@@ -1,0 +1,1681 @@
+FFFFFFFFFFFFF..FFFFFFFFFFFFFFF..                                         [100%]
+=================================== FAILURES ===================================
+_______________ test_real_source_fault_rejected[crc_polynomial] ________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte0')
+name = 'crc_polynomial', module = 'soc_pcie_gen3_stp'
+old = 'l[10]^l[7]^l[6]^l[4]^l[2]^l[1]^l[0]'
+new = 'l[7]^l[6]^l[4]^l[2]^l[1]^l[0]', top = 'soc_pcie_gen3_stp'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ie_gen3_stp:28: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ie_gen3_stp:28: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+________________ test_real_source_fault_rejected[frame_parity] _________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte1')
+name = 'frame_parity', module = 'soc_pcie_gen3_stp'
+old = 'wire parity = ^{l,c};', new = "wire parity = 1'b0;"
+top = 'soc_pcie_gen3_stp'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ie_gen3_stp:28: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ie_gen3_stp:28: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+_______________ test_real_source_fault_rejected[reserved_prefix] _______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte2')
+name = 'reserved_prefix', module = 'soc_pcie_gen3_framer_tx'
+old = '(!dllp_i && data_i[7:4]!=0)', new = "1'b0"
+top = 'soc_pcie_gen3_framer_tx'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+________________ test_real_source_fault_rejected[header_length] ________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte3')
+name = 'header_length', module = 'soc_pcie_gen3_framer_tx'
+old = 'final_bytes!=expected_bytes', new = "1'b0"
+top = 'soc_pcie_gen3_framer_tx'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+________________ test_real_source_fault_rejected[format_prefix] ________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte4')
+name = 'format_prefix', module = 'soc_pcie_gen3_framer_tx'
+old = 'fmt[2] || final_bytes', new = "1'b0 || final_bytes"
+top = 'soc_pcie_gen3_framer_tx'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+_________________ test_real_source_fault_rejected[stall_loss] __________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte5')
+name = 'stall_loss', module = 'soc_pcie_gen3_framer_tx'
+old = 'if (block_ready_i) begin', new = "if (1'b1) begin"
+top = 'soc_pcie_gen3_framer_tx'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+__________________ test_real_source_fault_rejected[striping] ___________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte6')
+name = 'striping', module = 'soc_pcie_gen3_framer_tx'
+old = '(index % 4)*128 + ((index % 64)/4)*8', new = '(index % 64)*8'
+top = 'soc_pcie_gen3_framer_tx'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+__________________ test_real_source_fault_rejected[omit_edb] ___________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte7')
+name = 'omit_edb', module = 'soc_pcie_gen3_framer_tx'
+old = 'if (nullify) begin', new = "if (1'b0) begin"
+top = 'soc_pcie_gen3_framer_tx'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+_________________ test_real_source_fault_rejected[edb_length] __________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte8')
+name = 'edb_length', module = 'soc_pcie_gen3_framer_tx'
+old = 'framed_dw = framed_bytes[12:2];'
+new = 'framed_dw = framed_bytes[12:2] + nullify;'
+top = 'soc_pcie_gen3_framer_tx'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+_____________ test_real_source_fault_rejected[ignore_input_error] ______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte9')
+name = 'ignore_input_error', module = 'soc_pcie_gen3_framer_tx'
+old = 'if (error_i || dllp_i!=is_dllp', new = "if (1'b0 || dllp_i!=is_dllp"
+top = 'soc_pcie_gen3_framer_tx'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...3_framer_tx:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+________________ test_real_source_fault_rejected[wrong_header] _________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte10')
+name = 'wrong_header', module = 'soc_pcie_gen3_packet_tx_path'
+old = '.header_i(header)', new = ".header_i(2'b01)"
+top = 'soc_pcie_gen3_packet_tx_path'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ket_tx_path:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ket_tx_path:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+________________ test_real_source_fault_rejected[no_scrambling] ________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte11')
+name = 'no_scrambling', module = 'soc_pcie_gen3_packet_tx_path'
+old = ".scramble_i(64'hffffffffffffffff)"
+new = ".scramble_i(64'h0000000000000000)", top = 'soc_pcie_gen3_packet_tx_path'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ket_tx_path:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ket_tx_path:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+______________ test_real_source_fault_rejected[reseed_each_block] ______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_real_source_fault_rejecte12')
+name = 'reseed_each_block', module = 'soc_pcie_gen3_packet_tx_path'
+old = ".reseed_after_i(4'b0)", new = ".reseed_after_i(4'b1111)"
+top = 'soc_pcie_gen3_packet_tx_path'
+
+    @pytest.mark.parametrize("name,module,old,new,top", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_real_source_fault_rejected(tmp_path, name, module, old, new, top):
+        directory = tmp_path / "rtl"
+        directory.mkdir()
+        for source in SOURCES:
+            shutil.copyfile(RTL / (source + ".v"), directory / (source + ".v"))
+        path = directory / (module + ".v")
+        text = path.read_text()
+        assert text.count(old) == 1
+        path.write_text(text.replace(old, new))
+        result = tmp_path / "capture"
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_framer.py"),
+            "--top",
+            top,
+            "--out",
+            str(result),
+            "--rtl-dir",
+            str(directory),
+            "--iverilog-dir",
+            str(iverilog_directory()),
+            "--command-timeout-seconds",
+            "60",
+        ]
+        with (tmp_path / "launch.log").open("w") as log:
+            completed = subprocess.run(
+                command,
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert completed.returncode != 0
+        record = json.loads((result / "result.json").read_text())
+        assert record["status"] == "FAIL"
+        # Require an executed HDL assertion failure, not compilation/tool absence.
+        log = (result / "simulation.log").read_text()
+>       assert "AssertionError" in log and "failed" in log
+E       assert ('AssertionError' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ket_tx_path:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n' and 'failed' in 'Traceback (most recent call last):\n  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libex...ket_tx_path:33: /Makefile.sim: No such file or directory\nmake: *** No rule to make target \'/Makefile.sim\'.  Stop.\n')
+
+sw/tests/test_pcie_gen3_framer.py:171: AssertionError
+___________________ test_actual_receive_fault_rejected[crc] ____________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje0')
+name = 'crc', old = 'frame_crc==word[23:20]', new = "1'b1"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09f83cb0>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje0/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje0/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+__________________ test_actual_receive_fault_rejected[parity] __________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje1')
+name = 'parity', old = "(^{length_dw,word[23:20],word[15]})==1'b0", new = "1'b1"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09f9e210>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje1/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje1/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_________________ test_actual_receive_fault_rejected[capacity] _________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje2')
+name = 'capacity', old = 'encoded_bytes<=MAX_ENCODED_BYTES', new = "1'b1"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09f9c7d0>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje2/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje2/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_______________ test_actual_receive_fault_rejected[header_shape] _______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje3')
+name = 'header_shape', old = 'packet_bytes!=header_bytes', new = "1'b0"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09f7a190>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje3/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje3/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+__________________ test_actual_receive_fault_rejected[format] __________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje4')
+name = 'format', old = 'header_bad<=fmt[2]', new = "header_bad<=1'b0"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09d608a0>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje4/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje4/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_____________ test_actual_receive_fault_rejected[first_symbol_edb] _____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje5')
+name = 'first_symbol_edb', old = "edb_ok=word==32'hc0c0c0c0"
+new = "edb_ok=word[7:0]==8'hc0"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09f631d0>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje5/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje5/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+______________ test_actual_receive_fault_rejected[lane0_idl_only] ______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje6')
+name = 'lane0_idl_only', old = "idl_ok=word==32'b0"
+new = "idl_ok=word[7:0]==8'b0"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09d245a0>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje6/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje6/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_______________ test_actual_receive_fault_rejected[eds_anywhere] _______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje7')
+name = 'eds_anywhere', old = '&& word_index==15', new = "&& 1'b1"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09d24490>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje7/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje7/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_______________ test_actual_receive_fault_rejected[mixed_header] _______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje8')
+name = 'mixed_header', old = "headers_i!=8'haa", new = "headers_i[1:0]!=2'b10"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09fffe50>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje8/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje8/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+_______________ test_actual_receive_fault_rejected[input_error] ________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje9')
+name = 'input_error', old = "headers_i!=8'haa || block_error_i"
+new = "headers_i!=8'haa || 1'b0"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09ffdb50>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje9/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje9/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+______________ test_actual_receive_fault_rejected[premature_tlp] _______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje10')
+name = 'premature_tlp', old = 'else state<=LOOK;'
+new = 'else begin state<=EMIT;packet_good_o<=1;end'
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09d41f40>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje10/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje10/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+______________ test_actual_receive_fault_rejected[lost_successor] ______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje11')
+name = 'lost_successor'
+old = '               packet_good_o<=1;state<=EMIT;read_pos<=0;'
+new = '               packet_good_o<=1;state<=EMIT;read_pos<=0;consume_word();'
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09d40500>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje11/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje11/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+________________ test_actual_receive_fault_rejected[stall_loss] ________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje12')
+name = 'stall_loss', old = 'if(valid_o && ready_i)', new = 'if(valid_o)'
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09e34d70>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje12/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje12/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+____________ test_actual_receive_fault_rejected[sequence_reserved] _____________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje13')
+name = 'sequence_reserved', old = "packet[0]<={4'b0,word[19:16]}"
+new = "packet[0]<={4'h1,word[19:16]}"
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09fbb770>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje13/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje13/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+________________ test_actual_receive_fault_rejected[dllp_lane] _________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje14')
+name = 'dllp_lane', old = 'packet[0]<=word[23:16]'
+new = 'packet[0]<=word[31:24]'
+
+    @pytest.mark.parametrize("name,old,new", FAULTS, ids=[x[0] for x in FAULTS])
+    def test_actual_receive_fault_rejected(tmp_path, name, old, new):
+        text = RTL.read_text()
+        assert text.count(old) == 1
+        altered = tmp_path / "soc_pcie_gen3_framer_rx.v"
+        altered.write_text(text.replace(old, new))
+        out = tmp_path / "capture"
+        with (tmp_path / "launch.log").open("w") as log:
+            result = subprocess.run(
+                [
+                    sys.executable,
+                    str(ROOT / "scripts/check_pcie_gen3_receive.py"),
+                    "--out",
+                    str(out),
+                    "--rtl",
+                    str(altered),
+                    "--iverilog-dir",
+                    str(iverilog_directory()),
+                    "--command-timeout-seconds",
+                    "60",
+                ],
+                cwd=ROOT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                timeout=90,
+            )
+        assert result.returncode != 0
+        assert json.loads((out / "result.json").read_text())["status"] == "FAIL"
+        assert "AssertionError" in (out / "simulation.log").read_text()
+>       cases = list(ET.parse(out / "results.xml").getroot().iter("testcase"))
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_receive.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:1227: in parse
+    tree.parse(source, parser)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = <xml.etree.ElementTree.ElementTree object at 0x7f0b09c0de60>
+source = PosixPath('/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje14/capture/results.xml')
+parser = None
+
+    def parse(self, source, parser=None):
+        """Load external XML document into element tree.
+    
+        *source* is a file name or file object, *parser* is an optional
+        parser instance that defaults to XMLParser.
+    
+        ParseError is raised if the parser fails to parse the document.
+    
+        Returns the root element of the given source document.
+    
+        """
+        close_source = False
+        if not hasattr(source, "read"):
+>           source = open(source, "rb")
+                     ^^^^^^^^^^^^^^^^^^
+E           FileNotFoundError: [Errno 2] No such file or directory: '/dev/shm/nssoc-gen3-portable-root-01/test_actual_receive_fault_reje14/capture/results.xml'
+
+../../../miniconda3/lib/python3.14/xml/etree/ElementTree.py:570: FileNotFoundError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[crc_polynomial]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[frame_parity]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[reserved_prefix]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[header_length]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[format_prefix]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[stall_loss]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[striping]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[omit_edb]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[edb_length]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[ignore_input_error]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[wrong_header]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[no_scrambling]
+FAILED sw/tests/test_pcie_gen3_framer.py::test_real_source_fault_rejected[reseed_each_block]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[crc]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[parity]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[capacity]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[header_shape]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[format]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[first_symbol_edb]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[lane0_idl_only]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[eds_anywhere]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[mixed_header]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[input_error]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[premature_tlp]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[lost_successor]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[stall_loss]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[sequence_reserved]
+FAILED sw/tests/test_pcie_gen3_receive.py::test_actual_receive_fault_rejected[dllp_lane]
+28 failed, 4 passed in 15.17s

@@ -1,0 +1,655 @@
+{
+  "status": "JOINT_ETHERNET_PASS_COARSE_TIMESTEP_REJECTED_TWO_MORE_NATIVE_GROUPS_PASS",
+  "asset": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-joint-ethernet-and-timestep-rejection-20261012.tar.gz",
+    "name": "nssoc-joint-ethernet-and-timestep-rejection-20261012.tar.gz",
+    "bytes": 34973718,
+    "sha256": "e0d61accb4c70beb4fcf812cbf6b4d428325b9ad243bea1b2f1cb35d24c7f463",
+    "members": 41
+  },
+  "joint": {
+    "status": "PASS_INDEPENDENT_JOINT_TWO_SCENARIOS_16_VENDOR_SRAM_CANONICAL_CAPTURE_BYTES",
+    "input_count": 123,
+    "runtime_count": 5,
+    "outputs_checked": {
+      "run.log": "2a7a1e0eb6aa59064c3971146347b8709b26e6cc02ecfc4c5508bdb91fc4816a",
+      "results.xml": "635c36944ebe5a67c4637a024c2c047848531f37c77be06721281c78b0660c34",
+      "inputs.tar.gz": "4611c7c83c4dff998b3b257eb01a83aaf3def5af690ea121f66de4d4946cdc01",
+      "rom.hex": "16e77150a5a261ecb7a4853c435219c95742b59d4f8c6e9ce26535e6fa2f39c5",
+      "sim/sim.vvp": "7af38f22d789a5c14a7970295c7b4bec13f41b6ad363b1c6670e285ace6290a5"
+    },
+    "tests": {
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    "scenarios": [
+      "7206888.00ns INFO     cocotb.tb_soc_pcie_ethernet        JOINT_ETH_PCIE frames=3 tx_writes=180 rx_reads=180 firmware_frames=3 cpu=39933 pcie=81 eth_contentions=17 pre_mbist_pcie=1",
+      "14418564.00ns INFO     cocotb.tb_soc_pcie_ethernet        JOINT_ETH_PCIE frames=3 tx_writes=193 rx_reads=180 firmware_frames=3 cpu=39959 pcie=43 eth_contentions=21 pre_mbist_pcie=1"
+    ],
+    "elapsed_seconds": 3188.56,
+    "ethernet_sram_instances": 16,
+    "canonical_capture_bytes_equal": true,
+    "scope": "Actual Ibex CPU, PCIe packet/GPIO and GMII Ethernet concurrent traffic. Base interface bundle; external loopback over independent 125 MHz clocks and 50 MHz APB. Optional 16 vendor functional FIFO SRAM instances with POR MBIST. No PCIe serial PHY, LTSSM, Ethernet PHY, full system SRAM mapping, layout, RC or timing qualification.",
+    "elaboration_warnings": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1165: warning: Port 11 (s_axis_tid) of module axis_async_fifo_adapter expects 8 bit(s), given 32.",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1165: warning: Port 12 (s_axis_tdest) of module axis_async_fifo_adapter expects 8 bit(s), given 32.",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1220: warning: Port 7 (s_axis_tkeep) of module axis_async_fifo_adapter expects 1 bit(s), given 32.",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1220: warning: Port 11 (s_axis_tid) of module axis_async_fifo_adapter expects 8 bit(s), given 32.",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/gen/interfaces.bundle.vh:1220: warning: Port 12 (s_axis_tdest) of module axis_async_fifo_adapter expects 8 bit(s), given 32."
+    ],
+    "full_serial_phy_accepted": false,
+    "physical_timing_accepted": false,
+    "result_sha256": "0469545379999f5861c5ed371149c4a355492bffffb6e23d483a5615f5db3981"
+  },
+  "timestep": {
+    "status": "FAIL_SELECTED_PROBE_TIMESTEP_CONVERGENCE_KEEP_FINE_REFERENCE",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-acquisition-20261011/prepare04.py": {
+        "bytes": 2479,
+        "sha256": "7fd47b8e411937172d073a3aac33b35d208fcd1f2298afc00810cab12338a8e3"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/native01/closed-01/bench.cir": {
+        "bytes": 85790,
+        "sha256": "05c2d09666a92fba82ef4fae323202027e05cae5c8a53469821084e48dc3d694"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/native01/closed-01/parent865.spice": {
+        "bytes": 603570,
+        "sha256": "6e306aa23610b2bbd6e6ef1abe4e29848da0977e9dad99ede9f19d34353a1036"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/native01/closed-01/result.json": {
+        "bytes": 938424,
+        "sha256": "0218375c3e27cb41701bd3074ec1482f277f96163b9a95053f17e99ed8047463"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-prefix-20261011/full-review04.json": {
+        "bytes": 90133,
+        "sha256": "6be27f959d49be3abc2155b656e86d4c5851ba04f8419daa03b4e12e7bb24c74"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-acquisition-20261011/native04/bench.cir": {
+        "bytes": 20469,
+        "sha256": "8d1ace49e8c2abe21be67433b1b5714f7a468790358e4ef33d4ef038b93944af"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-acquisition-20261011/native04/parent865.spice": {
+        "bytes": 603570,
+        "sha256": "6e306aa23610b2bbd6e6ef1abe4e29848da0977e9dad99ede9f19d34353a1036"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-acquisition-20261011/native04/spinit": {
+        "bytes": 18,
+        "sha256": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_acquisition_v1.py": {
+        "bytes": 22103,
+        "sha256": "ea34d89dc062a515727814b5549d28c4036ca030d39d966aacf605a8691ac649"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/compare_pcie_pump_boundary.py": {
+        "bytes": 6738,
+        "sha256": "05014942b2384108687959278a4d1e68081bd408032caf08eb9f6887826ef980"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/includes01/parent865.spice": {
+        "bytes": 603570,
+        "sha256": "6e306aa23610b2bbd6e6ef1abe4e29848da0977e9dad99ede9f19d34353a1036"
+      },
+      "/dev/shm/nssoc-vco-v4-mim-v6-local-v1-hybrid-01/hybrid-open.spice": {
+        "bytes": 71443,
+        "sha256": "37673a8cba095790d53b477db96cda8c782e94166a52b3998c92203d7649805b"
+      },
+      "/dev/shm/nssoc-vco-v4-mim-v6-local-v1-hybrid-01/composition.json": {
+        "bytes": 77538,
+        "sha256": "619ac16d7bb31a5a25b594c768bb551b232439d736745697b79923beb8811ff1"
+      },
+      "/dev/shm/nssoc-ngspice47-20261004/root/usr/bin/ngspice": {
+        "bytes": 8828088,
+        "sha256": "eaca52dad06845779fed4f50420a6a0cf4a32776e6a572432275f350002b87b8"
+      },
+      "/dev/shm/nssoc-clock-vco-full-20261004/r3_cmc.osdi": {
+        "bytes": 113080,
+        "sha256": "9b41facf3c49d2266e542406547ed00677304f09c1dd281f3bf90414ee053828"
+      },
+      "/dev/shm/nssoc-clock-vco-full-20261004/psp103.osdi": {
+        "bytes": 680864,
+        "sha256": "e4a50ec48e3fab3aa7af76f1d0816863c8aa06223e0efcded362ddadb49681a8"
+      },
+      "/dev/shm/nssoc-clock-vco-full-20261004/psp103_nqs.osdi": {
+        "bytes": 1001816,
+        "sha256": "523382d47f1f747c991a938b2f93cc6d9bab27ebf44f708c4e995820dc0bee88"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_svaricaphv_mod.lib": {
+        "bytes": 5176,
+        "sha256": "1462f67e80da7f5fa6f6b51efb0eb0e4dc7ef2da28d8bfde95a19ce2a780580a"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_stat.lib": {
+        "bytes": 1342,
+        "sha256": "183eb9192bf711db991b8df87e031bab2ca5e559c73393edc756fa02a2720d40"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_stat.lib": {
+        "bytes": 2463,
+        "sha256": "80d1893eb06a3417d05400335d8e58c8309b9c80061ca96ceff8f8fd68c9a7db"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_dschottky_nbl1_stat.lib": {
+        "bytes": 1108,
+        "sha256": "730c857bbaabb0c7876eb21b9b60a6882955db388956d082615763559c61d262"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_mod_mismatch.lib": {
+        "bytes": 4790,
+        "sha256": "8ebc8369966951cfec0e91d603685f1975fbf9ceff2eef493a25357ce9ae5492"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib": {
+        "bytes": 4936,
+        "sha256": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod_mismatch.lib": {
+        "bytes": 5241,
+        "sha256": "f0aa7d90b6489112ed256aaf4cb0a11b9ab17ebe0c3ce092f4f8c5ecb1fd1e15"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mismatch.lib": {
+        "bytes": 1167,
+        "sha256": "2e9612bdb8252c281f422511039dc9b3ea983892aec89f8ef3361592e68fed09"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_parm.lib": {
+        "bytes": 94408,
+        "sha256": "cbf10b8453a18bb70b8ad0d6e40faa0937338e699b5460947a94900db6c92a6e"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mismatch.lib": {
+        "bytes": 1088,
+        "sha256": "2d3251e2d42eadb0f8af152a4915fdc60a68bceb95a2d17a52f90cfb34b7e63e"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_stat.lib": {
+        "bytes": 7399,
+        "sha256": "cd30f22637e41fdbbaba506ebe0f17746b8438027e4651a7a87b241a39d68903"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_stat.lib": {
+        "bytes": 6077,
+        "sha256": "7f4cf8df714e327348ba3975a2630e9d7dd7ae1a7a88817df4890e82745f0f52"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerDIO.lib": {
+        "bytes": 2584,
+        "sha256": "28e747e8f7437a3f539c5cc36f50c9d17c57c03ed463a4c9ee8f0a93a823fe0b"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_mod.lib": {
+        "bytes": 4562,
+        "sha256": "94b569e695fd8a223a5a49a5b5a6b0d8a62408820bf0c2ed9dbcb0a8ab7d957e"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_parm.lib": {
+        "bytes": 64329,
+        "sha256": "eea5bbed39184cb1e2654ae29425a9ed6ee2f2341d6cb76c472591c75237bd35"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib": {
+        "bytes": 21645,
+        "sha256": "03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mod.lib": {
+        "bytes": 10452,
+        "sha256": "124c48af28aee8f4788170b50dbb4d798e7d830c6bb37516f749e16f676fa9db"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mod_mismatch.lib": {
+        "bytes": 12375,
+        "sha256": "be170c9619bed19215f7f7b55141e0869344874e3fcf7f30b2d2aa37659b1a0e"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib": {
+        "bytes": 2330,
+        "sha256": "2c18502104146804444a567abfe7d00520752bf75426809f9d79f40198fe9c1e"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_dschottky_nbl1_mod.lib": {
+        "bytes": 2532,
+        "sha256": "a5b4771593fdc6942eee9f74c58c42dd7dc777cf18a56814ad51c670c47ba351"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_esd.lib": {
+        "bytes": 3460,
+        "sha256": "4a4fb26a87f64bc6ed807f161cc7b3afaeb8d5ca7230b08ebba728e805caa925"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib": {
+        "bytes": 3975,
+        "sha256": "bae3d705445de8d6b8de4aa798a0e3e5e7cab617d6495d9c56473bc5377de462"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mod_mismatch.lib": {
+        "bytes": 13455,
+        "sha256": "67672ffa1f224294a90270f687d11b804a24dbf268071c5cd98923ab1b3e2f84"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_svaricaphv_mod_mismatch.lib": {
+        "bytes": 5404,
+        "sha256": "16da7669ee7e963645a604f64770d2f8d871fa8483c34e3dddaa9fcf01c51f50"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mod.lib": {
+        "bytes": 9279,
+        "sha256": "d4b348b494998d7057bdde6fb111c60153d8b86175fafcfc6de461737e7a644b"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_bondpad.lib": {
+        "bytes": 919,
+        "sha256": "19b3edd62d507bfaf03633b3dc3e89b4ab4d43187a309e8fc665cc5af28a0a4f"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod_mismatch.lib": {
+        "bytes": 20486,
+        "sha256": "1e493f25150b25b64985acd3f1e7ed2eb2e6ca4b712adf45b2de2ce2ba1a0eb2"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_stat.lib": {
+        "bytes": 1048,
+        "sha256": "68d2ef41174bcfae5997b355c4fd3dbe4f2b8ec4be30ff79d474052b3be1715a"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/diodes.lib": {
+        "bytes": 7971,
+        "sha256": "66fa37819fa8a5c8af4dbb85f11208c3e38faa49c117de55c35a1538786715e8"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod.lib": {
+        "bytes": 20057,
+        "sha256": "ae9288f885dd30fab24b07ed1e7e02e69eac9154022a0a6da576985183b0bd79"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib": {
+        "bytes": 1949,
+        "sha256": "4fc4a0f17ca2aef66ca38c2d2e7cead3307b69508d304ed073129565ec1c3e56"
+      },
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib": {
+        "bytes": 24384,
+        "sha256": "5a1f862dc304fdfe2fb9758b15d54809a688d83c3ce981dad2e8473b3e93481a"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/composition01.json": {
+        "bytes": 2019289,
+        "sha256": "9b527b181c1c659f75f1c6d73e2599d964ad05d25f9686fef7856ae370f68117"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/prepare01.py": {
+        "bytes": 4418,
+        "sha256": "851896364cab6477b3cbd7f29cc5fbbef3a5b7454898e654ed04130cd0c0e270"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/native-preparation01.json": {
+        "bytes": 845,
+        "sha256": "6c948692afc7e34f5b4d91ef2b3da099f6c5515c509d6e5e628e881a43bf6e53"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/run01.py": {
+        "bytes": 4134,
+        "sha256": "01099090dd698adedd27856fe40551b7f4eb201d29adc9aa68bc8774e425a6c0"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/engine_parent753.py": {
+        "bytes": 23451,
+        "sha256": "193a8d2036f197c796deca2f7b024700db5fe4aac5b39a74bddd85f9bae3615e"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/header1648_01.py": {
+        "bytes": 2198,
+        "sha256": "bc75fa2500974470009a6da8a1031cbbbc4956f84857ce040baf319422853643"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/startup753.py": {
+        "bytes": 1557,
+        "sha256": "8703e87251702cfc33b2881c8395481de7bec0eb63a010a53b6a11703199ced9"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/save_batches_parent.py": {
+        "bytes": 1032,
+        "sha256": "03b99e4e64b8e567e55311718e7568fa0b399def4fe060c1fb4828ef420eed47"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/check-measure01.py": {
+        "bytes": 3251,
+        "sha256": "d73e17eceb3d4ae2d55ed438c9d145f15490fc6feb99f1283f55ff1c69eeada0"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/measurement-controls01.json": {
+        "bytes": 82572,
+        "sha256": "3fceecf0920a4695fa1c02016abf3b7cbb37cc507e3cfc170568878aa9ff47e5"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/run-cpu12-02.py": {
+        "bytes": 1670,
+        "sha256": "0ad9952da0022be8214206492e90a0959652c175d41119057f29976aab918916"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/measurement01.py": {
+        "bytes": 4422,
+        "sha256": "7dbe7b4cdb787625a8f5714481ccef914ab216ebe18a04602fbc6bb556d50c6f"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/check-boundary01.py": {
+        "bytes": 4115,
+        "sha256": "f14d0ea06fd166a1054a34de146f6f71b4663027be09109ac671c3ce67b57a0f"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_clock_division_phase.py": {
+        "bytes": 2891,
+        "sha256": "0df5ca550e0513d5b500cf7008817645edbf75db5c39a3368447b1aef643b0f4"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/boundary-controls01.json": {
+        "bytes": 2214,
+        "sha256": "4eca8a2e965324504624874cb0cafe7d365ae616560ac851e58f370cb82e2802"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset-gated108-20261011/pvt12/matrix01.json": {
+        "bytes": 46404,
+        "sha256": "7c925612c1a20206db2ffaba4c594150e5ea8a07dd194346ebc6de4025a04258"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-composition-20261011/model02/composition.json": {
+        "bytes": 1768467,
+        "sha256": "2d84d7524bdaa4a06c821c621b155b6dc2d506b69b3be54b5c1a39866d292acd"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/build_pcie_clock_div4_v10_tail115_v1_hybrid_v1.py": {
+        "bytes": 18859,
+        "sha256": "f6cc2fcc1d9c8ec14b0e5409a663cc41d9013ceea90f5500d0bda92b90270ea8"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/build_pcie_vco_v6_hybrid_v1.py": {
+        "bytes": 18968,
+        "sha256": "dc075745c8481eb081415a12410c9ad2301e719d55cfa2a953ff559b8acfde61"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_driver_v3.py": {
+        "bytes": 20433,
+        "sha256": "510b0c25dc66acc8108f83a9f06dcbb00e6eeb1c1bb782f6f364bac73f483148"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_fanout_v1.py": {
+        "bytes": 6469,
+        "sha256": "c8c4cffde783a8a46663b0836b121abd3f6a1a7febfcfeb0ea00e2aab6a80a5d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_headroom_v2.py": {
+        "bytes": 12940,
+        "sha256": "00069ff6113f3390e4dcdf0f6778b6d1d199246252345b2bd726c2ba7338217e"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v1.py": {
+        "bytes": 34392,
+        "sha256": "9f405eaf9c68ed7237c06bfd0e81a25631a1417b74efd6395562086baf060982"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py": {
+        "bytes": 19742,
+        "sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_thermal_v1.py": {
+        "bytes": 17539,
+        "sha256": "663d50d2f7efd2f611792d305ce03813f8c1d0ca1f21fd0d52866adb801aa324"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_v1.py": {
+        "bytes": 15134,
+        "sha256": "508cb8aa7902b53d7680b93adf572ed3be3220e4687d7c96b4638588e4a9aa44"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_vco.py": {
+        "bytes": 14540,
+        "sha256": "b7fd696ed658650b5be118dc897db690e6c225250fc334706714dd62256df3f9"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_div2.py": {
+        "bytes": 22477,
+        "sha256": "8dd9818c28d3db09e550b41f70340ea196387bc40e7c691a2ec9f32ef50b28ce"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_div4.py": {
+        "bytes": 23975,
+        "sha256": "d4aa14a731dd5219be816d654583a264becb30df78340c8df93e264f97f2db16"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_div4_v2.py": {
+        "bytes": 4011,
+        "sha256": "f7cd2bb64ff76f4c9ed1459133706d48b42cc138019ec7b6f95f601c23f10954"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_div4_v4.py": {
+        "bytes": 6959,
+        "sha256": "ce9ce96ff0844a8c5f87f377c097b422c4bcc70e76156b7413168fda6a1c3395"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_div4_v5.py": {
+        "bytes": 3082,
+        "sha256": "55bbcb9116f7bd1410b6c3c9d46615be5a53fa9ff3e6c39f9cedabc79e237de2"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_feedback_v1.py": {
+        "bytes": 10648,
+        "sha256": "cd71ab14fb96350c582babc28b2faed100ac3553b3c1e27f677287a3cbe568b3"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_feedback_v2.py": {
+        "bytes": 3641,
+        "sha256": "4b1e3d2226c36983c5c54fd87ce1f4d06cc4512fa7bdd6dc5661ad26e3e18ece"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_loop_stream_v1.py": {
+        "bytes": 30105,
+        "sha256": "b0a92554452c3334ba14f44f7c743cd29aee02d5f5fd3f8625cd6386b5afec6d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_loop_stream_v2.py": {
+        "bytes": 6213,
+        "sha256": "79de51fcd210e1141b187a3fc83546e9933b5d5c6c36a9d0bc85aa6a69d2da9d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_loop_v1.py": {
+        "bytes": 9578,
+        "sha256": "f2e8fe57309ee15bb73dffc4954720b635842db333f8df81799ddb29e45f0737"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_loop_v2.py": {
+        "bytes": 5450,
+        "sha256": "bc94a96bd34fc73f2d2e1587ecf3e382637793bedf08578358acd14270ec095e"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_pfd_cp_v1.py": {
+        "bytes": 26220,
+        "sha256": "013c213cb2dc4dd3bef97124a107fbd06b6897340c4be9c517717c5ab8fef5b9"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_rx.py": {
+        "bytes": 15965,
+        "sha256": "74d192ab7c95b8113cafbc0202f219c52f2ae9a1e07b410ba72b7512cceb4a99"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_rx_v2.py": {
+        "bytes": 9568,
+        "sha256": "087ac0d41235f11fb64c532da0d4d9f13f85deea596652951d83d365e51ef1ef"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_sampler_v2.py": {
+        "bytes": 22262,
+        "sha256": "4c5f52d68012d79f0c08809d269f79d357955571630297aa62dbcbb9f5da7f67"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_tx.py": {
+        "bytes": 14315,
+        "sha256": "fdd6d927350d459ee68b7491047d0ceb976868bf93d6ff144a4339719d472f0c"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_tx_rsil.py": {
+        "bytes": 9454,
+        "sha256": "0028468eda30911b157bc650c78745c43a36f52437da61a1cfcc40972301e92e"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_feedback_bias_v1.py": {
+        "bytes": 7921,
+        "sha256": "56bd41ef4d8840a5a5344fc8a2e27fcd555126ec08eddab15a251e21a9e33405"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_feedback_bias_v2.py": {
+        "bytes": 8024,
+        "sha256": "f084eae8150533acd8d2f788fb6007155f88431610702fad1b7f40e4bb33f30e"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_feedback_v1.py": {
+        "bytes": 20439,
+        "sha256": "0658aa499361c2eba01b3af7671cdb1b2e97da7f64e41d7afe72b4fd659a841a"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_feedback_v2.py": {
+        "bytes": 1789,
+        "sha256": "2a8061c1db5988e932a3bc289f5b9120724ca3b87a5b0c4300e0231536d42af0"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_clock_zero_start_v2.py": {
+        "bytes": 11924,
+        "sha256": "0bab52f600f609d4f0e71849a7df492272c1320066815e9017cd7b67d791a0e4"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_vco_v6_powered_v1.py": {
+        "bytes": 28822,
+        "sha256": "bddafbf3a3ae9beaa9bbb4e212675bf4496e2b73220b2c08b00c88299622c87b"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_zero_start_v3.py": {
+        "bytes": 12622,
+        "sha256": "7a11136d653663fe0094199510294d6c36f178dc9dba38f5630f47e04875953a"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/pcie_pll_native_fixture_v1.py": {
+        "bytes": 14757,
+        "sha256": "ba483cc0a740db3c774225ef2c42cb0a41cf56311050512217ec588ab2172223"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_pcie_clock_stream_capture_v1.py": {
+        "bytes": 16501,
+        "sha256": "13e370d57778999a1bbd97dfeeb6aaef8dbe65e6fcdd4fa0393d1b2fec985c07"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_native_capture.py": {
+        "bytes": 4896,
+        "sha256": "7d974fdf1a37d987a9464c4e13dfbbc464fe01e9da6e0d147795694f1adfa03e"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/review_pcie_rx.py": {
+        "bytes": 11089,
+        "sha256": "93485e70a1a2fd72e5cc76542f48b5fb27bf580edfbb463217348fac9fce8417"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/review_pcie_rx_v2.py": {
+        "bytes": 13378,
+        "sha256": "0d3548490df7f908722106624002713528e2d578b2b994660ec836d9bb4237cf"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset865-native-20261011/native01/closed-01/spinit": {
+        "bytes": 18,
+        "sha256": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc"
+      },
+      "/tmp/nssoc-prepare-timestep-20261012.py": {
+        "bytes": 2570,
+        "sha256": "7b2d84362b15b4229e6b70abe2561dbd02b80e59b5e54ea260051d9d5904dd10"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-acquisition-20261011/preparation04.json": {
+        "bytes": 25350,
+        "sha256": "4bc62dba1ecf53f5fdcf5b8676c925f2a9387fcdc37f9b941051c46578480aa6"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-timestep-20261012/native01/bench.cir": {
+        "bytes": 20467,
+        "sha256": "4417d914becaddb0eeffaca78c4f6672dffa313c708fda542668e419ce50e9fc"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-timestep-20261012/native01/parent865.spice": {
+        "bytes": 603570,
+        "sha256": "6e306aa23610b2bbd6e6ef1abe4e29848da0977e9dad99ede9f19d34353a1036"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-timestep-20261012/native01/spinit": {
+        "bytes": 18,
+        "sha256": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-timestep-20261012/preparation01.json": {
+        "bytes": 27013,
+        "sha256": "d4026867bc9a38695a07a24c4fc3a45c09297fe628e5d007695165c07d57547b"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-timestep-20261012/run02.py": {
+        "bytes": 4357,
+        "sha256": "810bff2fd578222a1cf36c63d2b969622915345288c332da6b31d6a473632168"
+      }
+    },
+    "reference_prefix": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-timestep-20261012/reference-prefix01.bin",
+      "bytes": 32768879,
+      "sha256": "f2493dd35ea3d8fed0e88ce4a3f1ba73bc0bf8d4fc98e25720c6fd43673bd463",
+      "rows": 163840,
+      "header_bytes": 879,
+      "columns": [
+        "time",
+        "v(clkp)",
+        "v(clkn)",
+        "v(qp)",
+        "v(qn)",
+        "v(xloop.qp2)",
+        "v(xloop.qn2)",
+        "v(xloop.clk)",
+        "v(xloop.count)",
+        "v(xloop.countb)",
+        "v(xloop.xcount.q0)",
+        "v(xloop.xcount.q1)",
+        "v(fb)",
+        "v(fbbar)",
+        "v(vctrl)",
+        "v(up)",
+        "v(down)",
+        "v(reference)",
+        "v(reset)",
+        "v(xloop.bp)",
+        "v(xloop.bn)",
+        "v(xloop.releaseb)",
+        "v(xloop.counter_reset_b)",
+        "v(xloop.a_release_clk)",
+        "v(xloop.a_release_reset_b)"
+      ],
+      "last_time_s": 5.1177656250013996e-08,
+      "source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-parent865-acquisition-20261011/native04/wave.raw",
+      "source_was_growing": true,
+      "original_header_points": 0,
+      "scope": "Exact complete row prefix copied from still-running.3125ps reference; not a completed1us capture. Header remains nativeunfinalized; only prefix comparison allowed."
+    },
+    "elapsed_timeout": false,
+    "criteria": {
+      "window_start_s": 3.5e-08,
+      "window_stop_s": 5e-08,
+      "max_vctrl_difference_v": 0.005,
+      "max_edge_displacement_s": 5e-12,
+      "equal_edge_counts": true
+    },
+    "full_phy_accepted": false,
+    "vctrl_max_difference_v": 0.0551483600111482,
+    "edge_comparison": [
+      {
+        "signal": "reference",
+        "rising": true,
+        "reference_edges": 1,
+        "candidate_edges": 1,
+        "max_absolute_edge_displacement_s": 0.0,
+        "passed": true
+      },
+      {
+        "signal": "reference",
+        "rising": false,
+        "reference_edges": 2,
+        "candidate_edges": 2,
+        "max_absolute_edge_displacement_s": 0.0,
+        "passed": true
+      },
+      {
+        "signal": "feedback",
+        "rising": true,
+        "reference_edges": 2,
+        "candidate_edges": 2,
+        "max_absolute_edge_displacement_s": 5.102956618455722e-10,
+        "passed": false
+      },
+      {
+        "signal": "feedback",
+        "rising": false,
+        "reference_edges": 1,
+        "candidate_edges": 1,
+        "max_absolute_edge_displacement_s": 4.769763363781483e-10,
+        "passed": false
+      },
+      {
+        "signal": "vco_differential",
+        "rising": true,
+        "reference_edges": 114,
+        "candidate_edges": 114,
+        "max_absolute_edge_displacement_s": 1.0153621627247327e-10,
+        "passed": false
+      },
+      {
+        "signal": "vco_differential",
+        "rising": false,
+        "reference_edges": 114,
+        "candidate_edges": 114,
+        "max_absolute_edge_displacement_s": 8.27179114664596e-11,
+        "passed": false
+      },
+      {
+        "signal": "divider_differential",
+        "rising": true,
+        "reference_edges": 28,
+        "candidate_edges": 29,
+        "max_absolute_edge_displacement_s": null,
+        "passed": false
+      },
+      {
+        "signal": "divider_differential",
+        "rising": false,
+        "reference_edges": 29,
+        "candidate_edges": 28,
+        "max_absolute_edge_displacement_s": null,
+        "passed": false
+      }
+    ],
+    "rows": 40090,
+    "outputs": {
+      "wave.raw": {
+        "bytes": 8018879,
+        "sha256": "2f33f6f4c9f34084425ccf50b2589f777743e3af8faa3d6c93cab0a2b5cef7c7"
+      },
+      "op.raw": {
+        "bytes": 1047,
+        "sha256": "852dc0f48769d3d8e0d9533d715ce05d6bcd3f03176db911ea3138c781103c9c"
+      },
+      "bench.cir": {
+        "bytes": 20467,
+        "sha256": "4417d914becaddb0eeffaca78c4f6672dffa313c708fda542668e419ce50e9fc"
+      },
+      "run.log": {
+        "bytes": 311444,
+        "sha256": "97ed1ee1795bc6586256942011a7da8ed85e44ce01b3fc50c7ca4e83c73e57dd"
+      }
+    },
+    "scope": "Fixed35-50nswindow, absolute edge times, no fitted phase; selectedprobeconvergenceonly. Native1us.3125psreferencecontinues; nofull-device/PVT/PHYapproval."
+  },
+  "native_groups": {
+    "geometry_angle": {
+      "status": "PASS_INDEPENDENT_NATIVE_FILLED_GEOMETRY_ANGLE_ZERO_MARKERS",
+      "categories": 210,
+      "markers": 0,
+      "local_inputs_rechecked": 108
+    },
+    "supplemental_wide": {
+      "status": "PASS_INDEPENDENT_NATIVE_FILLED_SUPPLEMENTAL_WIDE_ZERO_MARKERS",
+      "categories": 11,
+      "markers": 0,
+      "local_inputs_rechecked": 108
+    }
+  },
+  "full_serial_phy_accepted": false,
+  "routed_main_chip_accepted": false,
+  "final_timing_closed": false
+}

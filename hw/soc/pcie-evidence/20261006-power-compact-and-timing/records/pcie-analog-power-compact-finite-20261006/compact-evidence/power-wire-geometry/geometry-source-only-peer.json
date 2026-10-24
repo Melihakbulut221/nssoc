@@ -1,0 +1,77 @@
+{
+  "status": "PASS_SOURCE_ONLY_DIVIDER_V7_WIRE_GEOMETRY",
+  "freeze": {
+    "bytes": 73350,
+    "sha256": "5c5751a02f73789956afd43c56d03f4b691f303321b8d7adef75ef1778ec25fb"
+  },
+  "findings": [],
+  "inputs_rehashed": 336,
+  "producer_sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/run_geometry.py": {
+      "bytes": 8107,
+      "sha256": "3db6ee537bbfcd4cbcdbbc00159310bfc7a00d1afe74ca3002224f18fe82860c"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/probe_native_cells.py": {
+      "bytes": 1343,
+      "sha256": "45b44b073076014f0b4389c88abd1beb651b5c92b173d23aad52861bdbea0a32"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/probe_device_locations.py": {
+      "bytes": 2923,
+      "sha256": "e70c17d7f14669e5b16aaea385a02031a2cc3bff5793b5d51fd2ab3c1f3c034b"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/probe_wire_components.py": {
+      "bytes": 7091,
+      "sha256": "65b29f26a7ebc3308dcc5bcee905f0521fe55dca44e3c86002caac1d15517fd0"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/probe_terminal_anchors.py": {
+      "bytes": 5430,
+      "sha256": "af347062cdc9a1c45818753dc643a7d546cdf43368bc966b6c04726c919d17d0"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/prepare_anchors.py": {
+      "bytes": 3400,
+      "sha256": "c81fdd2ebe9222e75ee10758e476421a335de2267e725d12160db63e7e52becc"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/bind_source_ids.py": {
+      "bytes": 3138,
+      "sha256": "6d2a991cdfea3d67f7d9a68f3bb951224c063b3badaa8d8fadc3832c575e8fff"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/native_unsimplified.lvs": {
+      "bytes": 758,
+      "sha256": "3d6a9afbf34be2b855edc2a89f30b0b2d7a6db287cc22a60ff7aadae1b5e055d"
+    }
+  },
+  "bridges_verified": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-20261005/draft-source-bridge.json",
+      "bytes": 69882,
+      "sha256": "97609abc3b229d2cad880afe69d46055454f780a322b1c89c1dab43925ce87bb",
+      "whole_forward_inverse_count": 7
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-v2-20261006/draft-source-bridge.json",
+      "bytes": 70173,
+      "sha256": "62ffe5f1535cb337954787a1184c9c04efecd8723ddfc3afd9da33e6064e5a14",
+      "whole_forward_inverse_count": 7
+    }
+  ],
+  "prior_findings_preserved": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-20261005/geometry-source-peer-findings01-rx.json",
+    "bytes": 1122,
+    "sha256": "6dcfa8299eda9c219c43388733bda71eca40dbd1017edd2693d931c0570c92b2"
+  },
+  "review": [
+    "Full seven producer bodies and native wrapper inspected. Both complete forward/inverse ledgers reproduced from independently read old/new files. V2 differs only in fresh roots and two explicit corrections of stale source assumptions; original rejected source/freeze remains unchanged.",
+    "Exact PowerV2 GDS identity now replaces the old baseline hash. All seven real metal layers including TopMetal2 and nonempty TopVia2 are required; every nonempty polygon is still unioned and inventoried before conductor binding.",
+    "Native leaf count725 and634 via_stack leaves preserve91 electrical devices. Fresh official-deck extraction is flat/net_only, no simplify/combine/purge, finite contacts retained, actual LayoutToNetlist explicitly exported; no comparison result is invented.",
+    "All283 terminal shapes require unique actual PCell enclosure, exact198 metal/85 body dispositions,205 real anchors and full91-device/38-net source location/parameter/net bijection. All72 raw clusters remain;34 auxiliary clusters must contain no metal/device terminal/public pin. No merge-by-label or net deletion.",
+    "Run gates prior actualPowerV2 zeroDRC/deep-flatLVS/strictGDS47-array peer and all336 frozen inputs. Exact inherited checked lifecycle ASTs are cloned into private namespace with fresh scratch roots only; CPU10,2GiB,80MiB+24MiB reservation,1GiB entry/512MiB floor and no healthy timeout remain.",
+    "Own controller executes and reaps each native stage before the next; input maps rehashed before/after stages. A failed actual census/bijection stops and retains output. Source predeclarations are not actual new geometry/RC acceptance."
+  ],
+  "native_or_reviewed_methods_executed": false,
+  "fresh_native_roots_absent": true,
+  "scope": "Source-only approval for fresh exact physical geometry extraction. No new RC, loaded division, qualified PEX, full PHY or main-chip acceptance.",
+  "method": {
+    "bytes": 5691,
+    "sha256": "7e94f6edffc0c8b3671092c8aa1039bc31da6ff1f3c94e8aab5baa1819761bd4"
+  }
+}

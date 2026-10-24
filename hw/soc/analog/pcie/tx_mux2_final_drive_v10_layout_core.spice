@@ -1,0 +1,40 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Canonical CORE INPUT for the native layout generator, NOT a transient model.
+* Candidate v10: twelve data HBTs Nx=3, four selectors Nx=6; reference/tails unchanged.
+* Same 19 HBT and 8 resistors as tx_mux54_passive_drive_v10.spice.
+* No electrical or physical acceptance is implied by this source.
+* Generator maps each body terminal to BULK and adds all 27 native 2x2um
+* substrate contacts between public sub and BULK. Do not omit those contacts
+* from electrical composition. Source equivalence is checked independently
+* before physical generation; passing schematic screens is not layout proof.
+* DRAFT: fresh native layout and extracted waveform acceptance remain pending.
+.subckt nssoc_tx_mux2_final_drive_v10_layout_core ap an bp bn sp sn op on avdd avss sub iref
+XREF iref iref avss sub npn13G2 Nx=1
+XAP_0 qn ap ea sub npn13G2 Nx=3
+XAP_1 qn ap ea sub npn13G2 Nx=3
+XAP_2 qn ap ea sub npn13G2 Nx=3
+XAN_0 qp an ea sub npn13G2 Nx=3
+XAN_1 qp an ea sub npn13G2 Nx=3
+XAN_2 qp an ea sub npn13G2 Nx=3
+XBP_0 qn bp eb sub npn13G2 Nx=3
+XBP_1 qn bp eb sub npn13G2 Nx=3
+XBP_2 qn bp eb sub npn13G2 Nx=3
+XBN_0 qp bn eb sub npn13G2 Nx=3
+XBN_1 qp bn eb sub npn13G2 Nx=3
+XBN_2 qp bn eb sub npn13G2 Nx=3
+XSA_0 ea sp tail sub npn13G2 Nx=6
+XSA_1 ea sp tail sub npn13G2 Nx=6
+XSB_0 eb sn tail sub npn13G2 Nx=6
+XSB_1 eb sn tail sub npn13G2 Nx=6
+XT_0 tail iref avss sub npn13G2 Nx=8
+XT_1 tail iref avss sub npn13G2 Nx=8
+XRP avdd qp sub rppd w=18u l=1.1u b=0 sw_et=1
+XRN avdd qn sub rppd w=18u l=1.1u b=0 sw_et=1
+XBA ea avss sub rppd w=2u l=38.4u b=0 sw_et=1
+XBB eb avss sub rppd w=2u l=38.4u b=0 sw_et=1
+XFPR op avss sub rppd w=8u l=4.5u b=0 sw_et=1
+XFNR on avss sub rppd w=8u l=4.5u b=0 sw_et=1
+XSP qp op sub rppd w=8u l=1.8u b=0 sw_et=1
+XSN qn on sub rppd w=8u l=1.8u b=0 sw_et=1
+.ends nssoc_tx_mux2_final_drive_v10_layout_core

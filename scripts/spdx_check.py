@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
+# REUSE-IgnoreStart
 
 """Check -- and, with --apply, insert -- the SPDX header on every source file.
 
@@ -17,10 +18,14 @@ applies to the flow's own gates.
 WHAT IS TAGGED INLINE, AND WHAT IS NOT
 
 A file is tagged inline when it is a SOURCE FILE and its syntax has a
-comment. Everything else is covered by path, in `.reuse/dep5` and
+comment. Everything else is covered by path, in `REUSE.toml` and
 `LICENSES.md`, and this script checks that those two agree with the
 classification below -- so a file that cannot carry a tag is still
 covered by a rule, not by silence.
+
+An immutable source capture may use a REUSE .license sidecar instead of an
+inline header. It must identify the same required licence and a copyright
+holder; existing inline headers still take precedence.
 
 Four groups are deliberately NOT tagged inline, each for a stated reason:
 
@@ -65,13 +70,19 @@ DOC = "CC-BY-4.0"       # documents and measurement data
 THIRD_PARTY = {
     "hw/soc/rvformal/insns/insn_div.v": "ISC",
     "hw/soc/rvformal/insns/insn_rem.v": "ISC",
+    # Exact upstream ngspice 47 captures; immutable bytes retain UC copyright.
+    # The adjacent COPYING, source-NOTICE and receipt establish Modified BSD.
+    "hw/soc/pcie-evidence/20261006-compact-rc-and-repair/records/"
+    "pcie-pll-acquisition-v3-20261005/numerical-convergence-plan01/dctran.c": "BSD-3-Clause",
+    "hw/soc/pcie-evidence/20261006-compact-rc-and-repair/records/"
+    "pcie-pll-acquisition-v3-20261005/numerical-convergence-plan01/traninit.c": "BSD-3-Clause",
 }
 
-# Path prefixes covered by .reuse/dep5 instead of an inline tag.
+# Path prefixes covered by REUSE.toml instead of an inline tag.
 UNTAGGED_PREFIXES = ("tt/", "LICENSES/", ".reuse/")
 UNTAGGED_SUFFIXES = (".json", ".md", ".csv", ".tsv", ".sha256", ".svg",
                      ".gitignore", ".txt", ".ini")
-UNTAGGED_NAMES = {"LICENSE", "pytest.ini", ".gitignore"}
+UNTAGGED_NAMES = {"LICENSE", "pytest.ini", ".gitignore", "REUSE.toml"}
 
 # Comment syntax by suffix. The value is (prefix, suffix); a suffix of ""
 # means a line comment.
@@ -86,6 +97,7 @@ SYNTAX = {
     ".sdc": HASH, ".sby": HASH, ".tcl": HASH, ".py": HASH, ".sh": HASH,
     ".mk": HASH, ".yml": HASH, ".yaml": HASH, ".awk": HASH, ".cfg": HASH,
     ".ys": HASH,
+    ".spice": ("* ", ""),
     ".tex": PCT, ".bib": PCT,
 }
 
@@ -110,7 +122,7 @@ DOCUMENT_SUFFIXES = {".tex", ".bib", ".yaml", ".yml", ".csv", ".tsv"}
 # Apache-2.0. The boundary is `docs/14` section 6.5: tooling is permissive
 # so that it can be offered upstream to yosys, LibreLane and IHP-Open-PDK,
 # none of which takes reciprocal code.
-HW_SUFFIXES = {".v", ".vh", ".sv", ".sdc", ".sby", ".tcl", ".ys"}
+HW_SUFFIXES = {".v", ".vh", ".sv", ".sdc", ".sby", ".tcl", ".ys", ".spice"}
 
 
 def strip_template(name):
@@ -130,6 +142,10 @@ def classify(rel):
     if rel in THIRD_PARTY:
         return THIRD_PARTY[rel], SYNTAX.get(strip_template(Path(rel).name))
     name = Path(rel).name
+    # REUSE metadata is not an executable Makefile, even when its companion is.
+    # The companion source still goes through the inline/sidecar licence check.
+    if name.endswith(".license"):
+        return None, None
     if rel.startswith(UNTAGGED_PREFIXES):
         return None, None
     if name in UNTAGGED_NAMES or (rel.endswith(UNTAGGED_SUFFIXES)
@@ -147,6 +163,19 @@ def classify(rel):
 
 def path_licence(rel):
     """The licence a path-covered (untagged) file is under, for LICENSES.md."""
+    if rel in {"docs/evidence/prepared-sources-20260920.tar.gz",
+               "docs/evidence/prepared-sources-20260920-NOTICES.txt",
+               "docs/evidence/prepared-sources-20260921.tar.gz",
+               "docs/evidence/prepared-sources-20260921-NOTICES.txt",
+               "docs/evidence/prepared-sources-can-bank-20260921.tar.gz",
+               "docs/evidence/prepared-sources-can-bank-20260921-NOTICES.txt",
+               "docs/evidence/prepared-sources-eth-mbist-20260926-NOTICES.txt",
+               "docs/evidence/ethernet-netlist-20260920.v.gz",
+               "docs/evidence/ethernet-netlist-20260920-NOTICES.txt"}:
+        return "CERN-OHL-W-2.0 AND Apache-2.0 AND LGPL-2.1-or-later AND MIT"
+    if rel in {"docs/evidence/historical-recovery-20260920.tar.gz",
+               "docs/evidence/historical-recovery-20260920-NOTICES.txt"}:
+        return "CERN-OHL-W-2.0 AND Apache-2.0"
     if rel.startswith("tt/"):
         return "see tt/README.md"
     if rel.startswith(DIR_IS_DOCUMENT):
@@ -191,6 +220,25 @@ def read_tag(text):
         if m:
             return m.group(1).strip()
     return None
+
+
+def read_sidecar_tag(path):
+    """Read REUSE's plain sidecar without modifying an immutable capture.
+
+    Inline headers still take precedence. Require one complete identifier
+    and a nonempty copyright line; prose containing a tag is not a licence.
+    """
+    sidecar = Path(str(path) + ".license")
+    if not sidecar.is_file():
+        return None
+    lines = sidecar.read_text(encoding="utf-8").splitlines()
+    tags = [match.group(1) for line in lines
+            if (match := TAG_RE.fullmatch(line.strip()))]
+    copyright_present = any(
+        line.startswith("SPDX-FileCopyrightText:")
+        and line.partition(":")[2].strip() for line in lines
+    )
+    return tags[0] if len(tags) == 1 and copyright_present else None
 
 
 def header_lines(lic, syn):
@@ -268,8 +316,11 @@ def main():
             covered += 1
             continue
         have = read_tag(text)
+        sidecar = have is None and read_sidecar_tag(p)
+        if sidecar:
+            have = sidecar
         if args.list:
-            print(f"{'inline':<18} {lic:<18} {rel}")
+            print(f"{'sidecar' if sidecar else 'inline':<18} {lic:<18} {rel}")
         if have is None:
             if args.apply and rel not in THIRD_PARTY:
                 p.write_text(insert(text, lic, syn), encoding="utf-8")
@@ -295,3 +346,5 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
+# REUSE-IgnoreEnd

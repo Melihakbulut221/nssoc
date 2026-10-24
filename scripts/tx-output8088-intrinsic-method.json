@@ -1,0 +1,329 @@
+{
+  "baseline_path": "scripts/cloud_tx_raw64_intrinsic.py",
+  "baseline_sha256": "1eea02423ca9b2f20059c8365a66049d63323b794c5a2af8ca964d3f8be70536",
+  "candidate_path": "scripts/cloud_tx_output8088_intrinsic.py",
+  "candidate_sha256": "7e858e90f9a03fe6fe5b37892b3012485cfd4f9340a845561d1c23980cf7fa1b",
+  "changes": [
+    {
+      "start": 74,
+      "end": 76,
+      "replacement": "88"
+    },
+    {
+      "start": 700,
+      "end": 705,
+      "replacement": "output8088"
+    },
+    {
+      "start": 731,
+      "end": 732,
+      "replacement": "o"
+    },
+    {
+      "start": 733,
+      "end": 737,
+      "replacement": "tput8088"
+    },
+    {
+      "start": 738,
+      "end": 738,
+      "replacement": "pa"
+    },
+    {
+      "start": 739,
+      "end": 746,
+      "replacement": "e"
+    },
+    {
+      "start": 747,
+      "end": 759,
+      "replacement": ""
+    },
+    {
+      "start": 760,
+      "end": 761,
+      "replacement": ""
+    },
+    {
+      "start": 782,
+      "end": 783,
+      "replacement": "o"
+    },
+    {
+      "start": 784,
+      "end": 792,
+      "replacement": "tput"
+    },
+    {
+      "start": 794,
+      "end": 796,
+      "replacement": "88"
+    },
+    {
+      "start": 832,
+      "end": 833,
+      "replacement": ""
+    },
+    {
+      "start": 834,
+      "end": 834,
+      "replacement": "3"
+    },
+    {
+      "start": 898,
+      "end": 898,
+      "replacement": "rsil=2,"
+    },
+    {
+      "start": 906,
+      "end": 908,
+      "replacement": "85"
+    },
+    {
+      "start": 1079,
+      "end": 1079,
+      "replacement": "_sub'],rsil=['rsil_1','rsil_2','rsil"
+    },
+    {
+      "start": 1346,
+      "end": 1347,
+      "replacement": "5"
+    },
+    {
+      "start": 1498,
+      "end": 1500,
+      "replacement": "6"
+    },
+    {
+      "start": 1501,
+      "end": 1501,
+      "replacement": "0"
+    },
+    {
+      "start": 1712,
+      "end": 1713,
+      "replacement": "8"
+    },
+    {
+      "start": 2803,
+      "end": 2804,
+      "replacement": "5"
+    },
+    {
+      "start": 3220,
+      "end": 3223,
+      "replacement": "703"
+    },
+    {
+      "start": 3843,
+      "end": 3845,
+      "replacement": "88"
+    },
+    {
+      "start": 3865,
+      "end": 3867,
+      "replacement": "6"
+    },
+    {
+      "start": 3868,
+      "end": 3868,
+      "replacement": "0"
+    },
+    {
+      "start": 4024,
+      "end": 4026,
+      "replacement": "88"
+    },
+    {
+      "start": 4039,
+      "end": 4041,
+      "replacement": "6"
+    },
+    {
+      "start": 4042,
+      "end": 4042,
+      "replacement": "0"
+    },
+    {
+      "start": 4051,
+      "end": 4052,
+      "replacement": "5"
+    },
+    {
+      "start": 4076,
+      "end": 4079,
+      "replacement": "703"
+    },
+    {
+      "start": 5108,
+      "end": 5110,
+      "replacement": " in ("
+    },
+    {
+      "start": 5116,
+      "end": 5116,
+      "replacement": ",'rsil')"
+    },
+    {
+      "start": 5201,
+      "end": 5209,
+      "replacement": "N"
+    },
+    {
+      "start": 5214,
+      "end": 5214,
+      "replacement": "504rppd and2rsil"
+    },
+    {
+      "start": 5926,
+      "end": 5927,
+      "replacement": "8"
+    },
+    {
+      "start": 5995,
+      "end": 5997,
+      "replacement": "88"
+    },
+    {
+      "start": 7096,
+      "end": 7098,
+      "replacement": "88"
+    },
+    {
+      "start": 8424,
+      "end": 8426,
+      "replacement": " in ("
+    },
+    {
+      "start": 8432,
+      "end": 8432,
+      "replacement": ",'rsil')"
+    },
+    {
+      "start": 10856,
+      "end": 10856,
+      "replacement": "\n    for name in ('wrong_rsil_length','missing_rsil_spacing','rsil_self_heating_disabled','rsil_body_short_to_avss'):\n        rows=copy.deepcopy(original);i=next(i for i,r in enumerate(rows)if 'rsil'in r)\n        if name=='rsil_body_short_to_avss':\n            assert rows[i][3]!='avss';rows[i][3]='avss'\n        else:\n            key={'wrong_rsil_length':'l','missing_rsil_spacing':'ps','rsil_self_heating_disabled':'sw_et'}[name]\n            j=next(j for j,x in enumerate(rows[i])if x.startswith(key+'='))\n            if name=='missing_rsil_spacing':del rows[i][j]\n            else:rows[i][j]=key+('=1u'if key=='l'else'=0')\n        changed='\\n'.join(' '.join(r)for r in rows)+'\\n'\n        assert changed!=text\n        try:verify(changed,native,tech)\n        except (AssertionError,ValueError):out.append(dict(name=name,rejected=True,sha256=__import__('hashlib').sha256(changed.encode()).hexdigest()))\n        else:raise AssertionError('Accepted '+name)\n    assert len(out)==19"
+    },
+    {
+      "start": 11034,
+      "end": 11034,
+      "replacement": "\n    delta=json.loads((ROOT/'scripts/tx-output8088-intrinsic-method.json').read_text())\n    original=(ROOT/delta['baseline_path']).read_text()\n    assert sha(ROOT/delta['baseline_path'])==delta['baseline_sha256']and sha(Path(__file__))==delta['candidate_sha256']\n    pieces=[];cursor=0\n    for change in delta['changes']:\n        assert cursor<=change['start']<=change['end']<=len(original)\n        pieces.extend([original[cursor:change['start']],change['replacement']]);cursor=change['end']\n    pieces.append(original[cursor:]);assert ''.join(pieces)==Path(__file__).read_text()"
+    },
+    {
+      "start": 11500,
+      "end": 11505,
+      "replacement": "output8088"
+    },
+    {
+      "start": 11533,
+      "end": 11534,
+      "replacement": "1"
+    },
+    {
+      "start": 11584,
+      "end": 11586,
+      "replacement": "58023059"
+    },
+    {
+      "start": 11587,
+      "end": 11593,
+      "replacement": ""
+    },
+    {
+      "start": 11623,
+      "end": 11623,
+      "replacement": "e1631f11fca77e70b125565deb9"
+    },
+    {
+      "start": 11625,
+      "end": 11625,
+      "replacement": "2ab00f"
+    },
+    {
+      "start": 11626,
+      "end": 11626,
+      "replacement": "246e"
+    },
+    {
+      "start": 11627,
+      "end": 11629,
+      "replacement": "bf73cec2fa"
+    },
+    {
+      "start": 11630,
+      "end": 11632,
+      "replacement": ""
+    },
+    {
+      "start": 11633,
+      "end": 11634,
+      "replacement": "6f8ee"
+    },
+    {
+      "start": 11637,
+      "end": 11639,
+      "replacement": ""
+    },
+    {
+      "start": 11640,
+      "end": 11647,
+      "replacement": ""
+    },
+    {
+      "start": 11648,
+      "end": 11686,
+      "replacement": ""
+    },
+    {
+      "start": 11837,
+      "end": 11842,
+      "replacement": "output8088"
+    },
+    {
+      "start": 12018,
+      "end": 12020,
+      "replacement": "6"
+    },
+    {
+      "start": 12021,
+      "end": 12021,
+      "replacement": "0"
+    },
+    {
+      "start": 13292,
+      "end": 13292,
+      "replacement": "loads=[d for d in native['devices']if d['model']=='rsil']\n        assert len(loads)==2 and all(decimal(d['parameters']['w'])==Decimal(10)and decimal(d['parameters']['l'])==Decimal('70.215')and d['parameters']['ps']==d['parameters']['b']==0 and d['parameters']['m']==1 for d in loads)\n        r['native_output_rsil']=dict(devices=2,w_um=10,l_um='70.215',ps_um=0,b=0,m=1,self_heating=True)\n\n        "
+    },
+    {
+      "start": 13671,
+      "end": 13674,
+      "replacement": "output"
+    },
+    {
+      "start": 13676,
+      "end": 13678,
+      "replacement": "88"
+    },
+    {
+      "start": 13816,
+      "end": 13819,
+      "replacement": "output"
+    },
+    {
+      "start": 13821,
+      "end": 13823,
+      "replacement": "88"
+    },
+    {
+      "start": 14143,
+      "end": 14145,
+      "replacement": "88"
+    },
+    {
+      "start": 14188,
+      "end": 14189,
+      "replacement": "9"
+    }
+  ],
+  "scope": "Actual combined8088-device native export and compact binding. Preserve original MOS named junction geometry,65body networks, all15core fault gates; add native two outputrsil model with four geometry/body/self-heating corruption controls."
+}

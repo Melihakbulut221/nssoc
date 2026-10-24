@@ -25,49 +25,49 @@ claims:
     value: 55
     text: "flip-flops in each of the three configuration TMR replicas"
     check: run
-    cmd: "python3 hw/openlane/replica_placement.py hw/openlane/pilot_ihp/runs/signoff-6x2 --json"
+    cmd: "python3 scripts/measure_recorded_replicas.py"
     json_path: "flops_per_replica.u_pilot.u_cfg_a"
-    needs_run_tree: true
+    source_json_path: "_recorded_scope"
 
   - id: replica.min_c2c_um
     value: 3.78
     text: "minimum cross-replica centre-to-centre distance, micrometres"
     check: run
-    cmd: "python3 hw/openlane/replica_placement.py hw/openlane/pilot_ihp/runs/signoff-6x2 --json"
+    cmd: "python3 scripts/measure_recorded_replicas.py"
     json_path: "min_c2c_um"
-    needs_run_tree: true
+    source_json_path: "_recorded_scope"
 
   - id: replica.min_edge_um
     value: 0.0
     text: "minimum cross-replica edge-to-edge distance, micrometres; the cells touch"
     check: run
-    cmd: "python3 hw/openlane/replica_placement.py hw/openlane/pilot_ihp/runs/signoff-6x2 --json"
+    cmd: "python3 scripts/measure_recorded_replicas.py"
     json_path: "min_edge_um"
-    needs_run_tree: true
+    source_json_path: "_recorded_scope"
 
   - id: replica.abutting_pairs
     value: 49
     text: "cross-replica flip-flop pairs whose cell outlines touch"
     check: run
-    cmd: "python3 hw/openlane/replica_placement.py hw/openlane/pilot_ihp/runs/signoff-6x2 --json"
+    cmd: "python3 scripts/measure_recorded_replicas.py"
     json_path: "abutting_pairs"
-    needs_run_tree: true
+    source_json_path: "_recorded_scope"
 
   - id: replica.nearest_is_other
     value: 103
     text: "of 165 configuration flip-flops whose nearest fellow is in a different replica"
     check: run
-    cmd: "python3 hw/openlane/replica_placement.py hw/openlane/pilot_ihp/runs/signoff-6x2 --json"
+    cmd: "python3 scripts/measure_recorded_replicas.py"
     json_path: "nearest_is_another_replica"
-    needs_run_tree: true
+    source_json_path: "_recorded_scope"
 
   - id: replica.unindexed
     value: 15
     text: "replica-C flip-flops that cannot be attributed to a bit, making the corresponding-bit figures a lower bound"
     check: run
-    cmd: "python3 hw/openlane/replica_placement.py hw/openlane/pilot_ihp/runs/signoff-6x2 --json"
+    cmd: "python3 scripts/measure_recorded_replicas.py"
     json_path: "unindexed_per_replica.u_pilot.u_cfg_c"
-    needs_run_tree: true
+    source_json_path: "_recorded_scope"
 
   - id: eqy.modules_proved
     value: 3
@@ -445,6 +445,8 @@ claims:
     check: grep
     pattern: "Circuits match uniquely"
     paths: "hw/soc/pnr/runs/s77lvs-b-blackbox/*/*.log"
+    recorded_file: "docs/evidence/s77lvs-b-blackbox/netgen-lvs.log"
+    recorded_sha256: "53505c833bceb44c2578c6ff2bfbb415e7c37b89630a07d06860a99241bec06a"
     needs_run_tree: true
 
     # PREDATES THE 2026-09-11 RTL REPAIR of soc_npu.v,

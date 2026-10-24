@@ -1,0 +1,84 @@
+{
+  "status": "DIAGNOSED_72_SAME_VDD_NORTH_STRIPE_RING_SPACING_MARKERS",
+  "gds_sha256": "0c2ca467f735b72c06e2d62065cc9d27d3677508040ed9c7524ef652f5737027",
+  "markers": 72,
+  "measured_spacing_nm": 4920,
+  "required_spacing_nm": 5000,
+  "stripe": {
+    "net": "VDD",
+    "layer": "TopMetal2",
+    "box": [
+      205900,
+      2964680,
+      3794420,
+      2966880
+    ],
+    "via": false
+  },
+  "ring": {
+    "net": "VDD",
+    "layer": "TopMetal2",
+    "box": [
+      217900,
+      2971800,
+      3782420,
+      2979800
+    ],
+    "via": false
+  },
+  "proposed_change": {
+    "parameter": "PDN_CORE_RING_HOFFSET",
+    "before_um": 4.5,
+    "after_um": 6.0,
+    "expected_north_spacing_nm_if_stripe_phase_unchanged": 6420
+  },
+  "scope": "All unchanged-rule supplemental markers share the same two north TopMetal2 edges. ODB assigns both conductors to VDD. Move horizontal ring sections 1.5um farther from core while preserving 30um core inset and 5um ring spacing; actual geometry, pad contacts and native checks must be remeasured.",
+  "input_sha256": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/diagnose.py": "f4d5964c1a10c42118dfab73bb1d55c25a13c42d2ecc017c5293181caa3932f6",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-supply-inset-20260929/native-results/supplemental_wide/drc.lyrdb": "821f25b8c333492d97d57248473c4f10d7dd1e5dda7eec3b92bec8e1da1045db",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-supply-inset-20260929/dump_supply_shapes.json": "642612b97754ffc4905767fa18f5ae3ba4188560d6ed36343e8e21d7b6ad9eec",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-supply-inset-20260929/results/run36501093402/config.json": "e82e3cd6cf7e1e7e60bb559d6b01b10022840ad09d12efae2d9f617a411c92eb",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-supply-inset-20260929/native-partial-verified.json": "26db4f0cae428ef4c8778684c1cce0ab7874ac9814d0d4bfdfcf554ab71c0ae3"
+  },
+  "physical_acceptance": false,
+  "prepared_candidate": {
+    "status": "PREPARED_HORIZONTAL_RING_OFFSET_REPAIR_REQUIRES_NEW_PHYSICAL_CHECKS",
+    "source_bundle_sha256": "0bd0a54e17555683ba590458e903c5535bfd4e448a880b9960268f1c02a005d1",
+    "changes": {
+      "original-config.json": {
+        "before_sha256": "726f1d387ab03db19e6dddac7be466aa803d3ac44156f9347b3a4485008e2d13",
+        "before_horizontal_ring_offset_um": 4.5,
+        "after_horizontal_ring_offset_um": 6.0
+      },
+      "config.template.json": {
+        "before_sha256": "ee2f8815ffb67c1298a42338fd70b4898ade33995f66938076f61ed8cef67c32",
+        "before_horizontal_ring_offset_um": 4.5,
+        "after_horizontal_ring_offset_um": 6.0
+      },
+      "workspace/hw/soc/out/chip-irq-buffer-20260928/config.json": {
+        "before_sha256": "726f1d387ab03db19e6dddac7be466aa803d3ac44156f9347b3a4485008e2d13",
+        "before_horizontal_ring_offset_um": 4.5,
+        "after_horizontal_ring_offset_um": 6.0
+      },
+      "relocation.json": {
+        "before_sha256": "61ca261f0c18af23ff12fb05d813a54c425090958fba0e52aabb97fc0f0c47ce",
+        "change": "candidate description and base commit only"
+      }
+    },
+    "unchanged_members": 779,
+    "core_area": [
+      230,
+      230,
+      3770,
+      2970
+    ],
+    "horizontal_ring_offset_before_um": 4.5,
+    "horizontal_ring_offset_after_um": 6.0,
+    "scope": "Move north/south core ring sections 1.5um farther from core, addressing72same-VDD TopMetal2 stripe/ring spacing failures. All native placements/netlist/clocks/PDK/ring width/spacing and30um core inset unchanged. Candidate only; actual rail contacts, all physical rules, LVS and timing require new verification.",
+    "physical_acceptance": false,
+    "manufacturing_approval": false
+  },
+  "preflight": "All785bundlemembers and8methodpins verified; real LibreLane Config/State load confirms unchanged30um core inset and6um horizontal ring offset.",
+  "input_asset": "chip-ring-offset-input-assets-20260929.json",
+  "raw_asset": "chip-ring-offset-preparation-assets-20260929.json"
+}

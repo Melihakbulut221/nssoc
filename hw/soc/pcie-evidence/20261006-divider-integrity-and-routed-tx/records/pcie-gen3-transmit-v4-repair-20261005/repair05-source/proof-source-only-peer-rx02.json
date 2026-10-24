@@ -1,0 +1,73 @@
+{
+  "status": "PASS_SOURCE_ONLY_TX05_PROOF_PORTS_AND_BIRTH_BOUND_GROUP_OWNERSHIP",
+  "findings": [],
+  "freeze": {
+    "bytes": 3700,
+    "sha256": "47c1c9294f80442e1121ed5ac79a5094850afd61267f0ba56d2cc2d0d4cea286"
+  },
+  "method": {
+    "bytes": 4407,
+    "sha256": "89b0e093fdb07b762032af20fad6cd8ac598d8cc552175c7a1c77bb7ce0b8cc1"
+  },
+  "source_pins": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/normalize_repair05.py": {
+      "bytes": 5282,
+      "sha256": "0bc337994e6cd75d8c9b852e6135c045e5ae0163f9cbef8d79cdff06926d76ca"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof_gate_repair05.py": {
+      "bytes": 7473,
+      "sha256": "5d50ee982d7db5c57e1e352a6e49845a71ed564d799f776fc3d2533eed71c92a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/replay_repair05.py": {
+      "bytes": 5069,
+      "sha256": "e8c21950cb56d1ace2018d40ad31880615f6195cdefb20654ab3d10015704505"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof05/compare.py": {
+      "bytes": 5570,
+      "sha256": "2c14e8f17e485ce9bf688cad33503d60ed1fb25ab8fb0cb00d47a5755137d874"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof05/mutations.py": {
+      "bytes": 2881,
+      "sha256": "29ec81bc7b02edcabe500a8e943b1645b9a8558c82613926c1d1f82097e32bf4"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair05-source/test_proof_binding.py": {
+      "bytes": 4746,
+      "sha256": "1586ffceaf68656d70450753e8ea748ec4f55da5c19db228c2607542de84cad7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/owned_lifecycle05.py": {
+      "bytes": 4133,
+      "sha256": "39dedf775c53370fe7696fab46b198bf3d727c3dbf52dbd4148c3d70134ff526"
+    }
+  },
+  "whole_source_inverse_bridges": 6,
+  "canonical_kernels_byte_exact": true,
+  "candidate_result": {
+    "bytes": 13785,
+    "sha256": "b8864544bb5abee24a3713d9fb67e3bc0a6ce470b5bbff853afa34f2b4cb0503"
+  },
+  "candidate_inputs_rehashed": 53,
+  "candidate_outputs_rehashed": 12,
+  "reused_gold": {
+    "compressed": {
+      "bytes": 4552611,
+      "sha256": "f71f85c257cde9b6615b8b43962d85ba47a56100a22df05ed8ff479a7b8e02fa"
+    },
+    "expanded": {
+      "bytes": 94919312,
+      "sha256": "89bb9b4004184059ef938974a665e1d9c904fec706f124bf74aa281454602bfd"
+    }
+  },
+  "lifecycle_controls": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair05-source/test_owned_lifecycle05.py": {
+      "bytes": 3969,
+      "sha256": "79c543a6a2dc6bb13642c0abf968fbad7ddf7591acb414b4a03ad2d4a423ce23"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair05-source/lifecycle-controls02.log": {
+      "bytes": 98,
+      "sha256": "f5b29f75a69c2a8a6f901b0456b59f62f9309fe917df6676371bf867dcc3f362"
+    }
+  },
+  "resolved_finding": "Initial poll/wait reaped leader too early, allowing a surviving descendant. All callers now use OwnedProcess poll/wait; WNOWAIT preserves direct-child birth/PGID anchor until group live-member census is empty. Nonzero/zero early leader exits with descendants cause cleanup and failure. Both group signals occur while exact leader remains unreaped; parent registration/cleanup signals masked and child mask/limits restored.",
+  "reviewed_control_scope": "Eight actual saved process controls: normal0/7; leader exits0/9 before poll with ignoring child; TERM leader/ignoring child; unrelated group survives; forged start refused; preexec/parent mask preserved. Ten saved file-binding controls retain same proof semantics. Controls inspected, not rerun.",
+  "limits": "Only descendants staying in the explicitly owned native process group are covered; current Yosys/compare/make-Icarus calls use that group. No native proof/port/physical execution by reviewer, no closure claim."
+}

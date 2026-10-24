@@ -1,0 +1,248 @@
+{
+  "time": "2026-10-12T22:47:09.097303+03:00",
+  "policy": "User requires cloud-only compute and local cleanup. Local CAD stopped intentionally. Cleanup only when exact bytes are preserved in verified GitHub release assets. Repository and tools removal awaiting scope reply.",
+  "head_before_migration": "5f3a50e312aeafb8e5d8f31d2ca31843f71c8fe9",
+  "local_units": {
+    "time": "2026-10-12T22:42:49.762342+03:00",
+    "reason": "User requests all compute in cloud and local cleanup; not a CAD failure. Freeze before preserving restart inputs.",
+    "units": [
+      {
+        "unit": "nssoc-credit-offer-physical19-20261012.service",
+        "before": "MainPID=3266715\nExecStart={ path=/usr/bin/taskset ; argv[]=/usr/bin/taskset -c 2,3 /home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-credit-offer-joint-20261012/physical19.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 05:43:49 +03] ; stop_time=[n/a] ; pid=3266715 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-credit-offer-physical19-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-credit-offer-read20-20261012.service",
+        "before": "MainPID=3266716\nExecStart={ path=/usr/bin/taskset ; argv[]=/usr/bin/taskset -c 3 /home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-credit-offer-joint-20261012/wait-postcts20.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 05:43:49 +03] ; stop_time=[n/a] ; pid=3266716 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-credit-offer-read20-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-pcie-acquisition-retry01-20261012.service",
+        "before": "MainPID=3463360\nExecStart={ path=/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python ; argv[]=/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-acquisition-resource-recovery-20261012/retry01.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 11:04:10 +03] ; stop_time=[n/a] ; pid=3463360 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-pcie-acquisition-retry01-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-pcie-rx-input-readback15-20261012.service",
+        "before": "MainPID=3059365\nExecStart={ path=/usr/bin/taskset ; argv[]=/usr/bin/taskset -c 6 /home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-rx-input-delay-relocation-20261012/wait-readback15.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 00:37:01 +03] ; stop_time=[n/a] ; pid=3059365 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-pcie-rx-input-readback15-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-pcie-rx-input-route12-20261012.service",
+        "before": "MainPID=3058723\nExecStart={ path=/usr/bin/taskset ; argv[]=/usr/bin/taskset -c 6,7 /home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-rx-input-delay-relocation-20261012/route12.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 00:35:42 +03] ; stop_time=[n/a] ; pid=3058723 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-pcie-rx-input-route12-20261012.service\n",
+        "freeze_rc": 0
+      },
+      {
+        "unit": "nssoc-pvt-raw-delivery02-20261012.service",
+        "before": "MainPID=3501440\nExecStart={ path=/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python ; argv[]=/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python hw/soc/out/pcie-pvt-full-raw-delivery-20261012/queue02.py ; ignore_errors=no ; start_time=[Mon 2026-10-12 11:58:38 +03] ; stop_time=[n/a] ; pid=3501440 ; code=(null) ; status=0/0 }\nControlGroup=/user.slice/user-1000.slice/user@1000.service/app.slice/nssoc-pvt-raw-delivery02-20261012.service\n",
+        "freeze_rc": 0
+      }
+    ],
+    "stop_requested_at": "2026-10-12T22:46:03.703519+03:00",
+    "restart_policy": "Cloud-only. Local CAD intentionally interrupted for requested migration, never counted as PASS. Restore on hosted runner from last written checkpoint; in-memory solver state is not transferable."
+  },
+  "open_items": [
+    "Full serial Gen3 x4 PHY",
+    "Main chip routing",
+    "Final setup/hold",
+    "SRAM hierarchical transistor LVS"
+  ],
+  "ack_controller_correction": "Frozen ports03 incorrectly requires literal PASS although the checker returns PASS_PORT_ONLY_PCIE_REPLAY. Seven replay tests passed; reliable packets never started. Cloud controller checks exact documented status and counts.",
+  "new_cloud_workflow": ".github/workflows/pcie-closure-cloud.yml",
+  "backup_scope": "Project outputs only; no unrelated personal files; retain unique data until verified upload.",
+  "cleanup_script": "scripts/clean_cloud_backed_outputs.py",
+  "cleanup_journal": "hw/soc/out/cloud-migration-20261012/deletions.jsonl",
+  "update_at": "2026-10-13T02:29:11.700063+03:00",
+  "verified_duplicate_cleanup": {
+    "files": 693,
+    "logical_bytes_removed": 27234285735,
+    "method": "SHA-256 of complete local archive equals current GitHub release asset digest; original member bytes separately hash-match. Complete restore journal archived in cloud recovery capsule."
+  },
+  "transfer_progress_snapshot": {
+    "status": "RUNNING",
+    "next_index": 183195,
+    "batch": 87,
+    "removed_bytes": 63303913083,
+    "uploaded_bytes": 46863995717
+  },
+  "transfer_command": "python3 scripts/migrate_outputs_to_cloud.py --apply",
+  "transfer_service": "nssoc-cloud-output-transfer-20261012",
+  "cloud_runs": {
+    "ACK_proof_and_ports": {
+      "id": 38299938442,
+      "result": "PASS; 7 replay + 4 reliable packet tests, all24 inputbits proof and two expected carry mutation failures; not physical closure"
+    },
+    "migration_safety_tests": {
+      "id": 38300238909,
+      "result": "PASS; 3 tests for interrupted manifest retention/resume, external/symlink exclusion and changed-source retention"
+    },
+    "baseline_ACK_map_three_corner": {
+      "failed_portability_run": 38300790301,
+      "reason": "Both mappings completed; AppImage exited127 because Ubuntu24 user namespace uid_map was denied. Both complete failure archives retained in release.",
+      "replacement_run": 38302150853,
+      "runner": "ubuntu-22.04",
+      "ACK_result": "COMPLETE_UNPLACED_SCREEN_NOT_TIMING_CLOSURE; slow PCIe setup slack -1.558253ns; other hold violations remain. Baseline paired result pending at snapshot. No candidate adoption.",
+      "replacement_result": "COMPLETE both profiles; equal runtime, input capsule, ports, parameters and20SRAM. ACK rejected for adoption because slow PCIe setup regressed143.555ps. Full paired measurements: docs/evidence/cloud-ack-screen-20261012.json."
+    },
+    "migration_safety_and_license_tests": {
+      "id": 38306616683,
+      "result": "PASS: SPDX, inventory, REUSE and3 migration safety tests on latest cloud restore source."
+    },
+    "existing_archive_catalog": {
+      "id": 38302888266,
+      "status": "COMPLETE_ALL_FOUR_HOSTED_GROUPS",
+      "archives": 1059,
+      "compressed_bytes": 75971220441,
+      "purpose": "Hash existing archive members on hosted runners so older identical captures can be removed locally without redundant upload. Index alone never authorizes deletion without matching original bytes.",
+      "members": 8385,
+      "logical_member_bytes": 199209835777,
+      "errors": []
+    },
+    "routed_four_cell_setup": {
+      "id": 38304835248,
+      "status": "FAIL_PREPARATION_AFTER_EXACT_ROUTED_BASELINE_REPRODUCED",
+      "adopted": false,
+      "archive": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/routed-setup-cloud-38304835248-1.tar.gz",
+      "sha256": "013bc0aadd255f6f7814c44c66fed67ebe67f1f85b159b5deff423a991f00d8c",
+      "diagnosis": "Native preparation rejected resized rebuffer45563 because complete origin/location signature changed during master replacement. Revised candidate preserves its placement location explicitly and allows origin change only for the three declared resized cells; all other retained cell geometry remains exact. New hosted rerun required.",
+      "replacement_run": 38306421942,
+      "replacement_result": "COMPLETE; exact routed baseline reproduced, restricted geometry and native logic proof passed, actual inverted-buffer control rejected. Fresh placement estimates do not improve worst slack; not adopted and no routed/final timing closure. See docs/evidence/cloud-routed-setup-screen-20261012.json."
+    },
+    "actual_output_restore": {
+      "id": 38306519569,
+      "status": "PASS_ALL_FOUR_GROUPS",
+      "method": "Four hosted groups download complete batch manifests and compressed assets; verify GitHub digests, then hash every tar member or concatenate decompressed gzip chunks and compare original file SHA256/length. No local CAD or validation run.",
+      "verified_complete_batches": 12,
+      "verified_original_files": 13339,
+      "verified_original_bytes": 11384788331,
+      "receipt": "docs/evidence/cloud-output-restore-20261012.json"
+    },
+    "compact_evidence_summary": {
+      "id": 38307126218,
+      "status": "PASS",
+      "purpose": "Read full heavy CAD archive in cloud and publish small hash-bound result for local review without downloading the layout bundle."
+    }
+  },
+  "cloud_backup": {
+    "release": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-migration-20261012-000",
+    "recovery_receipt": "docs/evidence/cloud-recovery-public-20261012.json",
+    "untracked_source_files_archived": 32,
+    "local_deletion_complete": false,
+    "latest_catalog_receipt": {
+      "status": "COMPLETE_FOUR_VERIFIED_CLOUD_CATALOGS",
+      "groups": [
+        {
+          "group": 0,
+          "archives": 264,
+          "members": 1976,
+          "index_asset": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/cloud-archive-index-0-38302888266-1.tar.gz",
+          "index_sha256": "sha256:b98278ee63dce5a88fb7413c3732b09567493e65ad7c8b84c5d78427f58408fb"
+        },
+        {
+          "group": 1,
+          "archives": 265,
+          "members": 1688,
+          "index_asset": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/cloud-archive-index-1-38302888266-1.tar.gz",
+          "index_sha256": "sha256:19df184e651e2be4936f55466e25fdb813bebd8f3fdeecae45a4f3ce6a01d954"
+        },
+        {
+          "group": 2,
+          "archives": 265,
+          "members": 2258,
+          "index_asset": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/cloud-archive-index-2-38302888266-1.tar.gz",
+          "index_sha256": "sha256:42514fbecb21920c7fdf4927eb1a31ad401d8989a7fdc04287783918869df029"
+        },
+        {
+          "group": 3,
+          "archives": 265,
+          "members": 2463,
+          "index_asset": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/cloud-archive-index-3-38302888266-1.tar.gz",
+          "index_sha256": "sha256:7177fbaeecfb1b3a29f0f8fd229d97dd951bac24fe701823d342ae46dc45281f"
+        }
+      ],
+      "members": 8385,
+      "member_bytes": 199209835777
+    },
+    "remaining_output_snapshot": {
+      "time": "2026-10-12T23:50:56.348479+03:00",
+      "files": 380589,
+      "logical_bytes": 263865593327,
+      "caution": "Earlier inventory snapshot; active deletion continues. Logical sizes are not filesystem allocated bytes."
+    },
+    "new_resume_receipt": "docs/evidence/cloud-resume-state-20261013.json"
+  },
+  "archive_tag_trigger_issue": "70 unintended storage-tag push runs identified; 67 cancel requests accepted, 3 had already completed. Only exact storage tag targeted. 70 push filters updated to preserve all branch pushes and other tags but exclude cloud-migration-*. No native branch work intentionally cancelled.",
+  "older_container_cleanup": {
+    "status": "COMPLETE_VERIFIED_OLDER_UPLOAD_CONTAINER_CLEANUP",
+    "manifest_receipt": {
+      "name": "older-verified-upload-containers.json",
+      "bytes": 138759,
+      "sha256": "b1c421f46ce77b6e84961c9871b3696fa707934ca7cd3599b01dec0910c8005b",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/older-verified-upload-containers.json",
+      "id": 634858916
+    },
+    "files": 321,
+    "logical_bytes_removed": 2813501350
+  },
+  "direct_asset_cleanup": {
+    "status": "COMPLETE_DIRECT_ASSET_DUPLICATE_CLEANUP",
+    "recovery_manifest": {
+      "name": "direct-asset-matches.json",
+      "bytes": 180995,
+      "sha256": "174421e79e55774038d7456978f626fe65791e05187886d058beece43b3fff2b",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/direct-asset-matches.json",
+      "id": 634866545
+    },
+    "files": 386,
+    "logical_bytes_removed": 8086287346
+  },
+  "catalog_member_cleanup": {
+    "status": "COMPLETE_VERIFIED_ARCHIVE_MEMBER_CLEANUP",
+    "restoration_manifest": {
+      "name": "catalog-exact-matches.json",
+      "bytes": 1743489,
+      "sha256": "6006fab058813e1894cd74fcff179a88b9b2fe8f85fa80188e97f83fd4336af2",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/catalog-exact-matches.json",
+      "id": 634932148
+    },
+    "files": 2531,
+    "logical_bytes_removed": 109075580966
+  },
+  "continue_policy": {
+    "compute": "GitHub-hosted only; never restart historical local native units.",
+    "transfer": "Two local transfer/cleanup services only: nssoc-cloud-output-transfer-20261012 and nssoc-cloud-pnr-transfer-20261013. Preserve each separate state and frozen plan. No local CAD/tests. No duplicate transfer service.",
+    "cleanup": "No source repository or tool deletion while scope question unanswered. All32 historical untracked source files additionally preserved in published recovery capsule.",
+    "acceptance": "No PHY, routed-ECO or final timing closure claimed. Current engineering candidates require their own proofs and physical checks."
+  },
+  "pnr_expansion": {
+    "reason": "Latest read-only inventory found40GiB generated historical PNR runs outside original hw/soc/out plan.",
+    "command": "python3 scripts/migrate_outputs_to_cloud.py --scope pnr-runs --apply",
+    "service": "nssoc-cloud-pnr-transfer-20261013",
+    "state": "hw/soc/out/cloud-migration-pnr-20261013",
+    "source_guard": "Refuses scope if git ls-files hw/soc/pnr/runs is nonempty. Source PNR scripts/configs outside runs retained.",
+    "hosted_validation_run": 38321669905,
+    "validation": "PASS23 safety tests plus SPDX/inventory/REUSE; no local tests run.",
+    "hosted_restore_run": 38322169148,
+    "restore_totals": {
+      "batches": 5,
+      "files": 587,
+      "logical_bytes": 2503719378,
+      "hardlinks": 0
+    }
+  },
+  "verified_input_capsule_copy_cleanup": {
+    "files": 4,
+    "logical_bytes_removed": 93958577,
+    "manifest_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/verified-cloud-input-copy-cleanup-20261013.json",
+    "manifest_sha256": "c3a8fc8a7e314b83bd3742cb4019927ceb10106c96527ff1cf2c50e639097ba4"
+  },
+  "generated_cache_cleanup": {
+    "files": 1072,
+    "logical_bytes_removed": 147324425,
+    "archive": {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/generated-site-cache-cleanup-20261013.tar.gz",
+      "sha256": "c6ff781cc6e318a5b81db21439059fe66ff830aa89fdd46db8fc61dc9110cca6",
+      "bytes": 104877765
+    },
+    "manifest_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/generated-site-cache-cleanup-20261013.json"
+  }
+}

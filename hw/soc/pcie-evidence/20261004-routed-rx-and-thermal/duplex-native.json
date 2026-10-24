@@ -1,0 +1,332 @@
+{
+  "status": "PASS_DEFAULT150_NATIVE_ELASTIC_GEN3_DUPLEX_PORTS",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_packet_rx_path.v": {
+      "bytes": 4415,
+      "sha256": "b248a15fbd8599cb6466aeb5a78a3e109d7e00a9e27218894968bfb20f53b495"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_packet_duplex.v": {
+      "bytes": 2607,
+      "sha256": "64f66f7a4f2c5b66577c0696f4ca237b282b079b60ee94f5b2ec4796e88a4b6b"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_packet_duplex.py": {
+      "bytes": 18525,
+      "sha256": "2d43c6208e8cbe58db5cbe25ae7a5f8c3094bc5cfdc2fc3ef838d24cca70f3ff"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_packet_duplex": {
+      "bytes": 1447,
+      "sha256": "16f2b78e4eb78673bab17e2a721ce48fc4b1c46aef1f19ea4c79e705547e4591"
+    },
+    "scripts/check_pcie_gen3_duplex.py": {
+      "bytes": 5252,
+      "sha256": "e5d93e1dfeaf32c20f54f18a26c2f25ef9217bf55fc751996d9204a3ec2f260c"
+    },
+    "sw/tests/test_pcie_gen3_duplex.py": {
+      "bytes": 3512,
+      "sha256": "a289281bcf2570454471c3d2b2a2aead130e44ff7eee0e45f83f6cc5460fcdb3"
+    }
+  },
+  "inherited_rtl_inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_stp.v": {
+      "bytes": 753,
+      "sha256": "4ff3cdbf8b69eff7de32b80ebfc1f26fd58ad7768961cf6fa88ee1d541abf33b"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_tx.v": {
+      "bytes": 5978,
+      "sha256": "64e2cbc3dc2939a471c11eae03e4ec679bc343537562927067d71475077b79ed"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_packet_tx_path.v": {
+      "bytes": 1595,
+      "sha256": "f43426bac999cd48bf4ddf042e93135eafb5382f8ad7939bedb6599080bd121b"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_tx_path_v3.v": {
+      "bytes": 6353,
+      "sha256": "c07872242c34b8f5a9a009016ad2a1f9dc352a1386547eec0c997828e2d1df83"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_gearbox.v": {
+      "bytes": 2609,
+      "sha256": "737d687d649391b0b5d2364e0dc332d6210ddc6098e8fe5c68ed3b76810775cd"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_scrambler.v": {
+      "bytes": 2304,
+      "sha256": "4b43b912832e2489f2169485383a4812835b9703435fbde03c81db3530590464"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx.v": {
+      "bytes": 6982,
+      "sha256": "1bdb05a37097de42c5aab8a48c6e6f84eb1bffec9287afc351b299bcd99d2f2f"
+    }
+  },
+  "result": {
+    "bytes": 8314,
+    "sha256": "2108b4820862d4641f68b3903e5c6f8e888cc6bbe8a44abdbe6506068ddf23cd"
+  },
+  "mapped_cells": 44225,
+  "tests": [
+    {
+      "name": "actual_packet_loopback_and_independent_serial_oracle",
+      "classname": "test_soc_pcie_gen3_packet_duplex",
+      "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_packet_duplex.py",
+      "lineno": "339",
+      "time": "41.83528995513916",
+      "sim_time_ns": "4536.0",
+      "ratio_time": "108.42520763843267"
+    },
+    {
+      "name": "nullification_and_rejected_packet_never_deliver",
+      "classname": "test_soc_pcie_gen3_packet_duplex",
+      "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_packet_duplex.py",
+      "lineno": "366",
+      "time": "29.89121389389038",
+      "sim_time_ns": "3204.0",
+      "ratio_time": "107.18868799954899"
+    },
+    {
+      "name": "independent_wire_faults_headers_and_end_tokens",
+      "classname": "test_soc_pcie_gen3_packet_duplex",
+      "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_packet_duplex.py",
+      "lineno": "398",
+      "time": "19.008594512939453",
+      "sim_time_ns": "7436.0",
+      "ratio_time": "391.1914684138376"
+    },
+    {
+      "name": "flush_abort_restart_clear_partial_words_and_held_packets",
+      "classname": "test_soc_pcie_gen3_packet_duplex",
+      "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_packet_duplex.py",
+      "lineno": "440",
+      "time": "88.45549750328064",
+      "sim_time_ns": "7216.0",
+      "ratio_time": "81.57774478327221"
+    },
+    {
+      "name": "receive_epoch_restart_cancels_all_four_lane_partial_state",
+      "classname": "test_soc_pcie_gen3_packet_duplex",
+      "file": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_packet_duplex.py",
+      "lineno": "472",
+      "time": "21.551957607269287",
+      "sim_time_ns": "3272.0",
+      "ratio_time": "151.8191553465372"
+    }
+  ],
+  "all_inputs_runtime_outputs_rehashed": true,
+  "prior_rtl_and_faults": {
+    "receipt": {
+      "bytes": 9774,
+      "sha256": "471ce0d229bb2fdad2155dc14a65338cb6d597ede77469b7022cf5fc2a281407"
+    },
+    "rtl_tests": 5,
+    "actual_rtl_faults": 10,
+    "capsule": {
+      "path": "hw/soc/out/pcie-gen3-duplex-20261004/duplex-rtl-controls.tar.xz",
+      "bytes": 39720,
+      "sha256": "985481a660aa53c002707ce0d61a0a14a6b809aeb17a44182f58de9629470f2c",
+      "members": 260,
+      "all_members_rehashed": true
+    }
+  },
+  "resource": {
+    "initial_free_bytes": 1149390848,
+    "minimum_sampled_free_bytes": 942182400,
+    "reserve_bytes": 536870912,
+    "reserve_monitor_period_seconds": 0.2,
+    "guard_trigger_bytes": 553648128,
+    "address_space_cap_per_child_bytes": 2147483648,
+    "direct_child_observations": {
+      "894830": {
+        "samples": 870,
+        "max_vmsize_kib": 829156,
+        "max_rss_kib": 760448,
+        "max_threads": 1
+      },
+      "895743": {
+        "samples": 1146,
+        "max_vmsize_kib": 19032,
+        "max_rss_kib": 2748,
+        "max_threads": 1
+      }
+    }
+  },
+  "mapping": {
+    "elapsed_seconds": 174.65505430399207,
+    "environment": {
+      "YOSYS_MAX_THREADS": "1"
+    },
+    "unchanged_synthesis_recipe_except_output_path": true,
+    "source_supported_thread_limit": "https://raw.githubusercontent.com/YosysHQ/yosys/468ba27d9/kernel/threading.cc"
+  },
+  "historical_failure": {
+    "result": {
+      "bytes": 6392,
+      "sha256": "1c1070159954daa62f212a1778cf8b997fa2914cebf6131218c3f11f4b9d3c9e"
+    },
+    "returncode": -6,
+    "stage": "Yosys OPT_MERGE, before VVP",
+    "literal": "terminate called without an active exception",
+    "space_floor_preserved": true,
+    "interpretation": "Runtime abort, no HDL verdict. Same recipe/hardware succeeded with oneYosys thread. First attempt lacks thread/VM peak, so underlying exception cause is not proven."
+  },
+  "scope": [
+    "Full mapped packet TX framing/striping/scrambling/gearbox and RX descrambling/unstriping/framing at independent serialized128bit word ports; test uses bounded elastic queue.",
+    "Unchanged five port cases at4ns, unmodified SG13G2 specify-model replay, independent serial polynomial/header/lane oracle and RX-only encoded controls.",
+    "Default150encoded bytes only; frozen receivev1 deliberately retained, newreceivev2 not silently adopted.",
+    "Nullified/malformed/abort/reset/backpressure and opaque sequence/LCRC byte preservation tested; this layer does not make LCRC/DLLPCRC acceptance decisions."
+  ],
+  "limits": [
+    "No continuous-wire PMA or line-rate acceptance, OS/SKP/LTSSM, alignment/deskew search, completePCIe/fullPHY or mainchip integration.",
+    "No full state-space functional equivalence proof for duplex, SDF, timing closure or physical acceptance.",
+    "Icarus timing-check warnings and known GPI sys.executable diagnostic retained; not a clean-log claim.",
+    "Ten actual mutants were run on RTL; no new mapped-mutant execution claimed."
+  ],
+  "capsule": {
+    "path": "hw/soc/out/pcie-gen3-duplex-20261004/native/pcie-gen3-duplex-native-20261004.tar.xz",
+    "bytes": 1047380,
+    "sha256": "0f2255288af5510888c2dd09ec53c991310cf64e17bf50173ad334f770085a7b",
+    "members": {
+      "native02/result.json": {
+        "bytes": 8314,
+        "sha256": "2108b4820862d4641f68b3903e5c6f8e888cc6bbe8a44abdbe6506068ddf23cd"
+      },
+      "native02/mapped.v": {
+        "bytes": 5731361,
+        "sha256": "de9c8517cc2c6e0426c031010e604b52fddccc2a0f2348259ac8e976b6f2860b"
+      },
+      "native02/mapped.json": {
+        "bytes": 31117278,
+        "sha256": "6de23df54b6401913c1e0e0d87fad7827e321342a85fa4ada2906723602ca534"
+      },
+      "native02/map.log": {
+        "bytes": 3744187,
+        "sha256": "24daba1fbadd7e70e85f97f6d5cf19f6471b131347dc17bb5e29aa1bc469164d"
+      },
+      "native02/map.ys": {
+        "bytes": 1793,
+        "sha256": "d5986b872c069448690576522b05ef1c8a8152d03fdd2daefdc56e6f65eed32a"
+      },
+      "native02/iverilog-version.log": {
+        "bytes": 3410,
+        "sha256": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f"
+      },
+      "native02/ports/result.json": {
+        "bytes": 5429,
+        "sha256": "e10f080b32a4a854616f3798e9726725110514390cbae98205d3e9fed68fdf21"
+      },
+      "native02/ports/results.xml": {
+        "bytes": 1717,
+        "sha256": "4062fea901afdee49ad53e9a563a6af839ba1e9ecc58c4b7dadfc8553d4d75a3"
+      },
+      "native02/ports/simulation.log": {
+        "bytes": 35516,
+        "sha256": "48a6dc6fa7aab3cfab2b9d9ef9038c37f3749d70c9594b29cd39372cea0a7063"
+      },
+      "failed-mapping01/result.json": {
+        "bytes": 6392,
+        "sha256": "1c1070159954daa62f212a1778cf8b997fa2914cebf6131218c3f11f4b9d3c9e"
+      },
+      "failed-mapping01/map.log": {
+        "bytes": 3713847,
+        "sha256": "270ddaaa88e2458184a46626cfc8eb8be4e9e21420da4dcb0714cfb09fed9528"
+      },
+      "failed-mapping01/map.ys": {
+        "bytes": 1793,
+        "sha256": "c6ad46d76309c70703af945a9f8da6c3f75745adbc7d472728477eaefad95c1c"
+      },
+      "failed-mapping01/iverilog-version.log": {
+        "bytes": 3410,
+        "sha256": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f"
+      },
+      "method/run_native.py": {
+        "bytes": 5430,
+        "sha256": "7105d4b36f288ae3485d45842d0da2d93fa57276ddf82655995ffc45a48151b7"
+      },
+      "method/run_native_single_thread.py": {
+        "bytes": 6208,
+        "sha256": "995ac791cdba7cba799ddcd4aa777bbd4063e23435c1e33ffe23ce3fb0f3cf3f"
+      },
+      "method/retry-thread-contract.json": {
+        "bytes": 877,
+        "sha256": "1a3c1549f74ee1ca9fcbb1f660618b15cc9506c7f7da0a2f72c9747c1d30bf8d"
+      },
+      "method/launch.log": {
+        "bytes": 313,
+        "sha256": "acd94a7344acdbc10de1ab888eaf8ba85d4d02cef908dd8c5ee1487deea23cba"
+      },
+      "method/launch-single-thread.log": {
+        "bytes": 259,
+        "sha256": "7c3635a0bce4115eff8fb2087ce161bd987b60d0386ff47563347a4b0c065d02"
+      },
+      "method/seal.py": {
+        "bytes": 6081,
+        "sha256": "ef1de5c20093ef10f59d019068e7ca5c3313729518e46bd3477ed884183a6dad"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_gen3_stp.v": {
+        "bytes": 753,
+        "sha256": "4ff3cdbf8b69eff7de32b80ebfc1f26fd58ad7768961cf6fa88ee1d541abf33b"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_gen3_framer_tx.v": {
+        "bytes": 5978,
+        "sha256": "64e2cbc3dc2939a471c11eae03e4ec679bc343537562927067d71475077b79ed"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_gen3_packet_tx_path.v": {
+        "bytes": 1595,
+        "sha256": "f43426bac999cd48bf4ddf042e93135eafb5382f8ad7939bedb6599080bd121b"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_gen3_tx_path_v3.v": {
+        "bytes": 6353,
+        "sha256": "c07872242c34b8f5a9a009016ad2a1f9dc352a1386547eec0c997828e2d1df83"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_gen3_gearbox.v": {
+        "bytes": 2609,
+        "sha256": "737d687d649391b0b5d2364e0dc332d6210ddc6098e8fe5c68ed3b76810775cd"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_gen3_scrambler.v": {
+        "bytes": 2304,
+        "sha256": "4b43b912832e2489f2169485383a4812835b9703435fbde03c81db3530590464"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx.v": {
+        "bytes": 6982,
+        "sha256": "1bdb05a37097de42c5aab8a48c6e6f84eb1bffec9287afc351b299bcd99d2f2f"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_gen3_packet_rx_path.v": {
+        "bytes": 4415,
+        "sha256": "b248a15fbd8599cb6466aeb5a78a3e109d7e00a9e27218894968bfb20f53b495"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_gen3_packet_duplex.v": {
+        "bytes": 2607,
+        "sha256": "64f66f7a4f2c5b66577c0696f4ca237b282b079b60ee94f5b2ec4796e88a4b6b"
+      },
+      "sources/hw/soc/tb/cocotb/test_soc_pcie_gen3_packet_duplex.py": {
+        "bytes": 18525,
+        "sha256": "2d43c6208e8cbe58db5cbe25ae7a5f8c3094bc5cfdc2fc3ef838d24cca70f3ff"
+      },
+      "sources/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_packet_duplex": {
+        "bytes": 1447,
+        "sha256": "16f2b78e4eb78673bab17e2a721ce48fc4b1c46aef1f19ea4c79e705547e4591"
+      },
+      "sources/scripts/check_pcie_gen3_duplex.py": {
+        "bytes": 5252,
+        "sha256": "e5d93e1dfeaf32c20f54f18a26c2f25ef9217bf55fc751996d9204a3ec2f260c"
+      },
+      "sources/scripts/check_pcie_gen3_framer.py": {
+        "bytes": 10409,
+        "sha256": "9d9626e7abfebfb2f7a6729f8c518d7b039492552627d982436497d65f7eb4d3"
+      },
+      "sources/scripts/check_pcie_integrity.py": {
+        "bytes": 4628,
+        "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+      },
+      "sources/scripts/check_pcie_integrity_native.py": {
+        "bytes": 6139,
+        "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+      },
+      "sources/scripts/cocotb_results.py": {
+        "bytes": 1383,
+        "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+      },
+      "prior-rtl-control-receipt.json": {
+        "bytes": 9774,
+        "sha256": "471ce0d229bb2fdad2155dc14a65338cb6d597ede77469b7022cf5fc2a281407"
+      }
+    },
+    "all_members_readback_verified": true
+  }
+}

@@ -1,0 +1,27 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: CERN-OHL-W-2.0
+[tasks]
+bmc
+prove
+cover
+
+[options]
+bmc: mode bmc
+bmc: depth 24
+prove: mode prove
+prove: depth 12
+cover: mode cover
+cover: depth 24
+
+[engines]
+smtbmc yices
+
+[script]
+read_verilog -formal soc_req_pipe.v soc_req_pipe_props.v
+prep -top soc_req_pipe_formal
+async2sync
+dffunmap
+
+[files]
+../rtl/soc_req_pipe.v
+soc_req_pipe_props.v

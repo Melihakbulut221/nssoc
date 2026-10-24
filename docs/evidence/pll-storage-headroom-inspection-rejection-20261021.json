@@ -1,0 +1,441 @@
+{
+  "run": 39595708873,
+  "summary_asset_id": 662362675,
+  "summary_sha256": "1b1a5fbc2ce8a351581a9714d53cbfed1539432bd22ff7a645e9c1366dc9659a",
+  "parts_asset_id": 662362769,
+  "parts_sha256": "b63f839dab67172832bdbda8251301a59622072260efd63558d5a5400fe123d1",
+  "report": {
+    "status": "FAIL_OR_ERROR",
+    "source_head": "bec2958470b2bf1bb96f3032421cd2ef6ebd6508",
+    "native_activation": false,
+    "full_capacity_proven": false,
+    "acquisition_accepted": false,
+    "full_phy_accepted": false,
+    "commands": [
+      {
+        "name": "empty-docker",
+        "args": [
+          "docker",
+          "ps",
+          "-aq"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "filesystem-before",
+        "args": [
+          "df",
+          "-B1",
+          "-T",
+          "/home/runner/work/nssoc/nssoc"
+        ],
+        "returncode": 0,
+        "log_sha256": "ea8f2a9ae46fcbb0d261ddbc1201eb889d1fea6ffbe5ab0ecf99f0dae887ea6b"
+      },
+      {
+        "name": "top-level-bytes",
+        "args": [
+          "sudo",
+          "du",
+          "-xB1",
+          "--max-depth=1",
+          "/opt",
+          "/usr/local",
+          "/home/runner",
+          "/usr/share"
+        ],
+        "returncode": 0,
+        "log_sha256": "39d66ed87be864dca2d7528b62cc024126f50edf0e790f83724e049d70bf663a"
+      },
+      {
+        "name": "size-0",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/local/lib/android"
+        ],
+        "returncode": 0,
+        "log_sha256": "13a1c57fcfe6236595034f6d23d391e0ad0320248fddd333300187f5bf573fb9"
+      },
+      {
+        "name": "remove-0",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/usr/local/lib/android"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-1",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/share/dotnet"
+        ],
+        "returncode": 0,
+        "log_sha256": "d608b456852f9b83991243be8f070467e7b6342866673aa2fb309f0e18b60de9"
+      },
+      {
+        "name": "remove-1",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/usr/share/dotnet"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-2",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/share/swift"
+        ],
+        "returncode": 0,
+        "log_sha256": "f1c4b06b731bacf8047df9e185cadf135d94a8bd2bdc452dd3fb21a9d1fd8070"
+      },
+      {
+        "name": "remove-2",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/usr/share/swift"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-3",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/lib/jvm"
+        ],
+        "returncode": 0,
+        "log_sha256": "8a3f3bbd0021a6dee753beed3dd78965dee0769eff6732861850ab92aaf6c330"
+      },
+      {
+        "name": "remove-3",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/usr/lib/jvm"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-4",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/opt/microsoft/powershell"
+        ],
+        "returncode": 0,
+        "log_sha256": "bfd9e4138b74cd7b47f4ce51cb4fbbf4fb01e4366e0f08c13f1970202859f3a1"
+      },
+      {
+        "name": "remove-4",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/opt/microsoft/powershell"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-5",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/local/share/powershell"
+        ],
+        "returncode": 0,
+        "log_sha256": "7f225e4a29dc33f6e12cc214da41954f0eba16be7b8ed4148b26b86fea0893e9"
+      },
+      {
+        "name": "remove-5",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/usr/local/share/powershell"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-6",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/opt/google/chrome"
+        ],
+        "returncode": 0,
+        "log_sha256": "baae4d117703f44105ab66999f7e87a5dad15caa08fd7ebc33be259f5997648b"
+      },
+      {
+        "name": "remove-6",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/opt/google/chrome"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-7",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/opt/microsoft/msedge"
+        ],
+        "returncode": 0,
+        "log_sha256": "0d89ba15320aa334fb89ddfe31bd7ade60d87f0a0e9f2acbfa2e6e9817cdfc1b"
+      },
+      {
+        "name": "remove-7",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/opt/microsoft/msedge"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-8",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/local/share/chromium"
+        ],
+        "returncode": 0,
+        "log_sha256": "1ccb21c0f4f5e8430c675012df48dda15f8f9e4278b2b54c1f71442a292f7aad"
+      },
+      {
+        "name": "remove-8",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/usr/local/share/chromium"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-9",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/usr/local/share/vcpkg"
+        ],
+        "returncode": 0,
+        "log_sha256": "4c86b6b2a6deb96b376a8c30e48019de719287f70b16f031a88bdcea569896e0"
+      },
+      {
+        "name": "remove-9",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/usr/local/share/vcpkg"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-10",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/home/runner/.rustup"
+        ],
+        "returncode": 0,
+        "log_sha256": "a1b4b96bb07d0076c9218195c39e3db71c75d7e63b2e110223871e57872b0245"
+      },
+      {
+        "name": "remove-10",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/home/runner/.rustup"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "size-11",
+        "args": [
+          "sudo",
+          "du",
+          "-sxB1",
+          "/home/runner/.cargo"
+        ],
+        "returncode": 0,
+        "log_sha256": "392307ed4bbf8f73f88217526a17ba0a1cbf063f6523383a8fd9bb2ba5e1b7ae"
+      },
+      {
+        "name": "remove-11",
+        "args": [
+          "sudo",
+          "rm",
+          "-rf",
+          "--",
+          "/home/runner/.cargo"
+        ],
+        "returncode": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "removed": [
+      {
+        "path": "/usr/local/lib/android",
+        "measured_bytes": "11838193664\t/usr/local/lib/android",
+        "free_gain_bytes": 11838181376
+      },
+      {
+        "path": "/usr/share/dotnet",
+        "measured_bytes": "6166843392\t/usr/share/dotnet",
+        "free_gain_bytes": 6166839296
+      },
+      {
+        "path": "/usr/share/swift",
+        "measured_bytes": "3710935040\t/usr/share/swift",
+        "free_gain_bytes": 3710930944
+      },
+      {
+        "path": "/usr/lib/jvm",
+        "measured_bytes": "1545011200\t/usr/lib/jvm",
+        "free_gain_bytes": 1545003008
+      },
+      {
+        "path": "/opt/microsoft/powershell",
+        "measured_bytes": "188178432\t/opt/microsoft/powershell",
+        "free_gain_bytes": 188170240
+      },
+      {
+        "path": "/usr/local/share/powershell",
+        "measured_bytes": "1432780800\t/usr/local/share/powershell",
+        "free_gain_bytes": 1432776704
+      },
+      {
+        "path": "/opt/google/chrome",
+        "measured_bytes": "462557184\t/opt/google/chrome",
+        "free_gain_bytes": 462553088
+      },
+      {
+        "path": "/opt/microsoft/msedge",
+        "measured_bytes": "682487808\t/opt/microsoft/msedge",
+        "free_gain_bytes": 682483712
+      },
+      {
+        "path": "/usr/local/share/chromium",
+        "measured_bytes": "698912768\t/usr/local/share/chromium",
+        "free_gain_bytes": 698904576
+      },
+      {
+        "path": "/usr/local/share/vcpkg",
+        "measured_bytes": "218279936\t/usr/local/share/vcpkg",
+        "free_gain_bytes": 218275840
+      },
+      {
+        "path": "/home/runner/.rustup",
+        "measured_bytes": "646471680\t/home/runner/.rustup",
+        "free_gain_bytes": 646463488
+      },
+      {
+        "path": "/home/runner/.cargo",
+        "measured_bytes": "21131264\t/home/runner/.cargo",
+        "free_gain_bytes": 21127168
+      }
+    ],
+    "protected_executables": {
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3.12": "53dab24bf9e0e9c490088a53d71770b6f027b057678b313648e75f7fc87a675e",
+      "/usr/bin/bash": "bc5945feb8bd26203ebfafea5ce1878bb2e32cb8fb50ab7ae395cfb1e1aaaef1",
+      "/usr/bin/curl": "8fb310957fb556e3f66a2d66418d72ad5487569f5855cae5ca782ca215b08133",
+      "/usr/bin/gh": "7469124f706944133d6a169691dd1c6c3511b12e85878d255e044e2948df4c9b",
+      "/usr/bin/docker": "6435ff9214bf8e0931078fb0980809728cac0a54a526d4f28a26d3e48132b58d",
+      "/usr/bin/x86_64-linux-gnu-gcc-13": "1b99826121ae6682a634e5efe09bd3e3df58ce58e0b28f849114ab5b89139c26",
+      "/usr/bin/make": "d78b8f1d099fbcfb6f2f49ab87223b9b68fb3956642f92d6ec6de812e8afa965",
+      "/usr/bin/tar": "3ee2c3c0b4dd9aacebfd2f0fbae44bad36348203acff78a44888dd58c05f811c",
+      "/usr/bin/gzip": "afea077ce127d4fa9ad410d3066ba2b54dea19c0b44f04adf56c72d5f7b7a9bb",
+      "/usr/bin/ldd": "752803b8baa217b821bd4566c4fbdaec50c01cb32d2796ec056d22d190d4290f",
+      "/usr/local/bin/node": "fde6a4bf8d0562f7751d1a2d6cb9b417c4cfe107bbcb0aa3e9a24e125e348f48"
+    },
+    "before": {
+      "total": 154894188544,
+      "used": 64816988160,
+      "free": 90060423168
+    },
+    "filesystem": "Filesystem     Type    1B-blocks        Used   Available Use% Mounted on\n/dev/root      ext4 154894188544 64816988160 90060423168  42% /\n",
+    "top_level_bytes": "12288\t/opt/containerd\n870670336\t/opt/microsoft\n526274560\t/opt/pipx\n700055552\t/opt/az\n16384\t/opt/post-generation\n5368926208\t/opt/hostedtoolcache\n282099712\t/opt/actionarchivecache\n462561280\t/opt/google\n31846400\t/opt/hca\n13398016\t/opt/primer\n1141420032\t/opt/runner-cache\n4096\t/opt/pipx_bin\n9397288960\t/opt\n4096\t/usr/local/etc\n2438512640\t/usr/local/share\n12336406528\t/usr/local/lib\n10612736\t/usr/local/sessionmanagerplugin\n4096\t/usr/local/games\n1095376896\t/usr/local/julia1.13.1\n67735552\t/usr/local/include\n287363072\t/usr/local/aws-cli\n212602880\t/usr/local/n\n4096\t/usr/local/src\n52924416\t/usr/local/doc\n3925278720\t/usr/local/.ghcup\n4222976\t/usr/local/man\n4096\t/usr/local/sbin\n1193922560\t/usr/local/bin\n207142912\t/usr/local/aws-sam-cli\n21832122368\t/usr/local\n8192\t/home/runner/.docker\n4096\t/home/runner/.composer\n183328768\t/home/runner/.dotnet\n2066231296\t/home/runner/work\n8192\t/home/runner/.config\n1425383424\t/home/runner/actions-runner\n646471680\t/home/runner/.rustup\n21131264\t/home/runner/.cargo\n4182016\t/home/runner/.nvm\n4346769408\t/home/runner\n12288\t/usr/share/base-passwd\n1077248\t/usr/share/dbus-1\n12288\t/usr/share/firebird3.0-common\n24576\t/usr/share/gettext\n983040\t/usr/share/javascript\n512000\t/usr/share/ca-certificates\n954368\t/usr/share/polkit-1\n16805888\t/usr/share/i18n\n6701056\t/usr/share/mime\n48525312\t/usr/share/icons\n770048\t/usr/share/rubygems-integration\n20480\t/usr/share/php8.3-mysql\n6430720\t/usr/share/texinfo\n12288\t/usr/share/session-migration\n65536\t/usr/share/plymouth\n8192\t/usr/share/enchant-2\n77824\t/usr/share/rsync\n118784\t/usr/share/awk\n24576\t/usr/share/grub-gfxpayload-lists\n335872\t/usr/share/gitweb\n28672\t/usr/share/debianutils\n352256\t/usr/share/ant\n45056\t/usr/share/pastebin.d\n8192\t/usr/share/ssl-cert\n4022272\t/usr/share/zoneinfo\n2269184\t/usr/share/misc\n6103040\t/usr/share/X11\n12288\t/usr/share/php8.3-curl\n344064\t/usr/share/publicsuffix\n110592\t/usr/share/python-apt\n12124160\t/usr/share/apache-maven-3.10.0\n360448\t/usr/share/dictionaries-common\n32768\t/usr/share/php8.3-xml\n12288\t/usr/share/needrestart\n12288\t/usr/share/php8.3-ldap\n8192\t/usr/share/lxd-installer\n16384\t/usr/share/systemd\n2568192\t/usr/share/python-wheels\n163840\t/usr/share/byobu\n12288\t/usr/share/iptables\n12288\t/usr/share/php8.3-readline\n172032\t/usr/share/gcc\n12288\t/usr/share/finalrd\n1687552\t/usr/share/apache2\n2396160\t/usr/share/php\n495616\t/usr/share/apport\n2580480\t/usr/share/grub\n172032\t/usr/share/aclocal-1.16\n16384\t/usr/share/sgml-base\n12288\t/usr/share/nginx\n12288\t/usr/share/php8.3-tidy\n286720\t/usr/share/mercurial\n172032\t/usr/share/open-vm-tools\n97681408\t/usr/share/kotlinc\n376832\t/usr/share/alsa\n20480\t/usr/share/systemtap\n16384\t/usr/share/debsig\n7712768\t/usr/share/terminfo\n3948544\t/usr/share/tcltk\n839680\t/usr/share/clang\n68243456\t/usr/share/locale\n8192\t/usr/share/readline\n16384\t/usr/share/php8.3-sqlite3\n12288\t/usr/share/php8.3-mbstring\n12288\t/usr/share/php8.3-gd\n172621824\t/usr/share/gradle-9.8.1\n24576\t/usr/share/debconf\n28672\t/usr/share/debhelper\n274432\t/usr/share/fontconfig\n16384\t/usr/share/openssh\n12288\t/usr/share/chrony\n90112\t/usr/share/doc-base\n69632\t/usr/share/gdb\n45056\t/usr/share/pam\n28672\t/usr/share/libdrm\n12288\t/usr/share/installed-tests\n4034560\t/usr/share/fwupd\n77824\t/usr/share/dpkg\n1027272704\t/usr/share/miniconda\n114688\t/usr/share/consoletrans\n1581056\t/usr/share/xml\n8192\t/usr/share/snapd\n12288\t/usr/share/xml-core\n401408\t/usr/share/libtool\n12288\t/usr/share/php8.3-opcache\n40960\t/usr/share/base-files\n704512\t/usr/share/snmp\n32768\t/usr/share/sgml\n40960\t/usr/share/ModemManager\n36864\t/usr/share/secureboot\n12288\t/usr/share/php8.3-gmp\n24576\t/usr/share/PackageKit\n4096\t/usr/share/package-data-downloads\n12288\t/usr/share/php8.3-enchant\n1560576\t/usr/share/iso-codes\n4014080\t/usr/share/gtk-3.0\n860160\t/usr/share/bug\n12288\t/usr/share/mozilla\n872448\t/usr/share/hunspell\n12288\t/usr/share/php8.3-intl\n12288\t/usr/share/php8.3-bcmath\n1961984\t/usr/share/autoconf\n12288\t/usr/share/appdata\n12288\t/usr/share/php8.3-pspell\n16384\t/usr/share/cmake\n507904\t/usr/share/initramfs-tools\n16384\t/usr/share/php8.3-odbc\n2084864\t/usr/share/groff\n40960\t/usr/share/xfsprogs\n77824\t/usr/share/keyrings\n16384\t/usr/share/sensible-utils\n897024\t/usr/share/bison\n28672\t/usr/share/themes\n114688\t/usr/share/update-notifier\n413696\t/usr/share/zsh\n516096\t/usr/share/maven-repo\n16384\t/usr/share/menu\n204800\t/usr/share/nano\n69632\t/usr/share/hwdata\n8192\t/usr/share/file\n8192\t/usr/share/tex-common\n90112\t/usr/share/git-core\n20480\t/usr/share/pam-configs\n40960\t/usr/share/pixmaps\n24576\t/usr/share/mdadm\n58597376\t/usr/share/ri\n8192\t/usr/share/freetds\n20480\t/usr/share/dhcpcd\n2736128\t/usr/share/consolefonts\n8192\t/usr/share/libc-bin\n12288\t/usr/share/emacsen-common\n8192\t/usr/share/rsyslog\n12288\t/usr/share/libgcrypt20\n81920\t/usr/share/postgresql-common\n548864\t/usr/share/sounds\n3391488\t/usr/share/bash-completion\n12288\t/usr/share/php8.3-zip\n32768\t/usr/share/glib-2.0\n12288\t/usr/share/p11-kit\n8843264\t/usr/share/perl5\n1064960\t/usr/share/automake-1.16\n12288\t/usr/share/php8.3-bz2\n12288\t/usr/share/php8.3-imap\n6166843392\t/usr/share/dotnet\n593920\t/usr/share/libthai\n16384\t/usr/share/php8.3-pgsql\n3887104\t/usr/share/postgresql\n638976\t/usr/share/netplan\n60882944\t/usr/share/doc\n9920512\t/usr/share/mysql\n49152\t/usr/share/fish\n155648\t/usr/share/emacs\n77824\t/usr/share/php8.3-common\n118784\t/usr/share/ImageMagick-6\n331776\t/usr/share/screen\n57344\t/usr/share/containers\n12288\t/usr/share/man-db\n1609728\t/usr/share/lintian\n13688832\t/usr/share/ieee-data\n16384\t/usr/share/util-linux\n12288\t/usr/share/os-prober\n8192\t/usr/share/appstream\n3710935040\t/usr/share/swift\n520192\t/usr/share/texmf\n344064\t/usr/share/gnupg\n57344\t/usr/share/ubuntu-release-upgrader\n225280\t/usr/share/shtool\n8192\t/usr/share/mysql-common\n12288\t/usr/share/php8.3-interbase\n16384\t/usr/share/bpfcc-tools\n16384\t/usr/share/gnome-control-center\n622592\t/usr/share/ufw\n12288\t/usr/share/php8.3-snmp\n401408\t/usr/share/aclocal\n24576\t/usr/share/usb_modeswitch\n37384192\t/usr/share/fonts\n20480\t/usr/share/distro-info\n54382592\t/usr/share/mecab\n1773568\t/usr/share/google-cloud-sdk\n8192\t/usr/share/keyutils\n37089280\t/usr/share/man\n22659072\t/usr/share/perl\n196608\t/usr/share/python3\n8192\t/usr/share/dict\n20480\t/usr/share/tabset\n20480\t/usr/share/cryptsetup\n5431296\t/usr/share/swig4.0\n43741184\t/usr/share/vim\n270336\t/usr/share/common-licenses\n12288\t/usr/share/php8.3-soap\n77824\t/usr/share/metainfo\n61440\t/usr/share/console-setup\n611831808\t/usr/share/az_15.6.1\n73728\t/usr/share/drirc.d\n59158528\t/usr/share/java\n12288\t/usr/share/ucf\n31780864\t/usr/share/python-babel-localedata\n8192\t/usr/share/landscape\n12288\t/usr/share/php8.3-dba\n2203648\t/usr/share/info\n36864\t/usr/share/icu\n12288\t/usr/share/locales\n20480\t/usr/share/binfmts\n36864\t/usr/share/lto-disabled-list\n12288\t/usr/share/php8.3-sybase\n49152\t/usr/share/pkgconfig\n90112\t/usr/share/applications\n12477267968\t/usr/share\n",
+    "error": "PermissionError(13, 'Permission denied')",
+    "outputs": {
+      "size-9.log": "4c86b6b2a6deb96b376a8c30e48019de719287f70b16f031a88bdcea569896e0",
+      "remove-0.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remove-4.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size-10.log": "a1b4b96bb07d0076c9218195c39e3db71c75d7e63b2e110223871e57872b0245",
+      "size-2.log": "f1c4b06b731bacf8047df9e185cadf135d94a8bd2bdc452dd3fb21a9d1fd8070",
+      "size-1.log": "d608b456852f9b83991243be8f070467e7b6342866673aa2fb309f0e18b60de9",
+      "size-3.log": "8a3f3bbd0021a6dee753beed3dd78965dee0769eff6732861850ab92aaf6c330",
+      "remove-10.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size-11.log": "392307ed4bbf8f73f88217526a17ba0a1cbf063f6523383a8fd9bb2ba5e1b7ae",
+      "remove-11.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remove-2.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remove-7.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remove-8.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size-5.log": "7f225e4a29dc33f6e12cc214da41954f0eba16be7b8ed4148b26b86fea0893e9",
+      "size-4.log": "bfd9e4138b74cd7b47f4ce51cb4fbbf4fb01e4366e0f08c13f1970202859f3a1",
+      "filesystem-before.log": "ea8f2a9ae46fcbb0d261ddbc1201eb889d1fea6ffbe5ab0ecf99f0dae887ea6b",
+      "empty-docker.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remove-3.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size-0.log": "13a1c57fcfe6236595034f6d23d391e0ad0320248fddd333300187f5bf573fb9",
+      "remove-5.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remove-9.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "top-level-bytes.log": "39d66ed87be864dca2d7528b62cc024126f50edf0e790f83724e049d70bf663a",
+      "size-7.log": "0d89ba15320aa334fb89ddfe31bd7ade60d87f0a0e9f2acbfa2e6e9817cdfc1b",
+      "size-8.log": "1ccb21c0f4f5e8430c675012df48dda15f8f9e4278b2b54c1f71442a292f7aad",
+      "remove-6.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "remove-1.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size-6.log": "baae4d117703f44105ab66999f7e87a5dad15caa08fd7ebc33be259f5997648b"
+    }
+  }
+}

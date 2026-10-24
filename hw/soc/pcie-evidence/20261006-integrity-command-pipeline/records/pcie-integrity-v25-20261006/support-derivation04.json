@@ -1,0 +1,155 @@
+{
+  "bridges": [
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/launch_controls03.py",
+      "parent_pin": {
+        "bytes": 4296,
+        "sha256": "18da27ef8038430377ce0b0d69502f75c5536fd0efd38b21e173bb3c87f18892"
+      },
+      "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/launch_controls04.py",
+      "candidate_pin": {
+        "bytes": 4319,
+        "sha256": "6462be21f1e80c72e49c754a37575db4f517792f12b6fdd0a3b57f16e3ef978f"
+      },
+      "substitutions": [
+        [
+          "source-freeze03.json",
+          "source-freeze04.json"
+        ],
+        [
+          "source-only-peer-rx03.json",
+          "source-only-peer-rx04.json"
+        ],
+        [
+          "launch_controls03.py",
+          "launch_controls04.py"
+        ],
+        [
+          "nssoc-integrity-v25-full-controls01",
+          "nssoc-integrity-v25-full-controls02"
+        ],
+        [
+          "status01.json",
+          "status02.json"
+        ],
+        [
+          "controls01.xml",
+          "controls02.xml"
+        ],
+        [
+          "owner01.json",
+          "owner02.json"
+        ],
+        [
+          "controls01.log",
+          "controls02.log"
+        ],
+        [
+          "detached-once01.json",
+          "detached-once02.json"
+        ],
+        [
+          "launch01.log",
+          "launch02.log"
+        ],
+        [
+          "detached-receipt01.json",
+          "detached-receipt02.json"
+        ],
+        [
+          "V25 full42",
+          "V25 full43"
+        ],
+        [
+          "minimum16/normal64",
+          "explicit ring16/MAX18 stress and normal64"
+        ],
+        [
+          "ed5cb88a99b8034d3eddf1e269de35d5704753153b4c9e51bdd84c4c021f583f",
+          "a1c125fdb02559a5c3269351c2a918c731327c538cef8b6a4c70101a453c591f"
+        ]
+      ],
+      "parent_body": "\"\"\"Owned CPU6/2GiB frozen V25 controls; native map remains separately gated.\"\"\"\nfrom pathlib import Path\nimport datetime,hashlib,json,os,resource,subprocess,sys,shutil\nR=Path.cwd();B=Path(__file__).resolve().parent\nsys.path.insert(0,str(R/'scripts'))\nimport characterize_pcie_clock_trim_stream_v2 as life\n\ndef pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nassert pin(life.__file__)['sha256']=='39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886'\nassert os.sched_getaffinity(0)=={6}\nfreeze=B/'source-freeze03.json';assert pin(freeze)['sha256']=='ed5cb88a99b8034d3eddf1e269de35d5704753153b4c9e51bdd84c4c021f583f'\nf=json.loads(freeze.read_text())\nfor p,v in f['sources'].items():assert pin(R/p)==v\nfor name,expected in f['selected_tools'].items():\n selected=Path(shutil.which(name)).absolute()\n assert str(selected)==expected['path'] and pin(selected)=={k:expected[k] for k in ('bytes','sha256')},'Selected native runtime differs'\ndef shared_floor(minimum):\n free=shutil.disk_usage('/dev/shm').free\n assert free>=minimum,('Shared scratch floor breached',free,minimum)\n return free\nentry_free=shared_floor(1024**3)\npeer=B/'source-only-peer-rx03.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V25_REGISTERED_COMMAND_IMPLEMENTATION' and not j['findings']\nassert j['freeze']==pin(freeze) and j['launcher']==pin(Path(__file__))\nD=Path('/dev/shm/nssoc-integrity-v25-full-controls01');assert not D.exists() and not (B/'status01.json').exists()\ncommand=[sys.executable,'-m','pytest','-q','-p','no:cacheprovider',str(R/'sw/tests/test_pcie_gen3_continuous_rx_integrity_v25.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_architecture.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_block_burst.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_command.py'),'-k','not 4118','--basetemp='+str(D),'--junitxml='+str(B/'controls01.xml')]\nowner=life.ProcessOwner(B/'owner01.json')\nr=dict(status='STARTING',controller=life.process_identity(os.getpid()),boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),command=command,source_freeze=pin(freeze),source_peer=pin(peer),pytest_AS_bytes=2*1024**3,CPU6=True,elapsed_watchdog_seconds=None,entry_shared_free=entry_free,selected_tools=f['selected_tools'])\ndef save():\n r['utc']=datetime.datetime.now(datetime.UTC).isoformat();life.atomic(B/'status01.json',r)\n life.atomic(B/'active-checkpoint.json',dict(status=r['status'],controls=str(B/'status01.json'),controller=r['controller'],boot_id=r['boot_id'],source_freeze=dict(path=str(freeze),**pin(freeze)),native_map_started=False,scope='V25 full42 selected predicates: nineteen independent public transaction cases, explicit nominal +1 relation, command literal/epoch controls and minimum16/normal64 block campaigns; one MAX4118 profile explicitly excluded. No general cycle equivalence. Native map remains separately gated. Existing PLL untouched.'))\ndef limits():\n resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3));resource.setrlimit(resource.RLIMIT_CORE,(0,0))\nsave()\ntry:\n with owner:\n  with (B/'controls01.log').open('x') as log:\n   p=owner.launch('native',command,stdout=log,stderr=subprocess.STDOUT,preexec_fn=limits,env={**{k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE')},'TMPDIR':'/dev/shm','PYTHONDONTWRITEBYTECODE':'1','OMP_NUM_THREADS':'1','YOSYS_MAX_THREADS':'1'})\n   r.update(status='RUNNING_FROZEN_V25_CONTROLS',pytest=life.process_identity(p.pid));save()\n   while p.poll() is None:\n    owner.check();shared_floor(528*1024**2);owner.cancelled.wait(0.05)\n   owner.check();code=owner.complete(p);owner.check()\n   r['terminal_shared_free']=shared_floor(528*1024**2)\n  r.update(returncode=code,status='COMPLETE_PENDING_INDEPENDENT_CONTROL_RECOUNT' if code==0 else 'FAILED_CONTROLS_RETAINED',log=pin(B/'controls01.log'))\n  for p,v in f['sources'].items():assert pin(R/p)==v\n  assert pin(peer)==r['source_peer'];owner.check()\n owner.check()\nexcept BaseException as error:\n r.update(status='CANCELLED_OR_FAILED_CONTROLS_RETAINED',error=repr(error));raise\nfinally:\n r['stop_reason']=owner.reason\n if owner.reason and owner.reason.startswith('Parent received SIG'):r['status']='CANCELLED_CONTROLS_RETAINED'\n save()\n",
+      "candidate_body": "\"\"\"Owned CPU6/2GiB frozen V25 controls; native map remains separately gated.\"\"\"\nfrom pathlib import Path\nimport datetime,hashlib,json,os,resource,subprocess,sys,shutil\nR=Path.cwd();B=Path(__file__).resolve().parent\nsys.path.insert(0,str(R/'scripts'))\nimport characterize_pcie_clock_trim_stream_v2 as life\n\ndef pin(p):\n p=Path(p)\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nassert pin(life.__file__)['sha256']=='39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886'\nassert os.sched_getaffinity(0)=={6}\nfreeze=B/'source-freeze04.json';assert pin(freeze)['sha256']=='a1c125fdb02559a5c3269351c2a918c731327c538cef8b6a4c70101a453c591f'\nf=json.loads(freeze.read_text())\nfor p,v in f['sources'].items():assert pin(R/p)==v\nfor name,expected in f['selected_tools'].items():\n selected=Path(shutil.which(name)).absolute()\n assert str(selected)==expected['path'] and pin(selected)=={k:expected[k] for k in ('bytes','sha256')},'Selected native runtime differs'\ndef shared_floor(minimum):\n free=shutil.disk_usage('/dev/shm').free\n assert free>=minimum,('Shared scratch floor breached',free,minimum)\n return free\nentry_free=shared_floor(1024**3)\npeer=B/'source-only-peer-rx04.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V25_REGISTERED_COMMAND_IMPLEMENTATION' and not j['findings']\nassert j['freeze']==pin(freeze) and j['launcher']==pin(Path(__file__))\nD=Path('/dev/shm/nssoc-integrity-v25-full-controls02');assert not D.exists() and not (B/'status02.json').exists()\ncommand=[sys.executable,'-m','pytest','-q','-p','no:cacheprovider',str(R/'sw/tests/test_pcie_gen3_continuous_rx_integrity_v25.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_architecture.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_block_burst.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_command.py'),'-k','not 4118','--basetemp='+str(D),'--junitxml='+str(B/'controls02.xml')]\nowner=life.ProcessOwner(B/'owner02.json')\nr=dict(status='STARTING',controller=life.process_identity(os.getpid()),boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),command=command,source_freeze=pin(freeze),source_peer=pin(peer),pytest_AS_bytes=2*1024**3,CPU6=True,elapsed_watchdog_seconds=None,entry_shared_free=entry_free,selected_tools=f['selected_tools'])\ndef save():\n r['utc']=datetime.datetime.now(datetime.UTC).isoformat();life.atomic(B/'status02.json',r)\n life.atomic(B/'active-checkpoint.json',dict(status=r['status'],controls=str(B/'status02.json'),controller=r['controller'],boot_id=r['boot_id'],source_freeze=dict(path=str(freeze),**pin(freeze)),native_map_started=False,scope='V25 full43 selected predicates: nineteen independent public transaction cases, explicit nominal +1 relation, command literal/epoch controls and explicit ring16/MAX18 stress and normal64 block campaigns; one MAX4118 profile explicitly excluded. No general cycle equivalence. Native map remains separately gated. Existing PLL untouched.'))\ndef limits():\n resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3));resource.setrlimit(resource.RLIMIT_CORE,(0,0))\nsave()\ntry:\n with owner:\n  with (B/'controls02.log').open('x') as log:\n   p=owner.launch('native',command,stdout=log,stderr=subprocess.STDOUT,preexec_fn=limits,env={**{k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE')},'TMPDIR':'/dev/shm','PYTHONDONTWRITEBYTECODE':'1','OMP_NUM_THREADS':'1','YOSYS_MAX_THREADS':'1'})\n   r.update(status='RUNNING_FROZEN_V25_CONTROLS',pytest=life.process_identity(p.pid));save()\n   while p.poll() is None:\n    owner.check();shared_floor(528*1024**2);owner.cancelled.wait(0.05)\n   owner.check();code=owner.complete(p);owner.check()\n   r['terminal_shared_free']=shared_floor(528*1024**2)\n  r.update(returncode=code,status='COMPLETE_PENDING_INDEPENDENT_CONTROL_RECOUNT' if code==0 else 'FAILED_CONTROLS_RETAINED',log=pin(B/'controls02.log'))\n  for p,v in f['sources'].items():assert pin(R/p)==v\n  assert pin(peer)==r['source_peer'];owner.check()\n owner.check()\nexcept BaseException as error:\n r.update(status='CANCELLED_OR_FAILED_CONTROLS_RETAINED',error=repr(error));raise\nfinally:\n r['stop_reason']=owner.reason\n if owner.reason and owner.reason.startswith('Parent received SIG'):r['status']='CANCELLED_CONTROLS_RETAINED'\n save()\n",
+      "full_diff": "--- \n+++ \n@@ -10,7 +10,7 @@\n  with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n assert pin(life.__file__)['sha256']=='39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886'\n assert os.sched_getaffinity(0)=={6}\n-freeze=B/'source-freeze03.json';assert pin(freeze)['sha256']=='ed5cb88a99b8034d3eddf1e269de35d5704753153b4c9e51bdd84c4c021f583f'\n+freeze=B/'source-freeze04.json';assert pin(freeze)['sha256']=='a1c125fdb02559a5c3269351c2a918c731327c538cef8b6a4c70101a453c591f'\n f=json.loads(freeze.read_text())\n for p,v in f['sources'].items():assert pin(R/p)==v\n for name,expected in f['selected_tools'].items():\n@@ -21,28 +21,28 @@\n  assert free>=minimum,('Shared scratch floor breached',free,minimum)\n  return free\n entry_free=shared_floor(1024**3)\n-peer=B/'source-only-peer-rx03.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V25_REGISTERED_COMMAND_IMPLEMENTATION' and not j['findings']\n+peer=B/'source-only-peer-rx04.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V25_REGISTERED_COMMAND_IMPLEMENTATION' and not j['findings']\n assert j['freeze']==pin(freeze) and j['launcher']==pin(Path(__file__))\n-D=Path('/dev/shm/nssoc-integrity-v25-full-controls01');assert not D.exists() and not (B/'status01.json').exists()\n-command=[sys.executable,'-m','pytest','-q','-p','no:cacheprovider',str(R/'sw/tests/test_pcie_gen3_continuous_rx_integrity_v25.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_architecture.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_block_burst.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_command.py'),'-k','not 4118','--basetemp='+str(D),'--junitxml='+str(B/'controls01.xml')]\n-owner=life.ProcessOwner(B/'owner01.json')\n+D=Path('/dev/shm/nssoc-integrity-v25-full-controls02');assert not D.exists() and not (B/'status02.json').exists()\n+command=[sys.executable,'-m','pytest','-q','-p','no:cacheprovider',str(R/'sw/tests/test_pcie_gen3_continuous_rx_integrity_v25.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_architecture.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_block_burst.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v25_command.py'),'-k','not 4118','--basetemp='+str(D),'--junitxml='+str(B/'controls02.xml')]\n+owner=life.ProcessOwner(B/'owner02.json')\n r=dict(status='STARTING',controller=life.process_identity(os.getpid()),boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),command=command,source_freeze=pin(freeze),source_peer=pin(peer),pytest_AS_bytes=2*1024**3,CPU6=True,elapsed_watchdog_seconds=None,entry_shared_free=entry_free,selected_tools=f['selected_tools'])\n def save():\n- r['utc']=datetime.datetime.now(datetime.UTC).isoformat();life.atomic(B/'status01.json',r)\n- life.atomic(B/'active-checkpoint.json',dict(status=r['status'],controls=str(B/'status01.json'),controller=r['controller'],boot_id=r['boot_id'],source_freeze=dict(path=str(freeze),**pin(freeze)),native_map_started=False,scope='V25 full42 selected predicates: nineteen independent public transaction cases, explicit nominal +1 relation, command literal/epoch controls and minimum16/normal64 block campaigns; one MAX4118 profile explicitly excluded. No general cycle equivalence. Native map remains separately gated. Existing PLL untouched.'))\n+ r['utc']=datetime.datetime.now(datetime.UTC).isoformat();life.atomic(B/'status02.json',r)\n+ life.atomic(B/'active-checkpoint.json',dict(status=r['status'],controls=str(B/'status02.json'),controller=r['controller'],boot_id=r['boot_id'],source_freeze=dict(path=str(freeze),**pin(freeze)),native_map_started=False,scope='V25 full43 selected predicates: nineteen independent public transaction cases, explicit nominal +1 relation, command literal/epoch controls and explicit ring16/MAX18 stress and normal64 block campaigns; one MAX4118 profile explicitly excluded. No general cycle equivalence. Native map remains separately gated. Existing PLL untouched.'))\n def limits():\n  resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3));resource.setrlimit(resource.RLIMIT_CORE,(0,0))\n save()\n try:\n  with owner:\n-  with (B/'controls01.log').open('x') as log:\n+  with (B/'controls02.log').open('x') as log:\n    p=owner.launch('native',command,stdout=log,stderr=subprocess.STDOUT,preexec_fn=limits,env={**{k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE')},'TMPDIR':'/dev/shm','PYTHONDONTWRITEBYTECODE':'1','OMP_NUM_THREADS':'1','YOSYS_MAX_THREADS':'1'})\n    r.update(status='RUNNING_FROZEN_V25_CONTROLS',pytest=life.process_identity(p.pid));save()\n    while p.poll() is None:\n     owner.check();shared_floor(528*1024**2);owner.cancelled.wait(0.05)\n    owner.check();code=owner.complete(p);owner.check()\n    r['terminal_shared_free']=shared_floor(528*1024**2)\n-  r.update(returncode=code,status='COMPLETE_PENDING_INDEPENDENT_CONTROL_RECOUNT' if code==0 else 'FAILED_CONTROLS_RETAINED',log=pin(B/'controls01.log'))\n+  r.update(returncode=code,status='COMPLETE_PENDING_INDEPENDENT_CONTROL_RECOUNT' if code==0 else 'FAILED_CONTROLS_RETAINED',log=pin(B/'controls02.log'))\n   for p,v in f['sources'].items():assert pin(R/p)==v\n   assert pin(peer)==r['source_peer'];owner.check()\n  owner.check()\n"
+    },
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/detach_controls03.py",
+      "parent_pin": {
+        "bytes": 1990,
+        "sha256": "9483fbf3a645c1b4bc81e9339a2ed2df7c10a271c10c6699bb24b0dc5c0969d9"
+      },
+      "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/detach_controls04.py",
+      "candidate_pin": {
+        "bytes": 1990,
+        "sha256": "ab6f6f850118b6144fe80e62da0bc177740cb0ec829cb8262c6c27287d2accd6"
+      },
+      "substitutions": [
+        [
+          "source-freeze03.json",
+          "source-freeze04.json"
+        ],
+        [
+          "source-only-peer-rx03.json",
+          "source-only-peer-rx04.json"
+        ],
+        [
+          "launch_controls03.py",
+          "launch_controls04.py"
+        ],
+        [
+          "nssoc-integrity-v25-full-controls01",
+          "nssoc-integrity-v25-full-controls02"
+        ],
+        [
+          "status01.json",
+          "status02.json"
+        ],
+        [
+          "controls01.xml",
+          "controls02.xml"
+        ],
+        [
+          "owner01.json",
+          "owner02.json"
+        ],
+        [
+          "controls01.log",
+          "controls02.log"
+        ],
+        [
+          "detached-once01.json",
+          "detached-once02.json"
+        ],
+        [
+          "launch01.log",
+          "launch02.log"
+        ],
+        [
+          "detached-receipt01.json",
+          "detached-receipt02.json"
+        ],
+        [
+          "V25 full42",
+          "V25 full43"
+        ],
+        [
+          "minimum16/normal64",
+          "explicit ring16/MAX18 stress and normal64"
+        ],
+        [
+          "{'bytes': 63119, 'sha256': 'ed5cb88a99b8034d3eddf1e269de35d5704753153b4c9e51bdd84c4c021f583f'}",
+          "{'bytes': 75168, 'sha256': 'a1c125fdb02559a5c3269351c2a918c731327c538cef8b6a4c70101a453c591f'}"
+        ],
+        [
+          "{'bytes': 4296, 'sha256': '18da27ef8038430377ce0b0d69502f75c5536fd0efd38b21e173bb3c87f18892'}",
+          "{'bytes': 4319, 'sha256': '6462be21f1e80c72e49c754a37575db4f517792f12b6fdd0a3b57f16e3ef978f'}"
+        ]
+      ],
+      "parent_body": "\"\"\"Launch one peer-gated V25 functional campaign detached from tool lifetime.\"\"\"\nfrom pathlib import Path\nimport json,hashlib,subprocess,os\nR=Path.cwd();B=Path(__file__).resolve().parent\ndef pin(p):return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\nassert pin(B/'launch_controls03.py')=={'bytes': 4296, 'sha256': '18da27ef8038430377ce0b0d69502f75c5536fd0efd38b21e173bb3c87f18892'}\nfreeze=B/'source-freeze03.json';assert pin(freeze)=={'bytes': 63119, 'sha256': 'ed5cb88a99b8034d3eddf1e269de35d5704753153b4c9e51bdd84c4c021f583f'}\nfor n,v in json.loads(freeze.read_text())['sources'].items():assert pin(R/n)==v\npeer=B/'source-only-peer-rx03.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V25_REGISTERED_COMMAND_IMPLEMENTATION' and j['freeze']==pin(freeze) and not j['findings']\nassert j['launcher']==pin(B/'launch_controls03.py') and j['detacher']==pin(Path(__file__))\nassert not Path('/dev/shm/nssoc-integrity-v25-full-controls01').exists()and not(B/'status01.json').exists()\nwith(B/'detached-once01.json').open('x')as f:json.dump(dict(source_freeze=pin(freeze),peer=pin(peer)),f)\ncommand=['taskset','-c','6',str(R/'.venv/bin/python'),str(B/'launch_controls03.py')]\nwith(B/'launch01.log').open('x')as f:c=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=f,stderr=subprocess.STDOUT,start_new_session=True,close_fds=True,cwd=R,env={**{k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE')},'PYTHONDONTWRITEBYTECODE':'1'})\na=Path(f'/proc/{c.pid}/stat').read_text().split(') ',1)[1].split()\nr=dict(status='DETACHED_CONTROL_LAUNCH_ACTUAL_PROGRESS_REQUIRED',controller=dict(pid=c.pid,start_ticks=a[19],process_group=int(a[2])),boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),command=command,launcher=pin(Path(__file__)),source_freeze=pin(freeze),peer=pin(peer))\nwith(B/'detached-receipt01.json').open('x')as f:json.dump(r,f,indent=2);f.write('\\n')\nprint(json.dumps(r))\n",
+      "candidate_body": "\"\"\"Launch one peer-gated V25 functional campaign detached from tool lifetime.\"\"\"\nfrom pathlib import Path\nimport json,hashlib,subprocess,os\nR=Path.cwd();B=Path(__file__).resolve().parent\ndef pin(p):return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\nassert pin(B/'launch_controls04.py')=={'bytes': 4319, 'sha256': '6462be21f1e80c72e49c754a37575db4f517792f12b6fdd0a3b57f16e3ef978f'}\nfreeze=B/'source-freeze04.json';assert pin(freeze)=={'bytes': 75168, 'sha256': 'a1c125fdb02559a5c3269351c2a918c731327c538cef8b6a4c70101a453c591f'}\nfor n,v in json.loads(freeze.read_text())['sources'].items():assert pin(R/n)==v\npeer=B/'source-only-peer-rx04.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V25_REGISTERED_COMMAND_IMPLEMENTATION' and j['freeze']==pin(freeze) and not j['findings']\nassert j['launcher']==pin(B/'launch_controls04.py') and j['detacher']==pin(Path(__file__))\nassert not Path('/dev/shm/nssoc-integrity-v25-full-controls02').exists()and not(B/'status02.json').exists()\nwith(B/'detached-once02.json').open('x')as f:json.dump(dict(source_freeze=pin(freeze),peer=pin(peer)),f)\ncommand=['taskset','-c','6',str(R/'.venv/bin/python'),str(B/'launch_controls04.py')]\nwith(B/'launch02.log').open('x')as f:c=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=f,stderr=subprocess.STDOUT,start_new_session=True,close_fds=True,cwd=R,env={**{k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE')},'PYTHONDONTWRITEBYTECODE':'1'})\na=Path(f'/proc/{c.pid}/stat').read_text().split(') ',1)[1].split()\nr=dict(status='DETACHED_CONTROL_LAUNCH_ACTUAL_PROGRESS_REQUIRED',controller=dict(pid=c.pid,start_ticks=a[19],process_group=int(a[2])),boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),command=command,launcher=pin(Path(__file__)),source_freeze=pin(freeze),peer=pin(peer))\nwith(B/'detached-receipt02.json').open('x')as f:json.dump(r,f,indent=2);f.write('\\n')\nprint(json.dumps(r))\n",
+      "full_diff": "--- \n+++ \n@@ -3,16 +3,16 @@\n import json,hashlib,subprocess,os\n R=Path.cwd();B=Path(__file__).resolve().parent\n def pin(p):return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\n-assert pin(B/'launch_controls03.py')=={'bytes': 4296, 'sha256': '18da27ef8038430377ce0b0d69502f75c5536fd0efd38b21e173bb3c87f18892'}\n-freeze=B/'source-freeze03.json';assert pin(freeze)=={'bytes': 63119, 'sha256': 'ed5cb88a99b8034d3eddf1e269de35d5704753153b4c9e51bdd84c4c021f583f'}\n+assert pin(B/'launch_controls04.py')=={'bytes': 4319, 'sha256': '6462be21f1e80c72e49c754a37575db4f517792f12b6fdd0a3b57f16e3ef978f'}\n+freeze=B/'source-freeze04.json';assert pin(freeze)=={'bytes': 75168, 'sha256': 'a1c125fdb02559a5c3269351c2a918c731327c538cef8b6a4c70101a453c591f'}\n for n,v in json.loads(freeze.read_text())['sources'].items():assert pin(R/n)==v\n-peer=B/'source-only-peer-rx03.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V25_REGISTERED_COMMAND_IMPLEMENTATION' and j['freeze']==pin(freeze) and not j['findings']\n-assert j['launcher']==pin(B/'launch_controls03.py') and j['detacher']==pin(Path(__file__))\n-assert not Path('/dev/shm/nssoc-integrity-v25-full-controls01').exists()and not(B/'status01.json').exists()\n-with(B/'detached-once01.json').open('x')as f:json.dump(dict(source_freeze=pin(freeze),peer=pin(peer)),f)\n-command=['taskset','-c','6',str(R/'.venv/bin/python'),str(B/'launch_controls03.py')]\n-with(B/'launch01.log').open('x')as f:c=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=f,stderr=subprocess.STDOUT,start_new_session=True,close_fds=True,cwd=R,env={**{k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE')},'PYTHONDONTWRITEBYTECODE':'1'})\n+peer=B/'source-only-peer-rx04.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V25_REGISTERED_COMMAND_IMPLEMENTATION' and j['freeze']==pin(freeze) and not j['findings']\n+assert j['launcher']==pin(B/'launch_controls04.py') and j['detacher']==pin(Path(__file__))\n+assert not Path('/dev/shm/nssoc-integrity-v25-full-controls02').exists()and not(B/'status02.json').exists()\n+with(B/'detached-once02.json').open('x')as f:json.dump(dict(source_freeze=pin(freeze),peer=pin(peer)),f)\n+command=['taskset','-c','6',str(R/'.venv/bin/python'),str(B/'launch_controls04.py')]\n+with(B/'launch02.log').open('x')as f:c=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=f,stderr=subprocess.STDOUT,start_new_session=True,close_fds=True,cwd=R,env={**{k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE')},'PYTHONDONTWRITEBYTECODE':'1'})\n a=Path(f'/proc/{c.pid}/stat').read_text().split(') ',1)[1].split()\n r=dict(status='DETACHED_CONTROL_LAUNCH_ACTUAL_PROGRESS_REQUIRED',controller=dict(pid=c.pid,start_ticks=a[19],process_group=int(a[2])),boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),command=command,launcher=pin(Path(__file__)),source_freeze=pin(freeze),peer=pin(peer))\n-with(B/'detached-receipt01.json').open('x')as f:json.dump(r,f,indent=2);f.write('\\n')\n+with(B/'detached-receipt02.json').open('x')as f:json.dump(r,f,indent=2);f.write('\\n')\n print(json.dumps(r))\n"
+    }
+  ],
+  "scope": "Fresh full43 CPU6/2GiB campaign after RTL reset-race repair; all exact lifecycle/runtime/floor gates unchanged, old control captures untouched."
+}

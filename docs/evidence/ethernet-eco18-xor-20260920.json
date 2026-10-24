@@ -1,0 +1,91 @@
+{
+  "date": "2026-09-20",
+  "status": "PASS",
+  "run": "eth256-eco18-xor-20260920",
+  "candidate": "eth256-eco18-clean-route-20260920",
+  "scope": "Full stream XOR between Magic and KLayout GDS for this exact ECO18 candidate, no ignored layers. Zero differences establishes stream agreement, not DRC, LVS, timing or product acceptance.",
+  "supervisor": {
+    "command": [
+      "bash",
+      "hw/soc/flow/pnr_soc_top.sh",
+      "eth256-eco18-xor-20260920",
+      "-F",
+      "KLayout.XOR",
+      "-T",
+      "Checker.XOR",
+      "-i",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/16-klayout-render/state_out.json"
+    ],
+    "environment": {
+      "SOC_INTERFACE_FLOW": "1",
+      "PNR_CONFIG": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/config-fpeth256-decks-20260919-decks.json",
+      "SYN_NETLIST": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/09-openroad-fillinsertion/soc_top.nl.v",
+      "PNR_STATE": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/state/eth256-eco18-xor-20260920-seed.json"
+    },
+    "returncode": 0,
+    "stop_reason": null,
+    "elapsed_s": 390.03370778799945,
+    "scope": "Independent stream XOR for this exact candidate only"
+  },
+  "reported_xor_differences": 0,
+  "xml_items_independently_counted": 0,
+  "commands": [
+    [
+      "bash",
+      "hw/soc/flow/pnr_soc_top.sh",
+      "eth256-eco18-xor-20260920",
+      "-F",
+      "KLayout.XOR",
+      "-T",
+      "Checker.XOR",
+      "-i",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/16-klayout-render/state_out.json"
+    ],
+    [
+      "python3",
+      "hw/soc/out/external-review-20260919/record_eco18_xor.py"
+    ]
+  ],
+  "artifacts": {
+    "hw/soc/pnr/runs/eth256-eco18-xor-20260920/01-klayout-xor/xor.xml": {
+      "bytes": 5926,
+      "sha256": "24f05daad0f51cba86ff3c69356776fbccf23e550ff5f3e601e0dfc07f0caa01"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-xor-20260920/01-klayout-xor/COMMANDS": {
+      "bytes": 539,
+      "sha256": "e60b2fd81dcf85034530d300de0085a26f1918903ff58b3a116d9fdb88bf52e0"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-xor-20260920/01-klayout-xor/config.json": {
+      "bytes": 19691,
+      "sha256": "f2997f3a273b0ef333d52b6e31e70ed358c2e65be4dc5f1e72939e732df3b9f6"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-xor-20260920/01-klayout-xor/state_out.json": {
+      "bytes": 13137,
+      "sha256": "c43423abcec72262ff8c74d638ff0959f0663eceadf9fd9fadcbeaf8724dc528"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-xor-20260920/02-checker-xor/state_out.json": {
+      "bytes": 13137,
+      "sha256": "c43423abcec72262ff8c74d638ff0959f0663eceadf9fd9fadcbeaf8724dc528"
+    },
+    "hw/soc/out/external-review-20260919/run_eco18_xor.py": {
+      "bytes": 1869,
+      "sha256": "ea8b279cb5f99a39807339eb85fb3d12642016344287e08ac3802d0076ec458f"
+    },
+    "hw/soc/out/external-review-20260919/eth256-eco18-xor-20260920-supervisor.json": {
+      "bytes": 879,
+      "sha256": "463e65f129ca1ceb715a0746274d9fdfb68f81282d43bc3d58e4fa9b4cf7dd3a"
+    },
+    "hw/soc/out/external-review-20260919/record_eco18_xor.py": {
+      "bytes": 1809,
+      "sha256": "fedbf57aaec45bad22e88485eb13bb05d3a95ad3238429c50b27d17fae068afa"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/14-magic-streamout/soc_top.magic.gds": {
+      "bytes": 174027486,
+      "sha256": "70d0447be4bd12a3d1134ba28c2fee81819bdf170ecb73dfbbdc217953719d60"
+    },
+    "hw/soc/pnr/runs/eth256-eco18-clean-route-20260920/15-klayout-streamout/soc_top.klayout.gds": {
+      "bytes": 96242756,
+      "sha256": "cc96dff7ff3e687e0dc4f70c43f5ce43892740154dc833499ec619a0977b3e9a"
+    }
+  }
+}

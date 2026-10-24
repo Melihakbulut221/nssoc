@@ -1,0 +1,60 @@
+{
+  "status": "CLEAN_WITHIN_FROZEN_RX_CELL_COMPARISON_SCOPE",
+  "recorded_at_utc": "2026-10-04T02:27:27.535348+00:00",
+  "source_files": {
+    "hw/soc/flow/make_pcie_rx_cell.py": {
+      "bytes": 15549,
+      "sha256": "59ccb8ba6193cba38a8419330df41e24f459869ff436814b9e2167fcae3ec2b2"
+    },
+    "hw/soc/flow/check_pcie_rx_cell.py": {
+      "bytes": 12767,
+      "sha256": "12cd1f269893c58ace903fa9cc38ac4098c17474cf191966f93e15ac28135885"
+    },
+    "hw/soc/analog/pcie/rx_hbt_rsil.spice": {
+      "bytes": 976,
+      "sha256": "4450bac31930cca351a33dcb7b269ef732a342bcafef8d96610ee15340d51e5a"
+    },
+    "sw/tests/test_pcie_rx_cell.py": {
+      "bytes": 3920,
+      "sha256": "04aa9a321f8c2a15c362b1fc2e7782b9394c529ca2d1f1a32c99372aeaf3cb4f"
+    }
+  },
+  "native_result": {
+    "bytes": 73754,
+    "sha256": "30203c3a324f10419f21556a3b3edd7aa33bae07db46db72d0dfc9a3c5d3bf78"
+  },
+  "generated_result": {
+    "bytes": 38552,
+    "sha256": "8901bc98da7bc914167d7f10d3a46b0c9454ee0f8e03e62d14899de0cff9d072"
+  },
+  "rehashed_inputs": 201,
+  "rehashed_check_outputs": 57,
+  "rehashed_generator_outputs": 3,
+  "exact_source_derived_reference_rebuilt": true,
+  "five_negative_schematics_exactly_rebuilt": true,
+  "all_nine_actual_extracted_ports_present": true,
+  "four_hbt_four_rsil_and_combined_eight_square_taps": true,
+  "actual_lef_all_obstruction_regions_exactly_cover_outline_except_nine_pin_openings": true,
+  "native_legacy_result_scopes": {
+    "drc": "PASS",
+    "drc_offgrid": "FAIL",
+    "lvs": "PASS within comparison scope",
+    "termination_width": "FAIL",
+    "tail_nx": "FAIL",
+    "missing_tap": "FAIL",
+    "wrong_input": "FAIL",
+    "bulk_short": "FAIL",
+    "lef": "PASS",
+    "lef_missing_pin": "EXPECTED_REJECTION"
+  },
+  "findings": [],
+  "limitations": [
+    "Read-only source/raw-artifact review and exact byte/hash/geometry replay; no new DRC/LVS extraction or analog simulation executed.",
+    "Native deck combines eight parallel square taps into one A=32p P=64u element. This does not establish substrate RC or extracted analog behavior.",
+    "LVS compares the physical reference, which adds explicit square taps to the schematic compact-model bulk boundary. It does not prove tap-free analog simulated behavior equals post-layout behavior.",
+    "No PEX, current/EM, ESD, full-chip integration, PCIe link or manufacturing acceptance."
+  ],
+  "future_nonblocking_hardening": [
+    "Checker can reconstruct the fixed source-derived reference itself and validate exact obstruction regions; this independent review has performed both for the present capture."
+  ]
+}

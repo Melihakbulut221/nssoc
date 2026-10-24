@@ -1,0 +1,48 @@
+{
+  "scope": "Read current unchanged failed nominal waves; preserve fixed original phases and all native-source reproduction. Require all HBT gates still pass, and trace the fourfold physical input widths.",
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_collector_v8_sampling_review.py",
+      "baseline_sha256": "22eaa46d77481bb8c97db8755b7e9447e98e955db2fc04bd809f3fe75b675a4d",
+      "candidate_path": "scripts/cloud_cdr_input_drive_v10_sampling_review.py",
+      "candidate_sha256": "4a99902d246c80850e18d2550545da7d35c8e7d3ccea1009460f4a6c0ee9fa04",
+      "edits": [
+        {
+          "before": "collector_v8",
+          "after": "input_drive_v10",
+          "count": 1
+        },
+        {
+          "before": "collector-v8",
+          "after": "input-drive-v10",
+          "count": 4
+        },
+        {
+          "before": "R=15490,C=11535",
+          "after": "R=15482,C=11527",
+          "count": 1
+        },
+        {
+          "before": "len(resistors)==15490 and len(capacitors)==11535",
+          "after": "len(resistors)==15482 and len(capacitors)==11527",
+          "count": 1
+        },
+        {
+          "before": "not prior['data_passed'] and not prior['devices_passed']",
+          "after": "not prior['data_passed'] and prior['devices_passed']",
+          "count": 1
+        },
+        {
+          "before": "parser.number(dev['parameters']['w'])==parser.number('1u') and parser.number(dev['parameters']['l'])==parser.number('3.6u')",
+          "after": "parser.number(dev['parameters']['w'])==parser.number('4u') and parser.number(dev['parameters']['l'])==parser.number('3.6u')",
+          "count": 1
+        },
+        {
+          "before": "==expected_failed and len(failed)>0",
+          "after": "==expected_failed and len(failed)==0",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

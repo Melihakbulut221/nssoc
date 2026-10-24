@@ -1,0 +1,1206 @@
+{
+  "run": 39376994817,
+  "source_commit": "38cab9684c3d3b104f8e84761943d72806706c69",
+  "scope": "Read-only original-v16 waveform and physical latch diagnosis; not electrical acceptance",
+  "full_phy_accepted": false,
+  "cases": [
+    {
+      "case": "nominal_early",
+      "assets": [
+        {
+          "id": 658412514,
+          "name": "cdr-v16-latch-timing-nominal_early-39376994817-1.parts.json",
+          "size": 886,
+          "digest": "sha256:05ddb2f2df1a9390e79d3e31905ea1a527fb30b81f893cb5ae65a98dad850a7f"
+        },
+        {
+          "id": 658412431,
+          "name": "cdr-v16-latch-timing-nominal_early-39376994817-1.summary.json",
+          "size": 9634894,
+          "digest": "sha256:90c501e925142eb2fb57050f8d36d3a4cc886502f65efa32a72c8ad0df07e521"
+        },
+        {
+          "id": 658412592,
+          "name": "cdr-v16-latch-timing-nominal_early-39376994817-1.tar.gz.part0000",
+          "size": 1581741,
+          "digest": "sha256:b53510546e4f93fd8affca841f13fab964491124199789300c5e38abc01c9169"
+        }
+      ],
+      "status": "COMPLETE_REJECTED_CDR_NATIVE_MASTER_SLAVE_TOPOLOGY_AND_TRANSFER_TIMING_NOT_ACCEPTANCE",
+      "original_rejection_preserved": true,
+      "stages": {
+        "a": {
+          "macro": "sa",
+          "original": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.043961131827218725,
+            "wrong_sign_samples": 77,
+            "below_100mv_samples": 129,
+            "maximum_clock_to_valid_s": 5.20312499999995e-11,
+            "passed": false
+          },
+          "phases": [
+            {
+              "offset_ui": 0,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": 0.09098015314112465
+                },
+                "master_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.16297524300977445
+                },
+                "slave_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.1358554641411354
+                },
+                "slave_output": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.2795690616020872
+                }
+              }
+            },
+            {
+              "offset_ui": 0.3,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.10173175075491574
+                },
+                "master_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.23181214821504972
+                },
+                "slave_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.21872162639532378
+                },
+                "slave_output": {
+                  "wrong_sign": 77,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.043961131827218725
+                }
+              }
+            },
+            {
+              "offset_ui": 0.9,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 128,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": -0.08331238210461481
+                },
+                "master_output": {
+                  "wrong_sign": 128,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": -0.11769786990995929
+                },
+                "slave_input": {
+                  "wrong_sign": 128,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": -0.09178556425710083
+                },
+                "slave_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.12755295245810963
+                }
+              }
+            }
+          ],
+          "steering": {
+            "master": {
+              "minimum_track_a": -2.3990339283216433e-05,
+              "maximum_track_a": 0.009561173347993316,
+              "minimum_hold_a": -3.5708524393855315e-05,
+              "maximum_hold_a": 0.009786758633739316,
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.3982750027594885e-11,
+                "maximum_s": 2.0710936589971906e-10,
+                "median_s": -4.316365993495781e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.047722320649303e-10,
+                "maximum_s": 2.685019109954197e-10,
+                "median_s": 1.864221181955785e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -3.858429171717166e-05,
+              "maximum_track_a": 0.009377201381168983,
+              "minimum_hold_a": -2.3165572402992104e-05,
+              "maximum_hold_a": 0.009318780170443283,
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.0466238648595853e-10,
+                "maximum_s": 2.687961543580649e-10,
+                "median_s": 1.89287830181765e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.40914344756414e-11,
+                "maximum_s": 2.0686349324289157e-10,
+                "median_s": -4.341212864746471e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "contingency": {
+            "(True, False)": 129,
+            "(False, False)": 126
+          },
+          "overlap": {
+            "sample_count": 0,
+            "duration_lower_bound_s": 0,
+            "duration_upper_bound_s": 0,
+            "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+          }
+        },
+        "b": {
+          "macro": "sb",
+          "original": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.0989801169729227,
+            "wrong_sign_samples": 129,
+            "below_100mv_samples": 129,
+            "maximum_clock_to_valid_s": 5.265624999999028e-11,
+            "passed": false
+          },
+          "phases": [
+            {
+              "offset_ui": 0,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.025863353062622944
+                },
+                "master_output": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.1398430990413117
+                },
+                "slave_input": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.13267218656733434
+                },
+                "slave_output": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.3151001882807043
+                }
+              }
+            },
+            {
+              "offset_ui": 0.3,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": 0.07419196407405515
+                },
+                "master_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.13033418910250472
+                },
+                "slave_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.11885337648862404
+                },
+                "slave_output": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.0989801169729227
+                }
+              }
+            },
+            {
+              "offset_ui": 0.9,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.10027810757178157
+                },
+                "master_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.2150205730630277
+                },
+                "slave_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.1828126966612056
+                },
+                "slave_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.21011850069457796
+                }
+              }
+            }
+          ],
+          "steering": {
+            "master": {
+              "minimum_track_a": -5.5010147658701906e-05,
+              "maximum_track_a": 0.009532267119572571,
+              "minimum_hold_a": -2.644665079175993e-05,
+              "maximum_hold_a": 0.009827883380096136,
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -4.6901737472347196e-11,
+                "maximum_s": 3.282804643468213e-10,
+                "median_s": -4.6583544074022e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": 1.54572208088692e-11,
+                "maximum_s": 2.6594833609459407e-10,
+                "median_s": 1.5772461759275062e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -3.623776530976174e-05,
+              "maximum_track_a": 0.009440371313584054,
+              "minimum_hold_a": -5.60804687151403e-05,
+              "maximum_hold_a": 0.009280493408617698,
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": 1.5614502926686084e-11,
+                "maximum_s": 2.6623762471250404e-10,
+                "median_s": 1.6059241980409322e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -4.697611655557098e-11,
+                "maximum_s": 3.2810378143429315e-10,
+                "median_s": -4.675243827013226e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "contingency": {
+            "(True, False)": 129,
+            "(False, False)": 126
+          },
+          "overlap": {
+            "sample_count": 0,
+            "duration_lower_bound_s": 0,
+            "duration_upper_bound_s": 0,
+            "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+          }
+        },
+        "c": {
+          "macro": "sc",
+          "original": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.3018000359713157,
+            "wrong_sign_samples": 189,
+            "below_100mv_samples": 206,
+            "maximum_clock_to_valid_s": 1.189062500003487e-10,
+            "passed": false
+          },
+          "phases": [
+            {
+              "offset_ui": 0,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 56,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": -0.010297282025123472
+                },
+                "master_output": {
+                  "wrong_sign": 92,
+                  "below_100mv_marker": 201,
+                  "minimum_signed_v": -0.04142111950938896
+                },
+                "slave_input": {
+                  "wrong_sign": 98,
+                  "below_100mv_marker": 245,
+                  "minimum_signed_v": -0.038375842794061414
+                },
+                "slave_output": {
+                  "wrong_sign": 126,
+                  "below_100mv_marker": 126,
+                  "minimum_signed_v": -0.3132210068730833
+                }
+              }
+            },
+            {
+              "offset_ui": 0.3,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": 0.0047161956053718415
+                },
+                "master_output": {
+                  "wrong_sign": 28,
+                  "below_100mv_marker": 112,
+                  "minimum_signed_v": -0.026607785701777603
+                },
+                "slave_input": {
+                  "wrong_sign": 28,
+                  "below_100mv_marker": 114,
+                  "minimum_signed_v": -0.02699802982682478
+                },
+                "slave_output": {
+                  "wrong_sign": 125,
+                  "below_100mv_marker": 126,
+                  "minimum_signed_v": -0.23464090391025447
+                }
+              }
+            },
+            {
+              "offset_ui": 0.9,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 48,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": -0.022246365163185615
+                },
+                "master_output": {
+                  "wrong_sign": 20,
+                  "below_100mv_marker": 158,
+                  "minimum_signed_v": -0.07822052321315465
+                },
+                "slave_input": {
+                  "wrong_sign": 22,
+                  "below_100mv_marker": 178,
+                  "minimum_signed_v": -0.07226685262740713
+                },
+                "slave_output": {
+                  "wrong_sign": 30,
+                  "below_100mv_marker": 34,
+                  "minimum_signed_v": -0.2856884319680895
+                }
+              }
+            }
+          ],
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.609570680370261e-05,
+              "maximum_track_a": 0.009541891936272771,
+              "minimum_hold_a": -3.139459049770105e-05,
+              "maximum_hold_a": 0.009838492648082906,
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.2238719630456375e-11,
+                "maximum_s": 2.0920233805154106e-10,
+                "median_s": -4.1299741090145395e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.0325393596865402e-10,
+                "maximum_s": 2.7022650280546197e-10,
+                "median_s": 2.0351060547588193e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -3.409117525622847e-05,
+              "maximum_track_a": 0.009437214100914823,
+              "minimum_hold_a": -2.6767565283706356e-05,
+              "maximum_hold_a": 0.009304761608415046,
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.031310329272504e-10,
+                "maximum_s": 2.705824467878919e-10,
+                "median_s": 2.067445016109618e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.234879217307476e-11,
+                "maximum_s": 2.0895749469181998e-10,
+                "median_s": -4.1544382922348365e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "contingency": {
+            "(True, False)": 221,
+            "(True, True)": 34
+          },
+          "overlap": {
+            "sample_count": 0,
+            "duration_lower_bound_s": 0,
+            "duration_upper_bound_s": 0,
+            "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+          }
+        },
+        "d": {
+          "macro": "sd",
+          "original": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.39963599434739894,
+            "wrong_sign_samples": 339,
+            "below_100mv_samples": 345,
+            "maximum_clock_to_valid_s": 1.189062500003487e-10,
+            "passed": false
+          },
+          "phases": [
+            {
+              "offset_ui": 0,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": -0.04451279283428933
+                },
+                "master_output": {
+                  "wrong_sign": 121,
+                  "below_100mv_marker": 210,
+                  "minimum_signed_v": -0.11144569024743789
+                },
+                "slave_input": {
+                  "wrong_sign": 119,
+                  "below_100mv_marker": 245,
+                  "minimum_signed_v": -0.0976560705836579
+                },
+                "slave_output": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.3159972348036901
+                }
+              }
+            },
+            {
+              "offset_ui": 0.3,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 71,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": -0.008405773949049775
+                },
+                "master_output": {
+                  "wrong_sign": 113,
+                  "below_100mv_marker": 146,
+                  "minimum_signed_v": -0.1376322171176484
+                },
+                "slave_input": {
+                  "wrong_sign": 113,
+                  "below_100mv_marker": 152,
+                  "minimum_signed_v": -0.13313664993538116
+                },
+                "slave_output": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 133,
+                  "minimum_signed_v": -0.3028650277050711
+                }
+              }
+            },
+            {
+              "offset_ui": 0.9,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": 0.004464321791928268
+                },
+                "master_output": {
+                  "wrong_sign": 95,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.027495970188054098
+                },
+                "slave_input": {
+                  "wrong_sign": 97,
+                  "below_100mv_marker": 148,
+                  "minimum_signed_v": -0.02985556277703505
+                },
+                "slave_output": {
+                  "wrong_sign": 105,
+                  "below_100mv_marker": 105,
+                  "minimum_signed_v": -0.2978816525492647
+                }
+              }
+            }
+          ],
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.7463235779620232e-05,
+              "maximum_track_a": 0.00955542175520322,
+              "minimum_hold_a": -3.2773812800384214e-05,
+              "maximum_hold_a": 0.009834584686710415,
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.282041072787844e-11,
+                "maximum_s": 2.0832790536216978e-10,
+                "median_s": -4.18945952376358e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.0377914472007427e-10,
+                "maximum_s": 2.696609063002786e-10,
+                "median_s": 1.9767211981626554e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -3.551502922642756e-05,
+              "maximum_track_a": 0.009439458476086246,
+              "minimum_hold_a": -2.2751917157043837e-05,
+              "maximum_hold_a": 0.009313401819578704,
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.0365567219983636e-10,
+                "maximum_s": 2.700026038623041e-10,
+                "median_s": 2.0082988631015754e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.292505788450574e-11,
+                "maximum_s": 2.0804714565835586e-10,
+                "median_s": -4.213240567675079e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "contingency": {
+            "(True, True)": 105,
+            "(True, False)": 150
+          },
+          "overlap": {
+            "sample_count": 0,
+            "duration_lower_bound_s": 0,
+            "duration_upper_bound_s": 0,
+            "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+          }
+        }
+      }
+    },
+    {
+      "case": "nominal_late",
+      "assets": [
+        {
+          "id": 658412062,
+          "name": "cdr-v16-latch-timing-nominal_late-39376994817-1.parts.json",
+          "size": 883,
+          "digest": "sha256:5ee2f20ec180bbeb3f900f43cc9e3d9c9568cbde0b9d8befe3e12f2f28d0a7d1"
+        },
+        {
+          "id": 658411964,
+          "name": "cdr-v16-latch-timing-nominal_late-39376994817-1.summary.json",
+          "size": 9633622,
+          "digest": "sha256:0e7e37e54699de4ae52a6d5829ad2bae831005b87c9e84027a462f0c45af7f16"
+        },
+        {
+          "id": 658412118,
+          "name": "cdr-v16-latch-timing-nominal_late-39376994817-1.tar.gz.part0000",
+          "size": 1578373,
+          "digest": "sha256:e7e8c91d1aeab6e97d71fe9a759202b04a5c74cafc06c2bbfebaa6e8ff49fd0f"
+        }
+      ],
+      "status": "COMPLETE_REJECTED_CDR_NATIVE_MASTER_SLAVE_TOPOLOGY_AND_TRANSFER_TIMING_NOT_ACCEPTANCE",
+      "original_rejection_preserved": true,
+      "stages": {
+        "a": {
+          "macro": "sa",
+          "original": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.05758613027838249,
+            "wrong_sign_samples": 97,
+            "below_100mv_samples": 129,
+            "maximum_clock_to_valid_s": 5.296874999998981e-11,
+            "passed": false
+          },
+          "phases": [
+            {
+              "offset_ui": 0,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": 0.05520390228688685
+                },
+                "master_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": 0.057636297326162905
+                },
+                "slave_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": 0.039709113315404644
+                },
+                "slave_output": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.30209546034047324
+                }
+              }
+            },
+            {
+              "offset_ui": 0.3,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": 0.09104811638728456
+                },
+                "master_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.2152975593998384
+                },
+                "slave_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.2020680464515676
+                },
+                "slave_output": {
+                  "wrong_sign": 97,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.05758613027838249
+                }
+              }
+            },
+            {
+              "offset_ui": 0.9,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 128,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": -0.02599274798224321
+                },
+                "master_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": 0.03378803549854609
+                },
+                "slave_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": 0.04317189705964886
+                },
+                "slave_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.15439241760124722
+                }
+              }
+            }
+          ],
+          "steering": {
+            "master": {
+              "minimum_track_a": -2.101267180549746e-05,
+              "maximum_track_a": 0.009550086133329604,
+              "minimum_hold_a": -3.5708524393855315e-05,
+              "maximum_hold_a": 0.009785424205916212,
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.403071573247286e-11,
+                "maximum_s": 2.0689649121816579e-10,
+                "median_s": -4.319013701881247e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.047722320649303e-10,
+                "maximum_s": 2.6856095827773416e-10,
+                "median_s": 1.8638740627098052e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -3.858429171717166e-05,
+              "maximum_track_a": 0.00939763629398424,
+              "minimum_hold_a": -2.4636669355968597e-05,
+              "maximum_hold_a": 0.00930338674966053,
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.0466238648595853e-10,
+                "maximum_s": 2.688540636491133e-10,
+                "median_s": 1.8915688592798485e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.411617768906457e-11,
+                "maximum_s": 2.0665243893715648e-10,
+                "median_s": -4.3429968846459614e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "contingency": {
+            "(True, False)": 129,
+            "(False, False)": 126
+          },
+          "overlap": {
+            "sample_count": 0,
+            "duration_lower_bound_s": 0,
+            "duration_upper_bound_s": 0,
+            "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+          }
+        },
+        "b": {
+          "macro": "sb",
+          "original": {
+            "samples": 765,
+            "minimum_signed_margin_v": 0.010849701522368915,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 128,
+            "maximum_clock_to_valid_s": 4.546875000004872e-11,
+            "passed": false
+          },
+          "phases": [
+            {
+              "offset_ui": 0,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 61,
+                  "minimum_signed_v": 0.09976576872265747
+                },
+                "master_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.18726022078398516
+                },
+                "slave_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.15790650591197467
+                },
+                "slave_output": {
+                  "wrong_sign": 128,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": -0.2760930927288942
+                }
+              }
+            },
+            {
+              "offset_ui": 0.3,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": 0.005292901869778194
+                },
+                "master_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.22044997872460848
+                },
+                "slave_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.21684404741928712
+                },
+                "slave_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": 0.010849701522368915
+                }
+              }
+            },
+            {
+              "offset_ui": 0.9,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.0950965856032796
+                },
+                "master_output": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.1620518460388161
+                },
+                "slave_input": {
+                  "wrong_sign": 129,
+                  "below_100mv_marker": 129,
+                  "minimum_signed_v": -0.133027258751208
+                },
+                "slave_output": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 0,
+                  "minimum_signed_v": 0.1972124813710785
+                }
+              }
+            }
+          ],
+          "steering": {
+            "master": {
+              "minimum_track_a": -5.5010147658701906e-05,
+              "maximum_track_a": 0.009533159138440364,
+              "minimum_hold_a": -2.3563050610035986e-05,
+              "maximum_hold_a": 0.009715443938535776,
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -4.6842319627302826e-11,
+                "maximum_s": 3.283452228671753e-10,
+                "median_s": -4.659676151401004e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": 1.5393601274458465e-11,
+                "maximum_s": 2.657468076220947e-10,
+                "median_s": 1.566265165633399e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -3.2848444771524537e-05,
+              "maximum_track_a": 0.009321544139405889,
+              "minimum_hold_a": -5.60804687151403e-05,
+              "maximum_hold_a": 0.009273935453499936,
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": 1.5526666528044727e-11,
+                "maximum_s": 2.6604791392472294e-10,
+                "median_s": 1.59431199670051e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -4.694077281489579e-11,
+                "maximum_s": 3.2816565781413575e-10,
+                "median_s": -4.6766498350390055e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "contingency": {
+            "(False, False)": 194,
+            "(True, False)": 61
+          },
+          "overlap": {
+            "sample_count": 0,
+            "duration_lower_bound_s": 0,
+            "duration_upper_bound_s": 0,
+            "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+          }
+        },
+        "c": {
+          "macro": "sc",
+          "original": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.2850696689724084,
+            "wrong_sign_samples": 188,
+            "below_100mv_samples": 210,
+            "maximum_clock_to_valid_s": 1.1890625000021636e-10,
+            "passed": false
+          },
+          "phases": [
+            {
+              "offset_ui": 0,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 58,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": -0.010444386247890255
+                },
+                "master_output": {
+                  "wrong_sign": 96,
+                  "below_100mv_marker": 204,
+                  "minimum_signed_v": -0.04289561619750405
+                },
+                "slave_input": {
+                  "wrong_sign": 102,
+                  "below_100mv_marker": 245,
+                  "minimum_signed_v": -0.03978316192687907
+                },
+                "slave_output": {
+                  "wrong_sign": 126,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": -0.31316306564772717
+                }
+              }
+            },
+            {
+              "offset_ui": 0.3,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": 0.006283709723549573
+                },
+                "master_output": {
+                  "wrong_sign": 26,
+                  "below_100mv_marker": 112,
+                  "minimum_signed_v": -0.02320070183503074
+                },
+                "slave_input": {
+                  "wrong_sign": 28,
+                  "below_100mv_marker": 114,
+                  "minimum_signed_v": -0.024091826860250545
+                },
+                "slave_output": {
+                  "wrong_sign": 126,
+                  "below_100mv_marker": 128,
+                  "minimum_signed_v": -0.2322833869411041
+                }
+              }
+            },
+            {
+              "offset_ui": 0.9,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 48,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": -0.020779865898571614
+                },
+                "master_output": {
+                  "wrong_sign": 22,
+                  "below_100mv_marker": 159,
+                  "minimum_signed_v": -0.07499223628209699
+                },
+                "slave_input": {
+                  "wrong_sign": 26,
+                  "below_100mv_marker": 180,
+                  "minimum_signed_v": -0.06941263693584655
+                },
+                "slave_output": {
+                  "wrong_sign": 30,
+                  "below_100mv_marker": 32,
+                  "minimum_signed_v": -0.2834337363197743
+                }
+              }
+            }
+          ],
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.668519950610791e-05,
+              "maximum_track_a": 0.009518456775138845,
+              "minimum_hold_a": -3.139459049770105e-05,
+              "maximum_hold_a": 0.009820732464847978,
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.22709751376685e-11,
+                "maximum_s": 2.0896884134278685e-10,
+                "median_s": -4.130184080180248e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.0325393596865402e-10,
+                "maximum_s": 2.7026972700042263e-10,
+                "median_s": 2.03555677324796e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -3.409117525622847e-05,
+              "maximum_track_a": 0.009400344649627131,
+              "minimum_hold_a": -2.5647008425903157e-05,
+              "maximum_hold_a": 0.009280140714073334,
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.031310329272504e-10,
+                "maximum_s": 2.7062666501262387e-10,
+                "median_s": 2.0677429149915896e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.238121410744249e-11,
+                "maximum_s": 2.0874178935157742e-10,
+                "median_s": -4.15542691096711e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "contingency": {
+            "(True, False)": 223,
+            "(True, True)": 32
+          },
+          "overlap": {
+            "sample_count": 0,
+            "duration_lower_bound_s": 0,
+            "duration_upper_bound_s": 0,
+            "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+          }
+        },
+        "d": {
+          "macro": "sd",
+          "original": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.3961685672782902,
+            "wrong_sign_samples": 310,
+            "below_100mv_samples": 330,
+            "maximum_clock_to_valid_s": 1.189062500003487e-10,
+            "passed": false
+          },
+          "phases": [
+            {
+              "offset_ui": 0,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 128,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": -0.039247927651941336
+                },
+                "master_output": {
+                  "wrong_sign": 112,
+                  "below_100mv_marker": 208,
+                  "minimum_signed_v": -0.10209935821900121
+                },
+                "slave_input": {
+                  "wrong_sign": 111,
+                  "below_100mv_marker": 244,
+                  "minimum_signed_v": -0.08996000164907746
+                },
+                "slave_output": {
+                  "wrong_sign": 128,
+                  "below_100mv_marker": 132,
+                  "minimum_signed_v": -0.31605261906327
+                }
+              }
+            },
+            {
+              "offset_ui": 0.3,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 48,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": -0.0039144914435589075
+                },
+                "master_output": {
+                  "wrong_sign": 104,
+                  "below_100mv_marker": 140,
+                  "minimum_signed_v": -0.11855205110364007
+                },
+                "slave_input": {
+                  "wrong_sign": 104,
+                  "below_100mv_marker": 145,
+                  "minimum_signed_v": -0.11507870994504496
+                },
+                "slave_output": {
+                  "wrong_sign": 128,
+                  "below_100mv_marker": 130,
+                  "minimum_signed_v": -0.2927518744612029
+                }
+              }
+            },
+            {
+              "offset_ui": 0.9,
+              "samples": 255,
+              "signals": {
+                "master_input": {
+                  "wrong_sign": 0,
+                  "below_100mv_marker": 255,
+                  "minimum_signed_v": 0.002021067687538095
+                },
+                "master_output": {
+                  "wrong_sign": 79,
+                  "below_100mv_marker": 121,
+                  "minimum_signed_v": -0.03148714587888649
+                },
+                "slave_input": {
+                  "wrong_sign": 86,
+                  "below_100mv_marker": 150,
+                  "minimum_signed_v": -0.03301338366735435
+                },
+                "slave_output": {
+                  "wrong_sign": 92,
+                  "below_100mv_marker": 96,
+                  "minimum_signed_v": -0.297032594134422
+                }
+              }
+            }
+          ],
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.8023523436602737e-05,
+              "maximum_track_a": 0.009528519263291218,
+              "minimum_hold_a": -3.2773812800384214e-05,
+              "maximum_hold_a": 0.009849239417498115,
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.28516805076897e-11,
+                "maximum_s": 2.081770562110431e-10,
+                "median_s": -4.192106089353866e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.0377914472007427e-10,
+                "maximum_s": 2.696451319358415e-10,
+                "median_s": 1.9781716050976805e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -3.551502922642756e-05,
+              "maximum_track_a": 0.009454365750376186,
+              "minimum_hold_a": -2.277089999193737e-05,
+              "maximum_hold_a": 0.0092877581651648,
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.0365567219983636e-10,
+                "maximum_s": 2.6996206815464286e-10,
+                "median_s": 2.0096265489436328e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.295663664821654e-11,
+                "maximum_s": 2.0792603789135104e-10,
+                "median_s": -4.21621558673584e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "contingency": {
+            "(True, False)": 159,
+            "(True, True)": 96
+          },
+          "overlap": {
+            "sample_count": 0,
+            "duration_lower_bound_s": 0,
+            "duration_upper_bound_s": 0,
+            "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+          }
+        }
+      }
+    }
+  ]
+}

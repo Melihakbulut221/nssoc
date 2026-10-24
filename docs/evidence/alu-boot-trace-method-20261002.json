@@ -1,0 +1,477 @@
+{
+  "status": "SOURCE_AND_TINY_OBSERVER_CONTROLS_VERIFIED_FULL_REPLAY_NOT_RUN",
+  "methods": {
+    "scripts/run_cloud_alu_boot_trace.py": {
+      "bytes": 20123,
+      "sha256": "21279939742cf28fd95855767f89bb784f4b1e36532e12959bc588291a3bf2c5"
+    },
+    "hw/soc/tb/alu_boot_trace.v": {
+      "bytes": 5176,
+      "sha256": "3cd442dcc7828c5579019d8ac8884ed220b814d5e979cd8e86d713eca2ea10fc"
+    },
+    "sw/tests/test_alu_boot_trace.py": {
+      "bytes": 11516,
+      "sha256": "b200832516b91e32bc732005cecc867dc45d48cd847f2cc910e05c92bae0a3a0"
+    },
+    ".github/workflows/timing-alu-boot-trace.yml": {
+      "bytes": 2541,
+      "sha256": "09ed724a1b63c616e02fcb5e198381fea279e306f861f26cb558cc08f6008bd9"
+    }
+  },
+  "tests": {
+    "command": [
+      ".venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "sw/tests/test_alu_boot_trace.py",
+      "sw/tests/test_alu_qualification.py"
+    ],
+    "returncode": 0,
+    "passed": 53,
+    "log": {
+      "bytes": 99,
+      "sha256": "0b998975dc9649b6ffc111f8da4941fdd327c1afcd4ced00fa9f155096f84fd0"
+    }
+  },
+  "actual_immutable_netlist_bindings_verified": {
+    "original": {
+      "netlist_sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8",
+      "bindings": {
+        "bytes": 20170,
+        "sha256": "cd7f2ceedada2f9b27210047778ecfb9c61a2ff053bee7f5664a4f825da1a86f"
+      }
+    },
+    "candidate": {
+      "netlist_sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c",
+      "bindings": {
+        "bytes": 20170,
+        "sha256": "599438070aaceabbc4c952bf407658c26c9c20f54f702d6f14be553257d9a9ee"
+      }
+    }
+  },
+  "native_controls": {
+    "known": {
+      "trigger": null,
+      "compile": {
+        "command": [
+          "/home/hasanmelih/.local/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tiny",
+          "-o",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/known/tiny.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/alu_boot_trace.v",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/known/tiny.v"
+        ],
+        "returncode": 0
+      },
+      "execution": {
+        "command": [
+          "/home/hasanmelih/.local/bin/vvp",
+          "-i",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/known/tiny.vvp",
+          "+trace_dir=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/known"
+        ],
+        "returncode": 0
+      }
+    },
+    "sample_high_bit": {
+      "trigger": [
+        "9",
+        "90000",
+        "sample_mask_80000000"
+      ],
+      "compile": {
+        "command": [
+          "/home/hasanmelih/.local/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tiny",
+          "-o",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/sample_high_bit/tiny.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/alu_boot_trace.v",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/sample_high_bit/tiny.v"
+        ],
+        "returncode": 0
+      },
+      "execution": {
+        "command": [
+          "/home/hasanmelih/.local/bin/vvp",
+          "-i",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/sample_high_bit/tiny.vvp",
+          "+trace_dir=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/sample_high_bit"
+        ],
+        "returncode": 0
+      }
+    },
+    "masked_unknown": {
+      "trigger": null,
+      "compile": {
+        "command": [
+          "/home/hasanmelih/.local/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tiny",
+          "-o",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/masked_unknown/tiny.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/alu_boot_trace.v",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/masked_unknown/tiny.v"
+        ],
+        "returncode": 0
+      },
+      "execution": {
+        "command": [
+          "/home/hasanmelih/.local/bin/vvp",
+          "-i",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/masked_unknown/tiny.vvp",
+          "+trace_dir=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/masked_unknown"
+        ],
+        "returncode": 0
+      }
+    },
+    "active_unknown": {
+      "trigger": [
+        "8",
+        "81000",
+        "active_sram_bank_0"
+      ],
+      "compile": {
+        "command": [
+          "/home/hasanmelih/.local/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tiny",
+          "-o",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/active_unknown/tiny.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/alu_boot_trace.v",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/active_unknown/tiny.v"
+        ],
+        "returncode": 0
+      },
+      "execution": {
+        "command": [
+          "/home/hasanmelih/.local/bin/vvp",
+          "-i",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/active_unknown/tiny.vvp",
+          "+trace_dir=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/active_unknown"
+        ],
+        "returncode": 0
+      }
+    },
+    "clock_unknown": {
+      "trigger": [
+        "8",
+        "81000",
+        "clock_gate_unknown"
+      ],
+      "compile": {
+        "command": [
+          "/home/hasanmelih/.local/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tiny",
+          "-o",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/clock_unknown/tiny.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/alu_boot_trace.v",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/clock_unknown/tiny.v"
+        ],
+        "returncode": 0
+      },
+      "execution": {
+        "command": [
+          "/home/hasanmelih/.local/bin/vvp",
+          "-i",
+          "hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/clock_unknown/tiny.vvp",
+          "+trace_dir=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-boot-trace-source/native-controls/clock_unknown"
+        ],
+        "returncode": 0
+      }
+    }
+  },
+  "native_control_outputs": {
+    "native-controls/active_unknown/compile-execution.json": {
+      "bytes": 409,
+      "sha256": "07e1ffd8f5aa97f6c7374382a8c07c419de674ef2170a12b020ece2137af6266"
+    },
+    "native-controls/active_unknown/compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/active_unknown/run-execution.json": {
+      "bytes": 335,
+      "sha256": "7148ab9637bed071a225339e5860a8ee2ed9f33e9d9c461f944bf089eb555c80"
+    },
+    "native-controls/active_unknown/run.log": {
+      "bytes": 313,
+      "sha256": "fc62d7a7044d02c439b42a61699948760691710de05c848331d37dc87c8acba1"
+    },
+    "native-controls/active_unknown/tiny.v": {
+      "bytes": 538,
+      "sha256": "fcac7697693d620c5e8156b202681787c5fedf2f275bf3c1bc5529d60a8d511e"
+    },
+    "native-controls/active_unknown/tiny.vvp": {
+      "bytes": 21771,
+      "sha256": "1ad7c8f92962160d3ee53ede4ce528a07da54146139ca93d0e207b62f8ddc459"
+    },
+    "native-controls/active_unknown/trace-events.log": {
+      "bytes": 1311,
+      "sha256": "6982e56f113b46fb4deb7af03c5cc94000e57473195ee3c4feb0304d9460f920"
+    },
+    "native-controls/active_unknown/trace-milestones.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/active_unknown/trace-samples.log": {
+      "bytes": 374,
+      "sha256": "d15d3e5d9e7f684ed9a05f347d56df0c28be00e07ed8e2ca97787f8c8d38f9f8"
+    },
+    "native-controls/clock_unknown/compile-execution.json": {
+      "bytes": 407,
+      "sha256": "c8e0a509f4e4dc71ec620c69acfde4d90432d2dff1f04314ac44f84fd79fa64f"
+    },
+    "native-controls/clock_unknown/compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/clock_unknown/run-execution.json": {
+      "bytes": 333,
+      "sha256": "6d9087b1ef9139931d647678e274ec6f136b0346f37a0a925e94e034e8fe4b97"
+    },
+    "native-controls/clock_unknown/run.log": {
+      "bytes": 312,
+      "sha256": "0aab36ee9b1290b0f72be9a7da8332a97aee0c30ddd30388283ddc9ea59ed257"
+    },
+    "native-controls/clock_unknown/tiny.v": {
+      "bytes": 512,
+      "sha256": "7db136170d13ac24aebefa5736d7ed148f143691e52fd882cac7ccfd5b7f8e1d"
+    },
+    "native-controls/clock_unknown/tiny.vvp": {
+      "bytes": 21170,
+      "sha256": "9aa5a276fd8dca561c260926547bf13bde426cdcf14514011ad9b59bac93c433"
+    },
+    "native-controls/clock_unknown/trace-events.log": {
+      "bytes": 1275,
+      "sha256": "339b761c3bf2027b749f05f7d136497d02cdc9897e9f1d3e9fa89d24906b742a"
+    },
+    "native-controls/clock_unknown/trace-milestones.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/clock_unknown/trace-samples.log": {
+      "bytes": 374,
+      "sha256": "d15d3e5d9e7f684ed9a05f347d56df0c28be00e07ed8e2ca97787f8c8d38f9f8"
+    },
+    "native-controls/known/compile-execution.json": {
+      "bytes": 391,
+      "sha256": "711e3170dd78505c257b7c644d5bbb5361676212b8cd86655c7cd19d112f872f"
+    },
+    "native-controls/known/compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/known/run-execution.json": {
+      "bytes": 317,
+      "sha256": "4fe93377e9c2793e24d9347c7b28479a92ed74437c39d043d0e7bc71f324f783"
+    },
+    "native-controls/known/run.log": {
+      "bytes": 245,
+      "sha256": "69334fa5504db13eb64ea324ac137670985c80969af2c869d38dd6a49cdd83ba"
+    },
+    "native-controls/known/tiny.v": {
+      "bytes": 501,
+      "sha256": "2f9db4e3360c520266ed4a23fb0d3ef5172de1a906767a3260a37453b64096a7"
+    },
+    "native-controls/known/tiny.vvp": {
+      "bytes": 21096,
+      "sha256": "3b0afd99f8e5dbf057ccbee57684b1bdfe69e23af31b8a25826df66e2275b26c"
+    },
+    "native-controls/known/trace-events.log": {
+      "bytes": 648,
+      "sha256": "9c672a0fb529eb6140626877c131dbf322b7bd717006ad40e5ac22cadb903b12"
+    },
+    "native-controls/known/trace-milestones.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/known/trace-samples.log": {
+      "bytes": 192,
+      "sha256": "5e01223b693933f275b9859b6f44cddbff53cdedadeff666914510799e7e6ed8"
+    },
+    "native-controls/masked_unknown/compile-execution.json": {
+      "bytes": 409,
+      "sha256": "c51c7905e3905e3c01d2c6de78b0236bb982dc316be054b8622a0811499a78ba"
+    },
+    "native-controls/masked_unknown/compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/masked_unknown/run-execution.json": {
+      "bytes": 335,
+      "sha256": "02d7cd0e1685db898b33c0e999c383c9e72bbc318866b36ff976e02840086219"
+    },
+    "native-controls/masked_unknown/run.log": {
+      "bytes": 254,
+      "sha256": "be09110a16a7b945da6ef05b3a95aa9fbcfdebcf540219eaeb28fa98f382edc4"
+    },
+    "native-controls/masked_unknown/tiny.v": {
+      "bytes": 538,
+      "sha256": "01ac72b249a8a9f380dbaca894bc164d29133e661142237de2a3dfd44d09c95c"
+    },
+    "native-controls/masked_unknown/tiny.vvp": {
+      "bytes": 21771,
+      "sha256": "de8f3e2683e4561fa99f38bbeb897f6ece343a72be9c791bed12d0cf9c89704e"
+    },
+    "native-controls/masked_unknown/trace-events.log": {
+      "bytes": 648,
+      "sha256": "9c672a0fb529eb6140626877c131dbf322b7bd717006ad40e5ac22cadb903b12"
+    },
+    "native-controls/masked_unknown/trace-milestones.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/masked_unknown/trace-samples.log": {
+      "bytes": 192,
+      "sha256": "5e01223b693933f275b9859b6f44cddbff53cdedadeff666914510799e7e6ed8"
+    },
+    "native-controls/sample_high_bit/compile-execution.json": {
+      "bytes": 411,
+      "sha256": "fc47128d01b88e61bb91942adc8e35885137b905cc1655dd0b25aa387ddcb882"
+    },
+    "native-controls/sample_high_bit/compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/sample_high_bit/run-execution.json": {
+      "bytes": 337,
+      "sha256": "979b8eef5aa071d6aa7b546f7ef137a468a5eba7910a4acaa1c290abadcc7884"
+    },
+    "native-controls/sample_high_bit/run.log": {
+      "bytes": 316,
+      "sha256": "34bfd6fe6741cfa9a36fa62b32eb0158341e20d40805af2df6ea140bb5f59c46"
+    },
+    "native-controls/sample_high_bit/tiny.v": {
+      "bytes": 516,
+      "sha256": "336a36e10aa4d438576def214187c6f140cdeeaf7e8b2fb17e1dc2836c2becd6"
+    },
+    "native-controls/sample_high_bit/tiny.vvp": {
+      "bytes": 21183,
+      "sha256": "6c992588f925d651701b8f6c3a6dd2ce9a3960b3d9cde60e0aeb635cbcd43ceb"
+    },
+    "native-controls/sample_high_bit/trace-events.log": {
+      "bytes": 1278,
+      "sha256": "d538d93e229d9367098de42b753a35ff3c06469e638f5e308da605c0604b89c0"
+    },
+    "native-controls/sample_high_bit/trace-milestones.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "native-controls/sample_high_bit/trace-samples.log": {
+      "bytes": 376,
+      "sha256": "d96c153c59389778b72f5c700ebbe11d82c89dd281875b3227095e8663d51720"
+    }
+  },
+  "limitations": [
+    "Only small isolated observer controls and source/binding checks executed locally.",
+    "No actual SoC simulation, synthesis or physical run locally.",
+    "Diagnostic probe scheduling can expose or alter race observations; reproduce the original reference and preserve failure before assigning a circuit cause.",
+    "Original 3M-cycle qualification and all its failures remain intact; separate diagnostic maximum is1.6M cycles."
+  ],
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "previous_validation": {
+    "bytes": 14505,
+    "sha256": "a7aa2f4902862c6243ab19a571003a0adc6408bd299d6ab592b5267dc908822c"
+  },
+  "byte_enable_mask_correction": "Generated queued-write X check masks every data byte using its real byte enable after checking control/address/BE unknowns.",
+  "real_generated_request_mask_control": {
+    "compile-execution.json": {
+      "bytes": 323,
+      "sha256": "fd3f86e51cb2cffc7e69eeb6e5f17d6025e78e1811cfb28b594190c16b448568"
+    },
+    "compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "request-mask.v": {
+      "bytes": 1198,
+      "sha256": "c749d65cc57fb590f7f2f080af0cb6a5ae99f4455ed1428ebeb5e3d9c4fdcbf3"
+    },
+    "request.vvp": {
+      "bytes": 7878,
+      "sha256": "74ebee82a914fa2ad24ebf5efc6561df78fefd53ec91a40bc289d7b8820d8246"
+    },
+    "run-execution.json": {
+      "bytes": 183,
+      "sha256": "eda252de5e28e90e10d56d770c10a7d6f58aa0f14d08d420ef6de083e561047f"
+    },
+    "run.log": {
+      "bytes": 148,
+      "sha256": "725257c16b16c17d83a347e147c8a4c04f51643e98af5835f8323ed9ee2def3f"
+    }
+  },
+  "real_generated_request_mask_positive_cases": [
+    "unknown disabled low/high bytes ignored",
+    "inactive request payload ignored"
+  ],
+  "real_generated_request_mask_negative_cases": [
+    "unknown enabled byte detected",
+    "unknown byte enables detected"
+  ],
+  "static_checks": {
+    "ruff": "PASS",
+    "actionlint": "PASS"
+  },
+  "previous_byte_mask_validation": {
+    "bytes": 15989,
+    "sha256": "2a72c8c127abce75949357f554339a1c04898ab67ae72ade67d8e47a88c27c31"
+  },
+  "dynamic_helper_closure": {
+    "hw/soc/flow/sim_logic_boot_gl.py": {
+      "bytes": 11771,
+      "sha256": "85bf0e22c0ba246973953ac5c8ee79e4c7219fcee2c78c5d55babcc121385830",
+      "matches_original_git_source_622a1ae": true
+    },
+    "hw/soc/flow/gen_logic_boot_rom.py": {
+      "bytes": 3473,
+      "sha256": "5f3510003984edf7decf2be3240fe9a13074547d7d87bcf2cfa4f73d9e3dc117",
+      "matches_original_git_source_622a1ae": true
+    }
+  },
+  "captured_complete_method_count": 16,
+  "helper_pins_checked_before_frozen_boot_prepare": true,
+  "old_producer_global_ROOT_unchanged": true,
+  "root_repeated_focused_tests": {
+    "passed": 53,
+    "scope": "Source bindings, bounded native observer and qualification controller controls; no actual chip simulation locally"
+  },
+  "independent_native_observer_review": {
+    "status": "NO_BLOCKER_IN_READ_ONLY_NATIVE_OBSERVER_REVIEW",
+    "methods": {
+      "scripts/run_cloud_alu_boot_trace.py": {
+        "bytes": 20123,
+        "sha256": "21279939742cf28fd95855767f89bb784f4b1e36532e12959bc588291a3bf2c5"
+      },
+      "hw/soc/tb/alu_boot_trace.v": {
+        "bytes": 5176,
+        "sha256": "3cd442dcc7828c5579019d8ac8884ed220b814d5e979cd8e86d713eca2ea10fc"
+      },
+      "sw/tests/test_alu_boot_trace.py": {
+        "bytes": 11516,
+        "sha256": "b200832516b91e32bc732005cecc867dc45d48cd847f2cc910e05c92bae0a3a0"
+      },
+      ".github/workflows/timing-alu-boot-trace.yml": {
+        "bytes": 2541,
+        "sha256": "09ed724a1b63c616e02fcb5e198381fea279e306f861f26cb558cc08f6008bd9"
+      }
+    },
+    "review": [
+      "Actual vendor SRAM CLK_MUX posedge uses nonblocking memory/dr_r updates: observer captures native controls before update; DOUT is prior value.",
+      "Only observer-local state assignments and input/read-only hierarchical DUT references. No force/release/deposit, DUT clocks/reset/logic edits.",
+      "Bounded pre/post ring buffers; active-write mask excludes inactive X data bits. Unknown notifier is recorded without treating its uninitialized state as data error.",
+      "Diagnostic 1.6M cycle stop is separate from original 3M qualification, not acceptance. Scheduling race caveat retained."
+    ],
+    "native_full_soc_executed_locally": false
+  }
+}

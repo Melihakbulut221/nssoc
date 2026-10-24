@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // Word-addressed memory behind one system-bus slave port.
 //
 // SCOPE, stated first because it bounds every claim made with this file
@@ -149,7 +151,7 @@ module soc_mem #(
   // ===================================================================
   // HARDEN = 0: the model of record from docs/39 to docs/66, unchanged.
   // ===================================================================
-  if (!HARDEN) begin : g_plain
+  if (HARDEN == 0) begin : g_plain
 
     assign gnt_o = req_i;
 
@@ -244,7 +246,7 @@ module soc_mem #(
   // ===================================================================
   // HARDEN = 1: the codec and the scrubber over the same array.
   // ===================================================================
-  if (HARDEN) begin : g_ecc
+  if (HARDEN != 0) begin : g_ecc
 
     localparam integer RW = ECC_BYTE ? 64 : 39;
     localparam integer CW = RW - 32;
@@ -347,7 +349,7 @@ module soc_mem #(
       output [31:0]       word;
       begin
         if (ECC_BYTE) begin
-          obs_row = {chk[idx], mem[idx]};
+          obs_row = {{(64-RW){1'b0}}, chk[idx], mem[idx]};
           #0;
           word = obs_word;
         end else begin
@@ -394,3 +396,5 @@ module soc_mem #(
   endgenerate
 
 endmodule
+
+`default_nettype wire

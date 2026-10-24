@@ -1,0 +1,187 @@
+{
+  "schema": 1,
+  "status": "PREPARED_NATIVE_CHIP_REPAIR_NOT_YET_MEASURED",
+  "input": "Unchanged original C10, original constraints, runtime and 32 SRAM instances. Historical versus fresh setup gap remains explicit.",
+  "combined": {
+    "status": "LOCAL_PURE_VALIDATION_ONLY_NO_NATIVE_RUN",
+    "source_base": "9e70e2b98376a849720d02241ee762ec5d3db3a9",
+    "files": {
+      "scripts/run_cloud_combined_repair.py": {
+        "bytes": 18431,
+        "sha256": "62ee91f3004e125ead601dc3a48228468c32c9d27362a4b53f82fd3f72458fb3"
+      },
+      "hw/soc/pnr/timing_combined_repair_helpers.tcl": {
+        "bytes": 5064,
+        "sha256": "48649fa90fc6f8fa9eb46341027491b94e11bba8b4ef59fb8683af004b8761f1"
+      },
+      "hw/soc/pnr/timing_combined_repair_step.tcl": {
+        "bytes": 8587,
+        "sha256": "cd8349712c2dd902ee79d231310fb042cc7a417d0b03cba729ab115785097327"
+      },
+      "hw/soc/pnr/timing_combined_reload.tcl": {
+        "bytes": 3279,
+        "sha256": "459416d74427c4a934ad8723b09a73a43c9b62d2e0139acabb43a68f7d92ddae"
+      },
+      ".github/workflows/timing-combined-repair.yml": {
+        "bytes": 5938,
+        "sha256": "bf308b7befde707f2b5a3f44c36fb54c64d7aec8e8e84dc1a537ed254668f6ee"
+      },
+      "sw/tests/test_cloud_combined_repair.py": {
+        "bytes": 16390,
+        "sha256": "408cef8f51f9031123f0ec98d22d8c928309a052d8f99e910886b9d1b771b2d5"
+      }
+    },
+    "tests": {
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_cloud_combined_repair.py sw/tests/test_cloud_targeted_hold.py sw/tests/test_cloud_hold_diagnostic.py sw/tests/test_compare_full_hold_endpoints.py",
+      "passed": 213,
+      "duration_seconds": 1.86
+    },
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "native_run": false,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "setup_recipe": {
+      "profile": "setup_batch4",
+      "max_iterations": 100,
+      "max_repairs_per_pass": 4,
+      "setup_margin_ns": 0.1,
+      "max_buffer_percent": 40,
+      "recipe_sha256": "77a9d94391285d9ca5e7fe0cab70517353213d62c3040ed46dd9fe4302a366bb"
+    },
+    "hold_recipe": {
+      "profile": "hold_guarded_targeted",
+      "maximum_batches": 4,
+      "endpoint_limit": 16,
+      "max_passes_per_endpoint": 1,
+      "setup_margin_ns": 0.1,
+      "hold_margin_ns": 0.15,
+      "allow_setup_violations": false,
+      "cumulative_original_instance_budget_fraction": 0.4
+    },
+    "guard_scope": "Original run_timing_experiments no_regression/improved guards and historical C10 metrics preserved. Applied to canonical exported-ODB fresh replay. Failed guard or nonidentical replay yields REJECTED_ISOLATED_CANDIDATE; successful diagnostic never adopts.",
+    "source_gap": "Prior no-op raw fingerprints demonstrate no placement/orientation change from GRT-before-DPL to matched-before. Historical C10 incremental route/cache state is not persisted in ODB/DEF; fresh complete route and estimated RC rebuild choose different upstream RF24 cone. Exact allocation between route shape and RC cache is unresolved, not waived.",
+    "native_preflight": "Existing pinned three-identity targeted native gate plus separate tiny read_current_odb child with explicit _SDC_IN binding before C10. Tiny ideal-clock policy matches original fixture only.",
+    "native_replay": "After repair export isolated ODB/DEF/SDC/netlist; two separate exact-native children read fixed ODB and _SDC_IN, rebuild canonical routing/parasitics and all hold endpoints. Hashes/PIDs/constraints/SRAM/full geometry and memory headroom are checked.",
+    "unrun": "Cloud native preflight,100-iteration setup, up to four hold batches, two full independent replays. No timing improvement or product closure claimed.",
+    "independent_review": {
+      "reviewer": "resume_history_recovery",
+      "finding": "Pinned io.tcl sources _TCL_ENV_IN and resets CURRENT_ODB to original C10.",
+      "correction": "Parent sources io/resizer definitions before reading view bindings. Child saves/restores only CURRENT_ODB, _SDC_IN and STEP_DIR across config reset, then verifies actual candidate hashes before load.",
+      "regression": "Pure tclsh executes actual child startup branch with an io.tcl stub resetting all three intended bindings; original candidate/SDC are read and source clock mode retained.",
+      "actual_captured_env": "Original successful targeted retry _env.tcl line95 resets CURRENT_ODB; no NSSOC, _SDC_IN or STEP_DIR assignment is present.",
+      "status": "FIXED_AND_PURE_REGRESSION_PASSED"
+    }
+  },
+  "xor_buffer": {
+    "status": "PASS_LOCAL_TINY_XOR_CONTROL_AND_28_PURE_TESTS",
+    "recorded": "2026-10-02T09:31:56.463164+00:00",
+    "source_sha256": {
+      "scripts/run_cloud_xor_buffer.py": "5f64198e294b7e3f65e7c75806ea5b82c38bbfedae3d9b9939c52f10ec07eb71",
+      "hw/soc/pnr/timing_xor_buffer_helpers.tcl": "137517a4a9376cc15ebfa6401687d7ec2c131980390d13765728b255d7bbc390",
+      "hw/soc/pnr/timing_xor_buffer_step.tcl": "96ee13b8940c20ecc5454d08d5d65d2f0bcbcb2aa22eb3544a8087046969d269",
+      "sw/tests/timing_xor_buffer_native.tcl": "8d163ebd8c141abf67ac6507212977829cc4f10ae513ab088a5a05d3b7d73e66",
+      "sw/tests/test_cloud_xor_buffer.py": "11969d299208c98d68eaa0e6fd74841d4addd4ade77f97a42205d6bf19b0bdde",
+      ".github/workflows/timing-xor-buffer.yml": "229b25485fb81cc1713cbb6e788fa99003b34e8eae0a3b91c9718160238ac999"
+    },
+    "native_fixture": {
+      "path": "hw/soc/out/resume-20261002-0800/xor-buffer-source/native-control-local3",
+      "returncode": 0,
+      "original_cell_count": 3,
+      "final_cell_count": 4,
+      "contraction": {
+        "original_instance_count": 3,
+        "inserted_instances": 1,
+        "inserted_signal_nets": 1,
+        "full_original_graph_preserved": true,
+        "noninverting_cell": "sg13g2_buf_2"
+      },
+      "all_three_corner_reports_verified": true,
+      "source_receipt": "hw/soc/out/resume-20261002-0800/xor-buffer-source/native-control-local3-run.json"
+    },
+    "pure_tests": 28,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "runtime_digest_provenance": "parent agent checked exact existing AppImage immediately before authorized local slot",
+    "no_chip_native_run": true,
+    "dispatch_performed": false,
+    "signoff": false,
+    "prior_failed_control_preserved": "hw/soc/out/resume-20261002-0800/xor-buffer-source/native-control-local.log",
+    "peer_review_hold_census_binding_added": true
+  },
+  "methods": {
+    "combined": "Existing 100-iteration setup batch4, then up to four guarded 16-target hold batches. Cumulative 40% original-instance growth cap. Save isolated ODB/DEF; replay twice in separate native processes.",
+    "xor": "One non-inverting buf2 on 345.06um single-sink syndrome net_017423_. Three-stage routed estimate/full-cache check, original graph contraction, explicit PG checks.",
+    "acceptance": "Original C10 and fresh-input no-regression guards retained. Repeatability and improved aggregates only qualify a candidate for further review, not signoff."
+  },
+  "known_timing_before_any_new_run": {
+    "source_selected": "C10",
+    "latest_completed_hold_diagnostic": {
+      "setup_violations": 1384,
+      "hold_violations": 104,
+      "candidate_adopted": false
+    }
+  },
+  "local_actual_chip_native_run": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "final_source_files": {
+    "scripts/run_cloud_combined_repair.py": {
+      "bytes": 18431,
+      "sha256": "62ee91f3004e125ead601dc3a48228468c32c9d27362a4b53f82fd3f72458fb3"
+    },
+    "hw/soc/pnr/timing_combined_repair_helpers.tcl": {
+      "bytes": 5064,
+      "sha256": "48649fa90fc6f8fa9eb46341027491b94e11bba8b4ef59fb8683af004b8761f1"
+    },
+    "hw/soc/pnr/timing_combined_repair_step.tcl": {
+      "bytes": 8587,
+      "sha256": "cd8349712c2dd902ee79d231310fb042cc7a417d0b03cba729ab115785097327"
+    },
+    "hw/soc/pnr/timing_combined_reload.tcl": {
+      "bytes": 3279,
+      "sha256": "459416d74427c4a934ad8723b09a73a43c9b62d2e0139acabb43a68f7d92ddae"
+    },
+    ".github/workflows/timing-combined-repair.yml": {
+      "bytes": 6010,
+      "sha256": "c85e78d295d153f192f4bf71d0cd38896bca2cd44a1690f39e2132c0b9aaeb55"
+    },
+    "sw/tests/test_cloud_combined_repair.py": {
+      "bytes": 16390,
+      "sha256": "408cef8f51f9031123f0ec98d22d8c928309a052d8f99e910886b9d1b771b2d5"
+    },
+    "scripts/run_cloud_xor_buffer.py": {
+      "bytes": 16867,
+      "sha256": "5f64198e294b7e3f65e7c75806ea5b82c38bbfedae3d9b9939c52f10ec07eb71"
+    },
+    "hw/soc/pnr/timing_xor_buffer_helpers.tcl": {
+      "bytes": 7437,
+      "sha256": "137517a4a9376cc15ebfa6401687d7ec2c131980390d13765728b255d7bbc390"
+    },
+    "hw/soc/pnr/timing_xor_buffer_step.tcl": {
+      "bytes": 6576,
+      "sha256": "96ee13b8940c20ecc5454d08d5d65d2f0bcbcb2aa22eb3544a8087046969d269"
+    },
+    "sw/tests/timing_xor_buffer_native.tcl": {
+      "bytes": 4941,
+      "sha256": "8d163ebd8c141abf67ac6507212977829cc4f10ae513ab088a5a05d3b7d73e66"
+    },
+    "sw/tests/test_cloud_xor_buffer.py": {
+      "bytes": 10630,
+      "sha256": "11969d299208c98d68eaa0e6fd74841d4addd4ade77f97a42205d6bf19b0bdde"
+    },
+    ".github/workflows/timing-xor-buffer.yml": {
+      "bytes": 5820,
+      "sha256": "229b25485fb81cc1713cbb6e788fa99003b34e8eae0a3b91c9718160238ac999"
+    }
+  },
+  "final_validation": {
+    "focused_tests": 64,
+    "adjacent_root_tests_before_final_two_regressions": 239,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "workflow_trigger": "Each new workflow starts only when its own file is pushed, or on explicit dispatch. No duplicate manual dispatch on this source push."
+  }
+}

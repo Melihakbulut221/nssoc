@@ -1,0 +1,50 @@
+{
+  "status": "REJECTED_TIMING_REGRESSION_AND_SELECTED_Z_COMPONENT_SEMANTIC_LIMIT",
+  "adopted": false,
+  "retained_baseline": "frozen integrity V11",
+  "source_freeze": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v14-20261005/source-freeze.json",
+    "bytes": 2087,
+    "sha256": "9f211b7850c645fdb4c3f10b41997d8caaacf3e1cf91fa476e484173b31cca3e"
+  },
+  "same4ns_repaired_setup_ns": {
+    "slow": -8.255548,
+    "typical": -3.739168,
+    "fast": -1.06763
+  },
+  "setup_delta_vs_v11_ns": {
+    "slow": -4.703537,
+    "typical": -2.980478,
+    "fast": -1.924035
+  },
+  "native_cells": 86186,
+  "native_ffs": 9410,
+  "cause_evidence": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v14-20261005/critical-path-attribution.json",
+    "bytes": 41656,
+    "sha256": "ee4479a257184bc7ee65c2a9a434e04ab4d8cd68d351c91abf2da37989437b7c"
+  },
+  "timing": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v14-20261005/timing-comparison.json",
+    "bytes": 3386,
+    "sha256": "7866ae5cafe5e07243c12ec46a23704a574833e46eb3e06b65e96b0eb24f5e65"
+  },
+  "existing_bounded_controls": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v14-20261005/pcie-integrity-v14-core-controls-validation-20261005.json",
+    "bytes": 1556,
+    "sha256": "168660e83dd3ac6fc093f32b4370b445a69cfcd185c65d0177aabf69975b274e"
+  },
+  "source_peer": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v14-20261005/source-peer.json",
+    "bytes": 5831,
+    "sha256": "35b48a0684d0edb5f9730ccc6c7a79a183b298f3f8005f0f9aa761687283b91b"
+  },
+  "selected_z_counterexample": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v14-20261005/peer-selected-z-01/result.json",
+    "bytes": 2562,
+    "sha256": "8b5d8b6b28429148292813cdce17f990b6eb713a5650c84d6ea24b328daf44bf"
+  },
+  "finding": "Six actual literal selected Z cases (data/keep/sop/eop/dllp/sequence): V11 direct assignment preserves Z while V14 OR accumulation converts selected Z to X. Existing finite known/X tests remain valid. This is a component counterexample, not proof of whole-DUT reachability; no unrestricted four-state equivalence claim.",
+  "next_candidate": "V15 was not created or run. An explicit balanced read-selection tree is justified by actual 56-stage V14 boolean chain, but must preserve selected Z with known eligibility and mux selection or prove a valid narrower invariant; plain mask-and-OR does not preserve selected Z. Add emitted-logic depth check before native timing, same original constraints.",
+  "shutdown": "No new work authorized until user resumes; preserve V14 unchanged."
+}

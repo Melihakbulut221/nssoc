@@ -1,0 +1,11 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Fixed native candidate paired with tx_clock_bias_feed_v2.spice.
+* Wider feed and offset reduce reference impedance under selector loading.
+* Offset aspect ratio compensates increased reference current/VBE.
+* No per-corner dimensions, phase changes, or ideal reference current.
+* This is an unaccepted schematic candidate; physical DRC/LVS/PEX remain open.
+.subckt nssoc_tx_clock_common_bias_v3 cm avss sub
+XREF cm cm er sub npn13G2 Nx=1
+XOFFSET er avss sub rppd w=4u l=6.5u b=0 sw_et=1
+.ends nssoc_tx_clock_common_bias_v3

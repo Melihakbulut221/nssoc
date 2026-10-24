@@ -1,0 +1,39 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: cloud-evidence-summary
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: Exact release containing the archive
+        default: cloud-migration-20261012-000
+        required: false
+      asset:
+        description: Exact archive asset name
+        default: routed-setup-cloud-38306421942-1.tar.gz
+        required: true
+      member:
+        description: Exact JSON or UTF-8 report member to read
+        default: cloud-routed-setup/result.json
+        required: true
+permissions:
+  contents: read
+jobs:
+  summarize:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Read exact report in cloud and publish source binding
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ASSET: ${{ inputs.asset || 'routed-setup-cloud-38306421942-1.tar.gz' }}
+          MEMBER: ${{ inputs.member || 'cloud-routed-setup/result.json' }}
+          RELEASE: ${{ inputs.release || 'cloud-migration-20261012-000' }}
+        run: python3 scripts/summarize_cloud_evidence.py --asset "$ASSET" --member "$MEMBER" --release "$RELEASE"

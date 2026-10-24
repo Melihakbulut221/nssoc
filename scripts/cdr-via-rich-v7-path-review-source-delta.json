@@ -1,0 +1,97 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_strapped_v6_path_review.py",
+      "candidate_path": "scripts/cloud_cdr_via_rich_v7_path_review.py",
+      "baseline_sha256": "8999ce699141bca8ed5333f7205d9af443666fb6d7674eba5e946e99e752a253",
+      "candidate_sha256": "fb8f09d09241ca8c9113f6215cfd5a133fd874826d5c6720c01eb72ceb3b46f8",
+      "edits": [
+        {
+          "before": "strapped-v6",
+          "after": "via-rich-v7",
+          "count": 4
+        },
+        {
+          "before": "from cloud_cdr_strapped_v6_mim_loaded import bind_native,START,STOP,STEP,UI",
+          "after": "from cloud_cdr_via_rich_v7_mim_streamed import bind_native,START,STOP,STEP,UI\nfrom cloud_tx_stream import read_streamed_wave",
+          "count": 1
+        },
+        {
+          "before": "cdr-via-rich-v7-native-path-input-20261018.json",
+          "after": "cdr-via-rich-v7-streamed-native-input-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "reports.restore_report('cdr-via-rich-v7-mim-loaded-'",
+          "after": "reports.restore_report('cdr-via-rich-v7-mim-streamed-'",
+          "count": 1
+        },
+        {
+          "before": "assert case['report_excerpt']=={k:prior[k]for k in case['report_excerpt']}",
+          "after": "assert case['report']==prior",
+          "count": 1
+        },
+        {
+          "before": "dict(devices=484,R=3286,C=3855)",
+          "after": "dict(devices=484,R=13186,C=10127)",
+          "count": 1
+        },
+        {
+          "before": "len(resistors)==3286 and len(capacitors)==3855",
+          "after": "len(resistors)==13186 and len(capacitors)==10127",
+          "count": 1
+        },
+        {
+          "before": "        wavepath=source/'native/wave.dat'\n        with wavepath.open()as f:header=f.readline().lower().split()\n        assert header==['time',*prior['vectors']]\n        wave=np.loadtxt(wavepath,skiprows=1);t=wave[:,0]\n        assert wave.shape[1]==len(header) and np.isfinite(wave).all()and t[0]==0 and abs(t[-1]-STOP)<1e-15 and np.all(np.diff(t)>0)and np.diff(t).max()<=STEP*1.00001\n        r['capture']=dict(rows=len(t),columns=len(header),stop_s=float(t[-1]),max_step_s=float(np.diff(t).max()),sha256=sha(wavepath))\n        index={n:i for i,n in enumerate(header)};active=t>=START;ta=t[active]",
+          "after": "        wavepath=source/'native/wave.raw'\n        t,values,capture=read_streamed_wave(wavepath,prior['vectors'],STOP,STEP)\n        assert capture==prior['raw_capture']\n        r['capture']=capture;active=t>=START;ta=t[active]",
+          "count": 1
+        },
+        {
+          "before": "selected=['native/wave.dat'",
+          "after": "selected=['native/wave.raw'",
+          "count": 1
+        },
+        {
+          "before": "wave[:,index['v('+n+')']]",
+          "after": "values['v('+n+')']",
+          "count": 1
+        },
+        {
+          "before": "            old=prior['device_checks']['xpd.'+name];measured=float((vc-ve)[active].min());assert abs(measured-old['minimum_active_vce_v'])<1e-12",
+          "after": "            old=prior['device_checks']['xpd.'+name];measured=float((vc-ve)[active].min());assert abs(measured-old['minimum_active_vce_v'])<1e-12\n            current=values['@q.xpd.'+name+'.qnpn13g2[ic]'];nx=float(parser.number(dev['parameters']['nx']))\n            peak_ic=float(abs(current).max()/nx);assert abs(peak_ic-old['maximum_alltime_abs_ic_per_emitter_a'])<1e-15\n            assert abs(float(abs(vc-ve).max())-old['maximum_alltime_abs_vce_v'])<1e-12\n            assert abs(float(abs(vb-ve).max())-old['maximum_alltime_abs_vbe_v'])<1e-12",
+          "count": 1
+        },
+        {
+          "before": "            h=dict(device=name,native_id=dev['native_id'],terminals=mapping,minimum_active_vce_v=measured,minimum_vce_instant=instant,base_voltage=stats(vb),emitter_voltage=stats(ve),collector_voltage=stats(vc));hbts.append(h)",
+          "after": "            h=dict(device=name,native_id=dev['native_id'],terminals=mapping,minimum_active_vce_v=measured,maximum_alltime_abs_ic_per_emitter_a=peak_ic,current_at_minimum_vce_a=float(current[worst]),minimum_vce_instant=instant,base_voltage=stats(vb),emitter_voltage=stats(ve),collector_voltage=stats(vc));hbts.append(h)",
+          "count": 1
+        },
+        {
+          "before": "        r['native_shared_emitter_pair_review']=pair_reviews",
+          "after": "        r['native_shared_emitter_pair_review']=pair_reviews\n        clock_reviews=[]\n        reference=v('cp')-v('cn')\n        for i,a in enumerate(hbts):\n            for b in hbts[i+1:]:\n                aa,bb=a['terminals'],b['terminals'];nets={aa['B']['logical_net'],bb['B']['logical_net']}\n                if aa['E']['native_cluster']!=bb['E']['native_cluster']or nets not in ({'cp','cn'},{'s0p','s0n'},{'s1p','s1n'}):continue\n                plus,minus=(aa,bb)if aa['B']['logical_net'].endswith('p')else(bb,aa)\n                delta=v(plus['B']['node'])-v(minus['B']['node']);cross=np.flatnonzero(np.signbit(delta[:-1])!=np.signbit(delta[1:]));crossings=[]\n                for index in cross:\n                    when=float(t[index]-delta[index]*(t[index+1]-t[index])/(delta[index+1]-delta[index]))\n                    if when>=START:crossings.append(dict(time_s=when,rising=bool(delta[index+1]>delta[index])))\n                phases={}\n                for phase in (0.,.1,.25,.4,.5,.6,.75,.9):\n                    times=START+(np.arange(1,256)+phase)*UI;local=np.interp(times,t,delta);external=np.interp(times,t,reference)\n                    phases[str(phase)]=dict(min_v=float(local.min()),max_v=float(local.max()),mean_v=float(local.mean()),external_min_v=float(external.min()),external_max_v=float(external.max()),different_sign_samples=int(np.count_nonzero(np.signbit(local)!=np.signbit(external))))\n                clock_reviews.append(dict(devices=[a['device'],b['device']],positive_base=plus['B'],negative_base=minus['B'],differential=stats(delta),first16_zero_crossings=crossings[:16],active_zero_crossing_count=len(crossings),fixed_UI_phase_samples=phases))\n        assert clock_reviews\n        r['clock_distribution_review']=dict(pairs=clock_reviews,interpretation='Actual native base voltages at fixed original source-clock phases. Zero crossings are listed without fitting or shifting any acceptance window; no new acceptance claim.')",
+          "count": 1
+        },
+        {
+          "before": "external=np.interp(times,t,reference)",
+          "after": "reference_samples=np.interp(times,t,reference)",
+          "count": 1
+        },
+        {
+          "before": "float(external.min())",
+          "after": "float(reference_samples.min())",
+          "count": 1
+        },
+        {
+          "before": "float(external.max())",
+          "after": "float(reference_samples.max())",
+          "count": 1
+        },
+        {
+          "before": "np.signbit(external)",
+          "after": "np.signbit(reference_samples)",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

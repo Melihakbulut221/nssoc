@@ -1,0 +1,11 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Candidate active C/D retime drive; not an accepted CDR or PHY.
+* Real native HBT emitter followers and native poly pull-down resistors.
+* No ideal gain, clock regeneration, altered loads or relaxed waveform gates.
+.subckt nssoc_cdr_retime_follower_v23 ip inn op on avdd avss sub
+XFP avdd ip op sub npn13G2 Nx=4
+XRP op avss sub rppd w=4u l=4.5u b=0 sw_et=1
+XFN avdd inn on sub npn13G2 Nx=4
+XRN on avss sub rppd w=4u l=4.5u b=0 sw_et=1
+.ends nssoc_cdr_retime_follower_v23

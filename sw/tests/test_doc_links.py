@@ -53,7 +53,7 @@ SIBLING_MARKERS = ("radhard-edge-ai", "sibling")
 
 def _sources():
     docs = sorted((ROOT / "docs").glob("*.md"))
-    roots = [ROOT / "README.md", ROOT / "ROADMAP.md"]
+    roots = [ROOT / "README.md", ROOT / "ROADMAP.md", ROOT / "HISTORY.md"]
     return docs + [p for p in roots if p.is_file()]
 
 
@@ -238,7 +238,7 @@ def test_index_names_no_document_that_does_not_exist():
         }
     )
     assert not dangling, dangling
-    for name in ("README.md", "ROADMAP.md"):
+    for name in ("README.md", "ROADMAP.md", "HISTORY.md"):
         if name in index_text:
             assert (ROOT / name).is_file(), name
 

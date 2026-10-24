@@ -1,0 +1,90 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_return_repair_assembly.py",
+      "candidate_path": "scripts/cloud_tx_v5_fast_stage_assembly.py",
+      "baseline_sha256": "8fd258f7a42fb9c46c46067d9a78f9498e6915752375c875cf302998858367d2",
+      "candidate_sha256": "b9e77675baef7314a627fcdbd4a9448bb973446853b21379d6264fe6b51a19e0",
+      "edits": [
+        {
+          "before": "cloud-tx-v5-return-repair-assembly",
+          "after": "cloud-tx-v5-fast-stage-assembly",
+          "count": 1
+        },
+        {
+          "before": "nssoc_tx_tree32_budget_balanced_v5_finalreturn_core_v1",
+          "after": "nssoc_tx_tree32_budget_balanced_v5_faststage_core_v1",
+          "count": 1
+        },
+        {
+          "before": "        assert check==original,'Placement changed original selector topology'\n        plan['return_rail_width_um']",
+          "after": "        assert check==original,'Placement changed original selector topology'\n        # Explicit frequency-priority physical rows; original selector truth table,\n        # references, clocks, cell choices and every device remain unchanged.\n        row_targets={'a':4200.,'b':4800.,'p4_0':3600.,'p4_2':4200.,'p4_1':4800.,'p4_3':5400.}\n        before_rows=json.loads(json.dumps(plan))\n        for node in plan['nodes']:\n            if node['label']in row_targets:node['y_um']=row_targets[node['label']]\n        restored=json.loads(json.dumps(plan));oldrows={n['label']:n['y_um']for n in before_rows['nodes']}\n        for node in restored['nodes']:node['y_um']=oldrows[node['label']]\n        assert restored==before_rows\n        plan['fast_stage_rows_um']=row_targets;result['fast_stage_rows_um']=row_targets\n        plan['return_rail_width_um']",
+          "count": 1
+        },
+        {
+          "before": "scripts/check_tx_v5_columns_geometry.py",
+          "after": "scripts/check_tx_v5_fast_stage_geometry.py",
+          "count": 1
+        },
+        {
+          "before": "PASS_COLUMNS700_ROWS600_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT",
+          "after": "PASS_FAST_STAGE_ROWS_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT",
+          "count": 1
+        },
+        {
+          "before": "Only parent macro pitch/trunks/routes move.",
+          "after": "Six final-stage macro rows change explicitly; parent routes are regenerated. Other macro rows and all cell sizes stay fixed.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_tx_v5_columns_geometry.py",
+      "candidate_path": "scripts/check_tx_v5_fast_stage_geometry.py",
+      "baseline_sha256": "ce4c0271a76f4841e0d3310b7d974cfe557e8d9349a83d5e6a3b6af773df0f8a",
+      "candidate_sha256": "b61c917a1baab36ee578a4c6e37d2e5e3f610b11e1c4ddae5827643d22ac5d0c",
+      "edits": [
+        {
+          "before": "\"\"\"Verify actual native child drawings and column-only placement against return64.\"\"\"",
+          "after": "\"\"\"Verify actual native children and explicitly prescribed fast-stage rows.\"\"\"",
+          "count": 1
+        },
+        {
+          "before": "def shifted(raw,dx):\n    x1,y1,x2,y2=box(raw);return [x1+dx,y1,x2+dx,y2]",
+          "after": "ROW_TARGETS={'a':4200.,'b':4800.,'p4_0':3600.,'p4_2':4200.,'p4_1':4800.,'p4_3':5400.}\ndef shifted(raw,dx,dy=0.):\n    x1,y1,x2,y2=box(raw);return [x1+dx,y1+dy,x2+dx,y2+dy]",
+          "count": 1
+        },
+        {
+          "before": "        offset=-300.*level",
+          "after": "        offset=-300.*level;row_shift=ROW_TARGETS.get(tag,ob[1])-ob[1]",
+          "count": 1
+        },
+        {
+          "before": "target=shifted(before['bbox_um'],offset)",
+          "after": "target=shifted(before['bbox_um'],offset,row_shift)",
+          "count": 1
+        },
+        {
+          "before": "shifted(before['ports'][port],offset)",
+          "after": "shifted(before['ports'][port],offset,row_shift)",
+          "count": 1
+        },
+        {
+          "before": "        assert all(r[k]==o[k]for k in ('net','endpoints','width_um','y_um'))\n        parent=o['endpoints'][1].split('.')[0];level=round(box(old['placements'][parent]['bbox_um'])[0]/1000.)\n        assert abs(r['x_um']-(o['x_um']-300*level))<1e-8\n        assert abs(r['centerline_length_um']-(o['centerline_length_um']-300))<1e-8\n    assert abs(record['parent_signal_centerline_sum_um']-(old['parent_signal_centerline_sum_um']-18000))<1e-7\n    assert abs(record['parent_signal_centerline_max_um']-(old['parent_signal_centerline_max_um']-300))<1e-8",
+          "after": "        assert all(r[k]==o[k]for k in ('net','endpoints','width_um'))\n        child=o['endpoints'][0].split('.')[0];parent=o['endpoints'][1].split('.')[0]\n        level=round(box(old['placements'][parent]['bbox_um'])[0]/1000.)\n        shifts=[ROW_TARGETS.get(tag,box(old['placements'][tag]['bbox_um'])[1])-box(old['placements'][tag]['bbox_um'])[1]for tag in (child,parent)]\n        ys=[a+b for a,b in zip(o['y_um'],shifts,strict=True)];eq(r['y_um'],ys)\n        assert abs(r['x_um']-(o['x_um']-300*level))<1e-8\n        expected=o['centerline_length_um']-300+abs(ys[1]-ys[0])-abs(o['y_um'][1]-o['y_um'][0])\n        assert abs(r['centerline_length_um']-expected)<1e-8\n        if parent in ('f','a','b'):assert r['centerline_length_um']<o['centerline_length_um']-300\n    lengths=[x['centerline_length_um']for x in record['signal_routes']]\n    assert abs(record['parent_signal_centerline_sum_um']-sum(lengths))<1e-7\n    assert abs(record['parent_signal_centerline_max_um']-max(lengths))<1e-8\n    # Prove actual bodies stay separated after row compression, per physical column.\n    for level in range(5):\n        bodies=sorted((box(p['bbox_um'])for p in record['placements'].values()if abs(box(p['bbox_um'])[0]-700*level)<1e-8),key=lambda b:b[1])\n        assert all(b[1]-a[3]>=7.9 for a,b in zip(bodies,bodies[1:]))",
+          "count": 1
+        },
+        {
+          "before": "PASS_COLUMNS700_ROWS600_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT",
+          "after": "PASS_FAST_STAGE_ROWS_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT",
+          "count": 1
+        },
+        {
+          "before": "reduction_um=18000",
+          "after": "reduction_um=old['parent_signal_centerline_sum_um']-new['parent_signal_centerline_sum_um'],fast_stage_rows_um=ROW_TARGETS,fast_stage_routes_shorter=12",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

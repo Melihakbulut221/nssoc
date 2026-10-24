@@ -1,0 +1,121 @@
+...........FFFFF.........                                                [100%]
+=================================== FAILURES ===================================
+_________ test_all455_devices_and_native_boundaries_are_observed[0.6-] _________
+
+vctrl = 0.6, fault = ''
+
+    @pytest.mark.parametrize('vctrl,fault',[(.6,''),(.85,''),(.6,'disconnect_divider_clock'),(.6,'wrong_feedback_modulus')])
+    def test_all455_devices_and_native_boundaries_are_observed(vctrl,fault):
+>       c,rows,texts=m.config(vctrl,fault)
+                     ^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/characterize_pcie_vco_v6_divider_power_v2_wire_v1.py:126: in config
+    require(sum(x.startswith("R") for x in wire_lines) == 1201 and sum(x.startswith("C") for x in wire_lines) == 1383, "Both complete actual metal RC networks")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = False, reason = 'Both complete actual metal RC networks'
+
+    def require(value, reason):
+        if not value:
+>           raise ValueError(reason)
+E           ValueError: Both complete actual metal RC networks
+
+scripts/characterize_pcie_pll_loop_stream_v1.py:82: ValueError
+________ test_all455_devices_and_native_boundaries_are_observed[0.85-] _________
+
+vctrl = 0.85, fault = ''
+
+    @pytest.mark.parametrize('vctrl,fault',[(.6,''),(.85,''),(.6,'disconnect_divider_clock'),(.6,'wrong_feedback_modulus')])
+    def test_all455_devices_and_native_boundaries_are_observed(vctrl,fault):
+>       c,rows,texts=m.config(vctrl,fault)
+                     ^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/characterize_pcie_vco_v6_divider_power_v2_wire_v1.py:126: in config
+    require(sum(x.startswith("R") for x in wire_lines) == 1201 and sum(x.startswith("C") for x in wire_lines) == 1383, "Both complete actual metal RC networks")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = False, reason = 'Both complete actual metal RC networks'
+
+    def require(value, reason):
+        if not value:
+>           raise ValueError(reason)
+E           ValueError: Both complete actual metal RC networks
+
+scripts/characterize_pcie_pll_loop_stream_v1.py:82: ValueError
+_ test_all455_devices_and_native_boundaries_are_observed[0.6-disconnect_divider_clock] _
+
+vctrl = 0.6, fault = 'disconnect_divider_clock'
+
+    @pytest.mark.parametrize('vctrl,fault',[(.6,''),(.85,''),(.6,'disconnect_divider_clock'),(.6,'wrong_feedback_modulus')])
+    def test_all455_devices_and_native_boundaries_are_observed(vctrl,fault):
+>       c,rows,texts=m.config(vctrl,fault)
+                     ^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/characterize_pcie_vco_v6_divider_power_v2_wire_v1.py:126: in config
+    require(sum(x.startswith("R") for x in wire_lines) == 1201 and sum(x.startswith("C") for x in wire_lines) == 1383, "Both complete actual metal RC networks")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = False, reason = 'Both complete actual metal RC networks'
+
+    def require(value, reason):
+        if not value:
+>           raise ValueError(reason)
+E           ValueError: Both complete actual metal RC networks
+
+scripts/characterize_pcie_pll_loop_stream_v1.py:82: ValueError
+_ test_all455_devices_and_native_boundaries_are_observed[0.6-wrong_feedback_modulus] _
+
+vctrl = 0.6, fault = 'wrong_feedback_modulus'
+
+    @pytest.mark.parametrize('vctrl,fault',[(.6,''),(.85,''),(.6,'disconnect_divider_clock'),(.6,'wrong_feedback_modulus')])
+    def test_all455_devices_and_native_boundaries_are_observed(vctrl,fault):
+>       c,rows,texts=m.config(vctrl,fault)
+                     ^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py:94: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/characterize_pcie_vco_v6_divider_power_v2_wire_v1.py:126: in config
+    require(sum(x.startswith("R") for x in wire_lines) == 1201 and sum(x.startswith("C") for x in wire_lines) == 1383, "Both complete actual metal RC networks")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = False, reason = 'Both complete actual metal RC networks'
+
+    def require(value, reason):
+        if not value:
+>           raise ValueError(reason)
+E           ValueError: Both complete actual metal RC networks
+
+scripts/characterize_pcie_pll_loop_stream_v1.py:82: ValueError
+______ test_real_faults_are_single_connections_with_both_models_retained _______
+
+    def test_real_faults_are_single_connections_with_both_models_retained():
+>       _,gold,good=m.config()
+                    ^^^^^^^^^^
+
+sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py:119: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+scripts/characterize_pcie_vco_v6_divider_power_v2_wire_v1.py:126: in config
+    require(sum(x.startswith("R") for x in wire_lines) == 1201 and sum(x.startswith("C") for x in wire_lines) == 1383, "Both complete actual metal RC networks")
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+value = False, reason = 'Both complete actual metal RC networks'
+
+    def require(value, reason):
+        if not value:
+>           raise ValueError(reason)
+E           ValueError: Both complete actual metal RC networks
+
+scripts/characterize_pcie_pll_loop_stream_v1.py:82: ValueError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py::test_all455_devices_and_native_boundaries_are_observed[0.6-]
+FAILED sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py::test_all455_devices_and_native_boundaries_are_observed[0.85-]
+FAILED sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py::test_all455_devices_and_native_boundaries_are_observed[0.6-disconnect_divider_clock]
+FAILED sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py::test_all455_devices_and_native_boundaries_are_observed[0.6-wrong_feedback_modulus]
+FAILED sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py::test_real_faults_are_single_connections_with_both_models_retained
+5 failed, 20 passed in 1.11s

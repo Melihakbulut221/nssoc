@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-physical-runner-20261006/run_pair02.py", line 24, in <module>
+    result=f.compare(B/'pair02-original',B/'pair02-factored');f.common.save(B/'pair02-comparison.json',result)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/run_npu_eco_physical.py", line 267, in compare
+    require(pin(entry['path']) == {k: entry[k] for k in ('bytes', 'sha256')}, 'Boot input changed')
+            ^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/run_cloud_alu_physical.py", line 68, in pin
+    return dict(bytes=path.stat().st_size, sha256=common.sha(path))
+                      ^^^^^^^^^
+AttributeError: 'str' object has no attribute 'stat'

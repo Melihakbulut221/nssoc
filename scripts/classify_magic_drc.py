@@ -40,17 +40,42 @@ NWELL_OVERHANG = 0.225
 
 
 def parse_report(path):
-    """-> [(rule, x1, y1, x2, y2)], in report order."""
-    out, rule = [], None
-    for line in path.read_text(errors="ignore").split("\n"):
+    """Read a completed native report, including signed coordinates.
+
+    Magic creates the file before computing DRC. An empty or truncated file
+    must not become a zero-error result; validate its final native box count.
+    """
+    out, rule, count = [], None, None
+    number = r"[+-]?(?:\d+(?:\.\d*)?|\.\d+)"
+    coordinates = re.compile(r"\s*" + r"\s+".join(
+        [f"({number})um"] * 4) + r"\s*")
+    for line in path.read_text().splitlines():
+        footer = re.fullmatch(r"\s*\[INFO\] COUNT: (\d+)\s*", line)
+        if footer:
+            if count is not None:
+                raise ValueError("Duplicate Magic report count")
+            count = int(footer.group(1))
+            continue
         if line.startswith("---") or line.startswith("soc_top"):
             continue
-        if re.match(r"^\s*[\d.]+um\s", line):
-            v = [float(t[:-2]) for t in line.split()]
-            if rule and len(v) == 4:
-                out.append((rule, *v))
+        match = coordinates.fullmatch(line)
+        if match:
+            if not rule or count is not None:
+                raise ValueError("Magic coordinates outside a rule or after count")
+            v = tuple(map(float, match.groups()))
+            if v[0] > v[2] or v[1] > v[3]:
+                raise ValueError("Inverted Magic marker coordinates")
+            out.append((rule, *v))
+        elif re.match(r"\s*[+\-.\d].*um(?:\s|$)", line):
+            raise ValueError(f"Malformed Magic marker: {line}")
         elif line.strip() and not line.lstrip().startswith("[INFO]"):
+            if count is not None:
+                raise ValueError("Unexpected report content after Magic count")
             rule = line.strip()
+    if count is None:
+        raise ValueError("Incomplete Magic report: missing final count")
+    if count != len(out):
+        raise ValueError(f"Magic report count {count} differs from {len(out)} parsed boxes")
     return out
 
 

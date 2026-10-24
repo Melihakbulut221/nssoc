@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_columns_stage_review.py",
+      "candidate_path": "scripts/cloud_tx_v5_fast_stage_isolated_stage_review.py",
+      "baseline_sha256": "187c23b15affbe61472a38558d927cd9ee60f6c59088d34c17e63de52e26cd8a",
+      "candidate_sha256": "22d3bb0502272844871e5415766f34db0ba2bc63511e45cd8c5253c7e4360b8e",
+      "edits": [
+        {
+          "before": "pin=json.loads((ROOT/'docs/evidence/tx-v5-columns-stage-review-input-20261018.json').read_text());source=pin['composition']\n        failed=json.loads((ROOT/'docs/evidence/tx-v5-columns-native-full-wire-rejection-20261018.json').read_text())\n        assert failed['summary_sha256']==pin['wave_summary_sha256']and failed['source_head']==pin['source_head']\n        assert failed['review']['signals']['wrong_sign_samples']==181 and len(failed['review']['failed_hbts'])==24",
+          "after": "source=json.loads((ROOT/'docs/evidence/tx-v5-fast-stage-isolated-composition-pass-20261018.json').read_text())\n        evidence=json.loads((ROOT/'docs/evidence/tx-v5-fast-stage-isolated-path-review-20261019.json').read_text())\n        report=evidence['report'];assert report['original_gates_reproduced'] and report['sources_unchanged'] and not report['accepted']\n        assert report['capture']['raw_sha256']=='a81aa5b7f27e46c2d808cd0e09568da57dde6d101ea3892d73da69b065bcdd60'\n        assert source['model_sha256']['wire']=='5ba39517abf8f1d0d85bdb36501d6ddd5ab6c52b4fcb54d1af2fd0ee927f3509'\n        failed={'review':dict(signals=report['original_signal_gate'],interfaces=report['original_interfaces'],failed_hbts={x['device']:x['original_gate'] for x in report['failed_hbt_terminal_review']})}\n        actual_samples={x['device']:x['minimum_vce_sample'] for x in report['failed_hbt_terminal_review']}\n        assert failed['review']['signals']['wrong_sign_samples']==140 and len(failed['review']['failed_hbts'])==24",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-columns-stage-review",
+          "after": "cloud-tx-v5-fast-stage-isolated-stage-review",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-columns-assembly/",
+          "after": "cloud-tx-v5-fast-stage-isolated-assembly/",
+          "count": 1
+        },
+        {
+          "before": "measured=metrics))",
+          "after": "measured=metrics,minimum_vce_sample=actual_samples[instance]))",
+          "count": 1
+        },
+        {
+          "before": ",clock_common_mode_range_v=failed['review']['clock_common_mode_range_v'],native_bias_current_a=failed['review']['native_bias_current_a'],prestage_native_bias_current_a=failed['review']['prestage_native_bias_current_a']",
+          "after": ",native_path_review_source=dict(run=evidence['run'],summary_sha256=evidence['summary_sha256']),physical_input_groups=report['physical_input_groups']",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

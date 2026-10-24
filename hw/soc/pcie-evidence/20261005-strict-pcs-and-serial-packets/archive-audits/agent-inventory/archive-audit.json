@@ -1,0 +1,671 @@
+{
+  "status": "PASS_BOUNDED_LOCAL_STRICT_PCS_AND_NATIVE_ARCHIVE_AUDIT",
+  "strict_root_independent": {
+    "archive": {
+      "bytes": 4753516,
+      "sha256": "550a43add967f884d1d8441e5d526f2f38a384ea27f7e936c199e5fdac48e740"
+    },
+    "publication": {
+      "name": "strict-pcs-serial-packet-native-20261005.tar.xz",
+      "asset_id": 611103929,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/strict-pcs-serial-packet-native-20261005.tar.xz",
+      "bytes": 4753516,
+      "sha256": "550a43add967f884d1d8441e5d526f2f38a384ea27f7e936c199e5fdac48e740",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    "validation": {
+      "bytes": 331836,
+      "sha256": "0ffcd85b500f3e7e25588deea78c618a0faed23592e02f7d05428df4571aa5e6"
+    },
+    "members_rehashed": 818,
+    "current_sources_rehashed": 10,
+    "leaf_final": [
+      {
+        "case": "four_cycle_cadence",
+        "mutant": [
+          "pending_bypassed"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "end_eios",
+        "mutant": [
+          "eds_ignored"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "unequal_skp_length",
+        "mutant": [
+          "lengths_unchecked"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "unowned_decision",
+        "mutant": [
+          "decision_ownership_unchecked"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "end_eios",
+        "mutant": [
+          "data_lane_reverse"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "end_eios",
+        "mutant": [
+          "data_backpressure_ignored"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "long_skp_stall",
+        "mutant": [
+          "skp_backpressure_ignored"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "end_eios",
+        "mutant": [
+          "skp_truncated"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "end_eieos",
+        "mutant": [
+          "eieos_kind_lost"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "missing_os_lane",
+        "mutant": [
+          "cohort_timeout_removed"
+        ],
+        "native_returncode": 1
+      },
+      {
+        "case": "end_eios",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "end_eieos",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "unknown_os_after_eds",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "missing_os_lane",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "first_block_os",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "bad_skp_padding",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "missing_eieos",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "missing_sds",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "unowned_decision",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "upstream_abort",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "second_arm",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "long_skp_stall",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "four_cycle_cadence",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "skp_without_eds",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "data_after_eds",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "consecutive_skp",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "unequal_skp_length",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "mixed_skp_eios",
+        "mutant": [],
+        "native_returncode": 0
+      },
+      {
+        "case": "mixed_ending_types",
+        "mutant": [],
+        "native_returncode": 0
+      }
+    ],
+    "packet_saved_XML_recounts": [
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-rtl01/result.json",
+        "status": "PASS_ACTUAL_RECOVERED_X4_RTL",
+        "kind": "positive",
+        "mutant": [],
+        "exact_test": null,
+        "counts": [
+          12,
+          0,
+          0
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls01/test_actual_packet_interface_f0/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "eds_disconnected"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          13
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls01/test_actual_packet_interface_f1/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "decision_disconnected"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          13
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls01/test_actual_packet_interface_f2/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "stream_stop_lost"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          13
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls01/test_actual_packet_interface_f3/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "wrong_headers"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          13
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls01/test_actual_packet_interface_f4/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "blocks_reversed"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          13
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls01/test_actual_packet_interface_f5/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "packet_backpressure_lost"
+        ],
+        "exact_test": "packet_output_stalls_and_independent_lane_skew",
+        "counts": [
+          0,
+          1,
+          13
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls01/test_actual_packet_interface_f6/capture/result.json",
+        "status": "PASS_ACTUAL_RECOVERED_X4_RTL",
+        "kind": "mutant_survived_initial_reset_oracle",
+        "mutant": [
+          "parser_reset_lost"
+        ],
+        "exact_test": "coordinated_reset_recovers_after_framing_abort",
+        "counts": [
+          1,
+          0,
+          13
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls01/test_actual_serial_records_to_0/capture/result.json",
+        "status": "PASS_ACTUAL_RECOVERED_X4_RTL",
+        "kind": "positive",
+        "mutant": [],
+        "exact_test": null,
+        "counts": [
+          14,
+          0,
+          0
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls02/test_actual_packet_interface_f0/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "parser_reset_lost"
+        ],
+        "exact_test": "coordinated_reset_recovers_after_framing_abort",
+        "counts": [
+          0,
+          1,
+          13
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls02/test_actual_serial_records_to_0/capture/result.json",
+        "status": "PASS_ACTUAL_RECOVERED_X4_RTL",
+        "kind": "positive",
+        "mutant": [],
+        "exact_test": null,
+        "counts": [
+          14,
+          0,
+          0
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-endguard01/result.json",
+        "status": "PASS_ACTUAL_RECOVERED_X4_RTL",
+        "kind": "positive",
+        "mutant": [],
+        "exact_test": "normal_end_drain_survives_later_transport_fault",
+        "counts": [
+          1,
+          0,
+          14
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls03/test_actual_packet_interface_f0/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "normal_end_guard_lost"
+        ],
+        "exact_test": "normal_end_drain_survives_later_transport_fault",
+        "counts": [
+          0,
+          1,
+          14
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls03/test_actual_packet_interface_f1/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "eds_disconnected"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          14
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls03/test_actual_packet_interface_f2/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "decision_disconnected"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          14
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls03/test_actual_packet_interface_f3/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "stream_stop_lost"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          14
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls03/test_actual_packet_interface_f4/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "wrong_headers"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          14
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls03/test_actual_packet_interface_f5/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "blocks_reversed"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          14
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls03/test_actual_packet_interface_f6/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "packet_backpressure_lost"
+        ],
+        "exact_test": "packet_output_stalls_and_independent_lane_skew",
+        "counts": [
+          0,
+          1,
+          14
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls03/test_actual_packet_interface_f7/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "parser_reset_lost"
+        ],
+        "exact_test": "coordinated_reset_recovers_after_framing_abort",
+        "counts": [
+          0,
+          1,
+          14
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls03/test_actual_serial_records_to_0/capture/result.json",
+        "status": "PASS_ACTUAL_RECOVERED_X4_RTL",
+        "kind": "positive",
+        "mutant": [],
+        "exact_test": null,
+        "counts": [
+          15,
+          0,
+          0
+        ]
+      },
+      {
+        "result": "native/nssoc-recovered-packet-rx-v1-controls04/test_actual_packet_interface_f0/capture/result.json",
+        "status": "FAIL",
+        "kind": "actual_mutant_counterexample",
+        "mutant": [
+          "stream_stop_lost"
+        ],
+        "exact_test": "actual_packet_context_skp_resume_and_payload_eds",
+        "counts": [
+          0,
+          1,
+          14
+        ]
+      }
+    ],
+    "retained_text_bytes": 3236212,
+    "scope": "Independent local full archive member hashes,current source pins,all saved packet XML/output/input/runtime closures and final29leaf result/mutant bytes. No fixture regeneration, HDL execution or protocol/formal/timing proof. Historical runtime pins are rechecked only where emitted by original top producer; direct leaf runtime inventory is not retroactively invented."
+  },
+  "strict_native_author_additive": {
+    "archive": {
+      "bytes": 8849108,
+      "sha256": "e7e45194335cd118603c2d8195a2dcb96000fc9890251ab3d03fca37ce03058b"
+    },
+    "publication": {
+      "name": "pcie-strict-sds-cohort-v2-native-method-v3-20261005.tar.xz",
+      "asset_id": 611117040,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-strict-sds-cohort-v2-native-method-v3-20261005.tar.xz",
+      "bytes": 8849108,
+      "sha256": "e7e45194335cd118603c2d8195a2dcb96000fc9890251ab3d03fca37ce03058b",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    "validation": {
+      "bytes": 153252,
+      "sha256": "789112cb20a148e007642b8abeffe3d10264d65b266c442a902ebf622ed9ced6"
+    },
+    "members_rehashed": 465,
+    "compiled_payload_replays": [
+      {
+        "member": "native/scenario/end_eios/sim.vvp.gz",
+        "bytes": 2529860,
+        "sha256": "93cdccb08903d4d246c981b8e4746926210ac07d8ba6cb1709f8b19d67efa4d4"
+      },
+      {
+        "member": "native/scenario/end_eieos/sim.vvp.gz",
+        "bytes": 2529865,
+        "sha256": "34256d4640260d0d60928435ae9efcf123dc6875af61de75f9dc3fc56493e37b"
+      },
+      {
+        "member": "native/scenario/long_skp_stall/sim.vvp.gz",
+        "bytes": 2530170,
+        "sha256": "98f0502990ac32a141154e50fdee951a8be195790e2a154456ba71b7a13e86d7"
+      },
+      {
+        "member": "native/scenario/four_cycle_cadence/sim.vvp.gz",
+        "bytes": 2530030,
+        "sha256": "9b62599fc5eaf4157c51d5849db4c095d5f626cf80fe33535151655bcf84fc66"
+      },
+      {
+        "member": "native/scenario/skp_without_eds/sim.vvp.gz",
+        "bytes": 2529883,
+        "sha256": "7bb2ad1e27f074f16eb0b45f3f0217b299719a959dbf15f5b6df4949c710d82a"
+      },
+      {
+        "member": "native/scenario/data_after_eds/sim.vvp.gz",
+        "bytes": 2529878,
+        "sha256": "638d7f696dd54f9ac8d95063769d8ab3efa395dafa235921af31448e48867798"
+      },
+      {
+        "member": "native/scenario/consecutive_skp/sim.vvp.gz",
+        "bytes": 2529883,
+        "sha256": "236d78b26d67d3a14e85c5622d96483ef8d79a991fde21327452a0fc4478cbe9"
+      },
+      {
+        "member": "native/scenario/unequal_skp_length/sim.vvp.gz",
+        "bytes": 2529898,
+        "sha256": "4d48e9892e394f69f3430910ec72d68e494d288072496550d1fe0168501afe7a"
+      },
+      {
+        "member": "native/scenario/mixed_skp_eios/sim.vvp.gz",
+        "bytes": 2529878,
+        "sha256": "9807ba16232d64bf979948741070aab0630e97a448e53612ac5f60629435f965"
+      },
+      {
+        "member": "native/scenario/mixed_ending_types/sim.vvp.gz",
+        "bytes": 2529898,
+        "sha256": "bf208dc508d8aaf9799586db990d85bb1f54902871ca2999a711e9fd66376cd4"
+      },
+      {
+        "member": "native/scenario/unknown_os_after_eds/sim.vvp.gz",
+        "bytes": 2529908,
+        "sha256": "bce03d46437cd3cc9d37a0cbbcef211dca1e100afce0d00ff41c1eca50e02623"
+      },
+      {
+        "member": "native/scenario/missing_os_lane/sim.vvp.gz",
+        "bytes": 2529882,
+        "sha256": "b184021b1aa272916d2fe2250a413aabe3d221f1c2d7bbe75e86202e45e27930"
+      },
+      {
+        "member": "native/scenario/first_block_os/sim.vvp.gz",
+        "bytes": 2529878,
+        "sha256": "b642292830291b7cb039a9671d95328803c74969dd274f1d536c718f371528cd"
+      },
+      {
+        "member": "native/scenario/bad_skp_padding/sim.vvp.gz",
+        "bytes": 2529883,
+        "sha256": "32b46a79152758603ff4ad21eb1aa384e1240651ce9f5dcb077d4958aa8f30e6"
+      },
+      {
+        "member": "native/scenario/missing_eieos/sim.vvp.gz",
+        "bytes": 2529873,
+        "sha256": "bf2729960712cd1b8691a1826d2689e00c876a0614ea3eb24781495b6fa76ce0"
+      },
+      {
+        "member": "native/scenario/missing_sds/sim.vvp.gz",
+        "bytes": 2529862,
+        "sha256": "12cb952dc51fcab9044086aa3cdf7540ea6e7831b58d87e10f89602cc5a0092b"
+      },
+      {
+        "member": "native/scenario/unowned_decision/sim.vvp.gz",
+        "bytes": 2530217,
+        "sha256": "9d562a43b62a66f8c4dfaf13331d987ce32545b9d9c32d3de7ee87b7ac4d3171"
+      },
+      {
+        "member": "native/scenario/upstream_abort/sim.vvp.gz",
+        "bytes": 2530057,
+        "sha256": "d46fb7a61a96657307312e6f06b63cf8fc3cf8189b7e92d78cf1428df4fee42c"
+      },
+      {
+        "member": "native/scenario/second_arm/sim.vvp.gz",
+        "bytes": 2530037,
+        "sha256": "90d74c9df491dc50083f09cecdfd3e315142a2017581ba985017f35bd042009f"
+      },
+      {
+        "member": "native/fault/pending_bypassed/sim.vvp.gz",
+        "bytes": 2171975,
+        "sha256": "78e4e07fec5fd1a9d84790772b95a9b81d1931f2cab269707c4e5e61f2045ec3"
+      },
+      {
+        "member": "native/fault/eds_ignored/sim.vvp.gz",
+        "bytes": 1839828,
+        "sha256": "f045937efda61c836ac297fdcda5ea2c16e43983911dc2f2eea5c5cfca293cff"
+      },
+      {
+        "member": "native/fault/lengths_unchecked/sim.vvp.gz",
+        "bytes": 2203394,
+        "sha256": "05f5f169551facb06943be200a5a8ce7508d87fde7c48711637dc940f3a3edfb"
+      },
+      {
+        "member": "native/fault/decision_ownership_unchecked/sim.vvp.gz",
+        "bytes": 2267289,
+        "sha256": "f4dd148869209c6068b08ee1344c425c189f7335ecb64952a6416aff65e192c7"
+      },
+      {
+        "member": "native/fault/data_lane_reverse/sim.vvp.gz",
+        "bytes": 2529890,
+        "sha256": "0ca69e72d0d2898accb732465afadf9fb18089f273e2391b479c5d67f7b439d5"
+      },
+      {
+        "member": "native/fault/data_backpressure_ignored/sim.vvp.gz",
+        "bytes": 2350156,
+        "sha256": "c170768dfedbf0798497b5f0a0546d99d72e53876200f4aba758ec807b9c9000"
+      },
+      {
+        "member": "native/fault/skp_backpressure_ignored/sim.vvp.gz",
+        "bytes": 2328074,
+        "sha256": "f59c505948bca0bd004882d5721ab5fdab2903229632f843c0c215eb59435da9"
+      },
+      {
+        "member": "native/fault/skp_truncated/sim.vvp.gz",
+        "bytes": 2527868,
+        "sha256": "51924cebe37d1001b42c3373af0897b89f313ed7b35c4914ec0f9f46702c5f9a"
+      },
+      {
+        "member": "native/fault/eieos_kind_lost/sim.vvp.gz",
+        "bytes": 2412477,
+        "sha256": "d7a1a0a73b8da88e3934ccfd15267681ac48e73701e1820b92c4606b44ec8e06"
+      },
+      {
+        "member": "native/fault/cohort_timeout_removed/sim.vvp.gz",
+        "bytes": 2468882,
+        "sha256": "00ef388bf51e85e1e624234ebe843d25891e0b63b7081dc35e12aca77234a6ea"
+      }
+    ],
+    "retained_text_bytes": 28400815,
+    "scope": "Additive author-owned archive and29 full gzip payload audit; not an independent new native execution."
+  },
+  "review_method": {
+    "bytes": 7342,
+    "sha256": "6e04a13e5d46654b816f645dcbd6725035f23e510a8d7d4bd8898ff5c97e7c64"
+  },
+  "limitations": [
+    "No new network download: exact local capsules match immutable public dual-roundtrip receipt digests.",
+    "No simulator, solver, PDK timing or analog process launched.",
+    "Incomplete/full-PCS/LTSSM/physicalCDC/main-chip acceptance remains open."
+  ]
+}

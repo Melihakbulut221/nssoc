@@ -1,0 +1,72 @@
+{
+  "observed_at": "2026-10-15T23:56:38.922642+00:00",
+  "accepted": false,
+  "status": "PRIMARY_SOURCE_FINDINGS_NATIVE_CONTROL_LIVE",
+  "run": {
+    "run": 38826401425,
+    "topic": "encoded FIXED route preservation control",
+    "status": "in_progress",
+    "conclusion": null,
+    "source_head": "4215feec880bd52af4fedc3e2c041ba6581ffe05",
+    "jobs": [
+      {
+        "id": 116734768284,
+        "status": "in_progress",
+        "conclusion": null,
+        "active_steps": [
+          "Preserve source and all native geometry observations"
+        ],
+        "passed_steps": [
+          "Set up job",
+          "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "Restore exact native runtime",
+          "Compile controllers and reject corrupted route conversions"
+        ]
+      }
+    ]
+  },
+  "primary_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/defin/definReader.cpp",
+      "sha256": "e23d7bc1f923c49aa5e416c59a733a4583e683077ecf251d446443820124e92d",
+      "line_range": [
+        1917,
+        1943
+      ],
+      "finding": "INCREMENTAL mode does not register NETS; FLOORPLAN does and reuses existing block."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/defin/definNet.cpp",
+      "sha256": "a5c7f0edd15c6c86c4c8f1230a1e91b1b2d8949952061f7e5ab680fd0f696587",
+      "line_range": [
+        45,
+        58
+      ],
+      "finding": "Existing native net wire destroyed before full replacement; exact preservation must be independently checked."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/defout/defout_impl.cpp",
+      "sha256": "a81f028054a03466ff67755b8bc203adb0ea97b89136efebb92f690ace7eae7d",
+      "line_range": [
+        1467,
+        1490
+      ],
+      "finding": "DEF writer can report FIXED based on net metadata even when native encoded wire remains ROUTED; decoder check mandatory."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/OpenRoad.tcl",
+      "sha256": "e7263231e2089673930741f37380221b31060196ef14341aa60dd88fc0af7a33",
+      "line_range": [
+        41,
+        94
+      ],
+      "finding": "Native read_def -floorplan_initialize updates existing database through FLOORPLAN reader."
+    }
+  ],
+  "limitations": [
+    "No fixed-route ECO implemented yet",
+    "No control result yet",
+    "Full serial PHY and final timing still open"
+  ]
+}

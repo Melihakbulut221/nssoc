@@ -1,0 +1,410 @@
+﻿2026-10-05T15:43:58.1829367Z Current runner version: '2.337.0'
+2026-10-05T15:43:58.1854499Z ##[group]Runner Image Provisioner
+2026-10-05T15:43:58.1855609Z Hosted Compute Agent
+2026-10-05T15:43:58.1856274Z Version: 20260901.588
+2026-10-05T15:43:58.1856957Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-05T15:43:58.1857677Z Build Date: 2026-09-01T19:56:44Z
+2026-10-05T15:43:58.1858401Z Worker ID: {f6354a82-69c7-4c29-a718-f268dd9fb562}
+2026-10-05T15:43:58.1859108Z Azure Region: eastus
+2026-10-05T15:43:58.1859784Z ##[endgroup]
+2026-10-05T15:43:58.1861998Z ##[group]Operating System
+2026-10-05T15:43:58.1862658Z Ubuntu
+2026-10-05T15:43:58.1863311Z 24.04.5
+2026-10-05T15:43:58.1863834Z LTS
+2026-10-05T15:43:58.1864362Z ##[endgroup]
+2026-10-05T15:43:58.1864976Z ##[group]Runner Image
+2026-10-05T15:43:58.1865576Z Image: ubuntu-24.04
+2026-10-05T15:43:58.1866171Z Version: 20260927.320.1
+2026-10-05T15:43:58.1867421Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260927.320/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-05T15:43:58.1869037Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260927.320
+2026-10-05T15:43:58.1870009Z ##[endgroup]
+2026-10-05T15:43:58.1871583Z ##[group]GITHUB_TOKEN Permissions
+2026-10-05T15:43:58.1873706Z Contents: read
+2026-10-05T15:43:58.1874475Z Metadata: read
+2026-10-05T15:43:58.1875050Z ##[endgroup]
+2026-10-05T15:43:58.1877405Z Secret source: Actions
+2026-10-05T15:43:58.1878441Z Cache mode: write
+2026-10-05T15:43:58.1879359Z Prepare workflow directory
+2026-10-05T15:43:58.2428794Z Prepare all required actions
+2026-10-05T15:43:58.2478686Z Getting action download info
+2026-10-05T15:43:58.4829464Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-05T15:43:58.6066474Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-05T15:43:58.6934121Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-05T15:43:58.8868593Z Complete job name: rtl
+2026-10-05T15:43:58.9645271Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-05T15:43:58.9646349Z with:
+2026-10-05T15:43:58.9646814Z   repository: Melihakbulut221/nssoc
+2026-10-05T15:43:58.9651069Z   token: ***
+2026-10-05T15:43:58.9651524Z   ssh-strict: true
+2026-10-05T15:43:58.9651975Z   ssh-user: git
+2026-10-05T15:43:58.9652426Z   persist-credentials: true
+2026-10-05T15:43:58.9652915Z   clean: true
+2026-10-05T15:43:58.9653363Z   sparse-checkout-cone-mode: true
+2026-10-05T15:43:58.9653883Z   fetch-depth: 1
+2026-10-05T15:43:58.9654326Z   fetch-tags: false
+2026-10-05T15:43:58.9654766Z   show-progress: true
+2026-10-05T15:43:58.9655204Z   lfs: false
+2026-10-05T15:43:58.9655614Z   submodules: false
+2026-10-05T15:43:58.9656066Z   set-safe-directory: true
+2026-10-05T15:43:58.9656581Z   allow-unsafe-pr-checkout: false
+2026-10-05T15:43:58.9657477Z env:
+2026-10-05T15:43:58.9657911Z   SOC_INTERFACE_PROFILE: base
+2026-10-05T15:43:58.9658417Z ##[endgroup]
+2026-10-05T15:43:59.0657229Z Syncing repository: Melihakbulut221/nssoc
+2026-10-05T15:43:59.0659671Z ##[group]Getting Git version info
+2026-10-05T15:43:59.0660617Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-05T15:43:59.0661769Z [command]/usr/bin/git version
+2026-10-05T15:43:59.0767778Z git version 2.55.0
+2026-10-05T15:43:59.0791370Z ##[endgroup]
+2026-10-05T15:43:59.0807740Z Temporarily overriding HOME='/home/runner/work/_temp/c11870cf-1c2f-4d13-bc8c-16f4e0bf320b' before making global git config changes
+2026-10-05T15:43:59.0810678Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T15:43:59.0815103Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-05T15:43:59.0877293Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-05T15:43:59.0879832Z ##[group]Initializing the repository
+2026-10-05T15:43:59.0883733Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-05T15:43:59.1024089Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-05T15:43:59.1025425Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-05T15:43:59.1026820Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-05T15:43:59.1027667Z hint: call:
+2026-10-05T15:43:59.1028125Z hint:
+2026-10-05T15:43:59.1028717Z hint: 	git config --global init.defaultBranch <name>
+2026-10-05T15:43:59.1029418Z hint:
+2026-10-05T15:43:59.1030077Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-05T15:43:59.1031490Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-05T15:43:59.1032353Z hint:
+2026-10-05T15:43:59.1032807Z hint: 	git branch -m <name>
+2026-10-05T15:43:59.1033284Z hint:
+2026-10-05T15:43:59.1033913Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-05T15:43:59.1041614Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-05T15:43:59.1061056Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-05T15:43:59.1110215Z ##[endgroup]
+2026-10-05T15:43:59.1111673Z ##[group]Disabling automatic garbage collection
+2026-10-05T15:43:59.1114835Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-05T15:43:59.1149213Z ##[endgroup]
+2026-10-05T15:43:59.1150339Z ##[group]Setting up auth
+2026-10-05T15:43:59.1157350Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T15:43:59.1192476Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T15:43:59.1659764Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T15:43:59.1697660Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T15:43:59.1941382Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-05T15:43:59.1981091Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-05T15:43:59.2241295Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-05T15:43:59.2285891Z ##[endgroup]
+2026-10-05T15:43:59.2287383Z ##[group]Fetching the repository
+2026-10-05T15:43:59.2297926Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +6018ea85b82c78a353c42141d579e07f396d3dd3:refs/remotes/pull/1/merge
+2026-10-05T15:44:18.8016448Z From https://github.com/Melihakbulut221/nssoc
+2026-10-05T15:44:18.8018832Z  * [new ref]         6018ea85b82c78a353c42141d579e07f396d3dd3 -> pull/1/merge
+2026-10-05T15:44:18.8024456Z ##[endgroup]
+2026-10-05T15:44:18.8025697Z ##[group]Determining the checkout info
+2026-10-05T15:44:18.8027623Z ##[endgroup]
+2026-10-05T15:44:18.8028659Z [command]/usr/bin/git sparse-checkout disable
+2026-10-05T15:44:18.8083350Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-05T15:44:18.8118502Z ##[group]Checking out the ref
+2026-10-05T15:44:18.8119882Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/1/merge
+2026-10-05T15:44:19.7778507Z Note: switching to 'refs/remotes/pull/1/merge'.
+2026-10-05T15:44:19.7781687Z 
+2026-10-05T15:44:19.7782206Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-05T15:44:19.7783428Z changes and commit them, and you can discard any commits you make in this
+2026-10-05T15:44:19.7784586Z state without impacting any branches by switching back to a branch.
+2026-10-05T15:44:19.7785285Z 
+2026-10-05T15:44:19.7786139Z If you want to create a new branch to retain commits you create, you may
+2026-10-05T15:44:19.7787335Z do so (now or later) by using -c with the switch command. Example:
+2026-10-05T15:44:19.7788094Z 
+2026-10-05T15:44:19.7788400Z   git switch -c <new-branch-name>
+2026-10-05T15:44:19.7788861Z 
+2026-10-05T15:44:19.7789185Z Or undo this operation with:
+2026-10-05T15:44:19.7789625Z 
+2026-10-05T15:44:19.7789874Z   git switch -
+2026-10-05T15:44:19.7790240Z 
+2026-10-05T15:44:19.7791043Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-05T15:44:19.7791819Z 
+2026-10-05T15:44:19.7792479Z HEAD is now at 6018ea8 Merge 380cfc7ebf5535218362dc8f55bdc78c17f8475e into 473b84f56cb26ab97aa2a5d409c779568c2507a3
+2026-10-05T15:44:19.7940672Z ##[endgroup]
+2026-10-05T15:44:19.7942412Z [command]/usr/bin/git log -1 --format=%H
+2026-10-05T15:44:19.7968513Z 6018ea85b82c78a353c42141d579e07f396d3dd3
+2026-10-05T15:44:19.8220776Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-05T15:44:19.8221315Z with:
+2026-10-05T15:44:19.8221582Z   python-version: 3.12
+2026-10-05T15:44:19.8221862Z   cache: pip
+2026-10-05T15:44:19.8222235Z   cache-dependency-path: sw/requirements.txt
+hw/requirements.txt
+
+2026-10-05T15:44:19.8222666Z   check-latest: false
+2026-10-05T15:44:19.8225513Z   token: ***
+2026-10-05T15:44:19.8225808Z   update-environment: true
+2026-10-05T15:44:19.8226111Z   allow-prereleases: false
+2026-10-05T15:44:19.8226399Z   freethreaded: false
+2026-10-05T15:44:19.8226666Z env:
+2026-10-05T15:44:19.8226911Z   SOC_INTERFACE_PROFILE: base
+2026-10-05T15:44:19.8227202Z ##[endgroup]
+2026-10-05T15:44:19.9584355Z ##[group]Installed versions
+2026-10-05T15:44:19.9672675Z (node:2311) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-05T15:44:19.9673728Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-05T15:44:19.9674821Z Successfully set up CPython (3.12.14)
+2026-10-05T15:44:19.9675750Z ##[endgroup]
+2026-10-05T15:44:20.0052638Z [command]/opt/hostedtoolcache/Python/3.12.14/x64/bin/pip cache dir
+2026-10-05T15:44:20.3380850Z /home/runner/.cache/pip
+2026-10-05T15:44:20.4291373Z Cache hit for: setup-python-Linux-x64-24.04-Ubuntu-python-3.12.14-pip-35a0007d11040d65da72ed4fcb169477e0be6d2b50171e75fc4dc2620916dbdf
+2026-10-05T15:44:20.4401503Z (node:2311) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-05T15:44:20.9313797Z Received 64377836 of 64377836 (100.0%), 136.1 MBs/sec
+2026-10-05T15:44:20.9314678Z Cache Size: ~61 MB (64377836 B)
+2026-10-05T15:44:20.9348960Z [command]/usr/bin/tar -xf /home/runner/work/_temp/f9a1e8a5-0946-4fa7-b602-782df313ad52/cache.tzst -P -C /home/runner/work/nssoc/nssoc --use-compress-program unzstd
+2026-10-05T15:44:21.0455693Z Cache restored successfully
+2026-10-05T15:44:21.0488894Z Cache restored from key: setup-python-Linux-x64-24.04-Ubuntu-python-3.12.14-pip-35a0007d11040d65da72ed4fcb169477e0be6d2b50171e75fc4dc2620916dbdf
+2026-10-05T15:44:21.0703389Z ##[group]Run sudo apt-get update -qq
+2026-10-05T15:44:21.0703796Z [36;1msudo apt-get update -qq[0m
+2026-10-05T15:44:21.0704198Z [36;1msudo apt-get install -y --no-install-recommends iverilog[0m
+2026-10-05T15:44:21.0704615Z [36;1mpython3 -m venv hw/.venv[0m
+2026-10-05T15:44:21.0704963Z [36;1mhw/.venv/bin/pip install -r hw/requirements.txt[0m
+2026-10-05T15:44:21.0993900Z shell: /usr/bin/bash -e {0}
+2026-10-05T15:44:21.0994242Z env:
+2026-10-05T15:44:21.0994487Z   SOC_INTERFACE_PROFILE: base
+2026-10-05T15:44:21.0994870Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:21.0995385Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-10-05T15:44:21.0995895Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:21.0996337Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:21.0997055Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:21.0997551Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-10-05T15:44:21.0997943Z ##[endgroup]
+2026-10-05T15:44:26.7281930Z Reading package lists...
+2026-10-05T15:44:26.9029655Z Building dependency tree...
+2026-10-05T15:44:26.9037341Z Reading state information...
+2026-10-05T15:44:27.0376480Z Suggested packages:
+2026-10-05T15:44:27.0376971Z   gtkwave
+2026-10-05T15:44:27.0530640Z The following NEW packages will be installed:
+2026-10-05T15:44:27.0538046Z   iverilog
+2026-10-05T15:44:27.0736272Z 0 upgraded, 1 newly installed, 0 to remove and 25 not upgraded.
+2026-10-05T15:44:27.0737020Z Need to get 2126 kB of archives.
+2026-10-05T15:44:27.0737517Z After this operation, 6828 kB of additional disk space will be used.
+2026-10-05T15:44:27.0737973Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-05T15:44:27.1938548Z Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 iverilog amd64 12.0-2build2 [2126 kB]
+2026-10-05T15:44:27.5056588Z Fetched 2126 kB in 0s (10.7 MB/s)
+2026-10-05T15:44:27.5279986Z Selecting previously unselected package iverilog.
+2026-10-05T15:44:27.5633297Z (Reading database ... 
+2026-10-05T15:44:27.5633602Z (Reading database ... 5%
+2026-10-05T15:44:27.5633876Z (Reading database ... 10%
+2026-10-05T15:44:27.5634136Z (Reading database ... 15%
+2026-10-05T15:44:27.5634391Z (Reading database ... 20%
+2026-10-05T15:44:27.5634632Z (Reading database ... 25%
+2026-10-05T15:44:27.5634885Z (Reading database ... 30%
+2026-10-05T15:44:27.5635125Z (Reading database ... 35%
+2026-10-05T15:44:27.5635361Z (Reading database ... 40%
+2026-10-05T15:44:27.5635598Z (Reading database ... 45%
+2026-10-05T15:44:27.5636150Z (Reading database ... 50%
+2026-10-05T15:44:27.5693673Z (Reading database ... 55%
+2026-10-05T15:44:27.6495613Z (Reading database ... 60%
+2026-10-05T15:44:27.7418140Z (Reading database ... 65%
+2026-10-05T15:44:27.8986814Z (Reading database ... 70%
+2026-10-05T15:44:28.0858967Z (Reading database ... 75%
+2026-10-05T15:44:28.2429573Z (Reading database ... 80%
+2026-10-05T15:44:28.4301387Z (Reading database ... 85%
+2026-10-05T15:44:28.6026718Z (Reading database ... 90%
+2026-10-05T15:44:28.7096205Z (Reading database ... 95%
+2026-10-05T15:44:28.7096850Z (Reading database ... 100%
+2026-10-05T15:44:28.7097584Z (Reading database ... 202296 files and directories currently installed.)
+2026-10-05T15:44:28.7137132Z Preparing to unpack .../iverilog_12.0-2build2_amd64.deb ...
+2026-10-05T15:44:28.7153024Z Unpacking iverilog (12.0-2build2) ...
+2026-10-05T15:44:28.7932272Z Setting up iverilog (12.0-2build2) ...
+2026-10-05T15:44:28.7977208Z Processing triggers for man-db (2.12.0-4build2) ...
+2026-10-05T15:44:28.7998993Z Not building database; man-db/auto-update is not 'true'.
+2026-10-05T15:44:29.4521087Z 
+2026-10-05T15:44:29.4521802Z Running kernel seems to be up-to-date.
+2026-10-05T15:44:29.4522225Z 
+2026-10-05T15:44:29.4522407Z No services need to be restarted.
+2026-10-05T15:44:29.4522755Z 
+2026-10-05T15:44:29.4522939Z No containers need to be restarted.
+2026-10-05T15:44:29.4523260Z 
+2026-10-05T15:44:29.4523870Z No user sessions are running outdated binaries.
+2026-10-05T15:44:29.4524293Z 
+2026-10-05T15:44:29.4531442Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-05T15:44:33.5293796Z Collecting cocotb==2.0.1 (from -r hw/requirements.txt (line 4))
+2026-10-05T15:44:33.5306727Z   Using cached cocotb-2.0.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.8 kB)
+2026-10-05T15:44:33.5637170Z Collecting pytest>=8.0 (from -r hw/requirements.txt (line 5))
+2026-10-05T15:44:33.5648451Z   Using cached pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+2026-10-05T15:44:33.5956046Z Collecting pyyaml>=6.0 (from -r hw/requirements.txt (line 6))
+2026-10-05T15:44:33.5968646Z   Using cached pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+2026-10-05T15:44:33.6057486Z Collecting find_libpython (from cocotb==2.0.1->-r hw/requirements.txt (line 4))
+2026-10-05T15:44:33.6069221Z   Using cached find_libpython-0.5.1-py3-none-any.whl.metadata (2.8 kB)
+2026-10-05T15:44:33.6163094Z Collecting iniconfig>=1.0.1 (from pytest>=8.0->-r hw/requirements.txt (line 5))
+2026-10-05T15:44:33.6175023Z   Using cached iniconfig-2.3.0-py3-none-any.whl.metadata (2.5 kB)
+2026-10-05T15:44:33.6316018Z Collecting packaging>=22 (from pytest>=8.0->-r hw/requirements.txt (line 5))
+2026-10-05T15:44:33.6327742Z   Using cached packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+2026-10-05T15:44:33.6432795Z Collecting pluggy<2,>=1.5 (from pytest>=8.0->-r hw/requirements.txt (line 5))
+2026-10-05T15:44:33.6444450Z   Using cached pluggy-1.6.0-py3-none-any.whl.metadata (4.8 kB)
+2026-10-05T15:44:33.6621625Z Collecting pygments>=2.7.2 (from pytest>=8.0->-r hw/requirements.txt (line 5))
+2026-10-05T15:44:33.6633579Z   Using cached pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+2026-10-05T15:44:33.6685802Z Using cached cocotb-2.0.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.6 MB)
+2026-10-05T15:44:33.6714820Z Using cached pytest-9.1.1-py3-none-any.whl (386 kB)
+2026-10-05T15:44:33.6728028Z Using cached pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+2026-10-05T15:44:33.6742320Z Using cached iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+2026-10-05T15:44:33.6753722Z Using cached packaging-26.3-py3-none-any.whl (129 kB)
+2026-10-05T15:44:33.6765353Z Using cached pluggy-1.6.0-py3-none-any.whl (20 kB)
+2026-10-05T15:44:33.6777089Z Using cached pygments-2.21.0-py3-none-any.whl (1.3 MB)
+2026-10-05T15:44:33.6792910Z Using cached find_libpython-0.5.1-py3-none-any.whl (9.2 kB)
+2026-10-05T15:44:33.7207301Z Installing collected packages: pyyaml, pygments, pluggy, packaging, iniconfig, find_libpython, pytest, cocotb
+2026-10-05T15:44:35.0332859Z Successfully installed cocotb-2.0.1 find_libpython-0.5.1 iniconfig-2.3.0 packaging-26.3 pluggy-1.6.0 pygments-2.21.0 pytest-9.1.1 pyyaml-6.0.3
+2026-10-05T15:44:35.1171001Z 
+2026-10-05T15:44:35.1171726Z [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+2026-10-05T15:44:35.1172549Z [notice] To update, run: python3 -m pip install --upgrade pip
+2026-10-05T15:44:35.1708913Z ##[group]Run make soc-interfaces-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"
+2026-10-05T15:44:35.1709575Z [36;1mmake soc-interfaces-prepare INTERFACE_PYTHON="$PWD/hw/.venv/bin/python"[0m
+2026-10-05T15:44:35.1775550Z shell: /usr/bin/bash -e {0}
+2026-10-05T15:44:35.1775832Z env:
+2026-10-05T15:44:35.1776049Z   SOC_INTERFACE_PROFILE: base
+2026-10-05T15:44:35.1776398Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:35.1776895Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-10-05T15:44:35.1777371Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:35.1777786Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:35.1778198Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:35.1778643Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-10-05T15:44:35.1779010Z ##[endgroup]
+2026-10-05T15:44:35.1895352Z make -f /home/runner/work/nssoc/nssoc/hw/soc/tools.soc.mk fetch-verilog-i2c fetch-verilog-ethernet
+2026-10-05T15:44:35.1912133Z make[1]: Entering directory '/home/runner/work/nssoc/nssoc'
+2026-10-05T15:44:35.3608928Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/verilog-i2c fetch --quiet origin
+2026-10-05T15:44:35.4699764Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/verilog-i2c checkout --quiet a65be4045e898a52e791c6ee71f8f79a7cd2e129
+2026-10-05T15:44:35.4759527Z verilog-i2c @ a65be4045e898a52e791c6ee71f8f79a7cd2e129
+2026-10-05T15:44:36.1472312Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/verilog-ethernet fetch --quiet origin
+2026-10-05T15:44:36.2556691Z git -C /home/runner/work/nssoc/nssoc/hw/soc/ext/verilog-ethernet checkout --quiet 77320a9471d19c7dd383914bc049e02d9f4f1ffb
+2026-10-05T15:44:36.3075982Z verilog-ethernet @ 77320a9471d19c7dd383914bc049e02d9f4f1ffb
+2026-10-05T15:44:36.3573314Z make[1]: Leaving directory '/home/runner/work/nssoc/nssoc'
+2026-10-05T15:44:36.3583680Z /home/runner/work/nssoc/nssoc/hw/.venv/bin/python /home/runner/work/nssoc/nssoc/hw/soc/flow/prepare_interfaces.py --profile base
+2026-10-05T15:44:36.4555870Z /home/runner/work/nssoc/nssoc/hw/soc/gen/interfaces.bundle.vh: 9 upstream RTL files, 9 inputs
+2026-10-05T15:44:36.4654308Z ##[group]Run scripts/run_cocotb.sh
+2026-10-05T15:44:36.4654653Z [36;1mscripts/run_cocotb.sh[0m
+2026-10-05T15:44:36.4718037Z shell: /usr/bin/bash -e {0}
+2026-10-05T15:44:36.4718313Z env:
+2026-10-05T15:44:36.4718525Z   SOC_INTERFACE_PROFILE: base
+2026-10-05T15:44:36.4718875Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:36.4719370Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-10-05T15:44:36.4719860Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:36.4720278Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:36.4721009Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T15:44:36.4721439Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-10-05T15:44:36.4721796Z ##[endgroup]
+2026-10-05T15:44:36.4874287Z == hw/tb
+2026-10-05T15:44:44.2907317Z   tb                           20 passed, 0 skipped
+2026-10-05T15:44:44.2921329Z   fi                           skipped (see SKIP_DEFAULT)
+2026-10-05T15:44:44.2934623Z   gl                           skipped (see SKIP_DEFAULT)
+2026-10-05T15:44:44.2947596Z   glfi                         skipped (see SKIP_DEFAULT)
+2026-10-05T15:45:17.0123384Z   lif                          32 passed, 0 skipped
+2026-10-05T15:46:05.9474292Z   pilot                        31 passed, 0 skipped
+2026-10-05T15:46:09.0039860Z   regbank                      33 passed, 0 skipped
+2026-10-05T15:46:16.3541875Z   scrub                        42 passed, 0 skipped
+2026-10-05T15:46:21.0489892Z   secded                       12 passed, 12 skipped
+2026-10-05T15:46:26.5597393Z   tmr                          18 passed, 3 skipped
+2026-10-05T15:46:26.5599905Z == hw/soc/tb/cocotb
+2026-10-05T15:46:34.4767502Z   ibex_regfile_secded          6 passed, 0 skipped
+2026-10-05T15:46:48.4020902Z   pilotlink                    2 passed, 0 skipped
+2026-10-05T15:46:51.5029377Z   soc_apb_bridge               11 passed, 0 skipped
+2026-10-05T15:46:54.0984654Z   soc_apb_bridge_to            4 passed, 0 skipped
+2026-10-05T15:46:56.9770805Z   soc_boot                     22 passed, 0 skipped
+2026-10-05T15:47:10.4626039Z   soc_boot_fi                  4 passed, 0 skipped
+2026-10-05T15:47:14.0381984Z   soc_bus                      17 passed, 0 skipped
+2026-10-05T15:47:19.9505949Z   soc_busstat                  12 passed, 0 skipped
+2026-10-05T15:47:22.8049542Z   soc_clint                    17 passed, 0 skipped
+2026-10-05T15:47:58.7721108Z   soc_clint_fi                 3 passed, 0 skipped
+2026-10-05T15:48:11.8825960Z   soc_eth                      6 passed, 0 skipped
+2026-10-05T15:48:14.5850152Z   soc_gpio                     14 passed, 0 skipped
+2026-10-05T15:48:17.2870858Z   soc_gptimer                  10 passed, 0 skipped
+2026-10-05T15:48:22.1700739Z   soc_interfaces               8 passed, 6 skipped
+2026-10-05T15:48:25.7378623Z   soc_mem                      16 passed, 0 skipped
+2026-10-05T15:52:15.7600116Z   soc_npu                      36 passed, 0 skipped
+2026-10-05T15:52:18.4745798Z   soc_npu_ser                  3 passed, 0 skipped
+2026-10-05T15:52:21.3198621Z   soc_pcie_apb_arbiter         6 passed, 0 skipped
+2026-10-05T15:52:24.7368194Z   soc_pcie_buffered_flow_packets 5 passed, 0 skipped
+2026-10-05T15:52:29.6005230Z   soc_pcie_credit_tx           4 passed, 0 skipped
+2026-10-05T15:52:39.1018085Z   soc_pcie_dllp_rx             3 passed, 0 skipped
+2026-10-05T15:52:42.0330125Z   soc_pcie_fc_tx               3 passed, 0 skipped
+2026-10-05T15:52:45.0320154Z   soc_pcie_flow_packets        3 passed, 0 skipped
+2026-10-05T15:52:50.4523220Z   soc_pcie_gen3_block_cdc_v1   7 passed, 0 skipped
+2026-10-05T15:52:55.9265704Z   soc_pcie_gen3_continuous_rx  6 passed, 0 skipped
+2026-10-05T15:53:17.0850400Z   soc_pcie_gen3_continuous_rx_integrity_v1 12 passed, 0 skipped
+2026-10-05T15:54:21.8889688Z   soc_pcie_gen3_continuous_rx_integrity_v10 13 passed, 0 skipped
+2026-10-05T15:55:26.3254002Z   soc_pcie_gen3_continuous_rx_integrity_v11 13 passed, 0 skipped
+2026-10-05T15:56:30.6963446Z   soc_pcie_gen3_continuous_rx_integrity_v12 13 passed, 0 skipped
+2026-10-05T15:57:35.6306897Z   soc_pcie_gen3_continuous_rx_integrity_v13 13 passed, 0 skipped
+2026-10-05T15:58:43.5899255Z   soc_pcie_gen3_continuous_rx_integrity_v14 13 passed, 0 skipped
+2026-10-05T15:59:04.9340208Z   soc_pcie_gen3_continuous_rx_integrity_v2 12 passed, 0 skipped
+2026-10-05T15:59:50.5512156Z   soc_pcie_gen3_continuous_rx_integrity_v3 13 passed, 0 skipped
+2026-10-05T16:00:40.8499883Z   soc_pcie_gen3_continuous_rx_integrity_v4 13 passed, 0 skipped
+2026-10-05T16:01:49.3496413Z   soc_pcie_gen3_continuous_rx_integrity_v5 13 passed, 0 skipped
+2026-10-05T16:02:58.2515109Z   soc_pcie_gen3_continuous_rx_integrity_v6 13 passed, 0 skipped
+2026-10-05T16:04:06.4427720Z   soc_pcie_gen3_continuous_rx_integrity_v7 13 passed, 0 skipped
+2026-10-05T16:05:13.5540002Z   soc_pcie_gen3_continuous_rx_integrity_v9 13 passed, 0 skipped
+2026-10-05T16:05:39.3000631Z   soc_pcie_gen3_continuous_rx_owned_v1 20 passed, 0 skipped
+2026-10-05T16:06:04.8921956Z   soc_pcie_gen3_continuous_rx_owned_v2 20 passed, 0 skipped
+2026-10-05T16:06:23.4215647Z   soc_pcie_gen3_continuous_rx_wide 9 passed, 0 skipped
+2026-10-05T16:06:41.6701183Z   soc_pcie_gen3_continuous_rx_wide_runtime_v3 9 passed, 0 skipped
+2026-10-05T16:06:44.0349014Z   soc_pcie_gen3_dllp_consumer_compare_v2 INVALID/MISSING XML (make rc=2; /home/runner/work/nssoc/nssoc/hw/soc/out/cocotb/soc_pcie_gen3_dllp_consumer_compare_v2.log)
+2026-10-05T16:06:44.0368028Z       make[2]: *** No rule to make target '/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_compare_v2.v', needed by 'sim_build_soc_pcie_gen3_dllp_consumer_compare_v2/sim.vvp'.  Stop.
+2026-10-05T16:06:44.0369384Z       make[1]: *** [/home/runner/work/nssoc/nssoc/hw/.venv/lib/python3.12/site-packages/cocotb_tools/makefiles/Makefile.inc:17: sim] Error 2
+2026-10-05T16:06:44.0370818Z       make: *** [Makefile.soc_pcie_gen3_dllp_consumer_compare_v2:13: sim] Error 2
+2026-10-05T16:06:44.0371641Z       usage: cocotb_results.py [-h] paths [paths ...]
+2026-10-05T16:06:44.0372313Z       cocotb_results.py: error: the following arguments are required: paths
+2026-10-05T16:07:34.1278083Z   soc_pcie_gen3_dllp_consumer_compare_v3 9 passed, 0 skipped
+2026-10-05T16:08:42.8394300Z   soc_pcie_gen3_dllp_consumer_compare_v4 9 passed, 0 skipped
+2026-10-05T16:14:13.4022577Z ##[error]The operation was canceled.
+2026-10-05T16:14:13.4122330Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-05T16:14:13.4122999Z with:
+2026-10-05T16:14:13.4123379Z   name: rtl-results
+2026-10-05T16:14:13.4124185Z   path: hw/soc/out/cocotb/
+hw/soc/out/pcie-tlp-controls/
+hw/soc/out/pcie-stream-controls/
+hw/tb/results*.xml
+hw/soc/tb/cocotb/results*.xml
+tt/test/results.xml
+
+2026-10-05T16:14:13.4124994Z   retention-days: 30
+2026-10-05T16:14:13.4135420Z   if-no-files-found: warn
+2026-10-05T16:14:13.4135869Z   compression-level: 6
+2026-10-05T16:14:13.4136226Z   overwrite: false
+2026-10-05T16:14:13.4136561Z   include-hidden-files: false
+2026-10-05T16:14:13.4136921Z env:
+2026-10-05T16:14:13.4137126Z   SOC_INTERFACE_PROFILE: base
+2026-10-05T16:14:13.4137463Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T16:14:13.4137921Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib/pkgconfig
+2026-10-05T16:14:13.4138360Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T16:14:13.4138787Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T16:14:13.4139181Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.14/x64
+2026-10-05T16:14:13.4139576Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.14/x64/lib
+2026-10-05T16:14:13.4140130Z ##[endgroup]
+2026-10-05T16:14:13.5879228Z (node:10807) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-05T16:14:13.5880947Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-05T16:14:13.7004354Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-05T16:14:13.7007450Z The least common ancestor is /home/runner/work/nssoc/nssoc. This will be the root directory of the artifact
+2026-10-05T16:14:13.7008666Z With the provided path, there will be 107 files uploaded
+2026-10-05T16:14:13.7009718Z Artifact name is valid!
+2026-10-05T16:14:13.7010364Z Root directory input is valid!
+2026-10-05T16:14:13.9014263Z Beginning upload of artifact content to blob storage
+2026-10-05T16:14:14.0603341Z (node:10807) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-05T16:14:14.1659583Z Uploaded bytes 162022
+2026-10-05T16:14:14.1660203Z Finished uploading artifact content to blob storage!
+2026-10-05T16:14:14.1661628Z SHA256 digest of uploaded artifact zip is 5924a4ceda17b30dc7baba25e364594e7db47ae01535774c1b94b75cb336e1c6
+2026-10-05T16:14:14.1662392Z Finalizing artifact upload
+2026-10-05T16:14:14.3635750Z Artifact rtl-results.zip successfully finalized. Artifact ID 11357587632
+2026-10-05T16:14:14.3636876Z Artifact rtl-results has been successfully uploaded! Final size is 162022 bytes. Artifact ID is 11357587632
+2026-10-05T16:14:14.3638138Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/37335176368/artifacts/11357587632
+2026-10-05T16:14:14.3850726Z Post job cleanup.
+2026-10-05T16:14:14.4851120Z [command]/usr/bin/git version
+2026-10-05T16:14:14.4894520Z git version 2.55.0
+2026-10-05T16:14:14.4963129Z Temporarily overriding HOME='/home/runner/work/_temp/717fc4b8-d6b1-47dd-9085-68bc340a859e' before making global git config changes
+2026-10-05T16:14:14.4981541Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T16:14:14.4982864Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-05T16:14:14.4995616Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T16:14:14.5034368Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T16:14:14.5304820Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T16:14:14.5338744Z http.https://github.com/.extraheader
+2026-10-05T16:14:14.5351319Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-05T16:14:14.5394856Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T16:14:14.5709688Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-05T16:14:14.5789920Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-05T16:14:14.6386218Z Cleaning up orphan processes
+2026-10-05T16:14:14.6690009Z Terminate orphan process: pid (2884) (bash)
+2026-10-05T16:14:14.6842859Z Terminate orphan process: pid (10649) (bash)
+2026-10-05T16:14:14.6877289Z Terminate orphan process: pid (10650) (timeout)
+2026-10-05T16:14:14.6912841Z Terminate orphan process: pid (10651) (make)
+2026-10-05T16:14:14.6952780Z Terminate orphan process: pid (10653) (sh)
+2026-10-05T16:14:14.6981905Z Terminate orphan process: pid (10654) (make)
+2026-10-05T16:14:14.7013861Z Terminate orphan process: pid (10681) (make)
+2026-10-05T16:14:14.7046803Z Terminate orphan process: pid (10715) (vvp)
+2026-10-05T16:14:14.7073416Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

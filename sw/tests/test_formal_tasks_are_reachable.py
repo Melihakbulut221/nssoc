@@ -25,29 +25,21 @@ forgets.
 
 import pathlib
 import re
+import json
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 FORMAL = ROOT / "hw" / "soc" / "formal"
 
 # Jobs deliberately outside the sweep, with the reason they are out.
-OPTED_OUT = {
-    "regfile_scrub.sby":
-        "docs/63 section 23: every engine stalls at step 4 on the real "
-        "codec's parity network, two of them TIMEOUT at 10,800 s. The "
-        "abstracted job regfile_scrub_abs.sby is the one in the sweep.",
-}
+POLICY = json.loads((FORMAL / "sweep-policy.json").read_text())
+OPTED_OUT = POLICY["excluded_jobs"]
 
 # Individual tasks outside the sweep, with the reason each is out. A
 # task belongs here when it is kept for the record rather than for the
 # gate -- a measurement of what an engine could not do is worth keeping
 # in the .sby and is not worth failing a sweep over.
-TASK_OPTED_OUT = {
-    ("regfile_scrub_abs.sby", "prove12"):
-        "docs/63 section 23: k-induction at depth 12 returned "
-        "DONE (UNKNOWN, rc=4) -- it neither proved nor refuted. The "
-        "unbounded proof is prove_pdr, which closes in 44 s and is what "
-        "the sweep runs.",
-}
+TASK_OPTED_OUT = {tuple(key.split(":")): value
+                  for key, value in POLICY["excluded_tasks"].items()}
 
 
 def _tasks(sby_text):

@@ -1,0 +1,13 @@
+{
+  "status": "REJECT_GENERATOR_ONE_SIDED_CLEARANCE_ASSERTION",
+  "run": 38693022160,
+  "source_commit": "c007fda6e7f3e19c2cb0a83a0f6438cf4a0b3cdc",
+  "summary_asset": 642935259,
+  "summary_sha256": "c6ef0ee9d78f21f08f2ba5a64c65c48be3968032b83d53760246755400182f82",
+  "archive_asset": 642935091,
+  "error": "RuntimeError('generation failed with exit1')",
+  "native_drc_lvs_ran": false,
+  "diagnosis": "Generation.log fails original riser_x+4<min(allterminalx)-4 assertion. New external avss terminalx=-19.2 lies left of riserx=-10. Centre separation9.2um retains old8um exclusion; guard must accept either side without reducing distance.",
+  "replacement": "all(abs(x-riser_x)>8.0 for every terminal)",
+  "adopted": false
+}

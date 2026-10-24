@@ -1,0 +1,53 @@
+{
+  "baseline_path": "scripts/cloud_cdr_sampler_headroom.py",
+  "baseline_sha256": "56856a0c6f6846a1b1ec939c72c9c853e55722b5be7a9d474f49300bc4cbc5df",
+  "candidate_path": "scripts/cloud_cdr_sampler_bleed.py",
+  "candidate_sha256": "f4587fac6158c4102d97a5857b6dd91282f439b71108005e5a3ee2a778b0fdce",
+  "edits": [
+    {
+      "before": "rx_sampler_headroom_v4.spice",
+      "after": "rx_sampler_bleed_v5.spice",
+      "count": 1
+    },
+    {
+      "before": "30be15f01bac35e18b353d2083d21df6737428bcc0b94cea1e64c45856809cbf",
+      "after": "160cabecd3c44f4e9b00c34504790cb9389a2edf39839083acd4b153fb66ee4f",
+      "count": 1
+    },
+    {
+      "before": "headroom_v4",
+      "after": "bleed_v5",
+      "count": 4
+    },
+    {
+      "before": "{'nssoc_cml_latch_bleed_v5','nssoc_rx_sampler_bleed_v5'}",
+      "after": "{'nssoc_cml_latch_bleed_v5','nssoc_cml_slave_bleed_v5','nssoc_rx_sampler_bleed_v5'}",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-sampler-headroom-",
+      "after": "cloud-cdr-sampler-bleed-",
+      "count": 1
+    },
+    {
+      "before": "from check_cdr_sampler_headroom_source import check",
+      "after": "from check_cdr_sampler_bleed_source import check",
+      "count": 1
+    },
+    {
+      "before": "Stronger native input pullups L2.4um instead of3.6um;",
+      "after": "Slave-only native emitter bleed length9.6um instead of38.4um; stronger native input pullups L2.4um instead of3.6um;",
+      "count": 1
+    },
+    {
+      "before": "PASS_NATIVE_HEADROOM_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "after": "PASS_NATIVE_SLAVE_BLEED_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "count": 1
+    },
+    {
+      "before": "REJECTED_NATIVE_HEADROOM_STRESS",
+      "after": "REJECTED_NATIVE_SLAVE_BLEED_STRESS",
+      "count": 1
+    }
+  ]
+}

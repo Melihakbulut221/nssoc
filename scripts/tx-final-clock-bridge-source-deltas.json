@@ -1,0 +1,216 @@
+[
+  {
+    "baseline_path": "hw/soc/flow/make_pcie_tx_clock_reference_v1.py",
+    "baseline_sha256": "cff3646c54143641a392092a81b54423e50e88a8f7514d525f0915ebb9f1f155",
+    "candidate_path": "hw/soc/flow/make_pcie_tx_final_clock_bridge_v1.py",
+    "candidate_sha256": "4695732bdeb2c48ab107afeb37870d00acfc744746ae4b9875ae28d8bbeaae94",
+    "edits": [
+      {
+        "before": "Generate the native clock reference/feed: one HBT, two resistors, three taps.",
+        "after": "Generate one native differential clock-load resistor and one substrate tap.",
+        "count": 1
+      },
+      {
+        "before": "PORTS = [\"avdd\", \"cm\", \"avss\", \"sub\"]",
+        "after": "PORTS = [\"sp\", \"sn\", \"sub\"]",
+        "count": 1
+      },
+      {
+        "before": "TOP = \"nssoc_tx_clock_reference_layout_v1\"",
+        "after": "TOP = \"nssoc_tx_final_clock_bridge_layout_v1\"",
+        "count": 1
+      },
+      {
+        "before": "OFFSET_LENGTHS = {\"l6p25\": \"6.25u\", \"l6p5\": \"6.5u\", \"l6p2\": \"6.2u\", \"l5p9\": \"5.9u\", \"l5p7\": \"5.7u\"}\nCIRCUIT = \"hw/soc/analog/pcie/tx_clock_common_bias_v3.spice\"\nCIRCUIT_SHA256 = \"da579518bd5140afc4e68545020524c3877a0119e2786c04833bc2e3e26ff199\"\nFEED = \"hw/soc/analog/pcie/tx_clock_bias_feed_v2.spice\"\nFEED_SHA256 = \"650579e07ec3c52c9ae1f429c3c9c56bec5b8761eae953bac33d08e0dbc4b8cc\"\n\n\ndef sha(path):\n    return hashlib.sha256(path.read_bytes()).hexdigest()\n\n\ndef devices(reference, feed, variant):\n    assert hashlib.sha256(reference.encode()).hexdigest() == CIRCUIT_SHA256\n    assert hashlib.sha256(feed.encode()).hexdigest() == FEED_SHA256\n    rows = []\n    expected = [\n        [\"XREF\", \"cm\", \"cm\", \"er\", \"sub\", \"npn13G2\", \"Nx=1\"],\n        [\"XOFFSET\", \"er\", \"avss\", \"sub\", \"rppd\", \"w=4u\", \"l=6.5u\", \"b=0\", \"sw_et=1\"],\n        [\"XFEED\", \"avdd\", \"cm\", \"sub\", \"rppd\", \"w=4u\", \"l=14.5u\", \"b=0\", \"sw_et=1\"],\n    ]\n    actual = [line.split() for text in (reference, feed) for line in text.splitlines()\n              if line.strip().startswith(\"X\")]\n    assert actual == expected, \"Unexpected clock reference/feed topology\"\n    if variant == \"l6p25\":\n        trimmed = Path(__file__).resolve().parents[3] / \"hw/soc/analog/pcie/tx_clock_common_bias_trim625_v1.spice\"\n        assert sha(trimmed) == \"597ecb6d90aed4f6fe0ed0f425a5925cd836969cbd9502a9ebffa54ef90719ca\"\n        changed = [list(r) for r in expected]\n        assert changed[1][6] == \"l=6.5u\"\n        changed[1][6] = \"l=6.25u\"\n        native = [line.split() for text in (trimmed.read_text(), feed) for line in text.splitlines() if line.strip().startswith(\"X\")]\n        assert native == changed, \"Native headroom clock differs beyond offset length\"\n\n    for fields in actual:\n        count = 4 if fields[0] == \"XREF\" else 3\n        row = dict(path=\"xclock.\" + fields[0].lower(), model=fields[count+1].lower(),\n                   nets=fields[1:count+1],\n                   params={k.lower(): v for k,v in (p.split(\"=\") for p in fields[count+2:])})\n        if fields[0] == \"XOFFSET\":\n            row[\"params\"][\"l\"] = OFFSET_LENGTHS[variant]\n        rows.append(row)\n    assert len(rows) == 3\n    return rows\n\n",
+        "after": "CIRCUIT = \"hw/soc/analog/pcie/tx_final_clock_bridge_v1.spice\"\n\ndef sha(path):\n    return hashlib.sha256(path.read_bytes()).hexdigest()\n\ndef devices(reference):\n    rows=[l.split()for l in reference.splitlines()if l.startswith(\"X\")]\n    assert rows==[[\"XBRIDGE\",\"sp\",\"sn\",\"sub\",\"rppd\",\"w=6u\",\"l=1.2u\",\"b=0\",\"sw_et=1\"]]\n    return [dict(path=\"xclock.xbridge\",model=\"rppd\",nets=[\"sp\",\"sn\",\"sub\"],\n        params=dict(w=\"6u\",l=\"1.2u\",b=\"0\",sw_et=\"1\"))]\n\n",
+        "count": 1
+      },
+      {
+        "before": "    parser.add_argument(\"--variant\", choices=list(OFFSET_LENGTHS), required=True)\n",
+        "after": "",
+        "count": 1
+      },
+      {
+        "before": "    feed = R / FEED\n    rows = devices(source.read_text(), feed.read_text(), args.variant)",
+        "after": "    rows = devices(source.read_text())",
+        "count": 1
+      },
+      {
+        "before": "        feed,\n",
+        "after": "",
+        "count": 1
+      },
+      {
+        "before": "    if args.variant == \"l6p25\":\n        inputs.append(R / \"hw/soc/analog/pcie/tx_clock_common_bias_trim625_v1.spice\")\n",
+        "after": "",
+        "count": 1
+      },
+      {
+        "before": "            assert net == \"er\"",
+        "after": "            raise AssertionError(\"Unexpected non-port conductor\")",
+        "count": 1
+      },
+      {
+        "before": "        (\"POWER\", \"INOUT\")\n        if n == \"avdd\"\n        else (\"GROUND\", \"INOUT\")\n        if n in [\"avss\", \"sub\"]\n        else (\"SIGNAL\", \"OUTPUT\" if n == \"cm\" else \"INPUT\")",
+        "after": "        (\"GROUND\", \"INOUT\") if n == \"sub\" else (\"SIGNAL\", \"INOUT\")",
+        "count": 1
+      },
+      {
+        "before": "                substrate_contacts=3,\n                variant=args.variant,\n                source_topology=\"reference_v3_plus_feed_v2\",\n                declared_changes=[] if args.variant == \"l6p5\" else [dict(device=\"XOFFSET\", parameter=\"l\", before=\"6.5u\", after=OFFSET_LENGTHS[args.variant])],\n                native_body_mapping=\"All three device bodies connect to BULK through three explicit finite ptap1 contacts; sub and avss stay distinct\",",
+        "after": "                substrate_contacts=1,\n                source_topology=\"one_differential_bridge_resistor_w6_l1p2\",\n                native_body_mapping=\"Native resistor body connects to BULK with one explicit finite ptap1 contact; sp and sn remain distinct\",",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "baseline_path": "hw/soc/flow/check_pcie_tx_clock_reference_v1.py",
+    "baseline_sha256": "644f5b09ff34f3aedb6b2619f2bf69ae0b39381157f98138e217c9bd6403bc73",
+    "candidate_path": "hw/soc/flow/check_pcie_tx_final_clock_bridge_v1.py",
+    "candidate_sha256": "4c30d20713d3de4845cb02c64d738f8d6a7e54f4ec7d41d9abf47bed83b886ef",
+    "edits": [
+      {
+        "before": "Native clock reference/feed DRC/LVS and real reference/geometry faults.",
+        "after": "Native differential clock bridge DRC/LVS and real reference/geometry faults.",
+        "count": 1
+      },
+      {
+        "before": "TOP = \"nssoc_tx_clock_reference_layout_v1\"",
+        "after": "TOP = \"nssoc_tx_final_clock_bridge_layout_v1\"",
+        "count": 1
+      },
+      {
+        "before": "PORTS = [\"avdd\", \"cm\", \"avss\", \"sub\"]",
+        "after": "PORTS = [\"sp\", \"sn\", \"sub\"]",
+        "count": 1
+      },
+      {
+        "before": "def reference_fault(text, name):\n    lines = text.splitlines(keepends=True)\n    prefix = \"RD1 \" if name == \"wrong_offset_length\" else \"QD0 \"\n    hits = [i for i, l in enumerate(lines) if l.startswith(prefix)]\n    assert len(hits) == 1\n    i = hits[0]\n    if name == \"wrong_finger_count\":\n        assert lines[i].count(\"Nx=1\") == 1\n        lines[i] = lines[i].replace(\"Nx=1\", \"Nx=2\")\n    elif name == \"wrong_offset_length\":\n        lengths = re.findall(r\"(?<!\\S)l=(\\S+)\", lines[i])\n        assert len(lengths) == 1 and lengths[0] in (\"6.5u\", \"6.25u\", \"6.2u\", \"5.9u\", \"5.7u\")\n        lines[i], count = re.subn(r\"(?<!\\S)l=\\S+\", \"l=7u\", lines[i])\n        assert count == 1\n    elif name == \"missing_hbt\":\n        lines[i] = \"\"\n    else:\n        raise ValueError(name)\n    return \"\".join(lines)\n\n\n",
+        "after": "def reference_fault(text, name):\n    lines=text.splitlines(keepends=True)\n    hits=[i for i,l in enumerate(lines)if l.startswith(\"RD0 \")]\n    assert len(hits)==1\n    i=hits[0]\n    if name==\"wrong_width\":\n        assert lines[i].count(\"w=6u\")==1\n        lines[i]=lines[i].replace(\"w=6u\",\"w=7u\")\n    elif name==\"wrong_length\":\n        assert lines[i].count(\"l=1.2u\")==1\n        lines[i]=lines[i].replace(\"l=1.2u\",\"l=1.6u\")\n    elif name==\"missing_resistor\":lines[i]=\"\"\n    else:raise ValueError(name)\n    assert \"\".join(lines)!=text\n    return \"\".join(lines)\n\n\n",
+        "count": 1
+      },
+      {
+        "before": "q_open",
+        "after": "signal_open",
+        "count": 3
+      },
+      {
+        "before": "rail_short",
+        "after": "signal_short",
+        "count": 3
+      },
+      {
+        "before": "ys['cm']",
+        "after": "ys['sp']",
+        "count": 1
+      },
+      {
+        "before": "min(ys['avdd'],ys['avss'])",
+        "after": "min(ys['sp'],ys['sn'])",
+        "count": 1
+      },
+      {
+        "before": "max(ys['avdd'],ys['avss'])",
+        "after": "max(ys['sp'],ys['sn'])",
+        "count": 1
+      },
+      {
+        "before": "make_pcie_tx_clock_reference_v1.py",
+        "after": "make_pcie_tx_final_clock_bridge_v1.py",
+        "count": 1
+      },
+      {
+        "before": "wrong_finger_count",
+        "after": "wrong_width",
+        "count": 2
+      },
+      {
+        "before": "wrong_offset_length",
+        "after": "wrong_length",
+        "count": 2
+      },
+      {
+        "before": "missing_hbt",
+        "after": "missing_resistor",
+        "count": 2
+      },
+      {
+        "before": "result[\"circuits\"][0][key] != 6",
+        "after": "result[\"circuits\"][0][key] != 2",
+        "count": 1
+      },
+      {
+        "before": "PASS_NATIVE_CLOCK_REFERENCE6_DRC_LVS_AND_SIX_FAULTS_NOT_ELECTRICAL_ACCEPTANCE",
+        "after": "PASS_NATIVE_CLOCK_BRIDGE2_DRC_LVS_AND_SIX_FAULTS_NOT_ELECTRICAL_ACCEPTANCE",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "baseline_path": "scripts/cloud_tx_clock_reference_physical.py",
+    "baseline_sha256": "e98f28b346f70634a673fb7ec0c17dfd50296b309c37f0f7c88d674b7f291035",
+    "candidate_path": "scripts/cloud_tx_final_clock_bridge_physical.py",
+    "candidate_sha256": "20de7825014ccac5d365d7ef0caa2c03d8f9d3755599209313d28e1737552798",
+    "edits": [
+      {
+        "before": "Build and physically check the actual native TX clock reference in cloud.",
+        "after": "Build and physically check the native final-clock differential bridge in cloud.",
+        "count": 1
+      },
+      {
+        "before": "    parser=argparse.ArgumentParser();parser.add_argument('--variant',choices=['l6p5','l6p25','l6p2','l5p9','l5p7'],required=True);args=parser.parse_args()",
+        "after": "    argparse.ArgumentParser().parse_args()",
+        "count": 1
+      },
+      {
+        "before": "out=ROOT/('hw/soc/out/cloud-tx-clock-reference-'+args.variant)",
+        "after": "out=ROOT/'hw/soc/out/cloud-tx-final-clock-bridge'",
+        "count": 1
+      },
+      {
+        "before": "variant=args.variant,",
+        "after": "geometry='one_rppd_w6_l1p2_plus_one_ptap',",
+        "count": 1
+      },
+      {
+        "before": "        # Recover the exact native launch failure in the cloud, without downloading\n        # result archives to the user's machine or changing the physical source.\n        import compare_cloud_routed_endpoints as reports\n        reports.OUT=out\n        failed,proof=reports.restore_report('tx-clock-reference-l6p2',38941349787,\n            '3c710802b068b4595cbdd4d07a80c56cbd979eccdb765c8362d8f52e9a622052',\n            'd97e5576b5e14caf235700740b08c1b282d7c85d4739a94c3f97be8fd4c30936',\n            out/'failed-launch',('check/drc/run.log',))\n        assert failed['status']=='FAIL_OR_ERROR'\n        assert failed['physical_checks']['steps']['drc']['execution']['returncode']==127\n        record['failed_launch_recovery']=proof\n        record['failed_native_launch_log']=(out/'failed-launch/check/drc/run.log').read_text()\n        print('PRESERVED ORIGINAL NATIVE LAUNCH FAILURE:',record['failed_native_launch_log'],flush=True)\n        save()\n",
+        "after": "",
+        "count": 1
+      },
+      {
+        "before": "make_pcie_tx_clock_reference_v1.py",
+        "after": "make_pcie_tx_final_clock_bridge_v1.py",
+        "count": 1
+      },
+      {
+        "before": "check_pcie_tx_clock_reference_v1.py",
+        "after": "check_pcie_tx_final_clock_bridge_v1.py",
+        "count": 1
+      },
+      {
+        "before": "ROOT/'hw/soc/analog/pcie/tx_clock_common_bias_v3.spice',ROOT/'hw/soc/analog/pcie/tx_clock_bias_feed_v2.spice'",
+        "after": "ROOT/'hw/soc/analog/pcie/tx_final_clock_bridge_v1.spice'",
+        "count": 1
+      },
+      {
+        "before": "        if args.variant=='l6p25':sources.append(ROOT/'hw/soc/analog/pcie/tx_clock_common_bias_trim625_v1.spice')\n",
+        "after": "",
+        "count": 1
+      },
+      {
+        "before": ",'--variant',args.variant",
+        "after": "",
+        "count": 1
+      },
+      {
+        "before": "PASS_NATIVE_CLOCK_REFERENCE6_DRC_LVS_AND_SIX_FAULTS_NOT_ELECTRICAL_ACCEPTANCE",
+        "after": "PASS_NATIVE_CLOCK_BRIDGE2_DRC_LVS_AND_SIX_FAULTS_NOT_ELECTRICAL_ACCEPTANCE",
+        "count": 1
+      },
+      {
+        "before": "PASS_NATIVE_CLOCK_REFERENCE_PHYSICAL_GATES_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE",
+        "after": "PASS_NATIVE_CLOCK_BRIDGE_PHYSICAL_GATES_NOT_ELECTRICAL_OR_PHY_ACCEPTANCE",
+        "count": 1
+      }
+    ]
+  }
+]

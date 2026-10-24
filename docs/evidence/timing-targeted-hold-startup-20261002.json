@@ -1,0 +1,576 @@
+{
+  "schema": 1,
+  "run_id": 36968724381,
+  "producer_commit": "ea0d78f4be2f808318508f020b0d81c44ff380c7",
+  "artifact": {
+    "id": 11210832238,
+    "node_id": "MDg6QXJ0aWZhY3QxMTIxMDgzMjIzOA==",
+    "name": "targeted-hold-startup-1",
+    "size_in_bytes": 597186,
+    "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11210832238",
+    "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11210832238/zip",
+    "expired": false,
+    "digest": "sha256:b91a7191e36422b92beee643bcb485437b3f5eea1faadf93682a80dead9c7bad",
+    "created_at": "2026-10-02T05:25:55Z",
+    "updated_at": "2026-10-02T05:25:55Z",
+    "expires_at": "2026-11-01T05:25:53Z",
+    "workflow_run": {
+      "id": 36968724381,
+      "repository_id": 1364721142,
+      "head_repository_id": 1364721142,
+      "head_branch": "codex/complete-open-work",
+      "head_sha": "ea0d78f4be2f808318508f020b0d81c44ff380c7"
+    }
+  },
+  "whole_zip_sha256_verified": true,
+  "selected_member_crc_and_capture_pins_verified": true,
+  "method_files": {
+    ".github/workflows/timing-hold-diagnostic.yml": {
+      "bytes": 5961,
+      "sha256": "6812068c3abe067d3c2cb00beca5f7c73c34116bd8f9de079b43306251e05359"
+    },
+    "scripts/run_cloud_hold_diagnostic.py": {
+      "bytes": 37240,
+      "sha256": "61644cc59ae15f7a9166d0e5f8558c5c755581d69ae516725e7e3b768b69abe7"
+    },
+    "scripts/run_cloud_timing_experiment.py": {
+      "bytes": 32423,
+      "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+    },
+    "hw/soc/pnr/timing_hold_reproducibility.tcl": {
+      "bytes": 16850,
+      "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+    },
+    "hw/soc/pnr/timing_hold_diagnostic_step.tcl": {
+      "bytes": 5244,
+      "sha256": "691e0b2106ec5796fd9032bb2c2c6d1b4e2b70039efc8d005c6e0c88fc77079e"
+    },
+    "sw/tests/hold_reproducibility_native.py": {
+      "bytes": 4906,
+      "sha256": "5a3b79315d5eb0e291ac9cae1caf6d6d5d5a35c372f53c3f982d1af2b8852225"
+    },
+    "sw/tests/timing_hold_reproducibility_native.tcl": {
+      "bytes": 5861,
+      "sha256": "1d35aaba397502bcd0e1a20f03982b33347219b3a2f13dce04061a347b7cd6f5"
+    },
+    ".github/workflows/timing-targeted-hold.yml": {
+      "bytes": 5909,
+      "sha256": "e9ca7b3be6bb0637b00f1f92347815233612864b1f056e70ec8e8b514418b0fa"
+    },
+    "scripts/run_cloud_targeted_hold.py": {
+      "bytes": 21082,
+      "sha256": "e765ad5d402be75b06580009e9846b74d947da8d1c3500529fcca910084174d0"
+    },
+    "scripts/compare_full_hold_endpoints.py": {
+      "bytes": 11551,
+      "sha256": "b51ca5a52d53b166623935bbfebe1275c24d1e43f967ec4bf3fbb829fa1144cb"
+    },
+    "scripts/run_timing_experiments.py": {
+      "bytes": 29034,
+      "sha256": "e81f2fe7cca268c4dc54c806b9ab6a91f1da37482555d413fae1c07329b306cf"
+    },
+    "scripts/timing_process_guard.py": {
+      "bytes": 8266,
+      "sha256": "efe0e0216774714de5112f739b21fade56b2819f5f0b8f6a4b6bf0ea4cd72f08"
+    },
+    "hw/soc/pnr/timing_targeted_hold_probe_step.tcl": {
+      "bytes": 9030,
+      "sha256": "72dadcd5a73a308ad95a6179344c71e3ccbbe5de1ef4f3a2f23468d4bf870ff1"
+    },
+    "hw/soc/pnr/timing_targeted_hold_probe_helpers.tcl": {
+      "bytes": 8771,
+      "sha256": "fe96c79ee4c56e816edc39c0269244ae41daa837f563427324bc37cfa29c3ab0"
+    },
+    "hw/soc/pnr/timing_repair_experiment.tcl": {
+      "bytes": 9382,
+      "sha256": "77a9d94391285d9ca5e7fe0cab70517353213d62c3040ed46dd9fe4302a366bb"
+    },
+    "sw/tests/timing_hold_targeted_native.tcl": {
+      "bytes": 10436,
+      "sha256": "066982c820626c0690ae8bcb3e0893189054e264dc1845f27982fa8a532fa3ac"
+    }
+  },
+  "status": "RUNNING",
+  "recorded": "2026-10-02T05:25:53.250334+00:00",
+  "phase": "native-diagnostic",
+  "error": null,
+  "complete_diagnostic_evidence": false,
+  "controls": {
+    "base": {
+      "status": "PASS_NATIVE_HOLD_DIAGNOSTIC_CONTROLS",
+      "cases": {
+        "complete_coverage": {
+          "passed": true
+        },
+        "bad_coverage": {
+          "passed": true
+        },
+        "corrupt_units": {
+          "passed": true
+        },
+        "route_mutation": {
+          "passed": true
+        }
+      },
+      "pure_replay": "PASS"
+    },
+    "targeted": {
+      "status": "PASS_TARGETED_NATIVE_GATE",
+      "returncode": 0,
+      "native_identity": {
+        "launcher": {
+          "path": "/nix/store/jgrv88sgsa97cvxdk0jz9rnxss19vw1p-devshell-dir/bin/openroad",
+          "bytes": 16032,
+          "sha256": "e41c3de2e496258357b41e9e9bdc8d9036cff6f53ffda2c2f61daef5bc827afc"
+        },
+        "native_entry": {
+          "path": "/nix/store/qqz49dx8dpx4q9i5wriif091n7iaa0ld-openroad-2026-02-17/bin/openroad",
+          "bytes": 16088,
+          "sha256": "b1daf182a2702687868c777a722924afeb45f85fc125029357b28a5f73ba8860"
+        },
+        "actual_elf": {
+          "path": "/nix/store/qqz49dx8dpx4q9i5wriif091n7iaa0ld-openroad-2026-02-17/bin/.openroad-wrapped",
+          "bytes": 103633024,
+          "sha256": "25a5e9ba1cbb76b820af97cfc8d87b7a2d1bc1203091d83ee4eee859c2e9a04b"
+        }
+      },
+      "pure_replay": "PASS",
+      "wrapper_files_regular": true
+    }
+  },
+  "matched_before": null,
+  "markers": {
+    "NSSOC_TARGETED_NATIVE_GATE_PASS_BEFORE_C10_LOAD": 0,
+    "NSSOC_TARGETED_HOLD_PROBE_REPAIR_BEGIN": 0,
+    "NSSOC_TARGETED_HOLD_PROBE_REPAIR_END": 0,
+    "NSSOC_TARGETED_HOLD_PROBE_COMPLETE_NO_ADOPTION": 0
+  },
+  "native_error_lines": [],
+  "selected_files": {
+    "capture.json": {
+      "bytes": 25442,
+      "sha256": "a007ea3493dc58033b605313a13ec277469dac0fb5b20977866769a54a4c57bf"
+    },
+    "launch.json": {
+      "bytes": 837,
+      "sha256": "e199c790fe29535fa56d139e326506bb4a35b33c22870764fe61ea03d5494d1e"
+    },
+    "methods/.github/workflows/timing-hold-diagnostic.yml": {
+      "bytes": 5961,
+      "sha256": "6812068c3abe067d3c2cb00beca5f7c73c34116bd8f9de079b43306251e05359"
+    },
+    "methods/.github/workflows/timing-targeted-hold.yml": {
+      "bytes": 5909,
+      "sha256": "e9ca7b3be6bb0637b00f1f92347815233612864b1f056e70ec8e8b514418b0fa"
+    },
+    "methods/hw/soc/pnr/timing_hold_diagnostic_step.tcl": {
+      "bytes": 5244,
+      "sha256": "691e0b2106ec5796fd9032bb2c2c6d1b4e2b70039efc8d005c6e0c88fc77079e"
+    },
+    "methods/hw/soc/pnr/timing_hold_reproducibility.tcl": {
+      "bytes": 16850,
+      "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+    },
+    "methods/hw/soc/pnr/timing_repair_experiment.tcl": {
+      "bytes": 9382,
+      "sha256": "77a9d94391285d9ca5e7fe0cab70517353213d62c3040ed46dd9fe4302a366bb"
+    },
+    "methods/hw/soc/pnr/timing_targeted_hold_probe_helpers.tcl": {
+      "bytes": 8771,
+      "sha256": "fe96c79ee4c56e816edc39c0269244ae41daa837f563427324bc37cfa29c3ab0"
+    },
+    "methods/hw/soc/pnr/timing_targeted_hold_probe_step.tcl": {
+      "bytes": 9030,
+      "sha256": "72dadcd5a73a308ad95a6179344c71e3ccbbe5de1ef4f3a2f23468d4bf870ff1"
+    },
+    "methods/scripts/compare_full_hold_endpoints.py": {
+      "bytes": 11551,
+      "sha256": "b51ca5a52d53b166623935bbfebe1275c24d1e43f967ec4bf3fbb829fa1144cb"
+    },
+    "methods/scripts/run_cloud_hold_diagnostic.py": {
+      "bytes": 37240,
+      "sha256": "61644cc59ae15f7a9166d0e5f8558c5c755581d69ae516725e7e3b768b69abe7"
+    },
+    "methods/scripts/run_cloud_targeted_hold.py": {
+      "bytes": 21082,
+      "sha256": "e765ad5d402be75b06580009e9846b74d947da8d1c3500529fcca910084174d0"
+    },
+    "methods/scripts/run_cloud_timing_experiment.py": {
+      "bytes": 32423,
+      "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+    },
+    "methods/scripts/run_timing_experiments.py": {
+      "bytes": 29034,
+      "sha256": "e81f2fe7cca268c4dc54c806b9ab6a91f1da37482555d413fae1c07329b306cf"
+    },
+    "methods/scripts/timing_process_guard.py": {
+      "bytes": 8266,
+      "sha256": "efe0e0216774714de5112f739b21fade56b2819f5f0b8f6a4b6bf0ea4cd72f08"
+    },
+    "methods/sw/tests/hold_reproducibility_native.py": {
+      "bytes": 4906,
+      "sha256": "5a3b79315d5eb0e291ac9cae1caf6d6d5d5a35c372f53c3f982d1af2b8852225"
+    },
+    "methods/sw/tests/timing_hold_reproducibility_native.tcl": {
+      "bytes": 5861,
+      "sha256": "1d35aaba397502bcd0e1a20f03982b33347219b3a2f13dce04061a347b7cd6f5"
+    },
+    "methods/sw/tests/timing_hold_targeted_native.tcl": {
+      "bytes": 10436,
+      "sha256": "066982c820626c0690ae8bcb3e0893189054e264dc1845f27982fa8a532fa3ac"
+    },
+    "native-control-validation.json": {
+      "bytes": 7734,
+      "sha256": "523923ecb7151549be1f0747f34c43047b090324ab61e477675940c9932c94d6"
+    },
+    "native-controls/native/arrivals/connectivity.v": {
+      "bytes": 409,
+      "sha256": "ebcbb5ae71c34f3d322938fbc90e5279bd9f2b80bb7235afa1d681a1440dae9a"
+    },
+    "native-controls/native/arrivals/constraints.sdc": {
+      "bytes": 1476,
+      "sha256": "e24077d4b80cea5afba6f5764007b4c650c6fb88b8b710c53a70f478aac90d79"
+    },
+    "native-controls/native/arrivals/endpoints.tsv": {
+      "bytes": 349,
+      "sha256": "4501c2d479862cf1f49e0e917d0d6b8bbccc02b53927f3edb2a810e355f3b3ed"
+    },
+    "native-controls/native/arrivals/hold-endpoints.tsv": {
+      "bytes": 2555,
+      "sha256": "c135c64ba86a342200a06ed8d17a060f1a244b6adf584675014d84b1a0242406"
+    },
+    "native-controls/native/arrivals/native.json": {
+      "bytes": 2287,
+      "sha256": "2b98aedcc666eabd2a77e3d5eb6154e74de69494bd165a9133a31583c3921309"
+    },
+    "native-controls/native/arrivals/parasitics.tsv.gz": {
+      "bytes": 2658,
+      "sha256": "7b8dd98b8d7de8c010091710c8e2a81350b799a2e2c34e0dbc60bde4b8ae9b70"
+    },
+    "native-controls/native/arrivals/placement.tsv": {
+      "bytes": 167,
+      "sha256": "9b595ff3c68edb96d8a2c5bed7c30e8e830cd40074964f03062c07a21efc3992"
+    },
+    "native-controls/native/arrivals/routes.txt": {
+      "bytes": 1815,
+      "sha256": "0307ce26b605492bf3235f370c91f394376aa9687bf938b0dd453d9cfa1914e8"
+    },
+    "native-controls/native/fixture.json": {
+      "bytes": 18135,
+      "sha256": "647800ae5f7aa8bc2798f9dad585e062f715523c18548d1f5b7b3343b9ace637"
+    },
+    "native-controls/native/full_update/connectivity.v": {
+      "bytes": 409,
+      "sha256": "ebcbb5ae71c34f3d322938fbc90e5279bd9f2b80bb7235afa1d681a1440dae9a"
+    },
+    "native-controls/native/full_update/constraints.sdc": {
+      "bytes": 1476,
+      "sha256": "e24077d4b80cea5afba6f5764007b4c650c6fb88b8b710c53a70f478aac90d79"
+    },
+    "native-controls/native/full_update/endpoints.tsv": {
+      "bytes": 349,
+      "sha256": "4501c2d479862cf1f49e0e917d0d6b8bbccc02b53927f3edb2a810e355f3b3ed"
+    },
+    "native-controls/native/full_update/hold-endpoints.tsv": {
+      "bytes": 2555,
+      "sha256": "c135c64ba86a342200a06ed8d17a060f1a244b6adf584675014d84b1a0242406"
+    },
+    "native-controls/native/full_update/native.json": {
+      "bytes": 2290,
+      "sha256": "21b980fdf94336b6c9ae1a0f73aa180ad337fb8ff30ea9eeaffcfba627c1889e"
+    },
+    "native-controls/native/full_update/parasitics.tsv.gz": {
+      "bytes": 2658,
+      "sha256": "7b8dd98b8d7de8c010091710c8e2a81350b799a2e2c34e0dbc60bde4b8ae9b70"
+    },
+    "native-controls/native/full_update/placement.tsv": {
+      "bytes": 167,
+      "sha256": "9b595ff3c68edb96d8a2c5bed7c30e8e830cd40074964f03062c07a21efc3992"
+    },
+    "native-controls/native/full_update/routes.txt": {
+      "bytes": 1815,
+      "sha256": "0307ce26b605492bf3235f370c91f394376aa9687bf938b0dd453d9cfa1914e8"
+    },
+    "native-controls/native/original/connectivity.v": {
+      "bytes": 409,
+      "sha256": "ebcbb5ae71c34f3d322938fbc90e5279bd9f2b80bb7235afa1d681a1440dae9a"
+    },
+    "native-controls/native/original/constraints.sdc": {
+      "bytes": 1476,
+      "sha256": "e24077d4b80cea5afba6f5764007b4c650c6fb88b8b710c53a70f478aac90d79"
+    },
+    "native-controls/native/original/endpoints.tsv": {
+      "bytes": 349,
+      "sha256": "4501c2d479862cf1f49e0e917d0d6b8bbccc02b53927f3edb2a810e355f3b3ed"
+    },
+    "native-controls/native/original/hold-endpoints.tsv": {
+      "bytes": 2555,
+      "sha256": "c135c64ba86a342200a06ed8d17a060f1a244b6adf584675014d84b1a0242406"
+    },
+    "native-controls/native/original/native.json": {
+      "bytes": 2287,
+      "sha256": "45d2d11fd29c5cc025e91e661513da2bc0516774b6a184bd4c8273dde45e7662"
+    },
+    "native-controls/native/original/parasitics.tsv.gz": {
+      "bytes": 2658,
+      "sha256": "7b8dd98b8d7de8c010091710c8e2a81350b799a2e2c34e0dbc60bde4b8ae9b70"
+    },
+    "native-controls/native/original/placement.tsv": {
+      "bytes": 167,
+      "sha256": "9b595ff3c68edb96d8a2c5bed7c30e8e830cd40074964f03062c07a21efc3992"
+    },
+    "native-controls/native/original/routes.txt": {
+      "bytes": 1815,
+      "sha256": "0307ce26b605492bf3235f370c91f394376aa9687bf938b0dd453d9cfa1914e8"
+    },
+    "native-controls/native/repeat/connectivity.v": {
+      "bytes": 409,
+      "sha256": "ebcbb5ae71c34f3d322938fbc90e5279bd9f2b80bb7235afa1d681a1440dae9a"
+    },
+    "native-controls/native/repeat/constraints.sdc": {
+      "bytes": 1476,
+      "sha256": "e24077d4b80cea5afba6f5764007b4c650c6fb88b8b710c53a70f478aac90d79"
+    },
+    "native-controls/native/repeat/endpoints.tsv": {
+      "bytes": 349,
+      "sha256": "4501c2d479862cf1f49e0e917d0d6b8bbccc02b53927f3edb2a810e355f3b3ed"
+    },
+    "native-controls/native/repeat/hold-endpoints.tsv": {
+      "bytes": 2555,
+      "sha256": "c135c64ba86a342200a06ed8d17a060f1a244b6adf584675014d84b1a0242406"
+    },
+    "native-controls/native/repeat/native.json": {
+      "bytes": 2285,
+      "sha256": "8d8d57940762ad436937e8061d5440bb528c1352741ab7a206eb3e6d72c610a2"
+    },
+    "native-controls/native/repeat/parasitics.tsv.gz": {
+      "bytes": 2658,
+      "sha256": "7b8dd98b8d7de8c010091710c8e2a81350b799a2e2c34e0dbc60bde4b8ae9b70"
+    },
+    "native-controls/native/repeat/placement.tsv": {
+      "bytes": 167,
+      "sha256": "9b595ff3c68edb96d8a2c5bed7c30e8e830cd40074964f03062c07a21efc3992"
+    },
+    "native-controls/native/repeat/routes.txt": {
+      "bytes": 1815,
+      "sha256": "0307ce26b605492bf3235f370c91f394376aa9687bf938b0dd453d9cfa1914e8"
+    },
+    "native-controls/native/rerouted_mutation/connectivity.v": {
+      "bytes": 409,
+      "sha256": "ebcbb5ae71c34f3d322938fbc90e5279bd9f2b80bb7235afa1d681a1440dae9a"
+    },
+    "native-controls/native/rerouted_mutation/constraints.sdc": {
+      "bytes": 1476,
+      "sha256": "e24077d4b80cea5afba6f5764007b4c650c6fb88b8b710c53a70f478aac90d79"
+    },
+    "native-controls/native/rerouted_mutation/endpoints.tsv": {
+      "bytes": 351,
+      "sha256": "8b2250314277567753f6b25384b8113e951f0ace46e53c8de01fb028a4108657"
+    },
+    "native-controls/native/rerouted_mutation/hold-endpoints.tsv": {
+      "bytes": 2555,
+      "sha256": "eb59f4615fa6aa5b2aab4953d9ad40d6e1436b038b5e937e28f1aff3623c4003"
+    },
+    "native-controls/native/rerouted_mutation/native.json": {
+      "bytes": 2297,
+      "sha256": "d5a3958a3e5ad95fea91ee7ef3eaa1c1d5ed730ce4dcf4e79d31baa0f4ef9ca6"
+    },
+    "native-controls/native/rerouted_mutation/parasitics.tsv.gz": {
+      "bytes": 2650,
+      "sha256": "f8c1125bf9c428f39050fd5287328fb213b87bdab48777cea1466a254f40cecd"
+    },
+    "native-controls/native/rerouted_mutation/placement.tsv": {
+      "bytes": 167,
+      "sha256": "d376319424eb0fcefbe38d3f26372d27786701c2df8a1cd24e070ce7e740b823"
+    },
+    "native-controls/native/rerouted_mutation/routes.txt": {
+      "bytes": 1933,
+      "sha256": "7fd65d67970e343a9b92784340f3a92959c8e72c153d02e842d32f20d554d15e"
+    },
+    "native-controls/native/tiny.v": {
+      "bytes": 321,
+      "sha256": "c41e1b65b5d225dda67694889a55436296a9de85233e9fd03c8a67e776c207c3"
+    },
+    "native-controls/native.log": {
+      "bytes": 1986,
+      "sha256": "eae5a4917dcdad70fa0649fabea01e476c6d2ad2d810a5b464efc175cf7efcc8"
+    },
+    "native-controls/result.json": {
+      "bytes": 7734,
+      "sha256": "523923ecb7151549be1f0747f34c43047b090324ab61e477675940c9932c94d6"
+    },
+    "native-controls/targeted/after.sdc": {
+      "bytes": 1476,
+      "sha256": "e24077d4b80cea5afba6f5764007b4c650c6fb88b8b710c53a70f478aac90d79"
+    },
+    "native-controls/targeted/before.sdc": {
+      "bytes": 1476,
+      "sha256": "e24077d4b80cea5afba6f5764007b4c650c6fb88b8b710c53a70f478aac90d79"
+    },
+    "native-controls/targeted/blocked-setup/after.sdc": {
+      "bytes": 1477,
+      "sha256": "916c0c0cbbd48d187524c13d7655dc2df550ef9d0a0da91fcb401c559789ed1f"
+    },
+    "native-controls/targeted/blocked-setup/before.sdc": {
+      "bytes": 1477,
+      "sha256": "916c0c0cbbd48d187524c13d7655dc2df550ef9d0a0da91fcb401c559789ed1f"
+    },
+    "native-controls/targeted/blocked-setup/hold-targeted-result.tcldict": {
+      "bytes": 347,
+      "sha256": "e7b58eea53e00c9301f6b89d84eaef745a220c7d312da8c4d33a71592885b84e"
+    },
+    "native-controls/targeted/blocked-setup/hold-targeted-selection.tcldict": {
+      "bytes": 436,
+      "sha256": "fb3f9e13a7b375481c3a54b0302d2c782324c8199814d74ee6e5688fe0ece3e5"
+    },
+    "native-controls/targeted/gate.json": {
+      "bytes": 4580,
+      "sha256": "37b8771c8cb8c6fabee97a71279f3cbfeb9453f7ea8277c0335955c23f2668d6"
+    },
+    "native-controls/targeted/hold-targeted-result.tcldict": {
+      "bytes": 452,
+      "sha256": "e1ec2434fa6675e32fc6a7c8b9ac30a3d2ca71cd571177d9ef86678a084827eb"
+    },
+    "native-controls/targeted/hold-targeted-selection.tcldict": {
+      "bytes": 460,
+      "sha256": "75474f71e81733fad0488c96bcf0293443238355b46c7de6726cad150342db56"
+    },
+    "native-controls/targeted/native-budget-overrun/hold-targeted-budget-failure.tcldict": {
+      "bytes": 223,
+      "sha256": "aa7362c5a589697849d4ceff1c5941f36972aa7b7c996dc4659ca46bea66ccaa"
+    },
+    "native-controls/targeted/native-budget-overrun/hold-targeted-selection.tcldict": {
+      "bytes": 436,
+      "sha256": "84cbb1075092bfe2ac34649a24ec59d94af3864d3e63fe94f54a45c823498d9d"
+    },
+    "native-controls/targeted/native-budget-overrun/rejected-candidate.odb": {
+      "bytes": 353341,
+      "sha256": "1614bfe1e4a5749c7e4465c3392bb21547763d21e53e41e7b123bab9c6581764"
+    },
+    "native-controls/targeted/native.log": {
+      "bytes": 3966,
+      "sha256": "0fea8167ddd9f616b19a02ae6b1f1b0ca82d0749603da907ff598241dc4b699c"
+    },
+    "native-controls/targeted/no-negative-targets/hold-targeted-result.tcldict": {
+      "bytes": 223,
+      "sha256": "aec8fccf2f9468df33aa6f555dcce495e5ddf51f74e9f0856eb70c31a636d4de"
+    },
+    "native-controls/targeted/no-negative-targets/hold-targeted-selection.tcldict": {
+      "bytes": 414,
+      "sha256": "de65b83a74605e4d6cc5bfced061fe473dd1caf18f67db8989b6f082c8bc15fd"
+    },
+    "native-controls/targeted/runtime-launcher.bin": {
+      "bytes": 16032,
+      "sha256": "e41c3de2e496258357b41e9e9bdc8d9036cff6f53ffda2c2f61daef5bc827afc"
+    },
+    "native-controls/targeted/runtime-native_entry.bin": {
+      "bytes": 16088,
+      "sha256": "b1daf182a2702687868c777a722924afeb45f85fc125029357b28a5f73ba8860"
+    },
+    "native-controls/targeted/tiny-after.odb": {
+      "bytes": 352691,
+      "sha256": "dd227f84e49887c9d21f4e9077efdaefd572b8af6c2fc3193231568fd8a9bb52"
+    },
+    "native-controls/targeted/tiny-after.v": {
+      "bytes": 475,
+      "sha256": "388cd5f66fb005dbd5614d3faafd5044975bea13b83690afb0bf7b2f32f76a90"
+    },
+    "native-controls/targeted/tiny.v": {
+      "bytes": 321,
+      "sha256": "c41e1b65b5d225dda67694889a55436296a9de85233e9fd03c8a67e776c207c3"
+    },
+    "native-controls/targeted.log": {
+      "bytes": 3966,
+      "sha256": "0fea8167ddd9f616b19a02ae6b1f1b0ca82d0749603da907ff598241dc4b699c"
+    },
+    "native-controls.log": {
+      "bytes": 37,
+      "sha256": "9eccea3b1d977edb27ddea633feeb8eafb9bfec654f7c7675d64adbebd2e891a"
+    },
+    "native-diagnostic.log": {
+      "bytes": 13863,
+      "sha256": "0546cbe9f32e6a181b98c977643bb3fa3546a2a546a88eca5ec23c5fb7fec9cf"
+    },
+    "observer.json": {
+      "bytes": 132,
+      "sha256": "7378cb982cc848b9bec57c913d5fd37d87d682a0eb540d5afe816c1bb4e1a549"
+    },
+    "prepared/config.json": {
+      "bytes": 10946,
+      "sha256": "ff711c8e9869c9f29cb13a726e39a952e2ec4c880f9b1b3095733e822f09a52f"
+    },
+    "prepared/state.json": {
+      "bytes": 5284,
+      "sha256": "f1e8b9fc6eb260ea80219aae2aef246712a9d03f5a0ff9cc364516c0afe2bedd"
+    },
+    "result.json": {
+      "bytes": 6068,
+      "sha256": "c726f25da2524811142b6b17570a795a821c0fbeb6b92887ca446774349e35f5"
+    },
+    "run/01-openroad-resizertimingpostgrt/COMMANDS": {
+      "bytes": 249,
+      "sha256": "3aca1c3d5a2ab3c880db6653f79e6c8eb44f0494e3a43c2971a496a7b3d2b6f3"
+    },
+    "run/01-openroad-resizertimingpostgrt/_env.tcl": {
+      "bytes": 14779,
+      "sha256": "9ff405b2c7d9ed3458a8746a5f2ae67796eec95a45461d870d21219032e76c71"
+    },
+    "run/01-openroad-resizertimingpostgrt/config.json": {
+      "bytes": 19730,
+      "sha256": "ae2fc4250bc953666f1fd5d9029356aea3cec5fefcae894de5ae3104c75b297a"
+    },
+    "run/01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run/01-openroad-resizertimingpostgrt/state_in.json": {
+      "bytes": 5539,
+      "sha256": "57781730963d61d2002dbfed82a61eb13a4948ecbb9c7b5641c917414af3a88a"
+    },
+    "run/error.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "run/flow.log": {
+      "bytes": 2832,
+      "sha256": "74c642a35dab72655df3917645a8918afb2b2c48d00648e80ca07971f9219e9e"
+    },
+    "run/resolved.json": {
+      "bytes": 31889,
+      "sha256": "7285f6ae0915a2998ea1e8eebd721e9b562ccdcce5690cede5f7b13ad25f6ccf"
+    },
+    "run/warning.log": {
+      "bytes": 724,
+      "sha256": "7ea37c018c76a8c15ce3e9df3c6ed0b8d2a02c558e235c6d1c1fc7a23a35c6a1"
+    },
+    "source-config.json": {
+      "bytes": 10274,
+      "sha256": "52456f4e2e7c281926bcbbb4f70c3bdd34d030989bea5bb168534a32a08b3c6c"
+    },
+    "source-manifest.json": {
+      "bytes": 1089565,
+      "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+    },
+    "source-state.json": {
+      "bytes": 4612,
+      "sha256": "ff11d3dd85d9a3068e89418ab1e3b3b12e3a409ac6fc50626f8a77ce8e5a3157"
+    },
+    "worker.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "range_bytes": 597186,
+  "range_requests": 1,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "note": "Immutable snapshot only; live native work can have advanced after capture. OpenROAD step log is still buffered/empty; console independently records the native gate pass. No matched_before export is in startup snapshot.",
+  "console_markers": {
+    "NSSOC_TARGETED_NATIVE_GATE_PASS_BEFORE_C10_LOAD": 1,
+    "NSSOC_TARGETED_HOLD_PROBE_REPAIR_BEGIN": 0,
+    "NSSOC_TARGETED_HOLD_PROBE_REPAIR_END": 0,
+    "NSSOC_TARGETED_HOLD_PROBE_COMPLETE_NO_ADOPTION": 0
+  },
+  "openroad_step_log_buffered_empty": true
+}

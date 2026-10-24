@@ -1,0 +1,73 @@
+{
+  "run": 38826401425,
+  "job": 116734768284,
+  "source": "4215feec880bd52af4fedc3e2c041ba6581ffe05",
+  "status": "FAILED_DEF_ENTRY_INDENTATION_COUNT",
+  "accepted": false,
+  "summary_sha256": "2603bd44843d998560558a51b1b02fffff6d00043e425441cdfa92f9542e86bd",
+  "summary": {
+    "status": "FAIL_OR_ERROR",
+    "accepted": false,
+    "source_run": 38788529905,
+    "source_head": "4215feec880bd52af4fedc3e2c041ba6581ffe05",
+    "controls": {
+      "positive_exact_change": true,
+      "negative_controls": [
+        "coordinate",
+        "missing_route",
+        "wrong_class",
+        "missing_nets",
+        "count",
+        "duplicate_nets"
+      ]
+    },
+    "full_serial_phy_complete": false,
+    "final_timing_complete": false,
+    "scope": "Native FIXED encoding and exact existing design preservation only. No physical ECO or reroute, no fresh RC, no signoff. Original antenna and global overflow failures remain open.",
+    "source_sha256": "4ecf6f150c7288c43b99fb944bec72e5ad45f693234181ff47c1df7566957493",
+    "source_summary_sha256": "e7ba93109d4aa057dd421fff97d1deb3275743ed8beecb3980f9e7fe36c632b2",
+    "source_archive_sha256": "ce430c94dd6da745f2a15420eb5f8031842e9ddd78b6ad70aa0bb56634c0b964",
+    "before_warnings": [
+      "[WARNING ORD-0039] .openroad ignored with -python"
+    ],
+    "before": {
+      "counts": {
+        "instances": 113791,
+        "nets": 113863,
+        "wired_nets": 113556
+      },
+      "instances_sha256": "9a6cf2a978874eed787e37f824997d064825b32d06e5ae8b13da58286ec8af8e",
+      "nets_sha256": "dd5ce9f06114f4e9730539d37f581eba47e019da7ce705384d2b4828d8dc6bb8",
+      "fixed_data_sha256": "70c5c35c41837048ffd08ebb41bbaa2235789b6f14d3535afe9bfaf226ef20e8",
+      "wire_type_net_counts": {
+        "ROUTED": 113556
+      },
+      "encoded_path_counts": {
+        "ROUTED": 1787710
+      },
+      "metadata_only_negative_control": [
+        {
+          "net": "$abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132399",
+          "metadata": "FIXED",
+          "encoded": "ROUTED"
+        }
+      ],
+      "metadata_only_negative_control_rejected": true
+    },
+    "export-def_warnings": [],
+    "error": "AssertionError('NETS count mismatch')",
+    "outputs": {
+      "export-def.log": "c578139f95817d2b3b47ddf72cee609cd74079e0f8a8ab6ab9ab83fa3f0aebad",
+      "before.json": "5608b60c5b9878052100318c4f4a82aa0c99fd3e25a49ed1eeda0af3b09ebeed",
+      "before.log": "13fed0b24f3a5fbbc7f60190f3fdeeda9fbf01d787b98e924dc4272507ddbd05",
+      "export-def.tcl": "958fef5304012d97ddd51a3ce9695460ad9365062c9b6e1c70db3900a591746c",
+      "before.def": "0f8db02230efda1a76ddbb5dbb367500b82fba6a3195bffaa8485e336b6b548d",
+      "source/routed.odb": "4ecf6f150c7288c43b99fb944bec72e5ad45f693234181ff47c1df7566957493",
+      "source/summary.json": "e7ba93109d4aa057dd421fff97d1deb3275743ed8beecb3980f9e7fe36c632b2"
+    }
+  },
+  "archive_sha256": "0f1fe669123cc0c59672b2abe41bd77d26fa41d88a0fad5a74d01fff42605883",
+  "manifest_sha256": "7dcd8f4f6e6387b23f659651982d0ca9cc66420c1ddcf22ed600efb244f0af68",
+  "cause": "Native DefOut::Impl::writeNet emits four spaces before dash (defout_impl.cpp1843-1846); parser incorrectly expected column0. Counts must still match exactly. Native metadata-only negative control passed; original113556routes areROUTED.",
+  "correction": "Accept horizontal indentation before NETS entry dash; include native indentation in synthetic positive and negative controls. No conversion or route acceptance occurred."
+}

@@ -1,0 +1,288 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_sampler_hybrid_tail_v1.py",
+      "baseline_sha256": "dacc174b0adc1d90f691b20e5d37c0e0d4dd5a723e5aac6e6c9619d138a5071d",
+      "candidate_path": "hw/soc/flow/make_pcie_sampler_parallel_drive_v8.py",
+      "candidate_sha256": "6f41bda0456a29fd9238d1057021b9011c8f2e2de1f4a11e9a223825fe83e469",
+      "edits": [
+        {
+          "before": "Native12HBT/3LVNMOS/12rppd hybrid sampler",
+          "after": "Native16HBT/9LVNMOS/12rppd parallel-drive sampler",
+          "count": 1
+        },
+        {
+          "before": "nssoc_rx_sampler_hybrid_tail_layout_v1",
+          "after": "nssoc_rx_sampler_parallel_drive_layout_v8",
+          "count": 1
+        },
+        {
+          "before": "rx_sampler_hybrid_tail_v1.spice",
+          "after": "rx_sampler_parallel_drive_v8.spice",
+          "count": 1
+        },
+        {
+          "before": "dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5",
+          "after": "876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3",
+          "count": 1
+        },
+        {
+          "before": "TAPS = 11",
+          "after": "TAPS = 17",
+          "count": 1
+        },
+        {
+          "before": "exact two fixed subcircuits",
+          "after": "exact three fixed subcircuits",
+          "count": 1
+        },
+        {
+          "before": "frozen v2 source",
+          "after": "frozen v8 source",
+          "count": 1
+        },
+        {
+          "before": "NSSOC_RX_SAMPLER_HYBRID_TAIL_V1",
+          "after": "NSSOC_RX_SAMPLER_PARALLEL_DRIVE_V8",
+          "count": 1
+        },
+        {
+          "before": "len(rows) != 27",
+          "after": "len(rows) != 37",
+          "count": 1
+        },
+        {
+          "before": "{\"hbt\": 12, \"nmos\": 3, \"resistor\": 12}",
+          "after": "{\"hbt\": 16, \"nmos\": 9, \"resistor\": 12}",
+          "count": 1
+        },
+        {
+          "before": "    return rows",
+          "after": "    assert all(1 <= r[\"nx\"] <= 10 for r in rows if r[\"kind\"] == \"hbt\")\n    return rows",
+          "count": 1
+        },
+        {
+          "before": "all eight finite ptap1 devices",
+          "after": "all seventeen finite ptap1 devices",
+          "count": 1
+        },
+        {
+          "before": "len(mos_rows) == 3",
+          "after": "len(mos_rows) == 9",
+          "count": 1
+        },
+        {
+          "before": "start=TAPS-3",
+          "after": "start=TAPS-9",
+          "count": 1
+        },
+        {
+          "before": "range(TAPS - 3)",
+          "after": "range(TAPS - 9)",
+          "count": 1
+        },
+        {
+          "before": "primitive_counts=dict(hbt=12,nmos=3,rppd=12,physical_tap=TAPS)",
+          "after": "primitive_counts=dict(hbt=16,nmos=9,rppd=12,physical_tap=TAPS)",
+          "count": 1
+        },
+        {
+          "before": "Hybrid-tail external-clock sampler, not the original all-HBT layout.",
+          "after": "Parallel-drive external-clock sampler with separate36um tail MOS and actual local body contacts.",
+          "count": 1
+        },
+        {
+          "before": "previous_right + 12",
+          "after": "previous_right + 18",
+          "count": 2
+        },
+        {
+          "before": "def safe_tap_x(desired):",
+          "after": "def safe_tap_x(desired, min_x=None):",
+          "count": 1
+        },
+        {
+          "before": "foreign = [x for net, points in terminals.items() if net != \"SUB\" for x, _ in points]",
+          "after": "foreign = [x for points in terminals.values() for x, _ in points]",
+          "count": 1
+        },
+        {
+          "before": "if all(abs(x+1-col) >= 2.0-1e-8 for col in foreign):",
+          "after": "if (min_x is None or x >= min_x) and all(abs(x+1-col) >= 2.0-1e-8 for col in foreign):",
+          "count": 1
+        },
+        {
+          "before": "x = safe_tap_x(row[\"placement_um\"][0] + 3)",
+          "after": "x = safe_tap_x(row[\"placement_um\"][0] + 3, row[\"placement_um\"][0] + 1.98)",
+          "count": 1
+        },
+        {
+          "before": "        t = instance(cell, x, y)\n        ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8,2))]",
+          "after": "        t = instance(cell, x, y)\n        tap_box = cell.dbbox().transformed(t)\n        # Native tap diffusion/contacts must stay outside every primitive.\n        for primitive in records:\n            if primitive[\"kind\"] == \"substrate_tap\":\n                continue\n            values = [float(v) for v in primitive[\"bbox_um\"].strip(\"()\").replace(\";\", \",\").split(\",\")]\n            left, bottom, right, upper = values\n            assert (tap_box.left >= right + 1 - 1e-8 or tap_box.right <= left - 1 + 1e-8 or\n                    tap_box.bottom >= upper + 1 - 1e-8 or tap_box.top <= bottom - 1 + 1e-8), (\n                    \"Local substrate contact overlaps native primitive clearance\", row[\"name\"], primitive[\"name\"])\n        ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8,2))]",
+          "count": 1
+        },
+        {
+          "before": "assert net == other or abs(x-ox) >= 2.0-1e-8",
+          "after": "assert abs(x-ox) < 1e-8 or abs(x-ox) >= 2.0-1e-8",
+          "count": 1
+        },
+        {
+          "before": "# The32um tails exceeded LU.b with only the original remote tap row.",
+          "after": "# Actual36um tails need local contacts; reserve diffusion AND all M4 column spacing.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_sampler_hybrid_tail_v1.py",
+      "baseline_sha256": "1383999b4232fe41b1ad4988df3f30614dce9afb55b6a280575d4f2c1303ea3f",
+      "candidate_path": "hw/soc/flow/check_pcie_sampler_parallel_drive_v8.py",
+      "candidate_sha256": "7bbc87ff97738ce2757000eb5fc9125d5f94da00bad3bb5a053452f955599cd5",
+      "edits": [
+        {
+          "before": "hybrid sampler DRC and unsimplified38device LVS with twelve fault controls",
+          "after": "parallel-drive sampler DRC and unsimplified54device LVS with fourteen fault controls",
+          "count": 1
+        },
+        {
+          "before": "from make_pcie_sampler_hybrid_tail_v1 import",
+          "after": "from make_pcie_sampler_parallel_drive_v8 import",
+          "count": 1
+        },
+        {
+          "before": "\"tail_gate\", \"tail_body\")",
+          "after": "\"tail_gate\", \"tail_body\", \"missing_parallel_tail\", \"missing_clock_selector\")",
+          "count": 1
+        },
+        {
+          "before": "rppd w=8u l=",
+          "after": "rppd w=32u l=",
+          "count": 2
+        },
+        {
+          "before": "MM_T ",
+          "after": "MM_T0 ",
+          "count": 6
+        },
+        {
+          "before": "sg13_lv_nmos w=32u",
+          "after": "sg13_lv_nmos w=36u",
+          "count": 1
+        },
+        {
+          "before": "sg13_lv_nmos w=31u",
+          "after": "sg13_lv_nmos w=35u",
+          "count": 1
+        },
+        {
+          "before": "QM_CS ",
+          "after": "QM_CS0 ",
+          "count": 2
+        },
+        {
+          "before": "        \"wrong_input\": (",
+          "after": "        \"missing_parallel_tail\": (\"MM_T3 M_TE IREF AVSS BULK sg13_lv_nmos w=36u l=0.3u ng=1 m=1\\n\", \"\"),\n        \"missing_clock_selector\": (\"QM_CS1 M_SE CLKN M_TE BULK npn13G2 Nx=8 we=0.07u le=0.9u m=1\\n\", \"\"),\n        \"wrong_input\": (",
+          "count": 1
+        },
+        {
+          "before": "{\"npn13g2\": 12, \"sg13_lv_nmos\": 3, \"rppd\": 12, \"ptap1\": 11}",
+          "after": "{\"npn13g2\": 16, \"sg13_lv_nmos\": 9, \"rppd\": 12, \"ptap1\": 17}",
+          "count": 1
+        },
+        {
+          "before": "!= 38",
+          "after": "!= 54",
+          "count": 2
+        },
+        {
+          "before": "dict(hbt=12,nmos=3,rppd=12,physical_tap=11)",
+          "after": "dict(hbt=16,nmos=9,rppd=12,physical_tap=17)",
+          "count": 1
+        },
+        {
+          "before": "PASS_HYBRID_SAMPLER38_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWELVE_FAULTS",
+          "after": "PASS_PARALLEL_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_FOURTEEN_FAULTS",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_sampler_hybrid_physical.py",
+      "baseline_sha256": "7766c5bd847cce7fcc3ab3140b28de0b1b7eb4b066e7487c2bbe1f21e1739364",
+      "candidate_path": "scripts/cloud_cdr_sampler_parallel_physical.py",
+      "candidate_sha256": "e55522ecf84f63bfbbd4e89512f24d386214b399839c349d15e0023dadef87eb",
+      "edits": [
+        {
+          "before": "unsimplified38device",
+          "after": "unsimplified54device",
+          "count": 1
+        },
+        {
+          "before": "cloud-cdr-sampler-hybrid-physical",
+          "after": "cloud-cdr-sampler-parallel-physical",
+          "count": 1
+        },
+        {
+          "before": "New12HBT3LVNMOS12rppd11taps, original560DRC/deep-flat38deviceLVS/LEF gates, MOS dimension/connectivity faults; twelve actual negative controls.",
+          "after": "New16HBT9LVNMOS12rppd17taps, original560DRC/deep-flat54deviceLVS/LEF gates, MOS dimension/connectivity faults plus missing split devices; fourteen actual negative controls.",
+          "count": 1
+        },
+        {
+          "before": "rx_sampler_hybrid_tail_v1.spice",
+          "after": "rx_sampler_parallel_drive_v8.spice",
+          "count": 1
+        },
+        {
+          "before": "dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5",
+          "after": "876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3",
+          "count": 1
+        },
+        {
+          "before": "dacc174b0adc1d90f691b20e5d37c0e0d4dd5a723e5aac6e6c9619d138a5071d",
+          "after": "4e97bf24c5e8ab05f8e982888c02ad9304f4b57b0ad0b3f72f545a6ce41bca6c",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_sampler_hybrid_tail_v1.py",
+          "after": "make_pcie_sampler_parallel_drive_v8.py",
+          "count": 3
+        },
+        {
+          "before": "check_pcie_sampler_hybrid_tail_v1.py",
+          "after": "check_pcie_sampler_parallel_drive_v8.py",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_sampler_hybrid_physical_sources.py",
+          "after": "check_cdr_sampler_parallel_physical_sources.py",
+          "count": 2
+        },
+        {
+          "before": "cdr-sampler-hybrid-physical-delta.json",
+          "after": "cdr-sampler-parallel-physical-delta.json",
+          "count": 1
+        },
+        {
+          "before": "        reports.OUT=OUT\n",
+          "after": "        reports.OUT=OUT\n        electrical_pin=json.loads((ROOT/'docs/evidence/cdr-sampler-parallel-drive-native-pass-20261018.json').read_text())\n        assert electrical_pin['run']==39125857951 and electrical_pin['source_head']=='3c5d2dcde9235c499ed0238e057fd2c3e6cb9605'\n        r['native_electrical_screens']={}\n        for case,bound in electrical_pin['cases'].items():\n            report,receipt=reports.restore_report('cdr-sampler-parallel-drive-'+case,electrical_pin['run'],bound['summary_sha256'],bound['parts_sha256'],OUT/('electrical-'+case),['native/bench.cir','native/native.log','native/op.dat'])\n            assert report==bound['report']and report['source_head']==electrical_pin['source_head']\n            assert report['status']=='PASS_NATIVE_PARALLEL_DRIVE_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE'\n            assert report['sources_unchanged']and report['devices_passed']and not report['diagnostics']and report['samples']==768\n            assert report['protected_inputs'][str(analog)]==sha(analog)\n            assert len(report['devices'])==16 and len(report['mos_devices'])==9 and len(report['resistors'])==12\n            assert report['parallel_tail_topology']['total_width_per_stage_um']==144\n            assert report['data_passed']if case in ('nominal','hot_low','cold_high')else report['actual_fault_detected']\n            r['native_electrical_screens'][case]=receipt\n        assert set(r['native_electrical_screens'])=={'nominal','hot_low','cold_high','swap_output','clock_stopped'}\n        save()\n",
+          "count": 1
+        },
+        {
+          "before": "PASS_HYBRID_SAMPLER38_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWELVE_FAULTS",
+          "after": "PASS_PARALLEL_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_FOURTEEN_FAULTS",
+          "count": 1
+        },
+        {
+          "before": "PASS_HYBRID_SAMPLER38_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+          "after": "PASS_PARALLEL_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+          "count": 1
+        },
+        {
+          "before": "4e97bf24c5e8ab05f8e982888c02ad9304f4b57b0ad0b3f72f545a6ce41bca6c",
+          "after": "6f41bda0456a29fd9238d1057021b9011c8f2e2de1f4a11e9a223825fe83e469",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

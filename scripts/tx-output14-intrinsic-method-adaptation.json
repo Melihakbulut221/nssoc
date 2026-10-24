@@ -1,0 +1,74 @@
+{
+  "baseline": "scripts/cloud_tx_clock_reference_intrinsic.py",
+  "baseline_sha256": "2c4ff226d9109375c0ed278b401fd88e3f2fe9d944c912f6c9add295f79ad3aa",
+  "functions": [
+    {
+      "function": "nodes",
+      "original_sha256": "e436776d3c1cdda7fb4e74c9e4e07db52ec186f5fd3d422069169c4c16fe1a0c",
+      "adapted_sha256": "e436776d3c1cdda7fb4e74c9e4e07db52ec186f5fd3d422069169c4c16fe1a0c",
+      "edits": []
+    },
+    {
+      "function": "build",
+      "original_sha256": "8681d6da0cc1464ad5daefd6922c71bd4a46f21422a01253872b23bcce504faf",
+      "adapted_sha256": "314286ba8485f0b682e92fdc93a215041da1fcffcb739dc170edf049f7472226",
+      "edits": [
+        {
+          "before": "Actual native clock six-device intrinsic model",
+          "after": "Actual native TX output fourteen-device intrinsic model",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "function": "verify",
+      "original_sha256": "65bfb1fedf56be5b0179407c55c53adb4c03381af1eb2ac0f01074bbb01f0c45",
+      "adapted_sha256": "5cccc9dab7012a627c52ffed7a784f2a750a24cd12b6d550171d2bdfd214ec92",
+      "edits": [
+        {
+          "before": "len(expected)==6",
+          "after": "len(expected)==14",
+          "count": 1
+        },
+        {
+          "before": "params['Nx']==p['Nx']==1",
+          "after": "params['Nx']==p['Nx'] and p['Nx'] in (1,8)",
+          "count": 1
+        },
+        {
+          "before": "model=='rppd'",
+          "after": "model=='rsil'",
+          "count": 1
+        },
+        {
+          "before": "devices=6,hbt=1,resistors=2,finite_contacts=3",
+          "after": "devices=14,hbt=4,resistors=2,finite_contacts=8",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "function": "controls",
+      "original_sha256": "aad7aeb1b5507baa2ffa7e09f3c245e9c1341212d4a0a4049989629811e2dbbb",
+      "adapted_sha256": "364651bedadcb760849f2734d03a5665eb0f7c4301834f554cbd27664dc14f9e",
+      "edits": [
+        {
+          "before": "wrong_offset_length",
+          "after": "wrong_load_length",
+          "count": 2
+        },
+        {
+          "before": "' rppd '",
+          "after": "' rsil '",
+          "count": 1
+        },
+        {
+          "before": "'er'in l.split()",
+          "after": "'outp'in l.split()",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "native_topology_checks": "New complete output14 source-specific native topology checks before model conversion; exact terminal order and all38 terminals retained."
+}

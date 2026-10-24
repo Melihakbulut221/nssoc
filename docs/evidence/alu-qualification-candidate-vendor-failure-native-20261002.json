@@ -1,0 +1,117 @@
+{
+  "status": "FAILED_CANDIDATE_VENDOR_NATIVE_BOOT_PRESERVED_AND_VERIFIED",
+  "source": "622a1ae720ae727fde0cd7b9c070cf6b873c9da8",
+  "run_id": 37002748526,
+  "artifact": {
+    "id": 11233351913,
+    "node_id": "MDg6QXJ0aWZhY3QxMTIzMzM1MTkxMw==",
+    "name": "alu-qualification-boot-candidate-vendor-1",
+    "size_in_bytes": 614871,
+    "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11233351913",
+    "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11233351913/zip",
+    "expired": false,
+    "digest": "sha256:f94d5e9046a71adf536de24db530bc12d9435c8e72b6fe3bddc9cba71e57d3cb",
+    "created_at": "2026-10-02T14:42:26Z",
+    "updated_at": "2026-10-02T14:42:26Z",
+    "expires_at": "2026-11-01T14:42:25Z",
+    "workflow_run": {
+      "id": 37002748526,
+      "repository_id": 1364721142,
+      "head_repository_id": 1364721142,
+      "head_branch": "codex/complete-open-work",
+      "head_sha": "622a1ae720ae727fde0cd7b9c070cf6b873c9da8"
+    }
+  },
+  "native_result": {
+    "bytes": 58945,
+    "sha256": "379a0084b53bfcf8773fdcda87e39a1a4a867bbebbf10f56c7873829d26cd021"
+  },
+  "full_compact_zip_sha256_verified": true,
+  "all_output_pins_verified": 331,
+  "immutable_git_methods_verified": 10,
+  "exact_boot_bench_reconstructed": true,
+  "other_source_runtime_loader_rom_firmware_matches_passing_original_vendor": true,
+  "only_input_change": "Candidate ALU synthesized netlist",
+  "candidate_netlist": {
+    "bytes": 10370597,
+    "sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c"
+  },
+  "raw_boot_log": {
+    "bytes": 26778,
+    "sha256": "fa0d957397297a7abcb96c93fbf35db53f551786c501c7ad431ff64f055e3995"
+  },
+  "raw_marker": "LOGICROM_GL cycles=3000096 checks=24 fails=00000000 code=00000000 magic=00000000 watchdog=1/0/0 flash_violations=0 uart_pass=0 framing=1",
+  "mbist_cycles": 983043,
+  "completion_cycles": 3000096,
+  "checks_completed": 24,
+  "fail_mask": 0,
+  "returncode": 1,
+  "elapsed_s": 10497.454124435,
+  "progress_prefixes_verified": 300,
+  "identical_raw_log_prefix_bytes": 14040,
+  "first_divergence": "[TB] framing error after 848 characters",
+  "last_completed_test_id": 25,
+  "first_sampled_unknown_ram_counters_cycle": 1570000,
+  "additional_flash_frame_after_divergence": true,
+  "diagnostic_inference": "Source firmware places this interval between completed reserved-window/fault check 25 and completion of NPU inference check 26. The current log does not identify the first internal unknown or causal circuit.",
+  "next_required": "Preserve candidate rejection; compare independent SRAM result and obtain source-bound internal state/clock/reset/bus trace around the first divergence without loosening gates.",
+  "compile_log": {
+    "bytes": 1128,
+    "sha256": "0a91b4e8891b34427b0c8e7f4413df858929e34bbe9ebd252cf89f5d88266117"
+  },
+  "limitations": [
+    "Finite functional/no-SDF simulation; native-library edge-sensitive ifnone specify timing paths unsupported.",
+    "Full compiled VVP and netlist not downloaded or executed locally; producer source pins checked.",
+    "No root cause yet established; reaching the cycle bound does not explain the earlier framing error and persistent unknown state."
+  ],
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "full_soc_functional_accepted": false,
+  "root_independent_review": {
+    "status": "ROOT_FAILED_CANDIDATE_VENDOR_COMPACT_EVIDENCE_VERIFIED",
+    "artifact": {
+      "id": 11233351913,
+      "node_id": "MDg6QXJ0aWZhY3QxMTIzMzM1MTkxMw==",
+      "name": "alu-qualification-boot-candidate-vendor-1",
+      "size_in_bytes": 614871,
+      "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11233351913",
+      "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11233351913/zip",
+      "expired": false,
+      "digest": "sha256:f94d5e9046a71adf536de24db530bc12d9435c8e72b6fe3bddc9cba71e57d3cb",
+      "created_at": "2026-10-02T14:42:26Z",
+      "updated_at": "2026-10-02T14:42:26Z",
+      "expires_at": "2026-11-01T14:42:25Z",
+      "workflow_run": {
+        "id": 37002748526,
+        "repository_id": 1364721142,
+        "head_repository_id": 1364721142,
+        "head_branch": "codex/complete-open-work",
+        "head_sha": "622a1ae720ae727fde0cd7b9c070cf6b873c9da8"
+      }
+    },
+    "result": {
+      "bytes": 58945,
+      "sha256": "379a0084b53bfcf8773fdcda87e39a1a4a867bbebbf10f56c7873829d26cd021"
+    },
+    "verified_output_pins": 331,
+    "git_bound_methods_verified": 10,
+    "identical_original_log_prefix_bytes": 14040,
+    "native_execution": {
+      "command": [
+        "/home/runner/work/nssoc/nssoc/alu-boot-work/oss-cad-suite/bin/vvp",
+        "-i",
+        "/home/runner/work/nssoc/nssoc/alu-boot-work/sim.vvp",
+        "+flash0=/home/runner/work/nssoc/nssoc/alu-qualification-boot/firmware/flash0.hex"
+      ],
+      "returncode": 1,
+      "elapsed_s": 10497.454124435
+    },
+    "raw_log": {
+      "bytes": 26778,
+      "sha256": "fa0d957397297a7abcb96c93fbf35db53f551786c501c7ad431ff64f055e3995"
+    },
+    "candidate_adopted": false,
+    "scope": "Failed four-state finite boot; first divergence window identified, root cause not yet established. No timing or physical acceptance."
+  }
+}

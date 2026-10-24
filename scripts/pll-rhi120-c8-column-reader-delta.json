@@ -1,0 +1,21 @@
+{
+  "baseline": "scripts/read_pll845_all_native_transient.py",
+  "baseline_sha256": "792c402154e1f3122f6f4f197d721e7e16632dba3dab05e4ac7e705e51922da1",
+  "candidate": "scripts/read_pll_rhi120_c8_all_native.py",
+  "candidate_sha256": "2d776f89979c9d91ed928f9f9dd83df618380681ae8f6f36e3c54551a69d0d5e",
+  "edits": [
+    {
+      "before": " assert contract['source_preparation_run']==39360285698\n assert contract['source_preparation_sha256']=='858c5f3bf1dd567f137c7397966b34edcc3185edf06ccb1d76f99359b6e6387f'\n assert contract['source_header_run']==39580323368\n assert contract['source_header_sha256']=='44cef9ce591b2c6bb87ba9416e78a4da9f233666e0169d2bcb3bd0e469084577'",
+      "after": " assert contract['source_preparation_run']==39920519407\n assert contract['source_preparation_sha256']=='63c6b8d34ecf277dce223427c72bdb943ed0dc010c80f496d8feb33f268f94dd'\n assert contract['source_header_run']==39925042125\n assert hashlib.sha256((json.dumps(contract,indent=2)+'\\n').encode()).hexdigest()=='fc36b8aec35974c35c5dd3f5041f87d6667a0d76e60a3dbac7d47cd8728b79f8'",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/check_pll_rhi120_c8_column_reader_sources.py": "4864d6815e77abdebc77f6b664f774537e7bf3c9215f654b46d75832e50fc167",
+    "scripts/pll_rhi120_c8_native_columns.py": "7b7ae4c25ab5219444537f1cd48f27a9248a807c1bb38ad409efe90bcb2b7b30",
+    ".github/workflows/pll-rhi120-c8-column-qualification-cloud.yml": "36ed36df7060b67243e42017afe5b5dcde8da3fd7170830ff37ea3f4b5bec792",
+    "scripts/read_pll845_full_native_op.py": "ba9a717f723e5c753dd4cc71c35d2f2eb1916860f28f2ad236f86103cadc4ec5",
+    "scripts/cloud_pll_rhi120_c8_header_audit.py": "68af772a96215824fa6004f757b66cbd6888306e84c3a8576d97577b3d686e64"
+  },
+  "scope": "Exact new actual table provenance only; original parser, every-column finite/time/order/count checks, full1us duration/timestep/row requirements and16actual-prefix/corruption controls unchanged. No raw column normalization."
+}

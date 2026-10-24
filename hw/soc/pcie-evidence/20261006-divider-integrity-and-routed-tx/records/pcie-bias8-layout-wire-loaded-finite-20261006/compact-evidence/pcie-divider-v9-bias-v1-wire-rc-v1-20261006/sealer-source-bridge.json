@@ -1,0 +1,14 @@
+{
+  "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v8-cap-v1-wire-rc-v1-20261006/seal_closed_native01.py",
+  "parent_pin": {
+    "bytes": 2232,
+    "sha256": "22866091e4f2c57c828933cef1c534df2a0733ebb745935399b0d992f70c5ae8"
+  },
+  "child": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v9-bias-v1-wire-rc-v1-20261006/seal_closed_native01.py",
+  "child_pin": {
+    "bytes": 2237,
+    "sha256": "b4de4cf0d387222c20d60b74d8dd4c4bb56cb61901b1d20e57d7b6968dc78553"
+  },
+  "whole_diff": "--- \n+++ \n@@ -1,13 +1,13 @@\n from pathlib import Path\n import json,hashlib,tarfile,io\n-B=Path(__file__).resolve().parent;G=B.parent/'pcie-divider-v8-cap-v1-wire-v1-20261006'\n+B=Path(__file__).resolve().parent;G=B.parent/'pcie-divider-v9-bias-v1-wire-v1-20261006'\n def pin(p):\n  p=Path(p)\n  with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n r=json.loads((B/'native-execution.json').read_text());assert r['status']=='PASS_NATIVE_WIRE_RC_GRAPH_AND13_RAW_CONTROLS_ONLY';assert r['outputs']=={p:pin(p)for p in r['outputs']}\n-geo=json.loads((G/'geometry-execution.json').read_text());assert geo['status']=='PASS_DIVIDER_V8_CAP24_SAVED_NATIVE_GEOMETRY_AND_SOURCE_BIJECTION_ONLY';assert geo['outputs']=={p:pin(p)for p in geo['outputs']}\n+geo=json.loads((G/'geometry-execution.json').read_text());assert geo['status']=='PASS_DIVIDER_V9_BIAS8_SAVED_NATIVE_GEOMETRY_AND_SOURCE_BIJECTION_ONLY';assert geo['outputs']=={p:pin(p)for p in geo['outputs']}\n controls=json.loads((G/'binding-controls01/result.json').read_text());assert controls['status']=='PASS_BASELINE_AND_FOUR_ACTUAL_COPIED_INPUT_BINDING_CONTROLS'\n-roots=[Path('/dev/shm')/n for n in ['nssoc-div4-v8-cap-v1-wire-native-01','nssoc-div4-v8-cap-v1-wire-geometry-01','nssoc-div4-v8-cap-v1-wire-rc-01','nssoc-div4-v8-cap-v1-binding-controls-01']]\n+roots=[Path('/dev/shm')/n for n in ['nssoc-div4-v9-bias-v1-wire-native-01','nssoc-div4-v9-bias-v1-wire-geometry-01','nssoc-div4-v9-bias-v1-wire-rc-01','nssoc-div4-v9-bias-v1-binding-controls-01']]\n files={str(Path('ram')/d.name/p.relative_to(d)):p for d in roots for p in d.rglob('*')if p.is_file()}\n for d in [G,B]:\n  for p in d.glob('*'):\n",
+  "full_inverse_byte_exact": true
+}

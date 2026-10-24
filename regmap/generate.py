@@ -1,5 +1,6 @@
 # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 # SPDX-License-Identifier: Apache-2.0
+# REUSE-IgnoreStart
 
 """Register map generator for the NPU configuration/status block.
 
@@ -226,3 +227,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# REUSE-IgnoreEnd

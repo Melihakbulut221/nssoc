@@ -1,0 +1,920 @@
+{
+  "files": [
+    {
+      "baseline": "scripts/generate_cdr_selector_v19_parent.py",
+      "baseline_sha256": "d559d7fbc6b65f95f8acba331f50c21c49224e0f41eab3e28950217d61ad3d74",
+      "candidate": "scripts/generate_cdr_data_v20_parent.py",
+      "candidate_sha256": "ad1142f72c21cb49cd825b1575ece13eae11156edc17369745490933e6954eb0",
+      "changes": [
+        {
+          "start": 77,
+          "end": 77,
+          "replacement": "n"
+        },
+        {
+          "start": 78,
+          "end": 79,
+          "replacement": ""
+        },
+        {
+          "start": 80,
+          "end": 83,
+          "replacement": "ive"
+        },
+        {
+          "start": 102,
+          "end": 102,
+          "replacement": "it"
+        },
+        {
+          "start": 103,
+          "end": 103,
+          "replacement": " expl"
+        },
+        {
+          "start": 104,
+          "end": 104,
+          "replacement": "citly bounded obso"
+        },
+        {
+          "start": 106,
+          "end": 108,
+          "replacement": "t"
+        },
+        {
+          "start": 109,
+          "end": 120,
+          "replacement": ""
+        },
+        {
+          "start": 128,
+          "end": 131,
+          "replacement": "M3 cl"
+        },
+        {
+          "start": 132,
+          "end": 134,
+          "replacement": ""
+        },
+        {
+          "start": 136,
+          "end": 148,
+          "replacement": "up"
+        },
+        {
+          "start": 280,
+          "end": 285,
+          "replacement": "da"
+        },
+        {
+          "start": 286,
+          "end": 288,
+          "replacement": "a"
+        },
+        {
+          "start": 297,
+          "end": 299,
+          "replacement": "20"
+        },
+        {
+          "start": 327,
+          "end": 327,
+          "replacement": "se"
+        },
+        {
+          "start": 328,
+          "end": 328,
+          "replacement": "ect"
+        },
+        {
+          "start": 329,
+          "end": 335,
+          "replacement": "r"
+        },
+        {
+          "start": 345,
+          "end": 346,
+          "replacement": "9"
+        },
+        {
+          "start": 348,
+          "end": 353,
+          "replacement": "DA"
+        },
+        {
+          "start": 354,
+          "end": 355,
+          "replacement": "A_PAI"
+        },
+        {
+          "start": 367,
+          "end": 370,
+          "replacement": ""
+        },
+        {
+          "start": 401,
+          "end": 403,
+          "replacement": "DP"
+        },
+        {
+          "start": 406,
+          "end": 408,
+          "replacement": "DN"
+        },
+        {
+          "start": 409,
+          "end": 421,
+          "replacement": ""
+        },
+        {
+          "start": 422,
+          "end": 423,
+          "replacement": "'LP','LN'"
+        },
+        {
+          "start": 656,
+          "end": 661,
+          "replacement": "da"
+        },
+        {
+          "start": 662,
+          "end": 664,
+          "replacement": "a"
+        },
+        {
+          "start": 2799,
+          "end": 2799,
+          "replacement": "# Previous v20 native DRC identifies obsolete parent-level M3 access overlays.\n # Keep the independently verified new leaf untouched; remove whole obsolete\n # parent polygons only inside sampler interiors and touching measured markers.\n marker_path=out/'failed-v20/physical/drc/drc.lyrdb'\n assert sha(marker_path)=='90881765db42ac4499d84d40cac7827f165346e27f243c7ed9a6d16a7f3b9faf'\n import xml.etree.ElementTree as ET\n markers=[];categories={}\n for item in ET.parse(marker_path).findall('.//items/item'):\n  category=item.findtext('category');assert category in (\"'M3.a'\",\"'M3.b'\")\n  categories[category]=categories.get(category,0)+1\n  values=item.findall('values/value');assert len(values)==1\n  nums=list(map(float,re.findall(r'-?\\d+(?:\\.\\d+)?',values[0].text)))\n  assert len(nums)==8\n  xs=nums[::2];ys=nums[1::2]\n  markers.append(pya.Region(pya.Box(round(min(xs)/L.dbu)-300,round(min(ys)/L.dbu)-300,\n      round(max(xs)/L.dbu)+300,round(max(ys)/L.dbu)+300)))\n assert categories=={\"'M3.a'\":16,\"'M3.b'\":8}and len(markers)==24\n m3=L.layer(30,0);original_m3=pya.Region(T.shapes(m3)).flatten().merged()\n assert not original_m3.is_empty()\n bounds={name:list(map(float,re.findall(r'-?\\d+(?:\\.\\d+)?',before['placements'][name]['bbox_um'])))for name in ('sa','sb','sc','sd')}\n def sampler_owner(poly):\n  b=poly.bbox().to_dtype(L.dbu)\n  found=[name for name,(x0,y0,x1,y1)in bounds.items()if b.left>=x0+5 and b.bottom>=y0+5 and b.right<=x1-5 and b.top<=y1-5]\n  assert len(found)==1,'Attempt to remove non-interior or non-sampler parent M3'\n  return found[0]\n removed_region=pya.Region();removed_rows=[];covered=set()\n for poly in original_m3.each():\n  region=pya.Region(poly);hits=[i for i,marker in enumerate(markers)if not(region&marker).is_empty()]\n  if not hits:continue\n  macro=sampler_owner(poly)\n  removed_region+=region;covered.update(hits)\n  removed_rows.append(dict(macro=macro,polygon_dbu=str(poly),area_dbu2=poly.area(),marker_indices=hits))\n assert covered==set(range(24))and {r['macro']for r in removed_rows}==set(bounds)\n replacement_m3=(original_m3-removed_region).merged()\n overlap=replacement_m3&removed_region\n combined=(replacement_m3+removed_region).merged()\n difference=combined^original_m3\n assert overlap.is_empty(),('Removed and retained native regions overlap',overlap.area())\n assert difference.is_empty(),('Native geometric reconstruction differs',difference.area())\n corrupt=combined+pya.Region(pya.Box(10000000,10000000,10000001,10000001))\n assert not(corrupt^original_m3).is_empty(),'One-grid native geometry fault accepted'\n T.shapes(m3).clear();T.shapes(m3).insert(replacement_m3)\n expected_shapes=dict(snap[0])\n if replacement_m3.is_empty():del expected_shapes[(30,0)]\n else:expected_shapes[(30,0)]=replacement_m3\n snap=(expected_shapes,snap[1],snap[2])\n try:sampler_owner(next(removed_region.each()).transformed(pya.Trans(10000000,0)))\n except AssertionError:outside_control=True\n else:raise AssertionError('Out-of-sampler metal-removal control accepted')\n cleanup_proof=dict(status='REMOVED_ONLY_OBSOLETE_PARENT_M3_TOUCHING_MEASURED_NATIVE_MARKERS',\n  source_run=39418862656,source_report_sha256=sha(marker_path),source_categories=categories,\n  removed_polygons=removed_rows,removed_area_dbu2=removed_region.area(),\n  retained_parent_m3_area_dbu2=replacement_m3.area(),all24markers_covered=True,\n  native_child_geometry_untouched=True,all_other_parent_layers_unchanged=True,\n  out_of_sampler_removal_rejected=outside_control,requires_full_drc_lvs=True)\n "
+        },
+        {
+          "start": 3407,
+          "end": 3412,
+          "replacement": "DA"
+        },
+        {
+          "start": 3413,
+          "end": 3414,
+          "replacement": "A_PAI"
+        },
+        {
+          "start": 3871,
+          "end": 3876,
+          "replacement": "DA"
+        },
+        {
+          "start": 3877,
+          "end": 3879,
+          "replacement": "A"
+        },
+        {
+          "start": 3972,
+          "end": 3972,
+          "replacement": "ob"
+        },
+        {
+          "start": 3973,
+          "end": 3974,
+          "replacement": "o"
+        },
+        {
+          "start": 3976,
+          "end": 3976,
+          "replacement": "te_parent_m3_"
+        },
+        {
+          "start": 3977,
+          "end": 3977,
+          "replacement": "leanup']=cleanup_proof\n me"
+        },
+        {
+          "start": 3978,
+          "end": 3980,
+          "replacement": "a['data"
+        },
+        {
+          "start": 4194,
+          "end": 4199,
+          "replacement": "da"
+        },
+        {
+          "start": 4200,
+          "end": 4202,
+          "replacement": "a"
+        },
+        {
+          "start": 4551,
+          "end": 4551,
+          "replacement": "k for k,v "
+        },
+        {
+          "start": 4552,
+          "end": 4556,
+          "replacement": "n "
+        },
+        {
+          "start": 4562,
+          "end": 4562,
+          "replacement": ".items()if not v.is_empty("
+        },
+        {
+          "start": 4994,
+          "end": 4994,
+          "replacement": "TH_DECLA"
+        },
+        {
+          "start": 4996,
+          "end": 4997,
+          "replacement": "D_M3_CLEANUP"
+        },
+        {
+          "start": 5001,
+          "end": 5027,
+          "replacement": ""
+        },
+        {
+          "start": 5040,
+          "end": 5045,
+          "replacement": "DA"
+        },
+        {
+          "start": 5046,
+          "end": 5048,
+          "replacement": "A4"
+        },
+        {
+          "start": 5157,
+          "end": 5158,
+          "replacement": "False,obsolete_pa"
+        },
+        {
+          "start": 5159,
+          "end": 5159,
+          "replacement": "ent_m3_clean"
+        },
+        {
+          "start": 5160,
+          "end": 5160,
+          "replacement": "p=cl"
+        },
+        {
+          "start": 5161,
+          "end": 5161,
+          "replacement": "anup_proof"
+        }
+      ]
+    },
+    {
+      "baseline": "scripts/cloud_cdr_selector_v19_parent.py",
+      "baseline_sha256": "8d862ddf1f2ddbd62bba792602d3c1ee3b4b59c696b4826932c845fe644e8d7c",
+      "candidate": "scripts/cloud_cdr_data_v20_parent.py",
+      "candidate_sha256": "bf3ce7bd3f77463dfa7d6958d8cdd451600d83a5f1dd9213ea024e999a2cf048",
+      "changes": [
+        {
+          "start": 406,
+          "end": 411,
+          "replacement": "da"
+        },
+        {
+          "start": 412,
+          "end": 414,
+          "replacement": "a"
+        },
+        {
+          "start": 416,
+          "end": 418,
+          "replacement": "20"
+        },
+        {
+          "start": 485,
+          "end": 490,
+          "replacement": "da"
+        },
+        {
+          "start": 491,
+          "end": 493,
+          "replacement": "a"
+        },
+        {
+          "start": 502,
+          "end": 504,
+          "replacement": "20"
+        },
+        {
+          "start": 1154,
+          "end": 1154,
+          "replacement": "750734,'8bd5a68094ea63cfab23f5e09b31e3ebeb1f8798f981"
+        },
+        {
+          "start": 1156,
+          "end": 1157,
+          "replacement": "8"
+        },
+        {
+          "start": 1158,
+          "end": 1171,
+          "replacement": "6"
+        },
+        {
+          "start": 1173,
+          "end": 1192,
+          "replacement": "0"
+        },
+        {
+          "start": 1194,
+          "end": 1195,
+          "replacement": "ad1d1b4"
+        },
+        {
+          "start": 1196,
+          "end": 1201,
+          "replacement": "6"
+        },
+        {
+          "start": 1202,
+          "end": 1226,
+          "replacement": ""
+        },
+        {
+          "start": 1261,
+          "end": 1262,
+          "replacement": "5"
+        },
+        {
+          "start": 1264,
+          "end": 1264,
+          "replacement": "bc"
+        },
+        {
+          "start": 1265,
+          "end": 1265,
+          "replacement": "c3577e00bafb"
+        },
+        {
+          "start": 1267,
+          "end": 1267,
+          "replacement": "7190f3"
+        },
+        {
+          "start": 1268,
+          "end": 1271,
+          "replacement": "9c"
+        },
+        {
+          "start": 1272,
+          "end": 1273,
+          "replacement": ""
+        },
+        {
+          "start": 1275,
+          "end": 1275,
+          "replacement": "cb18"
+        },
+        {
+          "start": 1276,
+          "end": 1277,
+          "replacement": "07"
+        },
+        {
+          "start": 1278,
+          "end": 1301,
+          "replacement": ""
+        },
+        {
+          "start": 1371,
+          "end": 1374,
+          "replacement": "SELECTOR4"
+        },
+        {
+          "start": 1375,
+          "end": 1376,
+          "replacement": "P"
+        },
+        {
+          "start": 1377,
+          "end": 1380,
+          "replacement": ""
+        },
+        {
+          "start": 1382,
+          "end": 1387,
+          "replacement": "NT"
+        },
+        {
+          "start": 1411,
+          "end": 1416,
+          "replacement": ""
+        },
+        {
+          "start": 1679,
+          "end": 1679,
+          "replacement": "selector-v19-pa"
+        },
+        {
+          "start": 1681,
+          "end": 1681,
+          "replacement": "n"
+        },
+        {
+          "start": 1682,
+          "end": 1698,
+          "replacement": ""
+        },
+        {
+          "start": 1703,
+          "end": 1703,
+          "replacement": "944"
+        },
+        {
+          "start": 1704,
+          "end": 1704,
+          "replacement": "5"
+        },
+        {
+          "start": 1705,
+          "end": 1709,
+          "replacement": ""
+        },
+        {
+          "start": 1717,
+          "end": 1717,
+          "replacement": "8bd5a680"
+        },
+        {
+          "start": 1718,
+          "end": 1719,
+          "replacement": "4ea63cfab23f5e09b31e3ebeb1f8"
+        },
+        {
+          "start": 1720,
+          "end": 1725,
+          "replacement": ""
+        },
+        {
+          "start": 1726,
+          "end": 1726,
+          "replacement": "8f98145866"
+        },
+        {
+          "start": 1728,
+          "end": 1747,
+          "replacement": "0"
+        },
+        {
+          "start": 1749,
+          "end": 1750,
+          "replacement": "ad1d1b4"
+        },
+        {
+          "start": 1751,
+          "end": 1756,
+          "replacement": "6"
+        },
+        {
+          "start": 1757,
+          "end": 1781,
+          "replacement": ""
+        },
+        {
+          "start": 1788,
+          "end": 1790,
+          "replacement": "64cf69007de71"
+        },
+        {
+          "start": 1791,
+          "end": 1791,
+          "replacement": "99"
+        },
+        {
+          "start": 1792,
+          "end": 1794,
+          "replacement": "3"
+        },
+        {
+          "start": 1795,
+          "end": 1796,
+          "replacement": "ea"
+        },
+        {
+          "start": 1798,
+          "end": 1798,
+          "replacement": "0d6594"
+        },
+        {
+          "start": 1799,
+          "end": 1801,
+          "replacement": "90"
+        },
+        {
+          "start": 1803,
+          "end": 1805,
+          "replacement": ""
+        },
+        {
+          "start": 1806,
+          "end": 1812,
+          "replacement": "7"
+        },
+        {
+          "start": 1813,
+          "end": 1817,
+          "replacement": ""
+        },
+        {
+          "start": 1818,
+          "end": 1834,
+          "replacement": ""
+        },
+        {
+          "start": 1836,
+          "end": 1837,
+          "replacement": "be9"
+        },
+        {
+          "start": 1838,
+          "end": 1838,
+          "replacement": "4"
+        },
+        {
+          "start": 1839,
+          "end": 1839,
+          "replacement": "9"
+        },
+        {
+          "start": 1840,
+          "end": 1840,
+          "replacement": "ee320427a"
+        },
+        {
+          "start": 1841,
+          "end": 1843,
+          "replacement": "c6ac6"
+        },
+        {
+          "start": 1844,
+          "end": 1852,
+          "replacement": ""
+        },
+        {
+          "start": 1951,
+          "end": 1951,
+          "replacement": "4"
+        },
+        {
+          "start": 1952,
+          "end": 1952,
+          "replacement": "fd159b5a245c9dd8df1"
+        },
+        {
+          "start": 1953,
+          "end": 1953,
+          "replacement": "08"
+        },
+        {
+          "start": 1954,
+          "end": 1954,
+          "replacement": "cab62d4f"
+        },
+        {
+          "start": 1955,
+          "end": 1955,
+          "replacement": "85ea39102"
+        },
+        {
+          "start": 1957,
+          "end": 1959,
+          "replacement": "2b9c4491ce23"
+        },
+        {
+          "start": 1960,
+          "end": 1961,
+          "replacement": "d999"
+        },
+        {
+          "start": 1962,
+          "end": 1962,
+          "replacement": "'\n  leaf_pin_path=ROOT/'do"
+        },
+        {
+          "start": 1963,
+          "end": 1963,
+          "replacement": "s/evidence/"
+        },
+        {
+          "start": 1965,
+          "end": 1966,
+          "replacement": "r-sampler-data-v20-physical-pass-20261020.json'\n  leaf_pin=json.loads(leaf_pin_path.read_text())\n  assert leaf_pin['run']==39417934516 and leaf_pin['source_head']=='9fa2d3"
+        },
+        {
+          "start": 1968,
+          "end": 1970,
+          "replacement": ""
+        },
+        {
+          "start": 1974,
+          "end": 1976,
+          "replacement": ""
+        },
+        {
+          "start": 1977,
+          "end": 1980,
+          "replacement": "9f"
+        },
+        {
+          "start": 1981,
+          "end": 1987,
+          "replacement": "ae"
+        },
+        {
+          "start": 1988,
+          "end": 1988,
+          "replacement": "cf22caef"
+        },
+        {
+          "start": 1989,
+          "end": 2002,
+          "replacement": ""
+        },
+        {
+          "start": 2004,
+          "end": 2006,
+          "replacement": "448b"
+        },
+        {
+          "start": 2008,
+          "end": 2010,
+          "replacement": "07"
+        },
+        {
+          "start": 2011,
+          "end": 2014,
+          "replacement": "8"
+        },
+        {
+          "start": 2037,
+          "end": 2037,
+          "replacement": "leaf_pin['summary_asset'],leaf_pin['summary_sha25"
+        },
+        {
+          "start": 2038,
+          "end": 2047,
+          "replacement": ""
+        },
+        {
+          "start": 2048,
+          "end": 2113,
+          "replacement": "]"
+        },
+        {
+          "start": 2146,
+          "end": 2146,
+          "replacement": "leaf_pin["
+        },
+        {
+          "start": 2147,
+          "end": 2150,
+          "replacement": "sour"
+        },
+        {
+          "start": 2151,
+          "end": 2152,
+          "replacement": "e_he"
+        },
+        {
+          "start": 2153,
+          "end": 2155,
+          "replacement": ""
+        },
+        {
+          "start": 2156,
+          "end": 2187,
+          "replacement": ""
+        },
+        {
+          "start": 2188,
+          "end": 2188,
+          "replacement": "]"
+        },
+        {
+          "start": 2250,
+          "end": 2250,
+          "replacement": "_DATA4"
+        },
+        {
+          "start": 2367,
+          "end": 2367,
+          "replacement": "DATA4_"
+        },
+        {
+          "start": 2422,
+          "end": 2423,
+          "replacement": ""
+        },
+        {
+          "start": 2424,
+          "end": 2427,
+          "replacement": "IGH"
+        },
+        {
+          "start": 2636,
+          "end": 2641,
+          "replacement": "da"
+        },
+        {
+          "start": 2642,
+          "end": 2644,
+          "replacement": "a"
+        },
+        {
+          "start": 2646,
+          "end": 2648,
+          "replacement": "20"
+        },
+        {
+          "start": 2659,
+          "end": 2670,
+          "replacement": "leaf_pin['run']"
+        },
+        {
+          "start": 2675,
+          "end": 2783,
+          "replacement": "l"
+        },
+        {
+          "start": 2785,
+          "end": 2786,
+          "replacement": ""
+        },
+        {
+          "start": 2787,
+          "end": 2787,
+          "replacement": "_pin['summary_sha256'],l"
+        },
+        {
+          "start": 2788,
+          "end": 2798,
+          "replacement": ""
+        },
+        {
+          "start": 2800,
+          "end": 2804,
+          "replacement": "_pin['parts_sha"
+        },
+        {
+          "start": 2805,
+          "end": 2808,
+          "replacement": ""
+        },
+        {
+          "start": 2810,
+          "end": 2811,
+          "replacement": ""
+        },
+        {
+          "start": 2812,
+          "end": 2812,
+          "replacement": "]"
+        },
+        {
+          "start": 2818,
+          "end": 2823,
+          "replacement": "da"
+        },
+        {
+          "start": 2824,
+          "end": 2826,
+          "replacement": "a"
+        },
+        {
+          "start": 2880,
+          "end": 2885,
+          "replacement": "da"
+        },
+        {
+          "start": 2886,
+          "end": 2888,
+          "replacement": "a"
+        },
+        {
+          "start": 3002,
+          "end": 3007,
+          "replacement": "da"
+        },
+        {
+          "start": 3008,
+          "end": 3009,
+          "replacement": "a_pai"
+        },
+        {
+          "start": 3046,
+          "end": 3047,
+          "replacement": "5"
+        },
+        {
+          "start": 3079,
+          "end": 3084,
+          "replacement": "da"
+        },
+        {
+          "start": 3085,
+          "end": 3087,
+          "replacement": "a"
+        },
+        {
+          "start": 3438,
+          "end": 3443,
+          "replacement": "da"
+        },
+        {
+          "start": 3444,
+          "end": 3446,
+          "replacement": "a"
+        },
+        {
+          "start": 3745,
+          "end": 3745,
+          "replacement": "failed,failed_proof=reports.restore_report('cdr-data-v20-parent',39418862656,\n   'a6537b3b827342428af9a489c95e8194fa781ce818dd4d08b9f3e0e9b926034e',\n   '57873e2b2cd575281ac6fb05d7d1f357a29f793826976f1e4a744ba40386fccd',\n   OUT/'failed-v20',['physical/drc/drc.lyrdb'])\n  assert failed['source_head']=='6d96225f23be75bd093216fd5bddbe8801f81384'and failed['status']=='FAIL_OR_ERROR'\n  assert failed['generation_returncode']==failed['child_geometry_returncode']==0 and failed['physical_returncode']==1\n  measurement=failed['physical']['steps']['drc']['measurement']\n  assert measurement['category_count']==560 and measurement['markers']==24\n  assert measurement['categories']=={\"'M3.a'\":16,\"'M3.b'\":8}\n  r['prior_native_drc_rejection']=failed_proof;save()\n  "
+        },
+        {
+          "start": 3768,
+          "end": 3768,
+          "replacement": ",leaf_pin_path,OUT/'failed-v20/physical/drc/drc.lyrdb'"
+        },
+        {
+          "start": 3796,
+          "end": 3801,
+          "replacement": "da"
+        },
+        {
+          "start": 3802,
+          "end": 3804,
+          "replacement": "a"
+        },
+        {
+          "start": 3806,
+          "end": 3808,
+          "replacement": "20"
+        },
+        {
+          "start": 4034,
+          "end": 4039,
+          "replacement": "da"
+        },
+        {
+          "start": 4040,
+          "end": 4042,
+          "replacement": "a"
+        },
+        {
+          "start": 4896,
+          "end": 4901,
+          "replacement": "da"
+        },
+        {
+          "start": 4902,
+          "end": 4904,
+          "replacement": "a"
+        },
+        {
+          "start": 4906,
+          "end": 4908,
+          "replacement": "20"
+        },
+        {
+          "start": 6100,
+          "end": 6105,
+          "replacement": "DA"
+        },
+        {
+          "start": 6106,
+          "end": 6108,
+          "replacement": "A"
+        },
+        {
+          "start": 6249,
+          "end": 6251,
+          "replacement": "data/ho"
+        },
+        {
+          "start": 6252,
+          "end": 6257,
+          "replacement": "d Nx"
+        },
+        {
+          "start": 6300,
+          "end": 6306,
+          "replacement": ""
+        },
+        {
+          "start": 6348,
+          "end": 6348,
+          "replacement": "; only obsolete interior parent M3 overlays touching the 24 native DRC markers removed with exact serialized region proof"
+        }
+      ]
+    }
+  ],
+  "protected": {
+    "scripts/check_cdr_localbus_v12_parent_geometry.py": "4c0917d4d88e61cb6c9cb7a02124d527a3a26b3de0ad5e1b556db87c78b45c97",
+    "hw/soc/flow/check_pcie_cdr_retimed_localbus_v12_parent.py": "350cd17e827e43621265122d49db10b1aedb2d1dbd740d4dc0df51cb045ba392",
+    "scripts/check_cdr_localbus_v12_parent_sources.py": "1fbcde840bce1895b19c541b158e415667a8be3178cd9594bef8a6fbb97a0b04"
+  }
+}

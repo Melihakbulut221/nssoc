@@ -1,0 +1,554 @@
+name: cloud-migration-checks
+run-name: cloud-migration-checks ${{ inputs.request_id || github.run_id }}
+on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths:
+      - scripts/finish_cloud_output_migration.py
+      - scripts/clean_cloud_output_links.py
+      - sw/tests/test_cloud_output_links.py
+      - sw/tests/test_cloud_result_publication.py
+      - scripts/publish_cloud_results.py
+      - sw/tests/test_cloud_migration_finalization.py
+      - scripts/migrate_outputs_to_cloud.py
+      - sw/tests/test_cloud_output_migration.py
+      - scripts/verify_cloud_output_restore.py
+      - sw/tests/test_cloud_restore_hardlinks.py
+      - .github/workflows/cloud-migration-checks.yml
+  workflow_dispatch:
+    inputs:
+      pll_pfd_stage:
+        description: PFD diagnostic, native schematic, physical layout or saved LEF verification
+        type: choice
+        default: none
+        options: [none, topology, schematic, layout, lef, methods, rc, rc_review, physical_wave, physical_review, parent_methods, layout_d2, rc_d2, physical_wave_d2, lef_d2, physical_review_d2, parent_interface_d2, parent_layout_d2, parent_review_d2, parent_wires_d2, parent_rc_d2, parent_plane_methods, parent_compose_d2, actual_parent_wave_d2, actual_parent_review_d2, actual_parent_acquisition_d2, actual_parent_acquisition_review_d2]
+      request_id:
+        type: string
+      verification_tag:
+        type: string
+      verification_manifest:
+        type: string
+      pll_full50_diagnosis:
+        type: boolean
+        default: false
+      pll_acquisition_diagnosis:
+        type: boolean
+        default: false
+      pll_acquisition_review:
+        type: boolean
+        default: false
+      pll_acquisition:
+        type: boolean
+        default: false
+      pll_snapshot:
+        type: boolean
+        default: false
+      pll_prefix_readback:
+        type: boolean
+        default: false
+      timing_readback:
+        type: boolean
+        default: false
+      credit_prefix_eco:
+        type: boolean
+        default: false
+      credit_late_verdict:
+        type: boolean
+        default: false
+      ack_direct_commit:
+        type: boolean
+        default: false
+      ack_window:
+        type: boolean
+        default: false
+      advert_dedicated_commit:
+        type: boolean
+        default: false
+      advert_bank_eop:
+        type: boolean
+        default: false
+      advert_bank_commit:
+        type: boolean
+        default: false
+      advert_static_commit:
+        type: boolean
+        default: false
+      advert_control:
+        type: boolean
+        default: false
+      advert_eop:
+        type: boolean
+        default: false
+      replay_idle:
+        type: boolean
+        default: false
+      replay_source:
+        type: choice
+        options: [canonical, physical_replay]
+        default: canonical
+permissions:
+  contents: read
+jobs:
+  archive-readback:
+    if: ${{ inputs.verification_tag != '' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify every preserved byte without executing archive contents
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ARCHIVE_TAG: ${{ inputs.verification_tag }}
+          ARCHIVE_MANIFEST: ${{ inputs.verification_manifest }}
+        run: python3 scripts/cloud_archive_readback.py --tag "$ARCHIVE_TAG" --manifest "$ARCHIVE_MANIFEST"
+  deletion-and-resume:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python -m pip install pytest reuse numpy==2.3.3
+      - run: python scripts/run_cloud_pll865_snapshot.py --self-test
+      - run: python scripts/spdx_check.py
+      - run: python scripts/licence_inventory.py --check
+      - run: python -m reuse lint
+      - run: python -m pytest -q sw/tests/test_cloud_output_migration.py sw/tests/test_cloud_restore_hardlinks.py sw/tests/test_cloud_migration_finalization.py sw/tests/test_cloud_output_links.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_transient_migration.py sw/tests/test_cloud_checkout_retirement.py
+      - name: Verify cloud-native capture commands and complete serializer source census
+        run: python -m pytest -q sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_tx_original_bits.py
+
+  timing-readback:
+    if: ${{ inputs.timing_readback == true }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact native runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Restore and verify the complete native placement timing report
+        run: python3 scripts/read_cloud_buffer_timing.py
+      - name: Preserve native reports and success or failure receipt
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="buffer-timing-readback-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-buffer-timing
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-buffer-timing/result.json "${archive%.tar.gz}.json"
+          files=("$archive" "$archive.sha256" "${archive%.tar.gz}.json")
+          if [ -f cloud-buffer-timing/relocated-placement-sta.log ]; then
+            cp cloud-buffer-timing/relocated-placement-sta.log "${archive%.tar.gz}.log"
+            files+=("${archive%.tar.gz}.log")
+          fi
+          if [ -f cloud-buffer-timing/native-cells.json ]; then
+            cp cloud-buffer-timing/native-cells.json "${archive%.tar.gz}.native-cells.json"
+            files+=("${archive%.tar.gz}.native-cells.json")
+          fi
+          python3 scripts/publish_cloud_results.py --group buffer-timing-readback "${files[@]}"
+
+  credit-prefix-eco:
+    if: ${{ inputs.credit_prefix_eco == true }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact native runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Prove and measure source-bound late-enable carry reassociation
+        run: |
+          python3 -m py_compile scripts/run_cloud_credit_prefix.py
+          python3 scripts/run_cloud_credit_prefix.py
+      - name: Preserve native reports and success or failure receipt
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="credit-prefix-eco-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-credit-prefix
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-credit-prefix/result.json "${archive%.tar.gz}.json"
+          files=("$archive" "$archive.sha256" "${archive%.tar.gz}.json")
+          if [ -f cloud-credit-prefix/relocated-placement-sta.log ]; then
+            cp cloud-credit-prefix/relocated-placement-sta.log "${archive%.tar.gz}.log"
+            files+=("${archive%.tar.gz}.log")
+          fi
+          if [ -f cloud-credit-prefix/native-cells.json ]; then
+            cp cloud-credit-prefix/native-cells.json "${archive%.tar.gz}.native-cells.json"
+            files+=("${archive%.tar.gz}.native-cells.json")
+          fi
+          python3 scripts/publish_cloud_results.py --group credit-prefix-eco "${files[@]}"
+
+  replay-idle:
+    if: ${{ inputs.replay_idle == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare hosted simulator environment
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+
+      - name: Prove candidate observation equivalence and run complete replay controls
+        env:
+          REPLAY_SOURCE: ${{ inputs.replay_source }}
+        run: |
+          hw/.venv/bin/python -m py_compile scripts/run_cloud_replay_idle.py
+          hw/.venv/bin/python scripts/run_cloud_replay_idle.py --source-profile "${REPLAY_SOURCE:-canonical}"
+      - name: Preserve full passing and failing candidate evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="replay-idle-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-replay-idle
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-replay-idle/result.json "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group replay-idle "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+
+  credit-late-verdict:
+    if: ${{ inputs.credit_late_verdict == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare hosted simulator environment
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+
+      - name: Prove exact physical credit verdict and run complete controls
+        run: |
+          hw/.venv/bin/python -m py_compile scripts/run_cloud_credit_late_verdict.py
+          hw/.venv/bin/python scripts/run_cloud_credit_late_verdict.py
+      - name: Preserve full passing and failing candidate evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="credit-late-verdict-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-credit-late-verdict
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-credit-late-verdict/result.json "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group credit-late-verdict "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+  advert-eop:
+    if: ${{ inputs.advert_eop == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare hosted simulator environment
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+
+      - name: Prove physical advertiser EOP ownership and complete buffered controls
+        run: |
+          hw/.venv/bin/python -m py_compile scripts/run_cloud_advert_eop.py
+          hw/.venv/bin/python scripts/run_cloud_advert_eop.py
+      - name: Preserve full passing and failing candidate evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="advert-eop-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-advert-eop
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-advert-eop/result.json "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group advert-eop "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+  advert-control:
+    if: ${{ inputs.advert_control == true || inputs.advert_static_commit == true || inputs.advert_bank_commit == true || inputs.advert_bank_eop == true || inputs.advert_dedicated_commit == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare hosted simulator environment
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+
+      - name: Prove actual reset factoring and all buffered state and port controls
+        run: |
+          hw/.venv/bin/python -m py_compile scripts/run_cloud_advert_control.py
+          hw/.venv/bin/python scripts/run_cloud_advert_control.py --variant '${{ inputs.advert_dedicated_commit == true && 'dedicated_commit' || inputs.advert_bank_eop == true && 'bank_eop' || inputs.advert_bank_commit == true && 'bank_commit' || inputs.advert_static_commit == true && 'static_commit' || 'control' }}'
+      - name: Preserve full passing and failing candidate evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="advert-control-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-advert-control
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-advert-control/result.json "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group advert-control "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+  ack-window:
+    if: ${{ inputs.ack_window == true || inputs.ack_direct_commit == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ github.token }}
+      - name: Prepare hosted simulator environment
+        run: |
+          python3 -m venv hw/.venv
+          hw/.venv/bin/pip install -r hw/requirements.txt
+
+      - name: Prove bounded ACK-window identity and exact replay controls
+        run: |
+          hw/.venv/bin/python -m py_compile scripts/run_cloud_ack_window.py
+          hw/.venv/bin/python scripts/run_cloud_ack_window.py --variant '${{ inputs.ack_direct_commit && 'direct_commit' || 'window' }}'
+      - name: Preserve full passing and failing candidate evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive="ack-window-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT.tar.gz"
+          tar -czf "$archive" cloud-ack-window
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-ack-window/result.json "${archive%.tar.gz}.json"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.ack_direct_commit && 'ack-direct-commit' || 'ack-window' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+
+  pll-prefix-readback:
+    if: ${{ inputs.pll_prefix_readback == true }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy==2.3.3
+      - name: Reject corrupted native partial captures
+        run: python scripts/read_cloud_pll_acquisition_prefix.py --self-test
+      - name: Diagnose the exact interrupted865 acquisition prefix
+        run: python scripts/read_cloud_pll_acquisition_prefix.py
+      - name: Preserve diagnostic or failure without accepting PLL lock
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f cloud-pll-prefix/result.json
+          archive="pll-prefix-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz"
+          tar -czf "$archive" cloud-pll-prefix
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-pll-prefix/result.json "${archive%.tar.gz}.json"
+          python scripts/publish_cloud_results.py --group pll-prefix "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+
+  pll-snapshot:
+    if: ${{ inputs.pll_snapshot == true || inputs.pll_acquisition == true || inputs.pll_pfd_stage == 'schematic' || inputs.pll_pfd_stage == 'physical_wave' || inputs.pll_pfd_stage == 'physical_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_acquisition_d2' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        pfd_profile: ${{ fromJSON(inputs.pll_pfd_stage == 'schematic' && '["baseline_schematic","aoi4"]' || inputs.pll_pfd_stage == 'physical_wave' && '["aoi4_rc"]' || inputs.pll_pfd_stage == 'physical_wave_d2' && '["aoi4_d2_rc"]' || (inputs.pll_pfd_stage == 'actual_parent_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_acquisition_d2') && '["actual_parent_d2_rc"]' || '["original"]') }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact native simulator with hosted dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
+          curl --fail --location --retry 4 'https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb' -o "$RUNNER_TEMP/ngspice.deb"
+          echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
+          dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
+          echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Reject mismatched, shifted, truncated and incomplete controls
+        run: python scripts/run_cloud_pll865_snapshot.py --self-test
+      - name: Run requested native865 capture or snapshot experiment
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'actual_parent_acquisition_d2' && '--pfd-candidate actual_parent_d2_rc --actual-parent-acquisition' || (inputs.pll_pfd_stage == 'schematic' || inputs.pll_pfd_stage == 'physical_wave' || inputs.pll_pfd_stage == 'physical_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_wave_d2') && format('--pfd-candidate {0}', matrix.pfd_profile) || inputs.pll_acquisition && '--acquisition' || '' }}
+      - name: Preserve actual waveforms, snapshots, diagnostics and failure receipts
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f cloud-pll-snapshot/result.json
+          archive="pll-snapshot-${{ matrix.pfd_profile }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz"
+          tar -czf "$archive" cloud-pll-snapshot
+          sha256sum "$archive" > "$archive.sha256"
+          cp cloud-pll-snapshot/result.json "${archive%.tar.gz}.json"
+          python scripts/publish_cloud_results.py --group '${{ (inputs.pll_pfd_stage == 'schematic' || inputs.pll_pfd_stage == 'physical_wave' || inputs.pll_pfd_stage == 'physical_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_wave_d2' || inputs.pll_pfd_stage == 'actual_parent_acquisition_d2') && format('pll-pfd-{0}', matrix.pfd_profile) || 'pll-snapshot' }}' "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+      - name: Keep native evidence if permanent publication fails
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pll-snapshot-${{ matrix.pfd_profile }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            pll-snapshot-*
+            cloud-pll-snapshot/result.json
+            cloud-pll-snapshot/*.log
+          if-no-files-found: warn
+          retention-days: 30
+
+  pll-acquisition-review:
+    if: ${{ inputs.pll_acquisition_review == true || inputs.pll_acquisition_diagnosis == true || inputs.pll_full50_diagnosis == true || inputs.pll_pfd_stage == 'topology' || inputs.pll_pfd_stage == 'methods' || inputs.pll_pfd_stage == 'physical_review' || inputs.pll_pfd_stage == 'physical_review_d2' || inputs.pll_pfd_stage == 'parent_methods' || inputs.pll_pfd_stage == 'parent_plane_methods' || inputs.pll_pfd_stage == 'actual_parent_review_d2' || inputs.pll_pfd_stage == 'actual_parent_acquisition_review_d2' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python -m pip install numpy==2.3.3
+      - name: Verify fixed acquisition gates and negative controls
+        run: python scripts/run_cloud_pll865_snapshot.py --self-test
+      - name: Review exact original one-us capture without new simulation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'actual_parent_acquisition_review_d2' && '--review-actual-parent-acquisition' || inputs.pll_pfd_stage == 'actual_parent_review_d2' && '--review-actual-pfd-parent' || inputs.pll_pfd_stage == 'parent_plane_methods' && '--recover-parent-planes' || inputs.pll_pfd_stage == 'physical_review_d2' && '--review-physical-pfd-drive2' || inputs.pll_pfd_stage == 'parent_methods' && '--recover-parent-methods' || inputs.pll_pfd_stage == 'physical_review' && '--review-physical-pfd' || inputs.pll_pfd_stage == 'methods' && '--recover-pfd-methods' || inputs.pll_pfd_stage == 'topology' && '--diagnose-pfd-topology' || inputs.pll_full50_diagnosis && '--diagnose-full50' || inputs.pll_acquisition_diagnosis && '--diagnose-acquisition' || '--review-acquisition' }}
+      - name: Preserve complete independent review or failure
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f cloud-pll-acquisition-review/result.json
+          python scripts/publish_cloud_results.py --group pll-acquisition-review cloud-pll-acquisition-review/result.json
+
+  pll-pfd-layout:
+    if: ${{ inputs.pll_pfd_stage == 'layout' || inputs.pll_pfd_stage == 'lef' || inputs.pll_pfd_stage == 'rc' || inputs.pll_pfd_stage == 'rc_review' || inputs.pll_pfd_stage == 'layout_d2' || inputs.pll_pfd_stage == 'rc_d2' || inputs.pll_pfd_stage == 'lef_d2' || inputs.pll_pfd_stage == 'parent_interface_d2' || inputs.pll_pfd_stage == 'parent_layout_d2' || inputs.pll_pfd_stage == 'parent_review_d2' || inputs.pll_pfd_stage == 'parent_wires_d2' || inputs.pll_pfd_stage == 'parent_rc_d2' || inputs.pll_pfd_stage == 'parent_compose_d2' }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify circuit truth controls and exact native runtime
+        run: |
+          python -m pip install numpy==2.3.3 networkx==3.5 igraph==0.11.9 texttable==1.7.0
+          python scripts/run_cloud_pll865_snapshot.py --self-test
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Generate actual PFD94 geometry and run native physical gates
+        run: python scripts/run_cloud_pll865_snapshot.py ${{ inputs.pll_pfd_stage == 'parent_compose_d2' && '--compose-pfd-parent' || inputs.pll_pfd_stage == 'parent_rc_d2' && '--extract-pfd-parent-rc' || inputs.pll_pfd_stage == 'parent_wires_d2' && '--export-pfd-parent-wires' || inputs.pll_pfd_stage == 'parent_review_d2' && '--review-pfd-parent' || inputs.pll_pfd_stage == 'parent_layout_d2' && '--integrate-pfd-parent' || inputs.pll_pfd_stage == 'parent_interface_d2' && '--inspect-pfd-parent' || inputs.pll_pfd_stage == 'lef_d2' && '--pfd-lef-drive2' || inputs.pll_pfd_stage == 'rc_d2' && '--pfd-rc-drive2' || inputs.pll_pfd_stage == 'layout_d2' && '--pfd-layout-drive2' || inputs.pll_pfd_stage == 'rc_review' && '--pfd-rc-review' || inputs.pll_pfd_stage == 'rc' && '--pfd-rc' || inputs.pll_pfd_stage == 'lef' && '--pfd-lef' || '--pfd-layout' }}
+      - name: Preserve actual geometry and every failed or passed native check
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f hw/soc/out/cloud-pfd-layout/result.json
+          archive="pfd94-layout-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz"
+          tar -czf "$archive" hw/soc/out/cloud-pfd-layout
+          sha256sum "$archive" > "$archive.sha256"
+          cp hw/soc/out/cloud-pfd-layout/result.json "${archive%.tar.gz}.json"
+          python scripts/publish_cloud_results.py --group pll-pfd-layout "$archive" "$archive.sha256" "${archive%.tar.gz}.json"
+      - name: Retain evidence if permanent publication fails
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pfd94-layout-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            pfd94-layout-*
+            hw/soc/out/cloud-pfd-layout/
+          if-no-files-found: warn
+          retention-days: 30

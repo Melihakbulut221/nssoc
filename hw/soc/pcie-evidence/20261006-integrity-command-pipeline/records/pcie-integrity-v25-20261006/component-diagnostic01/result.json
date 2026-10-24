@@ -1,0 +1,56 @@
+{
+  "scope": "Exact unchanged failed stimulus and DUT; additive display only; diagnostic not positive acceptance",
+  "original_hdl": {
+    "bytes": 19100,
+    "sha256": "10f5c178fd8f9f4427f40e0843cb8daeb32032d11345fb3308fb2a9cd867c55c"
+  },
+  "instrumented_hdl": {
+    "bytes": 20220,
+    "sha256": "c74b9ef4e9ec8a86e909c1d6b1950d38265fa5b9ef2dd0345fc6e240e7e85c4f"
+  },
+  "stages": [
+    {
+      "stage": "compile",
+      "returncode": 0,
+      "command": [
+        "/home/hasanmelih/.local/bin/iverilog",
+        "-g2012",
+        "-s",
+        "tb",
+        "-o",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/component-diagnostic01/sim.vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/component-diagnostic01/command.v"
+      ]
+    },
+    {
+      "stage": "simulation",
+      "returncode": 1,
+      "command": [
+        "/home/hasanmelih/.local/bin/vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/component-diagnostic01/sim.vvp"
+      ]
+    }
+  ],
+  "outputs": {
+    "sim.vvp": {
+      "bytes": 176260,
+      "sha256": "b75cc104b62e4c6d90973acee7c3fc057c3a691fa7ff6a8707880a1e85a9f9d0"
+    },
+    "compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "command.v": {
+      "bytes": 20220,
+      "sha256": "c74b9ef4e9ec8a86e909c1d6b1950d38265fa5b9ef2dd0345fc6e240e7e85c4f"
+    },
+    "simulation.log": {
+      "bytes": 856,
+      "sha256": "ac8aa67d1ed2881a7a716e587a33cac5cf12798528206bccba9120f979a76c2e"
+    },
+    "owner.json": {
+      "bytes": 1341,
+      "sha256": "3d51168a17caaf6a45021b090e1d8b8f9c3463073788e67a41587d19f7d2c52d"
+    }
+  }
+}

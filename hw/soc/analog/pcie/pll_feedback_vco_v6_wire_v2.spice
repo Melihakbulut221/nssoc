@@ -1,0 +1,9 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Physical VCOv6; first divider pull-ups L6.4um, other native /4 and /20 unchanged.
+* External VCTRL and explicit body/wire references; not a locked PLL.
+.subckt nssoc_pll_feedback_vco_v6_wire_v2 vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref
+XOSC vco_avdd avss clkn clkp sub vctrl body_substrate wire_cref nssoc_vco_local_hybrid_open_v2
+XDIV clkp clkn qp qn div_avdd avss sub nssoc_clock_div4_hbt_v6
+XFB qp qn clearb fb fbbar div_avdd core_vdd avss sub nssoc_pll_feedback_div20_v2
+.ends nssoc_pll_feedback_vco_v6_wire_v2

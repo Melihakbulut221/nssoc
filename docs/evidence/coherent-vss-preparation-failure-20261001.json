@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "status": "FAILED_PREPARATION_BEFORE_NATIVE_VSS_LVS",
+  "run_id": 36916335752,
+  "source_commit": "ca7b0462f16c8e6213f8a59a3c30512dc46184dc",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36916335752",
+  "native_vss_cases": {},
+  "error": "GDSFormatError('Invalid record length 0 at 71422884')",
+  "upstream_commit": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+  "native_generic_control_status": "PASS_NATIVE_PARENT_CONTEXT_CONTROLS",
+  "native_generic_control_case_count": 8,
+  "controls_scope": "Generic physical-parent and strict parameter/terminal controls, not native IHP Vss LVS acceptance.",
+  "artifact": {
+    "id": 11190265427,
+    "bytes": 13188594,
+    "api_sha256": "2a2cb757596da869e2a750a23b62159927293eaeb8506483f620540371f55b7c",
+    "whole_zip_hash_independently_verified": false,
+    "selected_member_crc_verified": true
+  },
+  "root_cause": {
+    "stage": "Strict GDS subset preparation",
+    "original_gds_bytes": 71424000,
+    "endlib_offset": 71422880,
+    "exact_endlib_hex": "00040400",
+    "prefix_bytes": 71422884,
+    "zero_padding_bytes": 1116,
+    "upstream_tail_http_status": 206,
+    "upstream_tail_content_range": "bytes 71422880-71423999/71424000",
+    "tail_sha256": "e36fe9ecac0b2b6aa3c95774a256feb9499830bd909ce0ea4d8c3acabe71c6d1",
+    "explanation": "Unchanged strict extractor rejects any bytes after ENDLIB, including the pinned vendor file zero transport padding."
+  },
+  "narrow_fix": {
+    "scope": "Coherent runner only; preserve original and stream-copy exact prefix to fresh derivative.",
+    "shared_extractor_changed": false,
+    "geometry_records_changed": false,
+    "parameters_or_globals_changed": false,
+    "pure_tests_passed": 112,
+    "ruff": "PASS",
+    "native_retry_verified": false
+  },
+  "evidence": {
+    "hw/soc/out/timing-heartbeat-20261001-2228/coherent-vss-review/selected/comparison/result.json": {
+      "bytes": 20289,
+      "sha256": "a497c7ea55b73f06dc785127179103f50df5b765468b340f15ebc43d65712293"
+    },
+    "hw/soc/out/timing-heartbeat-20261001-2228/coherent-vss-review/log-failed.txt": {
+      "bytes": 3043,
+      "sha256": "f075b564d69382ea8babca853b9e0dd412023914b4d1db07e18e9deb4c5dc456"
+    },
+    "hw/soc/out/timing-heartbeat-20261001-2228/coherent-vss-review/selected-review.json": {
+      "bytes": 1876,
+      "sha256": "3bd9c2bfdbd4ee9035ce35ed8d296c777f63f12ba67f7575e730134b06cd4c5e"
+    },
+    "hw/soc/out/timing-heartbeat-20261001-2228/coherent-vss-review/upstream-endlib-tail.bin": {
+      "bytes": 1120,
+      "sha256": "e36fe9ecac0b2b6aa3c95774a256feb9499830bd909ce0ea4d8c3acabe71c6d1"
+    },
+    "hw/soc/out/timing-heartbeat-20261001-2228/coherent-vss-review/upstream-tail-response.json": {
+      "bytes": 260,
+      "sha256": "905069dd01c3c73f04ac9e048f7c2df21b90185729c793b40b60398c20c4d39b"
+    }
+  },
+  "cell_lvs_accepted": false,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false,
+  "active_pdk_updated": false,
+  "original_layout_changed": false
+}

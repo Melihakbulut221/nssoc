@@ -1,0 +1,143 @@
+{
+  "schema": 1,
+  "status": "METHOD_AND_TINY_NATIVE_PASS_CHIP_RESULT_PENDING",
+  "method_validation": {
+    "status": "READY_FOR_ROOT_REVIEW_NO_CHIP_RUN",
+    "recorded": "2026-10-02T10:04:40.279195+00:00",
+    "source_pins": {
+      "scripts/run_cloud_xor_pair.py": {
+        "bytes": 17711,
+        "sha256": "3a0d62e3fc9f8666b86ceb99de2efc798aa6ff1a9e7d1c34b1e9f34e6fd9bbd6"
+      },
+      "hw/soc/pnr/timing_xor_pair_helpers.tcl": {
+        "bytes": 7624,
+        "sha256": "b1c80bae7e1fd84d25819ed5d5db98f4bf1acdc453612427c482ec1d1c8a1504"
+      },
+      "hw/soc/pnr/timing_xor_pair_step.tcl": {
+        "bytes": 7822,
+        "sha256": "69bdf1d21025033666205e995e51d1711f732d36ff9233c0c8223e060edc3aa7"
+      },
+      "sw/tests/timing_xor_pair_native.tcl": {
+        "bytes": 7921,
+        "sha256": "39f0540e39f73c8ec31932483a1f26e27b36ba069cf2b17ad2520aa5c46930eb"
+      },
+      "sw/tests/test_cloud_xor_pair.py": {
+        "bytes": 8082,
+        "sha256": "8cec5d7a0fd4ed5e8b3b92c4cd2134c22a3f11dfbfccac1d4c1bb3fbca59775b"
+      },
+      ".github/workflows/timing-xor-pair.yml": {
+        "bytes": 5756,
+        "sha256": "1b3465f5ca668d5b78d149bf4ec3353939406cf9908aa5b6b0291f349334f13c"
+      }
+    },
+    "original_one_buffer_source_pins_unchanged": {
+      "scripts/run_cloud_xor_buffer.py": "5f64198e294b7e3f65e7c75806ea5b82c38bbfedae3d9b9939c52f10ec07eb71",
+      "hw/soc/pnr/timing_xor_buffer_helpers.tcl": "137517a4a9376cc15ebfa6401687d7ec2c131980390d13765728b255d7bbc390",
+      "hw/soc/pnr/timing_xor_buffer_step.tcl": "96ee13b8940c20ecc5454d08d5d65d2f0bcbcb2aa22eb3544a8087046969d269",
+      "sw/tests/timing_xor_buffer_native.tcl": "8d163ebd8c141abf67ac6507212977829cc4f10ae513ab088a5a05d3b7d73e66",
+      "sw/tests/test_cloud_xor_buffer.py": "11969d299208c98d68eaa0e6fd74841d4addd4ade77f97a42205d6bf19b0bdde",
+      ".github/workflows/timing-xor-buffer.yml": "229b25485fb81cc1713cbb6e788fa99003b34e8eae0a3b91c9718160238ac999"
+    },
+    "pure_tests": {
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_cloud_xor_pair.py sw/tests/test_cloud_xor_buffer.py",
+      "passed": 55
+    },
+    "ruff_pass": true,
+    "actionlint_pass": true,
+    "native_tiny": {
+      "returncode": 0,
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "openroad",
+        "-no_init",
+        "-exit",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/timing_xor_pair_native.tcl"
+      ],
+      "elapsed_seconds": 0.9139981859989348,
+      "source_sha256": {
+        "sw/tests/timing_xor_pair_native.tcl": "39f0540e39f73c8ec31932483a1f26e27b36ba069cf2b17ad2520aa5c46930eb",
+        "hw/soc/pnr/timing_xor_pair_helpers.tcl": "b1c80bae7e1fd84d25819ed5d5db98f4bf1acdc453612427c482ec1d1c8a1504",
+        "hw/soc/pnr/timing_xor_buffer_helpers.tcl": "137517a4a9376cc15ebfa6401687d7ec2c131980390d13765728b255d7bbc390",
+        "hw/soc/pnr/timing_hold_reproducibility.tcl": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+      },
+      "source_unchanged": true,
+      "scope": "Tiny seven-cell fixture with two fixed inserted buffers only; no chip load"
+    },
+    "native_fixture_result": {
+      "status": "PASS_NATIVE_XOR_PAIR_CONTROL",
+      "missing_sink_rejected": true,
+      "wrong_sink_rejected": true,
+      "extra_second_sink_rejected": true,
+      "floating_power_rejected": true,
+      "wrong_power_rejected": true,
+      "second_duplicate_rejected": true,
+      "missing_api_rejected": true,
+      "extra_fanout_rejected": true,
+      "duplicate_rejected": true,
+      "original_graph_preserved": true,
+      "constraints_preserved": true,
+      "supply_connections_preserved": true,
+      "corners": [
+        "fast",
+        "slow",
+        "typical"
+      ],
+      "insertions": [
+        {
+          "buffer": "nssoc_xor_buf21",
+          "new_net": "nssoc_xor_bufnet1",
+          "original_net": "_017423_",
+          "driver": "_071517_/X",
+          "sink": "_071519_/A",
+          "master": "sg13g2_buf_2",
+          "initial_instances": 7,
+          "location_um": [
+            24.96,
+            15.12
+          ]
+        },
+        {
+          "buffer": "nssoc_xnor_buf22",
+          "new_net": "nssoc_xnor_bufnet2",
+          "original_net": "_016495_",
+          "driver": "_070589_/Y",
+          "master": "sg13g2_buf_2",
+          "sinks": [
+            "_070602_/A2",
+            "_072894_/A1"
+          ],
+          "initial_instances": 8,
+          "location_um": [
+            29.76,
+            60.48
+          ]
+        }
+      ],
+      "timing_accepted": false,
+      "candidate_adopted": false,
+      "manufacturing_approval": false
+    },
+    "independent_native_fixture_graph": {
+      "original_instance_count": 7,
+      "inserted_instances": 2,
+      "inserted_signal_nets": 2,
+      "full_original_graph_preserved": true,
+      "noninverting_cell": "sg13g2_buf_2"
+    },
+    "native_fixture_sdc_unchanged": true,
+    "actual_fixture_three_corner_reports_verified": true,
+    "all_chip_execution_deferred_to_github": true,
+    "new_method_source_count": 26,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "root_tests_passed": 91,
+  "root_ruff": "PASS",
+  "root_actionlint": "PASS",
+  "full_chip_native_performed_locally": false,
+  "old_one_buffer_producer_byte_unchanged": true,
+  "next_native_scope": "Same original C10: fixed first XOR buffer, measured intermediate stage, fixed two-sink XNOR buffer, four complete stages and rejected candidate views.",
+  "full_timing_accepted": false,
+  "manufacturing_approval": false
+}

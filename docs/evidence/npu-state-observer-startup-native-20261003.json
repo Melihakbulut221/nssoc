@@ -1,0 +1,1207 @@
+{
+  "candidate_adopted": false,
+  "firmware_pair_equal": true,
+  "fullchip_external_inputs_loaded_locally": false,
+  "root_reviewer_script": {
+    "bytes": 4617,
+    "sha256": "70f8ad38bf93d5c3bf10a75fe7746efcf8877aa9867462aed6cee1a1dacbf0e3"
+  },
+  "run_id": 37102953988,
+  "schema": 1,
+  "scope": "Full compact startup ZIP/member/Git verification and actual cloud tiny-control replay. Full external netlists/models/runtime remain in cloud; their captured pins are source-bound. This is preparation evidence, not a completed chip run.",
+  "source_commit": "14f5b2f38ce6040433b888b3522800b1b264a04d",
+  "status": "BOTH_NATIVE_STARTUPS_VERIFIED_LONG_REPLAYS_RUNNING",
+  "utc": "2026-10-03T06:28:36.587562+00:00",
+  "variants": {
+    "candidate": {
+      "all_member_crc_pass": true,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11266878566/zip",
+        "created_at": "2026-10-03T06:25:58Z",
+        "digest": "sha256:b5211bed08b8f5612aae658a841cccf527a2c4b4c494f2b0b87ea608b228cb34",
+        "expired": false,
+        "expires_at": "2026-11-02T06:25:57Z",
+        "id": 11266878566,
+        "name": "npu-state-trace-startup-candidate-1",
+        "node_id": "MDg6QXJ0aWZhY3QxMTI2Njg3ODU2Ng==",
+        "size_in_bytes": 522209,
+        "updated_at": "2026-10-03T06:25:58Z",
+        "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11266878566",
+        "workflow_run": {
+          "head_branch": "codex/complete-open-work",
+          "head_repository_id": 1364721142,
+          "head_sha": "14f5b2f38ce6040433b888b3522800b1b264a04d",
+          "id": 37102953988,
+          "repository_id": 1364721142
+        }
+      },
+      "compile": {
+        "command": [
+          "/home/runner/work/_temp/npu-state-trace-work/oss-cad-suite/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_logicrom_gl",
+          "-o",
+          "/home/runner/work/_temp/npu-state-trace-work/sim.vvp",
+          "-DFUNCTIONAL",
+          "-DTIMEOUT_CYCLES=3000000",
+          "-DEXIT_CODE_ADDR=32'h00001e64",
+          "-DEXIT_MAGIC_ADDR=32'h00001e68",
+          "-DCHECKS_ADDR=32'h00001e9c",
+          "-DFAILS_ADDR=32'h00001ea0",
+          "/home/runner/work/nssoc/nssoc/npu-state-trace/tb_qualification_boot.v",
+          "/home/runner/work/_temp/npu-state-trace-work/producer/synthesis-candidate/soc_top.netlist.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/repo/hw/soc/tb/flash_w25q128jv.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/sg13g2_stdcell.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_ideal.v",
+          "/home/runner/work/nssoc/nssoc/npu-state-trace/npu_state_event_trace.v"
+        ],
+        "returncode": 0
+      },
+      "controls": {
+        "bit0_unknown": {
+          "baseline_sampled_trajectory_unchanged": true,
+          "raw_native_observation": {
+            "events": 108,
+            "final_cycle": 9,
+            "last": 7,
+            "raw_event_file": {
+              "bytes": 11716,
+              "sha256": "b80fa02d543d22c46be367c25aede3339ffdde893548035b0027e371ff483574"
+            },
+            "samples": 6,
+            "sequence": 114,
+            "start": 2,
+            "unknown_scalar_events": [
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 16,
+                "signal": 4,
+                "value": "x"
+              },
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 18,
+                "signal": 0,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 26,
+                "signal": 8,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 29,
+                "signal": 1,
+                "value": "x"
+              }
+            ],
+            "width": 44
+          },
+          "unknown_q_bits": [
+            0
+          ]
+        },
+        "bit3_unknown": {
+          "baseline_sampled_trajectory_unchanged": true,
+          "raw_native_observation": {
+            "events": 112,
+            "final_cycle": 9,
+            "last": 7,
+            "raw_event_file": {
+              "bytes": 12140,
+              "sha256": "2706d5b689bf758ad5644645745ead8f8f08acd6a45dd8de3ec6753df1d2a0f7"
+            },
+            "samples": 6,
+            "sequence": 118,
+            "start": 2,
+            "unknown_scalar_events": [
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 10,
+                "signal": 37,
+                "value": "x"
+              },
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 12,
+                "signal": 33,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 20,
+                "signal": 41,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 29,
+                "signal": 34,
+                "value": "x"
+              }
+            ],
+            "width": 44
+          },
+          "unknown_q_bits": [
+            3
+          ]
+        },
+        "known": {
+          "baseline_sampled_trajectory_unchanged": true,
+          "raw_native_observation": {
+            "events": 120,
+            "final_cycle": 9,
+            "last": 7,
+            "raw_event_file": {
+              "bytes": 12980,
+              "sha256": "04a42a0889923aad497d17e76e021cd4c5bd137f7d91cefbeb3f1056325c5fdd"
+            },
+            "samples": 6,
+            "sequence": 126,
+            "start": 2,
+            "unknown_scalar_events": [],
+            "width": 44
+          },
+          "unknown_q_bits": []
+        }
+      },
+      "cycle_bound": 3000000,
+      "durable_capture": {
+        "bytes": 497203,
+        "path": "hw/soc/out/heartbeat-20261003-0547/npu-startup/candidate-verified-members.tar.gz",
+        "sha256": "392eb9ed4ad5750223e67d4501636ee2889515b7db488c4cd5859ecc8750c1f7"
+      },
+      "git_methods_rehashed": 20,
+      "members_rehashed": 84,
+      "native_output_pins_rehashed": 83,
+      "original_bench_preserved": true,
+      "runtime": {
+        "archive_bytes": 737555999,
+        "archive_sha256": "f9c8f52d7333341a1dcad3dc19b0ce229f1b30c5a30cdc8befcc6dd5c8ee2cbd",
+        "tools": {
+          "iverilog": {
+            "bytes": 453,
+            "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+          },
+          "vvp": {
+            "bytes": 485,
+            "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+          },
+          "yosys": {
+            "bytes": 540,
+            "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+          }
+        }
+      },
+      "source_bindings": {
+        "cells": {
+          "_131361_": {
+            "ports": {
+              "CLK": "clk_npu",
+              "D": "_005304_",
+              "Q": "\\u_npu.ev_state [0]",
+              "RESET_B": "\\g_core_req_reg.u_data_request.rst_ni "
+            },
+            "source": "  sg13g2_dfrbpq_1 _131361_ (\n    .CLK(clk_npu),\n    .D(_005304_),\n    .Q(\\u_npu.ev_state [0]),\n    .RESET_B(\\g_core_req_reg.u_data_request.rst_ni )\n  );",
+            "state_bit": 0
+          },
+          "_131362_": {
+            "ports": {
+              "CLK": "clk_npu",
+              "D": "_005305_",
+              "Q": "\\u_npu.ev_state [1]",
+              "RESET_B": "\\g_core_req_reg.u_data_request.rst_ni "
+            },
+            "source": "  sg13g2_dfrbpq_1 _131362_ (\n    .CLK(clk_npu),\n    .D(_005305_),\n    .Q(\\u_npu.ev_state [1]),\n    .RESET_B(\\g_core_req_reg.u_data_request.rst_ni )\n  );",
+            "state_bit": 1
+          },
+          "_131363_": {
+            "ports": {
+              "CLK": "clk_npu",
+              "D": "_005306_",
+              "Q": "\\u_npu.ev_state [2]",
+              "RESET_B": "\\g_core_req_reg.u_data_request.rst_ni "
+            },
+            "source": "  sg13g2_dfrbpq_1 _131363_ (\n    .CLK(clk_npu),\n    .D(_005306_),\n    .Q(\\u_npu.ev_state [2]),\n    .RESET_B(\\g_core_req_reg.u_data_request.rst_ni )\n  );",
+            "state_bit": 2
+          },
+          "_131364_": {
+            "ports": {
+              "CLK": "clk_npu",
+              "D": "_005307_",
+              "Q": "\\u_npu.ev_state [3]",
+              "RESET_B": "\\g_core_req_reg.u_data_request.rst_ni "
+            },
+            "source": "  sg13g2_dfrbpq_1 _131364_ (\n    .CLK(clk_npu),\n    .D(_005307_),\n    .Q(\\u_npu.ev_state [3]),\n    .RESET_B(\\g_core_req_reg.u_data_request.rst_ni )\n  );",
+            "state_bit": 3
+          }
+        },
+        "connected_cell_excerpts": {
+          "_131361_": [
+            "  sg13g2_o21ai_1 _107542_ (\n    .A1(_026978_),\n    .A2(_047302_),\n    .B1(_047305_),\n    .Y(_005304_)\n  );",
+            "  sg13g2_dfrbpq_1 _135137_ (\n    .CLK(clk_i),\n    .D(rst_sync[0]),\n    .Q(\\g_core_req_reg.u_data_request.rst_ni ),\n    .RESET_B(rst_raw_n)\n  );",
+            "  sg13g2_lgcp_1 \\g_clkgate.u_npu_cg.u_icg  (\n    .CLK(clk_i),\n    .GATE(\\g_clkgate.u_npu_cg.en_i ),\n    .GCLK(clk_npu)\n  );"
+          ],
+          "_131362_": [
+            "  sg13g2_o21ai_1 _107547_ (\n    .A1(_047306_),\n    .A2(_047302_),\n    .B1(_047309_),\n    .Y(_005305_)\n  );",
+            "  sg13g2_dfrbpq_1 _135137_ (\n    .CLK(clk_i),\n    .D(rst_sync[0]),\n    .Q(\\g_core_req_reg.u_data_request.rst_ni ),\n    .RESET_B(rst_raw_n)\n  );",
+            "  sg13g2_lgcp_1 \\g_clkgate.u_npu_cg.u_icg  (\n    .CLK(clk_i),\n    .GATE(\\g_clkgate.u_npu_cg.en_i ),\n    .GCLK(clk_npu)\n  );"
+          ],
+          "_131363_": [
+            "  sg13g2_mux2_1 _107552_ (\n    .A0(\\u_npu.ev_state [2]),\n    .A1(_047313_),\n    .S(_047302_),\n    .X(_005306_)\n  );",
+            "  sg13g2_dfrbpq_1 _135137_ (\n    .CLK(clk_i),\n    .D(rst_sync[0]),\n    .Q(\\g_core_req_reg.u_data_request.rst_ni ),\n    .RESET_B(rst_raw_n)\n  );",
+            "  sg13g2_lgcp_1 \\g_clkgate.u_npu_cg.u_icg  (\n    .CLK(clk_i),\n    .GATE(\\g_clkgate.u_npu_cg.en_i ),\n    .GCLK(clk_npu)\n  );"
+          ],
+          "_131364_": [
+            "  sg13g2_o21ai_1 _107556_ (\n    .A1(_026979_),\n    .A2(_047302_),\n    .B1(_047316_),\n    .Y(_005307_)\n  );",
+            "  sg13g2_dfrbpq_1 _135137_ (\n    .CLK(clk_i),\n    .D(rst_sync[0]),\n    .Q(\\g_core_req_reg.u_data_request.rst_ni ),\n    .RESET_B(rst_raw_n)\n  );",
+            "  sg13g2_lgcp_1 \\g_clkgate.u_npu_cg.u_icg  (\n    .CLK(clk_i),\n    .GATE(\\g_clkgate.u_npu_cg.en_i ),\n    .GCLK(clk_npu)\n  );"
+          ]
+        },
+        "model_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+        "native_dff_model": "module sg13g2_dfrbpq_1 (Q, D, RESET_B, CLK);\n\toutput Q;\n\tinput D, RESET_B, CLK;\n\treg notifier;\n\twire delayed_D, delayed_RESET_B, delayed_CLK;\n\n\t// Function\n\twire int_fwire_IQ, int_fwire_r, xcr_0;\n\n\tnot (int_fwire_r, delayed_RESET_B);\n\tihp_dff_r_err (xcr_0, delayed_CLK, delayed_D, int_fwire_r);\n\tihp_dff_r (int_fwire_IQ, notifier, delayed_CLK, delayed_D, int_fwire_r, xcr_0);\n\tbuf (Q, int_fwire_IQ);\n\n\t// Timing\n\tspecify\n\t\t(negedge RESET_B => (Q+:1'b0)) = 0;\n\t\t(posedge CLK => (Q+:D)) = 0;\n\t\t$setuphold (posedge CLK, posedge D, 0, 0, notifier,,, delayed_CLK, delayed_D);\n\t\t$setuphold (posedge CLK, negedge D, 0, 0, notifier,,, delayed_CLK, delayed_D);\n\t\t$recrem (posedge RESET_B, posedge CLK, 0, 0, notifier,,, delayed_RESET_B, delayed_CLK);\n\t\t$width (negedge RESET_B, 0, 0, notifier);\n\t\t$width (posedge CLK, 0, 0, notifier);\n\t\t$width (negedge CLK, 0, 0, notifier);\n\tendspecify\nendmodule",
+        "netlist_sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c",
+        "sample_encoding": "Binary per scalar and complete 44-bit snapshot; signal index zero is the least significant packed bit.",
+        "schema": 1,
+        "sequence_scope": "Observed scheduler execution order; not a simulator-internal delta index.",
+        "signals": [
+          {
+            "expression": "dut._131361_.D",
+            "field": "D",
+            "index": 0,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.Q",
+            "field": "Q",
+            "index": 1,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.CLK",
+            "field": "CLK",
+            "index": 2,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.RESET_B",
+            "field": "RESET_B",
+            "index": 3,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.delayed_D",
+            "field": "delayed_D",
+            "index": 4,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.delayed_CLK",
+            "field": "delayed_CLK",
+            "index": 5,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.delayed_RESET_B",
+            "field": "delayed_RESET_B",
+            "index": 6,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.notifier",
+            "field": "notifier",
+            "index": 7,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.int_fwire_IQ",
+            "field": "int_fwire_IQ",
+            "index": 8,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.int_fwire_r",
+            "field": "int_fwire_r",
+            "index": 9,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131361_.xcr_0",
+            "field": "xcr_0",
+            "index": 10,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._131362_.D",
+            "field": "D",
+            "index": 11,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.Q",
+            "field": "Q",
+            "index": 12,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.CLK",
+            "field": "CLK",
+            "index": 13,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.RESET_B",
+            "field": "RESET_B",
+            "index": 14,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.delayed_D",
+            "field": "delayed_D",
+            "index": 15,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.delayed_CLK",
+            "field": "delayed_CLK",
+            "index": 16,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.delayed_RESET_B",
+            "field": "delayed_RESET_B",
+            "index": 17,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.notifier",
+            "field": "notifier",
+            "index": 18,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.int_fwire_IQ",
+            "field": "int_fwire_IQ",
+            "index": 19,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.int_fwire_r",
+            "field": "int_fwire_r",
+            "index": 20,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131362_.xcr_0",
+            "field": "xcr_0",
+            "index": 21,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._131363_.D",
+            "field": "D",
+            "index": 22,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.Q",
+            "field": "Q",
+            "index": 23,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.CLK",
+            "field": "CLK",
+            "index": 24,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.RESET_B",
+            "field": "RESET_B",
+            "index": 25,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.delayed_D",
+            "field": "delayed_D",
+            "index": 26,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.delayed_CLK",
+            "field": "delayed_CLK",
+            "index": 27,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.delayed_RESET_B",
+            "field": "delayed_RESET_B",
+            "index": 28,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.notifier",
+            "field": "notifier",
+            "index": 29,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.int_fwire_IQ",
+            "field": "int_fwire_IQ",
+            "index": 30,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.int_fwire_r",
+            "field": "int_fwire_r",
+            "index": 31,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131363_.xcr_0",
+            "field": "xcr_0",
+            "index": 32,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._131364_.D",
+            "field": "D",
+            "index": 33,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.Q",
+            "field": "Q",
+            "index": 34,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.CLK",
+            "field": "CLK",
+            "index": 35,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.RESET_B",
+            "field": "RESET_B",
+            "index": 36,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.delayed_D",
+            "field": "delayed_D",
+            "index": 37,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.delayed_CLK",
+            "field": "delayed_CLK",
+            "index": 38,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.delayed_RESET_B",
+            "field": "delayed_RESET_B",
+            "index": 39,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.notifier",
+            "field": "notifier",
+            "index": 40,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.int_fwire_IQ",
+            "field": "int_fwire_IQ",
+            "index": 41,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.int_fwire_r",
+            "field": "int_fwire_r",
+            "index": 42,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._131364_.xcr_0",
+            "field": "xcr_0",
+            "index": 43,
+            "state_bit": 3
+          }
+        ],
+        "variant": "candidate"
+      },
+      "sources": {
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": {
+          "bytes": 6900,
+          "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_1P_core_behavioral_bm_bist.v": {
+          "bytes": 3932,
+          "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_256x16_c2_bm_bist.v": {
+          "bytes": 12655,
+          "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": {
+          "bytes": 6067,
+          "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_ideal.v": {
+          "bytes": 4051,
+          "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/sg13g2_stdcell.v": {
+          "bytes": 53835,
+          "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/repo/hw/soc/tb/flash_w25q128jv.v": {
+          "bytes": 20792,
+          "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/producer/synthesis-candidate/soc_top.netlist.v": {
+          "bytes": 10370597,
+          "sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/firmware/app.elf": {
+          "bytes": 57192,
+          "sha256": "2dfc38c7c4c94d7993d7ce74e5327333210812cbf7cc8faa551247bda77a64ac"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/firmware/flash0.hex": {
+          "bytes": 393216,
+          "sha256": "65b6cdbb476eb5b01b21dc69a4d7f0f9838bf22646c4d580e76294285b463d1b"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/firmware/test_soc.bin": {
+          "bytes": 3120,
+          "sha256": "729a8e1c199925b8a75e982704955e5cdc63a7bbff9cc2546b73ac6c5c6c788f"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/npu_state_event_trace.v": {
+          "bytes": 1926,
+          "sha256": "909131caa1d65d3554846f11daff0f9538474ffaa3ae2acf1d720a120f5eec9b"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/tb_qualification_boot.v": {
+          "bytes": 14441,
+          "sha256": "d6fa4a9ae3bfc4dae3020b6f0e2ddcdafb8cdce8318aa187d017c99e2da14774"
+        }
+      },
+      "window": {
+        "last": 1569520,
+        "max_events": 20000,
+        "start": 1569360
+      },
+      "zip_digest_independently_recomputed": true
+    },
+    "original": {
+      "all_member_crc_pass": true,
+      "artifact": {
+        "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11266474241/zip",
+        "created_at": "2026-10-03T06:26:14Z",
+        "digest": "sha256:6683be87ecc7d259ae9f4cf496812845d4a989609ec08bc54caceaf1d04f3f20",
+        "expired": false,
+        "expires_at": "2026-11-02T06:26:13Z",
+        "id": 11266474241,
+        "name": "npu-state-trace-startup-original-1",
+        "node_id": "MDg6QXJ0aWZhY3QxMTI2NjQ3NDI0MQ==",
+        "size_in_bytes": 522222,
+        "updated_at": "2026-10-03T06:26:14Z",
+        "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/11266474241",
+        "workflow_run": {
+          "head_branch": "codex/complete-open-work",
+          "head_repository_id": 1364721142,
+          "head_sha": "14f5b2f38ce6040433b888b3522800b1b264a04d",
+          "id": 37102953988,
+          "repository_id": 1364721142
+        }
+      },
+      "compile": {
+        "command": [
+          "/home/runner/work/_temp/npu-state-trace-work/oss-cad-suite/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_logicrom_gl",
+          "-o",
+          "/home/runner/work/_temp/npu-state-trace-work/sim.vvp",
+          "-DFUNCTIONAL",
+          "-DTIMEOUT_CYCLES=3000000",
+          "-DEXIT_CODE_ADDR=32'h00001e64",
+          "-DEXIT_MAGIC_ADDR=32'h00001e68",
+          "-DCHECKS_ADDR=32'h00001e9c",
+          "-DFAILS_ADDR=32'h00001ea0",
+          "/home/runner/work/nssoc/nssoc/npu-state-trace/tb_qualification_boot.v",
+          "/home/runner/work/_temp/npu-state-trace-work/producer/synthesis-original/soc_top.netlist.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/repo/hw/soc/tb/flash_w25q128jv.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/sg13g2_stdcell.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+          "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_ideal.v",
+          "/home/runner/work/nssoc/nssoc/npu-state-trace/npu_state_event_trace.v"
+        ],
+        "returncode": 0
+      },
+      "controls": {
+        "bit0_unknown": {
+          "baseline_sampled_trajectory_unchanged": true,
+          "raw_native_observation": {
+            "events": 108,
+            "final_cycle": 9,
+            "last": 7,
+            "raw_event_file": {
+              "bytes": 11716,
+              "sha256": "b80fa02d543d22c46be367c25aede3339ffdde893548035b0027e371ff483574"
+            },
+            "samples": 6,
+            "sequence": 114,
+            "start": 2,
+            "unknown_scalar_events": [
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 16,
+                "signal": 4,
+                "value": "x"
+              },
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 18,
+                "signal": 0,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 26,
+                "signal": 8,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 29,
+                "signal": 1,
+                "value": "x"
+              }
+            ],
+            "width": 44
+          },
+          "unknown_q_bits": [
+            0
+          ]
+        },
+        "bit3_unknown": {
+          "baseline_sampled_trajectory_unchanged": true,
+          "raw_native_observation": {
+            "events": 112,
+            "final_cycle": 9,
+            "last": 7,
+            "raw_event_file": {
+              "bytes": 12140,
+              "sha256": "2706d5b689bf758ad5644645745ead8f8f08acd6a45dd8de3ec6753df1d2a0f7"
+            },
+            "samples": 6,
+            "sequence": 118,
+            "start": 2,
+            "unknown_scalar_events": [
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 10,
+                "signal": 37,
+                "value": "x"
+              },
+              {
+                "cycle": 2,
+                "realtime_ns": "20.000",
+                "sequence": 12,
+                "signal": 33,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 20,
+                "signal": 41,
+                "value": "x"
+              },
+              {
+                "cycle": 3,
+                "realtime_ns": "25.000",
+                "sequence": 29,
+                "signal": 34,
+                "value": "x"
+              }
+            ],
+            "width": 44
+          },
+          "unknown_q_bits": [
+            3
+          ]
+        },
+        "known": {
+          "baseline_sampled_trajectory_unchanged": true,
+          "raw_native_observation": {
+            "events": 120,
+            "final_cycle": 9,
+            "last": 7,
+            "raw_event_file": {
+              "bytes": 12980,
+              "sha256": "04a42a0889923aad497d17e76e021cd4c5bd137f7d91cefbeb3f1056325c5fdd"
+            },
+            "samples": 6,
+            "sequence": 126,
+            "start": 2,
+            "unknown_scalar_events": [],
+            "width": 44
+          },
+          "unknown_q_bits": []
+        }
+      },
+      "cycle_bound": 3000000,
+      "durable_capture": {
+        "bytes": 497927,
+        "path": "hw/soc/out/heartbeat-20261003-0547/npu-startup/original-verified-members.tar.gz",
+        "sha256": "339f39231bcaa9c07b76f25081935a48e2f5210fe2dd5f44ed8e736c8b12dcc8"
+      },
+      "git_methods_rehashed": 20,
+      "members_rehashed": 84,
+      "native_output_pins_rehashed": 83,
+      "original_bench_preserved": true,
+      "runtime": {
+        "archive_bytes": 737555999,
+        "archive_sha256": "f9c8f52d7333341a1dcad3dc19b0ce229f1b30c5a30cdc8befcc6dd5c8ee2cbd",
+        "tools": {
+          "iverilog": {
+            "bytes": 453,
+            "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+          },
+          "vvp": {
+            "bytes": 485,
+            "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+          },
+          "yosys": {
+            "bytes": 540,
+            "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+          }
+        }
+      },
+      "source_bindings": {
+        "cells": {
+          "_130766_": {
+            "ports": {
+              "CLK": "clk_npu",
+              "D": "_005305_",
+              "Q": "\\u_npu.ev_state [0]",
+              "RESET_B": "\\g_core_req_reg.u_data_request.rst_ni "
+            },
+            "source": "  sg13g2_dfrbpq_1 _130766_ (\n    .CLK(clk_npu),\n    .D(_005305_),\n    .Q(\\u_npu.ev_state [0]),\n    .RESET_B(\\g_core_req_reg.u_data_request.rst_ni )\n  );",
+            "state_bit": 0
+          },
+          "_130767_": {
+            "ports": {
+              "CLK": "clk_npu",
+              "D": "_005306_",
+              "Q": "\\u_npu.ev_state [1]",
+              "RESET_B": "\\g_core_req_reg.u_data_request.rst_ni "
+            },
+            "source": "  sg13g2_dfrbpq_1 _130767_ (\n    .CLK(clk_npu),\n    .D(_005306_),\n    .Q(\\u_npu.ev_state [1]),\n    .RESET_B(\\g_core_req_reg.u_data_request.rst_ni )\n  );",
+            "state_bit": 1
+          },
+          "_130768_": {
+            "ports": {
+              "CLK": "clk_npu",
+              "D": "_005307_",
+              "Q": "\\u_npu.ev_state [2]",
+              "RESET_B": "\\g_core_req_reg.u_data_request.rst_ni "
+            },
+            "source": "  sg13g2_dfrbpq_1 _130768_ (\n    .CLK(clk_npu),\n    .D(_005307_),\n    .Q(\\u_npu.ev_state [2]),\n    .RESET_B(\\g_core_req_reg.u_data_request.rst_ni )\n  );",
+            "state_bit": 2
+          },
+          "_130769_": {
+            "ports": {
+              "CLK": "clk_npu",
+              "D": "_005308_",
+              "Q": "\\u_npu.ev_state [3]",
+              "RESET_B": "\\g_core_req_reg.u_data_request.rst_ni "
+            },
+            "source": "  sg13g2_dfrbpq_1 _130769_ (\n    .CLK(clk_npu),\n    .D(_005308_),\n    .Q(\\u_npu.ev_state [3]),\n    .RESET_B(\\g_core_req_reg.u_data_request.rst_ni )\n  );",
+            "state_bit": 3
+          }
+        },
+        "connected_cell_excerpts": {
+          "_130766_": [
+            "  sg13g2_mux2_1 _106857_ (\n    .A0(_047080_),\n    .A1(\\u_npu.ev_state [0]),\n    .S(_047086_),\n    .X(_005305_)\n  );",
+            "  sg13g2_dfrbpq_1 _134542_ (\n    .CLK(clk_i),\n    .D(rst_sync[0]),\n    .Q(\\g_core_req_reg.u_data_request.rst_ni ),\n    .RESET_B(rst_raw_n)\n  );",
+            "  sg13g2_lgcp_1 \\g_clkgate.u_npu_cg.u_icg  (\n    .CLK(clk_i),\n    .GATE(\\g_clkgate.u_npu_cg.en_i ),\n    .GCLK(clk_npu)\n  );"
+          ],
+          "_130767_": [
+            "  sg13g2_a21o_1 _106863_ (\n    .A1(_009552_),\n    .A2(_047086_),\n    .B1(_047091_),\n    .X(_005306_)\n  );",
+            "  sg13g2_dfrbpq_1 _134542_ (\n    .CLK(clk_i),\n    .D(rst_sync[0]),\n    .Q(\\g_core_req_reg.u_data_request.rst_ni ),\n    .RESET_B(rst_raw_n)\n  );",
+            "  sg13g2_lgcp_1 \\g_clkgate.u_npu_cg.u_icg  (\n    .CLK(clk_i),\n    .GATE(\\g_clkgate.u_npu_cg.en_i ),\n    .GCLK(clk_npu)\n  );"
+          ],
+          "_130768_": [
+            "  sg13g2_mux2_1 _106868_ (\n    .A0(_047095_),\n    .A1(\\u_npu.ev_state [2]),\n    .S(_047086_),\n    .X(_005307_)\n  );",
+            "  sg13g2_dfrbpq_1 _134542_ (\n    .CLK(clk_i),\n    .D(rst_sync[0]),\n    .Q(\\g_core_req_reg.u_data_request.rst_ni ),\n    .RESET_B(rst_raw_n)\n  );",
+            "  sg13g2_lgcp_1 \\g_clkgate.u_npu_cg.u_icg  (\n    .CLK(clk_i),\n    .GATE(\\g_clkgate.u_npu_cg.en_i ),\n    .GCLK(clk_npu)\n  );"
+          ],
+          "_130769_": [
+            "  sg13g2_or2_1 _106872_ (\n    .A(_047084_),\n    .B(_047098_),\n    .X(_005308_)\n  );",
+            "  sg13g2_dfrbpq_1 _134542_ (\n    .CLK(clk_i),\n    .D(rst_sync[0]),\n    .Q(\\g_core_req_reg.u_data_request.rst_ni ),\n    .RESET_B(rst_raw_n)\n  );",
+            "  sg13g2_lgcp_1 \\g_clkgate.u_npu_cg.u_icg  (\n    .CLK(clk_i),\n    .GATE(\\g_clkgate.u_npu_cg.en_i ),\n    .GCLK(clk_npu)\n  );"
+          ]
+        },
+        "model_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+        "native_dff_model": "module sg13g2_dfrbpq_1 (Q, D, RESET_B, CLK);\n\toutput Q;\n\tinput D, RESET_B, CLK;\n\treg notifier;\n\twire delayed_D, delayed_RESET_B, delayed_CLK;\n\n\t// Function\n\twire int_fwire_IQ, int_fwire_r, xcr_0;\n\n\tnot (int_fwire_r, delayed_RESET_B);\n\tihp_dff_r_err (xcr_0, delayed_CLK, delayed_D, int_fwire_r);\n\tihp_dff_r (int_fwire_IQ, notifier, delayed_CLK, delayed_D, int_fwire_r, xcr_0);\n\tbuf (Q, int_fwire_IQ);\n\n\t// Timing\n\tspecify\n\t\t(negedge RESET_B => (Q+:1'b0)) = 0;\n\t\t(posedge CLK => (Q+:D)) = 0;\n\t\t$setuphold (posedge CLK, posedge D, 0, 0, notifier,,, delayed_CLK, delayed_D);\n\t\t$setuphold (posedge CLK, negedge D, 0, 0, notifier,,, delayed_CLK, delayed_D);\n\t\t$recrem (posedge RESET_B, posedge CLK, 0, 0, notifier,,, delayed_RESET_B, delayed_CLK);\n\t\t$width (negedge RESET_B, 0, 0, notifier);\n\t\t$width (posedge CLK, 0, 0, notifier);\n\t\t$width (negedge CLK, 0, 0, notifier);\n\tendspecify\nendmodule",
+        "netlist_sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8",
+        "sample_encoding": "Binary per scalar and complete 44-bit snapshot; signal index zero is the least significant packed bit.",
+        "schema": 1,
+        "sequence_scope": "Observed scheduler execution order; not a simulator-internal delta index.",
+        "signals": [
+          {
+            "expression": "dut._130766_.D",
+            "field": "D",
+            "index": 0,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.Q",
+            "field": "Q",
+            "index": 1,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.CLK",
+            "field": "CLK",
+            "index": 2,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.RESET_B",
+            "field": "RESET_B",
+            "index": 3,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.delayed_D",
+            "field": "delayed_D",
+            "index": 4,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.delayed_CLK",
+            "field": "delayed_CLK",
+            "index": 5,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.delayed_RESET_B",
+            "field": "delayed_RESET_B",
+            "index": 6,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.notifier",
+            "field": "notifier",
+            "index": 7,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.int_fwire_IQ",
+            "field": "int_fwire_IQ",
+            "index": 8,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.int_fwire_r",
+            "field": "int_fwire_r",
+            "index": 9,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130766_.xcr_0",
+            "field": "xcr_0",
+            "index": 10,
+            "state_bit": 0
+          },
+          {
+            "expression": "dut._130767_.D",
+            "field": "D",
+            "index": 11,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.Q",
+            "field": "Q",
+            "index": 12,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.CLK",
+            "field": "CLK",
+            "index": 13,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.RESET_B",
+            "field": "RESET_B",
+            "index": 14,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.delayed_D",
+            "field": "delayed_D",
+            "index": 15,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.delayed_CLK",
+            "field": "delayed_CLK",
+            "index": 16,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.delayed_RESET_B",
+            "field": "delayed_RESET_B",
+            "index": 17,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.notifier",
+            "field": "notifier",
+            "index": 18,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.int_fwire_IQ",
+            "field": "int_fwire_IQ",
+            "index": 19,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.int_fwire_r",
+            "field": "int_fwire_r",
+            "index": 20,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130767_.xcr_0",
+            "field": "xcr_0",
+            "index": 21,
+            "state_bit": 1
+          },
+          {
+            "expression": "dut._130768_.D",
+            "field": "D",
+            "index": 22,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.Q",
+            "field": "Q",
+            "index": 23,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.CLK",
+            "field": "CLK",
+            "index": 24,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.RESET_B",
+            "field": "RESET_B",
+            "index": 25,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.delayed_D",
+            "field": "delayed_D",
+            "index": 26,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.delayed_CLK",
+            "field": "delayed_CLK",
+            "index": 27,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.delayed_RESET_B",
+            "field": "delayed_RESET_B",
+            "index": 28,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.notifier",
+            "field": "notifier",
+            "index": 29,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.int_fwire_IQ",
+            "field": "int_fwire_IQ",
+            "index": 30,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.int_fwire_r",
+            "field": "int_fwire_r",
+            "index": 31,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130768_.xcr_0",
+            "field": "xcr_0",
+            "index": 32,
+            "state_bit": 2
+          },
+          {
+            "expression": "dut._130769_.D",
+            "field": "D",
+            "index": 33,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.Q",
+            "field": "Q",
+            "index": 34,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.CLK",
+            "field": "CLK",
+            "index": 35,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.RESET_B",
+            "field": "RESET_B",
+            "index": 36,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.delayed_D",
+            "field": "delayed_D",
+            "index": 37,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.delayed_CLK",
+            "field": "delayed_CLK",
+            "index": 38,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.delayed_RESET_B",
+            "field": "delayed_RESET_B",
+            "index": 39,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.notifier",
+            "field": "notifier",
+            "index": 40,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.int_fwire_IQ",
+            "field": "int_fwire_IQ",
+            "index": 41,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.int_fwire_r",
+            "field": "int_fwire_r",
+            "index": 42,
+            "state_bit": 3
+          },
+          {
+            "expression": "dut._130769_.xcr_0",
+            "field": "xcr_0",
+            "index": 43,
+            "state_bit": 3
+          }
+        ],
+        "variant": "original"
+      },
+      "sources": {
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": {
+          "bytes": 6900,
+          "sha256": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_1P_core_behavioral_bm_bist.v": {
+          "bytes": 3932,
+          "sha256": "e2e43ec0159cbc34662fe91114e8cb03a697a2a829ad63b0d4f06631908ea787"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_256x16_c2_bm_bist.v": {
+          "bytes": 12655,
+          "sha256": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v": {
+          "bytes": 6067,
+          "sha256": "2aee72d964fb6cdc7ca0cc92d00b60baf03059b28f744cc0547a430f35c72d08"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/RM_IHPSG13_2P_core_behavioral_ideal.v": {
+          "bytes": 4051,
+          "sha256": "c02f31deaceefb8e5578a9595c2885f4669b5cb4e3c1cade9b5b9c24e0ed27d6"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/models/sg13g2_stdcell.v": {
+          "bytes": 53835,
+          "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/inputs/repo/hw/soc/tb/flash_w25q128jv.v": {
+          "bytes": 20792,
+          "sha256": "d27de4cef5f07cee09864d3d272e828ef438e5953053125cac08899ee10ad9f8"
+        },
+        "/home/runner/work/_temp/npu-state-trace-work/producer/synthesis-original/soc_top.netlist.v": {
+          "bytes": 10274923,
+          "sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/firmware/app.elf": {
+          "bytes": 57192,
+          "sha256": "2dfc38c7c4c94d7993d7ce74e5327333210812cbf7cc8faa551247bda77a64ac"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/firmware/flash0.hex": {
+          "bytes": 393216,
+          "sha256": "65b6cdbb476eb5b01b21dc69a4d7f0f9838bf22646c4d580e76294285b463d1b"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/firmware/test_soc.bin": {
+          "bytes": 3120,
+          "sha256": "729a8e1c199925b8a75e982704955e5cdc63a7bbff9cc2546b73ac6c5c6c788f"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/npu_state_event_trace.v": {
+          "bytes": 1926,
+          "sha256": "909131caa1d65d3554846f11daff0f9538474ffaa3ae2acf1d720a120f5eec9b"
+        },
+        "/home/runner/work/nssoc/nssoc/npu-state-trace/tb_qualification_boot.v": {
+          "bytes": 14441,
+          "sha256": "a15afc632a3747f0ca18a7e026320bb96d75c3f18ead91ed0c0b10abcd2962bd"
+        }
+      },
+      "window": {
+        "last": 1569520,
+        "max_events": 20000,
+        "start": 1569360
+      },
+      "zip_digest_independently_recomputed": true
+    }
+  }
+}

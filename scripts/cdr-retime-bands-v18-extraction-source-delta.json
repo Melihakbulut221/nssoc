@@ -1,0 +1,99 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_retime_data_v16_extraction_stage.py",
+      "candidate_path": "scripts/cloud_cdr_retime_bands_v18_extraction_stage.py",
+      "edits": [
+        {
+          "before": "cdr-retime-data-v16",
+          "after": "cdr-retime-bands-v18",
+          "count": 4
+        },
+        {
+          "before": "cloud_cdr_retime_data_v16_",
+          "after": "cloud_cdr_retime_bands_v18_",
+          "count": 1
+        },
+        {
+          "before": "check_cdr_retime_data_v16_extraction_sources",
+          "after": "check_cdr_retime_bands_v18_extraction_sources",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "a6d2635a53e7aa640d4e097d1f6f22c922dcec3fd09c9ae505600bb3b2567818",
+      "candidate_sha256": "1c6c4948968fa9bc799ec81c397389800e88733cffe0fcf9fb44efed1f7f7e9c"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retime_data_v16_planes.py",
+      "candidate_path": "scripts/cloud_cdr_retime_bands_v18_planes.py",
+      "edits": [
+        {
+          "before": "cdr-retime-data-v16",
+          "after": "cdr-retime-bands-v18",
+          "count": 2
+        },
+        {
+          "before": "'cdr-retime-data-access'",
+          "after": "'cdr-retime-band-reorder'",
+          "count": 1
+        },
+        {
+          "before": "        assert pin['run']==39334427158 and pin['source_head']=='93bd54c05201d089babb5cc9049f174dd5338ca4'\n        assert pin['summary_sha256']=='e1eac820df0d11888ee2a8b1b588e9e01bb17b20dbb110240b2687b45787e3f2'\n        assert pin['report']['geometry']['candidate_gds_sha256']=='c920186862bde235868d3fa009fedcff868246750f0fa38874e3c6b42ba7255e'\n        selected=[n for n in pin['report']['outputs']if n.startswith(('layout/','physical/lvs_flat/','inputs/','children.json'))]\n        prior,proof=reports.restore_report('cdr-retime-band-reorder',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',selected)\n        assert prior==pin['report'] and prior['sources_unchanged'] and prior['source_head']==pin['source_head']\n        assert prior['status']=='PASS_PD484_NATIVE_RETIME_DATA_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'\n        assert prior['physical']['status']=='PASS_NATIVE_PDK_CDR_PD484_DRC_LVS_AND_FAULT_CONTROLS'\n        overlay=prior['geometry']\n        assert overlay['status']=='PASS_NATIVE_RETIME_DATA_METAL_OVERLAY_REQUIRES_DRC_LVS_AND_FRESH_RC'\n        assert overlay['original_devices']==484 and overlay['selected_data_conductors']==12\n        assert overlay['allowed_added_layers']==[30,50,67]\n        assert overlay['source_gds_sha256']=='8a8a25b61c4f9edb092a37caf137f4442191bd78f848d588c1886a2f50a086cf'\n        assert all(p['requested_growth_nm']==250 and p['foreign_original_metal_clearance_nm']==800 and p['minimum_proposed_feature_nm']==200 for p in overlay['plan'])\n        assert all(overlay[k]for k in ('original_geometry_retained','all_layers_exact','serialized_gds_checked','reference_and_lef_byte_identical'))\n        assert set(overlay['rejected'])=={'removed_actual_new_data_metal','changed_unrelated_gate_geometry','unplanned_data_layer_geometry'}\n        assert sha(OUT/'parent/layout'/(TOP+'.gds'))==overlay['candidate_gds_sha256']\n        assert all(prior['outputs'][n]==v for n,v in prior['retained_child_sources'].items())\n        r['retime_data_geometry']=overlay\n",
+          "after": "        assert pin['run']==39379285294 and pin['source_head']=='6fae6cae4e8242e3436fe8873b5e42bed7e112be'\n        assert pin['summary_sha256']=='9d7300c3965d2a9487882e1a569cf17c5328acc130bbf2dc0ee9c993e0c210d3'\n        assert pin['parts_sha256']=='b58458f2193418c85cfb1ea89a1716749f5028b2b5ce58558524b1b097f1bdb3'\n        selected=[n for n in pin['report']['outputs']if n.startswith(('layout/','physical/lvs_flat/','inputs/','children.json'))]\n        prior,proof=reports.restore_report('cdr-retime-band-reorder',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'parent',selected)\n        assert prior==pin['report'] and prior['sources_unchanged'] and prior['source_head']==pin['source_head']\n        assert prior['status']=='PASS_PD484_V16_BAND_REORDER_PHYSICAL_REQUIRES_FRESH_FULL_RC_AND_ORIGINAL_LOADED_GATES'\n        assert prior['physical']['status']=='PASS_NATIVE_PDK_CDR_PD484_DRC_LVS_AND_FAULT_CONTROLS'\n        geometry=prior['geometry']\n        assert geometry['source_gds_sha256']=='c920186862bde235868d3fa009fedcff868246750f0fa38874e3c6b42ba7255e'\n        assert geometry['candidate_gds_sha256']=='27321a65507bccd81228e05933676158794b3c099186535fd4f9b892afacb37e'\n        assert geometry['enumerated']==720 and geometry['candidate_target_span_um']<geometry['original_target_span_um']\n        assert geometry['candidate_order']==['sd','bd','sb','sa','sc','ac','dfa','da','se','dfc','dc','s0','x','s1','y','vi']\n        assert all(geometry[k]for k in ('original_child_hierarchy_preserved','all_parent_band_geometry_conserved',\n            'all_original_v13_v14_v15_v16_local_overlays_preserved','exact_serialized_geometry_checked','reference_byte_identical'))\n        assert len(geometry['controls'])==2\n        assert prior['child_geometry']['status']=='PASS_ALL16_ACTUAL_PLACEMENTS_AND_EIGHT_NATIVE_LEAF_DRAWINGS'\n        assert len(prior['child_geometry']['controls'])==3\n        assert sha(OUT/'parent/layout'/(TOP+'.gds'))==geometry['candidate_gds_sha256']\n        r['band_reorder_geometry']=geometry\n",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "f540402b799fae426ec172f954217a4ec4633bb124ab5003dfa7fb2fb434b666",
+      "candidate_sha256": "e6fc33c470f2643ca261832e6eed685b72725ace279cc409724d229b31c5ba2f"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retime_data_v16_wire_inputs.py",
+      "candidate_path": "scripts/cloud_cdr_retime_bands_v18_wire_inputs.py",
+      "edits": [
+        {
+          "before": "cdr-retime-data-v16",
+          "after": "cdr-retime-bands-v18",
+          "count": 4
+        },
+        {
+          "before": "'cdr-retime-data-access'",
+          "after": "'cdr-retime-band-reorder'",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "7e4f234176cdfcc8648ea9730fb8285ce83179204001022ad118153eedcd462a",
+      "candidate_sha256": "4228165fdf0e635483acc29627984444f1de0ebd3e2fe19abe5c6e6196f99104"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retime_data_v16_binding.py",
+      "candidate_path": "scripts/cloud_cdr_retime_bands_v18_binding.py",
+      "edits": [
+        {
+          "before": "cdr-retime-data-v16",
+          "after": "cdr-retime-bands-v18",
+          "count": 3
+        },
+        {
+          "before": "nssoc_cdr_pd484_retime_data_compact_v16",
+          "after": "nssoc_cdr_pd484_retime_bands_compact_v18",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "afc19642026a6e0cb54f6dad813bca95bf6768863ca79988f6e695ed70d72999",
+      "candidate_sha256": "748d81e2fff1a86f92cf010ee88d7b657097da6fad334931c640863f1a7b4d75"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retime_data_v16_rc.py",
+      "candidate_path": "scripts/cloud_cdr_retime_bands_v18_rc.py",
+      "edits": [
+        {
+          "before": "cdr-retime-data-v16",
+          "after": "cdr-retime-bands-v18",
+          "count": 4
+        }
+      ],
+      "baseline_sha256": "f9242ba47cd9b9b6eecd6966d8fae3a020d0e16dc000c5c63a9f4cb0ecc6d0b0",
+      "candidate_sha256": "330c357296ea1762e881c7471ef3485e33c45fa74e2db5b6f986d449b1aa227f"
+    }
+  ]
+}

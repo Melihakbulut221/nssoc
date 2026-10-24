@@ -1,0 +1,16 @@
+{
+  "status": "REJECTED_BEFORE_NATIVE_SIMULATION",
+  "run": 39146976247,
+  "source_head": "010faca2b1b4f509e2945dc1f5dd749f8052f2d9",
+  "cases": [
+    "nominal_early",
+    "nominal_late",
+    "clock_stopped",
+    "vi_bias_off"
+  ],
+  "cause": "An overbroad4038to3841 string replacement changed an unchanged XOR dependency SHA256 literal. The source integrity assertion rejected all four cases before model restore/native simulation.",
+  "actual_unchanged_xor_sha256": "3ec870fa6a30d9f94038368d6b74c984c314c2d7248ecaab94c687867587fabe",
+  "correction": "Only the three explicit RC census strings are replaced; the cloud source guard additionally requires all64hex dependency literals to match the original and the actual XOR source digest.",
+  "waveform_acceptance_gates_changed": false,
+  "full_phy_accepted": false
+}

@@ -1,0 +1,731 @@
+{
+  "run": 39466552523,
+  "source_head": "55423714aed06e51351c35daf78c840423dc260c",
+  "summary_asset": 660000074,
+  "summary_sha256": "f5fcdbdee650f3c7868e671a9a05b0f3a7db3c78a0be76fe4afb828a1cd73d53",
+  "parts_asset": 660000178,
+  "parts_sha256": "2a3431b7a2cae61f6b9edcbce8edeef23963bc62c170332064a5ab779ac58404",
+  "status": "PASS_NATIVE_RAW64_CORE8074_DRC_DEEP_FLAT_LVS_AND_FAULTS_REQUIRES_FRESH_RC_FULLWAVE",
+  "outputs": {
+    "layout/layout.gds": "9583c6cf7f70d4dad4736b808535ef564bed11d0730ce4674314025d0beaebdb",
+    "layout/schematic.cir": "0e3f54d27928ea442d3398d6723dcff277c434a978d3943af3149b19e1268d95",
+    "deep_lvs/run.log": "b2c65ce59a873039ecaf5331550aab74c0bb3f6356bfba80ff47694933311e3c",
+    "deep_lvs/result.lvsdb": "178edb3329857318fef2f61db54a6b8275b9145312542b8ff0621de5d5f10aba",
+    "deep_lvs/extracted.cir": "746c4c5326c01c8bca97b9f234fc0e7d35c98eb7b5d472f930ef89b5c31be18b",
+    "deep_lvs/deck.log": "a38938753d14407b2e6ddd9857ddb64b530f1c7e1bddd9dc37c4a9d7c7ed1a44",
+    "deep_lvs/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+    "deep_lvs/audit.json": "192bfe0b4727072b595d7012a39bf5b43dbaf9c16e52e3bccd7e203c32b8e193",
+    "flat_lvs/run.log": "a1d6330658c3769bedb3efa6073c8a998622f032f9ccee8de1fdcd49407cff9c",
+    "flat_lvs/result.lvsdb": "eb1671587516cfa3ea2bef7393d859c8bc2a781bd6bf3768417a1f5414b83ff9",
+    "flat_lvs/extracted.cir": "3d1a6b12ff3d37d0bfe076205f5eb6deb1fd42194d2f8e0a93a0d57922cd279e",
+    "flat_lvs/deck.log": "f380cf174b7b4d08bbb2d7b6434407b1cf3374062ea24c11642d525a9955d4d0",
+    "flat_lvs/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+    "flat_lvs/audit.json": "13a320bb36cf7d72f7e79f4434b39878d4258332c58331a52f66454b70054c3c"
+  },
+  "steps": {
+    "drc": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/drc/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/drc/drc.lyrdb",
+          "-rd",
+          "threads=2",
+          "-rd",
+          "no_recommended=False",
+          "-rd",
+          "precheck_drc=False"
+        ],
+        "returncode": 0,
+        "seconds": 6.417330097000004,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "04f32e613427e36797752abd8fa86f5b86b1aaa0fe7b73a30f38fd398a1bcc41"
+      },
+      "positive": true,
+      "mode": "deep",
+      "combine_devices": false,
+      "measurement": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "a481d838c61767f18c8a71eed3ee09a75647adb63f58d9e65ef09bfdd60144a6",
+        "log_sha256": "04f32e613427e36797752abd8fa86f5b86b1aaa0fe7b73a30f38fd398a1bcc41"
+      },
+      "expected_verdict_observed": true
+    },
+    "deep_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/deep_lvs/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/deep_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/deep_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 5.535761102000009,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "b2c65ce59a873039ecaf5331550aab74c0bb3f6356bfba80ff47694933311e3c"
+      },
+      "positive": true,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/deep_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/deep_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/deep_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 1.1113804020000089,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+            "schematic": "NSSOC_TX_FULL32_RAW64_HANDOFF_CANDIDATE_V1",
+            "status": "Match",
+            "layout_devices_recursive": 8074,
+            "schematic_devices_recursive": 8074
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/deep_lvs/result.lvsdb": {
+            "bytes": 18415394,
+            "sha256": "178edb3329857318fef2f61db54a6b8275b9145312542b8ff0621de5d5f10aba"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/deep_lvs/deck.log": {
+            "bytes": 37243,
+            "sha256": "a38938753d14407b2e6ddd9857ddb64b530f1c7e1bddd9dc37c4a9d7c7ed1a44"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 163,
+        "actual_count": 163,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "flat_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/flat_lvs/deck.log",
+          "-rd",
+          "run_mode=flat",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/flat_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/flat_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 8.909160008,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "a1d6330658c3769bedb3efa6073c8a998622f032f9ccee8de1fdcd49407cff9c"
+      },
+      "positive": true,
+      "mode": "flat",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/flat_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/flat_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/flat_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 1.0520359299999882,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+            "schematic": "NSSOC_TX_FULL32_RAW64_HANDOFF_CANDIDATE_V1",
+            "status": "Match",
+            "layout_devices_recursive": 8074,
+            "schematic_devices_recursive": 8074
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/flat_lvs/result.lvsdb": {
+            "bytes": 15750403,
+            "sha256": "eb1671587516cfa3ea2bef7393d859c8bc2a781bd6bf3768417a1f5414b83ff9"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/flat_lvs/deck.log": {
+            "bytes": 37229,
+            "sha256": "f380cf174b7b4d08bbb2d7b6434407b1cf3374062ea24c11642d525a9955d4d0"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 163,
+        "actual_count": 163,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "handoff_open": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/faults/handoff_open.gds",
+          "-rd",
+          "topcell=nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/handoff_open/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/handoff_open/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/handoff_open/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 5.771118864999991,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "6e52ae42847775aa2460c8d93bbdcc1ef306ecdb3ead2b96403a27f2d58fc6ae"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/handoff_open/result.lvsdb",
+          "--top",
+          "nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/handoff_open/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/handoff_open/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 1.1777254220000088,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+            "schematic": "NSSOC_TX_FULL32_RAW64_HANDOFF_CANDIDATE_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 8074,
+            "schematic_devices_recursive": 8074
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/handoff_open/result.lvsdb": {
+            "bytes": 18408983,
+            "sha256": "3e9caff2d72f61c56d3674c65155504924a90d7d129daea191103c071b2cab26"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/handoff_open/deck.log": {
+            "bytes": 37246,
+            "sha256": "a66b3d7a35d354e29ef376d0b1ce0dbebe4050dbb09104f6bce92069948280e2"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 163,
+        "actual_count": 163,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "body_supply_short": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/faults/body_supply_short.gds",
+          "-rd",
+          "topcell=nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/body_supply_short/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/body_supply_short/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/body_supply_short/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 5.443813480000003,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "95a9ace24a7184e2d9ce7eda8cd446ae6ccf64ea52a0fb46f0604ec8dc2284f3"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/body_supply_short/result.lvsdb",
+          "--top",
+          "nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/body_supply_short/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/body_supply_short/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 1.0927583760000061,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+            "schematic": "NSSOC_TX_FULL32_RAW64_HANDOFF_CANDIDATE_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 8074,
+            "schematic_devices_recursive": 8074
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/body_supply_short/result.lvsdb": {
+            "bytes": 18435501,
+            "sha256": "407df7198a183a2f15c5346e33c82c577ad445f6622b2ee9d40fb88baeb7927e"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/body_supply_short/deck.log": {
+            "bytes": 37261,
+            "sha256": "d75949c688d80a938c56181f945c7e7c01c2b28830b78a657b51cb4c22b3e136"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": false,
+        "reason": "Aliased or malformed public port",
+        "expected_count": 163
+      },
+      "expected_verdict_observed": true
+    },
+    "wrong_width": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/layout/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/wrong_width/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/faults/wrong_width.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/wrong_width/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/wrong_width/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 5.413744615000013,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "9ca034124dd3802432c2b87693a4e03efec1e83a6225b3ce00f62fe5e1a25b9d"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/wrong_width/result.lvsdb",
+          "--top",
+          "nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/wrong_width/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/wrong_width/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 1.0934978880000017,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+            "schematic": "NSSOC_TX_FULL32_RAW64_HANDOFF_CANDIDATE_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 8074,
+            "schematic_devices_recursive": 8074
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/wrong_width/result.lvsdb": {
+            "bytes": 18415396,
+            "sha256": "e16010a1d6376a3cc4b13d974b7fd5d70d414a2590e5cf8f75a891d00c721773"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/wrong_width/deck.log": {
+            "bytes": 37240,
+            "sha256": "c1ec87b041e559e164a4d6729e9d69799caa34b2ea97e584a13e7d0093b5b2ae"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": true,
+        "expected_count": 163,
+        "actual_count": 163,
+        "missing": [],
+        "extra": []
+      },
+      "expected_verdict_observed": true
+    },
+    "internal_port_alias": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/faults/internal_port_alias.gds",
+          "-rd",
+          "topcell=nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/internal_port_alias/deck.log",
+          "-rd",
+          "run_mode=flat",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/layout/schematic.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/internal_port_alias/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/internal_port_alias/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 8.934284136999992,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "9f7f7be7584e0c7528001aa9cd16ee2dc3bce9b228dd2542eb8d83e56489b835"
+      },
+      "positive": false,
+      "mode": "flat",
+      "combine_devices": false,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/internal_port_alias/result.lvsdb",
+          "--top",
+          "nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/internal_port_alias/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/internal_port_alias/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 1.0183423140000087,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_full32_raw64_handoff_candidate_v1",
+            "schematic": "NSSOC_TX_FULL32_RAW64_HANDOFF_CANDIDATE_V1",
+            "status": "Match",
+            "layout_devices_recursive": 8074,
+            "schematic_devices_recursive": 8074
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/internal_port_alias/result.lvsdb": {
+            "bytes": 15750600,
+            "sha256": "76a7d715b74e23b782da0adff325cfc855fae19d763b54406af6b1d802b91f02"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/internal_port_alias/deck.log": {
+            "bytes": 37264,
+            "sha256": "3f62943f5745b0431ed6a1d8f4bb73cb92cde0fb73a8873e55b5c37e8490f3bf"
+          }
+        }
+      },
+      "external_ports": {
+        "passed": false,
+        "expected_count": 163,
+        "actual_count": 164,
+        "missing": [],
+        "extra": [
+          "D0P"
+        ]
+      },
+      "native_circuit_comparison_passed": true,
+      "fault_rejection_gate": "EXACT_EXTERNAL_INTERFACE_163_NAMES",
+      "expected_verdict_observed": true
+    },
+    "offgrid": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/faults/offgrid.gds",
+          "-rd",
+          "topcell=nssoc_tx_full32_raw64_handoff_candidate_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/offgrid/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-powered-physical/offgrid/drc.lyrdb",
+          "-rd",
+          "threads=2",
+          "-rd",
+          "no_recommended=False",
+          "-rd",
+          "precheck_drc=False"
+        ],
+        "returncode": 0,
+        "seconds": 6.177519946000004,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "842adeaa5d104460209555ae653a88e8d80dc6077b6fb8e32ee5e309b4f4afd3"
+      },
+      "positive": false,
+      "mode": "deep",
+      "combine_devices": false,
+      "measurement": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 2,
+        "categories": {
+          "metal5_drw_Offgrid": 2
+        },
+        "category_count": 560,
+        "report_sha256": "1db08b7619235d69cd5c0c3ff0ac205c1cfda3b03925867ba85c321070f8b93b",
+        "log_sha256": "842adeaa5d104460209555ae653a88e8d80dc6077b6fb8e32ee5e309b4f4afd3"
+      },
+      "expected_verdict_observed": true
+    }
+  },
+  "external_port_controls": {
+    "case_insensitive_native_spice_names": true,
+    "all163_required": true,
+    "rejected": [
+      "extra_internal_port",
+      "missing_external_port",
+      "alias_external_port",
+      "renamed_external_port",
+      "duplicate_external_port"
+    ]
+  },
+  "full_phy_accepted": false,
+  "qualified_pex": false,
+  "electrical_accepted": false
+}

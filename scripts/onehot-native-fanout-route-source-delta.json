@@ -1,0 +1,117 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_onehot_native_resizer_route.py",
+      "candidate_path": "scripts/cloud_onehot_native_fanout_route.py",
+      "edits": [
+        {
+          "before": "OUT=ROOT/'hw/soc/out/cloud-onehot-native-resizer-route'",
+          "after": "OUT=ROOT/'hw/soc/out/cloud-onehot-native-fanout-route'",
+          "count": 1
+        },
+        {
+          "before": "Route exact native-resizer candidate with all151051 cells",
+          "after": "Route exact native-fanout candidate with all152762 cells",
+          "count": 1
+        },
+        {
+          "before": "        saved_candidate_odb=odb",
+          "after": "\n        # Continue from the verified electrical/fanout ECO after its exact routed parent.\n        fan_pin=json.loads((ROOT/'docs/evidence/onehot-native-fanout-pass-20261020.json').read_text())\n        fan_run=api('actions/runs/'+str(fan_pin['run']))\n        assert fan_pin['run']==39404356943 and fan_pin['source_head']=='aa7d61054556ca6b26545d61a0124f8917637775'\n        assert fan_run['status']=='completed'and fan_run['conclusion']=='success'and fan_run['run_attempt']==1\n        assert fan_run['head_sha']==fan_pin['source_head']and fan_run['path']=='.github/workflows/onehot-native-fanout-cloud.yml'\n        fan_root=ROOT/'hw/soc/out/cloud-onehot-native-fanout'\n        fan_names=['candidate.odb','candidate.v','geometry.json','proof/result.json','controls/result.json',\n            'fixed-clock.json','source/result.json','source/trial-config.json',\n            'source/run/1-openroad-detailedrouting/soc_top.sdc',\n            'source/run/1-openroad-detailedrouting/soc_top.odb']\n        fan,fan_source=reports.restore_report(fan_pin['group'],fan_pin['run'],fan_pin['summary_sha256'],\n            fan_pin['parts_sha256'],fan_root,fan_names)\n        assert fan['status']=='PASS_NATIVE_RESIZER_CANDIDATE_REQUIRES_ROUTE_FRESH_RC_ALL_CORNER_STA'\n        assert fan['source_head']==fan_pin['source_head']and fan['sources_unchanged']\n        assert fan['candidate_odb_sha256']==fan_pin['candidate_odb_sha256']\n        assert fan['candidate_netlist_sha256']==fan_pin['candidate_netlist_sha256']\n        assert fan['source']['run']==39392483151 and fan['verified_postroute_run']==39392483151\n        assert fan['source']['summary_sha256']=='b45ac042386d5a8fb09eb74090f8db1ccf63addb2693d0558a8c9ab4e1f6f480'\n        assert fan['source']['manifest_sha256']=='a77fe7c8b92832cdf687184d188139b5d9273193c41bffcc2366cd3ef22e2416'\n        prior_run=api('actions/runs/39392483151')\n        assert prior_run['status']=='completed'and prior_run['conclusion']=='success'and prior_run['run_attempt']==1\n        assert prior_run['head_sha']=='3a4731b1cca9fcc2f95a8c0c96e84fa7be20c4e4'\n        assert prior_run['path']=='.github/workflows/onehot-native-resizer-route-cloud.yml'\n        prior=json.loads((fan_root/'source/result.json').read_text())\n        assert sha(fan_root/'source/result.json')==fan['source']['summary_sha256']\n        assert prior['status']=='COMPLETE_NATIVE_RESIZER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF'\n        assert prior['sources_unchanged']and prior['native_physical_gates_met']\n        assert prior['native_resizer_source']['summary_sha256']==eco_pin['summary_sha256']\n        assert prior['native_resizer_source']['manifest_sha256']==eco_pin['parts_sha256']\n        assert prior['native_resizer_candidate_geometry']==eco['geometry']\n        assert prior['native_resizer_candidate_logic']==eco['proof']\n        assert prior['routed_candidate_topology']['proof']['retained_instances']==151051\n        assert prior['routed_candidate_topology']['proof']['added_diode_count']==27\n        assert prior['fixed_clock_route_proof']['original_physical_route_preserved']\n        assert prior['routed_odb_sha256']==fan['source_odb_sha256']=='df3f0fe0bc20b3f6b31e990b488b467b1d0b445847e13eec2fd3a978cda71f0f'\n        assert sha(fan_root/'source/run/1-openroad-detailedrouting/soc_top.odb')==fan['source_odb_sha256']\n        assert fan['original_measurements']==prior['measurements']\n        assert fan['geometry']['original_instances']==151078 and len(fan['geometry']['added'])==1684\n        assert fan['geometry']['pg_ndr_ports_preserved']and fan['geometry']['clock_pins_and_clock_sram_geometry_preserved']\n        assert fan['fixed_clock']['original_physical_route_preserved']and fan['actual_inversion_control_rejected']\n        assert fan['proof']['status']=='PASS within scope'and fan['proof']['unobserved_output_port_changes']==0\n        assert all(fan['proof'][k]==v for k,v in fan_pin['proof'].items())\n        assert fan['logic_controls']['status']=='PASS_NATIVE_ECO_CONTROLS'\n        assert fan['routing_initialization']['physical_def_preserved_excluding_gcellgrid']\n        assert len(fan['routing_initialization']['six_native_reports_literal_identity'])==6\n        for c in fan['native_baseline']:\n            for mode in ('max','min'):\n                assert abs(fan['native_baseline'][c][mode]-fan['expected_baseline'][c][mode])<=.001\n        for p,key in [('geometry.json','geometry'),('proof/result.json','proof'),\n            ('controls/result.json','logic_controls'),('fixed-clock.json','fixed_clock')]:\n            assert json.loads((fan_root/p).read_text())==fan[key]\n        assert json.loads((fan_root/'source/trial-config.json').read_text())==cfg\n        odb=fan_root/'candidate.odb';netlist=fan_root/'candidate.v'\n        assert sha(odb)==fan['candidate_odb_sha256']=='c005764c949e088b96cea5583f3a86fe901772b5e0eafc9d93bba506a151f2b7'\n        assert sha(netlist)==fan['candidate_netlist_sha256']=='b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0'\n        sdc=fan_root/'source/run/1-openroad-detailedrouting/soc_top.sdc'\n        assert sha(sdc)==fan['source_sdc_sha256']=='19fdfb6dab9889037a4d1f486dadd4c46ac9ccc109a64c78422376c116233597'\n        state.update(odb=str(odb),nl=str(netlist),sdc=str(sdc))\n        for key in ('def','spef','pnl','sdf'):state[key]=None\n        r['native_fanout_source']=fan_source\n        r['native_fanout_candidate_geometry']=fan['geometry']\n        r['native_fanout_candidate_logic']=fan['proof']\n        r['native_fanout_candidate_instances']=152762\n        r['source_routed_measurements']=fan['original_measurements']\n        r['native_routed_baseline']=dict(run=39392483151,summary_sha256=fan['source']['summary_sha256'])\n\n        saved_candidate_odb=odb",
+          "count": 1
+        },
+        {
+          "before": "        command=[str(app),'python',str(flow)",
+          "after": "        protected.update({str(fan_root/p):fan['outputs'][p]for p in fan_names})\n        protected[str(ROOT/'docs/evidence/onehot-native-fanout-pass-20261020.json')]=sha(ROOT/'docs/evidence/onehot-native-fanout-pass-20261020.json')\n        command=[str(app),'python',str(flow)",
+          "count": 1
+        },
+        {
+          "before": "scripts/check_onehot_native_resizer_routed_topology.py",
+          "after": "scripts/check_onehot_native_fanout_routed_topology.py",
+          "count": 1
+        },
+        {
+          "before": "assert r['routed_candidate_topology']['proof']['retained_instances']==151051",
+          "after": "assert r['routed_candidate_topology']['proof']['retained_instances']==152762",
+          "count": 1
+        },
+        {
+          "before": "RUNNING_NATIVE_RESIZER_CANDIDATE_ROUTE_AND_FRESH_RC_STA",
+          "after": "RUNNING_NATIVE_FANOUT_CANDIDATE_ROUTE_AND_FRESH_RC_STA",
+          "count": 1
+        },
+        {
+          "before": "COMPLETE_NATIVE_RESIZER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF',measurements",
+          "after": "COMPLETE_NATIVE_FANOUT_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF',measurements",
+          "count": 1
+        },
+        {
+          "before": "        assert fan['original_measurements']==prior['measurements']",
+          "after": "        expected_source_measurements={c:{'timing__'+k+'__ws':prior['measurements'][c]['metrics']['timing__'+k+'__ws__corner:'+c]\n            for k in ('setup','hold')}for c in ('nom_typ_1p20V_25C','nom_slow_1p08V_125C','nom_fast_1p32V_m40C')}\n        assert fan['original_measurements']==expected_source_measurements\n        assert fan['expected_baseline']=={c:dict(max=v['timing__setup__ws'],min=v['timing__hold__ws'])for c,v in expected_source_measurements.items()}",
+          "count": 1
+        },
+        {
+          "before": "        r['source_routed_measurements']=fan['original_measurements']",
+          "after": "        r['source_routed_measurements']=prior['measurements']\n        r['native_fanout_source_worst_slacks']=fan['original_measurements']",
+          "count": 1
+        },
+        {
+          "before": "        saved_candidate_odb=odb\n        trial=",
+          "after": "        saved_candidate_odb=odb\n        # Resizing/legalization changes pin locations and data-net membership.\n        # Preserve the original candidate and discard only its stale data wires.\n        app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')\n        fresh_method=ROOT/'scripts/prepare_onehot_fanout_fresh_route.py'\n        fresh_root=OUT/'fresh-routing-input'\n        fresh_env=dict(os.environ,NSSOC_FRESH_ROUTE_SOURCE=str(odb),NSSOC_FRESH_ROUTE_OUT=str(fresh_root))\n        with (OUT/'fresh-routing-input.log').open('w')as log:\n            subprocess.run([str(app),'openroad','-exit','-python',str(fresh_method)],cwd=ROOT,env=fresh_env,stdout=log,stderr=subprocess.STDOUT,check=True)\n        preparation=json.loads((fresh_root/'result.json').read_text())\n        assert preparation['status']=='PASS_ONLY_STALE_DATA_WIRES_REMOVED_REQUIRES_FRESH_GLOBAL_AND_DETAIL_ROUTE'\n        assert preparation['source_sha256']==sha(odb) and preparation['source_unchanged']\n        assert preparation['proof']['all_non_wire_physical_def_preserved'] and preparation['proof']['all_other_net_records_preserved']\n        assert len(preparation['controls'])==3 and all(x['rejected']for x in preparation['controls'])\n        odb=fresh_root/'candidate.odb';assert sha(odb)==preparation['candidate_sha256']\n        state['odb']=str(odb)\n        r['fresh_route_input']=preparation;save()\n        trial=",
+          "count": 1
+        },
+        {
+          "before": "flow=ROOT/'hw/soc/pnr/onehot_clock_restore_route_flow.py'",
+          "after": "flow=ROOT/'hw/soc/pnr/onehot_fanout_fresh_route_flow.py'",
+          "count": 1
+        },
+        {
+          "before": "[Path(__file__),flow,topology_method,topology_path",
+          "after": "[Path(__file__),flow,fresh_method,fresh_root/'result.json',ROOT/'hw/soc/pnr/onehot_clock_restore_route_flow.py',topology_method,topology_path",
+          "count": 1
+        },
+        {
+          "before": "'--flow','OnehotClockRestoreRoute'",
+          "after": "'--flow','OnehotFreshFanoutRoute'",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "485a903bf51ded411a09b6e1ada8c66b10743e35cfa388debb1e9fbccded9496",
+      "candidate_sha256": "9372f18687c05deed6c71a5dc9941b5c669fda9a4197506c838c6835861a8935"
+    },
+    {
+      "baseline_path": "scripts/check_onehot_native_resizer_routed_topology.py",
+      "candidate_path": "scripts/check_onehot_native_fanout_routed_topology.py",
+      "edits": [
+        {
+          "before": "151051",
+          "after": "152762",
+          "count": 1
+        },
+        {
+          "before": "e2eef1214e78bf5143a6192633260b004542d1b6830372a983b457e9501e0386",
+          "after": "c005764c949e088b96cea5583f3a86fe901772b5e0eafc9d93bba506a151f2b7",
+          "count": 1
+        },
+        {
+          "before": "PASS_NATIVE_RESIZER_ROUTED_TOPOLOGY_AND_GEOMETRY_NOT_LVS",
+          "after": "PASS_NATIVE_FANOUT_ROUTED_TOPOLOGY_AND_GEOMETRY_NOT_LVS",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "808fd7ff8640694b8ccdcc0fe7b4ce2be65cd9cdd169330b5329e67aef40ec4b",
+      "candidate_sha256": "df81932b78735c0a695bbeaa4989932e57f4d134a862cdd2bed2ddf8b7c66efc"
+    }
+  ],
+  "fresh_route_support": {
+    "scripts/prepare_onehot_fanout_fresh_route.py": "08e99ad97a82e6ee42b1c7f6107d54f7bc394351707bc774114f86af70af5fa4",
+    "hw/soc/pnr/onehot_fanout_fresh_route_flow.py": "5b80b562460d8257ba8c7c504af83a22e137322892f94e2857a8294ddef4a53a"
+  },
+  "fresh_route_capacity_change": {
+    "baseline_commit": "b1dcf87fb2e5b85d88f397185f3eeae775e546cc",
+    "baseline_sha256": "7d49462ff63fcbe2352b63e0bf2200b552511ebbed3b87068b53e857b7b466d6",
+    "candidate_sha256": "5b80b562460d8257ba8c7c504af83a22e137322892f94e2857a8294ddef4a53a",
+    "before": "set_global_routing_layer_adjustment * 0.2",
+    "after": "set_global_routing_layer_adjustment * 0.0\n# General adjustment does not overwrite persisted per-layer adjustments.\nset nssoc_adjustment_report [open \"$::env(STEP_DIR)/native-layer-adjustments.tsv\" w]\nputs $nssoc_adjustment_report \"layer\\tbefore\\tafter\"\nforeach nssoc_layer_name {Metal2 Metal3 Metal4 Metal5 TopMetal1 TopMetal2} {\n    set nssoc_layer [[ord::get_db_tech] findLayer $nssoc_layer_name]\n    set nssoc_before [$nssoc_layer getLayerAdjustment]\n    set_global_routing_layer_adjustment $nssoc_layer_name 0.0\n    set nssoc_after [$nssoc_layer getLayerAdjustment]\n    puts $nssoc_adjustment_report \"$nssoc_layer_name\\t$nssoc_before\\t$nssoc_after\"\n    puts \"NSSOC_LAYER_ADJUSTMENT $nssoc_layer_name $nssoc_before -> $nssoc_after\"\n    if {abs($nssoc_after) > 1e-9} { error \"Persisted layer adjustment was not cleared\" }\n}\nclose $nssoc_adjustment_report",
+    "reason": "Native39427183963 retained20percent layer capacity and8overflows despite wildcard0.0. Explicit per-layer native readback/zeroing now required; no negative capacity, congestion waiver, geometry or STA gate change."
+  }
+}

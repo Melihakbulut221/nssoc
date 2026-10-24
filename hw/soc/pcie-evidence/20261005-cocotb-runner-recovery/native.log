@@ -1,0 +1,48 @@
+rm -f results_ci_compare_v2_20261005.xml
+"make" -f Makefile.soc_pcie_gen3_dllp_consumer_compare_v2 results_ci_compare_v2_20261005.xml
+make[1]: Entering directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb'
+mkdir -p /dev/shm/nssoc-ci-compare-v2-01
+/home/hasanmelih/.local/bin/iverilog -o /dev/shm/nssoc-ci-compare-v2-01/sim.vvp -s soc_pcie_gen3_dllp_consumer_compare_v2 -g2012 -g2012 -f /dev/shm/nssoc-ci-compare-v2-01/cmds.f  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/soc_pcie_gen3_dllp_consumer_compare_v2.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v1.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v2.v
+rm -f results_ci_compare_v2_20261005.xml
+COCOTB_TEST_MODULES=test_soc_pcie_gen3_dllp_consumer_compare_v2 COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=soc_pcie_gen3_dllp_consumer_compare_v2 TOPLEVEL_LANG=verilog \
+         /home/hasanmelih/.local/bin/vvp -M /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   /dev/shm/nssoc-ci-compare-v2-01/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1791217880
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_compare_v2.sustained_two_dllps_per_cycle_and_sequence_wrap (1/9)
+  3624.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_compare_v2.sustained_two_dllps_per_cycle_and_sequence_wrap passed
+  3624.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_compare_v2.mixed_fields_bad_null_and_independent_stalls (2/9)
+  7020.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_compare_v2.mixed_fields_bad_null_and_independent_stalls passed
+  7020.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_compare_v2.body_before_descriptor_reserved_bits_and_unknown_vc (3/9)
+  7524.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_compare_v2.body_before_descriptor_reserved_bits_and_unknown_vc passed
+  7524.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_compare_v2.exact_id_full_replace_and_held_generation (4/9)
+  7764.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_compare_v2.exact_id_full_replace_and_held_generation passed
+  7764.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_compare_v2.epoch_invalidates_both_halves_and_held_events (5/9)
+  8160.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_compare_v2.epoch_invalidates_both_halves_and_held_events passed
+  8160.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_compare_v2.malformed_ownership_fails_closed_then_epoch_restarts (6/9)
+  8232.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_compare_v2.malformed_ownership_fails_closed_then_epoch_restarts passed
+  8232.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_compare_v2.repeated_ids_and_arbitrary_malformed_public_inputs (7/9)
+ 11832.01ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_compare_v2.repeated_ids_and_arbitrary_malformed_public_inputs passed
+ 11832.01ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_compare_v2.full_received_counter_overflow_via_public_body (8/9)
+ 20196.01ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_compare_v2.full_received_counter_overflow_via_public_body passed
+ 20196.01ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_compare_v2.partial_body_flush_and_same_owner_repeated_dwords (9/9)
+ 20436.01ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_compare_v2.partial_body_flush_and_same_owner_repeated_dwords passed
+ 20436.01ns INFO     cocotb.regression                  **********************************************************************************************************************************************************
+                                                        ** TEST                                                                                              STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        **********************************************************************************************************************************************************
+                                                        ** test_soc_pcie_gen3_dllp_consumer_compare_v2.sustained_two_dllps_per_cycle_and_sequence_wrap        PASS        3624.00           5.11        709.64  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_compare_v2.mixed_fields_bad_null_and_independent_stalls           PASS        3396.00           4.31        787.12  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_compare_v2.body_before_descriptor_reserved_bits_and_unknown_vc    PASS         504.00           0.67        750.91  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_compare_v2.exact_id_full_replace_and_held_generation              PASS         240.00           0.26        922.25  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_compare_v2.epoch_invalidates_both_halves_and_held_events          PASS         396.00           0.53        745.07  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_compare_v2.malformed_ownership_fails_closed_then_epoch_restarts   PASS          72.00           0.07        988.38  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_compare_v2.repeated_ids_and_arbitrary_malformed_public_inputs     PASS        3600.00           2.06       1746.64  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_compare_v2.full_received_counter_overflow_via_public_body         PASS        8364.00           5.05       1657.49  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_compare_v2.partial_body_flush_and_same_owner_repeated_dwords      PASS         240.00           0.30        802.06  **
+                                                        **********************************************************************************************************************************************************
+                                                        ** TESTS=9 PASS=9 FAIL=0 SKIP=0                                                                                  20436.01          18.37       1112.61  **
+                                                        **********************************************************************************************************************************************************
+make[1]: Leaving directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb'

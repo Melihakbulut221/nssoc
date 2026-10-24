@@ -1,0 +1,66 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-v5-final-strap6-return-resistance-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/tx-v5-final-strap6-return-resistance-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-v5-final-strap6-return-resistance-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-physical:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore pinned diagnostic dependencies
+        run: python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+      - name: Compile source-bound diagnosis in cloud
+        run: |
+          python3 scripts/check_tx_v5_final_strap6_return_resistance_source.py
+          python3 -m py_compile scripts/cloud_tx_v5_final_strap6_return_resistance.py
+      - name: Solve actual emitter-return metal graph with KCL energy and reciprocity checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_tx_v5_final_strap6_return_resistance.py
+      - name: Preserve physical results and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-tx-v5-final-strap6-return-resistance
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
+          fi
+          stem="tx-v5-final-strap6-return-resistance-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-v5-final-strap6-return-resistance',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-v5-final-strap6-return-resistance-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-v5-final-strap6-return-resistance/
+          retention-days: 30
+
+# Select exact parent archive path; preserve rejection of ambiguous child layout/result.json suffixes.
+
+# Native IDs changed after row placement; compare only verified macro/finger-group distributions.

@@ -1,0 +1,94 @@
+{
+  "baseline_path": "scripts/cloud_cdr_v30_transfer.py",
+  "baseline_sha256": "b2716095df32a2639890216da9566736d3a6b8838d01f8c2117347913236a910",
+  "candidate_path": "scripts/cloud_cdr_v31_transfer.py",
+  "candidate_sha256": "204a000801cb3ec5e13d54e20992343b48e7632d0ce5ce1217b3f99f1515b9cd",
+  "edits": [
+    {
+      "before": "PINS={\"nominal_early\":[\"6d174b3f3f5a62a847403f8de023659611a494668d18447959bbf18749324e9f\",\"8d39eaab6be341b93aa7a4dad9005bb150d9036efaed4e9b6d11eec33b4681fd\"],\"nominal_late\":[\"402651c9298f99065d6738ee084d0b27dd144f991a10f6911dedf85a551b1f0e\",\"025d8e2f01bbae27decda5f34b96d7d4601abb39bdcf8fb139e073a7d310980d\"]}",
+      "after": "PINS={\"nominal_early\":[\"204b9cd4aa6fe74a36df4fa39edd9b4aa8fd126048070ac5b3ccf722ccd87dd1\",\"2cfe9c5ebd680fcbb5ec660e2122cf59f6763b51dce3e0429858f1b03af1bab8\"],\"nominal_late\":[\"cb89111e2723fdac58d43627c40b03f6b0514bfc6c913af2ebbdf7aa5d28f777\",\"04c50f528325cc1b6489d2235c2c078ea73022adc53522aa6731e2a1c29da931\"]}",
+      "count": 1
+    },
+    {
+      "before": "v30-transfer",
+      "after": "v31-transfer",
+      "count": 2
+    },
+    {
+      "before": "cdr-input-impedance-v30-electrical-rejection-20261022.json",
+      "after": "cdr-follower-v31-diagnostic-input-20261022.json",
+      "count": 1
+    },
+    {
+      "before": "39709128571",
+      "after": "39723936059",
+      "count": 2
+    },
+    {
+      "before": "cdr-input-impedance-v30-mim-streamed-",
+      "after": "cdr-follower-v31-mim-streamed-",
+      "count": 1
+    },
+    {
+      "before": "'validation_prerequisite',",
+      "after": "",
+      "count": 1
+    },
+    {
+      "before": "assert prior['case']==args.case",
+      "after": "assert prior['validation_prerequisite']['spec']['capture_summary_sha256']==pin['validation_capture_summary_sha256']\n  assert prior['case']==args.case",
+      "count": 1
+    },
+    {
+      "before": "0337485e3e0bbacd89385703b21c1a35cce4c539",
+      "after": "4b4c01de5dc5920c168927d78105ed61d0e22f91",
+      "count": 1
+    },
+    {
+      "before": "cdr-input-impedance-v30-mim-parent-capture-pass-20261022.json",
+      "after": "cdr-follower-v31-mim-parent-capture-pass-20261022.json",
+      "count": 1
+    },
+    {
+      "before": "39708084548",
+      "after": "39720419606",
+      "count": 1
+    },
+    {
+      "before": "260420a91547b8b245e6f7bca362e52991a11669f45f42d48801b1a2f8ea6a51",
+      "after": "30f3aeea746835dd56dea6edb6c826c16dfcb99cf0bba71855f02c7e2c490851",
+      "count": 1
+    },
+    {
+      "before": "cdr-input-impedance-v30-mim-parent-rc",
+      "after": "cdr-follower-v31-mim-parent-rc",
+      "count": 1
+    },
+    {
+      "before": "ea39f289a589d3a1bf2973a6c46b7e8d3406efc8",
+      "after": "12e7887c7e293016b6da37de316c0511e2122fea",
+      "count": 1
+    },
+    {
+      "before": "  assert not violations",
+      "after": "  assert set(violations)=={'xpd.xd0105','xpd.xd0106'} and not prior['devices_passed']",
+      "count": 1
+    },
+    {
+      "before": "same complete v30 waveform",
+      "after": "same complete v31 waveform",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "scripts/check_cdr_v30_transfer_sources.py": "fc30625539282f2e17b33055aaeae072eb4e87b4737a5b16a06f4fad43d55dad",
+    "scripts/check_cdr_v30_latch_sources.py": "66e8434184cbdea53ee27e6da41df7d8d29a82c7bc7ff77ae657c2caa67d55e0",
+    "scripts/cdr-v30-transfer-source-adaptation.json": "a31e90d2f362c9283926e1a8a8ad7bab02e1a7525b4fc8ffa0eefcb97b21e0cc",
+    "scripts/cdr-v30-latch-source-deltas.json": "508b677017f4eaeb35a00775c34e9a3ee626919464d9e605c8aa0bffc12701f4"
+  }
+}

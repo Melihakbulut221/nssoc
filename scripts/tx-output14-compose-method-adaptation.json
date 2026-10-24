@@ -1,0 +1,72 @@
+{
+  "source": "scripts/cloud_tx_clock_reference_compose.py",
+  "source_sha256": "3d73b5316c5cbc5423cf83735c7561dd7138227a21b1ce28c9c9338305a25c55",
+  "replacements": [
+    [
+      "len(devices)==6",
+      "len(devices)==14"
+    ],
+    [
+      "'clock_reference_wires'",
+      "'tx_output_wires'"
+    ],
+    [
+      "dict(R=13,C=28)",
+      "dict(R=2619,C=1410)"
+    ],
+    [
+      "==41",
+      "==4029"
+    ],
+    [
+      "len(anchors)==14",
+      "len(anchors)==32"
+    ],
+    [
+      "len(lines[0][2:])==14",
+      "len(lines[0][2:])==32"
+    ],
+    [
+      "a['reference_label']:a['name']",
+      "a['reference_label']:a['name'].lower()"
+    ],
+    [
+      "len(public)==4",
+      "len(public)==8"
+    ],
+    [
+      "len(by_terminal)==16",
+      "len(by_terminal)==38"
+    ],
+    [
+      "'rppd_sub'",
+      "'rsil_sub'"
+    ],
+    [
+      "Actual raw6 clock devices and13R28C",
+      "Actual raw14 output devices and2619R1410C"
+    ],
+    [
+      "len(actual)==6",
+      "len(actual)==14"
+    ],
+    [
+      "len(owner)==5 and len(components)==5",
+      "len(owner)==9 and len(components)==9"
+    ],
+    [
+      "count==16",
+      "count==38"
+    ],
+    [
+      "devices=6,wire_resistors=13,wire_capacitors=28",
+      "devices=14,wire_resistors=2619,wire_capacitors=1410"
+    ],
+    [
+      "wire_components=5",
+      "wire_components=9"
+    ]
+  ],
+  "same_net_cb_fault": "Select actual REF native C/B equal cluster with distinct physical planes",
+  "limits": "No gate/tolerance change; no intrinsic contact replaced by alias; every wire token conserved"
+}

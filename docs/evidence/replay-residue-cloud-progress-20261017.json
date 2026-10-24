@@ -1,0 +1,308 @@
+{
+  "as_of": "2026-10-17T14:49:48.119699+00:00",
+  "bank_run": 39041981839,
+  "bank_proofs": {
+    "replay-d2-b18": {
+      "asset": 650718084,
+      "sha256": "e8066873f529e81f8b0d7f31e39cfb1666fab09b961f541588ab0de273e7d1ad",
+      "source_head": "295bb24044d5ea7ba8eefdeeb0ea22eb18df34ed",
+      "kind": "replay",
+      "parameters": {
+        "DEPTH": 2,
+        "MAX_BYTES": 18
+      },
+      "parts_asset": 650718158,
+      "parts_sha256": "6e5faf2f832078e9e456dbd0c1358bdb0485b6d387b1260c2f75bbecc95cccad",
+      "report": {
+        "status": "PASS_TX_BANK_READ_CUT_CONTROLS_AND_FULL_SEQUENTIAL_EQUIVALENCE_NOT_TIMING_ACCEPTANCE",
+        "source_head": "295bb24044d5ea7ba8eefdeeb0ea22eb18df34ed",
+        "kind": "replay",
+        "parameters": {
+          "DEPTH": 2,
+          "MAX_BYTES": 18
+        },
+        "sources": {
+          "/home/runner/work/nssoc/nssoc/sw/tests/fixtures/pcie_chip_timing/pre-bank-replay-20261017.v": "6432a197a96005a12cfb9c223e695af25ab8dfa9febbb8e34fe1233953c2ad19",
+          "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_replay_tx.v": "1a15c0b9d6cfdfbf5ebed9a61c52901e126ca826008d167ff96bea4218a8f4dc",
+          "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc32_byte.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+          "/home/runner/work/_temp/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+          "/home/runner/work/nssoc/nssoc/scripts/check_pcie_tx_read_banks.py": "23f609d0074fa5ad763dd5054ab52eda38ffb6bf6869e9d551152d7e2d095fa3"
+        },
+        "timing_accepted": false,
+        "full_phy_accepted": false,
+        "scope": "Unmasked full sequential equivalence plus arbitrary defined memory/address read cuts. Includes replay cross-bank reads, LCRC all states/header sizes/byte order, no valid-only or reachable-state restriction in read cuts. Not mapped or physical timing acceptance.",
+        "read_cut": {
+          "passed": true,
+          "counterexample": false,
+          "returncode": 0,
+          "log_sha256": "cc30f5da7a3fce9dab64cc9b7664ff31c45618736bb1ee05fcff08ca0b1485e6"
+        },
+        "controls": [
+          {
+            "fault": "wrong_byte",
+            "passed": false,
+            "counterexample": true,
+            "returncode": 1,
+            "log_sha256": "06acb097378616f782aa7262a45fbb68f624ac24433c70d1bdf521d45a2d4459"
+          },
+          {
+            "fault": "wrong_slot",
+            "passed": false,
+            "counterexample": true,
+            "returncode": 1,
+            "log_sha256": "98111a28c3fffa8e474add6db573978817a28f8da136f6cd91329ebffeae05d7"
+          }
+        ],
+        "sequential": {
+          "returncode": 0,
+          "counts": [
+            [
+              "626",
+              "0"
+            ]
+          ],
+          "log_sha256": "253de42316a5885c5dc128663148627efc3d8871d57db66627a3e93f01dd989f"
+        },
+        "sources_unchanged": true,
+        "outputs": {
+          "wrong_byte/proof.log": "06acb097378616f782aa7262a45fbb68f624ac24433c70d1bdf521d45a2d4459",
+          "wrong_byte/gold.v": "04b2193e21fc1587b1ee09c8f34ae94be9aa8abd0860f2ca27f99a110900f0a9",
+          "wrong_byte/gate.v": "f87b4518adddab4e4e8be137a286b666d991518581198d3ed1ad60d0f17efb60",
+          "wrong_byte/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced",
+          "arbitrary-memory/proof.log": "cc30f5da7a3fce9dab64cc9b7664ff31c45618736bb1ee05fcff08ca0b1485e6",
+          "arbitrary-memory/gold.v": "04b2193e21fc1587b1ee09c8f34ae94be9aa8abd0860f2ca27f99a110900f0a9",
+          "arbitrary-memory/gate.v": "9c96552d9a59ce37d77d2ef758d54237da046cab346c6d9424c146f26668e01f",
+          "arbitrary-memory/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced",
+          "sequential/proof.log": "253de42316a5885c5dc128663148627efc3d8871d57db66627a3e93f01dd989f",
+          "sequential/gold.v": "1beb4889819884801a43bcfa0fd37eea62b397cafc98455aba31d29abfe54be5",
+          "sequential/gate.v": "b1827657d740772bb0bf621b6c32758522714d0f6a8c0fd48f2cae860939a3c1",
+          "sequential/crc.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+          "sequential/proof.ys": "88e83a78697cca60597dd59265473114e00132f4d2bc7da4bf01d311ae7685b5",
+          "wrong_slot/proof.log": "98111a28c3fffa8e474add6db573978817a28f8da136f6cd91329ebffeae05d7",
+          "wrong_slot/gold.v": "04b2193e21fc1587b1ee09c8f34ae94be9aa8abd0860f2ca27f99a110900f0a9",
+          "wrong_slot/gate.v": "f24933f51fba73af583775ca35a77a992fe261c57e9571e453383c3d6a334d82",
+          "wrong_slot/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced"
+        }
+      }
+    },
+    "replay-d3-b38": {
+      "asset": 650718520,
+      "sha256": "9849ea33f20472e6d8586482708336a25ec266dee32e32f8793d77aa3a56a102",
+      "source_head": "295bb24044d5ea7ba8eefdeeb0ea22eb18df34ed",
+      "kind": "replay",
+      "parameters": {
+        "DEPTH": 3,
+        "MAX_BYTES": 38
+      },
+      "parts_asset": 650718586,
+      "parts_sha256": "2edbdf92289194228f5ea66c35e4e5adcbedaee44330ed1051827d9bc36cc683",
+      "report": {
+        "status": "PASS_TX_BANK_READ_CUT_CONTROLS_AND_FULL_SEQUENTIAL_EQUIVALENCE_NOT_TIMING_ACCEPTANCE",
+        "source_head": "295bb24044d5ea7ba8eefdeeb0ea22eb18df34ed",
+        "kind": "replay",
+        "parameters": {
+          "DEPTH": 3,
+          "MAX_BYTES": 38
+        },
+        "sources": {
+          "/home/runner/work/nssoc/nssoc/sw/tests/fixtures/pcie_chip_timing/pre-bank-replay-20261017.v": "6432a197a96005a12cfb9c223e695af25ab8dfa9febbb8e34fe1233953c2ad19",
+          "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_replay_tx.v": "1a15c0b9d6cfdfbf5ebed9a61c52901e126ca826008d167ff96bea4218a8f4dc",
+          "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc32_byte.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+          "/home/runner/work/_temp/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+          "/home/runner/work/nssoc/nssoc/scripts/check_pcie_tx_read_banks.py": "23f609d0074fa5ad763dd5054ab52eda38ffb6bf6869e9d551152d7e2d095fa3"
+        },
+        "timing_accepted": false,
+        "full_phy_accepted": false,
+        "scope": "Unmasked full sequential equivalence plus arbitrary defined memory/address read cuts. Includes replay cross-bank reads, LCRC all states/header sizes/byte order, no valid-only or reachable-state restriction in read cuts. Not mapped or physical timing acceptance.",
+        "read_cut": {
+          "passed": true,
+          "counterexample": false,
+          "returncode": 0,
+          "log_sha256": "4f145e10876d5fec96f1d9f7703fdbe42689f0103b7bf399ced2588a2e1fcacb"
+        },
+        "controls": [
+          {
+            "fault": "wrong_byte",
+            "passed": false,
+            "counterexample": true,
+            "returncode": 1,
+            "log_sha256": "f4c892384a1c5a63f4daa44ce0525b724242b103a57a539cebe6dc1c8f833c78"
+          },
+          {
+            "fault": "wrong_slot",
+            "passed": false,
+            "counterexample": true,
+            "returncode": 1,
+            "log_sha256": "bc61c8649315e7e28149b419eca9b16e02995058e96d4eb9ea5c7c0b1cdd6d7d"
+          }
+        ],
+        "sequential": {
+          "returncode": 0,
+          "counts": [
+            [
+              "1265",
+              "0"
+            ]
+          ],
+          "log_sha256": "1c7d1fd1a0b63aa1cbe1b88f4542141334d80b809f6c5e2f9752e43b6ade2dac"
+        },
+        "sources_unchanged": true,
+        "outputs": {
+          "wrong_byte/proof.log": "f4c892384a1c5a63f4daa44ce0525b724242b103a57a539cebe6dc1c8f833c78",
+          "wrong_byte/gold.v": "c45fc70a0346a8e9ba77d44dbf83fef24b883c1e5090ab3ac1364e85f9ca566a",
+          "wrong_byte/gate.v": "2ed5a0cd27cdf9891dfb13935e4bbc3c7b7da66a55babc111f684ab3755fd5ef",
+          "wrong_byte/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced",
+          "arbitrary-memory/proof.log": "4f145e10876d5fec96f1d9f7703fdbe42689f0103b7bf399ced2588a2e1fcacb",
+          "arbitrary-memory/gold.v": "c45fc70a0346a8e9ba77d44dbf83fef24b883c1e5090ab3ac1364e85f9ca566a",
+          "arbitrary-memory/gate.v": "f44f510d833df65c3241e7937b8ea4ba1d536bedb02df76fb847ef2378c4567a",
+          "arbitrary-memory/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced",
+          "sequential/proof.log": "1c7d1fd1a0b63aa1cbe1b88f4542141334d80b809f6c5e2f9752e43b6ade2dac",
+          "sequential/gold.v": "1beb4889819884801a43bcfa0fd37eea62b397cafc98455aba31d29abfe54be5",
+          "sequential/gate.v": "b1827657d740772bb0bf621b6c32758522714d0f6a8c0fd48f2cae860939a3c1",
+          "sequential/crc.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+          "sequential/proof.ys": "582de8373b863d85056515a99639dd4fbb8cce4198ee7cf026ac62d6027d8057",
+          "wrong_slot/proof.log": "bc61c8649315e7e28149b419eca9b16e02995058e96d4eb9ea5c7c0b1cdd6d7d",
+          "wrong_slot/gold.v": "c45fc70a0346a8e9ba77d44dbf83fef24b883c1e5090ab3ac1364e85f9ca566a",
+          "wrong_slot/gate.v": "1ec8b29b389989f67e07bd1148ac47be680f3556d553b3e4aea5920ba59c8640",
+          "wrong_slot/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced"
+        }
+      }
+    },
+    "replay-d4-b38": {
+      "asset": 650718387,
+      "sha256": "27ca776d04434231d112108c3e37e88c712d356f3269bf8ee2af093f4c4b6158",
+      "source_head": "295bb24044d5ea7ba8eefdeeb0ea22eb18df34ed",
+      "kind": "replay",
+      "parameters": {
+        "DEPTH": 4,
+        "MAX_BYTES": 38
+      },
+      "parts_asset": 650718439,
+      "parts_sha256": "641216c5c0c501eef0e4c63dd3d05f5449acc1aa34c583436ad6e93ce781cd85",
+      "report": {
+        "status": "PASS_TX_BANK_READ_CUT_CONTROLS_AND_FULL_SEQUENTIAL_EQUIVALENCE_NOT_TIMING_ACCEPTANCE",
+        "source_head": "295bb24044d5ea7ba8eefdeeb0ea22eb18df34ed",
+        "kind": "replay",
+        "parameters": {
+          "DEPTH": 4,
+          "MAX_BYTES": 38
+        },
+        "sources": {
+          "/home/runner/work/nssoc/nssoc/sw/tests/fixtures/pcie_chip_timing/pre-bank-replay-20261017.v": "6432a197a96005a12cfb9c223e695af25ab8dfa9febbb8e34fe1233953c2ad19",
+          "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_replay_tx.v": "1a15c0b9d6cfdfbf5ebed9a61c52901e126ca826008d167ff96bea4218a8f4dc",
+          "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_crc32_byte.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+          "/home/runner/work/_temp/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+          "/home/runner/work/nssoc/nssoc/scripts/check_pcie_tx_read_banks.py": "23f609d0074fa5ad763dd5054ab52eda38ffb6bf6869e9d551152d7e2d095fa3"
+        },
+        "timing_accepted": false,
+        "full_phy_accepted": false,
+        "scope": "Unmasked full sequential equivalence plus arbitrary defined memory/address read cuts. Includes replay cross-bank reads, LCRC all states/header sizes/byte order, no valid-only or reachable-state restriction in read cuts. Not mapped or physical timing acceptance.",
+        "read_cut": {
+          "passed": true,
+          "counterexample": false,
+          "returncode": 0,
+          "log_sha256": "4ec69b3761e66f8e4ef9e4a268bcfa1ec5014a982dfd4e84aa4e5be7909d84bd"
+        },
+        "controls": [
+          {
+            "fault": "wrong_byte",
+            "passed": false,
+            "counterexample": true,
+            "returncode": 1,
+            "log_sha256": "f6e0983b20379e734b606eac39b956a4d1f646ba5a54ab8e116657b5d438a5bc"
+          },
+          {
+            "fault": "wrong_slot",
+            "passed": false,
+            "counterexample": true,
+            "returncode": 1,
+            "log_sha256": "3eacdcd213a249628a047ef27586aae1e25b7b6e49e8dd12fc3a840812adc6cc"
+          }
+        ],
+        "sequential": {
+          "returncode": 0,
+          "counts": [
+            [
+              "1578",
+              "0"
+            ]
+          ],
+          "log_sha256": "417f8118b9d70b70d8f84d708326f59a52196fb903313f07e1f99ea8ab12df56"
+        },
+        "sources_unchanged": true,
+        "outputs": {
+          "wrong_byte/proof.log": "f6e0983b20379e734b606eac39b956a4d1f646ba5a54ab8e116657b5d438a5bc",
+          "wrong_byte/gold.v": "cf7c4fedbb93594b76536aaf7b6dbe239ee96f7b655426650d77d26e0308679d",
+          "wrong_byte/gate.v": "6c7d00d511087eb10f42e03a5238820a5c6015f33d747faf5dffd046ad2d9857",
+          "wrong_byte/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced",
+          "arbitrary-memory/proof.log": "4ec69b3761e66f8e4ef9e4a268bcfa1ec5014a982dfd4e84aa4e5be7909d84bd",
+          "arbitrary-memory/gold.v": "cf7c4fedbb93594b76536aaf7b6dbe239ee96f7b655426650d77d26e0308679d",
+          "arbitrary-memory/gate.v": "47071303aaa8d05769073271e869f13809f116ff7b3749fc3c5850320800ccdd",
+          "arbitrary-memory/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced",
+          "sequential/proof.log": "417f8118b9d70b70d8f84d708326f59a52196fb903313f07e1f99ea8ab12df56",
+          "sequential/gold.v": "1beb4889819884801a43bcfa0fd37eea62b397cafc98455aba31d29abfe54be5",
+          "sequential/gate.v": "b1827657d740772bb0bf621b6c32758522714d0f6a8c0fd48f2cae860939a3c1",
+          "sequential/crc.v": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129",
+          "sequential/proof.ys": "ea14d3d4be4710cb3479d8849b93f0af81f5e47ee4c84acd9e45aa858955e688",
+          "wrong_slot/proof.log": "3eacdcd213a249628a047ef27586aae1e25b7b6e49e8dd12fc3a840812adc6cc",
+          "wrong_slot/gold.v": "cf7c4fedbb93594b76536aaf7b6dbe239ee96f7b655426650d77d26e0308679d",
+          "wrong_slot/gate.v": "1633e08181828254938e49260b1990ff63a4a0c44975f8fab8fb279a47c019d0",
+          "wrong_slot/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced"
+        }
+      }
+    }
+  },
+  "runs": [
+    {
+      "id": 39041981816,
+      "name": "replay-crc-native-boot-cloud",
+      "head_sha": "295bb24044d5ea7ba8eefdeeb0ea22eb18df34ed",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39041981816"
+    },
+    {
+      "id": 39041981763,
+      "name": "pcie-transaction",
+      "head_sha": "295bb24044d5ea7ba8eefdeeb0ea22eb18df34ed",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39041981763"
+    },
+    {
+      "id": 39042052313,
+      "name": "replay-crc-cloud",
+      "head_sha": "6e33442ffcd468596b8aba319d4f27e6f18e1811",
+      "status": "queued",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39042052313"
+    },
+    {
+      "id": 39041556309,
+      "name": "corrpre-banked-clock200-grt-cloud",
+      "head_sha": "e06941eefa3761b8b351be1606b7f802cde5dfed",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39041556309"
+    },
+    {
+      "id": 39030593206,
+      "name": "tx-tree32-return64-wire-cloud",
+      "head_sha": "29aa2927dc3a16822ea8fad4cd0865de1f509623",
+      "status": "in_progress",
+      "conclusion": null,
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39030593206"
+    },
+    {
+      "id": 39041981822,
+      "name": "replay-crc-cloud",
+      "head_sha": "295bb24044d5ea7ba8eefdeeb0ea22eb18df34ed",
+      "status": "completed",
+      "conclusion": "cancelled",
+      "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/39041981822"
+    }
+  ],
+  "local_workspace_empty": true,
+  "full_goal_complete": false,
+  "scope": "Actual residue RTL has independent old-prebank-to-current full sequential and arbitrary memory proofs. Old LCRC proof rows retained only for unchanged LCRC module; future checker must compare each proof head only with the module it proves, then require full RTL identity between protocol and boot heads. Existing incumbent checker and proof inputs unchanged."
+}

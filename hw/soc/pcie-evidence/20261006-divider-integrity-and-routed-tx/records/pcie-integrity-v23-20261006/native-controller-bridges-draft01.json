@@ -1,0 +1,143 @@
+{
+  "bridges": [
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/run_balanced_map02.py",
+      "parent_pin": {
+        "bytes": 5952,
+        "sha256": "68582e10f3e05f788b5ec67841652ff9a53211cd661bd6d220d3aad0b109b924"
+      },
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/run_balanced_map02.py",
+      "pin": {
+        "bytes": 6185,
+        "sha256": "bca0741bc05533c680dbd9a7cc7101a502808ad2d6bfc1d6bf324f8c5d17c77f"
+      },
+      "replacements": [
+        {
+          "before": "FREEZE=R/'hw/soc/out/pcie-integrity-v22-20261006/source-freeze03.json'\nassert pin(FREEZE)['sha256']=='46d599c89a5a19fee6e87dd9fbfa006a7d29f81922530256ab348685ea50e21c'\nfor name,value in json.loads(FREEZE.read_text())['sources'].items():assert pin(R/name)==value\nCORE=FREEZE.parent/'pcie-integrity-v22-controls-validation-20261006.json'\nvalidation=json.loads(CORE.read_text())\nassert validation['status']=='PASS_V22_CACHE_QUARANTINE_COMPOSITE_CONTROLS'\nassert validation['pytest_executions']==38 and validation['pytest_passed_executions']==35 and validation['historical_failed_executions']==3\nassert validation['source_freeze']==pin(FREEZE) and validation['public_positive_composite']==dict(original_unchanged_cases=16,targeted_corrected_case=1,complete_direct_profile_rerun=False,complete_cycle_miter_cases=17)\nassert validation['actual_cache_witness']==dict(epochs=8,fault_steps=8,invalid_cache_changes=8)and len(validation['meaningful_miter_mutants'])==6\nPEER=FREEZE.parent/'source-only-peer-vco03.json';assert pin(PEER)==validation['source_peer']\nassert not json.loads(PEER.read_text())['findings']\nCONTROL_RECEIPTS=[Path(row['path'])for row in validation['xml_recount']]\nfor p,row in zip(CONTROL_RECEIPTS,validation['xml_recount']):assert pin(p)=={k:row[k]for k in ['bytes','sha256']}\n",
+          "after": "FREEZE=R/'hw/soc/out/pcie-integrity-v23-20261006/source-freeze01.json'\nassert pin(FREEZE)['sha256']=='446efb90f07eb3b2fe960498c55079afb385c3a89f8e2dad6dc02f028372b630'\nfor name,value in json.loads(FREEZE.read_text())['sources'].items():assert pin(R/name)==value\nCORE=FREEZE.parent/'pcie-integrity-v23-controls01-validation-20261006.json'\nvalidation=json.loads(CORE.read_text())\nassert validation['status']=='PASS_V23_ADJACENT_HEADER_CONTROLS'\nassert {k:validation['pytest'][k]for k in ('passed','failed','skipped')}==dict(passed=35,failed=0,skipped=0)\nassert validation['source_freeze']==pin(FREEZE) and validation['observations']['public_cases']==validation['observations']['cycle_exact_cases']==18\nobs=validation['observations'];assert obs['cache_fault_write_epochs']==obs['cache_actual_changed_epochs']==8\nassert len(obs['adjacent_positions'])==16 and min(obs['adjacent_positions'])>0 and obs['cross_block_headers']>0 and obs['minimum_first_header_end_same_beat']>0 and obs['missing_old_predecessor_accepts']>=16\nassert len(obs['miter_actual_mutants'])==12 and len(obs['literal_controls'])==6 and obs['observer_negative']\nPEER=FREEZE.parent/'source-only-peer-rx01.json';assert pin(PEER)==validation['source_peer']\nassert not json.loads(PEER.read_text())['findings']\nCONTROL_RECEIPTS=[Path(validation['pytest']['path'])]+[Path(row['path'])for row in validation['helper_receipts']]\nfor p,row in zip(CONTROL_RECEIPTS,[validation['pytest']]+validation['helper_receipts']):assert pin(p)=={k:row[k]for k in ('bytes','sha256')}\n",
+          "count": 1
+        },
+        {
+          "before": "Separate V22 cache fault-write qualification from frozen V21; same registered retirement and public latency. Exact inverse, literal4096, cycle-exact17case miter and eight actual cache fault/reuse epochs required.",
+          "after": "Separate V23 registered accepted adjacent header relation from frozen V22. Same public latency, strict 18-case public and cycle miter, declared literal557056/XZ1440 and actual predecessor/cache fault witnesses.",
+          "count": 1
+        },
+        {
+          "before": "v22",
+          "after": "v23",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/continue_native02.py",
+      "parent_pin": {
+        "bytes": 5551,
+        "sha256": "55c111b6bacf2c5614756202848a09c1f46c6894fa38efb05e37293026d083b5"
+      },
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/continue_native01.py",
+      "pin": {
+        "bytes": 5538,
+        "sha256": "b7b93f7df103af065ed1f9ad8165da0288e673c2fcee4ccbd0fe12c33228e057"
+      },
+      "replacements": [
+        {
+          "before": "  result=json.loads(core.read_text());assert result['status']=='PASS_V22_CACHE_QUARANTINE_COMPOSITE_CONTROLS' and result['historical_failed_executions']==3 and result['pytest_passed_executions']==35\n  assert result['source_freeze']==pin(B/'source-freeze03.json') and result['source_peer']==pin(B/'source-only-peer-vco03.json')\n",
+          "after": "  result=json.loads(core.read_text());assert result['status']=='PASS_V23_ADJACENT_HEADER_CONTROLS' and {k:result['pytest'][k]for k in ('passed','failed','skipped')}==dict(passed=35,failed=0,skipped=0)\n  assert result['source_freeze']==pin(B/'source-freeze01.json') and result['source_peer']==pin(B/'source-only-peer-rx01.json')\n",
+          "count": 1
+        },
+        {
+          "before": "Owned same2GiB CPU6 freshmap, actual registeredboundary, literal-tieimport/fullpin graph and original4ns three-corner preplacement. Actual38testexecutions35PASS3historicalFAIL; corrected17case miter, eight invalidcachewriteepochs and sixmeaningfulmutants. No PLLduplicate or acceptance relaxation.",
+          "after": "Owned same2GiB CPU6 freshmap, actual registeredboundary, literal-tieimport/fullpin graph and original4ns three-corner preplacement. Complete35actualcontrols/18case public and cyclemiter plus old accepted predecessor and cache fault/restart witness required. No PLLduplicate or acceptance relaxation.",
+          "count": 1
+        },
+        {
+          "before": "v22",
+          "after": "v23",
+          "count": 2
+        },
+        {
+          "before": "V22",
+          "after": "V23",
+          "count": 4
+        },
+        {
+          "before": "source-freeze03.json",
+          "after": "source-freeze01.json",
+          "count": 3
+        },
+        {
+          "before": "46d599c89a5a19fee6e87dd9fbfa006a7d29f81922530256ab348685ea50e21c",
+          "after": "446efb90f07eb3b2fe960498c55079afb385c3a89f8e2dad6dc02f028372b630",
+          "count": 1
+        },
+        {
+          "before": "continuation-status02.json",
+          "after": "continuation-status01.json",
+          "count": 3
+        },
+        {
+          "before": "continuation-policy02.json",
+          "after": "continuation-policy01.json",
+          "count": 3
+        },
+        {
+          "before": "continuation-owner02.json",
+          "after": "continuation-owner01.json",
+          "count": 2
+        },
+        {
+          "before": "native-source-only-peer02.json",
+          "after": "native-source-only-peer01.json",
+          "count": 1
+        },
+        {
+          "before": "VALIDATED_MERGED_V23_CONTROLS_READY_NATIVE",
+          "after": "VALIDATED_V23_CONTROLS_READY_NATIVE",
+          "count": 1
+        },
+        {
+          "before": "PASS_SOURCE_ONLY_V23_MERGED_NATIVE_CONTINUATION",
+          "after": "PASS_SOURCE_ONLY_V23_NATIVE_CONTINUATION",
+          "count": 1
+        },
+        {
+          "before": "prove_balanced_import02.py",
+          "after": "prove_balanced_import.py",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "exact_stage_paths": {
+    "run_balanced_map02.py": {
+      "bytes": 6185,
+      "sha256": "bca0741bc05533c680dbd9a7cc7101a502808ad2d6bfc1d6bf324f8c5d17c77f"
+    },
+    "measure_registered_boundary.py": {
+      "bytes": 6751,
+      "sha256": "eb4442c0bbd292ba3faa5483010da95d1ec396cb940b15ece6721a813a1e37d7"
+    },
+    "balanced_import02.py": {
+      "bytes": 5134,
+      "sha256": "c6d78f2eb388a4fb6db80f6f6d3e3beea1c382774113a5060260e76b39b426ab"
+    },
+    "prove_balanced_import.py": {
+      "bytes": 3541,
+      "sha256": "124d377073638618ff957e37fc4585b2b902f90f7ba29b7fad10e5d4508eb03d"
+    },
+    "balanced_preplacement02.py": {
+      "bytes": 6366,
+      "sha256": "90a7df5ba50a7ddb0d3aefdc25bb582032c27774eda426f25f0170f915e3db37"
+    },
+    "review_timing.py": {
+      "bytes": 3288,
+      "sha256": "31608e38d6e6f0993992ea1a42cfe46280997af7c8088c64188ba2223f154bf6"
+    },
+    "analyze_critical_path.py": {
+      "bytes": 6018,
+      "sha256": "381c79ffa05d2a6f3d1640ca4bc25b144c787201b97f0cfe618fb545f5e6396d"
+    }
+  },
+  "status": "SOURCE_ONLY_NOT_LAUNCHED"
+}

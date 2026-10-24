@@ -1,0 +1,335 @@
+{
+  "scripts/cloud_cdr_follower_v23_planes.py": {
+    "baseline_path": "scripts/cloud_cdr_retime_trunks_v22_planes.py",
+    "baseline_sha256": "af1c0ede80555be39d3140093545addb23826dafb6595e065f9aea66a9ec24e4",
+    "candidate_sha256": "5b7406948bcb48240a9d83df5cd0e484868de5bb860350f50f45af6e75dbea87",
+    "changes": [
+      {
+        "before": "cdr-retime-trunks-v22",
+        "after": "cdr-follower-v23",
+        "count": 3
+      },
+      {
+        "before": "nssoc_cdr_pd484_localbus_v12",
+        "after": "nssoc_cdr_pd476_follower_v23",
+        "count": 1
+      },
+      {
+        "before": "PD484",
+        "after": "PD476",
+        "count": 5
+      },
+      {
+        "numeric_design_census": [
+          484,
+          476
+        ],
+        "count": 2
+      },
+      {
+        "numeric_design_census": [
+          1394,
+          1382
+        ],
+        "count": 1
+      },
+      {
+        "before": "npn13g2=116",
+        "after": "npn13g2=120",
+        "count": 1
+      },
+      {
+        "before": "rppd=102",
+        "after": "rppd=98",
+        "count": 1
+      },
+      {
+        "before": "cap_cmim=11",
+        "after": "cap_cmim=7",
+        "count": 1
+      },
+      {
+        "before": "ptap1=209",
+        "after": "ptap1=205",
+        "count": 1
+      },
+      {
+        "before": "check_cdr_localbus_v12_parent_geometry",
+        "after": "check_cdr_follower_v23_parent_geometry",
+        "count": 1
+      },
+      {
+        "before": "==158",
+        "after": "==160",
+        "count": 1
+      },
+      {
+        "before": "NATIVE158",
+        "after": "NATIVE160",
+        "count": 1
+      },
+      {
+        "before": "assert pin['run']==39454675485 and pin['source_head']=='41efb1baed378413a8cb49be4b8efcb82c83a5ba'",
+        "after": "assert pin['run']==39473538977 and pin['source_head']=='bd1af5d7130678914fdef4d5f00443aa6dc5de8f'",
+        "count": 1
+      },
+      {
+        "before": "0425f0b6cbfdae35240d2e99a0faea3f75b114f2e4974639d804556a36ccb266",
+        "after": "0b2217d4de1216336207650076be7431b585c3401441057d46f789a35598f945",
+        "count": 1
+      },
+      {
+        "before": "bdf63f2c67dc97827411310b1a9d50ccd81855b1aa4d686ce94c81e98747aca3",
+        "after": "c33776e2f42b308cf75f4fd58218303aa582eab4543d9f0767612fc7a87bee24",
+        "count": 1
+      },
+      {
+        "before": "PASS_PD476_RETIME_TRUNKS_V22_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+        "after": "PASS_PD476_ACTIVE_FOLLOWER_V23_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+        "count": 1
+      },
+      {
+        "before": "        geometry=prior['routing']\n        assert geometry['status']=='SERIALIZED_FOUR_INTERNAL_RETIME_TRUNKS_REQUIRES_NATIVE_DRC_LVS_AND_FRESH_RC'\n        assert len(geometry['changed_rectangles'])==12 and len(geometry['junction_rectangles'])==8\n        assert len(geometry['moved_native_tm1_tm2_vias'])==8 and len(geometry['controls'])==3\n        assert geometry['schematic_and_lef_byte_identical']and geometry['external_ports_unchanged']\n        assert geometry['primitive_parameters_unchanged']and geometry['all_leaf_transforms_unchanged']\n        corridor=geometry['native_corridor_proof']\n        assert corridor['actual_original_tm1_checked']and corridor['prior_measured_avdd_short_rejected']\n        assert corridor['foreign_metal_clearance_dbu']==1645\n        assert corridor['original_gds_sha256']=='3fdfff892b3c84d78349c7358699dfa2ec8fd98a98b887573beb4f4b3219c936'\n        assert geometry['targets_um']=={'cun': 949.6, 'cup': 944.6, 'dun': 949.6, 'dup': 944.6}\n        assert abs(geometry['horizontal_length_removed_um']-3423.2)<1e-8\n",
+        "after": "        geometry=prior['replacement']\n        assert geometry['replaced_instances']==['ac','bd'] and geometry['retained_other_instances']==14\n        assert geometry['old_parent_shapes_retained']and geometry['external_ports_unchanged']and geometry['old_six_leaf_pin_coordinates_unchanged']\n        assert len(geometry['actual_added_avdd_routes'])==2 and len(geometry['controls'])==2\n        assert all(x['original_rail_witness'] and len(x['native_via_centers_um'])==2 for x in geometry['actual_added_avdd_routes'])\n        assert geometry['new_native_device_census']==dict(npn13g2=120,sg13_lv_nmos=46,rppd=98,cap_cmim=7,ptap1=205)\n",
+        "count": 1
+      },
+      {
+        "before": "ebbdf5d83b35c110409c8934058e838f59751d9088485c36bd4d78e5166e510c",
+        "after": "e06bfb08c8ab9db6cf21560975b6bcd48afed0395d353fc258d1d853073ff3ec",
+        "count": 1
+      }
+    ],
+    "floating_cleanup_input_revision": {
+      "previous_sha256": "b085df53b6540b1d877c553121caed452d3cb7f9e2948d1ecb043cfc7f9e85fb",
+      "new_sha256": "5b7406948bcb48240a9d83df5cd0e484868de5bb860350f50f45af6e75dbea87",
+      "physical_run": 39475461885,
+      "scope": "Exact physically reverified GDS after removing only20 native terminal-free parent components; all extraction gates unchanged."
+    }
+  },
+  "scripts/cloud_cdr_follower_v23_wire_inputs.py": {
+    "baseline_path": "scripts/cloud_cdr_retime_trunks_v22_wire_inputs.py",
+    "baseline_sha256": "ed9035fd631c2c0d23b6e11063c3008d0bd52c40f3ba80952de6d44198d9f10d",
+    "candidate_sha256": "a130ba98718829706b7f69c1873165c2c5a833555c6204bd51fe3c792d4abcc7",
+    "changes": [
+      {
+        "before": "cdr-retime-trunks-v22",
+        "after": "cdr-follower-v23",
+        "count": 5
+      },
+      {
+        "before": "nssoc_cdr_pd484_localbus_v12",
+        "after": "nssoc_cdr_pd476_follower_v23",
+        "count": 1
+      },
+      {
+        "before": "PD484",
+        "after": "PD476",
+        "count": 2
+      },
+      {
+        "numeric_design_census": [
+          484,
+          476
+        ],
+        "count": 4
+      },
+      {
+        "numeric_design_census": [
+          1394,
+          1382
+        ],
+        "count": 4
+      },
+      {
+        "numeric_design_census": [
+          946,
+          938
+        ],
+        "count": 2
+      },
+      {
+        "numeric_design_census": [
+          921,
+          913
+        ],
+        "count": 2
+      },
+      {
+        "numeric_design_census": [
+          473,
+          469
+        ],
+        "count": 2
+      },
+      {
+        "before": "npn13g2=116",
+        "after": "npn13g2=120",
+        "count": 1
+      },
+      {
+        "before": "npn13G2=116",
+        "after": "npn13G2=120",
+        "count": 1
+      },
+      {
+        "before": "rppd=102",
+        "after": "rppd=98",
+        "count": 2
+      },
+      {
+        "before": "cap_cmim=11",
+        "after": "cap_cmim=7",
+        "count": 2
+      },
+      {
+        "before": "ptap1=209",
+        "after": "ptap1=205",
+        "count": 2
+      },
+      {
+        "before": "    assert any(x['cell']=='npn13G2'and x['drawing_sha256']=='0f068860a3d6570665f9534cf14c7346fa99f214c8d4648bcc3cfdd578f6c89c'for x in excluded),'The failed primitive must be proven unreachable, never bypassed'",
+        "after": "    # v23 serializes only the selected parent hierarchy. A historical orphan\n    # need not survive that serialization, but no reachable primitive may be\n    # excluded. complete(mapped) and the missing-primitive fault remain above.\n    assert all(not x['referenced_from_top']and x['cell']not in mapped for x in excluded)",
+        "count": 1
+      }
+    ],
+    "floating_cleanup_input_revision": {
+      "previous_sha256": "5d1e04704c47af56fe31fa13543c2bc649265ac25cc8361cf1862b1dc0c8f88f",
+      "new_sha256": "a130ba98718829706b7f69c1873165c2c5a833555c6204bd51fe3c792d4abcc7",
+      "physical_run": 39475461885,
+      "scope": "Exact physically reverified GDS after removing only20 native terminal-free parent components; all extraction gates unchanged."
+    }
+  },
+  "scripts/cloud_cdr_follower_v23_binding.py": {
+    "baseline_path": "scripts/cloud_cdr_retime_trunks_v22_binding.py",
+    "baseline_sha256": "f256b90eacd61c2a0a46f15f2c90731a3c3966e33fa9b55e3372165436130fd6",
+    "candidate_sha256": "6357aa384e5680e5a8609f220d463d6b9678ed9fe8d152de4cc77db9684f219d",
+    "changes": [
+      {
+        "before": "cdr-retime-trunks-v22",
+        "after": "cdr-follower-v23",
+        "count": 3
+      },
+      {
+        "before": "nssoc_cdr_pd484_localbus_v12",
+        "after": "nssoc_cdr_pd476_follower_v23",
+        "count": 1
+      },
+      {
+        "before": "nssoc_cdr_pd484_data_compact_v20",
+        "after": "nssoc_cdr_pd476_follower_v23_compact",
+        "count": 1
+      },
+      {
+        "before": "PD484",
+        "after": "PD476",
+        "count": 3
+      },
+      {
+        "before": "pd484",
+        "after": "pd476",
+        "count": 1
+      },
+      {
+        "numeric_design_census": [
+          1394,
+          1382
+        ],
+        "count": 2
+      },
+      {
+        "before": "npn13G2=116",
+        "after": "npn13G2=120",
+        "count": 1
+      },
+      {
+        "before": "rppd=102",
+        "after": "rppd=98",
+        "count": 1
+      },
+      {
+        "before": "cap_cmim=11",
+        "after": "cap_cmim=7",
+        "count": 1
+      },
+      {
+        "before": "ptap1=209",
+        "after": "ptap1=205",
+        "count": 1
+      },
+      {
+        "before": "range(1,485)",
+        "after": "range(1,477)",
+        "count": 1
+      }
+    ]
+  },
+  "scripts/cloud_cdr_follower_v23_rc.py": {
+    "baseline_path": "scripts/cloud_cdr_retime_trunks_v22_rc.py",
+    "baseline_sha256": "f704bfbdb4c9c511ce78675c3bf27830571fd54b9ee800bba5578cdeec8bd452",
+    "candidate_sha256": "d394c11d82df497213c257cc8b9005c3b5500884b429fd5a83335477819c8b14",
+    "changes": [
+      {
+        "before": "cdr-retime-trunks-v22",
+        "after": "cdr-follower-v23",
+        "count": 4
+      },
+      {
+        "before": "PD484",
+        "after": "PD476",
+        "count": 3
+      },
+      {
+        "numeric_design_census": [
+          484,
+          476
+        ],
+        "count": 2
+      },
+      {
+        "numeric_design_census": [
+          1394,
+          1382
+        ],
+        "count": 2
+      },
+      {
+        "numeric_design_census": [
+          946,
+          938
+        ],
+        "count": 3
+      },
+      {
+        "numeric_design_census": [
+          921,
+          913
+        ],
+        "count": 2
+      },
+      {
+        "numeric_design_census": [
+          473,
+          469
+        ],
+        "count": 2
+      }
+    ]
+  },
+  "scripts/cloud_cdr_follower_v23_extraction_stage.py": {
+    "baseline_path": "scripts/cloud_cdr_retime_trunks_v22_extraction_stage.py",
+    "baseline_sha256": "fa6c5baa8384842529751e1dc525ce90ca8907b67fbd34e91f84bbb318763799",
+    "candidate_sha256": "88b9b202f05150da965a64cf06db596bf874afc7d80096c2f796120b30b8e632",
+    "changes": [
+      {
+        "before": "cdr-retime-trunks-v22",
+        "after": "cdr-follower-v23",
+        "count": 4
+      },
+      {
+        "before": "cdr_retime_trunks_v22",
+        "after": "cdr_follower_v23",
+        "count": 2
+      }
+    ]
+  }
+}

@@ -749,3 +749,39 @@ NOT released by this signature:
 Rows 1 to 5 are complete, so `docs/13` D-6 and D-7 can be closed with
 real URLs once the public tree exists, and the application may describe
 the published state as a fact.
+
+## Dated scope reconciliation — 20 September 2026
+
+The `codex/complete-open-work` branch introduced research integration of the
+LGPL SpaceWire Reloaded and Mohor CAN cores. That engineering work did not
+amend the signed section 5.2 decision to exclude those cores from the funded
+default scope. The current unconditional instantiation is therefore an open
+integration-policy defect, recorded in docs/96 section 1.2.
+
+The selected remedy is explicit optional build profiles: the default build
+must not fetch or instantiate these two cores; a separately selected research
+profile retains their RTL, tests and source licences. Until that switch and
+its negative build tests are implemented, the requirement remains OPEN.
+The Mohor source includes a Bosch CAN protocol licensing notice. Its inclusion
+in a research bundle is not a determination of patent applicability or a grant
+of silicon implementation permission. No legal advice or clearance has been
+obtained or claimed in this change. The original signed decision above remains
+unaltered.
+
+### Optional-build implementation — 21 September 2026
+
+`SOC_INTERFACE_PROFILE=base` is now the default for Make targets, simulation,
+synthesis, fault campaigns and CI. It fetches only MIT I2C/Ethernet dependencies.
+`SOC_INTERFACE_PROFILE=full` explicitly adds the two LGPL cores and the
+`SOC_LGPL_INTERFACES` RTL/firmware definition. The base design reports zero
+SpaceWire/CAN discovery records, bus errors on their reserved slots, inactive
+IRQs and inactive serial outputs. Their ports retain the common package contract.
+Separate hashed dependency bundles prevent a previous full build from silently
+turning a later base build into a full one. Both profiles have CPU and pin tests;
+[docs/88](88-interface-integration.md) describes reproduction and limits.
+
+This implements the optional research route; it does not amend the signed
+funding decision or establish silicon/patent permission. Full-profile source
+bundles and mapped historical artifacts still carry their original component
+licences, complete notices and the retained Bosch notice. Historical artifacts
+are not regenerated or relabelled as base-profile results.

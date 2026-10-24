@@ -1,0 +1,41 @@
+{
+  "run": 39725886215,
+  "source_head": "b13ed3e018644aa964ce409a75ce9654ed59440a",
+  "assets": [
+    {
+      "asset": 664736357,
+      "sha256": "54bdc43031baad98c7341e378281dd055742c8cb5707430335a0bd8950811f18",
+      "status": "PASS_LOSSLESS_LOGICAL_ARCHIVE_AND16_CONTROLS_PLUS28_ORIGINAL_CONTROLS_NOT_NATIVE_ACTIVATION",
+      "source_head": "b13ed3e018644aa964ce409a75ce9654ed59440a"
+    },
+    {
+      "asset": 664736440,
+      "sha256": "3cee9f31a2bcfe7ab8c91667edf641f27ec311496af0f908406a1b7fdb44a799",
+      "status": null,
+      "source_head": null
+    },
+    {
+      "asset": 664736706,
+      "sha256": "cebb450ef6fca1c0b07b2ef816e07675fafe506e31d1b1c9241175c25476f989",
+      "status": "PASS_REAL_GITHUB_LOGICAL_ARCHIVE_NATIVE5106_PREFIX_AND_ORIGINAL16_READER_CONTROLS_NOT_FULL1US",
+      "source_head": "b13ed3e018644aa964ce409a75ce9654ed59440a"
+    },
+    {
+      "asset": 664736751,
+      "sha256": "e291d493c78a47c8629d71ed48efdb97d5c65cbba59631346410cce0807e1716",
+      "status": null,
+      "source_head": null
+    }
+  ],
+  "native5106_prefix_bit_exact": true,
+  "original_reader_controls_reproduced": 16,
+  "initial_new_controls": 16,
+  "original_archive_controls": 12,
+  "original_sparse_controls": 16,
+  "issue": "The first hosted-receipt/upload error was masked by a tar-close retry attempting to reopen the retained failed part. No complete manifest was produced and the failed part survived, but the reported reason was FileExistsError.",
+  "fix": "Latch the original exception on the sink. Footer unwinding must rethrow it without another publication attempt. Require exact original failure reason and one upload call for both affected controls.",
+  "rerun_required": true,
+  "native_activation_qualified": false,
+  "full1us_capture_accepted": false,
+  "full_phy_accepted": false
+}

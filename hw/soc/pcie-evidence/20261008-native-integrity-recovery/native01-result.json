@@ -1,0 +1,158 @@
+{
+  "status": "PASS_PORT_ONLY_PCIE_GEN3_WIDE_CRC_QUARANTINE_RX",
+  "top": "soc_pcie_gen3_continuous_rx_integrity_v1",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v1.v": {
+      "bytes": 35347,
+      "sha256": "d44e546be716b23e9e8b2f842e7eadb274aa626d419138e4d85e9b9b46673065"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v1.v": {
+      "bytes": 3264,
+      "sha256": "aeb411f9f603c24e3bac817153c3186e026128ebf1fec71a4ceb9cdb136c0760"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v1.py": {
+      "bytes": 18055,
+      "sha256": "6a05cb2b531e44679f95c3294b13144c06ded99740488ef55a593c35162b71f9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v1": {
+      "bytes": 1508,
+      "sha256": "949edff962ca8c8ee96655c8903c0c9336d4e687ec982a5ed38ee1ab215dc906"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_gen3_continuous_rx_integrity_native_v2.py": {
+      "bytes": 11425,
+      "sha256": "f5b5d20960014c24839e879c7019d282c39f5b7c95ec1f37f72fe90c7d1ce563"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/generate_pcie_crc_parallel_v1.py": {
+      "bytes": 1853,
+      "sha256": "f007a305b2457bbc37e3fe9d286ffc19a3b5c78915eaa820e004aae17e1440dd"
+    },
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+      "bytes": 1715351,
+      "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+    },
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+      "bytes": 53835,
+      "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    }
+  },
+  "expected_tests": 12,
+  "mode": "native",
+  "mapping_strategy": "explicit_no_fsm_structural_balance_v2",
+  "commands": [
+    {
+      "argv": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+        "-Q",
+        "-T",
+        "-s",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v1-native-recovery-20261008/native01/map.ys"
+      ],
+      "returncode": 0,
+      "log": "map.log",
+      "log_pin": {
+        "bytes": 1495993,
+        "sha256": "19032255f30361b35221322e21d17bf8fc8ce30e2d9b8204633c0306ee659f87"
+      }
+    },
+    {
+      "argv": [
+        "make",
+        "-f",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v1",
+        "--no-print-directory",
+        "VERILOG_SOURCES=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v1-native-recovery-20261008/native01/mapped.v /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "SIM_BUILD=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v1-native-recovery-20261008/native01/sim",
+        "COCOTB_RESULTS_FILE=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v1-native-recovery-20261008/native01/results.xml",
+        "PCIE_NATIVE=1",
+        "PCIE_WIDE_MAX_BYTES=150"
+      ],
+      "returncode": 0,
+      "log": "simulation.log",
+      "log_pin": {
+        "bytes": 40027,
+        "sha256": "70454a9f4e2c8afba44b10ffb0ac683a8e34507c2f52235a126a6b75e238401c"
+      }
+    }
+  ],
+  "runtime": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog": {
+      "bytes": 453,
+      "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp": {
+      "bytes": 485,
+      "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": {
+      "bytes": 540,
+      "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+    }
+  },
+  "address_space_limit_bytes": 2147483648,
+  "yosys_max_threads": 1,
+  "max_encoded_bytes": 150,
+  "exact_test_selection": null,
+  "theoretical_dwords_per_cycle": 4,
+  "minimum_packet_ring_dwords": 64,
+  "scope": "Continuous raw32-bit/lane input, four ordered DWORD parser steps without a block-load bubble, and masked128-bit retirement. Whole-packet LCRC32/DLLPCRC16 and lookahead quarantine is preserved. EDB requires the inverted ordinary LCRC; CRC failure is distinct from framing failure. No ECRC/ACK/NAK/replay policy acceptance. Finite output stalls can overflow the bounded ring and halt the epoch. Fixed external Data Stream alignment/deskew only; no SKP/OS search, CDC, PMA, completePCS/LTSSM or physicalfrequency acceptance.",
+  "abc_script": {
+    "bytes": 39,
+    "sha256": "3ce641a5418cb443d8ea335731a7dd151b630b88b3ab06f027e0c13d4c573b8c"
+  },
+  "mapped_cells": 71028,
+  "tests": {
+    "passed": 12,
+    "failed": 0,
+    "skipped": 0
+  },
+  "outputs": {
+    "results.xml": {
+      "bytes": 4179,
+      "sha256": "a69a78d9eb12fb29341aae7b72f17e75f31757205cad7ff0120e4b0d6b088840"
+    },
+    "mapped.v": {
+      "bytes": 9128636,
+      "sha256": "620eafdf207d30f6803b971e5e49b5eebdada57182bf5aa6d66158f683b0226e"
+    },
+    "simulation.log": {
+      "bytes": 40027,
+      "sha256": "70454a9f4e2c8afba44b10ffb0ac683a8e34507c2f52235a126a6b75e238401c"
+    },
+    "mapped.json": {
+      "bytes": 47241726,
+      "sha256": "e26ed60ac8864d9f626b18cb62f538e97b7c921eebb9c30aa22b10b532c61e08"
+    },
+    "map.ys": {
+      "bytes": 1776,
+      "sha256": "8a2145b7e1222dcd052d34b08a946cfb6678c4826cd158cc603c50818cd11817"
+    },
+    "map.log": {
+      "bytes": 1495993,
+      "sha256": "19032255f30361b35221322e21d17bf8fc8ce30e2d9b8204633c0306ee659f87"
+    },
+    "abc-structural.script": {
+      "bytes": 39,
+      "sha256": "3ce641a5418cb443d8ea335731a7dd151b630b88b3ab06f027e0c13d4c573b8c"
+    }
+  }
+}

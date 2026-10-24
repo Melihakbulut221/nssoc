@@ -1,0 +1,218 @@
+{
+  "status": "COMPLETE_NATIVE_SCREEN_FINITE_REVIEW_AND_PUBLICATION_REQUIRED",
+  "controller": {
+    "pid": 80276,
+    "state": "R",
+    "process_group": 80274,
+    "start_ticks": "906083"
+  },
+  "affinity": [
+    6
+  ],
+  "policy": {
+    "bytes": 7962,
+    "sha256": "bf88d934ef9f1ee04f94231704f4f3558981221dc71f5e73d3c1b503834f68f0"
+  },
+  "stages": [
+    {
+      "name": "complete_supersession_v3",
+      "command": [
+        "/home/hasanmelih/miniconda3/bin/python3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/complete_v16_supersession_v3.py"
+      ],
+      "started_utc": "2026-10-05T17:23:52.992845+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 80277,
+        "state": "R",
+        "process_group": 80277,
+        "start_ticks": "906095"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T17:23:53.207627+00:00",
+      "log": {
+        "bytes": 50,
+        "sha256": "1e814f7fb58e6b6d7f7309bdbb79ae27be2844bccea9bccf331a8dacbb89b465"
+      }
+    },
+    {
+      "name": "seal_controls",
+      "command": [
+        "/home/hasanmelih/miniconda3/bin/python3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/seal_controls.py"
+      ],
+      "started_utc": "2026-10-05T17:23:53.209005+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 80278,
+        "state": "R",
+        "process_group": 80278,
+        "start_ticks": "906117"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T17:23:57.123306+00:00",
+      "log": {
+        "bytes": 307,
+        "sha256": "cdcc5f3703552b5a1ec705687d8a7651d04d7ee92d208d09ecc5e9308deb219a"
+      }
+    },
+    {
+      "name": "map",
+      "command": [
+        "/home/hasanmelih/miniconda3/bin/python3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/run_balanced_map.py"
+      ],
+      "started_utc": "2026-10-05T17:23:57.124593+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 80290,
+        "state": "R",
+        "process_group": 80290,
+        "start_ticks": "906508"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T17:24:40.385624+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "read_depth",
+      "command": [
+        "/home/hasanmelih/miniconda3/bin/python3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/measure_native_read_depth.py",
+        "--candidate",
+        "/dev/shm/nssoc-integrity-v17-balanced-map-01/mapped.json",
+        "--rejected",
+        "/dev/shm/nssoc-integrity-v14-balanced-map-01/mapped.json",
+        "--out",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/native-read-depth-comparison.json"
+      ],
+      "started_utc": "2026-10-05T17:24:40.387197+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 80422,
+        "state": "R",
+        "process_group": 80422,
+        "start_ticks": "910835"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T17:24:42.048330+00:00",
+      "log": {
+        "bytes": 905,
+        "sha256": "3054bc67fcd4ad880ae9b85400231b9adb6b5b0b7bd33b7a8e05c5aaacfdb823"
+      }
+    },
+    {
+      "name": "import",
+      "command": [
+        "/home/hasanmelih/miniconda3/bin/python3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/balanced_import.py"
+      ],
+      "started_utc": "2026-10-05T17:24:42.475941+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 80428,
+        "state": "R",
+        "process_group": 80428,
+        "start_ticks": "911043"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T17:24:46.939578+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "import_graph_proof",
+      "command": [
+        "/home/hasanmelih/miniconda3/bin/python3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/prove_balanced_import.py"
+      ],
+      "started_utc": "2026-10-05T17:24:46.940869+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 80433,
+        "state": "R",
+        "process_group": 80433,
+        "start_ticks": "911490"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T17:24:50.703655+00:00",
+      "log": {
+        "bytes": 61,
+        "sha256": "313d36473a5df300ab56d8b56e70fac070b4daeb8bb0e9555b9b0709384d1cbf"
+      }
+    },
+    {
+      "name": "preplacement",
+      "command": [
+        "/home/hasanmelih/miniconda3/bin/python3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/balanced_preplacement.py"
+      ],
+      "started_utc": "2026-10-05T17:24:50.704957+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 80440,
+        "state": "R",
+        "process_group": 80440,
+        "start_ticks": "911866"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T17:25:53.983898+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "timing_review",
+      "command": [
+        "/home/hasanmelih/miniconda3/bin/python3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/review_timing.py"
+      ],
+      "started_utc": "2026-10-05T17:25:53.985198+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 80947,
+        "state": "R",
+        "process_group": 80947,
+        "start_ticks": "918194"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T17:25:54.098228+00:00",
+      "log": {
+        "bytes": 1553,
+        "sha256": "ef48c4e27e786d2601b37cccb416f87f8242e2514640a4cb838c4a93b52c060b"
+      }
+    },
+    {
+      "name": "critical_path",
+      "command": [
+        "/home/hasanmelih/miniconda3/bin/python3",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/analyze_critical_path.py"
+      ],
+      "started_utc": "2026-10-05T17:25:54.099828+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 80948,
+        "state": "R",
+        "process_group": 80948,
+        "start_ticks": "918206"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T17:25:56.663371+00:00",
+      "log": {
+        "bytes": 540,
+        "sha256": "b60d329277d0d5b2ecfdefc6e4759e343958008ddee254cea5a702394d44d3bf"
+      }
+    }
+  ],
+  "elapsed_watchdog_seconds": null,
+  "physical_acceptance": false,
+  "utc": "2026-10-05T17:25:56.664311+00:00",
+  "explicit_stop": false,
+  "stop_reason": null
+}

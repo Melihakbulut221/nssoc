@@ -1,0 +1,80 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_minimax_wave.py",
+      "candidate_path": "scripts/cloud_tx_v5_timing_priority_wave.py",
+      "edits": [
+        {
+          "before": "tx_v5_minimax",
+          "after": "tx_v5_timing_priority",
+          "count": 9
+        },
+        {
+          "before": "tx-v5-minimax",
+          "after": "tx-v5-timing-priority",
+          "count": 3
+        },
+        {
+          "before": "77516",
+          "after": "77538",
+          "count": 2
+        },
+        {
+          "before": "39267396114",
+          "after": "39307462428",
+          "count": 1
+        },
+        {
+          "before": "53b14ab7e3a5d924d7535840b3ab9c69fec3fd60",
+          "after": "e45f85a11e3b98430b12929370da32459c7b88f8",
+          "count": 2
+        },
+        {
+          "before": "f4a0e91e091d67b5cb60435ad3213d9ed3463592727445b9df2e64755a9b534c",
+          "after": "d05754a8d9d5a5a47fcad2acd7bdb01edc3f9f9b1a70bab29ef51cef5b939ec6",
+          "count": 1
+        },
+        {
+          "before": "a5aa0d879f654a5ce6366aaa6d45ec5d13022e56dab7cbc4fa095be1ba02f845",
+          "after": "b34985ea402fc73dd13295675fd6ccf14770b4d456d0de06eb08cba74cf092cb",
+          "count": 1
+        },
+        {
+          "before": "4ef6f8ba13bf63adea2abf78a43b0e279d020ebfc34beeee3522b31e1d807b2c",
+          "after": "dfcd1f83ac11cef5285899e261ded8a58f6dfe48bd12120fc5dc145d1c9f25c0",
+          "count": 2
+        },
+        {
+          "before": "PASS_MINIMAX_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS",
+          "after": "PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS",
+          "count": 1
+        },
+        {
+          "before": "  assert len(report['controls']['controls'])==6",
+          "after": "  priority=gp['plan']['timing_priority']\n  assert priority['maximum_weighted_after']<priority['maximum_weighted_before']\n  assert priority['stage_maxima']['1']['after']<priority['stage_maxima']['1']['before']\n  assert gp['maximum_after_um']<priority['original_maximum_ceiling_um']\n  assert len(priority['regressed_legs'])==24\n  assert len(report['controls']['controls'])==6",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "9f1589454f1d6437745b9b8aff90c4de7e84359c312a2c4e0e962d68429521f6",
+      "candidate_sha256": "5cfc97c77f5d2a04dc331a7f5e4f569905e793e7509d15efcd6f811827678a83"
+    },
+    {
+      "baseline_path": ".github/workflows/tx-v5-minimax-loaded-wave-cloud.yml",
+      "candidate_path": ".github/workflows/tx-v5-timing-priority-loaded-wave-cloud.yml",
+      "edits": [
+        {
+          "before": "tx-v5-minimax",
+          "after": "tx-v5-timing-priority",
+          "count": 8
+        },
+        {
+          "before": "tx_v5_minimax",
+          "after": "tx_v5_timing_priority",
+          "count": 14
+        }
+      ],
+      "baseline_sha256": "283e07d772286ff82e2cf8b575b3be95e366f57b229836103b2ef46d1be98e48",
+      "candidate_sha256": "2599d85f6d138a95417dd94841dcb9f8a89e3dab9133f8a9ca334cff6bbe9524"
+    }
+  ]
+}

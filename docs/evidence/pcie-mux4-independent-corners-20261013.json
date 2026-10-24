@@ -1,0 +1,1441 @@
+{
+  "run": 38333919415,
+  "source_head": "4153ce20",
+  "status": "COMPLETE_INDEPENDENT_CORNERS_CANDIDATE_REJECTED",
+  "scope": "Fixed geometry and sources. Independent native HBT and resistor corners expose failures missed by coupled hot/cold corners; no thresholds relaxed and all failed full captures preserved.",
+  "cases": {
+    "hbt_typ_res_bcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hbt_typ_res_bcs-none-38333919415-1.summary.json",
+      "summary_sha256": "2349a6ec0eb92a235e2d33fa501b1fd9069c9b6018d86a379b1796860c6ca48f",
+      "passed": true,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.26591708598891617,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.26679324598335663,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.26591708598891617,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.26662341732057393,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.25925802002001697,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8926295564347242,
+            1.9002656470859876
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2550018057975467,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9068110204672823,
+            1.9336564369529072
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.292741609073989,
+          1.3454841510215543
+        ],
+        "sb": [
+          1.2924741029011169,
+          1.3453924879329817
+        ],
+        "s": [
+          1.293036117928428,
+          1.345222539856037
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "84158cfbd42e730adb95f3dd63d8cc5ea0b104d0bbc093b9b40ab84140d230a9"
+      },
+      "diagnostics": []
+    },
+    "hbt_typ_res_wcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hbt_typ_res_wcs-none-38333919415-1.summary.json",
+      "summary_sha256": "08e953b77ed8fd984b3d91abfd9db976c7f652f646a56805c9491360e533591f",
+      "passed": false,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.30919100351088535,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.30919100351088535,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.3093502597724951,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.311172142649879,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.2733595736884884,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.88939901433782,
+            1.8962482805875216
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.21605685518112216,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9185197858599754,
+            1.94059917218939
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {
+        "xprea.xsa_0": {
+          "min_post_vce_v": 0.37504231226481455,
+          "max_post_vce_v": 0.7952686031716879,
+          "max_whole_abs_vce_v": 0.8492744117896678,
+          "max_whole_abs_vbe_v": 0.8543702078301935,
+          "max_whole_abs_ic_per_emitter_a": 0.0005655590700454164,
+          "passed": false
+        },
+        "xprea.xsa_1": {
+          "min_post_vce_v": 0.37504231226481455,
+          "max_post_vce_v": 0.7952686031716879,
+          "max_whole_abs_vce_v": 0.8492744117896678,
+          "max_whole_abs_vbe_v": 0.8543702078301935,
+          "max_whole_abs_ic_per_emitter_a": 0.000565559070045422,
+          "passed": false
+        },
+        "xprea.xsb_0": {
+          "min_post_vce_v": 0.3758912108268595,
+          "max_post_vce_v": 0.7948561171839668,
+          "max_whole_abs_vce_v": 0.9048124630866102,
+          "max_whole_abs_vbe_v": 0.8531203837128088,
+          "max_whole_abs_ic_per_emitter_a": 0.0005638326171191399,
+          "passed": false
+        },
+        "xprea.xsb_1": {
+          "min_post_vce_v": 0.3758912108268595,
+          "max_post_vce_v": 0.7948561171839668,
+          "max_whole_abs_vce_v": 0.9048124630866102,
+          "max_whole_abs_vbe_v": 0.8531203837128088,
+          "max_whole_abs_ic_per_emitter_a": 0.0005638326171191391,
+          "passed": false
+        },
+        "xpreb.xsa_0": {
+          "min_post_vce_v": 0.37451578819142883,
+          "max_post_vce_v": 0.7960031973667292,
+          "max_whole_abs_vce_v": 0.8494390426370269,
+          "max_whole_abs_vbe_v": 0.8543704308868303,
+          "max_whole_abs_ic_per_emitter_a": 0.0005652722710475461,
+          "passed": false
+        },
+        "xpreb.xsa_1": {
+          "min_post_vce_v": 0.37451578819142883,
+          "max_post_vce_v": 0.7960031973667292,
+          "max_whole_abs_vce_v": 0.8494390426370269,
+          "max_whole_abs_vbe_v": 0.8543704308868303,
+          "max_whole_abs_ic_per_emitter_a": 0.000565272271047545,
+          "passed": false
+        },
+        "xpreb.xsb_0": {
+          "min_post_vce_v": 0.37477604662477126,
+          "max_post_vce_v": 0.7937026689870614,
+          "max_whole_abs_vce_v": 0.9044130799088796,
+          "max_whole_abs_vbe_v": 0.8533681144945275,
+          "max_whole_abs_ic_per_emitter_a": 0.0005649327656100726,
+          "passed": false
+        },
+        "xpreb.xsb_1": {
+          "min_post_vce_v": 0.37477604662477126,
+          "max_post_vce_v": 0.7937026689870614,
+          "max_whole_abs_vce_v": 0.9044130799088796,
+          "max_whole_abs_vbe_v": 0.8533681144945275,
+          "max_whole_abs_ic_per_emitter_a": 0.0005649327656100726,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.398547859423017,
+          1.4508659562768678
+        ],
+        "sb": [
+          1.3978160189350337,
+          1.4507325124881607
+        ],
+        "s": [
+          1.39780195849979,
+          1.4506136964785172
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "d65c30d2155d986e43207b41e564752a2f6a0ed2b252547c0ea4c99c38381583"
+      },
+      "diagnostics": []
+    },
+    "hbt_bcs_res_typ": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hbt_bcs_res_typ-none-38333919415-1.summary.json",
+      "summary_sha256": "161298549b5df670c859f0d6e69081c35f348d93ce0f56df9cb667d40ba96470",
+      "passed": true,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.2962455415898888,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.2968961753264747,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2962455415898888,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.29662162307860207,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.2668099391963945,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8898053451468788,
+            1.8988514611002978
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2605015626201286,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9099488921368,
+            1.9389130591822268
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.3539609197648486,
+          1.4072940084051568
+        ],
+        "sb": [
+          1.3537146928325994,
+          1.4072401664993879
+        ],
+        "s": [
+          1.3543097838305767,
+          1.4070803867850046
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "6fc2056dda65df9271a916b6a68e4e1a14d6534f5b54a08f4219174b30cb2d0f"
+      },
+      "diagnostics": []
+    },
+    "hbt_bcs_res_bcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hbt_bcs_res_bcs-none-38333919415-1.summary.json",
+      "summary_sha256": "cdbfcd10286d35b7e60bf537a4be63c2452a1382766409a43e77eb259bfb5315",
+      "passed": true,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.27285577761797764,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.27353574738868036,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2731581531000482,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.27285577761797764,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.2569916146758824,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8926660060527218,
+            1.9011399856359206
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2801665010570449,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9027610705818578,
+            1.9330808783241191
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.3002111757344323,
+          1.3536717312390831
+        ],
+        "sb": [
+          1.2999543004928253,
+          1.3537381223667846
+        ],
+        "s": [
+          1.3007421453573949,
+          1.3535040488122658
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "e929ed7cd7cef1a01a8023c273b20bcb653d81f5176710c23e927bc6015ee564"
+      },
+      "diagnostics": []
+    },
+    "hbt_bcs_res_wcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hbt_bcs_res_wcs-none-38333919415-1.summary.json",
+      "summary_sha256": "6f5ce561e971ca9cb98813e073f577fde6eb1be4915fc36f5489abc138a2cd23",
+      "passed": false,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.3158277247417698,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.3169841002151925,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.3158277247417698,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.31689487334935773,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.2742849767350164,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8879649571660906,
+            1.897512691542866
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2411238810663039,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9151421521448069,
+            1.9418606216904009
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {
+        "xprea.xsa_0": {
+          "min_post_vce_v": 0.3647476379817749,
+          "max_post_vce_v": 0.7838076300698814,
+          "max_whole_abs_vce_v": 0.7838076300698814,
+          "max_whole_abs_vbe_v": 0.8436917063878043,
+          "max_whole_abs_ic_per_emitter_a": 0.000583315099756885,
+          "passed": false
+        },
+        "xprea.xsa_1": {
+          "min_post_vce_v": 0.3647476379817749,
+          "max_post_vce_v": 0.7838076300698814,
+          "max_whole_abs_vce_v": 0.7838076300698814,
+          "max_whole_abs_vbe_v": 0.8436917063878043,
+          "max_whole_abs_ic_per_emitter_a": 0.0005833150997568793,
+          "passed": false
+        },
+        "xprea.xsb_0": {
+          "min_post_vce_v": 0.365566819782686,
+          "max_post_vce_v": 0.783380256168474,
+          "max_whole_abs_vce_v": 0.8386471662353039,
+          "max_whole_abs_vbe_v": 0.8439344641456735,
+          "max_whole_abs_ic_per_emitter_a": 0.0005821870891903067,
+          "passed": false
+        },
+        "xprea.xsb_1": {
+          "min_post_vce_v": 0.365566819782686,
+          "max_post_vce_v": 0.783380256168474,
+          "max_whole_abs_vce_v": 0.8386471662353039,
+          "max_whole_abs_vbe_v": 0.8439344641456735,
+          "max_whole_abs_ic_per_emitter_a": 0.000582187089190321,
+          "passed": false
+        },
+        "xpreb.xsa_0": {
+          "min_post_vce_v": 0.36484942641033447,
+          "max_post_vce_v": 0.7846120639709134,
+          "max_whole_abs_vce_v": 0.7846120639709134,
+          "max_whole_abs_vbe_v": 0.8435595422523596,
+          "max_whole_abs_ic_per_emitter_a": 0.0005802428745836471,
+          "passed": false
+        },
+        "xpreb.xsa_1": {
+          "min_post_vce_v": 0.36484942641033447,
+          "max_post_vce_v": 0.7846120639709134,
+          "max_whole_abs_vce_v": 0.7846120639709134,
+          "max_whole_abs_vbe_v": 0.8435595422523596,
+          "max_whole_abs_ic_per_emitter_a": 0.0005802428745836489,
+          "passed": false
+        },
+        "xpreb.xsb_0": {
+          "min_post_vce_v": 0.36511115766523927,
+          "max_post_vce_v": 0.7828064118198251,
+          "max_whole_abs_vce_v": 0.8383431097748576,
+          "max_whole_abs_vbe_v": 0.8441109533161189,
+          "max_whole_abs_ic_per_emitter_a": 0.0005830876756761158,
+          "passed": false
+        },
+        "xpreb.xsb_1": {
+          "min_post_vce_v": 0.36511115766523927,
+          "max_post_vce_v": 0.7828064118198251,
+          "max_whole_abs_vce_v": 0.8383431097748576,
+          "max_whole_abs_vbe_v": 0.8441109533161189,
+          "max_whole_abs_ic_per_emitter_a": 0.0005830876756761158,
+          "passed": false
+        },
+        "xmux.xd0041": {
+          "min_post_vce_v": 0.39427084643766985,
+          "max_post_vce_v": 0.8857847308811546,
+          "max_whole_abs_vce_v": 0.8857847308811546,
+          "max_whole_abs_vbe_v": 0.8749065487816663,
+          "max_whole_abs_ic_per_emitter_a": 0.001103133878095684,
+          "passed": false
+        },
+        "xmux.xd0043": {
+          "min_post_vce_v": 0.39427084643766985,
+          "max_post_vce_v": 0.8857847308811546,
+          "max_whole_abs_vce_v": 0.8857847308811546,
+          "max_whole_abs_vbe_v": 0.8749065487816663,
+          "max_whole_abs_ic_per_emitter_a": 0.0011031338780956804,
+          "passed": false
+        },
+        "xmux.xd0046": {
+          "min_post_vce_v": 0.3950041151337378,
+          "max_post_vce_v": 0.886424613987832,
+          "max_whole_abs_vce_v": 0.886424613987832,
+          "max_whole_abs_vbe_v": 0.8741473515661388,
+          "max_whole_abs_ic_per_emitter_a": 0.0011036079291543632,
+          "passed": false
+        },
+        "xmux.xd0047": {
+          "min_post_vce_v": 0.3950041151337378,
+          "max_post_vce_v": 0.886424613987832,
+          "max_whole_abs_vce_v": 0.886424613987832,
+          "max_whole_abs_vbe_v": 0.8741473515661388,
+          "max_whole_abs_ic_per_emitter_a": 0.0011036079291543556,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.4075845935033957,
+          1.460838274642299
+        ],
+        "sb": [
+          1.4072845195925363,
+          1.461006513466873
+        ],
+        "s": [
+          1.4074118490243135,
+          1.4605283822008706
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "d53631ad69adb2d4206dbf94702732bff5f770321fb8a84d959ab6ac5e69cb34"
+      },
+      "diagnostics": []
+    },
+    "hbt_wcs_res_typ": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hbt_wcs_res_typ-none-38333919415-1.summary.json",
+      "summary_sha256": "ef9eeb9da312fda7778b9e43d7febd9591ea74404f868f609d30d274cbbab1ea",
+      "passed": true,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.2689485814156478,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.2689485814156478,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2817188414084957,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.2831545042504311,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.26610812977491616,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8918244194130938,
+            1.8967963019006298
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2125572536034852,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9158610853479887,
+            1.9405467992134953
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.327203086265421,
+          1.3778199332231718
+        ],
+        "sb": [
+          1.3264346515154124,
+          1.3777072884717536
+        ],
+        "s": [
+          1.3266317932152534,
+          1.3775166222012374
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "12daa32038659114f95b2a3a6a71be792d88b685ed0c3adb147b3cb9587fa8a3"
+      },
+      "diagnostics": []
+    },
+    "hbt_wcs_res_bcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hbt_wcs_res_bcs-none-38333919415-1.summary.json",
+      "summary_sha256": "9a538ea23aafc9f870d04e74e57a212f1ee9ff06a399204d93afa0cc3be5dd09",
+      "passed": true,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.2483581264525645,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.2483581264525645,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2571188528808195,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.25824628849995346,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.2575889950471313,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.893584438166728,
+            1.8990967235922793
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.23153851191090036,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9105006204100825,
+            1.9314957285031809
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.2754304952026843,
+          1.3261468687802491
+        ],
+        "sb": [
+          1.274873985617818,
+          1.3258779016584956
+        ],
+        "s": [
+          1.27534731260649,
+          1.3257614431489824
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "b5047b2a88b41cb22b08848a1fe82305400ed533844230a71fce5cebfba677ca"
+      },
+      "diagnostics": []
+    },
+    "hbt_wcs_res_wcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hbt_wcs_res_wcs-none-38333919415-1.summary.json",
+      "summary_sha256": "805b7ef82f992ce8f103074467ac9ae092b0bdc4668b506c89bfdb15366e6474",
+      "passed": false,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.28448599565638677,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.28448599565638677,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.30242177468153475,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.3037114148668034,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.2720723126084048,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8905900282340915,
+            1.895531630445145
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.1946483154927665,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.917145971026594,
+            1.9475933235162253
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {
+        "xprea.xsa_0": {
+          "min_post_vce_v": 0.39758552401982006,
+          "max_post_vce_v": 0.815041614392924,
+          "max_whole_abs_vce_v": 0.9110443301380782,
+          "max_whole_abs_vbe_v": 0.8678650755070025,
+          "max_whole_abs_ic_per_emitter_a": 0.000576750712763574,
+          "passed": false
+        },
+        "xprea.xsa_1": {
+          "min_post_vce_v": 0.39758552401982006,
+          "max_post_vce_v": 0.815041614392924,
+          "max_whole_abs_vce_v": 0.9110443301380782,
+          "max_whole_abs_vbe_v": 0.8678650755070025,
+          "max_whole_abs_ic_per_emitter_a": 0.0005767507127635903,
+          "passed": false
+        },
+        "xprea.xsb_0": {
+          "min_post_vce_v": 0.3984672495543904,
+          "max_post_vce_v": 0.8146812932848988,
+          "max_whole_abs_vce_v": 0.9630773010389778,
+          "max_whole_abs_vbe_v": 0.863622699424136,
+          "max_whole_abs_ic_per_emitter_a": 0.0005421602790092438,
+          "passed": false
+        },
+        "xprea.xsb_1": {
+          "min_post_vce_v": 0.3984672495543904,
+          "max_post_vce_v": 0.8146812932848988,
+          "max_whole_abs_vce_v": 0.9630773010389778,
+          "max_whole_abs_vbe_v": 0.863622699424136,
+          "max_whole_abs_ic_per_emitter_a": 0.0005421602790092548,
+          "passed": false
+        },
+        "xpreb.xsa_0": {
+          "min_post_vce_v": 0.39626820421393594,
+          "max_post_vce_v": 0.8155494292295482,
+          "max_whole_abs_vce_v": 0.9112147638443886,
+          "max_whole_abs_vbe_v": 0.8678674923710147,
+          "max_whole_abs_ic_per_emitter_a": 0.0005767542236942632,
+          "passed": false
+        },
+        "xpreb.xsa_1": {
+          "min_post_vce_v": 0.39626820421393594,
+          "max_post_vce_v": 0.8155494292295482,
+          "max_whole_abs_vce_v": 0.9112147638443886,
+          "max_whole_abs_vbe_v": 0.8678674923710147,
+          "max_whole_abs_ic_per_emitter_a": 0.0005767542236942686,
+          "passed": false
+        },
+        "xpreb.xsb_0": {
+          "min_post_vce_v": 0.3967428898182055,
+          "max_post_vce_v": 0.8129500592986301,
+          "max_whole_abs_vce_v": 0.9626876049759507,
+          "max_whole_abs_vbe_v": 0.8639340952278537,
+          "max_whole_abs_ic_per_emitter_a": 0.0005433006867189476,
+          "passed": false
+        },
+        "xpreb.xsb_1": {
+          "min_post_vce_v": 0.3967428898182055,
+          "max_post_vce_v": 0.8129500592986301,
+          "max_whole_abs_vce_v": 0.9626876049759507,
+          "max_whole_abs_vbe_v": 0.8639340952278537,
+          "max_whole_abs_ic_per_emitter_a": 0.0005433006867189476,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.3788290048286016,
+          1.4295607129225736
+        ],
+        "sb": [
+          1.3777105157533067,
+          1.429652865181928
+        ],
+        "s": [
+          1.3775184092122035,
+          1.4294650708154544
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "ba687d84ed89cb01c05d33230a02586d8705b7544ac17e9562f4d1476a08f70e"
+      },
+      "diagnostics": []
+    },
+    "hot_low_res_bcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hot_low_res_bcs-none-38333919415-1.summary.json",
+      "summary_sha256": "b6808188d31e0a4e1feed27caa58b40bb9c578222ed1af836b4fbc2d105346ec",
+      "passed": true,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.22285436467896091,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.22285436467896091,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.27208726098087244,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.2681174079229822,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.15585351669363834,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.845234821817066,
+            1.8493011515262094
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.1926133801018981,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8192633215776381,
+            1.84266143860678
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.156301265313969,
+          1.199416873036022
+        ],
+        "sb": [
+          1.1554658816666237,
+          1.1994838261488938
+        ],
+        "s": [
+          1.1550126238439435,
+          1.1989600518176706
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "f922cde8622df39875db899c09a8f919a85a3b4887392cbe43d37004bfe34abd"
+      },
+      "diagnostics": []
+    },
+    "hot_low_hbt_bcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-hot_low_hbt_bcs-none-38333919415-1.summary.json",
+      "summary_sha256": "6d8230fb69a0fde9fc52f44ab30039c87423307c8c96e712e677e1510af95e11",
+      "passed": false,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.33550594533286904,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.33550594533286904,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.3510303558852974,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.35263276807417565,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.18734898851291404,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8352021339555884,
+            1.8411252931145121
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2124876872715098,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8242675750813748,
+            1.8405610102748742
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {
+        "xprea.xsa_0": {
+          "min_post_vce_v": 0.386911681280915,
+          "max_post_vce_v": 0.7753663799949307,
+          "max_whole_abs_vce_v": 0.7753663799949307,
+          "max_whole_abs_vbe_v": 0.7534771043425836,
+          "max_whole_abs_ic_per_emitter_a": 0.0005325070648402428,
+          "passed": false
+        },
+        "xprea.xsa_1": {
+          "min_post_vce_v": 0.386911681280915,
+          "max_post_vce_v": 0.7753663799949307,
+          "max_whole_abs_vce_v": 0.7753663799949307,
+          "max_whole_abs_vbe_v": 0.7534771043425836,
+          "max_whole_abs_ic_per_emitter_a": 0.00053250706484024,
+          "passed": false
+        },
+        "xprea.xsb_0": {
+          "min_post_vce_v": 0.3888280635907482,
+          "max_post_vce_v": 0.7761862362723728,
+          "max_whole_abs_vce_v": 0.7761862362723728,
+          "max_whole_abs_vbe_v": 0.7534450923333407,
+          "max_whole_abs_ic_per_emitter_a": 0.0005343381534728589,
+          "passed": false
+        },
+        "xprea.xsb_1": {
+          "min_post_vce_v": 0.3888280635907482,
+          "max_post_vce_v": 0.7761862362723728,
+          "max_whole_abs_vce_v": 0.7761862362723728,
+          "max_whole_abs_vbe_v": 0.7534450923333407,
+          "max_whole_abs_ic_per_emitter_a": 0.0005343381534728489,
+          "passed": false
+        },
+        "xpreb.xsa_0": {
+          "min_post_vce_v": 0.38462205788486536,
+          "max_post_vce_v": 0.7771555466744473,
+          "max_whole_abs_vce_v": 0.7771555466744473,
+          "max_whole_abs_vbe_v": 0.7534785168201732,
+          "max_whole_abs_ic_per_emitter_a": 0.0005333043506932874,
+          "passed": false
+        },
+        "xpreb.xsa_1": {
+          "min_post_vce_v": 0.38462205788486536,
+          "max_post_vce_v": 0.7771555466744473,
+          "max_whole_abs_vce_v": 0.7771555466744473,
+          "max_whole_abs_vbe_v": 0.7534785168201732,
+          "max_whole_abs_ic_per_emitter_a": 0.0005333043506932809,
+          "passed": false
+        },
+        "xpreb.xsb_0": {
+          "min_post_vce_v": 0.388323380372519,
+          "max_post_vce_v": 0.7768171004004842,
+          "max_whole_abs_vce_v": 0.7768171004004842,
+          "max_whole_abs_vbe_v": 0.7536220088867113,
+          "max_whole_abs_ic_per_emitter_a": 0.0005339996390726226,
+          "passed": false
+        },
+        "xpreb.xsb_1": {
+          "min_post_vce_v": 0.388323380372519,
+          "max_post_vce_v": 0.7768171004004842,
+          "max_whole_abs_vce_v": 0.7768171004004842,
+          "max_whole_abs_vbe_v": 0.7536220088867113,
+          "max_whole_abs_ic_per_emitter_a": 0.000533999639072621,
+          "passed": false
+        },
+        "xmux.xd0037": {
+          "min_post_vce_v": 0.36112008630359305,
+          "max_post_vce_v": 1.0777434495900051,
+          "max_whole_abs_vce_v": 1.0777434495900051,
+          "max_whole_abs_vbe_v": 0.7712755234338222,
+          "max_whole_abs_ic_per_emitter_a": 0.0007245782082740495,
+          "passed": false
+        },
+        "xmux.xd0038": {
+          "min_post_vce_v": 0.36112008630359305,
+          "max_post_vce_v": 1.0777434495900051,
+          "max_whole_abs_vce_v": 1.0777434495900051,
+          "max_whole_abs_vbe_v": 0.7712755234338222,
+          "max_whole_abs_ic_per_emitter_a": 0.0007245782082740457,
+          "passed": false
+        },
+        "xmux.xd0039": {
+          "min_post_vce_v": 0.3600900642802407,
+          "max_post_vce_v": 1.078024089466953,
+          "max_whole_abs_vce_v": 1.078024089466953,
+          "max_whole_abs_vbe_v": 0.7714654237528327,
+          "max_whole_abs_ic_per_emitter_a": 0.0007208357622726267,
+          "passed": false
+        },
+        "xmux.xd0040": {
+          "min_post_vce_v": 0.3626158717327719,
+          "max_post_vce_v": 1.0769254206060213,
+          "max_whole_abs_vce_v": 1.0769254206060213,
+          "max_whole_abs_vbe_v": 0.7714011638158087,
+          "max_whole_abs_ic_per_emitter_a": 0.000726126369127085,
+          "passed": false
+        },
+        "xmux.xd0041": {
+          "min_post_vce_v": 0.3992200904819494,
+          "max_post_vce_v": 0.8840023489703962,
+          "max_whole_abs_vce_v": 0.8840023489703962,
+          "max_whole_abs_vbe_v": 0.791812903530163,
+          "max_whole_abs_ic_per_emitter_a": 0.0010577202006688095,
+          "passed": false
+        },
+        "xmux.xd0042": {
+          "min_post_vce_v": 0.35918801347920115,
+          "max_post_vce_v": 1.077520272758906,
+          "max_whole_abs_vce_v": 1.077520272758906,
+          "max_whole_abs_vbe_v": 0.7715246597142964,
+          "max_whole_abs_ic_per_emitter_a": 0.0007252124342006375,
+          "passed": false
+        },
+        "xmux.xd0043": {
+          "min_post_vce_v": 0.3992200904819494,
+          "max_post_vce_v": 0.8840023489703962,
+          "max_whole_abs_vce_v": 0.8840023489703962,
+          "max_whole_abs_vbe_v": 0.791812903530163,
+          "max_whole_abs_ic_per_emitter_a": 0.001057720200668803,
+          "passed": false
+        },
+        "xmux.xd0044": {
+          "min_post_vce_v": 0.3626158717327719,
+          "max_post_vce_v": 1.0769254206060213,
+          "max_whole_abs_vce_v": 1.0769254206060213,
+          "max_whole_abs_vbe_v": 0.7714011638158087,
+          "max_whole_abs_ic_per_emitter_a": 0.0007261263691270805,
+          "passed": false
+        },
+        "xmux.xd0045": {
+          "min_post_vce_v": 0.36112008630359305,
+          "max_post_vce_v": 1.0777434495900051,
+          "max_whole_abs_vce_v": 1.0777434495900051,
+          "max_whole_abs_vbe_v": 0.7712755234338222,
+          "max_whole_abs_ic_per_emitter_a": 0.0007245782082740417,
+          "passed": false
+        },
+        "xmux.xd0048": {
+          "min_post_vce_v": 0.3626158717327719,
+          "max_post_vce_v": 1.0769254206060213,
+          "max_whole_abs_vce_v": 1.0769254206060213,
+          "max_whole_abs_vbe_v": 0.7714011638158087,
+          "max_whole_abs_ic_per_emitter_a": 0.0007261263691270871,
+          "passed": false
+        },
+        "xmux.xd0050": {
+          "min_post_vce_v": 0.35918801347920115,
+          "max_post_vce_v": 1.077520272758906,
+          "max_whole_abs_vce_v": 1.077520272758906,
+          "max_whole_abs_vbe_v": 0.7715246597142964,
+          "max_whole_abs_ic_per_emitter_a": 0.0007252124342006404,
+          "passed": false
+        },
+        "xmux.xd0051": {
+          "min_post_vce_v": 0.3600900642802407,
+          "max_post_vce_v": 1.078024089466953,
+          "max_whole_abs_vce_v": 1.078024089466953,
+          "max_whole_abs_vbe_v": 0.7714654237528327,
+          "max_whole_abs_ic_per_emitter_a": 0.0007208357622726446,
+          "passed": false
+        },
+        "xmux.xd0052": {
+          "min_post_vce_v": 0.35918801347920115,
+          "max_post_vce_v": 1.077520272758906,
+          "max_whole_abs_vce_v": 1.077520272758906,
+          "max_whole_abs_vbe_v": 0.7715246597142964,
+          "max_whole_abs_ic_per_emitter_a": 0.0007252124342006375,
+          "passed": false
+        },
+        "xmux.xd0054": {
+          "min_post_vce_v": 0.3600900642802407,
+          "max_post_vce_v": 1.078024089466953,
+          "max_whole_abs_vce_v": 1.078024089466953,
+          "max_whole_abs_vbe_v": 0.7714654237528327,
+          "max_whole_abs_ic_per_emitter_a": 0.0007208357622726267,
+          "passed": false
+        },
+        "xtx.xp": {
+          "min_post_vce_v": 0.3600252350901332,
+          "max_post_vce_v": 0.7675541747294607,
+          "max_whole_abs_vce_v": 0.7675541747294607,
+          "max_whole_abs_vbe_v": 0.8225012830408638,
+          "max_whole_abs_ic_per_emitter_a": 0.0015854613405156992,
+          "passed": false
+        },
+        "xtx.xn": {
+          "min_post_vce_v": 0.35999058479338764,
+          "max_post_vce_v": 0.768175858495026,
+          "max_whole_abs_vce_v": 0.768175858495026,
+          "max_whole_abs_vbe_v": 0.8226415722765477,
+          "max_whole_abs_ic_per_emitter_a": 0.001586220613860436,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.3180338513995808,
+          1.3679741204126032
+        ],
+        "sb": [
+          1.3165308577922001,
+          1.367658970981097
+        ],
+        "s": [
+          1.3153748886989343,
+          1.3675186586221633
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "8c914923203f34da6580a0e934b8fc6977160ed836b6a5cee288d3d60f4c8f32"
+      },
+      "diagnostics": []
+    },
+    "cold_high_res_wcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-cold_high_res_wcs-none-38333919415-1.summary.json",
+      "summary_sha256": "d9b548690c6a0e9fbb574a4c63273c5b2576ba7498998302ac4308fadc00dc1a",
+      "passed": false,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.28326950261367245,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.2834717185194797,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.28326950261367245,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.28409310271486166,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.30643987598408295,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9680068869379435,
+            1.9801033459387507
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2716195606089522,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            2.006136194266361,
+            2.040556961624727
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {
+        "xprea.xsa_0": {
+          "min_post_vce_v": 0.39070685823680074,
+          "max_post_vce_v": 0.8220655958321175,
+          "max_whole_abs_vce_v": 0.8609587206695621,
+          "max_whole_abs_vbe_v": 0.9005922139788759,
+          "max_whole_abs_ic_per_emitter_a": 0.0006308243924090954,
+          "passed": false
+        },
+        "xprea.xsa_1": {
+          "min_post_vce_v": 0.39070685823680074,
+          "max_post_vce_v": 0.8220655958321175,
+          "max_whole_abs_vce_v": 0.8609587206695621,
+          "max_whole_abs_vbe_v": 0.9005922139788759,
+          "max_whole_abs_ic_per_emitter_a": 0.0006308243924090924,
+          "passed": false
+        },
+        "xprea.xsb_0": {
+          "min_post_vce_v": 0.39300518039677923,
+          "max_post_vce_v": 0.8203334091621216,
+          "max_whole_abs_vce_v": 0.8848513354339153,
+          "max_whole_abs_vbe_v": 0.9009125543250927,
+          "max_whole_abs_ic_per_emitter_a": 0.0006305996063366208,
+          "passed": false
+        },
+        "xprea.xsb_1": {
+          "min_post_vce_v": 0.39300518039677923,
+          "max_post_vce_v": 0.8203334091621216,
+          "max_whole_abs_vce_v": 0.8848513354339153,
+          "max_whole_abs_vbe_v": 0.9009125543250927,
+          "max_whole_abs_ic_per_emitter_a": 0.0006305996063366014,
+          "passed": false
+        },
+        "xpreb.xsa_0": {
+          "min_post_vce_v": 0.3923090509265742,
+          "max_post_vce_v": 0.8213281205664995,
+          "max_whole_abs_vce_v": 0.8610736684895389,
+          "max_whole_abs_vbe_v": 0.900274781108682,
+          "max_whole_abs_ic_per_emitter_a": 0.0006287562031794895,
+          "passed": false
+        },
+        "xpreb.xsa_1": {
+          "min_post_vce_v": 0.3923090509265742,
+          "max_post_vce_v": 0.8213281205664995,
+          "max_whole_abs_vce_v": 0.8610736684895389,
+          "max_whole_abs_vbe_v": 0.900274781108682,
+          "max_whole_abs_ic_per_emitter_a": 0.0006287562031795085,
+          "passed": false
+        },
+        "xpreb.xsb_0": {
+          "min_post_vce_v": 0.39278705039210915,
+          "max_post_vce_v": 0.8204677077578924,
+          "max_whole_abs_vce_v": 0.8841070996217201,
+          "max_whole_abs_vbe_v": 0.9008213332405945,
+          "max_whole_abs_ic_per_emitter_a": 0.0006298642232270813,
+          "passed": false
+        },
+        "xpreb.xsb_1": {
+          "min_post_vce_v": 0.39278705039210915,
+          "max_post_vce_v": 0.8204677077578924,
+          "max_whole_abs_vce_v": 0.8841070996217201,
+          "max_whole_abs_vbe_v": 0.9008213332405945,
+          "max_whole_abs_ic_per_emitter_a": 0.0006298642232270813,
+          "passed": false
+        }
+      },
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.4629196649712832,
+          1.522876845442896
+        ],
+        "sb": [
+          1.4627179077721209,
+          1.5227514822052537
+        ],
+        "s": [
+          1.4634016026253511,
+          1.5226953353370298
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "368263ecfc7ec6604df94593263ac3b752510454716b977e13f45b3cedd71992"
+      },
+      "diagnostics": []
+    },
+    "cold_high_hbt_wcs": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-independent-corners-cold_high_hbt_wcs-none-38333919415-1.summary.json",
+      "summary_sha256": "76677d8545025d356e26d015c95ea6b59044d26ec6f14ade97f5e40de67d8552",
+      "passed": true,
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.23357914356161547,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.23590111775889744,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.23357914356161547,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.23469453833965281,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.3069340742044342,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.967432502874215,
+            1.9763849684832637
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2656865108217703,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9992957381162493,
+            2.0265181327140476
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "clock_common_mode_range_v": {
+        "sa": [
+          1.3515101963116758,
+          1.4093816087678153
+        ],
+        "sb": [
+          1.3513807345627837,
+          1.4088269840294347
+        ],
+        "s": [
+          1.3520926896213048,
+          1.4091684325140856
+        ]
+      },
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "52ab28c40b899319a9767a547850f1ffb6a78e727097ff27516fa6a088dda7c5"
+      },
+      "diagnostics": []
+    }
+  }
+}

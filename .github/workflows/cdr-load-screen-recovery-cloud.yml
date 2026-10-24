@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-load-screen-recovery-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/cdr-load-screen-recovery-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr-load-screen-recovery-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  recover:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      actions: read
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        length: ['1.2', '1.6']
+        case: [nominal_early, nominal_late]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Recover SHA256-pinned failed waveforms in cloud; preserve original rejection
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m py_compile scripts/cloud_cdr_load_screen_recovery.py
+          python3 scripts/cloud_cdr_load_screen_recovery.py --length ${{ matrix.length }} --case ${{ matrix.case }}

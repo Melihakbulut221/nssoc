@@ -1,0 +1,81 @@
+{
+  "status": "DRAFT_V25_EXACT_INVERSE_WITH_PROCEDURAL_UNKNOWN_CONTROL_HOLD",
+  "baseline_sha256": "505db8d1daa5c5263a16a3584175bc89a73d1b6e35f16e10b64f1f9f6483dde6",
+  "candidate": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v25.v",
+    "bytes": 199988,
+    "sha256": "4504ffb6acd21df918f751d62396e8ca8dcdb42e91a5f276bfe3cbb12f406295"
+  },
+  "edits": [
+    {
+      "before": "module soc_pcie_gen3_framer_rx_integrity_v23 #(",
+      "after": "module soc_pcie_gen3_framer_rx_integrity_v25 #(",
+      "count": 1
+    },
+    {
+      "before": " reg slot_verdict [0:RING_DWORDS-1];\n",
+      "after": " reg slot_verdict [0:RING_DWORDS-1];\n // BEGIN V25 REGISTERED PARSER TO RING COMMAND\n // The parser reserves addresses immediately. Ring contents and their visible\n // commit frontier advance together when the previous command is applied.\n reg command_valid;\n reg [PW-1:0] command_address,command_commit,visible_commit_ptr;\n reg [127:0] command_data;\n reg [15:0] command_keep,command_sop,command_eop,command_dllp;\n reg [47:0] command_sequence;\n reg [4*PW-1:0] command_tags,command_verdict_tags;\n reg [3:0] command_verdict_enable,command_verdict_value;\n // END V25 REGISTERED PARSER TO RING COMMAND\n",
+      "count": 1
+    },
+    {
+      "before": "wire [PW-1:0] committed=commit_ptr-read_ptr;",
+      "after": "wire [PW-1:0] committed=visible_commit_ptr-read_ptr;",
+      "count": 1
+    },
+    {
+      "before": "assign cache_write_old_verdict[cache_read_lane]=verdict[write_tags[cache_read_lane*PW+:PW]];",
+      "after": "assign cache_write_old_verdict[cache_read_lane]=verdict[command_tags[cache_read_lane*PW+:PW]];",
+      "count": 1
+    },
+    {
+      "before": "if(((write_ptr+write_lane)&(RING_DWORDS-1))==cache_slot)",
+      "after": "if(((command_address+write_lane)&(RING_DWORDS-1))==cache_slot)",
+      "count": 1
+    },
+    {
+      "before": "effective_tag=write_tags[write_lane*PW+:PW];",
+      "after": "effective_tag=command_tags[write_lane*PW+:PW];",
+      "count": 1
+    },
+    {
+      "before": "if(verdict_enable[verdict_lane] && verdict_tags[verdict_lane*PW+:PW]==effective_tag)\n         next_value=verdict_value[verdict_lane];",
+      "after": "if(command_verdict_enable[verdict_lane] && command_verdict_tags[verdict_lane*PW+:PW]==effective_tag)\n         next_value=command_verdict_value[verdict_lane];",
+      "count": 1
+    },
+    {
+      "before": "if(step) slot_verdict[cache_slot]<=next_value; // V22 invalid cache content is quarantined.",
+      "after": "if(enabled && active_o && command_valid) slot_verdict[cache_slot]<=next_value; // V25 fault-invalid cache remains quarantined.",
+      "count": 1
+    },
+    {
+      "before": " // BEGIN V23 ACCEPTED STREAM PREDECESSOR\n",
+      "after": " // BEGIN V25 COMMAND CAPTURE AND EPOCH OWNERSHIP\n // Unqualified payload capture may change inaccessible bits on a fault edge.\n // Validity follows the original explicit procedural fault priority; a new\n // owner overwrites every field. A bubble consumes the old command only once.\n always @(posedge clk_i) begin\n   if(step) begin\n     command_address<=write_ptr;command_commit<=commit_n;\n     command_data<=write_data;command_keep<=write_keep;\n     command_sop<=write_sop;command_eop<=write_eop;command_dllp<=write_dllp;\n     command_sequence<=write_sequence;command_tags<=write_tags;\n     command_verdict_enable<=verdict_enable;\n     command_verdict_tags<=verdict_tags;command_verdict_value<=verdict_value;\n   end\n end\n always @(posedge clk_i or negedge rst_ni) begin\n   if(!rst_ni) command_valid<=0;\n   else if(flush_i || stream_start_i) command_valid<=0;\n   else if((stream_abort_i && active_o) || fault_now) command_valid<=0;\n   else if(active_o) begin\n     // Match the procedural apply gate, including unknown external controls:\n     // if enabled is X, neither apply nor replacement occurs; retain ownership.\n     if(enabled) begin\n       command_valid<=0;\n       if(step) command_valid<=1;\n     end\n   end\n end\n // END V25 COMMAND CAPTURE AND EPOCH OWNERSHIP\n // BEGIN V23 ACCEPTED STREAM PREDECESSOR\n",
+      "count": 1
+    },
+    {
+      "before": " integer w;\n",
+      "after": " integer command_lane;\n",
+      "count": 1
+    },
+    {
+      "before": "write_ptr<=0;read_ptr<=0;commit_ptr<=0;",
+      "after": "write_ptr<=0;read_ptr<=0;commit_ptr<=0;visible_commit_ptr<=0;",
+      "count": 3
+    },
+    {
+      "before": "     end else if(active_o) begin\n       if(!output_valid || ready_i) output_valid<=0;",
+      "after": "     end else if(active_o) begin\n       // BEGIN V25 APPLY OLD COMMAND\n       // This must run during parser bubbles and pending EDS drain. NBA reads\n       // the old complete command while capture can replace it on this edge.\n       if(enabled && command_valid) begin\n         visible_commit_ptr<=command_commit;\n         for(command_lane=0;command_lane<4;command_lane=command_lane+1) begin\n           slot_data[(command_address+command_lane)&(RING_DWORDS-1)]<=command_data[command_lane*32+:32];\n           slot_keep[(command_address+command_lane)&(RING_DWORDS-1)]<=command_keep[command_lane*4+:4];\n           slot_sop[(command_address+command_lane)&(RING_DWORDS-1)]<=command_sop[command_lane*4+:4];\n           slot_eop[(command_address+command_lane)&(RING_DWORDS-1)]<=command_eop[command_lane*4+:4];\n           slot_dllp[(command_address+command_lane)&(RING_DWORDS-1)]<=command_dllp[command_lane*4+:4];\n           slot_sequence[(command_address+command_lane)&(RING_DWORDS-1)]<=command_sequence[command_lane*12+:12];\n           slot_tag[(command_address+command_lane)&(RING_DWORDS-1)]<=command_tags[command_lane*PW+:PW];\n           if(command_verdict_enable[command_lane]) verdict[command_verdict_tags[command_lane*PW+:PW]]<=command_verdict_value[command_lane];\n         end\n       end\n       // END V25 APPLY OLD COMMAND\n       if(!output_valid || ready_i) output_valid<=0;",
+      "count": 1
+    },
+    {
+      "before": "         for(w=0;w<4;w=w+1) begin\n           slot_data[(write_ptr+w)&(RING_DWORDS-1)]<=write_data[w*32+:32];\n           slot_keep[(write_ptr+w)&(RING_DWORDS-1)]<=write_keep[w*4+:4];\n           slot_sop[(write_ptr+w)&(RING_DWORDS-1)]<=write_sop[w*4+:4];\n           slot_eop[(write_ptr+w)&(RING_DWORDS-1)]<=write_eop[w*4+:4];\n           slot_dllp[(write_ptr+w)&(RING_DWORDS-1)]<=write_dllp[w*4+:4];\n           slot_sequence[(write_ptr+w)&(RING_DWORDS-1)]<=write_sequence[w*12+:12];\n           slot_tag[(write_ptr+w)&(RING_DWORDS-1)]<=write_tags[w*PW+:PW];\n           if(verdict_enable[w]) verdict[verdict_tags[w*PW+:PW]]<=verdict_value[w];\n         end\n",
+      "after": "         // V25 ring writes apply from the prior complete command above.\n",
+      "count": 1
+    },
+    {
+      "before": "if(ending && read_ptr==write_ptr && !retire_valid && (!output_valid || ready_i)) begin",
+      "after": "if(ending && !command_valid && visible_commit_ptr==commit_ptr && read_ptr==write_ptr && !retire_valid && (!output_valid || ready_i)) begin",
+      "count": 1
+    }
+  ]
+}

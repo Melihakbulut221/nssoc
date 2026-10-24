@@ -1,0 +1,142 @@
+{
+  "observed_at_utc": "2026-10-16T10:03:21.508441+00:00",
+  "cloud_only": true,
+  "local_workspace_entries": [],
+  "source_head": "eab9f79b27a104a65bdc236138700f57ed65da41",
+  "receipts": {
+    "wide_physical": {
+      "asset_id": 646898513,
+      "sha256": "5c34ba872f712f2e0764661fb46c88b4d261949abe0e6a8e471fef33e1362fd9",
+      "status": "PASS_FULL_DRIVER_NATIVE_PHYSICAL_GATES_NOT_EXTRACTED_ELECTRICAL_OR_PHY_ACCEPTANCE",
+      "source_head": "eab9f79b27a104a65bdc236138700f57ed65da41",
+      "drc": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "d4066724f51409c7c4acedc182cb0ff0b16619e977915c2d27457b28dd7f1870",
+        "log_sha256": "4e44a9d56f7003bcfa51b1c895d567c24982aeb92e3633f5245c55fdb8469984"
+      },
+      "lvs": {
+        "raw_lvs": "PASS within comparison scope",
+        "raw_flat_lvs": "PASS within comparison scope",
+        "aggregate_lvs": "PASS within comparison scope",
+        "aggregate_flat_lvs": "PASS within comparison scope"
+      },
+      "accepted": false,
+      "serial_phy_complete": false,
+      "qualified_pex": false
+    },
+    "wide_parts": {
+      "asset_id": 646898619,
+      "sha256": "f50619debe8b06f9d168b7ce9d2a80f679d29348210e7aebb7d48782015a8257",
+      "status": null,
+      "source_head": null,
+      "manifest": {
+        "format": "ordered-tar-gzip-parts-v1",
+        "stem": "tx-input-driver-wide-38883604446-1",
+        "source_directory": "cloud-tx-input-driver-wide",
+        "bytes": 1284475,
+        "sha256": "90af68991e628655c749d9411feb9786bff717ff355463836fc1a0496abd210f",
+        "parts": [
+          {
+            "index": 0,
+            "name": "tx-input-driver-wide-38883604446-1.tar.gz.part0000",
+            "bytes": 1284475,
+            "sha256": "90af68991e628655c749d9411feb9786bff717ff355463836fc1a0496abd210f"
+          }
+        ],
+        "part_limit_bytes": 1073741824,
+        "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+        "verification": {
+          "parts": 1,
+          "bytes": 1284475,
+          "sha256": "90af68991e628655c749d9411feb9786bff717ff355463836fc1a0496abd210f",
+          "all_parts_and_combined_bytes_verified": true
+        }
+      }
+    },
+    "wire_metrics": {
+      "asset_id": 646879678,
+      "sha256": "0c23c9101a052ccc5a56f186b7e0c312c8d3a126a79c283725f48203457c8c86",
+      "status": "COMPLETE_ACTUAL_DRIVER_WIRE_METRICS_NOT_ELECTRICAL_ACCEPTANCE",
+      "source_head": "900d136b0cccc16775687619994e2e97e5873a45"
+    },
+    "low_r_diagnostic": {
+      "asset_id": 646880486,
+      "sha256": "5cf11614441efa65bb8d4b7601f6583331101c9a2b90c7d7bbce3991b04ced15",
+      "status": "FAIL_OR_ERROR",
+      "source_head": "698ddb7872e9af930484ed6387f2eb6d36111834",
+      "error": "AssertionError()",
+      "diagnostics": [
+        "doAnalyses: TRAN:  Timestep too small; time = 1.44308e-09, timestep = 6.25e-25: trouble with node \"xtree.xd0001.s1\""
+      ]
+    },
+    "cloud_migration": {
+      "asset_id": 636387277,
+      "sha256": "23f8d33591444bb1d22d18a8668142de3c52e906b4dddfbf98118b614d78bcbd",
+      "status": "COMPLETE_VERIFIED_CLOUD_HANDOFF_EMPTY_LOCAL_WORKSPACE",
+      "source_head": "a50c706b34c80c4720d43dcf89204928264becff"
+    }
+  },
+  "running_observation": [
+    {
+      "run": 38882163369,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "698ddb7872e9af930484ed6387f2eb6d36111834",
+      "jobs": [
+        {
+          "id": 116911231962,
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "All eight raw100 drivers loaded by the actual routed tree"
+          ]
+        },
+        {
+          "id": 116911232372,
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 38880596259,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "990c921013911a2a861331f38373b65e90845d60",
+      "jobs": [
+        {
+          "id": 116906116561,
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Insert five measured SRAM hold branches, prove full logic, reroute and reextract all corners"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 38857745157,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "91fb54b95d182d47dfb751216ec00d6e999e508b",
+      "jobs": [
+        {
+          "id": 116832900197,
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Physically matched C9 actual845 full1us acquisition under original gates"
+          ]
+        }
+      ]
+    }
+  ],
+  "next_required": "Extract fresh native device junctions, wire geometry and terminal planes from wide GDS; build and audit fresh RC and composition, then rerun unchanged loaded electrical gates. Original 251R294C network cannot stand in for changed geometry. Review the completed 146 hold trial with independent endpoint, geometry and annotation jobs. Collect physical PLL terminal evidence; do not accept partial captures.",
+  "full_phy_complete": false,
+  "final_timing_closed": false
+}

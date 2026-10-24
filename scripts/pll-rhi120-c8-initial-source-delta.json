@@ -1,0 +1,76 @@
+{
+  "baseline_path": "scripts/cloud_pll845_native_acquisition.py",
+  "baseline_sha256": "6252d868f362e7e638c61c55703eeb83c2505f87f7a48759bbb57d86a2f0395f",
+  "candidate_path": "scripts/cloud_pll_rhi120_c8_initial.py",
+  "candidate_sha256": "08028af99b7d139175d61b0ef2712e57df69b8b59d675653bfa775e1ff06b5c9",
+  "edits": [
+    {
+      "before": "OUT=ROOT/'cloud-pll845-native-acquisition'",
+      "after": "OUT=ROOT/'cloud-pll-rhi120-c8-native'",
+      "count": 1
+    },
+    {
+      "before": "PREP_RUN=39360285698",
+      "after": "PREP_RUN=39920519407",
+      "count": 1
+    },
+    {
+      "before": "858c5f3bf1dd567f137c7397966b34edcc3185edf06ccb1d76f99359b6e6387f",
+      "after": "63c6b8d34ecf277dce223427c72bdb943ed0dc010c80f496d8feb33f268f94dd",
+      "count": 1
+    },
+    {
+      "before": "607b2be43604c11ef09c865f0be144dda3bd827ee98d9a31c7bd8713ce3b2979",
+      "after": "92a85edae348ad4e3ebfb62b372f627dde16ef9aadb4fcb55cedc1422a9d4657",
+      "count": 1
+    },
+    {
+      "before": "cb2f3f79f7593303e8e8eda36624c7305a98c115",
+      "after": "efe9885e87bce9eb82a1c6decc4ed85ab2d65160",
+      "count": 1
+    },
+    {
+      "before": "pll845-loaded-preparation",
+      "after": "pll-rhi120-c8-preparation",
+      "count": 3
+    },
+    {
+      "before": "    assert stage in ('initial','continuation')and 60<=seconds<=14400\n    prior=restore_source(spec)if spec else None",
+      "after": "    assert stage=='initial' and spec is None,'New physical candidate initial only; no old RHI140 process'\n    assert os.environ['GITHUB_RUN_ATTEMPT']=='1','Never rerun an initial native process'\n    assert 60<=seconds<=3600\n    prior=None",
+      "count": 1
+    },
+    {
+      "before": "            names,values,cap=full_wave.capture(raw,vectors);result['capture']=cap\n            cols={n:values[:,i]for i,n in enumerate(names)}\n            result['independent_acquisition']=pll.acquisition_analyzer()(cols)\n            result['cycle_diagnosis']=pll.acquisition_cycle_diagnosis(cols,result['independent_acquisition'])\n            result.update(status=COMPLETE_STATUS,full_capture=True,original_gate_passed=bool(result['independent_acquisition']['passed']))",
+      "after": "            result.update(status='COMPLETE_RHI120_NATIVE_REQUIRES_ALL_COLUMN_FULL_CAPTURE_REVIEW',\n              native_complete=True,full_capture=False,full_capture_reader_pending=True,original_gate_passed=None)",
+      "count": 1
+    },
+    {
+      "before": "        result['protected_inputs_unchanged']=True;save()",
+      "after": "        # Bind actual new-candidate table, not the old RHI140 native identities.\n        import read_pll845_all_native_transient as table_reader\n        with raw.open('rb')as stream:prefix=stream.read(table_reader.MAX_HEADER)\n        table,metadata=table_reader.parse(prefix)\n        op_raw=(CASE/'op.raw').read_bytes()\n        op_head=op_raw[:op_raw.index(MARKER)].decode('ascii')\n        op_table=[line.split() for line in op_head.split('Variables:\\n',1)[1].splitlines()]\n        assert len(table)==len(op_table)+1==5106\n        assert {tuple(row[1:])for row in table[1:]}=={tuple(row[1:])for row in op_table}\n        assert all([v,'voltage'] in [row[1:]for row in table]for v in vectors)\n        (OUT/'native-header-prefix.bin').write_bytes(prefix)\n        (OUT/'native-column-contract.json').write_text(json.dumps(dict(\n          source_preparation_run=PREP_RUN,source_preparation_sha256=PREP_SUMMARY,\n          raw_table=table,raw_table_sha256=table_reader.digest(table),\n          required_vectors=vectors,required_vectors_sha256=table_reader.digest(vectors),\n          required_vector_indices={v:next(int(row[0])for row in table if row[1]==v)for v in vectors},\n          native_terminal_probes=2737,all_native_terminal_probes_covered=True,\n          source_raw_sha256=sha(raw),source_op_sha256=sha(CASE/'op.raw'),\n          full_capture_accepted=False),indent=2)+'\\n')\n        result['all_native_op_controls']=full_op.controls(op_raw,vectors)\n        assert len(result['all_native_op_controls'])==12\n        stride=8*len(table);rows,partial=divmod(raw.stat().st_size-metadata['header_bytes'],stride)\n        assert rows>1000\n        with raw.open('rb')as stream:\n            stream.seek(metadata['header_bytes']+(rows-1)*stride)\n            last=float(np.frombuffer(stream.read(8),dtype='<f8')[0])\n        assert np.isfinite(last)and 0<last<=1e-6\n        result['native_position']=dict(last_time_s=last,complete_rows=rows,partial_row_bytes=partial,columns=len(table))\n        result['protected_inputs_unchanged']=True;save()",
+      "count": 1
+    },
+    {
+      "before": "Path(full_op.__file__),Path(full_wave.__file__),Path(host_disk.__file__)]",
+      "after": "Path(full_op.__file__),Path(full_wave.__file__),Path(host_disk.__file__),ROOT/'scripts/read_pll845_all_native_transient.py']",
+      "count": 1
+    }
+  ],
+  "unchanged_methods": {
+    "scripts/cloud_native_checkpoint_probe.py": "28e3ca20e1d7cce96ac68f4ec19e510326d8e96ed0da77ddc16ab5b3c5e86231",
+    "scripts/cloud_native_portable_checkpoint.py": "5c2a6ca0996ffe88b4dd232ed5755f02cd8c9b0ba92f137c78d447f76b8b0b14",
+    "scripts/cloud_pll_vbic_acquisition.py": "841b74f19b10a9596af231a3e5250a0654d55fcc1004286bc20f24e273808a30",
+    "scripts/cloud_pll_filter_physical_acquisition.py": "f7bdad6929eaa5d686229e63c9f6146595cbdb174414f5d68e989fb12716aac4",
+    "scripts/cloud_tx_input_driver_localpins.py": "1e1a65ac0d6961c110a0324e5545d4b72ebee6c213880e68e44ec8a3175d8d7d",
+    "scripts/run_cloud_pll865_snapshot.py": "c38656c2e64d5e2ce9902c845020442082b6b605c664644ee1e78ea34195fb9f",
+    "scripts/cloud_vbic_tree32_backend.py": "472c0c14d1a55785c3d0e9823e2bac94a97216781c530fdb8e8562bd0b805639",
+    "scripts/cloud_chunked_results.py": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
+    "scripts/route_cloud_newer_postcts.py": "29997f34ca6e764c40a40b5203388993b890f6d838cbe2651d5ce5c018042b40",
+    "scripts/read_pll845_full_native_op.py": "ba9a717f723e5c753dd4cc71c35d2f2eb1916860f28f2ad236f86103cadc4ec5",
+    "scripts/read_pll845_full_native_transient.py": "59e4fb382439db1e8d16ecf80d64ae0406d775b41197037494ff60dbe0a3f3c4",
+    "scripts/cloud_pll845_disk_budget.py": "2e0e9a608b383563f17b23a4a3ed91fba47b120ee204b5d4ada508ff35c1be32",
+    "scripts/read_pll845_all_native_transient.py": "792c402154e1f3122f6f4f197d721e7e16632dba3dab05e4ac7e705e51922da1",
+    "scripts/review_pcie_pll_acquisition_v1.py": "168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db",
+    "scripts/cloud_pll_divider_load3p2v2_diagnostic.py": "8b9ff5b4d4d5ba1d3d8b61535d8b027c2719f423c2cb855aacb6da13796f2f9e",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42"
+  }
+}

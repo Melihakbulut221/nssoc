@@ -1,0 +1,105 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_fast_wire20_physical.py",
+      "baseline_sha256": "0308d94d763b40ca7ca299a25f19d44c4fcd7c58ede58c0f9fb7b2eb3886a1e6",
+      "candidate_path": "scripts/cloud_tx_p4_drive3_physical.py",
+      "candidate_sha256": "22775c439134fab7777de22508ea67ff4d20e9a2a6d65ddd792acb6d9090aff7",
+      "edits": [
+        {
+          "before": "Native cloud-only28-route capacitance candidate with unmodified physical gates.",
+          "after": "Native four-cell p4 drive candidate with unmodified full physical gates.",
+          "count": 1
+        },
+        {
+          "before": "check_tx_fast_wire20_sources",
+          "after": "check_tx_p4_drive3_sources",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-fast-wire20-physical",
+          "after": "cloud-tx-p4-drive3-physical",
+          "count": 1
+        },
+        {
+          "before": "docs/evidence/tx-v5-timing-priority-physical-pass-20261019.json",
+          "after": "docs/evidence/tx-fast-wire20-physical-pass-20261020.json",
+          "count": 1
+        },
+        {
+          "before": "+['verify-tree32.py']",
+          "after": "+['source/verify-tree32.py']",
+          "count": 1
+        },
+        {
+          "before": "'tx-v5-timing-priority-assembly'",
+          "after": "'tx-fast-wire20-physical'",
+          "count": 1
+        },
+        {
+          "before": "'PASS_TREE32_1674_NATIVE_DRC_LVS_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'",
+          "after": "'PASS_TX28_FAST_DATA_WIRE20_NATIVE_PHYSICAL_REQUIRES_FRESH_RC_AND_LOADED_GATES'",
+          "count": 1
+        },
+        {
+          "before": "generate_tx_fast_wire20.py",
+          "after": "generate_tx_p4_drive3.py",
+          "count": 1
+        },
+        {
+          "before": "OUT/'source/verify-tree32.py'",
+          "after": "OUT/'source/source/verify-tree32.py'",
+          "count": 1
+        },
+        {
+          "before": "pin['outputs']['verify-tree32.py']",
+          "after": "pin['outputs']['source/verify-tree32.py']",
+          "count": 1
+        },
+        {
+          "before": "r['layout']=json.loads((OUT/'layout/result.json').read_text());save()",
+          "after": "r['layout']=json.loads((OUT/'layout/result.json').read_text());save()\n        assert r['geometry_delta']['reference_emitters']==863 and r['geometry_delta']['reference_hbts']==589\n        assert len(r['geometry_delta']['changes'])==4 and len(r['geometry_delta']['controls'])==3",
+          "count": 1
+        },
+        {
+          "before": "r['status']='PASS_TX28_FAST_DATA_WIRE20_NATIVE_PHYSICAL_REQUIRES_FRESH_RC_AND_LOADED_GATES'",
+          "after": "r['status']='PASS_TX_FOUR_P4_NATIVE_DRIVE3_PHYSICAL_REQUIRES_FRESH_RC_AND_LOADED_GATES'",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/tx-fast-wire20-physical-cloud.yml",
+      "baseline_sha256": "f5d86bbc7d39d3addcb3af43b3ca4a673c230ebbf1f46d148732fe62d0139a2d",
+      "candidate_path": ".github/workflows/tx-p4-drive3-physical-cloud.yml",
+      "candidate_sha256": "ee111ed3a5e81f298d3ba403c9d5691d5b469542c74ce1669d0917ce7c50334e",
+      "edits": [
+        {
+          "before": "tx-fast-wire20",
+          "after": "tx-p4-drive3",
+          "count": 8
+        },
+        {
+          "before": "tx_fast_wire20",
+          "after": "tx_p4_drive3",
+          "count": 4
+        },
+        {
+          "before": "Narrow28 native parent data routes and run unchanged1674device DRC LVS fault gates",
+          "after": "Replace four p4 cells with pinned native drive3 masters and run original full DRC LVS faults",
+          "count": 1
+        },
+        {
+          "before": "          retention-days: 30\n",
+          "after": "          retention-days: 30\n# Compare actual integer database bounds; retain the exact containment gate.\n",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "exact_sources": {
+    "docs/evidence/tx-fast-wire20-physical-pass-20261020.json": "86cb811b069bc1782c512a235b153f8a0e2b8c291fdcff41496f17ba6b2a79e7",
+    "docs/evidence/tx-v5-timing-priority-physical-pass-20261019.json": "2e78b68f71b4b95b354544b3d5b089dd64aee6d6fdc918d1b1def825164289c4"
+  },
+  "generator_sha256": "9d9c9c0da3b3dc949bb36235c0e067269ddb702d7dfe43c0403896a89309da21"
+}

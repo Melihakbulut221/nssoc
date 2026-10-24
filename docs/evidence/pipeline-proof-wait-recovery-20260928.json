@@ -1,0 +1,204 @@
+{
+  "status": "PROOF_WAITER_RECOVERED_PHYSICAL_PRODUCER_STILL_RUNNING",
+  "recorded": "2026-09-28T10:21:57.854415+03:00",
+  "cause": "Original helper stopped after 46800 seconds waiting for the still-running physical producer. No equation proof was executed and the producer was not interrupted.",
+  "original_failure": {
+    "status": "ERROR",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pipeline-timing-eco-20260927/verify_completed.py": "0995a8895af149ccb14b550d99b9336ca8014661673e669f8f87ea42f8a678a3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-repair2-20260927/replacement-map-pipeline/soc_top.netlist.v": "13dd615dabe769c4c2809dfb1e4b2e182f55c265256aea0f279e4d31c8005e48",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-chip-integration/independent_bb.v": "d113e5d672bf584a08338a77bf8a0c1c238ed600949180455bc9a551c9709a64",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_load_logic.py": "e454fa7d1de5081578993fbf36aa4b28bb1b352412c953194186535600edf3e7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/eco_logic.py": "2175067cb6c07b0c40be88eb7de2e5737ad85560ab466e3d7bfbf7be6f417266",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/eco_logic_loads.py": "56b90b566d0c965b9c3fb34addc49dd83cf6dc0b0268eec9b9010c2d5b3e5efb",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/bounded_process.py": "fa98188a0cb351bafabd8e09103113dcbd2e59aa5ae5ca9c0bae7019b0f79924"
+    },
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "scope": "Retained digital equations and exact supported loads only. Not SRAM internals, timing, CDC, GDS connectivity, DRC/LVS or manufacturing acceptance.",
+    "error": "TimeoutError('Physical producer did not finish within bounded wait')"
+  },
+  "original_failure_sha256": "ab012e14d495ac4b413b653012fc69df4ca6a44425a8bf8808a1e9b6336b7eb0",
+  "original_method_sha256": "0995a8895af149ccb14b550d99b9336ca8014661673e669f8f87ea42f8a678a3",
+  "recovery_launch": {
+    "recorded": "2026-09-28T10:21:05.163664+03:00",
+    "pid": 2075710,
+    "birth": "53217913",
+    "command": [
+      "python3",
+      "scripts/verify_completed_pipeline.py",
+      "--producer",
+      "hw/soc/out/pipeline-timing-eco-20260927",
+      "--output",
+      "hw/soc/out/pipeline-timing-eco-20260927/postroute-proof-v2",
+      "--producer-pid",
+      "1936193",
+      "--producer-birth",
+      "48384625"
+    ],
+    "original_failure_preserved": "hw/soc/out/pipeline-timing-eco-20260927/postroute-proof/result.json"
+  },
+  "recovery_initial_result": {
+    "status": "WAITING_FOR_COMPLETE_PIPELINE_PHYSICAL",
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "producer_pid": 1936193,
+    "producer_birth": "48384625",
+    "elapsed_timeout_seconds": null,
+    "scope": "Retained digital equations and exact supported loads only; excludes SRAM interiors, timing, CDC, GDS connectivity, DRC/LVS and manufacturing acceptance.",
+    "recorded": "2026-09-28T10:21:12.635140+03:00",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pipeline-timing-eco-20260927/run.py": "3877251fe02cce4c9a38eda45dac348eb80cd61843c483662192de51af973fb0",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pipeline-timing-eco-20260927/flow.py": "0f4b0142c2d109f1c76ae0cbffc3dbe6f2c3a80b0016dad970dd143c64179c14",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pipeline-timing-eco-20260927/repair.tcl": "e3dcd495ca61647f3be45a4ba066cbcd02da15469e5019030976f8f6a753cb49",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pipeline-timing-eco-20260927/config.json": "7c6ef5600dd9b82cd01a51cedda959ee31001ec5a3734e04b53cfd4299771a6e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pipeline-timing-eco-20260927/state.json": "3228d04aebdb1d39da36f459926a5f521226ceee01ee935c561db18778475595",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/result.json": "661da83bd536b0adbd0694807323f1e4b82068a16e406b64cd2600a23e753ec4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/postroute-proof/result.json": "1867758f77e7d5d22008e5e5eac0b6541de936e2b3d9dcc41d367a5f1517b2bd",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/state_out.json": "b317971fde551265643010fffdc69a99b7da42bcf3d26aec60f3ae3eb082ccf3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run.py": "80465de264608084d22f0b6a6dabe0518f5582bd2ad7d50f9a15183f02b96611",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/flow.py": "0f4b0142c2d109f1c76ae0cbffc3dbe6f2c3a80b0016dad970dd143c64179c14",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/repair.tcl": "84879f842c47176f228c4cb7127cf89f07798508df24289b14c8235aa2700381",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/config.json": "b760dffbe680ecadf5480a4d6a2415450a0d69fe884edb4ab449ad24c8dc5b3b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/state.json": "18a554d1486cc03f3a628918ea2241d53cb3cd07de6e07c7f082762302f24398",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-repair2-20260927/pipeline-mbist-audit.json": "22c89c3839c8db64308316d65610c998fc6fc309d7edc3303f858c8e1029ac00",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-repair2-20260927/replacement-map-pipeline/result.json": "aa4b7d51326f0b06109a1a71867fca216ab9f739d32798aec6247c3e3e11236f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/sram-closure-20260926/wide-spacing-repair-v2/SP6TSRAM512x64.gds": "54906e0f9ff1c368faa773a151e9bc335fad8b558c07978d28ee86589e88a045",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/sram-closure-20260926/repaired-macro-abstracts-v3/SP6TSRAM512x64-valid/SP6TSRAM512x64.lef": "a691b8e195e320d12649aabc47a956f083d0f9180bdf3f6ef3997d301d1ed1d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-chip-integration/independent_bb.v": "d113e5d672bf584a08338a77bf8a0c1c238ed600949180455bc9a551c9709a64",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/sram-closure-20260926/wide-spacing-repair-v2/DP8TSRAMDP256x16.gds": "c6a1be71d0439e88e2c08729345eb8d8001f773266cb7a8b939446e54999ff45",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/sram-closure-20260926/repaired-macro-abstracts-v3/DP8TSRAMDP256x16-valid/DP8TSRAMDP256x16.lef": "3863d5723b3ace8a3589a9af56fac15db8b94265ea6f1d650744e3d9d5abade7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-chip-integration/pdn_metal4_top2.tcl": "6fbe2a69e13f0dd52fd40f7e8839dc5e5a8f142500595835bc7d1a7cfad1d151",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-512x64-filled/reference.spice": "3543bd2a3f810c3db984c20d612b5d31b46e4581496b20b56194646acd47cebf",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-dp256x16-filled/reference.spice": "64d041383d0ebee7b54dab0bc10d651d31262a2a41ccd15a9c0727dac06e0dd9",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/sta/soc_interfaces_external_irq.sdc": "78ce832a94cc18fd7956ddabb136d00827047903f83d420ac52658f222869ca8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-repair2-20260927/replacement-map-pipeline/soc_top.netlist.v": "13dd615dabe769c4c2809dfb1e4b2e182f55c265256aea0f279e4d31c8005e48",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/sta/ibex_tieoffs.sdc": "38373a76c8f66baed4dfda4a763e9bc72a2eed568ce685c2531a53657d063772",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/sta/soc_top_qspi_io.sdc": "985772749a6cbd356205dace27dc1686d244c85f56aec64e552cc8d772e95894",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/sta/soc_top_reset_cut.sdc": "8af883b51fd238a44cc86bbd859dc3a787e756a624f0d217556be458ee55a9e7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/sta/soc_interfaces.sdc": "2f9f7b290164ee35b6bceca6b1953e306df278a9f5913a6a4b60a7f92778fcec",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/40-openroad-fillinsertion/state_out.json": "1d29c751152598d5c2a25e5d3606754bc925be0d968f1f9022802d62391f1938",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/result.json": "c8650154ee22ffa0eb58c434bc834ec1201d97e3c5506f34c6a6920287eeecaf",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/resume_pipeline_v2.py": "df36f237b01222651df3caf68c7e1ba531669b3e8e20eecab72109d44486ccb3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/40-openroad-fillinsertion/soc_top.nl.v": "73b701b9576a5d5f4ee5086526e7158ee94f155e7b35756fcf77ed3f9baf3855",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/01-yosys-jsonheader/soc_top.h.json": "b0c4c09ff3d4536d8bffd9e46c0543f403e5271ce24e1645ce0d1271150904a7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/40-openroad-fillinsertion/soc_top.odb": "5eb9729f2db70c3cc640b6ab4811dbb66a8771d0055791200f177412468cc274",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/40-openroad-fillinsertion/soc_top.def": "a5dadd6a51ebfe02c22120e29ac43c4651140997a9ac17ea937f27676c218d4a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/40-openroad-fillinsertion/soc_top.sdc": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/40-openroad-fillinsertion/soc_top.pnl.v": "5cdec08e7f3932c718ca3f4f9af121a1184e3f7965bf87c776f322beab8a90a5",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/20-odb-writeverilogheader/soc_top.vh": "740d8c14adbfb87d815fcd24e530163c4c4a6e8d1994e04c3c0448a7c43f055a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/01-odb-cellfrequencytables/soc_top.odb": "5eb9729f2db70c3cc640b6ab4811dbb66a8771d0055791200f177412468cc274",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/01-odb-cellfrequencytables/soc_top.def": "a5dadd6a51ebfe02c22120e29ac43c4651140997a9ac17ea937f27676c218d4a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_fast_1p32V_m40C/soc_top__nom_fast_1p32V_m40C.sdf": "03d9558405f9e1de18214ae1fde43ac4728a94fa04dac3d301de8102fbf1b8a4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_typ_1p20V_25C/soc_top__nom_typ_1p20V_25C.sdf": "fcb20d0032e146248363c8a729d49cc8fa84bc3f068f0532de38b220e7b0dd3f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_slow_1p08V_125C/soc_top__nom_slow_1p08V_125C.sdf": "4fdeca7ad6f29843881f1b0897456196da6cb6d679a45aa12d22479db7281be8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_fast_1p32V_m40C/soc_top__nom_fast_1p32V_m40C.lib": "b159f25721333a4bf5e48b23e91c260e09a19285946c05ed4fc34319b130fe0f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_typ_1p20V_25C/soc_top__nom_typ_1p20V_25C.lib": "f3974e31dc0388ecfe31f0751422794e6d8b0bbc88148c71dddeaec8b7e4b2cc",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_slow_1p08V_125C/soc_top__nom_slow_1p08V_125C.lib": "0a265ec96fa42277fbae68f149abbd7748fd51362d1f79cd2107c43863d94067",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/04-klayout-streamout/soc_top.klayout.gds": "9f008dfd488c2a5af4a673b17f81f645268019091c9ed29181bc56ab3dabab80",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/verify_completed_pipeline.py": "e964e30b1a9ed03ec587c16079f17d37f51b0d602dccf99a720afbf802691b5c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_load_logic.py": "e454fa7d1de5081578993fbf36aa4b28bb1b352412c953194186535600edf3e7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/eco_logic.py": "2175067cb6c07b0c40be88eb7de2e5737ad85560ab466e3d7bfbf7be6f417266",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/eco_logic_loads.py": "56b90b566d0c965b9c3fb34addc49dd83cf6dc0b0268eec9b9010c2d5b3e5efb"
+    }
+  },
+  "verification": {
+    "focused_tests_passed": 18,
+    "controls": [
+      "wait continues beyond original 13-hour limit",
+      "producer failure and unknown status rejected",
+      "PID reuse, zombie and missing producer rejected",
+      "producer final-write/exit race accepted only with complete success",
+      "changed inventory and bytes rejected",
+      "foreign or symlink-escaping final netlist rejected",
+      "missing SRAM instance or Liberty rejected",
+      "transient JSON write retried; persistent malformed JSON rejected"
+    ]
+  },
+  "native_marker_localization": {
+    "status": "READ_ONLY_MARKER_CELL_LOCALIZATION",
+    "gds_sha256": "f9dc37b738fb33f2919c847263cc11cc6fc857653d1c394634ce9c4cd8966f52",
+    "dbu": 0.001,
+    "locations": {
+      "antenna": [
+        {
+          "cell": "sg13g2_buf_1$1",
+          "layer": [
+            5,
+            0
+          ],
+          "transform": "r0 *1 2151680,2788810",
+          "local_bbox": "(0.365,0.58;0.67,3.36)",
+          "global_bbox": "(2152.045,2789.39;2152.35,2792.17)"
+        },
+        {
+          "cell": "sg13g2_buf_1$1",
+          "layer": [
+            1,
+            0
+          ],
+          "transform": "r0 *1 2151680,2788810",
+          "local_bbox": "(0.2,0.57;1.61,1.31)",
+          "global_bbox": "(2151.88,2789.38;2153.29,2790.12)"
+        },
+        {
+          "cell": "sg13g2_buf_1$1",
+          "layer": [
+            1,
+            0
+          ],
+          "transform": "r0 *1 2151680,2788810",
+          "local_bbox": "(0.2,2.06;1.595,3.18)",
+          "global_bbox": "(2151.88,2790.87;2153.275,2791.99)"
+        }
+      ],
+      "tm2_gap": [
+        {
+          "cell": "nssoc_chip",
+          "layer": [
+            134,
+            0
+          ],
+          "transform": "r0 *1 0,0",
+          "local_bbox": "(187.66,187.84;3812.18,195.84)",
+          "global_bbox": "(187.66,187.84;3812.18,195.84)"
+        },
+        {
+          "cell": "nssoc_chip",
+          "layer": [
+            134,
+            0
+          ],
+          "transform": "r0 *1 0,0",
+          "local_bbox": "(184,175.84;3816,183.84)",
+          "global_bbox": "(184,175.84;3816,183.84)"
+        },
+        {
+          "cell": "nssoc_chip",
+          "layer": [
+            134,
+            0
+          ],
+          "transform": "r0 *1 0,0",
+          "local_bbox": "(187.66,187.84;3812.18,195.84)",
+          "global_bbox": "(187.66,187.84;3812.18,195.84)"
+        },
+        {
+          "cell": "nssoc_chip",
+          "layer": [
+            134,
+            0
+          ],
+          "transform": "r0 *1 0,0",
+          "local_bbox": "(184,175.84;3816,183.84)",
+          "global_bbox": "(184,175.84;3816,183.84)"
+        }
+      ]
+    },
+    "physical_acceptance": false
+  },
+  "timing_accepted": false,
+  "manufacturing_approval": false
+}

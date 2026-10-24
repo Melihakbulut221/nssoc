@@ -1,0 +1,157 @@
+[
+  {
+    "baseline": "scripts/tx_driver_localpins_wire_native.py",
+    "path": "scripts/tx_final_clock_bridge_wires_native.py",
+    "edits": [
+      [
+        "nssoc_tx_input_driver_v7_physical_localpins_v1",
+        "nssoc_tx_final_clock_bridge_layout_v1"
+      ],
+      [
+        "P=B/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'",
+        "P=B/'source'"
+      ],
+      [
+        "P/'base/layout.gds'",
+        "P/'layout/nssoc_tx_final_clock_bridge_layout_v1.gds'"
+      ],
+      [
+        "check-raw_flat_lvs",
+        "check/lvs_flat"
+      ],
+      [
+        "6f7a7cf92c1dc25a259acdbff779c7cce841128991abb780e13478aa84b4eb62",
+        "e02f760468950f7e095a3db511081c166ffe931dde3281b1ed1ec6802182fca3"
+      ],
+      [
+        "c.pin_count()==6",
+        "c.pin_count()==3"
+      ],
+      [
+        "dict(sg13_hv_nmos=40,sg13_lv_nmos=22,sg13_lv_pmos=22,ptap1=10,ntap1=2,rppd=4)",
+        "dict(rppd=1,ptap1=1)"
+      ],
+      [
+        "'full_driver_wires'",
+        "'clock_bridge_wires'"
+      ],
+      [
+        "'DRIVERWIRES'",
+        "'BRIDGEWIRES'"
+      ],
+      [
+        "PASS_FULL_DRIVER_METAL_VIA_GRAPH_BOUND_TO_ALL100_NATIVE_DEVICES_NO_RC",
+        "PASS_BRIDGE_METAL_VIA_GRAPH_BOUND_TO_ALL2_NATIVE_DEVICES_NO_RC"
+      ]
+    ],
+    "baseline_sha256": "171fba4772907101b840342696477c377e4f249dd915a9761a2f6f1b9b479225",
+    "sha256": "558dcfd29d23c01023e609fe5eadafdee29384c8433ba486f123f782c93ea99b",
+    "occurrences": {
+      "nssoc_tx_input_driver_v7_physical_localpins_v1": 1,
+      "P=B/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'": 1,
+      "P/'base/layout.gds'": 1,
+      "check-raw_flat_lvs": 2,
+      "6f7a7cf92c1dc25a259acdbff779c7cce841128991abb780e13478aa84b4eb62": 1,
+      "c.pin_count()==6": 1,
+      "dict(sg13_hv_nmos=40,sg13_lv_nmos=22,sg13_lv_pmos=22,ptap1=10,ntap1=2,rppd=4)": 1,
+      "'full_driver_wires'": 1,
+      "'DRIVERWIRES'": 1,
+      "PASS_FULL_DRIVER_METAL_VIA_GRAPH_BOUND_TO_ALL100_NATIVE_DEVICES_NO_RC": 1
+    }
+  },
+  {
+    "baseline": "scripts/tx_clock_reference_anchors_native.py",
+    "path": "scripts/tx_final_clock_bridge_anchors_native.py",
+    "edits": [
+      [
+        "Six-device clock terminal planes from actual native PCell pins and contacts.",
+        "Two-device bridge terminal planes from actual native PCell pins and contacts."
+      ],
+      [
+        "nssoc_tx_clock_reference_layout_v1",
+        "nssoc_tx_final_clock_bridge_layout_v1"
+      ],
+      [
+        "634cda63717ab4122f15e0fef5f3e8475e90e67e043823f5b8ed208e695f1729",
+        "58d53384ef0bb92a4fa413d3c92e8dcbcb8f422c5205da9260129049f07f1d6b"
+      ],
+      [
+        "else OUT/'wire'",
+        "else OUT"
+      ],
+      [
+        "len(devices)==6",
+        "len(devices)==2"
+      ],
+      [
+        "npn13G2_code.py",
+        "rppd_code.py"
+      ],
+      [
+        "Counter(npn13G2=1,rppd=2,ptap1=3)",
+        "Counter(rppd=1,ptap1=1)"
+      ],
+      [
+        "len(owner)==5",
+        "len(owner)==3"
+      ],
+      [
+        "body={('npn13G2','S'),('rppd','rppd_sub'),('ptap1','WELL')}",
+        "body={('rppd','rppd_sub'),('ptap1','WELL')}"
+      ],
+      [
+        "for contact in ([] if cls.name=='npn13G2' else candidate_regions.each()):",
+        "for contact in candidate_regions.each():"
+      ],
+      [
+        "            if cls.name=='npn13G2':\n                # Native Nx=1 PCell source assigns upper M1=C, lower M1=B, M2=E.\n                # C and B share cm electrically but MUST retain distinct physical planes.\n                assert d.parameter('Nx')==1 and td.name in ['C','B','E']\n                instances=[i for i in top.each_inst() if i.cell.name.split('$')[0]=='npn13G2']\n                assert len(instances)==1\n                inst=instances[0]\n                pins={m:[s.box for s in inst.cell.each_shape(layout.layer(m,2)) if s.is_box()] for m in [8,10]}\n                assert len(pins[8])==2 and len(pins[10])==1\n                base,collector=sorted(pins[8],key=lambda b:b.center().y)\n                assert base.center().y<collector.center().y\n                m,local={'C':(8,collector),'B':(8,base),'E':(10,pins[10][0])}[td.name]\n                box=local.transformed(inst.trans);point=box.center()\n                conductor=pya.Region(top.begin_shapes_rec(layout.layer(m,0))).merged()\n                assert (pya.Region(box)-conductor).is_empty(),'Native HBT pin is not covered by metal'\n                assert (inst.cell.bbox().transformed(inst.trans)&region.bbox())==region.bbox(),'Wrong HBT enclosure'\n                nn=native.probe_net(native.layer_by_index(mapping[m]),point)\n                assert nn is not None and nn.cluster_id==net.cluster_id,'Native HBT pin does not own its terminal net'\n                candidates=[(m,point,'pinned_native_hbt_'+td.name+'_pin')]\n",
+        ""
+      ],
+      [
+        "len(rows)==16 and sum('reference_label'in r for r in rows)==10 and len(public)==4",
+        "len(rows)==5 and sum('reference_label'in r for r in rows)==3 and len(public)==3"
+      ],
+      [
+        "len(observed)==16 and len({(r['device'],r['terminal']) for r in observed})==16",
+        "len(observed)==5 and len({(r['device'],r['terminal']) for r in observed})==5"
+      ],
+      [
+        "hbt_collector_base_planes_swapped",
+        "resistor_endpoint_planes_swapped"
+      ],
+      [
+        "            c=next(r for r in altered if r['model']=='npn13G2'and r['terminal']=='C')\n            b=next(r for r in altered if r['model']=='npn13G2'and r['terminal']=='B')\n            assert c['native_cluster']==b['native_cluster']and c['point_dbu']!=b['point_dbu']\n            for k in ['reference_label','metal','point_dbu','wire_component']:c[k],b[k]=b[k],c[k]\n",
+        "            c=next(r for r in altered if r['model']=='rppd'and r['terminal']=='rppd_1')\n            b=next(r for r in altered if r['model']=='rppd'and r['terminal']=='rppd_2')\n            assert c['native_cluster']!=b['native_cluster']and c['point_dbu']!=b['point_dbu']\n            for k in ['reference_label','metal','point_dbu','wire_component']:c[k],b[k]=b[k],c[k]\n"
+      ],
+      [
+        "PASS_ALL16_CLOCK_TERMINALS_BOUND_WITH10_METAL6_BODY_AND_SIX_FAULTS_NOT_RC_ACCEPTANCE",
+        "PASS_ALL5_BRIDGE_TERMINALS_BOUND_WITH3_METAL2_BODY_AND_SIX_FAULTS_NOT_RC_ACCEPTANCE"
+      ],
+      [
+        "dict(devices=6,terminals=16,metal_terminals=10,body_terminals=6,public_ports=4,unique_reference_planes=len(anchors),wire_components=5)",
+        "dict(devices=2,terminals=5,metal_terminals=3,body_terminals=2,public_ports=3,unique_reference_planes=len(anchors),wire_components=3)"
+      ]
+    ],
+    "baseline_sha256": "0d2f00cb1fcdf0bfa6ce64f3b98458f07a1febee0459c6db369f8cb5a5e8c29f",
+    "sha256": "ca7b81f8065d9ddcbb0072e468f37e3e87c06e21e2dd0613337223e12f755b0c",
+    "occurrences": {
+      "Six-device clock terminal planes from actual native PCell pins and contacts.": 1,
+      "nssoc_tx_clock_reference_layout_v1": 1,
+      "634cda63717ab4122f15e0fef5f3e8475e90e67e043823f5b8ed208e695f1729": 1,
+      "else OUT/'wire'": 1,
+      "len(devices)==6": 1,
+      "npn13G2_code.py": 2,
+      "Counter(npn13G2=1,rppd=2,ptap1=3)": 1,
+      "len(owner)==5": 1,
+      "body={('npn13G2','S'),('rppd','rppd_sub'),('ptap1','WELL')}": 1,
+      "for contact in ([] if cls.name=='npn13G2' else candidate_regions.each()):": 1,
+      "            if cls.name=='npn13G2':\n                # Native Nx=1 PCell source assigns upper M1=C, lower M1=B, M2=E.\n                # C and B share cm electrically but MUST retain distinct physical planes.\n                assert d.parameter('Nx')==1 and td.name in ['C','B','E']\n                instances=[i for i in top.each_inst() if i.cell.name.split('$')[0]=='npn13G2']\n                assert len(instances)==1\n                inst=instances[0]\n                pins={m:[s.box for s in inst.cell.each_shape(layout.layer(m,2)) if s.is_box()] for m in [8,10]}\n                assert len(pins[8])==2 and len(pins[10])==1\n                base,collector=sorted(pins[8],key=lambda b:b.center().y)\n                assert base.center().y<collector.center().y\n                m,local={'C':(8,collector),'B':(8,base),'E':(10,pins[10][0])}[td.name]\n                box=local.transformed(inst.trans);point=box.center()\n                conductor=pya.Region(top.begin_shapes_rec(layout.layer(m,0))).merged()\n                assert (pya.Region(box)-conductor).is_empty(),'Native HBT pin is not covered by metal'\n                assert (inst.cell.bbox().transformed(inst.trans)&region.bbox())==region.bbox(),'Wrong HBT enclosure'\n                nn=native.probe_net(native.layer_by_index(mapping[m]),point)\n                assert nn is not None and nn.cluster_id==net.cluster_id,'Native HBT pin does not own its terminal net'\n                candidates=[(m,point,'pinned_native_hbt_'+td.name+'_pin')]\n": 1,
+      "len(rows)==16 and sum('reference_label'in r for r in rows)==10 and len(public)==4": 1,
+      "len(observed)==16 and len({(r['device'],r['terminal']) for r in observed})==16": 1,
+      "hbt_collector_base_planes_swapped": 1,
+      "            c=next(r for r in altered if r['model']=='npn13G2'and r['terminal']=='C')\n            b=next(r for r in altered if r['model']=='npn13G2'and r['terminal']=='B')\n            assert c['native_cluster']==b['native_cluster']and c['point_dbu']!=b['point_dbu']\n            for k in ['reference_label','metal','point_dbu','wire_component']:c[k],b[k]=b[k],c[k]\n": 1,
+      "PASS_ALL16_CLOCK_TERMINALS_BOUND_WITH10_METAL6_BODY_AND_SIX_FAULTS_NOT_RC_ACCEPTANCE": 1,
+      "dict(devices=6,terminals=16,metal_terminals=10,body_terminals=6,public_ports=4,unique_reference_planes=len(anchors),wire_components=5)": 1
+    }
+  }
+]

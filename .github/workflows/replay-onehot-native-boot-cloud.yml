@@ -1,0 +1,89 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: replay-onehot-native-boot-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/replay-onehot-native-boot-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: replay-onehot-native-boot-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Test mapped configuration rejection and actual MBIST observer faults
+        run: |
+          python3 -m pip install -r sw/requirements.txt
+          python3 -m pytest -q sw/tests/test_logic_boot_gl.py sw/tests/test_native_boot_preparation.py
+          bash -n scripts/check_soc_corrpre_pcie_mbist_native_boot.sh
+          python3 scripts/check_mapped_mbist_monitor.py --iverilog "$(command -v iverilog)" --output hw/soc/out/mapped-mbist-monitor
+      - name: Preserve observer fault evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mapped-mbist-monitor-controls
+          path: hw/soc/out/mapped-mbist-monitor/
+          retention-days: 30
+  native-boot:
+    needs: controls
+    strategy:
+      fail-fast: false
+      matrix:
+        profile: [full]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      SOC_INTERFACE_PROFILE: ${{ matrix.profile }}
+      SOC_CORE_REQ_REG: '0'
+      SOC_CORE_WB_STAGE: '0'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: sw/requirements.txt
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde # v3
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare exact digital inputs
+        run: |
+          echo "OSS_CAD_SUITE=$(dirname "$(dirname "$(command -v yosys)")")" >> "$GITHUB_ENV"
+          python3 -m pip install -r sw/requirements.txt
+          make soc-prepare
+      - name: Reject missing wrong-width or wrong-clock packet profiles
+        run: python3 -m pytest -q sw/tests/test_logic_boot_gl.py sw/tests/test_native_boot_preparation.py
+      - name: Native CORRPRE, PCIe, system MBIST and both Ethernet MBIST handover boot
+        run: bash -n hw/soc/flow/syn_soc_top.sh hw/soc/flow/syn_ibex.sh hw/soc/flow/sim_soc.sh scripts/check_soc_corrpre_pcie_mbist_native_boot.sh && bash scripts/check_soc_corrpre_pcie_mbist_native_boot.sh
+      - name: Retain pass or failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: corrpre-pcie-mbist-native-boot-${{ matrix.profile }}
+          path: |
+            hw/soc/out/corrpre-pcie-mbist-native-boot/**/*.log
+            hw/soc/out/corrpre-pcie-mbist-native-boot/**/*.json
+            hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis/soc_top.netlist.v
+            hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis/area.rpt
+            hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/test_soc.bin
+            hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/app.elf
+            hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/flash0.hex
+            hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/boot-rom/
+            hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/soc_param_override.v
+            hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis/boot-rom/
+          retention-days: 30

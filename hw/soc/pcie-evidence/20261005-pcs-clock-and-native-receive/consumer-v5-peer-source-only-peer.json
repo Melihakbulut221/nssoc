@@ -1,0 +1,44 @@
+{
+  "status": "PASS_BOUNDED_SOURCE_ONLY_REVIEW",
+  "scope": "Manual topology and exact literal fragment conservation only. No tests, native simulation, raw capture reduction or all-state formal proof performed by this reviewer.",
+  "sources": [
+    {
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v4.v",
+      "sha256": "84603647dd6b8023faccbdb8aba04996d4129147bdf3ad3e3aff94536ceafbd0",
+      "bytes": 15956
+    },
+    {
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v5.v",
+      "sha256": "734cce5b4b37b5d1f8ec4751deecdd3fda8934e32dbc1b7570b2ee2492cd72b4",
+      "bytes": 17438
+    },
+    {
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v4.v",
+      "sha256": "2692cad3c373e24046e7b2939ab28cbe86f6ce53f27c9b0d834b2d5866de6410",
+      "bytes": 3712
+    },
+    {
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v5.v",
+      "sha256": "776d3748a2e18bf43d164688e042da3c8088c1aa0dc3b9fcfaa79133c5a47970",
+      "bytes": 3712
+    }
+  ],
+  "literal_guards": {
+    "shared_input_compaction_identical": true,
+    "seven_count_cases_and_sum_identical_after_lane_rename": true,
+    "event_gather_and_registered_updates_identical": true,
+    "wrapper_only_v4_to_v5_rename": true
+  },
+  "reasoning": [
+    "79-bit context includes sticky local error, all eight state flags, 13-bit size, 13-bit count, 12-bit sequence and 32-bit raw prefix.",
+    "Every owner applies release then ordered descriptor writes before the four body contexts gather.",
+    "Each body lane forwards all earlier active same-full-ID contexts in order; latest match wins and includes sticky error. Invalid SOP resets raw/count as before but does not clear a prior error.",
+    "Scatter selects only the last active body writer for each full six-bit ID. Earlier context state and errors have already been forwarded.",
+    "Zero-keep body metadata remains checked by the unchanged global protocol-error reduction. Global OR of per-entry errors prevents malformed repeated-ID sequences from retiring as accepted events.",
+    "Full next-state event gather and sequential halt/flush behavior are byte-identical to frozen v4."
+  ],
+  "limitations": [
+    "The manual/literal argument does not replace exhaustive HDL equivalence or native execution.",
+    "Author finite arbitrary-prestate comparisons and native runs are not claimed as independently replayed here."
+  ]
+}

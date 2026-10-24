@@ -1,0 +1,28 @@
+{
+  "baseline_path": "hw/soc/analog/pcie/rx_sampler_load_drive_v2.spice",
+  "baseline_sha256": "973930e61f732a729c751c9a7048e41f6eb81720aac23e620efa0a120b192f70",
+  "candidate_path": "hw/soc/analog/pcie/rx_sampler_split_drive_v3.spice",
+  "candidate_sha256": "801d27fa6cbe5acd6e64acd9255c69d66400d42ee567fe954497d72d97711514",
+  "edits": [
+    {
+      "before": "candidate:12HBT/",
+      "after": "candidate:16HBT/",
+      "count": 1
+    },
+    {
+      "before": "load_drive_v2",
+      "after": "split_drive_v3",
+      "count": 6
+    },
+    {
+      "before": "XCS se cp te sub npn13G2 Nx=16",
+      "after": "XCS0 se cp te sub npn13G2 Nx=8\nXCS1 se cp te sub npn13G2 Nx=8",
+      "count": 1
+    },
+    {
+      "before": "XCH he cn te sub npn13G2 Nx=16",
+      "after": "XCH0 he cn te sub npn13G2 Nx=8\nXCH1 he cn te sub npn13G2 Nx=8",
+      "count": 1
+    }
+  ]
+}

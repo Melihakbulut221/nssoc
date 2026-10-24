@@ -1,0 +1,50 @@
+{
+  "baseline_path": "scripts/cloud_cdr_v41_selector_headroom.py",
+  "baseline_sha256": "848dc2c7e4e167365d1685fe98dfc79cedcf326481558d26f3caaab59952db5e",
+  "candidate_path": "scripts/cloud_cdr_v44_l39_observation.py",
+  "candidate_sha256": "df64b4fbe8952dd08b74f0f9584b96ebe810906ea30d175953398ae6cd513148",
+  "edits": [
+    {
+      "before": "PINS={'follower_n6-nominal_early': ['ab0c306bc89fcc898432c02e9652ee418d83636cb00c7564a0d48846111cc895', '4c3087a61cf0e1c74520bdaad357a4d492d779919ae9dd4bb625ef32e6cad801'], 'follower_n6-nominal_late': ['74e5961d66017a3f33f878e70e647e0a2aaf397eb600c0c1e483e9f49041032c', '20f45bc277c6a5af38e5fe2c04cbafebbbb457c0a1cb571827007726859f3648'], 'follower_n8-nominal_early': ['9a9c6ff5356e2c5e2da91e04df2f3c76190aff8fd5a1ab400d4ac65ff41b863e', '0cd0c05ed4a86fcac9b57dd86f46fafd1b7e67e6bcce427500d26c0d120d6063'], 'follower_n8-nominal_late': ['e281ec7fad42b1aa312c2580a7ab87fc0ac9bce8e5239f70dce2611f840b6d10', '1ed27bc0788c6e5f98ba1832d2f979edff45e853223e1292b40af475ba3dfbed']}",
+      "after": "PINS={'cd_master_l39-nominal_early': ['bec2ab47a567f0a6ff2f8a0e403c179e8eeb2952388dcef28906693b8846f82a', 'ad051e05236c150f348186e5098436af2b821823f454437e65591a96f59094d3'], 'cd_master_l39-nominal_late': ['95f13c2d46aaa09c59e5233e43d5bfc245e8986333df952ef1aff727cbcfdcb8', '11c21155c23b89f4ccf5ef19d7107b59f34c3ab790e8629a84c59c1a4dcdd372']}",
+      "count": 1
+    },
+    {
+      "before": "choices=('follower_n6','follower_n8')",
+      "after": "choices=('cd_master_l39',)",
+      "count": 1
+    },
+    {
+      "before": "cdr-v41-selector-headroom",
+      "after": "cdr-v44-l39-observation",
+      "count": 3
+    },
+    {
+      "before": "docs/evidence/cdr-v41-transfer-input-20261023.json",
+      "after": "docs/evidence/cdr-v44-l39-observation-input-20261023.json",
+      "count": 2
+    },
+    {
+      "before": "pin['run']==39928714596",
+      "after": "pin['run']==39952318814",
+      "count": 1
+    },
+    {
+      "before": "len(screen['changes'])==80",
+      "after": "len(screen['changes'])==84",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cdr_capture_windows.py": "7b3c4107d4fa80a6638f6d645883f7659230aa5c92ea5475e1216b3806e7b771",
+    "scripts/cdr_candidate_input_bias_observation.py": "e905529803587c3b2a6a0ea21381d67ff43ce51538553e3fa53b6e768588b0e8",
+    "scripts/cdr_selector_headroom.py": "0ec3dd048430d941fbcd26a19695d342f77dbcf0915f10ecdf4504cbcac6054b",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "docs/evidence/cdr-v44-l39-observation-input-20261023.json": "87ce55483b1bfbcbd0cea17494181a274be8f8de63dbf24d8608925a3e2b2cdf"
+  },
+  "native_simulation_started": false,
+  "original_observation_equations_unchanged": true,
+  "scope": "Only actual l39 input reports, variant/run identity, isolated output names and exact84 changed primitive count. Same full raw reader, original120 HBT/four sampler gates, graph bindings, input bias and selector observations."
+}

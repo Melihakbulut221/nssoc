@@ -1,0 +1,30 @@
+{
+  "status": "ANALYSIS_PROPOSAL_ONLY_NO_MEASUREMENT_OR_ACCEPTANCE_CHANGE",
+  "evidence": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-layout-wire-loaded-finite-20261006/event-diagnosis-summary06.json": {
+      "bytes": 2777,
+      "sha256": "9aecc361c22edb8725ebc3491719f0628e5fcf20c7e5840e24c385e9c938106d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-halfstep-20261006/step-comparison01.json": {
+      "bytes": 146871,
+      "sha256": "46926607bd16fa563a504153b809511d0ef39bd7fec7cad73359b8bd4d6daa93"
+    }
+  },
+  "observation": "In both saved34ns runs every nearest VCO ordinal advances exactly4 at each CML edge. A strict half-open bucket loses one count when continuous CML-minus-VCO phase crosses zero. The bucket predicate is phase-boundary-sensitive even without an observed missing output event. It remains the authoritative current gate and both results FAIL.",
+  "numerical_gap": "5ps\u21922.5ps changes VCO frequency+4309.074987ppm and shifts exceptional bucket41\u219258. No frequency/phase convergence or acceptance is claimed.",
+  "candidate_supplemental_invariants": [
+    "Require complete output excursions, no extra zero-crossing chatter, and bounded pulse widths before assigning edges.",
+    "Independently map actual source-terminal output events to VCO ordinals; each adjacent output event must advance exactly4 ordinals, with no skipped/extra ordinal or unmatched output.",
+    "Track unwrapped relative phase continuously across all complete34ns edges; inspect any jump separately from smooth passage across bucket boundaries.",
+    "Retain originalhalf-open counts beside all diagnostics; do not silently shift boundaries, thresholds, timing windows or select a favorable subwindow."
+  ],
+  "conditions_before_any_future_oracle_revision": [
+    "Numerically converge frequency and phase using additional unchanged-physics smaller steps, with an explicit predeclared tolerance and full-window comparison.",
+    "Independently review a proposed supplemental oracle against actual dropped-output, extra-output, wrongdivision, stoppedinput and low-amplitude cases; current negative outcomes remain.",
+    "Preserve every originalFAIL and distinguish any new oracle revision from the original physical result."
+  ],
+  "physical_limits": [
+    "34ns nominal27C only; no acquisition/PLLlock/PVT/longduration/ESD/fullPHY qualification.",
+    "Nearestordinal matching by itself is not sufficient proof of physical state correctness; waveform swing and complete pulse history remain required."
+  ]
+}

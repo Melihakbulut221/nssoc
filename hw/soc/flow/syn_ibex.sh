@@ -116,12 +116,21 @@ IBEX_RF_FASTCORR=${IBEX_RF_FASTCORR:-1}
 #                       multiplexer, at one parity tree per register.
 #                       Nothing builds it; docs/44 section 5.5 prices it.
 IBEX_RF_SYNPRE=${IBEX_RF_SYNPRE:-0}
+IBEX_RF_CORRPRE=${IBEX_RF_CORRPRE:-0}
+case "$IBEX_RF_CORRPRE" in 0|1) ;; *) echo 'IBEX_RF_CORRPRE must be 0 or 1' >&2; exit 2 ;; esac
+if [ "$IBEX_RF_CORRPRE" = 1 ] && { [ "$IBEX_REGFILE" != secded ] || [ "$IBEX_RF_SYNPRE" != 0 ]; }; then
+  echo 'CORRPRE requires the SECDED register file and SYNPRE=0' >&2; exit 2
+fi
 RF_CHPARAM=""
 if [ "$IBEX_REGFILE" = "secded" ] && [ "$IBEX_RF_FASTCORR" != "default" ]; then
   RF_CHPARAM="chparam -set FASTCORR $IBEX_RF_FASTCORR ibex_register_file_ff"
   # `\n` and not a literal newline: this string is the REPLACEMENT half
   # of a `sed s|||` below, where an unescaped newline ends the command.
   RF_CHPARAM="$RF_CHPARAM\\nchparam -set SYNPRE $IBEX_RF_SYNPRE ibex_register_file_ff"
+fi
+
+if [ "$IBEX_RF_CORRPRE" = 1 ]; then
+  RF_CHPARAM="$RF_CHPARAM\\nchparam -set CORRPRE 1 ibex_register_file_ff"
 fi
 
 sed -e "s|@IBEX_SRCS@|$IBEX_SRCS|g" \

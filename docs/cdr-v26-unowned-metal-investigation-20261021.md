@@ -1,0 +1,4 @@
+# Strict native wire graph rejection
+The v26 full parent passed native DRC/LVS. Fresh extraction39528173939 passed native planes, but its wire-input stage rejected a native metal component with no device terminal. No RC or electrical acceptance follows from these results.
+
+The diagnostic workflow restores the exact failed wire-input archive and reproduces the unchanged graph rejection first. A separate instrumented copy records every offending native cluster, public port, physical layer, area and polygon coordinates, then stops before emitting any normal graph-pass artifact. All original GDS/LVS/source bytes must remain unchanged. This identifies a physical repair; it does not waive terminal ownership or declare floating metal harmless. After any actual cleanup or reconnection, repeat physical validation and fresh extraction before the full original loaded electrical gates.

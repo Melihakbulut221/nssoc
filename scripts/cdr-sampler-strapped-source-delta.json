@@ -1,0 +1,196 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_sampler_local_order_v9.py",
+      "candidate_path": "hw/soc/flow/make_pcie_sampler_strapped_v10.py",
+      "baseline_sha256": "b06df57184d75786aed41da98cdd4795af602d7028f7e8ff512bbf1c25d1813a",
+      "candidate_sha256": "fdb0e2b686869621ae02f5b38642df7e0c7f9dbc59190a5bd8bbdf571ac10046",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_local_order_layout_v9",
+          "after": "nssoc_rx_sampler_strapped_layout_v10",
+          "count": 1
+        },
+        {
+          "before": "20. + index * 20, right + 18 - box.left",
+          "after": "40. + index * 24, right + 24 - box.left",
+          "count": 1
+        },
+        {
+          "before": "20.0 + index * 20, previous_right + 18 - raw.left",
+          "after": "40.0 + index * 24, previous_right + 24 - raw.left",
+          "count": 1
+        },
+        {
+          "before": "previous_right + 18 - 1e-8",
+          "after": "previous_right + 24 - 1e-8",
+          "count": 1
+        },
+        {
+          "before": "x - 9, .04",
+          "after": "x - 18, .04",
+          "count": 1
+        },
+        {
+          "before": "x - 6, -.04",
+          "after": "x - 12, -.04",
+          "count": 1
+        },
+        {
+          "before": "x - 3, 0",
+          "after": "x - 6, 0",
+          "count": 1
+        },
+        {
+          "before": "x-9+3*k",
+          "after": "x-18+6*k",
+          "count": 1
+        },
+        {
+          "before": "x-3, row",
+          "after": "x-6, row",
+          "count": 1
+        },
+        {
+          "before": "x - 6 + 3*k",
+          "after": "x - 12 + 6*k",
+          "count": 1
+        },
+        {
+          "before": ">= 2.0-1e-8",
+          "after": ">= 5.0-1e-8",
+          "count": 2
+        },
+        {
+          "before": "safe_tap_x(22 + index * 60.0, search_steps=40)",
+          "after": "safe_tap_x(22 + index * 60.0, min_x=20, search_steps=80)",
+          "count": 1
+        },
+        {
+          "before": "            rect(4, x - .6, start - .2, x + .6, y + .2)\n            via(4, 5, x, y, net, 2)",
+          "after": "            rect(4, x - .6, start - .2, x + .6, y + .2)\n            via(4, 5, x, y, net, 2)\n            assert start < y\n            top.shapes(layout.layer(126,0)).insert(pya.DBox(x-.82,start-.82,x+.82,y+.82))\n            for vy in (start,y):\n                cell=pc(\"via_stack\",dict(b_layer=\"Metal4\",t_layer=\"TopMetal1\",\n                        vn_columns=2,vn_rows=1,vt1_columns=1,vt1_rows=1))\n                raw=cell.dbbox();trans=instance(cell,x-raw.center().x,vy-raw.center().y)\n                vias.append(dict(net=net,bottom=4,top=6,center_um=[x,vy],bbox_um=str(raw.transformed(trans))))",
+          "count": 1
+        },
+        {
+          "before": "        if net in (\"QP\", \"QN\"):\n            shunt = pya.DBox(left, y-1.6, right, y+1.6)\n            top.shapes(layout.layer(134, 0)).insert(shunt)\n            centers = []\n            x = left + 4\n            while x <= right - 4:\n                cell = pc(\"via_stack\", dict(b_layer=\"Metal5\", t_layer=\"TopMetal2\",\n                          vn_columns=2, vn_rows=1, vt1_columns=2, vt1_rows=1,\n                          vt2_columns=1, vt2_rows=1))\n                raw = cell.dbbox()\n                trans = instance(cell, x-raw.center().x, y-raw.center().y)\n                top.shapes(layout.layer(126, 0)).insert(pya.DBox(x-1.6,y-1.6,x+1.6,y+1.6))\n                vias.append(dict(net=net,bottom=5,top=7,center_um=[x,y],bbox_um=str(raw.transformed(trans))))\n                centers.append([x,y]);x += 20\n            assert centers\n            output_shunts.append(dict(net=net,metal=134,width_um=3.2,box_um=str(shunt),via_centers_um=centers))\n    assert len(output_shunts)==2 and {r['net']for r in output_shunts}=={'QP','QN'}",
+          "after": "        # Real upper-metal straps: vertical TopMetal1 and horizontal TopMetal2.\n        # Every connection is drawn through native via PCells, never an ideal alias.\n        # Keep the first 8um of each Metal5 boundary lead unshunted so the original\n        # clock-open negative control still cuts the entire conducting path.\n        shunt_left = 8.0 if net in PORTS else left\n        assert min(xs) > shunt_left + 2\n        shunt = pya.DBox(shunt_left, y-1.6, right, y+1.6)\n        top.shapes(layout.layer(134, 0)).insert(shunt)\n        centers = []\n        for x in sorted(set(xs + ([8.0] if net in PORTS else []))):\n            cell = pc(\"via_stack\", dict(b_layer=\"Metal5\", t_layer=\"TopMetal2\",\n                      vn_columns=2, vn_rows=1, vt1_columns=1, vt1_rows=1,\n                      vt2_columns=1, vt2_rows=1))\n            raw = cell.dbbox()\n            trans = instance(cell, x-raw.center().x, y-raw.center().y)\n            vias.append(dict(net=net,bottom=5,top=7,center_um=[x,y],bbox_um=str(raw.transformed(trans))))\n            centers.append([x,y])\n        output_shunts.append(dict(net=net,metal=134,width_um=3.2,box_um=str(shunt),via_centers_um=centers))\n    assert len(output_shunts)==len(nets) and {r['net']for r in output_shunts}==set(nets)",
+          "count": 1
+        },
+        {
+          "before": "Physical placement only: retain all37 original primitive rows/parameters.",
+          "after": "Physical placement and wire straps only: retain all37 original primitive rows/parameters.",
+          "count": 1
+        },
+        {
+          "before": "assert min(xs) > shunt_left + 2",
+          "after": "assert net not in PORTS or min(xs) > shunt_left + 2",
+          "count": 1
+        },
+        {
+          "before": "index * 24",
+          "after": "index * 30",
+          "count": 2
+        },
+        {
+          "before": "right + 24",
+          "after": "right + 30",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_sampler_local_order_v9.py",
+      "candidate_path": "hw/soc/flow/check_pcie_sampler_strapped_v10.py",
+      "baseline_sha256": "08df56b2f45c82efd558ce5165eea9829e5d0cfc5086ea2502f4d78bfbe08388",
+      "candidate_sha256": "06f2711cf358c3573e79b694aac7b97640247358b2217672e0d56480ab4e69b9",
+      "edits": [
+        {
+          "before": "make_pcie_sampler_local_order_v9",
+          "after": "make_pcie_sampler_strapped_v10",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_cdr_sampler_local_order_geometry.py",
+      "candidate_path": "scripts/check_cdr_sampler_strapped_geometry.py",
+      "baseline_sha256": "c5ad78b0df3e0c7b03a5ad35c976780394982e0829b62a8f1aff31199731ad1e",
+      "candidate_sha256": "3684bad11925d31af1de3c28e3dbd92f84e636814bd1f0361a64f11591882e2c",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_parallel_drive_layout_v8",
+          "after": "nssoc_rx_sampler_local_order_layout_v9",
+          "count": 1
+        },
+        {
+          "before": "tops=['nssoc_rx_sampler_local_order_layout_v9','nssoc_rx_sampler_local_order_layout_v9']",
+          "after": "tops=['nssoc_rx_sampler_local_order_layout_v9','nssoc_rx_sampler_strapped_layout_v10']",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_sampler_local_order_physical.py",
+      "candidate_path": "scripts/cloud_cdr_sampler_strapped_physical.py",
+      "baseline_sha256": "fa9d8205ff08d540d19dece04fc5aad27143a4e16afb528eae177506df4f2fd1",
+      "candidate_sha256": "0d0c6e35062af840ce1981c20f697cc5304b9d10a2aec25d19b6584096ce06a5",
+      "edits": [
+        {
+          "before": "cloud-cdr-sampler-local-order-physical",
+          "after": "cloud-cdr-sampler-strapped-physical",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_sampler_local_order_v9.py",
+          "after": "make_pcie_sampler_strapped_v10.py",
+          "count": 3
+        },
+        {
+          "before": "check_pcie_sampler_local_order_v9.py",
+          "after": "check_pcie_sampler_strapped_v10.py",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_sampler_local_order_sources.py",
+          "after": "check_cdr_sampler_strapped_sources.py",
+          "count": 2
+        },
+        {
+          "before": "cdr-sampler-local-order-source-delta.json",
+          "after": "cdr-sampler-strapped-source-delta.json",
+          "count": 1
+        },
+        {
+          "before": "b06df57184d75786aed41da98cdd4795af602d7028f7e8ff512bbf1c25d1813a",
+          "after": "7d268d2a42c79398438c821e95e5e820f11a86ad330aab34eb61a887deecdb45",
+          "count": 1
+        },
+        {
+          "before": "'hw/soc/flow/check_pcie_sampler_left_v1.py'",
+          "after": "'hw/soc/flow/check_pcie_sampler_left_v1.py','scripts/check_cdr_sampler_strapped_geometry.py'",
+          "count": 1
+        },
+        {
+          "before": "        for name,command in [\n",
+          "after": "        baseline_pin=json.loads((ROOT/'docs/evidence/cdr-sampler-local-order-physical-pass-20261018.json').read_text())\n        baseline_report,baseline_restore=reports.restore_report('cdr-sampler-local-order-physical',baseline_pin['run'],baseline_pin['summary_sha256'],baseline_pin['parts_sha256'],OUT/'baseline',['layout/result.json','layout/schematic.cir','layout/nssoc_rx_sampler_local_order_layout_v9.gds'])\n        assert baseline_report==baseline_pin['report']and baseline_report['sources_unchanged']\n        r['baseline_physical_source']=baseline_restore;save()\n        for name,command in [\n",
+          "count": 1
+        },
+        {
+          "before": "          ('physical',[sys.executable",
+          "after": "          ('primitive_identity',[app,'python',ROOT/'scripts/check_cdr_sampler_strapped_geometry.py','--baseline',OUT/'baseline/layout','--candidate',OUT/'layout','--output',OUT/'primitive-identity.json']),\n          ('physical',[sys.executable",
+          "count": 1
+        },
+        {
+          "before": "Actual left-edge sampler output pins with physical M7 signal shunts.",
+          "after": "Actual TopMetal1 vertical straps and TopMetal2 horizontal straps on every sampler net; native primitives and original physical gates unchanged.",
+          "count": 1
+        },
+        {
+          "before": "7d268d2a42c79398438c821e95e5e820f11a86ad330aab34eb61a887deecdb45",
+          "after": "fdb0e2b686869621ae02f5b38642df7e0c7f9dbc59190a5bd8bbdf571ac10046",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

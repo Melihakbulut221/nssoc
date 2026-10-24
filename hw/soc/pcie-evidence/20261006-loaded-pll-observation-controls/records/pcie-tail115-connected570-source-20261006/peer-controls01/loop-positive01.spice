@@ -1,0 +1,11 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Source-only candidate; polarity NOT SELECTED. Actual loaded tuning is prerequisite.
+* Four independent body/wire reference ports. No internal ideal sources.
+.subckt nssoc_pll_tail115_connected570_positive_v1 ref reset clearb clkp clkn qp qn fb fbbar up down vctrl vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref
+XCHAIN vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref nssoc_pll_feedback_vco_v6_divider_tail115_v1_wire_v1
+XDET ref fb reset up down vctrl div_avdd avss sub nssoc_pll_pfd_cp_hv_v1
+XRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1
+XRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1
+XC vctrl avss cap_cmim w=10u l=10u
+.ends nssoc_pll_tail115_connected570_positive_v1

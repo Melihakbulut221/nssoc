@@ -1,0 +1,196 @@
+{
+  "status": "SEALED_FINITE_FIELD_AUDIT_WITH_UNRESOLVED_CONVERGENCE",
+  "sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_pcie_finite_field_v1.py": {
+      "bytes": 4942,
+      "sha256": "1fcf311922b22e29731f05551602f4e2d57e6e6a9b0b0f7f81bd73a070095371"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_finite_field_v1.py": {
+      "bytes": 4458,
+      "sha256": "0cb0d3704802119f53cac6d3a868ece8e0ad92969af1fcd1642f5254faf3b8c0"
+    }
+  },
+  "capsule": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-openrcx-contract-20261004/field-audit/finite-field-rcx-native-evidence.tar.xz",
+    "bytes": 292248,
+    "sha256": "182e196933510018fca15374ba00530350a089ce588514a47af18ca6053ef1d3",
+    "members": 463,
+    "local_roundtrip": true
+  },
+  "tests": 22,
+  "field_cases": [
+    {
+      "folder": "/dev/shm/nssoc-pcie-coupled-field-06",
+      "case": "near",
+      "status": "FAIL_RAW_MATRIX_RECIPROCITY_OR_SYMMETRIC_PART",
+      "max_pairwise_reciprocity": 0.006682623794567946
+    },
+    {
+      "folder": "/dev/shm/nssoc-pcie-coupled-field-06",
+      "case": "far",
+      "status": "FAIL_RAW_MATRIX_RECIPROCITY_OR_SYMMETRIC_PART",
+      "max_pairwise_reciprocity": 0.005548521069691958
+    },
+    {
+      "folder": "/dev/shm/nssoc-pcie-coupled-field-tight-01",
+      "case": "near",
+      "status": "PASS_FINITE_MATRIX_DIAGNOSTICS_ONLY",
+      "max_pairwise_reciprocity": 0.0004656383241189673
+    },
+    {
+      "folder": "/dev/shm/nssoc-pcie-coupled-field-tight-01",
+      "case": "far",
+      "status": "FAIL_RAW_MATRIX_RECIPROCITY_OR_SYMMETRIC_PART",
+      "max_pairwise_reciprocity": 0.007684349777032224
+    },
+    {
+      "folder": "/dev/shm/nssoc-pcie-coupled-field-domain12-01",
+      "case": "near",
+      "status": "REJECTED_NATIVE_RESULT",
+      "max_pairwise_reciprocity": null
+    },
+    {
+      "folder": "/dev/shm/nssoc-pcie-coupled-field-interaction05-01",
+      "case": "near",
+      "status": "FAIL_RAW_MATRIX_RECIPROCITY_OR_SYMMETRIC_PART",
+      "max_pairwise_reciprocity": 0.010456103638641334
+    },
+    {
+      "folder": "/dev/shm/nssoc-pcie-coupled-field-interaction05-01",
+      "case": "far",
+      "status": "FAIL_RAW_MATRIX_RECIPROCITY_OR_SYMMETRIC_PART",
+      "max_pairwise_reciprocity": 0.005046202241300261
+    },
+    {
+      "folder": "/dev/shm/nssoc-pcie-coupled-field-far-tight-01",
+      "case": "far",
+      "status": "REJECTED_NATIVE_RESULT",
+      "max_pairwise_reciprocity": null
+    },
+    {
+      "folder": "/dev/shm/nssoc-pcie-coupled-field-far-interaction01-01",
+      "case": "far",
+      "status": "FAIL_RAW_MATRIX_RECIPROCITY_OR_SYMMETRIC_PART",
+      "max_pairwise_reciprocity": 0.006912354884857377
+    }
+  ],
+  "same_geometry_comparison": [
+    {
+      "name": "near",
+      "centerline_um": 5,
+      "width_um": 0.2,
+      "field_baseline_status": "FAIL_RAW_MATRIX_RECIPROCITY_OR_SYMMETRIC_PART",
+      "raw_grounded_substrate_block_F": [
+        [
+          9.65544e-16,
+          -6.5908e-16
+        ],
+        [
+          -6.589239999999999e-16,
+          9.65726e-16
+        ]
+      ],
+      "raw_field_ground_F": [
+        3.06464e-16,
+        3.06802e-16
+      ],
+      "raw_field_mutual_F": [
+        6.5908e-16,
+        6.589239999999999e-16
+      ],
+      "openrcx": {
+        "terminals_unchanged": true,
+        "each_wire": {
+          "ground_F": 3.1668e-16,
+          "mutual_F": 5.76561e-16,
+          "diagonal_F": 8.93241e-16,
+          "resistance_ohm": 2.288
+        },
+        "input": {
+          "bytes": 633,
+          "sha256": "326a342bc5958922e285b70ba1b74c08ed0edfb5f2380644cad92c13f53a7762"
+        },
+        "observation_only": true,
+        "zero_mutual_is_not_accepted": true
+      },
+      "comparison_is_descriptive_not_accuracy_validation": true
+    },
+    {
+      "name": "far",
+      "centerline_um": 5,
+      "width_um": 0.2,
+      "field_baseline_status": "FAIL_RAW_MATRIX_RECIPROCITY_OR_SYMMETRIC_PART",
+      "raw_grounded_substrate_block_F": [
+        [
+          5.146009999999999e-16,
+          -9.357539999999999e-17
+        ],
+        [
+          -9.359619999999999e-17,
+          5.14591e-16
+        ]
+      ],
+      "raw_field_ground_F": [
+        4.2102559999999996e-16,
+        4.209948e-16
+      ],
+      "raw_field_mutual_F": [
+        9.357539999999999e-17,
+        9.359619999999999e-17
+      ],
+      "openrcx": {
+        "terminals_unchanged": true,
+        "each_wire": {
+          "ground_F": 4.3484799999999997e-16,
+          "mutual_F": 0.0,
+          "diagonal_F": 4.3484799999999997e-16,
+          "resistance_ohm": 2.288
+        },
+        "input": {
+          "bytes": 617,
+          "sha256": "9e067f03898fa4d31fce5794b044cf6f01a19a2082c6654028a181cd55268e4d"
+        },
+        "observation_only": true,
+        "zero_mutual_is_not_accepted": true
+      },
+      "comparison_is_descriptive_not_accuracy_validation": true
+    }
+  ],
+  "reports": {
+    "raw-review.json": {
+      "bytes": 96577,
+      "sha256": "5f6167c3ffe50c960b8816ee7a3ed42d129197764969a49e19bba64af9d5eb72"
+    },
+    "geometry-baseline.json": {
+      "bytes": 10837,
+      "sha256": "9272a658d5269a5d5075f3a6205d80a5c1d70a871646aeea892e40277b4efbb4"
+    },
+    "geometry-domain12.json": {
+      "bytes": 10144,
+      "sha256": "a3c2dc2ea9ba9c0c10825fea884f6d0c7875fd84d34e93e4cb98b32a464c46fb"
+    },
+    "native-def-geometry.json": {
+      "bytes": 1586,
+      "sha256": "af0ab07528ad6dbd49b53c0ef6110478258de0295d431e3d0145a56dba0442d1"
+    },
+    "field05-06-independent-review.json": {
+      "bytes": 6277,
+      "sha256": "afc6732f16eb4dcd091ab726e1538a798bcfea2b5957520bc9e8daf28196ad00"
+    }
+  },
+  "limits": {
+    "reciprocity_limit": 0.005,
+    "original_solver_tolerance": 0.005,
+    "no_tolerance_relaxation": true,
+    "native_address_space_limit_bytes": 2147483648,
+    "core_limit_bytes": 0
+  },
+  "limitations": [
+    "Raw far reciprocity remains failed; no field-domain convergence; domain12 and tighter far runs ended SIGSEGV under2GiB cap, causal OOM not proved.",
+    "No symmetrization of raw matrix for acceptance. SPD diagnostic concerns symmetric part only.",
+    "Native DEF+width representation bridge, not unavailable direct OpenDB shape-iterator proof.",
+    "Original imported module provenance is review-time replay; not a retrospective complete original-runtime capture.",
+    "Same-geometry capacitance comparison is descriptive, not calibration or foundry-qualified PEX."
+  ],
+  "qualified_rc": false
+}

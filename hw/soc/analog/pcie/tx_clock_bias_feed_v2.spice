@@ -1,0 +1,8 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Fixed native feed paired with tx_clock_common_bias_v3.spice.
+* Twice the v1 resistor width; actual PDK contact and temperature models apply.
+* Increased reference current requires unchanged full-wave HBT current gates.
+.subckt nssoc_tx_clock_bias_feed_v2 avdd cm sub
+XFEED avdd cm sub rppd w=4u l=14.5u b=0 sw_et=1
+.ends nssoc_tx_clock_bias_feed_v2

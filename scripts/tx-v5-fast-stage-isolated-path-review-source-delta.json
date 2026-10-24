@@ -1,0 +1,47 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_return_repair_path_review.py",
+      "candidate_path": "scripts/cloud_tx_v5_fast_stage_isolated_path_review.py",
+      "baseline_sha256": "a29c27a8f9f7fc510a02ac8dd7811cf4a7ffae2fd8d624c056b87dbfd3b08d45",
+      "candidate_sha256": "d9fe6f53856bcf06dab27515057ef300e5f12646cc8291fd72bcd16e74e112c3",
+      "edits": [
+        {
+          "before": "cloud_tx_v5_return_repair_builder",
+          "after": "cloud_tx_v5_fast_stage_isolated_builder",
+          "count": 2
+        },
+        {
+          "before": "cloud-tx-v5-return-repair-path-review",
+          "after": "cloud-tx-v5-fast-stage-isolated-path-review",
+          "count": 2
+        },
+        {
+          "before": "pin=json.loads((ROOT/'docs/evidence/tx-v5-return-repair-full32-nominal-rejection-20261018.json').read_text())",
+          "after": "pin=json.loads((ROOT/'docs/evidence/tx-v5-fast-stage-isolated-wave-rejection-20261019.json').read_text())['cases']['none']",
+          "count": 1
+        },
+        {
+          "before": "'tx-v5-return-repair-wave-wire-nominal-none'",
+          "after": "'tx-v5-fast-stage-isolated-wave-wire-nominal-none'",
+          "count": 1
+        },
+        {
+          "before": "C=77471",
+          "after": "C=77514",
+          "count": 1
+        },
+        {
+          "before": "        contract=json.loads((source/'native/contract.json').read_text())",
+          "after": "        assert prior==pin['report']\n        contract=json.loads((source/'native/contract.json').read_text())",
+          "count": 1
+        },
+        {
+          "before": "            failed.append(dict(device=name,native_binding=d,original_gate=gate,",
+          "after": "            ce=v(ns[0])-v(ns[2]);ids=np.flatnonzero(active);worst=int(ids[np.argmin(ce[active])])\n            sample=dict(time_s=float(t[worst]),terminals_v={label:float(v(node)[worst])for label,node in zip(('C','B','E','S'),ns,strict=True)},ic_per_emitter_a=float(values['@q.'+name+'.qnpn13g2[ic]'][worst]/d['nx']))\n            assert sample['terminals_v']['C']-sample['terminals_v']['E']==gate['min_post_vce_v']\n            failed.append(dict(device=name,native_binding=d,original_gate=gate,minimum_vce_sample=sample,",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

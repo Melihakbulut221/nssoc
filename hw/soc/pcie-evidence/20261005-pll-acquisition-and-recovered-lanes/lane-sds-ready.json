@@ -1,0 +1,82 @@
+{
+  "status": "READY_SEPARATE_LOCAL_SDS_LOCK_RTL_EVIDENCE",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v3.v": {
+      "bytes": 7562,
+      "sha256": "7d8df97bc16c4c1e8dc10de8539dff0de50fefd88d6fe8ec02c20fcf25258cdb"
+    },
+    "sw/tests/test_pcie_gen3_lane_align_v3.py": {
+      "bytes": 27458,
+      "sha256": "140fe0695f3c5d3b10cc8fe94e14092c2d402192e27d49bf1f0db3c8b80b784d"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v2.v": {
+      "bytes": 6602,
+      "sha256": "ad5671d1f04a632118d982e94b3d034251d8fe3ea7e9b7c6f61d0aa68e646fd4"
+    }
+  },
+  "finite_result": {
+    "tests": 36,
+    "public_port_cases": 11,
+    "actual_hdl_faults": 24,
+    "source_conservation": 1,
+    "failures": 0,
+    "skipped": 0
+  },
+  "prior_failures_preserved": {
+    "first": {
+      "passed": 30,
+      "fixture_failures": 2
+    },
+    "second": {
+      "passed": 34,
+      "failures": 0
+    }
+  },
+  "capsule": {
+    "name": "pcie-local-sds-lane-v3-rtl-controls-20261005.tar.xz",
+    "asset_id": 610914610,
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/pcie-local-sds-lane-v3-rtl-controls-20261005.tar.xz",
+    "bytes": 1368936,
+    "sha256": "9d24c00b4be60df1c7229a043ff7aa3e950d885a032c98b95865d25613c148ab",
+    "authenticated_roundtrip": true,
+    "anonymous_roundtrip": true
+  },
+  "capsule_members": 696,
+  "receipts": {
+    "hw/soc/out/pcie-lane-align-v3-20261005/source-freeze.json": {
+      "bytes": 2716,
+      "sha256": "cd62fec0e6daac58118546e3362680143f03fd5b729700bdd87c49946c8b3d8b"
+    },
+    "hw/soc/out/pcie-lane-align-v3-20261005/contract.json": {
+      "bytes": 2545,
+      "sha256": "c7ded9fff1c768cf7a953a9de04619135b8bfdb45c3fd56bd28193a0661ab0c9"
+    },
+    "hw/soc/out/pcie-lane-align-v3-20261005/reference-acquisition.json": {
+      "bytes": 622,
+      "sha256": "16438fdf6142fe4cdfb7edad0d08d219bf0d9ac482a27b5dbe8275c00441d66e"
+    },
+    "hw/soc/out/pcie-lane-align-v3-20261005/validation.json": {
+      "bytes": 259005,
+      "sha256": "aa09087edd583a7be961cba54e2a03c8aa42626b72c9b3901a14aca13fcb31f0"
+    },
+    "hw/soc/out/pcie-lane-align-v3-20261005/publication.json": {
+      "bytes": 904,
+      "sha256": "2fb66cd540ea766e1513c299a1575115589f3a84194ecf7342d0b361241030a2"
+    },
+    "hw/soc/out/pcie-lane-align-v3-20261005/seal_rtl.py": {
+      "bytes": 4200,
+      "sha256": "aa6c51c26728bf68ef39ffd15f1e46babfffc0795d82174c845438e1d4d9fed7"
+    }
+  },
+  "interface": {
+    "module": "soc_pcie_gen3_lane_align_v3",
+    "preserved_v2_ports": true,
+    "new_outputs": [
+      "locked_o",
+      "sds_o"
+    ],
+    "eieos_o": "Classifies every exact aligned EIEOS; locked candidate never realigns.",
+    "lock_timing": "Set on same recovered-clock edge that accepts the complete exact SDS; gates EIEOS acquisition for every following raw word, regardless of external search remaining enabled."
+  },
+  "scope": "RTL finite public-port evidence only; native cell replay and physical timing not performed. Variable SKP extraction retained; rate compensation, deskew, CDC, LTSSM and complete PCS acceptance remain separate. Exact primary-authored PDF remains internal and is absent from capsule."
+}

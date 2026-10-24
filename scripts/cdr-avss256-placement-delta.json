@@ -1,0 +1,29 @@
+{
+  "baseline_path": "scripts/generate_cdr_retimed_parent_v2.py",
+  "baseline_sha256": "4c12d9172d7cc9189fdf60194d64bfb4bd0d6e17a57d6ee0a6c9efefc9cfc6f2",
+  "candidate_path": "scripts/generate_cdr_retimed_avss256_base.py",
+  "candidate_sha256": "99164485c73839e825e0d5ddb44fa5429df81ee06af2abc573a3b605bffa05d8",
+  "edits": [
+    {
+      "before": "TOP='nssoc_cdr_retimed_pd394_layout_v2'",
+      "after": "TOP='nssoc_cdr_pd394_avss256_base_v1'",
+      "count": 1
+    },
+    {
+      "before": "width=64. if net in ('avdd','avss','sub')else 3.2",
+      "after": "width=256. if net=='avss'else 64. if net in ('avdd','sub')else 3.2",
+      "count": 1
+    },
+    {
+      "before": "extent=24 if bus['width']==64 else 0",
+      "after": "extent=24 if bus['width']>=64 else 0",
+      "count": 1
+    },
+    {
+      "before": "        assert bus['ys'];wire(126,(bus['x'],min(bus['ys'])),(bus['x'],max(bus['ys'])),bus['width'])",
+      "after": "        assert bus['ys']\n        if net=='avss':\n            # Preserve original32um end extension, not a width/2 square cap\n            # that would put a256um-wide rail below the fixed public origin.\n            box(126,pya.DBox(bus['x']-bus['width']/2,min(bus['ys'])-32,bus['x']+bus['width']/2,max(bus['ys'])+32))\n        else:wire(126,(bus['x'],min(bus['ys'])),(bus['x'],max(bus['ys'])),bus['width'])",
+      "count": 1
+    }
+  ],
+  "scope": "Only global native TopMetal1 AVSS bus width64um to256um; retain original via arrays for all supply connections. Actual routing regenerates around increased bus span; original ordering optimizer, devices, child geometry, pin directions, public feed widths and clocks remain. AVSS vertical end extension remains32um, preserving original Y bounds and the zero-origin rule."
+}

@@ -1,0 +1,859 @@
+{
+  "status": "PASS_BOUNDED_LOCAL_RX_OWNERSHIP_AND_FC",
+  "source_commit_context": "a83e7bfeb2640b823cb273fc822cd059890ed560",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_fc_tx.v": {
+      "bytes": 4418,
+      "sha256": "6b5e82a05195fcce64b47d88612d7e1a3aff461cb6f520f2476a85165abfd3f1"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_rx_credit.v": {
+      "bytes": 9517,
+      "sha256": "ea4977440f6e111cb87967385012835720cf2581d8b1c3d03608d55f097ffae8"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_buffered_flow_packets.v": {
+      "bytes": 9175,
+      "sha256": "30448ccda991ea177f862eb5c69aef6a78aab20a0bf955eb802a8bfe2b03336d"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_fc_tx.py": {
+      "bytes": 4211,
+      "sha256": "6f2980191bda792b31cf2275c5fd93cd7cc80a061b172f9d8b387724c1acd087"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_fc_tx": {
+      "bytes": 1670,
+      "sha256": "0e7105acd7b5f44dfa4278b3103a74f224436cc73bca67139c263fa82c600001"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_rx_credit.py": {
+      "bytes": 7822,
+      "sha256": "3e4b67b1f9d40ad9fdaab6edf7982cfa51967f5841964ad330812d3c8d8129cb"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_rx_credit": {
+      "bytes": 1686,
+      "sha256": "d92b4437f1207eadb99547fccc6e3611196979bfceae0b73c833d443c1420b99"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_buffered_flow_packets.py": {
+      "bytes": 11862,
+      "sha256": "43ea29e81ded2fd448e83f27c279fe1f748b328cc31dcd734c1f964a07d708f3"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_buffered_flow_packets": {
+      "bytes": 1734,
+      "sha256": "c28eead3b29af4d6e43009e86e655112ccfc2cf75b71a14700c28b2d9a948505"
+    },
+    "hw/soc/tb/cocotb/pcie_rx_flow_common.py": {
+      "bytes": 1385,
+      "sha256": "0169b4db0ee564c34fcca595e2f6eb4ac1c6e631c52b9cc3f1d41c673a053499"
+    },
+    "scripts/check_pcie_rx_flow.py": {
+      "bytes": 9020,
+      "sha256": "1523c64d32830705c0c8fdf3b0a4225c377c1fcbe3ad23db2ee98015b018a3bf"
+    },
+    "sw/tests/test_pcie_rx_flow.py": {
+      "bytes": 4143,
+      "sha256": "84e245216872d9d6b304f2641dd3fc4c3860fae55ef95948e61c3eaebdbb3c6c"
+    }
+  },
+  "inherited_git_sources": {
+    "hw/soc/rtl/pcie/soc_pcie_crc16_byte.v": {
+      "bytes": 663,
+      "sha256": "ab1d759c59666baf754ddf51db66dc201682fca924cf26e4d31c15ea313eb77a"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_acknak_tx.v": {
+      "bytes": 1909,
+      "sha256": "16acc4674878c3fd53bf7bcbea330b14a453aacf0bfb622e4ee7eff200faae47"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_packet_tx.v": {
+      "bytes": 2202,
+      "sha256": "2cb2d0bc6ea7b15d9be8b706049c3273138dccf85c2c77df11f51f38c48f8e26"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_crc32_byte.v": {
+      "bytes": 1070,
+      "sha256": "b3e856cb329d35a634171f6c57b4e0205b94d140e8e8c50ca6334826dbb70129"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_lcrc_rx.v": {
+      "bytes": 4222,
+      "sha256": "7d68e35487f00fee5e0e389cb6e09c2e543cab01c2d303ae6156404719f0571a"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_sequence_rx.v": {
+      "bytes": 3801,
+      "sha256": "3bb40f62cd52b95590b901e2ce7791506a9fa33340b06999e300f2c9354f6d3d"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_lcrc_tx.v": {
+      "bytes": 4615,
+      "sha256": "988f786b50819539284b36b6c620efba6e05feafd0d54c6cd10e7c5f558f8928"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_packet_endpoint.v": {
+      "bytes": 5181,
+      "sha256": "f7990c099df193723e9434075046e37be0729ca4e4111c5e7c932c3564d8245b"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_tlp_stream.v": {
+      "bytes": 5931,
+      "sha256": "8363ec4c67ce1926d7044ef9e13dc3e1327a77233832809bac3308c3b72e61e2"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_tlp_regs.v": {
+      "bytes": 8352,
+      "sha256": "bcb033ed1e4434f478d167c437535a45ca050d48790d217b81754d1322441168"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_link_packets.v": {
+      "bytes": 3068,
+      "sha256": "49e202b1d2afe10b6db29333bcd86aa8ec6be8054e991c7771d7be0652f17408"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_dllp_rx.v": {
+      "bytes": 3448,
+      "sha256": "d270840bc48c7392319a5125bef147f82e188916ea842768bc1c371039e32956"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_replay_tx.v": {
+      "bytes": 10102,
+      "sha256": "c14be51aaf367fac2c129cc4065a0729a83407e87eb2f7bc558b7831e8001c54"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_reliable_packets.v": {
+      "bytes": 6799,
+      "sha256": "9212832d6fc20d26efaf1b1c7918cb39451644e178d7e5c2f90e1cc0cb741436"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_credit_tx.v": {
+      "bytes": 4861,
+      "sha256": "7d01f9a423bdd4f141371c47465a8c718d1eb578373a00f6eb1590efaf1708d6"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_flow_packets.v": {
+      "bytes": 5697,
+      "sha256": "9f90c5123ac4b82c832027af0e9ce79d5124cdf5dd502cde87c3f59c0729106a"
+    },
+    "scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_packet_tx.py": {
+      "bytes": 6497,
+      "sha256": "3c5b5c497df2591c745b5b74027fd64f293d4ff4edf73c7ec27d232e2598e276"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_tlp_stream.py": {
+      "bytes": 9089,
+      "sha256": "0dac8e1e7df716cd9cd754fdfa2469330372e730e5e19ad7a410a2deba8f42e6"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_tlp_integrity.py": {
+      "bytes": 8904,
+      "sha256": "9984383e02c6a933dcc5f039c45c7b162a0322defe56e04bb12513874cf9dec9"
+    }
+  },
+  "runs": [
+    {
+      "top": "soc_pcie_fc_tx",
+      "mode": "rtl",
+      "receipt": {
+        "bytes": 9132,
+        "sha256": "a7c59bc928a3aeef47bff03051a0c37370bf9bf855dfc5a5486d49aa023d93ea"
+      },
+      "tests": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "source_and_output_inventory_rechecked": true,
+      "mapped_cells": null,
+      "native_command_returncodes": [
+        0
+      ],
+      "address_space_limit_bytes": 2147483648,
+      "command_timeout_seconds": 300,
+      "unsupported_timing_check_warnings": 0,
+      "cocotb_executable_diagnostic": 1
+    },
+    {
+      "top": "soc_pcie_rx_credit",
+      "mode": "rtl",
+      "receipt": {
+        "bytes": 9156,
+        "sha256": "fff94cbc7c80ffeaeba1c4a8242dfe611e8028f95ede895d4f61bf7b4664352b"
+      },
+      "tests": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "source_and_output_inventory_rechecked": true,
+      "mapped_cells": null,
+      "native_command_returncodes": [
+        0
+      ],
+      "address_space_limit_bytes": 2147483648,
+      "command_timeout_seconds": 300,
+      "unsupported_timing_check_warnings": 0,
+      "cocotb_executable_diagnostic": 1
+    },
+    {
+      "top": "soc_pcie_buffered_flow_packets",
+      "mode": "rtl",
+      "receipt": {
+        "bytes": 9229,
+        "sha256": "3404360eae6bedad206001a86fdaed181da8bbd769f47feb3c00a2fa4e4d0524"
+      },
+      "tests": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "source_and_output_inventory_rechecked": true,
+      "mapped_cells": null,
+      "native_command_returncodes": [
+        0
+      ],
+      "address_space_limit_bytes": 2147483648,
+      "command_timeout_seconds": 300,
+      "unsupported_timing_check_warnings": 0,
+      "cocotb_executable_diagnostic": 1
+    },
+    {
+      "top": "soc_pcie_fc_tx",
+      "mode": "native",
+      "receipt": {
+        "bytes": 9535,
+        "sha256": "5053a10be08dd6c7c3af35ff17d71803eed06487a1bf442bee4a6fc1e0570904"
+      },
+      "tests": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "source_and_output_inventory_rechecked": true,
+      "mapped_cells": 805,
+      "native_command_returncodes": [
+        0,
+        0
+      ],
+      "address_space_limit_bytes": 2147483648,
+      "command_timeout_seconds": 300,
+      "unsupported_timing_check_warnings": 108,
+      "cocotb_executable_diagnostic": 1
+    },
+    {
+      "top": "soc_pcie_rx_credit",
+      "mode": "native",
+      "receipt": {
+        "bytes": 9574,
+        "sha256": "e5663436627beae1321f633ffc8bc941547fdd71fa826361e23733e42839930b"
+      },
+      "tests": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "source_and_output_inventory_rechecked": true,
+      "mapped_cells": 10889,
+      "native_command_returncodes": [
+        0,
+        0
+      ],
+      "address_space_limit_bytes": 2147483648,
+      "command_timeout_seconds": 300,
+      "unsupported_timing_check_warnings": 108,
+      "cocotb_executable_diagnostic": 1
+    },
+    {
+      "top": "soc_pcie_buffered_flow_packets",
+      "mode": "native",
+      "receipt": {
+        "bytes": 9674,
+        "sha256": "8d8cbad0158a5d514cfb68edba9995c26094aceede208deb60364143a4d954ba"
+      },
+      "tests": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "source_and_output_inventory_rechecked": true,
+      "mapped_cells": 21634,
+      "native_command_returncodes": [
+        0,
+        0
+      ],
+      "address_space_limit_bytes": 2147483648,
+      "command_timeout_seconds": 300,
+      "unsupported_timing_check_warnings": 108,
+      "cocotb_executable_diagnostic": 1
+    }
+  ],
+  "pytest": {
+    "passed": 13,
+    "failed": 0,
+    "skipped": 0,
+    "actual_rtl_mutants": 10,
+    "runner_rejection_cases": 3
+  },
+  "mutations": [
+    {
+      "index": 0,
+      "top": "soc_pcie_rx_credit",
+      "tests": {
+        "passed": 4,
+        "failed": 1,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 9539,
+        "sha256": "abe40c16dd42064c3527f89d100bb3d08f26b6036ed6d59fe4eba136427e8d33"
+      },
+      "raw_receipt": {
+        "bytes": 9807,
+        "sha256": "a6dae7ba3d20cdb9015302d62cbb9985b37f232decc9de96984e6a06e6104e90"
+      }
+    },
+    {
+      "index": 1,
+      "top": "soc_pcie_rx_credit",
+      "tests": {
+        "passed": 1,
+        "failed": 4,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 9519,
+        "sha256": "6d5d9d5d529969c7ccf9e7a432d361b4d294a0fcd0510a9a6a9e43a534387540"
+      },
+      "raw_receipt": {
+        "bytes": 9809,
+        "sha256": "4cd595b232251ee677096ef9baa11fc3c32a020f17323b98a0fbe4481c446d1e"
+      }
+    },
+    {
+      "index": 2,
+      "top": "soc_pcie_rx_credit",
+      "tests": {
+        "passed": 4,
+        "failed": 1,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 9509,
+        "sha256": "8450942ddc04e5e8890afa1e8f8980671b4fe01af2a2d544eac1e3c08274d527"
+      },
+      "raw_receipt": {
+        "bytes": 9807,
+        "sha256": "9892141fb365fb18a25453fd708971ca5d2d4c770ef5a2a80f4f2a87c5f0a5dd"
+      }
+    },
+    {
+      "index": 3,
+      "top": "soc_pcie_fc_tx",
+      "tests": {
+        "passed": 1,
+        "failed": 2,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 4404,
+        "sha256": "9338953f93c6e5f8107d25512774d21a5f68b3b6cd4eadd2f53c297eb8145d65"
+      },
+      "raw_receipt": {
+        "bytes": 9793,
+        "sha256": "18c9a15d2ec2f571596e99508cc070cb5119cbdf17b3607884af82db45927022"
+      }
+    },
+    {
+      "index": 4,
+      "top": "soc_pcie_fc_tx",
+      "tests": {
+        "passed": 1,
+        "failed": 2,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 4426,
+        "sha256": "650b2f4ea0fddaabac364f413ee90256824f4612047095e13151ad6cff3f25f1"
+      },
+      "raw_receipt": {
+        "bytes": 9791,
+        "sha256": "939afc98dbdb3123cc605486ca91c7efe7bf49726fddf5e1c0959f988e762ed2"
+      }
+    },
+    {
+      "index": 5,
+      "top": "soc_pcie_buffered_flow_packets",
+      "tests": {
+        "passed": 4,
+        "failed": 1,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 9162,
+        "sha256": "67f4e447298769927d50a21a25a941ac47e86644a3df061dcce88bc83770342d"
+      },
+      "raw_receipt": {
+        "bytes": 9858,
+        "sha256": "601f7e231fe21ea3fe436ab4268255300d7abead9d25551a60a84d99c3337c66"
+      }
+    },
+    {
+      "index": 6,
+      "top": "soc_pcie_buffered_flow_packets",
+      "tests": {
+        "passed": 1,
+        "failed": 4,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 9175,
+        "sha256": "c1027d2d820c59bc21d18603c67b8b0ad52e9ac981e9e37de089fba567943e92"
+      },
+      "raw_receipt": {
+        "bytes": 9858,
+        "sha256": "4747bd3bcf42aab951d9c5e218ea66abba26fa3697b6cc8bf596b697158b4f62"
+      }
+    },
+    {
+      "index": 7,
+      "top": "soc_pcie_buffered_flow_packets",
+      "tests": {
+        "passed": 4,
+        "failed": 1,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 9197,
+        "sha256": "61c581eebeecd8a3ef1f5ee8f8bfdd250c66e8b1eeafded6cc5f5e4db5463a1b"
+      },
+      "raw_receipt": {
+        "bytes": 9856,
+        "sha256": "7dd1a1fe923699bd33826a69e22c17df08b684d3fc689d663b9e6125c76dd05b"
+      }
+    },
+    {
+      "index": 8,
+      "top": "soc_pcie_buffered_flow_packets",
+      "tests": {
+        "passed": 1,
+        "failed": 4,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 9168,
+        "sha256": "42760ebc9ed373cd0d5699c7cb37ade0bfa371babf2d2d1a61bc2344e9435a1d"
+      },
+      "raw_receipt": {
+        "bytes": 9858,
+        "sha256": "b3eeea4b2e758d8989115109e0d0c437cda4bbd2d1099c01a67ee0adaf686c4e"
+      }
+    },
+    {
+      "index": 9,
+      "top": "soc_pcie_buffered_flow_packets",
+      "tests": {
+        "passed": 4,
+        "failed": 1,
+        "skipped": 0
+      },
+      "mutated_source": {
+        "bytes": 9149,
+        "sha256": "efd2a923b6087de525cdba7430b04bea2318bfbd7e2028e87e428a148ccae838"
+      },
+      "raw_receipt": {
+        "bytes": 9856,
+        "sha256": "1e2c3abdd13c1ca35815ce6e68b1aeb85e31617c90f3e00998068bd6c31f7292"
+      }
+    }
+  ],
+  "capsule": {
+    "bytes": 885248,
+    "sha256": "81f3b4f06d724b436035d164e88b892ca51dd0f6420205563b90ef861603a463",
+    "members": 84,
+    "members_pins": {
+      "sources/hw/soc/rtl/pcie/soc_pcie_fc_tx.v": {
+        "bytes": 4418,
+        "sha256": "6b5e82a05195fcce64b47d88612d7e1a3aff461cb6f520f2476a85165abfd3f1"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_rx_credit.v": {
+        "bytes": 9517,
+        "sha256": "ea4977440f6e111cb87967385012835720cf2581d8b1c3d03608d55f097ffae8"
+      },
+      "sources/hw/soc/rtl/pcie/soc_pcie_buffered_flow_packets.v": {
+        "bytes": 9175,
+        "sha256": "30448ccda991ea177f862eb5c69aef6a78aab20a0bf955eb802a8bfe2b03336d"
+      },
+      "sources/hw/soc/tb/cocotb/test_soc_pcie_fc_tx.py": {
+        "bytes": 4211,
+        "sha256": "6f2980191bda792b31cf2275c5fd93cd7cc80a061b172f9d8b387724c1acd087"
+      },
+      "sources/hw/soc/tb/cocotb/Makefile.soc_pcie_fc_tx": {
+        "bytes": 1670,
+        "sha256": "0e7105acd7b5f44dfa4278b3103a74f224436cc73bca67139c263fa82c600001"
+      },
+      "sources/hw/soc/tb/cocotb/test_soc_pcie_rx_credit.py": {
+        "bytes": 7822,
+        "sha256": "3e4b67b1f9d40ad9fdaab6edf7982cfa51967f5841964ad330812d3c8d8129cb"
+      },
+      "sources/hw/soc/tb/cocotb/Makefile.soc_pcie_rx_credit": {
+        "bytes": 1686,
+        "sha256": "d92b4437f1207eadb99547fccc6e3611196979bfceae0b73c833d443c1420b99"
+      },
+      "sources/hw/soc/tb/cocotb/test_soc_pcie_buffered_flow_packets.py": {
+        "bytes": 11862,
+        "sha256": "43ea29e81ded2fd448e83f27c279fe1f748b328cc31dcd734c1f964a07d708f3"
+      },
+      "sources/hw/soc/tb/cocotb/Makefile.soc_pcie_buffered_flow_packets": {
+        "bytes": 1734,
+        "sha256": "c28eead3b29af4d6e43009e86e655112ccfc2cf75b71a14700c28b2d9a948505"
+      },
+      "sources/hw/soc/tb/cocotb/pcie_rx_flow_common.py": {
+        "bytes": 1385,
+        "sha256": "0169b4db0ee564c34fcca595e2f6eb4ac1c6e631c52b9cc3f1d41c673a053499"
+      },
+      "sources/scripts/check_pcie_rx_flow.py": {
+        "bytes": 9020,
+        "sha256": "1523c64d32830705c0c8fdf3b0a4225c377c1fcbe3ad23db2ee98015b018a3bf"
+      },
+      "sources/sw/tests/test_pcie_rx_flow.py": {
+        "bytes": 4143,
+        "sha256": "84e245216872d9d6b304f2641dd3fc4c3860fae55ef95948e61c3eaebdbb3c6c"
+      },
+      "rtl/soc_pcie_fc_tx/results.xml": {
+        "bytes": 1035,
+        "sha256": "9b48d98aa107962d9983e368179d7ab472c11cab7184971c7959f2f9d7b15eb9"
+      },
+      "rtl/soc_pcie_fc_tx/simulation.log": {
+        "bytes": 6397,
+        "sha256": "4efaf2e22f76125c9f44465a4cb89e423d29f7d55001287ce2bdd95af54daf6d"
+      },
+      "rtl/soc_pcie_fc_tx/result.json": {
+        "bytes": 9132,
+        "sha256": "a7c59bc928a3aeef47bff03051a0c37370bf9bf855dfc5a5486d49aa023d93ea"
+      },
+      "rtl/soc_pcie_rx_credit/results.xml": {
+        "bytes": 1671,
+        "sha256": "87c955f1bbce9600550969df0d6817739571e05463a940e7450ca13d1455090d"
+      },
+      "rtl/soc_pcie_rx_credit/simulation.log": {
+        "bytes": 7380,
+        "sha256": "c196da1cd2fc22fa18a469f492fba26d1e5deb17ddfb08c956223419a78bdd2b"
+      },
+      "rtl/soc_pcie_rx_credit/result.json": {
+        "bytes": 9156,
+        "sha256": "fff94cbc7c80ffeaeba1c4a8242dfe611e8028f95ede895d4f61bf7b4664352b"
+      },
+      "rtl/soc_pcie_buffered_flow_packets/results.xml": {
+        "bytes": 1819,
+        "sha256": "82bbc6a37fd59bd6782ce6f7a0d76d1151b47a39e2edfe5edbbafdd2c6ad9220"
+      },
+      "rtl/soc_pcie_buffered_flow_packets/simulation.log": {
+        "bytes": 7943,
+        "sha256": "16201d069772209c51f33e7de46dff523ae1d424e3e735b4f33373a74977331b"
+      },
+      "rtl/soc_pcie_buffered_flow_packets/result.json": {
+        "bytes": 9229,
+        "sha256": "3404360eae6bedad206001a86fdaed181da8bbd769f47feb3c00a2fa4e4d0524"
+      },
+      "native/soc_pcie_fc_tx/results.xml": {
+        "bytes": 1036,
+        "sha256": "ba9818d3a11ed03cce82b080a1c515d7f97c586fc746b633348b51446eb62a90"
+      },
+      "native/soc_pcie_fc_tx/simulation.log": {
+        "bytes": 34448,
+        "sha256": "2d9e51c20261865fa9c7035d9118e06ad48935bf1a779caafac8655dad91adf8"
+      },
+      "native/soc_pcie_fc_tx/mapped.v": {
+        "bytes": 91505,
+        "sha256": "3a2a0f6e224dd4721b545f38731164cddc195b9bee467ee0ae501b4fb570ad47"
+      },
+      "native/soc_pcie_fc_tx/mapped.json": {
+        "bytes": 599851,
+        "sha256": "b455e6dcac27b472eddf323c9fe34b47958609974d8003efc78ff65864d53837"
+      },
+      "native/soc_pcie_fc_tx/map.log": {
+        "bytes": 74046,
+        "sha256": "695afec9df8c791a61eab4b3bd46a37576e65f77ed0af388e37067917f737011"
+      },
+      "native/soc_pcie_fc_tx/map.ys": {
+        "bytes": 2556,
+        "sha256": "932f6b40e17c453530c777e9d3b2075efa683e1720e602cfdf8138da2bb48f8a"
+      },
+      "native/soc_pcie_fc_tx/result.json": {
+        "bytes": 9535,
+        "sha256": "5053a10be08dd6c7c3af35ff17d71803eed06487a1bf442bee4a6fc1e0570904"
+      },
+      "native/soc_pcie_rx_credit/results.xml": {
+        "bytes": 1672,
+        "sha256": "d0638b3f416938cfcb6c0555e3b310f806aed5eca5bb34705c8966ccb97f359d"
+      },
+      "native/soc_pcie_rx_credit/simulation.log": {
+        "bytes": 35435,
+        "sha256": "6a183d3371c66b6f6cd360ba3389306e80e6af34ad2e13d48e3aaf2312ce9f78"
+      },
+      "native/soc_pcie_rx_credit/mapped.v": {
+        "bytes": 1308156,
+        "sha256": "36c6787cb63b7d7d1d258e4f0c7fd01015fb4567fd1163d33e6b244a2afcc627"
+      },
+      "native/soc_pcie_rx_credit/mapped.json": {
+        "bytes": 7186745,
+        "sha256": "a8ae624ef5ff6b9985aedcacb999112d31977b08788e39a6e3251e6665a76e3b"
+      },
+      "native/soc_pcie_rx_credit/map.log": {
+        "bytes": 825843,
+        "sha256": "83cdfdcf17068c59cabc72acbc7d76fb2191ec2bde00ca8ffdf202a057e42685"
+      },
+      "native/soc_pcie_rx_credit/map.ys": {
+        "bytes": 2572,
+        "sha256": "4cbdb3ce6003435c6dd862eda152571aece99450b39e6cee0d074621c5a10b2f"
+      },
+      "native/soc_pcie_rx_credit/result.json": {
+        "bytes": 9574,
+        "sha256": "e5663436627beae1321f633ffc8bc941547fdd71fa826361e23733e42839930b"
+      },
+      "native/soc_pcie_buffered_flow_packets/results.xml": {
+        "bytes": 1815,
+        "sha256": "dcac85af7d13c22de2df6574e95df6bea7460eb2a0c24b088bf5c64100a43a32"
+      },
+      "native/soc_pcie_buffered_flow_packets/simulation.log": {
+        "bytes": 36010,
+        "sha256": "021f05adc27baf5e584e32dd7635f8b0c7064209bafb653c4cb4e4a00af6e7d1"
+      },
+      "native/soc_pcie_buffered_flow_packets/mapped.v": {
+        "bytes": 3147858,
+        "sha256": "d79d7bd48b9bd7454341ab5257de6c668a4c4f10530237d2c3b310395fa646a0"
+      },
+      "native/soc_pcie_buffered_flow_packets/mapped.json": {
+        "bytes": 15990034,
+        "sha256": "528c2486fa7997bff5830bceaf85642d80058d96af36aa74247e89391329ac79"
+      },
+      "native/soc_pcie_buffered_flow_packets/map.log": {
+        "bytes": 1740828,
+        "sha256": "849106237682af6d4e9372c8b1ce8aede8eadf7cff5f52a518e819e6e5035eae"
+      },
+      "native/soc_pcie_buffered_flow_packets/map.ys": {
+        "bytes": 2620,
+        "sha256": "8b7877c61d5b24990ec48de439f0176fd3655352d3e451823886b112ead6d250"
+      },
+      "native/soc_pcie_buffered_flow_packets/result.json": {
+        "bytes": 9674,
+        "sha256": "8d8cbad0158a5d514cfb68edba9995c26094aceede208deb60364143a4d954ba"
+      },
+      "mutations/0/mutated.v": {
+        "bytes": 9539,
+        "sha256": "abe40c16dd42064c3527f89d100bb3d08f26b6036ed6d59fe4eba136427e8d33"
+      },
+      "mutations/0/results.xml": {
+        "bytes": 1892,
+        "sha256": "896749d986e5aac6be3854bd6cba2286273caaa523d0fdf21b260aa269683050"
+      },
+      "mutations/0/simulation.log": {
+        "bytes": 9163,
+        "sha256": "e3fcd73561130aadebe294b1091a358714ae0cb52109e853b76ed01cb361f76a"
+      },
+      "mutations/0/result.json": {
+        "bytes": 9807,
+        "sha256": "a6dae7ba3d20cdb9015302d62cbb9985b37f232decc9de96984e6a06e6104e90"
+      },
+      "mutations/1/mutated.v": {
+        "bytes": 9519,
+        "sha256": "6d5d9d5d529969c7ccf9e7a432d361b4d294a0fcd0510a9a6a9e43a534387540"
+      },
+      "mutations/1/results.xml": {
+        "bytes": 2707,
+        "sha256": "dde8e5eaaf721a13ad6fe59532a7b3b75d1283ece9e936a10967274410665e89"
+      },
+      "mutations/1/simulation.log": {
+        "bytes": 12856,
+        "sha256": "9ddf89458c829772b02d4085375828c00827b1d6faad2b3949163817606e6e0b"
+      },
+      "mutations/1/result.json": {
+        "bytes": 9809,
+        "sha256": "4cd595b232251ee677096ef9baa11fc3c32a020f17323b98a0fbe4481c446d1e"
+      },
+      "mutations/2/mutated.v": {
+        "bytes": 9509,
+        "sha256": "8450942ddc04e5e8890afa1e8f8980671b4fe01af2a2d544eac1e3c08274d527"
+      },
+      "mutations/2/results.xml": {
+        "bytes": 1878,
+        "sha256": "8b22105643d3c218ebf4213ff0c67e9c483c9723dfcf580c9cb33f7f9878c634"
+      },
+      "mutations/2/simulation.log": {
+        "bytes": 9109,
+        "sha256": "3ff0b8b4e31243d891094a4a526dac6939b6c9c6494a7f3806f598833bbeaa32"
+      },
+      "mutations/2/result.json": {
+        "bytes": 9807,
+        "sha256": "9892141fb365fb18a25453fd708971ca5d2d4c770ef5a2a80f4f2a87c5f0a5dd"
+      },
+      "mutations/3/mutated.v": {
+        "bytes": 4404,
+        "sha256": "9338953f93c6e5f8107d25512774d21a5f68b3b6cd4eadd2f53c297eb8145d65"
+      },
+      "mutations/3/results.xml": {
+        "bytes": 1548,
+        "sha256": "e8f27e24231d9788147f4120931467899de2d83fdc205387211fc0112b9241c9"
+      },
+      "mutations/3/simulation.log": {
+        "bytes": 10353,
+        "sha256": "92e0b43dd08451a108b839ac2f90453762f7bae07c334ff5413151efed47c336"
+      },
+      "mutations/3/result.json": {
+        "bytes": 9793,
+        "sha256": "18c9a15d2ec2f571596e99508cc070cb5119cbdf17b3607884af82db45927022"
+      },
+      "mutations/4/mutated.v": {
+        "bytes": 4426,
+        "sha256": "650b2f4ea0fddaabac364f413ee90256824f4612047095e13151ad6cff3f25f1"
+      },
+      "mutations/4/results.xml": {
+        "bytes": 1423,
+        "sha256": "161e59e1d1c2713e5b0413d186372dbe2757342bd722939564bdc932490bf46a"
+      },
+      "mutations/4/simulation.log": {
+        "bytes": 8810,
+        "sha256": "c5ee4068383b1d749bafd676f4b1fcca0d8bf89acd514c40e12930966f591cd7"
+      },
+      "mutations/4/result.json": {
+        "bytes": 9791,
+        "sha256": "939afc98dbdb3123cc605486ca91c7efe7bf49726fddf5e1c0959f988e762ed2"
+      },
+      "mutations/5/mutated.v": {
+        "bytes": 9162,
+        "sha256": "67f4e447298769927d50a21a25a941ac47e86644a3df061dcce88bc83770342d"
+      },
+      "mutations/5/results.xml": {
+        "bytes": 2186,
+        "sha256": "00f0952a5c355b67fde3a55c006c2b5cc64d3da5995a191f3d5d5fe72da41143"
+      },
+      "mutations/5/simulation.log": {
+        "bytes": 10487,
+        "sha256": "65ab95a41d51017b837912a35f74ed6403e369e085524ed89d57149635edbe21"
+      },
+      "mutations/5/result.json": {
+        "bytes": 9858,
+        "sha256": "601f7e231fe21ea3fe436ab4268255300d7abead9d25551a60a84d99c3337c66"
+      },
+      "mutations/6/mutated.v": {
+        "bytes": 9175,
+        "sha256": "c1027d2d820c59bc21d18603c67b8b0ad52e9ac981e9e37de089fba567943e92"
+      },
+      "mutations/6/results.xml": {
+        "bytes": 2504,
+        "sha256": "aef42713962e1f6b390d59e67f8b54707d6ae08c1d74853fab67ba91b9a3f38f"
+      },
+      "mutations/6/simulation.log": {
+        "bytes": 12670,
+        "sha256": "b29a3a819e10735922de7dc831c132dac2cdd2e096d07aa63b88e3225256b318"
+      },
+      "mutations/6/result.json": {
+        "bytes": 9858,
+        "sha256": "4747bd3bcf42aab951d9c5e218ea66abba26fa3697b6cc8bf596b697158b4f62"
+      },
+      "mutations/7/mutated.v": {
+        "bytes": 9197,
+        "sha256": "61c581eebeecd8a3ef1f5ee8f8bfdd250c66e8b1eeafded6cc5f5e4db5463a1b"
+      },
+      "mutations/7/results.xml": {
+        "bytes": 1934,
+        "sha256": "4587626d800c3661b1eb22b2a4e5a12e89854eb63844484ddc821f6f88df41b2"
+      },
+      "mutations/7/simulation.log": {
+        "bytes": 9334,
+        "sha256": "1b9d50c1f5c08c7b6e8ced41fb141a3576f910c6f33e19bf27274ba331ba2318"
+      },
+      "mutations/7/result.json": {
+        "bytes": 9856,
+        "sha256": "7dd1a1fe923699bd33826a69e22c17df08b684d3fc689d663b9e6125c76dd05b"
+      },
+      "mutations/8/mutated.v": {
+        "bytes": 9168,
+        "sha256": "42760ebc9ed373cd0d5699c7cb37ade0bfa371babf2d2d1a61bc2344e9435a1d"
+      },
+      "mutations/8/results.xml": {
+        "bytes": 2500,
+        "sha256": "b30e976362362a3a025321bccb80411ed88f7ec23997f6172a048e34fe61072e"
+      },
+      "mutations/8/simulation.log": {
+        "bytes": 12670,
+        "sha256": "a42206568db9a78a8ec77a16f30e062f363dad46463f5fd44b1f8a82605925eb"
+      },
+      "mutations/8/result.json": {
+        "bytes": 9858,
+        "sha256": "b3eeea4b2e758d8989115109e0d0c437cda4bbd2d1099c01a67ee0adaf686c4e"
+      },
+      "mutations/9/mutated.v": {
+        "bytes": 9149,
+        "sha256": "efd2a923b6087de525cdba7430b04bea2318bfbd7e2028e87e428a148ccae838"
+      },
+      "mutations/9/results.xml": {
+        "bytes": 1918,
+        "sha256": "cfa29b67e37f02a9945ff0f9e1b07cb9f1e30afd920278b375250bc2f51d86b2"
+      },
+      "mutations/9/simulation.log": {
+        "bytes": 9904,
+        "sha256": "65edc385475fdfe03ac729a205ac66a04f7544c7a7be86d048e0bd01b92709e2"
+      },
+      "mutations/9/result.json": {
+        "bytes": 9856,
+        "sha256": "1e2c3abdd13c1ca35815ce6e68b1aeb85e31617c90f3e00998068bd6c31f7292"
+      },
+      "pytest.log": {
+        "bytes": 110,
+        "sha256": "e714660c435af6385f275b82d44d61220514cb05f927773524406fabaf09f1e5"
+      },
+      "ruff.log": {
+        "bytes": 19,
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      }
+    }
+  },
+  "primary_sources": [
+    {
+      "url": "https://www.intel.com/content/dam/support/us/en/programmable/support-resources/fpga-wiki/asset03/pci-express-base-r2.1.pdf",
+      "basis": "Historical Base2.1 sections3.3/3.4 and FC figure: three classes, Init1/Init2 exchange, cumulative credit fields and existing DLLP CRC convention. Indexed source; direct full-PDF retrieval was unavailable in prior source review; no Gen3 qualification inferred."
+    },
+    {
+      "url": "https://cdrdv2-public.intel.com/655049/ug_pci_express.pdf",
+      "basis": "Endpoints advertise infinite completion credits and must manage admission of outgoing nonposted requests against real completion capacity."
+    },
+    {
+      "url": "https://www.intel.com/programmable/technical-pdfs/654304.pdf",
+      "basis": "Endpoint completion credits are infinite while actual completion buffer capacity is finite; independent admission bookkeeping is necessary."
+    }
+  ],
+  "implementation": {
+    "top": "soc_pcie_buffered_flow_packets",
+    "finite_classes": [
+      "P",
+      "NP"
+    ],
+    "slots_per_class": 2,
+    "max_tlp_bytes": 32,
+    "max_encoded_bytes": 38,
+    "initial_header_credits_per_finite_class": 2,
+    "initial_data_credits_per_finite_class": 4,
+    "bytes_per_data_credit": 16,
+    "separate_dllp_buffer_bytes": 6,
+    "unadvertised_staging_bytes": 38,
+    "cumulative_header_bits": 8,
+    "cumulative_data_bits": 12,
+    "completion_mode": "Infinite Cpl credit fields only in integrated completer-only mode; no outbound request input, requester_admission_o=0 and outstanding_requests_o=0. Unexpected inbound Cpl is discarded with sticky protocol/recovery notification.",
+    "release": "Physical slot freed on actual downstream accepted/duplicate/rejected result. Only NEW accepted sequence increases cumulative allocated credits; sent snapshots change only at accepted FC EOP.",
+    "init": "Actual P/NP/Cpl Init1 and Init2 triplets; local done requires completed local Init2 plus peer confirmation. RX eligibility after local Init2/peer initial classes permits TLP as confirmation alternative. Whole-frame fair FC versus ACK/TLP/replay arbitration.",
+    "reset": "Link down or retrain_done restarts local sequence/credit/replay epoch; training pauses new frames and permits current frame to finish."
+  },
+  "tested": {
+    "rtl_cases": 13,
+    "native_cases": 13,
+    "max_size_packets_in_rollover_case": 2050,
+    "all_three_finite_classes": "Standalone queue component only; finite Cpl is not endpoint compliance.",
+    "integrated": "Real LCRC/sequence/APB chain; ACK/NAK, no repeated write, CRC/future/malformed/oversize/no-credit-mint, unexpected-Cpl quarantine, DLLP bypass under pressure, init by TLP, stalls/reset/training."
+  },
+  "boundaries": {
+    "standalone_only": true,
+    "soc_top_modified_by_this_method": false,
+    "full_pcie_controller_qualification": false,
+    "phy_ltssm_pcs": false,
+    "sdf_or_timing_closure": false,
+    "formal_equivalence": false,
+    "default_capacity": "32-byte TLP development boundary inherited from frozen endpoint. This does not establish minimum-MPS PCIe endpoint interoperability. Larger parameter settings have not been mapped/replayed by this capture.",
+    "ingress": "Project-local ready/valid byte frames can backpressure; this does not establish a physical link ingress/elastic-buffer contract.",
+    "timers": "FC refresh uses explicit project-clock cycles; no link-speed-calibrated update/init timing compliance is asserted.",
+    "unsupported": "No requester admission/NP origination, VC>0, ECRC/TD, TLP prefixes or arbitrary completion handling.",
+    "malformed": "Unsupported/oversize/structurally invalid frames are quarantined with recovery request; they are not claimed to receive all normative error-reporting behavior.",
+    "native_diagnostics": "Unmodified IHP models report unsupported timing checks, and the installed cocotb/VVP launcher emits an executable-path diagnostic. All actual XML cases and native process statuses pass; no timing-check execution is claimed."
+  }
+}

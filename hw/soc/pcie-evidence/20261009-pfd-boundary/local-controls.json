@@ -1,0 +1,69 @@
+{
+  "status": "PASS_NAMED_BOUNDARY_FIVE_FAULTS_AND_MATCHED_PERMUTATION",
+  "positive": {
+    "status": "PASS_NAMED_PFD_INSTANCE_BOUNDARY",
+    "ports": [
+      "sub",
+      "vdd",
+      "ref",
+      "vss",
+      "up",
+      "fb",
+      "down",
+      "reset",
+      "wire_cref"
+    ],
+    "binding": {
+      "sub": "sub",
+      "vdd": "div_avdd",
+      "ref": "fb",
+      "vss": "avss",
+      "up": "up",
+      "fb": "ref",
+      "down": "down",
+      "reset": "reset",
+      "wire_cref": "pfd_wire_cref"
+    },
+    "serial_phy_complete": false
+  },
+  "rejected": [
+    {
+      "swapped": [
+        "vss",
+        "fb"
+      ],
+      "error": "PFD named boundary mismatch: {\"fb\": {\"actual\": \"avss\", \"expected\": \"ref\"}, \"vss\": {\"actual\": \"ref\", \"expected\": \"avss\"}}"
+    },
+    {
+      "swapped": [
+        "up",
+        "reset"
+      ],
+      "error": "PFD named boundary mismatch: {\"reset\": {\"actual\": \"up\", \"expected\": \"reset\"}, \"up\": {\"actual\": \"reset\", \"expected\": \"up\"}}"
+    },
+    {
+      "swapped": [
+        "ref",
+        "fb"
+      ],
+      "error": "PFD named boundary mismatch: {\"fb\": {\"actual\": \"fb\", \"expected\": \"ref\"}, \"ref\": {\"actual\": \"ref\", \"expected\": \"fb\"}}"
+    },
+    {
+      "swapped": [
+        "sub",
+        "vdd"
+      ],
+      "error": "PFD named boundary mismatch: {\"sub\": {\"actual\": \"div_avdd\", \"expected\": \"sub\"}, \"vdd\": {\"actual\": \"sub\", \"expected\": \"div_avdd\"}}"
+    },
+    {
+      "case": "actual_previous_port_order_bug",
+      "error": "PFD named boundary mismatch: {\"down\": {\"actual\": \"up\", \"expected\": \"down\"}, \"fb\": {\"actual\": \"avss\", \"expected\": \"ref\"}, \"reset\": {\"actual\": \"down\", \"expected\": \"reset\"}, \"up\": {\"actual\": \"reset\", \"expected\": \"up\"}, \"vss\": {\"actual\": \"ref\", \"expected\": \"avss\"}}"
+    }
+  ],
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-loaded740-local-bindfix-20261009/includes01/loop740-01.spice": "a9964c9b949d8b335ec3a4152299a14b1afcf1b22b1e1c39300bc9444c3c01eb",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-loaded740-local-bindfix-20261009/includes01/pfd255-wire01.spice": "4c414fe875dcaafc4bd74d03a268439d7f14650d15eed6c293727334501d37ff",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_pfd_instance.py": "e73dd2ba61e515d7c9b5aac9331b693bfc5269f93b67216d56c07ecca55344c9",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-loaded740-local-bindfix-20261009/binding-controls01.py": "9706106cc11624f78a7140db3bab952b0862c2fc5a8441e89a60c43e001a91aa"
+  }
+}

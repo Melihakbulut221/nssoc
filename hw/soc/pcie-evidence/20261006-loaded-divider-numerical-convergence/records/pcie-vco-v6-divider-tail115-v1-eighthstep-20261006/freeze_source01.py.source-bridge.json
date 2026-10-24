@@ -1,0 +1,762 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-quarterstep-20261006/freeze_source01.py",
+    "bytes": 3099,
+    "sha256": "05a56a25ae28c00b1bf5f808c71f2d80c2f44e03475c5c1ef89de1246a90584b"
+  },
+  "child": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-eighthstep-20261006/freeze_source01.py",
+    "bytes": 3671,
+    "sha256": "71056a753970a569f1ffe0f6a291a7489ec5e602a324eb1d70781b7f6485ee5a"
+  },
+  "full_diff": "--- \n+++ \n@@ -2,7 +2,7 @@\n # SPDX-License-Identifier: Apache-2.0\n from pathlib import Path\n import hashlib,json,shutil,sys\n-R=Path.cwd();B=Path(__file__).resolve().parent;L=B.parent/'pcie-vco-v6-divider-tail115-v1-halfstep-20261006';F=B.parent/'pcie-tail115-layout-wire-loaded-finite-20261006'\n+R=Path.cwd();B=Path(__file__).resolve().parent;L=B.parent/'pcie-vco-v6-divider-tail115-v1-quarterstep-20261006';F=B.parent/'pcie-tail115-layout-wire-loaded-finite-20261006'\n def pin(p):\n  p=Path(p)\n  with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n@@ -11,11 +11,13 @@\n paths=set(map(Path,old['pins']))\n paths.update([L/'source-freeze01.json',L/'source-only-peer01-root.json',L/'launch-runtime-freeze01.json',L/'validation-06-01.json',L/'members-06-01.json',L/'review-06-01.json',L/'release-06-01.json',F/'event-boundary-diagnosis06.json',F/'event-diagnosis-summary06.json'])\n assert json.loads((L/'release-06-01.json').read_text())['status']=='PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\n-control=json.loads((B/'derivative-controls01.json').read_text());assert control['status']=='PASS_QUARTERSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS'and len(control['checks'])==7\n+control=json.loads((B/'derivative-controls01.json').read_text());assert control['status']=='PASS_EIGHTHSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS'and len(control['checks'])==7\n+numerical=json.loads((B/'numerical-controls01.json').read_text());assert numerical['status']=='PASS_ACTUAL_ADDITIONAL_NUMERICAL_GATE_CONTROLS' and len(numerical['checks'])==12\n+assert all(pin(p)==v for p,v in numerical['inputs'].items())\n for root in [B,L/'pytest-handoff01',L/'pytest01']:\n  paths.update(p for p in root.rglob('*')if p.is_file()and '__pycache__'not in p.parts and p.suffix!='.pyc')\n paths.update([R/'hw/soc/tools/cocotb-venv/bin/python',R/'hw/soc/tools/cocotb-venv/pyvenv.cfg'])\n-N=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-halfstep-06-01');r=json.loads((N/'result.json').read_text());paths.update(Path(p)for p in r['inputs']);paths.update([N/'result.json',N/'wave.raw.gz'])\n-assert not Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-quarterstep-06-01').exists()\n-record=dict(status='FROZEN_SAME_PHYSICS_455_QUARTERSTEP_COMPLETE_34NS_PENDING_PEER',pins={str(p.absolute()):pin(p)for p in sorted(paths)},new_sources={str(p.absolute()):pin(p)for p in [B/'characterize_quarterstep01.py',B/'launch_probe01.py',B/'seal_probe01.py',B/'compare_saved_steps01.py']},parent_source_freeze=pin(L/'source-freeze01.json'),actual_derivative_controls=control,inherited_controls=dict(source=old['inherited_controls']['source'],handoff=old['inherited_controls']['handoff']),predeclared=dict(vctrl=.6,stop_s=34e-9,step_s=1.25e-12,window_s=[4e-9,34e-9],intrinsics=455,HBT=64,contacts=31,vectors=956,wire_R=1271,wire_C=1414,CPU=10,AS=2*1024**3,own_limit=256*1024**2,entry_floor=1024**3,shared_floor=512*1024**2,receipt_reserve=2*1024**2,elapsed_watchdog=None),acceptance_changes=False,physical_changes=False,resource_reason='Full2.5ps compressed raw96.93MB; doubled full1.25ps raw does not fit128MiB. Root explicitly approved separately bounded256MiB namespace, keeping AS/shared floors unchanged.',scope='Source-only full34ns restart fromtime0 with unchanged devices/bias/wires/initialization/455safety/strictcount predicates. Original5ps and2.5ps FAIL/raw retained. Fixedordinal and period diagnostics add no acceptance override.')\n+N=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-quarterstep-06-01');r=json.loads((N/'result.json').read_text());paths.update(Path(p)for p in r['inputs']);paths.update([N/'result.json',N/'wave.raw.gz'])\n+assert not Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eighthstep-06-01').exists()\n+record=dict(status='FROZEN_SAME_PHYSICS_455_EIGHTHSTEP_COMPLETE_34NS_PENDING_PEER',pins={str(p.absolute()):pin(p)for p in sorted(paths)},new_sources={str(p.absolute()):pin(p)for p in [B/'characterize_eighthstep01.py',B/'launch_probe01.py',B/'seal_probe01.py',B/'compare_saved_steps01.py',B/'convergence_policy01.py']},parent_source_freeze=pin(L/'source-freeze01.json'),actual_derivative_controls=control,actual_numerical_controls=pin(B/'numerical-controls01.json'),numerical_predeclaration=pin(B/'numerical-policy01.json'),inherited_controls=dict(source=old['inherited_controls']['source'],handoff=old['inherited_controls']['handoff']),predeclared=dict(vctrl=.6,stop_s=34e-9,step_s=6.25e-13,window_s=[4e-9,34e-9],intrinsics=455,HBT=64,contacts=31,vectors=956,wire_R=1271,wire_C=1414,CPU=10,AS=2*1024**3,own_limit=512*1024**2,entry_floor=1024**3,shared_floor=512*1024**2,receipt_reserve=2*1024**2,elapsed_watchdog=None),acceptance_changes=False,physical_changes=False,resource_reason='Full1.25ps compressed raw193.62MB; doubled full0.625ps raw does not fit256MiB. Root explicitly approved separately bounded512MiB namespace, keeping AS/shared floors unchanged.',scope='Source-only full34ns restart fromtime0 with unchanged devices/bias/wires/initialization/455safety/strictcount predicates. Original5ps/2.5ps FAIL and1.25ps finitePASS/raw retained. Original functional criteria unchanged. Separate predeclared100ppm and50ps unaligned matched-edge screen applies only adjacent1.25/0.625ps full34ns openloop captures, with fixed originalVCOordinal mapping and no phaseoffset fit.')\n (B/'source-freeze01.json').write_text(json.dumps(record,indent=2)+'\\n');print(len(paths),pin(B/'source-freeze01.json'))\n",
+  "opcodes": [
+    {
+      "tag": "equal",
+      "a0": 0,
+      "a1": 235,
+      "b0": 0,
+      "b1": 235,
+      "old": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nfrom pathlib import Path\nimport hashlib,json,shutil,sys\nR=Path.cwd();B=Path(__file__).resolve().parent;L=B.parent/'pcie-vco-v6-divider-tail115-v1-",
+      "new": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nfrom pathlib import Path\nimport hashlib,json,shutil,sys\nR=Path.cwd();B=Path(__file__).resolve().parent;L=B.parent/'pcie-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "replace",
+      "a0": 235,
+      "a1": 236,
+      "b0": 235,
+      "b1": 237,
+      "old": "h",
+      "new": "qu"
+    },
+    {
+      "tag": "equal",
+      "a0": 236,
+      "a1": 237,
+      "b0": 237,
+      "b1": 238,
+      "old": "a",
+      "new": "a"
+    },
+    {
+      "tag": "replace",
+      "a0": 237,
+      "a1": 239,
+      "b0": 238,
+      "b1": 242,
+      "old": "lf",
+      "new": "rter"
+    },
+    {
+      "tag": "equal",
+      "a0": 239,
+      "a1": 1107,
+      "b0": 242,
+      "b1": 1110,
+      "old": "step-20261006';F=B.parent/'pcie-tail115-layout-wire-loaded-finite-20261006'\ndef pin(p):\n p=Path(p)\n with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nassert not(B/'source-freeze01.json').exists()\nold=json.loads((L/'source-freeze01.json').read_text());assert all(pin(p)==v for p,v in old['pins'].items())\npaths=set(map(Path,old['pins']))\npaths.update([L/'source-freeze01.json',L/'source-only-peer01-root.json',L/'launch-runtime-freeze01.json',L/'validation-06-01.json',L/'members-06-01.json',L/'review-06-01.json',L/'release-06-01.json',F/'event-boundary-diagnosis06.json',F/'event-diagnosis-summary06.json'])\nassert json.loads((L/'release-06-01.json').read_text())['status']=='PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\ncontrol=json.loads((B/'derivative-controls01.json').read_text());assert control['status']=='PASS_",
+      "new": "step-20261006';F=B.parent/'pcie-tail115-layout-wire-loaded-finite-20261006'\ndef pin(p):\n p=Path(p)\n with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nassert not(B/'source-freeze01.json').exists()\nold=json.loads((L/'source-freeze01.json').read_text());assert all(pin(p)==v for p,v in old['pins'].items())\npaths=set(map(Path,old['pins']))\npaths.update([L/'source-freeze01.json',L/'source-only-peer01-root.json',L/'launch-runtime-freeze01.json',L/'validation-06-01.json',L/'members-06-01.json',L/'review-06-01.json',L/'release-06-01.json',F/'event-boundary-diagnosis06.json',F/'event-diagnosis-summary06.json'])\nassert json.loads((L/'release-06-01.json').read_text())['status']=='PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\ncontrol=json.loads((B/'derivative-controls01.json').read_text());assert control['status']=='PASS_"
+    },
+    {
+      "tag": "replace",
+      "a0": 1107,
+      "a1": 1111,
+      "b0": 1110,
+      "b1": 1114,
+      "old": "QUAR",
+      "new": "EIGH"
+    },
+    {
+      "tag": "equal",
+      "a0": 1111,
+      "a1": 1112,
+      "b0": 1114,
+      "b1": 1115,
+      "old": "T",
+      "new": "T"
+    },
+    {
+      "tag": "replace",
+      "a0": 1112,
+      "a1": 1114,
+      "b0": 1115,
+      "b1": 1116,
+      "old": "ER",
+      "new": "H"
+    },
+    {
+      "tag": "equal",
+      "a0": 1114,
+      "a1": 1188,
+      "b0": 1116,
+      "b1": 1190,
+      "old": "STEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS'and len(control['checks'])==7",
+      "new": "STEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS'and len(control['checks'])==7"
+    },
+    {
+      "tag": "insert",
+      "a0": 1188,
+      "a1": 1188,
+      "b0": 1190,
+      "b1": 1427,
+      "old": "",
+      "new": "\nnumerical=json.loads((B/'numerical-controls01.json').read_text());assert numerical['status']=='PASS_ACTUAL_ADDITIONAL_NUMERICAL_GATE_CONTROLS' and len(numerical['checks'])==12\nassert all(pin(p)==v for p,v in numerical['inputs'].items())"
+    },
+    {
+      "tag": "equal",
+      "a0": 1188,
+      "a1": 1493,
+      "b0": 1427,
+      "b1": 1732,
+      "old": "\nfor root in [B,L/'pytest-handoff01',L/'pytest01']:\n paths.update(p for p in root.rglob('*')if p.is_file()and '__pycache__'not in p.parts and p.suffix!='.pyc')\npaths.update([R/'hw/soc/tools/cocotb-venv/bin/python',R/'hw/soc/tools/cocotb-venv/pyvenv.cfg'])\nN=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-",
+      "new": "\nfor root in [B,L/'pytest-handoff01',L/'pytest01']:\n paths.update(p for p in root.rglob('*')if p.is_file()and '__pycache__'not in p.parts and p.suffix!='.pyc')\npaths.update([R/'hw/soc/tools/cocotb-venv/bin/python',R/'hw/soc/tools/cocotb-venv/pyvenv.cfg'])\nN=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "replace",
+      "a0": 1493,
+      "a1": 1494,
+      "b0": 1732,
+      "b1": 1734,
+      "old": "h",
+      "new": "qu"
+    },
+    {
+      "tag": "equal",
+      "a0": 1494,
+      "a1": 1495,
+      "b0": 1734,
+      "b1": 1735,
+      "old": "a",
+      "new": "a"
+    },
+    {
+      "tag": "replace",
+      "a0": 1495,
+      "a1": 1497,
+      "b0": 1735,
+      "b1": 1739,
+      "old": "lf",
+      "new": "rter"
+    },
+    {
+      "tag": "equal",
+      "a0": 1497,
+      "a1": 1702,
+      "b0": 1739,
+      "b1": 1944,
+      "old": "step-06-01');r=json.loads((N/'result.json').read_text());paths.update(Path(p)for p in r['inputs']);paths.update([N/'result.json',N/'wave.raw.gz'])\nassert not Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-",
+      "new": "step-06-01');r=json.loads((N/'result.json').read_text());paths.update(Path(p)for p in r['inputs']);paths.update([N/'result.json',N/'wave.raw.gz'])\nassert not Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "replace",
+      "a0": 1702,
+      "a1": 1706,
+      "b0": 1944,
+      "b1": 1948,
+      "old": "quar",
+      "new": "eigh"
+    },
+    {
+      "tag": "equal",
+      "a0": 1706,
+      "a1": 1707,
+      "b0": 1948,
+      "b1": 1949,
+      "old": "t",
+      "new": "t"
+    },
+    {
+      "tag": "replace",
+      "a0": 1707,
+      "a1": 1709,
+      "b0": 1949,
+      "b1": 1950,
+      "old": "er",
+      "new": "h"
+    },
+    {
+      "tag": "equal",
+      "a0": 1709,
+      "a1": 1775,
+      "b0": 1950,
+      "b1": 2016,
+      "old": "step-06-01').exists()\nrecord=dict(status='FROZEN_SAME_PHYSICS_455_",
+      "new": "step-06-01').exists()\nrecord=dict(status='FROZEN_SAME_PHYSICS_455_"
+    },
+    {
+      "tag": "replace",
+      "a0": 1775,
+      "a1": 1779,
+      "b0": 2016,
+      "b1": 2020,
+      "old": "QUAR",
+      "new": "EIGH"
+    },
+    {
+      "tag": "equal",
+      "a0": 1779,
+      "a1": 1780,
+      "b0": 2020,
+      "b1": 2021,
+      "old": "T",
+      "new": "T"
+    },
+    {
+      "tag": "replace",
+      "a0": 1780,
+      "a1": 1782,
+      "b0": 2021,
+      "b1": 2022,
+      "old": "ER",
+      "new": "H"
+    },
+    {
+      "tag": "equal",
+      "a0": 1782,
+      "a1": 1932,
+      "b0": 2022,
+      "b1": 2172,
+      "old": "STEP_COMPLETE_34NS_PENDING_PEER',pins={str(p.absolute()):pin(p)for p in sorted(paths)},new_sources={str(p.absolute()):pin(p)for p in [B/'characterize_",
+      "new": "STEP_COMPLETE_34NS_PENDING_PEER',pins={str(p.absolute()):pin(p)for p in sorted(paths)},new_sources={str(p.absolute()):pin(p)for p in [B/'characterize_"
+    },
+    {
+      "tag": "replace",
+      "a0": 1932,
+      "a1": 1936,
+      "b0": 2172,
+      "b1": 2176,
+      "old": "quar",
+      "new": "eigh"
+    },
+    {
+      "tag": "equal",
+      "a0": 1936,
+      "a1": 1937,
+      "b0": 2176,
+      "b1": 2177,
+      "old": "t",
+      "new": "t"
+    },
+    {
+      "tag": "replace",
+      "a0": 1937,
+      "a1": 1939,
+      "b0": 2177,
+      "b1": 2178,
+      "old": "er",
+      "new": "h"
+    },
+    {
+      "tag": "equal",
+      "a0": 1939,
+      "a1": 2014,
+      "b0": 2178,
+      "b1": 2253,
+      "old": "step01.py',B/'launch_probe01.py',B/'seal_probe01.py',B/'compare_saved_steps",
+      "new": "step01.py',B/'launch_probe01.py',B/'seal_probe01.py',B/'compare_saved_steps"
+    },
+    {
+      "tag": "insert",
+      "a0": 2014,
+      "a1": 2014,
+      "b0": 2253,
+      "b1": 2281,
+      "old": "",
+      "new": "01.py',B/'convergence_policy"
+    },
+    {
+      "tag": "equal",
+      "a0": 2014,
+      "a1": 2108,
+      "b0": 2281,
+      "b1": 2375,
+      "old": "01.py']},parent_source_freeze=pin(L/'source-freeze01.json'),actual_derivative_controls=control",
+      "new": "01.py']},parent_source_freeze=pin(L/'source-freeze01.json'),actual_derivative_controls=control"
+    },
+    {
+      "tag": "insert",
+      "a0": 2108,
+      "a1": 2108,
+      "b0": 2375,
+      "b1": 2494,
+      "old": "",
+      "new": ",actual_numerical_controls=pin(B/'numerical-controls01.json'),numerical_predeclaration=pin(B/'numerical-policy01.json')"
+    },
+    {
+      "tag": "equal",
+      "a0": 2108,
+      "a1": 2268,
+      "b0": 2494,
+      "b1": 2654,
+      "old": ",inherited_controls=dict(source=old['inherited_controls']['source'],handoff=old['inherited_controls']['handoff']),predeclared=dict(vctrl=.6,stop_s=34e-9,step_s=",
+      "new": ",inherited_controls=dict(source=old['inherited_controls']['source'],handoff=old['inherited_controls']['handoff']),predeclared=dict(vctrl=.6,stop_s=34e-9,step_s="
+    },
+    {
+      "tag": "replace",
+      "a0": 2268,
+      "a1": 2269,
+      "b0": 2654,
+      "b1": 2655,
+      "old": "1",
+      "new": "6"
+    },
+    {
+      "tag": "equal",
+      "a0": 2269,
+      "a1": 2275,
+      "b0": 2655,
+      "b1": 2661,
+      "old": ".25e-1",
+      "new": ".25e-1"
+    },
+    {
+      "tag": "replace",
+      "a0": 2275,
+      "a1": 2276,
+      "b0": 2661,
+      "b1": 2662,
+      "old": "2",
+      "new": "3"
+    },
+    {
+      "tag": "equal",
+      "a0": 2276,
+      "a1": 2399,
+      "b0": 2662,
+      "b1": 2785,
+      "old": ",window_s=[4e-9,34e-9],intrinsics=455,HBT=64,contacts=31,vectors=956,wire_R=1271,wire_C=1414,CPU=10,AS=2*1024**3,own_limit=",
+      "new": ",window_s=[4e-9,34e-9],intrinsics=455,HBT=64,contacts=31,vectors=956,wire_R=1271,wire_C=1414,CPU=10,AS=2*1024**3,own_limit="
+    },
+    {
+      "tag": "insert",
+      "a0": 2399,
+      "a1": 2399,
+      "b0": 2785,
+      "b1": 2787,
+      "old": "",
+      "new": "51"
+    },
+    {
+      "tag": "equal",
+      "a0": 2399,
+      "a1": 2400,
+      "b0": 2787,
+      "b1": 2788,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "delete",
+      "a0": 2400,
+      "a1": 2402,
+      "b0": 2788,
+      "b1": 2788,
+      "old": "56",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2402,
+      "a1": 2574,
+      "b0": 2788,
+      "b1": 2960,
+      "old": "*1024**2,entry_floor=1024**3,shared_floor=512*1024**2,receipt_reserve=2*1024**2,elapsed_watchdog=None),acceptance_changes=False,physical_changes=False,resource_reason='Full",
+      "new": "*1024**2,entry_floor=1024**3,shared_floor=512*1024**2,receipt_reserve=2*1024**2,elapsed_watchdog=None),acceptance_changes=False,physical_changes=False,resource_reason='Full"
+    },
+    {
+      "tag": "insert",
+      "a0": 2574,
+      "a1": 2574,
+      "b0": 2960,
+      "b1": 2962,
+      "old": "",
+      "new": "1."
+    },
+    {
+      "tag": "equal",
+      "a0": 2574,
+      "a1": 2575,
+      "b0": 2962,
+      "b1": 2963,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "delete",
+      "a0": 2575,
+      "a1": 2576,
+      "b0": 2963,
+      "b1": 2963,
+      "old": ".",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2576,
+      "a1": 2594,
+      "b0": 2963,
+      "b1": 2981,
+      "old": "5ps compressed raw",
+      "new": "5ps compressed raw"
+    },
+    {
+      "tag": "replace",
+      "a0": 2594,
+      "a1": 2597,
+      "b0": 2981,
+      "b1": 2982,
+      "old": "96.",
+      "new": "1"
+    },
+    {
+      "tag": "equal",
+      "a0": 2597,
+      "a1": 2599,
+      "b0": 2982,
+      "b1": 2984,
+      "old": "93",
+      "new": "93"
+    },
+    {
+      "tag": "insert",
+      "a0": 2599,
+      "a1": 2599,
+      "b0": 2984,
+      "b1": 2987,
+      "old": "",
+      "new": ".62"
+    },
+    {
+      "tag": "equal",
+      "a0": 2599,
+      "a1": 2615,
+      "b0": 2987,
+      "b1": 3003,
+      "old": "MB; doubled full",
+      "new": "MB; doubled full"
+    },
+    {
+      "tag": "replace",
+      "a0": 2615,
+      "a1": 2616,
+      "b0": 3003,
+      "b1": 3004,
+      "old": "1",
+      "new": "0"
+    },
+    {
+      "tag": "equal",
+      "a0": 2616,
+      "a1": 2617,
+      "b0": 3004,
+      "b1": 3005,
+      "old": ".",
+      "new": "."
+    },
+    {
+      "tag": "insert",
+      "a0": 2617,
+      "a1": 2617,
+      "b0": 3005,
+      "b1": 3006,
+      "old": "",
+      "new": "6"
+    },
+    {
+      "tag": "equal",
+      "a0": 2617,
+      "a1": 2638,
+      "b0": 3006,
+      "b1": 3027,
+      "old": "25ps raw does not fit",
+      "new": "25ps raw does not fit"
+    },
+    {
+      "tag": "delete",
+      "a0": 2638,
+      "a1": 2639,
+      "b0": 3027,
+      "b1": 3027,
+      "old": "1",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2639,
+      "a1": 2640,
+      "b0": 3027,
+      "b1": 3028,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "replace",
+      "a0": 2640,
+      "a1": 2641,
+      "b0": 3028,
+      "b1": 3030,
+      "old": "8",
+      "new": "56"
+    },
+    {
+      "tag": "equal",
+      "a0": 2641,
+      "a1": 2689,
+      "b0": 3030,
+      "b1": 3078,
+      "old": "MiB. Root explicitly approved separately bounded",
+      "new": "MiB. Root explicitly approved separately bounded"
+    },
+    {
+      "tag": "insert",
+      "a0": 2689,
+      "a1": 2689,
+      "b0": 3078,
+      "b1": 3080,
+      "old": "",
+      "new": "51"
+    },
+    {
+      "tag": "equal",
+      "a0": 2689,
+      "a1": 2690,
+      "b0": 3080,
+      "b1": 3081,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "delete",
+      "a0": 2690,
+      "a1": 2692,
+      "b0": 3081,
+      "b1": 3081,
+      "old": "56",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2692,
+      "a1": 2884,
+      "b0": 3081,
+      "b1": 3273,
+      "old": "MiB namespace, keeping AS/shared floors unchanged.',scope='Source-only full34ns restart fromtime0 with unchanged devices/bias/wires/initialization/455safety/strictcount predicates. Original5ps",
+      "new": "MiB namespace, keeping AS/shared floors unchanged.',scope='Source-only full34ns restart fromtime0 with unchanged devices/bias/wires/initialization/455safety/strictcount predicates. Original5ps"
+    },
+    {
+      "tag": "replace",
+      "a0": 2884,
+      "a1": 2888,
+      "b0": 3273,
+      "b1": 3274,
+      "old": " and",
+      "new": "/"
+    },
+    {
+      "tag": "equal",
+      "a0": 2888,
+      "a1": 2898,
+      "b0": 3274,
+      "b1": 3284,
+      "old": "2.5ps FAIL",
+      "new": "2.5ps FAIL"
+    },
+    {
+      "tag": "insert",
+      "a0": 2898,
+      "a1": 2898,
+      "b0": 3284,
+      "b1": 3305,
+      "old": "",
+      "new": " and1.25ps finitePASS"
+    },
+    {
+      "tag": "equal",
+      "a0": 2898,
+      "a1": 2913,
+      "b0": 3305,
+      "b1": 3320,
+      "old": "/raw retained. ",
+      "new": "/raw retained. "
+    },
+    {
+      "tag": "replace",
+      "a0": 2913,
+      "a1": 2914,
+      "b0": 3320,
+      "b1": 3493,
+      "old": "F",
+      "new": "Original functional criteria unchanged. Separate predeclared100ppm and50ps unaligned matched-edge screen applies only adjacent1.25/0.625ps full34ns openloop captures, with f"
+    },
+    {
+      "tag": "equal",
+      "a0": 2914,
+      "a1": 2918,
+      "b0": 3493,
+      "b1": 3497,
+      "old": "ixed",
+      "new": "ixed"
+    },
+    {
+      "tag": "insert",
+      "a0": 2918,
+      "a1": 2918,
+      "b0": 3497,
+      "b1": 3509,
+      "old": "",
+      "new": " originalVCO"
+    },
+    {
+      "tag": "equal",
+      "a0": 2918,
+      "a1": 2926,
+      "b0": 3509,
+      "b1": 3517,
+      "old": "ordinal ",
+      "new": "ordinal "
+    },
+    {
+      "tag": "insert",
+      "a0": 2926,
+      "a1": 2926,
+      "b0": 3517,
+      "b1": 3525,
+      "old": "",
+      "new": "mapping "
+    },
+    {
+      "tag": "equal",
+      "a0": 2926,
+      "a1": 2928,
+      "b0": 3525,
+      "b1": 3527,
+      "old": "an",
+      "new": "an"
+    },
+    {
+      "tag": "delete",
+      "a0": 2928,
+      "a1": 2951,
+      "b0": 3527,
+      "b1": 3527,
+      "old": "d period diagnostics ad",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2951,
+      "a1": 2956,
+      "b0": 3527,
+      "b1": 3532,
+      "old": "d no ",
+      "new": "d no "
+    },
+    {
+      "tag": "insert",
+      "a0": 2956,
+      "a1": 2956,
+      "b0": 3532,
+      "b1": 3534,
+      "old": "",
+      "new": "ph"
+    },
+    {
+      "tag": "equal",
+      "a0": 2956,
+      "a1": 2957,
+      "b0": 3534,
+      "b1": 3535,
+      "old": "a",
+      "new": "a"
+    },
+    {
+      "tag": "replace",
+      "a0": 2957,
+      "a1": 2959,
+      "b0": 3535,
+      "b1": 3536,
+      "old": "cc",
+      "new": "s"
+    },
+    {
+      "tag": "equal",
+      "a0": 2959,
+      "a1": 2960,
+      "b0": 3536,
+      "b1": 3537,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 2960,
+      "a1": 2961,
+      "b0": 3537,
+      "b1": 3542,
+      "old": "p",
+      "new": "offse"
+    },
+    {
+      "tag": "equal",
+      "a0": 2961,
+      "a1": 2962,
+      "b0": 3542,
+      "b1": 3543,
+      "old": "t",
+      "new": "t"
+    },
+    {
+      "tag": "delete",
+      "a0": 2962,
+      "a1": 2966,
+      "b0": 3543,
+      "b1": 3543,
+      "old": "ance",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2966,
+      "a1": 2967,
+      "b0": 3543,
+      "b1": 3544,
+      "old": " ",
+      "new": " "
+    },
+    {
+      "tag": "replace",
+      "a0": 2967,
+      "a1": 2972,
+      "b0": 3544,
+      "b1": 3545,
+      "old": "overr",
+      "new": "f"
+    },
+    {
+      "tag": "equal",
+      "a0": 2972,
+      "a1": 2973,
+      "b0": 3545,
+      "b1": 3546,
+      "old": "i",
+      "new": "i"
+    },
+    {
+      "tag": "replace",
+      "a0": 2973,
+      "a1": 2975,
+      "b0": 3546,
+      "b1": 3547,
+      "old": "de",
+      "new": "t"
+    },
+    {
+      "tag": "equal",
+      "a0": 2975,
+      "a1": 3099,
+      "b0": 3547,
+      "b1": 3671,
+      "old": ".')\n(B/'source-freeze01.json').write_text(json.dumps(record,indent=2)+'\\n');print(len(paths),pin(B/'source-freeze01.json'))\n",
+      "new": ".')\n(B/'source-freeze01.json').write_text(json.dumps(record,indent=2)+'\\n');print(len(paths),pin(B/'source-freeze01.json'))\n"
+    }
+  ]
+}

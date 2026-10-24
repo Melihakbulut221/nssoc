@@ -1,0 +1,581 @@
+{
+  "status": "VERIFIED_PHYSICAL_POWER_REPAIR_AND_BOUNDARY_DIAGNOSTICS_NOT_FULL_PLL_ACCEPTANCE",
+  "boundary": {
+    "status": "COMPLETE_THREE_BOUNDARY_POINTS_INDEPENDENTLY_REVIEWED",
+    "points": [
+      {
+        "case": "load150",
+        "status": "PASS_NATIVE_PHYSICAL91_COMPONENT_FINITE_POINT",
+        "checks": {
+          "input_8GHz": true,
+          "divide_by4": true,
+          "differential_swing": true
+        },
+        "safety": true
+      },
+      {
+        "case": "common110",
+        "status": "PASS_NATIVE_PHYSICAL91_COMPONENT_FINITE_POINT",
+        "checks": {
+          "input_8GHz": true,
+          "divide_by4": true,
+          "differential_swing": true
+        },
+        "safety": true
+      },
+      {
+        "case": "both",
+        "status": "PASS_NATIVE_PHYSICAL91_COMPONENT_FINITE_POINT",
+        "checks": {
+          "input_8GHz": true,
+          "divide_by4": true,
+          "differential_swing": true
+        },
+        "safety": true
+      }
+    ],
+    "full_phy_accepted": false,
+    "parent_accepted": false
+  },
+  "supply_boundary": {
+    "status": "COMPLETE_SUPPLY_BOUNDARY91_INDEPENDENTLY_REVIEWED",
+    "native_status": "FAIL_NATIVE_PHYSICAL91_COMPONENT_FINITE_POINT",
+    "checks": {
+      "input_8GHz": true,
+      "divide_by4": false,
+      "differential_swing": false
+    },
+    "electrical_passed": false,
+    "parent_accepted": false,
+    "full_phy_accepted": false
+  },
+  "physical": {
+    "supply03": {
+      "drc": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 3,
+        "categories": {
+          "'TM1.b'": 3
+        },
+        "category_count": 560,
+        "report_sha256": "b2782d9244cde4b9f3cef992c92c199dc3ecd3a21b4fb7f3b25d8deb8f6f4005",
+        "log_sha256": "153cd0573ac9fc2c706a0c42fca57eb04dffbcb474209e5720cc97362f629d19"
+      },
+      "hierarchical_lvs": "PASS within comparison scope",
+      "pipeline": "FAILED_WIDER_LOCAL_POWER_PHYSICAL_REPAIR"
+    },
+    "supply04": {
+      "drc": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "ab64591d2b58bcff4960e554eed531cf08680f084daf3f253698a854869a3707",
+        "log_sha256": "ab25a3dd2e9102871a38ae30b4870a01be0aca71ace845fd9de66feea4d21a67"
+      },
+      "hierarchical_lvs": "PASS within comparison scope",
+      "pipeline": "COMPLETE_WIDER_LOCAL_POWER_PHYSICAL_REPAIR_REQUIRES_RESISTANCE_COMPARISON_AND_NATIVE_TRANSIENT",
+      "power_paths": [
+        {
+          "macro": "vco",
+          "port": "AVDD",
+          "net": "vco_avdd",
+          "old_ohm": 5.939623999999999,
+          "new_ohm": 3.878524,
+          "delta_ohm": -2.0610999999999993
+        },
+        {
+          "macro": "vco",
+          "port": "AVSS",
+          "net": "avss",
+          "old_ohm": 4.717764,
+          "new_ohm": 3.423734,
+          "delta_ohm": -1.2940299999999998
+        },
+        {
+          "macro": "vco",
+          "port": "SUB",
+          "net": "sub",
+          "old_ohm": 5.573166,
+          "new_ohm": 3.703836,
+          "delta_ohm": -1.8693299999999997
+        },
+        {
+          "macro": "div1",
+          "port": "DIV_AVDD",
+          "net": "div_avdd",
+          "old_ohm": 4.376237,
+          "new_ohm": 3.067447,
+          "delta_ohm": -1.3087899999999997
+        },
+        {
+          "macro": "div1",
+          "port": "AVSS",
+          "net": "avss",
+          "old_ohm": 4.031467,
+          "new_ohm": 2.9144370000000004,
+          "delta_ohm": -1.1170299999999997
+        },
+        {
+          "macro": "div1",
+          "port": "SUB",
+          "net": "sub",
+          "old_ohm": 4.625297,
+          "new_ohm": 3.124747,
+          "delta_ohm": -1.5005499999999996
+        },
+        {
+          "macro": "gain",
+          "port": "avdd",
+          "net": "div_avdd",
+          "old_ohm": 4.072087,
+          "new_ohm": 2.860717,
+          "delta_ohm": -1.2113699999999996
+        },
+        {
+          "macro": "gain",
+          "port": "avss",
+          "net": "avss",
+          "old_ohm": 3.7284170000000003,
+          "new_ohm": 2.685417,
+          "delta_ohm": -1.0430000000000001
+        },
+        {
+          "macro": "gain",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 4.310147,
+          "new_ohm": 2.9304170000000003,
+          "delta_ohm": -1.3797299999999995
+        },
+        {
+          "macro": "div2",
+          "port": "DIV_AVDD",
+          "net": "div_avdd",
+          "old_ohm": 3.991237,
+          "new_ohm": 2.682447,
+          "delta_ohm": -1.3087900000000001
+        },
+        {
+          "macro": "div2",
+          "port": "AVSS",
+          "net": "avss",
+          "old_ohm": 3.6464670000000003,
+          "new_ohm": 2.5294470000000002,
+          "delta_ohm": -1.1170200000000001
+        },
+        {
+          "macro": "div2",
+          "port": "SUB",
+          "net": "sub",
+          "old_ohm": 4.240297,
+          "new_ohm": 2.739747,
+          "delta_ohm": -1.50055
+        },
+        {
+          "macro": "rx",
+          "port": "avss",
+          "net": "avss",
+          "old_ohm": 4.5791640000000005,
+          "new_ohm": 3.8565139999999998,
+          "delta_ohm": -0.7226500000000007
+        },
+        {
+          "macro": "rx",
+          "port": "cvdd",
+          "net": "core_vdd",
+          "old_ohm": 3.61863,
+          "new_ohm": 2.84461,
+          "delta_ohm": -0.7740200000000002
+        },
+        {
+          "macro": "rx",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 5.442266,
+          "new_ohm": 4.565516,
+          "delta_ohm": -0.8767500000000004
+        },
+        {
+          "macro": "count",
+          "port": "VDD",
+          "net": "core_vdd",
+          "old_ohm": 12.0333,
+          "new_ohm": 12.0333,
+          "delta_ohm": 0.0
+        },
+        {
+          "macro": "count",
+          "port": "VSS",
+          "net": "avss",
+          "old_ohm": 12.989279999999999,
+          "new_ohm": 12.989279999999999,
+          "delta_ohm": 0.0
+        },
+        {
+          "macro": "level",
+          "port": "avdd",
+          "net": "div_avdd",
+          "old_ohm": 4.884104,
+          "new_ohm": 3.348954,
+          "delta_ohm": -1.5351499999999998
+        },
+        {
+          "macro": "level",
+          "port": "avss",
+          "net": "avss",
+          "old_ohm": 4.266764,
+          "new_ohm": 3.069544,
+          "delta_ohm": -1.1972200000000002
+        },
+        {
+          "macro": "level",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 5.122166,
+          "new_ohm": 3.420726,
+          "delta_ohm": -1.7014399999999998
+        },
+        {
+          "macro": "pfd",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 3.9556235,
+          "new_ohm": 2.4982735,
+          "delta_ohm": -1.4573500000000004
+        },
+        {
+          "macro": "pfd",
+          "port": "vdd",
+          "net": "div_avdd",
+          "old_ohm": 3.692264,
+          "new_ohm": 2.383474,
+          "delta_ohm": -1.3087900000000001
+        },
+        {
+          "macro": "pfd",
+          "port": "vss",
+          "net": "avss",
+          "old_ohm": 3.3463935,
+          "new_ohm": 2.2293635000000003,
+          "delta_ohm": -1.1170299999999997
+        },
+        {
+          "macro": "pump",
+          "port": "avss",
+          "net": "avss",
+          "old_ohm": 2.5198535000000004,
+          "new_ohm": 1.4768535,
+          "delta_ohm": -1.0430000000000004
+        },
+        {
+          "macro": "pump",
+          "port": "div_avdd",
+          "net": "div_avdd",
+          "old_ohm": 2.8569240000000002,
+          "new_ohm": 1.646774,
+          "delta_ohm": -1.2101500000000003
+        },
+        {
+          "macro": "pump",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 3.1081835,
+          "new_ohm": 1.7299635,
+          "delta_ohm": -1.37822
+        },
+        {
+          "macro": "pump",
+          "port": "vco_avdd",
+          "net": "vco_avdd",
+          "old_ohm": 3.44195,
+          "new_ohm": 1.89566,
+          "delta_ohm": -1.54629
+        }
+      ],
+      "binding_counts": {
+        "devices": 753,
+        "wire_records": 7967,
+        "new_div1_devices": 91,
+        "new_div1_wires": 1025,
+        "parent_R": 91,
+        "parent_C": 224
+      },
+      "flat_lvs": "PASS within comparison scope",
+      "planes": 61
+    },
+    "supply05": {
+      "drc": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "ab64591d2b58bcff4960e554eed531cf08680f084daf3f253698a854869a3707",
+        "log_sha256": "23b3e6769065ec8eef297c5f87905512a7d0a6724f956a40401e6e5c82ed5df2"
+      },
+      "hierarchical_lvs": "PASS within comparison scope",
+      "pipeline": "COMPLETE_WIDER_LOCAL_POWER_PHYSICAL_REPAIR_REQUIRES_RESISTANCE_COMPARISON_AND_NATIVE_TRANSIENT",
+      "power_paths": [
+        {
+          "macro": "vco",
+          "port": "AVDD",
+          "net": "vco_avdd",
+          "old_ohm": 5.939623999999999,
+          "new_ohm": 3.473005,
+          "delta_ohm": -2.4666189999999992
+        },
+        {
+          "macro": "vco",
+          "port": "AVSS",
+          "net": "avss",
+          "old_ohm": 4.717764,
+          "new_ohm": 2.946411,
+          "delta_ohm": -1.771353
+        },
+        {
+          "macro": "vco",
+          "port": "SUB",
+          "net": "sub",
+          "old_ohm": 5.573166,
+          "new_ohm": 3.2543610000000003,
+          "delta_ohm": -2.3188049999999993
+        },
+        {
+          "macro": "div1",
+          "port": "DIV_AVDD",
+          "net": "div_avdd",
+          "old_ohm": 4.376237,
+          "new_ohm": 2.921152,
+          "delta_ohm": -1.4550849999999995
+        },
+        {
+          "macro": "div1",
+          "port": "AVSS",
+          "net": "avss",
+          "old_ohm": 4.031467,
+          "new_ohm": 2.7241419999999996,
+          "delta_ohm": -1.3073250000000005
+        },
+        {
+          "macro": "div1",
+          "port": "SUB",
+          "net": "sub",
+          "old_ohm": 4.625297,
+          "new_ohm": 2.9564519999999996,
+          "delta_ohm": -1.6688450000000001
+        },
+        {
+          "macro": "gain",
+          "port": "avdd",
+          "net": "div_avdd",
+          "old_ohm": 4.072087,
+          "new_ohm": 2.714422,
+          "delta_ohm": -1.357665
+        },
+        {
+          "macro": "gain",
+          "port": "avss",
+          "net": "avss",
+          "old_ohm": 3.7284170000000003,
+          "new_ohm": 2.495122,
+          "delta_ohm": -1.2332950000000005
+        },
+        {
+          "macro": "gain",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 4.310147,
+          "new_ohm": 2.7621219999999997,
+          "delta_ohm": -1.548025
+        },
+        {
+          "macro": "div2",
+          "port": "DIV_AVDD",
+          "net": "div_avdd",
+          "old_ohm": 3.991237,
+          "new_ohm": 2.536152,
+          "delta_ohm": -1.455085
+        },
+        {
+          "macro": "div2",
+          "port": "AVSS",
+          "net": "avss",
+          "old_ohm": 3.6464670000000003,
+          "new_ohm": 2.339152,
+          "delta_ohm": -1.3073150000000004
+        },
+        {
+          "macro": "div2",
+          "port": "SUB",
+          "net": "sub",
+          "old_ohm": 4.240297,
+          "new_ohm": 2.571452,
+          "delta_ohm": -1.6688450000000001
+        },
+        {
+          "macro": "rx",
+          "port": "avss",
+          "net": "avss",
+          "old_ohm": 4.5791640000000005,
+          "new_ohm": 3.3791909999999996,
+          "delta_ohm": -1.1999730000000008
+        },
+        {
+          "macro": "rx",
+          "port": "cvdd",
+          "net": "core_vdd",
+          "old_ohm": 3.61863,
+          "new_ohm": 2.87761,
+          "delta_ohm": -0.7410200000000002
+        },
+        {
+          "macro": "rx",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 5.442266,
+          "new_ohm": 4.116041,
+          "delta_ohm": -1.326225
+        },
+        {
+          "macro": "count",
+          "port": "VDD",
+          "net": "core_vdd",
+          "old_ohm": 12.0333,
+          "new_ohm": 12.0663,
+          "delta_ohm": 0.032999999999999474
+        },
+        {
+          "macro": "count",
+          "port": "VSS",
+          "net": "avss",
+          "old_ohm": 12.989279999999999,
+          "new_ohm": 12.511956999999999,
+          "delta_ohm": -0.47732300000000016
+        },
+        {
+          "macro": "level",
+          "port": "avdd",
+          "net": "div_avdd",
+          "old_ohm": 4.884104,
+          "new_ohm": 2.92148,
+          "delta_ohm": -1.962624
+        },
+        {
+          "macro": "level",
+          "port": "avss",
+          "net": "avss",
+          "old_ohm": 4.266764,
+          "new_ohm": 2.592221,
+          "delta_ohm": -1.6745430000000003
+        },
+        {
+          "macro": "level",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 5.122166,
+          "new_ohm": 2.9712509999999996,
+          "delta_ohm": -2.1509150000000004
+        },
+        {
+          "macro": "pfd",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 3.9556235,
+          "new_ohm": 2.531274,
+          "delta_ohm": -1.4243495000000004
+        },
+        {
+          "macro": "pfd",
+          "port": "vdd",
+          "net": "div_avdd",
+          "old_ohm": 3.692264,
+          "new_ohm": 2.438474,
+          "delta_ohm": -1.2537900000000004
+        },
+        {
+          "macro": "pfd",
+          "port": "vss",
+          "net": "avss",
+          "old_ohm": 3.3463935,
+          "new_ohm": 2.2403635,
+          "delta_ohm": -1.10603
+        },
+        {
+          "macro": "pump",
+          "port": "avss",
+          "net": "avss",
+          "old_ohm": 2.5198535000000004,
+          "new_ohm": 1.4878535000000002,
+          "delta_ohm": -1.0320000000000003
+        },
+        {
+          "macro": "pump",
+          "port": "div_avdd",
+          "net": "div_avdd",
+          "old_ohm": 2.8569240000000002,
+          "new_ohm": 1.7017740000000001,
+          "delta_ohm": -1.1551500000000001
+        },
+        {
+          "macro": "pump",
+          "port": "sub",
+          "net": "sub",
+          "old_ohm": 3.1081835,
+          "new_ohm": 1.762964,
+          "delta_ohm": -1.3452195
+        },
+        {
+          "macro": "pump",
+          "port": "vco_avdd",
+          "net": "vco_avdd",
+          "old_ohm": 3.44195,
+          "new_ohm": 1.97266,
+          "delta_ohm": -1.4692899999999998
+        }
+      ],
+      "binding_counts": {
+        "devices": 753,
+        "wire_records": 7967,
+        "new_div1_devices": 91,
+        "new_div1_wires": 1025,
+        "parent_R": 91,
+        "parent_C": 224
+      },
+      "flat_lvs": "PASS within comparison scope",
+      "planes": 61
+    }
+  },
+  "routing": {
+    "seed42": "FAIL78overflow:Metal3=13Metal4=9Metal5=56",
+    "next": "Metal5conservative15percentderate trial running; noacceptance"
+  },
+  "public_records": [
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-route78-boundary-records-20261010.tar.gz",
+      "name": "nssoc-route78-boundary-records-20261010.tar.gz",
+      "bytes": 111836,
+      "sha256": "c8aad387b9146ff94fe3f4aa829c10ffa261f0d51a227d32509a02d755f6f464"
+    },
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-widepower-boundary-records-20261010.tar.gz",
+      "name": "nssoc-widepower-boundary-records-20261010.tar.gz",
+      "bytes": 4036110,
+      "sha256": "9d1526e596632dbd587e476c8de2e80631176d42437bfbc596b075443a0de4a7"
+    }
+  ],
+  "public_range_cache": {
+    "freed_bytes": 4090592586,
+    "scope": "Generated download range cache only; native originals and receipts retained, full localorderedhash andcurrentproviderfullhash/anonymoussamples verified",
+    "restore_method": "pcie-public-archive-cache-20261010/restore03.py"
+  },
+  "full_phy_accepted": false,
+  "main_chip_integrated": false,
+  "final_setup_hold_accepted": false,
+  "full753": "Original first28 full50ns transient stillrunning. Supply05full753 preparation passes5measurement6boundary4diagnosticfaults; queued afterthatfullreview and25Ccomponent, unchanged14GiBdisk7GiBRAM gates. No fullwindow result yet.",
+  "scope": "Three load/commonmode points pass, supply-shift point fails. Finitepoints only, not foundryPEX/PVT/acquisition/jitter/serialPHY. Supply05physicalbbox2983x2040um is bounding fit only, not actual main-chip placement. DCseriesresistance is not measured IRdrop or EM qualification. Newly collected four boundary fullwave captures are retained locally and not in recordcapsule; older six91fullcaptures publicly delivered."
+}

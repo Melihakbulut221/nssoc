@@ -1,0 +1,20 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Connected sampled-comparison candidate; not a complete phase detector/CDR.
+* Two original native CML samplers, eight native level-conversion resistors,
+* and the exact freshly extracted shunt-v4 XOR model (4020R/2641C).
+* Ideal external clocks/bias/data sources remain explicit bench boundaries.
+* New sampler/converter routing and RC are required before physical acceptance.
+.subckt nssoc_cdr_sampled_compare_passive_v1 adp adn bdp bdn cp cn op on avdd avss sub ira irb irx wire_cref
+XSA adp adn aqp aqn cp cn avdd avss sub ira nssoc_rx_sampler_hbt
+XSB bdp bdn bqp bqn cp cn avdd avss sub irb nssoc_rx_sampler_hbt
+XDAP aqp xp sub rppd w=1u l=1.8u b=0 sw_et=1
+XDAN aqn xn sub rppd w=1u l=1.8u b=0 sw_et=1
+XDGP xp avss sub rppd w=1u l=10.8u b=0 sw_et=1
+XDGN xn avss sub rppd w=1u l=10.8u b=0 sw_et=1
+XSEP bqp yp sub rppd w=1u l=3u b=0 sw_et=1
+XSEN bqn yn sub rppd w=1u l=3u b=0 sw_et=1
+XSGP yp avss sub rppd w=1u l=4.3u b=0 sw_et=1
+XSGN yn avss sub rppd w=1u l=4.3u b=0 sw_et=1
+XXOR op on avdd sub xp xn yp yn irx avss wire_cref nssoc_cdr_xor54_wire_v4
+.ends nssoc_cdr_sampled_compare_passive_v1

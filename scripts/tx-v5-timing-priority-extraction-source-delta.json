@@ -1,0 +1,62 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_minimax_extraction.py",
+      "candidate_path": "scripts/cloud_tx_v5_timing_priority_extraction.py",
+      "edits": [
+        {
+          "before": "tx-v5-minimax",
+          "after": "tx-v5-timing-priority",
+          "count": 2
+        },
+        {
+          "before": "tx_v5_minimax",
+          "after": "tx_v5_timing_priority",
+          "count": 4
+        },
+        {
+          "before": "_minimax_core_v1",
+          "after": "_timing_priority_core_v1",
+          "count": 1
+        },
+        {
+          "before": "minimax-geometry",
+          "after": "timing-priority-geometry",
+          "count": 2
+        },
+        {
+          "before": "MINIMAX",
+          "after": "TIMING_PRIORITY",
+          "count": 2
+        },
+        {
+          "before": "39265712814",
+          "after": "39304550527",
+          "count": 1
+        },
+        {
+          "before": "dc89fcfbd2ae748dab23e25dbe6401966932ea99",
+          "after": "5cbdd0d6eebd458ae85af5c631f5165afba1dd8f",
+          "count": 1
+        },
+        {
+          "before": "5d81376ebdd2147693e30888276bf60a460aa5191c5454ae891b6516526b43d9",
+          "after": "03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d",
+          "count": 1
+        },
+        {
+          "before": "544119daf5019fd46c2a9c67015eaaca5199920599c034ae385ecbb4f131e309",
+          "after": "58fdbf05331785c3c3d42dc0192d0682ff45a5eb53a960a9a018afb30ee2a411",
+          "count": 1
+        },
+        {
+          "before": "        assert gp['plan']['solver']['first_mip_gap']==gp['plan']['solver']['second_mip_gap']==0.",
+          "after": "        assert gp['plan']['solver']['first_mip_gap']==gp['plan']['solver']['second_mip_gap']==0.\n        priority=gp['plan']['timing_priority']\n        assert priority['maximum_weighted_after']<priority['maximum_weighted_before']\n        assert priority['stage_maxima']['1']['after']<priority['stage_maxima']['1']['before']",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "e43053d05ea70bc062bc64c8b11a37fadc00c0b8a7c19f7ea06bca8e0823d2be",
+      "candidate_sha256": "5bb0ef05259319236c03311f1df3286f760fbcd9410fca8b314baac7971a0763"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "baseline_path": "scripts/cloud_cdr_left_mim_loaded.py",
+  "baseline_sha256": "7caa8a1e4f3613e232a6c6c6f0575bce5ca2572dc653c965d292e3e9b0e3eceb",
+  "candidate_path": "scripts/cloud_cdr_hybrid_mim_loaded.py",
+  "candidate_sha256": "d4fa5fb8299ee56cdeff4f5f6b918a08060acfcaa60cb27a40b56e7378a9f008",
+  "edits": [
+    {
+      "before": "cdr-left-mim",
+      "after": "cdr-hybrid-mim",
+      "count": 3
+    },
+    {
+      "before": "cdr-retimed-left",
+      "after": "cdr-retimed-hybrid",
+      "count": 3
+    },
+    {
+      "before": "nssoc_cdr_pd394_left_mim_wire_v1",
+      "after": "nssoc_cdr_pd406_hybrid_mim_wire_v1",
+      "count": 1
+    },
+    {
+      "before": "PD394",
+      "after": "PD406",
+      "count": 6
+    },
+    {
+      "before": "394",
+      "after": "406",
+      "count": 5
+    },
+    {
+      "before": "9946",
+      "after": "9970",
+      "count": 3
+    },
+    {
+      "before": "7771",
+      "after": "7795",
+      "count": 3
+    },
+    {
+      "before": "122HBT102rppd11MIM159contacts",
+      "after": "110HBT12LVNMOS102rppd11MIM171contacts",
+      "count": 1
+    },
+    {
+      "before": "('npn13g2','rppd','cap_cmim','ptap1')",
+      "after": "('npn13g2','sg13_lv_nmos','rppd','cap_cmim','ptap1')",
+      "count": 1
+    },
+    {
+      "before": "dict(npn13g2=122,rppd=102,cap_cmim=11,ptap1=159)",
+      "after": "dict(npn13g2=110,sg13_lv_nmos=12,rppd=102,cap_cmim=11,ptap1=171)",
+      "count": 1
+    },
+    {
+      "before": "        groups[d['model']]['xpd.'+name]=dev",
+      "after": "        if d['model']=='sg13_lv_nmos':\n            assert [t['terminal']for t in terms]==['D','G','S','B']\n            assert set(params)=={'w','l','as','ad','ps','pd','rfmode','ng','m'}\n            assert parser.number(params['w'])in (Decimal('8e-6'),Decimal('32e-6')) and parser.number(params['l'])==Decimal('.3e-6')\n            assert parser.number(params['rfmode'])==0 and parser.number(params['ng'])==parser.number(params['m'])==1\n            assert all(parser.number(params[k])>0 for k in ('as','ad','ps','pd'))\n        groups[d['model']]['xpd.'+name]=dev",
+      "count": 1
+    },
+    {
+      "before": "    tails=[]\n    for bias in ('ira','irb','irc','ird','ibda','ibdc','ibs0','ibs1'):\n        found=['xpd.'+name for name,d in native.items()if d['model']=='npn13g2'and native_nodes[name]['B']==bias and native_nodes[name]['E']=='avss'and native_nodes[name]['C']!=bias]\n        assert len(found)==(2 if bias in ('ira','irb','irc','ird')else 1);tails+=found\n    assert len(tails)==12\n",
+      "after": "    tails=[];mos_tails=[]\n    for bias in ('ira','irb','irc','ird'):\n        found=['xpd.'+name for name,d in native.items()if d['model']=='sg13_lv_nmos'and native_nodes[name]['G']==bias and native_nodes[name]['S']=='avss'and native_nodes[name]['D']!=bias]\n        assert len(found)==2;mos_tails+=found\n    for bias in ('ibda','ibdc','ibs0','ibs1'):\n        found=['xpd.'+name for name,d in native.items()if d['model']=='npn13g2'and native_nodes[name]['B']==bias and native_nodes[name]['E']=='avss'and native_nodes[name]['C']!=bias]\n        assert len(found)==1;tails+=found\n    assert len(tails)==4 and len(mos_tails)==8\n",
+      "count": 1
+    },
+    {
+      "before": "tail_names=tails,vi_names=vi",
+      "after": "tail_names=tails,mos_tail_names=mos_tails,vi_names=vi",
+      "count": 1
+    },
+    {
+      "before": "    assert len(rejected)==7\n",
+      "after": "    assert len(rejected)==7\n    for case in ('missing_mos','wrong_mos_width','swapped_mos_gate_source','mos_body_short'):\n        rows=parser.statements(text);i=next(i for i,r in enumerate(rows)if 'sg13_lv_nmos'in r)\n        if case=='missing_mos':del rows[i]\n        elif case=='wrong_mos_width':\n            j=next(j for j,x in enumerate(rows[i])if x.startswith('w='));rows[i][j]='w=999u'\n        elif case=='swapped_mos_gate_source':\n            assert rows[i][2]!=rows[i][3];rows[i][2],rows[i][3]=rows[i][3],rows[i][2]\n        else:\n            assert rows[i][4]!=rows[i][3];rows[i][4]=rows[i][3]\n        altered='\\n'.join(' '.join(r)for r in rows)+'\\n'\n        try:bind_native(altered,contract,planes)\n        except (AssertionError,ValueError,KeyError):rejected.append(case)\n        else:raise AssertionError('Accepted '+case)\n    assert len(rejected)==11\n",
+      "count": 1
+    },
+    {
+      "before": "len(prior['controls'])==15",
+      "after": "len(prior['controls'])==19",
+      "count": 1
+    },
+    {
+      "before": "ports=bound['ports'];biases=BIASES",
+      "after": "ports=bound['ports'];biases=BIASES;mos=bound['groups']['sg13_lv_nmos']",
+      "count": 1
+    },
+    {
+      "before": "for group in (devices,resistors,caps,contacts)",
+      "after": "for group in (devices,mos,resistors,caps,contacts)",
+      "count": 1
+    },
+    {
+      "before": "['@q.'+n+'.qnpn13g2[ic]'for n in devices]",
+      "after": "['@q.'+n+'.qnpn13g2[ic]'for n in devices]+['@n.'+n+'.nsg13_lv_nmos[ids]'for n in mos]",
+      "count": 1
+    },
+    {
+      "before": "        models=lib/'models/models'",
+      "after": "        models=lib/'models/models'\n        mos_osdi={}\n        for name in ('psp103.osdi','psp103_nqs.osdi'):\n            matches=list(lib.rglob(name));assert len(matches)==1,(name,matches)\n            mos_osdi[name]=matches[0]\n        r['mos_runtime']={str(p.relative_to(lib)):sha(p)for p in mos_osdi.values()}",
+      "count": 1
+    },
+    {
+      "before": "f'.lib \"{models}/cornerCAP.lib\" {c[\"cap\"]}'",
+      "after": "f'.lib \"{models}/cornerCAP.lib\" {c[\"cap\"]}',f'.lib \"{models}/cornerMOSlv.lib\" {c[\"mos\"]}'",
+      "count": 1
+    },
+    {
+      "before": "f'pre_osdi {lib/\"models/r3_cmc.osdi\"}',",
+      "after": "f'pre_osdi {lib/\"models/r3_cmc.osdi\"}',*[f'pre_osdi {p}'for p in mos_osdi.values()],",
+      "count": 1
+    },
+    {
+      "before": "r.update(binding=bound,devices=devices,native_caps=caps,",
+      "after": "r.update(binding=bound,devices=devices,mos_devices=mos,native_caps=caps,",
+      "count": 1
+    },
+    {
+      "before": "        cap_checks={name:dict(maximum_alltime_abs_v=",
+      "after": "        mos_checks={}\n        for name,dev in mos.items():\n            vd,vg,vs,vb=map(v,dev['nodes']);ids=d['@n.'+name+'.nsg13_lv_nmos[ids]']\n            peaks={label:float(abs(value).max())for label,value in [('vds',vd-vs),('vgs',vg-vs),('vgd',vg-vd),('vdb',vd-vb),('vsb',vs-vb)]}\n            mos_checks[name]=dict(peaks_v=peaks,limit_v=1.32,minimum_active_vds_v=float((vd-vs)[active].min()),minimum_active_drain_current_a=float(ids[active].min()),maximum_alltime_abs_drain_current_a=float(abs(ids).max()),passed=max(peaks.values())<=1.32 and float((vd-vs)[active].min())>=0)\n        mos_tails={name:mos_checks[name]['minimum_active_drain_current_a']for name in bound['mos_tail_names']}\n        assert len(mos_checks)==12 and len(mos_tails)==8\n        safe=safe and all(x['passed']for x in mos_checks.values())and min(mos_tails.values())>=.0005\n        r['mos_checks']=mos_checks;r['minimum_active_mos_tail_current_a']=mos_tails\n        cap_checks={name:dict(maximum_alltime_abs_v=",
+      "count": 1
+    }
+  ],
+  "scope": "New native406 model provenance/census and12LV MOS bindings/checks. Preserve original clocks, bit stream, loads, biases, sampler/phase/current/HBT/MIM gates. Actual remaining HBT tails4 plus8new MOS tails each retain minimum0.5mA. No recovered-loop or PHY signoff inferred."
+}

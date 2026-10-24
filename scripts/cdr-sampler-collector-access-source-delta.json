@@ -1,0 +1,126 @@
+{
+  "files": [
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_sampler_via_rich_v11.py",
+      "candidate_path": "hw/soc/flow/make_pcie_sampler_collector_access_v12.py",
+      "baseline_sha256": "d761657ff3545c1cad2b5431f10f41abeaebac4b12bd8317f8af211966308120",
+      "candidate_sha256": "d4ff035905430a7e50afb2ec6488f66d3c645720507705a9861f391ecf56d718",
+      "edits": [
+        {
+          "before": "nssoc_rx_sampler_via_rich_layout_v11",
+          "after": "nssoc_rx_sampler_collector_access_layout_v12",
+          "count": 1
+        },
+        {
+          "before": "offset=0, wide=False):",
+          "after": "offset=0, wide=False, collector=False):",
+          "count": 1
+        },
+        {
+          "before": "# Only the native32um load resistor pins receive the broad local access.\n        # Every other primitive pin/escape keeps its original conductor width.\n        half=1.0 if wide else .2",
+          "after": "# Preserve resistor access and widen only native HBT collector escapes.\n        # Single-row via arrays stay at the original physical pin centers.\n        half=1.0 if wide else .6 if collector else .2",
+          "count": 1
+        },
+        {
+          "before": "16 if wide else cols",
+          "after": "16 if wide or collector else cols",
+          "count": 2
+        },
+        {
+          "before": "escape(pin, metal, net, lane, row[\"name\"], 4, offset)",
+          "after": "escape(pin, metal, net, lane, row[\"name\"], 4, offset, collector=lane==x-18)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_sampler_via_rich_v11.py",
+      "candidate_path": "hw/soc/flow/check_pcie_sampler_collector_access_v12.py",
+      "baseline_sha256": "c3cb4162c8ddb1c9972c037f4999e7419eb1c519d7182de0f08fa649be16f4e3",
+      "candidate_sha256": "ffc8dffc8973da89bf777eb4cabcc2c8f8f8da771c0c59bb7898680b98738cca",
+      "edits": [
+        {
+          "before": "make_pcie_sampler_via_rich_v11",
+          "after": "make_pcie_sampler_collector_access_v12",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_cdr_sampler_via_rich_geometry.py",
+      "candidate_path": "scripts/check_cdr_sampler_collector_access_geometry.py",
+      "baseline_sha256": "a86e022df125f1e5ca4daed97c42aa68d10a251bab63543f047fa00f1ef785eb",
+      "candidate_sha256": "a4956d41e6da26fa87c2ff652c9ea4425d2de8143a9e7755cabe0dbb13c56da5",
+      "edits": [
+        {
+          "before": "tops=['nssoc_rx_sampler_strapped_layout_v10','nssoc_rx_sampler_via_rich_layout_v11']",
+          "after": "tops=['nssoc_rx_sampler_via_rich_layout_v11','nssoc_rx_sampler_collector_access_layout_v12']",
+          "count": 1
+        },
+        {
+          "before": "    a,b=all_shapes\n",
+          "after": "    # Bind precisely the16 actual collector escape metadata changes; all\n    # original primitive geometry/placement and other routing metadata remain.\n    before,after=all_data\n    assert before['ports']==after['ports']and before['bbox_um']==after['bbox_um']\n    assert before['output_shunts']==after['output_shunts']and before['placement_plan']==after['placement_plan']\n    hbt={x['name']:x for x in before['instances']if x['kind']=='hbt'}\n    changed=[]\n    assert len(before['routes'])==len(after['routes'])\n    for a,b in zip(before['routes'],after['routes'],strict=True):\n        expected=dict(a)\n        device=hbt.get(a['device'])\n        if device and abs(a['escape_lane_um']-(device['placement_um'][0]-18))<1e-8:\n            assert a['source_layer']==1 and a['net']==device['nets'][0]\n            assert a['escape_width_um']==.4 and a['pin_via_columns']==4\n            expected.update(escape_width_um=1.2,pin_via_columns=16);changed.append(a['device'])\n        assert b==expected,('Unexpected routing metadata delta',a,b)\n    assert len(changed)==len(set(changed))==16 and set(changed)==set(hbt)\n    a,b=all_shapes\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_sampler_via_rich_physical.py",
+      "candidate_path": "scripts/cloud_cdr_sampler_collector_access_physical.py",
+      "baseline_sha256": "d77f9b419ef15eb52e566b63d5cf914eb0794611069af2e5eecfecc76649481a",
+      "candidate_sha256": "3f9f6150e26222497957b6b47a98a17c90f7152e9c040ecd2aa1a24ac4325ac1",
+      "edits": [
+        {
+          "before": "cloud-cdr-sampler-via-rich-physical",
+          "after": "cloud-cdr-sampler-collector-access-physical",
+          "count": 1
+        },
+        {
+          "before": "make_pcie_sampler_via_rich_v11",
+          "after": "make_pcie_sampler_collector_access_v12",
+          "count": 3
+        },
+        {
+          "before": "check_pcie_sampler_via_rich_v11",
+          "after": "check_pcie_sampler_collector_access_v12",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_sampler_via_rich_sources",
+          "after": "check_cdr_sampler_collector_access_sources",
+          "count": 2
+        },
+        {
+          "before": "cdr-sampler-via-rich-source-delta",
+          "after": "cdr-sampler-collector-access-source-delta",
+          "count": 1
+        },
+        {
+          "before": "check_cdr_sampler_via_rich_geometry",
+          "after": "check_cdr_sampler_collector_access_geometry",
+          "count": 2
+        },
+        {
+          "before": "d761657ff3545c1cad2b5431f10f41abeaebac4b12bd8317f8af211966308120",
+          "after": "d4ff035905430a7e50afb2ec6488f66d3c645720507705a9861f391ecf56d718",
+          "count": 1
+        },
+        {
+          "before": "cdr-sampler-strapped-physical",
+          "after": "cdr-sampler-via-rich-physical",
+          "count": 2
+        },
+        {
+          "before": "nssoc_rx_sampler_strapped_layout_v10",
+          "after": "nssoc_rx_sampler_via_rich_layout_v11",
+          "count": 1
+        },
+        {
+          "before": "Parallel via arrays at local access and strap junctions;32um load-resistor Metal3 escapes widened to2um.",
+          "after": "Only16 HBT collector Metal3 escapes widened0.4to1.2um and native pin via columns4to16; other routes retained.",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

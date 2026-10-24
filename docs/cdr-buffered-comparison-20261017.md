@@ -1,0 +1,9 @@
+# Native buffer repair for loaded sampler/XOR interface, 2026-10-17
+
+The passive connected candidate39051840565 is rejected. Samplers still pass their original data/37.5pslimits, but XOR yields115/173/64wrong samples at nominal/hot/cold. Hot also violates0.4VVCE in samplerBslave input HBTs (minimum0.380598V). Every original trajectory and fault-control result is retained in docs/evidence/cdr-passive-compare-rejection-20261017.json.
+
+Candidatev2 doubles the eight input-divider resistor lengths at unchanged ratios, reducing sampler DC loading. Each divided pair now drives two native HBT bases in a real CML buffer, rather than the large XOR input network. Each buffer has a nativeNx1reference,Nx2differential pair,Nx4tail, twoL1.8/W4collector loads and a shared supply header. HeaderL2/W4 for the data domain andL6/W4 for the select domain are initial geometry choices; actual output common modes must be measured, not forced. Five external500uA references are explicit bench boundaries. No new ideal gain/driver/current switch replaces intrinsic devices.
+
+The complete connected candidate contains57HBT/46rppd/27finitecontacts=130native devices, all4020R/2641C of the fresh XOR, unchanged two samplers and explicit150fFsampler/50fFXORoutput loads. All original connected-case sourcebits, clock phase, sample phases,75pscomparison and37.5pssampler valid-time limits remain. Native zero-source startup/OFFreadback, all HBT bounds, tailcurrent and actual swapped-output/stoppedclock controls remain mandatory. The extra buffer tail currents are checked too. This is a proposed circuit repair; new native simulation decides its status.
+
+Sampler/converter/buffer layout and RC, coherent multiedge phase detection, V/Ifeedback, acquisition/jitter/BER/fullPVT and actualx4mainchip integration remain open regardless of this finite-corner screen. The old passive or standalone XOR evidence must never be used as acceptance of this new circuit.

@@ -1,0 +1,115 @@
+{
+  "status": "DRAFT_V25_REGISTERED_PARSER_TO_RING_COMMAND_CONTRACT_REQUIRES_INDEPENDENT_REVIEW",
+  "baseline": "Frozen V23 experimental implementation; V24 rejected and not cumulative. Stable comparison baseline V11 unchanged.",
+  "inputs": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v23.v",
+      "bytes": 197239,
+      "sha256": "505db8d1daa5c5263a16a3584175bc89a73d1b6e35f16e10b64f1f9f6483dde6"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v23.v",
+      "bytes": 3324,
+      "sha256": "5cfd68e487881df352512575122e695076d01b538e3d38cc8d08533e61e2172a"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/slow-critical-path.txt",
+      "bytes": 5808,
+      "sha256": "de32c467a87a785eb3c71053da6248700f81914f12d87929794be21fd890a519"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/critical-path-attribution.json",
+      "bytes": 38512,
+      "sha256": "259aaec7f31351286db48c7795e6b9b721eba64c5af7f905b4096be975b61a37"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/timing-comparison.json",
+      "bytes": 3865,
+      "sha256": "88bb268620e50544e608cce9ec6b72848a4c80833045f1390d5165711df89ab9"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/ready-finite.json",
+      "bytes": 50385,
+      "sha256": "42ffcfe07eb9fb9bfe2b2aee4997cd5b237832146fa182f31ace5e083c4c109e"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/slow-critical-path.txt",
+      "bytes": 5538,
+      "sha256": "112d35c7d88cb9c95efc4ffce2f7c86104d1702a4c7df97c7d3291c82be15ff7"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/critical-path-attribution.json",
+      "bytes": 41558,
+      "sha256": "c9659f51be37ff4022b2e8fbf8348679e9b234d1165efd180191f535ba519ef6"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/timing-comparison.json",
+      "bytes": 4136,
+      "sha256": "7bfb463e722c20b6bb5bfce67cc6b687fa9274f31775542cfec62db1683385a9"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/ready-finite.json",
+      "bytes": 43714,
+      "sha256": "40be867848ea683086eb92d206bbbd78280243c2aaa06549ae26ec1757fdb2a5"
+    }
+  ],
+  "physical_profile": "Unchanged original4ns three-corner setup+hold, CPU6/2GiB native, exact existing wrapper ports and ring parameters. No physical run before source/functional gates.",
+  "motivation": {
+    "v23": "Measured remaining[4] to verdict[1][0]: launch0.234542ns +11buffers1.607613ns +33Boolean4.471521ns +3mux0.678501ns; SS-3.191682ns.",
+    "v24": "Measured remaining[4] to cache[17].resident_verdict: arrival7.436069ns; SS-3.634856ns. Prefix-token-context regression443.174ps retained.",
+    "hypothesis": "Register complete ordered parser write command before ring/tag/verdict fanout; do not merely delay one cache broadcast. This may split parser decode from dynamic verdict write and cache-update selection. Actual emitted stage cones and4ns STA must measure any gain; no timing guarantee."
+  },
+  "state_contract": {
+    "parser_state": "Keep V23 parser state/CRC/remaining/header fields, write_ptr and original commit_ptr as parser-reserved progress. commit_n continues to default to original commit_ptr; never default it to the delayed visible frontier.",
+    "command_fields": {
+      "valid": 1,
+      "address": "PW-bit preincrement write_ptr",
+      "data": 128,
+      "keep": 16,
+      "sop": 16,
+      "eop": 16,
+      "dllp": 16,
+      "sequence": 48,
+      "tags": "4*PW",
+      "verdict_enable": 4,
+      "verdict_tags": "4*PW",
+      "verdict_value": 4,
+      "commit": "PW-bit commit_n"
+    },
+    "capture": "On a nonfaulted enabled active step edge, atomically capture every command field and set valid. The parser advances exactly as V23. Original event_good/nullified/crc_bad/dllp/sequence pulses remain parser-edge events.",
+    "apply": "On the following enabled active nonfaulted edge, apply the OLD valid command using nonblocking assignments, even when current_valid is0 or ending is1. Apply old command before replacement by any simultaneously captured new command. A bubble clears command_valid after any old command applies; it cannot replay it.",
+    "arrays": "Relocate all seven slot arrays, verdict-array writes, shared old-verdict lookups and slot_verdict cache inputs to the command address/tags/data/verdict fields together. Preserve lane0..3 last-writer priority, scalar resident reads, extended tags and literal value transfer. Cache old-verdict lookup observes table state before the same command applies, exactly as the original one-edge writer.",
+    "visible_commit": "Add visible_commit_ptr, reset/flush/fault to0. Update it only when an old valid command actually applies, from that command.commit. Only the committed/read_count/retirement visibility frontier uses visible_commit_ptr. Original commit_ptr remains parser-local. Newly stored slots/verdict/cache and their visible frontier become observable together after one edge; retire at that same edge still sees the OLD visible frontier.",
+    "ownership": "Command valid is an epoch ownership bit. Reset/start/flush/abort/fault priority clears it and both commit frontiers before any new epoch can expose a command. Command payload may be implemented with unqualified capture only if valid clears and a complete fresh overwrite precedes reuse; no stale field is permitted.",
+    "fault_priority": "Original reset then flush/start then abort/fault then active procedural priority and prospective fault-edge output handshake remain unchanged. An old public valid/ready transfer on the fault sampling edge counts as accepted. Neither a fault-causing new command nor a pending command may become visible in the new epoch. Inaccessible array contents may differ; there is no stored-state equivalence claim.",
+    "capacity": "occupied remains parser write_ptr minus read_ptr, so the pending command already reserves four physical addresses. Retain existing PW+1 modular capacity expressions and no overwrite allowance beyond RING_DWORDS. Do not subtract pending slots to manufacture free capacity. Additional latency can affect read/ready/overflow cycle under stalls; this is an explicit interface timing change, not a V23 cycle-equivalence assertion.",
+    "drain": "ending may suppress further parser/input activity but must not suppress applying the final old command. Stream end may assert only after no pending command, visible_commit==parser commit frontier, read_ptr==write_ptr, retire descriptor empty and old public output accepted/empty. Keep same fault priority throughout drain."
+  },
+  "temporal_relation": {
+    "nominal": "For identical admitted blocks, ready_i=1, no faults and no capacity pressure, parser state/events and acceptance cadence remain aligned with V23; each V23 ring-update command applies in V25 exactly one rising edge later. V25 visible frontier and valid slot/verdict/cache state correspond to V23 one-edge-earlier writer state, with retirement making public payload nominally one extra cycle later.",
+    "nominal_limit": "Do not claim this for all arbitrary states, stalls, faulted epochs or EDS active-completion cycles. Verify actual nominal output +1 witness, not just eventual byte equality. Parser ring reservation state and visible ring state have separate reference relations.",
+    "stalls": "An independent transaction scoreboard follows actual valid/ready handshakes, byte keep masks, sequence/DLLP/packet boundaries and packet verdicts. Held output remains bitwise stable. Accept exactly once, in order, without uncommitted data leakage. No general fixed-cycle comparison under stalls.",
+    "fault": "Scoreboard records actual preedge old valid/ready and keep-byte acceptance at fault; retires only those bytes, discards unaccepted epoch state under the declared abort, and requires fresh rewrite after restart. No broad exception suppression or any-error negative acceptance.",
+    "reuse": "Prove a pending extended tag cannot alias a newer live owner before applying. Two ring spans and conservative reserved occupancy are preserved; all commands apply in capture order. Test pointer span wrap, packet tail after SOP retirement, same-edge capture/apply and fault/restart reuse explicitly."
+  },
+  "interface_change": {
+    "ports": "Names, widths, clock and ready/valid protocol preserved.",
+    "latency": "The candidate intentionally adds one parser-to-ring register stage. Data/stream-end timing and ready/overflow timing at capacity boundaries may change; packet event sidebands stay at parser timing, so event-to-data distance increases.",
+    "integration_gate": "This is not a drop-in cycle-equivalent replacement. Before top-level/layout adoption, audit every consumer for fixed event/data phase assumptions and update latency-aware integration scoreboards. No main-chip change or layout integration is authorized by a source-contract PASS alone."
+  },
+  "required_controls": [
+    "Independent source peer of entire stage/control/writer inverse from V23; exact no-change ledger for parser math, CRCs, tag widths, pointer capacity and fault priority.",
+    "Isolated actual HDL command capture/apply temporal relation, bubbles, simultaneous apply/replace, all four lane write priorities and same-command old/new verdict selection. Include literal X/Z payload/metadata and unknown control cases matching original procedural if semantics; do not replace with payload OR.",
+    "Independent full-DUT transaction scoreboard over all inherited18 public scenarios plus accepted-next-bank burst and all previous meaningful product faults; versioned architecture oracle replaces cycle miter explicitly instead of silently loosening it.",
+    "Count sustained line-rate accepted input blocks and parser beats with ready1/no artificial bubbles. Verify all bank shift/next promotion/header relation boundaries inherited from V23, including j15 STP to next j0 header.",
+    "Count old pending apply while parser idle, final EDS pending apply, zero-keep-only command drain while public output held, and +1 nominal first/last payload edges.",
+    "Count nonzero actual preedge command_valid at reset/start/flush/abort/parser fault/bad block/capacity overflow; prove no old command leaks after restart. Include a previously accepted old public beat on the same fault edge.",
+    "Actual capacity boundary and overflow, minimum supported ring override and long maximum packet, randomized ready stalls, repeated extended-pointer wrap and same-tag epoch reuse; no overwritten unread data.",
+    "Real HDL mutants: visible commit early, stale command survives flush/fault, apply only when current step, missing final ending apply, replay pending twice, new data with old tag, reversed verdict-lane priority, pipeline bypass. Require the intended witness/diagnostic for each, not a generic failure.",
+    "Emission check: mapped registered command Qs are actual ring/cache/verdict D ancestors; direct original parser-data bypass excluded with explicit control-ancestry allowance. Count command FF fields and measure both stages.",
+    "Only after current positives and meaningful negatives and independent saved-control peer: same native map/import graph/4ns three-corner STA. Retain V23/V24 history and reject if setup/hold or throughput contract fails."
+  ],
+  "implementation_started": false,
+  "native_started": false,
+  "findings_pending": true
+}

@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // sg13g2 binding for the clock gate Ibex leaves to the integrator.
 //
 // ibex_top.sv instantiates `prim_clock_gating` (one instance when the
@@ -54,3 +56,5 @@ module prim_clock_gating (
   );
 endmodule
 `endif
+
+`default_nettype wire

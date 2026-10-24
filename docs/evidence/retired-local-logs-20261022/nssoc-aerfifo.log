@@ -1,0 +1,214 @@
+make: Entering directory '/home/hasanmelih/Documents/neuromorphic-space-soc/formal'
+rm -rf /home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_prove /home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_prove_d4 \
+       /home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_bmc /home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_cover \
+       /home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo
+cd /home/hasanmelih/Documents/neuromorphic-space-soc/formal && /home/hasanmelih/Downloads/oss-cad-suite-linux-x64-20260804/oss-cad-suite/bin/sby -f aer_fifo.sby prove
+SBY 19:39:20 [aer_fifo_prove] Removing directory '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_prove'.
+SBY 19:39:20 [aer_fifo_prove] Copy '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/../hw/rtl/aer_fifo.v' to '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_prove/src/aer_fifo.v'.
+SBY 19:39:20 [aer_fifo_prove] Copy '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_props.v' to '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_prove/src/aer_fifo_props.v'.
+SBY 19:39:20 [aer_fifo_prove] engine_0: smtbmc yices
+SBY 19:39:20 [aer_fifo_prove] base: starting process "cd aer_fifo_prove/src; yosys -ql ../model/design.log ../model/design.ys"
+SBY 19:39:20 [aer_fifo_prove] base: Warning: Replacing memory \mem with list of registers. See aer_fifo.v:307
+SBY 19:39:20 [aer_fifo_prove] base: finished (returncode=0)
+SBY 19:39:20 [aer_fifo_prove] prep: starting process "cd aer_fifo_prove/model; yosys -ql design_prep.log design_prep.ys"
+SBY 19:39:20 [aer_fifo_prove] prep: finished (returncode=0)
+SBY 19:39:20 [aer_fifo_prove] smt2: starting process "cd aer_fifo_prove/model; yosys -ql design_smt2.log design_smt2.ys"
+SBY 19:39:20 [aer_fifo_prove] smt2: finished (returncode=0)
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: starting process "cd aer_fifo_prove; yosys-smtbmc -s yices --presat --unroll --noprogress -t 15  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2"
+SBY 19:39:20 [aer_fifo_prove] engine_0.induction: starting process "cd aer_fifo_prove; yosys-smtbmc -s yices --presat --unroll -i --noprogress -t 15  --append 0 --dump-vcd engine_0/trace_induct.vcd --dump-yw engine_0/trace_induct.yw --dump-vlogtb engine_0/trace_induct_tb.v --dump-smtc engine_0/trace_induct.smtc model/design_smt2.smt2"
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Solver: yices
+SBY 19:39:20 [aer_fifo_prove] engine_0.induction: ##   0:00:00  Solver: yices
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 0..
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 0..
+SBY 19:39:20 [aer_fifo_prove] engine_0.induction: ##   0:00:00  Trying induction in step 15..
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 1..
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 1..
+SBY 19:39:20 [aer_fifo_prove] engine_0.induction: ##   0:00:00  Trying induction in step 14..
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 2..
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 2..
+SBY 19:39:20 [aer_fifo_prove] engine_0.induction: ##   0:00:00  Trying induction in step 13..
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 3..
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 3..
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 4..
+SBY 19:39:20 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 4..
+SBY 19:39:21 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 5..
+SBY 19:39:21 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 5..
+SBY 19:39:21 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assumptions in step 6..
+SBY 19:39:21 [aer_fifo_prove] engine_0.basecase: ##   0:00:00  Checking assertions in step 6..
+SBY 19:39:21 [aer_fifo_prove] engine_0.basecase: ##   0:00:01  Checking assumptions in step 7..
+SBY 19:39:21 [aer_fifo_prove] engine_0.basecase: ##   0:00:01  Checking assertions in step 7..
+SBY 19:39:22 [aer_fifo_prove] engine_0.basecase: ##   0:00:01  Checking assumptions in step 8..
+SBY 19:39:22 [aer_fifo_prove] engine_0.basecase: ##   0:00:01  Checking assertions in step 8..
+SBY 19:39:22 [aer_fifo_prove] engine_0.basecase: ##   0:00:02  Checking assumptions in step 9..
+SBY 19:39:22 [aer_fifo_prove] engine_0.basecase: ##   0:00:02  Checking assertions in step 9..
+SBY 19:39:23 [aer_fifo_prove] engine_0.basecase: ##   0:00:03  Checking assumptions in step 10..
+SBY 19:39:23 [aer_fifo_prove] engine_0.basecase: ##   0:00:03  Checking assertions in step 10..
+SBY 19:39:25 [aer_fifo_prove] engine_0.basecase: ##   0:00:04  Checking assumptions in step 11..
+SBY 19:39:25 [aer_fifo_prove] engine_0.basecase: ##   0:00:04  Checking assertions in step 11..
+SBY 19:39:26 [aer_fifo_prove] engine_0.basecase: ##   0:00:05  Checking assumptions in step 12..
+SBY 19:39:26 [aer_fifo_prove] engine_0.basecase: ##   0:00:05  Checking assertions in step 12..
+SBY 19:39:27 [aer_fifo_prove] engine_0.basecase: ##   0:00:07  Checking assumptions in step 13..
+SBY 19:39:27 [aer_fifo_prove] engine_0.basecase: ##   0:00:07  Checking assertions in step 13..
+SBY 19:39:29 [aer_fifo_prove] engine_0.basecase: ##   0:00:08  Checking assumptions in step 14..
+SBY 19:39:29 [aer_fifo_prove] engine_0.basecase: ##   0:00:09  Checking assertions in step 14..
+SBY 19:39:35 [aer_fifo_prove] engine_0.basecase: ##   0:00:14  Status: passed
+SBY 19:39:35 [aer_fifo_prove] engine_0.basecase: finished (returncode=0)
+SBY 19:39:35 [aer_fifo_prove] engine_0.basecase: Status returned by engine for basecase: pass
+SBY 19:39:49 [aer_fifo_prove] engine_0.induction: ##   0:00:28  Temporal induction successful.
+SBY 19:39:49 [aer_fifo_prove] engine_0.induction: ##   0:00:28  Status: passed
+SBY 19:39:49 [aer_fifo_prove] engine_0.induction: finished (returncode=0)
+SBY 19:39:49 [aer_fifo_prove] engine_0.induction: Status returned by engine for induction: pass
+SBY 19:39:49 [aer_fifo_prove] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:29 (29)
+SBY 19:39:49 [aer_fifo_prove] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:44 (44)
+SBY 19:39:49 [aer_fifo_prove] summary: engine_0 (smtbmc yices) returned pass for basecase
+SBY 19:39:49 [aer_fifo_prove] summary: engine_0 (smtbmc yices) returned pass for induction
+SBY 19:39:49 [aer_fifo_prove] summary: engine_0 did not produce any traces
+SBY 19:39:49 [aer_fifo_prove] summary: successful proof by k-induction.
+SBY 19:39:49 [aer_fifo_prove] DONE (PASS, rc=0)
+cd /home/hasanmelih/Documents/neuromorphic-space-soc/formal && /home/hasanmelih/Downloads/oss-cad-suite-linux-x64-20260804/oss-cad-suite/bin/sby -f aer_fifo.sby prove_d4
+SBY 19:39:49 [aer_fifo_prove_d4] Removing directory '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_prove_d4'.
+SBY 19:39:49 [aer_fifo_prove_d4] Copy '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/../hw/rtl/aer_fifo.v' to '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_prove_d4/src/aer_fifo.v'.
+SBY 19:39:49 [aer_fifo_prove_d4] Copy '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_props.v' to '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_prove_d4/src/aer_fifo_props.v'.
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0: smtbmc yices
+SBY 19:39:49 [aer_fifo_prove_d4] base: starting process "cd aer_fifo_prove_d4/src; yosys -ql ../model/design.log ../model/design.ys"
+SBY 19:39:49 [aer_fifo_prove_d4] base: Warning: Replacing memory \mem with list of registers. See aer_fifo.v:307
+SBY 19:39:49 [aer_fifo_prove_d4] base: finished (returncode=0)
+SBY 19:39:49 [aer_fifo_prove_d4] prep: starting process "cd aer_fifo_prove_d4/model; yosys -ql design_prep.log design_prep.ys"
+SBY 19:39:49 [aer_fifo_prove_d4] prep: finished (returncode=0)
+SBY 19:39:49 [aer_fifo_prove_d4] smt2: starting process "cd aer_fifo_prove_d4/model; yosys -ql design_smt2.log design_smt2.ys"
+SBY 19:39:49 [aer_fifo_prove_d4] smt2: finished (returncode=0)
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: starting process "cd aer_fifo_prove_d4; yosys-smtbmc -s yices --presat --unroll --noprogress -t 15  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2"
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.induction: starting process "cd aer_fifo_prove_d4; yosys-smtbmc -s yices --presat --unroll -i --noprogress -t 15  --append 0 --dump-vcd engine_0/trace_induct.vcd --dump-yw engine_0/trace_induct.yw --dump-vlogtb engine_0/trace_induct_tb.v --dump-smtc engine_0/trace_induct.smtc model/design_smt2.smt2"
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Solver: yices
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.induction: ##   0:00:00  Solver: yices
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 0..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 0..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.induction: ##   0:00:00  Trying induction in step 15..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 1..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 1..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.induction: ##   0:00:00  Trying induction in step 14..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.induction: ##   0:00:00  Trying induction in step 13..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 2..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 2..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 3..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 3..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 4..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 4..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 5..
+SBY 19:39:49 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 5..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 6..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 6..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.induction: ##   0:00:00  Temporal induction successful.
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.induction: ##   0:00:00  Status: passed
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.induction: finished (returncode=0)
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.induction: Status returned by engine for induction: pass
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 7..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 7..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 8..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 8..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 9..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 9..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 10..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 10..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assumptions in step 11..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:00  Checking assertions in step 11..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:01  Checking assumptions in step 12..
+SBY 19:39:50 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:01  Checking assertions in step 12..
+SBY 19:39:51 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:01  Checking assumptions in step 13..
+SBY 19:39:51 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:01  Checking assertions in step 13..
+SBY 19:39:51 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:01  Checking assumptions in step 14..
+SBY 19:39:51 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:01  Checking assertions in step 14..
+SBY 19:39:51 [aer_fifo_prove_d4] engine_0.basecase: ##   0:00:01  Status: passed
+SBY 19:39:51 [aer_fifo_prove_d4] engine_0.basecase: finished (returncode=0)
+SBY 19:39:51 [aer_fifo_prove_d4] engine_0.basecase: Status returned by engine for basecase: pass
+SBY 19:39:51 [aer_fifo_prove_d4] summary: Elapsed clock time [H:MM:SS (secs)]: 0:00:01 (1)
+SBY 19:39:51 [aer_fifo_prove_d4] summary: Elapsed process time [H:MM:SS (secs)]: 0:00:02 (2)
+SBY 19:39:51 [aer_fifo_prove_d4] summary: engine_0 (smtbmc yices) returned pass for basecase
+SBY 19:39:51 [aer_fifo_prove_d4] summary: engine_0 (smtbmc yices) returned pass for induction
+SBY 19:39:51 [aer_fifo_prove_d4] summary: engine_0 did not produce any traces
+SBY 19:39:51 [aer_fifo_prove_d4] summary: successful proof by k-induction.
+SBY 19:39:51 [aer_fifo_prove_d4] DONE (PASS, rc=0)
+cd /home/hasanmelih/Documents/neuromorphic-space-soc/formal && /home/hasanmelih/Downloads/oss-cad-suite-linux-x64-20260804/oss-cad-suite/bin/sby -f aer_fifo.sby bmc
+SBY 19:39:51 [aer_fifo_bmc] Removing directory '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_bmc'.
+SBY 19:39:51 [aer_fifo_bmc] Copy '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/../hw/rtl/aer_fifo.v' to '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_bmc/src/aer_fifo.v'.
+SBY 19:39:51 [aer_fifo_bmc] Copy '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_props.v' to '/home/hasanmelih/Documents/neuromorphic-space-soc/formal/aer_fifo_bmc/src/aer_fifo_props.v'.
+SBY 19:39:51 [aer_fifo_bmc] engine_0: smtbmc yices
+SBY 19:39:51 [aer_fifo_bmc] base: starting process "cd aer_fifo_bmc/src; yosys -ql ../model/design.log ../model/design.ys"
+SBY 19:39:51 [aer_fifo_bmc] base: Warning: Replacing memory \mem with list of registers. See aer_fifo.v:307
+SBY 19:39:51 [aer_fifo_bmc] base: finished (returncode=0)
+SBY 19:39:51 [aer_fifo_bmc] prep: starting process "cd aer_fifo_bmc/model; yosys -ql design_prep.log design_prep.ys"
+SBY 19:39:51 [aer_fifo_bmc] prep: finished (returncode=0)
+SBY 19:39:51 [aer_fifo_bmc] smt2: starting process "cd aer_fifo_bmc/model; yosys -ql design_smt2.log design_smt2.ys"
+SBY 19:39:51 [aer_fifo_bmc] smt2: finished (returncode=0)
+SBY 19:39:51 [aer_fifo_bmc] engine_0: starting process "cd aer_fifo_bmc; yosys-smtbmc -s yices --presat --unroll --noprogress -t 40  --append 0 --dump-vcd engine_0/trace.vcd --dump-yw engine_0/trace.yw --dump-vlogtb engine_0/trace_tb.v --dump-smtc engine_0/trace.smtc model/design_smt2.smt2"
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Solver: yices
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assumptions in step 0..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assertions in step 0..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assumptions in step 1..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assertions in step 1..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assumptions in step 2..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assertions in step 2..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assumptions in step 3..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assertions in step 3..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assumptions in step 4..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assertions in step 4..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assumptions in step 5..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assertions in step 5..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assumptions in step 6..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assertions in step 6..
+SBY 19:39:52 [aer_fifo_bmc] engine_0: ##   0:00:00  Checking assumptions in step 7..
+SBY 19:39:53 [aer_fifo_bmc] engine_0: ##   0:00:01  Checking assertions in step 7..
+SBY 19:39:53 [aer_fifo_bmc] engine_0: ##   0:00:01  Checking assumptions in step 8..
+SBY 19:39:53 [aer_fifo_bmc] engine_0: ##   0:00:01  Checking assertions in step 8..
+SBY 19:39:54 [aer_fifo_bmc] engine_0: ##   0:00:02  Checking assumptions in step 9..
+SBY 19:39:54 [aer_fifo_bmc] engine_0: ##   0:00:02  Checking assertions in step 9..
+SBY 19:39:54 [aer_fifo_bmc] engine_0: ##   0:00:02  Checking assumptions in step 10..
+SBY 19:39:54 [aer_fifo_bmc] engine_0: ##   0:00:02  Checking assertions in step 10..
+SBY 19:39:56 [aer_fifo_bmc] engine_0: ##   0:00:04  Checking assumptions in step 11..
+SBY 19:39:56 [aer_fifo_bmc] engine_0: ##   0:00:04  Checking assertions in step 11..
+SBY 19:39:57 [aer_fifo_bmc] engine_0: ##   0:00:05  Checking assumptions in step 12..
+SBY 19:39:57 [aer_fifo_bmc] engine_0: ##   0:00:05  Checking assertions in step 12..
+SBY 19:39:58 [aer_fifo_bmc] engine_0: ##   0:00:06  Checking assumptions in step 13..
+SBY 19:39:58 [aer_fifo_bmc] engine_0: ##   0:00:06  Checking assertions in step 13..
+SBY 19:40:00 [aer_fifo_bmc] engine_0: ##   0:00:08  Checking assumptions in step 14..
+SBY 19:40:00 [aer_fifo_bmc] engine_0: ##   0:00:08  Checking assertions in step 14..
+SBY 19:40:06 [aer_fifo_bmc] engine_0: ##   0:00:14  Checking assumptions in step 15..
+SBY 19:40:06 [aer_fifo_bmc] engine_0: ##   0:00:14  Checking assertions in step 15..
+SBY 19:40:08 [aer_fifo_bmc] engine_0: ##   0:00:16  Checking assumptions in step 16..
+SBY 19:40:08 [aer_fifo_bmc] engine_0: ##   0:00:16  Checking assertions in step 16..
+SBY 19:40:10 [aer_fifo_bmc] engine_0: ##   0:00:18  Checking assumptions in step 17..
+SBY 19:40:10 [aer_fifo_bmc] engine_0: ##   0:00:18  Checking assertions in step 17..
+SBY 19:40:16 [aer_fifo_bmc] engine_0: ##   0:00:24  Checking assumptions in step 18..
+SBY 19:40:16 [aer_fifo_bmc] engine_0: ##   0:00:24  Checking assertions in step 18..
+SBY 19:40:20 [aer_fifo_bmc] engine_0: ##   0:00:28  Checking assumptions in step 19..
+SBY 19:40:21 [aer_fifo_bmc] engine_0: ##   0:00:29  Checking assertions in step 19..
+SBY 19:40:24 [aer_fifo_bmc] engine_0: ##   0:00:32  Checking assumptions in step 20..
+SBY 19:40:25 [aer_fifo_bmc] engine_0: ##   0:00:33  Checking assertions in step 20..
+SBY 19:40:29 [aer_fifo_bmc] engine_0: ##   0:00:37  Checking assumptions in step 21..
+SBY 19:40:29 [aer_fifo_bmc] engine_0: ##   0:00:37  Checking assertions in step 21..
+SBY 19:40:32 [aer_fifo_bmc] engine_0: ##   0:00:40  Checking assumptions in step 22..
+SBY 19:40:34 [aer_fifo_bmc] engine_0: ##   0:00:42  Checking assertions in step 22..
+SBY 19:40:37 [aer_fifo_bmc] engine_0: ##   0:00:45  Checking assumptions in step 23..
+SBY 19:40:38 [aer_fifo_bmc] engine_0: ##   0:00:46  Checking assertions in step 23..
+SBY 19:40:42 [aer_fifo_bmc] engine_0: ##   0:00:50  Checking assumptions in step 24..
+SBY 19:40:42 [aer_fifo_bmc] engine_0: ##   0:00:50  Checking assertions in step 24..
+SBY 19:40:47 [aer_fifo_bmc] engine_0: ##   0:00:55  Checking assumptions in step 25..
+SBY 19:40:54 [aer_fifo_bmc] engine_0: ##   0:01:02  Checking assertions in step 25..
+SBY 19:40:59 [aer_fifo_bmc] engine_0: ##   0:01:07  Checking assumptions in step 26..
+SBY 19:41:06 [aer_fifo_bmc] engine_0: ##   0:01:14  Checking assertions in step 26..
+SBY 19:41:14 [aer_fifo_bmc] engine_0: ##   0:01:22  Checking assumptions in step 27..
+SBY 19:41:21 [aer_fifo_bmc] engine_0: ##   0:01:29  Checking assertions in step 27..
+SBY 19:41:27 [aer_fifo_bmc] engine_0: ##   0:01:35  Checking assumptions in step 28..
+SBY 19:41:33 [aer_fifo_bmc] engine_0: ##   0:01:41  Checking assertions in step 28..
+SBY 19:41:44 [aer_fifo_bmc] engine_0: ##   0:01:52  Checking assumptions in step 29..
+SBY 19:41:45 [aer_fifo_bmc] engine_0: ##   0:01:53  Checking assertions in step 29..
+SBY 19:42:04 [aer_fifo_bmc] engine_0: ##   0:02:12  Checking assumptions in step 30..
+SBY 19:42:20 [aer_fifo_bmc] engine_0: ##   0:02:28  Checking assertions in step 30..
+SBY 19:42:28 [aer_fifo_bmc] engine_0: ##   0:02:36  Checking assumptions in step 31..
+SBY 19:42:35 [aer_fifo_bmc] engine_0: ##   0:02:43  Checking assertions in step 31..
+SBY 19:43:02 [aer_fifo_bmc] engine_0: ##   0:03:10  Checking assumptions in step 32..
+SBY 19:43:19 [aer_fifo_bmc] engine_0: ##   0:03:27  Checking assertions in step 32..
+SBY ---- Keyboard interrupt or external termination signal ----
+SBY 19:43:21 [aer_fifo_bmc] engine_0: terminating process
+make: *** [Makefile:22: bmc] Terminated
+make: Leaving directory '/home/hasanmelih/Documents/neuromorphic-space-soc/formal'

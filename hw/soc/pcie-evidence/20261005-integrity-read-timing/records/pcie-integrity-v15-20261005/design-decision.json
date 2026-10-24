@@ -1,0 +1,20 @@
+{
+  "status": "BOUNDED_BALANCED_KNOWN_ELIGIBILITY_PAYLOAD_MUX_EXPERIMENT",
+  "baseline": "V11 frozen stable baseline; independent of rejected V12/V13/V14",
+  "measured_rejected_V14": {
+    "critical_report": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v14-20261005/critical-path-attribution.json",
+    "bytes": 41656,
+    "sha256": "ee4479a257184bc7ee65c2a9a434e04ab4d8cd68d351c91abf2da37989437b7c",
+    "critical_start": "framer.commit_ptr[1]",
+    "critical_endpoint": "framer.ending",
+    "arrival_ns": 12.056656,
+    "Boolean_cells": 56,
+    "Boolean_delay_ns": 7.640503,
+    "buffer_cells": 21,
+    "buffer_delay_ns": 3.494559,
+    "same4ns_slow_setup_slack": -8.255548
+  },
+  "hypothesis": "V14 procedural accumulator mapped into a 56-stage Boolean chain. V15 explicit complete binary known-flag/payload-mux tree bounds source selection depth and preserves selected literal Z. Actual mapped pin-graph depth and unchanged4ns three-corner STA determine whether the tool retains a useful structure.",
+  "unchanged": "Exact V11 read-block inverse preserves every slot/cache writer, fault/retire/commit/pointer/reset state, valid slot scope and public cycle behavior. Per-lane count masking moved after tree with equivalent procedural unknown handling.",
+  "physical_acceptance": false
+}

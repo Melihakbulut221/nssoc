@@ -1,0 +1,1025 @@
+{
+  "status": "PASS_FIXED_SAMPLER_AND_FOUR_CONNECTED_RX_PATHS_NATIVE_PHYSICAL_SCOPE_ONLY",
+  "sources": {
+    "hw/soc/flow/make_pcie_sampler_cell.py": {
+      "bytes": 12887,
+      "sha256": "9d6689ba659eb99f878e8bfd0696e8e758f31c00313edcacaef502bef8c113d1"
+    },
+    "hw/soc/flow/check_pcie_sampler_cell.py": {
+      "bytes": 13602,
+      "sha256": "5924edb06d3dc3532f1e55d0bf9a365a818aa32212cd9f3010ca1121560f5a82"
+    },
+    "hw/soc/flow/make_pcie_analog_bank_v2.py": {
+      "bytes": 15059,
+      "sha256": "a013154dda5ae69e6d6820abdcbf4f240d65f2362a06e4a0c53d16900a5fc2ff"
+    },
+    "hw/soc/flow/check_pcie_analog_bank_v2.py": {
+      "bytes": 14496,
+      "sha256": "0749a30b4dffb75c8e7c129b587470482db8e3e31cfb4cb4354333319caae968"
+    },
+    "sw/tests/test_pcie_sampler_layout.py": {
+      "bytes": 8774,
+      "sha256": "bec621536e775deefad9cfb1131562946a03b8cce6881fcce7c7365ed7f55dde"
+    }
+  },
+  "results": {
+    "sampler-layout": {
+      "result": {
+        "bytes": 87200,
+        "sha256": "566972459a8dbe5d3b5c0b8aa8a479015bc8ae1dbc88eec6dc7862620baaf0bb"
+      },
+      "status": "GENERATED_REQUIRES_NATIVE_DRC_LVS_AND_PEX"
+    },
+    "sampler-native": {
+      "result": {
+        "bytes": 88832,
+        "sha256": "7d70836e7cc27cd2d577edbf862cb2c603cea95653e1f77986ecefa3bf386e3e"
+      },
+      "status": "PASS_SAMPLER_V2_MAIN_DRC_STRICT_DEEP_LVS_LEF_AND_TEN_NEGATIVE_CONTROLS_ONLY",
+      "steps": [
+        {
+          "name": "drc",
+          "status": "PASS",
+          "seconds": 7.403830702998675,
+          "returncode": 0,
+          "measurement": {
+            "status": "PASS",
+            "process_returncode": 0,
+            "markers": 0,
+            "categories": {},
+            "category_count": 560,
+            "report_sha256": "570b62c08ab59cb494e2576137ed4c1390a1a3a269ae468509d078f18677a795",
+            "log_sha256": "1832dd8d65c11c7ed439149476626dcab8f321f7a3d87b198b90233c4ed16513"
+          },
+          "audit": null
+        },
+        {
+          "name": "offgrid",
+          "status": "FAIL",
+          "seconds": 6.988648524013115,
+          "returncode": 0,
+          "measurement": {
+            "status": "FAIL",
+            "process_returncode": 0,
+            "markers": 6,
+            "categories": {
+              "'M1.a'": 2,
+              "metal1_drw_Offgrid": 4
+            },
+            "category_count": 560,
+            "report_sha256": "d9532aa4a8041028517679303e9de29182e56cbcb222453563339e1a9b8310ef",
+            "log_sha256": "f26e9bdc0c8e61b66b13e02da453cb7f8fbdcd36b490f8cc618526748769f21a"
+          },
+          "audit": null
+        },
+        {
+          "name": "lvs",
+          "status": "PASS within comparison scope",
+          "seconds": 5.94366820299183,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "PASS within comparison scope",
+            "top": "nssoc_rx_sampler_hbt_v2_layout",
+            "reasons": [],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_rx_sampler_hbt_v2_layout",
+                "schematic": "NSSOC_RX_SAMPLER_HBT_V2_LAYOUT",
+                "status": "Match",
+                "layout_devices_recursive": 28,
+                "schematic_devices_recursive": 28
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-checks-02/lvs/result.lvsdb": {
+                "bytes": 127369,
+                "sha256": "107f3b8ee68cf5ca6f82101eb15d3ec6f2f74a5e0b1127b3a52b92af3699d8d9"
+              },
+              "/dev/shm/nssoc-sampler-checks-02/lvs/deck.log": {
+                "bytes": 36986,
+                "sha256": "29d3ab2ce51e797b67a91c2fbe643911f4c110c5aef94fb4fa2a5ab1a4dc58fd"
+              }
+            }
+          }
+        },
+        {
+          "name": "wrong_load",
+          "status": "FAIL",
+          "seconds": 5.932834717998048,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_rx_sampler_hbt_v2_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_rx_sampler_hbt_v2_layout",
+                "schematic": "NSSOC_RX_SAMPLER_HBT_V2_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 28,
+                "schematic_devices_recursive": 28
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-checks-02/wrong_load/result.lvsdb": {
+                "bytes": 127411,
+                "sha256": "fab3bfe5d35563f9c427e2b6839479d562d6e7fc8549fde19458252c74dac15f"
+              },
+              "/dev/shm/nssoc-sampler-checks-02/wrong_load/deck.log": {
+                "bytes": 36996,
+                "sha256": "f70c3bf6c1080a996f59e1ed566c1f831d0cda1cc80cb3d5b721769e4bb3b2d3"
+              }
+            }
+          }
+        },
+        {
+          "name": "tail_nx",
+          "status": "FAIL",
+          "seconds": 5.920394982997095,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_rx_sampler_hbt_v2_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_rx_sampler_hbt_v2_layout",
+                "schematic": "NSSOC_RX_SAMPLER_HBT_V2_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 28,
+                "schematic_devices_recursive": 28
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-checks-02/tail_nx/result.lvsdb": {
+                "bytes": 127369,
+                "sha256": "ab181adce6d07a8fe226f2dd18d85a93c25b009e4909b477bdc4f70a49b880cc"
+              },
+              "/dev/shm/nssoc-sampler-checks-02/tail_nx/deck.log": {
+                "bytes": 36987,
+                "sha256": "669d1e2a8fc55e89ffae21ba616c792ff19f45458039c2ab2351be0ff8d335ee"
+              }
+            }
+          }
+        },
+        {
+          "name": "missing_tap",
+          "status": "FAIL",
+          "seconds": 5.759050412016222,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_rx_sampler_hbt_v2_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_rx_sampler_hbt_v2_layout",
+                "schematic": "NSSOC_RX_SAMPLER_HBT_V2_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 28,
+                "schematic_devices_recursive": 28
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-checks-02/missing_tap/result.lvsdb": {
+                "bytes": 127369,
+                "sha256": "d53aee94ad534720db337d8f7270067e3fde3c976da5be50c812ff86774d4757"
+              },
+              "/dev/shm/nssoc-sampler-checks-02/missing_tap/deck.log": {
+                "bytes": 36999,
+                "sha256": "df42db7fb255a8de832074372e91eb3e9bbb24b8bfef8494b59d56030bfb15aa"
+              }
+            }
+          }
+        },
+        {
+          "name": "master_clock",
+          "status": "FAIL",
+          "seconds": 5.654515722009819,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_rx_sampler_hbt_v2_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_rx_sampler_hbt_v2_layout",
+                "schematic": "NSSOC_RX_SAMPLER_HBT_V2_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 28,
+                "schematic_devices_recursive": 28
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-checks-02/master_clock/result.lvsdb": {
+                "bytes": 127369,
+                "sha256": "85706f03b46db6704d82e0990e567a53eda120ec0024fa7c83fca2a0d74a9e4f"
+              },
+              "/dev/shm/nssoc-sampler-checks-02/master_clock/deck.log": {
+                "bytes": 37002,
+                "sha256": "15e611ac58ef780ba203971741a41fb518d33e0416a33f934f1a6b30f3e14af3"
+              }
+            }
+          }
+        },
+        {
+          "name": "wrong_input",
+          "status": "FAIL",
+          "seconds": 5.377602961991215,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_rx_sampler_hbt_v2_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_rx_sampler_hbt_v2_layout",
+                "schematic": "NSSOC_RX_SAMPLER_HBT_V2_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 28,
+                "schematic_devices_recursive": 27
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-checks-02/wrong_input/result.lvsdb": {
+                "bytes": 127732,
+                "sha256": "7c6e38383cb74dc44aa3a5ce0dbe40ea9eea6eb209790f37bcc5a7220d5a15fd"
+              },
+              "/dev/shm/nssoc-sampler-checks-02/wrong_input/deck.log": {
+                "bytes": 36999,
+                "sha256": "2fd8da9046f663d677382da7c8213d7cd4030043611c96da3a92341af85374cf"
+              }
+            }
+          }
+        },
+        {
+          "name": "clock_open",
+          "status": "FAIL",
+          "seconds": 6.0864180749922525,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_rx_sampler_hbt_v2_layout",
+            "reasons": [
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_rx_sampler_hbt_v2_layout",
+                "schematic": "NSSOC_RX_SAMPLER_HBT_V2_LAYOUT",
+                "status": "Match",
+                "layout_devices_recursive": 28,
+                "schematic_devices_recursive": 28
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-checks-02/clock_open/result.lvsdb": {
+                "bytes": 127389,
+                "sha256": "a2c99d96cfd8e8ca218e0f1cd8f2dcf469fc16deb0b92bb8d00cbafe2c6d3211"
+              },
+              "/dev/shm/nssoc-sampler-checks-02/clock_open/deck.log": {
+                "bytes": 36975,
+                "sha256": "ab143b5343530b5e1b4ca969f9587b45d87b8975f9fd287edad46aaca8bab92b"
+              }
+            }
+          }
+        },
+        {
+          "name": "clock_short",
+          "status": "FAIL",
+          "seconds": 5.5545409790065605,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_rx_sampler_hbt_v2_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_rx_sampler_hbt_v2_layout",
+                "schematic": "NSSOC_RX_SAMPLER_HBT_V2_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 28,
+                "schematic_devices_recursive": 28
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-checks-02/clock_short/result.lvsdb": {
+                "bytes": 127651,
+                "sha256": "1a6703474f38d9c892e3cdfe3ed7dfe1878870840e83c8411ad3943cb632f31f"
+              },
+              "/dev/shm/nssoc-sampler-checks-02/clock_short/deck.log": {
+                "bytes": 36978,
+                "sha256": "1fd5f2bae961de246596d53eece22c92fcdacc6ba85973e3dade96b4ee7cbf2a"
+              }
+            }
+          }
+        },
+        {
+          "name": "power_short",
+          "status": "FAIL",
+          "seconds": 5.962777724984335,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_rx_sampler_hbt_v2_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_rx_sampler_hbt_v2_layout",
+                "schematic": "NSSOC_RX_SAMPLER_HBT_V2_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 28,
+                "schematic_devices_recursive": 28
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-checks-02/power_short/result.lvsdb": {
+                "bytes": 127719,
+                "sha256": "ff0fa280ce7428c90fd40f28aa0d76d7dfff04b65523a3728afcd8c9646c0023"
+              },
+              "/dev/shm/nssoc-sampler-checks-02/power_short/deck.log": {
+                "bytes": 36978,
+                "sha256": "adb032e3360cf336072536c763c68de86be71f10c7a98408c96a1014646f15c0"
+              }
+            }
+          }
+        },
+        {
+          "name": "lef",
+          "status": "PASS",
+          "seconds": 1.7446420610067435,
+          "returncode": 0,
+          "measurement": null,
+          "audit": null
+        },
+        {
+          "name": "lef_missing_pin",
+          "status": "EXPECTED_REJECTION",
+          "seconds": 1.6412938940047752,
+          "returncode": 1,
+          "measurement": null,
+          "audit": null
+        }
+      ]
+    },
+    "bank-layout": {
+      "result": {
+        "bytes": 90397,
+        "sha256": "20dcc3309215cfed1a781a8b026dc6db7114a1ec4476c420155799408e693172"
+      },
+      "status": "GENERATED_REQUIRES_BANK_DRC_LVS_PEX"
+    },
+    "bank-native": {
+      "result": {
+        "bytes": 99630,
+        "sha256": "8b7f06934e7b1e28c1e7377ef66cd737083c37b9bec8a1de8407b31e85b4b292"
+      },
+      "status": "PASS_BANK_V2_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_AND_ELEVEN_NEGATIVE_CONTROLS_ONLY",
+      "steps": [
+        {
+          "name": "drc",
+          "status": "PASS",
+          "seconds": 10.461518243013415,
+          "returncode": 0,
+          "measurement": {
+            "status": "PASS",
+            "process_returncode": 0,
+            "markers": 0,
+            "categories": {},
+            "category_count": 560,
+            "report_sha256": "95c10e3f8f0814817924a1305e9040d80811f0bb6a56a3ef48ab417824c2a084",
+            "log_sha256": "df994fbd58178d2da9bdafe3cd793617fdf27441c43094b5684523a63f489291"
+          },
+          "audit": null
+        },
+        {
+          "name": "offgrid",
+          "status": "FAIL",
+          "seconds": 10.253247681015637,
+          "returncode": 0,
+          "measurement": {
+            "status": "FAIL",
+            "process_returncode": 0,
+            "markers": 6,
+            "categories": {
+              "'M1.a'": 2,
+              "metal1_drw_Offgrid": 4
+            },
+            "category_count": 560,
+            "report_sha256": "d32d82522f75e1b3d37cdc8d14f0f4eba0d941b9f74a29197893be3e465fb55b",
+            "log_sha256": "c1a91a0a0f00e85c0a961fb5979894d9129e66e7a409c1104c77a1b7693cf7ac"
+          },
+          "audit": null
+        },
+        {
+          "name": "lvs",
+          "status": "PASS within comparison scope",
+          "seconds": 8.969386518991087,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "PASS within comparison scope",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "Match",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/lvs/result.lvsdb": {
+                "bytes": 1560919,
+                "sha256": "48336361f29aee2264cfa4d589c0e91469f3b68524e03798a37b8b80bbe5d0f6"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/lvs/deck.log": {
+                "bytes": 37031,
+                "sha256": "bc798c093516a20a0e70788975e9f4b8bfa59d3614af3d0fc15056e04b6281f4"
+              }
+            }
+          }
+        },
+        {
+          "name": "lvs_flat",
+          "status": "PASS within comparison scope",
+          "seconds": 7.027839058020618,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "PASS within comparison scope",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "Match",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/lvs_flat/result.lvsdb": {
+                "bytes": 1346871,
+                "sha256": "c3d12a0380af56021aed1c2d928561ba5310ed2408c7afb1130d198a21852310"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/lvs_flat/deck.log": {
+                "bytes": 37031,
+                "sha256": "0b5e2f7328368f46b349637bf55c52f10f3b579b29418a616c2871b178a94f96"
+              }
+            }
+          }
+        },
+        {
+          "name": "wrong_load",
+          "status": "FAIL",
+          "seconds": 7.160545085003832,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "NoMatch",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/wrong_load/result.lvsdb": {
+                "bytes": 1561163,
+                "sha256": "d8d1bfedac498cbb75e1387add99b7339333ef516d944d7d21585051ed7f0e0a"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/wrong_load/deck.log": {
+                "bytes": 37045,
+                "sha256": "a2233a01a1d95913a0fb040845df6a162307e0c0f7016db4cb0a612e4d67d388"
+              }
+            }
+          }
+        },
+        {
+          "name": "tail_nx",
+          "status": "FAIL",
+          "seconds": 7.122415774007095,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "NoMatch",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/tail_nx/result.lvsdb": {
+                "bytes": 1561019,
+                "sha256": "b9299b917ad863a5cfd4f37746b4b883c6e68dbad3d085c2c00e9e5dd3565591"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/tail_nx/deck.log": {
+                "bytes": 37036,
+                "sha256": "34af2c0b8c7f2c62fdc08c0c0f8584cfeecfbd91e047b51f9544167440a83348"
+              }
+            }
+          }
+        },
+        {
+          "name": "missing_tap",
+          "status": "FAIL",
+          "seconds": 7.037749930983409,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "NoMatch",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/missing_tap/result.lvsdb": {
+                "bytes": 1561124,
+                "sha256": "6492ef47c9f4b891289ea0b23ab72117f3877a6fed8c9d65ff6017eac036149e"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/missing_tap/deck.log": {
+                "bytes": 37048,
+                "sha256": "44fb1826a04f0b47166ac52c6f0d9fbafb471ba8ec389b651342d0e5455b61ec"
+              }
+            }
+          }
+        },
+        {
+          "name": "master_clock",
+          "status": "FAIL",
+          "seconds": 6.746560931991553,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "NoMatch",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/master_clock/result.lvsdb": {
+                "bytes": 1561167,
+                "sha256": "508a5a3b6592d77e86adba4529c74dd1ca8e96b1e090653759b457c71ea5f7cb"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/master_clock/deck.log": {
+                "bytes": 37051,
+                "sha256": "426534034a81a54e4a55d5ddd59f86d0a1cd7412f61e929fe8672022b10c6008"
+              }
+            }
+          }
+        },
+        {
+          "name": "wrong_lane",
+          "status": "FAIL",
+          "seconds": 6.979582366999239,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "NoMatch",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/wrong_lane/result.lvsdb": {
+                "bytes": 1561044,
+                "sha256": "d178b353897db6acb0c5cd253ec2812bae4ce460719b9d8d80813531abffec4b"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/wrong_lane/deck.log": {
+                "bytes": 37045,
+                "sha256": "52462f1afd42923afbb15e3b221059a853897fba9ae5e185172260bb91aa0a34"
+              }
+            }
+          }
+        },
+        {
+          "name": "clock_open",
+          "status": "FAIL",
+          "seconds": 6.772027822997188,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "Match",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/clock_open/result.lvsdb": {
+                "bytes": 1560608,
+                "sha256": "33bdbcb49721da1b55091af7acc152233b8e4710874dc262cdcf52e21ea67b47"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/clock_open/deck.log": {
+                "bytes": 37028,
+                "sha256": "a95d28f4963ba078064daf514ea55da1c17f54af4e9dda087631333a2fb81737"
+              }
+            }
+          }
+        },
+        {
+          "name": "clock_short",
+          "status": "FAIL",
+          "seconds": 7.568967027007602,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "NoMatch",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/clock_short/result.lvsdb": {
+                "bytes": 1561582,
+                "sha256": "404206e33bd2de6bb382e529cec342083b9a963c9eba87707c2633de8228c4d9"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/clock_short/deck.log": {
+                "bytes": 37031,
+                "sha256": "2d2124ddbbad9e30c4b751226f3062f6ae07f61fd3082675af21153607bdfc73"
+              }
+            }
+          }
+        },
+        {
+          "name": "power_short",
+          "status": "FAIL",
+          "seconds": 7.282333763985662,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "NoMatch",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/power_short/result.lvsdb": {
+                "bytes": 1561563,
+                "sha256": "7f510b9f053009b15d4f6027e4fc118fab8bb5767134e63b240ec18b1e95e31e"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/power_short/deck.log": {
+                "bytes": 37031,
+                "sha256": "4d99e42946f62c084136451649aea8e6908ffd670dbf35960edc054f7c4769c9"
+              }
+            }
+          }
+        },
+        {
+          "name": "rx_path_open",
+          "status": "FAIL",
+          "seconds": 6.515161941992119,
+          "returncode": 0,
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_pcie_analog_bank4_v2",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_pcie_analog_bank4_v2",
+                "schematic": "NSSOC_PCIE_ANALOG_BANK4_V2",
+                "status": "NoMatch",
+                "layout_devices_recursive": 165,
+                "schematic_devices_recursive": 165
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-sampler-bank-checks-01/rx_path_open/result.lvsdb": {
+                "bytes": 1561504,
+                "sha256": "911787bebbf9dd18b40bb16f645ffc172c20212595492ba16fae515987eef05c"
+              },
+              "/dev/shm/nssoc-sampler-bank-checks-01/rx_path_open/deck.log": {
+                "bytes": 37034,
+                "sha256": "4c6ff8e0c0aeeaa7ac0342d27e81011d453925c3a59fada9bac6fdb2b5510a92"
+              }
+            }
+          }
+        },
+        {
+          "name": "lef",
+          "status": "PASS",
+          "seconds": 1.5312503989844117,
+          "returncode": 0,
+          "measurement": null,
+          "audit": null
+        },
+        {
+          "name": "lef_missing_pin",
+          "status": "EXPECTED_REJECTION",
+          "seconds": 1.6335032930073794,
+          "returncode": 1,
+          "measurement": null,
+          "audit": null
+        }
+      ]
+    },
+    "primitive-rx": {
+      "result": {
+        "bytes": 38562,
+        "sha256": "4703c4fdf0e14daa3e29f385cfcfce8a1fefaedb8966dbd7b26ab19d44518ff0"
+      },
+      "status": "GENERATED_REQUIRES_DRC_LVS_PEX_AND_CURRENT_QUALIFICATION"
+    },
+    "primitive-tx": {
+      "result": {
+        "bytes": 34507,
+        "sha256": "1355131bd7774a16c46e381e8103060a3fce84b6ddc4df05ba35da8c18956dc8"
+      },
+      "status": "GENERATED_REQUIRES_DRC_LVS_PEX_AND_CURRENT_QUALIFICATION"
+    },
+    "first-status-parser-failure": {
+      "result": {
+        "bytes": 52261,
+        "sha256": "75363f34a0acd7ee7582bbf61dfb5f58a19978a5d40d71bcd2faf71fe948e762"
+      },
+      "status": "FAILED_OR_INCOMPLETE"
+    }
+  },
+  "sampler": {
+    "bbox_um": [
+      0,
+      0,
+      880,
+      267.03
+    ],
+    "hbt": 15,
+    "rppd": 12,
+    "physical_taps": 8,
+    "combined_lvs_devices": 28,
+    "ports": 10,
+    "drc_markers": 0,
+    "drc_categories": 560,
+    "negative_controls": 10
+  },
+  "bank": {
+    "bbox_um": [
+      0,
+      0,
+      1070,
+      2640
+    ],
+    "hbt": 92,
+    "resistor": 72,
+    "physical_taps": 96,
+    "combined_lvs_devices": 165,
+    "ports": 60,
+    "drc_markers": 0,
+    "drc_categories": 560,
+    "negative_controls": 11,
+    "both_deep_and_flat_lvs": true,
+    "rx_sampler_connections": 8,
+    "literal_source_geometry_preserved": true
+  },
+  "assumptions": {
+    "external_clock": true,
+    "sampler_supply_v": 2.5,
+    "rx_tx_supply_v": 1.8,
+    "external_bias_references": true,
+    "sampler_source_sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f",
+    "sampler_pre_layout_numerical_residuals_closed": false,
+    "qualified_pex": false,
+    "post_layout_8ghz_qualified": false,
+    "em_qualified": false,
+    "phy_complete": false,
+    "main_chip_integrated": false,
+    "pad_bank_extended": false,
+    "manufacturing_approval": false
+  },
+  "validation": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm .venv/bin/python -m pytest sw/tests/test_pcie_sampler_layout.py sw/tests/test_pcie_rx_cell.py sw/tests/test_pcie_analog_bank.py -q -p no:cacheprovider",
+    "passed": 75,
+    "ruff": "All checks passed",
+    "heavy_chip_work": false
+  },
+  "source_pdk": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+  "verification_deck": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+  "runtime_appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "native_memory_limit_bytes": 2147483648,
+  "native_commands": "Exact commands, elapsed times, logs, input and output hashes are embedded in each native result.json. Generation uses AppImage python with --pdk and --out, and bank additionally --tx --rx --sampler. Outputs require fresh directories.",
+  "reproduction": {
+    "sampler_generate": "hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python hw/soc/flow/make_pcie_sampler_cell.py --pdk PDK --out /dev/shm/nssoc-sampler-NEW",
+    "sampler_check": "python hw/soc/flow/check_pcie_sampler_cell.py --pdk PDK --layout /dev/shm/nssoc-sampler-NEW --out /dev/shm/nssoc-sampler-CHECKNEW",
+    "bank_generate": "hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python hw/soc/flow/make_pcie_analog_bank_v2.py --pdk PDK --tx CAPTURE/primitive-tx --rx CAPTURE/primitive-rx --sampler /dev/shm/nssoc-sampler-NEW --out /dev/shm/nssoc-sampler-BANKNEW",
+    "bank_check": "python hw/soc/flow/check_pcie_analog_bank_v2.py --pdk PDK --layout /dev/shm/nssoc-sampler-BANKNEW --out /dev/shm/nssoc-sampler-BANKCHECKNEW",
+    "source_paths": "Original primitive source inventories bind exact repository/PDK paths. Restore the pinned original inputs before generation; do not repin or rewrite manifests."
+  },
+  "retention": "Every native positive/negative output including LVSdb, DRC database, OpenROAD logs, generated GDS/LEF/SPICE and project method copies retained; no proprietary/foundry model implementation or runtime binary included. Native-generated device geometry and model names are present.",
+  "limitations": "Physical connectivity/main DRC screen of deliberately conservative prototype geometry only. Long interconnect parasitics are not simulated or qualified; no post-layout frequency/current/EM/clock fanout guarantee. Original sampler v2 initialization residual remains. No complete SERDES/CDR/PLL or main-chip integration. Separate older padded bank is unchanged.",
+  "first_reader_failure": "Actual native DRC and LVS succeeded, but initial checker compared audit status to PASS instead of the exact PASS within comparison scope string. Original source hash and full failed receipt retained; no device/guard limit relaxation.",
+  "capsule": {
+    "bytes": 293244,
+    "sha256": "4ceb1956a8738ce7d12716a5bd0cda3d48a5169b45535178bdd3619de523e30e",
+    "members": 237,
+    "path": "hw/soc/out/pcie-sampler-layout-20261004/sampler-bank-native-final.tar.xz"
+  }
+}

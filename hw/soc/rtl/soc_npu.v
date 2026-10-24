@@ -1,6 +1,8 @@
 // SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
 // SPDX-License-Identifier: CERN-OHL-W-2.0
 
+`default_nettype none
+
 // soc_npu: the CPU-side NPU interface, and the frozen pilot behind it.
 //
 // docs/39-soc-bus-and-memory-map.md section 9 item 4 is the gap this
@@ -554,24 +556,24 @@ module soc_npu #(
   // -------------------------------------------------------------------
   // NPUCFG register offsets.
   //
-  // This block's own register map, written here, exactly as soc_uart's
-  // and soc_gptimer's are: regmap/memmap.yaml describes where a block
-  // lives and has never described what is inside one. The NODE window's
-  // map is different -- it IS regmap/regmap.yaml -- and this module
-  // does not restate a single offset of it.
+  // Generated from regmap/peripherals/npucfg.yaml. The base address
+  // remains in regmap/memmap.yaml. The NODE window uses its separate
+  // frozen map in regmap/regmap.yaml; no node offset is restated here.
+  // generate_peripherals.py --check verifies these decoder constants
+  // together with the matching firmware and host-test definitions.
   // -------------------------------------------------------------------
-  localparam [11:0] R_ID       = 12'h000;
-  localparam [11:0] R_VERSION  = 12'h004;
-  localparam [11:0] R_CTRL     = 12'h008;
-  localparam [11:0] R_STATUS   = 12'h00C;
-  localparam [11:0] R_IRQCAUSE = 12'h010;
-  localparam [11:0] R_IRQMASK  = 12'h014;
-  localparam [11:0] R_EVQ_IN   = 12'h018;
-  localparam [11:0] R_EVQ_OUT  = 12'h01C;
-  localparam [11:0] R_EVQ_STAT = 12'h020;
-  localparam [11:0] R_GEOM     = 12'h024;
-  localparam [11:0] R_CNT      = 12'h028;
-  localparam [11:0] R_CNT_DROP = 12'h02C;
+  localparam [11:0] R_ID       = 12'h000; // regmap:npucfg:ID
+  localparam [11:0] R_VERSION  = 12'h004; // regmap:npucfg:VERSION
+  localparam [11:0] R_CTRL     = 12'h008; // regmap:npucfg:CTRL
+  localparam [11:0] R_STATUS   = 12'h00C; // regmap:npucfg:STATUS
+  localparam [11:0] R_IRQCAUSE = 12'h010; // regmap:npucfg:IRQCAUSE
+  localparam [11:0] R_IRQMASK  = 12'h014; // regmap:npucfg:IRQMASK
+  localparam [11:0] R_EVQ_IN   = 12'h018; // regmap:npucfg:EVQ_IN
+  localparam [11:0] R_EVQ_OUT  = 12'h01C; // regmap:npucfg:EVQ_OUT
+  localparam [11:0] R_EVQ_STAT = 12'h020; // regmap:npucfg:EVQ_STAT
+  localparam [11:0] R_GEOM     = 12'h024; // regmap:npucfg:GEOM
+  localparam [11:0] R_CNT      = 12'h028; // regmap:npucfg:CNT
+  localparam [11:0] R_CNT_DROP = 12'h02C; // regmap:npucfg:CNT_DROP
 
   // "NPUC": the fabric controller, next to the node's own "NPU1"
   // (regmap/regmap.yaml ID). Same convention, one letter apart, so a
@@ -680,12 +682,6 @@ module soc_npu #(
     if (PROT_W > 64) begin : g_prot_too_wide
       ERROR_soc_npu_protected_word_exceeds_64_bits g ();
     end
-    // E_DECIDE's bound against the longest legitimate transient. WIN_MAX
-    // is derived from SER_HALF, so this fails HERE, with the reason, if
-    // someone slows the transport down and does not raise the bound.
-    if (DECIDE_MAX < 8 * WIN_MAX) begin : g_decide_too_tight
-      ERROR_soc_npu_DECIDE_MAX_must_be_at_least_8x_WIN_MAX g ();
-    end
   endgenerate
 
   // -------------------------------------------------------------------
@@ -759,6 +755,14 @@ module soc_npu #(
   // clean run is a second, longer one.
   localparam integer WIN_MAX   = 2 * (SER_GUARD_MAX + 2) + 2 + 16;
   localparam integer WIN_GRD_W = $clog2(WIN_MAX + 1);
+
+  // Declare WIN_MAX before using it in a generate condition. Icarus 14
+  // elaborates that condition before resolving a later localparam.
+  generate
+    if (DECIDE_MAX < 8 * WIN_MAX) begin : g_decide_too_tight
+      ERROR_soc_npu_DECIDE_MAX_must_be_at_least_8x_WIN_MAX g ();
+    end
+  endgenerate
 
   // E_DECIDE's bound. See the state itself for why it exists; this is
   // the number.
@@ -2463,3 +2467,5 @@ module soc_npu #(
 `endif
 
 endmodule
+
+`default_nettype wire

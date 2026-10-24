@@ -1,0 +1,160 @@
+{
+  "scope": "Only two actual data buffer header resistors change. Original topology and native acceptance gates remain.",
+  "files": [
+    {
+      "baseline_path": "hw/soc/analog/pcie/cdr_retimed_parallel_pd_vi_v3.spice",
+      "baseline_sha256": "11c7f3e5b0c9a55f9c3adde71873b2d9947a4ec4cbfbfb65a6d53e53baf860ec",
+      "candidate_path": "hw/soc/analog/pcie/cdr_retimed_data_cm_pd_vi_v9.spice",
+      "candidate_sha256": "dc8e9b7ff879780f2568161649e5bf2258fc1c8b8490994f0e3953d0beb57c26",
+      "edits": [
+        {
+          "before": "nssoc_cdr_retimed_parallel_pd_vi_v3",
+          "after": "nssoc_cdr_retimed_data_cm_pd_vi_v9",
+          "count": 2
+        },
+        {
+          "before": "nssoc_cdr_data_buffer_v4",
+          "after": "nssoc_cdr_data_buffer_cm_v5",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cdr_retimed_collector_v8_parent_plan.py",
+      "baseline_sha256": "a2c9ded1ea5edb4b80d440df4663f62f05e52bba85dfef98254d50feb0753803",
+      "candidate_path": "scripts/cdr_retimed_data_cm_v9_parent_plan.py",
+      "candidate_sha256": "3de42a59def4e14406b3297196a68fbae7dd1b5b8b194d07e273d4437a1b5442",
+      "edits": [
+        {
+          "before": "'cdr_retimed_parallel_pd_vi_v3.spice':'11c7f3e5b0c9a55f9c3adde71873b2d9947a4ec4cbfbfb65a6d53e53baf860ec'",
+          "after": "'cdr_retimed_data_cm_pd_vi_v9.spice':'dc8e9b7ff879780f2568161649e5bf2258fc1c8b8490994f0e3953d0beb57c26'",
+          "count": 1
+        },
+        {
+          "before": "'cdr_sampled_compare_buffered_v4.spice':'8b9ade6650c8d5153f3d872660b04d8cac1970220a6fc5fc233ec05489bb2d7c'",
+          "after": "'cdr_sampled_compare_data_cm_v5.spice':'9aa0379ae8ced00a3047119636523f95b1906a247fa221b21d864279d45f878b'",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_data_buffer_layout_v4",
+          "after": "nssoc_cdr_data_buffer_cm_layout_v5",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_retimed_parallel_pd_vi_v3",
+          "after": "nssoc_cdr_retimed_data_cm_pd_vi_v9",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_data_buffer_v4",
+          "after": "nssoc_cdr_data_buffer_cm_v5",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_collector_v8_parent.py",
+      "baseline_sha256": "9b061482381d3788d2fdce3ab17e4b8ce041ea1c6b69761d3c855c6a73f13ea9",
+      "candidate_path": "scripts/generate_cdr_retimed_data_cm_v9_parent.py",
+      "candidate_sha256": "88a3c6b8b204291ee1f34abc467a98cd255e08b2f9018bbf998a2bd6345e4040",
+      "edits": [
+        {
+          "before": "cdr_retimed_collector_v8_parent_plan",
+          "after": "cdr_retimed_data_cm_v9_parent_plan",
+          "count": 1
+        },
+        {
+          "before": "check_cdr_collector_v8_parent_sources",
+          "after": "check_cdr_data_cm_v9_parent_sources",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_pd484_collector_v8",
+          "after": "nssoc_cdr_pd484_data_cm_v9",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_retimed_collector_v8_parent.py",
+      "baseline_sha256": "21adb8fdfe6746a588f360fee20faa88198c3d293c60ba84554297b25e497afe",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retimed_data_cm_v9_parent.py",
+      "candidate_sha256": "0125c1b22b3ab1026bd049a4f2b8f465abc74708b55088d5a86860589938d35c",
+      "edits": [
+        {
+          "before": "nssoc_cdr_pd484_collector_v8",
+          "after": "nssoc_cdr_pd484_data_cm_v9",
+          "count": 1
+        },
+        {
+          "before": "cdr_retimed_collector_v8_parent_plan",
+          "after": "cdr_retimed_data_cm_v9_parent_plan",
+          "count": 2
+        },
+        {
+          "before": "generate_cdr_retimed_collector_v8_parent",
+          "after": "generate_cdr_retimed_data_cm_v9_parent",
+          "count": 1
+        },
+        {
+          "before": "def reference_fault(text, name):\n",
+          "after": "def reference_fault(text, name):\n    if name=='old_data_header_length':\n        lines=text.splitlines(keepends=True)\n        hits=[i for i,l in enumerate(lines)if l.split()and l.split()[0]in ('Rda_D4','Rdc_D4')]\n        assert len(hits)==2\n        for i in hits:\n            assert ' rppd w=8u l=2.4u ' in lines[i]\n            lines[i]=lines[i].replace(' l=2.4u ',' l=2u ')\n        return ''.join(lines)\n",
+          "count": 1
+        },
+        {
+          "before": "            \"wrong_finger_count\",\n",
+          "after": "            \"old_data_header_length\",\n            \"wrong_finger_count\",\n",
+          "count": 1
+        },
+        {
+          "before": "if name in (\"wrong_finger_count\", \"missing_hbt\"):",
+          "after": "if name in (\"old_data_header_length\", \"wrong_finger_count\", \"missing_hbt\"):",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_collector_v8_parent.py",
+      "baseline_sha256": "744c8beb179e5ca18884023d9be00fd3a914afdee006a62baf9acec68bd675a2",
+      "candidate_path": "scripts/cloud_cdr_retimed_data_cm_v9_parent.py",
+      "candidate_sha256": "298346688bdc2e749cbbbda04610b2c973e184054b56ba8639fb11971e5f7f8c",
+      "edits": [
+        {
+          "before": "cdr_retimed_collector_v8_parent_plan",
+          "after": "cdr_retimed_data_cm_v9_parent_plan",
+          "count": 2
+        },
+        {
+          "before": "cloud-cdr-retimed-collector-v8-parent",
+          "after": "cloud-cdr-retimed-data-cm-v9-parent",
+          "count": 1
+        },
+        {
+          "before": "docs/evidence/cdr-retimed-collector-v8-parent-children-20261019.json",
+          "after": "docs/evidence/cdr-retimed-data-cm-v9-parent-children-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "generate_cdr_retimed_collector_v8_parent",
+          "after": "generate_cdr_retimed_data_cm_v9_parent",
+          "count": 2
+        },
+        {
+          "before": "check_pcie_cdr_retimed_collector_v8_parent",
+          "after": "check_pcie_cdr_retimed_data_cm_v9_parent",
+          "count": 2
+        },
+        {
+          "before": "check_cdr_collector_v8_parent_sources",
+          "after": "check_cdr_data_cm_v9_parent_sources",
+          "count": 2
+        },
+        {
+          "before": "cdr-collector-v8-parent-source-delta.json",
+          "after": "cdr-data-cm-v9-parent-source-delta.json",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,118 @@
+{
+  "utc": "2026-10-08T04:34:14.165477+00:00",
+  "source": "hw/soc/rtl/soc_top.v",
+  "sha256": "84e244c947ed46715b22537bfcdeefed6020dae43beb899fc1a64b52483e485c",
+  "observed_packet_profile": [
+    {
+      "line": 251,
+      "text": "`ifdef SOC_PCIE_PACKET"
+    },
+    {
+      "line": 256,
+      "text": "    input wire pcie_link_up_i,pcie_training_i,pcie_retrain_done_i,"
+    },
+    {
+      "line": 257,
+      "text": "    input wire [15:0] pcie_function_id_i,"
+    },
+    {
+      "line": 258,
+      "text": "    input wire [7:0] pcie_rx_data_i,"
+    },
+    {
+      "line": 259,
+      "text": "    input wire pcie_rx_sop_i,pcie_rx_eop_i,pcie_rx_error_i,"
+    },
+    {
+      "line": 260,
+      "text": "    input wire pcie_rx_valid_i,pcie_rx_dllp_i,pcie_tx_ready_i,"
+    },
+    {
+      "line": 261,
+      "text": "    output wire pcie_rx_ready_o,"
+    },
+    {
+      "line": 262,
+      "text": "    output wire [7:0] pcie_tx_data_o,"
+    },
+    {
+      "line": 263,
+      "text": "    output wire pcie_tx_sop_o,pcie_tx_eop_o,pcie_tx_valid_o,"
+    },
+    {
+      "line": 264,
+      "text": "    output wire pcie_tx_dllp_o,pcie_tx_replay_o,"
+    },
+    {
+      "line": 265,
+      "text": "    output wire pcie_initialized_o,pcie_error_o,pcie_retrain_request_o,"
+    },
+    {
+      "line": 913,
+      "text": "`ifdef SOC_PCIE_PACKET"
+    },
+    {
+      "line": 929,
+      "text": "`ifdef SOC_PCIE_PACKET"
+    },
+    {
+      "line": 940,
+      "text": "`ifdef SOC_PCIE_PACKET"
+    },
+    {
+      "line": 948,
+      "text": "  soc_pcie_buffered_flow_packets #(.APB_TIMEOUT(APB_TIMEOUT)) u_pcie ("
+    },
+    {
+      "line": 949,
+      "text": "      .clk_i(clk_i),.rst_ni(rst_sys_n),.link_up_i(pcie_link_up_i),"
+    },
+    {
+      "line": 950,
+      "text": "      .training_i(pcie_training_i),.retrain_done_i(pcie_retrain_done_i),"
+    },
+    {
+      "line": 951,
+      "text": "      .function_id_i(pcie_function_id_i),.rx_data_i(pcie_rx_data_i),"
+    },
+    {
+      "line": 952,
+      "text": "      .rx_sop_i(pcie_rx_sop_i),.rx_eop_i(pcie_rx_eop_i),"
+    },
+    {
+      "line": 953,
+      "text": "      .rx_error_i(pcie_rx_error_i),.rx_valid_i(pcie_rx_valid_i),"
+    },
+    {
+      "line": 954,
+      "text": "      .rx_dllp_i(pcie_rx_dllp_i),.rx_ready_o(pcie_rx_ready_o),"
+    },
+    {
+      "line": 955,
+      "text": "      .tx_data_o(pcie_tx_data_o),.tx_sop_o(pcie_tx_sop_o),"
+    },
+    {
+      "line": 956,
+      "text": "      .tx_eop_o(pcie_tx_eop_o),.tx_valid_o(pcie_tx_valid_o),"
+    },
+    {
+      "line": 957,
+      "text": "      .tx_dllp_o(pcie_tx_dllp_o),.tx_replay_o(pcie_tx_replay_o),"
+    },
+    {
+      "line": 958,
+      "text": "      .tx_ready_i(pcie_tx_ready_i),.initialized_o(pcie_initialized_o),"
+    },
+    {
+      "line": 959,
+      "text": "      .error_o(pcie_error_o),.retrain_request_o(pcie_retrain_request_o),"
+    },
+    {
+      "line": 964,
+      "text": "  soc_pcie_apb_arbiter u_pcie_apb ("
+    }
+  ],
+  "full_phy_accepted": false,
+  "main_chip_serial_phy_integrated": false,
+  "scope": "Source inspection of current soc_top packet profile; external link/training flags and8-bit packet ports; not a new elaboration or physical chip proof."
+}

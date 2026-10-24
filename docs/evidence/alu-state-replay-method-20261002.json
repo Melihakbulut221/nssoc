@@ -1,0 +1,158 @@
+{
+  "status": "PASS_FROZEN_REPLAY_METHOD_AND_TINY_NATIVE_PARSER",
+  "native_execution": {
+    "command": [
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+      "yosys",
+      "-Q",
+      "-T",
+      "-s",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-state-replay-source/final/tiny-replay.ys"
+    ],
+    "returncode": 1,
+    "seconds": 0.2657104710015119,
+    "script": {
+      "bytes": 1631,
+      "sha256": "89fe2814b8b1204af83edfe80031bf516341c2965f5ad9da2e89c16d1c4ddf0a"
+    },
+    "log": {
+      "bytes": 26193,
+      "sha256": "63f136f9a6898f4e9a5e4ae0cb43fd45c55eb93c8c06acb4a6f3105d75ee3a9e"
+    }
+  },
+  "tiny_differences": {
+    "compared_bits": 13,
+    "differing_bits": 7,
+    "by_port": {
+      "output_q": 3,
+      "__mapped_state_equiv_ff_d": 2,
+      "__mapped_state_equiv_ff_clk": 2
+    },
+    "differences": [
+      {
+        "port": "output_q",
+        "bit": 0,
+        "original": 0,
+        "candidate": 1
+      },
+      {
+        "port": "output_q",
+        "bit": 1,
+        "original": 1,
+        "candidate": 0
+      },
+      {
+        "port": "output_q",
+        "bit": 2,
+        "original": 1,
+        "candidate": 0
+      },
+      {
+        "port": "__mapped_state_equiv_ff_d",
+        "bit": 0,
+        "original": 0,
+        "candidate": 1
+      },
+      {
+        "port": "__mapped_state_equiv_ff_d",
+        "bit": 1,
+        "original": 1,
+        "candidate": 0
+      },
+      {
+        "port": "__mapped_state_equiv_ff_clk",
+        "bit": 0,
+        "original": 1,
+        "candidate": 0
+      },
+      {
+        "port": "__mapped_state_equiv_ff_clk",
+        "bit": 1,
+        "original": 0,
+        "candidate": 1
+      }
+    ]
+  },
+  "fixed_inputs": {
+    "in_reset_b": "0",
+    "in_data": "10",
+    "in_clock": "1",
+    "in___mapped_state_equiv_gate_state": "0",
+    "in___mapped_state_equiv_ff_state": "10"
+  },
+  "scope": "Tiny binary diagnostic replay only; original full-chip unconstrained failure remains unchanged.",
+  "sources": {
+    "scripts/replay_alu_state_counterexample.py": {
+      "bytes": 13385,
+      "sha256": "82568b1092fc4c1640faff1f92c3b898a91060366569ba8538981d21af0b8d4c"
+    },
+    "sw/tests/test_alu_state_counterexample.py": {
+      "bytes": 4802,
+      "sha256": "8a02a08608dab6b6156a02946a23533b3816c9d9bb5fd30a8c3a904d11d9159b"
+    },
+    ".github/workflows/timing-alu-state-replay.yml": {
+      "bytes": 1839,
+      "sha256": "3488e751293b95b40fa2a09e3f2218f1ee970477fa7d9a0b6c8b4d0eca1fe57b"
+    }
+  },
+  "checks": {
+    "tests": {
+      "returncode": 0,
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "sw/tests/test_alu_state_counterexample.py",
+        "sw/tests/test_alu_mapped_state.py"
+      ],
+      "log": {
+        "bytes": 99,
+        "sha256": "c77532b54b0169b315366ac4e06589883a510b476efa38b40271ceeddfaffbb1"
+      }
+    },
+    "ruff": {
+      "returncode": 0,
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/dev-env/bin/ruff",
+        "check",
+        "scripts/replay_alu_state_counterexample.py",
+        "sw/tests/test_alu_state_counterexample.py"
+      ],
+      "log": {
+        "bytes": 19,
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      }
+    },
+    "actionlint": {
+      "returncode": 0,
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+        ".github/workflows/timing-alu-state-replay.yml"
+      ],
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "all_member_pins_match_original_receipt": true,
+  "original_method_unchanged": true,
+  "public_source": {
+    "bytes": 10538738,
+    "sha256": "8a90ec932cd6f4bfd04b49b40c33f44ad123f703673cb779977b4de74a90cb5a",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-alu-state-failure-37003975081-20261002.zip"
+  },
+  "candidate_adopted": false,
+  "equivalence_proved": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "root_review": {
+    "source_and_native_log_pins": "PASS",
+    "unchanged_original_failure_member_pins": "PASS",
+    "focused_pytest": 52,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "full_chip_replay_executed": false
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "status": "PASS_SOURCE_ONLY_PLL_RETAINED_TSTEP_MAXSTEP125",
+  "freeze": {
+    "bytes": 3144,
+    "sha256": "db47d293442b236b2a11774d264d6651023a1bf39077adc98a33a29fa876f84e"
+  },
+  "findings": [],
+  "method": {
+    "bytes": 4689,
+    "sha256": "2d6e5746e76634a31f8eab1b09c6fc77f2b424bdfc3660b44b46e087dd1f91c3"
+  },
+  "verified_sources": {
+    "scripts/characterize_pcie_pll_acquisition_v4.py": {
+      "bytes": 7340,
+      "sha256": "5e64b71eeb9f792b1a909ec354b3c69010b6f0983ec4f36323b2e0992c2b5503"
+    },
+    "scripts/review_pcie_pll_acquisition_v2.py": {
+      "bytes": 2876,
+      "sha256": "c52432fa751dd7d60bb1907d81ab2982eb28da5eb4513c0c7cfeb6869cebc01a"
+    },
+    "scripts/compare_pcie_pll_acquisition_pair_v2.py": {
+      "bytes": 5263,
+      "sha256": "66992b6dbcc9c49640aeb358d94cf2e3edda3512c4693745b0bee146330b3234"
+    },
+    "sw/tests/test_pcie_pll_acquisition_v4.py": {
+      "bytes": 14149,
+      "sha256": "726dfd4b03ec72afbb0382dd307441a0a8ac7d6f43fd0a264af67fa4c750c499"
+    }
+  },
+  "verified_parent_count": 8,
+  "actual_saved_controls": 43,
+  "whole_producer_method_inverses": [
+    "Meter",
+    "startup_proof",
+    "run",
+    "main"
+  ],
+  "whole_reviewer_method_inverses": [
+    "bind_completed_capture",
+    "review",
+    "main"
+  ],
+  "private_capture_meter_run_bindings_checked": true,
+  "scope": "Full four sources and relevant frozen parent bodies read; source imports only, no tests rerun, production function, SPICE, public replay, or comparison executed. Exact retained2.5ps TSTEP / new1.25ps TMAX, same1us/539devices/100ppm/50ps and no phase-offset removal. Changed Meter enforces TMAX; startup advisory remains TSTEP. Declaration must be pinned before new run. Wholedeck onlyTMAX and byte-identical825-value OP payload are final pair gates. Prior failed timestep comparison remains failed; this permits a distinct experiment, not numerical or physical closure."
+}

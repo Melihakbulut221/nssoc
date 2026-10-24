@@ -1,0 +1,6 @@
+# Broader measured setup repair with a hold-overlap screen
+Source39293720171 remains rejected for timing and antenna closure. Its source-bound native path review39328156931 exposes a changed worst slow path: o21ai1 and nand4_1 output delays3.042365ns and5.439997ns, with0.261458pF and0.283721pF loads. The fast worst path also contains an a22oi_1 with1.100494ns delay that the earlier master-name allowlist omitted.
+
+The new selection reads every available max/min report path in all three corners, rather than only12 worst paths per corner. It includes weak a22oi gates and excludes data outputs appearing in sampled hold paths with slack<=0.2ns. Up to128 eligible high-delay drivers are selected per batch; remaining candidates and hold exclusions are retained. This is a screening heuristic, not proof of exhaustive hold safety. Endpoint, clock, signal polarity and timing requirements are unchanged.
+
+Preparation retains all150291source instances, including666new antenna diodes. Positive buf16 additions must satisfy the existing native <=80um placement, original-cell geometry, exact expected net membership, PG/NDR/port preservation and equation proofs. The actual inversion fault control remains mandatory. Candidates must still undergo fresh detailed route, extracted RC and all original setup/hold/electrical gates; preparation alone is not timing acceptance.

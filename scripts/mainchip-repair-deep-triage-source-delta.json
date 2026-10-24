@@ -1,0 +1,100 @@
+{
+  "baseline_path": "scripts/cloud_mainchip_postroute_triage.py",
+  "baseline_sha256": "759952d231687cfd77239bca8a5a342280687fae8c5eeada7144c579aad67126",
+  "candidate_path": "scripts/cloud_mainchip_repair_deep_triage.py",
+  "candidate_sha256": "255f4d0d47748c48635e1f3ed05427c1173623a4aa8cbf07acb15f20ccbb1b89",
+  "edits": [
+    {
+      "before": "Read the completed route's exact native reports; no CAD rerun or acceptance.",
+      "after": "Read the current repaired candidate placement reports; not routed timing acceptance.",
+      "count": 1
+    },
+    {
+      "before": "OUT=ROOT/'hw/soc/out/cloud-mainchip-postroute-triage'",
+      "after": "OUT=ROOT/'hw/soc/out/cloud-mainchip-repair-deep-triage'",
+      "count": 1
+    },
+    {
+      "before": "RUN=39654204345",
+      "after": "RUN=39674630712",
+      "count": 1
+    },
+    {
+      "before": "HEAD='59297d93106c4401d94213ee94d048d7c839d7a3'",
+      "after": "HEAD='6fbd221520a35d6b5ef01cc1c67796175093ee3c'",
+      "count": 1
+    },
+    {
+      "before": "SUMMARY='39ddb8633e57072ce21d12fbe2c30c8a78a8d0f9b5c544724edc2ecdfc77635a'",
+      "after": "SUMMARY='cff0a3533c622f4ecf9951f205e046ba8ad35ab0ca326b6e2f82371559f2cade'",
+      "count": 1
+    },
+    {
+      "before": "PARTS='e10f42775e7ead514d4ca2701f6fa6e5266090329913a7d61522e12e05f1c237'",
+      "after": "PARTS='997ee6b2b8b5f9fd971a1901a68cf49465b80bf8f0914ae461f347e915b34123'",
+      "count": 1
+    },
+    {
+      "before": "NAMES=('max.rpt','min.rpt','checks.rpt','violator_list.rpt','clock.rpt','ws.max.rpt','ws.min.rpt')",
+      "after": "NAMES=('max','min')",
+      "count": 1
+    },
+    {
+      "before": "scope='Exact immutable native report diagnosis, not repair or full timing closure.'",
+      "after": "scope='Exact native placement-estimated paths of the repaired candidate now being routed. Not extracted routed timing, repair or full timing closure.'",
+      "count": 1
+    },
+    {
+      "before": "'.github/workflows/mainchip-postroute-review-cloud.yml'",
+      "after": "'.github/workflows/mainchip-postroute-repair-deep-cloud.yml'",
+      "count": 1
+    },
+    {
+      "before": "names=[f'run/4-nssoc-onehotroutedsta/{c}/{n}'for c in CORNERS for n in NAMES]",
+      "after": "names=[f'optimizer-placement-{c}-{n}.rpt'for c in CORNERS for n in NAMES]+['native-repair.log']",
+      "count": 1
+    },
+    {
+      "before": "reports.restore_report('mainchip-postroute-review',RUN,SUMMARY,PARTS,OUT/'source',names)",
+      "after": "reports.restore_report('mainchip-postroute-repair-deep',RUN,SUMMARY,PARTS,OUT/'source',names)",
+      "count": 1
+    },
+    {
+      "before": "        assert prior['status']=='COMPLETE_NATIVE_POSTROUTE_WITH_UNCLOSED_GATES'\n        result.update(source=proof,measurements=prior['measurements'],\n          antenna={k:prior['antenna'][k]for k in ('final_violating_nets','final_violating_pins','passed')},\n          corners={})",
+      "after": "        assert prior['status']=='PASS_NATIVE_RESIZER_CANDIDATE_REQUIRES_ROUTE_FRESH_RC_ALL_CORNER_STA'\n        assert prior['candidate_netlist_sha256']=='3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030'\n        assert prior['candidate_odb_sha256']=='25b1e56fe0667adc84b7c2bd5397a755d6cfdf7375b3d5c1444e56bd9252e279'\n        assert prior['source_sdc_sha256']=='19fdfb6dab9889037a4d1f486dadd4c46ac9ccc109a64c78422376c116233597'\n        assert prior['actual_inversion_control_rejected'] and prior['proof']['status']=='PASS within scope'\n        assert prior['fixed_clock']['original_physical_route_preserved']\n        result.update(source=proof,candidate_netlist_sha256=prior['candidate_netlist_sha256'],\n          source_sdc_sha256=prior['source_sdc_sha256'],optimizer_parasitics=prior['optimizer_parasitics'],\n          accepted=False,final_timing_complete=False,full_phy_accepted=False,corners={})",
+      "count": 1
+    },
+    {
+      "before": "base=OUT/'source/run/4-nssoc-onehotroutedsta'/c",
+      "after": "base=OUT/'source'",
+      "count": 1
+    },
+    {
+      "before": "raw=(base/(kind+'.rpt')).read_text()",
+      "after": "raw=(base/('optimizer-placement-'+c+'-'+kind+'.rpt')).read_text()",
+      "count": 1
+    },
+    {
+      "before": "            row['native_checks_excerpt']=(base/'checks.rpt').read_text()[:18000]\n            row['native_violator_excerpt']=(base/'violator_list.rpt').read_text()[:6000]\n            row['native_clock_report']=(base/'clock.rpt').read_text()\n",
+      "after": "",
+      "count": 1
+    },
+    {
+      "before": "'COMPLETE_EXACT_POSTROUTE_NATIVE_PATH_DIAGNOSIS_NOT_REPAIR'",
+      "after": "'COMPLETE_EXACT_CANDIDATE_PLACEMENT_PATH_DIAGNOSIS_NOT_ROUTED_TIMING'",
+      "count": 1
+    },
+    {
+      "before": "]+['native-repair.log']",
+      "after": "]+['native-repair.log','candidate.v']",
+      "count": 1
+    },
+    {
+      "before": "        assert all(digest(OUT/'source'/n)==prior['outputs'][n]for n in names)",
+      "after": "        assert digest(OUT/'source/candidate.v')==prior['candidate_netlist_sha256']\n        from map_mainchip_candidate_timing import map_endpoints\n        result['candidate_endpoint_mapping']=map_endpoints(OUT/'source/candidate.v',result['corners'])\n        assert all(digest(OUT/'source'/n)==prior['outputs'][n]for n in names)",
+      "count": 1
+    }
+  ],
+  "scope": "Only source binding and report paths change; inherited full native path parser retained. Candidate paths are placement estimated and cannot establish final timing closure.",
+  "mapping_helper_sha256": "d273822baa8ba773dc5c032ba5137189f8411e8f2b6dfd3b6322152f9351e49b"
+}

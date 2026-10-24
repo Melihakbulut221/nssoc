@@ -1,0 +1,9 @@
+# Residue-CRC placement and independent STA handoff, 2026-10-17
+
+Source-bound native run39042752404 completed placement/CTS with20SRAMmacros and125691instances after the exact39041981816boot artifact/protocol/sixbankproof chain was revalidated. CTSODB SHA37dea484450b49878ff9b438cbafb7d9b9a166d6c4d469280017833219f6e50e. This is a new candidate, not adoption of the routed mainchip.
+
+The inherited CTS metrics include implausibly large negative slow/typical setup values and inconsistent aggregate/corner values. Do not report these as reliable final delays, discard them silently, or claim timing improvement from the old candidate's numbers. Preserve the complete native reports and remeasure the exact new ODB in three independent propagated-clock STA processes before and after native electrical/setup/hold repair, using the existing source-bound banked flow.
+
+New replay-crc-postcts-cloud restores this exact archive, re-fetches all six formal proof sources and native boot/protocol artifacts, and verifies all175RTLfiles against the current commit. The original provenance dictionary includes the placement controller commit; the new checker includes the new controller commit. Only those source-hash key sets may differ, while their complete per-module hash values and every other source/proof/artifact field must agree. Real changed hashes/proofs/run IDs are rejected in cloud controls. No source gate is replaced by a copied status.
+
+Clock periods remain20/4/8/8ns and5percentderating; all corner constraints, fullpacket-async interfaces and system/bothEthernetMBIST remain. The flow protects initial ODB, SDC and all source inputs and retains before/after reports. Native repair still needs exact-netlist logic equivalence, global/detail routing, fresh extraction, full-chip LVS/DRC and final all-corner setup/hold. The analog serialPHY remains independently open.

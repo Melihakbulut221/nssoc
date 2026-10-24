@@ -1,0 +1,147 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_source_access_v14_planes.py",
+      "candidate_path": "scripts/cloud_cdr_xor_collector_v15_planes.py",
+      "edits": [
+        {
+          "before": "cdr-source-access-v14",
+          "after": "cdr-xor-collector-v15",
+          "count": 2
+        },
+        {
+          "before": "'cdr-sampler-source-access'",
+          "after": "'cdr-xor-collector-access'",
+          "count": 1
+        },
+        {
+          "before": "PASS_PD484_NATIVE_SOURCE_MIDPOINT_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+          "after": "PASS_PD484_NATIVE_XOR_COLLECTOR_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+          "count": 1
+        },
+        {
+          "before": "PASS_NATIVE_SOURCE_MIDPOINT_OVERLAY_GEOMETRY_REQUIRES_DRC_LVS_AND_FRESH_RC",
+          "after": "PASS_NATIVE_XOR_COLLECTOR_OVERLAY_REQUIRES_DRC_LVS_AND_FRESH_RC",
+          "count": 1
+        },
+        {
+          "before": "assert overlay['original_devices']==484 and overlay['sampler_count']==4",
+          "after": "assert overlay['original_devices']==484 and overlay['xor_count']==2",
+          "count": 1
+        },
+        {
+          "before": "assert overlay['observed_source_pins']==36 and overlay['unchanged_reference_sources']==4",
+          "after": "assert overlay['route_accesses']==36 and overlay['bus_count']==6",
+          "count": 1
+        },
+        {
+          "before": "assert overlay['source_accesses']==32 and overlay['native_via_stacks']==64",
+          "after": "assert overlay['native_via_stacks']==576 and overlay['via_group_count']==108\n        assert set(overlay['via_cut_lattice'])=={'49','66'}\n        assert all(v['native_width_nm']==190 and v['minimum_euclidean_spacing_nm']==220 and v['actual_cuts']>0 for v in overlay['via_cut_lattice'].values())",
+          "count": 1
+        },
+        {
+          "before": "'cut_actual_new_source_bridge','remove_actual_new_source_vias'",
+          "after": "'cut_actual_new_collector_bus_edge','remove_actual_added_collector_vias'",
+          "count": 1
+        },
+        {
+          "before": "r['source_access_geometry']",
+          "after": "r['xor_collector_geometry']",
+          "count": 1
+        },
+        {
+          "before": "        pin=json.loads((ROOT/'docs/evidence/cdr-xor-collector-v15-physical-pass-20261019.json').read_text())",
+          "after": "        pin=json.loads((ROOT/'docs/evidence/cdr-xor-collector-v15-physical-pass-20261019.json').read_text())\n        assert pin['run']==39315947252 and pin['source_head']=='01e65a2e18ab42e01a67b08db7df212e8650b532'\n        assert pin['summary_sha256']=='32fbc18167effe66c3f9c8bf15200d9dfc3adf41e9ea0c1696df1634a407099c'\n        assert pin['report']['geometry']['candidate_gds_sha256']=='8a8a25b61c4f9edb092a37caf137f4442191bd78f848d588c1886a2f50a086cf'",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "dabcea6ff5b632768c8898dc7a1925541a8c59251874ad8bf8b69cfecd05f8ac",
+      "candidate_sha256": "d4f9546bfb8510ddc505ae63267048c9cf8a3f2b99f2bd2253fc792b23467031"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_source_access_v14_wire_inputs.py",
+      "candidate_path": "scripts/cloud_cdr_xor_collector_v15_wire_inputs.py",
+      "edits": [
+        {
+          "before": "cdr-source-access-v14",
+          "after": "cdr-xor-collector-v15",
+          "count": 4
+        },
+        {
+          "before": "'cdr-sampler-source-access'",
+          "after": "'cdr-xor-collector-access'",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "2b527670f64f40cb7652ff1583aa8de199a8b653cd57eed5c8817a3fd5f724f6",
+      "candidate_sha256": "c4899ca7c46b94eab894fffd2599aa738199bbec4c062d57d1c4094173073adc"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_source_access_v14_binding.py",
+      "candidate_path": "scripts/cloud_cdr_xor_collector_v15_binding.py",
+      "edits": [
+        {
+          "before": "cdr-source-access-v14",
+          "after": "cdr-xor-collector-v15",
+          "count": 3
+        },
+        {
+          "before": "source_access_compact_v14",
+          "after": "xor_collector_compact_v15",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "7a6e637b53da6846aaec94099ee312dd3a4cf9694265f125acf45cba5a5a381e",
+      "candidate_sha256": "5dd9a871cf123d6935cc12cb55e34ab1cb48aa2c11b8dae46fe8ed4d4e1a7462"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_source_access_v14_rc.py",
+      "candidate_path": "scripts/cloud_cdr_xor_collector_v15_rc.py",
+      "edits": [
+        {
+          "before": "cdr-source-access-v14",
+          "after": "cdr-xor-collector-v15",
+          "count": 4
+        }
+      ],
+      "baseline_sha256": "708f87f95e6bbd15e959856cc0bb332d194b59115336fe50a4c090de4782e6b7",
+      "candidate_sha256": "30d2d2b5430bd614ad6d6e1e7d7cae6a289a1bd69f48e0c8244bd5c0e3aa7b4d"
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_source_access_v14_extraction_stage.py",
+      "candidate_path": "scripts/cloud_cdr_xor_collector_v15_extraction_stage.py",
+      "edits": [
+        {
+          "before": "cdr-source-access-v14",
+          "after": "cdr-xor-collector-v15",
+          "count": 4
+        },
+        {
+          "before": "cdr_source_access_v14",
+          "after": "cdr_xor_collector_v15",
+          "count": 2
+        }
+      ],
+      "baseline_sha256": "f37be11c9519997058ed745a0e374b889e52868322cacbcb372cda7ae8746c6d",
+      "candidate_sha256": "585156fc5c8d737d9cf3c9c6ee5d9884531d6b1ead652106afc498b7b78a186b"
+    },
+    {
+      "baseline_path": ".github/workflows/cdr-source-access-v14-extraction-cloud.yml",
+      "candidate_path": ".github/workflows/cdr-xor-collector-v15-extraction-cloud.yml",
+      "edits": [
+        {
+          "before": "cdr-source-access-v14",
+          "after": "cdr-xor-collector-v15",
+          "count": 15
+        },
+        {
+          "before": "cdr_source_access_v14",
+          "after": "cdr_xor_collector_v15",
+          "count": 20
+        }
+      ],
+      "baseline_sha256": "50a4386ce52b699a7b513fa67361a3b69a1971bd8d3c646c2ea9918bcdd05799",
+      "candidate_sha256": "f2c848e1a605aa09d27fffb683e59fd2258b1b442f17ff8f3f29522db16e9ef1"
+    }
+  ]
+}

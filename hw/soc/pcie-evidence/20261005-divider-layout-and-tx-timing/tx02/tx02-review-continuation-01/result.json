@@ -1,0 +1,81 @@
+{
+  "status": "FAILED_RETAINED",
+  "utc": "2026-10-05T15:55:25.502979+00:00",
+  "watched_identity": {
+    "pid": 18053,
+    "state": "S",
+    "process_group": 18051,
+    "start_ticks": "63270"
+  },
+  "method": {
+    "bytes": 4602,
+    "sha256": "0c37573b09e168916a33643db531c12cf92f36650b51acb50e3f6f218244d314"
+  },
+  "manifest": {
+    "bytes": 2620,
+    "sha256": "3e145790fbde298e0a2672163c0259ad9a2ab43fc7d12219559e51e31b52cfbc"
+  },
+  "cpu_affinity": [
+    4
+  ],
+  "elapsed_watchdog_seconds": null,
+  "physical_acceptance": false,
+  "qualified_rc": false,
+  "steps": [
+    {
+      "name": "review",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/review.py"
+      ],
+      "returncode": 0,
+      "log": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/review.log",
+        "bytes": 495,
+        "sha256": "cbc0cca08331706854fa9de88b5c61e43ab1307493bbc99e088284307b1b6420"
+      }
+    },
+    {
+      "name": "seal",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/seal.py"
+      ],
+      "returncode": 0,
+      "log": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/seal.log",
+        "bytes": 180,
+        "sha256": "167e87a6823b8fa05edb51f06065c834273519fa996767147068d5580923fe2b"
+      }
+    },
+    {
+      "name": "publish",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_native_capture_v3.py",
+        "--out",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/release.json",
+        "/dev/shm/pcie-tx-repair02-route-nominal-rc-and-peer-20261005.tar.xz",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/pcie-tx-repair02-finite-physical-validation-20261005.json",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/package.json"
+      ],
+      "returncode": 1,
+      "log": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/publish.log",
+        "bytes": 135,
+        "sha256": "26138e7a135d5b4461f2457f42bf685d63bbb577271fdf6c371e1429a02ae08a"
+      }
+    }
+  ],
+  "route_rc_receipt": {
+    "bytes": 1242,
+    "sha256": "05fed4cf28034621a2596be1ab131ce4a85376075262504021c2c8214f0f0499"
+  },
+  "owned_child": {
+    "pid": 68975,
+    "state": "R",
+    "process_group": 68975,
+    "start_ticks": "706550"
+  },
+  "error": "AssertionError(('publish', 1))"
+}

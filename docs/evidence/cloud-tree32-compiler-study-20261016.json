@@ -1,0 +1,43 @@
+{
+  "run_snapshot": {
+    "run": 38844301748,
+    "source_head": "71d38e57e86ea62c03e21be43e47f77df6254f58",
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 116791209162,
+        "status": "in_progress",
+        "conclusion": null,
+        "active_steps": [
+          "Build same patched upstream with strict O3 and no floating contraction"
+        ],
+        "passed_steps": [
+          "Set up job",
+          "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "Compile and test unchanged data transport and numerical guards",
+          "Install exact source build prerequisites"
+        ]
+      }
+    ]
+  },
+  "source_commit": "71d38e57e86ea62c03e21be43e47f77df6254f58",
+  "flags": "-O3 -fno-fast-math -ffp-contract=off -march=x86-64-v3 -mtune=generic",
+  "upstream": "a80f6e3e95d51534905b1f23410a951802666656",
+  "reference_executable_sha256": "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509",
+  "comparison_stop_s": 4e-09,
+  "comparison_tmax_s": 2.5e-13,
+  "voltage_guard_v": 1e-09,
+  "require_same_sparse_solver_numeric_options_and_method": true,
+  "require_same_input_decks_all_vectors_models_and_cpu_affinity": true,
+  "require_synthetic_npn_pnp_zero_nonzero_charge_controls": true,
+  "comparison_bidirectional": true,
+  "measure_wall_and_cpu_speed": true,
+  "full34ns_acceptance": false,
+  "full_serial_phy_complete": false,
+  "sources": [
+    "https://docs.github.com/en/actions/reference/limits",
+    "https://gcc.gnu.org/onlinedocs/gcc-13.4.0/gcc/Optimize-Options.html"
+  ]
+}

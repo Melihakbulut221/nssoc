@@ -1,0 +1,58 @@
+{
+  "status": "PASS_TX02_SAVED_OUTPUT_REVIEWER_SOURCE_ONLY",
+  "utc": "2026-10-05T15:50:22.225445+00:00",
+  "reviewer": "/root/rx_route_resume",
+  "sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/review.py": {
+      "bytes": 11693,
+      "sha256": "ea2e2562db390abc8254c705c865063f2f6ef655a906c9ed6440322063ae868a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair01-peer/review.py": {
+      "bytes": 10801,
+      "sha256": "da5fa9aff38de6d4285584d72867236198729de7a8589167c046df6aec76c6ae"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/source-derivation.json": {
+      "bytes": 3845,
+      "sha256": "54ceb2fe43e3a9d5c52ad9e1ca0133d4669862b73dcc8cfd828af433724a716d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/detailed_rc_repair02_resume03.py": {
+      "bytes": 5228,
+      "sha256": "b24d086741f136cd202814f4f5e586cd438932db9d2935e0fedf590023fffc31"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof_gate_repair02.py": {
+      "bytes": 7670,
+      "sha256": "8148d6d51332b5c035d3896898734d73cd613db2ee4cfabd9f127e507105df0f"
+    },
+    "/dev/shm/nssoc-tx-path-v4-postroute-repair-02/repaired.v": {
+      "bytes": 4174181,
+      "sha256": "5e964dabf6aa8a0d8a42a8ac9adbd0320b668ab350bf3a3ad9f9bd0402f62c90"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/source_review_rx.py": {
+      "bytes": 4467,
+      "sha256": "eca787a0ee6ad87754cdf360b5290d32836dd330d8879499dff37e2d4d9e48c4"
+    }
+  },
+  "inverse": {
+    "changes": 14,
+    "byte_exact": true
+  },
+  "candidate_CTS_census": {
+    "count": 150,
+    "all_150_input_only": true,
+    "instances_sha256": "c74b8da01622874d136b6326d4dce5e5f40babe2a3eae77e8e37d43637c27892"
+  },
+  "findings": [
+    "Full source read and exact inverse of all documented changes passed. Every TX02 new root points to candidate02, DRT03, RC02, equivalence02 and portreplay02; prior comparison uses TX01 RC01.",
+    "New setup/hold/recovery/removal values come from retained reports, all finite and MET/VIOLATED consistent. Per-class all-corner booleans do not assert closure in advance; qualified_rc and physical_acceptance stay false.",
+    "Frozen RC Tcl still requests three worst paths per group for slow/typical/fast and max/min. Requiring six cases, two classes and three each is fail-closed if actual groups differ; no new report is available or inferred.",
+    "Exact candidate netlist independently contains clkload0..149 with only A connections and valid buffer/inverter masters. Netlist equality, actual unannotated driver names and SPEF binding remain required after routing; source census is not extraction evidence.",
+    "Added saved proof binding verifies source/input/output hashes, expanded graph bytes, runtime pin and actual compare/mutation command receipts. Imported proof_gate has guarded run(), so saved-output verify_binding executes no subprocess. Existing canonical compare is explicitly replayed on same saved graphs, not an independent algorithm.",
+    "Declared DRT/RC input/output hashes, zero final router DRC, exact candidate netlist and SDC, no exceptions, retained XML cases, SPEF numeric census and all input rehashes stay inherited. Nominal same-RC corners remain unqualified."
+  ],
+  "issues_found": [],
+  "reviewer_executed": false,
+  "native_executed": false,
+  "tests_rerun": false,
+  "qualified_rc": false,
+  "physical_acceptance": false
+}

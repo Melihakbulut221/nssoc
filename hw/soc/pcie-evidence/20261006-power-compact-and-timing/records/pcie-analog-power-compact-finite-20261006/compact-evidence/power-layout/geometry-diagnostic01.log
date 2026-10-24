@@ -1,0 +1,68 @@
+{
+  "target": {
+    "net": "DIV_AVDD",
+    "role": "trunk_join",
+    "parameters": {
+      "b_layer": "TopMetal1",
+      "t_layer": "TopMetal2",
+      "vn_columns": 2,
+      "vn_rows": 3,
+      "vt1_columns": 2,
+      "vt1_rows": 2,
+      "vt2_columns": 2,
+      "vt2_rows": 2
+    },
+    "center_um": [
+      96.0,
+      110
+    ],
+    "bbox_um": "(94.07,108.07;97.93,111.93)"
+  },
+  "instance": [
+    "via_stack$7",
+    "r0 *1 96000,106030"
+  ],
+  "dbu": 0.001,
+  "transform": "r0 *1 96000,106030",
+  "layers": {
+    "(134, 0)": {
+      "actual": "",
+      "expected": "(-1930,-1930;-1930,1930;1930,1930;1930,-1930)",
+      "symmetric_difference": "(-1930,-1930;-1930,1930;1930,1930;1930,-1930)"
+    },
+    "(126, 0)": {
+      "actual": "(-1930,-1930;-1930,1930;1930,1930;1930,-1930)",
+      "expected": "(-1930,-1930;-1930,1930;1930,1930;1930,-1930)",
+      "symmetric_difference": ""
+    },
+    "(133, 0)": {
+      "actual": "(-1430,-1430;-1430,-530;-530,-530;-530,-1430);(530,-1430;530,-530;1430,-530;1430,-1430);(-1430,530;-1430,1430;-530,1430;-530,530);(530,530;530,1430;1430,1430;1430,530)",
+      "expected": "(-1430,-1430;-1430,-530;-530,-530;-530,-1430);(530,-1430;530,-530;1430,-530;1430,-1430);(-1430,530;-1430,1430;-530,1430;-530,530);(530,530;530,1430;1430,1430;1430,530)",
+      "symmetric_difference": ""
+    }
+  }
+}
+Traceback (most recent call last):
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v1-20261005/geometry-diagnostic01.py", line 400, in <module>
+    main()
+    ~~~~^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v1-20261005/geometry-diagnostic01.py", line 306, in main
+    extras = compare_instances(
+        old_instances,
+    ...<4 lines>...
+        tech,
+    )
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v1-20261005/geometry-diagnostic01.py", line 209, in compare_instances
+    require(
+    ~~~~~~~^
+        set(row["geometry"]) == set(expected)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        and all((row["geometry"][k] ^ expected[k]).is_empty() for k in expected),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        "Actual native power via cut/enclosure geometry differs",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v1-20261005/geometry-diagnostic01.py", line 37, in require
+    raise ValueError(reason)
+ValueError: Actual native power via cut/enclosure geometry differs

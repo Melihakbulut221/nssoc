@@ -1,0 +1,35 @@
+{
+  "source_run": 39029337682,
+  "source_head": "e29107296dc3abe0bcb15c57de0a7cbac67dc0e7",
+  "summary_asset": 650315607,
+  "summary_sha256": "d5eed10a190213d552fa410db5eece05cd2c39f0b8c5e8266ecee050c3ba4025",
+  "parts_asset": 650315673,
+  "archive_asset": 650315768,
+  "status": "FAIL_OR_ERROR",
+  "error": "AssertionError(('cold_high-u0d0-forward', ['Note: Starting dynamic gmin stepping', 'Note: Dynamic gmin stepping completed']))",
+  "native_attempt": {
+    "returncode": 0,
+    "native_options": {
+      "backend": "klu",
+      "numeric": {
+        "reltol": 1e-06,
+        "abstol": 1e-12,
+        "vntol": 1e-06,
+        "itl1": 1000.0,
+        "trtol": 7.0,
+        "maxord": 2.0,
+        "itl4": 10.0
+      },
+      "method": "TRAPEZOIDAL",
+      "native_readback_sha256": "61c9299efa39a56363f39865eaee051a4bbdd28cc650935be04be3cebce190f8"
+    },
+    "diagnostics": [
+      "Note: Starting dynamic gmin stepping",
+      "Note: Dynamic gmin stepping completed"
+    ],
+    "native_log_sha256": "66d81f4575e7afdd69cd2ca6478919e9d6f05db55fdabb49f5e9dca43fce2108"
+  },
+  "completed_cases": 17,
+  "accepted": false,
+  "conclusion": "1000 DC iterations did not remove cold00 dynamicgmin fallback. Do not increase budget again blindly or exempt diagnostic messages. Original raw/log retained. Next compare independent physically swept supply initialization or native node-set convergence, preserving same final equations, source current/KCL/forwardreverse gates; must inspect actual cold result before any acceptance."
+}

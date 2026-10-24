@@ -1,0 +1,73 @@
+{
+  "baseline_path": "scripts/cloud_cdr_xor_collector_access.py",
+  "baseline_sha256": "d4659f4d251cdf33c569e95846b9e6c1468a14e581ff93c64a48438ad70d122b",
+  "candidate_path": "scripts/cloud_cdr_retime_data_access.py",
+  "candidate_sha256": "6c34ea953b0b11d6aa83d7835c476c8cc8d5d631d5ecbca78f165fc852ef8ca3",
+  "edits": [
+    {
+      "before": "        path_receipts=[]\n        for case in ('nominal_early','nominal_late'):\n            geometry_pin=json.loads((ROOT/('docs/evidence/cdr-xor-headroom-paths-'+case+'-20261019.json')).read_text())\n            diagnosis=geometry_pin['report']\n            assert geometry_pin['run']==39311024780\n            assert diagnosis['status']=='COMPLETE_ORIGINAL_XOR_SUPPLY_LOAD_TERMINAL_OBSERVATIONS_NOT_ACCEPTANCE'\n            assert diagnosis['source_unchanged']and diagnosis['all116original_hbt_checks_reproduced']\n            for tag in ('x','y'):\n                network=diagnosis['xor_networks'][tag]\n                assert len(network['devices'])==59 and len(network['pullups'])==2\n                drops=[t['drop_from_public_supply_v']['at_worst_vce']for v in network['pullups'].values()for t in v['terminals']if 'drop_from_public_supply_v'in t]\n                assert len(drops)==2 and max(drops)>.27\n                assert network['original_failed_check']['minimum_active_vce_v']<.4\n            path_receipts.append(dict(run=geometry_pin['run'],case=case,summary_sha256=geometry_pin['summary_sha256']))\n        r['measured_xor_paths']=path_receipts\n        pin=json.loads((ROOT/'docs/evidence/cdr-source-access-v14-physical-pass-20261019.json').read_text())\n",
+      "after": "        path_receipts=[];graphs=[]\n        for case in ('nominal_early','nominal_late'):\n            path=ROOT/('docs/evidence/cdr-xor-v15-retime-chain-'+case+'-20261020.json')\n            pin=json.loads(path.read_text());diagnosis=pin['report_excerpt']\n            assert pin['run']==39332192573 and diagnosis['source_unchanged'] and diagnosis['original_rejection_preserved']\n            assert diagnosis['all116original_hbt_checks_reproduced'] and diagnosis['all4original_sampler_checks_reproduced']\n            assert diagnosis['status']=='COMPLETE_REJECTED_CDR_NATIVE_RETIME_INPUT_CHAIN_NOT_ACCEPTANCE'\n            graph={tag:v['native_graph']for tag,v in diagnosis['retime_input_chains'].items()}\n            assert set(graph)=={'c','d'} and all(len(v['actual_graph_faults'])==3 for v in diagnosis['retime_input_chains'].values())\n            graphs.append(graph);path_receipts.append(dict(run=pin['run'],case=case,summary_sha256=pin['summary_sha256']))\n        assert graphs[0]==graphs[1]\n        (OUT/'diagnosis.json').write_text(json.dumps(graphs[0],indent=2)+'\\n')\n        r['measured_retime_paths']=path_receipts\n        pin=json.loads((ROOT/'docs/evidence/cdr-xor-collector-v15-physical-pass-20261019.json').read_text())\n",
+      "count": 1
+    },
+    {
+      "before": "OUT=ROOT/'hw/soc/out/cloud-cdr-xor-collector-access'",
+      "after": "OUT=ROOT/'hw/soc/out/cloud-cdr-retime-data-access'",
+      "count": 1
+    },
+    {
+      "before": "reports.restore_report('cdr-sampler-source-access'",
+      "after": "reports.restore_report('cdr-xor-collector-access'",
+      "count": 1
+    },
+    {
+      "before": "PASS_PD484_NATIVE_SOURCE_MIDPOINT_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+      "after": "PASS_PD484_NATIVE_XOR_COLLECTOR_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+      "count": 1
+    },
+    {
+      "before": "cdr-source-access-v14-mim-parent-capture-pass-20261019.json",
+      "after": "cdr-xor-collector-v15-mim-parent-capture-pass-20261019.json",
+      "count": 1
+    },
+    {
+      "before": "selected=['wire/anchors08.json','source/wire/device-locations01.json','source/wire/native05/wires.l2n']",
+      "after": "selected=['source/wire/native05/wires.l2n','source/wire/native05/result.json']",
+      "count": 1
+    },
+    {
+      "before": "reports.restore_report('cdr-source-access-v14-mim-parent-rc'",
+      "after": "reports.restore_report('cdr-xor-collector-v15-mim-parent-rc'",
+      "count": 1
+    },
+    {
+      "before": "generate_cdr_xor_collector_access.py",
+      "after": "generate_cdr_retime_data_access.py",
+      "count": 2
+    },
+    {
+      "before": "cdr-xor-headroom-paths-nominal_early-20261019.json",
+      "after": "cdr-xor-v15-retime-chain-nominal_early-20261020.json",
+      "count": 1
+    },
+    {
+      "before": "cdr-xor-headroom-paths-nominal_late-20261019.json",
+      "after": "cdr-xor-v15-retime-chain-nominal_late-20261020.json",
+      "count": 1
+    },
+    {
+      "before": "        assert geometry['original_devices']==484 and geometry['route_accesses']==36 and geometry['native_via_stacks']==576\n        assert geometry['xor_count']==2 and geometry['bus_count']==6 and geometry['via_group_count']==108",
+      "after": "        assert geometry['original_devices']==484 and geometry['selected_data_conductors']==12\n        assert geometry['allowed_added_layers']==[30,50,67]",
+      "count": 1
+    },
+    {
+      "before": "r.update(status='PASS_PD484_NATIVE_XOR_COLLECTOR_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'",
+      "after": "r.update(status='PASS_PD484_NATIVE_RETIME_DATA_ACCESS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES'",
+      "count": 1
+    },
+    {
+      "before": "scope='Widen36actual collector/pullup access routes and6local buses in two original XORs with576native single-cut stacks across108existing access groups. Retain all original484devices,source-contact additions,geometry,ports and reference. Original native560DRC/deep+flatLVS/fault gates remain. Fresh RC and all original loaded data/phase/device checks required; no recovered clock or fullPHY acceptance.'",
+      "after": "scope='Widen actual M3/M4/M5 metal on twelve measured A/B source, retime-filter and C/D master-input conductors. Keep every original484device,via,metal,placement,port and reference. Original native560DRC/deep+flatLVS/fault gates remain. Added capacitance requires fresh complete RC and unchanged loaded electrical gates; no recovered clock or fullPHY acceptance.'",
+      "count": 1
+    }
+  ]
+}

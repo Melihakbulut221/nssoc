@@ -1,0 +1,136 @@
+{
+  "derivations": {
+    "scripts/cloud_mainchip_postroute_repair.py": {
+      "baseline_path": "scripts/cloud_onehot_native_fanout.py",
+      "baseline_sha256": "340c25935bb0df4fabaec45fd5321affa3490b037e4fd034c0a1395e6dea0786",
+      "candidate_sha256": "f01748a6181478ca8ddb56095c608b5b283923f80b60fb49d6a46dbf8076e708",
+      "changes": [
+        {
+          "start": 369,
+          "end": 418,
+          "replacement": "OUT=ROOT/'hw/soc/out/cloud-mainchip-postroute-repair'\n"
+        },
+        {
+          "start": 492,
+          "end": 640,
+          "replacement": "SUMMARY='39ddb8633e57072ce21d12fbe2c30c8a78a8d0f9b5c544724edc2ecdfc77635a'\nPARTS='e10f42775e7ead514d4ca2701f6fa6e5266090329913a7d61522e12e05f1c237'\n"
+        },
+        {
+          "start": 2124,
+          "end": 2124,
+          "replacement": "        optimizer_parasitics='placement-Steiner candidate estimates; not routed signoff',\n"
+        },
+        {
+          "start": 2455,
+          "end": 2561,
+          "replacement": "        'After the exact baseline and router guards, use placement-Steiner estimates only for candidate optimization. '\n        'Optimizer estimates are not final timing; new route/RC/all-corner STA required.')\n"
+        },
+        {
+          "start": 3443,
+          "end": 3443,
+          "replacement": "        from check_mainchip_postroute_repair_sources import check\n        check()\n"
+        },
+        {
+          "start": 3490,
+          "end": 5129,
+          "replacement": "        pin=json.loads((ROOT/'docs/evidence/mainchip-completed-postroute-unclosed-gates-20261021.json').read_text())\n        assert pin['run']==39654204345 and pin['summary_sha256']==SUMMARY and pin['parts_sha256']==PARTS\n        live=json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/actions/runs/39654204345']))\n        assert live['status']=='completed'and live['conclusion']=='success'and live['run_attempt']==1\n        assert live['head_sha']=='59297d93106c4401d94213ee94d048d7c839d7a3'\n        assert live['path']=='.github/workflows/mainchip-postroute-review-cloud.yml'\n        names=['inputs/postroute-inputs/trial-config.json','native-config/resolved.json',\n            'run/4-nssoc-onehotroutedsta/state_out.json','geometry/routed/work/detailed-route.odb',\n            'inputs/postroute-inputs/files/hw/soc/out/cloud-onehot-native-fanout/candidate.v',\n            'inputs/postroute-inputs/files/hw/soc/out/cloud-onehot-native-fanout/source/run/1-openroad-detailedrouting/soc_top.sdc',\n            'run/3-nssoc-onehotroutercx/native-spef-integrity.json',\n            'run/3-nssoc-onehotroutercx/nom/soc_top.nom.spef']\n        original,proof=reports.restore_report('mainchip-postroute-review',pin['run'],SUMMARY,PARTS,OUT/'source',names)\n        assert original['source_head']==live['head_sha']and original['returncode']==0\n        assert original['status']=='COMPLETE_NATIVE_POSTROUTE_WITH_UNCLOSED_GATES'and original['sources_unchanged']\n        assert original['native_drt_reported_final_violations']==original['critical_disconnected_pins']==0\n        assert original['antenna']['final_violating_nets']==563 and original['antenna']['final_violating_pins']==626\n"
+        },
+        {
+          "start": 5190,
+          "end": 5190,
+          "replacement": "        assert original['completed_geometry']['route_complete']and original['completed_geometry']['sources_unchanged']\n        assert original['native_spef_integrity']==pin['native_spef_integrity']\n        integrity=original['native_spef_integrity']['spefs']['nom_*']['audit']\n        assert integrity['nets']==143338 and integrity['inconsistent_nets']==0\n"
+        },
+        {
+          "start": 5469,
+          "end": 5717,
+          "replacement": "        assert sha(db)=='6a7bbf7bb871fa6037d26d0f60c2979ae5a3bb13caf8c84459a518c5fb0ca633'\n        assert sha(nl)=='b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0'\n        assert sha(sdc)=='19fdfb6dab9889037a4d1f486dadd4c46ac9ccc109a64c78422376c116233597'\n        assert sha(spef)=='a945642b3df7b61eb1c57250d7794d0134ba6c57bb0987721731be2414a13c9d'\n        assert sha(source/names[1])=='0fc8159beefd0a013aea99b34a92322248ae3f3ead58db7648ff0d1f39948293'\n"
+        },
+        {
+          "start": 7134,
+          "end": 7205,
+          "replacement": "        tcl=['set_thread_count 1','define_corners '+' '.join(CORNERS)]\n"
+        },
+        {
+          "start": 8647,
+          "end": 8706,
+          "replacement": "        native=ROOT/'hw/soc/flow/mainchip_postroute_repair.tcl'\n"
+        },
+        {
+          "start": 8960,
+          "end": 9172,
+          "replacement": "        protected={str(p):sha(p)for p in [Path(__file__),native,ROOT/'hw/soc/flow/mainchip_repair_timing_native_reference.tcl',ROOT/'hw/soc/flow/mainchip_placement_timing_wrapper.tcl',ROOT/'hw/soc/flow/onehot_native_router_init.tcl',script,lockpath,ROOT/'scripts/check_mainchip_postroute_repair_geometry.py',*[source/n for n in names]]}\n"
+        },
+        {
+          "start": 9211,
+          "end": 9319,
+          "replacement": "        r.update(source=proof,verified_postroute_run=pin['run'],previous_antenna=original['antenna'],\n"
+        },
+        {
+          "start": 9530,
+          "end": 9530,
+          "replacement": "        run([app,'openroad','-version'],'native-version')\n        r['native_version']=(OUT/'native-version.log').read_text().strip()\n        assert r['native_version']=='dcf36133a369abc8f3c5e5738cd4d82e4903c0e0'\n        print(r['native_version'],flush=True);save()\n"
+        },
+        {
+          "start": 10995,
+          "end": 11115,
+          "replacement": "        run([app,'openroad','-exit','-python',ROOT/'scripts/check_mainchip_postroute_repair_geometry.py'],'native-geometry')\n"
+        }
+      ]
+    },
+    "hw/soc/flow/mainchip_postroute_repair.tcl": {
+      "baseline_path": "hw/soc/flow/onehot_native_fanout.tcl",
+      "baseline_sha256": "d12ad0e97180e7a65add6f23929e77fd7396434d26b5917d60333c20c11aadaa",
+      "candidate_sha256": "e643d26f131f3bc67e39c4618199307a305887759178ff45d36d0d46acade08f",
+      "changes": [
+        {
+          "start": 634,
+          "end": 716,
+          "replacement": "if {[llength [$block getInsts]] != 152762} {error \"Wrong source instance census\"}\n"
+        },
+        {
+          "start": 3787,
+          "end": 3858,
+          "replacement": "    # Exact routed SPEF baseline above remains immutable evidence.\n    # read_guides is not a complete pin-connected global-route tree:\n    # run 39663969344 failed RSZ-0074 (3 reachable loads versus 8 expected).\n    # Use placement/Steiner estimates ONLY to construct a candidate.\n    # Fresh routing/extraction/all-corner measurements remain mandatory.\n    source [file join [file dirname [info script]] mainchip_placement_timing_wrapper.tcl]\n    estimate_parasitics -placement\n    foreach c $::env(NSSOC_CORNERS) {\n        foreach kind {max min} {\n            report_checks -corner $c -path_delay $kind -group_path_count 1 \\\n                -digits 9 -format full_clock_expanded \\\n                > \"$::env(NSSOC_RESIZER_OUT)/optimizer-placement-$c-$kind.rpt\"\n        }\n    }\n    puts \"NSSOC_PLACEMENT_ESTIMATES_FOR_CANDIDATE_ONLY_NOT_FINAL_TIMING\"\n    # Repair electrical loads on the explicitly labelled candidate estimate.\n"
+        },
+        {
+          "start": 4620,
+          "end": 4909,
+          "replacement": "    if {[catch {\n        nssoc_repair_timing_candidate -setup -setup_margin 0 -repair_tns 100 \\\n            -max_iterations 80 -max_repairs_per_pass 1 -max_utilization 80 \\\n            -skip_pin_swap -skip_gate_cloning -skip_size_down \\\n            -skip_buffer_removal -skip_last_gasp -skip_vt_swap -skip_crit_vt_swap \\\n            -verbose\n    } failure options]} {\n        write_db \"$::env(NSSOC_RESIZER_OUT)/setup-unchecked.odb\"\n        write_verilog \"$::env(NSSOC_RESIZER_OUT)/setup-unchecked.v\"\n        return -options $options $failure\n    }\n"
+        },
+        {
+          "start": 5431,
+          "end": 5490,
+          "replacement": "    nssoc_repair_timing_candidate -hold -setup_margin 0 -hold_margin 0.1 \\\n"
+        }
+      ]
+    },
+    "scripts/check_mainchip_postroute_repair_geometry.py": {
+      "baseline_path": "scripts/check_onehot_native_fanout_geometry.py",
+      "baseline_sha256": "9baa312c73677f614edd11f2d0c37481a2e453c6e198538c3d285fc66c5e654f",
+      "candidate_sha256": "4f52aedd6e2d9ba45c6f478abac87343425b565ec5e1a0ab91c99bff38fc9c6a",
+      "changes": [
+        {
+          "start": 2860,
+          "end": 3048,
+          "replacement": "    source=OUT/'source/geometry/routed/work/detailed-route.odb';candidate=OUT/'candidate.odb'\n    assert sha(source)=='6a7bbf7bb871fa6037d26d0f60c2979ae5a3bb13caf8c84459a518c5fb0ca633'\n"
+        },
+        {
+          "start": 3300,
+          "end": 3387,
+          "replacement": "    assert len(old)==152762 and sum(i.getMaster().isBlock()for i in ab.getInsts())==20\n"
+        }
+      ]
+    }
+  },
+  "frozen": {
+    "hw/soc/flow/onehot_native_router_init.tcl": "7a4d4dab2c0df85b7c0ddd9b8d8344081b9e42da01c47962fddb52dba41bb49e",
+    "scripts/onehot-native-resizer-pdk-lock.json": "36676aebb191acb47132c8731f72eb545fd17e976350a02dd57cd1f0b17c7a13",
+    "scripts/check_onehot_fixed_clock_route.py": "9d7515d21cc75fdf8f4824560495272629e60ae864953094587106fc69e3b078",
+    "hw/soc/flow/check_eco_logic_clones.py": "0c9f98a8732efa4baedfe46933fef8d54eb7c89bbdbcfec5411385bedb5ab031",
+    "sw/tests/eco_logic_native.py": "3dce4feb4ec8dca696f08d7eaf7ca890cd6054eef88b70f289d698b7318dc3b0",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "docs/evidence/mainchip-completed-postroute-unclosed-gates-20261021.json": "4be49721943aea183d81a301fb3a4b8d2d36fe833dd3cb8aec4b3861866fb4a2",
+    "hw/soc/flow/mainchip_repair_timing_native_reference.tcl": "3f2157dbdbd4d34cbe61631f9441eb9b5ebee03dc0ac2221eff382f657bf331d",
+    "hw/soc/flow/mainchip_placement_timing_wrapper.tcl": "2d2f2649202dd506ab3033323b6afc34723821fffbee8b57b2910a466b4ef7d2"
+  }
+}

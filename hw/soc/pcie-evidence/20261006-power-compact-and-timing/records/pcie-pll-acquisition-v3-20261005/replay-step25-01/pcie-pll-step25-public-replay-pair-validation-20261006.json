@@ -1,0 +1,124 @@
+{
+  "status": "SEALED_COMPLETE_PUBLIC_REPLAY_AND_REAL_TIMESTEP_PHASE_FAILURE",
+  "utc": "2026-10-06T02:24:10.516729+00:00",
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pcie-pll-step25-public-replay-and-failed-pair-20261006.tar.xz",
+    "bytes": 3304712,
+    "sha256": "d2ea286501dc3c17ad39dc916ffe4cf83747c5a6ae65cf9482e3216933dd0fa8",
+    "members": 3245
+  },
+  "full_member_readback": true,
+  "all_original_files_rehashed": true,
+  "native5ps": {
+    "bytes": 1025344,
+    "sha256": "38e2bc21a0995b6ceafd136b61c2a554476701369cefe8ef59245d0f99f237f4"
+  },
+  "native2p5ps": {
+    "bytes": 1626991,
+    "sha256": "072c0b6d8f0c4ae231e7f7160d63a6356c797dda0b438ec6aa68d4a279303b43"
+  },
+  "first_review": {
+    "bytes": 200613,
+    "sha256": "960ca00987717903f773516fecc75b3a207d027f8c7b7df860ba17dfba3241eb"
+  },
+  "second_review": {
+    "bytes": 955514,
+    "sha256": "b4bf9c2457a988ff9c0693f639fc98ed56c744a4e7d379cd38b9465b50affb52"
+  },
+  "replay_execution": {
+    "bytes": 1615,
+    "sha256": "31485f4398b1e494d5fd35e6a5fd6abe0f6d3147d29c16de9654d922df34985f"
+  },
+  "replay_parts": 159,
+  "rows": 401607,
+  "values": 331727382,
+  "all539_author_safety_records_exact": true,
+  "failed_pair": {
+    "passed": false,
+    "windows": [
+      {
+        "interval_s": [
+          8e-07,
+          9e-07
+        ],
+        "reference_indices": [
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88
+        ],
+        "frequency_difference_ppm": 0.769176965802908,
+        "maximum_matched_phase_difference_s": 6.948340877777602e-10,
+        "checks": {
+          "both_individual_windows_pass": true,
+          "frequency_difference_100ppm": true,
+          "matched_phase_difference_50ps": false
+        },
+        "passed": false
+      },
+      {
+        "interval_s": [
+          9e-07,
+          1e-06
+        ],
+        "reference_indices": [
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98
+        ],
+        "frequency_difference_ppm": 5.948267550617456,
+        "maximum_matched_phase_difference_s": 6.953492779363016e-10,
+        "checks": {
+          "both_individual_windows_pass": true,
+          "frequency_difference_100ppm": true,
+          "matched_phase_difference_50ps": false
+        },
+        "passed": false
+      }
+    ],
+    "status": "FAIL_FINITE_NOMINAL_TIMESTEP_SCREEN",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/compare_pcie_pll_acquisition_pair_v1.py": {
+        "bytes": 8329,
+        "sha256": "7d20c187e38e515cf8876a286bb53effc1e4322071ace8a60463d9e48c78b506"
+      },
+      "/dev/shm/nssoc-pll-acquisition-v1-evidence/pair-screen-declaration.json": {
+        "bytes": 1219,
+        "sha256": "4b8524ffdbba913840e2329374b69675e14a2b29c64af33155d84c4ca6fbff38"
+      },
+      "/dev/shm/nssoc-pll-acquisition-v1-step5-01/result.json": {
+        "bytes": 1025344,
+        "sha256": "38e2bc21a0995b6ceafd136b61c2a554476701369cefe8ef59245d0f99f237f4"
+      },
+      "/dev/shm/nssoc-pll-acquisition-v1-step5-full-review-01/result.json": {
+        "bytes": 200613,
+        "sha256": "960ca00987717903f773516fecc75b3a207d027f8c7b7df860ba17dfba3241eb"
+      },
+      "/dev/shm/nssoc-pll-acquisition-v3-step25-detached-02/result.json": {
+        "bytes": 1626991,
+        "sha256": "072c0b6d8f0c4ae231e7f7160d63a6356c797dda0b438ec6aa68d4a279303b43"
+      },
+      "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/result.json": {
+        "bytes": 955514,
+        "sha256": "b4bf9c2457a988ff9c0693f639fc98ed56c744a4e7d379cd38b9465b50affb52"
+      }
+    },
+    "scope": "Two source-bound nominal1us captures and full public raw replays. Matched phase difference is not zero phase error; no PVT/jitter/thermal/layout/foundry/fullPLL qualification."
+  },
+  "full_nominal_timestep_convergence": false,
+  "physical_acceptance": false,
+  "scope": "No new simulation. Both individual1us nominal finite screens and their complete public raw replay pass. Frozen100ppm/50ps pair predicates fail matched phase by~695ps in both declared windows. Do not remove phase offset or relax limits. No PVT/jitter/thermal/layout/foundry/fullPLL/fullPHY qualification."
+}

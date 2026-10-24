@@ -1,0 +1,231 @@
+{
+  "run": 38983807650,
+  "case": "hot_low",
+  "summary_asset": 649016900,
+  "summary_sha256": "dc06bf9d71e4be0201fad334039328aa6fbea54a1ef585d4205b35400060c6b0",
+  "parts_asset": 649016971,
+  "parts_sha256": "db5f2f4eea79bedf114c39478b06a45af388e8049471ff21b4e62c272f53b87a",
+  "archive_asset": 649017047,
+  "archive_bytes": 754144583,
+  "archive_sha256": "621c25bd79adeb38a328dcb84aa8a45f0699244e095c3db84ad9c1eb57978103",
+  "status": "COMPLETE_ACTUAL_CLOCK_AND_DRIVER_FRESH_RC_LOADED_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+  "source_head": "c98d08565172f321fd45972a4dcb723e97761939",
+  "component_screen_passed": false,
+  "returncode": 0,
+  "diagnostics": [],
+  "condition_name": "hot_low",
+  "corner_contract": {
+    "condition": {
+      "temperature_c": 125,
+      "supply_scale": 0.95,
+      "core_scale": 0.95,
+      "hbt": "hbt_wcs",
+      "resistor": "res_wcs",
+      "lv_corner": "mos_ss",
+      "hv_corner": "mos_ss",
+      "step_ps": 0.5
+    },
+    "rails": {
+      "avdd": 2.375,
+      "tvdd": 1.71,
+      "dvdd": 1.14
+    },
+    "all_source_edges_unchanged": true,
+    "sources": [
+      {
+        "source": "vavdd",
+        "scale": 0.95,
+        "points": 2
+      },
+      {
+        "source": "vtvdd",
+        "scale": 0.95,
+        "points": 2
+      },
+      {
+        "source": "vdvdd",
+        "scale": 0.95,
+        "points": 2
+      },
+      {
+        "source": "vd0p",
+        "scale": 0.95,
+        "points": 63
+      },
+      {
+        "source": "vd0n",
+        "scale": 0.95,
+        "points": 63
+      },
+      {
+        "source": "vd1p",
+        "scale": 0.95,
+        "points": 57
+      },
+      {
+        "source": "vd1n",
+        "scale": 0.95,
+        "points": 57
+      },
+      {
+        "source": "vd2p",
+        "scale": 0.95,
+        "points": 71
+      },
+      {
+        "source": "vd2n",
+        "scale": 0.95,
+        "points": 71
+      },
+      {
+        "source": "vd3p",
+        "scale": 0.95,
+        "points": 77
+      },
+      {
+        "source": "vd3n",
+        "scale": 0.95,
+        "points": 77
+      },
+      {
+        "source": "vsap",
+        "scale": 1.0,
+        "points": 259
+      },
+      {
+        "source": "vsan",
+        "scale": 1.0,
+        "points": 259
+      },
+      {
+        "source": "vsbp",
+        "scale": 1.0,
+        "points": 257
+      },
+      {
+        "source": "vsbn",
+        "scale": 1.0,
+        "points": 257
+      },
+      {
+        "source": "vsp",
+        "scale": 1.0,
+        "points": 513
+      },
+      {
+        "source": "vsn",
+        "scale": 1.0,
+        "points": 513
+      }
+    ],
+    "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+    "original_capture_solver_topology_probes_unchanged": true,
+    "nominal_wire_rc_retained": true,
+    "complete_pvt_qualified": false
+  },
+  "corner_faults": [
+    {
+      "fault": "nominal_temperature",
+      "rejected": true,
+      "reason": ""
+    },
+    {
+      "fault": "nominal_hbt",
+      "rejected": true,
+      "reason": "Missing actual model corner HBT"
+    },
+    {
+      "fault": "shortened_capture",
+      "rejected": true,
+      "reason": "Changed topology, probes, solver, source identity or capture"
+    },
+    {
+      "fault": "removed_input",
+      "rejected": true,
+      "reason": "Changed topology, probes, solver, source identity or capture"
+    }
+  ],
+  "review": {
+    "rows": 76651,
+    "coverage_s": [
+      0.0,
+      3.4e-08
+    ],
+    "signals": {
+      "samples": 768,
+      "minimum_margin_v": -0.2715015346898617,
+      "wrong_sign_samples": 251,
+      "below_100mv_samples": 328,
+      "phases": {
+        "0.3": {
+          "samples": 256,
+          "minimum_margin_v": -0.2715015346898617,
+          "wrong_sign_samples": 97,
+          "below_100mv_samples": 117
+        },
+        "0.5": {
+          "samples": 256,
+          "minimum_margin_v": -0.23370575856707743,
+          "wrong_sign_samples": 97,
+          "below_100mv_samples": 120
+        },
+        "0.7": {
+          "samples": 256,
+          "minimum_margin_v": -0.1344653833265368,
+          "wrong_sign_samples": 57,
+          "below_100mv_samples": 91
+        }
+      },
+      "passed": false,
+      "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+      "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+    },
+    "interfaces": {
+      "cmos": {
+        "samples": 768,
+        "minimum_margin_v": 0.02313613977626905,
+        "wrong_sign_samples": 0,
+        "below_150mv_samples": 384,
+        "common_mode_range_v": [
+          1.894541815787537,
+          1.9113467348370383
+        ],
+        "passed": false
+      },
+      "final": {
+        "samples": 6912,
+        "minimum_margin_v": -0.09825783676858713,
+        "wrong_sign_samples": 1584,
+        "below_150mv_samples": 3456,
+        "common_mode_range_v": [
+          1.8096792778011896,
+          1.8479924533115213
+        ],
+        "passed": false
+      }
+    },
+    "failed_hbts": {
+      "xtree.xd0006": {
+        "min_post_vce_v": 0.38818826413055313,
+        "max_post_vce_v": 0.4389098905322639,
+        "max_whole_abs_vce_v": 0.4389098905322639,
+        "max_whole_abs_vbe_v": 0.7978236799049396,
+        "max_whole_abs_ic_per_emitter_a": 0.0006989096675660294,
+        "passed": false
+      },
+      "xtree.xd0007": {
+        "min_post_vce_v": 0.3862961977611438,
+        "max_post_vce_v": 0.437193171551456,
+        "max_whole_abs_vce_v": 0.437193171551456,
+        "max_whole_abs_vbe_v": 0.797096462581273,
+        "max_whole_abs_ic_per_emitter_a": 0.0006912455242481761,
+        "passed": false
+      }
+    },
+    "failed_mos": {},
+    "all_engineering_gates_passed": false
+  },
+  "accepted": false,
+  "full_phy_accepted": false,
+  "diagnosis_run": 38985443422
+}

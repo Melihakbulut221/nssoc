@@ -1,0 +1,60 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_onehot_load_route.py",
+      "candidate_path": "scripts/cloud_onehot_load_resume.py",
+      "baseline_sha256": "0569a2f07d9336be4942166ef7abbc9fc4fe47b8808ea80b65239d517b3d8962",
+      "candidate_sha256": "0a54443acf1071518b1ee527e37bb6c993223019cd05b5d264319be0eed97982",
+      "edits": [
+        {
+          "before": "cloud-onehot-load-route",
+          "after": "cloud-onehot-load-resume",
+          "count": 1
+        },
+        {
+          "before": "onehot_load_route_flow.py",
+          "after": "onehot_load_resume_flow.py",
+          "count": 1
+        },
+        {
+          "before": "'OnehotLoadRoute'",
+          "after": "'OnehotLoadResume'",
+          "count": 1
+        },
+        {
+          "before": "        saved_candidate_odb=odb\n",
+          "after": "        saved_candidate_odb=odb\n        # Recover the last completed native drt_run, before interruption of a later antenna round.\n        checkpoint_pin=json.loads((ROOT/'docs/evidence/onehot-load-route-interrupted-20261018.json').read_text())\n        checkpoint_root=ROOT/'hw/soc/out/cloud-onehot-load-route'\n        checkpoint_name='run/2-openroad-detailedrouting/drt-run-2/soc_top.odb'\n        selected=[checkpoint_name,checkpoint_name.removesuffix('.odb')+'.drc','trial-config.json','run/1-openroad-globalrouting/state_out.json','run/2-openroad-detailedrouting/propagated_native.tcl']\n        interrupted,checkpoint_proof=reports.restore_report('onehot-load-route',checkpoint_pin['run'],checkpoint_pin['summary_sha256'],checkpoint_pin['parts_sha256'],checkpoint_root,selected)\n        assert interrupted['status']=='INTERRUPTED_NATIVE_STAGE_RETAINED_NOT_ACCEPTED' and not interrupted['accepted']\n        assert interrupted['source_head']==checkpoint_pin['source_head']=='3b415c02d11ac763fd081412b34234103772d347'\n        assert interrupted['native_load_preparation']['summary_sha256']==lp['summary_sha256']\n        assert interrupted['native_load_equation_proof']==prepared['proof'] and interrupted['native_load_geometry_proof']==prepared['geometry']\n        assert json.loads((checkpoint_root/'trial-config.json').read_text())==cfg\n        checkpoint=checkpoint_root/checkpoint_name\n        assert sha(checkpoint)==checkpoint_pin['native_checkpoint_odb_sha256'][checkpoint_name]=='fa3433b1431cfe32f85d13af614d489b26b83d15ee6dca24fad4d5cffb86083c'\n        assert not checkpoint.with_suffix('.drc').read_text().strip()\n        native_script=(checkpoint_root/'run/2-openroad-detailedrouting/propagated_native.tcl').read_text()\n        assert 'write_db $::env(STEP_DIR)/$directory/$::env(DESIGN_NAME).odb' in native_script\n        assert 'while {$i <= $::env(DRT_ANTENNA_REPAIR_ITERS) && [log_cmd check_antennas]}' in native_script\n        before_method=ROOT/'scripts/check_onehot_load_routed_topology.py';before_proof=OUT/'checkpoint-native-topology.json'\n        with (OUT/'checkpoint-native-topology.log').open('w')as log:\n            ret=subprocess.call([str(app),'openroad','-exit','-python',str(before_method)],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,env={**{k:v for k,v in os.environ.items()if k not in ('GH_TOKEN','GITHUB_TOKEN')},'NSSOC_TOPOLOGY_BEFORE':str(saved_candidate_odb),'NSSOC_TOPOLOGY_AFTER':str(checkpoint),'NSSOC_TOPOLOGY_OUT':str(before_proof)})\n        if ret:print((OUT/'checkpoint-native-topology.log').read_text()[-12000:],flush=True)\n        assert ret==0,'Saved checkpoint changed original topology or geometry'\n        checkpoint_topology=json.loads(before_proof.read_text());assert checkpoint_topology['proof']['retained_instances']==145088 and len(checkpoint_topology['rejected'])==4\n        r['recovered_checkpoint_source']=checkpoint_proof;r['recovered_checkpoint_topology']=checkpoint_topology\n        # Bound work per hosted job; a remaining antenna violation is still a failed physical gate.\n        assert cfg['DRT_ANTENNA_REPAIR_ITERS']==8\n        r['execution_config_changes']['DRT_ANTENNA_REPAIR_ITERS']=dict(before=8,after=1,reason='One actual repair cycle per saved-cloud continuation; final zero-violation gate unchanged.')\n        cfg['DRT_ANTENNA_REPAIR_ITERS']=1\n        state['odb']=str(checkpoint);odb=checkpoint\n        # Preserve the original proven netlist as ancestry only. Native write_views creates fresh post-route views.\n        r['checkpoint_ancestral_netlist_sha256']=sha(netlist)\n        assert all(sha(checkpoint_root/n)==interrupted['outputs'][n]for n in selected)\n        save()\n",
+          "count": 1
+        },
+        {
+          "before": "scope='Actual reroute of proven50positive load buffers on exact round4 source, then fresh nominal OpenRCX and original three cell corners.",
+          "after": "scope='Resume actual saved drt-run2 with proven50positive load buffers, then one native antenna repair cycle, fresh nominal OpenRCX and original three cell corners.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/pnr/onehot_load_route_flow.py",
+      "candidate_path": "hw/soc/pnr/onehot_load_resume_flow.py",
+      "baseline_sha256": "c6de078b66164cb7f11d71b891b94f427f00ef26668e29715fd7aef8f931df28",
+      "candidate_sha256": "6a0e3c9458ae6d28980b20082db65eed88cb33b3271e207f2c647dbec782a38e",
+      "edits": [
+        {
+          "before": "class OnehotLoadRoute",
+          "after": "class OnehotLoadResume",
+          "count": 1
+        },
+        {
+          "before": "Steps=[BankedGlobalRouting,GuardedDetailedRouting",
+          "after": "Steps=[GuardedDetailedRouting",
+          "count": 1
+        },
+        {
+          "before": "Route proven native50-buffer ECO",
+          "after": "Resume saved routed native50-buffer ECO",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,331 @@
+{
+  "status": "PASS",
+  "native_scope": "Two FFs, one clock-gate boundary and one inverter only; no full-chip frontend/proof",
+  "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "gate_semantics": {
+    "type": "sg13g2_lgcp_1",
+    "state": "int_GATE",
+    "transparent_when": "CLK=0",
+    "next": "CLK ? state : GATE",
+    "output": "CLK & state",
+    "liberty_sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+  },
+  "controls": {
+    "equal": {
+      "verdict": "PROVED_ALL_BINARY_BOUNDARY_EQUATIONS",
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-state-correspondence/tiny-native-final/tiny-equal.ys"
+        ],
+        "returncode": 0,
+        "seconds": 0.3160495060001267,
+        "script": {
+          "bytes": 1469,
+          "sha256": "110e45383b3b5ab8efd0ccfe2776c8dc8111c9d28d785907706265a10d4a14b6"
+        },
+        "log": {
+          "bytes": 22965,
+          "sha256": "7fb1db140aa6069c5eb746d58d6cc57f4935e2717c2611de8d4c050262411d38"
+        }
+      }
+    },
+    "wrong_state_pair": {
+      "verdict": "COUNTEREXAMPLE_PRESERVED",
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-state-correspondence/tiny-native-final/tiny-wrong_state_pair.ys"
+        ],
+        "returncode": 1,
+        "seconds": 0.31659651799782296,
+        "script": {
+          "bytes": 1502,
+          "sha256": "04e623072b5330ada1289e2bf2259db0a907e4dccfe5c66e08f0ba4a517b89e2"
+        },
+        "log": {
+          "bytes": 23717,
+          "sha256": "ca49088a1ca888b30666ea35b83f11255dd1080593b2bbe326192e288bc83063"
+        }
+      }
+    },
+    "wrong_reset": {
+      "verdict": "COUNTEREXAMPLE_PRESERVED",
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-state-correspondence/tiny-native-final/tiny-wrong_reset.ys"
+        ],
+        "returncode": 1,
+        "seconds": 0.31628878400078975,
+        "script": {
+          "bytes": 1487,
+          "sha256": "0d05f54f54f9c337e04cb68b90101787b9d8fc99392591e07a38af56801f5bfc"
+        },
+        "log": {
+          "bytes": 23965,
+          "sha256": "23586efb347a29569242e0072b62ea7d46fda0229f03afa0569bb9a5bcf6235c"
+        }
+      }
+    },
+    "wrong_output": {
+      "verdict": "COUNTEREXAMPLE_PRESERVED",
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-state-correspondence/tiny-native-final/tiny-wrong_output.ys"
+        ],
+        "returncode": 1,
+        "seconds": 0.3173109800009115,
+        "script": {
+          "bytes": 1490,
+          "sha256": "0a19579884a88023b57e29e338ceb3cc9e09c9de4f67537d09f451d80ef41ec9"
+        },
+        "log": {
+          "bytes": 23926,
+          "sha256": "d2bf7e4c9165b1923d12f461f2553be67b0b383a5b43ad7967b1e31b10850990"
+        }
+      }
+    },
+    "wrong_gate_latch": {
+      "verdict": "COUNTEREXAMPLE_PRESERVED",
+      "execution": {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-state-correspondence/tiny-native-final/tiny-wrong_gate_latch.ys"
+        ],
+        "returncode": 1,
+        "seconds": 0.3161218080022081,
+        "script": {
+          "bytes": 1502,
+          "sha256": "b57009aeb5d7ca37734858a1761201664cea87c8d6790b841bcac75a184b0aef"
+        },
+        "log": {
+          "bytes": 23723,
+          "sha256": "1b95fe99ccfa5b7a67e208f951ac69fdadd930b9b919e658574d21445183005b"
+        }
+      }
+    }
+  },
+  "native_elapsed_seconds": 2.2905694890032464,
+  "checks": {
+    "tests": {
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "sw/tests/test_alu_mapped_state.py"
+      ],
+      "returncode": 0,
+      "log": {
+        "bytes": 99,
+        "sha256": "3d92a3a8f179e568c4573609c7246adffbf3ff4608374443cc68ff6e4e8bdf3a"
+      }
+    },
+    "ruff": {
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/dev-env/bin/ruff",
+        "check",
+        "scripts/prove_alu_mapped_state.py",
+        "sw/tests/test_alu_mapped_state.py"
+      ],
+      "returncode": 0,
+      "log": {
+        "bytes": 19,
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      }
+    },
+    "actionlint": {
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+        ".github/workflows/timing-alu-mapped-state.yml"
+      ],
+      "returncode": 0,
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "source_files": {
+    "scripts/prove_alu_mapped_state.py": {
+      "bytes": 25957,
+      "sha256": "4ea03404cd11bdeda05dc018c8b9b4032f8622754f15dca7b6faef4b6d922335"
+    },
+    "sw/tests/test_alu_mapped_state.py": {
+      "bytes": 8765,
+      "sha256": "93638fca59b3c4b83cec5a78cdd929bd4df69afe8f490c448dd3aeda33d64c01"
+    },
+    ".github/workflows/timing-alu-mapped-state.yml": {
+      "bytes": 1758,
+      "sha256": "52ff1ed05058f586151afbb06c2f97b97076d9ffeffe26f10807d14f3f22c914"
+    }
+  },
+  "dependencies_unchanged": {
+    "scripts/run_cloud_alu_prefix.py": true,
+    "scripts/prepare_alu_prefix.py": true,
+    "scripts/run_cloud_timing_experiment.py": true,
+    "scripts/bootstrap_oss.py": true,
+    "hw/soc/pnr/alu-prefix-c10-input.lock.json": true,
+    "docs/evidence/timing-cloud-input-20260930.json": true
+  },
+  "whole_soc_native_executed_locally": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "native_output_pins": {
+    "tiny-wrong_output-model.vcd": {
+      "bytes": 582,
+      "sha256": "05a2225ef6301d32372df67cbbc94e5915ff3d103324c20abda4bf6d9365915f"
+    },
+    "tiny-wrong_reset-execution.json": {
+      "bytes": 599,
+      "sha256": "4e0fa76ffc7ad2bc4b79babf18d33ec2fd6dd796dea6811edb4a58f3249d1aef"
+    },
+    "tiny-wrong_state_pair.log": {
+      "bytes": 23717,
+      "sha256": "ca49088a1ca888b30666ea35b83f11255dd1080593b2bbe326192e288bc83063"
+    },
+    "tiny-wrong_gate_latch-model.vcd": {
+      "bytes": 582,
+      "sha256": "71e766537e550908a775a913b9794aec3fad302b08e8b42e707652efea4231b2"
+    },
+    "tiny-wrong_reset.json": {
+      "bytes": 4604,
+      "sha256": "0c4b32c593995cca361981de4eb83fd7d78cb3488ea504e8426037a72c3d7696"
+    },
+    "tiny-equal-execution.json": {
+      "bytes": 592,
+      "sha256": "23c973e36d17434cd45b2ff0bf1e295952de80b5d2d2ee87d27e2550797a2ec7"
+    },
+    "tiny-wrong_state_pair-execution.json": {
+      "bytes": 604,
+      "sha256": "01909f0f6d702b52ee01a9168272f3204f90846d437765a849319adb7a181ea4"
+    },
+    "tiny-wrong_output.log": {
+      "bytes": 23926,
+      "sha256": "d2bf7e4c9165b1923d12f461f2553be67b0b383a5b43ad7967b1e31b10850990"
+    },
+    "actionlint.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "tiny-wrong_gate_latch.log": {
+      "bytes": 23723,
+      "sha256": "1b95fe99ccfa5b7a67e208f951ac69fdadd930b9b919e658574d21445183005b"
+    },
+    "tiny-wrong_state_pair.json": {
+      "bytes": 4602,
+      "sha256": "39c284c654bd1d408c98043e810230df4e375d26c7cbc664c26620172cf4338b"
+    },
+    "ruff.log": {
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "tiny-equal.log": {
+      "bytes": 22965,
+      "sha256": "7fb1db140aa6069c5eb746d58d6cc57f4935e2717c2611de8d4c050262411d38"
+    },
+    "tiny-wrong_reset-model.vcd": {
+      "bytes": 582,
+      "sha256": "f10917ceae73c1598d3dbbf240c207d927429ffbe070887cc392f53079ab93a2"
+    },
+    "tiny-wrong_state_pair-model.json": {
+      "bytes": 399,
+      "sha256": "2d537443925cb67141bf2e7ab55373e7068a675898ba3815ac726fa4dd4d6c9f"
+    },
+    "tiny-left.json": {
+      "bytes": 4602,
+      "sha256": "587c8d300b80afbd2d15b9ed8db47093ef3fc2a5116def0c3febd0a7fa99a7f9"
+    },
+    "tiny-equal.ys": {
+      "bytes": 1469,
+      "sha256": "110e45383b3b5ab8efd0ccfe2776c8dc8111c9d28d785907706265a10d4a14b6"
+    },
+    "tiny-wrong_reset.ys": {
+      "bytes": 1487,
+      "sha256": "0d05f54f54f9c337e04cb68b90101787b9d8fc99392591e07a38af56801f5bfc"
+    },
+    "tiny-wrong_output.json": {
+      "bytes": 4603,
+      "sha256": "97e749944d3b373c1d3a1817ad65e9bfb0fa1e741a3c304a3ebf1d5c9b6a41ff"
+    },
+    "tiny-wrong_gate_latch-model.json": {
+      "bytes": 399,
+      "sha256": "1ef124c68976eb7a0f61e7511078239b6627327fc7496213043475e4778a121d"
+    },
+    "tiny-wrong_output.ys": {
+      "bytes": 1490,
+      "sha256": "0a19579884a88023b57e29e338ceb3cc9e09c9de4f67537d09f451d80ef41ec9"
+    },
+    "tiny-wrong_state_pair-model.vcd": {
+      "bytes": 582,
+      "sha256": "e99e6ee0225a1b308a8ee16866f324fa1a53c2f5f6089918c409e0fc931e1c2f"
+    },
+    "tiny-wrong_gate_latch-execution.json": {
+      "bytes": 603,
+      "sha256": "ff041044043bc7a717f45506e1e2e0030976b50ca438cae10bd5d1f29ed6211f"
+    },
+    "tiny-wrong_output-execution.json": {
+      "bytes": 599,
+      "sha256": "0c5f00892f9ee786c0cb4644c08c70dce61236670dab816ff5a969bc4da9e76e"
+    },
+    "tiny-wrong_gate_latch.json": {
+      "bytes": 4603,
+      "sha256": "5b6154e5c385ffe7d1d3ebd2df299dfe356afddd16d5ff94ee338d149369bf86"
+    },
+    "tiny-equal.json": {
+      "bytes": 4602,
+      "sha256": "587c8d300b80afbd2d15b9ed8db47093ef3fc2a5116def0c3febd0a7fa99a7f9"
+    },
+    "tiny-wrong_reset-model.json": {
+      "bytes": 399,
+      "sha256": "45c08f152e22836a67af860044fbc463b7d96ba31b9091490c71839798f812e8"
+    },
+    "tiny-wrong_reset.log": {
+      "bytes": 23965,
+      "sha256": "23586efb347a29569242e0072b62ea7d46fda0229f03afa0569bb9a5bcf6235c"
+    },
+    "tiny-wrong_output-model.json": {
+      "bytes": 399,
+      "sha256": "8486f80f38cd2e1a3c1a87cd1b241b664108b43d9918a0ec2bbfad5a3207518c"
+    },
+    "tiny-wrong_state_pair.ys": {
+      "bytes": 1502,
+      "sha256": "04e623072b5330ada1289e2bf2259db0a907e4dccfe5c66e08f0ba4a517b89e2"
+    },
+    "tiny-wrong_gate_latch.ys": {
+      "bytes": 1502,
+      "sha256": "b57009aeb5d7ca37734858a1761201664cea87c8d6790b841bcac75a184b0aef"
+    },
+    "tests.log": {
+      "bytes": 99,
+      "sha256": "3d92a3a8f179e568c4573609c7246adffbf3ff4608374443cc68ff6e4e8bdf3a"
+    }
+  },
+  "root_focused_tests_passed": 27,
+  "root_source_and_all_tiny_output_pins_reverified": true,
+  "full_core_proof_pending": true,
+  "declared_scope": "Prove all34321 storage-boundary equations for10828 shared binary state/input bits. Equal initial corresponding FF/latch state and same opaque SRAM behavior required; no reset reachability, four-state, CDC, timing or SRAM-interior claim."
+}

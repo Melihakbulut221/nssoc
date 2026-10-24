@@ -1,0 +1,52 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_final_strap6_extraction.py",
+      "baseline_sha256": "71ae5f00422abd0a09c8def17e958602b294c3f9f3a07a253e32e4d788aa41f9",
+      "candidate_path": "scripts/cloud_tx_v5_minimax_extraction.py",
+      "candidate_sha256": "e43053d05ea70bc062bc64c8b11a37fadc00c0b8a7c19f7ea06bca8e0823d2be",
+      "edits": [
+        {
+          "before": "_final_strap6_core_v1",
+          "after": "_minimax_core_v1",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-final-strap6-physical-pass-20261019.json",
+          "after": "tx-v5-minimax-physical-pass-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "receipt['source_run']==39217390888 and receipt['source_head']=='9be1ff7728c315c8b895ac02a7359e4ff1cabc03'",
+          "after": "receipt['source_run']==39265712814 and receipt['source_head']=='dc89fcfbd2ae748dab23e25dbe6401966932ea99'",
+          "count": 1
+        },
+        {
+          "before": "434b4ac63466d194c814a918d3f5d42a0e87ad249f0fb42d1ae8e61e16987068",
+          "after": "5d81376ebdd2147693e30888276bf60a460aa5191c5454ae891b6516526b43d9",
+          "count": 1
+        },
+        {
+          "before": "66b00b9660184ccdadc0223f5ebef22fa1b9edb4faedba5fdd9010631848e2a5",
+          "after": "544119daf5019fd46c2a9c67015eaaca5199920599c034ae385ecbb4f131e309",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-final-strap6-assembly",
+          "after": "cloud-tx-v5-minimax-assembly",
+          "count": 1
+        },
+        {
+          "before": "        gp=json.loads((out/'column-geometry-delta.json').read_text())\n        assert gp==physical['geometry_delta']\n        assert gp['status']=='PASS_FAST_STAGE_ROWS_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT'\n        assert gp['controls']==['wrong_column','moved_row','actual_child_conductor_removed']\n        assert gp['actual_macro_instances']==31 and gp['actual_cells_unchanged']and gp['all_reference_device_cards_unchanged']\n        assert gp['signal_connections']==60 and gp['fast_stage_routes_shorter']==12\n        assert physical['signal_track_shift_um']=={'p8_2p':48.,'p8_2n':48.,'p8_7p':24.,'p8_7n':24.}\n        assert gp['fast_stage_rows_um']=={'a':4200.,'b':4800.,'p4_0':3600.,'p4_2':4200.,'p4_1':4800.,'p4_3':5400.}\n        assert physical['return_rail']['final_column_trunk_width_um']==128. and physical['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert physical['return_rail']['local_final_strap_width_um']==6. and physical['return_rail']['final_strap_top_via_columns']==physical['return_rail']['final_strap_top_via_rows']==2\n        # Revalidate the exact generation/geometry code used by the new native pass.\n        from check_tx_v5_final_strap6_sources import check\n        check()\n        for method in ['scripts/cloud_tx_v5_final_strap6_assembly.py','scripts/check_tx_v5_fast_stage_isolated_geometry.py']:\n            bound=physical['layout']['inputs']if method.endswith('_assembly.py')else gp['inputs']\n            assert sha(ROOT/method)==bound[str(ROOT/method)]\n        result['independent_fast_stage_geometry']=gp\n        sg=json.loads((out/'strap6-geometry-delta.json').read_text());assert sg==physical['strap_geometry_delta']\n        assert sg['status']=='PASS_ONLY_FINAL_TM1_STRAP4TO6_GDS_DELTA' and sg['controls']==['old_width','removed_strap','unrelated_metal']\n        assert sg['before_width_um']==4 and sg['after_width_um']==6 and sg['original_vias_unchanged']\n        guard=ROOT/'scripts/check_tx_v5_final_strap6_geometry.py';assert sha(guard)==sg['inputs'][str(guard)]\n        result['independent_strap_geometry']=sg\n",
+          "after": "        gp=json.loads((out/'minimax-geometry-delta.json').read_text())\n        assert gp==physical['geometry_delta']\n        assert gp['status']=='PASS_MINIMAX_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n        assert gp['controls']==['wrong_actual_row_metadata','native_child_conductor_removed','actual_parent_trunk_cut']\n        assert gp['reference_devices_unchanged']and gp['actual_native_children_unchanged']\n        assert gp['fixed_leaf_and_final_rows']==17 and gp['signal_legs']==60\n        assert gp['plan']==physical['data_route_plan']\n        assert gp['maximum_after_um']==physical['layout']['parent_signal_centerline_max_um']\n        assert gp['maximum_after_um']<gp['maximum_before_um']*.8\n        assert gp['plan']['row_lattice']['quantum_um']==600.\n        assert gp['plan']['row_lattice']['private_diagnosis_run']==39263440258\n        assert all(abs((v-gp['plan']['original_rows_um'][k])/600.-round((v-gp['plan']['original_rows_um'][k])/600.))<1e-9 for k,v in gp['plan']['row_targets_um'].items())\n        assert gp['plan']['solver']['first_mip_gap']==gp['plan']['solver']['second_mip_gap']==0.\n        assert physical['return_rail']['final_column_trunk_width_um']==128. and physical['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert physical['return_rail']['local_final_strap_width_um']==6. and physical['return_rail']['final_strap_top_via_columns']==physical['return_rail']['final_strap_top_via_rows']==2\n        from check_tx_v5_minimax_sources import check\n        check()\n        for method in ['scripts/cloud_tx_v5_minimax_assembly.py','scripts/check_tx_v5_minimax_geometry.py']:\n            bound=physical['layout']['inputs']if method.endswith('_assembly.py')else gp['inputs']\n            assert sha(ROOT/method)==bound[str(ROOT/method)]\n        assert sha(ROOT/'scripts/plan_tx_v5_minimax_rows.py')==physical['planner_sha256']\n        result['independent_data_route_geometry']=gp\n",
+          "count": 1
+        },
+        {
+          "before": "        if wide64:\n            result['geometry_delta']=json.loads((out/'column-geometry-delta.json').read_text())\n            assert result['geometry_delta']==physical['geometry_delta']\n            assert result['geometry_delta']['controls']==['wrong_column','moved_row','actual_child_conductor_removed']\n            assert result['geometry_delta']['status']=='PASS_FAST_STAGE_ROWS_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT'\n",
+          "after": "        if wide64:\n            result['geometry_delta']=json.loads((out/'minimax-geometry-delta.json').read_text())\n            assert result['geometry_delta']==physical['geometry_delta']==gp\n            assert result['geometry_delta']['controls']==['wrong_actual_row_metadata','native_child_conductor_removed','actual_parent_trunk_cut']\n            assert result['geometry_delta']['status']=='PASS_MINIMAX_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

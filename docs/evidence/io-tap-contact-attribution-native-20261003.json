@@ -1,0 +1,252 @@
+{
+  "schema": 1,
+  "status": "LOCAL_SEVEN_CELL_CONTACT_ATTRIBUTION_INDEPENDENTLY_REPRODUCED",
+  "validation": {
+    "status": "FROZEN_SOURCE_AND_BOUNDED_NATIVE_CONTACT_DIAGNOSTIC_PASS",
+    "utc": "2026-10-02T22:12:59.054756+00:00",
+    "methods": {
+      "scripts/run_io_tap_contact_probe.py": {
+        "bytes": 14649,
+        "sha256": "d7c1441412f3461f9944ec802e40c7de22baa86e664209935000cccdb15c1eb9"
+      },
+      "hw/soc/flow/io_tap_contact_probe.py": {
+        "bytes": 19378,
+        "sha256": "a1f2ce625c13ff39e013d7e3cee82a13a409e9afd8e9e8c98d321ebdd8287949"
+      },
+      "sw/tests/test_io_tap_contact_probe.py": {
+        "bytes": 7953,
+        "sha256": "9a4b1bfc4d2792f0bfd57cfc83ba47e9bb1f4c174db8390494da0007b1edb701"
+      },
+      ".github/workflows/io-tap-contact-probe.yml": {
+        "bytes": 1952,
+        "sha256": "cc7938968bbc14346d29136f9fb008a8bad8dbe3c319973a6ae508eab617b8bc"
+      }
+    },
+    "validation": {
+      "pure_tests": {
+        "passed": 33,
+        "suite": "sw/tests/test_io_tap_contact_probe.py"
+      },
+      "combined_tests": {
+        "passed": 68,
+        "suites": [
+          "sw/tests/test_io_tap_contact_probe.py",
+          "sw/tests/test_io_tap_mask_probe.py",
+          "sw/tests/test_io_parent_boundary.py"
+        ]
+      },
+      "ruff": "PASS",
+      "actionlint": "PASS",
+      "native_controls": {
+        "count": 11,
+        "all_expected_outcomes": true
+      },
+      "captured_archive_members_replayed": 169,
+      "native_output_hashes_reverified": 84,
+      "input_hashes_reverified": 71
+    },
+    "native_result": {
+      "path": "hw/soc/out/resume-20261003/contact-probe-native-final/result.json",
+      "bytes": 66340,
+      "sha256": "99d6a7cea76e63461311a12ac576d407a4d618e350dff69e133d1ebd075dc960"
+    },
+    "analysis": {
+      "path": "hw/soc/out/resume-20261003/contact-probe-native-final/analysis.json",
+      "bytes": 2568,
+      "sha256": "9eaaea9105344471fe088065058962be24360624417dae4a242601af5a0c285f"
+    },
+    "contacts": {
+      "path": "hw/soc/out/resume-20261003/contact-probe-native-final/contacts.json",
+      "bytes": 267015,
+      "sha256": "7efbca5feff22879bbfb380ecbad666946a3fd8fcfa1a6a45e43a818521535d6"
+    },
+    "result": {
+      "status": "PASS_CONTACT_ATTRIBUTION_DIAGNOSTIC_ONLY",
+      "interpreted_bound": {
+        "bare_contact_projection_nm": 37440,
+        "enclosure_projection_nm": 70200,
+        "conservative_perimeter_lower_bound_um": 140.4,
+        "reference_combined_vss_perimeter_um": 87.9,
+        "literal_perimeter_contract_incompatible": true,
+        "proof": "For any enclosing planar tap region, perimeter is at least twice the measure of its x projection. Use the union of contact projection intervals; rotation preserves perimeter.",
+        "conditions": "All 234 contacts keep their present VSS/SUB! ownership, Cnt.c branch and recognized tap/enclosure role. No contact deletion, net reassignment or recognition reclassification.",
+        "limitation": "A rectangular 70 nm enclosure is a conservative current-geometry witness, not a full Euclidean DRC verdict. The bound concerns literal extracted perimeter only.",
+        "reference_caveat": "The isolated A=23.523 um^2/P=19.4 um resembles a 4.85 um equivalent square. No claim that reference P is an authoritative physical-shape target or that the tap is electrically invalid. A qualified consistent extraction/model contract is still required."
+      },
+      "lvs_accepted": false,
+      "qualified_deck_acceptance": false,
+      "full_chip_changed": false,
+      "manufacturing_approval": false,
+      "repeated_lvs_comparison": false,
+      "contact_count": 234,
+      "direct_contact_boxes_sha256": "d3f7f37041aa752514664ec0224148d08a3f9e70c12c76f6846a3b4317478289",
+      "native_klayout_version": "0.30.7",
+      "native_layers": {
+        "contact": 7,
+        "tie": 160,
+        "well": 161,
+        "pwell": 2
+      },
+      "source_to_captured_contact_geometry": {
+        "source_area_nm2": 4971289600,
+        "captured_area_nm2": 4963609600,
+        "source_absent_from_capture_area_nm2": 7680000,
+        "selected_missing_area_nm2": 0,
+        "scope": "Global source contacts may be absent from the saved extraction; every selected contact must be present unchanged."
+      },
+      "native_tap": {
+        "id": 18,
+        "tie": {
+          "name": "VSS",
+          "cluster_id": 4,
+          "circuit": "ACTUAL_IO_ADJACENCY"
+        },
+        "well": {
+          "name": "SUB!",
+          "cluster_id": 1,
+          "circuit": "ACTUAL_IO_ADJACENCY"
+        },
+        "area_um2": 98.034,
+        "perimeter_um": 657.76,
+        "representative_terminal_bbox_nm": [
+          156850,
+          834000,
+          157150,
+          914000
+        ],
+        "representative_is_source_stripe": false
+      },
+      "mask_to_extraction_xor_area_nm2": {
+        "tie": 0,
+        "well": 0
+      },
+      "parent_transform": [
+        3,
+        false,
+        0,
+        1076000
+      ],
+      "stripe_area_um2": 24.0,
+      "stripe_perimeter_um": 160.6
+    },
+    "limits": {
+      "full_chip_loaded": false,
+      "lvs_comparison_repeated": false,
+      "existing_deck_reference_or_geometry_modified": false,
+      "native_process_address_space_outer_limit_bytes": 4294967296,
+      "python_helper_internal_address_space_limit_bytes": 2147483648,
+      "manufacturing_approval": false
+    },
+    "startup_failures_preserved": [
+      "hw/soc/out/resume-20261003/contact-probe-native-01",
+      "hw/soc/out/resume-20261003/contact-probe-native-02",
+      "hw/soc/out/resume-20261003/contact-probe-analysis-03"
+    ],
+    "next_step": "Independent peer/root review. Root owns commit/push and optional own-path cloud workflow publication. This diagnostic does not fix or waive the strict tap A/P mismatch."
+  },
+  "peer_review": {
+    "schema": 1,
+    "verdict": "PASS_NO_BLOCKER_FOR_CONDITIONAL_DIAGNOSTIC",
+    "source_validation": {
+      "bytes": 5426,
+      "sha256": "8d9b0c4c4111c9d1e8a4dc74ddcbf58a605d0eaf66d87b3602b9a1cd14dafbc9"
+    },
+    "reviewed_methods": {
+      "scripts/run_io_tap_contact_probe.py": {
+        "bytes": 14649,
+        "sha256": "d7c1441412f3461f9944ec802e40c7de22baa86e664209935000cccdb15c1eb9"
+      },
+      "hw/soc/flow/io_tap_contact_probe.py": {
+        "bytes": 19378,
+        "sha256": "a1f2ce625c13ff39e013d7e3cee82a13a409e9afd8e9e8c98d321ebdd8287949"
+      },
+      "sw/tests/test_io_tap_contact_probe.py": {
+        "bytes": 7953,
+        "sha256": "9a4b1bfc4d2792f0bfd57cfc83ba47e9bb1f4c174db8390494da0007b1edb701"
+      },
+      ".github/workflows/io-tap-contact-probe.yml": {
+        "bytes": 1952,
+        "sha256": "cc7938968bbc14346d29136f9fb008a8bad8dbe3c319973a6ae508eab617b8bc"
+      }
+    },
+    "input_hashes_rechecked": 71,
+    "output_hashes_and_exact_closure_rechecked": 84,
+    "complete_original_archive_members_crc_sha_replayed": 169,
+    "native_runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "native_controls": {
+      "count": 11,
+      "all_expected_outcomes": true
+    },
+    "native_analysis": {
+      "process_returncode": 0,
+      "elapsed_s": 4.978987435999443,
+      "matches_author_analysis": true,
+      "all_234_contact_rows_byte_identical": true,
+      "enclosure_projection_union_nm_independent_sweep": 70200,
+      "conditional_perimeter_lower_bound_um": 140.4,
+      "reference_perimeter_um": 87.9,
+      "full_tie_mask_xor_nm2": 0,
+      "full_body_mask_xor_nm2": 0,
+      "captured_combined_A_P_reproduced": [
+        98.034,
+        657.76
+      ]
+    },
+    "tests": {
+      "passed": 68,
+      "warning": "Expected Python ZIP duplicate-name warning in negative archive fixture.",
+      "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm hw/soc/tools/cocotb-venv/bin/python -m pytest -q -p no:cacheprovider sw/tests/test_io_tap_contact_probe.py sw/tests/test_io_tap_mask_probe.py sw/tests/test_io_parent_boundary.py --basetemp=/dev/shm/nssoc-contact-peer-tests-20261003"
+    },
+    "reasoning": [
+      "234 exact 160 nm contact boxes and witnessed parent rotation are pinned; full polygons, not only contact centers, belong to native VSS tie and SUB! body.",
+      "Every 70 nm expanded contact is inside the recognized VSS region and outside exact EdgeSeal/SRAM/DigiBnd/Activ-mask/NWell exceptions. NWell absence excludes the derived SVaricap branch.",
+      "The union of mandatory enclosure projections is 70.2 um; twice that is a necessary 140.4 um perimeter lower bound conditional on preserving contact ownership and recognized tap/enclosure role. Overlap is not double-counted.",
+      "The current full combined tap area/perimeter are independently reproduced from captured native regions; a representative terminal abstract is not mistaken for the selected physical stripe.",
+      "Original flat comparison remains FAIL; one-line substrate-label overlay provenance is explicit. This helper neither edits geometry nor reruns or waives LVS."
+    ],
+    "scope_limits": {
+      "full_chip_loaded": false,
+      "lvs_accepted": false,
+      "qualified_deck_accepted": false,
+      "full_drc_executed": false,
+      "geometry_repaired": false,
+      "manufacturing_approved": false,
+      "rectangular_enclosure_is_not_complete_euclidean_drc": true,
+      "no_claim_reference_P_is_authoritative_electrical_target": true
+    },
+    "output_files": {
+      "analysis.json": {
+        "bytes": 2568,
+        "sha256": "9eaaea9105344471fe088065058962be24360624417dae4a242601af5a0c285f"
+      },
+      "contacts.json": {
+        "bytes": 267015,
+        "sha256": "7efbca5feff22879bbfb380ecbad666946a3fd8fcfa1a6a45e43a818521535d6"
+      },
+      "controls.json": {
+        "bytes": 1127,
+        "sha256": "3a640e1852d820a330125a5d9a8f19b7f3f70e5e8c9f38096a6d567ca309bd48"
+      },
+      "controls.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "inspect.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "execution.json": {
+        "bytes": 1136,
+        "sha256": "74a792001215d2c341ad5048cd7df1ab6b40a8627f88128240440d5dd2a519bd"
+      },
+      "tests.log": {
+        "bytes": 523,
+        "sha256": "b67a3598557207e341777ee8ed74c8b96bf04748a22112fd4c5f0cc51c0c4b7d"
+      }
+    }
+  },
+  "root_source_review": "Read full runner/helper; source pins rechecked and60contact/trace source tests passed.",
+  "full_chip_lvs_accepted": false,
+  "qualified_deck_acceptance": false,
+  "manufacturing_approval": false
+}

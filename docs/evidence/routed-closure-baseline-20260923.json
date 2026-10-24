@@ -1,0 +1,3068 @@
+{
+  "date": "2026-09-23",
+  "status": "OPEN: setup/electrical and full DRC/LVS closure in progress",
+  "hosted_run": 35743942451,
+  "hosted_conclusion": "failure",
+  "artifact_id": 10712724802,
+  "artifact_sha256": "8a76ddcff16915470e403b090019f3622f178c30aefcf1ae28f6e854d2f09c66",
+  "source_commit": "496961c0da353aa20638adfff4c37b05c920f49a",
+  "views": {
+    "odb/soc_top.odb": {
+      "bytes": 198162167,
+      "sha256": "480323cdaff6d5ca10f5f0e0cbfac9e4da1e28cbbc15dad1fc585ecee79edef4"
+    },
+    "def/soc_top.def": {
+      "bytes": 126074786,
+      "sha256": "72cef8da2969b24077170c124a7320473a09aaea35ff2bf3ef7178b9eb670421"
+    },
+    "nl/soc_top.nl.v": {
+      "bytes": 21326970,
+      "sha256": "bf1af80096206981a1f162ddc3f1040a5ace7159e1c8c3c883a4d0b05b8e6f71"
+    },
+    "pnl/soc_top.pnl.v": {
+      "bytes": 31980082,
+      "sha256": "f033dbd3a4da4bd626514a85f59728b54b5bb8a4dd74de3acbc4f155764ea04f"
+    },
+    "sdc/soc_top.sdc": {
+      "bytes": 30395,
+      "sha256": "c801584735b5eb8c4ff7918c295d19223356ad0e6ccb59191be6698057b70289"
+    },
+    "spef/nom/soc_top.nom.spef": {
+      "bytes": 113836096,
+      "sha256": "b119e949b861a285ddc4b0518ad4b16df0531652678b69d0258f2bf1bfb1b7b8"
+    },
+    "klayout_gds/soc_top.klayout.gds": {
+      "bytes": 102056564,
+      "sha256": "c8dc9462313e5f3484111a8ed23d683fedb18b2e1b7e65bec636efc8309ec838"
+    },
+    "metrics.json": {
+      "bytes": 10965,
+      "sha256": "1fb3603335ed00ce2d0b0ebfbeaa945dc49b5b5d126338448355ee12c63effc2"
+    }
+  },
+  "corners": {
+    "nom_fast_1p32V_m40C": {
+      "setup_worst_ns": 3.1940930804348833,
+      "hold_worst_ns": 0.04292238908011248,
+      "slew_violations": 9,
+      "capacitance_violations": 7
+    },
+    "nom_typ_1p20V_25C": {
+      "setup_worst_ns": 1.779901609812329,
+      "hold_worst_ns": 0.18453483707865231,
+      "slew_violations": 11,
+      "capacitance_violations": 6
+    },
+    "nom_slow_1p08V_125C": {
+      "setup_worst_ns": -7.173566832485881,
+      "hold_worst_ns": 0.29190739540671856,
+      "slew_violations": 313,
+      "capacitance_violations": 6
+    }
+  },
+  "router_drc_errors": 0,
+  "antenna_nets": 0,
+  "antenna_pins": 0,
+  "independent_slow_sta": {
+    "setup_worst_ns": -7.173566832485881,
+    "hold_worst_ns": 0.29190739540671856,
+    "tool": "OpenSTA 2.7.0, pinned LibreLane 3.0.5"
+  },
+  "constraints": {
+    "core_ns": 20,
+    "ethernet_ns": 8,
+    "early_derate": 0.95,
+    "late_derate": 1.05,
+    "extracted_rc": "nominal"
+  },
+  "eco3_logic": {
+    "retained_cells": 72992,
+    "positive_buffers_before": 24054,
+    "positive_buffers_after": 24054,
+    "equivalent_sizes": 171,
+    "equivalent_input_permutations": 0,
+    "status": "PASS within scope",
+    "yosys_version": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+    "sources": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/selected/pnr/runs/route-resume/final/nl/soc_top.nl.v": "bf1af80096206981a1f162ddc3f1040a5ace7159e1c8c3c883a4d0b05b8e6f71",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/eco3-iterative-size/soc_top.v": "5f5a4d3b6f8b4af2700276029bef0e9153c24ad7f6dec1ec7203de0bbcc2a53a",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/check_eco_logic.py": "da9eeb156f61502c881a099eedfcc9ea29505bbd126c8586c04cd39d17db6601",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/eco_logic.py": "48174c6b90ed532266d2dddf39e6722c482e15bd4a53473a0f785e1d93b831b2"
+    },
+    "scope": "Retained cell input equations and state definitions; verified positive buffer contraction and Boolean pin permutations. Unchanged opaque masters require identical input equations. Excludes timing, analog, SRAM interiors, initialization, CDC and extracted physical connectivity.",
+    "generated": {
+      "after.ys": "0aaebcf5d2c45766ac86ab252636005ac89c731092a3da4077f6ef6be4f254c3",
+      "before.json": "4140991987b5a416e275f92c50f6749cb7b7bd8389b2ddcc9b607ef3eec23865",
+      "before-libraries.json": "fc9f56f74c468bee02e183b9facd645ad3acdc06cc93fe893a15d86440e61629",
+      "after.json": "959d5e1a73be750515aec0af48a3f4e2f301a105ff35c95d787b5cfb48200262",
+      "after.log": "e68b6684ac7b1958b8b443fd046978bed80749e366cd84564a9cd94d92b72deb",
+      "after-libraries.json": "fc9f56f74c468bee02e183b9facd645ad3acdc06cc93fe893a15d86440e61629",
+      "before.log": "9b2838701a3013538ff2f2a7ab61203d38b16bae54f2b0be713da7b1b8b34774",
+      "before.ys": "423a3bd444577facaaea622e79194fbad670aa132d68973b2e9ffbdf16ac329a"
+    }
+  },
+  "source_schematic": {
+    "scope": "Source-side full transistor schematic; requires separate extracted LVS",
+    "top": "soc_top",
+    "instances": 387315,
+    "cdl_definitions": 332,
+    "floating_outputs": [
+      {
+        "instance": "clkload0",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload1",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload10",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload100",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload101",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload102",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload103",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload104",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload105",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload106",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload107",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload108",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload109",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload11",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload110",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload111",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload112",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload113",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload114",
+        "type": "sg13g2_inv_16",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload115",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload116",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload117",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload118",
+        "type": "sg13g2_inv_16",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload119",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload12",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload120",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload121",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload122",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload123",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload124",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload125",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload126",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload127",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload128",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload129",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload13",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload130",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload131",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload132",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload133",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload134",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload135",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload136",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload137",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload138",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload139",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload14",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload140",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload141",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload142",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload143",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload144",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload145",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload146",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload147",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload148",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload149",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload15",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload150",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload151",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload152",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload153",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload154",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload155",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload156",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload157",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload158",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload159",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload16",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload160",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload161",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload162",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload163",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload164",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload165",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload166",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload167",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload168",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload169",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload17",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload170",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload171",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload172",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload173",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload174",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload175",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload176",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload177",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload178",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload179",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload18",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload180",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload181",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload182",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload183",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload184",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload185",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload186",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload187",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload188",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload189",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload19",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload190",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload191",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload192",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload193",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload194",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload195",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload196",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload197",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload198",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload199",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload2",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload20",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload200",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload201",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload202",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload203",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload204",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload205",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload206",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload207",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload208",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload209",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload21",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload210",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload211",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload212",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload213",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload214",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload215",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload216",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload217",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload218",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload219",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload22",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload220",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload221",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload222",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload223",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload224",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload225",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload226",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload227",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload228",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload229",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload23",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload230",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload231",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload232",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload233",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload234",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload235",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload236",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload237",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload238",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload239",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload24",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload240",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload241",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload242",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload243",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload244",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload245",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload246",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload247",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload248",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload249",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload25",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload250",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload251",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload252",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload253",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload254",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload255",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload256",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload257",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload258",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload259",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload26",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload260",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload261",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload262",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload263",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload264",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload265",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload266",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload267",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload268",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload269",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload27",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload270",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload271",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload272",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload273",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload274",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload275",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload276",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload277",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload278",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload279",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload28",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload280",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload281",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload282",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload283",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload284",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload285",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload286",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload287",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload288",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload289",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload29",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload290",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload291",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload292",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload293",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload294",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload295",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload296",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload297",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload298",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload299",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload3",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload30",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload300",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload301",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload302",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload303",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload304",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload305",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload306",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload307",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload308",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload309",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload31",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload310",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload311",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload312",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload313",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload314",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload315",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload316",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload317",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload318",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload319",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload32",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload320",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload321",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload322",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload323",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload324",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload325",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload326",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload327",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload328",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload329",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload33",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload330",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload331",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload332",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload333",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload334",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload335",
+        "type": "sg13g2_inv_16",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload336",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload337",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload338",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload339",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload34",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload340",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload341",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload342",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload343",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload344",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload345",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload346",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload347",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload348",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload349",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload35",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload350",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload351",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload352",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload353",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload354",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload355",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload356",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload357",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload358",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload359",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload36",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload360",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload361",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload362",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload363",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload364",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload365",
+        "type": "sg13g2_inv_16",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload366",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload367",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload368",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload369",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload37",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload370",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload371",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload372",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload373",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload374",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload375",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload376",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload377",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload378",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload379",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload38",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload380",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload381",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload382",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload383",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload384",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload385",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload386",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload387",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload388",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload389",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload39",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload390",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload391",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload392",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload393",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload394",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload395",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload396",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload397",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload398",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload399",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload4",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload40",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload400",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload401",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload402",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload403",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload404",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload405",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload406",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload407",
+        "type": "sg13g2_inv_16",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload408",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload409",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload41",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload410",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload411",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload412",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload413",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload414",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload415",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload416",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload417",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload418",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload419",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload42",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload420",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload421",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload422",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload423",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload424",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload425",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload426",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload427",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload428",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload429",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload43",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload430",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload431",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload432",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload433",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload434",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload435",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload436",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload437",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload438",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload439",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload44",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload440",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload441",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload442",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload443",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload444",
+        "type": "sg13g2_inv_16",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload445",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload446",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload447",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload448",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload449",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload45",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload450",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload451",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload452",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload453",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload454",
+        "type": "sg13g2_inv_16",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload455",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload456",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload457",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload458",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload459",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload46",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload460",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload461",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload462",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload463",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload464",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload465",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload466",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload467",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload468",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload469",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload47",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload470",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload471",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload472",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload473",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload474",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload475",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload476",
+        "type": "sg13g2_inv_16",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload477",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload478",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload479",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload48",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload480",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload481",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload482",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload483",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload484",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload485",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload486",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload487",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload488",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload489",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload49",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload490",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload491",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload492",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload493",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload494",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload495",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload496",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload497",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload498",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload499",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload5",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload50",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload500",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload501",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload502",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload503",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload504",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload505",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload506",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload507",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload508",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload509",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload51",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload510",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload511",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload512",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload513",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload514",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload515",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload516",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload517",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload518",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload519",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload52",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload520",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload521",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload522",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload523",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload524",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload525",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload526",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload527",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload528",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload529",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload53",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload530",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload531",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload532",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload533",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload534",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload535",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload536",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload537",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload538",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload539",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload54",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload540",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload541",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload542",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload543",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload544",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload545",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload546",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload547",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload548",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload549",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload55",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload550",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload551",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload552",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload553",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload554",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload555",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload556",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload557",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload558",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload559",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload56",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload560",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload561",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload562",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload563",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload564",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload565",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload566",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload567",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload568",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload569",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload57",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload570",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload571",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload572",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload573",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload574",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload575",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload576",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload577",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload578",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload579",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload58",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload580",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload581",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload582",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload583",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload584",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload59",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload6",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload60",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload61",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload62",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload63",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload64",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload65",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload66",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload67",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload68",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload69",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload7",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload70",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload71",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload72",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload73",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload74",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload75",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload76",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload77",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload78",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload79",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload8",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload80",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload81",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload82",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload83",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload84",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload85",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload86",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload87",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload88",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload89",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload9",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload90",
+        "type": "sg13g2_inv_4",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload91",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload92",
+        "type": "sg13g2_inv_2",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload93",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload94",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload95",
+        "type": "sg13g2_inv_8",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload96",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload97",
+        "type": "sg13g2_buf_8",
+        "output": "X"
+      },
+      {
+        "instance": "clkload98",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      },
+      {
+        "instance": "clkload99",
+        "type": "sg13g2_inv_1",
+        "output": "Y"
+      }
+    ],
+    "sources": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/selected/pnr/runs/route-resume/final/pnl/soc_top.pnl.v": "f033dbd3a4da4bd626514a85f59728b54b5bb8a4dd74de3acbc4f155764ea04f",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/cdl/sg13g2_stdcell.cdl": "3d83e2f99a5c638ebcf947cd1c27b8365024fbe921970a48bc7658e7bdeee1b7",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/cdl/RM_IHPSG13_1P_2048x64_c2_bm_bist.cdl": "734647f8383209c7e08fc8e66a2914a3acaa33e1848b9ff33b6a4a2ed3c2ec61",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_sram/cdl/RM_IHPSG13_2P_256x16_c2_bm_bist.cdl": "1b307d5bd84ba57087717c1d1e631959352c6d20a27167b3ed08f637e3d312a8",
+      "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/transistor_schematic.py": "6d2860de9e31b859548c9d9efd46303ebc060dea4cab44c31e6727b10f82721e"
+    },
+    "schematic_sha256": "773ca4db89f623af988a7c27bb1a8ad2599b6ee2aab1b02d3dc8f0ffef5ddb9e"
+  },
+  "archive": {
+    "path": "docs/evidence/routed-closure-baseline-20260923.tar.gz",
+    "sha256": "7ae4e082bfa8140075b00eff99e209999fbf1695d3e251d17e7bef0fa1049fb0",
+    "members": {
+      "baseline-sta/slow.tcl": "baad4b6ee437e5f0eb866b4e527d408f90737d0a402535e87fb98b6526a1e2d3",
+      "baseline-sta/slow.log": "0cdaf970fa3dfafd08653ca7a506f4eeeb998e26c1458a0903d26f2e48d28255",
+      "eco3-proof-verified/result.json": "533a944a1878e4c045bd49552bb10e1b8906b593203e511ad2b186478d4e70a8",
+      "full-schematic-verified/sources.json": "b5d6c28b09e6b03bd89f91125580bbd2b5f63966c68a8bfd7b8a94c1e7bb68ca",
+      "full-schematic-verified/comparison.json": "891e7cb8193609a46b93351793a2cf60623869799c18c541faaae050c6de186f"
+    }
+  },
+  "full_foundry_drc": "RUNNING at this dated snapshot, unmodified main deck 5e6d592",
+  "full_transistor_lvs": "RUNNING at this dated snapshot; no PASS claimed",
+  "limitations": [
+    "Intermediate sizing and global-route estimates are not extracted signoff",
+    "Complete source-side CDL construction is not LVS success",
+    "Router DRC0 is not foundry DRC",
+    "PCIe PHY and package/pad product gates remain open"
+  ]
+}

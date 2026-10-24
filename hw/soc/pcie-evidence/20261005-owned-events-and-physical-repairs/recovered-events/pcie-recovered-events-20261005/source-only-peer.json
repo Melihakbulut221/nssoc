@@ -1,0 +1,75 @@
+{
+  "status": "NO_BLOCKING_FINDING_IN_BOUNDED_SOURCE_REVIEW",
+  "snapshot": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-recovered-events-20261005/source-snapshot01.json",
+    "bytes": 1309,
+    "sha256": "c8c03baf79a09ba6f7ffbd281bdfcf830bb423bc74555d6345e41f33a58069cc"
+  },
+  "snapshot_rehashed": {
+    "scripts/generate_pcie_owned_pcs_v3.py": {
+      "bytes": 2140,
+      "sha256": "0a1f4a245437986eabb5eee2b8d16910345dc09d67369a53cbee93938313c8e9"
+    },
+    "scripts/check_pcie_gen3_recovered_events_v1.py": {
+      "bytes": 8768,
+      "sha256": "3c1e4d6053ac919135fc71d1d7531f1d44ea2e209c1c303f95865c0b4fe643ab"
+    },
+    "sw/tests/test_pcie_gen3_recovered_events_v1.py": {
+      "bytes": 3863,
+      "sha256": "f0b35eddc5167a639da02ae0342c7c7c85b083758d1e7207b28b3241a562e704"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_owned_v3.v": {
+      "bytes": 45601,
+      "sha256": "2f7666cbca8c676445676a8cfe2b8bd18198ff54802dcfc961ea78419cede117"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_owned_rx_v1.v": {
+      "bytes": 4910,
+      "sha256": "0ca444320dd44eb4f90cf59df4841109dc29879a5d81c772bebf3dbe410fe022"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v1.v": {
+      "bytes": 6645,
+      "sha256": "840863872ae5a06e2f6d8fed642e28b14da58faea3c581445e221ae5caef370c"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_events_v1.py": {
+      "bytes": 12907,
+      "sha256": "f01f4939ae8d811a930d37e502d2b13fe381d15bfa9048aceaa37904b69bbd8d"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_recovered_events_v1": {
+      "bytes": 1653,
+      "sha256": "fa294803bf864f3683435ce9d4abf72bb262dbab65da441cd76f725a73bc51b9"
+    }
+  },
+  "reviewed_sources": {
+    "scripts/generate_pcie_owned_pcs_v3.py": {
+      "bytes": 2140,
+      "sha256": "0a1f4a245437986eabb5eee2b8d16910345dc09d67369a53cbee93938313c8e9"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_owned_v3.v": {
+      "bytes": 45601,
+      "sha256": "2f7666cbca8c676445676a8cfe2b8bd18198ff54802dcfc961ea78419cede117"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_owned_rx_v1.v": {
+      "bytes": 4910,
+      "sha256": "0ca444320dd44eb4f90cf59df4841109dc29879a5d81c772bebf3dbe410fe022"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v1.v": {
+      "bytes": 6645,
+      "sha256": "840863872ae5a06e2f6d8fed642e28b14da58faea3c581445e221ae5caef370c"
+    }
+  },
+  "inherited_consumer": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v5.v",
+    "bytes": 17438,
+    "sha256": "734cce5b4b37b5d1f8ec4751deecdd3fda8934e32dbc1b7570b2ee2492cd72b4"
+  },
+  "independent_bridge": "Generated owned_v3 matches exact current RTL. Inverse four substitutions, module rename and nettype/comment insertion reconstruct frozen owned_v2 byte-for-byte.",
+  "findings": [],
+  "reasoning": [
+    "Explicit abort reaches both the owned-framer enabled gate and consumer flush combinationally; pending descriptor/body/event valids therefore suppress before the abort edge. A registered upstream epoch change also clears consumer rendezvous. Normal stream_stop is deliberately not a consumer flush.",
+    "The wrapper counter increments only accepted descriptor bits and decrements only accepted event bits. Each consumer entry holds one complete 6-bit identity until its ordered event is consumed, so at most64 descriptor-backed pending events are reachable and the7-bit counter is adequate. Four descriptors/events can transfer on the same edge. The widened next value is tested before emitting end.",
+    "The owned framer end waits for ring/body and descriptor drain. The outer wrapper remains active at that pulse and while draining, and emits public end only when its descriptor-minus-event count reacheszero. Held consumer events therefore delay final end.",
+    "Bad/null ownership metadata comes from unchanged source: rejected packets set owner_body_taken internally, produce ordered bad/null descriptors, and have false verdicts preventing body output. Good packets preserve full owner ID and sequence until both descriptor and actual EOP body handshakes. The frozen consumer releases exact identities only on event acceptance.",
+    "stopped_q ignores later idle/training front faults after a complete normal stop, while explicit abort still applies. New epochs require the stated coordinated reset/arm contract; sticky consumer_error is reset-only."
+  ],
+  "scope": "Source-only manual review and exact inverse text bridge. No cocotb, native mapping, simulation, full-state formal proof, physical/timing, line-rate/LTSSM or CDR qualification. All eight snapshot files were hashed for stability; bench/checker semantics were not independently reviewed."
+}

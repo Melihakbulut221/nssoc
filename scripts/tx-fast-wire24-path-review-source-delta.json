@@ -1,0 +1,43 @@
+{
+  "baseline_path": "scripts/cloud_tx_v5_timing_priority_path_review.py",
+  "baseline_sha256": "95bde32900703a19753d036c06194b8888b3cc9a26ecd11b9c00887aad71f3a0",
+  "candidate_path": "scripts/cloud_tx_fast_wire24_path_review.py",
+  "candidate_sha256": "7dd56b75031d90b115153406626ee3dd7030b62b8ae25c20fa61aec671f5670a",
+  "edits": [
+    {
+      "before": "cloud_tx_v5_timing_priority_builder",
+      "after": "cloud_tx_fast_wire24_builder",
+      "count": 2
+    },
+    {
+      "before": "cloud-tx-v5-timing-priority-path-review",
+      "after": "cloud-tx-fast-wire24-path-review",
+      "count": 2
+    },
+    {
+      "before": "tx-v5-timing-priority-wave-nominal-rejected-20261020.json",
+      "after": "tx-fast-wire24-normal-rejected-20261020.json",
+      "count": 1
+    },
+    {
+      "before": "source/cloud-tx-v5-timing-priority-assembly/wire96/tree1674-wire01.spice",
+      "after": "source/cloud-tx-fast-wire24-physical/wire96/tree1674-wire01.spice",
+      "count": 2
+    },
+    {
+      "before": "'tx-v5-timing-priority-wave-wire-nominal-none'",
+      "after": "'tx-fast-wire24-wave-wire-nominal-none'",
+      "count": 1
+    },
+    {
+      "before": "        assert prior==pin['report']",
+      "after": "        assert prior['status']==pin['status']=='REJECTED_ACTUAL_FULL32_PHYSICAL_NATIVE_WAVEFORM'\n        assert prior['returncode']==pin['returncode']==0 and not prior['diagnostics']\n        assert prior['review']['signals']==pin['signals']\n        assert prior['review']['interfaces']==pin['interfaces']\n        assert prior['review']['failed_hbts']==pin['failed_hbts']",
+      "count": 1
+    },
+    {
+      "before": "COMPLETE_NATIVE_TX_V5_PATH_REVIEW_ORIGINAL_GATES_REMAIN_FAILED",
+      "after": "COMPLETE_NATIVE_TX_WIRE24_PATH_REVIEW_ORIGINAL_GATES_REMAIN_FAILED",
+      "count": 1
+    }
+  ]
+}

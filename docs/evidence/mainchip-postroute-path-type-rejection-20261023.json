@@ -1,0 +1,18 @@
+{
+  "run": 39903708641,
+  "source_head": "505cb0f89c61d3276856ab8f095dc5e0c1fc5a0f",
+  "summary_asset": 668037412,
+  "summary_sha256": "ebbf357061ec731f219755b4c3ca2c7f4a9e30e37344eff99fd84a6860c91ec0",
+  "status": "FAIL_OR_ERROR",
+  "error": "AttributeError(\"'str' object has no attribute 'open'\")",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_repair_deep_postroute.py\", line 118, in main\n    geometry.main()\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_repair_deep_postroute_geometry.py\", line 78, in main\n    assert all(sha(p)==h for p,h in protected.items())\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_repair_deep_postroute_geometry.py\", line 78, in <genexpr>\n    assert all(sha(p)==h for p,h in protected.items())\n               ^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/run_cloud_tx_layout_repair.py\", line 18, in sha\n    with path.open('rb') as stream:\n         ^^^^^^^^^\nAttributeError: 'str' object has no attribute 'open'\n",
+  "final_timing_complete": false,
+  "fix": {
+    "path": "scripts/cloud_mainchip_repair_deep_postroute_geometry.py",
+    "before_sha256": "2ff24237f9e11cc0e03431506ba9b5abb9b179e622e6c743b73765508aa514de",
+    "after_sha256": "f0df205bb1b471946edb30210c2848052f8140598725c9abda24880a7b9048d7",
+    "old_expression": "assert all(sha(p)==h for p,h in protected.items())",
+    "new_expression": "assert all(sha(Path(p))==h for p,h in protected.items())"
+  },
+  "scope": "Convert JSON-serializable protected-map string keys back to Path at the strict SHA helper boundary. All files, digests, topology gates, timing gates, route and clock constraints unchanged. No native route restart; this failed validation produced no final STA result."
+}

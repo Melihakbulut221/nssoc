@@ -1,0 +1,94 @@
+{
+  "status": "PASS_BOUNDED_INDEPENDENT_RX12_SOURCE_ONLY_REVIEW",
+  "utc": "2026-10-05T15:36:33.620177+00:00",
+  "method": {
+    "bytes": 7761,
+    "sha256": "e7dd3c13e17dc58ffa90967ea9dd31e598f72c88fa99e24104e685d807d3045e"
+  },
+  "sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-continuation01/run.py": {
+      "bytes": 10975,
+      "sha256": "dd538b3d88e5e82695848e85479a4f70650abf25af7798d60747326e2a6aba06"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-continuation01/manifest.json": {
+      "bytes": 13562,
+      "sha256": "9eca9c1d8a09faec1afbeae1ff80eeb5984bd5ff579e0bf32ad3a968443069df"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-continuation01/source-bridge.json": {
+      "bytes": 1932,
+      "sha256": "4d6214d61ed9b336ab1bdcd3555a5ace1151b8ca864a46461f132e9114d0fb90"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-peer/review.py": {
+      "bytes": 10647,
+      "sha256": "86180253866eecceaafd770eba7677d80b26b0b22b4cf5eccb1226660b45d0ca"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-peer/seal.py": {
+      "bytes": 7752,
+      "sha256": "ab8de7ab7be81095b00fa4695007d2dd87b76173faa911aec2343a9e937d0bd0"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-peer/source-bridge.json": {
+      "bytes": 9422,
+      "sha256": "c6f0fb4a7a0ed3d9745a940503b50720b9e9ecb4940f35a0ef03760661cb0495"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-peer/source-freeze.json": {
+      "bytes": 783,
+      "sha256": "0ccdbefce58abcbc59fcea35b685308ba42d0790a595858d35f982cafeb29136"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/detailed_rc_repair12.py": {
+      "bytes": 5210,
+      "sha256": "110a82bd702bc5a4e81766016d0486f81d8c4a5c104f6f93befd9e2cd5939582"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py": {
+      "bytes": 19742,
+      "sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_native_capture_v3.py": {
+      "bytes": 20052,
+      "sha256": "b2ea742c31c20c19bf02b30b3b1954342d5aa73772732dc69c8f170f46e1fa0f"
+    }
+  },
+  "manifest_input_pins_verified": 16,
+  "route_input_pins_verified": 26,
+  "independent_source_bridges": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-continuation01/source-bridge.json",
+      "full_forward_and_inverse_byte_exact": true
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-peer/review.py",
+      "full_forward_and_inverse_byte_exact": true
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair12-peer/seal.py",
+      "full_forward_and_inverse_byte_exact": true
+    }
+  ],
+  "candidate_and_capture_roots": [
+    "/dev/shm/nssoc-rx-prefetch-v2-postroute-repair-12",
+    "/dev/shm/nssoc-rx-prefetch-v2-repair12-equivalence",
+    "/dev/shm/nssoc-rx-prefetch-v2-repair12-physical-replay-01",
+    "/dev/shm/nssoc-rx-prefetch-v2-repair12-drt-01",
+    "/dev/shm/nssoc-rx-prefetch-v2-repair12-detailed-rc-01"
+  ],
+  "live_route_snapshot": {
+    "owner_pid": 25076,
+    "owner_start_ticks": "167086",
+    "native_pid": 25077,
+    "native_start_ticks": "167109",
+    "read_only_no_signal": true
+  },
+  "controller_result_existed": false,
+  "findings": [],
+  "reviewed_guards": [
+    "Existing exact DRT owner/native identities are observed without adopting or signalling the original route. No stale native launch or overwritten output.",
+    "Zero-router-DRC successful DRT, exact input/output pins and exact proved RX12 netlist gate the fresh RC directory.",
+    "Saved-output review binds repair12 candidate, DRT01 and RC01; the prior timing comparison uses published repair11, with no repair11 candidate substitution.",
+    "Saved actual proof execution gate, expanded JSON/gzip pins, ten fault-control outputs, six port XML cases and fully decompressed compiled program are rebound without a new proof run.",
+    "Every required repair12 native root must exist. Full native files and additional bound RAM proof inputs enter the capsule. Stable controller source/manifest are archived; the later binding retains the full package member manifest.",
+    "All members must remain unchanged and every archive member is rehashed before three immutable V3 assets (archive, finite validation, execution binding). Publisher source and independent peer receipt are manifest-pinned.",
+    "Outer 15s failure grace exceeds inner RC 5s cleanup. Exact owned-process lifecycle definitions are reused. No healthy elapsed watchdog; explicit cancellation reaches new dependent stages.",
+    "Actual nominal timing FAIL remains publishable evidence; qualified_rc and physical_acceptance remain false."
+  ],
+  "review_process_correction": "Initial read-only audit assumed a running controller and stopped on absent controller result.json. The controller intentionally awaits this source peer; corrected observation checks the existing route owner/native identities. No DUT result or source was changed.",
+  "scope": "Read-only source/byte/bridge review only. No OpenROAD, Icarus, proof, RC, sealer, publisher or controller execution. Future stage success is not inferred."
+}

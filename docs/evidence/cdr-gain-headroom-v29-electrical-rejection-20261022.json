@@ -1,0 +1,843 @@
+{
+  "run": 39695370523,
+  "source_head": "c875a4f6effbd936d054a58f22f90bdaaf27d3e3",
+  "accepted": false,
+  "full_phy_accepted": false,
+  "cases": {
+    "nominal_early": {
+      "summary_asset": 664199557,
+      "parts_asset": 664199620,
+      "summary_sha256": "f9418fb4bf9ac32a398aa51691536f95dd2d5fbf03894c6277d3539dbbba798a",
+      "parts_sha256": "3398065de43d7faa4dd2296d7bcdc09bcbca8c27f7d9ff7edd4c1ead8a54b5f1",
+      "case": "nominal_early",
+      "source_head": "c875a4f6effbd936d054a58f22f90bdaaf27d3e3",
+      "status": "REJECTED_WHOLE_MIM_PD476_LOADED",
+      "validation_prerequisite": {
+        "spec": {
+          "run": 39694882029,
+          "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+          "workflow_path": ".github/workflows/cdr-gain-headroom-v29-mim-validation-cloud.yml",
+          "capture_summary_sha256": "ccfe6913daa977fe9de26cb413c993e408ba38ab53430cd6a24e74b3065da1a8"
+        },
+        "spec_sha256": "a4f84a378af56b7fad2ec507774e68c4bdbd7e920736146f36c5f51951f02528",
+        "receipts": {
+          "mim-parent-audit": {
+            "run": 39694882029,
+            "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+            "summary_asset": 664117139,
+            "summary_sha256": "d6d8a26f41a478d0cad194481ff9523a77fa6026cc92b2043271d3ad40cfe2ca",
+            "parts_asset": 664117184,
+            "parts_sha256": "433f780985aa83aaaa536ff934b4b90a74f1cfe77ce861a73aa60e9dbfd065b3",
+            "status": "PASS_PD476_MIM_AWARE_RAW_RC_AND22_CONTROLS_REQUIRES_COMPOSITION_AND_LOADED_WAVES"
+          },
+          "mim-composition": {
+            "run": 39694882029,
+            "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+            "summary_asset": 664126778,
+            "summary_sha256": "69b23796f16b6f58d31b6902cb182c05c34185f5e2ef74316deee760293c1812",
+            "parts_asset": 664126917,
+            "parts_sha256": "c6d73291f95f28a54fed6ccc2e679481373e1a4b3c3524ae9f4cd62abf1102e2",
+            "status": "PASS_PD476_MIM_AWARE_COMPOSITION_AND19_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES"
+          }
+        }
+      },
+      "source_bits_sha256": "19651c736d6053f0fbb954fbc351fb9abcbf4f7d32d83f6034fd00e7e952f870",
+      "data_offset_s": -1.875e-11,
+      "devices_passed": true,
+      "data_passed": false,
+      "phase_passed": false,
+      "sources_unchanged": true,
+      "raw_capture": {
+        "header_rows": 113475,
+        "columns": 1104,
+        "header_bytes": 36091,
+        "raw_bytes": 1002247291,
+        "raw_sha256": "80149508f0a2c05eaf0d39e21831e2129ad4af9f3d38ce914703997c23170776",
+        "start_s": 0,
+        "end_s": 3.424999999999999e-8,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+      },
+      "returncode": 0,
+      "diagnostics": [],
+      "error": "AssertionError('Actual whole-wire retimed sampling, loaded phase/current or device gate failed')",
+      "vi": {
+        "mean_signed_current_a": -0.00004358881834318906,
+        "mean_output_difference_v": -0.01497693744216269,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025144869977432343,
+          "xty": 0.00025103163993640067
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 0.00005,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 0.000005,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.9523888271104335,
+          1.959896986582127
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "phase_average_v": -0.01427641220777918,
+      "actual_fault_detected": false,
+      "minimum_active_stage_tail_current_a": {
+        "ira:$451": 0.00586019670299842,
+        "ira:$454": 0.005664660798661158,
+        "irb:$287": 0.00591402891184695,
+        "irb:$290": 0.0057091373978968366,
+        "irc:$617": 0.005842095332426193,
+        "irc:$620": 0.005650152292441066,
+        "ird:$98": 0.00592594716792323,
+        "ird:$101": 0.005728740661145881,
+        "irx:$978:xpd.xd0044": 0.0016219018141109096,
+        "irx:$978:xpd.xd0046": 0.001514917994145879,
+        "iry:$1200:xpd.xd0043": 0.001613512128821057,
+        "iry:$1200:xpd.xd0045": 0.0015069716321865015,
+        "ibs0:$884:xpd.xd0039": 0.00178332392737891,
+        "ibs1:$1106:xpd.xd0040": 0.0017777624468430116
+      },
+      "interface_observations": {
+        "data_a": {
+          "commonmode_v": [
+            1.8254980459710226,
+            1.8683810605744047
+          ],
+          "differential_v": [
+            -0.4121298367808006,
+            0.4348407041524194
+          ]
+        },
+        "data_c": {
+          "commonmode_v": [
+            1.8132091266050738,
+            1.8590339483808869
+          ],
+          "differential_v": [
+            -0.41474714961241,
+            0.4348147325092613
+          ]
+        },
+        "select0": {
+          "commonmode_v": [
+            1.1616328451922495,
+            1.192052805226032
+          ],
+          "differential_v": [
+            -0.2847307702356643,
+            0.2900739198787696
+          ]
+        },
+        "select1": {
+          "commonmode_v": [
+            1.1612032521264934,
+            1.1898943027345985
+          ],
+          "differential_v": [
+            -0.2841785750743049,
+            0.2896287173910175
+          ]
+        }
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.0412016087939536,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.3828124999995575e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.016601708573053056,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.3593749999992e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.008760746754385979,
+          "wrong_sign_samples": 9,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 4.765624999999206e-11,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.13579246466781592,
+          "wrong_sign_samples": 96,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 5.921875000006349e-11,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.07907973103959122,
+          "wrong_sign_samples": 14,
+          "below_100mv_samples": 589,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12971425446731782,
+          "wrong_sign_samples": 379,
+          "below_100mv_samples": 692,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "hbt_violations": {},
+      "mos_violations": {}
+    },
+    "nominal_late": {
+      "summary_asset": 664208475,
+      "parts_asset": 664208542,
+      "summary_sha256": "20f62cab499e59d3ad6d6a3b55e4c326756531de7dc92440b2128e923661df81",
+      "parts_sha256": "6801521d5ec03baa31076285012f5cec57e05553d19c9286829bd8c979df13d6",
+      "case": "nominal_late",
+      "source_head": "c875a4f6effbd936d054a58f22f90bdaaf27d3e3",
+      "status": "REJECTED_WHOLE_MIM_PD476_LOADED",
+      "validation_prerequisite": {
+        "spec": {
+          "run": 39694882029,
+          "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+          "workflow_path": ".github/workflows/cdr-gain-headroom-v29-mim-validation-cloud.yml",
+          "capture_summary_sha256": "ccfe6913daa977fe9de26cb413c993e408ba38ab53430cd6a24e74b3065da1a8"
+        },
+        "spec_sha256": "a4f84a378af56b7fad2ec507774e68c4bdbd7e920736146f36c5f51951f02528",
+        "receipts": {
+          "mim-parent-audit": {
+            "run": 39694882029,
+            "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+            "summary_asset": 664117139,
+            "summary_sha256": "d6d8a26f41a478d0cad194481ff9523a77fa6026cc92b2043271d3ad40cfe2ca",
+            "parts_asset": 664117184,
+            "parts_sha256": "433f780985aa83aaaa536ff934b4b90a74f1cfe77ce861a73aa60e9dbfd065b3",
+            "status": "PASS_PD476_MIM_AWARE_RAW_RC_AND22_CONTROLS_REQUIRES_COMPOSITION_AND_LOADED_WAVES"
+          },
+          "mim-composition": {
+            "run": 39694882029,
+            "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+            "summary_asset": 664126778,
+            "summary_sha256": "69b23796f16b6f58d31b6902cb182c05c34185f5e2ef74316deee760293c1812",
+            "parts_asset": 664126917,
+            "parts_sha256": "c6d73291f95f28a54fed6ccc2e679481373e1a4b3c3524ae9f4cd62abf1102e2",
+            "status": "PASS_PD476_MIM_AWARE_COMPOSITION_AND19_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES"
+          }
+        }
+      },
+      "source_bits_sha256": "19651c736d6053f0fbb954fbc351fb9abcbf4f7d32d83f6034fd00e7e952f870",
+      "data_offset_s": 1.875e-11,
+      "devices_passed": false,
+      "data_passed": false,
+      "phase_passed": false,
+      "sources_unchanged": true,
+      "raw_capture": {
+        "header_rows": 113475,
+        "columns": 1104,
+        "header_bytes": 36091,
+        "raw_bytes": 1002247291,
+        "raw_sha256": "914a2531083c721c4c70be33aa39f6475b116fcc881749d305ecf507e03908f4",
+        "start_s": 0,
+        "end_s": 3.424999999999999e-8,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+      },
+      "returncode": 0,
+      "diagnostics": [],
+      "error": "AssertionError('Actual whole-wire retimed sampling, loaded phase/current or device gate failed')",
+      "vi": {
+        "mean_signed_current_a": 0.00005307577724039235,
+        "mean_output_difference_v": 0.014230054414146055,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025174443545741354,
+          "xty": 0.0002487686673177215
+        },
+        "phase_passed": true,
+        "bias_passed": true,
+        "passed": true,
+        "phase_limits": {
+          "minimum_signed_current_a": 0.00005,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 0.000005,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.9520723377562987,
+          1.9602231798038439
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "phase_average_v": 0.018501382090243733,
+      "actual_fault_detected": false,
+      "minimum_active_stage_tail_current_a": {
+        "ira:$451": 0.00586019670299842,
+        "ira:$454": 0.005664660798661158,
+        "irb:$287": 0.00591402891184695,
+        "irb:$290": 0.0057091373978968366,
+        "irc:$617": 0.005842095332426193,
+        "irc:$620": 0.005650152292441066,
+        "ird:$98": 0.00592594716792323,
+        "ird:$101": 0.005728740661145881,
+        "irx:$978:xpd.xd0044": 0.001595675125166634,
+        "irx:$978:xpd.xd0046": 0.0014900245471973494,
+        "iry:$1200:xpd.xd0043": 0.0015826643070021623,
+        "iry:$1200:xpd.xd0045": 0.0014777264939148604,
+        "ibs0:$884:xpd.xd0039": 0.00178316890576118,
+        "ibs1:$1106:xpd.xd0040": 0.001778824243761134
+      },
+      "interface_observations": {
+        "data_a": {
+          "commonmode_v": [
+            1.824487607774281,
+            1.8682405486029978
+          ],
+          "differential_v": [
+            -0.4129218422378915,
+            0.4347008650442785
+          ]
+        },
+        "data_c": {
+          "commonmode_v": [
+            1.8120189824791368,
+            1.8596146697033897
+          ],
+          "differential_v": [
+            -0.4142903538368561,
+            0.43436097618816305
+          ]
+        },
+        "select0": {
+          "commonmode_v": [
+            1.1587720372667505,
+            1.1911658275992791
+          ],
+          "differential_v": [
+            -0.2827340036198249,
+            0.29028955232690734
+          ]
+        },
+        "select1": {
+          "commonmode_v": [
+            1.1613898320224103,
+            1.1906097329664593
+          ],
+          "differential_v": [
+            -0.2828894588624893,
+            0.29029086455840325
+          ]
+        }
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.036695019348602316,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.4218750000000154e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.07267630896106213,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 70,
+          "maximum_clock_to_valid_s": 3.984375000009859e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.0011983311766914128,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 4.7031249999992176e-11,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.09504540670032369,
+          "wrong_sign_samples": 74,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 5.4531249999990755e-11,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12959263027155957,
+          "wrong_sign_samples": 389,
+          "below_100mv_samples": 706,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.07538997883489339,
+          "wrong_sign_samples": 19,
+          "below_100mv_samples": 590,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "hbt_violations": {
+        "xpd.xd0105": {
+          "minimum_active_vce_v": 0.399709092746213,
+          "maximum_alltime_abs_vce_v": 0.6955036985117412,
+          "maximum_alltime_abs_vbe_v": 0.9392684118489683,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0020451779515525048
+        }
+      },
+      "mos_violations": {}
+    },
+    "clock_stopped": {
+      "summary_asset": 664201835,
+      "parts_asset": 664201920,
+      "summary_sha256": "6ca5bf55fc882f0f47ce1ce0c9c7aea7956fd5e5eecec0bd4926363198d6eeef",
+      "parts_sha256": "58561e0c404d328952d7e317205be7ad79bec534750633b9a9737222a6ba41dd",
+      "case": "clock_stopped",
+      "source_head": "c875a4f6effbd936d054a58f22f90bdaaf27d3e3",
+      "status": "PASS_WHOLE_MIM_PD476_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF",
+      "validation_prerequisite": {
+        "spec": {
+          "run": 39694882029,
+          "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+          "workflow_path": ".github/workflows/cdr-gain-headroom-v29-mim-validation-cloud.yml",
+          "capture_summary_sha256": "ccfe6913daa977fe9de26cb413c993e408ba38ab53430cd6a24e74b3065da1a8"
+        },
+        "spec_sha256": "a4f84a378af56b7fad2ec507774e68c4bdbd7e920736146f36c5f51951f02528",
+        "receipts": {
+          "mim-parent-audit": {
+            "run": 39694882029,
+            "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+            "summary_asset": 664117139,
+            "summary_sha256": "d6d8a26f41a478d0cad194481ff9523a77fa6026cc92b2043271d3ad40cfe2ca",
+            "parts_asset": 664117184,
+            "parts_sha256": "433f780985aa83aaaa536ff934b4b90a74f1cfe77ce861a73aa60e9dbfd065b3",
+            "status": "PASS_PD476_MIM_AWARE_RAW_RC_AND22_CONTROLS_REQUIRES_COMPOSITION_AND_LOADED_WAVES"
+          },
+          "mim-composition": {
+            "run": 39694882029,
+            "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+            "summary_asset": 664126778,
+            "summary_sha256": "69b23796f16b6f58d31b6902cb182c05c34185f5e2ef74316deee760293c1812",
+            "parts_asset": 664126917,
+            "parts_sha256": "c6d73291f95f28a54fed6ccc2e679481373e1a4b3c3524ae9f4cd62abf1102e2",
+            "status": "PASS_PD476_MIM_AWARE_COMPOSITION_AND19_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES"
+          }
+        }
+      },
+      "source_bits_sha256": "19651c736d6053f0fbb954fbc351fb9abcbf4f7d32d83f6034fd00e7e952f870",
+      "data_offset_s": 1.875e-11,
+      "devices_passed": false,
+      "data_passed": false,
+      "phase_passed": false,
+      "sources_unchanged": true,
+      "raw_capture": {
+        "header_rows": 110385,
+        "columns": 1104,
+        "header_bytes": 36091,
+        "raw_bytes": 974956411,
+        "raw_sha256": "b793d3e5e125b20c05405ffb8db712044b88f10593530b7571b878ff83c83d7c",
+        "start_s": 0,
+        "end_s": 3.425e-8,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+      },
+      "returncode": 0,
+      "diagnostics": [],
+      "vi": {
+        "mean_signed_current_a": 0.0000010099214136059669,
+        "mean_output_difference_v": 0.005575514625582728,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.0002577524967817358,
+          "xty": 0.00025695293469093366
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 0.00005,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 0.000005,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.9525327801191326,
+          1.9567220974612038
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "phase_average_v": 0.0007943927494739155,
+      "actual_fault_detected": true,
+      "minimum_active_stage_tail_current_a": {
+        "ira:$451": 0.00654806219176797,
+        "ira:$454": 0.006322067475658105,
+        "irb:$287": 0.006631983154988751,
+        "irb:$290": 0.006392060320703317,
+        "irc:$617": 0.006535995257130459,
+        "irc:$620": 0.006313071708216265,
+        "ird:$98": 0.006603829258328746,
+        "ird:$101": 0.006376643426400203,
+        "irx:$978:xpd.xd0044": 0.0017366492701961908,
+        "irx:$978:xpd.xd0046": 0.001624398495372684,
+        "iry:$1200:xpd.xd0043": 0.0017259334965943605,
+        "iry:$1200:xpd.xd0045": 0.00161413292709381,
+        "ibs0:$884:xpd.xd0039": 0.0019016501979020732,
+        "ibs1:$1106:xpd.xd0040": 0.0018971464166768733
+      },
+      "interface_observations": {
+        "data_a": {
+          "commonmode_v": [
+            1.8290794254957863,
+            1.8465790659289345
+          ],
+          "differential_v": [
+            0.4048807324607413,
+            0.44797475547036414
+          ]
+        },
+        "data_c": {
+          "commonmode_v": [
+            1.819416836893962,
+            1.836177808798933
+          ],
+          "differential_v": [
+            0.4022416475805968,
+            0.447967202670172
+          ]
+        },
+        "select0": {
+          "commonmode_v": [
+            1.1662782118601343,
+            1.1756433506598565
+          ],
+          "differential_v": [
+            -0.3000179995573433,
+            -0.20559462211567547
+          ]
+        },
+        "select1": {
+          "commonmode_v": [
+            1.1646420625051637,
+            1.1738279266983707
+          ],
+          "differential_v": [
+            -0.29938853683475664,
+            -0.20540863817046295
+          ]
+        }
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.2995395970525396,
+          "wrong_sign_samples": 381,
+          "below_100mv_samples": 381,
+          "maximum_clock_to_valid_s": 1.1890625000101707e-10,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.3967983496245278,
+          "wrong_sign_samples": 378,
+          "below_100mv_samples": 378,
+          "maximum_clock_to_valid_s": 1.1890625000142073e-10,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.3279657657073228,
+          "wrong_sign_samples": 378,
+          "below_100mv_samples": 378,
+          "maximum_clock_to_valid_s": 1.1890625000101707e-10,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.3111232022036619,
+          "wrong_sign_samples": 387,
+          "below_100mv_samples": 387,
+          "maximum_clock_to_valid_s": 1.18906250005014e-10,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.1258176301371282,
+          "wrong_sign_samples": 378,
+          "below_100mv_samples": 378,
+          "maximum_clock_to_valid_s": 1.18906250005014e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12502155701636264,
+          "wrong_sign_samples": 765,
+          "below_100mv_samples": 765,
+          "maximum_clock_to_valid_s": 1.18906250005014e-10,
+          "passed": false
+        }
+      },
+      "hbt_violations": {
+        "xpd.xd0105": {
+          "minimum_active_vce_v": 0.39803187375140103,
+          "maximum_alltime_abs_vce_v": 0.5475348787546835,
+          "maximum_alltime_abs_vbe_v": 0.9350364368305383,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001994298495075708
+        },
+        "xpd.xd0106": {
+          "minimum_active_vce_v": 0.3998857384055752,
+          "maximum_alltime_abs_vce_v": 0.5478093299451926,
+          "maximum_alltime_abs_vbe_v": 0.9358342572571302,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0020126286398343468
+        }
+      },
+      "mos_violations": {}
+    },
+    "vi_bias_off": {
+      "summary_asset": 664200263,
+      "parts_asset": 664200410,
+      "summary_sha256": "2294e8f89622a3fe3b37ebfedfa659c722c485efac896ae8147425f09fcc5946",
+      "parts_sha256": "95a92274b8d1d51d886b5ae36bec1dce8beb8f56d62d84f7bf30b277506243dd",
+      "case": "vi_bias_off",
+      "source_head": "c875a4f6effbd936d054a58f22f90bdaaf27d3e3",
+      "status": "PASS_WHOLE_MIM_PD476_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF",
+      "validation_prerequisite": {
+        "spec": {
+          "run": 39694882029,
+          "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+          "workflow_path": ".github/workflows/cdr-gain-headroom-v29-mim-validation-cloud.yml",
+          "capture_summary_sha256": "ccfe6913daa977fe9de26cb413c993e408ba38ab53430cd6a24e74b3065da1a8"
+        },
+        "spec_sha256": "a4f84a378af56b7fad2ec507774e68c4bdbd7e920736146f36c5f51951f02528",
+        "receipts": {
+          "mim-parent-audit": {
+            "run": 39694882029,
+            "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+            "summary_asset": 664117139,
+            "summary_sha256": "d6d8a26f41a478d0cad194481ff9523a77fa6026cc92b2043271d3ad40cfe2ca",
+            "parts_asset": 664117184,
+            "parts_sha256": "433f780985aa83aaaa536ff934b4b90a74f1cfe77ce861a73aa60e9dbfd065b3",
+            "status": "PASS_PD476_MIM_AWARE_RAW_RC_AND22_CONTROLS_REQUIRES_COMPOSITION_AND_LOADED_WAVES"
+          },
+          "mim-composition": {
+            "run": 39694882029,
+            "source_head": "2e789a549370f07ee5a7df5fde34460f990c095a",
+            "summary_asset": 664126778,
+            "summary_sha256": "69b23796f16b6f58d31b6902cb182c05c34185f5e2ef74316deee760293c1812",
+            "parts_asset": 664126917,
+            "parts_sha256": "c6d73291f95f28a54fed6ccc2e679481373e1a4b3c3524ae9f4cd62abf1102e2",
+            "status": "PASS_PD476_MIM_AWARE_COMPOSITION_AND19_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES"
+          }
+        }
+      },
+      "source_bits_sha256": "19651c736d6053f0fbb954fbc351fb9abcbf4f7d32d83f6034fd00e7e952f870",
+      "data_offset_s": 1.875e-11,
+      "devices_passed": false,
+      "data_passed": false,
+      "phase_passed": false,
+      "sources_unchanged": true,
+      "raw_capture": {
+        "header_rows": 113475,
+        "columns": 1104,
+        "header_bytes": 36091,
+        "raw_bytes": 1002247291,
+        "raw_sha256": "0dfbe21249d24788d61edfb296d4a4969a0e2851234978772886186976b95532",
+        "start_s": 0,
+        "end_s": 3.424999999999999e-8,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+      },
+      "returncode": 0,
+      "diagnostics": [],
+      "vi": {
+        "mean_signed_current_a": 1.9139742310330912e-7,
+        "mean_output_difference_v": -0.00004820332085809621,
+        "minimum_active_tail_current_a": {
+          "xtx": -1.5499531532106295e-8,
+          "xty": 1.1522073796014743e-7
+        },
+        "phase_passed": false,
+        "bias_passed": false,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 0.00005,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 0.000005,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          2.036214988779383,
+          2.0404450828714915
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "phase_average_v": 0.01853370565851395,
+      "actual_fault_detected": true,
+      "minimum_active_stage_tail_current_a": {
+        "ira:$451": 0.005862981062989979,
+        "ira:$454": 0.00566729480291119,
+        "irb:$287": 0.005916530598755851,
+        "irb:$290": 0.0057115085754590265,
+        "irc:$617": 0.00584511344885108,
+        "irc:$620": 0.005653005826775182,
+        "ird:$98": 0.00592812273198635,
+        "ird:$101": 0.0057307960437288676,
+        "irx:$978:xpd.xd0044": 0.0015973686683209017,
+        "irx:$978:xpd.xd0046": 0.0014916359596463312,
+        "iry:$1200:xpd.xd0043": 0.0015845426352537897,
+        "iry:$1200:xpd.xd0045": 0.0014795133931717888,
+        "ibs0:$884:xpd.xd0039": 0.0017841270130870112,
+        "ibs1:$1106:xpd.xd0040": 0.001779930570205031
+      },
+      "interface_observations": {
+        "data_a": {
+          "commonmode_v": [
+            1.8247978907424418,
+            1.8685390724316115
+          ],
+          "differential_v": [
+            -0.4129555523236539,
+            0.4347452789145496
+          ]
+        },
+        "data_c": {
+          "commonmode_v": [
+            1.812412767560706,
+            1.860004227423405
+          ],
+          "differential_v": [
+            -0.4143271205022534,
+            0.4344150243540288
+          ]
+        },
+        "select0": {
+          "commonmode_v": [
+            1.1587163808006726,
+            1.1911155497419021
+          ],
+          "differential_v": [
+            -0.28288490499963936,
+            0.2904492741677842
+          ]
+        },
+        "select1": {
+          "commonmode_v": [
+            1.161341238636687,
+            1.1905602025307531
+          ],
+          "differential_v": [
+            -0.28305536673115594,
+            0.29046504913847593
+          ]
+        }
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.03672414821810546,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.4218750000000154e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.07271631201003263,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 69,
+          "maximum_clock_to_valid_s": 3.984375000009859e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.0012883388920741457,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 4.7031249999992176e-11,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.0949790041739749,
+          "wrong_sign_samples": 74,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 5.4531249999990755e-11,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12975817316696217,
+          "wrong_sign_samples": 388,
+          "below_100mv_samples": 705,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.07545815892582818,
+          "wrong_sign_samples": 19,
+          "below_100mv_samples": 590,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "hbt_violations": {
+        "xpd.xd0105": {
+          "minimum_active_vce_v": 0.399815386827582,
+          "maximum_alltime_abs_vce_v": 0.6956788508647427,
+          "maximum_alltime_abs_vbe_v": 0.939305297286665,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0020459906740387807
+        },
+        "xpd.xd0162": {
+          "minimum_active_vce_v": 0.29689445641839074,
+          "maximum_alltime_abs_vce_v": 0.31532827458246665,
+          "maximum_alltime_abs_vbe_v": 0.31532872121441224,
+          "maximum_alltime_abs_ic_per_emitter_a": 2.4338289826875044e-8
+        }
+      },
+      "mos_violations": {}
+    }
+  }
+}

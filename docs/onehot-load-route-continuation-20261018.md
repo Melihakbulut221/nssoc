@@ -1,0 +1,9 @@
+# Continue the interrupted50-buffer route from its native checkpoint
+
+Run39121691046 reached the hosted job time limit inside repeated native antenna repair/reroute cycles. The always-publish step preserved all evidence. Its native drt-run0, drt-run1 and drt-run2 each have an empty DRC report and a separately saved ODB. These are completed router checkpoints, not final timing or manufacturing acceptance. The last saved ODB is drt-run2, SHA256 fa3433b1431cfe32f85d13af614d489b26b83d15ee6dca24fad4d5cffb86083c.
+
+The recovery job restores this exact ODB and checks all145088 original instances, their masters, pins, net assignments, locations, orientations, external port geometry and NDRs against the independently proven50-buffer candidate. Only legal native antenna diodes may have been added. It preserves the original clocks20/4/8/8ns and5percent derating, all20SRAM macros and all RTL/equation proof ancestry.
+
+The continuation omits already completed global routing, starts detailed routing from the saved physical database and permits one antenna repair cycle per hosted job instead of eight. It then writes fresh native views, checks antenna/DRC/disconnected pins, extracts actual nominal RC and measures all three original cell corners. Any remaining physical or timing violation stays open; reducing work per job is not a waiver. This does not resume an interrupted router-internal optimization loop, and no provisional zero-count log is used as final closure evidence.
+
+The exact saved LibreLane native script proves that each drt_run writes its ODB after detailed_route returns, before the next check_antennas/repair_antennas cycle. Source SHA256 bindings and a source-delta guard preserve that provenance. The OpenROAD command reference is https://openroad.readthedocs.io/en/latest/main/src/drt/README.html ; actual runtime behavior is checked against the archived pinned script.

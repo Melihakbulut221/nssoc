@@ -1,0 +1,2417 @@
+{
+  "protected": {
+    "hw/soc/flow/make_pcie_sampler_compact_v1.py": "a94f1938100002b9eca7c70ecde985dc73f5d18b1879ae60c8ad884e40a7e2d9",
+    "hw/soc/flow/check_pcie_sampler_compact_v1.py": "017c7af34fab39cf49adbe61dd3f27ce977b39118f646dbf04ed67ac36b9db2b",
+    "hw/soc/flow/check_pcie_sampler_left_v1.py": "98f928288e12d05e10d0ec0573ce4941a921cdc67f69ea4ba9e45c80b9bd8d33",
+    "hw/soc/flow/check_ihp_drc.py": "b93e899a9b350edf63e55292913be09e2eea3dedbc95a6d027a5254979ad8650",
+    "hw/soc/flow/check_pcie_analog_bank.py": "5f9a98383f9c82e22a178a9f3aebd9d38d0a3e1f9091cc688e682067a8e31ee4",
+    "hw/soc/flow/check_pcie_rx_cell.py": "12cd1f269893c58ace903fa9cc38ac4098c17474cf191966f93e15ac28135885",
+    "hw/soc/flow/prepare_ihp_drc.py": "3b935282cef742cfb64b37d6b9cb2765660c418a1f7a1ef0491f5bb11c312f47",
+    "docs/evidence/cdr-sampler-gain-headroom-v29-physical-pass-20261021.json": "4878da70f3fdd087f3a9c99400012f1bf0f1e6d634601f507501a0b58e186f0f",
+    "docs/evidence/cdr-gain-headroom-v29-electrical-rejection-20261022.json": "9552b4459dc485a4ca5d8667342a1da3331eae62880115e0e2be92c976f29782",
+    "docs/evidence/cdr-v29-latch-diagnosis-20261022.json": "a0761045fa0c78fe0c83fb521476c95c9514e842f483bb305773710df54c7a25"
+  },
+  "files": [
+    {
+      "baseline": "hw/soc/analog/pcie/rx_sampler_gain_headroom_v29.spice",
+      "baseline_sha256": "38e71777c11da02176a02308c2ebe99f4c3ab23616bf14b7bfdd0b2f12de06d9",
+      "candidate": "hw/soc/analog/pcie/rx_sampler_input_impedance_v30.spice",
+      "candidate_sha256": "33d93062ff4bc1bbd97c28749f79e78ec9f7f4dac519ac6338679f6e9641f9c5",
+      "changes": [
+        {
+          "start": 13,
+          "end": 15,
+          "replacement": "30"
+        },
+        {
+          "start": 17,
+          "end": 20,
+          "replacement": "halve only four"
+        },
+        {
+          "start": 27,
+          "end": 27,
+          "replacement": " input/bias"
+        },
+        {
+          "start": 45,
+          "end": 52,
+          "replacement": ""
+        },
+        {
+          "start": 64,
+          "end": 73,
+          "replacement": ""
+        },
+        {
+          "start": 75,
+          "end": 76,
+          "replacement": "9"
+        },
+        {
+          "start": 80,
+          "end": 81,
+          "replacement": "IP/IN2.4um ->1.2um; BP/BN2.2um ->1.1um; widths4um unchanged.\n* N"
+        },
+        {
+          "start": 82,
+          "end": 83,
+          "replacement": "minal L/W divide"
+        },
+        {
+          "start": 85,
+          "end": 85,
+          "replacement": "ratio retained; lower impedan"
+        },
+        {
+          "start": 86,
+          "end": 86,
+          "replacement": "e is an unproven timing hypothesis.\n* C"
+        },
+        {
+          "start": 102,
+          "end": 111,
+          "replacement": ""
+        },
+        {
+          "start": 112,
+          "end": 158,
+          "replacement": ""
+        },
+        {
+          "start": 178,
+          "end": 184,
+          "replacement": ""
+        },
+        {
+          "start": 208,
+          "end": 208,
+          "replacement": "original "
+        },
+        {
+          "start": 219,
+          "end": 302,
+          "replacement": ""
+        },
+        {
+          "start": 1056,
+          "end": 1058,
+          "replacement": ""
+        },
+        {
+          "start": 1060,
+          "end": 1060,
+          "replacement": "put"
+        },
+        {
+          "start": 1061,
+          "end": 1062,
+          "replacement": "imp"
+        },
+        {
+          "start": 1063,
+          "end": 1063,
+          "replacement": "d"
+        },
+        {
+          "start": 1064,
+          "end": 1069,
+          "replacement": "nce"
+        },
+        {
+          "start": 1071,
+          "end": 1073,
+          "replacement": "30"
+        },
+        {
+          "start": 1830,
+          "end": 1832,
+          "replacement": ""
+        },
+        {
+          "start": 1834,
+          "end": 1834,
+          "replacement": "put"
+        },
+        {
+          "start": 1835,
+          "end": 1836,
+          "replacement": "imp"
+        },
+        {
+          "start": 1837,
+          "end": 1837,
+          "replacement": "d"
+        },
+        {
+          "start": 1838,
+          "end": 1843,
+          "replacement": "nce"
+        },
+        {
+          "start": 1845,
+          "end": 1847,
+          "replacement": "30"
+        },
+        {
+          "start": 1939,
+          "end": 1941,
+          "replacement": ""
+        },
+        {
+          "start": 1943,
+          "end": 1943,
+          "replacement": "put"
+        },
+        {
+          "start": 1944,
+          "end": 1945,
+          "replacement": "imp"
+        },
+        {
+          "start": 1946,
+          "end": 1946,
+          "replacement": "d"
+        },
+        {
+          "start": 1947,
+          "end": 1952,
+          "replacement": "nce"
+        },
+        {
+          "start": 1954,
+          "end": 1956,
+          "replacement": "30"
+        },
+        {
+          "start": 2712,
+          "end": 2714,
+          "replacement": ""
+        },
+        {
+          "start": 2716,
+          "end": 2716,
+          "replacement": "put"
+        },
+        {
+          "start": 2717,
+          "end": 2718,
+          "replacement": "imp"
+        },
+        {
+          "start": 2719,
+          "end": 2719,
+          "replacement": "d"
+        },
+        {
+          "start": 2720,
+          "end": 2725,
+          "replacement": "nce"
+        },
+        {
+          "start": 2727,
+          "end": 2729,
+          "replacement": "30"
+        },
+        {
+          "start": 2756,
+          "end": 2758,
+          "replacement": ""
+        },
+        {
+          "start": 2760,
+          "end": 2760,
+          "replacement": "put"
+        },
+        {
+          "start": 2761,
+          "end": 2762,
+          "replacement": "imp"
+        },
+        {
+          "start": 2763,
+          "end": 2763,
+          "replacement": "d"
+        },
+        {
+          "start": 2764,
+          "end": 2769,
+          "replacement": "nce"
+        },
+        {
+          "start": 2771,
+          "end": 2773,
+          "replacement": "30"
+        },
+        {
+          "start": 2894,
+          "end": 2894,
+          "replacement": "1."
+        },
+        {
+          "start": 2895,
+          "end": 2897,
+          "replacement": ""
+        },
+        {
+          "start": 2937,
+          "end": 2937,
+          "replacement": "1."
+        },
+        {
+          "start": 2938,
+          "end": 2940,
+          "replacement": ""
+        },
+        {
+          "start": 2982,
+          "end": 2983,
+          "replacement": "1"
+        },
+        {
+          "start": 2984,
+          "end": 2985,
+          "replacement": "1"
+        },
+        {
+          "start": 3027,
+          "end": 3028,
+          "replacement": "1"
+        },
+        {
+          "start": 3029,
+          "end": 3030,
+          "replacement": "1"
+        },
+        {
+          "start": 3181,
+          "end": 3183,
+          "replacement": ""
+        },
+        {
+          "start": 3185,
+          "end": 3185,
+          "replacement": "put"
+        },
+        {
+          "start": 3186,
+          "end": 3187,
+          "replacement": "imp"
+        },
+        {
+          "start": 3188,
+          "end": 3188,
+          "replacement": "d"
+        },
+        {
+          "start": 3189,
+          "end": 3194,
+          "replacement": "nce"
+        },
+        {
+          "start": 3196,
+          "end": 3198,
+          "replacement": "30"
+        },
+        {
+          "start": 3259,
+          "end": 3261,
+          "replacement": ""
+        },
+        {
+          "start": 3263,
+          "end": 3263,
+          "replacement": "put"
+        },
+        {
+          "start": 3264,
+          "end": 3265,
+          "replacement": "imp"
+        },
+        {
+          "start": 3266,
+          "end": 3266,
+          "replacement": "d"
+        },
+        {
+          "start": 3267,
+          "end": 3272,
+          "replacement": "nce"
+        },
+        {
+          "start": 3274,
+          "end": 3276,
+          "replacement": "30"
+        },
+        {
+          "start": 3300,
+          "end": 3302,
+          "replacement": ""
+        },
+        {
+          "start": 3304,
+          "end": 3304,
+          "replacement": "put"
+        },
+        {
+          "start": 3305,
+          "end": 3306,
+          "replacement": "imp"
+        },
+        {
+          "start": 3307,
+          "end": 3307,
+          "replacement": "d"
+        },
+        {
+          "start": 3308,
+          "end": 3313,
+          "replacement": "nce"
+        },
+        {
+          "start": 3315,
+          "end": 3317,
+          "replacement": "30"
+        }
+      ]
+    },
+    {
+      "baseline": "hw/soc/flow/make_pcie_sampler_gain_headroom_v29.py",
+      "baseline_sha256": "96b8e0391e3a15032d757e8997aa988a0ee9cb05b0276618cb9e9330ccf3103f",
+      "candidate": "hw/soc/flow/make_pcie_sampler_input_impedance_v30.py",
+      "candidate_sha256": "f3f4c7087fcbad18918944e5a9e6a0fb6db45f0c5bf214716aa0014c8580611a",
+      "changes": [
+        {
+          "start": 498,
+          "end": 500,
+          "replacement": ""
+        },
+        {
+          "start": 502,
+          "end": 502,
+          "replacement": "put"
+        },
+        {
+          "start": 503,
+          "end": 504,
+          "replacement": "imp"
+        },
+        {
+          "start": 505,
+          "end": 505,
+          "replacement": "d"
+        },
+        {
+          "start": 506,
+          "end": 511,
+          "replacement": "nce"
+        },
+        {
+          "start": 513,
+          "end": 515,
+          "replacement": "30"
+        },
+        {
+          "start": 542,
+          "end": 542,
+          "replacement": "3d93062ff4bc1bbd97c28749f79e7"
+        },
+        {
+          "start": 544,
+          "end": 544,
+          "replacement": "c9f"
+        },
+        {
+          "start": 545,
+          "end": 552,
+          "replacement": "f4"
+        },
+        {
+          "start": 554,
+          "end": 556,
+          "replacement": "c5"
+        },
+        {
+          "start": 557,
+          "end": 557,
+          "replacement": "9ac63386"
+        },
+        {
+          "start": 558,
+          "end": 558,
+          "replacement": "9f"
+        },
+        {
+          "start": 559,
+          "end": 569,
+          "replacement": ""
+        },
+        {
+          "start": 571,
+          "end": 571,
+          "replacement": "641f"
+        },
+        {
+          "start": 572,
+          "end": 574,
+          "replacement": ""
+        },
+        {
+          "start": 575,
+          "end": 605,
+          "replacement": "5"
+        },
+        {
+          "start": 982,
+          "end": 984,
+          "replacement": "30"
+        },
+        {
+          "start": 2631,
+          "end": 2633,
+          "replacement": ""
+        },
+        {
+          "start": 2635,
+          "end": 2635,
+          "replacement": "PUT"
+        },
+        {
+          "start": 2636,
+          "end": 2637,
+          "replacement": "IMP"
+        },
+        {
+          "start": 2638,
+          "end": 2638,
+          "replacement": "D"
+        },
+        {
+          "start": 2639,
+          "end": 2644,
+          "replacement": "NCE"
+        },
+        {
+          "start": 2646,
+          "end": 2648,
+          "replacement": "30"
+        },
+        {
+          "start": 11333,
+          "end": 11333,
+          "replacement": "38e7"
+        },
+        {
+          "start": 11335,
+          "end": 11335,
+          "replacement": "77c11d"
+        },
+        {
+          "start": 11336,
+          "end": 11337,
+          "replacement": "02176"
+        },
+        {
+          "start": 11338,
+          "end": 11339,
+          "replacement": "02308c2ebe99f4c3ab23616bf14b7bfdd0b2f1"
+        },
+        {
+          "start": 11341,
+          "end": 11370,
+          "replacement": ""
+        },
+        {
+          "start": 11373,
+          "end": 11374,
+          "replacement": ""
+        },
+        {
+          "start": 11375,
+          "end": 11386,
+          "replacement": ""
+        },
+        {
+          "start": 11387,
+          "end": 11397,
+          "replacement": ""
+        },
+        {
+          "start": 11599,
+          "end": 11600,
+          "replacement": "I"
+        },
+        {
+          "start": 11610,
+          "end": 11610,
+          "replacement": "1.2),'IN':(4,2.4,1.2),'BP':(4,"
+        },
+        {
+          "start": 11613,
+          "end": 11613,
+          "replacement": ",1.1"
+        },
+        {
+          "start": 11625,
+          "end": 11639,
+          "replacement": ""
+        },
+        {
+          "start": 11641,
+          "end": 11642,
+          "replacement": "1"
+        },
+        {
+          "start": 11644,
+          "end": 11649,
+          "replacement": ""
+        },
+        {
+          "start": 11650,
+          "end": 11689,
+          "replacement": ""
+        },
+        {
+          "start": 13490,
+          "end": 13492,
+          "replacement": ""
+        },
+        {
+          "start": 13494,
+          "end": 13494,
+          "replacement": "put"
+        },
+        {
+          "start": 13579,
+          "end": 13580,
+          "replacement": "9"
+        }
+      ]
+    },
+    {
+      "baseline": "hw/soc/flow/check_pcie_sampler_gain_headroom_v29.py",
+      "baseline_sha256": "d1e797305811313410f5e82be342548ff75d0ba1b75959757d09a2b8817ee9f8",
+      "candidate": "hw/soc/flow/check_pcie_sampler_input_impedance_v30.py",
+      "candidate_sha256": "a18767707486e8bf01905897a40639a2473f1f8bc3edd7306b9a6181740a5a4c",
+      "changes": [
+        {
+          "start": 456,
+          "end": 458,
+          "replacement": ""
+        },
+        {
+          "start": 460,
+          "end": 460,
+          "replacement": "put"
+        },
+        {
+          "start": 461,
+          "end": 462,
+          "replacement": "imp"
+        },
+        {
+          "start": 463,
+          "end": 463,
+          "replacement": "d"
+        },
+        {
+          "start": 464,
+          "end": 469,
+          "replacement": "nce"
+        },
+        {
+          "start": 471,
+          "end": 473,
+          "replacement": "30"
+        },
+        {
+          "start": 1140,
+          "end": 1140,
+          "replacement": "1."
+        },
+        {
+          "start": 1141,
+          "end": 1143,
+          "replacement": ""
+        },
+        {
+          "start": 1175,
+          "end": 1175,
+          "replacement": "1."
+        },
+        {
+          "start": 1176,
+          "end": 1178,
+          "replacement": ""
+        },
+        {
+          "start": 1243,
+          "end": 1244,
+          "replacement": "1"
+        },
+        {
+          "start": 1245,
+          "end": 1246,
+          "replacement": "1"
+        },
+        {
+          "start": 1347,
+          "end": 1347,
+          "replacement": "1."
+        },
+        {
+          "start": 1348,
+          "end": 1350,
+          "replacement": ""
+        },
+        {
+          "start": 1447,
+          "end": 1448,
+          "replacement": "1"
+        },
+        {
+          "start": 1449,
+          "end": 1450,
+          "replacement": "1"
+        },
+        {
+          "start": 1484,
+          "end": 1485,
+          "replacement": "1"
+        },
+        {
+          "start": 1486,
+          "end": 1487,
+          "replacement": "1"
+        },
+        {
+          "start": 15387,
+          "end": 15389,
+          "replacement": ""
+        },
+        {
+          "start": 15391,
+          "end": 15391,
+          "replacement": "PUT"
+        },
+        {
+          "start": 15392,
+          "end": 15393,
+          "replacement": "IMP"
+        },
+        {
+          "start": 15394,
+          "end": 15394,
+          "replacement": "D"
+        },
+        {
+          "start": 15395,
+          "end": 15400,
+          "replacement": "NCE"
+        },
+        {
+          "start": 15402,
+          "end": 15404,
+          "replacement": "30"
+        }
+      ]
+    },
+    {
+      "baseline": "scripts/check_cdr_sampler_gain_headroom_v29_geometry.py",
+      "baseline_sha256": "7240a893b53bf90dfe734a8a13cafb843b1e80ee3a89deeeffd60c70f38fefe2",
+      "candidate": "scripts/check_cdr_sampler_input_impedance_v30_geometry.py",
+      "candidate_sha256": "4e0919f5a59dc1545e8943669a8ffd941cbf3d763ce7c1d2ca49f26024a687ab",
+      "changes": [
+        {
+          "start": 442,
+          "end": 443,
+          "replacement": "I"
+        },
+        {
+          "start": 453,
+          "end": 453,
+          "replacement": "1.2),'IN':(4,2.4,1.2),'BP':(4,"
+        },
+        {
+          "start": 456,
+          "end": 456,
+          "replacement": ",1.1"
+        },
+        {
+          "start": 468,
+          "end": 482,
+          "replacement": ""
+        },
+        {
+          "start": 484,
+          "end": 485,
+          "replacement": "1"
+        },
+        {
+          "start": 487,
+          "end": 492,
+          "replacement": ""
+        },
+        {
+          "start": 493,
+          "end": 532,
+          "replacement": ""
+        },
+        {
+          "start": 1593,
+          "end": 1699,
+          "replacement": ""
+        },
+        {
+          "start": 1763,
+          "end": 1763,
+          "replacement": "'\n    assert b['source_circuit_sha256']=='33d93062ff4bc1bbd97c28749f79e78ec9f7f4dac519ac6338679f6e9641f9c5"
+        },
+        {
+          "start": 4455,
+          "end": 4456,
+          "replacement": "four "
+        },
+        {
+          "start": 4457,
+          "end": 4465,
+          "replacement": "npu"
+        },
+        {
+          "start": 4466,
+          "end": 4468,
+          "replacement": ""
+        },
+        {
+          "start": 8123,
+          "end": 8126,
+          "replacement": "I"
+        },
+        {
+          "start": 8145,
+          "end": 8147,
+          "replacement": "4"
+        },
+        {
+          "start": 8236,
+          "end": 8242,
+          "replacement": "inpu"
+        },
+        {
+          "start": 8243,
+          "end": 8245,
+          "replacement": ""
+        },
+        {
+          "start": 8296,
+          "end": 8302,
+          "replacement": "inpu"
+        },
+        {
+          "start": 8303,
+          "end": 8305,
+          "replacement": ""
+        },
+        {
+          "start": 8389,
+          "end": 8392,
+          "replacement": "FOUR"
+        },
+        {
+          "start": 8393,
+          "end": 8395,
+          "replacement": ""
+        },
+        {
+          "start": 8397,
+          "end": 8397,
+          "replacement": "PUT"
+        },
+        {
+          "start": 8421,
+          "end": 8423,
+          "replacement": "50"
+        },
+        {
+          "start": 8501,
+          "end": 8503,
+          "replacement": ""
+        },
+        {
+          "start": 8505,
+          "end": 8505,
+          "replacement": "put"
+        },
+        {
+          "start": 8630,
+          "end": 8632,
+          "replacement": "50"
+        }
+      ]
+    },
+    {
+      "baseline": "scripts/cloud_cdr_sampler_gain_headroom_v29_physical.py",
+      "baseline_sha256": "93a7ad0606434f65810d1b658ba3142c23f5d8f1019d18fefdefe178db6a215c",
+      "candidate": "scripts/cloud_cdr_sampler_input_impedance_v30_physical.py",
+      "candidate_sha256": "27c62b7d17dbda9509477cc998716a8afeba041e6a5afbc5cd95bf8f72857d3d",
+      "changes": [
+        {
+          "start": 442,
+          "end": 444,
+          "replacement": ""
+        },
+        {
+          "start": 446,
+          "end": 446,
+          "replacement": "put"
+        },
+        {
+          "start": 447,
+          "end": 448,
+          "replacement": "imp"
+        },
+        {
+          "start": 449,
+          "end": 449,
+          "replacement": "d"
+        },
+        {
+          "start": 450,
+          "end": 455,
+          "replacement": "nce"
+        },
+        {
+          "start": 457,
+          "end": 459,
+          "replacement": "30"
+        },
+        {
+          "start": 790,
+          "end": 791,
+          "replacement": "Four "
+        },
+        {
+          "start": 792,
+          "end": 800,
+          "replacement": "npu"
+        },
+        {
+          "start": 801,
+          "end": 803,
+          "replacement": ""
+        },
+        {
+          "start": 826,
+          "end": 827,
+          "replacement": ""
+        },
+        {
+          "start": 829,
+          "end": 831,
+          "replacement": "lv"
+        },
+        {
+          "start": 856,
+          "end": 857,
+          "replacement": "9"
+        },
+        {
+          "start": 859,
+          "end": 862,
+          "replacement": "I"
+        },
+        {
+          "start": 864,
+          "end": 877,
+          "replacement": "I"
+        },
+        {
+          "start": 880,
+          "end": 882,
+          "replacement": "4"
+        },
+        {
+          "start": 887,
+          "end": 887,
+          "replacement": "1."
+        },
+        {
+          "start": 888,
+          "end": 890,
+          "replacement": ""
+        },
+        {
+          "start": 904,
+          "end": 905,
+          "replacement": "2"
+        },
+        {
+          "start": 910,
+          "end": 911,
+          "replacement": "1"
+        },
+        {
+          "start": 912,
+          "end": 913,
+          "replacement": "1"
+        },
+        {
+          "start": 920,
+          "end": 922,
+          "replacement": "50"
+        },
+        {
+          "start": 1337,
+          "end": 1339,
+          "replacement": ""
+        },
+        {
+          "start": 1341,
+          "end": 1341,
+          "replacement": "put"
+        },
+        {
+          "start": 1342,
+          "end": 1343,
+          "replacement": "imp"
+        },
+        {
+          "start": 1344,
+          "end": 1344,
+          "replacement": "d"
+        },
+        {
+          "start": 1345,
+          "end": 1350,
+          "replacement": "nce"
+        },
+        {
+          "start": 1352,
+          "end": 1354,
+          "replacement": "30"
+        },
+        {
+          "start": 1392,
+          "end": 1392,
+          "replacement": "3d93062ff4bc1bbd97c28749f79e7"
+        },
+        {
+          "start": 1394,
+          "end": 1394,
+          "replacement": "c9f"
+        },
+        {
+          "start": 1395,
+          "end": 1402,
+          "replacement": "f4"
+        },
+        {
+          "start": 1404,
+          "end": 1406,
+          "replacement": "c5"
+        },
+        {
+          "start": 1407,
+          "end": 1407,
+          "replacement": "9ac63386"
+        },
+        {
+          "start": 1408,
+          "end": 1408,
+          "replacement": "9f"
+        },
+        {
+          "start": 1409,
+          "end": 1419,
+          "replacement": ""
+        },
+        {
+          "start": 1421,
+          "end": 1421,
+          "replacement": "641f"
+        },
+        {
+          "start": 1422,
+          "end": 1424,
+          "replacement": ""
+        },
+        {
+          "start": 1425,
+          "end": 1455,
+          "replacement": "5"
+        },
+        {
+          "start": 1512,
+          "end": 1514,
+          "replacement": ""
+        },
+        {
+          "start": 1516,
+          "end": 1516,
+          "replacement": "put"
+        },
+        {
+          "start": 1517,
+          "end": 1518,
+          "replacement": "imp"
+        },
+        {
+          "start": 1519,
+          "end": 1519,
+          "replacement": "d"
+        },
+        {
+          "start": 1520,
+          "end": 1525,
+          "replacement": "nce"
+        },
+        {
+          "start": 1527,
+          "end": 1529,
+          "replacement": "30"
+        },
+        {
+          "start": 1537,
+          "end": 1539,
+          "replacement": "f3f4c7087fc"
+        },
+        {
+          "start": 1540,
+          "end": 1540,
+          "replacement": "ad1"
+        },
+        {
+          "start": 1541,
+          "end": 1544,
+          "replacement": ""
+        },
+        {
+          "start": 1546,
+          "end": 1559,
+          "replacement": ""
+        },
+        {
+          "start": 1561,
+          "end": 1561,
+          "replacement": "44e5a"
+        },
+        {
+          "start": 1562,
+          "end": 1562,
+          "replacement": "e6a0fb6db45f0c5bf214"
+        },
+        {
+          "start": 1563,
+          "end": 1563,
+          "replacement": "16"
+        },
+        {
+          "start": 1565,
+          "end": 1566,
+          "replacement": "0014c"
+        },
+        {
+          "start": 1567,
+          "end": 1567,
+          "replacement": "5"
+        },
+        {
+          "start": 1568,
+          "end": 1569,
+          "replacement": ""
+        },
+        {
+          "start": 1570,
+          "end": 1582,
+          "replacement": ""
+        },
+        {
+          "start": 1584,
+          "end": 1597,
+          "replacement": ""
+        },
+        {
+          "start": 1598,
+          "end": 1601,
+          "replacement": "a"
+        },
+        {
+          "start": 1736,
+          "end": 1738,
+          "replacement": ""
+        },
+        {
+          "start": 1740,
+          "end": 1740,
+          "replacement": "put"
+        },
+        {
+          "start": 1741,
+          "end": 1742,
+          "replacement": "imp"
+        },
+        {
+          "start": 1743,
+          "end": 1743,
+          "replacement": "d"
+        },
+        {
+          "start": 1744,
+          "end": 1749,
+          "replacement": "nce"
+        },
+        {
+          "start": 1751,
+          "end": 1753,
+          "replacement": "30"
+        },
+        {
+          "start": 1837,
+          "end": 1839,
+          "replacement": ""
+        },
+        {
+          "start": 1841,
+          "end": 1841,
+          "replacement": "put"
+        },
+        {
+          "start": 1842,
+          "end": 1843,
+          "replacement": "imp"
+        },
+        {
+          "start": 1844,
+          "end": 1844,
+          "replacement": "d"
+        },
+        {
+          "start": 1845,
+          "end": 1850,
+          "replacement": "nce"
+        },
+        {
+          "start": 1852,
+          "end": 1854,
+          "replacement": "30"
+        },
+        {
+          "start": 1886,
+          "end": 1888,
+          "replacement": ""
+        },
+        {
+          "start": 1890,
+          "end": 1890,
+          "replacement": "put"
+        },
+        {
+          "start": 1891,
+          "end": 1892,
+          "replacement": "imp"
+        },
+        {
+          "start": 1893,
+          "end": 1893,
+          "replacement": "d"
+        },
+        {
+          "start": 1894,
+          "end": 1899,
+          "replacement": "nce"
+        },
+        {
+          "start": 1901,
+          "end": 1903,
+          "replacement": "30"
+        },
+        {
+          "start": 1937,
+          "end": 1939,
+          "replacement": ""
+        },
+        {
+          "start": 1941,
+          "end": 1941,
+          "replacement": "put"
+        },
+        {
+          "start": 1942,
+          "end": 1943,
+          "replacement": "imp"
+        },
+        {
+          "start": 1944,
+          "end": 1944,
+          "replacement": "d"
+        },
+        {
+          "start": 1945,
+          "end": 1950,
+          "replacement": "nce"
+        },
+        {
+          "start": 1952,
+          "end": 1954,
+          "replacement": "30"
+        },
+        {
+          "start": 2045,
+          "end": 2047,
+          "replacement": ""
+        },
+        {
+          "start": 2049,
+          "end": 2049,
+          "replacement": "put"
+        },
+        {
+          "start": 2050,
+          "end": 2051,
+          "replacement": "imp"
+        },
+        {
+          "start": 2052,
+          "end": 2052,
+          "replacement": "d"
+        },
+        {
+          "start": 2053,
+          "end": 2058,
+          "replacement": "nce"
+        },
+        {
+          "start": 2060,
+          "end": 2062,
+          "replacement": "30"
+        },
+        {
+          "start": 2150,
+          "end": 2152,
+          "replacement": ""
+        },
+        {
+          "start": 2154,
+          "end": 2154,
+          "replacement": "put"
+        },
+        {
+          "start": 2155,
+          "end": 2156,
+          "replacement": "imp"
+        },
+        {
+          "start": 2157,
+          "end": 2157,
+          "replacement": "d"
+        },
+        {
+          "start": 2158,
+          "end": 2163,
+          "replacement": "nce"
+        },
+        {
+          "start": 2165,
+          "end": 2167,
+          "replacement": "30"
+        },
+        {
+          "start": 2241,
+          "end": 2249,
+          "replacement": "9"
+        },
+        {
+          "start": 2273,
+          "end": 2274,
+          "replacement": "2"
+        },
+        {
+          "start": 2305,
+          "end": 2305,
+          "replacement": "ga"
+        },
+        {
+          "start": 2307,
+          "end": 2310,
+          "replacement": ""
+        },
+        {
+          "start": 2311,
+          "end": 2313,
+          "replacement": "he"
+        },
+        {
+          "start": 2315,
+          "end": 2318,
+          "replacement": "room"
+        },
+        {
+          "start": 2321,
+          "end": 2322,
+          "replacement": "9"
+        },
+        {
+          "start": 2351,
+          "end": 2352,
+          "replacement": "2"
+        },
+        {
+          "start": 5561,
+          "end": 5561,
+          "replacement": "ga"
+        },
+        {
+          "start": 5563,
+          "end": 5566,
+          "replacement": ""
+        },
+        {
+          "start": 5567,
+          "end": 5569,
+          "replacement": "he"
+        },
+        {
+          "start": 5571,
+          "end": 5574,
+          "replacement": "room"
+        },
+        {
+          "start": 5577,
+          "end": 5578,
+          "replacement": "9"
+        },
+        {
+          "start": 5660,
+          "end": 5662,
+          "replacement": "686"
+        },
+        {
+          "start": 5663,
+          "end": 5664,
+          "replacement": ""
+        },
+        {
+          "start": 5665,
+          "end": 5666,
+          "replacement": "49"
+        },
+        {
+          "start": 5668,
+          "end": 5669,
+          "replacement": ""
+        },
+        {
+          "start": 5704,
+          "end": 5706,
+          "replacement": "9cac"
+        },
+        {
+          "start": 5707,
+          "end": 5711,
+          "replacement": "8502"
+        },
+        {
+          "start": 5713,
+          "end": 5720,
+          "replacement": ""
+        },
+        {
+          "start": 5721,
+          "end": 5735,
+          "replacement": ""
+        },
+        {
+          "start": 5737,
+          "end": 5739,
+          "replacement": "f3fc8a7e3ad9"
+        },
+        {
+          "start": 5741,
+          "end": 5742,
+          "replacement": "3e"
+        },
+        {
+          "start": 5743,
+          "end": 5743,
+          "replacement": "b"
+        },
+        {
+          "start": 5744,
+          "end": 5744,
+          "replacement": "cdebe4b"
+        },
+        {
+          "start": 5797,
+          "end": 5797,
+          "replacement": "ga"
+        },
+        {
+          "start": 5799,
+          "end": 5802,
+          "replacement": ""
+        },
+        {
+          "start": 5803,
+          "end": 5805,
+          "replacement": "he"
+        },
+        {
+          "start": 5807,
+          "end": 5810,
+          "replacement": "room"
+        },
+        {
+          "start": 5813,
+          "end": 5814,
+          "replacement": "9"
+        },
+        {
+          "start": 5873,
+          "end": 5874,
+          "replacement": "115fa28"
+        },
+        {
+          "start": 5875,
+          "end": 5875,
+          "replacement": "321"
+        },
+        {
+          "start": 5876,
+          "end": 5876,
+          "replacement": "83"
+        },
+        {
+          "start": 5877,
+          "end": 5877,
+          "replacement": "5602eb5b6d173ae"
+        },
+        {
+          "start": 5879,
+          "end": 5923,
+          "replacement": ""
+        },
+        {
+          "start": 5926,
+          "end": 5926,
+          "replacement": "d61fccda18"
+        },
+        {
+          "start": 5927,
+          "end": 5927,
+          "replacement": "60499"
+        },
+        {
+          "start": 5928,
+          "end": 5933,
+          "replacement": ""
+        },
+        {
+          "start": 5935,
+          "end": 5937,
+          "replacement": "5746ac5b87"
+        },
+        {
+          "start": 6555,
+          "end": 6557,
+          "replacement": ""
+        },
+        {
+          "start": 6559,
+          "end": 6559,
+          "replacement": "put"
+        },
+        {
+          "start": 6560,
+          "end": 6561,
+          "replacement": "imp"
+        },
+        {
+          "start": 6562,
+          "end": 6562,
+          "replacement": "d"
+        },
+        {
+          "start": 6563,
+          "end": 6568,
+          "replacement": "nce"
+        },
+        {
+          "start": 6570,
+          "end": 6572,
+          "replacement": "30"
+        },
+        {
+          "start": 6755,
+          "end": 6757,
+          "replacement": ""
+        },
+        {
+          "start": 6759,
+          "end": 6759,
+          "replacement": "put"
+        },
+        {
+          "start": 6760,
+          "end": 6761,
+          "replacement": "imp"
+        },
+        {
+          "start": 6762,
+          "end": 6762,
+          "replacement": "d"
+        },
+        {
+          "start": 6763,
+          "end": 6768,
+          "replacement": "nce"
+        },
+        {
+          "start": 6770,
+          "end": 6772,
+          "replacement": "30"
+        },
+        {
+          "start": 6967,
+          "end": 6969,
+          "replacement": ""
+        },
+        {
+          "start": 6971,
+          "end": 6971,
+          "replacement": "put"
+        },
+        {
+          "start": 6972,
+          "end": 6973,
+          "replacement": "imp"
+        },
+        {
+          "start": 6974,
+          "end": 6974,
+          "replacement": "d"
+        },
+        {
+          "start": 6975,
+          "end": 6980,
+          "replacement": "nce"
+        },
+        {
+          "start": 6982,
+          "end": 6984,
+          "replacement": "30"
+        },
+        {
+          "start": 7545,
+          "end": 7547,
+          "replacement": ""
+        },
+        {
+          "start": 7549,
+          "end": 7549,
+          "replacement": "PUT"
+        },
+        {
+          "start": 7550,
+          "end": 7551,
+          "replacement": "IMP"
+        },
+        {
+          "start": 7552,
+          "end": 7552,
+          "replacement": "D"
+        },
+        {
+          "start": 7553,
+          "end": 7558,
+          "replacement": "NCE"
+        },
+        {
+          "start": 7560,
+          "end": 7562,
+          "replacement": "30"
+        },
+        {
+          "start": 7718,
+          "end": 7720,
+          "replacement": ""
+        },
+        {
+          "start": 7722,
+          "end": 7722,
+          "replacement": "PUT"
+        },
+        {
+          "start": 7723,
+          "end": 7724,
+          "replacement": "IMP"
+        },
+        {
+          "start": 7725,
+          "end": 7725,
+          "replacement": "D"
+        },
+        {
+          "start": 7726,
+          "end": 7731,
+          "replacement": "NCE"
+        },
+        {
+          "start": 7733,
+          "end": 7735,
+          "replacement": "30"
+        },
+        {
+          "start": 8211,
+          "end": 8211,
+          "replacement": "\n"
+        }
+      ]
+    },
+    {
+      "baseline": ".github/workflows/cdr-sampler-gain-headroom-v29-physical-cloud.yml",
+      "baseline_sha256": "9c0c5a23347882fc300df2fbd10d1cbd7c798e83ec6f4146dbe77ffec5604a5b",
+      "candidate": ".github/workflows/cdr-sampler-input-impedance-v30-physical-cloud.yml",
+      "candidate_sha256": "c8555cb9e89db2c5b5c8261df68a34ac7754b85678e4bae83eaec7b3f62b19bb",
+      "changes": [
+        {
+          "start": 200,
+          "end": 202,
+          "replacement": ""
+        },
+        {
+          "start": 204,
+          "end": 204,
+          "replacement": "put"
+        },
+        {
+          "start": 205,
+          "end": 206,
+          "replacement": "imp"
+        },
+        {
+          "start": 207,
+          "end": 207,
+          "replacement": "d"
+        },
+        {
+          "start": 208,
+          "end": 213,
+          "replacement": "nce"
+        },
+        {
+          "start": 215,
+          "end": 217,
+          "replacement": "30"
+        },
+        {
+          "start": 328,
+          "end": 330,
+          "replacement": ""
+        },
+        {
+          "start": 332,
+          "end": 332,
+          "replacement": "put"
+        },
+        {
+          "start": 333,
+          "end": 334,
+          "replacement": "imp"
+        },
+        {
+          "start": 335,
+          "end": 335,
+          "replacement": "d"
+        },
+        {
+          "start": 336,
+          "end": 341,
+          "replacement": "nce"
+        },
+        {
+          "start": 343,
+          "end": 345,
+          "replacement": "30"
+        },
+        {
+          "start": 451,
+          "end": 453,
+          "replacement": ""
+        },
+        {
+          "start": 455,
+          "end": 455,
+          "replacement": "put"
+        },
+        {
+          "start": 456,
+          "end": 457,
+          "replacement": "imp"
+        },
+        {
+          "start": 458,
+          "end": 458,
+          "replacement": "d"
+        },
+        {
+          "start": 459,
+          "end": 464,
+          "replacement": "nce"
+        },
+        {
+          "start": 466,
+          "end": 468,
+          "replacement": "30"
+        },
+        {
+          "start": 1015,
+          "end": 1017,
+          "replacement": ""
+        },
+        {
+          "start": 1019,
+          "end": 1019,
+          "replacement": "put"
+        },
+        {
+          "start": 1020,
+          "end": 1021,
+          "replacement": "imp"
+        },
+        {
+          "start": 1022,
+          "end": 1022,
+          "replacement": "d"
+        },
+        {
+          "start": 1023,
+          "end": 1028,
+          "replacement": "nce"
+        },
+        {
+          "start": 1030,
+          "end": 1032,
+          "replacement": "30"
+        },
+        {
+          "start": 1075,
+          "end": 1077,
+          "replacement": ""
+        },
+        {
+          "start": 1079,
+          "end": 1079,
+          "replacement": "put"
+        },
+        {
+          "start": 1080,
+          "end": 1081,
+          "replacement": "imp"
+        },
+        {
+          "start": 1082,
+          "end": 1082,
+          "replacement": "d"
+        },
+        {
+          "start": 1083,
+          "end": 1088,
+          "replacement": "nce"
+        },
+        {
+          "start": 1090,
+          "end": 1092,
+          "replacement": "30"
+        },
+        {
+          "start": 1127,
+          "end": 1129,
+          "replacement": ""
+        },
+        {
+          "start": 1131,
+          "end": 1131,
+          "replacement": "put"
+        },
+        {
+          "start": 1132,
+          "end": 1133,
+          "replacement": "imp"
+        },
+        {
+          "start": 1134,
+          "end": 1134,
+          "replacement": "d"
+        },
+        {
+          "start": 1135,
+          "end": 1140,
+          "replacement": "nce"
+        },
+        {
+          "start": 1142,
+          "end": 1144,
+          "replacement": "30"
+        },
+        {
+          "start": 1174,
+          "end": 1176,
+          "replacement": ""
+        },
+        {
+          "start": 1178,
+          "end": 1178,
+          "replacement": "put"
+        },
+        {
+          "start": 1179,
+          "end": 1180,
+          "replacement": "imp"
+        },
+        {
+          "start": 1181,
+          "end": 1181,
+          "replacement": "d"
+        },
+        {
+          "start": 1182,
+          "end": 1187,
+          "replacement": "nce"
+        },
+        {
+          "start": 1189,
+          "end": 1191,
+          "replacement": "30"
+        },
+        {
+          "start": 1230,
+          "end": 1232,
+          "replacement": ""
+        },
+        {
+          "start": 1234,
+          "end": 1234,
+          "replacement": "put"
+        },
+        {
+          "start": 1235,
+          "end": 1236,
+          "replacement": "imp"
+        },
+        {
+          "start": 1237,
+          "end": 1237,
+          "replacement": "d"
+        },
+        {
+          "start": 1238,
+          "end": 1243,
+          "replacement": "nce"
+        },
+        {
+          "start": 1245,
+          "end": 1247,
+          "replacement": "30"
+        },
+        {
+          "start": 1409,
+          "end": 1411,
+          "replacement": ""
+        },
+        {
+          "start": 1413,
+          "end": 1413,
+          "replacement": "put"
+        },
+        {
+          "start": 1414,
+          "end": 1415,
+          "replacement": "imp"
+        },
+        {
+          "start": 1416,
+          "end": 1416,
+          "replacement": "d"
+        },
+        {
+          "start": 1417,
+          "end": 1422,
+          "replacement": "nce"
+        },
+        {
+          "start": 1424,
+          "end": 1426,
+          "replacement": "30"
+        },
+        {
+          "start": 2246,
+          "end": 2248,
+          "replacement": ""
+        },
+        {
+          "start": 2250,
+          "end": 2250,
+          "replacement": "put"
+        },
+        {
+          "start": 2251,
+          "end": 2252,
+          "replacement": "imp"
+        },
+        {
+          "start": 2253,
+          "end": 2253,
+          "replacement": "d"
+        },
+        {
+          "start": 2254,
+          "end": 2259,
+          "replacement": "nce"
+        },
+        {
+          "start": 2261,
+          "end": 2263,
+          "replacement": "30"
+        },
+        {
+          "start": 2482,
+          "end": 2484,
+          "replacement": ""
+        },
+        {
+          "start": 2486,
+          "end": 2486,
+          "replacement": "put"
+        },
+        {
+          "start": 2487,
+          "end": 2488,
+          "replacement": "imp"
+        },
+        {
+          "start": 2489,
+          "end": 2489,
+          "replacement": "d"
+        },
+        {
+          "start": 2490,
+          "end": 2495,
+          "replacement": "nce"
+        },
+        {
+          "start": 2497,
+          "end": 2499,
+          "replacement": "30"
+        },
+        {
+          "start": 2725,
+          "end": 2727,
+          "replacement": ""
+        },
+        {
+          "start": 2729,
+          "end": 2729,
+          "replacement": "put"
+        },
+        {
+          "start": 2730,
+          "end": 2731,
+          "replacement": "imp"
+        },
+        {
+          "start": 2732,
+          "end": 2732,
+          "replacement": "d"
+        },
+        {
+          "start": 2733,
+          "end": 2738,
+          "replacement": "nce"
+        },
+        {
+          "start": 2740,
+          "end": 2742,
+          "replacement": "30"
+        },
+        {
+          "start": 3186,
+          "end": 3188,
+          "replacement": ""
+        },
+        {
+          "start": 3190,
+          "end": 3190,
+          "replacement": "put"
+        },
+        {
+          "start": 3191,
+          "end": 3192,
+          "replacement": "imp"
+        },
+        {
+          "start": 3193,
+          "end": 3193,
+          "replacement": "d"
+        },
+        {
+          "start": 3194,
+          "end": 3199,
+          "replacement": "nce"
+        },
+        {
+          "start": 3201,
+          "end": 3203,
+          "replacement": "30"
+        },
+        {
+          "start": 3542,
+          "end": 3544,
+          "replacement": ""
+        },
+        {
+          "start": 3546,
+          "end": 3546,
+          "replacement": "put"
+        },
+        {
+          "start": 3547,
+          "end": 3548,
+          "replacement": "imp"
+        },
+        {
+          "start": 3549,
+          "end": 3549,
+          "replacement": "d"
+        },
+        {
+          "start": 3550,
+          "end": 3555,
+          "replacement": "nce"
+        },
+        {
+          "start": 3557,
+          "end": 3559,
+          "replacement": "30"
+        },
+        {
+          "start": 3635,
+          "end": 3637,
+          "replacement": ""
+        },
+        {
+          "start": 3639,
+          "end": 3639,
+          "replacement": "put"
+        },
+        {
+          "start": 3640,
+          "end": 3641,
+          "replacement": "imp"
+        },
+        {
+          "start": 3642,
+          "end": 3642,
+          "replacement": "d"
+        },
+        {
+          "start": 3643,
+          "end": 3648,
+          "replacement": "nce"
+        },
+        {
+          "start": 3650,
+          "end": 3652,
+          "replacement": "30"
+        },
+        {
+          "start": 3713,
+          "end": 3714,
+          "replacement": "9"
+        }
+      ]
+    },
+    {
+      "baseline": "scripts/check_cdr_sampler_gain_headroom_v29_sources.py",
+      "baseline_sha256": "34a90804e6a77ad1166774d375921b6ab6346aae1d0672e40cc55d3d1538b80c",
+      "candidate": "scripts/check_cdr_sampler_input_impedance_v30_sources.py",
+      "candidate_sha256": "68502b415c91806680f45380fabca6c27fb0f2cbf28f7c7f0b667c815b3ad9ab",
+      "changes": [
+        {
+          "start": 69,
+          "end": 72,
+          "replacement": "four"
+        },
+        {
+          "start": 78,
+          "end": 84,
+          "replacement": "inpu"
+        },
+        {
+          "start": 85,
+          "end": 87,
+          "replacement": ""
+        },
+        {
+          "start": 333,
+          "end": 335,
+          "replacement": ""
+        },
+        {
+          "start": 337,
+          "end": 337,
+          "replacement": "put"
+        },
+        {
+          "start": 338,
+          "end": 339,
+          "replacement": "imp"
+        },
+        {
+          "start": 340,
+          "end": 340,
+          "replacement": "d"
+        },
+        {
+          "start": 341,
+          "end": 346,
+          "replacement": "nce"
+        },
+        {
+          "start": 348,
+          "end": 350,
+          "replacement": "30"
+        },
+        {
+          "start": 999,
+          "end": 999,
+          "replacement": "ga"
+        },
+        {
+          "start": 1001,
+          "end": 1004,
+          "replacement": ""
+        },
+        {
+          "start": 1005,
+          "end": 1007,
+          "replacement": "he"
+        },
+        {
+          "start": 1009,
+          "end": 1012,
+          "replacement": "room"
+        },
+        {
+          "start": 1015,
+          "end": 1016,
+          "replacement": "9"
+        },
+        {
+          "start": 1078,
+          "end": 1080,
+          "replacement": ""
+        },
+        {
+          "start": 1082,
+          "end": 1082,
+          "replacement": "put"
+        },
+        {
+          "start": 1083,
+          "end": 1084,
+          "replacement": "imp"
+        },
+        {
+          "start": 1085,
+          "end": 1085,
+          "replacement": "d"
+        },
+        {
+          "start": 1086,
+          "end": 1091,
+          "replacement": "nce"
+        },
+        {
+          "start": 1093,
+          "end": 1095,
+          "replacement": "30"
+        },
+        {
+          "start": 1358,
+          "end": 1378,
+          "replacement": ""
+        },
+        {
+          "start": 1395,
+          "end": 1395,
+          "replacement": "','input_impedance_v30"
+        },
+        {
+          "start": 1427,
+          "end": 1428,
+          "replacement": "I"
+        },
+        {
+          "start": 1434,
+          "end": 1584,
+          "replacement": "I"
+        },
+        {
+          "start": 1674,
+          "end": 1674,
+          "replacement": "1.2u ');count+=1\n    elif renamed.startswith(('XBP ','XBN ')):\n        assert ' w=4u l="
+        },
+        {
+          "start": 1677,
+          "end": 1677,
+          "replacement": "u 'in renamed and after==renamed.replace(' l=2.2u ',' l=1.1"
+        },
+        {
+          "start": 1736,
+          "end": 1737,
+          "replacement": "4"
+        },
+        {
+          "start": 1743,
+          "end": 1832,
+          "replacement": ""
+        },
+        {
+          "start": 1905,
+          "end": 1905,
+          "replacement": ".py'))\ncandidate=runpy.run_path(str(root/'hw/soc/flow/make_pcie_sampler_input_impedance_v30"
+        },
+        {
+          "start": 2000,
+          "end": 2001,
+          "replacement": "I"
+        },
+        {
+          "start": 2011,
+          "end": 2011,
+          "replacement": "1.2),'IN':(4,2.4,1.2),'BP':(4,"
+        },
+        {
+          "start": 2014,
+          "end": 2014,
+          "replacement": ",1.1"
+        },
+        {
+          "start": 2026,
+          "end": 2040,
+          "replacement": ""
+        },
+        {
+          "start": 2042,
+          "end": 2043,
+          "replacement": "1"
+        },
+        {
+          "start": 2045,
+          "end": 2050,
+          "replacement": ""
+        },
+        {
+          "start": 2051,
+          "end": 2090,
+          "replacement": ""
+        },
+        {
+          "start": 2722,
+          "end": 2722,
+          "replacement": "1."
+        },
+        {
+          "start": 2723,
+          "end": 2725,
+          "replacement": ""
+        },
+        {
+          "start": 2769,
+          "end": 2770,
+          "replacement": "1"
+        },
+        {
+          "start": 2771,
+          "end": 2772,
+          "replacement": "1"
+        },
+        {
+          "start": 2936,
+          "end": 2938,
+          "replacement": ""
+        },
+        {
+          "start": 2940,
+          "end": 2940,
+          "replacement": "put"
+        },
+        {
+          "start": 2941,
+          "end": 2942,
+          "replacement": "imp"
+        },
+        {
+          "start": 2943,
+          "end": 2943,
+          "replacement": "d"
+        },
+        {
+          "start": 2944,
+          "end": 2949,
+          "replacement": "nce"
+        },
+        {
+          "start": 2951,
+          "end": 2953,
+          "replacement": "30"
+        },
+        {
+          "start": 3031,
+          "end": 3031,
+          "replacement": "ga"
+        },
+        {
+          "start": 3033,
+          "end": 3036,
+          "replacement": ""
+        },
+        {
+          "start": 3037,
+          "end": 3039,
+          "replacement": "he"
+        },
+        {
+          "start": 3041,
+          "end": 3044,
+          "replacement": "room"
+        },
+        {
+          "start": 3047,
+          "end": 3048,
+          "replacement": "9"
+        },
+        {
+          "start": 3351,
+          "end": 3354,
+          "replacement": "FOUR"
+        },
+        {
+          "start": 3355,
+          "end": 3357,
+          "replacement": ""
+        },
+        {
+          "start": 3359,
+          "end": 3359,
+          "replacement": "PUT"
+        },
+        {
+          "start": 3389,
+          "end": 3391,
+          "replacement": "50"
+        }
+      ]
+    }
+  ]
+}

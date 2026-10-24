@@ -1,0 +1,45 @@
+rm -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_v6/results.xml
+"make" -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_dllp_consumer_v6 /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_v6/results.xml
+make[1]: Entering directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_v6'
+mkdir -p /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_v6/sim
+/home/hasanmelih/.local/bin/iverilog -o /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_v6/sim/sim.vvp -s soc_pcie_gen3_dllp_consumer_v6 -g2012 -g2012 -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_v6/sim/cmds.f  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v6.v
+rm -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_v6/results.xml
+COCOTB_TEST_MODULES=test_soc_pcie_gen3_dllp_consumer_v6 COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=soc_pcie_gen3_dllp_consumer_v6 TOPLEVEL_LANG=verilog \
+         /home/hasanmelih/.local/bin/vvp -M /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_v6/sim/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1791399983
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_v6.sustained_two_dllps_per_cycle_and_sequence_wrap (1/8)
+  3624.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_v6.sustained_two_dllps_per_cycle_and_sequence_wrap passed
+  3624.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_v6.mixed_fields_bad_null_and_independent_stalls (2/8)
+  7020.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_v6.mixed_fields_bad_null_and_independent_stalls passed
+  7020.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_v6.body_before_descriptor_reserved_bits_and_unknown_vc (3/8)
+  7524.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_v6.body_before_descriptor_reserved_bits_and_unknown_vc passed
+  7524.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_v6.exact_id_full_replace_and_held_generation (4/8)
+  7764.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_v6.exact_id_full_replace_and_held_generation passed
+  7764.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_v6.epoch_invalidates_both_halves_and_held_events (5/8)
+  8160.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_v6.epoch_invalidates_both_halves_and_held_events passed
+  8160.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_v6.malformed_ownership_fails_closed_then_epoch_restarts (6/8)
+  8232.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_v6.malformed_ownership_fails_closed_then_epoch_restarts passed
+  8232.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_v6.bad_packet_type_survives_stalls_and_owner_wrap (7/8)
+  8572.01ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_v6.bad_packet_type_survives_stalls_and_owner_wrap passed
+  8572.01ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_v6.packet_type_masked_on_flush_and_epoch_change (8/8)
+  8640.01ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_v6.packet_type_masked_on_flush_and_epoch_change passed
+  8640.01ns INFO     cocotb.regression                  **************************************************************************************************************************************************
+                                                        ** TEST                                                                                      STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        **************************************************************************************************************************************************
+                                                        ** test_soc_pcie_gen3_dllp_consumer_v6.sustained_two_dllps_per_cycle_and_sequence_wrap        PASS        3624.00           3.04       1192.22  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_v6.mixed_fields_bad_null_and_independent_stalls           PASS        3396.00           2.78       1219.62  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_v6.body_before_descriptor_reserved_bits_and_unknown_vc    PASS         504.00           0.45       1130.81  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_v6.exact_id_full_replace_and_held_generation              PASS         240.00           0.17       1406.12  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_v6.epoch_invalidates_both_halves_and_held_events          PASS         396.00           0.34       1181.53  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_v6.malformed_ownership_fails_closed_then_epoch_restarts   PASS          72.00           0.05       1595.80  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_v6.bad_packet_type_survives_stalls_and_owner_wrap         PASS         340.00           0.20       1715.58  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_v6.packet_type_masked_on_flush_and_epoch_change           PASS          68.00           0.04       1872.42  **
+                                                        **************************************************************************************************************************************************
+                                                        ** TESTS=8 PASS=8 FAIL=0 SKIP=0                                                                           8640.01           7.06       1224.00  **
+                                                        **************************************************************************************************************************************************
+make[1]: Leaving directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_v6'

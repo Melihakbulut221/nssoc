@@ -1,0 +1,37 @@
+{
+  "status": "ADDITIVE_REVIEWER_MISSED_TARGETED_RESULT_SCHEMA_RETAINED",
+  "inputs": {
+    "hw/soc/out/pcie-integrity-v23-20261006/source-only-peer-rx02.json": {
+      "bytes": 13489,
+      "sha256": "60142ce9b1124efc0adb4ab081a8d5a99c7a0d620cdbaf3f1b798f649c2a1399"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/source_peer_vco02.py": {
+      "bytes": 7793,
+      "sha256": "a3fd8ebfcad1ece8eb0ca583f3d9e1ebe33b6cafa456bf2b1f5851b4e879dc08"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/controls-status02.json": {
+      "bytes": 2099,
+      "sha256": "e5c4a96648891e505fd410c838efe1fad6ee840393dddd57d0c23fe83b481666"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/controls02.xml": {
+      "bytes": 8808,
+      "sha256": "591f37bb2a1ce6b2054e9d58b8d6f58b5a6c0ff8c454481ff95774a2321ee43a"
+    },
+    "hw/soc/out/pcie-integrity-v23-20261006/targeted_controls02.py": {
+      "bytes": 1443,
+      "sha256": "361d967df18af7b31413a3b8fcc04065fc10d13db865b3f7707e7d880963f7c0"
+    },
+    "/dev/shm/nssoc-integrity-v23-public-controls02/test_selected_adjacent_case_af0/capture/result.json": {
+      "bytes": 5383,
+      "sha256": "2106f78c077b7e1ea2fb66419f515311acf7d994e5ee53ab578934f8e0bb0a5c"
+    },
+    "/dev/shm/nssoc-integrity-v23-public-controls02/test_selected_adjacent_case_af1/capture/result.json": {
+      "bytes": 5641,
+      "sha256": "546f0dca1e6a4b628afc252c99d7d34a3221f4995136f2e1beed81fe539649b8"
+    }
+  },
+  "source_review_miss": "I read the helper assertions but did not reconcile its generic PASS/zero-skips expectation with the canonical checker selected-test record before issuing source-only peer. The actual producer reports PASS_PORT_ONLY_PCIE_GEN3_WIDE_CRC_QUARANTINE_RX and1PASS/0FAIL/17selected-outSKIP. Both actual positive captures are passing but rejected by the host helper. Original peer remains immutable as review history, not functional acceptance.",
+  "actual_campaign": "6PASS/3FAIL, including both host-positive schema failures and actual undetected header_promote_stale mutant. The latter is a real coverage gap, not repaired by changing receipt schema.",
+  "required": "Separate source-reviewed saved-positive reader must verify exact selected native result/XML/logs without rerunning completed HDL; separate meaningful actual next-bank promotion stimulus and matching mutation must pass before functional acceptance.",
+  "new_execution": false
+}

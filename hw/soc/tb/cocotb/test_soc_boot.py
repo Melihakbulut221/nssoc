@@ -51,13 +51,14 @@ from cocotb.triggers import RisingEdge, Timer
 _REPO = Path(__file__).resolve().parents[4]
 sys.path.insert(0, str(_REPO / "sw"))
 from golden.memmap_gen import APB_SLOTS  # noqa: E402
+from peripheral_registers import BOOT as _REG_OFFSETS
 
-BSTRAP = 0x000
-BSTAT = 0x004
-BRPT = 0x008
-EPOCH = 0x00C
+BSTRAP = _REG_OFFSETS['BSTRAP']
+BSTAT = _REG_OFFSETS['BSTAT']
+BRPT = _REG_OFFSETS['BRPT']
+EPOCH = _REG_OFFSETS['EPOCH']
 
-CRASH = 0x010
+CRASH = _REG_OFFSETS['CRASH']
 # BSTAT bit 10: cnt_w is [7:0], last_attempt 8, over_limit 9.
 CRASHV_BIT = 10
 STRAP_VALID = 1 << 31

@@ -1,0 +1,341 @@
+{
+  "DESIGN_NAME": "soc_top",
+  "PDK": "ihp-sg13g2",
+  "STD_CELL_LIBRARY": "sg13g2_stdcell",
+  "VERILOG_INCLUDE_DIRS": [
+    "dir::../rtl",
+    "dir::../../rtl"
+  ],
+  "CLOCK_PORT": [
+    "clk_i",
+    "eth_rx_clk_i",
+    "eth_tx_clk_i"
+  ],
+  "CLOCK_NET": [
+    "clk_i",
+    "eth_rx_clk_i",
+    "eth_tx_clk_i"
+  ],
+  "CLOCK_PERIOD": 20,
+  "SYNTH_HIERARCHY_MODE": "flatten",
+  "RUN_LINTER": 1,
+  "LINTER_INCLUDE_PDK_MODELS": 1,
+  "FP_SIZING": "absolute",
+  "DIE_AREA": [
+    0,
+    0,
+    3326.4,
+    2475.9
+  ],
+  "CORE_AREA": [
+    60.0,
+    45.36,
+    3266.4,
+    2430.54
+  ],
+  "MACROS": {
+    "RM_IHPSG13_1P_2048x64_c2_bm_bist": {
+      "gds": [
+        "pdk_dir::libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_2048x64_c2_bm_bist.gds"
+      ],
+      "lef": [
+        "pdk_dir::libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_2048x64_c2_bm_bist.lef"
+      ],
+      "vh": [
+        "dir::RM_IHPSG13_1P_2048x64_c2_bm_bist_bb.v"
+      ],
+      "lib": {
+        "nom_typ_1p20V_25C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib"
+        ],
+        "nom_slow_1p08V_125C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib"
+        ],
+        "nom_fast_1p32V_m40C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib"
+        ]
+      },
+      "instances": {
+        "u_ram.g_ram_2048x64_ecc.u_b0": {
+          "location": [
+            120.0,
+            60.48
+          ],
+          "orientation": "FS"
+        },
+        "u_ram.g_ram_2048x64_ecc.u_b1": {
+          "location": [
+            944.64,
+            60.48
+          ],
+          "orientation": "FS"
+        },
+        "u_ram.g_ram_2048x64_ecc.u_b2": {
+          "location": [
+            120.0,
+            1787.94
+          ],
+          "orientation": "N"
+        },
+        "u_ram.g_ram_2048x64_ecc.u_b3": {
+          "location": [
+            944.64,
+            1787.94
+          ],
+          "orientation": "N"
+        }
+      }
+    },
+    "RM_IHPSG13_1P_1024x32_c2_bm_bist": {
+      "gds": [
+        "pdk_dir::libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_1024x32_c2_bm_bist.gds"
+      ],
+      "lef": [
+        "pdk_dir::libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_1024x32_c2_bm_bist.lef"
+      ],
+      "vh": [
+        "dir::RM_IHPSG13_1P_1024x32_c2_bm_bist_bb.v"
+      ],
+      "lib": {
+        "nom_typ_1p20V_25C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_typ_1p20V_25C.lib"
+        ],
+        "nom_slow_1p08V_125C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib"
+        ],
+        "nom_fast_1p32V_m40C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_fast_1p32V_m55C.lib"
+        ]
+      },
+      "instances": {}
+    },
+    "RM_IHPSG13_1P_512x16_c2_bm_bist": {
+      "gds": [
+        "pdk_dir::libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_512x16_c2_bm_bist.gds"
+      ],
+      "lef": [
+        "pdk_dir::libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_512x16_c2_bm_bist.lef"
+      ],
+      "vh": [
+        "dir::RM_IHPSG13_1P_512x16_c2_bm_bist_bb.v"
+      ],
+      "lib": {
+        "nom_typ_1p20V_25C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_typ_1p20V_25C.lib"
+        ],
+        "nom_slow_1p08V_125C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib"
+        ],
+        "nom_fast_1p32V_m40C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_fast_1p32V_m55C.lib"
+        ]
+      },
+      "instances": {}
+    },
+    "RM_IHPSG13_2P_256x16_c2_bm_bist": {
+      "gds": [
+        "pdk_dir::libs.ref/sg13g2_sram/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds"
+      ],
+      "lef": [
+        "pdk_dir::libs.ref/sg13g2_sram/lef/RM_IHPSG13_2P_256x16_c2_bm_bist.lef"
+      ],
+      "vh": [
+        "dir::RM_IHPSG13_2P_256x16_c2_bm_bist_bb.v"
+      ],
+      "lib": {
+        "nom_typ_1p20V_25C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib"
+        ],
+        "nom_slow_1p08V_125C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib"
+        ],
+        "nom_fast_1p32V_m40C": [
+          "pdk_dir::libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_fast_1p32V_m55C.lib"
+        ]
+      },
+      "instances": {
+        "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.0": {
+          "location": [
+            2340,
+            60.48
+          ],
+          "orientation": "FS"
+        },
+        "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.1": {
+          "location": [
+            2340,
+            351.54
+          ],
+          "orientation": "N"
+        },
+        "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.2": {
+          "location": [
+            2340,
+            642.6
+          ],
+          "orientation": "FS"
+        },
+        "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.3": {
+          "location": [
+            2340,
+            933.66
+          ],
+          "orientation": "N"
+        },
+        "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.4": {
+          "location": [
+            2340,
+            1224.72
+          ],
+          "orientation": "FS"
+        },
+        "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.5": {
+          "location": [
+            2340,
+            1515.78
+          ],
+          "orientation": "N"
+        },
+        "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.6": {
+          "location": [
+            2340,
+            1806.84
+          ],
+          "orientation": "FS"
+        },
+        "u_eth.u_mac.rx_fifo.fifo_inst.mem.0.7": {
+          "location": [
+            2340,
+            2097.9
+          ],
+          "orientation": "N"
+        },
+        "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.0": {
+          "location": [
+            2808,
+            60.48
+          ],
+          "orientation": "FS"
+        },
+        "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.1": {
+          "location": [
+            2808,
+            351.54
+          ],
+          "orientation": "N"
+        },
+        "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.2": {
+          "location": [
+            2808,
+            642.6
+          ],
+          "orientation": "FS"
+        },
+        "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.3": {
+          "location": [
+            2808,
+            933.66
+          ],
+          "orientation": "N"
+        },
+        "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.4": {
+          "location": [
+            2808,
+            1224.72
+          ],
+          "orientation": "FS"
+        },
+        "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.5": {
+          "location": [
+            2808,
+            1515.78
+          ],
+          "orientation": "N"
+        },
+        "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.6": {
+          "location": [
+            2808,
+            1806.84
+          ],
+          "orientation": "FS"
+        },
+        "u_eth.u_mac.tx_fifo.fifo_inst.mem.0.7": {
+          "location": [
+            2808,
+            2097.9
+          ],
+          "orientation": "N"
+        }
+      }
+    }
+  },
+  "FP_MACRO_HORIZONTAL_HALO": 10,
+  "FP_MACRO_VERTICAL_HALO": 10,
+  "PL_TARGET_DENSITY_PCT": 40,
+  "VDD_PIN": "VPWR",
+  "GND_PIN": "VGND",
+  "PDN_CFG": "dir::pdn_macro.tcl",
+  "PDN_MACRO_CONNECTIONS": [
+    "u_ram\\.g_ram_2048x64_ecc\\.u_b[0-3] VPWR VGND VDD! VSS!",
+    "u_ram\\.g_ram_2048x64_ecc\\.u_b[0-3] VPWR VGND VDDARRAY! VSS!",
+    "u_eth\\.u_mac\\.(rx|tx)_fifo\\.fifo_inst\\.mem\\.0\\.[0-7] VPWR VGND VDD! VSS!",
+    "u_eth\\.u_mac\\.(rx|tx)_fifo\\.fifo_inst\\.mem\\.0\\.[0-7] VPWR VGND VDDARRAY! VSS!"
+  ],
+  "MAGIC_MACRO_STD_CELL_SOURCE": "PDK",
+  "EXTRA_SPICE_MODELS": [
+    "pdk_dir::libs.ref/sg13g2_sram/cdl/RM_IHPSG13_1P_2048x64_c2_bm_bist.cdl",
+    "pdk_dir::libs.ref/sg13g2_sram/cdl/RM_IHPSG13_1P_1024x32_c2_bm_bist.cdl",
+    "pdk_dir::libs.ref/sg13g2_sram/cdl/RM_IHPSG13_2P_256x16_c2_bm_bist.cdl"
+  ],
+  "RUN_MAGIC_WRITE_LEF": 0,
+  "RUN_MAGIC_DRC": 0,
+  "RUN_KLAYOUT_DRC": 0,
+  "RUN_KLAYOUT_XOR": 0,
+  "RUN_LVS": 0,
+  "RUN_EQY": 0,
+  "RUN_CTS": 1,
+  "RUN_DRT": 1,
+  "RUN_POST_GRT_DESIGN_REPAIR": 1,
+  "RUN_POST_GRT_RESIZER_TIMING": 1,
+  "RUN_SPEF_EXTRACTION": 1,
+  "RUN_MCSTA": 1,
+  "RUN_IRDROP_REPORT": 1,
+  "TIME_DERATING_CONSTRAINT": 5.0,
+  "SETUP_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "HOLD_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "MAX_CAP_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "MAX_SLEW_VIOLATION_CORNERS": [
+    "*"
+  ],
+  "PNR_CORNERS": [
+    "nom_typ_1p20V_25C",
+    "nom_slow_1p08V_125C",
+    "nom_fast_1p32V_m40C"
+  ],
+  "PL_RESIZER_HOLD_SLACK_MARGIN": 0.1,
+  "GRT_RESIZER_HOLD_SLACK_MARGIN": 0.05,
+  "SYNTH_PARAMETERS": [
+    "MEM_RDREG=1",
+    "REQ_REG=1",
+    "WAKE_GNT=1",
+    "MEM_HARDEN=1",
+    "ROM_HARDEN=1"
+  ],
+  "GRT_ADJUSTMENT": 0.2,
+  "DRT_SAVE_DRC_REPORT_ITERS": 1,
+  "PNR_SDC_FILE": "dir::../sta/soc_interfaces_external_irq.sdc",
+  "SIGNOFF_SDC_FILE": "dir::../sta/soc_interfaces_external_irq.sdc",
+  "DRT_ANTENNA_REPAIR_ITERS": 8,
+  "DRT_THREADS": 12,
+  "VERILOG_DEFINES": [
+    "SOC_LOGIC_BOOT_ROM"
+  ],
+  "//profile": "Fixed standard-cell boot ROM, external IRQ, ECC SYNPRE=1 mapped netlist, 4 RAM and 16 Ethernet SRAM instances. Unplaced ROM macro library views remain for lint compatibility with soc_mem_sram.v. See docs/95. No timing/signoff result is inherited.",
+  "//source": "Derived from eth256 ECO22 floorplan/config SHA256 7991b8b5406c611f5b52f50fc37bcfb86a66663c1174b32a849407480afa1c98. Same die, surviving macro coordinates, clocks, derate and checker thresholds. Independent physical checks remain separately invoked as in ECO22; RUN_* check switches are not a signoff claim."
+}

@@ -1,0 +1,45 @@
+{
+  "baseline": "scripts/cloud_pll845_sparse_io.py",
+  "baseline_sha256": "f992da114603b50a859dfe15a5a65c656aa8eedd93007d6af41d2ccab10ba677",
+  "candidate": "scripts/cloud_pll_rhi120_c8_sparse_io.py",
+  "candidate_sha256": "62d14d5a1f43fbd537f8b1611e82af813caf61915e6d992ceac0ce66d57e7f02",
+  "edits": [
+    {
+      "before": "FORMAT='pll845-immutable-archive-sparse-source-v1'",
+      "after": "FORMAT='pll-rhi120-c8-immutable-archive-sparse-source-v1'",
+      "count": 1
+    },
+    {
+      "before": "spec['stage']in ('initial','continuation')",
+      "after": "spec['stage']in ('initial','recovery','sparse')",
+      "count": 1
+    },
+    {
+      "before": "group='pll845-native-acquisition-'",
+      "after": "group='pll-rhi120-c8-native-'",
+      "count": 1
+    },
+    {
+      "before": "'pll845-source-read-'",
+      "after": "'rhi120-source-read-'",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_streamed_native_archive.py": "ed500db932348586efb9a86efd42cacafe2ca3d377de24e60196c6dbbbd2d5d5",
+    "scripts/cloud_logical_native_archive.py": "e264ff7ac376e32a3603dd2ef7ca29a1aef89eac80ee471d1ac2e658b4f89f14",
+    "scripts/cloud_native_sparse_prefix_store.py": "aabbcab1164bc709a4a7b8d14ae6ad4f138f674f5436a0e05775d944689c9f14",
+    "scripts/route_cloud_newer_postcts.py": "29997f34ca6e764c40a40b5203388993b890f6d838cbe2651d5ce5c018042b40",
+    "scripts/read_opensta_phase_slacks.py": "dfade1f0ac09bcbaa9a0c5f63869e0d2a545324003538a5dcb847d1dbc950273",
+    "scripts/cloud_pll_rhi120_c8_recovery.py": "a0befbf8fa910df99036aca54291869a5ca329c86b4cddca7cbecbef4132baeb",
+    "scripts/read_pll_rhi120_c8_all_native.py": "2d776f89979c9d91ed928f9f9dd83df618380681ae8f6f36e3c54551a69d0d5e",
+    "scripts/pll_rhi120_c8_native_columns.py": "7b7ae4c25ab5219444537f1cd48f27a9248a807c1bb38ad409efe90bcb2b7b30",
+    "scripts/cloud_chunked_results.py": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
+    "scripts/publish_cloud_results.py": "a5cd154c1a7e3f838f5880e6cabef115245d696485c9eda2bd0451da8e1e1296",
+    "scripts/cloud_pll_rhi120_c8_sparse_qualification.py": "12a60464ece574ab801085c1a0aa5a46ccbaee1a17874138a52e8e8f591b44b0",
+    "scripts/check_pll_rhi120_c8_sparse_sources.py": "d15b5ceaabaf5b9ba81a439bf13f64612726f5d1031daf83b78508969f2b7199",
+    ".github/workflows/pll-rhi120-c8-sparse-storage-qualification-cloud.yml": "d63951ddee354bb711aacfa88d678281653275adde9124ec55bfcca47ee13cdc"
+  },
+  "scope": "Storage-only exact archived RHI120 prefix qualification. No simulator activation, native continuation migration, complete-waveform acceptance, acquisition or PHY claim.",
+  "protected_existing_native_controller_unchanged": true
+}

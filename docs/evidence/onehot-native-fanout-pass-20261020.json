@@ -1,0 +1,263 @@
+{
+  "run": 39404356943,
+  "group": "onehot-native-fanout",
+  "source_head": "aa7d61054556ca6b26545d61a0124f8917637775",
+  "summary_asset": 658957542,
+  "summary_sha256": "400cc00f4a66d39d41a6e49c8c9d5077c8a6b02bdd14d74e17fa9b9c0e885ad0",
+  "parts_asset": 658957684,
+  "parts_sha256": "951d3b2002b2cc0c6ac513e2f6f4222a11e15cdeae7698b1e575be94491cd91b",
+  "archive_asset": 658957825,
+  "archive_sha256": "3460ed90244b747db330bb2f7ff3aa3328a815a51910c0e75dee3606fa8bf3eb",
+  "status": "PASS_NATIVE_RESIZER_CANDIDATE_REQUIRES_ROUTE_FRESH_RC_ALL_CORNER_STA",
+  "candidate_odb_sha256": "c005764c949e088b96cea5583f3a86fe901772b5e0eafc9d93bba506a151f2b7",
+  "candidate_netlist_sha256": "b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0",
+  "geometry_summary": {
+    "status": "PASS_SCOPED_CANDIDATE_GEOMETRY_NOT_ROUTE_OR_LVS",
+    "original_instances": 151078,
+    "guarded_instances": 17733,
+    "rejected": [
+      "removed-original",
+      "moved-clock-or-sram"
+    ],
+    "pg_ndr_ports_preserved": true,
+    "clock_pins_and_clock_sram_geometry_preserved": true,
+    "source_sha256": "df3f0fe0bc20b3f6b31e990b488b467b1d0b445847e13eec2fd3a978cda71f0f",
+    "candidate_sha256": "c005764c949e088b96cea5583f3a86fe901772b5e0eafc9d93bba506a151f2b7",
+    "accepted": false,
+    "added_count": 1684,
+    "changed_count": 10679
+  },
+  "proof": {
+    "retained_cells": 106767,
+    "positive_buffers_before": 34577,
+    "positive_buffers_after": 36261,
+    "equivalent_sizes": 72,
+    "proven_tie_cells_before": 9734,
+    "proven_tie_cells_after": 9734,
+    "unobserved_output_port_changes": 0,
+    "equivalent_input_permutations": 0,
+    "equivalent_combinational_clones": {},
+    "status": "PASS within scope",
+    "yosys_version": "Yosys 0.62 (git sha1 7326bb7d6641500ecb285c291a54a662cb1e76cf, clang++ 21.1.2 -fPIC -O3)",
+    "sources": {
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-onehot-native-fanout/source/run/1-openroad-detailedrouting/soc_top.nl.v": "343cdeca4f30e93d52cc7923fd562bc4bde74d77e9b149176e2c35328c6e8616",
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-onehot-native-fanout/candidate.v": "b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v": "54a401869676f8489565a3340036c25745c880709d3c74c56b4de62b6aa586ee",
+      "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v": "4caf9efde9cfd1b73c4f074615320794ea7bd375f108e6c027369dd70c93d8a3",
+      "/home/runner/work/nssoc/nssoc/hw/soc/flow/check_eco_logic_clones.py": "0c9f98a8732efa4baedfe46933fef8d54eb7c89bbdbcfec5411385bedb5ab031",
+      "/home/runner/work/nssoc/nssoc/hw/soc/flow/eco_logic.py": "2175067cb6c07b0c40be88eb7de2e5737ad85560ab466e3d7bfbf7be6f417266",
+      "/home/runner/work/nssoc/nssoc/hw/soc/flow/eco_logic_clones.py": "375e5d676e7a37c36af5d932b104e5ea81be184d53cab708d486688f4ed39de7"
+    },
+    "macro_verilog_defines": [
+      "FUNCTIONAL"
+    ],
+    "yosys_executable": {
+      "path": "/nix/store/vqq4mi8prw8x5rfwz7b3136rqi8v70m7-yosys-with-plugins-0.62-python3-3.13.9-env/bin/yosys",
+      "sha256": "63b1229caf9f50360cf9c61d6b812a82b2d81155306e3d3c72fd89b675b732ba"
+    },
+    "scope": "Combinational duplicate output equations, retained cell inputs and state definitions; positive buffer contraction and Boolean pin permutations. Added state and opaque macro duplicates are forbidden. Unchanged opaque masters require identical input equations. Excludes timing, analog, SRAM interiors, initialization, CDC and extracted physical connectivity."
+  },
+  "native_baseline": {
+    "nom_typ_1p20V_25C": {
+      "max": -5.113266945,
+      "min": -0.425175011
+    },
+    "nom_slow_1p08V_125C": {
+      "max": -13.346323967,
+      "min": -0.513008535
+    },
+    "nom_fast_1p32V_m40C": {
+      "max": -2.211620808,
+      "min": -0.362199008
+    }
+  },
+  "expected_baseline": {
+    "nom_typ_1p20V_25C": {
+      "max": -5.113266843554806,
+      "min": -0.42517501833810933
+    },
+    "nom_slow_1p08V_125C": {
+      "max": -13.346323535207782,
+      "min": -0.5130085390585908
+    },
+    "nom_fast_1p32V_m40C": {
+      "max": -2.2116207269318684,
+      "min": -0.3621990032639448
+    }
+  },
+  "actual_inversion_control_rejected": true,
+  "sources_unchanged": true,
+  "outputs": {
+    "router-init-source.guide": "4f64adc79a1a0439f1cfd91f4b4d49515d3807d03a26dfa64bdb289b92c67d5f",
+    "before-nom_fast_1p32V_m40C-checks.rpt": "5798d1783993d21b265769eed6aa6b91b83ad8bb2d7c612a90ae964f07eb937c",
+    "geometry.json": "064b160dab7ce5f5ccfbd154f4a0efda549143cfd57a0d0a5d1a864ba51a1acc",
+    "router-init-before-nom_fast_1p32V_m40C-max.rpt": "a2c7f22d0e48cb23af164d485b54b6f1e75abc6886026ee76107c00c74169237",
+    "router-init-after-nom_slow_1p08V_125C-min.rpt": "bca7c2eb47178d3bdf901b753c4140c762c985496e389aab8f033405859d68da",
+    "before-nom_slow_1p08V_125C-checks.rpt": "ac6cbdd159542082a3dc051ba4078e5d73ffd5e4e5c24dbfdede33ddf1f620b5",
+    "before-nom_typ_1p20V_25C-max.rpt": "caab75a2b4ad82ce4cf3857069c69725f7289e2df9977b3af4466f227408fe21",
+    "router-init-before-nom_slow_1p08V_125C-max.rpt": "42d2d7705171cd28d0cf752b3c85247f77bc6f36b82b2603cf3be60e6694f286",
+    "native-baseline.log": "329d007f00a47f771207900ce1450d6f28053527da5306a720638a290d909a17",
+    "candidate.odb": "c005764c949e088b96cea5583f3a86fe901772b5e0eafc9d93bba506a151f2b7",
+    "router-init-after-nom_slow_1p08V_125C-max.rpt": "42d2d7705171cd28d0cf752b3c85247f77bc6f36b82b2603cf3be60e6694f286",
+    "native-geometry.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "setup-checkpoint.v": "601e4fecc109e21743c5c14cc7b39e0079cb561f2512baa2ea57b9cb32fb9084",
+    "before-nom_slow_1p08V_125C-max.rpt": "42d2d7705171cd28d0cf752b3c85247f77bc6f36b82b2603cf3be60e6694f286",
+    "router-init-before-nom_typ_1p20V_25C-min.rpt": "40dcbfc87e931022c35ce246c565e0e5a3dd263fc82310f3b2b2a075959731e4",
+    "router-init-after-nom_typ_1p20V_25C-min.rpt": "40dcbfc87e931022c35ce246c565e0e5a3dd263fc82310f3b2b2a075959731e4",
+    "hold-checkpoint.odb": "505736d33f699b422ce857d9f6bf5a65961933943b6af9aa73cd0b5abf18fc22",
+    "router-init-before-nom_fast_1p32V_m40C-min.rpt": "373b93dd0acaa692cf8cf3334e672cac637eda9dc8cc01a6f58a9319b802ce3f",
+    "logic-controls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "router-init-before-nom_slow_1p08V_125C-min.rpt": "bca7c2eb47178d3bdf901b753c4140c762c985496e389aab8f033405859d68da",
+    "fixed-clock.json": "7012d568676369fbfe41a1f077333b914fd5219d49de9e7613e3bd52a16750a4",
+    "setup-checkpoint.odb": "29a124189a3e040308dc2449224e633b97ef9a304fa30422753d02b1a2f9eb3b",
+    "router-init-after-nom_typ_1p20V_25C-max.rpt": "caab75a2b4ad82ce4cf3857069c69725f7289e2df9977b3af4466f227408fe21",
+    "actual-buffer-inversion-control.log": "1358660e5d5d20068780b42eabde5640cf33db51b7e82b0a377f9586ec83f094",
+    "hold-checkpoint.v": "b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0",
+    "native.tcl": "34eae29abfd7492c20b2fa5b7a13a918b74c4b3ea52461767469ecc55cdaac2d",
+    "hold-unchecked.v": "b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0",
+    "before-nom_typ_1p20V_25C-min.rpt": "40dcbfc87e931022c35ce246c565e0e5a3dd263fc82310f3b2b2a075959731e4",
+    "router-init-after-nom_fast_1p32V_m40C-min.rpt": "373b93dd0acaa692cf8cf3334e672cac637eda9dc8cc01a6f58a9319b802ce3f",
+    "router-init-before.def": "3befb7747428e13459e3017da776d07e4ac14377b215b6c41fb45c637f59428b",
+    "native-equation-proof.log": "2f39ad0be7e14033ef133c700484aeb9ff403eebb001f9b0ef5cb509d9c06d42",
+    "router-init-after.def": "3befb7747428e13459e3017da776d07e4ac14377b215b6c41fb45c637f59428b",
+    "candidate.v": "b6c0547b1f1995ecc62b3cebef88b4ceeb0ca63372da3d66a4f1d9608144eda0",
+    "fixed-clock-after.def": "21f542fc2c94f958f6ea04317dbda1c7f72e7e1c660ca73f943f7d5e36353b9c",
+    "before-nom_typ_1p20V_25C-checks.rpt": "2a677115726d4cbc8c979ebcfe8133e3396c54b665a3d43645165b2caa6ff74b",
+    "hold-unchecked.odb": "50a0f43323a4f6b5f13e04252d9c41eca9bc61b69f69e026ca13f985460eb589",
+    "router-init-after-nom_fast_1p32V_m40C-max.rpt": "a2c7f22d0e48cb23af164d485b54b6f1e75abc6886026ee76107c00c74169237",
+    "native-logic-models.log": "39d8c375cce1c30df2d13e120bfc4b1fe9752716d84ff17251deab38e98a40e3",
+    "electrical-checkpoint.odb": "5bb76d9359cd7914a32e89b732d0389236d46951c83cd8168d143c91b42f2e88",
+    "electrical-checkpoint.v": "9c74a956d8312418194259adf84d282b035aed9b60c1e0e88870fbbc7fc9653e",
+    "fixed-clock-before.def": "3befb7747428e13459e3017da776d07e4ac14377b215b6c41fb45c637f59428b",
+    "before-nom_fast_1p32V_m40C-max.rpt": "a2c7f22d0e48cb23af164d485b54b6f1e75abc6886026ee76107c00c74169237",
+    "inverted.v": "ac364ff22ff36bc8e5188d2137c80ebbceaf5fd9d6d3dffb34a6e2989ed4c0b6",
+    "router-init-before-nom_typ_1p20V_25C-max.rpt": "caab75a2b4ad82ce4cf3857069c69725f7289e2df9977b3af4466f227408fe21",
+    "native-fixed-clock.log": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "before-nom_fast_1p32V_m40C-min.rpt": "373b93dd0acaa692cf8cf3334e672cac637eda9dc8cc01a6f58a9319b802ce3f",
+    "native-repair.log": "4f4ab6675aec9c800ac262486db97c464fde3ea83d4329cb46252782da514c2d",
+    "before-nom_slow_1p08V_125C-min.rpt": "bca7c2eb47178d3bdf901b753c4140c762c985496e389aab8f033405859d68da",
+    "negative-proof/before-libraries.json": "5d54da0723eabb2769afb9659e6ab377a1665ecfda62078288b86281b0e8d02e",
+    "negative-proof/before.json": "63081f2c916ea32ec7eec7d90436b088b260551f2ceaf382d96dca86936201d9",
+    "negative-proof/after-libraries.json": "5d54da0723eabb2769afb9659e6ab377a1665ecfda62078288b86281b0e8d02e",
+    "negative-proof/after.json": "78a8f0f3bc3a69bda52a6260815c749ac982e82f4df79aa7b54128a4a23bba6f",
+    "negative-proof/after.log": "6f7a2ea78dcf57d909e160579e3c359219748b9c06bafbd13cfa75abde9f1c02",
+    "negative-proof/before.log": "abe03a1cf2a0dfffe2c413b08343521862f96572f658a67c54ca71f2121b27d1",
+    "negative-proof/before.ys": "3d2a8d07bbac818a0e1216d6e6ae93eda5fef973a40e24191cff52a0e18c96a0",
+    "negative-proof/after.ys": "f5c6e68046e74693e4fe165af52b337cdc78a354c0ba98013cdb42b215e399b5",
+    "source/trial-config.json": "b86cade4259c9e0a650c0950882b6a9e08d15e3ebade31d31a001b507279832f",
+    "source/result.json": "b45ac042386d5a8fb09eb74090f8db1ccf63addb2693d0558a8c9ab4e1f6f480",
+    "proof/before-libraries.json": "5d54da0723eabb2769afb9659e6ab377a1665ecfda62078288b86281b0e8d02e",
+    "proof/before.json": "63081f2c916ea32ec7eec7d90436b088b260551f2ceaf382d96dca86936201d9",
+    "proof/after-libraries.json": "5d54da0723eabb2769afb9659e6ab377a1665ecfda62078288b86281b0e8d02e",
+    "proof/after.json": "38e8c397a261bfcbb461a71af09b85ee0e17123b24bc6b4292422cbc04aa2777",
+    "proof/after.log": "bbf4ffacdc3c1cb6f601c3460868a838b45aedfe6f8fc22729b77f9573715421",
+    "proof/before.log": "f4fda25e8d03ec00b01dc53d308d311319bf645b664bdeb2a461319567ae4597",
+    "proof/before.ys": "ada49c2adb0add9ab0ec06cd2a80de2c715b6afbe77084a5bf3d9b01b666bce2",
+    "proof/after.ys": "97f347a8185f5889f05fe266373215c3702e679ea31e1677fc2c6ffe8ef747a3",
+    "proof/result.json": "95b79dd9c99e9eeb46403b870a16fac0caf63b09c77b939a6f4c25160d051644",
+    "controls/macro.v": "3a3263f07048cd08e2a775979d7c6fbad7923e397021ce75eedb1dcb6848b936",
+    "controls/changed_macro_input.v": "f852e3fe0ad2a689b11e6cc12b5a8b25265766554f25bce3cf01e5df6d510af6",
+    "controls/buffered_macro.v": "3df9b909a2085a021049c47b77cffbecc87d84362a6fc3e5b4a1f436f47c68ff",
+    "controls/unknown_macro_pin.log": "8d7df3ec52b186bacd081ec85199540718214f40e3631777f301fa127936b9fb",
+    "controls/before.v": "b3fbdeaffbb474097f5ba65fff2d3769c92f025902ff86d064da82745a08ea37",
+    "controls/buffered_macro.log": "78e4d7ddb7e687f0aa3a2c0542d56f1c57bdf84a35b31322de973eeb616aa6b3",
+    "controls/changed_macro_input.log": "9d227ca5c0a6d2d3b89fa183ef008b33e8602dab86b717fb6ff6d9346445d704",
+    "controls/result.json": "b317dd8b7c679a435184824309ab092b0f6d2345f625d2af3906d44fb1891735",
+    "controls/unknown_macro_pin.v": "174a9ea4f524616565d0331def09521d71e670b00d78ac470c9c33e57eb038e7",
+    "onehot-native-resizer-route-source/parts.json": "a77fe7c8b92832cdf687184d188139b5d9273193c41bffcc2366cd3ef22e2416",
+    "onehot-native-resizer-route-source/summary.json": "b45ac042386d5a8fb09eb74090f8db1ccf63addb2693d0558a8c9ab4e1f6f480",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_slow_1p08V_3p0V_125C.lib": "a23776c264fc0d177b4a5612eb3e1595c0eddc98d5b28b5ef7925e40b743b6ae",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_fast_1p32V_3p6V_m40C.lib": "0dbc28e762ac820f9db193a2736f408cf1cbf521547fef850083a585c70f212f",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_io/lib/sg13g2_io_typ_1p2V_3p3V_25C.lib": "e9af7d440c807799de55d16a126467e27d3235e7f53a928e014cdabee98369c9",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_slow_1p08V_125C.lib": "19b234ed4c46cd0a9bde91fea2b916b8b05dae27b0a9a7ca538cb4702a5ba571",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_typ_1p20V_25C.lib": "4eba4f904ad61e1c0dbb78a6b636e486335be19803370048276438e41a0c26d3",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_typ_1p20V_25C.lib": "491d34328c5b4225277ccb72f1c254ba34e1f18eb1664ace80c890376cf83c23",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_fast_1p32V_m55C.lib": "32ad633416cb9f107b57136ea4305290510400fa065eb136e912f9616400f7f9",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_slow_1p08V_125C.lib": "f01ed86cfbc2a173abf5dd6994b24660225fde3f626fa01296878909e05942ac",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_fast_1p32V_m55C.lib": "d9102b5ca8be02e7d4837fde022f1a229f30d899d51a0e67ef09354c95a09adb",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_1024x32_c2_bm_bist_slow_1p08V_125C.lib": "34497364ed23734a929454b451ee9d209b16923e03b80cba258379069af1908c",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_slow_1p08V_125C.lib": "cacb40bf9fd25a5fdde0493415455353c40160e25ef8aa17bcb67b29eee02df5",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_typ_1p20V_25C.lib": "44c6ff102ab0a3fc8766b92cbb40a9723bac5aa084a00a111a5a70a772d30a1e",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_512x16_c2_bm_bist_fast_1p32V_m55C.lib": "4cb993f5108050e09de3bd01a5bf0ad433d25380f5dd873e9903f415e1d4c1e2",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_2P_256x16_c2_bm_bist_fast_1p32V_m55C.lib": "66fe1b1783f2578c8f5c4a65eaa102b8cc888c8456170503789b9e84c9b0aa01",
+    "pdk/ihp-sg13g2/libs.ref/sg13g2_sram/lib/RM_IHPSG13_1P_2048x64_c2_bm_bist_typ_1p20V_25C.lib": "9aefb0cb245b15ced86b10401e71bf2002da31c4e1356b23bf6f4c789bee254f",
+    "pdk/ihp-sg13g2/libs.tech/librelane/sg13g2_stdcell/pnr_exclude.cells": "daa0ff683947cd49e0a59c832571bfb6d75759544956f4b962bf4630fab28789",
+    "source/run/4-nssoc-onehotroutercx/native-spef-integrity.json": "6aea55e4cdbb7af80cc3f5e3a0da128db0b13d045dd1ba9f7b048b53dc1f0281",
+    "source/run/1-openroad-detailedrouting/soc_top.nl.v": "343cdeca4f30e93d52cc7923fd562bc4bde74d77e9b149176e2c35328c6e8616",
+    "source/run/1-openroad-detailedrouting/state_out.json": "fe86d5de1a3c36f0b859ee25a832da14eb94bc75e7e56793ea27d58f9c2d084a",
+    "source/run/1-openroad-detailedrouting/soc_top.sdc": "19fdfb6dab9889037a4d1f486dadd4c46ac9ccc109a64c78422376c116233597",
+    "source/run/1-openroad-detailedrouting/soc_top.odb": "df3f0fe0bc20b3f6b31e990b488b467b1d0b445847e13eec2fd3a978cda71f0f",
+    "source/run/1-openroad-detailedrouting/config.json": "335011342a0c78d29b40f483741c3e34316fa5f92c73c264d9ac104058a59382",
+    "source/run/4-nssoc-onehotroutercx/nom/soc_top.nom.spef": "4f39343df8883bbb5a39052214ec57e5a7220e6d16ae232845350c4224c89d87",
+    "controls/buffered_macro/before-libraries.json": "56df281bba89338823857448909611c24c149e7c319f3ea42fbd1172d9e57782",
+    "controls/buffered_macro/before.json": "dc13ad6f5bc1744ff249137ac7e06d31dab55ae1dd41103631bd2f6cd28d802b",
+    "controls/buffered_macro/after-libraries.json": "56df281bba89338823857448909611c24c149e7c319f3ea42fbd1172d9e57782",
+    "controls/buffered_macro/after.json": "ab730a82e513ff4347d0c83daf673e9ee49fe77b211bf87aff33d006dc836fd2",
+    "controls/buffered_macro/after.log": "4308ce5fd4da444b2bfefa542e975dfa41d94fb3f2b505e198529eb20dce4e7f",
+    "controls/buffered_macro/before.log": "6b5315e39cbc14b74a318246d1170bcaf1670abdce1a270d99624f8921e3f295",
+    "controls/buffered_macro/before.ys": "22cba146688f2dfe2311ed20c1f025aee3b91345c8b7e2328ff621490f74ef2e",
+    "controls/buffered_macro/after.ys": "d12fdf35e172bcfc0145356c34981586451406cffd5809945892868c9d59b6b1",
+    "controls/buffered_macro/result.json": "f66b75568b2ba15d0f1a9d3c68bc7210aba026feab6bdbabee18c384d8491f54",
+    "controls/unknown_macro_pin/before-libraries.json": "56df281bba89338823857448909611c24c149e7c319f3ea42fbd1172d9e57782",
+    "controls/unknown_macro_pin/before.json": "dc13ad6f5bc1744ff249137ac7e06d31dab55ae1dd41103631bd2f6cd28d802b",
+    "controls/unknown_macro_pin/after-libraries.json": "56df281bba89338823857448909611c24c149e7c319f3ea42fbd1172d9e57782",
+    "controls/unknown_macro_pin/after.log": "2eaa69d2a479d515e77aee41dc0f2da858c96f6e2d4e91098ae854a0209c1af0",
+    "controls/unknown_macro_pin/before.log": "747ccfb0c493e2bb843a4ce3170ec68848076aa40b32cb0fa27442823866c3f5",
+    "controls/unknown_macro_pin/before.ys": "4996c14d24cac0e56b0ff95689f269e62232ed06c3d1d3707bc320c934359ac6",
+    "controls/unknown_macro_pin/after.ys": "b6a9f6cdef6ae53d9f2c386b85b87141a33896c1ab9ace449ef82e46f65d0c28",
+    "controls/changed_macro_input/before-libraries.json": "56df281bba89338823857448909611c24c149e7c319f3ea42fbd1172d9e57782",
+    "controls/changed_macro_input/before.json": "dc13ad6f5bc1744ff249137ac7e06d31dab55ae1dd41103631bd2f6cd28d802b",
+    "controls/changed_macro_input/after-libraries.json": "56df281bba89338823857448909611c24c149e7c319f3ea42fbd1172d9e57782",
+    "controls/changed_macro_input/after.json": "b553d35f5afaa094ec2cae4075aa07a399715275b17da946d8b5d1d4d728d3f5",
+    "controls/changed_macro_input/after.log": "f27f053b55333b62419ba188a248f27c57b6526eef06f87d9f846b798a433491",
+    "controls/changed_macro_input/before.log": "917e1fbfd5f6be5366bc871076b8bb05a4455d1902d1de385d26e6ba06539d81",
+    "controls/changed_macro_input/before.ys": "a9ff12aa33b355044a73f0a39238c0184d2f807d5d9373aaecb57e6c8c17c959",
+    "controls/changed_macro_input/after.ys": "30119739b472ffed0ea2b874f51fe791f2ee16831201ef58e98f89680e3704aa"
+  },
+  "commands": [
+    {
+      "label": "native-baseline",
+      "returncode": 0,
+      "elapsed_s": 93.00471579499998
+    },
+    {
+      "label": "native-repair",
+      "returncode": 0,
+      "elapsed_s": 291.255227649
+    },
+    {
+      "label": "native-geometry",
+      "returncode": 0,
+      "elapsed_s": 21.21046289900005
+    },
+    {
+      "label": "native-fixed-clock",
+      "returncode": 0,
+      "elapsed_s": 15.092424697999945
+    },
+    {
+      "label": "native-logic-models",
+      "returncode": 0,
+      "elapsed_s": 1.4480732329999455
+    },
+    {
+      "label": "logic-controls",
+      "returncode": 0,
+      "elapsed_s": 1.9928139890000693
+    },
+    {
+      "label": "native-equation-proof",
+      "returncode": 0,
+      "elapsed_s": 43.67677312000001
+    },
+    {
+      "label": "actual-buffer-inversion-control",
+      "returncode": 1,
+      "elapsed_s": 49.367454898999995
+    }
+  ]
+}

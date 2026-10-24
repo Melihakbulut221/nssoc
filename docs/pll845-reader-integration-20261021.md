@@ -1,0 +1,7 @@
+# Verified full-column reader and explicit controller integration
+
+Reader qualification39582875018 passed: all1694 requested voltage probes covering2737 native terminal records are present, with correct units, in the actual5106-column table. All46 complete rows from the saved native prefix were bit-exact across every column. All16 corruption controls passed, including nonfinite values in additional internal voltages/currents. The prefix is not a full1us capture.
+
+The new allcolumn controller is a source-bound adaptation of the existing compressed controller. Exactly three documented textual changes add the new reader, bind its source hash and use it at final capture. Its helper derives the unchanged preallocated storage/native contracts, verifies every source method and validates migration from the actual latest successful capsule39502073954. Source/controller faults and omitted prepared vectors are rejected.
+
+The helper reads actual5106-column native positions while preserving incomplete trailing rows, replacing the contradicted1695-column diagnostic assumption. Final capture still requires original1us/.3125ps/row count plus unchanged acquisition and subsequent safety gates. No native process is started by this qualification workflow. The complete-archive storage census39581427678 must resolve capacity/reserve failure before any native resume. Existing native/core and old frozen reader methods remain immutable.

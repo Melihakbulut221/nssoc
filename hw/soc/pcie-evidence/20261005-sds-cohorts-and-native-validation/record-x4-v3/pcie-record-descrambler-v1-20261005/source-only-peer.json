@@ -1,0 +1,31 @@
+{
+  "status": "NO_BLOCKING_FINDING_IN_BOUNDED_SOURCE_ORACLE_REVIEW",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_record_descrambler_v1.v": {
+      "bytes": 6105,
+      "sha256": "514dc351e8f140635c16cf9bfe4c0ce4066bc9566493a55b55d46820fac7b007"
+    },
+    "sw/tests/test_pcie_gen3_record_descrambler_v1.py": {
+      "bytes": 9887,
+      "sha256": "e4b7ab1ab2813b5306ea3b151f0c23876b98a9d7c374c7639ce7c773c30421ec"
+    }
+  },
+  "primary_reference": {
+    "path": "/dev/shm/nssoc-pcie-base4-reference.pdf",
+    "bytes": 20802626,
+    "sha256": "e5cb45c3a25066d362d7ad95e0e4be59b1afd90ee774bab5ee90268bf081e770",
+    "sections": [
+      "4.2.2.4, printed pp248-249: accepted symbol progression, EIEOS initialization, assigned lane seeds",
+      "4.2.7.2, printed pp361-364: Gen3 SKP parity and state trailer; footnote66 binds 8GT/s rules to Base3.1"
+    ]
+  },
+  "findings": [
+    "No blocking defect found in accepted-only held output: ready_o only permits replacement when output is empty or consumed; state and diagnostics remain stable through backpressure.",
+    "The RTL transposed polynomial masks and Python serial transmitted-bit transform are structurally distinct. Least-significant payload bits are processed first, seeds match all eight assigned lanes, EIEOS initializes after its complete record and SDS advances rather than reseeds.",
+    "Variable standard SKP lengths are checked for literal symbols, ending marker and zero padding. SKPs hold state, reconstruct the 23-bit trailer in transmitted byte order, and never load a received state.",
+    "Parity updates use scrambled DATA bits, reset at SDS and each standard SKP, and compare only when a SKP directly follows DATA. Parity mismatch latches lane_error without format fault or retraining.",
+    "Unseeded records and malformed metadata latch format_fault; only reset/flush recovers. Accepted EIEOS can reinitialize LFSR while sticky diagnostics remain observable.",
+    "Author oracle tests cover all assigned seeds, stalls, SKP sizes, back-to-back SKP indicator policy, data parity/state diagnostics and actual source mutations. I inspected the source but did not rerun or reparse their complete captured corpus."
+  ],
+  "scope": "Read-only source and oracle review against cached primary-reference text. No HDL/native/test/formal/timing rerun, no full link/LTSSM, TS field/DC-balance decode, EDS adjacency or cohort ownership acceptance. Reset/flush implementation inspected; no claim of an independent midstream reset campaign."
+}

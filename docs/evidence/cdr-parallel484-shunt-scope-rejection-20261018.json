@@ -1,0 +1,858 @@
+{
+  "summary_asset": 653472215,
+  "summary_sha256": "4219624879a3d37e1400765242d8a7b7687b477d4429dd61e06b7cab39f1f484",
+  "summary": {
+    "status": "FAIL_OR_ERROR",
+    "source_head": "559ac3bef6694575aa3d429a6b54d2b5bfd81f90",
+    "full_phy_accepted": false,
+    "closed_loop": false,
+    "qualified_pex": false,
+    "main_chip_integrated": false,
+    "source_controls": {
+      "status": "PASS_EXACT_41_SOURCE_CARDS_16_PHYSICAL_MACROS_AND_SIX_BINDING_FAULTS",
+      "plan": {
+        "nodes": [
+          {
+            "tag": "sa",
+            "kind": "sampler",
+            "pins": {
+              "DP": "dp",
+              "DN": "dn",
+              "QP": "aqp",
+              "QN": "aqn",
+              "CLKP": "cp",
+              "CLKN": "cn",
+              "AVDD": "avdd",
+              "AVSS": "avss",
+              "SUB": "sub",
+              "IREF": "ira"
+            },
+            "source_cards": [
+              "xsa"
+            ]
+          },
+          {
+            "tag": "sb",
+            "kind": "sampler",
+            "pins": {
+              "DP": "dp",
+              "DN": "dn",
+              "QP": "bqp",
+              "QN": "bqn",
+              "CLKP": "cn",
+              "CLKN": "cp",
+              "AVDD": "avdd",
+              "AVSS": "avss",
+              "SUB": "sub",
+              "IREF": "irb"
+            },
+            "source_cards": [
+              "xsb"
+            ]
+          },
+          {
+            "tag": "sc",
+            "kind": "sampler",
+            "pins": {
+              "DP": "cup",
+              "DN": "cun",
+              "QP": "cqp",
+              "QN": "cqn",
+              "CLKP": "cp",
+              "CLKN": "cn",
+              "AVDD": "avdd",
+              "AVSS": "avss",
+              "SUB": "sub",
+              "IREF": "irc"
+            },
+            "source_cards": [
+              "xsc"
+            ]
+          },
+          {
+            "tag": "sd",
+            "kind": "sampler",
+            "pins": {
+              "DP": "dup",
+              "DN": "dun",
+              "QP": "dqp",
+              "QN": "dqn",
+              "CLKP": "cp",
+              "CLKN": "cn",
+              "AVDD": "avdd",
+              "AVSS": "avss",
+              "SUB": "sub",
+              "IREF": "ird"
+            },
+            "source_cards": [
+              "xsd"
+            ]
+          },
+          {
+            "tag": "da",
+            "kind": "data",
+            "pins": {
+              "dp": "uap",
+              "dn": "uan",
+              "qp": "adp",
+              "qn": "adn",
+              "avdd": "avdd",
+              "avss": "avss",
+              "sub": "sub",
+              "iref": "ibda"
+            },
+            "source_cards": [
+              "xda"
+            ]
+          },
+          {
+            "tag": "dc",
+            "kind": "data",
+            "pins": {
+              "dp": "ucp",
+              "dn": "ucn",
+              "qp": "cdp",
+              "qn": "cdn",
+              "avdd": "avdd",
+              "avss": "avss",
+              "sub": "sub",
+              "iref": "ibdc"
+            },
+            "source_cards": [
+              "xdc"
+            ]
+          },
+          {
+            "tag": "s0",
+            "kind": "select",
+            "pins": {
+              "dp": "usp",
+              "dn": "usn",
+              "qp": "s0p",
+              "qn": "s0n",
+              "avdd": "avdd",
+              "avss": "avss",
+              "sub": "sub",
+              "iref": "ibs0"
+            },
+            "source_cards": [
+              "xs0"
+            ]
+          },
+          {
+            "tag": "s1",
+            "kind": "select",
+            "pins": {
+              "dp": "usp",
+              "dn": "usn",
+              "qp": "s1p",
+              "qn": "s1n",
+              "avdd": "avdd",
+              "avss": "avss",
+              "sub": "sub",
+              "iref": "ibs1"
+            },
+            "source_cards": [
+              "xs1"
+            ]
+          },
+          {
+            "tag": "x",
+            "kind": "xor",
+            "pins": {
+              "dp": "adp",
+              "dn": "adn",
+              "ep": "s0p",
+              "en": "s0n",
+              "qp": "xp",
+              "qn": "xn",
+              "avdd": "avdd",
+              "avss": "avss",
+              "sub": "sub",
+              "iref": "irx"
+            },
+            "source_cards": [
+              "xx"
+            ]
+          },
+          {
+            "tag": "y",
+            "kind": "xor",
+            "pins": {
+              "dp": "cdp",
+              "dn": "cdn",
+              "ep": "s1p",
+              "en": "s1n",
+              "qp": "yp",
+              "qn": "yn",
+              "avdd": "avdd",
+              "avss": "avss",
+              "sub": "sub",
+              "iref": "iry"
+            },
+            "source_cards": [
+              "xy"
+            ]
+          },
+          {
+            "tag": "vi",
+            "kind": "vi",
+            "pins": {
+              "xp": "xp",
+              "xn": "xn",
+              "yp": "yp",
+              "yn": "yn",
+              "op": "vip",
+              "on": "vin",
+              "avdd": "avdd",
+              "avss": "avss",
+              "sub": "sub",
+              "irx": "irvx",
+              "iry": "irvy"
+            },
+            "source_cards": [
+              "xvi"
+            ]
+          },
+          {
+            "tag": "ac",
+            "kind": "rc_retime",
+            "pins": {
+              "ip": "aqp",
+              "inn": "aqn",
+              "op": "cup",
+              "on": "cun",
+              "avss": "avss",
+              "sub": "sub"
+            },
+            "source_cards": [
+              "xracsp",
+              "xracgp",
+              "xcacp",
+              "xracsn",
+              "xracgn",
+              "xcacn"
+            ]
+          },
+          {
+            "tag": "bd",
+            "kind": "rc_retime",
+            "pins": {
+              "ip": "bqp",
+              "inn": "bqn",
+              "op": "dup",
+              "on": "dun",
+              "avss": "avss",
+              "sub": "sub"
+            },
+            "source_cards": [
+              "xrbdsp",
+              "xrbdgp",
+              "xcbdp",
+              "xrbdsn",
+              "xrbdgn",
+              "xcbdn"
+            ]
+          },
+          {
+            "tag": "dfa",
+            "kind": "rc_data",
+            "pins": {
+              "ip": "aqp",
+              "inn": "aqn",
+              "op": "uap",
+              "on": "uan",
+              "avss": "avss",
+              "sub": "sub"
+            },
+            "source_cards": [
+              "xrdasp",
+              "xrdagp",
+              "xcdap",
+              "xrdasn",
+              "xrdagn",
+              "xcdan"
+            ]
+          },
+          {
+            "tag": "dfc",
+            "kind": "rc_data",
+            "pins": {
+              "ip": "cqp",
+              "inn": "cqn",
+              "op": "ucp",
+              "on": "ucn",
+              "avss": "avss",
+              "sub": "sub"
+            },
+            "source_cards": [
+              "xrdcsp",
+              "xrdcgp",
+              "xcdcp",
+              "xrdcsn",
+              "xrdcgn",
+              "xcdcn"
+            ]
+          },
+          {
+            "tag": "se",
+            "kind": "rc_select",
+            "pins": {
+              "ip": "dqp",
+              "inn": "dqn",
+              "op": "usp",
+              "on": "usn",
+              "avss": "avss",
+              "sub": "sub"
+            },
+            "source_cards": [
+              "xrsesp",
+              "xrsegp",
+              "xcsep",
+              "xrsesn",
+              "xrsegn",
+              "xcsen"
+            ]
+          }
+        ],
+        "ports": [
+          "dp",
+          "dn",
+          "cp",
+          "cn",
+          "xp",
+          "xn",
+          "yp",
+          "yn",
+          "avdd",
+          "avss",
+          "sub",
+          "ira",
+          "irb",
+          "irc",
+          "ird",
+          "irx",
+          "iry",
+          "ibda",
+          "ibdc",
+          "ibs0",
+          "ibs1",
+          "vip",
+          "vin",
+          "irvx",
+          "irvy"
+        ],
+        "nets": [
+          "adn",
+          "adp",
+          "aqn",
+          "aqp",
+          "avdd",
+          "avss",
+          "bqn",
+          "bqp",
+          "cdn",
+          "cdp",
+          "cn",
+          "cp",
+          "cqn",
+          "cqp",
+          "cun",
+          "cup",
+          "dn",
+          "dp",
+          "dqn",
+          "dqp",
+          "dun",
+          "dup",
+          "ibda",
+          "ibdc",
+          "ibs0",
+          "ibs1",
+          "ira",
+          "irb",
+          "irc",
+          "ird",
+          "irvx",
+          "irvy",
+          "irx",
+          "iry",
+          "s0n",
+          "s0p",
+          "s1n",
+          "s1p",
+          "sub",
+          "uan",
+          "uap",
+          "ucn",
+          "ucp",
+          "usn",
+          "usp",
+          "vin",
+          "vip",
+          "xn",
+          "xp",
+          "yn",
+          "yp"
+        ],
+        "types": {
+          "sampler": {
+            "top": "nssoc_rx_sampler_parallel_drive_layout_v8",
+            "devices": 54,
+            "layer": 67
+          },
+          "data": {
+            "top": "nssoc_cdr_data_buffer_layout_v4",
+            "devices": 14,
+            "layer": 67
+          },
+          "select": {
+            "top": "nssoc_cdr_select_hybrid_tail_layout_v2",
+            "devices": 18,
+            "layer": 67
+          },
+          "xor": {
+            "top": "nssoc_cdr_xor_hybrid_tail_layout_v3",
+            "devices": 59,
+            "layer": 67
+          },
+          "vi": {
+            "top": "nssoc_cdr_vi13_layout_v1",
+            "devices": 26,
+            "layer": 67
+          },
+          "rc_retime": {
+            "top": "nssoc_cdr_retime_feedforward_layout_v1",
+            "devices": 12,
+            "layer": 67
+          },
+          "rc_data": {
+            "top": "nssoc_cdr_data_feedforward_layout_v1",
+            "devices": 12,
+            "layer": 67
+          },
+          "rc_select": {
+            "top": "nssoc_cdr_select_feedforward_layout_v1",
+            "devices": 12,
+            "layer": 67
+          }
+        },
+        "source_sha256": {
+          "cdr_select_hybrid_tail_v2.spice": "4ea83a8d48cf38626234bb8530d9cca51eaa88c529369a37486a243e4614e4ba",
+          "cdr_xor_core_hybrid_tail_v2.spice": "47dbcf055d732456f9b5c199e8deedd0a2fc402546c5c464ab315862bd70b660",
+          "cdr_xor_hybrid_tail_v2.spice": "39d055605d72b6aa586b058c5492e17ae5bffe2dffc0942c07258dcb7137cddc",
+          "cdr_retimed_parallel_pd_vi_v3.spice": "11c7f3e5b0c9a55f9c3adde71873b2d9947a4ec4cbfbfb65a6d53e53baf860ec",
+          "rx_sampler_parallel_drive_v8.spice": "876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3",
+          "cdr_sampled_compare_buffered_v4.spice": "8b9ade6650c8d5153f3d872660b04d8cac1970220a6fc5fc233ec05489bb2d7c",
+          "cdr_vi_hbt_v1.spice": "9f13b4eeca782f34feb3a858937de871f61b2e7ab5a06ffc43ecfdfb5f5268ef"
+        },
+        "expected_devices": 484,
+        "primitive_census": {
+          "npn13g2": 116,
+          "sg13_lv_nmos": 46,
+          "rppd": 102,
+          "cap_cmim": 11,
+          "ptap1": 209
+        },
+        "source_cards_consumed": 41,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "rejected": [
+        "missing_sampler",
+        "wrong_clock_polarity",
+        "wrong_vi_polarity",
+        "missing_rc",
+        "wrong_bias",
+        "synthetic_cref"
+      ],
+      "layout_generated": false
+    },
+    "child_sources": {
+      "sampler": {
+        "run": 39127236215,
+        "summary_sha256": "3f3c2f6ec31d39025698da1c79cd10205b141b07025b1ab8b59722f9439e0fe0",
+        "manifest_sha256": "1d92d493324f92510aa5359ef8318e049a96d41f2303dd2271133333d02289fe",
+        "restore": {
+          "archive": {
+            "parts": 1,
+            "bytes": 826725,
+            "sha256": "bb1724f6f335b7944f55147f4bab040f4124c7dfc183cd34245991e16cbc7fae",
+            "all_parts_and_combined_bytes_verified": true
+          },
+          "selected_files": {
+            "layout/nssoc_rx_sampler_parallel_drive_layout_v8.lef": {
+              "sha256": "9fe141dfbcd4a6a0ab4c74e1ebfb1b808a782723f5b1c7d1bfaeebbe76664aa1",
+              "bytes": 2898
+            },
+            "layout/nssoc_rx_sampler_parallel_drive_layout_v8.gds": {
+              "sha256": "a361748f617e202e509cb78489c0593d4596200a0c6621f096c01485b2dc7341",
+              "bytes": 92202
+            },
+            "layout/schematic.cir": {
+              "sha256": "abe92be9ed55f411c62a834412232e9af6f950c5bd9c42f225127939db09aac6",
+              "bytes": 2784
+            },
+            "layout/result.json": {
+              "sha256": "d3e325e6a5c40e756498983d8787f395e55edc401e3cdef6bba62caf5120e3d6",
+              "bytes": 136055
+            },
+            "result.json": {
+              "sha256": "3f3c2f6ec31d39025698da1c79cd10205b141b07025b1ab8b59722f9439e0fe0",
+              "bytes": 289134
+            }
+          },
+          "full_archive_verified_before_extraction": true
+        }
+      },
+      "data": {
+        "run": 39067291672,
+        "summary_sha256": "77b711934aada7a041329c191c8a5347c024738504e7214d8b7958413cd8213a",
+        "manifest_sha256": "1b3c0deba2c58fe54f71e9a3cf0f13ed2d0d719271d2780ba717ba27a0e9a94c",
+        "restore": {
+          "archive": {
+            "parts": 1,
+            "bytes": 211768,
+            "sha256": "8f56d2aba8625e147f79da046e180235c79734fdbe34fbbb10932db5cd9baa38",
+            "all_parts_and_combined_bytes_verified": true
+          },
+          "selected_files": {
+            "layout/nssoc_cdr_data_buffer_layout_v4.gds": {
+              "sha256": "fa7822d4ee0789a443c0877e06089d671702d73b514d4cc94c10cfc5a5fdb02c",
+              "bytes": 31004
+            },
+            "layout/nssoc_cdr_data_buffer_layout_v4.lef": {
+              "sha256": "c88c8bad00f48af020e80c781073ff8ed60bc63c13970869ab020faeb7da249d",
+              "bytes": 2425
+            },
+            "layout/schematic.cir": {
+              "sha256": "a67bfd8832456c975fb0b189b1b14e1fcb2ad2b989e4b862a13da051dca814a6",
+              "bytes": 776
+            },
+            "layout/result.json": {
+              "sha256": "ba67848408fe6b993f2b67a8335fcf15d8f8f581f058c4e7a1f85b9271afbd73",
+              "bytes": 23848
+            },
+            "result.json": {
+              "sha256": "77b711934aada7a041329c191c8a5347c024738504e7214d8b7958413cd8213a",
+              "bytes": 99954
+            }
+          },
+          "full_archive_verified_before_extraction": true
+        }
+      },
+      "select": {
+        "run": 39113006603,
+        "summary_sha256": "23d08dc4ccd4e0718bf3c4e44e1d2404ed60bd17fcbc14449ee68c913c1df7bb",
+        "manifest_sha256": "c023e47df77d79e3fdfdf1966176cdb74e97d8fd61956dc1760777b4c7ac8345",
+        "restore": {
+          "archive": {
+            "parts": 1,
+            "bytes": 280578,
+            "sha256": "5fe2e8d051237bb42272a729dde7b2fc48c45c8f01d0a7d4736738910f813909",
+            "all_parts_and_combined_bytes_verified": true
+          },
+          "selected_files": {
+            "layout/nssoc_cdr_select_hybrid_tail_layout_v2.lef": {
+              "sha256": "2d75b0a33002706ddcf7223af45467afd07c4eb6613ebedf7553c57a94b29cba",
+              "bytes": 2439
+            },
+            "layout/nssoc_cdr_select_hybrid_tail_layout_v2.gds": {
+              "sha256": "3fcec6ba187ab269d521d4174b2ae3306ee1caa3fb164dc19a2ae6e926e7affd",
+              "bytes": 44282
+            },
+            "layout/schematic.cir": {
+              "sha256": "68ec33554488ce1376073a1de1952548c2f416c990c9217df10865de1f96ea85",
+              "bytes": 931
+            },
+            "layout/result.json": {
+              "sha256": "d6759bb5d272cc55ed18646aff639f7baab057adb2aabf3091e772637d26b311",
+              "bytes": 25394
+            },
+            "result.json": {
+              "sha256": "23d08dc4ccd4e0718bf3c4e44e1d2404ed60bd17fcbc14449ee68c913c1df7bb",
+              "bytes": 111636
+            }
+          },
+          "full_archive_verified_before_extraction": true
+        }
+      },
+      "rc_data": {
+        "run": 39067622805,
+        "summary_sha256": "e8d984ae4cf5cd2cfecc496dcaf5a3637870d1d36b9dd550f2af03607ce07e46",
+        "manifest_sha256": "9a7c11892c5900e796d87683a04922ff13c64af0cd5cc5f58b62025bf7784af3",
+        "restore": {
+          "archive": {
+            "parts": 1,
+            "bytes": 181977,
+            "sha256": "227bf782138d1539ea5b5a72166f33155de5edc7f77b204424c80f945187d9bd",
+            "all_parts_and_combined_bytes_verified": true
+          },
+          "selected_files": {
+            "layout/nssoc_cdr_data_feedforward_layout_v1.gds": {
+              "sha256": "c106bc559ef1da5f9022a2baa11363ed64854502121a1c873b72290ff9b9f5cf",
+              "bytes": 17276
+            },
+            "layout/nssoc_cdr_data_feedforward_layout_v1.lef": {
+              "sha256": "6f3cc8ef2b645d329a3ad359b88bafcfdbd4f5655c9298dc11a32755f90b0bc6",
+              "bytes": 1943
+            },
+            "layout/schematic.cir": {
+              "sha256": "9d071721e846505813a2e420d62ad0a870b6a4e17b166d3a602bd94c028413f2",
+              "bytes": 637
+            },
+            "layout/result.json": {
+              "sha256": "a182f41e45e1dedffd42a39b391d516a4856d3a611c40c6d7afcba58170e2225",
+              "bytes": 22130
+            },
+            "result.json": {
+              "sha256": "e8d984ae4cf5cd2cfecc496dcaf5a3637870d1d36b9dd550f2af03607ce07e46",
+              "bytes": 98751
+            }
+          },
+          "full_archive_verified_before_extraction": true
+        }
+      },
+      "rc_select": {
+        "run": 39067622805,
+        "summary_sha256": "c0733888a43ba5979d345b3c343807281f5ffcd94cfd1271f4b253249d4601dd",
+        "manifest_sha256": "0f248292b47c76b7b1d55ff298d04eed85879df5694cbf29478452353359b7a9",
+        "restore": {
+          "archive": {
+            "parts": 1,
+            "bytes": 183272,
+            "sha256": "15c680be46073ec9244f9e04495b1221a76ae0153dde1cba33799d5c5ce731bc",
+            "all_parts_and_combined_bytes_verified": true
+          },
+          "selected_files": {
+            "layout/nssoc_cdr_select_feedforward_layout_v1.gds": {
+              "sha256": "9896097c0af6f0c635bb46294b6fa812f3683df4f01aae37bba62f4ed3158bd1",
+              "bytes": 17596
+            },
+            "layout/schematic.cir": {
+              "sha256": "e497693b04799787060a165dfdc6d4343919660847d33e0b4038e0977ed2ab6f",
+              "bytes": 635
+            },
+            "layout/result.json": {
+              "sha256": "4da06b1122a5c2490e2c095bbd59694b96836b21afe7f890f6315cfefd4f619b",
+              "bytes": 22130
+            },
+            "layout/nssoc_cdr_select_feedforward_layout_v1.lef": {
+              "sha256": "e566c83fd7b9105267f8482632c2a6473858ebc2f43abfc1a8176e6449f0baa5",
+              "bytes": 1947
+            },
+            "result.json": {
+              "sha256": "c0733888a43ba5979d345b3c343807281f5ffcd94cfd1271f4b253249d4601dd",
+              "bytes": 98983
+            }
+          },
+          "full_archive_verified_before_extraction": true
+        }
+      },
+      "rc_retime": {
+        "run": 39067622805,
+        "summary_sha256": "9648ce573c597019918147c13cd7aab3b5ac475fb00df616ae1e88d426c12285",
+        "manifest_sha256": "83b2570fdd3aa44830f248c82d819b98b7c522a4ba47deecaf59456c5802ce97",
+        "restore": {
+          "archive": {
+            "parts": 1,
+            "bytes": 182069,
+            "sha256": "bc936989bbd5aed2ae2d949b5986745e59cb8b3880b42e5fffb7584e34da9b91",
+            "all_parts_and_combined_bytes_verified": true
+          },
+          "selected_files": {
+            "layout/nssoc_cdr_retime_feedforward_layout_v1.gds": {
+              "sha256": "fbe583e3b1d6a8a4662bc73be376f56d872d69ecce2888f3e93b3113128e7fef",
+              "bytes": 17278
+            },
+            "layout/nssoc_cdr_retime_feedforward_layout_v1.lef": {
+              "sha256": "ae432dcb995b7c15a6eb4aad8b135fec06752d4d993a416710feea77f76ef3f0",
+              "bytes": 1947
+            },
+            "layout/schematic.cir": {
+              "sha256": "bc4236c23c9bacfb054d2fba3838153426aed41b4042c75c86fcb9d4df33011e",
+              "bytes": 641
+            },
+            "layout/result.json": {
+              "sha256": "3c37e4e788db92ab033a1cf94e634335cea6b73858e1582b97d12ca474b515af",
+              "bytes": 22136
+            },
+            "result.json": {
+              "sha256": "9648ce573c597019918147c13cd7aab3b5ac475fb00df616ae1e88d426c12285",
+              "bytes": 98981
+            }
+          },
+          "full_archive_verified_before_extraction": true
+        }
+      },
+      "xor": {
+        "run": 39115862679,
+        "summary_sha256": "b5e6e6ce8ff492247e32f941bae9480c152905c2b7279ff83ba7ab580804fa77",
+        "manifest_sha256": "085d13173a212e596dd3d1df06518ce765777b80c0f9cd829d561452dc109ebc",
+        "restore": {
+          "archive": {
+            "parts": 1,
+            "bytes": 441239,
+            "sha256": "1427dbe8c44729c41851fcf7fe0e34234ebc8cd09261d6b4c14a1f306c741c9b",
+            "all_parts_and_combined_bytes_verified": true
+          },
+          "selected_files": {
+            "layout/schematic.cir": {
+              "sha256": "a41152d6629120edf7b0c174b6ebf5fc32208707d9609e99b5e5c7d9047e62c4",
+              "bytes": 2754
+            },
+            "layout/nssoc_cdr_xor_hybrid_tail_layout_v3.lef": {
+              "sha256": "6a13e991175186d7443aa961db510d9afa3a9813ffa0c1ff93979e561133295e",
+              "bytes": 2834
+            },
+            "layout/result.json": {
+              "sha256": "012cf9bd057dee36e8d84f4859ba09d0d7a8be631fddc00bbf684dbc108eb27f",
+              "bytes": 49448
+            },
+            "layout/nssoc_cdr_xor_hybrid_tail_layout_v3.gds": {
+              "sha256": "011c77f921a9f6393e206ecb566586358bedd83beece674d28635649f1fdc55f",
+              "bytes": 88072
+            },
+            "result.json": {
+              "sha256": "b5e6e6ce8ff492247e32f941bae9480c152905c2b7279ff83ba7ab580804fa77",
+              "bytes": 138014
+            }
+          },
+          "full_archive_verified_before_extraction": true
+        }
+      },
+      "vi": {
+        "run": 39063135809,
+        "summary_sha256": "33eaab6fdbdb2399ad7182916c84d8a68f96f4cc0a14bc15d43819ae021b2555",
+        "manifest_sha256": "67d6dbc8c1f017f8da1002aa0c02780417ca198f6e4ff316dfa70997f6968b79",
+        "restore": {
+          "archive": {
+            "parts": 1,
+            "bytes": 327287,
+            "sha256": "ac7fe5d09f5ae591a654995bf17d6f7ea93af423bfb764bad9ed8369f5ad3950",
+            "all_parts_and_combined_bytes_verified": true
+          },
+          "selected_files": {
+            "layout/nssoc_cdr_vi13_layout_v1.gds": {
+              "sha256": "8f9ce850fb53f2d75cda96f49e64cdbde4f44e37c95f3cf9c714bc71c6fc2d70",
+              "bytes": 90240
+            },
+            "layout/nssoc_cdr_vi13_layout_v1.lef": {
+              "sha256": "4db9c732219c48c3daf7eb0f3a46f007ea3e1ed676cb7d4f260d47c7e676416c",
+              "bytes": 3034
+            },
+            "layout/schematic.cir": {
+              "sha256": "0f1809ee6bf3cd361a344209fba7be6406c49383aebdf607dd868051471d29c1",
+              "bytes": 1246
+            },
+            "layout/result.json": {
+              "sha256": "469352077e991b1a2bbec665e90c4fe9f4f9e0cdc206acde5f6f479a90128139",
+              "bytes": 29760
+            },
+            "result.json": {
+              "sha256": "33eaab6fdbdb2399ad7182916c84d8a68f96f4cc0a14bc15d43819ae021b2555",
+              "bytes": 105356
+            }
+          },
+          "full_archive_verified_before_extraction": true
+        }
+      }
+    },
+    "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "generation_returncode": 1,
+    "error": "AssertionError('Actual parent generation failed')",
+    "outputs": {
+      "children.json": "56265ac63701e17020b93349f59bf10ee328bfc58ff9387fc76a95b65eebea30",
+      "generation.log": "f0b8e60752aa48dc8a1caa56214197a06f7ddc7ee6411118937c9b2ecf9fa2e5",
+      "cdr-select-hybrid-v2-physical-source/parts.json": "c023e47df77d79e3fdfdf1966176cdb74e97d8fd61956dc1760777b4c7ac8345",
+      "cdr-select-hybrid-v2-physical-source/summary.json": "23d08dc4ccd4e0718bf3c4e44e1d2404ed60bd17fcbc14449ee68c913c1df7bb",
+      "cdr-feedforward-select-physical-source/parts.json": "0f248292b47c76b7b1d55ff298d04eed85879df5694cbf29478452353359b7a9",
+      "cdr-feedforward-select-physical-source/summary.json": "c0733888a43ba5979d345b3c343807281f5ffcd94cfd1271f4b253249d4601dd",
+      "baseline-avss256/nssoc_cdr_pd484_parallel_base_v2.gds": "1abe4c06b261d4a95ade8054b545a7d089bcf74e3c7975994cf36093b33fd519",
+      "baseline-avss256/nssoc_cdr_pd484_parallel_base_v2.lef": "8ef95c182b9673240d3f70e1f8f5d5820f84ecd56f370a0413e4304fcef009ad",
+      "baseline-avss256/schematic.cir": "4bcfc2cdaa62a2e136f06f9599f4f1680fe053b51acb3d714841c8e7a4bdd67e",
+      "baseline-avss256/result.json": "a13ca4d0d6b0ab4ff303a5ee067fc9790247d5adf3bb1d41a890d87c116125b3",
+      "cdr-feedforward-data-physical-source/parts.json": "9a7c11892c5900e796d87683a04922ff13c64af0cd5cc5f58b62025bf7784af3",
+      "cdr-feedforward-data-physical-source/summary.json": "e8d984ae4cf5cd2cfecc496dcaf5a3637870d1d36b9dd550f2af03607ce07e46",
+      "cdr-xor-hybrid-v3-physical-source/parts.json": "085d13173a212e596dd3d1df06518ce765777b80c0f9cd829d561452dc109ebc",
+      "cdr-xor-hybrid-v3-physical-source/summary.json": "b5e6e6ce8ff492247e32f941bae9480c152905c2b7279ff83ba7ab580804fa77",
+      "cdr-feedforward-retime-physical-source/parts.json": "83b2570fdd3aa44830f248c82d819b98b7c522a4ba47deecaf59456c5802ce97",
+      "cdr-feedforward-retime-physical-source/summary.json": "9648ce573c597019918147c13cd7aab3b5ac475fb00df616ae1e88d426c12285",
+      "cdr-sampler-parallel-physical-source/parts.json": "1d92d493324f92510aa5359ef8318e049a96d41f2303dd2271133333d02289fe",
+      "cdr-sampler-parallel-physical-source/summary.json": "3f3c2f6ec31d39025698da1c79cd10205b141b07025b1ab8b59722f9439e0fe0",
+      "cdr-vi-physical-source/parts.json": "67d6dbc8c1f017f8da1002aa0c02780417ca198f6e4ff316dfa70997f6968b79",
+      "cdr-vi-physical-source/summary.json": "33eaab6fdbdb2399ad7182916c84d8a68f96f4cc0a14bc15d43819ae021b2555",
+      "cdr-buffer-data-physical-source/parts.json": "1b3c0deba2c58fe54f71e9a3cf0f13ed2d0d719271d2780ba717ba27a0e9a94c",
+      "cdr-buffer-data-physical-source/summary.json": "77b711934aada7a041329c191c8a5347c024738504e7214d8b7958413cd8213a",
+      "inputs/data/result.json": "77b711934aada7a041329c191c8a5347c024738504e7214d8b7958413cd8213a",
+      "inputs/select/result.json": "23d08dc4ccd4e0718bf3c4e44e1d2404ed60bd17fcbc14449ee68c913c1df7bb",
+      "inputs/rc_data/result.json": "e8d984ae4cf5cd2cfecc496dcaf5a3637870d1d36b9dd550f2af03607ce07e46",
+      "inputs/rc_retime/result.json": "9648ce573c597019918147c13cd7aab3b5ac475fb00df616ae1e88d426c12285",
+      "inputs/sampler/result.json": "3f3c2f6ec31d39025698da1c79cd10205b141b07025b1ab8b59722f9439e0fe0",
+      "inputs/rc_select/result.json": "c0733888a43ba5979d345b3c343807281f5ffcd94cfd1271f4b253249d4601dd",
+      "inputs/xor/result.json": "b5e6e6ce8ff492247e32f941bae9480c152905c2b7279ff83ba7ab580804fa77",
+      "inputs/vi/result.json": "33eaab6fdbdb2399ad7182916c84d8a68f96f4cc0a14bc15d43819ae021b2555",
+      "inputs/data/layout/nssoc_cdr_data_buffer_layout_v4.gds": "fa7822d4ee0789a443c0877e06089d671702d73b514d4cc94c10cfc5a5fdb02c",
+      "inputs/data/layout/nssoc_cdr_data_buffer_layout_v4.lef": "c88c8bad00f48af020e80c781073ff8ed60bc63c13970869ab020faeb7da249d",
+      "inputs/data/layout/schematic.cir": "a67bfd8832456c975fb0b189b1b14e1fcb2ad2b989e4b862a13da051dca814a6",
+      "inputs/data/layout/result.json": "ba67848408fe6b993f2b67a8335fcf15d8f8f581f058c4e7a1f85b9271afbd73",
+      "inputs/select/layout/nssoc_cdr_select_hybrid_tail_layout_v2.lef": "2d75b0a33002706ddcf7223af45467afd07c4eb6613ebedf7553c57a94b29cba",
+      "inputs/select/layout/nssoc_cdr_select_hybrid_tail_layout_v2.gds": "3fcec6ba187ab269d521d4174b2ae3306ee1caa3fb164dc19a2ae6e926e7affd",
+      "inputs/select/layout/schematic.cir": "68ec33554488ce1376073a1de1952548c2f416c990c9217df10865de1f96ea85",
+      "inputs/select/layout/result.json": "d6759bb5d272cc55ed18646aff639f7baab057adb2aabf3091e772637d26b311",
+      "inputs/rc_data/layout/nssoc_cdr_data_feedforward_layout_v1.gds": "c106bc559ef1da5f9022a2baa11363ed64854502121a1c873b72290ff9b9f5cf",
+      "inputs/rc_data/layout/nssoc_cdr_data_feedforward_layout_v1.lef": "6f3cc8ef2b645d329a3ad359b88bafcfdbd4f5655c9298dc11a32755f90b0bc6",
+      "inputs/rc_data/layout/schematic.cir": "9d071721e846505813a2e420d62ad0a870b6a4e17b166d3a602bd94c028413f2",
+      "inputs/rc_data/layout/result.json": "a182f41e45e1dedffd42a39b391d516a4856d3a611c40c6d7afcba58170e2225",
+      "inputs/rc_retime/layout/nssoc_cdr_retime_feedforward_layout_v1.gds": "fbe583e3b1d6a8a4662bc73be376f56d872d69ecce2888f3e93b3113128e7fef",
+      "inputs/rc_retime/layout/nssoc_cdr_retime_feedforward_layout_v1.lef": "ae432dcb995b7c15a6eb4aad8b135fec06752d4d993a416710feea77f76ef3f0",
+      "inputs/rc_retime/layout/schematic.cir": "bc4236c23c9bacfb054d2fba3838153426aed41b4042c75c86fcb9d4df33011e",
+      "inputs/rc_retime/layout/result.json": "3c37e4e788db92ab033a1cf94e634335cea6b73858e1582b97d12ca474b515af",
+      "inputs/sampler/layout/nssoc_rx_sampler_parallel_drive_layout_v8.lef": "9fe141dfbcd4a6a0ab4c74e1ebfb1b808a782723f5b1c7d1bfaeebbe76664aa1",
+      "inputs/sampler/layout/nssoc_rx_sampler_parallel_drive_layout_v8.gds": "a361748f617e202e509cb78489c0593d4596200a0c6621f096c01485b2dc7341",
+      "inputs/sampler/layout/schematic.cir": "abe92be9ed55f411c62a834412232e9af6f950c5bd9c42f225127939db09aac6",
+      "inputs/sampler/layout/result.json": "d3e325e6a5c40e756498983d8787f395e55edc401e3cdef6bba62caf5120e3d6",
+      "inputs/rc_select/layout/nssoc_cdr_select_feedforward_layout_v1.gds": "9896097c0af6f0c635bb46294b6fa812f3683df4f01aae37bba62f4ed3158bd1",
+      "inputs/rc_select/layout/schematic.cir": "e497693b04799787060a165dfdc6d4343919660847d33e0b4038e0977ed2ab6f",
+      "inputs/rc_select/layout/result.json": "4da06b1122a5c2490e2c095bbd59694b96836b21afe7f890f6315cfefd4f619b",
+      "inputs/rc_select/layout/nssoc_cdr_select_feedforward_layout_v1.lef": "e566c83fd7b9105267f8482632c2a6473858ebc2f43abfc1a8176e6449f0baa5",
+      "inputs/xor/layout/schematic.cir": "a41152d6629120edf7b0c174b6ebf5fc32208707d9609e99b5e5c7d9047e62c4",
+      "inputs/xor/layout/nssoc_cdr_xor_hybrid_tail_layout_v3.lef": "6a13e991175186d7443aa961db510d9afa3a9813ffa0c1ff93979e561133295e",
+      "inputs/xor/layout/result.json": "012cf9bd057dee36e8d84f4859ba09d0d7a8be631fddc00bbf684dbc108eb27f",
+      "inputs/xor/layout/nssoc_cdr_xor_hybrid_tail_layout_v3.gds": "011c77f921a9f6393e206ecb566586358bedd83beece674d28635649f1fdc55f",
+      "inputs/vi/layout/nssoc_cdr_vi13_layout_v1.gds": "8f9ce850fb53f2d75cda96f49e64cdbde4f44e37c95f3cf9c714bc71c6fc2d70",
+      "inputs/vi/layout/nssoc_cdr_vi13_layout_v1.lef": "4db9c732219c48c3daf7eb0f3a46f007ea3e1ed676cb7d4f260d47c7e676416c",
+      "inputs/vi/layout/schematic.cir": "0f1809ee6bf3cd361a344209fba7be6406c49383aebdf607dd868051471d29c1",
+      "inputs/vi/layout/result.json": "469352077e991b1a2bbec665e90c4fe9f4f9e0cdc206acde5f6f479a90128139"
+    }
+  },
+  "parts_asset": 653472254,
+  "parts_sha256": "21fd25f9bbf6d134b946576663a350e8399e0bc8b283c90ace87d758faa1740d",
+  "parts": {
+    "format": "ordered-tar-gzip-parts-v1",
+    "stem": "cdr-retimed-parallel-v3-parent-39128392958-1",
+    "source_directory": "cloud-cdr-retimed-parallel-v3-parent",
+    "bytes": 558529,
+    "sha256": "8d503c881a8cee9e74461236adb6a8f6f4d4c290e92b180c4f5ebd723a919f0a",
+    "parts": [
+      {
+        "index": 0,
+        "name": "cdr-retimed-parallel-v3-parent-39128392958-1.tar.gz.part0000",
+        "bytes": 558529,
+        "sha256": "8d503c881a8cee9e74461236adb6a8f6f4d4c290e92b180c4f5ebd723a919f0a"
+      }
+    ],
+    "part_limit_bytes": 1073741824,
+    "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+    "verification": {
+      "parts": 1,
+      "bytes": 558529,
+      "sha256": "8d503c881a8cee9e74461236adb6a8f6f4d4c290e92b180c4f5ebd723a919f0a",
+      "all_parts_and_combined_bytes_verified": true
+    }
+  },
+  "run": 39128392958,
+  "source_head": "559ac3bef6694575aa3d429a6b54d2b5bfd81f90",
+  "meaning": "Generation guard rejected unintended changed shunt omission outside sampler. No parent DRC or LVS completed. Narrow search radius change to sampler only; keep all original otherleaf geometry decisions."
+}

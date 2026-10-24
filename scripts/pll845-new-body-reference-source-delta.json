@@ -1,0 +1,33 @@
+{
+  "baseline_commit": "9923cb5222620edf908d2a8384ebe17f25796d01",
+  "edits": [
+    {
+      "before": " planned_taps=[];access=[];tech=",
+      "after": " planned_taps=[];access=[];new_points=[];tech="
+    },
+    {
+      "before": "   assert candidates,('New actual tap reference plane/RC extraction required; no existing contact anchor',name,polygon.to_s())",
+      "after": "   if not candidates:\n    # Add a genuinely new reference only at an actual drawn contact. The original\n    # RC capture cannot be reused as if it already contained this point.\n    real=[]\n    for contact in contacts.inside(tap).each():\n     box=contact.bbox()\n     if contact.area()!=box.area()or not(pya.Region(contact)-metal).is_empty():continue\n     point=box.center()\n     nn=N.probe_net(N.layer_by_index(mapping[8]),point);wn=wire.probe_net(wire.layer_by_name('gds_8'),point)\n     assert nn is not None and wn is not None and nn.cluster_id==203 and owners[wn.cluster_id]==203\n     real.append((point,wn.cluster_id))\n    assert real,('No actual contacted regular n-well tap',name,polygon.to_s())\n    center=polygon.bbox().center()\n    point,component=min(real,key=lambda x:((x[0].x-center.x)**2+(x[0].y-center.y)**2,x[0].x,x[0].y))\n    assert not any(a['metal']==8 and a['point_dbu']==[point.x,point.y]for a in physical.values())\n    label='BULK_ACCESS_'+str(len(new_points)+1).zfill(3)\n    assert label not in physical\n    a=dict(label=label,metal=8,point_dbu=[point.x,point.y],wire_component=component,native_cluster=203,\n     logical_labels=[label],kind='GEOMETRY_EXTRACTED_REGULAR_BODY_CONTACT_REFERENCE')\n    physical[label]=a;new_points.append(a);candidates=[(label,a,point)]"
+    },
+    {
+      "before": "actual_tap_polygon_dbu=polygon.to_s(),actual_contact_anchor_candidates=len(candidates),",
+      "after": "actual_tap_polygon_dbu=polygon.to_s(),actual_contact_anchor_candidates=len(candidates),\n    rectangular=(tap^pya.Region(tap.bbox())).is_empty(),\n    bbox_dbu=[tap.bbox().left,tap.bbox().bottom,tap.bbox().right,tap.bbox().top],"
+    },
+    {
+      "before": "reference_plane='existing exact native contact point; audited R/C mesh unchanged',",
+      "after": "reference_plane='new actual contact point; fresh RC mandatory'if label.startswith('BULK_ACCESS_')else'existing exact audited native contact point',"
+    },
+    {
+      "before": "existing_audited_wire_points_only=True,wire_geometry_changed=False,wire_rc_changed=False,qualified_pex=False,",
+      "after": "existing_audited_wire_points_only=not new_points,original_audited_wire_points_preserved=True,\n  new_physical_points=new_points,new_reference_count=len(new_points),fresh_wire_rc_required=bool(new_points),\n  original_logical_points=1877,original_physical_points=1604,\n  extended_logical_points=1877+len(new_points),extended_physical_points=1604+len(new_points),\n  wire_geometry_changed=False,old_wire_rc_not_rewritten=True,qualified_pex=False,"
+    },
+    {
+      "before": "result=dict(status='PASS_ACTUAL_REGULAR_NWELL_CONTACT_GEOMETRY_REQUIRES_COMPOSITION_AND_LOADED_WAVES',",
+      "after": "result=dict(status='PASS_ACTUAL_REGULAR_NWELL_CONTACT_GEOMETRY_REQUIRES_FRESH_RC_AND_COMPOSITION',"
+    },
+    {
+      "before": " (out/'regular-body-access.json').write_text(json.dumps(result,indent=2)+'\\n')",
+      "after": " extended=copy.deepcopy(anchors)\n extended['original_native_reference_counts']=copy.deepcopy(anchors['counts'])\n extended['anchors']+=copy.deepcopy(new_points)\n for a in new_points:extended['logical_anchor_aliases'][a['label']]=a['label']\n extended['logical_anchor_count']=1877+len(new_points);extended['physical_anchor_count']=1604+len(new_points)\n extended['counts']['anchors']=1877+len(new_points)\n extended['counts']['regular_body_contact_references']=len(new_points)\n extended['inputs']=dict(result['inputs'])\n extended['inputs'][str(composition/'result.json')]=sha(composition/'result.json')\n extended['status']='PASS_EXTENDED_ACTUAL_REGULAR_BODY_POINTS_FRESH_RC_REQUIRED'\n extended['fresh_wire_rc_required']=bool(new_points)\n assert extended['anchors'][:1604]==anchors['anchors']\n assert len(extended['anchors'])==len({(a['metal'],*a['point_dbu'])for a in extended['anchors']})\n assert len(extended['logical_anchor_aliases'])==1877+len(new_points)\n assert all(extended['logical_anchor_aliases'][k]==v for k,v in anchors['logical_anchor_aliases'].items())\n assert extended['rows']==anchors['rows']and extended['public']==anchors['public']\n (out/'extended-anchors.json').write_text(json.dumps(extended,indent=2)+'\\n')\n result['extended_anchors_sha256']=sha(out/'extended-anchors.json')\n (out/'regular-body-access.json').write_text(json.dumps(result,indent=2)+'\\n')"
+    }
+  ]
+}

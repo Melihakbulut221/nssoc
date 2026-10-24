@@ -1,0 +1,1083 @@
+{
+  "status": "NO_SAFE_AUTOMATIC_PARAMETER_CORRECTION_IDENTIFIED",
+  "utc": "2026-10-02T22:19:48.777021+00:00",
+  "arithmetic_analysis": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261003/tap-contract-origin/analysis.json",
+    "bytes": 36574,
+    "sha256": "d37fb316b1af59a18398d9d8fd0adf568947b56c64d796c3b8769b170a3ae373"
+  },
+  "analysis_method": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261003/tap-contract-origin/analyze_reference.py",
+    "bytes": 4958,
+    "sha256": "79fb43ae09cf83a819e10709cd76dc22109fc1e73acc0fba5e82ab0e9a247000"
+  },
+  "sources": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs",
+      "bytes": 23322,
+      "sha256": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs",
+      "bytes": 7436,
+      "sha256": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs",
+      "bytes": 7691,
+      "sha256": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs",
+      "bytes": 2254,
+      "sha256": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs",
+      "bytes": 2099,
+      "sha256": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/normalize_io_cdl.py",
+      "bytes": 4750,
+      "sha256": "450419e61aac13c7868fae80a56d0aab7fc2107b0ee7d23ab1f356ab4c6fd48c"
+    },
+    {
+      "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/cdl/sg13g2_io.cdl",
+      "bytes": 42921,
+      "sha256": "33217c1d8efc201d7183c1179f58dca4217cf9ab4630f1ddff80d6c4a6e89752"
+    },
+    {
+      "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/spice/sg13g2_io.spi",
+      "bytes": 42349,
+      "sha256": "c2cfa122268050f770e91eeb0c70682775f9610cf4d5b066805b2d57c5980ce2"
+    }
+  ],
+  "established_semantics": [
+    {
+      "finding": "The published ptap1/ntap1 simulation model is an ohmic resistor driven by R; it does not use W/L and does not accept A/P as device-model inputs. The diode extractor is a geometrical extraction mechanism, not evidence of a junction-diode simulation model.",
+      "source": "ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib",
+      "lines": [
+        19,
+        35
+      ]
+    },
+    {
+      "finding": "Xschem computes A=W*L and P=2*(W+L) for LVS; simulation R follows area and perimeter conductances in parallel. PCell code uses the same expression and draws an Activ rectangle at W,L.",
+      "source": "ihp-sg13g2/libs.tech/xschem/sg13g2_pr/ptap1.sym",
+      "lines": [
+        18,
+        27
+      ]
+    },
+    {
+      "finding": "All 64 tap records in the exact original I/O CDL use W=L. All Perim values equal 2*(W+L); published R values reproduce the square calculation within 0.01764 percent (printed rounding). This establishes square schematic metadata, but not why those square sides were selected or whether an arbitrary-shape equivalent was qualified.",
+      "source": "exact original c4 I/O CDL plus analysis.json"
+    },
+    {
+      "finding": "The strict reader uses explicit A and Perim values and correct SI-to-um scaling; ordered TIE/WELL and A/P are enabled. The parallel combiner sums both A and P. No unit or Perim-alias bug remains in this path.",
+      "source": "custom_reader.lvs:643-647, custom_devices.lvs:179-201, custom_combiner.lvs:209-225"
+    }
+  ],
+  "smallest_legitimate_correction": {
+    "local_unambiguous_correction_available": false,
+    "reason": "The checked-in schematic rectangle metadata and physical arbitrary tap geometry disagree, while the public model gives no qualified arbitrary-shape or hierarchy-overlap mapping that would justify replacing either set. Rewriting expected numbers, taking P=4sqrt(A), dropping P or disabling tap extraction would choose a new contract rather than repair an identified implementation error.",
+    "required_independent_contract": [
+      "Authoritative intended contact ownership and geometry per I/O master and parent seam, including overlaps and whether effective area or literal boundary perimeter is intended.",
+      "A consistent documented mapping from that geometry to both LVS parameters and simulation resistance; non-rectangular shapes and parallel/hierarchy merging must be included.",
+      "Corrected paired vendor GDS/CDL/LEF plus unchanged-or-explicitly-qualified strict extraction/reference rules; alternatively independently redesigned and qualified I/O cells with their own common schematic/layout specification.",
+      "ESD/latch-up/contact-density and substrate coupling validation of the corrected physical library, followed by isolated and actual parent strict LVS without parameter waivers."
+    ],
+    "concrete_next_engineering_action": "Prepare a reproducible correction request packet containing the exact Vss contact witness, 140.4 um conditional bound vs 87.9 um combined literal reference P, all 64 square parameter identities, source model equation and differing counterfactual resistances. Do not send without user authorization. If an authoritative corrected contract is supplied, implement only that correction and rerun the existing paired strict parent path."
+  },
+  "rejected_shortcuts": [
+    {
+      "method": "Normalize physical P to 4sqrt(A)",
+      "reason": "Would erase real non-square geometry and change the strict device contract; no such rule exists in the pinned extractor/model."
+    },
+    {
+      "method": "Compare or fit only equivalent R",
+      "reason": "Not the enabled strict A/P comparison and not a qualified arbitrary-shape model. Even arithmetic extension gives VSS 1.29665 ohm from extracted A/P versus 5.29707 ohm from reference A/P, so no numerical equivalence is established."
+    },
+    {
+      "method": "Copy extracted A/P into expected CDL",
+      "reason": "Circular expectation fitting without independent intended geometry/model specification."
+    },
+    {
+      "method": "Shrink/remove/relabel physical contacts to achieve P",
+      "reason": "The actual required contacts/recognition under the validated branch imply a conditional 140.4 um lower bound, exceeding the combined reference P87.9 um."
+    }
+  ],
+  "upstream_primary_context": [
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/955#issuecomment-4352461493",
+      "finding": "I/O-library contributor explains ambiguous arbitrary contact geometry and hierarchy-overlap representation, and discusses a future contract change rather than corrected A/P for this master."
+    },
+    {
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/issues/955#issuecomment-4348791501",
+      "finding": "Extractor contributor reports that converting measured geometry into equivalent dimensions still did not reproduce the published I/O netlist values."
+    }
+  ],
+  "limits": {
+    "actual_source_schematic_cdf_history_available": false,
+    "vendor_or_foundry_qualification_asserted": false,
+    "reference_deck_layout_modified": false,
+    "outbound_message_sent": false,
+    "existing_native_lvs_failure_preserved": true
+  },
+  "root_review": {
+    "source_hashes_rechecked": true,
+    "all_64_CDL_rows_and_rectangle_formula_independently_recomputed": true,
+    "max_relative_R_error": 0.0001763838832372387,
+    "source_code_read": true,
+    "qualified_correction_available": false
+  },
+  "arithmetic_details": {
+    "status": "READ_ONLY_REFERENCE_MODEL_CONTRACT_ANALYSIS",
+    "utc": "2026-10-02T22:18:11.197956+00:00",
+    "source": [
+      {
+        "path": "ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib",
+        "installed_c4": {
+          "bytes": 4936,
+          "sha256": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51"
+        },
+        "upstream_5e6": {
+          "bytes": 5327,
+          "sha256": "7c77da0c0419c8a332550da3f934f530262bd452734090db827b68ff88d09c43"
+        },
+        "url": "https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib",
+        "byte_identical": false
+      },
+      {
+        "path": "ihp-sg13g2/libs.tech/xschem/sg13g2_pr/ptap1.sym",
+        "installed_c4": {
+          "bytes": 1751,
+          "sha256": "daff372acd87b6fbb7a2ca3528f3bc3a5205f468e006a6f2a63ea7808433eca9"
+        },
+        "upstream_5e6": {
+          "bytes": 1750,
+          "sha256": "ca93ba7e1aefc330edfa3735186977289b77594f8f137b000e8f432634a8ecb9"
+        },
+        "url": "https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/xschem/sg13g2_pr/ptap1.sym",
+        "byte_identical": false
+      },
+      {
+        "path": "ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/ptap1_code.py",
+        "installed_c4": {
+          "bytes": 5923,
+          "sha256": "f2772537417ee992a5ecea8539f5e96732b38c086826b16c8a21eb1a1096f500"
+        },
+        "upstream_5e6": {
+          "bytes": 5923,
+          "sha256": "f2772537417ee992a5ecea8539f5e96732b38c086826b16c8a21eb1a1096f500"
+        },
+        "url": "https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/ptap1_code.py",
+        "byte_identical": true
+      },
+      {
+        "path": "ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/utility_functions.py",
+        "installed_c4": {
+          "bytes": 23338,
+          "sha256": "131cad3e7c52a5427cbe74a19934b58ed008ab02bc2b3b20bbe060f0c563802e"
+        },
+        "upstream_5e6": {
+          "bytes": 23276,
+          "sha256": "499174554b3aa6b8fb030d362ab44647c00a84589b56cc43554c7fc4dcb9b6ab"
+        },
+        "url": "https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/utility_functions.py",
+        "byte_identical": false
+      },
+      {
+        "path": "ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json",
+        "installed_c4": {
+          "bytes": 26363,
+          "sha256": "dce023dcf8dca1a7d875b6f71b5ce651b42f2dc3e9a21abb6de3997262273142"
+        },
+        "upstream_5e6": {
+          "bytes": 26814,
+          "sha256": "193f2af37d2d80ea28f88052298e91ed7650413dc6ca774cae6f8ed6a95e35ba"
+        },
+        "url": "https://raw.githubusercontent.com/IHP-GmbH/IHP-Open-PDK/5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json",
+        "byte_identical": false
+      }
+    ],
+    "original_cdl": {
+      "path": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_io/cdl/sg13g2_io.cdl",
+      "bytes": 42921,
+      "sha256": "33217c1d8efc201d7183c1179f58dca4217cf9ab4630f1ddff80d6c4a6e89752"
+    },
+    "all_cdl_taps": [
+      {
+        "cell": "sg13g2_IOPadIOVss",
+        "line": 45,
+        "source": "XR2 vss sub! / ptap1 r=22.472 A=24.01p Perim=19.6u w=4.9u l=4.9u",
+        "area_from_wl_m2": "2.401E-11",
+        "perimeter_from_wl_m": "0.0000196",
+        "resistance_from_wl_ohm": "22.47191011235955056179775281",
+        "stored_r_ohm": "22.472",
+        "relative_r_error": -3.9999840000639995e-06,
+        "area_rounding_m2": "0E-14",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadIOVss",
+        "line": 46,
+        "source": "XR0 iovss sub! / ptap1 r=169.45m A=5.487n Perim=296.3u w=74.075u l=74.075u",
+        "area_from_wl_m2": "5.487105625E-9",
+        "perimeter_from_wl_m": "0.000296300",
+        "resistance_from_wl_ohm": "0.1694503314385803606849727059",
+        "stored_r_ohm": "0.16945",
+        "relative_r_error": 1.955966836002862e-06,
+        "area_rounding_m2": "1.05625E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Clamp_N43N43D4R",
+        "line": 229,
+        "source": "XR0 tie sub! / ptap1 r=9.999 A=65.61p Perim=32.4u w=8.1u l=8.1u",
+        "area_from_wl_m2": "6.561E-11",
+        "perimeter_from_wl_m": "0.0000324",
+        "resistance_from_wl_ohm": "9.998979695949392919089888786",
+        "stored_r_ohm": "9.999",
+        "relative_r_error": -2.030608121520243e-06,
+        "area_rounding_m2": "0E-14",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_RCClampInverter",
+        "line": 299,
+        "source": "XR0 iovss sub! / ptap1 r=9.59 A=68.973p Perim=33.22u w=8.305u l=8.305u",
+        "area_from_wl_m2": "6.8973025E-11",
+        "perimeter_from_wl_m": "0.000033220",
+        "resistance_from_wl_ohm": "9.589695578538750565412854747",
+        "stored_r_ohm": "9.59",
+        "relative_r_error": -3.17436351667815e-05,
+        "area_rounding_m2": "2.5E-17",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadVdd",
+        "line": 313,
+        "source": "XR1 iovss sub! / ptap1 r=456.33m A=1.97n Perim=177.54u w=44.385u l=44.385u",
+        "area_from_wl_m2": "1.970028225E-9",
+        "perimeter_from_wl_m": "0.000177540",
+        "resistance_from_wl_ohm": "0.4563300893502463699377932452",
+        "stored_r_ohm": "0.45633",
+        "relative_r_error": 1.958018240526325e-07,
+        "area_rounding_m2": "2.8225E-14",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadVdd",
+        "line": 314,
+        "source": "XR0 vss sub! / ptap1 r=22.472 A=24.01p Perim=19.6u w=4.9u l=4.9u",
+        "area_from_wl_m2": "2.401E-11",
+        "perimeter_from_wl_m": "0.0000196",
+        "resistance_from_wl_ohm": "22.47191011235955056179775281",
+        "stored_r_ohm": "22.472",
+        "relative_r_error": -3.9999840000639995e-06,
+        "area_rounding_m2": "0E-14",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadIOVdd",
+        "line": 329,
+        "source": "XR1 iovss sub! / ptap1 r=449.797m A=2n Perim=178.88u w=44.72u l=44.72u",
+        "area_from_wl_m2": "1.9998784E-9",
+        "perimeter_from_wl_m": "0.00017888",
+        "resistance_from_wl_ohm": "0.4497974626282565336294285773",
+        "stored_r_ohm": "0.449797",
+        "relative_r_error": 1.0285267721519472e-06,
+        "area_rounding_m2": "-1.216E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadIOVdd",
+        "line": 330,
+        "source": "XR0 vss sub! / ptap1 r=22.832 A=23.523p Perim=19.4u w=4.85u l=4.85u",
+        "area_from_wl_m2": "2.35225E-11",
+        "perimeter_from_wl_m": "0.00001940",
+        "resistance_from_wl_ohm": "22.83184809831673364785368979",
+        "stored_r_ohm": "22.832",
+        "relative_r_error": -6.653016961560623e-06,
+        "area_rounding_m2": "-5E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_DCNDiode",
+        "line": 343,
+        "source": "XR0 anode sub! / ptap1 r=5.191 A=141.253p Perim=47.54u w=11.885u l=11.885u",
+        "area_from_wl_m2": "1.41253225E-10",
+        "perimeter_from_wl_m": "0.000047540",
+        "resistance_from_wl_ohm": "5.190864237845399378076199504",
+        "stored_r_ohm": "5.191",
+        "relative_r_error": -2.6153372105687136e-05,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_DCPDiode",
+        "line": 356,
+        "source": "XR0 guard sub! / ptap1 r=17.289 A=33.524p Perim=23.16u w=5.79u l=5.79u",
+        "area_from_wl_m2": "3.35241E-11",
+        "perimeter_from_wl_m": "0.00002316",
+        "resistance_from_wl_ohm": "17.28879879895773241526283385",
+        "stored_r_ohm": "17.289",
+        "relative_r_error": -1.1637517627831844e-05,
+        "area_rounding_m2": "1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadVss",
+        "line": 369,
+        "source": "XR1 iovss sub! / ptap1 r=174.346m A=5.329n Perim=292u w=73u l=73u",
+        "area_from_wl_m2": "5.329E-9",
+        "perimeter_from_wl_m": "0.000292",
+        "resistance_from_wl_ohm": "0.1743462017434620174346201743",
+        "stored_r_ohm": "0.174346",
+        "relative_r_error": 1.1571441961239983e-06,
+        "area_rounding_m2": "0E-12",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadVss",
+        "line": 370,
+        "source": "XR0 vss sub! / ptap1 r=22.832 A=23.523p Perim=19.4u w=4.85u l=4.85u",
+        "area_from_wl_m2": "2.35225E-11",
+        "perimeter_from_wl_m": "0.00001940",
+        "resistance_from_wl_ohm": "22.83184809831673364785368979",
+        "stored_r_ohm": "22.832",
+        "relative_r_error": -6.653016961560623e-06,
+        "area_rounding_m2": "-5E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler4000",
+        "line": 381,
+        "source": "XR1 vss sub! / ptap1 r=63.078 A=5.856p Perim=9.68u w=2.42u l=2.42u",
+        "area_from_wl_m2": "5.8564E-12",
+        "perimeter_from_wl_m": "0.00000968",
+        "resistance_from_wl_ohm": "63.07767565201719832136144796",
+        "stored_r_ohm": "63.078",
+        "relative_r_error": -5.142014375878732e-06,
+        "area_rounding_m2": "4E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler4000",
+        "line": 382,
+        "source": "XR0 iovss sub! / ptap1 r=625.742m A=1.416n Perim=150.5u w=37.625u l=37.625u",
+        "area_from_wl_m2": "1.415640625E-9",
+        "perimeter_from_wl_m": "0.000150500",
+        "resistance_from_wl_ohm": "0.6257420210908583001606257419",
+        "stored_r_ohm": "0.625742",
+        "relative_r_error": 3.370535827890828e-08,
+        "area_rounding_m2": "-3.59375E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_io_inv_x1",
+        "line": 395,
+        "source": "XR0 vss sub! / ptap1 r=258.978 A=624.1f Perim=3.16u w=790n l=790n",
+        "area_from_wl_m2": "6.24100E-13",
+        "perimeter_from_wl_m": "0.000003160",
+        "resistance_from_wl_ohm": "258.9783568087524114056182448",
+        "stored_r_ohm": "258.978",
+        "relative_r_error": 1.3777570002525529e-06,
+        "area_rounding_m2": "0E-18",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_LevelUp",
+        "line": 414,
+        "source": "XR0 vss sub! / ptap1 r=207.099 A=912.025f Perim=3.82u w=955n l=955n",
+        "area_from_wl_m2": "9.12025E-13",
+        "perimeter_from_wl_m": "0.000003820",
+        "resistance_from_wl_ohm": "207.0994975723923690174925111",
+        "stored_r_ohm": "207.099",
+        "relative_r_error": 2.402582303000099e-06,
+        "area_rounding_m2": "0E-18",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_io_nor2_x1",
+        "line": 429,
+        "source": "XR0 vss sub! / ptap1 r=251.534 A=656.1f Perim=3.24u w=810n l=810n",
+        "area_from_wl_m2": "6.56100E-13",
+        "perimeter_from_wl_m": "0.000003240",
+        "resistance_from_wl_ohm": "251.5335848669182002515335849",
+        "stored_r_ohm": "251.534",
+        "relative_r_error": -1.6504054394226962e-06,
+        "area_rounding_m2": "0E-18",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_io_tie",
+        "line": 440,
+        "source": "XR0 vss sub! / ptap1 r=258.978 A=624.1f Perim=3.16u w=790n l=790n",
+        "area_from_wl_m2": "6.24100E-13",
+        "perimeter_from_wl_m": "0.000003160",
+        "resistance_from_wl_ohm": "258.9783568087524114056182448",
+        "stored_r_ohm": "258.978",
+        "relative_r_error": 1.3777570002525529e-06,
+        "area_rounding_m2": "0E-18",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_io_nand2_x1",
+        "line": 455,
+        "source": "XR0 vss sub! / ptap1 r=251.534 A=656.1f Perim=3.24u w=810n l=810n",
+        "area_from_wl_m2": "6.56100E-13",
+        "perimeter_from_wl_m": "0.000003240",
+        "resistance_from_wl_ohm": "251.5335848669182002515335849",
+        "stored_r_ohm": "251.534",
+        "relative_r_error": -1.6504054394226962e-06,
+        "area_rounding_m2": "0E-18",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Clamp_N2N2D",
+        "line": 482,
+        "source": "XR0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u",
+        "area_from_wl_m2": "5.58009E-11",
+        "perimeter_from_wl_m": "0.00002988",
+        "resistance_from_wl_ohm": "11.43778835189639697995702660",
+        "stored_r_ohm": "11.438",
+        "relative_r_error": -1.850394331203183e-05,
+        "area_rounding_m2": "-1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Clamp_P2N2D",
+        "line": 499,
+        "source": "XR0 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u",
+        "area_from_wl_m2": "6.6994225E-11",
+        "perimeter_from_wl_m": "0.000032740",
+        "resistance_from_wl_ohm": "9.826115358092971595257295079",
+        "stored_r_ohm": "9.826",
+        "relative_r_error": 1.1740086807611974e-05,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_SecondaryProtection",
+        "line": 512,
+        "source": "XR1 minus sub! / ptap1 r=46.556 A=9.03p Perim=12.02u w=3.005u l=3.005u",
+        "area_from_wl_m2": "9.030025E-12",
+        "perimeter_from_wl_m": "0.000012020",
+        "resistance_from_wl_ohm": "46.55576418555322380852279273",
+        "stored_r_ohm": "46.556",
+        "relative_r_error": -5.065178425470218e-06,
+        "area_rounding_m2": "2.5E-17",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_LevelDown",
+        "line": 528,
+        "source": "XR0 vss sub! / ptap1 r=127.332 A=2.016p Perim=5.68u w=1.42u l=1.42u",
+        "area_from_wl_m2": "2.0164E-12",
+        "perimeter_from_wl_m": "0.00000568",
+        "resistance_from_wl_ohm": "127.3322592380853385998648719",
+        "stored_r_ohm": "127.332",
+        "relative_r_error": 2.0359225123189763e-06,
+        "area_rounding_m2": "4E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadInOut4mA",
+        "line": 545,
+        "source": "XR1 vss sub! / ptap1 r=26.933 A=18.966p Perim=17.42u w=4.355u l=4.355u",
+        "area_from_wl_m2": "1.8966025E-11",
+        "perimeter_from_wl_m": "0.000017420",
+        "resistance_from_wl_ohm": "26.93341743155510941357293082",
+        "stored_r_ohm": "26.933",
+        "relative_r_error": 1.5498888170995195e-05,
+        "area_rounding_m2": "2.5E-17",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadInOut4mA",
+        "line": 546,
+        "source": "XR0 iovss sub! / ptap1 r=214.134m A=4.314n Perim=262.72u w=65.68u l=65.68u",
+        "area_from_wl_m2": "4.3138624E-9",
+        "perimeter_from_wl_m": "0.00026272",
+        "resistance_from_wl_ohm": "0.2141335857953742950197946835",
+        "stored_r_ohm": "0.214134",
+        "relative_r_error": -1.9343244216471004e-06,
+        "area_rounding_m2": "-1.376E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Clamp_P15N15D",
+        "line": 559,
+        "source": "XR0 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u",
+        "area_from_wl_m2": "6.6994225E-11",
+        "perimeter_from_wl_m": "0.000032740",
+        "resistance_from_wl_ohm": "9.826115358092971595257295079",
+        "stored_r_ohm": "9.826",
+        "relative_r_error": 1.1740086807611974e-05,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Clamp_N15N15D",
+        "line": 571,
+        "source": "XR0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u",
+        "area_from_wl_m2": "5.58009E-11",
+        "perimeter_from_wl_m": "0.00002988",
+        "resistance_from_wl_ohm": "11.43778835189639697995702660",
+        "stored_r_ohm": "11.438",
+        "relative_r_error": -1.850394331203183e-05,
+        "area_rounding_m2": "-1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadInOut30mA",
+        "line": 589,
+        "source": "XR4 vss sub! / ptap1 r=26.746 A=19.141p Perim=17.5u w=4.375u l=4.375u",
+        "area_from_wl_m2": "1.9140625E-11",
+        "perimeter_from_wl_m": "0.000017500",
+        "resistance_from_wl_ohm": "26.74626865671641791044776119",
+        "stored_r_ohm": "26.746",
+        "relative_r_error": 1.0044743753006447e-05,
+        "area_rounding_m2": "-3.75E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadInOut30mA",
+        "line": 590,
+        "source": "XR3 iovss sub! / ptap1 r=214.165m A=4.313n Perim=262.7u w=65.675u l=65.675u",
+        "area_from_wl_m2": "4.313205625E-9",
+        "perimeter_from_wl_m": "0.000262700",
+        "resistance_from_wl_ohm": "0.2141652560852366792420462124",
+        "stored_r_ohm": "0.214165",
+        "relative_r_error": 1.1957380369306005e-06,
+        "area_rounding_m2": "2.05625E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_LevelUpInv",
+        "line": 610,
+        "source": "XR0 vss sub! / ptap1 r=190.268 A=1.051p Perim=4.1u w=1.025u l=1.025u",
+        "area_from_wl_m2": "1.050625E-12",
+        "perimeter_from_wl_m": "0.000004100",
+        "resistance_from_wl_ohm": "190.2681713384298022084698459",
+        "stored_r_ohm": "190.268",
+        "relative_r_error": 9.005110150009905e-07,
+        "area_rounding_m2": "-3.75E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadOut4mA",
+        "line": 638,
+        "source": "XR2 iovss sub! / ptap1 r=212.747m A=4.343n Perim=263.6u w=65.9u l=65.9u",
+        "area_from_wl_m2": "4.34281E-9",
+        "perimeter_from_wl_m": "0.0002636",
+        "resistance_from_wl_ohm": "0.2127470199135552415004309213",
+        "stored_r_ohm": "0.212747",
+        "relative_r_error": 9.36020495776694e-08,
+        "area_rounding_m2": "-1.9E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadOut4mA",
+        "line": 639,
+        "source": "XR1 vss sub! / ptap1 r=24.125 A=21.902p Perim=18.72u w=4.68u l=4.68u",
+        "area_from_wl_m2": "2.19024E-11",
+        "perimeter_from_wl_m": "0.00001872",
+        "resistance_from_wl_ohm": "24.12462089881444720154397574",
+        "stored_r_ohm": "24.125",
+        "relative_r_error": -1.571403877939061e-05,
+        "area_rounding_m2": "4E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadOut30mA",
+        "line": 655,
+        "source": "XR1 vss sub! / ptap1 r=24.125 A=21.902p Perim=18.72u w=4.68u l=4.68u",
+        "area_from_wl_m2": "2.19024E-11",
+        "perimeter_from_wl_m": "0.00001872",
+        "resistance_from_wl_ohm": "24.12462089881444720154397574",
+        "stored_r_ohm": "24.125",
+        "relative_r_error": -1.571403877939061e-05,
+        "area_rounding_m2": "4E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadOut30mA",
+        "line": 656,
+        "source": "XR2 iovss sub! / ptap1 r=214.165m A=4.313n Perim=262.7u w=65.675u l=65.675u",
+        "area_from_wl_m2": "4.313205625E-9",
+        "perimeter_from_wl_m": "0.000262700",
+        "resistance_from_wl_ohm": "0.2141652560852366792420462124",
+        "stored_r_ohm": "0.214165",
+        "relative_r_error": 1.1957380369306005e-06,
+        "area_rounding_m2": "2.05625E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadIn",
+        "line": 670,
+        "source": "XR1 vss sub! / ptap1 r=24.69 A=21.252p Perim=18.44u w=4.61u l=4.61u",
+        "area_from_wl_m2": "2.12521E-11",
+        "perimeter_from_wl_m": "0.00001844",
+        "resistance_from_wl_ohm": "24.69005167275100082888030616",
+        "stored_r_ohm": "24.69",
+        "relative_r_error": 2.09286152291733e-06,
+        "area_rounding_m2": "1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadIn",
+        "line": 671,
+        "source": "XR2 iovss sub! / ptap1 r=173.674m A=5.35n Perim=292.58u w=73.145u l=73.145u",
+        "area_from_wl_m2": "5.350191025E-9",
+        "perimeter_from_wl_m": "0.000292580",
+        "resistance_from_wl_ohm": "0.1736735365759414276428131336",
+        "stored_r_ohm": "0.173674",
+        "relative_r_error": -2.668355992102198e-06,
+        "area_rounding_m2": "1.91025E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Clamp_P8N8D",
+        "line": 682,
+        "source": "XR0 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u",
+        "area_from_wl_m2": "6.6994225E-11",
+        "perimeter_from_wl_m": "0.000032740",
+        "resistance_from_wl_ohm": "9.826115358092971595257295079",
+        "stored_r_ohm": "9.826",
+        "relative_r_error": 1.1740086807611974e-05,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Clamp_N8N8D",
+        "line": 695,
+        "source": "XR0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u",
+        "area_from_wl_m2": "5.58009E-11",
+        "perimeter_from_wl_m": "0.00002988",
+        "resistance_from_wl_ohm": "11.43778835189639697995702660",
+        "stored_r_ohm": "11.438",
+        "relative_r_error": -1.850394331203183e-05,
+        "area_rounding_m2": "-1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadInOut16mA",
+        "line": 714,
+        "source": "XR1 vss sub! / ptap1 r=26.933 A=18.966p Perim=17.42u w=4.355u l=4.355u",
+        "area_from_wl_m2": "1.8966025E-11",
+        "perimeter_from_wl_m": "0.000017420",
+        "resistance_from_wl_ohm": "26.93341743155510941357293082",
+        "stored_r_ohm": "26.933",
+        "relative_r_error": 1.5498888170995195e-05,
+        "area_rounding_m2": "2.5E-17",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadInOut16mA",
+        "line": 715,
+        "source": "XR0 iovss sub! / ptap1 r=207.756m A=4.45n Perim=266.84u w=66.71u l=66.71u",
+        "area_from_wl_m2": "4.4502241E-9",
+        "perimeter_from_wl_m": "0.00026684",
+        "resistance_from_wl_ohm": "0.2077563457320836492342768885",
+        "stored_r_ohm": "0.207756",
+        "relative_r_error": 1.6641256264523493e-06,
+        "area_rounding_m2": "2.241E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadOut16mA",
+        "line": 731,
+        "source": "XR1 vss sub! / ptap1 r=23.888 A=22.184p Perim=18.84u w=4.71u l=4.71u",
+        "area_from_wl_m2": "2.21841E-11",
+        "perimeter_from_wl_m": "0.00001884",
+        "resistance_from_wl_ohm": "23.88839730792387889070083195",
+        "stored_r_ohm": "23.888",
+        "relative_r_error": 1.663211335728779e-05,
+        "area_rounding_m2": "1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadOut16mA",
+        "line": 732,
+        "source": "XR2 iovss sub! / ptap1 r=208.667m A=4.43n Perim=266.24u w=66.56u l=66.56u",
+        "area_from_wl_m2": "4.4302336E-9",
+        "perimeter_from_wl_m": "0.00026624",
+        "resistance_from_wl_ohm": "0.2086672008547008547008547009",
+        "stored_r_ohm": "0.208667",
+        "relative_r_error": 9.625609265226454e-07,
+        "area_rounding_m2": "2.336E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadTriOut4mA",
+        "line": 748,
+        "source": "XR1 vss sub! / ptap1 r=24.567 A=21.391p Perim=18.5u w=4.625u l=4.625u",
+        "area_from_wl_m2": "2.1390625E-11",
+        "perimeter_from_wl_m": "0.000018500",
+        "resistance_from_wl_ohm": "24.56717587152369761065413239",
+        "stored_r_ohm": "24.567",
+        "relative_r_error": 7.158852269207093e-06,
+        "area_rounding_m2": "-3.75E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadTriOut4mA",
+        "line": 749,
+        "source": "XR2 iovss sub! / ptap1 r=208.667m A=4.43n Perim=266.24u w=66.56u l=66.56u",
+        "area_from_wl_m2": "4.4302336E-9",
+        "perimeter_from_wl_m": "0.00026624",
+        "resistance_from_wl_ohm": "0.2086672008547008547008547009",
+        "stored_r_ohm": "0.208667",
+        "relative_r_error": 9.625609265226454e-07,
+        "area_rounding_m2": "2.336E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadTriOut16mA",
+        "line": 765,
+        "source": "XR1 vss sub! / ptap1 r=24.897 A=21.022p Perim=18.34u w=4.585u l=4.585u",
+        "area_from_wl_m2": "2.1022225E-11",
+        "perimeter_from_wl_m": "0.000018340",
+        "resistance_from_wl_ohm": "24.89696657137649103931497775",
+        "stored_r_ohm": "24.897",
+        "relative_r_error": -1.3426767686452459e-06,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadTriOut16mA",
+        "line": 766,
+        "source": "XR2 iovss sub! / ptap1 r=208.211m A=4.44n Perim=266.54u w=66.635u l=66.635u",
+        "area_from_wl_m2": "4.440223225E-9",
+        "perimeter_from_wl_m": "0.000266540",
+        "resistance_from_wl_ohm": "0.2082110259540408472533691134",
+        "stored_r_ohm": "0.208211",
+        "relative_r_error": 1.2465259206887903e-07,
+        "area_rounding_m2": "2.23225E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadTriOut30mA",
+        "line": 782,
+        "source": "XR1 vss sub! / ptap1 r=24.649 A=21.298p Perim=18.46u w=4.615u l=4.615u",
+        "area_from_wl_m2": "2.1298225E-11",
+        "perimeter_from_wl_m": "0.000018460",
+        "resistance_from_wl_ohm": "24.64898772518139328403116587",
+        "stored_r_ohm": "24.649",
+        "relative_r_error": -4.979844458889192e-07,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadTriOut30mA",
+        "line": 783,
+        "source": "XR2 iovss sub! / ptap1 r=208.667m A=4.43n Perim=266.24u w=66.56u l=66.56u",
+        "area_from_wl_m2": "4.4302336E-9",
+        "perimeter_from_wl_m": "0.00026624",
+        "resistance_from_wl_ohm": "0.2086672008547008547008547009",
+        "stored_r_ohm": "0.208667",
+        "relative_r_error": 9.625609265226454e-07,
+        "area_rounding_m2": "2.336E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Corner",
+        "line": 794,
+        "source": "XR1 vss sub! / ptap1 r=35.383 A=13.177p Perim=14.52u w=3.63u l=3.63u",
+        "area_from_wl_m2": "1.31769E-11",
+        "perimeter_from_wl_m": "0.00001452",
+        "resistance_from_wl_ohm": "35.38302120453913614881087776",
+        "stored_r_ohm": "35.383",
+        "relative_r_error": 5.992860734292968e-07,
+        "area_rounding_m2": "-1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Corner",
+        "line": 795,
+        "source": "XR0 iovss sub! / ptap1 r=93.041m A=10.13n Perim=402.6u w=100.65u l=100.65u",
+        "area_from_wl_m2": "1.01304225E-8",
+        "perimeter_from_wl_m": "0.00040260",
+        "resistance_from_wl_ohm": "0.09304072026809018968676844659",
+        "stored_r_ohm": "0.093041",
+        "relative_r_error": -3.006544532091371e-06,
+        "area_rounding_m2": "4.225E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler400",
+        "line": 806,
+        "source": "XR1 vss sub! / ptap1 r=246.192 A=680.625f Perim=3.3u w=825n l=825n",
+        "area_from_wl_m2": "6.80625E-13",
+        "perimeter_from_wl_m": "0.000003300",
+        "resistance_from_wl_ohm": "246.1924948971581095933427539",
+        "stored_r_ohm": "246.192",
+        "relative_r_error": 2.010208122561226e-06,
+        "area_rounding_m2": "0E-18",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler400",
+        "line": 807,
+        "source": "XR0 iovss sub! / ptap1 r=6.246 A=114.169p Perim=42.74u w=10.685u l=10.685u",
+        "area_from_wl_m2": "1.14169225E-10",
+        "perimeter_from_wl_m": "0.000042740",
+        "resistance_from_wl_ohm": "6.245649355542989903875951207",
+        "stored_r_ohm": "6.246",
+        "relative_r_error": -5.6139042108564864e-05,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler200",
+        "line": 818,
+        "source": "XR1 vss sub! / ptap1 r=246.192 A=680.625f Perim=3.3u w=825n l=825n",
+        "area_from_wl_m2": "6.80625E-13",
+        "perimeter_from_wl_m": "0.000003300",
+        "resistance_from_wl_ohm": "246.1924948971581095933427539",
+        "stored_r_ohm": "246.192",
+        "relative_r_error": 2.010208122561226e-06,
+        "area_rounding_m2": "0E-18",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler200",
+        "line": 819,
+        "source": "XR0 iovss sub! / ptap1 r=14.724 A=40.96p Perim=25.6u w=6.4u l=6.4u",
+        "area_from_wl_m2": "4.096E-11",
+        "perimeter_from_wl_m": "0.0000256",
+        "resistance_from_wl_ohm": "14.72355769230769230769230769",
+        "stored_r_ohm": "14.724",
+        "relative_r_error": -3.0039913902994587e-05,
+        "area_rounding_m2": "0E-14",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler1000",
+        "line": 830,
+        "source": "XR1 vss sub! / ptap1 r=162.013 A=1.369p Perim=4.68u w=1.17u l=1.17u",
+        "area_from_wl_m2": "1.3689E-12",
+        "perimeter_from_wl_m": "0.00000468",
+        "resistance_from_wl_ohm": "162.0129279703747788854171833",
+        "stored_r_ohm": "162.013",
+        "relative_r_error": -4.4459163907288046e-07,
+        "area_rounding_m2": "-1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler1000",
+        "line": 831,
+        "source": "XR0 iovss sub! / ptap1 r=2.443 A=328.697p Perim=72.52u w=18.13u l=18.13u",
+        "area_from_wl_m2": "3.286969E-10",
+        "perimeter_from_wl_m": "0.00007252",
+        "resistance_from_wl_ohm": "2.442569094173251425849708724",
+        "stored_r_ohm": "2.443",
+        "relative_r_error": -0.0001763838832372387,
+        "area_rounding_m2": "-1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler2000",
+        "line": 842,
+        "source": "XR1 vss sub! / ptap1 r=101.912 A=2.856p Perim=6.76u w=1.69u l=1.69u",
+        "area_from_wl_m2": "2.8561E-12",
+        "perimeter_from_wl_m": "0.00000676",
+        "resistance_from_wl_ohm": "101.9124177161219205291126340",
+        "stored_r_ohm": "101.912",
+        "relative_r_error": 4.098792310233624e-06,
+        "area_rounding_m2": "1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler2000",
+        "line": 843,
+        "source": "XR0 iovss sub! / ptap1 r=1.224 A=695.113p Perim=105.46u w=26.365u l=26.365u",
+        "area_from_wl_m2": "6.95113225E-10",
+        "perimeter_from_wl_m": "0.000105460",
+        "resistance_from_wl_ohm": "1.224122877704284951573292999",
+        "stored_r_ohm": "1.224",
+        "relative_r_error": 0.00010039028127855521,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler10000",
+        "line": 854,
+        "source": "XR1 vss sub! / ptap1 r=32.364 A=14.861p Perim=15.42u w=3.855u l=3.855u",
+        "area_from_wl_m2": "1.4861025E-11",
+        "perimeter_from_wl_m": "0.000015420",
+        "resistance_from_wl_ohm": "32.36350156574950814908015828",
+        "stored_r_ohm": "32.364",
+        "relative_r_error": -1.540088525805991e-05,
+        "area_rounding_m2": "2.5E-17",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Filler10000",
+        "line": 855,
+        "source": "XR0 iovss sub! / ptap1 r=253.731m A=3.622n Perim=240.72u w=60.18u l=60.18u",
+        "area_from_wl_m2": "3.6216324E-9",
+        "perimeter_from_wl_m": "0.00024072",
+        "resistance_from_wl_ohm": "0.2537313788353439732739042662",
+        "stored_r_ohm": "0.253731",
+        "relative_r_error": 1.493058963915619e-06,
+        "area_rounding_m2": "-3.676E-13",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Clamp_P20N0D",
+        "line": 869,
+        "source": "XR1 iovss sub! / ptap1 r=9.826 A=66.994p Perim=32.74u w=8.185u l=8.185u",
+        "area_from_wl_m2": "6.6994225E-11",
+        "perimeter_from_wl_m": "0.000032740",
+        "resistance_from_wl_ohm": "9.826115358092971595257295079",
+        "stored_r_ohm": "9.826",
+        "relative_r_error": 1.1740086807611974e-05,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_Clamp_N20N0D",
+        "line": 881,
+        "source": "XR0 iovss sub! / ptap1 r=11.438 A=55.801p Perim=29.88u w=7.47u l=7.47u",
+        "area_from_wl_m2": "5.58009E-11",
+        "perimeter_from_wl_m": "0.00002988",
+        "resistance_from_wl_ohm": "11.43778835189639697995702660",
+        "stored_r_ohm": "11.438",
+        "relative_r_error": -1.850394331203183e-05,
+        "area_rounding_m2": "-1E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadAnalog",
+        "line": 899,
+        "source": "XR1 vss sub! / ptap1 r=22.579 A=23.863p Perim=19.54u w=4.885u l=4.885u",
+        "area_from_wl_m2": "2.3863225E-11",
+        "perimeter_from_wl_m": "0.000019540",
+        "resistance_from_wl_ohm": "22.57896734632046351394395232",
+        "stored_r_ohm": "22.579",
+        "relative_r_error": -1.446196888103373e-06,
+        "area_rounding_m2": "2.25E-16",
+        "perimeter_equal": true,
+        "square": true
+      },
+      {
+        "cell": "sg13g2_IOPadAnalog",
+        "line": 900,
+        "source": "XR2 iovss sub! / ptap1 r=214.8m A=4.3n Perim=262.3u w=65.575u l=65.575u",
+        "area_from_wl_m2": "4.300080625E-9",
+        "perimeter_from_wl_m": "0.000262300",
+        "resistance_from_wl_ohm": "0.2148001406612145605453512551",
+        "stored_r_ohm": "0.2148",
+        "relative_r_error": 6.548473676003043e-07,
+        "area_rounding_m2": "8.0625E-14",
+        "perimeter_equal": true,
+        "square": true
+      }
+    ],
+    "all_taps_square": true,
+    "all_tap_perimeters_equal_2wl": true,
+    "max_relative_r_reproduction_error": 0.0001763838832372387,
+    "aggregate_counterfactual": [
+      {
+        "rail": "VSS",
+        "layout_area_um2": 98.034,
+        "layout_perimeter_um": 657.76,
+        "reference_area_um2": 97.107875,
+        "reference_perimeter_um": 87.9,
+        "formal_extension_of_pcell_formula_layout_ohm": "1.296649616165251378020995139",
+        "formal_extension_reference_ohm": "5.297071813834951620302649279",
+        "reference_to_layout_resistance_ratio": "4.085199075985279005015327050",
+        "qualification": "Arithmetic extension of published rectangle formula only; not a qualified arbitrary-shape substrate extraction."
+      },
+      {
+        "rail": "IOVSS",
+        "layout_area_um2": 15455.02395,
+        "layout_perimeter_um": 4526.95,
+        "reference_area_um2": 15352.823,
+        "reference_perimeter_um": 1223.46,
+        "formal_extension_of_pcell_formula_layout_ohm": "0.04904420366337230661838591777",
+        "formal_extension_reference_ohm": "0.05912061226271293751439933790",
+        "reference_to_layout_resistance_ratio": "1.205455647083245381368066653",
+        "qualification": "Arithmetic extension of published rectangle formula only; not a qualified arbitrary-shape substrate extraction."
+      }
+    ],
+    "notes": [
+      "SPICE ptap1/ntap1 have only a linear R element controlled by R. W/L are explicitly unused and A/P are absent as simulation inputs.",
+      "Xschem and PCell sources generate A=W*L, P=2*(W+L), and R=1/(A/raspec+P/rpspec); the arbitrary-shape I/O reference retains square tuples.",
+      "That establishes the published parameter-generation semantics, not how I/O designers selected each square side or any foundry validation of arbitrary-shape equivalent squares.",
+      "Native CustomTap compares enabled A/P, mapping A and PERIM directly; parallel combiner sums A and P on identical ordered TIE/WELL nets. No existing local conversion changes these numbers.",
+      "Changing the comparison to R alone is not a valid closure: applying even the same rectangle formula to extracted A/P predicts materially different R, and would require a different qualified deck.",
+      "A legitimate corrected library must derive both schematic/LVS geometry and simulation R from a documented common specification with qualified arbitrary-shape/hierarchy handling. Copying measured A/P into expected CDL without that independent specification is not such a correction."
+    ],
+    "no_deck_reference_geometry_changes": true,
+    "no_native_execution": true,
+    "manufacturing_approval": false
+  }
+}

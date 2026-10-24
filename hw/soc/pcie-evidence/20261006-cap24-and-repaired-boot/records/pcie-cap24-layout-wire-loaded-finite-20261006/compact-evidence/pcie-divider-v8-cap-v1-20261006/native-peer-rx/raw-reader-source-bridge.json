@@ -1,0 +1,50 @@
+[
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-20261006/native-peer-rx/read_raw_databases.py",
+      "bytes": 1584,
+      "sha256": "5483d6b39f98bb61d894cb2262af4ff4108827b820d6d71c80f2d6f260c8b34c"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v8-cap-v1-20261006/native-peer-rx/read_raw_databases.py",
+      "bytes": 1580,
+      "sha256": "c04e1f3dd20735d6207ff950c15f5c920f1870db2cdd7a40cd5155483e734b7f"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Read saved KLayout comparison databases only; never extract/compare geometry.\"\"\"\nfrom pathlib import Path\nimport hashlib,json\nimport klayout.db as db\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Read saved KLayout comparison databases only; never extract/compare geometry.\"\"\"\nfrom pathlib import Path\nimport hashlib,json\nimport klayout.db as db\n"
+      },
+      {
+        "tag": "replace",
+        "before": "D=Path('/dev/shm/nssoc-div4-v7-compact-v2-checks-01');B=Path(__file__).resolve().parent\n",
+        "after": "D=Path('/dev/shm/nssoc-div4-v8-cap-v1-checks-01');B=Path(__file__).resolve().parent\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\ndef pin(p):\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nrows=[]\nfor path in sorted(D.glob('*/result.lvsdb')):\n before=pin(path);saved=db.LayoutVsSchematic();saved.read(str(path));xref=saved.xref();assert xref is not None\n pairs=[]\n for p in xref.each_circuit_pair():\n  a,z=p.first(),p.second();assert a is not None and z is not None\n  assert list(a.each_subcircuit())==[] and list(z.each_subcircuit())==[]\n  pairs.append(dict(layout=a.name,schematic=z.name,status=str(p.status()),layout_devices=sum(1 for _ in a.each_device()),schematic_devices=sum(1 for _ in z.each_device())))\n diagnostics=[dict(severity=str(x.severity),category=x.category_name,cell=x.cell_name,net=x.net_name,message=x.message) for x in saved.each_log_entry()]\n assert pin(path)==before;rows.append(dict(name=path.parent.name,input=dict(path=str(path),**before),pairs=pairs,extraction_diagnostics=diagnostics))\nassert len(rows)==16\np=B/'raw-database-read.json';assert not p.exists();p.write_text(json.dumps(dict(status='READ_ONLY_SAVED_NATIVE_DATABASE_CENSUS',method=pin(Path(__file__)),databases=rows,geometry_extraction_or_comparison_executed=False),indent=2)+'\\n')\nprint('READ_ONLY_SAVED_16_DATABASES_COMPLETE')\n",
+        "after": "\ndef pin(p):\n with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nrows=[]\nfor path in sorted(D.glob('*/result.lvsdb')):\n before=pin(path);saved=db.LayoutVsSchematic();saved.read(str(path));xref=saved.xref();assert xref is not None\n pairs=[]\n for p in xref.each_circuit_pair():\n  a,z=p.first(),p.second();assert a is not None and z is not None\n  assert list(a.each_subcircuit())==[] and list(z.each_subcircuit())==[]\n  pairs.append(dict(layout=a.name,schematic=z.name,status=str(p.status()),layout_devices=sum(1 for _ in a.each_device()),schematic_devices=sum(1 for _ in z.each_device())))\n diagnostics=[dict(severity=str(x.severity),category=x.category_name,cell=x.cell_name,net=x.net_name,message=x.message) for x in saved.each_log_entry()]\n assert pin(path)==before;rows.append(dict(name=path.parent.name,input=dict(path=str(path),**before),pairs=pairs,extraction_diagnostics=diagnostics))\nassert len(rows)==16\np=B/'raw-database-read.json';assert not p.exists();p.write_text(json.dumps(dict(status='READ_ONLY_SAVED_NATIVE_DATABASE_CENSUS',method=pin(Path(__file__)),databases=rows,geometry_extraction_or_comparison_executed=False),indent=2)+'\\n')\nprint('READ_ONLY_SAVED_16_DATABASES_COMPLETE')\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-20261006/native-peer-rx/run_database_reader.py",
+      "bytes": 612,
+      "sha256": "f831fd00888ae6793a50398c25ac29b77dc75b22f27034fe4cdaeb0464fededd"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v8-cap-v1-20261006/native-peer-rx/run_database_reader.py",
+      "bytes": 612,
+      "sha256": "f831fd00888ae6793a50398c25ac29b77dc75b22f27034fe4cdaeb0464fededd"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "from pathlib import Path\nimport sys,json,hashlib\nR=Path.cwd();B=Path(__file__).resolve().parent\nsys.path.insert(0,str(R/'hw/soc/flow'))\nimport check_pcie_clock_div4_v7_v2 as checked\nassert checked.digest(checked.__file__)=='24c89628c6d61226344214e077b5fa535c5570e4a7853fbd109e8cb1b1fcd163'\nchecked.SCRATCH_ROOTS=(B,)\napp=R/'hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage';assert checked.digest(app)==checked.APP_SHA\nr=checked.execute([app,'python',B/'read_raw_databases.py'],B,'saved-database-reader');assert r['returncode']==0\n(B/'reader-execution.json').write_text(json.dumps(r,indent=2)+'\\n');print(r)\n",
+        "after": "from pathlib import Path\nimport sys,json,hashlib\nR=Path.cwd();B=Path(__file__).resolve().parent\nsys.path.insert(0,str(R/'hw/soc/flow'))\nimport check_pcie_clock_div4_v7_v2 as checked\nassert checked.digest(checked.__file__)=='24c89628c6d61226344214e077b5fa535c5570e4a7853fbd109e8cb1b1fcd163'\nchecked.SCRATCH_ROOTS=(B,)\napp=R/'hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage';assert checked.digest(app)==checked.APP_SHA\nr=checked.execute([app,'python',B/'read_raw_databases.py'],B,'saved-database-reader');assert r['returncode']==0\n(B/'reader-execution.json').write_text(json.dumps(r,indent=2)+'\\n');print(r)\n"
+      }
+    ]
+  }
+]

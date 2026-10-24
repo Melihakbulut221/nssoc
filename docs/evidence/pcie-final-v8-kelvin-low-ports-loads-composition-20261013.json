@@ -1,0 +1,127 @@
+{
+  "run": 38483194682,
+  "source_head": "6041b750d692f86db0df8bf4ca10a8a935f2ce4d",
+  "status": "PASS_SOURCE_BOUND_NATIVE_DEVICE_WIRE_COMPOSITION_REQUIRES_TRANSIENT",
+  "variant": "critical_buses_kelvin_low_ports_loads",
+  "receipt": {
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38483194682-1-compose-final_drive_v8-critical_buses_kelvin_low_ports_loads/tx-layout-composition-final_drive_v8-critical_buses_kelvin_low_ports_loads-38483194682-1.tar.gz",
+    "bytes": 6685830,
+    "sha256": "f7086bef4932cb7c511d3ac0ab8a28d36cf28c418eb64d168fb440f1497713cf"
+  },
+  "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38483194682-1-compose-final_drive_v8-critical_buses_kelvin_low_ports_loads/tx-layout-composition-final_drive_v8-critical_buses_kelvin_low_ports_loads-38483194682-1.summary.json",
+  "summary_sha256": "24339ccd53a51238f6bb7d7c01c1d1916b76e8efdf8d97f6d3e6101ec00de6ff",
+  "outputs": {
+    "mux54-wire01.spice": "bf3b7dd725caddbb1e612b6efa7dd83dfa1deff7a8d9fbe9579bf929bb76f4e6",
+    "mux54-compact01.spice": "77cd82604becb8b483c298882607dda69948fca4a59e92fb257a713db5c9d9bc"
+  },
+  "counts": {
+    "devices": 54,
+    "R": 4047,
+    "C": 2653
+  },
+  "extraction_source_sha256": "45d52174b8bcb0fb399a3faf6a4c3d25885b5f36f1573e149a8431f57a23e8da",
+  "adopted": false,
+  "scope": "Start from low_ports with op/on buses -32/-24um; move only load R19/R20 and their native substrate taps from y=-50 to -18um. Same circuit/device sizes and metal widths. 560-category DRC zero markers, strict hierarchical/flat LVS, five physical faults and thirteen raw RC corruption controls passed. Loaded original-bit PVT still required; no assembled serializer intermacro PEX, qualified substrate/RF extraction, PLL/CDR or PHY/chip acceptance.",
+  "cloud_continuation": {
+    "execution": "GitHub hosted only; local workspace remains empty.",
+    "source_commit": "22c0add34538c1c9c53ddb9caaeac220489b8217",
+    "loaded_nominal_run": 38483582548,
+    "loaded_hot_cold_run": 38483554180,
+    "ack_combined_mapping_run": 38483062933,
+    "ack_mapping_source": "a8e69b9e64d5fff28b7436a96d2ed3503e44b93c",
+    "route_run": 38472175339,
+    "next": [
+      "Inspect every full-wave original-bit, device/interface and convergence gate in the six matched4:1 cases; Actions success is not electrical acceptance.",
+      "If gates pass, extend32:1 PVT and fault controls before assembled-tree clock/metal integration.",
+      "If gates fail, retain actual waveforms and inspect the remaining long output shunt branches; change physical geometry rather than RC values, sample times or thresholds.",
+      "Read joint baseline/combined32 port controls and three-corner mapping before adopting any ACK/EOP combination.",
+      "Preserve the confirmed live main-chip route; observation timeout is not a failed route."
+    ],
+    "full_serial_phy_complete": false,
+    "main_chip_route_complete": false,
+    "final_setup_hold_closed": false
+  },
+  "independent_output_shunt_hypothesis": {
+    "variant": "critical_buses_kelvin_low_ports_shunts",
+    "baseline": "critical_buses_kelvin_low_ports, not the pending load-move geometry",
+    "geometry": "Move R23(op,avss) from279.6,-50 to92.4,-82um and R24(on,avss) from318,-50 to54,-82um. Their output TM1 lanes align with R25/R26 series-resistor op/on lanes, removing the long horizontal output buses. Route avss on separate TM1 lanes x149.6/34.8um to avoid occupied signal/substrate lanes.",
+    "scope": "Same54devices and resistor values; fresh native DRC/LVS, five physical faults, native RC graph with13faults and unchanged loaded PVT required. This is a hypothesis, not an electrical improvement claim.",
+    "failed_physical_attempt": {
+      "run": 38483970941,
+      "source_head": "db17512e60c4b01020051cf09af9e05d076da048",
+      "summary_asset_id": 638551734,
+      "summary_sha256": "a1815e32f0553da8a357a8e5b64c0fe9cad1b1022cf54d50395a2c245f3c5ab6",
+      "archive_asset_id": 638551641,
+      "archive_bytes": 88923,
+      "archive_sha256": "78843456c8c31f38974628a04759f89f7409b479f854a3d7a5ec84556a5fbd00",
+      "drc_markers": 1,
+      "drc_category": "TM1.b",
+      "native_marker_edge_pair": "(167.16,51.76;167.16,293.44)|(165.64,294.056;165.64,51.144)",
+      "cause": "After14um X translation: the new avss lane150 plus1.64um half width leaves1.52um to existing avdd lane154.8 minus1.64um; insufficient native TM1 spacing.",
+      "repair": "Move only the new avss lane from150.0 to149.6um. Resulting geometric gap to avdd is1.92um; gap to neighboring sub lane145.2 with0.82um half width is1.94um. Rerun all native decks and fault controls; these computed distances are not a DRC verdict."
+    }
+  },
+  "loaded_screen": {
+    "status": "REJECTED_HOT_OUTPUT_MARGIN_WITH_DEVICE_GATES_PASSING",
+    "source_head": "22c0add34538c1c9c53ddb9caaeac220489b8217",
+    "hot_low_wire": {
+      "run": 38483554180,
+      "summary_asset_id": 638557224,
+      "summary_sha256": "2d2cdc5fd5f1213fa863d1ae2eedba6f82352a5839e68312e348ad25c2fa90d6",
+      "minimum_margin_v": 0.07695510428627772,
+      "wrong_sign_samples": 0,
+      "below100mV_samples": 64,
+      "failed_hbts": {},
+      "failed_mos": {},
+      "diagnostics": []
+    },
+    "other_cases": [
+      {
+        "run": 38483582548,
+        "condition": "nominal",
+        "mode": "physical_compact",
+        "summary_asset_id": 638546351,
+        "summary_sha256": "b1cc5ceeda2bd8e3941ce629b353112468d79a680f1aa930c5fa6b2435483564",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.2813612146771207
+      },
+      {
+        "run": 38483582548,
+        "condition": "nominal",
+        "mode": "physical_wire",
+        "summary_asset_id": 638559294,
+        "summary_sha256": "71a10a1d789c97ebb41796b192f618096d49609881c42bdc671cd2d582564b85",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.21419180385074532
+      },
+      {
+        "run": 38483554180,
+        "condition": "hot_low",
+        "mode": "physical_compact",
+        "summary_asset_id": 638545650,
+        "summary_sha256": "72ea825e5989492cf543da8e2e1c4a0a61dbcfef749d2ddec2f0f287f0f604bc",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.22988173910490173
+      },
+      {
+        "run": 38483554180,
+        "condition": "cold_high",
+        "mode": "physical_compact",
+        "summary_asset_id": 638545451,
+        "summary_sha256": "e4ca82ccc10f6635ce35aee783d1cca68b53778008890dea8b8426365e90d68e",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.272647608868114
+      },
+      {
+        "run": 38483554180,
+        "condition": "cold_high",
+        "mode": "physical_wire",
+        "summary_asset_id": 638557254,
+        "summary_sha256": "5bf0235390ada5f9d7b78b5682d0854e8c78c0585110bde13d2e8b9bd57688c5",
+        "component_screen_passed": true,
+        "minimum_margin_v": 0.26258367938301386
+      }
+    ],
+    "decision": "Load relocation alone gives only2.703mV hot margin gain over low_ports and still64failing samples. Not adopted. The independent shunt proximity candidate has unchanged low_ports loads; it does not inherit this geometry."
+  }
+}

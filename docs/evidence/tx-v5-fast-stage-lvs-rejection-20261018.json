@@ -1,0 +1,70 @@
+{
+  "observed_utc": "2026-10-18T18:45:28.828928+00:00",
+  "run_id": 39154915645,
+  "source_head": "b6e85db37a8deb6be74a17a1b45a418c60952623",
+  "summary_asset_id": 654188810,
+  "summary_sha256": "3f1f2729c966f60e7e1d8d533a13aa3715e2ee49f59480de0047c328fa3b24b5",
+  "parts_asset_id": 654188891,
+  "parts_sha256": "62a8c1bfe7f1230b23c755bcd309486256e5bddf4d6821f2607d0875a46084be",
+  "parts": {
+    "format": "ordered-tar-gzip-parts-v1",
+    "stem": "tx-v5-fast-stage-assembly-39154915645-1",
+    "source_directory": "cloud-tx-v5-fast-stage-assembly",
+    "bytes": 559260,
+    "sha256": "a29892e3a38330f6014c51560e062be2c32aa9285cb74ae59df33e5a187f7ce8",
+    "parts": [
+      {
+        "index": 0,
+        "name": "tx-v5-fast-stage-assembly-39154915645-1.tar.gz.part0000",
+        "bytes": 559260,
+        "sha256": "a29892e3a38330f6014c51560e062be2c32aa9285cb74ae59df33e5a187f7ce8"
+      }
+    ],
+    "part_limit_bytes": 1073741824,
+    "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+    "verification": {
+      "parts": 1,
+      "bytes": 559260,
+      "sha256": "a29892e3a38330f6014c51560e062be2c32aa9285cb74ae59df33e5a187f7ce8",
+      "all_parts_and_combined_bytes_verified": true
+    }
+  },
+  "observed": {
+    "status": "FAIL_OR_ERROR",
+    "error": "RuntimeError(('physical', 1))",
+    "serial_phy_complete": false,
+    "physical_status": "FAIL",
+    "lvs_audit": {
+      "status": "FAIL",
+      "top": "nssoc_tx_tree32_budget_balanced_v5_faststage_core_v1",
+      "reasons": [
+        "Non-matching, skipped, missing or warning circuit",
+        "Missing explicit successful deck verdict",
+        "Deck explicitly reported a mismatch"
+      ],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "NoMatch": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_tx_tree32_budget_balanced_v5_faststage_core_v1",
+          "schematic": "NSSOC_TX_TREE32_BUDGET_BALANCED_V5_FASTSTAGE_CORE_V1",
+          "status": "NoMatch",
+          "layout_devices_recursive": 1674,
+          "schematic_devices_recursive": 1674
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-v5-fast-stage-assembly/physical/lvs/result.lvsdb": {
+          "bytes": 10475708,
+          "sha256": "d5b990705fb89f20680cffc78646b90c7b076079c6954db349d18275f15681f0"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-v5-fast-stage-assembly/physical/lvs/deck.log": {
+          "bytes": 37258,
+          "sha256": "664c4381c3c2a7e5df8c5e18b49c3ef3f1ff1bec3c8e2f893b53615aeaf5d611"
+        }
+      }
+    }
+  }
+}

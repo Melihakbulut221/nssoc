@@ -41,7 +41,7 @@ SYN_SHIFT_MAX = 7
 LEAK_SHIFT_MAX = 15
 
 
-def _check_int(name, value):
+def _check_int(name: str, value: object) -> int:
     """Reject anything that is not a plain int (floats, bools, numpy)."""
     if type(value) is not int:
         raise TypeError(f"{name} must be a plain int, got {type(value).__name__}")
@@ -80,8 +80,8 @@ class LIFConfig:
     where the hardware refuses to start.
     """
 
-    def __init__(self, thresh, v_reset=0, leak_shift=3, syn_shift=0,
-                 refr_period=0, leak_en=True):
+    def __init__(self, thresh: int, v_reset: int = 0, leak_shift: int = 3,
+                 syn_shift: int = 0, refr_period: int = 0, leak_en: bool = True) -> None:
         _check_int("thresh", thresh)
         _check_int("v_reset", v_reset)
         _check_int("leak_shift", leak_shift)
@@ -117,7 +117,8 @@ class LIFCore:
     weight in such a word contributes zero (E10, fail-operational).
     """
 
-    def __init__(self, n_neurons, n_axons, weights, config, tile_offset=0):
+    def __init__(self, n_neurons: int, n_axons: int, weights: list[list[int]],
+                 config: LIFConfig, tile_offset: int = 0) -> None:
         _check_int("n_neurons", n_neurons)
         _check_int("n_axons", n_axons)
         _check_int("tile_offset", tile_offset)
@@ -148,21 +149,21 @@ class LIFCore:
         self.weights = [list(row) for row in weights]
         self.config = config
         self.tile_offset = tile_offset
-        self.poisoned_words = set()
+        self.poisoned_words: set[int] = set()
         self.v = [0] * n_neurons  # post-STATE_CLR state (spec section 3)
         self.r = [0] * n_neurons
 
     # -- state access (N_ADDR/N_DATA port model) ---------------------------
 
-    def reset_state(self):
+    def reset_state(self) -> None:
         """CTRL.STATE_CLR: zero all neuron state."""
         self.v = [0] * self.n_neurons
         self.r = [0] * self.n_neurons
 
-    def get_state(self, j):
+    def get_state(self, j: int) -> tuple[int, int]:
         return self.v[j], self.r[j]
 
-    def set_state(self, j, v, r=0):
+    def set_state(self, j: int, v: int, r: int = 0) -> None:
         """Debug/state-restore write; validated like the state word."""
         _check_int("v", v)
         _check_int("r", r)
@@ -175,17 +176,17 @@ class LIFCore:
 
     # -- ECC hook (E10) ----------------------------------------------------
 
-    def word_index(self, axon, j):
+    def word_index(self, axon: int, j: int) -> int:
         """Weight SRAM word index of W[axon][j] (spec section 5)."""
         return (axon * self.n_neurons + j) // WEIGHTS_PER_WORD
 
-    def poison_word(self, word):
+    def poison_word(self, word: int) -> None:
         """Mark a weight word uncorrectable (double-bit ECC error model)."""
         self.poisoned_words.add(word)
 
     # -- event processing (E1..E8) -----------------------------------------
 
-    def synaptic_event(self, axon):
+    def synaptic_event(self, axon: int) -> list[int]:
         """Consume one input spike event; return emitted spike ids in order.
 
         Implements E1..E5 with the E8 ascending-index scan.
@@ -212,7 +213,7 @@ class LIFCore:
                 self.v[j] = v
         return spikes
 
-    def tick(self):
+    def tick(self) -> None:
         """Consume one TICK event: refractory countdown and leak (E6, E7).
 
         Never emits spikes (spec section 4.2).
@@ -224,7 +225,7 @@ class LIFCore:
             if cfg.leak_en:  # (E6) leak applies regardless of R
                 self.v[j] = leak_value(self.v[j], cfg.leak_shift)
 
-    def run_frames(self, frames):
+    def run_frames(self, frames: list[list[int]]) -> list[list[int]]:
         """Convenience driver: frames is a list of timesteps, each a list
         of input axon ids (in arrival order). Each timestep is processed
         as its spike events in order followed by one TICK (E8). Returns

@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "status": "SOURCE_CONTROLS_PASS_NATIVE_STRICT_PARENT_PENDING",
+  "scope": "Seven actual chip I/O instances and original c4 CDL, explicit globals retained. Shared full-chip reference reader repaired. No tap A/P, terminal or geometry edits.",
+  "strict_parent_preflight": {
+    "status": "SOURCE_FROZEN_NATIVE_COMPARISON_PENDING",
+    "methods": {
+      "scripts/run_io_strict_parent_lvs.py": {
+        "bytes": 11428,
+        "sha256": "210627653dba4b1f9fcdaeb78f37dd6eada6eb91475dbde8824444ff960d13f5"
+      },
+      "sw/tests/test_io_strict_parent_lvs.py": {
+        "bytes": 5331,
+        "sha256": "4ed885398e1833b47679741dbc43365626e03fd29d53f43feefe9906d9e2c604"
+      },
+      ".github/workflows/io-strict-parent-lvs.yml": {
+        "bytes": 2290,
+        "sha256": "5b2bbd12e044868442764409f274c6bd13a3afeca6d41996b98c2ba8ee3a0f13"
+      }
+    },
+    "new_tests_passed": 14,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "diff_check": "PASS",
+    "real_reference": {
+      "original_sha256": "33217c1d8efc201d7183c1179f58dca4217cf9ab4630f1ddff80d6c4a6e89752",
+      "schematic_sha256": "1a1a545e3d279e234f99939baddd915118a63e83aea94c684d78459fe600a663",
+      "subcircuits": 11,
+      "explicit_globals": [
+        "sub!"
+      ],
+      "dialect_changes": 95
+    },
+    "geometry_changed": false,
+    "terminal_candidate_applied": false,
+    "tap_parameters_changed": false,
+    "full_chip_lvs_accepted": false
+  },
+  "full_chip_reader_validation": {
+    "status": "SOURCE_SIDE_GLOBAL_RETENTION_VERIFIED_NO_LVS_CLAIM",
+    "files": {
+      "hw/soc/flow/transistor_schematic.py": {
+        "bytes": 14266,
+        "sha256": "e2af13d90c5c37f03884d422a6ac8de7eb1f62e49b8dbf82452147c2dabda0aa"
+      },
+      "hw/soc/flow/io_cell_schematic.py": {
+        "bytes": 2943,
+        "sha256": "1877ac34785c8f5d05a7e66d0d2b3ebc62975eb8af5fb5c450889e8389729b5a"
+      },
+      "sw/tests/test_transistor_schematic.py": {
+        "bytes": 11387,
+        "sha256": "c01f87e182a87ccbee0b0bb6f1615ca80bec72d8894348e0264677ef051cf9f6"
+      }
+    },
+    "tests": {
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_transistor_schematic.py sw/tests/test_io_cdl_globals.py sw/tests/test_io_cdl_conversion.py sw/tests/test_inline_cdl.py sw/tests/test_coherent_io_lvs.py sw/tests/test_io_strict_parent_lvs.py sw/tests/test_archive_coherent_vss_failure.py sw/tests/test_io_tap_contract_audit.py",
+      "passed": 217,
+      "seconds": 1.05,
+      "actual_yosys_cli_cases": 2,
+      "yosys_version": "Yosys 0.33 (git sha1 2584903a060)"
+    },
+    "ruff": "PASS",
+    "diff_check": "PASS",
+    "strict_parent_compatibility": {
+      "original_source_path": "hw/soc/out/io-topology-contract-20261001-1429/upstream/local-sg13g2_io.cdl",
+      "original_source_sha256": "33217c1d8efc201d7183c1179f58dca4217cf9ab4630f1ddff80d6c4a6e89752",
+      "prepared_reference_sha256": "1a1a545e3d279e234f99939baddd915118a63e83aea94c684d78459fe600a663",
+      "selected_subcircuits": 11,
+      "explicit_globals": [
+        "sub!"
+      ],
+      "unchanged_from_original_preparation": true
+    },
+    "scope": "Full-chip main now merges explicitly declared .GLOBAL and *.GLOBAL across --cdl files, preserves selected device bodies verbatim, and records declarations. No global is inferred from bang naming. Legacy body-only read_cdl rejects any declaration that it cannot retain. I/O API remains compatible; no temporary body files or circular dependency. Generated internal/floating nets cannot collide with declared globals.",
+    "full_chip_lvs_accepted": false,
+    "physical_substrate_connectivity_proven": false,
+    "manufacturing_approval": false
+  },
+  "root_validation": {
+    "tests_passed": 77,
+    "real_original_reference_sha256": "1a1a545e3d279e234f99939baddd915118a63e83aea94c684d78459fe600a663",
+    "ruff": "PASS",
+    "actionlint": "PASS"
+  },
+  "source_files": {
+    "scripts/run_io_strict_parent_lvs.py": {
+      "bytes": 11428,
+      "sha256": "210627653dba4b1f9fcdaeb78f37dd6eada6eb91475dbde8824444ff960d13f5"
+    },
+    "sw/tests/test_io_strict_parent_lvs.py": {
+      "bytes": 5331,
+      "sha256": "4ed885398e1833b47679741dbc43365626e03fd29d53f43feefe9906d9e2c604"
+    },
+    ".github/workflows/io-strict-parent-lvs.yml": {
+      "bytes": 2290,
+      "sha256": "5b2bbd12e044868442764409f274c6bd13a3afeca6d41996b98c2ba8ee3a0f13"
+    },
+    "hw/soc/flow/transistor_schematic.py": {
+      "bytes": 14266,
+      "sha256": "e2af13d90c5c37f03884d422a6ac8de7eb1f62e49b8dbf82452147c2dabda0aa"
+    },
+    "hw/soc/flow/io_cell_schematic.py": {
+      "bytes": 2943,
+      "sha256": "1877ac34785c8f5d05a7e66d0d2b3ebc62975eb8af5fb5c450889e8389729b5a"
+    },
+    "sw/tests/test_transistor_schematic.py": {
+      "bytes": 11387,
+      "sha256": "c01f87e182a87ccbee0b0bb6f1615ca80bec72d8894348e0264677ef051cf9f6"
+    },
+    ".github/workflows/checks.yml": {
+      "bytes": 18599,
+      "sha256": "a11753f9bb61d46850b030f5dc0a2a2e82dd26989632cc916ee67eabe96ac1e2"
+    }
+  },
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false
+}

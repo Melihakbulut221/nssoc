@@ -1,0 +1,41 @@
+{
+  "status": "REJECTED_AS_TIMING_IMPROVEMENT",
+  "utc": "2026-10-05T13:26:18.345713+00:00",
+  "stable_baseline": "V11",
+  "source_freeze_sha256": "5fc9176560e9656a77c74374235ae28a24dad0bd91a9e546b2fc1e593d4e67eb",
+  "criteria": "Same4ns fullthreecornerpreplacement profile; no constraint relaxation.",
+  "native_cells": 82042,
+  "native_ff": 9410,
+  "delta_cells_vs_v11": -1736,
+  "delta_setup_vs_v11_ns": {
+    "slow_max": -0.652962,
+    "typical_max": -0.431207,
+    "fast_max": -0.296114
+  },
+  "timing_acceptance": false,
+  "new_critical_path": {
+    "startpoint_q_wire": "framer.read_ptr[2]",
+    "endpoint_q_wire": "framer.output_sequence[45]",
+    "arrival_ns": 8.005474,
+    "delay_by_cell_family": {
+      "launch_ff": {
+        "count": 1,
+        "delay_ns": 0.263877
+      },
+      "buffer": {
+        "count": 21,
+        "delay_ns": 3.462092
+      },
+      "other_boolean": {
+        "count": 30,
+        "delay_ns": 4.018006
+      },
+      "xor_xnor": {
+        "count": 1,
+        "delay_ns": 0.261499
+      }
+    }
+  },
+  "interpretation": "Control/content separation passes finite initialized public semantics and overflowquarantine screens, but does not reduce worst native preplacement setup; readpointer/retirement mux and buffering dominates. PreserveV11asbaseline; neither V12norV13 is adopted as timingclosure.",
+  "next_hypothesis": "A separate banked/one-hot parallel ringread candidate fromV11 could reduce pointer fanout and readmux depth; requires exact literalread comparison includingkeep/verdict masking and every read_count/wrap plus fullpublicmiter, actualnegativecontrols and measuredsameconstrainttiming."
+}

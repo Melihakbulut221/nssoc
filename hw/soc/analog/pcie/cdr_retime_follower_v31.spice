@@ -1,0 +1,13 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* v31 candidate: halve only pull-down resistor lengths4.5u to2.25u.
+* Addresses observed v30 follower cutoff under stronger sampler pull-up loading.
+* Actual current, stress, timing and full parent acceptance remain unproven.
+* Real native HBT emitter followers and native poly pull-down resistors.
+* No ideal gain, clock regeneration, altered loads or relaxed waveform gates.
+.subckt nssoc_cdr_retime_follower_v31 ip inn op on avdd avss sub
+XFP avdd ip op sub npn13G2 Nx=4
+XRP op avss sub rppd w=4u l=2.25u b=0 sw_et=1
+XFN avdd inn on sub npn13G2 Nx=4
+XRN on avss sub rppd w=4u l=2.25u b=0 sw_et=1
+.ends nssoc_cdr_retime_follower_v31

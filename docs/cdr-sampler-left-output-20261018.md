@@ -1,0 +1,7 @@
+# Sampler left output candidate — 2026-10-18
+
+Whole supply-risers run39099179881 remains rejected. Its exact early native capture diagnosis39100228873 (summary asset652566918) reproduces14 HBT failures and all original sampling errors. Actual differential input RMS at the first two sampler data pairs is about124mV, versus16–19mV at the retimed pair. This is a diagnostic observation, not a claim that routing alone explains or fixes every failure.
+
+The existing parent places its shared routing channel left of every macro, while sampler QP/QN ports leave the right edge and detour around the cell. This candidate moves only those two physical ports to the left edge and adds actual3.2um TopMetal2 output shunts with native M5-to-M7 via stacks. The M5 output bus changes accordingly; fresh RC is mandatory. No intrinsic circuit/size/placement, internal low-metal escape, clock, bias, source bit or acceptance threshold changes.
+
+The cloud generation audit compares the real original/candidate GDS layers, primitive records, all original low-metal vias, eight unchanged ports and the exact native source reference. Only declared output-route layers may differ. Native560-category DRC, unsimplified deep/flat35-device LVS, LEF and all ten original faults must pass before use. Physical passage alone is not electrical repair. After passing, insert four exact new leaves into the complete394-device parent, rebuild its physical proof and full MIM-aware RC, then repeat the original256-bit loaded tests. Keep all earlier rejected candidates and raw waves.

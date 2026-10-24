@@ -18,6 +18,12 @@ the replacement figures and `docs/23-tile-shape-decision.md` is the
 decision record. The **[in flux]** tag of section 0 no longer applies to
 any figure in this document.
 
+**Scope clarification, 21 September 2026:** this remains the frozen shuttle
+pilot datasheet. For the integrated management-processor SoC, its optional
+interfaces and current acceptance limits, use docs/60 section 0.4. That SoC
+contract supersedes this document only for SoC-level claims; it does not change
+the frozen pilot's RTL, pins or historical measurements.
+
 ## 0. How to read the numbers in this document
 
 Every quantity is tagged:

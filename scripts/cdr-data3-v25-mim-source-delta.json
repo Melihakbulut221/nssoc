@@ -1,0 +1,120 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_selector_small_v24_mim_parent_audit.py",
+      "baseline_sha256": "444ebb327dfd7d479a0bf03d13ce583b7fe0e2d81d97618418c7b7c906a2c0a6",
+      "candidate_path": "scripts/cloud_cdr_data3_v25_mim_parent_audit.py",
+      "candidate_sha256": "593e7a1926e23f40bbc75790a628ed71dfd7304611d202231d814228f8b1e9e3",
+      "edits": [
+        {
+          "before": "cdr-selector-small-v24",
+          "after": "cdr-data3-v25",
+          "count": 4
+        },
+        {
+          "before": "cdr_selector_small_v24",
+          "after": "cdr_data3_v25",
+          "count": 4
+        },
+        {
+          "before": "20261020",
+          "after": "20261021",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_selector_small_v24_mim_composition.py",
+      "baseline_sha256": "c4e19ebe6929c508ec23de88e0d2d410bd16f547409c4bc277ab7d010d17b812",
+      "candidate_path": "scripts/cloud_cdr_data3_v25_mim_composition.py",
+      "candidate_sha256": "d2d108242b6313378f56cbeb504eb281bbc500edf5933c34ec479935ea6d2ba6",
+      "edits": [
+        {
+          "before": "cdr-selector-small-v24",
+          "after": "cdr-data3-v25",
+          "count": 5
+        },
+        {
+          "before": "nssoc_cdr_pd476_retime_mim_wire_v24",
+          "after": "nssoc_cdr_pd476_retime_mim_wire_v25",
+          "count": 1
+        },
+        {
+          "before": "20261020",
+          "after": "20261021",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_selector_small_v24_mim_stage.py",
+      "baseline_sha256": "64378bc70e7809071ca1cb9d9f7afd0308964acaad378ad1f28f92b25564e099",
+      "candidate_path": "scripts/cloud_cdr_data3_v25_mim_stage.py",
+      "candidate_sha256": "d81b797abf939cb18d3798a28a815a8b45c018839dff5374f5e9eb31b05ea6c8",
+      "edits": [
+        {
+          "before": "cdr-selector-small-v24",
+          "after": "cdr-data3-v25",
+          "count": 4
+        },
+        {
+          "before": "cdr_selector_small_v24",
+          "after": "cdr_data3_v25",
+          "count": 2
+        },
+        {
+          "before": "20261020",
+          "after": "20261021",
+          "count": 1
+        },
+        {
+          "before": "    path=ROOT/('docs/evidence/cdr-data3-v25-'+stage+'-pass-20261021.json')",
+          "after": "    path=receipt_path(stage)",
+          "count": 1
+        },
+        {
+          "before": "def sha(raw):return hashlib.sha256(raw).hexdigest()",
+          "after": "def receipt_path(stage):return ROOT/('docs/evidence/cdr-data3-v25-'+stage+'-pass-20261021.json')\ndef sha(raw):return hashlib.sha256(raw).hexdigest()",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/audit_cdr_selector_small_v24_mim_intrinsic.py",
+      "baseline_sha256": "ea1ca34ea20f978fb5172c38c53030007feb1328bd5bd9fc86dadb058a740e07",
+      "candidate_path": "scripts/audit_cdr_data3_v25_mim_intrinsic.py",
+      "candidate_sha256": "532bb0747bd39ca30678f1a3a3a1a2737de9b9fa1ec6cebac2f5d150603003d6",
+      "edits": [
+        {
+          "before": "cdr-selector-small-v24",
+          "after": "cdr-data3-v25",
+          "count": 1
+        },
+        {
+          "before": "20261020",
+          "after": "20261021",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/cdr-selector-small-v24-mim-validation-cloud.yml",
+      "baseline_sha256": "4ba6eed49d184c4a66e4854f330cccdaad16f6d0ad5f255512b442a878caad14",
+      "candidate_path": ".github/workflows/cdr-data3-v25-mim-validation-cloud.yml",
+      "candidate_sha256": "b4352eff73e6700f0e7fb6ad10b3667441d5bbacf8f85d4e87ee2fccf002cfb5",
+      "edits": [
+        {
+          "before": "cdr-selector-small-v24",
+          "after": "cdr-data3-v25",
+          "count": 9
+        },
+        {
+          "before": "cdr_selector_small_v24",
+          "after": "cdr_data3_v25",
+          "count": 12
+        }
+      ]
+    }
+  ],
+  "scope": "Fresh v25 native capture. Original raw R/C conservation, seven MIM identities, 13 raw wire faults, 9 intrinsic faults and 19 composition faults unchanged; only source provenance/names/model identity and explicit receipt path helper change."
+}

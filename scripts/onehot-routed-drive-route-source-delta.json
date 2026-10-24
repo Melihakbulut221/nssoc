@@ -1,0 +1,71 @@
+{
+  "scope": "Only new hashed39-buffer candidate ancestry/state and native count. Every prior routing/RC/STA/clock/antenna check remains.",
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_onehot_logic_resize_route.py",
+      "baseline_sha256": "a9751949f2137d3464eec256dc0d47b47de0e5d7004bd7caf3369d80c0a36255",
+      "candidate_path": "scripts/cloud_onehot_routed_drive_route.py",
+      "candidate_sha256": "2a5b01be20d02b72d310627eff4b4f6ffb7c30a770ef6fe9a251defd43aad24c",
+      "edits": [
+        {
+          "before": "OUT=ROOT/'hw/soc/out/cloud-onehot-logic-resize-route'",
+          "after": "OUT=ROOT/'hw/soc/out/cloud-onehot-routed-drive-route'",
+          "count": 1
+        },
+        {
+          "before": "scope='Route actual resized combinational gates and data drivers with independent native placement and logic proof, preserving all original20/4/8/8ns clocks,5percent derate,20SRAM and RTL ancestry. Fresh nominal OpenRCX and original three cell corners; topology is not LVS, qualifiedRC or fullPHY/signoff.'",
+          "after": "scope='Route39 measured positive near-driver buffers with native geometry and logic proofs. All148832 source cells including antenna diodes retained. Original20/4/8/8ns clocks,5percent derate,20SRAM and complete RTL/route ancestry remain. Fresh nominal OpenRCX and three cell corners; topology is not LVS, qualifiedRC or fullPHY/signoff.'",
+          "count": 1
+        },
+        {
+          "before": "        saved_candidate_odb=odb",
+          "after": "\n        # Bind the physically nearby positive-buffer candidate to the complete\n        # previous native routed design. All older ancestry above still applies.\n        baseline_pin=json.loads((ROOT/'docs/evidence/onehot-logic-resize-route-result-20261019.json').read_text())\n        baseline_run=api('actions/runs/'+str(baseline_pin['run']))\n        assert baseline_run['status']=='completed'and baseline_run['conclusion']=='success'and baseline_run['head_sha']==baseline_pin['source_head']and baseline_run['run_attempt']==1\n        assert baseline_run['path']=='.github/workflows/onehot-logic-resize-route-cloud.yml'\n        baseline,baseline_sha,baseline_parts=logic.summary(baseline_pin['group'],baseline_run)\n        assert baseline==baseline_pin['report']and baseline_sha==baseline_pin['summary_sha256']and baseline_parts==baseline_pin['parts_sha256']\n        assert baseline['sources_unchanged']and baseline['returncode']==0 and baseline['detailed_route_complete']\n        assert baseline['resize_source']['summary_sha256']==np['summary_sha256']\n        assert baseline['resize_equation_proof']==sized['proof']and baseline['resize_geometry']==sized['geometry']\n        assert baseline['routed_candidate_topology']['proof']['retained_instances']==147858\n        assert baseline['routed_candidate_topology']['proof']['added_diode_count']==974\n        assert baseline['routed_candidate_topology']['inputs'][str(odb)]==sha(odb)\n        assert baseline['native_routing_drc_errors']==0 and baseline['critical_disconnected_pins']==0\n        bp=json.loads((ROOT/'docs/evidence/onehot-routed-drive-prepare-pass-20261019.json').read_text())\n        br=api('actions/runs/'+str(bp['run']))\n        assert bp['run']==39242341481 and bp['source_head']=='6163ef917ff57f346f88b873dd5df0f019e7fe5b'\n        assert br['status']=='completed'and br['conclusion']=='success'and br['head_sha']==bp['source_head']and br['run_attempt']==1\n        assert br['path']=='.github/workflows/onehot-routed-drive-prepare-cloud.yml'\n        buffer_root=ROOT/'hw/soc/out/cloud-onehot-routed-drive-prepare'\n        buffer_names=['candidate.odb','candidate.v','candidate-state.json','trial-config.json','proof/result.json','controls/result.json','geometry-proof.json','targets.json','actual-new-buffer-inversion-control.log']\n        buffered,buffer_proof=reports.restore_report(bp['group'],bp['run'],bp['summary_sha256'],bp['parts_sha256'],buffer_root,buffer_names)\n        assert buffered==bp['report']and buffered['sources_unchanged']\n        assert buffered['status']=='PASS_NATIVE_NEAR_DRIVER_BUFFER_PREPARATION_REQUIRES_ROUTE_RC_ALL_CORNERS'\n        assert buffered['source']['summary_sha256']==baseline_sha and buffered['source']['manifest_sha256']==baseline_parts\n        assert buffered['original_route']==dict(odb_sha256=baseline['routed_odb_sha256'],netlist_sha256=baseline['routed_netlist_sha256'])\n        assert buffered['original_measurements']==baseline['measurements']\n        assert buffered['proof']['status']=='PASS within scope'and buffered['controls']['status']=='PASS_NATIVE_ECO_CONTROLS'and buffered['inversion_control']['rejected']\n        assert buffered['proof']['positive_buffers_after']-buffered['proof']['positive_buffers_before']==39\n        assert buffered['proof']['unobserved_output_port_changes']==0\n        bg=buffered['geometry']\n        assert bg['original_instances']==148832 and len(bg['added'])==len(bg['changes'])==39 and bg['maximum_driver_to_buffer_um']<=80\n        assert all(bg[k]for k in ('all_original_cells_geometry_preserved','all_expected_net_memberships_preserved','pg_ports_ndr_unchanged'))\n        assert json.loads((buffer_root/'proof/result.json').read_text())==buffered['proof']\n        assert json.loads((buffer_root/'geometry-proof.json').read_text())==bg\n        assert json.loads((buffer_root/'controls/result.json').read_text())==buffered['controls']\n        assert json.loads((buffer_root/'trial-config.json').read_text())==cfg\n        state_path=buffer_root/'candidate-state.json';state=json.loads(state_path.read_text())\n        odb=Path(state['odb']);netlist=Path(state['nl'])\n        assert odb==buffer_root/'candidate.odb'and netlist==buffer_root/'candidate.v'\n        assert sha(odb)==buffered['candidate_odb_sha256']and sha(netlist)==buffered['candidate_netlist_sha256']\n        assert state['spef']is None and state['def']is None and not state['metrics']\n        baseline_root=ROOT/'hw/soc/out/cloud-onehot-logic-resize-route';buffer_missing=set()\n        def collect_buffer_missing(value):\n            if isinstance(value,dict):\n                for v in value.values():collect_buffer_missing(v)\n            elif isinstance(value,list):\n                for v in value:collect_buffer_missing(v)\n            elif isinstance(value,str)and value.startswith('/')and not Path(value).is_file():\n                p=Path(value);assert p.is_relative_to(baseline_root),('Unbound buffered candidate dependency',value)\n                rel=str(p.relative_to(baseline_root));assert rel in baseline['outputs'];buffer_missing.add(rel)\n        collect_buffer_missing(state)\n        if buffer_missing:\n            restored_baseline,baseline_view_proof=reports.restore_report(baseline_pin['group'],baseline_pin['run'],baseline_sha,baseline_parts,baseline_root,sorted(buffer_missing))\n            assert restored_baseline==baseline\n            dependency_hashes.update({str(baseline_root/n):baseline['outputs'][n]for n in buffer_missing})\n            r['buffer_state_dependency_source']=baseline_view_proof\n        assert all(sha(p)==v for p,v in dependency_hashes.items())\n        r['restored_exact_state_dependencies']['files']=dependency_hashes\n        r['source_routed_measurements']=baseline['measurements']\n        r['near_driver_buffer_source']=buffer_proof\n        r['near_driver_buffer_geometry']=bg\n        r['near_driver_buffer_equation_proof']=buffered['proof']\n        r['native_routed_baseline']=dict(run=baseline_pin['run'],summary_sha256=baseline_sha,parts_sha256=baseline_parts,antenna=baseline['final_antenna'],timing_and_electrical_counts_met=baseline['all_reported_timing_and_electrical_gates_met'])\n\n        saved_candidate_odb=odb",
+          "count": 1
+        },
+        {
+          "before": "        command=[str(app),'python',str(flow)",
+          "after": "        protected.update({str(buffer_root/n):buffered['outputs'][n]for n in buffer_names})\n        command=[str(app),'python',str(flow)",
+          "count": 1
+        },
+        {
+          "before": "RUNNING_NATIVE_RESIZED_DRIVER_ROUTE_AND_FRESH_RC_STA",
+          "after": "RUNNING_NATIVE_NEAR_DRIVER_BUFFER_ROUTE_AND_FRESH_RC_STA",
+          "count": 1
+        },
+        {
+          "before": "method=ROOT/'scripts/check_onehot_logic_resize_routed_topology.py'",
+          "after": "method=ROOT/'scripts/check_onehot_routed_drive_routed_topology.py'",
+          "count": 1
+        },
+        {
+          "before": "r['routed_candidate_topology']['proof']['retained_instances']==147858",
+          "after": "r['routed_candidate_topology']['proof']['retained_instances']==148871",
+          "count": 1
+        },
+        {
+          "before": "COMPLETE_NATIVE_RESIZED_LOGIC_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+          "after": "COMPLETE_NATIVE_NEAR_DRIVER_BUFFER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_onehot_logic_resize_routed_topology.py",
+      "baseline_sha256": "9a10f25ea2afe4fedbb2e83b21217f947291bd7678845cb6d6d694d228241118",
+      "candidate_path": "scripts/check_onehot_routed_drive_routed_topology.py",
+      "candidate_sha256": "31ef4902b04b74b400ce07b933a82d1700fa034eb0726a25f02423981eeae446",
+      "edits": [
+        {
+          "before": "assert len(before['instances'])==147858",
+          "after": "assert len(before['instances'])==148871",
+          "count": 1
+        },
+        {
+          "before": "PASS_NATIVE_RESIZED_ECO_ROUTED_TOPOLOGY_AND_GEOMETRY_NOT_LVS",
+          "after": "PASS_NATIVE_NEAR_DRIVER_BUFFER_ROUTED_TOPOLOGY_AND_GEOMETRY_NOT_LVS",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

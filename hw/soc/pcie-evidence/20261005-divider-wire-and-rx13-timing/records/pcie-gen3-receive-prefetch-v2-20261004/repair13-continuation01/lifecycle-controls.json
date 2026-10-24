@@ -1,0 +1,114 @@
+{
+  "status": "PASS_THREE_ACTUAL_RX13_CONTINUATION_BOUNDARY_CONTROLS",
+  "source": {
+    "bytes": 11535,
+    "sha256": "86943cdab7f5be4e3731150b87c865d13ca16b532474ad1db6bbf0f74b1a2cc0"
+  },
+  "method": {
+    "bytes": 3941,
+    "sha256": "41f9eec7ab5bf77baea7ff729fe9d22c199b6a11e2ee8ba569253b067d0f1301"
+  },
+  "exact_production_stage_ast": true,
+  "exact_production_post_context_try_ast": true,
+  "results": [
+    {
+      "mode": "complete_signal",
+      "expected_error": "SIGTERM",
+      "record": {
+        "stages": [
+          {
+            "name": "actual_control",
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+              "-c",
+              "raise SystemExit(0)"
+            ],
+            "log": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-continuation01/lifecycle-controls/complete_signal/child.log",
+            "source_pins_before": {},
+            "identity": {
+              "pid": 74227,
+              "state": "R",
+              "process_group": 74227,
+              "start_ticks": "792411"
+            },
+            "returncode": 0
+          }
+        ],
+        "status": "RUNNING_actual_control"
+      },
+      "owner_reason": "Parent received SIGTERM",
+      "remaining_members": [],
+      "terminal_guard_or_error_seen": true
+    },
+    {
+      "mode": "teardown_signal",
+      "expected_error": "SIGTERM",
+      "record": {
+        "stages": [
+          {
+            "name": "actual_control",
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+              "-c",
+              "raise SystemExit(0)"
+            ],
+            "log": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-continuation01/lifecycle-controls/teardown_signal/child.log",
+            "source_pins_before": {},
+            "identity": {
+              "pid": 74228,
+              "state": "R",
+              "process_group": 74228,
+              "start_ticks": "792466"
+            },
+            "returncode": 0,
+            "log_pin": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "source_pins_after": {}
+          }
+        ],
+        "status": "FAILED_RETAINED_NO_DEPENDENT_BYPASS",
+        "error": "Cancelled('Parent received SIGTERM')"
+      },
+      "owner_reason": "Parent received SIGTERM",
+      "remaining_members": [],
+      "terminal_guard_or_error_seen": true
+    },
+    {
+      "mode": "stage_failure",
+      "expected_error": "nonzero exit",
+      "record": {
+        "stages": [
+          {
+            "name": "actual_control",
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+              "-c",
+              "raise SystemExit(1)"
+            ],
+            "log": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair13-continuation01/lifecycle-controls/stage_failure/child.log",
+            "source_pins_before": {},
+            "identity": {
+              "pid": 74229,
+              "state": "R",
+              "process_group": 74229,
+              "start_ticks": "792520"
+            },
+            "returncode": 1,
+            "log_pin": {
+              "bytes": 0,
+              "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            },
+            "source_pins_after": {}
+          }
+        ],
+        "status": "RUNNING_actual_control"
+      },
+      "owner_reason": "actual_control nonzero exit",
+      "remaining_members": [],
+      "terminal_guard_or_error_seen": true
+    }
+  ],
+  "scope": "Real small Python child, completion/teardown real SIGTERM and actual nonzero exit. Original route observed nowhere, no EDA/proof/publication rerun. CPU8/productionlimits and outer15s owner retained."
+}

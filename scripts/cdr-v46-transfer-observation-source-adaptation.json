@@ -1,0 +1,71 @@
+{
+  "baseline_path": "scripts/cloud_cdr_v44_l39_observation.py",
+  "baseline_sha256": "df64b4fbe8952dd08b74f0f9584b96ebe810906ea30d175953398ae6cd513148",
+  "candidate_path": "scripts/cloud_cdr_v46_transfer_observation.py",
+  "candidate_sha256": "94458f550622ce53e4ffc14c5f4c28273f971f36c7cb7a41e7e8d4d9143b154e",
+  "edits": [
+    {
+      "before": "PINS={'cd_master_l39-nominal_early': ['bec2ab47a567f0a6ff2f8a0e403c179e8eeb2952388dcef28906693b8846f82a', 'ad051e05236c150f348186e5098436af2b821823f454437e65591a96f59094d3'], 'cd_master_l39-nominal_late': ['95f13c2d46aaa09c59e5233e43d5bfc245e8986333df952ef1aff727cbcfdcb8', '11c21155c23b89f4ccf5ef19d7107b59f34c3ab790e8629a84c59c1a4dcdd372']}",
+      "after": "PINS={'cd_slave_hold5-nominal_early': ['01c6775ea0016ec8a814cdefb3cc10893f120a1ad1f58651921c6c63629101a8', '9688a9558dce9680ceae041324b2bd9af4979fb02190f61f2073e05c262a39af'], 'cd_slave_hold5-nominal_late': ['8cbccbe26e8e33373441b7e41cd6af13322ccc23bd72833aa4d8f1611c98ff30', 'e0108f51580aa2062556f661cfad004d7d1354e735d64c0235b2be2f02505ddc'], 'cd_slave_data5_hold5-nominal_early': ['a768cff2f8e266dbf1a34e8a398a95ef79f829f2842488828ec5a3f342e601e0', '791381b2a99ee1ecb6ab4458587370edfb06a555e933bd61fbdaf92857106c55'], 'cd_slave_data5_hold5-nominal_late': ['26e0a7136b0567d24fc7f4fa0d5ed0f18926f681a4ba35b2a1ca7261d107ddba', '6db02e19f435bdf79042f6c9a92cc08b5921195f89945f66c97b163620e9d5d2']}",
+      "count": 1
+    },
+    {
+      "before": "choices=('cd_master_l39',)",
+      "after": "choices=('cd_slave_hold5','cd_slave_data5_hold5')",
+      "count": 1
+    },
+    {
+      "before": "cdr-v44-l39-observation",
+      "after": "cdr-v46-transfer-observation",
+      "count": 5
+    },
+    {
+      "before": "pin['run']==39952318814",
+      "after": "pin['run']==39999252164",
+      "count": 1
+    },
+    {
+      "before": "inputs/'wave',['native/wave.raw','composed/composition.json','exploratory-composition.json','exploratory-'+args.variant+'.spice','planes/native-planes.json']",
+      "after": "inputs/'wave',pin['selected_files']",
+      "count": 1
+    },
+    {
+      "before": "  assert prior['status']=='REJECTED_EXPLORATORY_INTRINSIC_SCREEN'",
+      "after": "  from cdr_v46_failed_capture_guard import verify\n  r['original_failed_capture']=verify(prior,pin,inputs/'wave',args.case,args.variant)",
+      "count": 1
+    },
+    {
+      "before": "'devices_passed','phase_passed','sources_unchanged'",
+      "after": "'devices_passed','phase_passed'",
+      "count": 1
+    },
+    {
+      "before": "and prior['sources_unchanged']and prior['devices_passed']==pin['devices_passed']",
+      "after": "and r['original_failed_capture']['original_failure_preserved']and prior['devices_passed']==pin['devices_passed']",
+      "count": 1
+    },
+    {
+      "before": "   for label,bank in latch_data['native_graph'].items():\n    assert all(members[n]['nx']==(4 if label=='master'else 6)for n in [bank['data_positive'],bank['data_negative'],*bank['hold_pair']])",
+      "after": "   for label,bank in latch_data['native_graph'].items():\n    for n in [bank['data_positive'],bank['data_negative'],*bank['hold_pair']]:\n     reduced=label=='slave' and tag in ('c','d') and (n in bank['hold_pair'] or args.variant=='cd_slave_data5_hold5')\n     expected_nx=4 if label=='master'else 5 if reduced else 6\n     assert members[n]['nx']==expected_nx,('Wrong actual v46 native area',tag,label,n)",
+      "count": 1
+    },
+    {
+      "before": "Path(__file__),Path(stream.__file__)",
+      "after": "Path(__file__),ROOT/'scripts/cdr_v46_failed_capture_guard.py',Path(stream.__file__)",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cdr_capture_windows.py": "7b3c4107d4fa80a6638f6d645883f7659230aa5c92ea5475e1216b3806e7b771",
+    "scripts/cdr_candidate_input_bias_observation.py": "e905529803587c3b2a6a0ea21381d67ff43ce51538553e3fa53b6e768588b0e8",
+    "scripts/cdr_selector_headroom.py": "0ec3dd048430d941fbcd26a19695d342f77dbcf0915f10ecdf4504cbcac6054b",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "docs/evidence/cdr-v46-transfer-observation-input-20261023.json": "b69976fafb2b41be760c82da4e315b0ec5a4a044f4d82def6d2f8aae44f33ed7",
+    "scripts/cdr_v46_failed_capture_guard.py": "be6052857084341425f9d0bec2d119e89262385bfe5e973699bd27ac69c8dfcc"
+  },
+  "native_simulation_started": false,
+  "original_observation_equations_unchanged": true,
+  "scope": "Exact completed-but-postprocessing-failed v46 inputs, explicit missing final assertion, pinned native Nx5 recipe, verified archived runtime bytes, same full reader/all120HBT/four sampler/window equations. Original failures and original gates remain. No resimulation or candidate acceptance."
+}

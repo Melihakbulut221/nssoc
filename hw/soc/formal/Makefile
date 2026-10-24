@@ -57,11 +57,34 @@ REPO := $(abspath $(dir $(lastword $(MAKEFILE_LIST)))../../..)
 # having run a single proof.
 .PHONY: all bus apb apbwb clint clkwakegnt wdog wdogtmr wdog_tmr_params regfile regfilescrub busstat npuser npu gpio qspi scrub boot boot_tmr_params bytesecded memecc clkwake clean
 .DEFAULT_GOAL := all
-all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt
+all: bus apb apbwb clint wdog wdogtmr regfile regfilescrub regfilecontract regfileequivalence regfilecontrols regfilescrubcomplete regfilescrubcontrols busstat npuser npu gpio qspi scrub boot bytesecded memecc clkwake clkwakegnt uart pnp gptimer peripheralcontrols pcietlp pciestream reqpipe
 
 include $(REPO)/tools.mk
 
 TASKS := bmc prove cover
+
+.PHONY: reqpipe
+reqpipe:
+	@for t in $(TASKS); do $(SBY) -f soc_req_pipe.sby $$t || exit 1; done
+
+.PHONY: pcietlp pciestream
+pcietlp:
+	@for t in $(TASKS); do $(SBY) -f soc_pcie_tlp_regs.sby $$t || exit 1; done
+pciestream:
+	@for t in $(TASKS); do $(SBY) -f soc_pcie_tlp_stream.sby $$t || exit 1; done
+
+.PHONY: uart pnp gptimer peripheralcontrols
+uart:
+	@for t in $(TASKS); do $(SBY) -f soc_uart.sby $$t || exit 1; done
+
+pnp:
+	@for t in $(TASKS); do $(SBY) -f soc_pnp.sby $$t || exit 1; done
+
+gptimer:
+	@for t in $(TASKS) prove_full; do $(SBY) -f soc_gptimer.sby $$t || exit 1; done
+
+peripheralcontrols:
+	python3 $(REPO)/scripts/check_peripheral_contracts.py --sby $(SBY)
 
 # docs/84's REQ_REG = 1 is carried by three more tasks, and they are in
 # this list rather than in a target of their own: the fabric's contract
@@ -116,14 +139,42 @@ apbwb:
 # scrub visits every register. regfile_scrub.sby, the same wrapper on
 # the REAL codec, is deliberately not here -- every engine stalls on
 # the codec's parity network (section 23 records the measurement), and
-# a target that never returns is not a regression test. Its depth-40
-# k-induction and bmc tasks are likewise left out of this target.
-REGFILESCRUB_TASKS := prove_pdr cover
-regfilescrub:
-	@for t in $(REGFILESCRUB_TASKS); do \
-	  echo "== regfile_scrub_abs $$t"; \
-	  $(SBY) -f regfile_scrub_abs.sby $$t || exit 1; \
+# a target that never returns is not a regression test. The separate
+# abstract-codec prove and depth-40 BMC are mandatory: the 2026-09-21
+# inventory found they were declared but omitted here. Run every required
+# task even if one fails; historical real-codec exclusions remain explicit.
+REGFILESCRUB_TASKS := prove prove_pdr cover bmc
+.PHONY: regfilecontract regfileequivalence regfilecontrols
+REGFILECONTRACT_TASKS := prove prove_noscrub cover
+regfilecontract:
+	@for t in $(REGFILECONTRACT_TASKS); do \
+	  $(SBY) -f regfile_contract.sby $$t || exit 1; \
 	done
+
+regfileequivalence:
+	@test -s ../gen/ibex_register_file_ff.v || { echo 'Run make soc-prepare at the repository root first.'; exit 1; }
+	@for t in prove prove_noscrub prove_synpre prove_synpre_noscrub; do \
+	  $(SBY) -f regfile_equivalence.sby $$t || exit 1; \
+	done
+
+regfilecontrols:
+	python3 $(REPO)/scripts/check_regfile_contract.py --sby $(SBY) --controls-only
+
+.PHONY: regfilescrubcomplete regfilescrubcontrols
+REGFILESCRUB_COMPLETE_TASKS := prove cover prove_synpre cover_synpre
+regfilescrubcomplete:
+	@status=0; for t in $(REGFILESCRUB_COMPLETE_TASKS); do \
+	  $(SBY) -f regfile_scrub_complete.sby $$t || status=1; \
+	done; exit $$status
+
+regfilescrubcontrols:
+	python3 $(REPO)/scripts/check_regfile_scrub.py --sby $(SBY)
+
+regfilescrub:
+	@status=0; for t in $(REGFILESCRUB_TASKS); do \
+	  echo "== regfile_scrub_abs $$t"; \
+	  $(SBY) -f regfile_scrub_abs.sby $$t || status=1; \
+	done; exit $$status
 
 clint:
 	@for t in $(TASKS); do \
@@ -134,7 +185,7 @@ clint:
 # The fault counters docs/44 adds, and the two widths they are proved
 # at: CNT_W = 4 so that saturation is reachable inside a bounded model,
 # and CNT_W = 16 because that is what soc_top.v instantiates.
-BUSSTAT_TASKS := bmc prove prove_w16 cover
+BUSSTAT_TASKS := bmc prove prove_w16 cover bmc_to prove_to prove_to_w16 cover_to
 
 busstat:
 	@for t in $(BUSSTAT_TASKS); do \
@@ -322,7 +373,9 @@ clkwakegnt:
 	done
 
 clean:
-	rm -rf $(addprefix clkgate_wake_,$(CLKWAKE_TASKS)) clkgate_wake \
+	rm -rf $(addprefix soc_uart_,$(TASKS)) $(addprefix soc_pnp_,$(TASKS)) \
+	       $(addprefix soc_gptimer_,$(TASKS) prove_full) \
+	       $(addprefix clkgate_wake_,$(CLKWAKE_TASKS)) clkgate_wake \
 	       $(addprefix soc_wdog_tmr_,$(WDOG_TMR_TASKS)) soc_wdog_tmr \
 	       soc_bus soc_bus_bmc soc_bus_prove soc_bus_cover \
 	       soc_apb_bridge soc_apb_bridge_bmc soc_apb_bridge_prove \

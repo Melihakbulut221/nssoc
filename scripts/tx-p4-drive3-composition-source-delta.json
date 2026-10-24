@@ -1,0 +1,128 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_fast_wire20_composition.py",
+      "baseline_sha256": "b0aa363aae7b555b03ed0d5e329ba41114f6b83418cb104288d47909c8ebdf88",
+      "candidate_path": "scripts/cloud_tx_p4_drive3_composition.py",
+      "candidate_sha256": "ce10b0501f2d7175562734d71a35f05b7659224c1b8916d1a7b01a939d9b9e23",
+      "edits": [
+        {
+          "before": "tx-fast-wire20",
+          "after": "tx-p4-drive3",
+          "count": 5
+        },
+        {
+          "before": "tx_fast_wire20",
+          "after": "tx_p4_drive3",
+          "count": 1
+        },
+        {
+          "before": "39405777617",
+          "after": "39449073164",
+          "count": 4
+        },
+        {
+          "before": "4d07b2b07de6ce8fbbf4a8a9a3ccacaeffb2a81a",
+          "after": "89c79f0d22be10619450c308ada8f53cc6ee6099",
+          "count": 3
+        },
+        {
+          "before": "b3e4e0128162ee0bda62e87e0043ab5bba036212016a8440d2e6ef5b123fe763",
+          "after": "9db11328c2adaf1c9eed1d11c1cd29a8105d1c288b1385cbb88ce851640983f1",
+          "count": 1
+        },
+        {
+          "before": "ac5c435a81e0868831e22ada4cb4bdbc57d4f398bc9155a1b10c1846dcf698fb",
+          "after": "770b0d07956e2758ab8d9ce58805be0ceaadf9e0e9625b29df16c86a90836e52",
+          "count": 2
+        },
+        {
+          "before": "bytes=19716992",
+          "after": "bytes=19854495",
+          "count": 1
+        },
+        {
+          "before": "'R': 116611, 'C': 77538",
+          "after": "'R': 117251, 'C': 77892",
+          "count": 1
+        },
+        {
+          "before": "8a9da85ef2508a72a0f26722d9e5b5f9a5c8bfb3d88e5f69e4ae2d36c6a17e7a",
+          "after": "f351c3ab008b764155594fe395f83b319ca384c32073c1106d7bebbb508319cc",
+          "count": 2
+        },
+        {
+          "before": "            assert delta['status']=='PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS'\n            assert delta==physpin['report']['geometry_delta']\n            assert delta['widths_um']==dict(original=4.,candidate=2.,retained_landings=4.)\n            assert delta['original_vias_children_placements_pins_and_other_layers_equal'] and delta['serialized_gds_verified']\n            assert len(delta['changed_routes'])==28\n            assert len(delta['controls'])==3 and all(c['rejected'] for c in delta['controls'])\n            assert {c['name']for c in delta['controls']}=={'restore_removed_wide_metal','cut_actual_narrow_trunk','change_native_child_geometry'}\n            assert delta['candidate_gds_sha256']=='b8ee72861b772cea2ea42746710dec3075c85fb2999c7204e55b9f1536585ab4'\n            assert delta['source_gds_sha256']=='6b8a3d68e6f94cc7a0812ab89c360a8098633d6e41fa238654c8e16c5ea73057'\n",
+          "after": "            assert delta['status']=='PASS_FOUR_P4_NATIVE_MASTER_REPLACEMENTS_ALL_PINS_PARENT_ROUTES_AND_THREE_FAULTS'\n            assert delta==physpin['report']['geometry_delta']\n            assert delta['reference_emitters']==863 and delta['reference_hbts']==589\n            assert delta['original_master_drawings_unchanged']and delta['parent_drawings_routes_and_pins_unchanged']and delta['serialized_gds_verified']and delta['lef_byte_identical']\n            assert {x['tag']for x in delta['changes']}=={'p4_0','p4_1','p4_2','p4_3'}\n            assert len(delta['controls'])==3 and all(c['rejected']for c in delta['controls'])\n            assert {c['name']for c in delta['controls']}=={'wrong_native_macro','shift_native_pins_5nm','missing_parent_metal'}\n            assert delta['candidate_gds_sha256']=='d202185d3691cd7778b8040492bab73492f44a1cfb0896c5f0b8f31350e6bdff'\n            assert delta['source_gds_sha256']=='b8ee72861b772cea2ea42746710dec3075c85fb2999c7204e55b9f1536585ab4'\n",
+          "count": 1
+        },
+        {
+          "before": "        assert sha(out/'source/result.json')==basepin['summary_sha256']\n        assert json.loads((out/'source/result.json').read_text())==baseline\n        assert physical['physical_source']['summary_sha256']==basepin['summary_sha256']\n        for key in ('ports','bbox_um','placements','origin_translation_um','total_devices','core_devices','substrate_contacts','parent_signal_centerline_sum_um','parent_signal_centerline_max_um'):\n            assert physical['layout'][key]==baseline['layout'][key],key\n        assert physical['layout']['outputs']['schematic.cir']==baseline['layout']['outputs']['schematic.cir']\n        assert physical['layout']['outputs'][TOP+'.lef']==baseline['layout']['outputs'][TOP+'.lef']\n",
+          "after": "        wirepin=json.loads((ROOT/'docs/evidence/tx-fast-wire20-physical-pass-20261020.json').read_text())\n        assert wirepin['run']==39401920232 and wirepin['summary_sha256']=='8a9da85ef2508a72a0f26722d9e5b5f9a5c8bfb3d88e5f69e4ae2d36c6a17e7a'\n        wirebase=wirepin['report']\n        assert sha(out/'source/result.json')==wirepin['summary_sha256']\n        assert json.loads((out/'source/result.json').read_text())==wirebase\n        assert wirebase['physical_source']['summary_sha256']==basepin['summary_sha256']\n        assert physical['physical_source']['summary_sha256']==wirepin['summary_sha256']\n        for key in ('ports','bbox_um','origin_translation_um','total_devices','core_devices','substrate_contacts','parent_signal_centerline_sum_um','parent_signal_centerline_max_um','signal_routes'):\n            assert physical['layout'][key]==wirebase['layout'][key],key\n        wanted={x['tag']:x for x in delta['changes']}\n        assert set(physical['layout']['placements'])==set(wirebase['layout']['placements'])\n        for tag,before in wirebase['layout']['placements'].items():\n            after=physical['layout']['placements'][tag]\n            if tag not in wanted:assert after==before\n            else:\n                q=wanted[tag]\n                assert q['original_kind']=='pre_low'and q['candidate_kind']=='pre'and q['public_pin_rectangles_identical']\n                assert q['before_transform']==before['transform']and q['before_bbox']==before['bbox_um']\n                assert after==dict(before,kind='pre',transform=q['after_transform'],bbox_um=q['after_bbox'])\n        assert physical['layout']['outputs']['schematic.cir']!=wirebase['layout']['outputs']['schematic.cir']\n        assert physical['layout']['outputs'][TOP+'.lef']==wirebase['layout']['outputs'][TOP+'.lef']\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/bind_tx_fast_wire20_interfaces.py",
+      "baseline_sha256": "4c65244d4eec12637362f3173d75c56670d06213d1391d15d97af4943eff7572",
+      "candidate_path": "scripts/bind_tx_p4_drive3_interfaces.py",
+      "candidate_sha256": "5015548d60ac029a1fa88bab5a7e825b2733bddf43681d3878da1343e01702c1",
+      "edits": [
+        {
+          "before": "d8e768c22fd7c1caec0db12239387238dbfdc5db",
+          "after": "4e9d1b6ecca60dd61b808a9d54de185f190f827c",
+          "count": 1
+        },
+        {
+          "before": "PASS_TX28_FAST_DATA_WIRE20_NATIVE_PHYSICAL_REQUIRES_FRESH_RC_AND_LOADED_GATES",
+          "after": "PASS_TX_FOUR_P4_NATIVE_DRIVE3_PHYSICAL_REQUIRES_FRESH_RC_AND_LOADED_GATES",
+          "count": 1
+        },
+        {
+          "before": "hashlib.sha256((P/'result.json').read_bytes()).hexdigest()=='8a9da85ef2508a72a0f26722d9e5b5f9a5c8bfb3d88e5f69e4ae2d36c6a17e7a'",
+          "after": "hashlib.sha256((P/'result.json').read_bytes()).hexdigest()=='f351c3ab008b764155594fe395f83b319ca384c32073c1106d7bebbb508319cc'",
+          "count": 1
+        },
+        {
+          "before": "b8ee72861b772cea2ea42746710dec3075c85fb2999c7204e55b9f1536585ab4",
+          "after": "d202185d3691cd7778b8040492bab73492f44a1cfb0896c5f0b8f31350e6bdff",
+          "count": 2
+        },
+        {
+          "before": "candidate['geometry_delta']['original_vias_children_placements_pins_and_other_layers_equal']",
+          "after": "candidate['geometry_delta']['original_master_drawings_unchanged']and candidate['geometry_delta']['parent_drawings_routes_and_pins_unchanged']",
+          "count": 1
+        },
+        {
+          "before": "# The immutable source supplies unchanged topology only; probe the new GDS and LVS.\nphysical=json.loads((P/'source/result.json').read_text())\nassert hashlib.sha256((P/'source/result.json').read_bytes()).hexdigest()=='03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d'\nassert layout==candidate['layout']\nfor key in ('placements','ports','bbox_um','origin_translation_um'):\n assert layout[key]==physical['layout'][key],key\n",
+          "after": "# Original topology is separately pinned; every probe below uses the new GDS/LVS.\nwirebase=json.loads((P/'source/result.json').read_text())\nassert hashlib.sha256((P/'source/result.json').read_bytes()).hexdigest()=='8a9da85ef2508a72a0f26722d9e5b5f9a5c8bfb3d88e5f69e4ae2d36c6a17e7a'\nbasepath=Path(__file__).resolve().parents[1]/'docs/evidence/tx-v5-timing-priority-physical-pass-20261019.json'\nbasepin=json.loads(basepath.read_text())\nassert basepin['run']==39304550527 and basepin['summary_sha256']=='03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d'\nphysical=basepin['report']\nassert wirebase['physical_source']['summary_sha256']==basepin['summary_sha256']\nassert candidate['physical_source']['summary_sha256']=='8a9da85ef2508a72a0f26722d9e5b5f9a5c8bfb3d88e5f69e4ae2d36c6a17e7a'\nassert layout==candidate['layout']\nfor key in ('ports','bbox_um','origin_translation_um','signal_routes'):\n assert layout[key]==wirebase['layout'][key],key\nchanges={q['tag']:q for q in candidate['geometry_delta']['changes']}\nassert set(changes)=={'p4_0','p4_1','p4_2','p4_3'}\nassert set(layout['placements'])==set(wirebase['layout']['placements'])\nfor tag,before in wirebase['layout']['placements'].items():\n after=layout['placements'][tag]\n if tag not in changes:assert after==before\n else:\n  q=changes[tag]\n  assert q['public_pin_rectangles_identical']and q['before_transform']==before['transform']and q['before_bbox']==before['bbox_um']\n  assert after==dict(before,kind='pre',transform=q['after_transform'],bbox_um=q['after_bbox'])\n",
+          "count": 1
+        },
+        {
+          "before": "in [Path(__file__),P/'result.json'",
+          "after": "in [Path(__file__),basepath,P/'result.json'",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/tx-fast-wire20-composition-cloud.yml",
+      "baseline_sha256": "c9cd4680b0b9811bbf621b39358d7d1020a19e19f8616da5892aafee6ed461ad",
+      "candidate_path": ".github/workflows/tx-p4-drive3-composition-cloud.yml",
+      "candidate_sha256": "2e93b4ab7f9f7eedf50769fa8d154ccd1701a89e73665f715fb48c57f84c1d00",
+      "edits": [
+        {
+          "before": "tx-fast-wire20",
+          "after": "tx-p4-drive3",
+          "count": 8
+        },
+        {
+          "before": "tx_fast_wire20",
+          "after": "tx_p4_drive3",
+          "count": 6
+        }
+      ]
+    }
+  ]
+}

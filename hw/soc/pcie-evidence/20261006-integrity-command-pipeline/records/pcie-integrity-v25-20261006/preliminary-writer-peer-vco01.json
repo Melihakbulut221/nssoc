@@ -1,0 +1,36 @@
+{
+  "status": "PRELIMINARY_FULL_WRITER_AND_EPOCH_REVIEW_NO_SOURCE_OR_FUNCTIONAL_APPROVAL",
+  "findings": [],
+  "candidate": {
+    "bytes": 199816,
+    "sha256": "fc6bbeebcca9c849d076007c2948a7652b5df8a251474103bce4f73679c50289"
+  },
+  "generator": {
+    "bytes": 8219,
+    "sha256": "a8568a8f4e41e6b233d1c94c2a36aa980f282e8d33169f33fe9efc92f0fdb863"
+  },
+  "bridge": {
+    "bytes": 7111,
+    "sha256": "d504dd3f9dea150f25f1af72507ef29035605026f6973ea224c7e220df914a5e"
+  },
+  "contract": {
+    "bytes": 11823,
+    "sha256": "d9a2be36142de3aab93737344376421944d5689e51cd9c2847d01433c8c02257"
+  },
+  "complete_forward_inverse_edits": 14,
+  "observations": [
+    "All seven data/metadata arrays, old-verdict address and cache lane selection now use old command fields together.",
+    "Main apply lives under unchanged fault-priority branch and is independent ofstep/ending; command ownership clears on same explicit reset/flush/start/abort/fault priorities.",
+    "Cache-only update on invalidated fault edge remains quarantined; actual tests must prove no pending/new epoch leakage.",
+    "Parser commit default remains original; delayed visibility and ending pending-frontier guards explicit.",
+    "No new condition observed in parser/CRC/header math outside exact14 edits."
+  ],
+  "pending": [
+    "Full final source/runtime freeze",
+    "Actual command-state temporal tests and all announced mutants",
+    "Transaction scoreboard including nominal+1 and stalled/fault/drain/capacity behavior",
+    "Independent actual saved-control review",
+    "Mapped stage ancestry/timing"
+  ],
+  "scope": "Read actual generator/full14 edits and independently reconstruct complete target/inverse, with focused full writer/cache/retire/epoch source read. No generator, HDL, tests or native executed. This preliminary observation is not the final source-peer gate."
+}

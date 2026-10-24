@@ -1,0 +1,3 @@
+# Return64 path reader source identity correction
+
+The first diagnosis workflow39102038162 was authored with the old `cloud_tx_balanced_v5_builder` import and protected-input filename. The actual return64 waveform pins `cloud_tx_v5_return64_builder`. Its source guard proves only model identities differ and its review remains byte-identical, but the physical provenance check must use the exact recorded module. Correct both references and run the existing full return64 builder guard before waveform analysis. No stimulus, waveform, evaluator, model, threshold or prior failed result changes. Keep the first workflow result; this is a diagnosis setup correction, not a TX electrical repair. The original nominal failure39087664998 remains rejected.

@@ -1,0 +1,1045 @@
+{
+  "status": "PASS_ORIGINAL_VCO_NATIVE_LAYOUT_MAIN_DRC_DEEP_FLAT_LVS_AND_TWELVE_NEGATIVE_CONTROLS_ONLY",
+  "sources": {
+    "hw/soc/flow/make_pcie_clock_vco.py": {
+      "bytes": 17593,
+      "sha256": "c0897827ac60ee2b5e76a82975102f0d72c7f4cc9b8d460e76045001ce7fcfeb"
+    },
+    "hw/soc/flow/check_pcie_clock_vco.py": {
+      "bytes": 13951,
+      "sha256": "fc1cfbd282e1c8f0548ad7092b5106e1e265abaf5ee90e6fc7f2d3b9eb354fcd"
+    },
+    "sw/tests/test_pcie_clock_vco_layout.py": {
+      "bytes": 5578,
+      "sha256": "5422ed1a4c0cf19c7a047479e912790920bd1255a0686c2184fcb0f3ecbfbfa2"
+    }
+  },
+  "circuit": {
+    "path": "hw/soc/analog/pcie/clock_vco_hbt.spice",
+    "bytes": 2046,
+    "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+  },
+  "results": {
+    "layout": {
+      "result": {
+        "bytes": 100168,
+        "sha256": "5181af78eaa6b7ea86a083671cc510ebb9fb812cda9f975e06d646a41488ce8f"
+      },
+      "status": "GENERATED_REQUIRES_NATIVE_DRC_LVS_AND_PEX"
+    },
+    "native": {
+      "result": {
+        "bytes": 99665,
+        "sha256": "bd3808eb0b25a34d8e714ce85a5a1ff0ef4df71151d45e55fa47ac739f15ddce"
+      },
+      "status": "PASS_VCO_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_AND_TWELVE_NEGATIVE_CONTROLS_ONLY",
+      "steps": [
+        {
+          "name": "drc",
+          "status": "PASS",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/drc/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/drc/drc.lyrdb",
+              "-rd",
+              "threads=2",
+              "-rd",
+              "no_recommended=False",
+              "-rd",
+              "precheck_drc=False"
+            ],
+            "returncode": 0,
+            "seconds": 9.710710901999846,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "db60e842c8b07e791bd86501a1fb5dd3e032e33f8b8b897d544e07c7b1fc254e"
+          },
+          "measurement": {
+            "status": "PASS",
+            "process_returncode": 0,
+            "markers": 0,
+            "categories": {},
+            "category_count": 560,
+            "report_sha256": "da30331905c678d9e5646db46ef2a4cf645ca3db462a48423fbb088288e0b5f2",
+            "log_sha256": "db60e842c8b07e791bd86501a1fb5dd3e032e33f8b8b897d544e07c7b1fc254e"
+          },
+          "audit": null
+        },
+        {
+          "name": "offgrid",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-checks-01/offgrid/wrong.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/offgrid/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/offgrid/drc.lyrdb",
+              "-rd",
+              "threads=2",
+              "-rd",
+              "no_recommended=False",
+              "-rd",
+              "precheck_drc=False"
+            ],
+            "returncode": 0,
+            "seconds": 8.471445125993341,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "aa72ed86f5ba638f245d6846fad421ec99f3e5c60c6a1192de74bafdb00ebcc0"
+          },
+          "measurement": {
+            "status": "FAIL",
+            "process_returncode": 0,
+            "markers": 6,
+            "categories": {
+              "'M1.a'": 2,
+              "metal1_drw_Offgrid": 4
+            },
+            "category_count": 560,
+            "report_sha256": "9681613a6ab26afff3949ea6c5171fbc2311ba50488193b463f178e63734f7e1",
+            "log_sha256": "aa72ed86f5ba638f245d6846fad421ec99f3e5c60c6a1192de74bafdb00ebcc0"
+          },
+          "audit": null
+        },
+        {
+          "name": "lvs",
+          "status": "PASS within comparison scope",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/lvs/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-layout-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/lvs/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/lvs/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 6.940293357998598,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "15097c8552b0d4632d52fd430b9b5cdcd09c57100bcbd6a2d698d6eb3bd28bb8"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "PASS within comparison scope",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "Match",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/lvs/result.lvsdb": {
+                "bytes": 171548,
+                "sha256": "a29b3e32c323e6b464422b41499d6a1f772e12b6669d82245115f03480a94ae5"
+              },
+              "/dev/shm/nssoc-vco-checks-01/lvs/deck.log": {
+                "bytes": 36971,
+                "sha256": "9cf8c8e58cbf55828743b6c12cb766f608fe3d622d40421792b133497c5fd8cf"
+              }
+            }
+          }
+        },
+        {
+          "name": "lvs_flat",
+          "status": "PASS within comparison scope",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/lvs_flat/deck.log",
+              "-rd",
+              "run_mode=flat",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-layout-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/lvs_flat/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/lvs_flat/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 6.284723683987977,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "d99a8b8a277accb6c761054097a37b594f615099aef3d8d7fcdece05ce3c9654"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "PASS within comparison scope",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "Match",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/lvs_flat/result.lvsdb": {
+                "bytes": 139615,
+                "sha256": "0d85ff9c2dcc0cc9b15e6dd7f68fedef3a12be7ad3ad88284aaa95b06243c3ed"
+              },
+              "/dev/shm/nssoc-vco-checks-01/lvs_flat/deck.log": {
+                "bytes": 36968,
+                "sha256": "835641f5f9f0a275a08f12b4439baaa3b2ca84fdfe18243101cdc8273e60c555"
+              }
+            }
+          }
+        },
+        {
+          "name": "wrong_load",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/wrong_load/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-checks-01/wrong_load/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/wrong_load/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/wrong_load/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 7.000351869995939,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "437cd5d78d48fd72636c5c0823f114390ef0d2b99be89490fdfe4c04a272ef1a"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/wrong_load/result.lvsdb": {
+                "bytes": 171536,
+                "sha256": "aed31d563cb9210c5535efdd49c64e1f48f54dd1c84f8ceda0f0c3e7bb5a03cc"
+              },
+              "/dev/shm/nssoc-vco-checks-01/wrong_load/deck.log": {
+                "bytes": 36981,
+                "sha256": "aa50842ae152cde67071c491446cf73f942c0fc5dee68838c72a34c2e153cef9"
+              }
+            }
+          }
+        },
+        {
+          "name": "tail_nx",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/tail_nx/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-checks-01/tail_nx/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/tail_nx/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/tail_nx/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 7.174257753009442,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "7f40e3ae846679b154dd5c5e7bba2de1ff44f2bb8581d1486dd569cbd16c8b43"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/tail_nx/result.lvsdb": {
+                "bytes": 171533,
+                "sha256": "e52f1efff1b45e478cdd7ce6b00ffe85a0db5b1cce5810dcaf37ae098fd4c729"
+              },
+              "/dev/shm/nssoc-vco-checks-01/tail_nx/deck.log": {
+                "bytes": 36972,
+                "sha256": "e6e517b007b0e50b417c196af0c2867f96787a2f6406ba37a59a87e642d035ea"
+              }
+            }
+          }
+        },
+        {
+          "name": "missing_tap",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/missing_tap/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-checks-01/missing_tap/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/missing_tap/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/missing_tap/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 7.174404879013309,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "ae4e3b32c9b3203e2bc622a1648239eb70d58e3fa18e137a960580b98fb91c39"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/missing_tap/result.lvsdb": {
+                "bytes": 171556,
+                "sha256": "2b1f85cbff146bccb90441d4187cf6ff3f860176b7a905bae972fd3b7de70130"
+              },
+              "/dev/shm/nssoc-vco-checks-01/missing_tap/deck.log": {
+                "bytes": 36984,
+                "sha256": "3f07e5f82473ae18c57f8a18662aae7d151fe08d4469fd4373d1c13d50f2d6d6"
+              }
+            }
+          }
+        },
+        {
+          "name": "ring_input",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/ring_input/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-checks-01/ring_input/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/ring_input/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/ring_input/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 6.685744570015231,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "264cd5d931bd12d384f2a6576253834375870a933328ff9ceee4adb22e3d82fc"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/ring_input/result.lvsdb": {
+                "bytes": 171532,
+                "sha256": "4f2aaa5e3b5662f2645f18608b2b63562664d1195b4231fd630872c86a25b33c"
+              },
+              "/dev/shm/nssoc-vco-checks-01/ring_input/deck.log": {
+                "bytes": 36981,
+                "sha256": "c732c3adc837867a18c13ff01d999a5b66c72e7814a213fe56bf145b60f210a8"
+              }
+            }
+          }
+        },
+        {
+          "name": "mim_asymmetry",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/mim_asymmetry/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-checks-01/mim_asymmetry/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/mim_asymmetry/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/mim_asymmetry/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 7.424849962990265,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "5625848f9648b80f1815bed67c92beb2111b4dd97de234ce40bbdf44504f786e"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/mim_asymmetry/result.lvsdb": {
+                "bytes": 171518,
+                "sha256": "245f1de3f8108621587d27d67a45a39f46def953c25829197170eb52771bc067"
+              },
+              "/dev/shm/nssoc-vco-checks-01/mim_asymmetry/deck.log": {
+                "bytes": 36990,
+                "sha256": "53abe07a99051a058830012643bd6acac739da47791a95b14f5f260fd1296718"
+              }
+            }
+          }
+        },
+        {
+          "name": "pmos_width",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/pmos_width/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-checks-01/pmos_width/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/pmos_width/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/pmos_width/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 7.681650241982425,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "bedb2031a575d6dee7df6c447d1aadb308659b54920b464108062bf6a257ff39"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/pmos_width/result.lvsdb": {
+                "bytes": 171897,
+                "sha256": "c36c4aa78767361a4c6534d2885cdce45f77a6c5a55511ff57d2c58c90443fc7"
+              },
+              "/dev/shm/nssoc-vco-checks-01/pmos_width/deck.log": {
+                "bytes": 36981,
+                "sha256": "422e62d126f996f509764cc07fbb0ea25309e8bf54e42d04fa42a762951ea119"
+              }
+            }
+          }
+        },
+        {
+          "name": "missing_well_tap",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-layout-01/nssoc_clock_vco_hbt_layout.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/missing_well_tap/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-checks-01/missing_well_tap/wrong.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/missing_well_tap/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/missing_well_tap/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 7.191551572992466,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "b551ffa7420a79ccc6a9c0e32effc714f427e90463e0f565c492052a9233d0e3"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 35
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/missing_well_tap/result.lvsdb": {
+                "bytes": 171401,
+                "sha256": "051c06d436abfabf981344b3f9bd0a65ebb029dd7818f1d34ee1455a4970473f"
+              },
+              "/dev/shm/nssoc-vco-checks-01/missing_well_tap/deck.log": {
+                "bytes": 36999,
+                "sha256": "8bf181d64284d87f5b932ed2669a767b7578b335efdb4550fd3f577a8c7702f6"
+              }
+            }
+          }
+        },
+        {
+          "name": "control_open",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-checks-01/control_open/wrong.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/control_open/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-layout-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/control_open/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/control_open/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 6.677339283982292,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "d9692730e97f2a7ba8217e0a07501ed962290e5d8069f0884694d1920372125b"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "Match": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "Match",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/control_open/result.lvsdb": {
+                "bytes": 171543,
+                "sha256": "a2e43756c77a4c04ed2200328b337e82f5d2c7d529457938243c97c3c3af0f78"
+              },
+              "/dev/shm/nssoc-vco-checks-01/control_open/deck.log": {
+                "bytes": 36970,
+                "sha256": "adae44e248f77727a2683f6c63d93d6fecfb4074997b5e007508bfbf27921711"
+              }
+            }
+          }
+        },
+        {
+          "name": "clock_short",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-checks-01/clock_short/wrong.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/clock_short/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-layout-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/clock_short/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/clock_short/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 7.0465159460145514,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "58c4abcf1080f7959fba05129e32eaff9933c29ab03bee7f1ae790a69abb5ecc"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 35,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/clock_short/result.lvsdb": {
+                "bytes": 171818,
+                "sha256": "62f9a4b2aed46d8fa71c8af8b64be82d160d8333aca2653b29405c671fc29432"
+              },
+              "/dev/shm/nssoc-vco-checks-01/clock_short/deck.log": {
+                "bytes": 36967,
+                "sha256": "628403c364be8b11e75a5bad305b7c515313b8e44ed9b727227a2e80ba5db08c"
+              }
+            }
+          }
+        },
+        {
+          "name": "power_short",
+          "status": "FAIL",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "klayout",
+              "-b",
+              "-zz",
+              "-r",
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+              "-rd",
+              "input=/dev/shm/nssoc-vco-checks-01/power_short/wrong.gds",
+              "-rd",
+              "topcell=nssoc_clock_vco_hbt_layout",
+              "-rd",
+              "log=/dev/shm/nssoc-vco-checks-01/power_short/deck.log",
+              "-rd",
+              "run_mode=deep",
+              "-rd",
+              "schematic=/dev/shm/nssoc-vco-layout-01/schematic.cir",
+              "-rd",
+              "report=/dev/shm/nssoc-vco-checks-01/power_short/result.lvsdb",
+              "-rd",
+              "target_netlist=/dev/shm/nssoc-vco-checks-01/power_short/extracted.cir",
+              "-rd",
+              "thr=2"
+            ],
+            "returncode": 0,
+            "seconds": 7.167391489987494,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "828b86f3ac193330e5d8ab117cef77a1c999517ce7971801ce78d49a7ee869f0"
+          },
+          "measurement": null,
+          "audit": {
+            "status": "FAIL",
+            "top": "nssoc_clock_vco_hbt_layout",
+            "reasons": [
+              "Non-matching, skipped, missing or warning circuit",
+              "Missing explicit successful deck verdict",
+              "Deck explicitly reported a mismatch"
+            ],
+            "extraction_diagnostics": [],
+            "circuit_status_counts": {
+              "NoMatch": 1
+            },
+            "circuits": [
+              {
+                "layout": "nssoc_clock_vco_hbt_layout",
+                "schematic": "NSSOC_CLOCK_VCO_HBT_LAYOUT",
+                "status": "NoMatch",
+                "layout_devices_recursive": 36,
+                "schematic_devices_recursive": 36
+              }
+            ],
+            "inputs": {
+              "/dev/shm/nssoc-vco-checks-01/power_short/result.lvsdb": {
+                "bytes": 172574,
+                "sha256": "9c6e09e732feb569d705e9d7de7112bf35ad3383fb17714b45f8224f6299e3f2"
+              },
+              "/dev/shm/nssoc-vco-checks-01/power_short/deck.log": {
+                "bytes": 36967,
+                "sha256": "0dc950058bcf9d564e75e3be7181b1a53ee1623ef0674c6231df67cd10b78143"
+              }
+            }
+          }
+        },
+        {
+          "name": "lef",
+          "status": "PASS",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "openroad",
+              "-exit",
+              "/dev/shm/nssoc-vco-checks-01/lef/inspect.tcl"
+            ],
+            "returncode": 0,
+            "seconds": 1.7101077100087423,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "f3609071e7cd98e24e366f4fe4c7a6fdae1e062d5637142cf9146a0651efb2e6"
+          },
+          "measurement": null,
+          "audit": null
+        },
+        {
+          "name": "lef_missing_pin",
+          "status": "EXPECTED_REJECTION",
+          "execution": {
+            "command": [
+              "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+              "openroad",
+              "-exit",
+              "/dev/shm/nssoc-vco-checks-01/lef_missing_pin/inspect.tcl"
+            ],
+            "returncode": 1,
+            "seconds": 1.920036212017294,
+            "memory_limit_bytes": 2147483648,
+            "elapsed_watchdog": null,
+            "log_sha256": "191776661be8a44fed15bd1aa5f17574954fa9b16628fbef19217dfc593aa8af"
+          },
+          "measurement": null,
+          "audit": null
+        }
+      ]
+    }
+  },
+  "physical": {
+    "bbox_um": [
+      0,
+      0,
+      1400,
+      277.03
+    ],
+    "hbt": 18,
+    "hv_pmos": 1,
+    "rppd": 9,
+    "cmim": 6,
+    "physical_ptap": 8,
+    "physical_ntap": 1,
+    "combined_lvs_devices": 36,
+    "ports": [
+      "CLKP",
+      "CLKN",
+      "VCTRL",
+      "AVDD",
+      "AVSS",
+      "SUB"
+    ],
+    "main_drc_markers": 0,
+    "rule_categories": 560,
+    "both_deep_and_flat_strict_lvs": true,
+    "negative_controls": 12
+  },
+  "literal_bridges": {
+    "pmos": "Native pmosHV W32u/L.45u/ng1: measured source/drain M1 and gate poly; actual poly contact outside active; actual joined NWell and 2x2um ntap to AVDD. NWELL is separate in physical reference, not a virtual body tie.",
+    "mim": "All six native cmim plate dimensions retained, including CP0 12.2x12um. Pinned native implementation defines PLUS TopMetal1 and MINUS Metal5; actual plate rectangles measured. Upper-plate contacts escape outside capacitor footprint.",
+    "bulk": "Eight actual 2x2um ptap1 contacts from SUB to physical BULK; AVSS separate.",
+    "forced_sources": "None; physical netlist has no voltage/current source, initial condition, periodic stimulus or kick."
+  },
+  "validation": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm .venv/bin/python -m pytest sw/tests/test_pcie_clock_vco_layout.py sw/tests/test_pcie_sampler_layout.py sw/tests/test_pcie_rx_cell.py sw/tests/test_pcie_analog_bank.py -q -p no:cacheprovider",
+    "passed": 97,
+    "ruff": "All checks passed"
+  },
+  "source_pdk": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+  "verification_deck": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+  "appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "native_check_memory_limit_bytes": 2147483648,
+  "reproduction": {
+    "generate": "hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python hw/soc/flow/make_pcie_clock_vco.py --pdk PDK --out /dev/shm/nssoc-vco-NEW",
+    "check": "python hw/soc/flow/check_pcie_clock_vco.py --layout /dev/shm/nssoc-vco-NEW --pdk PDK --out /dev/shm/nssoc-vco-CHECKNEW"
+  },
+  "assumptions": {
+    "external_supply_v": 2.3,
+    "external_control_voltage": true,
+    "ideal_substrate_replaced_by_explicit_physical_taps": true,
+    "post_layout_oscillation_qualified": false,
+    "sampler_clock_fanout_qualified": false,
+    "qualified_pex": false,
+    "em_qualified": false,
+    "pll_or_cdr_complete": false,
+    "main_chip_integrated": false,
+    "manufacturing_approval": false
+  },
+  "retention": "Every final GDS/LEF/SPICE, positive and negative native database/log, source snapshot, exact command and digest retained. No foundry implementation/runtime binaries included; actual generated PCell geometry and model names present.",
+  "limitations": "Separate original VCO macro only. Native main DRC and strict transistor connectivity/geometry do not qualify post-layout oscillation, 8GHz fanout, jitter/noise/phase locking, physical rail or interconnect current. Long prototype routes require extraction and recharacterization. No link to sampler clock nets has been made here. Analog characterization belongs to a separate source-bound campaign.",
+  "initial_launch_failure": "Initial generation used an unsupported DBox.contains(DBox) overload; corrected to two actual corner-point tests. An early positive helper started with missing generated files, returned nonzero and produced no DRC/LVS result. Those raw error logs are retained and are not counted as circuit controls.",
+  "capsule": {
+    "path": "hw/soc/out/pcie-clock-vco-layout-20261004/vco-native-physical-final.tar.xz",
+    "bytes": 134552,
+    "sha256": "ffba7a58c95e122a5200791d7bbfe2f0504a2d453d7530c14e55617bc0f78842",
+    "members": 131
+  }
+}

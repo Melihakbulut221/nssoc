@@ -1,0 +1,43 @@
+{
+  "baseline_path": "scripts/cloud_mainchip_postroute_review.py",
+  "baseline_sha256": "8bfe1db2075883f50c3530767f91fb1e148f6c3bb9210c1c61a6d12b69cfc567",
+  "candidate_path": "scripts/cloud_mainchip_repair_deep_postroute.py",
+  "candidate_sha256": "bf2321c63eadcac6feda0eabe144921ce85d889e78e16c1f3ad290254c70a50f",
+  "changes": [
+    {
+      "start": 246,
+      "end": 299,
+      "replacement": "import cloud_mainchip_repair_deep_postroute_geometry as geometry\n"
+    },
+    {
+      "start": 524,
+      "end": 567,
+      "replacement": "OUT=ROOT/'cloud-mainchip-repair-deep-postroute'\n"
+    },
+    {
+      "start": 2999,
+      "end": 3095,
+      "replacement": "        methods=json.loads((ROOT/'scripts/mainchip-repair-deep-postroute-methods.json').read_text())\n"
+    },
+    {
+      "start": 10473,
+      "end": 10473,
+      "replacement": "        state['nl']=g['candidate_netlist_path']\n        assert sha(state['nl'])==g['candidate_netlist_sha256']=='3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030'\n"
+    },
+    {
+      "start": 10562,
+      "end": 10683,
+      "replacement": "            subprocess.run([str(app),'openroad','-exit','-python',str(ROOT/'scripts/export_mainchip_repair_deep_completed_def.py')],\n"
+    },
+    {
+      "start": 11539,
+      "end": 11619,
+      "replacement": "        protected.update({str(p):sha(p)for p in (route,Path(state['nl']),deffile,trial,initial)})\n"
+    },
+    {
+      "start": 13729,
+      "end": 13838,
+      "replacement": "        assert sha(measured['odb'])==sha(route)and sha(measured['nl'])==g['candidate_netlist_sha256']\n"
+    }
+  ]
+}

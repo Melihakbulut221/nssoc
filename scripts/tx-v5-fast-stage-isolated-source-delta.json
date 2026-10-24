@@ -1,0 +1,60 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_fast_stage_assembly.py",
+      "baseline_sha256": "b9e77675baef7314a627fcdbd4a9448bb973446853b21379d6264fe6b51a19e0",
+      "candidate_path": "scripts/cloud_tx_v5_fast_stage_isolated_assembly.py",
+      "candidate_sha256": "fb8da2699c4e1547ba53982588d6f94022aafc5df15561342d572bf3b57853f6",
+      "edits": [
+        {
+          "before": "cloud-tx-v5-fast-stage-assembly",
+          "after": "cloud-tx-v5-fast-stage-isolated-assembly",
+          "count": 1
+        },
+        {
+          "before": "nssoc_tx_tree32_budget_balanced_v5_faststage_core_v1",
+          "after": "nssoc_tx_tree32_budget_balanced_v5_faststage_isolated_core_v1",
+          "count": 1
+        },
+        {
+          "before": "check_tx_v5_fast_stage_geometry.py",
+          "after": "check_tx_v5_fast_stage_isolated_geometry.py",
+          "count": 1
+        },
+        {
+          "before": "            x=right+40+12*k;y0=stub(child,op,x,4);y1=stub(parent,ip,x,4)",
+          "after": "            # Four observed same-layer overlaps in native failed39154915645.\n            # Share replacement tracks only where their physical Y intervals are disjoint.\n            shift={'p8_2p':48.,'p8_2n':48.,'p8_7p':24.,'p8_7n':24.}.get(maps[child][op],0.)\n            x=right+40+12*k+shift;y0=stub(child,op,x,4);y1=stub(parent,ip,x,4)",
+          "count": 1
+        },
+        {
+          "before": "        plan['fast_stage_rows_um']=row_targets;result['fast_stage_rows_um']=row_targets",
+          "after": "        plan['fast_stage_rows_um']=row_targets;result['fast_stage_rows_um']=row_targets\n        result['signal_track_shift_um']={'p8_2p':48.,'p8_2n':48.,'p8_7p':24.,'p8_7n':24.}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_tx_v5_fast_stage_geometry.py",
+      "baseline_sha256": "b61c917a1baab36ee578a4c6e37d2e5e3f610b11e1c4ddae5827643d22ac5d0c",
+      "candidate_path": "scripts/check_tx_v5_fast_stage_isolated_geometry.py",
+      "candidate_sha256": "37c6ca6d920580d7d74357cfb71a4f141745fdf41ff895b641bab822baaac8be",
+      "edits": [
+        {
+          "before": "        assert abs(r['x_um']-(o['x_um']-300*level))<1e-8",
+          "after": "        track_shift={'p8_2p':48.,'p8_2n':48.,'p8_7p':24.,'p8_7n':24.}.get(r['net'],0.)\n        assert abs(r['x_um']-(o['x_um']-300*level+track_shift))<1e-8",
+          "count": 1
+        },
+        {
+          "before": "        expected=o['centerline_length_um']-300+abs(ys[1]-ys[0])-abs(o['y_um'][1]-o['y_um'][0])",
+          "after": "        expected=o['centerline_length_um']-300+2*track_shift+abs(ys[1]-ys[0])-abs(o['y_um'][1]-o['y_um'][0])",
+          "count": 1
+        },
+        {
+          "before": "    lengths=[x['centerline_length_um']for x in record['signal_routes']]",
+          "after": "    # Verify every declared TM1 trunk exists in the actual parent geometry.\n    region=pya.Region(L.top_cell().shapes(L.layer(126,0))).merged()\n    for i,r in enumerate(record['signal_routes']):\n        x=r['x_um'];y0,y1=r['y_um'];b=pya.DBox(x-2+dx,min(y0,y1)-2+dy,x+2+dx,max(y0,y1)+2+dy)\n        assert (pya.Region(b.to_itype(L.dbu))-region).is_empty()\n        for q in record['signal_routes'][i+1:]:\n            if abs(r['x_um']-q['x_um'])>=4:continue\n            assert max(min(r['y_um']),min(q['y_um']))-min(max(r['y_um']),max(q['y_um']))>=4,('Parent trunks short',r['net'],q['net'])\n    lengths=[x['centerline_length_um']for x in record['signal_routes']]",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

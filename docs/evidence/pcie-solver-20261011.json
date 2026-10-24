@@ -1,0 +1,89 @@
+{
+  "status": "MEASURED_KLU_SPEEDUP_SHORT_AGREEMENT_LONGER_VALIDATION_PENDING",
+  "at": "2026-10-11T12:05:44.921469+03:00",
+  "solver": {
+    "status": "PASS_ACTUAL_SOLVER_IDENTITY_SPEED_AND_SHORT_AGREEMENT",
+    "elapsed_seconds": {
+      "sparse": 367.63258057500934,
+      "klu": 139.48852398298914
+    },
+    "speedup": 2.635575817117706,
+    "inputs": {
+      "hw/soc/out/pcie-solver-benchmark-20261011/comparison02.json": "ca32258460b241f497ee5eada12a9fd045cfac82c459c10a280ca1c93195154d",
+      "hw/soc/out/pcie-solver-benchmark-20261011/native-sparse01/closed-01/execution.json": "5b1fec14f1166dcf5f573851e6732a7bf2591694904fa1e9785bab66751d726b",
+      "hw/soc/out/pcie-solver-benchmark-20261011/native-klu01/closed-01/execution.json": "7ca87f283d20ac4a259914f385ab35325186074e9c9282909cdbc539fe785ca8"
+    },
+    "columns": 2142,
+    "full_phy_accepted": false,
+    "solver_adopted": false,
+    "longer8ns_pending": true
+  },
+  "numerical_comparison": {
+    "status": "PASS_SHORT_NUMERICAL_AGREEMENT",
+    "voltage_limit_v": 0.005,
+    "current_limit_a": 5e-06,
+    "capacitance_limit_f": 1e-15,
+    "edge_limit_s": 2e-12,
+    "failed_columns": 0
+  },
+  "idle_valid_regression": {
+    "status": "PASS_IDLE_VALID_LOW_REGRESSION_AND_REAL_CONSUME_GUARD_FAULT",
+    "results": {
+      "canonical": {
+        "returncode": 0,
+        "counts": [
+          5,
+          0,
+          0
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/idle-valid07.py": "1b0779cd3e7213ff1f2fa296004c387ba1520ca8c61ca5f96be1e607f26e715f",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/idle-valid06/test_soc_pcie_credit_tx.py": "b58326f543332a54fcf7c2773fb7dec30cf3575f35661b195ee5424cd60fe9a5",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_credit_tx": "3ca9700292b35f7c3f82ceb0fcc94ca3cdfd1f57013bff599ae4ede06079973e",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_credit_tx.v": "3526334ca8ce6fb1fabae239583fa51d51b1ac377c89276a650246c169f7a72d"
+        },
+        "log_sha256": "88720a297db1009b6272e4bbd88147fecbed1aa5bef13e1d5ae0e8a92bb1119b"
+      },
+      "candidate": {
+        "returncode": 0,
+        "counts": [
+          5,
+          0,
+          0
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/idle-valid07.py": "1b0779cd3e7213ff1f2fa296004c387ba1520ca8c61ca5f96be1e607f26e715f",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/idle-valid06/test_soc_pcie_credit_tx.py": "b58326f543332a54fcf7c2773fb7dec30cf3575f35661b195ee5424cd60fe9a5",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_credit_tx": "3ca9700292b35f7c3f82ceb0fcc94ca3cdfd1f57013bff599ae4ede06079973e",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/candidate03/soc_pcie_credit_tx.v": "484cd74476a98d117636ac22bc5ae72c35aa73702d1718015f6e222e6925c08d"
+        },
+        "log_sha256": "73a5395d0eeee353d2d19a9fd93b1ace0f8e7f17eeb3e5dcece4fa160c61dc5f"
+      },
+      "missing-consume": {
+        "returncode": 2,
+        "counts": [
+          4,
+          1,
+          0
+        ],
+        "inputs": {
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/idle-valid07.py": "1b0779cd3e7213ff1f2fa296004c387ba1520ca8c61ca5f96be1e607f26e715f",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/idle-valid06/test_soc_pcie_credit_tx.py": "b58326f543332a54fcf7c2773fb7dec30cf3575f35661b195ee5424cd60fe9a5",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_credit_tx": "3ca9700292b35f7c3f82ceb0fcc94ca3cdfd1f57013bff599ae4ede06079973e",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/fault05/soc_pcie_credit_tx.v": "9faca44017bc1dadee39c1818540e3ea40beba91894610f816097a47c5af7480"
+        },
+        "log_sha256": "4389290bcd4721eb4e98df0986ee774b2933a8cd82a422b2cc46f8d6b41e7033"
+      }
+    },
+    "scope": "Existing5portcases extended with valid-low nonzero request bus at modulo half-range for all3classes, followed by identical realdebit. Original fault05 escaped oldtest and is preserved; this run detects it. No timingacceptance."
+  },
+  "public_records": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-solver-records-20261011.tar.gz",
+    "name": "nssoc-solver-records-20261011.tar.gz",
+    "bytes": 207042923,
+    "sha256": "c297caa70432a34c1f6a11d3c6ca98f610c206e72c512484ef59fd2b1307e619"
+  },
+  "full_phy_accepted": false,
+  "final_timing_accepted": false
+}

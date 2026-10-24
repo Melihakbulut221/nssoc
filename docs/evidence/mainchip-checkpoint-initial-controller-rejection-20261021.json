@@ -1,0 +1,88 @@
+{
+  "run": 39496744489,
+  "source_head": "39f8b1ba38ec96e8fb38ff7ada4f341fa6f3c124",
+  "summary_asset": 660480008,
+  "summary_sha256": "875402564054af12aa723f3b77979d53dbca12ea08ab80ae558efc041524b49c",
+  "report": {
+    "status": "FAIL_OR_ERROR",
+    "source_head": "39f8b1ba38ec96e8fb38ff7ada4f341fa6f3c124",
+    "stage": "initial",
+    "route_complete": false,
+    "final_timing_complete": false,
+    "drt_worker_checkpoint_proven": false,
+    "scope": "Actual152762-instance native OpenROAD process, open journal and Tcl/native design memory across checkpoint. Not yet an active detailed-route worker checkpoint or routed/timing acceptance.",
+    "runtime_source": {
+      "run": 39494338440,
+      "summary_sha256": "21e8f082931a30e8ae074d34843c828502a80e0719b778e6a8686a04fc976bc2",
+      "manifest_sha256": "dccdda0edea5954b3284d87636d055cce1157f1a0e4d20b962f30b7476979856",
+      "restore": {
+        "archive": {
+          "parts": 1,
+          "bytes": 826825972,
+          "sha256": "b748abf9ecccc446606ecc49629de8ffef95e7c46b473a3bc83fa2cb301590e9",
+          "all_parts_and_combined_bytes_verified": true
+        },
+        "selected_files": {
+          "result.json": {
+            "sha256": "21e8f082931a30e8ae074d34843c828502a80e0719b778e6a8686a04fc976bc2",
+            "bytes": 8290
+          },
+          "native-image.tar": {
+            "sha256": "c8448ddce6e02b2f23ddd84245a71ae43c2b4b8537c5e1bdaf80fc4ef8882f9d",
+            "bytes": 2665922048
+          },
+          "source/run/1-openroad-detailedrouting/fresh_fanout_native.tcl": {
+            "sha256": "dcfb68741ea369b67c9dcd551c8d7b4aca4e7387ec999568cefa3a68c13f684e",
+            "bytes": 8655
+          },
+          "source/run/1-openroad-detailedrouting/fresh-fanout.guide": {
+            "sha256": "33cfd89ca715ebf222b001602da677fef1f411cb6465aee8adcc0d7c51a5ee06",
+            "bytes": 48619407
+          },
+          "source/run/1-openroad-detailedrouting/fresh-fanout-global.odb": {
+            "sha256": "538cbb286ac44f9ebeb09d0857619a675d14779ab0c4e6257900ee9499be7499",
+            "bytes": 143879453
+          },
+          "runtime-inventory.json": {
+            "sha256": "f0dd493a1f5106da8a86bf0de6821d6ddbeed25050717c5706225c3d4fdfdbfa",
+            "bytes": 6246138
+          }
+        },
+        "full_archive_verified_before_extraction": true
+      }
+    },
+    "image_id": "sha256:113cc2e5500e0152a2137336ae092c7caeccb5f8b95b17874fd649d097b8daf8",
+    "saved_route_tcl": "# Copyright 2020-2022 Efabless Corporation\n#\n# Licensed under the Apache License, Version 2.0 (the \"License\");\n# you may not use this file except in compliance with the License.\n# You may obtain a copy of the License at\n#\n#      http://www.apache.org/licenses/LICENSE-2.0\n#\n# Unless required by applicable law or agreed to in writing, software\n# distributed under the License is distributed on an \"AS IS\" BASIS,\n# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n# See the License for the specific language governing permissions and\n# limitations under the License.\nproc drt_run {i args} {\n    set directory \"drt-run-${i}\"\n    file mkdir \"$::env(STEP_DIR)/$directory\"\n    set output_drc \"-output_drc $::env(STEP_DIR)/$directory/$::env(DESIGN_NAME).drc\"\n    log_cmd detailed_route {*}$args {*}$output_drc\n    if { $::env(DRT_SAVE_SNAPSHOTS) } {\n        foreach snapshot [glob -nocomplain $::env(STEP_DIR)/drt_iter*.odb] {\n            file rename -force $snapshot $::env(STEP_DIR)/$directory/[file tail $snapshot]\n        }\n    }\n    foreach drc_file [glob -nocomplain $::env(STEP_DIR)/$directory/*.drc] {\n        file copy -force $drc_file $::env(STEP_DIR)/[file tail $drc_file]\n    }\n    write_db $::env(STEP_DIR)/$directory/$::env(DESIGN_NAME).odb\n}\n\nsource $::env(SCRIPTS_DIR)/openroad/common/io.tcl\n# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: CERN-OHL-W-2.0\n# Reject a lexical value that the native SDC would truncate before loading it.\nif {![info exists ::env(TIME_DERATING_CONSTRAINT)]} {\n error \"Missing TIME_DERATING_CONSTRAINT\"\n}\nset derate $::env(TIME_DERATING_CONSTRAINT)\nif {![string is double -strict $derate] ||\n    [catch {expr {double($derate) >= 0 && double($derate) < 100}} valid] || !$valid} {\n error \"Invalid TIME_DERATING_CONSTRAINT\"\n}\nset intended_derate [expr {double($derate) / 100.0}]\nif {[expr {$derate / 100}] != $intended_derate} {\n error \"TIME_DERATING_CONSTRAINT loses precision in the native SDC integer division\"\n}\nputs \"DERATE_GUARD percent=$derate early=[expr {1-$intended_derate}] late=[expr {1+$intended_derate}]\"\n\nread_current_odb\n\nset_propagated_clock [all_clocks]\nforeach {name period} {clk_i 20 pcie_clk_i 4 eth_rx_clk_i 8 eth_tx_clk_i 8} {\n    set clock [get_clocks $name]\n    if {[llength $clock] != 1 || abs([get_property $clock period]-$period)>1e-9} {\n        error \"Original physical clock budget changed: $name\"\n    }\n}\nforeach clock [all_clocks] {\n    if {![get_property $clock is_propagated]} {error \"PostCTS ideal clock\"}\n}\nputs \"%OL_CREATE_REPORT high-fanout.rpt\"\nforeach net [[ord::get_db_block] getNets] {\n    if {[$net getSigType] in {POWER GROUND}} {continue}\n    set pins [$net getITerms]\n    if {[llength $pins] < 128} {continue}\n    set drivers {}\n    foreach pin $pins {\n        if {[$pin getIoType] == \"OUTPUT\"} {\n            lappend drivers \"[[$pin getInst] getName]/[[$pin getMTerm] getName]\"\n        }\n    }\n    puts [list [$net getName] [$net getSigType] [llength $pins] $drivers]\n}\nputs \"%OL_END_REPORT\"\nsource \"/home/runner/work/nssoc/nssoc/hw/soc/flow/prune_orphan_guides.tcl\"\nputs \"REMOVED_ORPHAN_GUIDES [prune_orphan_guides [ord::get_db_block]]\"\n\n# Create NDRs\nif { [info exists ::env(NON_DEFAULT_RULES)] } {\n    dict for {ndr_name values} $::env(NON_DEFAULT_RULES) {\n        puts \"Creating NDR for $ndr_name:\"\n        dict with values {\n            puts \"  width: $width\"\n            puts \"  spacing: $spacing\"\n            puts \"  via: $via\"\n\n            if {$via eq \"None\"} {\n                create_ndr -name $ndr_name \\\n                    -width $width \\\n                    -spacing $spacing\n            } else {\n                create_ndr -name $ndr_name \\\n                    -width $width \\\n                    -spacing $spacing \\\n                    -via $via\n            }\n        }\n    }\n}\n\n# Assign NDRs to nets\nif { [info exists ::env(DRT_ASSIGN_NDR)] } {\n    dict for {net_regex ndr_name} $::env(DRT_ASSIGN_NDR) {\n        puts \"\\[INFO\\] Assigning NDR '$ndr_name' to nets matching '$net_regex'\"\n        if { $net_regex != {^$} } {\n            set odb_nets [$::block getNets]\n            foreach net $odb_nets {\n                set net_name [odb::dbNet_getName $net]\n                if { [regexp \"$net_regex\" $net_name full] } {\n                    puts \"\\[INFO\\] Net '$net_name' matched '$net_regex', assigning NDR '$ndr_name'\u2026\"\n                    assign_ndr -ndr $ndr_name -net $net_name\n                }\n            }\n        }\n    }\n}\n\nset_thread_count $::env(DRT_THREADS)\n\nset drc_report_iter_step_arg \"\"\nif { $::env(DRT_SAVE_SNAPSHOTS) } {\n    set_debug_level DRT snapshot 1\n    set drc_report_iter_step_arg \"-drc_report_iter_step 1\"\n    detailed_route_debug -snapshot_dir \"$::env(STEP_DIR)\"\n}\nif { [info exists ::env(DRT_SAVE_DRC_REPORT_ITERS)] } {\n    set drc_report_iter_step_arg \"-drc_report_iter_step $::env(DRT_SAVE_DRC_REPORT_ITERS)\"\n}\n\n# The input has only stale data wires removed. Source geometry, netlist,\n# power and clock wires were independently checked before this native step.\nset_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2\nset_global_routing_layer_adjustment * 0.0\n# General adjustment does not overwrite persisted per-layer adjustments.\nset nssoc_adjustment_report [open \"$::env(STEP_DIR)/native-layer-adjustments.tsv\" w]\nputs $nssoc_adjustment_report \"layer\\tbefore\\tafter\"\nforeach nssoc_layer_name {Metal2 Metal3 Metal4 Metal5 TopMetal1 TopMetal2} {\n    set nssoc_layer [[ord::get_db_tech] findLayer $nssoc_layer_name]\n    set nssoc_before [$nssoc_layer getLayerAdjustment]\n    set_global_routing_layer_adjustment $nssoc_layer_name 0.0\n    set nssoc_after [$nssoc_layer getLayerAdjustment]\n    puts $nssoc_adjustment_report \"$nssoc_layer_name\\t$nssoc_before\\t$nssoc_after\"\n    puts \"NSSOC_LAYER_ADJUSTMENT $nssoc_layer_name $nssoc_before -> $nssoc_after\"\n    if {abs($nssoc_after) > 1e-9} { error \"Persisted layer adjustment was not cleared\" }\n}\nclose $nssoc_adjustment_report\nset_macro_extension 0\nglobal_route -congestion_iterations 200 -verbose\nwrite_guides \"$::env(STEP_DIR)/fresh-fanout.guide\"\nwrite_db \"$::env(STEP_DIR)/fresh-fanout-global.odb\"\nputs \"NSSOC_FRESH_FANOUT_GUIDES_FROM_CURRENT_NATIVE_PINS\"\nset i 0\n\nset drt_args [list]\nlappend drt_args -droute_end_iter $::env(DRT_OPT_ITERS)\nlappend drt_args -or_seed 42\nlappend drt_args -verbose 1\nlappend drt_args {*}$drc_report_iter_step_arg\ndrt_run $i {*}$drt_args\n\nincr i\n\nif { ![info exists ::env(DIODE_CELL)] } {\n    puts \"\\[INFO\\] Skipping post-DRT antenna repair: 'DIODE_CELL' not set.\"\n} elseif { $::env(DRT_ANTENNA_REPAIR_ITERS) == 0 } {\n    puts \"\\[INFO\\] Skipping post-DRT antenna repair: DRT_ANTENNA_REPAIR_ITERS set to 0.\"\n} else {\n    set diode_cell [lindex [split $::env(DIODE_CELL) \"/\"] 0]\n\n    set arg_list [list]\n    lappend arg_list $diode_cell\n    lappend arg_list -ratio_margin $::env(GRT_ANTENNA_REPAIR_MARGIN)\n    append_if_flag arg_list GRT_ALLOW_CONGESTION -allow_congestion\n    append_if_flag arg_list DRT_ANTENNA_REPAIR_JUMPER_ONLY -jumper_only\n    append_if_flag arg_list DRT_ANTENNA_REPAIR_DIODE_ONLY -diode_only\n\n    while {$i <= $::env(DRT_ANTENNA_REPAIR_ITERS) && [log_cmd check_antennas]} {\n        puts \"\\[INFO\\] Running antenna repair iteration $i\u2026\"\n        # Native ANT WireBuilder recognizes net-level ROUTED metadata when\n        # deciding whether an existing detailed wire must be synthesized.\n        # Change only that metadata during ANT; keep its FIXED encoded wire.\n        set nssoc_fixed_net [[ord::get_db_block] findNet clknet_3_5_0_pcie_clk_i]\n        if {[$nssoc_fixed_net getWireType] ne \"FIXED\"} {\n            error \"Fixed clock metadata missing before native antenna repair\"\n        }\n        set nssoc_fixed_wire [$nssoc_fixed_net getWire]\n        if {$nssoc_fixed_wire eq \"NULL\"} {error \"Fixed clock wire missing\"}\n        $nssoc_fixed_net setWireType ROUTED\n        set nssoc_ant_code [catch {\n            set diodes_inserted [log_cmd repair_antennas {*}$arg_list]\n        } nssoc_ant_result nssoc_ant_options]\n        $nssoc_fixed_net setWireType FIXED\n        if {[$nssoc_fixed_net getWire] ne $nssoc_fixed_wire} {\n            error \"Native antenna repair replaced the physical fixed clock wire\"\n        }\n        if {$nssoc_ant_code} {\n            return -options $nssoc_ant_options $nssoc_ant_result\n        }\n        puts \"NSSOC_FIXED_CLOCK_ANTENNA_METADATA_RESTORED\"\n        \n        if {$diodes_inserted || $::env(DRT_ANTENNA_REPAIR_JUMPER_ONLY)} {\n            drt_run $i {*}$drt_args\n        } else {\n            puts \"\\[INFO\\] No diodes inserted. Ending antenna repair iterations.\"\n            break\n        }\n        incr i\n    }\n}\nwrite_views\n",
+    "boot_id": "0bd027c1-7e01-4ccb-b5d8-ff9e7eb18a9e",
+    "run_id": 39496744489,
+    "job": "initial",
+    "cpu_index": 0,
+    "commands": [
+      {
+        "label": "kernel",
+        "returncode": 0,
+        "log_sha256": "77e09d82a73d277df20fb04fc008186f813d9d2784dc64efbac4714a0e94aff7"
+      },
+      {
+        "label": "cpu",
+        "returncode": 0,
+        "log_sha256": "244d338703b572bff2acdf7c04638f09a101a6f94e795abd8ecd539661b0e874"
+      },
+      {
+        "label": "criu-check",
+        "returncode": 1,
+        "log_sha256": "2821a38a8ec93981d79b93c3d4688c98bd9de97253b33713d2b8df97c8c364c1"
+      }
+    ],
+    "error": "AttributeError(\"'str' object has no attribute 'open'\")",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_process_checkpoint.py\", line 76, in main\n    assert build['source_commit']==CRIU_COMMIT and sha('/usr/sbin/criu')==build['binary_sha256'];r['criu_build']=build\n                                                   ^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/run_cloud_tx_layout_repair.py\", line 18, in sha\n    with path.open('rb') as stream:\n         ^^^^^^^^^\nAttributeError: 'str' object has no attribute 'open'\n",
+    "outputs": {
+      "cpu.log": "244d338703b572bff2acdf7c04638f09a101a6f94e795abd8ecd539661b0e874",
+      "criu-check.log": "2821a38a8ec93981d79b93c3d4688c98bd9de97253b33713d2b8df97c8c364c1",
+      "kernel.log": "77e09d82a73d277df20fb04fc008186f813d9d2784dc64efbac4714a0e94aff7",
+      "mainchip-portable-runtime-source/parts.json": "dccdda0edea5954b3284d87636d055cce1157f1a0e4d20b962f30b7476979856",
+      "mainchip-portable-runtime-source/summary.json": "21e8f082931a30e8ae074d34843c828502a80e0719b778e6a8686a04fc976bc2"
+    }
+  },
+  "correction": "Use pathlib.Path for the existing native binary hash helper; no checkpoint/native acceptance gate changed."
+}

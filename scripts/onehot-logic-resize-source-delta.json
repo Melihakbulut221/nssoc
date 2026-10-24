@@ -1,0 +1,115 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_onehot_resize_prepare.py",
+      "candidate_path": "scripts/cloud_onehot_logic_resize_prepare.py",
+      "baseline_sha256": "62ddc885ff834044ebd1f7876ace0ec83b65cc6bdd54d8e1a8fef82b23dc1f2a",
+      "candidate_sha256": "cf072b68b976e667b1b26744168c4117831288021b62f0d8bb43e49aca8e007f",
+      "edits": [
+        {
+          "before": "cloud-onehot-resize-prepare",
+          "after": "cloud-onehot-logic-resize-prepare",
+          "count": 1
+        },
+        {
+          "before": "        pin=json.loads((ROOT/'docs/evidence/onehot-load-resume-route-result-20261018.json').read_text())\n        names=['run/1-openroad-detailedrouting/soc_top.odb','run/1-openroad-detailedrouting/soc_top.nl.v','run/1-openroad-detailedrouting/state_out.json','trial-config.json']\n        rel='run/5-nssoc-onehotroutedsta/nom_slow_1p08V_125C/max.rpt';names.append(rel)\n        source,proof=reports.restore_report('onehot-load-resume',pin['run_id'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',names)\n        assert source['source_head']==pin['source_head']and source['status']==pin['observed']['status']and source['sources_unchanged']\n        assert source['detailed_route_complete']and source['native_routing_drc_errors']==0 and source['critical_disconnected_pins']==0\n        odb=OUT/'source'/names[0];netlist=OUT/'source'/names[1]\n        assert sha(odb)==source['routed_odb_sha256']and sha(netlist)==source['routed_netlist_sha256']\n        cfg=json.loads((OUT/'source/trial-config.json').read_text())\n        assert cfg['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']and cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5\n        assert cfg['SETUP_VIOLATION_CORNERS']==cfg['HOLD_VIOLATION_CORNERS']==['*']\n        candidates=[x for x in select((OUT/'source'/rel).read_text())if x['master']in ('sg13g2_buf_1','sg13g2_buf_2')]\n        assert candidates\n        targets=candidates[:50]\n        for x in targets:x['new_master']='sg13g2_buf_16'if max(o['cap_pf']for o in x['observations'])>=.25 else'sg13g2_buf_8'\n",
+          "after": "        pin=json.loads((ROOT/'docs/evidence/onehot-resize-route-report-rejection-20261019.json').read_text())\n        validated=json.loads((ROOT/'docs/evidence/onehot-resize-saved-validation-20261019.json').read_text())['report']\n        assert validated['source']['run']==pin['run'] and validated['source']['summary_sha256']==pin['summary_sha256']\n        assert validated['sources_unchanged'] and validated['physical']==dict(drc_errors=0,critical_disconnected_pins=0)\n        names=['run/2-openroad-detailedrouting/soc_top.odb','run/2-openroad-detailedrouting/soc_top.nl.v','run/2-openroad-detailedrouting/state_out.json','trial-config.json']\n        rel='run/6-nssoc-onehotroutedsta/nom_slow_1p08V_125C/max.rpt';names.append(rel)\n        source,proof=reports.restore_report(pin['group'],pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',names)\n        assert source==pin['report'] and source['returncode']==0 and source['status']=='FAIL_OR_ERROR_NO_SOURCE_RESTART'\n        odb=OUT/'source'/names[0];netlist=OUT/'source'/names[1]\n        assert sha(odb)=='4acbb9969285c715969619795ec7a45305de1bd4a3f6ac97a91139cf0024b723'\n        assert sha(netlist)=='c05e6321a4aed063e5e69b902a3b7ed08863bd2a39189f8b17ded5bfc33b9756'\n        cfg=json.loads((OUT/'source/trial-config.json').read_text())\n        assert cfg['CLOCK_PORT']==['clk_i','pcie_clk_i','eth_rx_clk_i','eth_tx_clk_i']and cfg['CLOCK_PERIOD']==20 and cfg['TIME_DERATING_CONSTRAINT']==5\n        assert cfg['SETUP_VIOLATION_CORNERS']==cfg['HOLD_VIOLATION_CORNERS']==['*']\n        app=Path(os.environ['CLOUD_APPIMAGE']);verify(app,'x86_64')\n        openroad=shutil.which('openroad');assert openroad\n        helper=ROOT/'scripts/prepare_onehot_logic_resized_drivers.py'\n        run([openroad,'-exit','-python',helper],'native-master-inventory','inventory')\n        inventory=json.loads((OUT/'master-inventory.json').read_text())\n        assert inventory['instances']==147858 and inventory['source_sha256']==sha(odb)\n        candidates=select((OUT/'source'/rel).read_text());assert candidates\n        targets=[];skipped=[]\n        allowed={'sg13g2_buf','sg13g2_nand2','sg13g2_nand3','sg13g2_nand4','sg13g2_nor2','sg13g2_nor3','sg13g2_nor4','sg13g2_and2','sg13g2_or2','sg13g2_xor2','sg13g2_xnor2','sg13g2_a21oi','sg13g2_o21ai','sg13g2_a22oi','sg13g2_o22ai'}\n        for x in candidates:\n            family,strength=x['master'].rsplit('_',1)\n            if family not in allowed:continue\n            choices=[family+'_'+str(n)for n in ((16,8,4)if family=='sg13g2_buf'else(4,2))if n>int(strength)]\n            choices=[n for n in choices if n in inventory['masters'] and inventory['masters'][n]['pins']==inventory['masters'][x['master']]['pins']]\n            if not choices:skipped.append(dict(instance=x['instance'],master=x['master'],reason='No stronger same-pin native master'));continue\n            x['new_master']=choices[0];targets.append(x)\n            if len(targets)==32:break\n        assert targets and any(t['master'].startswith('sg13g2_buf_') for t in targets)\n        assert any(not t['master'].startswith('sg13g2_buf_') for t in targets)\n",
+          "count": 1
+        },
+        {
+          "before": "At most50; no clock/logic/state/macro changes. Not exhaustive closure.",
+          "after": "At most32 stronger same-pin native combinational masters on actual slow violating data paths; clock/state/macro untouched. Not timing acceptance.",
+          "count": 1
+        },
+        {
+          "before": "Positive buf1/buf2 only. ",
+          "after": "Includes weak buffers and actual NAND/NOR/complex data gates. ",
+          "count": 1
+        },
+        {
+          "before": "original_measurements=source['measurements']",
+          "after": "original_measurements=validated['corners'],unavailable_stronger_masters=skipped",
+          "count": 1
+        },
+        {
+          "before": "ROOT/'scripts/prepare_onehot_resized_drivers.py'",
+          "after": "ROOT/'scripts/prepare_onehot_logic_resized_drivers.py'",
+          "count": 1
+        },
+        {
+          "before": "text=(OUT/'candidate.v').read_text();t=targets[0]",
+          "after": "text=(OUT/'candidate.v').read_text();t=next(x for x in targets if x['master'].startswith('sg13g2_buf_'))",
+          "count": 1
+        },
+        {
+          "before": "PASS_NATIVE_MEASURED_BUFFER_RESIZING_REQUIRES_ROUTE_RC_ALL_CORNER_STA",
+          "after": "PASS_NATIVE_MEASURED_LOGIC_RESIZING_REQUIRES_ROUTE_RC_ALL_CORNER_STA",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/prepare_onehot_resized_drivers.py",
+      "candidate_path": "scripts/prepare_onehot_logic_resized_drivers.py",
+      "baseline_sha256": "6821413cdbae5cc3af3860930bc9a248e7497779c1e9cc15be71655d787fe9ec",
+      "candidate_sha256": "2560026631c6e581bc982d496a137ce051d9afc985378645d33f7691591d3500",
+      "edits": [
+        {
+          "before": "Resize only measured non-clock positive buffers; preserve all pin equations.",
+          "after": "Resize measured non-clock combinational gates; preserve all pin equations.",
+          "count": 1
+        },
+        {
+          "before": "cloud-onehot-resize-prepare",
+          "after": "cloud-onehot-logic-resize-prepare",
+          "count": 1
+        },
+        {
+          "before": "run/1-openroad-detailedrouting/soc_top.odb",
+          "after": "run/2-openroad-detailedrouting/soc_top.odb",
+          "count": 1
+        },
+        {
+          "before": "9fd2de4914a736dc666da66b866bbd1b1ae07547183044aa033628bc620bbe77",
+          "after": "4acbb9969285c715969619795ec7a45305de1bd4a3f6ac97a91139cf0024b723",
+          "count": 1
+        },
+        {
+          "before": "len(original)==146728 and 1<=len(targets)<=50",
+          "after": "len(original)==147858 and 1<=len(targets)<=32",
+          "count": 1
+        },
+        {
+          "before": "assert t['master']in ('sg13g2_buf_1','sg13g2_buf_2')and not i.getName().startswith('clkbuf')",
+          "after": "assert t['master'].rsplit('_',1)[0] in {'sg13g2_buf','sg13g2_nand2','sg13g2_nand3','sg13g2_nand4','sg13g2_nor2','sg13g2_nor3','sg13g2_nor4','sg13g2_and2','sg13g2_or2','sg13g2_xor2','sg13g2_xnor2','sg13g2_a21oi','sg13g2_o21ai','sg13g2_a22oi','sg13g2_o22ai'} and not i.getName().startswith('clkbuf')",
+          "count": 1
+        },
+        {
+          "before": "t['pin']=='X'",
+          "after": "t['pin']in ('X','Y')",
+          "count": 1
+        },
+        {
+          "before": "assert t['new_master']in ('sg13g2_buf_8','sg13g2_buf_16')",
+          "after": "assert t['new_master'].rsplit('_',1)[0]==t['master'].rsplit('_',1)[0] and int(t['new_master'].rsplit('_',1)[1])>int(t['master'].rsplit('_',1)[1])",
+          "count": 1
+        },
+        {
+          "before": "master=db.findMaster(t['new_master']);assert master",
+          "after": "master=db.findMaster(t['new_master']);assert master\n        assert sorted((p.getName(),str(p.getIoType()),str(p.getSigType()))for p in master.getMTerms())==sorted((p.getName(),str(p.getIoType()),str(p.getSigType()))for p in i.getMaster().getMTerms())",
+          "count": 1
+        },
+        {
+          "before": "PASS_NATIVE_SELECTED_BUFFER_RESIZING_UNCHANGED_CONNECTIVITY",
+          "after": "PASS_NATIVE_SELECTED_LOGIC_RESIZING_UNCHANGED_CONNECTIVITY",
+          "count": 1
+        },
+        {
+          "before": "if os.environ.get('NSSOC_RESIZE_MODE')=='audit':audit()",
+          "after": "def inventory():\n    db=load(SOURCE);block=db.getChip().getBlock()\n    masters={m.getName():dict(pins=sorted([t.getName(),str(t.getIoType()),str(t.getSigType())]for t in m.getMTerms()),width=m.getWidth(),height=m.getHeight())for lib in db.getLibs()for m in lib.getMasters()}\n    (OUT/'master-inventory.json').write_text(json.dumps(dict(source_sha256=hashlib.sha256(SOURCE.read_bytes()).hexdigest(),instances=len(block.getInsts()),masters=masters),indent=2)+'\\n')\n\nif os.environ.get('NSSOC_RESIZE_MODE')=='inventory':inventory()\nelif os.environ.get('NSSOC_RESIZE_MODE')=='audit':audit()",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

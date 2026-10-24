@@ -1,0 +1,161 @@
+{
+  "status": "PASS_BOUNDED_FRONTEND_DIAGNOSIS_AND_ACTUAL_SENSITIVITY_CONTROLS",
+  "utc": "2026-10-05T17:04:04.968310+00:00",
+  "actual_whole_array_warnings": 520,
+  "original_V16_full_suite": "INCOMPLETE_COMPILER_STILL_RUNNING",
+  "original_live": {
+    "42816": {
+      "pid": 42816,
+      "state": "S",
+      "process_group": 42780,
+      "start_ticks": "453535"
+    },
+    "43287": {
+      "pid": 43287,
+      "state": "R",
+      "process_group": 42780,
+      "start_ticks": "463290"
+    },
+    "45380": {
+      "pid": 45380,
+      "state": "R",
+      "process_group": 45372,
+      "start_ticks": "501509"
+    },
+    "48772": {
+      "pid": 48772,
+      "state": "S",
+      "process_group": 48770,
+      "start_ticks": "564758"
+    }
+  },
+  "superseded_diagnostic_cleanup": [
+    {
+      "expected": {
+        "pid": 59494,
+        "state": "S",
+        "process_group": 59494,
+        "start_ticks": "666253"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 59496,
+        "state": "S",
+        "process_group": 59494,
+        "start_ticks": "666260"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 59497,
+        "state": "S",
+        "process_group": 59494,
+        "start_ticks": "666269"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 59498,
+        "state": "S",
+        "process_group": 59494,
+        "start_ticks": "666269"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 59500,
+        "state": "R",
+        "process_group": 59494,
+        "start_ticks": "666269"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 61599,
+        "state": "S",
+        "process_group": 61599,
+        "start_ticks": "679384"
+      },
+      "after": null
+    },
+    {
+      "expected": {
+        "pid": 61601,
+        "state": "S",
+        "process_group": 61599,
+        "start_ticks": "679388"
+      },
+      "after": null
+    }
+  ],
+  "exactring128": {
+    "status": "PASS_DIAGNOSTIC_LITERAL4096",
+    "stages": [
+      {
+        "name": "compile",
+        "command": [
+          "/home/hasanmelih/.local/bin/iverilog",
+          "-g2012",
+          "-s",
+          "tb",
+          "-o",
+          "/dev/shm/nssoc-integrity-v16-exact-sensitivity-diagnostic03/sim.vvp",
+          "/dev/shm/nssoc-integrity-v16-exact-sensitivity-diagnostic03/tb.v"
+        ],
+        "status": "COMPLETE",
+        "identity": {
+          "pid": 65889,
+          "state": "R",
+          "process_group": 65889,
+          "start_ticks": "695209"
+        },
+        "returncode": 0,
+        "elapsed_s": 0.4567744300002232
+      },
+      {
+        "name": "run",
+        "command": [
+          "/home/hasanmelih/.local/bin/vvp",
+          "/dev/shm/nssoc-integrity-v16-exact-sensitivity-diagnostic03/sim.vvp"
+        ],
+        "status": "COMPLETE",
+        "identity": {
+          "pid": 65899,
+          "state": "R",
+          "process_group": 65899,
+          "start_ticks": "695254"
+        },
+        "returncode": 0,
+        "elapsed_s": 166.126216398
+      }
+    ],
+    "cpu": [
+      6
+    ],
+    "controller": {
+      "pid": 65887,
+      "state": "R",
+      "process_group": 65885,
+      "start_ticks": "695179"
+    },
+    "physical_acceptance": false
+  },
+  "sensitivity_controls": {
+    "bytes": 11631,
+    "sha256": "e0e343226ef1212df053dbf17b90f7cdf78b288ac5859d1416884bfdebb5794e"
+  },
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v17-20261005/pcie-integrity-v16-frontend-diagnostics-20261005.tar.xz",
+    "bytes": 286372,
+    "sha256": "c835cb8c66ddb5edbb0096e2b7473079f4d1c9ecc8fb4617ca12b404991d9fe6",
+    "members": 72
+  },
+  "full_readback": true,
+  "scope": "Diagnostic only, not full V17 suite. Original frozen V16 ring128 controls and Icarus14 probe incomplete. Two representation-only probes author-stopped and preserved. Exact constant-word sensitivity diagnostic passed original4096cases at ring128;59fourstate and31isolatedeventcases passed with9actualmutants detected. No mapped timing acceptance."
+}

@@ -1,0 +1,131 @@
+{
+  "source_head": "1b8fbb40cd53fcfc6f141c5d2a3a79fdcc3748e4",
+  "prior_control_run": 40069577774,
+  "prior_summary_asset": 671470663,
+  "prior_summary_sha256": "225236310ad1f38d2136eb59feb854064d5c5b720f56433f67242f7b1ebcfe22",
+  "prior_summary": {
+    "status": "PASS_DELTA_ADAPTER_ORIGINAL_NATIVE_GATES_PARTIAL_ROW_ALL5106_COLUMNS_AND41_REJECTIONS_NOT_NATIVE_ACCEPTANCE",
+    "source_head": "1b8fbb40cd53fcfc6f141c5d2a3a79fdcc3748e4",
+    "native_activation_performed": false,
+    "full_capture_accepted": false,
+    "full_phy_accepted": false,
+    "metadata_controls": {
+      "positive": "Synthetic terminal metadata only; never native acceptance",
+      "negative_controls": [
+        "live-workflow",
+        "failed-workflow",
+        "wrong-workflow",
+        "wrong-branch",
+        "wrong-owner-run",
+        "rerun-attempt",
+        "wrong-head",
+        "wrong-report-head",
+        "failed-native-step",
+        "changed-controller-claim",
+        "premature-capture-claim",
+        "changed-controller",
+        "wrong-native-owner",
+        "saved-not-completed",
+        "nonzero-native-exit",
+        "diagnostic-present",
+        "changed-prior-payload",
+        "changed-protected-input",
+        "missing-native-column",
+        "changed-native-method",
+        "wrong-last-time",
+        "partial-final-row",
+        "wrong-prefix-descriptor",
+        "wrong-raw-member",
+        "wrong-prefix-bytes",
+        "wrong-prefix-plan",
+        "wrong-logical-capture",
+        "wrong-report-file-hash",
+        "wrong-auxiliary-native-hash",
+        "wrong-capsule-root",
+        "wrong-capsule-archive-hash",
+        "wrong-capsule-archive-size",
+        "wrong-transport",
+        "actual-saved-source-rejected-as-completed",
+        "internally-consistent-unrelated-prefix-rejected-by-independent-source-binding"
+      ]
+    },
+    "partial_row_and_header_update": {
+      "prior_partial_row_bytes": 38144,
+      "rows": 512,
+      "columns": 5106,
+      "binary64_samples": 2614272,
+      "all_native_bits_equal": true,
+      "transport": {
+        "complete": true,
+        "native_activation_qualified": false,
+        "full_capture_accepted": false,
+        "source_iterator_exhausted": true,
+        "original_payload_preserved": true,
+        "source_bytes_verified": 15920315,
+        "logical_bytes_verified": 21110715,
+        "logical_sha256": "4b5d6740858b5b48c4fbe4865856f8be3684b58f2ddd6c2fe02025b3677c5bfe",
+        "payload_sha256": "25b8cd3aa2372126f7b6049509a20923fed3572f21afbfbfe70fe2c1e7d286a2",
+        "samples_removed": 0,
+        "resampled": false,
+        "all_original_auxiliary_files_preserved": true,
+        "all_original_directories_preserved": true
+      },
+      "full_duration_gate_rejected_short_capture": true,
+      "provenance": {
+        "source_descriptor": {
+          "run": 40001626503,
+          "attempt": 1,
+          "stage": "sparse",
+          "summary_sha256": "1f990f8de03976caf21be8592e6584f9b4e6906306133f6b729a171e51534509",
+          "parts_sha256": "ca9a995433ce65fba448e081a5b00e5a012ac3fd829869c553d90f83aad08974"
+        },
+        "manifest_asset": 670728190,
+        "manifest_sha256": "ca9a995433ce65fba448e081a5b00e5a012ac3fd829869c553d90f83aad08974",
+        "archive_part": {
+          "index": 0,
+          "name": "pll-rhi120-c8-native-sparse-40001626503-1.tar.gz.part0000",
+          "bytes": 268435456,
+          "sha256": "0ca2a44876e29825b93525ee0fcf547b19d212dca849dcc6c6697ad8124f0dac"
+        },
+        "archive_part_asset": 670403664,
+        "raw_member": "cloud-pll-rhi120-c8-native/case/actual-acquisition.raw",
+        "raw_member_full_size": 130569396155,
+        "prefix_bytes": 21110715,
+        "prefix_sha256": "590bfa42c8bbc27d57f20edecd553d19da2331d5377bb37adb3e6f67bc7b91c1",
+        "columns": 5106,
+        "rows": 512,
+        "all_prefix_payload_bits_native": true,
+        "header_rewrite_for_short_fixture_only": true,
+        "whole_archive_verified": false,
+        "full_capture_accepted": false,
+        "native_activation_performed": false
+      }
+    },
+    "semantic_and_directory_controls": [
+      "changed-real-flags",
+      "changed-native-column-identity",
+      "wrong-header-point-count",
+      "changed-empty-directory-mode",
+      "missing-empty-directory",
+      "native-symlink-fails-closed"
+    ],
+    "original_native_assertions_ast_identical": true,
+    "protected_controller_reader_analyzer_unchanged": true,
+    "source_bindings_verified": true,
+    "native_workflow_dispatched": false,
+    "sources_unchanged": true
+  },
+  "independent_audit": {
+    "issue": "Protected archive extractor uses Python tar data_filter, which normalizes directory and regular-file modes. Earlier actual0750 directory control did not exercise production archive roundtrip.",
+    "consequence": "Fail-closed rejection after restore for supported nondefault modes; no evidence that current production native modes already fail.",
+    "fix": "After complete archive verification and trusted contract SHA binding, verify every content byte/hash and exact inventory before restoring only recorded native modes. Keep protected original extractor and native controller unchanged.",
+    "added_controls": [
+      "production actual partial-row capsule archive roundtrip with0750/0700directories and0444/0555/0700files",
+      "reject unrestored normalized modes",
+      "reject corrupt contents before any chmod",
+      "reject unbound contract"
+    ]
+  },
+  "native_dispatched": false,
+  "full_capture_accepted": false
+}

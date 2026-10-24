@@ -1,0 +1,112 @@
+{
+  "run": 39411344148,
+  "job": 118589586967,
+  "source_head": "9a827769c2de95ad81e3ad80bb3edb7fe6cc7099",
+  "log_sha256": "acf147bfe7778c36ea249d95e5e90dc9d0aea7f8a109c40927c7bbf85a088d11",
+  "status": "PASS_STREAMED_STORAGE_MIGRATION_CONTROLS_ONLY",
+  "reports": [
+    {
+      "prefix_header_backpatch_allowed": true,
+      "payload_faults_rejected": [
+        "truncation",
+        "corruption"
+      ],
+      "reader": {
+        "identical_waveform_passed": true,
+        "rejected_controls": 4
+      },
+      "full_terminal_reader": {
+        "status": "PASS_FULL_COLUMN_STREAMING_READER_CONTROLS_ONLY",
+        "controls": [
+          "short_capture_not_full1us",
+          "nan_last_unsummarized_terminal",
+          "inf_first_terminal",
+          "duplicate_time_chunk_boundary",
+          "reversed_time_final",
+          "missing_terminal",
+          "duplicate_terminal",
+          "wrong_points",
+          "wrong_plot",
+          "wrong_unit",
+          "duplicate_field",
+          "extra_payload",
+          "truncated_payload"
+        ],
+        "positive_columns": 1695,
+        "positive_rows": 2053,
+        "header_bytes": 114222,
+        "native_simulation_or_lock_proven": false
+      },
+      "acquisition": {
+        "original_gate_source_sha256": "168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db",
+        "identical_locked_control": true,
+        "physical_faults_rejected": [
+          "frequency",
+          "phase_drift",
+          "missing_edge",
+          "control_voltage"
+        ],
+        "incomplete_and_nonfinite_rejected": true
+      },
+      "cycles": {
+        "ramp_mean_and_constant_pulse_controls": true,
+        "nonfinite_and_reversed_edges_rejected": true
+      },
+      "readback": {
+        "positive": 2,
+        "negative": [
+          "outside_label",
+          "inside_warning",
+          "changed_tolerance",
+          "duplicate",
+          "missing_marker",
+          "wrong_backend",
+          "missing_numeric"
+        ],
+        "only_verified_option_labels_exempted": true
+      }
+    },
+    {
+      "unchanged_native_methods": 11,
+      "exact_current_and_previous_method_migration": true,
+      "rejection_controls": [
+        "unknown-controller",
+        "changed-native",
+        "missing-native",
+        "extra-native",
+        "current-changed-native",
+        "changed-stream-helper"
+      ],
+      "minimum_checkpoint_reserve_bytes": 12884901888,
+      "native_or_phy_acceptance": false
+    },
+    {
+      "exact_tar_and_payload_roundtrip": true,
+      "max_local_compressed_bytes": 127,
+      "part_limit_bytes": 127,
+      "original_source_unchanged": true,
+      "partial_publications_not_accepted": true,
+      "negative_controls": [
+        "wrong-hosted-name",
+        "wrong-hosted-size",
+        "wrong-hosted-digest",
+        "failed-upload",
+        "wrong-order",
+        "missing-part",
+        "wrong-size",
+        "wrong-part-digest",
+        "wrong-whole-digest",
+        "unsafe-part",
+        "corrupt-download",
+        "truncated-download"
+      ],
+      "native_or_phy_acceptance": false
+    },
+    {
+      "only_owned_successful_saved_process_can_continue": true,
+      "rejected_cases": 6
+    }
+  ],
+  "native_jobs_skipped_on_push": true,
+  "full_phy_accepted": false
+}

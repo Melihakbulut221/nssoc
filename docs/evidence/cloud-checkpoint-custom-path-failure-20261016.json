@@ -1,0 +1,13 @@
+{
+  "run": 38887757668,
+  "job": 116929556489,
+  "source_head": "e4fface2e9044ff609c65520f7f2df7f26340a7d",
+  "checkpoint_creation_returncode": 0,
+  "checkpoint_prefix_rows": 70,
+  "restore_error": "Error response from daemon: custom checkpointdir is not supported",
+  "summary_asset": 646986926,
+  "summary_sha256": "f4f53f21e7330a896317bb1e28d545f21f8d6195dfe615ecbdf428a40fdd1503",
+  "upstream_issue": "https://github.com/moby/moby/issues/37344",
+  "remedy": "Copy the exact checkpoint images into the newly created, owned clone container standard checkpoint directory; prove every copied file hash then use docker start --checkpoint state. Preserve failed restore logs.",
+  "simulator_checkpoint_proven": false
+}

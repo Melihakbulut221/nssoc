@@ -1,0 +1,17 @@
+{
+  "status": "REVIEW_LIMITATION_FOUND_BY_ACTUAL_CONTINUATION",
+  "previous_peer": {
+    "bytes": 2158,
+    "sha256": "916bb404ead086290058f1e0e65716587c8afd21aab4c931a2293c5ca95e5945"
+  },
+  "producer": {
+    "bytes": 5551,
+    "sha256": "55c111b6bacf2c5614756202848a09c1f46c6894fa38efb05e37293026d083b5"
+  },
+  "finding": "The broad balanced_import.py\u2192balanced_import02.py replacement also changed prove_balanced_import.py to nonexistent prove_balanced_import02.py. The source-only peer checked whole-byte bridge correctness but failed to enumerate every executed helper path. This is a source-review miss, not a productRTL or numerical native failure.",
+  "actual_status": {
+    "bytes": 3322,
+    "sha256": "5c526a1d6981eb1ff9773a51e79d56b9a38c060da4932837f69052ee8097a655"
+  },
+  "recovery_requirement": "Retain actual exit2 and completed map/boundary/import; new recovery must rehash their complete inputs/outputs, skip completed stages, run exact existing proof helper and unchanged STA. Independently enumerate all literal launched helper paths and policy bindings before approval."
+}

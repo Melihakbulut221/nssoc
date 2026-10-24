@@ -1,0 +1,89 @@
+{
+  "receipt": {
+    "name": "pcie-tx-cloud-input-20261013.tar.gz",
+    "bytes": 109934,
+    "sha256": "276fbd8b9128750b2f524ec7b0f9e43a45652af62e477a6d618a74ab804a91bf",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/pcie-tx-cloud-input-20261013.tar.gz",
+    "id": 634990104
+  },
+  "native_runtime": {
+    "url": "https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb",
+    "package_bytes": 4310724,
+    "package_sha256": "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b",
+    "executable_sha256": "eaca52dad06845779fed4f50420a6a0cf4a32776e6a572432275f350002b87b8"
+  },
+  "method_archives": [
+    {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/batch-000023.tar.gz",
+      "sha256": "3ec98f567dd6190e13a657adac11773094ff2e17a75d91b9bb7f1ba6b8b74332",
+      "members": {
+        "hw/soc/out/pcie-tx-mux2-20261012/review54.py": "17859bf90e9e365ea7fcd7a26722a903215c3cb916de3afaa607dbea9865afa3",
+        "hw/soc/out/pcie-tx-mux2-20261012/wire96/mux54-wire01.spice": "b49f96660773e0c1a3d1677b4a288dc2183054ddc543740995994383e816bcb4"
+      }
+    },
+    {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/batch-000016.tar.gz",
+      "sha256": "026ffa6be2ca58807f8d0a598257436b088d003409d8cc318ff2674730fc5d83",
+      "members": {
+        "hw/soc/out/pcie-tx-mux2-20261012/binding96/mux54-compact01.spice": "bc22f8c7fefdf56187fcecd5fe056d4333c8b25f31934867dd6f5ee908950b09",
+        "hw/soc/out/pcie-tx-mux2-20261012/native101.py": "e4c5327244a9fa2b0e32bf279fca0e24aa301a39e3e1b9c421d9f89bd42841c4"
+      }
+    }
+  ],
+  "tx_sha256": "eec3e2491d7711deaa022343828d2fe8821228ac5b82f4c2f5b1299115017af9",
+  "points": {
+    "clock_small": [
+      1.93,
+      0.15,
+      1.23,
+      0.08
+    ],
+    "baseline": [
+      1.93,
+      0.15,
+      1.23,
+      0.3
+    ],
+    "swing_only": [
+      1.93,
+      0.08,
+      1.23,
+      0.08
+    ],
+    "headroom": [
+      1.8,
+      0.08,
+      1.23,
+      0.08
+    ],
+    "headroom_deep": [
+      1.75,
+      0.08,
+      1.18,
+      0.08
+    ]
+  },
+  "point_order": [
+    "data_common_mode_v",
+    "data_amplitude_v",
+    "select_common_mode_v",
+    "select_amplitude_v"
+  ],
+  "unchanged": [
+    "8GT/s",
+    "256bits",
+    "0.3/0.5/0.7UI sample times",
+    "100mV output margin",
+    "23HBT device limits and startup checks",
+    "500uA mux bias",
+    "1.5mA TX bias",
+    "25ohm input impedance",
+    "100ohm differential termination",
+    "100fF per output",
+    "0.5ps maximum integration step"
+  ],
+  "driver_operating_point_extension": {
+    "clock_small": "Prospective selector commonmode1.23V, amplitude80mV. Intended to restore selector HBT headroom with actual CMOS data loads. Measurement limits unchanged; selector clock andbiasstillideal.",
+    "scope_note": "The unchanged25ohm input list describes the ideal-source operating-point campaign. Explicit nonideal data-driver modes replace only its fourdata input resistors with native driver instances and retain downstream topology/load and originalsource-bit output oracle."
+  }
+}

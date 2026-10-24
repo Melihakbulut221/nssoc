@@ -1,0 +1,413 @@
+{
+  "status": "PASS_NATIVE_IHP_COMPLETE_BLOCK_CDC_FINITE",
+  "native_result": {
+    "bytes": 14418,
+    "sha256": "1a3f98968f0a3166490fab128442f88d546c1e72750e24ab2d53e1fb0016b189"
+  },
+  "source_freeze": {
+    "bytes": 2837,
+    "sha256": "80e7abc3badad6ea90426c029068eac697f1a881f251aac9c73f63a84613a874"
+  },
+  "source_files": {
+    "scripts/check_pcie_gen3_block_cdc_native_v1.py": {
+      "bytes": 12590,
+      "sha256": "637ba1a61ea77cd069ccc91bee25aa4dd5b1eb74b6800f1901e9443c89a593bd"
+    },
+    "sw/tests/test_pcie_gen3_block_cdc_native_v1.py": {
+      "bytes": 7639,
+      "sha256": "6f5f389f677bf876799d20321fb2f762078330cf020e54f8536fc016c0f2bd95"
+    }
+  },
+  "native_cells": 16513,
+  "native_cases": {
+    "passed": 7,
+    "failed": 0,
+    "skipped": 0
+  },
+  "exact_case_names": [
+    "asynchronous_metadata_and_drift",
+    "fast_reader_full_rate_and_many_wraps",
+    "held_output_and_bounded_pressure",
+    "exact_ram_prefetch_capacity_overflow_and_restart",
+    "either_domain_reset_with_held_output",
+    "stopped_clock_reset_and_restart",
+    "alignment_loss_and_illegal_length_fail_closed"
+  ],
+  "native_commands": [
+    {
+      "argv": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+        "-V"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.1056714009901043,
+      "min_free_bytes": 1075154944,
+      "log": "iverilog-version.txt"
+    },
+    {
+      "argv": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+        "-Q",
+        "-T",
+        "-s",
+        "/dev/shm/nssoc-block-cdc-native-v1-01/map.ys"
+      ],
+      "returncode": 0,
+      "elapsed_s": 2.710000010993099,
+      "min_free_bytes": 1063227392,
+      "log": "map.log"
+    },
+    {
+      "argv": [
+        "make",
+        "-f",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_block_cdc_v1",
+        "VERILOG_SOURCES=/dev/shm/nssoc-block-cdc-native-v1-01/mapped.v /home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "SIM_BUILD=/dev/shm/nssoc-block-cdc-native-v1-01/sim",
+        "COCOTB_RESULTS_FILE=/dev/shm/nssoc-block-cdc-native-v1-01/results.xml",
+        "DEPTH=32",
+        "COMPILE_ARGS=-g2012 -gspecify -f /dev/shm/nssoc-block-cdc-native-v1-01/sim/cmds.f"
+      ],
+      "returncode": 0,
+      "elapsed_s": 306.1282946150168,
+      "min_free_bytes": 1002168320,
+      "log": "simulation.log"
+    }
+  ],
+  "ram_entries": 32,
+  "prefetch_entries": 2,
+  "method_controls": 12,
+  "actual_process_lifecycle_controls": 3,
+  "resource_contract": {
+    "address_space": 2147483648,
+    "one_cpu": true,
+    "core_bytes": 0,
+    "entry_shm_bytes": 1073741824,
+    "continuous_shm_bytes": 553648128,
+    "elapsed_watchdog": false
+  },
+  "entry_free_bytes": 1075175424,
+  "prior_rtl_evidence": {
+    "bytes": 70085,
+    "sha256": "37d287fafd617e67d6fd6b9070dc8f63867a9309fcd94327fb027ab444feaae4"
+  },
+  "limitations": [
+    "Finite gate-level digital functionality, default DEPTH32. No SDF, physical Gray-bus/reset constraints, metastability/MTBF, routed CDC qualification, SKP rate compensation, deskew or complete PCIe claim.",
+    "Existing unsupported timing-check warnings are retained; no numerical analog/native-model behavior is inferred from this gate-level simulation.",
+    "No new native netlist mutation campaign or all-state equivalence proof is claimed; prior ten actual connection faults were RTL controls."
+  ],
+  "members": {
+    "LICENSES/Apache-2.0.txt": {
+      "bytes": 11358,
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    "LICENSES/CERN-OHL-W-2.0.txt": {
+      "bytes": 14529,
+      "sha256": "c1432111d0aeefc9d1ced8105d2d4ed07d5dcb1fd43abb5d4616c4f9ef96e08f"
+    },
+    "LICENSES/MIT.txt": {
+      "bytes": 1062,
+      "sha256": "8ea57f95365e9b16a5b516f422b71269183a1ae53bab5878ae6d69039e58fe77"
+    },
+    "LICENSES/axis-COPYING.txt": {
+      "bytes": 1062,
+      "sha256": "8ea57f95365e9b16a5b516f422b71269183a1ae53bab5878ae6d69039e58fe77"
+    },
+    "NOTICES.txt": {
+      "bytes": 658,
+      "sha256": "cb33dd1cee49644924cce6c87faa9cc88a3f7898e761cd159be4e8e72ca2379d"
+    },
+    "controls/test_actual_cleanup_stops_desc0/descendant.json": {
+      "bytes": 101,
+      "sha256": "6ea431a30a94e3c4f728810cd9aae5e8b3155277fd0ed4805ddb7bacb5e4b9b4"
+    },
+    "controls/test_actual_cleanup_stops_desc0/entered": {
+      "bytes": 5,
+      "sha256": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6"
+    },
+    "controls/test_actual_cleanup_stops_desc0/harness.py": {
+      "bytes": 1251,
+      "sha256": "02eccd323e0da06de44f229f959ffc549933d4adf75f106daa2854d56b3d9049"
+    },
+    "controls/test_actual_cleanup_stops_desc0/lifecycle-observation.json": {
+      "bytes": 311,
+      "sha256": "c73969ffa87b82a69b7b829e78ed549aa689bf9ea5f5db86972b0a918ffcb465"
+    },
+    "controls/test_actual_cleanup_stops_desc0/observed-error.json": {
+      "bytes": 60,
+      "sha256": "10263958b6568bf492ad6ca12fe55fe94986b4ed509dd30e0120cbd584e735c6"
+    },
+    "controls/test_actual_cleanup_stops_desc0/parent.log": {
+      "bytes": 750,
+      "sha256": "ba80b0b117b4a6c0d2830561769c5cecf2ab7735433a11a7064523325002605e"
+    },
+    "controls/test_actual_cleanup_stops_desc0/tool.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controls/test_actual_cleanup_stops_desc0/tool.py": {
+      "bytes": 540,
+      "sha256": "af7a364718e734bf6ed84ad2da150007b52bdfbf1b86f26f7d668d5ef1042f67"
+    },
+    "controls/test_actual_cleanup_stops_desc1/descendant.json": {
+      "bytes": 102,
+      "sha256": "c2e4b41ab9a040e334fb5e79fee35e9765580d3c52f04d70abcad721c4c7dd9d"
+    },
+    "controls/test_actual_cleanup_stops_desc1/entered": {
+      "bytes": 5,
+      "sha256": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6"
+    },
+    "controls/test_actual_cleanup_stops_desc1/harness.py": {
+      "bytes": 1249,
+      "sha256": "0695d15a6c0361eab96da4f581799f0ae613c8d893c952bfa3cfd65c57f8aa5a"
+    },
+    "controls/test_actual_cleanup_stops_desc1/lifecycle-observation.json": {
+      "bytes": 300,
+      "sha256": "60f4e36688c761089e5f4c2ba18e82dc9ae56118e669b2be0ceec7a879ef71ed"
+    },
+    "controls/test_actual_cleanup_stops_desc1/observed-error.json": {
+      "bytes": 51,
+      "sha256": "ff3a358d21455c35e71061adc5ee9620b96a879e8b55fc5718e1d216d05d57ba"
+    },
+    "controls/test_actual_cleanup_stops_desc1/parent.log": {
+      "bytes": 793,
+      "sha256": "79f99b4191cacfb080a7d006381b5ba70ede063dc1f172c4478463c466e4563e"
+    },
+    "controls/test_actual_cleanup_stops_desc1/tool.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controls/test_actual_cleanup_stops_desc1/tool.py": {
+      "bytes": 540,
+      "sha256": "af7a364718e734bf6ed84ad2da150007b52bdfbf1b86f26f7d668d5ef1042f67"
+    },
+    "controls/test_actual_cleanup_stops_desc2/descendant.json": {
+      "bytes": 102,
+      "sha256": "3160341fd12993520cde3f3517bab1804f2106a2fdaee8006d2f9f1f66c14080"
+    },
+    "controls/test_actual_cleanup_stops_desc2/entered": {
+      "bytes": 5,
+      "sha256": "b24d6d33736ecd5604a4b17bc9c6481039fac362bb7df044ef1c10a2bfd21db6"
+    },
+    "controls/test_actual_cleanup_stops_desc2/harness.py": {
+      "bytes": 1245,
+      "sha256": "139bf951b0f0d8c9f378b09b15a4e052525ad78658df23f2d4e7e1d35a9d4619"
+    },
+    "controls/test_actual_cleanup_stops_desc2/lifecycle-observation.json": {
+      "bytes": 300,
+      "sha256": "842461ab08e81a09401a0764c63c2b534097dd41a31caffcb2e5dd6a83359c51"
+    },
+    "controls/test_actual_cleanup_stops_desc2/observed-error.json": {
+      "bytes": 55,
+      "sha256": "d4647c3d58f18977f8e3b113a39f32cf3469779f2573f0e2c4b3683eda757951"
+    },
+    "controls/test_actual_cleanup_stops_desc2/parent.log": {
+      "bytes": 566,
+      "sha256": "74862903fc70c90d3ee756061e0b0b96a60115c4ee86a5c1f81cd231efad99fd"
+    },
+    "controls/test_actual_cleanup_stops_desc2/tool.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "controls/test_actual_cleanup_stops_desc2/tool.py": {
+      "bytes": 540,
+      "sha256": "af7a364718e734bf6ed84ad2da150007b52bdfbf1b86f26f7d668d5ef1042f67"
+    },
+    "controls/test_all_exact_cases_accepted0/results.xml": {
+      "bytes": 447,
+      "sha256": "c682f0a29d42eeb2221064b0d951b0c6724121466adca06211864485b1ac4022"
+    },
+    "controls/test_bad_native_disposition_re0/results.xml": {
+      "bytes": 382,
+      "sha256": "9e8602ef24551bdd41788c5ad3ef97782c37765fa0111bf20b5d1c0b3e556623"
+    },
+    "controls/test_bad_native_disposition_re1/results.xml": {
+      "bytes": 433,
+      "sha256": "dfd2c42c636db6f932c74b186cfc4636a9c8f9502a8a33f717cfa1ba2210530c"
+    },
+    "controls/test_bad_native_disposition_re2/results.xml": {
+      "bytes": 419,
+      "sha256": "8336f8bf851a58b1f3be9810bc0f0d1dab7b3a7b0cd93868c84b14c8ed1cf6c6"
+    },
+    "controls/test_bad_native_disposition_re3/results.xml": {
+      "bytes": 490,
+      "sha256": "7764d22ee087235346a198d86e7c9c15c3b2c2d7f401dfb40be673fb08579672"
+    },
+    "controls/test_bad_native_disposition_re4/results.xml": {
+      "bytes": 467,
+      "sha256": "a8b7bda84bbfd5b9d29d0ef4cc790721d74ffdc4c56b722e408bebdb32fe3f49"
+    },
+    "models/sg13g2_stdcell.v": {
+      "bytes": 53835,
+      "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    },
+    "models/sg13g2_stdcell_typ_1p20V_25C.lib": {
+      "bytes": 1715351,
+      "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+    },
+    "native/abc.script": {
+      "bytes": 39,
+      "sha256": "3ce641a5418cb443d8ea335731a7dd151b630b88b3ab06f027e0c13d4c573b8c"
+    },
+    "native/iverilog-version.txt": {
+      "bytes": 3410,
+      "sha256": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f"
+    },
+    "native/map.log": {
+      "bytes": 218661,
+      "sha256": "c752d7e8e588626a0c794ef7f18cef267765557907a34178051f10139a51edb6"
+    },
+    "native/map.ys": {
+      "bytes": 1277,
+      "sha256": "a699972045730fe38794512fe01a6263c3501616027c40ae95413437f930f23a"
+    },
+    "native/mapped.json": {
+      "bytes": 10384702,
+      "sha256": "170e00b90be83abd3bb2a8df19791d80465da6d62ff44a5ac4673a2c4c55f53b"
+    },
+    "native/mapped.v": {
+      "bytes": 2349468,
+      "sha256": "9e58804995479a023ff0130b958611b4afe92946d6cd9d9cda304f1459a4fd8a"
+    },
+    "native/result.json": {
+      "bytes": 14418,
+      "sha256": "1a3f98968f0a3166490fab128442f88d546c1e72750e24ab2d53e1fb0016b189"
+    },
+    "native/results.xml": {
+      "bytes": 2292,
+      "sha256": "042df6eb8e0b9912ce6bbc73fcf607dd4e88a6c0d5b1f2ab8fef809cbf4652b7"
+    },
+    "native/runtime/iverilog": {
+      "bytes": 101,
+      "sha256": "bee22a25187e107a23d7d6b871450ed1c273d6843c670befa3e201762c10d990"
+    },
+    "native/runtime/vvp": {
+      "bytes": 353,
+      "sha256": "14875baa6fd6b5f2c3168d1a726301ceb6a5660bbd2f5c3ee9b1e703052b0333"
+    },
+    "native/sim/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "native/sim/sim.vvp": {
+      "bytes": 57332625,
+      "sha256": "347f394f38eb713bbf21c4558ce8154290be3cc253df1ea66306964b5820233f"
+    },
+    "native/simulation.log": {
+      "bytes": 35903,
+      "sha256": "3e0ea3db7930c621221a8d6edf8a65929df34dcef90dbb8070811fec55f49935"
+    },
+    "prior-rtl/contract.json": {
+      "bytes": 6548,
+      "sha256": "a51a3b5e9b550a7f5ea6e29044c1637ba355e2b085a966663136cf60c154e3fb"
+    },
+    "prior-rtl/package-final.json": {
+      "bytes": 418,
+      "sha256": "81ec82455b9124dccfaedaea0178f7044dc6ff2c8f1477f9373b29b916f1b436"
+    },
+    "prior-rtl/publication-final.json": {
+      "bytes": 942,
+      "sha256": "8d18f98488a008f7b9835e73d8f3b3dacd09f9bdeb565c61ff9a2d0ba28cd049"
+    },
+    "prior-rtl/source-freeze.json": {
+      "bytes": 2107,
+      "sha256": "9111e4f078abe894e8830ce51277b778b44afe72e8ed5e0a8338c321e0356e18"
+    },
+    "prior-rtl/validation-final.json": {
+      "bytes": 70085,
+      "sha256": "37d287fafd617e67d6fd6b9070dc8f63867a9309fcd94327fb027ab444feaae4"
+    },
+    "review/admission.json": {
+      "bytes": 1356,
+      "sha256": "537cd012d61af804ff759cdf7e37524a99f0f2b4c5c7da3a44b38193b0b60759"
+    },
+    "review/cleanup_public_consumer_archives.py": {
+      "bytes": 3086,
+      "sha256": "b3cc7d01c89fb4eb8e7ccd0ebf4ab592b2bc48eebb2bca1c1f909fc8422b0e33"
+    },
+    "review/controls01.log": {
+      "bytes": 100,
+      "sha256": "ea8306c65a6734db6bd9113b5546f2f7ef85eb7f018c489a7234a60b473b1876"
+    },
+    "review/native-command.json": {
+      "bytes": 1245,
+      "sha256": "1243ba485e8234108a34c27414d676cacfc5f34d37dd3ff6e5e97eb5ca323461"
+    },
+    "review/native-live-observation.json": {
+      "bytes": 1749,
+      "sha256": "a37c50c06bf195cb1f22f289e4e714bfd2a19de459e09ad87a5be60c03991da5"
+    },
+    "review/native-run.log": {
+      "bytes": 1246,
+      "sha256": "b4aa6155c7bd4d788158ac883a6a63957c5e047346a8771ba7c8438c9571f3dd"
+    },
+    "review/public-consumer-archive-cleanup.json": {
+      "bytes": 13259,
+      "sha256": "855495b34e3667b746c67c4a0c0b05803f02aa05a7e0defe3add14fe5cefd1ad"
+    },
+    "review/public-consumer-archive-cleanup.log": {
+      "bytes": 9,
+      "sha256": "573385fcc1818a6437d7f040c2f7444d70bc43c76551db125d429f59c2208c29"
+    },
+    "review/run_when_admitted.py": {
+      "bytes": 1560,
+      "sha256": "677f5670520a764d7bd90fa3a7ce251bd325cfe0304a27559a6c227055579344"
+    },
+    "review/seal.py": {
+      "bytes": 5275,
+      "sha256": "c5dedd283358a43bcad94d2e4de2f68cae789b4c617122c9d0df29121246301e"
+    },
+    "review/source-freeze.json": {
+      "bytes": 2837,
+      "sha256": "80e7abc3badad6ea90426c029068eac697f1a881f251aac9c73f63a84613a874"
+    },
+    "sources/hw/soc/ext/verilog-ethernet/lib/axis/rtl/axis_async_fifo.v": {
+      "bytes": 34468,
+      "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250"
+    },
+    "sources/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v": {
+      "bytes": 5777,
+      "sha256": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735"
+    },
+    "sources/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_block_cdc_v1": {
+      "bytes": 1286,
+      "sha256": "8f561225f6224c3ebad1a7b020d749772ddf29aea02599715a032004c42ae036"
+    },
+    "sources/hw/soc/tb/cocotb/test_soc_pcie_gen3_block_cdc_v1.py": {
+      "bytes": 10919,
+      "sha256": "232ddf45d651b7299f57afae0710ee1c81aad1b4ec5d37e03edffd2e60225c44"
+    },
+    "sources/scripts/check_pcie_gen3_block_cdc_native_v1.py": {
+      "bytes": 12590,
+      "sha256": "637ba1a61ea77cd069ccc91bee25aa4dd5b1eb74b6800f1901e9443c89a593bd"
+    },
+    "sources/scripts/check_pcie_gen3_block_cdc_v1.py": {
+      "bytes": 7770,
+      "sha256": "f8201a9fdfc9da0135c79c79e85a01b2ef5c2560f59c9a1eaf8fc6d08a9aca43"
+    },
+    "sources/scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "sources/scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "sources/scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "sources/sw/tests/test_pcie_gen3_block_cdc_native_v1.py": {
+      "bytes": 7639,
+      "sha256": "6f5f389f677bf876799d20321fb2f762078330cf020e54f8536fc016c0f2bd95"
+    },
+    "sources/sw/tests/test_pcie_gen3_block_cdc_v1.py": {
+      "bytes": 5052,
+      "sha256": "e6771923820e544cb7d5ec20f57485051ee0b0376261aa8bd069d20a8e693f3f"
+    },
+    "sources/sw/tests/test_pcie_gen3_block_cdc_v1_lifecycle.py": {
+      "bytes": 3874,
+      "sha256": "578f1067917b04ad12c9fc9a6b96d327ff983015020b0500461dfbd7b81d2bff"
+    }
+  }
+}

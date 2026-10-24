@@ -1,0 +1,74 @@
+{
+  "status": "SAVED_COMPONENT_FAILURE_LOCALIZED_ASYNC_RESET_X_EDGE_PENDING_DIAGNOSTIC",
+  "inputs": {
+    "/dev/shm/nssoc-integrity-v25-full-controls01/test_actual_command_temporal_r0/command.v": {
+      "bytes": 19100,
+      "sha256": "10f5c178fd8f9f4427f40e0843cb8daeb32032d11345fb3308fb2a9cd867c55c"
+    },
+    "/dev/shm/nssoc-integrity-v25-full-controls01/test_actual_command_temporal_r0/command.vvp": {
+      "bytes": 173416,
+      "sha256": "a44f8796b988aba19dd2e9785cea2a97a0ce25803fef04662ccb951313eae2cc"
+    },
+    "/dev/shm/nssoc-integrity-v25-full-controls01/test_actual_command_temporal_r0/compile.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "/dev/shm/nssoc-integrity-v25-full-controls01/test_actual_command_temporal_r0/simulation.log": {
+      "bytes": 164,
+      "sha256": "6a95986eed244022134cbcfe004792e4db889f46985c5c3b02279dc264813e1a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_gen3_integrity_v25_command.py": {
+      "bytes": 14708,
+      "sha256": "812bc8a85605b9ae7d9e1f457da88a2173d00798a14ea844288377f911ae7175"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v25.v": {
+      "bytes": 199988,
+      "sha256": "4504ffb6acd21df918f751d62396e8ca8dcdb42e91a5f276bfe3cbb12f406295"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/source-freeze03.json": {
+      "bytes": 63119,
+      "sha256": "ed5cb88a99b8034d3eddf1e269de35d5704753153b4c9e51bdd84c4c021f583f"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/unknown-control-supplement02.json": {
+      "bytes": 1369,
+      "sha256": "c45ef954a28a300fa8de1990c7f45167fe45caeeda8b52111226b5617b025531"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/architecture-contract02.json": {
+      "bytes": 11823,
+      "sha256": "d9a2be36142de3aab93737344376421944d5689e51cd9c2847d01433c8c02257"
+    }
+  },
+  "fatal": {
+    "diagnostic": "V25_COMMAND_UNKNOWN_CONTROL_WRITES",
+    "line": 387,
+    "time_ticks": 12414,
+    "declared_timescale": false,
+    "compiled_time_precision_exponent": 0,
+    "kind_index": 6,
+    "control": "rst_ni 1 to X"
+  },
+  "arithmetic": {
+    "tick_delay_units": 3,
+    "pre_unknown_ticks": 4118,
+    "pre_unknown_time": 12354,
+    "first_unknown_hold_assertion_time": 12360,
+    "per_kind_ticks": 3,
+    "per_kind_time": 9,
+    "kind": 6
+  },
+  "actual_failure_boundary": "Both the pending-valid and visible-frontier hold assertions precede the failing slot/cache check and passed. The current fatal does not report which slot, metadata field or cache bit changed.",
+  "source_relation": "Saved candidate CAPTURE/APPLY/cache sections equal exact frozen product. Original and candidate use asynchronous posedge-clock/negedge-reset procedural priority. A1-to-X reset change is itself a negedge, so these blocks can run before a later settled positive edge.",
+  "hypothesis": "The bench changes drive to0, snapshots arrays and sets rst_ni toX without advancing simulation time. Continuous enabled/step update in event deltas; the two asynchronous always blocks can observe prior derived controls on that reset transition. The reported time precisely matches this edge. This is an event-order hypothesis from source and the actual fatal, not a rerun waveform observation.",
+  "classification": "Unresolved asynchronous four-state ownership edge. The existing assertion conflates transition behavior with settled-X positive-edge hold. Do not declare a product pass or simply add a delay to hide the transition: first compare both literal original and candidate edge observations and determine the intended transition-level contract.",
+  "requested_diagnostic": [
+    "Pin an additive print-only derivative of the exact generated HDL.",
+    "Record direct reset/flush/start/abort/active plus derived enabled/step at negedge reset, after NBA and at the next settled clock edge.",
+    "Record original and candidate slot/cache values, pending command fields/valid and visible commit before/after; include kind and first differing index.",
+    "Keep all original assertions, frozen product bytes and actual failure. A later fix needs independent additive source review and meaningful positive/negative retest."
+  ],
+  "no_native_or_test_rerun": true,
+  "method": {
+    "bytes": 5748,
+    "sha256": "f21e4666c5943083ad7e1fc3304478d4d99adef28502d55047965e1483151eea"
+  }
+}

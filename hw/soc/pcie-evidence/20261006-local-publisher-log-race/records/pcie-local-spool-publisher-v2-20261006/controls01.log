@@ -1,0 +1,246 @@
+FFFF...........................                                          [100%]
+=================================== FAILURES ===================================
+____ test_complete_frozen_v1_bridge_changes_only_size_guard_and_description ____
+
+    def test_complete_frozen_v1_bridge_changes_only_size_guard_and_description():
+        old = Path(original_worker.__file__).read_text()
+>       assert local.pin(original_worker.__file__)['sha256'] == '081e53f08b33b4a841754d4021272fd3c4f7bacd2e2d479c44acb9'
+E       AssertionError: assert '081e53f08b33...e2d479c44acb9' == '081e53f08b33...e2d479c44acb9'
+E         
+E         Skipping 33 identical leading characters in diff, use -v to show
+E         - 4f7bacd2e2d479c44acb9
+E         + 4f7bacd2e2b444c8b6e2d479c44acb9
+E         ?         ++++++++++
+
+sw/tests/test_pcie_local_spool_publisher_v2.py:28: AssertionError
+_________ test_actual_transient_stat_race_restarts_whole_tree[rename] __________
+
+tmp_path = PosixPath('/tmp/pytest-of-hasanmelih/pytest-52/test_actual_transient_stat_rac0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ba6c370dd90>
+operation = 'rename'
+
+    @pytest.mark.parametrize('operation', ['rename', 'compress_unlink', 'remove_subtree'])
+    def test_actual_transient_stat_race_restarts_whole_tree(tmp_path, monkeypatch, operation):
+        import gzip
+        directory = tmp_path / 'publication'; directory.mkdir()
+        command = directory / 'metadata'; command.mkdir()
+        moving = command / 'stdout.bin'; moving.write_bytes(b'bounded transport metadata' * 80)
+        (directory / 'retained.json').write_bytes(b'keep me')
+    
+        def move(path):
+            if operation == 'rename':
+                path.rename(path.with_suffix('.renamed'))
+            elif operation == 'compress_unlink':
+                path.with_suffix('.bin.gz').write_bytes(gzip.compress(path.read_bytes()))
+                path.unlink()
+            else:
+                path.unlink(); path.parent.rmdir()
+    
+        events = race_scandir(monkeypatch, directory, operations=[move])
+        used = m.guard(directory)
+        assert len(events) == 1
+>       expected = sum(p.stat().st_size for p in directory.rglob('*') if p.is_file())
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_local_spool_publisher_v2.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_local_spool_publisher_v2.py:93: in <genexpr>
+    expected = sum(p.stat().st_size for p in directory.rglob('*') if p.is_file())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/pathlib.py:1111: in rglob
+    for p in selector.select_from(self):
+/usr/lib/python3.12/pathlib.py:235: in _select_from
+    for starting_point in self._iterate_directories(parent_path):
+/usr/lib/python3.12/pathlib.py:229: in _iterate_directories
+    for dirpath, dirnames, _ in parent_path.walk():
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-hasanmelih/pytest-52/test_actual_transient_stat_rac0/publication')
+top_down = True, on_error = None, follow_symlinks = False
+
+    def walk(self, top_down=True, on_error=None, follow_symlinks=False):
+        """Walk the directory tree from this directory, similar to os.walk()."""
+        sys.audit("pathlib.Path.walk", self, on_error, follow_symlinks)
+        paths = [self]
+    
+        while paths:
+            path = paths.pop()
+            if isinstance(path, tuple):
+                yield path
+                continue
+    
+            # We may not have read permission for self, in which case we can't
+            # get a list of the files the directory contains. os.walk()
+            # always suppressed the exception in that instance, rather than
+            # blow up for a minor reason when (say) a thousand readable
+            # directories are still left to visit. That logic is copied here.
+            try:
+                scandir_it = path._scandir()
+            except OSError as error:
+                if on_error is not None:
+                    on_error(error)
+                continue
+    
+            with scandir_it:
+                dirnames = []
+                filenames = []
+>               for entry in scandir_it:
+E               TypeError: 'Scan' object is not iterable
+
+/usr/lib/python3.12/pathlib.py:1140: TypeError
+_____ test_actual_transient_stat_race_restarts_whole_tree[compress_unlink] _____
+
+tmp_path = PosixPath('/tmp/pytest-of-hasanmelih/pytest-52/test_actual_transient_stat_rac1')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ba6c3677b60>
+operation = 'compress_unlink'
+
+    @pytest.mark.parametrize('operation', ['rename', 'compress_unlink', 'remove_subtree'])
+    def test_actual_transient_stat_race_restarts_whole_tree(tmp_path, monkeypatch, operation):
+        import gzip
+        directory = tmp_path / 'publication'; directory.mkdir()
+        command = directory / 'metadata'; command.mkdir()
+        moving = command / 'stdout.bin'; moving.write_bytes(b'bounded transport metadata' * 80)
+        (directory / 'retained.json').write_bytes(b'keep me')
+    
+        def move(path):
+            if operation == 'rename':
+                path.rename(path.with_suffix('.renamed'))
+            elif operation == 'compress_unlink':
+                path.with_suffix('.bin.gz').write_bytes(gzip.compress(path.read_bytes()))
+                path.unlink()
+            else:
+                path.unlink(); path.parent.rmdir()
+    
+        events = race_scandir(monkeypatch, directory, operations=[move])
+        used = m.guard(directory)
+        assert len(events) == 1
+>       expected = sum(p.stat().st_size for p in directory.rglob('*') if p.is_file())
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_local_spool_publisher_v2.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_local_spool_publisher_v2.py:93: in <genexpr>
+    expected = sum(p.stat().st_size for p in directory.rglob('*') if p.is_file())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/pathlib.py:1111: in rglob
+    for p in selector.select_from(self):
+/usr/lib/python3.12/pathlib.py:235: in _select_from
+    for starting_point in self._iterate_directories(parent_path):
+/usr/lib/python3.12/pathlib.py:229: in _iterate_directories
+    for dirpath, dirnames, _ in parent_path.walk():
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-hasanmelih/pytest-52/test_actual_transient_stat_rac1/publication')
+top_down = True, on_error = None, follow_symlinks = False
+
+    def walk(self, top_down=True, on_error=None, follow_symlinks=False):
+        """Walk the directory tree from this directory, similar to os.walk()."""
+        sys.audit("pathlib.Path.walk", self, on_error, follow_symlinks)
+        paths = [self]
+    
+        while paths:
+            path = paths.pop()
+            if isinstance(path, tuple):
+                yield path
+                continue
+    
+            # We may not have read permission for self, in which case we can't
+            # get a list of the files the directory contains. os.walk()
+            # always suppressed the exception in that instance, rather than
+            # blow up for a minor reason when (say) a thousand readable
+            # directories are still left to visit. That logic is copied here.
+            try:
+                scandir_it = path._scandir()
+            except OSError as error:
+                if on_error is not None:
+                    on_error(error)
+                continue
+    
+            with scandir_it:
+                dirnames = []
+                filenames = []
+>               for entry in scandir_it:
+E               TypeError: 'Scan' object is not iterable
+
+/usr/lib/python3.12/pathlib.py:1140: TypeError
+_____ test_actual_transient_stat_race_restarts_whole_tree[remove_subtree] ______
+
+tmp_path = PosixPath('/tmp/pytest-of-hasanmelih/pytest-52/test_actual_transient_stat_rac2')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7ba6c3676150>
+operation = 'remove_subtree'
+
+    @pytest.mark.parametrize('operation', ['rename', 'compress_unlink', 'remove_subtree'])
+    def test_actual_transient_stat_race_restarts_whole_tree(tmp_path, monkeypatch, operation):
+        import gzip
+        directory = tmp_path / 'publication'; directory.mkdir()
+        command = directory / 'metadata'; command.mkdir()
+        moving = command / 'stdout.bin'; moving.write_bytes(b'bounded transport metadata' * 80)
+        (directory / 'retained.json').write_bytes(b'keep me')
+    
+        def move(path):
+            if operation == 'rename':
+                path.rename(path.with_suffix('.renamed'))
+            elif operation == 'compress_unlink':
+                path.with_suffix('.bin.gz').write_bytes(gzip.compress(path.read_bytes()))
+                path.unlink()
+            else:
+                path.unlink(); path.parent.rmdir()
+    
+        events = race_scandir(monkeypatch, directory, operations=[move])
+        used = m.guard(directory)
+        assert len(events) == 1
+>       expected = sum(p.stat().st_size for p in directory.rglob('*') if p.is_file())
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_local_spool_publisher_v2.py:93: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+sw/tests/test_pcie_local_spool_publisher_v2.py:93: in <genexpr>
+    expected = sum(p.stat().st_size for p in directory.rglob('*') if p.is_file())
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+/usr/lib/python3.12/pathlib.py:1111: in rglob
+    for p in selector.select_from(self):
+/usr/lib/python3.12/pathlib.py:235: in _select_from
+    for starting_point in self._iterate_directories(parent_path):
+/usr/lib/python3.12/pathlib.py:229: in _iterate_directories
+    for dirpath, dirnames, _ in parent_path.walk():
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+self = PosixPath('/tmp/pytest-of-hasanmelih/pytest-52/test_actual_transient_stat_rac2/publication')
+top_down = True, on_error = None, follow_symlinks = False
+
+    def walk(self, top_down=True, on_error=None, follow_symlinks=False):
+        """Walk the directory tree from this directory, similar to os.walk()."""
+        sys.audit("pathlib.Path.walk", self, on_error, follow_symlinks)
+        paths = [self]
+    
+        while paths:
+            path = paths.pop()
+            if isinstance(path, tuple):
+                yield path
+                continue
+    
+            # We may not have read permission for self, in which case we can't
+            # get a list of the files the directory contains. os.walk()
+            # always suppressed the exception in that instance, rather than
+            # blow up for a minor reason when (say) a thousand readable
+            # directories are still left to visit. That logic is copied here.
+            try:
+                scandir_it = path._scandir()
+            except OSError as error:
+                if on_error is not None:
+                    on_error(error)
+                continue
+    
+            with scandir_it:
+                dirnames = []
+                filenames = []
+>               for entry in scandir_it:
+E               TypeError: 'Scan' object is not iterable
+
+/usr/lib/python3.12/pathlib.py:1140: TypeError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_local_spool_publisher_v2.py::test_complete_frozen_v1_bridge_changes_only_size_guard_and_description
+FAILED sw/tests/test_pcie_local_spool_publisher_v2.py::test_actual_transient_stat_race_restarts_whole_tree[rename]
+FAILED sw/tests/test_pcie_local_spool_publisher_v2.py::test_actual_transient_stat_race_restarts_whole_tree[compress_unlink]
+FAILED sw/tests/test_pcie_local_spool_publisher_v2.py::test_actual_transient_stat_race_restarts_whole_tree[remove_subtree]
+4 failed, 27 passed in 17.37s

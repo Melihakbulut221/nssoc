@@ -1,0 +1,65 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_onehot_resize_route.py",
+      "candidate_path": "scripts/cloud_onehot_logic_resize_route.py",
+      "baseline_sha256": "f4bc3202355a63aa40b67aab1cd25a866cb25d1895e9d307401767c7351de07d",
+      "candidate_sha256": "a9751949f2137d3464eec256dc0d47b47de0e5d7004bd7caf3369d80c0a36255",
+      "edits": [
+        {
+          "before": "OUT=ROOT/'hw/soc/out/cloud-onehot-resize-route'",
+          "after": "OUT=ROOT/'hw/soc/out/cloud-onehot-logic-resize-route'",
+          "count": 1
+        },
+        {
+          "before": "Route actual resized positive data drivers",
+          "after": "Route actual resized combinational gates and data drivers",
+          "count": 1
+        },
+        {
+          "before": "        r['resize_source']=sized_proof;",
+          "after": "        # Chain the newly legalized logic candidate to the exact completed\n        # resized baseline. Old route/boot/RTL ancestry above is preserved.\n        r['previous_resize_source']=sized_proof\n        r['previous_resize_geometry']=sized['geometry']\n        old_route_pin=json.loads((ROOT/'docs/evidence/onehot-resize-route-report-rejection-20261019.json').read_text())\n        verified_route=json.loads((ROOT/'docs/evidence/onehot-resize-saved-validation-20261019.json').read_text())['report']\n        assert old_route_pin['report']['returncode']==0 and old_route_pin['report']['status']=='FAIL_OR_ERROR_NO_SOURCE_RESTART'\n        assert old_route_pin['report']['resize_source']['summary_sha256']==sized_sha\n        assert verified_route['sources_unchanged'] and verified_route['source']['summary_sha256']==old_route_pin['summary_sha256']\n        assert verified_route['physical']==dict(drc_errors=0,critical_disconnected_pins=0)\n        assert verified_route['routed_topology']['proof']['retained_instances']==146728\n        assert verified_route['routed_topology']['proof']['added_diode_count']==1130\n        np=json.loads((ROOT/'docs/evidence/onehot-logic-resize-prepare-pass-20261019.json').read_text())\n        nr=api('actions/runs/'+str(np['run']))\n        assert nr['status']=='completed' and nr['conclusion']=='success' and nr['head_sha']==np['source_head'] and nr['run_attempt']==1\n        assert nr['path']=='.github/workflows/onehot-logic-resize-prepare-cloud.yml'\n        new_root=ROOT/'hw/soc/out/cloud-onehot-logic-resize-prepare'\n        new_sized,new_proof=reports.restore_report('onehot-logic-resize-prepare',np['run'],np['summary_sha256'],np['parts_sha256'],new_root,list(np['report']['outputs']))\n        assert new_sized==np['report'] and new_sized['sources_unchanged']\n        assert new_sized['status']=='PASS_NATIVE_MEASURED_LOGIC_RESIZING_REQUIRES_ROUTE_RC_ALL_CORNER_STA'\n        assert new_sized['proof']['status']=='PASS within scope' and new_sized['controls']['status']=='PASS_NATIVE_ECO_CONTROLS' and new_sized['inversion_control']['rejected']\n        assert new_sized['source']['summary_sha256']==old_route_pin['summary_sha256'] and new_sized['source']['manifest_sha256']==old_route_pin['parts_sha256']\n        assert new_sized['original_route']==dict(odb_sha256='4acbb9969285c715969619795ec7a45305de1bd4a3f6ac97a91139cf0024b723',netlist_sha256='c05e6321a4aed063e5e69b902a3b7ed08863bd2a39189f8b17ded5bfc33b9756')\n        assert new_sized['original_measurements']==verified_route['corners']\n        assert new_sized['geometry']['instances']==147858 and len(new_sized['geometry']['changes'])==32\n        assert all(new_sized['geometry'][k] for k in ('all_net_memberships_unchanged','all_other_instances_unchanged','pg_ports_ndr_unchanged'))\n        assert json.loads((new_root/'proof/result.json').read_text())==new_sized['proof']\n        assert json.loads((new_root/'geometry-proof.json').read_text())==new_sized['geometry']\n        assert json.loads((new_root/'trial-config.json').read_text())==cfg\n        sized=new_sized;sized_proof=new_proof;sized_root=new_root\n        state_path=sized_root/'candidate-state.json';state=json.loads(state_path.read_text())\n        odb=Path(state['odb']);netlist=Path(state['nl'])\n        assert odb==sized_root/'candidate.odb' and netlist==sized_root/'candidate.v'\n        assert sha(odb)==sized['candidate_odb_sha256'] and sha(netlist)==sized['candidate_netlist_sha256']\n        assert state['spef']is None and state['def']is None and not state['metrics']\n        # Missing views must belong to a pinned source archive at their original path.\n        old_route_root=ROOT/'hw/soc/out/cloud-onehot-resize-route';new_missing=set()\n        def collect_new_missing(value):\n            if isinstance(value,dict):\n                for v in value.values():collect_new_missing(v)\n            elif isinstance(value,list):\n                for v in value:collect_new_missing(v)\n            elif isinstance(value,str)and value.startswith('/')and not Path(value).is_file():\n                p=Path(value);assert p.is_relative_to(old_route_root),('Unbound new candidate dependency',value)\n                rel=str(p.relative_to(old_route_root));assert rel in old_route_pin['report']['outputs'];new_missing.add(rel)\n        collect_new_missing(state)\n        if new_missing:\n            old_restored,old_restore_proof=reports.restore_report(old_route_pin['group'],old_route_pin['run'],old_route_pin['summary_sha256'],old_route_pin['parts_sha256'],old_route_root,sorted(new_missing))\n            assert old_restored==old_route_pin['report']\n            dependency_hashes.update({str(old_route_root/n):old_restored['outputs'][n] for n in new_missing})\n            r['new_state_dependency_source']=old_restore_proof\n        assert all(sha(p)==v for p,v in dependency_hashes.items())\n        r['restored_exact_state_dependencies']['files']=dependency_hashes\n        r['source_routed_measurements']=verified_route['corners']\n        r['resize_source']=sized_proof;",
+          "count": 1
+        },
+        {
+          "before": "r['resize_equation_proof']=sized['proof'];r['source_routed_measurements']=latest['measurements']",
+          "after": "r['resize_equation_proof']=sized['proof']",
+          "count": 1
+        },
+        {
+          "before": "        assert count==antenna['metrics']['route__antenna_violation__count']",
+          "after": "        from check_final_native_antenna_counts import validate as final_antenna_counts\n        r['final_antenna']=final_antenna_counts(antenna_report.read_text(),antenna['metrics'])\n        assert count==r['final_antenna']['final_violating_nets']",
+          "count": 1
+        },
+        {
+          "before": "method=ROOT/'scripts/check_onehot_resize_routed_topology.py'",
+          "after": "method=ROOT/'scripts/check_onehot_logic_resize_routed_topology.py'",
+          "count": 1
+        },
+        {
+          "before": "r['routed_candidate_topology']['proof']['retained_instances']==146728",
+          "after": "r['routed_candidate_topology']['proof']['retained_instances']==147858",
+          "count": 1
+        },
+        {
+          "before": "COMPLETE_NATIVE_RESIZED_DRIVER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+          "after": "COMPLETE_NATIVE_RESIZED_LOGIC_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_onehot_resize_routed_topology.py",
+      "candidate_path": "scripts/check_onehot_logic_resize_routed_topology.py",
+      "baseline_sha256": "a2a814ed06ce7fdebce8e1e7ffdfea3ae17a5e4b0daea1473e6b1ced00c0ab85",
+      "candidate_sha256": "9a10f25ea2afe4fedbb2e83b21217f947291bd7678845cb6d6d694d228241118",
+      "edits": [
+        {
+          "before": "len(before['instances'])==146728",
+          "after": "len(before['instances'])==147858",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

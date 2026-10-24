@@ -1,0 +1,52 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_columns_extraction.py",
+      "baseline_sha256": "2dd298b1448cb1580b3040b8b1345bb07f962b8a3e4012a4b69c1e9f57c96b93",
+      "candidate_path": "scripts/cloud_tx_v5_return_repair_extraction.py",
+      "candidate_sha256": "dbb81a0c3c52b977d1dbfbd0acd78060bb23b95957987802e83640028508f70c",
+      "edits": [
+        {
+          "before": "_columns_return64_core_v1",
+          "after": "_finalreturn_core_v1",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-columns-physical-pass-20261018.json",
+          "after": "tx-v5-return-repair-physical-pass-20261018.json",
+          "count": 1
+        },
+        {
+          "before": "39110049165",
+          "after": "39134428243",
+          "count": 1
+        },
+        {
+          "before": "5ac146781cf625dce9814630842ade3467e4e3f6",
+          "after": "f4d800262d2fd3da4e0aaa0835c6543df8515dbc",
+          "count": 1
+        },
+        {
+          "before": "011bdc1b9e8f18239c5d1e7edc032beb8f786f39d301cab27a50876f2ccce4b4",
+          "after": "ef1518d2b71ff637f0ef4fa46abd2e62aa17215e35621a5c523ca0d6463f5f26",
+          "count": 1
+        },
+        {
+          "before": "59e1b2e8fd0503e04893d0d6d6ba6f1afe9696f819e41436db523e6d29de4e68",
+          "after": "6380a0369f27621d8efc16945bb659888588751fd159b16488b2bc8c3624c2b3",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-columns-assembly",
+          "after": "cloud-tx-v5-return-repair-assembly",
+          "count": 1
+        },
+        {
+          "before": "        layout=physical['layout']",
+          "after": "        gp=json.loads((ROOT/'docs/evidence/tx-v5-return-geometry-pass-20261018.json').read_text())['report']\n        assert gp['status']=='PASS_INDEPENDENT_NATIVE_TX_RETURN_GEOMETRY_DELTA_REQUIRES_FRESH_RC'and gp['sources_unchanged']\n        assert gp['sources']['candidate']['run']==receipt['source_run'] and gp['sources']['candidate']['summary_sha256']==receipt['summary_sha256']\n        assert all(sha(out/n)==v for n,v in gp['sources']['candidate']['selected'].items())\n        assert gp['native']['all_drawing_layers_checked']==25 and len(gp['native']['controls'])==3\n        assert physical['return_rail']['final_column_trunk_width_um']==128. and physical['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert physical['return_rail']['local_final_strap_width_um']==4. and physical['return_rail']['final_strap_top_via_columns']==physical['return_rail']['final_strap_top_via_rows']==2\n        result['independent_return_geometry']=gp['native']\n        layout=physical['layout']",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

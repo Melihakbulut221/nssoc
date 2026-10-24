@@ -1,0 +1,9 @@
+# Fresh v5 serializer parent physical pass and RC extraction
+
+Actual31macro source39063951673 at7a1d1445ffdf55f82b8f6411280fc68719c3d63a passes all560nativeDRCrules with zero markers, both deep and flat1674device LVS, and all five reference/geometry fault controls. The589HBT instances contain719emitters; recommended rules remain enabled. Native GDS SHAaaf09a52c7f5f9fdd3307c73f9dc0c57966e461a5f2e8ddfd6666fb87900c5d4. The prior dependency-only failure is retained separately.
+
+The routed core bbox is4666.785x9897.82um using actual600um rows. This is an early physical implementation whose area and long interconnects still need electrical assessment and likely optimization. It includes30prestage+1final macro,60intermacro data nets and supply/substrate routes. It does not include complete clock/bias,64CMOS drivers, receiver/CDR/PLL, fourlanes or mainchip integration.
+
+The new cloud_tx_balanced_v5_extraction.py retains the existing native geometry/terminal ownership/RC graph and13actual-corruption controls. Only selected variant, archive/source identity and permitted placement profile change. It independently requires the exact successful parent summary and archive SHA, all original physical gates, then restores and extracts the newGDS. Expected census remains1674devices4774terminals3262probes377wirecomponents. No old parentRC, fitted delay or scaled resistance is substituted. RC graph/capacitance conservation is not qualified substrate/RF PEX or electrical acceptance. Full loaded native waveforms remain mandatory after new graph composition.
+
+Original extraction controller SHA 5ac462b0677fb2c85e5efc2c5d863dd6760564d20878f6541d7af1ea2bee09d2; adapted controller SHA 935b19116984114bddc487d2cc0393fd4b188ae9ce009fc5ef53686ab352bd00. All CAD/runtime/test artifacts remain exclusively in GitHub.

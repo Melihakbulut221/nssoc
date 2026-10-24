@@ -1,0 +1,346 @@
+{
+  "status": "PASS_RTL_PORT_CONTROLS_ONLY",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_v4.v": {
+      "bytes": 13429,
+      "sha256": "1ea65ae5cac74a2192330ac03540e2e8511585dff99fbdd60d8d9fb76463dd9b"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_wide.v": {
+      "bytes": 3149,
+      "sha256": "9bd86195d0a8bd019d8d6ddf01f786709058a5d56eb309bb8ad7130e82b3c15e"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_wide.py": {
+      "bytes": 13772,
+      "sha256": "c48ad24282f71258cba160c71b2a3cb8fa5f17cc0633e51cd0b34502a7555a53"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_wide": {
+      "bytes": 1434,
+      "sha256": "fe1298bf88145218b3efec4e1c3db3d0740b4286245ffc3d4c0977477b8627a2"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_wide.py": {
+      "bytes": 10358,
+      "sha256": "46edcba9d58605024a2346baa6fdbd3664a3a95f266755998688eeaf60871702"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_wide.py": {
+      "bytes": 6014,
+      "sha256": "957fe99d513e7f3f0672fcbaa5ad6089c6cca3e44baff3c2a6a3b63894702c2e"
+    }
+  },
+  "unchanged_dependencies": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    }
+  },
+  "actual_controls": [
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "three_steps",
+      "selected_case": "sustained_minimum_packets_exceed_every_buffer",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje0/capture/result.json",
+      "result_pin": {
+        "bytes": 5419,
+        "sha256": "fccda175ee35ef764858cb4ff3e002784c0173dda386ffeda5c1295489996ad3"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "lost_same_edge_block_activation",
+      "selected_case": "sustained_minimum_packets_exceed_every_buffer",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje1/capture/result.json",
+      "result_pin": {
+        "bytes": 5419,
+        "sha256": "0229ea701ae06de2a75e6005254b73ba99f5781bf2eba45cbf91c90f7952667f"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "bad_block_header_ignored",
+      "selected_case": "malformed_tokens_and_headers_never_release_quarantine",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje10/capture/result.json",
+      "result_pin": {
+        "bytes": 5438,
+        "sha256": "698fa4e85acfb7650ab97f7e0905fc9d12dca1b35b7388cfb60cede439ae66d2"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "bad_stp_crc_ignored",
+      "selected_case": "malformed_tokens_and_headers_never_release_quarantine",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje11/capture/result.json",
+      "result_pin": {
+        "bytes": 5438,
+        "sha256": "85b0287ed9d713cbd64c37ef2a38f6d7fe9f3b079c323efb41c7edc5dc0988a6"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "wrong_raw_lane",
+      "selected_case": "sustained_minimum_packets_exceed_every_buffer",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje12/capture/result.json",
+      "result_pin": {
+        "bytes": 5430,
+        "sha256": "c8190dbf992c31ceb0533cf8ad8db3f009e26e12a680111c724b72e33d870212"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "wrong_lfsr_advance",
+      "selected_case": "sustained_minimum_packets_exceed_every_buffer",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje13/capture/result.json",
+      "result_pin": {
+        "bytes": 5430,
+        "sha256": "f169fb43235d116c5908dd4ae0a476b7b2979d08f57d25ca99a168e5e3eb78a2"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "restart_without_reseed",
+      "selected_case": "start_without_abort_reseeds_and_discards_prior_epoch",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje14/capture/result.json",
+      "result_pin": {
+        "bytes": 5437,
+        "sha256": "c8dd61448dc618b1804e8d4350d6c5e52eec8b2da77fdfb0505e0bcae40ebb03"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "look_drops_successor",
+      "selected_case": "sustained_minimum_packets_exceed_every_buffer",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje2/capture/result.json",
+      "result_pin": {
+        "bytes": 5419,
+        "sha256": "022c8fada344ae078b155c495963c9560beaf0123222187865f64182626928eb"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "edb_releases_bad",
+      "selected_case": "edb_quarantine_and_eds_release_drain",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje3/capture/result.json",
+      "result_pin": {
+        "bytes": 5410,
+        "sha256": "03c6e244089974061656d521f059a7220a2752fa8453648f99d14ed83dafc20b"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "zero_body_lost",
+      "selected_case": "maximum_zero_packets_cross_blocks_and_verdict_wrap",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje4/capture/result.json",
+      "result_pin": {
+        "bytes": 5424,
+        "sha256": "1a4eb58c307ab3120be4ee7a006cb1ecbc5bc3604de3c5560c7f567d7fc1c60d"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "one_completion_event",
+      "selected_case": "sustained_minimum_packets_exceed_every_buffer",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje5/capture/result.json",
+      "result_pin": {
+        "bytes": 5419,
+        "sha256": "75d3adc89f6a812e4624c28cdbb32f511f62ee3ada0b4cc4b9e33c56153d8cc1"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "denied_full_replace",
+      "selected_case": "actual_full_ring_replacement_and_late_stall_overflow",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje6/capture/result.json",
+      "result_pin": {
+        "bytes": 5426,
+        "sha256": "09bf42cf696a93c649b44e5bdff31d2dfd567b0c06655cbafef9612f767b76cf"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "overwrite_stalled_output",
+      "selected_case": "bounded_stalls_preserve_all_wide_metadata",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje7/capture/result.json",
+      "result_pin": {
+        "bytes": 5415,
+        "sha256": "c12e623bd7659ba72f305af593d6de8d2f40ce1db4804540cc2bb4309b679bda"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "verdict_wrap_alias",
+      "selected_case": "verdict_tag_reuse_cannot_nullify_an_older_live_tail",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje8/capture/result.json",
+      "result_pin": {
+        "bytes": 5425,
+        "sha256": "1eb76836c4a85b7b6ceef9c70880dfbea50a6bb8303125b97400a83f9bd1e64d"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "actual_hdl_fault",
+      "fault": "eds_loses_pending_packet",
+      "selected_case": "edb_quarantine_and_eds_release_drain",
+      "selected_assertion_rejected": true,
+      "unselected_cases": 8,
+      "result": "final-controls02/test_actual_wide_rx_fault_reje9/capture/result.json",
+      "result_pin": {
+        "bytes": 5410,
+        "sha256": "d0a2fd6c184989c7fdc3da46da825eb5d9fce4aa52cfb54f472c4c879a61d13c"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "full_positive",
+      "max_encoded_bytes": 150,
+      "passed": 9,
+      "skipped": 0,
+      "result": "final-controls02/test_actual_wide_rx_full_posit0/capture/result.json",
+      "result_pin": {
+        "bytes": 4687,
+        "sha256": "b0f1144089c9534a7f5a960b872b54b4e5664d68dcf569a37ac5c4fb7a8285d6"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    },
+    {
+      "kind": "full_positive",
+      "max_encoded_bytes": 4118,
+      "passed": 9,
+      "skipped": 0,
+      "result": "final-controls02/test_actual_wide_rx_full_posit1/capture/result.json",
+      "result_pin": {
+        "bytes": 4691,
+        "sha256": "60edc8a71ae2c7d5edfb081935bf9f89eb18db1006b5defadea6c1ab64df0887"
+      },
+      "source_inputs_rehashed": 10,
+      "runtime_inputs_rehashed": 2,
+      "outputs_rehashed": 2
+    }
+  ],
+  "pytest": {
+    "passed": 17,
+    "failed": 0,
+    "log": {
+      "bytes": 111,
+      "sha256": "9aae2f932dc94ef7b10f97c60f9a253527360feee448087c4ef6a0432208f6d1"
+    }
+  },
+  "port_cases_per_full_profile": 9,
+  "full_profiles_skipped": 0,
+  "mutants": 15,
+  "method": {
+    "bytes": 7326,
+    "sha256": "d45ab8d3d10a15893223bb6e0ab0dbd1fb657beb55cb0058c6b3486d0095b400"
+  },
+  "scope": "RTL-only actual Icarus public-port controls. 150 and 4118 byte profiles; sustained no-IDL TLP/DLLP streams, all65 raw phases, four-DWORD no-load-bubble parser, bounded-stall overflow/restart, full replacement, EDB/EDS quarantine and repeated >8R extended-tag reuse. Targeted fault runs intentionally select one of9 cases; only intended assertion failure accepts a negative. No SG13 mapping, physical clock-frequency, SKP/OS/CDC/PMA or completePCS acceptance.",
+  "prior_failures": [
+    {
+      "path": "rtl01",
+      "disposition": "5 PASS/2 FAIL preserved; prospective overflow visibility and duplicate error pulse corrected in new RTL before final controls"
+    },
+    {
+      "path": "final-controls01",
+      "disposition": "15 PASS/2 FAIL preserved: insufficient large-profile drain fixture and observationally equivalent prefetch mutant; fixture tail budget and actual activation mutant corrected, RTL unchanged"
+    },
+    {
+      "path": "tag01",
+      "disposition": "cocotb tool discovery failure retained"
+    },
+    {
+      "path": "tag02",
+      "disposition": "inherited wrong Python ABI path retained"
+    },
+    {
+      "path": "tag03",
+      "disposition": "actual selected case passed but checker incorrectly expected zero unselected cases; selection-count contract corrected"
+    }
+  ],
+  "fault_semantics": "Overflow/error is synchronous with the sampling edge that invalidates ownership. A same-edge legal retirement is counted before overflow. No retrospective suppression of output already accepted before a later malformed input.",
+  "inherited_frontend_limits": "Fixed externally aligned and deskewed Data Stream only; output is128-bit masked retirement, not the old byte interface."
+}

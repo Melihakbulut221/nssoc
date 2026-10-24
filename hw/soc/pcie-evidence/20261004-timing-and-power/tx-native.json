@@ -1,0 +1,62 @@
+{
+  "status": "PASS_BOUNDED_PIPELINED_TX_V4_NATIVE_AND_CONTROLS",
+  "utc": "2026-10-04T16:28:58.523123+00:00",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_tx_path_v4.v": {
+      "bytes": 7024,
+      "sha256": "36691c0f57934c708367a30d6a5f4ce940ecfaa18c83c63e8e3636a5081fbd67"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_gearbox.v": {
+      "bytes": 2609,
+      "sha256": "737d687d649391b0b5d2364e0dc332d6210ddc6098e8fe5c68ed3b76810775cd"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_tx_path_v4.py": {
+      "bytes": 5607,
+      "sha256": "eb20d0c642668c6abbdc758055a658dcf44a6e041c214f54f1b27adc50833298"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_tx_path_v4": {
+      "bytes": 1218,
+      "sha256": "c097ed2043aec6e17d4bdc5ff34f26c06817d5eb90734eb92e56bf2ab3206c79"
+    },
+    "scripts/check_pcie_gen3_tx_path_v4.py": {
+      "bytes": 9917,
+      "sha256": "4383abc664cdf3bb4c0adfb39df8c361427f7ebaf56f0a3dd1e32291a2a104ed"
+    },
+    "sw/tests/test_pcie_gen3_tx_path_v4.py": {
+      "bytes": 4901,
+      "sha256": "be261b51b4df8025cbf51cc629c74d06a6a9e815b60d140f2e21d86754e31a03"
+    }
+  },
+  "native_cells": 29722,
+  "native_tests": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0
+  },
+  "rtl_tests": {
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0
+  },
+  "pytest": {
+    "passed": 17,
+    "actual_hdl_faults": 14,
+    "process_lifetime_controls": 3,
+    "skipped": 0
+  },
+  "capsule": {
+    "path": "/dev/shm/pcie-tx-v4-pipeline-native-and-controls-20261004.tar.xz",
+    "bytes": 14875976,
+    "sha256": "8cfa8a8892d1baf8846e5d3f41a0d68696e252c78668baecc6ff63a95f36d665",
+    "members": 162,
+    "all_members_readback_verified": true
+  },
+  "physical_acceptance": false,
+  "limits": [
+    "Source GF2 rows and byte counts captured together before registered selection; next input waits until original LFSR advances. Exact2cycle transformaccept interval stillsupports130/32output rate.",
+    "Samefrozenv3 serialoracle:3actualcases24492ns; no fullPCIePCS/OS/SKP/LTSSM/PMA/CDC acceptance.",
+    "NativeIcarus unsupported timingchecks and bundledPython executable diagnostic retained; notSDF.",
+    "Firsttiepostprocessorincorrectly requiredtiehi, secondomittedunusedconstantnetnamealiases; both native mapping outputs completed butpostprocessorassertionsfailed. Thirdactualconstantcensus includescellpins/ports/aliases andonlytielo isneeded.",
+    "Placement/CTS/routing/actualRC separate andunfinished."
+  ]
+}

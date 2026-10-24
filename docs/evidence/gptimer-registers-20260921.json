@@ -1,0 +1,677 @@
+{
+  "date": "2026-09-21",
+  "parent_head": "bb0ea7de4da141dcf58901d97896333e030da24d",
+  "status": "PASS_FOR_GPTIMER_REGISTER_MIGRATION",
+  "scope": "13 block maps / 113 global and relative offsets. Existing parameter-dependent timer/watchdog ABI and unaligned alias behavior retained. No new native boot or physical acceptance is inferred. CAN, field definitions and other audit 3.8 obligations remain open.",
+  "source_sha256": {
+    "hw/soc/lint-policy.json": "2d9d9a8694cfd42adb0b256a0321ea392e010284678642e8190cb2486de13aed",
+    "hw/soc/rtl/soc_gptimer.v": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25",
+    "hw/soc/tb/cocotb/peripheral_registers.py": "2e3874e826e6ea9dabc9be8cbcbb839be52db5cb28362a2736241775c4605fe0",
+    "hw/soc/tb/cocotb/test_soc_gptimer.py": "5dc91436980d579949bfeda17cd2620f789a45ec46892a54234d7020166ba24a",
+    "hw/soc/tb/sw/soc_reg_offsets.h": "785b89daef012307a390ce0d8b6262598f918d1179f2b4ead4ec7fa4fb488cbe",
+    "hw/soc/tb/sw/soc_timers.h": "542015389f97015d2b1c6b1a0ea7fbe9e07b135ffb7115c601a731c5cdbcc9b2",
+    "regmap/generate_peripherals.py": "ba8f3fb3bb72c3591509c7da99ffa00f84e0ca50c3deef35be9cc40775981ca7",
+    "sw/golden/peripheral_regs_gen.py": "a3f3bc861477682f095bdafd76970a635d19886d3735f5761c7ddc13e7b84e4d",
+    "sw/tests/test_peripheral_regmap.py": "cd9945cec350ffafc4b5c10fe0496ade77e53adfa85b62acf6875cbb0b6db328",
+    "regmap/peripherals/gptimer.yaml": "e7a5cd4f6792cc0ae3566105743be32d7c858edb69231c78bb055cead61e565e",
+    "hw/soc/formal/soc_gptimer.sby": "2c4b06ff616700d4002997d3d32d9c7fbff5a4d5e26a2990a22e5e7e383aebf2",
+    "hw/soc/formal/soc_gptimer_props.v": "55ecd1941c88ac2b1f9a4450ed07b22446266ff9560cd72d125844464d4db14c"
+  },
+  "python_guards": {
+    "passed": 61,
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/gptimer-regmap-guards-final.log",
+      "sha256": "383d780fcee6fce506df746d09f0bac26094c9035a62226924f41099257e73af"
+    }
+  },
+  "cocotb": {
+    "passed": 10,
+    "skipped": 0,
+    "failed": 0,
+    "results": {
+      "path": "hw/soc/out/external-review-20260919/gptimer-regmap-cocotb/results.xml",
+      "sha256": "f58d0cd86723e60dbd6744d92bf5f97cbdf37e2cf26be61c9920ffb03a20430b"
+    },
+    "log": {
+      "path": "hw/soc/out/external-review-20260919/gptimer-regmap-cocotb.log",
+      "sha256": "1857d1e3ed82fc76c5dfb6fcfa1797a11f62a086b26719fff755b54a977c8d33"
+    }
+  },
+  "formal": [
+    {
+      "task": "bmc",
+      "status": "PASS 0 9",
+      "sources_match": true,
+      "sources": [
+        {
+          "path": "hw/soc/rtl/soc_gptimer.v",
+          "sha256": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25"
+        },
+        {
+          "path": "hw/soc/rtl/soc_wdog.v",
+          "sha256": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5"
+        },
+        {
+          "path": "hw/soc/rtl/soc_tmr_bank.v",
+          "sha256": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06"
+        },
+        {
+          "path": "hw/rtl/tmr_voter.v",
+          "sha256": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476"
+        },
+        {
+          "path": "hw/soc/formal/soc_gptimer_props.v",
+          "sha256": "55ecd1941c88ac2b1f9a4450ed07b22446266ff9560cd72d125844464d4db14c"
+        }
+      ],
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-formal-bmc.log",
+        "sha256": "2a305267bc35b45c4adc860a8076cd2f6b488e971ccbbf95d3297c07ad523ead"
+      },
+      "config": {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-formal-bmc/config.sby",
+        "sha256": "832e40395b9681eaa08e9a3a39ab94e4061a43fe64934b56ee54a9ab6d16c1e3"
+      }
+    },
+    {
+      "task": "prove",
+      "status": "PASS 0 0",
+      "sources_match": true,
+      "sources": [
+        {
+          "path": "hw/soc/rtl/soc_gptimer.v",
+          "sha256": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25"
+        },
+        {
+          "path": "hw/soc/rtl/soc_wdog.v",
+          "sha256": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5"
+        },
+        {
+          "path": "hw/soc/rtl/soc_tmr_bank.v",
+          "sha256": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06"
+        },
+        {
+          "path": "hw/rtl/tmr_voter.v",
+          "sha256": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476"
+        },
+        {
+          "path": "hw/soc/formal/soc_gptimer_props.v",
+          "sha256": "55ecd1941c88ac2b1f9a4450ed07b22446266ff9560cd72d125844464d4db14c"
+        }
+      ],
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-formal-prove.log",
+        "sha256": "074aa0e2472204d5cc52be41d94d75bffa8478ff343caaf3c08751ee7097cd4a"
+      },
+      "config": {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-formal-prove/config.sby",
+        "sha256": "e4627d3860ac89dfb546b1cda3c484da63746640e16a2b84a025d363dda44667"
+      }
+    },
+    {
+      "task": "prove_full",
+      "status": "PASS 0 1",
+      "sources_match": true,
+      "sources": [
+        {
+          "path": "hw/soc/rtl/soc_gptimer.v",
+          "sha256": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25"
+        },
+        {
+          "path": "hw/soc/rtl/soc_wdog.v",
+          "sha256": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5"
+        },
+        {
+          "path": "hw/soc/rtl/soc_tmr_bank.v",
+          "sha256": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06"
+        },
+        {
+          "path": "hw/rtl/tmr_voter.v",
+          "sha256": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476"
+        },
+        {
+          "path": "hw/soc/formal/soc_gptimer_props.v",
+          "sha256": "55ecd1941c88ac2b1f9a4450ed07b22446266ff9560cd72d125844464d4db14c"
+        }
+      ],
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-formal-prove_full.log",
+        "sha256": "b340f816c60285912db692b02089bd3dbf9681cc8e1b836b479d686daa744e22"
+      },
+      "config": {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-formal-prove_full/config.sby",
+        "sha256": "ba45d7bc248643b08f529b47a202fc739507394bfc83cb25d7a60df849fff8f2"
+      }
+    },
+    {
+      "task": "cover",
+      "status": "PASS 0 1",
+      "sources_match": true,
+      "sources": [
+        {
+          "path": "hw/soc/rtl/soc_gptimer.v",
+          "sha256": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25"
+        },
+        {
+          "path": "hw/soc/rtl/soc_wdog.v",
+          "sha256": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5"
+        },
+        {
+          "path": "hw/soc/rtl/soc_tmr_bank.v",
+          "sha256": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06"
+        },
+        {
+          "path": "hw/rtl/tmr_voter.v",
+          "sha256": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476"
+        },
+        {
+          "path": "hw/soc/formal/soc_gptimer_props.v",
+          "sha256": "55ecd1941c88ac2b1f9a4450ed07b22446266ff9560cd72d125844464d4db14c"
+        }
+      ],
+      "log": {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-formal-cover.log",
+        "sha256": "78fd1a079db29b9a162a6c55642af4363a936dda0208a6e786afae9db93bf367"
+      },
+      "config": {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-formal-cover/config.sby",
+        "sha256": "81b20be510ed4fd9a14abd814334d8c9ed8ad34e3f2db05c69b0bdd3eaaab63f"
+      }
+    }
+  ],
+  "firmware_byte_identity": {
+    "status": "PASS",
+    "artifacts": [
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-base/test_soc.bin",
+        "sha256": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-base/app.bin",
+        "sha256": "c053d07d8039ed0ec75d8bb57857d88cdcc0526aefd210d2e04c909ef2aad83e"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-base/test_soc.hex",
+        "sha256": "fca30e36eccece5791ba994651405d12519df95a1cff2416d89447d873b4f502"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-base/flash1.hex",
+        "sha256": "142c5f09d98b67d85b4d53225d3208edf80e920438d9e78466d16a863db79688"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-base/flash0.hex",
+        "sha256": "d8069e37f24286c50ff86631d83aed55c15a9faa59b725397ed8ce3dad4a2b91"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-full/test_soc.bin",
+        "sha256": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-full/app.bin",
+        "sha256": "ebcbb9f6af26fa3ff79bf9df066edd94d52edd6599ecbbbd32950d008895a943"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-full/test_soc.hex",
+        "sha256": "fca30e36eccece5791ba994651405d12519df95a1cff2416d89447d873b4f502"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-full/flash1.hex",
+        "sha256": "142c5f09d98b67d85b4d53225d3208edf80e920438d9e78466d16a863db79688"
+      },
+      {
+        "path": "hw/soc/out/external-review-20260919/gptimer-regmap-full/flash0.hex",
+        "sha256": "0e177aa4b2a8e475049b106948874d8b76d22c72408c479c64bf716ab073db4b"
+      }
+    ]
+  },
+  "lint": [
+    {
+      "profile": "base",
+      "status": "PASS_WITH_RECORDED_WARNINGS",
+      "count": 987,
+      "verilator_version": "Verilator 5.051 devel rev v5.050-134-gb42d7c2d9 (mod)",
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/lint-gptimer-regmap-base-delivered/result.json",
+        "sha256": "e30f03aef9bd7de6612a9ae5f16d78c4256bd41fc913e817f3de61adb3428ad1"
+      },
+      "sources_unchanged": true,
+      "source_sha256": {
+        "hw/soc/gen/ibex_alu.v": "81fa8cb2b39fa0b879bd0bc2caa47b4ba69adf6ed361ec15ef8d3eb00165c063",
+        "hw/soc/gen/ibex_branch_predict.v": "066d38e5f865eab565a652410ffc2206f71686dc7169a33674d8b82df147c5a3",
+        "hw/soc/gen/ibex_cheriot_ex.v": "1e98e0a8d9af59ab2c54560ec772b360c7f08f1bc74de241ebc6022e3e255325",
+        "hw/soc/gen/ibex_compressed_decoder.v": "98511a0a0224cb491f8c1f26387938b1b0e2389b5cdfd994ecfbecaaffa3ac64",
+        "hw/soc/gen/ibex_controller.v": "4dccb7ebb3597383b5df233f4962885b4b486c4823330d0db062eea8c9cae9bf",
+        "hw/soc/gen/ibex_core.v": "4f9d0cb31ff8baba8ea380cbbba1a9f1eed338f45a43edacece3e9801b2dd989",
+        "hw/soc/gen/ibex_counter.v": "943af7b5289592f62ba258483fae9b803777d640863171209cb7a258e9457f01",
+        "hw/soc/gen/ibex_cs_registers.v": "aa7c6ca01df11ccf815c129317018678af7817fa8299f759ccf652e80d43ea61",
+        "hw/soc/gen/ibex_csr.v": "46615e34ae2e96f42e51c88eeecb09549fcc6bdccd77dd00a87a5eca0332faa2",
+        "hw/soc/gen/ibex_decoder.v": "7be7b5fca0b3852ed058fba505c959a455ef5e93e23629133a91e69675f48df3",
+        "hw/soc/gen/ibex_dummy_instr.v": "e781cb6cb120b067fd88ad2930d5ec4098d4c1ad1bc73125bab654e2a92ac6fa",
+        "hw/soc/gen/ibex_ex_block.v": "db91d2d96021c144c76f1257d9f9d250641832aa90a5cff9065f48c634c27c11",
+        "hw/soc/gen/ibex_fetch_fifo.v": "4a4aa8a375b30d02554705c9e48966ceb6bca9c59bf7d00267b8748e0bd730b0",
+        "hw/soc/gen/ibex_icache.v": "29836d2ed676b064fa013ca2a2dfd95d2bfc4c892aa1a62689682f55ab28784d",
+        "hw/soc/gen/ibex_id_stage.v": "93d1efa482e24e669ad73dcfad16c6b1df05968ac07dfec0f25e074c6acc78c4",
+        "hw/soc/gen/ibex_if_stage.v": "d42feadf61172b9785546c872c0fe050006f03e2ac4b9ca19cbb485c93b84cfc",
+        "hw/soc/gen/ibex_load_store_unit.v": "bf0eecf0e6077bee2fcba0adfd893d67650feb1bf2769c9b61b10d115b8ac5a9",
+        "hw/soc/gen/ibex_lockstep.v": "2a0fce3e60488399d90b880020fbe0f4f500c210d963de46bc02c76cbc3d4bea",
+        "hw/soc/gen/ibex_multdiv_fast.v": "c76ff1a7eb5933741b218335278dac524de6f166e9fa1587b7916780d79e2225",
+        "hw/soc/gen/ibex_multdiv_slow.v": "73da596d36c6649c8e2cec7189371c5e3354459750e23d9f6fe1cc52b6982605",
+        "hw/soc/gen/ibex_pmp.v": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+        "hw/soc/gen/ibex_prefetch_buffer.v": "55f6c149ccd533f4adc4dd7a20d2e951641e35fa79be9efa8ee6a359cb8a1869",
+        "hw/soc/gen/ibex_trvk.v": "fae1ff15710acfb925312c7f911df93cb3f65083a30b0cec86e3d9f571b57a5e",
+        "hw/soc/gen/ibex_wb_stage.v": "963eb68160e79830190d5d01af2449b1b7ae0f5ef2a3bcd160c8963621f6c707",
+        "hw/soc/gen/prim_and2.v": "6fdb4d8240c7edb5398853351709db765306f81a4b0ed2c8c0fdefb9239c9b88",
+        "hw/soc/gen/prim_buf.v": "e1f182a1c33f722ac8e76d1fb830c6b6bf36047b2ee12b5107e9136eecec37d1",
+        "hw/soc/gen/prim_clock_mux2.v": "f3f3f6fa20fd6ea9e73a2b4c414619edf6ed5b774604d0ae8ee3d22fed100922",
+        "hw/soc/gen/prim_count.v": "de4dca0ff2ba49c2253f80ac8de997ad9a08df68de31a5cc7c90a6489f99738f",
+        "hw/soc/gen/prim_flop.v": "0aa04d499306b94e801191760a4f62b1b8cbb6885042d44745b1cd286e55904a",
+        "hw/soc/gen/prim_lfsr.v": "62aeeab74660e33e95026da1af24c0372f1010d318b26c5b9b264a116ffe9a6b",
+        "hw/soc/gen/prim_secded_inv_39_32_dec.v": "19b2f7b8b9e0e672847c2cd101a8f6628fe7eb4782ad43a964f0d301c1e403d1",
+        "hw/soc/gen/prim_secded_inv_39_32_enc.v": "fc16d6d64a9799f273b93b7519d73e3a4ac86fd1d67ec658c9e25c0d4ee59192",
+        "hw/soc/genp/ibex_top.v": "06d4d33bcf22abb39711a66747056a9f18ed5716592b1eb66efde0f2733399e9",
+        "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+        "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "hw/soc/rtl/prim_clock_gating.v": "76232cb6a8056a9d3c524bcaff65e4273886fcbaf4c218b4db4bba92610f7024",
+        "hw/soc/rtl/soc_apb_bridge.v": "3055923174102efe7691f9688cb76ef0ebd5b4b52de423922f8cf43b0f12b11a",
+        "hw/soc/rtl/soc_apb_pnp.v": "05ee8aa89966151ec59b16eb3cdf31def51aa7dd25c7a5a2d2a165b5fe4cc994",
+        "hw/soc/rtl/soc_apb_wb.v": "3841d43aa38579909881e05d208082f4688dff68fd7d00c873a87858d1dcaf86",
+        "hw/soc/rtl/soc_boot.v": "58c2d4e6b6f9d3069adb5bd188ba32cf36f778b321a9c0ed996237bb140e71ff",
+        "hw/soc/rtl/soc_bus.v": "b833b51730ffb5804f9c021f0e88284b65208138b04f95c36b4e49a1cdd7fc93",
+        "hw/soc/rtl/soc_busstat.v": "f869a9532c267633bdf9192b5e09c9415a9a64034c63a88165c574778919d388",
+        "hw/soc/rtl/soc_can.v": "324e019fa0360c1c5422495376a18acdf29b487cf5eb0b09adac2137fda3e8e5",
+        "hw/soc/rtl/soc_clint.v": "95be0f06e5ccce08ff42eb19d628b17164782ce2b79da5b059820d88c922748b",
+        "hw/soc/rtl/soc_eth.v": "a8767df605299c17c3184ca8cb2d51104854ae848aafd8dd48941b55caeeb39c",
+        "hw/soc/rtl/soc_gpio.v": "8cbba74ae3d273e5ccefbae030db3428738bab897e09f97a5640f4eb5e763cb0",
+        "hw/soc/rtl/soc_gptimer.v": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25",
+        "hw/soc/rtl/soc_i2c.v": "5c41e193b6c9bd822acdb4aaeead75f211d00ca78c55c33be1ea567da1021f36",
+        "hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "hw/soc/rtl/soc_npu.v": "b4ca641a1144d1eeb09bce76c611fa483e1fda4f41a391ed4f9ae4b485dd4c6a",
+        "hw/soc/rtl/soc_npu_ser.v": "5a33b1e887ee64c4abf5ff7995c729303b39addef8f7ceac0daa350f0daeb0a8",
+        "hw/soc/rtl/soc_pnp.v": "4837af34c9b8cc14324ded01bd516e61a074f4be60e05717458872ffef8a9d7b",
+        "hw/soc/rtl/soc_qspi.v": "fdfa34d45f71558ec81450bf061ff47ff24ad50770dee471b14d26710ba57260",
+        "hw/soc/rtl/soc_scrub.v": "2d57728cf622f92c4cbdadbde6f80fee89ac04a3e9a8e2ff8442bf8404f2bfba",
+        "hw/soc/rtl/soc_spi.v": "016b2392967d99eda8a1ebbe2a3a46898c3a73ea95723ab8ce8d5a64f8f5d373",
+        "hw/soc/rtl/soc_spw.v": "3f49527c9c51280a3769c1b9822486471243d4047f74b4f99fc7c8ac6dd4f0a9",
+        "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+        "hw/soc/rtl/soc_top.v": "c3f33cab0c60691e42ce20ed12bbe8d6f2a80528035883ab20645d9782dce91a",
+        "hw/soc/rtl/soc_uart.v": "25ebe14625427db49b2727fa3a501cb13e4b8354591c99b2d56a3549f6e34d92",
+        "hw/soc/rtl/soc_wdog.v": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5",
+        "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+        "hw/rtl/pilot_top.v": "abeab4ebedfa9c0c5c5c9773700b9368c35edd888be7a6028b03e1bb415eb5af",
+        "hw/rtl/lif_core.v": "0f7631e01e3d5708babcea4c73296a0f6d519f6c21bb8b2ce70d54316cb344e8",
+        "hw/rtl/aer_fifo.v": "c60c22bbb55cd30d244dc30128eb61d7ac58ea48591ceb6852769508737dd94d",
+        "hw/rtl/scrub.v": "d894df909bd8da0a8e8c69f6bc29cdc06cb2e52a06eafd58ce38b0f7ec2415d3",
+        "hw/soc/gen/interfaces.bundle.vh": "3fcc60382427cfa421bc2c24238b05a435cb13bbfe377c3d19829e3b8490defc",
+        "hw/soc/rtl/soc_apb_pnp_rom.vh": "5aa959e5dd77ccb6011d006a1f12a6f6f5a99d430cdf73a324c8ccb8eeb4f4b6",
+        "hw/soc/rtl/soc_memmap.vh": "60b28e0fb7d42bc4abcde51b3f6fd7c0cfb26302a72a6a832c25d635f91fde5f",
+        "hw/soc/rtl/soc_npu_regs.vh": "75b50df4e34a3f2dcd323444b03f9f3b435267ebd99d1f0807068d6c112b8fb0",
+        "hw/soc/rtl/soc_pnp_rom.vh": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539",
+        "hw/rtl/npu_regs.vh": "724d3d2bbe30c471bf8642ff42a6be1c3a8f92f105ffc3eba600ca39fdebeffb",
+        "hw/soc/gen/interfaces.bundle.json": "efa8b8292740347f604f9af73c4ade51d1b898e04c754d3e5b9c4c48e5811f32",
+        "hw/soc/lint-policy.json": "2d9d9a8694cfd42adb0b256a0321ea392e010284678642e8190cb2486de13aed",
+        "scripts/check_soc_lint.py": "ec9faf393fccf794aff3a48d2c32313cd1c2cd2923f9610f202ade67c638634b",
+        "hw/soc/flow/ibex_sources.sh": "5c35b1d8f98eec833a9b0ebdaf5cf16f110fa03b2573ea71aee4fbc339e58520"
+      }
+    },
+    {
+      "profile": "full",
+      "status": "PASS_WITH_RECORDED_WARNINGS",
+      "count": 1015,
+      "verilator_version": "Verilator 5.051 devel rev v5.050-134-gb42d7c2d9 (mod)",
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/lint-gptimer-regmap-full-delivered/result.json",
+        "sha256": "ad8d8f03da80dfcd4b359a574e52ad0db1b1f634c023ef3f9cb4f9b74255784b"
+      },
+      "sources_unchanged": true,
+      "source_sha256": {
+        "hw/soc/gen/ibex_alu.v": "81fa8cb2b39fa0b879bd0bc2caa47b4ba69adf6ed361ec15ef8d3eb00165c063",
+        "hw/soc/gen/ibex_branch_predict.v": "066d38e5f865eab565a652410ffc2206f71686dc7169a33674d8b82df147c5a3",
+        "hw/soc/gen/ibex_cheriot_ex.v": "1e98e0a8d9af59ab2c54560ec772b360c7f08f1bc74de241ebc6022e3e255325",
+        "hw/soc/gen/ibex_compressed_decoder.v": "98511a0a0224cb491f8c1f26387938b1b0e2389b5cdfd994ecfbecaaffa3ac64",
+        "hw/soc/gen/ibex_controller.v": "4dccb7ebb3597383b5df233f4962885b4b486c4823330d0db062eea8c9cae9bf",
+        "hw/soc/gen/ibex_core.v": "4f9d0cb31ff8baba8ea380cbbba1a9f1eed338f45a43edacece3e9801b2dd989",
+        "hw/soc/gen/ibex_counter.v": "943af7b5289592f62ba258483fae9b803777d640863171209cb7a258e9457f01",
+        "hw/soc/gen/ibex_cs_registers.v": "aa7c6ca01df11ccf815c129317018678af7817fa8299f759ccf652e80d43ea61",
+        "hw/soc/gen/ibex_csr.v": "46615e34ae2e96f42e51c88eeecb09549fcc6bdccd77dd00a87a5eca0332faa2",
+        "hw/soc/gen/ibex_decoder.v": "7be7b5fca0b3852ed058fba505c959a455ef5e93e23629133a91e69675f48df3",
+        "hw/soc/gen/ibex_dummy_instr.v": "e781cb6cb120b067fd88ad2930d5ec4098d4c1ad1bc73125bab654e2a92ac6fa",
+        "hw/soc/gen/ibex_ex_block.v": "db91d2d96021c144c76f1257d9f9d250641832aa90a5cff9065f48c634c27c11",
+        "hw/soc/gen/ibex_fetch_fifo.v": "4a4aa8a375b30d02554705c9e48966ceb6bca9c59bf7d00267b8748e0bd730b0",
+        "hw/soc/gen/ibex_icache.v": "29836d2ed676b064fa013ca2a2dfd95d2bfc4c892aa1a62689682f55ab28784d",
+        "hw/soc/gen/ibex_id_stage.v": "93d1efa482e24e669ad73dcfad16c6b1df05968ac07dfec0f25e074c6acc78c4",
+        "hw/soc/gen/ibex_if_stage.v": "d42feadf61172b9785546c872c0fe050006f03e2ac4b9ca19cbb485c93b84cfc",
+        "hw/soc/gen/ibex_load_store_unit.v": "bf0eecf0e6077bee2fcba0adfd893d67650feb1bf2769c9b61b10d115b8ac5a9",
+        "hw/soc/gen/ibex_lockstep.v": "2a0fce3e60488399d90b880020fbe0f4f500c210d963de46bc02c76cbc3d4bea",
+        "hw/soc/gen/ibex_multdiv_fast.v": "c76ff1a7eb5933741b218335278dac524de6f166e9fa1587b7916780d79e2225",
+        "hw/soc/gen/ibex_multdiv_slow.v": "73da596d36c6649c8e2cec7189371c5e3354459750e23d9f6fe1cc52b6982605",
+        "hw/soc/gen/ibex_pmp.v": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+        "hw/soc/gen/ibex_prefetch_buffer.v": "55f6c149ccd533f4adc4dd7a20d2e951641e35fa79be9efa8ee6a359cb8a1869",
+        "hw/soc/gen/ibex_trvk.v": "fae1ff15710acfb925312c7f911df93cb3f65083a30b0cec86e3d9f571b57a5e",
+        "hw/soc/gen/ibex_wb_stage.v": "963eb68160e79830190d5d01af2449b1b7ae0f5ef2a3bcd160c8963621f6c707",
+        "hw/soc/gen/prim_and2.v": "6fdb4d8240c7edb5398853351709db765306f81a4b0ed2c8c0fdefb9239c9b88",
+        "hw/soc/gen/prim_buf.v": "e1f182a1c33f722ac8e76d1fb830c6b6bf36047b2ee12b5107e9136eecec37d1",
+        "hw/soc/gen/prim_clock_mux2.v": "f3f3f6fa20fd6ea9e73a2b4c414619edf6ed5b774604d0ae8ee3d22fed100922",
+        "hw/soc/gen/prim_count.v": "de4dca0ff2ba49c2253f80ac8de997ad9a08df68de31a5cc7c90a6489f99738f",
+        "hw/soc/gen/prim_flop.v": "0aa04d499306b94e801191760a4f62b1b8cbb6885042d44745b1cd286e55904a",
+        "hw/soc/gen/prim_lfsr.v": "62aeeab74660e33e95026da1af24c0372f1010d318b26c5b9b264a116ffe9a6b",
+        "hw/soc/gen/prim_secded_inv_39_32_dec.v": "19b2f7b8b9e0e672847c2cd101a8f6628fe7eb4782ad43a964f0d301c1e403d1",
+        "hw/soc/gen/prim_secded_inv_39_32_enc.v": "fc16d6d64a9799f273b93b7519d73e3a4ac86fd1d67ec658c9e25c0d4ee59192",
+        "hw/soc/genp/ibex_top.v": "06d4d33bcf22abb39711a66747056a9f18ed5716592b1eb66efde0f2733399e9",
+        "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+        "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "hw/soc/rtl/prim_clock_gating.v": "76232cb6a8056a9d3c524bcaff65e4273886fcbaf4c218b4db4bba92610f7024",
+        "hw/soc/rtl/soc_apb_bridge.v": "3055923174102efe7691f9688cb76ef0ebd5b4b52de423922f8cf43b0f12b11a",
+        "hw/soc/rtl/soc_apb_pnp.v": "05ee8aa89966151ec59b16eb3cdf31def51aa7dd25c7a5a2d2a165b5fe4cc994",
+        "hw/soc/rtl/soc_apb_wb.v": "3841d43aa38579909881e05d208082f4688dff68fd7d00c873a87858d1dcaf86",
+        "hw/soc/rtl/soc_boot.v": "58c2d4e6b6f9d3069adb5bd188ba32cf36f778b321a9c0ed996237bb140e71ff",
+        "hw/soc/rtl/soc_bus.v": "b833b51730ffb5804f9c021f0e88284b65208138b04f95c36b4e49a1cdd7fc93",
+        "hw/soc/rtl/soc_busstat.v": "f869a9532c267633bdf9192b5e09c9415a9a64034c63a88165c574778919d388",
+        "hw/soc/rtl/soc_can.v": "324e019fa0360c1c5422495376a18acdf29b487cf5eb0b09adac2137fda3e8e5",
+        "hw/soc/rtl/soc_clint.v": "95be0f06e5ccce08ff42eb19d628b17164782ce2b79da5b059820d88c922748b",
+        "hw/soc/rtl/soc_eth.v": "a8767df605299c17c3184ca8cb2d51104854ae848aafd8dd48941b55caeeb39c",
+        "hw/soc/rtl/soc_gpio.v": "8cbba74ae3d273e5ccefbae030db3428738bab897e09f97a5640f4eb5e763cb0",
+        "hw/soc/rtl/soc_gptimer.v": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25",
+        "hw/soc/rtl/soc_i2c.v": "5c41e193b6c9bd822acdb4aaeead75f211d00ca78c55c33be1ea567da1021f36",
+        "hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "hw/soc/rtl/soc_npu.v": "b4ca641a1144d1eeb09bce76c611fa483e1fda4f41a391ed4f9ae4b485dd4c6a",
+        "hw/soc/rtl/soc_npu_ser.v": "5a33b1e887ee64c4abf5ff7995c729303b39addef8f7ceac0daa350f0daeb0a8",
+        "hw/soc/rtl/soc_pnp.v": "4837af34c9b8cc14324ded01bd516e61a074f4be60e05717458872ffef8a9d7b",
+        "hw/soc/rtl/soc_qspi.v": "fdfa34d45f71558ec81450bf061ff47ff24ad50770dee471b14d26710ba57260",
+        "hw/soc/rtl/soc_scrub.v": "2d57728cf622f92c4cbdadbde6f80fee89ac04a3e9a8e2ff8442bf8404f2bfba",
+        "hw/soc/rtl/soc_spi.v": "016b2392967d99eda8a1ebbe2a3a46898c3a73ea95723ab8ce8d5a64f8f5d373",
+        "hw/soc/rtl/soc_spw.v": "3f49527c9c51280a3769c1b9822486471243d4047f74b4f99fc7c8ac6dd4f0a9",
+        "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+        "hw/soc/rtl/soc_top.v": "c3f33cab0c60691e42ce20ed12bbe8d6f2a80528035883ab20645d9782dce91a",
+        "hw/soc/rtl/soc_uart.v": "25ebe14625427db49b2727fa3a501cb13e4b8354591c99b2d56a3549f6e34d92",
+        "hw/soc/rtl/soc_wdog.v": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5",
+        "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+        "hw/rtl/pilot_top.v": "abeab4ebedfa9c0c5c5c9773700b9368c35edd888be7a6028b03e1bb415eb5af",
+        "hw/rtl/lif_core.v": "0f7631e01e3d5708babcea4c73296a0f6d519f6c21bb8b2ce70d54316cb344e8",
+        "hw/rtl/aer_fifo.v": "c60c22bbb55cd30d244dc30128eb61d7ac58ea48591ceb6852769508737dd94d",
+        "hw/rtl/scrub.v": "d894df909bd8da0a8e8c69f6bc29cdc06cb2e52a06eafd58ce38b0f7ec2415d3",
+        "hw/soc/gen/interfaces-full.bundle.vh": "589f5a053d2a0bd6fb3d99d38c30e51db4843a5d3217441994d14b6cc3980e7b",
+        "hw/soc/rtl/soc_apb_pnp_rom.vh": "5aa959e5dd77ccb6011d006a1f12a6f6f5a99d430cdf73a324c8ccb8eeb4f4b6",
+        "hw/soc/rtl/soc_memmap.vh": "60b28e0fb7d42bc4abcde51b3f6fd7c0cfb26302a72a6a832c25d635f91fde5f",
+        "hw/soc/rtl/soc_npu_regs.vh": "75b50df4e34a3f2dcd323444b03f9f3b435267ebd99d1f0807068d6c112b8fb0",
+        "hw/soc/rtl/soc_pnp_rom.vh": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539",
+        "hw/rtl/npu_regs.vh": "724d3d2bbe30c471bf8642ff42a6be1c3a8f92f105ffc3eba600ca39fdebeffb",
+        "hw/soc/gen/interfaces-full.bundle.json": "8987ecd186ef7cc6a916d11a1fd11f4ecf87f749ff4d16c4cba4e473ac412a0c",
+        "hw/soc/lint-policy.json": "2d9d9a8694cfd42adb0b256a0321ea392e010284678642e8190cb2486de13aed",
+        "scripts/check_soc_lint.py": "ec9faf393fccf794aff3a48d2c32313cd1c2cd2923f9610f202ade67c638634b",
+        "hw/soc/flow/ibex_sources.sh": "5c35b1d8f98eec833a9b0ebdaf5cf16f110fa03b2573ea71aee4fbc339e58520"
+      }
+    },
+    {
+      "profile": "base-sram-logic",
+      "status": "PASS_WITH_RECORDED_WARNINGS",
+      "count": 1012,
+      "verilator_version": "Verilator 5.051 devel rev v5.050-134-gb42d7c2d9 (mod)",
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/lint-gptimer-regmap-base-sram-logic-delivered/result.json",
+        "sha256": "35a10292f1105b08fceb5e4c9c5a07e5ea539219a8e564d6b758166543f1152c"
+      },
+      "sources_unchanged": true,
+      "source_sha256": {
+        "hw/soc/gen/ibex_alu.v": "81fa8cb2b39fa0b879bd0bc2caa47b4ba69adf6ed361ec15ef8d3eb00165c063",
+        "hw/soc/gen/ibex_branch_predict.v": "066d38e5f865eab565a652410ffc2206f71686dc7169a33674d8b82df147c5a3",
+        "hw/soc/gen/ibex_cheriot_ex.v": "1e98e0a8d9af59ab2c54560ec772b360c7f08f1bc74de241ebc6022e3e255325",
+        "hw/soc/gen/ibex_compressed_decoder.v": "98511a0a0224cb491f8c1f26387938b1b0e2389b5cdfd994ecfbecaaffa3ac64",
+        "hw/soc/gen/ibex_controller.v": "4dccb7ebb3597383b5df233f4962885b4b486c4823330d0db062eea8c9cae9bf",
+        "hw/soc/gen/ibex_core.v": "4f9d0cb31ff8baba8ea380cbbba1a9f1eed338f45a43edacece3e9801b2dd989",
+        "hw/soc/gen/ibex_counter.v": "943af7b5289592f62ba258483fae9b803777d640863171209cb7a258e9457f01",
+        "hw/soc/gen/ibex_cs_registers.v": "aa7c6ca01df11ccf815c129317018678af7817fa8299f759ccf652e80d43ea61",
+        "hw/soc/gen/ibex_csr.v": "46615e34ae2e96f42e51c88eeecb09549fcc6bdccd77dd00a87a5eca0332faa2",
+        "hw/soc/gen/ibex_decoder.v": "7be7b5fca0b3852ed058fba505c959a455ef5e93e23629133a91e69675f48df3",
+        "hw/soc/gen/ibex_dummy_instr.v": "e781cb6cb120b067fd88ad2930d5ec4098d4c1ad1bc73125bab654e2a92ac6fa",
+        "hw/soc/gen/ibex_ex_block.v": "db91d2d96021c144c76f1257d9f9d250641832aa90a5cff9065f48c634c27c11",
+        "hw/soc/gen/ibex_fetch_fifo.v": "4a4aa8a375b30d02554705c9e48966ceb6bca9c59bf7d00267b8748e0bd730b0",
+        "hw/soc/gen/ibex_icache.v": "29836d2ed676b064fa013ca2a2dfd95d2bfc4c892aa1a62689682f55ab28784d",
+        "hw/soc/gen/ibex_id_stage.v": "93d1efa482e24e669ad73dcfad16c6b1df05968ac07dfec0f25e074c6acc78c4",
+        "hw/soc/gen/ibex_if_stage.v": "d42feadf61172b9785546c872c0fe050006f03e2ac4b9ca19cbb485c93b84cfc",
+        "hw/soc/gen/ibex_load_store_unit.v": "bf0eecf0e6077bee2fcba0adfd893d67650feb1bf2769c9b61b10d115b8ac5a9",
+        "hw/soc/gen/ibex_lockstep.v": "2a0fce3e60488399d90b880020fbe0f4f500c210d963de46bc02c76cbc3d4bea",
+        "hw/soc/gen/ibex_multdiv_fast.v": "c76ff1a7eb5933741b218335278dac524de6f166e9fa1587b7916780d79e2225",
+        "hw/soc/gen/ibex_multdiv_slow.v": "73da596d36c6649c8e2cec7189371c5e3354459750e23d9f6fe1cc52b6982605",
+        "hw/soc/gen/ibex_pmp.v": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+        "hw/soc/gen/ibex_prefetch_buffer.v": "55f6c149ccd533f4adc4dd7a20d2e951641e35fa79be9efa8ee6a359cb8a1869",
+        "hw/soc/gen/ibex_trvk.v": "fae1ff15710acfb925312c7f911df93cb3f65083a30b0cec86e3d9f571b57a5e",
+        "hw/soc/gen/ibex_wb_stage.v": "963eb68160e79830190d5d01af2449b1b7ae0f5ef2a3bcd160c8963621f6c707",
+        "hw/soc/gen/prim_and2.v": "6fdb4d8240c7edb5398853351709db765306f81a4b0ed2c8c0fdefb9239c9b88",
+        "hw/soc/gen/prim_buf.v": "e1f182a1c33f722ac8e76d1fb830c6b6bf36047b2ee12b5107e9136eecec37d1",
+        "hw/soc/gen/prim_clock_mux2.v": "f3f3f6fa20fd6ea9e73a2b4c414619edf6ed5b774604d0ae8ee3d22fed100922",
+        "hw/soc/gen/prim_count.v": "de4dca0ff2ba49c2253f80ac8de997ad9a08df68de31a5cc7c90a6489f99738f",
+        "hw/soc/gen/prim_flop.v": "0aa04d499306b94e801191760a4f62b1b8cbb6885042d44745b1cd286e55904a",
+        "hw/soc/gen/prim_lfsr.v": "62aeeab74660e33e95026da1af24c0372f1010d318b26c5b9b264a116ffe9a6b",
+        "hw/soc/gen/prim_secded_inv_39_32_dec.v": "19b2f7b8b9e0e672847c2cd101a8f6628fe7eb4782ad43a964f0d301c1e403d1",
+        "hw/soc/gen/prim_secded_inv_39_32_enc.v": "fc16d6d64a9799f273b93b7519d73e3a4ac86fd1d67ec658c9e25c0d4ee59192",
+        "hw/soc/genp/ibex_top.v": "06d4d33bcf22abb39711a66747056a9f18ed5716592b1eb66efde0f2733399e9",
+        "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+        "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "hw/soc/rtl/prim_clock_gating.v": "76232cb6a8056a9d3c524bcaff65e4273886fcbaf4c218b4db4bba92610f7024",
+        "hw/soc/rtl/soc_apb_bridge.v": "3055923174102efe7691f9688cb76ef0ebd5b4b52de423922f8cf43b0f12b11a",
+        "hw/soc/rtl/soc_apb_pnp.v": "05ee8aa89966151ec59b16eb3cdf31def51aa7dd25c7a5a2d2a165b5fe4cc994",
+        "hw/soc/rtl/soc_apb_wb.v": "3841d43aa38579909881e05d208082f4688dff68fd7d00c873a87858d1dcaf86",
+        "hw/soc/rtl/soc_boot.v": "58c2d4e6b6f9d3069adb5bd188ba32cf36f778b321a9c0ed996237bb140e71ff",
+        "hw/soc/rtl/soc_bus.v": "b833b51730ffb5804f9c021f0e88284b65208138b04f95c36b4e49a1cdd7fc93",
+        "hw/soc/rtl/soc_busstat.v": "f869a9532c267633bdf9192b5e09c9415a9a64034c63a88165c574778919d388",
+        "hw/soc/rtl/soc_can.v": "324e019fa0360c1c5422495376a18acdf29b487cf5eb0b09adac2137fda3e8e5",
+        "hw/soc/rtl/soc_clint.v": "95be0f06e5ccce08ff42eb19d628b17164782ce2b79da5b059820d88c922748b",
+        "hw/soc/rtl/soc_eth.v": "a8767df605299c17c3184ca8cb2d51104854ae848aafd8dd48941b55caeeb39c",
+        "hw/soc/rtl/soc_gpio.v": "8cbba74ae3d273e5ccefbae030db3428738bab897e09f97a5640f4eb5e763cb0",
+        "hw/soc/rtl/soc_gptimer.v": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25",
+        "hw/soc/rtl/soc_i2c.v": "5c41e193b6c9bd822acdb4aaeead75f211d00ca78c55c33be1ea567da1021f36",
+        "hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "hw/soc/rtl/soc_npu.v": "b4ca641a1144d1eeb09bce76c611fa483e1fda4f41a391ed4f9ae4b485dd4c6a",
+        "hw/soc/rtl/soc_npu_ser.v": "5a33b1e887ee64c4abf5ff7995c729303b39addef8f7ceac0daa350f0daeb0a8",
+        "hw/soc/rtl/soc_pnp.v": "4837af34c9b8cc14324ded01bd516e61a074f4be60e05717458872ffef8a9d7b",
+        "hw/soc/rtl/soc_qspi.v": "fdfa34d45f71558ec81450bf061ff47ff24ad50770dee471b14d26710ba57260",
+        "hw/soc/rtl/soc_scrub.v": "2d57728cf622f92c4cbdadbde6f80fee89ac04a3e9a8e2ff8442bf8404f2bfba",
+        "hw/soc/rtl/soc_spi.v": "016b2392967d99eda8a1ebbe2a3a46898c3a73ea95723ab8ce8d5a64f8f5d373",
+        "hw/soc/rtl/soc_spw.v": "3f49527c9c51280a3769c1b9822486471243d4047f74b4f99fc7c8ac6dd4f0a9",
+        "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+        "hw/soc/rtl/soc_top.v": "c3f33cab0c60691e42ce20ed12bbe8d6f2a80528035883ab20645d9782dce91a",
+        "hw/soc/rtl/soc_uart.v": "25ebe14625427db49b2727fa3a501cb13e4b8354591c99b2d56a3549f6e34d92",
+        "hw/soc/rtl/soc_wdog.v": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5",
+        "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+        "hw/rtl/pilot_top.v": "abeab4ebedfa9c0c5c5c9773700b9368c35edd888be7a6028b03e1bb415eb5af",
+        "hw/rtl/lif_core.v": "0f7631e01e3d5708babcea4c73296a0f6d519f6c21bb8b2ce70d54316cb344e8",
+        "hw/rtl/aer_fifo.v": "c60c22bbb55cd30d244dc30128eb61d7ac58ea48591ceb6852769508737dd94d",
+        "hw/rtl/scrub.v": "d894df909bd8da0a8e8c69f6bc29cdc06cb2e52a06eafd58ce38b0f7ec2415d3",
+        "hw/soc/gen/interfaces.bundle.vh": "3fcc60382427cfa421bc2c24238b05a435cb13bbfe377c3d19829e3b8490defc",
+        "hw/soc/rtl/soc_apb_pnp_rom.vh": "5aa959e5dd77ccb6011d006a1f12a6f6f5a99d430cdf73a324c8ccb8eeb4f4b6",
+        "hw/soc/rtl/soc_memmap.vh": "60b28e0fb7d42bc4abcde51b3f6fd7c0cfb26302a72a6a832c25d635f91fde5f",
+        "hw/soc/rtl/soc_npu_regs.vh": "75b50df4e34a3f2dcd323444b03f9f3b435267ebd99d1f0807068d6c112b8fb0",
+        "hw/soc/rtl/soc_pnp_rom.vh": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539",
+        "hw/rtl/npu_regs.vh": "724d3d2bbe30c471bf8642ff42a6be1c3a8f92f105ffc3eba600ca39fdebeffb",
+        "hw/soc/gen/interfaces.bundle.json": "efa8b8292740347f604f9af73c4ade51d1b898e04c754d3e5b9c4c48e5811f32",
+        "hw/soc/lint-policy.json": "2d9d9a8694cfd42adb0b256a0321ea392e010284678642e8190cb2486de13aed",
+        "scripts/check_soc_lint.py": "ec9faf393fccf794aff3a48d2c32313cd1c2cd2923f9610f202ade67c638634b",
+        "hw/soc/flow/ibex_sources.sh": "5c35b1d8f98eec833a9b0ebdaf5cf16f110fa03b2573ea71aee4fbc339e58520",
+        "hw/soc/out/external-review-20260919/gptimer-regmap-base/test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801",
+        "hw/soc/rtl/soc_logic_boot_rom.v.in": "f4992596c85d4bc54de302cdd2a4eae5483858a32efc11138ef73fd19e2d64cf",
+        "hw/soc/flow/gen_logic_boot_rom.py": "5f3510003984edf7decf2be3240fe9a13074547d7d87bcf2cfa4f73d9e3dc117",
+        "sw/golden/secded.py": "05d35780cfd6d73d1cd2378b0845c1f30ddaa8fb2b25b1ede752a4f8b6fe581f",
+        "hw/soc/out/external-review-20260919/lint-gptimer-regmap-base-sram-logic-delivered/ibex_regfile_secded.v": "c9561b159e61be20bcd633ff8ee7ee489ba78fade77e9a81a309ba9eda79305f",
+        "hw/soc/rtl/soc_mem_sram.v": "0152e6d4f7e7c5f57c14841c9d6279ac5a5096aadc9f4ad40e1746842a977363",
+        "hw/soc/out/external-review-20260919/lint-gptimer-regmap-base-sram-logic-delivered/boot-rom/soc_logic_boot_rom.v": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+        "hw/soc/pnr/RM_IHPSG13_1P_2048x64_c2_bm_bist_bb.v": "93d9116767347ee2b5079cabe0aa984b36d367a4ddc61d73733f4d05ce47eaa9",
+        "hw/soc/pnr/RM_IHPSG13_1P_1024x32_c2_bm_bist_bb.v": "8b93e94a0c7b23cc253f2893fd1a8ff5d2245a5b2a28dc1b92b5dd3437f7dc14",
+        "hw/soc/pnr/RM_IHPSG13_1P_512x16_c2_bm_bist_bb.v": "a4849a8e8bf98bfffa294f532363dc4781d2759b5da0c31f4506be8ec9ab01c7",
+        "hw/soc/out/external-review-20260919/lint-gptimer-regmap-base-sram-logic-delivered/boot-rom/manifest.json": "c1d435db409e6937a6a25750aceb0e07544d2587d9e6b5fe435b7e913f241898"
+      }
+    },
+    {
+      "profile": "full-sram-logic",
+      "status": "PASS_WITH_RECORDED_WARNINGS",
+      "count": 1040,
+      "verilator_version": "Verilator 5.051 devel rev v5.050-134-gb42d7c2d9 (mod)",
+      "result": {
+        "path": "hw/soc/out/external-review-20260919/lint-gptimer-regmap-full-sram-logic-delivered/result.json",
+        "sha256": "07befdb1598e4aaa5eee05ecf47dc831f4040e47b4bf12be7a0c575c8fc5d4d4"
+      },
+      "sources_unchanged": true,
+      "source_sha256": {
+        "hw/soc/gen/ibex_alu.v": "81fa8cb2b39fa0b879bd0bc2caa47b4ba69adf6ed361ec15ef8d3eb00165c063",
+        "hw/soc/gen/ibex_branch_predict.v": "066d38e5f865eab565a652410ffc2206f71686dc7169a33674d8b82df147c5a3",
+        "hw/soc/gen/ibex_cheriot_ex.v": "1e98e0a8d9af59ab2c54560ec772b360c7f08f1bc74de241ebc6022e3e255325",
+        "hw/soc/gen/ibex_compressed_decoder.v": "98511a0a0224cb491f8c1f26387938b1b0e2389b5cdfd994ecfbecaaffa3ac64",
+        "hw/soc/gen/ibex_controller.v": "4dccb7ebb3597383b5df233f4962885b4b486c4823330d0db062eea8c9cae9bf",
+        "hw/soc/gen/ibex_core.v": "4f9d0cb31ff8baba8ea380cbbba1a9f1eed338f45a43edacece3e9801b2dd989",
+        "hw/soc/gen/ibex_counter.v": "943af7b5289592f62ba258483fae9b803777d640863171209cb7a258e9457f01",
+        "hw/soc/gen/ibex_cs_registers.v": "aa7c6ca01df11ccf815c129317018678af7817fa8299f759ccf652e80d43ea61",
+        "hw/soc/gen/ibex_csr.v": "46615e34ae2e96f42e51c88eeecb09549fcc6bdccd77dd00a87a5eca0332faa2",
+        "hw/soc/gen/ibex_decoder.v": "7be7b5fca0b3852ed058fba505c959a455ef5e93e23629133a91e69675f48df3",
+        "hw/soc/gen/ibex_dummy_instr.v": "e781cb6cb120b067fd88ad2930d5ec4098d4c1ad1bc73125bab654e2a92ac6fa",
+        "hw/soc/gen/ibex_ex_block.v": "db91d2d96021c144c76f1257d9f9d250641832aa90a5cff9065f48c634c27c11",
+        "hw/soc/gen/ibex_fetch_fifo.v": "4a4aa8a375b30d02554705c9e48966ceb6bca9c59bf7d00267b8748e0bd730b0",
+        "hw/soc/gen/ibex_icache.v": "29836d2ed676b064fa013ca2a2dfd95d2bfc4c892aa1a62689682f55ab28784d",
+        "hw/soc/gen/ibex_id_stage.v": "93d1efa482e24e669ad73dcfad16c6b1df05968ac07dfec0f25e074c6acc78c4",
+        "hw/soc/gen/ibex_if_stage.v": "d42feadf61172b9785546c872c0fe050006f03e2ac4b9ca19cbb485c93b84cfc",
+        "hw/soc/gen/ibex_load_store_unit.v": "bf0eecf0e6077bee2fcba0adfd893d67650feb1bf2769c9b61b10d115b8ac5a9",
+        "hw/soc/gen/ibex_lockstep.v": "2a0fce3e60488399d90b880020fbe0f4f500c210d963de46bc02c76cbc3d4bea",
+        "hw/soc/gen/ibex_multdiv_fast.v": "c76ff1a7eb5933741b218335278dac524de6f166e9fa1587b7916780d79e2225",
+        "hw/soc/gen/ibex_multdiv_slow.v": "73da596d36c6649c8e2cec7189371c5e3354459750e23d9f6fe1cc52b6982605",
+        "hw/soc/gen/ibex_pmp.v": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7",
+        "hw/soc/gen/ibex_prefetch_buffer.v": "55f6c149ccd533f4adc4dd7a20d2e951641e35fa79be9efa8ee6a359cb8a1869",
+        "hw/soc/gen/ibex_trvk.v": "fae1ff15710acfb925312c7f911df93cb3f65083a30b0cec86e3d9f571b57a5e",
+        "hw/soc/gen/ibex_wb_stage.v": "963eb68160e79830190d5d01af2449b1b7ae0f5ef2a3bcd160c8963621f6c707",
+        "hw/soc/gen/prim_and2.v": "6fdb4d8240c7edb5398853351709db765306f81a4b0ed2c8c0fdefb9239c9b88",
+        "hw/soc/gen/prim_buf.v": "e1f182a1c33f722ac8e76d1fb830c6b6bf36047b2ee12b5107e9136eecec37d1",
+        "hw/soc/gen/prim_clock_mux2.v": "f3f3f6fa20fd6ea9e73a2b4c414619edf6ed5b774604d0ae8ee3d22fed100922",
+        "hw/soc/gen/prim_count.v": "de4dca0ff2ba49c2253f80ac8de997ad9a08df68de31a5cc7c90a6489f99738f",
+        "hw/soc/gen/prim_flop.v": "0aa04d499306b94e801191760a4f62b1b8cbb6885042d44745b1cd286e55904a",
+        "hw/soc/gen/prim_lfsr.v": "62aeeab74660e33e95026da1af24c0372f1010d318b26c5b9b264a116ffe9a6b",
+        "hw/soc/gen/prim_secded_inv_39_32_dec.v": "19b2f7b8b9e0e672847c2cd101a8f6628fe7eb4782ad43a964f0d301c1e403d1",
+        "hw/soc/gen/prim_secded_inv_39_32_enc.v": "fc16d6d64a9799f273b93b7519d73e3a4ac86fd1d67ec658c9e25c0d4ee59192",
+        "hw/soc/genp/ibex_top.v": "06d4d33bcf22abb39711a66747056a9f18ed5716592b1eb66efde0f2733399e9",
+        "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+        "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+        "hw/soc/rtl/prim_clock_gating.v": "76232cb6a8056a9d3c524bcaff65e4273886fcbaf4c218b4db4bba92610f7024",
+        "hw/soc/rtl/soc_apb_bridge.v": "3055923174102efe7691f9688cb76ef0ebd5b4b52de423922f8cf43b0f12b11a",
+        "hw/soc/rtl/soc_apb_pnp.v": "05ee8aa89966151ec59b16eb3cdf31def51aa7dd25c7a5a2d2a165b5fe4cc994",
+        "hw/soc/rtl/soc_apb_wb.v": "3841d43aa38579909881e05d208082f4688dff68fd7d00c873a87858d1dcaf86",
+        "hw/soc/rtl/soc_boot.v": "58c2d4e6b6f9d3069adb5bd188ba32cf36f778b321a9c0ed996237bb140e71ff",
+        "hw/soc/rtl/soc_bus.v": "b833b51730ffb5804f9c021f0e88284b65208138b04f95c36b4e49a1cdd7fc93",
+        "hw/soc/rtl/soc_busstat.v": "f869a9532c267633bdf9192b5e09c9415a9a64034c63a88165c574778919d388",
+        "hw/soc/rtl/soc_can.v": "324e019fa0360c1c5422495376a18acdf29b487cf5eb0b09adac2137fda3e8e5",
+        "hw/soc/rtl/soc_clint.v": "95be0f06e5ccce08ff42eb19d628b17164782ce2b79da5b059820d88c922748b",
+        "hw/soc/rtl/soc_eth.v": "a8767df605299c17c3184ca8cb2d51104854ae848aafd8dd48941b55caeeb39c",
+        "hw/soc/rtl/soc_gpio.v": "8cbba74ae3d273e5ccefbae030db3428738bab897e09f97a5640f4eb5e763cb0",
+        "hw/soc/rtl/soc_gptimer.v": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25",
+        "hw/soc/rtl/soc_i2c.v": "5c41e193b6c9bd822acdb4aaeead75f211d00ca78c55c33be1ea567da1021f36",
+        "hw/soc/rtl/soc_mem.v": "f3d81187f6da692318507b12c84d0554fe1d4d6bba3a0596eac240afde80896b",
+        "hw/soc/rtl/soc_mem_ecc.v": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690",
+        "hw/soc/rtl/soc_npu.v": "b4ca641a1144d1eeb09bce76c611fa483e1fda4f41a391ed4f9ae4b485dd4c6a",
+        "hw/soc/rtl/soc_npu_ser.v": "5a33b1e887ee64c4abf5ff7995c729303b39addef8f7ceac0daa350f0daeb0a8",
+        "hw/soc/rtl/soc_pnp.v": "4837af34c9b8cc14324ded01bd516e61a074f4be60e05717458872ffef8a9d7b",
+        "hw/soc/rtl/soc_qspi.v": "fdfa34d45f71558ec81450bf061ff47ff24ad50770dee471b14d26710ba57260",
+        "hw/soc/rtl/soc_scrub.v": "2d57728cf622f92c4cbdadbde6f80fee89ac04a3e9a8e2ff8442bf8404f2bfba",
+        "hw/soc/rtl/soc_spi.v": "016b2392967d99eda8a1ebbe2a3a46898c3a73ea95723ab8ce8d5a64f8f5d373",
+        "hw/soc/rtl/soc_spw.v": "3f49527c9c51280a3769c1b9822486471243d4047f74b4f99fc7c8ac6dd4f0a9",
+        "hw/soc/rtl/soc_tmr_bank.v": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06",
+        "hw/soc/rtl/soc_top.v": "c3f33cab0c60691e42ce20ed12bbe8d6f2a80528035883ab20645d9782dce91a",
+        "hw/soc/rtl/soc_uart.v": "25ebe14625427db49b2727fa3a501cb13e4b8354591c99b2d56a3549f6e34d92",
+        "hw/soc/rtl/soc_wdog.v": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5",
+        "hw/rtl/tmr_voter.v": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476",
+        "hw/rtl/pilot_top.v": "abeab4ebedfa9c0c5c5c9773700b9368c35edd888be7a6028b03e1bb415eb5af",
+        "hw/rtl/lif_core.v": "0f7631e01e3d5708babcea4c73296a0f6d519f6c21bb8b2ce70d54316cb344e8",
+        "hw/rtl/aer_fifo.v": "c60c22bbb55cd30d244dc30128eb61d7ac58ea48591ceb6852769508737dd94d",
+        "hw/rtl/scrub.v": "d894df909bd8da0a8e8c69f6bc29cdc06cb2e52a06eafd58ce38b0f7ec2415d3",
+        "hw/soc/gen/interfaces-full.bundle.vh": "589f5a053d2a0bd6fb3d99d38c30e51db4843a5d3217441994d14b6cc3980e7b",
+        "hw/soc/rtl/soc_apb_pnp_rom.vh": "5aa959e5dd77ccb6011d006a1f12a6f6f5a99d430cdf73a324c8ccb8eeb4f4b6",
+        "hw/soc/rtl/soc_memmap.vh": "60b28e0fb7d42bc4abcde51b3f6fd7c0cfb26302a72a6a832c25d635f91fde5f",
+        "hw/soc/rtl/soc_npu_regs.vh": "75b50df4e34a3f2dcd323444b03f9f3b435267ebd99d1f0807068d6c112b8fb0",
+        "hw/soc/rtl/soc_pnp_rom.vh": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539",
+        "hw/rtl/npu_regs.vh": "724d3d2bbe30c471bf8642ff42a6be1c3a8f92f105ffc3eba600ca39fdebeffb",
+        "hw/soc/gen/interfaces-full.bundle.json": "8987ecd186ef7cc6a916d11a1fd11f4ecf87f749ff4d16c4cba4e473ac412a0c",
+        "hw/soc/lint-policy.json": "2d9d9a8694cfd42adb0b256a0321ea392e010284678642e8190cb2486de13aed",
+        "scripts/check_soc_lint.py": "ec9faf393fccf794aff3a48d2c32313cd1c2cd2923f9610f202ade67c638634b",
+        "hw/soc/flow/ibex_sources.sh": "5c35b1d8f98eec833a9b0ebdaf5cf16f110fa03b2573ea71aee4fbc339e58520",
+        "hw/soc/out/external-review-20260919/gptimer-regmap-base/test_soc.bin": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801",
+        "hw/soc/rtl/soc_logic_boot_rom.v.in": "f4992596c85d4bc54de302cdd2a4eae5483858a32efc11138ef73fd19e2d64cf",
+        "hw/soc/flow/gen_logic_boot_rom.py": "5f3510003984edf7decf2be3240fe9a13074547d7d87bcf2cfa4f73d9e3dc117",
+        "sw/golden/secded.py": "05d35780cfd6d73d1cd2378b0845c1f30ddaa8fb2b25b1ede752a4f8b6fe581f",
+        "hw/soc/out/external-review-20260919/lint-gptimer-regmap-full-sram-logic-delivered/ibex_regfile_secded.v": "c9561b159e61be20bcd633ff8ee7ee489ba78fade77e9a81a309ba9eda79305f",
+        "hw/soc/rtl/soc_mem_sram.v": "0152e6d4f7e7c5f57c14841c9d6279ac5a5096aadc9f4ad40e1746842a977363",
+        "hw/soc/out/external-review-20260919/lint-gptimer-regmap-full-sram-logic-delivered/boot-rom/soc_logic_boot_rom.v": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3",
+        "hw/soc/pnr/RM_IHPSG13_1P_2048x64_c2_bm_bist_bb.v": "93d9116767347ee2b5079cabe0aa984b36d367a4ddc61d73733f4d05ce47eaa9",
+        "hw/soc/pnr/RM_IHPSG13_1P_1024x32_c2_bm_bist_bb.v": "8b93e94a0c7b23cc253f2893fd1a8ff5d2245a5b2a28dc1b92b5dd3437f7dc14",
+        "hw/soc/pnr/RM_IHPSG13_1P_512x16_c2_bm_bist_bb.v": "a4849a8e8bf98bfffa294f532363dc4781d2759b5da0c31f4506be8ec9ab01c7",
+        "hw/soc/out/external-review-20260919/lint-gptimer-regmap-full-sram-logic-delivered/boot-rom/manifest.json": "c1d435db409e6937a6a25750aceb0e07544d2587d9e6b5fe435b7e913f241898"
+      }
+    }
+  ],
+  "lint_location_review": [
+    {
+      "profile": "base",
+      "diagnostics": 987,
+      "only_owned_locations_changed": true,
+      "control_returncode": 1,
+      "delta": {
+        "new": {
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",186,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1,
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",187,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1
+        },
+        "stale": {
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",180,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1,
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",181,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1
+        }
+      }
+    },
+    {
+      "profile": "base-sram-logic",
+      "diagnostics": 1012,
+      "only_owned_locations_changed": true,
+      "control_returncode": 1,
+      "delta": {
+        "new": {
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",186,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1,
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",187,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1
+        },
+        "stale": {
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",180,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1,
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",181,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1
+        }
+      }
+    },
+    {
+      "profile": "full",
+      "diagnostics": 1015,
+      "only_owned_locations_changed": true,
+      "control_returncode": 1,
+      "delta": {
+        "new": {
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",186,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1,
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",187,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1
+        },
+        "stale": {
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",180,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1,
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",181,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1
+        }
+      }
+    },
+    {
+      "profile": "full-sram-logic",
+      "diagnostics": 1040,
+      "only_owned_locations_changed": true,
+      "control_returncode": 1,
+      "delta": {
+        "new": {
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",186,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1,
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",187,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1
+        },
+        "stale": {
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",180,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1,
+          "[\"GENUNNAMED\",\"hw/soc/rtl/soc_gptimer.v\",181,37,\"Unnamed generate block 'genblk1' (IEEE 1800-2023 27.6)\"]": 1
+        }
+      }
+    }
+  ]
+}

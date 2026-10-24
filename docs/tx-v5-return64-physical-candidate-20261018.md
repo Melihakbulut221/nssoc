@@ -1,0 +1,27 @@
+# V5 original-placement return-rail candidate
+
+The rejected full-wire v5 capture (39067769686) and its verified path review (39084981409) show about 0.172 V at the final selector tail emitters relative to the external return. Exact native device/geometry mapping (39085786545) places six failing HBTs in macro f and two in p8_7. Shortest raw resistor paths from the external AVSS port to the final tails are 16.18605 and 16.22470 ohm; these sums are not effective network resistance.
+
+This candidate widens only five external TopMetal1 AVSS trunks and their bottom TopMetal2 bus from 32 to 64 um, retaining original 1000/600 um placement pitches, the actual v5 child drawings, 31 macros, 1674 native devices, 589 HBT instances and 719 emitters. Child stubs, the local final strap, power via arrays and signal routes remain unchanged. This is a physical experiment to reduce one measured failure mechanism, not an assumed cure for the other stage/clock failures.
+
+The controller repeats the full native 560-category DRC, deep/flat LVS and five deliberate faults. It additionally compares flattened drawing regions against the exact v5 physical baseline from run39063951673 after undoing origin translations. Only union with the six explicit 64 um rectangles is allowed; unrelated added metal, removed device geometry and absent widening must be rejected. No old high3/tight/return64 model or proof is reused.
+
+Next gates after physical success: regenerate native device/interface ownership, whole wire RC, exact composition and loaded original 256-bit waveform with unchanged voltage, margin and timing limits. All artifacts and rejected results remain on GitHub. Full serial Gen3 x4, clock distribution and mainchip integration are still open.
+
+## Native physical result
+
+Run39086629991 passed all560 DRC categories with zero markers, deep/flat1674device LVS and all five deliberate physical faults. The exact geometry comparison passed: only the six external AVSS rectangle unions changed; all three geometric corruption controls were rejected. The full receipt pins the native reports and every archive member. This does not prove electrical improvement.
+
+The tx-v5-return64-extraction-cloud workflow now restores that exact archive, verifies every physical member, regenerates all4774 terminal references/3262probes and377wire components, then extracts fresh native R/C and repeats the unchanged13 raw RC corruption controls. No old resistance scaling or old extracted model is used.
+
+## Fresh extraction result and composition
+
+Run39086995085 passed complete native RC/ownership/capacitance conservation and all13 raw corruption controls. The actual377conductors/3262probes cover1674devices/4774terminals. Export contains116611R77471C, coincidentally the same element counts as the baseline; values and geometry are freshly extracted and must not be substituted with old tokens. Intrinsic body spreading and RF distribution remain unqualified.
+
+The new tx-v5-return64-composition-cloud workflow binds all native device identities and source R/C rows, repeats six malformed-composition tests and checks resistor connectivity against original native nets. It also probes all124 input legs/372actual HBT bases from the widened physical GDS/LVS and rejects two wrong endpoint pairings. Original256-bit loaded tests follow only after this exact model is verified.
+
+## Native composition and unchanged loaded test
+
+Composition39087377122 passed six malformed-model controls, exact1674device/116611R77471C preservation, all377native-net recovery and124input-leg/372base binding with two incorrect-endpoint controls. The full39MB summary remains in its release; the compact receipt pins its digest, archive and exact model hashes.
+
+The return64 builder permits only these new model hashes. A cloud preflight proves every other builder byte, including stimuli, solver and engineering review, is unchanged from verified v5; clock-adapter changes only its builder import, preserving all44clock corruption tests. Two complete34ns/256-bit wire simulations run: nominal and actual swapped-leaf fault. Compact PVT is not substituted for wire acceptance. The nominal workflow now fails explicitly if any original engineering gate or diagnostic fails, preserving all reports and raw samples. Full-wire PVT/convergence and actual clock/PHY integration still remain.

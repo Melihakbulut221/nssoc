@@ -1,0 +1,173 @@
+{
+  "run-rc01.py": {
+    "path": "scripts/tx_driver_run_rc01.py",
+    "original_sha256": "e9e15ff0b7bfec170f19295a78988e50df81fda98738ca5338be66b41b172fde",
+    "adapted_sha256": "f6c41ebc2aafe5338e52f80c1110faa65ea60031079f40ae87de7981fad4e8eb",
+    "edits": [
+      {
+        "before": "pump_wires",
+        "after": "full_driver_wires",
+        "count": 2
+      },
+      {
+        "before": "Path('/dev/shm/nssoc-magic-area-product-v4-build/runtime/lib')",
+        "after": "B/'magic-cloud/runtime/lib'",
+        "count": 1
+      },
+      {
+        "before": "Path('/dev/shm/nssoc-magic-pad-stack-tech-v1')",
+        "after": "B/'magic-cloud/tech'",
+        "count": 1
+      }
+    ]
+  },
+  "audit-rc02.py": {
+    "path": "scripts/tx_driver_audit_rc02.py",
+    "original_sha256": "41051fb749e4842fe39a63541afef9f3e489f2cf0f9b7d79ae03c755c4586627",
+    "adapted_sha256": "8d3fc244c797c160dae82ed9f5d22346e147ea7dbdb18f1d91964a7001959210",
+    "edits": [
+      {
+        "before": "pump_wires",
+        "after": "full_driver_wires",
+        "count": 4
+      },
+      {
+        "before": "len(a)==59",
+        "after": "len(a)==164",
+        "count": 1
+      },
+      {
+        "before": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE=52,RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE=29",
+        "after": "ACTUAL_CONTACT_REFERENCE_WITH_UNMODELED_POLY_DIFFUSION_R=272,RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R=100",
+        "count": 1
+      },
+      {
+        "before": "len(native_rows)==81",
+        "after": "len(native_rows)==372",
+        "count": 1
+      },
+      {
+        "before": "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE",
+        "after": "RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R",
+        "count": 1
+      },
+      {
+        "before": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+        "after": "ACTUAL_CONTACT_REFERENCE_WITH_UNMODELED_POLY_DIFFUSION_R",
+        "count": 1
+      },
+      {
+        "before": "n=a.get(f\"T{r['device']:03d}_{r['terminal']}\")",
+        "after": "n=a.get(r['reference_label'])",
+        "count": 1
+      },
+      {
+        "before": "n['detail']==r",
+        "after": "n['native_cluster']==r['native_cluster'] and n['metal']==r['metal']",
+        "count": 1
+      },
+      {
+        "before": "==['13']",
+        "after": "==['11']",
+        "count": 1
+      },
+      {
+        "before": "==['12']",
+        "after": "==['10']",
+        "count": 1
+      },
+      {
+        "before": "len(ports)==59",
+        "after": "len(ports)==164",
+        "count": 1
+      },
+      {
+        "before": "len(nodes)==12",
+        "after": "len(nodes)==10",
+        "count": 1
+      },
+      {
+        "before": "set(range(1,13))",
+        "after": "set(range(1,11))",
+        "count": 2
+      },
+      {
+        "before": "len(after['ports'])==59",
+        "after": "len(after['ports'])==164",
+        "count": 1
+      },
+      {
+        "before": "len(before['ports'])==12",
+        "after": "len(before['ports'])==10",
+        "count": 1
+      },
+      {
+        "before": "len(connected)==12 and len({c['component'] for c in connected})==12",
+        "after": "len(connected)==10 and len({c['component'] for c in connected})==10",
+        "count": 1
+      },
+      {
+        "before": "len(retire)==12",
+        "after": "len(retire)==10",
+        "count": 1
+      },
+      {
+        "before": "len(markers)==12",
+        "after": "len(markers)==10",
+        "count": 1
+      },
+      {
+        "before": "original_devices=30,public_ports=7,physical_wire_components=12,geometry_probes=59,metal_device_terminals=52",
+        "after": "original_devices=100,public_ports=6,physical_wire_components=10,geometry_probes=164,metal_device_terminals=272",
+        "count": 1
+      },
+      {
+        "before": "unmodeled_body_well_terminals=29",
+        "after": "unmodeled_body_well_terminals=100",
+        "count": 1
+      },
+      {
+        "before": "connected_wire_components=12",
+        "after": "connected_wire_components=10",
+        "count": 1
+      },
+      {
+        "before": "collapsed_matrix_entries=13**2",
+        "after": "collapsed_matrix_entries=11**2",
+        "count": 1
+      }
+    ]
+  },
+  "mutations01.py": {
+    "path": "scripts/tx_driver_mutations01.py",
+    "original_sha256": "ac0589d27fcef0884c613b9b2734724e4b08a26539345855549b86e94774c617",
+    "adapted_sha256": "8c397af1a4cf26ef4739b65256438ea2a43e7846edbbee72cc49a9b145131cd4",
+    "edits": [
+      {
+        "before": "pump_wires",
+        "after": "full_driver_wires",
+        "count": 4
+      },
+      {
+        "before": "n.startswith('T')",
+        "after": "n.startswith('A')",
+        "count": 1
+      },
+      {
+        "before": "R_EXTRA P_up P_down 1",
+        "after": "R_EXTRA P_din P_dout 1",
+        "count": 1
+      },
+      {
+        "before": "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_RESISTANCE",
+        "after": "RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R",
+        "count": 2
+      },
+      {
+        "before": "'RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R',28",
+        "after": "'RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R',99",
+        "count": 1
+      }
+    ]
+  }
+}

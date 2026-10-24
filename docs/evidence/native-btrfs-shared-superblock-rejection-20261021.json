@@ -1,0 +1,942 @@
+{
+  "run": 39539101155,
+  "summary_asset": 661250800,
+  "summary_sha256": "4aa00b9c6e6339c77ab14efd3783de4d124e1e089fde6f7b248a2b34d4ac378b",
+  "report": {
+    "status": "FAIL_OR_ERROR",
+    "source_head": "df9df77ba30c65c7b4148a5dadb77816deb072ac",
+    "source": {
+      "run": 38904997140,
+      "group": "native-portable-checkpoint",
+      "root": "cloud-native-portable-checkpoint",
+      "bytes": 59772311,
+      "sha": "30bad1656b8c6f291d805b3161b8336825d7608c3a04355c57e10a6f8c0f7331",
+      "summary": "5f261d535f386661979ef9854e26dead27b6ba1d4d681eed931d5c300faed176"
+    },
+    "cross_job_native_restore_proven": false,
+    "full_capture": false,
+    "acquisition_accepted": false,
+    "full_phy_accepted": false,
+    "scope": "Restore the actual saved physical845 SPICE process from another completed job. Exact4ns native trajectory/34probes and single entrypoint, no cold restart or waveform splice. Not original1us acquisition, full-device safety, PVT or fullPHY acceptance.",
+    "commands": [
+      {
+        "label": "empty-runner",
+        "args": [
+          "docker",
+          "ps",
+          "-aq"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "destination-lscpu",
+        "args": [
+          "lscpu",
+          "--json"
+        ],
+        "returncode": 0,
+        "sha256": "61dcffad00ce53e335d409d1803c82792f62ab6a364ed2b2e11b8c45d1941490"
+      },
+      {
+        "label": "destination-kernel",
+        "args": [
+          "uname",
+          "-a"
+        ],
+        "returncode": 0,
+        "sha256": "cd8e31ad3f05d597238a1403bb5c2d25c975d53959c3d48af034216515712dc5"
+      },
+      {
+        "label": "btrfs-format-owned-image",
+        "args": [
+          "sudo",
+          "mkfs.btrfs",
+          "-f",
+          "-m",
+          "single",
+          "-d",
+          "single",
+          "/home/runner/work/nssoc/nssoc/native-btrfs-case-probe.img"
+        ],
+        "returncode": 0,
+        "sha256": "5512ba3f7a0507a84ff14a3449838c71f10b7fa47b1fdc5168bdd3545861c17c"
+      },
+      {
+        "label": "btrfs-mount-owned-image",
+        "args": [
+          "sudo",
+          "mount",
+          "-o",
+          "loop,compress-force=zstd:3,noatime",
+          "/home/runner/work/nssoc/nssoc/native-btrfs-case-probe.img",
+          "/home/runner/work/nssoc/nssoc/native-btrfs-case-probe-volume"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "btrfs-volume-owner",
+        "args": [
+          "sudo",
+          "chown",
+          "1001:1001",
+          "/home/runner/work/nssoc/nssoc/native-btrfs-case-probe-volume"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "btrfs-bind-original-path",
+        "args": [
+          "sudo",
+          "mount",
+          "--bind",
+          "/home/runner/work/nssoc/nssoc/native-btrfs-case-probe-volume/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed",
+          "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "btrfs-filesystem-root-readback",
+        "args": [
+          "findmnt",
+          "-n",
+          "-o",
+          "FSROOT",
+          "-T",
+          "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed"
+        ],
+        "returncode": 0,
+        "sha256": "89a7b4e231fdaf324b73073d99ffa7bcefdaeb33e620493ef2b028a4a35aeb8e"
+      },
+      {
+        "label": "btrfs-mount-readback",
+        "args": [
+          "findmnt",
+          "--json",
+          "-T",
+          "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed"
+        ],
+        "returncode": 0,
+        "sha256": "023aed2e2324a97fd0ebab35ccbad20bc07032eea8dcbb9326fc3fb6b686d86e"
+      },
+      {
+        "label": "btrfs-source-compression",
+        "args": [
+          "sudo",
+          "compsize",
+          "-b",
+          "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed/actual-acquisition.raw"
+        ],
+        "returncode": 0,
+        "sha256": "b877d2ad50028130b8256c9008c86bcd082fba01e4028281f49d95dab60e9d8d"
+      },
+      {
+        "label": "configure-durable-criu-log",
+        "args": [
+          "sudo",
+          "python3",
+          "-c",
+          "import pathlib,sys;p=pathlib.Path('/etc/criu/runc.conf');assert not p.exists()or not p.read_text().strip();p.parent.mkdir(parents=True,exist_ok=True);p.write_text(sys.argv[1]);print(p.read_text())",
+          "log-file /home/runner/work/nssoc/nssoc/cloud-native-btrfs-cross-job/criu-durable.log\n"
+        ],
+        "returncode": 0,
+        "sha256": "3934d772a7fa38e229050d8fdac10b4ff5b0b5a753b935350c50b219ddf42dc4"
+      },
+      {
+        "label": "criu-check",
+        "args": [
+          "sudo",
+          "criu",
+          "check",
+          "--all"
+        ],
+        "returncode": 1,
+        "sha256": "2821a38a8ec93981d79b93c3d4688c98bd9de97253b33713d2b8df97c8c364c1"
+      },
+      {
+        "label": "docker-experimental",
+        "args": [
+          "sudo",
+          "python3",
+          "-c",
+          "import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;d['debug']=True;p.write_text(json.dumps(d))"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "docker-restart",
+        "args": [
+          "sudo",
+          "systemctl",
+          "restart",
+          "docker"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "load-native-image",
+        "args": [
+          "docker",
+          "load",
+          "-i",
+          "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/native-image.tar"
+        ],
+        "returncode": 0,
+        "sha256": "bff5bb216604a5e7812651f3b2dbf9cbca7b51ed53810fe28da5a78f73e965bf"
+      },
+      {
+        "label": "loaded-image",
+        "args": [
+          "docker",
+          "image",
+          "inspect",
+          "sha256:0d7fbc3bc8e1cdf9285c2d07eeb15aa43e794c68234ceb157d0eb9bfabb6832c"
+        ],
+        "returncode": 0,
+        "sha256": "63be0c7d1a731c144834b10091c9caab7396c40d8b8b2599bf8218ecb5442590"
+      },
+      {
+        "label": "create-native-clone",
+        "args": [
+          "docker",
+          "create",
+          "--name",
+          "nssoc-native-cross-job",
+          "--network",
+          "host",
+          "--security-opt",
+          "seccomp=unconfined",
+          "--cpuset-cpus",
+          "0",
+          "--mount",
+          "type=bind,src=/home/runner/work/nssoc/nssoc,dst=/home/runner/work/nssoc/nssoc,readonly",
+          "--mount",
+          "type=bind,src=/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed,dst=/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed",
+          "-w",
+          "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed",
+          "-e",
+          "SPICE_SCRIPTS=/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed",
+          "-e",
+          "OMP_NUM_THREADS=1",
+          "-e",
+          "RAYON_NUM_THREADS=1",
+          "-e",
+          "GLIBC_TUNABLES=glibc.cpu.hwcaps=-AVX512F,-AVX512CD,-AVX512BW,-AVX512DQ,-AVX512ER,-AVX512PF,-AVX512VL,-RTM",
+          "--entrypoint",
+          "/bin/dash",
+          "sha256:0d7fbc3bc8e1cdf9285c2d07eeb15aa43e794c68234ceb157d0eb9bfabb6832c",
+          "-c",
+          "printf \"native-entrypoint\\n\" >> boots.log; exec \"/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/runtime/patched-ngspice\" -n -b actual-acquisition.cir"
+        ],
+        "returncode": 0,
+        "sha256": "c7b90f47299ee9bdee0679fe8d01467c7d90910386b665a1761afc8dd2bd3aab"
+      },
+      {
+        "label": "docker-root",
+        "args": [
+          "docker",
+          "info",
+          "--format",
+          "{{.DockerRootDir}}"
+        ],
+        "returncode": 0,
+        "sha256": "de06adb1b989dfb4bc336424e31d05b78070d845ebf0b62793726992afe13996"
+      },
+      {
+        "label": "default-checkpoint-dir",
+        "args": [
+          "sudo",
+          "mkdir",
+          "-p",
+          "/var/lib/docker/containers/0d96023466b02c312a5c27e1e1a608b5f70c679d68798a09ce706002694ec775/checkpoints"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "copy-native-checkpoint",
+        "args": [
+          "sudo",
+          "cp",
+          "-a",
+          "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/checkpoints/state",
+          "/var/lib/docker/containers/0d96023466b02c312a5c27e1e1a608b5f70c679d68798a09ce706002694ec775/checkpoints/state"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "copy-proof",
+        "args": [
+          "sudo",
+          "python3",
+          "-c",
+          "import pathlib,hashlib,sys,json;scan=lambda r:{str(p.relative_to(r)):hashlib.sha256(p.read_bytes()).hexdigest()for p in r.rglob('*')if p.is_file()};a=scan(pathlib.Path(sys.argv[1]));b=scan(pathlib.Path(sys.argv[2]));assert a and a==b;print(json.dumps(a))",
+          "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/checkpoints/state",
+          "/var/lib/docker/containers/0d96023466b02c312a5c27e1e1a608b5f70c679d68798a09ce706002694ec775/checkpoints/state"
+        ],
+        "returncode": 0,
+        "sha256": "640d95e2f456b77d1fd0435fc154eae830596df47beb887821ea3f8bbb5d166d"
+      },
+      {
+        "label": "restore-native",
+        "args": [
+          "docker",
+          "start",
+          "--checkpoint",
+          "state",
+          "nssoc-native-cross-job"
+        ],
+        "returncode": 1,
+        "sha256": "a2d71f74c9ad50225cf21b0b9ee48b05ea830d4b4d56c61435c5664e14bb01f6"
+      },
+      {
+        "label": "durable-criu-error-log",
+        "args": [
+          "sudo",
+          "cat",
+          "/home/runner/work/nssoc/nssoc/cloud-native-btrfs-cross-job/criu-durable.log"
+        ],
+        "returncode": 0,
+        "sha256": "11269916d2f24db4ac4bb4a0d8141454688992e259da6d28dd3afbc5a0ff556d"
+      },
+      {
+        "label": "all-owned-criu-restore-logs",
+        "args": [
+          "sudo",
+          "python3",
+          "-c",
+          "import pathlib,json,sys\ncid=sys.argv[1];roots=[pathlib.Path('/run/containerd'),pathlib.Path('/run/docker/containerd'),pathlib.Path('/var/lib/docker/containers')/cid]\nrows=[]\nfor root in roots:\n if root.exists():\n  for p in root.rglob('*.log'):\n   if p.name in ('restore.log','dump.log')or 'criu'in p.name:\n    try:rows.append(dict(path=str(p),text=p.read_text(errors='replace')))\n    except OSError as e:rows.append(dict(path=str(p),error=repr(e)))\nprint(json.dumps(rows))\n",
+          "0d96023466b02c312a5c27e1e1a608b5f70c679d68798a09ce706002694ec775"
+        ],
+        "returncode": 0,
+        "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      },
+      {
+        "label": "docker-restore-journal",
+        "args": [
+          "sudo",
+          "journalctl",
+          "-u",
+          "docker",
+          "--no-pager",
+          "-n",
+          "500"
+        ],
+        "returncode": 0,
+        "sha256": "ff539f392cb563017bfbd45bebbd774fc3e4b20e651f13357bcf2aad6b15742e"
+      },
+      {
+        "label": "runtime-versions",
+        "args": [
+          "docker",
+          "version"
+        ],
+        "returncode": 0,
+        "sha256": "89ca7a2a5981258b40c3899591a332c0a6e3b90aaf17684f406473463d2d8932"
+      },
+      {
+        "label": "restore-native-detail",
+        "args": [
+          "sudo",
+          "cat",
+          "/run/containerd/io.containerd.runtime.v2.task/moby/0d96023466b02c312a5c27e1e1a608b5f70c679d68798a09ce706002694ec775/work/restore.log"
+        ],
+        "returncode": 1,
+        "sha256": "aa6f567b2910ac8fb76f677877b87957a4093195e8e23aa0632bf0dfcf25c4c2"
+      },
+      {
+        "label": "final-native-log",
+        "args": [
+          "docker",
+          "logs",
+          "nssoc-native-cross-job"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "label": "cleanup-native",
+        "args": [
+          "docker",
+          "rm",
+          "-f",
+          "nssoc-native-cross-job"
+        ],
+        "returncode": 0,
+        "sha256": "2d68ca2a94c7b028bc384ecaec1f13e5d98ccadf604ab55a35b8b0ff683d15e9"
+      },
+      {
+        "label": "readable-durable-criu-log",
+        "args": [
+          "sudo",
+          "chown",
+          "1001:1001",
+          "/home/runner/work/nssoc/nssoc/cloud-native-btrfs-cross-job/criu-durable.log"
+        ],
+        "returncode": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "destination_cpu": {
+      "lscpu": [
+        {
+          "field": "Architecture:",
+          "data": "x86_64"
+        },
+        {
+          "field": "CPU op-mode(s):",
+          "data": "32-bit, 64-bit"
+        },
+        {
+          "field": "Address sizes:",
+          "data": "48 bits physical, 48 bits virtual"
+        },
+        {
+          "field": "Byte Order:",
+          "data": "Little Endian"
+        },
+        {
+          "field": "CPU(s):",
+          "data": "4"
+        },
+        {
+          "field": "On-line CPU(s) list:",
+          "data": "0-3"
+        },
+        {
+          "field": "Vendor ID:",
+          "data": "AuthenticAMD"
+        },
+        {
+          "field": "Model name:",
+          "data": "AMD EPYC 7763 64-Core Processor"
+        },
+        {
+          "field": "CPU family:",
+          "data": "25"
+        },
+        {
+          "field": "Model:",
+          "data": "1"
+        },
+        {
+          "field": "Thread(s) per core:",
+          "data": "2"
+        },
+        {
+          "field": "Core(s) per socket:",
+          "data": "2"
+        },
+        {
+          "field": "Socket(s):",
+          "data": "1"
+        },
+        {
+          "field": "Stepping:",
+          "data": "1"
+        },
+        {
+          "field": "BogoMIPS:",
+          "data": "4890.86"
+        },
+        {
+          "field": "Flags:",
+          "data": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid rdseed adx smap clflushopt clwb sha_ni xsaveopt xsavec xgetbv1 xsaves user_shstk clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload umip vaes vpclmulqdq rdpid fsrm"
+        },
+        {
+          "field": "Virtualization:",
+          "data": "AMD-V"
+        },
+        {
+          "field": "Hypervisor vendor:",
+          "data": "Microsoft"
+        },
+        {
+          "field": "Virtualization type:",
+          "data": "full"
+        },
+        {
+          "field": "L1d cache:",
+          "data": "64 KiB (2 instances)"
+        },
+        {
+          "field": "L1i cache:",
+          "data": "64 KiB (2 instances)"
+        },
+        {
+          "field": "L2 cache:",
+          "data": "1 MiB (2 instances)"
+        },
+        {
+          "field": "L3 cache:",
+          "data": "32 MiB (1 instance)"
+        },
+        {
+          "field": "NUMA node(s):",
+          "data": "1"
+        },
+        {
+          "field": "NUMA node0 CPU(s):",
+          "data": "0-3"
+        },
+        {
+          "field": "Vulnerability Gather data sampling:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Ghostwrite:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Indirect target selection:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Itlb multihit:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability L1tf:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Mds:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Meltdown:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Mmio stale data:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Old microcode:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Reg file data sampling:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Retbleed:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Spec rstack overflow:",
+          "data": "Vulnerable: Safe RET, no microcode"
+        },
+        {
+          "field": "Vulnerability Spec store bypass:",
+          "data": "Vulnerable"
+        },
+        {
+          "field": "Vulnerability Spectre v1:",
+          "data": "Mitigation; usercopy/swapgs barriers and __user pointer sanitization"
+        },
+        {
+          "field": "Vulnerability Spectre v2:",
+          "data": "Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected"
+        },
+        {
+          "field": "Vulnerability Srbds:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Tsa:",
+          "data": "Vulnerable: No microcode"
+        },
+        {
+          "field": "Vulnerability Tsx async abort:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Vmscape:",
+          "data": "Not affected"
+        }
+      ]
+    },
+    "destination_has_avx512f": false,
+    "probe_target": "Ext4 checkpoint to compressed Btrfs, then native Btrfs checkpoint/restore; CPU features recorded independently",
+    "source_cpu": {
+      "lscpu": [
+        {
+          "field": "Architecture:",
+          "data": "x86_64"
+        },
+        {
+          "field": "CPU op-mode(s):",
+          "data": "32-bit, 64-bit"
+        },
+        {
+          "field": "Address sizes:",
+          "data": "48 bits physical, 48 bits virtual"
+        },
+        {
+          "field": "Byte Order:",
+          "data": "Little Endian"
+        },
+        {
+          "field": "CPU(s):",
+          "data": "4"
+        },
+        {
+          "field": "On-line CPU(s) list:",
+          "data": "0-3"
+        },
+        {
+          "field": "Vendor ID:",
+          "data": "AuthenticAMD"
+        },
+        {
+          "field": "Model name:",
+          "data": "AMD EPYC 9V74 80-Core Processor"
+        },
+        {
+          "field": "CPU family:",
+          "data": "25"
+        },
+        {
+          "field": "Model:",
+          "data": "17"
+        },
+        {
+          "field": "Thread(s) per core:",
+          "data": "2"
+        },
+        {
+          "field": "Core(s) per socket:",
+          "data": "2"
+        },
+        {
+          "field": "Socket(s):",
+          "data": "1"
+        },
+        {
+          "field": "Stepping:",
+          "data": "1"
+        },
+        {
+          "field": "BogoMIPS:",
+          "data": "5192.29"
+        },
+        {
+          "field": "Flags:",
+          "data": "fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush mmx fxsr sse sse2 ht syscall nx mmxext fxsr_opt pdpe1gb rdtscp lm constant_tsc rep_good nopl xtopology tsc_reliable nonstop_tsc cpuid extd_apicid aperfmperf tsc_known_freq pni pclmulqdq ssse3 fma cx16 pcid sse4_1 sse4_2 movbe popcnt aes xsave avx f16c rdrand hypervisor lahf_lm cmp_legacy svm cr8_legacy abm sse4a misalignsse 3dnowprefetch osvw topoext vmmcall fsgsbase bmi1 avx2 smep bmi2 erms invpcid avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves user_shstk avx512_bf16 clzero xsaveerptr rdpru arat npt nrip_save tsc_scale vmcb_clean flushbyasid decodeassists pausefilter pfthreshold v_vmsave_vmload avx512vbmi umip avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq rdpid fsrm"
+        },
+        {
+          "field": "Virtualization:",
+          "data": "AMD-V"
+        },
+        {
+          "field": "Hypervisor vendor:",
+          "data": "Microsoft"
+        },
+        {
+          "field": "Virtualization type:",
+          "data": "full"
+        },
+        {
+          "field": "L1d cache:",
+          "data": "64 KiB (2 instances)"
+        },
+        {
+          "field": "L1i cache:",
+          "data": "64 KiB (2 instances)"
+        },
+        {
+          "field": "L2 cache:",
+          "data": "2 MiB (2 instances)"
+        },
+        {
+          "field": "L3 cache:",
+          "data": "32 MiB (1 instance)"
+        },
+        {
+          "field": "NUMA node(s):",
+          "data": "1"
+        },
+        {
+          "field": "NUMA node0 CPU(s):",
+          "data": "0-3"
+        },
+        {
+          "field": "Vulnerability Gather data sampling:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Ghostwrite:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Indirect target selection:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Itlb multihit:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability L1tf:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Mds:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Meltdown:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Mmio stale data:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Old microcode:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Reg file data sampling:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Retbleed:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Spec rstack overflow:",
+          "data": "Vulnerable: Safe RET, no microcode"
+        },
+        {
+          "field": "Vulnerability Spec store bypass:",
+          "data": "Vulnerable"
+        },
+        {
+          "field": "Vulnerability Spectre v1:",
+          "data": "Mitigation; usercopy/swapgs barriers and __user pointer sanitization"
+        },
+        {
+          "field": "Vulnerability Spectre v2:",
+          "data": "Mitigation; Retpolines; STIBP disabled; RSB filling; PBRSB-eIBRS Not affected; BHI Not affected"
+        },
+        {
+          "field": "Vulnerability Srbds:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Tsa:",
+          "data": "Vulnerable: No microcode"
+        },
+        {
+          "field": "Vulnerability Tsx async abort:",
+          "data": "Not affected"
+        },
+        {
+          "field": "Vulnerability Vmscape:",
+          "data": "Not affected"
+        }
+      ]
+    },
+    "source_has_avx512f": true,
+    "glibc_tunables": "glibc.cpu.hwcaps=-AVX512F,-AVX512CD,-AVX512BW,-AVX512DQ,-AVX512ER,-AVX512PF,-AVX512VL,-RTM",
+    "source_run_id": "38904997140",
+    "run_id": "39539101155",
+    "source_boot_id": "d7db7f01-5c25-41de-9281-ed592366419e",
+    "boot_id": "b70b3f83-c767-4027-a06c-34e0ce634d20",
+    "different_boot_id_observed": true,
+    "reference": {
+      "capture": {
+        "header_points": 12818,
+        "observed_rows": 12818,
+        "width": 35,
+        "header_bytes": 1190,
+        "payload_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "header_matches_observed": true,
+        "payload_has_only_complete_rows": true,
+        "excluded_trailing_bytes": 0,
+        "excluded_trailing_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "complete_rows_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "interrupted_diagnostic": false
+      },
+      "start_s": 0.0,
+      "end_s": 4e-09,
+      "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+      "native_options": {
+        "backend": "klu",
+        "numeric": {
+          "reltol": 0.0001,
+          "abstol": 1e-12,
+          "vntol": 1e-06,
+          "trtol": 7.0,
+          "maxord": 2.0,
+          "itl4": 10.0
+        },
+        "method": "TRAPEZOIDAL",
+        "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+      },
+      "zero_source_operating_point": {
+        "maximum_abs_v": 0.0,
+        "columns": [
+          "v(clkp)",
+          "v(clkn)",
+          "v(down)",
+          "v(fb)",
+          "v(fbbar)",
+          "v(qn)",
+          "v(qp)",
+          "v(reference)",
+          "v(reset)",
+          "v(up)",
+          "v(vctrl)",
+          "v(xloop.a_count_vss)",
+          "v(xloop.a_release_clk)",
+          "v(xloop.a_release_reset_b)",
+          "v(xloop.bn)",
+          "v(xloop.bp)",
+          "v(xloop.clk)",
+          "v(xloop.count)",
+          "v(xloop.countb)",
+          "v(xloop.counter_reset_b)",
+          "v(xloop.qn2)",
+          "v(xloop.qp2)",
+          "v(xloop.releaseb)",
+          "v(xloop.xcount.q0)",
+          "v(xloop.xcount.q1)",
+          "v(xloop.xpfd.t001_d)",
+          "v(xloop.xpfd.t003_d)",
+          "v(xloop.xpfd.t005_g)",
+          "v(xloop.xpfd.t007_g)",
+          "v(xloop.xpfd.t009_g)",
+          "v(xloop.xpfd.t012_d)",
+          "v(xloop.xpfd.t013_d)",
+          "v(xloop.xpfd.t014_d)",
+          "v(xloop.xpfd.t016_d)"
+        ],
+        "sha256": "095633d72b7554d47e4583c73f5ffa9712b30bfa05f1d92853496a6e48bd4491"
+      },
+      "diagnostics": []
+    },
+    "prefix_restore": {
+      "original_checkpoint_bytes_restored": true,
+      "sha256": "7f18693101bcc5884ef7dc8235d6793c3562f0f82a2b0bfdabf926333b7c4a88",
+      "bytes": 566438,
+      "full_old_capture_not_used_as_process_input": true
+    },
+    "compressed_case": {
+      "status": "MOUNTED_EXACT_NATIVE_CASE_BYTES_ON_ZSTD_BTRFS_REQUIRES_NATIVE_RESTORE",
+      "source_files": {
+        "actual-acquisition.raw": "7f18693101bcc5884ef7dc8235d6793c3562f0f82a2b0bfdabf926333b7c4a88",
+        "circuit.cir": "36f07c7cb6e91fb9505562b4fc3e280a40bcd4a04e05c0980d75e656b9508a9a",
+        "boots.log": "d6517f61034b9578e0ffe62cf86a12ca3a675a8281fa6ed80f9c4e4fcfd40d48",
+        "actual-acquisition.cir": "fc3f52e6511e62e17ee5717fc0e9fb3f8375d07b5cb735620f5f41ea16b1995f",
+        "spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+        "parent865.spice": "8147a7cbae9d1a43b362733a3b52c218c5d04ef519cedf9abf35cd17ff27911e",
+        "op.raw": "58b3f44e793efa178032b2a2ed28d719c3c53d3b2dcea9991bf0e25971bdeb7c"
+      },
+      "mount": {
+        "target": "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed",
+        "source": "/dev/loop0[/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed]",
+        "fstype": "btrfs",
+        "options": "rw,noatime,compress-force=zstd:3,discard=async,space_cache=v2,subvolid=5,subvol=/"
+      },
+      "compression": "Processed 1 file, 5 regular extents (5 refs), 0 inline.\nType       Perc     Disk Usage   Uncompressed Referenced  \nTOTAL       90%     516096       569344       569344      \nzstd        90%     516096       569344       569344      \n",
+      "original_backup_retained": true,
+      "filesystem_root": "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed",
+      "volume_path": "/home/runner/work/nssoc/nssoc/native-btrfs-case-probe-volume",
+      "native_case_path": "/home/runner/work/nssoc/nssoc/cloud-native-portable-checkpoint/resumed",
+      "same_inode_through_original_path_and_filesystem_root": true,
+      "logical_image_bytes": 8589934592,
+      "allocated_image_bytes": 5107712,
+      "compression_scope": "Only actual bounded native raw file, not a full1us capacity proof",
+      "native_or_phy_acceptance": false
+    },
+    "criu_log_configuration": {
+      "config": "/etc/criu/runc.conf",
+      "text": "log-file /home/runner/work/nssoc/nssoc/cloud-native-btrfs-cross-job/criu-durable.log\n",
+      "scope": "Log destination only; no restore behavior or native input change"
+    },
+    "criu_build": {
+      "source_repository": "https://github.com/checkpoint-restore/criu",
+      "source_tag": "v4.2.1",
+      "source_commit": "9539417f3e3cfa4eb84c319cd71f4d52f1f08645",
+      "binary_sha256": "f61e09cda1cb361dbd7bdbb1dd9e4b8e0d3c95c758f4e2be42a8220539bb793f",
+      "version": "Version: 4.2.1\nGitID: 9539417\n",
+      "libraries": "\tlinux-vdso.so.1 (0x00007ff2770e2000)\n\tlibbsd.so.0 => /lib/x86_64-linux-gnu/libbsd.so.0 (0x00007ff276efe000)\n\tlibprotobuf-c.so.1 => /lib/x86_64-linux-gnu/libprotobuf-c.so.1 (0x00007ff276ef3000)\n\tlibnl-3.so.200 => /lib/x86_64-linux-gnu/libnl-3.so.200 (0x00007ff276ed1000)\n\tlibnet.so.1 => /lib/x86_64-linux-gnu/libnet.so.1 (0x00007ff276eb6000)\n\tlibuuid.so.1 => /lib/x86_64-linux-gnu/libuuid.so.1 (0x00007ff276eac000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007ff276c00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007ff2770e4000)\n\tlibmd.so.0 => /lib/x86_64-linux-gnu/libmd.so.0 (0x00007ff276e9b000)\n"
+    },
+    "checkpoint_images": {
+      "pstree.img": "14d914057fb14ec294b37c00b8676c1c0d9a956d35859b0360237f7316b37207",
+      "files.img": "c28f262aefb2cf49fc93d5f72e7123d8a969f67b8133d57ee33e690b93fc53c7",
+      "mountpoints-12.img": "220f133ae50d1596c94ad7c458b527c83d619d270b7ddc8c76899f83ed9f1d54",
+      "fdinfo-2.img": "26aa510dabe8637954a181cf70dc5d018d16ddfb80e27c2c4704a7a3ca2701c7",
+      "timens-0.img": "9d78d03b9930d3868fb63a157bbdebe3634d37e8846665f6c150b89c1f405222",
+      "tmpfs-dev-62.tar.gz.img": "fd9465a7e8285a5ba0f7933d67ebe13eb5d79a81a073767e11bd29d3055258c4",
+      "tmpfs-dev-59.tar.gz.img": "7336ff24598c55dfa84e79533fd0af0e6eed98aadeb43dcc445dd66a868ee3c3",
+      "ipcns-var-10.img": "2c6811e94d6ee6661be7bbfbc5ba6fd86325e32599233fb8fe872e79b4047e22",
+      "core-1.img": "0164853a87cf0984d05dcb637c1770f5709e0c3166653e8ff3a5a1e44bd20371",
+      "utsns-11.img": "2476fd0136a613307df21285227a5cfb0268c7ca6989705722b1e3d9715c5562",
+      "tmpfs-dev-61.tar.gz.img": "fd9465a7e8285a5ba0f7933d67ebe13eb5d79a81a073767e11bd29d3055258c4",
+      "inventory.img": "5afefb99928492e4bcbf59d8a9154dc4830661ae54900729ef81a094ca8abd66",
+      "descriptors.json": "339171371616d4f93e71e83d6ababd281f5b1d98023ae1fb38be1ead496496ca",
+      "ids-1.img": "fb75ef1d70871f72c5f43edc76c6b0cd8035e55d5d5ec792490d7c59dd9a232a",
+      "cgroup.img": "3e4924c4440f1985e5168ac5afaa971fd31255034b393e0103e3d32a7b5e6431",
+      "pagemap-1.img": "2c158c32104661c5ea3da6bfe89bb08be225403d9f15bc4c9cb38d025a17fea9",
+      "seccomp.img": "957296853c04f6368f4ba65b5e86dc74860fec6d7017e51428e65632052e88dd",
+      "pages-1.img": "056fa3db5b2a0df0e2b52daa773623ea7909f67868d82da8bef15d9de7116cd0",
+      "mm-1.img": "6ec59e514c3cb2bad64d88b44614adb63110412362bd2f8f75c4d75c47a65bc1",
+      "fs-1.img": "b19d457673c827e42adee1fea9fe3a91850d9fdc2b03ba7be09e350e5c58a8c3"
+    },
+    "error": "RuntimeError('Separate-job native restore failed')",
+    "outputs": {
+      "btrfs-format-owned-image.log": "5512ba3f7a0507a84ff14a3449838c71f10b7fa47b1fdc5168bdd3545861c17c",
+      "durable-criu-error-log.log": "11269916d2f24db4ac4bb4a0d8141454688992e259da6d28dd3afbc5a0ff556d",
+      "docker-restore-journal.log": "ff539f392cb563017bfbd45bebbd774fc3e4b20e651f13357bcf2aad6b15742e",
+      "all-owned-criu-restore-logs.log": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "runtime-versions.log": "89ca7a2a5981258b40c3899591a332c0a6e3b90aaf17684f406473463d2d8932",
+      "criu-durable.log": "11269916d2f24db4ac4bb4a0d8141454688992e259da6d28dd3afbc5a0ff556d",
+      "btrfs-bind-original-path.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "default-checkpoint-dir.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "cleanup-native.log": "2d68ca2a94c7b028bc384ecaec1f13e5d98ccadf604ab55a35b8b0ff683d15e9",
+      "loaded-image.log": "63be0c7d1a731c144834b10091c9caab7396c40d8b8b2599bf8218ecb5442590",
+      "docker-restart.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "create-native-clone.log": "c7b90f47299ee9bdee0679fe8d01467c7d90910386b665a1761afc8dd2bd3aab",
+      "readable-durable-criu-log.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copy-native-checkpoint.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "btrfs-mount-owned-image.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "destination-kernel.log": "cd8e31ad3f05d597238a1403bb5c2d25c975d53959c3d48af034216515712dc5",
+      "docker-experimental.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "copy-proof.log": "640d95e2f456b77d1fd0435fc154eae830596df47beb887821ea3f8bbb5d166d",
+      "load-native-image.log": "bff5bb216604a5e7812651f3b2dbf9cbca7b51ed53810fe28da5a78f73e965bf",
+      "final-native-log.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "btrfs-volume-owner.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "destination-lscpu.log": "61dcffad00ce53e335d409d1803c82792f62ab6a364ed2b2e11b8c45d1941490",
+      "configure-durable-criu-log.log": "3934d772a7fa38e229050d8fdac10b4ff5b0b5a753b935350c50b219ddf42dc4",
+      "empty-runner.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "btrfs-mount-readback.log": "023aed2e2324a97fd0ebab35ccbad20bc07032eea8dcbb9326fc3fb6b686d86e",
+      "restore-native-detail.log": "aa6f567b2910ac8fb76f677877b87957a4093195e8e23aa0632bf0dfcf25c4c2",
+      "docker-root.log": "de06adb1b989dfb4bc336424e31d05b78070d845ebf0b62793726992afe13996",
+      "btrfs-source-compression.log": "b877d2ad50028130b8256c9008c86bcd082fba01e4028281f49d95dab60e9d8d",
+      "btrfs-filesystem-root-readback.log": "89a7b4e231fdaf324b73073d99ffa7bcefdaeb33e620493ef2b028a4a35aeb8e",
+      "criu-check.log": "2821a38a8ec93981d79b93c3d4688c98bd9de97253b33713d2b8df97c8c364c1",
+      "restore-native.log": "a2d71f74c9ad50225cf21b0b9ee48b05ea830d4b4d56c61435c5664e14bb01f6",
+      "uncompressed-case-proof/actual-acquisition.raw": "7f18693101bcc5884ef7dc8235d6793c3562f0f82a2b0bfdabf926333b7c4a88",
+      "uncompressed-case-proof/circuit.cir": "36f07c7cb6e91fb9505562b4fc3e280a40bcd4a04e05c0980d75e656b9508a9a",
+      "uncompressed-case-proof/boots.log": "d6517f61034b9578e0ffe62cf86a12ca3a675a8281fa6ed80f9c4e4fcfd40d48",
+      "uncompressed-case-proof/actual-acquisition.cir": "fc3f52e6511e62e17ee5717fc0e9fb3f8375d07b5cb735620f5f41ea16b1995f",
+      "uncompressed-case-proof/spinit": "2ef8c1ce0b4d65b62053c99e75b2bad1d1158582c6ca6cfc19b1e255c84ecfbc",
+      "uncompressed-case-proof/parent865.spice": "8147a7cbae9d1a43b362733a3b52c218c5d04ef519cedf9abf35cd17ff27911e",
+      "uncompressed-case-proof/op.raw": "58b3f44e793efa178032b2a2ed28d719c3c53d3b2dcea9991bf0e25971bdeb7c"
+    }
+  },
+  "primary_source": "https://criu.org/External_bind_mounts",
+  "diagnosis": "Restoring full FSROOT alone still fails. Original case, workspace and Docker /etc file bind mounts shared one superblock; moving only case splits this relationship. Next bounded probe migrates workspace and dedicated Docker data root together and requires stat device equality before restore.",
+  "diagnosis_is_hypothesis_until_native_proof": true,
+  "full_phy_accepted": false
+}

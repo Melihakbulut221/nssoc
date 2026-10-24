@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+SIM ?= icarus
+TOPLEVEL_LANG=verilog
+THIS_MK := $(lastword $(MAKEFILE_LIST))
+BENCH := $(abspath $(dir $(THIS_MK)))
+ROOT := $(abspath $(BENCH)/../../../..)
+VENV_BIN := $(if $(wildcard $(ROOT)/hw/.venv/bin/cocotb-config),$(ROOT)/hw/.venv/bin,$(ROOT)/hw/soc/tools/cocotb-venv/bin)
+ifeq ($(shell command -v cocotb-config 2>/dev/null),)
+GOALS := $(if $(MAKECMDGOALS),$(MAKECMDGOALS),sim)
+.PHONY: $(GOALS)
+$(GOALS):
+	@PATH="$(VENV_BIN):$$PATH" $(MAKE) -f $(THIS_MK) --no-print-directory $@
+else
+PCIE_PYTHON := $(shell cocotb-config --python-bin)
+export PYTHONPATH := $(BENCH):$(shell "$(PCIE_PYTHON)" -c 'import os,sys;print(os.pathsep.join(sys.path))')
+RTL := $(ROOT)/hw/soc/rtl/pcie
+VERILOG_SOURCES ?= $(RTL)/soc_pcie_gen3_dllp_consumer_v3.v
+TOPLEVEL=soc_pcie_gen3_dllp_consumer_v3
+COCOTB_TEST_MODULES=test_soc_pcie_gen3_dllp_consumer_v3
+COMPILE_ARGS += -g2012
+SIM_BUILD ?= sim_build_soc_pcie_gen3_dllp_consumer_v3
+COCOTB_RESULTS_FILE ?= results_soc_pcie_gen3_dllp_consumer_v3.xml
+export COCOTB_RESULTS_FILE
+include $(shell cocotb-config --makefiles)/Makefile.sim
+endif

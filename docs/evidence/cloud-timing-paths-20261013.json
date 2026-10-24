@@ -1,0 +1,474 @@
+{
+  "run": 38317312074,
+  "prior_failed_run": 38317122848,
+  "status": "PASS_EXACT_REPORTED_PATH_CONNECTIVITY_BINDING_NOT_TIMING_CLOSURE",
+  "source_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/timing-paths-cloud-38317312074-1.json",
+  "source_report_sha256": "79b6b45dc52f203591062ae7e5f761fb4e55b65a28afc821a202ab74f72bc6b5",
+  "source_odb_sha256": "49cd570b6b2f56abc084a6648ade3dab44a291d7f3cd3c51ddce3c01143f680b",
+  "source_log_sha256": "569969cd8ab9c55d3a30a8d1110a2e222b36168226d9f9751f29e05322f7e40c",
+  "measured_corner_group_paths": 39,
+  "adopted": false,
+  "worst_paths": [
+    {
+      "phase": "slow_max",
+      "group": "asynchronous",
+      "slack_ns": -5.167434,
+      "endpoints": [
+        {
+          "instance": "input36836",
+          "master": "sg13g2_buf_2",
+          "output_nets": {
+            "X": "net36836"
+          }
+        },
+        {
+          "instance": "$auto$ff.cc:337:slice$1171217",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "packet_pwdata[21]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "slow_max",
+      "group": "path delay",
+      "slack_ns": 1.745925,
+      "endpoints": [
+        {
+          "instance": "$auto$ff.cc:337:slice$1177611",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_pcie_cdc.response_payload[32]"
+          }
+        },
+        {
+          "instance": "$auto$ff.cc:337:slice$1177718",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_pcie_cdc.response[32]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "slow_max",
+      "group": "clk_i",
+      "slack_ns": -6.465747,
+      "endpoints": [
+        {
+          "instance": "$auto$ff.cc:337:slice$1181935",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_ibex.gen_regfile_ff.register_file_i.raddr_b_i[1]"
+          }
+        },
+        {
+          "instance": "$auto$ff.cc:337:slice$1458786",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_clint.g_mtime_secded.u_mtime_dec.check_raw[2]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "slow_max",
+      "group": "eth_gtx",
+      "slack_ns": 1.796355,
+      "endpoints": [
+        {
+          "instance": "$auto$ff.cc:337:slice$1601025",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "net36885"
+          }
+        },
+        {
+          "instance": "hold45620",
+          "master": "sg13g2_dlygate4sd3_1",
+          "output_nets": {
+            "X": "eth_txd_o[7]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "slow_max",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -4.453023,
+      "endpoints": [
+        {
+          "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+          "output_nets": {
+            "A_DOUT[8]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][8]",
+            "A_DOUT[7]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][7]",
+            "B_DOUT[8]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][8]",
+            "B_DOUT[7]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][7]",
+            "A_DOUT[9]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][9]",
+            "A_DOUT[6]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][6]",
+            "B_DOUT[9]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][9]",
+            "B_DOUT[6]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][6]",
+            "A_DOUT[10]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][10]",
+            "A_DOUT[5]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][5]",
+            "B_DOUT[10]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][10]",
+            "B_DOUT[5]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][5]",
+            "A_DOUT[11]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][11]",
+            "A_DOUT[4]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][4]",
+            "B_DOUT[11]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][11]",
+            "B_DOUT[4]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][4]",
+            "A_DOUT[12]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][12]",
+            "A_DOUT[3]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][3]",
+            "B_DOUT[12]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][12]",
+            "B_DOUT[3]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][3]",
+            "A_DOUT[13]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][13]",
+            "A_DOUT[2]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][2]",
+            "B_DOUT[13]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][13]",
+            "B_DOUT[2]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][2]",
+            "A_DOUT[14]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][14]",
+            "A_DOUT[1]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][1]",
+            "B_DOUT[14]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][14]",
+            "B_DOUT[1]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][1]",
+            "A_DOUT[15]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][15]",
+            "A_DOUT[0]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][0]",
+            "B_DOUT[15]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][15]",
+            "B_DOUT[0]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][0]"
+          }
+        },
+        {
+          "instance": "$auto$ff.cc:337:slice$1176547",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.axa[0]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "slow_max",
+      "group": "eth_tx_clk_i",
+      "slack_ns": -3.037894,
+      "endpoints": [
+        {
+          "instance": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+          "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+          "output_nets": {
+            "A_DOUT[8]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][8]",
+            "A_DOUT[7]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][7]",
+            "B_DOUT[8]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][8]",
+            "B_DOUT[7]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][7]",
+            "A_DOUT[9]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][9]",
+            "A_DOUT[6]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][6]",
+            "B_DOUT[9]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][9]",
+            "B_DOUT[6]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][6]",
+            "A_DOUT[10]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][10]",
+            "A_DOUT[5]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][5]",
+            "B_DOUT[10]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][10]",
+            "B_DOUT[5]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][5]",
+            "A_DOUT[11]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][11]",
+            "A_DOUT[4]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][4]",
+            "B_DOUT[11]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][11]",
+            "B_DOUT[4]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][4]",
+            "A_DOUT[12]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][12]",
+            "A_DOUT[3]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][3]",
+            "B_DOUT[12]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][12]",
+            "B_DOUT[3]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][3]",
+            "A_DOUT[13]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][13]",
+            "A_DOUT[2]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][2]",
+            "B_DOUT[13]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][13]",
+            "B_DOUT[2]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][2]",
+            "A_DOUT[14]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][14]",
+            "A_DOUT[1]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][1]",
+            "B_DOUT[14]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][14]",
+            "B_DOUT[1]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][1]",
+            "A_DOUT[15]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][15]",
+            "A_DOUT[0]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][0]",
+            "B_DOUT[15]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][15]",
+            "B_DOUT[0]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][0]"
+          }
+        },
+        {
+          "instance": "$auto$ff.cc:337:slice$1170506",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bxa[7]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "slow_max",
+      "group": "pcie_clk_i",
+      "slack_ns": -5.539688,
+      "endpoints": [
+        {
+          "instance": "$auto$ff.cc:337:slice$1175304",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_pcie.flow.packets.retry.read_pos[3]"
+          }
+        },
+        {
+          "instance": "$auto$ff.cc:337:slice$1175293",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_pcie.flow.packets.retry.tx_data_o[0]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "fast_min",
+      "group": "asynchronous",
+      "slack_ns": -0.258068,
+      "endpoints": [
+        {
+          "instance": "input36837",
+          "master": "sg13g2_buf_1",
+          "output_nets": {
+            "X": "net36837"
+          }
+        },
+        {
+          "instance": "$auto$ff.cc:337:slice$1166660",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_pcie.flow.packets.receiver.b2[1]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "fast_min",
+      "group": "clk_i",
+      "slack_ns": -0.148956,
+      "endpoints": [
+        {
+          "instance": "$auto$ff.cc:337:slice$1178669",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_ram.g_ram_2048x64_ecc.u_ecc.g_scrub.sptr[12]"
+          }
+        },
+        {
+          "instance": "u_ram.g_ram_2048x64_ecc.u_b1",
+          "master": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+          "output_nets": {
+            "A_DOUT[32]": "u_ram.g_ram_2048x64_ecc.dout1[32]",
+            "A_DOUT[31]": "u_ram.g_ram_2048x64_ecc.dout1[31]",
+            "A_DOUT[33]": "u_ram.g_ram_2048x64_ecc.dout1[33]",
+            "A_DOUT[30]": "u_ram.g_ram_2048x64_ecc.dout1[30]",
+            "A_DOUT[34]": "u_ram.g_ram_2048x64_ecc.dout1[34]",
+            "A_DOUT[29]": "u_ram.g_ram_2048x64_ecc.dout1[29]",
+            "A_DOUT[35]": "u_ram.g_ram_2048x64_ecc.dout1[35]",
+            "A_DOUT[28]": "u_ram.g_ram_2048x64_ecc.dout1[28]",
+            "A_DOUT[36]": "u_ram.g_ram_2048x64_ecc.dout1[36]",
+            "A_DOUT[27]": "u_ram.g_ram_2048x64_ecc.dout1[27]",
+            "A_DOUT[37]": "u_ram.g_ram_2048x64_ecc.dout1[37]",
+            "A_DOUT[26]": "u_ram.g_ram_2048x64_ecc.dout1[26]",
+            "A_DOUT[38]": "u_ram.g_ram_2048x64_ecc.dout1[38]",
+            "A_DOUT[25]": "u_ram.g_ram_2048x64_ecc.dout1[25]",
+            "A_DOUT[39]": "u_ram.g_ram_2048x64_ecc.dout1[39]",
+            "A_DOUT[24]": "u_ram.g_ram_2048x64_ecc.dout1[24]",
+            "A_DOUT[40]": "u_ram.g_ram_2048x64_ecc.dout1[40]",
+            "A_DOUT[23]": "u_ram.g_ram_2048x64_ecc.dout1[23]",
+            "A_DOUT[41]": "u_ram.g_ram_2048x64_ecc.dout1[41]",
+            "A_DOUT[22]": "u_ram.g_ram_2048x64_ecc.dout1[22]",
+            "A_DOUT[42]": "u_ram.g_ram_2048x64_ecc.dout1[42]",
+            "A_DOUT[21]": "u_ram.g_ram_2048x64_ecc.dout1[21]",
+            "A_DOUT[43]": "u_ram.g_ram_2048x64_ecc.dout1[43]",
+            "A_DOUT[20]": "u_ram.g_ram_2048x64_ecc.dout1[20]",
+            "A_DOUT[44]": "u_ram.g_ram_2048x64_ecc.dout1[44]",
+            "A_DOUT[19]": "u_ram.g_ram_2048x64_ecc.dout1[19]",
+            "A_DOUT[45]": "u_ram.g_ram_2048x64_ecc.dout1[45]",
+            "A_DOUT[18]": "u_ram.g_ram_2048x64_ecc.dout1[18]",
+            "A_DOUT[46]": "u_ram.g_ram_2048x64_ecc.dout1[46]",
+            "A_DOUT[17]": "u_ram.g_ram_2048x64_ecc.dout1[17]",
+            "A_DOUT[47]": "u_ram.g_ram_2048x64_ecc.dout1[47]",
+            "A_DOUT[16]": "u_ram.g_ram_2048x64_ecc.dout1[16]",
+            "A_DOUT[48]": "u_ram.g_ram_2048x64_ecc.dout1[48]",
+            "A_DOUT[15]": "u_ram.g_ram_2048x64_ecc.dout1[15]",
+            "A_DOUT[49]": "u_ram.g_ram_2048x64_ecc.dout1[49]",
+            "A_DOUT[14]": "u_ram.g_ram_2048x64_ecc.dout1[14]",
+            "A_DOUT[50]": "u_ram.g_ram_2048x64_ecc.dout1[50]",
+            "A_DOUT[13]": "u_ram.g_ram_2048x64_ecc.dout1[13]",
+            "A_DOUT[51]": "u_ram.g_ram_2048x64_ecc.dout1[51]",
+            "A_DOUT[12]": "u_ram.g_ram_2048x64_ecc.dout1[12]",
+            "A_DOUT[52]": "u_ram.g_ram_2048x64_ecc.dout1[52]",
+            "A_DOUT[11]": "u_ram.g_ram_2048x64_ecc.dout1[11]",
+            "A_DOUT[53]": "u_ram.g_ram_2048x64_ecc.dout1[53]",
+            "A_DOUT[10]": "u_ram.g_ram_2048x64_ecc.dout1[10]",
+            "A_DOUT[54]": "u_ram.g_ram_2048x64_ecc.dout1[54]",
+            "A_DOUT[9]": "u_ram.g_ram_2048x64_ecc.dout1[9]",
+            "A_DOUT[55]": "u_ram.g_ram_2048x64_ecc.dout1[55]",
+            "A_DOUT[8]": "u_ram.g_ram_2048x64_ecc.dout1[8]",
+            "A_DOUT[56]": "u_ram.g_ram_2048x64_ecc.dout1[56]",
+            "A_DOUT[7]": "u_ram.g_ram_2048x64_ecc.dout1[7]",
+            "A_DOUT[57]": "u_ram.g_ram_2048x64_ecc.dout1[57]",
+            "A_DOUT[6]": "u_ram.g_ram_2048x64_ecc.dout1[6]",
+            "A_DOUT[58]": "u_ram.g_ram_2048x64_ecc.dout1[58]",
+            "A_DOUT[5]": "u_ram.g_ram_2048x64_ecc.dout1[5]",
+            "A_DOUT[59]": "u_ram.g_ram_2048x64_ecc.dout1[59]",
+            "A_DOUT[4]": "u_ram.g_ram_2048x64_ecc.dout1[4]",
+            "A_DOUT[60]": "u_ram.g_ram_2048x64_ecc.dout1[60]",
+            "A_DOUT[3]": "u_ram.g_ram_2048x64_ecc.dout1[3]",
+            "A_DOUT[61]": "u_ram.g_ram_2048x64_ecc.dout1[61]",
+            "A_DOUT[2]": "u_ram.g_ram_2048x64_ecc.dout1[2]",
+            "A_DOUT[62]": "u_ram.g_ram_2048x64_ecc.dout1[62]",
+            "A_DOUT[1]": "u_ram.g_ram_2048x64_ecc.dout1[1]",
+            "A_DOUT[63]": "u_ram.g_ram_2048x64_ecc.dout1[63]",
+            "A_DOUT[0]": "u_ram.g_ram_2048x64_ecc.dout1[0]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "fast_min",
+      "group": "eth_gtx",
+      "slack_ns": 0.032741,
+      "endpoints": [
+        {
+          "instance": "$auto$ff.cc:337:slice$1176652",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "net36877"
+          }
+        },
+        {
+          "instance": "hold45638",
+          "master": "sg13g2_dlygate4sd3_1",
+          "output_nets": {
+            "X": "eth_tx_er_o"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "fast_min",
+      "group": "eth_rx_clk_i",
+      "slack_ns": -0.004299,
+      "endpoints": [
+        {
+          "instance": "$auto$ff.cc:337:slice$1439864",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a.rst_ni"
+          }
+        },
+        {
+          "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+          "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+          "output_nets": {
+            "A_DOUT[8]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][8]",
+            "A_DOUT[7]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][7]",
+            "B_DOUT[8]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][8]",
+            "B_DOUT[7]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][7]",
+            "A_DOUT[9]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][9]",
+            "A_DOUT[6]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][6]",
+            "B_DOUT[9]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][9]",
+            "B_DOUT[6]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][6]",
+            "A_DOUT[10]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][10]",
+            "A_DOUT[5]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][5]",
+            "B_DOUT[10]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][10]",
+            "B_DOUT[5]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][5]",
+            "A_DOUT[11]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][11]",
+            "A_DOUT[4]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][4]",
+            "B_DOUT[11]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][11]",
+            "B_DOUT[4]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][4]",
+            "A_DOUT[12]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][12]",
+            "A_DOUT[3]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][3]",
+            "B_DOUT[12]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][12]",
+            "B_DOUT[3]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][3]",
+            "A_DOUT[13]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][13]",
+            "A_DOUT[2]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][2]",
+            "B_DOUT[13]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][13]",
+            "B_DOUT[2]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][2]",
+            "A_DOUT[14]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][14]",
+            "A_DOUT[1]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][1]",
+            "B_DOUT[14]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][14]",
+            "B_DOUT[1]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][1]",
+            "A_DOUT[15]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][15]",
+            "A_DOUT[0]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_a\\[7\\][0]",
+            "B_DOUT[15]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][15]",
+            "B_DOUT[0]": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.bank_b\\[7\\][0]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "fast_min",
+      "group": "eth_tx_clk_i",
+      "slack_ns": -0.003606,
+      "endpoints": [
+        {
+          "instance": "$auto$ff.cc:337:slice$1186475",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.u_b_cross.state_q[2]"
+          }
+        },
+        {
+          "instance": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+          "master": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+          "output_nets": {
+            "A_DOUT[8]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][8]",
+            "A_DOUT[7]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][7]",
+            "B_DOUT[8]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][8]",
+            "B_DOUT[7]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][7]",
+            "A_DOUT[9]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][9]",
+            "A_DOUT[6]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][6]",
+            "B_DOUT[9]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][9]",
+            "B_DOUT[6]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][6]",
+            "A_DOUT[10]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][10]",
+            "A_DOUT[5]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][5]",
+            "B_DOUT[10]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][10]",
+            "B_DOUT[5]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][5]",
+            "A_DOUT[11]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][11]",
+            "A_DOUT[4]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][4]",
+            "B_DOUT[11]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][11]",
+            "B_DOUT[4]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][4]",
+            "A_DOUT[12]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][12]",
+            "A_DOUT[3]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][3]",
+            "B_DOUT[12]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][12]",
+            "B_DOUT[3]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][3]",
+            "A_DOUT[13]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][13]",
+            "A_DOUT[2]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][2]",
+            "B_DOUT[13]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][13]",
+            "B_DOUT[2]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][2]",
+            "A_DOUT[14]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][14]",
+            "A_DOUT[1]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][1]",
+            "B_DOUT[14]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][14]",
+            "B_DOUT[1]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][1]",
+            "A_DOUT[15]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][15]",
+            "A_DOUT[0]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_a\\[6\\][0]",
+            "B_DOUT[15]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][15]",
+            "B_DOUT[0]": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.bank_b\\[6\\][0]"
+          }
+        }
+      ]
+    },
+    {
+      "phase": "fast_min",
+      "group": "pcie_clk_i",
+      "slack_ns": -0.920199,
+      "endpoints": [
+        {
+          "instance": "input36851",
+          "master": "sg13g2_buf_1",
+          "output_nets": {
+            "X": "net36851"
+          }
+        },
+        {
+          "instance": "$auto$ff.cc:337:slice$1165362",
+          "master": "sg13g2_dfrbpq_1",
+          "output_nets": {
+            "Q": "u_pcie.credit_header_consumed_o[0]"
+          }
+        }
+      ]
+    }
+  ],
+  "next_action": "Historical95cellECO routes still connect Ethernet SRAM outputs combinationally to cross-check address. Current source pipelines both cross checks. Restore the completed newer RX-return-metadata postCTS database and its exact reader before further physical ECO against obsolete cones."
+}

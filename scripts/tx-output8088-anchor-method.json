@@ -1,0 +1,284 @@
+{
+  "baseline_path": "scripts/bind_tx_raw64_native_anchors.py",
+  "baseline_sha256": "59cf65bc2f8e05c2588338f733e2b8c8e35463545ae957aa96cc848f17e24ab3",
+  "candidate_path": "scripts/bind_tx_output8088_native_anchors.py",
+  "candidate_sha256": "65df9db9d6016f42f85ef000bb1c02c21d0be0706468e0a0769cd7fda93f4f9e",
+  "changes": [
+    {
+      "start": 78,
+      "end": 80,
+      "replacement": "88"
+    },
+    {
+      "start": 299,
+      "end": 304,
+      "replacement": "output8088"
+    },
+    {
+      "start": 335,
+      "end": 336,
+      "replacement": "o"
+    },
+    {
+      "start": 337,
+      "end": 341,
+      "replacement": "tput8088"
+    },
+    {
+      "start": 342,
+      "end": 342,
+      "replacement": "pa"
+    },
+    {
+      "start": 343,
+      "end": 350,
+      "replacement": "e"
+    },
+    {
+      "start": 351,
+      "end": 363,
+      "replacement": ""
+    },
+    {
+      "start": 364,
+      "end": 365,
+      "replacement": ""
+    },
+    {
+      "start": 935,
+      "end": 937,
+      "replacement": "88"
+    },
+    {
+      "start": 1252,
+      "end": 1255,
+      "replacement": "703"
+    },
+    {
+      "start": 1575,
+      "end": 1575,
+      "replacement": "rsil','rsil_sub'),('"
+    },
+    {
+      "start": 1796,
+      "end": 1796,
+      "replacement": ";output_hbt_instances=[]"
+    },
+    {
+      "start": 1817,
+      "end": 1817,
+      "replacement": ",in_output=False"
+    },
+    {
+      "start": 1874,
+      "end": 1875,
+      "replacement": "n_output=in_output or"
+    },
+    {
+      "start": 1883,
+      "end": 1883,
+      "replacement": "actual_output14'\n        if name in ('"
+    },
+    {
+      "start": 1888,
+      "end": 1888,
+      "replacement": ",'rsil')"
+    },
+    {
+      "start": 2017,
+      "end": 2018,
+      "replacement": "\n            if in_output:output_hbt_instances.append((cell,tr))\n            "
+    },
+    {
+      "start": 2292,
+      "end": 2292,
+      "replacement": ",in_output"
+    },
+    {
+      "start": 2358,
+      "end": 2359,
+      "replacement": "6"
+    },
+    {
+      "start": 2385,
+      "end": 2385,
+      "replacement": "93\n    assert len(output_hbt_instances)==4\n    pcell=OUT/'npn13G2_code.py'\n    record=json.loads((OUT/'output_leaf_proof/layout/result.json').read_text())\n    pcell_sha='634cda63717ab4122f15e0fef5f3e"
+    },
+    {
+      "start": 2386,
+      "end": 2386,
+      "replacement": "475e"
+    },
+    {
+      "start": 2387,
+      "end": 2387,
+      "replacement": "0e67e043823f5b8ed208e695f1729'\n    assert sha(pcell)==pcell_sha\n    assert [v for k,v in record['input_sha256'].items()if k.endswith('/ihp/npn13G2_code.py')]==[pcell_sha]"
+    },
+    {
+      "start": 6888,
+      "end": 6890,
+      "replacement": " in ("
+    },
+    {
+      "start": 6896,
+      "end": 6896,
+      "replacement": ",'rsil')"
+    },
+    {
+      "start": 7112,
+      "end": 7114,
+      "replacement": " in ("
+    },
+    {
+      "start": 7124,
+      "end": 7124,
+      "replacement": ",'rsil_sub')"
+    },
+    {
+      "start": 7314,
+      "end": 7314,
+      "replacement": " cell.name.split('$')[0].lower()==cls.name and"
+    },
+    {
+      "start": 7920,
+      "end": 7920,
+      "replacement": "\n            if cls.name=='npn13G2':\n                bounds=pya.Box()\n                for term in cls.terminal_definitions():\n                    if term.name=='S':continue\n                    for rr in native.shapes_of_terminal(d.terminal_ref(term.id())).values():bounds+=rr.bbox()\n                output_instances=[(cell,tr)for cell,tr in output_hbt_instances if(cell.bbox().transformed(tr)&bounds)==bounds]\n                if output_instances:\n                    assert len(output_instances)==1 and d.parameter('Nx')in(1,8)\n                    cell,tr=output_instances[0]\n                    assert tr.angle==0 and not tr.is_mirror()\n                    pins={m:[shape.box for shape in cell.each_shape(layout.layer(m,2))if shape.is_box()]for m in(8,10)}\n                    assert len(pins[8])==2 and len(pins[10])==1\n                    base,collector=sorted(pins[8],key=lambda box:box.center().y)\n                    assert base.center().y<collector.center().y\n                    m,local={'C':(8,collector),'B':(8,base),'E':(10,pins[10][0])}[td.name]\n                    box=local.transformed(tr);point=box.center()\n                    conductor=pya.Region(top.begin_shapes_rec(layout.layer(m,0))).merged()\n                    assert(pya.Region(box)-conductor).is_empty()\n                    nn=native.probe_net(native.layer_by_index(mapping[m]),point)\n                    assert nn is not None and nn.cluster_id==net.cluster_id\n                    # Override all same-net generic candidates with the actual\n                    # pinned PCell terminal plane, preserving REF C/B separation.\n                    candidates=[(m,point,'pinned_native_output_hbt_'+td.name+'_pin')]"
+    },
+    {
+      "start": 9173,
+      "end": 9174,
+      "replacement": "5"
+    },
+    {
+      "start": 9548,
+      "end": 9550,
+      "replacement": "6"
+    },
+    {
+      "start": 9551,
+      "end": 9551,
+      "replacement": "0"
+    },
+    {
+      "start": 9601,
+      "end": 9603,
+      "replacement": "32"
+    },
+    {
+      "start": 9623,
+      "end": 9624,
+      "replacement": "5"
+    },
+    {
+      "start": 9871,
+      "end": 9873,
+      "replacement": "6"
+    },
+    {
+      "start": 9874,
+      "end": 9874,
+      "replacement": "0"
+    },
+    {
+      "start": 9935,
+      "end": 9937,
+      "replacement": "6"
+    },
+    {
+      "start": 9938,
+      "end": 9938,
+      "replacement": "0"
+    },
+    {
+      "start": 11090,
+      "end": 11090,
+      "replacement": ",'output_hbt_collector_base_planes_swapped','duplicate_terminal'"
+    },
+    {
+      "start": 11448,
+      "end": 11448,
+      "replacement": "if fault=='body_a"
+    },
+    {
+      "start": 11449,
+      "end": 11449,
+      "replacement": "_wir"
+    },
+    {
+      "start": 11450,
+      "end": 11450,
+      "replacement": "'"
+    },
+    {
+      "start": 11542,
+      "end": 11542,
+      "replacement": "]\n        elif fault=='duplicate_terminal':altered[-1]=copy.deepcopy(altered[0])\n        else:\n            paired=[]\n            for did in devices:\n                rs=[r for r in altered if r['device']==did and r.get('selection','').startswith('pinned_native_output_hbt_')]\n                if not rs:continue\n                cc=next(r for r in rs if r['terminal']=='C');bb=next(r for r in rs if r['terminal']=='B')\n                if cc['native_cluster']==bb['native_cluster']:paired.append((cc,bb))\n            assert len(paired)==1\n            cc,bb=paired[0];assert cc['point_dbu']!=bb['point_dbu']\n            for k in ['reference_label','metal','point_dbu','wire_component']:cc[k],bb[k]=bb[k],cc[k"
+    },
+    {
+      "start": 11793,
+      "end": 11795,
+      "replacement": "6"
+    },
+    {
+      "start": 11796,
+      "end": 11796,
+      "replacement": "0"
+    },
+    {
+      "start": 11826,
+      "end": 11828,
+      "replacement": "32"
+    },
+    {
+      "start": 11836,
+      "end": 11838,
+      "replacement": "88"
+    },
+    {
+      "start": 11848,
+      "end": 11852,
+      "replacement": "SIX"
+    },
+    {
+      "start": 11975,
+      "end": 11977,
+      "replacement": "88"
+    },
+    {
+      "start": 11990,
+      "end": 11992,
+      "replacement": "6"
+    },
+    {
+      "start": 11993,
+      "end": 11993,
+      "replacement": "0"
+    },
+    {
+      "start": 12013,
+      "end": 12015,
+      "replacement": "32"
+    },
+    {
+      "start": 12033,
+      "end": 12035,
+      "replacement": "88"
+    },
+    {
+      "start": 12051,
+      "end": 12052,
+      "replacement": "5"
+    },
+    {
+      "start": 12106,
+      "end": 12109,
+      "replacement": "703"
+    },
+    {
+      "start": 12231,
+      "end": 12231,
+      "replacement": "/result.json',pcell,OUT/'output_leaf_proof/layout"
+    }
+  ],
+  "scope": "Full native8088 terminal census; original four faults plus duplicate terminal and actual output REF same-net C/B swap. Output four HBT planes use same pinned native PCell identities as verified output14; core terminal selection unchanged."
+}

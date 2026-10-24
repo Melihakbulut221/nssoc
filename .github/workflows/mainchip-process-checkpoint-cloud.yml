@@ -1,0 +1,144 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-process-checkpoint-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/mainchip-process-checkpoint-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: mainchip-process-checkpoint-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  initial:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact source bytes
+        run: |
+          echo 'b1ec1b367a17ae4bdc07683f9aa8a12628dd3c5430e441c179a94c54984cbc63  scripts/cloud_mainchip_process_checkpoint.py' | sha256sum --check
+          echo 'ef7b22a3c1e8cd35b488c7c30e22b3b30655a6998825ea43c0a95359def376d8  scripts/mainchip_process_checkpoint_probe.tcl' | sha256sum --check
+      - name: Install cloud-only checkpoint dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev
+          git init "$RUNNER_TEMP/criu-src"
+          git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
+          git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          git -C "$RUNNER_TEMP/criu-src" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/criu-src" rev-parse HEAD)" = 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          make -C "$RUNNER_TEMP/criu-src" -j2 criu PYTHON=/usr/bin/python3 2>&1 | tee "$RUNNER_TEMP/criu-build.log"
+          sudo install -m 755 "$RUNNER_TEMP/criu-src/criu/criu" /usr/sbin/criu
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          p=pathlib.Path('/usr/sbin/criu')
+          d=dict(source_repository='https://github.com/checkpoint-restore/criu',source_tag='v4.2.1',source_commit='9539417f3e3cfa4eb84c319cd71f4d52f1f08645',binary_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),version=subprocess.check_output([str(p),'--version'],text=True),libraries=subprocess.check_output(['ldd',str(p)],text=True))
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
+          PYCODE
+          python3 -m py_compile scripts/cloud_mainchip_process_checkpoint.py
+      - name: Actual native checkpoint proof
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_process_checkpoint.py --stage initial
+      - name: Publish exact process images and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=cloud-mainchip-checkpoint-initial
+          mkdir -p "$root"
+          if [ -f "$RUNNER_TEMP/criu-build.log" ]; then cp "$RUNNER_TEMP/criu-build.log" "$root/criu-build.log"; fi
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","route_complete":false,"final_timing_complete":false}' > "$root/result.json"
+          fi
+          stem="mainchip-checkpoint-initial-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','mainchip-checkpoint-initial',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Preserve failed publication
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-checkpoint-initial
+          path: cloud-mainchip-checkpoint-initial/
+          retention-days: 30
+  cross:
+    needs: initial
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact source bytes
+        run: |
+          echo 'b1ec1b367a17ae4bdc07683f9aa8a12628dd3c5430e441c179a94c54984cbc63  scripts/cloud_mainchip_process_checkpoint.py' | sha256sum --check
+          echo 'ef7b22a3c1e8cd35b488c7c30e22b3b30655a6998825ea43c0a95359def376d8  scripts/mainchip_process_checkpoint_probe.tcl' | sha256sum --check
+      - name: Install cloud-only checkpoint dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev
+          git init "$RUNNER_TEMP/criu-src"
+          git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
+          git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          git -C "$RUNNER_TEMP/criu-src" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/criu-src" rev-parse HEAD)" = 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          make -C "$RUNNER_TEMP/criu-src" -j2 criu PYTHON=/usr/bin/python3 2>&1 | tee "$RUNNER_TEMP/criu-build.log"
+          sudo install -m 755 "$RUNNER_TEMP/criu-src/criu/criu" /usr/sbin/criu
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          p=pathlib.Path('/usr/sbin/criu')
+          d=dict(source_repository='https://github.com/checkpoint-restore/criu',source_tag='v4.2.1',source_commit='9539417f3e3cfa4eb84c319cd71f4d52f1f08645',binary_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),version=subprocess.check_output([str(p),'--version'],text=True),libraries=subprocess.check_output(['ldd',str(p)],text=True))
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
+          PYCODE
+          python3 -m py_compile scripts/cloud_mainchip_process_checkpoint.py
+      - name: Actual native checkpoint proof
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_process_checkpoint.py --stage cross
+      - name: Publish exact process images and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=cloud-mainchip-checkpoint-cross
+          mkdir -p "$root"
+          if [ -f "$RUNNER_TEMP/criu-build.log" ]; then cp "$RUNNER_TEMP/criu-build.log" "$root/criu-build.log"; fi
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","route_complete":false,"final_timing_complete":false}' > "$root/result.json"
+          fi
+          stem="mainchip-checkpoint-cross-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','mainchip-checkpoint-cross',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Preserve failed publication
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-checkpoint-cross
+          path: cloud-mainchip-checkpoint-cross/
+          retention-days: 30

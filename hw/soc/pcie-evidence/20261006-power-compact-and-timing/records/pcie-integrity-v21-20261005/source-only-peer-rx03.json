@@ -1,0 +1,82 @@
+{
+  "status": "PASS_SOURCE_ONLY_V21_REGISTERED_RETIRE",
+  "freeze": {
+    "bytes": 2837,
+    "sha256": "c7ff40ed5045e9265a40fe8aa27fc073b335649f9fd65579372f22b3eaaa4e97"
+  },
+  "findings": [],
+  "source_pins": {
+    "scripts/generate_pcie_integrity_pipeline_v21.py": {
+      "bytes": 5192,
+      "sha256": "15f0d947e1f8850b422ac63eddda286443382f26b601e78e69c227a36d0026b4"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v21.py": {
+      "bytes": 11276,
+      "sha256": "29287ddf51991dd137c0b13ab46ea6532c3411dc5ed06ab14221df2fa4a5a35b"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v21.v": {
+      "bytes": 3324,
+      "sha256": "05ba0d636c266422ddb24e1f8d2e46e6a54f011ba876fa7ae2df566ee188a3b2"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v21.v": {
+      "bytes": 194804,
+      "sha256": "740757e328072118e57a775cf7987f942bd44c2f4e411484f9f1aeac8310ae78"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v21": {
+      "bytes": 1528,
+      "sha256": "ad50551298e96e1a9ebe94348cfc058c57dd488cfe3966fca05e1b5f945712e1"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v21.py": {
+      "bytes": 25757,
+      "sha256": "bcfb6d8f7e6ec080d9c2c34014ec01b4d0f6874c8eceb1aaf467eefd6f911b8a"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v21.py": {
+      "bytes": 5870,
+      "sha256": "558212cdea8b04c6c1f784b21488d305264e8aa17ba65850fac41e47102bf12a"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v21_nominal.py": {
+      "bytes": 4437,
+      "sha256": "c64d9907b933391719d22187a08375cf09b20b32603263d3f9afeec93a328bd4"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v21_pipeline.py": {
+      "bytes": 10073,
+      "sha256": "3dbb4a4fa26c2741267d701b53549e68674b6cfd6c28c5ee69fba80e7d9e427c"
+    }
+  },
+  "contract": {
+    "bytes": 10798,
+    "sha256": "b547913785a996155405d5d9892a25f79d550654c965621652bbf5aaa9e2b39a"
+  },
+  "previous_source_finding": {
+    "bytes": 1097,
+    "sha256": "534dc7997a3c49e93ca0e4151877368c111f73ed9b988599131010d6168d47c1"
+  },
+  "review": [
+    "Full generator, generated descriptor diffs and complete V17 inverse inspected. Eight exact regions implement only declarations, retire availability, atomic payload writer, reset/flush/fault descriptor ownership, old-head transfer/capture and EDS drain. All original parser/CRC/read tree/verdict/cache/ring writers preserved exactly.",
+    "Old descriptor moves to output on pop; same-edge capture writes all six fields and wins descriptor validity. Nonempty held descriptor cannot be overwritten; zero-keep descriptor may drain while old output holds. Separate payload writer may update invalid bytes on parser fault but validity priority blocks later leakage until complete new capture.",
+    "Full helper, wrapper and Makefile read and exact version-only inverse reproduced. Real XML expected case list is dynamically parsed; actual16 cases required for full profile and explicit skipped counts for targeted selections. Original13 public byte/event oracle prefix unchanged.",
+    "Literal component copies exact DUT snippets for control/payload/priority while queue oracle independently expresses old-state transfer.4096 declared binary control assignments,14 X/Z field cases/reset/wrap and nine separately constructed mutations remain actual simulation obligations, not source-only PASS.",
+    "Nominal dual-DUT observer samples V17 pre-NBA public output and compares V21 afterNBA at+1ps, with same-cycle ring/parser/verdict cadence only when both active/ready. No arbitrary stall/fault cycle-equivalence claim. Two declared ready1 traffic cases plus actual registered-payload-bypass negative required.",
+    "New public cases drive only physical raw/control ports; hierarchical descriptor reads are coverage witnesses. Held empty drain requires observed empty pops/simultaneous capture; eight explicit control epochs clear ring/descriptor/output before fresh transaction scoreboard. Parser-fault four modes now observe actual settled fault/valid/ready/keep one ns after drive, before the original2ns public sample, and require positive accepted bytes exactly for acceptance mode. Prior missing boundary witness was corrected additively; original draft retained.",
+    "Final freeze03 adds four whole-DUT negative edits (fault/start descriptor clear, blocked empty pop, full overwrite) bound to actual public cases. All12 distinct full-DUT edit counts and actual case names verified; these complement nine component mutations and still need real failure detection.",
+    "Original valid_o prospective fault policy remains unchanged: old public beat can handshake on parser fault edge, ownership clears thereafter. Fault test cancels only oracle remainder after actual error and requires clean fresh epoch bytes; no arbitrary invalid queue masking."
+  ],
+  "pure_source_construction_checks": {
+    "full_generator_forward_inverse": true,
+    "exact_version_helpers": 3,
+    "public_original_cases": 13,
+    "new_total_cases": 16,
+    "distinct_component_mutant_constructions": 9,
+    "whole_DUT_mutants_bound_to_actual_cases": 12
+  },
+  "HDL_or_native_executed": false,
+  "limitations": [
+    "Actual sixteen public cases, literal/sequential/XZ controls and all intended mutations have not yet passed.",
+    "Timing improvement is a hypothesis; new same4ns mapping/proof/three-cornerSTA required after real functional gates.",
+    "MAX4118 and main-chip/fullPHY acceptance remain separate."
+  ],
+  "method": {
+    "bytes": 6664,
+    "sha256": "5427a4594154ca4ad532272ab42d071480f07f8b2865e1ddf5d64c68c75094a8"
+  }
+}

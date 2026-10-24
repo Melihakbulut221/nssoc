@@ -1,0 +1,49 @@
+{
+  "status": "CLEAN_BOUNDED_SOURCE_ONLY_PEER",
+  "utc": "2026-10-05T00:35:25.569387+00:00",
+  "reviewer": "targeted_failure",
+  "source_pins": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v3.v": {
+      "bytes": 5792,
+      "sha256": "8ac910e51486d5e04aeee380675144c9769a8ebbfe4b502cb36f0830c6839b4c"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_record_descrambler_v1.v": {
+      "bytes": 6105,
+      "sha256": "514dc351e8f140635c16cf9bfe4c0ce4066bc9566493a55b55d46820fac7b007"
+    },
+    "scripts/check_pcie_gen3_recovered_x4_v3.py": {
+      "bytes": 8149,
+      "sha256": "7e140a6463e0770a2a5959dbdd9a290bf804cc744a82dd6432f162c2ce90112f"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_recovered_x4_v3": {
+      "bytes": 1463,
+      "sha256": "83f81c5ae14556e66cb68f023c96893824da08ed34441245c75fff3873a4f3dd"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_x4_v3.py": {
+      "bytes": 16549,
+      "sha256": "58280100a30f37b0d99f6a3fad929b01b23a0171c505616014a4aab613eae54d"
+    },
+    "sw/tests/test_pcie_gen3_recovered_x4_v3.py": {
+      "bytes": 4351,
+      "sha256": "09683a53a72940699808bed983c4fb116e4710e5a4a6cb87551d84c3c9fc2c8a"
+    }
+  },
+  "scope": "Read-only six-file source review at these exact bytes. No RTL/native rerun, waveform replay, timing, CDC implementation or full PCIe acceptance.",
+  "findings": [],
+  "checked": [
+    "Each recovered-domain32bit input slice/194bitrecord/3bitlength/metadata feeds its own pinnedCDC, then the correct logical-lane-seeded descrambler before common-clock SDS cohort.",
+    "Allfront CDC readiness requires four runningdomains and no synchronizedtransport or decoderformatfault. Earlyonecyclearm and secondarm are epochfaults; coordinatedreset clears all leaf ownership and status.",
+    "CDC ready and decodervalid share front_ready; decoder held-output advancement is gated by exactcohortready. DATAquartet atomic and SKP per-lane backpressure are maintained through the extra decoderregister.",
+    "Formatfaults abort untilreset. lane_error_o and lfsr_mismatch_o are sticky diagnostics and are deliberately absent from front_fault; paritymismatch does not cause retrain.",
+    "Descrambler state updates only on accepted records. EIEOS resets after record; SDS/nonSKP advance128; SKP holdsstate. Incomingtrailer never reseeds. Parity accumulates scrambledDATA and resets atSDS/standardSKP. OSbytes remainunchanged.",
+    "Raw-port oracle is an independent bitserial LFSR implementation across four independent recoveredclocks; actualDATAexpected queue contains clearpayload and exactSKPsideband record/length. All32 aggregate bitphases, variable66..194bitSKPs, DATApayloadEIEOSalias, stalls/reset/overflow/loss/arm and deliberate parity/statefault tests are present.",
+    "Runner validates actualcaseidentity/counts, no skippedfullsuite, sourceandtool rehashes, explicit pinnedvendorFIFO, separate failurecapture, processgroupresource/cancellation cleanup and no healthy elapsedcutoff.",
+    "ignored_cohort_ready mutant now expects first actual Unexpected SKP parity or LFSR diagnostic; this is a substantive record-loss/duplicate detection because decoderstate advances incorrectly. Previousfailed mutant expectation remains an author evidence item, not a pass claim by this source review."
+  ],
+  "limitations": [
+    "All reset inputs are assumed clean coordinated levels; physical clock/reset distribution and metastability timing are not qualified by RTL source review.",
+    "Bufferedvalidprefix may retire before a synchronizedheldfault is observed; downstream must discard the abortedpacketepoch.",
+    "NormalSKP/EDS adjacency/cohort policy, fullLTSSM, TSfield descrambling/DC balance and physicalCDR remain explicitly outside this wrapper.",
+    "Tests and14/15 initialcontrols mentioned by author were not independently executed here. Currentexactsource includes revisedexpectation; finalnative/disposition validation remainsroot authority."
+  ]
+}

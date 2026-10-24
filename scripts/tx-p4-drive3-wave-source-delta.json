@@ -1,0 +1,232 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_fast_wire20_model_compare.py",
+      "baseline_sha256": "aa915411bda4476c8ab8de25117da1fe84de9cfe979c6c1ab3291d4a2c62e7e0",
+      "candidate_path": "scripts/cloud_tx_p4_drive3_model_compare.py",
+      "candidate_sha256": "64b8e2ae0c80941625de1b1dc0eec5fcb2c9fb2fe87a1f07d68b320cd6e79508",
+      "edits": [
+        {
+          "before": "OUT=ROOT/'hw/soc/out/cloud-tx-fast-wire20-model-compare'",
+          "after": "OUT=ROOT/'hw/soc/out/cloud-tx-p4-drive3-model-compare'",
+          "count": 1
+        },
+        {
+          "before": "def main():\n    assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False,parents=True)\n    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False)\n    try:\n        models={};proof={};physical_keys={}\n        for label,name,root in [('baseline','tx-v5-timing-priority-composition-pass-20261019.json','cloud-tx-v5-timing-priority-assembly'),('candidate','tx-fast-wire20-composition-pass-20261020.json','cloud-tx-fast-wire20-physical')]:\n            pin=json.loads((ROOT/'docs/evidence'/name).read_text());archive=OUT/(label+'.tar.gz')\n            fetch(pin['url'],pin['sha256'],archive);assert archive.stat().st_size==pin['bytes']\n            with tarfile.open(archive)as tar:\n                raw=tar.extractfile(root+'/binding96/tree1674-compact01.spice').read()\n                assert hashlib.sha256(raw).hexdigest()==pin['model_sha256']['compact']\n                def member(rel,digest):\n                    data=tar.extractfile(root+'/'+rel).read();assert hashlib.sha256(data).hexdigest()==digest;return json.loads(data)\n                interface=member('wire96/all-interface-probes.json',pin['outputs']['wire96/all-interface-probes.json'])\n                assert interface['status']=='PASS_ALL124_PHYSICAL_INPUT_LEGS_AND372_DATA_BASES'\n                def bound(rel):\n                    hits=[x for n,x in interface['inputs'].items()if n.endswith('/'+rel)];assert len(hits)==1\n                    return member(rel,hits[0])\n                locations=bound('wire96/device-locations01.json');layout=bound('layout/result.json')\n                binding=member('binding96/binding01.json',pin['outputs']['binding96/binding01.json'])\n                def rect(raw):\n                    fields=list(map(float,re.findall(r'-?\\d+(?:\\.\\d+)?',raw)));assert len(fields)==4;return fields\n                dx,dy=layout['origin_translation_um'];boxes={}\n                for tag,p in layout['placements'].items():\n                    l,b,rr,t=rect(p['bbox_um']);boxes[tag]=[l+dx,b+dy,rr+dx,t+dy]\n                ids={d['native_id']:d['instance'].lower()for d in binding['devices']}\n                keys={}\n                for d in locations['devices']:\n                    b=rect(d['pcell']['bbox']);owners=[tag for tag,q in boxes.items()if b[0]>=q[0]-1e-8 and b[1]>=q[1]-1e-8 and b[2]<=q[2]+1e-8 and b[3]<=q[3]+1e-8];assert len(owners)==1\n                    tag=owners[0];q=boxes[tag];relative=[b[0]-q[0],b[1]-q[1],b[2]-q[0],b[3]-q[1]]\n                    quantized=tuple(round(x*1000)for x in relative);assert all(abs(x-y/1000)<1e-7 for x,y in zip(relative,quantized))\n                    key=(tag,d['model'].lower(),quantized);assert key not in keys;keys[key]=ids[d['native_id']]\n                assert len(keys)==len(ids)==len(locations['devices'])==1674\n                physical_keys[label]=keys\n\n            archive.unlink();(OUT/(label+'.spice')).write_bytes(raw);models[label]=raw.decode()\n            proof[label]=dict(source_run=pin['source_run'],source_head=pin['source_head'],summary_sha256=pin['summary_sha256'],archive_sha256=pin['sha256'],compact_sha256=pin['model_sha256']['compact'])\n        result['sources']=proof\n        a,b=[statements(models[label])for label in ('baseline','candidate')]\n        result['byte_identical']=models['baseline']==models['candidate']\n        result['statement_diff']=list(difflib.unified_diff(models['baseline'].splitlines(),models['candidate'].splitlines()))[:100]\n        # Native numbering changes with placement. Fix correspondence from\n        # independently hashed primitive positions inside unchanged named macros,\n        # before looking at any electrical node or parameter values.\n        assert physical_keys['baseline'].keys()==physical_keys['candidate'].keys()\n        original_names={row[0].lower():row[0]for row in a[1:-1]};assert len(original_names)==1674\n        rename={physical_keys['candidate'][k]:original_names[physical_keys['baseline'][k]]for k in physical_keys['baseline']}\n        assert len(rename)==len(set(rename.values()))==1674\n        assert set(rename)=={r[0].lower()for r in b[1:-1]}\n        b=copy.deepcopy(b)\n        for row in b[1:-1]:row[0]=rename[row[0].lower()]\n        result['native_instance_correspondence']=dict(method='Actual primitive model and local nanometer bbox within each named physical macro',renamed=sum(x!=y for x,y in rename.items()),pairs=rename,devices=1674)\n        result['comparison']=compare(a,b)\n        controls=[]\n        for fault in ['missing_device','changed_parameter','wrong_terminal']:\n            bad=copy.deepcopy(b)\n            if fault=='missing_device':bad.pop(1)\n            elif fault=='changed_parameter':\n                row=next(v for v in bad[1:-1]if 'npn13g2'in v);j=next(i for i,v in enumerate(row)if v.startswith('nx='));row[j]='nx='+str(int(row[j].split('=')[1])+1)\n            else:\n                row=next(v for v in bad[1:-1]if 'npn13g2'in v);row[1]='avdd'if row[1]!='avdd'else'avss'\n            try:compare(a,bad)\n            except AssertionError as e:controls.append(dict(fault=fault,rejected=True,reason=str(e)))\n            else:raise AssertionError('Real compact model fault accepted: '+fault)\n        # Actual physical identity corruption must also fail, independently of node spelling.\n        bad=copy.deepcopy(b);left=next(row for row in bad[1:-1]if 'npn13g2'in row);right=next(row for row in bad[1:-1]if 'rppd'in row)\n        left[0],right[0]=right[0],left[0]\n        try:compare(a,bad)\n        except AssertionError:result['physical_identity_swap_rejected']=True\n        else:raise AssertionError('Wrong physical-device correspondence accepted')\n        assert len(controls)==3\n        result.update(status='PASS_NATIVE1674_COMPACT_MODEL_TOPOLOGY_EQUIVALENCE_WITH_THREE_FAULTS',controls=controls)\n    except BaseException as e:result.update(status='FAIL_COMPACT_MODEL_COMPARISON',error=repr(e));raise\n    finally:\n        result['outputs']={p.name:sha(p)for p in OUT.iterdir()if p.is_file()and p.name!='result.json'}\n        (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\\n')\nif __name__=='__main__':main()\n",
+          "after": "def main():\n    assert os.environ.get('GITHUB_ACTIONS')=='true';OUT.mkdir(exist_ok=False,parents=True)\n    result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False)\n    try:\n        models={};proof={};physical_keys={};interfaces={};bindings={}\n        for label,name,root in [('baseline','tx-fast-wire20-composition-pass-20261020.json','cloud-tx-fast-wire20-physical'),('candidate','tx-p4-drive3-composition-pass-20261020.json','cloud-tx-p4-drive3-physical')]:\n            pin=json.loads((ROOT/'docs/evidence'/name).read_text());archive=OUT/(label+'.tar.gz')\n            fetch(pin['url'],pin['sha256'],archive);assert archive.stat().st_size==pin['bytes']\n            with tarfile.open(archive)as tar:\n                raw=tar.extractfile(root+'/binding96/tree1674-compact01.spice').read()\n                assert hashlib.sha256(raw).hexdigest()==pin['model_sha256']['compact']\n                def member(rel,digest):\n                    data=tar.extractfile(root+'/'+rel).read();assert hashlib.sha256(data).hexdigest()==digest;return json.loads(data)\n                interface=member('wire96/all-interface-probes.json',pin['outputs']['wire96/all-interface-probes.json'])\n                assert interface['status']=='PASS_ALL124_PHYSICAL_INPUT_LEGS_AND372_DATA_BASES'\n                def bound(rel):\n                    hits=[x for n,x in interface['inputs'].items()if n.endswith('/'+rel)];assert len(hits)==1\n                    return member(rel,hits[0])\n                locations=bound('wire96/device-locations01.json');layout=bound('layout/result.json')\n                binding=member('binding96/binding01.json',pin['outputs']['binding96/binding01.json'])\n                def rect(raw):\n                    fields=list(map(float,re.findall(r'-?\\d+(?:\\.\\d+)?',raw)));assert len(fields)==4;return fields\n                dx,dy=layout['origin_translation_um'];boxes={}\n                for tag,p in layout['placements'].items():\n                    l,b,rr,t=rect(p['bbox_um']);boxes[tag]=[l+dx,b+dy,rr+dx,t+dy]\n                ids={d['native_id']:d['instance'].lower()for d in binding['devices']}\n                keys={}\n                for d in locations['devices']:\n                    b=rect(d['pcell']['bbox']);owners=[tag for tag,q in boxes.items()if b[0]>=q[0]-1e-8 and b[1]>=q[1]-1e-8 and b[2]<=q[2]+1e-8 and b[3]<=q[3]+1e-8];assert len(owners)==1\n                    tag=owners[0];q=boxes[tag];relative=[b[0]-q[0],b[1]-q[1],b[2]-q[0],b[3]-q[1]]\n                    quantized=tuple(round(x*1000)for x in relative);assert all(abs(x-y/1000)<1e-7 for x,y in zip(relative,quantized))\n                    key=(tag,d['model'].lower(),quantized);assert key not in keys;keys[key]=ids[d['native_id']]\n                assert len(keys)==len(ids)==len(locations['devices'])==1674\n                physical_keys[label]=keys;interfaces[label]=interface;bindings[label]=binding\n            archive.unlink();(OUT/(label+'.spice')).write_bytes(raw);models[label]=raw.decode()\n            proof[label]=dict(source_run=pin['source_run'],source_head=pin['source_head'],summary_sha256=pin['summary_sha256'],archive_sha256=pin['sha256'],compact_sha256=pin['model_sha256']['compact'])\n        result['sources']=proof\n        original,b=[statements(models[label])for label in ('baseline','candidate')]\n        assert len(original[1:-1])==len(b[1:-1])==1674\n        before={r[0].lower():r for r in original[1:-1]}\n        tags={'p4_0','p4_1','p4_2','p4_3'}\n        baseline_keys=physical_keys['baseline'];candidate_keys=physical_keys['candidate']\n        old_owner={name:k[0]for k,name in baseline_keys.items()}\n        def model_index(row):\n            indices=[i for i,v in enumerate(row)if v in ('npn13g2','rppd','ptap1')]\n            assert len(indices)==1 and indices[0]in (3,4,5)\n            return indices[0]\n        node_owners={}\n        for name,row in before.items():\n            tag=old_owner[name]\n            for n in row[1:model_index(row)]:node_owners.setdefault(n,set()).add(tag)\n        physical_pin=json.loads((ROOT/'docs/evidence/tx-v5-timing-priority-physical-pass-20261019.json').read_text())\n        assert physical_pin['run']==39304550527 and physical_pin['summary_sha256']=='03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d'\n        maps=physical_pin['report']['plan']['maps']\n        public=set(bindings['baseline']['native_ports'])\n        def port_node(tag,port):\n            net=maps[tag][port]\n            if net in public:return net\n            nodes=interfaces['baseline']['modes']['compact'][net]\n            assert len(nodes)==1 and nodes[0].startswith('xtree.')\n            return nodes[0][len('xtree.'):]\n        expected=[copy.deepcopy(original[0])]+[copy.deepcopy(row)for row in original[1:-1]if old_owner[row[0].lower()]not in tags]\n        rename={}\n        expected_keys=set()\n        for key,name in baseline_keys.items():\n            if key[0]in tags:continue\n            assert key in candidate_keys\n            rename[candidate_keys[key]]=before[name][0];expected_keys.add(key)\n        master=[(k,name)for k,name in baseline_keys.items()if k[0]=='a'];assert len(master)==54\n        substitutions=[]\n        for tag in sorted(tags):\n            ports={port_node('a',p):port_node(tag,p)for p in maps['a']}\n            assert len(ports)==12\n            private_map={}\n            def node(n):\n                if n in ports:return ports[n]\n                if node_owners[n]!={'a'}:return n\n                return private_map.setdefault(n,'expected_'+tag+'_'+n)\n            made=[]\n            for key,name in master:\n                wanted=(tag,key[1],key[2]);assert wanted in candidate_keys\n                row=copy.deepcopy(before[name]);idx=model_index(row)\n                row[0]='X_EXPECTED_'+tag+'_'+name\n                row[1:idx]=[node(n)for n in row[1:idx]]\n                expected.append(row);made.append(row)\n                assert candidate_keys[wanted]not in rename\n                rename[candidate_keys[wanted]]=row[0];expected_keys.add(wanted)\n            assert len(made)==54\n            substitutions.append(dict(tag=tag,source_native_master='a',source_cells=54,source_port_nodes=ports,private_node_map=private_map))\n        expected.append(copy.deepcopy(original[-1]))\n        assert expected_keys==set(candidate_keys)and len(rename)==len(set(rename.values()))==1674\n        assert len(expected[1:-1])==1674 and len({x[0]for x in expected[1:-1]})==1674\n        assert set(rename)=={r[0].lower()for r in b[1:-1]}\n        b=copy.deepcopy(b)\n        for row in b[1:-1]:row[0]=rename[row[0].lower()]\n        hbts=[r for r in expected[1:-1]if 'npn13g2'in r]\n        emitters=sum(int(next(v.split('=')[1]for v in row if v.startswith('nx=')))for row in hbts)\n        assert len(hbts)==589 and emitters==863\n        (OUT/'expected-four-master-replacement.spice').write_text('\\n'.join(' '.join(x)for x in expected)+'\\n')\n        result['master_substitutions']=substitutions\n        result['native_instance_correspondence']=dict(method='Unchanged macros use original primitive nanometer bbox; four p4 macros use the original a master primitive nanometer bbox and original public topology',pairs=rename,devices=1674)\n        result['comparison']=compare(expected,b)\n        result['reference_emitters']=emitters\n        controls=[]\n        for fault in ['missing_device','changed_parameter','wrong_terminal']:\n            bad=copy.deepcopy(b)\n            if fault=='missing_device':bad.pop(1)\n            elif fault=='changed_parameter':\n                row=next(v for v in bad[1:-1]if 'npn13g2'in v);j=next(i for i,v in enumerate(row)if v.startswith('nx='));row[j]='nx='+str(int(row[j].split('=')[1])+1)\n            else:\n                row=next(v for v in bad[1:-1]if 'npn13g2'in v);row[1]='avdd'if row[1]!='avdd'else'avss'\n            try:compare(expected,bad)\n            except AssertionError as e:controls.append(dict(fault=fault,rejected=True,reason=str(e)))\n            else:raise AssertionError('Real compact model fault accepted: '+fault)\n        bad=copy.deepcopy(b);left=next(row for row in bad[1:-1]if 'npn13g2'in row);right=next(row for row in bad[1:-1]if 'rppd'in row)\n        left[0],right[0]=right[0],left[0]\n        try:compare(expected,bad)\n        except AssertionError:result['physical_identity_swap_rejected']=True\n        else:raise AssertionError('Wrong physical-device correspondence accepted')\n        bad=copy.deepcopy(b);row=next(row for row in bad[1:-1]if row[0].startswith('X_EXPECTED_p4_')and 'npn13g2'in row and 'nx=3'in row)\n        j=row.index('nx=3');row[j]='nx=1'\n        try:compare(expected,bad)\n        except AssertionError:result['old_low_drive_parameter_rejected']=True\n        else:raise AssertionError('Old low-drive model substituted into new native master')\n        assert len(controls)==3\n        result.update(status='PASS_NATIVE1674_FOUR_P4_MASTER_SUBSTITUTION_WITH_THREE_FAULTS',controls=controls,\n            scope='Exact native compact circuit correspondence to four existing high-drive masters and unchanged remaining cells. This is an intentional circuit change, not equivalence to the rejected low-drive circuit; no waveform or PHY acceptance.')\n    except BaseException as error:\n        result.update(status='FAIL_OR_ERROR',error=repr(error));raise\n    finally:\n        result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p.name!='result.json'}\n        (OUT/'result.json').write_text(json.dumps(result,indent=2)+'\\n')\nif __name__=='__main__':main()\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_fast_wire20_builder.py",
+      "baseline_sha256": "f278503761391134bbc6ea5656300631ebfd9f165778fc0c6449a12603956984",
+      "candidate_path": "scripts/cloud_tx_p4_drive3_builder.py",
+      "candidate_sha256": "a39c948e5ba6c894012360d3e23e7e0fe49ab9f94be7fd4469b19bbc4851ee88",
+      "edits": [
+        {
+          "before": "f9bf6f7473546b80a91541e0fab9b74cb0ff567a89ece495ebfef097c39c28ca",
+          "after": "1f0709a19395e7de77529adb20fbdff04f895fcc8588e0ba7ac5a32fb8c110bb",
+          "count": 1
+        },
+        {
+          "before": "d701fa02f415c1ba3e8f6a1243c362bc085a4b02df736712cf324b0a188899fe",
+          "after": "df92e5b36e0c633a9df3a065fe55729d50ca103e3fbaaa2a8267a5464d1f3eee",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_wire20_g234_clock_adapter.py",
+      "baseline_sha256": "0b5fb1b036aae0946cec8bb50ddf40e5a713258810312d00395b1d54c95d40e4",
+      "candidate_path": "scripts/cloud_tx_p4_drive3_clock_adapter.py",
+      "candidate_sha256": "9d5d3522d1305c5e34d79e132ddd5227e65480685c4fb19d9feb75b3f2dda1ff",
+      "edits": [
+        {
+          "before": "cloud_tx_fast_wire20_builder",
+          "after": "cloud_tx_p4_drive3_builder",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_tx_fast_wire20_builder.py",
+      "baseline_sha256": "4a060a81a782aa17964654a25b3c52d8c52228cfccbf38d73a6c36a666e68942",
+      "candidate_path": "scripts/check_tx_p4_drive3_builder.py",
+      "candidate_sha256": "08cd76badd2d684f5a1502bdf879d643163a031456fa1452ce8fb71bd9ce4eff",
+      "edits": [
+        {
+          "before": "check_tx_fast_wire20_wave_sources",
+          "after": "check_tx_p4_drive3_wave_sources",
+          "count": 1
+        },
+        {
+          "before": "check_tx_fast_wire20_composition_sources",
+          "after": "check_tx_p4_drive3_composition_sources",
+          "count": 1
+        },
+        {
+          "before": "tx-fast-wire20-composition-pass",
+          "after": "tx-p4-drive3-composition-pass",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-timing-priority-composition-pass",
+          "after": "tx-fast-wire20-composition-pass",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-fast-wire20-model-compare",
+          "after": "cloud-tx-p4-drive3-model-compare",
+          "count": 1
+        },
+        {
+          "before": "PASS_NATIVE1674_COMPACT_MODEL_TOPOLOGY_EQUIVALENCE_WITH_THREE_FAULTS",
+          "after": "PASS_NATIVE1674_FOUR_P4_MASTER_SUBSTITUTION_WITH_THREE_FAULTS",
+          "count": 1
+        },
+        {
+          "before": "39407840528",
+          "after": "39450330853",
+          "count": 1
+        },
+        {
+          "before": "fad4dcf6ab6924306072cbf85133af4d67d0d49f",
+          "after": "b47b573b1f5d609409215e53a8c9c41b75b61f70",
+          "count": 1
+        },
+        {
+          "before": "cloud_tx_fast_wire20_builder.py",
+          "after": "cloud_tx_p4_drive3_builder.py",
+          "count": 1
+        },
+        {
+          "before": "PASS_WIRE20_NATIVE_MODELS",
+          "after": "PASS_P4_DRIVE3_NATIVE_MODELS",
+          "count": 1
+        },
+        {
+          "before": "assert eq['physical_identity_swap_rejected']",
+          "after": "assert eq['physical_identity_swap_rejected']and eq['old_low_drive_parameter_rejected']\n    assert eq['reference_emitters']==863 and {x['tag']for x in eq['master_substitutions']}=={'p4_0','p4_1','p4_2','p4_3'}",
+          "count": 1
+        },
+        {
+          "before": "tx-fast-wire20-composition-pass-20261019.json",
+          "after": "tx-fast-wire20-composition-pass-20261020.json",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_wire20_g234_wave.py",
+      "baseline_sha256": "d3bb1cba4ae04631fbcfa5ec2472ec5827de6ee70287a38021e81fda5c9dc3b0",
+      "candidate_path": "scripts/cloud_tx_p4_drive3_wave.py",
+      "candidate_sha256": "de6e70bdd4f7d7e9d2bf64a9778094c5fe7473fc8454972cba46b6e141cb3412",
+      "edits": [
+        {
+          "before": "tx-wire20-g234",
+          "after": "tx-p4-drive3",
+          "count": 1
+        },
+        {
+          "before": "tx_wire20_g234",
+          "after": "tx_p4_drive3",
+          "count": 3
+        },
+        {
+          "before": "tx-fast-wire20",
+          "after": "tx-p4-drive3",
+          "count": 3
+        },
+        {
+          "before": "tx_fast_wire20",
+          "after": "tx_p4_drive3",
+          "count": 8
+        },
+        {
+          "before": "116611",
+          "after": "117251",
+          "count": 2
+        },
+        {
+          "before": "77538",
+          "after": "77892",
+          "count": 2
+        },
+        {
+          "before": "39407840528",
+          "after": "39450330853",
+          "count": 1
+        },
+        {
+          "before": "fad4dcf6ab6924306072cbf85133af4d67d0d49f",
+          "after": "b47b573b1f5d609409215e53a8c9c41b75b61f70",
+          "count": 2
+        },
+        {
+          "before": "868c274241cee23a2fe7c8e50b3ef9049ffc9d54bc938971e4b7f5af5706b3ef",
+          "after": "8650e9cafe751223d45c274ffa736b5900e2120400a45ece57bd23270a809406",
+          "count": 1
+        },
+        {
+          "before": "4ec60b4a44813adf0020743c71f0a10a289616fba746d8e172309276d9eb955e",
+          "after": "c2c710046e77004e1c622ac8c2ed21f4a4b987de6873411aca92e9fe98cd0444",
+          "count": 1
+        },
+        {
+          "before": "b3e4e0128162ee0bda62e87e0043ab5bba036212016a8440d2e6ef5b123fe763",
+          "after": "9db11328c2adaf1c9eed1d11c1cd29a8105d1c288b1385cbb88ce851640983f1",
+          "count": 2
+        },
+        {
+          "before": "PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS",
+          "after": "PASS_FOUR_P4_NATIVE_MASTER_REPLACEMENTS_ALL_PINS_PARENT_ROUTES_AND_THREE_FAULTS",
+          "count": 1
+        },
+        {
+          "before": "b8ee72861b772cea2ea42746710dec3075c85fb2999c7204e55b9f1536585ab4",
+          "after": "d202185d3691cd7778b8040492bab73492f44a1cfb0896c5f0b8f31350e6bdff",
+          "count": 1
+        },
+        {
+          "before": "  assert delta['widths_um']==dict(original=4.,candidate=2.,retained_landings=4.)\n  assert delta['original_vias_children_placements_pins_and_other_layers_equal'] and delta['serialized_gds_verified']\n  assert len(delta['changed_routes'])==28 and len(delta['controls'])==3 and all(c['rejected']for c in delta['controls'])",
+          "after": "  assert delta['original_master_drawings_unchanged']and delta['parent_drawings_routes_and_pins_unchanged']and delta['serialized_gds_verified']\n  assert delta['reference_emitters']==863 and delta['reference_hbts']==589\n  assert {q['tag']for q in delta['changes']}=={'p4_0','p4_1','p4_2','p4_3'}\n  assert all(q['public_pin_rectangles_identical']and q['original_emitters']==19 and q['candidate_emitters']==55 for q in delta['changes'])\n  assert len(delta['controls'])==3 and all(c['rejected']for c in delta['controls'])\n  assert {c['name']for c in delta['controls']}=={'wrong_native_macro','shift_native_pins_5nm','missing_parent_metal'}",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/tx-wire20-g234-loaded-wave-cloud.yml",
+      "baseline_sha256": "561fd16fa754518dfdb155502d1ad96e59c7aa62011f8bfd97e9781565bc2620",
+      "candidate_path": ".github/workflows/tx-p4-drive3-loaded-wave-cloud.yml",
+      "candidate_sha256": "286b5250a418c422a1499980e5e21340067911ee349af26f1a1015f390c85ae7",
+      "edits": [
+        {
+          "before": "tx-wire20-g234",
+          "after": "tx-p4-drive3",
+          "count": 8
+        },
+        {
+          "before": "tx_wire20_g234",
+          "after": "tx_p4_drive3",
+          "count": 5
+        },
+        {
+          "before": "tx-fast-wire20",
+          "after": "tx-p4-drive3",
+          "count": 2
+        },
+        {
+          "before": "tx_fast_wire20",
+          "after": "tx_p4_drive3",
+          "count": 10
+        },
+        {
+          "before": "Native model equivalence and four real corruptions precede each fullwave run.",
+          "after": "Native master-substitution correspondence and five real corruptions precede each fullwave run.",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

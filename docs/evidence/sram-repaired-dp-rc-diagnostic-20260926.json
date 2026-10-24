@@ -1,0 +1,427 @@
+{
+  "status": "FAIL_RC_CAPACITANCE_CONSERVATION",
+  "topology": {
+    "status": "PASS_COLLAPSED_MOS_TOPOLOGY_RC_ENDPOINTS_REQUIRE_REVIEW",
+    "qualified_pex": false,
+    "manufacturing_approval": false,
+    "scope": "Collapsed MOS graph and RC endpoint accounting only; no RC model accuracy, capacitance conservation, extracted simulation or timing acceptance",
+    "input_sha256": {
+      "hw/soc/out/sram-closure-20260926/audit_repaired_dp_rc_groundcap_topology.py": "b19cdf44d28c6ac9d8f897993d63559096d5eb2521ea182a9244bd82e30b0fbc",
+      "hw/soc/out/sram-closure-20260926/repaired-dp-rc-groundcap/extracted.spice": "2068993789462d7eb9ab34348e730dc4e85a5889a31464a3f45dc84974ca7c76",
+      "hw/soc/out/sram-closure-20260926/repaired-dp-rc-groundcap/result.json": "5c06f054d07e8b1078acfa18ce8f0b74ec9d24f87f9682348ccb1c6816a512b0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-alternative-research/generated-dp256x16-filled/reference.spice": "64d041383d0ebee7b54dab0bc10d651d31262a2a41ccd15a9c0727dac06e0dd9",
+      "hw/soc/flow/mos_graph_equivalence.py": "5270d2c30f9d63b6f8ccc5341416a6358ca3f964455cc361a0fb6cb27cbdbaea",
+      "hw/soc/out/sram-closure-20260926/magic-dp-via/graph-audit.json": "df0830ffe2ee70d7720c0fbbaee050cb3404dfd879875d58a6b1ebf92da1551f",
+      "hw/soc/out/sram-closure-20260926/via-import-controls-v2/result.json": "a4348cc0ddfe0fedab91dc8bf0078085566480ca3fbae074b42a3950c057ac9c"
+    },
+    "accounting": {
+      "resistance_components": 9496,
+      "unanchored_resistance_components": [],
+      "capacitor_only_nodes": [],
+      "resistors": 146385,
+      "capacitors": 115869,
+      "zero_resistors": 0,
+      "zero_capacitors": 0,
+      "self_resistors": 0,
+      "all_mos_terminals": 148304,
+      "dgs_terminals_on_resistance_nodes": 109676,
+      "expected_dgs_terminals": 111228
+    },
+    "positive": {
+      "status": "EXACT_NET_BIJECTION_AND_MOS_EDGE_MULTISET",
+      "devices": 37076,
+      "nets": 10272,
+      "ports": 88,
+      "iterations": 15,
+      "maximum_float_normalization_um": 4.440892098500626e-16
+    },
+    "disconnected_terminal_control": {
+      "status": "REJECTED",
+      "terminal": "DP8TCOLUMNBLOCK_COL64R_CP8B_CM4MN26L580W1R_PC26L100W_2WE_0.DP8TCOLUMN_64R_CP8B_CM4MN26L580W1R_PC26L100W_0.DP8TCOLPERIPH8B_PC26L100W_CM4MN26L580W1R_BL1_0.BL[2].T15",
+      "reason": "Graph/pin inventory differs"
+    },
+    "elapsed_seconds": 9.669203892990481,
+    "collapsed_sha256": "f28f4a639006150b89e953a167bcd1394797ccbdda19201171445678861a8f0b"
+  },
+  "capacitance": {
+    "status": "FAIL_RC_CAPACITANCE_CONSERVATION",
+    "qualified_pex": false,
+    "scope": "Every RC capacitor projected through independently proved resistor-collapsed MOS mapping to the C-only capacitance matrix; no physical model accuracy claim",
+    "input_sha256": {
+      "hw/soc/out/sram-closure-20260926/audit_repaired_dp_rc_groundcap_matrix.py": "a86c72545b12acb1df15803fd74911797ac8f7eacbfe767506289bc91a120191",
+      "hw/soc/out/sram-closure-20260926/repaired-dp-rc-groundcap/extracted.spice": "2068993789462d7eb9ab34348e730dc4e85a5889a31464a3f45dc84974ca7c76",
+      "hw/soc/out/sram-closure-20260926/repaired-macro-cap-extraction-v3/dp/extracted.spice": "9cd13016a335d060a257f888c169f47be512e87b2cd2bb4890959c90b8995f81",
+      "hw/soc/out/sram-closure-20260926/repaired-dp-rc-groundcap/collapsed-net-bijection.json": "7a2c1d8f50cfcd0cf2d1a891dcabf086e33f837f7544151edc6e33706737ae83",
+      "hw/soc/out/sram-closure-20260926/repaired-macro-cap-extraction-v3/dp/net-bijection.json": "39a774b0abaea14696c2cca25407b1adf3e44a17e3e476a99d6563ea1a4f72dd",
+      "hw/soc/out/sram-closure-20260926/repaired-dp-rc-groundcap/collapsed-mos.cir": "f28f4a639006150b89e953a167bcd1394797ccbdda19201171445678861a8f0b",
+      "hw/soc/out/sram-closure-20260926/repaired-dp-rc-groundcap/rc-audit.json": "7decd325ca1c83216c1fb358913b7d3cd87353ef4fdb24c97a8ac4d2fabb2ccb",
+      "hw/soc/out/sram-closure-20260926/repaired-macro-cap-audit-v3/result.json": "b323895de8030e05ea36842e9367a0ae97491827009aa5ff52f4930aeaa16553",
+      "hw/soc/flow/share_extracted_sram_models.py": "c5b4d4f7380743469f16b99816bd2d168df340ed9cd029e651c36e1281ead4ab"
+    },
+    "resistors": 146385,
+    "capacitors": 115869,
+    "rc_total_capacitance_f": 5.184733727189317e-11,
+    "projected_total_capacitance_f": 5.1847337271884556e-11,
+    "reference_total_capacitance_f": 2.7396033380224517e-11,
+    "unmapped_capacitor_nodes": {},
+    "self_capacitors": [],
+    "missing_pairs": 189054,
+    "extra_pairs": 20,
+    "mismatched_pairs": 10251,
+    "missing_sample": [
+      [
+        "A1[0]",
+        "DECODECLK1"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[0]._CLK_BUF"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[0]._CLK_N"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[0]._DFF_M"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[0]._DFF_S"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[0]._NET1"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[0]._NET3"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[0]._NET5"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[0]._U"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[0]._Y"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[1]._CLK_BUF"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[1]._CLK_N"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.AFF[1]._U"
+      ],
+      [
+        "A1[0]",
+        "ROWPERIPH1.COLDEC.LINE_N[1]"
+      ],
+      [
+        "A1[1]",
+        "DECODECLK1"
+      ],
+      [
+        "A1[1]",
+        "ROWPERIPH1.COLDEC.AFF[0]._CLK_BUF"
+      ],
+      [
+        "A1[1]",
+        "ROWPERIPH1.COLDEC.AFF[0]._CLK_N"
+      ],
+      [
+        "A1[1]",
+        "ROWPERIPH1.COLDEC.AFF[0]._U"
+      ],
+      [
+        "A1[1]",
+        "ROWPERIPH1.COLDEC.AFF[1]._CLK_BUF"
+      ],
+      [
+        "A1[1]",
+        "ROWPERIPH1.COLDEC.AFF[1]._CLK_N"
+      ]
+    ],
+    "extra_sample": [
+      [
+        "COLUMNBLOCK.COLUMN[0].PERIPH1.CLKWE.WEFF._NET5",
+        "VSS"
+      ],
+      [
+        "COLUMNBLOCK.COLUMN[0].PERIPH2.CLKWE.WEFF._NET5",
+        "VSS"
+      ],
+      [
+        "COLUMNBLOCK.COLUMN[1].PERIPH1.CLKWE.WEFF._NET5",
+        "VSS"
+      ],
+      [
+        "COLUMNBLOCK.COLUMN[1].PERIPH2.CLKWE.WEFF._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH1.COLDEC.AFF[0]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH1.COLDEC.AFF[1]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH1.ROWDEC.PREDEC.AFF[0]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH1.ROWDEC.PREDEC.AFF[1]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH1.ROWDEC.PREDEC.AFF[2]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH1.ROWDEC.PREDEC.AFF[3]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH1.ROWDEC.PREDEC.AFF[4]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH1.ROWDEC.PREDEC.AFF[5]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH2.COLDEC.AFF[0]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH2.COLDEC.AFF[1]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH2.ROWDEC.PREDEC.AFF[0]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH2.ROWDEC.PREDEC.AFF[1]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH2.ROWDEC.PREDEC.AFF[2]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH2.ROWDEC.PREDEC.AFF[3]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH2.ROWDEC.PREDEC.AFF[4]._NET5",
+        "VSS"
+      ],
+      [
+        "ROWPERIPH2.ROWDEC.PREDEC.AFF[5]._NET5",
+        "VSS"
+      ]
+    ],
+    "largest_mismatches": [
+      {
+        "pair": [
+          "VDD",
+          "VSS"
+        ],
+        "reference_f": 6.46164e-13,
+        "rc_f": 6.133660059736821e-12,
+        "difference_f": 5.487496059736821e-12
+      },
+      {
+        "pair": [
+          "PRECHARGE2_N",
+          "VSS"
+        ],
+        "reference_f": 1.61827001953125e-14,
+        "rc_f": 1.7589772656250014e-13,
+        "difference_f": 1.5971502636718764e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[62]"
+        ],
+        "reference_f": 9.413280273437501e-15,
+        "rc_f": 1.5101129101562508e-13,
+        "difference_f": 1.4159801074218757e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[1]"
+        ],
+        "reference_f": 9.412349609375e-15,
+        "rc_f": 1.5100972100830038e-13,
+        "difference_f": 1.4159737139892537e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[61]"
+        ],
+        "reference_f": 9.404900390625001e-15,
+        "rc_f": 1.5099128509521456e-13,
+        "difference_f": 1.4158638470458956e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[2]"
+        ],
+        "reference_f": 9.4042900390625e-15,
+        "rc_f": 1.5099036877441388e-13,
+        "difference_f": 1.4158607873535136e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[14]"
+        ],
+        "reference_f": 9.412719726562501e-15,
+        "rc_f": 1.509902940673827e-13,
+        "difference_f": 1.415775743408202e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[33]"
+        ],
+        "reference_f": 9.4120703125e-15,
+        "rc_f": 1.509892702026366e-13,
+        "difference_f": 1.415771998901366e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[46]"
+        ],
+        "reference_f": 9.412719726562501e-15,
+        "rc_f": 1.5098984680175774e-13,
+        "difference_f": 1.4157712707519524e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[30]"
+        ],
+        "reference_f": 9.412719726562501e-15,
+        "rc_f": 1.509898146362303e-13,
+        "difference_f": 1.415770949096678e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[49]"
+        ],
+        "reference_f": 9.4120703125e-15,
+        "rc_f": 1.5098888195800757e-13,
+        "difference_f": 1.4157681164550758e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[17]"
+        ],
+        "reference_f": 9.4120703125e-15,
+        "rc_f": 1.5098888098144507e-13,
+        "difference_f": 1.4157681066894508e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[34]"
+        ],
+        "reference_f": 9.404049804687501e-15,
+        "rc_f": 1.5097324871826122e-13,
+        "difference_f": 1.415691989135737e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[13]"
+        ],
+        "reference_f": 9.404419921875002e-15,
+        "rc_f": 1.5097340637207016e-13,
+        "difference_f": 1.4156898645019516e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[18]"
+        ],
+        "reference_f": 9.404049804687501e-15,
+        "rc_f": 1.5097300549316403e-13,
+        "difference_f": 1.4156895568847651e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[50]"
+        ],
+        "reference_f": 9.404049804687501e-15,
+        "rc_f": 1.5097288739013676e-13,
+        "difference_f": 1.4156883758544924e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[45]"
+        ],
+        "reference_f": 9.404419921875002e-15,
+        "rc_f": 1.5097320794677712e-13,
+        "difference_f": 1.4156878802490212e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[29]"
+        ],
+        "reference_f": 9.404419921875002e-15,
+        "rc_f": 1.5097298333740236e-13,
+        "difference_f": 1.4156856341552735e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[60]"
+        ],
+        "reference_f": 9.3921298828125e-15,
+        "rc_f": 1.5095252215576188e-13,
+        "difference_f": 1.4156039227294937e-13
+      },
+      {
+        "pair": [
+          "VSS",
+          "WL2[3]"
+        ],
+        "reference_f": 9.391849609375001e-15,
+        "rc_f": 1.5095065069580094e-13,
+        "difference_f": 1.4155880108642595e-13
+      }
+    ]
+  },
+  "qualified_pex": false,
+  "first_attempt": "Default interpreter lacked klayout; preserved in first-audit-missing-klayout. Identical audit rerun using kpex-env.",
+  "manufacturing_approval": false,
+  "archive": "hw/soc/out/sram-closure-20260926/mbist-publication-v2/sram-repaired-dp-rc-diagnostic-20260926.tar.xz",
+  "archive_bytes": 8576464,
+  "archive_sha256": "4e8f8e34a6dbde3ae234525994a37c48faf2faf8fdc120f2b5e9f93ecacdf05f",
+  "archive_url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260926-mbist-formal/sram-repaired-dp-rc-diagnostic-20260926.tar.xz",
+  "asset_manifest": "docs/evidence/mbist-formal-assets-20260926.json",
+  "archive_storage": "GitHub Release asset; untracked local cache"
+}

@@ -1,0 +1,3146 @@
+{
+  "status": "FROZEN_LIMITER_HEADROOM_PROGRESS_WITH_TUNING_LIMITS",
+  "source_sha256": {
+    "scripts/characterize_pcie_clock_headroom_v2.py": "00069ff6113f3390e4dcdf0f6778b6d1d199246252345b2bd726c2ba7338217e",
+    "sw/tests/test_pcie_clock_headroom_v2.py": "7c898b648e937db0c9410b473fe8c23f64afa8ccb6e6fda5f5cfa76a5f6ab7a6",
+    "hw/soc/analog/pcie/clock_vco_hbt_v2.spice": "c55baf3e280bc735c0825e96861150b09c63b4de29ed4241f965f835f3cdb749"
+  },
+  "native_cases": 161,
+  "cases_by_dataset": {
+    "4p0-pilot": 13,
+    "3p8-pilot": 13,
+    "4p0-full": 72,
+    "4p0-tuning": 63
+  },
+  "numerically_clean": 161,
+  "retained_waves_remeasured": [
+    "4p0-pilot/nominal",
+    "4p0-pilot/half_step",
+    "4p0-pilot/control_1.30",
+    "4p0-pilot/hbt_bcs_mos_ss_125",
+    "3p8-pilot/nominal",
+    "3p8-pilot/half_step",
+    "3p8-pilot/control_1.30",
+    "3p8-pilot/hbt_bcs_mos_ss_125",
+    "4p0-full/nominal",
+    "4p0-full/half_step",
+    "4p0-full/control_1.20",
+    "4p0-full/control_1.30",
+    "4p0-full/hbt_bcs_mos_ss_125",
+    "4p0-tuning/nominal_control_1.20",
+    "4p0-tuning/nominal_control_1.30",
+    "4p0-tuning/hot_bcs_ss_control_1.20",
+    "4p0-tuning/hot_bcs_ss_control_1.30",
+    "4p0-tuning/cold_wcs_ss_control_1.20",
+    "4p0-tuning/cold_wcs_ss_control_1.30",
+    "4p0-tuning/cold_bcs_ff_control_0.60",
+    "4p0-tuning/cold_bcs_ff_control_0.70",
+    "4p0-tuning/hot_wcs_ff_control_1.30",
+    "4p0-tuning/low_supply_res_wcs_cap_wcs_control_1.10",
+    "4p0-tuning/low_supply_res_wcs_cap_wcs_control_1.20",
+    "4p0-tuning/low_supply_res_wcs_cap_wcs_control_1.30",
+    "4p0-tuning/high_supply_res_bcs_cap_bcs_control_0.60",
+    "4p0-tuning/high_supply_res_bcs_cap_bcs_control_0.70",
+    "4p0-tuning/high_supply_res_bcs_cap_bcs_control_1.30"
+  ],
+  "raw_outputs_rehashed": 672,
+  "datasets": {
+    "4p0-pilot": {
+      "native_result_sha256": "b4ad382156692659754609f853ebaadd769219b05ca89fc340388228ca84307a",
+      "positive_screen_pass": 8,
+      "positive_cases": 9,
+      "negative_controls_rejected": 4,
+      "failures": [
+        {
+          "name": "control_1.30",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 0,
+            "frequency_hz": null,
+            "edge_order_errors": 0,
+            "min_diff_v": -1.299996500003786e-05,
+            "max_diff_v": -3.849479999873395e-06,
+            "period_spread": null,
+            "duty_range": null,
+            "mean_common_mode_v": 1.2545754227012633,
+            "mean_supply_power_w": 0.022471532966001073,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.808276210633,
+                "max_vce_v": 0.8088504503595,
+                "max_abs_ic_a": 0.0001774513349385
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.8093809786550001,
+                "max_vce_v": 0.8094535695520002,
+                "max_abs_ic_a": 0.0003759515175845
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.8093805015610003,
+                "max_vce_v": 0.8094533077330002,
+                "max_abs_ic_a": 0.0003759520501327
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.433069046171,
+                "max_vce_v": 1.434375364188,
+                "max_abs_ic_a": 0.0007528517015737
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.8100304189880001,
+                "max_vce_v": 0.8101379997229998,
+                "max_abs_ic_a": 0.0003759431489784
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.8100309400840002,
+                "max_vce_v": 0.810138253961,
+                "max_abs_ic_a": 0.0003759422987599
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.432718736038,
+                "max_vce_v": 1.434051375093,
+                "max_abs_ic_a": 0.0007528335715335
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.8097049864650001,
+                "max_vce_v": 0.8097938897180001,
+                "max_abs_ic_a": 0.000375951486826
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.8097045707320001,
+                "max_vce_v": 0.809793670226,
+                "max_abs_ic_a": 0.0003759521668402
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.433071078268,
+                "max_vce_v": 1.434376500843,
+                "max_abs_ic_a": 0.0007528517877773
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9011919520808,
+                "max_vce_v": 0.9050173553677,
+                "max_abs_ic_a": 0.001392793771249
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.7058272587319998,
+                "max_vce_v": 0.7155234352279998,
+                "max_abs_ic_a": 0.001570180926503
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.7058230079110002,
+                "max_vce_v": 0.7155094261649999,
+                "max_abs_ic_a": 0.001570211500971
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.375750848622,
+                "max_vce_v": 1.377863570991,
+                "max_abs_ic_a": 0.003145027363414
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 1.038591664864,
+                "max_vce_v": 1.0496605803339998,
+                "max_abs_ic_a": 0.001445209626872
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 1.0385786648989999,
+                "max_vce_v": 1.049656730854,
+                "max_abs_ic_a": 0.001445220231007
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.250339419666,
+                "max_vce_v": 1.261408335136,
+                "max_abs_ic_a": 0.001447154154523
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.250343269146,
+                "max_vce_v": 1.261421335101,
+                "max_abs_ic_a": 0.001447164802269
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": false,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        }
+      ]
+    },
+    "3p8-pilot": {
+      "native_result_sha256": "7965a0a89234c41e6a0f46b9b2b2d5d605a48c7dcca8719001f43c095ad9a642",
+      "positive_screen_pass": 8,
+      "positive_cases": 9,
+      "negative_controls_rejected": 4,
+      "failures": [
+        {
+          "name": "control_1.30",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 0,
+            "frequency_hz": null,
+            "edge_order_errors": 0,
+            "min_diff_v": -1.2656344000161468e-05,
+            "max_diff_v": -3.761597999973887e-06,
+            "period_spread": null,
+            "duty_range": null,
+            "mean_common_mode_v": 1.2645213154483472,
+            "mean_supply_power_w": 0.022476674008029832,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.8082762105774,
+                "max_vce_v": 0.8088504503164,
+                "max_abs_ic_a": 0.0001774513347001
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.80938098829,
+                "max_vce_v": 0.809453480275,
+                "max_abs_ic_a": 0.000375951518024
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.809380511699,
+                "max_vce_v": 0.8094532184810002,
+                "max_abs_ic_a": 0.0003759520482589
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.43306904621,
+                "max_vce_v": 1.434375364608,
+                "max_abs_ic_a": 0.0007528517001581
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.810030408869,
+                "max_vce_v": 0.8101381062250002,
+                "max_abs_ic_a": 0.0003759431461618
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.810030929774,
+                "max_vce_v": 0.8101383602300001,
+                "max_abs_ic_a": 0.0003759422962971
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.432718564711,
+                "max_vce_v": 1.434051384861,
+                "max_abs_ic_a": 0.0007528335663397
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.8097049871069999,
+                "max_vce_v": 0.809793889814,
+                "max_abs_ic_a": 0.0003759514860083
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.8097045710289998,
+                "max_vce_v": 0.8097936702790001,
+                "max_abs_ic_a": 0.0003759521662554
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.43307107872,
+                "max_vce_v": 1.434376500453,
+                "max_abs_ic_a": 0.0007528517863724
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9011914380045,
+                "max_vce_v": 0.9050172151117,
+                "max_abs_ic_a": 0.001392783975426
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.7159771911310002,
+                "max_vce_v": 0.7251543892730001,
+                "max_abs_ic_a": 0.001570181085953
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.7159730450240003,
+                "max_vce_v": 0.725140769524,
+                "max_abs_ic_a": 0.001570212371155
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.375814687345,
+                "max_vce_v": 1.377894237096,
+                "max_abs_ic_a": 0.003145030829447
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 1.028965699161,
+                "max_vce_v": 1.0395242719749997,
+                "max_abs_ic_a": 0.001446771156466
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 1.0289530428169997,
+                "max_vce_v": 1.0395205103769998,
+                "max_abs_ic_a": 0.001446781312834
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.260475728025,
+                "max_vce_v": 1.271034300839,
+                "max_abs_ic_a": 0.001448716611052
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.260479489623,
+                "max_vce_v": 1.271046957183,
+                "max_abs_ic_a": 0.001448726809656
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": false,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        }
+      ]
+    },
+    "4p0-full": {
+      "native_result_sha256": "35f04ce150709a7a2009f834680c013abbc2ad4b1419f576f1e514882fdd02f3",
+      "positive_screen_pass": 66,
+      "positive_cases": 68,
+      "negative_controls_rejected": 4,
+      "failures": [
+        {
+          "name": "control_1.20",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 55,
+            "frequency_hz": 6969643376.534655,
+            "edge_order_errors": 0,
+            "min_diff_v": -0.2782386807749999,
+            "max_diff_v": 0.27805127839099986,
+            "period_spread": 0.0012868565340763496,
+            "duty_range": [
+              0.5000030002796735,
+              0.5000102024256973
+            ],
+            "mean_common_mode_v": 1.2557274597855381,
+            "mean_supply_power_w": 0.025608028448065947,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.8229965160213,
+                "max_vce_v": 0.8239449640719,
+                "max_abs_ic_a": 0.0002751089598136
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.7791967208860002,
+                "max_vce_v": 0.8621208891680001,
+                "max_abs_ic_a": 0.001087677172467
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.7787379449960001,
+                "max_vce_v": 0.8624850128819999,
+                "max_abs_ic_a": 0.001087155040205
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.384648659395,
+                "max_vce_v": 1.402447138247,
+                "max_abs_ic_a": 0.00118764718292
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.7790524069989999,
+                "max_vce_v": 0.8644749152270002,
+                "max_abs_ic_a": 0.001066956292436
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.7788553676600001,
+                "max_vce_v": 0.864343003399,
+                "max_abs_ic_a": 0.001067104100289
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.384040419306,
+                "max_vce_v": 1.400522630128,
+                "max_abs_ic_a": 0.001185352505584
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.7767438407109999,
+                "max_vce_v": 0.8651711448189998,
+                "max_abs_ic_a": 0.001079428527191
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.7767494590469999,
+                "max_vce_v": 0.8651480678549999,
+                "max_abs_ic_a": 0.001079855682107
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.384666855251,
+                "max_vce_v": 1.401517892562,
+                "max_abs_ic_a": 0.00118615302796
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9011621617582,
+                "max_vce_v": 0.9050506384341,
+                "max_abs_ic_a": 0.001393723123703
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.5923999637490001,
+                "max_vce_v": 0.8708641345639998,
+                "max_abs_ic_a": 0.002562779558312
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.59191991922,
+                "max_vce_v": 0.8711671328730002,
+                "max_abs_ic_a": 0.002563602175836
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.342593448466,
+                "max_vce_v": 1.353936469219,
+                "max_abs_ic_a": 0.003132366686756
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.9091175634369999,
+                "max_vce_v": 1.1877868022319997,
+                "max_abs_ic_a": 0.001778801892899
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.9090576527289997,
+                "max_vce_v": 1.187666002338,
+                "max_abs_ic_a": 0.001779313684285
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.112213197768,
+                "max_vce_v": 1.390882436563,
+                "max_abs_ic_a": 0.001455072424965
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.112333997662,
+                "max_vce_v": 1.390942347271,
+                "max_abs_ic_a": 0.001455370284216
+              }
+            },
+            "checks": {
+              "edges": true,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": true,
+              "deterministic_period_spread": true,
+              "duty": true,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "control_1.30",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 0,
+            "frequency_hz": null,
+            "edge_order_errors": 0,
+            "min_diff_v": -1.299996500003786e-05,
+            "max_diff_v": -3.849479999873395e-06,
+            "period_spread": null,
+            "duty_range": null,
+            "mean_common_mode_v": 1.2545754227012633,
+            "mean_supply_power_w": 0.022471532966001073,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.808276210633,
+                "max_vce_v": 0.8088504503595,
+                "max_abs_ic_a": 0.0001774513349385
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.8093809786550001,
+                "max_vce_v": 0.8094535695520002,
+                "max_abs_ic_a": 0.0003759515175845
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.8093805015610003,
+                "max_vce_v": 0.8094533077330002,
+                "max_abs_ic_a": 0.0003759520501327
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.433069046171,
+                "max_vce_v": 1.434375364188,
+                "max_abs_ic_a": 0.0007528517015737
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.8100304189880001,
+                "max_vce_v": 0.8101379997229998,
+                "max_abs_ic_a": 0.0003759431489784
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.8100309400840002,
+                "max_vce_v": 0.810138253961,
+                "max_abs_ic_a": 0.0003759422987599
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.432718736038,
+                "max_vce_v": 1.434051375093,
+                "max_abs_ic_a": 0.0007528335715335
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.8097049864650001,
+                "max_vce_v": 0.8097938897180001,
+                "max_abs_ic_a": 0.000375951486826
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.8097045707320001,
+                "max_vce_v": 0.809793670226,
+                "max_abs_ic_a": 0.0003759521668402
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.433071078268,
+                "max_vce_v": 1.434376500843,
+                "max_abs_ic_a": 0.0007528517877773
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9011919520808,
+                "max_vce_v": 0.9050173553677,
+                "max_abs_ic_a": 0.001392793771249
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.7058272587319998,
+                "max_vce_v": 0.7155234352279998,
+                "max_abs_ic_a": 0.001570180926503
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.7058230079110002,
+                "max_vce_v": 0.7155094261649999,
+                "max_abs_ic_a": 0.001570211500971
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.375750848622,
+                "max_vce_v": 1.377863570991,
+                "max_abs_ic_a": 0.003145027363414
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 1.038591664864,
+                "max_vce_v": 1.0496605803339998,
+                "max_abs_ic_a": 0.001445209626872
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 1.0385786648989999,
+                "max_vce_v": 1.049656730854,
+                "max_abs_ic_a": 0.001445220231007
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.250339419666,
+                "max_vce_v": 1.261408335136,
+                "max_abs_ic_a": 0.001447154154523
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.250343269146,
+                "max_vce_v": 1.261421335101,
+                "max_abs_ic_a": 0.001447164802269
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": false,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        }
+      ]
+    },
+    "4p0-tuning": {
+      "native_result_sha256": "a4994c68bf6f68713e8c0a3849d1488d989d9f656c67ee4a086fd0ac60c08983",
+      "positive_screen_pass": 48,
+      "positive_cases": 63,
+      "negative_controls_rejected": 0,
+      "failures": [
+        {
+          "name": "nominal_control_1.20",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 55,
+            "frequency_hz": 6969643376.534655,
+            "edge_order_errors": 0,
+            "min_diff_v": -0.2782386807749999,
+            "max_diff_v": 0.27805127839099986,
+            "period_spread": 0.0012868565340763496,
+            "duty_range": [
+              0.5000030002796735,
+              0.5000102024256973
+            ],
+            "mean_common_mode_v": 1.2557274597855381,
+            "mean_supply_power_w": 0.025608028448065947,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.8229965160213,
+                "max_vce_v": 0.8239449640719,
+                "max_abs_ic_a": 0.0002751089598136
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.7791967208860002,
+                "max_vce_v": 0.8621208891680001,
+                "max_abs_ic_a": 0.001087677172467
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.7787379449960001,
+                "max_vce_v": 0.8624850128819999,
+                "max_abs_ic_a": 0.001087155040205
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.384648659395,
+                "max_vce_v": 1.402447138247,
+                "max_abs_ic_a": 0.00118764718292
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.7790524069989999,
+                "max_vce_v": 0.8644749152270002,
+                "max_abs_ic_a": 0.001066956292436
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.7788553676600001,
+                "max_vce_v": 0.864343003399,
+                "max_abs_ic_a": 0.001067104100289
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.384040419306,
+                "max_vce_v": 1.400522630128,
+                "max_abs_ic_a": 0.001185352505584
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.7767438407109999,
+                "max_vce_v": 0.8651711448189998,
+                "max_abs_ic_a": 0.001079428527191
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.7767494590469999,
+                "max_vce_v": 0.8651480678549999,
+                "max_abs_ic_a": 0.001079855682107
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.384666855251,
+                "max_vce_v": 1.401517892562,
+                "max_abs_ic_a": 0.00118615302796
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9011621617582,
+                "max_vce_v": 0.9050506384341,
+                "max_abs_ic_a": 0.001393723123703
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.5923999637490001,
+                "max_vce_v": 0.8708641345639998,
+                "max_abs_ic_a": 0.002562779558312
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.59191991922,
+                "max_vce_v": 0.8711671328730002,
+                "max_abs_ic_a": 0.002563602175836
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.342593448466,
+                "max_vce_v": 1.353936469219,
+                "max_abs_ic_a": 0.003132366686756
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.9091175634369999,
+                "max_vce_v": 1.1877868022319997,
+                "max_abs_ic_a": 0.001778801892899
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.9090576527289997,
+                "max_vce_v": 1.187666002338,
+                "max_abs_ic_a": 0.001779313684285
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.112213197768,
+                "max_vce_v": 1.390882436563,
+                "max_abs_ic_a": 0.001455072424965
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.112333997662,
+                "max_vce_v": 1.390942347271,
+                "max_abs_ic_a": 0.001455370284216
+              }
+            },
+            "checks": {
+              "edges": true,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": true,
+              "deterministic_period_spread": true,
+              "duty": true,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "nominal_control_1.30",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 0,
+            "frequency_hz": null,
+            "edge_order_errors": 0,
+            "min_diff_v": -1.299996500003786e-05,
+            "max_diff_v": -3.849479999873395e-06,
+            "period_spread": null,
+            "duty_range": null,
+            "mean_common_mode_v": 1.2545754227012633,
+            "mean_supply_power_w": 0.022471532966001073,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.808276210633,
+                "max_vce_v": 0.8088504503595,
+                "max_abs_ic_a": 0.0001774513349385
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.8093809786550001,
+                "max_vce_v": 0.8094535695520002,
+                "max_abs_ic_a": 0.0003759515175845
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.8093805015610003,
+                "max_vce_v": 0.8094533077330002,
+                "max_abs_ic_a": 0.0003759520501327
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.433069046171,
+                "max_vce_v": 1.434375364188,
+                "max_abs_ic_a": 0.0007528517015737
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.8100304189880001,
+                "max_vce_v": 0.8101379997229998,
+                "max_abs_ic_a": 0.0003759431489784
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.8100309400840002,
+                "max_vce_v": 0.810138253961,
+                "max_abs_ic_a": 0.0003759422987599
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.432718736038,
+                "max_vce_v": 1.434051375093,
+                "max_abs_ic_a": 0.0007528335715335
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.8097049864650001,
+                "max_vce_v": 0.8097938897180001,
+                "max_abs_ic_a": 0.000375951486826
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.8097045707320001,
+                "max_vce_v": 0.809793670226,
+                "max_abs_ic_a": 0.0003759521668402
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.433071078268,
+                "max_vce_v": 1.434376500843,
+                "max_abs_ic_a": 0.0007528517877773
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9011919520808,
+                "max_vce_v": 0.9050173553677,
+                "max_abs_ic_a": 0.001392793771249
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.7058272587319998,
+                "max_vce_v": 0.7155234352279998,
+                "max_abs_ic_a": 0.001570180926503
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.7058230079110002,
+                "max_vce_v": 0.7155094261649999,
+                "max_abs_ic_a": 0.001570211500971
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.375750848622,
+                "max_vce_v": 1.377863570991,
+                "max_abs_ic_a": 0.003145027363414
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 1.038591664864,
+                "max_vce_v": 1.0496605803339998,
+                "max_abs_ic_a": 0.001445209626872
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 1.0385786648989999,
+                "max_vce_v": 1.049656730854,
+                "max_abs_ic_a": 0.001445220231007
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.250339419666,
+                "max_vce_v": 1.261408335136,
+                "max_abs_ic_a": 0.001447154154523
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.250343269146,
+                "max_vce_v": 1.261421335101,
+                "max_abs_ic_a": 0.001447164802269
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": false,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "hot_bcs_ss_control_1.20",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 0,
+            "frequency_hz": null,
+            "edge_order_errors": 0,
+            "min_diff_v": -1.0619767000008551e-05,
+            "max_diff_v": -2.1378010000017156e-06,
+            "period_spread": null,
+            "duty_range": null,
+            "mean_common_mode_v": 1.3315209456596153,
+            "mean_supply_power_w": 0.02590363409765508,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.7171787820375,
+                "max_vce_v": 0.7179130309735,
+                "max_abs_ic_a": 0.0002473061648424
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.7191157571659998,
+                "max_vce_v": 0.7194500575479998,
+                "max_abs_ic_a": 0.0005326656097765
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.7191141311859999,
+                "max_vce_v": 0.7194498383810002,
+                "max_abs_ic_a": 0.0005326663229784
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.498042924168,
+                "max_vce_v": 1.500785366147,
+                "max_abs_ic_a": 0.001066577036051
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.7197766387789999,
+                "max_vce_v": 0.7201741842259999,
+                "max_abs_ic_a": 0.0005326503705976
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.7197782556260002,
+                "max_vce_v": 0.7201743969100001,
+                "max_abs_ic_a": 0.0005326491843996
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.497681083014,
+                "max_vce_v": 1.500455819116,
+                "max_abs_ic_a": 0.001066544635253
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.719444668041,
+                "max_vce_v": 0.7198088537389999,
+                "max_abs_ic_a": 0.0005326655815719
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.7194440901229999,
+                "max_vce_v": 0.7198086569730002,
+                "max_abs_ic_a": 0.0005326666135457
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.498046408216,
+                "max_vce_v": 1.500787405168,
+                "max_abs_ic_a": 0.001066577299079
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.8101969406384,
+                "max_vce_v": 0.8139644206032,
+                "max_abs_ic_a": 0.001459482670241
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.6183589557660003,
+                "max_vce_v": 0.630929986068,
+                "max_abs_ic_a": 0.001706071571038
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.6183565029690001,
+                "max_vce_v": 0.6309257306459999,
+                "max_abs_ic_a": 0.001706088966416
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.441171067289,
+                "max_vce_v": 1.445809350036,
+                "max_abs_ic_a": 0.003416893076702
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.9581451497149998,
+                "max_vce_v": 0.9753184651429998,
+                "max_abs_ic_a": 0.001551041404249
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.9581417405499999,
+                "max_vce_v": 0.9753163273419998,
+                "max_abs_ic_a": 0.00155104922386
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.324681534857,
+                "max_vce_v": 1.341854850285,
+                "max_abs_ic_a": 0.001552985550897
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.324683672658,
+                "max_vce_v": 1.34185825945,
+                "max_abs_ic_a": 0.001552993397178
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": false,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "hot_bcs_ss_control_1.30",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 0,
+            "frequency_hz": null,
+            "edge_order_errors": 0,
+            "min_diff_v": -7.194191000037264e-06,
+            "max_diff_v": -2.0968920000363767e-06,
+            "period_spread": null,
+            "duty_range": null,
+            "mean_common_mode_v": 1.3306293019153952,
+            "mean_supply_power_w": 0.023389819956337946,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.7015836296509,
+                "max_vce_v": 0.7020859716581,
+                "max_abs_ic_a": 0.0001692540265653
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.7029714468500001,
+                "max_vce_v": 0.703253022557,
+                "max_abs_ic_a": 0.0003592607646438
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.7029705714129999,
+                "max_vce_v": 0.7032527615690001,
+                "max_abs_ic_a": 0.0003592619846865
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.540976603458,
+                "max_vce_v": 1.542546105977,
+                "max_abs_ic_a": 0.0007193429623359
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.7036353601169998,
+                "max_vce_v": 0.7039839196080002,
+                "max_abs_ic_a": 0.0003592529850261
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.703636050222,
+                "max_vce_v": 0.703984102538,
+                "max_abs_ic_a": 0.0003592518134354
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.540611922683,
+                "max_vce_v": 1.542214969915,
+                "max_abs_ic_a": 0.0007193250030029
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.7033025143249998,
+                "max_vce_v": 0.7036164607169999,
+                "max_abs_ic_a": 0.0003592611537012
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.7033022067369998,
+                "max_vce_v": 0.7036163707109999,
+                "max_abs_ic_a": 0.0003592616874852
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.540978706436,
+                "max_vce_v": 1.542547424432,
+                "max_abs_ic_a": 0.000719343052147
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.8101966425321,
+                "max_vce_v": 0.8139662780707,
+                "max_abs_ic_a": 0.001459479432346
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.5908921301680001,
+                "max_vce_v": 0.6050350781250002,
+                "max_abs_ic_a": 0.001714671235131
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.5908896894360001,
+                "max_vce_v": 0.6050270362410002,
+                "max_abs_ic_a": 0.001714688542665
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.467427232296,
+                "max_vce_v": 1.471206121611,
+                "max_abs_ic_a": 0.00343411709474
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.9586466745319999,
+                "max_vce_v": 0.9765207018329998,
+                "max_abs_ic_a": 0.001550887576437
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.9586394803409999,
+                "max_vce_v": 0.9765186049409997,
+                "max_abs_ic_a": 0.001550896133502
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.323479298167,
+                "max_vce_v": 1.341353325468,
+                "max_abs_ic_a": 0.001552834537847
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.323481395059,
+                "max_vce_v": 1.341360519659,
+                "max_abs_ic_a": 0.001552843122265
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": false,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "cold_wcs_ss_control_1.20",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 54,
+            "frequency_hz": 6735179061.880352,
+            "edge_order_errors": 0,
+            "min_diff_v": -0.0008105690039998947,
+            "max_diff_v": 0.0007626316780000586,
+            "period_spread": 0.011127329165596056,
+            "duty_range": [
+              0.4919565324376274,
+              0.4948742738535197
+            ],
+            "mean_common_mode_v": 1.2051045610415472,
+            "mean_supply_power_w": 0.021564574519644393,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.8756485950151,
+                "max_vce_v": 0.8762394409431,
+                "max_abs_ic_a": 0.0001765529502285
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.8764326247140002,
+                "max_vce_v": 0.876719458597,
+                "max_abs_ic_a": 0.0003736415020493
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.876429904421,
+                "max_vce_v": 0.876718768907,
+                "max_abs_ic_a": 0.000373626985977
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.366784760278,
+                "max_vce_v": 1.36784883619,
+                "max_abs_ic_a": 0.0007470581068231
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.8770320196850001,
+                "max_vce_v": 0.8772873327580002,
+                "max_abs_ic_a": 0.0003735888266359
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.8770341624610001,
+                "max_vce_v": 0.8772866797229999,
+                "max_abs_ic_a": 0.0003735734456118
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.366484144979,
+                "max_vce_v": 1.367568739629,
+                "max_abs_ic_a": 0.0007470419257227
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.8767285662850002,
+                "max_vce_v": 0.877007170055,
+                "max_abs_ic_a": 0.0003736033680785
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.8767263853709999,
+                "max_vce_v": 0.877008245431,
+                "max_abs_ic_a": 0.000373618648182
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.366786483361,
+                "max_vce_v": 1.367849820309,
+                "max_abs_ic_a": 0.0007470581852872
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9647641574216,
+                "max_vce_v": 0.9686690687665,
+                "max_abs_ic_a": 0.001340355471381
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.7807026474259999,
+                "max_vce_v": 0.7881977300059999,
+                "max_abs_ic_a": 0.001468564972419
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.7807033627070001,
+                "max_vce_v": 0.788064011108,
+                "max_abs_ic_a": 0.001468612088965
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.316034670768,
+                "max_vce_v": 1.317222567165,
+                "max_abs_ic_a": 0.002939255204008
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 1.0901172555969998,
+                "max_vce_v": 1.0976016333679999,
+                "max_abs_ic_a": 0.001369992763895
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 1.089967366189,
+                "max_vce_v": 1.0976128002099999,
+                "max_abs_ic_a": 0.001370149033986
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.202398366632,
+                "max_vce_v": 1.209882744403,
+                "max_abs_ic_a": 0.001371540033498
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.20238719979,
+                "max_vce_v": 1.210032633811,
+                "max_abs_ic_a": 0.001371562588688
+              }
+            },
+            "checks": {
+              "edges": true,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": true,
+              "deterministic_period_spread": false,
+              "duty": true,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "cold_wcs_ss_control_1.30",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 0,
+            "frequency_hz": null,
+            "edge_order_errors": 0,
+            "min_diff_v": -1.7472741999924324e-05,
+            "max_diff_v": -5.130584000090366e-06,
+            "period_spread": null,
+            "duty_range": null,
+            "mean_common_mode_v": 1.2045311963674592,
+            "mean_supply_power_w": 0.01906428291033235,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.8602044071294,
+                "max_vce_v": 0.8605427643821,
+                "max_abs_ic_a": 9.738292846992e-05
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.8606240303009998,
+                "max_vce_v": 0.8606973975059999,
+                "max_abs_ic_a": 0.0002025532964968
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.860623955353,
+                "max_vce_v": 0.8606971754920001,
+                "max_abs_ic_a": 0.0002025536443333
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.408428106791,
+                "max_vce_v": 1.408843494519,
+                "max_abs_ic_a": 0.0004055842666567
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.861229664011,
+                "max_vce_v": 0.8612794277160001,
+                "max_abs_ic_a": 0.0002025505870627
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.8612297060939997,
+                "max_vce_v": 0.8612795327039999,
+                "max_abs_ic_a": 0.0002025503104553
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.40812648326,
+                "max_vce_v": 1.408561852633,
+                "max_abs_ic_a": 0.0004055782234857
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.86092633962,
+                "max_vce_v": 0.8609871321020002,
+                "max_abs_ic_a": 0.0002025534645796
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.8609263356269998,
+                "max_vce_v": 0.860987114684,
+                "max_abs_ic_a": 0.000202553490201
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.408428863884,
+                "max_vce_v": 1.40884391542,
+                "max_abs_ic_a": 0.0004055842791095
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9647618615213,
+                "max_vce_v": 0.9686682016029,
+                "max_abs_ic_a": 0.001340316068177
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.754620670489,
+                "max_vce_v": 0.7625663628370001,
+                "max_abs_ic_a": 0.001473104248947
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.7546150572679999,
+                "max_vce_v": 0.7625476379780003,
+                "max_abs_ic_a": 0.001473144837365
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.341475907108,
+                "max_vce_v": 1.342129768539,
+                "max_abs_ic_a": 0.002950257311845
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 1.0907107628169999,
+                "max_vce_v": 1.0982371539759999,
+                "max_abs_ic_a": 0.001369725359426
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 1.090693290075,
+                "max_vce_v": 1.0982320233919998,
+                "max_abs_ic_a": 0.001369738321149
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.201762846024,
+                "max_vce_v": 1.209289237183,
+                "max_abs_ic_a": 0.001371437329336
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.201767976608,
+                "max_vce_v": 1.209306709925,
+                "max_abs_ic_a": 0.001371450345657
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": false,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "cold_bcs_ff_control_0.60",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 73,
+            "frequency_hz": 9075246399.571342,
+            "edge_order_errors": 0,
+            "min_diff_v": -0.4462521094859,
+            "max_diff_v": 0.44613674002549997,
+            "period_spread": 0.001632728358630455,
+            "duty_range": [
+              0.49991839933583027,
+              0.4999513234794043
+            ],
+            "mean_common_mode_v": 1.229216181691274,
+            "mean_supply_power_w": 0.0697728536094875,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.9418120683886,
+                "max_vce_v": 0.9478278243125,
+                "max_abs_ic_a": 0.001664617200629
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.482029125927,
+                "max_vce_v": 1.2662503523547,
+                "max_abs_ic_a": 0.007450587190594
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.47944188214500016,
+                "max_vce_v": 1.2697594016512,
+                "max_abs_ic_a": 0.007444499269688
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 0.8027004350159,
+                "max_vce_v": 1.077048860217,
+                "max_abs_ic_a": 0.007320856115617
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.4820749878439998,
+                "max_vce_v": 1.2783971140888002,
+                "max_abs_ic_a": 0.007428090057812
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.479392290861,
+                "max_vce_v": 1.2770511322059002,
+                "max_abs_ic_a": 0.007431672851563
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 0.7993009078885,
+                "max_vce_v": 1.068423724581,
+                "max_abs_ic_a": 0.007301791076098
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.47261001221200005,
+                "max_vce_v": 1.2768762901009,
+                "max_abs_ic_a": 0.007446321744778
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.47266018079600003,
+                "max_vce_v": 1.2764732625996997,
+                "max_abs_ic_a": 0.007448764785291
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 0.8038481282723,
+                "max_vce_v": 1.073950139457,
+                "max_abs_ic_a": 0.007320667779361
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9299825199594,
+                "max_vce_v": 0.9386353013193,
+                "max_abs_ic_a": 0.001432778873009
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.741813573735,
+                "max_vce_v": 1.4407528046583997,
+                "max_abs_ic_a": 0.003237781603318
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.7383208089440001,
+                "max_vce_v": 1.4395294372185,
+                "max_abs_ic_a": 0.003239407848834
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 0.8439670641565,
+                "max_vce_v": 1.142090054791,
+                "max_abs_ic_a": 0.003103593822166
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.8692263068749999,
+                "max_vce_v": 1.3289028288468998,
+                "max_abs_ic_a": 0.004159765070027
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.8693375226839999,
+                "max_vce_v": 1.3287937033408999,
+                "max_abs_ic_a": 0.004163539809415
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 0.9710971711531,
+                "max_vce_v": 1.430773693125,
+                "max_abs_ic_a": 0.001538084047267
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 0.9712062966591,
+                "max_vce_v": 1.430662477316,
+                "max_abs_ic_a": 0.001538692957228
+              }
+            },
+            "checks": {
+              "edges": true,
+              "edge_order": true,
+              "differential_swing": true,
+              "frequency": true,
+              "deterministic_period_spread": true,
+              "duty": true,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": false
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "cold_bcs_ff_control_0.70",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 72,
+            "frequency_hz": 9022403625.290562,
+            "edge_order_errors": 0,
+            "min_diff_v": -0.44823222185730005,
+            "max_diff_v": 0.4480041521183,
+            "period_spread": 0.00030551508058271625,
+            "duty_range": [
+              0.4998995587060105,
+              0.4999869742208791
+            ],
+            "mean_common_mode_v": 1.2259107070893023,
+            "mean_supply_power_w": 0.061595339993530084,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.9320381471767,
+                "max_vce_v": 0.9372412222768,
+                "max_abs_ic_a": 0.001393908564581
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.5407346451599999,
+                "max_vce_v": 1.2077319841295,
+                "max_abs_ic_a": 0.006332633865611
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.538088698261,
+                "max_vce_v": 1.2108328128536003,
+                "max_abs_ic_a": 0.006327254337513
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 0.8960852150348,
+                "max_vce_v": 1.129495360066,
+                "max_abs_ic_a": 0.006218356015601
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.540734034158,
+                "max_vce_v": 1.2187537085642999,
+                "max_abs_ic_a": 0.006309721113708
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.537924905823,
+                "max_vce_v": 1.2176100424948997,
+                "max_abs_ic_a": 0.00631194097153
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 0.893126536699,
+                "max_vce_v": 1.121799576686,
+                "max_abs_ic_a": 0.006198014464837
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.530300669456,
+                "max_vce_v": 1.2174777208518,
+                "max_abs_ic_a": 0.006324852799396
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.5303370962859999,
+                "max_vce_v": 1.217264569326,
+                "max_abs_ic_a": 0.006325972380497
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 0.896919795425,
+                "max_vce_v": 1.126999113268,
+                "max_abs_ic_a": 0.00621365100595
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.930413080702,
+                "max_vce_v": 0.9381698893111,
+                "max_abs_ic_a": 0.001422032317973
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.705692090036,
+                "max_vce_v": 1.3556779396713,
+                "max_abs_ic_a": 0.003214203495953
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.7025168881489998,
+                "max_vce_v": 1.3547829171443002,
+                "max_abs_ic_a": 0.003214844670992
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 0.9268783909412,
+                "max_vce_v": 1.175686189629,
+                "max_abs_ic_a": 0.003111747303352
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.8707720665809999,
+                "max_vce_v": 1.3294603919922998,
+                "max_abs_ic_a": 0.003934055156551
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.8708720017379998,
+                "max_vce_v": 1.3295001847772998,
+                "max_abs_ic_a": 0.00393841800867
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 0.9705396080077,
+                "max_vce_v": 1.429227933419,
+                "max_abs_ic_a": 0.001524213138553
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 0.9704998152227,
+                "max_vce_v": 1.429127998262,
+                "max_abs_ic_a": 0.001524158082478
+              }
+            },
+            "checks": {
+              "edges": true,
+              "edge_order": true,
+              "differential_swing": true,
+              "frequency": true,
+              "deterministic_period_spread": true,
+              "duty": true,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": false
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "hot_wcs_ff_control_1.30",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 18,
+            "frequency_hz": 6225670969.962668,
+            "edge_order_errors": 0,
+            "min_diff_v": -6.471931399998354e-05,
+            "max_diff_v": 4.844418100002912e-05,
+            "period_spread": 0.028948372090526062,
+            "duty_range": [
+              0.17062587110347144,
+              0.4654652439950234
+            ],
+            "mean_common_mode_v": 1.3294766950962007,
+            "mean_supply_power_w": 0.025864628125529556,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.7457551923634,
+                "max_vce_v": 0.7466414100219,
+                "max_abs_ic_a": 0.0002823223071286
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.7469781712510002,
+                "max_vce_v": 0.747151887826,
+                "max_abs_ic_a": 0.0006005201169518
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.7469843369679998,
+                "max_vce_v": 0.7471516214429998,
+                "max_abs_ic_a": 0.0006005205225811
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.45895561236,
+                "max_vce_v": 1.461392693721,
+                "max_abs_ic_a": 0.001205762911734
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.7489984712680002,
+                "max_vce_v": 0.7492684722770002,
+                "max_abs_ic_a": 0.0006004723291958
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.7489884621200003,
+                "max_vce_v": 0.749268707416,
+                "max_abs_ic_a": 0.0006004711429491
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.457890632985,
+                "max_vce_v": 1.460393078968,
+                "max_abs_ic_a": 0.001205665461539
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.7479815213780001,
+                "max_vce_v": 0.7481999252410003,
+                "max_abs_ic_a": 0.0006005201171573
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.7479837678650001,
+                "max_vce_v": 0.7481997025040001,
+                "max_abs_ic_a": 0.0006005212750163
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.458966150167,
+                "max_vce_v": 1.461398410084,
+                "max_abs_ic_a": 0.00120576371472
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.8458506934174,
+                "max_vce_v": 0.849578637799,
+                "max_abs_ic_a": 0.001396384587457
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.6763444892189998,
+                "max_vce_v": 0.682780218112,
+                "max_abs_ic_a": 0.001542392780859
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.6763426335260001,
+                "max_vce_v": 0.6827150211269999,
+                "max_abs_ic_a": 0.001542405980004
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.405674677066,
+                "max_vce_v": 1.409049043401,
+                "max_abs_ic_a": 0.003098750944717
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.9647386741559998,
+                "max_vce_v": 0.9741420554499998,
+                "max_abs_ic_a": 0.001449954913138
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.9646739548419998,
+                "max_vce_v": 0.9741404587929998,
+                "max_abs_ic_a": 0.001449960088786
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.32585794455,
+                "max_vce_v": 1.335261325844,
+                "max_abs_ic_a": 0.001455822721591
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.325859541207,
+                "max_vce_v": 1.335326045158,
+                "max_abs_ic_a": 0.001455827873015
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": true,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "low_supply_res_wcs_cap_wcs_control_1.10",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 47,
+            "frequency_hz": 5949658346.846487,
+            "edge_order_errors": 0,
+            "min_diff_v": -0.27839231890899985,
+            "max_diff_v": 0.27825396101300015,
+            "period_spread": 0.0011163748180439339,
+            "duty_range": [
+              0.5000014413354951,
+              0.5000036424617664
+            ],
+            "mean_common_mode_v": 1.1666992397938387,
+            "mean_supply_power_w": 0.021107590307396486,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.8207359954678,
+                "max_vce_v": 0.8216329361788,
+                "max_abs_ic_a": 0.000257921090304
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.773623415221,
+                "max_vce_v": 0.8613558264330001,
+                "max_abs_ic_a": 0.001019725731798
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.7731387052880001,
+                "max_vce_v": 0.8617458826789999,
+                "max_abs_ic_a": 0.00101926780835
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.27117738992,
+                "max_vce_v": 1.290578322473,
+                "max_abs_ic_a": 0.001099424140258
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.7734858207739999,
+                "max_vce_v": 0.8635514592109998,
+                "max_abs_ic_a": 0.001003631116247
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.7732453958800001,
+                "max_vce_v": 0.8634046136569999,
+                "max_abs_ic_a": 0.001003793317264
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.270597726459,
+                "max_vce_v": 1.288725573385,
+                "max_abs_ic_a": 0.001097263747776
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.7713005052539998,
+                "max_vce_v": 0.864165373579,
+                "max_abs_ic_a": 0.001013753158048
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.7713124438219998,
+                "max_vce_v": 0.864135509265,
+                "max_abs_ic_a": 0.001014003463592
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.271202488787,
+                "max_vce_v": 1.289683506671,
+                "max_abs_ic_a": 0.001098146824821
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.8900847041929,
+                "max_vce_v": 0.8934082869989,
+                "max_abs_ic_a": 0.001177939993425
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.602705250219,
+                "max_vce_v": 0.881295860099,
+                "max_abs_ic_a": 0.002207005832557
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.6021993751060002,
+                "max_vce_v": 0.881627628156,
+                "max_abs_ic_a": 0.002207604308877
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.235792219926,
+                "max_vce_v": 1.248623853836,
+                "max_abs_ic_a": 0.002588861329581
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.8821480424150001,
+                "max_vce_v": 1.16065613789,
+                "max_abs_ic_a": 0.001502224865477
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.882094313626,
+                "max_vce_v": 1.1605633066980001,
+                "max_abs_ic_a": 0.001502568202961
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.02434386211,
+                "max_vce_v": 1.302851957585,
+                "max_abs_ic_a": 0.001217164747702
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.024436693302,
+                "max_vce_v": 1.302905686374,
+                "max_abs_ic_a": 0.001217396695058
+              }
+            },
+            "checks": {
+              "edges": true,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": true,
+              "deterministic_period_spread": true,
+              "duty": true,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "low_supply_res_wcs_cap_wcs_control_1.20",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 0,
+            "frequency_hz": null,
+            "edge_order_errors": 0,
+            "min_diff_v": -1.5212236999850859e-05,
+            "max_diff_v": -4.42662299993124e-06,
+            "period_spread": null,
+            "duty_range": null,
+            "mean_common_mode_v": 1.1656313079231273,
+            "mean_supply_power_w": 0.018272606487101294,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.8057258569074,
+                "max_vce_v": 0.8062583176675,
+                "max_abs_ic_a": 0.000163879071872
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.8065553845770002,
+                "max_vce_v": 0.8066596171939999,
+                "max_abs_ic_a": 0.0003436226038982
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.8065552709020001,
+                "max_vce_v": 0.8066592866080002,
+                "max_abs_ic_a": 0.000343623099799
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.320941446747,
+                "max_vce_v": 1.321906366111,
+                "max_abs_ic_a": 0.0006881096264172
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.8071678658929999,
+                "max_vce_v": 0.8072513176369998,
+                "max_abs_ic_a": 0.0003436165660476
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.8071679940329999,
+                "max_vce_v": 0.8072516486679999,
+                "max_abs_ic_a": 0.0003436158004318
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.320636549217,
+                "max_vce_v": 1.321619444703,
+                "max_abs_ic_a": 0.0006880962808031
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.8068603273439998,
+                "max_vce_v": 0.8069541386990002,
+                "max_abs_ic_a": 0.0003436225786
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.8068602258639999,
+                "max_vce_v": 0.806953856245,
+                "max_abs_ic_a": 0.0003436231833792
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.320943090464,
+                "max_vce_v": 1.321907317848,
+                "max_abs_ic_a": 0.0006881096850184
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.8901487686287,
+                "max_vce_v": 0.8933802856141,
+                "max_abs_ic_a": 0.001176910413076
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.717460515468,
+                "max_vce_v": 0.7246193159079999,
+                "max_abs_ic_a": 0.001297091765537
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.7174556440100002,
+                "max_vce_v": 0.724603189125,
+                "max_abs_ic_a": 0.001297123802963
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.270200810791,
+                "max_vce_v": 1.271563890511,
+                "max_abs_ic_a": 0.002597900940104
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 1.014459942092,
+                "max_vce_v": 1.022262903613,
+                "max_abs_ic_a": 0.001208870432645
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 1.014444955232,
+                "max_vce_v": 1.02225847699,
+                "max_abs_ic_a": 0.00120888087067
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.162737096387,
+                "max_vce_v": 1.170540057908,
+                "max_abs_ic_a": 0.001210462631881
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.16274152301,
+                "max_vce_v": 1.170555044768,
+                "max_abs_ic_a": 0.001210473117579
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": false,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "low_supply_res_wcs_cap_wcs_control_1.30",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 0,
+            "frequency_hz": null,
+            "edge_order_errors": 0,
+            "min_diff_v": -1.6044349000043923e-05,
+            "max_diff_v": -4.663653000003265e-06,
+            "period_spread": null,
+            "duty_range": null,
+            "mean_common_mode_v": 1.1650456858896814,
+            "mean_supply_power_w": 0.01614866329584005,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.7882558545777,
+                "max_vce_v": 0.7885657605713,
+                "max_abs_ic_a": 9.257318861189e-05
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.788704233349,
+                "max_vce_v": 0.7887529171919998,
+                "max_abs_ic_a": 0.0001913522524408
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.788704073593,
+                "max_vce_v": 0.7887525204650001,
+                "max_abs_ic_a": 0.0001913530853211
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.364137031765,
+                "max_vce_v": 1.364523592382,
+                "max_abs_ic_a": 0.0003831829767532
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.7893052426180001,
+                "max_vce_v": 0.78935103628,
+                "max_abs_ic_a": 0.000191350404205
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.7893055730360001,
+                "max_vce_v": 0.7893512200509998,
+                "max_abs_ic_a": 0.0001913498786221
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.363830549594,
+                "max_vce_v": 1.364235590767,
+                "max_abs_ic_a": 0.0003831779212891
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.7890111194879998,
+                "max_vce_v": 0.7890509128600001,
+                "max_abs_ic_a": 0.0001913526954753
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.789011126239,
+                "max_vce_v": 0.7890509252300002,
+                "max_abs_ic_a": 0.0001913526539557
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.364137779896,
+                "max_vce_v": 1.36452405667,
+                "max_abs_ic_a": 0.0003831829870632
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.890147126568,
+                "max_vce_v": 0.8933797071425,
+                "max_abs_ic_a": 0.00117688130839
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.6916671811570001,
+                "max_vce_v": 0.6997260111349999,
+                "max_abs_ic_a": 0.001302196196041
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.6916620046620001,
+                "max_vce_v": 0.6997086701190001,
+                "max_abs_ic_a": 0.001302230238392
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.295218575726,
+                "max_vce_v": 1.296119744414,
+                "max_abs_ic_a": 0.002608124929687
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 1.014797411797,
+                "max_vce_v": 1.023033961816,
+                "max_abs_ic_a": 0.001208773515423
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 1.014781367448,
+                "max_vce_v": 1.023029298163,
+                "max_abs_ic_a": 0.001208785683473
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.161966038184,
+                "max_vce_v": 1.170202588203,
+                "max_abs_ic_a": 0.001210367262266
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.161970701837,
+                "max_vce_v": 1.170218632552,
+                "max_abs_ic_a": 0.001210379482363
+              }
+            },
+            "checks": {
+              "edges": false,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": false,
+              "deterministic_period_spread": false,
+              "duty": false,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "high_supply_res_bcs_cap_bcs_control_0.60",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 80,
+            "frequency_hz": 9986101801.030924,
+            "edge_order_errors": 0,
+            "min_diff_v": -0.4991640722369999,
+            "max_diff_v": 0.49889190116400006,
+            "period_spread": 0.0010045916820167553,
+            "duty_range": [
+              0.49995600974749166,
+              0.49996663179352635
+            ],
+            "mean_common_mode_v": 1.3601891996988393,
+            "mean_supply_power_w": 0.07297459478519332,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.9061937294723,
+                "max_vce_v": 0.912087501138,
+                "max_abs_ic_a": 0.001527604052395
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.526914774045,
+                "max_vce_v": 1.187907081476,
+                "max_abs_ic_a": 0.006967995566534
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.524624967988,
+                "max_vce_v": 1.190814168536,
+                "max_abs_ic_a": 0.006961715233653
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.033261763805,
+                "max_vce_v": 1.25570787144,
+                "max_abs_ic_a": 0.006840097675048
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.5268881142670001,
+                "max_vce_v": 1.2004099317169998,
+                "max_abs_ic_a": 0.006941624203
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.524612786407,
+                "max_vce_v": 1.1992541975689999,
+                "max_abs_ic_a": 0.006945068915457
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.029663154619,
+                "max_vce_v": 1.245009056216,
+                "max_abs_ic_a": 0.006817847975371
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.517190180457,
+                "max_vce_v": 1.1999993087079999,
+                "max_abs_ic_a": 0.006957859831721
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.5172711318079999,
+                "max_vce_v": 1.1996445956369999,
+                "max_abs_ic_a": 0.006959249881037
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.03435356244,
+                "max_vce_v": 1.251278341288,
+                "max_abs_ic_a": 0.006835196453988
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9107046350285,
+                "max_vce_v": 0.9197009577938,
+                "max_abs_ic_a": 0.001686735730095
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.6427823831749999,
+                "max_vce_v": 1.3228828297459998,
+                "max_abs_ic_a": 0.003859236608539
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.6398229910390001,
+                "max_vce_v": 1.3220519689919998,
+                "max_abs_ic_a": 0.003860602306468
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.070507349442,
+                "max_vce_v": 1.311796732408,
+                "max_abs_ic_a": 0.003730961097252
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.8293964375910001,
+                "max_vce_v": 1.336971323922,
+                "max_abs_ic_a": 0.004068272906059
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.8294887755390001,
+                "max_vce_v": 1.336852100246,
+                "max_abs_ic_a": 0.004073137088112
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.078028676078,
+                "max_vce_v": 1.585603562409,
+                "max_abs_ic_a": 0.001822301702873
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.078147899754,
+                "max_vce_v": 1.585511224461,
+                "max_abs_ic_a": 0.001823180279403
+              }
+            },
+            "checks": {
+              "edges": true,
+              "edge_order": true,
+              "differential_swing": true,
+              "frequency": true,
+              "deterministic_period_spread": true,
+              "duty": true,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": false
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "high_supply_res_bcs_cap_bcs_control_0.70",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 79,
+            "frequency_hz": 9895172574.124008,
+            "edge_order_errors": 0,
+            "min_diff_v": -0.49701081652,
+            "max_diff_v": 0.4966962234200001,
+            "period_spread": 0.0009850579397707112,
+            "duty_range": [
+              0.49994565921980366,
+              0.4999886660026451
+            ],
+            "mean_common_mode_v": 1.3573823215501013,
+            "mean_supply_power_w": 0.06579079202432839,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.895636672935,
+                "max_vce_v": 0.9007928345404,
+                "max_abs_ic_a": 0.001308892018911
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.5673678530390001,
+                "max_vce_v": 1.139454374481,
+                "max_abs_ic_a": 0.006019719776948
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.5647913774769999,
+                "max_vce_v": 1.142109952401,
+                "max_abs_ic_a": 0.006014362644145
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.108174158022,
+                "max_vce_v": 1.300074974477,
+                "max_abs_ic_a": 0.005904494434916
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.5671291861799999,
+                "max_vce_v": 1.1508732205869998,
+                "max_abs_ic_a": 0.005991412309192
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.565015883354,
+                "max_vce_v": 1.1500258962160002,
+                "max_abs_ic_a": 0.005994332072782
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.105055288116,
+                "max_vce_v": 1.290295616982,
+                "max_abs_ic_a": 0.00588133933048
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.5569918765990001,
+                "max_vce_v": 1.150826968563,
+                "max_abs_ic_a": 0.006007986394687
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.5570738051389998,
+                "max_vce_v": 1.1504328983449998,
+                "max_abs_ic_a": 0.006009419225424
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.108969838042,
+                "max_vce_v": 1.296514552145,
+                "max_abs_ic_a": 0.005897845342087
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9111930581719,
+                "max_vce_v": 0.9193878755919,
+                "max_abs_ic_a": 0.001680014985348
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.616106591209,
+                "max_vce_v": 1.2563799256089998,
+                "max_abs_ic_a": 0.003827584774144
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.6136516706799999,
+                "max_vce_v": 1.256210919506,
+                "max_abs_ic_a": 0.003829463636397
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.134230493724,
+                "max_vce_v": 1.336658026781,
+                "max_abs_ic_a": 0.003734041963776
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.8310944676600001,
+                "max_vce_v": 1.3343076730730001,
+                "max_abs_ic_a": 0.003852352801563
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.8311676403920001,
+                "max_vce_v": 1.334236477174,
+                "max_abs_ic_a": 0.003858327229452
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.080692326927,
+                "max_vce_v": 1.58390553234,
+                "max_abs_ic_a": 0.001810086252801
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.080763522826,
+                "max_vce_v": 1.583832359608,
+                "max_abs_ic_a": 0.001810506985832
+              }
+            },
+            "checks": {
+              "edges": true,
+              "edge_order": true,
+              "differential_swing": true,
+              "frequency": true,
+              "deterministic_period_spread": true,
+              "duty": true,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": false
+            },
+            "screen_pass": false
+          }
+        },
+        {
+          "name": "high_supply_res_bcs_cap_bcs_control_1.30",
+          "measurement": {
+            "rows": 12011,
+            "rising_edges": 66,
+            "frequency_hz": 8267955386.376399,
+            "edge_order_errors": 0,
+            "min_diff_v": -0.2640302520719999,
+            "max_diff_v": 0.263832940116,
+            "period_spread": 0.0013434820477236304,
+            "duty_range": [
+              0.5000035030002399,
+              0.5000179981135039
+            ],
+            "mean_common_mode_v": 1.3434100785516678,
+            "mean_supply_power_w": 0.031144075909178847,
+            "devices": {
+              "xref": {
+                "nx": 1,
+                "min_vce_v": 0.8252742040907,
+                "max_vce_v": 0.8262685583021,
+                "max_abs_ic_a": 0.0002932015546038
+              },
+              "xp0": {
+                "nx": 2,
+                "min_vce_v": 0.7862429522020002,
+                "max_vce_v": 0.8619068588000001,
+                "max_abs_ic_a": 0.001149569374979
+              },
+              "xn0": {
+                "nx": 2,
+                "min_vce_v": 0.785834885037,
+                "max_vce_v": 0.8622226061059999,
+                "max_abs_ic_a": 0.001148942689352
+              },
+              "xt0": {
+                "nx": 4,
+                "min_vce_v": 1.498781757585,
+                "max_vce_v": 1.514168535989,
+                "max_abs_ic_a": 0.001283348164059
+              },
+              "xp1": {
+                "nx": 2,
+                "min_vce_v": 0.7860928419640001,
+                "max_vce_v": 0.8643502490910002,
+                "max_abs_ic_a": 0.001123121947223
+              },
+              "xn1": {
+                "nx": 2,
+                "min_vce_v": 0.7859168386409998,
+                "max_vce_v": 0.8642360901370001,
+                "max_abs_ic_a": 0.001123414093396
+              },
+              "xt1": {
+                "nx": 4,
+                "min_vce_v": 1.498157492588,
+                "max_vce_v": 1.512420789175,
+                "max_abs_ic_a": 0.00128108198146
+              },
+              "xp2": {
+                "nx": 2,
+                "min_vce_v": 0.7837391769319999,
+                "max_vce_v": 0.8651082139819999,
+                "max_abs_ic_a": 0.001138379670785
+              },
+              "xn2": {
+                "nx": 2,
+                "min_vce_v": 0.7837630416620001,
+                "max_vce_v": 0.8650740278359998,
+                "max_abs_ic_a": 0.001138783900318
+              },
+              "xt2": {
+                "nx": 4,
+                "min_vce_v": 1.498800866916,
+                "max_vce_v": 1.51336052163,
+                "max_abs_ic_a": 0.00128170076671
+              },
+              "xbref": {
+                "nx": 1,
+                "min_vce_v": 0.9134995956579,
+                "max_vce_v": 0.9181124077015,
+                "max_abs_ic_a": 0.001653488377639
+              },
+              "xbp": {
+                "nx": 2,
+                "min_vce_v": 0.5882716194970001,
+                "max_vce_v": 0.8526452094630002,
+                "max_abs_ic_a": 0.002946114746083
+              },
+              "xbn": {
+                "nx": 2,
+                "min_vce_v": 0.5878640225410001,
+                "max_vce_v": 0.8528977674590001,
+                "max_abs_ic_a": 0.002946877853046
+              },
+              "xbt": {
+                "nx": 2,
+                "min_vce_v": 1.44902628831,
+                "max_vce_v": 1.459146296669,
+                "max_abs_ic_a": 0.003807588741127
+              },
+              "xfp": {
+                "nx": 4,
+                "min_vce_v": 0.9443840085940001,
+                "max_vce_v": 1.209558273171,
+                "max_abs_ic_a": 0.002100543228478
+              },
+              "xfn": {
+                "nx": 4,
+                "min_vce_v": 0.944317198269,
+                "max_vce_v": 1.209399084088,
+                "max_abs_ic_a": 0.002101016612861
+              },
+              "xftp": {
+                "nx": 1,
+                "min_vce_v": 1.205441726829,
+                "max_vce_v": 1.470615991406,
+                "max_abs_ic_a": 0.001744898367852
+              },
+              "xftn": {
+                "nx": 1,
+                "min_vce_v": 1.205600915912,
+                "max_vce_v": 1.470682801731,
+                "max_abs_ic_a": 0.001745268085696
+              }
+            },
+            "checks": {
+              "edges": true,
+              "edge_order": true,
+              "differential_swing": false,
+              "frequency": true,
+              "deterministic_period_spread": true,
+              "duty": true,
+              "headroom": true,
+              "maximum_vce": true,
+              "current_density": true
+            },
+            "screen_pass": false
+          }
+        }
+      ]
+    }
+  },
+  "nominal": {
+    "rows": 12011,
+    "rising_edges": 64,
+    "frequency_hz": 8021222805.164807,
+    "edge_order_errors": 0,
+    "min_diff_v": -0.436358089626,
+    "max_diff_v": 0.43630094296,
+    "period_spread": 0.0022843454735933756,
+    "duty_range": [
+      0.49996235893461455,
+      0.4999901405574433
+    ],
+    "mean_common_mode_v": 1.2619852941581389,
+    "mean_supply_power_w": 0.04199813632888249,
+    "devices": {
+      "xref": {
+        "nx": 1,
+        "min_vce_v": 0.8663188923947,
+        "max_vce_v": 0.8693347249816,
+        "max_abs_ic_a": 0.0007820679363133
+      },
+      "xp0": {
+        "nx": 2,
+        "min_vce_v": 0.6589937634329999,
+        "max_vce_v": 1.02181999907,
+        "max_abs_ic_a": 0.003530812881757
+      },
+      "xn0": {
+        "nx": 2,
+        "min_vce_v": 0.6573535807370001,
+        "max_vce_v": 1.0234529744639997,
+        "max_abs_ic_a": 0.003528359957845
+      },
+      "xt0": {
+        "nx": 4,
+        "min_vce_v": 1.1660645985,
+        "max_vce_v": 1.284535445291,
+        "max_abs_ic_a": 0.003474244298655
+      },
+      "xp1": {
+        "nx": 2,
+        "min_vce_v": 0.6589265299509999,
+        "max_vce_v": 1.0291110674780002,
+        "max_abs_ic_a": 0.003512273512045
+      },
+      "xn1": {
+        "nx": 2,
+        "min_vce_v": 0.6575264955959998,
+        "max_vce_v": 1.0284569429819999,
+        "max_abs_ic_a": 0.003513173328776
+      },
+      "xt1": {
+        "nx": 4,
+        "min_vce_v": 1.164144870579,
+        "max_vce_v": 1.277790942676,
+        "max_abs_ic_a": 0.003461522160774
+      },
+      "xp2": {
+        "nx": 2,
+        "min_vce_v": 0.652404438881,
+        "max_vce_v": 1.0295810991949998,
+        "max_abs_ic_a": 0.003524697786403
+      },
+      "xn2": {
+        "nx": 2,
+        "min_vce_v": 0.6524218330789999,
+        "max_vce_v": 1.0294543922719999,
+        "max_abs_ic_a": 0.003525751944246
+      },
+      "xt2": {
+        "nx": 4,
+        "min_vce_v": 1.166411140653,
+        "max_vce_v": 1.281815643246,
+        "max_abs_ic_a": 0.00347028301805
+      },
+      "xbref": {
+        "nx": 1,
+        "min_vce_v": 0.9000141682582,
+        "max_vce_v": 0.9057040993811,
+        "max_abs_ic_a": 0.00140676911076
+      },
+      "xbp": {
+        "nx": 2,
+        "min_vce_v": 0.5877346884849999,
+        "max_vce_v": 1.1003339592649999,
+        "max_abs_ic_a": 0.003148532018118
+      },
+      "xbn": {
+        "nx": 2,
+        "min_vce_v": 0.5859935254170001,
+        "max_vce_v": 1.1001377975120001,
+        "max_abs_ic_a": 0.003148451293513
+      },
+      "xbt": {
+        "nx": 2,
+        "min_vce_v": 1.169731426755,
+        "max_vce_v": 1.286910677331,
+        "max_abs_ic_a": 0.003104734306964
+      },
+      "xfp": {
+        "nx": 4,
+        "min_vce_v": 0.8286527828509997,
+        "max_vce_v": 1.2704012946819998,
+        "max_abs_ic_a": 0.002694385415181
+      },
+      "xfn": {
+        "nx": 4,
+        "min_vce_v": 0.8286886035129999,
+        "max_vce_v": 1.2703857832839998,
+        "max_abs_ic_a": 0.002694440083552
+      },
+      "xftp": {
+        "nx": 1,
+        "min_vce_v": 1.029598705318,
+        "max_vce_v": 1.471347217149,
+        "max_abs_ic_a": 0.001483065869134
+      },
+      "xftn": {
+        "nx": 1,
+        "min_vce_v": 1.029614216716,
+        "max_vce_v": 1.471311396487,
+        "max_abs_ic_a": 0.00148313415362
+      }
+    },
+    "checks": {
+      "edges": true,
+      "edge_order": true,
+      "differential_swing": true,
+      "frequency": true,
+      "deterministic_period_spread": true,
+      "duty": true,
+      "headroom": true,
+      "maximum_vce": true,
+      "current_density": true
+    },
+    "screen_pass": true
+  },
+  "prior_failed_corner": {
+    "rows": 12011,
+    "rising_edges": 61,
+    "frequency_hz": 7633838764.402947,
+    "edge_order_errors": 0,
+    "min_diff_v": -0.47073347530200005,
+    "max_diff_v": 0.47061632586399993,
+    "period_spread": 0.004329445257193064,
+    "duty_range": [
+      0.49997291892065,
+      0.5000046660270457
+    ],
+    "mean_common_mode_v": 1.3374093783280339,
+    "mean_supply_power_w": 0.03870979781522475,
+    "devices": {
+      "xref": {
+        "nx": 1,
+        "min_vce_v": 0.7603798091492,
+        "max_vce_v": 0.762549537186,
+        "max_abs_ic_a": 0.0006348476223774
+      },
+      "xp0": {
+        "nx": 2,
+        "min_vce_v": 0.595906668452,
+        "max_vce_v": 0.887110024351,
+        "max_abs_ic_a": 0.002875412985761
+      },
+      "xn0": {
+        "nx": 2,
+        "min_vce_v": 0.594620165225,
+        "max_vce_v": 0.888423926764,
+        "max_abs_ic_a": 0.002873995645325
+      },
+      "xt0": {
+        "nx": 4,
+        "min_vce_v": 1.313906466969,
+        "max_vce_v": 1.407450302382,
+        "max_abs_ic_a": 0.002864199715807
+      },
+      "xp1": {
+        "nx": 2,
+        "min_vce_v": 0.5962762127379999,
+        "max_vce_v": 0.8931559113469998,
+        "max_abs_ic_a": 0.0028558650562
+      },
+      "xn1": {
+        "nx": 2,
+        "min_vce_v": 0.595147776868,
+        "max_vce_v": 0.8926004965729999,
+        "max_abs_ic_a": 0.002856953410957
+      },
+      "xt1": {
+        "nx": 4,
+        "min_vce_v": 1.312651167793,
+        "max_vce_v": 1.401207185128,
+        "max_abs_ic_a": 0.002852312406273
+      },
+      "xp2": {
+        "nx": 2,
+        "min_vce_v": 0.5901510683360001,
+        "max_vce_v": 0.89434873569,
+        "max_abs_ic_a": 0.002870864194858
+      },
+      "xn2": {
+        "nx": 2,
+        "min_vce_v": 0.5902509511180001,
+        "max_vce_v": 0.8941680877760001,
+        "max_abs_ic_a": 0.00287148999108
+      },
+      "xt2": {
+        "nx": 4,
+        "min_vce_v": 1.314195547909,
+        "max_vce_v": 1.404814200083,
+        "max_abs_ic_a": 0.002859515214633
+      },
+      "xbref": {
+        "nx": 1,
+        "min_vce_v": 0.8095362870042,
+        "max_vce_v": 0.8143775503664,
+        "max_abs_ic_a": 0.001468297133733
+      },
+      "xbp": {
+        "nx": 2,
+        "min_vce_v": 0.44506673313800005,
+        "max_vce_v": 0.9522602436460001,
+        "max_abs_ic_a": 0.003373567010896
+      },
+      "xbn": {
+        "nx": 2,
+        "min_vce_v": 0.4436263174320001,
+        "max_vce_v": 0.9523384208979999,
+        "max_abs_ic_a": 0.003374531419979
+      },
+      "xbt": {
+        "nx": 2,
+        "min_vce_v": 1.302894703774,
+        "max_vce_v": 1.390018285575,
+        "max_abs_ic_a": 0.003378344272454
+      },
+      "xfp": {
+        "nx": 4,
+        "min_vce_v": 0.7366730684259999,
+        "max_vce_v": 1.209458823368,
+        "max_abs_ic_a": 0.002585803058063
+      },
+      "xfn": {
+        "nx": 4,
+        "min_vce_v": 0.7366812710129997,
+        "max_vce_v": 1.209339713048,
+        "max_abs_ic_a": 0.002585616779787
+      },
+      "xftp": {
+        "nx": 1,
+        "min_vce_v": 1.090541176632,
+        "max_vce_v": 1.563326931574,
+        "max_abs_ic_a": 0.001579801265173
+      },
+      "xftn": {
+        "nx": 1,
+        "min_vce_v": 1.090660286952,
+        "max_vce_v": 1.563318728987,
+        "max_abs_ic_a": 0.00157962304196
+      }
+    },
+    "checks": {
+      "edges": true,
+      "edge_order": true,
+      "differential_swing": true,
+      "frequency": true,
+      "deterministic_period_spread": true,
+      "duty": true,
+      "headroom": true,
+      "maximum_vce": true,
+      "current_density": true
+    },
+    "screen_pass": true
+  },
+  "tuning": [
+    {
+      "corner": "nominal",
+      "passing_control_samples_v": [
+        0.6,
+        0.7,
+        0.8,
+        0.85,
+        0.9,
+        1.0,
+        1.1
+      ],
+      "measured_8ghz_brackets": [
+        {
+          "control_v": [
+            0.85,
+            0.9
+          ],
+          "frequency_hz": [
+            8021222805.164807,
+            7906342902.80888
+          ]
+        }
+      ],
+      "measured_8ghz_bracket_found": true,
+      "interpolation_or_lock_claim": false
+    },
+    {
+      "corner": "hot_bcs_ss",
+      "passing_control_samples_v": [
+        0.6,
+        0.7,
+        0.8,
+        0.85,
+        0.9,
+        1.0,
+        1.1
+      ],
+      "measured_8ghz_brackets": [
+        {
+          "control_v": [
+            0.6,
+            0.7
+          ],
+          "frequency_hz": [
+            8116536809.453397,
+            7955630272.036306
+          ]
+        }
+      ],
+      "measured_8ghz_bracket_found": true,
+      "interpolation_or_lock_claim": false
+    },
+    {
+      "corner": "cold_wcs_ss",
+      "passing_control_samples_v": [
+        0.6,
+        0.7,
+        0.8,
+        0.85,
+        0.9,
+        1.0,
+        1.1
+      ],
+      "measured_8ghz_brackets": [
+        {
+          "control_v": [
+            0.7,
+            0.8
+          ],
+          "frequency_hz": [
+            8106592917.187585,
+            7931298850.915596
+          ]
+        }
+      ],
+      "measured_8ghz_bracket_found": true,
+      "interpolation_or_lock_claim": false
+    },
+    {
+      "corner": "cold_bcs_ff",
+      "passing_control_samples_v": [
+        0.8,
+        0.85,
+        0.9,
+        1.0,
+        1.1,
+        1.2,
+        1.3
+      ],
+      "measured_8ghz_brackets": [
+        {
+          "control_v": [
+            1.1,
+            1.2
+          ],
+          "frequency_hz": [
+            8253003565.565492,
+            7809120019.468305
+          ]
+        }
+      ],
+      "measured_8ghz_bracket_found": true,
+      "interpolation_or_lock_claim": false
+    },
+    {
+      "corner": "hot_wcs_ff",
+      "passing_control_samples_v": [
+        0.6,
+        0.7,
+        0.8,
+        0.85,
+        0.9,
+        1.0,
+        1.1,
+        1.2
+      ],
+      "measured_8ghz_brackets": [],
+      "measured_8ghz_bracket_found": false,
+      "interpolation_or_lock_claim": false
+    },
+    {
+      "corner": "low_supply_res_wcs_cap_wcs",
+      "passing_control_samples_v": [
+        0.6,
+        0.7,
+        0.8,
+        0.85,
+        0.9,
+        1.0
+      ],
+      "measured_8ghz_brackets": [],
+      "measured_8ghz_bracket_found": false,
+      "interpolation_or_lock_claim": false
+    },
+    {
+      "corner": "high_supply_res_bcs_cap_bcs",
+      "passing_control_samples_v": [
+        0.8,
+        0.85,
+        0.9,
+        1.0,
+        1.1,
+        1.2
+      ],
+      "measured_8ghz_brackets": [],
+      "measured_8ghz_bracket_found": false,
+      "interpolation_or_lock_claim": false
+    }
+  ],
+  "limitations": [
+    "Only two limiter load lengths change from4.4 to4.0um; native models/equations,18HBTs, six oscillator loads, asymmetricCMIM seed and all engineering thresholds remain exact.",
+    "Both13-case pilot revisions are preserved, including3.8um unselected.4.0um is the smaller change and is only selected for further characterization.",
+    "Full72 is the same original separated exploratory corner matrix, not a full factorial PVT sweep.63 tuning samples comprise seven explicitly identified corners times nine control voltages.",
+    "Only adjacent actual passing samples can bracket8GHz. A bracket is not a measured operating point, interpolation guarantee, closed-loop lock, PLL, jitter or reference-clock proof.",
+    "VCTRL1.3V nooscillation and all other amplitude/period/headroom/current violations remain failed points. The limiter change narrows some valid control ranges.",
+    "Original physical layout is untouched and does not cover this new subcircuit. No PHY/mainchip/production acceptance."
+  ]
+}

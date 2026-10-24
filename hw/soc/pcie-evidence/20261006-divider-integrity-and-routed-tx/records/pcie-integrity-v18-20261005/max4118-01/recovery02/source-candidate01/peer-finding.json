@@ -1,0 +1,12 @@
+{
+  "issue": "Actual completion can race snapshot and pidfd_open, raising ProcessLookupError in observation or cleanup.",
+  "correction": "Catch only ProcessLookupError around pidfd_open. Preserve post-open birth check and all other failures.",
+  "old": {
+    "bytes": 10534,
+    "sha256": "d79b1bba1a5b3038510697290da8a5662de3a0d04e3f08533e77ebad5457cb58"
+  },
+  "new": {
+    "bytes": 10705,
+    "sha256": "574287f1b8aba32dd907c0176daf381254d59a8cdc3daa51da044aa6ffb91142"
+  }
+}

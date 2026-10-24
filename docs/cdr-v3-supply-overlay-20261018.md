@@ -1,0 +1,13 @@
+# CDR v2 diagnosis and physical supply-rail candidate
+
+Cloud path review [39083732157](https://github.com/Melihakbulut221/nssoc/actions/runs/39083732157) restored both original full-wire captures and reproduced all original sampler wrong-sign counts, margins and all 122 HBT minimum active VCE values. Each original waveform has 113475 rows, 898 columns and the original 0.3125 ps maximum step. The rejected nominal cases remain rejected.
+
+The failed select-buffer tails map to actual `ibs0`/`ibs1` devices xd0122/xd0091. Their emitter terminals, on the distributed AVSS net, average approximately 0.234/0.229 V above the external return. XOR tail emitters are approximately 0.139–0.147 V above return. Select-buffer base differential swing is already only about -24 to +52 mV at the actual inputs; return loss is therefore one established defect, not a complete explanation of sampling failures. The native signal wire capacitance includes approximately 0.595/0.637 pF on A sampler output nets and 0.701/0.717 pF on clock nets, excluding intrinsic device capacitance.
+
+The v3 physical candidate regenerates the exact v2 layout and adds 23 real TopMetal2 AVDD/AVSS shunts to existing continuous Metal5 buses of the 14 lower-metal children. Native via stacks stitch the old conductor to the added conductor every 20 um. The two XOR children with TopMetal2 interfaces are left as their existing geometry. Every original drawing shape, device layer, device parameter, placement, signal route and external port remains; only the top cell name changes in the schematic. An explicit region-union audit records the added five-layer metal/via geometry.
+
+The candidate runs the unchanged 560-rule DRC, 394-device deep/flat LVS and five reference/geometry faults. It is not a repair acceptance claim: after physical checks, native interfaces must be rebound and full MIM-aware RC re-extracted before loaded nominal/PVT/closed-loop simulation. New conductor capacitance remains real and must be included. No wire value is scaled and no timing/voltage threshold changes.
+
+## Physical result
+
+Run 39084708980 (source 735f37517a12c8e651312d1bff0f7216ef000bc7) completed: all 560 DRC categories pass, both deep and flat LVS match 394 devices without extraction diagnostics, and all five intentional faults are rejected. The actual candidate adds 23 shunts and 569 native via stacks. Metal5 drawing area is unchanged; additions are the recorded upper-metal/via layers. This proves physical construction and connectivity within the checked scope; reduction in return loss and sampled-data correctness are not yet established. Fresh native plane binding and RC extraction follow.

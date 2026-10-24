@@ -1,0 +1,39 @@
+{
+  "baseline_path": "hw/soc/flow/make_pcie_sampler_compact_v1.py",
+  "baseline_sha256": "a94f1938100002b9eca7c70ecde985dc73f5d18b1879ae60c8ad884e40a7e2d9",
+  "candidate_path": "hw/soc/flow/make_pcie_sampler_left_v1.py",
+  "candidate_sha256": "9abadbdde0ea5af68ebaf7da06876053acbc73b463725ee1fd36b9f09757441a",
+  "edits": [
+    {
+      "before": "nssoc_rx_sampler_hbt_v2_compact_v1",
+      "after": "nssoc_rx_sampler_hbt_v2_left_v1",
+      "count": 1
+    },
+    {
+      "before": "Compact physical candidate for the unchanged external-clock HBT sampler v2.",
+      "after": "Left output pins and real TopMetal2 output shunts for the unchanged HBT sampler.",
+      "count": 1
+    },
+    {
+      "before": "    width = 560.0\n",
+      "after": "    output_shunts = []\n",
+      "count": 1
+    },
+    {
+      "before": "            if net in (\"QP\", \"QN\"):\n                right = width\n                b = pya.DBox(width - 2, y - 1, width, y + 1)\n            else:\n                left = 0\n                b = pya.DBox(0, y - 1, 2, y + 1)",
+      "after": "            left = 0\n            b = pya.DBox(0, y - 1, 2, y + 1)",
+      "count": 1
+    },
+    {
+      "before": "        rect(5, left, y - 1, right, y + 1)\n    box = top.dbbox()",
+      "after": "        rect(5, left, y - 1, right, y + 1)\n        if net in (\"QP\", \"QN\"):\n            shunt = pya.DBox(left, y-1.6, right, y+1.6)\n            top.shapes(layout.layer(134, 0)).insert(shunt)\n            centers = []\n            x = left + 4\n            while x <= right - 4:\n                cell = pc(\"via_stack\", dict(b_layer=\"Metal5\", t_layer=\"TopMetal2\",\n                          vn_columns=2, vn_rows=1, vt1_columns=2, vt1_rows=1,\n                          vt2_columns=1, vt2_rows=1))\n                raw = cell.dbbox()\n                trans = instance(cell, x-raw.center().x, y-raw.center().y)\n                top.shapes(layout.layer(126, 0)).insert(pya.DBox(x-1.6,y-1.6,x+1.6,y+1.6))\n                vias.append(dict(net=net,bottom=5,top=7,center_um=[x,y],bbox_um=str(raw.transformed(trans))))\n                centers.append([x,y]);x += 20\n            assert centers\n            output_shunts.append(dict(net=net,metal=134,width_um=3.2,box_um=str(shunt),via_centers_um=centers))\n    assert len(output_shunts)==2 and {r['net']for r in output_shunts}=={'QP','QN'}\n    box = top.dbbox()",
+      "count": 1
+    },
+    {
+      "before": "                  instances=records, routes=routes, vias=vias, origin_translation_um=[dx, dy],",
+      "after": "                  instances=records, routes=routes, vias=vias, output_shunts=output_shunts,\n                  output_pin_edge=\"left\", origin_translation_um=[dx, dy],",
+      "count": 1
+    }
+  ],
+  "scope": "Only top name, output pin edge/metal routing and metadata differ. All source devices, native PCell sizes and primitive placements remain unchanged. Fresh physical and whole-parent electrical proof required."
+}

@@ -1,0 +1,134 @@
+{
+  "status": "CONTROLS_PASS_FULL_NATIVE_PRODUCT_BOOT_PENDING",
+  "source_head": "471a966524f68c18b9801488bfc512bee2dc2de0",
+  "run": 38994926932,
+  "workflow": "corrpre-pcie-mbist-native-boot-cloud.yml",
+  "jobs_at_recording": [
+    {
+      "id": 117285277667,
+      "name": "controls",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 117285636114,
+      "name": "native-boot (full)",
+      "status": "in_progress",
+      "conclusion": null
+    }
+  ],
+  "configuration": {
+    "interface": "full",
+    "pcie": "packet-async",
+    "CORRPRE": 1,
+    "SYNPRE": 0,
+    "CORE_REQ_REG": 0,
+    "CORE_WB_STAGE": 0,
+    "SOC_SRAM_MBIST": 1,
+    "SOC_ETH_SRAM": 1,
+    "required_mapped_mbist_profile": "system-ethernet"
+  },
+  "observer_controls": {
+    "passed": true,
+    "source_sha256": "c117d03640b2cc18be2390e050f8c7f85fdf14c694738355c6fbcc42f9650a0d",
+    "cases": [
+      {
+        "name": "success",
+        "returncode": 0,
+        "expected_pass": true,
+        "expected_fault_rejected": false,
+        "log_sha256": "6240054103e579fab9d1f3ad408d88aacf0e7c8f4cadd0c2ee0c76960241e099"
+      },
+      {
+        "name": "never_busy",
+        "returncode": 1,
+        "expected_pass": false,
+        "expected_fault_rejected": true,
+        "log_sha256": "000f74f3dcf9c67530ce8865df980faca25fb6d7246b4f7a9c2d57f4b0742522"
+      },
+      {
+        "name": "unknown",
+        "returncode": 1,
+        "expected_pass": false,
+        "expected_fault_rejected": true,
+        "log_sha256": "8cc24fee71fd372f61983be4d947ee06c292b85e989559fd86943cda2c6c265d"
+      },
+      {
+        "name": "system_failure",
+        "returncode": 1,
+        "expected_pass": false,
+        "expected_fault_rejected": true,
+        "log_sha256": "d57d6e72cc9ab229e4635a2b5d9e835cf2d4b51913d67e5e3ab15e3efbf02335"
+      },
+      {
+        "name": "missing_ethernet_done",
+        "returncode": 1,
+        "expected_pass": false,
+        "expected_fault_rejected": true,
+        "log_sha256": "8357b36ae618ae0b80fc876f8c87397b7dc464ec51d9dcdddd7459402765360d"
+      },
+      {
+        "name": "busy_at_done",
+        "returncode": 1,
+        "expected_pass": false,
+        "expected_fault_rejected": true,
+        "log_sha256": "8357b36ae618ae0b80fc876f8c87397b7dc464ec51d9dcdddd7459402765360d"
+      },
+      {
+        "name": "done_drop",
+        "returncode": 1,
+        "expected_pass": false,
+        "expected_fault_rejected": true,
+        "log_sha256": "f6ff4b48bce3bf42cbcea798798a3475753e33f821eb16cc5a5dae221e50459d"
+      },
+      {
+        "name": "false_done",
+        "returncode": 1,
+        "expected_pass": false,
+        "expected_fault_rejected": true,
+        "log_sha256": "5203eb835b129642b39fdb5731c85e703ed187d5ff316c39a42c36c9900bd84e"
+      },
+      {
+        "name": "never_done",
+        "returncode": 1,
+        "expected_pass": false,
+        "expected_fault_rejected": true,
+        "log_sha256": "0fd90ae81c839367da09b89555114de4b0721718a0a3eb5f851edca9f08e6e8f"
+      },
+      {
+        "name": "ethernet_failure",
+        "returncode": 1,
+        "expected_pass": false,
+        "expected_fault_rejected": true,
+        "log_sha256": "7963008b15ea7411f08c81b40689d8fe2b49b3b7354d2c624775a6f525e27519"
+      }
+    ],
+    "scope": "Actual observer logic controls, not SRAM cell or MBIST algorithm fault coverage",
+    "source_unchanged": true
+  },
+  "control_artifact": {
+    "id": 12086314127,
+    "name": "mapped-mbist-monitor-controls",
+    "bytes": 6289,
+    "sha256": "08825ce12552991d437b051a62a4985ac0964ae5511a25da2fd93b77765ee2ae"
+  },
+  "pytest_passed": 31,
+  "cycle_budget": {
+    "prior_firmware_bound": 1000000,
+    "MBIST_backgrounds": 8,
+    "MBIST_rows": 8192,
+    "cycles_per_row_background": 15,
+    "additional_March_cycles": 983040,
+    "full_bound": 2000000,
+    "checks_relaxed": false
+  },
+  "observations_required": [
+    "LOGICROM_GL PASS checks=28",
+    "PCIE_IDLE_BOOT PASS samples>=100",
+    "MBIST_BOOT PASS withobservedbusy andbothEthernetdone"
+  ],
+  "scope": "Native mapped functional boot with exact configuration and explicit MBIST handover. No SRAM fault-coverage, SDF/layout/timing/serialPHY acceptance; RTL firmware preparation is not an MBIST-mode simulation.",
+  "accepted": false,
+  "full_serial_phy_complete": false,
+  "final_timing_complete": false
+}

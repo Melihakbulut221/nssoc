@@ -1,0 +1,461 @@
+{
+  "run": 39007090307,
+  "group": "corrpre-pcie-mbist-boot-evidence",
+  "source_head": "604dff4b041be73694ee8bdd032121ed3309f167",
+  "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-39007090307-1-corrpre-pcie-mbist-boot-evidence/corrpre-pcie-mbist-boot-evidence-39007090307-1.summary.json",
+  "summary_sha256": "acfe8eee69d5fcfb248756adf8803418296915017735723e948c4acd3e2846ee",
+  "assets": [
+    {
+      "id": 649665119,
+      "name": "corrpre-pcie-mbist-boot-evidence-39007090307-1.parts.json",
+      "size": 880,
+      "digest": "sha256:802385e49aef4debc58db5436e2015db687afc36565db95186f19d4b5800ec2d"
+    },
+    {
+      "id": 649665040,
+      "name": "corrpre-pcie-mbist-boot-evidence-39007090307-1.summary.json",
+      "size": 31699,
+      "digest": "sha256:acfe8eee69d5fcfb248756adf8803418296915017735723e948c4acd3e2846ee"
+    },
+    {
+      "id": 649665211,
+      "name": "corrpre-pcie-mbist-boot-evidence-39007090307-1.tar.gz.part0000",
+      "size": 4610647,
+      "digest": "sha256:3bb665b2e1e6628a6e8e3b69635c9ced100cadb11b9b1b8c8ad67765bf9c94eb"
+    }
+  ],
+  "status": "PRESERVED_COMPLETED_NATIVE_CORRPRE_PCIE_SYSTEM_ETHERNET_MBIST_BOOT_NOT_TIMING_OR_PHYSICAL_ADOPTION",
+  "accepted": false,
+  "full_phy_accepted": false,
+  "configuration": {
+    "RF_CORRPRE": 1,
+    "SOC_SRAM_MBIST": 1,
+    "SOC_ETH_MBIST": 1,
+    "mbist_scope": "Mapped native boot explicitly observes system and both Ethernet MBISTs; RTL firmware preparation itself has no MBIST mode",
+    "SOC_PCIE_PROFILE": "packet-async",
+    "pcie_traffic_tested": false,
+    "RF_SYNPRE": 0,
+    "experimental_candidate_not_mainchip_acceptance": true,
+    "CORE_REQ_REG": 0,
+    "CORE_WB_STAGE": 0,
+    "CORE_BRANCH_TARGET_ALU": 0,
+    "interface_profile": "full",
+    "status": "requested configuration; consult RTL, synthesis and gate results"
+  },
+  "gate_result": {
+    "native_cell_gate": {
+      "library": "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+      "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "compile": {
+        "command": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+          "-g2005-sv",
+          "-s",
+          "tb_native_cell_gate",
+          "-o",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/native-cell-gate/sim.vvp",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/native-cell-gate/tb_native_cell_gate.v",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.03170167399991897
+      },
+      "runs": [
+        {
+          "command": [
+            "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+            "-i",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/native-cell-gate/sim.vvp"
+          ],
+          "returncode": 0,
+          "elapsed_s": 0.01563989000010224,
+          "pass_banner": true
+        }
+      ],
+      "passed": true
+    },
+    "compile": {
+      "command": [
+        "/home/runner/work/_temp/oss-cad-suite/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_logicrom_gl",
+        "-o",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/sim.vvp",
+        "-DFUNCTIONAL",
+        "-DTIMEOUT_CYCLES=2000000",
+        "-DEXIT_CODE_ADDR=32'h00001f94",
+        "-DEXIT_MAGIC_ADDR=32'h00001f98",
+        "-DCHECKS_ADDR=32'h00001fcc",
+        "-DFAILS_ADDR=32'h00001fd0",
+        "-DNSSOC_GL_MBIST",
+        "-DNSSOC_GL_PCIE",
+        "-DNSSOC_GL_PCIE_ASYNC",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/tb_soc_logic_boot_gl.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/synthesis/soc_top.netlist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/flash_w25q128jv.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_2048x64_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_1P_core_behavioral_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_256x16_c2_bm_bist.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_bm_bist_ideal.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_sram/verilog/RM_IHPSG13_2P_core_behavioral_ideal.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/tb/mapped_mbist_boot_monitor.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 5.575602840000101
+    },
+    "runs": [
+      {
+        "command": [
+          "/home/runner/work/_temp/oss-cad-suite/bin/vvp",
+          "-i",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/gates/sim.vvp",
+          "+flash0=/home/runner/work/nssoc/nssoc/hw/soc/out/corrpre-pcie-mbist-native-boot/rtl/flash0.hex"
+        ],
+        "returncode": 0,
+        "elapsed_s": 9806.012696927,
+        "pass_banner": true,
+        "pcie_idle_boot_passed": true,
+        "mbist_boot_passed": true
+      }
+    ],
+    "sources_unchanged": true,
+    "passed": true
+  },
+  "native_log_banner": [
+    "LOGICROM_GL begin: immutable gates, no ROM or RAM preload",
+    "LOGICROM_GL progress cycles=10000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=20000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=30000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=40000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=50000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=60000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=70000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=80000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=90000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=100000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=110000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=120000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=130000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=140000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=150000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=160000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=170000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=180000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=190000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=200000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=210000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=220000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=230000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=240000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=250000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=260000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=270000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=280000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=290000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=300000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=310000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=320000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=330000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=340000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=350000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=360000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=370000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=380000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=390000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=400000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=410000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=420000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=430000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=440000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=450000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=460000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=470000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=480000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=490000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=500000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=510000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=520000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=530000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=540000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=550000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=560000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=570000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=580000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=590000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=600000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=610000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=620000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=630000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=640000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=650000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=660000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=670000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=680000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=690000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=700000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=710000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=720000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=730000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=740000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=750000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=760000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=770000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=780000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=790000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=800000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=810000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=820000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=830000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=840000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=850000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=860000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=870000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=880000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=890000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=900000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=910000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=920000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=930000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=940000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=950000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=960000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=970000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=980000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=990000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1000000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1010000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1020000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1030000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1040000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1050000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1060000 uart=0 flash_frames=0 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1090000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1100000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1110000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1120000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1130000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1140000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1150000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1160000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1170000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1180000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1190000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1200000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1210000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1220000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1230000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1240000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1250000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1260000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1270000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1280000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1290000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1300000 uart=190 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1320000 uart=381 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1330000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1340000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1350000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1360000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1370000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1380000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1390000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1400000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1410000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1420000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1430000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1440000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1450000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1460000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1470000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1480000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1490000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1500000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1510000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1520000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1530000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1540000 uart=450 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1580000 uart=772 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1600000 uart=887 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL progress cycles=1610000 uart=887 flash_frames=6 ram_sec=0000 ram_ded=0000",
+    "LOGICROM_GL cycles=1634936 checks=28 fails=00000000 code=00000000 magic=600dc0de watchdog=1/0/0 flash_violations=0 uart_pass=1 framing=0",
+    "PCIE_IDLE_BOOT PASS samples=4087258",
+    "MBIST_BOOT PASS busy_cycles=983010 done_cycle=983043 eth_done=3",
+    "LOGICROM_GL PASS checks=28"
+  ],
+  "files": {
+    "core-configuration.json": {
+      "bytes": 540,
+      "sha256": "05637880fab865358c52e9548594cf3f6e83955c66975fb39a25f11844ef58b2"
+    },
+    "gates/inputs.json": {
+      "bytes": 12983,
+      "sha256": "405f8e76b9b8f314d179e1b664c79861f86597e83ba2bacb58fcb1be96f7bcef"
+    },
+    "gates/compile.log": {
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    "gates/native-cell-gate/compile.log": {
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    "gates/native-cell-gate/result.json": {
+      "bytes": 1189,
+      "sha256": "8a7456962d1e07c3c6cbb536c062f5416beab81456f685f096437650e99a1b16"
+    },
+    "gates/native-cell-gate/run-0.log": {
+      "bytes": 173,
+      "sha256": "cd779713d7574420ee4e19e1b3e2d04cef3279a9511783c285d4778cc208abc6"
+    },
+    "gates/result.json": {
+      "bytes": 3649,
+      "sha256": "d10ffa7a758107260084439011083f1dcbef6f06f0348c0d2b1ce50abbeab9bf"
+    },
+    "gates/run-0.log": {
+      "bytes": 15217,
+      "sha256": "c28d3baf712321d77d9ef04ab27964bc73189650a32b526c35d5708d2386d942"
+    },
+    "gates-driver.log": {
+      "bytes": 3649,
+      "sha256": "d10ffa7a758107260084439011083f1dcbef6f06f0348c0d2b1ce50abbeab9bf"
+    },
+    "iverilog-version.log": {
+      "bytes": 3410,
+      "sha256": "d82ad2a22534b17b1aaf04387f7bc96f209d72136bf667fb7f74bbec5adc7f2f"
+    },
+    "model-lock.json": {
+      "bytes": 2221,
+      "sha256": "1998e3b1982e9eb28c32a0d7b0676d9580dacbe03d0e300d64d4794bd74dac5e"
+    },
+    "native-cell-preflight/compile.log": {
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    "native-cell-preflight/result.json": {
+      "bytes": 1186,
+      "sha256": "ed231ca2b46fd6d3adf08dfaaa11f2e813a941ecf75e791c3578563254274eec"
+    },
+    "native-cell-preflight/run-0.log": {
+      "bytes": 172,
+      "sha256": "bb0270eed690d970fd6fff70b1334e77fa0b34f1871b84c3b26d4d37f0f79450"
+    },
+    "prepare-models.log": {
+      "bytes": 152,
+      "sha256": "39d8c375cce1c30df2d13e120bfc4b1fe9752716d84ff17251deab38e98a40e3"
+    },
+    "rtl/app.elf": {
+      "bytes": 62244,
+      "sha256": "cdfac6a4744dc0ef21db440030c1fbc649dd1e6e8017d140bb27bc656e31d7da"
+    },
+    "rtl/boot-rom/manifest.json": {
+      "bytes": 633,
+      "sha256": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b"
+    },
+    "rtl/boot-rom/soc_logic_boot_rom.v": {
+      "bytes": 27684,
+      "sha256": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3"
+    },
+    "rtl/flash0.hex": {
+      "bytes": 393216,
+      "sha256": "04d59a2c59b68df6297c9cd56b601c6397586797a9ee533df71beed0dc179c13"
+    },
+    "rtl/iverilog.log": {
+      "bytes": 1491,
+      "sha256": "76c384b6447cc31d712ebef74186065f9c512537f0e14ece76341fe6a31a6484"
+    },
+    "rtl/sim.log": {
+      "bytes": 2015,
+      "sha256": "484f837ed84691ccd981069f4aa06e561a56bc3a24dd8c4705d801158bb0c331"
+    },
+    "rtl/soc_param_override.v": {
+      "bytes": 694,
+      "sha256": "c2b1a67785ace8f1b869bbb727e748a7e7f0f4896b642cc41bf7aedc800864f5"
+    },
+    "rtl-driver.log": {
+      "bytes": 5115,
+      "sha256": "26ad5d50fe1b4a830fe286cae1bf6ac3a43c1dd150002a9b9a4db020c46c23f6"
+    },
+    "rtl/test_soc.bin": {
+      "bytes": 3084,
+      "sha256": "ab7440619ca719358e6598b0cf291a268c8ccf13357b50ef3a89cbe583e71801"
+    },
+    "scrub-native/native-cell/compile.log": {
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    "scrub-native/native-cell/result.json": {
+      "bytes": 1195,
+      "sha256": "6bc5363a8b37de7b5fb33a0d268135d8062eea0383bf9b840ec54971e9f42651"
+    },
+    "scrub-native/native-cell/run-0.log": {
+      "bytes": 175,
+      "sha256": "34ce559534ff1565f130a2949fd7d8b9510c7fc42abdf87425e5f03a621f4d1b"
+    },
+    "scrub-native/negative-compile.log": {
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    "scrub-native/negative-run.log": {
+      "bytes": 185,
+      "sha256": "a622ca17bc4a10c7ff255d407d90249b82fe9bc51436bfd10d77aa62d714fd37"
+    },
+    "scrub-native/positive-compile.log": {
+      "bytes": 1544,
+      "sha256": "0d90c75ca16bdfe1fb2e13318166432eca99ec7dece3743673682bd0d64c6241"
+    },
+    "scrub-native/positive-run.log": {
+      "bytes": 167,
+      "sha256": "f30ccf13f34cfc5ce3d7a887653e6360da2be3fb4c4a18700a4241b527ed7bd9"
+    },
+    "scrub-native/result.json": {
+      "bytes": 5384,
+      "sha256": "6d4457c981869c0d8339f92a7fbbb4f1e77b845f65c1d4d9b37a879b97d44e64"
+    },
+    "scrub-native/synthesis.log": {
+      "bytes": 43264,
+      "sha256": "a619ade9a6dadabbb2169d3f6ae8c64ca1038cddbd663c371efa618cb6543af8"
+    },
+    "scrub-native-driver.log": {
+      "bytes": 5384,
+      "sha256": "6d4457c981869c0d8339f92a7fbbb4f1e77b845f65c1d4d9b37a879b97d44e64"
+    },
+    "synthesis/area.rpt": {
+      "bytes": 2179,
+      "sha256": "28716ee48e82483d899e7020aa6a2a99c1bd86bf5a5ba6be241a114645fb2520"
+    },
+    "synthesis/boot-rom/manifest.json": {
+      "bytes": 633,
+      "sha256": "bffb51188d601822981c051c16676fbf6742d6bc5eefc33ee77e9a83cfe6226b"
+    },
+    "synthesis/boot-rom/soc_logic_boot_rom.v": {
+      "bytes": 27684,
+      "sha256": "effc0c150a9186efed4a4f2f8486ee3ca0a6af4f5eedb3598fa003c8f86cc0d3"
+    },
+    "synthesis/soc_top.mapped.json": {
+      "bytes": 65249474,
+      "sha256": "7d1f7a195b6082889d79899e6adcb7f4f7a68b15036b4e5985867212cc943d32"
+    },
+    "synthesis/soc_top.netlist.v": {
+      "bytes": 26366581,
+      "sha256": "edc47ab9263b3a08e5029e5ebd6b7b1beb63685e365792c39d0f51934bc2ebcd"
+    },
+    "synthesis-corrpre-selection.log": {
+      "bytes": 46,
+      "sha256": "1b7546fcda755d4cc41cca7ad6e89ff2d16d5dd5047c4b9270e6e5ad8f9a4bd7"
+    },
+    "synthesis/syn.log": {
+      "bytes": 24159320,
+      "sha256": "dc7b1c2b08ee986a3872f85d731a4431259a32f328648a5aadfbbce4d4166f68"
+    },
+    "synthesis-driver.log": {
+      "bytes": 1473,
+      "sha256": "186c6e621f6c1d3bc1719ee421941ebb51a89cef56f69a878c1d22f7ca62312c"
+    },
+    "yosys-version.log": {
+      "bytes": 82,
+      "sha256": "2329a9c49c1c7adbb3cf0d1eaf6736a3978f851578c892121ba3bedf2e8fee93"
+    }
+  }
+}

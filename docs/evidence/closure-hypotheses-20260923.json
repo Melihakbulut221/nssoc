@@ -1,0 +1,374 @@
+{
+  "date": "2026-09-23",
+  "status": "MEASURED_ALTERNATIVES_REJECTED",
+  "scope": "Bounded repair hypotheses, not closure claims. Original design and library views unchanged.",
+  "rf": {
+    "rf-corrpre-measurement": {
+      "status": "REJECTED_NOT_ADOPTED",
+      "scope": "Isolated matched synthesis and zero-wire STA, no proof or whole-SoC timing acceptance. Candidate is worse on both measured paths at all three corners and uses more cell area. Original tracked RTL unchanged.",
+      "measurements": {
+        "baseline": {
+          "area_um2": 159272.9082,
+          "arrival_times": {
+            "slow": {
+              "register_to_read_ns": 3.28318,
+              "address_to_read_ns": 6.453255
+            },
+            "typ": {
+              "register_to_read_ns": 2.087834,
+              "address_to_read_ns": 5.567768
+            },
+            "fast": {
+              "register_to_read_ns": 1.377528,
+              "address_to_read_ns": 5.031563
+            }
+          }
+        },
+        "candidate": {
+          "area_um2": 210282.1182,
+          "arrival_times": {
+            "slow": {
+              "register_to_read_ns": 3.426965,
+              "address_to_read_ns": 6.522855
+            },
+            "typ": {
+              "register_to_read_ns": 2.19291,
+              "address_to_read_ns": 5.622576
+            },
+            "fast": {
+              "register_to_read_ns": 1.437518,
+              "address_to_read_ns": 5.073795
+            }
+          }
+        }
+      }
+    },
+    "rf-onehot-measurement": {
+      "status": "REJECTED_NOT_ADOPTED",
+      "scope": "Isolated matched synthesis and zero-wire STA, no proof or whole-SoC timing acceptance. Candidate is worse on both measured paths at all three corners and uses more cell area. Original tracked RTL unchanged.",
+      "measurements": {
+        "baseline": {
+          "area_um2": 159272.9082,
+          "arrival_times": {
+            "slow": {
+              "register_to_read_ns": 3.28318,
+              "address_to_read_ns": 6.453255
+            },
+            "typ": {
+              "register_to_read_ns": 2.087834,
+              "address_to_read_ns": 5.567768
+            },
+            "fast": {
+              "register_to_read_ns": 1.377528,
+              "address_to_read_ns": 5.031563
+            }
+          }
+        },
+        "candidate": {
+          "area_um2": 159943.2534,
+          "arrival_times": {
+            "slow": {
+              "register_to_read_ns": 3.31787,
+              "address_to_read_ns": 6.633948
+            },
+            "typ": {
+              "register_to_read_ns": 2.1164,
+              "address_to_read_ns": 5.663476
+            },
+            "fast": {
+              "register_to_read_ns": 1.413997,
+              "address_to_read_ns": 5.111097
+            }
+          }
+        }
+      }
+    }
+  },
+  "sram": {
+    "status": "REJECTED_NOT_ADOPTED",
+    "reason": "The asymmetric candidate passes local metal topology but fails whole-macro full main DRC with 19200 M3.b spacing markers. No original library, CDL, rule, tolerance or production layout was changed.",
+    "whole_macro": {
+      "original": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "90df473ca35d040c956e60f8ce1b7a202446b81b5ed0564515cec1aee9c0a7b5"
+      },
+      "candidate": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 19200,
+        "categories": {
+          "'M3.b'": 19200
+        },
+        "category_count": 560,
+        "report_sha256": "f83d69d6f5d1f15a2d0ce92426f627247e6b84b60de15cd8a0fb29e1fe249782"
+      }
+    }
+  },
+  "local_metal_topology": {
+    "status": "PASS_LOCAL_METAL_TOPOLOGY_ONLY",
+    "scope": "Bijection of conductors outside the union of old/new resistor bodies, preserving each of six resistor terminal pairs and all other witness layers. Does not establish transistor LVS, macro-context DRC or characterized SRAM timing.",
+    "input_sha256": {
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-bitcell-width-witness/bitcell.gds": "0ca2c4e0ac3b759d29384c372a84ddfb2f9fa19a6c923e353cfa09f63261b918",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-local-widening-search-v2/candidate-bitcell.gds": "bdaf43f5b133eb0f53ab3e97ec164288d0e59265b2d0f1827aa46aceb0041051",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/audit_sram_widening_topology_v2.py": "b183bac2de7b810ae02a95a27355547862f30d447f951899eb4cd5083bbff8de"
+    },
+    "layers": {
+      "10": {
+        "conductor_partitions": 15,
+        "bijection": {
+          "0": 1,
+          "1": 0,
+          "2": 3,
+          "3": 2,
+          "4": 4,
+          "5": 5,
+          "6": 6,
+          "7": 7,
+          "8": 8,
+          "9": 9,
+          "10": 10,
+          "11": 11,
+          "12": 12,
+          "13": 13,
+          "14": 14
+        },
+        "resistor_terminal_pairs": [
+          {
+            "old_partitions": [
+              0,
+              8
+            ],
+            "new_partitions": [
+              1,
+              8
+            ]
+          },
+          {
+            "old_partitions": [
+              1,
+              9
+            ],
+            "new_partitions": [
+              0,
+              9
+            ]
+          },
+          {
+            "old_partitions": [
+              2,
+              13
+            ],
+            "new_partitions": [
+              3,
+              13
+            ]
+          },
+          {
+            "old_partitions": [
+              3,
+              14
+            ],
+            "new_partitions": [
+              2,
+              14
+            ]
+          }
+        ]
+      },
+      "30": {
+        "conductor_partitions": 5,
+        "bijection": {
+          "0": 0,
+          "1": 1,
+          "2": 2,
+          "3": 3,
+          "4": 4
+        },
+        "resistor_terminal_pairs": [
+          {
+            "old_partitions": [
+              0,
+              1
+            ],
+            "new_partitions": [
+              0,
+              1
+            ]
+          },
+          {
+            "old_partitions": [
+              3,
+              4
+            ],
+            "new_partitions": [
+              3,
+              4
+            ]
+          }
+        ]
+      }
+    },
+    "negative_controls": {
+      "10_short": "REJECTED",
+      "10_missing": "REJECTED",
+      "30_short": "REJECTED",
+      "30_missing": "REJECTED"
+    }
+  },
+  "symmetric_widening": {
+    "status": "REJECTED_NOT_ADOPTED",
+    "reason": "Widening actual metal plus markers to the unchanged original CDL width introduces locked Metal2/Metal3 spacing violations. Original GDS/CDL/library/route remain unchanged.",
+    "scope": "Selected locked metaln table on isolated bit-cell. A clean original selected table is not full DRC, macro LVS or timing acceptance.",
+    "results": {
+      "original": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 24,
+        "report_sha256": "4d3762710f32bbb10f61652de191237ce77d761fef017d483cb76f49c0d37dd3"
+      },
+      "widened": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 10,
+        "categories": {
+          "'M2.b'": 8,
+          "'M3.b'": 2
+        },
+        "category_count": 24,
+        "report_sha256": "455fc5012376da3cdf9ac7e9e78a2cefee845f4bf079bc365bd400818b26be22"
+      }
+    }
+  },
+  "hierarchical_marker_attempt": {
+    "status": "REJECTED_HIERARCHICAL_MARKERS_RETAINED",
+    "reason": "Top-cell-only clearing retained original child resistor markers. Two unions had length .64 instead of .60 um. Topology audit rejected it before use; superseded by a separate explicitly flattened witness."
+  },
+  "archive": {
+    "path": "docs/evidence/closure-hypotheses-20260923.tar.xz",
+    "sha256": "e4c6c6224b37416b658a78b8e5cd11a2de85fa49160dd0706e5377f6eabe643e",
+    "bytes": 823224,
+    "members": {
+      "LICENSES/Apache-2.0.txt": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+      "LICENSES/CC-BY-4.0.txt": "9ba9550ad48438d0836ddab3da480b3b69ffa0aac7b7878b5a0039e7ab429411",
+      "LICENSES/CERN-OHL-W-2.0.txt": "c1432111d0aeefc9d1ced8105d2d4ed07d5dcb1fd43abb5d4616c4f9ef96e08f",
+      "docs/evidence/closure-hypotheses-20260923-NOTICES.txt": "176cb665cca88da9f365ac73ce7f2329fa3cc7141caf1e3b363cdc478a100f88",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/audit_sram_widening_topology.py": "4c12d7f2dd78b592f9b8889e3779d23eec04999a3b84381d926c6d09d83b065c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/audit_sram_widening_topology_v2.py": "b183bac2de7b810ae02a95a27355547862f30d447f951899eb4cd5083bbff8de",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/check_sram_macro_widening_drc.py": "b5d4863f4083293cc25c68000e9ba026b6effae9d1aff6bdb164242034e823c3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/check_sram_widening_deck.py": "73957dc4cdf3ce0cde7efb3cf17368f250aa860525f6cac0be384c5db44b34dc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/make_sram_macro_widening_candidate.py": "08fd2aacf195f7de6eecc0d4a453c79c016b3c45a728b0c27d1b02451e930910",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/measure_corrpre.py": "4fb805a648469a790e6cacf312b26ee61132c548ec723b8e0cadb275fd9d7c81",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/measure_onehot.py": "78d948b1784cc2c508fa5edb25b1a3aefd313530f5c50d20ba1f883e8a4fec00",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/prepare_onehot_measurement.py": "3426ec84dfb56ae1a8abb8beff62f91dfcd887d9038c88dfabd1462cd91a9ef8",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/probe_sram_metal_widening.py": "406d1b8fd36167f497b35ce4de231dd4c43c4d31018d6686ac1e0293d71ef9bb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/record_closure_measurements.py": "de7617fd83173c8f0fd6bc4c3285b49966af9f4f994839ddf4bb345d5e3ebb43",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/abc.constr": "4b8874f01bd53bd5836ee0539b95bae68be23edf1b9a1678e01e200a443e65bc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.area.rpt": "a1007142263495f49e4cb96e5dec8ae2e21f6d5aec89fbb1ae62a59858239579",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.driver.log": "831c211d59ade000a842247199494c7256dcff1e99e4b94c039e67470129decc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.fast.sta.log": "caf1845068707dfdc3e632e918e219c33cb3c27aa47718ac04d609a284fab96b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.fast.tcl": "f41b8153e1c14ae4f6d4409f7dcee93d1f1c57dc8c8e922e9e50c35fc2436833",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.netlist.v": "597fec603e2b46dc4fdb9c8cb6d8cd2891102be2c538c11fd1c2a199476d5517",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.slow.sta.log": "b99f1c9b730ad071026fdacc10b3da080adda78a6e2d8994876b5bf15a9710b5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.slow.tcl": "b7b10f88f289cb351f2f742c5e6482f9009ed377db3a58319d6b462d67f9f44e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.sta.v": "84f7704ffeb1f7f93822f8766266942c4cdaf560434cf6c6ba6cd1d9591c390b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.syn.log": "831c211d59ade000a842247199494c7256dcff1e99e4b94c039e67470129decc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.typ.sta.log": "cf05c2e5429b0369e693b75958e4fbd4e4055c253e569d0de02efae9549d3993",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.typ.tcl": "5e4125920cec3c1a6fd195a7fd9b325c23ce2ce864c6495e86ef687a4efdbae4",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/baseline.ys": "885a3eb9d6a75ff25eeff26d379e9f4f4b88aef3526b3174ab29a4c2e21c8642",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.area.rpt": "be151e623988c4f9b572ee212a3197dfbc0f17bb7568449775838209c210a5d2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.driver.log": "678ddbc86901760fe817d1ce84f1d25ed2b7e9755ddf0951564fe8ebbebaaee0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.fast.sta.log": "b86d54cbfbedfe081b40f998d49e396ea408b5b7f0d41f9e9d014f46fc7ac410",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.fast.tcl": "2fb0b7b5510c79737040c9e5c354be5af642a9695c836903bfa7e836c941d287",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.netlist.v": "511424f7e79fe7b0f4fc72a2648a2b1e24b0edfa835d9e7af86bde52592d420a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.slow.sta.log": "febc8bb6c54e05f667464d877a5a2b005c4757b14c7dc08ec372d51e3934344e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.slow.tcl": "f6fdb11ee71756ffd7085cd1969e6509b9173722b90e861051c3db61c978487b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.sta.v": "87193ec03937b42681702d0f4546a0f8795236498064ddb704ba652a0936644a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.syn.log": "678ddbc86901760fe817d1ce84f1d25ed2b7e9755ddf0951564fe8ebbebaaee0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.typ.sta.log": "e0c36bbe39dce1d197468ea0ed9ef8586ae81f2da498b3d0a39caf4527bd1f65",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.typ.tcl": "8644349a165fe5774f5b44f50bab3ed50eb1a99929653eb0afa21a3477874469",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.v": "45f4953a2f1f4c1712efb6a47aadb462357fb05bf7210a8c9d663fbf624060c7",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/candidate.ys": "4f83f7b584571e75996a135ad187575031d8ee4e6d16a28cb314a8d80a73717f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/decision.json": "581e03f64955728bdcf844b2b75e765b970b482fc461da454d62073b44c10297",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/progress.json": "957dfd73035806f49d4c187d430cd5c26248e93f98aefcf856c46ee28873b20d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/publication-audit.json": "8365d8b3d20b85f16e2121882a6175a0f5c1b0f83063ab509ff6d69c7a13847d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-corrpre-measurement/rf.sdc": "3d5f3f05ac210b9646b50ebe9206c022cdfa6eecbc9fe596507b5d66d38105de",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/abc.constr": "4b8874f01bd53bd5836ee0539b95bae68be23edf1b9a1678e01e200a443e65bc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.area.rpt": "a1007142263495f49e4cb96e5dec8ae2e21f6d5aec89fbb1ae62a59858239579",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.driver.log": "2e91cf4e632693bcc15d78f6bd881375b2c30bf061f7738f638f0bb317a7ed4c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.fast.sta.log": "caf1845068707dfdc3e632e918e219c33cb3c27aa47718ac04d609a284fab96b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.fast.tcl": "adfed51a37bcdfa96daf66ee5dad8fbdc11e6dcdb2420656a33dd73d2136a32b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.netlist.v": "597fec603e2b46dc4fdb9c8cb6d8cd2891102be2c538c11fd1c2a199476d5517",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.slow.sta.log": "b99f1c9b730ad071026fdacc10b3da080adda78a6e2d8994876b5bf15a9710b5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.slow.tcl": "acec86c325d0d62cc7b61b7e6ff7e8a73a9a7be9ca67084f54620e9388f7f47c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.sta.v": "84f7704ffeb1f7f93822f8766266942c4cdaf560434cf6c6ba6cd1d9591c390b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.syn.log": "2e91cf4e632693bcc15d78f6bd881375b2c30bf061f7738f638f0bb317a7ed4c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.typ.sta.log": "cf05c2e5429b0369e693b75958e4fbd4e4055c253e569d0de02efae9549d3993",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.typ.tcl": "5dbbd9a8323e55d4253d3a4753f0b612a17a57252d84cd550bdcba5acd26f957",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/baseline.ys": "15e1095f99ce3239408a8850af6ef36065e0031a6758b32c8014dc1ecc20edfa",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.area.rpt": "b4867369d91a319dff71bb80b6caa5ddc11956cbbc3fbec0d48f89d0ed66c360",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.driver.log": "4d59a2428fd3c73c94acee82ccd4feeb531bcbc179769b744aeb4c175773ce1d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.fast.sta.log": "1331139b04c9ad2061343576d4166bedf10f297a62a8a5c6ab502fb1965c8ac8",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.fast.tcl": "400c2bbbaaab8ab43e911c9029485c72273c9878dab06f3f44a7ad7f09e82534",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.netlist.v": "7d6103d79381656539e9a893aee6623d5f6580c4c4b536ca0f472373379b5c3b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.slow.sta.log": "89e4def8f8e500024ce3d09189c5042427de4f124aa23e366f8aa47c3ef6aa6c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.slow.tcl": "b4fc72ee6eca78c93f31a3af72568b987092052d1361429b4a7825ff522242e1",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.sta.v": "1332111f2d5c7a0c4f32bf6ca47cc5017cc4d9dd9036545e57ce03005aa9b951",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.syn.log": "4d59a2428fd3c73c94acee82ccd4feeb531bcbc179769b744aeb4c175773ce1d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.typ.sta.log": "60aca03bfd528eb80b4c3e9f0212229dcdf7a24fb3749fc4fc68546ed46955cc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.typ.tcl": "135935f5dabb7db53a4500415d420ff2adcee8c3c989cf86e4fe09ffa198681b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.v": "9d175f97264ebebaf1c7ffbb9faea17545b919309a5e30925e296f612901ad46",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/candidate.ys": "bd4aaf5ae656dd82db7a4c8879854a9fcc85f5ceed99647d0c764b7f2cc45487",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/progress.json": "93cda8138f2bb755113bb6d5079a06f8daff75eccefc211a1c4c2cde8d17e1cb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/publication-audit.json": "44fbdb4edd13308b67159af3e90f2498b5cb2cd899b08a8b21a40a8048c16339",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/rf-onehot-measurement/rf.sdc": "3d5f3f05ac210b9646b50ebe9206c022cdfa6eecbc9fe596507b5d66d38105de",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/search_sram_local_widening.py": "3d710f24a87c5b3ba077af5de0edbdbb0d94d48eca926c9667fc678b6a8ecc3e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/search_sram_local_widening_v2.py": "7c590a09b0607385eaa1b48e415517dd5b0297d02fea512fb51c408ce629f6c5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-bitcell-width-witness/bitcell.cdl": "b19996838910e43b54458b225b0ba39bf75ed4d841d865b03d6497efa9855ba3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-bitcell-width-witness/bitcell.gds": "0ca2c4e0ac3b759d29384c372a84ddfb2f9fa19a6c923e353cfa09f63261b918",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-bitcell-width-witness/result.json": "1466c7935a8cb2a676d70c19ae05ad13eeaece177a4df3a13ab9763295fe5621",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-local-widening-search/candidate-bitcell.gds": "917d0730fd6a69f634695a6a1b0550400c5e6869b9bf9cc6c81a1b3c6f4bee92",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-local-widening-search/rejection.json": "e6036f8be49ef88ab9dcaf2bafefd58d3099c88f9777deabfe5d7286f17480a2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-local-widening-search/result.json": "507fcdab3488f74f589f453539172c2b4befac319bebe2b62b51a4e5ccb69f0f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-local-widening-search-v2/candidate-bitcell.gds": "bdaf43f5b133eb0f53ab3e97ec164288d0e59265b2d0f1827aa46aceb0041051",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-local-widening-search-v2/result.json": "1f5779d2fb9e7af0587a6b2cb1d4806be15ec2494f4726b7ef6a3f5a7462de6d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-local-widening-search-v2/topology.json": "82a9868d2b6cb2c7519bea1f508a883f2b9da20df21afd7b0ce64bd0961b57d3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-candidate/candidate-macro.gds": "17dd4a8f8c0acee1ecd3fc3e90e03d2e470ea1fd8a35eedc3e274255e16d3bce",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-candidate/rejection.json": "1550eb071fab4c10ce048ca1c4c71765092f9753f804960193f527fcf19d0903",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-candidate/result.json": "04c9d6b1b10f3d87c464b16fe4c3112338d9f967344d9a805572e96df68eef98",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-drc/candidate/drc.lyrdb": "f83d69d6f5d1f15a2d0ce92426f627247e6b84b60de15cd8a0fb29e1fe249782",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-drc/candidate/inputs.json": "f04347c84eb79394de8817d14b1e20216fee0015b00f6a0c4e0729c6e8f752ed",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-drc/candidate/result.json": "4dbf9a0ffea167bcdee46c48765b498f7d71c72169875cfe7a19005da80cee6d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-drc/candidate/run.log": "5fcef8cdfeb77690291d65274cabf8583bc64917545c85e745e2d7ec1490ca78",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-drc/original/drc.lyrdb": "90df473ca35d040c956e60f8ce1b7a202446b81b5ed0564515cec1aee9c0a7b5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-drc/original/inputs.json": "41fbbadb302efa29159ffd5bf7afa4f683344b9e0a231a8b79bde9a0fd7e732d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-drc/original/result.json": "ae4a5a738008f00f3774f7c3c7ebc1a42d3f11a7b7a31ff03bb14fee0186121a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-drc/original/run.log": "9d4e7fa44feee2df002cad0aaa321abe75ddd1b982547187e4224e3719d98345",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-macro-widening-drc/progress.json": "26fe2359829a116aaa90c10acc4013e4e16d4e353f48bdd843602680d6654db0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening/candidate-bitcell.gds": "024075dfb2d0a1a11134e2a903853d13b0c5947b902ee13af8aa0f9821d8c7b7",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening/result.json": "23b87d7cbc4b20c89475c5069382d8316e8d0f852875c62292c9c2d2aa4ca115",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening-deck/decision.json": "821e7f50a25c8ef7a78fb1fffac87dacdb22854ad42d835a928231bfcfc5ddf2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening-deck/original/drc.lyrdb": "4d3762710f32bbb10f61652de191237ce77d761fef017d483cb76f49c0d37dd3",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening-deck/original/inputs.json": "0a0b383a486962ed57172961e30841859c682a75e5ef36fd32b1aea9996adb9b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening-deck/original/result.json": "918ed286716bfba320ddd6aa02a87b6d936ca2ad1408f5f228150e8b0542f912",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening-deck/original/run.log": "faa5388a80114b27c50f11c4a30be70cb084e3a09f4f26a7f68f6f4881183b7d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening-deck/widened/drc.lyrdb": "455fc5012376da3cdf9ac7e9e78a2cefee845f4bf079bc365bd400818b26be22",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening-deck/widened/inputs.json": "c8792fca512a998369f89443155de6cd3de811db2df3d9e0d344a1e4becdea37",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening-deck/widened/result.json": "bbbbd4dc95094ca40059dfadb6a1b82c5de1f43b5ed4d36b626eafbfa430c0bf",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/sram-metal-widening-deck/widened/run.log": "c629d3d9d9d3804736135001717dc2660cbd98bf0dc3048dc4d9ad5af90e7a5b"
+    },
+    "recompression": {
+      "original_path": "docs/evidence/closure-hypotheses-20260923.tar.gz",
+      "original_sha256": "1c2fea8d69228c1202844a808c1b3324fb0c6a865cbbc8dec12a5e627f2e97a8",
+      "original_bytes": 2177604,
+      "decompressed_tar_sha256": "da44de9a01890fe52db4e48677d1d67176760dd28f22d139c39b2a88dd578956"
+    }
+  }
+}

@@ -1,0 +1,230 @@
+[
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair03-peer/review.py",
+      "bytes": 11693,
+      "sha256": "34758770834a26cac7a979e5e1a3938a38655f2594d808f16244083124dac181"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair05-peer/review.py",
+      "bytes": 11787,
+      "sha256": "6e6865600c63dda008434cb4236614b776cbe8b7b8bbf758af81e2bc810eee3a"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n"
+      },
+      {
+        "tag": "replace",
+        "before": "\"\"\"Bounded read-only verification of completed TX03 outputs; no new native run.\"\"\"\n",
+        "after": "\"\"\"Bounded read-only verification of completed TX05 outputs; no new native run.\"\"\"\n"
+      },
+      {
+        "tag": "equal",
+        "before": "import gzip\nimport hashlib\nimport importlib.util\nimport json\nimport math\nimport os\nimport re\nimport resource\n",
+        "after": "import gzip\nimport hashlib\nimport importlib.util\nimport json\nimport math\nimport os\nimport re\nimport resource\n"
+      },
+      {
+        "tag": "insert",
+        "before": "",
+        "after": "import sys\n"
+      },
+      {
+        "tag": "equal",
+        "before": "import xml.etree.ElementTree as ET\nfrom pathlib import Path\n\nresource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\nresource.setrlimit(resource.RLIMIT_CORE, (0, 0))\nos.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\nR = Path.cwd()\nB = R / \"hw/soc/out/pcie-gen3-transmit-v4-repair-20261005\"\nO = Path(__file__).resolve().parent\n",
+        "after": "import xml.etree.ElementTree as ET\nfrom pathlib import Path\n\nresource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\nresource.setrlimit(resource.RLIMIT_CORE, (0, 0))\nos.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\nR = Path.cwd()\nB = R / \"hw/soc/out/pcie-gen3-transmit-v4-repair-20261005\"\nO = Path(__file__).resolve().parent\n"
+      },
+      {
+        "tag": "insert",
+        "before": "",
+        "after": "sys.path.insert(0, str(B))  # Exact proof gate imports reviewed owned_lifecycle05.\n"
+      },
+      {
+        "tag": "equal",
+        "before": "N = Path('/dev/shm')\n",
+        "after": "N = Path('/dev/shm')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "D = N / 'nssoc-tx-path-v4-repair03-drt-01'\nX = N / 'nssoc-tx-path-v4-repair03-detailed-rc-01'\nP = N / 'nssoc-tx-path-v4-postroute-repair-03'\nE = N / 'nssoc-tx-path-v4-repair03-equivalence'\nT = N / 'nssoc-tx-path-v4-repair03-physical-replay-01'\n",
+        "after": "D = N / 'nssoc-tx-path-v4-repair05-drt-01'\nX = N / 'nssoc-tx-path-v4-repair05-detailed-rc-01'\nP = N / 'nssoc-tx-path-v4-postroute-repair-05'\nE = N / 'nssoc-tx-path-v4-repair05-equivalence'\nT = N / 'nssoc-tx-path-v4-repair05-physical-replay-02'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef j(p):\n    return json.loads(Path(p).read_text())\n\n\ninputs = {}\nfor directory in (D, X):\n    result = j(directory / 'result.json')\n    assert result['returncode'] == 0 and result['status'].startswith('COMPLETE_')\n    for path, h in result['inputs'].items():\n        assert pin(path) == h\n        inputs[path] = h\n    for name, h in result['outputs'].items():\n        assert pin(directory / name) == h\n        inputs[str(directory / name)] = h\n    inputs[str(directory / 'result.json')] = pin(directory / 'result.json')\nassert (D / 'routed.v').read_bytes() == (P / 'repaired.v').read_bytes()\nassert (D / 'router-drc.rpt').stat().st_size == 0\nassert re.findall(r'Number of violations = (\\d+)', (D / 'native.log').read_text())[-1] == '0'\nassert 'NATIVE_DETAILED_ROUTING_COMPLETE' in (D / 'native.log').read_text()\nlog = (X / 'native.log').read_text()\nassert 'NATIVE_NOMINAL_RC_SCREEN_COMPLETE' in log\nassert not re.search(r'\\[ERROR\\b|Error:', log)\nslacks = {}\npaths = []\nfor corner in ('slow', 'typical', 'fast'):\n    values = {}\n    for direction in ('max', 'min'):\n        part = log.split(f'EXTRACTED_NOMINAL_RC_{corner}_{direction}\\n')[1].split('EXTRACTED_NOMINAL_RC_', 1)[0]\n        cases = part.split('Startpoint:')[1:]\n        assert len(cases) == 6\n        for case in cases:\n            matches = re.findall(r'(-?\\d+\\.\\d+)\\s+slack \\((MET|VIOLATED)\\)', case)\n            assert len(matches) == 1\n            value = float(matches[0][0])\n            assert (value < 0) == (matches[0][1] == 'VIOLATED')\n            kind = ('recovery' if 'recovery check' in case else 'setup') if direction == 'max' else ('removal' if 'removal check' in case else 'hold')\n            values.setdefault(kind, []).append(value)\n            if corner == 'slow' and kind == 'setup':\n                paths.append({'startpoint': case.splitlines()[0].strip(), 'endpoint': re.search(r'Endpoint: (\\S+)', case)[1], 'slack_ns': value, 'raw_path': case})\n    assert all(len(v) == 3 for v in values.values()) and len(values) == 4\n    slacks[corner] = {k: min(v) for k, v in values.items()}\n# The new measured slacks are not known in advance; record all four classes.\nassert all(math.isfinite(value) for corner in slacks.values() for value in corner.values())\n",
+        "after": "\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef j(p):\n    return json.loads(Path(p).read_text())\n\n\ninputs = {}\nfor directory in (D, X):\n    result = j(directory / 'result.json')\n    assert result['returncode'] == 0 and result['status'].startswith('COMPLETE_')\n    for path, h in result['inputs'].items():\n        assert pin(path) == h\n        inputs[path] = h\n    for name, h in result['outputs'].items():\n        assert pin(directory / name) == h\n        inputs[str(directory / name)] = h\n    inputs[str(directory / 'result.json')] = pin(directory / 'result.json')\nassert (D / 'routed.v').read_bytes() == (P / 'repaired.v').read_bytes()\nassert (D / 'router-drc.rpt').stat().st_size == 0\nassert re.findall(r'Number of violations = (\\d+)', (D / 'native.log').read_text())[-1] == '0'\nassert 'NATIVE_DETAILED_ROUTING_COMPLETE' in (D / 'native.log').read_text()\nlog = (X / 'native.log').read_text()\nassert 'NATIVE_NOMINAL_RC_SCREEN_COMPLETE' in log\nassert not re.search(r'\\[ERROR\\b|Error:', log)\nslacks = {}\npaths = []\nfor corner in ('slow', 'typical', 'fast'):\n    values = {}\n    for direction in ('max', 'min'):\n        part = log.split(f'EXTRACTED_NOMINAL_RC_{corner}_{direction}\\n')[1].split('EXTRACTED_NOMINAL_RC_', 1)[0]\n        cases = part.split('Startpoint:')[1:]\n        assert len(cases) == 6\n        for case in cases:\n            matches = re.findall(r'(-?\\d+\\.\\d+)\\s+slack \\((MET|VIOLATED)\\)', case)\n            assert len(matches) == 1\n            value = float(matches[0][0])\n            assert (value < 0) == (matches[0][1] == 'VIOLATED')\n            kind = ('recovery' if 'recovery check' in case else 'setup') if direction == 'max' else ('removal' if 'removal check' in case else 'hold')\n            values.setdefault(kind, []).append(value)\n            if corner == 'slow' and kind == 'setup':\n                paths.append({'startpoint': case.splitlines()[0].strip(), 'endpoint': re.search(r'Endpoint: (\\S+)', case)[1], 'slack_ns': value, 'raw_path': case})\n    assert all(len(v) == 3 for v in values.values()) and len(values) == 4\n    slacks[corner] = {k: min(v) for k, v in values.items()}\n# The new measured slacks are not known in advance; record all four classes.\nassert all(math.isfinite(value) for corner in slacks.values() for value in corner.values())\n"
+      },
+      {
+        "tag": "replace",
+        "before": "old = N / 'nssoc-tx-path-v4-repair02-detailed-rc-02/result.json'\n",
+        "after": "old = N / 'nssoc-tx-path-v4-repair03-detailed-rc-01/result.json'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "old_result = j(old)\nfor name,h in old_result['outputs'].items():\n    assert pin(old.parent / name) == h\n    inputs[str(old.parent / name)] = h\nold_log = (old.parent / 'native.log').read_text()\nprior_slacks = {}\nfor corner in ('slow', 'typical', 'fast'):\n    values = {}\n    for direction in ('max', 'min'):\n        part = old_log.split(f'EXTRACTED_NOMINAL_RC_{corner}_{direction}\\n')[1].split('EXTRACTED_NOMINAL_RC_', 1)[0]\n        for case in part.split('Startpoint:')[1:]:\n            value = float(re.findall(r'(-?\\d+\\.\\d+)\\s+slack \\((?:MET|VIOLATED)\\)', case)[0])\n            kind = ('recovery' if 'recovery check' in case else 'setup') if direction == 'max' else ('removal' if 'removal check' in case else 'hold')\n            values.setdefault(kind, []).append(value)\n    prior_slacks[corner] = {k:min(v) for k,v in values.items()}\ndelta = {corner:{k:round(slacks[corner][k]-v,6) for k,v in prior_slacks[corner].items()} for corner in prior_slacks}\n\n# Every reported unannotated output belongs to an input-only CTS load.\nunannotated = log.split('Found 150 unannotated drivers.\\n')[1].split('Found 0 partially unannotated drivers.')[0].split()\nassert len(unannotated) == 150 and {p.split('/')[0] for p in unannotated} == {f'clkload{i}' for i in range(150)}\nnetlist = (D / 'routed.v').read_text()\nloads = {}\nfor output in unannotated:\n    inst, pinname = output.split('/')\n    match = re.search(r'\\b(sg13g2_(?:inv|buf)_\\d+)\\s+' + inst + r'\\s*\\((.*?)\\);', netlist, re.S)\n    assert match\n    connections = re.findall(r'\\.(\\w+)\\(([^()]*)\\)', match[2])\n    assert len(connections) == 1 and connections[0][0] == 'A'\n    assert pinname == ('Y' if '_inv_' in match[1] else 'X')\n    loads[inst] = {'master': match[1], 'unconnected_output': pinname, 'clock_input_net': connections[0][1]}\n\n# Stream the actual extracted SPEF; bind each dummy input to an annotated net.\nnames = {}\nstate = ''\nnet = None\nconnected = {}\ncount = {'nets': 0, 'capacitor_entries': 0, 'resistor_entries': 0, 'zero_resistors': 0}\nwith (X / 'routed.spef').open() as f:\n    for raw in f:\n        fields = raw.split()\n        if not fields:\n            continue\n        if fields[0] == '*NAME_MAP':\n            state = 'names'\n        elif fields[0] == '*PORTS':\n            state = 'ports'\n        elif fields[0] == '*D_NET':\n            net = names.get(fields[1], fields[1])\n            count['nets'] += 1\n            assert math.isfinite(float(fields[2])) and float(fields[2]) >= 0\n            state = 'net'\n        elif fields[0] in ('*CONN', '*CAP', '*RES', '*END'):\n            state = fields[0]\n        elif state == 'names':\n            assert len(fields) == 2 and fields[0] not in names\n            names[fields[0]] = fields[1]\n        elif state == '*CONN' and fields[0] == '*I':\n            number, terminal = fields[1].rsplit(':', 1)\n            instance = names.get(number, number)\n            if instance in loads:\n                assert terminal == 'A' and fields[2] == 'I' and net == loads[instance]['clock_input_net']\n                assert instance not in connected\n                connected[instance] = net\n        elif state in ('*CAP', '*RES'):\n            value = float(fields[-1])\n            assert math.isfinite(value) and value >= 0\n            key = 'capacitor_entries' if state == '*CAP' else 'resistor_entries'\n            count[key] += 1\n            if state == '*RES' and value == 0:\n                count['zero_resistors'] += 1\nassert set(connected) == set(loads)\n\n# Retained port XML and native-expanded proof payloads are checked again.\nports = j(T / 'result.json')\nassert ports['tests'] == {'passed': 3, 'failed': 0, 'skipped': 0}\ncases = list(ET.parse(T / 'results.xml').iter('testcase'))\nassert len(cases) == 3 and all(c.find('failure') is None and c.find('error') is None and c.find('skipped') is None for c in cases)\nfor path, h in {**ports['inputs'], **ports.get('runtime', {})}.items():\n    assert pin(path) == h\n    inputs[path] = h\nfor name, h in ports['outputs'].items():\n    assert pin(T / name) == h\nnormalization = j(E / 'normalization.json')\nfor path, h in normalization['inputs'].items():\n    assert pin(path) == h\n    inputs[path] = h\nfor run in normalization['runs']:\n    assert run['returncode'] == 0\n    for suffix, key in [('.ys','script_sha256'),('.log','log_sha256')]:\n        file = E / (run['name'] + suffix)\n        assert pin(file)['sha256'] == run[key]\n        inputs[str(file)] = pin(file)\n    compressed = E / (run['name'] + '.json.gz')\n    assert pin(compressed)['sha256'] == run['expanded_json']['lossless_gzip_sha256']\n    inputs[str(compressed)] = pin(compressed)\n    with gzip.open(compressed, 'rb') as stream:\n        assert hashlib.file_digest(stream, 'sha256').hexdigest() == run['expanded_json']['sha256']\n\n",
+        "after": "old_result = j(old)\nfor name,h in old_result['outputs'].items():\n    assert pin(old.parent / name) == h\n    inputs[str(old.parent / name)] = h\nold_log = (old.parent / 'native.log').read_text()\nprior_slacks = {}\nfor corner in ('slow', 'typical', 'fast'):\n    values = {}\n    for direction in ('max', 'min'):\n        part = old_log.split(f'EXTRACTED_NOMINAL_RC_{corner}_{direction}\\n')[1].split('EXTRACTED_NOMINAL_RC_', 1)[0]\n        for case in part.split('Startpoint:')[1:]:\n            value = float(re.findall(r'(-?\\d+\\.\\d+)\\s+slack \\((?:MET|VIOLATED)\\)', case)[0])\n            kind = ('recovery' if 'recovery check' in case else 'setup') if direction == 'max' else ('removal' if 'removal check' in case else 'hold')\n            values.setdefault(kind, []).append(value)\n    prior_slacks[corner] = {k:min(v) for k,v in values.items()}\ndelta = {corner:{k:round(slacks[corner][k]-v,6) for k,v in prior_slacks[corner].items()} for corner in prior_slacks}\n\n# Every reported unannotated output belongs to an input-only CTS load.\nunannotated = log.split('Found 150 unannotated drivers.\\n')[1].split('Found 0 partially unannotated drivers.')[0].split()\nassert len(unannotated) == 150 and {p.split('/')[0] for p in unannotated} == {f'clkload{i}' for i in range(150)}\nnetlist = (D / 'routed.v').read_text()\nloads = {}\nfor output in unannotated:\n    inst, pinname = output.split('/')\n    match = re.search(r'\\b(sg13g2_(?:inv|buf)_\\d+)\\s+' + inst + r'\\s*\\((.*?)\\);', netlist, re.S)\n    assert match\n    connections = re.findall(r'\\.(\\w+)\\(([^()]*)\\)', match[2])\n    assert len(connections) == 1 and connections[0][0] == 'A'\n    assert pinname == ('Y' if '_inv_' in match[1] else 'X')\n    loads[inst] = {'master': match[1], 'unconnected_output': pinname, 'clock_input_net': connections[0][1]}\n\n# Stream the actual extracted SPEF; bind each dummy input to an annotated net.\nnames = {}\nstate = ''\nnet = None\nconnected = {}\ncount = {'nets': 0, 'capacitor_entries': 0, 'resistor_entries': 0, 'zero_resistors': 0}\nwith (X / 'routed.spef').open() as f:\n    for raw in f:\n        fields = raw.split()\n        if not fields:\n            continue\n        if fields[0] == '*NAME_MAP':\n            state = 'names'\n        elif fields[0] == '*PORTS':\n            state = 'ports'\n        elif fields[0] == '*D_NET':\n            net = names.get(fields[1], fields[1])\n            count['nets'] += 1\n            assert math.isfinite(float(fields[2])) and float(fields[2]) >= 0\n            state = 'net'\n        elif fields[0] in ('*CONN', '*CAP', '*RES', '*END'):\n            state = fields[0]\n        elif state == 'names':\n            assert len(fields) == 2 and fields[0] not in names\n            names[fields[0]] = fields[1]\n        elif state == '*CONN' and fields[0] == '*I':\n            number, terminal = fields[1].rsplit(':', 1)\n            instance = names.get(number, number)\n            if instance in loads:\n                assert terminal == 'A' and fields[2] == 'I' and net == loads[instance]['clock_input_net']\n                assert instance not in connected\n                connected[instance] = net\n        elif state in ('*CAP', '*RES'):\n            value = float(fields[-1])\n            assert math.isfinite(value) and value >= 0\n            key = 'capacitor_entries' if state == '*CAP' else 'resistor_entries'\n            count[key] += 1\n            if state == '*RES' and value == 0:\n                count['zero_resistors'] += 1\nassert set(connected) == set(loads)\n\n# Retained port XML and native-expanded proof payloads are checked again.\nports = j(T / 'result.json')\nassert ports['tests'] == {'passed': 3, 'failed': 0, 'skipped': 0}\ncases = list(ET.parse(T / 'results.xml').iter('testcase'))\nassert len(cases) == 3 and all(c.find('failure') is None and c.find('error') is None and c.find('skipped') is None for c in cases)\nfor path, h in {**ports['inputs'], **ports.get('runtime', {})}.items():\n    assert pin(path) == h\n    inputs[path] = h\nfor name, h in ports['outputs'].items():\n    assert pin(T / name) == h\nnormalization = j(E / 'normalization.json')\nfor path, h in normalization['inputs'].items():\n    assert pin(path) == h\n    inputs[path] = h\nfor run in normalization['runs']:\n    assert run['returncode'] == 0\n    for suffix, key in [('.ys','script_sha256'),('.log','log_sha256')]:\n        file = E / (run['name'] + suffix)\n        assert pin(file)['sha256'] == run[key]\n        inputs[str(file)] = pin(file)\n    compressed = E / (run['name'] + '.json.gz')\n    assert pin(compressed)['sha256'] == run['expanded_json']['lossless_gzip_sha256']\n    inputs[str(compressed)] = pin(compressed)\n    with gzip.open(compressed, 'rb') as stream:\n        assert hashlib.file_digest(stream, 'sha256').hexdigest() == run['expanded_json']['sha256']\n\n"
+      },
+      {
+        "tag": "replace",
+        "before": "spec = importlib.util.spec_from_file_location('tx03_review_kernel', B / 'proof03/compare.py')\n",
+        "after": "spec = importlib.util.spec_from_file_location('tx05_review_kernel', B / 'proof05/compare.py')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "kernel = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(kernel)\nkernel.ROOT = E\nrecomputed = kernel.compare(kernel.read('gold'), kernel.read('gate'))\noriginal = j(E / 'equivalence.json')\nassert all(original[k] == v for k, v in recomputed.items())\nassert recomputed['states'] == 3850 and recomputed['matched'] == recomputed['targets'] == 11680 and not recomputed['mismatches']\n",
+        "after": "kernel = importlib.util.module_from_spec(spec)\nspec.loader.exec_module(kernel)\nkernel.ROOT = E\nrecomputed = kernel.compare(kernel.read('gold'), kernel.read('gate'))\noriginal = j(E / 'equivalence.json')\nassert all(original[k] == v for k, v in recomputed.items())\nassert recomputed['states'] == 3850 and recomputed['matched'] == recomputed['targets'] == 11680 and not recomputed['mismatches']\n"
+      },
+      {
+        "tag": "replace",
+        "before": "binding_spec = importlib.util.spec_from_file_location('tx03_saved_binding', B / 'proof_gate_repair03.py')\n",
+        "after": "binding_spec = importlib.util.spec_from_file_location('tx05_saved_binding', B / 'proof_gate_repair05.py')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "binding_module = importlib.util.module_from_spec(binding_spec)\nbinding_spec.loader.exec_module(binding_module)\nbinding_record = binding_module.verify_binding(E)\nassert binding_record['before_inputs'] == binding_record['after_inputs']\nfor path, expected in binding_record['before_inputs'].items():\n    assert pin(path) == expected\n    inputs[path] = expected\ninputs[str(E / 'proof-execution-binding.json')] = pin(E / 'proof-execution-binding.json')\nmutations = j(E / 'mutation-controls.json')\nassert len(mutations['controls']) == 10 and all(c['status'].startswith('REJECTED_') for c in mutations['controls'])\n\nsdc = (D / 'routed.sdc').read_text()\nassert 'create_clock -name development_clock -period 4.0000' in sdc\nassert not re.search(r'^set_(?:false_path|multicycle_path)', sdc, re.M)\nbefore = (P / 'repaired.sdc').read_text()\ndef constraint_lines(s):\n    return [l for l in s.splitlines() if l and not l.startswith('#')]\nassert constraint_lines(sdc) == constraint_lines(before)\n",
+        "after": "binding_module = importlib.util.module_from_spec(binding_spec)\nbinding_spec.loader.exec_module(binding_module)\nbinding_record = binding_module.verify_binding(E)\nassert binding_record['before_inputs'] == binding_record['after_inputs']\nfor path, expected in binding_record['before_inputs'].items():\n    assert pin(path) == expected\n    inputs[path] = expected\ninputs[str(E / 'proof-execution-binding.json')] = pin(E / 'proof-execution-binding.json')\nmutations = j(E / 'mutation-controls.json')\nassert len(mutations['controls']) == 10 and all(c['status'].startswith('REJECTED_') for c in mutations['controls'])\n\nsdc = (D / 'routed.sdc').read_text()\nassert 'create_clock -name development_clock -period 4.0000' in sdc\nassert not re.search(r'^set_(?:false_path|multicycle_path)', sdc, re.M)\nbefore = (P / 'repaired.sdc').read_text()\ndef constraint_lines(s):\n    return [l for l in s.splitlines() if l and not l.startswith('#')]\nassert constraint_lines(sdc) == constraint_lines(before)\n"
+      },
+      {
+        "tag": "replace",
+        "before": "for p in [Path(__file__), B / 'proof03/compare.py', B / 'proof03/mutations.py', B / 'proof_gate_repair03.py', P / 'repaired.v', E / 'equivalence.json', E / 'mutation-controls.json', E / 'normalization.json', T / 'result.json', old]:\n",
+        "after": "for p in [Path(__file__), B / 'proof05/compare.py', B / 'proof05/mutations.py', B / 'proof_gate_repair05.py', P / 'repaired.v', E / 'equivalence.json', E / 'mutation-controls.json', E / 'normalization.json', T / 'result.json', old]:\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    inputs[str(p)] = pin(p)\nrecord = {\n",
+        "after": "    inputs[str(p)] = pin(p)\nrecord = {\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    'status': 'REVIEWED_TX03_ZERO_ROUTER_DRC_AND_FUNCTION__MEASURED_NOMINAL_TIMING',\n",
+        "after": "    'status': 'REVIEWED_TX05_ZERO_ROUTER_DRC_AND_FUNCTION__MEASURED_NOMINAL_TIMING',\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    'nominal_all_cell_corners_pass': {kind: all(v[kind] >= 0 for v in slacks.values()) for kind in ('setup', 'hold', 'recovery', 'removal')},\n    'physical_acceptance': False, 'qualified_rc': False,\n    'nominal_rc_cell_corner_slack_ns': slacks, 'nominal_prior_and_improvement': {'prior':prior_slacks,'delta_ns':delta},\n    'unannotated_output_analysis': {'reported': 150, 'partially_unannotated': 0, 'all_output_pins_unconnected_CTS_loads': True, 'all150_input_pins_present_on_correct_extracted_clock_nets': True, 'instances': loads},\n    'spef_numeric_census': count, 'SS_three_worst_setup_paths': paths,\n    'canonical_binary_kernel_replay': recomputed,\n    'preserved_original_fault_controls': 10, 'port_XML_cases_recounted': 3,\n    'inputs_rehashed': inputs,\n    'runtime_warnings_retained': [l for l in (T / 'simulation.log').read_text().splitlines() if 'Unexpected sys.executable' in l],\n    'scope': 'Independent saved-output review, complete SPEF numeric/clock-load binding census, all declared DRT/RC inputs/outputs rehashed, three saved portXML cases, fresh replay of existing canonical binary kernel on unchanged native-expanded JSONs. No new OpenROAD/Icarus/SAT run or independent proof algorithm; mutation controls inspected, not rerun. Unchanged4ns/IO constraints. Nominal sameRC at all cell corners is unqualified; All measured setup, hold, recovery and removal values are retained without a predetermined pass result. No fullchip/PDN/foundryDRC/PHY acceptance.',\n}\nassert all(pin(path) == h for path,h in inputs.items())\n(O / 'review.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint({'slacks': slacks, 'spef': count, 'review': pin(O / 'review.json')})\n",
+        "after": "    'nominal_all_cell_corners_pass': {kind: all(v[kind] >= 0 for v in slacks.values()) for kind in ('setup', 'hold', 'recovery', 'removal')},\n    'physical_acceptance': False, 'qualified_rc': False,\n    'nominal_rc_cell_corner_slack_ns': slacks, 'nominal_prior_and_improvement': {'prior':prior_slacks,'delta_ns':delta},\n    'unannotated_output_analysis': {'reported': 150, 'partially_unannotated': 0, 'all_output_pins_unconnected_CTS_loads': True, 'all150_input_pins_present_on_correct_extracted_clock_nets': True, 'instances': loads},\n    'spef_numeric_census': count, 'SS_three_worst_setup_paths': paths,\n    'canonical_binary_kernel_replay': recomputed,\n    'preserved_original_fault_controls': 10, 'port_XML_cases_recounted': 3,\n    'inputs_rehashed': inputs,\n    'runtime_warnings_retained': [l for l in (T / 'simulation.log').read_text().splitlines() if 'Unexpected sys.executable' in l],\n    'scope': 'Independent saved-output review, complete SPEF numeric/clock-load binding census, all declared DRT/RC inputs/outputs rehashed, three saved portXML cases, fresh replay of existing canonical binary kernel on unchanged native-expanded JSONs. No new OpenROAD/Icarus/SAT run or independent proof algorithm; mutation controls inspected, not rerun. Unchanged4ns/IO constraints. Nominal sameRC at all cell corners is unqualified; All measured setup, hold, recovery and removal values are retained without a predetermined pass result. No fullchip/PDN/foundryDRC/PHY acceptance.',\n}\nassert all(pin(path) == h for path,h in inputs.items())\n(O / 'review.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint({'slacks': slacks, 'spef': count, 'review': pin(O / 'review.json')})\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair03-peer/seal.py",
+      "bytes": 6492,
+      "sha256": "07f596d185cd56cd75beb05aa75e870254c7eaa59ab791a91a40d0f67008df36"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair05-peer/seal.py",
+      "bytes": 7522,
+      "sha256": "08fd4ef0a720ea0b2fa2e3681f7bb857b307565f37293200802b3b96097f764b"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n"
+      },
+      {
+        "tag": "replace",
+        "before": "\"\"\"Preserve complete TX03 captures after exact saved-output review.\"\"\"\n",
+        "after": "\"\"\"Preserve complete TX05 captures after exact saved-output review.\"\"\"\n"
+      },
+      {
+        "tag": "equal",
+        "before": "from pathlib import Path\nimport gzip\nimport hashlib\nimport json\nimport shutil\nimport tarfile\n\nR = Path.cwd()\nB = R / 'hw/soc/out/pcie-gen3-transmit-v4-repair-20261005'\nO = Path(__file__).resolve().parent\nN = Path('/dev/shm')\n",
+        "after": "from pathlib import Path\nimport gzip\nimport hashlib\nimport json\nimport shutil\nimport tarfile\n\nR = Path.cwd()\nB = R / 'hw/soc/out/pcie-gen3-transmit-v4-repair-20261005'\nO = Path(__file__).resolve().parent\nN = Path('/dev/shm')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "A = N / 'pcie-tx-repair03-route-nominal-rc-and-peer-20261005.tar.xz'\n",
+        "after": "A = N / 'pcie-tx-repair05-route-nominal-rc-and-peer-20261006.tar.xz'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as stream:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(stream, 'sha256').hexdigest()}\n\n\ndef read(p):\n    return json.loads(Path(p).read_text())\n\n\nassert not A.exists()\nassert shutil.disk_usage(N).free >= 1024**3\nreview = read(O / 'review.json')\n",
+        "after": "\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as stream:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(stream, 'sha256').hexdigest()}\n\n\ndef read(p):\n    return json.loads(Path(p).read_text())\n\n\nassert not A.exists()\nassert shutil.disk_usage(N).free >= 1024**3\nreview = read(O / 'review.json')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "assert review['status'] == 'REVIEWED_TX03_ZERO_ROUTER_DRC_AND_FUNCTION__MEASURED_NOMINAL_TIMING'\n",
+        "after": "assert review['status'] == 'REVIEWED_TX05_ZERO_ROUTER_DRC_AND_FUNCTION__MEASURED_NOMINAL_TIMING'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "assert review['inputs_rehashed'] == {p: pin(p) for p in review['inputs_rehashed']}\n",
+        "after": "assert review['inputs_rehashed'] == {p: pin(p) for p in review['inputs_rehashed']}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "T = N / 'nssoc-tx-path-v4-repair03-physical-replay-01'\n",
+        "after": "T = N / 'nssoc-tx-path-v4-repair05-physical-replay-02'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "ports = read(T / 'result.json')\ncompressed = T / 'sim/sim.vvp.gz'\nassert pin(compressed) == ports['outputs']['sim/sim.vvp.gz']\ndigest = hashlib.sha256()\nsize = 0\nwith gzip.open(compressed, 'rb') as stream:\n    while chunk := stream.read(1024**2):\n        digest.update(chunk)\n        size += len(chunk)\nexpanded = {'bytes': size, 'sha256': digest.hexdigest()}\nassert expanded == ports['lossless_closed_program']['raw']\n\nvalidation = {\n    'status': 'REVIEWED_ROUTER_DRC_AND_FUNCTION_WITH_MEASURED_NOMINAL_TIMING',\n    'router_drc_violations': 0,\n    'same_logical_netlist_after_detailed_route': True,\n    'nominal_rc_cell_corner_slack_ns': review['nominal_rc_cell_corner_slack_ns'],\n    'nominal_prior_and_improvement': review['nominal_prior_and_improvement'],\n    'nominal_all_cell_corners_pass': review['nominal_all_cell_corners_pass'],\n    'unannotated_output_analysis': review['unannotated_output_analysis'],\n    'canonical_binary_kernel_replay': review['canonical_binary_kernel_replay'],\n    'saved_native_port_XML_cases_recounted': 3,\n    'saved_actual_kernel_fault_controls': 10,\n    'full_compiled_program_gzip_readback': expanded,\n    'peer': {'path': str(O / 'review.json'), **pin(O / 'review.json')},\n    'qualified_rc': False,\n    'physical_acceptance': False,\n    'constraints': 'Unchanged 4 ns, I/O constraints and propagated clock; no false or multicycle exceptions. Same nominal RC reused across three cell corners, not three RC corners.',\n",
+        "after": "ports = read(T / 'result.json')\ncompressed = T / 'sim/sim.vvp.gz'\nassert pin(compressed) == ports['outputs']['sim/sim.vvp.gz']\ndigest = hashlib.sha256()\nsize = 0\nwith gzip.open(compressed, 'rb') as stream:\n    while chunk := stream.read(1024**2):\n        digest.update(chunk)\n        size += len(chunk)\nexpanded = {'bytes': size, 'sha256': digest.hexdigest()}\nassert expanded == ports['lossless_closed_program']['raw']\n\nvalidation = {\n    'status': 'REVIEWED_ROUTER_DRC_AND_FUNCTION_WITH_MEASURED_NOMINAL_TIMING',\n    'router_drc_violations': 0,\n    'same_logical_netlist_after_detailed_route': True,\n    'nominal_rc_cell_corner_slack_ns': review['nominal_rc_cell_corner_slack_ns'],\n    'nominal_prior_and_improvement': review['nominal_prior_and_improvement'],\n    'nominal_all_cell_corners_pass': review['nominal_all_cell_corners_pass'],\n    'unannotated_output_analysis': review['unannotated_output_analysis'],\n    'canonical_binary_kernel_replay': review['canonical_binary_kernel_replay'],\n    'saved_native_port_XML_cases_recounted': 3,\n    'saved_actual_kernel_fault_controls': 10,\n    'full_compiled_program_gzip_readback': expanded,\n    'peer': {'path': str(O / 'review.json'), **pin(O / 'review.json')},\n    'qualified_rc': False,\n    'physical_acceptance': False,\n    'constraints': 'Unchanged 4 ns, I/O constraints and propagated clock; no false or multicycle exceptions. Same nominal RC reused across three cell corners, not three RC corners.',\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    'scope': 'Standalone TXv4 four-lane scrambling/fixed130 gearbox. Completed TX03 candidate/proof/ports/DRT01/RC01 preserved; no new native rerun by this sealer. Actual measured timing is retained regardless of pass/fail. No full-chip/PHY/PDN/foundry acceptance.',\n",
+        "after": "    'scope': 'Standalone TXv4 four-lane scrambling/fixed130 gearbox. Completed TX05 actual-SPEF-first candidate/proof/ports02/DRT01/RC01 preserved; original ports01 interpreter failure retained; no new native rerun by this sealer. Actual measured timing is retained regardless of pass/fail. No full-chip/PHY/PDN/foundry acceptance.',\n"
+      },
+      {
+        "tag": "equal",
+        "before": "}\n",
+        "after": "}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "V = O / 'pcie-tx-repair03-finite-physical-validation-20261005.json'\n",
+        "after": "V = O / 'pcie-tx-repair05-finite-physical-validation-20261006.json'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "V.write_text(json.dumps(validation, indent=2) + '\\n')\nfiles = {}\nroots = {\n",
+        "after": "V.write_text(json.dumps(validation, indent=2) + '\\n')\nfiles = {}\nroots = {\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    'nssoc-tx-path-v4-postroute-repair-03': ('repaired.v', 'repaired.odb', 'repaired.sdc', 'result.json'),\n    'nssoc-tx-path-v4-repair03-equivalence': ('gold.json.gz', 'gate.json.gz', 'normalization.json', 'proof-execution-binding.json', 'equivalence.json', 'mutation-controls.json'),\n    'nssoc-tx-path-v4-repair03-physical-replay-01': ('results.xml', 'simulation.log', 'sim/sim.vvp.gz', 'result.json'),\n    'nssoc-tx-path-v4-repair03-drt-01': ('routed.v', 'routed.odb', 'routed.sdc', 'native.log', 'router-drc.rpt', 'result.json'),\n    'nssoc-tx-path-v4-repair03-detailed-rc-01': ('routed.spef', 'native.log', 'extract.tcl', 'result.json'),\n",
+        "after": "    'nssoc-tx-path-v4-postroute-repair-05': ('repaired.v', 'repaired.odb', 'repaired.sdc', 'result.json'),\n    'nssoc-tx-path-v4-repair05-equivalence': ('gold.json.gz', 'gate.json.gz', 'normalization.json', 'proof-execution-binding.json', 'equivalence.json', 'mutation-controls.json'),\n    'nssoc-tx-path-v4-repair05-physical-replay-02': ('results.xml', 'simulation.log', 'sim/sim.vvp.gz', 'result.json'),\n    'nssoc-tx-path-v4-repair05-drt-01': ('routed.v', 'routed.odb', 'routed.sdc', 'native.log', 'router-drc.rpt', 'result.json'),\n    'nssoc-tx-path-v4-repair05-detailed-rc-01': ('routed.spef', 'native.log', 'extract.tcl', 'result.json'),\n"
+      },
+      {
+        "tag": "equal",
+        "before": "}\nfor name, mandatory in roots.items():\n    directory = N / name\n    assert directory.is_dir() and all((directory / p).is_file() for p in mandatory), name\n    for p in sorted(directory.rglob('*')):\n        if p.is_file() and '__pycache__' not in p.parts:\n            assert not p.is_symlink()\n            files['native/' + name + '/' + str(p.relative_to(directory))] = p\nfor path in review['inputs_rehashed']:\n    p = Path(path)\n    if p.is_relative_to(R) and p.suffix in ('.py', '.v') and 'tools' not in p.parts:\n        files['source/' + str(p.relative_to(R))] = p\n",
+        "after": "}\nfor name, mandatory in roots.items():\n    directory = N / name\n    assert directory.is_dir() and all((directory / p).is_file() for p in mandatory), name\n    for p in sorted(directory.rglob('*')):\n        if p.is_file() and '__pycache__' not in p.parts:\n            assert not p.is_symlink()\n            files['native/' + name + '/' + str(p.relative_to(directory))] = p\nfor path in review['inputs_rehashed']:\n    p = Path(path)\n    if p.is_relative_to(R) and p.suffix in ('.py', '.v') and 'tools' not in p.parts:\n        files['source/' + str(p.relative_to(R))] = p\n"
+      },
+      {
+        "tag": "replace",
+        "before": "for name in ['postroute_repair03.py', 'normalize_repair03.py', 'replay_repair03.py', 'drt_repair03.py', 'detailed_rc_repair03.py', 'proof_gate_repair03.py', 'proof03/compare.py', 'proof03/mutations.py', 'repair03-continuation01/run.py']:\n",
+        "after": "for name in ['postroute_repair05.py', 'normalize_repair05.py', 'replay_repair05_resume02.py', 'owned_lifecycle05.py', 'drt_repair05.py', 'detailed_rc_repair05.py', 'proof_gate_repair05.py', 'proof05/compare.py', 'proof05/mutations.py', 'repair05-continuation01/run.py']:\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    files['method/' + name] = B / name\nfor name in ['hw/soc/rtl/pcie/soc_pcie_gen3_tx_path_v4.v', 'hw/soc/rtl/pcie/soc_pcie_gen3_gearbox.v', 'scripts/check_pcie_integrity_native.py', 'scripts/cocotb_results.py', 'LICENSES/CERN-OHL-W-2.0.txt', 'LICENSES/Apache-2.0.txt']:\n    files['source/' + name] = R / name\nfor name in ['result.json', 'extract.tcl', 'native.log']:\n",
+        "after": "    files['method/' + name] = B / name\nfor name in ['hw/soc/rtl/pcie/soc_pcie_gen3_tx_path_v4.v', 'hw/soc/rtl/pcie/soc_pcie_gen3_gearbox.v', 'scripts/check_pcie_integrity_native.py', 'scripts/cocotb_results.py', 'LICENSES/CERN-OHL-W-2.0.txt', 'LICENSES/Apache-2.0.txt']:\n    files['source/' + name] = R / name\nfor name in ['result.json', 'extract.tcl', 'native.log']:\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    files['prior-native-rc/' + name] = N / 'nssoc-tx-path-v4-repair02-detailed-rc-02' / name\nfor directory in ['repair03-source', 'repair02-peer']:\n    for p in sorted((B / directory).glob('*.json')):\n        files['preservation/' + directory + '/' + p.name] = p\n",
+        "after": "    files['prior-native-rc/' + name] = N / 'nssoc-tx-path-v4-repair03-detailed-rc-01' / name\nfor name in ['source-freeze.json', 'source-bridge.json', 'source-only-peer-rx.json', 'proof-source-freeze02.json', 'proof-source-bridge.json', 'proof-source-only-peer-rx02.json', 'ports02-source-freeze.json', 'ports02-source-only-peer-rx.json', 'route-rc-source-freeze.json', 'route-rc-source-bridge.json', 'route-rc-source-only-peer-rx.json', 'pre-drt-proof-port-review.json', 'owned_lifecycle05-before02.py', 'proof-source-review-rx01-findings.json', 'test_owned_lifecycle05.py', 'lifecycle-controls02.log', 'binding-controls02.log', 'ports-launch01.json', 'ports-launch01.log', 'ports-launch02.json', 'ports-launch02.log']:\n    files['preservation/repair05-source/' + name] = B / 'repair05-source' / name\nfor name in ['review.json','package.json','release.json','pcie-tx-repair03-finite-physical-validation-20261005.json']:\n    files['prior-published/repair03/' + name] = B / 'repair03-peer' / name\nfor name in ['package.json','pcie-tx-repair05-preroute-validation-20261006.json','release01.json']:\n    files['prior-preroute-publication/' + name] = B / 'repair05-preroute-preservation' / name\n"
+      },
+      {
+        "tag": "equal",
+        "before": "for name in ['review.py', 'review.json', 'review.log', 'seal.py', 'source-derivation.json', 'source-freeze.json']:\n    files['peer/' + name] = O / name\n",
+        "after": "for name in ['review.py', 'review.json', 'review.log', 'seal.py', 'source-derivation.json', 'source-freeze.json']:\n    files['peer/' + name] = O / name\n"
+      },
+      {
+        "tag": "replace",
+        "before": "for name in ['run.py', 'manifest.json', 'source-only-peer-vco.json', 'launch-preflight.json', 'active-controller.json']:\n    files['continuation/' + name] = B / 'repair03-continuation01' / name\n",
+        "after": "for name in ['run.py', 'manifest.json', 'source-only-peer-vco.json', 'launch.py', 'launch.json', 'detached-confirmed.json']:\n    files['continuation/' + name] = B / 'repair05-continuation01' / name\n"
+      },
+      {
+        "tag": "equal",
+        "before": "files['validation.json'] = V\nmembers = {name: pin(p) for name, p in files.items()}\nminimum = shutil.disk_usage(N).free\nwith tarfile.open(A, 'x:xz', preset=3) as archive:\n    for name, p in files.items():\n        minimum = min(minimum, shutil.disk_usage(N).free)\n        assert minimum >= 528 * 1024**2 and A.stat().st_size < 200 * 1024**2\n        archive.add(p, arcname=name, recursive=False)\nassert A.stat().st_size < 200 * 1024**2\nassert members == {name: pin(p) for name, p in files.items()}\nactual = {}\nwith tarfile.open(A, 'r|xz') as archive:\n    for member in archive:\n        assert member.isfile() and member.name not in actual\n        actual[member.name] = {'bytes': member.size, 'sha256': hashlib.file_digest(archive.extractfile(member), 'sha256').hexdigest()}\nassert actual == members\nrecord = {'status': 'PASS_COMPLETE_IMMUTABLE_MEMBER_READBACK', 'archive': {'path': str(A), **pin(A)}, 'validation': {'path': str(V), **pin(V)}, 'member_count': len(members), 'members': members, 'minimum_shared_free_bytes_during_archive': minimum, 'files_unlinked': []}\n(O / 'package.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint(record['archive'], record['member_count'])\n",
+        "after": "files['validation.json'] = V\nmembers = {name: pin(p) for name, p in files.items()}\nminimum = shutil.disk_usage(N).free\nwith tarfile.open(A, 'x:xz', preset=3) as archive:\n    for name, p in files.items():\n        minimum = min(minimum, shutil.disk_usage(N).free)\n        assert minimum >= 528 * 1024**2 and A.stat().st_size < 200 * 1024**2\n        archive.add(p, arcname=name, recursive=False)\nassert A.stat().st_size < 200 * 1024**2\nassert members == {name: pin(p) for name, p in files.items()}\nactual = {}\nwith tarfile.open(A, 'r|xz') as archive:\n    for member in archive:\n        assert member.isfile() and member.name not in actual\n        actual[member.name] = {'bytes': member.size, 'sha256': hashlib.file_digest(archive.extractfile(member), 'sha256').hexdigest()}\nassert actual == members\nrecord = {'status': 'PASS_COMPLETE_IMMUTABLE_MEMBER_READBACK', 'archive': {'path': str(A), **pin(A)}, 'validation': {'path': str(V), **pin(V)}, 'member_count': len(members), 'members': members, 'minimum_shared_free_bytes_during_archive': minimum, 'files_unlinked': []}\n(O / 'package.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint(record['archive'], record['member_count'])\n"
+      }
+    ]
+  }
+]

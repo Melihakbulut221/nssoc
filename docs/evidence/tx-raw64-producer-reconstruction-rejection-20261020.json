@@ -1,0 +1,60 @@
+{
+  "run": 39481658422,
+  "source_head": "ed71a75ed58826890ff6dacd270f7f9944de7a28",
+  "summary_asset": 660246822,
+  "summary_sha256": "f2d1f664d195660f1b8c949319f64d1e830abaef14e6ac93ababb0f8aaa23f30",
+  "parts_asset": 660246949,
+  "parts_sha256": "f36aab1b4b6d9fe9255236e020188f532fb09a79bd021ac82cdb3b0205bf2cf7",
+  "status": "FAIL_OR_ERROR",
+  "error": "AssertionError('Rebuilt native R/C records differ from archived failed extraction')",
+  "baseline_audit": {
+    "status": "FAIL_AUDIT",
+    "error": "Native failure",
+    "full_pex_qualified": false,
+    "inputs": {
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/baseline/audit-rc02.py": {
+        "bytes": 12450,
+        "sha256": "71460d918cabdaea67fae1da1c9217dc1c54b20615441cac0dfc41bfe02561a1"
+      },
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/pcie-magic-resis-terminals-v1-20261004/audit_pilot.py": {
+        "bytes": 8291,
+        "sha256": "f8132c8498cd32c4e27e6a8c054a7b35a72129bbf15ab8cc1ee9d6d65610e667"
+      },
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/baseline/anchors03.json": {
+        "bytes": 27181000,
+        "sha256": "aab94b8571e71ea9e6afcf5dd5c95e1d9dd842b1b3d8fbf8b04073abfeb6545d"
+      },
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/baseline/rc01/full_raw64_core_wires.ext": {
+        "bytes": 1162555,
+        "sha256": "07d3ad037e4b555c4ae743a707381d5abc5211eeb438eb88c2f6a376365c0a06"
+      },
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/baseline/rc01/full_raw64_core_wires.res.ext": {
+        "bytes": 10992547,
+        "sha256": "92bca5042c49bd1e3ca3fbba21ff5fea118abdecc490aa06f802edf7bba2e63c"
+      },
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/baseline/rc01/native.log": {
+        "bytes": 2625891,
+        "sha256": "07627a139a986ffd41c4892f2c666b6082c3825467d0d715ce11bbb27149e479"
+      },
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/baseline/rc01/wires.spice": {
+        "bytes": 9626909,
+        "sha256": "5885feb984737be4545893e5a530b17138e27116a2d4c83001895965391efdc4"
+      },
+      "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/baseline/rc01/baseline.spice": {
+        "bytes": 194283,
+        "sha256": "7ad7ffbfbdfb9557543093a853d6694e23ee10a8db1c00e18cd53015c4a9ae77"
+      }
+    }
+  },
+  "rebuilt_runtimes": {
+    "baseline": {
+      "library": "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/baseline-source/magic/tclmagic.so",
+      "sha256": "2bae23a6010bc4380758f1d1ffba049597a5e56ef7c03ab3716743befc2f7e72"
+    },
+    "precise": {
+      "library": "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-raw64-totalcap-precision/precise-source/magic/tclmagic.so",
+      "sha256": "5c04b5c3f0eb0709dc93151b1aa1aaf3f4e0299727da5dfd9dc7499e4831eb04"
+    }
+  },
+  "cause": "The archived base source tree lacks historical HBT/tap/ESD producer overlays. Its native CIF importer rejected5 interacting/noninteracting declarations. The published runtime already supports them. No raw RC acceptance waived; restore existing exact overlays in both builds."
+}

@@ -1,0 +1,84 @@
+{
+  "observed_at": "2026-10-16T02:59:49.520982+00:00",
+  "profile": "expanded_load_batch",
+  "total_positive_buffers": 110,
+  "original_targets": 50,
+  "additional_targets": 60,
+  "new_targets_disjoint_from_original": true,
+  "new_target_masters": [
+    "sg13g2_a22oi_1",
+    "sg13g2_and3_1",
+    "sg13g2_and4_1",
+    "sg13g2_buf_1",
+    "sg13g2_buf_2",
+    "sg13g2_nand2b_1",
+    "sg13g2_nand3b_1",
+    "sg13g2_nand4_1",
+    "sg13g2_xor2_1"
+  ],
+  "source_diagnosis": {
+    "run": 38839736674,
+    "summary_sha256": "a7b7c9ec447475af9dc7dc5e2a08f7552a4aab2b0404471166edef331244eea8"
+  },
+  "recipe_sha256": "8e998b9f304aedc02e22a8f3aa171c6b6c4b0d0e187650c3bf59581e436e37ee",
+  "cloud_controls": {
+    "exact_source_and_13_rejections": 38842858175,
+    "geometry_controls": 38842441677,
+    "annotation_controls": 38842441584
+  },
+  "physical_run": {
+    "run": 38843068297,
+    "source_head": "76b58f13a83f30dab52a68c4d3af7ad94bac1607",
+    "status": "in_progress",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 116787326928,
+        "status": "in_progress",
+        "conclusion": null,
+        "active_steps": [
+          "Prove110source-measured load repairs, fully reroute, reextract and compare all corners"
+        ],
+        "passed_steps": [
+          "Set up job",
+          "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+          "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+          "Verify source-bound110target recipe and all legacy profile contracts",
+          "Reject overlapping, missing, sequential or malformed new targets",
+          "Compile exact source-bound buffer repair controllers",
+          "Restore exact native runtime"
+        ]
+      }
+    ]
+  },
+  "failed_predecessors": [
+    {
+      "run": 38842199036,
+      "reason": "Inline profile loader did not put scripts on module search path; no CAD execution."
+    },
+    {
+      "run": 38842441662,
+      "reason": "Same loader failure; controller mode-dispatch syntax separately fixed and passed hosted compilation."
+    },
+    {
+      "run": 38842629638,
+      "reason": "Source validator required global slow_max only, rejecting genuine target_N_slow_max observations before baseline reproduction or edits. Both exact formats now covered by published-source controls.",
+      "summary_asset": 645929817,
+      "summary_sha256": "5228ee812b1c23025d7bd7c5b158e3dea3372dd49f5d8ae4d26a97043d556188"
+    }
+  ],
+  "mandatory_acceptance_checks": [
+    "Reproduce unchanged original native timing and validate exact source measurements.",
+    "Native original pin/master/fanout/SIGNAL/noNDR checks for all110targets.",
+    "Preserve original cells/pins/PG/NDR; positive-buffer logic proof and inversion rejection.",
+    "Full detailed routing then exact all-candidate cell signatures/topology/PG/port/NDR preservation.",
+    "Fresh allnet nominal RC and unchanged original constraints/cell corners.",
+    "Independent all22544endpoint comparison against original and50buffer parent; preserve every regression/unconstrained path.",
+    "Independent geometry/contact/continuity/antenna and native RC annotation checks."
+  ],
+  "accepted": false,
+  "full_serial_phy_complete": false,
+  "final_timing_complete": false,
+  "cloud_only": true,
+  "local_workspace_entries": 0
+}

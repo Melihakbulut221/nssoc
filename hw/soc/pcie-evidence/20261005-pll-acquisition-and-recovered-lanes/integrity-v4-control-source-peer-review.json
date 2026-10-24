@@ -1,0 +1,107 @@
+{
+  "status": "CLEAN_BOUNDED_SOURCE_REVIEW",
+  "reviewer": "/root/tap_mask_next_step",
+  "scope": "Generator and parser control/metadata reasoning plus exact inverse-source bridges. No author HDL tests, raw port traces, mapping, timing, or formal equivalence rerun.",
+  "files": {
+    "hw/soc/out/pcie-integrity-v4-20261005/control-source-peer/review_source.py": {
+      "bytes": 8957,
+      "sha256": "f5f1cf809601e868113cacaab9fa34a1afaf360397a323db41e7fe9351dd2f3b"
+    },
+    "hw/soc/out/pcie-integrity-v4-20261005/rtl-validation.json": {
+      "bytes": 3618,
+      "sha256": "661431f58b906e6eafb70f7efff73a556bc71cbd1bfe473397b2df78d27e524c"
+    },
+    "hw/soc/out/pcie-integrity-v4-20261005/source-freeze.json": {
+      "bytes": 1819,
+      "sha256": "6638dbbc5cc8858bad18c3f448a4edc6a60794a5b8d323b88be4a9a84102e55b"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v3.v": {
+      "bytes": 3264,
+      "sha256": "10b56eaaf76bb4547273f5bd9cf3c5ec5d635284d61486f5abe82a91b90c0616"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v4.v": {
+      "bytes": 3308,
+      "sha256": "25b44000074d504adf78f24b0fae4e504bc7cf60347e202363671af4c5d042c6"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v3.v": {
+      "bytes": 175748,
+      "sha256": "ea9c978b14ce0b5d764cb87cdf82ce1e76aa2a83d1ed19eaf97f74aa800b2abb"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v4.v": {
+      "bytes": 183139,
+      "sha256": "c7805937b44c03707c1f9c4c3d5a8fc7ee90b78b8fc9a48ae47dde8eb132bded"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v4": {
+      "bytes": 1508,
+      "sha256": "97bad653ce7440ad777adc305388230ce551f2a68891628d0a3d5e374a07b097"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v4.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v4.py": {
+      "bytes": 11193,
+      "sha256": "9eaa27030a33d6181891cd0c6c084a5e33f187c5ef37b1645b5af2953fd9cae0"
+    },
+    "scripts/generate_pcie_integrity_control_v4.py": {
+      "bytes": 9238,
+      "sha256": "dc23c8e85a5197d3c4175f21af4548356c0a4d46f5cf173fb1565571835675a7"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v4.py": {
+      "bytes": 4787,
+      "sha256": "1560fdf1545cffab3b26fa44d0bcc886eff48ba19c9026de0131c4a1a3baa110"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v4_control.py": {
+      "bytes": 7122,
+      "sha256": "1eb570081b323b4b6c0a8e06e34a47257d92fa89a746fb62872ccbce99ebdfec"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v4_frontiers.py": {
+      "bytes": 3754,
+      "sha256": "6c7f28aca2bfbc8803cd641bd3af6b1f1ce98a2f3f10479b95f581b01d18f997"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v4_miter.py": {
+      "bytes": 6593,
+      "sha256": "b7c4ed210abce3660d67bad236d88b21117b3c6d9bcc137650668223215c6923"
+    }
+  },
+  "machine_source_checks": {
+    "all_ten_author_frozen_source_pins_rehashed": true,
+    "generator_literal_control_equals_inserted_text": true,
+    "six_substitutions_match_generator_ast": true,
+    "inverse_parser_body_byte_identical_to_v3": true,
+    "wrapper_only_names_and_nettype_guards": true
+  },
+  "manual_findings": [
+    {
+      "subject": "Newly accepted STP cannot complete within its four-DWORD slice",
+      "reason": "Both old and new decoders require length_dw>=5. STP at position k initializes remaining=length_dw-1>=4. Only 3-k later words remain, so remaining stays at least 1+k and cannot reach zero. Mode4 may therefore stay TLP throughout the rest of the slice. This premise relies on four steps and the unchanged >=5 guard."
+    },
+    {
+      "subject": "Carried TLP completion and malformed zero counter",
+      "reason": "Initial carried TLP consumes every preceding word until completion; its decrement reaches zero at j exactly when registered remaining==j+1. Registered remaining=0 wraps modulo 2048 on the first decrement and never reaches zero within four words, matching the original body. Once a carried packet ends, the modes cannot reenter carried mode; a later STP instead enters new-packet mode4."
+    },
+    {
+      "subject": "First-header and completion validation",
+      "reason": "A carried TLP with header_first set necessarily consumes its first header at word0. control_expected0 uses identical fields, 13-bit widths, payload-zero expansion, and 18/4-byte contributions as the original TLP branch; it intentionally replaces stale saved header_bad/expected values. Otherwise it uses unchanged saved header_bad and expected_bytes. Packet byte count remains unchanged throughout the carried TLP, so this single decision is valid at any of its four possible completion positions. Newly started TLP parses its header only immediately after a TOKEN/LOOK-accepted STP; a final-word STP leaves header_first set for the next slice."
+    },
+    {
+      "subject": "Matrix direction and stopped-state retention",
+      "reason": "Bit destination*8+source and apply row-by-initial-mode agree. compose(later,earlier) sums later[d,k] AND earlier[k,s], so table1 after table0 and table2 after that prefix match chronological word order. Stops5/6/7 retain TOKEN/LOOK/TLP after invalid TOKEN, invalid LOOK, or bad carried-header completion. Initial ending masks every active word and directly retains saved state/metadata. No fault is cleared by an inactive suffix."
+    },
+    {
+      "subject": "LOOK, EDB, DLLP and same-word successor priority",
+      "reason": "LOOK checks EDB first and consumes it without reinterpreting it as TOKEN. Recognized STP/SDP/IDL/EDS first issues the prior TLP verdict and then enters the unchanged TOKEN body in that same word. Unrecognized LOOK input sets token_failure and suppresses TOKEN handling. DLLP always consumes exactly one completion word and returns TOKEN even for a bad CRC verdict; CRC validity does not choose parser state. Token decoding and priority match the original body."
+    },
+    {
+      "subject": "Commit and fault isolation",
+      "reason": "The inverse bridge proves CRC candidate transforms, data/metadata writes, ring logic, event production, and sequential/reset/abort code unchanged outside the six declared substitutions. The new candidate control still commits only on step; token_failure remains qualified by step in fault_now. Speculation when no step is accepted cannot update architectural state."
+    }
+  ],
+  "limitations": [
+    "No independent execution of the author's 28 pytest executions, 52 port positives, or 19 injected faults is claimed.",
+    "This review is not all-state formal equivalence or a proof of physical timing/area improvement.",
+    "Reasoning covers concrete binary state/data values; four-state X propagation equivalence is not established.",
+    "Existing fixed aligned/descrambled x4 framing scope remains; no new CDC, variable-SKP, deskew, or complete-controller qualification follows."
+  ],
+  "blocking_findings": []
+}

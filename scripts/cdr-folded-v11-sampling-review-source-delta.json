@@ -1,0 +1,48 @@
+{
+  "scope": "Read-only reuse of exact original256bit fixed-phase native waveform diagnosis. Only folded namespace/source, measured11590C and exact known early device rejection changed; no functional acceptance gate, load, stimulus or wave changed.",
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_input_drive_v10_sampling_review.py",
+      "baseline_sha256": "4a99902d246c80850e18d2550545da7d35c8e7d3ccea1009460f4a6c0ee9fa04",
+      "candidate_path": "scripts/cloud_cdr_folded_v11_sampling_review.py",
+      "candidate_sha256": "3ffb83d5258f66dbeed47e09323eecce29a28a2bf4c90a6d035ce744207d73d5",
+      "edits": [
+        {
+          "before": "CDR RISERS captures",
+          "after": "CDR folded-layout captures",
+          "count": 1
+        },
+        {
+          "before": "cdr-input-drive-v10",
+          "after": "cdr-folded-v11",
+          "count": 4
+        },
+        {
+          "before": "cloud_cdr_input_drive_v10_mim_streamed",
+          "after": "cloud_cdr_folded_v11_mim_streamed",
+          "count": 1
+        },
+        {
+          "before": "assert not prior['data_passed'] and prior['devices_passed'] and prior['status']=='REJECTED_WHOLE_MIM_PD484_LOADED'",
+          "after": "assert not prior['data_passed'] and prior['devices_passed'] is (args.case=='nominal_late') and prior['status']=='REJECTED_WHOLE_MIM_PD484_LOADED'",
+          "count": 1
+        },
+        {
+          "before": "11527",
+          "after": "11590",
+          "count": 2
+        },
+        {
+          "before": "assert {'xpd.'+x['device']for x in failed}==expected_failed and len(failed)==0",
+          "after": "assert {'xpd.'+x['device']for x in failed}==expected_failed\n        assert expected_failed==({'xpd.xd0129'}if args.case=='nominal_early'else set()),'Saved original device failure identity changed'",
+          "count": 1
+        },
+        {
+          "before": "COMPLETE_NATIVE_CDR_HYBRID_PATH_DIAGNOSIS_ORIGINAL_GATES_REMAIN_FAILED",
+          "after": "COMPLETE_NATIVE_CDR_FOLDED_PATH_DIAGNOSIS_ORIGINAL_GATES_REMAIN_FAILED",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

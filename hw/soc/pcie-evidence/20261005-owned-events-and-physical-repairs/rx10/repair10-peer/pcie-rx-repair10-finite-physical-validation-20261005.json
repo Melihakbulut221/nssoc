@@ -1,0 +1,67 @@
+{
+  "status": "REVIEWED_ROUTER_DRC_FUNCTION_AND_NOMINAL_HOLD__SS_SETUP_STILL_FAIL",
+  "router_drc_violations": 0,
+  "same_logical_netlist_after_detailed_route": true,
+  "nominal_rc_cell_corner_slack_ns": {
+    "slow": {
+      "recovery": 0.325061,
+      "setup": -0.696048,
+      "removal": 0.8923,
+      "hold": 0.04166
+    },
+    "typical": {
+      "recovery": 1.64194,
+      "setup": 1.088547,
+      "removal": 0.595948,
+      "hold": 0.074507
+    },
+    "fast": {
+      "recovery": 2.439881,
+      "setup": 2.100882,
+      "removal": 0.423325,
+      "hold": 0.092947
+    }
+  },
+  "SS_setup_improvement_vs_published08_ns": 0.391247,
+  "unannotated_drivers": 78,
+  "unannotated_classification": "All78 unconnected outputs of input-only CTS dummy load cells; all78 clock-input pins independently located on correct extracted SPEF nets. Zero partially unannotated drivers.",
+  "canonical_binary_kernel_replay": {
+    "states": 1804,
+    "input_bits": 528,
+    "output_bits": 31,
+    "targets": 5443,
+    "canonical_nodes": 39119,
+    "mismatches": [],
+    "matched": 5443
+  },
+  "saved_native_port_XML_cases_recounted": 6,
+  "saved_actual_kernel_fault_controls": 10,
+  "full_compiled_program_gzip_readback": {
+    "raw_path": "/dev/shm/nssoc-rx-prefetch-v2-repair10-physical-replay-01/sim/sim.vvp",
+    "raw": {
+      "bytes": 60649406,
+      "sha256": "d2fac696081c620b38e0d797a2e719104b306453c3e9d76ec323f68878083479"
+    },
+    "compressed_path": "/dev/shm/nssoc-rx-prefetch-v2-repair10-physical-replay-01/sim/sim.vvp.gz",
+    "compressed": {
+      "bytes": 7187677,
+      "sha256": "a3cffa44ac76792771bec0f2c34eb63147ea5078b313d83c73e4a8ff82d7e506"
+    },
+    "full_decompressed_readback": {
+      "bytes": 60649406,
+      "sha256": "d2fac696081c620b38e0d797a2e719104b306453c3e9d76ec323f68878083479"
+    },
+    "observed_closed_after_native_exit": true,
+    "raw_unlinked": true
+  },
+  "peer": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair10-peer/review.json",
+    "bytes": 32168,
+    "sha256": "0d8c62a3c1046933fad9369b717ba7b62c71f720e1375988a48c195ae42370db"
+  },
+  "setup_closed": false,
+  "qualified_rc": false,
+  "physical_acceptance": false,
+  "constraints": "Unchanged4ns,0.2ns I/O,0.1ns input slew,0.01pF output load, propagatedclock, no false/multicycle exceptions. Nominal extractedRC reused across three cell corners; not distinctRC process corners.",
+  "scope": "Default150 standalone byte receiver, not strictwidePCS/currentwidepacket receiver. Complete raw repair10/GRT/proof/port/DRT/RC captures retained. Existing proof kernel independently replayed on saved expanded native graphs; proof fault controls inspected but not rerun. No new OpenROAD/Icarus execution, no fullchip/foundry/PDN/PHY signoff. Earlier failures and original sources remain unchanged."
+}

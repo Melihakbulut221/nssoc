@@ -1,0 +1,38 @@
+{
+  "baseline_path": "scripts/cloud_onehot_critical_data_path_review.py",
+  "baseline_sha256": "0a896f8a7651dc1c8a6db59d981ff5c125a0035193679a5c30768f81cf86c298",
+  "candidate_path": "scripts/cloud_onehot_coverage_data_path_review.py",
+  "candidate_sha256": "bef97100c37563dd97c61cd806b26b603bfae0da12d5ad22c2430f6abf6551bb",
+  "edits": [
+    {
+      "before": "cloud-onehot-critical-data-path-review",
+      "after": "cloud-onehot-coverage-data-path-review",
+      "count": 1
+    },
+    {
+      "before": "from run_cloud_tx_layout_repair import sha",
+      "after": "from run_cloud_tx_layout_repair import sha,fetch",
+      "count": 1
+    },
+    {
+      "before": "docs/evidence/onehot-critical-data-route-result-20261020.json",
+      "after": "docs/evidence/onehot-coverage-data-route-result-20261020.json",
+      "count": 1
+    },
+    {
+      "before": "assert pin['run']==39293720171 and pin['source_head']=='ca6a4d0e143ec95d836201887b96d187ecdccb39'",
+      "after": "assert pin['run']==39331918238 and pin['source_head']=='5a623eb7b9e873093809884e8bde6d36d20e6ca5'",
+      "count": 1
+    },
+    {
+      "before": "        original=pin['report']",
+      "after": "        fetch(pin['summary_url'],pin['summary_sha256'],OUT/'routed-summary.json')\n        original=json.loads((OUT/'routed-summary.json').read_text())\n        assert original['source_head']==pin['source_head']\n        assert original['native_routed_baseline']['run']==39293720171",
+      "count": 1
+    },
+    {
+      "before": "COMPLETE_NATIVE_CRITICAL_DATA_PATH_REVIEW_NOT_TIMING_CLOSURE",
+      "after": "COMPLETE_NATIVE_COVERAGE_DATA_PATH_REVIEW_NOT_TIMING_CLOSURE",
+      "count": 1
+    }
+  ]
+}

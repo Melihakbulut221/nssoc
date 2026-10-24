@@ -1,0 +1,115 @@
+{
+  "date": "2026-09-20",
+  "scope": "Corrected startup-clear loader and external IRQ physical implementation, completed native post-global-route timing repair and independent fixed-route corner estimates",
+  "native": {
+    "scope": "Run the original configured native LibreLane step through Step.start, preserving checker and optimization settings. Avoid SequentialFlow.save_snapshot duplicate final copies. No rule waiver. Startup resumes from completed step35; Magic consumes own third-candidate DEF/GDS.",
+    "mode": "startup-clear-nativeenv",
+    "command": [
+      "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/bin/python",
+      "hw/soc/out/external-review-20260919/restart1_native_single_step_worker_preserve_env.py",
+      "startup-clear-nativeenv"
+    ],
+    "input_sha256": {
+      "hw/soc/pnr/runs/logicrom-startup-clear-grt-20260920/36-openroad-resizertimingpostgrt/state_in.json": "dbe98585c5028abcbcdcd7d764abadfe3ce3a2e578457bc616737575c2892f79",
+      "hw/soc/out/external-review-20260919/restart1_native_single_step_worker_preserve_env.py": "a50b722dd33bd31b0645cefe9c644c2481d5c42ba870411a7a889465c2299fa2",
+      "hw/soc/pnr/runs/logicrom-startup-clear-grt-20260920/33-openroad-repairdesignpostgrt/soc_top.nl.v": "6c4753989afee3f7b041e3c060e87c2432083102cf4c840f6607e1b112312534",
+      "hw/soc/pnr/runs/logicrom-startup-clear-grt-20260920/35-openroad-repairantennas/1-openroad-diodeinsertion/soc_top.odb": "a2c8e662bfd622a7aee995319a0ccf8b0fb8960b39dc8a5eaf27ee46d78e358e",
+      "hw/soc/pnr/runs/logicrom-startup-clear-grt-20260920/35-openroad-repairantennas/1-openroad-diodeinsertion/soc_top.def": "971ce7bdd590ebe8a6ef4776e99193d240385fd72d92d230af548005502940a1",
+      "hw/soc/pnr/runs/logicrom-startup-clear-grt-20260920/33-openroad-repairdesignpostgrt/soc_top.sdc": "4ad61c17e1ef9a5fb25335eeebd9f0c007d5b6c2758e8e5a3ef60209235ffdd8",
+      "hw/soc/pnr/runs/logicrom-startup-clear-grt-20260920/33-openroad-repairdesignpostgrt/soc_top.pnl.v": "2a075ec7cc8d42b1d0f6ac604c94e8c5519bb3632bb08f66c92399b1cfea60d3"
+    },
+    "status": "COMPLETED",
+    "minimum_free_bytes": 1828106240,
+    "disk_stop_threshold_bytes": 805306368,
+    "pid": 12277,
+    "returncode": 0,
+    "elapsed_s": 6465.657913588,
+    "inputs_unchanged": true
+  },
+  "corner_reports": {
+    "scope": "Report one fixed global route in independent single-corner OpenROAD processes.\n\nConsumes a LibreLane step environment, a matching placed ODB and an exported\nwrite_global_route_segments file. Does not place, route, repair or export a\nmodified design. Estimated RC is not detailed-route extraction or signoff.\n",
+    "inputs": {
+      "hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-analysis/environment.tcl": "d737d074d2d4544b6060a55bb4d6c8ac1945bf3b4096de12b6d3a642e5ea4dd6",
+      "hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-single-step/soc_top.odb": "a2455c662d4e844608d095d851bf54253d83774a70b733319618452eec05972c",
+      "hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-analysis/route-estimate/routes.segments": "e86d8a105a8dac3ab6d618560f1532dc43f8596242d529b977542dbd95509e83",
+      "hw/soc/flow/report_route_corners.py": "64936f9001f537a5bf857770e405513b574687a8d1488914114ac197c688d09b",
+      "hw/soc/flow/check_timing_derate.tcl": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f",
+      "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/io.tcl": "ebf23a2a079f6527933897215d70fa91fe43e4ec38099987fbc52aaf8759a233",
+      "/home/hasanmelih/Documents/caravel-lif-crossbar/.venv-flow/lib/python3.12/site-packages/librelane/scripts/openroad/common/set_rc.tcl": "4d338cf468b644652380158db86b35c1966a0797ed891fb24e4bfc3f9384fece"
+    },
+    "results": {
+      "nom_fast_1p32V_m40C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-analysis/single-corner-reports-v2/nom_fast_1p32V_m40C/report.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_s": 21.917619845000445,
+        "setup_ns": 3.1530556835704417,
+        "hold_ns": -0.08904055522699121,
+        "electrical": {
+          "slew": 54,
+          "capacitance": 7,
+          "fanout": 703
+        },
+        "estimated_checks_pass": false
+      },
+      "nom_typ_1p20V_25C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-analysis/single-corner-reports-v2/nom_typ_1p20V_25C/report.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_s": 20.514633836999565,
+        "setup_ns": 2.0602355959938268,
+        "hold_ns": 0.0821949198635447,
+        "electrical": {
+          "slew": 31,
+          "capacitance": 7,
+          "fanout": 703
+        },
+        "estimated_checks_pass": false
+      },
+      "nom_slow_1p08V_125C": {
+        "command": [
+          "/home/hasanmelih/.local/opt/llbin/openroad",
+          "-exit",
+          "-no_splash",
+          "hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-analysis/single-corner-reports-v2/nom_slow_1p08V_125C/report.tcl"
+        ],
+        "returncode": 0,
+        "elapsed_s": 19.46045552599935,
+        "setup_ns": -2.866963636531179,
+        "hold_ns": 0.10221468405438805,
+        "electrical": {
+          "slew": 46,
+          "capacitance": 7,
+          "fanout": 703
+        },
+        "estimated_checks_pass": false
+      }
+    },
+    "source_unchanged": true,
+    "all_estimated_checks_pass": false
+  },
+  "parser_regression": {
+    "tests": 36,
+    "passed": 36,
+    "log": "hw/soc/out/external-review-20260919/corner-parser-regression.log"
+  },
+  "earlier_attempt": {
+    "path": "hw/soc/out/external-review-20260919/startup-clear-nativeenv-restart1-analysis/single-corner-reports",
+    "result": "Reporting failed on a fanout row without slack; not accepted as a completed corner report",
+    "log_sha256": "1c008f959d537d57380decf42c65b567af14fa2e180cb30ab588df00d5f4f770"
+  },
+  "limits": [
+    "Global-route RC estimates, not detailed-route extraction",
+    "Negative setup and hold slack plus electrical violations remain failures",
+    "Same unchanged native environment preserves TIME_DERATING_CONSTRAINT=5.0",
+    "This is separate from the older halo DRC candidate"
+  ]
+}
