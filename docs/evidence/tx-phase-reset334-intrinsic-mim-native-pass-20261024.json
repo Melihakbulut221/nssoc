@@ -1,0 +1,860 @@
+{
+  "schema": 1,
+  "status": "PASS_BOTH_NATIVE334_INTRINSICS_EIGHT_MIM695_PLANES_11_MODEL_6_GEOMETRY_FAULTS_REQUIRES_TWO_ORDER_RC",
+  "run": 40122940443,
+  "source": "15f733863e43fb0ed3660829ffd24c2a1205139b",
+  "workflow": ".github/workflows/tx-phase-reset334-intrinsic-mim-cloud.yml",
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40122940443",
+  "jobs": [
+    {
+      "id": 120958226859,
+      "name": "controls",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T18:55:42Z",
+      "completed_at": "2026-10-24T18:56:19Z",
+      "log_bytes": 51321,
+      "log_sha256": "6179f813898b7f23f6c4ab640562ebab7ca756f19136501eee1327e9ef9a8569"
+    },
+    {
+      "id": 120958376344,
+      "name": "fresh-two-polarity334-intrinsic-mim",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T18:56:22Z",
+      "completed_at": "2026-10-24T18:57:54Z",
+      "log_bytes": 173163,
+      "log_sha256": "36cbc1d151c2b4b44a4b8a64a756064cce4db7460ef2aeba026fa7f6b53ab57e"
+    }
+  ],
+  "release": {
+    "id": 422921286,
+    "tag": "cloud-results-40122940443-1-tx-phase-reset334-intrinsic-mim",
+    "target": "15f733863e43fb0ed3660829ffd24c2a1205139b",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-results-40122940443-1-tx-phase-reset334-intrinsic-mim"
+  },
+  "assets": [
+    {
+      "id": 673049316,
+      "name": "tx-phase-reset334-intrinsic-mim-40122940443-1.parts.json",
+      "size": 877,
+      "digest": "sha256:48f2d5352d98b27fbba2da42bfb670fb3cf2870dceb0ab53097f3fb9b6219373"
+    },
+    {
+      "id": 673049249,
+      "name": "tx-phase-reset334-intrinsic-mim-40122940443-1.summary.json",
+      "size": 98173,
+      "digest": "sha256:02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+    },
+    {
+      "id": 673049374,
+      "name": "tx-phase-reset334-intrinsic-mim-40122940443-1.tar.gz.part0000",
+      "size": 4278175,
+      "digest": "sha256:d980f07d5e55b505847d03d127cd9572644cf2b078f0ce49708be37a1b9a11b2"
+    }
+  ],
+  "parts": {
+    "format": "ordered-tar-gzip-parts-v1",
+    "stem": "tx-phase-reset334-intrinsic-mim-40122940443-1",
+    "source_directory": "cloud-tx-phase-reset334-intrinsic-mim",
+    "bytes": 4278175,
+    "sha256": "d980f07d5e55b505847d03d127cd9572644cf2b078f0ce49708be37a1b9a11b2",
+    "parts": [
+      {
+        "index": 0,
+        "name": "tx-phase-reset334-intrinsic-mim-40122940443-1.tar.gz.part0000",
+        "bytes": 4278175,
+        "sha256": "d980f07d5e55b505847d03d127cd9572644cf2b078f0ce49708be37a1b9a11b2"
+      }
+    ],
+    "part_limit_bytes": 1073741824,
+    "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+    "verification": {
+      "parts": 1,
+      "bytes": 4278175,
+      "sha256": "d980f07d5e55b505847d03d127cd9572644cf2b078f0ce49708be37a1b9a11b2",
+      "all_parts_and_combined_bytes_verified": true
+    }
+  },
+  "full_result": {
+    "path": "docs/evidence/tx-phase-reset334-intrinsic-mim-full-result-20261024.json",
+    "bytes": 98173,
+    "sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+  },
+  "variants": {
+    "p": {
+      "status": "PASS_NATIVE334_INTRINSIC_AND_EIGHT_MIM695_PLANES_REQUIRES_TWO_ORDER_RC",
+      "physical_GDS_sha256": "601e5611ae555d4a39891a095bce443851665853439d379377d9a1f6cb60c834",
+      "intrinsic": {
+        "devices": 334,
+        "hbt": 106,
+        "resistors": 130,
+        "mim": 8,
+        "finite_contacts": 90,
+        "ports": [
+          "CLKP",
+          "CLKN",
+          "MP",
+          "MN",
+          "QP",
+          "QN",
+          "ARM_P",
+          "ARM_N",
+          "DIV_AVDD",
+          "AVSS",
+          "SUB"
+        ]
+      },
+      "intrinsic_controls": [
+        {
+          "fault": "missing_HBT",
+          "rejected": true,
+          "reason": "Divider device missing or duplicated"
+        },
+        {
+          "fault": "wrong_Nx",
+          "rejected": true,
+          "reason": "HBT Nx changed"
+        },
+        {
+          "fault": "swap_B_E",
+          "rejected": true,
+          "reason": "Named native divider terminal changed"
+        },
+        {
+          "fault": "body_short",
+          "rejected": true,
+          "reason": "Named native divider terminal changed"
+        },
+        {
+          "fault": "missing_contact",
+          "rejected": true,
+          "reason": "Divider device missing or duplicated"
+        },
+        {
+          "fault": "wrong_contact_R",
+          "rejected": true,
+          "reason": "Finite body contact conductance changed"
+        },
+        {
+          "fault": "wrong_resistor_L",
+          "rejected": true,
+          "reason": "Resistor native geometry changed"
+        },
+        {
+          "fault": "missing_resistor_ps",
+          "rejected": true,
+          "reason": "Resistor parameter census changed"
+        },
+        {
+          "fault": "missing_MIM",
+          "rejected": true,
+          "reason": "Divider device missing or duplicated"
+        },
+        {
+          "fault": "wrong_MIM_width",
+          "rejected": true,
+          "reason": "MIM physical geometry changed"
+        },
+        {
+          "fault": "swap_MIM_planes",
+          "rejected": true,
+          "reason": "Named native divider terminal changed"
+        }
+      ],
+      "mim_geometry": {
+        "status": "PASS_ACTUAL_EIGHT_MIM_DRAWINGS_AND_ALL695_NATIVE_PLANES_WITH_SIX_FAULTS_REQUIRES_RC",
+        "qualified_pex": false,
+        "electrical_accepted": false,
+        "deterministic_startup_verified": false,
+        "full_phy_accepted": false,
+        "actual_mim_devices": 8,
+        "physical_points": 695,
+        "wire_components": 119,
+        "all_metal_via_drawings_unchanged": true,
+        "intrinsic_mask_union_exact": true,
+        "all_original_native_terminal_identities_unchanged": true,
+        "all695_native_and_physical_owners_verified": true,
+        "bottom_access_changes": [
+          {
+            "native_id": 237,
+            "reference_label": "A0579",
+            "old_point_dbu": [
+              692000,
+              43430
+            ],
+            "new_point_dbu": [
+              692000,
+              31130
+            ],
+            "native_cluster": 15,
+            "wire_component": 10,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_p_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 680000,31430",
+            "actual_mask_bbox_dbu": "(680000,31430;704000,55430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 238,
+            "reference_label": "A0581",
+            "old_point_dbu": [
+              692000,
+              199430
+            ],
+            "new_point_dbu": [
+              692000,
+              187130
+            ],
+            "native_cluster": 31,
+            "wire_component": 22,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_p_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 680000,187430",
+            "actual_mask_bbox_dbu": "(680000,187430;704000,211430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 239,
+            "reference_label": "A0583",
+            "old_point_dbu": [
+              728000,
+              199430
+            ],
+            "new_point_dbu": [
+              728000,
+              187130
+            ],
+            "native_cluster": 32,
+            "wire_component": 23,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_p_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 716000,187430",
+            "actual_mask_bbox_dbu": "(716000,187430;740000,211430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 240,
+            "reference_label": "A0585",
+            "old_point_dbu": [
+              692000,
+              1323430
+            ],
+            "new_point_dbu": [
+              692000,
+              1311130
+            ],
+            "native_cluster": 137,
+            "wire_component": 75,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_p_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 680000,1311430",
+            "actual_mask_bbox_dbu": "(680000,1311430;704000,1335430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 241,
+            "reference_label": "A0587",
+            "old_point_dbu": [
+              728000,
+              1323430
+            ],
+            "new_point_dbu": [
+              728000,
+              1311130
+            ],
+            "native_cluster": 138,
+            "wire_component": 76,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_p_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 716000,1311430",
+            "actual_mask_bbox_dbu": "(716000,1311430;740000,1335430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 242,
+            "reference_label": "A0589",
+            "old_point_dbu": [
+              728000,
+              43430
+            ],
+            "new_point_dbu": [
+              728000,
+              31130
+            ],
+            "native_cluster": 16,
+            "wire_component": 11,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_p_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 716000,31430",
+            "actual_mask_bbox_dbu": "(716000,31430;740000,55430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 243,
+            "reference_label": "A0591",
+            "old_point_dbu": [
+              873100,
+              1334430
+            ],
+            "new_point_dbu": [
+              873100,
+              1333130
+            ],
+            "native_cluster": 17,
+            "wire_component": 13,
+            "native_parameters": {
+              "w": 2.2,
+              "l": 2.0,
+              "A": 4.4,
+              "P": 8.4,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim$1",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_p_v1",
+              "cmim$1"
+            ],
+            "actual_leaf_transform": "r0 *1 872000,1333430",
+            "actual_mask_bbox_dbu": "(872000,1333430;874200,1335430)",
+            "actual_mask_area_dbu2": 4400000,
+            "actual_via_area_dbu2": 176400
+          },
+          {
+            "native_id": 244,
+            "reference_label": "A0593",
+            "old_point_dbu": [
+              897000,
+              1334430
+            ],
+            "new_point_dbu": [
+              897000,
+              1333130
+            ],
+            "native_cluster": 17,
+            "wire_component": 13,
+            "native_parameters": {
+              "w": 2.0,
+              "l": 2.0,
+              "A": 4.0,
+              "P": 8.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim$2",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_p_v1",
+              "cmim$2"
+            ],
+            "actual_leaf_transform": "r0 *1 896000,1333430",
+            "actual_mask_bbox_dbu": "(896000,1333430;898000,1335430)",
+            "actual_mask_area_dbu2": 4000000,
+            "actual_via_area_dbu2": 176400
+          }
+        ],
+        "controls": [
+          {
+            "name": "missing_mim_mask",
+            "rejected": true,
+            "reason": "Actual placed intrinsic drawing changed"
+          },
+          {
+            "name": "shifted_mim_mask",
+            "rejected": true,
+            "reason": "Actual placed intrinsic drawing changed"
+          },
+          {
+            "name": "missing_mim_via",
+            "rejected": true,
+            "reason": "Actual placed intrinsic drawing changed"
+          },
+          {
+            "name": "bottom_reference_on_intrinsic_mask",
+            "rejected": true,
+            "reason": "Bottom reference lies on intrinsic MIM mask"
+          },
+          {
+            "name": "bottom_reference_on_foreign_conductor",
+            "rejected": true,
+            "reason": "Native point ownership changed"
+          },
+          {
+            "name": "swapped_mim_plane_ownership",
+            "rejected": true,
+            "reason": "Native point ownership changed"
+          }
+        ],
+        "outputs": {
+          "wires.gds": "8cedc425b9a554b5693ee8674c569f1f32d195354fbf18230b17fc6538e2cd73",
+          "anchors.json": "e0bca1364d0c167555e55386f2ee911bd268a4638228c0ca7c6325451491a5a0"
+        }
+      },
+      "native_sha256": "9588b3bc3d63d24c545284d2c99a9685e5e4881cd4c38d19bb50ac05fec7508c",
+      "intrinsic_sha256": "01aa098dbdfc841d0b4cc71d4da1749846da73b6273e2c49ab46c5c44f09dcff",
+      "binding_sha256": "e460a73bd6165320f040958c46063316e883f9c031e54a0e20d9e2fb30c3ea69"
+    },
+    "n": {
+      "status": "PASS_NATIVE334_INTRINSIC_AND_EIGHT_MIM695_PLANES_REQUIRES_TWO_ORDER_RC",
+      "physical_GDS_sha256": "c30c73110c4e8f0507b2a10058a2dbfe9a7e2abb22dcb1af7cad1213e4df167b",
+      "intrinsic": {
+        "devices": 334,
+        "hbt": 106,
+        "resistors": 130,
+        "mim": 8,
+        "finite_contacts": 90,
+        "ports": [
+          "CLKP",
+          "CLKN",
+          "MP",
+          "MN",
+          "QP",
+          "QN",
+          "ARM_P",
+          "ARM_N",
+          "DIV_AVDD",
+          "AVSS",
+          "SUB"
+        ]
+      },
+      "intrinsic_controls": [
+        {
+          "fault": "missing_HBT",
+          "rejected": true,
+          "reason": "Divider device missing or duplicated"
+        },
+        {
+          "fault": "wrong_Nx",
+          "rejected": true,
+          "reason": "HBT Nx changed"
+        },
+        {
+          "fault": "swap_B_E",
+          "rejected": true,
+          "reason": "Named native divider terminal changed"
+        },
+        {
+          "fault": "body_short",
+          "rejected": true,
+          "reason": "Named native divider terminal changed"
+        },
+        {
+          "fault": "missing_contact",
+          "rejected": true,
+          "reason": "Divider device missing or duplicated"
+        },
+        {
+          "fault": "wrong_contact_R",
+          "rejected": true,
+          "reason": "Finite body contact conductance changed"
+        },
+        {
+          "fault": "wrong_resistor_L",
+          "rejected": true,
+          "reason": "Resistor native geometry changed"
+        },
+        {
+          "fault": "missing_resistor_ps",
+          "rejected": true,
+          "reason": "Resistor parameter census changed"
+        },
+        {
+          "fault": "missing_MIM",
+          "rejected": true,
+          "reason": "Divider device missing or duplicated"
+        },
+        {
+          "fault": "wrong_MIM_width",
+          "rejected": true,
+          "reason": "MIM physical geometry changed"
+        },
+        {
+          "fault": "swap_MIM_planes",
+          "rejected": true,
+          "reason": "Named native divider terminal changed"
+        }
+      ],
+      "mim_geometry": {
+        "status": "PASS_ACTUAL_EIGHT_MIM_DRAWINGS_AND_ALL695_NATIVE_PLANES_WITH_SIX_FAULTS_REQUIRES_RC",
+        "qualified_pex": false,
+        "electrical_accepted": false,
+        "deterministic_startup_verified": false,
+        "full_phy_accepted": false,
+        "actual_mim_devices": 8,
+        "physical_points": 695,
+        "wire_components": 119,
+        "all_metal_via_drawings_unchanged": true,
+        "intrinsic_mask_union_exact": true,
+        "all_original_native_terminal_identities_unchanged": true,
+        "all695_native_and_physical_owners_verified": true,
+        "bottom_access_changes": [
+          {
+            "native_id": 237,
+            "reference_label": "A0579",
+            "old_point_dbu": [
+              692000,
+              43430
+            ],
+            "new_point_dbu": [
+              692000,
+              31130
+            ],
+            "native_cluster": 15,
+            "wire_component": 10,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_n_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 680000,31430",
+            "actual_mask_bbox_dbu": "(680000,31430;704000,55430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 238,
+            "reference_label": "A0581",
+            "old_point_dbu": [
+              692000,
+              199430
+            ],
+            "new_point_dbu": [
+              692000,
+              187130
+            ],
+            "native_cluster": 31,
+            "wire_component": 22,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_n_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 680000,187430",
+            "actual_mask_bbox_dbu": "(680000,187430;704000,211430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 239,
+            "reference_label": "A0583",
+            "old_point_dbu": [
+              728000,
+              199430
+            ],
+            "new_point_dbu": [
+              728000,
+              187130
+            ],
+            "native_cluster": 32,
+            "wire_component": 23,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_n_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 716000,187430",
+            "actual_mask_bbox_dbu": "(716000,187430;740000,211430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 240,
+            "reference_label": "A0585",
+            "old_point_dbu": [
+              692000,
+              1323430
+            ],
+            "new_point_dbu": [
+              692000,
+              1311130
+            ],
+            "native_cluster": 137,
+            "wire_component": 75,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_n_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 680000,1311430",
+            "actual_mask_bbox_dbu": "(680000,1311430;704000,1335430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 241,
+            "reference_label": "A0587",
+            "old_point_dbu": [
+              728000,
+              1323430
+            ],
+            "new_point_dbu": [
+              728000,
+              1311130
+            ],
+            "native_cluster": 138,
+            "wire_component": 76,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_n_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 716000,1311430",
+            "actual_mask_bbox_dbu": "(716000,1311430;740000,1335430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 242,
+            "reference_label": "A0589",
+            "old_point_dbu": [
+              728000,
+              43430
+            ],
+            "new_point_dbu": [
+              728000,
+              31130
+            ],
+            "native_cluster": 16,
+            "wire_component": 11,
+            "native_parameters": {
+              "w": 24.0,
+              "l": 24.0,
+              "A": 576.0,
+              "P": 96.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_n_v1",
+              "cmim"
+            ],
+            "actual_leaf_transform": "r0 *1 716000,31430",
+            "actual_mask_bbox_dbu": "(716000,31430;740000,55430)",
+            "actual_mask_area_dbu2": 576000000,
+            "actual_via_area_dbu2": 63680400
+          },
+          {
+            "native_id": 243,
+            "reference_label": "A0591",
+            "old_point_dbu": [
+              873100,
+              1334430
+            ],
+            "new_point_dbu": [
+              873100,
+              1333130
+            ],
+            "native_cluster": 17,
+            "wire_component": 13,
+            "native_parameters": {
+              "w": 2.2,
+              "l": 2.0,
+              "A": 4.4,
+              "P": 8.4,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim$1",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_n_v1",
+              "cmim$1"
+            ],
+            "actual_leaf_transform": "r0 *1 872000,1333430",
+            "actual_mask_bbox_dbu": "(872000,1333430;874200,1335430)",
+            "actual_mask_area_dbu2": 4400000,
+            "actual_via_area_dbu2": 176400
+          },
+          {
+            "native_id": 244,
+            "reference_label": "A0593",
+            "old_point_dbu": [
+              897000,
+              1334430
+            ],
+            "new_point_dbu": [
+              897000,
+              1333130
+            ],
+            "native_cluster": 17,
+            "wire_component": 13,
+            "native_parameters": {
+              "w": 2.0,
+              "l": 2.0,
+              "A": 4.0,
+              "P": 8.0,
+              "m": 1.0
+            },
+            "actual_leaf_cell": "cmim$2",
+            "actual_leaf_path": [
+              "nssoc_tx_phase_reset244_n_v1",
+              "cmim$2"
+            ],
+            "actual_leaf_transform": "r0 *1 896000,1333430",
+            "actual_mask_bbox_dbu": "(896000,1333430;898000,1335430)",
+            "actual_mask_area_dbu2": 4000000,
+            "actual_via_area_dbu2": 176400
+          }
+        ],
+        "controls": [
+          {
+            "name": "missing_mim_mask",
+            "rejected": true,
+            "reason": "Actual placed intrinsic drawing changed"
+          },
+          {
+            "name": "shifted_mim_mask",
+            "rejected": true,
+            "reason": "Actual placed intrinsic drawing changed"
+          },
+          {
+            "name": "missing_mim_via",
+            "rejected": true,
+            "reason": "Actual placed intrinsic drawing changed"
+          },
+          {
+            "name": "bottom_reference_on_intrinsic_mask",
+            "rejected": true,
+            "reason": "Bottom reference lies on intrinsic MIM mask"
+          },
+          {
+            "name": "bottom_reference_on_foreign_conductor",
+            "rejected": true,
+            "reason": "Native point ownership changed"
+          },
+          {
+            "name": "swapped_mim_plane_ownership",
+            "rejected": true,
+            "reason": "Native point ownership changed"
+          }
+        ],
+        "outputs": {
+          "wires.gds": "f8cf9d9fc44fc4fdf8e2e21c5df0c52b2204873a94af9d40008c462b2c4b8ee8",
+          "anchors.json": "5c519053afcd14ac5f8043767d046ad7e2b6f0148bdbf595859a75cc2861b9d5"
+        }
+      },
+      "native_sha256": "4c08f2d93d51994014ddc989492aff272153c6863a2bb172ffb39c46c386d9f1",
+      "intrinsic_sha256": "c4125e38e6658e77d25a1d1e136110477c62973423b99b318b29e4b2cb258baa",
+      "binding_sha256": "3344239822fc914631bf8d536e435ab5b6f8c296492b62a67806048428816937"
+    }
+  },
+  "models": {
+    "commit": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+    "hashes": {
+      "libs.tech/ngspice/models/resistors_mod.lib": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51",
+      "libs.tech/ngspice/models/sg13g2_hbt_mod.lib": "ae9288f885dd30fab24b07ed1e7e02e69eac9154022a0a6da576985183b0bd79",
+      "libs.tech/ngspice/models/capacitors_mod.lib": "94b569e695fd8a223a5a49a5b5a6b0d8a62408820bf0c2ed9dbcb0a8ab7d957e",
+      "libs.tech/klayout/python/sg13g2_pycell_lib/ihp/utility_functions.py": "131cad3e7c52a5427cbe74a19934b58ed008ab02bc2b3b20bbe060f0c563802e",
+      "libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json": "dce023dcf8dca1a7d875b6f71b5ce651b42f2dc3e9a21abb6de3997262273142"
+    }
+  },
+  "all250_output_hashes_in_full_result": true,
+  "sources_unchanged": true,
+  "generated_sources_unchanged": true,
+  "locally_downloaded_native_archive": false,
+  "wire_RC_extracted": false,
+  "qualified_pex": false,
+  "electrical_accepted": false,
+  "physical_reset_qualified": false,
+  "all31_clock_tree_accepted": false,
+  "PLL_connected": false,
+  "full_phy_accepted": false,
+  "next": "Fresh actual two-order MIM-aware RC for both variants, exact compact/wire composition and unchanged loaded reset/phase/device-safety proof."
+}
