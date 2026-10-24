@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   controls:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -51,7 +51,7 @@ jobs:
   readback:
     needs: controls
     if: github.event_name == 'workflow_dispatch' && inputs.readback
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
