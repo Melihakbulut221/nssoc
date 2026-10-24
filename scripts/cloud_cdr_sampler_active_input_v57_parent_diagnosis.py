@@ -36,7 +36,7 @@ def native():
    if m!=metal:continue
    cut=r&clip
    if not cut.is_empty():contributors.append(dict(owner=key,area_dbu2=cut.area(),shapes=[str(x)for x in cut.each()]))
-  markers.append(dict(category=category,values=values,bbox_um=str(box.to_dtype(L.dbu)),contributors=contributors))
+  markers.append(dict(category=category,cell=item.findtext('cell'),values=values,bbox_um=str(box.to_dtype(L.dbu)),contributors=contributors))
  r=dict(status='PASS_ACTUAL54_MARKER_AND_GEOMETRY_READBACK',categories=categories,markers=markers,
         direct_parent_shapes={str(m):[str(x)for x in regions[(m,'parent_direct')].each()]for m in (8,67)},
         input_sha256={str(p):sha(p)for p in source.rglob('*')if p.is_file()},geometry_edited=False,physical_pass=False)
