@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: Apache-2.0
+# Install this workflow on main to activate schedule; the script reads the
+# small run inventory from codex/complete-open-work at an exact immutable commit.
+# Observation only: no native dispatch, cancellation or arbitrary CAD repair.
+name: cloud-progress-monitor
+on:
+  schedule:
+    - cron: '17 */8 * * *'
+  workflow_dispatch:
+  push:
+    branches: [codex/cloud-progress-monitor]
+    paths:
+      - .github/workflows/cloud-progress-monitor.yml
+      - .github/cloud-progress-monitor.json
+      - scripts/cloud_progress_monitor.py
+      - scripts/check_cloud_progress_monitor.py
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: nssoc-cloud-progress-monitor
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Mock API controls including duplicates, active work, failures and source corruption
+        run: python3 scripts/check_cloud_progress_monitor.py
+  observe:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Observe authoritative cloud work without native dispatch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_progress_monitor.py
+      - name: Require the live working-branch inventory on main
+        if: always() && github.ref_name == 'main'
+        run: |
+          python3 - <<'PYCODE'
+          import json
+          r=json.load(open('cloud-progress-monitor/result.json'))
+          p=r['configuration_source']
+          assert p['bootstrap'] is False and p['branch']=='codex/complete-open-work'
+          assert p['head_sha']==r['target_head']
+          print(json.dumps(dict(inventory_source=p,monitor_status=r['status'],problem_runs=r['problem_runs'],automatic_native_dispatch=False)))
+          PYCODE
+      - name: Persist the bounded cloud snapshot
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cloud-progress-snapshot
+          path: cloud-progress-monitor/result.json
+          if-no-files-found: error
+          retention-days: 90
