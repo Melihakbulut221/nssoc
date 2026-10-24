@@ -33,6 +33,10 @@ def pins():
     return m
 def api(path):
     return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path]))
+def json_proof(value):
+    # Frozen receipts are JSON: preserve every value and field while converting
+    # source-only tuple containers to their exact JSON list representation.
+    return json.loads(json.dumps(value,allow_nan=False))
 def validate(prior):
     assert prior['source_head']==SOURCE['head']and prior['sources_unchanged']and prior['generated_sources_unchanged']and prior['validation_errors']==[]
     assert prior['status']=='PASS_BOTH_NATIVE334_INTRINSICS_EIGHT_MIM695_PLANES_11_MODEL_6_GEOMETRY_FAULTS_REQUIRES_TWO_ORDER_RC'
@@ -47,7 +51,7 @@ def validate(prior):
         assert len(g['controls'])==6 and all(x['rejected']for x in g['controls'])
         assert sorted(tuple(sorted((x['native_parameters']['w'],x['native_parameters']['l'])))for x in g['bottom_access_changes'])==[(2.,2.),(2.,2.2)]+[(24.,24.)]*6
         for kind,proof in v['derivations'].items():
-            text,expected=intrinsic_source.sources(kind,pol);assert proof==expected
+            text,expected=intrinsic_source.sources(kind,pol);assert proof==json_proof(expected)
     assert all(prior[k]is False for k in ('wire_rc_extracted','qualified_pex','electrical_accepted','physical_reset_qualified','all31_clock_tree_accepted','PLL_connected','full_phy_accepted'))
 def prerequisite():
     r=api('actions/runs/'+str(SOURCE['run']));j=api('actions/jobs/120958376344')
@@ -61,7 +65,15 @@ def prerequisite():
     prior=json.loads(data);validate(prior)
     return prior
 def source_controls():
-    host();pins();prior=prerequisite();proofs=[]
+    host();pins();prior=prerequisite();proofs=[];roundtrips=[]
+    for pol in ('p','n'):
+        for kind in intrinsic_source.ORIGINAL:
+            _,expected=intrinsic_source.sources(kind,pol)
+            assert isinstance(expected['reversible_edits'][0],tuple)
+            saved=prior['variants'][pol]['derivations'][kind]
+            assert isinstance(saved['reversible_edits'][0],list)and saved==json_proof(expected)
+            roundtrips.append(pol+'-'+kind)
+    assert len(roundtrips)==6
     for label,fn in [('mim',methods.mim_source),('audit',methods.audit_source),('mutations',methods.mutations_source)]:
         text,proof=fn();proofs.append(dict(label=label,**proof))
     for order in (False,True):
@@ -89,7 +101,11 @@ def source_controls():
       ('model-fault',lambda d:d['variants']['p']['intrinsic_controls'][0].update(rejected=False)),
       ('geometry-fault',lambda d:d['variants']['n']['mim_geometry']['controls'][0].update(rejected=False)),
       ('anchor-count',lambda d:d['variants']['p']['mim_geometry'].update(physical_points=694)),
-      ('native-owner',lambda d:d['variants']['n']['mim_geometry'].update(all695_native_and_physical_owners_verified=False))]:
+      ('native-owner',lambda d:d['variants']['n']['mim_geometry'].update(all695_native_and_physical_owners_verified=False)),
+      ('proof-generated-hash',lambda d:d['variants']['p']['derivations']['native'].update(generated_sha256='0'*64)),
+      ('proof-original-hash',lambda d:d['variants']['n']['derivations']['intrinsic'].update(original_sha256='0'*64)),
+      ('proof-edit-count',lambda d:d['variants']['p']['derivations']['mim']['reversible_edits'][0].__setitem__(2,2)),
+      ('proof-edit-text',lambda d:d['variants']['n']['derivations']['native']['reversible_edits'][0].__setitem__(1,'PORTS=[]'))]:
         d=copy.deepcopy(prior);mutate(d)
         try:validate(d)
         except (AssertionError,KeyError):faults.append(name)
@@ -98,10 +114,10 @@ def source_controls():
         try:methods.derive(text,[(changes,'x=1'if name=='identity-edit'else'y=2')])
         except AssertionError:faults.append(name)
         else:raise AssertionError('Accepted derivation fault '+name)
-    assert len(faults)==15 and len(proofs)==13
+    assert len(faults)==19 and len(proofs)==13
     cap=cap_order.controls();assert len(cap)==4;pub=publication.controls();assert len(pub['rejected'])==17;pins()
-    return dict(status='PASS_RESET334_RC13_DERIVATIONS15_FAULTS_AND_ORIGINAL_CAP_ORDER_CONTROLS_NO_NATIVE',
-      source_derivations=proofs,rejected=faults,cap_order_controls=cap,publication_controls=pub,native_executed=False,
+    return dict(status='PASS_RESET334_RC13_DERIVATIONS19_FAULTS_AND_ORIGINAL_CAP_ORDER_CONTROLS_NO_NATIVE',
+      source_derivations=proofs,JSON_tuple_list_roundtrips=roundtrips,rejected=faults,cap_order_controls=cap,publication_controls=pub,native_executed=False,
       electrical_accepted=False,full_phy_accepted=False)
 def copy_checked(src,dest):
     shutil.copytree(src,dest)
@@ -195,7 +211,7 @@ def main():
                 for kind in intrinsic_source.ORIGINAL:
                     name='tx_phase_reset334_'+pol+'_'+kind+'_generated.py';path=ROOT/'scripts'/name;assert not path.exists()
                     data=(source/name).read_text();expected,derivation=intrinsic_source.sources(kind,pol)
-                    assert data==expected and derivation==prior['variants'][pol]['derivations'][kind]
+                    assert data==expected and json_proof(derivation)==prior['variants'][pol]['derivations'][kind]
                     path.write_text(data);generated[path]=sha(path)
                 anchor=json.loads((source/'mim/anchors.json').read_text());assert len(anchor['anchors'])==695 and len(anchor['rows'])==1010
                 original_prefix='/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-phase-reset334-intrinsic-mim/'

@@ -38,8 +38,9 @@ jobs:
           python3 - <<'PY'
           import json
           x=json.load(open("source-controls.json"))
-          assert x["status"]=="PASS_RESET334_RC13_DERIVATIONS15_FAULTS_AND_ORIGINAL_CAP_ORDER_CONTROLS_NO_NATIVE"
-          assert len(x["source_derivations"])==13 and len(x["rejected"])==15
+          assert x["status"]=="PASS_RESET334_RC13_DERIVATIONS19_FAULTS_AND_ORIGINAL_CAP_ORDER_CONTROLS_NO_NATIVE"
+          assert len(x["source_derivations"])==13 and len(x["rejected"])==19
+          assert len(x["JSON_tuple_list_roundtrips"])==6
           assert len(x["cap_order_controls"])==4 and len(x["publication_controls"]["rejected"])==17
           assert x["native_executed"] is x["electrical_accepted"] is x["full_phy_accepted"] is False
           PY
