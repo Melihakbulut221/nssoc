@@ -7794,3 +7794,32 @@ the obsolete weekly nssoc-a-k-i-leri-tamamla record and recreated the single
 nssoc-bulut-takibi heartbeat. Persisted ACTIVE state and480minute interval were
 verified, with cloud-only prompt and this same target thread. No duplicate
 heartbeat remains. The monitor runs every8hours.
+
+
+## 2026-10-24 cloud-only continuation: full TX capture and actual500 supply short
+
+Local project directory remains empty; native work and source/output persistence
+stay on GitHub. The 8-hour thread monitor was recreated and its saved
+FREQ=MINUTELY;INTERVAL=480 verified; id nssoc-bulut-takibi. Already running
+Actions computations continue independently of this local session.
+
+Actual500 parent40063829456 passed all560 full DRC categories, but native LVS
+rejected the circuit. Readback40064453561 identified AVSS/SUB as the only
+shorted public logical group, no logical opens, and the expected500-device
+census. This is not LVS acceptance. The next short-review job compares original
+parent and new leaf independently LVS-passed native metal nets to locate
+physical overlaps without editing sources or treating labels as connectivity.
+
+TX40060991148 and fault40060992700 both completed full34ns with native exit0,
+zero diagnostics, all14182 columns, original bit/phase limits and unchanged
+sources. Do NOT resume their obsolete checkpoints. Normal electrical gates
+rejected:14 wrong-sign /32 below100mV samples among768;84 native HBT devices
+failed operating limits; MOS failures0. Fault case detected its injected
+swap_leaf_select. CMOS/final/level4/level8 interfaces also fail original gates.
+No serial-PHY acceptance. Exact release hashes and compact full-gate receipts
+are checked in; all ordinary raw captures stay in GitHub Releases. Investigate
+saved-wave/native paths before changing actual circuit/layout; do not fit
+latency, loosen device limits, discard rows or repeat already completed capture.
+
+Mainchip40056071182 and PLL40041871167 were still in progress at this update;
+do not launch duplicates. Resume/stream only after terminal exact-hash review.
