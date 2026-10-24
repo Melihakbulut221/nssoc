@@ -221,6 +221,11 @@ class Controls(unittest.TestCase):
                 r = m.collect(Mock(run("completed", conclusion)), config(), NOW)
                 self.assertEqual(r["runs"][0]["classification"], "FAILED")
 
+    def test_overall_success_does_not_hide_failed_job(self):
+        r = m.collect(Mock(run("completed", "success"), [job("completed", conclusion="failure")]), config(), NOW)
+        self.assertEqual(r["runs"][0]["classification"], "FAILED_JOB")
+        self.assertEqual(r["status"], "ATTENTION_REQUIRED")
+
     def test_terminal_native_failure(self):
         api = Mock(run("completed", "success"), summary=dict(status="FAIL_OR_ERROR", source_head=HEAD))
         r = m.collect(api, config(), NOW)

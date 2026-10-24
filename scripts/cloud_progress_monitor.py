@@ -137,6 +137,9 @@ def classify(run, jobs, now, stall_seconds):
         if conclusion in TERMINAL_BAD:
             return "FAILED", "Actions conclusion: " + str(conclusion)
         if conclusion == "success":
+            bad = [j for j in jobs if j.get("conclusion") in TERMINAL_BAD]
+            if bad:
+                return "FAILED_JOB", "A failed job remains despite overall success: " + ", ".join(j["name"] for j in bad)
             return "COMPLETED_ACTIONS", "Actions succeeded; native evidence and product gates remain separate"
         return "NOT_EXECUTED", "Terminal Actions conclusion: " + str(conclusion)
     bad = [j for j in jobs if j.get("conclusion") in TERMINAL_BAD]
