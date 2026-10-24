@@ -1,0 +1,82 @@
+# Source preparation only; after independent review one activation first qualifies preparation then all original ten loaded cases.
+# SPDX-License-Identifier: Apache-2.0
+name: cdr500-v58-loaded-cloud
+on:
+  push:
+    branches: [codex/cdr500-floating-wire-diagnosis]
+    paths: [.github/workflows/cdr500-v58-loaded-cloud.yml, scripts/cloud_cdr500_v58_loaded.py, scripts/cloud_cdr500_v58_loaded_stage.py, scripts/cdr500-v58-loaded-methods.json]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr500-v58-loaded-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  prepare:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify sources and native simulator dependencies
+        run: |
+          python3 -m py_compile scripts/cloud_cdr500_v58_loaded.py scripts/cloud_cdr500_v58_loaded_stage.py
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+          PYTHONPATH=scripts python3 -c 'from cloud_cdr500_v58_loaded_stage import check; check()'
+      - name: Qualify fresh native binding, complete vectors and unchanged full stimulus
+        id: native
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr500_v58_loaded_stage.py --case nominal_early --prepare-only
+      - name: Retain preparation evidence after failure
+        if: always() && steps.native.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr500-v58-loaded-preparation-${{ github.run_id }}
+          path: cloud-cdr500-v58-loaded-nominal_early/
+          retention-days: 30
+  loaded:
+    needs: prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        case: [nominal_early, nominal_late, hot_early, hot_late, cold_early, cold_late, constant_zero, constant_one, clock_stopped, vi_bias_off]
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify sources and native simulator dependencies
+        run: |
+          python3 -m py_compile scripts/cloud_cdr500_v58_loaded.py scripts/cloud_cdr500_v58_loaded_stage.py
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+          PYTHONPATH=scripts python3 -c 'from cloud_cdr500_v58_loaded_stage import check; check()'
+      - name: Full fresh PD500 loaded waveform with original electrical gates
+        id: native
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr500_v58_loaded_stage.py --case ${{ matrix.case }}
+      - name: Retain waveform evidence after failure
+        if: always() && steps.native.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr500-v58-loaded-${{ matrix.case }}-${{ github.run_id }}
+          path: cloud-cdr500-v58-loaded-${{ matrix.case }}/
+          retention-days: 30
