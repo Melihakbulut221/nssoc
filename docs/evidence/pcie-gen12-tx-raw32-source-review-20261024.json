@@ -1,0 +1,72 @@
+{
+  "schema": "pcie-gen12-tx-raw32-source-review-v1",
+  "branch": "codex/pcie-gen12-tx-transport",
+  "reviewed_source": "fb79b9957354285b423c557181db7fc400669652",
+  "final_source": "674f8ff1c6ac16cff3223c6ed6acd584fce08baf",
+  "reviewer": "independent tx_diagnosis agent",
+  "status": "SOURCE_REVIEW_PASSED_NATIVE_TRANSPORT_UNQUALIFIED",
+  "protected_source_entries_verified": 20,
+  "findings": {
+    "concrete_RTL_or_oracle_blockers": [],
+    "followup": "The16 additional positive forced-RD requests now hold one payload until actual acceptance, within two output-ready cycles; the earlier9-cycle stall and8192-word continuous producer already held requests.",
+    "followup_peer_verified": true
+  },
+  "preserved_contract": {
+    "encoders": 4,
+    "max_symbols_per_batch": 4,
+    "fifo_bits": 72,
+    "wire_word_bits": 32,
+    "earliest_slot": 0,
+    "earliest_bit": 0,
+    "invalid_batch_no_append_or_RD_change": true,
+    "independent_output_retirement_on_rejection": true,
+    "force_negative_only_on_accepted_valid_batch": true,
+    "unused_stored_and_output_bits_zero": true,
+    "no_fabricated_valid_words": true,
+    "truthful_active_ready_underflow": true,
+    "reset_disable_flush_discard": true
+  },
+  "proposed_not_executed_native_controls": {
+    "published_symbol_RD_pairs": 536,
+    "invalid_K_RD_pairs": 488,
+    "reachable_even_occupancies": 37,
+    "flush_controls": [
+      "reset",
+      "disable",
+      "flush"
+    ],
+    "continuous_output_words": 8192,
+    "random_held_request_cycles": 12000,
+    "compiling_behavioral_mutants": 18,
+    "tools": [
+      "Icarus",
+      "Verilator",
+      "Yosys nonempty synthesis"
+    ]
+  },
+  "codec_prerequisite": {
+    "state": "UNBOUND",
+    "original_rejected_run": 40099402878,
+    "original_RTL_source": "86dbe41b5383c29238b6a61f87783f3409e6cf3b",
+    "corrected_proof_owned_by_tx_diagnosis": 40102483214,
+    "corrected_source": "aa8afbb7ec2cc78dc533271d530a6abbb1eb20a3",
+    "corrected_proof_not_claimed_passed_here": true
+  },
+  "source_hashes": {
+    "hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v": "483685e8574baecc8e754678ca7cd90aae93be2a0313d8669935546758ebc31d",
+    "scripts/check_pcie_gen12_tx_raw32.py": "b19d118fc2d2b71a8f74361a5ca315c9b137cdb1916decd9aec0d189d084a577",
+    "scripts/pcie-gen12-tx-raw32-methods.json": "3cf456bb62b7bb32d9529732ec89886489cbfe1b51832b4da41b994dabd3d68e"
+  },
+  "resume": [
+    "Do not run the TX checker while its codec prerequisite is UNBOUND.",
+    "Await the exact corrected codec native proof and separately hash-verified complete artifact readback; preserve the original40099402878 reset-stimulus rejection.",
+    "Bind exact successful run/head/attempt/job/readback receipt and reused encoder/vendor/table hashes into the protected prerequisite; no new acceptance scope.",
+    "Only after source review of that binding, register the branch-local workflow without accidentally launching native work, then dispatch one full TX proof with unchanged oracle,18 mutants and synthesis gates.",
+    "Actual serializer, low-rate analog and training/compliance owner remain separate open interfaces."
+  ],
+  "native_TX_run_dispatched": false,
+  "native_TX_accepted": false,
+  "full_PHY_accepted": false,
+  "local_files_created": false,
+  "local_native_execution": false
+}
