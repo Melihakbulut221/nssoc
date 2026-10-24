@@ -81,7 +81,7 @@ class Controls(unittest.TestCase):
     def test_remote_config_is_commit_and_blob_bound(self):
         api = Mock(); raw = json.dumps(config()).encode()
         api.remote_config = dict(encoding="base64", size=len(raw), content=base64.b64encode(raw).decode(),
-                                 sha=hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest())
+                                 sha=hashlib.sha1(b"blob " + str(len(raw)).encode() + bytes([0]) + raw).hexdigest())
         actual, proof = m.load_config(api, config())
         self.assertEqual(actual, config()); self.assertFalse(proof["bootstrap"])
         self.assertEqual(proof["head_sha"], HEAD)

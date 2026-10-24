@@ -124,7 +124,7 @@ def load_config(api, bootstrap):
     assert data["encoding"] == "base64" and data["size"] <= 65536
     raw = base64.b64decode(data["content"], validate=False)
     assert len(raw) == data["size"] <= 65536
-    assert hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\\0" + raw).hexdigest() == data["sha"]
+    assert hashlib.sha1(b"blob " + str(len(raw)).encode() + bytes([0]) + raw).hexdigest() == data["sha"]
     config = json.loads(raw)
     check_config(config)
     return config, dict(branch=branch, head_sha=head, blob_sha=data["sha"],
