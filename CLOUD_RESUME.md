@@ -7231,3 +7231,16 @@ introduce real R loops; use all-branch nodal equivalent resistance with unit-cur
 KCL and power checks, tested series/parallel/triangle/open/negative/zero fixtures,
 not an arbitrary DFS path or deleted physical branches. All waveform samples retained.
 PLL40041871167, mainchip40031170989, TX40039365864/40039368788 remain existing handles.
+
+
+## 2026-10-24 v52 drive and common-mode candidate
+v51 full-wave diagnosis40042791373 passed all-branch resistance/KCL checks.
+Hot intrinsic collectors83.127mV/42.344ps already miss100mV/37.5ps before output
+routing; public output59.855mV/50.781ps. Nominal output collectors16.17/16.31ohm;
+supply resistor paths10.756/10.798ohm with57mV drops. Real via arrays must be
+improved alongside circuit drive; route-only change cannot establish hot closure.
+v52 candidate changes XREF width8->5.4um (external500uA remains), pullup length
+2.8->1.8um, shunts9.6->8.0um. Goal is lower output impedance/increased current
+and restored common-mode headroom; this is unproven until actual full results.
+All five original cases and exact full gates unchanged. Need new physical
+geometry/DRC/LVS/RC and loaded wave even if schematic screen passes.
