@@ -1,0 +1,1234 @@
+{
+  "candidate_observables": {
+    "all_original_saved_vectors_retained": true,
+    "charge_units": "C after real native metadata/semantics validation",
+    "current_units": "A after real native metadata/semantics validation",
+    "existing_external_aggregate_currents_not_substitutes": [
+      {
+        "raw_column": 3903,
+        "scope": "External voltage-source branch current for combined divider supply/body network; never a per-HBT current",
+        "unit": "current",
+        "vector": "i(vdivwref)"
+      },
+      {
+        "raw_column": 3904,
+        "scope": "External voltage-source branch current for combined divider supply/body network; never a per-HBT current",
+        "unit": "current",
+        "vector": "i(vdivbody)"
+      },
+      {
+        "raw_column": 3911,
+        "scope": "External voltage-source branch current for combined divider supply/body network; never a per-HBT current",
+        "unit": "current",
+        "vector": "i(vddiv)"
+      }
+    ],
+    "leaf_path_pattern_UNQUALIFIED": "q.xloop.xdNNNN.qnpn13g2",
+    "must_resolve_from_exact_native_flattening_not_pattern": true,
+    "nominal_new_vector_count_if_all_valid": 42,
+    "per_selected_device": [
+      "ic",
+      "ib",
+      "ie",
+      "is",
+      "qbe",
+      "qbc"
+    ]
+  },
+  "circuit_parameter_changes": {},
+  "executable_controller_added": false,
+  "frozen_original": {
+    "C": 5105,
+    "MIM": 26,
+    "R": 3381,
+    "auxiliary_contacts": 4,
+    "candidate_circuit_sha256": "690d1e9cf8ab1c7fcf1e0d6a5450df1c04dbb0eeef1f6b38018845cffd7671c6",
+    "composition_contract_sha256": "2e365bed864f6762e46ebe96b64b888b49b25558cec106a5eebde110fcca81fa",
+    "engine_sha256": "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509",
+    "existing_off_targets": 102,
+    "model_hbt_sha256": "ae9288f885dd30fab24b07ed1e7e02e69eac9154022a0a6da576985183b0bd79",
+    "native_devices": 845,
+    "native_terminal_probes": 2737,
+    "num_threads": 1,
+    "old_full_raw_columns": 5106,
+    "parts_sha256": "92a85edae348ad4e3ebfb62b372f627dde16ef9aadb4fcb55cedc1422a9d4657",
+    "preparation_run": 39920519407,
+    "preparation_source": "efe9885e87bce9eb82a1c6decc4ed85ab2d65160",
+    "preparation_summary_asset": 668391906,
+    "preserve_all_OFF_flags": true,
+    "preserve_original_runtime_startup_and_options": true,
+    "preserve_original_zero_source_OP": true,
+    "required_terminal_voltage_vectors": 1694,
+    "summary_sha256": "63c6b8d34ecf277dce223427c72bdb943ed0dc010c80f496d8feb33f268f94dd",
+    "terminal_instrumentation_sha256": "b32760aed32f138f438976024769d89d249523dc1c6a071d53ec2d46bbd61941",
+    "total_instances": 849
+  },
+  "native_dispatch_authorized": false,
+  "native_execution_contract_if_later_authorized": {
+    "all_new_values": "Finite original full columns plus every validated new accessor; exact names, dimensions and declared units. Preserve actual raw data and diagnostics on any failure.",
+    "allowed_control_deltas": [
+      "additional validated save observables only",
+      "declared TSTOP1us to130ns diagnostic endpoint; TSTEP/TMAX unchanged"
+    ],
+    "forbidden_deltas": [
+      "DUT connectivity/device parameters",
+      "stimuli or loads",
+      "startup OFF/OP/uic/nodeset changes",
+      "solver tolerances/method/thread count",
+      "artificial current sources or ideal shunts",
+      "device safety thresholds"
+    ],
+    "new_engineering_acceptance": false,
+    "new_process_from_time0": true,
+    "prefix_comparison": "Authenticate exact existing131-column selected cache and original acquisition rejection first. Compare all common native times and these original131 values bit-for-bit from time0 through every old row strictly before130ns; exclude only the new endpoint row. Reject divergence; no interpolation, retiming, alignment fit or loosened tolerance. This proves only those131 columns, not all5106 old values.",
+    "resource_scope": "Cloud only. Retaining5106 original columns for about416000rows is roughly17GB before archive; bounded resource/phase telemetry and immutable artifact transport required. No local capture or archive.",
+    "reuse_existing_process_capsule": false,
+    "unchanged_original_safety_gates": "Evaluate existing all-device safety observations over this diagnostic duration without relabelling original1us acquisition/device rejection as pass."
+  },
+  "native_query_semantics": {
+    "actual_companion_vbicload_sha256": "aafdf5b06a6965c995a70321dc6edaab34ad1f0698dd42e8e15adca22088cb25",
+    "cannot_assert_KCL_or_reconstruct_full_port_current_before_proof": true,
+    "only_companion_source_patch": "cbcx = model->VBICtype * (*(ckt->CKTstate0 + here->VBICcqbcx) - gbcx * Vbcx);",
+    "registration": "vbic.c lines41-44 and60-61 exposes four query currents and two stored charges.",
+    "source_sha256": {
+      "src/spicelib/devices/vbic/vbic.c": "e6dd50fd8f07c2c41cc7d7de86895014b175f75d97768357cde651b5ed47e903",
+      "src/spicelib/devices/vbic/vbicask.c": "92a12d2cc99505427945fec0e984e3f56b9ebd0b2b61d811af3b4405170f2b51",
+      "src/spicelib/devices/vbic/vbicdefs.h": "0185f8162e02de0cf9c332bbc827d6e43af9a1c494e8e86642b2d7d8ec57ef9b",
+      "src/spicelib/devices/vbic/vbicload.c": "ae2fca22ca7178bce26f31b4e433307945cafa9d8661d55007eed8fc096ff866"
+    },
+    "upstream_commit": "a80f6e3e95d51534905b1f23410a951802666656",
+    "upstream_repo": "ngspice/ngspice",
+    "warning": "These queries must not be called conduction-only: vbicload.c869-897 adds cqbe/cqbex/cqbc/cqbep/cqbcp into several states before987-1017 stores them. Nor are they yet qualified complete outer macro-terminal currents: qbcx is handled separately and outer qbeo/qbco are integrated at959-968; actual frozen subcircuit may contain other branches."
+  },
+  "proof_sources": {
+    "crossing_observation_sha256": "11471694ce3f9867ea4bae94c81fe70524284f4fd7e0df6707fd5b6ca395c597",
+    "crossing_result_sha256": "c778222aa5af86ad227edf5a0787e8705d1f9ef42f6a2a0ef7a3367d37916c33",
+    "crossing_run": 40120469625,
+    "crossing_source": "35c92ae7aacf1e7d2701d842cb91d8d44bea2bf1",
+    "docs/evidence/pll-first-divider15-terminal-column-map-20261024.json": "d405e7125ae9b838dc258d65ccfc91c03d0f3e9e03ccaed59a741dfb75058df5",
+    "docs/evidence/pll-first-latch-crossing-order-native-pass-20261024.json": "2b1d0cebbae7c95e621aa67f222d69ef082be9cdb4b8f4ab2513b05fa96cfe44"
+  },
+  "purpose": "Test sample/hold current sharing at original first-latch anomalies. Voltage ordering alone did not distinguish faulty intervals; no resistor or bias change is justified yet.",
+  "required_preflight_before_any_transient": [
+    "Cloud restore exact frozen preparation/runtime/model members with original full part/archive/member hashes. No substitution by current upstream PDK: its HBT file hash108ae66b59fc44213c080e11b1d3593a6cc44fed118a664005a268d09c5f2232 differs from frozen ae9288.",
+    "Read exact frozen HBT subcircuit, model selector and all included paths; resolve each selected actual XD instance, child Q hierarchy, C/B/E/S mapping, Nx/area/m, dimensions and original OFF target.",
+    "Use the exact engine to query native device identity and accessor existence/type. Verify actual model branch topology and each current/charge query formula against the loaded implementation before deciding whether it measures complete terminal current or a narrower native quantity. No guessed accessor or zero fallback.",
+    "If the query omits branches needed to test isolation, stop source preparation and design a separately reviewed measurement method. Do not insert ideal shunts or alter source values merely to produce a current trace.",
+    "Actual controls must reject wrong leaf/parent, wrong Nx/parameter, missing accessor, voltage-as-current, missing capture vector, old circuit/model/runtime hash, changed solver/startup/OFF, altered original vector, shortened/full-acceptance mislabel, and failed shared-prefix comparison."
+  ],
+  "schema": "pll-first-latch-current-diagnostic-source-proposal-v1",
+  "scope": {
+    "acquisition_accepted": false,
+    "complete_terminal_currents_qualified": false,
+    "full_PHY_accepted": false,
+    "full_device_safety_accepted": false,
+    "mechanism_proved": false,
+    "new_transient_run": false,
+    "source_accessor_preflight_run": false
+  },
+  "selected_actual_native_devices": [
+    {
+      "instance": "XD0391",
+      "model": "npn13G2",
+      "native_id": 391,
+      "parameters": {
+        "le": "0.900u",
+        "nx": "4",
+        "we": "0.070u"
+      },
+      "role": "master_tail",
+      "terminals": [
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 65,
+          "native_net": "$213",
+          "node": "w_T391_C",
+          "raw_column": 979,
+          "raw_wire_node": "T391_C",
+          "reference_anchor": "T391_C",
+          "required_by_original_preparation": true,
+          "terminal": "C",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t391_c)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 47,
+          "native_net": "$167",
+          "node": "w_T391_B",
+          "raw_column": 980,
+          "raw_wire_node": "T391_B",
+          "reference_anchor": "T391_B",
+          "required_by_original_preparation": true,
+          "terminal": "B",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t391_b)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 78,
+          "native_net": "avss",
+          "node": "w_T391_E",
+          "raw_column": 981,
+          "raw_wire_node": "T391_E",
+          "reference_anchor": "T391_E",
+          "required_by_original_preparation": true,
+          "terminal": "E",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t391_e)"
+        },
+        {
+          "disposition": "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING",
+          "native_cluster": 78,
+          "native_net": "avss",
+          "node": "body_78",
+          "raw_column": 23,
+          "required_by_original_preparation": true,
+          "terminal": "S",
+          "unit": "voltage",
+          "vector": "v(xloop.body_78)"
+        }
+      ]
+    },
+    {
+      "instance": "XD0392",
+      "model": "npn13G2",
+      "native_id": 392,
+      "parameters": {
+        "le": "0.900u",
+        "nx": "4",
+        "we": "0.070u"
+      },
+      "role": "master_hold_clock",
+      "terminals": [
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 53,
+          "native_net": "$173",
+          "node": "w_T392_C",
+          "raw_column": 984,
+          "raw_wire_node": "T392_C",
+          "reference_anchor": "T392_C",
+          "required_by_original_preparation": true,
+          "terminal": "C",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t392_c)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 50,
+          "native_net": "$170",
+          "node": "w_T392_B",
+          "raw_column": 985,
+          "raw_wire_node": "T392_B",
+          "reference_anchor": "T392_B",
+          "required_by_original_preparation": true,
+          "terminal": "B",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t392_b)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 65,
+          "native_net": "$213",
+          "node": "w_T392_E",
+          "raw_column": 986,
+          "raw_wire_node": "T392_E",
+          "reference_anchor": "T392_E",
+          "required_by_original_preparation": true,
+          "terminal": "E",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t392_e)"
+        },
+        {
+          "disposition": "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING",
+          "native_cluster": 78,
+          "native_net": "avss",
+          "node": "body_78",
+          "raw_column": 23,
+          "required_by_original_preparation": true,
+          "terminal": "S",
+          "unit": "voltage",
+          "vector": "v(xloop.body_78)"
+        }
+      ]
+    },
+    {
+      "instance": "XD0393",
+      "model": "npn13G2",
+      "native_id": 393,
+      "parameters": {
+        "le": "0.900u",
+        "nx": "4",
+        "we": "0.070u"
+      },
+      "role": "master_sample_clock",
+      "terminals": [
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 54,
+          "native_net": "$174",
+          "node": "w_T393_C",
+          "raw_column": 989,
+          "raw_wire_node": "T393_C",
+          "reference_anchor": "T393_C",
+          "required_by_original_preparation": true,
+          "terminal": "C",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t393_c)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 49,
+          "native_net": "$169",
+          "node": "w_T393_B",
+          "raw_column": 990,
+          "raw_wire_node": "T393_B",
+          "reference_anchor": "T393_B",
+          "required_by_original_preparation": true,
+          "terminal": "B",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t393_b)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 65,
+          "native_net": "$213",
+          "node": "w_T393_E",
+          "raw_column": 991,
+          "raw_wire_node": "T393_E",
+          "reference_anchor": "T393_E",
+          "required_by_original_preparation": true,
+          "terminal": "E",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t393_e)"
+        },
+        {
+          "disposition": "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING",
+          "native_cluster": 78,
+          "native_net": "avss",
+          "node": "body_78",
+          "raw_column": 23,
+          "required_by_original_preparation": true,
+          "terminal": "S",
+          "unit": "voltage",
+          "vector": "v(xloop.body_78)"
+        }
+      ]
+    },
+    {
+      "instance": "XD0394",
+      "model": "npn13G2",
+      "native_id": 394,
+      "parameters": {
+        "le": "0.900u",
+        "nx": "2",
+        "we": "0.070u"
+      },
+      "role": "master_hold_MP_branch",
+      "terminals": [
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 55,
+          "native_net": "$202",
+          "node": "w_T394_C",
+          "raw_column": 994,
+          "raw_wire_node": "T394_C",
+          "reference_anchor": "T394_C",
+          "required_by_original_preparation": true,
+          "terminal": "C",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t394_c)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 52,
+          "native_net": "$172",
+          "node": "w_T394_B",
+          "raw_column": 995,
+          "raw_wire_node": "T394_B",
+          "reference_anchor": "T394_B",
+          "required_by_original_preparation": true,
+          "terminal": "B",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t394_b)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 53,
+          "native_net": "$173",
+          "node": "w_T394_E",
+          "raw_column": 996,
+          "raw_wire_node": "T394_E",
+          "reference_anchor": "T394_E",
+          "required_by_original_preparation": true,
+          "terminal": "E",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t394_e)"
+        },
+        {
+          "disposition": "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING",
+          "native_cluster": 78,
+          "native_net": "avss",
+          "node": "body_78",
+          "raw_column": 23,
+          "required_by_original_preparation": true,
+          "terminal": "S",
+          "unit": "voltage",
+          "vector": "v(xloop.body_78)"
+        }
+      ]
+    },
+    {
+      "instance": "XD0395",
+      "model": "npn13G2",
+      "native_id": 395,
+      "parameters": {
+        "le": "0.900u",
+        "nx": "2",
+        "we": "0.070u"
+      },
+      "role": "master_data_MP_branch",
+      "terminals": [
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 55,
+          "native_net": "$202",
+          "node": "w_T395_C",
+          "raw_column": 999,
+          "raw_wire_node": "T395_C",
+          "reference_anchor": "T395_C",
+          "required_by_original_preparation": true,
+          "terminal": "C",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t395_c)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 74,
+          "native_net": "$267",
+          "node": "w_T395_B",
+          "raw_column": 1000,
+          "raw_wire_node": "T395_B",
+          "reference_anchor": "T395_B",
+          "required_by_original_preparation": true,
+          "terminal": "B",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t395_b)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 54,
+          "native_net": "$174",
+          "node": "w_T395_E",
+          "raw_column": 1001,
+          "raw_wire_node": "T395_E",
+          "reference_anchor": "T395_E",
+          "required_by_original_preparation": true,
+          "terminal": "E",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t395_e)"
+        },
+        {
+          "disposition": "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING",
+          "native_cluster": 78,
+          "native_net": "avss",
+          "node": "body_78",
+          "raw_column": 23,
+          "required_by_original_preparation": true,
+          "terminal": "S",
+          "unit": "voltage",
+          "vector": "v(xloop.body_78)"
+        }
+      ]
+    },
+    {
+      "instance": "XD0396",
+      "model": "npn13G2",
+      "native_id": 396,
+      "parameters": {
+        "le": "0.900u",
+        "nx": "2",
+        "we": "0.070u"
+      },
+      "role": "master_data_MN_branch",
+      "terminals": [
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 52,
+          "native_net": "$172",
+          "node": "w_T396_C",
+          "raw_column": 1004,
+          "raw_wire_node": "T396_C",
+          "reference_anchor": "T396_C",
+          "required_by_original_preparation": true,
+          "terminal": "C",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t396_c)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 73,
+          "native_net": "$266",
+          "node": "w_T396_B",
+          "raw_column": 1005,
+          "raw_wire_node": "T396_B",
+          "reference_anchor": "T396_B",
+          "required_by_original_preparation": true,
+          "terminal": "B",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t396_b)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 54,
+          "native_net": "$174",
+          "node": "w_T396_E",
+          "raw_column": 1006,
+          "raw_wire_node": "T396_E",
+          "reference_anchor": "T396_E",
+          "required_by_original_preparation": true,
+          "terminal": "E",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t396_e)"
+        },
+        {
+          "disposition": "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING",
+          "native_cluster": 78,
+          "native_net": "avss",
+          "node": "body_78",
+          "raw_column": 23,
+          "required_by_original_preparation": true,
+          "terminal": "S",
+          "unit": "voltage",
+          "vector": "v(xloop.body_78)"
+        }
+      ]
+    },
+    {
+      "instance": "XD0400",
+      "model": "npn13G2",
+      "native_id": 400,
+      "parameters": {
+        "le": "0.900u",
+        "nx": "2",
+        "we": "0.070u"
+      },
+      "role": "master_hold_MN_branch",
+      "terminals": [
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 52,
+          "native_net": "$172",
+          "node": "w_T400_C",
+          "raw_column": 1024,
+          "raw_wire_node": "T400_C",
+          "reference_anchor": "T400_C",
+          "required_by_original_preparation": true,
+          "terminal": "C",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t400_c)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 55,
+          "native_net": "$202",
+          "node": "w_T400_B",
+          "raw_column": 1025,
+          "raw_wire_node": "T400_B",
+          "reference_anchor": "T400_B",
+          "required_by_original_preparation": true,
+          "terminal": "B",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t400_b)"
+        },
+        {
+          "disposition": "ACTUAL_TERMINAL_METAL_POINT_REFERENCE",
+          "native_cluster": 53,
+          "native_net": "$173",
+          "node": "w_T400_E",
+          "raw_column": 1026,
+          "raw_wire_node": "T400_E",
+          "reference_anchor": "T400_E",
+          "required_by_original_preparation": true,
+          "terminal": "E",
+          "unit": "voltage",
+          "vector": "v(xloop.w_t400_e)"
+        },
+        {
+          "disposition": "RETAINED_INTRINSIC_BODY_NO_SUBSTRATE_SPREADING",
+          "native_cluster": 78,
+          "native_net": "avss",
+          "node": "body_78",
+          "raw_column": 23,
+          "required_by_original_preparation": true,
+          "terminal": "S",
+          "unit": "voltage",
+          "vector": "v(xloop.body_78)"
+        }
+      ]
+    }
+  ],
+  "status": "SOURCE_ONLY_NATIVE_MODEL_HIERARCHY_AND_CURRENT_SEMANTICS_UNQUALIFIED",
+  "window": {
+    "actual_interval_count": 26,
+    "actual_original_anomalous_intervals": [
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              5983,
+              5984
+            ],
+            "kind": "falling",
+            "time_s": 1.866607410523976e-09
+          },
+          {
+            "bracketing_rows": [
+              6169,
+              6170
+            ],
+            "kind": "rising",
+            "time_s": 1.9247989751631886e-09
+          }
+        ],
+        "index": 1,
+        "interval_s": [
+          1.841949971469076e-09,
+          1.93147615521921e-09
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              243826,
+              243827
+            ],
+            "kind": "falling",
+            "time_s": 7.616035899525225e-08
+          },
+          {
+            "bracketing_rows": [
+              244009,
+              244010
+            ],
+            "kind": "rising",
+            "time_s": 7.62173467170039e-08
+          }
+        ],
+        "index": 648,
+        "interval_s": [
+          7.612144683403228e-08,
+          7.624047929389485e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              244898,
+              244899
+            ],
+            "kind": "falling",
+            "time_s": 7.649528950636969e-08
+          },
+          {
+            "bracketing_rows": [
+              245065,
+              245066
+            ],
+            "kind": "rising",
+            "time_s": 7.654761559450447e-08
+          }
+        ],
+        "index": 651,
+        "interval_s": [
+          7.647168896582803e-08,
+          7.658573732231338e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              272766,
+              272767
+            ],
+            "kind": "rising",
+            "time_s": 8.519977588303923e-08
+          },
+          {
+            "bracketing_rows": [
+              272974,
+              272975
+            ],
+            "kind": "falling",
+            "time_s": 8.52647985509255e-08
+          }
+        ],
+        "index": 725,
+        "interval_s": [
+          8.519974782756066e-08,
+          8.532264048721427e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              273277,
+              273278
+            ],
+            "kind": "rising",
+            "time_s": 8.535941259844441e-08
+          },
+          {
+            "bracketing_rows": [
+              273457,
+              273458
+            ],
+            "kind": "falling",
+            "time_s": 8.54156219066798e-08
+          }
+        ],
+        "index": 726,
+        "interval_s": [
+          8.532264048721427e-08,
+          8.544422981037862e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              273942,
+              273943
+            ],
+            "kind": "falling",
+            "time_s": 8.556713537689086e-08
+          },
+          {
+            "bracketing_rows": [
+              274128,
+              274129
+            ],
+            "kind": "rising",
+            "time_s": 8.562541954660105e-08
+          }
+        ],
+        "index": 728,
+        "interval_s": [
+          8.556258124070216e-08,
+          8.567626009224162e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              274425,
+              274426
+            ],
+            "kind": "falling",
+            "time_s": 8.571800288474853e-08
+          },
+          {
+            "bracketing_rows": [
+              274625,
+              274626
+            ],
+            "kind": "rising",
+            "time_s": 8.57805652124166e-08
+          }
+        ],
+        "index": 729,
+        "interval_s": [
+          8.567626009224162e-08,
+          8.579147920801804e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              275423,
+              275424
+            ],
+            "kind": "falling",
+            "time_s": 8.603014355795623e-08
+          },
+          {
+            "bracketing_rows": [
+              275605,
+              275606
+            ],
+            "kind": "rising",
+            "time_s": 8.60868978973072e-08
+          }
+        ],
+        "index": 732,
+        "interval_s": [
+          8.602141080857737e-08,
+          8.613612222307731e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              276267,
+              276268
+            ],
+            "kind": "rising",
+            "time_s": 8.629380803768537e-08
+          },
+          {
+            "bracketing_rows": [
+              276449,
+              276450
+            ],
+            "kind": "falling",
+            "time_s": 8.635068788117008e-08
+          }
+        ],
+        "index": 734,
+        "interval_s": [
+          8.625305333582172e-08,
+          8.637078656516651e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              277308,
+              277309
+            ],
+            "kind": "rising",
+            "time_s": 8.661895514784359e-08
+          },
+          {
+            "bracketing_rows": [
+              277496,
+              277497
+            ],
+            "kind": "falling",
+            "time_s": 8.66779481024347e-08
+          }
+        ],
+        "index": 737,
+        "interval_s": [
+          8.660958669413192e-08,
+          8.672784465531866e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              278519,
+              278520
+            ],
+            "kind": "rising",
+            "time_s": 8.699757896815419e-08
+          },
+          {
+            "bracketing_rows": [
+              278684,
+              278685
+            ],
+            "kind": "falling",
+            "time_s": 8.704910633612112e-08
+          }
+        ],
+        "index": 740,
+        "interval_s": [
+          8.69668751219401e-08,
+          8.708532169051616e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              279314,
+              279315
+            ],
+            "kind": "falling",
+            "time_s": 8.724589414102386e-08
+          },
+          {
+            "bracketing_rows": [
+              279506,
+              279507
+            ],
+            "kind": "rising",
+            "time_s": 8.730580561427251e-08
+          }
+        ],
+        "index": 742,
+        "interval_s": [
+          8.720394708836831e-08,
+          8.732179661464722e-08
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              367042,
+              367043
+            ],
+            "kind": "falling",
+            "time_s": 1.1464769232852868e-07
+          },
+          {
+            "bracketing_rows": [
+              367217,
+              367218
+            ],
+            "kind": "rising",
+            "time_s": 1.1470246337830501e-07
+          }
+        ],
+        "index": 981,
+        "interval_s": [
+          1.146133639885358e-07,
+          1.147374645956545e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              367499,
+              367500
+            ],
+            "kind": "falling",
+            "time_s": 1.1479053723161835e-07
+          },
+          {
+            "bracketing_rows": [
+              367731,
+              367732
+            ],
+            "kind": "rising",
+            "time_s": 1.1486316961499346e-07
+          }
+        ],
+        "index": 982,
+        "interval_s": [
+          1.147374645956545e-07,
+          1.1486331159811556e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              368227,
+              368228
+            ],
+            "kind": "rising",
+            "time_s": 1.1501813890563332e-07
+          },
+          {
+            "bracketing_rows": [
+              368404,
+              368405
+            ],
+            "kind": "falling",
+            "time_s": 1.1507349584094427e-07
+          }
+        ],
+        "index": 984,
+        "interval_s": [
+          1.1498697791039403e-07,
+          1.1510744901871809e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              368665,
+              368666
+            ],
+            "kind": "rising",
+            "time_s": 1.1515506439430866e-07
+          },
+          {
+            "bracketing_rows": [
+              368879,
+              368880
+            ],
+            "kind": "falling",
+            "time_s": 1.1522201527939615e-07
+          }
+        ],
+        "index": 985,
+        "interval_s": [
+          1.1510744901871809e-07,
+          1.152279098161918e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              369360,
+              369361
+            ],
+            "kind": "falling",
+            "time_s": 1.1537230660981488e-07
+          },
+          {
+            "bracketing_rows": [
+              369533,
+              369534
+            ],
+            "kind": "rising",
+            "time_s": 1.1542640447916659e-07
+          }
+        ],
+        "index": 987,
+        "interval_s": [
+          1.1534602585362631e-07,
+          1.1546301744073836e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              370043,
+              370044
+            ],
+            "kind": "rising",
+            "time_s": 1.1558562734243039e-07
+          },
+          {
+            "bracketing_rows": [
+              370237,
+              370238
+            ],
+            "kind": "falling",
+            "time_s": 1.1564626043141728e-07
+          }
+        ],
+        "index": 989,
+        "interval_s": [
+          1.1558113285559643e-07,
+          1.156960686108224e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              370541,
+              370542
+            ],
+            "kind": "rising",
+            "time_s": 1.1574140614818526e-07
+          },
+          {
+            "bracketing_rows": [
+              370753,
+              370754
+            ],
+            "kind": "falling",
+            "time_s": 1.1580763544902746e-07
+          }
+        ],
+        "index": 990,
+        "interval_s": [
+          1.156960686108224e-07,
+          1.1581299624744886e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              371275,
+              371276
+            ],
+            "kind": "falling",
+            "time_s": 1.1597076300930627e-07
+          },
+          {
+            "bracketing_rows": [
+              371470,
+              371471
+            ],
+            "kind": "rising",
+            "time_s": 1.1603162027370884e-07
+          }
+        ],
+        "index": 992,
+        "interval_s": [
+          1.1592883592487586e-07,
+          1.1604705763398334e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              372292,
+              372293
+            ],
+            "kind": "falling",
+            "time_s": 1.1628841530572635e-07
+          },
+          {
+            "bracketing_rows": [
+              372486,
+              372487
+            ],
+            "kind": "rising",
+            "time_s": 1.1634915679344116e-07
+          }
+        ],
+        "index": 995,
+        "interval_s": [
+          1.1628508649850128e-07,
+          1.16403730317994e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              372818,
+              372819
+            ],
+            "kind": "falling",
+            "time_s": 1.164527133872854e-07
+          },
+          {
+            "bracketing_rows": [
+              373046,
+              373047
+            ],
+            "kind": "rising",
+            "time_s": 1.1652395228843704e-07
+          }
+        ],
+        "index": 996,
+        "interval_s": [
+          1.16403730317994e-07,
+          1.1652423437035281e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              373856,
+              373857
+            ],
+            "kind": "falling",
+            "time_s": 1.167771430519165e-07
+          },
+          {
+            "bracketing_rows": [
+              374033,
+              374034
+            ],
+            "kind": "rising",
+            "time_s": 1.1683250382682431e-07
+          }
+        ],
+        "index": 999,
+        "interval_s": [
+          1.1676327153085945e-07,
+          1.1688143220137885e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              374628,
+              374629
+            ],
+            "kind": "rising",
+            "time_s": 1.1701846627663505e-07
+          },
+          {
+            "bracketing_rows": [
+              374804,
+              374805
+            ],
+            "kind": "falling",
+            "time_s": 1.1707329879513369e-07
+          }
+        ],
+        "index": 1001,
+        "interval_s": [
+          1.1700101705136765e-07,
+          1.1711851945620668e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              375402,
+              375403
+            ],
+            "kind": "falling",
+            "time_s": 1.172601592544354e-07
+          },
+          {
+            "bracketing_rows": [
+              375571,
+              375572
+            ],
+            "kind": "rising",
+            "time_s": 1.1731300713789765e-07
+          }
+        ],
+        "index": 1003,
+        "interval_s": [
+          1.1723722631900311e-07,
+          1.173539211645442e-07
+        ]
+      },
+      {
+        "events": [
+          {
+            "bracketing_rows": [
+              376230,
+              376231
+            ],
+            "kind": "rising",
+            "time_s": 1.1751893441678845e-07
+          },
+          {
+            "bracketing_rows": [
+              376449,
+              376450
+            ],
+            "kind": "falling",
+            "time_s": 1.1758761103617128e-07
+          }
+        ],
+        "index": 1005,
+        "interval_s": [
+          1.1747094687722253e-07,
+          1.1758762202401154e-07
+        ]
+      }
+    ],
+    "endpoint_change_is_diagnostic_only": true,
+    "full_acquisition_acceptance": false,
+    "original_TSTEP_and_TMAX_s": 3.125e-13,
+    "original_stop_s": 1e-06,
+    "proposed_stop_s": 1.3e-07,
+    "start_s": 0
+  }
+}
