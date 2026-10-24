@@ -1,0 +1,37 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase31-mapping-source-controls-cloud
+on:
+  push:
+    branches: [codex/tx-clock-phase-parent]
+    paths:
+      - scripts/tx_phase31_source_mapping.py
+      - scripts/tx-phase31-source-methods.json
+      - .github/workflows/tx-phase31-mapping-source-controls-cloud.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-phase31-mapping-source-controls-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  analytic-source-controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Prove fixed source-event ownership only
+        run: |
+          python3 -m py_compile scripts/tx_phase31_source_mapping.py
+          python3 scripts/tx_phase31_source_mapping.py | tee phase31-source-mapping.json
+      - name: Preserve analytic-only proof
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: phase31-source-mapping-${{ github.run_id }}
+          path: phase31-source-mapping.json
+          retention-days: 30
