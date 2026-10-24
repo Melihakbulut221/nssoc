@@ -8297,3 +8297,18 @@ Allsource/nativework remainsGitHub, localworkspaceempty. Existingmainmonitor sch
 AddedsoleCDRcontrols40121893201/PASS58faults at20f7949e, exact3savedcapture readback40122075973 at8cf2a01d, andinstrumentedrecorddiagnostic40122066637 at689ddede after8actualsupervisioncontrols. OriginalCDRelectricalrejections andall44recordsource/gates remain unchanged. Recordinstrumentation capturesphase/resource/fullrawoutput andrejectsescapeddescendants; itisnotablindretry. Mainchip600sec observation40120760532 andbothTXcontinuations remainsoleoriginalhandles.
 
 PLLcrossingreader40120469625 completed withoutprovingcause: samecoarsecompetitionexistsbothfaultyandcleanintervals; latencyrangesoverlap. Neededper-HBTcurrentsabsentfrom131cacheandoriginal5106columns, so nextproposal isunchanged-circuit boundedcurrentinstrumentation, sourceonly. Fresh334 intrinsic/MIM sourced54ea34b underpeerreview; nofreshRC/electricalacceptance. FullserialPHY, routedserialchip andfinaltiming remainopen.
+
+
+### 2026-10-24T19:15:59.844798+00:00 — cloud-only checkpoint v30
+
+The local workspace is empty. Sources, native processes and continuation evidence remain in GitHub. The existing eight-hour read-only monitor now tracks85 exact run/source handles.
+
+Mainchip observation40120760532 passed with40 bound process samples and a new saved process. Original no-log rejection still applies: main thread uses CPU while the other three do not, but routing progress is not proved. Diagnose the latest saved process with bounded native stack/profile observations; preserve the original clock/derate and normal acceptance gates.
+
+TX normal40109066076 saved24.62344955ns of34ns; sole next segment40123584880 at unchanged2e63863 and reserved release422925445 is active. Swapped40109221280 remains its original sole handle.
+
+Fresh334 intrinsic/MIM40122940443 passed both polarities; exact proof imported. Two-order RC9741e731 remains source-only under review. CDR saved-capture40122075973 passed diagnosis while preserving all3 electrical rejections; authenticated cloud artifact publication is next. PLL crossing result46da6a49 does not establish current causation.
+
+Record40122066637 passed both simulators, then suffered runner shutdown during synthesis with15.18GB RSS and low available RAM. This is evidence of memory pressure, not a proven kernel OOM.13 memory-sentinel controls40123115007 pass. Constant-write candidatec8fcad78 preserves all32 count-state semantics and awaits independent equivalence before full synthesis/mutation proof.
+
+Full serial PHY, routed serial main chip and final setup/hold closure remain open.
