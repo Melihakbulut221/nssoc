@@ -7539,3 +7539,15 @@ Binding must support exact new MOS widths8/53.335 and new contact geometry throu
 native PDK CbTapCalc equation from actualA/P; never silently map2x20 to2x2/81.666ohm.
 Base converter rejects non2x2; add isolated exact extension only after physical
 evidence and preserve base. All physical source/failure coordinates retained.
+
+## 2026-10-24 v56 body coverage corrected and full physical suite passed
+Physical40053436971 sourceaa97d13c passed560DRC0markers/deep-flat18LVS/ninefaults.
+Exactly2native ptaps2x20um (A40/P44),7ptaps2x2(A4/P8); nine intrinsic/tap counts
+unchanged, total18. Native PCell UI-derived R/A/Perim fields remain stale defaults
+(even2x2 saysR263/A0.6084), so NEVER use those UI fields as extracted geometry
+or model-resistance proof. Use actual native LVS extractedA/P and pinned PDK
+CbTapCalc area/perimeter equation. Baseconverter only permits2x2; new isolated
+v56converter must support MOS8/53.335um and exactptapA40/P44 in addition toA4/P8.
+Fresh wire graph launched; then new RC/model binding/14compositionfaults and
+all5originalfull loaded waves. Do not infer actual loaded pass from schematic.
+Final parent retains only existing8umreference shared by gain/latch gates.
