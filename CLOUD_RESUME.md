@@ -7297,3 +7297,14 @@ routing is not monotonic and399 is not zero or final setup/hold. Original clocks
 20/4/8/8ns+5%derate retained. Dispatch next7200s continuation from exact new
 399checkpoint after this commit; no cold restart or completed-prefix replay.
 PLL40041871167 and TX40039365864/40039368788 live, do not duplicate.
+
+
+## 2026-10-24 v53 RC passed, exact-width binding contract repaired
+RC40045229994 passed actual241R/210C and14raw faults; all real input/via loops
+retained. Binding40045229988 rejected5.4um native MOS at legacy converter width
+allowlist8/32/36/64, before any native electrical test; failure retained.
+Create isolated v53 converter differing ONLY in exact allowed widths5.4/36um.
+Parameter units, native ordering, model hashes, L=.3um/rfmode/positive-area guards
+unchanged; cloud control asserts exact source equivalence except that tuple.
+Existing converters remain immutable. Require rerun native18binding+9faults
+before composition. Mainchip continuation40045229904 now live from399checkpoint.

@@ -32,6 +32,17 @@ jobs:
         run: |
           PYTHONPATH=scripts python3 -c "from cloud_cdr_active_levelshift_v53_binding import check; check()"
           python3 -m py_compile scripts/cloud_cdr_active_levelshift_v53_binding.py
+      - name: Require unchanged model conversion apart from exact native v53 MOS width set
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          old=Path('scripts/build_cdr_parallel_v3_native_models.py').read_text()
+          new=Path('scripts/build_cdr_active_levelshift_v53_native_models.py').read_text()
+          a='(Decimal(8),Decimal(32),Decimal(36),Decimal(64))'
+          b="(Decimal('5.4'),Decimal(36))"
+          assert old.count(a)==1 and new==old.replace(a,b)
+          print('PASS_ONLY_EXACT_NATIVE_WIDTH_SET_CHANGED_ALL_PARAMETER_CONVERSION_IDENTICAL')
+          PYCODE
       - name: Restore pinned native CAD runtime
         run: |
           sudo apt-get update -qq

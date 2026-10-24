@@ -7,7 +7,7 @@ from collections import Counter
 from decimal import Decimal
 from pathlib import Path
 import compare_cloud_routed_endpoints as reports
-import build_cdr_parallel_v3_native_models as models
+import build_cdr_active_levelshift_v53_native_models as models
 from run_cloud_tx_layout_repair import fetch,sha
 ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-cdr-active-levelshift-v53-binding'
 TOP='nssoc_cdr_active_levelshift_layout_v53';MODEL='nssoc_cdr_active_levelshift_v53_compact'
