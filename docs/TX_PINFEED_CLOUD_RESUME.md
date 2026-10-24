@@ -37,3 +37,9 @@ Run40071267004 completed successfully at737bef27ae4bd8ddb0b2740f2e0562cb51f8991b
 
 Summary asset671560373 SHA256 b40767d0a3dc77124ff0ae6ebf4f11f5c79fd4241492cbabc6b52ee30ffe4f8b; parts671560437 SHA256823af2aa83ea8cc284b21f9513233cbe8ab5e792628f01af7c23eebb99aaf74f.
 Fresh intrinsic/RC40071489977 is running. Precision40072842481 at12a42514bee086c800ba8f296a09b2b78556275f waits for it; composition/rail40072977220 at380763d925826786ff567e4e9bce75f770eaedc0 waits for precision. No new loaded waveform or electrical pass is available yet.
+
+## Fresh intrinsic and RC terminal pass
+
+Run40071489977 completed successfully atb00c6f400c60190ff4ddcba200bbe0d6f92c8fe7. All8088 native devices/65 body nets and19 intrinsic corruption controls passed. Fresh RC contains141246 resistors and100546 capacitors; all13 raw corruption controls passed. Exact native source receipt: docs/evidence/tx-driver-pinfeed-fresh-intrinsic-rc-pass-20261024.json. The committed anchor receipt byteSHA2cb3982c513e7941d149c8a6daa3a2669500ebbc60c19459eb2887482a4d18eb exactly matches the receipt generated and preserved by this native run.
+
+Precision40072842481 and composition/rail40072977220 remain active. No new DC resistance result or loaded electrical acceptance yet. The future fresh native interface source and exact preparation/continuation caveats are in docs/TX_PINFEED_NATIVE_CONTINUATION.md; no interface workflow or34ns transient was started.
