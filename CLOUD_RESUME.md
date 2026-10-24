@@ -7823,3 +7823,15 @@ latency, loosen device limits, discard rows or repeat already completed capture.
 
 Mainchip40056071182 and PLL40041871167 were still in progress at this update;
 do not launch duplicates. Resume/stream only after terminal exact-hash review.
+
+
+## Mainchip checkpoint40056071182 verified and consumed for the next cloud continuation
+
+Terminal summary SHA256 3f802facd9a5895e04a229f31ae13ce5469f5c5fa7e0bade31b45d4cbce628b2, parts SHA256 43cb1d4e57eb9afe41a67c8d79d238c20f75a8eaffd92f69c24e6471f3fda413.
+Same native process saved, four controls and source-prefix verification passed.
+Completed iteration violation counts: [172654, 95333, 86913, 20662, 11905, 7787, 4917, 4328, 3605, 3007, 1713, 889, 525, 485, 396, 334, 301, 5394, 399, 265, 222, 161, 154, 154, 154, 4123, 220].
+Last partial progress: [{'percent': 20, 'violations': 220}, {'percent': 30, 'violations': 217}, {'percent': 40, 'violations': 217}]; neither partial values nor this checkpoint
+mean final DRC/timing closure. Native settings, original20/4/8/8ns clocks and
+5percent derate remain unchanged. Dispatch next same-process continuation with
+7200 native seconds from the exact descriptor recorded in
+docs/evidence/mainchip-route12-drt-40056071182-checkpoint-20261024.json.
