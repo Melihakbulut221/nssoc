@@ -7973,3 +7973,7 @@ authorized until newadapter validated; lastdurable same-process source4000162650
 
 ### Cloud-only root M4 short-path diagnosis
 Drawing-only seven-metal/six-via extraction run40069060616 proves a real AVSS/SUB path with no label union. Its11-node path bridges through root-direct Metal4 remnants in sampler D. Earlier old-net-owned overlap checks did not cover these unattributed pieces. No physical acceptance. Read all old/new native M4 attachments and original vias before editing; sources remain bound to40066771967.
+
+
+### PLL lossless full-capture handoff integrated, cloud only
+Imported exact14 added files from independently reviewed eb2d69856ee29b078af437ae785da204b83d70c5 (qualified code873935e14e679572228d6874f616e5ae4db047db). Cloud40070233821 passed56 transport and44 adapter controls; all23 protected hashes verified against current root. Original native controller/readers/analyzer/extractor unchanged. Prior40041871167 terminal cancelled6h timeout; no complete published capture. Next authorized native dispatch uses pll-rhi120-c8-delta-native-cloud.yml and only durable40001626503 descriptor. Same process, original clocks/gates, lossless prefix+tail; no t=0 restart. Completed reader only after owning native workflow terminalsuccess and exact summary/parts hash verification. Preserve immutable prefix and partial timeoutassets. No local artifacts.

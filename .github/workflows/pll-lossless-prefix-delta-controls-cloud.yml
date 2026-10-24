@@ -1,0 +1,52 @@
+name: pll-lossless-prefix-delta-controls-cloud
+on:
+  push:
+    branches: [codex/pll-lossless-prefix-publication]
+    paths:
+      - scripts/cloud_native_prefix_delta.py
+      - scripts/check_pll_lossless_prefix_delta.py
+      - scripts/pll-lossless-prefix-delta-method.json
+      - .github/workflows/pll-lossless-prefix-delta-controls-cloud.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: pll-lossless-prefix-delta-controls
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Qualify exact prefix and delta transport using actual native columns
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 -m py_compile scripts/cloud_native_prefix_delta.py scripts/check_pll_lossless_prefix_delta.py
+          python3 scripts/check_pll_lossless_prefix_delta.py
+      - name: Preserve transport proof or rejection without native acceptance
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p cloud-pll-lossless-prefix-delta-controls
+          if [ ! -f cloud-pll-lossless-prefix-delta-controls/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_TRANSPORT_CONTROLS","full_capture_accepted":false,"full_phy_accepted":false}' > cloud-pll-lossless-prefix-delta-controls/result.json
+          fi
+          stem="pll-lossless-prefix-delta-controls-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-pll-lossless-prefix-delta-controls/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory cloud-pll-lossless-prefix-delta-controls --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          s=sys.argv[1];m=json.load(open(s+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','pll-lossless-prefix-delta-controls',s+'.summary.json',s+'.parts.json',*[x['name']for x in m['parts']]],check=True)
+          PYCODE
