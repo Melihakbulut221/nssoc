@@ -7273,3 +7273,15 @@ does not fit new5.4um reference MOS pin. No physical pass/DRC/LVS inferred.
 Retain actual pin containment; choose min(3um,actual_pin_height/2-1um) with
 minimum1um separation offset. Four-row lower via array has actual DRC verification
 still required. TailMOS keeps3um offset. All native checks unchanged.
+
+
+## 2026-10-24 v53 full physical leaf passed; fresh wire graph launched
+Physical40044409423 passed560DRC0markers, deep/flat18deviceLVS and9real faults.
+Current source033e66fb includes actual reference pin-height escape fix; earlier
+generation failure40044085847 retained. New v53 wire graph must bind all50terminals,
+18devices,40anchors and8ports using exact fresh GDS, no reuse of old wire values.
+Next: fresh RC and native model binding; binder MOS census must be5.4um x1/36um x2.
+New upper via arrays can produce loops/internal nodes even on input nets. For
+fault-control stimulus choose an actual native input bridge on P_ip to T004_B
+path; retain strict native edge/value/point/conductor auditing and14faults.
+Then actual measured R/C census and native port order drive composition/full waves.
