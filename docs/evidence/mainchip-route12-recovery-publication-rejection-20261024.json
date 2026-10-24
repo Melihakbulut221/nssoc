@@ -1,0 +1,156 @@
+{
+  "schema": "mainchip-route12-recovery-publication-rejection-v1",
+  "observed_utc": "2026-10-24T17:06:38.141166+00:00",
+  "run": 40110502492,
+  "source": "ac1740af745fe3d62960b1e62297096c619f0c5d",
+  "attempt": 1,
+  "job": {
+    "id": 120925285512,
+    "name": "recovery",
+    "conclusion": "failure",
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "conclusion": "success"
+      },
+      {
+        "name": "Require precreated immutable exact-source evidence release",
+        "conclusion": "success"
+      },
+      {
+        "name": "Recover only the exact failed Actions artifact without native execution",
+        "conclusion": "success"
+      },
+      {
+        "name": "Publish verified original bytes and all small diagnostic evidence",
+        "conclusion": "failure"
+      },
+      {
+        "name": "Preserve failed recovery or publication byte for byte",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "controls_job": {
+    "id": 120921031748,
+    "conclusion": "success"
+  },
+  "readback_status": "PASS_LOSSLESS_MAINCHIP_EVIDENCE_RECOVERY_ORIGINAL_ROUTING_REMAINS_REJECTED",
+  "native_routing_status": "ORIGINAL_NO_PROGRESS_REJECTION_PRESERVED",
+  "job_log": {
+    "bytes": 99783,
+    "sha256": "1bb2093ad4a2dcbe8e2353df361a98bd1b6d600df790947ff1e469b8b9a3ab45"
+  },
+  "authenticated_small_assets": [
+    {
+      "asset": 672759822,
+      "bytes": 45327,
+      "sha256": "ef688f4fbb6b238618b7e9c46a4cd7297b1aa809db020ccaa52bffd28d2e3468",
+      "path": "docs/evidence/mainchip-route12-recovery-readback-result-20261024.json"
+    },
+    {
+      "asset": 672759529,
+      "bytes": 31348,
+      "sha256": "d5416296df6079400fa63f77aae63928c41f7e3913ab92a734ed823e867386d0",
+      "path": "docs/evidence/mainchip-route12-recovery-readback-diagnosis-20261024.json"
+    },
+    {
+      "asset": 672759634,
+      "bytes": 14944,
+      "sha256": "d0ac4a8dfebab1d8c2f9336291f5863b171ae8fa28bab70ad8fc461c27fea6d4",
+      "path": "docs/evidence/mainchip-route12-recovery-readback-inventory-20261024.json"
+    }
+  ],
+  "publication_failure": {
+    "release": 422839260,
+    "error": "HTTP 400: Bad Content-Length",
+    "failed_asset": "original-evidence-002-checkpoint-copy-proof.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "attempts": 6,
+    "partial_release_assets": 6
+  },
+  "empty_standalone_files": {
+    "small/original-evidence-036-empty-containers.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small/original-evidence-004-checkpoint-parent.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small/original-evidence-048-readable-process-images.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small/original-evidence-002-checkpoint-copy-proof.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small/original-evidence-003-checkpoint-copy.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small/original-evidence-049-remove-consumed-default-checkpoint.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small/original-evidence-050-restore-active-drt.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small/original-evidence-034-docker-restart.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "small/original-evidence-033-docker-experimental.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "original_archive": {
+    "artifact": 12564886005,
+    "bytes": 1560640815,
+    "sha256": "6231b9523ba15bcabac5e65b166648523a742c146321c7806ff97d01e6272e56",
+    "all65_members_verified_in_hosted_readback": true,
+    "empty_members_retained": true
+  },
+  "fallback": {
+    "id": 12567520376,
+    "name": "mainchip-route12-artifact-recovery-fallback",
+    "bytes": 1484547934,
+    "digest": "sha256:3d9c5f0576457f02c2a0c0783340ebc9bb71e2b6c84d55f79a1f0914e21bc4ff",
+    "expired": false,
+    "member_count_from_job_log": 40,
+    "metadata_and_job_log_verified": true,
+    "archive_bytes_not_read_locally": true
+  },
+  "proposed_repair": "Keep all bytes in original ZIP and inventories; replace zero-byte standalone uploads with an explicit empty-member inventory, and publish every nonempty file with unchanged source-bound/hash verification. No routing/simulation/restore.",
+  "native_execution": false,
+  "native_process_restored": false,
+  "saved_process_validated": false,
+  "route_complete": false,
+  "continuation_accepted": false,
+  "final_timing_complete": false,
+  "full_phy_accepted": false
+}

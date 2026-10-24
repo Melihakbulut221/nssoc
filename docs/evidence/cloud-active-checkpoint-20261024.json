@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-24T16:21:54.306502+00:00",
-  "execution_policy": "GitHub-hosted Actions/Releases only; no local checkout, CAD, simulations or native artifacts.",
-  "root_source_before_receipt": "2dec9f3165652f128c5b66bef1372d75346361e3",
+  "updated_at": "2026-10-24T17:11:13.234506+00:00",
+  "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
+  "root_source_before_receipt": "0c91aa06dc1ece1804216af44e22db8d9792cab8",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 24,
+    "inventory_version": 25,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40080701966,
@@ -16,11 +16,10 @@
     "tx_normal_same_process_native": 40109066076,
     "tx_swapped_selector_same_process_native": 40109221280,
     "cdr_v58_loaded_matrix": 40108285374,
-    "gen12_raw32_receiver": 40108338384,
-    "tx_native_role_failure_readback": 40108734425,
-    "phase244_offset_preparation": 40110198744,
-    "mainchip_saved_artifact_recovery": 40110502492,
-    "pll_saved_cache_replay": 40111010067
+    "mainchip_proc_observer_controls": 40113334727,
+    "tx_native_clock_role_parameters": 40113558341,
+    "phase244_offset_native_four_case": 40114254950,
+    "pll_saved_cache_reference_repair": 40114471619
   },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
@@ -82,25 +81,33 @@
     "mainchip_raw_cli_continuation": "41e82f0d16d658ce5ea6d4769a90933b40e5f2ae",
     "pll_raw_cli_continuation": "00c20c00c3f22b305e9a2f0e0129a020e0cf8411",
     "gen12_rx_latest_checkpoint": "b760af45bf01ae629aedb5a450248d22fbc9e9d2",
-    "pll_raw_cli_peer_review": "11c9c07346daa9aecf5c78f691c8e85557804b0f"
+    "pll_raw_cli_peer_review": "11c9c07346daa9aecf5c78f691c8e85557804b0f",
+    "gen12_rx_root_import": "0c91aa06dc1ece1804216af44e22db8d9792cab8",
+    "pll_reference_repair_reviewed": "8a73f76045d50a8c528af967b119b5da859f02f2",
+    "pll_reference_retry_checkpoint": "dcf18655a3cc54cf375e59f2e7dceb3c635b0754",
+    "phase_offset_native_dispatch": "229aa080c820ebda613838ccdf6723f99e56aea5",
+    "native_role_parameter_dispatch": "f9fba3fcb0b097e0dcf1a356b227af2b2d3cec9d",
+    "mainchip_proc_observer_dispatch": "bf2a34a800cbd24c2e13f71ea941c76ae08485f1",
+    "mainchip_lossless_recovery_publication_failure": "096c1762fb892fbcf161c3b0a09e36551d380924",
+    "cdr_v58_three_case_actual_rejection": "160e94b44eeb947e2fb271648030b38939269db6",
+    "gen12_record_transport_reviewed_source": "54ef399390bf48ecf10bf644ebc5e6bc88a6a34f"
   },
   "qualified_progress": {
     "tx": "Exact continuation capsules40098024825/40098031853 saved normal17.176968514ns and swapped15.682858938ns of34ns, not completed. Next40109066076/40109221280 were dispatched once with unchanged source/controller/runtime gates and source-bound output releases.",
-    "phase": "Exact reset readback40102964781 reproduced original3failures and measured real fan-in settling2.35-3.14ps past fixed31.25ps deadline. Independently reviewed one-resistor rppdL32toL20 source candidate has sole preparation40110198744, no transient; original oracle/vectors/safety gates unchanged. Clock-role rejection40102668052 stays open; exact reader40108734425 pending.",
-    "cdr": "Source-bound preparation/publication40108285374 passed and the ten original loaded waveform jobs now exist. All required results remain pending; no electrical acceptance.",
-    "pll": "Original acquisition and first replay rejection are preserved. Replay40108109320 failed before real cache restoration because hosted gh refused the ANSI-bearing original log. Narrow fix379bbcbd passed independent review with17 pins and14 unchanged AST functions. Sole retry40111010067 at6755118f has46 transport controls, unchanged cache/80/8 hashes, mandatory original row-zero failure reproduction and source-bound release422841066; no fresh simulation,130GB reread or acquisition acceptance.",
-    "gen12": "Exact codec, aligner, nettype guard remedy and native digital transmitter sources/proofs are imported in root. TX40108369376 passed23618cycles,536legal/488invalidK RD pairs,37occupancies/all3flushes,8192continuous words,dual simulators,1077cell synthesis and18compiling mutations. All23protected pins match imported root77d16d44. RX40108338384 remains pending. No low-rate PMA, training owner, serializer connection, layout or fullPHY acceptance.",
-    "mainchip": "Original routing40095811631 and its no-new-log rejection remain preserved. Artifact12564886005 retains65outputs; first recovery controls40107937311 failed before archive/native work. Narrow raw-byte fixd6eb121a passed independent review; sole recovery40110502492 at exactac1740af has29 source/transport faults,17 publication controls and reserved source-bound release422839260. Exact ZIP/member/native-failure gates remain; artifact recovery is not route continuation or acceptance."
+    "phase": "Actual role-reader40108734425 passed and reproduced blanketNx8 source mismatch without forgiving actualgeometry. Sole original-database role observer40113558341 queuedaftercontrolsPASS. Offset source/deck preparation40110198744 passed; reviewed one-rppdL32toL20 actual4case transient40114254950 sole sourcee2598de5/release422863338. Alloriginal34ns/31.25ps/100mV/106HBT/zeroOP gates retained.",
+    "cdr": "Three completedv58 cases nominalearly/nominallate/hotearly actually fail original sampler/XOR/safety gates despite complete113475x1152 capture, clean solver, unchangedsource. Exact3case native-role receipt identifies8HBT headroom failures; bounded same-row existingcapture readback underpreparation, no guessed circuit values or relaxed gates. Remaining originalmatrix cases continue.",
+    "pll": "Replay40111010067 restored exact3part cache and acquisition-report reproduction, then failed absent reference parent; fresh131/80/8 scan and exact analyze142 not reached. Narrow reviewed repair8a73f760 adds fresh directory and original authenticated reference preflight before large restore;46prior+3directory controls. Sole retry40114471619 exacta4bf51c1/release422865688; acquisition rejected, no simulation or130GB reread.",
+    "gen12": "Qualified RX40108338384 imported root0c91aa06 with all28protected hashes,107568cycles,2048code/RD pairs,64offsets,dual simulators/synthesis and12compiled faults. TX/codec/aligner previous proofs retained. New16-symbol record transport54ef3993 independently reviewed,24faults and640continuousword oracle source-only until actual cloud run. No LTSSM/low-rate PMA/mainchip/layout/fullPHY acceptance.",
+    "mainchip": "Recovery40110502492 actual internalPASS: exact originalZIP and all65member CRC/SHA verified. OveralljobFAIL only standalone zero-byte log publication HTTP400; exact small results/receipt preserved. Original routing still rejected; no process restored. Publication-only repair source preparation underway. Read-only process observer40113334727 self-controls pending, not integrated into router."
   },
   "next_actions": [
-    "Cloud-only policy overrides older goal wording that requested local work. Workspace empty, no local native processes or project-named temporary entries. Do not recreate local checkouts or download native archives.",
-    "Follow exact analog TX40109066076/40109221280 and all10CDR cases40108285374; never duplicate active processes or treat saved/preparation states as acceptance.",
-    "Consume exact RX40108338384. TX transport40108369376 has complete authenticated receipt and exact9paths imported77d16d44; no additional TX proof is needed unless source changes.",
-    "Consume sole mainchip recovery40110502492 after29 faults and17 publication controls; exact-source release422839260 is reserved. Authenticate all65outputs and original rejection before any saved-process diagnosis. Immutable continuation receipt41e82f0d records source/hash/tag; do not dispatch another route.",
-    "Consume sole reviewed PLL cache replay40111010067 at6755118f; release422841066 is reserved and immutable continuation00c20c00 records all source/trigger/failure pins. Require46 controls, original acquisition rejection, exact131/80/8 cache bits and the actual original line142 row-zero exception before endpoint sampling repair. No fresh simulation or duplicate replay.",
-    "Consume role failure readback40108734425 and phase source/deck preparation40110198744. A source-only offset candidate is not an electrical or layout pass.",
-    "Existing GitHub monitor on main runs every8hours, is read-only, and reads this root pinned inventory. It does not itself dispatch engineering work or certify fullPHY/timing.",
-    "Use immutable commits and exact audited cloud-results tags. Preserve all original failures, actual DUT/source licenses, independent oracle and original20/4/8/8ns plus5percent constraints."
+    "Cloud-only. Local workspace empty; no checkout/native artifacts/processes. Source/evidence viaGitHub, execution inActions, all immutable run/head receipts retained.",
+    "Consume sole PLL40114471619 after reviewed referenceparent repair; require original acquisition rejection, exact131/80/8 bits, exact original line142 failure, then endpoint diagnosis. No duplicate/newsim.",
+    "Consume native-role40113558341 and actualoffset40114254950. Preparation/sourcechecks are not electrical acceptance; propagate only proven circuit fixes into layout/RC later.",
+    "Finish publication-only recovery of mainchip40110502492 fallback without native route/restore; preserve emptyfiles in originalZIP+explicitinventory. Validate observer40113334727 before any future observed native continuation.",
+    "Consume existing TX40109066076/40109221280 and CDR40108285374. Diagnose CDR threecase actualsafety/phase failure via same-row cloudcapture observer; retain all gates.",
+    "After reviewed training-record source54ef3993 is bound to actualRX/TX proofs, run one manual cloud proof; only import after genuine pass. Fulltrainingowner/negotiation/PMA/mainchip stillrequired.",
+    "Mainbranch8hour monitor remains read-only. No repeated native dispatch or claims that saved/preparation/isolateddigital PASS is completePHY/timing."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -139,20 +146,32 @@
     "pll_cache_replay_rejected": 40108109320,
     "gen12_targeted_nettype_pass": 40108372395,
     "mainchip_artifact_recovery_controls_transport_rejected": 40107937311,
-    "gen12_raw32_tx_native_pass_authenticated": 40108369376
+    "gen12_raw32_tx_native_pass_authenticated": 40108369376,
+    "gen12_raw32_rx_pass_authenticated": 40108338384,
+    "tx_native_role_failure_readback_pass": 40108734425,
+    "phase244_offset_preparation_pass": 40110198744,
+    "mainchip_lossless_recovery_pass_publication_empty_asset_failure": 40110502492,
+    "pll_reference_parent_failure_after_cache_restore": 40111010067
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
       "run": 40109066076,
       "head_sha": "2e63863abb0309c245d89e2a3d4934fe40a2b2ed",
-      "status": "queued",
+      "branch": "codex/tx-via3-rail-diagnosis",
+      "status": "in_progress",
       "conclusion": null,
       "jobs": [
         {
           "id": 120916773350,
           "name": "controls",
-          "status": "queued",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 120924150069,
+          "name": "native",
+          "status": "in_progress",
           "conclusion": null
         }
       ]
@@ -160,40 +179,28 @@
     {
       "run": 40109221280,
       "head_sha": "2e63863abb0309c245d89e2a3d4934fe40a2b2ed",
-      "status": "queued",
+      "branch": "codex/tx-via3-rail-diagnosis",
+      "status": "in_progress",
       "conclusion": null,
       "jobs": [
         {
           "id": 120917241695,
           "name": "controls",
-          "status": "queued",
-          "conclusion": null
-        }
-      ]
-    },
-    {
-      "run": 40108109320,
-      "head_sha": "5508d3a6c1a5948f2f18536b188c04b01a846caa",
-      "status": "completed",
-      "conclusion": "failure",
-      "jobs": [
-        {
-          "id": 120913930566,
-          "name": "controls",
           "status": "completed",
           "conclusion": "success"
         },
         {
-          "id": 120915949118,
-          "name": "replay",
-          "status": "completed",
-          "conclusion": "failure"
+          "id": 120926782598,
+          "name": "native",
+          "status": "in_progress",
+          "conclusion": null
         }
       ]
     },
     {
       "run": 40108285374,
       "head_sha": "d92a3367a1013d1071125b753ec4f65ae4ec813b",
+      "branch": "codex/cdr500-floating-wire-diagnosis",
       "status": "queued",
       "conclusion": null,
       "jobs": [
@@ -206,32 +213,32 @@
         {
           "id": 120914806150,
           "name": "loaded (nominal_early)",
-          "status": "queued",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "failure"
         },
         {
           "id": 120914806160,
           "name": "loaded (hot_early)",
-          "status": "queued",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "failure"
         },
         {
           "id": 120914806163,
           "name": "loaded (hot_late)",
-          "status": "queued",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "failure"
         },
         {
           "id": 120914806167,
           "name": "loaded (cold_early)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null
         },
         {
           "id": 120914806173,
           "name": "loaded (nominal_late)",
-          "status": "queued",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "failure"
         },
         {
           "id": 120914806175,
@@ -268,70 +275,24 @@
     {
       "run": 40108338384,
       "head_sha": "493d8ab352330edf5ed01f4340f0cceff6f4ce6f",
-      "status": "queued",
-      "conclusion": null,
+      "branch": "codex/pcie-gen12-rx-integration",
+      "status": "completed",
+      "conclusion": "success",
       "jobs": [
         {
           "id": 120914614112,
           "name": "native-stream-integration",
-          "status": "queued",
-          "conclusion": null
-        }
-      ]
-    },
-    {
-      "run": 40108369376,
-      "head_sha": "99deb1b36cab641541accbaa25fb26d22ec053fd",
-      "status": "completed",
-      "conclusion": "success",
-      "jobs": [
-        {
-          "id": 120914712396,
-          "name": "transport-native-proof",
           "status": "completed",
           "conclusion": "success"
-        }
-      ]
-    },
-    {
-      "run": 40108372395,
-      "head_sha": "e80881f8c9a3cdc14d26c19f3fd6864f4452cd03",
-      "status": "completed",
-      "conclusion": "success",
-      "jobs": [
-        {
-          "id": 120914722155,
-          "name": "exact-guarded-lint",
-          "status": "completed",
-          "conclusion": "success"
-        }
-      ]
-    },
-    {
-      "run": 40107937311,
-      "head_sha": "05b0d320919b4ed17f0a0b56dcc2531f63e967d5",
-      "status": "completed",
-      "conclusion": "failure",
-      "jobs": [
-        {
-          "id": 120913412663,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "failure"
-        },
-        {
-          "id": 120917512365,
-          "name": "recovery",
-          "status": "completed",
-          "conclusion": "skipped"
         }
       ]
     },
     {
       "run": 40108734425,
       "head_sha": "c120426f5430548038847516f2a876caf24964f9",
-      "status": "queued",
-      "conclusion": null,
+      "branch": "codex/tx-clock-phase-parent",
+      "status": "completed",
+      "conclusion": "success",
       "jobs": [
         {
           "id": 120915787556,
@@ -342,34 +303,141 @@
         {
           "id": 120916487594,
           "name": "readback",
-          "status": "queued",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run": 40110198744,
+      "head_sha": "3e335947e42c562763ffd1c569e86942c047f0fa",
+      "branch": "codex/tx-clock-phase-parent",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 120920134925,
+          "name": "preparation-only",
+          "status": "completed",
+          "conclusion": "success"
         }
       ]
     },
     {
       "run": 40110502492,
       "head_sha": "ac1740af745fe3d62960b1e62297096c619f0c5d",
-      "status": "queued",
-      "conclusion": null,
+      "branch": "codex/mainchip-route12-artifact-recovery",
+      "status": "completed",
+      "conclusion": "failure",
       "jobs": [
         {
           "id": 120921031748,
           "name": "controls",
-          "status": "queued",
-          "conclusion": null
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 120925285512,
+          "name": "recovery",
+          "status": "completed",
+          "conclusion": "failure"
         }
       ]
     },
     {
       "run": 40111010067,
       "head_sha": "6755118f44284fc78f7874dabcd6fe00764f876d",
-      "status": "queued",
-      "conclusion": null,
+      "branch": "codex/pll-first-latch-cache-replay",
+      "status": "completed",
+      "conclusion": "failure",
       "jobs": [
         {
           "id": 120922548944,
           "name": "controls",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 120925280221,
+          "name": "replay",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "run": 40113334727,
+      "head_sha": "e4881834cb572ad82f1deaac96b079ca1d2aef5c",
+      "branch": "codex/mainchip-proc-observer",
+      "status": "completed",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 120929427743,
+          "name": "native-self-controls",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run": 40113558341,
+      "head_sha": "363b5a863a4db52b2f364110eef229a02f2742b1",
+      "branch": "codex/tx-clock-phase-parent",
+      "status": "completed",
+      "conclusion": "failure",
+      "jobs": [
+        {
+          "id": 120930086555,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 120932026993,
+          "name": "exact-native-role-parameters",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "run": 40114254950,
+      "head_sha": "e2598de52f2190ee0e3eddf8095c3fffe640b62f",
+      "branch": "codex/tx-clock-phase-parent",
+      "status": "in_progress",
+      "conclusion": null,
+      "jobs": [
+        {
+          "id": 120932173438,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 120933910302,
+          "name": "intrinsic-four-case-assert-offset",
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 40114471619,
+      "head_sha": "a4bf51c1219fe521f34bb477035cdfc2a5012335",
+      "branch": "codex/pll-first-latch-cache-replay",
+      "status": "queued",
+      "conclusion": null,
+      "jobs": [
+        {
+          "id": 120932806611,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 120933360673,
+          "name": "replay",
           "status": "queued",
           "conclusion": null
         }
@@ -377,12 +445,13 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-24T16:07:50.906739+00:00",
+    "observed_at": "2026-10-24T17:11:13.234506+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
     "native_processes": 0,
-    "scope": "project workspace and project-named tmp entries; unrelated user files untouched"
+    "scope": "project workspace and project-named tmp entries; unrelated user files untouched",
+    "verification": "Current root checked directory entries directly; no files were created afterward. This turn used RAM-only API/source processing."
   },
   "immutable_continuation_receipts": {
     "mainchip_recovery": {
@@ -418,6 +487,72 @@
       "release": 422841066,
       "tag": "cloud-results-40111010067-1-pll-first-latch-cache-replay",
       "exact_tag_target_verified": true
+    },
+    "pll_reference_directory_repair": {
+      "run": 40114471619,
+      "source": "a4bf51c1219fe521f34bb477035cdfc2a5012335",
+      "release": 422865688,
+      "tag": "cloud-results-40114471619-1-pll-first-latch-cache-replay",
+      "exact_tag_target_verified": true
+    },
+    "phase_offset_intrinsic": {
+      "run": 40114254950,
+      "source": "e2598de52f2190ee0e3eddf8095c3fffe640b62f",
+      "release": 422863338,
+      "tag": "cloud-results-40114254950-1-tx-phase-assert-offset-intrinsic",
+      "exact_tag_target_verified": true
     }
-  }
+  },
+  "imported_checkpoint_receipts_v25": [
+    {
+      "path": "docs/evidence/pll-cache-reference-directory-dispatch-20261024.json",
+      "source": "dcf18655a3cc54cf375e59f2e7dceb3c635b0754",
+      "sha256": "7da156bbcc04fcdc4acbfff1493fddd273205010a5ff5bda57764b75e6fec6a7"
+    },
+    {
+      "path": "docs/evidence/pll-cache-replay-reference-parent-failure-result-20261024.json",
+      "source": "8a73f76045d50a8c528af967b119b5da859f02f2",
+      "sha256": "b75cd3b6136e46eef2b45745c86e6a7ae24434ac1a6ed0da4a2c610ff34751db"
+    },
+    {
+      "path": "docs/evidence/tx-phase-assert-offset-native-dispatch-20261024.json",
+      "source": "229aa080c820ebda613838ccdf6723f99e56aea5",
+      "sha256": "4b9c17fd2ea2b30177d8c87cb9ac72aa4413c70684774f85a4974ac6ebd0969f"
+    },
+    {
+      "path": "docs/evidence/tx-native-clock-role-parameter-source-review-dispatch-20261024.json",
+      "source": "f9fba3fcb0b097e0dcf1a356b227af2b2d3cec9d",
+      "sha256": "14c7f892ddb23608aa431bb9d858466319794b3748bfe4981b35d2892192abad"
+    },
+    {
+      "path": "docs/evidence/mainchip-proc-observer-cloud-checkpoint-20261024.json",
+      "source": "bf2a34a800cbd24c2e13f71ea941c76ae08485f1",
+      "sha256": "86ed78ae916ba384a8a3e6bb15ab258def33240d61c84384c0c8aacc8fd0c6d3"
+    },
+    {
+      "path": "docs/evidence/cdr500-v58-three-case-electrical-rejection-audit-20261024.json",
+      "source": "160e94b44eeb947e2fb271648030b38939269db6",
+      "sha256": "cb1bac1e1491e35cb109f19cd86fb6520dfea1bbfb8c21eb136dde1a43c9ec4a"
+    },
+    {
+      "path": "docs/evidence/mainchip-route12-recovery-readback-result-20261024.json",
+      "source": "096c1762fb892fbcf161c3b0a09e36551d380924",
+      "sha256": "ef688f4fbb6b238618b7e9c46a4cd7297b1aa809db020ccaa52bffd28d2e3468"
+    },
+    {
+      "path": "docs/evidence/mainchip-route12-recovery-readback-diagnosis-20261024.json",
+      "source": "096c1762fb892fbcf161c3b0a09e36551d380924",
+      "sha256": "d5416296df6079400fa63f77aae63928c41f7e3913ab92a734ed823e867386d0"
+    },
+    {
+      "path": "docs/evidence/mainchip-route12-recovery-readback-inventory-20261024.json",
+      "source": "096c1762fb892fbcf161c3b0a09e36551d380924",
+      "sha256": "d0ac4a8dfebab1d8c2f9336291f5863b171ae8fa28bab70ad8fc461c27fea6d4"
+    },
+    {
+      "path": "docs/evidence/mainchip-route12-recovery-publication-rejection-20261024.json",
+      "source": "096c1762fb892fbcf161c3b0a09e36551d380924",
+      "sha256": "7f501bf8051738cdc3d2418941efcf2f2e009b8f091f744f4de57e5c2ef4ad30"
+    }
+  ]
 }

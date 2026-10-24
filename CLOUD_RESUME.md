@@ -8230,3 +8230,16 @@ Both raw-log transport repairs passed independent source review. Mainchip artifa
 PLL selected-cache replay [40111010067](https://github.com/Melihakbulut221/nssoc/actions/runs/40111010067) is the sole retry at6755118f, with46 controls before replay and reserved exact-source release422841066. Its [00c20c00 continuation](https://github.com/Melihakbulut221/nssoc/blob/00c20c00c3f22b305e9a2f0e0129a020e0cf8411/docs/evidence/pll-first-latch-raw-cli-continuation-20261024.json) preserves the first transport rejection, all original cache/acquisition gates and actual row-zero failure reproduction. No new simulator or full130GB capture read is authorized by this recovery.
 
 The RX [b760af45 checkpoint](https://github.com/Melihakbulut221/nssoc/blob/b760af45bf01ae629aedb5a450248d22fbc9e9d2/docs/evidence/pcie-gen12-rx-cloud-checkpoint-20261024.json) remains pinned. All62 prior monitor runs, analog TX/CDR/phase handles and original failures are preserved; only the new PLL retry makes63. Existing8-hour monitoring stays read-only. All operations remain cloud-only; full serial PHY, routed serial chip integration and final timing are still unaccepted.
+
+
+### 2026-10-24T17:11:13.234506+00:00 — cloud-only checkpoint v25
+
+Latest user policy: all work and evidence in GitHub; local workspace remains empty. Main monitor still reads67exact run/source entries every8hours and does not dispatch repairs.
+
+Qualified Gen1/2 RX40108338384 and exact28protected dependencies are imported at0c91aa06:107568cycles,12compiled faults,dual simulators and synthesis. The new16-symbol record transport54ef3993 passed independent source review, including demand/underflow and640continuousword coverage, but has no native result yet and remains isolated.
+
+PLL40111010067 restored the cache but failed before fresh cache scan/original analyze replay because referenceparent was missing. Reviewed fix8a73f760 preserves originalgates and places authenticated reference load before3GBrestore; sole retry40114471619/a4bf51c1/release422865688.
+
+Mainchip40110502492 recovered exactZIP/all65members; overalljobfailed only zero-byte standalone log upload. Exact proof and publicationfailure are preserved. Publication-only repair is next; originalrouting remains rejected. Read-onlyprocobserver selftest40113334727 has no routerintegration acceptance. Roleobserver40113558341 and actualone-resistor offset4case40114254950 are sole cloud runs.
+
+CDRv58 nominalearly/nominallate/hotearly genuinely fail fullwaveform electrical gates. Exact8device role/headroom evidence is retained; same-row observer preparation precedes any circuitvalue choice. TXcontinuations and remainingCDRcases continue. FullserialPHY, routedserialmainchip and finaltiming remain open.
