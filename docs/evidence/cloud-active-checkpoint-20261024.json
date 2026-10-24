@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-24T10:31:04.205728+00:00",
-  "execution_policy": "GitHub-hosted Actions/Releases only; local workspace, task temp and native processes empty.",
-  "root_source_before_receipt": "2e4e19590e1f3a43620b1f1cb0a9a78153527a63",
+  "updated_at": "2026-10-24T11:17:50.182724+00:00",
+  "execution_policy": "GitHub-hosted Actions/Releases only; no local checkout, CAD, simulations or native artifacts.",
+  "root_source_before_receipt": "47080043bb505d4eb0e1410fb6459b62b8a270e1",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 12,
+    "inventory_version": 13,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40080701966
@@ -15,23 +15,28 @@
     "mainchip_same_process_route": 40085912519,
     "pll_existing_capture_diagnosis": 40084454916,
     "cdr_full_original_loaded_matrix": 40081228425,
-    "cdr_existing_input_rc_path_diagnosis": 40085495203,
-    "tx_fresh_preparation_no34ns_yet": 40085025627,
-    "phase_divider_mim_rc": 40086006467
+    "cdr_narrowed_via_physical": 40089170867,
+    "tx_fresh_full_native_and_fault": 40088271926
   },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
-    "cdr_path_checkpoint": "91bc8290e545f3965a8ee72052d15de1e34e6ba3",
-    "tx_new_trajectory_source_only": "3b0453df22413d69e0cd38694131037bad2c32c5",
-    "phase_intrinsic_receipt": "efd9f604f3fe0f506f350fff6c1d43bc38a53c20"
+    "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
+    "cdr_six_column_source_review": "a48d67720a3491720428c02dbd040b6dacf0cc03",
+    "tx_initial_dispatch_receipt": "b5d47768078214a792e1025c83ae6da181b4976d",
+    "phase_rc_pass_receipt": "7d5eeda103b0dfdb0cee82350ba3ea7b7dcca6fb"
+  },
+  "qualified_progress": {
+    "tx": "Both exact fresh model/bench preparations passed; same-source22controls passed; actual normal/fault matrix now running. No new waveform acceptance yet.",
+    "phase": "Real55-device physical/wire/intrinsic/MIM/two-order238R410C composition passed. Source-only child-load preparation has a ptap card parser bug caught by independent review; repair and exact-model positive preparation pending.",
+    "cdr": "Existing input-path diagnosis measured39.44-49.24ohm driver-to-gain access. First new via landing rejected325nm foreign-metal gap versus unchanged500nm planning clearance; no actual overlap. Six-column replacement now undergoing fresh qualification."
   },
   "next_actions": [
-    "No duplicate live jobs. Read complete published summaries/parts and exact run/source identities before advancing.",
-    "PLL observer must reproduce full raw hash and original failure; inspect real4/4/5 stage pulse loss without gate relaxation.",
-    "CDR raw readbacks reproduce actual nominal failures: four active-data HBT overvoltage and substantial same-net input RC drops. Use existing-path diagnostic before geometric change.",
-    "Both TX preparations must pass and exact fresh deck/contract hashes be reviewed before activating source-only34ns/fault templates; never restore old-model capsules.",
-    "Phase intrinsic passed; two-order MIM RC/composition is next. Real electrical phase/reset/31-clock integration still open.",
-    "On route terminal publication, continue same process unless route_complete; then original topology/antenna/disconnect/RC/20/4/8/8ns+5percent STA remain mandatory."
+    "Never duplicate live native jobs; verify terminal summary/parts/full-source hashes before advancing.",
+    "PLL existing full-capture observer must reproduce original acquisition rejection before diagnosing actual4/4/5 stage edges and boundary swings.",
+    "CDR40089170867 must pass original560DRC/deepflat500LVS and strictwires before newRC/MIM and full ten original electrical cases.",
+    "TX40088271926 must preserve fresh new model and trajectory; same-process capsules only. Full34ns full-column original review and fault mandatory.",
+    "Phase exact55model positive deck preparation plus mixed ptap/HBT cards must pass before electrical execution; independent31phase/reset hardware remains open.",
+    "Route terminal publication leads to same-process continuation unless route_complete; then original topology/antenna/disconnect/RC and20/4/8/8ns+5percent STA."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false

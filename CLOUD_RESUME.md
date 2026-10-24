@@ -8091,3 +8091,13 @@ Cloud monitor inventory v11 now tracks these exact diagnostic runs. Mainchip4007
 Compact resume record: docs/evidence/cloud-active-checkpoint-20261024.json. Monitor inventory v12 pins all current native work. Mainchip40075970481 saved its exact native process; two-part1.635GB publication verified by immutable hashes. Last complete DRC count6385; current iteration50percent/5540 (not a completed count). Same-process continuation40085912519 now queued at2e4e1959, unchanged controller and timing contract. No postroute/timing acceptance.
 
 TX real interface passed; fresh preparation40085025627 controls passed, both deck cases pending. Source-only new controller/templates at3b0453df remain inactive until exact new preparation hashes reviewed. Phase compact/MIM40084804265 passed; reviewed two-order MIM RC40086006467 queued. CDR failed-wave readbacks passed exact original metric reproduction; physical input-path diagnostic40085495203 queued before any metal or bias repair. PLL exact observer40084454916 remains queued. Local workspace/task temp/native processes verified empty.
+
+## 2026-10-24T11:17:50.182724+00:00 — real cloud work and exact collision repair
+
+Inventory v13 now tracks actual TX fresh-native run40088271926 atf964338d and narrowed CDR physical40089170867 ata48d6772. TX original22controls passed; normal/fault native jobs started. Registration-only runs40087690526/40087690535 are separate no-op provenance, not electrical results.
+
+CDR reporting-only40087908260 rejected original eight-column M4 landing at325nm gap to foreign nativecluster59, below unchanged500nm planningclearance; no physical overlap. Immutable receipt dca2bcd7 preserves summary672054104 SHA863b240919a7bf8d8f8e9f5eb42784ea9870cd72b9eef3c152c6f06e595fb644 and parts672054175 SHA4199543d36d62a02685c6a50597550acf6c725e0d013a0c7292af1eb26e44d39. New candidate changes only sixteen M4-to-TM1 stacks8to6columns at identical owned centroids. All guards, devices, old material and future freshRC requirements unchanged; no physical/electrical pass inferred.
+
+Phase55 real two-orderMIMRC/composition40086006467 passed238R/410C/fourMIM; receipt7d5eeda1. Independent source review found five-token ptap cards would break the new positive child-load deck preparer despite green negative-only sourcecontrols40088526578. Repair and an exact-qualified-model positive cloud preparation are required. No phase electrical run has been dispatched. Full31phase/polarity/reset and actual PLL connectivity remain open.
+
+PLL observer40084454916 and mainchip same-process40085912519 remain active. No duplicate native calculation, no local artifacts. Full serialPHY and original-clock finalSTA are not closed.
