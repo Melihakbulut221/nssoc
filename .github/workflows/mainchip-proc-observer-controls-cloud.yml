@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: Apache-2.0
+# Orphan-tree registration only; no source checkout, controls or native inputs.
+name: mainchip-proc-observer-controls-cloud
+on:
+  push:
+    branches: [codex/register-mainchip-proc-observer-20261024]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+      - run: echo 'Registration only. No observer, router, restore, controls or qualification.'
