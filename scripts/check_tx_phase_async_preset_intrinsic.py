@@ -105,9 +105,44 @@ def main():
           ('nonmonotone',np.array([[0.,0.,0.],[s,0.,0.],[s,0.,0.]])),
           ('gap',np.array([[0.,0.,0.],[.5*s,0.,0.],[2*s,0.,0.]]))]:
             raw_fixture(p,vectors,v);assert fails(lambda:read_streamed_wave(p,vectors,2*s,s));raw_controls.append(name)
+    op_controls=[]
+    with tempfile.TemporaryDirectory()as td:
+        p=Path(td)/'op.raw';vectors=['v(a)','@q.x.qnpn13g2[ic]']
+        def op_bytes(table,values):
+            head='Title: OP reader control\nPlotname: Operating Point\nFlags: real\nNo. Variables: '+str(len(table))+'\nNo. Points: 1\nVariables:\n'
+            head+=''.join(f'\t{i}\t{n}\t{k}\n'for i,(n,k)in enumerate(table))+'Binary:\n'
+            return head.encode()+np.asarray(values,dtype='<f8').tobytes()
+        table=[('v(a)','voltage'),('i(@q.x.qnpn13g2[ic])','current')]
+        good_op=op_bytes(table,[0.,0.]);p.write_bytes(good_op)
+        assert native.zero_op(p,vectors)['all_saved_electrical_and_thermal_states_zero']
+        dup=op_bytes([table[0],*table],[0.,0.,0.]);p.write_bytes(dup)
+        assert native.zero_op(p,vectors)['explicit_scale_duplicate']
+        current_first=[table[1],table[1],table[0]]
+        p.write_bytes(op_bytes(current_first,[0.,0.,0.]))
+        assert native.zero_op(p,vectors)['explicit_scale_duplicate']
+        mutations=[
+          ('missing_vector',op_bytes(table[:1],[0.])),('wrong_units',good_op.replace(b'voltage',b'current')),
+          ('nonzero_voltage',op_bytes(table,[.001,0.])),('nonzero_current',op_bytes(table,[0.,1e-8])),
+          ('different_duplicate_bits',op_bytes([table[0],*table],[0.,-0.,0.])),
+          ('unknown_vector',good_op.replace(b'v(a)',b'v(b)')),('truncated',good_op[:-1]),('extra_byte',good_op+b'x')]
+        for name,raw_op in mutations:
+            p.write_bytes(raw_op);assert fails(lambda:native.zero_op(p,vectors));op_controls.append(name)
+    # Fetch and verify the exact qualified runtime/model bundle on the runner,
+    # but do not execute any native program. Missing CAP/model files must fail
+    # this real preparation control before a DUT run is dispatched.
+    with tempfile.TemporaryDirectory()as td:
+        old_out=native.OUT;native.OUT=Path(td)
+        try:
+            engine,models,proof=native.restore()
+            runtime_preparation=dict(engine_sha256=native.sha(engine),
+              model_archive_sha256=proof['model_receipt']['sha256'],
+              model_manifest_entries=len(proof['model_manifest']['files']),
+              HBT_RES_CAP_present=all((models/'models'/('corner'+k+'.lib')).is_file()for k in ('HBT','RES','CAP')),
+              native_program_executed=False)
+        finally:native.OUT=old_out
     assert native.source_pins()==pins
     print(json.dumps(dict(status='PASS_INTRINSIC241_SOURCE_PREPARATION_AND_OBSERVER_CONTROLS_NO_NATIVE_SIMULATION',
       source=b.SOURCE_SHA,boundary=bound,positive_cases=cases,original_first80_root_phase_centers_match=True,
-      all106_actual_HBT_terminal_and_current_binding=True,negative_controls=rejected,full_raw_reader_controls=raw_controls,
+      all106_actual_HBT_terminal_and_current_binding=True,negative_controls=rejected,full_raw_reader_controls=raw_controls,zero_OP_reader_controls=op_controls,qualified_runtime_models_prepared=runtime_preparation,
       DUT_waveforms_executed=False,deterministic_reset_qualified=False,physical_accepted=False,PLL_connected=False,full_PHY_accepted=False),indent=2))
 if __name__=='__main__':main()
