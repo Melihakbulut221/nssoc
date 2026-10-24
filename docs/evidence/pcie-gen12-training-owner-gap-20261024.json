@@ -11,7 +11,10 @@
     "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50",
     "hw/soc/rtl/pcie/soc_pcie_gen3_record_descrambler_v1.v": "514dc351e8f140635c16cf9bfe4c0ce4066bc9566493a55b55d46820fac7b007",
     "hw/soc/rtl/pcie/soc_pcie_gen3_tx_path_v4.v": "36691c0f57934c708367a30d6a5f4ce940ecfaa18c83c63e8e3636a5081fbd67",
-    "hw/soc/rtl/pcie/soc_pcie_gen3_packet_duplex.v": "64f66f7a4f2c5b66577c0696f4ca237b282b079b60ee94f5b2ec4796e88a4b6b"
+    "hw/soc/rtl/pcie/soc_pcie_gen3_packet_duplex.v": "64f66f7a4f2c5b66577c0696f4ca237b282b079b60ee94f5b2ec4796e88a4b6b",
+    "hw/soc/rtl/pcie/soc_pcie_buffered_flow_packets.v": "30448ccda991ea177f862eb5c69aef6a78aab20a0bf955eb802a8bfe2b03336d",
+    "hw/soc/rtl/pcie/soc_pcie_flow_packets.v": "9f90c5123ac4b82c832027af0e9ce79d5124cdf5dd502cde87c3f59c0729106a",
+    "hw/soc/rtl/pcie/soc_pcie_reliable_packets.v": "9212832d6fc20d26efaf1b1c7918cb39451644e178d7e5c2f90e1cc0cb741436"
   },
   "scope_of_search": {
     "directory": "hw/soc/rtl/pcie/",
@@ -72,7 +75,35 @@
       "url": "https://www.intel.com/content/dam/www/public/us/en/documents/manuals/pcie-gbe-controllers-open-source-manual.pdf",
       "section": "4.7.2",
       "use": "Training identifier symbols provide polarity evidence; complement COM is not sufficient to infer polarity."
+    },
+    {
+      "url": "https://cdn.teledynelecroy.com/files/manuals/pciesummitm5x_scripting_manual.pdf",
+      "section": "4.3.5, printed pages84-87",
+      "use": "Explicit Gen1/2 decoded common training-field positions; analyzer masks/defaults are not normative receiver requirements."
+    },
+    {
+      "url": "https://pcisig.com/section-42644-table-4-5-defines-valid-range-link-number-symbol-1-ts1-ordered-set-0-31-downstream",
+      "section": "PCIe3.0 FAQ4.2.6.4.4",
+      "use": "Role/state-dependent link-number mismatch semantics."
+    },
+    {
+      "url": "https://pcisig.com/faq?field_category_value%5B%5D=pci_express_3.0",
+      "section": "PCIe3.0 FAQs4.2.6.4,4.2.6.4.2.2.1",
+      "use": "Low-rate EQ TS2 presets are used for8GT/s equalization; configured-lane TS1 scheduling has actual SKP/EIEOS exceptions."
+    },
+    {
+      "url": "https://www.keysight.com.cn/cn/zh/assets/9018-70241/programming-guides/9018-70241.pdf",
+      "section": "Gen1/Gen2 macros, printedpages46-47",
+      "use": "Primary indexed field evidence of low-rate IsEQ/preset/hint variants; exact target-revision table still required, not macrodefaults."
     }
   ],
-  "remaining_source_prerequisite": "Pin an accessible authoritative PCIe Base specification table for Gen1/2 TS1/TS2 fields and Gen3 capability advertisement before implementing field interpretation; PIPE alone does not define the LTSSM or complete training table."
+  "remaining_source_prerequisite": "Pin target Base-specification standard/EQ TS1/TS2 layout, reserved handling, TX/RX acceptance, consecutive-sequence rules and state-specific timers; bind actual rate/preset capability before implementing training owner.",
+  "additional_integration_risks": [
+    "link_up gates FC initialization, so waiting for initialized before link_up would deadlock",
+    "retrain_done resets packet/FC/sequence and APB CDC epochs",
+    "fixed4 logical-lane path cannot silently accept narrower negotiated width",
+    "do not mux recovered clocks when implementing physical-to-logical lane mapping",
+    "standard-only TSidentifier equality would omit low-rate EQ variants",
+    "analyzer masks and macrodefaults are not receiver acceptance rules"
+  ]
 }
