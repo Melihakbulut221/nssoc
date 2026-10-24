@@ -1,0 +1,76 @@
+# SPDX-License-Identifier: Apache-2.0
+name: pcie-gen12-raw32-rx-cloud
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/pcie-gen12-rx-integration]
+    paths:
+      - hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v
+      - hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v
+      - scripts/check_pcie_gen12_raw32_rx.py
+      - scripts/pcie-gen12-raw32-rx-methods.json
+      - scripts/pcie-gen12-raw32-rx-prerequisites.json
+      - .github/workflows/pcie-gen12-raw32-rx-cloud.yml
+permissions:
+  contents: write
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: pcie-gen12-raw32-rx-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-stream-integration:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Exact-source publication controls
+        run: python3 scripts/ensure_cloud_tested_source_release.py --controls
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Exact prerequisites, dual simulators, synthesis and twelve faults
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/check_pcie_gen12_raw32_rx.py
+      - name: Preserve exact small result bytes in hosted log
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          import base64,hashlib,json
+          from pathlib import Path
+          data=Path('hw/soc/out/cloud-pcie-gen12-raw32-rx/result.json').read_bytes()
+          assert 0<len(data)<2*1024*1024;json.loads(data)
+          print('GEN12_RX_RESULT_SHA256 '+hashlib.sha256(data).hexdigest())
+          print('GEN12_RX_RESULT_BYTES '+str(len(data)))
+          text=base64.b64encode(data).decode();chunks=[text[i:i+4096]for i in range(0,len(text),4096)]
+          for i,chunk in enumerate(chunks):print('GEN12_RX_RESULT_BASE64 '+str(i)+'/'+str(len(chunks))+' '+chunk)
+          PYCODE
+      - name: Preserve actual acceptance or rejection
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -d hw/soc/out/cloud-pcie-gen12-raw32-rx
+          tar -czf "$RUNNER_TEMP/gen12-raw32-rx-proof.tar.gz" -C hw/soc/out cloud-pcie-gen12-raw32-rx
+          sha256sum "$RUNNER_TEMP/gen12-raw32-rx-proof.tar.gz" > "$RUNNER_TEMP/gen12-raw32-rx-proof.sha256"
+          python3 scripts/ensure_cloud_tested_source_release.py --group gen12-raw32-rx
+          tag="cloud-results-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-gen12-raw32-rx"
+          gh release upload "$tag" "$RUNNER_TEMP/gen12-raw32-rx-proof.tar.gz" "$RUNNER_TEMP/gen12-raw32-rx-proof.sha256"
+          if test -f hw/soc/out/cloud-pcie-gen12-raw32-rx/result.json; then
+            gh release upload "$tag" hw/soc/out/cloud-pcie-gen12-raw32-rx/result.json
+          fi
+      - name: Preserve complete evidence if release publication fails
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen12-raw32-rx-publication-failure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cloud-pcie-gen12-raw32-rx/
+          retention-days: 90

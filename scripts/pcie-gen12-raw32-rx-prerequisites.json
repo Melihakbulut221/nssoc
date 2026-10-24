@@ -1,5 +1,5 @@
 {
-  "state": "UNBOUND_PENDING_CORRECTED_CODEC_PROOF",
+  "state": "BOUND_TO_TWO_COMPLETED_NATIVE_PROOFS",
   "runs": [
     {
       "role": "aligner",
@@ -12,6 +12,22 @@
       "result_sha256": "c74c349298699dfbf76fa8bd7f06c4eb781abb92f8e24a5aeed6f810d798dcf1",
       "receipt_path": "docs/evidence/pcie-gen12-raw32-native-result-20261024.json",
       "receipt_sha256": "c74c349298699dfbf76fa8bd7f06c4eb781abb92f8e24a5aeed6f810d798dcf1"
+    },
+    {
+      "role": "codec",
+      "run": 40102483214,
+      "head": "aa8afbb7ec2cc78dc533271d530a6abbb1eb20a3",
+      "attempt": 1,
+      "workflow": ".github/workflows/pcie-gen12-codec-cloud.yml",
+      "job": "exhaustive-native-rtl",
+      "receipt_path": "docs/evidence/pcie-gen12-codec-native-proof-20261024.json",
+      "receipt_sha256": "f305e4546f6388d8bda0be557f2c72f9ee1e87c97a9bdc8b9d5ce895dcd3b495",
+      "readback_run": 40106066552,
+      "readback_head": "b255e253d92443c4deee840d75e537681b265384",
+      "proof_asset": 672612895,
+      "proof_bytes": 20041,
+      "artifact_id": 12563629865,
+      "archive_sha256": "1e6dfffeb50530fbe6215ee0b708fb223cd52d98fae42ce3d978a44a8791dca7"
     }
   ],
   "sources": {
@@ -23,11 +39,8 @@
     "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438",
     "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v": "d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9"
   },
-  "pending_codec_run": 40102483214,
-  "pending_codec_source": "aa8afbb7ec2cc78dc533271d530a6abbb1eb20a3",
-  "pending_aligner_run": 40100300472,
-  "pending_aligner_source": "b34743c320df68bd96cde82063bc00e04c56b3e5",
   "native_integration_accepted": false,
   "aligner_bound_after_terminal_pass": true,
-  "rejected_original_codec_run": 40099402878
+  "rejected_original_codec_run": 40099402878,
+  "codec_bound_after_authenticated_terminal_pass": true
 }
