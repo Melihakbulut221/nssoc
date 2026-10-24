@@ -53,3 +53,11 @@ All64 AVDD driver accesses improved:20.8286087722–22.5362348471 ohm before,14.
 Both original final-tail emitter accesses remain exactly unchanged: XD5667=6.286958767402115 ohm; XD5674=6.275982084626478 ohm. Their remaining local access geometry still needs investigation. No34ns transistor run was dispatched.
 
 Exact receipts and all comparison-output hashes: docs/evidence/tx-driver-pinfeed-precision-composition-rail-pass-20261024.json. Full added-path list and immutable native source heads: docs/TX_PINFEED_SOURCE_MANIFEST.json. The future interface controller remains source-only pending parent review; see docs/TX_PINFEED_NATIVE_CONTINUATION.md.
+
+## Exact remaining-rail and current-geometry readback
+
+Read-only run40075242137 at f9dfeee4ebdd1970109eee34b9289bc29fd0eef1 restores the qualified new composition, fresh raw ext/res.ext and current native GDS/LVS/wire database. It selects d0p/d0n/d31p/d31n AVDD/AVSS plus the two final-tail emitters by the independently matched original device/terminal geometry. The report preserves dominant resistance segments, original extractor node records and full same/foreign metal/via/hierarchy windows for ten actual terminals, with all four native ownership corruption controls.
+
+The job was queued when this checkpoint was written. Do not claim it passed until its terminal result and immutable release hashes are verified. Next: identify actual residual segment coordinates and local via phase/clearance, then only add a physical candidate proven to belong to the intended rail. Preserve all original intrinsic dimensions and165 ports. No34ns transient or native interface controller has been run.
+
+Cloud-only workspace contract remains enforced: local workspace contains zero entries; no GDS/raw archives/local CAD were downloaded or executed.
