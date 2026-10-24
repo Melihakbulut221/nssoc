@@ -7433,3 +7433,11 @@ All original source/prefix integrity retained. Exact next descriptor preserved
 in tx-via3-normal-23ns-checkpoint-20261024.json. Dispatch same native process for
 7200more native seconds, fulltarget34ns unchanged. Fault40039368788 remains live,
 do not duplicate it. v55physical40050528141 is testing upper-array clearance.
+
+## 2026-10-24 v55 corrected geometry passed native physical suite
+Run40050528141 source5bb096c0 passed560DRC0markers/deep-flat18deviceLVS/ninefaults.
+Both earlier actual M3 spacing failures retained. Emitter upper via8x2 fits the
+105nm failing channel of old8x4 landing; no deck filtering. Full fresh geometric
+wire binding now launched. Next freshRC/binding, read actual R/Ccensus,compose,
+then original5full34.25ns loaded waves. Do not reuse v54counts473R/350C.
+Reuse unchanged build_cdr_active_levelshift_v53_native_models.py for5.4/36um widths.
