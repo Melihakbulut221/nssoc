@@ -1,6 +1,6 @@
 # Composed per-lane 16-symbol candidate-record transport
 
-This source candidate adds a concrete record boundary around the existing raw32 RX and TX RTL. It does not decide whether a candidate is an accepted TS1/TS2, negotiate a link or assign an LTSSM state. RX native run 40108338384 and root source review remain mandatory pending prerequisites; the workflow is a nonregistered manual-only template and its initial gate rejects the UNBOUND state.
+This source candidate adds a concrete record boundary around the existing raw32 RX and TX RTL. It does not decide whether a candidate is an accepted TS1/TS2, negotiate a link or assign an LTSSM state. RX native run 40108338384 has now passed and its exact authenticated result is bound. Root source review remains a mandatory prerequisite; the workflow is a nonregistered manual-only template and its initial gate rejects the REVIEW_PENDING state. The native RX receipt is docs/evidence/pcie-gen12-raw32-rx-native-pass-20261024.json.
 
 ## Receive contract
 
