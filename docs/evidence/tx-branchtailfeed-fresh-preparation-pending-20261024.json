@@ -1,0 +1,173 @@
+{
+  "status": "SOURCE_PREPARED_NATIVE_TWO_CASES_PENDING_NO_DUT_TRANSIENT",
+  "parent_head": "76038e4384530eba19aef9757e4d5db7c96417ed",
+  "interface_run": 40083738813,
+  "interface_source_head": "11ed6ba3e7ecd4b184ee0161c5b8a1699c539a56",
+  "interface_summary_sha256": "e872278654de17a300e5004c463a1ad37b5c9e1116ed7d8720e2872f8124c2b9",
+  "interface_parts_sha256": "278156444c2bd2159f6f029f8f3a9d51ad156d1a84a751ea41e4e75e6b5b6a51",
+  "model_sha256": "8286d54832432603f78739f30d0087e99a46f026d82a37ecd5e450d2167231c8",
+  "counts": {
+    "devices": 8088,
+    "R": 141473,
+    "C": 100694
+  },
+  "workflow": ".github/workflows/tx-output8088-branchtailfeed-prepared-cloud.yml",
+  "jobs": [
+    "controls",
+    "prepare-fresh-native-cases (wire, nominal, none)",
+    "prepare-fresh-native-cases (wire, nominal, swap_leaf_select)"
+  ],
+  "source_delta_path": "scripts/tx-output8088-branchtailfeed-prepared-source-delta.json",
+  "source_derivations": [
+    {
+      "baseline_path": "scripts/cloud_tx_output8088_power128return64via3_prepared.py",
+      "baseline_sha256": "d70593e8ec82679ac5297a74a71daedee2eca6114a013d1ac6d48d87e2fd694b",
+      "candidate_path": "scripts/cloud_tx_output8088_branchtailfeed_prepared.py",
+      "candidate_sha256": "7dee925236b11e0176ed9b7cce1c61ef100c6be23cfb80b01d46a6344639b919",
+      "edits": [
+        {
+          "before": "power128return64via3",
+          "after": "branchtailfeed",
+          "count": 7
+        },
+        {
+          "before": "POWER128RETURN64VIA3",
+          "after": "BRANCHTAILFEED",
+          "count": 1
+        },
+        {
+          "before": "R=140222,C=99906",
+          "after": "R=141473,C=100694",
+          "count": 1
+        },
+        {
+          "before": "140222R99906C",
+          "after": "141473R100694C",
+          "count": 1
+        },
+        {
+          "before": "tx-output8088-branchtailfeed-interfaces-pass-20261023.json",
+          "after": "tx-output8088-branchtailfeed-interfaces-pass-20261024.json",
+          "count": 1
+        },
+        {
+          "before": "  if args.prepare_only:\n",
+          "after": "  assert columns==14182 and minimum_rows==68001\n  assert len(contract['hbt'])==604 and len(contract['mos'])==5376 and len(contract['vectors'])==14181\n  assert sha(paths['patched'])=='103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509'\n  assert result['model_sha256']=='8286d54832432603f78739f30d0087e99a46f026d82a37ecd5e450d2167231c8'\n  assert len(result['output_parent_binding']['controls'])==10 and all(c['rejected']for c in result['output_parent_binding']['controls'])\n  result['new_trajectory_contract']=dict(fresh_initialization_required=True,old_model_process_checkpoint_reuse_allowed=False,transient_dispatched=False,duration_ns=34,bits=256,ui_ps=125,streams=32,source_bits_sha256=contract['source_bits_sha256'],native_engine_sha256=sha(paths['patched']))\n  if args.prepare_only:\n",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_output8088_power128return64via3_fullwave_adapter.py",
+      "baseline_sha256": "da3790c5054d1ee0865fdfde20e2434c45edbac1d63d530bd4438d13857f35de",
+      "candidate_path": "scripts/cloud_tx_output8088_branchtailfeed_fullwave_adapter.py",
+      "candidate_sha256": "a34a7fb3e8c5562420d2ae7cfcdfd32bf2f594ebe1f2544f6d0bc6aa630afec8",
+      "edits": [
+        {
+          "before": "power128return64via3",
+          "after": "branchtailfeed",
+          "count": 2
+        },
+        {
+          "before": "POWER128RETURN64VIA3",
+          "after": "BRANCHTAILFEED",
+          "count": 1
+        },
+        {
+          "before": "R=140222,C=99906",
+          "after": "R=141473,C=100694",
+          "count": 1
+        },
+        {
+          "before": "tx-output8088-branchtailfeed-interfaces-pass-20261023.json",
+          "after": "tx-output8088-branchtailfeed-interfaces-pass-20261024.json",
+          "count": 1
+        },
+        {
+          "before": "40003582105",
+          "after": "40083738813",
+          "count": 1
+        },
+        {
+          "before": "48aa3b39422955f78d94749252eb8a545153979141d1bb7cd7f9f207c6e3949b",
+          "after": "e872278654de17a300e5004c463a1ad37b5c9e1116ed7d8720e2872f8124c2b9",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_tx_output8088_power128return64via3_prepared_sources.py",
+      "baseline_sha256": "c3ec42889c532e4df18c0f43915165da2daef18bf9c511edea4c2b815b236add",
+      "candidate_path": "scripts/check_tx_output8088_branchtailfeed_prepared_sources.py",
+      "candidate_sha256": "47be884588c995ac397bfc1ec6086aac3f877e66c23981aac897070e6810bd32",
+      "edits": [
+        {
+          "before": "power128return64via3",
+          "after": "branchtailfeed",
+          "count": 2
+        },
+        {
+          "before": "POWER128RETURN64VIA3",
+          "after": "BRANCHTAILFEED",
+          "count": 1
+        },
+        {
+          "before": "from check_tx_output8088_power128return64_prepared_sources import check as original_check",
+          "after": "from check_tx_output8088_power128return64via3_prepared_sources import check as original_check",
+          "count": 1
+        },
+        {
+          "before": "tx-output8088-branchtailfeed-interfaces-pass-20261023.json",
+          "after": "tx-output8088-branchtailfeed-interfaces-pass-20261024.json",
+          "count": 1
+        },
+        {
+          "before": "40003582105",
+          "after": "40083738813",
+          "count": 1
+        },
+        {
+          "before": "48aa3b39422955f78d94749252eb8a545153979141d1bb7cd7f9f207c6e3949b",
+          "after": "e872278654de17a300e5004c463a1ad37b5c9e1116ed7d8720e2872f8124c2b9",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/tx-output8088-power128return64via3-prepared-cloud.yml",
+      "baseline_sha256": "4781cf074103ca678ed240640232699b9f9b14330f3662ed478111d81f51895b",
+      "candidate_path": ".github/workflows/tx-output8088-branchtailfeed-prepared-cloud.yml",
+      "candidate_sha256": "b69d1f1c20ce7eb0cf040014c4d608c7cbef05aca97ea8fcd0c44ebc435d9713",
+      "edits": [
+        {
+          "before": "power128return64via3",
+          "after": "branchtailfeed",
+          "count": 10
+        },
+        {
+          "before": "codex/complete-open-work",
+          "after": "codex/tx-via3-rail-diagnosis",
+          "count": 1
+        },
+        {
+          "before": "  native-full32:\n",
+          "after": "  prepare-fresh-native-cases:\n",
+          "count": 1
+        },
+        {
+          "before": "# Preparation only: no full DUT transient until exact process checkpointing is ready.",
+          "after": "# Preparation only. A new initial trajectory is required; old-model checkpoints are forbidden.",
+          "count": 1
+        },
+        {
+          "before": "# The raw64 preparation also proves native10032-vector chunked OP export before any DUT simulation.",
+          "after": "# The unchanged native10032-vector OP transport control runs before preparing either fresh case.",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "no_old_process_checkpoint_reuse": true,
+  "transient_dispatched": false,
+  "loaded_electrical_passed": false
+}

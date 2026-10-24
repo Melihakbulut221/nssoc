@@ -19,3 +19,9 @@ This source has no workflow and has never run. AST parsing and locked-source ver
 ## Actual branch/tail native interface qualified
 
 The formerly source-only adapter now passed native run40083738813/source11ed6ba3 with all original interface and actual endpoint/output fault checks. Use docs/evidence/tx-branchtailfeed-native-interface-descriptor-20261024.json and the original-schema receipt docs/evidence/tx-output8088-branchtailfeed-interfaces-pass-20261024.json for a fresh preparation. Original34ns and swap_leaf_select engineering gates remain unchanged; old-model process checkpoints are not reusable. No transient was started.
+
+## Fresh branch/tail preparation, before any new transient
+
+Native interface run40083738813 is pinned in the 20261024 interface receipt. New preparation derives from the frozen via3 preparation by an exact source delta; it binds the fresh141473R/100694C model and interfaces while retaining original34ns/256bits/125ps UI, all604HBT/5376MOS/14181vectors, solver, maximum step, loads, all clocks and all original safety/negative controls. It prepares both none and swap_leaf_select cases. Explicit preflight requires14182columns/68001minimum rows and the original patched engine. It cannot simulate the DUT or reuse any old-model process checkpoint.
+
+Workflow: .github/workflows/tx-output8088-branchtailfeed-prepared-cloud.yml; controls then prepare-fresh-native-cases matrix. The commit adding this workflow triggers exactly one cloud preparation. Terminal status and immutable receipts are still pending. Do not dispatch34ns or fault transient before parent reviews both new prepared cases and the exact source delta.

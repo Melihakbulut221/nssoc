@@ -20,6 +20,7 @@
     ".github/workflows/tx-output8088-branchtailfeed-composition-cloud.yml",
     ".github/workflows/tx-output8088-branchtailfeed-interfaces-cloud.yml",
     ".github/workflows/tx-output8088-branchtailfeed-precision-cloud.yml",
+    ".github/workflows/tx-output8088-branchtailfeed-prepared-cloud.yml",
     ".github/workflows/tx-output8088-driver-pinfeed-cloud.yml",
     ".github/workflows/tx-output8088-driver-pinfeed-wires-anchors-cloud.yml",
     ".github/workflows/tx-output8088-driverpinfeed-composition-cloud.yml",
@@ -34,6 +35,7 @@
     "docs/evidence/tx-branch-tail-wire-source-review-20261024.json",
     "docs/evidence/tx-branchtailfeed-followthrough-source-review-20261024.json",
     "docs/evidence/tx-branchtailfeed-fresh-intrinsic-rc-pass-20261024.json",
+    "docs/evidence/tx-branchtailfeed-fresh-preparation-pending-20261024.json",
     "docs/evidence/tx-branchtailfeed-interface-source-review-20261024.json",
     "docs/evidence/tx-branchtailfeed-native-interface-descriptor-20261024.json",
     "docs/evidence/tx-branchtailfeed-precision-composition-rail-pass-20261024.json",
@@ -48,6 +50,7 @@
     "docs/evidence/tx-via3-rail-geometry-20261024.json",
     "scripts/bind_tx_output8088_branch_tail_feed_native_anchors.py",
     "scripts/bind_tx_output8088_driver_pinfeed_native_anchors.py",
+    "scripts/check_tx_output8088_branchtailfeed_prepared_sources.py",
     "scripts/cloud_tx_branchtailfeed_composition_followthrough.py",
     "scripts/cloud_tx_branchtailfeed_followthrough.py",
     "scripts/cloud_tx_driverpinfeed_composition_followthrough.py",
@@ -56,8 +59,10 @@
     "scripts/cloud_tx_output8088_branch_tail_feed.py",
     "scripts/cloud_tx_output8088_branch_tail_feed_wires_anchors.py",
     "scripts/cloud_tx_output8088_branchtailfeed_composition_launch.py",
+    "scripts/cloud_tx_output8088_branchtailfeed_fullwave_adapter.py",
     "scripts/cloud_tx_output8088_branchtailfeed_interfaces.py",
     "scripts/cloud_tx_output8088_branchtailfeed_precision_launch.py",
+    "scripts/cloud_tx_output8088_branchtailfeed_prepared.py",
     "scripts/cloud_tx_output8088_driver_pinfeed.py",
     "scripts/cloud_tx_output8088_driver_pinfeed_wires_anchors.py",
     "scripts/cloud_tx_output8088_driverpinfeed_composition_launch.py",
@@ -81,6 +86,7 @@
     "scripts/tx-driverpinfeed-remaining-geometry-methods.json",
     "scripts/tx-output8088-branch-tail-feed-methods.json",
     "scripts/tx-output8088-branch-tail-feed-wires-anchors-methods.json",
+    "scripts/tx-output8088-branchtailfeed-prepared-source-delta.json",
     "scripts/tx-output8088-driver-pinfeed-methods.json",
     "scripts/tx-output8088-driver-pinfeed-wires-anchors-methods.json",
     "scripts/tx-output8088-return64via3-rail-geometry-methods.json",
@@ -292,5 +298,13 @@
     "physical": "12dbfa546406f345bc594cf25af699bea5840634"
   },
   "branch_tail_qualification_scope": "Physical DRC/LVS/geometry controls, fresh wire/intrinsicRC, two-order precision, composition and130-target metal DC comparison passed. Native interface/loaded waveform/fullPEX/PHY/mainchip acceptance remains open.",
-  "branch_tail_native_interface_qualified": true
+  "branch_tail_native_interface_qualified": true,
+  "branch_tail_fresh_preparation": {
+    "workflow": ".github/workflows/tx-output8088-branchtailfeed-prepared-cloud.yml",
+    "interface_run": 40083738813,
+    "status": "SOURCE_READY_NATIVE_PENDING",
+    "transient_dispatched": false,
+    "old_model_checkpoint_reuse_allowed": false,
+    "source_delta": "scripts/tx-output8088-branchtailfeed-prepared-source-delta.json"
+  }
 }
