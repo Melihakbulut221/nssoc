@@ -42,14 +42,16 @@ def identity(run,job,a):
     assert a['size_in_bytes']==ZIP_BYTES and a['digest']=='sha256:'+ZIP_SHA
     assert a['workflow_run']['id']==RUN and a['workflow_run']['head_sha']==HEAD
     assert a['workflow_run']['head_branch']=='codex/complete-open-work'
-def source_evidence():
-    r=api('actions/runs/'+str(RUN));j=api('actions/jobs/'+str(JOB));a=api('actions/artifacts/'+str(ARTIFACT))
-    identity(r,j,a)
-    log=subprocess.check_output(['gh','api',REPO+'actions/jobs/'+str(JOB)+'/logs'])
+def original_log_bytes(log):
     assert len(log)==130528 and digest(log)==LOG_SHA
     assert b'line 352, in main'in log and ('AssertionError: '+FAILURE).encode()in log
     assert b'HTTP 403: Resource not accessible by integration'in log
     assert b'With the provided path, there will be 65 files uploaded'in log
+def source_evidence():
+    r=api('actions/runs/'+str(RUN));j=api('actions/jobs/'+str(JOB));a=api('actions/artifacts/'+str(ARTIFACT))
+    identity(r,j,a)
+    log=subprocess.check_output(['gh','api','--allow-escape-sequences',REPO+'actions/jobs/'+str(JOB)+'/logs'])
+    original_log_bytes(log)
     return r,j,a,log
 def consume(inp,target,size,sha):
     h=hashlib.sha256();n=0
@@ -61,7 +63,7 @@ def consume(inp,target,size,sha):
     assert target.stat().st_size==size and file_sha(target)==sha
     return dict(bytes=n,sha256=h.hexdigest(),complete_stream_verified=True)
 def download(target):
-    p=subprocess.Popen(['gh','api',REPO+'actions/artifacts/'+str(ARTIFACT)+'/zip'],stdout=subprocess.PIPE)
+    p=subprocess.Popen(['gh','api','--allow-escape-sequences',REPO+'actions/artifacts/'+str(ARTIFACT)+'/zip'],stdout=subprocess.PIPE)
     try:proof=consume(p.stdout,target,ZIP_BYTES,ZIP_SHA)
     except BaseException:
         p.stdout.close()
@@ -170,7 +172,7 @@ def diagnosis(r,inventory,small):
         route_complete=False,final_timing_complete=False,full_phy_accepted=False,
         scope='Exact original failure and all65 files recovered only. Process-image existence/hashes do not establish liveness or a valid next checkpoint.')
 def controls(actual):
-    run,job,artifact,_=actual;identity(run,job,artifact);bad=[]
+    run,job,artifact,log=actual;identity(run,job,artifact);original_log_bytes(log);bad=[]
     def reject(name,fn):
         try:fn()
         except(AssertionError,KeyError,ValueError,zipfile.BadZipFile,EOFError):bad.append(name)
@@ -184,8 +186,13 @@ def controls(actual):
         ('artifact-name','artifact','name','other')]:
         r,j,a=copy.deepcopy((run,job,artifact));{'run':r,'job':j,'artifact':a}[which][key]=value
         reject(label,lambda:identity(r,j,a))
+    # ANSI bytes are evidence: stripping or truncating the actual log must fail.
+    stripped=re.sub(rb'\x1b\[[0-?]*[ -/]*[@-~]',b'',log)
+    assert b'\x1b['in log and stripped!=log
+    reject('actual-log-ansi-stripped',lambda:original_log_bytes(stripped))
+    reject('actual-log-truncated',lambda:original_log_bytes(log[:-1]))
     with tempfile.TemporaryDirectory(prefix='artifact-recovery-controls-')as td:
-        d=Path(td);payload=b'actual\x00opaque\xffbytes'
+        d=Path(td);payload=b'actual\x00opaque\xffbytes\x1b[31m\x1b[0m'
         consume(io.BytesIO(payload),d/'good',len(payload),digest(payload))
         for label,b in [('truncated-stream',payload[:-1]),('overlong-stream',payload+b'x'),('corrupt-stream',b'x'+payload[1:])]:
             reject(label,lambda:consume(io.BytesIO(b),d/label,len(payload),digest(payload)))
@@ -229,8 +236,8 @@ def controls(actual):
         reject('recorded-member-hash',lambda:inventory_valid(report,q))
         q=copy.deepcopy(fixture);q['invented']=q.pop('file-2')
         reject('recorded-member-inventory',lambda:inventory_valid(report,q))
-    assert len(bad)==27,len(bad)
-    return dict(status='PASS_ACTUAL_SOURCE_IDENTITY_TRANSPORT_SAFE_ZIP_AND27_FAULTS',rejected=bad,
+    assert len(bad)==29,len(bad)
+    return dict(status='PASS_ACTUAL_SOURCE_IDENTITY_TRANSPORT_SAFE_ZIP_AND29_FAULTS',rejected=bad,
         all65_fixture_recorded_hashes_positive=True,opaque_archive_bytes_only=True,native_execution=False)
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ['GITHUB_RUN_ATTEMPT']=='1'
