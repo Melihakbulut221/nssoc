@@ -1,0 +1,66 @@
+{
+  "schema": "cdr500-v58-loaded-matrix-checkpoint-v1",
+  "run_id": 40101491695,
+  "source_head": "d8ec11ef38ac4737106134509a0d732df8e8e2d0",
+  "branch": "codex/cdr500-floating-wire-diagnosis",
+  "workflow": ".github/workflows/cdr500-v58-loaded-cloud.yml",
+  "event": "workflow_dispatch",
+  "created_at": "2026-10-24T14:12:50Z",
+  "dispatch_count": 1,
+  "authoritative_status": "queued",
+  "jobs_observed": [
+    {
+      "name": "prepare",
+      "id": 120894406881,
+      "status": "queued",
+      "conclusion": null
+    }
+  ],
+  "preparation_prerequisite": {
+    "run": 40099344993,
+    "receipt": "docs/evidence/cdr500-v58-loaded-preparation-pass-20261024.json",
+    "receipt_sha256": "0b285837a6346602bbcb8a9e60b185a12fa17eafd0d5f3f6e5acd063ba229036",
+    "summary_asset": 672433040,
+    "summary_sha256": "087fe17649b4113d5098d85b42f5cfdd6ff396dc6f287b1a455bb8acafb61722",
+    "parts_asset": 672433140,
+    "parts_sha256": "9fb971587de6b18a7fcc54a5542d563bcf47eaa6ec824172fbeba8fb652e68c1",
+    "status": "PASS_PD500_LOADED_PREPARATION_AND13_BINDING_CONTROLS_NO_TRANSIENT"
+  },
+  "expected_dependent_matrix_cases": [
+    "nominal_early",
+    "nominal_late",
+    "hot_early",
+    "hot_late",
+    "cold_early",
+    "cold_late",
+    "constant_zero",
+    "constant_one",
+    "clock_stopped",
+    "vi_bias_off"
+  ],
+  "expected_matrix_job_name_template": "loaded (<case>)",
+  "matrix_job_names_not_yet_observed": true,
+  "scope": {
+    "devices": 500,
+    "original_binding_controls": 13,
+    "vectors": 1151,
+    "source_bits": 256,
+    "duration_ns": 34.25,
+    "max_step_ps": 0.3125,
+    "concurrency": 2,
+    "fail_fast": false,
+    "model": "nssoc_cdr_pd500_input_access_mim_wire_v58",
+    "model_sha256": "daa20afc0260f312691de3fb92f1aa758a1a1ad379357f2d22846a8140241f7c",
+    "all_original_electrical_gates_unchanged": true
+  },
+  "resume": [
+    "Follow only existing run40101491695; do not dispatch, restart or cancel duplicate cases.",
+    "Wait for its preparation prerequisite, then inspect exact actual matrix jobs as created.",
+    "Preserve every complete native result and original rejection; no early nominal failure cancels remaining cases.",
+    "Hash-pin actual summary/parts for each case and verify complete34.25ns capture, original256 bits, all native flags/zero-OP/numerical/safety/current/phase/timing gates before any acceptance claim."
+  ],
+  "local_files_created": false,
+  "local_native_execution": false,
+  "loaded_screen_accepted": false,
+  "full_PHY_accepted": false
+}

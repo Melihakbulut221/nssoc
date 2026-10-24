@@ -8157,3 +8157,16 @@ Fresh phase24440098170615 completed but was rejected: numerical startup is clean
 CDR preparation40099344993 must pass before the sole manual ten-case loaded matrix. Gen1/2 codec40099402878 and raw32 boundary40100300472 are the exact native prerequisites. The alignment proof now covers every measured remainder0..9 and incomplete-COM flushes. Source-only RX chainc0de90b9 remains UNBOUND with no executable workflow until those proofs pass. No link-up, lower-rate analog or full serial PHY acceptance is claimed.
 
 All source, native execution and durable evidence remain on GitHub; the local project directory remains empty.
+
+
+### 2026-10-24 cloud-only checkpoint v20 (2026-10-24T14:44:14.219146+00:00)
+
+Raw32 Gen1/2 boundary40100300472 passed95653 nativecycles,64offsets, bothpolarities/RD, all1024rawcodes, every0..9retainedbitcount, allfoursearchflush controls and10behavioral faults; Yosys synthesis passed. Exacttested RTL/checker/workflow and receipt imported here. This is not codec, LTSSM or low-rate analog acceptance.
+
+Originalcodec40099402878 failed because its TB never asserted a real reset edge. Correctedsole40102483214 retains originalRTL/table/gates. RX/TX source candidates stay UNBOUND until authenticated native codec proof.
+
+CDRpreparation40099344993 passed; soleoriginal10case matrix40101491695 now queued. Reset readback40102964781 and actualclockrole proof40102668052 follow passed source controls, also queued. Expand monitored job names only after dependent production jobs appear.
+
+PLL13140096538128 is terminalFAILURE after fullyverified originalcapture and exact131cache preservation. The failed interpolationassertion is an observer issue under investigation, not repaired acquisition. Do not rerun130GB orsimulate. Sourcehelper6d992191 and controls40103396561 are separate; cache-only replay must reproduce oldline142failure, then show actual firstnative-row witness with unchanged olddiagnostic/edgecounts. The3GB cache stays in Releases.
+
+Mainchip40095811631 and TX40098024825/40098031853 remain exact live native processes. FullserialPHY and original finaltiming are still open. Allwork/artifacts remain in GitHub; localworkspace empty.

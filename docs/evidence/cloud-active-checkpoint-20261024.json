@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-24T14:03:55.847975+00:00",
+  "updated_at": "2026-10-24T14:44:14.219146+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only; no local checkout, CAD, simulations or native artifacts.",
-  "root_source_before_receipt": "c8395d31972d0d7e6c0f7af15fe78f44382331be",
+  "root_source_before_receipt": "cae2f2342b9d267cca13aba75251ec11d0a8a69c",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 19,
+    "inventory_version": 20,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40080701966
@@ -15,11 +15,11 @@
     "mainchip_same_process_route": 40095811631,
     "tx_normal_same_process_native": 40098024825,
     "tx_swapped_selector_same_process_native": 40098031853,
-    "pll_full_capture_first_latch_sinks": 40096538128,
-    "cdr_v58_loaded_preparation": 40099344993,
-    "gen12_codec_proof": 40099402878,
-    "gen12_raw32_boundary_proof": 40100300472,
-    "phase244_rejected_capture_readback_controls": 40099838691
+    "cdr_v58_original_loaded_matrix": 40101491695,
+    "gen12_corrected_codec_proof": 40102483214,
+    "phase244_exact_reset_path_readback": 40102964781,
+    "tx_actual_native_clock_roles": 40102668052,
+    "pll_exact_native_endpoint_controls": 40103396561
   },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
@@ -52,24 +52,31 @@
     "gen12_raw32_rx_unbound_source": "c0de90b976db8437849407546dc640be130eec06",
     "phase244_readback_controls": "956b128deb7b42adb19715013d7513ce0897af8f",
     "phase62clock_role_binder_source_only": "77eb50b83f7d2051e02af169c004d8fa1bd8d203",
-    "phase244_actual_rejection_receipt": "baf99befd405bb025ce08748ccf491edabbf0b95"
+    "phase244_actual_rejection_receipt": "baf99befd405bb025ce08748ccf491edabbf0b95",
+    "gen12_raw32_native_receipt": "bfd2c8ba3d5eac319a51faf7cfd131a0dff96876",
+    "gen12_corrected_codec_dispatch_receipt": "1d0f79c70706fda5a125342fead7b73cb3fb4b71",
+    "gen12_rx_aligner_import": "d974fb2c",
+    "gen12_rx_receipt_gates": "41351a3a",
+    "gen12_tx_source_review": "4f49646add144ec611d6ae3a98df2d64ad928377",
+    "pll_endpoint_sampling_source": "6d9921912ed57c55598b4e575d3bd25665459233",
+    "phase_actual_clock_role_and_reset_readback": "9456baa6ad8aa6fc87b78d41a67588a1e7bcb470",
+    "cdr_v58_loaded_matrix_checkpoint": "b42e8634d3cf061f24d8ebe79795e9ab8e5422fc"
   },
   "qualified_progress": {
     "tx": "Both fresh native initial trajectories saved with exact runtime/source proof, not completed: normal 8.645814903 ns and swapped-selector 7.514319757 ns of required 34 ns. Each exact process now continues once in its own cloud run.",
-    "phase": "Fresh244 four-case run40098170615 completed full captures without numerical diagnostics. All106 HBT safety, held reset and first-fall release passed. Reset crossing improved to30.95-31.82ps, but three cases still fail the unchanged100mV phase margin at fixed31.25ps sample. Rejection preserved; exact existing-capture readback controls queued. Dedicated62-clock-port to124-selector-base binder is source-only.",
-    "cdr": "Fresh v58 actual GDS passed 560-rule DRC, deep/flat 500-device LVS and strict wire extraction. Fresh binding and raw RC passed; both native orders agree on 24574 R and 15694 C plus seven MIM capacitors. Original 10 loaded cases remain unqualified for this new geometry.",
-    "pll": "Exact existing-capture diagnoses localized extra transitions to first master output and preserved acquisition rejection. Full original 130 GB first-latch sink observer remains live; no per-HBT currents were saved.",
-    "gen12": "Independent source reviews passed for codec, raw32 aligner and one-cycle receive decoder chain. Actual codec and raw32 proofs remain queued with no acceptance. RX integration prerequisites explicitly UNBOUND; no aligner import or registered integration workflow before both exact native proofs pass."
+    "phase": "Phase244 remains rejected inthree cases on original100mV phase margin. Reset-path source controls passed; exact saved-capture readback40102964781 queued. Dedicated actual62clock-port\u2192124selector-base controller controls passed; native proof40102668052 queued. No loaded31tree or physical acceptance.",
+    "cdr": "Fresh preparation40099344993 passed actual500 devices/sevenMIM/1151vectors/256bits and13faults. Sole original ten-case loaded matrix40101491695 is queued atd8ec11ef, unchanged34.25ns and0.3125ps step with original safety/phase/current gates; no loaded acceptance.",
+    "pll": "Full131 observer40096538128 verified full original130GB/all5106columns/old80 and8cache bits and original acquisition rejection, then failed a strict interpolation-bracket assertion atline142. Exact3355077680-byte cache preserved. New helper correctly samples exactnative timestamps without dropping anyedge; actual first-row cause must still be proven by cache-only replay. No full original reread or new simulation needed.",
+    "gen12": "Raw32 boundary proof40100300472 passed95653native cycles, all64offsets/bothpolarities/RD/all1024codes/all10residues/foursearchflushes and10compiling behavioral faults, plus synthesis. Exact tested aligner imported here. Codec40099402878 failed missing testbench reset edge; corrected40102483214 changes only stimulus, no RTL/table/gates. RX and TX candidates remain unbound pending actual codec proof."
   },
   "next_actions": [
-    "Keep all native work, durable source and evidence in GitHub Actions/Releases. Local workspace is empty and no local CAD/simulation process is running.",
-    "Follow mainchip 40095811631 without duplication. If saved, validate exact image/prefix/source contract before continuing. Routing is packet-boundary integration only; original 20/4/8/8 ns plus 5 percent derate STA remains required after actual route completion.",
-    "Follow TX normal 40098024825 and swapped selector 40098031853. Preserve byte-exact partial records, immutable inputs, process images and original 34 ns acceptance. Saved work is not waveform acceptance.",
-    "Follow PLL 40096538128. Verify all original bytes, all 5106 finite columns, old 80-column bits, old eight-column cache, exact original diagnosis and acquisition rejection before diagnosing actual first-latch sink voltages.",
-    "CDR v58 fresh composition passed. Independently review exact original ten-case loaded adapter, then activate once; all original safety, phase, current and fault oracles remain unchanged.",
-    "Phase24440098170615 remains rejected on the fixed100mV margin. Follow reviewed readback source controls40099838691, then inspect exact saved captures without a new simulation. Prove the62-clock-port to124-selector-base role map before loaded tree expansion.",
-    "Follow exact codec40099402878 and raw32 boundary40100300472 native proofs; do not duplicate queued runs. All10 alignment residuals and search-state flush controls are explicitly covered. Old unstarted raw32 source runs were cancelled after confirming no assigned runner/native step.",
-    "RX decoder-chain sourcec0de90b9 is independently reviewed but unbound. Only after both native prerequisites pass import exact aligner, bind immutable proofs and run independent full-stream/RD/flush verification. No LTSSM, low-rate analog or full PHY acceptance follows from these units."
+    "Remain cloud-only. All source/evidence is in GitHub; local workspace remains empty, no local native processes or artifacts.",
+    "Follow mainchip40095811631 and TX normal/fault40098024825/40098031853 exact live processes. Validate terminal capsules before continuing; no duplicate. Mainchip remains packet-boundary routing, original20/4/8/8ns plus5percent derate gates unchanged.",
+    "Follow CDR40101491695. Its manual pipeline repeats exact preparation before original ten loaded cases. Once dependent jobs are actually created, expand monitor production_jobs from prepare to every actual loaded case; never treat preparation PASS as loaded acceptance.",
+    "PLL old observer40096538128 is terminal failure after verified full-capture caching. Do not rerun full130GB reader or simulate. Delta prepares codex/pll-first-latch-cache-replay from21f0 using exact3GB cache; helper6d992191 controls40103396561 must pass. Require original exactline142 failure reproduction, then actual row0 endpoint witness with all old stats/edges retained.",
+    "Follow phase244 readback40102964781 and clock-role proof40102668052. Once actual dependent jobs exist, replace monitor production_jobs source-controls with exact-reset-path-readback and actual-native-clock-roles respectively. Preserve original phase rejection and actual topology evidence.",
+    "Follow sole corrected codec40102483214; original reset-stimulus failure remains preserved. Native aligner40100300472 is qualified only for its stated raw boundary scope.",
+    "Only after complete authenticated codec native proof may agents bind RX41351a3a and TX4f49646a prerequisites, register reviewed workflows and execute actual integration tests. No implied LTSSM, lower-rate analog, mainchip integration or full PHY acceptance."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -88,6 +95,12 @@
     "cdr_v58_mim_composition_pass": 40098426328,
     "tx_fresh_initial_saved": 40088271926,
     "phase_original_zero_op_comparison_pass": 40097348918,
-    "phase244_fast_assert_rejected_fixed_phase_margin": 40098170615
+    "phase244_fast_assert_rejected_fixed_phase_margin": 40098170615,
+    "gen12_raw32_native_pass": 40100300472,
+    "gen12_initial_codec_testbench_reset_rejection": 40099402878,
+    "pll131_full_capture_pass_analysis_rejection": 40096538128,
+    "cdr_v58_loaded_preparation_pass": 40099344993,
+    "phase244_readback_controls_pass": 40099838691,
+    "tx_clock_role_source_controls_pass": 40101777955
   }
 }
