@@ -8061,3 +8061,17 @@ Inventory version8 keeps the original verifier unchanged. Every isolated branch 
 Added docs/full-serial-phy-integration-status-20261024.md with source-pinned evidence for the still-external serial/link/clock/pad boundaries. Existing packet-mainchip routing is not full serial integration. Next actual hardware work includes real master/slave phase-output divider qualification, deterministic phase generation/distribution and PLL-connected parent assembly; the 31 ideal per-mux clocks are not hidden or accepted as hardware.
 
 Cloud-only execution remains mandatory. Native TX/CDR pipelines continue from exact qualified artifacts; no original electrical/clock/device gates were weakened.
+
+## 2026-10-24 09:57 UTC — full-capture diagnosis and physical progress
+
+Cloud-only policy remains in force. Local workspace is empty. Root inventory v10 uses exact isolated run/head pins, never unsupported isolated latest-workflow selectors. Main monitor40080701966 passed its own controls/native-inventory checks: ATTENTION_REQUIRED is the real PLL acquisition rejection, not MONITOR_ERROR.
+
+PLL40076916467 verified all130771392219 bytes,3201410 rows and5106 columns through1us. The unchanged81-window acquisition gate failed; final feedback104.152221MHz and phase span5.002709ns. Receipt is docs/evidence/pll-rhi120-c8-full-capture-acquisition-rejection-20261024.json. New source-bound observer is on codex/pll-feedback-cycle-diagnosis atf520b2511b9dd00c98c1bff5491e87d232f11d21; its corrected cache/adjacent-sample controls40083774007 must pass before full diagnostic. It reuses the existing capture and preserves exact original rejection.
+
+TX source snapshot ea54f6bd2616a69df38bddb4fd65b65b291e8788 on codex/tx-via3-rail-diagnosis passed actual130-feed geometry, wires, fresh intrinsic/RC, both orders and all130-target DC comparison. Source-only interface reviewed; native40083738813 at11ed6ba3e7ecd4b184ee0161c5b8a1699c539a56 is now queued. No new34ns loaded run or electrical acceptance yet.
+
+Real phase-divider physical40079962143 and fresh wire40082784240 both passed. Phase/startup/reset and MIM-aware RC/electrical qualification remain open.
+
+CDR500 cleaned geometry/MIM-aware RC/composition passed. Loaded40081228425 preparation passed; both nominal cases completed actual waveform rejection, not infrastructure error. Four HBTs exceed unchanged1.6V VCE (max1.7183V), phase/margin and VI current gates fail. Other eight original cases continue. Preserve all failed results; diagnose actual mapped devices without gate relaxation.
+
+Mainchip40075970481 still owns live same-process routing. Do not dispatch another route or postroute until its full terminal publication is verified. Packet-boundary routing is not full serial PHY integration.
