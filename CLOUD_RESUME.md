@@ -7885,3 +7885,27 @@ not a net-label change. Fresh560-rule DRC/deep+flat500-device LVS/12 faults stil
 required. Nine replacement controls now include unrepaired_old_m3_bridge.
 Future extraction validator must use M1 translation/M3 supply detour/M5 fill
 status and m3_reroutes (original-via coverage), not M3 translation.
+
+
+## CDR supply detour passes full DRC; native comparison still requires investigation
+
+40066771967 sourceaba3881c6d6e2090eb2b6e69db798dded0ed9b09 passed generation,
+all9 replacement controls, all5 native-child geometry controls and full560-rule
+DRC with0 markers. Strict500-device LVS still rejects. The next read-only
+LVS review now targets this exact layout and additionally extracts the native
+cross-reference: actual matched/unmatched device parameters, terminal net pairs,
+and all public logical anchor clusters. Do not infer closure of AVSS/SUB or
+the whole LVS before that readback. The earlier relocation-guard failure remains.
+
+TX saved-wave diagnosis40066102059 exactly reproduced every original full
+electrical review field. All84 native HBT failures are active-window VCE<0.4V;
+worst xtree.xd5676 is0.345121720V at18.026903ns. No VCE-high/VBE/current or
+MOS failures. Final b interface contains45 wrong-sign samples, final a9;
+level4/8 margin deficits and CMOS common-mode below1.8V remain. This diagnosis
+does not yet prove a circuit remedy or fullPHY acceptance. Complete immutable
+source/raw and readback artifacts stay in Releases; compact diagnosis is in
+docs/evidence/tx-via3-full34ns-diagnosis-20261024.json.
+
+Cloud-only current jobs: mainchip40065933598 resumed exact process;
+PLL40041871167 publishing ordinary native full-capture archive; parent LVS
+readback triggered by this commit. Local workspace empty; no local CAD processes.

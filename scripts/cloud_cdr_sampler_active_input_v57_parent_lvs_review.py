@@ -44,6 +44,28 @@ def native():
     for d in c.each_device():
         dc=d.device_class();devices.append(dict(id=d.id(),model=dc.name,parameters={p.name:d.parameter(p.id())for p in dc.parameter_definitions()},terminals={t.name:dict(cluster=d.net_for_terminal(t.id()).cluster_id,name=d.net_for_terminal(t.id()).name)for t in dc.terminal_definitions()}))
     result=dict(status='DIAGNOSED_NATIVE_FAILED_LVS_NOT_ACCEPTANCE',native_census=census,anchors=rows,shorted_logical_groups=shorted,opened_logical_nets=opened,devices=devices,public_pins=[dict(name=p.name(),cluster=c.net_for_pin(p.id()).cluster_id)for p in c.each_pin()])
+    def describe_device(d):
+        if d is None:return None
+        dc=d.device_class()
+        return dict(id=d.id(),name=d.name,model=dc.name,
+          parameters={p.name:d.parameter(p.id())for p in dc.parameter_definitions()},
+          terminals={t.name:dict(cluster=d.net_for_terminal(t.id()).cluster_id,name=d.net_for_terminal(t.id()).name)for t in dc.terminal_definitions()})
+    def describe_net(n):
+        if n is None:return None
+        return dict(name=n.name,cluster=n.cluster_id)
+    xref=db.xref();assert xref is not None
+    device_pairs=[];net_pairs=[]
+    for pair in xref.each_circuit_pair():
+        assert pair.first().name==TOP and pair.second().name.lower()==TOP.lower()
+        for row in xref.each_device_pair(pair):
+            device_pairs.append(dict(status=str(row.status()),layout=describe_device(row.first()),schematic=describe_device(row.second())))
+        for row in xref.each_net_pair(pair):
+            net_pairs.append(dict(status=str(row.status()),layout=describe_net(row.first()),schematic=describe_net(row.second())))
+    assert sum(row['layout']is not None for row in device_pairs)==500
+    assert sum(row['schematic']is not None for row in device_pairs)==500
+    result['xref']=dict(device_status_counts=dict(Counter(r['status']for r in device_pairs)),net_status_counts=dict(Counter(r['status']for r in net_pairs)),
+        failed_device_pairs=[r for r in device_pairs if r['status']!='Match'],failed_net_pairs=[r for r in net_pairs if r['status']!='Match'],
+        all_net_pairs=net_pairs,all_device_pairs=device_pairs)
     (OUT/'native.json').write_text(json.dumps(result,indent=2)+'\n')
     print(json.dumps(dict(shorted={k:sorted({r['logical_net']for r in v})for k,v in shorted.items()},opened=opened),indent=2),flush=True)
 def main():
@@ -51,7 +73,7 @@ def main():
     if args.native:native();return
     OUT.mkdir(parents=True,exist_ok=False);reports.OUT=OUT;r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False)
     try:
-        pin=json.loads((ROOT/'docs/evidence/cdr-sampler-active-input-v57-parent-drc-pass-lvs-rejection-20261024.json').read_text())
+        pin=json.loads((ROOT/'docs/evidence/cdr-sampler-active-input-v57-parent-m3-detour-drc-pass-lvs-rejection-20261024.json').read_text())
         selected=['layout/result.json','layout/schematic.cir','layout/'+TOP+'.gds',*['physical/lvs/'+n for n in ('result.lvsdb','extracted.cir','deck.log','run.log','audit.json')]]
         prior,proof=reports.restore_report('cdr-sampler-active-input-v57-parent',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',selected)
         assert prior==pin['report']and prior['source_head']==pin['source_head'];r['original_source']=proof
