@@ -1,0 +1,75 @@
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-v58-saved-capture-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        default: false
+        required: true
+        description: Replay the three exact rejected captures after source qualification
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-v58-saved-capture-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install numpy==2.3.3
+      - name: Actual receipt and synthetic transport controls only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/cloud_cdr_v58_saved_capture.py scripts/cdr_v58_saved_rows.py scripts/check_cdr_v58_saved_capture.py
+          python3 scripts/cloud_cdr_v58_saved_capture.py --controls > cloud-cdr-v58-controls.json
+          cat cloud-cdr-v58-controls.json
+          sha256sum cloud-cdr-v58-controls.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('cloud-cdr-v58-controls.json'))
+          assert r['status']=='PASS_SAVED_CDR_SOURCE_AND58_CORRUPTION_CONTROLS_ONLY'
+          assert len(r['rejected'])==58 and not r['full_native_capture_read'] and not r['new_simulation']
+          PY
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v58-saved-capture-controls
+          path: cloud-cdr-v58-controls.json
+          retention-days: 90
+  readback:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch' && inputs.readback
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install numpy==2.3.3
+      - name: Replay immutable failed captures without an engine
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_v58_saved_capture.py --readback
+      - name: Preserve all derived native rows and all rejection evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v58-saved-capture
+          path: cloud-cdr-v58-saved-capture/
+          retention-days: 90
+          compression-level: 1
