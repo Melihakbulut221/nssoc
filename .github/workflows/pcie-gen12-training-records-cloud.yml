@@ -1,0 +1,14 @@
+name: PCIe Gen1/2 candidate-record cloud proof
+on:
+  push:
+    branches: [codex/gen12-record-register]
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - name: Register workflow path only; no RTL qualification
+        shell: bash
+        run: printf '%s\n' 'Registration only. No checkout, native inputs, RTL execution or qualification.'
