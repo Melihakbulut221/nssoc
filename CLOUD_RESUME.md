@@ -8288,3 +8288,12 @@ Recordretry40116908104 losthostcommunication, afterfirst40114982496 interrupt143
 ### 2026-10-24T18:44:10.564105+00:00 — qualified physical and role sources integrated
 
 Imported37 exact new paths from actual334physical source2e1f26e9 and canonicalclock-role source82450b1d, preserving every protected dependency and manual native gate. Actual40120130880 and40121026312 bothpassed; root import receipt records allcombined hashes. Existingroot files arepreserved. This imports implementation, not only reports. Full canonical result0b166e90 and23,817Breceipt7c82d594 are also retained. Fresh334RC, realclocktreeelectrical, fullserialPHY andfinaltiming remainunqualified.
+
+
+### 2026-10-24T18:49:34.940645+00:00 — cloud-only checkpoint v29
+
+Allsource/nativework remainsGitHub, localworkspaceempty. Existingmainmonitor schedule17 */8 * * * wasrefetched andreads thisimmutableworking-branch inventory:81exactrun/sourcehandles, read-only andnoautomaticdispatch.
+
+AddedsoleCDRcontrols40121893201/PASS58faults at20f7949e, exact3savedcapture readback40122075973 at8cf2a01d, andinstrumentedrecorddiagnostic40122066637 at689ddede after8actualsupervisioncontrols. OriginalCDRelectricalrejections andall44recordsource/gates remain unchanged. Recordinstrumentation capturesphase/resource/fullrawoutput andrejectsescapeddescendants; itisnotablindretry. Mainchip600sec observation40120760532 andbothTXcontinuations remainsoleoriginalhandles.
+
+PLLcrossingreader40120469625 completed withoutprovingcause: samecoarsecompetitionexistsbothfaultyandcleanintervals; latencyrangesoverlap. Neededper-HBTcurrentsabsentfrom131cacheandoriginal5106columns, so nextproposal isunchanged-circuit boundedcurrentinstrumentation, sourceonly. Fresh334 intrinsic/MIM sourced54ea34b underpeerreview; nofreshRC/electricalacceptance. FullserialPHY, routedserialchip andfinaltiming remainopen.
