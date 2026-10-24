@@ -14,4 +14,22 @@ The ten components contain20 of the32 preserved v14 M4 pieces. Their total metal
 
 Summary SHA256: `ed751395fdbe3049a69c6fe799a465528e49d7b7a825915cd902d5ec7855d11b`; parts manifest SHA256: `d74d553c32525eeb79e5cbdc759971d6e0be13aada11dd19f50566ca655bfa2f`. Exact polygons, graph edges, one-sided cuts and ownership are preserved in the receipt.
 
-The new cleanup is still a candidate. It recomputes the entire diagnostic, requires exact agreement, checks native terminal/public-pin absence and root-exclusive/no-child ownership, and permits only the pinned layer area/via census. Seven corruption controls protect these conditions. All other drawings, hierarchy, texts, schematic and LEF remain unchanged across GDS serialization. Full560-category DRC, unsimplified500-device deep/flat LVS,12 physical fault controls, fresh native planes and the unchanged strict wire methods must pass before any fresh RC stage.
+The bounded cleanup recomputes the entire diagnostic, requires exact agreement, checks native terminal/public-pin absence and root-exclusive/no-child ownership, and permits only the pinned layer area/via census. Seven corruption controls protect these conditions. All other drawings, hierarchy, texts, schematic and LEF remain unchanged across GDS serialization.
+
+## Verified cleanup and next checkpoint
+
+[Cleanup run40076590920](https://github.com/Melihakbulut221/nssoc/actions/runs/40076590920), source `2627eb651ebff31b96abac985d19e1bc9b76d6a8`, completed successfully:
+
+- Full560-category DRC: zero violations.
+- Unsimplified deep and flat LVS: all500 devices match; no extraction diagnostics.
+- All12 physical fault controls and all7 cleanup corruption controls rejected.
+- Fresh160 native planes across51 logical nets;19 plane corruption controls rejected.
+- All16 placements and nine native child drawings preserved; five child-geometry controls rejected.
+- The four original strict wire methods are byte-identical to their previously rejected versions. They now pass, with113 complete metal/via components,238 native nets,500 uniquely located devices and1446 native terminals. No terminal-free metal component remains.
+- All978 logical/physical anchors are bound, with953 metal-terminal and493 intrinsic-body dispositions; no substrate resistance is claimed.
+
+The cleaned GDS SHA256 is `e6ab61471595cd3635c8e2ef3922a09d6b128db0a5338fd6106f3a8e4aefc2f3`. The strict probe SHA256 remains `d0ff17e291afae70873724369a89304dfd845ace8a5b9ed438e478c05b9a3790`.
+
+The immutable publication group is `cdr500-floating-wire-cleanup`, run40076590920. Summary asset671670485 has SHA256 `817bdcb956662d9f3384ddcd72e237a4b9afb77e2cae3703eb4c063b0def90a2`; parts manifest671670572 has SHA256 `ee011be772093b73ceaa45c735aaa2591eb9d321b4f35260c795c1df290839c6`. The complete receipt is `docs/evidence/cdr500-floating-wire-cleanup-pass-20261024.json`.
+
+The next stage must restore this exact cleaned output: `parent/layout/`, `parent/physical/lvs_flat/`, `native-planes.json` and `wire/`. The old rejected source remains under `source/` solely as evidence. Fresh whole-parent RC and original full loaded early/late/fault waveforms remain required. This result does not establish electrical safety, recovered-clock behavior, complete PCIe PHY, main-chip integration, final timing, qualified PEX or production acceptance. No fresh RC or electrical run was launched by this bounded cleanup.
