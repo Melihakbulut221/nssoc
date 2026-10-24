@@ -30,3 +30,10 @@ Physical success is not electrical success, qualified PEX, a complete serial PHY
 ## Guarded cloud continuation launched
 
 Precision run40072842481 at12a42514bee086c800ba8f296a09b2b78556275f now waits for exact fresh intrinsic/RC run40071489977 success. It starts no native precision before the original gates pass. The composition followthrough waits for exactly40072842481 at that HEAD, then pins the successful release hashes and runs the25 composition controls plus130 actual-rail DC comparisons. Any failed prerequisite prevents advancement. These workflows run only on the isolated branch; no34ns transient is launched.
+
+## Fresh wire/anchor terminal pass
+
+Run40071267004 completed successfully at737bef27ae4bd8ddb0b2740f2e0562cb51f8991b. Its actual repaired geometry binds8088 devices,28620 terminals,20532 metal terminals,8088 body terminals,165 physical ports,13370 reference planes and703 conductor components. All six native anchor corruption controls were rejected. The exact receipt is docs/evidence/tx-output8088-driverpinfeed-native-anchors-pass-20261024.json (same bytes as the source-controlled followthrough receipt generation).
+
+Summary asset671560373 SHA256 b40767d0a3dc77124ff0ae6ebf4f11f5c79fd4241492cbabc6b52ee30ffe4f8b; parts671560437 SHA256823af2aa83ea8cc284b21f9513233cbe8ab5e792628f01af7c23eebb99aaf74f.
+Fresh intrinsic/RC40071489977 is running. Precision40072842481 at12a42514bee086c800ba8f296a09b2b78556275f waits for it; composition/rail40072977220 at380763d925826786ff567e4e9bce75f770eaedc0 waits for precision. No new loaded waveform or electrical pass is available yet.
