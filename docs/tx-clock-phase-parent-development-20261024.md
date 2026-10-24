@@ -21,3 +21,10 @@ Deterministic startup remains a real missing stage: the native fixed MIM mismatc
 Native run40079962143 at60b6cc9bf263a3fc2e08aa434bff4292a6df1143 passed all560DRC categories with zero markers, unsimplified deep and flat55-device/9-port LVS, and all five physical corruption controls. GDS SHA256 is c9f55e2220c2278edbbe83d54d6da1ffcbf25b88de32b7335cde1e416e6e795b. Only two M5 master access extensions (648 square micrometers total) were added; all original devices, intrinsic elements, child geometry and seven original ports remain exact. The earlier report-order audit rejection remains recorded.
 
 The new tx-phase-divider-wires-cloud workflow requires that exact completed run/head and exact summary, parts and GDS hashes. It uses the independently reviewed reversible strict native wire/anchor derivations, measures component count, and must cover all168terminals (117metal/51body),9publicports and seven unchanged negative controls. It makes no RC, electrical phase, deterministic reset,31clock parent or fullPHY claim. Real reset/seed/synchronization and full loading remain required.
+
+
+## Native wire pass and intrinsic MIM prerequisite
+
+Run40082784240 passed ondb46f332c4438e21bf55dae4ec9cc4a85b8afd32. Native measurement found24physical wire components,25electrical nets,55devices/168terminals (117metal/51body),126reference planes and9publicports; all seven original anchor faults were rejected.
+
+The next cloud stage derives the original exact native-device and compact-model checks reversibly for this55-device graph. It binds all four MIM devices to actual placed leaf mask/via drawings, rebinds bottom Metal5 reference points outside the intrinsic mask, and reprobes every126point in both original LVS and independent wire graph. All original metal/via geometry, device parameters, intrinsic bodies and contacts must remain unchanged. Eleven original model faults and six mask/point faults must fail. This stage creates no simulator trajectory and does not establish reset, phase,31-clock distribution or electrical acceptance. Fresh MIM-aware two-order RC and exact composition remain the next dependent stage.
