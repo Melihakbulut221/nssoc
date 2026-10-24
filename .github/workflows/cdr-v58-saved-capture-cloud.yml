@@ -1,0 +1,16 @@
+name: CDR saved-capture workflow registration only
+on:
+  push:
+    branches: [codex/register-cdr-v58-saved-capture]
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo 'Workflow registration only; no sources, captures, native tools or qualification.'
