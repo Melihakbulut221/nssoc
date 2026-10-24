@@ -284,7 +284,7 @@ def collect(api, config, now, previous=None, configuration_source=None):
         category, reason = classify(run, jobs, now, config["stall_seconds"])
         required_jobs = item.get("production_jobs", [])
         production = [j for j in jobs if j["name"] in required_jobs and j.get("conclusion") != "skipped"]
-        if required_jobs and not production and run["status"] == "completed":
+        if required_jobs and not production and category == "COMPLETED_ACTIONS":
             category, reason = "NOT_EXECUTED", "Production job absent or skipped; control-job success is not native completion"
         reports = terminal_reports(api, run) if run["status"] == "completed" else []
         statuses = [r.get("native_status") or "" for r in reports]

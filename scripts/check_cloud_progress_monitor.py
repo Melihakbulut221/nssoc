@@ -5,6 +5,7 @@ import copy
 import base64
 import datetime as dt
 import hashlib
+import io
 import json
 from pathlib import Path
 import sys
@@ -74,7 +75,50 @@ class Mock:
         assert binary and path in ("releases/assets/100", "releases/assets/101"), "Bulk asset access forbidden"
         return self.payloads[int(path.rsplit("/", 1)[1])]
 
+class SmallResponse:
+    def __init__(self, raw, declared=None):
+        self.raw = io.BytesIO(raw)
+        self.headers = {} if declared is None else {"Content-Length": str(declared)}
+    def __enter__(self): return self
+    def __exit__(self, *args): return False
+    def read(self, size): return self.raw.read(size)
+
+class CaptureOpener:
+    def __init__(self, response): self.response = response; self.requests = []
+    def open(self, request, timeout):
+        self.requests.append(request)
+        return self.response
+
 class Controls(unittest.TestCase):
+    def test_real_api_request_is_repository_scoped_get(self):
+        api = m.API("fixture-token"); api.opener = CaptureOpener(SmallResponse(b"{}", 2))
+        self.assertEqual(api.get("actions/runs/123"), {})
+        request = api.opener.requests[0]
+        self.assertEqual(request.get_method(), "GET")
+        self.assertEqual(request.full_url, "https://api.github.com/repos/" + m.REPO + "/actions/runs/123")
+
+    def test_path_escape_rejected_before_request(self):
+        api = m.API("fixture-token"); api.opener = CaptureOpener(SmallResponse(b"{}"))
+        for path in ("../other", "/outside", "https://attacker.invalid/"):
+            with self.assertRaises(AssertionError): api.get(path)
+        self.assertEqual(api.opener.requests, [])
+
+    def test_http_body_limit_even_without_content_length(self):
+        api = m.API("fixture-token"); api.opener = CaptureOpener(SmallResponse(b"12345"))
+        with self.assertRaises(ValueError): api.raw("actions/runs/123", limit=4)
+
+    def test_redirect_removes_authorization(self):
+        request = m.urllib.request.Request("https://api.github.com/repos/" + m.REPO,
+            headers={"Authorization": "Bearer fixture-secret"})
+        redirected = m.SafeRedirect().redirect_request(request, None, 302, "", {},
+            "https://release-assets.githubusercontent.com/fixture")
+        self.assertIsNone(redirected.get_header("Authorization"))
+
+    def test_redirect_rejects_external_or_unencrypted_host(self):
+        request = m.urllib.request.Request("https://api.github.com/repos/" + m.REPO)
+        for url in ("https://attacker.invalid/fixture", "http://release-assets.githubusercontent.com/fixture"):
+            with self.assertRaises(ValueError): m.SafeRedirect().redirect_request(request, None, 302, "", {}, url)
+
     def test_real_config(self):
         m.check_config(json.loads(Path(".github/cloud-progress-monitor.json").read_text()))
 
@@ -115,6 +159,16 @@ class Controls(unittest.TestCase):
         r = m.collect(Mock(run("completed", "success"), [job("completed", conclusion="skipped")]), c, NOW)
         self.assertEqual(r["runs"][0]["classification"], "NOT_EXECUTED")
         self.assertFalse(r["full_phy_accepted"])
+
+    def test_failed_missing_or_skipped_production_stays_failed(self):
+        c = config(); c["runs"][0]["production_jobs"] = ["native simulation"]
+        for conclusion in ("failure", "cancelled", "timed_out", "action_required"):
+            for jobs in ([], [job("completed", conclusion="skipped")]):
+                with self.subTest(conclusion=conclusion, jobs=jobs):
+                    r = m.collect(Mock(run("completed", conclusion), jobs), c, NOW)
+                    self.assertEqual(r["runs"][0]["classification"], "FAILED")
+                    self.assertEqual(r["status"], "ATTENTION_REQUIRED")
+                    self.assertEqual(r["problem_runs"], [123])
 
     def test_duplicate_pinned_run_rejected(self):
         c = config(); c["runs"] *= 2
