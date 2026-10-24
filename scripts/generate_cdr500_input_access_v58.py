@@ -22,6 +22,10 @@ ALLOWED = set(METALS + VIAS)
 CLEARANCE = {m: 2000 if m in (126, 134) else 500 for m in ALLOWED}
 CLEARANCE.update({m: 300 for m in VIAS})
 EXPECTED_IDS = {59: (69, 187), 60: (70, 188), 111: (121, 225), 112: (124, 226)}
+VIA_PINS = {
+    'sg13g2_pycell_lib/ihp/via_stack_code.py': '185f6d3bea6ef9a4960817d189e099057242e1cca73f6ab31c08298c2d64cc61',
+    'sg13g2_pycell_lib/sg13g2_tech.json': 'dce023dcf8dca1a7d875b6f71b5ce651b42f2dc3e9a21abb6de3997262273142',
+}
 
 def sha(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
@@ -68,7 +72,14 @@ def build_plan(report):
             low = via_center(p, col['node'], pieces[neighbor]['node'], 49)
             high = via_center(p, col['node'], pieces[3]['node'], 66)
             require(low[0] == high[0] and high[1] > low[1]+100000, 'Wrong original vertical M4 column')
-            columns.append(dict(role=role, low_dbu=low, high_dbu=high, original_column=col))
+            high_link = next(v for v in p['via_links'] if set(v['nodes']) == {col['node'], pieces[3]['node']})
+            high_cuts = [box_coordinates(v['bbox_dbu']) for v in high_link['cuts']]
+            require(len(high_cuts) == 2 and all(v['via_layer'] == 66 for v in high_link['cuts']), 'Original high endpoint must have exactly two native Via4 cuts')
+            require(all(b[2]-b[0] == b[3]-b[1] == 190 for b in high_cuts), 'Original Via4 cut size changed')
+            centers = sorted(((b[0]+b[2])//2, (b[1]+b[3])//2) for b in high_cuts)
+            require(centers == [(high[0]-205, high[1]), (high[0]+205, high[1])], 'Original two-cut410nm Via4 pitch changed')
+            columns.append(dict(role=role, low_dbu=low, high_dbu=high, original_column=col,
+                                original_high_via4_boxes_dbu=high_cuts))
         require(columns[0]['high_dbu'][1] == columns[1]['high_dbu'][1], 'Different original M5 buses')
         cross = next(p for p in g['paths'] if p['roles'] == ['driver', 'gain'])
         metal = cross['metal_pieces']
@@ -108,6 +119,7 @@ def main():
     require(sha(gds) == GDS_SHA, 'Exact cleaned GDS required')
     protected = {str(q): sha(q) for q in (gds, lvs_path, graph_path, wire_path, args.diagnosis, Path(__file__))}
     source = args.pdk/'libs.tech/klayout/python'
+    require(all(sha(source/name) == digest for name, digest in VIA_PINS.items()), 'Native count-dependent via source changed')
     pdk_files = [*source.rglob('*.py'), *source.rglob('*.json')]
     require(pdk_files, 'Missing native PDK source')
     protected.update({str(q): sha(q) for q in pdk_files})
@@ -153,6 +165,7 @@ def main():
     addition_owner = {m: [] for m in ALLOWED}
     route_records = []
     controls = []
+    high_cut_controls = []
     diagnostic_active = False
 
     def probe(anchor):
@@ -243,7 +256,11 @@ def main():
         box = pya.Box(min(a[0], b[0])-h, min(a[1], b[1])-h, max(a[0], b[0])+h, max(a[1], b[1])+h)
         add_region(layer, pya.Region(box), plan, purpose)
 
-    def via(bottom_name, top_name, point, plan, purpose, columns=8, upper=False):
+    def exact_original_via4(actual, expected, owned):
+        require(expected.count() == 2 and (expected-owned).is_empty(), 'Original two-cut Via4 source identity differs')
+        require((actual^expected).is_empty(), 'Rendered native Via4 cuts differ from exact original two-cut polygons')
+
+    def via(bottom_name, top_name, point, plan, purpose, columns=8, upper=False, original_via4=None):
         layer_name = {'Metal1': 8, 'Metal3': 30, 'Metal4': 50, 'Metal5': 67, 'TopMetal1': 126, 'TopMetal2': 134}
         landing(layer_name[bottom_name], point, plan)
         parameters = dict(b_layer=bottom_name, t_layer=top_name, vn_columns=columns, vn_rows=1)
@@ -321,11 +338,32 @@ def main():
             rendered[info.layer] = reg
         require(layer_name[bottom_name] in rendered and layer_name[top_name] in rendered, 'Native via endpoint missing')
         require(not (rendered[layer_name[bottom_name]] & own[plan['gain_native_id']][layer_name[bottom_name]]).is_empty(), 'Rendered bottom landing misses original owned metal')
+        if original_via4 is not None:
+            require(columns == 2 and bottom_name == 'Metal4' and top_name == 'TopMetal1', 'Wrong original-cut preservation target')
+            expected = pya.Region()
+            for bounds in original_via4:
+                expected += pya.Region(pya.Box(*bounds))
+            expected = expected.merged()
+            require(66 in rendered, 'Original-cut preservation requires rendered Via4')
+            exact_original_via4(rendered[66], expected, own[plan['gain_native_id']][66])
+            if not high_cut_controls:
+                one_cut = pya.Region(next(rendered[66].each()))
+                for name, bad in [
+                    ('removed_rendered_via4_cut', rendered[66]-one_cut),
+                    ('shifted_rendered_via4_cuts_35nm', rendered[66].transformed(pya.Trans(35, 0))),
+                    ('enlarged_rendered_via4_cuts_5nm', rendered[66].sized(5)),
+                ]:
+                    try:
+                        exact_original_via4(bad, expected, own[plan['gain_native_id']][66])
+                    except ValueError:
+                        high_cut_controls.append(name)
+                    else:
+                        raise AssertionError('Accepted actual Via4 corruption '+name)
         for m, reg in rendered.items():
             additions[m] += reg
             addition_owner[m].append((plan['gain_native_id'], reg.dup()))
         T.insert(pya.CellInstArray(cell.cell_index(), tr))
-        route_records.append(dict(gain_native_id=plan['gain_native_id'], purpose=purpose, pcell=cell.name, parameters=parameters, point_dbu=point, transform=str(tr), actual_layers={str(m): [str(q) for q in reg.each()] for m, reg in rendered.items()}))
+        route_records.append(dict(gain_native_id=plan['gain_native_id'], purpose=purpose, pcell=cell.name, parameters=parameters, point_dbu=point, transform=str(tr), exact_original_via4_cuts_preserved=original_via4 is not None, actual_layers={str(m): [str(q) for q in reg.each()] for m, reg in rendered.items()}))
 
     for label, corrupt in [('changed_endpoint_identity', lambda x: x['native_geometry']['groups'][0]['role_binding']['driver'].update(native_id=-1)), ('changed_owned_path_layer', lambda x: x['native_geometry']['groups'][0]['paths'][1]['metal_pieces'][2].update(metal=8))]:
         bad = copy.deepcopy(report)
@@ -357,8 +395,9 @@ def main():
         # Both retime output accesses retain their complete original M4 drawing;
         # each real TM1 strap gets separate native M4/M5/TopVia1 endpoint stacks.
         for col in plan['columns']:
-            for point in (col['low_dbu'], col['high_dbu']):
-                via('Metal4', 'TopMetal1', point, plan, col['role']+'_native_upper_landing', columns=6, upper=True)
+            via('Metal4', 'TopMetal1', col['low_dbu'], plan, col['role']+'_native_upper_landing', columns=6, upper=True)
+            via('Metal4', 'TopMetal1', col['high_dbu'], plan, col['role']+'_native_upper_landing', columns=2, upper=True,
+                original_via4=col['original_high_via4_boxes_dbu'])
             add_line(126, col['low_dbu'], col['high_dbu'], 3200, plan, col['role']+'_parallel_tm1_access')
         high = [col['high_dbu'] for col in plan['columns']]
         for point in high:
@@ -405,6 +444,8 @@ def main():
     else:
         raise AssertionError('Accepted original material removal')
     require(len(controls) == 9, 'Missing candidate negative control')
+    require(len(high_cut_controls) == 3, 'Missing exact original Via4 geometry corruption control')
+    require(sum(r.get('exact_original_via4_cuts_preserved', False) for r in route_records) == 8, 'Incomplete original high-endpoint Via4 preservation')
     T.name = CANDIDATE
     args.out.mkdir(parents=True)
     output = args.out/(CANDIDATE+'.gds')
@@ -429,6 +470,8 @@ def main():
         input_sha256=protected, original_top=original_top_name, candidate_top=CANDIDATE,
         source_diagnostic_run=40085495203, source_diagnostic_sha256=DIAG_SHA,
         plans=plans, additions=route_records, controls=controls,
+        high_endpoint_cut_controls=high_cut_controls, original_high_endpoint_two_cut_sets_preserved=8,
+        count_dependent_native_via_source_sha256=VIA_PINS,
         original_children_drawings_and_placements_preserved=True,
         original_public_labels_and_boundary_preserved=True,
         serialized_metal_and_via_delta_exact=True, added_via_instances=28,

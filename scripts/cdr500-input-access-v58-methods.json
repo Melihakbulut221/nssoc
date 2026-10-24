@@ -10,7 +10,7 @@
     "docs/evidence/cdr500-input-path-diagnosis-pass-20261024.json": "2db03b24c14e4ae13ab698ebf52b20b626fab755fd26bbd75e7346bea116885f",
     "hw/soc/flow/make_pcie_sampler_active_input_v57.py": "8e2006a15a40d03a368f06e4d5ee7926f8a5407459d12f429f5001e28453a151",
     "scripts/generate_cdr_sampler_active_input_v57_parent.py": "94c45b309446ecdbc4cccd262af777df14d4cb5945b4d28b777268317de0a799",
-    "scripts/generate_cdr500_input_access_v58.py": "4b33906dfd4f7749b6eafb859a6181c6f113cef33ebcfa85e270fd5564c7bd47"
+    "scripts/generate_cdr500_input_access_v58.py": "48eb0434a38adfa60dfc3744877f0f21b09e4038290512935b61a72518748d46"
   },
   "diagnosis": {
     "run": 40085495203,
@@ -59,14 +59,20 @@
   "candidate_array_refinement": {
     "source_only": true,
     "physical_accepted": false,
-    "prior_vn_columns": 8,
-    "new_m4_to_tm1_vn_columns": 6,
-    "applies_to": "Only the16 M4-to-TopMetal1 endpoint stacks; all other candidate parameters and routes unchanged",
-    "native_footprint_and_full_gates_still_required": true,
-    "clearance_changed": false,
+    "low_endpoint_columns": 6,
+    "high_endpoint_columns": 2,
+    "high_endpoint_count": 8,
+    "exact_original_via4_runtime_identity_required": true,
+    "native_cut_corruption_controls": 3,
+    "unchanged_original_controls": 9,
     "coordinates_changed": false,
-    "original_geometry_changed": false,
-    "resistance_reduction_measured": false
+    "clearance_changed": false,
+    "source_rule": "Pinned native PCell uses Vn_b=.22um only when columns<4 and rows<4; otherwise Vn_b1=.29um. Cut size.19um. Thus original2x1 pitch410nm and rejected6x1 pitch480nm.",
+    "pdk_sources": {
+      "pdk/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/via_stack_code.py": "185f6d3bea6ef9a4960817d189e099057242e1cca73f6ab31c08298c2d64cc61",
+      "pdk/libs.tech/klayout/python/sg13g2_pycell_lib/sg13g2_tech.json": "dce023dcf8dca1a7d875b6f71b5ce651b42f2dc3e9a21abb6de3997262273142"
+    },
+    "native_pass_or_R_gain_inferred": false
   },
   "partial_cut_reporting_change": "Rejection-only native cut layer, polygons, PCell footprint and original drawing ownership readback. Exact six-column candidate geometry and all guards remain unchanged."
 }

@@ -79,6 +79,7 @@ def main():
         run([app,'python',ROOT/'scripts/generate_cdr500_input_access_v58.py','--physical',OUT/'source','--diagnosis',diagnostic,'--pdk',ROOT/'pdk','--out',parent/'layout'],'generation')
         layout=parent/'layout';delta=json.loads((layout/'result.json').read_text())
         assert len(delta['controls'])==9 and delta['added_via_instances']==28
+        assert len(delta['high_endpoint_cut_controls'])==3 and delta['original_high_endpoint_two_cut_sets_preserved']==8
         assert delta['original_children_drawings_and_placements_preserved']and delta['original_public_labels_and_boundary_preserved']and delta['serialized_metal_and_via_delta_exact']
         assert delta['all_intrinsic_device_bias_and_stimulus_sources_unchanged']and not delta['reduced_resistance_claim']
         (OUT/'candidate-delta.json').write_text(json.dumps(delta,indent=2)+'\n');r['candidate_delta']=delta;save()
