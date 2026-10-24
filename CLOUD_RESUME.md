@@ -7344,3 +7344,14 @@ including cold pass, with unchanged all-branch nodal/KCL/power checks.
 Investigate actual lower-terminal via/access drops before further physical edit;
 original HBT lower escapes still4columns/.4umM3 and MOS source/drain4lower via cuts.
 Any stronger arrays require real pin geometry/DRC/LVS/freshRC, never scaled values.
+
+
+## 2026-10-24 v54 measured collector/access repair
+v53 loss40046527683: hot intrinsic collectors104.246mV/36.406ps meet100mV/37.5ps;
+public81.261mV/45.156ps fail. Nominal collector access12.193/12.330ohm,42-43mV
+drop; pullup supply8.651/6.885ohm,64/51mV drop. Actual full-wave receipts retained.
+v54 preserves entire v53 circuit and all MOS/access/bias settings. Only real HBT
+collector lower M1->M3 via columns4->16 and M3width0.4->1.2um; resistor lower
+via columns8->16 and M3width1.6->2um. Upper arrays and other routing retained.
+Run original560DRC/deep-flat18LVS/9faults, fresh extraction/model binding/RC, then
+original full5case waveform. No numerical RC scaling or acceptance gate changes.
