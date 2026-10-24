@@ -7969,3 +7969,7 @@ actual38144byte partialpriorrow, archive links/duplicates and fullstream exhaust
 40041871167 was authoritatively cancelled for the GitHub6h maximum during
 publication;423partialparts retained, no complete manifest. No productionrestart
 authorized until newadapter validated; lastdurable same-process source40001626503.
+
+
+### Cloud-only root M4 short-path diagnosis
+Drawing-only seven-metal/six-via extraction run40069060616 proves a real AVSS/SUB path with no label union. Its11-node path bridges through root-direct Metal4 remnants in sampler D. Earlier old-net-owned overlap checks did not cover these unattributed pieces. No physical acceptance. Read all old/new native M4 attachments and original vias before editing; sources remain bound to40066771967.
