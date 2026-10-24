@@ -1,6 +1,6 @@
 {
   "schema": "tx-phase-cloud-checkpoint-v5",
-  "observed_utc": "2026-10-24T14:28:21.698901+00:00",
+  "observed_utc": "2026-10-24T14:29:58.903920+00:00",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
   "source_head": "6240eda9c2273338dc84627d0dbc01ee4adbc82b",
@@ -85,7 +85,7 @@
   "full_PHY_accepted": false,
   "next": [
     "Follow source controls40099838691 (reviewed reset reader956b128). On exact terminal success preserve joblog/status, check no duplicate manual workflow, then dispatch tx-phase-fast-assert-readback-cloud.yml once on codex/tx-clock-phase-parent. It only reads exact published rejected244 captures; no simulation or acceptance.",
-    "Follow source controls40101777955 (registered native clock-role controller6240eda9). On exact terminal success preserve receipt, check no duplicate manual workflow, then dispatch tx-output8088-native-clock-roles-cloud.yml once. Parent authorized one independently reviewed native role proof; complete archive/input/native-binder result equality and all fresh role/polarity controls must pass.",
+    "Follow existing native clock-role proof40102668052 atd9d3e845; no duplicate. Its source-controls gate reruns12metadata+8archive faults, then exact native proof must reproduce originalinterface13bfff54 and all62clock/124base/14fault/31polarity checks. Native/electrical/PHY acceptance is still false.",
     "Use actual244 readback path measurements to justify any new transistor/resistor circuit repair; retain fixed125psUI/100mV margins, all106HBT safety, measured scalar fixture and original rejected outputs. No full31-tree/layoutRC/actualPLL/fullPHY acceptance follows from these proofs."
   ],
   "terminal_source_receipt": {
@@ -228,7 +228,7 @@
     "script": "scripts/bind_tx_output8088_native_clock_roles.py",
     "methods": "scripts/tx-output8088-native-clock-roles-methods.json",
     "document": "docs/tx-output8088-native-clock-role-candidate-20261024.md",
-    "status": "reviewed_native_proof_ready_no_dispatch_yet",
+    "status": "native_proof_dispatched_queued",
     "native_executed": false,
     "registered_workflow": true,
     "parent_run": 40083738813,
@@ -246,9 +246,17 @@
     "source_controls_run": 40101777955,
     "source_controls_status": "completed_success",
     "source_controls_passed": true,
-    "native_execution_dispatched": false,
+    "native_execution_dispatched": true,
     "native_execution_passed": false,
     "full_phy_accepted": false,
-    "source_controls_receipt": "docs/evidence/tx-output8088-native-clock-role-controls-pass-20261024.json"
+    "source_controls_receipt": "docs/evidence/tx-output8088-native-clock-role-controls-pass-20261024.json",
+    "native": {
+      "run": 40102668052,
+      "source_head": "d9d3e8453dbb5831354bb84b40e042dd73c61211",
+      "workflow": "tx-output8088-native-clock-roles-cloud.yml",
+      "job": "actual-native-clock-roles",
+      "last_observed_status": "queued",
+      "no_duplicate_dispatch": true
+    }
   }
 }
