@@ -7244,3 +7244,14 @@ v52 candidate changes XREF width8->5.4um (external500uA remains), pullup length
 and restored common-mode headroom; this is unproven until actual full results.
 All five original cases and exact full gates unchanged. Need new physical
 geometry/DRC/LVS/RC and loaded wave even if schematic screen passes.
+
+
+## 2026-10-24 v52 cold safety rejection and v53 correction
+v52 run40043161809 full results retained. Nominal196.19mV/17.969ps and hot170.49mV/
+20.781ps pass schematic signal andCM. Cold signal209.99mV/16.406ps but one HBT
+maximum all-time VCE1.607070321V exceeds1.6V; deliberately REJECTED, not physicalized
+as accepted. v53 reduces only two shunt lengths8.0->7.4um to lower output common
+mode/collector stress; keep original1.6V bound and all other gates. New five-case
+screen must pass before qualified physical work. Planned physical improvement:
+more actual upper via cuts to reduce measured10-16ohm port-terminal series losses,
+fresh native DRC/LVS and RC required, never numerical rescaling of oldRC.
