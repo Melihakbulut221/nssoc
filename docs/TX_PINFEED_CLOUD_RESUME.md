@@ -61,3 +61,15 @@ Read-only run40075242137 at f9dfeee4ebdd1970109eee34b9289bc29fd0eef1 restores th
 The job was queued when this checkpoint was written. Do not claim it passed until its terminal result and immutable release hashes are verified. Next: identify actual residual segment coordinates and local via phase/clearance, then only add a physical candidate proven to belong to the intended rail. Preserve all original intrinsic dimensions and165 ports. No34ns transient or native interface controller has been run.
 
 Cloud-only workspace contract remains enforced: local workspace contains zero entries; no GDS/raw archives/local CAD were downloaded or executed.
+
+## Remaining-rail readback passed; physical branch/tail candidate queued
+
+Readback40075242137 completed successfully with all four native ownership corruptions rejected. Exact summary asset671655169 SHA256 b8327a78d088a97d4d4864b552d5e9084d2b79b022088a49456e70908cc1f8eb; parts671655235 SHA256 0bcfc03e125fa14e7cf6dc1f1bae2a3e1ae5cf00ea0bf9bc963d0b5f6df3ea89. Original native terminal coordinates independently establish the5nm raw extraction grid.
+
+Every sampled AVDD driver has a10.0055-ohm series branch segment; AVSS samples have4.84198-ohm and1.9965-ohm series sections. Their endpoint coordinates span the long existing M5 branches and vertical M4 feeds, not a remaining single V1 cut. Both final tails retain1.42924-ohm local emitter access. Native readback confirms same-net M2/M3 at each emitter and free M4/M5 routing to the existing AVSS strap, while TM1 directly above the emitter belongs to a foreign net.
+
+Native physical candidate40077948550 at12dbfa546406f345bc594cf25af699bea5840634 is queued, not accepted. It adds128 real parallel TM1 branch feeds and two short M2-to-M5 tail feeds. Driver starts are selected only beyond the opposite supply's native vertical TM1 trunk; every endpoint is re-probed and every candidate is checked against full foreign-metal/cut geometry before insertion. Tail rows are derived from actual existing V2 cut phase. All original M1/V1, device geometry, port shapes, circuit dimensions, clocks and biases remain unchanged.
+
+The candidate requires the complete560-category DRC deck, deep and flat unsimplified8088-device LVS, exact165 ports and zero extraction diagnostics. Five physical negative controls are retained/added: driver access open, tail emitter access open, supply short, wrong width and off-grid. Missing added parallel geometry is rejected separately, never falsely claimed as an LVS open.
+
+After terminal physical success, derive fresh wire/anchor sources from the exact new GDS hash and passed summary/parts hashes, rerun all28620-terminal/six-fault binding, intrinsic19 controls, raw RC13 controls, both precision orders and composition25 controls. Recompute all130 exact rail accesses and require original8088 device/full-terminal/body fingerprints to match. No old RC/node indices or native checkpoint may be reused as candidate evidence. The source-only interface controller still needs independent review or cloud controls. No34ns run is authorized by this checkpoint; parent review of combined new-rail results is required first.
