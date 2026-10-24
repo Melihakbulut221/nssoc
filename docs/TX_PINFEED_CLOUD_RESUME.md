@@ -43,3 +43,13 @@ Fresh intrinsic/RC40071489977 is running. Precision40072842481 at12a42514bee086c
 Run40071489977 completed successfully atb00c6f400c60190ff4ddcba200bbe0d6f92c8fe7. All8088 native devices/65 body nets and19 intrinsic corruption controls passed. Fresh RC contains141246 resistors and100546 capacitors; all13 raw corruption controls passed. Exact native source receipt: docs/evidence/tx-driver-pinfeed-fresh-intrinsic-rc-pass-20261024.json. The committed anchor receipt byteSHA2cb3982c513e7941d149c8a6daa3a2669500ebbc60c19459eb2887482a4d18eb exactly matches the receipt generated and preserved by this native run.
 
 Precision40072842481 and composition/rail40072977220 remain active. No new DC resistance result or loaded electrical acceptance yet. The future fresh native interface source and exact preparation/continuation caveats are in docs/TX_PINFEED_NATIVE_CONTINUATION.md; no interface workflow or34ns transient was started.
+
+## Qualified bounded precision/composition/DC snapshot
+
+Both workflows completed successfully: precision40072842481 at12a42514bee086c800ba8f296a09b2b78556275f, composition/rail40072977220 at380763d925826786ff567e4e9bce75f770eaedc0. Both native cap-input orders preserve exactly141246R/100546C and pass13 corruption controls each. All25 composition controls passed. All8088 native device/full-terminal/body-topology fingerprints equal the original, and the prior10 target resistance values were independently reproduced.
+
+All64 AVDD driver accesses improved:20.8286087722–22.5362348471 ohm before,14.0721811816–15.7798072565 ohm after; minimum reduction29.9802856885%. All64 AVSS accesses improved:19.8678275847–21.9054852845 ohm before,12.8609699392–14.8986276390 ohm after; minimum reduction31.9867720552%. This is a partial reduction of actual metal DC access resistance, not removal of every bottleneck or loaded IR/timing acceptance.
+
+Both original final-tail emitter accesses remain exactly unchanged: XD5667=6.286958767402115 ohm; XD5674=6.275982084626478 ohm. Their remaining local access geometry still needs investigation. No34ns transistor run was dispatched.
+
+Exact receipts and all comparison-output hashes: docs/evidence/tx-driver-pinfeed-precision-composition-rail-pass-20261024.json. Full added-path list and immutable native source heads: docs/TX_PINFEED_SOURCE_MANIFEST.json. The future interface controller remains source-only pending parent review; see docs/TX_PINFEED_NATIVE_CONTINUATION.md.
