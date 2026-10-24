@@ -42,6 +42,8 @@ jobs:
           s=json.load(open('source-controls.json'))
           assert s['status']=='PASS_PINNED_PARENT_AND_STAGE_PARAMETER_CONTROLS_NOT_NATIVE_PROOF'
           assert len(s['stage_catalog_controls']['faults'])==16
+          assert len(s['stage_catalog_controls']['original_failure_faults'])==6
+          assert all(x['rejected']for x in s['stage_catalog_controls']['original_failure_faults'])
           assert all(x['rejected']for x in s['stage_catalog_controls']['faults'])
           assert len(s['original_parent_controls']['controls'])==12
           assert len(s['original_parent_controls']['archive_controls']['negative_controls'])==8

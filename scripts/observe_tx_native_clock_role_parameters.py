@@ -75,6 +75,13 @@ def mismatches(blocks):
     need(totals=={"data":372,"selector":124,"tail":62,"reference":31},"role census",{"data":372,"selector":124,"tail":62,"reference":31},totals)
     need(emitters==719,"actual mux emitters",719,emitters)
     return bad
+def verify_original_failure(original,witness):
+    assert original["type"]=="AssertionError"and original["message"]=="Actual selector/tail emitter multiplier changed"
+    assert original["frames"][-2:]==[
+     {"function":"bind","line":75,"file":"bind_tx_output8088_native_clock_roles.py"},
+     {"function":"nx","line":31,"file":"bind_tx_output8088_native_clock_roles.py"}]
+    assert original["failing_device"]=={"native_id":witness["native_id"],"parameters":witness["parameters"]}
+    assert original["bind_context"]=={"macro":witness["macro"],"clock_leg":witness["clock_leg"]}
 def controls():
     source_catalog();blocks=[];did=1
     for label,kind in KINDS.items():
@@ -109,7 +116,23 @@ def controls():
         else:dev("a","selector")["parameters"]["nx"]=True
         errors=mismatches(b);assert errors,("Missed source catalog fault",name)
         faults.append({"name":name,"rejected":True})
-    return {"status":"PASS_CANONICAL_STAGE_CATALOG_AND16_CORRUPTIONS_NOT_NATIVE_PROOF","faults":faults,"native_execution":False}
+    witness={"native_id":17,"parameters":{"nx":3.0},"macro":"a","clock_leg":"sap"}
+    original={"type":"AssertionError","message":"Actual selector/tail emitter multiplier changed",
+     "frames":[{"function":"bind","line":75,"file":"bind_tx_output8088_native_clock_roles.py"},{"function":"nx","line":31,"file":"bind_tx_output8088_native_clock_roles.py"}],
+     "failing_device":{"native_id":17,"parameters":{"nx":3.0}},"bind_context":{"macro":"a","clock_leg":"sap"}}
+    verify_original_failure(original,witness);failure_faults=[]
+    for name in ("type","message","callsite","device","parameters","owner"):
+        wrong=copy.deepcopy(original)
+        if name=="type":wrong["type"]="RuntimeError"
+        elif name=="message":wrong["message"]="Unrelated assertion"
+        elif name=="callsite":wrong["frames"][-2]["line"]=95
+        elif name=="device":wrong["failing_device"]["native_id"]+=1
+        elif name=="parameters":wrong["failing_device"]["parameters"]["nx"]=8.
+        else:wrong["bind_context"]["clock_leg"]="san"
+        try:verify_original_failure(wrong,witness)
+        except AssertionError:failure_faults.append({"name":name,"rejected":True})
+        else:raise AssertionError("Accepted wrong original failure "+name)
+    return {"status":"PASS_CANONICAL_STAGE_CATALOG_AND16_CORRUPTIONS_NOT_NATIVE_PROOF","faults":faults,"original_failure_faults":failure_faults,"native_execution":False}
 def inspect_native(g):
     pya=g["pya"];rows=g["rows"];ds=g["devices"];records=g["records"]
     def cl(d,t):return rows[d,t]["native_cluster"]
@@ -171,8 +194,14 @@ def main():
     except AssertionError as e:
         original={"type":type(e).__name__,"message":str(e),"traceback":traceback.format_exc(),
          "frames":[{"function":x.name,"line":x.lineno,"file":Path(x.filename).name}for x in traceback.extract_tb(e.__traceback__)]}
-        assert str(e)=="Actual selector/tail emitter multiplier changed"
-        assert original["frames"][-1]=={"function":"nx","line":31,"file":"bind_tx_output8088_native_clock_roles.py"}
+        frames=[];tb=e.__traceback__
+        while tb is not None:
+            frames.append(tb.tb_frame);tb=tb.tb_next
+        nx_frame=frames[-1];bind_frame=frames[-2]
+        assert nx_frame.f_code.co_name=="nx"and bind_frame.f_code.co_name=="bind"
+        original["failing_device"]={"native_id":nx_frame.f_locals["did"],"parameters":copy.deepcopy(nx_frame.f_locals["p"])}
+        original["bind_context"]={"macro":bind_frame.f_locals["label"],"clock_leg":bind_frame.f_locals["key"]}
+        verify_original_failure(original,legacy_first)
     else:raise AssertionError("Frozen original rejection did not reproduce")
     assert all(frozen.sha(workspace/p)==h for p,h in frozen.PIN.items());source_catalog()
     report={"status":"PASS_EXACT_STAGE_ROLE_PARAMETER_DIAGNOSIS_ORIGINAL_BINDER_REJECTION_REMAINS"if not bad else"FAIL_ACTUAL_STAGE_ROLE_PARAMETER_MISMATCH",

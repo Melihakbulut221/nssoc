@@ -18,6 +18,7 @@ def controls():
     assert old["status"]=="PASS_EXACT_PARENT_METADATA_AND_ARCHIVE_CONTROLS_NOT_NATIVE_ROLES"
     assert len(old["controls"])==12 and len(old["archive_controls"]["negative_controls"])==8
     assert len(new["faults"])==16 and all(x["rejected"]for x in new["faults"])
+    assert len(new["original_failure_faults"])==6 and all(x["rejected"]for x in new["original_failure_faults"])
     return {"status":"PASS_PINNED_PARENT_AND_STAGE_PARAMETER_CONTROLS_NOT_NATIVE_PROOF",
      "original_parent_controls":old,"stage_catalog_controls":new,"method":m,
      "native_execution":False,"native_role_accepted":False,"electrical_accepted":False,"full_phy_accepted":False}
@@ -45,7 +46,7 @@ def main():
         assert d["status"]=="PASS_EXACT_STAGE_ROLE_PARAMETER_DIAGNOSIS_ORIGINAL_BINDER_REJECTION_REMAINS"
         assert d["counts"]=={"muxes":31,"HBTs":589,"emitters":719.0}and not d["mismatches"]
         assert not observer.mismatches(d["blocks"])
-        assert d["original_failure"]["message"]=="Actual selector/tail emitter multiplier changed"
+        observer.verify_original_failure(d["original_failure"],d["first_legacy_selector_rejection"])
         assert d["original_binder_unchanged"]and d["qualified_inputs_unchanged"]and d["no_new_extraction_or_simulation"]
         assert d["original_interfaces_sha256"]==prior.roles.PIN["interfaces.json"]
         assert all(d[k]is False for k in ("native_role_accepted","electrical_accepted","full_phy_accepted"))
