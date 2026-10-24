@@ -47,6 +47,7 @@ jobs:
     timeout-minutes: 100
     permissions:
       contents: write
+      actions: read
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -79,6 +80,10 @@ jobs:
           (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
           PYCODE
           python3 -m py_compile scripts/cloud_mainchip_route12_drt_continuation.py
+      - name: Verify exact tested-source publication destination before any native restore
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ensure_cloud_tested_source_release.py --group mainchip-route12-observed
       - name: Observe the exact rejected process for600seconds and preserve its state
         env:
           GH_TOKEN: ${{ github.token }}
