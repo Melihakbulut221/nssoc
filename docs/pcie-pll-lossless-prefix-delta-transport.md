@@ -1,7 +1,7 @@
 # Lossless native prefix/delta transport
 
 This transport is qualified independently on branch codex/pll-lossless-prefix-publication.
-It is **not connected to the production PLL controller or completed-capture reader**.
+Separate production adapters are implemented and qualified below; **no production native job or completed-capture reader has been dispatched**.
 No native simulation, activation, acquisition acceptance or full PHY acceptance is
 claimed by the transport test.
 
@@ -70,3 +70,53 @@ bytes and retaining 15335424 bytes in its immutable prefix.
    a production continuation until this integration is separately reviewed.
 
 The present branch contains only transport code, controls, workflow and receipts.
+
+## Production adapters and final qualification
+
+The independently reviewed adapter is implemented in
+scripts/cloud_pll_rhi120_c8_delta_adapter.py. Existing native controller,
+original archive extractor, native column reader and acquisition analyzer files
+remain unchanged. The adapter's native completion assertions are AST-identical
+to the original completed reader.
+
+Run 40070233821 at 873935e14e679572228d6874f616e5ae4db047db passed the 56 core
+transport controls and 44 adapter rejections. Its actual 5106-column fixture
+includes a 38144 byte incomplete prior row, matching the durable source, and a
+same-length current header update. All 2614272 fixture samples remain bit-identical.
+The unchanged full-duration gate rejects this short fixture.
+
+An independent review identified that Python tar data_filter normalizes file
+and directory modes. The adapter now verifies the complete archive and owning
+contract hash, then checks all contents and exact inventory before restoring
+recorded modes. Strict capsule verification follows. The production archive
+roundtrip passes for 0750/0700 directories and 0444/0555/0700 files; corrupt
+contents and an unbound contract reject before any chmod. The original extractor
+is unchanged. Independent re-review found no further blocking code defect.
+
+No production native continuation or completed-capture reader was dispatched by
+this branch. Root review and integration into codex/complete-open-work are still
+required before activation.
+
+After integration, dispatch pll-rhi120-c8-delta-native-cloud.yml on
+codex/complete-open-work with source_checkpoint containing exactly:
+
+    {"run":40001626503,"attempt":1,"stage":"sparse","summary_sha256":"1f990f8de03976caf21be8592e6584f9b4e6906306133f6b729a171e51534509","parts_sha256":"ca9a995433ce65fba448e081a5b00e5a012ac3fd829869c553d90f83aad08974"}
+
+This workflow shares the existing PLL native concurrency group, refuses another
+source or a rerun attempt, and invokes the unchanged native controller. Push
+events run controls only. A successful new publication emits a descriptor with
+the same run/attempt/stage/hash fields plus
+transport=native-lossless-prefix-delta-v1.
+
+Only after the owning native workflow is terminal and successful, verify its
+summary/parts hashes and dispatch pll-rhi120-c8-delta-reader-cloud.yml with that
+exact descriptor as checkpoint. The reader independently binds the prior report,
+parts, source raw identity, fixed sparse plan, current report and capsule
+identities. It consumes every immutable source byte, reconstructs every current
+raw byte and checks all 5106 columns before the original full-duration and
+acquisition gates. It does not grant device-safety/PVT/PEX/full-PHY signoff.
+
+If publication fails, the workflow retains an explicitly unqualified sparse
+physical working artifact. Its raw file may contain archived-prefix holes and
+must never be interpreted as an ordinary waveform; the source descriptor/plan
+and preserved immutable archive remain necessary for reconstruction.
