@@ -1,0 +1,78 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-branchtailfeed-followthrough-cloud
+on:
+  push:
+    branches: [codex/tx-via3-rail-diagnosis]
+    paths: [.github/workflows/tx-branchtailfeed-followthrough-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-branchtailfeed-followthrough-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-physical:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Compile exact-source cloud followthrough
+        run: |
+          python3 -m py_compile scripts/cloud_tx_branchtailfeed_followthrough.py
+      - name: Restore pinned native CAD runtime
+        run: |
+          python3 -m pip install networkx==3.4.2
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6 libglu1-mesa libx11-6 libxext6 libxrender1 libxt6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Wait for exact native anchor success then run fresh intrinsic and RC controls
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_tx_branchtailfeed_followthrough.py
+      - name: Preserve physical results and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/cloud_tx_branchtailfeed_followthrough.py --collect
+          python3 - <<'PYCODE'
+          import json,os,pathlib,subprocess,sys
+          root=pathlib.Path('hw/soc/out/cloud-tx-branchtailfeed-followthrough')
+          root.mkdir(parents=True,exist_ok=True)
+          if not (root/'result.json').is_file():
+              (root/'result.json').write_text(json.dumps(dict(status='FAIL_MISSING_REPORT',accepted=False))+'\n')
+          groups=[('tx-output8088-branchtailfeed-intrinsic',root/'intrinsic'),
+                  ('tx-output8088-branchtailfeed-native-rc',root/'native-rc'),
+                  ('tx-branchtailfeed-followthrough',root)]
+          for group,directory in groups:
+              if not (directory/'result.json').is_file():
+                  continue
+              stem=group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+              pathlib.Path(stem+'.summary.json').write_bytes((directory/'result.json').read_bytes())
+              subprocess.run([sys.executable,'scripts/cloud_chunked_results.py','--directory',str(directory),'--stem',stem],check=True)
+              manifest=stem+'.parts.json';m=json.load(open(manifest))
+              subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-branchtailfeed-followthrough-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-branchtailfeed-followthrough/
+          retention-days: 30
+# No native fork: wait for exact terminal40078861177. A failed source cannot advance.
+# Publish all generated exact-source adapters and both independent native reports.
+# No fullwave, two-order precision, electrical, or full PHY acceptance is asserted.
