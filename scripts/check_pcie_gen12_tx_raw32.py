@@ -141,7 +141,12 @@ def vectors():
  for _ in range(9):add(v=1,c=4,d=0x11223344,force=1,ready=0)
  add(v=1,c=4,d=0x11223344,force=1,ready=1)
  add(v=1,c=4,d=0xbcbcbcbc,k=15,force=1,ready=1)
- for _ in range(16):add(v=1,c=4,d=rng.getrandbits(32),force=1,ready=1)
+ for _ in range(16):
+  held_word=rng.getrandbits(32);accepted=False
+  for retry in range(2):
+   out=add(v=1,c=4,d=held_word,force=1,ready=1)
+   if out[0]:accepted=True;break
+  assert accepted
  # Accumulate every possible even occupancy up to72, then flush under every control.
  # Byte batches contribute10 bits and a word consumes32, so odd occupancies cannot occur.
  for kind in ('reset','disable','flush'):
