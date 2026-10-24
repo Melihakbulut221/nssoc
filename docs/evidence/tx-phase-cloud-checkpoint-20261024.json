@@ -1,6 +1,6 @@
 {
   "schema": "tx-phase-cloud-checkpoint-v12",
-  "observed_utc": "2026-10-24T18:19:20Z",
+  "observed_utc": "2026-10-24T18:25:38Z",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
   "source_head": "ef04b20b155d9f5033b7c3b82c649e094c3bc978",
@@ -397,6 +397,18 @@
         "complete_native_result_sha256": "55306fa1acd6e22dd0c81af17b8de3bf55c4013a06f12a4fa8cbffba25f8b3c3",
         "native_role_accepted": false
       }
+    },
+    "canonical_correction": {
+      "source": "f141056358be0e425b0cefebdce0f0415b0b5a9a",
+      "status": "source_review_pending",
+      "controller": "scripts/cloud_tx_canonical_clock_roles.py",
+      "binder": "scripts/bind_tx_output8088_canonical_clock_roles.py",
+      "workflow_template": ".github/workflow-templates/tx-canonical-clock-roles-cloud.yml",
+      "six_reversible_binder_edits": true,
+      "new_stage_faults": 48,
+      "new_prerequisite_faults": 10,
+      "dispatched": false,
+      "native_role_accepted": false
     }
   },
   "trigger_audit": {
@@ -569,7 +581,7 @@
     "dedicated_native_jobs_untouched": true
   },
   "new244_physical": {
-    "status": "source_controls_running_native_pending",
+    "status": "both_actual334_physical_variants_pass_fresh_MIM_RC_pending",
     "source": "246599ca9e3db64d328329425a0ae09b5c84ff73",
     "generator": "hw/soc/flow/make_pcie_tx_phase_reset244_v1.py",
     "checker": "scripts/check_tx_phase_reset244_physical_source.py",
@@ -614,6 +626,16 @@
       "assets": [],
       "tag_commit_verified": true
     },
-    "dispatch_receipt": "docs/evidence/tx-phase-reset244-native-dispatch-20261024.json"
+    "dispatch_receipt": "docs/evidence/tx-phase-reset244-native-dispatch-20261024.json",
+    "native_physical_passed": true,
+    "native_job_id": 120949804811,
+    "DRC_LVS_passed": true,
+    "actual_wire_components_per_variant": 119,
+    "actual_anchors_per_variant": 695,
+    "terminal_receipt": "docs/evidence/tx-phase-reset244-two-physical-variants-pass-20261024.json",
+    "summary_asset": 672983363,
+    "summary_sha256": "5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913",
+    "parts_asset": 672983475,
+    "parts_sha256": "a6be15e92a1721ddd794ab75cce227e962f6ada294d5a54b0e58cc4778ec187b"
   }
 }
