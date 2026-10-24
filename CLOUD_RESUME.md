@@ -7759,3 +7759,5 @@ All computation and artifact storage remain cloud-only.
 
 
 Parent500 first run40061455421 stopped before DRC at binary floating LEF size equality. Preserve failed artifact and independently read exact native integer grid; use zero-tolerance integer-grid dimensions/pins/obstructions. Geometry and native physical rules unchanged. Restart only after old run terminal; no duplicate live native work.
+
+Parent500 run40061773728 retained a diagnostic-script newline launch error before geometry/native checks. The grid readback is now a checked-in standalone Python file, included in cloud compilation. Native rules and device expectations remain unchanged.

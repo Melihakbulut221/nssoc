@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Compile exact physical methods in the cloud
-        run: python3 -m py_compile scripts/cloud_cdr_sampler_active_input_v57_parent.py scripts/generate_cdr_sampler_active_input_v57_parent.py scripts/check_cdr_sampler_active_input_v57_parent_geometry.py hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py
+        run: python3 -m py_compile scripts/cloud_cdr_sampler_active_input_v57_parent.py scripts/generate_cdr_sampler_active_input_v57_parent.py scripts/check_cdr_sampler_active_input_v57_parent_geometry.py hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py scripts/read_cdr_sampler_parent_lef_grid.py
       - name: Restore pinned native CAD runtime
         run: |
           sudo apt-get update -qq
