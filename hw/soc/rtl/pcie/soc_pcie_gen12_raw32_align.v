@@ -1,4 +1,5 @@
-// SPDX-License-Identifier: Apache-2.0
+// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+// SPDX-License-Identifier: CERN-OHL-W-2.0
 // Raw PMA word bit 0 is earliest on the wire. This block establishes only
 // a symbol boundary, never polarity, LTSSM state, code validity or link-up.
 module soc_pcie_gen12_raw32_align (

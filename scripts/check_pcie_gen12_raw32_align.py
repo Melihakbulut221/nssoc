@@ -94,29 +94,59 @@ def run():
         add(raw=0)
         stats["empty_search_words"] += 1
 
-    # Flush controls tested at each tail residue and during search. Deliberately
-    # changing raw bits in disabled/gap cycles must never affect later symbols.
-    for tail_phase in range(10):
-        for action in ("reset", "disable", "force", "polarity"):
-            add(reset=0, valid=0)
-            for n in range(tail_phase + 1):
-                add(raw=COMS[0] if n == 0 else rng.getrandbits(32))
-            pol = 0
-            if action == "reset":
-                add(reset=0, raw=0xffffffff)
-            elif action == "disable":
-                add(enable=0, raw=0xffffffff)
-            elif action == "force":
-                add(force=1, raw=0xffffffff)
-            else:
-                pol = 1
-                add(polarity=pol, raw=0xffffffff)
-            stats["transitions"] += 1
-            for _ in range(3):
-                add(polarity=pol, raw=0xffffffff if pol else 0)
-            data = bits(COMS[1], 10) + [rng.randrange(2) for _ in range(310)]
-            for n in range(0, len(data), 32):
-                add(polarity=pol, raw=number(data[n:n + 32]) ^ (0xffffffff if pol else 0))
+    # Flush each actual retained residue, and flush while an incomplete COM
+    # is in the search tail. Coverage is measured from global serial positions.
+    residues = set()
+    search_flushes = set()
+    for odd_offset in (0, 1):
+        for phase in range(5):
+            for action in ("reset", "disable", "force", "polarity"):
+                add(reset=0, valid=0)
+                for n in range(phase + 1):
+                    add(raw=(COMS[0] << odd_offset) if n == 0 else rng.getrandbits(32))
+                assert oracle.start == odd_offset
+                residues.add((len(oracle.stream) - oracle.start) % 10)
+                pol = 0
+                if action == "reset":
+                    add(reset=0, raw=0xffffffff)
+                elif action == "disable":
+                    add(enable=0, raw=0xffffffff)
+                elif action == "force":
+                    add(force=1, raw=0xffffffff)
+                else:
+                    pol = 1
+                    add(polarity=pol, raw=0xffffffff)
+                stats["transitions"] += 1
+                for _ in range(3):
+                    add(polarity=pol, raw=0xffffffff if pol else 0)
+                data = bits(COMS[1], 10) + [rng.randrange(2) for _ in range(310)]
+                for n in range(0, len(data), 32):
+                    add(polarity=pol, raw=number(data[n:n + 32]) ^ (0xffffffff if pol else 0))
+    assert residues == set(range(10)), residues
+    stats["aligned_flush_residues"] = sorted(residues)
+    for action in ("reset", "disable", "force", "polarity"):
+        add(reset=0, valid=0)
+        # A complete COM is absent: only its first nine bits enter this word.
+        add(raw=(COMS[0] & 0x1ff) << 23)
+        assert oracle.start is None
+        pol = 0
+        if action == "reset":
+            add(reset=0, raw=0xffffffff)
+        elif action == "disable":
+            add(enable=0, raw=0xffffffff)
+        elif action == "force":
+            add(force=1, raw=0xffffffff)
+        else:
+            pol = 1
+            add(polarity=pol, raw=0xffffffff)
+        for _ in range(3):
+            add(polarity=pol, raw=0xffffffff if pol else 0)
+            assert oracle.start is None
+        add(polarity=pol, raw=COMS[1] ^ (0xffffffff if pol else 0))
+        assert oracle.start == 96
+        search_flushes.add(action)
+    assert search_flushes == {"reset", "disable", "force", "polarity"}
+    stats["search_flush_controls"] = sorted(search_flushes)
     for _ in range(5):
         add(valid=0, raw=rng.getrandbits(32))
     vector_path = OUT / "vectors.txt"
