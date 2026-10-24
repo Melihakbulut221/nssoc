@@ -9,3 +9,9 @@ Original coordinate source: run39986288644/head438d6e842b8cea5f5d561d6d333480580
 After interface success, fresh counts must appear once each in binder, once in fullwave adapter, twice in prepared, once in native controller. Keep historical1674/117251/77892 intermediate builder checks. Native branch identity appears twice (source_valid and its positive control); adapt both consistently. Freeze one controller SHA before the new initial and every continuation. Prepared receipts require exact cases.none and cases.swap_leaf_select run/head/group/hash/output metadata; absolute prepared paths and protected_inputs must be preserved. Old checkpoint/model must not be resumed on this new geometry.
 
 No expensive34ns job may start before parent review of the new precision/composition/rail results.
+
+## Branch/tail interface adapter remains source-only
+
+The separate scripts/cloud_tx_output8088_branchtailfeed_interfaces.py retains the exact native endpoint binder and all original28620-terminal/124-input-leg/372-base/64-driver/four-output checks and eight identity/two endpoint/two output faults. It binds the passed new branch/tail physical40077948550 and fresh wire40078861177, plus the complete immutable preceding pinfeed and original via3 physical chain. Current five physical negatives are distinguished from historical negatives; all original physical gates remain. The new130 routes and M1/V1 preservation are checked explicitly. R/C counts are consumed only from a terminal passed composition supplied in four immutable fields by parent after review.
+
+This source has no workflow and has never run. AST parsing and locked-source verification only are complete; independent review and actual native interface/fault controls remain necessary. Parent must first review qualified new geometry, RC/precision/composition and130 DC reductions. No34ns transient or loaded-wave acceptance is implied.
