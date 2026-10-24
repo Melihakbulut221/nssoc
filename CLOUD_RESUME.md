@@ -7355,3 +7355,12 @@ collector lower M1->M3 via columns4->16 and M3width0.4->1.2um; resistor lower
 via columns8->16 and M3width1.6->2um. Upper arrays and other routing retained.
 Run original560DRC/deep-flat18LVS/9faults, fresh extraction/model binding/RC, then
 original full5case waveform. No numerical RC scaling or acceptance gate changes.
+
+
+## 2026-10-24 v54 actual lower-access geometry passed physical checks
+Physical40046943320 passed560DRC0markers/deep-flat18LVS/ninefaults. Source circuit
+is still v53; collector and resistor lower metal/via arrays are new physical
+geometry. Launch exact new wire graph; then fresh RC and binding. Reuse isolated
+build_cdr_active_levelshift_v53_native_models.py because native dimensions remain
+5.4um reference and2x36um tails; do not rename that converter import to missingv54.
+Actual native R/C census/port order must be read again before composition/waves.
