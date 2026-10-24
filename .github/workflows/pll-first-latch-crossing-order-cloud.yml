@@ -1,0 +1,14 @@
+name: PLL crossing-order registration only
+on:
+  push:
+    branches: [codex/pll-crossing-register]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - name: Register workflow filename only
+        run: printf '%s\n' 'Registration only. No source checkout, cache restore, simulator or qualification.'
