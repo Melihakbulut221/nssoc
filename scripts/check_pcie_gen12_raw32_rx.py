@@ -13,6 +13,34 @@ FILES=[
  'hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v']
 COM=(0x17c,0x283)
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
+def validate_receipt(item,binding):
+ p=ROOT/item['receipt_path'];assert sha(p)==item['receipt_sha256']
+ saved=json.loads(p.read_text())
+ if item['role']=='aligner':
+  assert saved['status']=='PASS'and saved['cycles']==95653 and saved['synthesis']=='PASS'
+  assert saved['source_sha256']==binding['sources']['hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v']
+  c=saved['coverage']
+  assert c['offsets']==list(range(64))and c['polarities']==[0,1]and c['initial_rd']==[0,1]
+  assert c['all_raw10_payload_codes']==1024 and c['aligned_flush_residues']==list(range(10))
+  assert set(c['search_flush_controls'])=={'reset','disable','force','polarity'}
+  checks=saved['checks'];assert len(checks)==11 and checks[0]['label']=='positive'and checks[0]['returncode']==0
+  assert len({x['label']for x in checks})==11 and all(x['returncode']!=0 for x in checks[1:])
+  assert saved['full_phy_accepted']is False and saved['ltssm_accepted']is False and saved['low_rate_analog_accepted']is False
+ else:
+  assert item['role']=='codec'
+  assert saved['status']=='PASS_EXACT_CODEC_NATIVE_ARTIFACT_SOURCES_TABLE_AND_ALL_GATES'
+  assert saved['codec_RTL_accepted']and saved['native_conclusion']=='success'
+  assert saved['native_run']==item['run']and saved['native_source']==item['head']and saved['native_attempt']==item['attempt']
+  a=saved['artifact']
+  assert a['all_recorded_member_hashes_verified']and a['metadata_digest']=='sha256:'+a['archive_sha256']and a['archive_bytes']>0
+  r=saved['original_result']
+  assert r['source_head']==item['head']and int(r['run_id'])==item['run']
+  assert r['status']=='PASS_GEN12_SINGLE_LANE_CODEC_TABLE_EXHAUSTIVE_STATE_SYNTHESIS_AND9_FAULTS'
+  assert len(r['negative_controls'])==9 and all(x['rejected']for x in r['negative_controls'])
+  assert r['coverage']['decode_cases']==2048 and r['coverage']['all_codes_both_disparities']
+  for path,h in saved['protected_sources'].items():assert sha(ROOT/path)==h,path
+  assert saved['full_PHY_accepted']is False
+ return item['receipt_sha256']
 def proof():
  manifest=json.loads((ROOT/'scripts/pcie-gen12-raw32-rx-methods.json').read_text())
  for p,h in manifest['protected'].items():assert sha(ROOT/p)==h,p
@@ -22,6 +50,7 @@ def proof():
  for p,h in receipt['sources'].items():assert sha(ROOT/p)==h,p
  live=[]
  for item in receipt['runs']:
+  receipt_sha=validate_receipt(item,receipt)
   def api(tail):return json.loads(subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+tail],text=True))
   run=api('actions/runs/'+str(item['run']))
   assert run['head_sha']==item['head'] and run['run_attempt']==item['attempt']
@@ -30,7 +59,7 @@ def proof():
   jobs=api('actions/runs/'+str(item['run'])+'/jobs?filter=latest&per_page=100')['jobs']
   selected=[j for j in jobs if j['name']==item['job']]
   assert len(selected)==1 and selected[0]['status']=='completed' and selected[0]['conclusion']=='success'
-  live.append(dict(run=item['run'],head=item['head'],attempt=item['attempt'],job=selected[0]['id'],conclusion='success'))
+  live.append(dict(run=item['run'],head=item['head'],attempt=item['attempt'],job=selected[0]['id'],conclusion='success',receipt_sha256=receipt_sha))
  return manifest,live
 def bits(v,n):return [(v>>i)&1 for i in range(n)]
 def number(v):return sum(b<<i for i,b in enumerate(v))
