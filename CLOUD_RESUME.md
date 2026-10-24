@@ -7639,3 +7639,11 @@ Same native wire source and intrinsic8/53.335um/7small2large contacts verified.
 Native ports remain ip,inn,avdd,on,op,avss,sub,iref. Compose all18+1244+835=2097
 rows; require original14composition faults before full five loaded cases.
 New counts differ fromv56, never reuse1270R849C or old waveform.
+
+## 2026-10-24 v57 all physical wire/device composition passed; fullwaves dispatched
+Composition40057370416 passes18devices+1244R835C, all2097rows and14faults.
+Native interface unchanged ip,inn,avdd,on,op,avss,sub,iref,wire_cref. Run nominal,
+hot_low,cold_high,swap_output,bias_off with original full34.25ns/256bits,10ohm
+source/150fF loads,100mV/37.5ps/1.8..2.15V and original transistor safety gates.
+Every actual native wire/body voltage and transistor current retained. No claim
+of hot fix until actual full results; no parent/fullPHY inference from leaf checks.
