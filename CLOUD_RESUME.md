@@ -7741,3 +7741,18 @@ Run all560rules,66device deep/flatLVS,LEF and27faults after thisrealgeometryfix.
 ## 2026-10-24 — active-input sampler66 physical pass and TX continuation
 
 Run40060383240 passed full560-rule DRC, native unsimplified deep/flat66-device LVS and27 fault controls. Only physical leaf acceptance; standalone1pF device safety failures remain recorded. Next: C/D-only actual500-device parent, fresh native RC/binding and original loaded waves. A/B remain unchanged. TX same-process checkpoints40050776700 normal31.5100178745ns and40051009656 fault32.7786997321ns verified, resume toward34ns without restart. All native work and assets remain in GitHub; local workspace empty.
+
+
+## 2026-10-24 — real C/D active-input parent500 integration
+
+The shared-reference sampler66 passed run40060383240 with full560-rule DRC,
+unsimplified deep/flat66-device LVS and27 native faults. Integrate only actual
+sc/sd children from verified v32 parent39738683936. Preserve sa/sb and all parent
+polygons/labels/transforms. Expected124HBT/50MOS/98R/7MIM/221contacts=500.
+C/D grows320um right; actual parent bbox and all LEF obstruction planes must grow.
+Six serialized replacement/LEF controls and five actual child-geometry controls;
+full native parent DRC/deep-flat LVS and twelve faults remain mandatory.
+No claim of electrical acceptance: standalone1pF device failures remain preserved.
+Next after actual physical pass: fresh whole-parent planes/native bindings/RC/MIM,
+then original complete early/late and fault waves under actual parent loading.
+All computation and artifact storage remain cloud-only.
