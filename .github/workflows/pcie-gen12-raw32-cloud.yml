@@ -1,0 +1,44 @@
+name: Gen12 raw32 boundary proof
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/pcie-gen12-raw32]
+    paths:
+      - hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v
+      - scripts/check_pcie_gen12_raw32_align.py
+      - .github/workflows/pcie-gen12-raw32-cloud.yml
+permissions:
+  contents: write
+concurrency:
+  group: gen12-raw32-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  rtl-proof:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          sparse-checkout: |
+            hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v
+            scripts/check_pcie_gen12_raw32_align.py
+          sparse-checkout-cone-mode: false
+      - uses: YosysHQ/setup-oss-cad-suite@aefa8397bbf8fc6670a0a62af9805a89738f3cde
+        with:
+          version: '2026-08-04'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Exact serial stream proof, behavioral faults and synthesis
+        run: python3 scripts/check_pcie_gen12_raw32_align.py
+      - name: Preserve success or rejection
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -d hw/soc/out/gen12-raw32-align || exit 1
+          tar -czf "$RUNNER_TEMP/gen12-raw32-proof.tar.gz" -C hw/soc/out gen12-raw32-align
+          sha256sum "$RUNNER_TEMP/gen12-raw32-proof.tar.gz" > "$RUNNER_TEMP/gen12-raw32-proof.sha256"
+          tag="cloud-results-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-gen12-raw32"
+          gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --notes "Raw32 symbol-boundary proof only. Full PHY and LTSSM remain unqualified." "$RUNNER_TEMP/gen12-raw32-proof.tar.gz" "$RUNNER_TEMP/gen12-raw32-proof.sha256"
+          if test -f hw/soc/out/gen12-raw32-align/result.json; then
+            gh release upload "$tag" hw/soc/out/gen12-raw32-align/result.json
+          fi
