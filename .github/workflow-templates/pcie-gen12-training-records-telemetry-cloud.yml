@@ -33,7 +33,7 @@ jobs:
           from pathlib import Path
           s=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-telemetry/controls.json').read_text())
           assert s['status']=='PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL'
-          assert len(s['controls'])==6 and all(s['controls'].values())
+          assert len(s['controls'])==8 and all(s['controls'].values())
           assert s['engineering_accepted']is False
           PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

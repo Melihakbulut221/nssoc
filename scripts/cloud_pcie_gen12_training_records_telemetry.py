@@ -92,15 +92,42 @@ def sample(kind='resource_sample'):
 def heartbeat():
     while not STOP.wait(PERIOD):sample()
 
+def group_members(pgid):
+    # Linux stat fields follow the parenthesized comm; do not expose comm/argv.
+    result=[]
+    for path in Path('/proc').iterdir():
+        if not path.name.isdecimal():continue
+        value=safe_read(path/'stat')
+        if value is None:continue
+        fields=value.rsplit(') ',1)[-1].split()
+        if len(fields)>2 and int(fields[2])==pgid:
+            result.append({'pid':int(path.name),'state':fields[0]})
+    return result
+
+def live_members(pgid):
+    return [x for x in group_members(pgid)if x['state']not in ('Z','X')]
+
 def stop_process(p):
-    if p is None or p.poll() is not None:return
-    try:os.killpg(p.pid,signal.SIGTERM)
-    except ProcessLookupError:return
-    try:p.wait(timeout=5)
-    except subprocess.TimeoutExpired:
-        try:os.killpg(p.pid,signal.SIGKILL)
-        except ProcessLookupError:pass
-        p.wait(timeout=5)
+    if p is None:return {'signals':[],'remaining_live':[],'remaining_nonrunning':[]}
+    signals=[]
+    # The leader may already be reaped while a child still owns these streams.
+    p.poll()
+    for sig,grace in ((signal.SIGTERM,5.0),(signal.SIGKILL,5.0)):
+        if not live_members(p.pid):break
+        try:os.killpg(p.pid,sig);signals.append(signal.Signals(sig).name)
+        except ProcessLookupError:break
+        deadline=time.monotonic()+grace
+        while time.monotonic()<deadline and live_members(p.pid):
+            p.poll();time.sleep(.05)
+    p.poll()
+    remaining=live_members(p.pid)
+    report={'signals':signals,'remaining_live':remaining,
+            'remaining_nonrunning':[x for x in group_members(p.pid)if x['state']in ('Z','X')]}
+    if remaining:raise SupervisionFailure('Process group remains live: '+json.dumps(report))
+    # Defunct descendants cannot execute or write; expose them instead of
+    # claiming that another parent or PID1 has already reaped them.
+    if p.returncode is None:p.wait(timeout=5)
+    return report
 
 def supervised(args,label,passed=True,*,seconds=SECONDS,output_limit=OUTPUT_LIMIT,cwd=None):
     """Keep exact command/returncode/streams, fail closed on resource supervision."""
@@ -123,7 +150,8 @@ def supervised(args,label,passed=True,*,seconds=SECONDS,output_limit=OUTPUT_LIMI
                 if time.monotonic()-began>=seconds:reason='elapsed_limit';break
                 if max(stdout.stat().st_size,stderr.stat().st_size)>output_limit:reason='output_limit';break
                 time.sleep(.1)
-            if reason:stop_process(p)
+            if not reason and live_members(p.pid):reason='orphan_descendant_after_leader_exit'
+            cleanup=stop_process(p)
             p.wait()
             so.flush();se.flush();os.fsync(so.fileno());os.fsync(se.fileno())
         sizes=(stdout.stat().st_size,stderr.stat().st_size)
@@ -131,7 +159,7 @@ def supervised(args,label,passed=True,*,seconds=SECONDS,output_limit=OUTPUT_LIMI
         record={'label':label,'argv':command,'pid':p.pid,'returncode':p.returncode,
           'elapsed_seconds':time.monotonic()-began,'supervision_failure':reason,
           'stdout_bytes':sizes[0],'stderr_bytes':sizes[1],
-          'stdout_sha256':sha(stdout),'stderr_sha256':sha(stderr)}
+          'stdout_sha256':sha(stdout),'stderr_sha256':sha(stderr),'process_group_cleanup':cleanup}
         (TRACE/(label+'.command.json')).write_text(json.dumps(record,indent=2)+'\n')
         event('command_end',**record)
         if reason:raise SupervisionFailure(json.dumps(record,sort_keys=True))
@@ -202,13 +230,32 @@ def controls():
         try:supervised([sys.executable,'-c','raise SystemExit(9)'],'fixture-bad-positive',cwd=TRACE)
         except AssertionError:results['positive_nonzero_rejected']=True
         else:raise AssertionError('Nonzero positive accepted')
+        child='import time;print("descendant-writer",flush=True);time.sleep(60)'
+        leader='import subprocess,sys,time;subprocess.Popen([sys.executable,"-c",'+repr(child)+']);time.sleep(.2)'
+        try:supervised([sys.executable,'-c',leader],'fixture-orphan',False,cwd=TRACE)
+        except SupervisionFailure:
+            q=json.loads((TRACE/'fixture-orphan.command.json').read_text())
+            assert q['supervision_failure']=='orphan_descendant_after_leader_exit'
+            assert q['process_group_cleanup']['remaining_live']==[]
+            assert 'descendant-writer' in (TRACE/'fixture-orphan.stdout').read_text()
+            results['exited_leader_descendant_rejected_and_stopped']=True
+        else:raise AssertionError('Live descendant accepted')
+        child='import signal,time;signal.signal(signal.SIGTERM,signal.SIG_IGN);print("TERM-ignored",flush=True);time.sleep(60)'
+        try:supervised([sys.executable,'-c',child],'fixture-resistant',False,cwd=TRACE,seconds=.5)
+        except SupervisionFailure:
+            q=json.loads((TRACE/'fixture-resistant.command.json').read_text())
+            assert q['supervision_failure']=='elapsed_limit'
+            assert q['process_group_cleanup']['signals']==['SIGTERM','SIGKILL']
+            assert q['process_group_cleanup']['remaining_live']==[]
+            results['term_resistant_group_killed_and_rejected']=True
+        else:raise AssertionError('Resistant child accepted')
         try:wrap('fixture-phase-timeout',lambda:time.sleep(60),seconds=.2)()
         except SupervisionFailure:results['python_phase_watchdog_fails_closed']=True
         else:raise AssertionError('Unbounded Python phase')
         pins()
         result={'status':'PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL',
           'controls':results,'source_pins':m,'engineering_accepted':False}
-        assert len(results)==6
+        assert len(results)==8
         (TRACE/'controls.json').write_text(json.dumps(result,indent=2)+'\n')
         print(json.dumps(result),flush=True)
     finally:stop_process(ACTIVE)

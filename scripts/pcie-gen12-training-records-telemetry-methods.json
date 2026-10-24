@@ -8,7 +8,7 @@
   "protected": {
     ".github/workflow-templates/pcie-gen12-raw32-rx-cloud.yml": "760f651c8228586e5026984eda9a0159358eb10b8a3f4b1940d70efc64d1a451",
     ".github/workflow-templates/pcie-gen12-training-records-cloud.yml": "71906a457d99060ac6a3b87a23977dda1de269a79e88daac6880d61160f875d5",
-    ".github/workflow-templates/pcie-gen12-training-records-telemetry-cloud.yml": "873f861602c268bea8c0d19cf57de415e5705fa65f1f09ccad09a091e5195c6c",
+    ".github/workflow-templates/pcie-gen12-training-records-telemetry-cloud.yml": "5811a4fe1e9efdbefc2f12d9a2bbc3f6d0ddc0fc8611dd08673e90a094dbb475",
     ".github/workflow-templates/pcie-gen12-tx-raw32-cloud.yml": "6eccac097ba87a22dec0bc9c739c8b8914245ea460a71cb7ae1198a6bb74e093",
     ".github/workflows/pcie-gen12-codec-cloud.yml": "563eef688f587d1b8f6eec1af8be24efbd385ba5a240ba2e061ee7f3eabcc303",
     ".github/workflows/pcie-gen12-raw32-rx-cloud.yml": "760f651c8228586e5026984eda9a0159358eb10b8a3f4b1940d70efc64d1a451",
@@ -26,7 +26,7 @@
     "docs/pcie-gen12-codec-development-20261024.md": "0e8a0842a8b1f192d476de98a3fe17fef8fbc8bb397bf90fc45653edca1a404b",
     "docs/pcie-gen12-raw32-boundary-contract-20261024.md": "6f7415d3199169e8f854845cfe65d8e10b15d5e7ace8373320d71243b9e9993a",
     "docs/pcie-gen12-raw32-rx-integration-contract-20261024.md": "83d0c2955abbbd4aec40e8333c897e924aa6eabd7e1f8a787dbb4bdcd874eecd",
-    "docs/pcie-gen12-training-record-telemetry-20261024.md": "303425ca6ea1dc14f7d77fef418c40eb1641b769132456014fb405656797916e",
+    "docs/pcie-gen12-training-record-telemetry-20261024.md": "bf00d48441307815613900e14af1cc53895040a5cc63c1217f75841372149c8a",
     "docs/pcie-gen12-training-record-transport-20261024.md": "d328d39ed6a546f2de45afeaf26ac750b0705fb754d541bc002ac5e57f431c98",
     "docs/pcie-gen12-tx-raw32-transport-contract-20261024.md": "f8c9c02e036142e2e4551f25e26e0c474b86a7ec7a661e39ad515a1d48257cd7",
     "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v": "009d4885c5492dbc291b7eea3987304847d9a187013439459ada829a18ed54af",
@@ -42,7 +42,7 @@
     "scripts/check_pcie_gen12_raw32_rx.py": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da",
     "scripts/check_pcie_gen12_training_records.py": "e1bf844ef719b4ad4230aebc58550ee577da72d88958b7724400d1c4c14c8f5a",
     "scripts/check_pcie_gen12_tx_raw32.py": "b19d118fc2d2b71a8f74361a5ca315c9b137cdb1916decd9aec0d189d084a577",
-    "scripts/cloud_pcie_gen12_training_records_telemetry.py": "d6ba6a6be67eaa0d882c0116b736a6b9cc8699da2dcfd7811f0575b15afce1b8",
+    "scripts/cloud_pcie_gen12_training_records_telemetry.py": "423e15361e061b7934e31a81c4ecbb11da73b362edb6ad710515499a07c3387a",
     "scripts/ensure_cloud_tested_source_release.py": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e",
     "scripts/pcie-gen12-codec-methods.json": "7f5fc8f3e3c5dc77cef4be07f6a4856df74bee8ddd6d6d69a5ee62c8f64a59e0",
     "scripts/pcie-gen12-raw32-rx-prerequisites.json": "02cc5968fccf76bae36572bd823e2931765152ef945afa0b27bf4f95aab4fac4",
@@ -60,7 +60,8 @@
   "schema": "record-telemetry-v1",
   "status": "SOURCE_ONLY_REVIEW_REQUIRED_NO_INSTRUMENTED_RUN",
   "supervision_only": {
-    "controls": 6,
+    "controls": 8,
+    "live_process_group_cleanup_after_leader_exit": true,
     "phase_timeout_seconds": 1200,
     "resource_period_seconds": 15,
     "stream_limit_bytes": 16777216
