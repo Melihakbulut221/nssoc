@@ -28,12 +28,28 @@ jobs:
         with:
           python-version: '3.12'
       - name: Prepare every real241-device case and exercise fixed observers without simulation
+        shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          if ( exit 7 ) | tee rejected-pipeline-control.txt; then
+            echo "ERROR: failed pipeline was masked"
+            exit 1
+          fi
+          echo "PASS_PIPEFAIL_NEGATIVE_CONTROL"
           python3 -m pip install numpy==2.3.3
           python3 -m py_compile scripts/tx_phase_async_preset_diagnostic.py scripts/cloud_tx_phase_async_preset_intrinsic.py scripts/check_tx_phase_async_preset_intrinsic.py
           python3 scripts/check_tx_phase_async_preset_intrinsic.py | tee source-controls.json
+          python3 - <<'PYCODE'
+          import json
+          d=json.load(open('source-controls.json'))
+          assert d['status']=='PASS_INTRINSIC241_SOURCE_PREPARATION_AND_OBSERVER_CONTROLS_NO_NATIVE_SIMULATION'
+          assert len(d['positive_cases'])==4 and all(c['prepared'] for c in d['positive_cases'].values())
+          assert not d['DUT_waveforms_executed'] and not d['full_PHY_accepted']
+          assert d['qualified_runtime_models_prepared']['HBT_RES_CAP_present']
+          assert len(d['zero_OP_reader_controls'])==8 and len(d['full_raw_reader_controls'])==7
+          print('PASS_PARSED_CONTROL_STATUS')
+          PYCODE
       - name: Preserve source controls
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
