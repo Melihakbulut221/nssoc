@@ -572,7 +572,7 @@ def main():
     for key, before in all_before.items():
         expected = before + additions.get(key[0], pya.Region()) if key[1] == 0 else before
         actual = pya.Region(rt.begin_shapes_rec(reread.layer(*key)))
-        delta = (actual^expected).merged()
+        delta = (actual^expected)
         if not delta.is_empty():
             actual_merged = actual.merged()
             expected_merged = expected.merged()
@@ -581,6 +581,11 @@ def main():
                 expected_raw_count=expected.count(), actual_raw_count=actual.count(),
                 expected_merged_count=expected_merged.count(), actual_merged_count=actual_merged.count(),
                 expected_merged_area_dbu2=expected_merged.area(), actual_merged_area_dbu2=actual_merged.area(),
+                exact_original_guard_xor_is_empty=delta.is_empty(),
+                exact_original_guard_xor_count=delta.count(),
+                exact_original_guard_xor_polygon_areas_dbu2=[p.area() for p in delta.each()],
+                merged_guard_xor_count=delta.merged().count(),
+                merged_guard_xor_area_dbu2=delta.merged().area(),
                 exact_original_guard_xor_area_dbu2=delta.area(),
                 exact_original_guard_xor_polygons_dbu=[str(p) for p in delta.each()],
                 expected_minus_actual_polygons_dbu=[str(p) for p in (expected-actual).merged().each()],
