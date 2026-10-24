@@ -97,6 +97,11 @@ def main():
         assert measurement['status']=='PASS_READ_ONLY_ALL44_NATIVE_CANDIDATE_PRIMITIVES_AND_FINITE_CORRIDOR_SURVEY_NOT_PHYSICAL_ACCEPTANCE'
         assert measurement['primitive_count']==44 and measurement['via_count']==28 and measurement['line_count']==16
         assert measurement['exact_original_high_via4_sets']==8 and len(measurement['original_preinsertion_controls'])==8 and len(measurement['survey_controls'])==4
+        choices=measurement['sampler_finite_choices']
+        assert len(choices['sampler_cut_controls'])==2
+        assert len(choices['groups'])==4 and len(choices['all567_combination_results'])==567
+        assert all(len(g['via_candidates'])==7 and len(g['width_candidates'])==81 for g in choices['groups'])
+        assert choices['all_original_Via1_Via2_four_cut_phases_preserved']and choices['all_candidates_subset_of_original_screened_maximum_owners']
         assert measurement['original_material_hierarchy_labels_unchanged']and not measurement['planned_candidate_inserted']and not measurement['candidate_gds_written']
         assert not list((OUT/'survey').rglob('*.gds'))
         assert all(sha(OUT/'source'/n)==prior['outputs'][n]for n in selected)

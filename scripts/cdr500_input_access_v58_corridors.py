@@ -171,6 +171,96 @@ def survey(ctx, namespace):
         if not inventory[p['id']]['planning_clear']:
             corridor['original_foreign_material_in_search_window']=polygons(f&roi)
         corridors.append(corridor)
+    # Second bounded diagnostic: enumerate every requested finite sampler
+    # choice against the SAME original and maximum planned foreign material.
+    sampler=[];sampler_cut_controls=[]
+    for plan in plans:
+        gain=plan['gain_native_id'];point=plan['base_pin_dbu'];lane=plan['base_lane_dbu']
+        group=next(g for g in ctx['report']['native_geometry']['groups']if g['role_binding']['gain_native_id']==gain)
+        path=next(p for p in group['paths']if p['roles']==['driver','gain'])
+        old_cuts={}
+        for link in path['via_links'][-2:]:
+            require(len(link['cuts'])==4,'Original sampler cut census changed')
+            m=link['cuts'][0]['via_layer'];require(m in(19,29),'Original sampler via layer changed')
+            expected=pya.Region()
+            centers=[]
+            for cut in link['cuts']:
+                require(cut['via_layer']==m,'Mixed original sampler via layer')
+                box=namespace['box_coordinates'](cut['bbox_dbu'])
+                require(box[2]-box[0]==box[3]-box[1]==190,'Original sampler cut dimension changed')
+                expected+=pya.Region(pya.Box(*box));centers.append(((box[0]+box[2])//2,(box[1]+box[3])//2))
+            require(sorted(centers)==[(point[0]+dx,point[1])for dx in(-720,-240,240,720)],'Original sampler native480nm phase changed')
+            require((expected-own[gain][m]).is_empty(),'Original sampler cuts absent from native owner')
+            old_cuts[m]=expected.merged()
+        require(set(old_cuts)=={19,29},'Incomplete original sampler cut layers')
+        def preserve_cuts(rendered,expected):
+            require(expected.count()==4 and(expected-rendered).is_empty(),'Original four-cut identity not preserved')
+        if not sampler_cut_controls:
+            for label,bad in[
+                ('shifted_actual_original_sampler_cut_phase',old_cuts[19].transformed(pya.Trans(35,0))),
+                ('removed_actual_original_sampler_cut',old_cuts[19]-pya.Region(next(old_cuts[19].each())))]:
+                try:preserve_cuts(bad,old_cuts[19])
+                except ValueError:sampler_cut_controls.append(label)
+                else:raise AssertionError('Accepted sampler cut corruption '+label)
+        midpoint=(lane[0]+point[0])//2
+        section=(own[gain][30]&pya.Region(pya.Box(midpoint,point[1]-1000,midpoint+1,point[1]+1000))).merged()
+        require(section.count()==1 and section.area()==section.bbox().height(),'Original escape section ambiguous')
+        original_width=section.bbox().height()
+        require(original_width==400 and section.bbox().bottom+section.bbox().top==2*point[1],'Original centered sampler width changed')
+        maximum_via=next(p for p in primitives if p['gain']==gain and p['purpose']=='native_sixteen_column_base_access')
+        maximum_line=next(p for p in primitives if p['gain']==gain and p['purpose']=='wider_owned_sampler_base_escape')
+        vias=[];widths=[]
+        for count in range(4,17,2):
+            v=native_via('Metal1','Metal3',point,plan,'enumerated_native_sampler_access',count)
+            require(8 in v['rendered']and 30 in v['rendered'],'Native sampler endpoint absent')
+            require(not(v['rendered'][8]&own[gain][8]).is_empty(),'Sampler rendered bottom misses original owner')
+            for m,expected in old_cuts.items():
+                require(m in v['rendered'],'Native sampler via layer missing')
+                preserve_cuts(v['rendered'][m],expected)
+                require(v['rendered'][m].count()==count,'Native sampler array cut census differs')
+            require(all((reg-maximum_via['regions'][m]).is_empty()for m,reg in v['rendered'].items()),'Sampler candidate exceeds screened maximum owner')
+            layers=[detail(gain,m,reg)for m,reg in sorted(v['rendered'].items())]
+            vias.append(dict(columns=count,rows=1,point_dbu=list(point),parameters=v['parameters'],transform=str(v['transform']),
+                original_four_cuts_preserved_on_both_layers=True,subset_of_screened_maximum_owner=True,
+                is_contact_count_improvement=count>4,planning_clear=all(x['planning_clear']for x in layers),
+                new_material_area_dbu2={str(m):(reg-own[gain][m]).area()for m,reg in v['rendered'].items()},layers=layers))
+        for width in range(original_width,maximum_line['width']+1,10):
+            require(width%10==0 and width>=round(float(params['Mn_a'])*1000),'Illegal enumerated escape width')
+            h=width//2;reg=pya.Region(pya.Box(lane[0]-h,point[1]-h,point[0]+h,point[1]+h))
+            require((reg-maximum_line['regions'][30]).is_empty(),'Width exceeds screened maximum owner')
+            for endpoint in(point,lane):
+                ctx['landing'](30,endpoint,plan)
+                require(not(reg&pya.Region(pya.Box(endpoint[0]-5,endpoint[1]-5,endpoint[0]+5,endpoint[1]+5))).is_empty(),'Escape endpoint missing')
+            row=detail(gain,30,reg)
+            widths.append(dict(width_dbu=width,is_width_improvement=width>original_width,planning_clear=row['planning_clear'],
+                new_material_area_dbu2=(reg-own[gain][30]).area(),subset_of_screened_maximum_owner=True,geometry=row))
+        require(len(vias)==7 and len(widths)==81,'Incomplete finite sampler enumeration')
+        sampler.append(dict(gain=gain,native_cluster=plan['native_cluster'],wire_component=plan['wire_component'],
+            original_width_dbu=original_width,original_four_cut_layers={str(m):polygons(r)for m,r in old_cuts.items()},
+            original_section_dbu=polygons(section),via_candidates=vias,width_candidates=widths))
+    universal=[]
+    for columns in range(4,17,2):
+        for width in range(400,1201,10):
+            failures=[]
+            for group in sampler:
+                via=next(v for v in group['via_candidates']if v['columns']==columns)
+                line=next(v for v in group['width_candidates']if v['width_dbu']==width)
+                if not via['planning_clear']or not line['planning_clear']:
+                    failures.append(dict(gain=group['gain'],via_failed=not via['planning_clear'],escape_failed=not line['planning_clear']))
+            universal.append(dict(columns=columns,width_dbu=width,all_four_planning_clear=not failures,failures=failures))
+    require(len(universal)==567,'Missing requested via/width combinations')
+    clear_counts=[n for n in range(4,17,2)if all(next(v for v in g['via_candidates']if v['columns']==n)['planning_clear']for g in sampler)]
+    clear_widths=[n for n in range(400,1201,10)if all(next(v for v in g['width_candidates']if v['width_dbu']==n)['planning_clear']for g in sampler)]
+    require(len(sampler_cut_controls)==2,'Missing sampler native cut corruption controls')
+    sampler_result=dict(sampler_cut_controls=sampler_cut_controls,scope='Finite fixed-original-center native even4..16 arrays and every10nm escape width400..1200. Same500nm guard; no physical or RC acceptance.',
+        all_original_Via1_Via2_four_cut_phases_preserved=True,all_candidates_subset_of_original_screened_maximum_owners=True,
+        other_owner_maximum_superset_proof=True,groups=sampler,all567_combination_results=universal,
+        largest_universally_clear_columns=max(clear_counts)if clear_counts else None,
+        largest_universally_clear_width_dbu=max(clear_widths)if clear_widths else None,
+        largest_universally_clear_improving_columns=max([n for n in clear_counts if n>4],default=None),
+        largest_universally_clear_improving_width_dbu=max([n for n in clear_widths if n>400],default=None),
+        combined_contact_and_width_improvement_available=any(r['all_four_planning_clear']and r['columns']>4 and r['width_dbu']>400 for r in universal),
+        native_rc_measured=False,physical_accepted=False)
     # Actual original hierarchy/drawings/labels stay untouched, including after
     # creating uninstantiated native PCells to inspect their real cut footprints.
     for index,before in ctx['old_cells'].items():
@@ -202,7 +292,7 @@ def survey(ctx, namespace):
     result=dict(status='PASS_READ_ONLY_ALL44_NATIVE_CANDIDATE_PRIMITIVES_AND_FINITE_CORRIDOR_SURVEY_NOT_PHYSICAL_ACCEPTANCE',
         original_generator_sha256=GENERATOR_SHA,primitive_count=44,via_count=28,line_count=16,
         exact_original_high_via4_sets=8,original_preinsertion_controls=ctx['controls'],survey_controls=faults,
-        actual_inventory=inventory,finite_corridors=corridors,
+        actual_inventory=inventory,finite_corridors=corridors,sampler_finite_choices=sampler_result,
         problematic_primitives=[x['id']for x in inventory if not x['planning_clear']],
         original_material_hierarchy_labels_unchanged=True,protected_input_sha256=ctx['protected'],
         planned_candidate_inserted=False,candidate_gds_written=False,physical_accepted=False,
