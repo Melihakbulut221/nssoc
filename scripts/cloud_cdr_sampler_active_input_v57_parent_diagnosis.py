@@ -25,7 +25,7 @@ def native():
    regions[(metal,key)]=pya.Region(inst.cell.begin_shapes_rec(li)).transformed(inst.cplx_trans).flatten().merged()
  markers=[]
  for item in items:
-  category=item.findtext('category').strip("'");metal=8 if category.startswith('M1.')else67
+  category=item.findtext('category').strip("'");metal=8 if category.startswith('M1.')else 67
   assert category in ('M1.a','M1.b','M5.b')
   values=[v.text for v in item.findall('values/value')]
   coords=[float(v)for text in values for v in re.findall(r'-?\d+(?:\.\d+)?',text)]
