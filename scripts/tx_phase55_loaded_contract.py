@@ -43,6 +43,18 @@ def validate_boundary(boundary):
     clock_points(boundary['common_mode_v'],boundary['single_ended_amplitude_v'])
 def validate_paths(*paths):
     assert all(not any(c in str(p) for c in ('"','\n','\r','\x00')) for p in paths)
+def classify_device(row):
+    terminals={'npn13G2':4,'rppd':3,'cap_cmim':2,'ptap1':2}
+    matches=[(model,n)for model,n in terminals.items()if len(row)>n+1 and row[n+1]==model]
+    assert row and row[0].startswith('XD')and len(matches)==1,'Unknown or truncated native compact card'
+    model,n=matches[0]
+    parameters=row[n+2:]
+    assert parameters and all('='in p for p in parameters)
+    keys=[p.split('=',1)[0]for p in parameters]
+    required={'npn13G2':{'Nx','we','le'},'rppd':{'w','l','ps','b','m','sw_et'},'cap_cmim':{'w','l'},'ptap1':{'R'}}
+    assert len(set(keys))==len(keys)and set(keys)==required[model]
+    for p in parameters:compact.number(p.split('=',1)[1])
+    return model
 def prepare(model_text,rc_summary_text,boundary,model_path,model_directory,r3_osdi):
     validate_boundary(boundary)
     assert digest(rc_summary_text)==RC_SUMMARY
@@ -54,8 +66,10 @@ def prepare(model_text,rc_summary_text,boundary,model_path,model_directory,r3_os
     assert c['positive']==dict(devices=55,wire_resistors=238,wire_capacitors=410,terminals=168,wire_components=24,body_nodes=1,ports=PORTS)
     rows=compact.statements(model_text);assert rows[0][0].lower()=='.subckt'and rows[0][2:]==PORTS and rows[-1][0].lower()=='.ends'and rows[-1][1]==rows[0][1]
     top=rows[0][1];devices=[r for r in rows[1:-1]if r[0].startswith('XD')]
-    assert len(devices)==55 and sum('cap_cmim'in r for r in devices)==4
-    hbts=[r for r in devices if r[5]=='npn13G2'];assert len(hbts)==19
+    assert len(devices)==55 and len({r[0].lower()for r in devices})==55
+    models=[classify_device(r)for r in devices]
+    assert {m:models.count(m)for m in set(models)}=={'npn13G2':19,'rppd':20,'cap_cmim':4,'ptap1':12}
+    hbts=[r for r,m in zip(devices,models,strict=True)if m=='npn13G2'];assert len(hbts)==19
     # Every output pair sees one complete real downstream divider, not an
     # ideal capacitor, a guessed input impedance or a terminal short.
     instances=[

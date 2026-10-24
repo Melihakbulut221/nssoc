@@ -2,10 +2,10 @@
   "schema": "phase55-loaded-source-methods-v1",
   "source_only": true,
   "protected": {
-    "scripts/tx_phase55_loaded_contract.py": "d029c5e581b5b761365b318ab4decc3312b434d5e497e9c4bac37efeebc152bd",
-    "scripts/check_tx_phase55_loaded_contract.py": "9e6ddfe0f589e797e4de1451cd1775968aa5c3cdcbeff8766b90fed8c3a43b2a",
+    "scripts/tx_phase55_loaded_contract.py": "ac1bb87f27b27911ab4de164c4382b9149ddccae20bb896f68e3582c464d9da0",
+    "scripts/check_tx_phase55_loaded_contract.py": "91c21795381f80e765f29764752333250896942bf87cac0909fb7960b9b0d1c4",
     "hw/soc/analog/pcie/clock_div2_reset_feedback_candidate_v1.spice": "5dbc69634d9b9421fea2da4a1fec30424b7209fa41021878c1ed493f4e1f935e",
-    ".github/workflows/tx-phase55-loaded-source-controls-cloud.yml": "2208c49c252a9391b2ec7d11ca3d1b8aa9a974cf01e855aeeda01e7b8b742e3a",
+    ".github/workflows/tx-phase55-loaded-source-controls-cloud.yml": "36917c77beded152d8cf8e074e60e505833d4431f341524cd1ce9e3792625e08",
     "hw/soc/analog/pcie/rx_sampler_hbt_v2.spice": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f",
     "hw/soc/analog/pcie/clock_div4_hbt_v10.spice": "b3fcfce801776215938cd7130153e5bc43ccf378706b50fcd1138e2af6dfd6b0",
     "hw/soc/analog/pcie/clock_div2_high_input_v1.spice": "e6b0a3f4f0c497d7290e9eab52133791cb035db3c37e797112bc8b15c32aab8a",
@@ -39,6 +39,14 @@
   "independent_review_corrections": [
     "Exact reset level public-port order and two swap faults",
     "All selector resistor cards/endpoints/geometry with seed/load/bleeder corruptions",
-    "Actual newline/CR/quote/NUL path rejection"
-  ]
+    "Actual newline/CR/quote/NUL path rejection",
+    "Model-specific card terminal counts prevent five-token ptap1 indexing failure",
+    "Cloud positive preparation restores exact complete qualified archive and exercises all55 native cards plus6 corruptions"
+  ],
+  "positive_prepare_cloud_only": {
+    "existing_archive_asset": 671984613,
+    "archive_sha256": "70ab8f1f8171f4dc9b559b4d321b0282f26a2423cdcc911ad1b0c662123ab57c",
+    "simulator_executed": false,
+    "boundary_fixture_not_measurement": true
+  }
 }

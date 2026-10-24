@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Cloud source controls only. No DUT transient or physical qualification."""
-import ast,collections,copy,hashlib,json,re
+import ast,collections,copy,hashlib,io,json,os,re,subprocess,tarfile
 from pathlib import Path
 import tx_phase55_loaded_contract as bench
 ROOT=Path(__file__).resolve().parents[1]
@@ -84,6 +84,65 @@ def reset_validate(text):
       original_latch_cards_unchanged=True,original_core_except_master_data_unchanged=True,
       level_network_exact_original=True,no_internal_ideal_sources=True,
       no_new_layout_or_electrical_acceptance=True,full_tree_reset_implemented=False)
+
+def positive_qualified_prepare(boundary):
+    # Downloads occur only on the GitHub runner; only model text is read from the
+    # already qualified archive. No file extraction or native program is used.
+    assert os.environ.get('GITHUB_ACTIONS')=='true','Exact model positive control runs only in cloud'
+    api='repos/Melihakbulut221/nssoc/'
+    def json_api(path):return json.loads(subprocess.check_output(['gh','api',api+path]))
+    def asset(aid,digest,size):
+        data=subprocess.check_output(['gh','api',api+'releases/assets/'+str(aid),'-H','Accept: application/octet-stream'])
+        assert len(data)==size and hashlib.sha256(data).hexdigest()==digest
+        return data
+    run=json_api('actions/runs/40086006467')
+    assert run['status']=='completed'and run['conclusion']=='success'and run['run_attempt']==1
+    assert run['head_sha']=='c7cb559701eb5b05194110ef3c9bf8bd43626db0'
+    assert run['head_branch']=='codex/tx-clock-phase-parent'
+    assert run['path']=='.github/workflows/tx-phase-divider-mim-precision-cloud.yml'
+    summary=asset(671984522,bench.RC_SUMMARY,351099)
+    parts=json.loads(asset(671984570,bench.RC_PARTS,877))
+    assert parts['format']=='ordered-tar-gzip-parts-v1'and parts['stem']=='tx-phase-divider-mim-precision-40086006467-1'
+    assert len(parts['parts'])==1 and parts['parts'][0]['index']==0
+    part=parts['parts'][0]
+    assert part['name']=='tx-phase-divider-mim-precision-40086006467-1.tar.gz.part0000'
+    raw=asset(671984613,part['sha256'],part['bytes'])
+    assert len(raw)==parts['bytes']==15606038
+    assert hashlib.sha256(raw).hexdigest()==parts['sha256']=='70ab8f1f8171f4dc9b559b4d321b0282f26a2423cdcc911ad1b0c662123ab57c'
+    with tarfile.open(fileobj=io.BytesIO(raw),mode='r:gz')as tar:
+        members=[m for m in tar.getmembers()if m.name=='composition/phase55-wire.spice'or m.name.endswith('/composition/phase55-wire.spice')]
+        assert len(members)==1 and members[0].isfile()and members[0].size<2_000_000
+        model=tar.extractfile(members[0]).read().decode()
+    assert bench.digest(model)==bench.MODEL_SHA
+    deck,contract=bench.prepare(model,summary.decode(),boundary,'/qualified/phase55-wire.spice','/qualified/models','/qualified/r3.osdi')
+    assert contract['device_count']==165 and len(contract['hbt'])==57
+    assert contract['actual_intrinsic_MIM']==12 and contract['native_wire_R']==714 and contract['native_wire_C']==1230
+    assert not contract['exact_observer_scalar_binding_verified']and not contract['pll_connected']and not contract['full_phy_accepted']
+    assert len([r for r in bench.compact.statements(deck)if r[0]in ('xdut','xloadm','xloadq')])==3
+    rows=bench.compact.statements(model)
+    actual=[r for r in rows if r[0].startswith('XD')]
+    by_model={name:[r for r in actual if bench.classify_device(r)==name]for name in ('npn13G2','rppd','cap_cmim','ptap1')}
+    assert {name:len(rows)for name,rows in by_model.items()}=={'npn13G2':19,'rppd':20,'cap_cmim':4,'ptap1':12}
+    assert all(len(r)==5 for r in by_model['ptap1'])
+    corruptions=[]
+    first={name:rows[0]for name,rows in by_model.items()}
+    mutants=[
+      ('truncated_HBT',first['npn13G2'][:5]),
+      ('wrong_tap_model',[*first['ptap1'][:3],'npn13G2',*first['ptap1'][4:]]),
+      ('missing_tap_parameter',first['ptap1'][:-1]),
+      ('duplicate_HBT_parameter',first['npn13G2']+[first['npn13G2'][-1]]),
+      ('wrong_resistor_family',[*first['rppd'][:4],'cap_cmim',*first['rppd'][5:]]),
+      ('truncated_MIM',first['cap_cmim'][:-1])]
+    for name,row in mutants:
+        try:bench.classify_device(row)
+        except (AssertionError,ValueError,TypeError):corruptions.append(name)
+        else:raise AssertionError('Accepted '+name)
+    return dict(exact_qualified_model_restored_in_cloud=True,source_run=40086006467,model_sha256=bench.MODEL_SHA,
+      full_qualified_archive_sha256=parts['sha256'],actual55_native_cards_prepared=True,
+      actual12_five_token_contact_cards=True,all57_HBTs_bound=True,mixed_card_negative_controls=corruptions,
+      generated_deck_sha256=contract['deck_sha256'],unverified_fixture_boundary_only=True,
+      no_native_program_executed=True,PLL_connected=False,full_PHY_accepted=False)
+
 def main():
     methods=json.loads((ROOT/'scripts/tx-phase55-loaded-source-methods.json').read_text())
     for path,digest in methods['protected'].items():assert sha((ROOT/path).read_text())==digest,path
@@ -132,6 +191,7 @@ def main():
         try:bench.validate_paths(path)
         except AssertionError:rejected.append('path_'+name)
         else:raise AssertionError('Unsafe path accepted: '+name)
+    prepared=positive_qualified_prepare(boundary)
     reset=(ROOT/RESET).read_text();positive=reset_validate(reset);reset_faults=[]
     for name,old,new in [
       ('level_input_port_swap','nssoc_phase_reset_level_v1 ip in cp cn','nssoc_phase_reset_level_v1 in ip cp cn'),
@@ -152,7 +212,7 @@ def main():
         except (AssertionError,ValueError,KeyError):reset_faults.append(name)
         else:raise AssertionError(name)
     print(json.dumps(dict(status='PASS_SOURCE_ONLY_PHASE_OBSERVER_AND_RESET_TOPOLOGY_CONTROLS',
-      observer=result,exact_original_31_clock_plan=True,exact_original_root_PWL=True,
+      observer=result,qualified_model_positive_prepare=prepared,exact_original_31_clock_plan=True,exact_original_root_PWL=True,
       boundary_negative_controls=rejected,reset_topology=positive,reset_negative_controls=reset_faults,
       actual_new_native_electrical_run=False,actual_reset_layout=False,PLL_connected=False,full_PHY_accepted=False),indent=2))
 if __name__=='__main__':main()
