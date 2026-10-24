@@ -1,0 +1,7 @@
+# First-latch native endpoint sampling
+
+The original full capture reader40096538128 verified all original bytes and5106columns, reproduced rejected acquisition exactly, and preserved a3355077680-byte131-column cache (SHA256aad3cab8f3035a7c89eca665016bc15558152877bc058972f8a03dfa4172bf97). It failed later at a strict interpolation bracket assertion in analyze line142. The original source, rejection, thresholds and event lists remain unchanged.
+
+The new helper provides one reversible substitution in the exact old analysis function. A transition exactly at a native timestamp uses that actual native row, including time zero; a transition strictly between samples retains the original two-row linear interpolation. Values outside the capture are rejected. No event is removed, clipped, resampled or assigned an inferred current. The actual replay must first reproduce the original assertion and then demonstrate at least one first-native-row event explaining it; the suspected endpoint cause is not accepted merely from source inspection.
+
+The cache-only cloud replay must restore every part/combined hash, all131sample bits, prior80 and8column hashes, the original full-capture proof and exact old diagnostic. Sampling controls cover first/last/exact/intermediate times, strided arrays, signed zero, and eight invalid requests. This repairs an observer, not the PLL acquisition failure or any hardware acceptance.
