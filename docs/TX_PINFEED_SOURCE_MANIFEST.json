@@ -1,7 +1,7 @@
 {
   "branch": "codex/tx-via3-rail-diagnosis",
   "baseline_already_integrated_by_root": "b78a3420",
-  "source_snapshot": "b91a3f312d2538faf232164cdf9493b0cac61422",
+  "source_snapshot": "69d4dcfa957ccc6d19ab2ee6766bdd9a0ac7c147",
   "native_source_heads": {
     "physical": "74bc46d2e9518821a12c66b6a071add579ccf2df",
     "wire_anchors": "737bef27ae4bd8ddb0b2740f2e0562cb51f8991b",
@@ -12,10 +12,13 @@
   "source_only_future_interface_commit": "081ba6cb0cad30a00e5d71385a1d9ae7ed781f43",
   "all_changes_added_only": true,
   "added_paths": [
+    ".github/workflows/tx-branchtailfeed-followthrough-cloud.yml",
     ".github/workflows/tx-driverpinfeed-followthrough-cloud.yml",
     ".github/workflows/tx-driverpinfeed-remaining-geometry-cloud.yml",
     ".github/workflows/tx-output8088-branch-tail-feed-cloud.yml",
     ".github/workflows/tx-output8088-branch-tail-feed-wires-anchors-cloud.yml",
+    ".github/workflows/tx-output8088-branchtailfeed-composition-cloud.yml",
+    ".github/workflows/tx-output8088-branchtailfeed-precision-cloud.yml",
     ".github/workflows/tx-output8088-driver-pinfeed-cloud.yml",
     ".github/workflows/tx-output8088-driver-pinfeed-wires-anchors-cloud.yml",
     ".github/workflows/tx-output8088-driverpinfeed-composition-cloud.yml",
@@ -27,6 +30,7 @@
     "docs/evidence/tx-branch-tail-physical-pass-20261024.json",
     "docs/evidence/tx-branch-tail-source-review-pending-20261024.json",
     "docs/evidence/tx-branch-tail-wire-source-review-20261024.json",
+    "docs/evidence/tx-branchtailfeed-followthrough-source-review-20261024.json",
     "docs/evidence/tx-driver-pinfeed-fresh-intrinsic-rc-pass-20261024.json",
     "docs/evidence/tx-driver-pinfeed-physical-pass-20261024.json",
     "docs/evidence/tx-driver-pinfeed-precheck-error-20261024.json",
@@ -36,22 +40,30 @@
     "docs/evidence/tx-via3-rail-geometry-20261024.json",
     "scripts/bind_tx_output8088_branch_tail_feed_native_anchors.py",
     "scripts/bind_tx_output8088_driver_pinfeed_native_anchors.py",
+    "scripts/cloud_tx_branchtailfeed_composition_followthrough.py",
+    "scripts/cloud_tx_branchtailfeed_followthrough.py",
     "scripts/cloud_tx_driverpinfeed_composition_followthrough.py",
     "scripts/cloud_tx_driverpinfeed_followthrough.py",
     "scripts/cloud_tx_driverpinfeed_remaining_geometry.py",
     "scripts/cloud_tx_output8088_branch_tail_feed.py",
     "scripts/cloud_tx_output8088_branch_tail_feed_wires_anchors.py",
+    "scripts/cloud_tx_output8088_branchtailfeed_composition_launch.py",
+    "scripts/cloud_tx_output8088_branchtailfeed_precision_launch.py",
     "scripts/cloud_tx_output8088_driver_pinfeed.py",
     "scripts/cloud_tx_output8088_driver_pinfeed_wires_anchors.py",
     "scripts/cloud_tx_output8088_driverpinfeed_composition_launch.py",
     "scripts/cloud_tx_output8088_driverpinfeed_interfaces.py",
     "scripts/cloud_tx_output8088_driverpinfeed_precision_launch.py",
     "scripts/cloud_tx_output8088_return64via3_rail_geometry.py",
+    "scripts/compare_tx_branchtailfeed_rail_access.py",
     "scripts/compare_tx_driverpinfeed_rail_access.py",
     "scripts/generate_tx_output8088_branch_tail_feed.py",
     "scripts/generate_tx_output8088_driver_pinfeed.py",
     "scripts/read_tx_driverpinfeed_remaining_geometry.py",
     "scripts/read_tx_output8088_return64via3_rail_geometry.py",
+    "scripts/tx-branchtailfeed-composition-launch-methods.json",
+    "scripts/tx-branchtailfeed-followthrough-methods.json",
+    "scripts/tx-branchtailfeed-precision-launch-methods.json",
     "scripts/tx-driverpinfeed-composition-launch-methods.json",
     "scripts/tx-driverpinfeed-followthrough-methods.json",
     "scripts/tx-driverpinfeed-interface-methods.json",
@@ -89,6 +101,42 @@
   "branch_tail_wire_anchors": {
     "run": 40078861177,
     "source_head": "b91a3f312d2538faf232164cdf9493b0cac61422",
-    "status": "QUEUED_WHEN_RECORDED_NOT_QUALIFIED"
-  }
+    "status": "IN_PROGRESS_WHEN_RECORDED_NOT_YET_QUALIFIED"
+  },
+  "cloud_pipeline_observed_utc": "2026-10-24T09:01:12.439556+00:00",
+  "branch_tail_guarded_pipeline": {
+    "wire_anchors": {
+      "run": 40078861177,
+      "source_head": "b91a3f312d2538faf232164cdf9493b0cac61422",
+      "workflow": ".github/workflows/tx-output8088-branch-tail-feed-wires-anchors-cloud.yml",
+      "job": "diagnose",
+      "observed_status": "in_progress",
+      "observed_conclusion": null
+    },
+    "intrinsic_rc": {
+      "run": 40079922239,
+      "source_head": "1b3c71745361e40f508024f9ba76e49bc0804769",
+      "workflow": ".github/workflows/tx-branchtailfeed-followthrough-cloud.yml",
+      "job": "native-physical",
+      "observed_status": "queued",
+      "observed_conclusion": null
+    },
+    "precision": {
+      "run": 40080002978,
+      "source_head": "00b9d3dc879253faece67d3db3136daeb4811203",
+      "workflow": ".github/workflows/tx-output8088-branchtailfeed-precision-cloud.yml",
+      "job": "actual-full-parent-wire-rc",
+      "observed_status": "queued",
+      "observed_conclusion": null
+    },
+    "composition_dc": {
+      "run": 40080181306,
+      "source_head": "69d4dcfa957ccc6d19ab2ee6766bdd9a0ac7c147",
+      "workflow": ".github/workflows/tx-output8088-branchtailfeed-composition-cloud.yml",
+      "job": "actual-whole-parent-composition",
+      "observed_status": "queued",
+      "observed_conclusion": null
+    }
+  },
+  "no_34ns_transient_in_guarded_pipeline": true
 }

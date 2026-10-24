@@ -87,3 +87,18 @@ Physical40077948550 completed SUCCESS. All130 added feeds passed560-category DRC
 Fresh wire/anchor40078861177 atb91a3f312d2538faf232164cdf9493b0cac61422 is queued. Workflow tx-output8088-branch-tail-feed-wires-anchors-cloud.yml; job diagnose. The actual new GDS hash and all physical evidence are pinned. Independent source review verifies all seven method hashes, exact native extractor/binder derivations and unchanged8088/28620/165/703/768/six-fault gates. Receipt docs/evidence/tx-branch-tail-wire-source-review-20261024.json. This source review does not claim the new graph/anchors passed.
 
 After exact terminal wire/anchor success, generate a new branchtailfeed intrinsic/RC followthrough from scripts/cloud_tx_driverpinfeed_followthrough.py using the new wire run/head, distinct branch-tail-feed wire cell/path names and identical19/13 native gates. It must consume the new source, then fresh two-order precision/composition and130 DC comparisons before any34ns decision. No new transient was started.
+
+## Guarded fresh intrinsic, precision and composition/DC continuation published
+
+Observed 2026-10-24T09:01:12.439556+00:00. The new whole-parent wire/anchor run40078861177 is in_progress; it has not been claimed qualified. The native physical result above remains the latest accepted branch/tail result.
+
+- wire_anchors: run40078861177 at b91a3f312d2538faf232164cdf9493b0cac61422; workflow tx-output8088-branch-tail-feed-wires-anchors-cloud.yml; job diagnose; observed in_progress.
+- intrinsic_rc: run40079922239 at 1b3c71745361e40f508024f9ba76e49bc0804769; workflow tx-branchtailfeed-followthrough-cloud.yml; job native-physical; observed queued.
+- precision: run40080002978 at 00b9d3dc879253faece67d3db3136daeb4811203; workflow tx-output8088-branchtailfeed-precision-cloud.yml; job actual-full-parent-wire-rc; observed queued.
+- composition_dc: run40080181306 at 69d4dcfa957ccc6d19ab2ee6766bdd9a0ac7c147; workflow tx-output8088-branchtailfeed-composition-cloud.yml; job actual-whole-parent-composition; observed queued.
+
+Each downstream runtime waits for its exact immutable predecessor run, head and attempt1 to finish successfully, then validates published summary/parts digests and original engineering gates. The source-only publication while a predecessor is pending does not qualify any result. No native stage was duplicated. The intrinsic/RC adapter received independent review: all11 method locks and exact namespace-only derivation match the qualified preceding pipeline; native19 intrinsic and13 raw-RC faults remain unchanged. See docs/evidence/tx-branchtailfeed-followthrough-source-review-20261024.json.
+
+Precision retains both native capacitor orders and all13 faults in each row. Composition retains all8088 full intrinsic/terminal/body identities,165 ports and25 corruption controls, followed by the unchanged analytic DC solver and130 exact rail bindings. The new comparison additionally restores the immutable previous-pinfeed report and compares every target/fingerprint, so incremental branch/tail resistance improvement can be measured without reusing old RC or nodes. Its bounded independent source review is pending.
+
+No34ns transient appears in this chain. Parent must review the combined qualified new geometry, fresh RC/precision/composition and actual DC reductions before any loaded native waveform job. Keep pending/failure receipts and original gates; never report source review as native acceptance. Local workspace remains empty; all native and archived evidence stays on GitHub.
