@@ -7308,3 +7308,12 @@ Parameter units, native ordering, model hashes, L=.3um/rfmode/positive-area guar
 unchanged; cloud control asserts exact source equivalence except that tuple.
 Existing converters remain immutable. Require rerun native18binding+9faults
 before composition. Mainchip continuation40045229904 now live from399checkpoint.
+
+
+## 2026-10-24 v53 native binding passed; compose actual241R/210C
+Binding40045663801 passed18native devices/50terminals and9faults. Native ports
+sub,ip,inn,avdd,on,op,avss,iref. Exact isolated converter permits5.4/36um only;
+no change to native model parameter conversion. Combine with RC40045229994
+actual241R/210C under14composition controls, then original five full loaded waves.
+All native waveform columns must be derived from new graph, never copied
+from prior capture; vector count is not acceptance. Local directory remains empty.
