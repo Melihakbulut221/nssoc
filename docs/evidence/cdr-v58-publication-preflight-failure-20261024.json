@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "status": "PUBLICATION_PREFLIGHT_REJECTED_BEFORE_CAPTURE_DOWNLOAD",
+  "run": {
+    "id": 40124538661,
+    "head_sha": "849cf464829e778753839bfde037234f41adba2f",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at": "2026-10-24T19:16:25Z",
+    "updated_at": "2026-10-24T19:17:18Z"
+  },
+  "publication_job": 120963136412,
+  "controls_job": 120963036005,
+  "controls": {
+    "status": "PASS_EXISTING_CDR_ARTIFACT_METADATA_AND45_CONTROLS_ONLY",
+    "transport_faults": 45,
+    "release_faults": 17,
+    "result_bytes": 2034,
+    "result_sha256": "0cc1ac5a138ba50c3dd9df532361ac81dcc71f18e0da545c8e877e0f93f43c4e",
+    "log_sha256": "016bea3dc8be97671d36f1d986c819ed14de6b6eba644cf26e73f2b346f363db"
+  },
+  "failure": {
+    "line": 317,
+    "error": "Exact-source release preflight returned HTTP404",
+    "observed_at": "2026-10-24T19:17:14Z",
+    "result_bytes": 880,
+    "result_sha256": "08cce9b685280c5fd8458772aa9f78ec03ba05b45d3a51bcc2e681d4afe7f040",
+    "log_bytes": 27634,
+    "log_sha256": "6b502d02b164172edfd437ec0bd497daf66755847100735a14fdf232e2b978c4"
+  },
+  "later_reservation": {
+    "id": 422931848,
+    "published_at": "2026-10-24T19:17:33Z",
+    "source": "849cf464829e778753839bfde037234f41adba2f",
+    "assets_empty": true
+  },
+  "fallback": [
+    {
+      "id": 12572128939,
+      "name": "cdr-v58-diagnostic-publication-controls",
+      "size_in_bytes": 952,
+      "digest": "sha256:5fb2560e79e48064d96ac6ecf4e61e35f93425b9a80b2513f82665d192b7683b"
+    },
+    {
+      "id": 12571844910,
+      "name": "cdr-v58-complete-diagnostic-jsons",
+      "size_in_bytes": 564,
+      "digest": "sha256:00e919549109050fa5f56db2803926b6b4af5c2f91a48e05210772b0ed5c8fa9"
+    }
+  ],
+  "attempt2_source_audit": {
+    "own_release_context_supports_positive_attempts": true,
+    "own_publisher_uses_GITHUB_RUN_ATTEMPT": true,
+    "original_source_identity_attempt1_unchanged": true,
+    "workflow_has_no_own_attempt1_gate": true,
+    "engineering_source_unchanged": true
+  },
+  "archive_downloaded": false,
+  "new_simulation": false,
+  "cdr_accepted": false,
+  "full_phy_accepted": false,
+  "next": "Precreate exact-source attempt2 release before rerun-failed-jobs; retain passed controls and original failed attempt."
+}
