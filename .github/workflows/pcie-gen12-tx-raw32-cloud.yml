@@ -1,0 +1,51 @@
+# SPDX-License-Identifier: Apache-2.0
+# Manual native proof bound to authenticated codec evidence; push registers only.
+name: pcie-gen12-tx-raw32-cloud
+on:
+  workflow_dispatch:
+  push:
+    branches: [codex/pcie-gen12-tx-transport]
+    paths: [.github/workflows/pcie-gen12-tx-raw32-cloud.yml]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: pcie-gen12-tx-raw32-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  transport-native-proof:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install native RTL and synthesis tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends iverilog verilator yosys
+      - name: Exact prerequisite, independent serial queue and18 compiling faults
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/check_pcie_gen12_tx_raw32.py
+      - name: Preserve complete small result bytes in hosted log
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          import base64,hashlib,json
+          from pathlib import Path
+          data=Path('hw/soc/out/cloud-pcie-gen12-tx-raw32/result.json').read_bytes()
+          assert 0<len(data)<2*1024*1024;json.loads(data)
+          print('GEN12_TX_RESULT_SHA256 '+hashlib.sha256(data).hexdigest())
+          print('GEN12_TX_RESULT_BYTES '+str(len(data)))
+          text=base64.b64encode(data).decode();chunks=[text[i:i+4096]for i in range(0,len(text),4096)]
+          for i,chunk in enumerate(chunks):print('GEN12_TX_RESULT_BASE64 '+str(i)+'/'+str(len(chunks))+' '+chunk)
+          PYCODE
+      - name: Preserve complete native proof including rejection
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pcie-gen12-tx-raw32-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cloud-pcie-gen12-tx-raw32/
+          retention-days: 90
