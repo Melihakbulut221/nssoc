@@ -398,7 +398,7 @@ def main():
             via('Metal4', 'TopMetal1', col['low_dbu'], plan, col['role']+'_native_upper_landing', columns=6, upper=True)
             via('Metal4', 'TopMetal1', col['high_dbu'], plan, col['role']+'_native_upper_landing', columns=2, upper=True,
                 original_via4=col['original_high_via4_boxes_dbu'])
-            add_line(126, col['low_dbu'], col['high_dbu'], 3200, plan, col['role']+'_parallel_tm1_access')
+            add_line(126, col['low_dbu'], col['high_dbu'], 2700, plan, col['role']+'_parallel_tm1_access')
         high = [col['high_dbu'] for col in plan['columns']]
         for point in high:
             via('Metal5', 'TopMetal2', point, plan, 'native_m5_tm2_bus_landing', upper=True)
