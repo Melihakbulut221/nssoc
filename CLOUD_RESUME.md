@@ -7551,3 +7551,14 @@ v56converter must support MOS8/53.335um and exactptapA40/P44 in addition toA4/P8
 Fresh wire graph launched; then new RC/model binding/14compositionfaults and
 all5originalfull loaded waves. Do not infer actual loaded pass from schematic.
 Final parent retains only existing8umreference shared by gain/latch gates.
+
+## 2026-10-24 v56 wire passed; exact new RC and contact-aware binding
+Wire40053836525 passed18devices/50terminals/40anchors/9conductors. Native taps
+are7A4/P8 and2A40/P44, not UI defaults. New isolated v56 model converter changes
+only MOS width set8/53.335 and exact A40/P44 branch using pinned CbTapCalc equation;
+all other conversions/base remain unchanged. Binding invokes actual frozen PDK
+CbTapCalc, records its source/signature, compares all9contact resistances and
+rejects3bad geometries plus3bad actualcompact models in addition to9old faults.
+If native function signature differs, preserve report and correct invocation,
+never remove native-oracle proof. RC copies v55 explicit input-open witness;
+revalidate actual fresh graph, don't reuse wire values/counts.
