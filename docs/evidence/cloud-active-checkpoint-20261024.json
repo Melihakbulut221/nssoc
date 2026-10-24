@@ -1,23 +1,23 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-24T15:02:26.350576+00:00",
+  "updated_at": "2026-10-24T15:27:13.959380+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only; no local checkout, CAD, simulations or native artifacts.",
-  "root_source_before_receipt": "783dc0150fb105ec8961574c5f0f7ff0170065a8",
+  "root_source_before_receipt": "e9942bb32af5c1c390d5bd5cb15873fc08ee93b8",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 20,
+    "inventory_version": 21,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40080701966
   },
   "active_runs": {
-    "mainchip_same_process_route": 40095811631,
     "tx_normal_same_process_native": 40098024825,
     "tx_swapped_selector_same_process_native": 40098031853,
     "phase244_exact_reset_path_readback": 40102964781,
     "tx_actual_native_clock_roles": 40102668052,
-    "pll_exact_native_endpoint_controls": 40103396561
+    "pll_cache_replay_controls": 40105495542,
+    "gen12_successful_codec_artifact_readback": 40106066552
   },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
@@ -58,23 +58,29 @@
     "gen12_tx_source_review": "4f49646add144ec611d6ae3a98df2d64ad928377",
     "pll_endpoint_sampling_source": "6d9921912ed57c55598b4e575d3bd25665459233",
     "phase_actual_clock_role_and_reset_readback": "9456baa6ad8aa6fc87b78d41a67588a1e7bcb470",
-    "cdr_v58_loaded_matrix_checkpoint": "b42e8634d3cf061f24d8ebe79795e9ab8e5422fc"
+    "cdr_v58_loaded_matrix_checkpoint": "b42e8634d3cf061f24d8ebe79795e9ab8e5422fc",
+    "pll_cache_replay_checkpoint": "322b22f2436e804e1aa06381f57cfdb45abc7a42",
+    "cdr_publication_safety_source": "d92a3367a1013d1071125b753ec4f65ae4ec813b",
+    "cloud_result_tag_trigger_audit": "7a3dd6dd8b6681d10f805eefda0ac96b563a3d90",
+    "gen12_codec_native_pass_awaiting_artifact": "9c179163877e17d321c9f082a60b228354eb0103"
   },
   "qualified_progress": {
     "tx": "Both fresh native initial trajectories saved with exact runtime/source proof, not completed: normal 8.645814903 ns and swapped-selector 7.514319757 ns of required 34 ns. Each exact process now continues once in its own cloud run.",
-    "phase": "Phase244 remains rejected inthree cases on original100mV phase margin. Reset-path source controls passed; exact saved-capture readback40102964781 queued. Dedicated actual62clock-port\u2192124selector-base controller controls passed; native proof40102668052 queued. No loaded31tree or physical acceptance.",
+    "phase": "Manual controls passed for roles40102668052 and reset40102964781. Actual dependent jobs120904864521/120905934713 are queued; exact-source releases were precreated. Phase244 original100mV failure remains open.",
     "cdr": "Preparation in 40101491695 passed its actual model and 13 binding controls, but publication returned HTTP403; all loaded cases were skipped. Existing fallback artifact is preserved. Exact tested-source release publication fix is under independent review. No waveform acceptance or simulation failure inferred.",
-    "pll": "Full131 observer40096538128 verified full original130GB/all5106columns/old80 and8cache bits and original acquisition rejection, then failed a strict interpolation-bracket assertion atline142. Exact3355077680-byte cache preserved. New helper correctly samples exactnative timestamps without dropping anyedge; actual first-row cause must still be proven by cache-only replay. No full original reread or new simulation needed.",
-    "gen12": "Raw32 boundary proof 40100300472 passed and was imported. Corrected codec 40102483214 passed both simulators, synthesis, 1024 encoder requests, 2048 code/RD cases, 2048 four-symbol chains, 4096 lane cycles and nine faults. Its complete artifact is being authenticated in GitHub before RX/TX prerequisite binding."
+    "pll": "Endpoint observer helper40103396561 passed all8 exact/interior cases and8 invalid inputs, preserving signed zero and original values. Saved-cache replay controls40105495542 queued; actual oldline142 failure and same-event row0 proof remain mandatory. Original PLL acquisition remains rejected.",
+    "gen12": "Raw32 boundary proof 40100300472 passed and was imported. Corrected codec 40102483214 passed both simulators, synthesis, 1024 encoder requests, 2048 code/RD cases, 2048 four-symbol chains, 4096 lane cycles and nine faults. Its complete artifact is being authenticated in GitHub before RX/TX prerequisite binding.",
+    "mainchip": "Run40095811631 failed strict no-new-log-progress assertion after the saved process segment. All65 outputs survived in Actions artifact12564886005 after publication403. No routing completion or deadlock conclusion; authenticate artifact and diagnose before continuation."
   },
   "next_actions": [
-    "Remain cloud-only. All source/evidence is in GitHub; local workspace remains empty, no local native processes or artifacts.",
-    "Follow mainchip40095811631 and TX normal/fault40098024825/40098031853 exact live processes. Validate terminal capsules before continuing; no duplicate. Mainchip remains packet-boundary routing, original20/4/8/8ns plus5percent derate gates unchanged.",
-    "Preserve CDR 40101491695 preparation PASS and publication failure; fix release target to exact tested source before restoring the unchanged original ten-case matrix. No loaded jobs ran.",
-    "Corrected codec 40102483214 passed; authenticate complete artifact in the cloud, then bind reviewed RX/TX transport native prerequisites. Do not accept logs alone as complete proof.",
-    "PLL old observer40096538128 is terminal failure after verified full-capture caching. Do not rerun full130GB reader or simulate. Delta prepares codex/pll-first-latch-cache-replay from21f0 using exact3GB cache; helper6d992191 controls40103396561 must pass. Require original exactline142 failure reproduction, then actual row0 endpoint witness with all old stats/edges retained.",
-    "Follow phase244 readback40102964781 and clock-role proof40102668052. Once actual dependent jobs exist, replace monitor production_jobs source-controls with exact-reset-path-readback and actual-native-clock-roles respectively. Preserve original phase rejection and actual topology evidence.",
-    "Only after complete authenticated codec native proof may agents bind RX41351a3a and TX4f49646a prerequisites, register reviewed workflows and execute actual integration tests. No implied LTSSM, lower-rate analog, mainchip integration or full PHY acceptance."
+    "Cloud-only: local project directory and project-named temporary paths are empty; no native tools run locally.",
+    "Mainchip40095811631 failed no-new-log-progress gate. Delta prepares cloud-only exact artifact12564886005 recovery; authenticate65 files and process state before any resume. Do not blindly restart or weaken original20/4/8/8ns plus5percent gates.",
+    "TX normal40098024825 and swapped40098031853 remain exact live native processes; source-bound output releases now exist. Consume terminal evidence before continuation.",
+    "PLL helper40103396561 passed; follow source controls40105495542. On pass dispatch saved-cache replay once and have root precreate exact-source release before publication. No130GB reread or fresh simulation.",
+    "CDR40101491695 preparation passed but release publication failed; preserve existing artifact12563786893. After reviewed source-bound publication preparation, execute original ten-case matrix once, without loosening waveform gates.",
+    "Follow actual clock-role40102668052 and reset readback40102964781 production jobs; monitor now targets real dependent jobs, not prior controls.",
+    "Follow codec artifact reader40106066552; only actual authenticated proof may bind reviewed RX/TX. Preserve old codec fixture failure and upstream vendor nettype lint failure for a narrow remedy.",
+    "Use existing commit refs and audited cloud-results tags. No codex freeze tags. Retain all original failures and pending qualification limits."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -101,7 +107,9 @@
     "phase244_readback_controls_pass": 40099838691,
     "tx_clock_role_source_controls_pass": 40101777955,
     "cdr_v58_preparation_pass_publication_failed": 40101491695,
-    "gen12_corrected_codec_pass_awaiting_full_artifact_readback": 40102483214
+    "gen12_corrected_codec_pass_awaiting_full_artifact_readback": 40102483214,
+    "mainchip_no_observable_log_progress_rejected": 40095811631,
+    "pll_exact_native_endpoint_controls_pass": 40103396561
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json"
 }

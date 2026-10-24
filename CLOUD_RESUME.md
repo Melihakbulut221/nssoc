@@ -8179,3 +8179,12 @@ The local project directory is empty, no project-named temporary entries were fo
 An evidence freeze tag accidentally triggered 70 legacy push workflows. All 63 unfinished unintended runs are now cancelled; the seven pre-existing completed outcomes and the tag remain preserved. Exact identities and cancellation results are in docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json. Canonical mainchip and TX processes were not cancelled. Use existing immutable commits; do not create codex-prefixed freeze tags.
 
 Corrected codec 40102483214 passed its native proof; full artifact authentication still precedes RX/TX binding. CDR 40101491695 passed preparation but failed release publication, so no loaded waveform case began. Preserve that distinction and fix only the publication path. Full serial PHY, routed serial mainchip integration and original final timing remain open.
+
+
+### 2026-10-24T15:27:13.959380+00:00 — cloud checkpoint v21
+
+Mainchip 40095811631 is now a terminal failure: the resumed segment produced no additional log bytes, and the strict progress assertion rejected it. Its 65 files are retained in Actions artifact 12564886005. The release publication failed before the source-bound destination was reserved. Recover and inspect the existing artifact in GitHub; do not restart or assert deadlock without process evidence.
+
+Canonical TX runs 40098024825 and 40098031853 remain active. Exact-source evidence releases were reserved for both, the two actual phase/clock proof jobs, and corrected codec artifact reader 40106066552. The tag trigger audit found no matching cloud-results jobs at these exact source commits; never default release targets to main.
+
+Endpoint helper 40103396561 passed its controls. PLL cache replay controls 40105495542 precede the one cache-only replay. CDR preparation passed but its loaded matrix never started because publication failed. All original electrical, timing and failure gates remain unchanged. Full serial PHY, serial mainchip integration and final timing are not accepted.
