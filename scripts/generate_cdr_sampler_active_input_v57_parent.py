@@ -79,7 +79,7 @@ def main():
   origin=nums(before['placements'][tag]['bbox_um'])[:2];tr=pya.Trans(round(origin[0]/L.dbu),round(origin[1]/L.dbu))
   limits=pya.DBox(*nums(before['placements'][tag]['bbox_um'])).to_itype(L.dbu)
   source=old_core.transformed(tr).merged();target=new_core.transformed(tr).merged()
-  candidates=[q for q in old_direct.each()if limits.contains(q.bbox())]
+  candidates=[q for q in old_direct.each()if (limits & q.bbox())==q.bbox()]
   assert len(candidates)==16,('C/D old enclosure census',tag,len(candidates))
   for polygon in candidates:
    r=pya.Region(polygon);b=polygon.bbox()
@@ -113,7 +113,7 @@ def main():
   patch=pya.Region(box);touch=m5_before.interacting(patch)
   assert touch.count()==1,('Notch spans different M5 components',str(box),touch.count())
   assert (patch-m5_before).area()>0,'No actual notch gap covered'
-  assert any(pya.DBox(*nums(before['placements'][tag]['bbox_um'])).to_itype(L.dbu).contains(box)for tag in ('sc','sd'))
+  assert any((pya.DBox(*nums(before['placements'][tag]['bbox_um'])).to_itype(L.dbu) & box)==box for tag in ('sc','sd'))
   m5_fill+=patch;m5_records.append(dict(box_dbu=str(box),source_marker=marker['values'],touched_existing_m5_components=touch.count(),added_area_dbu2=(patch-m5_before).area()))
  assert len(m5_records)==6 and (m5_before+m5_fill).merged().count()==m5_before.count()
  T.shapes(m5_index).insert(m5_fill)
