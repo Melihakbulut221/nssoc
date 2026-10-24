@@ -1,0 +1,178 @@
+{
+  "status": "NATIVE_CODEC_SUCCESS_FULL_AUTHENTICATED_PROOF_READBACK_PENDING",
+  "native_run": 40102483214,
+  "native_source": "aa8afbb7ec2cc78dc533271d530a6abbb1eb20a3",
+  "native_attempt": 1,
+  "native_job": 120897302344,
+  "native_conclusion": "success",
+  "job_log_bytes": 35279,
+  "job_log_sha256": "3836ff90a23b8efd7ac59f07ffbedbe8b65252bcfb3d95f59e8b85c242cebf6c",
+  "actual_compact_result_from_native_log": {
+    "result_sha256": "795e077c81e383036089a47e29a299710c9fa76d3c8d58d0dd68212b20cda590",
+    "result": {
+      "status": "PASS_GEN12_SINGLE_LANE_CODEC_TABLE_EXHAUSTIVE_STATE_SYNTHESIS_AND9_FAULTS",
+      "source_head": "aa8afbb7ec2cc78dc533271d530a6abbb1eb20a3",
+      "run_id": "40102483214",
+      "LTSSM_implemented": false,
+      "comma_alignment_implemented": false,
+      "low_rate_PMA_qualified": false,
+      "full_PHY_accepted": false,
+      "primary_oracle": {
+        "url": "https://www.ieee802.org/3/z/public/presentations/sep1996/RT8b10b_codes.pdf",
+        "sha256": "8db7e64132d931c25a579a9582404af3fb505f97079e21c08d373d9563b3e749",
+        "rows": 268,
+        "independent_published_table_exact": true
+      },
+      "coverage": {
+        "encode_cases": 1024,
+        "valid_encode": 536,
+        "invalid_K_cases": 488,
+        "decode_cases": 2048,
+        "all_codes_both_disparities": true,
+        "legal_code_patterns": 464,
+        "allowed_code_RD_pairs": 536,
+        "four_symbol_chain_cases": 2048,
+        "lane_cycles": 4096,
+        "lane_coverage": {
+          "tx_disabled": 2049,
+          "rx_disabled": 2051,
+          "tx_invalid_k": 961,
+          "rx_invalid_code": 1114,
+          "rx_wrong_disparity": 395,
+          "independent_resets": 65
+        },
+        "alternate_D7_cases": [
+          {
+            "rd": 0,
+            "data": 241,
+            "code": "1000110111"
+          },
+          {
+            "rd": 0,
+            "data": 242,
+            "code": "0100110111"
+          },
+          {
+            "rd": 0,
+            "data": 244,
+            "code": "0010110111"
+          },
+          {
+            "rd": 1,
+            "data": 235,
+            "code": "1101001000"
+          },
+          {
+            "rd": 1,
+            "data": 237,
+            "code": "1011001000"
+          },
+          {
+            "rd": 1,
+            "data": 238,
+            "code": "0111001000"
+          }
+        ],
+        "all_RX_RD_updates_from_received_subblocks": true
+      },
+      "icarus": "PASS_INDEPENDENT_TABLE_AND_STATE_TESTS",
+      "verilator": "PASS_SAME_INDEPENDENT_VECTORS",
+      "synthesis": {
+        "soc_pcie_gen12_8b10b_encode": {
+          "cells": 37,
+          "yosys_check_assert": true,
+          "netlist_sha256": "185fa1ae252c3cf2b4f5545cae5be71d729f7e553ebd3b7a4fdcd751954e8056"
+        },
+        "soc_pcie_gen12_8b10b_decode": {
+          "cells": 64,
+          "yosys_check_assert": true,
+          "netlist_sha256": "40e7cc7a02a4764813b100bb093beb6c4851db0f2680b8566c6975d878b7e749"
+        },
+        "soc_pcie_gen12_codec_lane": {
+          "cells": 32,
+          "yosys_check_assert": true,
+          "netlist_sha256": "3d4d2e6e283ae166006308400c39d880c4e4d435abc643cf66b0df8c2734b27b"
+        }
+      },
+      "negative_controls": [
+        {
+          "name": "tx_bit_order",
+          "rejected": true,
+          "mutant_sha256": "822eef1acd9cb4a462c2fa3d83eb4d5409d38cd1b5bec4803548953c53403aca"
+        },
+        {
+          "name": "tx_invalid_K",
+          "rejected": true,
+          "mutant_sha256": "d1f30187fdf1681a0223f5e3664c8f430cec1de197ad5dbb37154cf024000249"
+        },
+        {
+          "name": "tx_RD_constant",
+          "rejected": true,
+          "mutant_sha256": "c2556e57a30bad30d5129cac3c4a1febe72259fafadf6fee9ab9ff97f5205089"
+        },
+        {
+          "name": "rx_code_error_hidden",
+          "rejected": true,
+          "mutant_sha256": "abda1b6e73f89cd295e19f908e95a1a62fdaef170ff241d4c044a71ad6586f09"
+        },
+        {
+          "name": "rx_disparity_hidden",
+          "rejected": true,
+          "mutant_sha256": "c12b8d2798a617c7223bb72fbe0e23d4f4b3ca29840297b4c238aff56ecf7623"
+        },
+        {
+          "name": "rx_RD_invalid_hold",
+          "rejected": true,
+          "mutant_sha256": "5047670c40e24774a7b39a679f945dbb168d8e9d23cdeeace64ab4d89885ade8"
+        },
+        {
+          "name": "rx_alternate7_reject",
+          "rejected": true,
+          "mutant_sha256": "e1ebe2d4d2978b3ca9bee6f5759956b0af26cc115fd008088f5d621716b56fe3"
+        },
+        {
+          "name": "lane_enable_ignored",
+          "rejected": true,
+          "mutant_sha256": "14c5de6270723d44a8652f333087e79a2b03335c2a925e37c62e0d72ede8f4f3"
+        },
+        {
+          "name": "lane_reset_positive",
+          "rejected": true,
+          "mutant_sha256": "20f54a1fea07e5d2351ede2d7241fef38ed56d0985145700eeacb8b588baabd1"
+        }
+      ],
+      "sources_unchanged": true
+    }
+  },
+  "native_artifact": {
+    "id": 12563629865,
+    "name": "pcie-gen12-codec-40102483214-1",
+    "size_in_bytes": 24208064,
+    "digest": "sha256:1e6dfffeb50530fbe6215ee0b708fb223cd52d98fae42ce3d978a44a8791dca7"
+  },
+  "artifact_not_downloaded_locally": true,
+  "corrected_reader": {
+    "run": 40106066552,
+    "source": "b255e253d92443c4deee840d75e537681b265384",
+    "attempt": 1,
+    "workflow": ".github/workflows/pcie-gen12-codec-proof-readback.yml",
+    "branch": "codex/pcie-gen12-codec-corrected-proof-readback",
+    "precreated_release": 422806538,
+    "tag": "cloud-results-40106066552-1-gen12-codec-readback",
+    "scope": "Only actual terminal reader proof can bind RX/TX prerequisites; this native-log snapshot does not replace archive-member verification."
+  },
+  "original_failure_preserved": {
+    "run": 40099402878,
+    "source": "86dbe41b5383c29238b6a61f87783f3409e6cf3b",
+    "failure": "Missing real testbench reset assertion edge; unchanged RTL/oracle/gates passed corrected actual stimulus.",
+    "reader_verification": 40102949747,
+    "reader_verified_original_rejection": true,
+    "reader_release_publication_failed": true
+  },
+  "RX_source_ready_not_run": "a1150d3562a96c8c30d0471ddc28491bfb0f812b",
+  "TX_source_owner": "delta_review",
+  "local_files_created": false,
+  "LTSSM_accepted": false,
+  "low_rate_PMA_accepted": false,
+  "full_PHY_accepted": false
+}
