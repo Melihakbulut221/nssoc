@@ -7660,3 +7660,17 @@ tailcurrent minimum. Input uses measured-leaf60mV/1.48Vscaled bench; external8GH
 clock only. Binary fullcapture,no ideal internal source,no physical/parent/PHY
 acceptance. Need actual C/D-specific geometry and full parent RC/waves next;
 A/B remainoriginal and existing parent sharing must not be silently changed.
+
+## 2026-10-24 v57 actual extracted leaf electrical closure passed
+Full five-case40057530494 sourced65f7212 passed. Same100mV/37.5ps/1.8..2.15V and
+original native transistor gates, full34.25ns every wire/body/current sample.
+Nominal130.192mV/30.156ps/CM1.915608..1.917534V; hot109.973mV/34.844ps/
+CM1.804202..1.806278V; cold144.679mV/27.344ps/CM2.027879..2.029701V.
+Both actual output-swap/bias-off faults detected,zero diagnostics,source intact.
+This closes the isolated physical gain leaf electrical issue, NOT parent/fullPHY.
+Preserve v56 hotfailure and all previous actual results; no gate changes.
+Native shared-reference sampler screen workflowcdr-sampler-active-input-v57-cloud
+at329123de is live/queued; inspect exact current run before any retry. It keeps
+oneexisting8umref,eight36um latchtails,two53.335um gaintails; no duplicate bias.
+Next actual C/D-specific sampler geometry,parentreplacement,freshRC/fullparentwaves.
+Mainchip40056071182,PLL40041871167,TX40050776700/40051009656 remain separate.
