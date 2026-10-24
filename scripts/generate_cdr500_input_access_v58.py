@@ -268,6 +268,33 @@ def main():
             clear(reg, info.layer, plan)
             if info.layer in VIAS:
                 for old_cut in own[plan['gain_native_id']][info.layer].interacting(reg).each():
+                    if not (pya.Region(old_cut)-reg).is_empty() and diagnostic_active:
+                        old_region = pya.Region(old_cut)
+                        owners = []
+                        root_piece = (pya.Region(T.shapes(L.layer(info.layer, 0))) & old_region).merged()
+                        if not root_piece.is_empty():
+                            owners.append(dict(owner='root_direct', polygons_dbu=[str(q) for q in root_piece.each()]))
+                        for instance in T.each_inst():
+                            piece = (pya.Region(instance.cell.begin_shapes_rec(L.layer(info.layer, 0))).transformed(instance.cplx_trans) & old_region).merged()
+                            if not piece.is_empty():
+                                owners.append(dict(owner=instance.cell.name+'@'+str(instance.dcplx_trans), polygons_dbu=[str(q) for q in piece.each()]))
+                        footprint = {}
+                        for layer_index in L.layer_indexes():
+                            layer_info = L.get_info(layer_index)
+                            piece = pya.Region(cell.begin_shapes_rec(layer_index)).transformed(tr).merged()
+                            if not piece.is_empty():
+                                footprint[str((layer_info.layer, layer_info.datatype))] = [str(q) for q in piece.each()]
+                        diagnostic = dict(status='REJECTED_UNCHANGED_PARTIAL_ORIGINAL_CUT_GUARD',
+                            gain_native_id=plan['gain_native_id'], native_cluster=plan['native_cluster'],
+                            wire_component=plan['wire_component'], purpose=purpose, point_dbu=list(point),
+                            pcell=cell.name, parameters=parameters, transform=str(tr), via_layer=info.layer,
+                            original_cut_polygon_dbu=str(old_cut), candidate_cut_polygons_dbu=[str(q) for q in reg.each()],
+                            intersection_area_dbu2=(old_region & reg).area(),
+                            original_cut_outside_candidate_dbu2=(old_region-reg).area(),
+                            original_drawing_owners=owners, actual_candidate_footprint=footprint,
+                            geometry_accepted=False, guard_waived=False)
+                        (args.out.parent/'access-cut-collision.json').write_text(json.dumps(diagnostic, indent=2)+'\n')
+                        print(json.dumps(diagnostic), flush=True)
                     require((pya.Region(old_cut)-reg).is_empty(), 'New native cut partially overlaps an original cut')
             rendered[info.layer] = reg
         require(layer_name[bottom_name] in rendered and layer_name[top_name] in rendered, 'Native via endpoint missing')
