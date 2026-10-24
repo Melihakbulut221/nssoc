@@ -1,9 +1,9 @@
 {
-  "schema": "tx-phase-cloud-checkpoint-v10",
-  "observed_utc": "2026-10-24T17:02:43.485Z",
+  "schema": "tx-phase-cloud-checkpoint-v11",
+  "observed_utc": "2026-10-24T17:23:09.945Z",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
-  "source_head": "e2598de52f2190ee0e3eddf8095c3fffe640b62f",
+  "source_head": "293eed1f3538d5a2208c972310e25a8e465b59ee",
   "qualified_RC": {
     "run": 40086006467,
     "source": "c7cb559701eb5b05194110ef3c9bf8bd43626db0",
@@ -83,12 +83,7 @@
   "electrical_native_dispatched": true,
   "PLL_connected": false,
   "full_PHY_accepted": false,
-  "next": [
-    "Follow sole role observer40113558341 at exact363b5a86 through controls and actual database role/parameter readback. Original Nx8 guard and original electrical failure remain; no role acceptance inferred.",
-    "Follow sole offset244 intrinsic40114254950/sourcee2598de52 through source-controls120932173438, then actual four34ns cases. Existing release422863338 is bound to exacttestedsource. Preserve all original reset/fixedUI/device/numerical/fullcapture gates and every rejected waveform; no substitute threshold/phase fitting.",
-    "Original244 waveform rejection remains: three fixed100mV UI sample failures; same deadlines, all106HBT limits, zeroOP, numerical diagnostics and full capture gates remain mandatory.",
-    "Loaded31-tree, fresh reset physical layout/RC, actual lockedPLL connection and fullPHY remain open."
-  ],
+  "next": "Follow the single role failure artifact readback40115817352 and actual offset transient40114254950. Diagnose the actual inner exception before changing any source/geometry or Nx guard. Existing CDR failure capture readback requirements remain bounded source preparation; no new simulation or values.",
   "terminal_source_receipt": {
     "path": "docs/evidence/tx-phase-source-preparation-and31-mapping-pass-20261024.json",
     "sha256": "cec1eb3d82489be21728f607f870aad961dded9d921d9060e76555d1d5a1ad94"
@@ -314,7 +309,7 @@
       "original_failure": "Actual selector/tail emitter multiplier changed at frozen binder line31; role acceptance remains false."
     },
     "parameter_diagnosis": {
-      "status": "queued_controls_then_exact_native_database_observer",
+      "status": "completed_failure_preserved_inner_log_pending",
       "source": "cdcf0f925d1afc119bf14c13ea7856424b3b6184",
       "observer": "scripts/observe_tx_native_clock_role_parameters.py",
       "controller": "scripts/cloud_tx_native_clock_role_parameters.py",
@@ -339,6 +334,41 @@
         "tree": "5831af1f225dc080f871fbc66688ab1326c36857",
         "workflow_sha256": "0ef003226f80ef0d330f93d8c808054850eb4b554252319b8a169ecc7c237bef",
         "orphan": true
+      },
+      "native_job_id": 120932026993,
+      "source_controls_passed": true,
+      "rejection_receipt": "docs/evidence/tx-native-role-parameter-observer-rejection-20261024.json",
+      "failure_reader": {
+        "run": {
+          "id": 40115817352,
+          "head_sha": "293eed1f3538d5a2208c972310e25a8e465b59ee",
+          "status": "queued",
+          "conclusion": null,
+          "run_attempt": 1,
+          "created_at": "2026-10-24T17:22:23Z"
+        },
+        "jobs": [
+          {
+            "id": 120936752187,
+            "name": "controls",
+            "status": "queued",
+            "conclusion": null
+          }
+        ],
+        "workflow": "tx-role-parameter-failure-readback-cloud.yml",
+        "registration": {
+          "registration": {
+            "branch": "codex/tx-role-failure-reader-registration",
+            "commit": "6ee3ac7b7a683062c6feb01917052c984088555b",
+            "orphan": true
+          },
+          "actual_commit": "293eed1f3538d5a2208c972310e25a8e465b59ee",
+          "workflow_id": 395285497,
+          "workflow_sha256": "4be239542ca48140f2eaff27715694ae422d005aac5b33b22a0636973a23d3db"
+        },
+        "independent_review_passed": true,
+        "no_new_native_database_execution": true,
+        "native_role_accepted": false
       }
     }
   },
@@ -425,7 +455,7 @@
       "dispatch_source": "e2598de52f2190ee0e3eddf8095c3fffe640b62f",
       "workflow": "tx-phase-assert-offset-intrinsic-cloud.yml",
       "source_controls_job": 120932173438,
-      "last_observed_status": "queued",
+      "last_observed_status": "in_progress",
       "release": {
         "id": 422863338,
         "tag": "cloud-results-40114254950-1-tx-phase-assert-offset-intrinsic",
@@ -443,7 +473,44 @@
         "orphan": true
       },
       "dispatch_receipt": "docs/evidence/tx-phase-assert-offset-native-dispatch-20261024.json",
-      "no_duplicate_dispatch": true
+      "no_duplicate_dispatch": true,
+      "source_controls_passed": true,
+      "source_controls_log": {
+        "job": 120932173438,
+        "bytes": 65869,
+        "sha256": "a23fb5e2cefb81982851b558307e21b897d0167ca43b2aded53fcd6fde60fef4",
+        "proof": [
+          "2026-10-24T17:08:53.5124172Z Complete job name: source-controls",
+          "2026-10-24T17:09:17.7332148Z \u001b[36;1mpython3 scripts/ensure_cloud_tested_source_release.py --controls | tee release-controls.json\u001b[0m",
+          "2026-10-24T17:09:17.7332774Z \u001b[36;1mpython3 scripts/check_tx_phase_assert_offset_intrinsic.py | tee controls.json\u001b[0m",
+          "2026-10-24T17:09:17.7333812Z \u001b[36;1md=json.load(open('controls.json'));r=json.load(open('release-controls.json'))\u001b[0m",
+          "2026-10-24T17:09:17.7334448Z \u001b[36;1massert r['status']=='PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS'and len(r['rejected'])==17\u001b[0m",
+          "2026-10-24T17:09:17.7335408Z \u001b[36;1massert d['status']=='PASS_ASSERT_OFFSET244_FRESH_NATIVE_CONTROLLER_CONTROLS_NO_DUT_TRANSIENT'\u001b[0m",
+          "2026-10-24T17:09:17.7338504Z \u001b[36;1massert len(d['original_loader_and_reader_controls']['full_raw_reader_controls'])==7\u001b[0m",
+          "2026-10-24T17:09:17.7339073Z \u001b[36;1massert len(d['original_loader_and_reader_controls']['zero_OP_reader_controls'])==8\u001b[0m",
+          "2026-10-24T17:09:31.6353887Z   \"status\": \"PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS\",",
+          "2026-10-24T17:09:38.1235895Z   \"status\": \"PASS_ASSERT_OFFSET244_FRESH_NATIVE_CONTROLLER_CONTROLS_NO_DUT_TRANSIENT\",",
+          "2026-10-24T17:09:38.1250348Z     \"status\": \"PASS_EXACT_OFFSET_PREPARATION_OLD_REJECTION_AND10_FAULTS_NO_DUT_TRANSIENT\",",
+          "2026-10-24T17:09:38.1265478Z   \"original_loader_and_reader_controls\": {",
+          "2026-10-24T17:09:38.1265968Z     \"status\": \"PASS_INTRINSIC241_PREPARATION_FIXED_OBSERVERS_AND_NATIVE_LOADER_CONTROLS_NO_DUT_TRANSIENT\",",
+          "2026-10-24T17:09:38.1283362Z     \"negative_controls\": [",
+          "2026-10-24T17:09:38.1288395Z     \"full_raw_reader_controls\": [",
+          "2026-10-24T17:09:38.1290170Z     \"zero_OP_reader_controls\": [",
+          "2026-10-24T17:09:38.1295638Z       \"loader_controls\": {",
+          "2026-10-24T17:09:38.1308507Z     \"status\": \"PASS_ASSERT_OFFSET244_FOUR_PREPARED_UNCHANGED_ORACLE_NOT_NATIVE\",",
+          "2026-10-24T17:09:38.1373379Z     \"negative_controls\": [",
+          "2026-10-24T17:09:38.1377252Z   \"all106_flag_controls\": {",
+          "2026-10-24T17:09:38.1377575Z     \"status\": \"PASS_UNIFORM106_OFF_OP_ONLY_SOURCE_CONTROLS_NO_NATIVE\",",
+          "2026-10-24T17:09:38.1377934Z     \"negative_controls\": [",
+          "2026-10-24T17:09:38.1395350Z   \"native_program_scope\": \"Original one-resistor loader controls only; no244 DUT transient\",",
+          "2026-10-24T17:09:38.1741023Z   name: phase-assert-offset-controls-40114254950",
+          "2026-10-24T17:09:38.1741460Z   path: controls.json",
+          "release-controls.json",
+          "2026-10-24T17:09:39.5752339Z Artifact phase-assert-offset-controls-40114254950.zip successfully finalized. Artifact ID 12567604310",
+          "2026-10-24T17:09:39.5753928Z Artifact phase-assert-offset-controls-40114254950 has been successfully uploaded! Final size is 5363 bytes. Artifact ID is 12567604310"
+        ]
+      },
+      "native_job_id": 120933910302
     }
   },
   "queue_cleanup": {
