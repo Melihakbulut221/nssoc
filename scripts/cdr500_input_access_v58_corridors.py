@@ -61,10 +61,11 @@ def survey(ctx, namespace):
     original_owners={m:[]for m in CLEARANCE}
     records={r['component']:r for r in graph['wire_components']}
     for net in wire.netlist().top_circuit().each_net():
-        require(net.cluster_id in records,'Native wire mapping absent')
         for m in CLEARANCE:
             reg=wire.shapes_of_net(net,wire.layer_by_name('gds_'+str(m)),True).flatten().merged()
-            if not reg.is_empty():original_owners[m].append((records[net.cluster_id],reg))
+            if not reg.is_empty():
+                require(net.cluster_id in records,'Native material wire mapping absent')
+                original_owners[m].append((records[net.cluster_id],reg))
     drawing={m:[('root_direct',pya.Region(T.shapes(L.layer(m,0))).merged())]for m in CLEARANCE}
     for inst in T.each_inst():
         for m in CLEARANCE:
