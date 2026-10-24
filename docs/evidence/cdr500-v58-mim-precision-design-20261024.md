@@ -1,0 +1,9 @@
+# Fresh intrinsic-MIM and two-order RC continuation for CDR v58
+
+The exact v58 physical prerequisite40096705004 passed full560 DRC, deep/flat500-device LVS and strict113-component/978-anchor binding. Fresh run40097552747 then passed native500-device/1446-terminal model binding with the14 original faults and the native221-tap contact oracle; the independent raw-RC branch passed13 raw corruptions with measured24559 R and15687 C. These counts describe raw wire extraction only and are not copied into MIM-aware composition.
+
+The next source restores only those fresh v58 receipts. The unchanged native MIM algorithm recovers allseven placed masks, retains all actual metal/via geometry, moves each bottom label to actual outside-mask Metal5 access, and probes all978 points against both original LVS and wire ownership. It then uses the exact qualified double-total native producer in both original and reversed coupling orders. Every13 raw-RC and nine intrinsic-MIM corruption controls, native point/value/ownership tests, and21 composition faults remain required. The final model includes500 intrinsic devices and seven intrinsic MIM models once.
+
+The frozen compositor is adapted using one simultaneous substitution pass over its original source. Newly measured R/C digits cannot be rewritten by later census or count substitutions. Exact source-span reverse reconstruction, generated-census/count assertions, four deliberately colliding R/C-count pairs and four invalid-source/count controls guard this adapter. No native RC records or values are altered.
+
+This is source preparation, not a new RC or electrical pass. No loaded transient is part of this workflow. After fresh MIM precision passes, the original ten34.25ns/256-bit cases and unchanged HBT/current/phase/timing/numerical gates still determine whether the owned-metal repair resolves the measured input drop.
