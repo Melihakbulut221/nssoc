@@ -8283,3 +8283,8 @@ Mainchip original40095811631 remainsno-logrejected. Recoverypublication401158674
 CDR40108285374 completed all10cases:8originalelectricalrejections,2expectedfaultscreensPASS. Allsummary hashes/nativecase evidence arepreserved in docs/evidence/cdr500-v58-complete-ten-case-matrix-20261024.json. Existingcapture exactsame-row diagnostics precedeanynewcircuitguess. PLLcrossingorder40120469625 iscache-only onexact35c92ae7, no newPLLsimulation.
 
 Recordretry40116908104 losthostcommunication, afterfirst40114982496 interrupt143. Noresult/artifact orcheckerfailureproof exists; source remainsunqualified. Prepare boundedphase/resource telemetry, notanotherblindretry. ExistingTXnormal40109066076/swapped40109221280 remainsole savedprocesscontinuations. FullserialPHY, serialmainchip routing andfinaltiming remainopen.
+
+
+### 2026-10-24T18:44:10.564105+00:00 — qualified physical and role sources integrated
+
+Imported37 exact new paths from actual334physical source2e1f26e9 and canonicalclock-role source82450b1d, preserving every protected dependency and manual native gate. Actual40120130880 and40121026312 bothpassed; root import receipt records allcombined hashes. Existingroot files arepreserved. This imports implementation, not only reports. Full canonical result0b166e90 and23,817Breceipt7c82d594 are also retained. Fresh334RC, realclocktreeelectrical, fullserialPHY andfinaltiming remainunqualified.

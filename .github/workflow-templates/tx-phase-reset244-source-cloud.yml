@@ -1,0 +1,49 @@
+name: TX new244 physical source planning controls
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-phase-reset244-source-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        shell: bash
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Prove a failed upstream command cannot be masked
+        run: |
+          if bash -o pipefail -c '(exit 7) | tee /dev/null'; then
+            exit 1
+          fi
+      - name: Validate exact passed source and both new physical source maps
+        run: |
+          python3 scripts/check_tx_phase_reset244_physical_source.py | tee source-controls.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open("source-controls.json"))
+          assert x["status"]=="PASS_TWO244_SOURCE_VARIANTS_AND27_FAULTS_NO_NATIVE_PHYSICAL_PROOF"
+          assert len(x["faults"])==27 and all(r["rejected"] for r in x["faults"])
+          assert set(x["polarity"])=={"p","n"}
+          assert all(v["compact_devices"]==244 and v["rows"]==15 and v["finite_contacts"]==90 and v["expected_native_LVS_count"]==334 for v in x["polarity"].values())
+          assert x["native_execution"] is x["physical_accepted"] is x["full_PHY_accepted"] is False
+          print("PASS_NEW244_SOURCE_PLANNING_ONLY_NO_NATIVE_PHYSICAL_EXECUTION")
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: tx-phase-reset244-source-controls
+          path: |
+            source-controls.json
+            hw/soc/out/phase-reset244-source-controls/
+          if-no-files-found: error
+          retention-days: 90
