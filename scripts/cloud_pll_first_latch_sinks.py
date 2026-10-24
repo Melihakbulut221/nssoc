@@ -78,10 +78,17 @@ def controls():
  assert np.array_equal(old.crossing(t,-y),[1.5])
  rows=events.relation([0.,2.,3.],old.crossing(t,y),old.crossing(t,-y))
  assert [r['output_transitions']for r in rows]==[2,1]
+ current=summarize(t,np.array([.01,.01,.01,.01]),np.array([.5,2.5]),'A')
+ assert current['unit']=='A'and current['per_feedback_cycle'][0]['mean_a']==.01
+ assert not any(k.endswith('_v')for k in current['per_feedback_cycle'][0])
  return dict(original_observer=original,exact_native_column_faults=bad,count=len(bad),
   actual_original_contract_positive=True,native_started=False)
-def summarize(t,y,fb):
- return dict(full=old.stats(y),per_feedback_cycle=old.cycles(t,y,fb,{}))
+def summarize(t,y,fb,unit='V'):
+ assert unit in ('V','A')
+ rows=old.cycles(t,y,fb,{})
+ if unit=='A':
+  rows=[{({'minimum_v':'minimum_a','maximum_v':'maximum_a','mean_v':'mean_a'}.get(k,k)):v for k,v in row.items()}for row in rows]
+ return dict(unit=unit,full=old.stats(y),per_feedback_cycle=rows)
 def analyze(data,mapping,chain,analysis):
  # Reproduce every old statistic/event exactly; all 79 old voltage bits are independently hashed during streaming.
  original=old.diagnose(data,chain,analysis)
@@ -117,7 +124,7 @@ def analyze(data,mapping,chain,analysis):
  # These are external supply/body branch currents; no individual transistor current was saved.
  for r in mapping['aggregate_branch_currents']:signals['aggregate_only_'+r['vector']+'_a']=data[r['vector']]
  result=dict(scope='Exact native terminal-voltage observations over complete1us. Not individual HBT current or current-density evidence. Original acquisition rejection remains unchanged.',
-  original_diagnostic_sha256=events.DIAG_SHA,signals={k:summarize(t,v,fb)for k,v in signals.items()},
+  original_diagnostic_sha256=events.DIAG_SHA,signals={k:summarize(t,v,fb,'A'if k.startswith('aggregate_only_')else'V')for k,v in signals.items()},
   master_events={},device_current_observation_available=False,acquisition_accepted=False,full_phy_accepted=False)
  clock=original['differential']['div1_first_conditioned']
  master=original['differential']['div1_first_master']
