@@ -1,0 +1,13 @@
+name: Register saved instruction readback only
+on:
+  push:
+    branches: [codex/mainchip-saved-ip-register]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 1
+    steps:
+      - run: printf '%s\n' 'Registration only; no checkout, process restore, native inputs or routing.'
