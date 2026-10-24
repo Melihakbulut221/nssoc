@@ -7624,3 +7624,10 @@ verified in generated native pin records; intrinsic circuit remains exactv56.
 GDS c65376f7dfbf8026f4d2dd604d95062b74b5bd6af6bae7f78e16a796bf72cb63.
 Fresh wire geometry launched. Then newRC/binding/complete composition/original
 5full loaded cases required. No electrical improvement or parent closure yet claimed.
+
+## 2026-10-24 v57 native wire graph passed; fresh RC and binding
+Wire40056738185 passed18devices/50terminals/40anchors/8ports/9conductors from new
+actual shortened-supply layout. Launch original14wire-fault controls and native
+model binding with9old+6contact faults/oracle. Intrinsic model converter remains
+exact v56 (8umref/53.335umtails;7small/2extended taps), not a new conversion.
+Read actual new R/C census and native port order before composition/fullwaves.
