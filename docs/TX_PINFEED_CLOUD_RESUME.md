@@ -174,3 +174,11 @@ Use docs/evidence/tx-branchtailfeed-native-methods-ready-20261024.json for exact
 Root independently verified both terminal preparation cases, actual summary/parts hashes, protected deck/contract/model/engine identities, all10+5 preparation negatives and original capture/samplebits/new-trajectory contract. Root also reproduced every controller/checker/template delta and all24 method/template hashes at a1112d7d. The exact already-hashed initial/continuation templates are now copied to the registered workflow paths without changing a byte. Both are manual-dispatch only.
 
 Root authorized one new initial matrix workflow for none and swap_leaf_select, with the original22 source/descriptor/runtime controls gating native execution. The run/source receipt will follow after dispatch. No old-model capsule may be restored. Full34ns/all14182columns/all604HBT/all5376MOS safety and fault review remain unchanged.
+
+## Actual new initial dispatched exactly once
+
+Actual reviewed native run40088271926 was accepted at2026-10-24T11:02:12UTC, sourcef964338d5f8eb8c7fb9715aa977aa9c57a8dcdcf, attempt1, workflowID395028400, branchcodex/tx-via3-rail-diagnosis. It is the initial matrix for none and swap_leaf_select. Original22 source/descriptor/runtime controls gate both native jobs; dispatch is not native/electrical completion. Controller SHAe10466f715a933a79444b3f27525f0c2e16275d6fd071f428816a87786842ab6 is unchanged.
+
+The first filename-based request returned explicit404 because the new manual workflow was not registered. Separate branchcodex/tx-branchtailfeed-native-registration/source8ea31865 registered initialID395028400 and continuationID395028401 using no-op jobs only. Registration runs40087690526/40087690535 are not native inputs/results. Root removed the unnecessary wait for their runner completion after registry IDs and reviewed source bytes were verified. Preserve their outcomes separately; never confuse them with actual40088271926.
+
+Use docs/evidence/tx-branchtailfeed-native-initial-dispatch-20261024.json for run/source/gate provenance. Do not dispatch another initial. Future continuation must consume only this new model/controller's exact successful checkpoint descriptor, retaining the complete native prefix and original34ns safety/fault review. Historical rejected via3 waveforms stay preserved.
