@@ -7989,3 +7989,7 @@ Run40070690392 measured all48 C/D old M4 parent pieces: all touched old child ge
 
 ### Remaining supply path: old Metal5 widening annulus
 40072365248 traces remaining real AVSS/SUB path through root M5 widening ring after16M4ringremovals. Candidate now reconciles enclosed child-local M3/M5rootrings with one originalchildattachment, zero adjacentroot-ownedvias and noexternalrootcomponent; preserveallv14bypassmetal/vias. Retire only obsolete added M5notch area tied toremovedrings; childdrawingsunchanged. Every measuredM5pathring mustmatchtrackedremoval. Drawing-only supply separation stillmandatory beforefullDRC/LVS. Currentnative500acceptance remainsOPEN.
+
+
+### Actual500 parent physical closure and fresh extraction
+Run40073349301/fcb5c0f19 passed full560DRC0,unsimplifieddeep/flat500LVS and12faultcontrols. GDS681c9af79a502807a06eaf96c32f28b409303c02a4c66eb1ed04e162dc0a34fc; source-pinned receipt committed. Label-freeAVSS13/SUB1separate; preserve32v14bypasspieces+96rootVia3; remove16M4+4M3+12M5obsoletechild-localwideningrings. Report M5count769 is INTERMEDIATE before ringremovals, notfinal. New two-stage cloud extraction measures160planes51nets, thenactualmetalgraph/500devices1446terminals953metal493body978logicalanchors. Nativecomponentcount/deduplicatedphysicalanchorcount mustbeMEASURED, notassumed113/978.20parenthandofffaults andunchangedrecoverAST enforced. Binding/fullRCnextrequires53.335umMOS and217small+4A40/P44ptaps, preservednativecontactoracle; nooldRCreuse. Loaded10caseparentgatesandfullPHYremainopen.
