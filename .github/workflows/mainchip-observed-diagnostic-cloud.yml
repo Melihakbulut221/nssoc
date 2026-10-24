@@ -1,0 +1,17 @@
+name: mainchip-observed-diagnostic-cloud
+on:
+  push:
+    branches: [codex/register-mainchip-observed-controls]
+  workflow_dispatch:
+    inputs:
+      diagnostic:
+        type: boolean
+        default: false
+        required: true
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo 'Registration only; no source checkout, controls, process restore or qualification.'
