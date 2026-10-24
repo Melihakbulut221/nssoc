@@ -1,0 +1,89 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-output8088-branchtailfeed-interfaces-cloud
+on:
+  push:
+    branches: [codex/tx-via3-rail-diagnosis]
+    paths: [.github/workflows/tx-output8088-branchtailfeed-interfaces-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-output8088-branchtailfeed-interfaces-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  actual-native-interface-binding:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify reviewed controller and restore exact native runtime
+        run: |
+          echo '7159533f35a4e2b02e6572806edbf4f9085a8b6c0f8f1b0519f9d12cbf25dd40  scripts/cloud_tx_output8088_branchtailfeed_interfaces.py' | sha256sum --check
+          echo '21c48861d15e3a3de6d9ece79b01fc1335f7fcab506a266a3d9ac32bb93c6609  scripts/tx-branchtailfeed-interface-methods.json' | sha256sum --check
+          python3 -m py_compile scripts/cloud_tx_output8088_branchtailfeed_interfaces.py
+          python3 -m pip install networkx==3.4.2
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6 libglu1-mesa libx11-6 libxext6 libxrender1 libxt6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Bind exact reviewed composition then reprobe actual native interfaces
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NSSOC_TX_COMPOSITION_SOURCE: '{"run":40080181306,"source_head":"69d4dcfa957ccc6d19ab2ee6766bdd9a0ac7c147","summary_sha256":"0eaf95458de7e0ffda91a80bc022830994972e933a0a6d2cb064dd9839ee2c43","parts_sha256":"addebff74d0c1612cb2eda6cd3ccaf0cf20761bcfdb96bb5cce6d07805ac2f3a"}'
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,os,subprocess
+          p=json.loads(os.environ['NSSOC_TX_COMPOSITION_SOURCE'])
+          root='repos/Melihakbulut221/nssoc/'
+          q=json.loads(subprocess.check_output(['gh','api',root+'actions/runs/'+str(p['run'])]))
+          assert q['status']=='completed'and q['conclusion']=='success'and q['head_sha']==p['source_head']and q['run_attempt']==1
+          b=subprocess.check_output(['gh','api',root+'releases/assets/671874144','-H','Accept: application/octet-stream'])
+          assert hashlib.sha256(b).hexdigest()==p['summary_sha256']
+          d=json.loads(b)
+          assert d['source_head']==p['source_head']and d['sources_unchanged']
+          assert d['status']=='PASS_ACTUAL_FULL8088_BRANCHTAILFEED_PARENT_WIRE_COMPOSITION_AND25_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES'
+          assert len(d['controls'])==25 and all(c['rejected']for c in d['controls'])
+          assert d['model_sha256']=='8286d54832432603f78739f30d0087e99a46f026d82a37ecd5e450d2167231c8'
+          assert d['composition_sha256']=='093dba5b465ee54cc8232d28c196be13eaf7c74637ed742989c44d75976e9708'
+          assert d['counts']==dict(devices=8088,R=141473,C=100694,external_ports=166,physical_ports=165,metal_reference_planes=13370,body_nets=65,conductors=703,terminals=28620)
+          assert not d['loaded_electrical_passed']and not d['full_serial_phy']and not d['mainchip_integrated']
+          PYCODE
+          python3 scripts/cloud_tx_output8088_branchtailfeed_interfaces.py
+      - name: Publish actual interface success or failure evidence
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p hw/soc/out/cloud-tx-output8088-branchtailfeed-interfaces
+          if [ ! -f hw/soc/out/cloud-tx-output8088-branchtailfeed-interfaces/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false,"no_new_simulation":true}' > hw/soc/out/cloud-tx-output8088-branchtailfeed-interfaces/result.json
+          fi
+          stem="tx-output8088-branchtailfeed-interfaces-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp hw/soc/out/cloud-tx-output8088-branchtailfeed-interfaces/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory hw/soc/out/cloud-tx-output8088-branchtailfeed-interfaces --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-output8088-branchtailfeed-interfaces',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence if release publication fails
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-output8088-branchtailfeed-interfaces-${{ github.run_id }}
+          retention-days: 30
+          path: hw/soc/out/cloud-tx-output8088-branchtailfeed-interfaces/
+# Root reviewed exact geometry, RC, both precision rows and130 DC targets.
+# No34ns or fault transient is dispatched here.
