@@ -55,6 +55,16 @@ def main():
   assert all(sha(ROOT/n)==v['sha256']for n,v in runtime['files'].items())
   app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==spec['runtime_sha256']
   r['runtime_sha256']=sha(app);save()
+  failure=json.loads((ROOT/'docs/evidence/cdr-sampler-active-input-v57-parent-lef-grid-error-20261024.json').read_text())
+  old_failure,old_proof=reports.restore_report(failure['group'],failure['run'],failure['summary_sha256'],failure['parts_sha256'],OUT/'prior-lef',['layout/'+TOP+'.gds','layout/'+TOP+'.lef'])
+  assert old_failure==failure['report']
+  diagnostic=OUT/'lef-grid-readback.py'
+  diagnostic.write_text("import json,re,sys,pya\nfrom pathlib import Path\nfrom decimal import Decimal\np=Path(sys.argv[1]);name='nssoc_cdr_pd500_active_input_v57'\nL=pya.Layout();L.read(str(p/'layout'/(name+'.gds')));T=L.cell(name)\ntext=(p/'layout'/(name+'.lef')).read_text();size=re.findall(r'SIZE ([\\d.]+) BY ([\\d.]+) ;',text)\nassert len(size)==1\nnative=[T.dbbox().width(),T.dbbox().height()];printed=list(map(float,size[0]))\ngrid=[Decimal(x)/Decimal(str(L.dbu))for x in size[0]]\nassert all(v==v.to_integral_value()for v in grid)\nassert list(map(int,grid))==[T.bbox().width(),T.bbox().height()]\nassert printed!=native\nd=dict(status='PASS_EXACT_INTEGER_GRID_EQUALITY_WITH_BINARY_FLOAT_COUNTEREXAMPLE',native_double=native,printed_double=printed,native_integer=[T.bbox().width(),T.bbox().height()],lef_exact_grid=[str(v)for v in grid],dbu=L.dbu,tolerance=0,geometry_changed=False)\n(p/'readback.json').write_text(json.dumps(d,indent=2)+'\n')\n")
+  with(OUT/'lef-grid-readback.log').open('w')as log:rc=subprocess.call([str(app),'python',str(diagnostic),str(OUT/'prior-lef')],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
+  if rc:print((OUT/'lef-grid-readback.log').read_text()[-10000:],flush=True)
+  assert rc==0,'Exact native grid diagnosis failed'
+  r['previous_lef_failure']=dict(source=old_proof,readback=json.loads((OUT/'prior-lef/readback.json').read_text()));save()
+
   script="import sys,json;from pathlib import Path;sys.path.insert(0,'scripts');from check_cdr_sampler_active_input_v57_parent_geometry import check;p=Path(sys.argv[1]);(p/'child-geometry-proof.json').write_text(json.dumps(check(p),indent=2)+'\\n')"
   for name,cmd in [
    ('generation',[app,'python',ROOT/'scripts/generate_cdr_sampler_active_input_v57_parent.py','--out',OUT]),

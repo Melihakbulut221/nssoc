@@ -3,6 +3,7 @@
 """Replace exactly C/D sampler leaves; conserve all existing parent geometry."""
 import argparse,copy,hashlib,json,re,sys
 from collections import Counter
+from decimal import Decimal
 from pathlib import Path
 from generate_cdr_retimed_parallel_v3_base import flatten
 OLD_TOP='nssoc_cdr_pd476_follower_v23'
@@ -117,20 +118,25 @@ def main():
   assert(pya.Region(b.to_itype(R.dbu))-pya.Region(U.shapes(R.layer(134,2)))).is_empty()
   assert(pya.Region(b.to_itype(R.dbu))-pya.Region(U.shapes(R.layer(134,0)))).is_empty()
  lef=writer.lef(pya,R.dbu,U.dbbox(),public);(dest/(TOP+'.lef')).write_text(lef)
+ def grid(values):
+  exact=[Decimal(str(v))/Decimal(str(R.dbu))for v in values]
+  assert all(v==v.to_integral_value()for v in exact),'LEF value off exact native grid'
+  return tuple(int(v)for v in exact)
  def check_lef(text):
   assert f'MACRO {TOP}'in text and f'END {TOP}'in text
   size=re.findall(r'SIZE ([\d.]+) BY ([\d.]+) ;',text);assert len(size)==1
-  assert tuple(map(float,size[0]))==(U.dbbox().width(),U.dbbox().height())
+  assert grid(size[0])==(U.bbox().width(),U.bbox().height())
   for n,(_,b)in public.items():
    chunk=text.split('  PIN '+n+'\n')[1].split('  END '+n+'\n')[0]
    assert 'LAYER TopMetal2 ;'in chunk
    rects=re.findall(r'RECT ([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+) ;',chunk)
-   assert len(rects)==1 and tuple(map(float,rects[0]))==(b.left,b.bottom,b.right,b.top)
+   ib=b.to_itype(R.dbu)
+   assert len(rects)==1 and grid(rects[0])==(ib.left,ib.bottom,ib.right,ib.top)
   obs=text.split('  OBS\n')[1].split('  END\n')[0]
   for metal in ('Metal1','Metal2','Metal3','Metal4','Metal5','TopMetal1','TopMetal2'):
    chunks=obs.split('    LAYER '+metal+' ;\n');assert len(chunks)==2
    section=chunks[1].split('    LAYER ')[0];actual=pya.Region()
-   for r in re.findall(r'RECT ([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+) ;',section):actual+=pya.Region(pya.DBox(*map(float,r)).to_itype(R.dbu))
+   for r in re.findall(r'RECT ([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+) ;',section):actual+=pya.Region(pya.Box(*grid(r)))
    expected=pya.Region(U.dbbox().to_itype(R.dbu))
    for layer,b in public.values():
     if layer==metal:expected-=pya.Region(b.to_itype(R.dbu))

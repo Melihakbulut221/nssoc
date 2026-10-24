@@ -7756,3 +7756,6 @@ No claim of electrical acceptance: standalone1pF device failures remain preserve
 Next after actual physical pass: fresh whole-parent planes/native bindings/RC/MIM,
 then original complete early/late and fault waves under actual parent loading.
 All computation and artifact storage remain cloud-only.
+
+
+Parent500 first run40061455421 stopped before DRC at binary floating LEF size equality. Preserve failed artifact and independently read exact native integer grid; use zero-tolerance integer-grid dimensions/pins/obstructions. Geometry and native physical rules unchanged. Restart only after old run terminal; no duplicate live native work.
