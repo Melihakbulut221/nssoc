@@ -1,0 +1,13 @@
+name: mainchip-route12-recovery-publication-cloud
+on:
+  push:
+    branches: [codex/register-route12-publication]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+      - run: echo "Registration only; no source, archive, controls or native execution."
