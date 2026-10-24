@@ -7562,3 +7562,13 @@ rejects3bad geometries plus3bad actualcompact models in addition to9old faults.
 If native function signature differs, preserve report and correct invocation,
 never remove native-oracle proof. RC copies v55 explicit input-open witness;
 revalidate actual fresh graph, don't reuse wire values/counts.
+
+## 2026-10-24 v56 exact RC/model binding including native contact oracle passed
+RC40054364036 passes actual1270R849C and14faults. Binding40054364025 passes18/50,
+nine oldfaults and six contact-specific corruptions. Actual frozen CbTapCalc
+signature(calc,r,l,w,cell) returned81.66666666666666ohm for2x2 and11.666666666666666ohm
+for2x20; every compact model matches. Seven small/twoextended contacts retained.
+Composition must require oracle/6extra controls, preserve every new native
+parameter and RC value. Native interface read from actual report, not prior.
+Next full-wave binder MUST identify tails by53.335u, not old36u; reference8u.
+Original v49 acceptance region remains unchanged; no physical/electrical inference.
