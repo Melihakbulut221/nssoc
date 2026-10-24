@@ -247,7 +247,7 @@ def main():
   original=snap[0][(metal,0)]
   old_child=pya.Region(L.cell('pd_child_sampler').begin_shapes_rec(index)).flatten().merged()
   root_cuts={v:pya.Region(T.shapes(L.layer(v,0))).flatten().merged()for v in adjacent}
-  removed=pya.Region()
+  removed_overlays=pya.Region()
   for tag,instance in replacements.items():
    limits=pya.DBox(*nums(before['placements'][tag]['bbox_um'])).to_itype(L.dbu)
    old_placed=old_child.transformed(instance.cplx_trans).merged()
@@ -261,22 +261,22 @@ def main():
     cuts={str(v):q.interacting(r).count()for v,q in root_cuts.items()}
     assert all(n==0 for n in cuts.values()),('Root-owned via depends on old ring',metal,tag,str(polygon.bbox()),cuts)
     assert original.interacting(r).count()==1
-    removed+=r
+    removed_overlays+=r
     overlay_records.append(dict(tag=tag,metal=metal,before_polygon_dbu=str(polygon),after_polygons_dbu=[],
      old_child_attachment_count=1,root_owned_via_contacts=cuts,confined_to_replaced_child=True,
      no_external_parent_component=True,action='REMOVE_OLD_CHILD_LOCAL_PARENT_WIDENING_RING'))
-  if not removed.is_empty():
+  if not removed_overlays.is_empty():
    # The four prior M5 notch fills were derived from exactly these superseded
    # overlays. Remove only their added area; do not subtract native child metal.
    retired_fill=pya.Region()
    if metal==67:
     for record in m5_records:
      patch=pya.Region(pya.Box(*map(int,re.findall(r'-?\d+',record['box_dbu']))))
-     if not patch.interacting(removed).is_empty():retired_fill+=patch-m5_before
-   corrected=(direct-removed-retired_fill).merged()
+     if not patch.interacting(removed_overlays).is_empty():retired_fill+=patch-m5_before
+   corrected=(direct-removed_overlays-retired_fill).merged()
    T.shapes(index).clear();T.shapes(index).insert(corrected)
    expected_metal[(metal,0)]=corrected
-   overlay_saved[str(metal)]=dict(removed_count=removed.count(),removed_area_dbu2=removed.area(),
+   overlay_saved[str(metal)]=dict(removed_count=removed_overlays.count(),removed_area_dbu2=removed_overlays.area(),
     retired_prior_fill_area_dbu2=retired_fill.area(),root_owned_vias_unchanged=True)
  assert len(overlay_records)>0 and any(v['metal']==67 for v in overlay_records)
  # Every root ring on the independently measured remaining supply path must
