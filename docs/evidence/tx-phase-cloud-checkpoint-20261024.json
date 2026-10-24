@@ -107,7 +107,7 @@
     "physical_reset_or_release_qualified": false
   },
   "intrinsic_reset_diagnostic_preparation": {
-    "source_head": "3f96603e603bdea31742970fc424c4a9a7c63f5c",
+    "source_head": "fe649b9d96356afe9ff45c25ed1f5ea094d47035",
     "workflow": "tx-phase-async-preset-intrinsic-cloud.yml",
     "native_job": "intrinsic-four-case",
     "source_controls_run": 40092803320,
@@ -119,21 +119,29 @@
     "cases": 4,
     "observer_run": 40084454916,
     "observer_summary_sha256": "9656bff3e87627c0529bdff52921f2d8278d48fe05cc76516b507200f9c67863",
-    "next": "Monitor exact existing run40092958226 to terminal and preserve full summary/parts. Do not duplicate this four-case intrinsic diagnostic. Engineering failure must remain rejected. No old55 physical/RC or full31-clock/PLL qualification follows.",
+    "next": "Monitor exact corrected run40093613768 to terminal; preserve full summary/parts and genuine engineering failures. All models/devices/source/oracle/safety unchanged; loader control token fixed and independently/native validated. Do not duplicate. No loaded31clock/PLL/layout qualification.",
     "native_electrical_result_available": false,
     "physical_qualified": false,
     "PLL_connected": false,
     "full_PHY_accepted": false,
     "active_native": {
+      "run": 40093613768,
+      "source_head": "fe649b9d96356afe9ff45c25ed1f5ea094d47035",
+      "workflow": "tx-phase-async-preset-intrinsic-cloud.yml",
+      "name": "intrinsic-four-case",
+      "last_observed_status": "in_progress",
+      "no_duplicate_dispatch": true
+    },
+    "preserved_failed_native": {
       "run": 40092958226,
       "source_head": "f640313c17acf29a302bf9ef06727eda38aa8979",
-      "workflow": "tx-phase-async-preset-intrinsic-cloud.yml",
-      "job": 120869351146,
-      "name": "intrinsic-four-case",
-      "last_observed_status": "queued",
-      "controls_job": 120869237178,
-      "controls_conclusion": "success",
-      "no_duplicate_dispatch": true
-    }
+      "summary_asset": 672185904,
+      "summary_sha256": "916c12c6cb7422915672ecc16c870eccb58f55046263c4510cce2f1601d5c33e",
+      "parts_asset": 672185941,
+      "parts_sha256": "5d61f5a59ba6f843a3f32f7ce6301247b1f9e20a42524e8dc41a3e5acacf3402",
+      "cause": "Native pre_osdi quoted filename rejected; no DUT waveform executed. Exact logs retained and verified by cloud-only readback40093229489."
+    },
+    "loader_repair_control_run": 40093472344,
+    "loader_repair_peer_review_passed": true
   }
 }

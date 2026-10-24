@@ -1,0 +1,47 @@
+{
+  "run": 40093472344,
+  "head": "fe649b9d96356afe9ff45c25ed1f5ea094d47035",
+  "job": 120870767498,
+  "log_sha256": "1f48db02555e091bccb6b4db7a2d0f87a8dc200aab0c72a4d22ab2d34ca4a546",
+  "completed_at": "2026-10-24T12:20:28Z",
+  "status": "PASS_INTRINSIC241_PREPARATION_FIXED_OBSERVERS_AND_NATIVE_LOADER_CONTROLS_NO_DUT_TRANSIENT",
+  "controls": {
+    "negative_controls": 21,
+    "full_raw_reader_controls": 7,
+    "zero_OP_reader_controls": 8
+  },
+  "runtime": {
+    "engine_sha256": "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509",
+    "model_archive_sha256": "276fbd8b9128750b2f524ec7b0f9e43a45652af62e477a6d618a74ab804a91bf",
+    "model_manifest_entries": 40,
+    "HBT_RES_CAP_present": true,
+    "native_program_executed": true,
+    "native_program_scope": "One real-resistor loader OP positive and exact quoted-path negative; no DUT transient",
+    "loader_controls": {
+      "unquoted_positive": {
+        "returncode": 0,
+        "log_sha256": "33c80a920008f03dbfa6e0b66a7392ce32a985485c6a73a6c6af67d4c9abd06b",
+        "log": "\nNote: No compatibility mode selected!\n\n\nCircuit: nssoc real r3 loader control\n\nDoing analysis at TEMP = 27.000000 and TNOM = 27.000000\n\nUsing SPARSE 1.3 as Direct Linear Solver\n\nNo. of Data Rows : 1\nbinary raw file \"op.raw\"\nNSSOC_RESISTOR_OP_COMPLETE\nngspice-47 done\n",
+        "expected_outcome_verified": true
+      },
+      "quoted_negative": {
+        "returncode": 1,
+        "log_sha256": "a5421953ad06153bd53c70586ad39fc4611a5f5d304158525a8cbf98633adf3a",
+        "log": "Error opening osdi lib \"\"/tmp/tmpzp64ytmf/models/r3_cmc.osdi\"\": No such file or directory!\nError: Library \"/tmp/tmpzp64ytmf/models/r3_cmc.osdi\" couldn't be loaded!\n\nNote: No compatibility mode selected!\n\n\nCircuit: nssoc real r3 loader control\n\nError on line 78 or its substitute:\n  n.xr.nr1 vdd 0 0 xr.dt xr:res_rppd l=    2.120000000000000e-06     w=    8.005999999999999e-06     m=    1.000000000000000e+00     a1=    1.192000000000000e-11     a2=    1.192000000000000e-11     p1=    1.098000000000000e-05     p2=    1.098000000000000e-05     c1=1 c2=1 trise=    0.000000000000000e+00     sw_et=    1.000000000000000e+00     sw_mman=1 nsmm_rsh=1 nsmm_w=1 nsmm_l=1\nUnable to find definition of model xr:res_rppd\n    Simulation interrupted due to error!\n\nError: incomplete or empty netlist\n       or no \".plot\", \".print\", or \".fourier\" lines in batch mode;\nno simulations run!\n",
+        "expected_outcome_verified": true
+      }
+    }
+  },
+  "DUT_waveforms_executed": false,
+  "independent_review": {
+    "reviewer": "tx_diagnosis",
+    "source": "fe649b9d96356afe9ff45c25ed1f5ea094d47035",
+    "verdict": "No concrete blocker. Only unsupported pre_osdi quotes removed plus whitespace token rejection; original schematic, source vectors, fixed oracle and HBT gates unchanged."
+  },
+  "corrected_native": {
+    "run": 40093613768,
+    "source": "fe649b9d96356afe9ff45c25ed1f5ea094d47035",
+    "status": "dispatched",
+    "no_duplicate_live_native": true
+  }
+}
