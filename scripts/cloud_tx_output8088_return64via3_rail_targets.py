@@ -6,7 +6,7 @@ from pathlib import Path
 from collections import defaultdict
 import compare_cloud_routed_endpoints as reports
 import cloud_tx_output8088_return64via3_diagnosis as source
-import cloud_tx_output8088_return_paths as solver
+import cloud_tx_output8088_return_sensitivity as solver
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'cloud-tx-output8088-return64via3-rail-targets'
 def sha(p):return source.sha(p)
