@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted-only instrumentation of the unchanged complete record proof."""
-import argparse, contextlib, hashlib, json, os, signal, subprocess, sys, threading, time, traceback
+import argparse, base64, contextlib, hashlib, json, os, signal, subprocess, sys, threading, time, traceback
 from pathlib import Path
 import check_pcie_gen12_training_records as frozen
 ROOT=Path(__file__).resolve().parents[1]
@@ -12,6 +12,12 @@ ORIGINAL='e1bf844ef719b4ad4230aebc58550ee577da72d88958b7724400d1c4c14c8f5a'
 SECONDS=1200
 OUTPUT_LIMIT=16*1024*1024
 PERIOD=15.0
+MEMORY_PERIOD=.5
+MIN_AVAILABLE_KIB=2*1024*1024
+MAX_GROUP_RSS_KIB=10*1024*1024
+STREAM_PERIOD=5.0
+STREAM_TAIL_BYTES=4096
+CONSOLE_BROKEN=False
 LOCK=threading.RLock()
 CURRENT={'phase':'not_started','child_pid':None}
 STOP=threading.Event()
@@ -71,6 +77,17 @@ def resources():
       'disk_available_bytes':disk.f_bavail*disk.f_frsize,
       'self_maxrss_kib_unit':'Linux proc VmRSS/VmHWM fields retain original kB units'}
 
+def console_line(line,stream=None):
+    global CONSOLE_BROKEN
+    if CONSOLE_BROKEN:return
+    try:
+        if stream is None:stream=sys.stdout
+        print(line,file=stream,flush=True)
+    except BrokenPipeError:
+        # Persisted evidence must survive a closed runner console. The command
+        # supervisor rejects and terminates its group; a broken pipe is no PASS.
+        CONSOLE_BROKEN=True
+
 def event(kind,**extra):
     with LOCK:
         item={'event':kind,'utc':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),
@@ -80,7 +97,7 @@ def event(kind,**extra):
         temporary=TRACE/'latest.tmp'
         temporary.write_text(json.dumps(item,indent=2)+'\n')
         os.replace(temporary,TRACE/'latest.json')
-        print('RECORD_PROGRESS '+line,flush=True)
+        console_line('RECORD_PROGRESS '+line)
 
 def sample(kind='resource_sample'):
     try:event(kind,resources=resources())
@@ -129,17 +146,62 @@ def stop_process(p):
     if p.returncode is None:p.wait(timeout=5)
     return report
 
-def supervised(args,label,passed=True,*,seconds=SECONDS,output_limit=OUTPUT_LIMIT,cwd=None):
+def memory_snapshot(pgid,meminfo_path='/proc/meminfo'):
+    """Fail closed on unreadable required counters, never infer absent as zero."""
+    text=Path(meminfo_path).read_text()
+    rows=[line.split()for line in text.splitlines()if line.startswith('MemAvailable:')]
+    if len(rows)!=1 or len(rows[0])!=3 or rows[0][2]!='kB':
+        raise SupervisionFailure('Unavailable MemAvailable in kB')
+    available=int(rows[0][1])
+    if available<0:raise SupervisionFailure('Negative MemAvailable')
+    members=[]
+    for member in live_members(pgid):
+        path=Path('/proc')/str(member['pid'])/'status'
+        try:text=path.read_text()
+        except FileNotFoundError:
+            if not any(x['pid']==member['pid']for x in live_members(pgid)):continue
+            raise
+        fields=[line.split()for line in text.splitlines()if line.startswith('VmRSS:')]
+        if len(fields)!=1 or len(fields[0])!=3 or fields[0][2]!='kB':
+            if not any(x['pid']==member['pid']for x in live_members(pgid)):continue
+            raise SupervisionFailure('Unavailable live process VmRSS')
+        rss=int(fields[0][1])
+        if rss<0:raise SupervisionFailure('Negative VmRSS')
+        members.append({'pid':member['pid'],'rss_kib':rss})
+    return {'available_kib':available,'group_rss_kib':sum(x['rss_kib']for x in members),
+            'members':members,'group_rss_may_double_count_shared_pages':True}
+
+def stream_tails(label,paths,positions):
+    # Forward bounded exact tails during execution; full streams remain in files.
+    # Skipped old ranges are explicit and never represented as logged in full.
+    for stream,path in paths.items():
+        size=path.stat().st_size;previous=positions[stream]
+        if size<=previous:continue
+        start=max(previous,size-STREAM_TAIL_BYTES)
+        with path.open('rb')as f:f.seek(start);chunk=f.read(size-start)
+        if len(chunk)!=size-start:raise SupervisionFailure('Raw stream changed while reading')
+        event('raw_stream_tail',label=label,stream=stream,offset=start,bytes=len(chunk),
+              previous_forwarded_end=previous,skipped_bytes=start-previous,
+              sha256=hashlib.sha256(chunk).hexdigest(),base64=base64.b64encode(chunk).decode())
+        positions[stream]=size
+
+def supervised(args,label,passed=True,*,seconds=SECONDS,output_limit=OUTPUT_LIMIT,cwd=None,
+               min_available_kib=MIN_AVAILABLE_KIB,max_group_rss_kib=MAX_GROUP_RSS_KIB,
+               meminfo_path='/proc/meminfo'):
     """Keep exact command/returncode/streams, fail closed on resource supervision."""
     global ACTIVE
     assert isinstance(label,str) and label and '/' not in label
-    assert seconds>0 and output_limit>0
+    assert seconds>0 and output_limit>0 and min_available_kib>0 and max_group_rss_kib>0
     cwd=OUT if cwd is None else Path(cwd)
     stdout=TRACE/(label+'.stdout');stderr=TRACE/(label+'.stderr')
     command=list(map(str,args))
-    began=time.monotonic();reason=None;p=None
+    began=time.monotonic();reason=None;p=None;memory=None;memory_error=None
+    next_memory=0.0;next_stream=0.0;positions={'stdout':0,'stderr':0}
+    paths={'stdout':stdout,'stderr':stderr}
     with LOCK:CURRENT.update(phase='command:'+label,child_pid=None)
-    event('command_start',label=label,argv=command,timeout_seconds=seconds,output_limit_per_stream_bytes=output_limit)
+    event('command_start',label=label,argv=command,timeout_seconds=seconds,output_limit_per_stream_bytes=output_limit,
+          minimum_available_kib=min_available_kib,maximum_group_rss_kib=max_group_rss_kib,
+          memory_period_seconds=MEMORY_PERIOD,stream_tail_bytes=STREAM_TAIL_BYTES)
     try:
         with stdout.open('wb') as so,stderr.open('wb') as se:
             p=subprocess.Popen(command,cwd=cwd,stdout=so,stderr=se,start_new_session=True)
@@ -147,17 +209,36 @@ def supervised(args,label,passed=True,*,seconds=SECONDS,output_limit=OUTPUT_LIMI
             with LOCK:CURRENT['child_pid']=p.pid
             sample('command_process_started')
             while p.poll() is None:
-                if time.monotonic()-began>=seconds:reason='elapsed_limit';break
+                now=time.monotonic()
+                if CONSOLE_BROKEN:reason='console_pipe_broken';break
+                if now>=next_memory:
+                    try:
+                        memory=memory_snapshot(p.pid,meminfo_path)
+                        if memory['available_kib']<min_available_kib:reason='minimum_available_memory'
+                        elif memory['group_rss_kib']>max_group_rss_kib:reason='maximum_group_rss'
+                    except Exception as e:reason='memory_sample_unavailable';memory_error=repr(e)
+                    next_memory=now+MEMORY_PERIOD
+                    if reason:
+                        event('memory_sentinel_rejection',label=label,reason=reason,
+                              memory=memory,memory_error=memory_error)
+                        break
+                if now>=next_stream:
+                    stream_tails(label,paths,positions);next_stream=now+STREAM_PERIOD
+                if now-began>=seconds:reason='elapsed_limit';break
                 if max(stdout.stat().st_size,stderr.stat().st_size)>output_limit:reason='output_limit';break
                 time.sleep(.1)
             if not reason and live_members(p.pid):reason='orphan_descendant_after_leader_exit'
             cleanup=stop_process(p)
             p.wait()
             so.flush();se.flush();os.fsync(so.fileno());os.fsync(se.fileno())
+        stream_tails(label,paths,positions)
+        if CONSOLE_BROKEN:reason='console_pipe_broken'
         sizes=(stdout.stat().st_size,stderr.stat().st_size)
         if max(sizes)>output_limit:reason='output_limit'
         record={'label':label,'argv':command,'pid':p.pid,'returncode':p.returncode,
           'elapsed_seconds':time.monotonic()-began,'supervision_failure':reason,
+          'last_memory_sentinel_sample':memory,'memory_read_error':memory_error,
+          'minimum_available_kib':min_available_kib,'maximum_group_rss_kib':max_group_rss_kib,
           'stdout_bytes':sizes[0],'stderr_bytes':sizes[1],
           'stdout_sha256':sha(stdout),'stderr_sha256':sha(stderr),'process_group_cleanup':cleanup}
         (TRACE/(label+'.command.json')).write_text(json.dumps(record,indent=2)+'\n')
@@ -204,6 +285,7 @@ def interrupted(signum,frame):
     raise RunnerInterrupted('Received signal '+str(signum)+'; no engineering acceptance')
 
 def controls():
+    global CONSOLE_BROKEN
     host();m=pins();TRACE.mkdir(parents=True,exist_ok=False)
     results={}
     try:
@@ -212,6 +294,14 @@ def controls():
                      'fixture-positive',cwd=TRACE)
         assert r.stdout=='positive\n'and r.stderr=='stderr\n'
         results['positive_exact_streams']=True
+        tails=[json.loads(x)for x in (TRACE/'events.jsonl').read_text().splitlines()
+               if json.loads(x).get('event')=='raw_stream_tail'and json.loads(x).get('label')=='fixture-positive']
+        assert len(tails)==2 and {x['stream']for x in tails}=={'stdout','stderr'}
+        for item in tails:
+            expected=('positive\n'if item['stream']=='stdout'else'stderr\n').encode()
+            assert base64.b64decode(item['base64'])==expected and item['offset']==0 and item['skipped_bytes']==0
+            assert item['sha256']==hashlib.sha256(expected).hexdigest()
+        results['exact_bounded_stream_chunks_forwarded']=True
         r=supervised([sys.executable,'-c','import sys;print("FATAL fixture");sys.exit(7)'],
                      'fixture-negative',False,cwd=TRACE)
         assert r.returncode==7 and r.stdout=='FATAL fixture\n'
@@ -226,6 +316,33 @@ def controls():
                 assert ACTIVE is None
                 results[name+'_fails_before_mutant_acceptance']=True
             else:raise AssertionError('Supervision failure accepted as mutation '+name)
+        # Low fixture limits avoid intentionally stressing the runner.
+        for name,code,kw,reason in (
+          ('rss','import time;block=bytearray(32*1024*1024);print("allocated-32MiB",flush=True);time.sleep(60)',
+             {'max_group_rss_kib':16*1024},'maximum_group_rss'),
+          ('available','import time;time.sleep(60)',{'min_available_kib':1<<60},'minimum_available_memory'),
+          ('memory-unreadable','import time;time.sleep(60)',
+             {'meminfo_path':str(TRACE/'deliberately-absent-meminfo')},'memory_sample_unavailable')):
+            try:supervised([sys.executable,'-c',code],'fixture-'+name,False,cwd=TRACE,**kw)
+            except SupervisionFailure:
+                q=json.loads((TRACE/('fixture-'+name+'.command.json')).read_text())
+                assert q['supervision_failure']==reason and q['process_group_cleanup']['remaining_live']==[]
+                assert ACTIVE is None
+                results[name+'_fails_before_mutant_acceptance']=True
+            else:raise AssertionError('Memory sentinel accepted as mutation '+name)
+        class ClosedConsole:
+            def write(self,text):raise BrokenPipeError('deliberately closed fixture console')
+            def flush(self):pass
+        console_line('fixture closed pipe',ClosedConsole())
+        assert CONSOLE_BROKEN is True
+        try:
+            try:supervised([sys.executable,'-c','import time;time.sleep(60)'],'fixture-console',False,cwd=TRACE)
+            except SupervisionFailure:
+                q=json.loads((TRACE/'fixture-console.command.json').read_text())
+                assert q['supervision_failure']=='console_pipe_broken'and q['process_group_cleanup']['remaining_live']==[]
+                results['closed_console_persisted_and_rejected']=True
+            else:raise AssertionError('Closed console accepted')
+        finally:CONSOLE_BROKEN=False
         # A normal nonzero tool must still reject at the original passed=True gate.
         try:supervised([sys.executable,'-c','raise SystemExit(9)'],'fixture-bad-positive',cwd=TRACE)
         except AssertionError:results['positive_nonzero_rejected']=True
@@ -255,7 +372,7 @@ def controls():
         pins()
         result={'status':'PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL',
           'controls':results,'source_pins':m,'engineering_accepted':False}
-        assert len(results)==8
+        assert len(results)==13
         (TRACE/'controls.json').write_text(json.dumps(result,indent=2)+'\n')
         print(json.dumps(result),flush=True)
     finally:stop_process(ACTIVE)
