@@ -45,6 +45,13 @@ def files(root):
         if p.is_file():result[p.relative_to(root).as_posix()]=p
     return result
 
+def directories(root):
+    root=Path(root);result={'.':stat.S_IMODE(root.stat().st_mode)}
+    for p in sorted(root.rglob('*')):
+        assert not p.is_symlink(),'Symlinks require separate native qualification'
+        if p.is_dir():result[p.relative_to(root).as_posix()]=stat.S_IMODE(p.stat().st_mode)
+    return result
+
 def snapshot(root,member):
     result={}
     for name,p in files(root).items():
@@ -57,7 +64,7 @@ def snapshot(root,member):
 
 def validate(record):
     assert set(record)=={'format','member','source_descriptor','source','plan','logical',
-        'extents','original_files','transport_only','native_activation_qualified','full_capture_accepted'}
+        'extents','original_files','original_directories','transport_only','native_activation_qualified','full_capture_accepted'}
     assert record['format']==FORMAT
     member=relative(record['member']);assert not member.startswith(META+'/')
     descriptor(record['source_descriptor'])
@@ -84,6 +91,10 @@ def validate(record):
         assert type(row['bytes'])is int and row['bytes']>=0
         assert type(row['mode'])is int and 0<=row['mode']<=0o7777
         assert re.fullmatch('[0-9a-f]{64}',row['sha256'])
+    assert isinstance(record['original_directories'],dict)and '.'in record['original_directories']
+    for name,mode in record['original_directories'].items():
+        if name!='.':relative(name);assert not name.startswith(META+'/')and name!=META
+        assert type(mode)is int and 0<=mode<=0o7777
     assert record['original_files'][member]['bytes']==logical['bytes']
     assert record['original_files'][member]['sha256']==logical['sha256']
     return True
@@ -108,7 +119,10 @@ def write_capsule(native_root,capsule_root,member,source_descriptor,source,plan,
     original=native_root/member
     sparse.unchanged_hole(original,plan,source)
     assert original.stat().st_size==logical['bytes']
-    before=snapshot(native_root,member);capsule_root.mkdir()
+    before=snapshot(native_root,member);dirs=directories(native_root);capsule_root.mkdir()
+    for name,mode in dirs.items():
+        target=capsule_root if name=='.'else capsule_root/name
+        target.mkdir(parents=True,exist_ok=True)
     for name,p in files(native_root).items():
         if name==member:continue
         target=capsule_root/name;target.parent.mkdir(parents=True,exist_ok=True)
@@ -125,11 +139,13 @@ def write_capsule(native_root,capsule_root,member,source_descriptor,source,plan,
             sha256=logical['sha256']if name==member else row['sha256'])
     record=dict(format=FORMAT,member=member,source_descriptor=copy.deepcopy(source_descriptor),
         source=copy.deepcopy(source),plan=copy.deepcopy(plan),logical=copy.deepcopy(logical),
-        extents=extents,original_files=inventory,transport_only=True,
+        extents=extents,original_files=inventory,original_directories=dirs,transport_only=True,
         native_activation_qualified=False,full_capture_accepted=False)
     validate(record)
     (capsule_root/CONTRACT).write_text(json.dumps(record,indent=2)+'\n')
-    assert stopped()is True and snapshot(native_root,member)==before,'Native source changed while copying'
+    for name,mode in sorted(dirs.items(),key=lambda pair:len(pair[0]),reverse=True):
+        (capsule_root if name=='.'else capsule_root/name).chmod(mode)
+    assert stopped()is True and snapshot(native_root,member)==before and directories(native_root)==dirs,'Native source changed while copying'
     sparse.unchanged_hole(original,plan,source)
     verify_capsule(capsule_root)
     return record
@@ -138,6 +154,8 @@ def verify_capsule(root,expected=None):
     root=Path(root);record=json.loads((root/CONTRACT).read_text());validate(record)
     if expected is not None:assert record==expected,'Delta contract identity mismatch'
     current=files(root)
+    actual_dirs=directories(root);assert actual_dirs.pop(META,None)is not None
+    assert actual_dirs==record['original_directories'],'Missing or changed native directory'
     wanted=(set(record['original_files'])-{record['member']})|{CONTRACT}|{x['name']for x in record['extents']}
     assert set(current)==wanted,'Missing or untracked capsule file'
     for name,row in record['original_files'].items():
@@ -198,4 +216,5 @@ def capture_chunks(root,source_chunks,proof,expected_descriptor=None):
     proof.update(complete=True,source_iterator_exhausted=True,original_payload_preserved=True,
         source_bytes_verified=source['bytes'],logical_bytes_verified=total,
         logical_sha256=whole.hexdigest(),payload_sha256=payload.hexdigest(),
-        samples_removed=0,resampled=False,all_original_auxiliary_files_preserved=True)
+        samples_removed=0,resampled=False,all_original_auxiliary_files_preserved=True,
+        all_original_directories_preserved=True)
