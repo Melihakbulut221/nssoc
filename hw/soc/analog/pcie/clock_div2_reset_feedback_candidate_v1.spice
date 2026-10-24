@@ -1,0 +1,82 @@
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Source-only physical-device hypothesis. No accepted reset, timing or layout.
+* Include exact rx_sampler_hbt_v2.spice for the unchanged nssoc_cml_latch.
+* External reqp/reqn are a high-common-mode CML request boundary, not an
+* implemented digital reset pad or internal ideal assignment. Hold reset low
+* through sufficient real clock cycles; both synchronizer flops are unseeded.
+* New devices require native layout/LVS/RC and complete HBT safety screening.
+
+.subckt nssoc_phase_reset_feedback_selector_v1 fbp fbn runp runn outp outn avdd avss sub
+* RUN high selects actual inverse feedback; RUN low selects native high data.
+XBIAS avdd ref sub rppd w=1u l=11.5u b=0 sw_et=1
+XREF ref ref avss sub npn13G2 Nx=1
+XAP outn fbp ea sub npn13G2 Nx=2
+XAN outp fbn ea sub npn13G2 Nx=2
+XBP outn seedp eb sub npn13G2 Nx=2
+XBN outp seedn eb sub npn13G2 Nx=2
+XSA ea runp tail sub npn13G2 Nx=4
+XSB eb runn tail sub npn13G2 Nx=4
+XT tail ref avss sub npn13G2 Nx=4
+XRP avdd outp sub rppd w=8u l=2.12u b=0 sw_et=1
+XRN avdd outn sub rppd w=8u l=2.12u b=0 sw_et=1
+XBA ea avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XBB eb avss sub rppd w=1u l=38.4u b=0 sw_et=1
+* These are explicit unqualified native bias design values, not measured.
+XHP avdd seedp sub rppd w=4u l=4u b=0 sw_et=1
+XLP seedp avss sub rppd w=4u l=40u b=0 sw_et=1
+XHN avdd seedn sub rppd w=4u l=4u b=0 sw_et=1
+XLN seedn avss sub rppd w=4u l=20u b=0 sw_et=1
+.ends nssoc_phase_reset_feedback_selector_v1
+
+.subckt nssoc_phase_reset_sync2_v1 reqp reqn clkp clkn qp qn avdd avss sub
+* Two real master/slave CML flip-flops. No IC/UIC, behavioral latch or
+* initialized state. Metastability/MTBF and safe release latency are unproven.
+XBIAS avdd ref sub rppd w=1u l=11.5u b=0 sw_et=1
+XREF ref ref avss sub npn13G2 Nx=1
+XM1 reqp reqn m1p m1n clkn clkp avdd avss sub ref nssoc_cml_latch
+XS1 m1p m1n q1p q1n clkp clkn avdd avss sub ref nssoc_cml_latch
+XM2 q1p q1n m2p m2n clkn clkp avdd avss sub ref nssoc_cml_latch
+XS2 m2p m2n qp qn clkp clkn avdd avss sub ref nssoc_cml_latch
+.ends nssoc_phase_reset_sync2_v1
+
+.subckt nssoc_phase_reset_level_v1 ip in cp cn avdd avss sub
+* Same real limiter/feed-forward front network as clock_div2_high_input_v1.
+* DC reset transfer and edge behavior still require new loaded validation.
+XLSP ip bip sub rppd w=2u l=3.6u b=0 sw_et=1
+XLSN in bin sub rppd w=2u l=3.6u b=0 sw_et=1
+XLDP bip avss sub rppd w=1u l=16u b=0 sw_et=1
+XLDN bin avss sub rppd w=1u l=16u b=0 sw_et=1
+XLB avdd lref sub rppd w=1u l=9u b=0 sw_et=1
+XLREF lref lref avss sub npn13G2 Nx=1
+XLP ln bip lt sub npn13G2 Nx=2
+XLN lp bin lt sub npn13G2 Nx=2
+XLT lt lref avss sub npn13G2 Nx=4
+XLRP avdd lp sub rppd w=8u l=4.4u b=0 sw_et=1
+XLRN avdd ln sub rppd w=8u l=4.4u b=0 sw_et=1
+XSP lp cp sub rppd w=2u l=8u b=0 sw_et=1
+XSN ln cn sub rppd w=2u l=8u b=0 sw_et=1
+XDP cp avss sub rppd w=1u l=8u b=0 sw_et=1
+XDN cn avss sub rppd w=1u l=8u b=0 sw_et=1
+XCP lp cp cap_cmim w=24u l=24u
+XCN ln cn cap_cmim w=24u l=24u
+.ends nssoc_phase_reset_level_v1
+
+.subckt nssoc_clock_div2_tail_reset_candidate_v1 clkp clkn mp mn qp qn reqp reqn avdd avss sub
+* Original tail reference, both latches and seed dimensions are preserved.
+* Only the two master data connections change from QN/QP to the real selector.
+XBIAS avdd ref sub rppd w=1u l=11.5u b=0 sw_et=1
+XREF ref ref avss sub npn13G2 Nx=1
+XRSYNC reqp reqn clkp clkn rs_p rs_n avdd avss sub nssoc_phase_reset_sync2_v1
+XRLEVEL rs_p rs_n runp runn avdd avss sub nssoc_phase_reset_level_v1
+XRMUX qn qp runp runn rp rn avdd avss sub nssoc_phase_reset_feedback_selector_v1
+XM rp rn mp mn clkn clkp avdd avss sub ref nssoc_cml_latch
+XS mp mn qp qn clkp clkn avdd avss sub ref nssoc_cml_latch
+XSEEDP mp avss cap_cmim w=2.2u l=2u
+XSEEDN mn avss cap_cmim w=2u l=2u
+.ends nssoc_clock_div2_tail_reset_candidate_v1
+
+* A single free-running-clock experiment only: this is NOT a 31-clock reset.
+* Resetting an upstream divider stops child clocks. This feedback-only reset
+* cannot asynchronously preset a closed master and would deadlock a naive
+* local-clock reset cascade. A real global reset/phase sequencer or physically
+* verified asynchronous latch preset is still required for the complete tree.
