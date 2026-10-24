@@ -1,0 +1,28 @@
+{
+  "status": "REJECTED_INITIAL_PROOF_TESTBENCH_RESET_STIMULUS",
+  "checked_utc": "2026-10-24T14:23:05.375362+00:00",
+  "run": 40099402878,
+  "attempt": 1,
+  "source": "86dbe41b5383c29238b6a61f87783f3409e6cf3b",
+  "job": 120888261871,
+  "job_log_sha256": "6eedfd6ad03306e739622aabcdfc98a5d6d5bbb8747d0db39351216ef31ef61f",
+  "job_log_bytes": 27980,
+  "actual_rejection": "Asynchronous TX reset vector 0 at time5121000, tb_pcie_gen12_codec.v:56",
+  "cause": "Both testbench reset registers were initialized0 and remained0 with clocks held0 before the first lane assertion; no actual reset edge occurred. The failure is retained, not waived.",
+  "original_artifact": {
+    "id": 12562423938,
+    "bytes": 174763,
+    "zip_sha256_from_upload_log": "99e2e0e066229d608f00ce0805b5de45080d693ada9deffb3087c35a0fd82f55",
+    "not_downloaded_locally": true
+  },
+  "cloud_readback": {
+    "source": "f2d9ee1ab31716613e7c17a4c562a3ad1db56720",
+    "registered_workflow_id": 395157420,
+    "immutable_ref": "codex/gen12-codec-initial-proof-f2d9ee1a",
+    "not_dispatched": true
+  },
+  "repair": "Add an explicit1-to0 TX/RX reset pulse before the lane-vector loop. RTL, table, source licensing, vector counts, expected states and all9 behavioral corruption gates remain unchanged. Print compact result/hash for future evidence readback.",
+  "codec_RTL_accepted": false,
+  "RX_integration_accepted": false,
+  "full_PHY_accepted": false
+}
