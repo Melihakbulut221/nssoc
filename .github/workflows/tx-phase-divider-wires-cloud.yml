@@ -1,0 +1,66 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-divider-wires-cloud
+on:
+  push:
+    branches: [codex/tx-clock-phase-parent]
+    paths: [.github/workflows/tx-phase-divider-wires-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-phase-divider-wires-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Extract actual phase-divider wire ownership and bind all168 native terminals
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6
+          python3 -m pip install networkx==3.4.2 numpy==2.1.3
+          curl -fL --retry 3 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum -c
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          export CLOUD_APPIMAGE="$RUNNER_TEMP/librelane.AppImage"
+          python3 -m py_compile scripts/cloud_tx_phase_divider_wires.py
+          python3 scripts/cloud_tx_phase_divider_wires.py
+      - name: Preserve fresh native wire graph and every terminal binding
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-tx-phase-divider-wires
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
+          fi
+          stem="tx-phase-divider-wires-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];m=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-phase-divider-wires',stem+'.summary.json',stem+'.parts.json',*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Preserve evidence if publication fails
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-phase-divider-wires-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-phase-divider-wires/
+          retention-days: 30
+
+# Requires exact native physical run40079962143 and pinned full publication; no phase/reset/RC acceptance.

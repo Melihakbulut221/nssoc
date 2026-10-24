@@ -10,6 +10,9 @@ OUT=ROOT/'hw/soc/out/cloud-tx-phase-divider-wires'
 TOP='nssoc_tx_phase_divider55_v1'
 PHYSICAL_RUN=40079962143
 PHYSICAL_HEAD='60b6cc9bf263a3fc2e08aa434bff4292a6df1143'
+PHYSICAL_SUMMARY='d31aa1c3046344059bb5c37b95e442e306460dad468ca3dccdbac28fe8716822'
+PHYSICAL_PARTS='13dca83da1a04004076489f367fc75b313065dc254a9427950d48563652d8499'
+PHYSICAL_GDS='c9f55e2220c2278edbbe83d54d6da1ffcbf25b88de32b7335cde1e416e6e795b'
 PHYSICAL_STATUS='PASS_NATIVE55_PHASE_OUTPUTS_DRC_DEEP_FLAT_LVS_AND_FIVE_FAULTS_REQUIRES_LOADED_PHASE_AND_FRESH_RC'
 REPO='repos/Melihakbulut221/nssoc/'
 def api(p):return json.loads(subprocess.check_output(['gh','api',REPO+p]))
@@ -49,6 +52,7 @@ def main():
             a=assets[0];assert a['size']<4*1024**2
             data=subprocess.check_output(['gh','api',REPO+'releases/assets/'+str(a['id']),'-H','Accept: application/octet-stream'])
             h=hashlib.sha256(data).hexdigest();assert a['digest']=='sha256:'+h
+            assert h=={'summary':PHYSICAL_SUMMARY,'parts':PHYSICAL_PARTS}[key],'Exact completed physical publication identity'
             pins[key]=h;(OUT/('physical'+suffix)).write_bytes(data)
         selected=('layout/'+TOP+'.gds','layout/result.json','layout/schematic.cir','flat_lvs/result.lvsdb','flat_lvs/audit.json','flat_lvs/extracted.cir','deep_lvs/audit.json','geometry-audit.json')
         source=OUT/'source';prior,proof=reports.restore_report(group,PHYSICAL_RUN,pins['summary'],pins['parts'],source,selected)
@@ -56,7 +60,7 @@ def main():
         assert all(prior['steps'][n]['expected_verdict_observed']for n in ['drc','deep_lvs','flat_lvs','master_access_open','master_slave_short','wrong_feedback','wrong_seed','offgrid'])
         assert prior['steps']['drc']['measurement']['category_count']==560 and prior['steps']['drc']['measurement']['markers']==0
         assert prior['geometry_audit']['devices']==55 and prior['geometry_audit']['ports']==9
-        gds=source/'layout'/(TOP+'.gds');gds_sha=sha(gds);assert gds_sha==prior['outputs']['layout/'+TOP+'.gds']
+        gds=source/'layout'/(TOP+'.gds');gds_sha=sha(gds);assert gds_sha==prior['outputs']['layout/'+TOP+'.gds']==PHYSICAL_GDS
         r.update(physical_source=proof,physical_gds_sha256=gds_sha);save()
         spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text());packed=OUT/'fixture.tar.gz'
         fetch(spec['receipt']['url'],spec['receipt']['sha256'],packed);assert packed.stat().st_size==spec['receipt']['bytes']
