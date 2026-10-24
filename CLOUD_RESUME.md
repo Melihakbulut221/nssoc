@@ -8195,3 +8195,18 @@ Endpoint helper 40103396561 passed its controls. PLL cache replay controls 40105
 Corrected Gen1/2 codec 40102483214 and full artifact reader 40106066552 passed. Imported exactly 15 source paths from aa8afbb7, plus the complete 99-member proof and receipt from 1e3781f7. Licensed Benz derivatives are actual synthesized DUT dependencies; the IEEE table is the independent oracle. Preserve this distinction.
 
 This qualifies the single-lane codec scope only. RX/TX raw32 integration, original vendor nettype lint repair, lower-rate analog operation, LTSSM and full serial PHY remain separate requirements. Agents own the already-reviewed RX/TX native proofs; do not duplicate them. All files remain in GitHub only.
+
+
+### 2026-10-24T16:07:50.906739+00:00 — cloud checkpoint v22
+
+Local workspace and project-named temporary entries are empty; no local native process is running. Sources, all native execution, artifacts and continuation receipts stay in GitHub.
+
+TX normal and swapped processes reached17.176968514ns and15.682858938ns of34ns. Exact next continuations40109066076/40109221280 are queued once each, with exact-source release destinations. These are saved trajectories, not waveform acceptance.
+
+CDR40108285374 passed preparation and publication; the ten loaded cases are queued. PLL saved-cache replay40108109320 failed and requires exact result diagnosis. Original PLL acquisition remains rejected.
+
+Native Gen1/2 TX40108369376 passed; receipt authentication precedes import. RX40108338384 remains queued. Targeted vendor nettype40108372395 passed all31tests and its exact8files were imported65d2c84a, preserving20protected source hashes and all34prior guard entries. This does not qualify whole-SoC CI or full PHY.
+
+Reset saved-waveform readback40102964781 reproduced the fixed31.25ps margin failure and measured the real fan-in delay. A physical offset candidate is source-only. Actual clock-role40102668052 failed;40108734425 reads its saved failure log without simulation.
+
+Mainchip routing40095811631 remains rejected. Recovery controls40107937311 failed log transport before archive/native work; repair and peer review are in progress. Keep artifact12564886005 and all original constraints. Full serial PHY, routed serial mainchip integration and final timing remain open.
