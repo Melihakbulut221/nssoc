@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: Apache-2.0
+# Unregistered source-only template. Independent review before native diagnostic.
+name: PCIe candidate-record phase resource diagnostic
+on:
+  workflow_dispatch:
+    inputs:
+      diagnose:
+        description: 'Instrument the exact original complete proof after controls'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: pcie-gen12-record-telemetry-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Exact frozen source and real subprocess supervision controls
+        run: |
+          python3 -u scripts/cloud_pcie_gen12_training_records_telemetry.py --controls | tee telemetry-control-console.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-telemetry/controls.json').read_text())
+          assert s['status']=='PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL'
+          assert len(s['controls'])==8 and all(s['controls'].values())
+          assert s['engineering_accepted']is False
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: record-telemetry-controls-${{ github.run_id }}
+          path: |
+            hw/soc/out/cloud-pcie-gen12-training-records-telemetry
+            telemetry-control-console.log
+          retention-days: 90
+  complete-proof-with-resource-evidence:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch' && inputs.diagnose
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install the same hosted RTL tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog verilator yosys
+          iverilog -V
+          verilator --version
+          yosys -V
+      - name: Unchanged complete proof with phase and process measurements
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONUNBUFFERED: '1'
+        run: |
+          python3 -u scripts/cloud_pcie_gen12_training_records_telemetry.py | tee training-records-telemetry-console.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-telemetry/result.json').read_text())
+          r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records/result.json').read_text())
+          assert a['status']=='PASS_INSTRUMENTED_UNCHANGED_COMPLETE_RECORD_PROOF'
+          assert r['status']=='PASS_COMPOSED_CANDIDATE16_TRANSPORT_AND24_COMPILED_FAULTS'
+          assert len(r['negative_controls'])==24 and all(x['returncode']!=0 for x in r['negative_controls'])
+          assert r['protocol_TS_acceptance']is False and r['full_PHY_accepted']is False
+          PY
+      - name: Preserve exact small results even after a failed phase
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ('cloud-pcie-gen12-training-records','cloud-pcie-gen12-training-records-telemetry'):
+              p=Path('hw/soc/out')/name/'result.json'
+              if not p.exists():
+                  print('RECORD_DIAGNOSTIC_NO_RESULT '+name);continue
+              b=p.read_bytes();assert len(b)<16_000_000
+              s=base64.b64encode(b).decode();chunks=[s[i:i+4096]for i in range(0,len(s),4096)]
+              print('RECORD_DIAGNOSTIC_RESULT '+json.dumps(dict(name=name,bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),chunks=len(chunks))))
+              for i,c in enumerate(chunks):print('RECORD_DIAGNOSTIC_CHUNK '+name+' '+str(i)+' '+c)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: record-telemetry-complete-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            hw/soc/out/cloud-pcie-gen12-training-records
+            hw/soc/out/cloud-pcie-gen12-training-records-telemetry
+            training-records-telemetry-console.log
+          retention-days: 90
+          if-no-files-found: warn
