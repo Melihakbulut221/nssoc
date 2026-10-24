@@ -1,4 +1,4 @@
-# Source preparation only; after independent review one activation first qualifies preparation then all original ten loaded cases.
+# Push qualifies preparation only. Full original ten-case DUT matrix requires explicit manual dispatch and successful preparation.
 # SPDX-License-Identifier: Apache-2.0
 name: cdr500-v58-loaded-cloud
 on:
@@ -44,6 +44,7 @@ jobs:
           path: cloud-cdr500-v58-loaded-nominal_early/
           retention-days: 30
   loaded:
+    if: github.event_name == 'workflow_dispatch'
     needs: prepare
     runs-on: ubuntu-24.04
     timeout-minutes: 360
