@@ -1,0 +1,107 @@
+# SPDX-License-Identifier: Apache-2.0
+# Source-reviewed template only; registration and one native readback need review.
+name: tx-native-clock-role-parameters-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      observe_native:
+        description: 'Read the exact existing native database after controls; no extraction or simulation'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-native-clock-role-parameters-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact original metadata/archive and independent per-kind source controls
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if (set -o pipefail; python3 -c 'raise SystemExit(7)' | tee pipeline-control.txt); then
+            echo 'Broken pipeline failure propagation'; exit 1
+          fi
+          python3 -m pip install networkx==3.4.2
+          python3 scripts/cloud_tx_native_clock_role_parameters.py --controls | tee source-controls.json
+          python3 - <<'PYCODE'
+          import json
+          s=json.load(open('source-controls.json'))
+          assert s['status']=='PASS_PINNED_PARENT_AND_STAGE_PARAMETER_CONTROLS_NOT_NATIVE_PROOF'
+          assert len(s['stage_catalog_controls']['faults'])==16
+          assert len(s['stage_catalog_controls']['original_failure_faults'])==6
+          assert all(x['rejected']for x in s['stage_catalog_controls']['original_failure_faults'])
+          assert all(x['rejected']for x in s['stage_catalog_controls']['faults'])
+          assert len(s['original_parent_controls']['controls'])==12
+          assert len(s['original_parent_controls']['archive_controls']['negative_controls'])==8
+          assert all(s[k]is False for k in ('native_execution','native_role_accepted','electrical_accepted','full_phy_accepted'))
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: tx-role-parameter-source-controls-${{ github.run_id }}
+          path: |
+            source-controls.json
+            pipeline-control.txt
+          retention-days: 30
+  exact-native-role-parameters:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch' && inputs.observe_native
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore pinned original database reader runtime
+        run: |
+          python3 -m pip install networkx==3.4.2
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6 libglu1-mesa libx11-6 libxext6 libxrender1 libxt6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Read exact role parameters and reproduce frozen failure
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_tx_native_clock_role_parameters.py
+      - name: Preserve complete small result in log with exact hash
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          import base64,hashlib,json
+          from pathlib import Path
+          p=Path('hw/soc/out/cloud-tx-native-clock-role-parameters/result.json')
+          if not p.exists():
+              p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_text(json.dumps(dict(status='FAIL_MISSING_REPORT',native_role_accepted=False,electrical_accepted=False,full_phy_accepted=False))+'\n')
+          b=p.read_bytes();assert len(b)<=3_000_000
+          print('RESULT_SHA256',hashlib.sha256(b).hexdigest());print('RESULT_BYTES',len(b))
+          s=base64.b64encode(b).decode();parts=[s[i:i+4096]for i in range(0,len(s),4096)]
+          for i,c in enumerate(parts):print(f'RESULT_BASE64 {i}/{len(parts)} {c}')
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: tx-native-role-parameters-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-native-clock-role-parameters/
+          retention-days: 30
+# Existing original archive, database and composed model remain unchanged.
+# No release/tag, native solver, PEX, circuit resizing or acceptance transition.
