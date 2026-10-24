@@ -1,0 +1,11 @@
+# Fresh reset334 compact and MIM prerequisite
+
+Both new P/N layouts passed run40120130880 at2e1f26e9c4fdf37d63433a0c859c2d305db3486b:560 DRC categories, zero markers, deep and flat334-device LVS, nine physical/schematic faults and every1010 terminal with seven anchor faults. This continuation restores exactly that complete hashed capsule and reuses neither the old55-device geometry nor its RC.
+
+The actual334-device database is exported with all eleven public ports,120 native electrical nets and all1010 terminal identities. The model retains106 HBTs,130 physical rppd resistors, eight actual MIMs and90 finite body contacts. The unchanged native parameter verifier and its eleven corruption controls bind every model parameter and terminal. Compact models remain pinned to their previously qualified c4b8b4e5 IHP model source; the geometry DRC/LVS was performed with the separately recorded5e6d592e deck. Neither source is silently substituted.
+
+The native MIM algorithm binds each of the eight extracted capacitors to a unique actual placed leaf, verifies its full mask/via geometry and dimensions, and moves only the bottom reference point to actual Metal5 outside all intrinsic masks. Six24×24um devices and the2×2um/2×2.2um seed devices are individually preserved. All695 anchor ownership checks and all original metal/via polygons are repeated, with six real geometry/ownership corruption controls per polarity. Source derivations reverse byte-exactly to frozen algorithms; arbitrary global census substitutions are forbidden.
+
+This stage does not extract wire RC, run a transient, qualify deterministic startup or drive the31-clock tree. The next stage must perform fresh two-order MIM-aware RC with actual capacitance conservation and exact device composition, then unchanged loaded reset/phase/device-safety gates. The saved scalar fixture intrinsic pass is not evidence of a PLL-connected or loaded physical pass.
+
+The workflow template is manual only; source controls run first and a separate boolean enables native binding. Every result release must be precreated at the exact tested source, and original rejected outputs remain published. A successful source-controls job alone proves no native geometry or electrical result.
