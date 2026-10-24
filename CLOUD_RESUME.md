@@ -7572,3 +7572,13 @@ Composition must require oracle/6extra controls, preserve every new native
 parameter and RC value. Native interface read from actual report, not prior.
 Next full-wave binder MUST identify tails by53.335u, not old36u; reference8u.
 Original v49 acceptance region remains unchanged; no physical/electrical inference.
+
+## 2026-10-24 v56 full actual extracted waveform dispatched
+Composition40054632438 passed18native devices+1270R849C and14faults, including
+required native-oracle evidence and six contact-specific binding corruptions.
+Actual nativeinterface CHANGED to ip,inn,avdd,on,op,avss,sub,iref,wire_cref.
+Both fullwave interface assertions follow this actual order; bench maps names
+to original sources/grounds, no port alias. Tail identification uses53.335u.
+Original v49 device/signal/CM acceptance region still exact in workflow.
+Run all5full34.25ns cases with every actual wire/body/nativecurrent column;
+no parent/PHY pass inferred from prelayout or DRC/LVS.
