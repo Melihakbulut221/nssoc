@@ -1,0 +1,13 @@
+name: Register static32 record equivalence only
+on:
+  push:
+    branches: [codex/record-static-register]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - run: printf '%s\n' 'Registration only; no source checkout, native inputs, RTL proof or synthesis.'
