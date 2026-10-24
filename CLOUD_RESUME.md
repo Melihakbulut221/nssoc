@@ -7943,3 +7943,29 @@ and if so traces an actual polygon/via path with per-owner geometry. This
 covers indirect paths/floating old root remnants excluded from source-net
 attribution. If physical components differ, investigate non-metal/label union
 before any new metal modification. No acceptance or native gate relaxed.
+
+
+## Qualified TX rail diagnosis integrated from isolated cloud branch
+
+Imported exactly nine added files from verified commit
+b78a3420aec13db27d1272e13dc34042daec2149. Cloud observer40068199314 and
+native-RC target readback40068947293 passed; intermediate40068804180 failure
+retained. Independent source review confirmed original runtime_inputs SHA
+binds the same wire.spice, R-only selected paths are actual metal rather than
+intrinsic Xrppd devices, and KCL/reciprocity/energy controls pass.
+
+Actual capture localAVDD minimum2.24417V from2.5V, localAVSS maximum162.61mV.
+At finalselector worstVCE, AVDD loadplanes2.30031/2.28612V and finaltail
+ground86–90mV. At d31 lowCM, AVDD2.26165/2.24464V and AVSS158.88/159.15mV.
+Sampled driver AVDD access segments18.1207ohm and AVSS access13.2076ohm
+dominate those terminal paths. See docs/evidence/tx-via3-rail-targets-20261024.json.
+Next isolatedTX work reads exact native geometry before actual uppermetal/via
+parallel feeds. Intrinsic dimensions, original rails/ports and gates must remain;
+new full DRC/LVS/freshRC mandatory before another34ns transient. No PHY pass.
+
+PLL lossless-prefix module independently reviewed without a blocking byte-loss
+defect; productionadapter controls still required (exact5106header binding,
+actual38144byte partialpriorrow, archive links/duplicates and fullstream exhaustion).
+40041871167 was authoritatively cancelled for the GitHub6h maximum during
+publication;423partialparts retained, no complete manifest. No productionrestart
+authorized until newadapter validated; lastdurable same-process source40001626503.
