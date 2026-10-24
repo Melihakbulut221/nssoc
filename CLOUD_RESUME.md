@@ -7391,3 +7391,11 @@ and original34.25ns full capture. New waveform columns derive from actual graph.
 Cloud only; local project directory empty. No native archives downloaded locally.
 Mainchip40045229904, PLL40041871167, TX40039365864/40039368788 remain live;
 do not duplicate. Full PHY, parent integration and final setup/hold still open.
+
+## 2026-10-24 v54 actual extracted nominal/cold passed; hot signal still open
+Run40048775621 retained complete325columns/110385rows in all5cases, no solver
+diagnostics, source integrity preserved. Nominal105.539mV/35.781ps and
+cold117.290mV/32.344ps pass all original gates. Hot89.597mV/41.719ps misses
+100mV/37.5ps; hotCM1.814918..1.817514V and all ordinary device gates now pass.
+Both injected faults detected. No parent/fullPHY acceptance. Diagnose complete
+saved waves with exact473R/350C graph before further actual layout changes.
