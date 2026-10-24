@@ -1,0 +1,16 @@
+name: tx-phase-reset334-mim-precision-cloud
+on:
+  push:
+    branches: [codex/register-reset334-mim-precision-20261024]
+  workflow_dispatch:
+    inputs:
+      enable_native:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo "Workflow registration only; no repository checkout or native work"
