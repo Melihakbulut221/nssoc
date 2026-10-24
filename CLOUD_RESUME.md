@@ -7693,3 +7693,24 @@ newline literal was invalid Python. Also remove unrelated inherited nonexistent
 resistance_controls import; this reader solves no resistor graph. Fix workflow
 trigger to actualsampler receipt. Source hashes and all waveform reproduction
 assertions retained; no native simulation restarted or acceptance gate changed.
+
+## 2026-10-24 shared-bias diagnosis complete: active limits, not only startup
+Corrected full saved-wave analysis40058657301 passed and reproduced original
+device gates exactly, no resimulation. Nominal and hot overcurrent occurs during
+active clock/data transitions. Cold latch VBE about1.058..1.072V and per-emitter
+peak3.94mA occur actively; gainXGN VCE>1.6 has2316alltime/12active samples ending
+2.06521875ns. Reference voltage activevariation25..50mV measured, not ideal.
+These are real rejected41-intrinsic/1pF standalone stress results. Prioractual
+v32parent nominal device checks passed, so do not blindly resize all latch HBTs
+or infer parent behavior from different standalone loading. No limit relaxation.
+Accepted isolated v57gain physical/electrical proof remains40057530494.
+Next required integration: real C/D-specific sampler geometry replacing four
+passive inputR with gain8intrinsics, share oneexisting8umreference with eight36um
+latchtails/two53.335umgaintails, no duplicate gainref. Keep A/B original. Derive
+actual bodytap/device census from generated geometry (do not assume492). Original
+v32sampler bbox1003x243.63/ports/parent16instances are constraints to inspect, not
+permission to force a larger candidate into unchanged bounds. Need fresh full
+parentDRC/LVS/terminalbinding/RC/MIM/full native waveform withoriginalactualloads.
+Cloudonly; no local native artifacts. Long jobs checked live before this record:
+route40056071182,PLL40041871167,TX40050776700/40051009656. Verify terminal state
+before exactcheckpoint continuations; do not duplicate.
