@@ -42,6 +42,7 @@
     "docs/evidence/tx-branchtailfeed-fresh-trajectory-descriptor-20261024.json",
     "docs/evidence/tx-branchtailfeed-interface-source-review-20261024.json",
     "docs/evidence/tx-branchtailfeed-native-interface-descriptor-20261024.json",
+    "docs/evidence/tx-branchtailfeed-native-methods-ready-20261024.json",
     "docs/evidence/tx-branchtailfeed-native-source-only-20261024.json",
     "docs/evidence/tx-branchtailfeed-precision-composition-rail-pass-20261024.json",
     "docs/evidence/tx-branchtailfeed-precision-composition-source-review-20261024.json",
@@ -94,6 +95,7 @@
     "scripts/tx-driverpinfeed-remaining-geometry-methods.json",
     "scripts/tx-output8088-branch-tail-feed-methods.json",
     "scripts/tx-output8088-branch-tail-feed-wires-anchors-methods.json",
+    "scripts/tx-output8088-branchtailfeed-native-methods.json",
     "scripts/tx-output8088-branchtailfeed-native-source-delta.json",
     "scripts/tx-output8088-branchtailfeed-prepared-source-delta.json",
     "scripts/tx-output8088-driver-pinfeed-methods.json",
@@ -351,5 +353,137 @@
       "no_source_gate_blocker_found": true,
       "scope": "Source review only; queued preparation not qualified"
     }
+  },
+  "branch_tail_native_methods_ready": {
+    "status": "EXACT_NATIVE_METHODS_READY_WORKFLOW_PROMOTION_AND_PARENT_REVIEW_PENDING",
+    "preparation_run": 40085025627,
+    "preparation_source_head": "78b185040777ba65f93d1199295b4dfd52dea476",
+    "receipt_path": "docs/evidence/tx-output8088-branchtailfeed-preparation-pass-20261024.json",
+    "receipt_sha256": "302608ae329f02b4dca15a169f7fbb09c4a0d5a99373051f6725105bcdedd55f",
+    "method_manifest": "scripts/tx-output8088-branchtailfeed-native-methods.json",
+    "method_manifest_sha256": "80507562eab09b28c2412e26f082727e636e569b75c38f6d387f000d7143b6cc",
+    "method_count": 24,
+    "controller_sha256": "e10466f715a933a79444b3f27525f0c2e16275d6fd071f428816a87786842ab6",
+    "controller_unchanged_since_source_review_commit": "3b0453df22413d69e0cd38694131037bad2c32c5",
+    "future_workflow_paths": [
+      {
+        "path": ".github/workflows/tx-output8088-branchtailfeed-native-initial-cloud.yml",
+        "source_template": ".github/workflow-templates/tx-output8088-branchtailfeed-native-initial-cloud.yml",
+        "sha256": "5750e76880f35885b7d0675458f4e14ddc88a5eb97ba99c7deb1a628bf4aefe3"
+      },
+      {
+        "path": ".github/workflows/tx-output8088-branchtailfeed-native-continuation-cloud.yml",
+        "source_template": ".github/workflow-templates/tx-output8088-branchtailfeed-native-continuation-cloud.yml",
+        "sha256": "1a35d20f1d89252c72c02d59aed487e33c81e789b6fa1a03481d955b70cf7e3b"
+      }
+    ],
+    "original_method_mapping": [
+      {
+        "baseline_path": "scripts/cloud_tx_p4_drive3_builder.py",
+        "candidate_path": "scripts/cloud_tx_p4_drive3_builder.py",
+        "unchanged": true,
+        "sha256": "a39c948e5ba6c894012360d3e23e7e0fe49ab9f94be7fd4469b19bbc4851ee88"
+      },
+      {
+        "baseline_path": "scripts/cloud_tx_stream.py",
+        "candidate_path": "scripts/cloud_tx_stream.py",
+        "unchanged": true,
+        "sha256": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb"
+      },
+      {
+        "baseline_path": "scripts/cloud_tx_chunked_op.py",
+        "candidate_path": "scripts/cloud_tx_chunked_op.py",
+        "unchanged": true,
+        "sha256": "e04bd6f61672f0522c3d5d457fcd0ea365a9cc6a5dc3d10d393613e49b9801ac"
+      },
+      {
+        "baseline_path": "scripts/compare_cloud_routed_endpoints.py",
+        "candidate_path": "scripts/compare_cloud_routed_endpoints.py",
+        "unchanged": true,
+        "sha256": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42"
+      },
+      {
+        "baseline_path": "scripts/run_cloud_tx_layout_repair.py",
+        "candidate_path": "scripts/run_cloud_tx_layout_repair.py",
+        "unchanged": true,
+        "sha256": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f"
+      },
+      {
+        "baseline_path": "scripts/cloud_tx_raw8074_native.py",
+        "candidate_path": "scripts/cloud_tx_raw8074_native.py",
+        "unchanged": true,
+        "sha256": "f9240718d53e62309d25a439f3cdf63c5aa73939d1b33d10e5db039f91defe6d"
+      },
+      {
+        "baseline_path": "scripts/cloud_tx_output8088_native.py",
+        "candidate_path": "scripts/cloud_tx_output8088_native.py",
+        "unchanged": true,
+        "sha256": "33b6cab21b696fe63f4de2a3a46290d431106439eb8ae29ee5dbda418d9c7548"
+      },
+      {
+        "baseline_path": "docs/evidence/tx-output8088-power128return64via3-preparation-pass-20261023.json",
+        "candidate_path": "docs/evidence/tx-output8088-branchtailfeed-preparation-pass-20261024.json",
+        "unchanged": false,
+        "sha256": "302608ae329f02b4dca15a169f7fbb09c4a0d5a99373051f6725105bcdedd55f"
+      },
+      {
+        "baseline_path": "scripts/cloud_tx_output8088_power128return64via3_native.py",
+        "candidate_path": "scripts/cloud_tx_output8088_branchtailfeed_native.py",
+        "unchanged": false,
+        "sha256": "e10466f715a933a79444b3f27525f0c2e16275d6fd071f428816a87786842ab6"
+      },
+      {
+        "baseline_path": ".github/workflows/tx-output8088-power128return64via3-native-initial-cloud.yml",
+        "candidate_path": ".github/workflows/tx-output8088-branchtailfeed-native-initial-cloud.yml",
+        "unchanged": false,
+        "sha256": "5750e76880f35885b7d0675458f4e14ddc88a5eb97ba99c7deb1a628bf4aefe3"
+      },
+      {
+        "baseline_path": ".github/workflows/tx-output8088-power128return64via3-native-continuation-cloud.yml",
+        "candidate_path": ".github/workflows/tx-output8088-branchtailfeed-native-continuation-cloud.yml",
+        "unchanged": false,
+        "sha256": "1a35d20f1d89252c72c02d59aed487e33c81e789b6fa1a03481d955b70cf7e3b"
+      },
+      {
+        "baseline_path": "scripts/check_tx_output8088_power128return64via3_native_sources.py",
+        "candidate_path": "scripts/check_tx_output8088_branchtailfeed_native_sources.py",
+        "unchanged": false,
+        "sha256": "cc795010211e5df8408ba5df2727f66d52ffec7274a644c3097977dc009000b7"
+      },
+      {
+        "baseline_path": "scripts/tx-output8088-power128return64via3-native-source-delta.json",
+        "candidate_path": "scripts/tx-output8088-branchtailfeed-native-source-delta.json",
+        "unchanged": false,
+        "sha256": "2be13cc748f0edbca5707e0c5cd8cd6bcb9d634d6eb0a4a76901bd716db28ab5"
+      },
+      {
+        "baseline_path": "scripts/cloud_tx_output8088_power128_native.py",
+        "candidate_path": "scripts/cloud_tx_output8088_power128_native.py",
+        "unchanged": true,
+        "sha256": "916c204af8e8c67775ac855264f021d78d556bec953e707ecee2292775711dc9"
+      },
+      {
+        "baseline_path": "scripts/cloud_tx_output8088_power128feed32_native.py",
+        "candidate_path": "scripts/cloud_tx_output8088_power128feed32_native.py",
+        "unchanged": true,
+        "sha256": "2ddd7d4dfebe66b81e72dbd262192e6db1d9fc2ab9944da46ea79f0008ff0199"
+      },
+      {
+        "baseline_path": "scripts/cloud_tx_output8088_power128return32_native.py",
+        "candidate_path": "scripts/cloud_tx_output8088_power128return32_native.py",
+        "unchanged": true,
+        "sha256": "58302d59356b9c8885472d8b92d3fc4bb9fbe485bff2f667ba3407c378c3e9a5"
+      },
+      {
+        "baseline_path": "scripts/cloud_tx_output8088_power128return64_native.py",
+        "candidate_path": "scripts/cloud_tx_output8088_power128return64_native.py",
+        "unchanged": true,
+        "sha256": "3e0eb3d0a65e2acffabf348e49f481ee824dd7ad848a4c371d402ba637913044"
+      }
+    ],
+    "activation_guard": "Both final workflow paths intentionally absent. Controller/checker verify every method path before activation; virtual template hash checks do not claim native lifecycle controls passed.",
+    "parent_review_required_before_promotion_and_dispatch": true,
+    "transient_dispatched": false,
+    "old_model_checkpoint_reuse_allowed": false
   }
 }
