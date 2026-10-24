@@ -1,0 +1,91 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-async-preset-intrinsic-cloud
+on:
+  push:
+    branches: [codex/tx-clock-phase-parent]
+    paths:
+      - scripts/tx_phase_async_preset_diagnostic.py
+      - scripts/cloud_tx_phase_async_preset_intrinsic.py
+      - scripts/check_tx_phase_async_preset_intrinsic.py
+      - scripts/tx-phase-async-preset-intrinsic-methods.json
+      - .github/workflows/tx-phase-async-preset-intrinsic-cloud.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: tx-phase-async-preset-intrinsic
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Prepare every real241-device case and exercise fixed observers without simulation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 -m py_compile scripts/tx_phase_async_preset_diagnostic.py scripts/cloud_tx_phase_async_preset_intrinsic.py scripts/check_tx_phase_async_preset_intrinsic.py
+          python3 scripts/check_tx_phase_async_preset_intrinsic.py | tee source-controls.json
+      - name: Preserve source controls
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: phase-async-preset-intrinsic-controls-${{ github.run_id }}
+          path: source-controls.json
+          retention-days: 30
+  intrinsic-four-case:
+    if: github.event_name == 'workflow_dispatch'
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install native cloud runtime dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+      - name: Run all four fresh intrinsic transistor cases with original safety gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_tx_phase_async_preset_intrinsic.py --native
+      - name: Preserve full native captures including rejections
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import json,os,pathlib,subprocess,sys
+          root=pathlib.Path('hw/soc/out/cloud-tx-phase-async-preset-intrinsic');root.mkdir(parents=True,exist_ok=True)
+          result=root/'result.json'
+          if not result.exists():result.write_text(json.dumps(dict(status='FAIL_MISSING_REPORT',full_PHY_accepted=False,source_head=os.environ['GITHUB_SHA']))+'\n')
+          group='tx-phase-async-preset-intrinsic';stem=group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+          summary=pathlib.Path(stem+'.summary.json');summary.write_bytes(result.read_bytes())
+          subprocess.run([sys.executable,'scripts/cloud_chunked_results.py','--directory',str(root),'--stem',stem],check=True)
+          manifest=pathlib.Path(stem+'.parts.json');parts=json.loads(manifest.read_text())
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,str(summary),str(manifest),*[p['name']for p in parts['parts']]],check=True)
+          PYCODE
+      - name: Preserve complete evidence when release publication fails
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: phase-async-preset-intrinsic-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-phase-async-preset-intrinsic/
+          retention-days: 30
