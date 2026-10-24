@@ -91,14 +91,20 @@ def cycles(t,y,edges,crossings):
  result=[]
  for a,b in zip(edges[:-1],edges[1:]):
   lo,hi=np.searchsorted(t,[a,b])
-  v=np.concatenate(([np.interp(a,t,y)],y[lo:hi],[np.interp(b,t,y)]))
+  def boundary(x,i):
+   if i<len(t)and t[i]==x:return float(y[i])
+   assert 0<i<len(t)
+   return float(np.interp(x,t[i-1:i+1],y[i-1:i+1]))
+  v=np.concatenate(([boundary(a,lo)],y[lo:hi],[boundary(b,hi)]))
   row=dict(interval_s=[float(a),float(b)],minimum_v=float(v.min()),maximum_v=float(v.max()),
            mean_v=float(np.trapezoid(v,np.concatenate(([a],t[lo:hi],[b])))/(b-a)))
   row['rising_counts']={k:int(np.searchsorted(e,b,side='left')-np.searchsorted(e,a,side='left'))for k,e in crossings.items()}
   result.append(row)
  return result
 def diagnose(data,mapping,analysis):
- t=data['time'];assert len(t)>2 and np.isfinite(t).all() and np.all(np.diff(t)>0)
+ t=np.array(data['time'],dtype='<f8',order='C',copy=True)
+ assert np.array_equal(t.view('<u8'),data['time'].view('<u8'));t.flags.writeable=False
+ assert len(t)>2 and np.isfinite(t).all() and np.all(np.diff(t)>0)
  fb=np.asarray(analysis['feedback_edges_s']);assert len(fb)>2 and np.all(np.diff(fb)>0)
  report=dict(scope='Diagnostic only. Original feedback intervals; no fitting, edge replacement, resampling or acceptance override.',
   original_feedback_edges_s=fb.tolist(),differential={},single_ended={},
@@ -223,6 +229,14 @@ def controls():
  rr=cycles(t,yy,np.array([.5,3.5,5.5]),{'x':np.array([.5,1.5,3.5,4.5,5.5])})
  assert [r['rising_counts']['x']for r in rr]==[2,2]
  assert np.allclose([r['mean_v']for r in rr],[2.,4.5])
+ # Same endpoints, including exact native sample times, with strided cache views.
+ st=np.zeros((7,3),dtype='<f8');st[:,0]=t;st[:,2]=yy
+ for bounds in (np.array([.5,3.5,5.5]),np.array([0.,3.,6.])):
+  rows=cycles(st[:,0],st[:,2],bounds,{})
+  for row,a,b in zip(rows,bounds[:-1],bounds[1:]):
+   lo,hi=np.searchsorted(t,[a,b]);grid=np.concatenate(([a],t[lo:hi],[b]))
+   expected=float(np.trapezoid(np.interp(grid,t,yy),grid)/(b-a))
+   assert row['mean_v']==expected
  return dict(rejected=rejects,count=len(rejects),exact_binary_cache=True,
   analytical_crossings_and_seams=True,ringing_retained=True,half_open_feedback_intervals=True,
   no_acceptance_override=True,native_started=False)
