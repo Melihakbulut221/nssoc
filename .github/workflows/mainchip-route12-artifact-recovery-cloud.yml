@@ -1,0 +1,102 @@
+# SPDX-License-Identifier: Apache-2.0
+# Only source/transport controls run on this isolated push; recovery is manual.
+name: mainchip-route12-artifact-recovery-cloud
+on:
+  push:
+    branches: [codex/mainchip-route12-artifact-recovery]
+    paths: [.github/workflows/mainchip-route12-artifact-recovery-cloud.yml, scripts/cloud_mainchip_route12_artifact_recovery.py, scripts/mainchip-route12-artifact-recovery-methods.json]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-route12-artifact-recovery-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact source, actual source metadata and all transport controls
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/ensure_cloud_tested_source_release.py --controls
+          python3 scripts/cloud_mainchip_route12_artifact_recovery.py --controls
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: mainchip-route12-recovery-controls
+          path: cloud-mainchip-route12-artifact-recovery/result.json
+          if-no-files-found: error
+          retention-days: 90
+  recovery:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Require precreated immutable exact-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import json,os
+          from ensure_cloud_tested_source_release import context,api,validate_release
+          tag,sha=context('mainchip-route12-artifact-recovery',os.environ)
+          print(json.dumps(validate_release(api('releases/tags/'+tag),api('git/ref/tags/'+tag),tag,sha)))
+          PYCODE
+      - name: Recover only the exact failed Actions artifact without native execution
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_route12_artifact_recovery.py --recover
+      - name: Publish verified original bytes and all small diagnostic evidence
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import json,os,pathlib
+          from ensure_cloud_tested_source_release import context,api,validate_release
+          from migrate_outputs_to_cloud import publish
+          root=pathlib.Path('cloud-mainchip-route12-artifact-recovery')
+          assert (root/'result.json').is_file(),'Recovery report missing'
+          group='mainchip-route12-artifact-recovery';tag,sha=context(group,os.environ)
+          verify=lambda:validate_release(api('releases/tags/'+tag),api('git/ref/tags/'+tag),tag,sha)
+          verify()
+          small=sorted(p for p in root.rglob('*')if p.is_file()and p.suffix!='.zip')
+          archives=sorted(root.glob('*.zip'))
+          paths=small+archives
+          assert len({p.name for p in paths})==len(paths),'Duplicate release asset names'
+          receipts=[]
+          for p in paths:
+              verify();receipts.append(publish(p,tag))
+          result=dict(tag=tag,tested_source=sha,assets=receipts,source_release=verify(),
+              native_execution=False,route_complete=False,continuation_accepted=False)
+          report=root/'publication.json';report.write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(publish(report,tag)),flush=True)
+          PYCODE
+      - name: Preserve failed recovery or publication byte for byte
+        if: always() && (failure() || steps.publish.outcome == 'failure')
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-route12-artifact-recovery-fallback
+          path: cloud-mainchip-route12-artifact-recovery/
+          if-no-files-found: error
+          retention-days: 90
