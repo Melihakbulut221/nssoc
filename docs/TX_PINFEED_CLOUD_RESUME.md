@@ -148,3 +148,9 @@ Native interface run40083738813 is pinned in the 20261024 interface receipt. New
 Workflow: .github/workflows/tx-output8088-branchtailfeed-prepared-cloud.yml; controls then prepare-fresh-native-cases matrix. The commit adding this workflow triggers exactly one cloud preparation. Terminal status and immutable receipts are still pending. Do not dispatch34ns or fault transient before parent reviews both new prepared cases and the exact source delta.
 
 Fresh preparation run40085025627/source78b185040777ba65f93d1199295b4dfd52dea476 is queued. Preserve both case receipts before deriving a new native controller. No DUT transient has been dispatched.
+
+## Source-only fresh native trajectory staged
+
+scripts/cloud_tx_output8088_branchtailfeed_native.py is an exact-delta derivation of the original via3 controller. All22 native process/descriptor/prefix/runtime controls, full34ns capture and complete engineering review remain intact. It accepts only the new branch/tail namespace and fresh prepared model, requires both exact preparation cases, and requires the fresh-trajectory contract. Old-model process capsules cannot satisfy its branch, namespace, controller, model and protected-input identity gates.
+
+Initial and continuation YAML are saved under .github/workflow-templates, outside registered workflows, with no push trigger. No transient has been dispatched. The required new native methods manifest and both-case preparation receipt intentionally do not yet exist, so direct activation fails closed. First obtain terminal run40085025627 receipts, preserve parent source review and immutable case hashes, then get parent review before producing the exact method manifest and promoting/dispatching a new initial workflow. Do not use old via3 CRIU/model capsules.

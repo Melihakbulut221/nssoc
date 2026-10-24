@@ -12,6 +12,8 @@
   "source_only_future_interface_commit": "081ba6cb0cad30a00e5d71385a1d9ae7ed781f43",
   "all_changes_added_only": true,
   "added_paths": [
+    ".github/workflow-templates/tx-output8088-branchtailfeed-native-continuation-cloud.yml",
+    ".github/workflow-templates/tx-output8088-branchtailfeed-native-initial-cloud.yml",
     ".github/workflows/tx-branchtailfeed-followthrough-cloud.yml",
     ".github/workflows/tx-driverpinfeed-followthrough-cloud.yml",
     ".github/workflows/tx-driverpinfeed-remaining-geometry-cloud.yml",
@@ -38,6 +40,7 @@
     "docs/evidence/tx-branchtailfeed-fresh-preparation-pending-20261024.json",
     "docs/evidence/tx-branchtailfeed-interface-source-review-20261024.json",
     "docs/evidence/tx-branchtailfeed-native-interface-descriptor-20261024.json",
+    "docs/evidence/tx-branchtailfeed-native-source-only-20261024.json",
     "docs/evidence/tx-branchtailfeed-precision-composition-rail-pass-20261024.json",
     "docs/evidence/tx-branchtailfeed-precision-composition-source-review-20261024.json",
     "docs/evidence/tx-driver-pinfeed-fresh-intrinsic-rc-pass-20261024.json",
@@ -50,6 +53,7 @@
     "docs/evidence/tx-via3-rail-geometry-20261024.json",
     "scripts/bind_tx_output8088_branch_tail_feed_native_anchors.py",
     "scripts/bind_tx_output8088_driver_pinfeed_native_anchors.py",
+    "scripts/check_tx_output8088_branchtailfeed_native_sources.py",
     "scripts/check_tx_output8088_branchtailfeed_prepared_sources.py",
     "scripts/cloud_tx_branchtailfeed_composition_followthrough.py",
     "scripts/cloud_tx_branchtailfeed_followthrough.py",
@@ -61,6 +65,7 @@
     "scripts/cloud_tx_output8088_branchtailfeed_composition_launch.py",
     "scripts/cloud_tx_output8088_branchtailfeed_fullwave_adapter.py",
     "scripts/cloud_tx_output8088_branchtailfeed_interfaces.py",
+    "scripts/cloud_tx_output8088_branchtailfeed_native.py",
     "scripts/cloud_tx_output8088_branchtailfeed_precision_launch.py",
     "scripts/cloud_tx_output8088_branchtailfeed_prepared.py",
     "scripts/cloud_tx_output8088_driver_pinfeed.py",
@@ -86,6 +91,7 @@
     "scripts/tx-driverpinfeed-remaining-geometry-methods.json",
     "scripts/tx-output8088-branch-tail-feed-methods.json",
     "scripts/tx-output8088-branch-tail-feed-wires-anchors-methods.json",
+    "scripts/tx-output8088-branchtailfeed-native-source-delta.json",
     "scripts/tx-output8088-branchtailfeed-prepared-source-delta.json",
     "scripts/tx-output8088-driver-pinfeed-methods.json",
     "scripts/tx-output8088-driver-pinfeed-wires-anchors-methods.json",
@@ -311,5 +317,33 @@
     "run_attempt": 1,
     "observed_status": "queued",
     "observed_conclusion": null
+  },
+  "branch_tail_native_source_only": {
+    "status": "SOURCE_ONLY_NOT_REGISTERED_NOT_EXECUTABLE_UNTIL_BOTH_PREPARATIONS_REVIEWED",
+    "preparation_run": 40085025627,
+    "preparation_source_head": "78b185040777ba65f93d1199295b4dfd52dea476",
+    "controller_sha256": "e10466f715a933a79444b3f27525f0c2e16275d6fd071f428816a87786842ab6",
+    "source_paths": [
+      "scripts/cloud_tx_output8088_branchtailfeed_native.py",
+      "scripts/check_tx_output8088_branchtailfeed_native_sources.py",
+      ".github/workflow-templates/tx-output8088-branchtailfeed-native-initial-cloud.yml",
+      ".github/workflow-templates/tx-output8088-branchtailfeed-native-continuation-cloud.yml",
+      "scripts/tx-output8088-branchtailfeed-native-source-delta.json"
+    ],
+    "required_future_files": [
+      "scripts/tx-output8088-branchtailfeed-native-methods.json",
+      "docs/evidence/tx-output8088-branchtailfeed-preparation-pass-20261024.json"
+    ],
+    "workflow_templates_not_registered": true,
+    "transient_dispatched": false,
+    "requires_parent_review_of_both_prepared_cases": true,
+    "old_model_checkpoint_reuse_allowed": false,
+    "all_original22_native_controls_byte_equivalent_after_namespace_and_branch": true,
+    "root_preparation_source_review": {
+      "source_head": "78b185040777ba65f93d1199295b4dfd52dea476",
+      "all_four_source_deltas_reproduced": true,
+      "no_source_gate_blocker_found": true,
+      "scope": "Source review only; queued preparation not qualified"
+    }
   }
 }

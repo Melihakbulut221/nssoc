@@ -1,0 +1,115 @@
+{
+  "baseline_path": "scripts/cloud_tx_output8088_power128return64via3_native.py",
+  "baseline_sha256": "d13e213be3a52a7c23242f0126514e8069ed880302844fb2520d2dd8f1f6b616",
+  "candidate_path": "scripts/cloud_tx_output8088_branchtailfeed_native.py",
+  "candidate_sha256": "e10466f715a933a79444b3f27525f0c2e16275d6fd071f428816a87786842ab6",
+  "edits": [
+    {
+      "before": "power128return64via3",
+      "after": "branchtailfeed",
+      "count": 14
+    },
+    {
+      "before": "POWER128RETURN64VIA3",
+      "after": "BRANCHTAILFEED",
+      "count": 7
+    },
+    {
+      "before": "codex/complete-open-work",
+      "after": "codex/tx-via3-rail-diagnosis",
+      "count": 2
+    },
+    {
+      "before": "tx-output8088-branchtailfeed-preparation-pass-20261023.json",
+      "after": "tx-output8088-branchtailfeed-preparation-pass-20261024.json",
+      "count": 1
+    },
+    {
+      "before": "40005449202",
+      "after": "40085025627",
+      "count": 1
+    },
+    {
+      "before": "f69aa30bcf33f098bc8b29136905ac5ed2f2539b",
+      "after": "78b185040777ba65f93d1199295b4dfd52dea476",
+      "count": 1
+    },
+    {
+      "before": "218d5e41762cf7dfca7e57ad88def18cfd2fbd045a57a249e3789f6c38059649",
+      "after": "8286d54832432603f78739f30d0087e99a46f026d82a37ecd5e450d2167231c8",
+      "count": 1
+    },
+    {
+      "before": "R=140222,C=99906",
+      "after": "R=141473,C=100694",
+      "count": 1
+    },
+    {
+      "before": "        prep_pin=json.loads((ROOT/'docs/evidence/tx-output8088-branchtailfeed-preparation-pass-20261024.json').read_text())['cases'][case_name]\n",
+      "after": "        preparations=json.loads((ROOT/'docs/evidence/tx-output8088-branchtailfeed-preparation-pass-20261024.json').read_text())\n        assert preparations['status']=='PASS_BOTH_ACTUAL8088_BRANCHTAILFEED_PREPARATIONS_NO_DUT_TRANSIENT'\n        assert set(preparations['cases'])=={'none','swap_leaf_select'}\n        assert all(v['run']==40085025627 and v['source_head']=='78b185040777ba65f93d1199295b4dfd52dea476' and v['status']=='READY_ACTUAL8088_BRANCHTAILFEED_PHYSICAL_WIRE_DECK_NOT_SIMULATED' and v['model_sha256']=='8286d54832432603f78739f30d0087e99a46f026d82a37ecd5e450d2167231c8' and v['core_counts']==dict(devices=8088,R=141473,C=100694) for v in preparations['cases'].values())\n        prep_pin=preparations['cases'][case_name]\n",
+      "count": 1
+    },
+    {
+      "before": "        assert prepared['capture_preflight']['columns']==14182 and prepared['capture_preflight']['minimum_rows']==68001\n",
+      "after": "        assert prepared['capture_preflight']['columns']==14182 and prepared['capture_preflight']['minimum_rows']==68001\n        assert prepared['new_trajectory_contract']==dict(fresh_initialization_required=True,old_model_process_checkpoint_reuse_allowed=False,transient_dispatched=False,duration_ns=34,bits=256,ui_ps=125,streams=32,source_bits_sha256='5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825',native_engine_sha256=ENGINE_SHA)\n        assert all(c['rejected']for c in prepared['output_parent_binding']['controls'])\n",
+      "count": 1
+    }
+  ],
+  "checker_derivation": {
+    "baseline_path": "scripts/check_tx_output8088_power128return64via3_native_sources.py",
+    "baseline_sha256": "f4b2cc1d1a841bbc9feef1214c111bae92ba3504c99fb19c94f6366f17b005af",
+    "candidate_path": "scripts/check_tx_output8088_branchtailfeed_native_sources.py",
+    "candidate_sha256": "cc795010211e5df8408ba5df2727f66d52ffec7274a644c3097977dc009000b7",
+    "edits": [
+      {
+        "before": "power128return64via3",
+        "after": "branchtailfeed",
+        "count": 2
+      },
+      {
+        "before": "POWER128RETURN64VIA3",
+        "after": "BRANCHTAILFEED",
+        "count": 1
+      }
+    ]
+  },
+  "workflow_template_derivations": [
+    {
+      "baseline_path": ".github/workflows/tx-output8088-power128return64via3-native-initial-cloud.yml",
+      "baseline_sha256": "562d21141d29a107272503be8581150913674d6e8de9bbc330f267b5ab28d67a",
+      "candidate_path": ".github/workflow-templates/tx-output8088-branchtailfeed-native-initial-cloud.yml",
+      "candidate_sha256": "5750e76880f35885b7d0675458f4e14ddc88a5eb97ba99c7deb1a628bf4aefe3",
+      "edits": [
+        {
+          "before": "power128return64via3",
+          "after": "branchtailfeed",
+          "count": 12
+        },
+        {
+          "before": "  push:\n    branches: [codex/complete-open-work]\n    paths: [.github/workflows/tx-output8088-branchtailfeed-native-initial-cloud.yml]\n",
+          "after": "",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/tx-output8088-power128return64via3-native-continuation-cloud.yml",
+      "baseline_sha256": "303becae14516f36167482017bfede3904d86923672d3ba62c972aab78446629",
+      "candidate_path": ".github/workflow-templates/tx-output8088-branchtailfeed-native-continuation-cloud.yml",
+      "candidate_sha256": "1a35d20f1d89252c72c02d59aed487e33c81e789b6fa1a03481d955b70cf7e3b",
+      "edits": [
+        {
+          "before": "power128return64via3",
+          "after": "branchtailfeed",
+          "count": 12
+        },
+        {
+          "before": "  push:\n    branches: [codex/complete-open-work]\n    paths: [.github/workflows/tx-output8088-branchtailfeed-native-continuation-cloud.yml]\n",
+          "after": "",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "scope": "SOURCE ONLY: future initial/continuation controllers preserve original engine, CRIU, all22 descriptor/prefix/runtime controls, complete14182-column34ns capture, all604HBT/5376MOS observations and exact safety/full electrical/fault review. Only namespace, isolated branch and fresh preparation/model identity are substituted; stronger guards require both fresh preparation receipts and the unchanged capture contract. No old-model checkpoint is admissible. Workflow templates are intentionally outside .github/workflows; production methods manifest and both-case receipt remain absent until actual preparation succeeds and parent reviews exact hashes."
+}
