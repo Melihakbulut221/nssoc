@@ -1,0 +1,61 @@
+* Native shared-bias active-input sampler candidate; not physical or fullPHY acceptance.
+* Original v32 master/slave and single8um reference retained; exact v56 gain without its reference.
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+.subckt nssoc_cml_latch_settling_v32 dp dn qp qn cp cn avdd avss sub ref
+XDP qn dp se sub npn13G2 Nx=4
+XDN qp dn se sub npn13G2 Nx=4
+XLP qn qp he sub npn13G2 Nx=4
+XLN qp qn he sub npn13G2 Nx=4
+XCS0 se cp te sub npn13G2 Nx=2
+XCS1 se cp te sub npn13G2 Nx=2
+XCH0 he cn te sub npn13G2 Nx=2
+XCH1 he cn te sub npn13G2 Nx=2
+XT0 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT1 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT2 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT3 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XRP avdd qp sub rppd w=32u l=2.6u b=0 sw_et=1
+XRN avdd qn sub rppd w=32u l=2.6u b=0 sw_et=1
+* Weak native bleeders keep the inactive emitter nodes from floating.
+XBS se avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XBH he avss sub rppd w=1u l=38.4u b=0 sw_et=1
+.ends nssoc_cml_latch_settling_v32
+
+* Explicit slave native bleeds: data6x, hold8x; master unchanged.
+.subckt nssoc_cml_slave_settling_v32 dp dn qp qn cp cn avdd avss sub ref
+XDP qn dp se sub npn13G2 Nx=4
+XDN qp dn se sub npn13G2 Nx=4
+XLP qn qp he sub npn13G2 Nx=4
+XLN qp qn he sub npn13G2 Nx=4
+XCS0 se cp te sub npn13G2 Nx=2
+XCS1 se cp te sub npn13G2 Nx=2
+XCH0 he cn te sub npn13G2 Nx=2
+XCH1 he cn te sub npn13G2 Nx=2
+XT0 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT1 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT2 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XT3 te ref avss sub sg13_lv_nmos w=36u l=.3u ng=1
+XRP avdd qp sub rppd w=32u l=2.6u b=0 sw_et=1
+XRN avdd qn sub rppd w=32u l=2.6u b=0 sw_et=1
+* Weak native bleeders keep the inactive emitter nodes from floating.
+XBS se avss sub rppd w=1u l=6.4u b=0 sw_et=1
+XBH he avss sub rppd w=1u l=4.8u b=0 sw_et=1
+.ends nssoc_cml_slave_settling_v32
+
+.subckt nssoc_rx_sampler_active_input_v57 dp dn qp qn clkp clkn avdd avss sub iref
+XREF iref iref avss sub sg13_lv_nmos w=8u l=.3u ng=1
+* Active input replaces all four passive divider resistors.
+* Gain gates share the one existing8um XREF; no duplicate bias source.
+XGP ln dp gain_tail sub npn13G2 Nx=4
+XGN lp dn gain_tail sub npn13G2 Nx=4
+XGT0 gain_tail iref avss sub sg13_lv_nmos w=53.335u l=.3u ng=1
+XGT1 gain_tail iref avss sub sg13_lv_nmos w=53.335u l=.3u ng=1
+XUP avdd lp sub rppd w=8u l=1.8u b=0 sw_et=1
+XUN avdd ln sub rppd w=8u l=1.8u b=0 sw_et=1
+XDP lp avss sub rppd w=4u l=7.4u b=0 sw_et=1
+XDN ln avss sub rppd w=4u l=7.4u b=0 sw_et=1
+* Master tracks low clock; slave tracks high clock, capturing a rising edge.
+XM lp ln mp mn clkn clkp avdd avss sub iref nssoc_cml_latch_settling_v32
+XS mp mn qp qn clkp clkn avdd avss sub iref nssoc_cml_slave_settling_v32
+.ends nssoc_rx_sampler_active_input_v57
+

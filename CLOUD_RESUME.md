@@ -7647,3 +7647,16 @@ hot_low,cold_high,swap_output,bias_off with original full34.25ns/256bits,10ohm
 source/150fF loads,100mV/37.5ps/1.8..2.15V and original transistor safety gates.
 Every actual native wire/body voltage and transistor current retained. No claim
 of hot fix until actual full results; no parent/fullPHY inference from leaf checks.
+
+## 2026-10-24 actual shared-reference sampler circuit screen
+v57 extracted leaf40057530494 remains independent. Prepare actual C/D sampler
+replacement: originalv32 latch/slave definitions and single8umref unchanged,
+replace four passive input resistors with exactv56 eight-device gain without
+its separate reference. New circuit41intrinsics=18HBT/11MOS/12R,one IREFshared
+by eight36um latch tails and two53.335um gain tails. Exact two-source contract
+and4corruptions protect replacement. Cloud native6case full34.25ns/256bit screen
+keeps original sampler37.5ps/100mV/device gates and1pF/output stress, adds gain
+tailcurrent minimum. Input uses measured-leaf60mV/1.48Vscaled bench; external8GHz
+clock only. Binary fullcapture,no ideal internal source,no physical/parent/PHY
+acceptance. Need actual C/D-specific geometry and full parent RC/waves next;
+A/B remainoriginal and existing parent sharing must not be silently changed.
