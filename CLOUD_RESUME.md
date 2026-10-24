@@ -7736,3 +7736,8 @@ actualnativearrays4x4. Extend full3.2um TM2 bus to actualnative two-column landi
 bounds, avoiding narrow end projections. Controller restores immutable62marker
 XML and records actual coordinates. No waiver or DRC/LVS gate change.
 Run all560rules,66device deep/flatLVS,LEF and27faults after thisrealgeometryfix.
+
+
+## 2026-10-24 — active-input sampler66 physical pass and TX continuation
+
+Run40060383240 passed full560-rule DRC, native unsimplified deep/flat66-device LVS and27 fault controls. Only physical leaf acceptance; standalone1pF device safety failures remain recorded. Next: C/D-only actual500-device parent, fresh native RC/binding and original loaded waves. A/B remain unchanged. TX same-process checkpoints40050776700 normal31.5100178745ns and40051009656 fault32.7786997321ns verified, resume toward34ns without restart. All native work and assets remain in GitHub; local workspace empty.
