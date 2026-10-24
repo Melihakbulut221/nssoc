@@ -8170,3 +8170,12 @@ CDRpreparation40099344993 passed; soleoriginal10case matrix40101491695 now queue
 PLL13140096538128 is terminalFAILURE after fullyverified originalcapture and exact131cache preservation. The failed interpolationassertion is an observer issue under investigation, not repaired acquisition. Do not rerun130GB orsimulate. Sourcehelper6d992191 and controls40103396561 are separate; cache-only replay must reproduce oldline142failure, then show actual firstnative-row witness with unchanged olddiagnostic/edgecounts. The3GB cache stays in Releases.
 
 Mainchip40095811631 and TX40098024825/40098031853 remain exact live native processes. FullserialPHY and original finaltiming are still open. Allwork/artifacts remain in GitHub; localworkspace empty.
+
+
+### 2026-10-24T15:02:26.350576+00:00 — cloud workspace cleanup and unintended queue repair
+
+The local project directory is empty, no project-named temporary entries were found, and no native CAD/simulation process is running locally. Sources, native work and durable results remain in GitHub.
+
+An evidence freeze tag accidentally triggered 70 legacy push workflows. All 63 unfinished unintended runs are now cancelled; the seven pre-existing completed outcomes and the tag remain preserved. Exact identities and cancellation results are in docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json. Canonical mainchip and TX processes were not cancelled. Use existing immutable commits; do not create codex-prefixed freeze tags.
+
+Corrected codec 40102483214 passed its native proof; full artifact authentication still precedes RX/TX binding. CDR 40101491695 passed preparation but failed release publication, so no loaded waveform case began. Preserve that distinction and fix only the publication path. Full serial PHY, routed serial mainchip integration and original final timing remain open.

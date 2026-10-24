@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-24T14:44:14.219146+00:00",
+  "updated_at": "2026-10-24T15:02:26.350576+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only; no local checkout, CAD, simulations or native artifacts.",
-  "root_source_before_receipt": "cae2f2342b9d267cca13aba75251ec11d0a8a69c",
+  "root_source_before_receipt": "783dc0150fb105ec8961574c5f0f7ff0170065a8",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
@@ -15,8 +15,6 @@
     "mainchip_same_process_route": 40095811631,
     "tx_normal_same_process_native": 40098024825,
     "tx_swapped_selector_same_process_native": 40098031853,
-    "cdr_v58_original_loaded_matrix": 40101491695,
-    "gen12_corrected_codec_proof": 40102483214,
     "phase244_exact_reset_path_readback": 40102964781,
     "tx_actual_native_clock_roles": 40102668052,
     "pll_exact_native_endpoint_controls": 40103396561
@@ -65,17 +63,17 @@
   "qualified_progress": {
     "tx": "Both fresh native initial trajectories saved with exact runtime/source proof, not completed: normal 8.645814903 ns and swapped-selector 7.514319757 ns of required 34 ns. Each exact process now continues once in its own cloud run.",
     "phase": "Phase244 remains rejected inthree cases on original100mV phase margin. Reset-path source controls passed; exact saved-capture readback40102964781 queued. Dedicated actual62clock-port\u2192124selector-base controller controls passed; native proof40102668052 queued. No loaded31tree or physical acceptance.",
-    "cdr": "Fresh preparation40099344993 passed actual500 devices/sevenMIM/1151vectors/256bits and13faults. Sole original ten-case loaded matrix40101491695 is queued atd8ec11ef, unchanged34.25ns and0.3125ps step with original safety/phase/current gates; no loaded acceptance.",
+    "cdr": "Preparation in 40101491695 passed its actual model and 13 binding controls, but publication returned HTTP403; all loaded cases were skipped. Existing fallback artifact is preserved. Exact tested-source release publication fix is under independent review. No waveform acceptance or simulation failure inferred.",
     "pll": "Full131 observer40096538128 verified full original130GB/all5106columns/old80 and8cache bits and original acquisition rejection, then failed a strict interpolation-bracket assertion atline142. Exact3355077680-byte cache preserved. New helper correctly samples exactnative timestamps without dropping anyedge; actual first-row cause must still be proven by cache-only replay. No full original reread or new simulation needed.",
-    "gen12": "Raw32 boundary proof40100300472 passed95653native cycles, all64offsets/bothpolarities/RD/all1024codes/all10residues/foursearchflushes and10compiling behavioral faults, plus synthesis. Exact tested aligner imported here. Codec40099402878 failed missing testbench reset edge; corrected40102483214 changes only stimulus, no RTL/table/gates. RX and TX candidates remain unbound pending actual codec proof."
+    "gen12": "Raw32 boundary proof 40100300472 passed and was imported. Corrected codec 40102483214 passed both simulators, synthesis, 1024 encoder requests, 2048 code/RD cases, 2048 four-symbol chains, 4096 lane cycles and nine faults. Its complete artifact is being authenticated in GitHub before RX/TX prerequisite binding."
   },
   "next_actions": [
     "Remain cloud-only. All source/evidence is in GitHub; local workspace remains empty, no local native processes or artifacts.",
     "Follow mainchip40095811631 and TX normal/fault40098024825/40098031853 exact live processes. Validate terminal capsules before continuing; no duplicate. Mainchip remains packet-boundary routing, original20/4/8/8ns plus5percent derate gates unchanged.",
-    "Follow CDR40101491695. Its manual pipeline repeats exact preparation before original ten loaded cases. Once dependent jobs are actually created, expand monitor production_jobs from prepare to every actual loaded case; never treat preparation PASS as loaded acceptance.",
+    "Preserve CDR 40101491695 preparation PASS and publication failure; fix release target to exact tested source before restoring the unchanged original ten-case matrix. No loaded jobs ran.",
+    "Corrected codec 40102483214 passed; authenticate complete artifact in the cloud, then bind reviewed RX/TX transport native prerequisites. Do not accept logs alone as complete proof.",
     "PLL old observer40096538128 is terminal failure after verified full-capture caching. Do not rerun full130GB reader or simulate. Delta prepares codex/pll-first-latch-cache-replay from21f0 using exact3GB cache; helper6d992191 controls40103396561 must pass. Require original exactline142 failure reproduction, then actual row0 endpoint witness with all old stats/edges retained.",
     "Follow phase244 readback40102964781 and clock-role proof40102668052. Once actual dependent jobs exist, replace monitor production_jobs source-controls with exact-reset-path-readback and actual-native-clock-roles respectively. Preserve original phase rejection and actual topology evidence.",
-    "Follow sole corrected codec40102483214; original reset-stimulus failure remains preserved. Native aligner40100300472 is qualified only for its stated raw boundary scope.",
     "Only after complete authenticated codec native proof may agents bind RX41351a3a and TX4f49646a prerequisites, register reviewed workflows and execute actual integration tests. No implied LTSSM, lower-rate analog, mainchip integration or full PHY acceptance."
   ],
   "full_serial_phy_accepted": false,
@@ -101,6 +99,9 @@
     "pll131_full_capture_pass_analysis_rejection": 40096538128,
     "cdr_v58_loaded_preparation_pass": 40099344993,
     "phase244_readback_controls_pass": 40099838691,
-    "tx_clock_role_source_controls_pass": 40101777955
-  }
+    "tx_clock_role_source_controls_pass": 40101777955,
+    "cdr_v58_preparation_pass_publication_failed": 40101491695,
+    "gen12_corrected_codec_pass_awaiting_full_artifact_readback": 40102483214
+  },
+  "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json"
 }
