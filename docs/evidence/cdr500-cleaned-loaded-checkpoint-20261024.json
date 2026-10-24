@@ -1,0 +1,80 @@
+{
+  "status": "ACTIVE_GATED_LOADED_CLOUD_CHECKPOINT_NOT_ELECTRICAL_ACCEPTANCE",
+  "recorded_utc": "2026-10-24T09:16:22.590852+00:00",
+  "branch": "codex/cdr500-floating-wire-diagnosis",
+  "native_source_head": "e4aca2e147acf55dfe9718da5a4a6e0471fbb2d5",
+  "run": 40081228425,
+  "run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40081228425",
+  "workflow": ".github/workflows/cdr500-cleaned-loaded-cloud.yml",
+  "run_status": "queued",
+  "conclusion": null,
+  "jobs": [
+    {
+      "id": 120835030804,
+      "name": "prepare",
+      "status": "queued",
+      "conclusion": null,
+      "steps": []
+    }
+  ],
+  "required_job_names": [
+    "prepare",
+    "loaded (nominal_early)",
+    "loaded (nominal_late)",
+    "loaded (hot_early)",
+    "loaded (hot_late)",
+    "loaded (cold_early)",
+    "loaded (cold_late)",
+    "loaded (constant_zero)",
+    "loaded (constant_one)",
+    "loaded (clock_stopped)",
+    "loaded (vi_bias_off)"
+  ],
+  "preparation_group": "cdr500-cleaned-loaded-preparation",
+  "waveform_groups": [
+    "cdr500-cleaned-loaded-nominal_early",
+    "cdr500-cleaned-loaded-nominal_late",
+    "cdr500-cleaned-loaded-hot_early",
+    "cdr500-cleaned-loaded-hot_late",
+    "cdr500-cleaned-loaded-cold_early",
+    "cdr500-cleaned-loaded-cold_late",
+    "cdr500-cleaned-loaded-constant_zero",
+    "cdr500-cleaned-loaded-constant_one",
+    "cdr500-cleaned-loaded-clock_stopped",
+    "cdr500-cleaned-loaded-vi_bias_off"
+  ],
+  "prerequisite": {
+    "run": 40079062179,
+    "source_head": "1bd0473206284a437726eb83d644cf68ec62fcb6",
+    "summary_sha256": "7b52ac8820caec6b2f0d8431baa2b14232d3bc1612de2888a8a4442bc5efee91",
+    "parts_sha256": "b017486400ef3d4468955754b2a55c01b9b47c4cd2c7157c17aa6b3564c2b803",
+    "counts": {
+      "devices": 500,
+      "R": 24550,
+      "C": 15678
+    },
+    "both_native_orders_passed": true,
+    "raw_controls_per_order": 13,
+    "intrinsic_controls_per_order": 9,
+    "composition_controls": 21
+  },
+  "original_gates": {
+    "cases": 10,
+    "bits": 256,
+    "stop_ns": 34.25,
+    "step_ps": 0.3125,
+    "sampler_margin_v": 0.1,
+    "sampler_valid_ui": 0.3,
+    "xor_valid_ui": 0.6,
+    "minimum_stage_tail_a": 0.0005
+  },
+  "waveforms_require_preparation_success": true,
+  "max_parallel_waveforms": 2,
+  "next_steps": [
+    "Inspect existing prepare job and its immutable release. Preserve any rejection and exact source before changing code.",
+    "If prepare passes, inspect every existing loaded case. No duplicate waveform dispatch; all ten cases are already dependency-gated in this workflow.",
+    "Require full original captures and original electrical limits for every acceptance; do not infer them from preparation or raw RC.",
+    "Record terminal source-bound summaries and parts with SHA256 values, or update this exact active checkpoint."
+  ],
+  "local_files_created": false
+}
