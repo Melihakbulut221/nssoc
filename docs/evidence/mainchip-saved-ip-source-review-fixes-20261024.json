@@ -1,0 +1,15 @@
+{
+  "reviewed_source": "abc8ceaa4f8b8dd54735ac4c544e9795eaba9111",
+  "reviewer": "pll_handoff",
+  "findings": [
+    "Unaligned preceding x86 context alone did not guarantee a decoded instruction at saved RIP.",
+    "Upstream make lib depends on full CRIU; old dependency list was insufficient."
+  ],
+  "changes": [
+    "Add exact-RIP disassembly and verify its first address and bytes against the authenticated ELF offset; preserve old wider context with explicit unaligned warning.",
+    "Generate only pinned upstream Python image/rpc protobufs, magic and imports; no native CRIU build or process restore.",
+    "Bind imported decoder module path to the verified upstream source."
+  ],
+  "controls": "22 meaningful mapping/ELF/instruction rejections; hosted execution still pending",
+  "native_routing_or_timing_accepted": false
+}

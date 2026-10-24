@@ -66,6 +66,14 @@ def elf_address(path,offset):
      segment_file_offset=off,segment_virtual_address=va,elf_virtual_address=uint(va+offset-off)))
   assert len(rows)==1,'Instruction file offset does not map to exactly one executable PT_LOAD'
   return rows[0]
+def exact_instruction(text,address,expected):
+ uint(address);assert isinstance(expected,bytes)and expected
+ rows=re.findall(r'^\s*([0-9a-fA-F]+):[ \t]+((?:[0-9a-fA-F]{2}[ \t]+)+)([^\n]*)',text,re.M)
+ assert rows,'No decoded instruction'
+ addr,raw,mnemonic=rows[0];data=bytes.fromhex(raw)
+ assert int(addr,16)==address,'Disassembler did not start at saved IP'
+ assert 0<len(data)<=15 and data==expected[:len(data)],'Instruction bytes differ from exact saved-file offset'
+ return dict(address=address,bytes_hex=data.hex(),text=mnemonic.strip(),exact_file_bytes_verified=True)
 def methods():
  m=json.loads((ROOT/METHOD).read_text())
  for p,h in m['protected'].items():assert sha(ROOT/p)==h,p
@@ -109,7 +117,14 @@ def controls():
    try:elf_address(path,off)
    except(AssertionError,struct.error):rejected.append(label)
    else:raise AssertionError('Accepted '+label)
- assert len(rejected)==18
+ instruction='  401010:\t90 \tnop\n'
+ assert exact_instruction(instruction,0x401010,b'\x90')['bytes_hex']=='90'
+ for label,text in [('instruction-empty',''),('instruction-wrong-address',instruction.replace('401010','401011')),
+  ('instruction-wrong-bytes',instruction.replace('90','91')),('instruction-no-bytes','401010: nop')]:
+  try:exact_instruction(text,0x401010,b'\x90')
+  except AssertionError:rejected.append(label)
+  else:raise AssertionError('Accepted '+label)
+ assert len(rejected)==22
  return dict(status='PASS_SYNTHETIC_SAVED_IP_MAPPING_CONTROLS',faults=rejected,positive_file_offset=0x1010,
   positive_elf_virtual_address=0x401010,**FLAGS)
 def run():
@@ -129,7 +144,9 @@ def run():
   assert api('git/ref/tags/'+release['tag_name'])['object']['sha']==HEAD
   criu_root=Path(os.environ['NSSOC_CRIU_SOURCE'])
   assert subprocess.check_output(['git','-C',str(criu_root),'rev-parse','HEAD'],text=True).strip()==CRIU
+  assert Path(images.__file__).resolve()==(criu_root/'lib/pycriu/images/__init__.py').resolve()
   result['criu_source_commit']=CRIU
+  result['decoder_module_path']=str(Path(images.__file__).resolve())
   selected=['inner-controller-result.json','current-inputs-before.json','current-inputs-after.json']
   # Explicit published paths; never substitute the original rejected capsule.
   published=json.loads((ROOT/'docs/evidence/mainchip-observed-native-result-20261024.json').read_text())
@@ -194,9 +211,16 @@ def run():
    mapping=elf_address(native_path,row['file_offset']);address=mapping['elf_virtual_address']
    row['elf_mapping']=mapping;row['elf_sha256']=copied[row['path']]['sha256']
    row['addr2line']=command(['addr2line','-f','-C','-e',str(native_path),hex(address)]).decode()
-   asm=command(['objdump','-d','-C','--start-address='+hex(max(0,address-128)),'--stop-address='+hex(address+128),str(native_path)])
-   (OUT/('thread-'+tid+'-disassembly.txt')).write_bytes(asm)
-   row['disassembly_sha256']=hashlib.sha256(asm).hexdigest()
+   asm=command(['objdump','-d','-C','--insn-width=16','--start-address='+hex(address),'--stop-address='+hex(address+128),str(native_path)])
+   with native_path.open('rb')as stream:
+    stream.seek(row['file_offset']);expected=stream.read(15)
+   row['saved_ip_instruction']=exact_instruction(asm.decode(),address,expected)
+   (OUT/('thread-'+tid+'-exact-ip-disassembly.txt')).write_bytes(asm)
+   row['exact_ip_disassembly_sha256']=hashlib.sha256(asm).hexdigest()
+   context=command(['objdump','-d','-C','--insn-width=16','--start-address='+hex(max(0,address-128)),'--stop-address='+hex(address+128),str(native_path)])
+   (OUT/('thread-'+tid+'-unaligned-context.txt')).write_bytes(context)
+   row['unaligned_context_sha256']=hashlib.sha256(context).hexdigest()
+   row['unaligned_context_warning']='Starts at an arbitrary preceding byte; only the separate exact-IP disassembly is byte-validated.'
   assert json.loads(command(['docker','inspect',owned]))[0]['State']['Status']=='created'
   methods();result['status']='PASS_AUTHENTICATED_SAVED_INSTRUCTION_LOCATIONS_NOT_ROUTE_OR_CAUSAL_PROOF'
  except BaseException as error:
