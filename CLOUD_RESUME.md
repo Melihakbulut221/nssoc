@@ -8085,3 +8085,9 @@ CDR existing-waveform diagnostic40084668388 at08fcc6cd1ad9ac95643e345bb3d4d2c67a
 TX actual native interface40083738813 succeeded. The isolated branch is preparing a NEW trajectory against the fresh model/interface; old native capsules must never be rebound to changed model bytes. Original34ns stimuli/solver/step/load/data/device gates remain mandatory. Root review of exact preparation source/descriptor precedes34ns and its original fault run.
 
 Cloud monitor inventory v11 now tracks these exact diagnostic runs. Mainchip40075970481 remains sole live routing owner. No local files/CAD/artifacts; all native and large evidence stay in GitHub Actions/Releases.
+
+## 2026-10-24T10:31:04.205728+00:00 — durable cloud-only checkpoint
+
+Compact resume record: docs/evidence/cloud-active-checkpoint-20261024.json. Monitor inventory v12 pins all current native work. Mainchip40075970481 saved its exact native process; two-part1.635GB publication verified by immutable hashes. Last complete DRC count6385; current iteration50percent/5540 (not a completed count). Same-process continuation40085912519 now queued at2e4e1959, unchanged controller and timing contract. No postroute/timing acceptance.
+
+TX real interface passed; fresh preparation40085025627 controls passed, both deck cases pending. Source-only new controller/templates at3b0453df remain inactive until exact new preparation hashes reviewed. Phase compact/MIM40084804265 passed; reviewed two-order MIM RC40086006467 queued. CDR failed-wave readbacks passed exact original metric reproduction; physical input-path diagnostic40085495203 queued before any metal or bias repair. PLL exact observer40084454916 remains queued. Local workspace/task temp/native processes verified empty.
