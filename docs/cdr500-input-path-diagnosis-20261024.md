@@ -1,0 +1,7 @@
+# CDR500 retimed-input resistance and owned geometry diagnosis
+
+Both existing nominal waveforms reproduce the original rejection exactly. Four C/D gain HBTs exceed1.6V during active data; their input native nets show0.239–0.265V between physically distinct terminals. This stage separates the upstream native HBT emitter, gain HBT base, and actual termination-resistor terminal by native identities.
+
+It restores the exact passed500-device MIM-aware two-order RC model and cleaned physical source. Every24550 raw exported resistor endpoint/value is compared with the full native resistance file and final composition. All978 reference coordinates must preserve their original5nm-grid relation. A source-bound sparse unit-current calculation measures twelve pair resistances with KCL/energy controls; semiconductor devices and capacitors are excluded only from this explicit wire-only DC diagnosis.
+
+The native geometry reader probes original LVS and physical wire ownership, verifies unchanged actual GDS metal/via unions, then follows real conductor polygons and via cuts between the three physical endpoints on each of four nets. It identifies root/child contributors and native material at dominant resistor-node coordinates. It does not equate an extracted reduced resistor edge to a unique straight physical segment or uniquely label an edge as metal/via. Actual geometry and full-wave gates remain authoritative; no bias, topology or route changes are made here.
