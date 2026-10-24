@@ -18,7 +18,7 @@ def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true' and not OUT.exists()
     STAGE.mkdir(parents=True,exist_ok=False);reports.OUT=STAGE
     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],qualified_pex=False,full_phy_accepted=False,closed_loop=False,
-        scope='Whole actual PD500 metal/via RC. Native476device/1382terminal binding,113 independent wire components,978 actual points; strict raw R/C value/point/topology checks and13corruptions. Intrinsic MIM retained separately; wire-only geometry has no intrinsic device extraction. Substrate spreading/RF qualification, loaded electrical behavior and closed-loop acceptance remain separate.')
+        scope='Whole actual PD500 metal/via RC. Native500device/1446terminal binding,113 independent wire components,978 actual points; strict raw R/C value/point/topology checks and13corruptions. Intrinsic MIM retained separately; wire-only geometry has no intrinsic device extraction. Substrate spreading/RF qualification, loaded electrical behavior and closed-loop acceptance remain separate.')
     def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     def run(command,label):
         log=OUT/(label+'.log')
