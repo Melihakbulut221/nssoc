@@ -1,0 +1,37 @@
+{
+  "status": "SOURCE_REVIEW_PASS_PREREQUISITES_UNBOUND",
+  "source": "c0de90b976db8437849407546dc640be130eec06",
+  "branch": "codex/pcie-gen12-rx-integration",
+  "checked_utc": "2026-10-24T14:01:47.734062+00:00",
+  "reviewer": "delta_review",
+  "protected_hashes_independently_verified": 20,
+  "review": [
+    "Previous registered batch is consumed one edge later; acquisition COM supplies incoming RD.",
+    "All actual slots advance RD including invalid symbols; unused slots bypass it.",
+    "Current control flush discards both pending delivery and new raw input; valid gaps can retire prior batches.",
+    "Independent global-bit/table oracle requires all 2048 actual code/RD pairs, all ten measured residues per flush control, search-state flush and pending four-symbol flush.",
+    "Twelve compiling behavioral mutations retained."
+  ],
+  "native_prerequisites": [
+    {
+      "role": "codec",
+      "run": 40099402878,
+      "source": "86dbe41b5383c29238b6a61f87783f3409e6cf3b",
+      "status_at_review": "queued"
+    },
+    {
+      "role": "aligner",
+      "run": 40100300472,
+      "source": "b34743c320df68bd96cde82063bc00e04c56b3e5",
+      "status_at_review": "queued"
+    }
+  ],
+  "aligner_imported": false,
+  "registered_integration_workflow": false,
+  "native_integration_run": null,
+  "native_accepted": false,
+  "LTSSM_accepted": false,
+  "low_rate_PMA_accepted": false,
+  "full_PHY_accepted": false,
+  "resume": "Wait for exact prerequisite proofs. Import final aligner bytes only after its terminal pass, bind both exact proof runs and imported hashes, register the prepared workflow and run once. Preserve failures. No local native artifacts or tests."
+}
