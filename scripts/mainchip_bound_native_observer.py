@@ -8,7 +8,12 @@ ELF='25a5e9ba1cbb76b820af97cfc8d87b7a2d1bc1203091d83ee4eee859c2e9a04b'
 FLAGS=dict(route_progress_accepted=False,continuation_accepted=False,
     process_liveness_accepted=False,routing_complete=False,target_modified=False)
 def digest(b):return hashlib.sha256(b).hexdigest()
-def write(path,obj):path.write_text(json.dumps(obj,indent=2)+'\n')
+def write(path,obj):
+    # Consumers must never observe partially written ready/result metadata.
+    temporary=path.with_name(path.name+'.writing-'+str(os.getpid()))
+    with temporary.open('x')as stream:
+        stream.write(json.dumps(obj,indent=2)+'\n');stream.flush();os.fsync(stream.fileno())
+    os.replace(temporary,path)
 def inspect(ident):
     raw=subprocess.check_output(['docker','inspect',ident])
     rows=json.loads(raw);assert len(rows)==1
@@ -26,6 +31,9 @@ def read_at(observer,name):
         b=os.read(fd,1024*1024+1);assert len(b)<=1024*1024
         return b
     finally:os.close(fd)
+def raw_binding(cmdline,cgroup):
+    return dict(cmdline_base64=base64.b64encode(cmdline).decode(),cmdline_sha256=digest(cmdline),
+        cgroup_base64=base64.b64encode(cgroup).decode(),cgroup_sha256=digest(cgroup))
 def proc_binding(sample,cmdline,cgroup,expect):
     assert sample['status']=='OBSERVED_IDENTITY_BOUND_PROCESS'
     ident=sample['derived']['identity'];assert ident['pid']==expect['pid']
@@ -34,8 +42,7 @@ def proc_binding(sample,cmdline,cgroup,expect):
     assert args[-1]==b'' and args[:-1]==[os.fsencode(expect['elf_path']),b'-exit',b'-no_init',os.fsencode(expect['route_tcl'])]
     # Require the complete container identifier as a cgroup path component/token.
     assert re.search(rb'(?<![0-9a-f])'+expect['id'].encode()+rb'(?![0-9a-f])',cgroup)
-    return dict(cmdline_base64=base64.b64encode(cmdline).decode(),cmdline_sha256=digest(cmdline),
-        cgroup_base64=base64.b64encode(cgroup).decode(),cgroup_sha256=digest(cgroup))
+    return raw_binding(cmdline,cgroup)
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     a=argparse.ArgumentParser();a.add_argument('--expect',required=True);a.add_argument('--out',required=True)
@@ -56,11 +63,14 @@ def main():
                 try:
                     record['container_before']=inspect(expect['id']);bound(record['container_before'],expect)
                     cmd=read_at(observer,'cmdline');cg=read_at(observer,'cgroup')
+                    record['binding_before']=raw_binding(cmd,cg)
                     sample=observer.snapshot(expected_identity=first_identity)
                     record['sample']=sample
                     record['binding']=proc_binding(sample,cmd,cg,expect)
                     record['container_after']=inspect(expect['id']);bound(record['container_after'],expect)
-                    assert read_at(observer,'cmdline')==cmd and read_at(observer,'cgroup')==cg
+                    cmd_after=read_at(observer,'cmdline');cg_after=read_at(observer,'cgroup')
+                    record['binding_after']=raw_binding(cmd_after,cg_after)
+                    assert cmd_after==cmd and cg_after==cg
                     if first_identity is None:first_identity=sample['derived']['identity']
                     record['status']='BOUND_READ_ONLY_SAMPLE'
                 except BaseException as error:

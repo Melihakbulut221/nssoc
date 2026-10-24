@@ -88,9 +88,9 @@ def current_inputs(base,case,r,runtime,names,global_report,global_names,full,ori
     add('generated-diagnostic',PROGRAM,hashlib.sha256(generated.encode()).hexdigest())
     add('exact-saved-native-tcl',case/'route.tcl',r['route_script']['sha256'])
     add('exact-saved-global-odb',case/'before-guide-read.odb',global_report['global_odb_sha256'])
+    for n,want in admission.REQUIRED_INPUTS.items():add('authenticated-current/'+n,ROOT/n,want)
     CURRENT=pairs
-    proof=dict(phase='before_diagnostic_restore',inputs=copy.deepcopy(pairs),
-        historical_sources_unchanged_proven=False,current_reconstructed_inputs_verified=True)
+    proof=admission.verify_current_inputs(lambda:copy.deepcopy(CURRENT),'before_restore')
     PROOFS.append(proof);write(OUT/'current-inputs-before.json',proof)
 def recheck_inputs():
     assert CURRENT
@@ -98,8 +98,7 @@ def recheck_inputs():
     for label,row in pairs.items():
         row['actual_sha256']=sha(Path(row['path']))
         assert row['actual_sha256']==row['expected_sha256'],label
-    proof=dict(phase='after_diagnostic_restore',inputs=pairs,
-        historical_sources_unchanged_proven=False,current_reconstructed_inputs_verified=True)
+    proof=admission.verify_current_inputs(lambda:pairs,'after_restore',PROOFS[0])
     PROOFS.append(proof);write(OUT/'current-inputs-after.json',proof)
     return proof
 def start_probe(name,inventory,case,out,r):
@@ -160,6 +159,50 @@ def validate_observations():
         first_monotonic_ns=rows[0]['monotonic_begin_ns'],last_monotonic_ns=rows[-1]['monotonic_end_ns'],
         last_cpu_comparison=rows[-1]['sample']['derived'].get('between_samples'),
         cpu_motion_is_not_route_progress=True,route_progress_accepted=False)
+def verify_no_progress_site(error,function,program,report):
+    assert type(error)is AssertionError and str(error)==NO_PROGRESS
+    tree=ast.parse(program)
+    main=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='main')
+    sites=[n for n in ast.walk(main)if isinstance(n,ast.Assert)
+        and isinstance(n.msg,ast.Constant)and n.msg.value==NO_PROGRESS]
+    assert len(sites)==1
+    site=sites[0]
+    assert ast.dump(site.test)==ast.dump(ast.parse('len(raw)>len(prefix)',mode='eval').body)
+    assert function.__code__.co_filename==str(PROGRAM) and function.__code__.co_name=='main'
+    assert function.__code__.co_firstlineno==main.lineno
+    tb=error.__traceback__;assert tb is not None
+    while tb.tb_next is not None:tb=tb.tb_next
+    assert tb.tb_frame.f_code is function.__code__ and tb.tb_lineno==site.lineno,'Wrong assertion code or site'
+    assert report['status']=='FAIL_OR_ERROR' and report['error']==repr(error)
+    assert report['native_process_saved']is True and report['native_log']['single_entrypoint']is True
+    witness='File "'+str(PROGRAM)+'", line '+str(site.lineno)+', in main'
+    assert witness in report['traceback']
+    assert report['traceback'].rstrip().endswith('AssertionError: '+NO_PROGRESS)
+    return dict(code_object_bound=True,source_assertion_line=site.lineno,
+        original_no_log_progress_rejection_reproduced=True,normal_continuation_accepted=False)
+def run_inner_and_verify(inner,r,program):
+    pending=None;after_errors=[]
+    try:
+        inner.main()
+    except BaseException as error:
+        pending=(error,error.__traceback__)
+    finally:
+        # Both cleanup and the after-proof are attempted even after an unexpected
+        # restore/observer/native error. Neither may erase the original failure.
+        try:finish_probe(r,OUT)
+        except BaseException as error:after_errors.append(dict(stage='observer-finish',error=repr(error),traceback=traceback.format_exc()))
+        if CURRENT:
+            try:r['current_inputs_after']=recheck_inputs()
+            except BaseException as error:after_errors.append(dict(stage='current-inputs-after',error=repr(error),traceback=traceback.format_exc()))
+        else:r['current_inputs_after_unavailable']='The before-input proof was never established'
+    if after_errors:r['after_errors']=after_errors
+    if pending:
+        error,tb=pending
+        r['native_inner_error']=dict(error=repr(error),traceback=''.join(traceback.format_exception(type(error),error,tb)))
+        if type(error)is not AssertionError or str(error)!=NO_PROGRESS:raise error.with_traceback(tb)
+        report=json.loads((OUT/'result.json').read_text())
+        r['expected_rejection']=verify_no_progress_site(error,inner.main,program,report)
+    if after_errors:raise AssertionError('After-diagnostic verification failed; original error retained')
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ['GITHUB_RUN_ATTEMPT']=='1'
     a=argparse.ArgumentParser();a.add_argument('--controls',action='store_true');args=a.parse_args()
@@ -181,16 +224,7 @@ def main():
         historical_sources_unchanged_proven=False)
     try:
         sys.argv=[str(PROGRAM),'--stage','cross']
-        try:inner.main()
-        except AssertionError as error:
-            assert str(error)==NO_PROGRESS,'Different native diagnostic failure'
-            report=json.loads((OUT/'result.json').read_text())
-            assert report['status']=='FAIL_OR_ERROR'and report['error']==repr(error)
-            assert report['native_process_saved'] and report['native_log']['single_entrypoint']
-            r['original_no_log_progress_rejection_reproduced']=True
-        finally:
-            finish_probe(r,OUT)
-        recheck_inputs()
+        run_inner_and_verify(inner,r,program)
         r['observations']=validate_observations()
         original=OUT/'result.json';saved=OUT/'inner-controller-result.json';original.rename(saved)
         r['inner_controller_result_sha256']=sha(saved)
