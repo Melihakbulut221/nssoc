@@ -1,0 +1,15 @@
+# First-divider latch: bounded observations from the existing capture
+
+This note interprets the exact saved native diagnosis. It does not change the circuit, run a simulator, prove transistor current, accept acquisition or identify a uniquely proved failure cause. The companion evidence JSON binds the actual replay source, assets, source files, 15-device terminal map and synchronized event samples.
+
+At the 10mV diagnostic threshold, 159 complete conditioned-clock intervals contain two master-output transitions instead of one. All318 recorded transition snapshots follow the sign of actual slave QN−QP feedback at master data bases T396_B−T395_B.165 transitions occur while the nominal master hold-clock base is above the sample-clock base;51 occur above50mV. At those51 events, the actual VBE392−VBE393 difference is only38.3–49.2mV. Algebra from the same observed terminal voltages gives E392−E393 of11.9–15.2mV. These observations support an incomplete sample/hold isolation or regeneration hypothesis; they do not measure either clock branch's current.
+
+A concrete late counterexample begins986.907983840ns and ends987.022775673ns. The master rises through+10mV at986.931788803ns with hold-minus-sample base voltage+62.582mV and actual feedback+51.759mV, then falls through−10mV at986.983915182ns with sample-dominant clock−55.264mV and feedback−56.092mV. The JSON retains each exact pair of native row indices/times and all selected differences at that one interpolated event time.
+
+Master/slave versions of each clock-base net differ by at most about1.35mV over the full capture. This does not support a large mismatch between those two base routes. It does not remove the separately observed shared-emitter terminal voltage differences. The upstream VCO differential extrema are−244/+253mV, while the first conditioned clock is−85.9/+91.1mV with median common mode1.36428V. Actual first-conditioner XSP/XSN are native rppd W4/L3.6um and XUP/XUN are W1/L4um. These are source-grounded experiment seams, not proposed replacement values.
+
+Tail386/391 B−C mean voltage is positive by about0.380/0.383V, and tail391 remains+373–397mV during the final complete feedback cycle. This is a measured headroom concern that persists beyond just bad events; it alone does not prove the intermittent cause. Current-sharing, stored-charge and device-safety claims require evidence absent from this capture: individual Ic/Ib/Ie were not saved.
+
+The 50mV histogram needs a separate caveat. Its18-transition interval spans114.758659948–116.063016265ns, or1.304ns. The observer uses the same threshold to select conditioned-input boundaries, so that interval merges many approximately115ps cycles. It is not18 output transitions within one nominal input period. The10mV counterexamples are cleaner: two transitions within at most125.85ps.
+
+Root owns the next loading/regeneration experiment design around the actual first conditioner and loaded master/slave. No resistor value, transistor resize, loop-filter retune, ideal-clock substitution, native run or acceptance follows automatically from this note.
