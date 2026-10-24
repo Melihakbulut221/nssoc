@@ -8210,3 +8210,14 @@ Native Gen1/2 TX40108369376 passed; receipt authentication precedes import. RX40
 Reset saved-waveform readback40102964781 reproduced the fixed31.25ps margin failure and measured the real fan-in delay. A physical offset candidate is source-only. Actual clock-role40102668052 failed;40108734425 reads its saved failure log without simulation.
 
 Mainchip routing40095811631 remains rejected. Recovery controls40107937311 failed log transport before archive/native work; repair and peer review are in progress. Keep artifact12564886005 and all original constraints. Full serial PHY, routed serial mainchip integration and final timing remain open.
+
+
+### 2026-10-24T16:16:04.070019+00:00 — cloud-only checkpoint v23
+
+The local workspace remains empty. All source changes, native calculations, evidence and continuation records are in GitHub. The existing main-branch progress workflow runs every8hours and reads this branch inventory; its scope is read-only observation.
+
+Digital Gen1/2 TX40108369376 has authenticated native proof and all9exact source/proof files imported77d16d44. All23protected hashes match, both simulators and synthesis pass, and18compiling mutations are rejected. This accepts isolated digital transport only; low-rate PMA, training, serializer, layout and fullPHY remain open.
+
+Route recovery40110502492/ac1740af follows a narrowly reviewed raw-log transport fix; delta reserves its exact-source release. The old recovery failed before archive/native work because gh refused ANSI log bytes. Original routing failure, saved artifact12564886005 and all65member/hash gates remain intact. PLL replay40108109320 failed at the same transport boundary before cache restore; source379bbcbd is under peer review, with one retry owned by delta only after review.
+
+Phase preparation40110198744/3e335947 tests the actual one-resistor offset change and byte-identical old/new external decks, without transistor simulation. Role reader40108734425 remains the sole existing log readback. Analog TX40109066076/40109221280, CDR40108285374 and RX40108338384 remain their exact sole cloud handles. Full serial PHY, routed serial mainchip integration and final timing are not accepted.

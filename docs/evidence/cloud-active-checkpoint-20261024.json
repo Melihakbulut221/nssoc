@@ -1,22 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-24T16:07:50.906739+00:00",
+  "updated_at": "2026-10-24T16:16:04.070019+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only; no local checkout, CAD, simulations or native artifacts.",
-  "root_source_before_receipt": "65d2c84ad0f854c75c035b29a77d8e799c07ea74",
+  "root_source_before_receipt": "77d16d440b1a489da6041ee7fe4fef6ea0fe80c8",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 22,
+    "inventory_version": 23,
     "every_hours": 8,
     "read_only": true,
-    "last_verified_run": 40080701966
+    "last_verified_run": 40080701966,
+    "schedule_verified_at": "2026-10-24T16:16:04.070019+00:00"
   },
   "active_runs": {
     "tx_normal_same_process_native": 40109066076,
     "tx_swapped_selector_same_process_native": 40109221280,
     "cdr_v58_loaded_matrix": 40108285374,
     "gen12_raw32_receiver": 40108338384,
-    "tx_native_role_failure_readback": 40108734425
+    "tx_native_role_failure_readback": 40108734425,
+    "phase244_offset_preparation": 40110198744,
+    "mainchip_saved_artifact_recovery": 40110502492
   },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
@@ -69,25 +72,30 @@
     "cloud_recovery_checkpoint": "eaafe9050e23c5c288f9a63bae652aa95a069ef9",
     "phase244_reset_path_and_offset_source": "eef3f8ba6a093eac7604498a015c4fbe3055d54a",
     "phase_offset_preparation_source": "5cb4592d97ead28fe1c4ea118b88466aa0f054c2",
-    "phase_actual_role_failure_reader": "c120426f5430548038847516f2a876caf24964f9"
+    "phase_actual_role_failure_reader": "c120426f5430548038847516f2a876caf24964f9",
+    "gen12_tx_transport_proof": "71e90ca4930a775484517f182fdc5a82ce056635",
+    "phase_latest_cloud_checkpoint": "bcd18a2fbfff48b909069bd05f93510a47c8f17c",
+    "mainchip_raw_log_transport_fix": "d6eb121aa35c59d2053d91424eb84f622dfefd2f",
+    "mainchip_reviewed_recovery_source": "ac1740af745fe3d62960b1e62297096c619f0c5d",
+    "pll_raw_log_transport_fix": "379bbcbd5653445d97a16024b5296a07d68be468"
   },
   "qualified_progress": {
     "tx": "Exact continuation capsules40098024825/40098031853 saved normal17.176968514ns and swapped15.682858938ns of34ns, not completed. Next40109066076/40109221280 were dispatched once with unchanged source/controller/runtime gates and source-bound output releases.",
-    "phase": "Exact saved reset readback40102964781 passed and reproduced original3case100mV failure. Real fan-in asserts2.35-3.14ps later than fixed31.25ps center. Source-only physical offset candidate and preparation are under independent review; no fresh transient. Actual clock-role40102668052 failed after archive restoration; exact failure reader40108734425 is queued.",
+    "phase": "Exact reset readback40102964781 reproduced original3failures and measured real fan-in settling2.35-3.14ps past fixed31.25ps deadline. Independently reviewed one-resistor rppdL32toL20 source candidate has sole preparation40110198744, no transient; original oracle/vectors/safety gates unchanged. Clock-role rejection40102668052 stays open; exact reader40108734425 pending.",
     "cdr": "Source-bound preparation/publication40108285374 passed and the ten original loaded waveform jobs now exist. All required results remain pending; no electrical acceptance.",
-    "pll": "Endpoint helper and cache replay source controls passed. Actual saved-cache replay40108109320 failed; preserve result and diagnose exact failure before any further replay. Original acquisition remains rejected.",
-    "gen12": "Corrected native codec and aligner imported with full receipts. Exact vendor nettype remedy40108372395 passed31tests,0failure/error/skip; all34prior guards plus2exact hashes and20protected source hashes preserved. Imported8paths frome80881f8/bd8f6cff. Native transmitter40108369376passed but proof authentication is pending; receiver40108338384queued. No LTSSM/PMA/fullPHY acceptance.",
-    "mainchip": "Routing40095811631 remains rejected for no new log bytes, with65outputs in artifact12564886005. First recovery controls40107937311 failed hosted gh ANSI log transport before archive download or native work. Agent repairs only byte transport while preserving130528B log hash and all artifact gates; no route restart."
+    "pll": "Original acquisition and first replay rejection are preserved. Replay40108109320 stopped before cache restoration because hosted gh rejected ANSI-bearing source log bytes; this is a metadata transport failure. Corrected raw-byte transport379bbcbd preserves all original hashes/analysis gates and is under peer review. No fresh simulation or130GB reread.",
+    "gen12": "Exact codec, aligner, nettype guard remedy and native digital transmitter sources/proofs are imported in root. TX40108369376 passed23618cycles,536legal/488invalidK RD pairs,37occupancies/all3flushes,8192continuous words,dual simulators,1077cell synthesis and18compiling mutations. All23protected pins match imported root77d16d44. RX40108338384 remains pending. No low-rate PMA, training owner, serializer connection, layout or fullPHY acceptance.",
+    "mainchip": "Original routing40095811631 remains rejected for no additional native log bytes. Artifact12564886005 retains65outputs. First recovery controls40107937311 stopped on hosted gh ANSI log transport before any archive/native work. Narrow raw-byte fixd6eb121a passed independent review; sole retry40110502492 targets exactac1740af and preserves original log SHA, ZIP and65member gates. Recovery is not routing continuation or acceptance."
   },
   "next_actions": [
-    "Cloud-only. Local workspace and project-named temporary entries are empty, with no native CAD/simulation processes. Do not recreate local checkouts or download native archives.",
-    "Follow exact TX continuations40109066076/40109221280; do not duplicate them. Full34ns captures and original waveform gates remain mandatory after same-process restoration.",
-    "Authenticate native TX transport40108369376 and consume RX40108338384. Import only exact passed source/proof paths. Preserve actual vendor DUT dependencies and independent IEEE oracle.",
-    "Inspect terminal PLL replay40108109320 exact small reports before a narrow repair. No130GB reread or new simulation; original rejected acquisition gates remain.",
-    "Consume all ten CDR loaded cases40108285374. Preparation success is not electrical success.",
-    "Repair mainchip recovery log transport under peer review, pass its source controls, then recover exact artifact12564886005 once in GitHub. Do not restart routing or waive original20/4/8/8ns plus5percent constraints.",
-    "Consume role failure reader40108734425. Independently review phase offset preparation and run source/deck controls once before considering any fresh actual transient.",
-    "Every8hours the existing GitHub monitor reads the pinned inventory. It observes only; it does not autonomously dispatch engineering work or certify fullPHY/finaltiming."
+    "Cloud-only policy overrides older goal wording that requested local work. Workspace empty, no local native processes or project-named temporary entries. Do not recreate local checkouts or download native archives.",
+    "Follow exact analog TX40109066076/40109221280 and all10CDR cases40108285374; never duplicate active processes or treat saved/preparation states as acceptance.",
+    "Consume exact RX40108338384. TX transport40108369376 has complete authenticated receipt and exact9paths imported77d16d44; no additional TX proof is needed unless source changes.",
+    "Consume mainchip recovery40110502492 after its29source faults and17publication controls. Delta owns exact-source release reservation. Retain original routing rejection; authenticate65outputs before any saved-process diagnosis/continuation.",
+    "PLL source379bbcbd only fixes captured raw-log transport, with original cache/observer/oldfailure gates intact. Peer review precedes one retry; delta owns dispatch and exact-source release reservation. No new simulation.",
+    "Consume role failure readback40108734425 and phase source/deck preparation40110198744. A source-only offset candidate is not an electrical or layout pass.",
+    "Existing GitHub monitor on main runs every8hours, is read-only, and reads this root pinned inventory. It does not itself dispatch engineering work or certify fullPHY/timing.",
+    "Use immutable commits and exact audited cloud-results tags. Preserve all original failures, actual DUT/source licenses, independent oracle and original20/4/8/8ns plus5percent constraints."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -124,9 +132,9 @@
     "tx_actual_native_clock_roles_rejected": 40102668052,
     "pll_cache_replay_controls_pass": 40105495542,
     "pll_cache_replay_rejected": 40108109320,
-    "gen12_raw32_tx_native_pass_pending_authentication": 40108369376,
     "gen12_targeted_nettype_pass": 40108372395,
-    "mainchip_artifact_recovery_controls_transport_rejected": 40107937311
+    "mainchip_artifact_recovery_controls_transport_rejected": 40107937311,
+    "gen12_raw32_tx_native_pass_authenticated": 40108369376
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
