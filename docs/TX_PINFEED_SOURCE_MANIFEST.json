@@ -1,7 +1,7 @@
 {
   "branch": "codex/tx-via3-rail-diagnosis",
   "baseline_already_integrated_by_root": "b78a3420",
-  "source_snapshot": "b9e4e5d3fff1845c4582f0369a206d74bee01e30",
+  "source_snapshot": "738a58194bbd46801042f6133444a3fc1e400417",
   "native_source_heads": {
     "physical": "74bc46d2e9518821a12c66b6a071add579ccf2df",
     "wire_anchors": "737bef27ae4bd8ddb0b2740f2e0562cb51f8991b",
@@ -32,6 +32,7 @@
     "docs/evidence/tx-branch-tail-source-review-pending-20261024.json",
     "docs/evidence/tx-branch-tail-wire-source-review-20261024.json",
     "docs/evidence/tx-branchtailfeed-followthrough-source-review-20261024.json",
+    "docs/evidence/tx-branchtailfeed-fresh-intrinsic-rc-pass-20261024.json",
     "docs/evidence/tx-branchtailfeed-precision-composition-source-review-20261024.json",
     "docs/evidence/tx-driver-pinfeed-fresh-intrinsic-rc-pass-20261024.json",
     "docs/evidence/tx-driver-pinfeed-physical-pass-20261024.json",
@@ -120,7 +121,7 @@
     },
     "receipt": "docs/evidence/tx-branch-tail-fresh-native-anchors-pass-20261024.json"
   },
-  "cloud_pipeline_observed_utc": "2026-10-24T09:22:40.845869+00:00",
+  "cloud_pipeline_observed_utc": "2026-10-24T09:33:56.237655+00:00",
   "branch_tail_guarded_pipeline": {
     "wire_anchors": {
       "run": 40078861177,
@@ -135,8 +136,47 @@
       "source_head": "1b3c71745361e40f508024f9ba76e49bc0804769",
       "workflow": ".github/workflows/tx-branchtailfeed-followthrough-cloud.yml",
       "job": "native-physical",
-      "observed_status": "in_progress",
-      "observed_conclusion": null
+      "observed_status": "completed",
+      "observed_conclusion": "success",
+      "receipt": "docs/evidence/tx-branchtailfeed-fresh-intrinsic-rc-pass-20261024.json",
+      "assets": {
+        "followthrough": {
+          "summary": {
+            "id": 671840987,
+            "sha256": "98e867efafe92c2c52f3c071735998fd61e9c0c6849ef27b225c47d601acaf50",
+            "bytes": 70295
+          },
+          "parts": {
+            "id": 671841120,
+            "sha256": "6f6eb2afe97262200fcf56b2c009c5ef84bcd508fe37c92e2ab7aa89d8e22a28",
+            "bytes": 880
+          }
+        },
+        "intrinsic": {
+          "summary": {
+            "id": 671839240,
+            "sha256": "371281f7aaa4965de1058082ce985156ebc28cdc1de1cee399b51c471645c610",
+            "bytes": 8482
+          },
+          "parts": {
+            "id": 671839350,
+            "sha256": "9d3115145d49cf9549d773292a3b75ce62ed0e6ac7addbe576455d6d71e66092",
+            "bytes": 863
+          }
+        },
+        "native_rc": {
+          "summary": {
+            "id": 671839937,
+            "sha256": "15cf5245fe297f465f416d6fe6552cf89f65527f8d3dbd12c168dd720978276b",
+            "bytes": 1161563
+          },
+          "parts": {
+            "id": 671840070,
+            "sha256": "807acba8f8811655a276369f9962271d5f3ca828901845e4f9e0bb6a375a463f",
+            "bytes": 866
+          }
+        }
+      }
     },
     "precision": {
       "run": 40080002978,
@@ -168,5 +208,14 @@
     "native_executed": false,
     "independent_review": "PENDING",
     "parent_review_of_qualified_geometry_rc_and_dc_required": true
+  },
+  "branch_tail_fresh_counts": {
+    "R": 141473,
+    "C": 100694,
+    "devices": 8088,
+    "terminals": 28620,
+    "ports": 165,
+    "body_nets": 65,
+    "conductors": 703
   }
 }
