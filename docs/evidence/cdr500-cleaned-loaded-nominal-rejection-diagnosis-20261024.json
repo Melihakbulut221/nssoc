@@ -1,0 +1,1566 @@
+{
+  "schema": 1,
+  "status": "CONFIRMED_NATIVE_ELECTRICAL_REJECTION_NO_WRAPPER_SCHEMA_REPAIR",
+  "observed_at": "2026-10-24T09:59:33.113487+00:00",
+  "run": 40081228425,
+  "source_head": "e4aca2e147acf55dfe9718da5a4a6e0471fbb2d5",
+  "workflow": ".github/workflows/cdr500-cleaned-loaded-cloud.yml",
+  "cases": {
+    "nominal_early": {
+      "release": "cloud-results-40081228425-1-cdr500-cleaned-loaded-nominal_early",
+      "summary": {
+        "asset": 671877337,
+        "bytes": 463015,
+        "sha256": "bdeaee5605948d964e0b8ebeee1ac20fdbdb1cff853290d6ab330dd992a07948"
+      },
+      "parts": {
+        "asset": 671877533,
+        "bytes": 895,
+        "sha256": "f8d2039615ff150685868c0c627296de18dece89a62b637433716974a32d7ff3",
+        "descriptor": {
+          "format": "ordered-tar-gzip-parts-v1",
+          "stem": "cdr500-cleaned-loaded-nominal_early-40081228425-1",
+          "source_directory": "cloud-cdr500-cleaned-loaded-nominal_early",
+          "bytes": 997634591,
+          "sha256": "110d9e03f4ac5911c78fbc852d69626f8c2c624a4537a1d1cfdaa2004a4ceb05",
+          "parts": [
+            {
+              "index": 0,
+              "name": "cdr500-cleaned-loaded-nominal_early-40081228425-1.tar.gz.part0000",
+              "bytes": 997634591,
+              "sha256": "110d9e03f4ac5911c78fbc852d69626f8c2c624a4537a1d1cfdaa2004a4ceb05"
+            }
+          ],
+          "part_limit_bytes": 1073741824,
+          "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+          "verification": {
+            "parts": 1,
+            "bytes": 997634591,
+            "sha256": "110d9e03f4ac5911c78fbc852d69626f8c2c624a4537a1d1cfdaa2004a4ceb05",
+            "all_parts_and_combined_bytes_verified": true
+          }
+        }
+      },
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "native_returncode": 0,
+      "native_diagnostics": [],
+      "native_flags_verified": 124,
+      "sources_unchanged": true,
+      "raw_capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "a4914dc79a74f5e7c33c23efdd101cd54959005146bf2c21e038b1b9997ae160",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.022781140718192594,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.546874999999909e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.033014976941096966,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.2343750000260244e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.010698640167212909,
+          "wrong_sign_samples": 32,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 5.390624999999087e-11,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.0314596135553002,
+          "wrong_sign_samples": 66,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 9.640624999999482e-11,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.009103117426167505,
+          "wrong_sign_samples": 44,
+          "below_100mv_samples": 660,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12478159084448649,
+          "wrong_sign_samples": 382,
+          "below_100mv_samples": 720,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "phase_average_v": -0.011174706762447677,
+      "phase_passed": false,
+      "phase_gate": {
+        "minimum_signed_v": 0.03,
+        "constant_maximum_abs_v": 0.01,
+        "window_s": [
+          3.0000000000000004e-09,
+          3.3875e-08
+        ]
+      },
+      "failed_hbt_checks": {
+        "xpd.xd0059": {
+          "minimum_active_vce_v": 1.207722439868043,
+          "maximum_alltime_abs_vce_v": 1.7055216439281229,
+          "maximum_alltime_abs_vbe_v": 0.915427113973341,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.00164692025059589
+        },
+        "xpd.xd0060": {
+          "minimum_active_vce_v": 1.2075851454124464,
+          "maximum_alltime_abs_vce_v": 1.7183259787086316,
+          "maximum_alltime_abs_vbe_v": 0.9147985610896965,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0016671632567050378
+        },
+        "xpd.xd0111": {
+          "minimum_active_vce_v": 1.2419042910513087,
+          "maximum_alltime_abs_vce_v": 1.702933933912084,
+          "maximum_alltime_abs_vbe_v": 0.9074084693109224,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014979069828250314
+        },
+        "xpd.xd0112": {
+          "minimum_active_vce_v": 1.2457532205629485,
+          "maximum_alltime_abs_vce_v": 1.7125065746573422,
+          "maximum_alltime_abs_vbe_v": 0.9070013660358784,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015115620434839653
+        }
+      },
+      "all50_mos_voltage_checks_passed": true,
+      "all7_mim_voltage_checks_passed": true,
+      "minimum_mos_stage_tail_current_a": 0.0014567741715217828,
+      "minimum_hbt_tail_current_a": 0.0024432227478927778,
+      "vi": {
+        "mean_signed_current_a": -3.454230248569265e-05,
+        "mean_output_difference_v": -0.01161175771184079,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.0002517010971851413,
+          "xty": 0.00025134432106753597
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.9428789091502547,
+          1.9515949897336402
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "devices_passed": false,
+      "data_passed": false,
+      "error": "AssertionError('Actual whole-wire retimed sampling, loaded phase/current or device gate failed')",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr500_cleaned_loaded.py\", line 337, in main\n    assert passed,'Actual whole-wire retimed sampling, loaded phase/current or device gate failed'\n           ^^^^^^\nAssertionError: Actual whole-wire retimed sampling, loaded phase/current or device gate failed\n"
+    },
+    "nominal_late": {
+      "release": "cloud-results-40081228425-1-cdr500-cleaned-loaded-nominal_late",
+      "summary": {
+        "asset": 671879228,
+        "bytes": 463116,
+        "sha256": "6af139c8104c3c2d9fa24d9a546f278a7b6a4318fd9e9f1dbf4a3ca43ad05772"
+      },
+      "parts": {
+        "asset": 671879308,
+        "bytes": 892,
+        "sha256": "81d6e9d68d74fb3d43e727ccc9edc29e8ec40a9688b91bbedf92a0caf5b12202",
+        "descriptor": {
+          "format": "ordered-tar-gzip-parts-v1",
+          "stem": "cdr500-cleaned-loaded-nominal_late-40081228425-1",
+          "source_directory": "cloud-cdr500-cleaned-loaded-nominal_late",
+          "bytes": 997727941,
+          "sha256": "80a64ad8c1b2442ccd22b49c6804fa9356830e101dca6e4e104ccc42cab5adcb",
+          "parts": [
+            {
+              "index": 0,
+              "name": "cdr500-cleaned-loaded-nominal_late-40081228425-1.tar.gz.part0000",
+              "bytes": 997727941,
+              "sha256": "80a64ad8c1b2442ccd22b49c6804fa9356830e101dca6e4e104ccc42cab5adcb"
+            }
+          ],
+          "part_limit_bytes": 1073741824,
+          "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+          "verification": {
+            "parts": 1,
+            "bytes": 997727941,
+            "sha256": "80a64ad8c1b2442ccd22b49c6804fa9356830e101dca6e4e104ccc42cab5adcb",
+            "all_parts_and_combined_bytes_verified": true
+          }
+        }
+      },
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "native_returncode": 0,
+      "native_diagnostics": [],
+      "native_flags_verified": 124,
+      "sources_unchanged": true,
+      "raw_capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "14f1d145158060a416a1aa4cadc77ce29c7efc113d6c7e9fdecafc8c114da3ec",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.018740315435830768,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.5781250000001926e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.05020555186559092,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 4.171875000011064e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.009194490314671639,
+          "wrong_sign_samples": 25,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 5.390624999999087e-11,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.026991027060224118,
+          "wrong_sign_samples": 64,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 5.671874999999034e-11,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12410352199918691,
+          "wrong_sign_samples": 383,
+          "below_100mv_samples": 730,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.005872367167771145,
+          "wrong_sign_samples": 44,
+          "below_100mv_samples": 662,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "phase_average_v": 0.015110933198637934,
+      "phase_passed": false,
+      "phase_gate": {
+        "minimum_signed_v": 0.03,
+        "constant_maximum_abs_v": 0.01,
+        "window_s": [
+          3.0000000000000004e-09,
+          3.3875e-08
+        ]
+      },
+      "failed_hbt_checks": {
+        "xpd.xd0059": {
+          "minimum_active_vce_v": 1.2068220851788027,
+          "maximum_alltime_abs_vce_v": 1.7055193402705349,
+          "maximum_alltime_abs_vbe_v": 0.9153740757535032,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001646840299888564
+        },
+        "xpd.xd0060": {
+          "minimum_active_vce_v": 1.2077985622860268,
+          "maximum_alltime_abs_vce_v": 1.7169168534813237,
+          "maximum_alltime_abs_vbe_v": 0.9147765760784947,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0016668317208771801
+        },
+        "xpd.xd0111": {
+          "minimum_active_vce_v": 1.2418136921811256,
+          "maximum_alltime_abs_vce_v": 1.70333829106363,
+          "maximum_alltime_abs_vbe_v": 0.9074321074877134,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014982168630234894
+        },
+        "xpd.xd0112": {
+          "minimum_active_vce_v": 1.2457031463886001,
+          "maximum_alltime_abs_vce_v": 1.7128698917136518,
+          "maximum_alltime_abs_vbe_v": 0.9069714761668701,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015117819699380706
+        }
+      },
+      "all50_mos_voltage_checks_passed": true,
+      "all7_mim_voltage_checks_passed": true,
+      "minimum_mos_stage_tail_current_a": 0.0014906509577375506,
+      "minimum_hbt_tail_current_a": 0.0024436952905256036,
+      "vi": {
+        "mean_signed_current_a": 4.5539735826564094e-05,
+        "mean_output_difference_v": 0.012913492897436795,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025193899395732937,
+          "xty": 0.0002484457116704802
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.9426502308921942,
+          1.9507256153572845
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "devices_passed": false,
+      "data_passed": false,
+      "error": "AssertionError('Actual whole-wire retimed sampling, loaded phase/current or device gate failed')",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr500_cleaned_loaded.py\", line 337, in main\n    assert passed,'Actual whole-wire retimed sampling, loaded phase/current or device gate failed'\n           ^^^^^^\nAssertionError: Actual whole-wire retimed sampling, loaded phase/current or device gate failed\n"
+    }
+  },
+  "source_gate_comparison": {
+    "baseline_path": "scripts/cloud_cdr_sampler_settling_v32_mim_streamed.py",
+    "baseline_sha256": "3bb1063ba11cd23b384f553ff6da0c3621e5a68a2ad5d058ab63eb1a9f17b026",
+    "new_path": "scripts/cloud_cdr500_cleaned_loaded.py",
+    "new_sha256": "72f693679333fc1a17321be368499dbceacd518d81637870cf8659bb669b61e4",
+    "measurement_to_vi_gate_block_equal_except_native_mos_and_stage_census": true,
+    "only_census_changes": [
+      "46 MOS to 50",
+      "38 individual MOS tails to 42",
+      "14 physical stage tails to 16"
+    ],
+    "gates_unchanged": true
+  },
+  "failed_device_native_binding": {
+    "physical_summary_asset": 671670485,
+    "physical_summary_sha256": "817bdcb956662d9f3384ddcd72e237a4b9afb77e2cae3703eb4c063b0def90a2",
+    "composition_summary_asset": 671757996,
+    "composition_summary_sha256": "7b52ac8820caec6b2f0d8431baa2b14232d3bc1612de2888a8a4442bc5efee91",
+    "devices": [
+      {
+        "native_id": 59,
+        "native_record": {
+          "native_id": 59,
+          "instance": "XD0059",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "4",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T059_C",
+              "anchor": "T059_C",
+              "native_cluster": 21,
+              "native_net": "$98"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T059_B",
+              "anchor": "T059_B",
+              "native_cluster": 13,
+              "native_net": "$65"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T059_E",
+              "anchor": "T059_E",
+              "native_cluster": 14,
+              "native_net": "$66"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        "native_location": {
+          "native_id": 59,
+          "model": "npn13G2",
+          "parameters": {
+            "we": 0.07,
+            "le": 0.9,
+            "Nx": 4.0,
+            "m": 1.0
+          },
+          "pcell": {
+            "cell": "npn13G2$17",
+            "transform": "r0 *1 1023.6,298.03",
+            "bbox": "(1020.25,294.7;1032.5,301.81)",
+            "pins": [],
+            "path": "nssoc_cdr_pd500_active_input_v57/134_3/124_736"
+          },
+          "terminals": [
+            {
+              "name": "C",
+              "net": "$98",
+              "native_cluster": 21,
+              "native_layers": [
+                {
+                  "layer": 35,
+                  "bbox_dbu": "(1022625,295600;1030125,299310)",
+                  "area_dbu2": 22416,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "B",
+              "net": "$65",
+              "native_cluster": 13,
+              "native_layers": [
+                {
+                  "layer": 37,
+                  "bbox_dbu": "(1022625,295600;1030125,299310)",
+                  "area_dbu2": 25353000,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "E",
+              "net": "$66",
+              "native_cluster": 14,
+              "native_layers": [
+                {
+                  "layer": 34,
+                  "bbox_dbu": "(1029115,297580;1029185,298480)",
+                  "area_dbu2": 63000,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "S",
+              "net": "$1",
+              "native_cluster": 1,
+              "native_layers": [
+                {
+                  "layer": 33,
+                  "bbox_dbu": "(1021150,295600;1031600,300910)",
+                  "area_dbu2": 55489500,
+                  "polygons": 1
+                }
+              ]
+            }
+          ]
+        },
+        "logical_base_witnesses": [
+          {
+            "label": "A_sd_DP",
+            "point_dbu": [
+              994600,
+              448030
+            ],
+            "metal": 67,
+            "logical_net": "dup",
+            "native_cluster": 13,
+            "native_name": "$65"
+          },
+          {
+            "label": "A_bd_op",
+            "point_dbu": [
+              994600,
+              727660
+            ],
+            "metal": 67,
+            "logical_net": "dup",
+            "native_cluster": 13,
+            "native_name": "$65"
+          }
+        ],
+        "shared_emitter_gain_tail_records": [
+          {
+            "native_id": 1,
+            "instance": "XD0001",
+            "model": "sg13_lv_nmos",
+            "parameters": {
+              "l": "0.3u",
+              "w": "53.335u",
+              "as": "18.1339p",
+              "ad": "18.1339p",
+              "ps": "107.35u",
+              "pd": "107.35u",
+              "rfmode": "0",
+              "ng": "1",
+              "m": "1"
+            },
+            "terminals": [
+              {
+                "terminal": "D",
+                "node": "w_T001_D",
+                "anchor": "T001_D",
+                "native_cluster": 14,
+                "native_net": "$66"
+              },
+              {
+                "terminal": "G",
+                "node": "w_T001_G",
+                "anchor": "T001_G",
+                "native_cluster": 25,
+                "native_net": "ird"
+              },
+              {
+                "terminal": "S",
+                "node": "w_T001_S",
+                "anchor": "T001_S",
+                "native_cluster": 23,
+                "native_net": "avss"
+              },
+              {
+                "terminal": "B",
+                "node": "body_1",
+                "anchor": null,
+                "native_cluster": 1,
+                "native_net": "$1"
+              }
+            ]
+          },
+          {
+            "native_id": 2,
+            "instance": "XD0002",
+            "model": "sg13_lv_nmos",
+            "parameters": {
+              "l": "0.3u",
+              "w": "53.335u",
+              "as": "18.1339p",
+              "ad": "18.1339p",
+              "ps": "107.35u",
+              "pd": "107.35u",
+              "rfmode": "0",
+              "ng": "1",
+              "m": "1"
+            },
+            "terminals": [
+              {
+                "terminal": "D",
+                "node": "w_T002_D",
+                "anchor": "T002_D",
+                "native_cluster": 14,
+                "native_net": "$66"
+              },
+              {
+                "terminal": "G",
+                "node": "w_T002_G",
+                "anchor": "T002_G",
+                "native_cluster": 25,
+                "native_net": "ird"
+              },
+              {
+                "terminal": "S",
+                "node": "w_T002_S",
+                "anchor": "T002_S",
+                "native_cluster": 23,
+                "native_net": "avss"
+              },
+              {
+                "terminal": "B",
+                "node": "body_1",
+                "anchor": null,
+                "native_cluster": 1,
+                "native_net": "$1"
+              }
+            ]
+          }
+        ],
+        "parent_sampler": "sd",
+        "parent_sampler_placement": {
+          "kind": "sampler_cd",
+          "bbox_um": "(993.6,272;2316.6,515.63)",
+          "ports": {
+            "DP": "(993.6,447.03;995.6,449.03)",
+            "DN": "(993.6,453.03;995.6,455.03)",
+            "QP": "(993.6,459.03;995.6,461.03)",
+            "QN": "(993.6,465.03;995.6,467.03)",
+            "CLKP": "(993.6,471.03;995.6,473.03)",
+            "CLKN": "(993.6,477.03;995.6,479.03)",
+            "AVDD": "(993.6,483.03;995.6,485.03)",
+            "AVSS": "(993.6,489.03;995.6,491.03)",
+            "SUB": "(993.6,495.03;995.6,497.03)",
+            "IREF": "(993.6,501.03;995.6,503.03)"
+          }
+        },
+        "parent_source_plan": {
+          "tag": "sd",
+          "kind": "sampler_cd",
+          "pins": {
+            "DP": "dup",
+            "DN": "dun",
+            "QP": "dqp",
+            "QN": "dqn",
+            "CLKP": "cp",
+            "CLKN": "cn",
+            "AVDD": "avdd",
+            "AVSS": "avss",
+            "SUB": "sub",
+            "IREF": "ird"
+          },
+          "source_cards": [
+            "xsd"
+          ]
+        },
+        "conclusion": "The failing HBT belongs to the C/D active input pair: its base is the native retimed sampler input and its emitter shares the two native 53.335um gain-tail MOS devices."
+      },
+      {
+        "native_id": 60,
+        "native_record": {
+          "native_id": 60,
+          "instance": "XD0060",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "4",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T060_C",
+              "anchor": "T060_C",
+              "native_cluster": 22,
+              "native_net": "$99"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T060_B",
+              "anchor": "T060_B",
+              "native_cluster": 15,
+              "native_net": "$67"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T060_E",
+              "anchor": "T060_E",
+              "native_cluster": 14,
+              "native_net": "$66"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        "native_location": {
+          "native_id": 60,
+          "model": "npn13G2",
+          "parameters": {
+            "we": 0.07,
+            "le": 0.9,
+            "Nx": 4.0,
+            "m": 1.0
+          },
+          "pcell": {
+            "cell": "npn13G2$17",
+            "transform": "r0 *1 1053.6,298.03",
+            "bbox": "(1050.25,294.7;1062.5,301.81)",
+            "pins": [],
+            "path": "nssoc_cdr_pd500_active_input_v57/134_3/124_731"
+          },
+          "terminals": [
+            {
+              "name": "C",
+              "net": "$99",
+              "native_cluster": 22,
+              "native_layers": [
+                {
+                  "layer": 35,
+                  "bbox_dbu": "(1052625,295600;1060125,299310)",
+                  "area_dbu2": 22416,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "B",
+              "net": "$67",
+              "native_cluster": 15,
+              "native_layers": [
+                {
+                  "layer": 37,
+                  "bbox_dbu": "(1052625,295600;1060125,299310)",
+                  "area_dbu2": 25353000,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "E",
+              "net": "$66",
+              "native_cluster": 14,
+              "native_layers": [
+                {
+                  "layer": 34,
+                  "bbox_dbu": "(1059115,297580;1059185,298480)",
+                  "area_dbu2": 63000,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "S",
+              "net": "$1",
+              "native_cluster": 1,
+              "native_layers": [
+                {
+                  "layer": 33,
+                  "bbox_dbu": "(1051150,295600;1061600,300910)",
+                  "area_dbu2": 55489500,
+                  "polygons": 1
+                }
+              ]
+            }
+          ]
+        },
+        "logical_base_witnesses": [
+          {
+            "label": "A_sd_DN",
+            "point_dbu": [
+              994600,
+              454030
+            ],
+            "metal": 67,
+            "logical_net": "dun",
+            "native_cluster": 15,
+            "native_name": "$67"
+          },
+          {
+            "label": "A_bd_on",
+            "point_dbu": [
+              994600,
+              721660
+            ],
+            "metal": 67,
+            "logical_net": "dun",
+            "native_cluster": 15,
+            "native_name": "$67"
+          }
+        ],
+        "shared_emitter_gain_tail_records": [
+          {
+            "native_id": 1,
+            "instance": "XD0001",
+            "model": "sg13_lv_nmos",
+            "parameters": {
+              "l": "0.3u",
+              "w": "53.335u",
+              "as": "18.1339p",
+              "ad": "18.1339p",
+              "ps": "107.35u",
+              "pd": "107.35u",
+              "rfmode": "0",
+              "ng": "1",
+              "m": "1"
+            },
+            "terminals": [
+              {
+                "terminal": "D",
+                "node": "w_T001_D",
+                "anchor": "T001_D",
+                "native_cluster": 14,
+                "native_net": "$66"
+              },
+              {
+                "terminal": "G",
+                "node": "w_T001_G",
+                "anchor": "T001_G",
+                "native_cluster": 25,
+                "native_net": "ird"
+              },
+              {
+                "terminal": "S",
+                "node": "w_T001_S",
+                "anchor": "T001_S",
+                "native_cluster": 23,
+                "native_net": "avss"
+              },
+              {
+                "terminal": "B",
+                "node": "body_1",
+                "anchor": null,
+                "native_cluster": 1,
+                "native_net": "$1"
+              }
+            ]
+          },
+          {
+            "native_id": 2,
+            "instance": "XD0002",
+            "model": "sg13_lv_nmos",
+            "parameters": {
+              "l": "0.3u",
+              "w": "53.335u",
+              "as": "18.1339p",
+              "ad": "18.1339p",
+              "ps": "107.35u",
+              "pd": "107.35u",
+              "rfmode": "0",
+              "ng": "1",
+              "m": "1"
+            },
+            "terminals": [
+              {
+                "terminal": "D",
+                "node": "w_T002_D",
+                "anchor": "T002_D",
+                "native_cluster": 14,
+                "native_net": "$66"
+              },
+              {
+                "terminal": "G",
+                "node": "w_T002_G",
+                "anchor": "T002_G",
+                "native_cluster": 25,
+                "native_net": "ird"
+              },
+              {
+                "terminal": "S",
+                "node": "w_T002_S",
+                "anchor": "T002_S",
+                "native_cluster": 23,
+                "native_net": "avss"
+              },
+              {
+                "terminal": "B",
+                "node": "body_1",
+                "anchor": null,
+                "native_cluster": 1,
+                "native_net": "$1"
+              }
+            ]
+          }
+        ],
+        "parent_sampler": "sd",
+        "parent_sampler_placement": {
+          "kind": "sampler_cd",
+          "bbox_um": "(993.6,272;2316.6,515.63)",
+          "ports": {
+            "DP": "(993.6,447.03;995.6,449.03)",
+            "DN": "(993.6,453.03;995.6,455.03)",
+            "QP": "(993.6,459.03;995.6,461.03)",
+            "QN": "(993.6,465.03;995.6,467.03)",
+            "CLKP": "(993.6,471.03;995.6,473.03)",
+            "CLKN": "(993.6,477.03;995.6,479.03)",
+            "AVDD": "(993.6,483.03;995.6,485.03)",
+            "AVSS": "(993.6,489.03;995.6,491.03)",
+            "SUB": "(993.6,495.03;995.6,497.03)",
+            "IREF": "(993.6,501.03;995.6,503.03)"
+          }
+        },
+        "parent_source_plan": {
+          "tag": "sd",
+          "kind": "sampler_cd",
+          "pins": {
+            "DP": "dup",
+            "DN": "dun",
+            "QP": "dqp",
+            "QN": "dqn",
+            "CLKP": "cp",
+            "CLKN": "cn",
+            "AVDD": "avdd",
+            "AVSS": "avss",
+            "SUB": "sub",
+            "IREF": "ird"
+          },
+          "source_cards": [
+            "xsd"
+          ]
+        },
+        "conclusion": "The failing HBT belongs to the C/D active input pair: its base is the native retimed sampler input and its emitter shares the two native 53.335um gain-tail MOS devices."
+      },
+      {
+        "native_id": 111,
+        "native_record": {
+          "native_id": 111,
+          "instance": "XD0111",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "4",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T111_C",
+              "anchor": "T111_C",
+              "native_cluster": 121,
+              "native_net": "$651"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T111_B",
+              "anchor": "T111_B",
+              "native_cluster": 114,
+              "native_net": "$619"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T111_E",
+              "anchor": "T111_E",
+              "native_cluster": 115,
+              "native_net": "$620"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        "native_location": {
+          "native_id": 111,
+          "model": "npn13G2",
+          "parameters": {
+            "we": 0.07,
+            "le": 0.9,
+            "Nx": 4.0,
+            "m": 1.0
+          },
+          "pcell": {
+            "cell": "npn13G2$17",
+            "transform": "r0 *1 1023.6,1487.55",
+            "bbox": "(1020.25,1484.22;1032.5,1491.33)",
+            "pins": [],
+            "path": "nssoc_cdr_pd500_active_input_v57/134_4/124_736"
+          },
+          "terminals": [
+            {
+              "name": "C",
+              "net": "$651",
+              "native_cluster": 121,
+              "native_layers": [
+                {
+                  "layer": 35,
+                  "bbox_dbu": "(1022625,1485120;1030125,1488830)",
+                  "area_dbu2": 22416,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "B",
+              "net": "$619",
+              "native_cluster": 114,
+              "native_layers": [
+                {
+                  "layer": 37,
+                  "bbox_dbu": "(1022625,1485120;1030125,1488830)",
+                  "area_dbu2": 25353000,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "E",
+              "net": "$620",
+              "native_cluster": 115,
+              "native_layers": [
+                {
+                  "layer": 34,
+                  "bbox_dbu": "(1029115,1487100;1029185,1488000)",
+                  "area_dbu2": 63000,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "S",
+              "net": "$1",
+              "native_cluster": 1,
+              "native_layers": [
+                {
+                  "layer": 33,
+                  "bbox_dbu": "(1021150,1485120;1031600,1490430)",
+                  "area_dbu2": 55489500,
+                  "polygons": 1
+                }
+              ]
+            }
+          ]
+        },
+        "logical_base_witnesses": [
+          {
+            "label": "A_sc_DP",
+            "point_dbu": [
+              994600,
+              1637550
+            ],
+            "metal": 67,
+            "logical_net": "cup",
+            "native_cluster": 114,
+            "native_name": "$619"
+          },
+          {
+            "label": "A_ac_op",
+            "point_dbu": [
+              994600,
+              1949180
+            ],
+            "metal": 67,
+            "logical_net": "cup",
+            "native_cluster": 114,
+            "native_name": "$619"
+          }
+        ],
+        "shared_emitter_gain_tail_records": [
+          {
+            "native_id": 30,
+            "instance": "XD0030",
+            "model": "sg13_lv_nmos",
+            "parameters": {
+              "l": "0.3u",
+              "w": "53.335u",
+              "as": "18.1339p",
+              "ad": "18.1339p",
+              "ps": "107.35u",
+              "pd": "107.35u",
+              "rfmode": "0",
+              "ng": "1",
+              "m": "1"
+            },
+            "terminals": [
+              {
+                "terminal": "D",
+                "node": "w_T030_D",
+                "anchor": "T030_D",
+                "native_cluster": 115,
+                "native_net": "$620"
+              },
+              {
+                "terminal": "G",
+                "node": "w_T030_G",
+                "anchor": "T030_G",
+                "native_cluster": 123,
+                "native_net": "irc"
+              },
+              {
+                "terminal": "S",
+                "node": "w_T030_S",
+                "anchor": "T030_S",
+                "native_cluster": 23,
+                "native_net": "avss"
+              },
+              {
+                "terminal": "B",
+                "node": "body_1",
+                "anchor": null,
+                "native_cluster": 1,
+                "native_net": "$1"
+              }
+            ]
+          },
+          {
+            "native_id": 31,
+            "instance": "XD0031",
+            "model": "sg13_lv_nmos",
+            "parameters": {
+              "l": "0.3u",
+              "w": "53.335u",
+              "as": "18.1339p",
+              "ad": "18.1339p",
+              "ps": "107.35u",
+              "pd": "107.35u",
+              "rfmode": "0",
+              "ng": "1",
+              "m": "1"
+            },
+            "terminals": [
+              {
+                "terminal": "D",
+                "node": "w_T031_D",
+                "anchor": "T031_D",
+                "native_cluster": 115,
+                "native_net": "$620"
+              },
+              {
+                "terminal": "G",
+                "node": "w_T031_G",
+                "anchor": "T031_G",
+                "native_cluster": 123,
+                "native_net": "irc"
+              },
+              {
+                "terminal": "S",
+                "node": "w_T031_S",
+                "anchor": "T031_S",
+                "native_cluster": 23,
+                "native_net": "avss"
+              },
+              {
+                "terminal": "B",
+                "node": "body_1",
+                "anchor": null,
+                "native_cluster": 1,
+                "native_net": "$1"
+              }
+            ]
+          }
+        ],
+        "parent_sampler": "sc",
+        "parent_sampler_placement": {
+          "kind": "sampler_cd",
+          "bbox_um": "(993.6,1461.52;2316.6,1705.15)",
+          "ports": {
+            "DP": "(993.6,1636.55;995.6,1638.55)",
+            "DN": "(993.6,1642.55;995.6,1644.55)",
+            "QP": "(993.6,1648.55;995.6,1650.55)",
+            "QN": "(993.6,1654.55;995.6,1656.55)",
+            "CLKP": "(993.6,1660.55;995.6,1662.55)",
+            "CLKN": "(993.6,1666.55;995.6,1668.55)",
+            "AVDD": "(993.6,1672.55;995.6,1674.55)",
+            "AVSS": "(993.6,1678.55;995.6,1680.55)",
+            "SUB": "(993.6,1684.55;995.6,1686.55)",
+            "IREF": "(993.6,1690.55;995.6,1692.55)"
+          }
+        },
+        "parent_source_plan": {
+          "tag": "sc",
+          "kind": "sampler_cd",
+          "pins": {
+            "DP": "cup",
+            "DN": "cun",
+            "QP": "cqp",
+            "QN": "cqn",
+            "CLKP": "cp",
+            "CLKN": "cn",
+            "AVDD": "avdd",
+            "AVSS": "avss",
+            "SUB": "sub",
+            "IREF": "irc"
+          },
+          "source_cards": [
+            "xsc"
+          ]
+        },
+        "conclusion": "The failing HBT belongs to the C/D active input pair: its base is the native retimed sampler input and its emitter shares the two native 53.335um gain-tail MOS devices."
+      },
+      {
+        "native_id": 112,
+        "native_record": {
+          "native_id": 112,
+          "instance": "XD0112",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "4",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T112_C",
+              "anchor": "T112_C",
+              "native_cluster": 122,
+              "native_net": "$652"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T112_B",
+              "anchor": "T112_B",
+              "native_cluster": 116,
+              "native_net": "$621"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T112_E",
+              "anchor": "T112_E",
+              "native_cluster": 115,
+              "native_net": "$620"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        "native_location": {
+          "native_id": 112,
+          "model": "npn13G2",
+          "parameters": {
+            "we": 0.07,
+            "le": 0.9,
+            "Nx": 4.0,
+            "m": 1.0
+          },
+          "pcell": {
+            "cell": "npn13G2$17",
+            "transform": "r0 *1 1053.6,1487.55",
+            "bbox": "(1050.25,1484.22;1062.5,1491.33)",
+            "pins": [],
+            "path": "nssoc_cdr_pd500_active_input_v57/134_4/124_731"
+          },
+          "terminals": [
+            {
+              "name": "C",
+              "net": "$652",
+              "native_cluster": 122,
+              "native_layers": [
+                {
+                  "layer": 35,
+                  "bbox_dbu": "(1052625,1485120;1060125,1488830)",
+                  "area_dbu2": 22416,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "B",
+              "net": "$621",
+              "native_cluster": 116,
+              "native_layers": [
+                {
+                  "layer": 37,
+                  "bbox_dbu": "(1052625,1485120;1060125,1488830)",
+                  "area_dbu2": 25353000,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "E",
+              "net": "$620",
+              "native_cluster": 115,
+              "native_layers": [
+                {
+                  "layer": 34,
+                  "bbox_dbu": "(1059115,1487100;1059185,1488000)",
+                  "area_dbu2": 63000,
+                  "polygons": 1
+                }
+              ]
+            },
+            {
+              "name": "S",
+              "net": "$1",
+              "native_cluster": 1,
+              "native_layers": [
+                {
+                  "layer": 33,
+                  "bbox_dbu": "(1051150,1485120;1061600,1490430)",
+                  "area_dbu2": 55489500,
+                  "polygons": 1
+                }
+              ]
+            }
+          ]
+        },
+        "logical_base_witnesses": [
+          {
+            "label": "A_sc_DN",
+            "point_dbu": [
+              994600,
+              1643550
+            ],
+            "metal": 67,
+            "logical_net": "cun",
+            "native_cluster": 116,
+            "native_name": "$621"
+          },
+          {
+            "label": "A_ac_on",
+            "point_dbu": [
+              994600,
+              1943180
+            ],
+            "metal": 67,
+            "logical_net": "cun",
+            "native_cluster": 116,
+            "native_name": "$621"
+          }
+        ],
+        "shared_emitter_gain_tail_records": [
+          {
+            "native_id": 30,
+            "instance": "XD0030",
+            "model": "sg13_lv_nmos",
+            "parameters": {
+              "l": "0.3u",
+              "w": "53.335u",
+              "as": "18.1339p",
+              "ad": "18.1339p",
+              "ps": "107.35u",
+              "pd": "107.35u",
+              "rfmode": "0",
+              "ng": "1",
+              "m": "1"
+            },
+            "terminals": [
+              {
+                "terminal": "D",
+                "node": "w_T030_D",
+                "anchor": "T030_D",
+                "native_cluster": 115,
+                "native_net": "$620"
+              },
+              {
+                "terminal": "G",
+                "node": "w_T030_G",
+                "anchor": "T030_G",
+                "native_cluster": 123,
+                "native_net": "irc"
+              },
+              {
+                "terminal": "S",
+                "node": "w_T030_S",
+                "anchor": "T030_S",
+                "native_cluster": 23,
+                "native_net": "avss"
+              },
+              {
+                "terminal": "B",
+                "node": "body_1",
+                "anchor": null,
+                "native_cluster": 1,
+                "native_net": "$1"
+              }
+            ]
+          },
+          {
+            "native_id": 31,
+            "instance": "XD0031",
+            "model": "sg13_lv_nmos",
+            "parameters": {
+              "l": "0.3u",
+              "w": "53.335u",
+              "as": "18.1339p",
+              "ad": "18.1339p",
+              "ps": "107.35u",
+              "pd": "107.35u",
+              "rfmode": "0",
+              "ng": "1",
+              "m": "1"
+            },
+            "terminals": [
+              {
+                "terminal": "D",
+                "node": "w_T031_D",
+                "anchor": "T031_D",
+                "native_cluster": 115,
+                "native_net": "$620"
+              },
+              {
+                "terminal": "G",
+                "node": "w_T031_G",
+                "anchor": "T031_G",
+                "native_cluster": 123,
+                "native_net": "irc"
+              },
+              {
+                "terminal": "S",
+                "node": "w_T031_S",
+                "anchor": "T031_S",
+                "native_cluster": 23,
+                "native_net": "avss"
+              },
+              {
+                "terminal": "B",
+                "node": "body_1",
+                "anchor": null,
+                "native_cluster": 1,
+                "native_net": "$1"
+              }
+            ]
+          }
+        ],
+        "parent_sampler": "sc",
+        "parent_sampler_placement": {
+          "kind": "sampler_cd",
+          "bbox_um": "(993.6,1461.52;2316.6,1705.15)",
+          "ports": {
+            "DP": "(993.6,1636.55;995.6,1638.55)",
+            "DN": "(993.6,1642.55;995.6,1644.55)",
+            "QP": "(993.6,1648.55;995.6,1650.55)",
+            "QN": "(993.6,1654.55;995.6,1656.55)",
+            "CLKP": "(993.6,1660.55;995.6,1662.55)",
+            "CLKN": "(993.6,1666.55;995.6,1668.55)",
+            "AVDD": "(993.6,1672.55;995.6,1674.55)",
+            "AVSS": "(993.6,1678.55;995.6,1680.55)",
+            "SUB": "(993.6,1684.55;995.6,1686.55)",
+            "IREF": "(993.6,1690.55;995.6,1692.55)"
+          }
+        },
+        "parent_source_plan": {
+          "tag": "sc",
+          "kind": "sampler_cd",
+          "pins": {
+            "DP": "cup",
+            "DN": "cun",
+            "QP": "cqp",
+            "QN": "cqn",
+            "CLKP": "cp",
+            "CLKN": "cn",
+            "AVDD": "avdd",
+            "AVSS": "avss",
+            "SUB": "sub",
+            "IREF": "irc"
+          },
+          "source_cards": [
+            "xsc"
+          ]
+        },
+        "conclusion": "The failing HBT belongs to the C/D active input pair: its base is the native retimed sampler input and its emitter shares the two native 53.335um gain-tail MOS devices."
+      }
+    ]
+  },
+  "diagnosis": {
+    "wrapper_binding_schema_failure": false,
+    "native_circuit_screen_rejection": true,
+    "source_only_fix_warranted": false,
+    "reason": "The original sampler/comparator/phase/VI/device gates execute after successful exact binding and complete native transient capture. Existing code correctly rejects these results. No evidence supports relaxing a gate or changing a binding.",
+    "first_concrete_physical_failure": "Four native C/D active-input HBTs exceed the original all-time 1.6 V VCE ceiling; sampler timing/margins and phase/current transfer also miss their original limits.",
+    "timing_attribution_limit": "The small summary records maximum all-time VCE, not its time or startup-versus-active occurrence. Distinguishing startup overshoot from active stress needs cloud-only readback of the preserved raw capture; no waveform archive was downloaded or analyzed locally.",
+    "next_justified_diagnostic": "Re-read the immutable full native capture in the cloud to locate stress times, input/output delay and per-terminal RC voltage drops before selecting a physical circuit or routing repair. Preserve original 10 cases, 34.25 ns, 256 bits and all electrical gates."
+  },
+  "active_jobs_snapshot": [
+    {
+      "id": 120835030804,
+      "name": "prepare",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T09:30:47Z",
+      "completed_at": "2026-10-24T09:31:57Z"
+    },
+    {
+      "id": 120838239534,
+      "name": "loaded (clock_stopped)",
+      "status": "queued",
+      "conclusion": null,
+      "started_at": "2026-10-24T09:31:57Z",
+      "completed_at": null
+    },
+    {
+      "id": 120838239535,
+      "name": "loaded (nominal_late)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-24T09:32:00Z",
+      "completed_at": "2026-10-24T09:47:51Z"
+    },
+    {
+      "id": 120838239536,
+      "name": "loaded (vi_bias_off)",
+      "status": "queued",
+      "conclusion": null,
+      "started_at": "2026-10-24T09:31:57Z",
+      "completed_at": null
+    },
+    {
+      "id": 120838239537,
+      "name": "loaded (cold_early)",
+      "status": "queued",
+      "conclusion": null,
+      "started_at": "2026-10-24T09:31:57Z",
+      "completed_at": null
+    },
+    {
+      "id": 120838239554,
+      "name": "loaded (hot_early)",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T09:50:54Z",
+      "completed_at": null
+    },
+    {
+      "id": 120838239572,
+      "name": "loaded (nominal_early)",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-24T09:32:05Z",
+      "completed_at": "2026-10-24T09:47:08Z"
+    },
+    {
+      "id": 120838239581,
+      "name": "loaded (hot_late)",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-24T09:51:31Z",
+      "completed_at": null
+    },
+    {
+      "id": 120838239593,
+      "name": "loaded (constant_one)",
+      "status": "queued",
+      "conclusion": null,
+      "started_at": "2026-10-24T09:31:57Z",
+      "completed_at": null
+    },
+    {
+      "id": 120838239627,
+      "name": "loaded (constant_zero)",
+      "status": "queued",
+      "conclusion": null,
+      "started_at": "2026-10-24T09:31:57Z",
+      "completed_at": null
+    },
+    {
+      "id": 120838239716,
+      "name": "loaded (cold_late)",
+      "status": "queued",
+      "conclusion": null,
+      "started_at": "2026-10-24T09:31:57Z",
+      "completed_at": null
+    }
+  ],
+  "native_dispatch_performed": false,
+  "jobs_cancelled_or_restarted": false,
+  "original_sources_modified": false,
+  "waveform_archives_downloaded_locally": false,
+  "full_phy_accepted": false,
+  "cdr_accepted": false
+}
