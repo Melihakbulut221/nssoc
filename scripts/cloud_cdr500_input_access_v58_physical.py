@@ -94,6 +94,7 @@ def main():
         layout=parent/'layout';delta=json.loads((layout/'result.json').read_text())
         assert len(delta['controls'])==9 and delta['added_via_instances']==24
         assert len(delta['native_survey_selection_controls'])==8 and delta['added_route_rectangles']==20
+        assert len(delta['serialization_integrity_controls'])==3 and delta['serialized_region_materialized_before_exact_xor']
         assert delta['original_sampler_via1_via2_material_preserved']and delta['native_survey_sha256']==survey_sha
         assert len(delta['high_endpoint_cut_controls'])==3 and delta['original_high_endpoint_two_cut_sets_preserved']==8
         assert delta['original_children_drawings_and_placements_preserved']and delta['original_public_labels_and_boundary_preserved']and delta['serialized_metal_and_via_delta_exact']

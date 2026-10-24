@@ -566,8 +566,9 @@ def main():
     reread.read(str(output))
     rt = reread.cell(CANDIDATE)
     require(rt is not None and rt.bbox() == original_box and reread.dbu == L.dbu, 'Serialized boundary/grid changed')
-    # Reporting only: inspect every serialized layer/cell before the unchanged
-    # exact XOR gate. No region or acceptance condition is modified here.
+    # Retain the exact historical raw-Region witness. Acceptance below now
+    # materializes the serialized polygon Region, matching the pre-write
+    # comparisons; exact XOR and separate text/hierarchy checks remain required.
     serialized_layers = []
     for key, before in all_before.items():
         expected = before + additions.get(key[0], pya.Region()) if key[1] == 0 else before
@@ -613,7 +614,7 @@ def main():
             serialized_children.append(dict(name=old_names[index], missing=False, layer_differences=mismatches,
                 original_labels=before[1], serialized_labels=after[1],
                 original_instances=before[2], serialized_instances=after[2]))
-    serialization_witness = dict(status='REPORT_ONLY_SERIALIZED_GEOMETRY_DIAGNOSIS_ORIGINAL_XOR_GATE_UNCHANGED',
+    serialization_witness = dict(status='SERIALIZED_MATERIAL_RAW_WITNESS_WITH_MATERIALIZED_EXACT_XOR_GATE',
         source_head=__import__('os').environ['GITHUB_SHA'], source_sha256=sha(Path(__file__)),
         original_gds_sha256=GDS_SHA, candidate_gds_sha256=sha(output), grid_dbu=L.dbu,
         original_top_name=original_top_name, candidate_top_name=rt.name,
@@ -624,7 +625,8 @@ def main():
         serialized_layer_differences=serialized_layers, serialized_original_child_differences=serialized_children,
         original_top_labels=old_top[1], serialized_top_labels=cell_snapshot(reread, rt)[1],
         original_top_instances=old_top[2], serialized_top_instances=cell_snapshot(reread, rt)[2],
-        candidate_geometry_changed_by_diagnostic=False, acceptance_guard_changed=False,
+        candidate_geometry_changed_by_diagnostic=False, serialized_region_materialization_changed=True,
+        exact_material_equality_still_required=True, acceptance_tolerance_changed=False,
         physical_accepted=False, rc_accepted=False, electrical_accepted=False)
     # Snapshot label dictionaries have tuple layer keys; use JSON-safe records
     # without changing or filtering any native labels.
@@ -639,18 +641,48 @@ def main():
     (args.out.parent/'serialized-delta-witness.json').write_text(json.dumps(serialization_witness, indent=2)+'\n')
     print(json.dumps(dict(serialization_witness='serialized-delta-witness.json',
         changed_layers=len(serialized_layers), changed_original_children=len(serialized_children),
-        original_xor_gate_unchanged=True)), flush=True)
+        exact_material_xor_required=True)), flush=True)
     for key, before in all_before.items():
         expected = before + additions.get(key[0], pya.Region()) if key[1] == 0 else before
-        require((pya.Region(rt.begin_shapes_rec(reread.layer(*key)))^expected).is_empty(), 'Serialized original material differs')
+        require((pya.Region(rt.begin_shapes_rec(reread.layer(*key))).merged()^expected).is_empty(), 'Serialized original material differs')
     for m in ALLOWED:
-        require((pya.Region(rt.begin_shapes_rec(reread.layer(m, 0)))^(total[m]+additions[m])).is_empty(), 'Serialized material differs')
+        require((pya.Region(rt.begin_shapes_rec(reread.layer(m, 0))).merged()^(total[m]+additions[m])).is_empty(), 'Serialized material differs')
     require(cell_snapshot(reread, rt)[1] == old_top[1], 'Serialized public labels changed')
     for index, before in old_cells.items():
         if index != T.cell_index():
             child = reread.cell(old_names[index])
             require(child is not None, 'Serialized original child disappeared')
             equal_snapshot(before, cell_snapshot(reread, child))
+    # Native serialized-material corruption controls. These are actual
+    # nonzero-area polygons, not a polygon-count substitute for material equality.
+    serial_material = pya.Region(rt.begin_shapes_rec(reread.layer(30, 0))).merged()
+    serial_expected = total[30]+additions[30]
+    require((serial_material^serial_expected).is_empty(), 'Serialized M3 baseline differs')
+    px, py = first['base_lane_dbu']
+    removed_square = pya.Region(pya.Box(px-5, py-5, px+5, py+5))
+    added_square = pya.Region(pya.Box(original_box.left-10, original_box.bottom-10,
+                                    original_box.left-5, original_box.bottom-5))
+    require(removed_square.area() == 100 and (removed_square-serial_material).is_empty(), 'Native removed-square witness must be fully inside real M3')
+    require(added_square.area() == 25 and (added_square & serial_material).is_empty(), 'Native added-square witness must be outside original material')
+    serialization_controls = []
+    for name, bad in [('removed_serialized10nm_material_square', serial_material-removed_square),
+                      ('added_serialized5nm_material_square', serial_material+added_square)]:
+        try:
+            require((bad.merged()^serial_expected).is_empty(), 'Serialized original material differs')
+        except ValueError:
+            serialization_controls.append(name)
+        else:
+            raise AssertionError('Accepted actual serialized material corruption '+name)
+    bad_labels = copy.deepcopy(cell_snapshot(reread, rt)[1])
+    label_layer = sorted(bad_labels)[0]
+    bad_labels[label_layer][0] += '_CORRUPTED'
+    try:
+        require(bad_labels == old_top[1], 'Serialized public labels changed')
+    except ValueError:
+        serialization_controls.append('changed_serialized_public_label')
+    else:
+        raise AssertionError('Accepted changed serialized public label')
+    require(len(serialization_controls) == 3, 'Missing serialized material/text controls')
     require(all(sha(Path(q)) == h for q, h in protected.items()), 'Protected input changed')
     result = dict(status='GENERATED_SOURCE_REVIEWED_CANDIDATE_REQUIRES_ALL_NATIVE_PHYSICAL_RC_AND_ELECTRICAL_GATES',
         input_sha256=protected, original_top=original_top_name, candidate_top=CANDIDATE,
@@ -658,6 +690,8 @@ def main():
         plans=plans, additions=route_records, controls=controls,
         native_survey_run=40093754159, native_survey_sha256=SURVEY_SHA,
         native_survey_selections=selected, native_survey_selection_controls=selection_controls,
+        serialization_integrity_controls=serialization_controls,
+        serialized_region_materialized_before_exact_xor=True,
         high_endpoint_cut_controls=high_cut_controls, original_high_endpoint_two_cut_sets_preserved=8,
         count_dependent_native_via_source_sha256=VIA_PINS,
         original_children_drawings_and_placements_preserved=True,
