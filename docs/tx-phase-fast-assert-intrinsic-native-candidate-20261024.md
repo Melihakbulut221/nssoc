@@ -1,0 +1,13 @@
+# Fast-assert244 intrinsic native candidate
+
+The original241 full readback40095334893 measured genuine reset latency: reset asserted at12.03125ns, but required MP/QP preset crossings followed at12.08190–12.08269ns. The fixed original12.0625ns UI sample therefore failed in three of four cases. The source-only repair adds three real rppd cards to the original level network, directly including ARM at its differential input. It leaves original latch/current/clock stacks and the first-fall release circuit intact. It does change their analog loading; source algebra does not prove speed or release correctness.
+
+The independent original241 zero-source native comparison40097348918 reproduced the default junction-guess temperature NaN and dynamic-gmin diagnostics. Uniform OFF=1 on all106 HBTs gave diagnostic-free all-zero355-state OP for both P/N presets, with every actual native device flag read back. This qualifies only that initialization diagnostic. It does not accept the old transients or new244 circuit.
+
+The new cloud controller pins that exact completed run and summary/parts hashes before restoring the identical engine/models. All four fresh244 preparations retain the original34ns trajectory, measured scalar fixture, nominal4GHz, fixed125ps UI centers, .3125ps maximum step and original106-HBT safety limits. The only runtime initialization addition is the same uniform106 OFF flag command/readback; there is no IC/UIC, nodeset, differential state selection or phase fit. The original phase/safety observer functions remain byte/AST identical.
+
+Every full fresh transient must independently have zero native numerical diagnostics, exact solver and flag readback, complete all-zero358-state OP, complete finite359-column raw capture, and pass the original phase and HBT safety gates. Numerical failure never skips the useful full waveform readback, but it still rejects the case. Full raw/decks/models/logs/contracts and rejection details are published even on failure. All original rejected captures remain immutable.
+
+The workflow's push event runs only controls (including the existing actual one-resistor loader controls), never a244 DUT transient. The manual native job is intrinsic-four-case-fast-assert and requires those controls. New controls refuse altered prerequisite metadata/flags/OP outcomes and reject any numerical, transport, phase or safety failure independently.
+
+No new layout/RC, real reset driver/distribution, selector loading,31-clock tree, PLL connection, frequency lock or full-PHY acceptance follows from this experiment. Even a four-case pass is an unloaded nominal intrinsic schematic diagnostic; the real-load/physical obligations in docs/tx-phase31-real-load-and-reset-contract-20261024.md remain.

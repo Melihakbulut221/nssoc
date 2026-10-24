@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-fast-assert-intrinsic-cloud
+on:
+  push:
+    branches: [codex/tx-clock-phase-parent]
+    paths:
+      - scripts/cloud_tx_phase_fast_assert_intrinsic.py
+      - scripts/check_tx_phase_fast_assert_intrinsic.py
+      - scripts/tx-phase-fast-assert-intrinsic-methods.json
+      - .github/workflows/tx-phase-fast-assert-intrinsic-cloud.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-fast-assert-intrinsic
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Preserve original observers and require qualified native zero-OP diagnosis
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ( exit 7 ) | tee rejected-pipeline-control.txt; then exit 1; fi
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/check_tx_phase_fast_assert_intrinsic.py | tee controls.json
+          python3 - <<'PYCODE'
+          import json
+          d=json.load(open('controls.json'))
+          assert d['status']=='PASS_FAST_ASSERT244_FRESH_NATIVE_CONTROLLER_CONTROLS_NO_DUT_TRANSIENT'
+          assert len(d['four_uniform_decks'])==4
+          assert len(d['prerequisite_and_deck_faults'])==12 and len(d['acceptance_gate_faults'])==10
+          assert not d['fast_assert244_DUT_executed'] and not d['full_PHY_accepted']
+          assert len(d['original_loader_and_reader_controls']['full_raw_reader_controls'])==7
+          assert len(d['original_loader_and_reader_controls']['zero_OP_reader_controls'])==8
+          assert d['exact_original_zero_OP_prerequisite']['run']==40097348918
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: phase-fast-assert-controls-${{ github.run_id }}
+          path: controls.json
+          retention-days: 30
+  intrinsic-four-case-fast-assert:
+    if: github.event_name == 'workflow_dispatch'
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Run fresh244-device real fast-assert transistor candidate with unchanged four-case oracle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/cloud_tx_phase_fast_assert_intrinsic.py --native
+      - name: Publish full fresh captures and every rejection
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import json,os,pathlib,subprocess,sys
+          root=pathlib.Path('hw/soc/out/cloud-tx-phase-fast-assert-intrinsic');root.mkdir(parents=True,exist_ok=True)
+          p=root/'result.json'
+          if not p.exists():p.write_text(json.dumps(dict(status='FAIL_MISSING_FAST_ASSERT_REPORT',source_head=os.environ['GITHUB_SHA'],full_PHY_accepted=False))+'\n')
+          group='tx-phase-fast-assert-intrinsic';stem=group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+          summary=pathlib.Path(stem+'.summary.json');summary.write_bytes(p.read_bytes())
+          subprocess.run([sys.executable,'scripts/cloud_chunked_results.py','--directory',str(root),'--stem',stem],check=True)
+          parts=pathlib.Path(stem+'.parts.json');d=json.loads(parts.read_text())
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,str(summary),str(parts),*[p['name']for p in d['parts']]],check=True)
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome == 'failure'
+        with:
+          name: phase-fast-assert-full-evidence-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-phase-fast-assert-intrinsic/
+          retention-days: 30
