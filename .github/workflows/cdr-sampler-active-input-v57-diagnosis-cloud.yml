@@ -6,7 +6,7 @@ on:
       - .github/workflows/cdr-sampler-active-input-v57-diagnosis-cloud.yml
       - scripts/cloud_cdr_sampler_active_input_v57_diagnosis.py
       - scripts/cdr-sampler-active-input-v57-diagnosis-method.json
-      - docs/evidence/cdr-active-levelshift-v56-extracted-results-20261024.json
+      - docs/evidence/cdr-sampler-active-input-v57-results-20261024.json
   workflow_dispatch:
 permissions:
   contents: read
@@ -26,7 +26,7 @@ jobs:
       - run: |
           python3 -m pip install numpy==2.3.3
           python3 -m py_compile scripts/cloud_cdr_sampler_active_input_v57_diagnosis.py
-          PYTHONPATH=scripts python3 -c "from cloud_cdr_sampler_active_input_v57_diagnosis import check, resistance_controls; print(check()); print(resistance_controls())"
+          PYTHONPATH=scripts python3 -c "from cloud_cdr_sampler_active_input_v57_diagnosis import check; check()"
   native:
     needs: controls
     runs-on: ubuntu-24.04

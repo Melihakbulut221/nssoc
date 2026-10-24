@@ -7686,3 +7686,10 @@ measureactual sharedref/tails and stage signals before choosing a repair.
 Original standalone1pF/output stress retained, notactual parent loading; don't
 infer physical parent failure or acceptance from this screen. No gates relaxed.
 Need actual C/D-specific sampler geometry + wholeparent freshRC/fullwaves.
+
+## 2026-10-24 waveform analysis launch repair
+Diagnosis40058204387 stopped at controls before reading any wave: generated
+newline literal was invalid Python. Also remove unrelated inherited nonexistent
+resistance_controls import; this reader solves no resistor graph. Fix workflow
+trigger to actualsampler receipt. Source hashes and all waveform reproduction
+assertions retained; no native simulation restarted or acceptance gate changed.

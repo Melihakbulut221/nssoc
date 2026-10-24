@@ -17,8 +17,7 @@ def main():
  assert os.environ.get('GITHUB_ACTIONS')=='true';check()
  out=ROOT/('cloud-cdr-sampler-active-input-v57-diagnosis-'+a.case);out.mkdir();reports.OUT=out
  result=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],case=a.case,full_phy_accepted=False,physical_accepted=False)
- def save():(out/'result.json').write_text(json.dumps(result,indent=2)+'
-')
+ def save():(out/'result.json').write_text(json.dumps(result,indent=2)+ '\n')
  save()
  try:
   pin=json.loads(PIN.read_text());p=pin['cases'][a.case]
