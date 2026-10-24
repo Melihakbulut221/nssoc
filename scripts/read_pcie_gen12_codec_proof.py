@@ -9,6 +9,9 @@ RUN=40099402878
 HEAD='86dbe41b5383c29238b6a61f87783f3409e6cf3b'
 ATTEMPT=1
 ARTIFACT='pcie-gen12-codec-40099402878-1'
+ARTIFACT_ID=12562423938
+ARCHIVE_BYTES=174763
+ARCHIVE_SHA='99e2e0e066229d608f00ce0805b5de45080d693ada9deffb3087c35a0fd82f55'
 STATUS='PASS_GEN12_SINGLE_LANE_CODEC_TABLE_EXHAUSTIVE_STATE_SYNTHESIS_AND9_FAULTS'
 FAULTS={'tx_bit_order','tx_invalid_K','tx_RD_constant','rx_code_error_hidden','rx_disparity_hidden','rx_RD_invalid_hold','rx_alternate7_reject','lane_enable_ignored','lane_reset_positive'}
 def digest(b):return hashlib.sha256(b).hexdigest()
@@ -68,9 +71,10 @@ def main():
   selected=[x for x in artifacts['artifacts']if x['name']==ARTIFACT]
   assert len(selected)==1;meta=selected[0]
   assert not meta['expired'] and meta['workflow_run']['id']==RUN and meta['workflow_run']['head_sha']==HEAD
-  assert 0<meta['size_in_bytes']<=128*1024*1024
+  assert meta['id']==ARTIFACT_ID and meta['size_in_bytes']==ARCHIVE_BYTES
+  assert meta['digest']=='sha256:'+ARCHIVE_SHA
   raw=api('actions/artifacts/'+str(meta['id'])+'/zip',True)
-  assert 0<len(raw)<=128*1024*1024
+  assert len(raw)==ARCHIVE_BYTES and digest(raw)==ARCHIVE_SHA
   z=zipfile.ZipFile(io.BytesIO(raw));info=z.infolist()
   assert len(info)<4000 and sum(x.file_size for x in info)<=512*1024*1024
   names=[x.filename for x in info if not x.is_dir()]
