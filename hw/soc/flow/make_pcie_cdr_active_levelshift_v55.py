@@ -173,7 +173,7 @@ def main():
                 collector_access = (met == 1 and net == n[0])
                 emitter_access = (met == 2 and net == n[2])
                 escape(pin, met, net, lane, name, 16 if collector_access or emitter_access else 4, off,
-                       width=1.2 if collector_access else 0.8 if emitter_access else 0.4)
+                       width=1.2 if collector_access else 0.6 if emitter_access else 0.4)
             reference.append(
                 f"Q{name} "
                 + " ".join(n[:3] + ["BULK"])
@@ -344,7 +344,7 @@ def main():
                 hbt_collector_via_columns=16,
                 hbt_collector_escape_width_um=1.2,
                 hbt_emitter_via_columns=16,
-                hbt_emitter_escape_width_um=0.8,
+                hbt_emitter_escape_width_um=0.6,
                 ports={n: str(b) for n, (_, b) in ports.items()},
                 bbox_um=str(bbox),
                 drc_pass=False,

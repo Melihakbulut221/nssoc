@@ -7409,3 +7409,10 @@ resistor access. Upper regular via arrays8x4 and TopVia1 4x4; tailMOS lower16row
 HBT emitter lower16cuts/.8umM3. No numeric R/C rescale. Need native560DRC0,
 deep/flat18LVS,ninefaults,actual freshRC and original loaded fullwaves.
 Local project remains empty; do not download archives or run native tools locally.
+
+## 2026-10-24 v55 first physical attempt rejected two M3.b markers
+Run40049797053 has actual560rule DRC with2M3.b spacing markers, stopped beforeLVS.
+Complete failed layout/logs retained in release and exact failure receipt.
+Reduce HBT emitter M3 escape0.8->0.6um, retain16lower cuts and all other v55changes.
+Controller also restores/records both original native XML markers before new
+generation; no rule filtering/waiver. Full560DRC/deep-flat18LVS/ninefaults rerun.

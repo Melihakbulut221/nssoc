@@ -45,11 +45,28 @@ def main():
     out=ROOT/'hw/soc/out/cloud-cdr-active-levelshift-v55-physical';out.mkdir(parents=True,exist_ok=False)
     r=dict(status='RUNNING',kind=a.kind,source_head=os.environ['GITHUB_SHA'],accepted=False,
            full_phy_accepted=False,closed_loop=False,qualified_pex=False,main_chip_integrated=False,
-           scope='Unchanged v53 circuit in v55 geometry with actual stronger upper8x4 regular/4x4 TopVia1 arrays,16row tail MOS access and16cut/0.8um HBT emitter access:2HBT/3MOS/4R and9finite substrate contacts,8ports. Full560DRC,deep/flat18-device LVS and9actual fault controls. Component physical validation only; parent bias/load integration,fresh RC,loaded waves,PVT and full serial PHY remain required.')
+           scope='Unchanged v53 circuit in v55 geometry with actual stronger upper8x4 regular/4x4 TopVia1 arrays,16row tail MOS access and16cut/0.6um HBT emitter access:2HBT/3MOS/4R and9finite substrate contacts,8ports. Full560DRC,deep/flat18-device LVS and9actual fault controls. Component physical validation only; parent bias/load integration,fresh RC,loaded waves,PVT and full serial PHY remain required.')
     def save():(out/'result.json').write_text(json.dumps(r,indent=2)+'\n')
     save()
     try:
         r['component_preflight']=component_evidence(out);save()
+        # Preserve and inspect the two native M3 spacing markers from the prior
+        # actual candidate; no filter or waiver is applied to the new geometry.
+        import compare_cloud_routed_endpoints as reports
+        import xml.etree.ElementTree as ET
+        reports.OUT=out
+        previous_pin=json.loads((ROOT/'docs/evidence/cdr-active-levelshift-v55-m3-spacing-error-20261024.json').read_text())
+        prior,proof=reports.restore_report('cdr-active-levelshift-v55-physical',previous_pin['run'],previous_pin['summary_sha256'],previous_pin['parts_sha256'],out/'prior-drc',['physical/drc/drc.lyrdb','layout/result.json'])
+        assert prior==previous_pin['report']
+        measurement=prior['physical']['steps']['drc']['measurement']
+        assert measurement['category_count']==560 and measurement['categories']=={"'M3.b'":2}
+        marker_path=out/'prior-drc/physical/drc/drc.lyrdb'
+        assert sha(marker_path)==measurement['report_sha256']
+        tree=ET.parse(marker_path)
+        markers=[ET.tostring(item,encoding='unicode')for item in tree.findall('.//items/item')]
+        assert len(markers)==2
+        r['previous_drc_diagnosis']=dict(source=proof,markers=markers,corrective_geometry='HBT emitter M3 width0.8->0.6um; all16lower cuts retained',waivers=[])
+        save()
         protected={str(ROOT/p):h for p,h in check()['protected'].items()};protected[str(MANIFEST)]=sha(MANIFEST)
         r['protected_inputs']=protected
         spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
