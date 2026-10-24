@@ -67,6 +67,7 @@ class Records:
   self.tx_accepted=0;self.tx_rejected=0;self.tx_queued=0;self.tx_stalls=0
   self.bad_k_positions=set();self.tx_flush_groups={k:set()for k in ('reset','disable','flush')}
   self.tx_force_stalls=0;self.tx_force_changes=0;self.loopback_words=0
+  self.tx_demand_cycles=0;self.tx_demand_not_ready_cycles=0;self.tx_underflow_cycles=0
  def rx_step(self,r,e,f,p,v,w,ready):
   flush='reset'if not r else'disable'if not e else'force'if f else'polarity'if p!=self.prev else None
   flush_partial=len(self.partial);flush_queue=len(self.queue)
@@ -111,6 +112,9 @@ class Records:
   prior_rd=self.tx.rd
   out=self.tx.step(r,e,f,int(old is not None),4,chunk,flags,int(initial and old_group==0),ready,demand)
   error=queued=0
+  self.tx_demand_cycles+=int(active and demand)
+  self.tx_demand_not_ready_cycles+=int(active and demand and not ready)
+  self.tx_underflow_cycles+=out[3]
   if not active:
    kind='reset'if not r else'disable'if not e else'flush'
    if old is not None:self.tx_flush_groups[kind].add(old_group)
@@ -240,6 +244,35 @@ def vectors():
    for k in (0,1):
     reset_tx();data=(0x11*sum(1<<(8*i)for i in range(16)))&~(255<<(8*pos));data|=byte<<(8*pos)
     submit(data,k<<pos,force=byte%2);drain()
+ # The real wrapper demand pin must distinguish starvation, no request,
+ # output backpressure and inactive/reset/flush cycles.
+ reset_tx()
+ assert add(tdemand=1,tready=1)[6]==1
+ assert add(tdemand=1,tready=0)[6]==0
+ assert add(tdemand=0,tready=1)[6]==0
+ for ctl in ({'trst':0},{'ten':0},{'tflush':1}):
+  assert add(tdemand=1,tready=1,**ctl)[6]==0
+ submit(0x111111111111111111111111111111bc,1)
+ assert add(tdemand=1,tready=1)[6]==1  # Staged record is not yet raw output.
+ assert add(tdemand=1,tready=0)[6]==0
+ drain()
+ assert add(tdemand=1,tready=1)[6]==1
+ # A continuously supplied legal record stream covers the single staging
+ # cycle without any missing output word after startup, not merely equal totals.
+ reset_tx();continuous_records=128;continuous_words=0;accepted=0;held=None;started=False
+ for cycle in range(continuous_records*6+16):
+  if held is None and accepted<continuous_records:
+   payload=[188]+[rng.randrange(256)for _ in range(15)]
+   held=sum(b<<(8*j)for j,b in enumerate(payload))
+  out=add(tvalid=int(held is not None),tdata=held or 0,tk=1,tready=1,tdemand=int(started))
+  if started:assert out[5]and not out[6],('continuous output gap',cycle,continuous_words)
+  if out[5]:continuous_words+=1;started=True
+  if held is not None and out[3]:accepted+=1;held=None
+  if continuous_words==continuous_records*5:
+   assert accepted==continuous_records and o.pending is None and not o.tx.q
+   break
+ else:raise AssertionError('continuous record stream did not drain')
+ assert continuous_words==640
  # Real repeated RD continuity and forced-negative while earlier raw words
  # remain queued. This is caller-owned, not an automatic per-record reset.
  reset_tx()
@@ -286,6 +319,7 @@ def vectors():
  assert all(v.issuperset({0,1,2})for v in o.queued_flush.values())
  assert all(v==set(range(4))for v in o.tx_flush_groups.values())
  assert o.tx_stalls and o.tx_force_stalls and o.tx_force_changes
+ assert o.tx_demand_cycles and o.tx_demand_not_ready_cycles and o.tx_underflow_cycles
  path=OUT/'vectors.txt';path.write_text(''.join(' '.join(format(v,'x')for v in row)+'\n'for row in rows))
  coverage=dict(cycles=len(rows),raw_offsets=list(range(32)),polarities=[0,1],actual_raw_code_RD_pairs=len(o.rx.pairs),
   completed_records=o.rx_completed,delivered_records=o.rx_delivered,completion_slots=sorted(o.complete_slots),start_slots=sorted(o.starts),
@@ -295,6 +329,8 @@ def vectors():
   partial_flush={k:sorted(v)for k,v in o.partial_flush.items()},queued_flush={k:sorted(v)for k,v in o.queued_flush.items()},
   tx_accepted=o.tx_accepted,tx_rejected=o.tx_rejected,tx_queued=o.tx_queued,invalid_K_positions=sorted(o.bad_k_positions),
   tx_backpressure_cycles=o.tx_stalls,forced_first_batch_stalls=o.tx_force_stalls,forced_first_batch_RD_changes=o.tx_force_changes,
+  demand_cycles=o.tx_demand_cycles,demand_not_ready_cycles=o.tx_demand_not_ready_cycles,underflow_cycles=o.tx_underflow_cycles,
+  continuous_legal_records=continuous_records,continuous_output_words=continuous_words,continuous_output_gaps=0,
   tx_flush_groups={k:sorted(v)for k,v in o.tx_flush_groups.items()},actual_composed_loopback_words=o.loopback_words,
   actual_composed_loopback_records=loop_records,protocol_TS_acceptance=False)
  return path,coverage
@@ -378,7 +414,9 @@ def mutations():
  'reverse_TX_chunks':[(".data_i(tx_data[tx_group*32+:32])",".data_i(tx_data[(3-tx_group)*32+:32])")],
  'read_unlatched_TX_input':[(".data_i(tx_data[tx_group*32+:32])",".data_i(tx_record_data_i[tx_group*32+:32])")],
  'ignore_TX_flush':[("if(!tx_enable_i || tx_flush_i)begin","if(!tx_enable_i)begin")],
- 'discard_last_TX_chunk':[("if(tx_group==3)begin","if(tx_group==2)begin")]
+ 'discard_last_TX_chunk':[("if(tx_group==3)begin","if(tx_group==2)begin")],
+ 'disconnect_TX_demand':[(".stream_active_i(tx_stream_active_i)",".stream_active_i(1'b0)")],
+ 'invent_TX_demand':[(".stream_active_i(tx_stream_active_i)",".stream_active_i(1'b1)")]
  }
 def main():
  assert os.environ.get('GITHUB_ACTIONS')=='true'
@@ -408,8 +446,8 @@ def main():
    mutant=OUT/(label+'.v');mutant.write_text(changed)
    controls.append(simulate([mutant if p==RTL else p for p in paths],label,False))
   result['negative_controls']=controls
-  assert len(controls)==22 and prerequisites()[0]==m
-  result['status']='PASS_COMPOSED_CANDIDATE16_TRANSPORT_AND22_COMPILED_FAULTS'
+  assert len(controls)==24 and prerequisites()[0]==m
+  result['status']='PASS_COMPOSED_CANDIDATE16_TRANSPORT_AND24_COMPILED_FAULTS'
  except BaseException as exc:
   result.update(status='FAIL_OR_ERROR',error=repr(exc));raise
  finally:

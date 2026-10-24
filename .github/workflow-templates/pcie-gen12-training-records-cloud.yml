@@ -38,8 +38,8 @@ jobs:
           import json
           from pathlib import Path
           r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records/result.json').read_text())
-          assert r['status']=='PASS_COMPOSED_CANDIDATE16_TRANSPORT_AND22_COMPILED_FAULTS'
-          assert len(r['negative_controls'])==22
+          assert r['status']=='PASS_COMPOSED_CANDIDATE16_TRANSPORT_AND24_COMPILED_FAULTS'
+          assert len(r['negative_controls'])==24
           assert r['protocol_TS_acceptance'] is False and r['full_PHY_accepted'] is False
           PY
       - name: Preserve complete small result in authenticated job log
