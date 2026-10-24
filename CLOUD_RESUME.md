@@ -7604,3 +7604,15 @@ mainchip-route12-drt-154-checkpoint-20261024.json. Original20/4/8/8ns+5percent u
 Local workspace verified empty and no local CAD process; all archives stay Releases.
 PLL40041871167 currently publishing native full bytes; TX40050776700 and40051009656
 remain live. No duplicates or local download of native wave/GDS/archive.
+
+## 2026-10-24 v56 measured supply losses retained; v57 real short supply access
+Saved diagnosis40055430934 verifies complete original wave bytes. Hot pullup
+supply equivalent5.397/3.841ohm and39.645/28.625mV loss. v56 hot actual still
+99.346mV/37.969ps/CM1.795696V, rejected. New v57 keeps exact v56 intrinsic SPICE,
+8umref/53.335umtails and2x20um tail taps, original signal/device/CM gates.
+Only pullup supply M3 escapes move from x-12 to x+6 (~16um to2um); their substrate
+columns move x+6->x+12; M3 box now explicitly includes both endpoints. Actual
+new GDS/560DRC/deep-flat18LVS/nine faults launched, then fresh native RC/model
+binding/composition/all5loaded waves mandatory. Never scale old resistance values.
+Mainchip continuation40056071182 live from exact154checkpoint, no duplicate.
+All work cloud-only; local workspace empty, native archives remain Releases.
