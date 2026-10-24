@@ -237,6 +237,7 @@ def main():
                     require((pya.Region(old_cut)-reg).is_empty(), 'New native cut partially overlaps an original cut')
             rendered[info.layer] = reg
         require(layer_name[bottom_name] in rendered and layer_name[top_name] in rendered, 'Native via endpoint missing')
+        require(not (rendered[layer_name[bottom_name]] & own[plan['gain_native_id']][layer_name[bottom_name]]).is_empty(), 'Rendered bottom landing misses original owned metal')
         for m, reg in rendered.items():
             additions[m] += reg
             addition_owner[m].append((plan['gain_native_id'], reg.dup()))
@@ -278,6 +279,7 @@ def main():
         high = [col['high_dbu'] for col in plan['columns']]
         for point in high:
             via('Metal5', 'TopMetal2', point, plan, 'native_m5_tm2_bus_landing', upper=True)
+        landing(134, plan['bus_boundary_dbu'], plan)
         add_line(134, plan['bus_boundary_dbu'], max(high, key=lambda q: q[0]), 3200, plan, 'parallel_tm2_bus_to_original_parent_boundary')
         # Existing base M1 geometry, original four cuts and all native devices
         # remain. The sixteen-column stack adds finite metal/via access.
