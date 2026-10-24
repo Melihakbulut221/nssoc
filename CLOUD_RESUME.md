@@ -7285,3 +7285,15 @@ New upper via arrays can produce loops/internal nodes even on input nets. For
 fault-control stimulus choose an actual native input bridge on P_ip to T004_B
 path; retain strict native edge/value/point/conductor auditing and14faults.
 Then actual measured R/C census and native port order drive composition/full waves.
+
+
+## 2026-10-24 v53 RC/binding and mainchip saved-process continuation
+v53 wire40044866226 passed all50terminals,18devices/40anchors/8ports; start fresh
+RC and binding with actual5.4um reference MOS census. Input-open fault selected on
+real P_ip to native base bridge, no forest assumption or removal of physical loops.
+Mainchip40031170989 terminal SAVED actual process; completed iterations extended
+334->301->5394->399. Latest partial336 is not completed. All history retained;
+routing is not monotonic and399 is not zero or final setup/hold. Original clocks
+20/4/8/8ns+5%derate retained. Dispatch next7200s continuation from exact new
+399checkpoint after this commit; no cold restart or completed-prefix replay.
+PLL40041871167 and TX40039365864/40039368788 live, do not duplicate.
