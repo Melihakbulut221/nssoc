@@ -1,0 +1,98 @@
+# SPDX-License-Identifier: Apache-2.0
+# Source-only manual template. No complete engineering proof or synthesis here.
+name: PCIe record static32 write equivalence
+on:
+  workflow_dispatch:
+    inputs:
+      verify:
+        type: boolean
+        default: false
+        description: Run actual all-index original/candidate equivalence after supervision controls
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: pcie-gen12-record-static-equivalence-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Original13 resource controls and reversible source derivation
+        run: |
+          python3 -u scripts/cloud_pcie_gen12_training_records_telemetry.py --controls | tee static-control-console.log
+          python3 - <<'PY'
+          import json,sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          from check_pcie_gen12_training_records_static_equivalence import source_contract
+          r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-telemetry/controls.json').read_text())
+          assert r['status']=='PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL'
+          assert len(r['controls'])==13 and all(r['controls'].values())
+          m=source_contract()
+          print(json.dumps({'status':'PASS_REVERSIBLE_STATIC_SOURCE_NO_RTL_EXECUTION','protected':len(m['protected'])}))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: record-static-controls-${{ github.run_id }}
+          path: |
+            hw/soc/out/cloud-pcie-gen12-training-records-telemetry
+            static-control-console.log
+          retention-days: 90
+  equivalence:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch' && inputs.verify
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install the same independent RTL compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog
+          iverilog -V
+      - name: Original and candidate against bit oracle and compiling faults
+        run: |
+          python3 -u scripts/check_pcie_gen12_training_records_static_equivalence.py | tee static-equivalence-console.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-static-equivalence/result.json').read_text())
+          assert r['status']=='PASS_STATIC32_WRITE_EQUIVALENCE_AND8_COMPILED_FAULTS'
+          assert r['coverage']['all_counts']==list(range(32)) and r['coverage']['all_batch_slots']==list(range(4))
+          assert r['coverage']['slot_cases']==62720 and r['coverage']['full_serial_block_cases']==15360
+          assert len(r['negative_controls'])==8 and all(x['returncode']!=0 for x in r['negative_controls'])
+          assert r['original_full_record_proof_completed']is False and r['synthesis_improvement_measured']is False
+          PY
+      - name: Preserve actual small result independently of artifact publication
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          p=Path('hw/soc/out/cloud-pcie-gen12-training-records-static-equivalence/result.json')
+          if p.exists():
+              b=p.read_bytes();assert len(b)<8_000_000
+              s=base64.b64encode(b).decode();parts=[s[i:i+4096]for i in range(0,len(s),4096)]
+              print('STATIC_EQ_RESULT '+json.dumps({'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest(),'chunks':len(parts)}))
+              for i,v in enumerate(parts):print('STATIC_EQ_CHUNK '+str(i)+' '+v)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: record-static-equivalence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            hw/soc/out/cloud-pcie-gen12-training-records-static-equivalence
+            static-equivalence-console.log
+          retention-days: 90
+          if-no-files-found: warn
