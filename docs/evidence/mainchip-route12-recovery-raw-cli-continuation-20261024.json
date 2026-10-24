@@ -1,0 +1,44 @@
+{
+  "schema": "mainchip-route12-recovery-raw-cli-continuation-v1",
+  "run": 40110502492,
+  "source": "ac1740af745fe3d62960b1e62297096c619f0c5d",
+  "attempt": 1,
+  "status": "queued",
+  "release": 422839260,
+  "tag": "cloud-results-40110502492-1-mainchip-route12-artifact-recovery",
+  "url": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-results-40110502492-1-mainchip-route12-artifact-recovery",
+  "empty_assets_verified": true,
+  "workflow": ".github/workflows/mainchip-route12-artifact-recovery-cloud.yml",
+  "jobs": [
+    "controls",
+    "recovery"
+  ],
+  "source_review": "d6eb121aa35c59d2053d91424eb84f622dfefd2f independently cleared by /root/pll_handoff",
+  "original_controls_failure": {
+    "run": 40107937311,
+    "source": "05b0d320919b4ed17f0a0b56dcc2531f63e967d5",
+    "receipt": "docs/evidence/mainchip-route12-recovery-raw-cli-rejection-20261024.json"
+  },
+  "trigger_proof": {
+    "source": "ac1740af745fe3d62960b1e62297096c619f0c5d",
+    "workflow_tree": "e5def822c44a6662f38c89fbd33333db940a3ded",
+    "inherited_source": "4d85722e05fbda8440c6577d7d7baa18a642485b",
+    "inherited_count": 1305,
+    "inherited_inventory_sha256": "ea0f53f665079869cc5ef8c83f792caef80d052fa22cdf7278db11b1a1231871",
+    "audit_source": "7a3dd6dd8b6681d10f805eefda0ac96b563a3d90",
+    "audit_sha256": "66207076e4055a97b475a302479f39925fd82573ac358b576626109bbc1876c8",
+    "added_workflows": {
+      ".github/workflows/mainchip-route12-artifact-recovery-cloud.yml": {
+        "blob": "384ca7cabfec72346f05ddedf8f4c5edc6ef6181",
+        "sha256": "cbc6a9be5c5930be3cc0993a56261f44c645979b547f7de704adb1c0d391acef",
+        "trigger": "  push:\n    branches: [codex/mainchip-route12-artifact-recovery]\n    paths: [.github/workflows/mainchip-route12-artifact-recovery-cloud.yml, scripts/cloud_mainchip_route12_artifact_recovery.py, scripts/mainchip-route12-artifact-recovery-methods.json]\n  workflow_dispatch:",
+        "classification": "Explicit branch-only push excludes tags; manual dispatch only otherwise"
+      }
+    },
+    "cloud_results_tag_triggers_no_workflows": true
+  },
+  "next": "Wait for this exact29-control→artifact-only recovery; consume immutable source ZIP/full65-member result and original failure evidence. Do not restart native route or duplicate run.",
+  "route_complete": false,
+  "continuation_accepted": false,
+  "cloud_only": true
+}
