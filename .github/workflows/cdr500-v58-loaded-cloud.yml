@@ -27,6 +27,7 @@ jobs:
       - name: Verify sources and native simulator dependencies
         run: |
           python3 -m py_compile scripts/cloud_cdr500_v58_loaded.py scripts/cloud_cdr500_v58_loaded_stage.py
+          python3 scripts/ensure_cloud_tested_source_release.py --controls
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
           python3 -m pip install numpy==2.3.3
@@ -35,7 +36,9 @@ jobs:
         id: native
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/cloud_cdr500_v58_loaded_stage.py --case nominal_early --prepare-only
+        run: |
+          python3 scripts/ensure_cloud_tested_source_release.py --group cdr500-v58-loaded-preparation
+          python3 scripts/cloud_cdr500_v58_loaded_stage.py --case nominal_early --prepare-only
       - name: Retain preparation evidence after failure
         if: always() && steps.native.outcome == 'failure'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -65,6 +68,7 @@ jobs:
       - name: Verify sources and native simulator dependencies
         run: |
           python3 -m py_compile scripts/cloud_cdr500_v58_loaded.py scripts/cloud_cdr500_v58_loaded_stage.py
+          python3 scripts/ensure_cloud_tested_source_release.py --controls
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
           python3 -m pip install numpy==2.3.3
@@ -73,7 +77,9 @@ jobs:
         id: native
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/cloud_cdr500_v58_loaded_stage.py --case ${{ matrix.case }}
+        run: |
+          python3 scripts/ensure_cloud_tested_source_release.py --group cdr500-v58-loaded-${{ matrix.case }}
+          python3 scripts/cloud_cdr500_v58_loaded_stage.py --case ${{ matrix.case }}
       - name: Retain waveform evidence after failure
         if: always() && steps.native.outcome == 'failure'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
