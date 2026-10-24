@@ -1,0 +1,63 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-output8088-return64via3-rail-targets-cloud
+on:
+  push:
+    branches: [codex/tx-via3-rail-diagnosis]
+    paths: [.github/workflows/tx-output8088-return64via3-rail-targets-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: tx-output8088-return64via3-rail-targets-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bind already measured rail targets to native geometry and unchanged DC graph
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m pip install numpy==2.3.3 scipy==1.16.2
+          python3 -m py_compile scripts/cloud_tx_output8088_return64via3_rail_targets.py
+          python3 scripts/cloud_tx_output8088_return64via3_rail_targets.py
+      - name: Preserve diagnostic evidence and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=cloud-tx-output8088-return64via3-rail-targets
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
+          fi
+          stem="tx-output8088-return64via3-rail-targets-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];m=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-output8088-return64via3-rail-targets',stem+'.summary.json',stem+'.parts.json',*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence if release publication fails
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-output8088-return64via3-rail-targets-${{ github.run_id }}
+          path: cloud-tx-output8088-return64via3-rail-targets/
+          retention-days: 30
+
+
+
+
