@@ -237,6 +237,56 @@ def main():
  corrected_m4=((m4_direct-m4_removed)+m4_added).merged()
  T.shapes(m4_index).clear();T.shapes(m4_index).insert(corrected_m4)
  expected_metal[(50,0)]=corrected_m4
+ # Native path after M4 reconciliation exposes the analogous old M5
+ # data-width annulus. Reconcile only enclosed, child-local root rings on
+ # M3/M5 with one original child attachment and no root-owned via.
+ overlay_records=[];overlay_saved={}
+ for metal,adjacent in((30,(29,49)),(67,(66,125))):
+  index=L.layer(metal,0)
+  direct=pya.Region(T.shapes(index)).flatten().merged()
+  original=snap[0][(metal,0)]
+  old_child=pya.Region(L.cell('pd_child_sampler').begin_shapes_rec(index)).flatten().merged()
+  root_cuts={v:pya.Region(T.shapes(L.layer(v,0))).flatten().merged()for v in adjacent}
+  removed=pya.Region()
+  for tag,instance in replacements.items():
+   limits=pya.DBox(*nums(before['placements'][tag]['bbox_um'])).to_itype(L.dbu)
+   old_placed=old_child.transformed(instance.cplx_trans).merged()
+   for polygon in original.each():
+    if polygon.holes()==0 or(limits & polygon.bbox())!=polygon.bbox():continue
+    r=pya.Region(polygon)
+    # Do not silently alter a previous M3 detour or other tracked correction.
+    assert(r-direct).is_empty(),'Tracked M3/M5 repair changed this root ring'
+    touch=old_placed.interacting(r)
+    assert touch.count()==1,('Ring spans different original child components',metal,tag,str(polygon.bbox()),touch.count())
+    cuts={str(v):q.interacting(r).count()for v,q in root_cuts.items()}
+    assert all(n==0 for n in cuts.values()),('Root-owned via depends on old ring',metal,tag,str(polygon.bbox()),cuts)
+    assert original.interacting(r).count()==1
+    removed+=r
+    overlay_records.append(dict(tag=tag,metal=metal,before_polygon_dbu=str(polygon),after_polygons_dbu=[],
+     old_child_attachment_count=1,root_owned_via_contacts=cuts,confined_to_replaced_child=True,
+     no_external_parent_component=True,action='REMOVE_OLD_CHILD_LOCAL_PARENT_WIDENING_RING'))
+  if not removed.is_empty():
+   # The four prior M5 notch fills were derived from exactly these superseded
+   # overlays. Remove only their added area; do not subtract native child metal.
+   retired_fill=pya.Region()
+   if metal==67:
+    for record in m5_records:
+     patch=pya.Region(pya.Box(*map(int,re.findall(r'-?\d+',record['box_dbu']))))
+     if not patch.interacting(removed).is_empty():retired_fill+=patch-m5_before
+   corrected=(direct-removed-retired_fill).merged()
+   T.shapes(index).clear();T.shapes(index).insert(corrected)
+   expected_metal[(metal,0)]=corrected
+   overlay_saved[str(metal)]=dict(removed_count=removed.count(),removed_area_dbu2=removed.area(),
+    retired_prior_fill_area_dbu2=retired_fill.area(),root_owned_vias_unchanged=True)
+ assert len(overlay_records)>0 and any(v['metal']==67 for v in overlay_records)
+ # Every root ring on the independently measured remaining supply path must
+ # be among the exact tracked removals (path includes only sampler D).
+ path_pin=Path.cwd()/'docs/evidence/cdr-sampler-active-input-v57-parent-m4-overlay-wire-path-20261024.json'
+ path_data=json.loads(path_pin.read_text());assert path_data['run']==40072365248
+ path_rings=[p for node in path_data['report']['native']['path']if node['metal']==67
+   for owner in node['contributors']if owner['owner']=='root_direct'
+   for p in owner['polygons_dbu']if '/'in p]
+ assert path_rings and all(p in {v['before_polygon_dbu']for v in overlay_records}for p in path_rings)
  # Independent drawing-only proof after every parent edit; no text union.
  def supply_separation(layout,top):
   metals=(8,10,30,50,67,126,134);vias=(19,29,49,66,125,133)
@@ -259,7 +309,7 @@ def main():
   return dict(method='Seven drawing metals and six via layers without text union',clusters=nets,separate=True)
  wire_separation=supply_separation(L,T)
  expected=(expected_metal,expected[1],expected[2])
- metal_delta=dict(status='TRACKED_C_D_M1_M4_RECONCILIATION_M3_SUPPLY_DETOUR_AND_SAME_COMPONENT_M5_FILL',diagnosis_sha256=sha(diagnosis_path),m1_strips=m1_records,m4_enclosures=m4_records,m4_diagnosis_sha256=sha(m4_path),drawing_only_supply_separation=wire_separation,m3_reroutes=m3_records,m3_diagnosis_sha256=sha(collision_path),m5_patches=m5_records,m5_component_count_before=m5_before.count(),m5_component_count_after=(m5_before+m5_fill).merged().count(),all_other_parent_layers_unchanged=True,all_parent_labels_and_transforms_unchanged=True,all_children_unchanged=True)
+ metal_delta=dict(status='TRACKED_C_D_M1_M4_RECONCILIATION_M3_SUPPLY_DETOUR_AND_SAME_COMPONENT_M5_FILL',diagnosis_sha256=sha(diagnosis_path),m1_strips=m1_records,m4_enclosures=m4_records,m4_diagnosis_sha256=sha(m4_path),drawing_only_supply_separation=wire_separation,additional_widening_ring_removals=overlay_records,additional_widening_ring_summary=overlay_saved,additional_wire_path_sha256=sha(path_pin),m3_reroutes=m3_records,m3_diagnosis_sha256=sha(collision_path),m5_patches=m5_records,m5_component_count_before=m5_before.count(),m5_component_count_after=(m5_before+m5_fill).merged().count(),all_other_parent_layers_unchanged=True,all_parent_labels_and_transforms_unchanged=True,all_children_unchanged=True)
  compare(expected,snapshot(L,T))
  assert T.dbbox()==pya.DBox(0,0,2316.6,4715.48)
  options=pya.SaveLayoutOptions();options.select_cell(T.cell_index());L.write(str(dest/(TOP+'.gds')),options)
@@ -359,7 +409,7 @@ def main():
   try:compare(expected,(bad,after[1],after[2]))
   except AssertionError:faults.append(name)
   else:raise AssertionError(name+' accepted')
- files=[p for name in ('baseline','data','inputs')for p in(out/name).rglob('*')if p.is_file()]+[out/'children.json',Path(__file__),Path(writer.__file__),circuit,diagnosis_path,collision_path,m4_path]
+ files=[p for name in ('baseline','data','inputs')for p in(out/name).rglob('*')if p.is_file()]+[out/'children.json',Path(__file__),Path(writer.__file__),circuit,diagnosis_path,collision_path,m4_path,path_pin]
  meta['inputs']={str(p):sha(p)for p in files}
  meta['active_input_parent_metal_delta']=metal_delta
  meta['active_input_replacement']=dict(tags=['sc','sd'],old_devices_per_leaf=54,new_devices_per_leaf=66,preserved_reference_devices=368,one_reference_per_sampler=True,source_parent_gds_sha256=sha(old/'layout'/(OLD_TOP+'.gds')),source_leaf_gds_sha256=sha(fresh/(LEAF+'.gds')))

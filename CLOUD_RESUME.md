@@ -7985,3 +7985,7 @@ Run40070690392 measured all48 C/D old M4 parent pieces: all touched old child ge
 
 ### Correct native ownership supersedes attempted M4-strip relocation
 40071409794 correctly rejected translation because strips have root Via3. Native ownership readback40071753728 plus original generation sources resolves purpose:32 strips are intentional v14 MOS-source bypass pieces with96 root Via3; preserve them all.16 rings are v16 250nm data-wire widening deltas around changed child routes; every ring has zero root-ownedVia3/Via4. Candidate removes ONLY these16 obsolete widening overlays with exact oldchild/rootendpoint guards. No floating-metal claim, no source-bypass deletion. Drawing-only supply separation andfull500physicalgate remainmandatory. PLL same-process delta publication run40071288423 is active atc61befbd; no duplicate native launch.
+
+
+### Remaining supply path: old Metal5 widening annulus
+40072365248 traces remaining real AVSS/SUB path through root M5 widening ring after16M4ringremovals. Candidate now reconciles enclosed child-local M3/M5rootrings with one originalchildattachment, zero adjacentroot-ownedvias and noexternalrootcomponent; preserveallv14bypassmetal/vias. Retire only obsolete added M5notch area tied toremovedrings; childdrawingsunchanged. Every measuredM5pathring mustmatchtrackedremoval. Drawing-only supply separation stillmandatory beforefullDRC/LVS. Currentnative500acceptance remainsOPEN.
