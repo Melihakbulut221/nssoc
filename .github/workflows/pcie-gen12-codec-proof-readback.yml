@@ -1,0 +1,39 @@
+name: pcie-gen12-codec-proof-readback
+on:
+  push:
+    branches: [codex/pcie-gen12-training]
+    paths:
+      - .github/workflows/pcie-gen12-codec-proof-readback.yml
+      - scripts/read_pcie_gen12_codec_proof.py
+      - scripts/pcie-gen12-codec-proof-readback-methods.json
+  workflow_dispatch:
+permissions:
+  actions: read
+  contents: write
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: pcie-gen12-codec-proof-readback
+  cancel-in-progress: false
+jobs:
+  exact-existing-proof:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Verify exact existing artifact in cloud RAM without simulation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/read_pcie_gen12_codec_proof.py
+      - name: Preserve proof or readback rejection
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -f hw/soc/out/pcie-gen12-codec-proof-readback/codec-proof.json
+          tag="cloud-results-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}-gen12-codec-readback"
+          gh release create "$tag" --target "$GITHUB_SHA" --title "$tag" --notes "Exact existing digital codec proof readback. No new simulation or PHY qualification." hw/soc/out/pcie-gen12-codec-proof-readback/codec-proof.json hw/soc/out/pcie-gen12-codec-proof-readback/codec-proof.sha256
