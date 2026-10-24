@@ -7867,3 +7867,21 @@ Fresh full560-rule DRC/deep+flat500-device LVS and12 physical faults must pass
 before parent acceptance or RC extraction. Do not reuse prior RC or claim
 physical acceptance merely from this repair. Future extraction validator must
 check the new M1/M3 proof status and nine replacement controls.
+
+
+## Metal3 attachment guard rejected translation; preserve root bridge endpoints instead
+
+40066243612 stopped in generation, before DRC/LVS: the old AVSS M3 correction
+has no same-layer attachment to the old child. Therefore the previously proposed
++320um M3 translation is NOT accepted and has been removed.
+
+The actual two native-witnessed old AVSS M3 bridges are now locally detoured
+around the new SUB landings. Their1.2um bridge width remains;0.6um physical
+clearance is drawn around the foreign contact. All original old-parent Via2/
+Via3 contact polygons touching each bridge must remain covered, the replacement
+must stay one connected component, and it may touch neither any new child M3
+conductor nor another root M3 component. This is a real parent-metal route edit,
+not a net-label change. Fresh560-rule DRC/deep+flat500-device LVS/12 faults still
+required. Nine replacement controls now include unrepaired_old_m3_bridge.
+Future extraction validator must use M1 translation/M3 supply detour/M5 fill
+status and m3_reroutes (original-via coverage), not M3 translation.
