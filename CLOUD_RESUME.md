@@ -7441,3 +7441,11 @@ Both earlier actual M3 spacing failures retained. Emitter upper via8x2 fits the
 wire binding now launched. Next freshRC/binding, read actual R/Ccensus,compose,
 then original5full34.25ns loaded waves. Do not reuse v54counts473R/350C.
 Reuse unchanged build_cdr_active_levelshift_v53_native_models.py for5.4/36um widths.
+
+## 2026-10-24 TX fault same native process reached24.871434ns
+Run40039368788 completed successful SAVED checkpoint, not full electrical pass.
+56845complete rows/14182columns,110224partial-row bytes,6449516544payload bytes.
+All original source/prefix integrity retained. Exact next descriptor preserved
+in tx-via3-fault-24ns-checkpoint-20261024.json. Dispatch same native process for
+7200more native seconds, fulltarget34ns unchanged. Normal continuation40050776700 remains live,
+do not duplicate it. v55physical40050528141 passed; fresh wire40050897308 is live.
