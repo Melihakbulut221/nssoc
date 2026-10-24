@@ -8133,3 +8133,16 @@ Workspace is empty. Inventoryv17 and compactcheckpoint are current. Route4008591
 PLL fulloriginalcapture firstlatchsinkobserver40096538128 at21f0e56b isactive. Sourcecontrols40096297601 andindependentreviewpassed; exact131columns includeold80,48newterminalvoltages and3aggregatebranchcurrents. Tailshortcut rejected because actualanomaly liesoutsidecanonicaldelta. Receipt docs/evidence/pll-first-latch-sinks-cloud-dispatch-20261024.json. OriginalPLLacquisitionremainsrejected.
 
 CDR rawemptyRegionwitness40095863916 provedmaterial/children/labelsunchanged; exactmaterializationrepair hasnoexcludedlayers/tolerance andthreeextraactualmaterial/text-recordcontrols. Reviewed fullphysical40096705004 isactive at9e7f3d3d. Reset readback40095334893 found106HBTsafety/firstfallpasses butfixedphase resetlatencyfailures; new244device fastassertsourcec77a4ffe andseparate original241zeroOP source47b5ad9f areunqualifiednextwork. TX normal/fault40088271926 stillownslivefreshmodeltrajectories. FullserialPHY/mainchipserialintegration/finalSTAremainopen.
+
+
+### 2026-10-24 cloud-only checkpoint v18 (2026-10-24T13:40:04.683464+00:00)
+
+The local project directory is empty; no local CAD/simulation processes were present. All new native work and durable artifacts remain on GitHub.
+
+- Main-chip same-process routing:40095811631; PLL original-capture first-latch reader:40096538128.
+- Fresh TX initial captures ended in saved state, not acceptance. Normal40098024825 and swapped-selector40098031853 continue those exact processes at source2e63863a; never restart or duplicate them while live.
+- CDR v58 passed actual physical verification40096705004, fresh binding/RC40097552747 and two-order MIM composition40098426328. Final model has24574 R,15694 C and7 MIM capacitors. Original ten loaded cases are next; old geometry's waveform results cannot qualify this model.
+- Original phase zero-OP comparison40097348918 passed. Fresh244-device fast-assert four-case native run40098170615 is live. Loaded clock-tree ownership, accumulated delays and actual selector loads remain mandatory.
+- Gen1/2 8b/10b/raw-word alignment is a real missing training prerequisite and is being developed in an isolated branch. It is not full PHY or LTSSM acceptance.
+
+See docs/evidence/cloud-active-checkpoint-20261024.json and exact immutable receipts. Full serial PHY and final timing flags remain false.

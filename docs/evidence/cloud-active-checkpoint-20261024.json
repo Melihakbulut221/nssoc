@@ -1,21 +1,22 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-24T13:11:03.596895+00:00",
+  "updated_at": "2026-10-24T13:40:04.683464+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only; no local checkout, CAD, simulations or native artifacts.",
-  "root_source_before_receipt": "4d85722e05fbda8440c6577d7d7baa18a642485b",
+  "root_source_before_receipt": "3e0a9dca937095efce55f350b8727c58989bf35c",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 17,
+    "inventory_version": 18,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40080701966
   },
   "active_runs": {
     "mainchip_same_process_route": 40095811631,
-    "tx_fresh_full_native_and_fault": 40088271926,
+    "tx_normal_same_process_native": 40098024825,
+    "tx_swapped_selector_same_process_native": 40098031853,
     "pll_full_capture_first_latch_sinks": 40096538128,
-    "cdr_full_physical_after_serialized_materialization": 40096705004
+    "phase244_fast_assert_four_case_intrinsic": 40098170615
   },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
@@ -34,21 +35,28 @@
     "pll_first_latch_observer": "21f0e56b39b21901cd4a38012503071ccb1f9914",
     "cdr_materialization_review": "9e7f3d3dd55ec452dfbb27520a73b67f5078067a",
     "phase_fast_assert_source": "c77a4ffe22f9202cbf48aabd834de9c0b283274c",
-    "phase_zero_op_controls_source": "47b5ad9f"
+    "phase_zero_op_controls_source": "47b5ad9fb5d7f139e755b4554211dfb6b4f08d7f",
+    "tx_initial_saved_receipt": "2e63863abb0309c245d89e2a3d4934fe40a2b2ed",
+    "cdr_v58_physical_pass": "5dfa08dbb09cf4ffb6c04461c24417991538943f",
+    "cdr_v58_binding_and_rc_pass": "7f85c2f10ac86968d337553ad70a7463260ee6d8",
+    "cdr_v58_mim_composition_pass": "8cd9f1a0caf8b100612dcbc504231f9f5625479e",
+    "phase_uniform_zero_op_pass": "24b7ca803779fe5b930101d2f0118d71b207b9fa",
+    "phase244_four_case_dispatch_receipt": "a3822ea47f5c0d3520e3f819749b88386643b5ad"
   },
   "qualified_progress": {
-    "tx": "Both exact fresh model/bench preparations passed; same-source22controls passed; actual normal/fault matrix now running. No new waveform acceptance yet.",
-    "phase": "Existing4captures pass all106HBT measured safety and firstfallrelease; actualfixedphase misses at12.0625ns identify serialresetassertiondelay. NumericalNaN/gminrejection remains. Actual244device fast-assert circuit sourcecontrols passed, electrical/PVT/load/layout unqualified; source-bound uniformOFFzeroOP comparison preparation independent.",
-    "cdr": "Exact native witness:33 material sets,135originalchildren and25publiclabels preserved. Only two nonmaterial lazyRegions falsely reported nonempty despite0polygons/0area. Reviewed repair materializes Regions before exactXOR, noexclusions/tolerance; three real material/text-record negatives added. Fullphysical40096705004 pending.",
-    "pll": "Both exact existing-capture diagnoses passed and preserved original rejection. Extra transitions localized to firstmaster output; actualsinkvoltage readback next. No individualHBTcurrents were saved."
+    "tx": "Both fresh native initial trajectories saved with exact runtime/source proof, not completed: normal 8.645814903 ns and swapped-selector 7.514319757 ns of required 34 ns. Each exact process now continues once in its own cloud run.",
+    "phase": "Original 241-device zero-OP comparison reproduced default NaN/gmin diagnostics and proved uniform zero initialization on all 106 HBTs without diagnostics. Fresh actual 244-device fast-assert four-case transients are running; no transient, loaded tree or physical acceptance.",
+    "cdr": "Fresh v58 actual GDS passed 560-rule DRC, deep/flat 500-device LVS and strict wire extraction. Fresh binding and raw RC passed; both native orders agree on 24574 R and 15694 C plus seven MIM capacitors. Original 10 loaded cases remain unqualified for this new geometry.",
+    "pll": "Exact existing-capture diagnoses localized extra transitions to first master output and preserved acquisition rejection. Full original 130 GB first-latch sink observer remains live; no per-HBT currents were saved."
   },
   "next_actions": [
-    "Cloud-only native work and evidence. Local projectworkspace verifiedempty at this checkpoint. No localcheckout, nativeprocess or artifactstaging.",
-    "Mainchip40095811631 must restore all23images and exactprefix/hash contract from40085912519. Continueoriginalprocess ifsaved; original20/4/8/8ns+5percent topology/antenna/RC/STA onlyafterroutecomplete.",
-    "TX40088271926 has two exactfreshmodel34ns cases stilllive. tx_diagnosis owns terminalsummary/parts andsameprocess/fullcapture classification; do notduplicate.",
-    "PLL40096538128 fulloriginal130GBreader derives131column cache. Alloriginalbytes/5106finitecolumns, old80bits, old8cache, originaldiagnosticSHA andacquisitionrejection mustmatch. Then examineactualmasterclock/feedbacksink voltages beforehardwarecorrection; no per-devicecurrentclaims.",
-    "CDR40096705004 full560DRC/deepflat500LVS/strictwire pending after reviewedexactmaterializationfix. Onlyafterpass derivefreshMIM-awareRC andoriginal10loadedcases; oldv57RC notvalid fornewmetal.",
-    "Phase244 fastassert nativecircuit remainshypothesis. Separate original241zeroOP default/uniformOFF comparison must reproduceoriginaldiagnostics andqualifyall106readbacks beforeinitializationmethodchanges. Alloriginalphase/safety/oracles remain."
+    "Keep all native work, durable source and evidence in GitHub Actions/Releases. Local workspace is empty and no local CAD/simulation process is running.",
+    "Follow mainchip 40095811631 without duplication. If saved, validate exact image/prefix/source contract before continuing. Routing is packet-boundary integration only; original 20/4/8/8 ns plus 5 percent derate STA remains required after actual route completion.",
+    "Follow TX normal 40098024825 and swapped selector 40098031853. Preserve byte-exact partial records, immutable inputs, process images and original 34 ns acceptance. Saved work is not waveform acceptance.",
+    "Follow PLL 40096538128. Verify all original bytes, all 5106 finite columns, old 80-column bits, old eight-column cache, exact original diagnosis and acquisition rejection before diagnosing actual first-latch sink voltages.",
+    "CDR v58 fresh composition passed. Independently review exact original ten-case loaded adapter, then activate once; all original safety, phase, current and fault oracles remain unchanged.",
+    "Follow phase244 40098170615 with all original phase, safety and strict zero-diagnostic gates. Derive actual 62-clock-port to 124-selector-base binding before growing the loaded 1/3/7/15-cell tree; no clock-origin shift to conceal cumulative delays.",
+    "Develop missing Gen1/2 raw-PMA codec/alignment prerequisites in an isolated cloud branch with independent exhaustive code-table proof; this does not qualify LTSSM, lower-rate analog operation or full serial integration."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -61,6 +69,11 @@
     "reset_intrinsic_rejected_numerical_startup": 40093613768,
     "mainchip_saved_native_process": 40085912519,
     "cdr_empty_raw_region_witness": 40095863916,
-    "reset_rejected_waveform_readback": 40095334893
+    "reset_rejected_waveform_readback": 40095334893,
+    "cdr_v58_physical_pass": 40096705004,
+    "cdr_v58_binding_rc_pass": 40097552747,
+    "cdr_v58_mim_composition_pass": 40098426328,
+    "tx_fresh_initial_saved": 40088271926,
+    "phase_original_zero_op_comparison_pass": 40097348918
   }
 }
