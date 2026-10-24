@@ -7909,3 +7909,22 @@ docs/evidence/tx-via3-full34ns-diagnosis-20261024.json.
 Cloud-only current jobs: mainchip40065933598 resumed exact process;
 PLL40041871167 publishing ordinary native full-capture archive; parent LVS
 readback triggered by this commit. Local workspace empty; no local CAD processes.
+
+
+## 2026-10-24 native cross-reference narrows remaining CDR mismatch to supply short
+
+Readback40067331164 succeeded.279 primitive pairs Match; all221 mismatches
+are finite ptap1 devices on the AVSS/SUB short. All public logical anchors are
+connected; no logical opens.111 native net pairs Match, three mismatch
+(SUB missing, mergedAVSS/SUB and sharedBULK context). Thus the M3 detour alone
+did not remove all physical short paths; do not mark LVS passed.
+Expanded read-only old-parent/new-leaf diagnosis now includes both directions
+of native via→foreign metal contact on all six interconnect transitions,
+in addition to same-layer overlaps. Source nativeAVSS/SUB separation remains
+mandatory in both independently passed input layouts. No geometry edits in
+this diagnostic.
+
+Parallel bounded cloud branches: TX saved-capture rail diagnosis and PLL
+lossless-prefix publication qualification. Neither may mutate live production
+jobs or the main working branch; integrate exact verified commits after review.
+The user cloud-only override remains in force.
