@@ -29,7 +29,7 @@ Simply repeating MP→lower offset and QP→upper offset would violate the origi
 
 ## Physical startup requirement exposed by the oracle
 
-Every external original clock pair begins positive. Therefore the four direct-master cells require internal MP=1, QP=1 initially; the eleven swapped-master cells require MP=0, QP=1 initially. MN and QN must be their complements.
+Every external original clock pair begins positive. Therefore the four direct-master cells require internal MP=1, QP=1 initially; the eleven swapped-master cells require MP=0, QP=1 initially. MN and QN must be their complements. These 0/1 values denote Boolean differential polarity only, never a0-V or1-V analog terminal assignment or a forced simulator state.
 
 The existing CML slave is transparent when its parent is high. Without an independent physical preset/hold, MP=0 would immediately pull QP=0 and destroy the required initial state. An ordinary feedback-only reset or a uniform all-positive reset cannot satisfy this contract.
 
