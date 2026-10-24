@@ -245,7 +245,12 @@ def previous_snapshot(api, current_run):
             continue
         if source["head_branch"] not in ("main", "codex/cloud-progress-monitor"):
             continue
-        packed = api.raw("actions/artifacts/" + str(artifact["id"]) + "/zip", binary=True)
+        # Actions archive endpoint requires the normal GitHub API Accept header;
+        # only release assets use application/octet-stream at the API hop.
+        packed = api.raw("actions/artifacts/" + str(artifact["id"]) + "/zip")
+        packed_sha = hashlib.sha256(packed).hexdigest()
+        if artifact.get("digest"):
+            assert artifact["digest"] == "sha256:" + packed_sha, "Monitor artifact digest changed"
         with zipfile.ZipFile(io.BytesIO(packed)) as archive:
             assert archive.namelist() == ["result.json"], "Unexpected monitor artifact contents"
             item = archive.getinfo("result.json")
@@ -253,6 +258,9 @@ def previous_snapshot(api, current_run):
             data = json.loads(archive.read(item))
         assert data["schema"] == 1 and data["repository"] == REPO
         assert data["target_branch"] == "codex/complete-open-work"
+        if data.get("status") == "MONITOR_ERROR":
+            continue
+        data["_artifact_source"] = dict(id=artifact["id"], run=source["id"], sha256=packed_sha)
         return data
     return None
 
@@ -273,6 +281,7 @@ def collect(api, config, now, previous=None, configuration_source=None):
     result = {
         "schema": 1, "repository": REPO, "target_branch": branch, "target_head": head,
         "configuration_source": configuration_source,
+        "previous_snapshot_source": None if previous is None else previous.get("_artifact_source"),
         "inventory_version": config["inventory_version"],
         "inventory_updated_at": config["inventory_updated_at"],
         "observed_at": now.isoformat(), "monitor_source": os.environ.get("GITHUB_SHA"),
@@ -320,7 +329,9 @@ def markdown(result):
     lines = [
         "# Cloud progress observation", "",
         "Target branch: `" + result["target_branch"] + "`; HEAD `" + result["target_head"] + "`.",
-        "Observed: " + result["observed_at"], "",
+        "Observed: " + result["observed_at"],
+        "Inventory version: " + str(result["inventory_version"]) + "; bootstrap: " + str((result.get("configuration_source") or {}).get("bootstrap", "fixture")),
+        "Previous cloud snapshot: " + str((result.get("previous_snapshot_source") or {}).get("id", "none")), "",
         "| Tracked work | Run | Observed state | Change |",
         "|---|---|---|---|",
     ]

@@ -89,7 +89,58 @@ class CaptureOpener:
         self.requests.append(request)
         return self.response
 
+class SnapshotAPI:
+    def __init__(self, members=None):
+        body = m.collect(Mock(), config(), NOW)
+        raw = io.BytesIO()
+        with m.zipfile.ZipFile(raw, "w") as archive:
+            for name, value in (members or {"result.json": json.dumps(body)}).items():
+                archive.writestr(name, value)
+        self.packed = raw.getvalue()
+        self.artifact = dict(id=789, name=m.ARTIFACT, expired=False, size_in_bytes=len(self.packed),
+            digest="sha256:" + hashlib.sha256(self.packed).hexdigest(),
+            created_at="2026-10-24T11:00:00Z", workflow_run=dict(id=100))
+        self.calls = []
+
+    def pages(self, path, key, maximum=1000):
+        assert path == "actions/artifacts?name=" + m.ARTIFACT and key == "artifacts"
+        return [self.artifact]
+
+    def get(self, path):
+        assert path == "actions/runs/100"
+        return dict(id=100, path=m.WORKFLOW, status="completed", head_branch="main")
+
+    def raw(self, path, limit=m.LIMIT, binary=False):
+        assert path == "actions/artifacts/789/zip"
+        assert binary is False, "Actions artifact endpoint rejects release-asset octet-stream Accept header"
+        self.calls.append(path)
+        return self.packed
+
 class Controls(unittest.TestCase):
+    def test_previous_snapshot_roundtrip_and_digest(self):
+        api = SnapshotAPI(); snapshot = m.previous_snapshot(api, 200)
+        self.assertEqual(snapshot["_artifact_source"]["id"], 789)
+        self.assertEqual(snapshot["_artifact_source"]["sha256"], hashlib.sha256(api.packed).hexdigest())
+        self.assertEqual(snapshot["runs"][0]["id"], 123)
+
+    def test_previous_snapshot_corrupt_digest_rejected(self):
+        api = SnapshotAPI(); api.artifact["digest"] = "sha256:" + "f" * 64
+        with self.assertRaises(AssertionError): m.previous_snapshot(api, 200)
+
+    def test_previous_snapshot_unexpected_archive_member_rejected(self):
+        api = SnapshotAPI({"unexpected.json": "{}"})
+        with self.assertRaises(AssertionError): m.previous_snapshot(api, 200)
+
+    def test_previous_monitor_error_not_used_as_progress_baseline(self):
+        body = dict(schema=1, repository=m.REPO, target_branch="codex/complete-open-work",
+                    status="MONITOR_ERROR", runs=[])
+        self.assertIsNone(m.previous_snapshot(SnapshotAPI({"result.json": json.dumps(body)}), 200))
+
+    def test_current_snapshot_never_reused(self):
+        api = SnapshotAPI()
+        self.assertIsNone(m.previous_snapshot(api, 100))
+        self.assertEqual(api.calls, [])
+
     def test_real_api_request_is_repository_scoped_get(self):
         api = m.API("fixture-token"); api.opener = CaptureOpener(SmallResponse(b"{}", 2))
         self.assertEqual(api.get("actions/runs/123"), {})
