@@ -14,7 +14,10 @@ assert len(ra['instances'])==len(rb['instances'])==55
 assert ra['bbox_um']==rb['bbox_um']
 assert all(ra['ports'][n]==rb['ports'][n]for n in ra['ports'])
 assert set(rb['ports'])==set(ra['ports'])|{'MP','MN'}
-assert all(ra['local_buses'][i]['y_um']==rb['local_buses'][i]['y_um']for i in range(len(ra['local_buses'])))
+rename={'DIV__XSECOND__MP':'MP','DIV__XSECOND__MN':'MN'}
+old_buses={(rename.get(v['net'],v['net']),v['row']):v['y_um']for v in ra['local_buses']}
+new_buses={(v['net'],v['row']):v['y_um']for v in rb['local_buses']}
+assert old_buses==new_buses,'Physical row/net bus heights changed'
 layers={(a.get_info(i).layer,a.get_info(i).datatype)for i in a.layer_indexes()}|{(b.get_info(i).layer,b.get_info(i).datatype)for i in b.layer_indexes()}
 changes=[]
 for layer,datatype in sorted(layers):
