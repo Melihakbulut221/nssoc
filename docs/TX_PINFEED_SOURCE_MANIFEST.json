@@ -1,7 +1,7 @@
 {
   "branch": "codex/tx-via3-rail-diagnosis",
   "baseline_already_integrated_by_root": "b78a3420",
-  "source_snapshot": "11ed6ba3e7ecd4b184ee0161c5b8a1699c539a56",
+  "source_snapshot": "11f143cdfa29a2d1ed399ff96a550477b1ec9d6b",
   "native_source_heads": {
     "physical": "74bc46d2e9518821a12c66b6a071add579ccf2df",
     "wire_anchors": "737bef27ae4bd8ddb0b2740f2e0562cb51f8991b",
@@ -35,6 +35,7 @@
     "docs/evidence/tx-branchtailfeed-followthrough-source-review-20261024.json",
     "docs/evidence/tx-branchtailfeed-fresh-intrinsic-rc-pass-20261024.json",
     "docs/evidence/tx-branchtailfeed-interface-source-review-20261024.json",
+    "docs/evidence/tx-branchtailfeed-native-interface-descriptor-20261024.json",
     "docs/evidence/tx-branchtailfeed-precision-composition-rail-pass-20261024.json",
     "docs/evidence/tx-branchtailfeed-precision-composition-source-review-20261024.json",
     "docs/evidence/tx-driver-pinfeed-fresh-intrinsic-rc-pass-20261024.json",
@@ -42,6 +43,7 @@
     "docs/evidence/tx-driver-pinfeed-precheck-error-20261024.json",
     "docs/evidence/tx-driver-pinfeed-precision-composition-rail-pass-20261024.json",
     "docs/evidence/tx-driverpinfeed-remaining-geometry-pass-20261024.json",
+    "docs/evidence/tx-output8088-branchtailfeed-interfaces-pass-20261024.json",
     "docs/evidence/tx-output8088-driverpinfeed-native-anchors-pass-20261024.json",
     "docs/evidence/tx-via3-rail-geometry-20261024.json",
     "scripts/bind_tx_output8088_branch_tail_feed_native_anchors.py",
@@ -124,7 +126,7 @@
     },
     "receipt": "docs/evidence/tx-branch-tail-fresh-native-anchors-pass-20261024.json"
   },
-  "cloud_pipeline_observed_utc": "2026-10-24T09:47:50.472416+00:00",
+  "cloud_pipeline_observed_utc": "2026-10-24T10:08:19.868712+00:00",
   "branch_tail_guarded_pipeline": {
     "wire_anchors": {
       "run": 40078861177,
@@ -240,16 +242,22 @@
     "sha256": "7159533f35a4e2b02e6572806edbf4f9085a8b6c0f8f1b0519f9d12cbf25dd40",
     "method_manifest": "scripts/tx-branchtailfeed-interface-methods.json",
     "no_workflow": false,
-    "native_executed": false,
+    "native_executed": true,
     "independent_review": "docs/evidence/tx-branchtailfeed-interface-source-review-20261024.json",
     "parent_review_of_qualified_geometry_rc_and_dc_required": true,
     "workflow": ".github/workflows/tx-output8088-branchtailfeed-interfaces-cloud.yml",
     "job": "actual-native-interface-binding",
     "root_reviewed_composition_run": 40080181306,
-    "pending_status": "QUEUED_WHEN_RECORDED_NOT_NATIVE_ACCEPTANCE",
+    "pending_status": "COMPLETED_SUCCESS_NATIVE_INTERFACES_AND_ALL12_FAULTS_ONLY",
     "run": 40083738813,
     "source_head": "11ed6ba3e7ecd4b184ee0161c5b8a1699c539a56",
-    "observed_utc": "2026-10-24T09:54:52.560390+00:00"
+    "observed_utc": "2026-10-24T09:54:52.560390+00:00",
+    "receipt": "docs/evidence/tx-output8088-branchtailfeed-interfaces-pass-20261024.json",
+    "descriptor": "docs/evidence/tx-branchtailfeed-native-interface-descriptor-20261024.json",
+    "summary_asset": 671922034,
+    "summary_sha256": "e872278654de17a300e5004c463a1ad37b5c9e1116ed7d8720e2872f8124c2b9",
+    "parts_asset": 671922116,
+    "parts_sha256": "278156444c2bd2159f6f029f8f3a9d51ad156d1a84a751ea41e4e75e6b5b6a51"
   },
   "branch_tail_fresh_counts": {
     "R": 141473,
@@ -283,5 +291,6 @@
     "composition_dc": "69d4dcfa957ccc6d19ab2ee6766bdd9a0ac7c147",
     "physical": "12dbfa546406f345bc594cf25af699bea5840634"
   },
-  "branch_tail_qualification_scope": "Physical DRC/LVS/geometry controls, fresh wire/intrinsicRC, two-order precision, composition and130-target metal DC comparison passed. Native interface/loaded waveform/fullPEX/PHY/mainchip acceptance remains open."
+  "branch_tail_qualification_scope": "Physical DRC/LVS/geometry controls, fresh wire/intrinsicRC, two-order precision, composition and130-target metal DC comparison passed. Native interface/loaded waveform/fullPEX/PHY/mainchip acceptance remains open.",
+  "branch_tail_native_interface_qualified": true
 }
