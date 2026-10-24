@@ -71,3 +71,7 @@ safety defects before investing in a new layout. It does not close loaded clock
 drive, 31-node phase distribution, recovery/removal/metastability, PVT, noise,
 new body contacts, DRC/LVS/RC, real ARM distribution, PLL connection or full PHY.
 The previous 55-device physical/RC result cannot qualify this 241-device design.
+
+## Preparation evidence
+
+Guarded source controls run40092803320 at3f96603e passed four actual preparation paths,355 vectors each,20 source/signal/safety faults,7 full-raw reader faults and8 zero-OP reader faults. The runner restored the exact patched runtime and all40 model-manifest entries without executing a native program. The concrete pipeline failure-masking review finding was fixed and negatively exercised. Two independent source reviews found no remaining concrete blocker. This result authorizes the bounded diagnostic dispatch; it is not native electrical evidence.
