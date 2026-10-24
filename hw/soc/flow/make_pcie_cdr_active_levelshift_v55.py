@@ -134,14 +134,14 @@ def main():
         t = place(c, x - b.center().x, y - b.center().y)
         return b.transformed(t)
 
-    def escape(pin, met, net, lane, label, cols=4, offset=0, rows=1, width=0.4, pin_bounds=None):
+    def escape(pin, met, net, lane, label, cols=4, offset=0, rows=1, width=0.4, pin_bounds=None, upper_rows=4):
         x = round(pin.center().x / 0.005) * 0.005
         y = round((pin.center().y + offset) / 0.005) * 0.005
         lower = via(met, 3, x, y, cols, rows)
         if pin_bounds is not None:
             assert lower.bottom >= pin_bounds.bottom - 1e-8 and lower.top <= pin_bounds.top + 1e-8, ("Via array escapes native pin height", str(lower), str(pin_bounds))
         box(3, lane - width/2, y - width/2, x + width/2, y + width/2)
-        via(3, 6, lane, y, 8, rows=4)
+        via(3, 6, lane, y, 8, rows=upper_rows)
         terminals.setdefault(net, []).append((lane, y))
         routes.append(
             dict(
@@ -173,7 +173,8 @@ def main():
                 collector_access = (met == 1 and net == n[0])
                 emitter_access = (met == 2 and net == n[2])
                 escape(pin, met, net, lane, name, 16 if collector_access or emitter_access else 4, off,
-                       width=1.2 if collector_access else 0.6 if emitter_access else 0.4)
+                       width=1.2 if collector_access else 0.6 if emitter_access else 0.4,
+                       upper_rows=2 if emitter_access else 4)
             reference.append(
                 f"Q{name} "
                 + " ".join(n[:3] + ["BULK"])
@@ -335,6 +336,7 @@ def main():
                 topvia1_array=[4,4],
                 topvia2_array=[2,2],
                 upper_metal_via_array=[8,4],
+                hbt_emitter_upper_metal_via_array=[8,2],
                 device_pitch_um=30,
                 mos_escape_rule="min(3um,actual_pin_height/2-1um), opposite signs",
                 tail_mos_via_rows=16,

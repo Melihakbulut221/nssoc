@@ -7416,3 +7416,12 @@ Complete failed layout/logs retained in release and exact failure receipt.
 Reduce HBT emitter M3 escape0.8->0.6um, retain16lower cuts and all other v55changes.
 Controller also restores/records both original native XML markers before new
 generation; no rule filtering/waiver. Full560DRC/deep-flat18LVS/ninefaults rerun.
+
+## 2026-10-24 v55 exact DRC coordinates identify upper-array clearance
+Second physical40050219240 still has2M3.b markers after emitter line0.6um.
+Restored native marker coordinates show upper-array edges x21.993..26.007 and
+51.993..56.007,y20.02 against collector liney20.125:105nm gap. The initial line
+width hypothesis was insufficient; preserve both failures. Reduce only HBT
+emitter upper regular via array8x4->8x2 (still16cuts), leaving TopVia1 4x4,
+all other upper arrays8x4, lower emitter16cuts/.6umM3 and tailMOS16rows intact.
+Full native physical suite rerun, no marker waiver or deck modifications.

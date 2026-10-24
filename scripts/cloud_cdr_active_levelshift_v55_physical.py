@@ -55,7 +55,7 @@ def main():
         import compare_cloud_routed_endpoints as reports
         import xml.etree.ElementTree as ET
         reports.OUT=out
-        previous_pin=json.loads((ROOT/'docs/evidence/cdr-active-levelshift-v55-m3-spacing-error-20261024.json').read_text())
+        previous_pin=json.loads((ROOT/'docs/evidence/cdr-active-levelshift-v55-upper-via-spacing-error-20261024.json').read_text())
         prior,proof=reports.restore_report('cdr-active-levelshift-v55-physical',previous_pin['run'],previous_pin['summary_sha256'],previous_pin['parts_sha256'],out/'prior-drc',['physical/drc/drc.lyrdb','layout/result.json'])
         assert prior==previous_pin['report']
         measurement=prior['physical']['steps']['drc']['measurement']
@@ -65,7 +65,7 @@ def main():
         tree=ET.parse(marker_path)
         markers=[ET.tostring(item,encoding='unicode')for item in tree.findall('.//items/item')]
         assert len(markers)==2
-        r['previous_drc_diagnosis']=dict(source=proof,markers=markers,corrective_geometry='HBT emitter M3 width0.8->0.6um; all16lower cuts retained',waivers=[])
+        r['previous_drc_diagnosis']=dict(source=proof,markers=markers,corrective_geometry='HBT emitter upper regular via array8x4->8x2 to fit actual channel; all16lower cuts and0.6umM3 retained',waivers=[])
         save()
         protected={str(ROOT/p):h for p,h in check()['protected'].items()};protected[str(MANIFEST)]=sha(MANIFEST)
         r['protected_inputs']=protected
