@@ -7265,3 +7265,11 @@ with4x2TopVia1,2x2TopVia2,4x2upper regular vias and at least4um horizontal TM2.
 All original560DRC/18device deep-flatLVS/ninefaults unchanged. If physical passes,
 new wire graph/binding/RC/composition/full-loaded fivecase waves required.
 Do not reuse v51's181R/173C census or native port order without actual extraction.
+
+
+## 2026-10-24 v53 reference-MOS pin geometry correction
+Physical40044085847 terminated in generator: inherited3um source/drain escape
+does not fit new5.4um reference MOS pin. No physical pass/DRC/LVS inferred.
+Retain actual pin containment; choose min(3um,actual_pin_height/2-1um) with
+minimum1um separation offset. Four-row lower via array has actual DRC verification
+still required. TailMOS keeps3um offset. All native checks unchanged.

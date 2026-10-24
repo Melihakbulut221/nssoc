@@ -181,7 +181,11 @@ def main():
             gp = [s.dbbox().transformed(t) for s in c.each_shape(layout.layer(5, 2))]
             assert len(mp) == 2 and len(gp) == 1 and n[3] == "sub"
             for k, (pin, net) in enumerate(zip(mp, [n[2], n[0]], strict=True)):
-                py = round((pin.center().y + (-3 if k == 0 else 3)) / .005) * .005
+                # Keep the four-row lower via array within the actual shorter
+                # 5.4um reference-MOS pin; long tail MOS retains its 3um escape.
+                offset = min(3.0, pin.height()/2 - 1.0)
+                assert offset >= 1.0, ("MOS pin too short for four-row via", str(pin))
+                py = round((pin.center().y + (-offset if k == 0 else offset)) / .005) * .005
                 tiny = pya.DBox(pin.left, py-.1, pin.right, py+.1)
                 assert pin.contains(pya.DPoint(tiny.left,tiny.bottom)) and pin.contains(pya.DPoint(tiny.right,tiny.top))
                 escape(tiny, 1, net, x-18+6*k, name, 1, rows=4, width=1.6)
@@ -325,7 +329,7 @@ def main():
                 topvia2_array=[2,2],
                 upper_metal_via_array=[4,2],
                 device_pitch_um=30,
-                mos_escape_from_center_um=[-3,3],
+                mos_escape_rule="min(3um,actual_pin_height/2-1um), opposite signs",
                 mos_via_rows=4,
                 resistor_via_columns=8,
                 ports={n: str(b) for n, (_, b) in ports.items()},
