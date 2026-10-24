@@ -134,6 +134,20 @@ def main():
             row['all_saved_ranges']={name:dict(minimum=float(v.min()),maximum=float(v.max()),
               post_START_minimum=float(v[active].min()),post_START_maximum=float(v[active].max()))for name,v in values.items()}
             row['failed_HBT']={k:v for k,v in row['measurement']['hbt_safety'].items()if not v['passed']}
+            # Diagnostic sample locations do not change the frozen safety oracle.
+            row['HBT_extrema_samples']={}
+            post=np.flatnonzero(active)
+            def voltage(n):return np.zeros_like(t)if n=='0'else values['v('+n+')']
+            for name,h in contract['hbt'].items():
+                c,b,e,sub=[voltage(n)for n in h['terminals']]
+                ic=values['@q.'+name+'.qnpn13g2[ic]']/h['nx']
+                ce=c-e;be=b-e
+                indices=dict(min_post_vce=int(post[np.argmin(ce[active])]),
+                  max_whole_abs_vce=int(np.argmax(abs(ce))),max_whole_abs_vbe=int(np.argmax(abs(be))),
+                  max_whole_abs_ic_per_emitter=int(np.argmax(abs(ic))))
+                row['HBT_extrema_samples'][name]={kind:dict(row=i,time_s=float(t[i]),collector_v=float(c[i]),
+                  base_v=float(b[i]),emitter_v=float(e[i]),substrate_v=float(sub[i]),vce_v=float(ce[i]),vbe_v=float(be[i]),
+                  ic_per_emitter_a=float(ic[i]))for kind,i in indices.items()}
             row['thermal_vectors']=[k for k in values if k.endswith('.dt)')]
             assert len(row['thermal_vectors'])==127
             for name in ('wave.raw','op.raw','candidate.spice','bench.cir','contract.json','native.log'):
