@@ -63,7 +63,8 @@ def dataset(comp,anchors,model):
  assert len({root(n)for n in parent})==703
  for a in anchors['public']:
   assert comp['wire_node_map'][a['reference_label']].lower()==a['name'].lower()
- return dict(comp=comp,refs=refs,index=indexed,edges=edges,root=root,records=records)
+ return dict(comp=comp,refs=refs,index=indexed,edges=edges,root=root,records=records,
+  device_fingerprints=Counter(json.dumps(fingerprint(d),sort_keys=True)for d in records.values()))
 def bind(data,target,expected=None):
  key=(target['model'].lower(),target['terminal'],target['metal'],*target['point_dbu'])
  matches=[r for r in data['index'].get(key,[])if r['rail']==target['rail']]
@@ -122,6 +123,8 @@ def main():
   assert all(digest(p)==h for p,h in protected.items())
   before=dataset(json.loads((oldroot/'composition.json').read_text()),json.loads((oldroot/'intrinsic/source/anchors.json').read_text()),oldroot/'output8088-wire.spice')
   after=dataset(json.loads((a.composition/'composition.json').read_text()),json.loads((a.composition/'intrinsic/source/anchors.json').read_text()),a.composition/'output8088-wire.spice')
+  assert before['device_fingerprints']==after['device_fingerprints'],'An original native device/terminal/body topology changed'
+  result['all8088_intrinsic_and_complete_terminal_body_fingerprints_equal']=True
   targets={}
   for route in physical['geometry']['routes']:
    t=route['terminal'];anchor=route['anchor'];assert t['reference_label']==anchor['label']
