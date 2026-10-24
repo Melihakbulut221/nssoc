@@ -1,0 +1,16 @@
+name: registration-only-pcie-gen12-nettype-cloud
+on:
+  push:
+    branches: [codex/gen12-register-cloud-proofs]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - name: Explicit registration-only status
+        shell: bash
+        run: |
+          printf '%s\n' 'REGISTRATION_ONLY: no source checkout, native inputs, tests, or qualification.'
