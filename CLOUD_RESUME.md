@@ -8146,3 +8146,14 @@ The local project directory is empty; no local CAD/simulation processes were pre
 - Gen1/2 8b/10b/raw-word alignment is a real missing training prerequisite and is being developed in an isolated branch. It is not full PHY or LTSSM acceptance.
 
 See docs/evidence/cloud-active-checkpoint-20261024.json and exact immutable receipts. Full serial PHY and final timing flags remain false.
+
+
+### 2026-10-24 cloud-only checkpoint v19 (2026-10-24T14:03:55.847975+00:00)
+
+The four long native jobs remain mainchip40095811631, PLL observer40096538128 and TX normal/fault40098024825/40098031853. Never duplicate a live process.
+
+Fresh phase24440098170615 completed but was rejected: numerical startup is clean and all106 HBT safety/held-reset/first-fall gates pass; three cases still miss the original100mV phase margin at31.25ps. Readback controls40099838691 precede exact saved-waveform diagnosis; no new simulation is justified yet. Actual62-clock-port to124-selector-base binder77eb50b8 is source-only.
+
+CDR preparation40099344993 must pass before the sole manual ten-case loaded matrix. Gen1/2 codec40099402878 and raw32 boundary40100300472 are the exact native prerequisites. The alignment proof now covers every measured remainder0..9 and incomplete-COM flushes. Source-only RX chainc0de90b9 remains UNBOUND with no executable workflow until those proofs pass. No link-up, lower-rate analog or full serial PHY acceptance is claimed.
+
+All source, native execution and durable evidence remain on GitHub; the local project directory remains empty.
