@@ -7480,3 +7480,15 @@ preserved with exact native interface. New5full loaded cases use actual graph
 derived vector list, all wire/body/nativecurrent capture. Original v49 acceptance
 region comparison remains in workflow, no gate/clock/load/source relaxation.
 Nominal,cold,hot,outputswap,biasoff must all finish and retain every result.
+
+## 2026-10-24 native shared-reference compatibility candidate v56
+v55 full actual wire waves40052062927 remain independent/in progress.
+For actual C/D sampler integration, original v32 has exactly one8um reference,
+eight36um latch tails, one original IREF. Directly tying v53leaf5.4um reference
+in parallel is invalid. v56 schematic screen changes only reference5.4->8um and
+two gain tails36->53.335um (5nmgrid); original solver/source/load/device/signal/CM
+gates exact-source compared to v53, full5cases retained. Ratio alone notproof.
+If this candidate passes, final sampler must retain existing single8um reference,
+omit duplicate gain reference, replace old passive input divider, preserve all
+existing latch tails/bias. Requires actual whole-parent circuit and new geometry/
+DRC/LVS/RC/fullwaves; no acceptance from this isolated native candidate.
