@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Replay the exact 131-column native cache; no simulator or full-capture restore."""
-import copy, hashlib, io, json, os, shutil, subprocess, sys, tarfile, tempfile, traceback
+import copy, hashlib, io, json, os, re, shutil, subprocess, sys, tarfile, tempfile, traceback
 from contextlib import contextmanager
 from pathlib import Path
 from unittest.mock import patch
@@ -81,6 +81,17 @@ def manifest_valid(m):
     assert m['verification'] == dict(parts=3,bytes=ARCHIVE_BYTES,sha256=ARCHIVE_SHA,
         all_parts_and_combined_bytes_verified=True)
 
+def original_log_bytes(log):
+    assert digest(log) == LOG_SHA
+    assert b'line 142, in analyze' in log and b'AssertionError' in log
+
+def captured_original_log():
+    # Capture opaque bytes; never sanitize ANSI or render the raw log in a terminal.
+    log = subprocess.check_output(['gh','api','--allow-escape-sequences',
+        REPO+'actions/jobs/'+str(JOB)+'/logs'])
+    original_log_bytes(log)
+    return log
+
 def source_identity():
     r = api('actions/runs/'+str(RUN))
     assert r['id'] == RUN and r['status'] == 'completed' and r['conclusion'] == 'failure'
@@ -94,14 +105,12 @@ def source_identity():
     assert rows['controls']['conclusion'] == 'success'
     assert rows['diagnostic']['id'] == JOB and rows['diagnostic']['conclusion'] == 'failure'
     assert rows['diagnostic']['head_sha'] == SOURCE and rows['diagnostic']['run_attempt'] == 1
-    log = subprocess.check_output(['gh','api',REPO+'actions/jobs/'+str(JOB)+'/logs'])
-    assert digest(log) == LOG_SHA
-    assert b'line 142, in analyze' in log and b'AssertionError' in log
+    captured_original_log()
     return dict(run=RUN,source=SOURCE,attempt=1,job=JOB,conclusion='failure',job_log_sha256=LOG_SHA)
 
 @contextmanager
 def asset_stream(asset):
-    p = subprocess.Popen(['gh','api',REPO+'releases/assets/'+str(asset),
+    p = subprocess.Popen(['gh','api','--allow-escape-sequences',REPO+'releases/assets/'+str(asset),
         '-H','Accept: application/octet-stream'],stdout=subprocess.PIPE)
     try:
         yield p.stdout
@@ -242,6 +251,11 @@ def controls(s,m):
         try: fn()
         except (AssertionError,KeyError,ValueError,tarfile.TarError,EOFError): bad.append(name)
         else: raise AssertionError('Accepted fault '+name)
+    log = captured_original_log()
+    stripped = re.sub(rb'\x1b\[[0-?]*[ -/]*[@-~]', b'', log)
+    assert stripped != log and b'\x1b[' in log, 'Actual source log must exercise opaque ANSI transport'
+    reject('original-log-ansi-stripped',lambda:original_log_bytes(stripped))
+    reject('original-log-truncated',lambda:original_log_bytes(log[:-1]))
     for label,mutate in [
         ('accepted-source',lambda x:x.__setitem__('acquisition_accepted',True)),
         ('wrong-source',lambda x:x.__setitem__('source_head','0'*40)),
@@ -265,7 +279,7 @@ def controls(s,m):
         ('incomplete-publication',lambda x:x['verification'].__setitem__('all_parts_and_combined_bytes_verified',False))]:
         q=copy.deepcopy(m);mutate(q);reject(label,lambda:manifest_valid(q))
     with tempfile.TemporaryDirectory(prefix='replay-transport-controls-') as td:
-        d=Path(td); chunks=[b'first\x00payload',b'middle\x00payload',b'last\xffpayload']
+        d=Path(td); chunks=[b'first\x00\x1b[31mpayload',b'middle\x00payload',b'last\xffpayload']
         fm=dict(parts=[dict(index=i,bytes=len(b),sha256=digest(b)) for i,b in enumerate(chunks)],
             bytes=sum(map(len,chunks)),sha256=digest(b''.join(chunks)))
         def opener(values):
@@ -327,8 +341,8 @@ def controls(s,m):
             ('cache-unordered-time',2,0,-1.),('cache-original8-bit',1,1,999.),('cache-prior80-bit',2,2,999.),
             ('cache-first-time',0,0,1e-12),('cache-last-time',6,0,1.1e-6)]:
             q=values.copy();q[row,col]=value;reject(label,lambda:cache_check(q,label))
-    assert len(bad)==44, len(bad)
-    return dict(status='PASS_REPLAY_TRANSPORT_METADATA_CACHE_AND44_FAULTS',
+    assert len(bad)==46, len(bad)
+    return dict(status='PASS_REPLAY_TRANSPORT_METADATA_CACHE_AND46_FAULTS',
         rejected=bad,successful_three_part_transport=positive,successful_exact_tar=True,
         successful_chunked_cache=scan,endpoint_sampling=sampling.controls(),
         original_source_and_observer_controls=original.controls(),native_simulation_started=False)

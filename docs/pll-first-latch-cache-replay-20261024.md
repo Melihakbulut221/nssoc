@@ -15,3 +15,9 @@ The 3,355,077,680-byte selected cache is hash-checked, then scanned in bounded c
 The controls use actual immutable failure metadata mutations, successful and rejected synthetic three-part streams, exact archive-member fixtures and finite/nonfinite/time/order/bit-corrupt cache fixtures. These are transport and analysis controls, not new circuit simulations. Original observer/source-map controls and the endpoint helper controls remain mandatory.
 
 The selected cache stays in a runner temporary directory. Only small JSON results, original-failure metadata and the resulting diagnosis are published. No large cache is republished. Push activates controls only; a separately guarded manual replay depends on controls. All acquisition, full-device safety, qualified-PEX and full-PHY acceptance flags remain false.
+
+## Preserved hosted CLI rejection and raw-byte correction
+
+Replay 40108109320 at 5508d3a6 passed all 44 original transport controls and the original observer/endpoint controls, then stopped before restoring the actual selected cache. The newer hosted GitHub CLI refused the exact original ANSI-bearing job log unless raw escape sequences were explicitly permitted. The small failed result was published successfully; this was transport rejection, not a newly evaluated PLL waveform.
+
+The corrected captured-log and binary archive pipes explicitly use --allow-escape-sequences. Nothing strips, rewrites, renders or interprets those bytes; the original cryptographic hashes and failure checks still apply. The controls now additionally reject removal of actual ANSI bytes from the authenticated source log and one-byte truncation, for 46 total transport/metadata/cache faults. The successful opaque stream fixture also contains an escape sequence. All original cache, analyzer, acquisition and publication gates remain unchanged.
