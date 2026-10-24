@@ -7770,3 +7770,27 @@ Actual diagnosis40062426929 identified32 old C/D MOS Metal1 enclosure strips sti
 
 
 Cell-aware diagnosis40063538558 resolved6M5markers:4parent-coordinate markers plus2local pd_child_sampler_cd markers, repeated across2instances. They represent4unique physical notch locations. Map local boxes through actual native transforms, deduplicate8occurrences to4locations while preserving all6source markers. Same-component and geometry guards unchanged.32M1strips already passed exact translated-native attachment checks in40063073016. New full physical retry pending.8-hour monitor update tool returned success but local persisted rule stayed weekly; do not claim schedule corrected until verified.
+
+
+## 2026-10-24 — parent500 DRC closed; LVS topology review pending
+
+Run40063829456/source2c2fd01edfed5cbf7f5a3710c0bb4c04734730ba:
+generation, exact LEF/bbox/pins/obstructions,8serialized replacement controls and
+all9native child drawings/16placements/5geometry controls passed.
+All54prior DRC markers are closed: full560rule categories,zero markers.
+32old C/D M1 enclosure strips relocated320um with exact translated-native-component
+identity. Six hierarchical M5markers resolve to4actual same-component fills;
+global M5component count remains769. A/B and allchild drawings retained.
+Deep LVS extracts500devices against500reference devices with no extraction
+diagnostics, but reports NoMatch. No LVS/fullPHY/electrical acceptance.
+Read actual database with cdr-sampler-active-input-v57-parent-lvs-review-cloud.yml;
+identify actual clusters before changing more parent geometry. Do not start
+fresh planes/RC pipeline until parent LVS and native corruption gates pass.
+
+Local project directory verified empty. No local native CAD, simulation or
+artifact downloads. Sources/results are in GitHub; continue from branch HEAD.
+Scheduler tool silently ignored repeated updates of the old heartbeat. Deleted
+the obsolete weekly nssoc-a-k-i-leri-tamamla record and recreated the single
+nssoc-bulut-takibi heartbeat. Persisted ACTIVE state and480minute interval were
+verified, with cloud-only prompt and this same target thread. No duplicate
+heartbeat remains. The monitor runs every8hours.
