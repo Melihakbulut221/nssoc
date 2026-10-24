@@ -1,9 +1,9 @@
 {
-  "schema": "tx-phase-cloud-checkpoint-v6",
-  "observed_utc": "2026-10-24T16:09:20.110Z",
+  "schema": "tx-phase-cloud-checkpoint-v7",
+  "observed_utc": "2026-10-24T16:42:12.261Z",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
-  "source_head": "3e335947e42c562763ffd1c569e86942c047f0fa",
+  "source_head": "fba5352def8346abb0c2550986b542a76fee3ab3",
   "qualified_RC": {
     "run": 40086006467,
     "source": "c7cb559701eb5b05194110ef3c9bf8bd43626db0",
@@ -84,10 +84,10 @@
   "PLL_connected": false,
   "full_PHY_accepted": false,
   "next": [
-    "Follow existing role rejection reader40108734425/sourcec120426f, readbackjob120916487594; controls passed. No native rerun or binder repair until exact underlying log is read.",
-    "Follow the single preparation-only job40110198744/source3e335947;14source faults+four exact original decks+8fixedphase/safety faults. No DUT transient or production controller exists yet for offset candidate. Preserve current numerical/phase/safety gates.",
-    "Original244 reset waveform readback40102964781 is terminal PASS, reproducing all original359 columns and full measurement reports. Three electrical cases still rejected; the next candidate must preserve original fixedUI/100mV/106HBT numerical and safety gates.",
-    "Loaded31-tree, new physical reset/RC, realPLL connection and fullPHY remain open."
+    "Review source-only actual clock-role parameter observer fba5352d, then one exact archive/database readback. Preserve original role-binder Nx8 rejection until actual IDs/roles/sizes and independent canonical sources agree; do not resize physical devices to satisfy the erroneous universal assumption.",
+    "Offset244 four-case preparation40110198744 passed14+8 controls and all old deck/oracle/safety comparisons. A separately reviewed native controller is still required before any fresh waveform dispatch; no new transient exists or ran.",
+    "Original244 waveform rejection remains: three fixed100mV UI sample failures; same deadlines, all106HBT limits, zeroOP, numerical diagnostics and full capture gates remain mandatory.",
+    "Loaded31-tree, fresh reset physical layout/RC, actual lockedPLL connection and fullPHY remain open."
   ],
   "terminal_source_receipt": {
     "path": "docs/evidence/tx-phase-source-preparation-and31-mapping-pass-20261024.json",
@@ -277,7 +277,7 @@
     },
     "failure_reader": {
       "workflow": "tx-native-clock-role-failure-readback-cloud.yml",
-      "source_only": true,
+      "source_only": false,
       "independent_review_pending": false,
       "readback_dispatched": true,
       "native_rerun": false,
@@ -293,7 +293,7 @@
         "orphan": true,
         "tree_contains_one_noop_workflow_only": true
       },
-      "status": "queued_after_controls_pass",
+      "status": "completed_success",
       "run": 40108734425,
       "dispatch_source": "c120426f5430548038847516f2a876caf24964f9",
       "source_controls_job": 120915787556,
@@ -308,7 +308,22 @@
       },
       "production_job": 120916487594,
       "no_duplicate_dispatch": true,
-      "controls_receipt": "docs/evidence/tx-native-role-rejection-reader-controls-pass-20261024.json"
+      "controls_receipt": "docs/evidence/tx-native-role-rejection-reader-controls-pass-20261024.json",
+      "terminal_receipt": "docs/evidence/tx-native-clock-role-failure-readback-pass-20261024.json",
+      "terminal_receipt_sha256": "61f1e2483687ebbb3f55396e9c3e28badec029811cadfd304263f906ea868a28",
+      "original_failure": "Actual selector/tail emitter multiplier changed at frozen binder line31; role acceptance remains false."
+    },
+    "parameter_diagnosis": {
+      "status": "source_only_independent_review_pending",
+      "source": "fba5352def8346abb0c2550986b542a76fee3ab3",
+      "observer": "scripts/observe_tx_native_clock_role_parameters.py",
+      "controller": "scripts/cloud_tx_native_clock_role_parameters.py",
+      "methods": "scripts/tx-native-clock-role-parameters-methods.json",
+      "workflow_template": ".github/workflow-templates/tx-native-clock-role-parameters-cloud.yml",
+      "protected_sources": 21,
+      "dispatched": false,
+      "original_guard_unchanged": true,
+      "scope": "Actual589 mux HBT device/role comparison against independent Nx3/Nx1/final6+8 child definitions, followed by exact old failure reproduction. No extraction/simulation or acceptance."
     }
   },
   "trigger_audit": {
@@ -341,7 +356,7 @@
     "original_threshold_v": 0.1,
     "original_rejection_preserved": true,
     "preparation": {
-      "source_only": true,
+      "source_only": false,
       "workflow": "tx-phase-assert-offset-preparation-cloud.yml",
       "job": "preparation-only",
       "independent_review_pending": false,
@@ -359,12 +374,35 @@
         "orphan": true,
         "tree_contains_one_noop_workflow_only": true
       },
-      "status": "queued",
+      "status": "completed_success",
       "run": 40110198744,
       "dispatch_source": "3e335947e42c562763ffd1c569e86942c047f0fa",
-      "no_duplicate_dispatch": true
+      "no_duplicate_dispatch": true,
+      "terminal_receipt": "docs/evidence/tx-phase-assert-offset-preparation-pass-20261024.json",
+      "positive_cases": 4,
+      "source_faults": 14,
+      "unchanged_phase_safety_faults": 8,
+      "vector_count": 358,
+      "all_original106_HBT_limits_preserved": true
     },
     "source_review_passed": true,
     "source_review_receipt": "docs/evidence/tx-phase-assert-offset-source-review-20261024.json"
+  },
+  "queue_cleanup": {
+    "receipt": "docs/evidence/cloud-generic-ci-duplicate-cleanup-20261024.json",
+    "sha256": "c36ed381fdfa0227316cc56ec44a1c8a6191bbbf9f196ca75814e0d4cc8dfe5b",
+    "cancelled_only": [
+      40104013681,
+      40096297570,
+      40087690539
+    ],
+    "all_terminal": true,
+    "ordinary_cancel_only": true,
+    "protected_generic": [
+      40103387527,
+      40097669937,
+      40075044920
+    ],
+    "dedicated_native_jobs_untouched": true
   }
 }
