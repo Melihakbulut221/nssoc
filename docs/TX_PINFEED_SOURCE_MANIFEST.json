@@ -1,7 +1,7 @@
 {
   "branch": "codex/tx-via3-rail-diagnosis",
   "baseline_already_integrated_by_root": "b78a3420",
-  "source_snapshot": "18903b4e7a9119dc6cecdfeed9becbb7a924fa21",
+  "source_snapshot": "bbfd56564042cbdd5446bdbe47bb9b5ee6e187bc",
   "native_source_heads": {
     "physical": "74bc46d2e9518821a12c66b6a071add579ccf2df",
     "wire_anchors": "737bef27ae4bd8ddb0b2740f2e0562cb51f8991b",
@@ -27,6 +27,7 @@
     "docs/TX_PINFEED_CLOUD_RESUME.md",
     "docs/TX_PINFEED_NATIVE_CONTINUATION.md",
     "docs/TX_PINFEED_SOURCE_MANIFEST.json",
+    "docs/evidence/tx-branch-tail-fresh-native-anchors-pass-20261024.json",
     "docs/evidence/tx-branch-tail-physical-pass-20261024.json",
     "docs/evidence/tx-branch-tail-source-review-pending-20261024.json",
     "docs/evidence/tx-branch-tail-wire-source-review-20261024.json",
@@ -102,24 +103,37 @@
   "branch_tail_wire_anchors": {
     "run": 40078861177,
     "source_head": "b91a3f312d2538faf232164cdf9493b0cac61422",
-    "status": "IN_PROGRESS_WHEN_RECORDED_NOT_YET_QUALIFIED"
+    "status": "COMPLETED_SUCCESS_WIRE_GRAPH_AND_ALL_ORIGINAL_ANCHORS_ONLY",
+    "assets": {
+      "summary": {
+        "id": 671820495,
+        "sha256": "bbd49748b6d504a76a3c349ea13aa627a83ba415effaf9db3d633008fdd4b615",
+        "bytes": 4274693
+      },
+      "parts": {
+        "id": 671820592,
+        "sha256": "4ee8acdd851be108a48cd3715fafe3e4d412a09aef1ec6a04409e94dac7ceba1",
+        "bytes": 916
+      }
+    },
+    "receipt": "docs/evidence/tx-branch-tail-fresh-native-anchors-pass-20261024.json"
   },
-  "cloud_pipeline_observed_utc": "2026-10-24T09:01:12.439556+00:00",
+  "cloud_pipeline_observed_utc": "2026-10-24T09:22:40.845869+00:00",
   "branch_tail_guarded_pipeline": {
     "wire_anchors": {
       "run": 40078861177,
       "source_head": "b91a3f312d2538faf232164cdf9493b0cac61422",
       "workflow": ".github/workflows/tx-output8088-branch-tail-feed-wires-anchors-cloud.yml",
       "job": "diagnose",
-      "observed_status": "in_progress",
-      "observed_conclusion": null
+      "observed_status": "completed",
+      "observed_conclusion": "success"
     },
     "intrinsic_rc": {
       "run": 40079922239,
       "source_head": "1b3c71745361e40f508024f9ba76e49bc0804769",
       "workflow": ".github/workflows/tx-branchtailfeed-followthrough-cloud.yml",
       "job": "native-physical",
-      "observed_status": "queued",
+      "observed_status": "in_progress",
       "observed_conclusion": null
     },
     "precision": {
@@ -127,7 +141,7 @@
       "source_head": "00b9d3dc879253faece67d3db3136daeb4811203",
       "workflow": ".github/workflows/tx-output8088-branchtailfeed-precision-cloud.yml",
       "job": "actual-full-parent-wire-rc",
-      "observed_status": "queued",
+      "observed_status": "in_progress",
       "observed_conclusion": null
     },
     "composition_dc": {
