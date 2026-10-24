@@ -71,12 +71,6 @@
       ]
     },
     {
-      "label": "CDR newest fresh extraction pipeline",
-      "workflow": "cdr-sampler-active-input-v57-extraction-cloud.yml",
-      "branch": "codex/complete-open-work",
-      "optional": true
-    },
-    {
       "label": "PLL latest complete-capture reader",
       "workflow": "pll-rhi120-c8-delta-reader-cloud.yml",
       "branch": "codex/complete-open-work",
@@ -85,8 +79,27 @@
         "completed-reader"
       ],
       "optional": true
+    },
+    {
+      "label": "CDR latest guarded cleanup and unchanged strict extraction",
+      "workflow": "cdr500-floating-wire-cleanup-cloud.yml",
+      "branch": "codex/cdr500-floating-wire-diagnosis",
+      "optional": false,
+      "production_jobs": [
+        "native-physical"
+      ]
+    },
+    {
+      "label": "CDR fresh cleaned native binding and RC",
+      "workflow": "cdr500-cleaned-binding-rc-cloud.yml",
+      "branch": "codex/cdr500-floating-wire-diagnosis",
+      "optional": false,
+      "production_jobs": [
+        "binding",
+        "rc"
+      ]
     }
   ],
-  "inventory_version": 4,
-  "inventory_updated_at": "2026-10-24T08:11:53.117511+00:00"
+  "inventory_version": 5,
+  "inventory_updated_at": "2026-10-24T08:19:51.648330+00:00"
 }

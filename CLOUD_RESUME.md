@@ -8021,3 +8021,15 @@ PLL native continuation 40071288423 completed the original 1 us capture (3,201,4
 CDR native orphan diagnosis 40074893232 identified exactly10 root-exclusive terminal/public-pin-free metal components (20 of32 old M4 strips). Guarded cleanup run40076590920 at2627eb651ebff31b96abac985d19e1bc9b76d6a8 is running on isolated branch codex/cdr500-floating-wire-diagnosis, with full500-device physical checks and unchanged strict wire methods. It must not be accepted until all native controls finish.
 
 Cancelled duplicate root pull-request checks40073952481 after matching workflow/head against retained push checks40073945162. Cancellation is not a passing test; native jobs were not cancelled.
+
+## 2026-10-24 accepted bounded CDR floating-metal cleanup, fresh RC underway
+
+Independent source review and native run40076590920 qualify cleanup source2627eb651ebff31b96abac985d19e1bc9b76d6a8. Imported exactly8 added paths from receipt head438a19507b5ed2242b08efa3608cbdca4721dc0d; no pre-existing design sources changed. Whole-component subtraction removes exactly10 proved root-exclusive metal/via components with no intrinsic/public terminal, preserving all child geometry, other polygons, labels, hierarchy, transforms, schematic and LEF.
+
+Cleaned GDS SHA256 e6ab61471595cd3635c8e2ef3922a09d6b128db0a5338fd6106f3a8e4aefc2f3: 560 DRC categories/0 violations; unsimplified deep/flat500/500LVS;12 physical faults and7 cleanup corruptions rejected. Fresh160 planes/51nets/19faults pass. All4 previously failing strict wire methods remain byte-identical and now pass with113 components,238 native nets,1446 terminals,978 anchors and no terminal-free metal nets. Summary671670485 SHA817bdcb956662d9f3384ddcd72e237a4b9afb77e2cae3703eb4c063b0def90a2; parts671670572 SHAee011be772093b73ceaa45c735aaa2591eb9d321b4f35260c795c1df290839c6.
+
+The historical root extraction failure40073945226 is superseded specifically by this fresh strict-wire pass, not waived or erased. Cloud inventory now tracks the qualified cleanup and its successors instead of repeatedly treating the obsolete rejected geometry as the active extraction candidate. Historical negative receipts remain in GitHub.
+
+Next independent binding/RC native run40077487147 at068faa34b54d5ed2019c7d6cc1f9b4fe07b679fd uses the exact cleaned archive. It must retain measured500-device census (124HBT/50MOS/98R/7MIM/221ptaps), exact53.335um gain MOS,217small+4large contacts with native contact-equation oracle,113components/978anchors and all13 rawRC controls. Native binding and RC results are pending. No full loaded transient or fullPHY acceptance is claimed. Workflow cdr500-cleaned-binding-rc-cloud.yml is now included in the eight-hour monitor inventory.
+
+Full serial PHY, original-clock final chip timing, and actual mainchip integration remain open; the accepted cleanup closes only the proved floating-metal extraction blocker.
