@@ -8033,3 +8033,11 @@ The historical root extraction failure40073945226 is superseded specifically by 
 Next independent binding/RC native run40077487147 at068faa34b54d5ed2019c7d6cc1f9b4fe07b679fd uses the exact cleaned archive. It must retain measured500-device census (124HBT/50MOS/98R/7MIM/221ptaps), exact53.335um gain MOS,217small+4large contacts with native contact-equation oracle,113components/978anchors and all13 rawRC controls. Native binding and RC results are pending. No full loaded transient or fullPHY acceptance is claimed. Workflow cdr500-cleaned-binding-rc-cloud.yml is now included in the eight-hour monitor inventory.
 
 Full serial PHY, original-clock final chip timing, and actual mainchip integration remain open; the accepted cleanup closes only the proved floating-metal extraction blocker.
+
+## 2026-10-24 updated binding/RC run descriptor
+
+Run40077487147 was cancelled while both native jobs were still queued: source review found a stale descriptive476/1382 string even though numerical gates already required500/1446. Replacement40077616252 at383748effef8f5132e4739f9f74b7557c431d6ef corrects only that report scope and its method hash. No native calculation was duplicated. The inventory follows the latest workflow on codex/cdr500-floating-wire-diagnosis and will observe the replacement.
+
+Current root cleanup integration commitc25f95fa06cb9e7e13d494bc61d9022ac7aa9f5c contains exactly8 qualified added paths. It does not accept the new binding/RC source until its fresh native checks complete. Current live/main cloud work: mainchip continuation40075970481; full PLL delta/prefix reader40076916467; CDR fresh binding/RC40077616252. TX remaining geometry40075242137 has passed its native ownership controls; subsequent physical candidate preparation stays isolated oncodex/tx-via3-rail-diagnosis.
+
+Local project folder and scoped temporary outputs remain empty; the app-local heartbeat is deleted. The scheduled GitHub monitor is read-only and does not replace an engineering agent.
