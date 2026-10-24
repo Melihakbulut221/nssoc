@@ -67,6 +67,16 @@ def main():
         assert sha(diagnostic)==dpin['summary_sha256']and observed['source_head']==dpin['source_head']
         assert observed['status']==dpin['status']and observed['sources_unchanged']
         r['owned_path_source']=dict(run=dpin['run'],source_head=dpin['source_head'],summary_sha256=sha(diagnostic),summary_url=diagnostic_url,source_archive_previously_verified=dpin['small_archive_fully_verified_in_memory'])
+        survey=OUT/'diagnosis/native-sampler-survey.json'
+        survey_url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40093754159-1-cdr500-input-access-v58-corridors/cdr500-input-access-v58-corridors-40093754159-1.summary.json'
+        survey_sha='2e41ff33706aea82769eaa9d9afacec1f373916c2dbd3866f63b2233bd3c4e54'
+        fetch(survey_url,survey_sha,survey)
+        measured=json.loads(survey.read_text())
+        assert measured['source_head']=='6dfc9392b6327a73a6ef265c492bf3eccefd4d98'and measured['sources_unchanged']
+        assert measured['status']=='PASS_READ_ONLY_NATIVE_ALL_PRIMITIVES_CORRIDOR_DIAGNOSIS_NOT_PHYSICAL_RC_OR_ELECTRICAL_ACCEPTANCE'
+        assert not measured['accepted']and not measured['geometry_survey']['candidate_gds_written']
+        protected[str(survey)]=survey_sha
+        r['native_geometry_selection_source']=dict(run=40093754159,source_head=measured['source_head'],summary_sha256=survey_sha,summary_url=survey_url,physical_accepted=False)
         app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)==APP_SHA
         spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
         packed=OUT/'runtime.tar.gz';fetch(spec['receipt']['url'],spec['receipt']['sha256'],packed)
@@ -76,9 +86,11 @@ def main():
         assert all(sha(ROOT/n)==v['sha256']for n,v in runtime['files'].items())
         assert all(sha(Path(n))==h for n,h in protected.items())
         parent=OUT/'parent';parent.mkdir();shutil.copytree(OUT/'source/parent/inputs',parent/'inputs');shutil.copyfile(OUT/'source/parent/children.json',parent/'children.json')
-        run([app,'python',ROOT/'scripts/generate_cdr500_input_access_v58.py','--physical',OUT/'source','--diagnosis',diagnostic,'--pdk',ROOT/'pdk','--out',parent/'layout'],'generation')
+        run([app,'python',ROOT/'scripts/generate_cdr500_input_access_v58.py','--physical',OUT/'source','--diagnosis',diagnostic,'--survey',survey,'--pdk',ROOT/'pdk','--out',parent/'layout'],'generation')
         layout=parent/'layout';delta=json.loads((layout/'result.json').read_text())
-        assert len(delta['controls'])==9 and delta['added_via_instances']==28
+        assert len(delta['controls'])==9 and delta['added_via_instances']==24
+        assert len(delta['native_survey_selection_controls'])==8 and delta['added_route_rectangles']==20
+        assert delta['original_sampler_via1_via2_material_preserved']and delta['native_survey_sha256']==survey_sha
         assert len(delta['high_endpoint_cut_controls'])==3 and delta['original_high_endpoint_two_cut_sets_preserved']==8
         assert delta['original_children_drawings_and_placements_preserved']and delta['original_public_labels_and_boundary_preserved']and delta['serialized_metal_and_via_delta_exact']
         assert delta['all_intrinsic_device_bias_and_stimulus_sources_unchanged']and not delta['reduced_resistance_claim']
