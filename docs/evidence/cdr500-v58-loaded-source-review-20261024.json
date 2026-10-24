@@ -1,0 +1,33 @@
+{
+  "reviewed_controller_commit": "8cd9f1a0caf8b100612dcbc504231f9f5625479e",
+  "reviewed_workflow_fix_commit": "923512a691e56014c77bb242330a4c9edda62ac2",
+  "reviewer": "/root/pll_handoff",
+  "scope": "Independent read-only source/hash review; no native execution or local artifacts",
+  "findings": {
+    "initial": "Loaded on-push activation was not explicitly separated from preparation. Initial source remained [skip ci] and was never run.",
+    "resolution": "Added loaded workflow_dispatch condition while retaining needs:prepare, with exact protected workflow digest and truthful design wording.",
+    "remaining": "No concrete source blocker"
+  },
+  "checks": {
+    "base_protected_hashes": 24,
+    "loaded_controller_exact_reversible_substitutions": 8,
+    "stage_exact_reversible_substitutions": 2,
+    "controllers_unchanged_by_workflow_fix": true,
+    "original_cases": 10,
+    "original_bits": 256,
+    "stop_s": 3.425e-08,
+    "max_step_s": 3.125e-13,
+    "original_binding_corruptions": 13,
+    "native_collector_load_f": 1.5e-13,
+    "external_comparator_load_f": 5e-14,
+    "all_original_numerical_device_current_phase_timing_gates_retained": true,
+    "fresh_MIM_prerequisite": 40098426328
+  },
+  "activation": {
+    "event": "push",
+    "only_preparation_runs": true,
+    "loaded_requires_later_manual_dispatch": true
+  },
+  "actual_loaded_pass": false,
+  "full_PHY_accepted": false
+}
