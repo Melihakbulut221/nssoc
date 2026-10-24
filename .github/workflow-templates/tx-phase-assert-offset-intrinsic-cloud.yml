@@ -1,0 +1,143 @@
+# SPDX-License-Identifier: Apache-2.0
+# Source-only template. Register separately; native requires explicit manual input.
+name: tx-phase-assert-offset-intrinsic-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      execute_native:
+        description: 'Execute one fresh four-case intrinsic244 transient after all controls'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-assert-offset-intrinsic
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bind passed preparation, preserve original rejection and unchanged native gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ( exit 7 ) | tee rejected-pipeline-control.txt; then exit 1; fi
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/ensure_cloud_tested_source_release.py --controls | tee release-controls.json
+          python3 scripts/check_tx_phase_assert_offset_intrinsic.py | tee controls.json
+          python3 - <<'PYCODE'
+          import json
+          d=json.load(open('controls.json'));r=json.load(open('release-controls.json'))
+          assert r['status']=='PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS'and len(r['rejected'])==17
+          assert d['status']=='PASS_ASSERT_OFFSET244_FRESH_NATIVE_CONTROLLER_CONTROLS_NO_DUT_TRANSIENT'
+          assert len(d['four_uniform_decks'])==4
+          assert len(d['prerequisite_and_deck_faults'])==12 and len(d['acceptance_gate_faults'])==10
+          assert len(d['exact_offset_preparation_and_original_rejection']['faults'])==10
+          assert d['native_source_derivation']['exact_declared_replacements']==8
+          assert not d['assert_offset244_DUT_executed'] and not d['full_PHY_accepted']
+          assert len(d['original_loader_and_reader_controls']['full_raw_reader_controls'])==7
+          assert len(d['original_loader_and_reader_controls']['zero_OP_reader_controls'])==8
+          assert d['exact_original_zero_OP_prerequisite']['run']==40097348918
+          assert d['exact_offset_preparation_and_original_rejection']['receipt']['preparation_run']==40110198744
+          assert d['exact_offset_preparation_and_original_rejection']['receipt']['original_rejected_run']==40098170615
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: phase-assert-offset-controls-${{ github.run_id }}
+          path: |
+            controls.json
+            release-controls.json
+            rejected-pipeline-control.txt
+          retention-days: 30
+  intrinsic-four-case-assert-offset:
+    if: github.event_name == 'workflow_dispatch' && inputs.execute_native
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify precreated immutable evidence release at exact tested source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import json,os,sys
+          sys.path.insert(0,'scripts')
+          import ensure_cloud_tested_source_release as e
+          tag,sha=e.context('tx-phase-assert-offset-intrinsic',os.environ)
+          p=e.validate_release(e.api('releases/tags/'+tag),e.api('git/ref/tags/'+tag),tag,sha)
+          print(json.dumps(p,indent=2))
+          PYCODE
+      - name: Execute single-resistor offset candidate with unchanged four-case native oracle
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/cloud_tx_phase_assert_offset_intrinsic.py --native
+      - name: Preserve complete small report in exact log chunks
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          p=Path('hw/soc/out/cloud-tx-phase-assert-offset-intrinsic/result.json')
+          if not p.exists():
+              p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_text(json.dumps(dict(status='FAIL_MISSING_ASSERT_OFFSET_REPORT',source_head=os.environ['GITHUB_SHA'],full_PHY_accepted=False))+'\n')
+          b=p.read_bytes();assert len(b)<=3_000_000
+          print('RESULT_SHA256',hashlib.sha256(b).hexdigest());print('RESULT_BYTES',len(b))
+          s=base64.b64encode(b).decode();parts=[s[i:i+4096]for i in range(0,len(s),4096)]
+          for i,c in enumerate(parts):print(f'RESULT_BASE64 {i}/{len(parts)} {c}')
+          PYCODE
+      - name: Publish complete fresh captures and every rejection
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import json,os,pathlib,subprocess,sys
+          sys.path.insert(0,'scripts')
+          import ensure_cloud_tested_source_release as e
+          group='tx-phase-assert-offset-intrinsic'
+          tag,sha=e.context(group,os.environ)
+          e.validate_release(e.api('releases/tags/'+tag),e.api('git/ref/tags/'+tag),tag,sha)
+          root=pathlib.Path('hw/soc/out/cloud-tx-phase-assert-offset-intrinsic')
+          p=root/'result.json';assert p.is_file()
+          stem=group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+          summary=pathlib.Path(stem+'.summary.json');summary.write_bytes(p.read_bytes())
+          subprocess.run([sys.executable,'scripts/cloud_chunked_results.py','--directory',str(root),'--stem',stem],check=True)
+          parts=pathlib.Path(stem+'.parts.json');d=json.loads(parts.read_text())
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,str(summary),str(parts),*[p['name']for p in d['parts']]],check=True)
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome == 'failure'
+        with:
+          name: phase-assert-offset-full-evidence-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-phase-assert-offset-intrinsic/
+          retention-days: 30
+# No push native execution, automatic release creation or acceptance from diagnostic status.
