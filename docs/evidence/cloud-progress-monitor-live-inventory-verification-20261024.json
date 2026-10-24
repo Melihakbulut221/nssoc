@@ -1,0 +1,265 @@
+{
+  "schema": 1,
+  "status": "VERIFIED_GENUINE_NATIVE_REJECTION_NOT_MONITOR_ERROR",
+  "observed_at": "2026-10-24T09:41:30.794761+00:00",
+  "scope": "Independent in-memory verification of the small published monitor artifact and small immutable PLL metadata. No native archive or waveform was downloaded, no native job was started, and no product acceptance is inferred.",
+  "monitor": {
+    "run": 40080701966,
+    "source_head": "8689cb4b866b050f4136482d34433a62491f95ef",
+    "workflow": ".github/workflows/cloud-progress-monitor.yml",
+    "status": "completed",
+    "conclusion": "failure",
+    "jobs": [
+      {
+        "id": 120833461505,
+        "name": "controls",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-24T09:30:40Z",
+        "completed_at": "2026-10-24T09:30:45Z"
+      },
+      {
+        "id": 120837993064,
+        "name": "observe",
+        "status": "completed",
+        "conclusion": "failure",
+        "started_at": "2026-10-24T09:31:31Z",
+        "completed_at": "2026-10-24T09:32:02Z"
+      }
+    ],
+    "verifier_path": "scripts/cloud_progress_monitor.py",
+    "verifier_sha256": "2f636a5ecfe0e1f2385122911923a32fa62855bf265429e197e89eeaab02bfdc",
+    "verifier_modified": false,
+    "artifact": {
+      "id": 12555662692,
+      "name": "cloud-progress-snapshot",
+      "zip_bytes": 12367,
+      "zip_sha256": "2cc099d98785d299d914a5168c4f745f438ccf54b19beedfbeb4f8b2d1637d8b",
+      "member": "result.json",
+      "json_bytes": 118736,
+      "json_sha256": "2a87cb3143e523c13aaabdbeac6965bc4af45bae6228f9662b53389e1b4d90e1"
+    },
+    "snapshot": {
+      "status": "ATTENTION_REQUIRED",
+      "inventory_version": 8,
+      "inventory_updated_at": "2026-10-24T09:07:08.539177+00:00",
+      "observed_at": "2026-10-24T09:31:35.570027+00:00",
+      "target_branch": "codex/complete-open-work",
+      "target_head": "0a45dfb1539a39d7cc4a0008ce1a3fcf65e85e15",
+      "configuration_source": {
+        "branch": "codex/complete-open-work",
+        "head_sha": "0a45dfb1539a39d7cc4a0008ce1a3fcf65e85e15",
+        "blob_sha": "d6ae26f7beaefafe445803abbc4e8ab282b5000e",
+        "sha256": "61fd441f5154eab2b5f83c66987e0492f2d34d10eb8a03d7fda2e6fdb66a158c",
+        "bytes": 5000,
+        "bootstrap": false
+      },
+      "problem_runs": [
+        40076916467
+      ],
+      "missing_selectors": [],
+      "missing_required_workflows": [],
+      "automatic_native_dispatch": false,
+      "full_phy_accepted": false,
+      "final_timing_accepted": false
+    },
+    "classification_explanation": "The controls and snapshot publication succeeded. observe returned failure because the verifier intentionally exits nonzero for ATTENTION_REQUIRED, whose sole problem is the explicit original PLL acquisition-gate rejection. It did not return MONITOR_ERROR."
+  },
+  "pll_rejection": {
+    "run": 40076916467,
+    "source_head": "a8f6ba185f0bfefba781c4992f181e034d8592fe",
+    "classification": "FAILED_NATIVE_REPORT",
+    "reason": "A terminal native report explicitly failed",
+    "publication_verified": true,
+    "report": {
+      "tag": "cloud-results-40076916467-1-pll-rhi120-c8-delta-review",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-results-40076916467-1-pll-rhi120-c8-delta-review",
+      "metadata": {
+        ".summary.json": {
+          "asset": 671784463,
+          "bytes": 208783,
+          "sha256": "04ae4ebfcdaa3696d686e6f3be68998183ba0f9c7eb937b9b96859835f6feebf"
+        },
+        ".parts.json": {
+          "asset": 671784519,
+          "bytes": 868,
+          "sha256": "aae524c3084b9b5e09be33458f4e8207c5ec0a131e3b23992ff331028dc1ecd1"
+        }
+      },
+      "complete_descriptor": true,
+      "native_status": "REJECTED_ORIGINAL_FULL_RHI120_ACQUISITION_GATES",
+      "native_error": "AssertionError('Original full-duration acquisition gates failed')",
+      "sources_unchanged": null,
+      "product_acceptance_inferred": false,
+      "part_count": 1
+    },
+    "independently_retrieved_metadata": {
+      ".summary.json": {
+        "asset": 671784463,
+        "bytes": 208783,
+        "sha256": "04ae4ebfcdaa3696d686e6f3be68998183ba0f9c7eb937b9b96859835f6feebf",
+        "verified_in_memory": true,
+        "status": "REJECTED_ORIGINAL_FULL_RHI120_ACQUISITION_GATES",
+        "error": "AssertionError('Original full-duration acquisition gates failed')",
+        "source_head": "a8f6ba185f0bfefba781c4992f181e034d8592fe",
+        "full_capture": true,
+        "acquisition_accepted": false,
+        "full_device_safety_accepted": false,
+        "full_phy_accepted": false,
+        "all_original_native_bytes_retained": true,
+        "all5106_columns_verified": true
+      },
+      ".parts.json": {
+        "asset": 671784519,
+        "bytes": 868,
+        "sha256": "aae524c3084b9b5e09be33458f4e8207c5ec0a131e3b23992ff331028dc1ecd1",
+        "verified_in_memory": true,
+        "part_count": 1,
+        "archive_bytes": 236811780,
+        "archive_sha256": "8eb627169d4577d9f5798ff9d67c6e125406481fde3040192d80dd6b24c9fcaf"
+      }
+    },
+    "raw_capture_independently_reviewed_here": false
+  },
+  "cdr_loaded_checkpoint": {
+    "run": 40081228425,
+    "source_head": "e4aca2e147acf55dfe9718da5a4a6e0471fbb2d5",
+    "workflow": ".github/workflows/cdr500-cleaned-loaded-cloud.yml",
+    "branch": "codex/cdr500-floating-wire-diagnosis",
+    "run_status": "queued",
+    "run_conclusion": null,
+    "jobs": [
+      {
+        "id": 120835030804,
+        "name": "prepare",
+        "status": "completed",
+        "conclusion": "success",
+        "started_at": "2026-10-24T09:30:47Z",
+        "completed_at": "2026-10-24T09:31:57Z"
+      },
+      {
+        "id": 120838239534,
+        "name": "loaded (clock_stopped)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:31:57Z",
+        "completed_at": null
+      },
+      {
+        "id": 120838239535,
+        "name": "loaded (nominal_late)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:32:00Z",
+        "completed_at": null
+      },
+      {
+        "id": 120838239536,
+        "name": "loaded (vi_bias_off)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:31:57Z",
+        "completed_at": null
+      },
+      {
+        "id": 120838239537,
+        "name": "loaded (cold_early)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:31:57Z",
+        "completed_at": null
+      },
+      {
+        "id": 120838239554,
+        "name": "loaded (hot_early)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:31:57Z",
+        "completed_at": null
+      },
+      {
+        "id": 120838239572,
+        "name": "loaded (nominal_early)",
+        "status": "in_progress",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:32:05Z",
+        "completed_at": null
+      },
+      {
+        "id": 120838239581,
+        "name": "loaded (hot_late)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:31:57Z",
+        "completed_at": null
+      },
+      {
+        "id": 120838239593,
+        "name": "loaded (constant_one)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:31:57Z",
+        "completed_at": null
+      },
+      {
+        "id": 120838239627,
+        "name": "loaded (constant_zero)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:31:57Z",
+        "completed_at": null
+      },
+      {
+        "id": 120838239716,
+        "name": "loaded (cold_late)",
+        "status": "queued",
+        "conclusion": null,
+        "started_at": "2026-10-24T09:31:57Z",
+        "completed_at": null
+      }
+    ],
+    "production_jobs": [
+      "loaded (nominal_early)",
+      "loaded (nominal_late)",
+      "loaded (hot_early)",
+      "loaded (hot_late)",
+      "loaded (cold_early)",
+      "loaded (cold_late)",
+      "loaded (constant_zero)",
+      "loaded (constant_one)",
+      "loaded (clock_stopped)",
+      "loaded (vi_bias_off)"
+    ],
+    "interpretation": "Use job-level state: the aggregate run may remain queued while two loaded jobs are executing. Preparation success does not constitute waveform acceptance. All ten original cases must pass their unchanged gates."
+  },
+  "inventory_proposal": {
+    "path": "docs/evidence/cloud-progress-monitor-inventory-v9-proposed-20261024.json",
+    "base_branch": "codex/complete-open-work",
+    "base_head": "0a45dfb1539a39d7cc4a0008ce1a3fcf65e85e15",
+    "base_path": ".github/cloud-progress-monitor.json",
+    "base_sha256": "61fd441f5154eab2b5f83c66987e0492f2d34d10eb8a03d7fda2e6fdb66a158c",
+    "base_inventory_version": 8,
+    "proposed_inventory_version": 9,
+    "added_entry": {
+      "label": "CDR fresh 500-device full loaded waveform cases",
+      "run": 40081228425,
+      "branch": "codex/cdr500-floating-wire-diagnosis",
+      "head_sha": "e4aca2e147acf55dfe9718da5a4a6e0471fbb2d5",
+      "production_jobs": [
+        "loaded (nominal_early)",
+        "loaded (nominal_late)",
+        "loaded (hot_early)",
+        "loaded (hot_late)",
+        "loaded (cold_early)",
+        "loaded (cold_late)",
+        "loaded (constant_zero)",
+        "loaded (constant_one)",
+        "loaded (clock_stopped)",
+        "loaded (vi_bias_off)"
+      ]
+    },
+    "other_entries_unchanged": true,
+    "verifier_semantics": "production_jobs is an execution observation filter, not an assertion that every listed job passed. Full waveform acceptance remains governed by all ten native case results.",
+    "automatic_native_dispatch": false
+  }
+}
