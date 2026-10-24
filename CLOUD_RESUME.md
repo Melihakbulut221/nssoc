@@ -7616,3 +7616,11 @@ new GDS/560DRC/deep-flat18LVS/nine faults launched, then fresh native RC/model
 binding/composition/all5loaded waves mandatory. Never scale old resistance values.
 Mainchip continuation40056071182 live from exact154checkpoint, no duplicate.
 All work cloud-only; local workspace empty, native archives remain Releases.
+
+## 2026-10-24 v57 shortened supply geometry passed physical checks
+Physical40056373149/sourcee4e58cda passed full560DRC0markers, deep/flat18-device
+LVS and nine real faults. Actual pullup supply escapes186/216um, substrate192/222um
+verified in generated native pin records; intrinsic circuit remains exactv56.
+GDS c65376f7dfbf8026f4d2dd604d95062b74b5bd6af6bae7f78e16a796bf72cb63.
+Fresh wire geometry launched. Then newRC/binding/complete composition/original
+5full loaded cases required. No electrical improvement or parent closure yet claimed.
