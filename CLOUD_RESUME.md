@@ -7515,3 +7515,15 @@ do not reuse old5.4/36 converter or oldv55wire values. Read fresh counts/ports.
 v56 leaf has isolated reference for this screen; final C/D sampler must retain
 only its existing8umreference and gain gates share it, no extra IREF source.
 Actual parent circuit/layout/RC/fullwave integration remains open.
+
+## 2026-10-24 v55 remaining loss measured; v56 physical live
+Saved-wave analysis40052613465 passed with every native sample/node unchanged.
+Hot intrinsic collector106.533mV/35.781ps vs external97.374mV/38.594ps.
+Collector equivalent4.097/4.234ohm; tail sources3.988/4.031ohm, down from10.27/10.32.
+Pullup supply paths5.397/3.841ohm,38.749/27.985mV drop; all measured receipts saved.
+v56physical40052914682 uses native8umreference/53.335umgain tails for actual parent
+bias compatibility, not a gate change. Wait exact result; then freshwire and RC,
+new isolated model converter8/53.335um, full extracted5cases. Never call v56
+physical/electrical accepted based on v55passes or v56prelayout pass alone.
+Cloud only. Active mainchip40045229904, PLL40041871167, TXnormal40050776700 and
+TXfault40051009656 must be checked before continuing their exact saved processes.
