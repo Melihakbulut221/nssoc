@@ -1,0 +1,70 @@
+{
+  "schema": "pll-first-latch-raw-cli-continuation-v1",
+  "run": 40111010067,
+  "source": "6755118f44284fc78f7874dabcd6fe00764f876d",
+  "attempt": 1,
+  "status": "queued",
+  "release": 422841066,
+  "tag": "cloud-results-40111010067-1-pll-first-latch-cache-replay",
+  "url": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-results-40111010067-1-pll-first-latch-cache-replay",
+  "empty_assets_verified": true,
+  "trigger_proof": {
+    "source": "379bbcbd5653445d97a16024b5296a07d68be468",
+    "workflow_tree": "a7a687802bc594e32b85caeae790ad4523b69896",
+    "inherited_source": "4d85722e05fbda8440c6577d7d7baa18a642485b",
+    "inherited_count": 1305,
+    "inherited_inventory_sha256": "ea0f53f665079869cc5ef8c83f792caef80d052fa22cdf7278db11b1a1231871",
+    "audit_source": "7a3dd6dd8b6681d10f805eefda0ac96b563a3d90",
+    "audit_sha256": "66207076e4055a97b475a302479f39925fd82573ac358b576626109bbc1876c8",
+    "added_workflows": {
+      ".github/workflows/pll-feedback-cycle-diagnosis-cloud.yml": {
+        "blob": "f7df7e40934202ace8a424728b3069869382af4b",
+        "sha256": "b23bab8bd1fcb28d52ec3298c4c426fdceb03b6fdd40ee7f24eea18fbbda5197",
+        "trigger": "  push:\n    branches: [codex/pll-feedback-cycle-diagnosis]\n    paths: [.github/workflows/pll-feedback-cycle-diagnosis-cloud.yml, scripts/cloud_pll_feedback_cycle_diagnosis.py]\n  workflow_dispatch:",
+        "classification": "Explicit branch-only push excludes tags; manual dispatch only otherwise"
+      },
+      ".github/workflows/pll-feedback-event-review-cloud.yml": {
+        "blob": "082cd1103e5df12ceacb41d171aafb751dfeac5a",
+        "sha256": "41f931590bd81c31b50506da612f13821ecd16e5852cda2b340bf1b64e4f4f9c",
+        "trigger": "  push:\n    branches: [codex/pll-feedback-cycle-diagnosis]\n    paths: [.github/workflows/pll-feedback-event-review-cloud.yml, scripts/cloud_pll_feedback_event_review.py, scripts/pll-feedback-event-review-methods.json]\n  workflow_dispatch:",
+        "classification": "Explicit branch-only push excludes tags; manual dispatch only otherwise"
+      },
+      ".github/workflows/pll-first-latch-cache-replay-cloud.yml": {
+        "blob": "e2ca33218de305d125788b1a0b618f38fe89517f",
+        "sha256": "b0b3707d08584f9f508a64c10da9c57f51771235401a8cb403a244b57d412806",
+        "trigger": "  push:\n    branches: [codex/pll-first-latch-cache-replay]\n    paths:\n      - .github/workflows/pll-first-latch-cache-replay-cloud.yml\n      - scripts/cloud_pll_first_latch_cache_replay.py\n      - scripts/pll-first-latch-cache-replay-methods.json\n      - scripts/pll_first_latch_native_sampling.py\n  workflow_dispatch:",
+        "classification": "Explicit branch-only push excludes tags; manual dispatch only otherwise"
+      },
+      ".github/workflows/pll-first-latch-sinks-cloud.yml": {
+        "blob": "4718eb6ad6c758cb3ae9873296a9a3f90e3ca018",
+        "sha256": "631a081c3e4da36a13f5f88a6c2bfae2abceac0d2455b0527b26a05fde28f3fa",
+        "trigger": "  push:\n    branches: [codex/pll-feedback-cycle-diagnosis]\n    paths: [.github/workflows/pll-first-latch-sinks-cloud.yml, scripts/cloud_pll_first_latch_sinks.py]\n  workflow_dispatch:",
+        "classification": "Explicit branch-only push excludes tags; manual dispatch only otherwise"
+      }
+    },
+    "cloud_results_tag_triggers_no_workflows": true
+  },
+  "docs_only_successor_verified": true,
+  "workflow": ".github/workflows/pll-first-latch-cache-replay-cloud.yml",
+  "jobs": [
+    "controls",
+    "replay"
+  ],
+  "source_review": "379bbcbd5653445d97a16024b5296a07d68be468 independently cleared by /root/pll_handoff; docs-only6755118f is tested source.",
+  "peer_receipt": {
+    "source": "11c9c07346daa9aecf5c78f691c8e85557804b0f",
+    "path": "docs/evidence/pll-cache-replay-raw-byte-peer-review-20261024.json",
+    "sha256": "3dcd88fc755944de345d043995520c48e43604c6985a69faeafa756068be6695"
+  },
+  "original_failure": {
+    "run": 40108109320,
+    "source": "5508d3a6c1a5948f2f18536b188c04b01a846caa",
+    "summary_asset": 672682739,
+    "summary_sha256": "05f12f66ae3c3a32071b3c6a412a097941524a9e2249e38ea772d9454e2b2b6e"
+  },
+  "next": "Wait for this sole46-control→exact selected-cache replay; require all original part/cache/80/8 hashes and actual line142 row-zero failure reproduction before sampling repair. No new simulator or full130GB capture read.",
+  "native_simulation_started": false,
+  "acquisition_accepted": false,
+  "full_phy_accepted": false,
+  "cloud_only": true
+}
