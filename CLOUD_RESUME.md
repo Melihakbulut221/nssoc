@@ -7997,3 +7997,15 @@ Run40073349301/fcb5c0f19 passed full560DRC0,unsimplifieddeep/flat500LVS and12fau
 
 ### Cloud-only handoff 2026-10-24: native planes passed, strict wire graph rejected
 ActualCDR500 physical40073349301 remainspassed. Extraction40073945226/751b438f:160planes,51interface nets,1446terminals,19faults PASS; exactprimitiveannotationrecovery PASS; strictoriginalprobe01.py rejects a terminal-free metalnet (line56). No RCacceptance andno waiver. Isolatednativeownership diagnostic40074893232/76035ad723 oncodex/cdr500-floating-wire-diagnosis mustenumerateallorphansbeforeanycleanup; priorclean_cdr_v23_floating_parent_metal.py isprecedentonly. TXpinfeed40072842481precision and40072977220composition/DCbothpassed; currentqualifiedbranchsnapshot5da049616d, receipts/source manifest cloudonly; driverR improves~30%/32%,bothfinaltailR unchanged,34nsnotstarted. FurtherremainingR/tailgeometry readback delegated. Mainchip40065933598 ispublishing07:38UTC; waitterminalandexactdescriptorbeforeanothercontinuation. PLL40071288423 sameprocessdelta native stillactive. Maincloudmonitor installed8689cb4b onmain; 8hUTCschedule17*/8, firstmainobservation40075060423 pending; monitoronlyreadsmetadata, neverrestart/dispatch/arbitraryrepair. Rootinventoryv2nowtracksCDRdiagnosis. Localprojectempty/noCADprocess; no nativeassets downloadedlocally. Four supersededchecks40068408138/40068189971/40058959464/40056081425 cancelled tofreecloudrunners; noCADjobcancelled.
+
+## 2026-10-24 cloud-only routing continuation and queue handoff
+
+Native route run 40065933598 is fully published and verified. It preserves the exact saved process, controller 08b91df1a93d28c4acda1dbeae3b45e53af8393664ceaf71038808bdb0707eee, original 20/4/8/8 ns clocks and 5% derating. Complete violation counts advanced 220 -> 82 -> 72 -> 50 -> 47 -> 47 -> 27 -> 6385; iteration 34 at 40% reports 5540 partial violations. The increase is real; do not call routing or timing closed.
+
+Dispatched exactly one continuation 40075970481 at source f9bd0466deff765c062143a4b5ec5cff4939537f for 7200 native seconds using the fully verified descriptor. No t=0 restart or postroute dispatch. The existing old-boundary main chip does not contain the complete serial PHY.
+
+Cloud inventory version 3 includes this continuation and TX remaining driver/final-tail geometry readback 40075242137 at f9dfeee4ebdd1970109eee34b9289bc29fd0eef1. Its isolated durable source checkpoint is 25aaeb20239b9f946f855c6fcf6617dd35e101d4; no new 34 ns electrical acceptance.
+
+Cancelled redundant isolated PLL checks 40070531615 after verifying identical checks workflow and PLL delta source paths against active root checks 40073945162. This is cancellation, not test success; no native job was cancelled. The root regression remains active.
+
+GitHub main monitor is installed at 8689cb4b866b050f4136482d34433a62491f95ef, first main verification run 40075060423. Wait for the live inventory bootstrap=false gate and snapshot publication before retiring local heartbeat nssoc-bulut-takibi. Monitor observes every eight hours; it does not automatically dispatch, cancel, or repair native CAD runs. Local workspace remains empty.
