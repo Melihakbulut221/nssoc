@@ -1,0 +1,173 @@
+{
+  "schema": 1,
+  "observed_utc": "2026-10-24T17:38:16Z",
+  "cloud_only": true,
+  "readback_run": 40115817352,
+  "source_head": "293eed1f3538d5a2208c972310e25a8e465b59ee",
+  "workflow": "tx-role-parameter-failure-readback-cloud.yml",
+  "run_conclusion": "cancelled",
+  "controls_job": 120936752187,
+  "controls_passed": true,
+  "readback_job": 120937492702,
+  "computation_complete": true,
+  "artifact_publication_complete": true,
+  "workflow_success": false,
+  "lifecycle_note": "Authenticated complete report and finalized artifact were emitted by17:27:48Z. API lifecycle later returned completed/cancelled at17:38:16Z with empty steps. This receipt does not turn that lifecycle into success or rerun native work.",
+  "result": {
+    "result_sha256": "df8dfca390b461687569ce4bd8f446630a1b1a3dfa253182451aa0fb8cb76fb7",
+    "result_bytes": 30638,
+    "status": "PASS_EXACT_REJECTED_OBSERVER_LOG_READBACK_NOT_ROLE_ACCEPTANCE",
+    "inner_log": "PASS_ACTUAL8088_NATIVE124_INPUTS372_BASES64_DRIVER_HANDOFFS_FOUR_OUTPUT_PORTS_REQUIRES_LOADED_WAVES\nTraceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/observe_tx_native_clock_role_parameters.py\", line 216, in <module>\n    if __name__==\"__main__\":main()\n                            ~~~~^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/observe_tx_native_clock_role_parameters.py\", line 191, in main\n    blocks=inspect_native(g);bad=mismatches(blocks)\n  File \"/home/runner/work/nssoc/nssoc/scripts/observe_tx_native_clock_role_parameters.py\", line 142, in inspect_native\n    assert kind==KINDS[label]==placement[\"kind\"],\"Native child kind disagrees with pinned plan\"\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Native child kind disagrees with pinned plan\n",
+    "inner_log_sha256": "5f27de711304b10f35b78ecf1d262ab0f428917b6e166688347a4fa379375124",
+    "original_unchanged": true,
+    "members": {
+      "native-parameter-observer.log": {
+        "bytes": 804,
+        "sha256": "5f27de711304b10f35b78ecf1d262ab0f428917b6e166688347a4fa379375124"
+      },
+      "result.json": {
+        "bytes": 7386,
+        "sha256": "a89611df3c48af78133f22b988a3be7ff61f62081bb850be050bdf66f8c753bb"
+      },
+      "native/original-interfaces.json": {
+        "bytes": 197219,
+        "sha256": "13bfff54e68a5355547fc64e4ebdd64e347c5b54a43b8c924b9ece724b009aaf"
+      },
+      "tx-output8088-branchtailfeed-interfaces-source/parts.json": {
+        "bytes": 901,
+        "sha256": "278156444c2bd2159f6f029f8f3a9d51ad156d1a84a751ea41e4e75e6b5b6a51"
+      },
+      "tx-output8088-branchtailfeed-interfaces-source/summary.json": {
+        "bytes": 17608,
+        "sha256": "e872278654de17a300e5004c463a1ad37b5c9e1116ed7d8720e2872f8124c2b9"
+      }
+    },
+    "error": null,
+    "traceback": null,
+    "original_job": {
+      "id": 120932026993,
+      "name": "exact-native-role-parameters",
+      "status": "completed",
+      "conclusion": "failure"
+    }
+  },
+  "terminal_evidence": [
+    {
+      "path": "actions/jobs/120937492702",
+      "data": {
+        "id": 120937492702,
+        "name": "readback",
+        "status": "completed",
+        "conclusion": "cancelled",
+        "started_at": "2026-10-24T17:27:17Z",
+        "completed_at": "2026-10-24T17:38:16Z",
+        "steps": []
+      }
+    },
+    {
+      "path": "actions/jobs/120937492702/logs",
+      "bytes": 64520,
+      "sha256": "387bfeb5240b55dcfbe649a2733747903d834a71d9b2e6ab564922ec339bb7a5",
+      "tail": [
+        "2026-10-24T17:27:41.2973223Z   path: cloud-tx-role-parameter-failure-readback/",
+        "2026-10-24T17:27:41.2973466Z   if-no-files-found: error",
+        "2026-10-24T17:27:41.2973663Z   retention-days: 90",
+        "2026-10-24T17:27:41.2973845Z   compression-level: 6",
+        "2026-10-24T17:27:41.2974021Z   overwrite: false",
+        "2026-10-24T17:27:41.2974199Z   include-hidden-files: false",
+        "2026-10-24T17:27:41.2974393Z env:",
+        "2026-10-24T17:27:41.2974602Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64",
+        "2026-10-24T17:27:41.2974937Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig",
+        "2026-10-24T17:27:41.2975263Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64",
+        "2026-10-24T17:27:41.2975560Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64",
+        "2026-10-24T17:27:41.2975906Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64",
+        "2026-10-24T17:27:41.2976199Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib",
+        "2026-10-24T17:27:41.2976450Z ##[endgroup]",
+        "2026-10-24T17:27:41.4334264Z (node:1963) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.",
+        "2026-10-24T17:27:41.4335001Z (Use `node --trace-deprecation ...` to show where the warning was created)",
+        "2026-10-24T17:27:41.4401289Z With the provided path, there will be 7 files uploaded",
+        "2026-10-24T17:27:41.4402018Z Artifact name is valid!",
+        "2026-10-24T17:27:41.4402322Z Root directory input is valid!",
+        "2026-10-24T17:27:41.7679584Z Beginning upload of artifact content to blob storage",
+        "2026-10-24T17:27:41.7950099Z (node:1963) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.",
+        "2026-10-24T17:27:47.1191255Z Uploaded bytes 55134",
+        "2026-10-24T17:27:47.1844466Z Finished uploading artifact content to blob storage!",
+        "2026-10-24T17:27:47.1845079Z SHA256 digest of uploaded artifact zip is 14afd4acee3b98ad3370c153634047f80e515042fb587fb7f4aac27b2a660f43",
+        "2026-10-24T17:27:47.1846235Z Finalizing artifact upload",
+        "2026-10-24T17:27:47.7632496Z Artifact exact-role-parameter-failure.zip successfully finalized. Artifact ID 12567434969",
+        "2026-10-24T17:27:47.7633567Z Artifact exact-role-parameter-failure has been successfully uploaded! Final size is 55134 bytes. Artifact ID is 12567434969",
+        "2026-10-24T17:27:47.7639109Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/40115817352/artifacts/12567434969",
+        "2026-10-24T17:27:47.8855083Z Post job cleanup.",
+        "2026-10-24T17:27:47.9851001Z (node:1977) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.",
+        "2026-10-24T17:27:47.9851871Z (Use `node --trace-deprecation ...` to show where the warning was created)",
+        "2026-10-24T17:27:48.0226338Z Post job cleanup.",
+        "2026-10-24T17:27:48.0974262Z [command]/usr/bin/git version",
+        "2026-10-24T17:27:48.1039807Z git version 2.55.0",
+        "2026-10-24T17:27:48.1080774Z Temporarily overriding HOME='/home/runner/work/_temp/b678d134-c8c6-4456-b296-0194735b9d3e' before making global git config changes",
+        "2026-10-24T17:27:48.1081886Z Adding repository directory to the temporary git global config as a safe directory",
+        "2026-10-24T17:27:48.1082850Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc",
+        "2026-10-24T17:27:48.1664887Z [command]/usr/bin/git config --local --name-only --get-regexp core\\.sshCommand",
+        "2026-10-24T17:27:48.1704176Z [command]/usr/bin/git submodule foreach --recursive sh -c \"git config --local --name-only --get-regexp 'core\\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :\"",
+        "2026-10-24T17:27:48.1990196Z [command]/usr/bin/git config --local --name-only --get-regexp http\\.https\\:\\/\\/github\\.com\\/\\.extraheader",
+        "2026-10-24T17:27:48.2029453Z [command]/usr/bin/git submodule foreach --recursive sh -c \"git config --local --name-only --get-regexp 'http\\.https\\:\\/\\/github\\.com\\/\\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :\"",
+        "2026-10-24T17:27:48.2327879Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\\.gitdir:",
+        "2026-10-24T17:27:48.2365505Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url",
+        "2026-10-24T17:27:48.2904749Z Cleaning up orphan processes",
+        "2026-10-24T17:27:48.3172783Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      ]
+    },
+    {
+      "path": "actions/runs/40115817352/artifacts",
+      "data": {
+        "total_count": 2,
+        "artifacts": [
+          {
+            "id": 12568117378,
+            "node_id": "MDg6QXJ0aWZhY3QxMjU2ODExNzM3OA==",
+            "name": "role-parameter-failure-controls",
+            "size_in_bytes": 1275,
+            "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12568117378",
+            "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12568117378/zip",
+            "expired": false,
+            "digest": "sha256:d529eee37805b3aa053512dcfe0fdc0ac554bc5569193b9b11595e05161fd386",
+            "created_at": "2026-10-24T17:25:44Z",
+            "updated_at": "2026-10-24T17:25:44Z",
+            "expires_at": "2027-01-22T17:22:25Z",
+            "workflow_run": {
+              "id": 40115817352,
+              "repository_id": 1364721142,
+              "head_repository_id": 1364721142,
+              "head_branch": "codex/tx-clock-phase-parent",
+              "head_sha": "293eed1f3538d5a2208c972310e25a8e465b59ee"
+            }
+          },
+          {
+            "id": 12567434969,
+            "node_id": "MDg6QXJ0aWZhY3QxMjU2NzQzNDk2OQ==",
+            "name": "exact-role-parameter-failure",
+            "size_in_bytes": 55134,
+            "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12567434969",
+            "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12567434969/zip",
+            "expired": false,
+            "digest": "sha256:14afd4acee3b98ad3370c153634047f80e515042fb587fb7f4aac27b2a660f43",
+            "created_at": "2026-10-24T17:27:47Z",
+            "updated_at": "2026-10-24T17:27:47Z",
+            "expires_at": "2027-01-22T17:22:25Z",
+            "workflow_run": {
+              "id": 40115817352,
+              "repository_id": 1364721142,
+              "head_repository_id": 1364721142,
+              "head_branch": "codex/tx-clock-phase-parent",
+              "head_sha": "293eed1f3538d5a2208c972310e25a8e465b59ee"
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "independent_review_source": "6becd32d6475868710f79ee12ca1f812fa2a763a",
+  "native_role_accepted": false,
+  "electrical_accepted": false,
+  "full_PHY_accepted": false,
+  "next": "Correct only independently proven four-node historical plan-kind metadata; reproduce frozen failure, then compare all actual device roles against original canonical child definitions."
+}
