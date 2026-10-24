@@ -106,7 +106,6 @@ def crossings(t,signal,lo,hi,threshold=0.):
         events.append(dict(left_row=int(a),right_row=int(b),left_s=float(t[a]),right_s=float(t[b]),
             left_value=float(signal[a]),right_value=float(signal[b]),threshold=threshold,
             direction='rising' if x[b]>x[a] else 'falling',
-            linear_estimate_s=float(t[a]+(threshold-signal[a])*(t[b]-t[a])/(signal[b]-signal[a])),
             zero_plateau_rows=int(b-a-1),ordering_qualified=False))
     return events
 
