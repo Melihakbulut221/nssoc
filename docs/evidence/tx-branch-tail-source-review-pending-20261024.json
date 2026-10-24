@@ -1,0 +1,49 @@
+{
+  "source_head": "12dbfa546406f345bc594cf25af699bea5840634",
+  "review_scope": "Independent source/readback/hash-binding review only; not native physical acceptance.",
+  "review_status": "NO_CONCRETE_SOURCE_BLOCKER_FOUND",
+  "independent_reviewer": "parallel agent pll_handoff",
+  "locked_sources_verified": {
+    "scripts/generate_tx_output8088_branch_tail_feed.py": "ea097e902fa2fc7b9a20302af813df155f4526563e36249dd47c581121b075e9",
+    "scripts/cloud_tx_output8088_branch_tail_feed.py": "df1f68c26809c8a85fe10d88894c93ad9e842eb1b212ac56b3c208f7ee876ff7",
+    ".github/workflows/tx-output8088-branch-tail-feed-cloud.yml": "6a2aa41be22654943aec98ad90f75ee591f84cbf591bc8bebe68db0c43ede414",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "scripts/cloud_tx_exact_external_ports.py": "0c98c7d1f43f5fda36a869383a6cd6d91bdec581466664f3e80be029fd2ff583",
+    "hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568"
+  },
+  "method_file_sha256": "9560b85d81b48f474f73e23fbde33006d4d500c4283a5e8d06f40375d32726ca",
+  "checked": [
+    "Original native same/foreign rail ownership and actual route endpoints",
+    "Every original polygon retained; serialized original M1/Via1 and intrinsic/non-routing/port drawing layers unchanged",
+    "Tail source via phase derived from existing Via2 cuts in native same-net M2/M3 geometry",
+    "Full560-category native DRC and unsimplified deep/flat8088-device LVS",
+    "Exact165 physical ports and zero extraction diagnostics for positives",
+    "Five actual physical negatives: driver open, tail open, supply short, wrong width, off-grid",
+    "All7 method source hashes match producer commit; prior native/anchor release hashes match qualified readback"
+  ],
+  "remaining_geometry": {
+    "run": 40075242137,
+    "summary_asset": 671655169,
+    "summary_sha256": "b8327a78d088a97d4d4864b552d5e9084d2b79b022088a49456e70908cc1f8eb"
+  },
+  "native_candidate": {
+    "run": 40077948550,
+    "head": "12dbfa546406f345bc594cf25af699bea5840634",
+    "status": "queued",
+    "conclusion": null,
+    "jobs": [
+      {
+        "id": 120825291676,
+        "name": "diagnose",
+        "status": "queued",
+        "conclusion": null,
+        "step_count": 0
+      }
+    ]
+  },
+  "full_phy_accepted": false,
+  "physical_candidate_qualified": false,
+  "electrical_improvement_measured": false,
+  "next_action": "Await exact native result. If all physical gates pass, derive fresh wires/anchors/RC and both precision orders, then exact composition/130 rail comparison. No34ns transient without parent review."
+}
