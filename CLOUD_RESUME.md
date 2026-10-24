@@ -7317,3 +7317,18 @@ no change to native model parameter conversion. Combine with RC40045229994
 actual241R/210C under14composition controls, then original five full loaded waves.
 All native waveform columns must be derived from new graph, never copied
 from prior capture; vector count is not acceptance. Local directory remains empty.
+
+
+## 2026-10-24 v53 full actual extracted wave dispatched
+Composition40045938263 passed18native devices+241R+210C and14corruptions.
+Native interface sub,ip,inn,avdd,on,op,avss,iref,wire_cref. New fivecase waveform
+uses exact actual model, original34.25ns/125psUI/.3125ps step,100mV/37.5ps and
+all transistor/CM limits. No electrical pass inferred from schematic or DRC/LVS.
+Parent integration planning: original v32 sampler has one8um diode reference and
+eight36um tail MOS; new v53 leaf uses5.4um reference and two36um tails. Simply
+tying both IREF pins duplicates references and shifts all bias. Replacing old8um
+with5.4um also changes latch tail bias. Must derive shared physical reference
+design and rerun actual parent geometry/RC/full waves; no new ideal IREF source.
+One untested option preserves original8um reference and scales gain tails to
+near53.335um each (5nm grid) while omitting leaf reference; requires native
+simulation before any acceptance, not an already-validated integration.
