@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Cloud-only adapter gates and real all-column partial-row transport controls."""
 import ast,copy,hashlib,json,os,shutil,tempfile,traceback
+import cloud_streamed_native_archive as archive
 from pathlib import Path
 import numpy as np
 import cloud_pll_rhi120_c8_delta_adapter as adapter
@@ -20,6 +21,9 @@ def actual_fixture(root,old,current):
  source=base.raw_contract(old);logical=base.raw_contract(current)
  native=root/'native';(native/'case/empty').mkdir(parents=True)
  (native/'case/empty').chmod(0o750)
+ (native/'case/private-empty').mkdir();(native/'case/private-empty').chmod(0o700)
+ for name,mode in [('readonly.model',0o444),('native-executable',0o555),('private-helper',0o700)]:
+  p=native/'case'/name;p.write_bytes(('Exact original '+name+' bytes').encode());p.chmod(mode)
  raw=native/base.MEMBER
  plan=sparse.materialize(raw,base.chunks(old),source,2*1024**2,4*1024**2)
  with raw.open('r+b')as f:
@@ -141,6 +145,31 @@ def main():
   old=old+current_raw[len(old):len(old)+38144]
   assert (len(old)-base.raw_contract(old)['header_bytes'])%(5106*8)==38144
   actual=scratch/'actual';actual.mkdir();capsule,record,native=actual_fixture(actual,old,current_raw)
+  pack=actual/'packed';pack.mkdir();hosted={}
+  def send(path):
+   target=actual/('hosted-'+path.name);shutil.copyfile(path,target);hosted[path.name]=target
+   return dict(name=path.name,bytes=target.stat().st_size,sha256=delta.sha(target))
+  packed=archive.stream_pack(capsule,'adapter-mode-roundtrip',pack,send,part_bytes=2*1024**2)
+  def download(row,path):shutil.copyfile(hosted[row['name']],path)
+  restored=actual/'restored';archive.extract_verified(packed,actual/'parts',restored,download)
+  roundcapsule=restored/'capsule'
+  reject(lambda:delta.verify_capsule(roundcapsule))
+  before_modes={n:p.stat().st_mode for n,p in delta.files(roundcapsule).items()}
+  badfile=roundcapsule/'case/readonly.model';original=badfile.read_bytes();badfile.write_bytes(original+b'corrupt')
+  reject(lambda:delta.restore_capsule_modes(roundcapsule,record))
+  assert {n:p.stat().st_mode for n,p in delta.files(roundcapsule).items()}==before_modes
+  badfile.write_bytes(original)
+  wrong=copy.deepcopy(record);wrong['original_directories']['case/empty']=0o777
+  reject(lambda:delta.restore_capsule_modes(roundcapsule,wrong))
+  modes=delta.restore_capsule_modes(roundcapsule,record)
+  assert {'case/empty','case/private-empty'}<=set(modes['restored_directory_modes'])
+  assert {'case/readonly.model','case/native-executable'}<=set(modes['restored_file_modes'])
+  assert modes['exact_native_modes_restored']
+  result['production_archive_mode_roundtrip']=dict(mode_restoration=modes,
+   rejected_unrestored_modes=True,rejected_corrupted_contents_before_any_chmod=True,
+   rejected_unbound_contract=True,original_private_and_empty_dirs_preserved=True,
+   original_readonly_and_executable_modes_preserved=True)
+  capsule=roundcapsule
   refdir=scratch/'reference';refdir.mkdir();ref=reference.load_reference(refdir)
   proof={};received=[]
   names,meta=wave.read_chunks(delta.capture_chunks(capsule,base.chunks(old),proof,spec),
@@ -198,7 +227,7 @@ def main():
   # Existing unchanged analyzer source is the compatibility proof, not a new
   # replacement algorithm. The original assertion body is checked by methods().
   assert adapter.methods()==current
-  result.update(status='PASS_DELTA_ADAPTER_ORIGINAL_NATIVE_GATES_PARTIAL_ROW_ALL5106_COLUMNS_AND41_REJECTIONS_NOT_NATIVE_ACCEPTANCE',
+  result.update(status='PASS_DELTA_ADAPTER_ORIGINAL_NATIVE_GATES_PARTIAL_ROW_ALL5106_COLUMNS_AND44_REJECTIONS_NOT_NATIVE_ACCEPTANCE',
    original_native_assertions_ast_identical=True,protected_controller_reader_analyzer_unchanged=True,
    source_bindings_verified=True,native_workflow_dispatched=False,sources_unchanged=True)
  except BaseException as error:

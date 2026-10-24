@@ -168,6 +168,42 @@ def verify_capsule(root,expected=None):
         assert p.stat().st_size==row['bytes']and sha(p)==row['sha256'],'Stored extent changed'
     return record
 
+def restore_capsule_modes(root,expected):
+    """Restore archive-normalized modes only after trusted inventory/content proof.
+
+    The caller must first verify the entire archive and bind the contract hash
+    to its owning summary. No mode is changed until every named file's size and
+    hash, the complete directory set, and both raw extents have been checked.
+    """
+    root=Path(root);record=json.loads((root/CONTRACT).read_text());validate(record)
+    assert record==expected,'Unbound restoration contract'
+    current=files(root)
+    wanted=(set(record['original_files'])-{record['member']})|{CONTRACT}|{x['name']for x in record['extents']}
+    assert set(current)==wanted,'Missing or untracked restored file'
+    actual_dirs=directories(root);assert actual_dirs.pop(META,None)is not None
+    assert set(actual_dirs)==set(record['original_directories']),'Missing or untracked restored directory'
+    for name,row in record['original_files'].items():
+        if name==record['member']:continue
+        p=current[name]
+        assert p.stat().st_size==row['bytes']and sha(p)==row['sha256'],'Restored auxiliary content changed'
+    for row in record['extents']:
+        p=current[row['name']]
+        assert p.stat().st_size==row['bytes']and sha(p)==row['sha256'],'Restored raw extent changed'
+    changed_files=[];changed_dirs=[]
+    for name,row in record['original_files'].items():
+        if name==record['member']:continue
+        p=current[name]
+        if stat.S_IMODE(p.stat().st_mode)!=row['mode']:
+            p.chmod(row['mode']);changed_files.append(name)
+    for name,mode in sorted(record['original_directories'].items(),key=lambda pair:len(pair[0]),reverse=True):
+        p=root if name=='.'else root/name
+        if stat.S_IMODE(p.stat().st_mode)!=mode:
+            p.chmod(mode);changed_dirs.append(name)
+    verify_capsule(root,record)
+    return dict(all_contents_verified_before_mode_changes=True,
+        restored_file_modes=changed_files,restored_directory_modes=changed_dirs,
+        exact_native_modes_restored=True,full_capture_accepted=False)
+
 def file_chunks(path):
     with Path(path).open('rb')as stream:
         while data:=stream.read(CHUNK):yield data

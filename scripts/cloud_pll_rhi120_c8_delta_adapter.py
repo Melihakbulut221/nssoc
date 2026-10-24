@@ -214,6 +214,7 @@ def review_complete():
   archive.extract_verified(manifest,inputs/'capsule-parts',inputs/'restored',download)
   capsule=inputs/'restored'/CAPSULE
   assert delta.sha(capsule/delta.CONTRACT)==envelope['capsule_contract_sha256']
+  result['restored_native_modes']=delta.restore_capsule_modes(capsule,envelope['capsule_contract'])
   record=delta.verify_capsule(capsule,envelope['capsule_contract'])
   raw=(capsule/'result.json').read_bytes()
   assert digest(raw)==envelope['native_report_sha256']and json.loads(raw)==envelope['native_report']
