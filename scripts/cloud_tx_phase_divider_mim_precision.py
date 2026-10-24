@@ -73,13 +73,19 @@ def compose_source(nr,nc):
         ('nssoc_divider_load3p2_native91_intrinsic_v1',INTRINSIC),
         ('divider_load3p2_wires',CELL),
         ('Full native91 divider composition','Full native55 phase-divider composition'),
-        ('==91','==55'),('dict(devices=91,wire_resistors=382,wire_capacitors=649','dict(devices=55,wire_resistors='+str(nr)+',wire_capacitors='+str(nc)),
+        ('==91','==55'),('==205','==126'),('==7','==9'),('==283','==168'),('==37','==24'),('wire_components=37','wire_components=24'),
+        ('dict(devices=91,wire_resistors=382,wire_capacitors=649','dict(devices=55,wire_resistors='+str(nr)+',wire_capacitors='+str(nc)),
         ('dict(R=382,C=649)','dict(R='+str(nr)+',C='+str(nc)+')'),
-        ('==1031','=='+str(nr+nc)),('==205','==126'),('==7','==9'),('==283','==168'),('==37','==24'),('wire_components=37','wire_components=24'),
+        ('==1031','=='+str(nr+nc)),
         ('Actual raw91 divider devices and382R649C metal/via model','Actual raw55 phase-divider devices and'+str(nr)+'R'+str(nc)+'C metal/via model')]
     return derive((ROOT/'scripts/pll_divider_load3p2_compose_model.py').read_text(),edits)
 def source_controls():
-    protected();a,proof=audit_source();mutations_source();rc_source(Path('/fixture'),False);rc_source(Path('/fixture'),True);compose_source(123,456)
+    protected();a,proof=audit_source();mutations_source();rc_source(Path('/fixture'),False);rc_source(Path('/fixture'),True)
+    for nr,nc in ((123,456),(323,456),(3123,600),(91,7)):
+        generated,_=compose_source(nr,nc)
+        assert generated.count('=='+str(nr+nc))==2
+        assert 'dict(R='+str(nr)+',C='+str(nc)+')'in generated
+        assert 'wire_resistors='+str(nr)+',wire_capacitors='+str(nc)in generated
     assert "rel_tol=3e-6,abs_tol=1e-4" in a
     assert "graph.add_nodes_from(a)"in a and "owners['sub']=0"in a
     assert "native_mim_intrinsic=mim_proof"in a
@@ -89,7 +95,7 @@ def source_controls():
         try:derive(text,edits)
         except AssertionError:pass
         else:raise AssertionError('Unsafe source derivation accepted')
-    return dict(source_derivations=5,corruptions_rejected=len(bad),original_conservation_gates_retained=True,cap_order_controls=cap_order.controls())
+    return dict(source_derivations=8,corruptions_rejected=len(bad),original_conservation_gates_retained=True,cap_order_controls=cap_order.controls())
 def raw_mim_controls(B,module,anchors):
     P=B/'rc01';names=('wires.spice','baseline.spice',CELL+'.ext',CELL+'.res.ext')
     texts={n:(P/n).read_text()for n in names};source_rows=texts['wires.spice'].splitlines()

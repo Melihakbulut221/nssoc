@@ -19,7 +19,7 @@
     "docs/evidence/pcie-magic-cloud-runtime-20261013.json": "a9f920ee0758a24efdef9cc1957f7cea2128cbda76d7b448b745d8b338fc1f8b",
     "docs/evidence/pcie-tx-cloud-extraction-input-20261013.json": "af0bfc66f1a265a0e63d87790577ba603537536ef8a6910b75e7c699d493e701",
     "docs/evidence/cdr-mim-explicit-model-pilot-pass-20261018.json": "395137ed418b13ea61687adab2d98557d062cf97d0359bc037b74f8030e4e6b1",
-    "scripts/cloud_tx_phase_divider_mim_precision.py": "710634f34bef335ef070e194eb2fd78f885daea145f26998a8b97998185437e9",
+    "scripts/cloud_tx_phase_divider_mim_precision.py": "aa2f288fe8ac788a29a0f4f982cbb5e6edee16074e770df7f5a4db579005f187",
     "scripts/audit_tx_phase55_mim_intrinsic.py": "7947fa17e6e39669c6062457592b89628f6b332b5fc8cf3a3d7d478bf6622cb5",
     ".github/workflows/tx-phase-divider-mim-precision-cloud.yml": "5b5a1b477caa81e2ceb1a5c853e5259a05ba79f6203820165851bb2527c041c8"
   },
@@ -401,6 +401,49 @@
           ]
         },
         {
+          "before": "==205",
+          "after": "==126",
+          "count": 2,
+          "positions": [
+            1124,
+            1151
+          ]
+        },
+        {
+          "before": "==7",
+          "after": "==9",
+          "count": 1,
+          "positions": [
+            1327
+          ]
+        },
+        {
+          "before": "==283",
+          "after": "==168",
+          "count": 2,
+          "positions": [
+            1716,
+            5636
+          ]
+        },
+        {
+          "before": "==37",
+          "after": "==24",
+          "count": 2,
+          "positions": [
+            4783,
+            4807
+          ]
+        },
+        {
+          "before": "wire_components=37",
+          "after": "wire_components=24",
+          "count": 1,
+          "positions": [
+            5724
+          ]
+        },
+        {
           "before": "dict(devices=91,wire_resistors=382,wire_capacitors=649",
           "after": "dict(devices=55,wire_resistors=123,wire_capacitors=456",
           "count": 1,
@@ -426,12 +469,76 @@
           ]
         },
         {
+          "before": "Actual raw91 divider devices and382R649C metal/via model",
+          "after": "Actual raw55 phase-divider devices and123R456C metal/via model",
+          "count": 1,
+          "positions": [
+            2882
+          ]
+        }
+      ],
+      "reversible": true
+    },
+    "compose_source(323, 456)": {
+      "original_sha256": "f2dc95f4aa36e775b0364623a0a37fd42884b9c4bd7cab053e03d16537ec272e",
+      "generated_sha256": "58caabd8d87de8d0cfe4e65ba29259ef141e44030abc29826c1711c241cbfb60",
+      "edits": [
+        {
+          "before": "import pll_divider_load3p2_intrinsic as intrinsic",
+          "after": "import tx_phase55_intrinsic_generated as intrinsic",
+          "count": 1,
+          "positions": [
+            286
+          ]
+        },
+        {
+          "before": "nssoc_divider_load3p2_native91_wire_v1",
+          "after": "nssoc_tx_phase_divider55_native_wire_v1",
+          "count": 1,
+          "positions": [
+            342
+          ]
+        },
+        {
+          "before": "nssoc_divider_load3p2_native91_intrinsic_v1",
+          "after": "nssoc_tx_phase_divider55_intrinsic_v1",
+          "count": 1,
+          "positions": [
+            398
+          ]
+        },
+        {
+          "before": "divider_load3p2_wires",
+          "after": "phase_divider55_wires",
+          "count": 1,
+          "positions": [
+            816
+          ]
+        },
+        {
+          "before": "Full native91 divider composition",
+          "after": "Full native55 phase-divider composition",
+          "count": 1,
+          "positions": [
+            115
+          ]
+        },
+        {
+          "before": "==91",
+          "after": "==55",
+          "count": 2,
+          "positions": [
+            723,
+            3709
+          ]
+        },
+        {
           "before": "==205",
           "after": "==126",
           "count": 2,
           "positions": [
-            1123,
-            1150
+            1124,
+            1151
           ]
         },
         {
@@ -439,7 +546,7 @@
           "after": "==9",
           "count": 1,
           "positions": [
-            1326
+            1327
           ]
         },
         {
@@ -447,8 +554,8 @@
           "after": "==168",
           "count": 2,
           "positions": [
-            1715,
-            5634
+            1716,
+            5636
           ]
         },
         {
@@ -456,8 +563,8 @@
           "after": "==24",
           "count": 2,
           "positions": [
-            4781,
-            4805
+            4783,
+            4807
           ]
         },
         {
@@ -465,15 +572,304 @@
           "after": "wire_components=24",
           "count": 1,
           "positions": [
-            5722
+            5724
+          ]
+        },
+        {
+          "before": "dict(devices=91,wire_resistors=382,wire_capacitors=649",
+          "after": "dict(devices=55,wire_resistors=323,wire_capacitors=456",
+          "count": 1,
+          "positions": [
+            5653
+          ]
+        },
+        {
+          "before": "dict(R=382,C=649)",
+          "after": "dict(R=323,C=456)",
+          "count": 1,
+          "positions": [
+            944
+          ]
+        },
+        {
+          "before": "==1031",
+          "after": "==779",
+          "count": 2,
+          "positions": [
+            1044,
+            3938
           ]
         },
         {
           "before": "Actual raw91 divider devices and382R649C metal/via model",
-          "after": "Actual raw55 phase-divider devices and123R456C metal/via model",
+          "after": "Actual raw55 phase-divider devices and323R456C metal/via model",
           "count": 1,
           "positions": [
             2882
+          ]
+        }
+      ],
+      "reversible": true
+    },
+    "compose_source(3123, 600)": {
+      "original_sha256": "f2dc95f4aa36e775b0364623a0a37fd42884b9c4bd7cab053e03d16537ec272e",
+      "generated_sha256": "a2bd71fbc502567cf286f69aa832da3fec48ddfb7c543547d046eb829c0b0546",
+      "edits": [
+        {
+          "before": "import pll_divider_load3p2_intrinsic as intrinsic",
+          "after": "import tx_phase55_intrinsic_generated as intrinsic",
+          "count": 1,
+          "positions": [
+            286
+          ]
+        },
+        {
+          "before": "nssoc_divider_load3p2_native91_wire_v1",
+          "after": "nssoc_tx_phase_divider55_native_wire_v1",
+          "count": 1,
+          "positions": [
+            342
+          ]
+        },
+        {
+          "before": "nssoc_divider_load3p2_native91_intrinsic_v1",
+          "after": "nssoc_tx_phase_divider55_intrinsic_v1",
+          "count": 1,
+          "positions": [
+            398
+          ]
+        },
+        {
+          "before": "divider_load3p2_wires",
+          "after": "phase_divider55_wires",
+          "count": 1,
+          "positions": [
+            816
+          ]
+        },
+        {
+          "before": "Full native91 divider composition",
+          "after": "Full native55 phase-divider composition",
+          "count": 1,
+          "positions": [
+            115
+          ]
+        },
+        {
+          "before": "==91",
+          "after": "==55",
+          "count": 2,
+          "positions": [
+            723,
+            3709
+          ]
+        },
+        {
+          "before": "==205",
+          "after": "==126",
+          "count": 2,
+          "positions": [
+            1124,
+            1151
+          ]
+        },
+        {
+          "before": "==7",
+          "after": "==9",
+          "count": 1,
+          "positions": [
+            1327
+          ]
+        },
+        {
+          "before": "==283",
+          "after": "==168",
+          "count": 2,
+          "positions": [
+            1716,
+            5636
+          ]
+        },
+        {
+          "before": "==37",
+          "after": "==24",
+          "count": 2,
+          "positions": [
+            4783,
+            4807
+          ]
+        },
+        {
+          "before": "wire_components=37",
+          "after": "wire_components=24",
+          "count": 1,
+          "positions": [
+            5724
+          ]
+        },
+        {
+          "before": "dict(devices=91,wire_resistors=382,wire_capacitors=649",
+          "after": "dict(devices=55,wire_resistors=3123,wire_capacitors=600",
+          "count": 1,
+          "positions": [
+            5653
+          ]
+        },
+        {
+          "before": "dict(R=382,C=649)",
+          "after": "dict(R=3123,C=600)",
+          "count": 1,
+          "positions": [
+            944
+          ]
+        },
+        {
+          "before": "==1031",
+          "after": "==3723",
+          "count": 2,
+          "positions": [
+            1045,
+            3940
+          ]
+        },
+        {
+          "before": "Actual raw91 divider devices and382R649C metal/via model",
+          "after": "Actual raw55 phase-divider devices and3123R600C metal/via model",
+          "count": 1,
+          "positions": [
+            2884
+          ]
+        }
+      ],
+      "reversible": true
+    },
+    "compose_source(91, 7)": {
+      "original_sha256": "f2dc95f4aa36e775b0364623a0a37fd42884b9c4bd7cab053e03d16537ec272e",
+      "generated_sha256": "e2d6fe6c7a24f4bbe39c2f2f1b56297e46e0e2901dd28bf09db9022e8f72a147",
+      "edits": [
+        {
+          "before": "import pll_divider_load3p2_intrinsic as intrinsic",
+          "after": "import tx_phase55_intrinsic_generated as intrinsic",
+          "count": 1,
+          "positions": [
+            286
+          ]
+        },
+        {
+          "before": "nssoc_divider_load3p2_native91_wire_v1",
+          "after": "nssoc_tx_phase_divider55_native_wire_v1",
+          "count": 1,
+          "positions": [
+            342
+          ]
+        },
+        {
+          "before": "nssoc_divider_load3p2_native91_intrinsic_v1",
+          "after": "nssoc_tx_phase_divider55_intrinsic_v1",
+          "count": 1,
+          "positions": [
+            398
+          ]
+        },
+        {
+          "before": "divider_load3p2_wires",
+          "after": "phase_divider55_wires",
+          "count": 1,
+          "positions": [
+            816
+          ]
+        },
+        {
+          "before": "Full native91 divider composition",
+          "after": "Full native55 phase-divider composition",
+          "count": 1,
+          "positions": [
+            115
+          ]
+        },
+        {
+          "before": "==91",
+          "after": "==55",
+          "count": 2,
+          "positions": [
+            723,
+            3709
+          ]
+        },
+        {
+          "before": "==205",
+          "after": "==126",
+          "count": 2,
+          "positions": [
+            1124,
+            1151
+          ]
+        },
+        {
+          "before": "==7",
+          "after": "==9",
+          "count": 1,
+          "positions": [
+            1327
+          ]
+        },
+        {
+          "before": "==283",
+          "after": "==168",
+          "count": 2,
+          "positions": [
+            1716,
+            5636
+          ]
+        },
+        {
+          "before": "==37",
+          "after": "==24",
+          "count": 2,
+          "positions": [
+            4783,
+            4807
+          ]
+        },
+        {
+          "before": "wire_components=37",
+          "after": "wire_components=24",
+          "count": 1,
+          "positions": [
+            5724
+          ]
+        },
+        {
+          "before": "dict(devices=91,wire_resistors=382,wire_capacitors=649",
+          "after": "dict(devices=55,wire_resistors=91,wire_capacitors=7",
+          "count": 1,
+          "positions": [
+            5653
+          ]
+        },
+        {
+          "before": "dict(R=382,C=649)",
+          "after": "dict(R=91,C=7)",
+          "count": 1,
+          "positions": [
+            944
+          ]
+        },
+        {
+          "before": "==1031",
+          "after": "==98",
+          "count": 2,
+          "positions": [
+            1041,
+            3934
+          ]
+        },
+        {
+          "before": "Actual raw91 divider devices and382R649C metal/via model",
+          "after": "Actual raw55 phase-divider devices and91R7C metal/via model",
+          "count": 1,
+          "positions": [
+            2878
           ]
         }
       ],
