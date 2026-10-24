@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+# Orphan registration only; production reader lives on codex/tx-clock-phase-parent.
+name: tx-native-clock-role-failure-readback-cloud
+on:
+  push:
+    branches: [codex/tx-role-rejection-reader-registration]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register-workflow-name-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - name: Register workflow name without native execution or generic checks
+        run: echo 'Registration only; no source qualification, readback, simulator or CAD.'
