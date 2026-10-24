@@ -7502,3 +7502,16 @@ Full saved loss diagnosis launched foractual1270R849C. Investigate remaining
 collector access and load capacitance with real geometry before choosing fix.
 v56 independent existing8um reference compatibility screen40052296928 queued;
 keep separate from proven v55 physical variant and do not reuse its wire model.
+
+## 2026-10-24 v56 native shared-bias candidate passed; physical geometry launched
+Schematic40052296928 passed all original gates:nominal200.611mV/17.656ps,
+hot175.000mV/20.156ps,cold213.962mV/16.094ps; bothfaults detected,zero diagnostics.
+Keep actual v55 hot97.374mV/38.594ps rejection and saved-wave analysis40052613465.
+Prioritize physically validating parent-compatible8umref/2x53.335umtail v56,
+using v55 via geometry/clearance fixes. Native MOS height grows to83.515um;
+explicit core row limit88um fits routing starting90um. No change to DRC/LVS gates.
+Need new isolated native model converter permitting8/53.335um widths at binding;
+do not reuse old5.4/36 converter or oldv55wire values. Read fresh counts/ports.
+v56 leaf has isolated reference for this screen; final C/D sampler must retain
+only its existing8umreference and gain gates share it, no extra IREF source.
+Actual parent circuit/layout/RC/fullwave integration remains open.
