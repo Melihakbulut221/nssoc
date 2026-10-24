@@ -7373,3 +7373,12 @@ launched. Binder reuses immutable build_cdr_active_levelshift_v53_native_models
 because intrinsic dimensions are unchanged; model names/output paths are v54.
 Do not assume241R/210C or port order from v53; use new actual reports.
 Mainchip40045229904, PLL40041871167 and TX40039365864/40039368788 verified live.
+
+
+## 2026-10-24 v54 fresh RC and binding passed; exact full composition
+RC40047805400 passed473R/350C and14faults. Binding40047805418 passed native18devices/
+50terminals and9faults, native ports sub,ip,inn,avdd,on,op,avss,iref. More extracted
+elements reflect actual wider lower via arrays; preserve every edge/value, never
+collapse mesh for SPICE acceptance. New full composition requires14faults.
+Then full5case loaded waveform with18+473+350=841intrinsic/wire rows, original
+v49 signal/CM/device gates and all native vectors. Not parent/fullPHY acceptance.
