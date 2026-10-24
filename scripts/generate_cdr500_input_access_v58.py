@@ -153,6 +153,7 @@ def main():
     addition_owner = {m: [] for m in ALLOWED}
     route_records = []
     controls = []
+    diagnostic_active = False
 
     def probe(anchor):
         point = pya.Point(*anchor['point_dbu'])
@@ -176,7 +177,40 @@ def main():
         for did, previous in addition_owner[layer]:
             if did != plan['gain_native_id']:
                 foreign += previous
-        require((region.sized(CLEARANCE[layer]) & foreign).is_empty(), 'Foreign material or planning clearance collision')
+        collision = (region.sized(CLEARANCE[layer]) & foreign).merged()
+        if not collision.is_empty() and diagnostic_active:
+            native_owners = []
+            for net in wire.netlist().top_circuit().each_net():
+                if net.cluster_id == plan['wire_component']:
+                    continue
+                pieces = wire.shapes_of_net(net, wire.layer_by_name('gds_'+str(layer)), True).flatten().merged()
+                clipped = (pieces & region.sized(CLEARANCE[layer])).merged()
+                if clipped.is_empty():
+                    continue
+                record = next((q for q in graph['wire_components'] if q['component'] == net.cluster_id), None)
+                require(record is not None, 'Collision wire owner absent from original graph')
+                native_owners.append(dict(wire_component=net.cluster_id, native_cluster=record['native_cluster'],
+                    native_name=record['native_name'], clipped_polygons_dbu=[str(q) for q in clipped.each()]))
+            drawing_owners = []
+            root_part = (pya.Region(T.shapes(L.layer(layer, 0))) & collision).merged()
+            if not root_part.is_empty():
+                drawing_owners.append(dict(owner='root_direct', clipped_polygons_dbu=[str(q) for q in root_part.each()]))
+            for instance in T.each_inst():
+                part = (pya.Region(instance.cell.begin_shapes_rec(L.layer(layer, 0))).transformed(instance.cplx_trans) & collision).merged()
+                if not part.is_empty():
+                    drawing_owners.append(dict(owner=instance.cell.name+'@'+str(instance.dcplx_trans),
+                                              clipped_polygons_dbu=[str(q) for q in part.each()]))
+            report = dict(status='REJECTED_UNCHANGED_FOREIGN_MATERIAL_PLANNING_GUARD',
+                gain_native_id=plan['gain_native_id'], requested_native_cluster=plan['native_cluster'],
+                gds_layer=layer, planning_clearance_dbu=CLEARANCE[layer],
+                candidate_polygons_dbu=[str(q) for q in region.each()],
+                collision_polygons_dbu=[str(q) for q in collision.each()],
+                actual_overlap_polygons_dbu=[str(q) for q in (region & foreign).merged().each()],
+                native_foreign_owners=native_owners, actual_drawing_owners=drawing_owners,
+                geometry_accepted=False, guard_waived=False)
+            (args.out.parent/'access-collision.json').write_text(json.dumps(report, indent=2)+'\n')
+            print(json.dumps(report), flush=True)
+        require(collision.is_empty(), 'Foreign material or planning clearance collision')
         # New metal must not contact an old foreign adjacent-layer via.
         if layer in METALS:
             idx = METALS.index(layer)
@@ -269,6 +303,7 @@ def main():
         else:
             raise AssertionError('Accepted corruption '+name)
 
+    diagnostic_active = True
     for plan in plans:
         # Both retime output accesses retain their complete original M4 drawing;
         # each real TM1 strap gets separate native M4/M5/TopVia1 endpoint stacks.
