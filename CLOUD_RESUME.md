@@ -8243,3 +8243,14 @@ PLL40111010067 restored the cache but failed before fresh cache scan/original an
 Mainchip40110502492 recovered exactZIP/all65members; overalljobfailed only zero-byte standalone log upload. Exact proof and publicationfailure are preserved. Publication-only repair is next; originalrouting remains rejected. Read-onlyprocobserver selftest40113334727 has no routerintegration acceptance. Roleobserver40113558341 and actualone-resistor offset4case40114254950 are sole cloud runs.
 
 CDRv58 nominalearly/nominallate/hotearly genuinely fail fullwaveform electrical gates. Exact8device role/headroom evidence is retained; same-row observer preparation precedes any circuitvalue choice. TXcontinuations and remainingCDRcases continue. FullserialPHY, routedserialmainchip and finaltiming remain open.
+
+
+### 2026-10-24T17:18:37.291396+00:00 — cloud-only checkpoint v26
+
+Workspace rechecked empty. Source/evidence remain in GitHub; no local native work or artifact writes. Read-only8hour monitor now tracks68exact runs.
+
+Process observer40113334727 passed39faults,3actualhostedselfsamples and6commcases; complete152301B result and7sourcepins are authenticated and8files imported at233e02d9. Originalrouter bytes unchanged; no routerprogress/continuation acceptance.
+
+Sole reviewed16-symbol record transport native proof40114982496 runs ata3343434. Durable receipt2a44527c includes source review and cancelled registration-only no-op. Do not duplicate or import unqualified RTL.
+
+Actualroleobserver40113558341 failed after exact original-interface reproduction; the decisive innerlog is in smallartifact12568236017. Cloud-only reader preparation precedes diagnosis; no native rerun. PLLreference retry40114471619 and offsettransient40114254950 remain their sole handles. Mainchippublication repair and CDRsame-row diagnostic source are owned by delta_review/pll_handoff; all original failures and fullPHY/finaltiming=false remain.
