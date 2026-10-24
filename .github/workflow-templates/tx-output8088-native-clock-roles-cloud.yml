@@ -1,0 +1,109 @@
+# SPDX-License-Identifier: Apache-2.0
+# Nonregistered template until independent source review; one manual native proof only.
+name: tx-output8088-native-clock-roles-cloud
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-output8088-native-clock-roles-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check exact reviewed source and real parent metadata and archive faults
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo '1353d001f83543d4fcbdca8270d4a3f5cea1b473a955ef9619788b3541083214  scripts/cloud_tx_output8088_native_clock_roles.py' | sha256sum --check
+          echo '18dfbcb009a91760955b65137fc2789f4e86104b34eb6ebc3f9c6d38d79f3456  scripts/tx-output8088-native-clock-roles-cloud-methods.json' | sha256sum --check
+          if (set -o pipefail; python3 -c 'raise SystemExit(7)' | tee pipeline-control.txt); then
+            echo 'Broken pipeline failure propagation'; exit 1
+          fi
+          python3 -m pip install networkx==3.4.2
+          python3 scripts/cloud_tx_output8088_native_clock_roles.py --controls | tee source-controls.json
+          python3 - <<'PYCODE'
+          import json
+          s=json.load(open('source-controls.json'))
+          assert s['status']=='PASS_EXACT_PARENT_METADATA_AND_ARCHIVE_CONTROLS_NOT_NATIVE_ROLES'
+          assert len(s['controls'])==12 and all(c['rejected']for c in s['controls'])
+          assert s['archive_controls']['exact_native_payload_roundtrip']
+          assert len(s['archive_controls']['negative_controls'])==8
+          assert s['native_role_execution']is False and s['full_phy_accepted']is False
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: tx-native-clock-role-controls-${{ github.run_id }}
+          path: |
+            source-controls.json
+            pipeline-control.txt
+          retention-days: 30
+  actual-native-clock-roles:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact reviewed native CAD runtime
+        run: |
+          echo '1353d001f83543d4fcbdca8270d4a3f5cea1b473a955ef9619788b3541083214  scripts/cloud_tx_output8088_native_clock_roles.py' | sha256sum --check
+          echo '18dfbcb009a91760955b65137fc2789f4e86104b34eb6ebc3f9c6d38d79f3456  scripts/tx-output8088-native-clock-roles-cloud-methods.json' | sha256sum --check
+          python3 -m pip install networkx==3.4.2
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6 libglu1-mesa libx11-6 libxext6 libxrender1 libxt6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Restore all exact source bytes and prove physical clock polarity and roles
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_tx_output8088_native_clock_roles.py
+      - name: Publish clock role proof or complete rejection
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p hw/soc/out/cloud-tx-output8088-native-clock-roles
+          if [ ! -f hw/soc/out/cloud-tx-output8088-native-clock-roles/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","full_phy_accepted":false,"no_new_simulation":true}' > hw/soc/out/cloud-tx-output8088-native-clock-roles/result.json
+          fi
+          stem="tx-output8088-native-clock-roles-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp hw/soc/out/cloud-tx-output8088-native-clock-roles/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory hw/soc/out/cloud-tx-output8088-native-clock-roles --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-output8088-native-clock-roles',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Preserve evidence if release publication fails
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-native-clock-role-failure-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-output8088-native-clock-roles/
+          retention-days: 30
+# Original archive remains immutable; restored GDS/model are not republished.
+# No native circuit simulation or real clock-generator integration occurs here.
