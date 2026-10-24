@@ -168,3 +168,9 @@ This is preparation only, not DUT transient or loaded acceptance. Source-only co
 Both preparation cases are qualified. scripts/tx-output8088-branchtailfeed-native-methods.json now pins the exact new two-case receipt, unchanged full electrical/transport dependencies, source-only controller, source delta and workflow template bytes. The final initial/continuation workflow paths remain absent: the controller and source checker fail closed until those exact templates are promoted. Nothing was dispatched.
 
 Use docs/evidence/tx-branchtailfeed-native-methods-ready-20261024.json for exact hashes and two pending activation paths. Parent must review the concrete case descriptors and source-only delta before promotion or new initial dispatch. The controller is unchanged since3b0453df. Preserve historical rejected waveform evidence and all original safety/sampling gates.
+
+## Exact new initial workflow authorized and promoted
+
+Root independently verified both terminal preparation cases, actual summary/parts hashes, protected deck/contract/model/engine identities, all10+5 preparation negatives and original capture/samplebits/new-trajectory contract. Root also reproduced every controller/checker/template delta and all24 method/template hashes at a1112d7d. The exact already-hashed initial/continuation templates are now copied to the registered workflow paths without changing a byte. Both are manual-dispatch only.
+
+Root authorized one new initial matrix workflow for none and swap_leaf_select, with the original22 source/descriptor/runtime controls gating native execution. The run/source receipt will follow after dispatch. No old-model capsule may be restored. Full34ns/all14182columns/all604HBT/all5376MOS safety and fault review remain unchanged.
