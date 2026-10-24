@@ -8254,3 +8254,12 @@ Process observer40113334727 passed39faults,3actualhostedselfsamples and6commcase
 Sole reviewed16-symbol record transport native proof40114982496 runs ata3343434. Durable receipt2a44527c includes source review and cancelled registration-only no-op. Do not duplicate or import unqualified RTL.
 
 Actualroleobserver40113558341 failed after exact original-interface reproduction; the decisive innerlog is in smallartifact12568236017. Cloud-only reader preparation precedes diagnosis; no native rerun. PLLreference retry40114471619 and offsettransient40114254950 remain their sole handles. Mainchippublication repair and CDRsame-row diagnostic source are owned by delta_review/pll_handoff; all original failures and fullPHY/finaltiming=false remain.
+
+
+### 2026-10-24T17:24:44.728831+00:00 — cloud-only checkpoint v27
+
+PLL40114471619 diagnostic replay is now complete and authenticated:49controls,19pins,3201410x131 exactsamples, original80/8bit projections, originalrowzero failure reproduced and endpointrepair validated. Exactsummary/proof rootc8281ff1. The PLL electrical acquisition remains rejected; do not rerun thisdiagnosis. Actual6MBfirstlatch result remains release672846039 for mechanism review.
+
+Sole new cloudhandles: roleinnerlog reader40115817352/source293eed1f (only24KBartifact, no native rerun); mainchippublication-only40115867400/source79477d53 (existing40file fallback andexplicitnineempty inventory, original65ZIPopaque). Each passed independent source review before dispatch. These complement existingTX/CDR/offset and recordtransport40114982496. Rootmonitor70pinnedruns,8hourreadonly; no duplicate nativework.
+
+Localworkspace rechecked empty. All source, receipts and continuingcompute remainGitHub. FullserialPHY, serialmainchipintegration and finaltiming remain unaccepted.
