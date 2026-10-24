@@ -7714,3 +7714,16 @@ parentDRC/LVS/terminalbinding/RC/MIM/full native waveform withoriginalactualload
 Cloudonly; no local native artifacts. Long jobs checked live before this record:
 route40056071182,PLL40041871167,TX40050776700/40051009656. Verify terminal state
 before exactcheckpoint continuations; do not duplicate.
+
+## 2026-10-24 actual C/D shared-reference sampler geometry launched
+Build new physicalsampler66 candidate from exactv57 integratedSPICE. Keep33old
+latch/reference primitives unchanged and translate320um right, remove4passive
+inputR. Add8gain primitives and8realptaps in left region, no duplicate reference.
+17original taps retained, plus6small+2extendedgain taps:expected25taps/66total.
+Actual fullnativeLVS must prove18HBT/11MOS/12R/25taps and one8umref.
+PublicMetal5pin positions must stay exact; actual bbox allowed to widen by320um.
+Gain uses real widened vias/straps andshortpullupsupply, no oldRC reuse.
+Full560DRC/deep-flatLVS/LEF and27actualfaults launched. Native1pF screen device
+failures preserved; geometry pass alone will not closeactualparent electrical.
+Afterleafphysical pass replace onlysc/sd instances inrealparent; sa/sb unchanged.
+Expected parent500derivefromactualcensus, needfullfreshparentgates andRC/fullwaves.
