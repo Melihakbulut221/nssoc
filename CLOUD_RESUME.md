@@ -7835,3 +7835,15 @@ mean final DRC/timing closure. Native settings, original20/4/8/8ns clocks and
 5percent derate remain unchanged. Dispatch next same-process continuation with
 7200 native seconds from the exact descriptor recorded in
 docs/evidence/mainchip-route12-drt-40056071182-checkpoint-20261024.json.
+
+
+## Actual8088 return64via3 full-capture diagnosis launched in cloud
+
+Adapted the already controlled return64 saved-wave reader to normal
+40060991148 only: exact run/head/summary/parts/raw hashes,77708 rows,
+14182 columns,84 failed native HBTs. Review algorithms and original engineering
+limits are unchanged and method-hash pinned. The job downloads and validates
+every original archive member only on GitHub-hosted runner, reproduces the
+whole original rejection, then identifies exact interface endpoints and native
+failure times. No new simulation or large duplicate raw publication. Existing
+source release remains immutable. Workflow tx-output8088-return64via3-diagnosis-cloud.
