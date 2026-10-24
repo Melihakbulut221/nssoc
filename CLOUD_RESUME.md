@@ -7527,3 +7527,15 @@ new isolated model converter8/53.335um, full extracted5cases. Never call v56
 physical/electrical accepted based on v55passes or v56prelayout pass alone.
 Cloud only. Active mainchip40045229904, PLL40041871167, TXnormal40050776700 and
 TXfault40051009656 must be checked before continuing their exact saved processes.
+
+## 2026-10-24 v56 actual tail body-contact distance repair
+Physical40052914682 rejected2LU.b markers for taller53.335um tailMOS. Original
+2x2um central ptap has insufficient end coverage. Enlarge only two tail ptap1
+native cells to2x20um, centered on each active strip; seven others remain2x2.
+Reference now exactA40um2/P44um for those two, originalA4/P8 for others.
+Record each native PCell parameter set. Native20? Do not assume: intended18devices
+still9core+9contacts, full560DRC/deep-flat18LVS/ninefaults must prove it.
+Binding must support exact new MOS widths8/53.335 and new contact geometry through
+native PDK CbTapCalc equation from actualA/P; never silently map2x20 to2x2/81.666ohm.
+Base converter rejects non2x2; add isolated exact extension only after physical
+evidence and preserve base. All physical source/failure coordinates retained.

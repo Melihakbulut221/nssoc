@@ -92,6 +92,7 @@ def main():
     terminals = {}
     routes = []
     records = []
+    contact_records = []
     reference = [
         "* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut",
         "* SPDX-License-" "Identifier: CERN-OHL-W-2.0",
@@ -258,9 +259,10 @@ def main():
                 bbox_um=str(c.dbbox().transformed(t)),
             )
         )
-        tap = pc("ptap1", {"w": "2u", "l": "2u"})
+        tap_length = 20 if row["model"] == "sg13_lv_nmos" and p["w"] == "53.335u" else 2
+        tap = pc("ptap1", {"w": "2u", "l": str(tap_length)+"u"})
         # MOS needs a local body contact beside the middle of the long active strip.
-        tx,ty=(x+4,y+float(p["w"][:-1])/2-1) if row["model"]=="sg13_lv_nmos" else (x+10,10)
+        tx,ty=(x+4,y+float(p["w"][:-1])/2-tap_length/2) if row["model"]=="sg13_lv_nmos" else (x+10,10)
         tt = place(tap, tx, ty)
         tb=tap.dbbox().transformed(tt)
         cb=c.dbbox().transformed(t)
@@ -269,7 +271,8 @@ def main():
         ps = [s.dbbox().transformed(tt) for s in tap.each_shape(layout.layer(8, 2))]
         assert len(ps) == 1
         escape(ps[0], 1, "sub", x + 6, name + "_tap", 3)
-        reference.append(f"RPTAP{i} sub BULK ptap1 A=4p P=8u")
+        reference.append(f"RPTAP{i} sub BULK ptap1 A={2*tap_length}p P={2*(2+tap_length)}u")
+        contact_records.append(dict(instance="RPTAP"+str(i),w_um=2,l_um=tap_length,area_um2=2*tap_length,perimeter_um=2*(2+tap_length),bbox_um=str(tb),native_pcell_parameters={k:str(v)for k,v in tap.pcell_parameters_by_name().items()}))
     columns=[(net,x) for net,points in terminals.items() for x,_ in points]
     for i,(net,x) in enumerate(columns):
         for other,ox in columns[i+1:]:
@@ -328,6 +331,7 @@ def main():
                 outputs={p.name: sha(p) for p in out.iterdir()},
                 core_devices=records,
                 substrate_contacts=len(rows),
+                contact_geometries=contact_records,
                 kind=args.kind,
                 routes=routes,
                 routing_geometry=routing_geometry,

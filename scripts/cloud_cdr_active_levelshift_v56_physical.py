@@ -50,6 +50,20 @@ def main():
     save()
     try:
         r['component_preflight']=component_evidence(out);save()
+        import compare_cloud_routed_endpoints as reports
+        import xml.etree.ElementTree as ET
+        reports.OUT=out
+        previous_pin=json.loads((ROOT/'docs/evidence/cdr-active-levelshift-v56-body-contact-spacing-error-20261024.json').read_text())
+        prior,proof=reports.restore_report('cdr-active-levelshift-v56-physical',previous_pin['run'],previous_pin['summary_sha256'],previous_pin['parts_sha256'],out/'prior-drc',['physical/drc/drc.lyrdb','layout/result.json'])
+        assert prior==previous_pin['report']
+        measurement=prior['physical']['steps']['drc']['measurement']
+        assert measurement['category_count']==560 and measurement['categories']=={"'LU.b'":2}
+        marker_path=out/'prior-drc/physical/drc/drc.lyrdb'
+        assert sha(marker_path)==measurement['report_sha256']
+        markers=[ET.tostring(item,encoding='unicode')for item in ET.parse(marker_path).findall('.//items/item')]
+        assert len(markers)==2
+        r['previous_drc_diagnosis']=dict(source=proof,markers=markers,corrective_geometry='Two gain-tail ptap1 cells2x2->2x20um centered on53.335um active; actual reference A40um2/P44um, all others A4/P8 retained',waivers=[])
+        save()
         protected={str(ROOT/p):h for p,h in check()['protected'].items()};protected[str(MANIFEST)]=sha(MANIFEST)
         r['protected_inputs']=protected
         spec=json.loads((ROOT/'docs/evidence/pcie-tx-layout-cloud-input-20261013.json').read_text())
