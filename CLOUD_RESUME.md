@@ -7674,3 +7674,15 @@ at329123de is live/queued; inspect exact current run before any retry. It keeps
 oneexisting8umref,eight36um latchtails,two53.335um gaintails; no duplicate bias.
 Next actual C/D-specific sampler geometry,parentreplacement,freshRC/fullparentwaves.
 Mainchip40056071182,PLL40041871167,TX40050776700/40051009656 remain separate.
+
+## 2026-10-24 shared-bias whole sampler passes data but fails device safety
+Screen40057794223 preserves complete6native cases. Ordinary data all pass:
+nominal141.297mV/31.406ps,hot110.209mV/36.094ps,cold162.374mV/28.281ps.
+But HBT current/VBE violations reject every ordinary case; cold gainXGNmaxVCE
+1.617085V also exceeds1.6V. Threeactualfaults detected,zero diagnostics.
+Keep these failures separate from accepted v57 physical gain leaf40057530494.
+Full saved-wave diagnosis launched to distinguish startup/active current peaks,
+measureactual sharedref/tails and stage signals before choosing a repair.
+Original standalone1pF/output stress retained, notactual parent loading; don't
+infer physical parent failure or acceptance from this screen. No gates relaxed.
+Need actual C/D-specific sampler geometry + wholeparent freshRC/fullwaves.
