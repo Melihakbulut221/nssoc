@@ -7473,3 +7473,10 @@ native/export check rejects. Binding40051098574 passes18devices/50terms/9faults.
 Compose all18+1270+849=2137body rows and14composition faults, then original5full
 loaded waves. Nativeports sub,ip,inn,avdd,on,op,avss,iref pluswire_cref in composition.
 No intrinsic, load, source timing or original electrical acceptance change.
+
+## 2026-10-24 v55 full actual extracted waveform dispatched
+Composition40051847757 passes18devices+1270R849C and14faults. All2137body rows
+preserved with exact native interface. New5full loaded cases use actual graph
+derived vector list, all wire/body/nativecurrent capture. Original v49 acceptance
+region comparison remains in workflow, no gate/clock/load/source relaxation.
+Nominal,cold,hot,outputswap,biasoff must all finish and retain every result.
