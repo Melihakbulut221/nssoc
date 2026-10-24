@@ -7399,3 +7399,13 @@ cold117.290mV/32.344ps pass all original gates. Hot89.597mV/41.719ps misses
 100mV/37.5ps; hotCM1.814918..1.817514V and all ordinary device gates now pass.
 Both injected faults detected. No parent/fullPHY acceptance. Diagnose complete
 saved waves with exact473R/350C graph before further actual layout changes.
+
+## 2026-10-24 v55 actual upper and tail/emitter access candidate
+v54 saved loss40049127330 confirms hot intrinsic104.471mV/36.094ps vs external
+89.597mV/41.719ps. Collector equivalent7.932/8.068ohm; tail MOS source10.27/10.32ohm
+and drain edges10.29/10.37ohm. v55 preserves v53 intrinsic circuit and v54collector/
+resistor access. Upper regular via arrays8x4 and TopVia1 4x4; tailMOS lower16rows
+(reference4rows unchanged) with actual native via bbox height containment;
+HBT emitter lower16cuts/.8umM3. No numeric R/C rescale. Need native560DRC0,
+deep/flat18LVS,ninefaults,actual freshRC and original loaded fullwaves.
+Local project remains empty; do not download archives or run native tools locally.
