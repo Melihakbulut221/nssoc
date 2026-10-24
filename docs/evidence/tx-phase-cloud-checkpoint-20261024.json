@@ -1,9 +1,9 @@
 {
-  "schema": "tx-phase-cloud-checkpoint-v7",
-  "observed_utc": "2026-10-24T16:42:12.261Z",
+  "schema": "tx-phase-cloud-checkpoint-v8",
+  "observed_utc": "2026-10-24T16:53:23.778Z",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
-  "source_head": "fba5352def8346abb0c2550986b542a76fee3ab3",
+  "source_head": "363b5a863a4db52b2f364110eef229a02f2742b1",
   "qualified_RC": {
     "run": 40086006467,
     "source": "c7cb559701eb5b05194110ef3c9bf8bd43626db0",
@@ -84,7 +84,7 @@
   "PLL_connected": false,
   "full_PHY_accepted": false,
   "next": [
-    "Review source-only actual clock-role parameter observer fba5352d, then one exact archive/database readback. Preserve original role-binder Nx8 rejection until actual IDs/roles/sizes and independent canonical sources agree; do not resize physical devices to satisfy the erroneous universal assumption.",
+    "Follow sole role observer40113558341 at exact363b5a86 through controls and actual database role/parameter readback. Original Nx8 guard and original electrical failure remain; no role acceptance inferred.",
     "Offset244 four-case preparation40110198744 passed14+8 controls and all old deck/oracle/safety comparisons. A separately reviewed native controller is still required before any fresh waveform dispatch; no new transient exists or ran.",
     "Original244 waveform rejection remains: three fixed100mV UI sample failures; same deadlines, all106HBT limits, zeroOP, numerical diagnostics and full capture gates remain mandatory.",
     "Loaded31-tree, fresh reset physical layout/RC, actual lockedPLL connection and fullPHY remain open."
@@ -314,16 +314,32 @@
       "original_failure": "Actual selector/tail emitter multiplier changed at frozen binder line31; role acceptance remains false."
     },
     "parameter_diagnosis": {
-      "status": "source_only_independent_review_pending",
-      "source": "fba5352def8346abb0c2550986b542a76fee3ab3",
+      "status": "queued_controls_then_exact_native_database_observer",
+      "source": "cdcf0f925d1afc119bf14c13ea7856424b3b6184",
       "observer": "scripts/observe_tx_native_clock_role_parameters.py",
       "controller": "scripts/cloud_tx_native_clock_role_parameters.py",
       "methods": "scripts/tx-native-clock-role-parameters-methods.json",
       "workflow_template": ".github/workflow-templates/tx-native-clock-role-parameters-cloud.yml",
       "protected_sources": 21,
-      "dispatched": false,
+      "dispatched": true,
       "original_guard_unchanged": true,
-      "scope": "Actual589 mux HBT device/role comparison against independent Nx3/Nx1/final6+8 child definitions, followed by exact old failure reproduction. No extraction/simulation or acceptance."
+      "scope": "Actual589 mux HBT device/role comparison against independent Nx3/Nx1/final6+8 child definitions, followed by exact old failure reproduction. No extraction/simulation or acceptance.",
+      "independent_review_pending": false,
+      "independent_review_passed": true,
+      "review_receipt": "docs/evidence/tx-native-clock-role-parameter-source-review-dispatch-20261024.json",
+      "run": 40113558341,
+      "dispatch_source": "363b5a863a4db52b2f364110eef229a02f2742b1",
+      "source_controls_job": 120930086555,
+      "no_duplicate_dispatch": true,
+      "workflow": "tx-native-clock-role-parameters-cloud.yml",
+      "native_job": "exact-native-role-parameters",
+      "registration": {
+        "branch": "codex/tx-role-parameters-registration",
+        "commit": "fdced143330f19da662f3855a10ebd456e870e82",
+        "tree": "5831af1f225dc080f871fbc66688ab1326c36857",
+        "workflow_sha256": "0ef003226f80ef0d330f93d8c808054850eb4b554252319b8a169ecc7c237bef",
+        "orphan": true
+      }
     }
   },
   "trigger_audit": {
