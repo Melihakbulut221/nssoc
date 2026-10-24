@@ -7465,3 +7465,11 @@ real input endpoint after bridge deletion. Keep exact native audit unchanged.
 Add explicit single-endpoint isolation/count/row-removal witness; expect original
 strict topology mismatch. All14corruptions must pass. Full failed report retained.
 Binding40051098574 passed18native devices/50terminals/ninefaults; no model changes.
+
+## 2026-10-24 v55 RC and binding passed; full2119wire-element composition
+Corrected RC40051655708 passes1270R849C andall14faults. Real open witness deletes
+R18 P_ip P_ip.n10 0.838224, isolatesP_ip, retains9nontrivial components; unchanged
+native/export check rejects. Binding40051098574 passes18devices/50terms/9faults.
+Compose all18+1270+849=2137body rows and14composition faults, then original5full
+loaded waves. Nativeports sub,ip,inn,avdd,on,op,avss,iref pluswire_cref in composition.
+No intrinsic, load, source timing or original electrical acceptance change.
