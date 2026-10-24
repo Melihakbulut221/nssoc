@@ -7767,3 +7767,6 @@ Parent500 actual run40061976764: serialized C/D replacement, all9native child dr
 
 
 Actual diagnosis40062426929 identified32 old C/D MOS Metal1 enclosure strips still at old positions (65nm width,7.49umheight), causing48M1markers. Relocate each320um only if old/new attachment is the identical translated native component. Six M5notches may be filled only within one existing actual metal component; whole M5component count must remain unchanged. Track this explicit parent geometry delta; do not claim all parent polygons unchanged. Native560DRC/deep-flat500LVS/12faults must pass. Pending fresh-extraction builder MUST be adapted to this explicit delta and8replacement controls before use.
+
+
+Cell-aware diagnosis40063538558 resolved6M5markers:4parent-coordinate markers plus2local pd_child_sampler_cd markers, repeated across2instances. They represent4unique physical notch locations. Map local boxes through actual native transforms, deduplicate8occurrences to4locations while preserving all6source markers. Same-component and geometry guards unchanged.32M1strips already passed exact translated-native attachment checks in40063073016. New full physical retry pending.8-hour monitor update tool returned success but local persisted rule stayed weekly; do not claim schedule corrected until verified.

@@ -66,7 +66,7 @@ def main():
  T.name=TOP
  expected=(snap[0],snap[1],sorted(expected_instances))
  # Diagnose and relocate only proven old C/D MOS enclosure strips.
- diagnosis_path=Path.cwd()/'docs/evidence/cdr-sampler-active-input-v57-parent-drc-diagnosis-20261024.json'
+ diagnosis_path=Path.cwd()/'docs/evidence/cdr-sampler-active-input-v57-parent-drc-marker-frames-20261024.json'
  diagnosis=json.loads(diagnosis_path.read_text())['report']['diagnosis']
  assert diagnosis['status']=='PASS_ACTUAL54_MARKER_AND_GEOMETRY_READBACK'
  m1_index=L.layer(8,0);m5_index=L.layer(67,0)
@@ -102,20 +102,34 @@ def main():
  corrected=(old_direct-moved)+shifted
  T.shapes(m1_index).clear();T.shapes(m1_index).insert(corrected)
  expected_metal=dict(expected[0]);expected_metal[(8,0)]=corrected.merged()
- # Fill only six actual narrow notches within one existing M5 component.
+ # Resolve six hierarchical markers to four actual notch locations before filling.
  m5_before=pya.Region(T.begin_shapes_rec(m5_index)).flatten().merged()
  parent_m5=pya.Region(T.shapes(m5_index)).flatten().merged()
  m5_fill=pya.Region();m5_records=[]
- for marker in diagnosis['markers']:
+ normalized={};source_markers=[]
+ for marker_index,marker in enumerate(diagnosis['markers']):
   if marker['category']!='M5.b':continue
-  b=pya.DBox(*nums(marker['bbox_um'])).to_itype(L.dbu)
+  source_markers.append(marker_index)
+  local=pya.DBox(*nums(marker['bbox_um'])).to_itype(L.dbu)
+  if marker['cell']==TOP:boxes=[local]
+  else:
+   assert marker['cell']=='pd_child_sampler_cd',marker['cell']
+   boxes=[local.transformed(i.cplx_trans)for i in T.each_inst()if i.cell.name==marker['cell']]
+   assert len(boxes)==2
+  for b in boxes:
+   key=(b.left,b.bottom,b.right,b.top)
+   normalized.setdefault(key,[]).append(dict(marker_index=marker_index,cell=marker['cell'],source_values=marker['values']))
+ assert len(source_markers)==6 and len(normalized)==4 and sum(map(len,normalized.values()))==8
+ for key,sources in sorted(normalized.items()):
+  b=pya.Box(*key)
   box=pya.Box((b.left//5)*5-5,(b.bottom//5)*5-5,((b.right+4)//5)*5+5,((b.top+4)//5)*5+5)
   patch=pya.Region(box);touch=m5_before.interacting(patch)
   assert touch.count()==1,('Notch spans different M5 components',str(box),touch.count())
   assert (patch-m5_before).area()>0,'No actual notch gap covered'
   assert any((pya.DBox(*nums(before['placements'][tag]['bbox_um'])).to_itype(L.dbu) & box)==box for tag in ('sc','sd'))
-  m5_fill+=patch;m5_records.append(dict(box_dbu=str(box),source_marker=marker['values'],touched_existing_m5_components=touch.count(),added_area_dbu2=(patch-m5_before).area()))
- assert len(m5_records)==6 and (m5_before+m5_fill).merged().count()==m5_before.count()
+  m5_fill+=patch;m5_records.append(dict(box_dbu=str(box),source_markers=sources,touched_existing_m5_components=touch.count(),added_area_dbu2=(patch-m5_before).area()))
+ assert len(m5_records)==4 and (m5_before+m5_fill).merged().count()==m5_before.count()
+ assert {v['marker_index']for r in m5_records for v in r['source_markers']}==set(source_markers)
  T.shapes(m5_index).insert(m5_fill)
  expected_metal[(67,0)]=(parent_m5+m5_fill).merged()
  expected=(expected_metal,expected[1],expected[2])
