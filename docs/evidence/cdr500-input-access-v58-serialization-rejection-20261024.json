@@ -1,0 +1,54 @@
+{
+  "schema": "cdr500-measured-access-serialization-rejection-v1",
+  "run": 40094547119,
+  "source_head": "4ad6e78794304d17d64f87c7ae0ef429201a71a0",
+  "status": "FAIL_NATIVE_PHYSICAL_OR_STRICT_WIRES",
+  "summary_asset": 672229986,
+  "summary_sha256": "44f1ca36a0b01707d717fe8d0fc295e85dbbaee091bd6a246ae8c03b0b46c1ea",
+  "parts_asset": 672230074,
+  "parts_sha256": "72213da89cb2fe2f502761e8d8db2c94a5a276e752ad0660bca02a2fe835ae4e",
+  "parts": {
+    "format": "ordered-tar-gzip-parts-v1",
+    "stem": "cdr500-input-access-v58-physical-40094547119-1",
+    "source_directory": "cloud-cdr500-input-access-v58-physical",
+    "bytes": 6572050,
+    "sha256": "77d06a1b297fff59aa9df5fce0f7c506f134a1de542c45190ca1722c1d3a9184",
+    "parts": [
+      {
+        "index": 0,
+        "name": "cdr500-input-access-v58-physical-40094547119-1.tar.gz.part0000",
+        "bytes": 6572050,
+        "sha256": "77d06a1b297fff59aa9df5fce0f7c506f134a1de542c45190ca1722c1d3a9184"
+      }
+    ],
+    "part_limit_bytes": 1073741824,
+    "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+    "verification": {
+      "parts": 1,
+      "bytes": 6572050,
+      "sha256": "77d06a1b297fff59aa9df5fce0f7c506f134a1de542c45190ca1722c1d3a9184",
+      "all_parts_and_combined_bytes_verified": true
+    }
+  },
+  "summary_and_parts_verified_in_ram": true,
+  "archive_downloaded_locally": false,
+  "observed_native_error": "ValueError: Serialized original material differs",
+  "observed_native_location": "generate_cdr500_input_access_v58.py:571",
+  "stage": "Serialized GDS readback XOR against original plus exactly added metal, after pre-serialization ownership/material/census/control gates",
+  "failure_details_not_yet_observed": true,
+  "commands": [
+    {
+      "name": "generation",
+      "returncode": 1,
+      "log_sha256": "a4f1b450dc7d41f606a293f9085bc74e418d0e9a572c9235b3d2b5e0861b1195"
+    }
+  ],
+  "rejected_candidate_gds_sha256": "67d4f3f9c75f1368e7477880f36db57b3b464bf1f2cf292f90b76ea0d0a78f28",
+  "generation_log_sha256": "a4f1b450dc7d41f606a293f9085bc74e418d0e9a572c9235b3d2b5e0861b1195",
+  "physical_checks_started": false,
+  "drc_accepted": false,
+  "lvs_accepted": false,
+  "rc_extracted": false,
+  "electrical_accepted": false,
+  "next": "Reporting-only native all-layer/cell expected-versus-serialized XOR witness. Preserve exact geometry and original failure guard; no speculative repair."
+}
