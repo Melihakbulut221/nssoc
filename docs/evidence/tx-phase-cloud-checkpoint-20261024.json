@@ -1,6 +1,6 @@
 {
   "schema": "tx-phase-cloud-checkpoint-v6",
-  "observed_utc": "2026-10-24T15:19:53.005278+00:00",
+  "observed_utc": "2026-10-24T15:44:44.553212+00:00",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
   "source_head": "6240eda9c2273338dc84627d0dbc01ee4adbc82b",
@@ -85,7 +85,7 @@
   "full_PHY_accepted": false,
   "next": [
     "Follow existing simulator-free readback40102964781/source7253ef85; no duplicate reader or DUT. It must reproduce every original359-column capture and all unchanged safety/phase results before diagnosing actual reset/fanin/run/selector paths.",
-    "Follow existing native clock-role proof40102668052 atd9d3e845; no duplicate. Its source-controls gate reruns12metadata+8archive faults, then exact native proof must reproduce originalinterface13bfff54 and all62clock/124base/14fault/31polarity checks. Native/electrical/PHY acceptance is still false.",
+    "Read the exact role40102668052 failure log in one reviewed simulator-free cloud reader; original geometry/interface restore passed, new native role binder rejected. No role repair or native rerun before actual underlying traceback is read.",
     "Use actual244 readback path measurements to justify any new transistor/resistor circuit repair; retain fixed125psUI/100mV margins, all106HBT safety, measured scalar fixture and original rejected outputs. No full31-tree/layoutRC/actualPLL/fullPHY acceptance follows from these proofs."
   ],
   "terminal_source_receipt": {
@@ -235,8 +235,8 @@
     "script": "scripts/bind_tx_output8088_native_clock_roles.py",
     "methods": "scripts/tx-output8088-native-clock-roles-methods.json",
     "document": "docs/tx-output8088-native-clock-role-candidate-20261024.md",
-    "status": "native_proof_dispatched_queued",
-    "native_executed": false,
+    "status": "native_proof_rejected_preserved",
+    "native_executed": true,
     "registered_workflow": true,
     "parent_run": 40083738813,
     "expected_pairs": 31,
@@ -262,10 +262,18 @@
       "source_head": "d9d3e8453dbb5831354bb84b40e042dd73c61211",
       "workflow": "tx-output8088-native-clock-roles-cloud.yml",
       "job": "actual-native-clock-roles",
-      "last_observed_status": "queued_after_source_controls_success",
+      "last_observed_status": "completed_failure",
       "no_duplicate_dispatch": true,
       "source_controls_job": 120897848745,
-      "production_job": 120904864521
+      "production_job": 120904864521,
+      "rejection_receipt": "docs/evidence/tx-native-clock-role-binding-rejection-20261024.json"
+    },
+    "failure_reader": {
+      "workflow": "tx-native-clock-role-failure-readback-cloud.yml",
+      "source_only": true,
+      "independent_review_pending": true,
+      "readback_dispatched": false,
+      "native_rerun": false
     }
   },
   "trigger_audit": {

@@ -1,0 +1,63 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-native-clock-role-failure-readback-cloud
+on:
+  push:
+    branches: [codex/tx-clock-phase-parent]
+    paths:
+      - scripts/read_tx_native_clock_role_failure.py
+      - scripts/tx-native-clock-role-failure-readback-methods.json
+      - .github/workflows/tx-native-clock-role-failure-readback-cloud.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-native-clock-role-failure-readback
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Preserve the original rejection and exercise source/archive faults
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/read_tx_native_clock_role_failure.py --controls
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: clock-role-failure-reader-controls
+          path: cloud-tx-native-clock-role-failure-readback/result.json
+          if-no-files-found: error
+  readback:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate the exact preserved small diagnostic archive on GitHub only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/read_tx_native_clock_role_failure.py --readback
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: exact-native-clock-role-failure
+          path: cloud-tx-native-clock-role-failure-readback/
+          if-no-files-found: error
+          retention-days: 90

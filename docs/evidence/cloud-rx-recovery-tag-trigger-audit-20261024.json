@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "cloud_only": true,
+  "new_references": {
+    "rx_candidate": {
+      "ref": "493d8ab352330edf5ed01f4340f0cceff6f4ce6f",
+      "count": 1307,
+      "inherited_safe": 1306,
+      "new_classified": 1,
+      "new_classes": {
+        "branch_only_excludes_tags": 1
+      },
+      "new_events": {
+        "workflow_dispatch": 1,
+        "push": 1
+      },
+      "inventory_sha256": "f987d528b2bd85fc94c2b1e92e00b61a0bb002a2c7f11fc2922bfe288c9e7537",
+      "new_triggers": [
+        {
+          "path": ".github/workflows/pcie-gen12-raw32-rx-cloud.yml",
+          "blob": "2c292069d3194584dcf5467b7c63db533e686cae",
+          "on_line": 3,
+          "on": "on:\n  workflow_dispatch:\n  push:\n    branches: [codex/pcie-gen12-rx-integration]\n    paths:\n      - hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v\n      - hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v\n      - scripts/check_pcie_gen12_raw32_rx.py\n      - scripts/pcie-gen12-raw32-rx-methods.json\n      - scripts/pcie-gen12-raw32-rx-prerequisites.json\n      - .github/workflows/pcie-gen12-raw32-rx-cloud.yml",
+          "events": [
+            "workflow_dispatch",
+            "push"
+          ],
+          "filters": {
+            "branches": [
+              "codex/pcie-gen12-rx-integration"
+            ]
+          },
+          "push_class": "branch_only_excludes_tags",
+          "indirect_events": [],
+          "sha256": "760f651c8228586e5026984eda9a0159358eb10b8a3f4b1940d70efc64d1a451"
+        }
+      ],
+      "risky": []
+    },
+    "recovery_candidate": {
+      "ref": "d7900da186b1dd944d7f738eee59d08d2b88888e",
+      "count": 1306,
+      "inherited_safe": 1305,
+      "new_classified": 1,
+      "new_classes": {
+        "branch_only_excludes_tags": 1
+      },
+      "new_events": {
+        "push": 1,
+        "workflow_dispatch": 1
+      },
+      "inventory_sha256": "ea7e7bb024a9f2037c8f75d5db11782f19e9eaad09e919a11dba1b316808427a",
+      "new_triggers": [
+        {
+          "path": ".github/workflows/mainchip-route12-artifact-recovery-cloud.yml",
+          "blob": "9245a2742a0c18e7f515b4202cc5f41c6ec96092",
+          "on_line": 4,
+          "on": "on:\n  push:\n    branches: [codex/mainchip-route12-artifact-recovery]\n    paths: [.github/workflows/mainchip-route12-artifact-recovery-cloud.yml, scripts/cloud_mainchip_route12_artifact_recovery.py, scripts/mainchip-route12-artifact-recovery-methods.json]\n  workflow_dispatch:",
+          "events": [
+            "push",
+            "workflow_dispatch"
+          ],
+          "filters": {
+            "branches": [
+              "codex/mainchip-route12-artifact-recovery"
+            ]
+          },
+          "push_class": "branch_only_excludes_tags",
+          "indirect_events": [],
+          "sha256": "9417aef9bc11a7293e5aab0fc31c896ab3e42db25c21f138c250de5b512f4907"
+        }
+      ],
+      "risky": []
+    }
+  },
+  "previously_audited_blobs": 1352,
+  "new_blobs": 2,
+  "new_source_bytes": 7989,
+  "unparsed": {},
+  "policy": "Only source-pinned cloud-results-* tags at exactly audited commits. Default main target remains prohibited. No tags/releases/jobs were created during read-only audit."
+}
