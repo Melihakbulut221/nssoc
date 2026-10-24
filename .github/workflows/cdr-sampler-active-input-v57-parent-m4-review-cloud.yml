@@ -4,7 +4,7 @@ name: cdr-sampler-active-input-v57-parent-m4-review-cloud
 on:
   push:
     branches: [codex/complete-open-work]
-    paths: [.github/workflows/cdr-sampler-active-input-v57-parent-m4-review-cloud.yml, scripts/cloud_cdr_sampler_active_input_v57_parent_short_review.py]
+    paths: [.github/workflows/cdr-sampler-active-input-v57-parent-m4-review-cloud.yml, scripts/cloud_cdr_sampler_active_input_v57_parent_m4_review.py]
   workflow_dispatch:
 permissions:
   contents: read
@@ -25,7 +25,7 @@ jobs:
         with:
           python-version: '3.12'
       - name: Compile exact physical methods in the cloud
-        run: python3 -m py_compile scripts/cloud_cdr_sampler_active_input_v57_parent_short_review.py
+        run: python3 -m py_compile scripts/cloud_cdr_sampler_active_input_v57_parent_m4_review.py
       - name: Restore pinned native CAD runtime
         run: |
           sudo apt-get update -qq
@@ -34,10 +34,18 @@ jobs:
           echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
           chmod +x "$RUNNER_TEMP/librelane.AppImage"
           echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
-      - name: Locate actual supply-metal overlap against two independently LVS-passed sources
+      - name: Read original and new attachments of every C/D root Metal4 piece
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/cloud_cdr_sampler_active_input_v57_parent_short_review.py
+        run: python3 scripts/cloud_cdr_sampler_active_input_v57_parent_m4_review.py
+      - name: Require actual native attachment report
+        run: |
+          python3 - <<'PYCODE'
+          import json
+          r=json.load(open('hw/soc/out/cloud-cdr-sampler-active-input-v57-parent-m4-review/result.json'))
+          assert r['status']=='COMPLETE_ACTUAL500_ROOT_M4_ATTACHMENTS_NOT_ACCEPTANCE'
+          assert r['sources_unchanged'] and r['native']['records']
+          PYCODE
       - name: Preserve physical results and failures
         if: always()
         id: publish
