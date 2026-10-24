@@ -7219,3 +7219,15 @@ with unchanged original v49 acceptance region, all native nodes/currents,
 34.25ns,125psUI,0.3125ps step,150fF/output,10ohm input,100mV margin and37.5ps delay.
 No new electrical pass claimed before actual results. PLL continuation40041871167
 now live consuming998.4567ns checkpoint; do not dispatch completed-reader yet.
+
+
+## 2026-10-24 v51 full electrical result rejected; loss diagnosis follows
+Run40042087552: all5 actual34.25ns captures,110385rows/147columns, source integrity,
+zero diagnostics and native device safety retained. Three ordinary corners rejected;
+both injected faults detected. Nominal77.089mV/43.90625ps, cold92.183mV/39.53125ps,
+original gates100mV/37.5ps remain. Do not mark PHY or parent integration accepted.
+Preserve full receipts and launch no-resimulation loss/stage analysis. New via arrays
+introduce real R loops; use all-branch nodal equivalent resistance with unit-current
+KCL and power checks, tested series/parallel/triangle/open/negative/zero fixtures,
+not an arbitrary DFS path or deleted physical branches. All waveform samples retained.
+PLL40041871167, mainchip40031170989, TX40039365864/40039368788 remain existing handles.
