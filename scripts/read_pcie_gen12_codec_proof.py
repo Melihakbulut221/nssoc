@@ -5,10 +5,14 @@ import hashlib,io,json,os,subprocess,zipfile
 from pathlib import Path,PurePosixPath
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'hw/soc/out/pcie-gen12-codec-proof-readback'
-RUN=40099402878
-HEAD='86dbe41b5383c29238b6a61f87783f3409e6cf3b'
+RUN=40102483214
+HEAD='aa8afbb7ec2cc78dc533271d530a6abbb1eb20a3'
 ATTEMPT=1
-ARTIFACT='pcie-gen12-codec-40099402878-1'
+ARTIFACT='pcie-gen12-codec-40102483214-1'
+ARTIFACT_ID=12563629865
+ARCHIVE_BYTES=24208064
+ARCHIVE_SHA='1e6dfffeb50530fbe6215ee0b708fb223cd52d98fae42ce3d978a44a8791dca7'
+RESULT_SHA='795e077c81e383036089a47e29a299710c9fa76d3c8d58d0dd68212b20cda590'
 STATUS='PASS_GEN12_SINGLE_LANE_CODEC_TABLE_EXHAUSTIVE_STATE_SYNTHESIS_AND9_FAULTS'
 FAULTS={'tx_bit_order','tx_invalid_K','tx_RD_constant','rx_code_error_hidden','rx_disparity_hidden','rx_RD_invalid_hold','rx_alternate7_reject','lane_enable_ignored','lane_reset_positive'}
 def digest(b):return hashlib.sha256(b).hexdigest()
@@ -68,16 +72,18 @@ def main():
   selected=[x for x in artifacts['artifacts']if x['name']==ARTIFACT]
   assert len(selected)==1;meta=selected[0]
   assert not meta['expired'] and meta['workflow_run']['id']==RUN and meta['workflow_run']['head_sha']==HEAD
-  assert 0<meta['size_in_bytes']<=128*1024*1024
+  assert meta['id']==ARTIFACT_ID and meta['size_in_bytes']==ARCHIVE_BYTES
+  assert meta['digest']=='sha256:'+ARCHIVE_SHA
   raw=api('actions/artifacts/'+str(meta['id'])+'/zip',True)
-  assert 0<len(raw)<=128*1024*1024
+  assert len(raw)==ARCHIVE_BYTES and digest(raw)==ARCHIVE_SHA
   z=zipfile.ZipFile(io.BytesIO(raw));info=z.infolist()
   assert len(info)<4000 and sum(x.file_size for x in info)<=512*1024*1024
   names=[x.filename for x in info if not x.is_dir()]
   assert len(names)==len(set(names))and 'result.json'in names
   for n in names:
    p=PurePosixPath(n);assert not p.is_absolute()and '..'not in p.parts
-  result_bytes=z.read('result.json');result=json.loads(result_bytes)
+  result_bytes=z.read('result.json');assert digest(result_bytes)==RESULT_SHA
+  result=json.loads(result_bytes)
   assert result['source_head']==HEAD and int(result['run_id'])==RUN
   assert set(names)==set(result['outputs'])|{'result.json'}
   for name,sha in result['outputs'].items():assert digest(z.read(name))==sha,name
