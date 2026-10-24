@@ -1,6 +1,6 @@
 {
   "schema": "tx-phase-cloud-checkpoint-v5",
-  "observed_utc": "2026-10-24T14:32:13.775603+00:00",
+  "observed_utc": "2026-10-24T14:33:44.104073+00:00",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
   "source_head": "6240eda9c2273338dc84627d0dbc01ee4adbc82b",
@@ -84,7 +84,7 @@
   "PLL_connected": false,
   "full_PHY_accepted": false,
   "next": [
-    "Follow source controls40099838691 (reviewed reset reader956b128). On exact terminal success preserve joblog/status, check no duplicate manual workflow, then dispatch tx-phase-fast-assert-readback-cloud.yml once on codex/tx-clock-phase-parent. It only reads exact published rejected244 captures; no simulation or acceptance.",
+    "Follow existing simulator-free readback40102964781/source7253ef85; no duplicate reader or DUT. It must reproduce every original359-column capture and all unchanged safety/phase results before diagnosing actual reset/fanin/run/selector paths.",
     "Follow existing native clock-role proof40102668052 atd9d3e845; no duplicate. Its source-controls gate reruns12metadata+8archive faults, then exact native proof must reproduce originalinterface13bfff54 and all62clock/124base/14fault/31polarity checks. Native/electrical/PHY acceptance is still false.",
     "Use actual244 readback path measurements to justify any new transistor/resistor circuit repair; retain fixed125psUI/100mV margins, all106HBT safety, measured scalar fixture and original rejected outputs. No full31-tree/layoutRC/actualPLL/fullPHY acceptance follows from these proofs."
   ],
@@ -202,7 +202,7 @@
       "job": "exact-reset-path-readback",
       "source_controls_run": 40099838691,
       "source_controls_job": 120890401401,
-      "last_observed_status": "source_controls_completed_success",
+      "last_observed_status": "queued",
       "source_review_passed": true,
       "native_simulator_execution": false,
       "manual_dispatch_pending_source_controls": false,
@@ -213,7 +213,10 @@
         "reason": "Superseded source-control-only push; latest956b128 covers same strict logic and additional predefined diagnostic times."
       },
       "source_controls_passed": true,
-      "source_controls_receipt": "docs/evidence/tx-phase-fast-assert-readback-controls-pass-20261024.json"
+      "source_controls_receipt": "docs/evidence/tx-phase-fast-assert-readback-controls-pass-20261024.json",
+      "run": 40102964781,
+      "dispatch_source": "7253ef855ad20a61204038c9ae5076e7f6a99b7b",
+      "no_duplicate_dispatch": true
     }
   },
   "zero_op_initialization": {
