@@ -1,0 +1,770 @@
+{
+  "schema": 1,
+  "status": "PASS_FOUR_ASSERT_OFFSET244_INTRINSIC_DIAGNOSTICS_NOT_LAYOUT_OR_FULLPHY",
+  "run": {
+    "id": 40114254950,
+    "head_sha": "e2598de52f2190ee0e3eddf8095c3fffe640b62f",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1
+  },
+  "jobs": [
+    {
+      "id": 120932173438,
+      "name": "source-controls",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T17:08:51Z",
+      "completed_at": "2026-10-24T17:09:42Z"
+    },
+    {
+      "id": 120933910302,
+      "name": "intrinsic-four-case-assert-offset",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-24T17:10:11Z",
+      "completed_at": "2026-10-24T17:22:25Z"
+    }
+  ],
+  "source_controls_log": {
+    "job": 120932173438,
+    "bytes": 65869,
+    "sha256": "a23fb5e2cefb81982851b558307e21b897d0167ca43b2aded53fcd6fde60fef4",
+    "proof": [
+      "2026-10-24T17:08:53.5124172Z Complete job name: source-controls",
+      "2026-10-24T17:09:17.7332148Z \u001b[36;1mpython3 scripts/ensure_cloud_tested_source_release.py --controls | tee release-controls.json\u001b[0m",
+      "2026-10-24T17:09:17.7332774Z \u001b[36;1mpython3 scripts/check_tx_phase_assert_offset_intrinsic.py | tee controls.json\u001b[0m",
+      "2026-10-24T17:09:17.7333812Z \u001b[36;1md=json.load(open('controls.json'));r=json.load(open('release-controls.json'))\u001b[0m",
+      "2026-10-24T17:09:17.7334448Z \u001b[36;1massert r['status']=='PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS'and len(r['rejected'])==17\u001b[0m",
+      "2026-10-24T17:09:17.7335408Z \u001b[36;1massert d['status']=='PASS_ASSERT_OFFSET244_FRESH_NATIVE_CONTROLLER_CONTROLS_NO_DUT_TRANSIENT'\u001b[0m",
+      "2026-10-24T17:09:17.7338504Z \u001b[36;1massert len(d['original_loader_and_reader_controls']['full_raw_reader_controls'])==7\u001b[0m",
+      "2026-10-24T17:09:17.7339073Z \u001b[36;1massert len(d['original_loader_and_reader_controls']['zero_OP_reader_controls'])==8\u001b[0m",
+      "2026-10-24T17:09:31.6353887Z   \"status\": \"PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS\",",
+      "2026-10-24T17:09:38.1235895Z   \"status\": \"PASS_ASSERT_OFFSET244_FRESH_NATIVE_CONTROLLER_CONTROLS_NO_DUT_TRANSIENT\",",
+      "2026-10-24T17:09:38.1250348Z     \"status\": \"PASS_EXACT_OFFSET_PREPARATION_OLD_REJECTION_AND10_FAULTS_NO_DUT_TRANSIENT\",",
+      "2026-10-24T17:09:38.1265478Z   \"original_loader_and_reader_controls\": {",
+      "2026-10-24T17:09:38.1265968Z     \"status\": \"PASS_INTRINSIC241_PREPARATION_FIXED_OBSERVERS_AND_NATIVE_LOADER_CONTROLS_NO_DUT_TRANSIENT\",",
+      "2026-10-24T17:09:38.1283362Z     \"negative_controls\": [",
+      "2026-10-24T17:09:38.1288395Z     \"full_raw_reader_controls\": [",
+      "2026-10-24T17:09:38.1290170Z     \"zero_OP_reader_controls\": [",
+      "2026-10-24T17:09:38.1295638Z       \"loader_controls\": {",
+      "2026-10-24T17:09:38.1308507Z     \"status\": \"PASS_ASSERT_OFFSET244_FOUR_PREPARED_UNCHANGED_ORACLE_NOT_NATIVE\",",
+      "2026-10-24T17:09:38.1373379Z     \"negative_controls\": [",
+      "2026-10-24T17:09:38.1377252Z   \"all106_flag_controls\": {",
+      "2026-10-24T17:09:38.1377575Z     \"status\": \"PASS_UNIFORM106_OFF_OP_ONLY_SOURCE_CONTROLS_NO_NATIVE\",",
+      "2026-10-24T17:09:38.1377934Z     \"negative_controls\": [",
+      "2026-10-24T17:09:38.1395350Z   \"native_program_scope\": \"Original one-resistor loader controls only; no244 DUT transient\",",
+      "2026-10-24T17:09:38.1741023Z   name: phase-assert-offset-controls-40114254950",
+      "2026-10-24T17:09:38.1741460Z   path: controls.json",
+      "release-controls.json",
+      "2026-10-24T17:09:39.5752339Z Artifact phase-assert-offset-controls-40114254950.zip successfully finalized. Artifact ID 12567604310",
+      "2026-10-24T17:09:39.5753928Z Artifact phase-assert-offset-controls-40114254950 has been successfully uploaded! Final size is 5363 bytes. Artifact ID is 12567604310"
+    ]
+  },
+  "native_job_log": {
+    "job": 120933910302,
+    "log_bytes": 575488,
+    "log_sha256": "c6d5c734a52148ed31c7942fd73b7638ebf2a5fb25d1bc33acbf9a3f0dd9d511",
+    "proof": [
+      "2026-10-24T17:10:12.8204060Z Complete job name: intrinsic-four-case-assert-offset",
+      "2026-10-24T17:11:18.3043322Z {\"case\": \"p-initial-high\", \"elapsed_s\": 30.003648780000006, \"raw_bytes\": 64469829}",
+      "2026-10-24T17:11:48.3064497Z {\"case\": \"p-initial-high\", \"elapsed_s\": 60.005813118000006, \"raw_bytes\": 127839045}",
+      "2026-10-24T17:12:18.3085915Z {\"case\": \"p-initial-high\", \"elapsed_s\": 90.007949531, \"raw_bytes\": 191458117}",
+      "2026-10-24T17:12:48.3107825Z {\"case\": \"p-initial-high\", \"elapsed_s\": 120.01010046, \"raw_bytes\": 255155013}",
+      "2026-10-24T17:13:19.5806709Z {\"case\": \"p-initial-high\", \"complete\": true, \"passed\": true, \"gates\": {\"checks\": {\"native_returncode_zero\": true, \"no_native_diagnostics\": true, \"solver_readback\": true, \"all106_flags\": true, \"full_zero_OP\": true, \"complete_original_capture\": true, \"original_phase_and_safety\": true, \"no_validation_errors\": true}, \"passed\": true}}",
+      "2026-10-24T17:13:49.6263785Z {\"case\": \"p-initial-low\", \"elapsed_s\": 30.00688535200004, \"raw_bytes\": 64981829}",
+      "2026-10-24T17:14:19.6301734Z {\"case\": \"p-initial-low\", \"elapsed_s\": 60.012872249, \"raw_bytes\": 128449349}",
+      "2026-10-24T17:14:49.6341512Z {\"case\": \"p-initial-low\", \"elapsed_s\": 90.01671693899999, \"raw_bytes\": 191683397}",
+      "2026-10-24T17:15:19.6380582Z {\"case\": \"p-initial-low\", \"elapsed_s\": 120.02067723900001, \"raw_bytes\": 255376197}",
+      "2026-10-24T17:15:50.8165534Z {\"case\": \"p-initial-low\", \"complete\": true, \"passed\": true, \"gates\": {\"checks\": {\"native_returncode_zero\": true, \"no_native_diagnostics\": true, \"solver_readback\": true, \"all106_flags\": true, \"full_zero_OP\": true, \"complete_original_capture\": true, \"original_phase_and_safety\": true, \"no_validation_errors\": true}, \"passed\": true}}",
+      "2026-10-24T17:16:20.8672133Z {\"case\": \"n-initial-high\", \"elapsed_s\": 30.010260996, \"raw_bytes\": 64703301}",
+      "2026-10-24T17:16:50.8736243Z {\"case\": \"n-initial-high\", \"elapsed_s\": 60.01908444700001, \"raw_bytes\": 128473925}",
+      "2026-10-24T17:17:20.8825004Z {\"case\": \"n-initial-high\", \"elapsed_s\": 90.02550167800001, \"raw_bytes\": 192297797}",
+      "2026-10-24T17:17:50.8915867Z {\"case\": \"n-initial-high\", \"elapsed_s\": 120.03436148700001, \"raw_bytes\": 255839045}",
+      "2026-10-24T17:18:21.5455523Z {\"case\": \"n-initial-high\", \"complete\": true, \"passed\": true, \"gates\": {\"checks\": {\"native_returncode_zero\": true, \"no_native_diagnostics\": true, \"solver_readback\": true, \"all106_flags\": true, \"full_zero_OP\": true, \"complete_original_capture\": true, \"original_phase_and_safety\": true, \"no_validation_errors\": true}, \"passed\": true}}",
+      "2026-10-24T17:18:51.5981898Z {\"case\": \"n-initial-low\", \"elapsed_s\": 30.013433293999924, \"raw_bytes\": 64580421}",
+      "2026-10-24T17:19:21.6102969Z {\"case\": \"n-initial-low\", \"elapsed_s\": 60.02068213199993, \"raw_bytes\": 128031557}",
+      "2026-10-24T17:19:51.6175926Z {\"case\": \"n-initial-low\", \"elapsed_s\": 90.0327731719999, \"raw_bytes\": 191277893}",
+      "2026-10-24T17:20:21.6247376Z {\"case\": \"n-initial-low\", \"elapsed_s\": 120.04008059199998, \"raw_bytes\": 255036229}",
+      "2026-10-24T17:20:51.6320228Z {\"case\": \"n-initial-low\", \"elapsed_s\": 150.04726127899994, \"raw_bytes\": 318171973}",
+      "2026-10-24T17:20:53.2313681Z {\"case\": \"n-initial-low\", \"complete\": true, \"passed\": true, \"gates\": {\"checks\": {\"native_returncode_zero\": true, \"no_native_diagnostics\": true, \"solver_readback\": true, \"all106_flags\": true, \"full_zero_OP\": true, \"complete_original_capture\": true, \"original_phase_and_safety\": true, \"no_validation_errors\": true}, \"passed\": true}}",
+      "2026-10-24T17:20:54.2221316Z \u001b[36;1m    p.write_text(json.dumps(dict(status='FAIL_MISSING_ASSERT_OFFSET_REPORT',source_head=os.environ['GITHUB_SHA'],full_PHY_accepted=False))+'\\n')\u001b[0m",
+      "2026-10-24T17:20:54.2222435Z \u001b[36;1mprint('RESULT_SHA256',hashlib.sha256(b).hexdigest());print('RESULT_BYTES',len(b))\u001b[0m",
+      "2026-10-24T17:20:54.2638203Z RESULT_SHA256 80597ce7b874d56a2e9b5d6a0daaf3863e63c94395bbba74f33772da7eb15bd9",
+      "2026-10-24T17:20:54.2639419Z RESULT_BYTES 395763"
+    ]
+  },
+  "release": {
+    "release": {
+      "id": 422863338,
+      "tag_name": "cloud-results-40114254950-1-tx-phase-assert-offset-intrinsic",
+      "target_commitish": "e2598de52f2190ee0e3eddf8095c3fffe640b62f"
+    },
+    "assets": [
+      {
+        "id": 672855502,
+        "name": "tx-phase-assert-offset-intrinsic-40114254950-1.parts.json",
+        "size": 1108,
+        "digest": "sha256:8193a9ac53bc2d5658dbddd307109bf9cd3b5e8b88a3b47960be7be4b5929a99"
+      },
+      {
+        "id": 672855429,
+        "name": "tx-phase-assert-offset-intrinsic-40114254950-1.summary.json",
+        "size": 395763,
+        "digest": "sha256:80597ce7b874d56a2e9b5d6a0daaf3863e63c94395bbba74f33772da7eb15bd9"
+      },
+      {
+        "id": 672855600,
+        "name": "tx-phase-assert-offset-intrinsic-40114254950-1.tar.gz.part0000",
+        "size": 1073741824,
+        "digest": "sha256:7c1840839dbb28ba7539fa7bcd73431f02697dc855a30a87ed6ebc1e21255a8a"
+      },
+      {
+        "id": 672856468,
+        "name": "tx-phase-assert-offset-intrinsic-40114254950-1.tar.gz.part0001",
+        "size": 42441142,
+        "digest": "sha256:8cf1394b04c1a99bd7f1b8a8c6fafc24f8c5bae109346fcf06dc7fbfc00ca6f2"
+      }
+    ]
+  },
+  "summary": {
+    "asset": 672855429,
+    "bytes": 395763,
+    "sha256": "80597ce7b874d56a2e9b5d6a0daaf3863e63c94395bbba74f33772da7eb15bd9"
+  },
+  "parts": {
+    "asset": 672855502,
+    "bytes": 1108,
+    "sha256": "8193a9ac53bc2d5658dbddd307109bf9cd3b5e8b88a3b47960be7be4b5929a99",
+    "manifest": {
+      "format": "ordered-tar-gzip-parts-v1",
+      "stem": "tx-phase-assert-offset-intrinsic-40114254950-1",
+      "source_directory": "cloud-tx-phase-assert-offset-intrinsic",
+      "bytes": 1116182966,
+      "sha256": "391554a56cec8e465f3223ed9d809faaec5cb70771b0467b81efff3df93e02a2",
+      "parts": [
+        {
+          "index": 0,
+          "name": "tx-phase-assert-offset-intrinsic-40114254950-1.tar.gz.part0000",
+          "bytes": 1073741824,
+          "sha256": "7c1840839dbb28ba7539fa7bcd73431f02697dc855a30a87ed6ebc1e21255a8a"
+        },
+        {
+          "index": 1,
+          "name": "tx-phase-assert-offset-intrinsic-40114254950-1.tar.gz.part0001",
+          "bytes": 42441142,
+          "sha256": "8cf1394b04c1a99bd7f1b8a8c6fafc24f8c5bae109346fcf06dc7fbfc00ca6f2"
+        }
+      ],
+      "part_limit_bytes": 1073741824,
+      "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+      "verification": {
+        "parts": 2,
+        "bytes": 1116182966,
+        "sha256": "391554a56cec8e465f3223ed9d809faaec5cb70771b0467b81efff3df93e02a2",
+        "all_parts_and_combined_bytes_verified": true
+      }
+    }
+  },
+  "verified_small_report": {
+    "status": "PASS_FOUR_ASSERT_OFFSET244_INTRINSIC_DIAGNOSTICS_NOT_LAYOUT_OR_FULLPHY",
+    "scope": "Fresh244-device fixture-driven4x34ns test, original125ps fixed phase/safety/solver limits. Same244-device ARM fan-in with only XAND_SKEW L32to20; original three-case rejection retained; uniform all106 OFF junction initialization qualified separately at original zero-source OP. No IC/UIC/internal ideal driver, no fitted phase, no old55RC. Complete new waveforms and all failures preserved.",
+    "flags": {
+      "original241_transient_accepted": false,
+      "layout_RC_included": false,
+      "reset_hardware_qualified": false,
+      "all31_clock_tree_accepted": false,
+      "PLL_connected": false,
+      "full_PHY_accepted": false,
+      "sources_and_models_unchanged": true,
+      "all_four_diagnostic_screens_passed": true
+    },
+    "boundary": {
+      "source_run": 40084454916,
+      "source_head": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
+      "summary_asset": 672131330,
+      "summary_sha256": "9656bff3e87627c0529bdff52921f2d8278d48fe05cc76516b507200f9c67863",
+      "pair": "div1_first_div2",
+      "vectors": [
+        "v(xloop.w_t398_c)",
+        "v(xloop.w_t389_c)"
+      ],
+      "common_mode_v": 2.2605958859271773,
+      "single_ended_amplitude_v": 0.08531554498100902,
+      "common_mode_field": "stage_statistics.div1_first_div2.common_mode.median",
+      "amplitude_derivation": "min(-stage_statistics.div1_first_div2.voltage.minimum, stage_statistics.div1_first_div2.voltage.maximum)/2",
+      "actual_median_period_s": 2.299490864896042e-10,
+      "nominal_test_frequency_hz": 4000000000,
+      "actual_PLL_waveform_replayed": false,
+      "stable_input_envelope_qualified": false,
+      "PLL_locked": false,
+      "arm_interface": "Same documented high-CML fixture scalar levels; external test equipment, not a real reset driver"
+    },
+    "cases": [
+      {
+        "case": "p-initial-high",
+        "complete": true,
+        "passed": true,
+        "errors": [],
+        "native_returncode": 0,
+        "diagnostics": [],
+        "count": {
+          "hbt_count": 106,
+          "primitive_count": 244,
+          "vector_count": 358
+        },
+        "flags": {
+          "actual_HBT_targets": 106,
+          "uniform_OFF_value": 1,
+          "all_native_flags_read_back": true
+        },
+        "zero_source_op": {
+          "all_saved_electrical_and_thermal_states_zero": true,
+          "rows": 1,
+          "columns": 358,
+          "explicit_scale_duplicate": false,
+          "sha256": "82765593435a613943c8ebecde8a6e131e306e26c164dc4ab18ce5911bb1eb2e"
+        },
+        "capture": {
+          "header_rows": 110875,
+          "columns": 359,
+          "header_bytes": 15173,
+          "raw_bytes": 318448173,
+          "raw_sha256": "3d0db1eef8b49ff516f5a28895b7abd9269793445827068733adc3030c81f5ea",
+          "start_s": 0,
+          "end_s": 3.4e-8,
+          "max_step_s": 3.125000000020087e-13,
+          "complete_unmodified_rows": true,
+          "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+        },
+        "acceptance_gate": {
+          "checks": {
+            "native_returncode_zero": true,
+            "no_native_diagnostics": true,
+            "solver_readback": true,
+            "all106_flags": true,
+            "full_zero_OP": true,
+            "complete_original_capture": true,
+            "original_phase_and_safety": true,
+            "no_validation_errors": true
+          },
+          "passed": true
+        },
+        "measurement_flags": {
+          "all106_HBT_safety_passed": true,
+          "diagnostic_screen_passed": true,
+          "all31_clock_tree_accepted": false,
+          "loaded_selector_interface_accepted": false,
+          "new_layout_qualified": false,
+          "PLL_connected": false,
+          "full_PHY_accepted": false
+        },
+        "signals": {
+          "fixed_phase_samples": {
+            "MP": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.17781722188469765,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 61,
+              "falling_edge_count": 61
+            },
+            "QP": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.17302632800011358,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 61,
+              "falling_edge_count": 62
+            },
+            "release": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.15554803563930436,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 3,
+              "falling_edge_count": 2
+            }
+          },
+          "asynchronous_preset_during_running": {
+            "MP": {
+              "minimum_signed_margin_v": 0.11598126242950668,
+              "wrong_sign_samples": 0
+            },
+            "QP": {
+              "minimum_signed_margin_v": 0.11416493477356715,
+              "wrong_sign_samples": 0
+            },
+            "release": {
+              "minimum_signed_margin_v": 0.12829338215042085,
+              "wrong_sign_samples": 0
+            }
+          },
+          "first_fall_releases": [
+            {
+              "arm_s": 1.75e-9,
+              "fall_s": 2.125e-9,
+              "observed_release_edges_s": [
+                2.1494155829672995e-9
+              ],
+              "exactly_one": true,
+              "before_first_fall": false,
+              "signed_delay_s": 2.4415582967299477e-11,
+              "within_original_UI_center": true
+            },
+            {
+              "arm_s": 1.403125e-8,
+              "fall_s": 1.4125e-8,
+              "observed_release_edges_s": [
+                1.4152768787628169e-8
+              ],
+              "exactly_one": true,
+              "before_first_fall": false,
+              "signed_delay_s": 2.7768787628168352e-11,
+              "within_original_UI_center": true
+            }
+          ],
+          "fixed_phase_and_margin_passed": true,
+          "preset_passed": true,
+          "first_fall_passed": true,
+          "diagnostic_signal_screen_passed": true,
+          "observed_phase_fitted": false,
+          "production_startup_or_recovery_removal_qualified": false
+        },
+        "native_log_sha256": "c4d8d97ebfa64eff42ded807b0e45ae89326b126e50b2a8c070762f03d6959e2",
+        "deck_sha256": "da95b735917adcf0dd095453386e5b0ff264a64aa650658814c1b962ef89e09c",
+        "source_sha256": "3b4aa82387b5e532437dc592feceea699b4d283570751d6e983f0949fe7095f4",
+        "contract_sha256": "1e9946b8f4e84f4ac7bebcbfa8896386de1a6f9b8145a0a497b41c5f32c16b84"
+      },
+      {
+        "case": "p-initial-low",
+        "complete": true,
+        "passed": true,
+        "errors": [],
+        "native_returncode": 0,
+        "diagnostics": [],
+        "count": {
+          "hbt_count": 106,
+          "primitive_count": 244,
+          "vector_count": 358
+        },
+        "flags": {
+          "actual_HBT_targets": 106,
+          "uniform_OFF_value": 1,
+          "all_native_flags_read_back": true
+        },
+        "zero_source_op": {
+          "all_saved_electrical_and_thermal_states_zero": true,
+          "rows": 1,
+          "columns": 358,
+          "explicit_scale_duplicate": false,
+          "sha256": "ee69cabdc1a8a790087fa6c1d449b9aa8b54644486030d568772a742a84a3a48"
+        },
+        "capture": {
+          "header_rows": 110875,
+          "columns": 359,
+          "header_bytes": 15173,
+          "raw_bytes": 318448173,
+          "raw_sha256": "891e90f913762ec71a68942f504535858ec76c65153650f7d618d90e02c91e15",
+          "start_s": 0,
+          "end_s": 3.4e-8,
+          "max_step_s": 3.125000000020087e-13,
+          "complete_unmodified_rows": true,
+          "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+        },
+        "acceptance_gate": {
+          "checks": {
+            "native_returncode_zero": true,
+            "no_native_diagnostics": true,
+            "solver_readback": true,
+            "all106_flags": true,
+            "full_zero_OP": true,
+            "complete_original_capture": true,
+            "original_phase_and_safety": true,
+            "no_validation_errors": true
+          },
+          "passed": true
+        },
+        "measurement_flags": {
+          "all106_HBT_safety_passed": true,
+          "diagnostic_screen_passed": true,
+          "all31_clock_tree_accepted": false,
+          "loaded_selector_interface_accepted": false,
+          "new_layout_qualified": false,
+          "PLL_connected": false,
+          "full_PHY_accepted": false
+        },
+        "signals": {
+          "fixed_phase_samples": {
+            "MP": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.1675270274330305,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 60,
+              "falling_edge_count": 61
+            },
+            "QP": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.1767181399208618,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 61,
+              "falling_edge_count": 62
+            },
+            "release": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.15590799479817485,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 3,
+              "falling_edge_count": 2
+            }
+          },
+          "asynchronous_preset_during_running": {
+            "MP": {
+              "minimum_signed_margin_v": 0.11597009920462353,
+              "wrong_sign_samples": 0
+            },
+            "QP": {
+              "minimum_signed_margin_v": 0.11412617040441919,
+              "wrong_sign_samples": 0
+            },
+            "release": {
+              "minimum_signed_margin_v": 0.12824882980753127,
+              "wrong_sign_samples": 0
+            }
+          },
+          "first_fall_releases": [
+            {
+              "arm_s": 1.75e-9,
+              "fall_s": 2.2500000000000003e-9,
+              "observed_release_edges_s": [
+                2.28037674695412e-9
+              ],
+              "exactly_one": true,
+              "before_first_fall": false,
+              "signed_delay_s": 3.0376746954119825e-11,
+              "within_original_UI_center": true
+            },
+            {
+              "arm_s": 1.403125e-8,
+              "fall_s": 1.425e-8,
+              "observed_release_edges_s": [
+                1.4277713517752989e-8
+              ],
+              "exactly_one": true,
+              "before_first_fall": false,
+              "signed_delay_s": 2.7713517752988336e-11,
+              "within_original_UI_center": true
+            }
+          ],
+          "fixed_phase_and_margin_passed": true,
+          "preset_passed": true,
+          "first_fall_passed": true,
+          "diagnostic_signal_screen_passed": true,
+          "observed_phase_fitted": false,
+          "production_startup_or_recovery_removal_qualified": false
+        },
+        "native_log_sha256": "0d2051d156bb8c249d0edfa3231daa50126515c9a63e1626375273de80c9f05a",
+        "deck_sha256": "d159388a21a677b8ee3cea5e400b64f85bdfbbb3ed92f013972a616bc9ad8cfc",
+        "source_sha256": "3b4aa82387b5e532437dc592feceea699b4d283570751d6e983f0949fe7095f4",
+        "contract_sha256": "34ddde69d0dc23bf353e94b779f77e9ccdf35f405829c3c98fc571728c1c9028"
+      },
+      {
+        "case": "n-initial-high",
+        "complete": true,
+        "passed": true,
+        "errors": [],
+        "native_returncode": 0,
+        "diagnostics": [],
+        "count": {
+          "hbt_count": 106,
+          "primitive_count": 244,
+          "vector_count": 358
+        },
+        "flags": {
+          "actual_HBT_targets": 106,
+          "uniform_OFF_value": 1,
+          "all_native_flags_read_back": true
+        },
+        "zero_source_op": {
+          "all_saved_electrical_and_thermal_states_zero": true,
+          "rows": 1,
+          "columns": 358,
+          "explicit_scale_duplicate": false,
+          "sha256": "2ad7ce9c3f2f4ea097afc69172dae51e600f60f24ce9f8a39f5071bff1bf7391"
+        },
+        "capture": {
+          "header_rows": 110875,
+          "columns": 359,
+          "header_bytes": 15173,
+          "raw_bytes": 318448173,
+          "raw_sha256": "9f442afc4190b714be8128cdaed5ea97ecc9fdb47f13c3da049ff7292c37ac20",
+          "start_s": 0,
+          "end_s": 3.4e-8,
+          "max_step_s": 3.125000000020087e-13,
+          "complete_unmodified_rows": true,
+          "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+        },
+        "acceptance_gate": {
+          "checks": {
+            "native_returncode_zero": true,
+            "no_native_diagnostics": true,
+            "solver_readback": true,
+            "all106_flags": true,
+            "full_zero_OP": true,
+            "complete_original_capture": true,
+            "original_phase_and_safety": true,
+            "no_validation_errors": true
+          },
+          "passed": true
+        },
+        "measurement_flags": {
+          "all106_HBT_safety_passed": true,
+          "diagnostic_screen_passed": true,
+          "all31_clock_tree_accepted": false,
+          "loaded_selector_interface_accepted": false,
+          "new_layout_qualified": false,
+          "PLL_connected": false,
+          "full_PHY_accepted": false
+        },
+        "signals": {
+          "fixed_phase_samples": {
+            "MP": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.17744729832685416,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 60,
+              "falling_edge_count": 60
+            },
+            "QP": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.1747760956836162,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 62,
+              "falling_edge_count": 63
+            },
+            "release": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.15554794453436435,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 3,
+              "falling_edge_count": 2
+            }
+          },
+          "asynchronous_preset_during_running": {
+            "MP": {
+              "minimum_signed_margin_v": 0.11603304030121198,
+              "wrong_sign_samples": 0
+            },
+            "QP": {
+              "minimum_signed_margin_v": 0.11416041251391151,
+              "wrong_sign_samples": 0
+            },
+            "release": {
+              "minimum_signed_margin_v": 0.12832226797025337,
+              "wrong_sign_samples": 0
+            }
+          },
+          "first_fall_releases": [
+            {
+              "arm_s": 1.75e-9,
+              "fall_s": 2.125e-9,
+              "observed_release_edges_s": [
+                2.1494186405354844e-9
+              ],
+              "exactly_one": true,
+              "before_first_fall": false,
+              "signed_delay_s": 2.4418640535484412e-11,
+              "within_original_UI_center": true
+            },
+            {
+              "arm_s": 1.403125e-8,
+              "fall_s": 1.4125e-8,
+              "observed_release_edges_s": [
+                1.4152775047913973e-8
+              ],
+              "exactly_one": true,
+              "before_first_fall": false,
+              "signed_delay_s": 2.7775047913971838e-11,
+              "within_original_UI_center": true
+            }
+          ],
+          "fixed_phase_and_margin_passed": true,
+          "preset_passed": true,
+          "first_fall_passed": true,
+          "diagnostic_signal_screen_passed": true,
+          "observed_phase_fitted": false,
+          "production_startup_or_recovery_removal_qualified": false
+        },
+        "native_log_sha256": "a0f6398ecf75ca6c525a5421c0ef3a8310e96bc50ae80b73c8c54a44dbf2dcc2",
+        "deck_sha256": "95375e6348a75f9de5b2c4dc809844d18f963d83c70516cac38d97042d5eeab1",
+        "source_sha256": "3b4aa82387b5e532437dc592feceea699b4d283570751d6e983f0949fe7095f4",
+        "contract_sha256": "476eb91ddee5b5829a6e014ebf61419c5cbd7ed5a23fbe16b6b2d6bf44f2f5c1"
+      },
+      {
+        "case": "n-initial-low",
+        "complete": true,
+        "passed": true,
+        "errors": [],
+        "native_returncode": 0,
+        "diagnostics": [],
+        "count": {
+          "hbt_count": 106,
+          "primitive_count": 244,
+          "vector_count": 358
+        },
+        "flags": {
+          "actual_HBT_targets": 106,
+          "uniform_OFF_value": 1,
+          "all_native_flags_read_back": true
+        },
+        "zero_source_op": {
+          "all_saved_electrical_and_thermal_states_zero": true,
+          "rows": 1,
+          "columns": 358,
+          "explicit_scale_duplicate": false,
+          "sha256": "5d701560c28e46ccd5e9e81c75be26763d803a721482d8da2be18e9da047af36"
+        },
+        "capture": {
+          "header_rows": 110875,
+          "columns": 359,
+          "header_bytes": 15173,
+          "raw_bytes": 318448173,
+          "raw_sha256": "73193ae960725568822e2c3109e1a5339aafca1acea7de68de6f4587d9f30114",
+          "start_s": 0,
+          "end_s": 3.4e-8,
+          "max_step_s": 3.125000000020087e-13,
+          "complete_unmodified_rows": true,
+          "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+        },
+        "acceptance_gate": {
+          "checks": {
+            "native_returncode_zero": true,
+            "no_native_diagnostics": true,
+            "solver_readback": true,
+            "all106_flags": true,
+            "full_zero_OP": true,
+            "complete_original_capture": true,
+            "original_phase_and_safety": true,
+            "no_validation_errors": true
+          },
+          "passed": true
+        },
+        "measurement_flags": {
+          "all106_HBT_safety_passed": true,
+          "diagnostic_screen_passed": true,
+          "all31_clock_tree_accepted": false,
+          "loaded_selector_interface_accepted": false,
+          "new_layout_qualified": false,
+          "PLL_connected": false,
+          "full_PHY_accepted": false
+        },
+        "signals": {
+          "fixed_phase_samples": {
+            "MP": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.1768849977266506,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 59,
+              "falling_edge_count": 60
+            },
+            "QP": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.17577595345939356,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 62,
+              "falling_edge_count": 63
+            },
+            "release": {
+              "fixed_original_UI_centers": 256,
+              "minimum_signed_margin_v": 0.15733118215148578,
+              "wrong_sign_samples": 0,
+              "margin_violations": 0,
+              "rising_edge_count": 3,
+              "falling_edge_count": 2
+            }
+          },
+          "asynchronous_preset_during_running": {
+            "MP": {
+              "minimum_signed_margin_v": 0.11607248815187088,
+              "wrong_sign_samples": 0
+            },
+            "QP": {
+              "minimum_signed_margin_v": 0.11420751399347884,
+              "wrong_sign_samples": 0
+            },
+            "release": {
+              "minimum_signed_margin_v": 0.12827777360710213,
+              "wrong_sign_samples": 0
+            }
+          },
+          "first_fall_releases": [
+            {
+              "arm_s": 1.75e-9,
+              "fall_s": 2.2500000000000003e-9,
+              "observed_release_edges_s": [
+                2.280386210210919e-9
+              ],
+              "exactly_one": true,
+              "before_first_fall": false,
+              "signed_delay_s": 3.038621021091886e-11,
+              "within_original_UI_center": true
+            },
+            {
+              "arm_s": 1.403125e-8,
+              "fall_s": 1.425e-8,
+              "observed_release_edges_s": [
+                1.4277720155099405e-8
+              ],
+              "exactly_one": true,
+              "before_first_fall": false,
+              "signed_delay_s": 2.7720155099404312e-11,
+              "within_original_UI_center": true
+            }
+          ],
+          "fixed_phase_and_margin_passed": true,
+          "preset_passed": true,
+          "first_fall_passed": true,
+          "diagnostic_signal_screen_passed": true,
+          "observed_phase_fitted": false,
+          "production_startup_or_recovery_removal_qualified": false
+        },
+        "native_log_sha256": "997e7b4357315d2421a91eefe4459f0fffda2e94267a11564d675148fdd64a5a",
+        "deck_sha256": "594f7e8cd7d21644da37ab6cc285d82649395b75cdd85305a4d37c1f89d44a94",
+        "source_sha256": "3b4aa82387b5e532437dc592feceea699b4d283570751d6e983f0949fe7095f4",
+        "contract_sha256": "3fadc171f3d2a6d873920b0bd1553fdd058b962ad41826b97ff51960cbacbd3e"
+      }
+    ]
+  },
+  "sole_device_delta": "XRUN.XAND_SKEW rppd W1um L32um -> L20um; other243 devices/endpoints/model/thermal flags unchanged",
+  "original_failure_retained": {
+    "run": 40098170615,
+    "summary_asset": 672365442,
+    "summary_sha256": "3ad8114c2f3a0f84fd7eb986b0846b98ad0027e977ba62737a019e2c3e28d9fa",
+    "cases_failed": 3
+  },
+  "independent_reviews": [
+    "docs/evidence/tx-phase-assert-offset-native-source-review-20261024.json"
+  ],
+  "scope": {
+    "local_files_or_archives": false,
+    "small_JSON_and_joblog_authenticated_in_RAM": true,
+    "full_raw_independently_replayed_by_this_audit": false,
+    "cloud_producer_full_capture_verified": true,
+    "fixture_driven_intrinsic_only": true,
+    "actual_PLL_waveform": false,
+    "real_selector_load": false,
+    "new_layout_RC": false,
+    "all31_tree": false,
+    "reset_hardware_qualified": false,
+    "full_PHY_accepted": false
+  },
+  "next": "Preserve this passing244 schematic and unchanged fixed gates. Finish native load-role proof, then validate actual selector loading and implement new physical reset/clock geometry with fresh DRC/LVS/RC; no use of old55-cell RC as244 proof."
+}

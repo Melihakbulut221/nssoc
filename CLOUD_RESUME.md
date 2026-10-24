@@ -8263,3 +8263,10 @@ PLL40114471619 diagnostic replay is now complete and authenticated:49controls,19
 Sole new cloudhandles: roleinnerlog reader40115817352/source293eed1f (only24KBartifact, no native rerun); mainchippublication-only40115867400/source79477d53 (existing40file fallback andexplicitnineempty inventory, original65ZIPopaque). Each passed independent source review before dispatch. These complement existingTX/CDR/offset and recordtransport40114982496. Rootmonitor70pinnedruns,8hourreadonly; no duplicate nativework.
 
 Localworkspace rechecked empty. All source, receipts and continuingcompute remainGitHub. FullserialPHY, serialmainchipintegration and finaltiming remain unaccepted.
+
+
+### 2026-10-24T17:27:11.200812+00:00 — actual offset244 intrinsic pass
+
+One-resistor offset run40114254950 now passes all4fresh34ns cases with full110875x359captures,106HBT safety, originalzeroOP and unchanged31.25ps/100mV gates. Worst prescribed margin114.126mV; no simulatorwarnings/errors. Exactpass receipt7d67efe1/SHA117ad08b and smallactualsummarySHA80597ce7 are retained here. No repeat simulation. Next: propagate onlyXAND_SKEW rppdL32toL20 into real244layout/model, preserveother243devices, independentlyreview then fullphysical/RC validation. Real31tree/load/PLL/mainchip/fullPHY remainopen.
+
+Mainchippublication checkpoint9b8f4e91 pins sole40115867400 and exactsource release422874927. Roleinnerlog reader40115817352 andrecordproof40114982496 remain sole pendinghandles. All work remainscloud-only and workspaceempty.
