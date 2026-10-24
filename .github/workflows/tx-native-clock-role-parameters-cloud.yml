@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-native-clock-role-parameters-cloud
+on:
+  push:
+    branches: [codex/tx-role-parameters-registration]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo 'Registration only. No checkout, simulation, extraction or data readback.'
