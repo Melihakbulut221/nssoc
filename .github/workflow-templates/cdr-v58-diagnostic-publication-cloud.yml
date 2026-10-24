@@ -1,0 +1,95 @@
+# SPDX-License-Identifier: Apache-2.0
+# Source-only template; activate byte-identically after independent review.
+name: cdr-v58-diagnostic-publication-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Authenticate exact existing593MB artifact and publish complete JSONs; no simulator'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: cdr-v58-diagnostic-publication-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Exact metadata and synthetic transport controls
+        run: |
+          python3 scripts/cloud_cdr_v58_diagnostic_publication.py --controls
+          python3 - <<'PY'
+          import json
+          x=json.load(open("cloud-cdr-v58-diagnostic-publication/result.json"))
+          assert x["status"]=="PASS_EXISTING_CDR_ARTIFACT_METADATA_AND45_CONTROLS_ONLY"
+          assert len(x["faults"])==45 and len(x["publication_controls"]["rejected"])==17
+          assert x["artifact_downloaded"] is x["new_simulation"] is x["cdr_accepted"] is x["full_phy_accepted"] is False
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-v58-diagnostic-publication-controls
+          path: cloud-cdr-v58-diagnostic-publication/result.json
+          if-no-files-found: error
+          retention-days: 90
+  authenticate-and-publish:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch' && inputs.publish
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Exact existing artifact authentication and complete JSON derivation
+        run: python3 scripts/cloud_cdr_v58_diagnostic_publication.py --publish
+      - name: Publish original JSONs and complete bounded summary without caches
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import os,subprocess,sys
+          from pathlib import Path
+          sys.path.insert(0,"scripts")
+          import ensure_cloud_tested_source_release as p
+          tag,head=p.context("cdr-v58-diagnostic-publication",os.environ)
+          proof=p.validate_release(p.api("releases/tags/"+tag),p.api("git/ref/tags/"+tag),tag,head)
+          assert not proof["existing_assets"]
+          root=Path("cloud-cdr-v58-diagnostic-publication")
+          files=sorted(root.glob("*.json"))+sorted(root.glob("*.log"))
+          assert root/"result.json" in files and all(x.stat().st_size>0 for x in files)
+          subprocess.run([sys.executable,"scripts/publish_cloud_results.py","--group","cdr-v58-diagnostic-publication",*map(str,files)],check=True)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-v58-complete-diagnostic-jsons
+          path: |
+            cloud-cdr-v58-diagnostic-publication/*.json
+            cloud-cdr-v58-diagnostic-publication/*.log
+          if-no-files-found: error
+          retention-days: 90
