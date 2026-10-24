@@ -7928,3 +7928,18 @@ Parallel bounded cloud branches: TX saved-capture rail diagnosis and PLL
 lossless-prefix publication qualification. Neither may mutate live production
 jobs or the main working branch; integrate exact verified commits after review.
 The user cloud-only override remains in force.
+
+
+## Supply short remains despite zero directly attributed metal/via crossings
+
+40068209433 compared all7metals/6via transitions against independent passed
+old-parent/new-leaf native AVSS/SUB nets. After the M3 detour it finds zero
+same-layer and zero cross-layer direct attributed supply collisions. This
+does NOT overrule native LVS40067331164, which still reports AVSS/SUB short.
+
+Next native diagnostic extracts drawing-only whole-parent wire connectivity
+without label unions, checks if public AVSS/SUB share a physical conductor,
+and if so traces an actual polygon/via path with per-owner geometry. This
+covers indirect paths/floating old root remnants excluded from source-net
+attribution. If physical components differ, investigate non-metal/label union
+before any new metal modification. No acceptance or native gate relaxed.
