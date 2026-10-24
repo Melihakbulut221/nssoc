@@ -1,6 +1,6 @@
 {
   "schema": "tx-phase-cloud-checkpoint-v3",
-  "observed_utc": "2026-10-24T11:51:28.156440+00:00",
+  "observed_utc": "2026-10-24T12:39:48.133878+00:00",
   "cloud_only": true,
   "branch": "codex/tx-clock-phase-parent",
   "source_head": "a83bfc1da87695ae141468452680351077593efe",
@@ -75,16 +75,17 @@
       "v(xloop.w_t398_c)",
       "v(xloop.w_t389_c)"
     ],
-    "verified_measurements_received": false
+    "verified_measurements_received": true,
+    "observer_summary_sha256": "9656bff3e87627c0529bdff52921f2d8278d48fe05cc76516b507200f9c67863",
+    "PLL_locked": false
   },
-  "electrical_native_dispatched": false,
+  "electrical_native_dispatched": true,
   "PLL_connected": false,
   "full_PHY_accepted": false,
   "next": [
-    "Prepare and independently review a fixture-driven intrinsic transistor transient for both parent presets and both initial clock phases, including reset assertion during running and first-fall release. Root has authorized this independent diagnostic; measured PLL boundary is not required for its explicitly documented nominal fixture.",
-    "Do not dispatch the intrinsic transient until exact fixture/model/engine/source and negative controls are reviewed. No new layoutRC or PLL-connected acceptance.",
-    "Keep actual phase55 child-load/PLL connection pending the measured root observer boundary.",
-    "Implement physical independent preset/release, body contacts, fresh DRC/LVS/RC, selector buffers and routed parent before all31 hardware acceptance."
+    "Read already-preserved full captures in cloud without rerunning or accepting this rejected DUT; preserve original numerical failure while measuring fixed-phase and all106HBT safety.",
+    "Diagnose original retained finite waveforms before changing real circuit; no warnings may be waived.",
+    "Build actual selector-interface/child/reset loads and physical241-device geometry only after schematic failures are resolved."
   ],
   "terminal_source_receipt": {
     "path": "docs/evidence/tx-phase-source-preparation-and31-mapping-pass-20261024.json",
@@ -119,8 +120,8 @@
     "cases": 4,
     "observer_run": 40084454916,
     "observer_summary_sha256": "9656bff3e87627c0529bdff52921f2d8278d48fe05cc76516b507200f9c67863",
-    "next": "Monitor exact corrected run40093613768 to terminal; preserve full summary/parts and genuine engineering failures. All models/devices/source/oracle/safety unchanged; loader control token fixed and independently/native validated. Do not duplicate. No loaded31clock/PLL/layout qualification.",
-    "native_electrical_result_available": false,
+    "next": "Read already-preserved full captures in cloud without rerunning or accepting this rejected DUT; preserve original numerical failure while measuring fixed-phase and all106HBT safety.",
+    "native_electrical_result_available": true,
     "physical_qualified": false,
     "PLL_connected": false,
     "full_PHY_accepted": false,
@@ -129,7 +130,7 @@
       "source_head": "fe649b9d96356afe9ff45c25ed1f5ea094d47035",
       "workflow": "tx-phase-async-preset-intrinsic-cloud.yml",
       "name": "intrinsic-four-case",
-      "last_observed_status": "in_progress",
+      "last_observed_status": "completed_failure",
       "no_duplicate_dispatch": true
     },
     "preserved_failed_native": {
@@ -142,6 +143,15 @@
       "cause": "Native pre_osdi quoted filename rejected; no DUT waveform executed. Exact logs retained and verified by cloud-only readback40093229489."
     },
     "loader_repair_control_run": 40093472344,
-    "loader_repair_peer_review_passed": true
+    "loader_repair_peer_review_passed": true,
+    "native_rejection_receipt": "docs/evidence/tx-phase-intrinsic-numerical-rejection-20261024.json"
+  },
+  "readback_candidate": {
+    "workflow": "tx-phase-rejected-capture-readback-cloud.yml",
+    "job": "full-capture-readback",
+    "original_native_run": 40093613768,
+    "dispatch_pending_independent_source_review": true,
+    "native_execution": false,
+    "original_native_accepted": false
   }
 }
