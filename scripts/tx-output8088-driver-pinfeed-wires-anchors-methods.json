@@ -1,0 +1,47 @@
+{
+  "locked": {
+    "scripts/cloud_tx_output8088_driver_pinfeed_wires_anchors.py": "4c653cf4d94a829a4161578b1524b4f9412b095632973d273a49c06fa64dcfd1",
+    "scripts/tx_output8088_driver_pinfeed_wire_native.py": "d73fd07aa1d0ec2cf96bf01ea361d74399f1e0b26771f8a3034dc5e5180ea7a7",
+    "scripts/bind_tx_output8088_driver_pinfeed_native_anchors.py": "ab7732e7abad16e3b635f36ebe4457e0d8ff39abb9f33099a4f0ffc359807b22",
+    ".github/workflows/tx-output8088-driver-pinfeed-wires-anchors-cloud.yml": "01c50d0e3a3125b203e7619d8658461967f99f942826baab5bea8517f8376d04",
+    "scripts/tx_output8088_power128return64via3_wire_native.py": "2833be9e98a61560d8302239e23c2012dd815fec85ef5789ef21426631b2cab1",
+    "scripts/bind_tx_output8088_power128return64via3_native_anchors.py": "6d5d1535221a5b7c125d5c2532b53f08f1d2862151e31e99080d158c63602a34",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "scripts/cloud_tx_exact_external_ports.py": "0c98c7d1f43f5fda36a869383a6cd6d91bdec581466664f3e80be029fd2ff583"
+  },
+  "derivations": {
+    "scripts/tx_output8088_driver_pinfeed_wire_native.py": {
+      "baseline": "scripts/tx_output8088_power128return64via3_wire_native.py",
+      "baseline_sha256": "2833be9e98a61560d8302239e23c2012dd815fec85ef5789ef21426631b2cab1",
+      "edits": [
+        {
+          "before": "853fcb891bad225640d3f37a1cd234f9a3ad82923ad56d6dbeeded523ea95a4e",
+          "after": "35336560233371ba519a354d26eb43447435102a7b7cda1e8f0c81fddf979819",
+          "count": 1
+        },
+        {
+          "before": "power128return64via3",
+          "after": "driver_pinfeed",
+          "count": 1
+        },
+        {
+          "before": "POWER128RETURN64VIA3",
+          "after": "DRIVER_PINFEED",
+          "count": 2
+        }
+      ]
+    },
+    "scripts/bind_tx_output8088_driver_pinfeed_native_anchors.py": {
+      "baseline": "scripts/bind_tx_output8088_power128return64via3_native_anchors.py",
+      "baseline_sha256": "6d5d1535221a5b7c125d5c2532b53f08f1d2862151e31e99080d158c63602a34",
+      "edits": [
+        {
+          "before": "OUT=ROOT/'hw/soc/out/cloud-tx-output8088-power128return64via3-native-anchors'",
+          "after": "OUT=ROOT/'cloud-tx-output8088-driver-pinfeed-wires-anchors'",
+          "count": 1
+        }
+      ]
+    }
+  }
+}
