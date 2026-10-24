@@ -26,6 +26,9 @@ def survey(ctx, namespace):
     primitives=[]
     def collect_via(bottom_name,top_name,point,plan,purpose,columns=8,upper=False,original_via4=None):
         v=native_via(bottom_name,top_name,point,plan,purpose,columns,upper,original_via4)
+        layer_name={'Metal1':8,'Metal3':30,'Metal4':50,'Metal5':67,'TopMetal1':126,'TopMetal2':134}
+        require(layer_name[bottom_name]in v['rendered']and layer_name[top_name]in v['rendered'],'Native via endpoint missing')
+        require(not(v['rendered'][layer_name[bottom_name]]&own[plan['gain_native_id']][layer_name[bottom_name]]).is_empty(),'Rendered bottom landing misses original owned metal')
         if original_via4 is not None:
             expected=pya.Region()
             for box in original_via4:expected+=pya.Region(pya.Box(*box))
