@@ -7582,3 +7582,15 @@ to original sources/grounds, no port alias. Tail identification uses53.335u.
 Original v49 device/signal/CM acceptance region still exact in workflow.
 Run all5full34.25ns cases with every actual wire/body/nativecurrent column;
 no parent/PHY pass inferred from prelayout or DRC/LVS.
+
+## 2026-10-24 v56 full loaded result: hot still rejected; measure supply IR loss
+Run40054876579 full5cases/824columns/110385rows/no diagnostics/source unchanged.
+Nominal118.858mV/32.969ps,cold132.705mV/29.844ps pass all originalgates.
+Hot99.346mV/37.969ps and CMmin1.795696V fail100mV/37.5ps/1.8V; transistor safety
+passes. Both faults detected. Actual coldmaxVCE1.533737V; prelayout coldmax
+1.592499V leaves little intrinsic headroom, so do not blindly raise shuntR.
+Full saved loss diagnosis launched; investigate actual pullup supply paths before
+choosing a physical repair. Candidate hypothesis: shorten only XUP/XUN supply M3
+escapes by routing toward right side, with substrate routing column kept distinct;
+requires actual routing/DRC/LVS/newRC/fullwaves, never numerical resistance scaling.
+Preserve native8umref/53.335umtails and2x20um contacts for final shared-bias parent.
