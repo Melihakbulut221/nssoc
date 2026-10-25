@@ -1,0 +1,109 @@
+{
+  "schema": "nssoc.gen12-training-owner-gap.v1",
+  "status": "SOURCE_AUDIT_AND_PROPOSED_NEXT_UNIT_ONLY",
+  "audited_root_source": "77d16d440b1a489da6041ee7fe4fef6ea0fe80c8",
+  "source_sha256": {
+    "hw/soc/rtl/soc_top.v": "b782a7fbe7b9ad5abb0db67bd132907d71e1ef43c9451b9befa2f356b77d4847",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v": "d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v": "483685e8574baecc8e754678ca7cd90aae93be2a0313d8669935546758ebc31d",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_owned_rx_v1.v": "0ca444320dd44eb4f90cf59df4841109dc29879a5d81c772bebf3dbe410fe022",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_record_descrambler_v1.v": "514dc351e8f140635c16cf9bfe4c0ce4066bc9566493a55b55d46820fac7b007",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_tx_path_v4.v": "36691c0f57934c708367a30d6a5f4ce940ecfaa18c83c63e8e3636a5081fbd67",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_packet_duplex.v": "64f66f7a4f2c5b66577c0696f4ca237b282b079b60ee94f5b2ec4796e88a4b6b",
+    "hw/soc/rtl/pcie/soc_pcie_buffered_flow_packets.v": "30448ccda991ea177f862eb5c69aef6a78aab20a0bf955eb802a8bfe2b03336d",
+    "hw/soc/rtl/pcie/soc_pcie_flow_packets.v": "9f90c5123ac4b82c832027af0e9ce79d5124cdf5dd502cde87c3f59c0729106a",
+    "hw/soc/rtl/pcie/soc_pcie_reliable_packets.v": "9212832d6fc20d26efaf1b1c7918cb39451644e178d7e5c2f90e1cc0cb741436"
+  },
+  "scope_of_search": {
+    "directory": "hw/soc/rtl/pcie/",
+    "verilog_files": 138,
+    "keywords": [
+      "TS1",
+      "TS2",
+      "LTSSM",
+      "Polling",
+      "Detect"
+    ],
+    "result": "Matches in this directory were scope/comments only, with no implemented TS1/TS2 training owner found. Actual top-level ownership is separately verified from the named source ports and instantiations."
+  },
+  "native_prerequisites": {
+    "codec": {
+      "run": 40102483214,
+      "authenticated_reader": 40106066552,
+      "status": "PASS"
+    },
+    "raw32_aligner": {
+      "run": 40100300472,
+      "status": "PASS"
+    },
+    "raw32_tx": {
+      "run": 40108369376,
+      "status": "PASS"
+    },
+    "raw32_rx": {
+      "run": 40108338384,
+      "attempt": 1,
+      "source": "493d8ab352330edf5ed01f4340f0cceff6f4ce6f",
+      "job": 120914614112,
+      "status_at_audit": "QUEUED_NO_STEPS",
+      "duplicate_dispatched": false
+    }
+  },
+  "proposed_next_unit": "Complete per-lane Gen1/2 TS1/TS2 ordered-set record receiver and transmitter, composed with existing raw32 transports after prerequisite qualification. No link-up output.",
+  "scope_flags": {
+    "rtl_changed": false,
+    "native_job_dispatched": false,
+    "full_ltssm_implemented": false,
+    "low_rate_pma_qualified": false,
+    "gen3_equalization_qualified": false,
+    "mainchip_serial_integration_qualified": false,
+    "full_phy_qualified": false
+  },
+  "primary_sources": [
+    {
+      "url": "https://cdrdv2-public.intel.com/643108/643108_PIPE_Arch_Spec_Rev_7_1.pdf",
+      "sections": [
+        "2.4",
+        "8.4.1",
+        "8.7"
+      ],
+      "use": "Rate capability and real PHY rate/detection completion ownership; custom raw32 interfaces are not claimed PIPE compliant."
+    },
+    {
+      "url": "https://www.intel.com/content/dam/www/public/us/en/documents/manuals/pcie-gbe-controllers-open-source-manual.pdf",
+      "section": "4.7.2",
+      "use": "Training identifier symbols provide polarity evidence; complement COM is not sufficient to infer polarity."
+    },
+    {
+      "url": "https://cdn.teledynelecroy.com/files/manuals/pciesummitm5x_scripting_manual.pdf",
+      "section": "4.3.5, printed pages84-87",
+      "use": "Explicit Gen1/2 decoded common training-field positions; analyzer masks/defaults are not normative receiver requirements."
+    },
+    {
+      "url": "https://pcisig.com/section-42644-table-4-5-defines-valid-range-link-number-symbol-1-ts1-ordered-set-0-31-downstream",
+      "section": "PCIe3.0 FAQ4.2.6.4.4",
+      "use": "Role/state-dependent link-number mismatch semantics."
+    },
+    {
+      "url": "https://pcisig.com/faq?field_category_value%5B%5D=pci_express_3.0",
+      "section": "PCIe3.0 FAQs4.2.6.4,4.2.6.4.2.2.1",
+      "use": "Low-rate EQ TS2 presets are used for8GT/s equalization; configured-lane TS1 scheduling has actual SKP/EIEOS exceptions."
+    },
+    {
+      "url": "https://www.keysight.com.cn/cn/zh/assets/9018-70241/programming-guides/9018-70241.pdf",
+      "section": "Gen1/Gen2 macros, printedpages46-47",
+      "use": "Primary indexed field evidence of low-rate IsEQ/preset/hint variants; exact target-revision table still required, not macrodefaults."
+    }
+  ],
+  "remaining_source_prerequisite": "Pin target Base-specification standard/EQ TS1/TS2 layout, reserved handling, TX/RX acceptance, consecutive-sequence rules and state-specific timers; bind actual rate/preset capability before implementing training owner.",
+  "additional_integration_risks": [
+    "link_up gates FC initialization, so waiting for initialized before link_up would deadlock",
+    "retrain_done resets packet/FC/sequence and APB CDC epochs",
+    "fixed4 logical-lane path cannot silently accept narrower negotiated width",
+    "do not mux recovered clocks when implementing physical-to-logical lane mapping",
+    "standard-only TSidentifier equality would omit low-rate EQ variants",
+    "analyzer masks and macrodefaults are not receiver acceptance rules"
+  ]
+}
