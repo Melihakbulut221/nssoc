@@ -1,0 +1,131 @@
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-v59-static-source-recovery-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      recovery:
+        type: boolean
+        default: false
+        description: Add exact static annotation source and run unchanged strict wires on the saved C/D capsule
+permissions:
+  contents: read
+concurrency:
+  group: cdr-v59-static-source-recovery-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact saved failure, zero-cell prerequisite and publication controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/cloud_cdr_v59_static_source_recovery.py --controls | tee annotation-controls.json
+          python3 scripts/ensure_cloud_tested_source_release.py --controls | tee publication-controls.json
+          python3 - <<'PY'
+          import json
+          a=json.load(open('annotation-controls.json'));p=json.load(open('publication-controls.json'))
+          assert a['status']=='PASS32_ORIGINAL_AND20_STATIC_SOURCE_PREREQUISITE_CONTROLS'
+          assert len(a['rejected'])==20 and len(a['original_capsule_controls']['rejected'])==32 and not a['native_executed'] and not a['geometry_changed']
+          assert p['status']=='PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS' and len(p['rejected'])==17
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-v59-annotation-controls-${{ github.run_id }}
+          path: "*-controls.json"
+          retention-days: 90
+  static-source-and-strict-wires:
+    if: github.event_name == 'workflow_dispatch' && inputs.recovery == true
+    needs: controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Require the reserved exact-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PYTHONPATH=scripts python3 - <<'PY'
+          from cloud_cdr500_resistor_v59_physical import precreated
+          print(precreated('cdr-v59-static-source-recovery',wait=True))
+          PY
+      - name: Load the exact pinned interpreter for static sources and unchanged wire checks
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Reproduce failure, materialize exact source, then run unchanged strict wire gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: python3 scripts/cloud_cdr_v59_static_source_recovery.py
+      - name: Preserve full static source, strict wire reports, original capsule and rejection
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=hw/soc/out/cloud-cdr-v59-static-source-recovery
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false,"full_phy_accepted":false}' > "$root/result.json"
+          fi
+          stem="cdr-v59-static-source-recovery-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 - "$root/result.json" <<'PY'
+          import base64,hashlib,pathlib,sys
+          b=pathlib.Path(sys.argv[1]).read_bytes()
+          assert len(b)<4*1024**2
+          print('V59_STATIC_SOURCE_RESULT_BYTES',len(b),'SHA256',hashlib.sha256(b).hexdigest(),flush=True)
+          s=base64.b64encode(b).decode()
+          for i in range(0,len(s),4096):print('V59_STATIC_SOURCE_RESULT_BASE64',i//4096,s[i:i+4096],flush=True)
+          PY
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" "$root" <<'PY'
+          import json,pathlib,subprocess,sys
+          sys.path.insert(0,'scripts')
+          from cloud_cdr500_resistor_v59_physical import precreated
+          stem,root=sys.argv[1:];group='cdr-v59-static-source-recovery';precreated(group)
+          m=json.load(open(stem+'.parts.json'))
+          names=[stem+'.summary.json',stem+'.parts.json',*[p['name']for p in m['parts']]]
+          direct_files={
+              'materialization.json':'native/materialization.json',
+              'source-pins.json':'capsule/wire/source-pins.json',
+              'native-graph.json':'capsule/wire/native05/result.json',
+              'device-locations.json':'capsule/wire/device-locations01.json',
+              'anchors.json':'capsule/wire/anchors08.json',
+              'static-source.gds':'capsule/parent/inputs/sampler_cd/layout/native-rppd-v59-static-cd_shunt.gds'}
+          for suffix,relative in direct_files.items():
+              witness=pathlib.Path(root)/relative
+              if witness.exists():
+                  direct=pathlib.Path(stem+'.'+suffix);direct.write_bytes(witness.read_bytes())
+                  assert direct.read_bytes()==witness.read_bytes();names.append(str(direct))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,*names],check=True)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome == 'failure'
+        with:
+          name: cdr-v59-static-source-recovery-${{ github.run_id }}
+          path: hw/soc/out/cloud-cdr-v59-static-source-recovery/
+          retention-days: 90
