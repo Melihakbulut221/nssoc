@@ -1,0 +1,59 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-userstack-fixture-cloud
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-userstack-fixture-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  harmless-fixture:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install host debugger for harmless owned fixture
+        run: sudo apt-get update && sudo apt-get install -y gdb gcc libc6-dev binutils
+      - name: Source pins and actual harmless GDB compatibility controls
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/mainchip_userstack_identity.py scripts/mainchip_userstack_gdb_reader.py scripts/mainchip_userstack_observer.py scripts/mainchip_latest_stack_admission.py scripts/check_mainchip_userstack_fixture.py
+          python3 -u scripts/check_mainchip_userstack_fixture.py
+          python3 - <<'PY'
+          import json
+          r=json.load(open('cloud-mainchip-userstack-fixture/result.json'))
+          assert r['status']=='PASS_24_HARMLESS_USERSTACK_CONTROLS_ONLY'
+          assert len(r['controls'])==24 and r['sources_unchanged']
+          assert r['complete_chip_admission_unexecuted'] and r['live_container_binding_unexecuted']
+          assert not r['native_process_restored'] and not r['native_attachment_authorized']
+          assert not r['actual_archive_read'] and not r['normal_continuation_accepted']
+          PY
+      - name: Preserve full fixture result and cleanup evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          p=Path('cloud-mainchip-userstack-fixture/result.json')
+          if p.exists():
+              b=p.read_bytes()
+              print('USERSTACK_FIXTURE_RESULT '+json.dumps(dict(bytes=len(b),sha256=hashlib.sha256(b).hexdigest())))
+              for n in range(0,len(b),3072):
+                  print('USERSTACK_FIXTURE_CHUNK '+str(n//3072)+' '+base64.b64encode(b[n:n+3072]).decode(),flush=True)
+          PY
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-userstack-harmless-fixture
+          path: cloud-mainchip-userstack-fixture/
+          retention-days: 90
+          compression-level: 1
