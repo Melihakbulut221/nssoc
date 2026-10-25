@@ -1,0 +1,19 @@
+# Registration only: this isolated tree has no project sources or native jobs.
+name: cdr-v59-binding-rc-cloud
+on:
+  push:
+    branches: [codex/register-cdr-v59-binding-rc]
+  workflow_dispatch:
+    inputs:
+      stage:
+        type: choice
+        default: controls
+        options: [controls, binding, rc, both]
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - run: echo "Workflow registration only. No source controls, CAD, source inputs or qualification."
