@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-v58-current-ledger-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        default: false
+        required: true
+        description: Replay the three exact rejected captures after source qualification
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-v58-current-ledger-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install numpy==2.3.3
+      - name: Actual receipt and synthetic transport controls only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m py_compile scripts/cloud_cdr_v58_current_ledger.py scripts/cdr_v58_current_ledger.py scripts/check_cdr_v58_current_ledger.py
+          python3 scripts/cloud_cdr_v58_current_ledger.py --controls > cloud-cdr-v58-current-ledger-controls.json
+          cat cloud-cdr-v58-current-ledger-controls.json
+          sha256sum cloud-cdr-v58-current-ledger-controls.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('cloud-cdr-v58-current-ledger-controls.json'))
+          assert r['status']=='PASS_CURRENT_LEDGER_58_INHERITED_AND44_NEW_CONTROLS_ONLY'
+          assert len(r['rejected'])==44 and len(r['inherited']['rejected'])==58 and len(r['publication']['rejected'])==17 and not r['full_native_capture_read'] and not r['new_simulation']
+          PY
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v58-current-ledger-controls
+          path: cloud-cdr-v58-current-ledger-controls.json
+          retention-days: 90
+  readback:
+    permissions:
+      contents: write
+      actions: read
+    needs: controls
+    if: github.event_name == 'workflow_dispatch' && inputs.readback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install numpy==2.3.3
+      - name: Verify precreated release at exact tested source before reading archives
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ensure_cloud_tested_source_release.py --group cdr-v58-current-ledger
+      - name: Replay immutable failed captures without an engine
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_v58_current_ledger.py --readback
+      - name: Publish all complete JSON evidence with source and digest verification
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python3 - <<'PY'
+          import base64,hashlib,json,os,shutil,tempfile
+          from pathlib import Path
+          from ensure_cloud_tested_source_release import ensure
+          from publish_cloud_results import publish_results
+          from cloud_cdr_v58_current_ledger import methods,sha
+          methods()
+          root=Path('cloud-cdr-v58-current-ledger')
+          result=root/'result.json'
+          assert result.is_file()
+          raw=result.read_bytes()
+          print(json.dumps(dict(marker='CDR_CURRENT_LEDGER_RESULT',bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())),flush=True)
+          for i in range(0,len(raw),3072):
+              print('CDR_CURRENT_LEDGER_RESULT_CHUNK '+str(i//3072)+' '+base64.b64encode(raw[i:i+3072]).decode(),flush=True)
+          # Full JSONs are individual assets; selected binary caches remain in the
+          # artifact. No detailed case is truncated to fit a console summary.
+          paths=sorted(root.rglob('*.json'));assert paths
+          with tempfile.TemporaryDirectory() as tmp:
+              dest=Path(tmp);inventory=[];names=set()
+              for p in paths:
+                  assert p.is_file()and not p.is_symlink()and p.stat().st_size>0
+                  rel=p.relative_to(root).as_posix();name=rel.replace('/','__')
+                  assert name not in names;names.add(name)
+                  q=dest/name;shutil.copyfile(p,q)
+                  assert q.stat().st_size==p.stat().st_size and sha(q)==sha(p)
+                  inventory.append(dict(original_relative_path=rel,asset_name=name,bytes=q.stat().st_size,sha256=sha(q)))
+              inv=dest/'publication-inventory.json';assert not inv.exists()
+              inv.write_text(json.dumps(dict(source_head=os.environ['GITHUB_SHA'],files=inventory,
+                  original_electrical_rejections_preserved=True,new_simulation=False,cdr_accepted=False),indent=2)+'\n')
+              for q in [*(dest/x['asset_name']for x in inventory),inv]:
+                  ensure('cdr-v58-current-ledger',os.environ)
+                  print(json.dumps(publish_results('cdr-v58-current-ledger',[q])),flush=True)
+          PY
+      - name: Preserve all derived native rows and all rejection evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v58-current-ledger
+          path: cloud-cdr-v58-current-ledger/
+          retention-days: 90
+          compression-level: 1
