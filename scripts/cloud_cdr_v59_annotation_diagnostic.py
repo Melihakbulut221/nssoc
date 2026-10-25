@@ -168,6 +168,12 @@ def main():
         assert diagnosis['original_failure']['original_rejection_retained']
         assert diagnosis['restored_capsule_files_unchanged']and diagnosis['restored_report_unchanged']
         assert len(diagnosis['native_controls']['rejected'])==4
+        assert len(diagnosis['source_census_controls']['positive_cases'])==3
+        assert len(diagnosis['source_census_controls']['rejected'])==5
+        census=diagnosis['saved_new_source_census']
+        assert census['bytes']==66 and census['sha256']==PINNED_OUTPUTS['parent/inputs/sampler_cd/layout/native-rppd-v59-cd_shunt.gds']
+        assert census['all_cells_included_without_model_or_leaf_or_pin_filter']
+        assert not census['annotation_binding_accepted']and not census['target_geometry_edited']
         assert all(diagnosis[k]is False for k in('annotation_binding_accepted','target_geometry_edited',
           'strict_wire_qualification','qualified_pex','electrical_accepted'))
         for n,h in prior['outputs'].items():assert sha(capsule/n)==h,n
@@ -176,6 +182,10 @@ def main():
         result.update(status='COMPLETE_READ_ONLY_V59_ANNOTATION_DIAGNOSTIC_ORIGINAL_REJECTION_RETAINED',
           diagnosis_sha256=sha(out/'native/diagnosis.json'),
           original_failure=diagnosis['original_failure'],
+          saved_new_source_census={**{k:census[k]for k in('source','bytes','sha256','exact_file_hex','record_inventory','dbu_um','cell_count','top_cells')},
+            'cells':[{k:r[k]for k in('cell','cell_index','kind','direct_instances','original_box_pins',
+              'original_name_filter_passed','original_leaf_filter_passed','original_pin_filter_passed')}for r in census['cells']]},
+          source_census_controls=diagnosis['source_census_controls'],
           missing_primitives=[{k:r[k]for k in('target_cell','original_signature','material_equal_annotated_source_count',
             'distinct_equal_source_pin_sets','unique_pin_set_observed')}for r in diagnosis['all_original_hash_missing_primitives']],
           restored_capsule_files_unchanged=True,current_diagnostic_sources_unchanged=True)
