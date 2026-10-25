@@ -1,0 +1,38 @@
+name: Mainchip latest userstack source controls
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-latest-userstack-source-controls
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact source and actual harmless prerequisite controls only
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/check_mainchip_userstack_native_source.py | tee mainchip-userstack-native-source-controls.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('mainchip-userstack-native-source-controls.json'))
+          assert r['status']=='PASS39_SOURCE_BINDING_CONTROLS_NOT_NATIVE_ATTACH'
+          assert len(r['rejected'])==39
+          assert not r['chip_restore_executed'] and not r['chip_attachment_executed']
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mainchip-userstack-source-controls-${{ github.run_id }}
+          path: mainchip-userstack-native-source-controls.json
+          retention-days: 90
