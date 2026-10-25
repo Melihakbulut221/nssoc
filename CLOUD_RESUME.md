@@ -8519,3 +8519,10 @@ Local project/tmp/native processes verified absent. Inventory184 exact cloud han
 CDR preparation and its first alias-regression controls both failed before simulation; full logs and exact causes are preserved. The alias correction is minimal, and its fixture needs one existing immutable receipt pin. AVSS18 fresh-RC source controls passed in GitHub; extraction remains gated pending complete proof review. Mainchip original-clock restoration is undergoing independent source review. All project source/evidence is remote; no local native work or project files.
 
 Local project/tmp/native processes verified absent. Inventory187 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-25T17:51:27.735067+00:00 — cloud-only checkpoint v54
+
+CDR source controls now passed with the actual old/fixed main-entry regression; all full proofs independently verified. PLL fresh-RC controls also passed with exact live logs and metadata normalization. Exactly one fresh RC run and one CDR prepare-only retry completed successfully with source-bound complete releases. Their full outer/inner JSON assets were independently rehashed; complete native proofs3920c6f3 and6ad39957 are imported. Simulations/physical acceptance remain unclaimed; mainchip clock-restoration driver is still source work. No local project files or native processes.
+
+Local project/tmp/native processes verified absent. Inventory190 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
