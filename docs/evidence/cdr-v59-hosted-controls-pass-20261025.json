@@ -1,0 +1,173 @@
+{
+  "schema": "cdr-v59-source-controls-native-enablement-v1",
+  "status": "HOSTED_26_6_17_CONTROLS_PASSED_NATIVE_PHYSICAL_PENDING",
+  "run": 40176295615,
+  "source": "1a452c48fbc7a39ed50a52d56e4f70472ddcdefd",
+  "attempt": 1,
+  "workflow": ".github/workflows/cdr500-resistor-v59-physical-cloud.yml",
+  "job": 121117594684,
+  "conclusion": "success",
+  "native_job": {
+    "id": 121117669642,
+    "conclusion": "skipped"
+  },
+  "log": {
+    "path": "docs/evidence/cdr-v59-hosted-controls-20261025.log",
+    "bytes": 26941,
+    "sha256": "8c84737df256fc547bff528428beb2b7c74f92fef73edb075c906c20504ba6af"
+  },
+  "parsed_hosted_json": {
+    "source": {
+      "controls": [
+        "wrong_source",
+        "failed_status",
+        "changed_sources",
+        "wrong_gds",
+        "missing_device",
+        "wrong_location_status",
+        "wrong_device_count",
+        "wrong_terminal_count",
+        "wrong_anchor_count",
+        "wrong_public_ports",
+        "wrong_target_model",
+        "wrong_target_width",
+        "wrong_target_length",
+        "bent_target",
+        "parallel_target",
+        "wrong_extracted_poly_spacing",
+        "wrong_native_terminal",
+        "rotated_target",
+        "cd_shunt_missing_reference",
+        "cd_shunt_wrong_reference_width",
+        "cd_shunt_wrong_reference_length",
+        "cd_shunt_duplicate_reference",
+        "ab_hold_missing_reference",
+        "ab_hold_wrong_reference_width",
+        "ab_hold_wrong_reference_length",
+        "ab_hold_duplicate_reference"
+      ],
+      "electrical_accepted": false,
+      "native_renderer_executed": false,
+      "physical_accepted": false,
+      "protected": {
+        "docs/cdr-v59-isolated-physical-source-20261025.md": "c7362835b4d5f3e08c0187632b1b7b186b32c28f5cbe08ddcfc280a3e874ca9d",
+        "docs/evidence/cdr-rppd-frozen-renderer-pin-audit-20261025.json": "7663d71253fe29da931b8d4db8072374f8d86d7da0aeec5511e4f6abe76e23a0",
+        "docs/evidence/cdr-rppd-frozen-source-scaling-audit-20261025.json": "8ac0e466918cf31377100660fed65c1fed8f76c67b2759835f075757002f0245",
+        "docs/evidence/cdr-v59-headroom-candidate-matrix-20261025.json": "2f121a8dfdcaca6d6a50dbaf0e0c92a66be06cf47f9435b96d7c557159a709c9",
+        "docs/evidence/cdr-v59-native-physical-targets-20261025.json": "26ee05d1dc2451c11abb036df5009a3fa5f99d83fe406b56477d5410c916cfe2",
+        "docs/evidence/cdr500-input-access-v58-physical-pass-20261024.json": "f5f4bcb3cdb548070152c3d06d1f75dd01d1be526f7636220f756bdfc5cfcdde",
+        "scripts/check_cdr500_resistor_v59_source.py": "1d458093d210b20c0dda7f17a65c9e600cabc9eb8444511af2a0c7aae71245ce",
+        "scripts/generate_cdr500_resistor_v59.py": "73d2eb18f3ceb4425668584f86b5e64a4c262af25c638114a4f18fcac36fb81d"
+      },
+      "qualified_pex": false,
+      "reference_fixtures": [
+        {
+          "arm": "cd_shunt",
+          "changed": [
+            "Rsc_DN",
+            "Rsc_DP",
+            "Rsd_DN",
+            "Rsd_DP"
+          ],
+          "child": false
+        },
+        {
+          "arm": "cd_shunt",
+          "changed": [
+            "RDN",
+            "RDP"
+          ],
+          "child": true
+        },
+        {
+          "arm": "ab_hold",
+          "changed": [
+            "Rsa_S_RN",
+            "Rsa_S_RP",
+            "Rsb_S_RN",
+            "Rsb_S_RP"
+          ],
+          "child": false
+        },
+        {
+          "arm": "ab_hold",
+          "changed": [
+            "RS_RN",
+            "RS_RP"
+          ],
+          "child": true
+        }
+      ],
+      "status": "PASS_CDR_V59_ISOLATED_SOURCE_CONTROLS"
+    },
+    "derivation": {
+      "status": "PASS_CDR_V59_PHYSICAL_DERIVATION_CONTROLS",
+      "controls": [
+        "cd_shunt_0",
+        "cd_shunt_1",
+        "cd_shunt_2",
+        "ab_hold_0",
+        "ab_hold_1",
+        "ab_hold_2"
+      ],
+      "native_executed": false
+    },
+    "publication": {
+      "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+      "rejected": [
+        "local-context",
+        "other-repo",
+        "missing-source",
+        "mutable-source",
+        "invalid-run",
+        "invalid-attempt",
+        "invalid-group",
+        "different-release-target",
+        "different-tag-object",
+        "annotated-tag",
+        "different-tag-name",
+        "draft-release",
+        "production-release",
+        "duplicate-asset-name",
+        "asset-digest-missing",
+        "preexisting-wrong-tag",
+        "read-denied-never-creates"
+      ],
+      "existing_partial_assets_preserved": true,
+      "existing_release_not_recreated": true,
+      "new_release_uses_tested_sha": true,
+      "no_permissions_expanded": true
+    }
+  },
+  "artifact_metadata_only": {
+    "id": 12592430890,
+    "bytes": 1873,
+    "sha256": "69e953482e799801c0addc8f2d22bd6c93551e797267eb7e48b6ad39b66e3635",
+    "archive_downloaded": false
+  },
+  "registration": {
+    "orphan_commit": "33872c33309041f5fde0ff5f5b77e75625368e5f",
+    "workflow_id": 395769209,
+    "noop_run": 40176262377,
+    "noop_conclusion": "success",
+    "tree_only_registration_workflow": true
+  },
+  "trigger_inheritance": {
+    "base": "d965f27c264ed43fe22b0c3e749f6d33147357af",
+    "base_run_precreated_release": 423205581,
+    "inherited_workflows": 1321,
+    "delta": {
+      ".github/workflows/cdr500-resistor-v59-physical-cloud.yml": {
+        "old": null,
+        "new": "8c1fe2c434de8aa8f19eca2bd42082f2d185952a"
+      }
+    },
+    "new_workflow_manual_only": true
+  },
+  "authorization": "Root authorized sole cd_shunt physical after hosted26+6+17 PASS. ab_hold only after shared generation/preflight passes. No combined candidate, RC or electrical acceptance.",
+  "all_reviewed_engineering_unchanged": true,
+  "physical_accepted": false,
+  "qualified_pex": false,
+  "electrical_accepted": false,
+  "full_phy_accepted": false
+}
