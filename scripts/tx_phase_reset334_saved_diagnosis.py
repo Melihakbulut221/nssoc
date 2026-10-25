@@ -179,7 +179,7 @@ def analyze(t,values,c,original):
         original_measurement=original['measurement'],causal_conclusion=False,circuit_edit_justified=False,
         new_simulation=False,process_resumed=False,all31_clock_tree_accepted=False,PLL_connected=False,full_PHY_accepted=False)
 
-def observe_restored(case,method):
+def observe_restored(case,method,emit):
     assert os.environ.get('GITHUB_ACTIONS')=='true'and method['readback_authorized']is True
     assert method['native_simulation_authorized']is False
     for path,h in method['protected_files'].items():pin(ROOT/path,h)
@@ -192,10 +192,21 @@ def observe_restored(case,method):
     assert source['native_exit_code']==0 and not source['electrical_screen_passed']
     for name in('bench.cir','contract.json','native.log','op.raw'):pin(case/name,source['outputs']['work/'+name])
     c=contract_check((case/'contract.json').read_bytes(),source)
+    # Validate all requested pair endpoints before full review, alongside contract_check's HBT/thermal inventory.
+    native_pairs=pairs(c)
+    emit('diagnostic-probe-inventory.json',dict(contract_sha256=digest((case/'contract.json').read_bytes()),
+        native_pair_nodes=native_pairs,all_native_HBT_roles=c['hbt'],thermal_nodes=c['thermal_nodes'],
+        vector_count=len(c['vectors']),original_limits=c['limits'],original_timing=c['timing'],
+        original_first_fall_limit_s=UI/2,all_requested_probes_checked_before_review=True))
     # Exact frozen reader function; no runtime restoration or simulator entrypoint.
     from tx_phase_reset334_transient_support import review_capture
     replay=review_capture(case,c,0)
     assert canonical(replay)==canonical(source['review']),'Original complete rejection not reproduced'
+    emit('original-review-replay.json',dict(status='EXACT_ORIGINAL_PHASE318_REJECTION_REPRODUCED_BEFORE_DIAGNOSIS',
+        actual_canonical_sha256=digest(canonical(replay).encode()),
+        recorded_canonical_sha256=digest(canonical(source['review']).encode()),
+        capture=replay['capture'],failed_hbt_count=sum(not h['passed']for h in replay['measurement']['hbt_safety'].values()),
+        original_first_fall_limit_s=UI/2,original_acceptance=False,new_simulation=False,full_original_review_replays=1))
     from cloud_tx_stream import read_streamed_wave
     t,values,transport=read_streamed_wave(case/'wave.raw',c['vectors'],STOP,STEP)
     assert transport==replay['capture']and transport['raw_sha256']==method['raw_sha256']==source['outputs']['work/wave.raw']

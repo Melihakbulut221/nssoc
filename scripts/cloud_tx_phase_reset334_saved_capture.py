@@ -28,7 +28,11 @@ def original_result(r):
     assert r['run_id']==40178775666 and r['source_head']=='7398bb00efc4ec6ff053aeb50e03028570f0cfa0'
     assert r['status']=='REJECTED_PHYSICAL334_THREE_MODEL_ORIGINAL_LOADED_GATES'
     assert r['stage']=='initial'and r['case']=='p-initial-high'and r['full_capture']is True
-    assert r['native_process_saved']is False and r['continuation']is None
+    assert r['native_process_saved']is False
+    assert r['continuation']==dict(run=40178775666,attempt=1,
+      group='tx-phase-reset334-transient-native-initial-p-initial-high',source_head=r['source_head'],
+      controller_sha256=r['controller_sha256'],case='p-initial-high',native_process_saved=False,
+      next_phase='review_complete_capture'),'Completed capture descriptor must never authorize continuation'
     assert r['native_exit_code']==0 and r['sources_unchanged']is True
     assert r['electrical_screen_passed']is False and r['full_PHY_accepted']is False
     q=r['review'];assert q['passed']is False and not q['errors']and not q['diagnostics']
@@ -128,6 +132,12 @@ def source_controls():
         try:original_result(q)
         except(AssertionError,KeyError):rejected.append(key)
         else:raise AssertionError('Accepted source-result fault '+key)
+    for key,value in [('native_process_saved',True),('next_phase','restore_and_continue')]:
+        q=copy.deepcopy(original);q['continuation'][key]=value;assert q!=original
+        try:original_result(q)
+        except(AssertionError,KeyError):rejected.append('continuation:'+key)
+        else:raise AssertionError('Accepted completed-capture continuation fault '+key)
+    assert len(rejected)==9
     with tempfile.TemporaryDirectory()as td:
         root=Path(td);d=root/'fixture';d.mkdir();(d/'a').write_bytes(b'actual\x1b opaque bytes');(d/'b').write_bytes(b'complete inventory')
         manifest=transport.pack(d,'fixture',root,32);expected={n:sha(d/n)for n in ('a','b')}
@@ -194,7 +204,12 @@ def main():
         case=work/'native/work';c=json.loads((case/'contract.json').read_bytes());deck=(case/'bench.cir').read_text()
         result['actual_input_controls']=actual_controls(c,deck,expected_c,expected_b,inputs);save()
         method=json.loads((ROOT/observer.METHOD).read_bytes());assert method['readback_authorized']is True
-        diagnosis=observer.observe_restored(case,method)
+        write(OUT/'consumed-input-binding.json',dict(contract_sha256=sha(case/'contract.json'),
+          native_deck_sha256=sha(case/'bench.cir'),actual_input_controls=result['actual_input_controls'],
+          prepared_inputs={n:expected_p[n]for n in sorted(chosen)},
+          original_first_fall_limit_s=observer.UI/2,original_electrical_acceptance=False,
+          no_simulation=True,no_continuation=True))
+        diagnosis=observer.observe_restored(case,method,lambda name,value:write(OUT/name,value))
         proof=write(OUT/'complete-native-row-diagnosis.json',diagnosis)
         compact=dict(status=diagnosis['status'],full_witness=proof,frames=len(diagnosis['frames']),
           failed_hbt_count=diagnosis['original_failed_HBT_count'],pair_extrema_both_signs=diagnosis['pair_extrema_both_signs'],
