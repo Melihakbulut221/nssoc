@@ -51,7 +51,7 @@
     "complete_native_serialized_category_census_required": true,
     "controls_executed": false,
     "failed_run": 40220274771,
-    "independent_review_pending": true,
+    "independent_review_pending": false,
     "positives": 6,
     "prior_native_result": "FAIL_UNSUPPORTED_SWIG_SET",
     "refusals": 32,
@@ -116,6 +116,11 @@
     "positives": 8,
     "refusals": 55
   },
+  "prior_source_review": {
+    "peer": "docs/evidence/mainchip-original-clock-source-controls-peer-review-20261025.json",
+    "root": "docs/evidence/mainchip-original-clock-source-controls-root-review-20261025.json",
+    "source": "bca401a6bd43ea7e5aa529257fd126a5c3a99df7"
+  },
   "protected": {
     ".github/workflow-templates/mainchip-clock-diagnostic-cloud.yml": "ff78fe6369c94df2209ae7cfd53c8f53054453ec0e34bf7c7c2c967f2f2248a0",
     ".github/workflow-templates/mainchip-original-clock-restoration-cloud.yml": "158af04bf103e2b19c925767555fd3dea6e3607efa96af4d62e766dbd5646479",
@@ -153,6 +158,8 @@
     "docs/evidence/mainchip-original-clock-first-native-failure-20261025.tested-planner-methods.json": "b67960c006f7fe47520c85a667229cbdc9b7ad068e6bd840d70aa7abf0f2a941",
     "docs/evidence/mainchip-original-clock-independent-metadata-correction-20261025.json": "62f662316278be00c10d9c02962d68e722136d09ce8dac7cfe9e87ebd6c2352b",
     "docs/evidence/mainchip-original-clock-initial-DRT-primary-source-20261025.json": "655a248842cd4e2d2156f9dd003e926c1e47047a4b5675fd794da5a4fe152c53",
+    "docs/evidence/mainchip-original-clock-marker-api-peer-review-20261025.json": "ded1cbc10168cfa145cf76057ca6b1c2e2b7d02361c3f61521ecf6b6bb456669",
+    "docs/evidence/mainchip-original-clock-marker-api-root-review-20261025.json": "58e0697f3878381c7d66cd7e4d3f982b0804b87b291aeda5e710876fc08d6063",
     "docs/evidence/mainchip-original-clock-marker-api-source-correction-20261025.json": "67e06942f9822c274f6e66996bab188e58cec3975ad8b16d23bbc0bdbaf390cc",
     "docs/evidence/mainchip-original-clock-metadata-export-peer-correction-20261025.json": "d9adc81167a84fa64d3838b3fdfdac95201a787e3213d9bc69406dacdc408351",
     "docs/evidence/mainchip-original-clock-restoration-selectors-20261025.json": "ca05e1c5a21fa07d36ba1b41746784dde713fa3874e7fbff15493760d5077056",
@@ -304,9 +311,9 @@
     "reserved_only": true
   },
   "review": {
-    "peer": "docs/evidence/mainchip-original-clock-source-controls-peer-review-20261025.json",
-    "root": "docs/evidence/mainchip-original-clock-source-controls-root-review-20261025.json",
-    "source": "bca401a6bd43ea7e5aa529257fd126a5c3a99df7"
+    "peer": "docs/evidence/mainchip-original-clock-marker-api-peer-review-20261025.json",
+    "root": "docs/evidence/mainchip-original-clock-marker-api-root-review-20261025.json",
+    "source": "1e0409bbd6ea84d7c5e215d72bcfed1aae4e0e2c"
   },
   "runtime": {
     "appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
@@ -316,7 +323,7 @@
   },
   "schema": "mainchip-original-clock-restoration-cloud-source-v1",
   "simulation_authorized": false,
-  "source_controls_authorized": false,
+  "source_controls_authorized": true,
   "source_controls_dispatch_plan": {
     "automatic_retry": false,
     "complete_result_required": true,
@@ -325,8 +332,8 @@
     "workflow_id": 396241929
   },
   "source_controls_executed": false,
-  "source_peer_reviewed": false,
-  "status": "SOURCE_ONLY_MARKER_API_REPAIR_NATIVE_FALSE_PENDING_REVIEW",
+  "source_peer_reviewed": true,
+  "status": "REVIEWED_ONE_MARKER_API_SOURCE_CONTROLS_ONLY_NATIVE_FALSE",
   "supervisor": {
     "maximum_group_rss_kib": 10485760,
     "minimum_available_kib": 2097152,
@@ -339,7 +346,6 @@
     "sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b"
   },
   "unfinished": [
-    "Independent marker API/count correction review.",
     "One separately authorized hosted source-controls run, with native flags false.",
     "Actual compatible native full census and original FIXED roundtrip remain unqualified.",
     "Any native diagnostic retry requires actual controls and separate root metadata review; no automatic retry.",
