@@ -1,0 +1,67 @@
+{
+  "causal_conclusion": false,
+  "detailed_receipt": {
+    "bytes": 416266,
+    "path": "docs/evidence/tx-phase318-loaded-row-engineering-observations-20261025.json",
+    "sha256": "1de195f7d5da0c542512acb13eb6d85a7400b09ba3e42410a3a9fd0e0c547e3a",
+    "source": "c6abad67ac32b199ef53488e5a131477352d5fee"
+  },
+  "full_witness": {
+    "asset": 674870082,
+    "authenticated_JSON_in_RAM": true,
+    "bytes": 82659791,
+    "native_raw_or_archive_downloaded_locally": false,
+    "sha256": "6bf4b7164e0aa144ba539090f7c97251d17048dc5f653430fab7ca3bb7c09cef"
+  },
+  "hypothesis": {
+    "before_any_geometry_candidate": [
+      "Inventory every actual composed native R edge on AVSS and the exact emitter/reference resistor terminals, bound to the qualified P/N physical models.",
+      "Use same native rows to measure both endpoint voltages and edge drops for P/N selectors, shared tails, bias/pullup/shunt rppd contacts and relevant supply-return paths; distinguish parallel/shared branch currents from a naive V/I resistance.",
+      "Identify source-net routes and native sheet/via geometry responsible for the measured drops; choose only that single geometric parameter after the ledger is available.",
+      "Preserve original334-device identity, strict DRC/LVS/terminal/body/RC gates and original318-HBT electrical limits."
+    ],
+    "current_witness_limit": "The saved diagnostic JSON contains all HBT terminal voltages,24 pairs and390 resistor thermal states, but not every electrical resistor endpoint voltage. The original full4726-vector capture retains them; a narrowly reviewed existing-capture ledger extension can read the missing endpoints without simulation.",
+    "falsifiable_prediction": "A source- and terminal-bound AVSS routing correction should reduce measured emitter-to-public-AVSS drops and improve affected tail VCE at unchanged current/clock conditions. Failure to improve those exact quantities would reject this explanation. It is not claimed to solve clock or RUN fan-in behavior.",
+    "status": "SOURCE_BOUND_HYPOTHESIS_ONLY_NO_CANDIDATE_VALUE_OR_GEOMETRY_SELECTED",
+    "variable": "Physical AVSS return routing conductance, preserving compact device dimensions, all biases, reset timing and fixed gates"
+  },
+  "new_simulation": false,
+  "observations": [
+    "The parent fixture zero crossing is4.84275..5.15525ps after prescribed first fall; native clock zero is108.62866..108.94116ps and release zero142.35452..142.66702ps. No threshold crossing interpolation or fitted phase is used. The original62.5ps gate remains authoritative.",
+    "At row6876 fixture differential is+5.366mV while XCLK transistor base differential remains+140.154mV and native clock+203.198mV. This distinguishes the external fixture event from the actual loaded internal path.",
+    "Parent run full-capture max39.3776mV is a startup observation. Its postSTART maximum is only8.99222mV at row9674,2.959563ns. At that same row release is+69.4737mV, external ARM+170.631mV, XRUN pair base difference+4.48349mV and collector currents776.872/737.798uA.",
+    "All17 failed devices are native mapped XT tails. Worst parent XS/XHOLD/XT has C582.996mV,E237.611mV,VCE345.386mV and Ic1.16650mA at row23023,6.911121ns; its original schematic emitter is AVSS and the external AVSS fixture is0V. Actual finite return drop is observed; its exact contributing R edges and shared currents are not yet apportioned.",
+    "At that same worst row, XS/XHOLD XSA/XSB emitters621.923/619.942mV exceed their common source-net tail collector582.996mV by38.926/36.946mV. These distributed terminal differences are not interpreted as single-resistor measurements."
+  ],
+  "original_electrical_rejected": true,
+  "original_first_fall_limit_s": 6.25e-11,
+  "schema": "nssoc.phase318-row-observations-compact.v1",
+  "selected_actual_frames": 28,
+  "selected_actual_roles": 30,
+  "source_topology": {
+    "fixture_lines": {
+      "all_three_ground_connections": [
+        65,
+        71,
+        73
+      ],
+      "external_AVSS_ground": 65,
+      "finite_internal_BULK": 186,
+      "supply_2p5V_after_1ns": 162
+    },
+    "fixture_path": "scripts/tx_phase_reset334_loaded_contract.py",
+    "fixture_sha256": "44ea63180e0c7fc262fdee306212fd5baa47a9ede805699a7269d919d11cb680",
+    "path": "hw/soc/analog/pcie/clock_div2_assert_offset_v4.spice",
+    "relevant_cards": [
+      "XT tail ref avss sub npn13G2 Nx=4",
+      "XLT lt lref avss sub npn13G2 Nx=4",
+      "XAND_SKEW bip avss sub rppd w=1u l=20u b=0 sw_et=1"
+    ],
+    "sha256": "3b4aa82387b5e532437dc592feceea699b4d283570751d6e983f0949fe7095f4"
+  },
+  "terminal_receipt": {
+    "path": "docs/evidence/tx-phase318-complete-row-diagnosis-terminal-pass-20261025.json",
+    "sha256": "5dd95b2a7574718e29a4495025c2f9e302ba9d73536ddcf8106c532c25c99eb2",
+    "source": "b1089f2836ef235b485405a17eb96b8d0211f204"
+  }
+}

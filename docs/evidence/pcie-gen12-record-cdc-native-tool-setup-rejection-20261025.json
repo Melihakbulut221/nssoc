@@ -1,0 +1,828 @@
+{
+  "actual_executions": {
+    "compiled_mutations": 0,
+    "compiled_mutations_required": 18,
+    "mapped": 0,
+    "mapped_required": 33,
+    "rtl": 0,
+    "rtl_required": 66,
+    "synthesis": 0
+  },
+  "archive_downloaded_locally": false,
+  "archive_members_independently_inspected": false,
+  "artifacts": [
+    {
+      "digest": "sha256:408c9d815725d3d23ebf9335a64ad277800ef5ad80fd9726591c151e80b11ef4",
+      "expired": false,
+      "expires_at": "2027-01-23T12:26:31Z",
+      "id": 12598657950,
+      "name": "gen12-record-cdc-proof-40193110968-1",
+      "size_in_bytes": 136077
+    },
+    {
+      "digest": "sha256:1315c9ea7bfe4fed12f64bea6edf8fe1e02c142aa49f42323c73b4cf853dcd20",
+      "expired": false,
+      "expires_at": "2027-01-23T12:26:31Z",
+      "id": 12598294816,
+      "name": "gen12-record-cdc-controls-40193110968-1",
+      "size_in_bytes": 38102
+    }
+  ],
+  "attempt": 1,
+  "branch": "codex/pcie-gen12-record-cdc",
+  "engineering_accepted": false,
+  "engineering_files_changed": false,
+  "finding": "The inherited supervisor rejected unavailable live-process VmRSS during the exact Verilator make -j2 tool build and terminated its owned group. This is an observation failure, not an RTL assertion, synthesis failure, resource-threshold breach, host-loss proof, or OOM proof.",
+  "jobs": [
+    {
+      "completed_at": "2026-10-25T12:27:08Z",
+      "conclusion": "success",
+      "id": 121168156036,
+      "name": "source-controls",
+      "started_at": "2026-10-25T12:26:36Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-25T12:30:46Z",
+      "conclusion": "failure",
+      "id": 121168290252,
+      "name": "complete-functional-proof",
+      "started_at": "2026-10-25T12:27:11Z",
+      "status": "completed"
+    }
+  ],
+  "new_job_or_retry_dispatched": false,
+  "observed": {
+    "assets": [
+      {
+        "digest": "sha256:cd25273d8f3a74ec5908667d199193492df1950246345e8beda5cb1c2bf9e911",
+        "id": 674997069,
+        "name": "pcie-gen12-record-cdc-40193110968-1.parts.json",
+        "size": 841
+      },
+      {
+        "digest": "sha256:4e1057e4980f5a55df81838262216238c8db1ab0d20e9f5fda7df45f9ca907f5",
+        "id": 674996988,
+        "name": "pcie-gen12-record-cdc-40193110968-1.summary.json",
+        "size": 24292
+      },
+      {
+        "digest": "sha256:e84055221a60007accbc73f88cdf6778623b7bd491de47a71a138a2d543f0e58",
+        "id": 674997173,
+        "name": "pcie-gen12-record-cdc-40193110968-1.tar.gz.part0000",
+        "size": 40325
+      }
+    ],
+    "build": {
+      "argv": [
+        "make",
+        "-j2"
+      ],
+      "elapsed_seconds": 155.358788581,
+      "event": "command_end",
+      "label": "verilator-build",
+      "last_memory_sentinel_sample": {
+        "available_kib": 14909508,
+        "group_rss_kib": 549956,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pid": 5166,
+            "rss_kib": 2940
+          },
+          {
+            "pid": 5170,
+            "rss_kib": 2696
+          },
+          {
+            "pid": 5241,
+            "rss_kib": 3180
+          },
+          {
+            "pid": 5253,
+            "rss_kib": 3120
+          },
+          {
+            "pid": 5584,
+            "rss_kib": 2888
+          },
+          {
+            "pid": 5585,
+            "rss_kib": 239056
+          },
+          {
+            "pid": 5586,
+            "rss_kib": 2884
+          },
+          {
+            "pid": 5587,
+            "rss_kib": 293192
+          }
+        ]
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": "SupervisionFailure('Unavailable live process VmRSS')",
+      "minimum_available_kib": 2097152,
+      "monotonic_seconds": 231.575582463,
+      "pid": 5166,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": [
+          "SIGTERM"
+        ]
+      },
+      "returncode": -15,
+      "state": {
+        "child_pid": 5166,
+        "phase": "command:verilator-build"
+      },
+      "stderr_bytes": 458,
+      "stderr_sha256": "11364b2d16b5ef1211403686a5181d2c56aa2b4c858ba6804112006d27c23b29",
+      "stdout_bytes": 46192,
+      "stdout_sha256": "ead08045c1a15edaf7fa6c2251dc7186bad0966078835ef578aa12c59e769fda",
+      "supervision_failure": "memory_sample_unavailable",
+      "utc": "2026-10-25T12:30:33Z"
+    },
+    "log": {
+      "bytes": 233747,
+      "complete_result_reassembled": {
+        "bytes": 24292,
+        "chunks": 8,
+        "name": "result.json",
+        "sha256": "4e1057e4980f5a55df81838262216238c8db1ab0d20e9f5fda7df45f9ca907f5"
+      },
+      "job_id": 121168290252,
+      "sha256": "faee41e67a435af469c531e74f0bb47a65848a68d3154e188bb0ca920726247a",
+      "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/jobs/121168290252/logs"
+    },
+    "parts": {
+      "bytes": 40325,
+      "format": "ordered-tar-gzip-parts-v1",
+      "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+      "part_limit_bytes": 1073741824,
+      "parts": [
+        {
+          "bytes": 40325,
+          "index": 0,
+          "name": "pcie-gen12-record-cdc-40193110968-1.tar.gz.part0000",
+          "sha256": "e84055221a60007accbc73f88cdf6778623b7bd491de47a71a138a2d543f0e58"
+        }
+      ],
+      "sha256": "e84055221a60007accbc73f88cdf6778623b7bd491de47a71a138a2d543f0e58",
+      "source_directory": "cloud-pcie-gen12-record-cdc",
+      "stem": "pcie-gen12-record-cdc-40193110968-1",
+      "verification": {
+        "all_parts_and_combined_bytes_verified": true,
+        "bytes": 40325,
+        "parts": 1,
+        "sha256": "e84055221a60007accbc73f88cdf6778623b7bd491de47a71a138a2d543f0e58"
+      }
+    },
+    "pins": {
+      "methods_sha256": "35f101726bf641cbd03710ba908adbecac1b38c7021271b93f362f2446ef8c06",
+      "pins": [
+        {
+          "bytes": 5306,
+          "git_blob_sha": "449e0facbe91eee4b3c6776916af4e0fbbcdbb15",
+          "path": ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml",
+          "sha256": "52217d88a5123f15246ee9da2085f65f23e807b146fd74c1305468c652294515"
+        },
+        {
+          "bytes": 5306,
+          "git_blob_sha": "449e0facbe91eee4b3c6776916af4e0fbbcdbb15",
+          "path": ".github/workflows/pcie-gen12-record-cdc-cloud.yml",
+          "sha256": "52217d88a5123f15246ee9da2085f65f23e807b146fd74c1305468c652294515"
+        },
+        {
+          "bytes": 17499,
+          "git_blob_sha": "5d415911de7ff3a1466293c7abe229a79993015e",
+          "path": "docs/evidence/pcie-gen12-record-cdc-classifier-correction-review-20261025.json",
+          "sha256": "13f8d11cf2da0b485cfd2b6c497a3bd7aaf6d0b7f7cc4c59cfc8808b2eea94e2"
+        },
+        {
+          "bytes": 15805,
+          "git_blob_sha": "38eaecc81889f9fda6821c9ed7ea2e4348098599",
+          "path": "docs/evidence/pcie-gen12-record-cdc-controller-controls-source-review-20261025.json",
+          "sha256": "054a8aa7bf3543e9f7989a0ffcab3e5c6d231fee9ceb74d5743aa620f395b604"
+        },
+        {
+          "bytes": 15892,
+          "git_blob_sha": "992f31a2cbb8e9af502aaa03063166b7c776336a",
+          "path": "docs/evidence/pcie-gen12-record-cdc-controls-native-result-20261025.json",
+          "sha256": "1e4de76573238bd327ebbcae67beb5e2ca300446545a01da22ffa050fd5ac9c1"
+        },
+        {
+          "bytes": 22594,
+          "git_blob_sha": "04a5cb730a883e47a9cc5c2a5a0ca4622608b1fd",
+          "path": "docs/evidence/pcie-gen12-record-cdc-controls-pass-20261025.json",
+          "sha256": "bda8312ad205bcd7f8f99f7ffb0487b1769daba56c211d67595be88fe490e9b9"
+        },
+        {
+          "bytes": 11460,
+          "git_blob_sha": "8b7bd17c4cd29dff8fc03e3c6d71949b4154ebf7",
+          "path": "docs/evidence/pcie-gen12-record-cdc-controls-rejected-result-20261025.json",
+          "sha256": "69e5415121c88131f77831175e5018fede9b01f47b6fe5baa39f92048d2c54d2"
+        },
+        {
+          "bytes": 7706,
+          "git_blob_sha": "423a8fbcfe471a11f81b38b736237532e3836e14",
+          "path": "docs/evidence/pcie-gen12-record-cdc-controls-rejection-20261025.json",
+          "sha256": "73e021eea701cc36811a37d94b72cfd463916c8419c01bec72c941d3c7545fca"
+        },
+        {
+          "bytes": 5316,
+          "git_blob_sha": "22ada3a8ec96f3a1364ba2e4518b85a933eebe78",
+          "path": "docs/evidence/pcie-gen12-record-cdc-independent-source-review-20261025.json",
+          "sha256": "982bc88139bac7f9e5631e654cce069e36dd01f06541f5537da240efa0c6fd6f"
+        },
+        {
+          "bytes": 21876,
+          "git_blob_sha": "3a709ab9792793fe223170ee05da01a14fcba24e",
+          "path": "docs/evidence/pcie-gen12-training-record-noshare-native-pass-20261025.json",
+          "sha256": "23f194ff593e30c340f7562ab92c1a66f7107b5f35ff3abda7f0d293a50bd10f"
+        },
+        {
+          "bytes": 6138,
+          "git_blob_sha": "c501f2f0cad0703c38d1aeed8a84c60ad64c5f5c",
+          "path": "docs/pcie-gen12-record-cdc-hosted-proof-20261025.md",
+          "sha256": "73c94f645f2eec63a4a7627d8b4355e9386987c203538907a9ca54d7a22a61be"
+        },
+        {
+          "bytes": 7249,
+          "git_blob_sha": "d46f9943bd0c469beebdbf1a25d8f32c0e10962e",
+          "path": "docs/pcie-gen12-record-cdc-implementation-20261025.md",
+          "sha256": "32b0160e2d959c15dd60e081f4be10aad3dd005321237f54ef219ad1bff5b52c"
+        },
+        {
+          "bytes": 1737,
+          "git_blob_sha": "76bd151142b75ed82a51bddee73055c9d4c25c55",
+          "path": "docs/pcie-gen12-record-cdc-literal-raise-correction-20261025.md",
+          "sha256": "0579eae383080d84f955ba61f4c678578a744c7be44951e943a6d4de0e0609c7"
+        },
+        {
+          "bytes": 1798,
+          "git_blob_sha": "3293409caad562ce73e6cdb5ef5349cb9d06db68",
+          "path": "docs/pcie-gen12-record-cdc-proof-refinements-20261025.md",
+          "sha256": "618af28582d274bafe2bd4ca38efd7b93304f4acc93bad38c81d899505e40dc5"
+        },
+        {
+          "bytes": 2837,
+          "git_blob_sha": "e091c0cdf0b37a69faa10562eb73800737ff10fb",
+          "path": "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-source-freeze.json",
+          "sha256": "80e7abc3badad6ea90426c029068eac697f1a881f251aac9c73f63a84613a874"
+        },
+        {
+          "bytes": 16062,
+          "git_blob_sha": "53091dbba62748c8bfb60eecf68086a8cf6f84cd",
+          "path": "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-validation.json",
+          "sha256": "36f55a9a5a5e4d1a11034747df79b67e196fd8852b33ffa407c0ecae160f98fc"
+        },
+        {
+          "bytes": 6548,
+          "git_blob_sha": "9851e32dabad017cc80b09b5ec44eb8ddd07f8cf",
+          "path": "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-rtl-contract.json",
+          "sha256": "a51a3b5e9b550a7f5ea6e29044c1637ba355e2b085a966663136cf60c154e3fb"
+        },
+        {
+          "bytes": 3413,
+          "git_blob_sha": "2c292069d3194584dcf5467b7c63db533e686cae",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/.github/workflow-templates/pcie-gen12-raw32-rx-cloud.yml",
+          "sha256": "760f651c8228586e5026984eda9a0159358eb10b8a3f4b1940d70efc64d1a451"
+        },
+        {
+          "bytes": 2768,
+          "git_blob_sha": "7e5235f14aa6244fcd5850bae9ade408aa732fbb",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/.github/workflow-templates/pcie-gen12-training-records-cloud.yml",
+          "sha256": "71906a457d99060ac6a3b87a23977dda1de269a79e88daac6880d61160f875d5"
+        },
+        {
+          "bytes": 4540,
+          "git_blob_sha": "8bf0a5a95c78e8b381736cc000fe59800af0091f",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/.github/workflow-templates/pcie-gen12-training-records-telemetry-cloud.yml",
+          "sha256": "9af19d76302a58a365d72d807213981454113d9a391b2de5679ed3dab5016b79"
+        },
+        {
+          "bytes": 1254,
+          "git_blob_sha": "660752d03ac8f2fac4566acecc76d70df4170145",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/.github/workflow-templates/pcie-gen12-tx-raw32-cloud.yml",
+          "sha256": "6eccac097ba87a22dec0bc9c739c8b8914245ea460a71cb7ae1198a6bb74e093"
+        },
+        {
+          "bytes": 1550,
+          "git_blob_sha": "71741773a555bbccdc1c1ccccc3d8b6c6e5b27ae",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/.github/workflows/pcie-gen12-codec-cloud.yml",
+          "sha256": "563eef688f587d1b8f6eec1af8be24efbd385ba5a240ba2e061ee7f3eabcc303"
+        },
+        {
+          "bytes": 3413,
+          "git_blob_sha": "2c292069d3194584dcf5467b7c63db533e686cae",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/.github/workflows/pcie-gen12-raw32-rx-cloud.yml",
+          "sha256": "760f651c8228586e5026984eda9a0159358eb10b8a3f4b1940d70efc64d1a451"
+        },
+        {
+          "bytes": 4540,
+          "git_blob_sha": "8bf0a5a95c78e8b381736cc000fe59800af0091f",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/.github/workflows/pcie-gen12-training-records-telemetry-cloud.yml",
+          "sha256": "9af19d76302a58a365d72d807213981454113d9a391b2de5679ed3dab5016b79"
+        },
+        {
+          "bytes": 2128,
+          "git_blob_sha": "b675c94803da17fac824bf9cdd2d9b41a5c76d1b",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/.github/workflows/pcie-gen12-tx-raw32-cloud.yml",
+          "sha256": "a91362a9c809810b89e239fae66916ee8ee4709cfe6b5e05f761bb62db62d2be"
+        },
+        {
+          "bytes": 5904,
+          "git_blob_sha": "3736b1bacbfcc6f87048f45bc491c702d938a479",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-codec-native-pass-20261024.json",
+          "sha256": "cc303aa6e8cfce98bdc9c6d51db13839edcbbef8614d972c0e59633b306cd0fe"
+        },
+        {
+          "bytes": 20041,
+          "git_blob_sha": "7dbaea7584113aaefc3f515477111664e356a84e",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-codec-native-proof-20261024.json",
+          "sha256": "f305e4546f6388d8bda0be557f2c72f9ee1e87c97a9bdc8b9d5ce895dcd3b495"
+        },
+        {
+          "bytes": 4883,
+          "git_blob_sha": "c337d7e035fa43fc2b44edd760845f5bed5437ea",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-raw32-native-pass-20261024.json",
+          "sha256": "970710f885608701dfbb2c6f7b250df15f088215e1d23517df68e58054a2626d"
+        },
+        {
+          "bytes": 3214,
+          "git_blob_sha": "a2919f5e50f08c7d9369dfa6c441b98bcf82b2ed",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-raw32-native-result-20261024.json",
+          "sha256": "c74c349298699dfbf76fa8bd7f06c4eb781abb92f8e24a5aeed6f810d798dcf1"
+        },
+        {
+          "bytes": 5070,
+          "git_blob_sha": "9a92ea4af63aee5d397bbbb632025913e08a4230",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-raw32-rx-native-pass-20261024.json",
+          "sha256": "77cd5332da1559ac82f76d2151d231af711465367f143d0d117290e05f306d25"
+        },
+        {
+          "bytes": 13628,
+          "git_blob_sha": "7f758b3e9a0a711cd7f6a19d3a2903ec9bfd1328",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-raw32-rx-native-result-20261024.json",
+          "sha256": "608dddd2b07803e399618b384dcf48dbd925a810fb9cd2323646d12525da12da"
+        },
+        {
+          "bytes": 4661,
+          "git_blob_sha": "ee91ec641fd4d48880f6e00f3c02a905dde56ea2",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-training-record-retry-communication-failure-20261024.json",
+          "sha256": "7a59ba1a98f9901f7a5c364d5f12c1222164543e9ae10d95e367070f3efc39cd"
+        },
+        {
+          "bytes": 8849,
+          "git_blob_sha": "fce36b8392827c82cb0d75262a9e0325b9dd7687",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-training-record-runner-interruption-20261024.json",
+          "sha256": "ff47a21ea535ad798a60ee4efbde7e6905d126f6c254f7e9f775a2e60166c5b1"
+        },
+        {
+          "bytes": 33974,
+          "git_blob_sha": "01cf04962a5b9ebb0870a4d0f466a9e32e64b16f",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-training-record-telemetry-synthesis-failure-20261024.json",
+          "sha256": "1c0309223bf312ea46a49c5766f0a4f071faefc0ecb36e17b120d2653ca6b285"
+        },
+        {
+          "bytes": 5174,
+          "git_blob_sha": "c3be52ffb7100f18734b464b41c01d7dfa4ee752",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-tx-raw32-native-pass-20261024.json",
+          "sha256": "765bc687eb4f6da75755d412469de385772ca3892b081faa75c0b2e618e649f7"
+        },
+        {
+          "bytes": 17396,
+          "git_blob_sha": "829979926f1a1c32791047237445a772fcec6e5c",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/evidence/pcie-gen12-tx-raw32-native-result-20261024.json",
+          "sha256": "781b2c3210c04ca77873c848d103137ccb5a4644815af1b06131fd8aede555db"
+        },
+        {
+          "bytes": 4265,
+          "git_blob_sha": "877cb631e49b8f75563113b078e7910aa9e7d35b",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/pcie-gen12-codec-development-20261024.md",
+          "sha256": "0e8a0842a8b1f192d476de98a3fe17fef8fbc8bb397bf90fc45653edca1a404b"
+        },
+        {
+          "bytes": 3314,
+          "git_blob_sha": "c22b18283afddc86f6ef46a8588e4b56626df6ce",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/pcie-gen12-raw32-boundary-contract-20261024.md",
+          "sha256": "6f7415d3199169e8f854845cfe65d8e10b15d5e7ace8373320d71243b9e9993a"
+        },
+        {
+          "bytes": 3691,
+          "git_blob_sha": "1eee7519ef1760c31aaae189dd690fb9c56112b7",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/pcie-gen12-raw32-rx-integration-contract-20261024.md",
+          "sha256": "83d0c2955abbbd4aec40e8333c897e924aa6eabd7e1f8a787dbb4bdcd874eecd"
+        },
+        {
+          "bytes": 5954,
+          "git_blob_sha": "99cc9f7b86ece3421e8c0377f98784d94a00c795",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/pcie-gen12-training-record-telemetry-20261024.md",
+          "sha256": "0d4b469da51bb34cae320c257e5178a130894f0bc8c79286f7621abe4df963a3"
+        },
+        {
+          "bytes": 6338,
+          "git_blob_sha": "23eef606eb9a9a4d57e8a9c1a459d5ab8035bf26",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/pcie-gen12-training-record-transport-20261024.md",
+          "sha256": "d328d39ed6a546f2de45afeaf26ac750b0705fb754d541bc002ac5e57f431c98"
+        },
+        {
+          "bytes": 5024,
+          "git_blob_sha": "d21d0cf9519a1c8482c2828025a8c00e7f4fed25",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/docs/pcie-gen12-tx-raw32-transport-contract-20261024.md",
+          "sha256": "f8c9c02e036142e2e4551f25e26e0c474b86a7ec7a661e39ad515a1d48257cd7"
+        },
+        {
+          "bytes": 1607,
+          "git_blob_sha": "10c2567f3dfb3326a775f0bd80217fbff33381ad",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v",
+          "sha256": "009d4885c5492dbc291b7eea3987304847d9a187013439459ada829a18ed54af"
+        },
+        {
+          "bytes": 846,
+          "git_blob_sha": "d0f68238467c00e6ffb624ab2e01d0c2275d2922",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v",
+          "sha256": "5a0661a0681bbe351714305859a111bb8c53544e80e680e1056c057ffcc4de66"
+        },
+        {
+          "bytes": 2100,
+          "git_blob_sha": "e9698ecedf5bd660d6505b9a5cddafa92cc70d8d",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/hw/soc/rtl/pcie/soc_pcie_gen12_codec_lane.v",
+          "sha256": "bc7805d182fec9f7658c7573c019fde6b287e3d2da5df7b1134795192c2d212e"
+        },
+        {
+          "bytes": 4376,
+          "git_blob_sha": "72e1ae201abf6dfa7e6027ccbf84faa5749377be",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v",
+          "sha256": "d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9"
+        },
+        {
+          "bytes": 2856,
+          "git_blob_sha": "e520e8dc33ea6c3bf22c7c8bd0d8cd8ffd43abb4",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v",
+          "sha256": "96c6dea3aecca038dc8d5322d2c4a85d7847dbe24bc45a1b4a22d27301980566"
+        },
+        {
+          "bytes": 6931,
+          "git_blob_sha": "11013459fd94620a421e8a6fdc8cc2b42ff94e81",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v",
+          "sha256": "fa9e0fc9e91e4d2517ac87dcca7d364948a5572c131386ce6837e60a469e5ef5"
+        },
+        {
+          "bytes": 3199,
+          "git_blob_sha": "640d77b694de1df75668cff9daaf72dea74f56a7",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v",
+          "sha256": "483685e8574baecc8e754678ca7cd90aae93be2a0313d8669935546758ebc31d"
+        },
+        {
+          "bytes": 5801,
+          "git_blob_sha": "27766847e0c56141cf98e4713ff9417a4307059b",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v",
+          "sha256": "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f"
+        },
+        {
+          "bytes": 4124,
+          "git_blob_sha": "6764313c812fcc13a3ea02e6698d44b11077055f",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v",
+          "sha256": "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e"
+        },
+        {
+          "bytes": 10550,
+          "git_blob_sha": "febba7a8c7bc46f9f113841032a453bfb6ffb5c2",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/check_pcie_gen12_codec.py",
+          "sha256": "7e7b839089d78a7a32791335698d71514f03501f30b70fd5918b3b986141a180"
+        },
+        {
+          "bytes": 15431,
+          "git_blob_sha": "ab64df1e6497ffae7cd9820aabd1e8e2d8760936",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/check_pcie_gen12_raw32_rx.py",
+          "sha256": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da"
+        },
+        {
+          "bytes": 28358,
+          "git_blob_sha": "dcabf71c0f7309bcf770caa32e718cff6d66cfd0",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/check_pcie_gen12_training_records.py",
+          "sha256": "e1bf844ef719b4ad4230aebc58550ee577da72d88958b7724400d1c4c14c8f5a"
+        },
+        {
+          "bytes": 16940,
+          "git_blob_sha": "b155e124640d99249a5d5eafb5b5215ef52c5195",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/check_pcie_gen12_tx_raw32.py",
+          "sha256": "b19d118fc2d2b71a8f74361a5ca315c9b137cdb1916decd9aec0d189d084a577"
+        },
+        {
+          "bytes": 22471,
+          "git_blob_sha": "cff6c01f5e2397283e30dfa227bff13cbbc0659e",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py",
+          "sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b"
+        },
+        {
+          "bytes": 6349,
+          "git_blob_sha": "7ba26a296d26419b1f09aec2aeb074abc7bad338",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/ensure_cloud_tested_source_release.py",
+          "sha256": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e"
+        },
+        {
+          "bytes": 1804,
+          "git_blob_sha": "e788b536eeee3fe6e190316945ab4e86f682fb18",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/pcie-gen12-codec-methods.json",
+          "sha256": "7f5fc8f3e3c5dc77cef4be07f6a4856df74bee8ddd6d6d69a5ee62c8f64a59e0"
+        },
+        {
+          "bytes": 2354,
+          "git_blob_sha": "173ee2abd80d1433ed7cc9dd96d5d33ca20d4770",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/pcie-gen12-raw32-rx-prerequisites.json",
+          "sha256": "02cc5968fccf76bae36572bd823e2931765152ef945afa0b27bf4f95aab4fac4"
+        },
+        {
+          "bytes": 5688,
+          "git_blob_sha": "54e7ee6beb456f264b11718c14efa92bf859a2bd",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/pcie-gen12-training-records-methods.json",
+          "sha256": "c39809a731492bc26dea40b1f5dc25d0eb40b5c16f4dc4a9592cc9ea05ab6992"
+        },
+        {
+          "bytes": 8038,
+          "git_blob_sha": "cb7161a41f82072aae8a265a85b4ab8da4cb64e7",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/pcie-gen12-training-records-prerequisites.json",
+          "sha256": "404ccd886e7a54015382b4c923620ff98345a73fdd944c7340a3cc2529cdf515"
+        },
+        {
+          "bytes": 7462,
+          "git_blob_sha": "dfdda9611b79140ea1957ef3ea66119d4c8d929b",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/pcie-gen12-training-records-telemetry-methods.json",
+          "sha256": "9f3023d06493ad328e710e58719baf97b811b6e9484eee464327f34980955125"
+        },
+        {
+          "bytes": 3094,
+          "git_blob_sha": "76bc62e95d2b40351e8bfee544e475758e4a8755",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/pcie-gen12-tx-raw32-methods.json",
+          "sha256": "e40efb938b6eb382b7d3a798bec7a9c9073ba46fa1212704e2b5a0cca17d7dd1"
+        },
+        {
+          "bytes": 2487,
+          "git_blob_sha": "c2b8f9742d92920f17f21825c33420e6ae02c35f",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/pcie-gen12-tx-raw32-prerequisite.json",
+          "sha256": "5658451bb47e9a6fe09dc14ddbb45fe5c50b495a6a6bad2ececcbd85e5cbd43b"
+        },
+        {
+          "bytes": 27611,
+          "git_blob_sha": "6aea24be436cdc538d0d5c9db34e2270a8b85291",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/sw/tests/data/pcie_gen12_ieee8023z_codes.json",
+          "sha256": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
+        },
+        {
+          "bytes": 3167,
+          "git_blob_sha": "01dcca2da0adff6f9154101a1c6182f13551b918",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/sw/tests/rtl/tb_pcie_gen12_codec.v",
+          "sha256": "7bb310c10c7064e2de150039d384fe88ec3a73dea1bd057359cbb4bc92684990"
+        },
+        {
+          "bytes": 333,
+          "git_blob_sha": "68de9d2218f8f67fa95230a2252d26eb5fa094db",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/third_party/chuck_benz_8b10b/LICENSE.txt",
+          "sha256": "f2e5b94be743fcaa8dd661a9794e4c50f8f48a4371ac7cc58c03fd64b7e63643"
+        },
+        {
+          "bytes": 5782,
+          "git_blob_sha": "468f5029fea73aaba6afa30575fcdf60dda40cb2",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/third_party/chuck_benz_8b10b/decode.v.txt",
+          "sha256": "b4ef92679b25aba7aaaf3492b948c3a9ffc635e82de04bae53eb1599566ed19d"
+        },
+        {
+          "bytes": 4105,
+          "git_blob_sha": "3f718c0b58cd09ead36d3760cbaef0f075dc412c",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/third_party/chuck_benz_8b10b/encode.v.txt",
+          "sha256": "c8e59b8457c3ee32a3058e24e1adb190cc22c9ec98e752ab5356c0a39ba0398b"
+        },
+        {
+          "bytes": 2021,
+          "git_blob_sha": "020d8d26a171aebd93619a5ffb26b66a75f78dd1",
+          "path": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/third_party/chuck_benz_8b10b/provenance.json",
+          "sha256": "879f1df1e516e3c982ca5f3631a0fc2645d621b2ec34f36a93bf71bb7eaecd9f"
+        },
+        {
+          "bytes": 1607,
+          "git_blob_sha": "10c2567f3dfb3326a775f0bd80217fbff33381ad",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v",
+          "sha256": "009d4885c5492dbc291b7eea3987304847d9a187013439459ada829a18ed54af"
+        },
+        {
+          "bytes": 846,
+          "git_blob_sha": "d0f68238467c00e6ffb624ab2e01d0c2275d2922",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v",
+          "sha256": "5a0661a0681bbe351714305859a111bb8c53544e80e680e1056c057ffcc4de66"
+        },
+        {
+          "bytes": 4376,
+          "git_blob_sha": "72e1ae201abf6dfa7e6027ccbf84faa5749377be",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v",
+          "sha256": "d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9"
+        },
+        {
+          "bytes": 2856,
+          "git_blob_sha": "e520e8dc33ea6c3bf22c7c8bd0d8cd8ffd43abb4",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v",
+          "sha256": "96c6dea3aecca038dc8d5322d2c4a85d7847dbe24bc45a1b4a22d27301980566"
+        },
+        {
+          "bytes": 1880,
+          "git_blob_sha": "78ed183b74b405243e545b7715e529aeb4fb73f1",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v",
+          "sha256": "b83c9e0d15e055020e8d44c0dc948eaff88d118cede1feaf33b8d38ddd24bc78"
+        },
+        {
+          "bytes": 4076,
+          "git_blob_sha": "137dde81679888b960c4e9ef7dd0a3daed1d4e8a",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v",
+          "sha256": "3c60eead90fe053c2615b76d44e1d5c74add6b3351a3cd85f76572ac3faabf20"
+        },
+        {
+          "bytes": 7179,
+          "git_blob_sha": "6b32ef36d31eb52f8654960d34b5e347bdfe84a0",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v",
+          "sha256": "01a3c63b3f3e561e25adb955526a2e0f5241986181dec9ada78cc5f84e7e5533"
+        },
+        {
+          "bytes": 3199,
+          "git_blob_sha": "640d77b694de1df75668cff9daaf72dea74f56a7",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v",
+          "sha256": "483685e8574baecc8e754678ca7cd90aae93be2a0313d8669935546758ebc31d"
+        },
+        {
+          "bytes": 5777,
+          "git_blob_sha": "0b10fbc275584bd9475eea0ae1f79b6343416337",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v",
+          "sha256": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735"
+        },
+        {
+          "bytes": 6031,
+          "git_blob_sha": "349bb9e7b9ba894bf7d352c9eea4b830f6d8ec3e",
+          "path": "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v",
+          "sha256": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d"
+        },
+        {
+          "bytes": 5801,
+          "git_blob_sha": "27766847e0c56141cf98e4713ff9417a4307059b",
+          "path": "hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v",
+          "sha256": "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f"
+        },
+        {
+          "bytes": 4124,
+          "git_blob_sha": "6764313c812fcc13a3ea02e6698d44b11077055f",
+          "path": "hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v",
+          "sha256": "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e"
+        },
+        {
+          "bytes": 1241,
+          "git_blob_sha": "f23cee7c412f0b86ee977d77440b3393bd9a53b8",
+          "path": "hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "sha256": "bdb28508b8599cb6a7c5dc8f0bf29e9343190e797d4b617e8ccd8e2619652817"
+        },
+        {
+          "bytes": 11859,
+          "git_blob_sha": "e4164227239f6f9e90e27fd8928b543896a7cc9f",
+          "path": "hw/soc/tb/cocotb/pcie_gen12_record_cdc_harness.py",
+          "sha256": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979"
+        },
+        {
+          "bytes": 3846,
+          "git_blob_sha": "95223a3ba205c0535e5e5b6fd29da21e7ba5b3c3",
+          "path": "hw/soc/tb/cocotb/test_soc_pcie_gen12_record_cdc_v1.py",
+          "sha256": "5d1d386c3fe5a7dfedc9279066f9bd8f8cf3d75e42ef1d463d49868e9580ce32"
+        },
+        {
+          "bytes": 5851,
+          "git_blob_sha": "a3bfbfe6c42934e5efa66745acf645eb7d7d0c02",
+          "path": "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py",
+          "sha256": "c6e71e6c8fa440f20d0d9619fac0ea9015eef662dfe6c89497edcb39a16fa102"
+        },
+        {
+          "bytes": 15431,
+          "git_blob_sha": "ab64df1e6497ffae7cd9820aabd1e8e2d8760936",
+          "path": "scripts/check_pcie_gen12_raw32_rx.py",
+          "sha256": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da"
+        },
+        {
+          "bytes": 14367,
+          "git_blob_sha": "ddb0c805396abe3f0e855af03b39c5ee2b67ef94",
+          "path": "scripts/check_pcie_gen12_record_cdc_cloud.py",
+          "sha256": "090f0ef17b6d3d3e651baff6e6ba6679face3dc4896035356eb7da6f86142f58"
+        },
+        {
+          "bytes": 3645,
+          "git_blob_sha": "9f93714c786fe87c3a031cc7a4ab79390f6d6b7a",
+          "path": "scripts/check_pcie_gen12_record_cdc_source.py",
+          "sha256": "91c601c3cbc4fb8a23dda5d602acbc392f8b53dbdbcc15a3ced9cb8c3a081d67"
+        },
+        {
+          "bytes": 4885,
+          "git_blob_sha": "6869c27452077d04d85917c197f017372475df99",
+          "path": "scripts/cloud_chunked_results.py",
+          "sha256": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816"
+        },
+        {
+          "bytes": 26446,
+          "git_blob_sha": "91d0bbcc25a2468b4bdf8c0f360cf0eb85811e3f",
+          "path": "scripts/cloud_pcie_gen12_record_cdc.py",
+          "sha256": "385280d745272ce3839327d382e3357b633362ed44a67c1bf48fe5651ad85cd2"
+        },
+        {
+          "bytes": 6349,
+          "git_blob_sha": "7ba26a296d26419b1f09aec2aeb074abc7bad338",
+          "path": "scripts/ensure_cloud_tested_source_release.py",
+          "sha256": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e"
+        },
+        {
+          "bytes": 12452,
+          "git_blob_sha": "2caf3de12c67d83aa74b8427c04b64014ddd8330",
+          "path": "scripts/migrate_outputs_to_cloud.py",
+          "sha256": "52fa3ef7adc92b6e6071b304ccb1b07908f31ccde7dacf39a7258e07356fa512"
+        },
+        {
+          "bytes": 5380,
+          "git_blob_sha": "75d245a19068548cc6ebdd8be2cfbad909966916",
+          "path": "scripts/pcie-gen12-record-cdc-methods.json",
+          "sha256": "2ad89118f825c8c777a0f97843e104422015eb4ba4d130cb39ed822b2320bf03"
+        },
+        {
+          "bytes": 5417,
+          "git_blob_sha": "98984d6be490d6db4828032bb8dcac667b7f9c10",
+          "path": "scripts/pcie-gen12-record-cdc-mutations.json",
+          "sha256": "5d7f7457ee47d257d62424610363836132eff63acf8a0aff46fd566fb3d6aeab"
+        },
+        {
+          "bytes": 8350,
+          "git_blob_sha": "8a238b8ae525270286c9c5c31393f3dc09449cfc",
+          "path": "scripts/pcie-gen12-record-cdc-proposal.json",
+          "sha256": "bf7b09fb1127d62e4be85c39f65eb09a58467a20c4f811cddde39eab1a9feacf"
+        },
+        {
+          "bytes": 267,
+          "git_blob_sha": "7c8aea747fb33f74503d3742e099f8f482acfeae",
+          "path": "scripts/pcie-gen12-record-cdc-requirements.txt",
+          "sha256": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070"
+        },
+        {
+          "bytes": 1257,
+          "git_blob_sha": "f0116917ee1c205bf314bff593407650aef521f5",
+          "path": "scripts/publish_cloud_results.py",
+          "sha256": "a5cd154c1a7e3f838f5880e6cabef115245d696485c9eda2bd0451da8e1e1296"
+        },
+        {
+          "bytes": 3571,
+          "git_blob_sha": "0cb481ad57689d858941344017e60782c141160e",
+          "path": "scripts/wait_cloud_tested_source_release.py",
+          "sha256": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73"
+        },
+        {
+          "bytes": 27611,
+          "git_blob_sha": "6aea24be436cdc538d0d5c9db34e2270a8b85291",
+          "path": "sw/tests/data/pcie_gen12_ieee8023z_codes.json",
+          "sha256": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
+        }
+      ],
+      "supervisor_excerpts": [
+        {
+          "line": 112,
+          "name": "group_members",
+          "source": "def group_members(pgid):\n    # Linux stat fields follow the parenthesized comm; do not expose comm/argv.\n    result=[]\n    for path in Path('/proc').iterdir():\n        if not path.name.isdecimal():continue\n        value=safe_read(path/'stat')\n        if value is None:continue\n        fields=value.rsplit(') ',1)[-1].split()\n        if len(fields)>2 and int(fields[2])==pgid:\n            result.append({'pid':int(path.name),'state':fields[0]})\n    return result"
+        },
+        {
+          "line": 149,
+          "name": "memory_snapshot",
+          "source": "def memory_snapshot(pgid,meminfo_path='/proc/meminfo'):\n    \"\"\"Fail closed on unreadable required counters, never infer absent as zero.\"\"\"\n    text=Path(meminfo_path).read_text()\n    rows=[line.split()for line in text.splitlines()if line.startswith('MemAvailable:')]\n    if len(rows)!=1 or len(rows[0])!=3 or rows[0][2]!='kB':\n        raise SupervisionFailure('Unavailable MemAvailable in kB')\n    available=int(rows[0][1])\n    if available<0:raise SupervisionFailure('Negative MemAvailable')\n    members=[]\n    for member in live_members(pgid):\n        path=Path('/proc')/str(member['pid'])/'status'\n        try:text=path.read_text()\n        except FileNotFoundError:\n            if not any(x['pid']==member['pid']for x in live_members(pgid)):continue\n            raise\n        fields=[line.split()for line in text.splitlines()if line.startswith('VmRSS:')]\n        if len(fields)!=1 or len(fields[0])!=3 or fields[0][2]!='kB':\n            if not any(x['pid']==member['pid']for x in live_members(pgid)):continue\n            raise SupervisionFailure('Unavailable live process VmRSS')\n        rss=int(fields[0][1])\n        if rss<0:raise SupervisionFailure('Negative VmRSS')\n        members.append({'pid':member['pid'],'rss_kib':rss})\n    return {'available_kib':available,'group_rss_kib':sum(x['rss_kib']for x in members),\n            'members':members,'group_rss_may_double_count_shared_pages':True}"
+        }
+      ],
+      "total_bytes": 757977
+    }
+  },
+  "release": {
+    "draft": false,
+    "html_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-results-40193110968-1-pcie-gen12-record-cdc",
+    "id": 423387855,
+    "prerelease": true,
+    "tag_name": "cloud-results-40193110968-1-pcie-gen12-record-cdc",
+    "target_commitish": "96ee918510bc3a3c1e24acfd9404459f8d8b75f0"
+  },
+  "run": 40193110968,
+  "schema": "gen12-record-cdc-native-tool-setup-rejection-v1",
+  "scope": {
+    "LTSSM_implemented": false,
+    "TS_accepted": false,
+    "automatic_clock_loss_detection": false,
+    "full_PHY_accepted": false,
+    "physical_CDC_qualified": false,
+    "x4_lane_mapping": false
+  },
+  "source": "96ee918510bc3a3c1e24acfd9404459f8d8b75f0",
+  "source_limit": "memory_snapshot rechecks group membership but the failure record does not retain the offending PID or its identity/status; an exec/exit sampling race is a hypothesis, not established cause.",
+  "status": "PRESERVED_TOOL_SETUP_FAILURE_NO_CDC_EXECUTION",
+  "tag": {
+    "sha": "96ee918510bc3a3c1e24acfd9404459f8d8b75f0",
+    "type": "commit",
+    "url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/commits/96ee918510bc3a3c1e24acfd9404459f8d8b75f0"
+  },
+  "workflow": ".github/workflows/pcie-gen12-record-cdc-cloud.yml"
+}

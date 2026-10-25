@@ -8442,3 +8442,10 @@ Local project/tmp/native processes verified absent. Inventory137 exact cloud han
 Saved normalTX40188423827 and phase31840188858885 diagnoses are complete and authenticated, with exact original electrical rejections preserved. Full compact evidence/replay/probe/control logs imported; normal both-bracket correlation isolates later-stage signal degradation and selection-dependent headroom without causalclaim. CDR next705-file immutable restoration/binding/rawRC contract5b8f8b73 is reviewed for sourceimplementation only. Gen12CDC hostedcontrollerb4bede8e remains unexecuted; permanentpublication fix and peerreview required. Only original mainchip40185550438 route remains active among tracked native jobs.
 
 Local project/tmp/native processes verified absent. Inventory137 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-25T12:42:49.722999+00:00 — cloud-only checkpoint v43
+
+CDR native binding and raw wire RC both passed at40193186762 with all706 original saved files unchanged, but both jobs failed afterward in publication due to a Path indexing error. Exact complete summaries, logs and authenticated fallback artifact metadata are retained; next work is cloud-only publication recovery without repeating CAD. CDC corrected source controls passed at40192232929 (49 classifier and13 supervision controls plus publication checks); the full native proof40193110968 then stopped during Verilator build on an unavailable live VmRSS counter before any RTL/mapped/mutation test. Its original failure and complete permanent evidence are retained; a bounded fresh-counter source repair is pending. Phase318 and normalTX exact-row observations plus the source-only AVSS ledger are saved. Mainchip40185550438 remains the sole routing handle. All source/CAD/evidence work remains in GitHub; the local project is empty.
+
+Local project/tmp/native processes verified absent. Inventory144 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
