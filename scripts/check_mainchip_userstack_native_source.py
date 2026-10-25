@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Source and real temporary-file controls only. Never restores/attaches a chip."""
-import ast,copy,hashlib,json,os,subprocess,sys,tempfile,traceback,types
+import ast,copy,hashlib,json,os,signal,subprocess,sys,tempfile,threading,time,traceback,types
 from pathlib import Path
 import cloud_mainchip_userstack_diagnostic as controller
 import mainchip_userstack_native_binding as bind
