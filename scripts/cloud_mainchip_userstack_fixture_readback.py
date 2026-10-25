@@ -13,8 +13,13 @@ DIGEST='68e6bf54ac3bb925b92883538a96ec2d584da15f0bbb59c106adc3a09396890f'
 RESULT_SHA='e274559d3fddc80ed02b492395e1d396c7c513f77e521f0c1ec425beccd377b6'
 STDERR_SHA='7aeab8d8f8e0207f393a35e5d8565a5f33b312277a346bc5c3c23259aee3746b'
 def sha(b):return hashlib.sha256(b).hexdigest()
+def api_command(path,raw=False):
+    return ['gh','api','repos/Melihakbulut221/nssoc/'+path]+(['--allow-escape-sequences']if raw else [])
+def validate_api_command(command,path,raw):
+    assert command==api_command(path,raw),'Raw API transport arguments changed'
 def api(path,raw=False):
-    b=subprocess.check_output(['gh','api','repos/Melihakbulut221/nssoc/'+path])
+    command=api_command(path,raw);validate_api_command(command,path,raw)
+    b=subprocess.check_output(command)
     return b if raw else json.loads(b)
 def scan(raw,size,digest):
     assert len(raw)==size and sha(raw)==digest,'Artifact transport bytes changed'
@@ -24,7 +29,7 @@ def scan(raw,size,digest):
         for item in z.infolist():
             p=PurePosixPath(item.filename)
             assert str(p)==item.filename and not p.is_absolute() and '..'not in p.parts
-            assert '\\'not in item.filename and '\x00'not in item.filename and ':'not in item.filename
+            assert chr(92)not in item.filename and '\x00'not in item.filename and ':'not in item.filename
             assert not item.is_dir() and item.filename not in files
             mode=(item.external_attr>>16)&0xffff
             assert stat.S_IFMT(mode)in(0,stat.S_IFREG)
@@ -56,10 +61,16 @@ def controls():
       ('absolute',[('/a',b'a',stat.S_IFREG)]),
       ('symlink',[('a',b'a',stat.S_IFLNK)]),
       ('oversize',[('a',b'a'*(1024**2+1),stat.S_IFREG)]),
-      ('directory',[('a/',b'',stat.S_IFDIR)])]:
+      ('directory',[('a/',b'',stat.S_IFDIR)]),
+      ('single-backslash',[('a'+chr(92)+'b',b'a',stat.S_IFREG)])]:
         raw=control_zip(entries);reject(name,lambda raw=raw:scan(raw,len(raw),sha(raw)))
-    assert len(faults)==8
-    return dict(status='PASS_8_SMALL_ARCHIVE_CONTROLS_ONLY',rejected=faults,new_fixture_run=False)
+    path='actions/artifacts/12590911691/zip'
+    validate_api_command(api_command(path,True),path,True)
+    validate_api_command(api_command('actions/runs/40172782148',False),'actions/runs/40172782148',False)
+    reject('raw-transport-flag-removed',lambda:validate_api_command(api_command(path,False),path,True))
+    reject('metadata-raw-flag-invented',lambda:validate_api_command(api_command(path,True),path,False))
+    assert len(faults)==11
+    return dict(status='PASS_11_SMALL_ARCHIVE_AND_TRANSPORT_CONTROLS_ONLY',rejected=faults,new_fixture_run=False)
 def main():
     p=argparse.ArgumentParser();p.add_argument('--readback-only',action='store_true');args=p.parse_args()
     assert os.environ.get('GITHUB_ACTIONS')=='true'and args.readback_only
