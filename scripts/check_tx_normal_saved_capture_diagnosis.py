@@ -3,7 +3,7 @@
 """Small synthetic math/identity controls; not native capture acceptance."""
 import copy
 import numpy as np
-from tx_normal_saved_capture_diagnosis import bracket,hbt_point,native_pairs,crossing_brackets,below_segments,catalog
+from tx_normal_saved_capture_diagnosis import bracket,hbt_point,native_pairs,crossing_brackets,below_segments,catalog,admitted_window,STOP,START,UI
 
 def main():
     t=np.array([0.,1.,2.,3.,4.]); v={'v(c)':np.array([2.,2.,1.,2.,2.]),
@@ -27,6 +27,9 @@ def main():
     seg=below_segments(t,np.array([0.,1.,0.,0.,1.]),.4,1.)
     assert len(seg)==1 and seg[0]['first_row']==2 and seg[0]['last_row']==3
     assert seg[0]['entry_bracket_rows']==[1,2] and seg[0]['exit_bracket_rows']==[3,4]
+    end=np.nextafter(STOP,0.); window=admitted_window(np.array([0.,end]),START+255*UI,START+256*UI)
+    assert window['admitted_endpoint_clipped'] and window['native_scan_bounds_s'][1]==end
+    assert window['requested_UI_bounds_s'][1]==START+256*UI
     faults=[]
     def reject(name,func):
         try:func()
@@ -48,7 +51,8 @@ def main():
     reject('crossing_outside',lambda:crossing_brackets(t,y,0.,-.1,4.))
     reject('wrong_crossing_shape',lambda:crossing_brackets(t,y[:-1],0.,0.,4.))
     reject('wrong_segment_shape',lambda:below_segments(t,y[:-1],.4,1.))
-    assert len(faults)==18
+    reject('unadmitted_end_truncation',lambda:admitted_window(np.array([0.,STOP-1e-10]),START+255*UI,START+256*UI))
+    assert len(faults)==19
     return dict(status='PASS_SYNTHETIC_SAME_ROW_MATH_CONTROLS_ONLY',negative_controls=faults,
                 native_capture_read=False,original_failure_replayed=False,readback_authorized=False)
 if __name__=='__main__':

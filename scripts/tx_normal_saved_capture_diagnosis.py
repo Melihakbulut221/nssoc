@@ -103,6 +103,18 @@ def stages_at(t, values, contract, bit, row):
     return {stage: native_pairs(t, values, p, n, row, sign)
             for stage, p, n in groups(contract, bit)}
 
+def admitted_window(t, lo, hi):
+    """Clip only diagnostic last-UI extent to an originally admitted endpoint."""
+    assert np.isfinite([lo, hi, t[0], t[-1]]).all() and t[0] <= lo <= hi
+    scan_hi = min(float(t[-1]), hi)
+    if scan_hi != hi:
+        assert abs(t[-1]-STOP) < 1e-18 and abs(hi-STOP) < 1e-18
+        assert 0 < hi-scan_hi < 1e-18
+    assert lo <= scan_hi
+    return dict(requested_UI_bounds_s=[float(lo), float(hi)],
+                native_scan_bounds_s=[float(lo), float(scan_hi)],
+                admitted_endpoint_clipped=scan_hi != hi)
+
 def crossing_brackets(t, y, level, lo, hi):
     assert y.shape == t.shape and np.isfinite(y).all()
     assert np.isfinite(level) and t[0] <= lo <= hi <= t[-1]
@@ -235,14 +247,15 @@ def analyze(t, values, contract, original, qualified):
     crossings = {}
     for bit in sorted({e['bit_index'] for e in events}):
         lo, hi = START+bit*UI, START+(bit+1)*UI; sign=2*contract['bits'][bit]-1
+        window = admitted_window(t,lo,hi); scan_hi = window['native_scan_bounds_s'][1]
         group_rows = {}
         for stage, pp, nn in groups(contract,bit):
             for p in pp:
                 for n in nn:
                     y=(values['v('+p+')']-values['v('+n+')'])*sign
-                    group_rows[stage+':'+p+':'+n] = {str(level):crossing_brackets(t,y,level,lo,hi)
+                    group_rows[stage+':'+p+':'+n] = {str(level):crossing_brackets(t,y,level,lo,scan_hi)
                         for level in (0.,.1,.15)}
-        crossings[str(bit)] = group_rows
+        crossings[str(bit)] = dict(**window, physical_pair_crossings=group_rows)
     return dict(status='DIAGNOSIS_ONLY_ORIGINAL_ELECTRICAL_REJECTION_REMAINS', accepted=False,
         original_rejection_reproduced=True, new_simulation=False, fitted_phase=False,
         thermal_state_available=False, thermal_reason='No thermal state vector was saved by the original 14181-vector contract.',
