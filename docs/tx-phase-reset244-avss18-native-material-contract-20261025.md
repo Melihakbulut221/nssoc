@@ -9,3 +9,9 @@ Comparison retains every loaded cell name, actual DBU, top cell, bounding box, s
 Both actual layouts are read from their saved files. Eighteen refusal cases mutate new candidate layouts only in hosted memory: unchanged old trunk, wrong width/center/y/layer, unrelated top/leaf material, changed non-target box, text string/font, instance transform/array/target/property, shape/cell property, cell name and DBU. Every refusal follows the real positive comparison. A pristine reread repeats the positive comparison after faults; the original and candidate files plus layer map must remain byte-identical. No GDS is written by this comparator. Its full structured result is written before validation and on every exception.
 
 The exact APIs are documented in the primary KLayout [Shape](https://www.klayout.de/doc/code/class_Shape.html), [Instance](https://www.klayout.de/doc/code/class_Instance.html) and [Cell](https://www.klayout.de/doc/code/class_Cell.html) references. Actual API execution and geometry identity remain unproved until the reviewed Ubuntu 22.04/AppImage job runs. Material equality does not establish conductivity/ownership, DRC, LVS, wire/MIM RC, loaded timing or electrical safety. The original electrical rejection remains authoritative.
+
+## Native text enum serialization
+
+HAlign/VAlign are native enum wrappers. The comparator converts only their alignment values to explicit integers for lossless JSON encoding. Both actual restored and candidate texts must round-trip through JSON with those exact integers. Two additional actual layout corruptions change the alignment via documented Text.HAlignLeft/Right and Text.VAlignBottom/Top constants, require the value to change, and require the unchanged full comparator to reject. All twenty material faults remain hosted-only; no execution is claimed by this source change.
+
+Primary API: https://www.klayout.de/doc-qt5/code/class_Text.html

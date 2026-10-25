@@ -13,7 +13,7 @@ LYP_SHA = "5d2a8f297dc951d97e1a0a1a4a2604eb756604b8ac443f5a69f31fc623d03974"
 VERSION = "0.30.7"
 FAULTS = ("old_geometry", "trunk_width", "trunk_center", "trunk_y", "trunk_other_layer",
           "unrelated_top_material", "changed_other_top_box", "changed_leaf_material",
-          "changed_text_string", "changed_text_font", "instance_transform", "instance_array",
+          "changed_text_string", "changed_text_font", "changed_text_halign", "changed_text_valign", "instance_transform", "instance_array",
           "instance_target", "instance_property", "shape_property", "cell_property",
           "cell_name", "wrong_dbu")
 
@@ -37,7 +37,7 @@ def shape_record(s):
     elif s.is_path(): kind="path"; value=str(s.path)
     elif s.is_text():
         t=s.text; kind="text"
-        value=dict(string=t.string,trans=str(t.trans),size=t.size,font=t.font,halign=t.halign,valign=t.valign)
+        value=dict(string=t.string,trans=str(t.trans),size=t.size,font=t.font,halign=int(t.halign),valign=int(t.valign))
     else: raise AssertionError(("Unsupported native GDS shape",str(s)))
     return dict(kind=kind,value=value,properties=props(s))
 
@@ -148,10 +148,18 @@ def mutate(pya,layout,top,layer,new_box,name):
         leaves=[v for v in layout.each_cell() if v.name!=top and not list(v.each_inst())]
         assert leaves;leaf=leaves[0]
         leaf.shapes(layout.layer(8,0)).insert(pya.Box(0,0,5,5))
-    elif name in ("changed_text_string","changed_text_font"):
+    elif name in ("changed_text_string","changed_text_font","changed_text_halign","changed_text_valign"):
         s=first_text(layout); t=s.text
         if name=="changed_text_string": t.string=t.string+"_fault"
-        else:t.font=2 if t.font!=2 else 1
+        elif name=="changed_text_font":t.font=2 if t.font!=2 else 1
+        elif name=="changed_text_halign":
+            old=int(t.halign)
+            t.halign=pya.Text.HAlignRight if t.halign==pya.Text.HAlignLeft else pya.Text.HAlignLeft
+            assert int(t.halign)!=old
+        else:
+            old=int(t.valign)
+            t.valign=pya.Text.VAlignTop if t.valign==pya.Text.VAlignBottom else pya.Text.VAlignBottom
+            assert int(t.valign)!=old
         s.text=t
     elif name in ("instance_transform","instance_array","instance_target","instance_property"):
         item=next(c.each_inst())
@@ -200,6 +208,15 @@ def main():
         new_box=native_box(pya,candidate.NEW_RECT,old_report["origin_translation_um"])
         report.update(polarity=pol,runtime_klayout_version=pya.__version__,layer_map_sha256=LYP_SHA,
                       actual_topmetal1_layer=list(layer),actual_layer_source=raw_layer_source,input_sha256=immutable)
+        text_proofs=[]
+        for label,layout in (("original",original),("candidate",changed)):
+            shape=first_text(layout);record=shape_record(shape)
+            assert type(record["value"]["halign"]) is type(record["value"]["valign"]) is int
+            assert json.loads(canonical(record))==record
+            assert record["value"]["halign"]==int(shape.text.halign)
+            assert record["value"]["valign"]==int(shape.text.valign)
+            text_proofs.append(dict(layout=label,actual_native_text=record,json_roundtrip=True))
+        report["actual_text_serialization_positives"]=text_proofs
         report["native_comparison"]=compare(pya,original,changed,top,layer,old_box,new_box);save()
         faults=[]
         for name in FAULTS:
@@ -209,11 +226,11 @@ def main():
             except (AssertionError,ValueError,RuntimeError) as e:faults.append(dict(name=name,rejected=True,error=repr(e)))
             else:raise AssertionError("Accepted actual native material fault "+name)
             report["actual_native_faults"]=faults;save()
-        assert len(faults)==18
+        assert len(faults)==20
         # Reread the pristine candidate after actual in-memory corruptions.
         report["post_fault_positive"]=compare(pya,original,load(pya,new/(top+".gds")),top,layer,old_box,new_box)
         assert all(sha(Path(p))==h for p,h in immutable.items()) and sha(lyp)==LYP_SHA
-        report.update(status="PASS_EXACT_AVSS18_NATIVE_MATERIAL_AND18_ACTUAL_FAULTS_REQUIRES_DRC_LVS_RC_LOADED",
+        report.update(status="PASS_EXACT_AVSS18_NATIVE_MATERIAL_AND20_ACTUAL_FAULTS_REQUIRES_DRC_LVS_RC_LOADED",
                       native_geometry_delta_proved=True,all_inputs_byte_unchanged=True,
                       no_GDS_written=True,original_electrical_rejection_preserved=True)
     except BaseException as e:
