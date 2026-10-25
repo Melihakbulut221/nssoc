@@ -29,6 +29,90 @@ def derivation(old,new,d):
     assert before['CASES']==after['CASES']==a.descriptor()['cases']and len(after['CASES'])==10
     assert after['MODEL']==a.MODEL
     return dict(reversible_edits=6,unchanged_blocks=BLOCKS,all_ten_cases_preserved=True,non_main_functions_AST_identical=True)
+
+def main_entry_controls(new):
+    """Execute the exact complete main with explicit entry stubs, stopping before restore."""
+    import argparse,contextlib,io,os,sys,tempfile,traceback,types
+    from pathlib import Path
+    from unittest import mock
+    failed=new.decode()
+    substitutions=[
+      ('import cdr_v59_loaded_admission as current_inputs\n','import cdr_v59_loaded_admission as current\n'),
+      ('ROOT/current_inputs.SUMMARY','ROOT/current.SUMMARY'),
+      ('ROOT/current_inputs.STAGE','ROOT/current.STAGE'),
+      ('current_inputs.restore(out,args.prepare_only)','current.restore(out,args.prepare_only)'),
+      ('current_inputs.verify_restored(out)','current.verify_restored(out)')]
+    for before,after in substitutions:
+        assert failed.count(before)==1;failed=failed.replace(before,after)
+    assert digest(failed.encode())=='b489dd21d11c1d49fb6fc2347f4c5faa2f445b8b298fb0e6c7536394e22b2f9f'
+    class RestorationBoundaryStop(RuntimeError):pass
+    def exercise(source,old):
+        tree=ast.parse(source);nodes=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='main']
+        assert len(nodes)==1
+        # Full original function retains its later numeric current assignment.
+        program=compile(ast.Module(body=nodes,type_ignores=[]),'actual-loaded-main-entry-fixture','exec')
+        with tempfile.TemporaryDirectory()as td:
+            root=Path(td);(root/'scripts').mkdir();(root/'docs/evidence').mkdir(parents=True)
+            names=['scripts/cloud_cdr_pd_vi.py','scripts/cloud_tx_stream.py','scripts/cloud_cdr_xor.py',
+              'scripts/run_cloud_tx_mux4.py','docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json']
+            pins={}
+            actual_method=a.methods()
+            for name in names:
+                data=(a.ROOT/name).read_bytes();assert digest(data)==actual_method['protected'][name]
+                (root/name).write_bytes(data);pins[name]=digest(data)
+            # This limited methods fixture only enables the entry seam, never qualifies a capsule.
+            (root/'scripts/cdr-v59-loaded-methods.json').write_text(json.dumps(dict(protected=pins))+'\n')
+            calls=[];out=root/'cloud-cdr-v59-loaded-nominal_early'
+            def restore(path,prepare):
+                assert path==out and prepare is True
+                calls.append('restore_boundary');(path/'current-mim-bundle').mkdir()
+                raise RestorationBoundaryStop('EXPLICIT_STOP_BEFORE_NETWORK_OR_CAPSULE_RESTORE')
+            def verify(path):
+                assert path==out and calls==['restore_boundary']
+                calls.append('finally_verification_boundary')
+                return dict(synthetic_entry_fixture_only=True)
+            admission=types.SimpleNamespace(SUMMARY=a.SUMMARY,STAGE=a.STAGE,restore=restore,verify_restored=verify)
+            def prbs(seed):
+                assert seed==0x7f
+                return [0,1]*128
+            ns=dict(argparse=argparse,json=json,os=os,Path=Path,traceback=traceback,ROOT=root,
+              UI=125e-12,START=2e-9,STOP=2e-9+258*125e-12,STEP=.3125e-12,
+              CASES=a.descriptor()['cases'],sha=lambda p:digest(Path(p).read_bytes()),
+              reports=types.SimpleNamespace(),pump=types.SimpleNamespace(CORNERS={'nominal':{'scale':1.0}}),
+              primitive=types.SimpleNamespace(prbs=prbs),
+              legacy=types.SimpleNamespace(__file__=str(root/'scripts/cloud_cdr_pd_vi.py')),
+              stream=types.SimpleNamespace(__file__=str(root/'scripts/cloud_tx_stream.py')),
+              readback_controls=lambda:dict(synthetic_entry_fixture_only=True),
+              current=admission,current_inputs=admission)
+            exec(program,ns)
+            assert 'current'in ns['main'].__code__.co_varnames
+            assert 'current_inputs'not in ns['main'].__code__.co_varnames
+            failure=None
+            with mock.patch.object(sys,'argv',['loaded-entry','--case','nominal_early','--prepare-only']),contextlib.redirect_stdout(io.StringIO())as output:
+                try:ns['main']()
+                except BaseException as error:failure=error
+            assert failure is not None
+            saved=json.loads((out/'result.json').read_bytes())
+            assert saved['status']=='FAIL_OR_ERROR'and saved['accepted']is saved['full_phy_accepted']is False
+            if old:
+                assert type(failure)is UnboundLocalError and "'current'"in str(failure)
+                assert calls==[]and not(out/'current-mim-bundle').exists()
+                assert 'current.SUMMARY'in saved['traceback']or 'UnboundLocalError'in saved['traceback']
+            else:
+                assert type(failure)is RestorationBoundaryStop and str(failure)=='EXPLICIT_STOP_BEFORE_NETWORK_OR_CAPSULE_RESTORE'
+                assert calls==['restore_boundary','finally_verification_boundary']
+                assert saved['current_saved_input_integrity']==dict(synthetic_entry_fixture_only=True)
+            assert not(out/'native').exists()
+            return dict(exception_type=type(failure).__name__,exception=str(failure),calls=calls,
+              saved_status=saved['status'],stdout=output.getvalue(),exact_complete_main_compiled=True,
+              copied_protected_entry_files=pins)
+    original=exercise(failed,True);corrected=exercise(new.decode(),False)
+    return dict(positive_cases=['corrected_complete_main_reaches_mocked_restore_and_finally'],
+      rejected=['original_current_module_alias_shadow'],original=original,corrected=corrected,
+      actual_full_main_entry_executed=True,explicit_entry_stubs=True,
+      stopped_before_real_restore=True,prior_archive_accessed=False,simulator_executed=False,
+      native_binding_or_measurement_executed=False)
+
 def metadata_fixture():
     p=a.descriptor();run=copy.deepcopy(p['run'])
     jobs=dict(total_count=len(p['jobs']),jobs=[dict(**x,run_id=run['id'],head_sha=run['head_sha'])for x in p['jobs']])
@@ -41,6 +125,7 @@ def controls():
     new=(a.ROOT/'scripts/cloud_cdr_v59_loaded.py').read_bytes()
     d=json.loads((a.ROOT/'scripts/cdr-v59-loaded-source-derivation.json').read_bytes())
     source_proof=derivation(old,new,d)
+    entry_proof=main_entry_controls(new)
     rejected=[]
     def reject(name,fn):
         try:fn()
@@ -103,7 +188,7 @@ def controls():
     assert len(rejected)==43 and len(set(rejected))==43
     a.methods()
     return dict(status='PASS_CURRENT_V59_LOADED_SOURCE_ADMISSION_NOT_PREPARATION_OR_SIMULATION',
-      protected_files=len(m['protected']),source_proof=source_proof,rejected=rejected,
+      protected_files=len(m['protected']),source_proof=source_proof,rejected=rejected,main_entry_controls=entry_proof,
       full_actual_report_positive=True,remote_envelope_positive_is_schema_fixture=True,
       archive_restore_executed=False,preparation_executed=False,simulation_executed=False)
 if __name__=='__main__':print(json.dumps(controls(),indent=2))

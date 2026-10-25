@@ -1,0 +1,105 @@
+{
+  "schema": "cdr-v59-loaded-main-alias-repair-v1",
+  "status": "SOURCE_ONLY_PENDING_INDEPENDENT_REVIEW_AND_HOSTED_CONTROLS",
+  "failed_run": 40214668800,
+  "failed_source": "6c58c1c72485abd8023bc3372f715cab84ebe790",
+  "failure_receipt": "docs/evidence/cdr-v59-loaded-preparation-rejection-20261025.json",
+  "failure_receipt_sha256": "ba44c579b3d755215062ffdd908363ee988ba6180205c8214e9dd4f31a095e9d",
+  "cause": "Added admission alias current is shadowed throughout main by the preserved numeric current local; first failure line207 precedes restoration.",
+  "source_change": "Only added admission import alias and its four attribute uses change to current_inputs; original numeric current assignments/uses stay byte-exact.",
+  "old_controller_sha256": "b489dd21d11c1d49fb6fc2347f4c5faa2f445b8b298fb0e6c7536394e22b2f9f",
+  "new_controller_sha256": "a5a2d4dbc95771d4425d9f2c58179b8dde06f2308ff93c5dbb451d8a87a74ba9",
+  "exact_alias_substitutions": [
+    [
+      "import cdr_v59_loaded_admission as current\n",
+      "import cdr_v59_loaded_admission as current_inputs\n"
+    ],
+    [
+      "ROOT/current.SUMMARY",
+      "ROOT/current_inputs.SUMMARY"
+    ],
+    [
+      "ROOT/current.STAGE",
+      "ROOT/current_inputs.STAGE"
+    ],
+    [
+      "current.restore(out,args.prepare_only)",
+      "current_inputs.restore(out,args.prepare_only)"
+    ],
+    [
+      "current.verify_restored(out)",
+      "current_inputs.verify_restored(out)"
+    ]
+  ],
+  "original_six_reversible_derivation_edits": true,
+  "all_six_frozen_blocks_unchanged": [
+    {
+      "name": "native_binding",
+      "start_line": 31,
+      "end_line": 127,
+      "bytes": 7507,
+      "sha256": "a7067fdb80569bbabc2d70193e2bf4e28865a0647a1c0789ca0995aeb37deafb"
+    },
+    {
+      "name": "binding_faults",
+      "start_line": 128,
+      "end_line": 180,
+      "bytes": 3639,
+      "sha256": "20f3e8acdf034b458eb8c9bc7e3dde43af0a0f5cdf0c863d47f27fe66e4c0222"
+    },
+    {
+      "name": "case_corner_oracles",
+      "start_line": 188,
+      "end_line": 191,
+      "bytes": 424,
+      "sha256": "7bb0b9fbd02029addf8024787d91591eb9a4f73869134cffe806828c3e5da6ab"
+    },
+    {
+      "name": "model_runtime_and_bench",
+      "start_line": 225,
+      "end_line": 260,
+      "bytes": 4136,
+      "sha256": "37df0c59a36aa6fb9f465ff9f543dfdf8fd428fcc4ae9ee14505298fdc53dd3b"
+    },
+    {
+      "name": "OFF_OP_stream_admission",
+      "start_line": 267,
+      "end_line": 275,
+      "bytes": 1271,
+      "sha256": "1a05d71d6f12258dc23fa7437f44574674b4d616df9d4cb18c0132961a1f9717"
+    },
+    {
+      "name": "frozen_measurement",
+      "start_line": 276,
+      "end_line": 337,
+      "bytes": 7156,
+      "sha256": "25d8ab3689494cd55f7173b56d25914bb5b41f8bc3fa6f7d38ac20cf430bebfb"
+    }
+  ],
+  "all_non_main_controller_functions_AST_identical": true,
+  "main_entry_fixture": {
+    "exact_complete_main_compiled": true,
+    "old_failed_source_reconstructed_exactly": true,
+    "original_actual_UnboundLocalError_required": true,
+    "corrected_mocked_restore_and_finally_callbacks_required": true,
+    "real_temporary_files": true,
+    "five_real_protected_entry_files": true,
+    "explicit_PRBS_readback_and_restore_stubs": true,
+    "stops_before_real_network_or_archive": true,
+    "source_refusals_unchanged": 43,
+    "new_entry_refusals": 1,
+    "new_entry_positives": 1,
+    "tests_executed": false
+  },
+  "stage_admission_publication_bytes_unchanged": true,
+  "all_ten_cases_and_thresholds_unchanged": true,
+  "source_controls_authorized": false,
+  "preparation_authorized": false,
+  "native_execution_authorized": false,
+  "simulation_authorized": false,
+  "extraction_authorized": false,
+  "geometry_regeneration_authorized": false,
+  "accepted": false,
+  "qualified_pex": false,
+  "full_phy_accepted": false
+}

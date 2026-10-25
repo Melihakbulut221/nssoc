@@ -19,7 +19,7 @@ import cloud_cdr_pd_vi as legacy
 import cloud_cdr_xor as primitive
 import cloud_pll_pump_current as pump
 import compare_cloud_routed_endpoints as reports
-import cdr_v59_loaded_admission as current
+import cdr_v59_loaded_admission as current_inputs
 import build_pcie_local_vco_hybrid_v6 as parser
 from cloud_vbic_tree32_backend import backend_readback,readback_controls
 from route_cloud_newer_postcts import fetch,sha
@@ -204,8 +204,8 @@ def main():
         assert tp['report']['status']=='PASS_FULL_CDR_MODEL_ALL_VECTOR_3NS_STREAM_TRANSPORT_REQUIRES_FULL_LOADED_SCREEN'and tp['report']['sources_unchanged']
         assert tp['report']['stream_capture']['columns']==1108 and tp['report']['transport_comparison']['vectors']==1107
         r['transport_control_source']=dict(run=tp['run'],summary_sha256=tp['summary_sha256'],parts_sha256=tp['parts_sha256'])
-        pinpath=ROOT/current.SUMMARY;pp=ROOT/current.STAGE
-        prior,proof,model,contract,planes,plane_proof=current.restore(out,args.prepare_only)
+        pinpath=ROOT/current_inputs.SUMMARY;pp=ROOT/current_inputs.STAGE
+        prior,proof,model,contract,planes,plane_proof=current_inputs.restore(out,args.prepare_only)
         r['native_plane_source']=plane_proof
 
         r['composition_source']=proof;r['binding_controls']=binding_controls(model.read_text(),contract,planes)
@@ -329,7 +329,7 @@ def main():
     finally:
         integrity_error=None
         try:
-            if(out/'current-mim-bundle').exists():r['current_saved_input_integrity']=current.verify_restored(out)
+            if(out/'current-mim-bundle').exists():r['current_saved_input_integrity']=current_inputs.verify_restored(out)
         except BaseException as error:
             integrity_error=error;r['status']='FAIL_CURRENT_SAVED_INPUT_INTEGRITY';r['input_integrity_error']=repr(error)
         r['outputs']={str(p.relative_to(out)):sha(p)for p in out.rglob('*')if p.is_file()and p!=out/'result.json'};save();print(r['status'],flush=True)

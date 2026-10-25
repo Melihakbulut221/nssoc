@@ -54,6 +54,10 @@ jobs:
           r=json.load(open('hw/soc/out/cdr-v59-loaded-controls/source.json'))
           assert r['status']=='PASS_CURRENT_V59_LOADED_SOURCE_ADMISSION_NOT_PREPARATION_OR_SIMULATION'
           assert len(r['rejected'])==43
+          entry=r['main_entry_controls']
+          assert len(entry['positive_cases'])==1 and len(entry['rejected'])==1
+          assert entry['actual_full_main_entry_executed'] and entry['explicit_entry_stubs'] and entry['stopped_before_real_restore']
+          assert not entry['prior_archive_accessed'] and not entry['simulator_executed'] and not entry['native_binding_or_measurement_executed']
           assert not r['archive_restore_executed'] and not r['preparation_executed'] and not r['simulation_executed']
           PY
       - name: Actual stage publication, complete synthetic archives and terminal verdict refusals
