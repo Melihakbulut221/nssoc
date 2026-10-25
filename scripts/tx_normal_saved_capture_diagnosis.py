@@ -187,7 +187,10 @@ def analyze(t, values, contract, original, qualified):
             clocks = ['sp16_'+str(bit % 16), 'sp8_'+str(bit % 8), 'sp4_'+str(bit % 4),
                       'sa' if bit % 2 == 0 else 'sb', 's']
             frames[key] = dict(row=int(row), time_s=float(t[row]), oracle_bit_index=bit,
-                ui_position=float((t[row]-START)/UI), stages=stages_at(t, values, contract, bit, row),
+                ui_position=float((t[row]-START)/UI),
+                within_original_bit_window=bool(START <= t[row] < STOP),
+                bit_label_scope='Original UI context; startup/end extrema use bounded context only, never an added oracle sample',
+                stages=stages_at(t, values, contract, bit, row),
                 clocks=clock_at(t, values, contract, roles, clocks, row),
                 affected_hbts={n:hbt_point(t, values, n, contract['hbt'][n], row) for n in failed},
                 measured_bias_currents={k:float(v[row]) for k,v in values.items() if k.startswith('i(')})
