@@ -8312,3 +8312,18 @@ Fresh334 intrinsic/MIM40122940443 passed both polarities; exact proof imported. 
 Record40122066637 passed both simulators, then suffered runner shutdown during synthesis with15.18GB RSS and low available RAM. This is evidence of memory pressure, not a proven kernel OOM.13 memory-sentinel controls40123115007 pass. Constant-write candidatec8fcad78 preserves all32 count-state semantics and awaits independent equivalence before full synthesis/mutation proof.
 
 Full serial PHY, routed serial main chip and final setup/hold closure remain open.
+
+
+### 2026-10-25T06:41:29.403934+00:00 — cloud-only checkpoint v31
+
+Local workspace verified empty; sources, artifacts and native work remain entirely on GitHub. Existing eight-hour read-only monitor now tracks98 exact run/source handles; no automatic native dispatch.
+
+Normal TX fourth40123584880 saved32.516148474ns of34ns; sole fifth40168554741 continues exact source2e63863 with precreated release423184197. Swapped40125751590 completed34ns/77,691rows/14,182columns and detected its original fault. The negative case is complete, electrical acceptance remains false, and it must not be resumed.
+
+Mainchip route remains rejected for no log progress. Offline saved-IP40168659586 failed before any native archive access due to missing protobuf headers and Python3.10 fallback hashing. Both errors and37,047B actual log are preserved. Reviewed environment-only fix keeps controller98675c1f and35nonworkflow pins unchanged. Reviewed retry40169634355 at fdbbf799 with release423191527 nowPASS: mainthread saved IP maps to drt::FlexGridGraph::getRouteShapeCostAdj; all three workers map to libc futex waiting. Exact ELF bytes are checked without executing OpenROAD. A single saved IP is not a causal profile.
+
+Static32 transport was equivalent but its full proof40125733778 hit the10GiB sentinel in Yosys SHARE. Reviewed optional -noshare40169233322 completed workflow SUCCESS; authenticate full mapped-netlist/original-oracle and mutation evidence before implementation qualification. Original failed evidence remains visible.
+
+Actual334 two-order RC40125124288 passed; full qualified sources were imported at ef66e493. Explicit finite-contact/distributed-node loaded binding is next. CDR22-asset JSON recovery40125550819 passed while all original electrical rejections remain; exact C/D high-VCE and hot A/B low-VCE targets are retained. Absent native currents must not be invented; prepare one bounded current/voltage readback.
+
+Full serial PHY, routed serial main chip and final setup/hold closure remain open.
