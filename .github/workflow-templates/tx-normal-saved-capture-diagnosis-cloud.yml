@@ -40,6 +40,15 @@ jobs:
           assert len(x['metadata']['rejected'])==23
           assert x['native_simulation'] is False
           PYCODE
+          python3 scripts/wait_cloud_tested_source_release.py --controls > release-wait-controls.json
+          python3 - <<'PYCODE'
+          import json
+          x=json.load(open('release-wait-controls.json'))
+          assert x['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'
+          assert len(x['positive_cases'])==3 and len(x['rejected'])==4
+          assert x['maximum_scheduled_wait_s']==300 and not x['creation_attempted'] and not x['native_executed']
+          print(json.dumps(x,indent=2))
+          PYCODE
   saved-capture-readback:
     if: inputs.readback
     needs: source-controls
@@ -55,6 +64,10 @@ jobs:
         with:
           python-version: '3.12'
       - run: python3 -m pip install numpy==2.3.3
+      - name: Wait read-only for externally reserved exact-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/wait_cloud_tested_source_release.py --group tx-normal-saved-capture-diagnosis
       - name: Authenticate every original archive byte then read unchanged full capture once
         env:
           GH_TOKEN: ${{ github.token }}
@@ -70,7 +83,7 @@ jobs:
           test -f "$root/result.json"
           stem="$group-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           cp "$root/result.json" "$stem.summary.json"
-          python3 scripts/ensure_cloud_tested_source_release.py --group "$group"
+          python3 scripts/wait_cloud_tested_source_release.py --group "$group"
           python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
           python3 - "$stem" "$group" "$root" <<'PYCODE'
           import json,pathlib,subprocess,sys
