@@ -57,7 +57,15 @@
     "body": "r3 line484: r0=rsh*delr_rsh*(leff_um/weff_um)*(1-df*sqrt(dp_i))",
     "contacts": "r3 lines488-495: rc1_tnom=(rc+rcw/w_um)/c1; rc2_tnom=(rc+rcw/w_um)/c2",
     "temperature": "body tc1=170e-6/K,tc2=0.4e-6/K^2; contact tc1rc=-950e-6/K. r3 lines534-542 apply distinct body/contact factors.",
-    "bias": "r3 line822 reports r_dc=1/geff+tcrc*(rc1_tnom+rc2_tnom), including bias dependence; loadStatic749-760 places contacts at both actual ends."
+    "bias": "r3 line822 reports r_dc=1/geff+tcrc*(rc1_tnom+rc2_tnom), including bias dependence; loadStatic749-760 places contacts at both actual ends.",
+    "corner_rsh_ohm_per_square": {
+      "res_typ": 260.0,
+      "res_bcs": 234.0,
+      "res_wcs": 286.0
+    },
+    "corner_scope": "These are distinct selected cornerRES sections; a hot/cold loaded case is not assumed to select res_wcs/res_bcs. Contact rz remains35e-6/W for all three unless postsim or another parameter is explicitly changed.",
+    "explicit_mismatch_default_m1": "With sw_mmgeo=0, sw_mman=1, nsmm_w=nsmm_l=nsmm_rsh=1, zero global nsig and m=1: wid=W_drawn_um+0.006, len=L_drawn_um; Weff_um=W_drawn_um+0.012+0.01/sqrt(L_drawn_um); Leff_um=L_drawn_um+0.01/sqrt(W_drawn_um+0.006); delr_rsh=exp(0.015/sqrt(L_drawn_um*(W_drawn_um+0.006))). These expressions reflect actual nonzero default local-variation arguments in the wrapper, not a random mismatch simulation.",
+    "explicit_temperature": "For unchanged remaining default coefficients, body multiplier1+170e-6*DeltaT+0.4e-6*DeltaT^2 and contact multiplier1-950e-6*DeltaT, with DeltaT=actual device temperature minus27C; both are clipped by the native model and self-heating/bias must remain native. Do not substitute arithmetic approximations for per-case compact-model behavior."
   },
   "line_references": {
     "r3_cmc.va": [
