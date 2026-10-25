@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T10:40:47.441322+00:00",
+  "updated_at": "2026-10-25T10:48:18.796852+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "63b26b74e767e9ac09a88b0c1514d7ea2e199fbd",
+  "root_source_before_receipt": "e21d982cdf33927c099b3bbcb8c6efedf099aa6c",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 39,
+    "inventory_version": 40,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40163484810,
@@ -15,6 +15,31 @@
     "last_verified_run_status": "ATTENTION_REQUIRED: actual observation succeeded and published; nonzero exit reflects tracked open failures, not MONITOR_ERROR"
   },
   "active_runs": {
+    "Normal TX corrected existing-capture same-row diagnosis": {
+      "run": 40186130564,
+      "head_sha": "8fedec64c45b2028f0241380e439783659553fb6",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121147179561,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121147283332,
+          "name": "saved-capture-readback",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Authenticate every original archive byte then read unchanged full capture once"
+          ]
+        }
+      ]
+    },
     "Mainchip no-GDB7200 corrected release same-process continuation": {
       "run": 40185550438,
       "head_sha": "85f1aeee0e92eb4ad8c4f16fa98814ea30c3f60c",
@@ -35,7 +60,7 @@
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Build and verify only the original CRIU source; no debugger"
+            "Continue only the exact saved 401797 process under original routing gates"
           ]
         }
       ]
@@ -262,12 +287,16 @@
       "final_timing_complete": false
     },
     "cdr_serialized_shape_observer": {
-      "controls_pass": 40185270543,
-      "current_run": 40185582304,
-      "source": "04fa51061bcce36be4eef491d171a75dc93977c3",
-      "release_id": 423327966,
-      "original184engineering_hashes_verified": true,
-      "scope": "Existing2910B saved sidecar only; both native/saved raw/text/pin/property/material differences captured before reproducing exact original first-cell line40 rejection.",
+      "run": 40185582304,
+      "status": "PASS_DIAGNOSIS_ORIGINAL_RAW_SHAPE_REJECTION_PRESERVED",
+      "proof": "1b8977deba8d2018fa3824564c504e9c4f74b381",
+      "summary_sha256": "35fcb508",
+      "comparison_sha256": "6d3f73f925ab9767c3b161f293ce0c105074ec03e9052f516ab6f1c2553530f4",
+      "both_cells_shapes": 21,
+      "both_cells_exact_pin_shapes": 2,
+      "all_material_layers_equal": true,
+      "actual_difference": "Exactly two text shapes per cell on52/0 and63/0 lose f=2 in serialized text; string/position/r0-r90/size/horizontal-vertical alignment remain identical. Actual font accessor and narrowly bounded comparator repair pending.",
+      "original339_and_restored345_unchanged": true,
       "candidate_geometry_edited": false,
       "annotation_recovery_accepted": false,
       "strict_wires_executed": false
@@ -283,15 +312,31 @@
       "historical_gap_files_restored_byte_exact": true,
       "current_scope_note": "docs/pcie-gen12-owner-audit-provenance-20261025.md",
       "training_owner_implemented": false
+    },
+    "normal_tx_corrected_existing_capture_readback": {
+      "controls_pass": 40185752188,
+      "original_controls_retained": true,
+      "publisher_addon_faults": 13,
+      "current_run": 40186130564,
+      "source": "8fedec64c45b2028f0241380e439783659553fb6",
+      "release_id": 423332416,
+      "scope": "Read existing complete7part capture, alloriginal53members+result hashes and exactsource-derivedpublisherlog;19 actualinputcontrols then originalfullreviewonce and same-row evidence. No simulator or process continuation.",
+      "original_electrical_rejection_preserved": true,
+      "electrical_accepted": false
+    },
+    "gen12_complete_record_cdc_proposal": {
+      "owner": "tx_diagnosis",
+      "status": "DESIGN_REVIEW_ONLY",
+      "scope": "Inspect qualified192-bitrecord/200-bitCDC primitives and propose recovered-to-common complete-record transport/reset/overflow contract. No implementation/native run or LTSSM/link-up claim authorized yet."
     }
   },
   "next_actions": [
-    "Keep all execution and native artifacts on GitHub Actions/Releases; local project/tmp/CAD processes remain absent.",
-    "Consume CDR40185582304 exact sidecar differences and preserved original rejection; only then propose geometry-preserving serialization correction and unchanged strict-wire recovery.",
-    "Consume sole mainchip40185550438 original-budget7200 no-GDB same-process route. Preserve original no-log/native-progress and postroute gates; no further automatic retry.",
-    "Qualify normal TX671b027 publication-addon source controls, then review one corrected saved-capture readback. Preserve first readbackfailure40184778567 and original electricalfailure40168554741.",
-    "Review phase318 c756a318 same-row source/contract-archive controller without new simulation. Complete40178775666 remains electrically rejected and not resumable.",
-    "Retain full Gen3x4 owner/analog/serial/mainchip/finaltiming open status and existing8h read-only monitor."
+    "Keep all NSSOC computation and native outputs on GitHub; local workspace/project temporaries/CAD processes remain empty.",
+    "CDR actual40185582304 isolated exactly two nonmaterial textfont losses percell. Implement/review narrow nativefont2-to-savedNoFont(-1) comparator on only52/0+63/0 preserving allothertext/nontext/properties/material/pins/signature; actualaccessorvalues and realfaults required. Then exact originalrecovery+4strictwire scripts, no arbitrarynormalization.",
+    "Consume mainchip sole40185550438 original7200 same-process continuation. Nativepreflight passed; preserve original no-log/progress/20-4-8-8ns+5percent/postroute gates. No furtherautomaticretry.",
+    "Consume corrected normalTX40186130564 saved-capture analysis. Preserve firstarchivefailure and originalelectricalrejection; no newSPICE.",
+    "Phase318 completecapture remains nonresumable electricalfailure. Review c756a318 sourceonly observer and cloudrestore/inputcontrols before any readback.",
+    "Review Gen12 complete-record CDC design proposal only; training owner/LTSSM/analog serial PHY/mainchip timing still open. Existing8h read-only monitor retained."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -398,26 +443,27 @@
     "observed_40184859368": 40184859368,
     "observed_40185260899": 40185260899,
     "observed_40185270543": 40185270543,
-    "observed_40185582304": 40185582304
+    "observed_40185582304": 40185582304,
+    "observed_40185752188": 40185752188
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40184193430,
-      "head_sha": "d4dc336e65c7093a58666c1e73517c9b67e2cd7a",
+      "run": 40185752188,
+      "head_sha": "671b02787ac2b6261bd08487da30d93c0856b4c7",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121141401609,
+          "id": 121146061282,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121141502445,
+          "id": 121146188756,
           "name": "saved-capture-readback",
           "status": "completed",
           "conclusion": "skipped",
@@ -426,119 +472,27 @@
       ]
     },
     {
-      "run": 40184778567,
-      "head_sha": "e8ce0f3040925730c4a15fba8604ab2114a39a25",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121143151256,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121143242137,
-          "name": "saved-capture-readback",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40184859368,
-      "head_sha": "0fb3552ea0f72c055564409bf644767e95861a1d",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121143401566,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121143494123,
-          "name": "exact-saved-route",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40185260899,
-      "head_sha": "85f1aeee0e92eb4ad8c4f16fa98814ea30c3f60c",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121144601367,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121144689298,
-          "name": "exact-saved-route",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40185550438,
-      "head_sha": "85f1aeee0e92eb4ad8c4f16fa98814ea30c3f60c",
+      "run": 40186130564,
+      "head_sha": "8fedec64c45b2028f0241380e439783659553fb6",
       "status": "in_progress",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121145461460,
+          "id": 121147179561,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121145553802,
-          "name": "exact-saved-route",
+          "id": 121147283332,
+          "name": "saved-capture-readback",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Build and verify only the original CRIU source; no debugger"
+            "Authenticate every original archive byte then read unchanged full capture once"
           ]
-        }
-      ]
-    },
-    {
-      "run": 40185270543,
-      "head_sha": "d35e943d45bc8963275e9b7c4c8c8d03122b9759",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121144631174,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121144722413,
-          "name": "read-only-saved-sidecar",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
         }
       ]
     },
@@ -564,10 +518,35 @@
           "active_steps": []
         }
       ]
+    },
+    {
+      "run": 40185550438,
+      "head_sha": "85f1aeee0e92eb4ad8c4f16fa98814ea30c3f60c",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121145461460,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121145553802,
+          "name": "exact-saved-route",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Continue only the exact saved 401797 process under original routing gates"
+          ]
+        }
+      ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-25T10:40:47.441322+00:00",
+    "observed_at": "2026-10-25T10:48:18.796852+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -689,7 +668,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-25T10:40:47.441322+00:00",
+  "local_workspace_verified_empty_at": "2026-10-25T10:48:18.796852+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -1836,6 +1815,105 @@
       "run": 40185582304,
       "release_id": 423327966,
       "source": "04fa51061bcce36be4eef491d171a75dc93977c3",
+      "prerelease": true,
+      "draft": false
+    }
+  ],
+  "imported_checkpoint_receipts_v40": [
+    {
+      "path": "docs/evidence/tx-normal-publication-addon-controls-40185752188.log",
+      "source": "c646d6f3aa59cf0c1ef583af4d944dce17c9981b",
+      "git_blob": "a7be252a46d1b98c8208558c149431379913cde2",
+      "bytes": 40831,
+      "sha256": "4a581244614879e1132b16766fdd4204fd18a9725e746a803eb550368232931c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-normal-publication-addon-controls-result-20261025.json",
+      "source": "c646d6f3aa59cf0c1ef583af4d944dce17c9981b",
+      "git_blob": "2e3ed2ac4507c63813a625bdd2dc747dd1b47c20",
+      "bytes": 9458,
+      "sha256": "2ad49a5025605c781f05cc2b1d26fa7b90b29693e540f0c2f0e56934c5fd2542",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-normal-publication-addon-hosted-controls-pass-20261025.json",
+      "source": "c646d6f3aa59cf0c1ef583af4d944dce17c9981b",
+      "git_blob": "991858ca1673f22c6b5327a388ed2ea2b798c9e3",
+      "bytes": 1027,
+      "sha256": "66d6f5b1ca051eef0e3912e0bdaa17000771e780c6167d826b5c4770bf748e2f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-normal-corrected-readback-activation-20261025.json",
+      "source": "8fedec64c45b2028f0241380e439783659553fb6",
+      "git_blob": "507c4592af00aea21962c9b5f2fcef47a717b314",
+      "bytes": 830,
+      "sha256": "988753e174266b54b21f34cc73730e06879418e199e6f581dcf8f09c43c873ce",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-userstack7200-corrected-dispatch-20261025.json",
+      "source": "f2446a632fa7f7e16100b4bc2117428e4febd7e6",
+      "git_blob": "2d0c109291b542b23f5f7b8faf72e8ebf0ba46a2",
+      "bytes": 7452,
+      "sha256": "9a1c2c0a05edbe71c8edea9c484fb41b469f3a569461e630731bea5be1988fe2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-serialized-shape-diagnostic-comparison-20261025.json",
+      "source": "1b8977deba8d2018fa3824564c504e9c4f74b381",
+      "git_blob": "17a25b3e7d4dfb1829a909190c58b156a68caf2e",
+      "bytes": 52200,
+      "sha256": "6d3f73f925ab9767c3b161f293ce0c105074ec03e9052f516ab6f1c2553530f4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-serialized-shape-diagnostic-joblog-20261025.log",
+      "source": "1b8977deba8d2018fa3824564c504e9c4f74b381",
+      "git_blob": "7b950890558e9da0b88f5841297ff602f48f400c",
+      "bytes": 347400,
+      "sha256": "a20643007e9ce1684b59e1ee56076b5b7b6c24afb8d09269fc42a7a63a5b8f0b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-serialized-shape-diagnostic-materialization-20261025.json",
+      "source": "1b8977deba8d2018fa3824564c504e9c4f74b381",
+      "git_blob": "0766addc4f5ea4b250e3e75d6c73e168f41774c8",
+      "bytes": 4584,
+      "sha256": "764275e229d81a3703ab69fcfa34a048f11ec6cb175ffbb3aec7b77dfda90ee5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-serialized-shape-diagnostic-parts-20261025.json",
+      "source": "1b8977deba8d2018fa3824564c504e9c4f74b381",
+      "git_blob": "bd4148d3a29d2cb7bb147bb87820796ec8342fb1",
+      "bytes": 892,
+      "sha256": "7880998edb45b4a1efa981aa5c23a04324cf5991a1c8a726519cbb2f1e71c83d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-serialized-shape-diagnostic-result-20261025.json",
+      "source": "1b8977deba8d2018fa3824564c504e9c4f74b381",
+      "git_blob": "a729f58724b6fbbbe1744575fe5cfb2bf5b57d11",
+      "bytes": 229022,
+      "sha256": "35fcb508dd467a22af7c7b545eec25e9d5e933577c736eb72aa2528b3200d360",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-serialized-shape-diagnostic-terminal-20261025.json",
+      "source": "1b8977deba8d2018fa3824564c504e9c4f74b381",
+      "git_blob": "66060fddf1e47f1f82e5611682bb486af3a2d867",
+      "bytes": 8910,
+      "sha256": "a71997f7521712b82a5330c2e47051b35ddc7fa114277d6d7b897aa5823ec53b",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v40": [
+    {
+      "run": 40186130564,
+      "release_id": 423332416,
+      "source": "8fedec64c45b2028f0241380e439783659553fb6",
       "prerelease": true,
       "draft": false
     }
