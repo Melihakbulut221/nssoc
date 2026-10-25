@@ -1,0 +1,181 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Mainchip exact same-process 7200-second continuation
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source controls or one reviewed same-process routing segment
+        required: true
+        default: source-controls
+        type: choice
+        options: [source-controls, native]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-userstack7200-continuation
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact source and actual harmless prerequisite controls only
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 scripts/check_mainchip_userstack7200_source.py | tee mainchip-userstack7200-source-controls.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('mainchip-userstack7200-source-controls.json'))
+          assert r['status']=='PASS58_EXACT_DIAGNOSTIC_ADMISSION_AND_ROUTE_SOURCE_CONTROLS_ONLY'
+          assert len(r['rejected'])==58
+          assert r['original39']['status']=='PASS39_SOURCE_BINDING_CONTROLS_NOT_NATIVE_ATTACH'
+          assert not r['native_process_restored'] and not r['chip_started'] and not r['gdb_attached'] and not r['archive_downloaded']
+          PY
+      - name: Prove bounded read-only external release wait
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/wait_cloud_tested_source_release.py --controls > mainchip-userstack7200-release-wait-controls.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('mainchip-userstack7200-release-wait-controls.json'))
+          assert d['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'
+          assert len(d['positive_cases'])==3 and len(d['rejected'])==4
+          assert d['maximum_scheduled_wait_s']==300 and not d['creation_attempted'] and not d['native_executed']
+          print(json.dumps(d,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mainchip-userstack7200-source-controls-${{ github.run_id }}
+          path: |
+            mainchip-userstack7200-source-controls.json
+            mainchip-userstack7200-release-wait-controls.json
+          retention-days: 90
+
+  exact-saved-route:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'native'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    permissions:
+      contents: write
+      actions: read
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Verify reviewed source authorization and exact evidence destination
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          PYTHONPATH=scripts python3 - <<'PY'
+          import json
+          from cloud_mainchip_userstack7200_continue import methods
+          from ensure_cloud_tested_source_release import controls
+          m=methods()
+          assert m['native_process_restore_authorized'] is True
+          assert m['gdb_attachment_authorized'] is False and m['cold_restart_authorized'] is False
+          assert m['latest_capsule_run']==40179732322
+          assert m['route_segment_s']==7200 and m['original_budget_bounds_s']==[600,7200]
+          assert not m['normal_continuation_preaccepted'] and not m['native_execution_claimed']
+          p=controls();assert len(p['rejected'])==17
+          print(json.dumps(p,indent=2))
+          PY
+          python3 scripts/wait_cloud_tested_source_release.py --group mainchip-route12-userstack7200
+      - name: Reserve hosted disk for the authenticated runtime and process images
+        run: |
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet
+          df -h /
+      - name: Build and verify only the original CRIU source; no debugger
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev
+          git init "$RUNNER_TEMP/criu-src"
+          git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
+          git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          git -C "$RUNNER_TEMP/criu-src" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/criu-src" rev-parse HEAD)" = 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          make -C "$RUNNER_TEMP/criu-src" -j2 criu PYTHON=/usr/bin/python3 2>&1 | tee "$RUNNER_TEMP/criu-build.log"
+          sudo install -m 755 "$RUNNER_TEMP/criu-src/criu/criu" /usr/sbin/criu
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          p=pathlib.Path('/usr/sbin/criu')
+          d=dict(source_repository='https://github.com/checkpoint-restore/criu',source_tag='v4.2.1',
+            source_commit='9539417f3e3cfa4eb84c319cd71f4d52f1f08645',
+            binary_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
+            version=subprocess.check_output([str(p),'--version'],text=True),
+            libraries=subprocess.check_output(['ldd',str(p)],text=True))
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
+          PY
+      - name: Continue only the exact saved 401797 process under original routing gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NSSOC_DRT_SECONDS: '7200'
+        run: |
+          set -euo pipefail
+          python3 -u scripts/cloud_mainchip_userstack7200_continue.py
+      - name: Preserve bounded exact result and complete native failure metadata
+        if: always()
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import base64,hashlib,json,os,shutil
+          from pathlib import Path
+          root=Path('cloud-mainchip-route12-userstack7200');root.mkdir(exist_ok=True)
+          for name in ('criu-build.log','criu-build.json'):
+              p=Path(os.environ['RUNNER_TEMP'])/name
+              if p.is_file():shutil.copy2(p,root/name)
+          p=root/'result.json'
+          if not p.exists():
+              p.write_text(json.dumps(dict(status='FAIL_MISSING_NATIVE_RESULT',source_head=os.environ['GITHUB_SHA'],
+                run_id=os.environ['GITHUB_RUN_ID'],routing_complete=False,continuation_accepted=False,
+                final_timing_complete=False,full_phy_accepted=False))+'\n')
+          raw=p.read_bytes();print('ROUTE7200_NATIVE_RESULT '+json.dumps(dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())))
+          if len(raw)<=4_000_000:
+              for n in range(0,len(raw),3072):
+                  print('ROUTE7200_NATIVE_CHUNK '+str(n//3072)+' '+base64.b64encode(raw[n:n+3072]).decode(),flush=True)
+          else:
+              print('ROUTE7200_NATIVE_COMPLETE_RESULT_RETAINED_IN_ASSET_AND_FALLBACK_ARTIFACT')
+          PY
+      - name: Publish complete process, runtime binding, original progress and failure evidence
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          root=cloud-mainchip-route12-userstack7200
+          stem="mainchip-route12-userstack7200-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          python3 scripts/wait_cloud_tested_source_release.py --group mainchip-route12-userstack7200
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PY'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','mainchip-route12-userstack7200',
+            stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PY
+      - name: Preserve complete evidence if publication fails
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-route12-userstack7200-complete-evidence
+          path: cloud-mainchip-route12-userstack7200/
+          retention-days: 90
+          compression-level: 1

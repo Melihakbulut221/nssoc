@@ -1,0 +1,15 @@
+# Exact saved-process 7200-second continuation proposal
+
+The completed 40179732322 diagnostic bound the actual OpenROAD executable, complete declared runtime and twenty detached stack samples. Nineteen samples were inside FlexGridGraph search and one was in cost update. This supports a longer attempt to finish the existing route; it does not establish a particular net's progress or waive the original no-log rejection.
+
+This proposal restores only the 23-image diagnostic capsule from source e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3. Its outer diagnostic PASS and inner FAIL_OR_ERROR are admitted explicitly through immutable summary, parts, output-member and generated-controller hashes. The original 40095811631 and 40120760532 admissions and all qualified engineering files remain unchanged.
+
+The exact original continuation source permits 600..7200 seconds. This proposal chooses 7200 seconds without changing that assertion. It performs no GDB attachment, no new stack sampling, no runtime upgrade and no cold restart. Before the timed segment, a separate root-side read-only helper reuses the already qualified held-process/root file traversal to verify all 26,524 runtime files, 2,794 symlinks, executable, mapped-library identities, environment and container identity. It does not invoke target functions, ptrace or a debugger.
+
+The generated controller is a reversible nine-site derivation of the frozen controller: module/output namespace, explicit diagnostic admission/restoration/history, current-input before-proof, streaming checkpoint-copy proof, detached runtime binding and truthful new publication group. The original 600..7200 bound, 14-GiB checkpoint reserve, original native command, checkpoint/cleanup, exact elapsed segment loop, actual log-prefix/progress requirements and final completion checks remain unchanged. Source clock periods 20/4/8/8 ns and five-percent derating remain mandatory.
+
+The new wrapper propagates the original no-log assertion as a failing job, preserving the new checkpoint and all failure outputs. CPU activity never sets continuation acceptance. A successful saved-process result requires the original appended native optimization witness and every original source/settings check. A completed native DRT result still requires the original post-route antenna, connectivity, clock/topology, extraction and three-corner setup/hold gates before final acceptance.
+
+Source controls authenticate the real 21,030,878-byte prior summary and exact run/release/job metadata, preserve the original 39 controls, and add 58 transport/schema/disposition/source corruptions. Inner-member field positives are explicitly shape fixtures, not actual archive admission; actual inner-member SHA and all 39 selected members are required during hosted restoration. No source controls download an archive or start a chip process.
+
+The workflow is a nonregistered manual-only template. Native authorization is false. Independent source review, actual hosted controls, final root review, metadata authorization and one explicit dispatch remain required. No native result or future route progress is claimed by this proposal.
