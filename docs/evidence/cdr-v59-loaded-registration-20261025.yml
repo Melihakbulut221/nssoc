@@ -1,0 +1,14 @@
+name: cdr-v59-loaded-cloud
+on:
+  push:
+    branches: [codex/register-cdr-v59-loaded-controls-d25a1f4e]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  harmless-registration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Register workflow path without checkout or native work
+        run: echo 'CDR v59 loaded source-controls workflow registration only'
