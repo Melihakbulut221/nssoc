@@ -8370,3 +8370,16 @@ C/D shunt candidate40176503143 generated real layout and passes reported origina
 Qualified harmless GDB43-path closure imported81341b09. Latest actual-container binding source0128a77 is not executed; generated-controller identity/descriptor corrected separately and exceptional supervisor final-cleanup proof is under repair. Hosted controls must pass before actual chip attach; original no-log/timing gates unchanged.
 
 Full serial PHY, routed serial chip and final timing remain open.
+
+
+### 2026-10-25T09:06:48.169583+00:00 — cloud-only checkpoint v35
+
+User directive: all work/cloud, no local project files. Fresh verification: workspace empty, project temporary files absent, no local CAD/simulation processes. GitHub remains authoritative. Inventory115 exact runs; existing8h read-only monitor retained.
+
+First actual loaded reset334 p-high run40178775666/source7398bb00 has passed hosted controls and entered execution; release423271065 source-bound before heavy work. One13200s segment, full34ns and4726-state review; if incomplete save same process and derive continuation only from published native capsule. No transient acceptance yet. Frozen first-fall threshold is62.5ps.
+
+Mainchip exact observer source controls40177235211 passed39 new controls. First actual attempt40178764762 failed403 at evidence-release preflight before runtime installation/restore/attach. Full log/result retained. Root subsequently reserved423271749; an empty release is not success. Narrow read-only external-release wait repair is under review; no new chip route or stack proof yet. Original600s/no-log/timing/controller/probe remain frozen.
+
+CDR physical40176503143 passes reported DRC/deep-flat LVS/native planes then fails original annotation line62. Read-only exact339-file capsule diagnosis40179142223 follows32+17 actual controls, with source-bound release423274350. It will reproduce original failure then test per-layer geometry XOR and actual native pin association without rerunning geometry. A/B candidate held.
+
+Full serial PHY, routed serial mainchip and final timing are not accepted. Continue from exact handles above; never infer acceptance from a green controls job, active CPU, an empty release or partial capture.

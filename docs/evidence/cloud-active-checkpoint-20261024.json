@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T08:32:05.911323+00:00",
+  "updated_at": "2026-10-25T09:06:48.169583+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "7f951fc7778a278083282c3d79423f0439debe3c",
+  "root_source_before_receipt": "2ec5dbcec84491c92fe29ae37230c3e8b982728a",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 34,
+    "inventory_version": 35,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40163484810,
@@ -14,7 +14,29 @@
     "automatic_native_dispatch": false,
     "last_verified_run_status": "ATTENTION_REQUIRED: actual observation succeeded and published; nonzero exit reflects tracked open failures, not MONITOR_ERROR"
   },
-  "active_runs": {},
+  "active_runs": {
+    "Reset334 first actual loaded p-high34ns native process": {
+      "run": 40178775666,
+      "head_sha": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121125132309,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 121125295778,
+          "name": "exact318-p-high-native",
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -146,23 +168,27 @@
     "reset334_zero_OP_nested_closure": "0a16af26c4daf387013c71ce3818c680f61dd8b0",
     "cdr_v59_reviewed_physical_source": "1551ff0eee49324b827682588a1818a7b8f81207",
     "cdr_v59_physical_dispatch": "cba98bba5422273d809b139b5e9ae479dcd2acd5",
-    "mainchip_latest_container_binding_candidate": "0128a77d45ad6291bcc439e3b2147ca56a181bb7"
+    "mainchip_latest_container_binding_candidate": "0128a77d45ad6291bcc439e3b2147ca56a181bb7",
+    "mainchip_exact_observer_source_controls": "7431e0813246643f77a2c8069384a0df3765d164",
+    "mainchip_observer_failed_preflight_source": "b9aebc332c640c7e54d19f56980378005e654b70",
+    "reset334_first_transient_source": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+    "cdr_annotation_diagnostic_source": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618"
   },
   "qualified_progress": {
     "tx": "NormalTX40168554741 is terminal electricalFAIL after complete34ns/77,681rows/14,182columns, nativeexit0/zero-sourceOP/no solver diagnostics. Original768 signal samples:14wrong-sign,30below100mV,min-263.488mV.76of604HBTs fail (worstVCEmin0.341760V),0of5376MOS fail; level16 interface passes,level8/4/final/CMOS fail. All7native parts published with exact manifest metadata; no local native download. Normal and swapped cases are now complete with no saved process to resume. Preserve original rejection and diagnose same-row capture before repair.",
-    "phase": "All four actual fresh318 native zero-source OPs40175085823 PASS, native return0/no diagnostics: ordered318 OFF=1 readbacks and all4726 electrical/thermal states zero, no transient file. Exact source/runtime/model bytes unchanged. Qualified172-path nested closure imported root7f951fc7. Original five source cards, full34ns/0.3125ps and100mV gates retained for next p-initial-high transient. Frozen first-fall predicate is UI/2 at125ps UI=62.5ps, not31.25ps; clarification receipt preserves original source and does not claim timing proof. Same-process portable220min segment/checkpoint design under review; no transient yet. All31/actualPLL/fullPHY remain open.",
-    "cdr": "Actual three-capture terminal-current ledger40171679250 PASS, all original electrical rejections retained; qualified49native-pin/full59-path closure roota283d6. All8 clock-tail current differences reverse515times per case, disproving absent steering inferred from collector voltage alone. Gain C/D VCE1.6708-1.6813V and hotA/B holdVCE0.3585-0.3877V remain failures. Isolated v59 shunt7.4to5.0um and slave-load2.6to2.0um candidates are conditional sensitivity hypotheses only, not simulated acceptance; source1ffc55e6 records missing Ib/Ie/rppd/internal wire data and original ten-case gates. Actual isolated C/D-shunt run40176503143 generated real candidate and reports original full DRC/deep-flat LVS plus native planes passing, then fails source-annotation-recovery. Partial gates are not aggregate physical/strict-wire/RC/electrical acceptance; complete failure/source checks pending recovery. Exact summary SHA c07cfcd6f1172d54dd1fdda3cf5d8c69e0522121fcc245a0b85d58ac5fa9258f is preserved by owner. Hold ab_hold until shared recovery cause is fixed; reuse authenticated passing candidate bytes where valid.",
+    "phase": "Four fresh318 native zero-source OPs40175085823 passed; exact172-path closure imported root7f951fc7. Complete transient source controls40178169815 pass52 new+22 portable plus inherited30/12/15/17 controls. Actual first p-high34ns loaded run40178775666/source7398bb00 has passed fresh controls and entered native execution step09:01:52UTC. All180 original source hashes and numerical/lifecycle gates unchanged;182 protected inputs after actual receipt binding. One13200s segment with same-process checkpoint if unfinished, all4726 states and prescribed three-parent oracles. Exact-source release423271065 reserved before dependencies. No transient electrical acceptance yet. Original first-fall predicate is UI/2=62.5ps; all31/actualPLL/fullPHY remain open.",
+    "cdr": "v59 isolated C/D-shunt40176503143 generated candidate and passed reported full original DRC/deep-flat LVS and native plane steps, then failed annotation recovery at original line62 for missing rppd signature. Full rejection/log retained. Read-only saved-capsule diagnosis40179142223/sourcee0d3d16f follows actual32+17 source controls40178947201. It first reproduces exact original error, then compares all missing primitive candidates by per-layer material XOR, raw/flattened hashes, DBU and actual native pin associations. Original339 outputs authenticated; no geometry/DRC/LVS rerun, no repaired source or strict-wire/RC/electrical acceptance. Hold ab_hold until shared cause is established.",
     "pll": "Crossing evidence remains noncausal:159anomalous/198clean controls overlap; native currents absent from oldcapture. Source-only first-latch instrumentationproposal d05b2bf1 and independentreview72fd1502 retained. FrozenPDK accessor/scaling/KCLpreflight is required before any unchanged-circuit currenttrace; no PLL closure.",
     "gen12": "Actual no-SHARE40169233322 passes full Yosys synth/check in12.665s (tool-reported peak320.77MB), both Icarus/Verilator100,859-cycle oracles, mapped-netlist sameoracle50.707s,24original faults and2mappedoutput faults. Canonical7179B static implementation nowroot303aa1df exactSHA01a3c63b, with83file frozen replay snapshot outsideproductionRTL and all evidence. No duplicate module, memorylimit increase or originalchecker change. This per-lane transport does not implement cross-laneCDC/commontrainingowner/lane-negotiation/Gen3transition/PMA/fullPHY/mainchip.",
-    "mainchip": "Saved-IP40169634355 identifies exact getRouteShapeCostAdj mainthread IP and3 futex workers without causal proof. Published pinned OpenROAD source/recipe association aa112f3f is not rebuilt ELF attestation. Harmless GDB fixture40172782148 failed before sample0 because executable display-string equality rejected; cloud-only artifact readback40173543363 authenticates exact stderr, without guessing missing filename spelling. Repaired actual file dev/inode/size/SHA binding passes harmless40174045028:20 samples,24 original controls plus3 spelling positives/8 wrong-object faults; timeout/detach/owned cleanup proved. Strict latest40120760532 capsule admission/live-container binding still required. No chip restore/attach, routed acceptance or timing closure. Qualified harmless43-path closure is root81341b09. Latest-container candidate0128a77 has descriptor/actual generated-controller adc703fa binding corrected separately from frozen helper. Exceptional supervisor finally_cleanup schema is being repaired and must pass hosted controls before chip restore/attach. No native chip job."
+    "mainchip": "Qualified harmless observer43-path root81341b09 remains frozen. Exact latest401207 container/descriptor/generated-controller adapter passed hosted39 source controls40177235211. Actual first diagnostic40178764762 failed HTTP403 release preflight before any runtime install, restore or chip attachment. Complete failure244B result/log/fallbackartifact retained; exact-source release423271749 was reserved only after the failed preflight and its emptiness is not evidence. Narrow external-release wait repair is being reviewed before fresh run; original observer/controller e43d4596, probe700dd422,600s route budget,20samples/480s collection/500s parent envelope and original no-log/timing gates unchanged. No new stack evidence or route acceptance."
   },
   "next_actions": [
-    "Preserve and diagnose C/D-shunt40176503143 source-annotation-recovery error. Keep all actual successful DRC/LVS/plane evidence; use authenticated unchanged candidate for corrected recovery when valid. No strict-wire/RC acceptance yet. Hold A/B arm until common error resolved.",
-    "After source review, execute first p-initial-high34ns loaded transient using qualified4case318OP initialization; all4726 states, three prescribed parent/child oracles, exact frozen62.5ps first-fall/100mV diagnostic gates. Reuse proven same-process portable checkpoint if220min segment budget is reached; never restart/accept partial capture.",
-    "Finish latest40120760532 exact container/file admission and exceptional-cleanup proof, run hosted controls, then one bounded actual stack observation only after review. Original600s route/no-log/timing source remains unchanged.",
-    "Both complete normal/swapped TX processes are terminal; do not resume. Diagnose normal electrical rejection before circuit changes.",
-    "Gen12 qualified per-lane record transport still needs four recovered-clock CDC/common training owner and full protocol/serial integration.",
-    "All work stays GitHub-only; local project/tmp/native-process checks remain empty. Eight-hour monitor observes and reports open failures; it never automatically dispatches or claims PHY/timing acceptance."
+    "Observe sole first p-high native40178775666; require full published result/parts hashes. On saved status derive exact same-process continuation descriptor from actual assets; never restart or accept partial capture. Preserve13200s segment, all4726states, original62.5ps/100mV gates and positive p-high scope.",
+    "Consume CDR read-only diagnostic40179142223; establish actual material XOR and pin identity cause before any annotation fix. Preserve original line62 rejection and all successful physical evidence. Hold A/B candidate until common recovery cause resolved.",
+    "Finish bounded read-only external-release wait fix after HTTP40340178764762, verify hosted controls, reserve exact source destination, then one fresh mainchip observer. Failed first run did not restore or attach any chip. Native controller/probe and original route/no-log/timing remain fixed.",
+    "Both complete normal/swapped TX captures are terminal; diagnose normal electrical rejection before circuit changes; do not resume them.",
+    "Gen12 per-lane record proof is qualified but four recovered-clock CDC/common training owner and full protocol/serial mainchip integration remain open.",
+    "Continue cloud-only. Local project/tmp/native processes remain empty; all source/test/native artifacts and checkpoints reside on GitHub. Existing8h read-only monitor tracks115 exact handles and reports open failures, without auto-dispatch or PHY/timing claims."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -252,70 +278,138 @@
     "cdr_v59_source_controls_pass": 40176295615,
     "observed_40175085823": 40175085823,
     "observed_40176295615": 40176295615,
-    "observed_40176503143": 40176503143
+    "observed_40176503143": 40176503143,
+    "observed_40177235211": 40177235211,
+    "observed_40178169815": 40178169815,
+    "observed_40178764762": 40178764762,
+    "observed_40178947201": 40178947201,
+    "observed_40179142223": 40179142223
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40175085823,
-      "head_sha": "63a4c761e08442f037027916233acb78f4dfd8c1",
+      "run": 40177235211,
+      "head_sha": "7431e0813246643f77a2c8069384a0df3765d164",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
+          "id": 121120468566,
           "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success"
-        },
-        {
-          "name": "exact318-runtime-paths-or-zero-OP",
           "status": "completed",
           "conclusion": "success"
         }
       ]
     },
     {
-      "run": 40176295615,
-      "head_sha": "1a452c48fbc7a39ed50a52d56e4f70472ddcdefd",
+      "run": 40178169815,
+      "head_sha": "2905f1ddf525076112b4f43946d0fedb906b1d9b",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "name": "controls",
+          "id": 121123292465,
+          "name": "source-controls",
           "status": "completed",
           "conclusion": "success"
         },
         {
-          "name": "native-physical-and-wires",
+          "id": 121123457469,
+          "name": "exact318-p-high-native",
           "status": "completed",
           "conclusion": "skipped"
         }
       ]
     },
     {
-      "run": 40176503143,
-      "head_sha": "384ca20f3f482b65687e951d94fedc29dec42613",
+      "run": 40178764762,
+      "head_sha": "b9aebc332c640c7e54d19f56980378005e654b70",
       "status": "completed",
       "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
+          "id": 121125099440,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 121125181189,
+          "name": "exact-saved-userstack",
+          "status": "completed",
+          "conclusion": "failure"
+        }
+      ]
+    },
+    {
+      "run": 40178775666,
+      "head_sha": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121125132309,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 121125295778,
+          "name": "exact318-p-high-native",
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 40178947201,
+      "head_sha": "5467d11f2209e673a5d469fd51a755f2736f6a91",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121125638542,
           "name": "controls",
           "status": "completed",
           "conclusion": "success"
         },
         {
-          "name": "native-physical-and-wires",
+          "id": 121125731070,
+          "name": "read-only-native-geometry",
           "status": "completed",
-          "conclusion": "failure"
+          "conclusion": "skipped"
+        }
+      ]
+    },
+    {
+      "run": 40179142223,
+      "head_sha": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121126226038,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 121126312475,
+          "name": "read-only-native-geometry",
+          "status": "completed",
+          "conclusion": "success"
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-25T08:32:05.911323+00:00",
+    "observed_at": "2026-10-25T09:06:48.169583+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -437,7 +531,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-25T08:32:05.911323+00:00",
+  "local_workspace_verified_empty_at": "2026-10-25T09:06:48.169583+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -926,6 +1020,184 @@
       "bytes": 1882,
       "sha256": "38646f5f87e555b198cdf996977bd750d3fbd904e526a68b3d5cbd8d518460fb",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v35": [
+    {
+      "path": "docs/evidence/mainchip-latest-userstack-controls-joblog-20261025.txt",
+      "source": "b5462f2ef35b232876a2b57d2a8001f7320fdc44",
+      "git_blob": "c71d017ff2a9e4145f9730370e69dd66f7b295e0",
+      "bytes": 29130,
+      "sha256": "cfcf65386421e7cf8320f2b45043baf5492433f7583bb2a9b4b9e0b491eb357c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-latest-userstack-controls-pass-20261025.json",
+      "source": "b5462f2ef35b232876a2b57d2a8001f7320fdc44",
+      "git_blob": "b0d12397eff28fe49a2ca1da0df53092f4c191cb",
+      "bytes": 3118,
+      "sha256": "3d5acd0d6896aeaf5f24d488f534ac2f77a5863bed9790b6bdadd93d517b8107",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-latest-userstack-controls-result-20261025.json",
+      "source": "b5462f2ef35b232876a2b57d2a8001f7320fdc44",
+      "git_blob": "800839134aba0ae149e03cfb930b55a3f065ba1b",
+      "bytes": 3583,
+      "sha256": "374a94395c3e01488ddf3f9f4cc0c47f7351025aa9eb5bbf8657d8c90ba3ccab",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-transient-controls-full-result-20261025.json",
+      "source": "5c8a69d9bb656af0a3fe3e7569268462e6c294a7",
+      "git_blob": "48059cfd757449f056d113d2aeca3045bcaba086",
+      "bytes": 10326,
+      "sha256": "5d50182ed6dda477cd5335d60fbdfabd6d9cdbc0fbbd0fcbf0864f4cf2c4823f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-transient-controls-pass-20261025.json",
+      "source": "5c8a69d9bb656af0a3fe3e7569268462e6c294a7",
+      "git_blob": "1b8685b4205bcb3f04507b1b84b5a9489c2d9f80",
+      "bytes": 2349,
+      "sha256": "cb906be8651f1cca9c8d6958ea631e9e3509dd7c36a68b749b016483778cd3ea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-cd-shunt-first-annotation-failure-20261025.log",
+      "source": "80be8df46300ae6953c301db61b222009519b40c",
+      "git_blob": "c20292375cbb3e3f6804727ef7b183a1341d2fe5",
+      "bytes": 932,
+      "sha256": "5fc456912bbe247c195efd39c51e416319d339436c05b2910f744cc66e53d2c9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-cd-shunt-first-physical-20261025.log",
+      "source": "80be8df46300ae6953c301db61b222009519b40c",
+      "git_blob": "e75afd2359637de78cc0178ccb62a3bb74a1e068",
+      "bytes": 35740,
+      "sha256": "54cf116e0bb6a28d12096f8ef95247fe42e5c3d2b95306f4a205dfa6b1213164",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-cd-shunt-first-physical-rejection-20261025.json",
+      "source": "80be8df46300ae6953c301db61b222009519b40c",
+      "git_blob": "ac1b0e726ab9f24f72947b2ccfa3c8ccb6a81aa6",
+      "bytes": 6989,
+      "sha256": "98d075d8192d4bca6e24843fcf76b721e402efc8b7a9fa0b57ce6afa5d07abc2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-cd-shunt-first-physical-result-20261025.json",
+      "source": "80be8df46300ae6953c301db61b222009519b40c",
+      "git_blob": "68d315a6df08e9690919a8ad1680e6f015f495b5",
+      "bytes": 1114546,
+      "sha256": "c07cfcd6f1172d54dd1fdda3cf5d8c69e0522121fcc245a0b85d58ac5fa9258f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-first-transient-dispatch-20261025.json",
+      "source": "8f365b3d00bd184a9e034eac8327c4e92da28717",
+      "git_blob": "a5de87556bd936c4e52cfb23f5b5b47da0a5eb03",
+      "bytes": 8507,
+      "sha256": "47ae90744b457db59312122d7e378f2f1d13203a46060f96343a826fbc25389f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-first-transient-source-controls-20261025.json",
+      "source": "8f365b3d00bd184a9e034eac8327c4e92da28717",
+      "git_blob": "dae25d6cd54abda9e66df1f7e6aeb98d4855426c",
+      "bytes": 10326,
+      "sha256": "cd6f197421a960a4d5423e001b86cc913b4feb5364b9d5ef2ac23d68ddf68e2b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-latest-userstack-native-dispatch-20261025.json",
+      "source": "36f6752eacd13f91a8f5aaa05c83865ceea69042",
+      "git_blob": "c038276d2dae97e09fa6850af34b5686135938cd",
+      "bytes": 1910,
+      "sha256": "4d183bd8f98bdc83b7272e692001f1daf7e15605d6e96fbe41995dfbede1cebd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-userstack-release-preflight-failure-20261025.json",
+      "source": "2584a00a1b2072affebfc0d0df0282cd4322a3e7",
+      "git_blob": "e506ac674f3e42efb93ac0c01ab9491968a4c795",
+      "bytes": 6481,
+      "sha256": "b42c191ce2bc38a731540c1606b7fcb66da69d4716cc02a5b0dd45b4c8ad6159",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-userstack-release-preflight-joblog-20261025.txt",
+      "source": "2584a00a1b2072affebfc0d0df0282cd4322a3e7",
+      "git_blob": "4b193cc6708066f3af7836f08b9625fa7978da2a",
+      "bytes": 31007,
+      "sha256": "c488dec634c3b2ab7dfe09bd3812d1a4f00c9677927da501aefab82117ce21f1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-userstack-release-preflight-result-20261025.json",
+      "source": "2584a00a1b2072affebfc0d0df0282cd4322a3e7",
+      "git_blob": "0bcddcdfbd3e1e8bdd4d434ce929e8a8177364fb",
+      "bytes": 244,
+      "sha256": "cf78e66b8bc6d6d2ac80c118d8f5d8f020c19e34250ba0cd5d9af286940da7aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-annotation-controls-20261025.log",
+      "source": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618",
+      "git_blob": "27555ad3c37a8a0a24ff629181f2f90570437598",
+      "bytes": 27071,
+      "sha256": "c2b19897994914ef2881914511778dce268b2bc4f770ff028432929b7b98c719",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-annotation-controls-result-20261025.json",
+      "source": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618",
+      "git_blob": "8030665330ee6e75e6b1f03a25be5b0dcbf191a4",
+      "bytes": 1119,
+      "sha256": "f6558722d64bda2bc36845113808838f195240bf8ad6c8527bf13621921a54e3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-annotation-hosted-controls-pass-20261025.json",
+      "source": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618",
+      "git_blob": "05de84c6eb1b22e4f68054bc9e14364111c7e083",
+      "bytes": 2866,
+      "sha256": "312b8052ff444a43c68fd90cd7511f2c967ed1c6eccdc2ccefd0d73206c405fa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-annotation-readback-dispatch-20261025.json",
+      "source": "2adaefc4193d2f8ef30ac48d96a67171734d674c",
+      "git_blob": "17f07960562ec592615d67982e7cb6c7a6af83c8",
+      "bytes": 1302,
+      "sha256": "823cff331955bd45c2e3e899dfa2dc8b4f7c5d90f1032c8665cd8a278ebc14f8",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v35": [
+    {
+      "run": 40178775666,
+      "release": 423271065,
+      "source": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+      "group": "tx-phase-reset334-transient-native-initial-p-initial-high",
+      "reserved_before_native": true
+    },
+    {
+      "run": 40178764762,
+      "release": 423271749,
+      "source": "b9aebc332c640c7e54d19f56980378005e654b70",
+      "group": "mainchip-route12-userstack",
+      "reserved_before_native": false,
+      "native_process_started": false
+    },
+    {
+      "run": 40179142223,
+      "release": 423274350,
+      "source": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618",
+      "group": "cdr-v59-annotation-diagnostic",
+      "reserved_before_native": true
     }
   ]
 }
