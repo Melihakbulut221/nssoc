@@ -11,10 +11,18 @@
   },
   "base_source": "c6cd12f0c820eb9d46cf4b4471e4f182755b222e",
   "cloud_restore_authorized": false,
+  "disk_required_bytes": {
+    "initial": 17179869184,
+    "phase": 4294967296,
+    "publication_additional_to_complete_evidence": 1073741824,
+    "publication_minimum": 4294967296,
+    "restore": 12884901888
+  },
   "driver_controls": {
     "actual_native_API_unexecuted": true,
-    "positives": 9,
-    "refusals": 26
+    "actual_original_restore_and_supervisor_imports_required": true,
+    "positives": 13,
+    "refusals": 37
   },
   "full_phy_accepted": false,
   "group": "mainchip-original-clock-restoration",
@@ -41,6 +49,58 @@
   },
   "native_execution_authorized": false,
   "native_routing_authorized": false,
+  "original_archive_restore": {
+    "manifest_sha256": "4ae4920f85e70ab51029414c68a0ee4bb69891007642198a02e14da8188d4823",
+    "restore": {
+      "archive": {
+        "all_parts_and_combined_bytes_verified": true,
+        "bytes": 629603913,
+        "parts": 1,
+        "sha256": "df1269d646d03ff4a03203c1347d0a22a78a1e3fd81ca00e43bd4266cbd91ace"
+      },
+      "full_archive_verified_before_extraction": true,
+      "selected_files": {
+        "geometry/all-clocks/after.def": {
+          "bytes": 185391806,
+          "sha256": "031e61ff169d27dbc8f83c0bf630cd43de44483ec9605bf6a4e1d38ccfbe37a7"
+        },
+        "geometry/all-clocks/before.def": {
+          "bytes": 59000251,
+          "sha256": "f8e4c86346c8876fa04ff02ccd8d8f060f018e6fab36fdca834b986d07a4748c"
+        },
+        "geometry/all-source-clocks.log": {
+          "bytes": 912,
+          "sha256": "918c26c919aa207380fdb7858d261b2d1e1a377eb987e9d065bfcf3e141f717e"
+        },
+        "geometry/fixed-clock.json": {
+          "bytes": 20355,
+          "sha256": "e8d944b963a701c151cf8d1300243fade2fac98903b3dfb723f8b76f3ad74dcd"
+        },
+        "geometry/result.json": {
+          "bytes": 10736,
+          "sha256": "6bf71f4846f6e1814922fe6b7246e89eb72d46f76da1dc61aa4507cb333be7fd"
+        },
+        "geometry/routed/work/before-guide-read.odb": {
+          "bytes": 145147935,
+          "sha256": "2d3dfa6ed917fd0d06b20109f3044073f60bbe263f59d8f31ac4913e1a7a787a"
+        },
+        "geometry/routed/work/detailed-route.odb": {
+          "bytes": 214494861,
+          "sha256": "9cdf9a6fb32d49894a5b23bd12ae4e6f400e1a945a9d2601e728f2d4ec7e0ae8"
+        },
+        "geometry/topology.json": {
+          "bytes": 921,
+          "sha256": "0bd0dd1790a56a274f13fb33bc7fe41fa940f7a717fe6cf2d036c9c3b767dbf3"
+        },
+        "result.json": {
+          "bytes": 4654340,
+          "sha256": "7e09bafa19e24a6de1c6fa3113ec104fc7fe7a43e421ad61b233164308223bd5"
+        }
+      }
+    },
+    "run": 40209284989,
+    "summary_sha256": "7e09bafa19e24a6de1c6fa3113ec104fc7fe7a43e421ad61b233164308223bd5"
+  },
   "original_planner": {
     "positives": 8,
     "refusals": 55
@@ -60,6 +120,7 @@
     "docs/evidence/mainchip-clock-diagnostic-native-activation-20261025.json": "c91e0136a6d8623ea30478e75ea09904e5e727d69d7dbc3c9645ac40f1980b36",
     "docs/evidence/mainchip-clock-diagnostic-root-controls-review-20261025.json": "39829eeac8e84b68e3698049ce79967066879dac52d121cac3958500cb4bcb19",
     "docs/evidence/mainchip-original-clock-c6cd-independent-source-review-20261025.json": "563ecdd5053c466d7c9af406d74ee0f653f67dfb49b530aae813befb158f059f",
+    "docs/evidence/mainchip-original-clock-driver-input-storage-correction-20261025.json": "20a683241ef270709bd6040076c5a84cce0731358bf7d1c34fef5a1cf33c28f0",
     "docs/evidence/mainchip-original-clock-independent-metadata-correction-20261025.json": "62f662316278be00c10d9c02962d68e722136d09ce8dac7cfe9e87ebd6c2352b",
     "docs/evidence/mainchip-original-clock-initial-DRT-primary-source-20261025.json": "655a248842cd4e2d2156f9dd003e926c1e47047a4b5675fd794da5a4fe152c53",
     "docs/evidence/mainchip-original-clock-metadata-export-peer-correction-20261025.json": "d9adc81167a84fa64d3838b3fdfdac95201a787e3213d9bc69406dacdc408351",
@@ -80,7 +141,7 @@
     "docs/evidence/mainchip-saved-postroute-root-controls-review-20261025.json": "c42e6f39c5f8c8b0c2daf1e57600e42ef8ef4218e0b87bc0b8503fb02314c95b",
     "docs/evidence/onehot-clock-restore-pass-20261020.json": "169fd80a0fadf36eba427fbe05f3e30d9c7c6dc2189e2b35f1b5e71f8ab20d3a",
     "docs/mainchip-completed-saved-postroute-20261025.md": "3da976e660c933e9d7450e14ddf2a268826e7f7e67841201e39874e99b8b6c56",
-    "docs/mainchip-original-clock-restoration-cloud-20261025.md": "7f95bf6e82d07af3713b63acd946df4295724932ca1a2325a48a7f43ac451f65",
+    "docs/mainchip-original-clock-restoration-cloud-20261025.md": "3e119a7e61a03c95980b485533ffca98dc87b8b4424ae8f87d1a225c870fdc41",
     "docs/mainchip-original-clock-restoration-source-20261025.md": "3510726a5f5a91a2ab2499795c2a2d8287ca244d70d5ca836392ea6e458a1c2e",
     "hw/soc/flow/audit_estimated_spef.py": "5f69d0c7efb5b30ce4b24edcd850b0926715c61e760465ecfa239d726b53e357",
     "hw/soc/flow/check_timing_derate.tcl": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f",
@@ -104,7 +165,7 @@
     "scripts/candidate_hold_conflicts.py": "1ab6d7159278e68370f20a2bd6c6943e4df4efbe315a8764871559f63cedf3f5",
     "scripts/check_final_native_antenna_counts.py": "70abda1232ec88f48b8e8687d48b2f4e83239d73456f2c98714b123b0f1fce13",
     "scripts/check_mainchip_original_clock_restoration.py": "15a2f88f3ca920eea78665d2f3a2e7fd90ae94bd347a452485b22540db5a29e4",
-    "scripts/check_mainchip_original_clock_restoration_driver.py": "4bddf2bc490f3076266a307a018da479f11b4c2a1ebe57ac59d8f3a369264480",
+    "scripts/check_mainchip_original_clock_restoration_driver.py": "82571418001e8e63f1ff2d2d4252b40ddc02c29e2b4d3bbbf0521ac39c49d91c",
     "scripts/check_mainchip_postroute_config.py": "6e120dfe941173796056318397eecdfadf5b0658963012ec5a987ef53329afcb",
     "scripts/check_mainchip_postroute_inputs_sources.py": "11f2b32003e008e3e05617caa57798d26fb8c513ada8e2b82340c612035892ab",
     "scripts/check_mainchip_postroute_review_sources.py": "dc08b3ba3446b525eede3cb3e85d44a9af958523d794d993159d5e065e2e511d",
@@ -128,7 +189,7 @@
     "scripts/cloud_corrpre_banked_postcts.py": "4f5fa7851576768c0df9769dc6550883aee1cf321f62d4b97a09e6c9e14585f4",
     "scripts/cloud_hbt_polarity.py": "5bc7a6ba774bcf81895d6a6a041ac3623d3a5533b0d52c6df1bc1a623ea72a1e",
     "scripts/cloud_mainchip_clock_diagnostic.py": "3aeb4e25ed64c363f91b154ee4934dabfd627a1b65125cf71b3ff41598fca9ee",
-    "scripts/cloud_mainchip_original_clock_restoration.py": "43a7c9ee54026657af0d75bd0e0123f173f273cc507da3b053e1296d3fdf2abb",
+    "scripts/cloud_mainchip_original_clock_restoration.py": "7700e04988a916977727b44e880f47ae8d8ae454553c8702eacae5951d743646",
     "scripts/cloud_mainchip_postroute_geometry.py": "b610181d0dbb219c6298fb88bbf729e78d0ab965a4eb77ee1a644e9312103f7f",
     "scripts/cloud_mainchip_postroute_inputs.py": "b4ea0290387bd9891559c146b88aab274da60f180cad4b356bd53b986398382a",
     "scripts/cloud_mainchip_postroute_review.py": "8bfe1db2075883f50c3530767f91fb1e148f6c3bb9210c1c61a6d12b69cfc567",
@@ -169,7 +230,7 @@
     "scripts/mainchip-route12-postroute-methods.json": "0e814d73a8b992f66e6ada95c9a157f59763591118db866675339bc36497b371",
     "scripts/mainchip-saved-postroute-methods.json": "ab66cb93b62cec64ff5ac6c488dd13099554ffc0dc5518ce9936bc36e831d72b",
     "scripts/mainchip_clock_diagnostic_helpers.py": "3597f345aa52a5d9bc4380fae168df68538f9a4f8be5e462217c946e271f6b84",
-    "scripts/mainchip_original_clock_drc.py": "12f6258085d23be185a1e0fa49503b0f410dac15a8e0d585b10e1d0957eb9cfd",
+    "scripts/mainchip_original_clock_drc.py": "aec962eb19cff705a1ccd9a8662506347ab03335dccd1107462407f6cc1b67bd",
     "scripts/mainchip_original_clock_restoration.py": "fd69f21bae8beed99f1886accec86a9b35bfa7db5437cdb792813a76e60f9194",
     "scripts/mainchip_original_clock_restoration_native.py": "e48e0071f26309cfebadd051286408c3a229b1a6c54884ec516292d3017bee4c",
     "scripts/mainchip_saved_postroute_admission.py": "02228698d77216f28f2ce3ff2542aedc3615bd34d60d6f8aa138a24ea1702977",

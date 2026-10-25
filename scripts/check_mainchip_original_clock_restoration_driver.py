@@ -44,13 +44,35 @@ def source_sequence(source):
 def controls():
     m=driver.methods();assert m['source_controls_authorized']is True
     assert type(m['native_execution_authorized'])is bool and type(m['cloud_restore_authorized'])is bool
+    import cloud_mainchip_clock_diagnostic as original_cloud
+    original_cloud.methods()
+    sup=driver.supervisor()
+    assert getattr(sup.memory_snapshot,'bounded_fresh_rss_adapter',False)
     import check_mainchip_original_clock_restoration as original
     original_result=original.controls()
-    positive=[];negative=[]
+    positive=['actual_old_restore_module_and_source_gate_import','actual_qualified_supervisor_and_sampler_import'];negative=[]
     def reject(name,fn):
         try:fn()
         except (AssertionError,KeyError,ValueError,TypeError,AttributeError,FileNotFoundError):negative.append(name)
         else:raise AssertionError('control accepted '+name)
+    actual=c.diagnosis(c.regular(c.ROOT/c.DIAG).read_bytes())['restore']
+    assert driver.admit_restore_proof(actual)==actual
+    positive.append('actual_original_629603913_byte_archive_projection')
+    for key,value in [('bytes',131000000),('sha256','0'*64),('parts',2)]:
+        bad=copy.deepcopy(actual);bad['restore']['archive'][key]=value
+        reject('actual_archive_'+key,lambda bad=bad:driver.admit_restore_proof(bad))
+    for key,value in [('bytes',0),('sha256','0'*64)]:
+        bad=copy.deepcopy(actual);bad['restore']['selected_files'][driver.SELECTED[0]][key]=value
+        reject('actual_donor_'+key,lambda bad=bad:driver.admit_restore_proof(bad))
+    bad=copy.deepcopy(actual);del bad['restore']['selected_files'][driver.SELECTED[1]]
+    reject('actual_recipient_missing',lambda:driver.admit_restore_proof(bad))
+    assert driver.disk_admission(16*1024**3,'initial')['required_bytes']==16*1024**3
+    assert driver.disk_admission(7*1024**3,'publish',6*1024**3)['required_bytes']==7*1024**3
+    positive.append('explicit_storage_reserves_and_publication_full_copy')
+    for stage,size in [('initial',16),('restore',12),('phase',4)]:
+        reject('disk_'+stage,lambda stage=stage,size=size:driver.disk_admission(size*1024**3-1,stage))
+    reject('disk_negative',lambda:driver.disk_admission(-1,'phase'))
+    reject('disk_unknown_stage',lambda:driver.disk_admission(100*1024**3,'unknown'))
     zero=drc.marker_tree(Category())
     assert zero['marker_count']==0 and zero['zero_reported_DRT_markers']is True
     positive.append('explicit_existing_native_shaped_zero_category')
@@ -116,7 +138,7 @@ def controls():
     def fake(root,out):
         assert pub.GROUP==driver.GROUP and root==driver.OUT and out==driver.ROOT/('publication-'+driver.GROUP)
         seen.append('actual_driver_publish_call');return dict(mock_transport=True)
-    with patch.object(driver,'methods',return_value=m),patch.object(pub,'publish_evidence',side_effect=fake):
+    with patch.object(driver,'methods',return_value=m),patch.object(driver,'storage',return_value={}),patch.object(pub,'publish_evidence',side_effect=fake):
         assert driver.publish()==dict(mock_transport=True)
     assert pub.GROUP==previous and len(seen)==1
     positive.append('actual_driver_qualified_publisher_group_and_paths')
@@ -129,7 +151,7 @@ def controls():
     archive_result=archive.controls()
     import wait_cloud_tested_source_release as waiter
     wait_result=waiter.controls()
-    assert len(positive)==9 and len(negative)==26,(len(positive),len(negative))
+    assert len(positive)==13 and len(negative)==37,(len(positive),len(negative))
     return dict(status='PASS_CLOCK_RESTORATION_DRIVER_SOURCE_CONTROLS_NOT_NATIVE',positives=positive,refusals=negative,
         original=original_result,qualified_publication=publication,qualified_archive=archive_result,
         qualified_wait=wait_result,phase_sequence=order,protected=len(m['protected']),

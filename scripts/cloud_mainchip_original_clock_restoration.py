@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Bounded cloud restoration, exact original-clock transfer and read-only DRT measurement."""
-import argparse,contextlib,hashlib,importlib,json,os,signal,sys,threading,traceback
+import argparse,contextlib,hashlib,importlib,json,os,shutil,signal,sys,threading,traceback
 from pathlib import Path
 import mainchip_original_clock_restoration as c
 ROOT=c.ROOT
@@ -70,6 +70,37 @@ def native_environment(donor,recipient):
             if v is None:os.environ.pop(k,None)
             else:os.environ[k]=v
 
+def admit_restore_proof(proof):
+    expected=c.diagnosis(c.regular(ROOT/c.DIAG).read_bytes())['restore']
+    assert proof==expected,'Exact original ODB archive/selected-file restoration proof differs'
+    assert proof['run']==40209284989
+    assert proof['restore']['archive']['bytes']==629603913
+    assert proof['restore']['archive']['sha256']=='df1269d646d03ff4a03203c1347d0a22a78a1e3fd81ca00e43bd4266cbd91ace'
+    return proof
+
+def required_space(stage,unpacked_bytes=0):
+    assert type(unpacked_bytes)is int and unpacked_bytes>=0
+    if stage=='initial':return 16*1024**3
+    if stage=='restore':return 12*1024**3
+    if stage=='phase':return 4*1024**3
+    assert stage=='publish','Unknown storage stage'
+    return max(4*1024**3,unpacked_bytes+1024**3)
+
+def disk_admission(free,stage,unpacked_bytes=0):
+    assert type(free)is int and free>=0
+    needed=required_space(stage,unpacked_bytes)
+    assert free>=needed,('Insufficient disk headroom',stage,free,needed)
+    return dict(stage=stage,free_bytes=free,required_bytes=needed,unpacked_bytes=unpacked_bytes)
+
+def storage(stage):
+    unpacked=0
+    if stage=='publish'and OUT.exists():
+        assert not OUT.is_symlink()and OUT.is_dir()
+        for p in OUT.rglob('*'):
+            assert not p.is_symlink()and (p.is_file()or p.is_dir())
+            if p.is_file():unpacked+=p.stat().st_size
+    return disk_admission(shutil.disk_usage(ROOT).free,stage,unpacked)
+
 def restore_worker():
     m=methods();assert m['cloud_restore_authorized']is True
     assert not(OUT/'source').exists()
@@ -77,7 +108,9 @@ def restore_worker():
     old.methods() # All original source/timing/physical input pins remain mandatory.
     source=old.live_source()
     old.reports.OUT=OUT
+    storage('restore')
     result,proof=old.reports.restore_report(old.SOURCE_GROUP,old.SOURCE_RUN,old.SUMMARY,old.PARTS,OUT/'source',SELECTED)
+    admit_restore_proof(proof)
     expected=json.loads(c.regular(ROOT/'docs/evidence/mainchip-saved-postroute-first-native-full-summary-20261025.json').read_bytes())
     assert result==expected
     assert result['status']=='FAIL_OR_ERROR'and result['error']=="AssertionError(('all-source-clocks', 1))"
@@ -105,6 +138,7 @@ def publish():
     previous=p.GROUP
     try:
         p.GROUP=GROUP
+        storage('publish')
         return p.publish_evidence(OUT,ROOT/('publication-'+GROUP))
     finally:p.GROUP=previous
 
@@ -116,14 +150,16 @@ def native_run():
     import ensure_cloud_tested_source_release as guard
     tag,source=guard.context(GROUP,os.environ)
     guard.validate_release(guard.api('releases/tags/'+tag),guard.api('git/ref/tags/'+tag),tag,source)
+    initial_space=storage('initial')
     OUT.mkdir(exist_ok=False);(OUT/'supervision').mkdir()
     result=dict(status='RUNNING_CLOCK_RESTORATION_DIAGNOSTIC',source_head=os.environ['GITHUB_SHA'],
         accepted=False,full_phy_accepted=False,final_timing_complete=False,
-        native_routing_started=False,phase_results=[],zero_DRT_markers=None)
+        native_routing_started=False,phase_results=[],zero_DRT_markers=None,storage=[initial_space])
     save(OUT/'result.json',result)
     sup=supervisor();previous={s:signal.signal(s,sup.interrupted)for s in (signal.SIGINT,signal.SIGTERM)}
     worker=threading.Thread(target=sup.heartbeat,daemon=True);worker.start()
     def run(args,label):
+        result['storage'].append(storage('phase'));save(OUT/'result.json',result)
         sup.supervised(args,label,seconds=1200,cwd=ROOT)
         record=json.loads(c.regular(sup.TRACE/(label+'.command.json')).read_bytes())
         terminal_stream(record,sup.TRACE,label);result['phase_results'].append(record);save(OUT/'result.json',result)

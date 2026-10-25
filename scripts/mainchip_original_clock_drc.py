@@ -118,8 +118,8 @@ def main():
                 geometry=geometry_projection(db,block,native)
                 assert geometry==prep['native_geometry'],'Nonmarker native geometry projection changed'
                 result['native_geometry']=geometry
+                if category is not None:category.writeJSON(str(out/'initial-drc-markers.json'))
                 result['measurement']=measure_report(category,out/'initial-drc.rpt',out/'initial-drc-reread.rpt')
-                category.writeJSON(str(out/'initial-drc-markers.json'))
             finally:odb.dbDatabase.destroy(db)
             result['original_gate']=native.original_gate(donor,measured,out,'original-gate-after-drc')
             result.update(status='COMPLETE_INITIAL_DRT_MEASUREMENT_NOT_SIGNOFF',
