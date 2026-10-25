@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T09:06:48.169583+00:00",
+  "updated_at": "2026-10-25T09:20:34.190572+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "2ec5dbcec84491c92fe29ae37230c3e8b982728a",
+  "root_source_before_receipt": "a4fe2caae27b556f39ffa3a0e4e527ad93d5af1b",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 35,
+    "inventory_version": 36,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40163484810,
@@ -15,6 +15,31 @@
     "last_verified_run_status": "ATTENTION_REQUIRED: actual observation succeeded and published; nonzero exit reflects tracked open failures, not MONITOR_ERROR"
   },
   "active_runs": {
+    "Mainchip corrected exact saved-process20-stack diagnostic": {
+      "run": 40179732322,
+      "head_sha": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121128018929,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121128110449,
+          "name": "exact-saved-userstack",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Observe only the exact saved 401207 process and preserve its next checkpoint"
+          ]
+        }
+      ]
+    },
     "Reset334 first actual loaded p-high34ns native process": {
       "run": 40178775666,
       "head_sha": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
@@ -26,13 +51,17 @@
           "id": 121125132309,
           "name": "source-controls",
           "status": "completed",
-          "conclusion": "success"
+          "conclusion": "success",
+          "active_steps": []
         },
         {
           "id": 121125295778,
           "name": "exact318-p-high-native",
           "status": "in_progress",
-          "conclusion": null
+          "conclusion": null,
+          "active_steps": [
+            "Run first actual p-high process or restore its exact native capsule"
+          ]
         }
       ]
     }
@@ -172,23 +201,28 @@
     "mainchip_exact_observer_source_controls": "7431e0813246643f77a2c8069384a0df3765d164",
     "mainchip_observer_failed_preflight_source": "b9aebc332c640c7e54d19f56980378005e654b70",
     "reset334_first_transient_source": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
-    "cdr_annotation_diagnostic_source": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618"
+    "cdr_annotation_diagnostic_source": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618",
+    "mainchip_external_release_wait_controls": "d1b92a1b0a3f39611b2294ae2d553929068c6176",
+    "mainchip_corrected_native_source": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
+    "reset334_run_specific_cloud_resume_recipe": "fb32e6cf09acd70f616af16658027e0712f3a977",
+    "cdr_annotation_actual_witness": "9efb2163b8b36779828df1d91d1a675c01fa5b4e",
+    "cdr_name_independent_cell_census_candidate": "c3c2eee99a157b06394d0c88758913fce2ba84ca"
   },
   "qualified_progress": {
     "tx": "NormalTX40168554741 is terminal electricalFAIL after complete34ns/77,681rows/14,182columns, nativeexit0/zero-sourceOP/no solver diagnostics. Original768 signal samples:14wrong-sign,30below100mV,min-263.488mV.76of604HBTs fail (worstVCEmin0.341760V),0of5376MOS fail; level16 interface passes,level8/4/final/CMOS fail. All7native parts published with exact manifest metadata; no local native download. Normal and swapped cases are now complete with no saved process to resume. Preserve original rejection and diagnose same-row capture before repair.",
-    "phase": "Four fresh318 native zero-source OPs40175085823 passed; exact172-path closure imported root7f951fc7. Complete transient source controls40178169815 pass52 new+22 portable plus inherited30/12/15/17 controls. Actual first p-high34ns loaded run40178775666/source7398bb00 has passed fresh controls and entered native execution step09:01:52UTC. All180 original source hashes and numerical/lifecycle gates unchanged;182 protected inputs after actual receipt binding. One13200s segment with same-process checkpoint if unfinished, all4726 states and prescribed three-parent oracles. Exact-source release423271065 reserved before dependencies. No transient electrical acceptance yet. Original first-fall predicate is UI/2=62.5ps; all31/actualPLL/fullPHY remain open.",
-    "cdr": "v59 isolated C/D-shunt40176503143 generated candidate and passed reported full original DRC/deep-flat LVS and native plane steps, then failed annotation recovery at original line62 for missing rppd signature. Full rejection/log retained. Read-only saved-capsule diagnosis40179142223/sourcee0d3d16f follows actual32+17 source controls40178947201. It first reproduces exact original error, then compares all missing primitive candidates by per-layer material XOR, raw/flattened hashes, DBU and actual native pin associations. Original339 outputs authenticated; no geometry/DRC/LVS rerun, no repaired source or strict-wire/RC/electrical acceptance. Hold ab_hold until shared cause is established.",
+    "phase": "Four fresh318 native zero-source OPs40175085823 passed; exact172-path closure imported root7f951fc7. Complete transient source controls40178169815 pass52 new+22 portable plus inherited30/12/15/17 controls. Actual first p-high34ns loaded run40178775666/source7398bb00 has passed fresh controls and entered native execution step09:01:52UTC. All180 original source hashes and numerical/lifecycle gates unchanged;182 protected inputs after actual receipt binding. One13200s segment with same-process checkpoint if unfinished, all4726 states and prescribed three-parent oracles. Exact-source release423271065 reserved before dependencies. No transient electrical acceptance yet. Original first-fall predicate is UI/2=62.5ps; all31/actualPLL/fullPHY remain open. Run-specific cloud-only resume recipe/auditfb32e6cf authenticates all6 hosted prerequisite assets, no workstation input. Actual saved continuation descriptor does not yet exist until complete checkpoint publication. Preserve exact8-key descriptor/terminal-success/full parts verification and original same-process source; do not invent offsets or declare restore proof before actual execution.",
+    "cdr": "Original v59 C/D-shunt40176503143 physical partial result remains: original DRC/deep-flat LVS/native-plane steps pass, annotation line62 fails. Read-only diagnostic40179142223 PASS authenticates339 unchanged files, reproduces exact line62/missing-key failure and passes4 real-material mutation controls. Crucially no eligible material-equal annotated source was found: native-rppd-v59-cd_shunt.gds is only66 bytes and absent from recognized source inventory despite being one of11 read inputs. This does not justify a heuristic fallback. Complete source-cell/record census c3c2eee9 is under review to distinguish empty serialization from naming/classification. No candidate redraw, source repair, strict-wire/RC/electrical acceptance or A/B dispatch yet.",
     "pll": "Crossing evidence remains noncausal:159anomalous/198clean controls overlap; native currents absent from oldcapture. Source-only first-latch instrumentationproposal d05b2bf1 and independentreview72fd1502 retained. FrozenPDK accessor/scaling/KCLpreflight is required before any unchanged-circuit currenttrace; no PLL closure.",
     "gen12": "Actual no-SHARE40169233322 passes full Yosys synth/check in12.665s (tool-reported peak320.77MB), both Icarus/Verilator100,859-cycle oracles, mapped-netlist sameoracle50.707s,24original faults and2mappedoutput faults. Canonical7179B static implementation nowroot303aa1df exactSHA01a3c63b, with83file frozen replay snapshot outsideproductionRTL and all evidence. No duplicate module, memorylimit increase or originalchecker change. This per-lane transport does not implement cross-laneCDC/commontrainingowner/lane-negotiation/Gen3transition/PMA/fullPHY/mainchip.",
-    "mainchip": "Qualified harmless observer43-path root81341b09 remains frozen. Exact latest401207 container/descriptor/generated-controller adapter passed hosted39 source controls40177235211. Actual first diagnostic40178764762 failed HTTP403 release preflight before any runtime install, restore or chip attachment. Complete failure244B result/log/fallbackartifact retained; exact-source release423271749 was reserved only after the failed preflight and its emptiness is not evidence. Narrow external-release wait repair is being reviewed before fresh run; original observer/controller e43d4596, probe700dd422,600s route budget,20samples/480s collection/500s parent envelope and original no-log/timing gates unchanged. No new stack evidence or route acceptance."
+    "mainchip": "Previous40178764762 failed release preflight before any restore/attach; complete failure is preserved. Narrow external-reservation waiter passed actual40179512327 original39 controls plus3positive/4negative waiter controls. Corrected sole run40179732322/sourcee4d3ab6d has passed source controls, exact release preflight, disk and pinnedGDB/CRIU setup and entered exact saved401207 restore/observe/checkpoint step. Release423280373 is exact-source bound before native work. Original observer/controller e43d4596, probe700dd422,600s route budget,20samples/480s collection/500s parent envelope and original no-log/timing remain fixed. No terminal stack, route or final-timing acceptance yet; await complete native evidence and verified detach/cleanup."
   },
   "next_actions": [
-    "Observe sole first p-high native40178775666; require full published result/parts hashes. On saved status derive exact same-process continuation descriptor from actual assets; never restart or accept partial capture. Preserve13200s segment, all4726states, original62.5ps/100mV gates and positive p-high scope.",
-    "Consume CDR read-only diagnostic40179142223; establish actual material XOR and pin identity cause before any annotation fix. Preserve original line62 rejection and all successful physical evidence. Hold A/B candidate until common recovery cause resolved.",
-    "Finish bounded read-only external-release wait fix after HTTP40340178764762, verify hosted controls, reserve exact source destination, then one fresh mainchip observer. Failed first run did not restore or attach any chip. Native controller/probe and original route/no-log/timing remain fixed.",
+    "Consume sole corrected mainchip40179732322 result/complete publication. Require exact20sample acquisition, actual executable/runtime identity, bounded errors and verified detach before checkpoint; CPU activity alone is not routing progress. Preserve original600s/no-log/timing gates.",
+    "Observe sole first p-high40178775666 through saved/completed terminal and full cloud publication. Derive exact8-key continuation only from actual published capsule; no workstation paths or speculative descriptor, no restarted DUT. Follow docs/tx-phase-reset334-first-transient-cloud-resume-20261025.md.",
+    "Qualify and execute read-only CDR complete source-cell/record census on same saved candidate. If actual66B source is empty, repair only its annotated source serialization using frozen native O/F and exact readback material/pin equality against existing candidate; do not apply a name fallback without geometry or rerun passing physical candidate unnecessarily.",
     "Both complete normal/swapped TX captures are terminal; diagnose normal electrical rejection before circuit changes; do not resume them.",
-    "Gen12 per-lane record proof is qualified but four recovered-clock CDC/common training owner and full protocol/serial mainchip integration remain open.",
-    "Continue cloud-only. Local project/tmp/native processes remain empty; all source/test/native artifacts and checkpoints reside on GitHub. Existing8h read-only monitor tracks115 exact handles and reports open failures, without auto-dispatch or PHY/timing claims."
+    "Gen12 per-lane record is qualified; recovered-clock CDC/common training owner and full serial mainchip integration remain open.",
+    "Keep all work/source/native data on GitHub. Local workspace/project temporary entries/native processes remain absent; existing8h read-only monitor now117 exact handles, no automatic native dispatch or PHY/final-timing claims."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -283,64 +317,56 @@
     "observed_40178169815": 40178169815,
     "observed_40178764762": 40178764762,
     "observed_40178947201": 40178947201,
-    "observed_40179142223": 40179142223
+    "observed_40179142223": 40179142223,
+    "observed_40179512327": 40179512327
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40177235211,
-      "head_sha": "7431e0813246643f77a2c8069384a0df3765d164",
+      "run": 40179512327,
+      "head_sha": "d1b92a1b0a3f39611b2294ae2d553929068c6176",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121120468566,
+          "id": 121127349194,
           "name": "source-controls",
           "status": "completed",
-          "conclusion": "success"
-        }
-      ]
-    },
-    {
-      "run": 40178169815,
-      "head_sha": "2905f1ddf525076112b4f43946d0fedb906b1d9b",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121123292465,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success"
+          "conclusion": "success",
+          "active_steps": []
         },
         {
-          "id": 121123457469,
-          "name": "exact318-p-high-native",
-          "status": "completed",
-          "conclusion": "skipped"
-        }
-      ]
-    },
-    {
-      "run": 40178764762,
-      "head_sha": "b9aebc332c640c7e54d19f56980378005e654b70",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121125099440,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success"
-        },
-        {
-          "id": 121125181189,
+          "id": 121127486096,
           "name": "exact-saved-userstack",
           "status": "completed",
-          "conclusion": "failure"
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40179732322,
+      "head_sha": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121128018929,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121128110449,
+          "name": "exact-saved-userstack",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Observe only the exact saved 401207 process and preserve its next checkpoint"
+          ]
         }
       ]
     },
@@ -355,34 +381,17 @@
           "id": 121125132309,
           "name": "source-controls",
           "status": "completed",
-          "conclusion": "success"
+          "conclusion": "success",
+          "active_steps": []
         },
         {
           "id": 121125295778,
           "name": "exact318-p-high-native",
           "status": "in_progress",
-          "conclusion": null
-        }
-      ]
-    },
-    {
-      "run": 40178947201,
-      "head_sha": "5467d11f2209e673a5d469fd51a755f2736f6a91",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121125638542,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success"
-        },
-        {
-          "id": 121125731070,
-          "name": "read-only-native-geometry",
-          "status": "completed",
-          "conclusion": "skipped"
+          "conclusion": null,
+          "active_steps": [
+            "Run first actual p-high process or restore its exact native capsule"
+          ]
         }
       ]
     },
@@ -397,19 +406,21 @@
           "id": 121126226038,
           "name": "controls",
           "status": "completed",
-          "conclusion": "success"
+          "conclusion": "success",
+          "active_steps": []
         },
         {
           "id": 121126312475,
           "name": "read-only-native-geometry",
           "status": "completed",
-          "conclusion": "success"
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-25T09:06:48.169583+00:00",
+    "observed_at": "2026-10-25T09:20:34.190572+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -531,7 +542,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-25T09:06:48.169583+00:00",
+  "local_workspace_verified_empty_at": "2026-10-25T09:20:34.190572+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -1197,6 +1208,113 @@
       "release": 423274350,
       "source": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618",
       "group": "cdr-v59-annotation-diagnostic",
+      "reserved_before_native": true
+    }
+  ],
+  "imported_checkpoint_receipts_v36": [
+    {
+      "path": "docs/evidence/tx-phase-reset334-cloud-resumability-audit-20261025.json",
+      "source": "fb32e6cf09acd70f616af16658027e0712f3a977",
+      "git_blob": "9b127171e7155aca87662e484da02179d7b5b88a",
+      "bytes": 5977,
+      "sha256": "e348dc76b424fd24e4c9560dfa16752d9a10f0c6df72ec0394f265565e60cb87",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/tx-phase-reset334-first-transient-cloud-resume-20261025.md",
+      "source": "fb32e6cf09acd70f616af16658027e0712f3a977",
+      "git_blob": "a42173619d31635e171833e456fbc4c7a525907c",
+      "bytes": 12025,
+      "sha256": "8bde531a33e25854a4a5901d7dc04a9599668ef14218861eefa8ddfbf8d16022",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-userstack-external-release-wait-joblog-20261025.txt",
+      "source": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
+      "git_blob": "152a35a82376a9eefd109c2b6f7bb50725599cc2",
+      "bytes": 31981,
+      "sha256": "3fde9169febce6c760b6755b6240addc4283b8485537e9b282d47d0a48f084b0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-userstack-external-release-wait-pass-20261025.json",
+      "source": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
+      "git_blob": "4b22f2fca0f6556fcd583539b5a023ddc46340b2",
+      "bytes": 2290,
+      "sha256": "ca7b30d55c9520560cdd7cb7d0e189aeb6d0e96d90a2550cdb7414839a90fade",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-userstack-external-release-wait-result-20261025.json",
+      "source": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-userstack-external-release-wait-source-result-20261025.json",
+      "source": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
+      "git_blob": "800839134aba0ae149e03cfb930b55a3f065ba1b",
+      "bytes": 3583,
+      "sha256": "374a94395c3e01488ddf3f9f4cc0c47f7351025aa9eb5bbf8657d8c90ba3ccab",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-latest-userstack-corrected-native-dispatch-20261025.json",
+      "source": "419a89107bf23ba581faf23a13f7b7c1f12f245a",
+      "git_blob": "92b47212787cf99231b3f483f9dc33d6e01dd562",
+      "bytes": 2229,
+      "sha256": "51e5aa1ff593d1c110e1cbeae0ffc8bdc067ebba19473dc1a82217740d3ed98d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-annotation-diagnostic-joblog-20261025.log",
+      "source": "9efb2163b8b36779828df1d91d1a675c01fa5b4e",
+      "git_blob": "543d39ee04ab1388e0c0aafb4a31c516ef538252",
+      "bytes": 124931,
+      "sha256": "34f67b05dad8a166ae205f58768f8187279edc7fe23523591c90b7885eb79398",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-annotation-diagnostic-native-witness-20261025.json",
+      "source": "9efb2163b8b36779828df1d91d1a675c01fa5b4e",
+      "git_blob": "a4de70f084a89eeec72b5c287fe7d7d69e220963",
+      "bytes": 3361480,
+      "sha256": "eeda3a86dd434a3da768036a419873faae72e3e2c869acc06e3784f8a82ebbec",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-annotation-diagnostic-parts-20261025.json",
+      "source": "9efb2163b8b36779828df1d91d1a675c01fa5b4e",
+      "git_blob": "64eade79125a4f0f5578a82dfd7ad56e5abbd901",
+      "bytes": 868,
+      "sha256": "8422622fec4cdb55150e3e1f3b18a9a05c0df4b5fd7453b9362fe2e3bc519336",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-annotation-diagnostic-result-20261025.json",
+      "source": "9efb2163b8b36779828df1d91d1a675c01fa5b4e",
+      "git_blob": "a3458c976bcde22d63e1a79aae4b1f375856f26d",
+      "bytes": 66604,
+      "sha256": "81c3c665caf6eda99dd166a835eb17ff320941553b0df6900ea15a963e6f46ea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-annotation-diagnostic-terminal-20261025.json",
+      "source": "9efb2163b8b36779828df1d91d1a675c01fa5b4e",
+      "git_blob": "01e6b042e18e1f7822bb9f208c086fc446d4248a",
+      "bytes": 4851,
+      "sha256": "071e24428d67f98a3b50b418e853ad122fe2ac6b6d85fa6117a3ce04fe2402e9",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v36": [
+    {
+      "run": 40179732322,
+      "release": 423280373,
+      "source": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
+      "group": "mainchip-route12-userstack",
       "reserved_before_native": true
     }
   ]

@@ -8383,3 +8383,16 @@ Mainchip exact observer source controls40177235211 passed39 new controls. First 
 CDR physical40176503143 passes reported DRC/deep-flat LVS/native planes then fails original annotation line62. Read-only exact339-file capsule diagnosis40179142223 follows32+17 actual controls, with source-bound release423274350. It will reproduce original failure then test per-layer geometry XOR and actual native pin association without rerunning geometry. A/B candidate held.
 
 Full serial PHY, routed serial mainchip and final timing are not accepted. Continue from exact handles above; never infer acceptance from a green controls job, active CPU, an empty release or partial capture.
+
+
+### 2026-10-25T09:20:34.190572+00:00 — cloud-only checkpoint v36
+
+Fresh local verification remains empty workspace, no project temporary files/native CAD processes. Inventory117 exact cloud handles. Tested source, all native artifacts and resumability are GitHub-owned; no workstation file is required. Run-specific reset334 resume recipe/auditfb32e6cf is imported, with6 exact prerequisites and exact8-key saved descriptor derivation. No descriptor exists until actual successful checkpoint/publication.
+
+Mainchip release preflight failure40178764762 is preserved. Narrow read-only external-release wait passed hosted40179512327; sole corrected40179732322/sourcee4d3ab6d passed preflight and pinned debugger/CRIU setup and entered saved401207 restore/observation. Exact release423280373 reserved before native; original controller/probe/600s/no-log/timing remain unchanged. Await terminal evidence, not CPU motion.
+
+First p-high full-state transient40178775666 remains sole current process; retain same-process checkpoint/continuation with original full34ns and all numeric gates.
+
+Read-only CDR40179142223 passed diagnostic only: original exact line62 error reproduced,339 source files unchanged, no eligible new annotated native source found; saved newsourceGDS only66bytes. Full3.36MB native witness and summary/log/parts imported. Name-independent complete cell/record census c3c2eee9 pending review; no geometry fallback or repair acceptance. Original candidate/passing physical evidence remains untouched.
+
+Full serial PHY, routed serial chip and final setup/hold closure remain open.
