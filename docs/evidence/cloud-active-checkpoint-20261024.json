@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T13:50:36.144732+00:00",
+  "updated_at": "2026-10-25T14:09:39.390347+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "f3fe84947d96ee04d97b82215d45e2f03bb524d1",
+  "root_source_before_receipt": "c7bccc75ef7a452f89abc61ebbaef5cbf18b9662",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 46,
+    "inventory_version": 47,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40163484810,
@@ -14,7 +14,33 @@
     "automatic_native_dispatch": false,
     "last_verified_run_status": "ATTENTION_REQUIRED: actual observation succeeded and published; nonzero exit reflects tracked open failures, not MONITOR_ERROR"
   },
-  "active_runs": {},
+  "active_runs": {
+    "mainchip_saved7200_next_native": {
+      "run": 40199977397,
+      "head_sha": "e291495bea09cfeb38df625c21f6697f90625749",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121188907132,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121189017872,
+          "name": "exact-saved-route",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Continue only the exact saved 401855 process under original routing gates"
+          ]
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -642,15 +668,98 @@
       "local_project_files": 0,
       "local_native_processes": 0,
       "native_archives_downloaded_locally": false
+    },
+    "cloud_only_v47": {
+      "all_engineering_and_native_work": "GitHub source branches, Actions, Releases; no local checkout/native/archive files",
+      "workspace_empty": true,
+      "project_named_tmp_absent": true,
+      "local_native_processes_absent": true,
+      "monitor": "existing read-only 8h cloud monitor; no automatic native dispatch or retry"
+    },
+    "mainchip_saved7200_next_v47": {
+      "run": 40199977397,
+      "source": "e291495bea09cfeb38df625c21f6697f90625749",
+      "controls_pass_run": 40199301259,
+      "controls_pass_source": "b59db91636a317f4246591af6f9ddbb238625e2a",
+      "final_methods_sha256": "88dc4ef81a32dc019cc3cc468a94ebcb2dd51cab2c17574f500afe665b4e53a4",
+      "root_review_cleared": true,
+      "one_native_dispatch": true,
+      "automatic_retry": false,
+      "prior_saved_process_run": 40185550438,
+      "budget_seconds": 7200,
+      "cold_restart": false,
+      "mandatory_original_inner_and_log_admission_before_restore": true,
+      "original_timing_and_progress_guards_unchanged": true,
+      "full_phy_closed": false,
+      "route_complete": false,
+      "final_timing_closed": false
+    },
+    "cdc_ast_controls_rejection_v47": {
+      "run": 40200111070,
+      "source": "760d7221d05cb62fe719c2bb666c0419d53987d0",
+      "native_skipped": true,
+      "reason": "Checker incorrectly expected only two direct Link.reset assertions. Unchanged actual source has lines 206,207,216.",
+      "full_result_sha256": "b3fee8396dd3dbc560524dcc723692012e7373704236454d22f30b320de29ad8",
+      "failure_evidence_source": "e3bb5a4c9d6d251fd7c456a0b284acf09a9acdc9",
+      "correction_source": "f8a69b4d72ed41a7eaae9f457fab220d0871eff0",
+      "correction": "Checker-only inventory of actual three assertions; explicitly refuses line216 for both reset-mutant predicates; exercises only declared lines206/207.",
+      "checker_sha256": "1646b734acdd8b920361e9758d808ff797f31b04d7fb261f3bd7b9a46f7a414e",
+      "methods_sha256": "c8cd1a8db6fc7ff1e31ef6b2c578f5a4d7cec7957a73ebdad416adf8e4e1e9e1",
+      "controller_harness_rtl_oracle_and_63_control_group_gate_unchanged": true,
+      "new_controls_executed": false,
+      "new_native_retry_dispatched": false,
+      "full_cdc_acceptance": false,
+      "prior_native_run": 40196820337,
+      "prior_rtl_passes": 66,
+      "prior_mapped_passes": 33,
+      "prior_syntheses": 6,
+      "prior_accepted_mutants": 9,
+      "required_mutants": 18
+    },
+    "phase318_route_schema_candidate_v47": {
+      "source": "f07c5e9d12a841fe9765b4f59b343a59bb34a1ed",
+      "status": "SOURCE_ONLY_NOT_EXECUTED",
+      "route_count": 586,
+      "scalar_route_count": 578,
+      "mim_route_count": 8,
+      "avss_scalar": 83,
+      "avss_mim": 2,
+      "planned_schema_owner_faults": 40,
+      "planned_actual_inventory_geometry_faults": 4,
+      "prior_failed_readbacks": [
+        40195581462,
+        40198176471
+      ],
+      "peer_source_review": "TX bounded schema/ownership review clear; no execution or full electrical clearance",
+      "new_readback_dispatched": false,
+      "simulation_enabled": false,
+      "extraction_enabled": false
+    },
+    "cdr_current_mim_candidate_v47": {
+      "source": "fe911ddf430361561a2c8ee377c3a6163af23de6",
+      "status": "SOURCE_ONLY_WIP",
+      "pinned_sources": 344,
+      "original_pins_unchanged": 315,
+      "planned_source_faults": 83,
+      "adapters": 5,
+      "reversible_changes": 26,
+      "canonical_and_stage_evidence_copy_failures_independent": true,
+      "independent_peer_review_complete": false,
+      "controls_executed": false,
+      "registration_dispatched": false,
+      "native_enabled": false,
+      "simulation_enabled": false,
+      "extraction_enabled": false,
+      "prior_binding_rc_publication_recovery_run": 40196976458
     }
   },
   "next_actions": [
-    "Keep source, CAD, simulations, native archives and resume evidence on GitHub. Local project/tmp/native processes remain absent; RAM metadata/source/derived-JSON orchestration only.",
-    "CDC40196820337 passed66RTL,33mapped and6syntheses, then rejected mutant10(ignore_read_reset) at unqualified reset-barrier assertion. Preserve9accepted mutants and exactfailure. Fix only canonical AST qualification of already declared expressions; keep RTL/harness/oracle bytes and all error/resource gates unchanged. Hosted controls before any reviewed full-proof retry.",
-    "Phase31840198176471 passed qualified MIM-point mapping but rejected mixed physical route schema before waveform review. Explicitly include83single-net and2seed-MIM AVSS routes, prove both exact schemas with actual pinned JSON controls; preserve original electrical rejection and both failed readbacks. No new simulation/geometry.",
-    "Mainchip40185550438 is saved after original progress gates passed, not route complete. Root+peer cleared source/publication candidate13225b8f. One controls-only registration/run allowed; native restore remains false until actual74+60+39source/15publication controls and separate metadata review. Same saved process, original7200 budget,20/4/8/8ns+5percent timing, no cold restart.",
-    "CDR artifact-only recovery40196976458 is complete. Derive next MIM/precise-two-order/composition source from exact97c8662b prerequisites and current recovered500-device geometry; keep allnative flagsfalse until actual source review/controls.",
-    "Retain full PHY/link-training/lane-mapping/analog/electrical and final physical/RC/STA acceptance boundaries. Existing8h read-only monitor remains; no automated native retry."
+    "Keep source, CAD, simulations, native archives and resume evidence on GitHub. Local workspace/tmp/native processes remain absent; RAM metadata/source/derived-JSON orchestration only.",
+    "Observe sole native mainchip40199977397 exact sourcee291495b and release423436830. It resumes saved40185550438 only after original archive/inner/log admission; preserve original7200s budget,20/4/8/8ns+5percent timing and no-log/checkpoint gates. No duplicate, cold restart, automatic retry or completion claim.",
+    "Preserve failed CDC controls40200111070 and prior native40196820337 (66RTL/33mapped/six synthesis/nine accepted mutants). Review checker-only sourcef8a69b4d: exact206/207/216 inventory,216unqualified, unchanged controller/harness/RTL/oracle. Run hosted controls before any separately reviewed complete-proof retry.",
+    "Review phase318 explicit mixed-schema candidatef07c5e9d. Require actual hosted route/owner/inventory mutation controls before any readback activation. Retain all83scalar+2MIM AVSS owners, both rejected readbacks, original math/electrical gates and zero new simulation/geometry.",
+    "Review current CDR MIM sourcefe911ddf (344pins,83proposed controls, five reversible adapters). Actual native binding and RC publication recovery40196976458 is complete; next MIM controls/native are not executed or enabled.",
+    "Retain full PHY/link-training/lane-mapping/analog/electrical and final physical/RC/STA acceptance boundaries. Existing8h read-only cloud monitor remains; no automated native retry."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -787,43 +896,53 @@
     "observed_40185550438": 40185550438,
     "observed_40198176471": 40198176471,
     "observed_40199176389": 40199176389,
-    "observed_40199301259": 40199301259
+    "observed_40199301259": 40199301259,
+    "observed_40200111070": 40200111070
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40199176389,
-      "head_sha": "86b64aef009c8a3492a07fb860bd94894299fc9a",
-      "status": "completed",
-      "conclusion": "success",
+      "run": 40199977397,
+      "head_sha": "e291495bea09cfeb38df625c21f6697f90625749",
+      "status": "in_progress",
+      "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121186469494,
-          "name": "registration-only",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40199301259,
-      "head_sha": "b59db91636a317f4246591af6f9ddbb238625e2a",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121186856312,
+          "id": 121188907132,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121186983856,
+          "id": 121189017872,
           "name": "exact-saved-route",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Continue only the exact saved 401855 process under original routing gates"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 40200111070,
+      "head_sha": "760d7221d05cb62fe719c2bb666c0419d53987d0",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121189313317,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 121189445278,
+          "name": "complete-functional-proof",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
@@ -832,7 +951,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-25T13:50:36.144732+00:00",
+    "observed_at": "2026-10-25T14:09:39.390347+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -954,7 +1073,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-25T13:50:36.144732+00:00",
+  "local_workspace_verified_empty_at": "2026-10-25T14:09:39.390347+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -3514,6 +3633,129 @@
       "bytes": 1795,
       "sha256": "df1245144fa5b13fef9c0654f2a8d91f313eddc18f3ed77a8d0a187575de4f3e",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v47": [
+    {
+      "path": "docs/evidence/mainchip-saved7200-next-controls-pass-20261025.json",
+      "source": "1cf76e0768a62561740ed567a2e6b35e15052707",
+      "git_blob": "944e3060623773459d1dfc638e7295028a283e4c",
+      "bytes": 2996,
+      "sha256": "de4f6fd1b44eacc7ba2edfd84088bfc421859d6cc4547e3fc2571cad15eef969",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-saved7200-next-publication-controls-result-20261025.json",
+      "source": "1cf76e0768a62561740ed567a2e6b35e15052707",
+      "git_blob": "a8f2f4f6f4d509a37ad425067083051797080d70",
+      "bytes": 700,
+      "sha256": "3470d8f455ff69bb769bb902eefeabe3b7bf5ada1025e42e20090ce664e9a0f1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-saved7200-next-release-wait-controls-result-20261025.json",
+      "source": "1cf76e0768a62561740ed567a2e6b35e15052707",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-saved7200-next-source-controls-result-20261025.json",
+      "source": "1cf76e0768a62561740ed567a2e6b35e15052707",
+      "git_blob": "9b5269592370b7d757100f9fda45cdc7007f6493",
+      "bytes": 8798,
+      "sha256": "39c93c4bc4af2632842adabe09b064e00335770a82fa504a23bea13488f46fae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-saved7200-next-native-activation-review-20261025.json",
+      "source": "dc9c2a6d2f59150a47d11f325e5c5297ea6ee057",
+      "git_blob": "4fa4e5fee739e42a24f5bce59d979cd066f42293",
+      "bytes": 17229,
+      "sha256": "0760fa9378ec12ce8d1d88c42d84c5dfe6fcae042720f16d1ca9dbd12de0ae55",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-saved7200-next-root-native-review-20261025.json",
+      "source": "e291495bea09cfeb38df625c21f6697f90625749",
+      "git_blob": "f69a6fd61ff578da8602d2a12a7cd0b1ea2ece30",
+      "bytes": 1083,
+      "sha256": "7efdf98c96d9b95914a0cca346641f54db2a5ddfcd14daa5b1a1bcac82a8c485",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-saved7200-next-native-dispatch-20261025.json",
+      "source": "8f03b1f107470e0280c1b156e7414304c922f926",
+      "git_blob": "8c28dc9e893707ad186051b9719bb530e1088cce",
+      "bytes": 1900,
+      "sha256": "55024f5a5a66c52ebf97397e74f3bf7dd4927ca0a0431f881cfd0e74fc0a1441",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-explicit-physical-route-schemas-20261025.json",
+      "source": "f07c5e9d12a841fe9765b4f59b343a59bb34a1ed",
+      "git_blob": "419ba952ca63566b2aa5b21abfb398cdbcee524b",
+      "bytes": 3694,
+      "sha256": "133643320b3b096a5cf159d194bd8f1d71d8e74f62de2dfa421b5c3c9a63209e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/tx-phase318-explicit-physical-route-schemas-20261025.md",
+      "source": "f07c5e9d12a841fe9765b4f59b343a59bb34a1ed",
+      "git_blob": "2fadabed0dbd6ad5708848acba48562dd653ea4c",
+      "bytes": 2417,
+      "sha256": "e4fc40884069c75c4e95d84579a5295630c426c29b08100066bf2eb79ee3ab26",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-current-mim-source-checkpoint-20261025.json",
+      "source": "fe911ddf430361561a2c8ee377c3a6163af23de6",
+      "git_blob": "28ae5e0fe09c74f274fa2b6e484a346465c29302",
+      "bytes": 12218,
+      "sha256": "a3adb66d2593b0336279dbeecdeebbb4419060e420f6a0c1256ebb2cfc782ea3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/cdr-v59-current-mim-source-candidate-20261025.md",
+      "source": "fe911ddf430361561a2c8ee377c3a6163af23de6",
+      "git_blob": "67e4f39522b003845fe38acbd2316c041e50918c",
+      "bytes": 3838,
+      "sha256": "f393ccb4cbcdef8756e924fc04cef1c3c6584c30f7b70b9445120aa303c270e7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-ast-source-review-20261025.json",
+      "source": "760d7221d05cb62fe719c2bb666c0419d53987d0",
+      "git_blob": "e213076455177729f23c29ec5ca450d6866286ba",
+      "bytes": 1833,
+      "sha256": "35418591b408675897812ae47994ce79dc3781b18ee1f153061bfc6c19c5de19",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-ast-controls-rejected-result-20261025.json",
+      "source": "e3bb5a4c9d6d251fd7c456a0b284acf09a9acdc9",
+      "git_blob": "f6c5b28498c5fb41843f8873960a095821dd7705",
+      "bytes": 78562,
+      "sha256": "b3fee8396dd3dbc560524dcc723692012e7373704236454d22f30b320de29ad8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-ast-controls-rejection-20261025.json",
+      "source": "e3bb5a4c9d6d251fd7c456a0b284acf09a9acdc9",
+      "git_blob": "be8fcd251498d260ea341d3e35bd4e449782ecae",
+      "bytes": 3112,
+      "sha256": "1442d9b200e97524acf3950d85d1291b2c031d95417d9702a5b5d28ad9f437b4",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v47": [
+    {
+      "id": 423436830,
+      "tag": "cloud-results-40199977397-1-mainchip-route12-saved7200-next",
+      "source": "e291495bea09cfeb38df625c21f6697f90625749",
+      "prerelease": true,
+      "draft": false
     }
   ]
 }

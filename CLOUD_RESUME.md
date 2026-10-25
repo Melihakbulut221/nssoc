@@ -8470,3 +8470,10 @@ Local project/tmp/native processes verified absent. Inventory154 exact cloud han
 Mainchip next same-process source control workflow is now registered through a harmless sole-file orphan40199176389 and exactly one controls-only run40199301259 atb59db916; native restore remains false and full archive/inner/log evidence will be checked in cloud before any future restore. CDC canonical-AST predicate qualification source2aaa439f is saved for review; no RTL/harness/oracle changes or retry. All previously recorded native failures remain open and retained. Project workspace/tmp/native processes remain absent locally.
 
 Local project/tmp/native processes verified absent. Inventory156 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-25T14:09:39.390347+00:00 — cloud-only checkpoint v47
+
+Cloud-only cleanup handoff is durable. Sole saved-process mainchip native40199977397 sourcee291495bea09cfeb38df625c21f6697f90625749 is running after source controls passed; exact-source prerelease423436830 is reserved. Mainchip actual controls40199301259 and root metadata review/imported dispatch receipts are retained. CDC controls40200111070 failed in the new checker fixture, native skipped; failure sourcee3bb5a4c and checker-only correctionf8a69b4d are durable, unexecuted correction has no native retry. Actual previous66RTL/33mapped/six syntheses and nine accepted mutants remain valid partial evidence. Phase318 mixed scalar/MIM route candidatef07c5e9d and CDR current MIM candidatefe911ddf are durable source-only work, not native passes. No local checkout, raw native archives, CAD, simulation or project temporary files are needed to resume. Earlier source notes are historical; this checkpoint records the newer exact candidate pointers and required next controls.
+
+Local project/tmp/native processes verified absent. Inventory158 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
