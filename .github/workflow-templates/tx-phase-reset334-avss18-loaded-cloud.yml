@@ -1,0 +1,180 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-avss18-loaded-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "Source controls, current RC preparation, or fresh four-case OFF zero-OP; no transient"
+        type: choice
+        options: [controls, prepare, zero-op]
+        default: controls
+        required: true
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-avss18-loaded-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Current RC admission, unchanged numerical contexts, and actual main-entry controls
+        run: |
+          set -euo pipefail
+          if bash -o pipefail -c '(exit 7) | tee /dev/null'; then exit 1; fi
+          python3 -m pip install networkx==3.4.2 numpy==2.3.3
+          python3 scripts/cloud_tx_phase_reset334_avss18_loaded.py --controls | tee source-controls.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open('source-controls.json'))
+          assert x['status']=='PASS_CURRENT_AVSS18_LOADED_SOURCE_CONTROLS_ONLY'
+          assert x['actual_controller_imported']and x['all_original_function_code_objects_identical']and x['original_module_globals_unchanged']
+          assert len(x['RC_faults'])==24 and len(x['metadata_faults'])==20 and len(x['context_faults'])==13
+          assert len(x['actual_main_entry_positives'])==2
+          assert all(p['actual_main_reached_current_preparation']and p['actual_finally_result_written']for p in x['actual_main_entry_positives'])
+          assert len(x['inherited_preparation']['rejected'])==15
+          assert len(x['inherited_initialization']['negative_controls'])==30
+          assert len(x['inherited_zero_OP']['negative_controls'])==12
+          assert len(x['archive_controls']['rejected'])==13 and x['archive_controls']['inherited_parts_controls']['negative_controls']==6
+          assert x['original_failed_HBT_count']==17
+          assert x['simulation_executed']is x['extraction_executed']is x['actual_binding_or_preparation_executed']is False
+          PY
+      - name: Actual reserved-only publication and read-only waiter controls
+        run: |
+          set -euo pipefail
+          python3 scripts/check_tx_phase_reset334_avss18_loaded_publication.py | tee publication-controls.json
+          python3 scripts/wait_cloud_tested_source_release.py --controls | tee wait-controls.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('publication-controls.json'));w=json.load(open('wait-controls.json'))
+          assert len(p['positive_cases'])==2 and len(p['rejected'])==13
+          assert p['actual_template_program_executed']and p['real_file_list_assembly']
+          assert len(w['positive_cases'])==3 and len(w['rejected'])==4
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: avss18-loaded-source-controls
+          path: |
+            source-controls.json
+            publication-controls.json
+            wait-controls.json
+          if-no-files-found: error
+          retention-days: 90
+          include-hidden-files: true
+  current-preparation-or-zero-op:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.mode != 'controls'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+      NSSOC_LOADED_MODE: ${{ inputs.mode }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Exact passed controls and reserved source release before dependencies
+        run: python3 scripts/cloud_tx_phase_reset334_avss18_loaded.py --preflight "$NSSOC_LOADED_MODE"
+      - name: Install pinned Python dependencies and original native runtime libraries only for OP
+        run: |
+          if [ "$NSSOC_LOADED_MODE" = zero-op ]; then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          fi
+          python3 -m pip install networkx==3.4.2 numpy==2.3.3
+      - name: Prepare current models or execute only the reviewed fresh four-case zero OP
+        run: python3 scripts/cloud_tx_phase_reset334_avss18_loaded.py --mode "$NSSOC_LOADED_MODE"
+      - name: Preserve complete result and every rejected native stage
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          p=Path("hw/soc/out/cloud-tx-phase-reset334-avss18-loaded/result.json")
+          if not p.exists():
+              p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_text(json.dumps(dict(status="FAIL_MISSING_REPORT",electrical_accepted=False,full_phy_accepted=False))+"\n")
+          b=p.read_bytes()
+          print("RESULT_SHA256",hashlib.sha256(b).hexdigest());print("RESULT_BYTES",len(b))
+          if len(b)<=16_000_000:
+              s=base64.b64encode(b).decode();parts=[s[i:i+4096]for i in range(0,len(s),4096)]
+              for i,c in enumerate(parts):print(f"RESULT_BASE64 {i}/{len(parts)} {c}")
+          else:print("COMPLETE_RESULT_RETAINED_IN_PUBLICATION_AND_FALLBACK",p)
+          PY
+      - name: Publish all original and new evidence using reserved-only release binding
+        if: always()
+        id: publish
+        run: |
+          set -euo pipefail
+          python3 scripts/wait_cloud_tested_source_release.py --group tx-phase-reset334-avss18-loaded
+          root=hw/soc/out/cloud-tx-phase-reset334-avss18-loaded
+          group=tx-phase-reset334-avss18-loaded
+          stem="$group-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" "$group" "$root" <<'PYCODE'
+          import json,pathlib,sys,os
+          sys.path.insert(0,'scripts')
+          import ensure_cloud_tested_source_release as guard
+          import migrate_outputs_to_cloud as migration
+          import publish_cloud_results as publisher
+          stem,group,root_arg=sys.argv[1:]
+          assert group=='tx-phase-reset334-avss18-loaded'
+          expected,source=guard.context(group,os.environ)
+          assert stem==group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+          root=pathlib.Path(root_arg)
+          part_file=pathlib.Path(stem+'.parts.json')
+          manifest=json.loads(part_file.read_text())
+          part_names=[p['name'] for p in manifest['parts']]
+          assert part_names and len(part_names)==len(set(part_names))
+          assert all(pathlib.Path(n).name==n and '\\' not in n and n not in ('.','..') for n in part_names)
+          separate=sorted(str(p) for p in root.glob('*.json') if p.name!='result.json')
+          paths=[stem+'.summary.json',str(part_file),*separate,*part_names]
+          assert len(paths)==len(set(paths))
+          assert len({pathlib.Path(p).name for p in paths})==len(paths)
+          assert all(pathlib.Path(p).is_file() and not pathlib.Path(p).is_symlink() for p in paths)
+          def readonly_release(tag):
+              assert tag==expected
+              info=guard.api('releases/tags/'+tag)
+              guard.validate_release(info,guard.api('git/ref/tags/'+tag),tag,source)
+              return info
+          migration.release=readonly_release
+          assert publisher.publish is migration.publish
+          assert publisher.publish.__globals__['release'] is readonly_release
+          readonly_release(expected)
+          result=publisher.publish_results(group,paths)
+          assert result['tag']==expected and len(result['assets'])==len(paths)
+          assert [x['name'] for x in result['assets']]==[pathlib.Path(p).name for p in paths]
+          readonly_release(expected)
+          print(json.dumps(result,sort_keys=True),flush=True)
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome != 'success'
+        with:
+          name: avss18-loaded-complete-evidence
+          path: hw/soc/out/cloud-tx-phase-reset334-avss18-loaded/
+          if-no-files-found: error
+          retention-days: 90
+          include-hidden-files: true
