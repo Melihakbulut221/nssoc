@@ -1,4 +1,27 @@
 {
+  "actual_source_controls": {
+    "attempt": 1,
+    "full_results": {
+      "docs/evidence/mainchip-saved7200-next-publication-controls-result-20261025.json": {
+        "bytes": 700,
+        "sha256": "3470d8f455ff69bb769bb902eefeabe3b7bf5ada1025e42e20090ce664e9a0f1"
+      },
+      "docs/evidence/mainchip-saved7200-next-release-wait-controls-result-20261025.json": {
+        "bytes": 577,
+        "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e"
+      },
+      "docs/evidence/mainchip-saved7200-next-source-controls-result-20261025.json": {
+        "bytes": 8798,
+        "sha256": "39c93c4bc4af2632842adabe09b064e00335770a82fa504a23bea13488f46fae"
+      }
+    },
+    "job": 121186856312,
+    "native_job_skipped": true,
+    "pass_receipt_path": "docs/evidence/mainchip-saved7200-next-controls-pass-20261025.json",
+    "pass_receipt_sha256": "de4f6fd1b44eacc7ba2edfd84088bfc421859d6cc4547e3fc2571cad15eef969",
+    "run": 40199301259,
+    "source": "b59db91636a317f4246591af6f9ddbb238625e2a"
+  },
   "cold_restart_authorized": false,
   "copied_byte_exact_bridge_function": {
     "name": "validate_current_rows",
@@ -70,8 +93,16 @@
   "inherited_qualified_admission_controls": 60,
   "latest_capsule_run": 40185550438,
   "latest_capsule_source": "85f1aeee0e92eb4ad8c4f16fa98814ea30c3f60c",
+  "native_activation_proposal": {
+    "automatic_retry": false,
+    "dispatch_occurred": false,
+    "one_segment_only": true,
+    "receipt_path": "docs/evidence/mainchip-saved7200-next-native-activation-review-20261025.json",
+    "receipt_sha256": "0760fa9378ec12ce8d1d88c42d84c5dfe6fcae042720f16d1ca9dbd12de0ae55",
+    "root_exact_metadata_review_pending": true
+  },
   "native_execution_claimed": false,
-  "native_process_restore_authorized": false,
+  "native_process_restore_authorized": true,
   "normal_continuation_preaccepted": false,
   "old_scheduling_perturbation_retained": true,
   "original_all74_outputs_required": true,
@@ -83,7 +114,7 @@
   "original_postroute_gates_mandatory": true,
   "original_source_controls": 39,
   "prerequisites": {
-    "hosted_source_controls": false,
+    "hosted_source_controls": true,
     "peer_review": true,
     "root_native_review": false
   },
@@ -109,7 +140,13 @@
     "docs/evidence/mainchip-latest-userstack-source-review-20261025.json": "b6ca60449c63953e81811022bc9a81301ddf3963bbecb543c88bfcbb484ba786",
     "docs/evidence/mainchip-portable-runtime-pass-20261020.json": "165629f8ec5b3ff99b9b9c01464b7fb129fb991ee9c5287e19de614c36e62e18",
     "docs/evidence/mainchip-route12-global-pass-20261023.json": "b1f5ba79b842b4a4dc2667b6a5eea58e75df897376f373cec20ab6d0390b2729",
+    "docs/evidence/mainchip-saved7200-next-controls-dispatch-20261025.json": "b4a5cb92faba06e1a0a32f92cca3382dce5e644159a91bd3b51db839c6abc9ac",
+    "docs/evidence/mainchip-saved7200-next-controls-pass-20261025.json": "de4f6fd1b44eacc7ba2edfd84088bfc421859d6cc4547e3fc2571cad15eef969",
+    "docs/evidence/mainchip-saved7200-next-native-activation-review-20261025.json": "0760fa9378ec12ce8d1d88c42d84c5dfe6fcae042720f16d1ca9dbd12de0ae55",
+    "docs/evidence/mainchip-saved7200-next-publication-controls-result-20261025.json": "3470d8f455ff69bb769bb902eefeabe3b7bf5ada1025e42e20090ce664e9a0f1",
     "docs/evidence/mainchip-saved7200-next-publication-source-review-20261025.json": "b3f97235353f4bc06fd17c420307b0db5179c92c9ff76b90f9b27bbb4496bc30",
+    "docs/evidence/mainchip-saved7200-next-release-wait-controls-result-20261025.json": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+    "docs/evidence/mainchip-saved7200-next-source-controls-result-20261025.json": "39c93c4bc4af2632842adabe09b064e00335770a82fa504a23bea13488f46fae",
     "docs/evidence/mainchip-userstack-artifact-readback-pass-20261025.json": "ea96f75a216b9c31273eb68302fb009b6beac1f950d9810cbefc76a8d2faddbb",
     "docs/evidence/mainchip-userstack-artifact-readback-result-20261025.json": "467c40d029f7eb57e5f724a1e228de164ef71e29d77bcc5d8a484ce4d6ce40b1",
     "docs/evidence/mainchip-userstack-artifact-readback-source-review-20261025.json": "22567f81381d3e8046caadf34b188e23445047cb6453965c4152c2af9294fa1c",
@@ -225,13 +262,14 @@
   "runtime_closure": "Qualified nofollow/held-process runtime and mapping helpers; no debugger or target calls",
   "schema": "mainchip-saved7200-next-source-only-v1",
   "source_controls": 74,
-  "status": "SOURCE_REVIEWED_CONTROLS_ONLY_NATIVE_FALSE",
+  "status": "NATIVE_ACTIVATION_PROPOSAL_ROOT_METADATA_REVIEW_PENDING",
   "unfinished": [
-    "Actual74+inherited60/39+15publication+3/4wait controls",
-    "Actual prior inner/native-log authentication before any process restore",
-    "Separate metadata activation review and sole native authorization"
+    "Root exact metadata review before one native dispatch",
+    "Actual prior full capsule/inner/native-log authentication before process restore",
+    "Actual same-process7200-second segment and preserved original progress/checkpoint/routing gates"
   ],
   "workflow_definition_activated": true,
-  "workflow_registered": false,
+  "workflow_id": 396025077,
+  "workflow_registered": true,
   "workflow_template": ".github/workflow-templates/mainchip-saved7200-next-cloud.yml"
 }
