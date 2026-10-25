@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-v59-font-recovery-cloud
+on:
+  push:
+    branches: [codex/register-cdr-v59-font-recovery]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo "Registration only; no controls, capsule, runtime or recovery."
