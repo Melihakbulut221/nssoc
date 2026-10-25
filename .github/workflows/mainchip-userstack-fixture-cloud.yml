@@ -2,6 +2,12 @@
 name: mainchip-userstack-fixture-cloud
 on:
   workflow_dispatch:
+    inputs:
+      readback_only:
+        type: boolean
+        default: false
+        required: true
+        description: Read only the authenticated failed fixture artifact; never rerun the fixture
 permissions:
   contents: read
   actions: read
@@ -10,6 +16,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   harmless-fixture:
+    if: github.event_name == 'workflow_dispatch' && !inputs.readback_only
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -57,3 +64,24 @@ jobs:
           path: cloud-mainchip-userstack-fixture/
           retention-days: 90
           compression-level: 1
+  artifact-readback-only:
+    if: github.event_name == 'workflow_dispatch' && inputs.readback_only
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Authenticate and read the exact failed small artifact in hosted RAM
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/cloud_mainchip_userstack_fixture_readback.py --readback-only
+      - if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-userstack-artifact-readback
+          path: cloud-mainchip-userstack-readback/
+          retention-days: 90
