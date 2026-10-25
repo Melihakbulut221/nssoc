@@ -3,7 +3,7 @@
 """Small synthetic math/identity controls; not native capture acceptance."""
 import copy
 import numpy as np
-from tx_normal_saved_capture_diagnosis import bracket,hbt_point,native_pairs,crossing_brackets,below_segments,catalog,admitted_window,bit_context,STOP,START,UI
+from tx_normal_saved_capture_diagnosis import bracket,hbt_point,native_pairs,crossing_brackets,below_segments,catalog,admitted_window,bit_context,STOP,START,UI,probe_inventory,replay_receipt
 
 def main():
     t=np.array([0.,1.,2.,3.,4.]); v={'v(c)':np.array([2.,2.,1.,2.,2.]),
@@ -37,6 +37,18 @@ def main():
     end=np.nextafter(STOP,0.); window=admitted_window(np.array([0.,end]),START+255*UI,START+256*UI)
     assert window['admitted_endpoint_clipped'] and window['native_scan_bounds_s'][1]==end
     assert window['requested_UI_bounds_s'][1]==START+256*UI
+    prefixes=['d'+str(i)for i in range(32)]+['p16_'+str(i)for i in range(16)]+['p8_'+str(i)for i in range(8)]+['p4_'+str(i)for i in range(4)]+['a','b']
+    mapping={p+s:[p+s+'_'+str(i)for i in range(3)]for p in prefixes for s in ('p','n')}
+    clocks=[dict(name=p+str(i))for p,n in [('sp16_',16),('sp8_',8),('sp4_',4)]for i in range(n)]+[dict(name=n)for n in ('sa','sb','s')]
+    observed={'v('+n+')'for nodes in mapping.values()for n in nodes}|{'v(op)','v(on)','v(c)','v(b)','v(e)','v(s)','@q.x.qnpn13g2[ic]'}
+    observed|={'v('+c['name']+s+')'for c in clocks for s in ('p','n')}
+    contract=dict(interface_probes=mapping,tree_plan=dict(clocks=clocks),vectors=sorted(observed),hbt={'x':spec})
+    inventory=probe_inventory(contract)
+    assert inventory['all_256_bit_group_sets_checked']==256 and inventory['physical_interface_legs']==124
+    assert inventory['public_clock_pairs']==31 and inventory['unavailable_diagnostics']['mux_output_diagnostic_only']['available'] is False
+    assert 'v(mp)' not in inventory['requested_vectors'] and 'v(op)' in inventory['requested_vectors']
+    report=dict(all_engineering_gates_passed=False,capture_transport={'raw_sha256':'fixture-only'},failed_hbts=['x'],failed_mos=[],signals={'wrong_sign_samples':1})
+    assert replay_receipt(report,copy.deepcopy(report))['original_acceptance'] is False
     faults=[]
     def reject(name,func):
         try:func()
@@ -60,7 +72,19 @@ def main():
     reject('wrong_segment_shape',lambda:below_segments(t,y[:-1],.4,1.))
     reject('unadmitted_end_truncation',lambda:admitted_window(np.array([0.,STOP-1e-10]),START+255*UI,START+256*UI))
     reject('nonfinite_ui_context',lambda:bit_context(float('nan')))
-    assert len(faults)==20
+    def inventory_fault(label,mutation):
+        changed=copy.deepcopy(contract);mutation(changed);assert changed!=contract
+        reject(label,lambda:probe_inventory(changed))
+    for label,vector in [('missing_stage_probe','v(op)'),('missing_public_clock_probe','v(sp16_0p)'),
+                         ('missing_current_probe','@q.x.qnpn13g2[ic]'),('missing_terminal_probe','v(e)')]:
+        inventory_fault(label,lambda c,vector=vector:c['vectors'].remove(vector))
+    inventory_fault('stale_mux_probe',lambda c:c['vectors'].append('v(mp)'))
+    inventory_fault('missing_interface_key',lambda c:c['interface_probes'].pop('ap'))
+    inventory_fault('duplicate_clock_name',lambda c:c['tree_plan']['clocks'][0].__setitem__('name','s'))
+    inventory_fault('duplicate_probe_vector',lambda c:c['vectors'].append(c['vectors'][0]))
+    reject('changed_original_review',lambda:replay_receipt(report,dict(report,failed_hbts=[])))
+    reject('accepted_original_review',lambda:replay_receipt(dict(report,all_engineering_gates_passed=True),dict(report,all_engineering_gates_passed=True)))
+    assert len(faults)==30
     return dict(status='PASS_SYNTHETIC_SAME_ROW_MATH_CONTROLS_ONLY',negative_controls=faults,
                 native_capture_read=False,original_failure_replayed=False,readback_authorized=False)
 if __name__=='__main__':

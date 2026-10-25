@@ -133,7 +133,7 @@ def audit_complete(manifest,parts,destination,expected,selected,addons=()):
                 publication_addons={n:dict(found[n],authentication='Immutable combined archive SHA256; no prepublication member hash')for n in sorted(addons)},directories=directories,
                 complete_inventory_and_bytes_verified=True,native_image_executed=False)
 
-def validate_contract(contract,bench,model,qualified):
+def validate_contract(contract,bench,model,qualified,interfaces):
     frozen=observer.frozen_functions(json.loads((ROOT/observer.METHOD).read_bytes())['protected_files'])
     assert contract['fault']=='none' and contract['streams']==32
     assert contract['bits']==frozen['sequence']() and len(contract['bits'])==256
@@ -169,20 +169,28 @@ def validate_contract(contract,bench,model,qualified):
         assert r['model']=='npn13g2' and 1<=r['nx']<=10 and len(r['terminals'])==4
         assert '@q.'+n+'.qnpn13g2[ic]'in contract['vectors']
         assert all(v=='0' or 'v('+v+')'in contract['vectors']for v in r['terminals'])
+    assert interfaces['status']=='PASS_ACTUAL8088_NATIVE124_INPUTS372_BASES64_DRIVER_HANDOFFS_FOUR_OUTPUT_PORTS_REQUIRES_LOADED_WAVES'
+    assert set(interfaces['output_ports'])=={'op','on','tvdd','tr'}
+    assert all(v['node']==k and v['reference_label']=='P_'+k for k,v in interfaces['output_ports'].items())
+    assert contract['interface_probes']==interfaces['modes']['wire'],'Changed native input reference-plane mapping'
+    probes=observer.probe_inventory(contract)
     mapping=contract['interface_probes']
     assert len(mapping)==124 and all(len(v)==3 for v in mapping.values())
     assert len({n for v in mapping.values()for n in v})==372
     assert all('v('+n+')'in contract['vectors']for v in mapping.values()for n in v)
     return dict(actual_core_devices=8088,actual_core_hbts=593,actual_core_mos=5376,
         canonical_tree_hbts=len(roles),source_bits_unchanged=True,all_actual_terminal_and_Nx_projections_equal=True,
-        original_clock_origins_and_half_periods_unchanged=True)
+        original_clock_origins_and_half_periods_unchanged=True,
+        all_requested_probes_present=True,requested_vector_count=probes['requested_vector_count'],
+        authenticated_native_interfaces_equal=True)
 
-def actual_controls(contract,bench,model,qualified):
-    positive=validate_contract(contract,bench,model,qualified);bad=[]
+def actual_controls(contract,bench,model,qualified,interfaces):
+    def validate(c,b,m,q):return validate_contract(c,b,m,q,interfaces)
+    positive=validate(contract,bench,model,qualified);bad=[]
     def reject(label,change):
         c,b,m,q=copy.deepcopy((contract,bench,model,qualified));c,b,m,q=change(c,b,m,q)
         assert (c,b,m,q)!=(contract,bench,model,qualified),'Mutation must change an actual input'
-        try:validate_contract(c,b,m,q)
+        try:validate(c,b,m,q)
         except(AssertionError,KeyError,ValueError,StopIteration):bad.append(label)
         else:raise AssertionError('Accepted actual input corruption '+label)
     def edit(fn):
@@ -212,7 +220,28 @@ def actual_controls(contract,bench,model,qualified):
         b,count=re.subn(r'(?mi)^xtree ','wrongtree ',b);assert count==1
         return c,b,m,q
     reject('wrong_top_instance',wrong_top)
-    assert len(bad)==19
+    def missing(vector):
+        def change(c):
+            assert vector in c['vectors'];c['vectors'][c['vectors'].index(vector)]='v(unbound_diagnostic_probe)'
+        return change
+    for label,vector in [('missing_tx_output_vector','v(op)'),('missing_public_clock_vector','v(sp16_0p)'),
+        ('missing_hbt_terminal_vector','v('+contract['hbt']['xtree.xd5676']['terminals'][2]+')'),
+        ('missing_hbt_current_vector','@q.xtree.xd5676.qnpn13g2[ic]')]:
+        reject(label,edit(missing(vector)))
+    reject('stale_public_mux_vector',edit(lambda c:c['vectors'].__setitem__(-1,'v(mp)')))
+    reject('missing_interface_group',edit(lambda c:c['interface_probes'].pop('ap')))
+    def swap(c):c['interface_probes']['ap'],c['interface_probes']['an']=c['interface_probes']['an'],c['interface_probes']['ap']
+    reject('swapped_interface_polarity',edit(swap))
+    reject('foreign_existing_interface_base',edit(lambda c:c['interface_probes']['ap'].__setitem__(0,c['interface_probes']['bp'][0])))
+    reject('duplicate_interface_base',edit(lambda c:c['interface_probes']['ap'].__setitem__(0,c['interface_probes']['ap'][1])))
+    reject('duplicate_clock_name',edit(lambda c:c['tree_plan']['clocks'][0].__setitem__('name','s')))
+    for label,mutate in [('changed_interface_source_node',lambda x:x['modes']['wire']['ap'].__setitem__(0,'unbound')),
+                         ('changed_interface_output_port',lambda x:x['output_ports']['op'].__setitem__('node','on'))]:
+        x=copy.deepcopy(interfaces);mutate(x);assert x!=interfaces
+        try:validate_contract(contract,bench,model,qualified,x)
+        except(AssertionError,KeyError,ValueError):bad.append(label)
+        else:raise AssertionError('Accepted native interface corruption '+label)
+    assert len(bad)==31
     return dict(positive=positive,rejected=bad,full_waveform_review_repeated=False)
 
 def metadata_controls(m):
@@ -308,7 +337,7 @@ def addon_controls(m):
 
 def source_controls():
     m=methods();from check_tx_normal_saved_capture_diagnosis import main as math_controls
-    math=math_controls();assert len(math['negative_controls'])==20
+    math=math_controls();assert len(math['negative_controls'])==30
     addons=addon_controls(m)
     parts=parts_controls();selected=selected_archive_controls();publication=release.controls();metadata=metadata_controls(m)
     with tempfile.TemporaryDirectory()as td:
@@ -377,15 +406,25 @@ def main():
         runtime_models=[h for p,h in source['runtime_inputs'].items()if p.endswith('/whole8088/source/composed/output8088-wire.spice')]
         assert runtime_models==[m['model_sha256']]
         result['prepared_source_identity']=restore_parts(m['prepared_source'],pp,work/'prep-parts');save()
-        chosen={n:prep['outputs'][n]for n in ('whole8088/source/composed/output8088-wire.spice','whole8088/source/composed/composition.json')}
+        chosen={n:prep['outputs'][n]for n in ('whole8088/source/composed/output8088-wire.spice','whole8088/source/composed/composition.json','whole8088/source/interfaces.json')}
+        assert chosen['whole8088/source/interfaces.json']==m['interfaces_sha256']=='13bfff54e68a5355547fc64e4ebdd64e347c5b54a43b8c924b9ece724b009aaf'
+        assert prior['restore']['selected_files']['whole8088/source/interfaces.json']['sha256']==m['interfaces_sha256'] if 'whole8088/source/interfaces.json' in prior['restore']['selected_files'] else prep['output_parent_binding']['source']['restore']['selected_files']['interfaces.json']['sha256']==m['interfaces_sha256']
         result['prepared_model_restore']=extract_verified(pp,work/'prep-parts',work/'model',chosen);save()
         model=(work/'model/whole8088/source/composed/output8088-wire.spice').read_text()
         case=work/'native/work';contract=json.loads((case/'contract.json').read_bytes());bench=(case/'bench.cir').read_text()
         qualified=json.loads((ROOT/observer.ROLES).read_bytes())
-        result['actual_input_controls']=actual_controls(contract,bench,model,qualified);save()
+        interfaces=json.loads((work/'model/whole8088/source/interfaces.json').read_bytes())
+        result['actual_input_controls']=actual_controls(contract,bench,model,qualified,interfaces);save()
+        write(OUT/'consumed-input-binding.json',dict(contract_sha256=sha(case/'contract.json'),
+            bench_sha256=sha(case/'bench.cir'),model_sha256=hashlib.sha256(model.encode()).hexdigest(),
+            composition_sha256=chosen['whole8088/source/composed/composition.json'],interfaces_sha256=m['interfaces_sha256'],
+            source_run=40168554741,source_head=m['native_source']['source'],prepared_source=m['prepared_source'],
+            actual_input_controls=result['actual_input_controls'],unavailable_diagnostics=observer.probe_inventory(contract)['unavailable_diagnostics'],
+            bits_sha256=contract['source_bits_sha256'],condition=contract['condition'],solver_profile=contract['solver_profile'],
+            electrical_acceptance=False))
         method=json.loads((ROOT/observer.METHOD).read_bytes())
         assert method['readback_authorized'] is True,'Core and wrapper require separate explicit reviewed authorization'
-        diagnosis=observer.observe_restored(case,method)
+        diagnosis=observer.observe_restored(case,method,lambda name,value:write(OUT/name,value))
         proof=write(OUT/'complete-native-row-diagnosis.json',diagnosis)
         compact=dict(status=diagnosis['status'],full_witness=proof,
             original_failed_samples=len(diagnosis['failed_sample_events']),failed_hbt_count=len(diagnosis['failed_hbt_same_row_witnesses']),

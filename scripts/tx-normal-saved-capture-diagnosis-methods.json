@@ -1,7 +1,7 @@
 {
   "schema": "tx-normal-saved-capture-diagnosis-v1",
   "status": "SOURCE_ONLY_REVIEW_REQUIRED",
-  "readback_authorized": true,
+  "readback_authorized": false,
   "native_simulation_authorized": false,
   "source_run": 40168554741,
   "source_head": "2e63863abb0309c245d89e2a3d4934fe40a2b2ed",
@@ -80,13 +80,15 @@
     "scripts/cloud_tx_data_driver.py": "b85660408b95e79669335e128ba06ed5f07f96ac73f051cd9d5eada3b03c9912",
     "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
     "docs/evidence/tx-canonical-clock-role-full-result-20261024.json": "0b166e90b9e3ff95386974d72e944ea2a469f85581585d7dc066a50f81e83b46",
-    "scripts/tx_normal_saved_capture_diagnosis.py": "0657fce223d281a707db547bbd44de74383e24d2e7cedf5dbd27f21ae6c99fcb",
-    "scripts/check_tx_normal_saved_capture_diagnosis.py": "773a6127393c5c4f16ba4e3b11b11a3e4fe021f9d301626ecdf0fce57f90b55f",
+    "scripts/tx_normal_saved_capture_diagnosis.py": "d1f9051e09ba255f98c9c5f45dfc0214098d884f7d7ac9a28c5383e1644147ea",
+    "scripts/check_tx_normal_saved_capture_diagnosis.py": "550485e84c72249f3d2e7d24644d37be383cd3a88ad49a357463f28da23eff84",
     "docs/evidence/tx-normal-complete-rejected-parts-20261025.json": "91b79f0085d1f44dbfd10ba40e5b1648eeb926380423947ef92d05c3c4f2a01e",
     "docs/evidence/tx-normal-complete-rejected-result-20261025.json": "c131efdcef18e4c35d0a034e524241356878cc34c95452819078179b80f9c372",
-    "docs/evidence/tx-normal-rejected-qualified-role-join-20261025.json": "61ffe7957d46690c30d7d99f0523e50f979abffa6378f3bc1bcced9b8aaf3284"
+    "docs/evidence/tx-normal-rejected-qualified-role-join-20261025.json": "61ffe7957d46690c30d7d99f0523e50f979abffa6378f3bc1bcced9b8aaf3284",
+    "docs/evidence/tx-normal-original-output8088-adapter-20261025.py": "a34a7fb3e8c5562420d2ae7cfcdfd32bf2f594ebe1f2544f6d0bc6aa630afec8",
+    "docs/evidence/tx-normal-obsolete-mux-probe-source-correction-20261025.json": "f0fb08d85fdb67cc504d9a4d1620c1a21dfd3145b64d28b3c81595e26dc47820"
   },
-  "synthetic_negative_controls": 20,
+  "synthetic_negative_controls": 30,
   "original_rejection_reproduction_required": true,
   "thermal_state_available": false,
   "original_maximum_step_s": 5e-13,
@@ -104,5 +106,6 @@
   ],
   "diagnostic_endpoint_policy": "Keep original strict full-duration reader unchanged; retain requested final UI bounds and clip diagnostic scan only to its admitted native endpoint (<1e-18 difference).",
   "inactive_extrema_policy": "Keep actual row; outside [START,STOP) expected bit/sign/stage diagnostics are None, with raw HBT/all31-clock values retained.",
-  "threshold_interval_policy": "Entry/exit retain actual row/value bounds, explicit native transition boolean and START/end observation censor flags; sampled span is not exact threshold dwell."
+  "threshold_interval_policy": "Entry/exit retain actual row/value bounds, explicit native transition boolean and START/end observation censor flags; sampled span is not exact threshold dwell.",
+  "unavailable_diagnostic_policy": "Only obsolete public mp/mn pair unavailable; retain actual five interface stages and op/on. No alias or internal-handoff causal claim."
 }

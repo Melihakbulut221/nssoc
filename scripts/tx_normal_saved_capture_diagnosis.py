@@ -96,7 +96,57 @@ def groups(contract, bit):
               ('level_8', 'p8_'+str(bit % 8)), ('level_4', 'p4_'+str(bit % 4)),
               ('final', 'a' if bit % 2 == 0 else 'b')]
     return [(stage, mapping[prefix+'p'], mapping[prefix+'n']) for stage, prefix in labels] + [
-        ('mux_output_diagnostic_only', ['mp'], ['mn']), ('tx_output', ['op'], ['on'])]
+        ('tx_output', ['op'], ['on'])]
+
+def probe_inventory(contract):
+    """Refuse any unavailable requested probe before the expensive frozen review."""
+    mapping = contract['interface_probes']
+    prefixes = ['d'+str(i) for i in range(32)] + ['p16_'+str(i) for i in range(16)]
+    prefixes += ['p8_'+str(i) for i in range(8)] + ['p4_'+str(i) for i in range(4)] + ['a', 'b']
+    assert set(mapping) == {p+s for p in prefixes for s in ('p', 'n')}
+    assert all(len(v) == len(set(v)) == 3 for v in mapping.values())
+    assert len({n for v in mapping.values() for n in v}) == 372
+    vectors = contract['vectors']; available = set(vectors)
+    assert len(vectors) == len(available)
+    assert not {'v(mp)', 'v(mn)'} & available, 'Stale schematic output probes are not physical8088 public ports'
+    requested = set(); per_bit = []
+    for bit in range(256):
+        rows = groups(contract, bit)
+        assert [r[0] for r in rows] == ['cmos', 'level_16', 'level_8', 'level_4', 'final', 'tx_output']
+        for stage, pp, nn in rows:
+            assert len(pp) == len(nn) == (1 if stage == 'tx_output' else 3)
+            assert len(set(pp+nn)) == len(pp+nn)
+            requested.update('v('+n+')' for n in pp+nn)
+        per_bit.append([r[0] for r in rows])
+    clocks = contract['tree_plan']['clocks']
+    expected_clocks = {p+str(i) for p,n in [('sp16_',16), ('sp8_',8), ('sp4_',4)] for i in range(n)} | {'sa','sb','s'}
+    assert len(clocks) == 31 and {c['name'] for c in clocks} == expected_clocks
+    requested.update('v('+c['name']+s+')' for c in clocks for s in ('p','n'))
+    for name, spec in contract['hbt'].items():
+        assert spec['model'] == 'npn13g2' and len(spec['terminals']) == 4
+        requested.update('v('+n+')' for n in spec['terminals'] if n != '0')
+        requested.add('@q.'+name+'.qnpn13g2[ic]')
+    assert requested <= available, ('Missing requested diagnostic probes', sorted(requested-available))
+    return dict(status='ALL_REQUESTED_DIAGNOSTIC_PROBES_PRESENT_BEFORE_FROZEN_REVIEW',
+        all_256_bit_group_sets_checked=len(per_bit), stages_per_bit=per_bit[0],
+        physical_interface_legs=len(mapping), public_clock_pairs=len(clocks),
+        observed_hbt_count=len(contract['hbt']), requested_vector_count=len(requested),
+        requested_vectors=sorted(requested), actual_interface_probes=mapping,
+        public_clock_source_records=clocks, unavailable_diagnostics={
+            'mux_output_diagnostic_only': dict(available=False, historical_public_nodes=['mp','mn'],
+                reason='Exact physical8088 adapter removes these public ports and saved vectors when output14 is absorbed into the parent. Internal output-handoff roles are not separately bound by this diagnostic; no waveform alias is inferred.')})
+
+
+def replay_receipt(actual, recorded):
+    actual_sha = digest(canonical(actual).encode()); expected_sha = digest(canonical(recorded).encode())
+    assert actual_sha == expected_sha and canonical(actual) == canonical(recorded)
+    assert not actual['all_engineering_gates_passed']
+    return dict(status='FROZEN_ORIGINAL_ELECTRICAL_REJECTION_REPRODUCED_BEFORE_DIAGNOSTICS',
+        actual_review_canonical_sha256=actual_sha, recorded_review_canonical_sha256=expected_sha,
+        full_original_review_replays=1, capture_transport=actual['capture_transport'],
+        failed_hbt_count=len(actual['failed_hbts']), failed_mos_count=len(actual['failed_mos']),
+        signals=actual['signals'], original_acceptance=False, new_simulation=False)
+
 
 def stages_at(t, values, contract, bit, row):
     sign = 2*contract['bits'][bit]-1
@@ -278,6 +328,7 @@ def analyze(t, values, contract, original, qualified):
         crossings[str(bit)] = dict(**window, physical_pair_crossings=group_rows)
     return dict(status='DIAGNOSIS_ONLY_ORIGINAL_ELECTRICAL_REJECTION_REMAINS', accepted=False,
         original_rejection_reproduced=True, new_simulation=False, fitted_phase=False,
+        unavailable_diagnostics=probe_inventory(contract)['unavailable_diagnostics'],
         thermal_state_available=False, thermal_reason='No thermal state vector was saved by the original 14181-vector contract.',
         original_sample_interpolation=True, diagnostic_crossing_interpolation=False,
         failed_sample_events=events, failed_hbt_same_row_witnesses=hbts, frames=frames,
@@ -286,7 +337,7 @@ def analyze(t, values, contract, original, qualified):
         conclusions_not_established=['causality', 'complete macro terminal KCL', 'thermal state',
                                      'circuit repair', 'full31 clock tree', 'full PHY', 'mainchip timing'])
 
-def observe_restored(run, method):
+def observe_restored(run, method, emit):
     """Future hosted-only entry. Disabled until restoration/controls review."""
     import os
     assert os.environ.get('GITHUB_ACTIONS') == 'true'
@@ -310,8 +361,10 @@ def observe_restored(run, method):
     assert contract['bits'] == frozen['sequence']()
     assert contract['tree_plan']['nodes'] == frozen['tree_plan'](32)['nodes']
     assert len(contract['tree_plan']['clocks']) == 31
+    emit('diagnostic-probe-inventory.json', probe_inventory(contract))
     original = frozen['review'](run,contract)
     assert canonical(original) == canonical(result['review']), 'Original full electrical rejection not exactly reproduced'
+    emit('original-review-replay.json', replay_receipt(original, result['review']))
     from cloud_tx_stream import read_streamed_wave
     t, values, transport = read_streamed_wave(run/'wave.raw',contract['vectors'],STOP,contract['condition']['step_ps']*1e-12)
     assert transport == original['capture_transport']
