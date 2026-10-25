@@ -1,0 +1,52 @@
+{
+  "schema": "mainchip-saved-postroute-publication-source-repair-v1",
+  "status": "SOURCE_ONLY_REPAIR_REQUIRES_INDEPENDENT_REVIEW_AND_HOSTED_CONTROLS",
+  "reviewed_parent": "a82693517fef03a630e6442d541c14fffa6048a8",
+  "reviewers": [
+    "delta_review",
+    "tx_diagnosis"
+  ],
+  "parent_methods_sha256": "122454b98042b67624fc6300b0b34edd4bc0bbfd44529014ea09364912636261",
+  "independently_verified_parent_pins": 62,
+  "independently_verified_parent_bytes": 6760559,
+  "actual_summary": {
+    "asset": 675284368,
+    "bytes": 49860330,
+    "sha256": "0f5123d3ea073c93b4e4733e778605e2108719053714b3cbe2f0062b65580c76",
+    "complete_bytes_authenticated_in_RAM": true,
+    "critical_projection_matches": true
+  },
+  "preserved": {
+    "admission_sha256": "02228698d77216f28f2ce3ff2542aedc3615bd34d60d6f8aa138a24ea1702977",
+    "controller_sha256": "8a1a5ed19bb3fdb6d4bbf482718dcf29d7d15fdada23a90e678edef6981f5716",
+    "geometry_sha256": "52de46aacf9b97ab17ac56560efef838d149a746a2dd09a6f1af87ed41be0c97",
+    "postroute_sha256": "c6335c535959286b7f77c3aaf6a5ab631640557c8453079a80dd97c97f58701f",
+    "qualified_publisher_sha256": "63b577fbac2b72037653c2a39486723cfd496edb34e1282850eaeed31a72a553",
+    "generated_geometry_sha256": "acedd589a8de3c7facdf8caa04f1521a965160808475a2121a915a6db689424a",
+    "actual_saved_controller_sha256": "9c2b35b0c037541626e710dff6a7461ca47a6f95952616f2c660da14d253e280"
+  },
+  "findings_closed_in_source": [
+    "Reject a symlinked evidence root before report access and archive creation.",
+    "Reject report and descendant symlinks before report read/write.",
+    "Reject unsupported attempt2 before any evidence/publication write.",
+    "Exercise actual wrapper, real pack, complete member/file identity and unchanged qualified publisher with fake transport.",
+    "Replace release creation with pinned read-only bounded waiter.",
+    "Protect the two invoked source checkers and archive extractor plus waiter."
+  ],
+  "proposed_controls": {
+    "actual_wrapper_positives": 3,
+    "actual_wrapper_refusals": 13,
+    "read_only_wait_positives": 3,
+    "read_only_wait_refusals": 4,
+    "existing_base_publication_controls_unchanged": true
+  },
+  "limitations": {
+    "source_review_only": true,
+    "authored_code_executed": false,
+    "tests_executed": false,
+    "native_executed": false,
+    "archives_downloaded": false,
+    "local_files_written": false,
+    "source_controls_pass_inferred": false
+  }
+}
