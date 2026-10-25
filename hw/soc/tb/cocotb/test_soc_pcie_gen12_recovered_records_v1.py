@@ -35,18 +35,21 @@ async def first_public_word_and_startup_reset(d):
     for polarity in (0,1):
         for domain in ('wr','rr'):
             # Release while one clock is stopped, then reset again during startup.
-            await link.reset(domain,stopped='wr',polarity=polarity)
-            await link.feed(stream_words(0,polarity,count=2),gap=1)
-            await link.drain()
+            before=link.reads
+            await link.reset(domain,stopped='wr',polarity=polarity,
+                             prefill=stream_words(0,polarity,count=2))
+            await link.until(lambda:not link.pending);await link.drain()
+            assert link.reads-before==2
             assert link.value('boundary_valid_o')
             link.sig(domain).value=1
             await Timer(1000,unit='ps')
             link.sig(domain).value=0
             await Timer(2000,unit='ps')  # Below the frozen startup barrier length.
-            await link.reset(domain,stopped='rd',polarity=polarity)
             before=link.reads
-            # No extra bench settling edge after public running: first COM must survive.
-            await link.feed(stream_words(0,polarity,count=2),gap=1);await link.drain()
+            # Queue before release: first live writer low phase already presents COM.
+            await link.reset(domain,stopped='rd',polarity=polarity,
+                             prefill=stream_words(0,polarity,count=2))
+            await link.until(lambda:not link.pending);await link.drain()
             assert link.reads-before==2
     link.close()
 

@@ -195,9 +195,10 @@ class Link:
         await Timer(50000,unit='ps')
         assert not self.value('rv'),'late duplicate'
         if self.error:raise self.error
-    async def reset(self,domain='wr',stopped=None,polarity=None):
+    async def reset(self,domain='wr',stopped=None,polarity=None,prefill=()):
         self.sig(domain).value=1
-        self.pending.clear();self.expected.clear();self.available.clear();self.partial=[]
+        self.pending.clear();self.pending.extend(prefill)
+        self.expected.clear();self.available.clear();self.partial=[]
         self.held=None;self.loss=False;self.gap_left=0
         if polarity is not None:self.polarity=polarity
         if self.oracle:self.oracle.clear();self.oracle.prev=self.polarity
