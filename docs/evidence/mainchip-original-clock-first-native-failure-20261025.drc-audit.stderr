@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py", line 139, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py", line 127, in main
+    result['measurement']=measure_report(category,out/'initial-drc.rpt',out/'initial-drc-reread.rpt')
+                          ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py", line 39, in measure_report
+    result=marker_tree(category)
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py", line 27, in marker_tree
+    count,rows=walk(category,[CATEGORY])
+               ~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py", line 23, in walk
+    n,more=walk(child,path+[child.getName()]);total+=n;rows+=more
+           ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py", line 25, in walk
+    assert len(list(node.getAllMarkers()))==total
+               ~~~~^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'SwigPyObject' object is not iterable
