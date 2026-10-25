@@ -1,0 +1,81 @@
+{
+  "schema": 1,
+  "status": "EXISTING_CAPTURE_CURRENT_LEDGER_READBACK_DISPATCHED",
+  "run": 40171679250,
+  "source": "07dfd6553a9a204a6f89904e4c58128ee7c21509",
+  "attempt": 1,
+  "event": "workflow_dispatch",
+  "run_status": "in_progress",
+  "release": 423205581,
+  "tag": "cloud-results-40171679250-1-cdr-v58-current-ledger",
+  "group": "cdr-v58-current-ledger",
+  "release_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-results-40171679250-1-cdr-v58-current-ledger",
+  "empty_assets_verified": true,
+  "exact_source_tag_verified": true,
+  "workflow_id": 395718020,
+  "workflow_path": ".github/workflows/cdr-v58-current-ledger-cloud.yml",
+  "workflow_sha256": "c894b66ddf7f0d68c1992875253e95534d8cf2f726b93aa7f94b169f9ce553aa",
+  "jobs": [
+    {
+      "id": 121103644390,
+      "name": "controls",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121103732367,
+      "name": "readback",
+      "status": "in_progress",
+      "conclusion": null
+    }
+  ],
+  "controls_prerequisite": {
+    "run": 40171508329,
+    "source": "f7f782c137cc6227ec276e646fb4446ea4a742dd",
+    "job": 121103121162,
+    "conclusion": "success",
+    "result_sha256": "217a429531843baa2ec55d6adc0ee31d38af1e6de5b21bb176738dcb81784708",
+    "receipt": "docs/evidence/cdr-v58-current-ledger-controls-pass-20261025.json"
+  },
+  "source_identity": {
+    "reviewed_engineering_source": "e335739391dc2061733a2e5e9fa82b5619c2848b",
+    "changes_after_controls": "Only immutable proof/dispatch JSON and method authorization/pins; all helpers, checker, controller and workflow bytes unchanged.",
+    "protected_paths": 49
+  },
+  "release_trigger_audit": {
+    "baseline_already_published_source": "85fe7ea077dbd2ebe0c679c138ff263e9561db51",
+    "compare_status": "ahead",
+    "total_commits": 9,
+    "total_files": 22,
+    "workflow_changes": [
+      "Added only the reviewed manual workflow_dispatch ledger workflow; all inherited workflow bytes unchanged."
+    ]
+  },
+  "original_data": {
+    "run": 40108285374,
+    "source": "d92a3367a1013d1071125b753ec4f65ae4ec813b",
+    "cases": [
+      "nominal_early",
+      "nominal_late",
+      "hot_early"
+    ],
+    "full_columns": 1152,
+    "original_rejection_reproduced_first": true
+  },
+  "publication": {
+    "complete_json_assets_individual": true,
+    "byte_identical_outputs": true,
+    "selected_binary_caches_in_90_day_actions_artifact": true,
+    "combined_large_summary_required": false
+  },
+  "limits": {
+    "unsaved_HBT_Ib_Ie_unavailable": true,
+    "unsaved_rppd_current_unavailable": true,
+    "observed_Ic_minus_Ids_not_KCL": true,
+    "native_brackets_authoritative": true
+  },
+  "native_simulation_authorized": false,
+  "cdr_accepted": false,
+  "full_PHY_accepted": false,
+  "continuation": "Consume exact source-bound result and publication inventory when terminal. Authenticate complete case JSONs and same-row current/voltage/clock findings; retain every original electrical rejection and partial evidence. No new circuit values or acceptance inferred before readback."
+}

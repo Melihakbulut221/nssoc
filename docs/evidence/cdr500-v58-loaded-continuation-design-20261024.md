@@ -1,0 +1,9 @@
+# Exact fresh CDR v58 loaded continuation
+
+Physical40096705004 passed560-category DRC, deep/flat500-device LVS and the unchanged strict113-component/978-anchor graph. Fresh500-device binding and raw RC passed40097552747. MIM precision40098426328 then passed both native extraction orders with identical24574 R and15694 C, seven intrinsic MIM devices once, all13+9 raw/intrinsic controls per order, and21 composition faults.
+
+The new loaded controller is an exact reversible source adaptation of the original whole500-device screen. Only the model name, immutable MIM/binding/physical receipts and output/publication paths change. The native500-device/1446-terminal population, exact53.335um gain MOS widths, native collector load selection,150fF sampler loads,50fF external comparator loads, complete native vector capture, all safety/current/phase/timing/numerical gates and the external8GHz stimulus remain unchanged.
+
+Push execution qualifies nominal_early preparation without executing a transient. The13 binding corruption controls, all256 stimulus bits, fresh primitive/terminal/load mapping and exact native planes must pass. After the actual preparation receipt is recorded, one explicit manual dispatch reruns that prerequisite gate before allowing the original ten-case matrix, at most two cases concurrently: nominal_early, nominal_late, hot_early, hot_late, cold_early, cold_late, constant_zero, constant_one, clock_stopped and vi_bias_off. Every case keeps the original34.25ns duration and0.3125ps maximum step. Failed cases remain published and do not cancel other cases.
+
+This is source preparation; no new loaded result is claimed. Even a passing whole-PD500 loaded screen is not a recovered-clock loop, actual PLL integration, full PHY acceptance, RF/body extraction qualification or production approval.
