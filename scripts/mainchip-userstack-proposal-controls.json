@@ -1,0 +1,152 @@
+{
+  "schema": "mainchip-user-stack-required-controls-v1",
+  "status": "PLANNED_NOT_IMPLEMENTED_OR_EXECUTED",
+  "count": 24,
+  "controls": [
+    {
+      "id": "positive-20",
+      "required_evidence": "Real hosted multithreaded fixture produces exactly 20 identity-bound samples; fixture counter advances while detached. This is not an OpenROAD run.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "all-lwps",
+      "required_evidence": "Compare actual GDB host LWP IDs with /proc/PID/task during all-stop; reject missing or duplicate threads and retain real unwind errors.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "container-root",
+      "required_evidence": "Fixture has distinct same-named host/target libraries; resolve /proc/PID/root and reject host substitution.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "initialization-canary",
+      "required_evidence": "Actual system/home/local/executable auto-load canaries must not execute under -nx/-nh and early set auto-load off.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "debuginfod-canary",
+      "required_evidence": "Controlled local endpoint receives zero requests; explicit off and empty URL environment are required.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "permission-canaries",
+      "required_evidence": "On sacrificial fixture only, actual memory/register writes, inferior calls and breakpoint/tracepoint insertion are rejected.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "wrong-starttime",
+      "required_evidence": "Reject changed native starttime before attaching.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "wrong-executable",
+      "required_evidence": "Reject changed ELF bytes/inode/device or exec after initial identity.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "wrong-container",
+      "required_evidence": "Reject changed container ID, image, StartedAt, cpuset, cmdline or cgroup.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "pid-replacement",
+      "required_evidence": "Fixture exits and another PID is supplied; no original identity is inferred. Numeric attach race is rechecked while stopped.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "already-traced",
+      "required_evidence": "Reject nonzero TracerPid before observer owns attachment.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "namespace-drift",
+      "required_evidence": "Reject changed proc root/namespace identity before, during or after attachment.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "during-stop-rebind",
+      "required_evidence": "Stopped-snapshot identity corruption rejects before frames are accepted.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "timeout-cleanup",
+      "required_evidence": "Stall debugger fixture; deadline terminates only debugger group, proves TracerPid zero/no tracing stop, retains failure.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "error-finally-detach",
+      "required_evidence": "Inject trusted-reader exception after attach; finally detach and post-detach identity proof must run.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "leader-descendant",
+      "required_evidence": "Debugger-wrapper fixture exits leaving descendant; supervisor rejects and cleans owned group before accepting output.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "detach-unproved",
+      "required_evidence": "Missing detach acknowledgment or retained tracer/trace-stop rejects; no target rescue signal.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "partial-19",
+      "required_evidence": "Nineteen samples cannot satisfy 20-sample acquisition.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "oversize-or-time",
+      "required_evidence": "Thread/frame/output/monotonic limits checked; excess reported explicitly rather than silently dropped.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "unknown-unwind",
+      "required_evidence": "Absent symbols/unwind failure retain addresses/module offsets and error; no fabricated complete stack.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "wrong-capsule",
+      "required_evidence": "Reject old40095811631 or changed40120760532 summary/parts/member/ELF/image/prefix.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "original-rejection",
+      "required_evidence": "Reproduce original no-log assertion site/code object; arbitrary exception or CPU activity cannot satisfy gate.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "material-mutation",
+      "required_evidence": "Changed route.tcl/config/methods/ODB/runtime/controller hashes reject before and after.",
+      "executed": false,
+      "passed": false
+    },
+    {
+      "id": "failure-publication",
+      "required_evidence": "Failure retains partial JSON/raw output/identity/cleanup; publication loss never produces pass.",
+      "executed": false,
+      "passed": false
+    }
+  ],
+  "native_openroad_controls_permitted": false
+}

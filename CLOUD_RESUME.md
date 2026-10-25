@@ -8344,3 +8344,16 @@ Mainchip saved-IP40169634355 passed without running router; exactgetRouteShapeCo
 CDR126-device terminal/current ledgere3357393 is source-only under peerreview. MissingIb/Ie/rppd/internalwire currents remain explicit; no completeKCL or speculative resizing.
 
 FullserialPHY, routedserialmainchip and finalsetup/hold are still open.
+
+
+### 2026-10-25T07:58:30.311238+00:00 — cloud-only checkpoint v33
+
+Local project workspace and project-named temporary files are empty; no local CAD/simulator process. All source, evidence and execution stay GitHub. The live main monitor schedule remains17 */8 * * * UTC, read-only, with106 exact run/source handles and no automatic native dispatch.
+
+Actual318 initialization adapter40173307881 and three-model preparation40171468821 PASS. Qualified159-path nested adapter closure imported4061a1be. These are preparation/adapter proofs, not native OFF readback or zero OP; reviewed-wrapper candidate54b53c78 is next. Preserve rejected complete parentTX; neither normal nor swapped capture has a process to resume.
+
+CDR current ledger40171679250 PASS preserves all original electrical failures. Eight clock-tail current differences reverse515times; collector voltage alone was not evidence of absent current steering. Isolated resistor-length experiments1ffc55e6 must now receive real physical/RC/electrical validation; estimates are explicitly conditional, not measured acceptance. Full49pin/59path ledger source closure importeda283d6.
+
+Harmless GDB fixture initially failed40172782148 before sample0. Exact hosted artifact readback40173543363 identified executable display-string equality. Narrow file-identity repair40174045028 PASS20 samples,24 original controls plus3 spelling positives/8 wrong-file faults with cleanup proof. No chip process was restored or attached. Implement exact latest-capsule/live-container admission before actual bounded chip stack observation. Original no-log/clock/derate gates stay unchanged.
+
+Full serial PHY, routed serial main chip and final setup/hold closure remain open.

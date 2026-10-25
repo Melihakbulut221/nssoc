@@ -1,0 +1,304 @@
+{
+  "status": "PASS_24_HARMLESS_USERSTACK_CONTROLS_ONLY",
+  "native_process_restored": false,
+  "native_attachment_authorized": false,
+  "native_route_started": false,
+  "normal_continuation_accepted": false,
+  "route_progress_proven": false,
+  "scheduling_perturbation_on_harmless_fixture": true,
+  "controls": [
+    {
+      "id": "positive-20",
+      "evidence": {
+        "samples": 20,
+        "result_sha256": "ffb55dbfa66192d92a03992bf250334880e713fefa3645a457fce730997a4d7b"
+      }
+    },
+    {
+      "id": "all-lwps",
+      "evidence": {
+        "actual_rejection": "AssertionError()"
+      }
+    },
+    {
+      "id": "container-root",
+      "evidence": {
+        "actual_rejection": "AssertionError()"
+      }
+    },
+    {
+      "id": "initialization-canary",
+      "evidence": {
+        "actual_home_local_executable_canaries_not_executed": true,
+        "system_init_exclusion_by_nx": true,
+        "system_init_file_not_modified": true
+      }
+    },
+    {
+      "id": "debuginfod-canary",
+      "evidence": {
+        "actual_http_requests": [],
+        "early_off": true,
+        "urls_cleared": true
+      }
+    },
+    {
+      "id": "permission-canaries",
+      "evidence": {
+        "actual_write_register_call_rejections": [
+          {
+            "command": "set variable fixture_counter = 0",
+            "error": "Writing to memory is not allowed (addr 0x560ed6145010, len 8)"
+          },
+          {
+            "command": "set $rax = 0",
+            "error": "Writing to registers is not allowed (regno 0)"
+          },
+          {
+            "command": "call fixture_noop()",
+            "error": "Cannot call functions in the program: may-call-functions is off."
+          }
+        ],
+        "breakpoint_tracepoint_fast_tracepoint_permissions": false,
+        "trace_activation_not_attempted": true
+      }
+    },
+    {
+      "id": "wrong-starttime",
+      "evidence": {
+        "actual_rejection": "AssertionError('Native process identity changed')"
+      }
+    },
+    {
+      "id": "wrong-executable",
+      "evidence": {
+        "actual_rejection": "AssertionError('Native process identity changed')"
+      }
+    },
+    {
+      "id": "wrong-container",
+      "evidence": {
+        "actual_rejection": "AssertionError('Native process identity changed')"
+      }
+    },
+    {
+      "id": "pid-replacement",
+      "evidence": {
+        "actual_rejection": "AssertionError('Native process identity changed')"
+      }
+    },
+    {
+      "id": "already-traced",
+      "evidence": {
+        "actual_rejection": "AssertionError(('Unexpected tracer', 2874, 0))"
+      }
+    },
+    {
+      "id": "timeout-cleanup",
+      "evidence": {
+        "report_sha256": "61f8fe7306278695596313ef6f263cd8709e997cb7104244d8ddf1f9b8dc281f",
+        "detach_verified": true
+      }
+    },
+    {
+      "id": "namespace-drift",
+      "evidence": {
+        "actual_rejection": "AssertionError('Native process identity changed')"
+      }
+    },
+    {
+      "id": "during-stop-rebind",
+      "evidence": {
+        "actual_rejection": "AssertionError({'command': ['/usr/bin/gdb', '--nx', '--nh', '--quiet', '--batch', '-iex', 'set auto-load off', '-iex', 'set debuginfod enabled off', '-x', '/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/during-stop-rebind/reader.gdb'], 'deadline_s': 10, 'status': 'COMPLETED_SUPERVISED_COMMAND', 'debugger_pid': 2882, 'cleanup': {'attempts': [{'signal': 15, 'members': []}], 'zombies': [], 'live_remaining': False}, 'returncode': 1, 'elapsed_s': 0.21249029300000188, 'outputs': {'stdout.log': {'bytes': 360, 'sha256': 'b0d39ad51ab12849b0e34f5837db5b766f0336cd85ca073df8a74f9690b10bc2'}, 'stderr.log': {'bytes': 457, 'sha256': '6a2ac382f96a7c2999cc7ce4fbc07d34627a3ec447adcd8b18f2beffce183dce'}}, 'failure': None})"
+      }
+    },
+    {
+      "id": "error-finally-detach",
+      "evidence": {
+        "actual_rejection": "AssertionError({'command': ['/usr/bin/gdb', '--nx', '--nh', '--quiet', '--batch', '-iex', 'set auto-load off', '-iex', 'set debuginfod enabled off', '-x', '/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/error-finally-detach/reader.gdb'], 'deadline_s': 10, 'status': 'COMPLETED_SUPERVISED_COMMAND', 'debugger_pid': 2891, 'cleanup': {'attempts': [{'signal': 15, 'members': []}], 'zombies': [], 'live_remaining': False}, 'returncode': 1, 'elapsed_s': 0.21269732999999746, 'outputs': {'stdout.log': {'bytes': 360, 'sha256': 'b0d39ad51ab12849b0e34f5837db5b766f0336cd85ca073df8a74f9690b10bc2'}, 'stderr.log': {'bytes': 459, 'sha256': '9511de13009ec6de54c4aa86937e833c2d4f026864cdc7cc97f66411d955bdfb'}}, 'failure': None})"
+      }
+    },
+    {
+      "id": "leader-descendant",
+      "evidence": {
+        "command": [
+          "/usr/bin/python3",
+          "-c",
+          "import os,signal,time\np=os.fork()\nif p==0:\n signal.signal(signal.SIGTERM,signal.SIG_IGN)\n time.sleep(30)\nelse:\n time.sleep(.2)\n os._exit(0)\n"
+        ],
+        "deadline_s": 2.0,
+        "status": "REJECTED_SUPERVISION",
+        "debugger_pid": 2899,
+        "cleanup": {
+          "attempts": [
+            {
+              "signal": 15,
+              "members": [
+                {
+                  "pid": 2900,
+                  "state": "S",
+                  "ppid": 1,
+                  "pgrp": 2899,
+                  "session": 2899,
+                  "utime": 0,
+                  "stime": 0,
+                  "starttime": 17860
+                }
+              ]
+            },
+            {
+              "signal": 9,
+              "members": [
+                {
+                  "pid": 2900,
+                  "state": "S",
+                  "ppid": 1,
+                  "pgrp": 2899,
+                  "session": 2899,
+                  "utime": 0,
+                  "stime": 0,
+                  "starttime": 17860
+                }
+              ]
+            }
+          ],
+          "zombies": [],
+          "live_remaining": false
+        },
+        "returncode": 0,
+        "elapsed_s": 2.2772774019999815,
+        "outputs": {
+          "stdout.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "failure": "live_debugger_descendant_after_leader"
+      }
+    },
+    {
+      "id": "detach-unproved",
+      "evidence": {
+        "actual_rejection": "AssertionError()"
+      }
+    },
+    {
+      "id": "partial-19",
+      "evidence": {
+        "actual_rejection": "AssertionError()"
+      }
+    },
+    {
+      "id": "oversize-or-time",
+      "evidence": {
+        "command": [
+          "/usr/bin/python3",
+          "-c",
+          "import os;os.write(1,b\"x\"*17000)"
+        ],
+        "deadline_s": 2.0,
+        "status": "REJECTED_SUPERVISION",
+        "debugger_pid": 2902,
+        "cleanup": {
+          "attempts": [
+            {
+              "signal": 15,
+              "members": []
+            }
+          ],
+          "zombies": [],
+          "live_remaining": false
+        },
+        "returncode": 0,
+        "elapsed_s": 0.06205621800000927,
+        "outputs": {
+          "stdout.log": {
+            "bytes": 17000,
+            "sha256": "841fb2dbdc6be49db3c9df02b4c04bd5a859c6d36acb9b6fca930c28e6e86748"
+          },
+          "stderr.log": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        },
+        "failure": "debugger_output_limit"
+      }
+    },
+    {
+      "id": "unknown-unwind",
+      "evidence": {
+        "actual_unknown_symbols_retained": true,
+        "result_sha256": "62069d6dec0bfe1c6b289f1270759bcd830b3d7a27d36427671839d2c8013f06"
+      }
+    },
+    {
+      "id": "wrong-capsule",
+      "evidence": {
+        "actual_rejection": "AssertionError()"
+      }
+    },
+    {
+      "id": "original-rejection",
+      "evidence": {
+        "actual_rejection": "AssertionError()"
+      }
+    },
+    {
+      "id": "material-mutation",
+      "evidence": {
+        "actual_rejection": "AssertionError('observer.py')"
+      }
+    },
+    {
+      "id": "failure-publication",
+      "evidence": {
+        "actual_partial_failure_files_preserved": true,
+        "bounded_console_streams_verified": true,
+        "remote_artifact_upload_not_proven_by_checker": true
+      }
+    }
+  ],
+  "gdb": {
+    "path": "/usr/bin/gdb",
+    "sha256": "3832cc070ae1716e322105d3b39fb398695e5f031c9d39224cf227a8c2b889f6",
+    "version": "GNU gdb (Ubuntu 15.1-1ubuntu1~24.04.1) 15.1\nCopyright (C) 2024 Free Software Foundation, Inc.\nLicense GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>\nThis is free software: you are free to change and redistribute it.\nThere is NO WARRANTY, to the extent permitted by law.\n"
+  },
+  "loaded_executable_binding_controls": {
+    "positive_spellings": 3,
+    "rejected": [
+      "empty-filename",
+      "relative-filename",
+      "wrong-existing-file",
+      "identical-bytes-different-inode",
+      "wrong-inode",
+      "wrong-size",
+      "wrong-sha256",
+      "wrong-pid"
+    ],
+    "full_identity_bound": true
+  },
+  "actual_pidfd_exit_rejected": true,
+  "latest_capsule_actual_metadata_verified": {
+    "run": 40120760532,
+    "source": "84b513cb437b68af0f4cb22bc4707db1a35958cf",
+    "metadata_faults": [
+      "id",
+      "head_sha",
+      "run_attempt",
+      "conclusion"
+    ]
+  },
+  "sources_unchanged": true,
+  "counter_progress": {
+    "first": 9,
+    "last": 292425
+  },
+  "complete_chip_admission_unexecuted": true,
+  "live_container_binding_unexecuted": true,
+  "actual_archive_read": false,
+  "full_user_stacks_claimed": false
+}
