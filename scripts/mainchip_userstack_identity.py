@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Process identity/read-only proc records shared by host and trusted GDB reader."""
-import hashlib,os,re
+import hashlib,os,re,select
 from pathlib import Path
 LIMIT=1024*1024
 
@@ -114,3 +114,26 @@ def frame_binding(pc,modules):
         return dict(native_pc=pc,module_path=p,file_offset=m['offset']+pc-m['start'],file=f,
                     file_backed=True)
     return dict(native_pc=pc,module_path=p,file_offset=None,file=None,file_backed=False)
+
+class ProcessPin:
+    """Hold native proc directory and pidfd; numeric ptrace attach still revalidates identity."""
+    def __init__(self,pid,expected):
+        self.pid=pid;self.expected=expected;self.directory=None;self.pidfd=None
+        try:
+            self.directory=os.open('/proc/'+str(pid),os.O_RDONLY|os.O_DIRECTORY|os.O_CLOEXEC|os.O_NOFOLLOW)
+            self.pidfd=os.pidfd_open(pid,0)
+            self.verify()
+        except BaseException:self.close();raise
+    def verify(self,tracer=0,require_running=True):
+        poll=select.poll();poll.register(self.pidfd,select.POLLIN|select.POLLHUP|select.POLLERR)
+        assert poll.poll(0)==[],'Pinned process exited'
+        assert object_id(os.fstat(self.directory))==self.expected['proc_directory']
+        current=stat_record(fd_read(self.directory,'stat'))
+        assert current['pid']==self.pid and current['starttime']==self.expected['starttime']
+        return snapshot(self.pid,self.expected,tracer=tracer,require_running=require_running)
+    def close(self):
+        for name in ('pidfd','directory'):
+            fd=getattr(self,name,None)
+            if fd is not None:os.close(fd);setattr(self,name,None)
+    def __enter__(self):return self
+    def __exit__(self,*args):self.close()

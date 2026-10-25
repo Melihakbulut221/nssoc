@@ -4,7 +4,7 @@
 import copy,json,os,time,traceback
 from pathlib import Path
 import gdb
-from mainchip_userstack_identity import snapshot,check_frames,module_inventory,frame_binding
+from mainchip_userstack_identity import snapshot,check_frames,module_inventory,frame_binding,ProcessPin
 OFF=('may-write-registers','may-write-memory','may-insert-breakpoints',
      'may-insert-tracepoints','may-insert-fast-tracepoints','may-call-functions')
 
@@ -18,9 +18,10 @@ def run():
     pid=ctx['expected']['pid'];out=Path(ctx['output'])
     result=dict(status='RUNNING',identity=ctx['expected'],native_attachment_authorized=False,
         scheduling_perturbed=True,native_memory_writes_permitted=False,threads=[],detach_attempted=False)
-    attached=False
+    attached=False;pin=None
     try:
-        snapshot(pid,ctx['expected'],tracer=0,require_running=True)
+        pin=ProcessPin(pid,ctx['expected'])
+        pin.verify(tracer=0,require_running=True)
         gdb.execute('set auto-load off')
         gdb.execute('set debuginfod enabled off')
         gdb.execute('set pagination off')
@@ -38,7 +39,7 @@ def run():
         assert gdb.current_progspace().filename=='/proc/'+str(pid)+'/exe'
         started=time.monotonic_ns()
         gdb.execute('attach '+str(pid));attached=True
-        during=snapshot(pid,ctx['expected'],tracer=os.getpid())
+        during=pin.verify(tracer=os.getpid(),require_running=False)
         assert all(t['state']in ('T','t')for t in during['tasks'])
         result['stopped_identity']=during
         write(out,result)
@@ -105,6 +106,7 @@ def run():
             else:result['detached']=False
         except BaseException as e:
             result.update(status='REJECTED_FIXTURE_STACK_DETACH',detach_error=repr(e))
+        if pin is not None:pin.close()
         result['finished_monotonic_ns']=time.monotonic_ns()
         write(out,result)
     if result['status']!='ACQUIRED_BOUNDED_FIXTURE_STACKS':raise gdb.GdbError(result['status'])

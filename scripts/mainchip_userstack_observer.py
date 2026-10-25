@@ -3,7 +3,7 @@
 """Bounded GDB supervision. OpenROAD attachment remains explicitly disabled."""
 import hashlib,json,os,signal,subprocess,time
 from pathlib import Path
-from mainchip_userstack_identity import snapshot,module_inventory,file_sha,stat_record,check_frames
+from mainchip_userstack_identity import snapshot,module_inventory,file_sha,stat_record,check_frames,ProcessPin
 ROOT=Path(__file__).resolve().parents[1]
 READER=ROOT/'scripts/mainchip_userstack_gdb_reader.py'
 NATIVE_ATTACHMENT_AUTHORIZED=False
@@ -90,7 +90,7 @@ def accepted_collection(samples):
     assert all(s['status']=='PASS_BOUNDED_OWNED_FIXTURE_ATTACHMENT'for s in samples)
     return True
 
-def attach_once(pid,expected,fixture,gdb,out,*,fault=None,canaries=False,seconds=10):
+def _attach_once(pid,expected,fixture,gdb,out,*,fault=None,canaries=False,seconds=10):
     assert os.environ.get('GITHUB_ACTIONS')=='true'
     before=snapshot(pid,expected,tracer=0,require_running=True)
     out.mkdir(exist_ok=False);path=out/'context.json';target=out/'gdb-result.json'
@@ -121,7 +121,7 @@ def attach_once(pid,expected,fixture,gdb,out,*,fault=None,canaries=False,seconds
     finally:write(out/'result.json',result)
     return result
 
-def collect(pid,expected,fixture,gdb,out,interval=5.,count=20):
+def _collect(pid,expected,fixture,gdb,out,interval=5.,count=20):
     assert count==20 and interval==5.,'Fixed acquisition contract'
     out.mkdir(exist_ok=False);start=time.monotonic();samples=[]
     try:
@@ -142,3 +142,40 @@ def collect(pid,expected,fixture,gdb,out,interval=5.,count=20):
         write(out/'result.json',dict(status='REJECTED_FIXTURE_ACQUISITION',error=repr(e),samples=samples,
             native_attachment_authorized=False,normal_continuation_accepted=False,route_progress_proven=False))
         raise
+
+def attach_once(pid,expected,fixture,gdb,out,*,fault=None,canaries=False,seconds=10):
+    with ProcessPin(pid,expected)as pin:
+        before=pin.verify()
+        try:
+            result=_attach_once(pid,expected,fixture,gdb,out,fault=fault,canaries=canaries,seconds=seconds)
+            after=pin.verify()
+            result['held_proc_and_pidfd']=dict(before=before['identity'],after=after['identity'],exit_not_observed=True)
+            write(out/'result.json',result)
+            return result
+        except BaseException:
+            if (out/'result.json').exists():
+                result=json.loads((out/'result.json').read_text())
+                result['status_before_final_binding_rejection']=result['status']
+                result['status']='REJECTED_OWNED_FIXTURE_ATTACHMENT'
+                try:
+                    after=pin.verify()
+                    result['held_pin_after_rejection']=dict(identity=after['identity'],exit_not_observed=True)
+                except BaseException as e:result['held_pin_rejection']=repr(e)
+                write(out/'result.json',result)
+            raise
+
+def collect(pid,expected,fixture,gdb,out,interval=5.,count=20):
+    with ProcessPin(pid,expected)as pin:
+        pin.verify()
+        try:
+            result=_collect(pid,expected,fixture,gdb,out,interval=interval,count=count)
+            pin.verify()
+            result['one_pidfd_held_for_full_collection']=True
+            write(out/'result.json',result)
+            return result
+        except BaseException as e:
+            if (out/'result.json').exists():
+                result=json.loads((out/'result.json').read_text())
+                result.update(status='REJECTED_FIXTURE_ACQUISITION',final_binding_error=repr(e))
+                write(out/'result.json',result)
+            raise

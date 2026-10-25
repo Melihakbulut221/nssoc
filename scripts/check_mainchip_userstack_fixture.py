@@ -5,7 +5,7 @@ import copy,hashlib,http.client,http.server,json,os,shutil,subprocess,sys,thread
 from pathlib import Path
 import mainchip_userstack_observer as obs
 import mainchip_latest_stack_admission as admission
-from mainchip_userstack_identity import snapshot,file_sha,check_frames,module_inventory
+from mainchip_userstack_identity import snapshot,file_sha,check_frames,module_inventory,ProcessPin
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'cloud-mainchip-userstack-fixture'
 METHOD=ROOT/'scripts/mainchip-userstack-fixture-methods.json'
@@ -122,6 +122,11 @@ def controls():
         elf2=prepare_elf(OUT/'other')
         p2,l2,e2,f2=start_fixture(elf2,elf2.parent);fixture_owned.append((p2,l2))
         rejected('pid-replacement',lambda:snapshot(p2.pid,expected,tracer=0,require_running=True))
+        with ProcessPin(p2.pid,e2)as dead_pin:
+            p2.terminate();p2.wait(timeout=3)
+            try:dead_pin.verify()
+            except AssertionError:result['actual_pidfd_exit_rejected']=True
+            else:raise AssertionError('Accepted exited pinned fixture')
         # While an actual debugger holds the fixture, a competing observer rejects its tracer.
         errs=[]
         def timed():
