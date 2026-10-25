@@ -1,0 +1,127 @@
+{
+  "causal_claim": false,
+  "electrical_accepted": false,
+  "full_correlation": {
+    "bytes": 2223457,
+    "path": "docs/evidence/tx-normal-complete-row-correlation-20261025.json",
+    "sha256": "4b473e8d482b242cb19a69879a9a5a750f19f1c7faf7a5b59375c4c0f24599f9",
+    "source": "b1856fd6c627b9f306ead4528eba76e7278fb830"
+  },
+  "full_witness": {
+    "authenticated_in_ram_as_JSON": true,
+    "bytes": 26430653,
+    "id": 674855863,
+    "native_raw_or_archive_downloaded_locally": false,
+    "sha256": "90ab7770a79884c60a21e3858281c01168f3d622223e8f425676410d78161504"
+  },
+  "next_question": "Trace the final selected input settling and output stage transfer against their actual clock/current/headroom histories, including all relevant output-block device roles, before proposing any value or bias change. Existing witnesses permit source-bound voltage/current comparison; they do not by themselves identify a unique cause.",
+  "observations": [
+    "All thirty bad output sample brackets have cmos/level16/level8 path inputs above100mV. Later selected interfaces show progressive degradation: level4 weak at2 events, final input weak at17 (wrong at6), output weak at30 (wrong at14). Counts apply only to these bad-event native brackets, not a replacement full-interface acceptance gate.",
+    "The worst VCE device is physically bound final f bank a/sp selector Nx6. At its minimum, VBE0.88258V and native Ic5.941mA coexist with only98.50uV public-to-base difference. This supports a headroom observation; it does not establish deficient clock drive.",
+    "The minimum-VCE witness belongs to bit128, absent from the22 bad sampled bits; the safety and output-sample failures are not causally equated.",
+    "Seventy-three failures map to selectors and two to final tail devices; XD5644 is unclassified by the589-device tree catalogue and remains explicitly unclassified.",
+    "Thermal states were never saved by the original contract; no thermal cause or temperature values are inferred."
+  ],
+  "role_counts": {
+    "selector": 73,
+    "tail": 2,
+    "unclassified": 1
+  },
+  "sample_counts": {
+    "distinct_bits": 22,
+    "phase_counts": {
+      "0.3": 22,
+      "0.5": 5,
+      "0.7": 3
+    },
+    "weak_including_wrong": 30,
+    "wrong_sign": 14
+  },
+  "schema": "nssoc.tx-normal-row-correlation-compact.v1",
+  "stage_statistics": {
+    "cmos": {
+      "events_with_any_native_pair_under_100mV": 0,
+      "events_with_any_native_pair_wrong_sign": 0,
+      "minimum_across_both_native_brackets_v": 0.1874897526067354
+    },
+    "final": {
+      "events_with_any_native_pair_under_100mV": 17,
+      "events_with_any_native_pair_wrong_sign": 6,
+      "minimum_across_both_native_brackets_v": -0.2044687785087116
+    },
+    "level_16": {
+      "events_with_any_native_pair_under_100mV": 0,
+      "events_with_any_native_pair_wrong_sign": 0,
+      "minimum_across_both_native_brackets_v": 0.2466052059269883
+    },
+    "level_4": {
+      "events_with_any_native_pair_under_100mV": 2,
+      "events_with_any_native_pair_wrong_sign": 0,
+      "minimum_across_both_native_brackets_v": 0.04928767699315051
+    },
+    "level_8": {
+      "events_with_any_native_pair_under_100mV": 0,
+      "events_with_any_native_pair_wrong_sign": 0,
+      "minimum_across_both_native_brackets_v": 0.12868959088227694
+    },
+    "tx_output": {
+      "events_with_any_native_pair_under_100mV": 30,
+      "events_with_any_native_pair_wrong_sign": 14,
+      "minimum_across_both_native_brackets_v": -0.2635416048577519
+    }
+  },
+  "worst_bit_absent_from_failed_bits": true,
+  "worst_clock": {
+    "common_mode_v": 1.3658808579244317,
+    "differential_v": 0.15780974739188314,
+    "public_n_v": 1.2869759842284902,
+    "public_p_v": 1.4447857316203734,
+    "selector_bases": {
+      "xtree.xd5668": {
+        "clock_leg": "sn",
+        "native_base_v": 1.28718844689053,
+        "public_minus_base_v": -0.00021246266203966968
+      },
+      "xtree.xd5669": {
+        "clock_leg": "sp",
+        "native_base_v": 1.4446842396690331,
+        "public_minus_base_v": 0.00010149195134023792
+      },
+      "xtree.xd5675": {
+        "clock_leg": "sn",
+        "native_base_v": 1.287186714552063,
+        "public_minus_base_v": -0.000210730323572772
+      },
+      "xtree.xd5676": {
+        "clock_leg": "sp",
+        "native_base_v": 1.4446872360344947,
+        "public_minus_base_v": 9.849558587871066e-05
+      }
+    },
+    "source_half_period_s": 1.25e-10,
+    "source_origin_s": 2e-09,
+    "source_transition_index": 128.2169442671197
+  },
+  "worst_same_row": {
+    "base_v": 1.4446872360344947,
+    "collector_v": 0.9038647730217173,
+    "emitter_v": 0.5621045464534623,
+    "frame": "40979:128",
+    "ic_per_emitter_a": 0.0009902137290926866,
+    "native_ic_a": 0.00594128237455612,
+    "nx": 6,
+    "row": 40979,
+    "substrate_v": 0.0911386214340778,
+    "terminals": [
+      "xtree.w0003521",
+      "xtree.w0003522",
+      "xtree.w0003523",
+      "xtree.body000"
+    ],
+    "thermal_state": null,
+    "thermal_status": "NOT_SAVED_IN_ORIGINAL_CAPTURE",
+    "time_s": 1.8027118033389964e-08,
+    "vbe_v": 0.8825826895810324,
+    "vce_v": 0.341760226568255
+  }
+}
