@@ -1,0 +1,13 @@
+name: tx-phase-reset334-avss18-rc-cloud
+on:
+  push:
+    branches: [codex/register-tx-phase-reset334-avss18-rc]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - run: echo "Manual source-controls registration only; no project checkout or native execution."
