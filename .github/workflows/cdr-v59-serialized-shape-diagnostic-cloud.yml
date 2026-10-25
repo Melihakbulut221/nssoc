@@ -1,0 +1,16 @@
+name: Register CDR v59 serialized-shape diagnostic
+on:
+  push:
+    branches: [codex/register-cdr-v59-serialized-shape-diagnostic]
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo 'Registration only; no source controls, capsule, CAD or simulation.'
