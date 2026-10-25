@@ -1,0 +1,114 @@
+{
+  "schema": "cdr-v59-annotation-readback-terminal-v1",
+  "status": "PASS_DIAGNOSTIC_WITH_UNRESOLVED_SOURCE_CELL_CLASSIFICATION",
+  "run": {
+    "id": 40179142223,
+    "head_sha": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618",
+    "status": "completed",
+    "conclusion": "success",
+    "run_attempt": 1,
+    "event": "workflow_dispatch",
+    "path": ".github/workflows/cdr-v59-annotation-diagnostic-cloud.yml"
+  },
+  "jobs": [
+    {
+      "id": 121126226038,
+      "name": "controls",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121126312475,
+      "name": "read-only-native-geometry",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "release": {
+    "id": 423274350,
+    "tag_name": "cloud-results-40179142223-1-cdr-v59-annotation-diagnostic",
+    "target_commitish": "e0d3d16fe99ffc832cebb97cc17287e5ddae7618",
+    "draft": false,
+    "prerelease": true
+  },
+  "assets": [
+    {
+      "id": 674575897,
+      "name": "cdr-v59-annotation-diagnostic-40179142223-1.diagnosis.json",
+      "size": 3361480,
+      "digest": "sha256:eeda3a86dd434a3da768036a419873faae72e3e2c869acc06e3784f8a82ebbec"
+    },
+    {
+      "id": 674575788,
+      "name": "cdr-v59-annotation-diagnostic-40179142223-1.parts.json",
+      "size": 868,
+      "digest": "sha256:8422622fec4cdb55150e3e1f3b18a9a05c0df4b5fd7453b9362fe2e3bc519336"
+    },
+    {
+      "id": 674575724,
+      "name": "cdr-v59-annotation-diagnostic-40179142223-1.summary.json",
+      "size": 66604,
+      "digest": "sha256:81c3c665caf6eda99dd166a835eb17ff320941553b0df6900ea15a963e6f46ea"
+    },
+    {
+      "id": 674575828,
+      "name": "cdr-v59-annotation-diagnostic-40179142223-1.tar.gz.part0000",
+      "size": 137026,
+      "digest": "sha256:578ea18c54f66f2b52d112ffc1f40a74a4dcbc28a681f25d587eb30ccbc39bb9"
+    }
+  ],
+  "job_log": {
+    "job": 121126312475,
+    "bytes": 124931,
+    "sha256": "34f67b05dad8a166ae205f58768f8187279edc7fe23523591c90b7885eb79398",
+    "exact_log_chunks_equal_summary": true
+  },
+  "original_failure": {
+    "code_file_sha256": "29b92f3ae273b3f5bf6f0f9ae4b144c3257b73bf38307500c27f8853d00d90ea",
+    "function": "recover",
+    "line": 62,
+    "error": "AssertionError(('rppd$v59_cd_shunt', ('rppd', '26cb371619de68fbd6248f25a98a6b1c2ef649e3e75d56b082c7eafb9d35ec91')))",
+    "cell": "rppd$v59_cd_shunt",
+    "key": [
+      "rppd",
+      "26cb371619de68fbd6248f25a98a6b1c2ef649e3e75d56b082c7eafb9d35ec91"
+    ],
+    "original_traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/diagnose_cdr_v59_annotation_native.py\", line 20, in original_failure\n    try:module.recover()\n        ~~~~~~~~~~~~~~^^\n  File \"/home/runner/work/nssoc/nssoc/.cdr-v59-annotation-source/capsule/methods/cdr_v59_recover.py\", line 62, in recover\n    assert key in sources,(c.name,key)\n           ^^^^^^^^^^^^^^\nAssertionError: ('rppd$v59_cd_shunt', ('rppd', '26cb371619de68fbd6248f25a98a6b1c2ef649e3e75d56b082c7eafb9d35ec91'))\n",
+    "source_key_count": 32,
+    "source_file_count": 11,
+    "original_rejection_retained": true
+  },
+  "native_material_controls": {
+    "positive_equal_material": true,
+    "annotation_exclusion_does_not_hide_pin_witness": true,
+    "rejected": [
+      "added_actual_material",
+      "removed_actual_material",
+      "translated_actual_material",
+      "additional_actual_layer"
+    ]
+  },
+  "observations": {
+    "source_file_count": 11,
+    "recognized_source_primitive_count": 75,
+    "target_primitive_count": 63,
+    "missing_target": "rppd$v59_cd_shunt",
+    "same_kind_source_comparisons": 34,
+    "eligible_material_equal_source_count": 0,
+    "unique_pin_set_observed": false,
+    "new_native_source": "parent/inputs/sampler_cd/layout/native-rppd-v59-cd_shunt.gds",
+    "new_native_source_sha256": "d0463267c8b53af161a7f47384eb6a83578f7d588bf03453729a0d077c66dd18",
+    "new_native_source_cells_in_recognized_inventory": 0,
+    "new_native_source_compared": false
+  },
+  "preserved_candidate_gds_sha256": "fb2a773c4d3a3ffab6acfe7718a55fa5db0c2621a6c75377940c95a7989b70b5",
+  "preserved_candidate_reference_sha256": "9f70d7af1f26aa07029c8b473e7596f27cd6a50e1dacae4ea16bfd4559fc9f13",
+  "all339_source_files_and_report_unchanged": true,
+  "historical_sources_unchanged_was_not_reached": true,
+  "interpretation": "The input file was authenticated and read, but no cell passed the original model-name and leaf filter. The actual saved cell names/instance topology have not yet been reported. This does not establish representation-only inequality or justify an annotation fallback.",
+  "next_step": "Read-only complete saved new-source cell census and name-independent material/pin comparison; no regeneration.",
+  "annotation_binding_accepted": false,
+  "strict_wire_qualified": false,
+  "qualified_pex": false,
+  "electrical_accepted": false
+}
