@@ -100,7 +100,12 @@
     "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73",
     ".github/workflows/tx-phase-reset244-avss18-physical-cloud.yml": "351fe106dad4e3ad8d6083f7125b14e0c6e3d88a7c8439a642040188519d805e",
     "docs/evidence/tx-phase-reset244-avss18-native-source-peer-review-20261025.json": "cc606ef111d8114f5c0318d733666564718d1a22eb4ac6c372e56147e2c5c920",
-    "docs/evidence/tx-phase-reset244-avss18-root-source-controls-authorization-20261025.json": "80d67bdcfd162fde7168892d49aa3f18421b155a4434afe86efe8d0c220306b9"
+    "docs/evidence/tx-phase-reset244-avss18-root-source-controls-authorization-20261025.json": "80d67bdcfd162fde7168892d49aa3f18421b155a4434afe86efe8d0c220306b9",
+    "docs/evidence/tx-phase-reset244-avss18-physical-controls-full-result-20261025.json": "929e7afc7628017ae3d2809552069a85917285d79e71adfd3c8d4e7b5586b1f9",
+    "docs/evidence/tx-phase-reset244-avss18-physical-controls-publication-result-20261025.json": "fe3867153a3921c93dda797324ff20cbf9ea94a831c2cf230e52e32d854a52f3",
+    "docs/evidence/tx-phase-reset244-avss18-physical-controls-wait-result-20261025.json": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+    "docs/evidence/tx-phase-reset244-avss18-physical-controls-job-20261025.log": "bc0e3c8b9731778606c1e1333f24f3e36072ac87e5c03326f5cae36b02060c45",
+    "docs/evidence/tx-phase-reset244-avss18-physical-controls-pass-20261025.json": "5c7fad3542f2be76500cb22779e006a7f20382928f1326913c4af93884734ce0"
   },
   "planning_run": 40118554214,
   "planning_source": "7c5d1177873428bb4f35ba097174e359e246582d",
@@ -135,7 +140,7 @@
   "PLL_connected": false,
   "full_PHY_accepted": false,
   "source_controls_authorized": true,
-  "native_generation_authorized": false,
+  "native_generation_authorized": true,
   "simulation_authorized": false,
   "extraction_authorized": false,
   "source_derivation": {
@@ -285,5 +290,55 @@
     "scripts/tx_phase_reset244_avss18_native_material.py",
     "scripts/tx_phase_reset244_native_wires.py"
   ],
-  "new_wrapper_transitive_imports_byte_equal_original_physical_source": true
+  "new_wrapper_transitive_imports_byte_equal_original_physical_source": true,
+  "completed_physical_wrapper_controls": {
+    "run": 40209622463,
+    "attempt": 1,
+    "source": "47f54fed86dd6fb7b8803981396fdb3d42ef6a06",
+    "source_job": 121217878968,
+    "source_job_conclusion": "success",
+    "native_job": 121218092365,
+    "native_job_conclusion": "skipped",
+    "terminal_receipt_source": "714b46937f8744d40d808e6b705fac224219f919",
+    "proof_files": {
+      "docs/evidence/tx-phase-reset244-avss18-physical-controls-full-result-20261025.json": {
+        "bytes": 17274,
+        "sha256": "929e7afc7628017ae3d2809552069a85917285d79e71adfd3c8d4e7b5586b1f9"
+      },
+      "docs/evidence/tx-phase-reset244-avss18-physical-controls-job-20261025.log": {
+        "bytes": 63393,
+        "sha256": "bc0e3c8b9731778606c1e1333f24f3e36072ac87e5c03326f5cae36b02060c45"
+      },
+      "docs/evidence/tx-phase-reset244-avss18-physical-controls-pass-20261025.json": {
+        "bytes": 23917,
+        "sha256": "5c7fad3542f2be76500cb22779e006a7f20382928f1326913c4af93884734ce0"
+      },
+      "docs/evidence/tx-phase-reset244-avss18-physical-controls-publication-result-20261025.json": {
+        "bytes": 874,
+        "sha256": "fe3867153a3921c93dda797324ff20cbf9ea94a831c2cf230e52e32d854a52f3"
+      },
+      "docs/evidence/tx-phase-reset244-avss18-physical-controls-wait-result-20261025.json": {
+        "bytes": 577,
+        "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e"
+      }
+    },
+    "actual_counts": {
+      "original54_fault_sourceplan_prerequisite": true,
+      "controller_reversible_edits": 7,
+      "original_main_sha256": "1f58b5cf0b8ba8db914e66a57905751640357654ea23ecddeac5a6c4b5746f74",
+      "generated_main_sha256": "a42ac9df3a9af7891b17d28326697474ba83dfe28eafba991ab2e0d250d7e8b7",
+      "admission_authorization_derivation_faults": 56,
+      "archive_faults": 13,
+      "parts_faults": 6,
+      "baseline_mutation_persistent_report_faults": 3,
+      "original_schematic_faults": 10,
+      "original_release_faults": 17,
+      "actual_publication_program_positives": 2,
+      "actual_publication_program_faults": 13,
+      "wait_positives": 3,
+      "wait_faults": 4,
+      "no_source_control_failure": true
+    },
+    "meaning": "Prior actual hosted controls; current workflow source-controls dependency must pass again before its native job."
+  }
 }

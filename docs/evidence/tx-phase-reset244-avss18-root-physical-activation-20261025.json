@@ -1,0 +1,464 @@
+{
+  "schema": 1,
+  "status": "ROOT_AUTHORIZED_EXACT_ONE_PHYSICAL_NATIVE_NO_RC_OR_SIMULATION",
+  "proposal_source": "8042b47ca763f5095e7c9b28aea707c8792880f9",
+  "proposal_path": "docs/evidence/tx-phase-reset244-avss18-physical-native-activation-proposal-20261025.json",
+  "proposal_sha256": "538aa7f94a4f7aefc40daa556b17404fa1c560f2d390d59f306a473329d642e0",
+  "tested_controls": {
+    "run": 40209622463,
+    "source": "47f54fed86dd6fb7b8803981396fdb3d42ef6a06",
+    "job": 121217878968,
+    "conclusion": "success",
+    "native_job_conclusion": "skipped"
+  },
+  "prior_method_sha256": "1d1d6a8fb30db0e32f3a87646b866e4199f81de8c0595426979b0f866ece81c6",
+  "approved_method_sha256": "5c6d7a9ce7f5127aeb1a0e88613335a34c9a9e942daabd41b7d1cd2f1a78f005",
+  "root_independently_verified": {
+    "all99_old_pins_preserved": true,
+    "proposed_pins": 104,
+    "complete_proof_files": 5,
+    "complete_proof_bytes": 106035
+  },
+  "applied_scope": {
+    "physical_native_runs": 1,
+    "native_generation_authorized": true,
+    "simulation_authorized": false,
+    "extraction_authorized": false,
+    "P_and_N": true,
+    "actual_material_faults_each": 20,
+    "DRC_rules": 560,
+    "LVS_devices": 334,
+    "LVS_modes": [
+      "deep",
+      "flat"
+    ],
+    "native_terminals": 1010,
+    "original_physical_faults_each": 9,
+    "original_anchor_faults_each": 7
+  },
+  "no_retry": true,
+  "no_gate_change": true,
+  "no_RC_or_simulation": true,
+  "publication": {
+    "precreated_exact_source_release_required": true,
+    "prerelease": true,
+    "draft": false,
+    "make_latest": false,
+    "lightweight_tag": true,
+    "read_only_wait_before_dependencies": true,
+    "source_checked_before_and_after_upload": true
+  },
+  "trigger_safety": {
+    "base_receipt_path": "docs/evidence/cloud-evidence-tag-trigger-audit-20261024.json",
+    "base_receipt_sha256": "66207076e4055a97b475a302479f39925fd82573ac358b576626109bbc1876c8",
+    "base_ref": "4d85722e05fbda8440c6577d7d7baa18a642485b",
+    "base_map_sha256": "ea0f53f665079869cc5ef8c83f792caef80d052fa22cdf7278db11b1a1231871",
+    "source_before_metadata_activation": "8042b47ca763f5095e7c9b28aea707c8792880f9",
+    "current_workflow_count": 1343,
+    "inherited_identical": 1305,
+    "delta": [
+      {
+        "path": ".github/workflows/tx-canonical-clock-roles-cloud.yml",
+        "blob": "f260028b9112730a5fd6797b1c95e1f911483ada",
+        "sha256": "a8f991caf6dc8d100af5b0882b7f2bcc4d5802e77a981e904884334d9d91814b",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      bind_native:\n        description: 'Read the exact existing native database after controls; no extraction or simulation'\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-native-clock-role-failure-readback-cloud.yml",
+        "blob": "8a87b3ac4b663c8b3753b9c4c597f1c07b96705b",
+        "sha256": "6042f54145db710ac6b6c3686cacb19283a5146a2a7b438af1f7409e8edf11ba",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/read_tx_native_clock_role_failure.py\n      - scripts/tx-native-clock-role-failure-readback-methods.json\n      - .github/workflows/tx-native-clock-role-failure-readback-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-native-clock-role-p4-parameters-cloud.yml",
+        "blob": "893fb0a3927a0069679c2523ca9fea2c68b8fca7",
+        "sha256": "4b321d842cf139d188799b5067aa9b85c746c2015c2595a4559314208466784a",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      observe_native:\n        description: 'Read the exact existing native database after controls; no extraction or simulation'\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-native-clock-role-parameters-cloud.yml",
+        "blob": "22fecd551726360e98aa4bacbb839257ee261c52",
+        "sha256": "0aa72b488775a1ae8d5fa32bf0d43b83257c32df7946fbd1246f67143b9143f2",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      observe_native:\n        description: 'Read the exact existing native database after controls; no extraction or simulation'\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-normal-saved-capture-diagnosis-cloud.yml",
+        "blob": "6c6ed94fc94a027af0cbaa0336ffd5b3081df19f",
+        "sha256": "b737f720a22fff5d8c3834bd29d626ad9ef965cbbd8459548ba48a5495838edb",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      readback:\n        description: Authenticate and read existing completed TX capture without any simulation\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-output8088-native-clock-roles-cloud.yml",
+        "blob": "2a6da45818f05e4eb703f3da2ec24579822789c5",
+        "sha256": "3910558ce9d18f514e2c3debff6d61b19c00fde4fd20c0e1e980eca3fb081547",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths: [.github/workflows/tx-output8088-native-clock-roles-cloud.yml]\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-assert-offset-intrinsic-cloud.yml",
+        "blob": "fd92e7b8b56cdba2498fd162424d0e9eca53bc6d",
+        "sha256": "1ea48ab1d9d583aa9d4317dd18d4739ca069a316fa316400bee04fe8176949ef",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      execute_native:\n        description: 'Execute one fresh four-case intrinsic244 transient after all controls'\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-phase-assert-offset-preparation-cloud.yml",
+        "blob": "de8963636dcdaaa0f8771b6c03411df0c1f8308c",
+        "sha256": "412a42e61db645b85894750bce79cfce75ecbd0cc47bc823ed99ee45c13747a2",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-assert-offset-source-controls-cloud.yml",
+        "blob": "23c145bf1d06eccc3f5bce589142801eb6e25c10",
+        "sha256": "3dbeb24a0ef072f9fde45c25e18b413553f444c78f835b9d3c23ec7b3516f44a",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-async-preset-intrinsic-cloud.yml",
+        "blob": "840caf3c68fe2b2fefde684376628d3e8e0db913",
+        "sha256": "64386e06cf67cf033cd552c81b89e7fb840909f2a0ed5b64ee75d9fa46d4541c",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/tx_phase_async_preset_diagnostic.py\n      - scripts/cloud_tx_phase_async_preset_intrinsic.py\n      - scripts/check_tx_phase_async_preset_intrinsic.py\n      - scripts/tx-phase-async-preset-intrinsic-methods.json\n      - .github/workflows/tx-phase-async-preset-intrinsic-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-async-preset-source-controls-cloud.yml",
+        "blob": "4cc9d7813ef7eb89d0c9e054edc56d41b7b238e0",
+        "sha256": "8f346bffc97886236d3aa3c123d49094d55bd0da55e360366b1fe0be867b84a6",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/build_tx_phase_async_preset_source.py\n      - scripts/check_tx_phase_async_preset_source.py\n      - scripts/tx-phase-async-preset-source-methods.json\n      - hw/soc/analog/pcie/clock_div2_async_preset_firstfall_v2.spice\n      - .github/workflows/tx-phase-async-preset-source-controls-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-divider-intrinsic-mim-cloud.yml",
+        "blob": "e24046835423933ea9b08c25861d1009602fa8dd",
+        "sha256": "598089731810282c9de417936dafb0f42c74320e9ebdbfd20745b6a87072999f",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths: [.github/workflows/tx-phase-divider-intrinsic-mim-cloud.yml]\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-divider-mim-precision-cloud.yml",
+        "blob": "e70572cbc31e4516c5b3fe3e1e0d4f7638f9dd67",
+        "sha256": "5b5a1b477caa81e2ceb1a5c853e5259a05ba79f6203820165851bb2527c041c8",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths: [.github/workflows/tx-phase-divider-mim-precision-cloud.yml, scripts/cloud_tx_phase_divider_mim_precision.py, scripts/audit_tx_phase55_mim_intrinsic.py, scripts/tx-phase-divider-mim-precision-methods.json]\n  workflow_dispatch:\n    inputs:\n      source_summary_sha256:\n        description: Exact successful native intrinsic/MIM run40084804265 summary SHA256\n        required: true\n        type: string\n      source_parts_sha256:\n        description: Exact complete publication parts SHA256 for the same run\n        required: true\n        type: string"
+      },
+      {
+        "path": ".github/workflows/tx-phase-divider-physical-cloud.yml",
+        "blob": "f2d6181483ccb2e2bb9066ada6aa8216c2eda4cf",
+        "sha256": "7e2aef97229402e29367a2be9af838fbadaa2476de275a2400d429fcb412ac63",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths: [.github/workflows/tx-phase-divider-physical-cloud.yml]\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-divider-wires-cloud.yml",
+        "blob": "c86300a346217f32a7487a083bf4fe5a9a324219",
+        "sha256": "157f16d51734c1e344b07a13f01e48c0c58edd77b5783fc17ef64552ff897740",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths: [.github/workflows/tx-phase-divider-wires-cloud.yml]\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-fast-assert-intrinsic-cloud.yml",
+        "blob": "be974f516fc6a0a5790cb4044a24741285c8e5d9",
+        "sha256": "ec781853a608de9f902ba932a1d763d0d29714a99c9a0a2a207d89c469760078",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/cloud_tx_phase_fast_assert_intrinsic.py\n      - scripts/check_tx_phase_fast_assert_intrinsic.py\n      - scripts/tx-phase-fast-assert-intrinsic-methods.json\n      - .github/workflows/tx-phase-fast-assert-intrinsic-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-fast-assert-preparation-cloud.yml",
+        "blob": "87218605e268aa67408293678736f9cd78f191e2",
+        "sha256": "153da721344182499f7c342233ce8613206f957d6100794feb1f20cb8aa6d19f",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/tx_phase_fast_assert_diagnostic.py\n      - scripts/check_tx_phase_fast_assert_preparation.py\n      - scripts/tx-phase-fast-assert-preparation-methods.json\n      - .github/workflows/tx-phase-fast-assert-preparation-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-fast-assert-readback-cloud.yml",
+        "blob": "f9b25c7a83f931c712bf63a0909adfd464a02f27",
+        "sha256": "befeda1c8bf0b7cb1994e63e7f741630b4fa6a09ca5a9bbc05852b1fa9e226cd",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/cloud_tx_phase_fast_assert_readback.py\n      - scripts/tx-phase-fast-assert-readback-methods.json\n      - .github/workflows/tx-phase-fast-assert-readback-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-fast-assert-source-controls-cloud.yml",
+        "blob": "7e073ec49a37a9df74d133e8d24807fad8f9fbc4",
+        "sha256": "377b1411c9cee0f286f10cf57c702917177ab7eb30ccc57621734ba4c260feb4",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/build_tx_phase_fast_assert_source.py\n      - scripts/check_tx_phase_fast_assert_source.py\n      - scripts/tx-phase-fast-assert-source-methods.json\n      - hw/soc/analog/pcie/clock_div2_fast_assert_firstfall_v3.spice\n      - .github/workflows/tx-phase-fast-assert-source-controls-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-preset-failure-readback-cloud.yml",
+        "blob": "92bab04010c8e0531d30d4c190e1afeebb13ff51",
+        "sha256": "286208d187d900396c3a610d24789001d91f6dfabdc404c0348fc04e8a6bf434",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths: [scripts/read_tx_phase_preset_intrinsic_failure.py, .github/workflows/tx-phase-preset-failure-readback-cloud.yml]\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-rejected-capture-readback-cloud.yml",
+        "blob": "4301542261389f2506c49ec4b6b4d732a5eea4e3",
+        "sha256": "15254fd5f5e586317643599f6096f3aad05fac96fda0fafd28f0de3821c8b769",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/cloud_tx_phase_rejected_capture_readback.py\n      - scripts/tx-phase-rejected-capture-readback-methods.json\n      - .github/workflows/tx-phase-rejected-capture-readback-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset244-avss18-physical-cloud.yml",
+        "blob": "28695263ea6a29c7bd8726f62e83b236df85de1b",
+        "sha256": "351fe106dad4e3ad8d6083f7125b14e0c6e3d88a7c8439a642040188519d805e",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      native:\n        description: \"Generate the reviewed isolated AVSS18 layouts and enforce original physical gates\"\n        type: boolean\n        default: false\n        required: true"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset244-avss18-source-cloud.yml",
+        "blob": "f9fd332c19c468f86f6c3a84f676724ecf3e977d",
+        "sha256": "d254b1805e16f2c1db8ca871d177b4f220fc72dcd8b90d8eb6ffd1f1fe9fd48f",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset244-physical-cloud.yml",
+        "blob": "d75c06ac96f998f6bb1a26743c89d18219cc6560",
+        "sha256": "ef3986e112e5d36bcfe2f2252d6f83d6b5d6ecfba38c4e9582eca2e5828732c9",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset244-source-cloud.yml",
+        "blob": "e49f29ed6e41b6a5d2cdd46da119f8a914e1abb7",
+        "sha256": "ba4b4bd21a41b1b646fd314115979bf5ad1b92f17cd8bb7478764b37f40a61be",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-intrinsic-mim-cloud.yml",
+        "blob": "bf26bbfb85c26baff60fb804ec8dabfce4463838",
+        "sha256": "618baeca3854286c8a75ab36aaab7689a63b1471adb65c9f2a353f7a81ccfa3e",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      enable_native:\n        description: 'Exact passed334 geometry compact/MIM binding only; no electrical simulation'\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-loaded-adapter-cloud.yml",
+        "blob": "d7bea7da56be9a49f61b6e36049b5f325ce68b33",
+        "sha256": "907c549e26a727f7a666813cd1ea8876d471ec2d08ccb1ea19ecd27a1b884dbe",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      prepared_controls:\n        description: Authenticate completed decks and verify all318 initialization targets without native execution\n        required: true\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-loaded-binding-cloud.yml",
+        "blob": "a40121de8572d996482bd820f1700f42884019b1",
+        "sha256": "5b7e4607acf3b3e0051d62b476cad60815fe4b3ad3716829e4d53fdcc21bba14",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      bind:\n        description: Authenticate existing334 models and prove both physical role maps without simulation\n        type: boolean\n        required: true\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-loaded-preparation-cloud.yml",
+        "blob": "2015987247571e55b8a620f0a516653486e8d429",
+        "sha256": "16702a352faa6f9b682be90b0f8ad23766f9e9fc00d2b6bb3ae7c72a8e4bb311",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      prepare:\n        description: Restore existing qualified334 models and prepare four three-model decks without simulation\n        required: true\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-mim-precision-cloud.yml",
+        "blob": "5c86cb732f4a28401f8dfea2b09d344b08ab4d06",
+        "sha256": "eabdc54d878e3cd973d8395c5a9d750ad96f78a30b0cec7f7c6c747767c058a6",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      enable_native:\n        description: 'Exact passed334 MIM geometry: both native RC orders and composition; no electrical simulation'\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-return-ledger-cloud.yml",
+        "blob": "2b2603309d1ba929ba7b6e50f2570321aa148490",
+        "sha256": "0138859310b9eb9f576b1528d49e58edc575a0e0953fa0143bfa16b90c2e6c18",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      readback:\n        description: Authenticate completed phase318 capture and exact saved AVSS R graph; no simulation\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-saved-capture-diagnosis-cloud.yml",
+        "blob": "8e7d4265d51db61cf2bbfb56b5dda8f8c431252a",
+        "sha256": "427b24658829f720e7d28db10efbdb5254f37b520ce2b20580be350ba556289d",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      readback:\n        description: Authenticate and read existing completed phase318 capture without any simulation\n        type: boolean\n        default: false"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-transient-cloud.yml",
+        "blob": "c847cde234bbcb31b1eb9cccaf936a592fbbda1b",
+        "sha256": "c262077fc66fcf743825489ad832a4900ebbf0cce1d15054c46bcfbe2e2768a9",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      mode:\n        description: Source controls or the separately authorized first p-high native process\n        type: choice\n        default: source-controls\n        required: true\n        options: [source-controls, native]\n      stage:\n        description: Fresh initial process or exact saved-process continuation\n        type: choice\n        default: initial\n        required: true\n        options: [initial, cross]\n      source_descriptor:\n        description: Exact successful saved-process descriptor for cross only\n        type: string\n        default: '{}'\n        required: true"
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-zero-op-cloud.yml",
+        "blob": "2ff1c5980cfff94607a8727052806f54cc0b9890",
+        "sha256": "90a4b5e0ba515b70204a4489eaf53d7669bc77baf7566bf522b8a137ee1f49fa",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:\n    inputs:\n      mode:\n        description: Source controls, exact prepared paths, or separately authorized fresh zero OP\n        required: true\n        type: choice\n        default: source-controls\n        options:\n          - source-controls\n          - prepared-paths\n          - native-op"
+      },
+      {
+        "path": ".github/workflows/tx-phase-zero-op-initialization-cloud.yml",
+        "blob": "01c9b9c1e1932181a9c83e6566fdeb5f1a2fa3c5",
+        "sha256": "a3ee333a94b87acf70ffe234668d211ab8fe37ad004cf42ce0c306afb5e27e03",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/cloud_tx_phase_zero_op_initialization.py\n      - scripts/tx-phase-zero-op-initialization-methods.json\n      - .github/workflows/tx-phase-zero-op-initialization-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase31-mapping-source-controls-cloud.yml",
+        "blob": "2c5888a624cbd127c2680e6ae3c58d1607ecce70",
+        "sha256": "8b030949088f253ac9a8c16e59a402280376e900207ee74d605af8d4ef6c5497",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/tx_phase31_source_mapping.py\n      - scripts/tx-phase31-source-methods.json\n      - .github/workflows/tx-phase31-mapping-source-controls-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-phase55-loaded-source-controls-cloud.yml",
+        "blob": "dca13e4a0328cf2efc22fb89ab22acb6e300cbd1",
+        "sha256": "36917c77beded152d8cf8e074e60e505833d4431f341524cd1ce9e3792625e08",
+        "events": [
+          "push",
+          "workflow_dispatch"
+        ],
+        "classification": "branch_only",
+        "trigger_block": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/tx_phase55_loaded_contract.py\n      - scripts/check_tx_phase55_loaded_contract.py\n      - scripts/tx-phase55-loaded-source-methods.json\n      - hw/soc/analog/pcie/clock_div2_reset_feedback_candidate_v1.spice\n      - .github/workflows/tx-phase55-loaded-source-controls-cloud.yml\n  workflow_dispatch:"
+      },
+      {
+        "path": ".github/workflows/tx-role-parameter-failure-readback-cloud.yml",
+        "blob": "a6b78c8b356121c94adc45ccf2e0e73a8945960a",
+        "sha256": "4be239542ca48140f2eaff27715694ae422d005aac5b33b22a0636973a23d3db",
+        "events": [
+          "workflow_dispatch"
+        ],
+        "classification": "no_push",
+        "trigger_block": "on:\n  workflow_dispatch:"
+      }
+    ],
+    "workflow_map_sha256": "effe26b298fc05b376865b2503b5173a2f21a733e89df8328f2d26b5f3d3c249",
+    "cloud_results_tag_safe": true,
+    "no_create_release_workflow_run_triggers_in_delta": true
+  },
+  "original_loaded_rejections_preserved": true,
+  "native_success_not_claimed": true
+}
