@@ -3,7 +3,7 @@
 """Small synthetic math/identity controls; not native capture acceptance."""
 import copy
 import numpy as np
-from tx_normal_saved_capture_diagnosis import bracket,hbt_point,native_pairs,crossing_brackets,below_segments,catalog,admitted_window,STOP,START,UI
+from tx_normal_saved_capture_diagnosis import bracket,hbt_point,native_pairs,crossing_brackets,below_segments,catalog,admitted_window,bit_context,STOP,START,UI
 
 def main():
     t=np.array([0.,1.,2.,3.,4.]); v={'v(c)':np.array([2.,2.,1.,2.,2.]),
@@ -26,7 +26,14 @@ def main():
     assert all('linear_estimate_s' not in r for r in c)
     seg=below_segments(t,np.array([0.,1.,0.,0.,1.]),.4,1.)
     assert len(seg)==1 and seg[0]['first_row']==2 and seg[0]['last_row']==3
-    assert seg[0]['entry_bracket_rows']==[1,2] and seg[0]['exit_bracket_rows']==[3,4]
+    assert seg[0]['entry']['rows']==[1,2] and seg[0]['exit']['rows']==[3,4]
+    assert seg[0]['entry']['native_threshold_transition'] and not seg[0]['entry']['censored_by_observation_window']
+    censored=below_segments(t,np.zeros(5),.4,1.)[0]
+    assert censored['entry']['censored_by_observation_window'] and censored['exit']['censored_by_observation_window']
+    assert censored['entry']['values']==[0.,0.] and not censored['entry']['native_threshold_transition']
+    assert bit_context(0.) is None and bit_context(np.nextafter(START,0.)) is None
+    assert bit_context(START)==0 and bit_context(np.nextafter(STOP,0.))==255
+    assert bit_context(STOP) is None
     end=np.nextafter(STOP,0.); window=admitted_window(np.array([0.,end]),START+255*UI,START+256*UI)
     assert window['admitted_endpoint_clipped'] and window['native_scan_bounds_s'][1]==end
     assert window['requested_UI_bounds_s'][1]==START+256*UI
@@ -52,7 +59,8 @@ def main():
     reject('wrong_crossing_shape',lambda:crossing_brackets(t,y[:-1],0.,0.,4.))
     reject('wrong_segment_shape',lambda:below_segments(t,y[:-1],.4,1.))
     reject('unadmitted_end_truncation',lambda:admitted_window(np.array([0.,STOP-1e-10]),START+255*UI,START+256*UI))
-    assert len(faults)==19
+    reject('nonfinite_ui_context',lambda:bit_context(float('nan')))
+    assert len(faults)==20
     return dict(status='PASS_SYNTHETIC_SAME_ROW_MATH_CONTROLS_ONLY',negative_controls=faults,
                 native_capture_read=False,original_failure_replayed=False,readback_authorized=False)
 if __name__=='__main__':

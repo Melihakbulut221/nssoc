@@ -125,17 +125,32 @@ def crossing_brackets(t, y, level, lo, hi):
                  threshold=float(level), before_below=bool(y[i] < level),
                  after_below=bool(y[i+1] < level)) for i in ids]
 
+def bit_context(at):
+    assert np.isfinite(at)
+    if not START <= at < STOP:
+        return None
+    bit = int(np.floor((at-START)/UI))
+    assert 0 <= bit < 256
+    return bit
+
 def below_segments(t, y, threshold, start):
     assert t.shape == y.shape and np.isfinite(y).all()
+    active = np.flatnonzero(t >= start)
     ids = np.flatnonzero((t >= start) & (y < threshold))
     if not len(ids):
         return []
+    def boundary(a, b, censored):
+        return dict(rows=[int(a),int(b)], times_s=[float(t[a]),float(t[b])],
+                    values=[float(y[a]),float(y[b])], threshold=float(threshold),
+                    native_threshold_transition=bool((y[a] < threshold) != (y[b] < threshold)),
+                    censored_by_observation_window=bool(censored))
     chunks = np.split(ids, np.flatnonzero(np.diff(ids) != 1)+1)
     return [dict(first_row=int(g[0]), last_row=int(g[-1]), samples=len(g),
                  first_time_s=float(t[g[0]]), last_time_s=float(t[g[-1]]),
-                 entry_bracket_rows=[max(0, int(g[0])-1), int(g[0])],
-                 exit_bracket_rows=[int(g[-1]), min(len(t)-1, int(g[-1])+1)],
-                 sampled_span_s=float(t[g[-1]]-t[g[0]])) for g in chunks]
+                 entry=boundary(max(0,int(g[0])-1),int(g[0]),g[0]==active[0]),
+                 exit=boundary(int(g[-1]),min(len(t)-1,int(g[-1])+1),g[-1]==len(t)-1),
+                 sampled_span_s=float(t[g[-1]]-t[g[0]]),
+                 sampled_span_is_not_exact_threshold_dwell=True) for g in chunks]
 
 def catalog(contract, qualified):
     assert qualified['native_role_accepted'] is True and qualified['electrical_accepted'] is False
@@ -196,13 +211,18 @@ def analyze(t, values, contract, original, qualified):
     def frame(row, bit):
         key = str(row)+':'+str(bit)
         if key not in frames:
-            clocks = ['sp16_'+str(bit % 16), 'sp8_'+str(bit % 8), 'sp4_'+str(bit % 4),
-                      'sa' if bit % 2 == 0 else 'sb', 's']
+            assert bit is None or 0 <= bit < 256
+            valid = bool(START <= t[row] < STOP)
+            assert valid or bit is None
+            clocks = ([c['name'] for c in contract['tree_plan']['clocks']] if bit is None else
+                      ['sp16_'+str(bit % 16), 'sp8_'+str(bit % 8), 'sp4_'+str(bit % 4),
+                       'sa' if bit % 2 == 0 else 'sb', 's'])
             frames[key] = dict(row=int(row), time_s=float(t[row]), oracle_bit_index=bit,
                 ui_position=float((t[row]-START)/UI),
-                within_original_bit_window=bool(START <= t[row] < STOP),
-                bit_label_scope='Original UI context; startup/end extrema use bounded context only, never an added oracle sample',
-                stages=stages_at(t, values, contract, bit, row),
+                within_original_bit_window=valid,
+                expected_source_bit=None if bit is None else contract['bits'][bit],
+                bit_label_scope='No expected bit, sign or signed-stage diagnostic outside [START,STOP)',
+                stages=None if bit is None else stages_at(t, values, contract, bit, row),
                 clocks=clock_at(t, values, contract, roles, clocks, row),
                 affected_hbts={n:hbt_point(t, values, n, contract['hbt'][n], row) for n in failed},
                 measured_bias_currents={k:float(v[row]) for k,v in values.items() if k.startswith('i(')})
@@ -222,7 +242,7 @@ def analyze(t, values, contract, original, qualified):
                 ce[row] if key == 'max_whole_abs_vce_v' else be[row] if key == 'max_whole_abs_vbe_v' else ic[row])
             assert float(measured) == original['hbt_devices'][name][key]
             witness = hbt_point(t, values, name, spec, row)
-            bit = max(0, min(255, int(np.floor((t[row]-START)/UI))))
+            bit = bit_context(t[row])
             witness['frame'] = frame(row, bit)
             if name in roles:
                 macro = roles[name]['macro']
