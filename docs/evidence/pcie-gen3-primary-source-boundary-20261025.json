@@ -1,0 +1,67 @@
+{
+  "schema": "pcie-gen3-target-primary-source-audit-v1",
+  "observed_utc": "2026-10-25",
+  "status": "PRIMARY_SOURCE_BOUNDARIES_IDENTIFIED_NOT_COMPLETE_PROTOCOL_ORACLE",
+  "target": "Serial PCIe Gen3 x4; original task scope unchanged",
+  "sources": {
+    "base3_catalog": {
+      "url": "https://pcisig.com/PCIExpress/Specs/Base/_3.0",
+      "revision": "3.0",
+      "published": "2010-11-10",
+      "catalog_read": true,
+      "full_specification_read": false,
+      "download": "https://members.pcisig.com/wg/PCI-SIG/document/8265",
+      "observed_download_result": "Redirect to PCI-SIG login; no authentication attempted"
+    },
+    "errata_catalog": {
+      "url": "https://pcisig.com/specification-overview/pci-express-base",
+      "base3_errata_date": "2014-10-23",
+      "full_errata_read": false
+    },
+    "equalization_faq": {
+      "url": "https://pcisig.com/faq?field_category_value%5B%5D=pci_express_3.0&keys=equalization",
+      "public_primary_content_read": true
+    },
+    "older_generation_reference": {
+      "url": "https://www.intel.com/content/dam/support/us/en/programmable/support-resources/fpga-wiki/asset03/pci-express-base-r2.1.pdf",
+      "revision": "2.1",
+      "scope": "Older 2.5/5.0 GT/s reference; not evidence of complete target Gen3 TS/EQ/LTSSM rules"
+    }
+  },
+  "future_owner_requirements": [
+    {
+      "id": "GEN3-EQ-CONSECUTIVE",
+      "source": "equalization_faq",
+      "section": "4.2.6.4.2",
+      "requirement": "For 128b/130b TS consecutiveness, compare symbols6 through9 with the previous set. Recovery.Equalization does not additionally require Link/Lane-number equality.",
+      "test_obligation": "State-specific acceptance: matching identifier count alone is insufficient; do not impose that exception on other states.",
+      "implemented_by_current_record_transport": false
+    },
+    {
+      "id": "GEN3-EQ-PRESET-RETENTION",
+      "source": "equalization_faq",
+      "section": "4.2.6.4.2.2.1",
+      "requirement": "Repeated equalization phase0 uses the transmitter preset received in EQ TS2 during the latest transition from2.5/5.0 to8.0GT/s.",
+      "test_obligation": "Keep separately sourced negotiated preset state across repeated equalization; distinguish it from initial reset defaults.",
+      "implemented_by_current_record_transport": false
+    },
+    {
+      "id": "GEN3-EQ-DLLP-GATE",
+      "source": "equalization_faq",
+      "section": "4.2.3",
+      "requirement": "For the described autonomous-equalization sequence, DLLPs remain inhibited in intermediate L0 until required equalization completes.",
+      "test_obligation": "An L0 state bit alone must not release DLLPs; reset/recovery/epoch loss invalidates stale completion.",
+      "implemented_by_current_record_transport": false
+    }
+  ],
+  "current_evidence_boundary": {
+    "qualified_record_transport": "soc_pcie_gen12_training_records SHA01a3c63b3f3e561e25adb955526a2e0f5241986181dec9ada78cc5f84e7e5533",
+    "cdc_candidate": "codex/pcie-gen12-record-cdc at786dc41ffe18347f6f5403ca4567db5a4c74cc8d; source-controls pending, no native proof",
+    "training_owner_acceptance": false,
+    "LTSSM_acceptance": false,
+    "full_Gen3_PHY_acceptance": false,
+    "complete_target_TS_field_and_timer_oracle_available": false
+  },
+  "next_action": "Continue electrical and routed-layout repair independently. Before protocol-owner acceptance, obtain and pin the target normative field/state/timer/errata rules and a separately reviewed oracle; public FAQ requirements above remain necessary partial constraints, not a substitute.",
+  "local_files_or_native_artifacts_created": false
+}
