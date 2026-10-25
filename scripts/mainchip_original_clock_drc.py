@@ -17,16 +17,61 @@ def marker_tree(category):
         assert len(direct)<maximum,'Marker category may have been truncated at native cap'
         names=[x.getName()for x in children]
         assert len(names)==len(set(names)),'Duplicate marker category'
-        rows=[dict(path=path,direct_markers=len(direct),maximum_markers=maximum)]
+        assert node.getSource()=='DRT'
+        assert all(type(name)is str and name for name in names)
+        rows=[dict(path=path,direct_markers=len(direct),maximum_markers=maximum,source=node.getSource())]
         total=len(direct)
         for child in children:
             n,more=walk(child,path+[child.getName()]);total+=n;rows+=more
         assert node.getMarkerCount()==total
-        assert len(list(node.getAllMarkers()))==total
+        assert type(node.getMarkerCount())is int and node.getMarkerCount()>=0
         return total,rows
     count,rows=walk(category,[CATEGORY])
     return dict(marker_count=count,categories=rows,all_categories_below_native_cap=True,
                 zero_reported_DRT_markers=count==0,full_signoff_DRC=False)
+
+
+def serialized_marker_tree(raw):
+    """Count complete pinned writeJSON category hierarchy; marker bodies stay preserved."""
+    def unique(pairs):
+        result={}
+        for key,value in pairs:
+            assert key not in result,'Duplicate JSON key'
+            result[key]=value
+        return result
+    tree=json.loads(raw,object_pairs_hook=unique)
+    assert type(tree)is dict and set(tree)=={CATEGORY},'Wrong serialized root category'
+    def walk(node,path):
+        assert type(node)is dict
+        assert {'description','source','max_markers'}<=set(node)<={'description','source','max_markers','category','violations'}
+        assert type(node['description'])is str and node['source']=='DRT'
+        cap=node['max_markers']
+        # Boost property_tree writes scalar values as strings, not JSON numbers.
+        assert type(cap)is str and cap.isascii()and cap.isdecimal()and cap==str(int(cap))and int(cap)>0
+        maximum=int(cap)
+        children=node.get('category',{})
+        assert type(children)is dict and ('category'not in node or children),'Malformed serialized child categories'
+        assert all(type(name)is str and name for name in children)
+        markers=node.get('violations',[])
+        assert type(markers)is list and ('violations'not in node or markers),'Malformed serialized marker list'
+        assert all(type(marker)is dict and marker for marker in markers),'Malformed serialized marker body'
+        assert len(markers)<maximum,'Serialized marker category may have been truncated at native cap'
+        rows=[dict(path=path,direct_markers=len(markers),maximum_markers=maximum,source=node['source'])]
+        total=len(markers)
+        for name,child in children.items():
+            n,more=walk(child,path+[name]);total+=n;rows+=more
+        return total,rows
+    total,rows=walk(tree[CATEGORY],[CATEGORY])
+    return dict(marker_count=total,categories=rows)
+
+def bind_serialized_markers(native,raw):
+    serialized=serialized_marker_tree(raw)
+    order=lambda rows:sorted(rows,key=lambda row:tuple(row['path']))
+    assert serialized['marker_count']==native['marker_count'],'Serialized/native total marker count differs'
+    assert order(serialized['categories'])==order(native['categories']),'Serialized/native category census differs'
+    return dict(marker_count=serialized['marker_count'],category_count=len(serialized['categories']),
+        bytes=len(raw),sha256=c.digest(raw),complete_native_category_census_equal=True,
+        scope='Exact named category paths, direct counts, positive caps, DRT source and total count; full marker bodies preserved, not an independent shape-semantic interpretation.')
 
 def tcl(source,out,path_quote):
     return ('read_db '+path_quote(source)+'\nset_thread_count 2\nwrite_def '+
@@ -35,8 +80,9 @@ def tcl(source,out,path_quote):
         '\nwrite_def '+path_quote(out/'drc-after.def')+
         '\nwrite_db '+path_quote(out/'drc-observed.odb')+'\n')
 
-def measure_report(category,report,reexport):
+def measure_report(category,report,reexport,serialized):
     result=marker_tree(category)
+    result['serialized_markers']=bind_serialized_markers(result,c.regular(serialized).read_bytes())
     category.writeTR(str(reexport))
     raw=c.regular(report).read_bytes()
     assert raw==c.regular(reexport).read_bytes(),'Native marker DB/report differ'
@@ -124,7 +170,7 @@ def main():
                 assert geometry==prep['native_geometry'],'Nonmarker native geometry projection changed'
                 result['native_geometry']=geometry
                 if category is not None:category.writeJSON(str(out/'initial-drc-markers.json'))
-                result['measurement']=measure_report(category,out/'initial-drc.rpt',out/'initial-drc-reread.rpt')
+                result['measurement']=measure_report(category,out/'initial-drc.rpt',out/'initial-drc-reread.rpt',out/'initial-drc-markers.json')
             finally:odb.dbDatabase.destroy(db)
             result['original_gate']=native.original_gate(donor,measured,out,'original-gate-after-drc')
             result.update(status='COMPLETE_INITIAL_DRT_MEASUREMENT_NOT_SIGNOFF',

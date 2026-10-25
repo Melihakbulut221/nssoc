@@ -10,10 +10,14 @@ import mainchip_original_clock_drc as drc
 import cloud_mainchip_original_clock_restoration as driver
 OUT=c.ROOT/'cloud-mainchip-original-clock-restoration-controls'
 
+class SwigPyObject:
+    """Synthetic opaque return reproduces the actual unsupported set surface."""
+    pass
+
 class Category:
-    def __init__(self,name=drc.CATEGORY,count=0,children=None,maximum=10000,source='DRT',declared=None,all_count=None):
+    def __init__(self,name=drc.CATEGORY,count=0,children=None,maximum=10000,source='DRT',declared=None):
         self.name=name;self.count=count;self.children=[]if children is None else children
-        self.maximum=maximum;self.source=source;self.declared=declared;self.all_count=all_count
+        self.maximum=maximum;self.source=source;self.declared=declared
     def getName(self):return self.name
     def getSource(self):return self.source
     def getMarkers(self):return list(range(self.count))
@@ -21,9 +25,106 @@ class Category:
     def getMaxMarkers(self):return self.maximum
     def getMarkerCount(self):
         return self.declared if self.declared is not None else self.count+sum(c.getMarkerCount()for c in self.children)
-    def getAllMarkers(self):return list(range(self.getMarkerCount()if self.all_count is None else self.all_count))
+    def getAllMarkers(self):return SwigPyObject()
+    def serialized(self):
+        node=dict(description='',source=self.source,max_markers=str(self.maximum))
+        if self.children:node['category']={child.getName():child.serialized()for child in self.children}
+        if self.count:node['violations']=[dict(visited='false',visible='true',waived='false',shape='',sources='')for _ in range(self.count)]
+        return node
+    def writeJSON(self,path):Path(path).write_text(json.dumps({self.name:self.serialized()}))
     def writeTR(self,path):
         Path(path).write_bytes(b''.join(b'violation type: test\n\tsrcs:\n\tbbox = (0, 0) - (1, 1) on Layer M1\n'for _ in range(self.getMarkerCount())))
+
+
+def marker_controls():
+    """Hosted synthetic API/schema fixtures; no actual odb module or native files."""
+    positive=[];negative=[]
+    def reject(name,fn):
+        try:fn()
+        except (AssertionError,KeyError,ValueError,TypeError,FileNotFoundError):negative.append(name)
+        else:raise AssertionError('marker control accepted '+name)
+    encode=lambda value:json.dumps(value).encode()
+    cat=Category(count=1,children=[Category('Short',2),Category('Spacing',2)])
+    tree={drc.CATEGORY:cat.serialized()}
+    native=drc.marker_tree(cat)
+    assert native['marker_count']==5
+    proof=drc.bind_serialized_markers(native,encode(tree))
+    assert proof['marker_count']==5 and proof['category_count']==3
+    positive.append('complete_native_and_serialized_direct_recursive_counts')
+    zero=Category()
+    assert drc.bind_serialized_markers(drc.marker_tree(zero),encode({drc.CATEGORY:zero.serialized()}))['marker_count']==0
+    positive.append('explicit_zero_category_with_absent_violations')
+    repeated=Category(children=[Category('A',children=[Category('Same',1)]),Category('B',children=[Category('Same',2)])])
+    p=drc.bind_serialized_markers(drc.marker_tree(repeated),encode({drc.CATEGORY:repeated.serialized()}))
+    assert p['marker_count']==3 and p['category_count']==5
+    positive.append('same_child_name_in_distinct_category_paths')
+    reverse=copy.deepcopy(tree);reverse[drc.CATEGORY]['category']=dict(reversed(list(reverse[drc.CATEGORY]['category'].items())))
+    assert drc.bind_serialized_markers(native,encode(reverse))['marker_count']==5
+    positive.append('category_order_does_not_change_owned_census')
+    old=c.regular(c.ROOT/'docs/evidence/mainchip-original-clock-first-native-failed-drc-source-20261025.py').read_bytes()
+    assert c.digest(old)=='197e777ae7f5c5c0d24aacc0ecc959905ffff7a669bba5718928db7b286957bb'
+    old=old.decode();node=next(n for n in ast.parse(old).body if isinstance(n,ast.FunctionDef)and n.name=='marker_tree')
+    ns={'CATEGORY':drc.CATEGORY}
+    exec(compile(ast.get_source_segment(old,node),'<actual_failed_marker_tree>','exec'),ns)
+    try:ns['marker_tree'](cat)
+    except TypeError as error:
+        assert "'SwigPyObject' object is not iterable"in str(error)
+        negative.append('actual_frozen_getAllMarkers_seam_fails_opaque_return')
+    else:raise AssertionError('old unsupported API unexpectedly passed')
+    with patch.object(Category,'getAllMarkers',side_effect=RuntimeError('unsupported API must never be called')):
+        assert drc.marker_tree(cat)==native
+        assert drc.bind_serialized_markers(native,encode(tree))['marker_count']==5
+    positive.append('corrected_full_census_never_calls_unsupported_API')
+    cases=[]
+    def altered(name,change):
+        value=copy.deepcopy(tree);change(value[drc.CATEGORY]);cases.append((name,value))
+    altered('missing_serialized_child',lambda n:n['category'].pop('Short'))
+    altered('extra_serialized_child',lambda n:n['category'].update(Extra=Category('Extra').serialized()))
+    altered('wrong_serialized_child_name',lambda n:n['category'].update(Renamed=n['category'].pop('Short')))
+    altered('missing_serialized_marker',lambda n:n['category']['Short']['violations'].pop())
+    altered('extra_serialized_marker',lambda n:n['category']['Short']['violations'].append(copy.deepcopy(n['violations'][0])))
+    def move_marker(n):n['category']['Short']['violations'].append(n['category']['Spacing']['violations'].pop())
+    altered('same_total_wrong_direct_category_ownership',move_marker)
+    altered('changed_native_cap',lambda n:n.update(max_markers='9999'))
+    altered('missing_native_cap',lambda n:n.pop('max_markers'))
+    altered('numeric_cap_wrong_writer_schema',lambda n:n.update(max_markers=10000))
+    altered('zero_cap',lambda n:n.update(max_markers='0'))
+    altered('negative_cap',lambda n:n.update(max_markers='-1'))
+    altered('noncanonical_cap',lambda n:n.update(max_markers='010000'))
+    altered('wrong_source',lambda n:n.update(source='other'))
+    altered('unknown_category_field',lambda n:n.update(unrecorded=[]))
+    altered('missing_description',lambda n:n.pop('description'))
+    altered('malformed_description',lambda n:n.update(description=None))
+    altered('violations_object_instead_of_list',lambda n:n.update(violations={}))
+    altered('empty_present_violations',lambda n:n.update(violations=[]))
+    altered('invalid_marker_entry',lambda n:n.update(violations=[None]))
+    altered('empty_marker_entry',lambda n:n.update(violations=[{}]))
+    altered('categories_array',lambda n:n.update(category=[]))
+    altered('empty_present_category',lambda n:n.update(category={}))
+    altered('nested_saturated_cap',lambda n:n['category']['Short'].update(max_markers='2'))
+    for name,value in cases:reject(name,lambda value=value:drc.bind_serialized_markers(native,encode(value)))
+    reject('wrong_root',lambda:drc.bind_serialized_markers(native,encode({'other':tree[drc.CATEGORY]})))
+    reject('extra_root',lambda:drc.bind_serialized_markers(native,encode(dict(tree,extra=tree[drc.CATEGORY]))))
+    reject('duplicate_JSON_key',lambda:drc.bind_serialized_markers(native,b'{"'+drc.CATEGORY.encode()+b'":{},"'+drc.CATEGORY.encode()+b'":{}}'))
+    reject('malformed_JSON',lambda:drc.bind_serialized_markers(native,b'{'))
+    # Actual file seam: complete JSON is required before the report can be accepted.
+    with tempfile.TemporaryDirectory()as temp:
+        root=Path(temp);report=root/'report';again=root/'again';serialized=root/'markers.json'
+        cat.writeTR(report);cat.writeJSON(serialized)
+        measured=drc.measure_report(cat,report,again,serialized)
+        assert measured['marker_count']==5 and measured['serialized_markers']['sha256']==c.file_sha(serialized)
+        positive.append('actual_measure_report_binds_full_JSON_file_and_TR')
+        serialized.unlink()
+        reject('missing_serialized_file',lambda:drc.measure_report(cat,report,again,serialized))
+        cat.writeJSON(root/'real.json');serialized.symlink_to(root/'real.json')
+        reject('symlink_serialized_file',lambda:drc.measure_report(cat,report,again,serialized))
+        serialized.unlink();serialized.write_bytes(b'{}')
+        reject('empty_JSON_not_native_zero',lambda:drc.measure_report(cat,report,again,serialized))
+        cat.writeJSON(serialized);report.write_bytes(b'violation type: fabricated\n')
+        reject('TR_count_or_bytes_mismatch',lambda:drc.measure_report(cat,report,again,serialized))
+    assert len(positive)==6 and len(negative)==32,(len(positive),len(negative))
+    return dict(status='PASS_SYNTHETIC_MARKER_API_AND_COMPLETE_CENSUS_CONTROLS_NOT_NATIVE',
+        positives=positive,refusals=negative,actual_ODB_or_CAD_executed=False)
 
 def source_sequence(source):
     a=ast.parse(source)
@@ -128,26 +229,26 @@ def controls():
       ('wrong_source',Category(source='OTHER')),('zero_cap',Category(maximum=0)),
       ('unknown_cap',Category(maximum='10000')),('saturated',Category(count=2,maximum=2)),
       ('over_cap',Category(count=3,maximum=2)),('wrong_declared_count',Category(count=1,declared=0)),
-      ('wrong_all_count',Category(count=1,all_count=0)),
+      ('boolean_declared_count',Category(count=1,declared=True)),
       ('duplicate_subcategory',Category(children=[Category('Short'),Category('Short')])),
       ('nested_saturation',Category(children=[Category('Short',3,maximum=3)]))]:
         reject(name,lambda value=value:drc.marker_tree(value))
     with tempfile.TemporaryDirectory()as temp:
-        root=Path(temp);report=root/'report';reexport=root/'again'
-        cat=Category(count=2);cat.writeTR(report)
-        proof=drc.measure_report(cat,report,reexport)
+        root=Path(temp);report=root/'report';reexport=root/'again';serialized=root/'markers.json'
+        cat=Category(count=2);cat.writeTR(report);cat.writeJSON(serialized)
+        proof=drc.measure_report(cat,report,reexport,serialized)
         assert proof['marker_count']==2 and proof['report_bytes']==report.stat().st_size
         positive.append('actual_file_TR_reexport_count')
-        report.write_bytes(b'');reject('false_empty_report',lambda:drc.measure_report(cat,report,reexport))
-        report.unlink();reject('missing_report',lambda:drc.measure_report(cat,report,reexport))
-        cat=Category();report.write_bytes(b'');assert drc.measure_report(cat,report,reexport)['marker_count']==0
+        report.write_bytes(b'');reject('false_empty_report',lambda:drc.measure_report(cat,report,reexport,serialized))
+        report.unlink();reject('missing_report',lambda:drc.measure_report(cat,report,reexport,serialized))
+        cat=Category();cat.writeJSON(serialized);report.write_bytes(b'');assert drc.measure_report(cat,report,reexport,serialized)['marker_count']==0
         positive.append('explicit_zero_and_empty_report_together')
         report.unlink();report.symlink_to(reexport)
-        reject('report_symlink',lambda:drc.measure_report(cat,report,reexport))
+        reject('report_symlink',lambda:drc.measure_report(cat,report,reexport,serialized))
         report.unlink()
         report.write_bytes(b'not a zero marker report')
         with patch.object(cat,'writeTR',side_effect=lambda p:Path(p).write_bytes(report.read_bytes())):
-            reject('nonempty_report_with_zero_native_count',lambda:drc.measure_report(cat,report,reexport))
+            reject('nonempty_report_with_zero_native_count',lambda:drc.measure_report(cat,report,reexport,serialized))
         label='fixture'
         for name,data in [('stdout',b'actual stdout\n'),('stderr',b'')]: (root/(label+'.'+name)).write_bytes(data)
         record=dict(label=label,returncode=0,supervision_failure=None,process_group_cleanup=dict(remaining_live=[]))
@@ -201,9 +302,10 @@ def controls():
     archive_result=archive.controls()
     import wait_cloud_tested_source_release as waiter
     wait_result=waiter.controls()
+    marker_result=marker_controls()
     assert len(positive)==14 and len(negative)==39,(len(positive),len(negative))
     return dict(status='PASS_CLOCK_RESTORATION_DRIVER_SOURCE_CONTROLS_NOT_NATIVE',positives=positive,refusals=negative,
-        original=original_result,qualified_publication=publication,qualified_archive=archive_result,
+        marker_API_repair=marker_result,original=original_result,qualified_publication=publication,qualified_archive=archive_result,
         qualified_wait=wait_result,phase_sequence=order,protected=len(m['protected']),
         synthetic_marker_API_scope=True,actual_ODB_or_CAD_executed=False,accepted=False)
 
