@@ -1,0 +1,18 @@
+name: cdr-v59-annotation-diagnostic-cloud
+on:
+  push:
+    branches: [codex/register-cdr-v59-annotation-diagnostic]
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        default: false
+        description: Read-only exact saved-capsule diagnostic on the reviewed source branch
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-22.04
+    steps:
+      - run: echo "Registration only. No input, native engine, geometry, archive or qualification."
