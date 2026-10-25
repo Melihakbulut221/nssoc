@@ -1,0 +1,15 @@
+name: cdr-v59-mim-precision-cloud
+on:
+  push:
+    branches:
+      - codex/register-cdr-v59-mim-precision
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Read-only workflow registration
+        run: echo 'Manual workflow registration only; no checkout, dependency, archive or native execution.'
