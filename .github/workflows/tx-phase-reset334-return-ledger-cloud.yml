@@ -45,7 +45,17 @@ jobs:
           assert len(q['synthetic']['rejected'])==12
           assert len(q['RC_metadata_rejected'])==15 and len(q['row_rejected'])==4
           assert len(q['derivation_rejected'])==2
-          assert q['observer_derivation']['edits']==2 and q['controller_derivation']['edits']==12
+          assert q['observer_derivation']['edits']==2 and q['controller_derivation']['edits']==13
+          c=q['synthetic']['qualified_coordinate_controls']
+          assert c['status']=='PASS_EXACT_RECORDED_MIM_COORDINATE_CONTROLS_ONLY'
+          assert len(c['rejected'])==32 and c['source_derived_JSON_fixture']
+          assert not c['restored_planes_exercised'] and not c['new_geometry_or_simulation']
+          assert c['all32_failure_witnesses_persisted'] and c['unrelated_error_not_reclassified']
+          for sign in ('p','n'):
+              p=c['positives'][sign]
+              assert p['all_terminal_rows_exact']==1010 and p['all_anchor_records_exact']==695
+              assert p['recorded_MIM_changes']==8 and p['AVSS_original_point_equal']==83
+              assert len(p['AVSS_recorded_MIM_changes'])==2 and not p['coordinate_tolerance_used']
           assert q['actual_graph_or_waveform_executed'] is False
           PYCODE
           python3 scripts/wait_cloud_tested_source_release.py --controls > release-wait-controls.json
