@@ -1,0 +1,105 @@
+{
+  "schema": "current-AVSS18-portable-literal-source-derivation-v1",
+  "scope": "No authored code executed; literal text and AST/hash verification only",
+  "old_lifecycle": {
+    "path": "scripts/cloud_tx_phase_reset334_transient.py",
+    "sha256": "db0108b0b553d24d1ce8d4813806f41821bbf607053538a2ebe59127629eb0f0"
+  },
+  "generated_lifecycle_sha256": "e75efd3cdac27ac6cd4060dfeb72963acbcad0adba59e25883f2a182958710f8",
+  "lifecycle_edits": [
+    {
+      "before": "import tx_phase_reset334_transient_support as review",
+      "after": "from tx_phase_reset334_avss18_transient_adapter import session\nreview=session()",
+      "count": 1
+    },
+    {
+      "before": "tx-phase-reset334-transient-native-",
+      "after": "tx-phase-reset334-avss18-transient-native-",
+      "count": 4
+    },
+    {
+      "before": "codex/tx-clock-phase-parent",
+      "after": "codex/phase318-saved-capture-diagnosis",
+      "count": 2
+    },
+    {
+      "before": "tx-phase-reset334-transient-cloud.yml",
+      "after": "tx-phase-reset334-avss18-transient-cloud.yml",
+      "count": 2
+    },
+    {
+      "before": ".reset334-portable-stage-",
+      "after": ".reset334-avss18-portable-stage-",
+      "count": 1
+    },
+    {
+      "before": "cloud-tx-phase-reset334-prepared-",
+      "after": "cloud-tx-phase-reset334-avss18-prepared-",
+      "count": 1
+    },
+    {
+      "before": "        r['original_parent_TX_rejection']=proof['original_parent_TX_rejection']",
+      "after": "        r['original_parent_TX_rejection']=proof['original_parent_TX_rejection']\n        r.update(original17_HBT_rejection=proof['original17_HBT_rejection'],current_RC_model_hashes=proof['current_models'],old_R_rescaled=False,geometry_generation_executed=False,new_extraction_performed=False)",
+      "count": 1
+    },
+    {
+      "before": "                a=next(a for a in rel['assets']if a['name'].endswith(suffix))",
+      "after": "                expected=spec['group']+'-'+str(spec['run'])+'-1'+suffix\n                matches=[a for a in rel['assets']if a['name']==expected];assert len(matches)==1\n                a=matches[0]",
+      "count": 1
+    }
+  ],
+  "unchanged_native_and_io_functions": {
+    "digest": "5ad57d31673808040a8fc96717e685ddcb175dfb774a3a6d61a30ae1182fa7d3",
+    "api": "c429e6ba22f15e8942e49f7ac9bec74ff0e1aa7f1a12ee5b8ab60ca19589141b",
+    "byte_hash": "73b8725b5f04aeaf8369486537a008ca917d3b6a05a6c7a46b853d7ce2a1b446",
+    "raw_state": "1a4b4a5976af497aeebe06c208822c36d58c0f76cb87c09fbcaa106df38a3611",
+    "verify_prefix": "59747b07229fe7caa9f6e869f632fd99c9b6d84c7d5eee0c375f2d316efc68b4",
+    "spice_lines": "b15319d03d25cb4c6ab4bf8ece15de21537e3837b4f3762c1d3fd3eeee6d404c",
+    "runtime_files": "21c5ee9d73f79889ad16d1e4614a199ea8a76c9cf498726ca4019bf253720fa9",
+    "run": "c62a081b43310dba352cd67a1f58c9dda50a3df217ab43897dea55588e3c7f16",
+    "state": "8575be3b31eb8885293565a142addd8c3617f8da14500b958a70ccaf72b22dac",
+    "dump": "5def65fd414669465c81ae2259f8c1847822465ba5ba2b51e67e4367b92e0637"
+  },
+  "old_numerical_support": {
+    "path": "scripts/tx_phase_reset334_transient_support.py",
+    "sha256": "6e13a8fb79af6cffb3f65c0085ba15ca5e2d565508f7154ffc94c2469383a7df"
+  },
+  "generated_support_sha256": "1d09e23919736e377bf2e646b3a08731f79ee43e08c0be2a56f67fa3bf29df62",
+  "support_edits": [
+    {
+      "before": "    op_raw=preparation.asset(OP['summary_asset'],OP['summary_sha256'])\n    op=json.loads(op_raw);validate_OP(op,preparation.api('actions/runs/'+str(OP['run'])))\n    (out/'qualified-zero-OP.summary.json').write_bytes(op_raw)\n    spec=initialization.PREPARATION\n    old=preparation.api('actions/runs/'+str(spec['run']))\n    assert old['head_sha']==spec['head']and old['run_attempt']==1 and old['status']=='completed'and old['conclusion']=='success'\n    summary_raw=preparation.asset(spec['summary_asset'],spec['summary_sha256']);summary=json.loads(summary_raw)\n    (out/'qualified-preparation.summary.json').write_bytes(summary_raw)\n    prepared_root.mkdir(exist_ok=False)\n    selected=['cases/'+label+'/'+n for n in ('bench.cir','contract.json')]\n    selected+=['qualified-binding/qualified-rc/'+s+'/composition/reset334-wire.spice'for s in ('p','n')]\n    restored,proof=reports.restore_report('tx-phase-reset334-loaded-preparation',spec['run'],\n      spec['summary_sha256'],spec['parts_sha256'],prepared_root/'prepared',selected)\n    assert restored==summary\n    base=(prepared_root/'prepared/cases'/label/'bench.cir').read_text()\n    c=json.loads((prepared_root/'prepared/cases'/label/'contract.json').read_bytes())\n    initialization.prepared_contract(label,base,c,summary_raw)\n    assert op['cases'][label]['contract_sha256']==digest(json.dumps(c,indent=2,allow_nan=False)+'\\n')\n    models_at={s:prepared_root/'prepared/qualified-binding/qualified-rc'/s/'composition/reset334-wire.spice'for s in ('p','n')}\n    models={s:p.read_text()for s,p in models_at.items()}\n",
+      "after": "    op_raw,op,summary_raw,base,c,models_at,models,proof,spec=_restore_current(label,prepared_root,out)\n    initialization.prepared_contract(label,base,c,summary_raw)\n    assert op['cases'][label]['contract_sha256']==digest(json.dumps(c,indent=2,allow_nan=False)+'\\n')\n",
+      "count": 1
+    },
+    {
+      "before": "assert run['path']=='.github/workflows/tx-phase-reset334-zero-op-cloud.yml'",
+      "after": "assert run['path']=='.github/workflows/tx-phase-reset334-avss18-loaded-cloud.yml'",
+      "count": 1
+    }
+  ],
+  "support_original_code_objects": [
+    "digest",
+    "write",
+    "methods",
+    "runtime_identity",
+    "compatible",
+    "measurement_checks",
+    "gate",
+    "review_capture"
+  ],
+  "original_native_runtime_install_step_sha256": "13f0b6b85362d2e263f5cf8f94762bc4ce277d9e84c14f5cbac32b5df4f62a96",
+  "completed_current_OP": {
+    "run": 40222180657,
+    "head": "a218dd078115fbb65088de6e0129bb4e5f3100cd",
+    "summary_sha256": "af1babab272ca21fc332b79b3a8f3288f8c5e055cacfc0479d9d03686b575002",
+    "preparation_summary_sha256": "b9dfd2e1edcda8c30f6e4e81c622249fc4ed21e1818cad254a2002e49a8ad4b0",
+    "binding_summary_sha256": "0bac53cd5b69341e36fc88dd2a4c9cd273dc445dc00c4620abe203edd80116b2"
+  },
+  "current_models": {
+    "p": "bfe98e32e29aacd8defbb46eed28a62286bcc1513db0af1b6f8e1d514e1c8aa4",
+    "n": "1e5a2f72577c1923d06afa4e74f879ca2f8bd086581c1400188ff5ac7d95c975"
+  },
+  "source_authorization": false,
+  "native_authorization": false,
+  "transient_electrical_qualification": false
+}

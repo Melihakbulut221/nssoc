@@ -1,0 +1,210 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-avss18-transient-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source controls or separately authorized first current AVSS18 p-high process
+        type: choice
+        default: source-controls
+        required: true
+        options: [source-controls, native]
+      stage:
+        description: Fresh initial process or separately authorized exact saved-process continuation
+        type: choice
+        default: initial
+        required: true
+        options: [initial, cross]
+      source_descriptor:
+        description: Exact successful saved-process descriptor for cross only
+        type: string
+        default: '{}'
+        required: true
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-avss18-transient-p-initial-high
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Current OP admission, exact numerical functions and actual preparation/main-entry controls
+        run: |
+          set -euo pipefail
+          if bash -o pipefail -c '(exit 7) | tee /dev/null'; then exit 1; fi
+          python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+          python3 scripts/cloud_tx_phase_reset334_avss18_transient.py --controls | tee source-controls.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open('source-controls.json'))
+          assert x['status']=='PASS_CURRENT_AVSS18_PORTABLE_SOURCE_CONTROLS_ONLY'
+          assert len(x['OP_faults'])==20 and len(x['metadata_faults'])==20 and len(x['context_controls']['rejected'])==14
+          assert len(x['lifecycle_derivation']['literal_edits'])==8 and len(x['support_derivation']['literal_edits'])==2
+          assert len(x['derivation_faults'])==4
+          assert x['continuation_asset_controls']['two_summary_orderings_preserve_exact_source_asset']and len(x['continuation_asset_controls']['rejected'])==2
+          assert x['numerical_functions_use_exact_original_code_objects']and x['original_module_globals_unchanged']
+          assert len(x['actual_main_entry_positives'])==2 and all(r['actual_finally_failure_preserved']for r in x['actual_main_entry_positives'])
+          assert x['actual_preparation_entry']['current_capsule_boundary_reached']and x['legacy_preparation_refusal']['original_legacy_prepare_rejected_before_restore']
+          assert len(x['inherited_original_numerical_controls']['negative_controls'])==52 and x['current_portable_controls']['count']==22
+          assert len(x['archive_controls']['rejected'])==13 and x['archive_controls']['inherited_parts_controls']['negative_controls']==6
+          assert x['actual_restored18_source_plus32_path_controls_required_before_engine']
+          assert x['actual_restore_executed']is x['native_simulator_invoked']is x['transient_executed']is False
+          PY
+      - name: Actual reserved-only publication and read-only release waiter controls
+        run: |
+          set -euo pipefail
+          python3 scripts/check_tx_phase_reset334_avss18_transient_publication.py | tee publication-controls.json
+          python3 scripts/wait_cloud_tested_source_release.py --controls | tee wait-controls.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('publication-controls.json'));w=json.load(open('wait-controls.json'))
+          assert len(p['positive_cases'])==2 and len(p['rejected'])==13 and p['actual_template_program_executed']and p['real_file_list_assembly']
+          assert len(w['positive_cases'])==3 and len(w['rejected'])==4
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: avss18-portable-source-controls
+          path: |
+            source-controls.json
+            publication-controls.json
+            wait-controls.json
+          if-no-files-found: error
+          retention-days: 90
+          include-hidden-files: true
+  exact318-p-high-native:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'native'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+      PROOF_STAGE: ${{ inputs.stage }}
+      NSSOC_TX_SOURCE: ${{ inputs.source_descriptor }}
+      NSSOC_TX_SECONDS: '13200'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Passed source controls and read-only exact reserved release before dependencies
+        run: |
+          if [ "$PROOF_STAGE" = initial ]; then test "$NSSOC_TX_SOURCE" = '{}'; fi
+          python3 scripts/cloud_tx_phase_reset334_avss18_transient.py --preflight --stage "$PROOF_STAGE" --case p-initial-high
+      - name: Install original pinned portable runtime dependencies and CRIU
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+          git init "$RUNNER_TEMP/criu-src"
+          git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
+          git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          git -C "$RUNNER_TEMP/criu-src" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/criu-src" rev-parse HEAD)" = 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          make -C "$RUNNER_TEMP/criu-src" -j2 criu PYTHON=/usr/bin/python3 2>&1 | tee "$RUNNER_TEMP/criu-build.log"
+          sudo install -m 755 "$RUNNER_TEMP/criu-src/criu/criu" /usr/sbin/criu
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          p=pathlib.Path('/usr/sbin/criu')
+          d=dict(source_commit='9539417f3e3cfa4eb84c319cd71f4d52f1f08645',
+            binary_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
+            version=subprocess.check_output([str(p),'--version'],text=True),
+            libraries=subprocess.check_output(['ldd',str(p)],text=True))
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
+          PY
+      - name: Run sole p-high process or continue its exact saved process
+        run: python3 scripts/cloud_tx_phase_reset334_avss18_transient.py --stage "$PROOF_STAGE" --case p-initial-high
+      - name: Preserve complete result including rejected capture or partial process
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          root=Path('cloud-tx-phase-reset334-avss18-transient-native-'+os.environ['PROOF_STAGE']+'-p-initial-high')
+          root.mkdir(exist_ok=True);p=root/'result.json'
+          if not p.exists():p.write_text(json.dumps(dict(status='FAIL_MISSING_NATIVE_RESULT',source_head=os.environ['GITHUB_SHA'],
+            full_capture=False,electrical_screen_passed=False,full_PHY_accepted=False))+'\n')
+          raw=p.read_bytes()
+          print('RESULT_SHA256',hashlib.sha256(raw).hexdigest());print('RESULT_BYTES',len(raw))
+          if len(raw)<=16_000_000:
+              data=base64.b64encode(raw).decode();chunks=[data[i:i+4096]for i in range(0,len(data),4096)]
+              for i,c in enumerate(chunks):print(f'RESULT_BASE64 {i}/{len(chunks)} {c}')
+          else:print('COMPLETE_RESULT_RETAINED_IN_PUBLICATION_AND_FALLBACK',p)
+          PY
+      - name: Publish every native byte and complete failure using reserved-only source binding
+        id: publish
+        if: always()
+        run: |
+          set -euo pipefail
+          group="tx-phase-reset334-avss18-transient-native-$PROOF_STAGE-p-initial-high"
+          root="cloud-$group"
+          stem="$group-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          python3 scripts/wait_cloud_tested_source_release.py --group "$group"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" "$group" "$root" <<'PYCODE'
+          import json,pathlib,sys,os
+          sys.path.insert(0,'scripts')
+          import ensure_cloud_tested_source_release as guard
+          import migrate_outputs_to_cloud as migration
+          import publish_cloud_results as publisher
+          stem,group,root_arg=sys.argv[1:]
+          assert os.environ['PROOF_STAGE'] in ('initial','cross')
+          assert group=='tx-phase-reset334-avss18-transient-native-'+os.environ['PROOF_STAGE']+'-p-initial-high'
+          expected,source=guard.context(group,os.environ)
+          assert stem==group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+          root=pathlib.Path(root_arg)
+          part_file=pathlib.Path(stem+'.parts.json')
+          manifest=json.loads(part_file.read_text())
+          part_names=[p['name'] for p in manifest['parts']]
+          assert part_names and len(part_names)==len(set(part_names))
+          assert all(pathlib.Path(n).name==n and '\\' not in n and n not in ('.','..') for n in part_names)
+          separate=sorted(str(p) for p in root.glob('*.json') if p.name!='result.json')
+          paths=[stem+'.summary.json',str(part_file),*separate,*part_names]
+          assert len(paths)==len(set(paths))
+          assert len({pathlib.Path(p).name for p in paths})==len(paths)
+          assert all(pathlib.Path(p).is_file() and not pathlib.Path(p).is_symlink() for p in paths)
+          def readonly_release(tag):
+              assert tag==expected
+              info=guard.api('releases/tags/'+tag)
+              guard.validate_release(info,guard.api('git/ref/tags/'+tag),tag,source)
+              return info
+          migration.release=readonly_release
+          assert publisher.publish is migration.publish
+          assert publisher.publish.__globals__['release'] is readonly_release
+          readonly_release(expected)
+          result=publisher.publish_results(group,paths)
+          assert result['tag']==expected and len(result['assets'])==len(paths)
+          assert [x['name'] for x in result['assets']]==[pathlib.Path(p).name for p in paths]
+          readonly_release(expected)
+          print(json.dumps(result,sort_keys=True),flush=True)
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome != 'success'
+        with:
+          name: avss18-p-high-complete-evidence-${{ inputs.stage }}
+          path: cloud-tx-phase-reset334-avss18-transient-native-${{ inputs.stage }}-p-initial-high/
+          if-no-files-found: error
+          retention-days: 90
+          include-hidden-files: true
