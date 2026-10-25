@@ -1,0 +1,149 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-return-ledger-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        description: Authenticate completed phase318 capture and exact saved AVSS R graph; no simulation
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: tx-phase-reset334-return-ledger-${{ github.ref }}
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+      - name: Real failed-pipeline refusal and source math transport controls
+        run: |
+          if (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi
+          python3 scripts/cloud_tx_phase_reset334_return_ledger.py --controls | tee source-controls.json
+          python3 - <<'PYCODE'
+          import json
+          x=json.load(open('source-controls.json'))
+          assert x['status']=='PASS_PHASE318_RETURN_LEDGER_SOURCE_CONTROLS_ONLY'
+          assert len(x['math']['rejected'])==20
+          assert len(x['archive_faults'])==11
+          assert len(x['original_result_faults'])==9
+          assert len(x['metadata']['rejected'])==23
+          assert x['new_simulation'] is False
+          q=x['ledger']
+          assert q['status']=='PASS_LEDGER_SOURCE_CONTROLS_ONLY'
+          assert len(q['synthetic']['rejected'])==12
+          assert len(q['RC_metadata_rejected'])==15 and len(q['row_rejected'])==4
+          assert len(q['derivation_rejected'])==2
+          assert q['observer_derivation']['edits']==2 and q['controller_derivation']['edits']==12
+          assert q['actual_graph_or_waveform_executed'] is False
+          PYCODE
+          python3 scripts/wait_cloud_tested_source_release.py --controls > release-wait-controls.json
+          python3 - <<'PYCODE'
+          import json
+          x=json.load(open('release-wait-controls.json'))
+          assert x['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'
+          assert len(x['positive_cases'])==3 and len(x['rejected'])==4
+          assert x['maximum_scheduled_wait_s']==300 and not x['creation_attempted'] and not x['native_executed']
+          print(json.dumps(x,indent=2))
+          PYCODE
+      - name: Actual reserved-only publication program and file-list controls
+        run: |
+          python3 scripts/check_tx_phase_reset334_return_publication.py | tee publication-program-controls.json
+          python3 - <<'PYCODE'
+          import json
+          p=json.load(open('publication-program-controls.json'))
+          assert p['status']=='PASS_PHASE318_ACTUAL_PUBLICATION_PROGRAM_CONTROLS_ONLY'
+          assert len(p['positive_cases'])==2 and len(p['rejected'])==13
+          assert p['actual_template_program_executed'] and p['real_file_list_assembly']
+          assert p['real_publisher_retry_and_digest_function_used']
+          assert not p['remote_network_or_upload_executed'] and not p['release_creation_executed'] and not p['native_executed']
+          PYCODE
+  saved-capture-readback:
+    if: inputs.readback
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Wait read-only for externally reserved exact-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/wait_cloud_tested_source_release.py --group tx-phase-reset334-return-ledger
+      - run: python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+      - name: Authenticate every original archive byte then read unchanged full capture once
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_tx_phase_reset334_return_ledger.py --readback
+      - name: Publish full native graph, fixed42-row ledger and compact index separately
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          group=tx-phase-reset334-return-ledger
+          root=cloud-$group
+          test -f "$root/result.json"
+          stem="$group-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/wait_cloud_tested_source_release.py --group "$group"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" "$group" "$root" <<'PYCODE'
+          import json,pathlib,sys,os
+          sys.path.insert(0,'scripts')
+          import ensure_cloud_tested_source_release as guard
+          import migrate_outputs_to_cloud as migration
+          import publish_cloud_results as publisher
+          stem,group,root_arg=sys.argv[1:]
+          assert group=='tx-phase-reset334-return-ledger'
+          expected,source=guard.context(group,os.environ)
+          assert stem==group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+          root=pathlib.Path(root_arg)
+          part_file=pathlib.Path(stem+'.parts.json')
+          manifest=json.loads(part_file.read_text())
+          part_names=[p['name'] for p in manifest['parts']]
+          assert part_names and len(part_names)==len(set(part_names))
+          assert all(pathlib.Path(n).name==n and '\\' not in n and n not in ('.','..') for n in part_names)
+          separate=sorted(str(p) for p in root.glob('*.json') if p.name!='result.json')
+          paths=[stem+'.summary.json',str(part_file),*separate,*part_names]
+          assert len(paths)==len(set(paths))
+          assert len({pathlib.Path(p).name for p in paths})==len(paths)
+          assert all(pathlib.Path(p).is_file() and not pathlib.Path(p).is_symlink() for p in paths)
+          def readonly_release(tag):
+              assert tag==expected
+              info=guard.api('releases/tags/'+tag)
+              guard.validate_release(info,guard.api('git/ref/tags/'+tag),tag,source)
+              return info
+          migration.release=readonly_release
+          assert publisher.publish is migration.publish
+          assert publisher.publish.__globals__['release'] is readonly_release
+          readonly_release(expected)
+          result=publisher.publish_results(group,paths)
+          assert result['tag']==expected and len(result['assets'])==len(paths)
+          assert [x['name'] for x in result['assets']]==[pathlib.Path(p).name for p in paths]
+          readonly_release(expected)
+          print(json.dumps(result,sort_keys=True),flush=True)
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: tx-phase318-AVSS-return-ledger-evidence
+          path: cloud-tx-phase-reset334-return-ledger/
+          retention-days: 90
