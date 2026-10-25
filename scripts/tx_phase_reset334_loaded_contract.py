@@ -10,6 +10,7 @@ import tx_phase31_source_mapping as mapping
 import tx_phase_reset334_loaded_binding as binding
 from tx_phase55_loaded_contract import classify_device
 from build_pcie_local_vco_hybrid_v6 import statements,number
+from run_cloud_tx_mux4 import native_save_commands
 SUMMARY_SHA='ea7ca38a1c9cecdf374f3ba6ecdeb520275d51186a71d72c226e6a7a5474ae6b'
 SOURCE='76eb57e7fc57086f0ccb7c087196c22065d2a740'
 RUN=40169988733
@@ -164,7 +165,7 @@ def prepare(summary_raw,payload_raw,models,observer_raw,sign,initial_high,model_
         lines.append('V'+name+' '+name+' 0 PWL('+' '.join(f'{t:.16g} {v:.16g}'for t,v in pts)+')')
     lines +=[r['instance']+' '+' '.join(r['actual_ports'])+' '+r['top']for r in instances]
     lines +=[f'.tran {original.STEP:.16g} {original.STOP:.16g} 0 {original.STEP:.16g}',
-      '.control',f'pre_osdi {osdi}','set filetype=binary','set numdgt=16','save '+' '.join(vectors),
+      '.control',f'pre_osdi {osdi}','set filetype=binary','set numdgt=16',*native_save_commands(vectors),
       'op','write op.raw all','run wave.raw','echo NSSOC_SOLVER_OPTIONS_BEGIN','option',
       'echo NSSOC_NATIVE_MINBREAK $minbreak','echo NSSOC_SOLVER_OPTIONS_END','quit','.endc','.end']
     deck='\n'.join(lines)+'\n'

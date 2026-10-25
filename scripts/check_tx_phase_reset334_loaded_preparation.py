@@ -52,7 +52,16 @@ def controls():
         if label=='quote-model':models['p']=path
         else:osdi=path
         faults.append(reject(label,lambda:bench.validate_paths(models,'/tmp/models',osdi)))
-    assert len(faults)==12
+    for count in (1,1000,1001,9999):
+        vectors=['v(fixture_'+str(i)+')'for i in range(count)]
+        commands=bench.native_save_commands(vectors)
+        assert [v for line in commands for v in line.split()[1:]]==vectors
+        assert all(line.startswith('save ')and len(line.split())-1<=1000 for line in commands)
+        assert len(commands)==(1 if count<=1000 else (count+127)//128)
+    faults.append(reject('empty-native-save',lambda:bench.native_save_commands([])))
+    faults.append(reject('duplicate-native-save',lambda:bench.native_save_commands(['v(a)','v(a)'])))
+    faults.append(reject('over-limit-native-save',lambda:bench.native_save_commands(['v(a'+str(i)+')'for i in range(10000)])))
+    assert len(faults)==15
     return dict(status='PASS_SOURCE_ONLY_THREE_MODEL_FIXED_EVENT_CONTROLS',positive_cases=positive,
       rejected=faults,native_simulator_executed=False,actual_model_preparation_executed=False,**bench.FLAGS)
 def positive_prepare(summary_raw,payload_raw,models,observer_raw,source_text,model_paths,model_directory,osdi,out):
@@ -69,6 +78,9 @@ def positive_prepare(summary_raw,payload_raw,models,observer_raw,source_text,mod
             assert c['device_count']==1002 and c['hbt_count']==318 and c['physical_contacts']==270
             assert c['native_wire_R']==4041 and c['native_wire_C']==7635 and c['actual_intrinsic_MIM']==24
             assert len(c['hbt'])==318 and len(c['thermal_nodes'])==390
+            commands=[l for l in deck.splitlines()if l.startswith('save ')]
+            assert [v for line in commands for v in line.split()[1:]]==c['vectors']
+            assert all(len(line.split())-1<=1000 for line in commands)
             assert c['uniform_OFF_initialization_required_for_all318']and c['zero_source_OP_required']
             assert c['full_internal_model_nodes_saved']and c['all318_HBT_safety_required']
             assert len({r['body_node']for r in c['instances']})==3
