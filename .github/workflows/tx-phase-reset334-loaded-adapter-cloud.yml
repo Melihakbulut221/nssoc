@@ -1,0 +1,14 @@
+name: tx-phase-reset334-loaded-adapter-cloud
+on:
+  push:
+    branches: [codex/register-reset334-loaded-adapter-20261025]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Register reviewed manual workflow without native execution
+        run: echo "Registration only; no repository checkout or engineering computation"
