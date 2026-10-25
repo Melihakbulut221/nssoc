@@ -26,8 +26,8 @@ jobs:
           python3 - <<'PY'
           import json
           r=json.load(open('mainchip-userstack-native-source-controls.json'))
-          assert r['status']=='PASS37_SOURCE_BINDING_CONTROLS_NOT_NATIVE_ATTACH'
-          assert len(r['rejected'])==37
+          assert r['status']=='PASS39_SOURCE_BINDING_CONTROLS_NOT_NATIVE_ATTACH'
+          assert len(r['rejected'])==39
           assert not r['chip_restore_executed'] and not r['chip_attachment_executed']
           PY
       - uses: actions/upload-artifact@v4

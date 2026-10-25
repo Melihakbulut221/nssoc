@@ -44,6 +44,13 @@ def probe_rejected():
     if(folder/'result.json').exists():
         return json.loads((folder/'result.json').read_text())['status']!='PASS_20_EXACT_SAVED_NATIVE_STACK_SAMPLES'
     return p['process'].poll()is not None
+def checkpoint_cleanup_proof(command):
+    proofs={k:command[k]for k in ('cleanup','finally_cleanup')if k in command}
+    assert proofs,'No terminal debugger-group cleanup proof'
+    assert all(v['live_remaining']is False for v in proofs.values()),'Debugger descendants may remain'
+    assert all(type(v['attempts'])is list and type(v['zombies'])is list for v in proofs.values())
+    return dict(keys=sorted(proofs),live_remaining=False,
+        acquisition_accepted=False,checkpoint_cleanup_only=True)
 def finish_probe(r,out):
     if PROBE is None:return
     p=PROBE;folder=p['folder'];child=p['process']
@@ -78,7 +85,7 @@ def finish_probe(r,out):
     assert p['process'].poll()is not None,'Observer still active at native checkpoint'
     for path in folder.glob('sample-*/command/command.json'):
         command=json.loads(path.read_text())
-        assert command.get('cleanup',{}).get('live_remaining')is False,'Debugger group cleanup not proved'
+        checkpoint_cleanup_proof(command)
     p['finished']=True
 def validate_observations():
     assert PROBE is not None and PROBE['finished']and PROBE['returncode']==0

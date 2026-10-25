@@ -8,6 +8,8 @@ import mainchip_userstack_native_binding as bind
 import mainchip_latest_userstack_bridge as bridge
 import mainchip_latest_native_stack_admission as latest
 import mainchip_userstack_native_prerequisite as prerequisite
+from mainchip_userstack_native_probe import checkpoint_cleanup_proof
+from mainchip_userstack_observer import supervised
 from mainchip_userstack_identity import object_id
 ROOT=Path(__file__).resolve().parents[1]
 def check():
@@ -142,9 +144,38 @@ def check():
         else:raise AssertionError('Original failure hidden')
         assert events==['finish','after']
     finally:controller.finish_probe,controller.recheck_inputs,controller.CURRENT=saved
-    assert len(failures)==37,len(failures)
+    # A real signal interrupts the qualified supervisor while its owned child is alive.
+    # Its finally-only cleanup proves checkpoint readiness, never successful acquisition.
+    with tempfile.TemporaryDirectory(prefix='native-stack-finally-')as td:
+        out=Path(td)/'command';abort=threading.Event();delivered=threading.Event()
+        old_handler=signal.getsignal(signal.SIGTERM)
+        def handler(signum,frame):raise RuntimeError('actual-harmless-supervisor-signal')
+        def interrupt():
+            until=time.monotonic()+5
+            while not abort.is_set()and time.monotonic()<until:
+                if(out/'command.json').exists():
+                    delivered.set();os.kill(os.getpid(),signal.SIGTERM);return
+                time.sleep(.01)
+        signal.signal(signal.SIGTERM,handler)
+        sender=threading.Thread(target=interrupt);sender.start();caught=False
+        try:
+            try:supervised([sys.executable,'-c','import time;time.sleep(30)'],dict(os.environ),out,10)
+            except RuntimeError as e:
+                assert str(e)=='actual-harmless-supervisor-signal';caught=True
+        finally:
+            abort.set();sender.join(timeout=6);assert not sender.is_alive()
+            signal.signal(signal.SIGTERM,old_handler)
+        assert caught and delivered.is_set()
+        actual=json.loads((out/'command.json').read_text())
+        assert 'finally_cleanup'in actual and 'cleanup'not in actual
+        cp=checkpoint_cleanup_proof(actual);assert cp['keys']==['finally_cleanup']and cp['acquisition_accepted']is False
+        q=copy.deepcopy(actual);q.pop('finally_cleanup')
+        reject('missing-finally-cleanup',lambda:checkpoint_cleanup_proof(q))
+        q=copy.deepcopy(actual);q['finally_cleanup']['live_remaining']=True
+        reject('live-finally-descendant',lambda:checkpoint_cleanup_proof(q))
+    assert len(failures)==39,len(failures)
     assert bridge.STAGED is None
-    return dict(status='PASS37_SOURCE_BINDING_CONTROLS_NOT_NATIVE_ATTACH',rejected=failures,
+    return dict(status='PASS39_SOURCE_BINDING_CONTROLS_NOT_NATIVE_ATTACH',rejected=failures,
         exact_adapter_edits=edits,frozen_controller_controls=frozen,harmless_fixture=qualified,
         chip_restore_executed=False,chip_attachment_executed=False,normal_continuation_accepted=False)
 if __name__=='__main__':print(json.dumps(check(),indent=2))

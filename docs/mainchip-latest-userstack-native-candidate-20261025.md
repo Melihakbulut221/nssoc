@@ -45,7 +45,7 @@ there is no fallback to fewer samples or a cold restart.
 
 The proposed hosted source controls retain the frozen controller controls,
 authenticate the actual harmless prerequisite, reconstruct/reverse the source
-derivations, check unchanged AST seams and exercise 37 binding/path/error
+derivations, check unchanged AST seams and exercise 39 binding/path/error
 faults with real temporary-file opens. These controls are not yet executed.
 The template is manual, source-controls-only and unregistered. No chip restore,
 attachment, routing, final timing or PHY acceptance is claimed.
@@ -56,3 +56,8 @@ the exact generated observer source, while its frozen source remains08b91df1….
 Source controls reconstruct that historical generated program and verify its
 published hash. The original qualified fixture admission file stays unchanged.
 The new descriptor records both identities and cannot admit old400958 as latest.
+
+A real harmless SIGTERM fixture interrupts the unchanged qualified supervisor.
+Its finally_cleanup-only terminal proof is accepted for checkpoint readiness;
+missing or live-descendant proofs reject. This never becomes a successful
+stack acquisition: all20 readers and normal return codes remain mandatory.
