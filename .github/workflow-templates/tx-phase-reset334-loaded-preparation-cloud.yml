@@ -1,0 +1,93 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-loaded-preparation-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      prepare:
+        description: Restore existing qualified334 models and prepare four three-model decks without simulation
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-loaded-preparation-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install Python import dependency only
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends python3-numpy
+      - name: Check exact source and fixed phase preparation controls
+        run: |
+          /usr/bin/python3 scripts/cloud_tx_phase_reset334_loaded_preparation.py --source-controls > source-controls.json
+          /usr/bin/python3 - <<'PY'
+          import json
+          d=json.load(open('source-controls.json'))
+          assert d['status']=='PASS_THREE_MODEL_SOURCE_CONTROLS_ONLY'
+          assert len(d['preparation_controls']['rejected'])==15
+          assert len(d['preparation_controls']['positive_cases'])==4
+          assert len(d['publication_controls']['rejected'])==17
+          assert not d['simulator_invoked'] and not d['full_PHY_accepted']
+          print(json.dumps(d,indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: reset334-loaded-preparation-source-controls
+          path: source-controls.json
+          retention-days: 90
+  prepare-four-three-model-cases:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.prepare
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install Python import dependency only
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends python3-numpy
+      - name: Verify precreated exact-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: /usr/bin/python3 scripts/ensure_cloud_tested_source_release.py --group tx-phase-reset334-loaded-preparation
+      - name: Authenticate full model archive and prepare without a simulator
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: /usr/bin/python3 scripts/cloud_tx_phase_reset334_loaded_preparation.py
+      - name: Publish complete preparation evidence
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -s cloud-tx-phase-reset334-loaded-preparation/result.json
+          stem="tx-phase-reset334-loaded-preparation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-tx-phase-reset334-loaded-preparation/result.json "$stem.summary.json"
+          /usr/bin/python3 scripts/ensure_cloud_tested_source_release.py --group tx-phase-reset334-loaded-preparation
+          /usr/bin/python3 scripts/cloud_chunked_results.py --directory cloud-tx-phase-reset334-loaded-preparation --stem "$stem"
+          /usr/bin/python3 - "$stem" <<'PY'
+          import json,subprocess,sys
+          stem=sys.argv[1];parts=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-phase-reset334-loaded-preparation',
+            stem+'.summary.json',stem+'.parts.json',*[p['name']for p in parts['parts']]],check=True)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome == 'failure'
+        with:
+          name: reset334-loaded-preparation-complete-evidence
+          path: cloud-tx-phase-reset334-loaded-preparation/
+          retention-days: 90
