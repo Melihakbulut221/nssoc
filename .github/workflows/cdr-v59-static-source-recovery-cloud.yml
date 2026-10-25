@@ -1,0 +1,21 @@
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-v59-static-source-recovery-cloud
+on:
+  push:
+    branches:
+      - codex/register-cdr-v59-static-source-recovery
+  workflow_dispatch:
+    inputs:
+      recovery:
+        type: boolean
+        default: false
+        description: Real work runs only from the reviewed source branch
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+      - name: Register only
+        run: echo 'Registration only. No inputs, geometry, native execution or qualification.'
