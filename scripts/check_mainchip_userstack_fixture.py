@@ -5,7 +5,7 @@ import copy,hashlib,http.client,http.server,json,os,shutil,subprocess,sys,thread
 from pathlib import Path
 import mainchip_userstack_observer as obs
 import mainchip_latest_stack_admission as admission
-from mainchip_userstack_identity import snapshot,file_sha,check_frames,module_inventory,ProcessPin
+from mainchip_userstack_identity import snapshot,file_sha,check_frames,module_inventory,ProcessPin,loaded_executable_identity
 ROOT=Path(__file__).resolve().parents[1]
 OUT=ROOT/'cloud-mainchip-userstack-fixture'
 METHOD=ROOT/'scripts/mainchip-userstack-fixture-methods.json'
@@ -73,6 +73,36 @@ def controls():
             version=subprocess.check_output([gdb,'--nx','--nh','--version'],text=True))
         elf=prepare_elf(OUT/'fixture')
         p,log,expected,fixture=start_fixture(elf,elf.parent);fixture_owned.append((p,log))
+
+        # Actual /proc link and GDB's possible canonical spelling bind the same held object.
+        binding_controls=[]
+        with ProcessPin(p.pid,expected)as pin:
+            pin.verify()
+            for spelling in ('/proc/'+str(p.pid)+'/exe',str(elf)):
+                value=loaded_executable_identity(p.pid,expected,spelling)
+                assert value['files']['gdb_reported']['sha256']==expected['exe_sha256']
+            alias=elf.parent/'counter-alias';alias.symlink_to(elf)
+            loaded_executable_identity(p.pid,expected,str(alias))
+            duplicate=elf.parent/'counter-identical-copy';shutil.copyfile(elf,duplicate)
+            def binding_reject(label,reported,wanted=expected,pid=p.pid):
+                try:loaded_executable_identity(pid,wanted,reported)
+                except(AssertionError,FileNotFoundError):binding_controls.append(label)
+                else:raise AssertionError('Accepted loaded executable corruption '+label)
+            binding_reject('empty-filename','')
+            binding_reject('relative-filename','counter')
+            binding_reject('wrong-existing-file',str(ROOT/'scripts/fixtures/mainchip_userstack_counter.c'))
+            binding_reject('identical-bytes-different-inode',str(duplicate))
+            wrong=copy.deepcopy(expected);wrong['exe']['inode']+=1
+            binding_reject('wrong-inode',str(elf),wrong)
+            wrong=copy.deepcopy(expected);wrong['exe_bytes']+=1
+            binding_reject('wrong-size',str(elf),wrong)
+            wrong=copy.deepcopy(expected);wrong['exe_sha256']='0'*64
+            binding_reject('wrong-sha256',str(elf),wrong)
+            binding_reject('wrong-pid',str(elf),pid=p.pid+1)
+            pin.verify()
+        assert len(binding_controls)==8
+        result['loaded_executable_binding_controls']=dict(
+            positive_spellings=3,rejected=binding_controls,full_identity_bound=True)
         # Initialization canaries are actual files, not inferred from argv alone.
         canary=OUT/'autoload-ran'
         command='shell touch '+str(canary)+'\n'
@@ -95,6 +125,7 @@ def controls():
         finally:server.shutdown();server.server_close();thread.join(timeout=3)
         passed('positive-20',dict(samples=20,result_sha256=file_sha(OUT/'twenty/result.json')))
         first=collection['samples'][0]['reader']
+        assert all(s['reader']['loaded_executable_identity']['files']['gdb_reported']['sha256']==expected['exe_sha256']for s in collection['samples'])
         bad=copy.deepcopy(first);bad['threads'].pop()
         rejected('all-lwps',lambda:check_frames(bad,first['stopped_identity']))
         # Actual target-root hashes and frame file offsets are retained for every acquisition.
@@ -195,7 +226,20 @@ def controls():
         assert failed['status']=='REJECTED_OWNED_FIXTURE_ATTACHMENT'
         for name in ('stdout.log','stderr.log','command.json'):
             assert (OUT/'error-finally-detach/command'/name).is_file()
+        assert failed['failure_console']['emitted']is True
+        for name,record in failed['failure_console']['streams'].items():
+            actual=OUT/'error-finally-detach/command'/name
+            assert record['sha256']==file_sha(actual)and record['bytes']==actual.stat().st_size
+            assert sum(x['bytes']for x in record['selected'])<=8192
+        bounded=OUT/'bounded-console';bounded.mkdir()
+        (bounded/'stdout.log').write_bytes(b'a'*9000)
+        (bounded/'stderr.log').write_bytes(b'\xfffailure\n')
+        stream=obs.emit_bounded_command_outputs(bounded)
+        assert stream['streams']['stdout.log']['omitted_bytes']==808
+        assert [x['offset']for x in stream['streams']['stdout.log']['selected']]==[0,4904]
+        assert stream['streams']['stderr.log']['omitted_bytes']==0
         passed('failure-publication',dict(actual_partial_failure_files_preserved=True,
+            bounded_console_streams_verified=True,
             remote_artifact_upload_not_proven_by_checker=True))
         values=[int(s)for s in (elf.parent/'counter.log').read_text().splitlines()]
         assert len(values)>2 and values[-1]>values[0]

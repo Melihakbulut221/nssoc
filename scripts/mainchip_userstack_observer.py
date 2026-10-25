@@ -66,6 +66,26 @@ def supervised(command,env,out,seconds,output_limit=32*1024**2):
         write(out/'command.json',report)
     return report
 
+
+def emit_bounded_command_outputs(folder):
+    """Print exact bounded stream slices before rejection; retain complete original files."""
+    outputs={}
+    for name in ('stdout.log','stderr.log'):
+        path=folder/name
+        if not path.exists():continue
+        size=path.stat().st_size
+        with path.open('rb')as f:
+            if size<=8192:chunks=[(0,f.read())]
+            else:
+                head=f.read(4096);f.seek(size-4096);chunks=[(0,head),(size-4096,f.read(4096))]
+        selected=[dict(offset=o,bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),
+                       text=b.decode('utf-8',errors='backslashreplace'))for o,b in chunks]
+        report=dict(bytes=size,sha256=file_sha(path),selected=selected,
+                    omitted_bytes=size-sum(len(b)for o,b in chunks),complete_raw_file_preserved=True)
+        print('USERSTACK_COMMAND_STREAM '+json.dumps(dict(name=name,**report),ensure_ascii=True),flush=True)
+        outputs[name]=report
+    return dict(emitted=True,streams=outputs,per_stream_limit_bytes=8192)
+
 def context(pid,expected,fixture,output,*,fault=None,canaries=False):
     assert NATIVE_ATTACHMENT_AUTHORIZED is False
     assert fixture['owned_pid']==pid and fixture['owner_pid']==os.getpid()
@@ -114,6 +134,8 @@ def _attach_once(pid,expected,fixture,gdb,out,*,fault=None,canaries=False,second
         result['status']='PASS_BOUNDED_OWNED_FIXTURE_ATTACHMENT'
     except BaseException as e:
         result.update(status='REJECTED_OWNED_FIXTURE_ATTACHMENT',error=repr(e))
+        try:result['failure_console']=emit_bounded_command_outputs(out/'command')
+        except BaseException as console_error:result['failure_console_error']=repr(console_error)
         try:result['after_rejection']=snapshot(pid,expected,tracer=0,require_running=True)
         except BaseException as cleanup:
             result['cleanup_unproved']=repr(cleanup)

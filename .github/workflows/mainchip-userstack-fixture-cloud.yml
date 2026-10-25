@@ -38,6 +38,8 @@ jobs:
           r=json.load(open('cloud-mainchip-userstack-fixture/result.json'))
           assert r['status']=='PASS_24_HARMLESS_USERSTACK_CONTROLS_ONLY'
           assert len(r['controls'])==24 and r['sources_unchanged']
+          assert len(r['loaded_executable_binding_controls']['rejected'])==8
+          assert r['loaded_executable_binding_controls']['positive_spellings']==3
           assert r['complete_chip_admission_unexecuted'] and r['live_container_binding_unexecuted']
           assert not r['native_process_restored'] and not r['native_attachment_authorized']
           assert not r['actual_archive_read'] and not r['normal_continuation_accepted']

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Process identity/read-only proc records shared by host and trusted GDB reader."""
-import hashlib,os,re,select
+import hashlib,os,re,select,stat
 from pathlib import Path
 LIMIT=1024*1024
 
@@ -77,6 +77,31 @@ def snapshot(pid,expected=None,tracer=None,require_running=False):
         assert os.readlink('exe',dir_fd=fd)==identity['exe_path']
         return dict(identity=identity,process=final,tracer_pid=actual_tracer,tasks=tasks)
     finally:os.close(fd)
+
+
+def loaded_executable_identity(pid,expected,reported):
+    """Validate the loaded object itself; GDB may normalize the /proc display path."""
+    assert type(pid)is int and pid==expected['pid']
+    assert type(reported)is str and reported and Path(reported).is_absolute()
+    proc=Path('/proc')/str(pid)/'exe'
+    assert os.readlink(proc)==expected['exe_path']
+    resolved=Path(reported).resolve(strict=True)
+    assert str(resolved)==expected['exe_path'],'Loaded executable resolves to a different object path'
+    records={}
+    for label,path in (('gdb_reported',reported),('proc_executable',proc)):
+        with open(path,'rb')as f:
+            before=os.fstat(f.fileno())
+            assert stat.S_ISREG(before.st_mode)
+            assert object_id(before)==expected['exe'],'Loaded executable device/inode changed'
+            assert before.st_size==expected['exe_bytes'],'Loaded executable size changed'
+            digest=hashlib.file_digest(f,'sha256').hexdigest()
+            after=os.fstat(f.fileno())
+            assert object_id(after)==object_id(before)and after.st_size==before.st_size
+            assert digest==expected['exe_sha256'],'Loaded executable bytes changed'
+            records[label]=dict(device=before.st_dev,inode=before.st_ino,bytes=before.st_size,sha256=digest)
+    assert records['gdb_reported']==records['proc_executable']
+    assert os.readlink(proc)==expected['exe_path']
+    return dict(reported=reported,resolved=str(resolved),proc_path=str(proc),files=records)
 
 def check_frames(report,observed):
     assert report['identity']==observed['identity']

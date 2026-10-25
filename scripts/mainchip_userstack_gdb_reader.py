@@ -4,7 +4,7 @@
 import copy,json,os,time,traceback
 from pathlib import Path
 import gdb
-from mainchip_userstack_identity import snapshot,check_frames,module_inventory,frame_binding,ProcessPin
+from mainchip_userstack_identity import snapshot,check_frames,module_inventory,frame_binding,ProcessPin,loaded_executable_identity
 OFF=('may-write-registers','may-write-memory','may-insert-breakpoints',
      'may-insert-tracepoints','may-insert-fast-tracepoints','may-call-functions')
 
@@ -36,7 +36,10 @@ def run():
         # Numeric PID comes only from the validated owned fixture context.
         gdb.execute('set sysroot /proc/'+str(pid)+'/root')
         gdb.execute('file /proc/'+str(pid)+'/exe')
-        assert gdb.current_progspace().filename=='/proc/'+str(pid)+'/exe'
+        result['gdb_programspace_filename']=gdb.current_progspace().filename
+        write(out,result)
+        result['loaded_executable_identity']=loaded_executable_identity(pid,ctx['expected'],result['gdb_programspace_filename'])
+        pin.verify(tracer=0,require_running=True)
         started=time.monotonic_ns()
         gdb.execute('attach '+str(pid));attached=True
         during=pin.verify(tracer=os.getpid(),require_running=False)
