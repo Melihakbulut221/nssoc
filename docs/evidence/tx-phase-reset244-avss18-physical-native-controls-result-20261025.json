@@ -1,0 +1,516 @@
+{
+  "status": "PASS_AVSS18_NATIVE_WRAPPER_SOURCE_CONTROLS_NO_NATIVE",
+  "derivation": {
+    "original_main_sha256": "1f58b5cf0b8ba8db914e66a57905751640357654ea23ecddeac5a6c4b5746f74",
+    "generated_main_sha256": "a42ac9df3a9af7891b17d28326697474ba83dfe28eafba991ab2e0d250d7e8b7",
+    "edit_count": 7,
+    "edits": [
+      {
+        "old": "    host();m=pins();pre=prerequisite()\n",
+        "new": "    host();m=pins();_avss18_authorize(m);pre=prerequisite()\n",
+        "count": 1
+      },
+      {
+        "old": "        report['clock_contract']=clock_contract()\n",
+        "new": "        report['clock_contract']=clock_contract()\n        report['source_controls_prerequisite']=_avss18_save_prerequisite(pre)\n        report['baseline_restoration']=_avss18_restore(OUT);save()\n",
+        "count": 1
+      },
+      {
+        "old": "ROOT/'hw/soc/flow/make_pcie_tx_phase_reset244_v1.py','--pdk'",
+        "new": "ROOT/'scripts/generate_tx_phase_reset244_avss18_native.py','--pdk'",
+        "count": 1
+      },
+      {
+        "old": "                variant['generation']=generated;save()\n",
+        "new": "                variant['generation']=generated;save()\n                variant['native_material']=_avss18_material(app,execute,polarity,out,report['baseline_restoration']);save()\n",
+        "count": 1
+      },
+      {
+        "old": "PASS_FRESH334_DRC_DEEP_FLAT_LVS9_FAULTS_AND1010_NATIVE_TERMINALS7_FAULTS_REQUIRES_FRESH_RC_AND_LOADED_RESET",
+        "new": "PASS_AVSS18_MATERIAL20_FAULTS334_DRC_DEEP_FLAT_LVS9_FAULTS1010_TERMINALS7_FAULTS_REQUIRES_FRESH_RC_LOADED",
+        "count": 1
+      },
+      {
+        "old": "        report.update(status='PASS_BOTH_FRESH334_PHYSICAL_AND1010_TERMINAL_GATES_REQUIRES_MIM_RC_AND_LOADED_RESET',sources_unchanged=True)",
+        "new": "        _avss18_finish(report)\n        report.update(status='PASS_BOTH_AVSS18_EXACT_MATERIAL_334_PHYSICAL_1010_TERMINALS_REQUIRES_FRESH_MIM_RC_LOADED',sources_unchanged=True)",
+        "count": 1
+      },
+      {
+        "old": "    finally:\n        report['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()",
+        "new": "    finally:\n        if 'baseline_restoration'in report:_avss18_finalize_baseline(report)\n        report['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()\n        assert report.get('original_baseline_byte_unchanged',True),report.get('baseline_immutability_error')",
+        "count": 1
+      }
+    ],
+    "reversed_byte_exact": true
+  },
+  "inherited": {
+    "status": "PASS_NEW334_PHYSICAL_SOURCE_AND_EXACT_PLANNING_PREREQUISITE_NO_NATIVE_EXECUTION",
+    "prerequisite": {
+      "run": 40118554214,
+      "source": "7c5d1177873428bb4f35ba097174e359e246582d",
+      "job": 120944928730,
+      "exact_original_log_sha256": "ad152a27343bfbef642f85dd0788f97e4202b367bef2e611f81ae90d7eda58f3",
+      "avss18_source_controls": {
+        "run": 40206328842,
+        "job": 121207947350,
+        "source": "ec29fe6fe97c3f39a4b158892faf51ce1a710104",
+        "result_sha256": "fef47872a720e3b1eaa3e27498644dbf999cd6928651a640c334905764fdb3be",
+        "log_sha256": "508427f5f5cf25302785640e537c0329e5d103d59d966b306384307318ecd5ac",
+        "all54_source_faults_passed": true,
+        "native_geometry_proved": false
+      }
+    },
+    "source_derivations": [
+      {
+        "polarity": "p",
+        "graph": {
+          "source_sha256": "171fba4772907101b840342696477c377e4f249dd915a9761a2f6f1b9b479225",
+          "exact_reversible_edits": [
+            [
+              "nssoc_tx_input_driver_v7_physical_localpins_v1",
+              "nssoc_tx_phase_reset244_p_v1",
+              1
+            ],
+            [
+              "P=B/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'",
+              "P=B",
+              1
+            ],
+            [
+              "P/'base/layout.gds'",
+              "P/'layout/nssoc_tx_phase_reset244_p_v1.gds'",
+              1
+            ],
+            [
+              "P/'check-raw_flat_lvs/",
+              "P/'flat_lvs/",
+              2
+            ],
+            [
+              "6f7a7cf92c1dc25a259acdbff779c7cce841128991abb780e13478aa84b4eb62",
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              1
+            ],
+            [
+              "c.pin_count()==6",
+              "c.pin_count()==11",
+              1
+            ],
+            [
+              "dict(sg13_hv_nmos=40,sg13_lv_nmos=22,sg13_lv_pmos=22,ptap1=10,ntap1=2,rppd=4)",
+              "dict(npn13G2=106,rppd=130,cap_cmim=8,ptap1=90)",
+              1
+            ],
+            [
+              "'full_driver_wires'",
+              "'phase_reset334_wires'",
+              1
+            ],
+            [
+              "'DRIVERWIRES'",
+              "'PHASERESET334WIRES'",
+              1
+            ],
+            [
+              "PASS_FULL_DRIVER_METAL_VIA_GRAPH_BOUND_TO_ALL100_NATIVE_DEVICES_NO_RC",
+              "PASS_RESET334_METAL_VIA_GRAPH_BOUND_TO_ALL334_NATIVE_DEVICES_NO_RC",
+              1
+            ]
+          ]
+        },
+        "anchors": {
+          "source_sha256": "340be59065f0777d96b7df54ce7a8f4f34c46362e9df8686c82000cb96e93a0d",
+          "exact_reversible_edits": [
+            [
+              "All91 divider devices:283 terminal planes",
+              "All334 reset-divider devices:1010 terminal planes",
+              1
+            ],
+            [
+              "nssoc_clock_div4_load3p2_v1_layout",
+              "nssoc_tx_phase_reset244_p_v1",
+              1
+            ],
+            [
+              "db=source/'raw_flat/result.lvsdb'",
+              "db=physical_source/'flat_lvs/result.lvsdb'",
+              1
+            ],
+            [
+              "assert len(devices)==91",
+              "assert len(devices)==334",
+              1
+            ],
+            [
+              "Counter(npn13G2=34,rppd=33,cap_cmim=6,ptap1=18)",
+              "Counter(npn13G2=106,rppd=130,cap_cmim=8,ptap1=90)",
+              1
+            ],
+            [
+              "assert len(owner)==37",
+              "assert len(owner)==39",
+              1
+            ],
+            [
+              "assert len(rows)==283 and sum('reference_label'in r for r in rows)==198 and len(public)==7",
+              "assert len(rows)==1010 and sum('reference_label'in r for r in rows)==684 and len(public)==11",
+              1
+            ],
+            [
+              "assert len(observed)==283 and len({(r['device'],r['terminal']) for r in observed})==283",
+              "assert len(observed)==1010 and len({(r['device'],r['terminal']) for r in observed})==1010",
+              1
+            ],
+            [
+              "PASS_ALL283_DIVIDER_TERMINALS_BOUND_WITH198_METAL85_BODY_AND_SEVEN_FAULTS_NOT_RC_ACCEPTANCE",
+              "PASS_ALL1010_RESET_TERMINALS_BOUND_WITH684_METAL326_BODY_AND_SEVEN_FAULTS_NOT_RC_ACCEPTANCE",
+              1
+            ],
+            [
+              "devices=91,terminals=283,metal_terminals=198,body_terminals=85,public_ports=7",
+              "devices=334,terminals=1010,metal_terminals=684,body_terminals=326,public_ports=11",
+              1
+            ],
+            [
+              "wire_components=37",
+              "wire_components=39",
+              1
+            ],
+            [
+              "OUT=Path(sys.argv[1]);generate()",
+              "OUT=Path(sys.argv[1]);generate(OUT,OUT)",
+              1
+            ]
+          ]
+        },
+        "synthetic_components_not_native_prediction": true
+      },
+      {
+        "polarity": "n",
+        "graph": {
+          "source_sha256": "171fba4772907101b840342696477c377e4f249dd915a9761a2f6f1b9b479225",
+          "exact_reversible_edits": [
+            [
+              "nssoc_tx_input_driver_v7_physical_localpins_v1",
+              "nssoc_tx_phase_reset244_n_v1",
+              1
+            ],
+            [
+              "P=B/'inputs/tx-input-driver-localpins/cloud-tx-input-driver-localpins'",
+              "P=B",
+              1
+            ],
+            [
+              "P/'base/layout.gds'",
+              "P/'layout/nssoc_tx_phase_reset244_n_v1.gds'",
+              1
+            ],
+            [
+              "P/'check-raw_flat_lvs/",
+              "P/'flat_lvs/",
+              2
+            ],
+            [
+              "6f7a7cf92c1dc25a259acdbff779c7cce841128991abb780e13478aa84b4eb62",
+              "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+              1
+            ],
+            [
+              "c.pin_count()==6",
+              "c.pin_count()==11",
+              1
+            ],
+            [
+              "dict(sg13_hv_nmos=40,sg13_lv_nmos=22,sg13_lv_pmos=22,ptap1=10,ntap1=2,rppd=4)",
+              "dict(npn13G2=106,rppd=130,cap_cmim=8,ptap1=90)",
+              1
+            ],
+            [
+              "'full_driver_wires'",
+              "'phase_reset334_wires'",
+              1
+            ],
+            [
+              "'DRIVERWIRES'",
+              "'PHASERESET334WIRES'",
+              1
+            ],
+            [
+              "PASS_FULL_DRIVER_METAL_VIA_GRAPH_BOUND_TO_ALL100_NATIVE_DEVICES_NO_RC",
+              "PASS_RESET334_METAL_VIA_GRAPH_BOUND_TO_ALL334_NATIVE_DEVICES_NO_RC",
+              1
+            ]
+          ]
+        },
+        "anchors": {
+          "source_sha256": "340be59065f0777d96b7df54ce7a8f4f34c46362e9df8686c82000cb96e93a0d",
+          "exact_reversible_edits": [
+            [
+              "All91 divider devices:283 terminal planes",
+              "All334 reset-divider devices:1010 terminal planes",
+              1
+            ],
+            [
+              "nssoc_clock_div4_load3p2_v1_layout",
+              "nssoc_tx_phase_reset244_n_v1",
+              1
+            ],
+            [
+              "db=source/'raw_flat/result.lvsdb'",
+              "db=physical_source/'flat_lvs/result.lvsdb'",
+              1
+            ],
+            [
+              "assert len(devices)==91",
+              "assert len(devices)==334",
+              1
+            ],
+            [
+              "Counter(npn13G2=34,rppd=33,cap_cmim=6,ptap1=18)",
+              "Counter(npn13G2=106,rppd=130,cap_cmim=8,ptap1=90)",
+              1
+            ],
+            [
+              "assert len(owner)==37",
+              "assert len(owner)==39",
+              1
+            ],
+            [
+              "assert len(rows)==283 and sum('reference_label'in r for r in rows)==198 and len(public)==7",
+              "assert len(rows)==1010 and sum('reference_label'in r for r in rows)==684 and len(public)==11",
+              1
+            ],
+            [
+              "assert len(observed)==283 and len({(r['device'],r['terminal']) for r in observed})==283",
+              "assert len(observed)==1010 and len({(r['device'],r['terminal']) for r in observed})==1010",
+              1
+            ],
+            [
+              "PASS_ALL283_DIVIDER_TERMINALS_BOUND_WITH198_METAL85_BODY_AND_SEVEN_FAULTS_NOT_RC_ACCEPTANCE",
+              "PASS_ALL1010_RESET_TERMINALS_BOUND_WITH684_METAL326_BODY_AND_SEVEN_FAULTS_NOT_RC_ACCEPTANCE",
+              1
+            ],
+            [
+              "devices=91,terminals=283,metal_terminals=198,body_terminals=85,public_ports=7",
+              "devices=334,terminals=1010,metal_terminals=684,body_terminals=326,public_ports=11",
+              1
+            ],
+            [
+              "wire_components=37",
+              "wire_components=39",
+              1
+            ],
+            [
+              "OUT=Path(sys.argv[1]);generate()",
+              "OUT=Path(sys.argv[1]);generate(OUT,OUT)",
+              1
+            ]
+          ]
+        },
+        "synthetic_components_not_native_prediction": true
+      }
+    ],
+    "schematic_fault_controls": [
+      {
+        "polarity": "p",
+        "name": "wrong_feedback",
+        "exact_source_fault_created": true
+      },
+      {
+        "polarity": "p",
+        "name": "wrong_seed",
+        "exact_source_fault_created": true
+      },
+      {
+        "polarity": "p",
+        "name": "wrong_offset_length",
+        "exact_source_fault_created": true
+      },
+      {
+        "polarity": "p",
+        "name": "wrong_hbt",
+        "exact_source_fault_created": true
+      },
+      {
+        "polarity": "p",
+        "name": "missing_hbt",
+        "exact_source_fault_created": true
+      },
+      {
+        "polarity": "n",
+        "name": "wrong_feedback",
+        "exact_source_fault_created": true
+      },
+      {
+        "polarity": "n",
+        "name": "wrong_seed",
+        "exact_source_fault_created": true
+      },
+      {
+        "polarity": "n",
+        "name": "wrong_offset_length",
+        "exact_source_fault_created": true
+      },
+      {
+        "polarity": "n",
+        "name": "wrong_hbt",
+        "exact_source_fault_created": true
+      },
+      {
+        "polarity": "n",
+        "name": "missing_hbt",
+        "exact_source_fault_created": true
+      }
+    ],
+    "publication_controls": {
+      "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+      "rejected": [
+        "local-context",
+        "other-repo",
+        "missing-source",
+        "mutable-source",
+        "invalid-run",
+        "invalid-attempt",
+        "invalid-group",
+        "different-release-target",
+        "different-tag-object",
+        "annotated-tag",
+        "different-tag-name",
+        "draft-release",
+        "production-release",
+        "duplicate-asset-name",
+        "asset-digest-missing",
+        "preexisting-wrong-tag",
+        "read-denied-never-creates"
+      ],
+      "existing_partial_assets_preserved": true,
+      "existing_release_not_recreated": true,
+      "new_release_uses_tested_sha": true,
+      "no_permissions_expanded": true
+    },
+    "native_execution": false,
+    "physical_accepted": false,
+    "full_phy_accepted": false
+  },
+  "controls": {
+    "status": "PASS_AVSS18_ADMISSION56_ARCHIVE13_PART6_NO_NATIVE",
+    "positive_physical_and_source_prerequisites": true,
+    "authorization_positive_mock_only": true,
+    "rejected": [
+      "source_run.head_sha",
+      "source_run.run_attempt",
+      "source_run.conclusion",
+      "source_job.run_id",
+      "source_job.name",
+      "source_job.status",
+      "physical_run.head_sha",
+      "physical_run.conclusion",
+      "physical_run.run_attempt",
+      "physical_job.id",
+      "physical_job.run_id",
+      "physical_job.conclusion",
+      "log_truncated",
+      "log_byte_changed",
+      "result_source",
+      "result_fault_omitted",
+      "native_claim",
+      "electrical_claim",
+      "release_source",
+      "release_id",
+      "release_tag",
+      "draft_release",
+      "tag_source",
+      "asset_digest",
+      "asset_missing",
+      "asset_size",
+      "physical_source",
+      "physical_electrical_claim",
+      "physical_omitted_output",
+      "physical_DRC_marker",
+      "physical_deep_devices",
+      "physical_flat_simplified",
+      "physical_terminal_count",
+      "physical_body_count",
+      "physical_missing_fault",
+      "physical_old_circuit",
+      "manifest_format",
+      "manifest_stem",
+      "manifest_root",
+      "manifest_size",
+      "manifest_whole_digest",
+      "manifest_parts",
+      "authorization_native_generation_authorized",
+      "authorization_simulation_authorized",
+      "authorization_extraction_authorized",
+      "wrong_os",
+      "wrong_distro",
+      "wrong_image",
+      "omitted_native_seam_0",
+      "omitted_native_seam_1",
+      "omitted_native_seam_2",
+      "omitted_native_seam_3",
+      "omitted_native_seam_4",
+      "omitted_native_seam_5",
+      "omitted_native_seam_6",
+      "changed_native_seam_source"
+    ],
+    "archive": {
+      "positive": {
+        "files": {
+          "result.json": {
+            "bytes": 25,
+            "sha256": "177fe707b2c7f196e44485ab4e78ec1b6e482fe29337f2aac271b93a1f930f6f"
+          },
+          "p/layout/a.gds": {
+            "bytes": 19,
+            "sha256": "cde35e76eccc0d3495aa020bfb746e88c95d2c3c7d9af69fd8b228f8aa73a683"
+          }
+        },
+        "all_files_streamed": true,
+        "directories": [],
+        "unknown_duplicate_link_special_paths_rejected": true
+      },
+      "rejected": [
+        "missing",
+        "unknown",
+        "duplicate",
+        "wrong_root",
+        "traversal",
+        "absolute",
+        "backslash",
+        "dot_component",
+        "digest",
+        "symlink",
+        "hardlink",
+        "fifo",
+        "unknown_directory"
+      ],
+      "valid_transport_before_each_archive_fault": true,
+      "inherited_parts_controls": {
+        "positive_roundtrip": true,
+        "negative_controls": 6,
+        "all_native_payload_bytes_preserved": true
+      }
+    },
+    "baseline_finalization_faults": [
+      {
+        "name": "changed",
+        "rejected_and_report_retained": true
+      },
+      {
+        "name": "extra",
+        "rejected_and_report_retained": true
+      },
+      {
+        "name": "missing",
+        "rejected_and_report_retained": true
+      }
+    ],
+    "native_executed": false,
+    "actual_material_controls_require_hosted_Pya": true
+  },
+  "native_execution": false,
+  "native_geometry_proved": false,
+  "electrical_accepted": false,
+  "original_electrical_rejection_preserved": true
+}
