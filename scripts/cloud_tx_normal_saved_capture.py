@@ -27,6 +27,20 @@ def methods():
     assert not m['native_simulation_authorized']
     return m
 
+def publication_addons(m,workflow_bytes):
+    spec=json.loads((ROOT/m['publication_addons_path']).read_bytes())
+    assert spec['schema']=='exact-tx-normal-publication-addon-v1'
+    assert spec['source']==m['native_source']['source']=='2e63863abb0309c245d89e2a3d4934fe40a2b2ed'
+    assert spec['workflow']==m['native_source']['workflow']
+    assert hashlib.sha256(workflow_bytes).hexdigest()==spec['workflow_sha256']=='1a35d20f1d89252c72c02d59aed487e33c81e789b6fa1a03481d955b70cf7e3b'
+    lines=workflow_bytes.decode().splitlines()
+    assert spec['copy_line_1based']==89 and lines[88].strip()==spec['copy_statement']
+    assert workflow_bytes.decode().count(spec['copy_statement'])==1
+    assert spec['required_members']==['criu-build.log']
+    assert spec['archive_sha256']==json.loads((ROOT/m['native_parts_path']).read_bytes())['sha256']
+    assert spec['archive_sha256']=='e0a126d17e8503a9b3217351c53aad480330fbae126126035c79541610e213f2'
+    return set(spec['required_members']),spec
+
 def source_identity(run,info,ref,spec):
     assert run['id']==spec['run'] and run['run_attempt']==1
     assert run['status']=='completed' and run['conclusion']==spec['conclusion']
@@ -87,10 +101,11 @@ def safe_relative(entry,prefix):
     assert entry.isdir() or entry.isfile(), 'Link/special archive entry refused'
     return '/'.join(p.parts[1:])
 
-def audit_complete(manifest,parts,destination,expected,selected):
+def audit_complete(manifest,parts,destination,expected,selected,addons=()):
     """Hash every original file, retain only exact analysis members; no extractall."""
     proof=verify_parts(manifest,parts)
     prefix=manifest['source_directory'];assert PurePosixPath(prefix).name==prefix
+    addons=set(addons);assert not(addons & set(expected))
     assert set(selected)<=set(expected) and not destination.exists()
     destination.mkdir(parents=True);seen=set();found={};directories=[]
     with JoinedParts([parts/p['name']for p in manifest['parts']])as joined:
@@ -99,7 +114,7 @@ def audit_complete(manifest,parts,destination,expected,selected):
                 name=safe_relative(member,prefix)
                 assert name not in seen, 'Duplicate archive path';seen.add(name)
                 if member.isdir():directories.append(name);continue
-                assert name in expected,('Unrecorded original file',name)
+                assert name in expected or name in addons,('Unrecorded original file',name)
                 total=0;h=hashlib.sha256();out=None
                 if name in selected:
                     path=destination/name;path.parent.mkdir(parents=True,exist_ok=True);out=path.open('xb')
@@ -110,10 +125,12 @@ def audit_complete(manifest,parts,destination,expected,selected):
                             if out is not None:out.write(b)
                 finally:
                     if out is not None:out.close()
-                assert total==member.size and h.hexdigest()==expected[name],('Changed original file',name)
+                assert total==member.size
+                if name in expected:assert h.hexdigest()==expected[name],('Changed original file',name)
                 found[name]=dict(bytes=total,sha256=h.hexdigest(),retained=name in selected)
-    assert set(found)==set(expected),'Missing original files'
-    return dict(archive=proof,all_original_files=found,directories=directories,
+    assert set(found)==set(expected)|addons,'Missing original files or required publication additions'
+    return dict(archive=proof,all_original_files={n:found[n]for n in expected},
+                publication_addons={n:dict(found[n],authentication='Immutable combined archive SHA256; no prepublication member hash')for n in sorted(addons)},directories=directories,
                 complete_inventory_and_bytes_verified=True,native_image_executed=False)
 
 def validate_contract(contract,bench,model,qualified):
@@ -233,9 +250,65 @@ def metadata_controls(m):
     return dict(actual_metadata_positives=positives,rejected=bad)
 
 
+def addon_controls(m):
+    spec=json.loads((ROOT/m['publication_addons_path']).read_bytes())
+    wb=(ROOT/spec['snapshot_path']).read_bytes();names,proof=publication_addons(m,wb);bad=[]
+    prior=json.loads((ROOT/'docs/evidence/tx-normal-saved-capture-first-rejected-result-20261025.json').read_bytes())
+    assert prior['source_head']=='e8ce0f3040925730c4a15fba8604ab2114a39a25'
+    assert prior['error']=="AssertionError(('Unrecorded original file', 'criu-build.log'))"
+    def reject(label,fn):
+        try:fn()
+        except(AssertionError,KeyError,FileNotFoundError):bad.append(label)
+        else:raise AssertionError('Accepted publication-addon fault '+label)
+    reject('changed_workflow_bytes',lambda:publication_addons(m,wb+b'\n'))
+    q=copy.deepcopy(m);q['native_source']['source']='0'*40
+    reject('wrong_producer_source',lambda:publication_addons(q,wb))
+    q=copy.deepcopy(m);q['native_source']['workflow']='other.yml'
+    reject('wrong_producer_workflow',lambda:publication_addons(q,wb))
+    with tempfile.TemporaryDirectory()as td:
+        root=Path(td);d=root/'fixture';d.mkdir();(d/'a').write_bytes(b'original')
+        expected={'a':sha(d/'a')};(d/'criu-build.log').write_bytes(b'original publisher \x1b build bytes')
+        manifest=pack(d,'fixture',root,32)
+        good=audit_complete(manifest,root,root/'good',expected,{'a'},names)
+        assert good['all_original_files']['a']['sha256']==expected['a']
+        assert set(good['publication_addons'])=={'criu-build.log'}
+        assert good['publication_addons']['criu-build.log']['sha256']==sha(d/'criu-build.log')
+        assert good['publication_addons']['criu-build.log']['bytes']==(d/'criu-build.log').stat().st_size
+        assert not(root/'good/criu-build.log').exists()
+        reject('original_unrecorded_build_failure',lambda:audit_complete(manifest,root,root/'old',expected,{'a'}))
+        reject('renamed_addition',lambda:audit_complete(manifest,root,root/'wrong',expected,{'a'},{'different.log'}))
+        reject('addon_overlaps_original',lambda:audit_complete(manifest,root,root/'overlap',expected,{'a'},{'a'}))
+        reject('addon_cannot_be_analysis_input',lambda:audit_complete(manifest,root,root/'selected',expected,{'criu-build.log'},names))
+        (d/'criu-build.log').unlink();missing=pack(d,'missing',root,32)
+        reject('missing_required_addition',lambda:audit_complete(missing,root,root/'missing',expected,{'a'},names))
+        # Recreate controlled authenticated archives to prove duplicates, extras and links still fail.
+        def archive_fault(label,entries):
+            packed=root/(label+'.tar.gz')
+            with tarfile.open(packed,'w:gz')as tar:
+                for path,data,kind in entries:
+                    entry=tarfile.TarInfo('fixture/'+path);entry.type=kind
+                    if kind==tarfile.REGTYPE:entry.size=len(data);tar.addfile(entry,io.BytesIO(data))
+                    else:entry.linkname='a';tar.addfile(entry)
+            size=packed.stat().st_size;h=sha(packed)
+            fm=dict(format='ordered-tar-gzip-parts-v1',stem=label,source_directory='fixture',bytes=size,sha256=h,
+                    parts=[dict(index=0,name=packed.name,bytes=size,sha256=h)])
+            reject(label,lambda:audit_complete(fm,root,root/('out-'+label),expected,{'a'},names))
+        base=[('a',b'original',tarfile.REGTYPE),('criu-build.log',b'build',tarfile.REGTYPE)]
+        archive_fault('unknown_extra',[*base,('other.log',b'unknown',tarfile.REGTYPE)])
+        archive_fault('duplicate_addon',[*base,base[-1]])
+        archive_fault('symlink_addon',[base[0],('criu-build.log',b'',tarfile.SYMTYPE)])
+        archive_fault('hardlink_addon',[base[0],('criu-build.log',b'',tarfile.LNKTYPE)])
+        # A payload change without a new authenticated manifest must fail before enumeration.
+        part=root/manifest['parts'][0]['name'];part.write_bytes(part.read_bytes()+b'changed')
+        reject('changed_authenticated_archive',lambda:audit_complete(manifest,root,root/'changed',expected,{'a'},names))
+    assert len(bad)==13
+    return dict(required_additions=sorted(names),source=proof,rejected=bad,original_failure_preserved=True,
+                prepublication_member_hash_claimed=False,full_archive_verified_before_enumeration=True)
+
 def source_controls():
     m=methods();from check_tx_normal_saved_capture_diagnosis import main as math_controls
     math=math_controls();assert len(math['negative_controls'])==20
+    addons=addon_controls(m)
     parts=parts_controls();selected=selected_archive_controls();publication=release.controls();metadata=metadata_controls(m)
     with tempfile.TemporaryDirectory()as td:
         root=Path(td);d=root/'fixture';d.mkdir();(d/'a').write_bytes(b'actual\x1b opaque bytes');(d/'b').write_bytes(b'keep inventory')
@@ -259,7 +332,7 @@ def source_controls():
             reject(name,lambda entry=entry:safe_relative(entry,'fixture'))
         assert len(bad)==11
     return dict(status='PASS_SOURCE_MATH_AND_TRANSPORT_CONTROLS_ONLY',math=math,parts=parts,
-        selected_archive=selected,strict_archive_faults=bad,publication=publication,metadata=metadata,
+        selected_archive=selected,strict_archive_faults=bad,publication_addon_controls=addons,publication=publication,metadata=metadata,
         readback_authorized=m['readback_authorized'],native_simulation=False)
 
 def main():
@@ -285,7 +358,11 @@ def main():
         result['native_source_identity']=restore_parts(m['native_source'],parts,work/'native-parts');save()
         expected=dict(source['outputs']);expected['result.json']=m['source_summary_sha256']
         selected={'work/'+n for n in ('wave.raw','bench.cir','contract.json','native.log','op.dat')}
-        result['native_archive']=audit_complete(parts,work/'native-parts',work/'native',expected,selected);save()
+        publisher=api('contents/'+m['native_source']['workflow']+'?ref='+m['native_source']['source'])
+        if not publisher.get('content'):publisher=api('git/blobs/'+publisher['sha'])
+        addons,addon_proof=publication_addons(m,base64.b64decode(publisher['content']))
+        result['publication_addon_source']=addon_proof;save()
+        result['native_archive']=audit_complete(parts,work/'native-parts',work/'native',expected,selected,addons);save()
         prep=json.loads((ROOT/m['prepared_summary_path']).read_bytes());pp=json.loads((ROOT/m['prepared_parts_path']).read_bytes())
         assert prep['status']=='READY_ACTUAL8088_BRANCHTAILFEED_PHYSICAL_WIRE_DECK_NOT_SIMULATED'
         assert prep['source_head']==m['prepared_source']['source'] and prep['fault']=='none' and prep['source_unchanged']
