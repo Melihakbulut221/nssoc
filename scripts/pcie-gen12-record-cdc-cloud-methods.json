@@ -43,8 +43,11 @@
     "total_snapshot_window_seconds": 0.1
   },
   "mutations_executed": false,
-  "native_execution_authorized": false,
-  "native_review_receipt": null,
+  "native_execution_authorized": true,
+  "native_review_receipt": {
+    "path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-native-activation-review-20261025.json",
+    "sha256": "9be832f8287c7a7e2dd2e1f1b6d7479e0920e9b189cf055248e0056dc1efb551"
+  },
   "positive_named_executions": 66,
   "previous_source_controls": {
     "result_sha256": "1e4de76573238bd327ebbcae67beb5e2ca300446545a01da22ffa050fd5ac9c1",
@@ -82,6 +85,10 @@
     "docs/evidence/pcie-gen12-record-cdc-reset-ast-controls-rejected-result-20261025.json": "b3fee8396dd3dbc560524dcc723692012e7373704236454d22f30b320de29ad8",
     "docs/evidence/pcie-gen12-record-cdc-reset-ast-controls-rejection-20261025.json": "1442d9b200e97524acf3950d85d1291b2c031d95417d9702a5b5d28ad9f437b4",
     "docs/evidence/pcie-gen12-record-cdc-reset-ast-source-review-20261025.json": "35418591b408675897812ae47994ce79dc3781b18ee1f153061bfc6c19c5de19",
+    "docs/evidence/pcie-gen12-record-cdc-reset-fixture-controls-dispatch-20261025.json": "887249b8dacf539b489af7f63e828d96a1c127c4cd61526a09efc1020a451350",
+    "docs/evidence/pcie-gen12-record-cdc-reset-fixture-controls-pass-20261025.json": "b6d07817ae458281e6804780d766f6bd5cb9bc1eed3fdfc2d79687910b9a5139",
+    "docs/evidence/pcie-gen12-record-cdc-reset-fixture-controls-result-20261025.json": "93b1b0993a16c67f261ce837831238feee5c09d2ccfe9893da92ae998b73b2df",
+    "docs/evidence/pcie-gen12-record-cdc-reset-fixture-source-review-20261025.json": "eaeaa29c4c202b3be3f1fd1e6475742077517008e3747aa0b3b387507d2c52dc",
     "docs/evidence/pcie-gen12-training-record-noshare-native-pass-20261025.json": "23f194ff593e30c340f7562ab92c1a66f7107b5f35ff3abda7f0d293a50bd10f",
     "docs/pcie-gen12-record-cdc-hosted-proof-20261025.md": "73c94f645f2eec63a4a7627d8b4355e9386987c203538907a9ca54d7a22a61be",
     "docs/pcie-gen12-record-cdc-implementation-20261025.md": "32b0160e2d959c15dd60e081f4be10aad3dd005321237f54ef219ad1bff5b52c",
@@ -199,6 +206,29 @@
     "wait_positives": 3
   },
   "refinement_source": "078c1c3b7bf6a7305176a1e3ab38c18c9ace4a47",
+  "reset_fixture_actual_controls": {
+    "attempt": 1,
+    "classification": 63,
+    "full_result_bytes": 68111,
+    "full_result_path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-controls-result-20261025.json",
+    "full_result_sha256": "93b1b0993a16c67f261ce837831238feee5c09d2ccfe9893da92ae998b73b2df",
+    "job": 121193250637,
+    "line216_explicitly_unqualified": true,
+    "native_job": 121193390240,
+    "native_job_skipped": true,
+    "qualified_reset_lines": [
+      206,
+      207
+    ],
+    "real_churn_samples": 124,
+    "receipt_path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-controls-pass-20261025.json",
+    "receipt_sha256": "b6d07817ae458281e6804780d766f6bd5cb9bc1eed3fdfc2d79687910b9a5139",
+    "run": 40201434083,
+    "sampler_positives": 15,
+    "sampler_refusals": 27,
+    "source": "befcd75fffc6f3d32d1bce132de2c8f364d410e8",
+    "supervision": 13
+  },
   "reset_fixture_correction": {
     "actual_lines": [
       206,
@@ -210,7 +240,8 @@
       207
     ],
     "derivation_path": "scripts/pcie-gen12-record-cdc-reset-fixture-derivation.json",
-    "executed": false,
+    "executed": true,
+    "execution_scope": "HOSTED_CONTROLS_ONLY_NO_RTL",
     "failed_controls_run": 40200111070,
     "failed_result_sha256": "b3fee8396dd3dbc560524dcc723692012e7373704236454d22f30b320de29ad8",
     "only_checker_changed": true,
@@ -228,7 +259,8 @@
     "prior_synthesis_PASS": 6,
     "strict_rejected_mutant": "ignore_read_reset"
   },
-  "review_status": "SOURCE_ONLY_REVIEW_PENDING",
+  "review_status": "REVIEWED_FOR_ONE_HOSTED_PROOF",
+  "root_metadata_review_required_before_dispatch": true,
   "schema": "gen12-record-cdc-hosted-proof-source-v1",
   "scope": {
     "LTSSM_implemented": false,
@@ -242,7 +274,7 @@
     "x4_lane_mapping": false
   },
   "simulations_executed": false,
-  "source_controls_executed": false,
+  "source_controls_executed": true,
   "source_only_reviewed_basis": "50708f2c75c4c44246a7226cb4b9cb86dd2f10af",
   "supervisor_reuse": {
     "archived_protected_count": 52,
@@ -263,9 +295,8 @@
     "verilator_tag": "v5.040"
   },
   "unfinished": [
-    "Independent bounded fixture-only correction review",
-    "Future authorized hosted63 classifier plus unchanged sampler/supervision/publication controls",
-    "Separate metadata review before any complete66/33/18 proof; no further retry authorized in current handoff"
+    "Final root review of this exact metadata-only activation before dispatch",
+    "Complete 66 RTL / 33 mapped / six synthesis / 18 compiled-fault proof must rerun on the corrected source; no partial resume or inferred native pass"
   ],
   "vendor": {
     "bytes": 34468,
