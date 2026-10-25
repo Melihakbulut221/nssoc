@@ -142,8 +142,14 @@ def controls():
         assert driver.publish()==dict(mock_transport=True)
     assert pub.GROUP==previous and len(seen)==1
     positive.append('actual_driver_qualified_publisher_group_and_paths')
-    with patch.object(driver,'methods',return_value=m),patch.object(pub,'publish_evidence',side_effect=ValueError('injected transport refusal')):
-        reject('publisher_error_preserved',driver.publish)
+    injected=ValueError('injected transport refusal')
+    with patch.object(driver,'methods',return_value=m),patch.object(driver,'storage',return_value={}),patch.object(pub,'publish_evidence',side_effect=injected)as failed_publish:
+        try:driver.publish()
+        except ValueError as error:
+            assert error is injected and str(error)=='injected transport refusal'
+            failed_publish.assert_called_once_with(driver.OUT,driver.ROOT/('publication-'+driver.GROUP))
+            negative.append('publisher_error_preserved')
+        else:raise AssertionError('injected publisher error accepted')
     assert pub.GROUP==previous
     import check_mainchip_saved_postroute_publication as pubcheck
     publication=pubcheck.controls()
