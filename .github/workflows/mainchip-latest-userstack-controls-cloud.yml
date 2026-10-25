@@ -1,0 +1,14 @@
+name: Register latest userstack controls only
+on:
+  push:
+    branches: [codex/register-latest-userstack-controls]
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - name: Registration only; no native inputs or qualification
+        shell: bash
+        run: printf '%s\n' 'Registration only. No checkout, native computation, input or qualification.'
