@@ -1,24 +1,27 @@
-# Current500 same-row cn headroom source proposal
+# Current500 same-row cn headroom capture analysis
 
-Source-only implementation; no workflow registered, source controls executed, capture downloaded, or simulator invoked.
+This source-only proposal reads the two complete nominal captures from run40219397958/source92a8253dd3410dd33bf34c1f7225991cf588d85d. It preserves their original electrical rejections. No new simulator, operating point, extraction, geometry generation or electrical acceptance is authorized.
 
-The proposed single hosted analysis reads the two complete nominal captures from run 40219397958/source 92a8253dd3410dd33bf34c1f7225991cf588d85d. These cases genuinely failed the original electrical screen. It authenticates their exact completed jobs, original prereleases/lightweight tags, full summary/native/parts bytes, every part and concatenated archive, every regular member hash (including unselected members), and the selected native waveform/model/contract/planes/deck/log/OP records. The archive root result is the outer result; native-controller-result.json is separately preserved and matched.
+The first source checkpoint is2b6dbb9e; its bounded core peer led to explicit interval censoring at2e8a09e7. This complete candidate adds the publication/import fixtures and an unregistered manual workflow. Every source-control and readback authorization remains false. Authored controls have not run.
 
-The actual current500 binder is reused unchanged. Original 124 OFF and zero-OP evidence and full streamed 113475 x 1152 capture are revalidated. The unchanged original frozen measurement block replays before any new diagnostic. All original rejections remain authoritative.
+## Exact source and capture admission
 
-Four actual cn steering HBTs XD0061/62/115/116 are connected to their exact physical upper pairs, bleeders, complementary cp pairs and four-way MOS tails through the current 500-device contract. The report retains each distributed access, not one alias for an entire net. At each selected native row it reports:
-- target C/B/E, VCE, VBE, VCB and the original 0.4 V shortfall;
-- supply-to-upper-collector drop, upper VCE, upper-emitter-to-target-collector access drop and target-emitter level;
-- exact same-row upper/cn/cp collector-current sums and MOS drain-current sum;
-- local base-to-parent-cn and all tail-drain-to-emitter access differences;
-- actual bleeder terminal voltage, with intrinsic resistor current explicitly unavailable.
+Both nominal early and late captures are bound to exact failed named jobs, attempt1, source commits, lightweight-tag prereleases, all released asset metadata and complete summary/native-result/part JSON. All ordered parts and the concatenated archive must match before parsing. Every original regular member is hashed, including unselected files; only nine selected native/model/contract/planes files and the original outer result are extracted. The original5642-file archive inventory, current5549 input map and5639 native outputs remain mandatory.
 
-Every native VCE violation interval is retained with first/last/minimum rows and adjacent samples. All actual parent/base/current crossing brackets are retained; no phase fit, event filter or interpolation is introduced. Full selected native rows are cached bit-exactly, and large critical frames are written as separate JSONL rather than embedded into a combined summary. This can separate collector collapse, elevated tail level, upper-device headroom and distributed access loss in observed rows. It does not by itself establish intervention causality or complete KCL.
+Fresh parsing reruns the unchanged original500-device binding, selected150fF/50fF loads, native options, all124 OFF flags, exact zero-source OP, complete113475-by1152 stream and frozen measurement replay. The four target minima must reproduce the saved original values exactly.
 
-The proposed hosted job runs both nominal cases sequentially with an 8 GiB free-space gate per case, a read-only exact-source reservation waiter before archive access and reserved-only/no-clobber complete evidence publication. Original downloaded cloud copies are disposed only after full replay, cache/frame proof and selected-input recheck; original release assets remain untouched. Failure keeps partial outputs and source evidence.
+## Same native rows
 
-Implemented controls (authored only): 16 positives and 47 refusals, including actual pinned report/identity/current500 topology, same-row arithmetic and parallel-current sums, complete native cache/JSONL, and a real synthetic multipart extractor with changed unselected bytes, missing/extra/duplicate/path/nonregular members. These fixtures are not physical evidence.
+The observer follows physical devices61/62 and115/116 with their actual parallel upper pairs54/56 and106/108, physical MOS tails, bleeders179/217 and every directly incident selected physical terminal. It reports VCE/VBE/VCB and telescoping supply/upper-device/access/tail budgets at the same native row. Instantaneous parallel Ic/Ids sums, parent-clock crossings, all four local base-pair crossings and complete below0.4 VCE intervals are retained.
 
-Remaining before a proposed hosted run: independent source/math/restoration review; static transitive import closure and actual hosted imports; actual publisher/waiter glue fixtures; unregistered manual workflow template with always-artifact fallback; source-controls authorization and real PASS; separate readback activation and exact-source prerelease reservation. All authorization and acceptance flags in the new methods remain false. No additional electrical or physical run is proposed.
+First/last/worst/neighbor rows and all crossing brackets have complete separate JSONL frames; the selected native vectors are also saved as a verified binary cache containing every native row. Intervals touching the first eligible sample or capture end explicitly carry left/right censoring, actual boundary values/times and no inferred threshold crossing. No interpolation, phase fitting, new electrical tolerance or causal verdict is introduced. Unsaved HBT Ib/Ie, intrinsic bleeder current and full dynamic KCL remain explicitly unavailable.
 
-The analysis labels intervals touching the first eligible native row or capture end as left/right censored. It retains actual first/last/before/after values and times, the analysis cutoff, first eligible row, and capture-end value; only an observed in-window threshold bracket is labeled as such. Three focused boundary fixtures cover START, an intersample cutoff, one/both censored edges, capture start and an empty window. These remain authored, unexecuted controls.
+## Complete evidence and controls
+
+The actual publisher validates attempt/source/original-run/status, the complete output map and all-false acceptance flags before packing. It uses the existing verified part/file-list helper and the qualified publisher with its actual release lookup replaced by exact reserved-only lookup. Existing failed/interrupted results and hidden/empty files remain byte-exact. Four hosted synthetic real pack/full-member/fake-remote publisher fixtures and25 refusals are authored.
+
+The row/admission suite has16 positive groups and48 refusals, including real synthetic multipart extraction with altered unselected bytes and boundary censoring. The import suite preserves the qualified isolated -I/-B full-driver and exact waiter present/absent tests, with4 positives and9 refusals. The only explicit external dependency is numpy==2.3.3; missing/unprotected repository imports cannot be classified implicitly as third-party. Static source closure is separate from actual import execution. Qualified publication/release/wait controls are also retained.
+
+The manual template defaults to controls only. It emits six complete named JSON records and always retains artifacts. Readback requires controls, a separate metadata authorization and an exact-source prerelease before dependency or archive access. It processes the two cases sequentially, preserves complete or partial evidence and publishes through a separate always-run step. Source callbacks/imports/tests, capture archives and numerical analysis have not executed during source authoring.
+
+Remaining work: independent complete source review, separate source-controls authorization/registration, actual hosted controls, exact metadata readback review, and one authorized cloud analysis. The original10-case simulation matrix continues independently; no retry or tolerance change is proposed.

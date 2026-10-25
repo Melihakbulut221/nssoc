@@ -25,7 +25,7 @@ def methods():
     for p,h in m['protected'].items():
         path=ROOT/p;assert path.is_file()and not path.is_symlink()and sha(path)==h,p
     assert m['original_source']==HEAD and m['original_run']==RUN
-    assert all(m[k]is False for k in ('simulation_authorized','extraction_authorized','geometry_authorized','electrical_acceptance'))
+    assert all(m[k]is False for k in ('native_execution_authorized','simulation_authorized','extraction_authorized','geometry_authorized','electrical_acceptance','accepted','cdr_accepted','qualified_pex','full_phy_accepted'))
     return m
 def reference(case,m):
     assert case in ('nominal_early','nominal_late')
@@ -81,7 +81,7 @@ def asset_identity(actual,pin):
 def api(path):return json.loads(subprocess.check_output(['gh','api',API+path,'--allow-escape-sequences']))
 def cloud_guard(m):
     assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ.get('GITHUB_RUN_ATTEMPT')=='1'
-    assert m['readback_authorized']is True
+    assert m['readback_authorized']is True and m['source_controls_authorized']is True
 def download(pin,target,m):
     cloud_guard(m);asset_identity(api('releases/assets/'+str(pin['id'])),pin)
     with Path(target).open('xb')as f:

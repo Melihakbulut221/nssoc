@@ -1,0 +1,184 @@
+# Source only: existing saved captures; no simulator, extraction or geometry command.
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-v59-cn-headroom-readback-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        required: true
+        default: false
+        description: Analyze two exact existing nominal captures after reviewed source controls
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-v59-cn-headroom-readback
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact source-controls authorization before dependency setup
+        run: |
+          python3 - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          m=json.loads(Path('scripts/cdr-v59-headroom-readback-methods.json').read_bytes())
+          assert m['source_controls_authorized'] is True
+          for name,h in m['protected'].items():
+              p=Path(name);assert p.is_file() and not p.is_symlink()
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==h,name
+          for k in ('native_execution_authorized','simulation_authorized','extraction_authorized','geometry_authorized','electrical_acceptance'):
+              assert m[k] is False
+          PY
+      - name: Exact previously used array runtime
+        run: python3 -m pip install numpy==2.3.3
+      - name: Real isolated imports and missing dependency controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p hw/soc/out/cdr-v59-headroom-controls
+          PYTHONPATH=scripts python3 scripts/check_cdr_v59_headroom_imports.py | tee hw/soc/out/cdr-v59-headroom-controls/imports.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('hw/soc/out/cdr-v59-headroom-controls/imports.json'))
+          assert r['status']=='PASS_CURRENT_V59_HEADROOM_IMPORT_CLOSURE_NOT_CAPTURE_ANALYSIS'
+          assert len(r['positives'])==4 and len(r['rejected'])==9
+          assert r['closure']['installed_allowlist']=={'numpy':'2.3.3'}
+          assert not r['preparation_executed'] and not r['simulation_executed'] and not r['prior_archive_downloaded']
+          PY
+      - name: Exact existing capture admission and same native row controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python3 scripts/check_cdr_v59_headroom_readback.py | tee hw/soc/out/cdr-v59-headroom-controls/rows.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('hw/soc/out/cdr-v59-headroom-controls/rows.json'))
+          assert r['status']=='PASS_SOURCE_FIXTURES_NOT_CAPTURE_ANALYSIS'
+          assert r['positives']==16 and r['refusals']==48
+          assert not r['actual_capture_read'] and not r['simulation']
+          PY
+      - name: Actual complete synthetic archive and qualified publisher fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python3 scripts/check_cdr_v59_headroom_publication.py | tee hw/soc/out/cdr-v59-headroom-controls/stage.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('hw/soc/out/cdr-v59-headroom-controls/stage.json'))
+          assert r['status']=='PASS_HEADROOM_REAL_PUBLICATION_FIXTURES_NOT_CAPTURE_ANALYSIS'
+          assert len(r['positives'])==4 and len(r['rejected'])==25
+          assert r['actual_complete_pack_roundtrips']==4 and r['actual_publisher_with_fake_remote']
+          assert not r['actual_capture_accessed'] and not r['simulator_executed']
+          PY
+      - name: Qualified reserved publication and read-only waiter controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_binding_rc.py --publication-controls | tee hw/soc/out/cdr-v59-headroom-controls/publication.json
+          python3 scripts/ensure_cloud_tested_source_release.py --controls | tee hw/soc/out/cdr-v59-headroom-controls/release.json
+          python3 scripts/wait_cloud_tested_source_release.py --controls | tee hw/soc/out/cdr-v59-headroom-controls/wait.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('hw/soc/out/cdr-v59-headroom-controls/publication.json'))
+          assert len(r['rejected'])==8 and len(r['file_list_controls']['rejected'])==14
+          assert r['file_list_controls']['actual_shared_function_executed'] and not r['release_creation_possible']
+          assert json.load(open('hw/soc/out/cdr-v59-headroom-controls/release.json'))['status'].startswith('PASS')
+          r=json.load(open('hw/soc/out/cdr-v59-headroom-controls/wait.json'))
+          assert len(r['positive_cases'])==3 and len(r['rejected'])==4 and not r['creation_attempted']
+          PY
+      - name: Preserve all complete named source-control records
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PY'
+          from pathlib import Path
+          from cloud_cdr_v59_binding_rc import emit
+          for p in sorted(Path('hw/soc/out/cdr-v59-headroom-controls').glob('*.json')):
+              print('CONTROL_FILE '+p.name,flush=True)
+              emit(p,'CDR_V59_HEADROOM_CONTROLS_'+p.stem.upper())
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-v59-headroom-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cdr-v59-headroom-controls/
+          include-hidden-files: true
+          retention-days: 90
+          if-no-files-found: warn
+  readback:
+    needs: controls
+    if: inputs.readback
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact source/readback authorization before dependency or archive access
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          m=json.loads(Path('scripts/cdr-v59-headroom-readback-methods.json').read_bytes())
+          assert m['readback_authorized'] is True and m['source_controls_authorized'] is True
+          assert os.environ['GITHUB_RUN_ATTEMPT']=='1'
+          for name,h in m['protected'].items():
+              p=Path(name);assert p.is_file() and not p.is_symlink()
+              assert hashlib.sha256(p.read_bytes()).hexdigest()==h,name
+          for k in ('native_execution_authorized','simulation_authorized','extraction_authorized','geometry_authorized','electrical_acceptance'):
+              assert m[k] is False
+          PY
+      - name: Read-only exact-source prerelease reservation before dependencies
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/wait_cloud_tested_source_release.py --group cdr-v59-cn-headroom-readback
+      - name: Exact previously used array runtime
+        run: python3 -m pip install numpy==2.3.3
+      - name: Original measurement replay and complete same-row observations
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_headroom_readback.py --readback
+      - name: Complete result log even on analysis rejection
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PY'
+          from pathlib import Path
+          from cloud_cdr_v59_binding_rc import emit
+          p=Path('cloud-cdr-v59-cn-headroom-readback/result.json')
+          if p.is_file(): emit(p,'CDR_V59_HEADROOM_READBACK_RESULT')
+          else: print('CDR_V59_HEADROOM_RESULT_MISSING_NO_ACCEPTANCE',flush=True)
+          PY
+      - name: Complete reserved-only evidence publication preserving original status
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_headroom_readback.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: cdr-v59-headroom-readback-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            cloud-cdr-v59-cn-headroom-readback/
+            hw/soc/out/cdr-v59-cn-headroom-readback-publication/
+          include-hidden-files: true
+          retention-days: 90
+          if-no-files-found: warn

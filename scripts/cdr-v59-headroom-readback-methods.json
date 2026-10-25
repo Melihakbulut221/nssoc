@@ -1,6 +1,6 @@
 {
   "schema": "cdr-v59-existing-capture-cn-headroom-source-v1",
-  "status": "SOURCE_ONLY_DRAFT_PENDING_REVIEW_AND_HOSTED_CONTROLS",
+  "status": "SOURCE_ONLY_COMPLETE_CANDIDATE_PENDING_INDEPENDENT_REVIEW_AND_HOSTED_CONTROLS",
   "original_run": 40219397958,
   "original_source": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
   "source_controls_authorized": false,
@@ -15,11 +15,28 @@
   "qualified_pex": false,
   "full_phy_accepted": false,
   "controls": {
-    "positive": 16,
-    "refusals": 47,
-    "executed": false,
-    "publication_glue_fixtures_pending": true,
-    "actual_import_fixture_pending": true
+    "rows": {
+      "positive": 16,
+      "refusals": 48
+    },
+    "publication_glue": {
+      "positive": 4,
+      "refusals": 25,
+      "actual_pack_roundtrips": 4
+    },
+    "imports": {
+      "positive": 4,
+      "refusals": 9
+    },
+    "shared_publication": {
+      "refusals": 8,
+      "file_list_refusals": 14
+    },
+    "wait": {
+      "positive": 3,
+      "refusals": 4
+    },
+    "executed": false
   },
   "proposed_group": "cdr-v59-cn-headroom-readback",
   "proposed_case_order": [
@@ -698,10 +715,32 @@
     "docs/evidence/cdr-v59-loaded-ten-case-nominal_late-terminal-20261025.parts.json": "03b6aa284a0eef8cb3f95b5820b7bb7e7f607c56215f9b25ec8c4697ae1d8e57",
     "scripts/cdr_v58_saved_rows.py": "b98bdc27fddf3fa30e51da019491cf44772474dbcb308714eed9bf6b8a6d121f",
     "scripts/cdr_v59_headroom_rows.py": "3c8de1c3b23a3ab638c777f5976f133409a593d551703a722adaeb3e82757790",
-    "scripts/cdr_v59_headroom_readback_admission.py": "8b8843649c58fba5e199cf917d5d686d15a7d59444ed19e870359c9fcb0bdd6f",
-    "scripts/check_cdr_v59_headroom_readback.py": "bc7573b2921fba576212116f92af67e8c748b3876c1809d96b958a9e939a8f32",
-    "scripts/cloud_cdr_v59_headroom_readback.py": "99b856371d6f4c74469bd79608ef45271f3b9ef11e0d894cfa0bc18605ce3086",
-    "docs/cdr-v59-cn-headroom-readback-source-proposal-20261025.md": "08e73effc7aa41f9f4c7a6158ef36fc3b4822645eabab67aadc592309929d1b3",
-    "docs/evidence/cdr-v59-cn-headroom-interval-boundary-source-correction-20261025.json": "120f7d884237d31a35046878efe40cd49778a09cba1cca896057d931acd5154c"
-  }
+    "scripts/cdr_v59_headroom_readback_admission.py": "38707c950e9a78c0d1429adda69c81299a0f290d925f9704432c8bde16947fd1",
+    "scripts/check_cdr_v59_headroom_readback.py": "2e7ee1e56093ec2a438a3da985de55f125010131935d704725359b669016ad67",
+    "scripts/cloud_cdr_v59_headroom_readback.py": "15bd95a2826766ad43708f6fe5060d91b5d95d2912b226f2fda4cdb7491132eb",
+    "docs/cdr-v59-cn-headroom-readback-source-proposal-20261025.md": "df7dd589fac012af7114ba8dcab93a3707137bd9468b2b38c0d39b15db45ca15",
+    "docs/evidence/cdr-v59-cn-headroom-interval-boundary-source-correction-20261025.json": "120f7d884237d31a35046878efe40cd49778a09cba1cca896057d931acd5154c",
+    "scripts/check_cdr_v59_headroom_imports.py": "263cf0884be6c53dbfd79f5730449f7f45e9842284d942ae8b5d1e8430f8df6a",
+    "scripts/check_cdr_v59_headroom_publication.py": "883d17fd37a65f0ff2ab8199ee387e8ff5f61f97d318e4c6fa770416699760d7",
+    ".github/workflow-templates/cdr-v59-cn-headroom-readback-cloud.yml": "89de22a9d391cd3eb9f770d1d369ebfed9b4aba8bd7142521ec9713c2db25bfe",
+    "docs/evidence/cdr-v59-cn-headroom-core-independent-review-20261025.json": "4cc4ca76cbbb8f5e80c3f0e3844c259ab750e9f54112d1ac65230e62b2625573",
+    "docs/evidence/cdr-v59-cn-headroom-static-import-inventory-20261025.json": "b4bf5d83bddc430336fcc4f452a92028d1fe662d9f01af6a072a373f35cf691f"
+  },
+  "installed_allowlist": {
+    "numpy": "2.3.3"
+  },
+  "static_import_inventory": {
+    "path": "docs/evidence/cdr-v59-cn-headroom-static-import-inventory-20261025.json",
+    "sha256": "b4bf5d83bddc430336fcc4f452a92028d1fe662d9f01af6a072a373f35cf691f",
+    "repository_modules": 52,
+    "actual_imports_executed": false
+  },
+  "workflow_template": ".github/workflow-templates/cdr-v59-cn-headroom-readback-cloud.yml",
+  "remaining": [
+    "Independent final source review",
+    "Source-controls-only authorization and registration",
+    "Actual hosted controls",
+    "Separate exact metadata readback authorization",
+    "One cloud existing-capture analysis"
+  ]
 }

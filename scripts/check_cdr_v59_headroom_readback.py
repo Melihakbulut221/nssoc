@@ -114,6 +114,7 @@ def controls():
         reject('changed_native_cache_byte',lambda:rows.verify_cache(p/'cache.bin',tt,d,cache))
     positive.append('actual_JSONL_and_bit_exact_cache')
     reject('local_archive_readback',lambda:a.cloud_guard({**m,'readback_authorized':False}))
+    reject('missing_source_control_authorization',lambda:a.cloud_guard({**m,'readback_authorized':True,'source_controls_authorized':False}))
     # These archives are synthetic bytes created only in hosted source controls.
     # The actual extractor hashes even unselected members before discarding them.
     with tempfile.TemporaryDirectory()as td:
@@ -153,7 +154,7 @@ def controls():
         for label in ('missing_selected','missing_unselected','unselected_bytes','changed_selected','unexpected','duplicate','symlink','hardlink','fifo','path_escape','wrong_root','corrupt_part'):
             manifest,folder=archive_case(label)
             reject('archive_'+label,lambda:a.extract(manifest,folder,folder/'saved',dict(outputs=expected),hashlib.sha256(b'{}').hexdigest()))
-    assert len(positive)==16 and len(negative)==47,(positive,negative)
+    assert len(positive)==16 and len(negative)==48,(positive,negative)
     return dict(status='PASS_SOURCE_FIXTURES_NOT_CAPTURE_ANALYSIS',positive=positive,rejected=negative,
         positives=len(positive),refusals=len(negative),actual_capture_read=False,simulation=False)
 if __name__=='__main__':print(json.dumps(controls(),indent=2))
