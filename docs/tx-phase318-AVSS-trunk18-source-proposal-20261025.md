@@ -14,7 +14,7 @@ The worst is xdut.XD105 / PHASE__XS__XHOLD__XT at row23023, 6.911120895ns: C=582
 
 Across the 42 prescribed rows and three macros, the middle span stays 166.127–168.106mV. Its endpoints lie at (111.020,89.010) and (112.980,2199.050)um in the native frame, inside the recorded AVSS TopMetal1 trunk. Actual edges R1021..R1033 form a tapped graph chain; their resistance sum is not an equivalent return resistance. Some extracted edges include access or multiple material portions, so no individual edge is assigned a layer or rescaled from these coordinates.
 
-The source entry also matters: R1016 is1.02992ohm and drops47.9258mV at the worst row, with46.5335mA computed from its actual endpoint voltages. First cross-row edgeR1021 is.743101ohm and drops33.0801mV at44.5163mA. The narrow parallel Metal5-route endpoint chain includesR1048=15.94ohm with54.9745mV/3.44884mA. These are linear wire-resistor calculations, not Ic=Ie or full-KCL claims.
+The source entry also matters: R1016 is1.02992ohm and drops47.9258mV at the worst row, with46.5335mA computed from its actual endpoint voltages. First cross-row edgeR1021 is.743101ohm and drops33.0801mV at44.5163mA. The parallel branch whose endpoints align with the source Metal5 trunk includesR1048=15.94ohm with54.9745mV/3.44884mA. These are linear wire-resistor calculations, not Ic=Ie or full-KCL claims.
 
 At row9674, the passive XRUN.XAND_SKEW return is199.644mV above source0; release/ARM/run differential voltages are69.474/170.631/8.992mV. This connects the return issue to the actual steering/bias neighborhood but does not establish why the clock or run state fails.
 
