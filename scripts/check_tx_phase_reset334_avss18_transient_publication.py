@@ -36,7 +36,7 @@ def controls():
         (root/'result.json').write_text('{"status":"original rejection remains"}\n')
         (base/(stem+'.summary.json')).write_bytes((root/'result.json').read_bytes())
         for name in ('fresh-intrinsic-result.json','fresh-two-order-result.json',
-                     'physical-prerequisite.json','source-controls-prerequisite.json'):
+                     'physical-prerequisite.json','source-controls-prerequisite.json','native-resource-before-dependencies.json'):
             (root/name).write_text(json.dumps(dict(kind=name))+'\n')
         part_names=[stem+'.tar.gz.part0000',stem+'.tar.gz.part0001']
         for i,name in enumerate(part_names):(base/name).write_bytes(b'opaque archive part '+bytes([i]))
@@ -44,7 +44,7 @@ def controls():
         parts=base/(stem+'.parts.json');parts.write_text(json.dumps(manifest)+'\n')
         expected=[stem+'.summary.json',stem+'.parts.json',
                   *sorted(p.name for p in root.glob('*.json') if p.name!='result.json'),*part_names]
-        assert len(expected)==8
+        assert len(expected)==9
         def exercise(candidate,remote=None,tag_ref=None,missing=False,bad_upload_digest=False):
             remote=copy.deepcopy(info if remote is None else remote)
             tag_ref=copy.deepcopy(reference if tag_ref is None else tag_ref)
@@ -91,8 +91,9 @@ def controls():
                 migration.release=oldrelease;sys.path[:]=oldpath;os.chdir(cwd)
         first=exercise(code)
         assert first['uploads']==expected
+        assert 'native-resource-before-dependencies.json'in first['uploads']
         assert first['reads']==4+4*len(expected)
-        positives.append('actual_program_all8_paths_two_archive_parts_real_publisher_digest_roundtrip')
+        positives.append('actual_program_all9_paths_two_archive_parts_real_publisher_digest_roundtrip')
         second=exercise(code,first['remote'])
         assert second['uploads']==[] and second['reads']==4+2*len(expected)
         positives.append('identical_existing_assets_preserved_without_upload')

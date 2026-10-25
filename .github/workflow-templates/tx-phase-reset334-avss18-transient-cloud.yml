@@ -66,6 +66,18 @@ jobs:
           assert x['actual_restored18_source_plus32_path_controls_required_before_engine']
           assert x['actual_restore_executed']is x['native_simulator_invoked']is x['transient_executed']is False
           PY
+      - name: Actual resource observation and failure-preservation program fixtures
+        run: |
+          set -euo pipefail
+          python3 scripts/check_tx_phase_reset334_avss18_transient_resources.py | tee resource-controls.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('resource-controls.json'))
+          assert r['status']=='PASS_ACTUAL_RESOURCE_PROGRAM_FIXTURES_ONLY'
+          assert len(r['positive_cases'])==4 and len(r['rejected'])==5
+          assert r['actual_template_programs_executed']and r['measured_resource_inputs_are_synthetic']
+          assert not r['native_executed']and not r['provisioning_performed']
+          PY
       - name: Actual reserved-only publication and read-only release waiter controls
         run: |
           set -euo pipefail
@@ -85,6 +97,7 @@ jobs:
             source-controls.json
             publication-controls.json
             wait-controls.json
+            resource-controls.json
           if-no-files-found: error
           retention-days: 90
           include-hidden-files: true
@@ -113,6 +126,31 @@ jobs:
         run: |
           if [ "$PROOF_STAGE" = initial ]; then test "$NSSOC_TX_SOURCE" = '{}'; fi
           python3 scripts/cloud_tx_phase_reset334_avss18_transient.py --preflight --stage "$PROOF_STAGE" --case p-initial-high
+      - name: Record native runner resources before dependency installation
+        run: |
+          python3 - <<'RESOURCE'
+          import datetime,json,os,shutil
+          from pathlib import Path
+          assert os.environ['PROOF_STAGE']in ('initial','cross')and os.environ['GITHUB_RUN_ATTEMPT']=='1'
+          root=Path.cwd().resolve();disk=shutil.disk_usage(root);fields={}
+          for line in Path('/proc/meminfo').read_text().splitlines():
+              key,_,value=line.partition(':')
+              if key in ('MemTotal','MemAvailable','MemFree'):
+                  count,unit=value.split();assert unit=='kB';fields[key]=int(count)*1024
+          assert set(fields)=={'MemTotal','MemAvailable','MemFree'}and all(v>=0 for v in fields.values())
+          affinity=sorted(os.sched_getaffinity(0));assert affinity and os.cpu_count()>0
+          receipt=dict(schema='native-resource-observation-v1',status='OBSERVATION_ONLY_NOT_RESOURCE_OR_ELECTRICAL_ACCEPTANCE',
+              source_head=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),run_attempt=1,stage=os.environ['PROOF_STAGE'],
+              observed_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              disk=dict(path=str(root),device=os.stat(root).st_dev,total_bytes=disk.total,used_bytes=disk.used,free_bytes=disk.free),
+              ram_bytes=fields,cpu=dict(logical_count=os.cpu_count(),available_affinity=affinity),
+              runner={k:os.environ.get(k)for k in ('ImageOS','ImageVersion','ImageRelease','RUNNER_OS','RUNNER_ARCH','RUNNER_NAME')},
+              original_guards_unchanged=dict(prelaunch_free_bytes=72*1024**3,checkpoint_reserve_bytes=20*1024**3),
+              provisioning_performed=False,cleanup_performed=False,resource_guarantee=False)
+          path=Path(os.environ['RUNNER_TEMP'])/'native-resource-before-dependencies.json'
+          with path.open('xb')as f:f.write((json.dumps(receipt,indent=2,allow_nan=False)+'\n').encode())
+          print(json.dumps(receipt,sort_keys=True),flush=True)
+          RESOURCE
       - name: Install original pinned portable runtime dependencies and CRIU
         run: |
           sudo apt-get update -qq
@@ -146,6 +184,21 @@ jobs:
           root.mkdir(exist_ok=True);p=root/'result.json'
           if not p.exists():p.write_text(json.dumps(dict(status='FAIL_MISSING_NATIVE_RESULT',source_head=os.environ['GITHUB_SHA'],
             full_capture=False,electrical_screen_passed=False,full_PHY_accepted=False))+'\n')
+          resource=Path(os.environ['RUNNER_TEMP'])/'native-resource-before-dependencies.json'
+          result=json.loads(p.read_bytes())
+          if resource.exists()or resource.is_symlink():
+              assert resource.is_file()and not resource.is_symlink()
+              value=json.loads(resource.read_bytes())
+              assert value['source_head']==os.environ['GITHUB_SHA']and value['run_id']==int(os.environ['GITHUB_RUN_ID'])and value['run_attempt']==1
+              assert value['stage']==os.environ['PROOF_STAGE']and value['schema']=='native-resource-observation-v1'
+              assert value['original_guards_unchanged']==dict(prelaunch_free_bytes=72*1024**3,checkpoint_reserve_bytes=20*1024**3)
+              target=root/resource.name;assert not target.exists()and not target.is_symlink()
+              target.write_bytes(resource.read_bytes());digest=hashlib.sha256(target.read_bytes()).hexdigest()
+              assert target.read_bytes()==resource.read_bytes()
+              result.setdefault('outputs',{})[target.name]=digest
+              result['early_resources']=dict(status='OBSERVED_BEFORE_DEPENDENCIES',path=target.name,sha256=digest)
+          else:result['early_resources']=dict(status='NOT_RECORDED',reason='Native preflight/resource step did not complete')
+          p.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
           raw=p.read_bytes()
           print('RESULT_SHA256',hashlib.sha256(raw).hexdigest());print('RESULT_BYTES',len(raw))
           if len(raw)<=16_000_000:

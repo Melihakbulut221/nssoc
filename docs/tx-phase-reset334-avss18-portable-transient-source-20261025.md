@@ -19,3 +19,13 @@ Hosted controls require20 OP-summary,20 metadata,14 context and4 derivation/budg
 Next: independent source review; parent-authorized source-controls-only activation; complete hosted proof; then separately reviewed first transient activation/reservation/sole dispatch. Completed-controls normalization may change only declared native/continuation/simulation flags, completed-controls metadata and added proof pins. No other case, geometry, extraction, all31/PLL/fullPHY acceptance is implied.
 
 Peer review caught a missing local summary in the first source-only draft before execution. The same prepare replacement now parses summary_raw explicitly. A hosted fixture executes the entire actual derived prepare through final proof/return with synthetic runtime/path collaborators; its concrete missing-summary mutation must raise NameError after deck writing. It claims only control-flow coverage, not318-device preparation or engine execution. The early-stop fixtures remain.
+
+## Early runner resource observation
+
+The standard `ubuntu-24.04` label does not guarantee the inherited 72 GiB free-space prerequisite. The exact historical first p-high run traversed that guard and completed its 34 ns capture, but did not save a numeric free-space measurement or exercise checkpoint restoration. Its final failure was the original electrical rejection. The 72 GiB prelaunch and 20 GiB checkpoint guards remain byte-exact.
+
+The native job now records disk total/used/free bytes, RAM, CPU affinity, runner image environment fields and a UTC timestamp after exact release preflight and before dependency installation. This is an observation only: no cleanup, provisioning, extra capacity assumption or threshold relaxation. Missing image fields remain explicit nulls.
+
+The early observation is first written to `RUNNER_TEMP` because the frozen lifecycle requires exclusive creation of its result directory. The always-run preservation program copies the exact bytes into that directory, appends its hash to `result.outputs`, and records its identity without changing the original result status or electrical fields. An earlier preflight failure is marked `NOT_RECORDED`. The complete archive and separate JSON publication include the receipt.
+
+Four positive and five refusal fixtures execute both actual template programs with synthetic disk/RAM/CPU inputs; below-72 GiB observation is deliberately allowed while the original later 72 GiB guard remains mandatory. The existing publication fixture now exercises all nine paths including the receipt. All fixtures remain authored and unexecuted, and all native flags remain false. See the pinned resource source audit for exact prior run/log hashes and the source delta.

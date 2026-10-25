@@ -41,14 +41,18 @@
     "original_numerical_faults": 52,
     "portable_faults": 22,
     "publication_faults": 13,
-    "wait_faults": 4
+    "wait_faults": 4,
+    "resource_observation_positives": 4,
+    "resource_observation_refusals": 5
   },
   "runtime_budget": {
     "hosted_job_minutes": 360,
     "segment_seconds": 13200,
     "initial_free_GiB": 72,
     "checkpoint_reserve_GiB": 20,
-    "automatic_rerun": false
+    "automatic_rerun": false,
+    "early_resource_receipt": "native-resource-before-dependencies.json",
+    "resource_guarantee": false
   },
   "import_roots": [
     "scripts/cloud_tx_phase_reset334_avss18_transient.py",
@@ -57,7 +61,8 @@
     "scripts/check_tx_phase_reset334_avss18_transient.py",
     "scripts/check_tx_phase_reset334_avss18_transient_publication.py",
     "scripts/check_tx_phase_reset334_transient.py",
-    "scripts/cloud_tx_phase_reset334_transient.py"
+    "scripts/cloud_tx_phase_reset334_transient.py",
+    "scripts/check_tx_phase_reset334_avss18_transient_resources.py"
   ],
   "required_repository_modules": [
     "scripts/cloud_tx_phase_reset334_avss18_transient.py",
@@ -70,7 +75,8 @@
     "scripts/check_tx_phase_reset334_transient.py",
     "scripts/wait_cloud_tested_source_release.py",
     "scripts/migrate_outputs_to_cloud.py",
-    "scripts/publish_cloud_results.py"
+    "scripts/publish_cloud_results.py",
+    "scripts/check_tx_phase_reset334_avss18_transient_resources.py"
   ],
   "protected": {
     ".github/workflow-templates/tx-phase-assert-offset-intrinsic-cloud.yml": "1ea48ab1d9d583aa9d4317dd18d4739ca069a316fa316400bee04fe8176949ef",
@@ -80,7 +86,7 @@
     ".github/workflow-templates/tx-phase-reset244-source-cloud.yml": "ba4b4bd21a41b1b646fd314115979bf5ad1b92f17cd8bb7478764b37f40a61be",
     ".github/workflow-templates/tx-phase-reset334-avss18-loaded-cloud.yml": "cdbb4d146e7171273584777405dd9d38ec6af274c3240e56d973b6314eb3c285",
     ".github/workflow-templates/tx-phase-reset334-avss18-rc-cloud.yml": "b7e6d758e81b3c3791b7ca1eaa7564d9789da7625fa8ce46e70fc97258c12714",
-    ".github/workflow-templates/tx-phase-reset334-avss18-transient-cloud.yml": "cb59a8c540d64ab0c5abdf0dd02bd81282216293ed494201704955e12005c0c4",
+    ".github/workflow-templates/tx-phase-reset334-avss18-transient-cloud.yml": "40b576d2c137bae14f34d8ed35c9549d11060e9f10444d642b4e23d5705b8fe1",
     ".github/workflow-templates/tx-phase-reset334-intrinsic-mim-cloud.yml": "618baeca3854286c8a75ab36aaab7689a63b1471adb65c9f2a353f7a81ccfa3e",
     ".github/workflow-templates/tx-phase-reset334-loaded-adapter-cloud.yml": "907c549e26a727f7a666813cd1ea8876d471ec2d08ccb1ea19ecd27a1b884dbe",
     ".github/workflow-templates/tx-phase-reset334-loaded-binding-cloud.yml": "5b7e4607acf3b3e0051d62b476cad60815fe4b3ad3716829e4d53fdcc21bba14",
@@ -228,7 +234,7 @@
     "docs/tx-phase-reset244-native-physical-candidate-20261024.md": "71e156fc831f13a282117976c43fa36da8cad3744395948f6a2f52b3989e71dd",
     "docs/tx-phase-reset334-avss18-fresh-rc-20261025.md": "7f44325db55e6bba4212ca6eb3b502a23c1aa8aac7d45a03f581588669882f7e",
     "docs/tx-phase-reset334-avss18-loaded-20261025.md": "89bf5e59d2cdfbea551e8f90318893c5c27f6e05323fccf165a271f01790adbf",
-    "docs/tx-phase-reset334-avss18-portable-transient-source-20261025.md": "9534ef91e05042d590f5d4ad601c6d8ca837c4b3f679f6ceeb1d01d09337fec8",
+    "docs/tx-phase-reset334-avss18-portable-transient-source-20261025.md": "360ccff24f17715573ba12c4279addf7fcf81ff735f17f31d510043669d9aadc",
     "docs/tx-phase-reset334-intrinsic-mim-20261024.md": "f2e0c4f5f240b68ba5b1523fb2c22a4f32407780bb8bdfd77ee23cc517350f13",
     "docs/tx-phase-reset334-loaded-native-adapter-20261025.md": "1dbfbd10802e27d685014d405fcb8a4a6a1e2c45c0ceb020cdc4d4e3f507a9a2",
     "docs/tx-phase-reset334-mim-precision-20261024.md": "af5d65866b5c7c71fcaa7454bb72b9ea627330836147e16219e388917427dee7",
@@ -286,7 +292,7 @@
     "scripts/check_tx_phase_reset334_avss18_rc.py": "a29d021fef10ead5d0d9db58cbb1348d505b51033268c1fa8bf8840b05784a52",
     "scripts/check_tx_phase_reset334_avss18_rc_publication.py": "99bf0874a2e5790cfafdf97ca2c1c1a5d96d1f48164cab6a9bee35d89a050939",
     "scripts/check_tx_phase_reset334_avss18_transient.py": "bb02542b81a6089bf5d3f82515451460ef8d2d2ec584dcf5391f71beb9545c4e",
-    "scripts/check_tx_phase_reset334_avss18_transient_publication.py": "cac8f4be684434c32669fc4e3bcde53a40d35b8a06d6338d20ab279ca2de3269",
+    "scripts/check_tx_phase_reset334_avss18_transient_publication.py": "62a5449444a80458e563340501cdd84d197c381f3208c15d0718a49c9ba49720",
     "scripts/check_tx_phase_reset334_loaded_native_adapter.py": "90333e39333d9be5509a7cb22b204ebf92245c3e170cc5065e1d4ac68129e17f",
     "scripts/check_tx_phase_reset334_loaded_preparation.py": "53c36384d9f46035914e3948b04422c52834f36b5b598a2bd3ae5699e2fd2684",
     "scripts/check_tx_phase_reset334_return_publication.py": "469b079f2a7d0c131ef4ee5e9101777e825ca7667fa0a7344962f55f23313e6e",
@@ -403,7 +409,10 @@
     "scripts/tx_phase_reset334_transient_support.py": "6e13a8fb79af6cffb3f65c0085ba15ca5e2d565508f7154ffc94c2469383a7df",
     "scripts/tx_phase_reset334_zero_op_runtime.py": "dd3745fc3207e43f44b8a59c6107280ff46c510d58b4d23d109197e85a98384c",
     "scripts/tx_reverse_native_cap_order.py": "4d46575a4c7c50d8ad5d1c4f73239454ac26345ae5b9984f0282b0c7f55980c4",
-    "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73"
+    "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73",
+    "scripts/check_tx_phase_reset334_avss18_transient_resources.py": "4845ae645320853579d695886caf4b908e5eeace5e0238a70acb96273301506f",
+    "docs/evidence/tx-phase-reset334-avss18-portable-resource-source-audit-20261025.json": "b7f4502125ab02c58173ad0463109e3ee9131e1dee564eda39804824444742b0",
+    "docs/evidence/tx-phase-reset334-avss18-transient-context-independent-review-20261025.json": "d5f777e0c6f37c654d246c49fc26eb88a1392a4aeffcf2ad071ccb7ad9fcf18a"
   },
   "scope": "Source candidate only; fresh OP is not transient/all31/PLL/fullPHY acceptance. No inherited electrical failure relaxed."
 }

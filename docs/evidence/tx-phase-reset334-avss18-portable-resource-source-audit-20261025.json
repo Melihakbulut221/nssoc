@@ -1,0 +1,92 @@
+{
+  "schema": "portable-resource-source-observation-v1",
+  "status": "SOURCE_ONLY_UNEXECUTED_RESOURCE_RECEIPT_DELTA",
+  "base_source": "d4f294c9d457e0dc05d37efa48f25342451fff15",
+  "parent_request": "Add only early native-job resource observation and publication persistence; preserve original 72/20 GiB guards, no provisioning or authorization.",
+  "prior_actual": {
+    "run": 40178775666,
+    "source": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+    "job": 121125295778,
+    "runner_label": "ubuntu-24.04",
+    "runner_image": "20261012.334.1",
+    "controller_sha256": "db0108b0b553d24d1ce8d4813806f41821bbf607053538a2ebe59127629eb0f0",
+    "workflow_sha256": "c262077fc66fcf743825489ad832a4900ebbf0cce1d15054c46bcfbe2e2768a9",
+    "log_bytes": 550473,
+    "log_sha256": "ab79693865338a20a5dc4fe53177e113684b051386c81ac3b8664c541182bb03",
+    "log_result_chunks": 104,
+    "result_bytes": 318284,
+    "result_sha256": "815b8422d6d8ba88f9f8596d3c417591a90f86a593e37d841332cbe006b1f402",
+    "complete_capture_s": 3.4e-08,
+    "wall_time_s": 2327.323749069,
+    "terminal_rejection": "Original electrical gates; not disk preflight failure",
+    "original72GiB_guard_traversed_by_source_control_flow": true,
+    "numeric_free_space_not_recorded": true,
+    "native_checkpoint_saved": false,
+    "criu_check_returncode": 1,
+    "restore_qualification_inferred": false
+  },
+  "original_guards": {
+    "controller": "scripts/cloud_tx_phase_reset334_transient.py",
+    "prelaunch_line": 216,
+    "prelaunch_free_GiB": 72,
+    "checkpoint_line": 292,
+    "checkpoint_free_GiB": 20,
+    "poll_s": 15,
+    "docker_memory_GiB": 12,
+    "per_file_limit_GiB": 32,
+    "unchanged": true
+  },
+  "scheduling_limit": {
+    "standard_public_runner_documented_storage_GB": 14,
+    "source": "https://docs.github.com/en/actions/reference/runners/github-hosted-runners",
+    "meaning": "72 GiB free is not guaranteed by the standard runner label. Prior exact hosted execution passed its guard, so a future resource refusal is possible but not inevitable."
+  },
+  "delta": {
+    "template_changes": [
+      "Native-only observation after exact preflight/wait and before dependency installation",
+      "Always-preservation copies exact observation from RUNNER_TEMP into result directory and adds its hash to result.outputs",
+      "Actual two-program hosted source fixtures",
+      "Resource control artifact retained"
+    ],
+    "observation_fields": [
+      "UTC timestamp",
+      "source/run/attempt/stage",
+      "filesystem path/device/total/used/free bytes",
+      "MemTotal/MemAvailable/MemFree bytes",
+      "logical CPU count/available affinity",
+      "ImageOS/ImageVersion/ImageRelease and runner OS/architecture/name; missing env values explicit null"
+    ],
+    "output_name": "native-resource-before-dependencies.json",
+    "root_creation_reason": "Frozen lifecycle owns output mkdir(exist_ok=False); early observation lives in RUNNER_TEMP until always-preservation, avoiding any lifecycle edit.",
+    "missing_observation": "Explicit NOT_RECORDED when preflight/resource step did not complete; no invented capacity.",
+    "publication": "Exact observation is included in result.outputs, archive and separate JSON asset; actual publication fixture expands from eight to nine paths.",
+    "preservation": "Original result status and electrical fields unchanged; only early_resources and one exact output digest are added."
+  },
+  "controls": {
+    "source_only_authored": true,
+    "actual_template_resource_and_preservation_programs": true,
+    "positive": 4,
+    "refusals": 5,
+    "synthetic_capacity_RAM_CPU": true,
+    "hosted_executed": false,
+    "publication_positive": 2,
+    "publication_refusals": 13,
+    "publication_asset_paths": 9
+  },
+  "unchanged": {
+    "lifecycle_literal_edits": 8,
+    "support_literal_edits": 2,
+    "lifecycle_generated_sha256": "e75efd3cdac27ac6cd4060dfeb72963acbcad0adba59e25883f2a182958710f8",
+    "support_generated_sha256": "593b7c1d0e4f386c3c534693734ec32064a62ef661d2fa436c958dfdb6a6bb8c",
+    "original_numerical_functions": true,
+    "original72_20_guards": true,
+    "all_authorization_false": true,
+    "controller_sha256": "e54194102ab784cd3198c278ba29c9c527c6f367607a3e25cf29e501099562fb",
+    "adapter_sha256": "3a64b3b3532b0e3a382c227bdbab0cf77858573846ff04a037b4f9ac9eb4565c",
+    "admission_sha256": "cd9c58ab48a3701a5a9809919d5cfc08917746334f4d8e84de6afcbf36075d62"
+  },
+  "observations_locally_executed": false,
+  "local_files_created": false,
+  "native_archive_accessed": false,
+  "native_dispatched": false
+}
