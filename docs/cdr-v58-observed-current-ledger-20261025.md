@@ -1,0 +1,19 @@
+# CDR v58 observed-current ledger (source only)
+
+The existing three captures already reproduce the original electrical rejection. This candidate reads those exact captures once more to place native current vectors beside the existing terminal-voltage evidence. It does not run a simulator or change any schematic, layout, stimulus, model, threshold or acceptance decision.
+
+The source is based on the authenticated 500-device composition and physical plane report. Its 126 selected records are 72 HBTs, 36 MOS devices and 18 intrinsic resistors. The four actual follower/gain paths use follower IDs 69, 70, 121 and 124. The 32 clock steering HBTs are grouped by their actual eight shared-tail clusters; the C/D parallel pairs retain their nonadjacent native IDs and separate distributed base accesses.
+
+The frozen controller is derived by seven explicitly recorded reversible replacements: helper, method, controls and output names; diagnostic status strings; and writing a separate compact index. All source identity, terminal failed job, release/part/archive hashes, safe member inventory, complete 1152-column capture, model-derived vector order, original bench/OFF/zero-OP checks and original 6,722-byte measurement replay remain unchanged. Full original rejection reproduction precedes new diagnostics.
+
+For each failed device the ledger preserves the native rows of all four original extrema. It records all 126 selected devices at those rows, the worst original 0.3-UI native bracket for each sampler over all 255 compared bits, and extrema of actual same-net follower-to-gain and input-load terminal drops. Both bracket rows are retained; neither is relabelled as an exact requested-time sample.
+
+For each clock tail the ledger keeps every differential collector-current sign-crossing bracket, all four physical distributed-base crossing lists and parent clock crossings. A deduplicated row table carries all eight clock/tail devices at every referenced endpoint, plus current extrema. Nearby-event associations retain explicit native ordering ambiguity. No interpolated edge time, fitted phase or missing edge is invented.
+
+Only original HBT Ic and MOS Ids were saved. HBT Ib/Ie, intrinsic resistor current and 14,662 internal extracted-wire voltages were not saved. Resistor terminal drops are observations; no current is inferred from drawn resistance or VBE. The reported Ic-minus-Ids value is an incomplete observed-current difference, explicitly not a full KCL residual. Zero collector-voltage crossings alone did not justify a circuit change. The purpose of this ledger is to narrow that cause before choosing a concrete device or owned-metal correction.
+
+The new checker retains all 58 inherited controls. Forty-four additional corruption controls cover actual records/binding/polarity/current availability, compiled same-row/current/phase reporting mutations and an independent synthetic fixed-grid fixture over the original 255-bit scope. Seventeen exact-source publication controls are also required. Only source AST and mutation-anchor checks have been performed while preparing this candidate; no fixture, capture readback or native job has been executed.
+
+The workflow is an unregistered manual-only template with readback disabled by the method contract. Controls must pass and source review must clear before enabling the existing-capture job. A precreated exact-source release is checked before archive access. Every complete JSON is copied byte-for-byte to a unique named release asset and verified by the existing publisher; full detailed files and selected binary caches are additionally kept as an Actions artifact. The compact index is separate from the full diagnosis, so large details are never silently truncated.
+
+Original rejection receipts, the already qualified recovery and all original sources remain immutable. This work grants no CDR, PHY, layout, timing or production acceptance.
