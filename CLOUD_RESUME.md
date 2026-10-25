@@ -8512,3 +8512,10 @@ Local project/tmp/native processes verified absent. Inventory183 exact cloud han
 Actual complete CDC40212194745 now passes66namedRTL/33namedmapped/sixfullsynthesis+check/all18independentlycompiled faults. Collectorreset failure is detected by explicit public reset assertion, never timeout. All152pins match; complete96336Bresult/1.95MBlog/parts/receipt imported, actualrelease fullsummary independently rehashed by root. This closes only bounded functionalCDC, not trainingowner/physicalCDC/fullPHY. Sole CDR preparation40214668800 uses exactreviewed6c58source/release423539086, actual133sourcecontrols dependency and original5549currentinputs/13binding tests; no simulator/OP/transient. PLL freshRCsource6a65694a awaits peer/root review; exact218clock restoration source is being developed from actualdiagnostic6720066d. Cloud-only operation and local absence reverified.
 
 Local project/tmp/native processes verified absent. Inventory184 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-25T17:25:08.802538+00:00 — cloud-only checkpoint v53
+
+CDR preparation and its first alias-regression controls both failed before simulation; full logs and exact causes are preserved. The alias correction is minimal, and its fixture needs one existing immutable receipt pin. AVSS18 fresh-RC source controls passed in GitHub; extraction remains gated pending complete proof review. Mainchip original-clock restoration is undergoing independent source review. All project source/evidence is remote; no local native work or project files.
+
+Local project/tmp/native processes verified absent. Inventory187 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

@@ -1,0 +1,47 @@
+{
+  "status": "REJECTED_OR_FAILED_CURRENT_V59_LOADED_CASE",
+  "source_head": "6c58c1c72485abd8023bc3372f715cab84ebe790",
+  "run_id": 40214668800,
+  "run_attempt": 1,
+  "case": "nominal_early",
+  "preparation_only": true,
+  "group": "cdr-v59-loaded-preparation",
+  "reservation": {
+    "tag": "cloud-results-40214668800-1-cdr-v59-loaded-preparation",
+    "tested_source": "6c58c1c72485abd8023bc3372f715cab84ebe790",
+    "release_id": 423539086,
+    "existing_assets": [],
+    "target_verified": true,
+    "assets_overwritten": false,
+    "read_attempts": 1,
+    "externally_reserved": true,
+    "creation_attempted": false
+  },
+  "native_case_passed": false,
+  "accepted": false,
+  "full_phy_accepted": false,
+  "cdr_accepted": false,
+  "qualified_pex": false,
+  "geometry_regenerated": false,
+  "native_extraction_executed": false,
+  "original_electrical_failures_preserved": true,
+  "command": {
+    "argv": [
+      "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+      "/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_v59_loaded.py",
+      "--case",
+      "nominal_early",
+      "--prepare-only"
+    ],
+    "returncode": 1,
+    "log_sha256": "09a7a5f7c95b643fd00a5e3da475994dfc313518ebe8fdaa503ecb020ec86ef8"
+  },
+  "native_controller_result_sha256": "b390630e016a0ed5f6d49761093720cca0589bcf8e6455a75826df45dcef3290",
+  "native_status": "FAIL_OR_ERROR",
+  "validation_error": "AssertionError()",
+  "validation_traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_v59_loaded_stage.py\", line 80, in run_case\n    validate_result(native,case,prepare,code)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_v59_loaded_stage.py\", line 31, in validate_result\n    assert code==0 and r['source_head']==os.environ['GITHUB_SHA']and r['case']==case\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "outputs": {
+    "native-controller-result.json": "b390630e016a0ed5f6d49761093720cca0589bcf8e6455a75826df45dcef3290",
+    "controller-transport.log": "09a7a5f7c95b643fd00a5e3da475994dfc313518ebe8fdaa503ecb020ec86ef8"
+  }
+}
