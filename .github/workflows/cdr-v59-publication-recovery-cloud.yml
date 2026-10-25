@@ -1,0 +1,12 @@
+name: cdr-v59-publication-recovery-cloud
+on:
+  push:
+    branches: [codex/register-cdr-v59-publication-recovery]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: echo 'Registration only; no source, artifact, CAD or qualification work.'
