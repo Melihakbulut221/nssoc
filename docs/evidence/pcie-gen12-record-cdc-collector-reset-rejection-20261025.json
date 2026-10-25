@@ -1,0 +1,155 @@
+{
+  "schema": "pcie-gen12-record-cdc-collector-reset-rejection-v1",
+  "status": "FAILED_UNQUALIFIED_COLLECTOR_RESET_TIMEOUT_NO_FULL_CDC_ACCEPTANCE",
+  "run_id": 40202709622,
+  "attempt": 1,
+  "source": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
+  "controls_job": 121197069924,
+  "native_job": 121197198545,
+  "native_completed_at": "2026-10-25T14:58:06Z",
+  "release_id": 423455789,
+  "tag": "cloud-results-40202709622-1-pcie-gen12-record-cdc",
+  "exact_source_prerelease_verified": true,
+  "result": {
+    "asset_id": 675317139,
+    "bytes": 81311,
+    "sha256": "f09aca5c88d23025c14fd0e3112d894c0fd1bb71953379d77388ffff7e84a03c",
+    "exact_log_chunks": 27,
+    "log_reassembly_equals_release": true
+  },
+  "job_log": {
+    "bytes": 1896660,
+    "sha256": "850d184bd3e61d646b79aaf7c6bb8592e9541a6d4c6635c0875708b3d7fccc72"
+  },
+  "source_verification": {
+    "protected_files": 125,
+    "protected_bytes": 1230269,
+    "all_hashes_match": true,
+    "result_methods_equal_exact_source": true
+  },
+  "actual_coverage": {
+    "rtl_named_pass": 66,
+    "rtl_groups": 12,
+    "mapped_named_pass": 33,
+    "mapped_groups": 6,
+    "synthesis_check_pass": 6,
+    "qualified_mutants": 16,
+    "qualified_mutant_names": [
+      "drop_data",
+      "drop_K",
+      "drop_code_error",
+      "drop_disparity",
+      "drop_comma",
+      "swap_code_disparity",
+      "ignore_ready",
+      "hide_loss",
+      "ignore_write_reset",
+      "ignore_read_reset",
+      "duplicate_source",
+      "unmask_stale_fields",
+      "hide_polarity_loss",
+      "hide_external_loss",
+      "bypass_arming",
+      "wrong_collector_pop"
+    ],
+    "unqualified_compiled_mutant": "collector_reset_POR_only",
+    "unqualified_compile_returncode": 0,
+    "unqualified_simulate_returncode": 2,
+    "remaining_not_executed": [
+      "ignore_polarity"
+    ]
+  },
+  "failure": {
+    "phase": "simulate_mutant-collector_reset_POR_only",
+    "controller_error": "AssertionError('unqualified failure site')",
+    "actual_test_line": 82,
+    "actual_harness_origin_line": 104,
+    "actual_message": "bounded public-port scenario timeout",
+    "same_polarity_reset_segment_reached": true,
+    "explicit_post_drain_count_assertion_line": 83,
+    "timeout_is_not_qualified_behavioral_detection": true,
+    "supervision_or_memory_failure": false
+  },
+  "disposition": "Preserve all prior failures and valid partial results. Investigate a deterministic public reset-state/field witness or independently justified protocol-latency contract; no timeout whitelist expansion or retry authorized.",
+  "archive_metadata_only": {
+    "id": 675317243,
+    "name": "pcie-gen12-record-cdc-40202709622-1.tar.gz.part0000",
+    "size": 74277336,
+    "digest": "sha256:95b27b60f2221b5ba162380a7c071f5269bec2ddc13c22dc8f7bd80d85dda88f"
+  },
+  "artifacts_metadata": [
+    {
+      "id": 12603331435,
+      "node_id": "MDg6QXJ0aWZhY3QxMjYwMzMzMTQzNQ==",
+      "name": "gen12-record-cdc-proof-40202709622-1",
+      "size_in_bytes": 146380123,
+      "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12603331435",
+      "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12603331435/zip",
+      "expired": false,
+      "digest": "sha256:4bc3231db09e3d97da3cc5ebe58fdd65e06912f8110826e9f8021084366f8e79",
+      "created_at": "2026-10-25T14:58:04Z",
+      "updated_at": "2026-10-25T14:58:04Z",
+      "expires_at": "2027-01-23T14:32:24Z",
+      "workflow_run": {
+        "id": 40202709622,
+        "repository_id": 1364721142,
+        "head_repository_id": 1364721142,
+        "head_branch": "codex/pcie-gen12-record-cdc",
+        "head_sha": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9"
+      }
+    },
+    {
+      "id": 12602805596,
+      "node_id": "MDg6QXJ0aWZhY3QxMjYwMjgwNTU5Ng==",
+      "name": "gen12-record-cdc-controls-40202709622-1",
+      "size_in_bytes": 43315,
+      "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12602805596",
+      "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12602805596/zip",
+      "expired": false,
+      "digest": "sha256:823eed31fe0546e2396ba0a1c5e83d1ac8cc3e221768cafb04ce14d0669e7ab9",
+      "created_at": "2026-10-25T14:32:54Z",
+      "updated_at": "2026-10-25T14:32:54Z",
+      "expires_at": "2027-01-23T14:32:24Z",
+      "workflow_run": {
+        "id": 40202709622,
+        "repository_id": 1364721142,
+        "head_repository_id": 1364721142,
+        "head_branch": "codex/pcie-gen12-record-cdc",
+        "head_sha": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9"
+      }
+    }
+  ],
+  "scope": {
+    "LTSSM_implemented": false,
+    "TS_accepted": false,
+    "automatic_clock_loss_detection": false,
+    "full_PHY_accepted": false,
+    "physical_CDC_qualified": false,
+    "x4_lane_mapping": false
+  },
+  "engineering_accepted": false,
+  "new_native_dispatch": false,
+  "local_files_or_archives_created": false,
+  "files": [
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-collector-reset-rejected-result-20261025.json",
+      "bytes": 81311,
+      "sha256": "f09aca5c88d23025c14fd0e3112d894c0fd1bb71953379d77388ffff7e84a03c"
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-collector-reset-rejected-parts-20261025.json",
+      "bytes": 850,
+      "sha256": "f2c20328b6f1fd76287f85ba830b0f042c6a4d3e0941b5bca03bca033316f72c"
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-collector-reset-rejected-joblog-20261025.log",
+      "bytes": 1896660,
+      "sha256": "850d184bd3e61d646b79aaf7c6bb8592e9541a6d4c6635c0875708b3d7fccc72"
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-collector-reset-observed-trace-20261025.json",
+      "bytes": 25546,
+      "sha256": "0ba8ef00d4b8438147c04606897e20634a6817c84fc0b2629b7a644d141862d9"
+    }
+  ]
+}
