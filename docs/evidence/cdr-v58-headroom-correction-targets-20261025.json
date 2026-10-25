@@ -1,0 +1,1239 @@
+{
+  "schema": "nssoc.cdr-v58-correction-targets.v1",
+  "status": "MEASURED_HEADROOM_TARGETS_COMPONENT_VALUES_NOT_YET_IDENTIFIABLE",
+  "physical_source": {
+    "asset": 672301614,
+    "bytes": 3973846,
+    "sha256": "c757b2d7416031b94f625591f8568a08ff61a60d62ec02c5822325083827515c"
+  },
+  "loaded_source": "d92a3367a1013d1071125b753ec4f65ae4ec813b",
+  "diagnostic_source": {
+    "run": 40125550819,
+    "result_asset": 673121432,
+    "result_sha256": "bd02854a92d6fcd620b52bec5d0588b068224c136941f74be4adbb60a124490b"
+  },
+  "native_source_plan": {
+    "nodes": [
+      {
+        "tag": "sa",
+        "kind": "sampler",
+        "pins": {
+          "DP": "dp",
+          "DN": "dn",
+          "QP": "aqp",
+          "QN": "aqn",
+          "CLKP": "cp",
+          "CLKN": "cn",
+          "AVDD": "avdd",
+          "AVSS": "avss",
+          "SUB": "sub",
+          "IREF": "ira"
+        },
+        "source_cards": [
+          "xsa"
+        ]
+      },
+      {
+        "tag": "sb",
+        "kind": "sampler",
+        "pins": {
+          "DP": "dp",
+          "DN": "dn",
+          "QP": "bqp",
+          "QN": "bqn",
+          "CLKP": "cn",
+          "CLKN": "cp",
+          "AVDD": "avdd",
+          "AVSS": "avss",
+          "SUB": "sub",
+          "IREF": "irb"
+        },
+        "source_cards": [
+          "xsb"
+        ]
+      },
+      {
+        "tag": "sc",
+        "kind": "sampler_cd",
+        "pins": {
+          "DP": "cup",
+          "DN": "cun",
+          "QP": "cqp",
+          "QN": "cqn",
+          "CLKP": "cp",
+          "CLKN": "cn",
+          "AVDD": "avdd",
+          "AVSS": "avss",
+          "SUB": "sub",
+          "IREF": "irc"
+        },
+        "source_cards": [
+          "xsc"
+        ]
+      },
+      {
+        "tag": "sd",
+        "kind": "sampler_cd",
+        "pins": {
+          "DP": "dup",
+          "DN": "dun",
+          "QP": "dqp",
+          "QN": "dqn",
+          "CLKP": "cp",
+          "CLKN": "cn",
+          "AVDD": "avdd",
+          "AVSS": "avss",
+          "SUB": "sub",
+          "IREF": "ird"
+        },
+        "source_cards": [
+          "xsd"
+        ]
+      },
+      {
+        "tag": "da",
+        "kind": "data",
+        "pins": {
+          "dp": "uap",
+          "dn": "uan",
+          "qp": "adp",
+          "qn": "adn",
+          "avdd": "avdd",
+          "avss": "avss",
+          "sub": "sub",
+          "iref": "ibda"
+        },
+        "source_cards": [
+          "xda"
+        ]
+      },
+      {
+        "tag": "dc",
+        "kind": "data",
+        "pins": {
+          "dp": "ucp",
+          "dn": "ucn",
+          "qp": "cdp",
+          "qn": "cdn",
+          "avdd": "avdd",
+          "avss": "avss",
+          "sub": "sub",
+          "iref": "ibdc"
+        },
+        "source_cards": [
+          "xdc"
+        ]
+      },
+      {
+        "tag": "s0",
+        "kind": "select",
+        "pins": {
+          "dp": "usp",
+          "dn": "usn",
+          "qp": "s0p",
+          "qn": "s0n",
+          "avdd": "avdd",
+          "avss": "avss",
+          "sub": "sub",
+          "iref": "ibs0"
+        },
+        "source_cards": [
+          "xs0"
+        ]
+      },
+      {
+        "tag": "s1",
+        "kind": "select",
+        "pins": {
+          "dp": "usp",
+          "dn": "usn",
+          "qp": "s1p",
+          "qn": "s1n",
+          "avdd": "avdd",
+          "avss": "avss",
+          "sub": "sub",
+          "iref": "ibs1"
+        },
+        "source_cards": [
+          "xs1"
+        ]
+      },
+      {
+        "tag": "x",
+        "kind": "xor",
+        "pins": {
+          "dp": "adp",
+          "dn": "adn",
+          "ep": "s0p",
+          "en": "s0n",
+          "qp": "xp",
+          "qn": "xn",
+          "avdd": "avdd",
+          "avss": "avss",
+          "sub": "sub",
+          "iref": "irx"
+        },
+        "source_cards": [
+          "xx"
+        ]
+      },
+      {
+        "tag": "y",
+        "kind": "xor",
+        "pins": {
+          "dp": "cdp",
+          "dn": "cdn",
+          "ep": "s1p",
+          "en": "s1n",
+          "qp": "yp",
+          "qn": "yn",
+          "avdd": "avdd",
+          "avss": "avss",
+          "sub": "sub",
+          "iref": "iry"
+        },
+        "source_cards": [
+          "xy"
+        ]
+      },
+      {
+        "tag": "vi",
+        "kind": "vi",
+        "pins": {
+          "xp": "xp",
+          "xn": "xn",
+          "yp": "yp",
+          "yn": "yn",
+          "op": "vip",
+          "on": "vin",
+          "avdd": "avdd",
+          "avss": "avss",
+          "sub": "sub",
+          "irx": "irvx",
+          "iry": "irvy"
+        },
+        "source_cards": [
+          "xvi"
+        ]
+      },
+      {
+        "tag": "ac",
+        "kind": "rc_retime",
+        "pins": {
+          "ip": "aqp",
+          "inn": "aqn",
+          "op": "cup",
+          "on": "cun",
+          "avss": "avss",
+          "sub": "sub",
+          "avdd": "avdd"
+        },
+        "source_cards": [
+          "xfollower_ac"
+        ]
+      },
+      {
+        "tag": "bd",
+        "kind": "rc_retime",
+        "pins": {
+          "ip": "bqp",
+          "inn": "bqn",
+          "op": "dup",
+          "on": "dun",
+          "avss": "avss",
+          "sub": "sub",
+          "avdd": "avdd"
+        },
+        "source_cards": [
+          "xfollower_bd"
+        ]
+      },
+      {
+        "tag": "dfa",
+        "kind": "rc_data",
+        "pins": {
+          "ip": "aqp",
+          "inn": "aqn",
+          "op": "uap",
+          "on": "uan",
+          "avss": "avss",
+          "sub": "sub"
+        },
+        "source_cards": [
+          "xrdasp",
+          "xrdagp",
+          "xcdap",
+          "xrdasn",
+          "xrdagn",
+          "xcdan"
+        ]
+      },
+      {
+        "tag": "dfc",
+        "kind": "rc_data",
+        "pins": {
+          "ip": "cqp",
+          "inn": "cqn",
+          "op": "ucp",
+          "on": "ucn",
+          "avss": "avss",
+          "sub": "sub"
+        },
+        "source_cards": [
+          "xrdcsp",
+          "xrdcgp",
+          "xcdcp",
+          "xrdcsn",
+          "xrdcgn",
+          "xcdcn"
+        ]
+      },
+      {
+        "tag": "se",
+        "kind": "rc_select",
+        "pins": {
+          "ip": "dqp",
+          "inn": "dqn",
+          "op": "usp",
+          "on": "usn",
+          "avss": "avss",
+          "sub": "sub"
+        },
+        "source_cards": [
+          "xrsesp",
+          "xrsegp",
+          "xcsep",
+          "xrsesn",
+          "xrsegn",
+          "xcsen"
+        ]
+      }
+    ],
+    "ports": [
+      "dp",
+      "dn",
+      "cp",
+      "cn",
+      "xp",
+      "xn",
+      "yp",
+      "yn",
+      "avdd",
+      "avss",
+      "sub",
+      "ira",
+      "irb",
+      "irc",
+      "ird",
+      "irx",
+      "iry",
+      "ibda",
+      "ibdc",
+      "ibs0",
+      "ibs1",
+      "vip",
+      "vin",
+      "irvx",
+      "irvy"
+    ],
+    "nets": [
+      "adn",
+      "adp",
+      "aqn",
+      "aqp",
+      "avdd",
+      "avss",
+      "bqn",
+      "bqp",
+      "cdn",
+      "cdp",
+      "cn",
+      "cp",
+      "cqn",
+      "cqp",
+      "cun",
+      "cup",
+      "dn",
+      "dp",
+      "dqn",
+      "dqp",
+      "dun",
+      "dup",
+      "ibda",
+      "ibdc",
+      "ibs0",
+      "ibs1",
+      "ira",
+      "irb",
+      "irc",
+      "ird",
+      "irvx",
+      "irvy",
+      "irx",
+      "iry",
+      "s0n",
+      "s0p",
+      "s1n",
+      "s1p",
+      "sub",
+      "uan",
+      "uap",
+      "ucn",
+      "ucp",
+      "usn",
+      "usp",
+      "vin",
+      "vip",
+      "xn",
+      "xp",
+      "yn",
+      "yp"
+    ],
+    "types": {
+      "sampler": {
+        "top": "nssoc_rx_sampler_input_access_layout_v26",
+        "devices": 54,
+        "layer": 67
+      },
+      "data": {
+        "top": "nssoc_cdr_data_buffer_cm_layout_v5",
+        "devices": 14,
+        "layer": 67
+      },
+      "select": {
+        "top": "nssoc_cdr_select_hybrid_tail_layout_v2",
+        "devices": 18,
+        "layer": 67
+      },
+      "xor": {
+        "top": "nssoc_cdr_xor_power_access_layout_v4",
+        "devices": 59,
+        "layer": 67
+      },
+      "vi": {
+        "top": "nssoc_cdr_vi13_layout_v1",
+        "devices": 26,
+        "layer": 67
+      },
+      "rc_retime": {
+        "top": "nssoc_cdr_retime_follower_layout_v23",
+        "devices": 8,
+        "layer": 67
+      },
+      "rc_data": {
+        "top": "nssoc_cdr_data_feedforward_layout_v1",
+        "devices": 12,
+        "layer": 67
+      },
+      "rc_select": {
+        "top": "nssoc_cdr_select_feedforward_layout_v1",
+        "devices": 12,
+        "layer": 67
+      },
+      "sampler_cd": {
+        "top": "nssoc_rx_sampler_active_input_layout_v57",
+        "devices": 66,
+        "layer": 67
+      }
+    },
+    "source_sha256": {
+      "cdr_select_hybrid_tail_v2.spice": "4ea83a8d48cf38626234bb8530d9cca51eaa88c529369a37486a243e4614e4ba",
+      "cdr_xor_core_hybrid_tail_v2.spice": "47dbcf055d732456f9b5c199e8deedd0a2fc402546c5c464ab315862bd70b660",
+      "cdr_xor_hybrid_tail_v2.spice": "39d055605d72b6aa586b058c5492e17ae5bffe2dffc0942c07258dcb7137cddc",
+      "cdr_retimed_input_drive_pd_vi_v10.spice": "92f3456be30328010ebacdae2046205fe96e60d70379068e4042aecba0dc6503",
+      "rx_sampler_input_drive_v13.spice": "aa9dd47123e10fd611087384d62e90e42493044ea95b8cbd8194f5217a7c67c4",
+      "cdr_sampled_compare_data_cm_v5.spice": "9aa0379ae8ced00a3047119636523f95b1906a247fa221b21d864279d45f878b",
+      "cdr_vi_hbt_v1.spice": "9f13b4eeca782f34feb3a858937de871f61b2e7ab5a06ffc43ecfdfb5f5268ef",
+      "cdr_retime_follower_v31.spice": "29d98dbb56cb32a7496da2c45aaca47a1233c2d29cdae497c782ec4ec11106d9",
+      "rx_sampler_settling_v32.spice": "c9c78b752e4ec5d17169b3254afa603b3d0b7702f164f8414356d54aa25b6db4",
+      "rx_sampler_active_input_v57.spice": "05f5e3e389643704cbea8ccf9a700237f05a2e77b639db48d7ea7f18103d1ade"
+    },
+    "expected_devices": 500,
+    "primitive_census": {
+      "npn13g2": 124,
+      "sg13_lv_nmos": 50,
+      "rppd": 98,
+      "cap_cmim": 7,
+      "ptap1": 221
+    },
+    "source_cards_consumed": 31,
+    "full_phy_accepted": false,
+    "closed_loop": false,
+    "qualified_pex": false
+  },
+  "reviewed_schematic_sources": [
+    {
+      "path": "hw/soc/analog/pcie/rx_sampler_active_input_v57.spice",
+      "sha256": "05f5e3e389643704cbea8ccf9a700237f05a2e77b639db48d7ea7f18103d1ade"
+    },
+    {
+      "path": "hw/soc/analog/pcie/rx_sampler_settling_v32.spice",
+      "sha256": "c9c78b752e4ec5d17169b3254afa603b3d0b7702f164f8414356d54aa25b6db4"
+    },
+    {
+      "path": "hw/soc/analog/pcie/cdr_retime_follower_v31.spice",
+      "sha256": "29d98dbb56cb32a7496da2c45aaca47a1233c2d29cdae497c782ec4ec11106d9"
+    }
+  ],
+  "actual_adjacent_resistors": [
+    {
+      "native_id": 182,
+      "parameters": {
+        "w": 8,
+        "l": 1.8,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/129_3/3_768",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "avdd",
+          "native_cluster": 16
+        },
+        {
+          "name": "rppd_2",
+          "net": "$99",
+          "native_cluster": 22
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 183,
+      "parameters": {
+        "w": 8,
+        "l": 1.8,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/129_3/3_769",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "avdd",
+          "native_cluster": 16
+        },
+        {
+          "name": "rppd_2",
+          "net": "$98",
+          "native_cluster": 21
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 184,
+      "parameters": {
+        "w": 4,
+        "l": 7.4,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/129_3/4_767",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$99",
+          "native_cluster": 22
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 185,
+      "parameters": {
+        "w": 4,
+        "l": 7.4,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/129_3/4_766",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$98",
+          "native_cluster": 21
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 187,
+      "parameters": {
+        "w": 4,
+        "l": 2.25,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/135_0/36_14",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$65",
+          "native_cluster": 13
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 188,
+      "parameters": {
+        "w": 4,
+        "l": 2.25,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/135_0/36_15",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$67",
+          "native_cluster": 15
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 191,
+      "parameters": {
+        "w": 32,
+        "l": 2.6,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/130_1/119_613",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "avdd",
+          "native_cluster": 16
+        },
+        {
+          "name": "rppd_2",
+          "net": "$285",
+          "native_cluster": 58
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 194,
+      "parameters": {
+        "w": 32,
+        "l": 2.6,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/130_1/119_367",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "avdd",
+          "native_cluster": 16
+        },
+        {
+          "name": "rppd_2",
+          "net": "$286",
+          "native_cluster": 59
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 198,
+      "parameters": {
+        "w": 1,
+        "l": 4.800000000000001,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/130_1/116_345",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$337",
+          "native_cluster": 71
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 202,
+      "parameters": {
+        "w": 32,
+        "l": 2.6,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/130_2/119_613",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "avdd",
+          "native_cluster": 16
+        },
+        {
+          "name": "rppd_2",
+          "net": "$449",
+          "native_cluster": 87
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 205,
+      "parameters": {
+        "w": 32,
+        "l": 2.6,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/130_2/119_367",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "avdd",
+          "native_cluster": 16
+        },
+        {
+          "name": "rppd_2",
+          "net": "$450",
+          "native_cluster": 88
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 210,
+      "parameters": {
+        "w": 1,
+        "l": 4.800000000000001,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/130_2/116_345",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$501",
+          "native_cluster": 100
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 220,
+      "parameters": {
+        "w": 8,
+        "l": 1.8,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/129_4/3_768",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "avdd",
+          "native_cluster": 16
+        },
+        {
+          "name": "rppd_2",
+          "net": "$652",
+          "native_cluster": 122
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 221,
+      "parameters": {
+        "w": 8,
+        "l": 1.8,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/129_4/3_769",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "avdd",
+          "native_cluster": 16
+        },
+        {
+          "name": "rppd_2",
+          "net": "$651",
+          "native_cluster": 121
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 222,
+      "parameters": {
+        "w": 4,
+        "l": 7.4,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/129_4/4_767",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$652",
+          "native_cluster": 122
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 223,
+      "parameters": {
+        "w": 4,
+        "l": 7.4,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/129_4/4_766",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$651",
+          "native_cluster": 121
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 225,
+      "parameters": {
+        "w": 4,
+        "l": 2.25,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/135_5/36_14",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$619",
+          "native_cluster": 114
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 226,
+      "parameters": {
+        "w": 4,
+        "l": 2.25,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/135_5/36_15",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$621",
+          "native_cluster": 116
+        },
+        {
+          "name": "rppd_2",
+          "net": "avss",
+          "native_cluster": 23
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 227,
+      "parameters": {
+        "w": 1,
+        "l": 3.6,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/133_6/70_62",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$450",
+          "native_cluster": 88
+        },
+        {
+          "name": "rppd_2",
+          "net": "$787",
+          "native_cluster": 139
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    },
+    {
+      "native_id": 229,
+      "parameters": {
+        "w": 1,
+        "l": 3.6,
+        "ps": 0,
+        "b": 0,
+        "m": 1
+      },
+      "physical_path": "nssoc_cdr_pd500_input_access_v58/133_6/70_63",
+      "terminals": [
+        {
+          "name": "rppd_1",
+          "net": "$449",
+          "native_cluster": 87
+        },
+        {
+          "name": "rppd_2",
+          "net": "$788",
+          "native_cluster": 140
+        },
+        {
+          "name": "rppd_sub",
+          "net": "$1",
+          "native_cluster": 1
+        }
+      ]
+    }
+  ],
+  "same_row_required_headroom_deficits": [
+    {
+      "case": "nominal_early",
+      "native_id": 59,
+      "role": "D gain positive input",
+      "kind": "maximum_VCE",
+      "row": 14399,
+      "time_s": 4.4142187500000415e-9,
+      "measured_VCE_v": 1.672399553198051,
+      "required_C_minus_E_reduction_v": 0.0723995531980508,
+      "C_v": 2.038571390377174,
+      "B_v": 1.1757448080177095,
+      "E_v": 0.36617183717912294,
+      "Ic_a": 0.0006907037684702958
+    },
+    {
+      "case": "nominal_early",
+      "native_id": 60,
+      "role": "D gain negative input",
+      "kind": "maximum_VCE",
+      "row": 12736,
+      "time_s": 3.911406250000039e-9,
+      "measured_VCE_v": 1.6812547372242865,
+      "required_C_minus_E_reduction_v": 0.08125473722428644,
+      "C_v": 2.041475111592342,
+      "B_v": 1.1705803567498245,
+      "E_v": 0.36022037436805576,
+      "Ic_a": 0.0007434262047258419
+    },
+    {
+      "case": "nominal_early",
+      "native_id": 111,
+      "role": "C gain positive input",
+      "kind": "maximum_VCE",
+      "row": 12132,
+      "time_s": 3.730156249999999e-9,
+      "measured_VCE_v": 1.670835043742259,
+      "required_C_minus_E_reduction_v": 0.07083504374225891,
+      "C_v": 2.019169082556839,
+      "B_v": 1.149878065122234,
+      "E_v": 0.34833403881457997,
+      "Ic_a": 0.0005538865627163491
+    },
+    {
+      "case": "nominal_early",
+      "native_id": 112,
+      "role": "C gain negative input",
+      "kind": "maximum_VCE",
+      "row": 12946,
+      "time_s": 3.97515625000004e-9,
+      "measured_VCE_v": 1.677306021034764,
+      "required_C_minus_E_reduction_v": 0.0773060210347638,
+      "C_v": 2.022180356694608,
+      "B_v": 1.1441276098263824,
+      "E_v": 0.3448743356598442,
+      "Ic_a": 0.0005486982252495568
+    },
+    {
+      "case": "nominal_late",
+      "native_id": 59,
+      "role": "D gain positive input",
+      "kind": "maximum_VCE",
+      "row": 12317,
+      "time_s": 3.786093750000039e-9,
+      "measured_VCE_v": 1.671598728461951,
+      "required_C_minus_E_reduction_v": 0.07159872846195081,
+      "C_v": 2.0398350778467993,
+      "B_v": 1.1730253763664102,
+      "E_v": 0.3682363493848484,
+      "Ic_a": 0.0005969373844254082
+    },
+    {
+      "case": "nominal_late",
+      "native_id": 60,
+      "role": "D gain negative input",
+      "kind": "maximum_VCE",
+      "row": 13136,
+      "time_s": 4.032656250000034e-9,
+      "measured_VCE_v": 1.6801539667840935,
+      "required_C_minus_E_reduction_v": 0.08015396678409337,
+      "C_v": 2.0405201953406813,
+      "B_v": 1.1632409003964814,
+      "E_v": 0.3603662285565879,
+      "Ic_a": 0.0006056652164800688
+    },
+    {
+      "case": "nominal_late",
+      "native_id": 111,
+      "role": "C gain positive input",
+      "kind": "maximum_VCE",
+      "row": 12134,
+      "time_s": 3.730781249999999e-9,
+      "measured_VCE_v": 1.671363467894625,
+      "required_C_minus_E_reduction_v": 0.07136346789462489,
+      "C_v": 2.019441555595629,
+      "B_v": 1.1498022799853689,
+      "E_v": 0.34807808770100407,
+      "Ic_a": 0.0005569153497061136
+    },
+    {
+      "case": "nominal_late",
+      "native_id": 112,
+      "role": "C gain negative input",
+      "kind": "maximum_VCE",
+      "row": 12948,
+      "time_s": 3.975781250000041e-9,
+      "measured_VCE_v": 1.677662708134136,
+      "required_C_minus_E_reduction_v": 0.0776627081341359,
+      "C_v": 2.022850255572693,
+      "B_v": 1.1444939324184042,
+      "E_v": 0.3451875474385568,
+      "Ic_a": 0.000548628901747014
+    },
+    {
+      "case": "hot_early",
+      "native_id": 71,
+      "role": "B regenerative hold pair leg1",
+      "kind": "minimum_active_window_VCE",
+      "row": 68864,
+      "time_s": 2.0815781249999993e-8,
+      "measured_VCE_v": 0.3585379308935608,
+      "required_C_minus_E_increase_v": 0.04146206910643924,
+      "C_v": 1.833286032070081,
+      "B_v": 2.2005924336463374,
+      "E_v": 1.4747481011765202,
+      "base_above_collector_v": 0.3673064015762564,
+      "Ic_a": 0.0010167440948866523
+    },
+    {
+      "case": "hot_early",
+      "native_id": 72,
+      "role": "B regenerative hold pair leg2",
+      "kind": "minimum_active_window_VCE",
+      "row": 105819,
+      "time_s": 3.194234375000002e-8,
+      "measured_VCE_v": 0.3773437882596835,
+      "required_C_minus_E_increase_v": 0.022656211740316512,
+      "C_v": 1.8422471442199735,
+      "B_v": 2.1916646515677147,
+      "E_v": 1.46490335596029,
+      "base_above_collector_v": 0.34941750734774124,
+      "Ic_a": 0.0010237549578759257
+    },
+    {
+      "case": "hot_early",
+      "native_id": 87,
+      "role": "A regenerative hold pair leg1",
+      "kind": "minimum_active_window_VCE",
+      "row": 64510,
+      "time_s": 1.9503906249999998e-8,
+      "measured_VCE_v": 0.3688193066548493,
+      "required_C_minus_E_increase_v": 0.031180693345150723,
+      "C_v": 1.8228298546771775,
+      "B_v": 2.1809792543915583,
+      "E_v": 1.4540105480223282,
+      "base_above_collector_v": 0.35814939971438076,
+      "Ic_a": 0.001040360727452804
+    },
+    {
+      "case": "hot_early",
+      "native_id": 88,
+      "role": "A regenerative hold pair leg2",
+      "kind": "minimum_active_window_VCE",
+      "row": 111841,
+      "time_s": 3.375484375000002e-8,
+      "measured_VCE_v": 0.3876582205683845,
+      "required_C_minus_E_increase_v": 0.012341779431615518,
+      "C_v": 1.8319999303679597,
+      "B_v": 2.1699524112570705,
+      "E_v": 1.4443417097995752,
+      "base_above_collector_v": 0.3379524808891108,
+      "Ic_a": 0.0010158037490236049
+    }
+  ],
+  "conclusions": [
+    "C/D actual gain transistors59/60/111/112 and A/B slave hold71/72/87/88 are two distinct headroom targets. Original native source plan and adjacent physical resistor ownership are recorded, not inferred solely from names.",
+    "Candidate control points for C/D are symmetric collector pullups182/183/220/221 and shunts184/185/222/223, upstream follower loads187/188/225/226, or owned input conductors. Their direction cannot be selected safely from transistor extrema without separating same-row conductor drop, follower headroom and collector load currents.",
+    "Candidate control points for A/B are slave emitter bleeds198/210 and output loads191/194/202/205. A stronger bleed or changed load can alter regeneration, dynamic current and downstream loading; no numeric resistor change follows from a required VCE difference alone.",
+    "C/D negative margin at0.3UI becomes positive at0.6UI in nominal cases; the observed failure does not justify a polarity swap or clock pin swap.",
+    "Zero first-latch collector-voltage difference crossings do not establish failed current steering. Compare actual sums of the two parallel cp and two parallel cn collector currents on each shared tail, retaining distinct native nodes, rather than imposing a zero-voltage crossing requirement.",
+    "Original captured selected188-column caches include all32 clock HBT currents and all8 failed HBT C/B/E/current traces. They do not include all adjacent resistor terminal voltages and upstream follower C/B/E/current, so they cannot alone close a complete same-row KCL ledger. Any next capture readback should batch all required nodes/branches once, authenticate the original full capture and reproduce the unchanged rejection first."
+  ],
+  "next_measurement_contract": {
+    "case_set": [
+      "nominal_early",
+      "nominal_late",
+      "hot_early"
+    ],
+    "same_native_rows": "Every recorded failed-device extremum plus original fixed0.3UI worst-margin brackets; also preserve complete active-window extrema and brackets for current steering.",
+    "gain_ledger": "Actual native follower C/B/E/current, gain B/E/C/current, both endpoints of corresponding input load, gain pullup/shunt and owned metal path, actual local AVDD/AVSS; use original compact-device laws/native reported currents and include dynamic charge current before claiming KCL closure.",
+    "hold_ledger": "Both cross-coupled hold C/B/E/current, emitter bleed endpoints/current, output load endpoints/current, local supply and all four shared-tail steering HBT C/B/E/current; retain physical terminal voltages rather than logical aliases.",
+    "no_new_simulation": true,
+    "no_changed_gates": true,
+    "no_component_values_until_evidence": true
+  },
+  "new_simulation": false,
+  "component_values_changed": false,
+  "physical_acceptance": false,
+  "electrical_acceptance": false
+}
