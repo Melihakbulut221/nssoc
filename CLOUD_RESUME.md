@@ -8435,3 +8435,10 @@ Local project/tmp/native processes verified absent. Inventory129 exact cloud han
 NativeCDR40188489346 passed exact observed font metadata correction, original annotation recovery and allfour strict-wire stages with original geometry/reference preserved. NativeTX40188423827 passed complete savedcapture diagnostics and31actualinputfaults; original30failedsamples/76HBT rejection remains. Earlier40186130564 obsoleteprobe error preserved. Phase318 sole savedreadback40188858885 and mainchip40185550438 are tracked exactly. Gen12CDC source50708f2c reviewed; hostedcontroller being authored. All work/cloud artifacts stay on GitHub.
 
 Local project/tmp/native processes verified absent. Inventory137 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-25T11:45:59.729177+00:00 — cloud-only checkpoint v42
+
+Saved normalTX40188423827 and phase31840188858885 diagnoses are complete and authenticated, with exact original electrical rejections preserved. Full compact evidence/replay/probe/control logs imported; normal both-bracket correlation isolates later-stage signal degradation and selection-dependent headroom without causalclaim. CDR next705-file immutable restoration/binding/rawRC contract5b8f8b73 is reviewed for sourceimplementation only. Gen12CDC hostedcontrollerb4bede8e remains unexecuted; permanentpublication fix and peerreview required. Only original mainchip40185550438 route remains active among tracked native jobs.
+
+Local project/tmp/native processes verified absent. Inventory137 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
