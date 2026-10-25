@@ -120,7 +120,9 @@ def main():
     save()
     try:
         spec=importlib.util.spec_from_file_location('exact_failed_v59_annotation',frozen)
-        module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);module.OUT=capsule
+        module=importlib.util.module_from_spec(spec)
+        # Execute exact authenticated source bytes, never a saved bytecode cache.
+        exec(compile(frozen.read_bytes(),str(frozen),'exec'),module.__dict__);module.OUT=capsule
         assert module.TOP==TOP and module.METALS==METALS and module.MODELS==MODELS
         proof,frame=original_failure(module);result['original_failure']=proof;save()
         signature=frame['signature'];target_layout=frame['L'];target=frame['c']
