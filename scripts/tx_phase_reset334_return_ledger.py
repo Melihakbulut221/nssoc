@@ -10,6 +10,7 @@ from collections import Counter,defaultdict,deque
 from decimal import Decimal
 import tx_phase_reset334_loaded_contract as bench
 import tx_phase_reset334_qualified_anchor_points as coordinates
+import tx_phase_reset334_route_inventory as physical_routes
 
 RC_SHA='a11da5bb7ee22134f9373d43a1fffda9d1f6538877b440031ffd910adec56bcf'
 PHYSICAL_SHA='5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913'
@@ -180,11 +181,13 @@ def inventory(binding_summary_raw,payload_raw,models,rc_raw,physical_raw,raw_inp
         assert Counter(t['model'] for t in terminals)==Counter(npn13G2=28,rppd=55,cap_cmim=2)
         assert {t['reference_label'] for t in terminals}|{'P_AVSS'}==(set(graph['AVSS_nodes']) & set(planes_by_ref))|{'P_AVSS'}
         gen=physical['variants'][sign]['generation']
+        route_inventory=physical_routes.inventory(gen,terminals)
         geometry=dict(origin_translation_um=gen['origin_translation_um'],public_port=gen['ports']['AVSS'],
             local_buses=[x for x in gen['local_buses'] if x['net']=='AVSS'],
             straps=[x for x in gen['additive_power_straps'] if x['net']=='AVSS'],
             vias=[x for x in gen['additive_power_vias'] if x['net']=='AVSS'],
-            routes=[x for x in gen['routes'] if x['net']=='AVSS'],
+            routes=route_inventory['AVSS_routes'],
+            route_inventory={k:v for k,v in route_inventory.items() if k!='AVSS_routes'},
             component_signature=physical['variants'][sign]['wires']['graph'])
         assert len(geometry['local_buses'])==15 and len(geometry['straps'])==16 and len(geometry['vias'])==101
         output[sign]=dict(model_sha256=digest(models[sign]),raw_res_sha256=digest(selected['res_ext']),

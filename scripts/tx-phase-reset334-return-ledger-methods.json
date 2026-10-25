@@ -1,10 +1,10 @@
 {
   "schema": "phase318-native-AVSS-edge-ledger-source-v1",
-  "readback_authorized": true,
+  "readback_authorized": false,
   "native_simulation_authorized": false,
   "native_extraction_authorized": false,
-  "source_only": false,
-  "controls_executed": true,
+  "source_only": true,
+  "controls_executed": false,
   "original_frozen_review_replays_required": 1,
   "original_electrical_rejection_remains": true,
   "original_first_fall_limit_s": 6.25e-11,
@@ -233,8 +233,8 @@
     "docs/evidence/tx-phase318-saved-capture-source-controls-pass-20261025.json": "1e280fdcfcfcd9c0fc9681eb4131338cbeeaac6142c62c469b1625ead2791599"
   },
   "protected_files": {
-    "scripts/tx_phase_reset334_return_ledger.py": "4d896eadfe0a97126e80f71d39616dc241dc49539a347cf9642f4129a6641060",
-    "scripts/check_tx_phase_reset334_return_ledger.py": "515510d184c956a4fd5dfdb6b2c0c151c88093b541906a8fdc03e56a3f665f31",
+    "scripts/tx_phase_reset334_return_ledger.py": "7e36608935054c259502d114994097d7832479245280a47c78addc7fd3f05519",
+    "scripts/check_tx_phase_reset334_return_ledger.py": "a39d31e17cf2d1f97b66fd0724ee1e9cf69e3d97a81ca10fedc9afecc44fdc5a",
     "docs/evidence/tx-phase318-AVSS-source-return-inventory-20261025.json": "f206332b15ce15a64ef8ffb86872934c351ada0794c8e1b8b84ca517d263c553",
     "docs/evidence/tx-phase318-loaded-row-engineering-observations-20261025.json": "1de195f7d5da0c542512acb13eb6d85a7400b09ba3e42410a3a9fd0e0c547e3a",
     "docs/evidence/tx-phase318-return-ledger-controls-job-20261025.log": "7e8a0420ac8e5c92edea8d3e2deca9166b6dc1b0c25de9ccc23cf76a997a18b5",
@@ -256,7 +256,16 @@
     "docs/evidence/tx-phase318-MIM-coordinate-controls-20261025-result.json": "86b0dec96c51df2c7ef51cf074769b8f5b9186ae9bc913a51e12abb78fc22ba5",
     "docs/evidence/tx-phase318-MIM-coordinate-controls-20261025-wait.json": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
     "docs/evidence/tx-phase318-MIM-coordinate-controls-20261025-publication.json": "bcc0c38102836aadf3c79bc1b7341b32b644de81191271c166cb8cc750188a00",
-    "docs/evidence/tx-phase318-MIM-coordinate-controls-20261025-pass.json": "a29c69d7497a2e0ecd9d88bebeb2fc77159414a832de8955aee9d9e0d307851a"
+    "docs/evidence/tx-phase318-MIM-coordinate-controls-20261025-pass.json": "a29c69d7497a2e0ecd9d88bebeb2fc77159414a832de8955aee9d9e0d307851a",
+    "scripts/tx_phase_reset334_route_inventory.py": "74ecb1618a6c5f097f7efe5037b664e938a03aa6dab3bd85b30589a68807e7a9",
+    ".github/workflows/tx-phase-reset334-return-ledger-cloud.yml": "0138859310b9eb9f576b1528d49e58edc575a0e0953fa0143bfa16b90c2e6c18",
+    ".github/workflow-templates/tx-phase-reset334-return-ledger-cloud.yml": "0138859310b9eb9f576b1528d49e58edc575a0e0953fa0143bfa16b90c2e6c18",
+    "docs/tx-phase318-explicit-physical-route-schemas-20261025.md": "e4fc40884069c75c4e95d84579a5295630c426c29b08100066bf2eb79ee3ab26",
+    "docs/evidence/tx-phase318-explicit-physical-route-schemas-20261025.json": "133643320b3b096a5cf159d194bd8f1d71d8e74f62de2dfa421b5c3c9a63209e",
+    "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025.json": "c6bc421e041270086cbe2984bc58254a8fda178f5e24d6ce82b38f04f1c6edae",
+    "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025-result.json": "b31c0cad3d4b2b8444c853cd5ef29c3a6db1899ef2a886c720abe438cacde657",
+    "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025-parts.json": "c75c78e0a8a3c2d7bf05de6743634305b63e0f52229dc0f6a64cede143a9a5dd",
+    "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025-job.log": "f6438ebf4953706993b3b2f80674f79b522e9b35128aae3b672baa32cb65cc3f"
   },
   "source_inventory": {
     "path": "docs/evidence/tx-phase318-AVSS-source-return-inventory-20261025.json",
@@ -480,10 +489,10 @@
     "per_edge_metal_or_via_assignment_not_yet_known": true
   },
   "required_next": [
-    "Independent source/graph review",
-    "Complete existing archive restoration/controller/template with unchanged one canonical electrical review",
-    "Hosted source controls and actual 36 input refusals",
-    "Root readback authorization and one existing-capture-only proof",
+    "Independent explicit two-schema source review",
+    "Hosted source controls: 40 route/owner faults and four actual inventory seam faults, with all inherited gates",
+    "Root metadata-only readback authorization after actual controls",
+    "One existing-capture-only readback; original rejection and 36 graph/row plus 32 coordinate refusals remain required",
     "Native material association of actual bottleneck candidates before any geometry edit"
   ],
   "no_new_native_work": true,
@@ -506,7 +515,7 @@
     "evidence": "docs/evidence/tx-phase318-qualified-MIM-anchor-relocation-20261025.json",
     "first_failure_receipt": "docs/evidence/tx-phase318-return-ledger-first-rejection-20261025.json"
   },
-  "hosted_source_controls": {
+  "previous_coordinate_hosted_source_controls": {
     "run": 40197625874,
     "source": "3f27e85abd1ec0ffdd18b250cacf04caf1d28d43",
     "job": 121181797600,
@@ -518,5 +527,19 @@
     "source_derived_fixture_only": true,
     "publication_actual_program_controls_passed": true,
     "readback_job_skipped": true
+  },
+  "physical_route_contract": {
+    "physical_summary_sha256": "5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913",
+    "total_routes_per_polarity": 586,
+    "scalar_routes": 578,
+    "MIM_pair_routes": 8,
+    "AVSS_scalar": 83,
+    "AVSS_MIM_minus": 2,
+    "AVSS_total": 85,
+    "source_schema_owner_faults": 40,
+    "actual_inventory_geometry_seam_faults": 4,
+    "actual_restored_schema_owner_faults": 40,
+    "evidence": "docs/evidence/tx-phase318-explicit-physical-route-schemas-20261025.json",
+    "second_failure_receipt": "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025.json"
   }
 }

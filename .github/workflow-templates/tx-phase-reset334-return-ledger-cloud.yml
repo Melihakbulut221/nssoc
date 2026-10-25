@@ -56,6 +56,17 @@ jobs:
               assert p['all_terminal_rows_exact']==1010 and p['all_anchor_records_exact']==695
               assert p['recorded_MIM_changes']==8 and p['AVSS_original_point_equal']==83
               assert len(p['AVSS_recorded_MIM_changes'])==2 and not p['coordinate_tolerance_used']
+          r=q['synthetic']['physical_route_controls']
+          assert r['status']=='PASS_PINNED_PHYSICAL_ROUTE_SCHEMA_CONTROLS_ONLY'
+          assert len(r['rejected'])==40 and r['source_terminal_fixture']
+          assert len(r['integration']['rejected'])==4 and r['integration']['actual_inventory_geometry_statements_executed']
+          assert not r['integration']['native_R_graph_or_waveform_executed']
+          assert not r['restored_terminal_owners_exercised'] and not r['new_geometry_or_simulation']
+          for sign in ('p','n'):
+              p=r['positives'][sign]
+              assert (p['total_routes'],p['scalar_routes'],p['MIM_pair_routes'])==(586,578,8)
+              assert (p['AVSS_terminal_routes'],p['AVSS_scalar_routes'],p['AVSS_MIM_terminal_routes'])==(85,83,2)
+              assert p['all586_records_classified'] and p['all85_terminal_owners_matched']
           assert q['actual_graph_or_waveform_executed'] is False
           PYCODE
           python3 scripts/wait_cloud_tested_source_release.py --controls > release-wait-controls.json

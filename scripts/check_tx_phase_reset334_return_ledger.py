@@ -1,14 +1,50 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Unexecuted source controls for the exact saved AVSS ledger; no native engine."""
-import copy,json,math
+import ast,copy,inspect,json,math
 from decimal import Decimal
+from collections import Counter
+from pathlib import Path
 import tx_phase_reset334_return_ledger as ledger
 
 def refused(label,fn,rejected):
     try:fn()
     except (AssertionError,KeyError,ValueError,IndexError,ZeroDivisionError):rejected.append(label)
     else:raise AssertionError('Accepted ledger fault '+label)
+def physical_route_seam(physical,terminals_by_sign):
+    # Execute the actual inventory geometry statements, not a copied fixture implementation.
+    original=inspect.getsource(ledger.inventory)
+    def evaluate(text,sign):
+        fn=ast.parse(text).body[0]
+        loop=next(n for n in fn.body if isinstance(n,ast.For))
+        starts=[i for i,n in enumerate(loop.body) if isinstance(n,ast.Assign)
+            and len(n.targets)==1 and isinstance(n.targets[0],ast.Name) and n.targets[0].id=='gen']
+        assert len(starts)==1
+        statements=loop.body[starts[0]:starts[0]+4]
+        assert len(statements)==4 and isinstance(statements[-1],ast.Assert)
+        names=[n.targets[0].id for n in statements[:3] if isinstance(n,ast.Assign) and isinstance(n.targets[0],ast.Name)]
+        assert names==['gen','route_inventory','geometry']
+        env=dict(physical=physical,sign=sign,terminals=terminals_by_sign[sign],physical_routes=ledger.physical_routes)
+        exec(compile(ast.fix_missing_locations(ast.Module(body=statements,type_ignores=[])),
+            '<actual-inventory-geometry-seam>','exec'),env)
+        geometry=env['geometry'];proof=env['route_inventory']
+        assert geometry['routes']==proof['AVSS_routes'] and len(geometry['routes'])==85
+        assert Counter(x['schema'] for x in geometry['routes'])==Counter(scalar=83,MIM=2)
+        assert geometry['route_inventory']=={k:v for k,v in proof.items() if k!='AVSS_routes'}
+        return dict(actual_inventory_statements=4,retained_scalar_AVSS=83,retained_MIM_AVSS=2)
+    positives={};rejected=[]
+    old="routes=route_inventory['AVSS_routes']"
+    assert original.count(old)==1
+    for sign in ('p','n'):
+        positives[sign]=evaluate(original,sign)
+        for name,new in [('old_uniform_net_filter',"routes=[x for x in gen['routes'] if x['net']=='AVSS']"),
+                         ('silently_omit_MIM',"routes=[x for x in route_inventory['AVSS_routes'] if x['schema']=='scalar']")]:
+            text=original.replace(old,new,1)
+            refused(sign+':'+name,lambda text=text,sign=sign:evaluate(text,sign),rejected)
+    assert len(rejected)==4
+    return dict(positives=positives,rejected=rejected,actual_inventory_geometry_statements_executed=True,
+        native_R_graph_or_waveform_executed=False)
+
 def synthetic_controls():
     rejected=[]
     assert ledger.number('1.25k')==Decimal(1250)
@@ -40,9 +76,18 @@ def synthetic_controls():
     assert len(rejected)==12
     physical,mim=ledger.coordinates.provenance()
     coordinate_controls=ledger.coordinates.controls(physical,mim)
+    text=(Path(__file__).resolve().parents[1]/'hw/soc/analog/pcie/clock_div2_assert_offset_v4.spice').read_text()
+    source_terminals={}
+    for sign in ('p','n'):
+        canonical=ledger.bench.binding.source_rows(text,sign)
+        source_terminals[sign]=[dict(source_instance=row['name'],model=row['model'],terminal=term,source_net=net)
+            for row in canonical for term,net in zip(ledger.bench.binding.ORDER[row['model']],row['nets'],strict=True)
+            if net=='AVSS']
+    route_controls=ledger.physical_routes.controls(physical,source_terminals)
+    route_controls['integration']=physical_route_seam(physical,source_terminals)
     return dict(status='PASS_SYNTHETIC_LEDGER_MATH_ONLY',rejected=rejected,
         actual_native_R_inventory_executed=False,actual_waveform_rows_executed=False,
-        qualified_coordinate_controls=coordinate_controls)
+        qualified_coordinate_controls=coordinate_controls,physical_route_controls=route_controls)
 def actual_controls(inputs,contract_raw,time,values,rows):
     """Run only on restored authenticated inputs, before one frozen waveform review.
 
@@ -52,6 +97,8 @@ def actual_controls(inputs,contract_raw,time,values,rows):
     physical,mim=ledger.coordinates.provenance()
     actual_points={sign:json.loads(inputs['raw_inputs'][sign]['anchors']) for sign in ('p','n')}
     coordinate_controls=ledger.coordinates.controls(physical,mim,actual_points)
+    route_controls=ledger.physical_routes.controls(physical,
+        {sign:catalog['polarities'][sign]['terminals'] for sign in ('p','n')},restored_terminal_owners=True)
     rc=json.loads(inputs['rc_raw'])
     for sign in ('p','n'):
         comp=rc['polarities'][sign]['composition'];audit=rc['polarities'][sign]['orders']['precise']['audit']
@@ -118,5 +165,6 @@ def actual_controls(inputs,contract_raw,time,values,rows):
     assert len(rejected)==36
     return catalog,dict(status='PASS_ACTUAL_GRAPH_AND_ROW_INPUT_REFUSALS_ONLY',
         positive_graphs=positives,rejected=rejected,qualified_coordinate_controls=coordinate_controls,
+        physical_route_controls=route_controls,
         original_electrical_review_repeated=False,
         geometry_or_circuit_acceptance=False)
