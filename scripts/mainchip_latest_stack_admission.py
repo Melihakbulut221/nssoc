@@ -95,6 +95,9 @@ def restore_files_only(target):
     release=api('releases/422907570')
     transport_identity(api('actions/runs/'+str(RUN)),release,api('git/ref/tags/'+release['tag_name']))
     target=Path(target);assert target.is_absolute()and not target.exists()
+    assert target.parent.is_dir()and target.parent.resolve()==target.parent
+    reports.OUT=target.parent/'latest-capsule-transport'
+    reports.OUT.mkdir(exist_ok=False)
     got,proof=reports.restore_report(GROUP,RUN,SUMMARY,PARTS,target,selected_names(r))
     assert got==r
     admitted=validate_restored(r,target);admitted['archive_proof']=proof

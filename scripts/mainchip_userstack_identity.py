@@ -66,7 +66,16 @@ def snapshot(pid,expected=None,tracer=None,require_running=False):
             if require_running:assert t['state']not in ('T','t','Z','X','x')
             tasks.append(t)
         assert tasks and len({t['pid']for t in tasks})==len(tasks)
-        return dict(identity=identity,process=after,tracer_pid=actual_tracer,tasks=tasks)
+        final=stat_record(fd_read(fd,'stat'))
+        assert final['pid']==pid and final['starttime']==before['starttime'],'Process changed during task census'
+        finalexe=os.open('exe',os.O_RDONLY|os.O_CLOEXEC,dir_fd=fd)
+        try:
+            fest=os.fstat(finalexe)
+            assert object_id(fest)==identity['exe'] and fest.st_size==identity['exe_bytes']
+            with os.fdopen(os.dup(finalexe),'rb')as f:assert hashlib.file_digest(f,'sha256').hexdigest()==identity['exe_sha256']
+        finally:os.close(finalexe)
+        assert os.readlink('exe',dir_fd=fd)==identity['exe_path']
+        return dict(identity=identity,process=final,tracer_pid=actual_tracer,tasks=tasks)
     finally:os.close(fd)
 
 def check_frames(report,observed):
@@ -130,7 +139,11 @@ class ProcessPin:
         assert object_id(os.fstat(self.directory))==self.expected['proc_directory']
         current=stat_record(fd_read(self.directory,'stat'))
         assert current['pid']==self.pid and current['starttime']==self.expected['starttime']
-        return snapshot(self.pid,self.expected,tracer=tracer,require_running=require_running)
+        result=snapshot(self.pid,self.expected,tracer=tracer,require_running=require_running)
+        assert poll.poll(0)==[],'Pinned process exited during complete task census'
+        final=stat_record(fd_read(self.directory,'stat'))
+        assert final['pid']==self.pid and final['starttime']==self.expected['starttime']
+        return result
     def close(self):
         for name in ('pidfd','directory'):
             fd=getattr(self,name,None)
