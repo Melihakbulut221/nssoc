@@ -37,6 +37,12 @@ jobs:
           assert all(x.get('passed')is True or x.get('rejected')is True for x in r['controls'].values())
           q=r['qualified_supervision_controls']
           assert len(q['controls'])==13 and all(q['controls'].values())
+          z=r['bounded_memory_sampler_controls']
+          assert z['status']=='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL'
+          assert len(z['positives'])==9 and all(z['positives'].values())
+          assert len(z['rejected'])==22 and all(v['rejected'] for v in z['rejected'].values())
+          assert z['real_churn']['samples']>=3 and z['real_churn']['maximum_observed_members']>=2
+          assert not z['real_churn']['cleanup']['remaining_live']
           assert r['simulations_executed']is False and r['synthesis_executed']is False
           assert r['terminal_source_pins_unchanged']is True
           p=r['publication_controls']

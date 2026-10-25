@@ -1,0 +1,13 @@
+# Bounded live-memory counter resampling candidate — 2026-10-25
+
+The actual CDC proof 40193110968 stopped during the exact Verilator tool build, before any RTL, mapped, synthesis, or mutation execution. The supervisor reported unavailable live-process VmRSS. Its last valid memory sample was below both limits. No memory-pressure, OOM, PID-reuse, or exit/exec cause is established by that record.
+
+This source-only candidate retains the frozen supervisor file and installs only a new memory_snapshot callable. The original 2 GiB available-memory minimum, 10 GiB group-RSS ceiling, 0.5-second sampling cadence, command timeout, raw-stream evidence, process-group cleanup, and rejection-before-mutant-classification are unchanged. All functional RTL/oracles and 66/33/18 requirements remain unchanged.
+
+Only absent VmRSS or a missing status file for an independently observed still-live identity can request another sample. At most three complete fresh attempts are allowed, with 20 ms between attempts and a 100 ms window starting at the first absent counter. No previous RSS or MemAvailable value is reused. Every resample records enumerated PID/process-group/start-time identities, held-directory before/after identity, disposition and status digest. A successful return contains only the final fresh measurement; earlier attempts remain diagnostic evidence.
+
+Each process is read through an O_NOFOLLOW held /proc/PID directory. Exit or nonrunning state is explicitly recorded and excluded rather than replaced by an invented RSS. Changed PID/start-time/group identity, persistent missing data, malformed/negative/duplicate/wrong-unit counters, permission errors and exhausted time remain failures. Identity sampling cannot make /proc atomic or guarantee that an abrupt host kill is avoided.
+
+The hosted controls add nine positives and 22 negative cases, including fresh values after transient absence, bounded persistent absence, identity transitions, counter corruption and permissions. A separate harmless real short-lived process-churn fixture reads actual /proc identities and must observe child membership and clean termination. The original 13 supervision fixtures, 49 classification cases and all publication controls remain mandatory.
+
+The prior exact native failure and complete evidence are preserved in docs/evidence/pcie-gen12-record-cdc-native-tool-setup-rejection-20261025.json. This candidate has had only source/AST/derivation inspection. Native authorization is false. No retry, tool build, simulation, synthesis, archive read or hosted control run is performed by publishing it. Independent review and actual controls are required before any further native authorization.

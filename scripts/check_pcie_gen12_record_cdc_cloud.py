@@ -95,6 +95,9 @@ def controls():
         assert original['status']=='PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL'
         assert len(original['controls'])==13 and all(original['controls'].values())
         result['qualified_supervision_controls']=original
+        import check_pcie_live_memory_sampler as memory_controls
+        result['bounded_memory_sampler_controls']=memory_controls.controls(s)
+        c.save(c.OUT/'controls.json',result)
         found={}
         def reject(name,fn):
             try:fn()

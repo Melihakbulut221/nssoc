@@ -1,0 +1,46 @@
+{
+  "basis_source": "96ee918510bc3a3c1e24acfd9404459f8d8b75f0",
+  "between_attempts_seconds": 0.02,
+  "edits": [
+    {
+      "count": 1,
+      "derived_sha256": "4f039723883ea7a51f7a892f4caab6d6aff0d632759c3a40438f3b50ce8a632f",
+      "new": "        assert Path(SUP.__file__).resolve()==ARCHIVE/'scripts/cloud_pcie_gen12_training_records_telemetry.py'\n        from pcie_live_memory_sampler import install\n        install(SUP)\n",
+      "old": "        assert Path(SUP.__file__).resolve()==ARCHIVE/'scripts/cloud_pcie_gen12_training_records_telemetry.py'\n",
+      "original_sha256": "385280d745272ce3839327d382e3357b633362ed44a67c1bf48fe5651ad85cd2",
+      "path": "scripts/cloud_pcie_gen12_record_cdc.py"
+    },
+    {
+      "count": 1,
+      "derived_sha256": "9c29f8fae5eef9e2be3115d52061636c2a75c297ff0e3e0c6fc9c73c305560f0",
+      "new": "        result['qualified_supervision_controls']=original\n        import check_pcie_live_memory_sampler as memory_controls\n        result['bounded_memory_sampler_controls']=memory_controls.controls(s)\n        c.save(c.OUT/'controls.json',result)\n",
+      "old": "        result['qualified_supervision_controls']=original\n",
+      "original_sha256": "090f0ef17b6d3d3e651baff6e6ba6679face3dc4896035356eb7da6f86142f58",
+      "path": "scripts/check_pcie_gen12_record_cdc_cloud.py"
+    },
+    {
+      "count": 1,
+      "derived_sha256": "b728de4ecaf9483ba580552d534e8f24a7a2203b7a5a33cad665364850d2bfb0",
+      "new": "          assert len(q['controls'])==13 and all(q['controls'].values())\n          z=r['bounded_memory_sampler_controls']\n          assert z['status']=='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL'\n          assert len(z['positives'])==9 and all(z['positives'].values())\n          assert len(z['rejected'])==22 and all(v['rejected'] for v in z['rejected'].values())\n          assert z['real_churn']['samples']>=3 and z['real_churn']['maximum_observed_members']>=2\n          assert not z['real_churn']['cleanup']['remaining_live']\n",
+      "old": "          assert len(q['controls'])==13 and all(q['controls'].values())\n",
+      "original_sha256": "52217d88a5123f15246ee9da2085f65f23e807b146fd74c1305468c652294515",
+      "path": ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml"
+    },
+    {
+      "count": 1,
+      "derived_sha256": "b728de4ecaf9483ba580552d534e8f24a7a2203b7a5a33cad665364850d2bfb0",
+      "new": "          assert len(q['controls'])==13 and all(q['controls'].values())\n          z=r['bounded_memory_sampler_controls']\n          assert z['status']=='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL'\n          assert len(z['positives'])==9 and all(z['positives'].values())\n          assert len(z['rejected'])==22 and all(v['rejected'] for v in z['rejected'].values())\n          assert z['real_churn']['samples']>=3 and z['real_churn']['maximum_observed_members']>=2\n          assert not z['real_churn']['cleanup']['remaining_live']\n",
+      "old": "          assert len(q['controls'])==13 and all(q['controls'].values())\n",
+      "original_sha256": "52217d88a5123f15246ee9da2085f65f23e807b146fd74c1305468c652294515",
+      "path": ".github/workflows/pcie-gen12-record-cdc-cloud.yml"
+    }
+  ],
+  "frozen_supervisor": "hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py",
+  "frozen_supervisor_sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b",
+  "maximum_attempts": 3,
+  "native_execution_authorized": false,
+  "original_limits_and_cleanup_unchanged": true,
+  "resampling_window_seconds": 0.1,
+  "runtime_scope": "Install one replacement memory_snapshot callable after exact frozen-file and original-function source validation; no frozen file edit, no other supervisor function edit.",
+  "schema": "bounded-live-VmRSS-source-adapter-v1"
+}

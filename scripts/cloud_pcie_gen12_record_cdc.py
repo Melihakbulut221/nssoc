@@ -55,6 +55,8 @@ def supervisor():
         try:SUP=importlib.import_module('cloud_pcie_gen12_training_records_telemetry')
         finally:sys.path[:]=old
         assert Path(SUP.__file__).resolve()==ARCHIVE/'scripts/cloud_pcie_gen12_training_records_telemetry.py'
+        from pcie_live_memory_sampler import install
+        install(SUP)
     return SUP
 
 def pins():
