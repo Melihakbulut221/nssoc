@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Owned hosted launcher smoke; never creates geometry or runs a simulator."""
-import argparse,base64,hashlib,json,os,signal,subprocess,sys,tempfile
+import argparse,ast,base64,hashlib,json,os,signal,subprocess,sys,tempfile,time
 from pathlib import Path
 import cdr_v59_mim_admission as admission
 from cloud_cdr_v59_binding_rc import emit
@@ -42,6 +42,18 @@ def validate_report(raw):
     for key in ('executable_sha256','pya_file_sha256'):
         assert len(r[key])==64 and all(c in '0123456789abcdef'for c in r[key])
     return r
+SUPERVISOR='docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py'
+SUPERVISOR_SHA='e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b'
+SUPERVISOR_NAMES=('SupervisionFailure','safe_read','group_members','live_members','stop_process')
+def supervisor():
+    path=admission.ROOT/SUPERVISOR;raw=path.read_bytes()
+    assert hashlib.sha256(raw).hexdigest()==SUPERVISOR_SHA
+    tree=ast.parse(raw.decode())
+    nodes=[n for n in tree.body if isinstance(n,(ast.FunctionDef,ast.ClassDef))and n.name in SUPERVISOR_NAMES]
+    assert [n.name for n in nodes]==list(SUPERVISOR_NAMES)
+    scope=dict(Path=Path,os=os,signal=signal,time=time,json=json)
+    exec(compile(ast.Module(body=nodes,type_ignores=[]),str(path),'exec'),scope)
+    return scope
 def probe(app,expected_sha,out,timeout=60,env=None):
     app=Path(app);out=Path(out);out.mkdir(parents=True,exist_ok=False)
     stdout=out/'stdout.bin';stderr=out/'stderr.bin'
@@ -49,8 +61,10 @@ def probe(app,expected_sha,out,timeout=60,env=None):
     r=dict(status='FAIL_RUNTIME_LAUNCH',accepted=False,launcher_started=False,
       timed_out=False,command=[str(app),'python','-c',CODE],
       expected_appimage_sha256=expected_sha,simulation_executed=False,
-      geometry_executed=False)
+      geometry_executed=False,cleanup_helper_sha256=SUPERVISOR_SHA)
+    process=None
     try:
+        owned=supervisor()
         assert app.is_absolute()and app.is_file()and not app.is_symlink()
         r['appimage_before_sha256']=digest(app)
         assert r['appimage_before_sha256']==expected_sha,'Pinned launcher hash mismatch'
@@ -58,29 +72,33 @@ def probe(app,expected_sha,out,timeout=60,env=None):
             process=subprocess.Popen(r['command'],stdout=outlog,stderr=errlog,
                 env=env,start_new_session=True)
             r['launcher_started']=True;r['pid']=process.pid
-            try:code=process.wait(timeout=timeout)
-            except subprocess.TimeoutExpired:
-                r['timed_out']=True
-                try:os.killpg(process.pid,signal.SIGKILL)
-                except ProcessLookupError:pass
-                code=process.wait()
-            except BaseException:
-                try:os.killpg(process.pid,signal.SIGKILL)
-                except ProcessLookupError:pass
-                process.wait();raise
-            r['returncode']=code
+            try:
+                try:process.wait(timeout=timeout)
+                except subprocess.TimeoutExpired:r['timed_out']=True
+            finally:
+                if process.poll()is not None:
+                    r['live_after_leader_exit']=owned['live_members'](process.pid)
+                r['cleanup']=owned['stop_process'](process)
+                r['returncode']=process.returncode
+        assert not r.get('live_after_leader_exit',[]),'Live descendant after launcher leader exit'
+        assert not r['cleanup']['remaining_live'],'Owned group did not terminate'
         r['appimage_after_sha256']=digest(app)
         assert r['appimage_after_sha256']==expected_sha,'Launcher changed during smoke'
-        assert not r['timed_out']and code==0,('launcher_return',code,r['timed_out'])
+        assert not r['timed_out']and r['returncode']==0,('launcher_return',r['returncode'],r['timed_out'])
         assert stdout.stat().st_size<=262144 and stderr.stat().st_size<=262144
         r['interpreter']=validate_report(stdout.read_bytes())
         r.update(status='PASS_PINNED_APPIMAGE_INTERPRETER_AND_PYA_IMPORT',accepted=True)
     except BaseException as error:r['error']=repr(error)
     finally:
+        terminal=process is None or ('cleanup'in r and not r['cleanup']['remaining_live'])
+        r['terminal_group_verified_before_stream_collection']=terminal
+        if not terminal:r.update(status='FAIL_RUNTIME_GROUP_NOT_TERMINAL',accepted=False)
         for name,path in [('stdout',stdout),('stderr',stderr)]:
-            entry=dict(bytes=path.stat().st_size,sha256=digest(path),path=path.name)
-            if path.stat().st_size<=262144:entry['base64']=base64.b64encode(path.read_bytes()).decode()
-            else:r.update(status='FAIL_RUNTIME_LOG_BOUND',accepted=False)
+            entry=dict(bytes=path.stat().st_size,path=path.name,complete=terminal)
+            if terminal:
+                entry['sha256']=digest(path)
+                if path.stat().st_size<=262144:entry['base64']=base64.b64encode(path.read_bytes()).decode()
+                else:r.update(status='FAIL_RUNTIME_LOG_BOUND',accepted=False)
             r[name]=entry
         admission.write(out/'result.json',r)
     return r
@@ -126,12 +144,18 @@ def controls():
         invalid=dict(good['interpreter'],platform='invalid')
         wrong=launcher('wrong-platform',"printf '%s\\n' "+shlex.quote(MARKER+json.dumps(invalid))+"\n")
         reject('zero_exit_invalid_runtime_identity',wrong,expected_code=0)
+        orphan_code="import os,sys,time\nassert sys.argv[1]=='-c'\nexec(sys.argv[2],{})\nchild=os.fork()\nif child:os._exit(0)\nwhile True:\n os.write(1,b'OWNED_DESCENDANT\\n');time.sleep(.01)\n"
+        orphan=launcher('orphan-after-leader','test "$1" = python || exit 97\nshift\nexec '+shlex.quote(sys.executable)+' -c '+shlex.quote(orphan_code)+' "$@"\n')
+        ended=reject('actual_leader_exit_with_live_descendant',orphan,expected_code=0)
+        assert ended['live_after_leader_exit']and not ended['cleanup']['remaining_live']
+        assert ended['terminal_group_verified_before_stream_collection']
+        assert validate_report(base64.b64decode(ended['stdout']['base64']))['pya_imported']
         binary=launcher('binary-stderr',"printf '\\377\\000' >&2\n"+body)
         exact=probe(binary,digest(binary),root/'binary-out',env=env)
         assert exact['accepted']and base64.b64decode(exact['stderr']['base64'])==bytes([255,0])
         positives.append('exact_nonUTF8_stderr_preserved')
-    assert len(rejected)==8 and len(positives)==2
-    return dict(status='PASS_HOSTED_LAUNCHER_TRANSPORT_8_FAULTS_2_POSITIVES',
+    assert len(rejected)==9 and len(positives)==2
+    return dict(status='PASS_HOSTED_LAUNCHER_TRANSPORT_9_FAULTS_2_POSITIVES',
       rejected=rejected,positive=positives,actual_subprocesses=True,
       pya_module_in_controls='EXPLICIT_SYNTHETIC_STUB_NOT_NATIVE_PYA',
       actual_appimage_executed=False,native_geometry_executed=False)
