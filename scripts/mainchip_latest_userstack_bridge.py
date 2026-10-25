@@ -3,7 +3,7 @@
 """Separate latest40120760532 file bridge; old40095811631 admission is immutable."""
 import copy,hashlib,json,os,re,shutil
 from pathlib import Path
-import mainchip_latest_stack_admission as latest
+import mainchip_latest_native_stack_admission as latest
 from mainchip_userstack_identity import file_sha
 ROOT=Path(__file__).resolve().parents[1]
 METHOD='scripts/mainchip-userstack-native-methods.json'
@@ -22,6 +22,13 @@ def activate_required_inputs():
         if p in REQUIRED_INPUTS:assert REQUIRED_INPUTS[p]==h
         REQUIRED_INPUTS[p]=h
     return m
+def descriptor():
+    return dict(run=latest.RUN,attempt=1,group=latest.GROUP,source_head=latest.HEAD,
+        summary_sha256=latest.SUMMARY,parts_sha256=latest.PARTS,
+        exact_inner_sha256=latest.INNER,generated_controller_sha256=latest.CONTROLLER,
+        original_controller_sha256='08b91df1a93d28c4acda1dbeae3b45e53af8393664ceaf71038808bdb0707eee',
+        native_process_saved=True,normal_continuation_accepted=False,
+        next_phase='reviewed_saved_process_diagnostic_only')
 def rejected_receipt():
     global STAGED
     assert STAGED is None
@@ -38,13 +45,14 @@ def rejected_receipt():
     STAGED=dict(path=target,proof=proof,outer=outer,inner=copy.deepcopy(inner))
     return dict(group=latest.GROUP,run=latest.RUN,summary_sha256=latest.SUMMARY,
         parts_sha256=latest.PARTS,source_head=latest.HEAD,report=inner,
-        exact_inner_sha256=latest.INNER,normal_continuation_accepted=False)
+        exact_inner_sha256=latest.INNER,descriptor=descriptor(),normal_continuation_accepted=False)
 def restore_failed_capsule(pin,target,old_names):
     global STAGED
     assert STAGED is not None
     assert pin['run']==latest.RUN and pin['source_head']==latest.HEAD
     assert pin['summary_sha256']==latest.SUMMARY and pin['parts_sha256']==latest.PARTS
     assert pin['exact_inner_sha256']==latest.INNER and pin['report']==STAGED['inner']
+    assert pin['descriptor']==descriptor()
     expected=sorted(n for n in STAGED['outer']['outputs']if n.startswith(('work/','checkpoints/')))
     assert sorted(old_names)==expected and len(expected)==36
     target=Path(target);assert not target.exists()and target.parent==STAGED['path'].parent

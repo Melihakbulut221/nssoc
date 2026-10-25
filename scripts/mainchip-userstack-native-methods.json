@@ -95,17 +95,18 @@
     "docs/evidence/mainchip-route12-global-pass-20261023.json": "b1f5ba79b842b4a4dc2667b6a5eea58e75df897376f373cec20ab6d0390b2729",
     "scripts/cloud_mainchip_route12_drt_continuation.py": "08b91df1a93d28c4acda1dbeae3b45e53af8393664ceaf71038808bdb0707eee",
     "scripts/mainchip-route12-drt-methods.json": "eb71f5f616bed3b17e5cbeea8ae657c874b8b174653caf349d388dc8d94db010",
-    "scripts/mainchip_userstack_native_binding.py": "a8cf471b69518b6edc5b24f7c5a99a088e30e3ff99d1d5bfabededc0bb9a4870",
+    "scripts/mainchip_userstack_native_binding.py": "a9d5011101a720027bc111171223f423b7ce204103876c4c780f5a303675d0cb",
     "scripts/mainchip_userstack_native_reader.py": "20331cfbd510865caefb99c8ed59198683b394369156b4f546092617c5133087",
-    "scripts/mainchip_userstack_native_observer.py": "f9bb0b1bfa6f00d87881ec4d2bc1c3f4eb92dc40bc1574d36c803daac204ab9e",
-    "scripts/mainchip_userstack_native_probe.py": "1ab9466e698f13e3dbf554b7321c6d6d7c05a909d1a94651812574fc41f2f00a",
-    "scripts/mainchip_latest_userstack_bridge.py": "445464462da688e180d3493d57650b9c8a300b5bba49ee9ceaa966fb577fa8f9",
+    "scripts/mainchip_userstack_native_observer.py": "cfc5cc323be5cd077290933ea5d20edeca3ddcb1d480d96ba680fec0f4090534",
+    "scripts/mainchip_userstack_native_probe.py": "1b83c8fbc11e1ee330d931815adc651fd7c9944ba1ae9357f1af7fe69cb9eace",
+    "scripts/mainchip_latest_userstack_bridge.py": "1c2b13c02f2c3dc9b5b6b0f27aacca7f19439d852ff63f16b7e366fe5f8b2b15",
     "scripts/mainchip_userstack_native_prerequisite.py": "7696709381ae6d679943460e5469902107a2f23ce84d1bc8401189375de756a9",
-    "scripts/cloud_mainchip_userstack_diagnostic.py": "28b751f68478cd218dd264bc16dc4ca6120fab316908f6e714938d36d6dbb3b0",
-    "scripts/check_mainchip_userstack_native_source.py": "a6b0add83064ba414b8882b13d40e81f72ce8d5ba0cb7fd5b2942ecb79c50ad9",
-    "docs/mainchip-latest-userstack-native-candidate-20261025.md": "caa7b0220fc35708d7792336d3804dcf71e7b8d14ac22461320704c6113230a9",
+    "scripts/cloud_mainchip_userstack_diagnostic.py": "e43d459686dbd312c96c91273f428128103e2adff9a65fe60de3362079235b28",
+    "scripts/check_mainchip_userstack_native_source.py": "fdb049408180d9c1fc366c4be41da52b38d4d1579f600c3db8b1599f02463fe2",
+    "docs/mainchip-latest-userstack-native-candidate-20261025.md": "537dc0ca8eff1e64ce0d2c365f66acb36ae5f39da28f32630a197021ac2c4fb0",
     ".github/workflow-templates/mainchip-latest-userstack-controls-cloud.yml": "3d815feb929258ea02cc123307e4434080d8e0d95eebedbccc3e56fda524db5b",
-    "hw/soc/diagnostic-source-basis/userstack/cloud_mainchip_portable_runtime.py": "6647d0806401d315fad1b152cf742ee176b99d264fa774000c57553d854bc29c"
+    "hw/soc/diagnostic-source-basis/userstack/cloud_mainchip_portable_runtime.py": "6647d0806401d315fad1b152cf742ee176b99d264fa774000c57553d854bc29c",
+    "scripts/mainchip_latest_native_stack_admission.py": "c784290c35a459561ea42e46bd4ee45874c7c93ee966353ba3d39e15bd1bb64e"
   },
   "derivations": [
     {
@@ -217,6 +218,13 @@
           "new": "historical_sources_unchanged_proven=False,scheduling_perturbed=True,harmless_fixture_prerequisite=qualification)",
           "count": 1,
           "reverse_count": 1
+        },
+        {
+          "label": "exact-latest-generated-history",
+          "old": "assert old==pin['report']and old['controller_sha256']==diag.FROZEN_SHA",
+          "new": "assert old==pin['report']and old['controller_sha256']==diag.admission.latest.CONTROLLER",
+          "count": 1,
+          "reverse_count": 1
         }
       ]
     },
@@ -317,9 +325,31 @@
           "reverse_count": 1
         }
       ]
+    },
+    {
+      "basis_path": "scripts/mainchip_latest_stack_admission.py",
+      "output_path": "scripts/mainchip_latest_native_stack_admission.py",
+      "basis_sha256": "267a7d6ab6cf724e9b6eead847e8e1e4763376738cbcbbe6a3c5ef95bbd2e23c",
+      "edits": [
+        {
+          "label": "actual-latest-generated-controller",
+          "old": "CONTROLLER='08b91df1a93d28c4acda1dbeae3b45e53af8393664ceaf71038808bdb0707eee'",
+          "new": "CONTROLLER='adc703fa0b22d259393fd19b5419d974193b59dcbd2ae9c462a8983e23c0e244'",
+          "count": 1,
+          "reverse_count": 1
+        },
+        {
+          "label": "exact-outer-generated-controller",
+          "old": "    assert r['source_head']==HEAD and str(r['run_id'])==str(RUN)\n",
+          "new": "    assert r['source_head']==HEAD and str(r['run_id'])==str(RUN)\n    assert r['generated_program_sha256']==CONTROLLER\n",
+          "count": 1,
+          "reverse_count": 1
+        }
+      ]
     }
   ],
   "native_controller_unchanged": true,
   "runtime_generator_source": "81341b09dfc77501b19c9aba412d85bc40cff8f3",
-  "native_execution_claimed": false
+  "native_execution_claimed": false,
+  "exact_latest_generated_controller_sha256": "adc703fa0b22d259393fd19b5419d974193b59dcbd2ae9c462a8983e23c0e244"
 }

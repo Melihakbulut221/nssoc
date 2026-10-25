@@ -13,8 +13,8 @@ def start_probe(name,inv,case,out,r):
     assert PROBE is None
     c=inspect(name);assert c['running']and c['image']==r['image_id']
     expect={k:c[k]for k in ('id','image','pid','started_at','cpuset')}
-    expect.update(route_tcl=str(case/'route.tcl'),identity=snapshot(c['pid'],tracer=0,require_running=True)['identity'])
-    bound(c,expect);verify_live(expect,inv)
+    expect.update(route_tcl=str(case/'route.tcl'))
+    bound(c,expect)
     folder=out/'native-userstack';folder.mkdir()
     expected_path=folder/'expect.json';write(expected_path,expect)
     inv_path=ROOT/'cloud-mainchip-route12-drt-runtime/input/runtime-inventory.json'
@@ -29,6 +29,10 @@ def start_probe(name,inv,case,out,r):
     PROBE=dict(process=child,stream=stream,folder=folder,expect=expect,inventory=inv,start=time.monotonic(),finished=False)
     deadline=PROBE['start']+60
     while not(folder/'ready.json').exists()and child.poll()is None and time.monotonic()<deadline:time.sleep(.25)
+    if(folder/'ready.json').exists():
+        ready=json.loads((folder/'ready.json').read_text())
+        if ready['status']=='BOUND_EXACT_NATIVE_PROCESS':
+            expect['identity']=ready['identity'];write(expected_path,expect)
     r['native_userstack_started']=dict(expected=expect,ready=(folder/'ready.json').exists(),
         scheduling_perturbed=True,normal_continuation_accepted=False)
 def probe_rejected():
@@ -60,7 +64,10 @@ def finish_probe(r,out):
         finally:
             if child.poll()is not None:p['stream'].close()
         p['returncode']=rc
-    detached=verify_live(p['expect'],p['inventory'])
+    command=['sudo','env','GITHUB_ACTIONS=true',sys.executable,str(ROOT/'scripts/mainchip_userstack_native_binding.py'),
+        '--verify','--expect',str(folder/'expect.json'),'--inventory',str(ROOT/'cloud-mainchip-route12-drt-runtime/input/runtime-inventory.json')]
+    detached=json.loads(subprocess.check_output(command,timeout=30))
+    assert detached['status']=='PASS_EXACT_NATIVE_DETACHED_IDENTITY'and detached['target_detached']is True
     info=dict(returncode=p['returncode'],scheduling_perturbed=True,
         target_detached_before_checkpoint=True,identity=detached['identity'],normal_continuation_accepted=False)
     if(folder/'result.json').exists():

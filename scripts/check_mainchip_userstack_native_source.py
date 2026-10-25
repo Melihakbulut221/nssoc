@@ -6,7 +6,7 @@ from pathlib import Path
 import cloud_mainchip_userstack_diagnostic as controller
 import mainchip_userstack_native_binding as bind
 import mainchip_latest_userstack_bridge as bridge
-import mainchip_latest_stack_admission as latest
+import mainchip_latest_native_stack_admission as latest
 import mainchip_userstack_native_prerequisite as prerequisite
 from mainchip_userstack_identity import object_id
 ROOT=Path(__file__).resolve().parents[1]
@@ -37,6 +37,17 @@ def check():
     new=ast.parse(Path(controller.__file__).read_text())
     funcs=lambda t:{n.name:ast.dump(n)for n in t.body if isinstance(n,ast.FunctionDef)}
     a,b=funcs(old),funcs(new)
+    # Reconstruct the historical generated source without importing/executing its native main.
+    node=next(n for n in old.body if isinstance(n,ast.FunctionDef)and n.name=='adapted_source')
+    class FrozenFile:
+        def read_text(self):return (ROOT/'hw/soc/diagnostic-source-basis/userstack/cloud_mainchip_route12_drt_continuation.py').read_text()
+    class FrozenRoot:
+        def __truediv__(self,unused):return FrozenFile()
+    scope=dict(ROOT=FrozenRoot(),FROZEN='frozen',FROZEN_SHA=controller.FROZEN_SHA,hashlib=hashlib,ast=ast)
+    exec(compile(ast.Module(body=[node],type_ignores=[]),'<historical-source-only>','exec'),scope)
+    historical,_=scope['adapted_source']()
+    assert hashlib.sha256(historical.encode()).hexdigest()==latest.CONTROLLER
+    assert bridge.descriptor()['generated_controller_sha256']==latest.CONTROLLER
     for name in ('current_inputs','recheck_inputs','verify_no_progress_site','run_inner_and_verify'):
         assert a[name]==b[name],name
     basis=(ROOT/'hw/soc/diagnostic-source-basis/userstack/mainchip_rejected_capsule_admission.py').read_text()

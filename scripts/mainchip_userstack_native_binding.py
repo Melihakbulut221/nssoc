@@ -136,3 +136,18 @@ def verify_live(expect,inv,tracer=0,require_running=True):
     assert actual==inv['environment']
     bound(inspect(expect['id']),expect)
     return got
+
+def main():
+    import argparse
+    assert os.environ.get('GITHUB_ACTIONS')=='true'
+    m=json.loads((ROOT/'scripts/mainchip-userstack-native-methods.json').read_text())
+    assert m['native_process_restore_authorized']is True and m['native_attachment_authorized']is True
+    for p,h in m['protected'].items():assert file_sha(ROOT/p)==h,p
+    a=argparse.ArgumentParser();a.add_argument('--verify',action='store_true',required=True)
+    a.add_argument('--expect',required=True);a.add_argument('--inventory',required=True);args=a.parse_args()
+    expect=json.loads(Path(args.expect).read_text());inv=inventory(Path(args.inventory).read_bytes())
+    with ProcessPin(expect['pid'],expect['identity'])as pin:
+        pin.verify();r=verify_live(expect,inv);pin.verify()
+    print(json.dumps(dict(status='PASS_EXACT_NATIVE_DETACHED_IDENTITY',identity=r['identity'],
+        tasks=r['tasks'],target_detached=True,normal_continuation_accepted=False)))
+if __name__=='__main__':main()

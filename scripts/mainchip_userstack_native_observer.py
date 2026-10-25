@@ -3,7 +3,7 @@
 """20 bounded read-only attachments to the exact saved process; scheduling is perturbed."""
 import argparse,hashlib,json,os,signal,subprocess,sys,time,traceback
 from pathlib import Path
-from mainchip_userstack_identity import ProcessPin,file_sha,check_frames
+from mainchip_userstack_identity import ProcessPin,file_sha,check_frames,snapshot
 from mainchip_userstack_observer import supervised,write,emit_bounded_command_outputs
 from mainchip_userstack_native_binding import inventory,verify_live,mapped_runtime,runtime_closure,MODE
 ROOT=Path(__file__).resolve().parents[1]
@@ -65,6 +65,8 @@ def main():
     a=argparse.ArgumentParser();a.add_argument('--expect',required=True);a.add_argument('--inventory',required=True);a.add_argument('--out',required=True);a.add_argument('--gdb',required=True);args=a.parse_args()
     method_gate();out=Path(args.out);assert out.is_dir()
     expect=json.loads(Path(args.expect).read_text());inv_path=Path(args.inventory);inv=inventory(inv_path.read_bytes())
+    assert 'identity'not in expect,'Bootstrap identity must be measured in the privileged observer'
+    expect['identity']=snapshot(expect['pid'],tracer=0,require_running=True)['identity']
     assert file_sha(args.gdb)==GDB_SHA
     signal.signal(signal.SIGTERM,stopped);signal.signal(signal.SIGINT,stopped)
     start=time.monotonic();deadline=start+480;samples=[];report=dict(status='RUNNING',**FLAGS)

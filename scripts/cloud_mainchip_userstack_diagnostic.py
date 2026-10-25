@@ -53,7 +53,7 @@ def adapted_source():
       ('exact-recovered-image-restore',"            old,proof=reports.restore_report(pin['group'],pin['run'],pin['summary_sha256'],pin['parts_sha256'],out/'initial',old_names)\n",
        "            old,proof=diag.admission.restore_failed_capsule(pin,out/'initial',old_names)\n"),
       ('honest-historical-failure',"            assert old==pin['report']and old['sources_unchanged']and old['controller_sha256']in{LEGACY_CONTROLLER_SHA256,r['controller_sha256']}\n",
-       "            assert old==pin['report']and old['controller_sha256']==diag.FROZEN_SHA\n            assert 'sources_unchanged'not in old and 'active_drt_cross_runner_progress_proven'not in old\n"),
+       "            assert old==pin['report']and old['controller_sha256']==diag.admission.latest.CONTROLLER\n            assert 'sources_unchanged'not in old and 'active_drt_cross_runner_progress_proven'not in old\n"),
       ('current-inputs-before-restore',"            ident=run('create-restored',command(name,True)).stdout.strip();assert re.fullmatch('[a-f0-9]{64}',ident)\n",
        "            diag.current_inputs(BASE,case,r,runtime,names,global_report,global_names,full,methods)\n            ident=run('create-restored',command(name,True)).stdout.strip();assert re.fullmatch('[a-f0-9]{64}',ident)\n"),
       ('streaming-copy-proof','            compare="import pathlib,hashlib,sys;scan=lambda d:{str(p.relative_to(d)):hashlib.sha256(p.read_bytes()).hexdigest()for p in d.rglob(\'*\')if p.is_file()};assert scan(pathlib.Path(sys.argv[1]))==scan(pathlib.Path(sys.argv[2]))"\n',

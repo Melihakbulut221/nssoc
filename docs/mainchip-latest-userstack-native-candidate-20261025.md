@@ -49,3 +49,10 @@ derivations, check unchanged AST seams and exercise 37 binding/path/error
 faults with real temporary-file opens. These controls are not yet executed.
 The template is manual, source-controls-only and unregistered. No chip restore,
 attachment, routing, final timing or PHY acceptance is claimed.
+
+The native-specific latest file-admission derivative corrects an unexecuted
+fixture-admission assumption: latest inner controller identity is adc703fa…,
+the exact generated observer source, while its frozen source remains08b91df1….
+Source controls reconstruct that historical generated program and verify its
+published hash. The original qualified fixture admission file stays unchanged.
+The new descriptor records both identities and cannot admit old400958 as latest.
