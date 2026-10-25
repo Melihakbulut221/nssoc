@@ -1,0 +1,168 @@
+{
+  "schema": "cdr-v59-saved-source-census-terminal-v1",
+  "status": "PASS_ACTUAL_EMPTY_AUXILIARY_GDS_DIAGNOSIS_ORIGINAL_REJECTION_RETAINED",
+  "run": {
+    "id": 40180385567,
+    "head_sha": "abab9391fd7b07259294ab15e046117b712dabcb",
+    "run_attempt": 1,
+    "event": "workflow_dispatch",
+    "path": ".github/workflows/cdr-v59-annotation-diagnostic-cloud.yml",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "jobs": [
+    {
+      "id": 121129994561,
+      "name": "controls",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 121130071837,
+      "name": "read-only-native-geometry",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "release": {
+    "id": 423285659,
+    "tag_name": "cloud-results-40180385567-1-cdr-v59-annotation-diagnostic",
+    "target_commitish": "abab9391fd7b07259294ab15e046117b712dabcb",
+    "draft": false,
+    "prerelease": true
+  },
+  "assets": [
+    {
+      "id": 674613565,
+      "name": "cdr-v59-annotation-diagnostic-40180385567-1.diagnosis.json",
+      "size": 3363876,
+      "digest": "sha256:3c8f5aa86b3a68a1311a840c4ad84c8049324898d303ef3601c49dd24f0d88c4"
+    },
+    {
+      "id": 674613442,
+      "name": "cdr-v59-annotation-diagnostic-40180385567-1.parts.json",
+      "size": 868,
+      "digest": "sha256:ba3234a1ad364972f947d66479f0d5241d0ce895724dfe1f8af95617ca6bb59c"
+    },
+    {
+      "id": 674613353,
+      "name": "cdr-v59-annotation-diagnostic-40180385567-1.summary.json",
+      "size": 68730,
+      "digest": "sha256:7b99e37369fc022f8255a929ff75c767b142cc5ac5c046027e66bf9427e68dca"
+    },
+    {
+      "id": 674613507,
+      "name": "cdr-v59-annotation-diagnostic-40180385567-1.tar.gz.part0000",
+      "size": 138360,
+      "digest": "sha256:1f9a3a4e0cc07e166b1b644d6e04f4fd760a3793eaf4b11c0231c910b8697aee"
+    }
+  ],
+  "job_log": {
+    "job": 121130071837,
+    "bytes": 130587,
+    "sha256": "a7418b816d2c9ec00b2ca9e1a2d146b3ee96e137bd3cc7e0eb279fedb50a751b",
+    "exact_summary_recovered_from_log": true
+  },
+  "actual_census": {
+    "source": "parent/inputs/sampler_cd/layout/native-rppd-v59-cd_shunt.gds",
+    "bytes": 66,
+    "sha256": "d0463267c8b53af161a7f47384eb6a83578f7d588bf03453729a0d077c66dd18",
+    "exact_file_hex": "000600020258001c010207ea000a00190008001a000a07ea000a00190008001a000a000802064c494200001403053e4189374bc6a7f03944b82fa09b5a5400040400",
+    "record_inventory": [
+      {
+        "offset": 0,
+        "bytes": 6,
+        "record_type": 0,
+        "data_type": 2,
+        "exact_record_hex": "000600020258",
+        "sha256": "3d58039577894a2cfccff63c7348306cd0f08d88bc71f66ae231d033d8233a7b"
+      },
+      {
+        "offset": 6,
+        "bytes": 28,
+        "record_type": 1,
+        "data_type": 2,
+        "exact_record_hex": "001c010207ea000a00190008001a000a07ea000a00190008001a000a",
+        "sha256": "dc32bbe49c70989ef33e8ce4e3d03792f4dca5652967947243e891121e6dbc27"
+      },
+      {
+        "offset": 34,
+        "bytes": 8,
+        "record_type": 2,
+        "data_type": 6,
+        "exact_record_hex": "000802064c494200",
+        "sha256": "f696d5757b4fc7f0c8fe77e68eac1e2463b7ebd2d5bca9a2afdc86f6a3808e35"
+      },
+      {
+        "offset": 42,
+        "bytes": 20,
+        "record_type": 3,
+        "data_type": 5,
+        "exact_record_hex": "001403053e4189374bc6a7f03944b82fa09b5a54",
+        "sha256": "e8af559ea4454d44433b873f5305afec6b0020ad77bea7acaf710ce3bbd68efa"
+      },
+      {
+        "offset": 62,
+        "bytes": 4,
+        "record_type": 4,
+        "data_type": 0,
+        "exact_record_hex": "00040400",
+        "sha256": "798954f87c35100e175892248e7fda11bd06037f06539b26110b803159617912"
+      }
+    ],
+    "dbu_um": 0.001,
+    "cell_count": 0,
+    "top_cells": [],
+    "cells": []
+  },
+  "original_failure": {
+    "code_file_sha256": "29b92f3ae273b3f5bf6f0f9ae4b144c3257b73bf38307500c27f8853d00d90ea",
+    "function": "recover",
+    "line": 62,
+    "error": "AssertionError(('rppd$v59_cd_shunt', ('rppd', '26cb371619de68fbd6248f25a98a6b1c2ef649e3e75d56b082c7eafb9d35ec91')))",
+    "cell": "rppd$v59_cd_shunt",
+    "key": [
+      "rppd",
+      "26cb371619de68fbd6248f25a98a6b1c2ef649e3e75d56b082c7eafb9d35ec91"
+    ],
+    "original_traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/diagnose_cdr_v59_annotation_native.py\", line 20, in original_failure\n    try:module.recover()\n        ~~~~~~~~~~~~~~^^\n  File \"/home/runner/work/nssoc/nssoc/.cdr-v59-annotation-source/capsule/methods/cdr_v59_recover.py\", line 62, in recover\n    assert key in sources,(c.name,key)\n           ^^^^^^^^^^^^^^\nAssertionError: ('rppd$v59_cd_shunt', ('rppd', '26cb371619de68fbd6248f25a98a6b1c2ef649e3e75d56b082c7eafb9d35ec91'))\n",
+    "source_key_count": 32,
+    "source_file_count": 11,
+    "original_rejection_retained": true
+  },
+  "native_material_controls": {
+    "positive_equal_material": true,
+    "annotation_exclusion_does_not_hide_pin_witness": true,
+    "rejected": [
+      "added_actual_material",
+      "removed_actual_material",
+      "translated_actual_material",
+      "additional_actual_layer"
+    ]
+  },
+  "source_census_controls": {
+    "positive_cases": [
+      "unrecognized_annotated_leaf_reported",
+      "nonleaf_wrapper_reported",
+      "empty_layout_reported"
+    ],
+    "rejected": [
+      "omitted_unrecognized_cell",
+      "duplicate_cell_census",
+      "truncated_record",
+      "zero_record_length",
+      "odd_record_length"
+    ],
+    "record_bytes_preserved": true
+  },
+  "preserved_candidate_gds_sha256": "fb2a773c4d3a3ffab6acfe7718a55fa5db0c2621a6c75377940c95a7989b70b5",
+  "preserved_candidate_reference_sha256": "9f70d7af1f26aa07029c8b473e7596f27cd6a50e1dacae4ea16bfd4559fc9f13",
+  "all339_source_files_and_original_report_unchanged": true,
+  "historical_sources_unchanged_was_not_reached": true,
+  "diagnosis": "The serialized auxiliary native source contains no cells. This is missing saved source material, not evidence for a signature-only fallback. The prior candidate layout and full physical/planes results are retained.",
+  "next_repair": "Independently materialize exact frozen native old/new resistor drawings and their actual annotations into owned static source cells, require full serialization/material/pin/text identity, then run unchanged annotation recovery and strict graph/anchor gates on the same candidate. No target layout regeneration.",
+  "annotation_binding_accepted": false,
+  "strict_wire_qualified": false,
+  "qualified_pex": false,
+  "electrical_accepted": false
+}

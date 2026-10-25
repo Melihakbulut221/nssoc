@@ -8396,3 +8396,14 @@ First p-high full-state transient40178775666 remains sole current process; retai
 Read-only CDR40179142223 passed diagnostic only: original exact line62 error reproduced,339 source files unchanged, no eligible new annotated native source found; saved newsourceGDS only66bytes. Full3.36MB native witness and summary/log/parts imported. Name-independent complete cell/record census c3c2eee9 pending review; no geometry fallback or repair acceptance. Original candidate/passing physical evidence remains untouched.
 
 Full serial PHY, routed serial chip and final setup/hold closure remain open.
+
+
+### 2026-10-25T09:30:28.403950+00:00 — cloud-only checkpoint v37
+
+CDR saved-source census40180385567/sourceabab9391 conclusively identifies missing serialized source geometry: exact66-byte auxiliary GDS contains five records, zero native cells, no top cells, DBU0.001. Full rawhex/native census and all controls preserved at98f8db07 and imported here. Original exact line62 failure and339 file hashes unchanged; this is not a signature-representation mismatch.
+
+Next bounded correction is an additional static annotated O/F source beside the original empty file, from frozen nativePCell runtime. Require exact serialized material/text/pin equality to original/candidate, then unchanged recovery and strict graph/anchor verification. Candidate GDS/reference/passing physical evidence stay fixed. No source-recovery or electrical acceptance yet.
+
+Mainchip40179732322 and first p-high40178775666 remain the sole two current native processes; their exact state is refreshed in machine checkpoint.
+
+Local project/tmp/native processes verified absent. Inventory118 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
