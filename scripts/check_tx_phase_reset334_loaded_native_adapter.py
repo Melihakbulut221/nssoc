@@ -40,7 +40,10 @@ def controls():
       ('added-UIC',base.replace('.tran .3125p 34n 0 .3125p','.tran .3125p 34n 0 .3125p uic')),
       ('missing-transient',base.replace('run wave.raw\n',''))]:
         faults.append(reject(label,lambda:a.initialized_deck(bad,c)))
-        reject(label+'-OP-only',lambda:a.op_only(bad,c,True))
+        # Frozen OP-only removes the complete sole transient line, including UIC.
+        # It must never retain/run that line; initialized_deck above rejects UIC.
+        if label=='added-UIC':assert a.op_only(bad,c,True)==op
+        else:reject(label+'-OP-only',lambda:a.op_only(bad,c,True))
     for p in adapter.PINS:
         sources={q:(adapter.ROOT/q).read_text()for q in adapter.PINS};sources[p]+='\n'
         faults.append(reject('changed-frozen-source-'+p,lambda:adapter.derive(sources)))
