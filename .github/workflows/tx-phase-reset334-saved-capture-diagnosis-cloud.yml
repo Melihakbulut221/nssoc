@@ -1,0 +1,12 @@
+name: tx-phase-reset334-saved-capture-diagnosis-cloud
+on:
+  push:
+    branches: [codex/phase318-saved-capture-diagnosis]
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - run: echo 'Workflow registration only; no checkout, files, archive, engine or readback.'
