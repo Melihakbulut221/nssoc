@@ -1,0 +1,131 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-mim-precision-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      enable_native:
+        description: 'Exact passed334 MIM geometry: both native RC orders and composition; no electrical simulation'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-mim-precision-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Exact MIM prerequisite and reversible RC/composition source controls
+        run: |
+          if bash -o pipefail -c '(exit 7) | tee /dev/null'; then exit 1; fi
+          python3 -m pip install networkx==3.4.2 numpy==2.1.3
+          python3 scripts/cloud_tx_phase_reset334_mim_precision.py --controls | tee source-controls.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open("source-controls.json"))
+          assert x["status"]=="PASS_RESET334_RC13_DERIVATIONS19_FAULTS_AND_ORIGINAL_CAP_ORDER_CONTROLS_NO_NATIVE"
+          assert len(x["source_derivations"])==13 and len(x["rejected"])==19
+          assert len(x["JSON_tuple_list_roundtrips"])==6
+          assert len(x["cap_order_controls"])==4 and len(x["publication_controls"]["rejected"])==17
+          assert x["native_executed"] is x["electrical_accepted"] is x["full_phy_accepted"] is False
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: reset334-mim-precision-controls
+          path: source-controls.json
+          if-no-files-found: error
+          retention-days: 90
+  fresh-two-polarity334-mim-precision:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch' && inputs.enable_native
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Require precreated release bound to this exact tested source
+        run: |
+          python3 - <<'PY'
+          import os,sys
+          sys.path.insert(0,"scripts")
+          import ensure_cloud_tested_source_release as p
+          tag,source=p.context("tx-phase-reset334-mim-precision",os.environ)
+          proof=p.validate_release(p.api("releases/tags/"+tag),p.api("git/ref/tags/"+tag),tag,source)
+          assert not proof["existing_assets"],"Never reuse or overwrite a prior production capsule"
+          print(proof)
+          PY
+      - name: Restore dependencies for the exact qualified native Magic runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 tk8.6 tcl-dev tk-dev build-essential m4 autoconf libreadline-dev libx11-dev libxext-dev libxpm-dev libxt-dev libcairo2-dev libgl1-mesa-dev libglu1-mesa-dev
+          python3 -m pip install networkx==3.4.2 numpy==2.1.3
+      - name: Extract both334 physical polarities in two native orders and compose all compact devices
+        run: python3 scripts/cloud_tx_phase_reset334_mim_precision.py
+      - name: Preserve complete small result with exact bytes
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          p=Path("hw/soc/out/cloud-tx-phase-reset334-mim-precision/result.json")
+          if not p.exists():
+              p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_text(json.dumps(dict(status="FAIL_MISSING_REPORT",full_phy_accepted=False))+"\n")
+          b=p.read_bytes();assert len(b)<=16_000_000
+          print("RESULT_SHA256",hashlib.sha256(b).hexdigest());print("RESULT_BYTES",len(b))
+          s=base64.b64encode(b).decode();parts=[s[i:i+4096]for i in range(0,len(s),4096)]
+          for i,c in enumerate(parts):print(f"RESULT_BASE64 {i}/{len(parts)} {c}")
+          PY
+      - name: Publish all native RC, geometry, compact models and rejected outputs
+        if: always()
+        id: publish
+        run: |
+          python3 - <<'PY'
+          import os,sys
+          sys.path.insert(0,"scripts")
+          import ensure_cloud_tested_source_release as p
+          tag,source=p.context("tx-phase-reset334-mim-precision",os.environ)
+          print(p.validate_release(p.api("releases/tags/"+tag),p.api("git/ref/tags/"+tag),tag,source))
+          PY
+          root=hw/soc/out/cloud-tx-phase-reset334-mim-precision
+          stem="tx-phase-reset334-mim-precision-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PY'
+          import json,subprocess,sys
+          stem=sys.argv[1];m=json.load(open(stem+".parts.json"))
+          subprocess.run([sys.executable,"scripts/publish_cloud_results.py","--group","tx-phase-reset334-mim-precision",stem+".summary.json",stem+".parts.json",*[p["name"]for p in m["parts"]]],check=True)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome != 'success'
+        with:
+          name: reset334-mim-precision-complete-evidence
+          path: hw/soc/out/cloud-tx-phase-reset334-mim-precision/
+          if-no-files-found: error
+          retention-days: 90

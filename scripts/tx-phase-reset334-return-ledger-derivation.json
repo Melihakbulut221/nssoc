@@ -1,0 +1,90 @@
+{
+  "schema": "exact-existing-phase-reader-ledger-adapter-v1",
+  "controller": {
+    "path": "scripts/cloud_tx_phase_reset334_saved_capture.py",
+    "source_sha256": "0536cf24a536083a017b32c1fa247d9d502fd8c374bcfdaf8dbd246f45742ee5",
+    "destination": "scripts/cloud_tx_phase_reset334_return_ledger.py",
+    "derived_sha256": "98d16f26e2749b9bf364afe6f391538f84d33e78c59a9bf922ce6b209510aa54",
+    "edits": [
+      {
+        "old": "import tx_phase_reset334_saved_diagnosis as observer\n",
+        "new": "import tx_phase_reset334_saved_diagnosis as observer\nimport tx_phase_reset334_return_ledger_bridge as ledger_bridge\n",
+        "count": 1
+      },
+      {
+        "old": "METHOD='scripts/tx-phase-reset334-saved-capture-cloud-methods.json'",
+        "new": "METHOD='scripts/tx-phase-reset334-return-ledger-cloud-methods.json'",
+        "count": 1
+      },
+      {
+        "old": "GROUP='tx-phase-reset334-saved-capture-diagnosis'",
+        "new": "GROUP='tx-phase-reset334-return-ledger'",
+        "count": 1
+      },
+      {
+        "old": "    return m\n\ndef original_result",
+        "new": "    assert m['readback_authorized']==ledger_bridge.methods()['readback_authorized']\n    return m\n\ndef original_result",
+        "count": 1
+      },
+      {
+        "old": "    return dict(status='PASS_PHASE318_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY',math=math,metadata=metadata,",
+        "new": "    supplement=ledger_bridge.bridge_controls(m)\n    return dict(status='PASS_PHASE318_RETURN_LEDGER_SOURCE_CONTROLS_ONLY',ledger=supplement,math=math,metadata=metadata,",
+        "count": 1
+      },
+      {
+        "old": "'tx-phase318-saved-capture'",
+        "new": "'tx-phase318-return-ledger'",
+        "count": 1
+      },
+      {
+        "old": "        result['actual_input_controls']=actual_controls(c,deck,expected_c,expected_b,inputs);save()\n",
+        "new": "        result['actual_input_controls']=actual_controls(c,deck,expected_c,expected_b,inputs);save()\n        catalog,ledger_inputs,ledger_proof=ledger_bridge.prepare_inventory(m,work,inputs,(case/'contract.json').read_bytes())\n        result['RC_restore_and_graph_inventory']=ledger_proof;save()\n        catalog_proof=write(OUT/'complete-native-AVSS-graph.json',catalog)\n        write(OUT/'AVSS-probe-inventory-before-review.json',ledger_proof['probes_before_frozen_review'])\n",
+        "count": 1
+      },
+      {
+        "old": "        diagnosis=observer.observe_restored(case,method,lambda name,value:write(OUT/name,value))",
+        "new": "        diagnosis=ledger_bridge.observe(case,method,lambda name,value:write(OUT/name,value),catalog,ledger_inputs)",
+        "count": 1
+      },
+      {
+        "old": "OUT/'complete-native-row-diagnosis.json'",
+        "new": "OUT/'complete-native-AVSS-row-ledger.json'",
+        "count": 1
+      },
+      {
+        "old": "        compact=dict(status=diagnosis['status'],full_witness=proof,frames=len(diagnosis['frames']),\n          failed_hbt_count=diagnosis['original_failed_HBT_count'],pair_extrema_both_signs=diagnosis['pair_extrema_both_signs'],\n          failed_hbt_same_row_extrema=diagnosis['failed_hbt_same_row_extrema'],first_fall_windows=diagnosis['first_fall_windows'],\n          native_pair_nodes=diagnosis['native_pair_nodes'],original_first_fall_limit_s=diagnosis['original_first_fall_limit_s'],\n          original_rejection_reproduced=True,causal_conclusion=False,circuit_edit_justified=False,\n          full_row_observations_in_separate_witness=True,no_interpolation_or_observed_phase_fit=True)\n",
+        "new": "        compact=ledger_bridge.compact(diagnosis,proof,catalog_proof)\n",
+        "count": 1
+      },
+      {
+        "old": "PASS_PHASE318_SAVED_DIAGNOSIS_ORIGINAL_ELECTRICAL_REJECTION_REMAINS",
+        "new": "PASS_PHASE318_AVSS_RETURN_LEDGER_ORIGINAL_ELECTRICAL_REJECTION_REMAINS",
+        "count": 1
+      },
+      {
+        "old": "FAIL_PHASE318_SAVED_CAPTURE_DIAGNOSIS",
+        "new": "FAIL_PHASE318_AVSS_RETURN_LEDGER",
+        "count": 1
+      }
+    ]
+  },
+  "observer": {
+    "path": "scripts/tx_phase_reset334_saved_diagnosis.py",
+    "source_sha256": "955430fe3719889dc195cc1b61d160e3882a6c5e0ffa23fa3b48ad4abb3f6a70",
+    "function_sha256": "2921d29f130f8f95aebeab0b8c0f5a1d9ba1e04ef2f2211e91f3ca61aebe2cce",
+    "derived_sha256": "5b524598cf4b44dd30aed41201228dab09f917b03ddface2082b2af7731bb2ee",
+    "edits": [
+      {
+        "old": "def observe_restored(case,method,emit):",
+        "new": "def observe_for_ledger(case,method,emit,finish):",
+        "count": 1
+      },
+      {
+        "old": "    return analyze(t,values,c,replay)",
+        "new": "    return finish(t,values,c,replay)",
+        "count": 1
+      }
+    ]
+  },
+  "scope": "Only final diagnostic callback changes; exact original full rejection replay remains once"
+}
