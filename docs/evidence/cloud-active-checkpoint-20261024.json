@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T14:09:39.390347+00:00",
+  "updated_at": "2026-10-25T14:52:11.749260+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "c7bccc75ef7a452f89abc61ebbaef5cbf18b9662",
+  "root_source_before_receipt": "f00b672cdcba3ba99b2e842321e1eb43c01bd857",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 47,
+    "inventory_version": 48,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40163484810,
@@ -15,27 +15,27 @@
     "last_verified_run_status": "ATTENTION_REQUIRED: actual observation succeeded and published; nonzero exit reflects tracked open failures, not MONITOR_ERROR"
   },
   "active_runs": {
-    "mainchip_saved7200_next_native": {
-      "run": 40199977397,
-      "head_sha": "e291495bea09cfeb38df625c21f6697f90625749",
+    "cdc_reset_fixture_full_native": {
+      "run": 40202709622,
+      "head_sha": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
       "status": "in_progress",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121188907132,
+          "id": 121197069924,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121189017872,
-          "name": "exact-saved-route",
+          "id": 121197198545,
+          "name": "complete-functional-proof",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Continue only the exact saved 401855 process under original routing gates"
+            "Bounded exact tools, two RTL simulators, mapped oracle and eighteen compiled faults"
           ]
         }
       ]
@@ -751,15 +751,108 @@
       "simulation_enabled": false,
       "extraction_enabled": false,
       "prior_binding_rc_publication_recovery_run": 40196976458
+    },
+    "goal_continuation_audit_v48": {
+      "previous_goal_turn": "progress",
+      "evidence": "v47 durable cloud-only migration and sole mainchip continuation; this continuation produces actual source-control passes and successful full saved waveform/AVSS ledger evidence.",
+      "goal_complete": false,
+      "cloud_only_overrides_older_local_work_text": true
+    },
+    "phase318_return_ledger_v48": {
+      "run": 40202237269,
+      "source": "30cc90bb5b9aeea0aaa6400b0e1493009fe8eaaa",
+      "release": 423452799,
+      "proof_source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "status": "PASS_PHASE318_AVSS_RETURN_LEDGER_ORIGINAL_ELECTRICAL_REJECTION_REMAINS",
+      "summary_asset": 675256060,
+      "summary_sha256": "31fb2523c1656a519abd9feeb7fc4bfbd740b4cf9f783e2f588707ba83f9bc1c",
+      "full_ledger_asset": 675256272,
+      "full_ledger_bytes": 24753270,
+      "full_ledger_sha256": "ba597239dd03d64c897d8bec65d3e1312d3565bb2626216df40b400a99352b64",
+      "full_graph_asset": 675256218,
+      "full_graph_sha256": "8094269dde8d76e61e3c1a8d8d457555da2036a250354e4b8d9d3d69c64c26c0",
+      "native_rows": 42,
+      "macros": 3,
+      "native_R_multiset": 1347,
+      "physical_components": 119,
+      "AVSS_terminals": 85,
+      "actual_graph_row_faults": 36,
+      "actual_coordinate_faults": 32,
+      "actual_route_owner_faults": 40,
+      "original_frozen_review_replays": 1,
+      "original_canonical_replay_sha256": "c1f5bac1147ee04378cff03c1bbc617f1a75167521f94a7701445ca781c50bbf",
+      "original_17_HBT_rejections_preserved": true,
+      "electrical_accepted": false,
+      "PLL_connected": false,
+      "full_PHY_accepted": false,
+      "no_full_wave_extrema_or_full_KCL_or_Ic_equals_Ie_claim": true,
+      "next_layout_hypothesis_source": "3e6ea3fb056501f4ee7d5a974b7151541ea85f63",
+      "observed_worst_XD105_row": 23023,
+      "observed_worst_return_V": 0.237611,
+      "observed_middle_span_V": 0.167287,
+      "proposal": "Only AVSS TopMetal1 cross-row width6->18um, unchanged center112um/y89..2371; requires native ownership/DRC/LVS, fresh two-order RC and unchanged loaded-wave gates.",
+      "geometry_change_or_electrical_benefit_verified": false
+    },
+    "cdc_reset_fixture_v48": {
+      "controls_run": 40201434083,
+      "controls_source": "befcd75fffc6f3d32d1bce132de2c8f364d410e8",
+      "controls_proof": "86d010f0fc5fc8b138df393e93b2bdf29abe02f3",
+      "full_controls_sha256": "93b1b0993a16c67f261ce837831238feee5c09d2ccfe9893da92ae998b73b2df",
+      "actual_classification_groups": 63,
+      "actual_supervision": 13,
+      "actual_sampler_positive": 15,
+      "actual_sampler_negative": 27,
+      "line206_and207_qualified_line216_refused": true,
+      "native_run": 40202709622,
+      "native_source": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
+      "release": 423455789,
+      "final_methods_sha256": "c4a32062720e80e0d4372958251e4ee2ef9173fe346d97c9780dc3b2d90e7708",
+      "required_full_scope": {
+        "rtl": 66,
+        "mapped": 33,
+        "syntheses": 6,
+        "compiled_mutants": 18
+      },
+      "native_terminal_evidence_accepted": false,
+      "no_partial_resume": true,
+      "automatic_retry": false,
+      "Gen3_integration_boundary_source": "3b52dea8691b2e348baf3be731d9bcf077d94c59",
+      "normal_SDS_deskew_not_a_TS_EQ_owner": true,
+      "full_PCS_LTSSM_or_linkup_accepted": false
+    },
+    "cdr_v59_mim_v48": {
+      "controls_run": 40202166490,
+      "controls_source": "52c20676b13a59dbb443db65b42e16ac29bf9da2",
+      "controls_proof": "c2e5d7c8491a9fa47bc0525c95ebfd7425a685a7",
+      "actual_source_faults": 83,
+      "reversible_adapters": 5,
+      "literal_edits": 26,
+      "old_pins_at_controls": 351,
+      "native_run": 40203058826,
+      "native_source": "ff038d2c73169cb8e28a743d9905989298a3d9ef",
+      "release": 423458272,
+      "failure_proof": "2df9d48f57a7200e2e4da224398a0618f7568738",
+      "first_failure": "Pinned librelane.AppImage cannot write uid_map: Operation not permitted; native geometry helper returned127 on ubuntu-24.04.",
+      "stage_asset": 675278338,
+      "stage_sha256": "805ad5ad2a3dc297437925ceb99b7a6732a06cf1d96eb0b6b62899d2f6d79c40",
+      "complete_binding763_rc1136_restored": true,
+      "canonical1127_and_original706_unchanged": true,
+      "completed_variants": 0,
+      "Magic_extraction_completed": false,
+      "composition_completed": false,
+      "electrical_accepted": false,
+      "full_PHY_accepted": false,
+      "next_repair": "Restore native ubuntu-22.04 runner from exact successful workflows; add actual pinned AppImage/python/pya launcher smoke and retained exit/stdout/stderr before geometry; keep all physics/runtime hashes unchanged.",
+      "automatic_retry": false
     }
   },
   "next_actions": [
-    "Keep source, CAD, simulations, native archives and resume evidence on GitHub. Local workspace/tmp/native processes remain absent; RAM metadata/source/derived-JSON orchestration only.",
-    "Observe sole native mainchip40199977397 exact sourcee291495b and release423436830. It resumes saved40185550438 only after original archive/inner/log admission; preserve original7200s budget,20/4/8/8ns+5percent timing and no-log/checkpoint gates. No duplicate, cold restart, automatic retry or completion claim.",
-    "Preserve failed CDC controls40200111070 and prior native40196820337 (66RTL/33mapped/six synthesis/nine accepted mutants). Review checker-only sourcef8a69b4d: exact206/207/216 inventory,216unqualified, unchanged controller/harness/RTL/oracle. Run hosted controls before any separately reviewed complete-proof retry.",
-    "Review phase318 explicit mixed-schema candidatef07c5e9d. Require actual hosted route/owner/inventory mutation controls before any readback activation. Retain all83scalar+2MIM AVSS owners, both rejected readbacks, original math/electrical gates and zero new simulation/geometry.",
-    "Review current CDR MIM sourcefe911ddf (344pins,83proposed controls, five reversible adapters). Actual native binding and RC publication recovery40196976458 is complete; next MIM controls/native are not executed or enabled.",
-    "Retain full PHY/link-training/lane-mapping/analog/electrical and final physical/RC/STA acceptance boundaries. Existing8h read-only cloud monitor remains; no automated native retry."
+    "Keep every source/native/CAD/simulation/archive/result on GitHub. Local workspace/tmp/native processes remain absent; RAM source/metadata/derived JSON only. Keep existing8h read-only monitor/no automatic native dispatch.",
+    "Observe sole mainchip40199977397 at exacte291495b. Do not duplicate/restart. Retain original saved-process/log/progress/checkpoint guards and7200s segment,20/4/8/8ns+5percent timing. Routing/finalSTA/fullPHY remain open until actual final evidence.",
+    "Consume sole full CDC40202709622/source81ac935f/release423455789. Require all66RTL/33mapped/six syntheses/18compiledfaults and full resource/publication gates; preserve failure or complete output. No partial resume/automatic retry.",
+    "Phase318 saved readback40202237269 succeeded with42rows/all36+32+40 actual faults and one original reviewer replay. Electrical17HBT rejection remains. Implement/review isolated AVSS6->18um trunk source hypothesis3e6ea3fb, preserving all other geometry/circuit; source guards then native ownership/DRC/LVS/fresh two-orderRC and unchanged loaded-wave gates. Do not scale oldR or infer causal/electrical acceptance.",
+    "Preserve CDR native40203058826 runtime-launch failure2df9d48f; full inputs restored unchanged but AppImage uid_map blocked on new24.04 runner before geometry. Review minimal restored22.04/native launcher smoke, hosted controls before one explicitly reviewed retry. Same AppImage/hash/PDK/native algorithms/ten original electrical cases, no simulation or geometry regeneration waiver.",
+    "Review Gen3 integration boundary3b52dea8: common-clock raw194-bit Gen3 training-record export before normal descrambler plus epoch/control acknowledgment is missing; external packet linkup/training status is not fullPHY. Preserve normative TS/EQ/LTSSM/lane-map limitations and no inferred COM/SDS linkup."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -897,15 +990,178 @@
     "observed_40198176471": 40198176471,
     "observed_40199176389": 40199176389,
     "observed_40199301259": 40199301259,
-    "observed_40200111070": 40200111070
+    "observed_40200111070": 40200111070,
+    "observed_40201395758": 40201395758,
+    "observed_40201434083": 40201434083,
+    "observed_40201932935": 40201932935,
+    "observed_40202166490": 40202166490,
+    "observed_40202237269": 40202237269,
+    "observed_40203058826": 40203058826,
+    "observed_40199977397": 40199977397
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40199977397,
-      "head_sha": "e291495bea09cfeb38df625c21f6697f90625749",
+      "run": 40201395758,
+      "head_sha": "097b3c1bbc45e4ad141cc397ce4de4e1dc38a795",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121193134593,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121193275575,
+          "name": "saved-capture-readback",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40201434083,
+      "head_sha": "befcd75fffc6f3d32d1bce132de2c8f364d410e8",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121193250637,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121193390240,
+          "name": "complete-functional-proof",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40201932935,
+      "head_sha": "2242506a1498375d46791a0f4e47190ce8d83773",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121194740615,
+          "name": "register",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40202166490,
+      "head_sha": "52c20676b13a59dbb443db65b42e16ac29bf9da2",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121195443423,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121195551841,
+          "name": "native",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40202237269,
+      "head_sha": "30cc90bb5b9aeea0aaa6400b0e1493009fe8eaaa",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121195658799,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121195802570,
+          "name": "saved-capture-readback",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40202709622,
+      "head_sha": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
       "status": "in_progress",
       "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121197069924,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121197198545,
+          "name": "complete-functional-proof",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Bounded exact tools, two RTL simulators, mapped oracle and eighteen compiled faults"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 40203058826,
+      "head_sha": "ff038d2c73169cb8e28a743d9905989298a3d9ef",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121198130990,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121198220955,
+          "name": "native",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40199977397,
+      "head_sha": "e291495bea09cfeb38df625c21f6697f90625749",
+      "status": "completed",
+      "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
@@ -918,40 +1174,15 @@
         {
           "id": 121189017872,
           "name": "exact-saved-route",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Continue only the exact saved 401855 process under original routing gates"
-          ]
-        }
-      ]
-    },
-    {
-      "run": 40200111070,
-      "head_sha": "760d7221d05cb62fe719c2bb666c0419d53987d0",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121189313317,
-          "name": "source-controls",
           "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 121189445278,
-          "name": "complete-functional-proof",
-          "status": "completed",
-          "conclusion": "skipped",
+          "conclusion": "success",
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-25T14:09:39.390347+00:00",
+    "observed_at": "2026-10-25T14:52:11.749260+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -1073,7 +1304,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-25T14:09:39.390347+00:00",
+  "local_workspace_verified_empty_at": "2026-10-25T14:52:11.749260+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -3754,6 +3985,431 @@
       "id": 423436830,
       "tag": "cloud-results-40199977397-1-mainchip-route12-saved7200-next",
       "source": "e291495bea09cfeb38df625c21f6697f90625749",
+      "prerelease": true,
+      "draft": false
+    }
+  ],
+  "imported_checkpoint_receipts_v48": [
+    {
+      "path": "docs/evidence/tx-phase318-mixed-route-source-review-20261025.json",
+      "source": "097b3c1bbc45e4ad141cc397ce4de4e1dc38a795",
+      "git_blob": "2ea863dd1085401ea2b3837969d2002256f6a2b2",
+      "bytes": 53454,
+      "sha256": "626cd4f9b799910edfc7ad60d059d3caa5ff5eb7061ed7273417ab5f7852b2d2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-mixed-route-controls-20261025-job.log",
+      "source": "3ed0b68b3534f364b89413701fde714f5b4b3f20",
+      "git_blob": "0e3e8eef7184357176105e20f9d48821944a3ba5",
+      "bytes": 133190,
+      "sha256": "9311e7fbdcf1c73f13576136100eecc498b732ba3f293c919dd9496d31540c8d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-mixed-route-controls-20261025-pass.json",
+      "source": "3ed0b68b3534f364b89413701fde714f5b4b3f20",
+      "git_blob": "91c57e7f2f6d81143a49c845be86543d039f951b",
+      "bytes": 23257,
+      "sha256": "902d8a63c0c66042e2aed01a3d799b08a95406978e093e6f59f4e82721c46167",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-mixed-route-controls-20261025-publication.json",
+      "source": "3ed0b68b3534f364b89413701fde714f5b4b3f20",
+      "git_blob": "ca15f007a174391817b41f0fb4bc0c02ec6f441e",
+      "bytes": 876,
+      "sha256": "bcc0c38102836aadf3c79bc1b7341b32b644de81191271c166cb8cc750188a00",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-mixed-route-controls-20261025-result.json",
+      "source": "3ed0b68b3534f364b89413701fde714f5b4b3f20",
+      "git_blob": "2998e170dd6e8120f60eb065d34d02bbff54b499",
+      "bytes": 58089,
+      "sha256": "b3adb4717342c4fc8204c651325e79955c87643630be36d127d52dc31cbbd46e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-mixed-route-controls-20261025-wait.json",
+      "source": "3ed0b68b3534f364b89413701fde714f5b4b3f20",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-mixed-route-readback-activation-proposal-20261025.json",
+      "source": "2fc6a43e90cedfa71a6755d8d5e6f3f212d9976d",
+      "git_blob": "554390d5451546dd71e48d54361a90897e69dfe2",
+      "bytes": 93683,
+      "sha256": "cd9a9a14bb97ff1cad86c1e8c52bad9b906c0428fb046908b126a2c40ffb5ebf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-mixed-route-readback-root-review-20261025.json",
+      "source": "30cc90bb5b9aeea0aaa6400b0e1493009fe8eaaa",
+      "git_blob": "180d2aff7b3402cf1dc4f4c331df8a1ac089665f",
+      "bytes": 1361,
+      "sha256": "518019bfdb4ae8c05a55d41d95291691c560387474587feff25ee8a119a4c145",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-mixed-route-readback-dispatch-20261025.json",
+      "source": "dfeb89c6868146574308b4501e691812585bdc48",
+      "git_blob": "9827d27454b1c9c7ffb5c4c940aca78eea3136e1",
+      "bytes": 2559,
+      "sha256": "4bf00ed85cc828379445ea3deb622febfdb26908047011faf61067d52f5eb2da",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-AVSS-probe-inventory.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "e197e67df529f575f6d26e8b56ddd2e3dcf152f9",
+      "bytes": 17919,
+      "sha256": "c1ea1b58889a8ce928a9e71e11c6cdd8920ddc9c03fe7fd802b0c6432e0a0471",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-actual-controls.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "71c18f66e605f70f0a2cbc9f3b1765f0c45a3fd2",
+      "bytes": 27719,
+      "sha256": "82e6a7241a553c86f5c34c9926f77ce50a018313029008c331f1a961a77bb707",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-consumed-binding.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "c257eb0e4f2ec51e4080c2768535d53554fa9923",
+      "bytes": 2282,
+      "sha256": "629b7d3b6b2ea0fa66087018f47b2617531b390dc00972c55cbca9ebed454b4d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-index.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "5ad871af24cda5d84671f286787a5c2231701fc2",
+      "bytes": 826762,
+      "sha256": "ea3dc2d43e83f6045ad3efc432ea1def3e5d36343348d1fb738ee8f4caf94e07",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-job.log",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "a55bc19ee607954659846962db4f4547b8c73754",
+      "bytes": 1934284,
+      "sha256": "3adc3a6d7ec40371d6afb1bb99c9220b15ff8534bed069e9822516e2586588f2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-native-graph.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "00da382d9307e5f0fdb7fa1d13924943e2dda193",
+      "bytes": 2350009,
+      "sha256": "8094269dde8d76e61e3c1a8d8d457555da2036a250354e4b8d9d3d69c64c26c0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-original-replay.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "c66b3f576a6861012489c2003395e19c95e66b8b",
+      "bytes": 124735,
+      "sha256": "454e253cb556668717af0d15c7a2e4a08aa88dc8110cc2f18e1552629038296f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-parts.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "91cfb57ea6bf1e014f35362883e2ac2c2675e95a",
+      "bytes": 877,
+      "sha256": "0369b58e73787f1dc659621be18a9c9a92c3317b87552439249b43fee322b47d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-probe-inventory.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "622e753663832ce1ceba7506ab0243d582dd33fe",
+      "bytes": 108434,
+      "sha256": "cb4bc59c1cc56a4a8d0a60f3713c9aed42126526736b6b8129f04f8ea83acc1c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025-result.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "30f348f0a656728aae4275bd778578b9d3d1123b",
+      "bytes": 1405326,
+      "sha256": "31fb2523c1656a519abd9feeb7fc4bfbd740b4cf9f783e2f588707ba83f9bc1c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-native-pass-20261025.json",
+      "source": "dff99092f786d916404c5dcab9f1d75dd2878df5",
+      "git_blob": "d25eb0044b273b3523581cf3eab28b35a693a92c",
+      "bytes": 19585,
+      "sha256": "b77e12abd749b0b8c3cbc9d8d6d41387c4868e43bdff5a8d3bb56f34ec827e77",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-source-review-20261025.json",
+      "source": "befcd75fffc6f3d32d1bce132de2c8f364d410e8",
+      "git_blob": "791c8bb7ad6ea8ff336758410fc1d6a5d60760b2",
+      "bytes": 2244,
+      "sha256": "eaeaa29c4c202b3be3f1fd1e6475742077517008e3747aa0b3b387507d2c52dc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-controls-pass-20261025.json",
+      "source": "86d010f0fc5fc8b138df393e93b2bdf29abe02f3",
+      "git_blob": "1b63b3f52e5ff433683d0ddf7957036f79f602f1",
+      "bytes": 2732,
+      "sha256": "b6d07817ae458281e6804780d766f6bd5cb9bc1eed3fdfc2d79687910b9a5139",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-controls-result-20261025.json",
+      "source": "86d010f0fc5fc8b138df393e93b2bdf29abe02f3",
+      "git_blob": "a56665911f2ab45f10424d81bc0d930ddb17d3d4",
+      "bytes": 68111,
+      "sha256": "93b1b0993a16c67f261ce837831238feee5c09d2ccfe9893da92ae998b73b2df",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-root-native-review-20261025.json",
+      "source": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
+      "git_blob": "eb15784703de0bee2988bff10a241f7a07817619",
+      "bytes": 1659,
+      "sha256": "b1cc89766e91c73eb24576aee6ca36eb5a31dfdf53745b09d3cdaa59db37dec3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-native-activation-review-20261025.json",
+      "source": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
+      "git_blob": "55fc1570b9edc0df844214ade65f13f5b82ef145",
+      "bytes": 23298,
+      "sha256": "79aee49fa2e863e22fda44c1f3e11bdae19fa9b408a5212a818991303ca9b4b3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-controls-dispatch-20261025.json",
+      "source": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
+      "git_blob": "7a109ae242ba01b6c45fd52bff2219964be52af6",
+      "bytes": 1028,
+      "sha256": "887249b8dacf539b489af7f63e828d96a1c127c4cd61526a09efc1020a451350",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-reset-fixture-native-dispatch-20261025.json",
+      "source": "e567d37dae2a7637a2fb7181b5669f40eb0feee0",
+      "git_blob": "4f9323e3f9bb59abf84f93c8b8811934ae32d8e6",
+      "bytes": 1954,
+      "sha256": "494a3f5937fb79e6a72011bb2811ac957fe4f5e46519d56ab4cf6fc51acb3fb5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-shared-training-owner-connection-boundary-20261025.json",
+      "source": "3b52dea8691b2e348baf3be731d9bcf077d94c59",
+      "git_blob": "5de6a2224534ebb8d829c9b1e9aba0f8315c4bf4",
+      "bytes": 8941,
+      "sha256": "d16e3eb92bb94860f9bca3e0098d3502706366c61b1a945fe340a3c2f812b288",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/pcie-shared-training-owner-connection-boundary-20261025.md",
+      "source": "3b52dea8691b2e348baf3be731d9bcf077d94c59",
+      "git_blob": "5ac98975829c5c0bb038d8bbbb63e9ba5c83d48f",
+      "bytes": 8157,
+      "sha256": "fb20b56bdc59d8a2cdcf8189c62d7bca4a3809342113df010e5c03d515ac4079",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-controls-only-activation-20261025.json",
+      "source": "52c20676b13a59dbb443db65b42e16ac29bf9da2",
+      "git_blob": "4b93832a1ffdc1ae5110527f95fd910a1cc3901f",
+      "bytes": 1729,
+      "sha256": "e2335b666ee804191c4fedb34f4a3d4c6de7148eeac313a07cc395a7888b19d0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-independent-source-review-20261025.json",
+      "source": "52c20676b13a59dbb443db65b42e16ac29bf9da2",
+      "git_blob": "d3cfdab26c7c25e18a003842cb2ceeebcc7c2d95",
+      "bytes": 1942,
+      "sha256": "3799042953255b5b369266d869f47c8fd07109e93a8859e461e48c4d2376618d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-registration-20261025.json",
+      "source": "52c20676b13a59dbb443db65b42e16ac29bf9da2",
+      "git_blob": "b313352c89f9ca4a0e0aa68c4e626162ba1ed515",
+      "bytes": 3280,
+      "sha256": "1ed225c423c35394c427f07c23d49c48be1bfac0165ccba68597d1779a0d6ac1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-registration-20261025.log",
+      "source": "52c20676b13a59dbb443db65b42e16ac29bf9da2",
+      "git_blob": "1ad6d09b3e36657e0033316e2f72c86973cd4b51",
+      "bytes": 2263,
+      "sha256": "124ac98b853dd38b08f6dd2bf02fc5160f33840865218c3a53661a9c4c04623a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-reviewed-methods-20261025.json",
+      "source": "52c20676b13a59dbb443db65b42e16ac29bf9da2",
+      "git_blob": "3f9f8283017b517f81d944bfaff8d17767f17f96",
+      "bytes": 45953,
+      "sha256": "c22464a055e8ac35c0b9b75add5276e9f58b57edafefe66d3d78d398589845b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-root-source-review-20261025.json",
+      "source": "52c20676b13a59dbb443db65b42e16ac29bf9da2",
+      "git_blob": "7788f47a5afb01fb628a53207917c6d7e51102fa",
+      "bytes": 1269,
+      "sha256": "b3f653a12e5f318da603d0a2cb415c1f8f1120ae692450816bbe096d98054c40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-controls-joblog-20261025.log",
+      "source": "c2e5d7c8491a9fa47bc0525c95ebfd7425a685a7",
+      "git_blob": "6ffe8c7f46cd8a91725f6981800d9922216725f2",
+      "bytes": 59303,
+      "sha256": "69cf07cf92b0219546b24d02291f7fe16196921fa0dbb13625121ed68daea102",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-controls-publication-20261025.json",
+      "source": "c2e5d7c8491a9fa47bc0525c95ebfd7425a685a7",
+      "git_blob": "3f4761ed305153188c7d631e040d5c259127a99c",
+      "bytes": 1170,
+      "sha256": "21a5a9fc54d61d49df2aa0c8a20036124aee183a567cbe9babf967af006f620c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-controls-release-20261025.json",
+      "source": "c2e5d7c8491a9fa47bc0525c95ebfd7425a685a7",
+      "git_blob": "059ea13e7ccf270ee0188532d6f82b6272b3afc5",
+      "bytes": 665,
+      "sha256": "b0d5bc89c4f5560335e60f640f8feb9e1ac879030a785d8881b1fb6f71083b00",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-controls-source-20261025.json",
+      "source": "c2e5d7c8491a9fa47bc0525c95ebfd7425a685a7",
+      "git_blob": "da0871e2134f157ce2a5f00c1171c3ccf6ef1291",
+      "bytes": 7659,
+      "sha256": "c93421582fd943dc55a245cd87c2dd744ff27557a8a51952b63ef3cdb8df0f33",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-controls-tested-methods-20261025.json",
+      "source": "c2e5d7c8491a9fa47bc0525c95ebfd7425a685a7",
+      "git_blob": "5564cc62b2c7cb18628b723bfd089403a2e995bb",
+      "bytes": 46853,
+      "sha256": "88b614da3fe692f66adfd1b5b7736ae4178962dc47dc9838cbdd6d7fb6d88d40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-hosted-source-controls-pass-20261025.json",
+      "source": "c2e5d7c8491a9fa47bc0525c95ebfd7425a685a7",
+      "git_blob": "cea2c48d358fcda4aae5f2cd3d1e1e9bfa690507",
+      "bytes": 7103,
+      "sha256": "3d69f8632f4ab612d339f5e368fad04648cc6dcfc730e0774d9f780d3b2e7bec",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-native-activation-proposal-20261025.json",
+      "source": "1aa753af42c0b1b5bea1f3cd6a945c79fbd4e3f4",
+      "git_blob": "2d49445c7feca60692c9f8b8c9d651900abbed12",
+      "bytes": 5460,
+      "sha256": "c5cb4e6b903172fb52e0d2c51ce6e9745e41213662a07b84825288490967e33f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-root-native-activation-review-20261025.json",
+      "source": "ff038d2c73169cb8e28a743d9905989298a3d9ef",
+      "git_blob": "21dba0c1517d89004f9a9849795d6b82c6708b2f",
+      "bytes": 1684,
+      "sha256": "c722aa6737cf9f3189575f640b96bf0bebe17e9caa6ab9c72f3ec2a1dd2b2e09",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-source-controls-dispatch-20261025.json",
+      "source": "ff038d2c73169cb8e28a743d9905989298a3d9ef",
+      "git_blob": "2bb892d2875b6d545f7016ae113546def31ecbac",
+      "bytes": 1699,
+      "sha256": "81a1615f792b8cc36718ceaf28159a1e0c3665a3286babf0bc044bec87e166e7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-native-dispatch-20261025.json",
+      "source": "623ad24d2604230d0e3b30d9e492e3eddd415726",
+      "git_blob": "0b0b1e06d0a062764c7ce217583de37f0b47c30f",
+      "bytes": 5682,
+      "sha256": "708b122e9e21470a16eecae9f2ebfd3a3e1655dacb50c0fdc3dcff033c843391",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-native-failure-joblog-20261025.log",
+      "source": "2df9d48f57a7200e2e4da224398a0618f7568738",
+      "git_blob": "42060ff101718f5dc0d51d865061f841e2fc3533",
+      "bytes": 2134918,
+      "sha256": "3bbd2bbef208513e218ff9e1efd72de8e6bb361a811403185f3d03ff2be65f82",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-native-failure-parts-20261025.json",
+      "source": "2df9d48f57a7200e2e4da224398a0618f7568738",
+      "git_blob": "63c9ef1280208fde90637a94b38a8eaa240fa3fb",
+      "bytes": 851,
+      "sha256": "ae153cdd21ffb52c3c1d4de02eb935c22fab01070bfd2bf2975ab1f65d9c849a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-native-failure-stage-20261025.json",
+      "source": "2df9d48f57a7200e2e4da224398a0618f7568738",
+      "git_blob": "ade39f3fceb046146d151cb3f77c4562b82990a7",
+      "bytes": 928242,
+      "sha256": "805ad5ad2a3dc297437925ceb99b7a6732a06cf1d96eb0b6b62899d2f6d79c40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-native-failure-summary-20261025.json",
+      "source": "2df9d48f57a7200e2e4da224398a0618f7568738",
+      "git_blob": "b60f67f03d6b8bdb8c0f813d2d160eda170e4a9f",
+      "bytes": 1527101,
+      "sha256": "02e33f9d7545c6de568278670a464f5b95fffd9dd5d7ca067b6a31252b637a6b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-native-runtime-failure-20261025.json",
+      "source": "2df9d48f57a7200e2e4da224398a0618f7568738",
+      "git_blob": "23dba716847b5b3d3cd822da664e44b8f1634d2b",
+      "bytes": 12187,
+      "sha256": "af9b83236ccc8c811cad623dff9d436482ff9e29324c706a2bf5ea1efe3877ba",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v48": [
+    {
+      "id": 423452799,
+      "tag": "cloud-results-40202237269-1-tx-phase-reset334-return-ledger",
+      "source": "30cc90bb5b9aeea0aaa6400b0e1493009fe8eaaa",
+      "prerelease": true,
+      "draft": false
+    },
+    {
+      "id": 423455789,
+      "tag": "cloud-results-40202709622-1-pcie-gen12-record-cdc",
+      "source": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
+      "prerelease": true,
+      "draft": false
+    },
+    {
+      "id": 423458272,
+      "tag": "cloud-results-40203058826-1-cdr-v59-mim-precision",
+      "source": "ff038d2c73169cb8e28a743d9905989298a3d9ef",
       "prerelease": true,
       "draft": false
     }
