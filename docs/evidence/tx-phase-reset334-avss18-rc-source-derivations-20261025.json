@@ -1,0 +1,178 @@
+{
+  "schema": "source-only-reversible-AVSS18-RC-adaptation-v1",
+  "base_source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+  "physical": {
+    "run": 40211309923,
+    "source": "5ddb5be6843a967305dbb5a45b426070c0f8fabd",
+    "summary_sha256": "6d1cc609af69edd9e1c34558b67f976997afd950b27c90db158652d369ce9d17"
+  },
+  "source_inspection_only": true,
+  "authored_source_executed": false,
+  "local_native_or_archive": false,
+  "derivations": [
+    {
+      "kind": "source",
+      "path": "scripts/tx_phase_reset334_intrinsic_mim_source.py",
+      "original_sha256": "efaaa597d6fd7f228e5be58ffc481d1eb6a770005ff52d6f2e51defa48f87da1",
+      "generated_sha256": "a7630bbefc11cfa7417c124b0487bc971dc870ca6710e83b5a1cf1d6911694e8",
+      "literal_edits": [
+        [
+          "601e5611ae555d4a39891a095bce443851665853439d379377d9a1f6cb60c834",
+          "d81e0dadaa74dc649399b02fdb0bd71583835e1754787b40784ba3ce2559c0b7",
+          1
+        ],
+        [
+          "c30c73110c4e8f0507b2a10058a2dbfe9a7e2abb22dcb1af7cad1213e4df167b",
+          "2b726595cf7d220974ecdb8a7cb04f3e12ca488b858622fa276c08eb4ca85467",
+          1
+        ]
+      ],
+      "only_changed_functions": [],
+      "reversed_byte_exact": true
+    },
+    {
+      "kind": "intrinsic",
+      "path": "scripts/cloud_tx_phase_reset334_intrinsic_mim.py",
+      "original_sha256": "c162ff874e7c4135567b2f9cb20ee28d4c9f275e1fde21aec4ed1dcb3def31a6",
+      "generated_sha256": "86d0bdebce68cafbf66ac8559992ccbfae0c9c920e9dcc8c07d990995d1b375b",
+      "literal_edits": [
+        [
+          "record,proof=reports.restore_report(SOURCE['group'],SOURCE['run'],SOURCE['summary'],SOURCE['parts'],physical,list(prior['outputs']))",
+          "proof=_actual_physical_restore(prior,physical);record=prior",
+          1
+        ]
+      ],
+      "only_changed_functions": [
+        "main"
+      ],
+      "reversed_byte_exact": true
+    },
+    {
+      "kind": "precision",
+      "path": "scripts/cloud_tx_phase_reset334_mim_precision.py",
+      "original_sha256": "1a515a5c0eb8c9a50d0e7bcd79a39e25e6333455914e6d9b1c5ae6a506179967",
+      "generated_sha256": "d857d8036dc3898084aea2eaaaab88eedf9760c5ec9899293d45f7615725c47a",
+      "literal_edits": [
+        [
+          "and len(prior['outputs'])==250",
+          "and len(prior['outputs'])==459",
+          1
+        ],
+        [
+          "restored,proof=reports.restore_report(SOURCE['group'],SOURCE['run'],SOURCE['summary'],SOURCE['parts'],full,list(prior['outputs']))\n        assert restored==prior and sha(full/'result.json')==SOURCE['summary'];validate(restored);result['source']=proof;save()",
+          "proof=_fresh_intrinsic_copy(prior,full);restored=prior\n        assert sha(full/'result.json')==_fresh_intrinsic_digest;validate(restored);result['source']=proof;save()",
+          1
+        ],
+        [
+          "name='tx_phase_reset334_'+pol+'_'+kind+'_generated.py';path=ROOT/'scripts'/name;assert not path.exists()",
+          "name='tx_phase_reset334_'+pol+'_'+kind+'_generated.py';path=ROOT/'scripts'/name;assert path.is_file()and not path.is_symlink()",
+          1
+        ],
+        [
+          "path.write_text(data);generated[path]=sha(path)",
+          "assert path.read_text()==data;generated[path]=sha(path)",
+          1
+        ],
+        [
+          "original_prefix='/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-phase-reset334-intrinsic-mim/'",
+          "original_prefix='/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-phase-reset334-avss18-rc/intrinsic/'",
+          1
+        ]
+      ],
+      "only_changed_functions": [
+        "validate",
+        "main"
+      ],
+      "reversed_byte_exact": true
+    }
+  ],
+  "fresh_input_inventory": {
+    "physical_outputs": 406,
+    "physical_exact_summary": 1,
+    "authenticated_physical_members": 407,
+    "physical_transport": 3,
+    "original_intrinsic_generated_files": 49,
+    "intrinsic_outputs": 459,
+    "full_precision_handoff_including_intrinsic_result": 460
+  },
+  "same_run_handoff": "Every file is hashed before copying, every copied file is hashed, then the source is rehashed; no old intrinsic archive is consumed.",
+  "coordinate_mapping": {
+    "actual_anchor_key": "label",
+    "terminal_reference_key": "reference_label",
+    "fresh_native_bottom_accesses": 8,
+    "unchanged_other_terminal_rows": 1002,
+    "unchanged_other_reference_planes": 687,
+    "actual_same_conductor_native_probes_required": true
+  },
+  "import_initialization": {
+    "roots": [
+      "scripts/cloud_tx_phase_reset334_avss18_rc.py",
+      "scripts/check_tx_phase_reset334_avss18_rc.py",
+      "scripts/check_tx_phase_reset334_avss18_rc_publication.py",
+      "scripts/cloud_chunked_results.py",
+      "scripts/publish_cloud_results.py",
+      "scripts/wait_cloud_tested_source_release.py"
+    ],
+    "files": {
+      "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73",
+      "scripts/ensure_cloud_tested_source_release.py": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e",
+      "scripts/publish_cloud_results.py": "a5cd154c1a7e3f838f5880e6cabef115245d696485c9eda2bd0451da8e1e1296",
+      "scripts/migrate_outputs_to_cloud.py": "52fa3ef7adc92b6e6071b304ccb1b07908f31ccde7dacf39a7258e07356fa512",
+      "scripts/cloud_chunked_results.py": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
+      "scripts/check_tx_phase_reset334_avss18_rc_publication.py": "99bf0874a2e5790cfafdf97ca2c1c1a5d96d1f48164cab6a9bee35d89a050939",
+      "scripts/tx_phase_reset334_avss18_rc_admission.py": "03c5c360a021392974bbafaba64668cf0f6287f38d2159117f6208cf080c57ea",
+      "scripts/tx_phase_reset244_avss18_baseline.py": "2211a221e7fe57d8d17e94f9309ef3883538da09fee58767da1420bfb8dd57de",
+      "scripts/tx_phase_reset334_intrinsic_mim_source.py": "efaaa597d6fd7f228e5be58ffc481d1eb6a770005ff52d6f2e51defa48f87da1",
+      "scripts/check_tx_phase_reset334_avss18_rc.py": "a29d021fef10ead5d0d9db58cbb1348d505b51033268c1fa8bf8840b05784a52",
+      "scripts/cloud_tx_phase_reset334_mim_precision.py": "1a515a5c0eb8c9a50d0e7bcd79a39e25e6333455914e6d9b1c5ae6a506179967",
+      "scripts/run_cloud_pll_filter_rc.py": "51d572c3e4ff30d2a772edeac550c20037989ae471b7744b32c26322d6eab81e",
+      "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+      "scripts/tx_phase_reset334_rc_sources.py": "27ccf16ada13b74fe157525d62a6c2964508e5f380e509c5140fa3c5d808ef49",
+      "scripts/tx_native_cap_order.py": "c006fe0689d2d7d8760284a9456b2a48ed838bf1616e538001ac93eef4038331",
+      "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+      "scripts/read_opensta_phase_slacks.py": "dfade1f0ac09bcbaa9a0c5f63869e0d2a545324003538a5dcb847d1dbc950273",
+      "scripts/route_cloud_newer_postcts.py": "29997f34ca6e764c40a40b5203388993b890f6d838cbe2651d5ce5c018042b40",
+      "scripts/cloud_verified_parts.py": "64b6655bfd6f8c348af62e9179268eafb84c9150cbba895989bcdfb2c6b5b795",
+      "scripts/audit_cloud_routed_endpoints.py": "7ac4b12b49e25b276e57cdbe98cf401b19868713cdbfa1f40217d8116bb0c076",
+      "scripts/audit_cloud_route_annotation.py": "88e5c8ae53fdfe03fae68b35983ebf63784c325cdf143a4f04c6d8096a3be64b",
+      "scripts/candidate_hold_conflicts.py": "1ab6d7159278e68370f20a2bd6c6943e4df4efbe315a8764871559f63cedf3f5",
+      "scripts/audit_cloud_routed_hold_conflicts.py": "5aab0a1aa2e12515a6ffe5c94d0920672b50aafd7bcdee4e8c853f26d90818ee",
+      "scripts/measured_hold_targets.py": "91138b2c0f590b151ed93f12aeabb17fa5406e1286754498ad14b694e423efdf",
+      "scripts/refined_load_targets.py": "d942cecb77d1b3394c53d5bc7f3e0d9e117843882d37c59fbb42909f24da5cb9",
+      "scripts/expanded_load_targets.py": "1ef4d51a8be52f5621ed594a6fb4e0c5a24c078e54759dae227226dbe0cc6fd8",
+      "scripts/cloud_contact_release.py": "6a1e50e9cb4e1fb18bc4ef19a821096952fc50b382c25b0d655e537e55e35f11",
+      "scripts/branch_hold_targets.py": "4a6fc92fd4ec974cfa3ec36ae5ad6e01f7c6ad3b2419e1651a0bc48b87568cbc",
+      "scripts/refined_hold_targets.py": "d3d985cc4b16add202815a745aebcd952723c296ce7e2d7a2b9eabc0eb72592a",
+      "scripts/cloud_tx_phase_divider_mim_precision.py": "aa2f288fe8ac788a29a0f4f982cbb5e6edee16074e770df7f5a4db579005f187",
+      "scripts/cloud_pll_divider_load3p2v2_compose.py": "dd334a5b9ad1813c58deac2caacd8ed1dedf4499b05e463f03a1008b570fb588",
+      "scripts/cloud_tx_driver_localpins_intrinsic.py": "f66e58d128f0ba896c81891b91f7ae52263f0efc79e7c0f4ca3e21c1516ff06b",
+      "scripts/build_pcie_local_vco_hybrid_v6.py": "ab2962f0c47cc89029866761992bfdd87ab1d5649920b8bc8edaa1c54bbe5a3f",
+      "scripts/cloud_tx_input_driver_localpins.py": "1e1a65ac0d6961c110a0324e5545d4b72ebee6c213880e68e44ec8a3175d8d7d",
+      "scripts/pll_divider_load3p2_compose_model.py": "f2dc95f4aa36e775b0364623a0a37fd42884b9c4bd7cab053e03d16537ec272e",
+      "scripts/pll_divider_load3p2_intrinsic.py": "e6ee69991a85cf8dd19f8a92773d8875baf60c69ab37b9959dd0c7e9ab9a0305",
+      "scripts/pll_divider_load3p2_native.py": "01233ad006ebc53e98499becc37a291f88fb448e73c77293c2403b63a5784d46",
+      "scripts/cloud_tx_phase_reset334_intrinsic_mim.py": "c162ff874e7c4135567b2f9cb20ee28d4c9f275e1fde21aec4ed1dcb3def31a6",
+      "scripts/cloud_tx_phase_reset334_avss18_rc.py": "4e867fc7a91205576009eb0a2f4d4624fd42061a8fe51c77e30a2e2d2b1a40b5",
+      "scripts/tx_phase_reset334_avss18_rc_adapter.py": "37c92090a84cbbb461c69ad86e8d3db60ddd2d3d72601f8c28e5f1348b9b5824"
+    },
+    "external_modules_seen": {},
+    "scope": "AST only; no candidate import executed locally. Hosted source controls repeat closure and actual imports."
+  },
+  "peer_constraints": {
+    "reviewer": "/root/tx_diagnosis",
+    "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+    "scope": "Frozen prior helper seam lookup only, not final new controller approval",
+    "requirements": [
+      "Use exact new intrinsic absolute prefix; authenticate every remapped input and reject all other prefixes.",
+      "Bind both fresh physical GDS hashes; regenerate compact/MIM/anchor output from current actual geometry.",
+      "Consume fresh mim/anchors.json after actual eight bottom-conductor continuity probes, retaining original native coordinates.",
+      "Keep 684 metal and 326 finite body dispositions distinct; do not reinterpret public SUB or capacitance sub as AVSS.",
+      "Measure current native resistor and capacitor counts; retain complete both-order multiset equality and eight MIM replace-once gates."
+    ]
+  },
+  "native_RC_executed": false,
+  "simulation_executed": false,
+  "old_R_rescaled": false,
+  "qualified_pex": false,
+  "electrical_accepted": false
+}

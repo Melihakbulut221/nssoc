@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T16:32:15.334451+00:00",
+  "updated_at": "2026-10-25T17:02:38.579755+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "232b85ef6ecef75b60b5d2a4f90527acce5d2552",
+  "root_source_before_receipt": "26a6e84a4a6d000a2f8fa4bd989c64fa9f7be2c9",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 50,
+    "inventory_version": 51,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40163484810,
@@ -940,30 +940,94 @@
       "root_verified_complete_result_log_parts_receipt": true
     },
     "PLL_AVSS18_physical": {
-      "source_controls": 40209622463,
-      "native_run": 40211309923,
+      "status": "PASS_BOTH_EXACT_MATERIAL_334_PHYSICAL_1010_TERMINALS",
+      "run": 40211309923,
       "source": "5ddb5be6843a967305dbb5a45b426070c0f8fabd",
-      "release": 423515853,
-      "physical_terminal_success_reported": true,
-      "complete_native_proof_consumption_pending": true,
-      "RC_simulation_authorized": false
+      "proof": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "summary_sha256": "6d1cc609af69edd9e1c34558b67f976997afd950b27c90db158652d369ce9d17",
+      "root_rehashed_full_actual_release_summary": true,
+      "per_polarity": {
+        "DRC_categories": 560,
+        "DRC_markers": 0,
+        "deep_flat_devices": 334,
+        "public_ports": 11,
+        "terminals": 1010,
+        "metal": 684,
+        "body": 326,
+        "actual_material_faults": 20,
+        "physical_faults": 9,
+        "anchor_faults": 7
+      },
+      "fresh_RC_source": "6a65694a0fdf8e19c39c3d6b97d07f9be4298af3",
+      "fresh_RC_source_review_pending": true,
+      "RC_simulation_accepted": false
     },
     "CDR_current500_loaded": {
-      "source": "90ee8dcb4fa52e9bc26e114ebe7922d4d7858b81",
-      "controls_proposal": "d25a1f4e2dd6c04e8884f309d56b9156727bc15c",
-      "protected_files": 415,
-      "independent_stage_review": "CLEAR",
-      "source_controls_not_yet_executed": true,
-      "native_execution": false,
-      "all_original_electrical_gates_retained": true
+      "first_controls_run": 40212568932,
+      "first_failure": "missing qualified waiter module before stage controls; no native execution",
+      "first_failure_proof": "ef299c51a697256cf0d66c61df8cf5799ec5a601",
+      "repaired_source": "6d052133686476eeceea0ef2026f88dc08384b58",
+      "controls_run": 40213798886,
+      "tested_source": "553c4f0befbabdfde0e99a4e4fbed2c0bb1803ee",
+      "proof": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "source_controls_passed": true,
+      "complete_JSONs": 6,
+      "named_refusals": 133,
+      "actual_import_modules": 37,
+      "complete_synthetic_archive_roundtrips": 4,
+      "preparation_skipped": true,
+      "simulation_skipped": true,
+      "preparation_proposal": "2d50691f34ca6fb871292a4cc914aef0b2cae878",
+      "root_metadata_review_passed": true,
+      "one_preparation_dispatch_authorized": true
+    },
+    "mainchip_clock_actual_diagnosis": {
+      "run": 40213042958,
+      "source": "ed3e96c368867f1c3ad0bbbae794d4e15344ba89",
+      "proof": "6720066d1a2823e1a00a58472488f6fd9bd429fe",
+      "full_summary_sha256": "484c9a2ee19ed97a4501741774290c63810a6a69e702e21f905eb60b4f49fa80",
+      "full_summary_bytes": 7333969,
+      "selected_clock_fixed_nets": 1691,
+      "changed_DEF_records": 218,
+      "attached_geometry_changes": 0,
+      "connection_prefix_changes": 0,
+      "only_TAPER_tokens": 3,
+      "same_token_multiset_other_order": 3,
+      "other_record_changes": 212,
+      "original_clock_gate_still_failed": true,
+      "original_gate_waived": false,
+      "RC_STA_not_reached": true,
+      "exact_failed_before_after_DEF_reproduced": true,
+      "original_sources_unchanged": true,
+      "clock_restoration_source_development_assigned": true
+    },
+    "full_CDC_after_targeted": {
+      "run": 40212194745,
+      "source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a",
+      "release": 423522060,
+      "required_RTL": 66,
+      "required_mapped": 33,
+      "required_synthesis": 6,
+      "required_compiled_mutants": 18,
+      "targeted_mode_disabled": true,
+      "no_automatic_retry": true,
+      "terminal_consumption_owner": "tx_diagnosis"
+    },
+    "cloud_only_monitor_verified": {
+      "main_source": "8689cb4b866b050f4136482d34433a62491f95ef",
+      "workflow": ".github/workflows/cloud-progress-monitor.yml",
+      "every_hours": 8,
+      "reads_exact_working_branch_inventory": true,
+      "read_only": true,
+      "automatic_native_dispatch": false
     }
   },
   "next_actions": [
-    "Consume unchanged original all-clock failure with read-only exact saved ODB diagnosis; never waive clock route preservation or run downstream STA as accepted.",
-    "Root-reviewed full CDC66RTL/33mapped/sixsynthesis/18mutants may run once after metadata-only activation; preserve terminal public-reset witness proof and all failures.",
-    "Consume complete AVSS18 physical result before fresh two-order RC and unchanged OFF/zero-OP/34ns loaded gates.",
-    "Finish root source review of concrete current500 CDR loaded wrapper and run source controls only before preparation or simulation.",
-    "Keep all project source/results/archives in GitHub. No local files, native CAD, checkout or native-archive download."
+    "Consume actual full CDC40212194745 terminal proof. Keep original66/33/six/18 tests and public reset assertions, no timeout waiver or retry.",
+    "Implement and source-test exact218-clock NETS restoration candidate from before2d3dfa6e to completed9cdf9a6f, using actual encoded FIXED routes for any native signal repair. Preserve all1691 original clock record/attached geometry gate, NDR/via/terminal/non-NETS identities. No metadata-only fixed/dont_touch assumption.",
+    "Review concrete fresh AVSS18 both-order wire/MIM RC source before source-controls; original numerical helpers and electrical thresholds remain unchanged.",
+    "Review actual133-control CDR repaired-source proof and metadata-only preparation proposal; no transient authorization yet.",
+    "Keep all project work in GitHub, local directory/tmp/native processes empty. Existing8h main cloud observer reads this exact inventory; no automatic native dispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -1120,26 +1184,49 @@
     "observed_40209284989": 40209284989,
     "observed_40209771782": 40209771782,
     "observed_40209622463": 40209622463,
-    "observed_40211309923": 40211309923
+    "observed_40211309923": 40211309923,
+    "observed_40212491482": 40212491482,
+    "observed_40212642450": 40212642450,
+    "observed_40213042958": 40213042958,
+    "observed_40212194745": 40212194745,
+    "observed_40212568932": 40212568932,
+    "observed_40213798886": 40213798886,
+    "observed_40212418261": 40212418261
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40208896478,
-      "head_sha": "7e0ee3af53df6bbfc91075a4f7c1d7bc10f2e0fc",
+      "run": 40212491482,
+      "head_sha": "3ac618f1dbecc69ae2080fe2f18ef511baf96888",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121215692988,
+          "id": 121226536396,
+          "name": "register",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40212642450,
+      "head_sha": "f86abdb7aebdfc6e639c5b644ea987508d9fabe1",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121226996640,
           "name": "controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121215974519,
+          "id": 121227193856,
           "name": "native",
           "status": "completed",
           "conclusion": "skipped",
@@ -1148,52 +1235,82 @@
       ]
     },
     {
-      "run": 40209284989,
-      "head_sha": "d861793277aa2b724c083c8b478d52db06725e56",
+      "run": 40213042958,
+      "head_sha": "ed3e96c368867f1c3ad0bbbae794d4e15344ba89",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121228201306,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121228402210,
+          "name": "native",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40212194745,
+      "head_sha": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121225618464,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121225767650,
+          "name": "complete-functional-proof",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121225768839,
+          "name": "collector-reset-diagnostic",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40212568932,
+      "head_sha": "b534c845cfa785b079e094a8927274f66b2306e2",
       "status": "completed",
       "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121216874360,
+          "id": 121226774837,
           "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121217089037,
-          "name": "native",
           "status": "completed",
           "conclusion": "failure",
           "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40209771782,
-      "head_sha": "1e1dcdb8f8769d04142fda91c732a46eb74dea71",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
+        },
         {
-          "id": 121218319712,
-          "name": "source-controls",
+          "id": 121226873489,
+          "name": "loaded",
           "status": "completed",
-          "conclusion": "success",
+          "conclusion": "skipped",
           "active_steps": []
         },
         {
-          "id": 121218486298,
-          "name": "collector-reset-diagnostic",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121218487762,
-          "name": "complete-functional-proof",
+          "id": 121226874033,
+          "name": "prepare",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
@@ -1201,22 +1318,29 @@
       ]
     },
     {
-      "run": 40209622463,
-      "head_sha": "47f54fed86dd6fb7b8803981396fdb3d42ef6a06",
+      "run": 40213798886,
+      "head_sha": "553c4f0befbabdfde0e99a4e4fbed2c0bb1803ee",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121217878968,
-          "name": "source-controls",
+          "id": 121230482686,
+          "name": "controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121218092365,
-          "name": "fresh-two-polarity334-physical",
+          "id": 121230612126,
+          "name": "loaded",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        },
+        {
+          "id": 121230612411,
+          "name": "prepare",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
@@ -1245,10 +1369,26 @@
           "active_steps": []
         }
       ]
+    },
+    {
+      "run": 40212418261,
+      "head_sha": "2de425bcd97d1d8d0878bb83708f964f5fd46a48",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121226307401,
+          "name": "harmless-registration",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-25T16:32:15.334451+00:00",
+    "observed_at": "2026-10-25T17:02:38.579755+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -1370,7 +1510,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-25T16:32:15.334451+00:00",
+  "local_workspace_verified_empty_at": "2026-10-25T17:02:38.579755+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -5121,6 +5261,416 @@
       "git_blob": "c57d9b3f934132093c99239622f8445623881840",
       "bytes": 1711,
       "sha256": "d6a953dbf751b8b0dc3d74cb1fb6368fb23512cbf16c636c5381ba917f4398b8",
+      "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v51": [
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-baseline-restoration-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "8c35c4b70ddee2c96abf252eef26daa8472c0e3e",
+      "bytes": 34319,
+      "sha256": "4465f63b5b2a3dcd70848c56bc9bbb9556747edb6eb6a6a184dcfdaf807a371e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-controls-job-20261025.log",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "d66d5b31eccb12ce700e21d98049e6856057cd22",
+      "bytes": 63145,
+      "sha256": "f2ff77a3b498575109d45cd50c40c3742d6031db19ffad8155fedd52b3bf728f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-controls-result-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "2dc17ec52cbeec7d1bbeb107acd1425f3bd109fa",
+      "bytes": 17274,
+      "sha256": "929e7afc7628017ae3d2809552069a85917285d79e71adfd3c8d4e7b5586b1f9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-job-20261025.log",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "77ee513b23f156358d67548364d6b763701d2025",
+      "bytes": 7817523,
+      "sha256": "73c55f7871da4e9fed37f866805f215c7ad440bad30246a0b35081959d7ff5be",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-parts-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "e6ba2903dbd634eaeb42dd996ca00ace186abcff",
+      "bytes": 883,
+      "sha256": "4bc339b08667b762eff306f543235b6f6b16ed6dd9ed4e9e8856b5c16301d4ed",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-pass-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "a9fb9b36a4a19c3b2368440ce39857b7961cf216",
+      "bytes": 153486,
+      "sha256": "29fb74b162924dae593af5c663b12c8ef391c5cc369d346ecf65d402a25bf556",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-physical-n-native-material-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "432f84dca0c7e61099707e8fa50d821cf504059f",
+      "bytes": 17550,
+      "sha256": "dca0fa1a828c461f5f69bd5104f309201fe542a67723d7ed9604c8b7f4d9a0ca",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-physical-p-native-material-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "9b207b5b002c3c19a854df42fd93a1564ef79f6b",
+      "bytes": 17550,
+      "sha256": "0defc32c43a27d1332b9ae71b96395fec0dd1e238860cd755919b0a938b61caf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-publication-controls-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "e7c3e42a930702dd8e6c10065ec234ac1eaa54ee",
+      "bytes": 874,
+      "sha256": "fe3867153a3921c93dda797324ff20cbf9ea94a831c2cf230e52e32d854a52f3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-result-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "f445ba4b93dcc5ce836413f4b5a267b299f55fea",
+      "bytes": 5754736,
+      "sha256": "6d1cc609af69edd9e1c34558b67f976997afd950b27c90db158652d369ce9d17",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-source-controls-prerequisite-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "27772b582cabf51db84f78f046ecda08cc55302d",
+      "bytes": 596,
+      "sha256": "384347e9510b47c9a28c69fab47e79f5c535787971056ec9c3ce4bb5d857c06c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-tested-methods-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "e20cd963efd14015f2971a87bbdfb1f48f786a7f",
+      "bytes": 22476,
+      "sha256": "5c6d7a9ce7f5127aeb1a0e88613335a34c9a9e942daabd41b7d1cd2f1a78f005",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset244-avss18-physical-native-wait-controls-20261025.json",
+      "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-independent-review-20261025.json",
+      "source": "c84c44cbb5ba394aaaf867bb617e787497c9a358",
+      "git_blob": "907cb49dd08c8f067ba99fd7f5f0c65a8071af06",
+      "bytes": 3872,
+      "sha256": "c1b8429f2d52f403a8e0a958a90c14916af916b8cdf36f6f9caa565e6d41c208",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-root-controls-review-20261025.json",
+      "source": "8b5a17d39f35a9d94625500226090bb9d8adfe97",
+      "git_blob": "5ab9844c8e8b2e5c23521ecb3e84f7741e5e1e27",
+      "bytes": 388,
+      "sha256": "39829eeac8e84b68e3698049ce79967066879dac52d121cac3958500cb4bcb19",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-registration-20261025.json",
+      "source": "f86abdb7aebdfc6e639c5b644ea987508d9fabe1",
+      "git_blob": "a82ea2a883c6de924e865622c4147fd8280f055b",
+      "bytes": 347,
+      "sha256": "23f838e094a9db68fd7b8e3cc2835bc9e944d31dd06e0d31fd60fde2878fabba",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-controls-20261025.json",
+      "source": "22029eb6490d0017993dcb84b1a0e784a0072eb9",
+      "git_blob": "9c221a5a3f954e783478b12debddc5cf80ca9dd8",
+      "bytes": 18891,
+      "sha256": "e3c46eaa690407959ce7fbd6f865b07349311fab2a04ead19ef0ac20492a5f11",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-controls-20261025.log",
+      "source": "22029eb6490d0017993dcb84b1a0e784a0072eb9",
+      "git_blob": "412dc1f16a7a133218744a7b74a9fd6c50b74b67",
+      "bytes": 46417,
+      "sha256": "21ef51da94ba40c713cb5ccfbbd93ad80bb6015b102b54519177d661732fdd6c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-native-activation-20261025.json",
+      "source": "ed3e96c368867f1c3ad0bbbae794d4e15344ba89",
+      "git_blob": "14d0c77a80e18f351e4d76b3301c4558197fac7f",
+      "bytes": 665,
+      "sha256": "c91e0136a6d8623ea30478e75ea09904e5e727d69d7dbc3c9645ac40f1980b36",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-native-dispatch-20261025.json",
+      "source": "9d4a5c2f9ead8dc2e55343b819b11a085b32cd7d",
+      "git_blob": "01dc72e5d20e3957be76a7c97ea001b8dfefb417",
+      "bytes": 810,
+      "sha256": "8670b547ff48e95bb33618c90837780cc06faf8bc5e3db90a997ea11f2c0218a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-first-native-full-result-20261025.json",
+      "source": "c5d69d8495e7dfd89f439e55b56f8f45d31d4434",
+      "git_blob": "ecd9f7b27ff755ed0cc1617c089be3446eb5f549",
+      "bytes": 7333969,
+      "sha256": "484c9a2ee19ed97a4501741774290c63810a6a69e702e21f905eb60b4f49fa80",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-first-native-findings-20261025.json",
+      "source": "6720066d1a2823e1a00a58472488f6fd9bd429fe",
+      "git_blob": "c8097806680231bce6d1bef51a03e0a9a28cf063",
+      "bytes": 90424,
+      "sha256": "eaa20c8eedcd1150d0c8d9d26e355c177d785bb3de57b0d6103330d891c31574",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-first-native-joblog-20261025.log",
+      "source": "6720066d1a2823e1a00a58472488f6fd9bd429fe",
+      "git_blob": "083eec487c175d43d0a18ebab3a0c160e91ff699",
+      "bytes": 34659,
+      "sha256": "ce6efb077015476e26e3f8d1de25aadee35f6b8016d02b0769016496b2c8f8a5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-clock-diagnostic-first-native-parts-20261025.json",
+      "source": "6720066d1a2823e1a00a58472488f6fd9bd429fe",
+      "git_blob": "22e7b20c6b9d6844dbde3e3c5deb1894a579ce85",
+      "bytes": 881,
+      "sha256": "434efaeef0783352a33a1b73a9e6dd956b61e26634ea62fda956bd1b1defe2d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-full-after-targeted-final-review-20261025.json",
+      "source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a",
+      "git_blob": "926a3eb28a0093f7deeb935f4e449c5fd05a8e98",
+      "bytes": 26326,
+      "sha256": "a1c144cef576b7eb8bb349056213af15cf2f2a41967d015a3f4dd5225ff381a3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-full-after-targeted-root-review-20261025.json",
+      "source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a",
+      "git_blob": "92d3e04465300b9d8e42cd7c78d5f13269193240",
+      "bytes": 1652,
+      "sha256": "733fac9ea3e9b8e6bdc4ceefd519e9ebe3b68b52f43cc14abf9487b963ea833e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-full-after-targeted-dispatch-20261025.json",
+      "source": "577d7ab2f2790c15ee09017d44f1a78b0ddb0758",
+      "git_blob": "686507aebd81b7e4a5c7527c3c97d80125048ae6",
+      "bytes": 3264,
+      "sha256": "28a4b2991f130846d17ff7d1d733b3b10e39c0f6257536208d6db384c28c6f79",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-registration-20261025.json",
+      "source": "b534c845cfa785b079e094a8927274f66b2306e2",
+      "git_blob": "9235664c73931f238227219a45480f57dead6e2e",
+      "bytes": 3043,
+      "sha256": "c6ad7867a32f0dae4faa7e64e22636511858f1c9b4cb8e6d00fb3560b12bd025",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-registration-20261025.log",
+      "source": "b534c845cfa785b079e094a8927274f66b2306e2",
+      "git_blob": "a5a632465ff133073654f98fdc4065bbd1d21a41",
+      "bytes": 2183,
+      "sha256": "8fe0222823430d47e272ea3cd19f021ba72f5d44e3c97a1969e538874dbba127",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-registration-20261025.yml",
+      "source": "b534c845cfa785b079e094a8927274f66b2306e2",
+      "git_blob": "e3cb7b7094354133f3a41d6c84961478cf5eb1b5",
+      "bytes": 392,
+      "sha256": "733a714717701652e4af0116ff0cbac671af754699aeff3985d4db9af7445b7c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-source-controls-rejection-20261025.json",
+      "source": "ef299c51a697256cf0d66c61df8cf5799ec5a601",
+      "git_blob": "cfc365321f92814b5641d91e76fce721a57c56f5",
+      "bytes": 10088,
+      "sha256": "d66ef31c641c9b06b7df14017380635d8d89c8a30731f66f38865dab3921f191",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-source-controls-rejection-20261025.log",
+      "source": "ef299c51a697256cf0d66c61df8cf5799ec5a601",
+      "git_blob": "573bb67db97d95b47b2e7c1a3c97f0da64249c53",
+      "bytes": 38046,
+      "sha256": "b2d1d6cb335bb3b89be86b9de491d462358e821a7df546cfb8f54cc852e0bd1e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-source-controls-rejection-20261025.source.json",
+      "source": "ef299c51a697256cf0d66c61df8cf5799ec5a601",
+      "git_blob": "506814ae605df2a9056e378127ab4b2d23181fb7",
+      "bytes": 2872,
+      "sha256": "09a68f22f122dd7cb013c28520ed239884991bdaa6788198a8d90cfbcaced36f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-source-controls-rejection-20261025.stage.json",
+      "source": "ef299c51a697256cf0d66c61df8cf5799ec5a601",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-source-controls-rejection-20261025.tested-methods.json",
+      "source": "ef299c51a697256cf0d66c61df8cf5799ec5a601",
+      "git_blob": "271400611e8f87b118f92402eaaf3b26843e77ba",
+      "bytes": 56235,
+      "sha256": "c006906e9eb2cb03ea8eaeab7e4918bb466b278b0021cb6ef2572b11e8f7edef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-waiter-import-repair-20261025.json",
+      "source": "6d052133686476eeceea0ef2026f88dc08384b58",
+      "git_blob": "22aa55a30c9d56752af0b398954ffd922d297e72",
+      "bytes": 3021,
+      "sha256": "5ea7722f6b0528e097f2046b2490a139afc06d3e59e483676ade49da20c212a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-import-repair-independent-review-20261025.json",
+      "source": "f8862a5fb295f932f7892e8ab5a43d2f81e15916",
+      "git_blob": "1d9fecfef1d2cae6b6edfdb6b63c169c15b88632",
+      "bytes": 4135,
+      "sha256": "8067dadb349b1e842055dd239bc46707716f8f8dc19f0102b618c789c7f9e9a9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-import-repair-root-review-20261025.json",
+      "source": "553c4f0befbabdfde0e99a4e4fbed2c0bb1803ee",
+      "git_blob": "f867932e0be715e0d606d93204eb66051ec95f02",
+      "bytes": 1541,
+      "sha256": "9a7e72f907fa3b974bc6fce60e691bb9750f418b8773e81074f2b5431ef06c14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-repaired-source-controls-pass-20261025.imports.json",
+      "source": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "git_blob": "edeae2ce64717ebe06de3d3822ca59c790bad4cd",
+      "bytes": 67079,
+      "sha256": "a2c2a8ecec39f40e4b47428d1a3050afe99480eea58663b6a916f595b88da99e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-repaired-source-controls-pass-20261025.json",
+      "source": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "git_blob": "94e7ab02296a13c14efa20a38ec9966ce2652b68",
+      "bytes": 12385,
+      "sha256": "ef3dcfd150d80b90b069f4d35850cbfeda5a9cff6a5a383531fe29f339e8868e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-repaired-source-controls-pass-20261025.log",
+      "source": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "git_blob": "717ed9659220c8c10d3973b25367fabf1d639149",
+      "bytes": 281484,
+      "sha256": "092f1a2e7dc2e19b0c24a6c5cb60636e309c5eda1cc6984926515e5b994c189f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-repaired-source-controls-pass-20261025.publication.json",
+      "source": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "git_blob": "3f4761ed305153188c7d631e040d5c259127a99c",
+      "bytes": 1170,
+      "sha256": "21a5a9fc54d61d49df2aa0c8a20036124aee183a567cbe9babf967af006f620c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-repaired-source-controls-pass-20261025.release.json",
+      "source": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "git_blob": "059ea13e7ccf270ee0188532d6f82b6272b3afc5",
+      "bytes": 665,
+      "sha256": "b0d5bc89c4f5560335e60f640f8feb9e1ac879030a785d8881b1fb6f71083b00",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-repaired-source-controls-pass-20261025.source.json",
+      "source": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "git_blob": "dc86dcf2c4b813331a17ab7ae797c90664450438",
+      "bytes": 2872,
+      "sha256": "12ddaa730c54dc940309a7bf4d237d6e0df434470c9dd730328bd851b3d3ec44",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-repaired-source-controls-pass-20261025.stage.json",
+      "source": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "git_blob": "8a69d1f260808583c803916033b6d6fca5320583",
+      "bytes": 1800,
+      "sha256": "57adb9d970a0e6611ccb983a18d8345596c75bd45c4f664694b8d686f2033116",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-repaired-source-controls-pass-20261025.tested-methods.json",
+      "source": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "git_blob": "2fb4ce39a15cc2d8b9d21a80769765ba103f4ec9",
+      "bytes": 58105,
+      "sha256": "3c3ba18b27e8c8cdac67b01e1cabd6c1f5150f864fbe76b37e425e9daeaa2e46",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-repaired-source-controls-pass-20261025.wait.json",
+      "source": "06cde009b0d0b145d8b3002f9e69852fadfa9e48",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-restoration-source-feasibility-20261025.json",
+      "source": "43df2cc6481accbdd608ea5f18cd3a39553cd9d5",
+      "git_blob": "7f0826b6a699a61376ca566ec1e5aef14b1fe061",
+      "bytes": 11178,
+      "sha256": "c024fc1cf7ff2ebe697795f68f1197c54d3ff06ad3035af61506f7b9d8c08507",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-rc-source-derivations-20261025.json",
+      "source": "6a65694a0fdf8e19c39c3d6b97d07f9be4298af3",
+      "git_blob": "f72fad0685e194b0c6361b93fff655b4d7408c7f",
+      "bytes": 10676,
+      "sha256": "996f6b06a3110b58dbe8df37918c6be2015a597b10c643bf6901f05728a415ee",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/tx-phase-reset334-avss18-fresh-rc-20261025.md",
+      "source": "6a65694a0fdf8e19c39c3d6b97d07f9be4298af3",
+      "git_blob": "be32bf7ce663a7cb695b90af16ae174b6b7bde34",
+      "bytes": 4550,
+      "sha256": "7f44325db55e6bba4212ca6eb3b502a23c1aa8aac7d45a03f581588669882f7e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-preparation-activation-proposal-20261025.json",
+      "source": "2d50691f34ca6fb871292a4cc914aef0b2cae878",
+      "git_blob": "2c21462f2f806f647220b0b45b11e0b5226061c8",
+      "bytes": 7223,
+      "sha256": "6dd327b3700ef52d941de84137240d54cdaf5a38cba7f66bf5e918e365198aea",
       "existing_identical": false
     }
   ]

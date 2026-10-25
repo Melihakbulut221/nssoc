@@ -1,0 +1,50 @@
+{
+  "schema": "cdr-v59-loaded-qualified-waiter-import-repair-v1",
+  "status": "SOURCE_ONLY_PENDING_REVIEW_NO_RETRY",
+  "failure": {
+    "run": 40212568932,
+    "source": "b534c845cfa785b079e094a8927274f66b2306e2",
+    "receipt": "docs/evidence/cdr-v59-loaded-source-controls-rejection-20261025.json",
+    "sha256": "d66ef31c641c9b06b7df14017380635d8d89c8a30731f66f38865dab3921f191",
+    "source_controls_passed": 43,
+    "stage_controls_started": false,
+    "native_skipped": true
+  },
+  "copied_qualified_waiter": {
+    "source": "a3c8b9e3f0cae0e79ff0cef2978e5b56428e6ee3",
+    "path": "scripts/wait_cloud_tested_source_release.py",
+    "bytes": 3571,
+    "sha256": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73",
+    "byte_identical": true
+  },
+  "checker": {
+    "path": "scripts/check_cdr_v59_loaded_imports.py",
+    "bytes": 8621,
+    "sha256": "db941f3f4118f79b74db30331562d76be2c2711fd1ed6bfe369e6e211944488c",
+    "positive_cases": 4,
+    "refusals": 9,
+    "actual_full_stage_import": true,
+    "actual_exact_import_statement_positive": true,
+    "actual_missing_waiter_and_guard_fresh_processes": true,
+    "subprocesses_are_import_only": true,
+    "stdlib_allowlist": "sys.stdlib_module_names and sys.builtin_module_names",
+    "installed_allowlist": {},
+    "closure_scope": "Transitive import-time repository closure; deferred function/native CAD imports are explicitly outside this source-controls scope"
+  },
+  "workflow": {
+    "original_sha256": "b60a6dd9edeb5bb3003b307d1f25527421e8134878d1fa4ba522e8739e51a043",
+    "corrected_sha256": "891cfe4e3aaaca5a532c823bcf5c63211c1e6e312fbe273645dff594f0e41a0d",
+    "only_added_step": "      - name: Exact protected repository import closure and real absent-module controls\n        shell: bash\n        run: |\n          set -euo pipefail\n          mkdir -p hw/soc/out/cdr-v59-loaded-controls\n          PYTHONPATH=scripts python3 scripts/check_cdr_v59_loaded_imports.py | tee hw/soc/out/cdr-v59-loaded-controls/imports.json\n          python3 - <<'PY'\n          import json\n          r=json.load(open('hw/soc/out/cdr-v59-loaded-controls/imports.json'))\n          assert r['status']=='PASS_CURRENT_V59_LOADED_IMPORT_CLOSURE_AND_ACTUAL_ABSENCE_CONTROLS_NOT_NATIVE'\n          assert len(r['positives'])==4 and len(r['rejected'])==9\n          assert r['closure']['installed_allowlist']=={} and r['source_controls_only']\n          assert not r['preparation_executed'] and not r['simulation_executed'] and not r['prior_archive_downloaded']\n          PY\n",
+    "original_controls_and_native_jobs_byte_unchanged": true,
+    "full_named_control_records_after_correction": 6,
+    "total_expected_named_refusals": 133
+  },
+  "original_admission_controller_stage_and_electrical_blocks_unchanged": true,
+  "controls_executed": false,
+  "retry_dispatched": false,
+  "native_authorized": false,
+  "preparation_authorized": false,
+  "simulation_authorized": false,
+  "extraction_authorized": false,
+  "geometry_regeneration_authorized": false
+}
