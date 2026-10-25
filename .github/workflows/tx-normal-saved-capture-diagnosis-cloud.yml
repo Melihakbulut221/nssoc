@@ -1,0 +1,13 @@
+# Harmless orphan registration; no source checkout or native job.
+name: tx-normal-saved-capture-diagnosis-cloud
+on:
+  push:
+    branches: [codex/register-tx-normal-capture-diagnosis-20261025]
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - run: echo 'Register only; no simulator, checkout or repository mutation.'
