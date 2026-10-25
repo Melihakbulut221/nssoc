@@ -1,0 +1,115 @@
+{
+  "AST_changed_functions": {
+    "scripts/check_pcie_gen12_record_cdc_cloud.py": [
+      "controls"
+    ],
+    "scripts/cloud_pcie_gen12_record_cdc.py": [
+      "assertion_site"
+    ]
+  },
+  "actual_failed_run": 40196820337,
+  "actual_predicate": {
+    "AST": "BoolOp(op=And(), values=[UnaryOp(op=Not(), operand=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='value', ctx=Load()), args=[Constant(value='rv')])), UnaryOp(op=Not(), operand=Call(func=Attribute(value=Name(id='self', ctx=Load()), attr='value', ctx=Load()), args=[Constant(value='wa')]))])",
+    "ast_identical": true,
+    "declared": "not self.value('rv') and not self.value('wa')",
+    "line": 206,
+    "old_literal_equality": false,
+    "unparse": "not self.value('rv') and (not self.value('wa'))"
+  },
+  "basis_source": "f028f7f0524cbe8f504fca6b4c21108f6a18cca5",
+  "changes": [
+    {
+      "after_sha256": "a5936ae04e9ab5d194bcb4e6db20fb72654bdc39d59d5dd72745637f9350b406",
+      "before_sha256": "4f039723883ea7a51f7a892f4caab6d6aff0d632759c3a40438f3b50ce8a632f",
+      "edits": [
+        {
+          "after": "        expression_match=expression in EXPRESSIONS.get(name,())\n        if name in ('ignore_write_reset','ignore_read_reset'):\n            # Only the already-declared reset predicates use structural equality.\n            # Formatting-only parentheses must not change an exact AST predicate.\n            expression_match=any(\n                ast.dump(node.test,include_attributes=False)==\n                ast.dump(ast.parse(allowed,mode='eval').body,include_attributes=False)\n                for allowed in EXPRESSIONS[name])\n        if message in MESSAGES[name]or expression_match:\n",
+          "after_range": [
+            141,
+            150
+          ],
+          "before": "        if message in MESSAGES[name]or expression in EXPRESSIONS.get(name,()):\n",
+          "before_range": [
+            141,
+            142
+          ]
+        }
+      ],
+      "path": "scripts/cloud_pcie_gen12_record_cdc.py"
+    },
+    {
+      "after_sha256": "a55972638ab6181d6c90ffce332aaa308e13ac90fbdeb0a42bf010b1fa57c72e",
+      "before_sha256": "9c29f8fae5eef9e2be3115d52061636c2a75c297ff0e3e0c6fc9c73c305560f0",
+      "edits": [
+        {
+          "after": "        # Actual reset source predicates must be admitted independent of ast.unparse\n        # parentheses. Keep the pinned harness and both expressions byte-identical.\n        reset_nodes=next(n for n in ast.walk(ast.parse(c.HARNESS.read_text()))\n                         if isinstance(n,ast.AsyncFunctionDef)and n.name=='reset')\n        direct_assertions=[n for n in reset_nodes.body if isinstance(n,ast.Assert)]\n        assert [n.lineno for n in direct_assertions]==[206,207]\n        reset_proofs=[]\n        for reset_name in ('ignore_write_reset','ignore_read_reset'):\n            reset_mutation=next(x for x in mutations if x['name']==reset_name)\n            reset_sites=c.assertion_sites(reset_mutation)\n            for node in direct_assertions:\n                reset_origin=(str(c.HARNESS.resolve()),node.lineno)\n                assert reset_origin in reset_sites\n                assert c.assertion_site(node,reset_name)['message']is None\n                reset_xml=fixture(c.DIRECT,reset_mutation)\n                case(reset_xml,reset_mutation['test']).find('failure').set('error_msg','')\n                reset_log='  File \"%s\", line %d, in reset\\n'%reset_origin\n                rows=c.xml_review(encoded(reset_xml),c.DIRECT,2,\n                                  mutation=reset_mutation,log=reset_log)\n                assert sum(x['disposition']=='DETECTED_ASSERTION'for x in rows)==1\n                reset_proofs.append(dict(mutation=reset_name,source=list(reset_origin),\n                                         expression=ast.unparse(node.test)))\n        found['actual_reset_predicates_both_mutants']={'passed':True,'sites':reset_proofs}\n        for reset_name in ('ignore_write_reset','ignore_read_reset'):\n            for text in [\n                \"assert not self.value('rv') and not self.value('wa')\",\n                \"assert (not self.value('rv')) and (not self.value('wa'))\",\n                \"assert (((not self.value('rv')) and (not self.value('wa'))))\",\n                \"assert (self.output()) == ((0,) * 5)\"]:\n                assert c.assertion_site(ast.parse(text).body[0],reset_name)is not None\n        found['reset_equivalent_parentheses']={'passed':True,'cases':8}\n        def require_reset_site(text):\n            assert c.assertion_site(ast.parse(text).body[0],'ignore_read_reset')is not None\n        for name,text in [\n            ('operator',\"assert not self.value('rv') or not self.value('wa')\"),\n            ('read_port',\"assert not self.value('rn') and not self.value('wa')\"),\n            ('write_port',\"assert not self.value('rv') and not self.value('wn')\"),\n            ('read_negation',\"assert self.value('rv') and not self.value('wa')\"),\n            ('write_negation',\"assert not self.value('rv') and self.value('wa')\"),\n            ('output_operator',\"assert self.output() != (0,) * 5\"),\n            ('output_width',\"assert self.output() == (0,) * 4\"),\n            ('non_assert_node',\"not self.value('rv') and not self.value('wa')\")]:\n            reject('reset_predicate_'+name,lambda text=text:require_reset_site(text))\n        reset_mutation=next(x for x in mutations if x['name']=='ignore_read_reset')\n        reset_xml=fixture(c.DIRECT,reset_mutation)\n        case(reset_xml,reset_mutation['test']).find('failure').set('error_msg','')\n        reset_origin=(str(c.HARNESS.resolve()),206)\n        reset_log='  File \"%s\", line %d, in reset\\n'%reset_origin\n        def bad_reset(change,trace=reset_log,rc=2):\n            bad=copy.deepcopy(reset_xml);change(bad)\n            return lambda:c.xml_review(encoded(bad),c.DIRECT,rc,\n                                       mutation=reset_mutation,log=trace)\n        reject('reset_xml_unknown_conversion',bad_reset(lambda r:\n            case(r,reset_mutation['test']).find('failure').set('error_type','ValueError')))\n        reject('reset_xml_wrong_line',bad_reset(lambda r:None,\n            trace='  File \"%s\", line 1, in reset\\n'%reset_origin[0]))\n        reject('reset_xml_wrong_file',bad_reset(lambda r:None,\n            trace='  File \"/tmp/unreviewed.py\", line 206, in reset\\n'))\n        reject('reset_xml_success_returncode',bad_reset(lambda r:None,rc=0))\n",
+          "after_range": [
+            177,
+            236
+          ],
+          "before": "",
+          "before_range": [
+            177,
+            177
+          ]
+        },
+        {
+          "after": "        assert len(found)==63\n",
+          "after_range": [
+            267,
+            268
+          ],
+          "before": "        assert len(found)==49\n",
+          "before_range": [
+            208,
+            209
+          ]
+        }
+      ],
+      "path": "scripts/check_pcie_gen12_record_cdc_cloud.py"
+    },
+    {
+      "after_sha256": "e95d3ba229e2b9d6c4d3ef9378a410905d316f4b0d93f43d1116ab252495a64d",
+      "before_sha256": "84925e82c5755a2a2d896855c18aba686d7355afe2357a730614addebc099eaf",
+      "edits": [
+        {
+          "after": "          assert r['classification_control_count']==63 and len(r['controls'])==63\n",
+          "after_range": [
+            35,
+            36
+          ],
+          "before": "          assert r['classification_control_count']==49 and len(r['controls'])==49\n",
+          "before_range": [
+            35,
+            36
+          ]
+        }
+      ],
+      "path": ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml"
+    },
+    {
+      "after_sha256": "e95d3ba229e2b9d6c4d3ef9378a410905d316f4b0d93f43d1116ab252495a64d",
+      "before_sha256": "84925e82c5755a2a2d896855c18aba686d7355afe2357a730614addebc099eaf",
+      "edits": [
+        {
+          "after": "          assert r['classification_control_count']==63 and len(r['controls'])==63\n",
+          "after_range": [
+            35,
+            36
+          ],
+          "before": "          assert r['classification_control_count']==49 and len(r['controls'])==49\n",
+          "before_range": [
+            35,
+            36
+          ]
+        }
+      ],
+      "path": ".github/workflows/pcie-gen12-record-cdc-cloud.yml"
+    }
+  ],
+  "failed_result_sha256": "65b6f9459fa693a91012fa834d31fbfe0d5d78e89aa49aac3679e5e639ae85a8",
+  "harness_unchanged_sha256": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979",
+  "schema": "cdc-reset-predicate-exact-source-derivation-v1",
+  "source_AST_inspection_only": true,
+  "tests_executed": false
+}

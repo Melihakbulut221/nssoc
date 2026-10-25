@@ -139,7 +139,15 @@ def assertion_site(node,name):
     if isinstance(node,ast.Assert):
         message=node.msg.value if isinstance(node.msg,ast.Constant)and isinstance(node.msg.value,str)else None
         expression=ast.unparse(node.test)
-        if message in MESSAGES[name]or expression in EXPRESSIONS.get(name,()):
+        expression_match=expression in EXPRESSIONS.get(name,())
+        if name in ('ignore_write_reset','ignore_read_reset'):
+            # Only the already-declared reset predicates use structural equality.
+            # Formatting-only parentheses must not change an exact AST predicate.
+            expression_match=any(
+                ast.dump(node.test,include_attributes=False)==
+                ast.dump(ast.parse(allowed,mode='eval').body,include_attributes=False)
+                for allowed in EXPRESSIONS[name])
+        if message in MESSAGES[name]or expression_match:
             return {'message':message,'expression':expression}
     elif isinstance(node,ast.Raise)and node.cause is None:
         call=node.exc

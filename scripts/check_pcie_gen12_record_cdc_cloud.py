@@ -175,6 +175,65 @@ def controls():
             ('chained_cause',"raise AssertionError('bounded public-port scenario timeout') from error"),
             ('extra_argument',"raise AssertionError('bounded public-port scenario timeout', other)")]:
             reject('source_raise_'+name,lambda source=source:require_raise_site(source))
+        # Actual reset source predicates must be admitted independent of ast.unparse
+        # parentheses. Keep the pinned harness and both expressions byte-identical.
+        reset_nodes=next(n for n in ast.walk(ast.parse(c.HARNESS.read_text()))
+                         if isinstance(n,ast.AsyncFunctionDef)and n.name=='reset')
+        direct_assertions=[n for n in reset_nodes.body if isinstance(n,ast.Assert)]
+        assert [n.lineno for n in direct_assertions]==[206,207]
+        reset_proofs=[]
+        for reset_name in ('ignore_write_reset','ignore_read_reset'):
+            reset_mutation=next(x for x in mutations if x['name']==reset_name)
+            reset_sites=c.assertion_sites(reset_mutation)
+            for node in direct_assertions:
+                reset_origin=(str(c.HARNESS.resolve()),node.lineno)
+                assert reset_origin in reset_sites
+                assert c.assertion_site(node,reset_name)['message']is None
+                reset_xml=fixture(c.DIRECT,reset_mutation)
+                case(reset_xml,reset_mutation['test']).find('failure').set('error_msg','')
+                reset_log='  File "%s", line %d, in reset\n'%reset_origin
+                rows=c.xml_review(encoded(reset_xml),c.DIRECT,2,
+                                  mutation=reset_mutation,log=reset_log)
+                assert sum(x['disposition']=='DETECTED_ASSERTION'for x in rows)==1
+                reset_proofs.append(dict(mutation=reset_name,source=list(reset_origin),
+                                         expression=ast.unparse(node.test)))
+        found['actual_reset_predicates_both_mutants']={'passed':True,'sites':reset_proofs}
+        for reset_name in ('ignore_write_reset','ignore_read_reset'):
+            for text in [
+                "assert not self.value('rv') and not self.value('wa')",
+                "assert (not self.value('rv')) and (not self.value('wa'))",
+                "assert (((not self.value('rv')) and (not self.value('wa'))))",
+                "assert (self.output()) == ((0,) * 5)"]:
+                assert c.assertion_site(ast.parse(text).body[0],reset_name)is not None
+        found['reset_equivalent_parentheses']={'passed':True,'cases':8}
+        def require_reset_site(text):
+            assert c.assertion_site(ast.parse(text).body[0],'ignore_read_reset')is not None
+        for name,text in [
+            ('operator',"assert not self.value('rv') or not self.value('wa')"),
+            ('read_port',"assert not self.value('rn') and not self.value('wa')"),
+            ('write_port',"assert not self.value('rv') and not self.value('wn')"),
+            ('read_negation',"assert self.value('rv') and not self.value('wa')"),
+            ('write_negation',"assert not self.value('rv') and self.value('wa')"),
+            ('output_operator',"assert self.output() != (0,) * 5"),
+            ('output_width',"assert self.output() == (0,) * 4"),
+            ('non_assert_node',"not self.value('rv') and not self.value('wa')")]:
+            reject('reset_predicate_'+name,lambda text=text:require_reset_site(text))
+        reset_mutation=next(x for x in mutations if x['name']=='ignore_read_reset')
+        reset_xml=fixture(c.DIRECT,reset_mutation)
+        case(reset_xml,reset_mutation['test']).find('failure').set('error_msg','')
+        reset_origin=(str(c.HARNESS.resolve()),206)
+        reset_log='  File "%s", line %d, in reset\n'%reset_origin
+        def bad_reset(change,trace=reset_log,rc=2):
+            bad=copy.deepcopy(reset_xml);change(bad)
+            return lambda:c.xml_review(encoded(bad),c.DIRECT,rc,
+                                       mutation=reset_mutation,log=trace)
+        reject('reset_xml_unknown_conversion',bad_reset(lambda r:
+            case(r,reset_mutation['test']).find('failure').set('error_type','ValueError')))
+        reject('reset_xml_wrong_line',bad_reset(lambda r:None,
+            trace='  File "%s", line 1, in reset\n'%reset_origin[0]))
+        reject('reset_xml_wrong_file',bad_reset(lambda r:None,
+            trace='  File "/tmp/unreviewed.py", line 206, in reset\n'))
+        reject('reset_xml_success_returncode',bad_reset(lambda r:None,rc=0))
         mutation=mutations[0];mt=Path(mutation['path']).stem;tree=fixture(mt,mutation)
         origin,site=next(iter(c.assertion_sites(mutation).items()))
         case(tree,mutation['test']).find('failure').set('error_msg',site['message'])
@@ -206,7 +265,7 @@ def controls():
         c.pins()
         result.update(status='PASS_CDC_CONTROLLER_SOURCE_AND_CLASSIFICATION_CONTROLS_NO_RTL',
                       controls=found,classification_control_count=len(found),terminal_source_pins_unchanged=True)
-        assert len(found)==49
+        assert len(found)==63
     except BaseException as error:
         result.update(status='FAIL_OR_INTERRUPTED',error=repr(error),traceback=traceback.format_exc())
         raise

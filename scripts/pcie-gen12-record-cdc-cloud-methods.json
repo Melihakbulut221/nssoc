@@ -1,6 +1,6 @@
 {
   "compiling_behavioral_mutations": 18,
-  "controller_controls": 49,
+  "controller_controls": 63,
   "mapped_named_executions": 33,
   "memory_sampler_actual_controls": {
     "attempt": 1,
@@ -43,11 +43,8 @@
     "total_snapshot_window_seconds": 0.1
   },
   "mutations_executed": false,
-  "native_execution_authorized": true,
-  "native_review_receipt": {
-    "path": "docs/evidence/pcie-gen12-record-cdc-memory-sampler-native-activation-review-20261025.json",
-    "sha256": "77a944b71f114d2058adaf77922b7e37c4d7b506b4a498d7b17ec87249ae1b7d"
-  },
+  "native_execution_authorized": false,
+  "native_review_receipt": null,
   "positive_named_executions": 66,
   "previous_source_controls": {
     "result_sha256": "1e4de76573238bd327ebbcae67beb5e2ca300446545a01da22ffa050fd5ac9c1",
@@ -63,8 +60,10 @@
     "source": "af3efe229f75860f71f407cae33908ee3dc6f253"
   },
   "protected": {
-    ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml": "84925e82c5755a2a2d896855c18aba686d7355afe2357a730614addebc099eaf",
-    ".github/workflows/pcie-gen12-record-cdc-cloud.yml": "84925e82c5755a2a2d896855c18aba686d7355afe2357a730614addebc099eaf",
+    ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml": "e95d3ba229e2b9d6c4d3ef9378a410905d316f4b0d93f43d1116ab252495a64d",
+    ".github/workflows/pcie-gen12-record-cdc-cloud.yml": "e95d3ba229e2b9d6c4d3ef9378a410905d316f4b0d93f43d1116ab252495a64d",
+    "docs/evidence/pcie-gen12-record-cdc-assertion-site-native-rejection-20261025.json": "54d124970a9b4c1ae1ce5a2aef24e1e9b3f0f74bdd93cdb8f9633f054284c5e4",
+    "docs/evidence/pcie-gen12-record-cdc-assertion-site-rejected-result-20261025.json": "65b6f9459fa693a91012fa834d31fbfe0d5d78e89aa49aac3679e5e639ae85a8",
     "docs/evidence/pcie-gen12-record-cdc-classifier-correction-review-20261025.json": "13f8d11cf2da0b485cfd2b6c497a3bd7aaf6d0b7f7cc4c59cfc8808b2eea94e2",
     "docs/evidence/pcie-gen12-record-cdc-controller-controls-source-review-20261025.json": "054a8aa7bf3543e9f7989a0ffcab3e5c6d231fee9ceb74d5743aa620f395b604",
     "docs/evidence/pcie-gen12-record-cdc-controls-native-result-20261025.json": "1e4de76573238bd327ebbcae67beb5e2ca300446545a01da22ffa050fd5ac9c1",
@@ -85,6 +84,7 @@
     "docs/pcie-gen12-record-cdc-literal-raise-correction-20261025.md": "0579eae383080d84f955ba61f4c678578a744c7be44951e943a6d4de0e0609c7",
     "docs/pcie-gen12-record-cdc-memory-resampling-20261025.md": "573f06cd3701db6b6b5f033e8bc8a4a0ae161a008ba7f544e88acf36be614f20",
     "docs/pcie-gen12-record-cdc-proof-refinements-20261025.md": "618af28582d274bafe2bd4ca38efd7b93304f4acc93bad38c81d899505e40dc5",
+    "docs/pcie-gen12-record-cdc-reset-ast-correction-20261025.md": "df1245144fa5b13fef9c0654f2a8d91f313eddc18f3ed77a8d0a187575de4f3e",
     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-source-freeze.json": "80e7abc3badad6ea90426c029068eac697f1a881f251aac9c73f63a84613a874",
     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-validation.json": "36f55a9a5a5e4d1a11034747df79b67e196fd8852b33ffa407c0ecae160f98fc",
     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-rtl-contract.json": "a51a3b5e9b550a7f5ea6e29044c1637ba355e2b085a966663136cf60c154e3fb",
@@ -158,17 +158,18 @@
     "hw/soc/tb/cocotb/test_soc_pcie_gen12_record_cdc_v1.py": "5d1d386c3fe5a7dfedc9279066f9bd8f8cf3d75e42ef1d463d49868e9580ce32",
     "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py": "c6e71e6c8fa440f20d0d9619fac0ea9015eef662dfe6c89497edcb39a16fa102",
     "scripts/check_pcie_gen12_raw32_rx.py": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da",
-    "scripts/check_pcie_gen12_record_cdc_cloud.py": "9c29f8fae5eef9e2be3115d52061636c2a75c297ff0e3e0c6fc9c73c305560f0",
+    "scripts/check_pcie_gen12_record_cdc_cloud.py": "a55972638ab6181d6c90ffce332aaa308e13ac90fbdeb0a42bf010b1fa57c72e",
     "scripts/check_pcie_gen12_record_cdc_source.py": "91c601c3cbc4fb8a23dda5d602acbc392f8b53dbdbcc15a3ced9cb8c3a081d67",
     "scripts/check_pcie_live_memory_sampler.py": "e982abd9262ced6882bf383af5b4389d73a4077f8f19c61be99ae0398ae1a851",
     "scripts/cloud_chunked_results.py": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
-    "scripts/cloud_pcie_gen12_record_cdc.py": "4f039723883ea7a51f7a892f4caab6d6aff0d632759c3a40438f3b50ce8a632f",
+    "scripts/cloud_pcie_gen12_record_cdc.py": "a5936ae04e9ab5d194bcb4e6db20fb72654bdc39d59d5dd72745637f9350b406",
     "scripts/ensure_cloud_tested_source_release.py": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e",
     "scripts/migrate_outputs_to_cloud.py": "52fa3ef7adc92b6e6071b304ccb1b07908f31ccde7dacf39a7258e07356fa512",
     "scripts/pcie-gen12-record-cdc-methods.json": "2ad89118f825c8c777a0f97843e104422015eb4ba4d130cb39ed822b2320bf03",
     "scripts/pcie-gen12-record-cdc-mutations.json": "5d7f7457ee47d257d62424610363836132eff63acf8a0aff46fd566fb3d6aeab",
     "scripts/pcie-gen12-record-cdc-proposal.json": "bf7b09fb1127d62e4be85c39f65eb09a58467a20c4f811cddde39eab1a9feacf",
     "scripts/pcie-gen12-record-cdc-requirements.txt": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070",
+    "scripts/pcie-gen12-record-cdc-reset-ast-derivation.json": "53508adb7e783cb4059becf9f5e7999f60dbb1aa6ea228b2ea837b874e57bdb4",
     "scripts/pcie-live-memory-sampler-derivation.json": "793e2067517f98709da341d5936182d931432d50349d0a53b72bc0b1a337ddbb",
     "scripts/pcie_live_memory_sampler.py": "55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07",
     "scripts/publish_cloud_results.py": "a5cd154c1a7e3f838f5880e6cabef115245d696485c9eda2bd0451da8e1e1296",
@@ -193,7 +194,19 @@
     "wait_positives": 3
   },
   "refinement_source": "078c1c3b7bf6a7305176a1e3ab38c18c9ace4a47",
-  "review_status": "REVIEWED_FOR_ONE_HOSTED_PROOF",
+  "reset_predicate_correction": {
+    "additional_classifier_cases": 14,
+    "changed_harness_or_RTL": false,
+    "current_candidate_executed": false,
+    "derivation_path": "scripts/pcie-gen12-record-cdc-reset-ast-derivation.json",
+    "failed_run": 40196820337,
+    "failed_source": "f028f7f0524cbe8f504fca6b4c21108f6a18cca5",
+    "prior_66_RTL_and_33_mapped_PASS": true,
+    "prior_accepted_mutants": 9,
+    "prior_synthesis_PASS": 6,
+    "strict_rejected_mutant": "ignore_read_reset"
+  },
+  "review_status": "SOURCE_ONLY_REVIEW_PENDING",
   "schema": "gen12-record-cdc-hosted-proof-source-v1",
   "scope": {
     "LTSSM_implemented": false,
@@ -207,7 +220,7 @@
     "x4_lane_mapping": false
   },
   "simulations_executed": false,
-  "source_controls_executed": true,
+  "source_controls_executed": false,
   "source_only_reviewed_basis": "50708f2c75c4c44246a7226cb4b9cb86dd2f10af",
   "supervisor_reuse": {
     "archived_protected_count": 52,
@@ -228,8 +241,9 @@
     "verilator_tag": "v5.040"
   },
   "unfinished": [
-    "Final root metadata review before the one proposed native retry",
-    "Actual 66 RTL / 33 mapped / 18 compiled-fault proof remains entirely unexecuted"
+    "Independent exact reset-predicate AST classifier review",
+    "Actual63 classifier plus unchanged sampler/supervision/publication controls",
+    "Separate metadata review before one complete66/33/18 proof; no automatic retry"
   ],
   "vendor": {
     "bytes": 34468,
