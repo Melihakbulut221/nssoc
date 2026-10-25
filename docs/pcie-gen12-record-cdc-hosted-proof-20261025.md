@@ -52,7 +52,10 @@ The stale-output fault must reach the explicit epoch barrier assertion on known
 held data; the collector-reset fault must reach an explicit data/epoch assertion.
 
 The controller checker defines 36 source/XML/classification controls in addition
-to the 13 actual supervisor fixtures. It performs no RTL simulation. These controls,
+to the 13 actual supervisor fixtures. Publication also requires the unchanged
+17 exact-source release controls, three positive/four negative bounded-wait cases,
+six archive-integrity faults, and the actual extracted read-only publisher program
+with one positive and three wrong-source/tag/legacy-create faults. It performs no RTL simulation. These controls,
 all tool setup, all66 positives, all33 mapped tests and all18 mutants remain
 unexecuted at this source checkpoint. Source/AST review is not a hosted result.
 
@@ -60,9 +63,19 @@ A future reviewed activation must provide an exact review receipt whose complete
 protected-source map equals the controller manifest, enable the separate native
 authorization, and register the byte-identical manual template. Controls remain
 a prerequisite to the opt-in job. No registration, dispatch, release creation or
-retry is authorized by this source commit. Complete small result bytes are logged
-with SHA256 and ordered base64 chunks before unconditional 90-day artifacts;
-failure evidence and progress remain separate from acceptance.
+retry is authorized by this source commit. Complete source-control and native small-result bytes are logged with SHA256 and
+ordered bounded base64 chunks. Before any tool/bootstrap work the native controller
+waits, under a 360-second process bound, for an externally reserved exact-source
+prerelease; it neither creates nor moves a tag. An always-run publication step
+revalidates that destination and uses the existing pinned archive/publisher helpers
+to publish the unchanged result summary, parts manifest and complete evidence
+archive. The publisher's legacy release-creation fallback is replaced only at the
+call seam with the original strict read-only release validator on every lookup.
+Upload retries still require matching remote byte length/digest and never clobber.
+Packaging supervision is outside the archived directory so live logs cannot mutate
+the input archive. Original failed/partial results remain intact; a missing result
+gets an explicit failed disposition. Both evidence and publication traces also
+have unconditional 90-day artifact fallback. Publication does not change acceptance.
 
 Primary sources:
 - https://docs.cocotb.org/en/v2.0.1/building.html

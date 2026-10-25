@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted parser/source/supervision controls; no RTL simulation in this program."""
-import copy, json, os, traceback
+import ast, contextlib, copy, io, json, os, sys, traceback, types
+from unittest import mock
 import xml.etree.ElementTree as ET
 from pathlib import Path
 import cloud_pcie_gen12_record_cdc as c
@@ -20,6 +21,53 @@ def fixture(top,mutation=None):
 def encoded(tree):return ET.tostring(tree)
 def case(root,name):return next(x for x in root.iter('testcase')if x.attrib['name']==name)
 
+def readonly_publication_controls(release):
+    tree=ast.parse(Path(c.__file__).read_text())
+    fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='publish')
+    program=next(n.value.value for n in fn.body if isinstance(n,ast.Assign)and
+                 any(isinstance(v,ast.Name)and v.id=='program'for v in n.targets))
+    env=dict(GITHUB_ACTIONS='true',GITHUB_REPOSITORY=release.REPO,GITHUB_RUN_ID='123',
+             GITHUB_RUN_ATTEMPT='1',GITHUB_SHA='a'*40)
+    tag,source=release.context(c.GROUP,env)
+    info=dict(id=5,tag_name=tag,target_commitish=source,draft=False,prerelease=True,assets=[])
+    ref=dict(ref='refs/tags/'+tag,object=dict(type='commit',sha=source))
+    def exercise(code,body,reference):
+        calls=[]
+        def read(path,missing=False):
+            calls.append(path)
+            return copy.deepcopy(body if path.startswith('releases/')else reference)
+        def legacy(*args):raise AssertionError('Legacy release creation path must never execute')
+        migration=types.SimpleNamespace(release=legacy)
+        def publish(group,paths):
+            assert group==c.GROUP and paths==['fixture.summary.json','fixture.parts.json']
+            migration.release(tag)
+            return dict(tag=tag,assets=[dict(name=p)for p in paths])
+        guard=types.SimpleNamespace(context=release.context,api=read,validate_release=release.validate_release)
+        oldpath=list(sys.path)
+        try:
+            with mock.patch.dict(os.environ,env),mock.patch.object(sys,'argv',
+                 ['fixture',str(c.ROOT/'scripts'),c.GROUP,'fixture.summary.json','fixture.parts.json']),\
+                 mock.patch.dict(sys.modules,{'ensure_cloud_tested_source_release':guard,
+                  'migrate_outputs_to_cloud':migration,'publish_cloud_results':types.SimpleNamespace(publish_results=publish)}),\
+                 contextlib.redirect_stdout(io.StringIO())as output:
+                exec(compile(code,'reviewed-publication-program','exec'),{})
+            result=json.loads(output.getvalue())
+            assert result['tag']==tag and len(calls)==4
+        finally:sys.path[:]=oldpath
+    exercise(program,info,ref)
+    rejected=[]
+    cases=[('legacy-create-path',program.replace('migration.release=readonly_release','pass'),info,ref)]
+    bad=copy.deepcopy(info);bad['target_commitish']='b'*40
+    cases.append(('wrong-release-source',program,bad,ref))
+    badref=copy.deepcopy(ref);badref['object']['sha']='b'*40
+    cases.append(('wrong-tag-object',program,info,badref))
+    for name,code,body,reference in cases:
+        try:exercise(code,body,reference)
+        except AssertionError:rejected.append(name)
+        else:raise AssertionError('Read-only publication control survived: '+name)
+    assert len(rejected)==3
+    return dict(actual_extracted_program_positive=True,rejected=rejected,network_or_upload_executed=False)
+
 def controls():
     m=c.pins();c.authorization(m)
     c.OUT.mkdir(parents=True,exist_ok=False)
@@ -32,6 +80,18 @@ def controls():
         # The exact qualified 13 fixtures execute real harmless subprocesses.
         s.controls()
         original=json.loads((s.TRACE/'controls.json').read_text())
+        import ensure_cloud_tested_source_release as release
+        import wait_cloud_tested_source_release as wait
+        release_proof=release.controls();wait_proof=wait.controls()
+        assert len(release_proof['rejected'])==17
+        assert wait_proof['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'
+        assert len(wait_proof['positive_cases'])==3 and len(wait_proof['rejected'])==4
+        archive=c.command([os.sys.executable,c.ROOT/'scripts/cloud_chunked_results.py','--self-test'],
+                          'publication-archive-fixture',seconds=120)
+        archive_proof=json.loads(archive.stdout)
+        assert archive_proof['positive_roundtrip']and archive_proof['negative_controls']==6
+        result['publication_controls']={'release':release_proof,'wait':wait_proof,'archive':archive_proof,
+                                        'readonly_program':readonly_publication_controls(release)}
         assert original['status']=='PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL'
         assert len(original['controls'])==13 and all(original['controls'].values())
         result['qualified_supervision_controls']=original

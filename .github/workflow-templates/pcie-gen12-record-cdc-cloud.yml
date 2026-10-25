@@ -39,7 +39,16 @@ jobs:
           assert len(q['controls'])==13 and all(q['controls'].values())
           assert r['simulations_executed']is False and r['synthesis_executed']is False
           assert r['terminal_source_pins_unchanged']is True
+          p=r['publication_controls']
+          assert len(p['release']['rejected'])==17
+          assert len(p['wait']['positive_cases'])==3 and len(p['wait']['rejected'])==4
+          assert p['archive']['negative_controls']==6 and p['archive']['positive_roundtrip']
+          assert p['readonly_program']['actual_extracted_program_positive']
+          assert len(p['readonly_program']['rejected'])==3 and not p['readonly_program']['network_or_upload_executed']
           PY
+      - name: Preserve complete small source-control result in bounded log chunks
+        if: always()
+        run: python3 -u scripts/cloud_pcie_gen12_record_cdc.py --log-controls
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
@@ -54,6 +63,9 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && inputs.execute
     runs-on: ubuntu-24.04
     timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -83,12 +95,18 @@ jobs:
       - name: Preserve complete small result before artifact upload
         if: always()
         run: python3 -u scripts/cloud_pcie_gen12_record_cdc.py --log-result
+      - name: Publish exact-source summary and complete verified evidence parts
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -u scripts/cloud_pcie_gen12_record_cdc.py --publish
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: gen12-record-cdc-proof-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             hw/soc/out/cloud-pcie-gen12-record-cdc
+            hw/soc/out/cloud-pcie-gen12-record-cdc-publication
             cdc-native-console.log
           retention-days: 90
           if-no-files-found: warn

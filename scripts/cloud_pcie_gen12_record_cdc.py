@@ -9,6 +9,8 @@ import check_pcie_gen12_record_cdc_source as source
 ROOT=Path(__file__).resolve().parents[1]
 ARCHIVE=ROOT/'hw/soc/pcie-evidence/20261025-gen12-record-qualified-source'
 OUT=ROOT/'hw/soc/out/cloud-pcie-gen12-record-cdc'
+PUBLICATION=ROOT/'hw/soc/out/cloud-pcie-gen12-record-cdc-publication'
+GROUP='pcie-gen12-record-cdc'
 METHOD=ROOT/'scripts/pcie-gen12-record-cdc-cloud-methods.json'
 BENCH=ROOT/'hw/soc/tb/cocotb'
 MAKEFILE=BENCH/'Makefile.gen12_record_cdc'
@@ -327,6 +329,10 @@ def native():
     thread=threading.Thread(target=s.heartbeat,daemon=True);thread.start()
     try:
         progress('admission')
+        assert os.environ['GITHUB_RUN_ATTEMPT']=='1','No implicit retry of this proof'
+        command([sys.executable,ROOT/'scripts/wait_cloud_tested_source_release.py','--group',GROUP],
+                'exact-source-release-preflight',seconds=360)
+        progress('exact_source_prerelease_verified_before_bootstrap')
         vendor=bootstrap(m,scratch);paths=source_paths(vendor)
         for sim in ('icarus','verilator'):
             for depth in DEPTHS:
@@ -366,18 +372,69 @@ def native():
         s.event('cdc_terminal',status=RESULT['status'],engineering_accepted=RESULT['engineering_accepted'])
         assert RESULT.get('terminal_source_pins_unchanged')is True,'terminal source identity failed'
 
-def log_result():
-    path=OUT/'result.json'
+def log_result(controls=False):
+    path=OUT/('controls.json'if controls else'result.json')
     if not path.exists():
-        print('CDC_RESULT_ABSENT',flush=True);return
+        print('CDC_RESULT_ABSENT '+path.name,flush=True);return
     raw=path.read_bytes();assert len(raw)<=2*1024*1024
     encoded=base64.b64encode(raw).decode();chunks=[encoded[i:i+4096]for i in range(0,len(encoded),4096)]
-    print('CDC_RESULT '+json.dumps(dict(bytes=len(raw),sha256=sha(raw),chunks=len(chunks))),flush=True)
-    for i,chunk in enumerate(chunks):print('CDC_RESULT_CHUNK '+str(i)+' '+chunk,flush=True)
+    print('CDC_RESULT '+json.dumps(dict(name=path.name,bytes=len(raw),sha256=sha(raw),chunks=len(chunks))),flush=True)
+    for i,chunk in enumerate(chunks):print('CDC_RESULT_CHUNK '+path.name+' '+str(i)+' '+chunk,flush=True)
+
+def publish():
+    """Publish stable completed/failed evidence; never create or move a release."""
+    m=pins();s=supervisor()
+    OUT.mkdir(parents=True,exist_ok=True)
+    PUBLICATION.mkdir(parents=True,exist_ok=False)
+    # Packing/upload supervision must not change the directory being archived.
+    s.TRACE=PUBLICATION/'supervision';s.TRACE.mkdir()
+    if not (OUT/'result.json').exists():
+        save(OUT/'result.json',dict(status='FAIL_MISSING_NATIVE_RESULT',run=os.environ['GITHUB_RUN_ID'],
+          attempt=os.environ['GITHUB_RUN_ATTEMPT'],source=os.environ['GITHUB_SHA'],
+          engineering_accepted=False,scope=SCOPE,source_pins=m))
+    command([sys.executable,ROOT/'scripts/wait_cloud_tested_source_release.py','--group',GROUP],
+            'publication-exact-source-prerelease',seconds=360)
+    stem=GROUP+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+    summary=PUBLICATION/(stem+'.summary.json')
+    summary.write_bytes((OUT/'result.json').read_bytes())
+    command([sys.executable,ROOT/'scripts/cloud_chunked_results.py','--directory',OUT,'--stem',stem],
+            'pack-complete-evidence',cwd=PUBLICATION)
+    parts=PUBLICATION/(stem+'.parts.json');manifest=json.loads(parts.read_text())
+    paths=[summary,parts,*[PUBLICATION/x['name']for x in manifest['parts']]]
+    # Reuse the pinned publisher's retries/no-overwrite/digest verification, but
+    # replace only its release lookup with the existing strict read-only validator.
+    # This prevents its legacy create fallback from targeting another branch.
+    program=r"""
+import json,os,sys
+sys.path.insert(0,sys.argv[1])
+import ensure_cloud_tested_source_release as guard
+import migrate_outputs_to_cloud as migration
+import publish_cloud_results as publisher
+group=sys.argv[2]
+expected,source=guard.context(group,os.environ)
+def readonly_release(tag):
+    assert tag==expected
+    info=guard.api('releases/tags/'+tag)
+    guard.validate_release(info,guard.api('git/ref/tags/'+tag),tag,source)
+    return info
+migration.release=readonly_release
+result=publisher.publish_results(group,sys.argv[3:])
+assert result['tag']==expected
+readonly_release(expected)
+print(json.dumps(result,sort_keys=True),flush=True)
+"""
+    r=command([sys.executable,'-c',program,ROOT/'scripts',GROUP,*paths],'publish-verified-assets')
+    proof=json.loads(r.stdout);assert len(proof['assets'])==len(paths)
+    save(PUBLICATION/'publication.json',dict(status='PUBLISHED_EXACT_SOURCE_COMPLETE_EVIDENCE',
+         summary=file_info(summary),parts=file_info(parts),publication=proof,
+         original_engineering_status=json.loads(summary.read_text())['status'],
+         publication_does_not_change_acceptance=True))
 
 if __name__=='__main__':
-    parser=argparse.ArgumentParser();parser.add_argument('--native',action='store_true')
-    parser.add_argument('--log-result',action='store_true');args=parser.parse_args()
-    assert args.native != args.log_result
-    if args.log_result:log_result()
+    parser=argparse.ArgumentParser();modes=parser.add_mutually_exclusive_group(required=True)
+    modes.add_argument('--native',action='store_true');modes.add_argument('--publish',action='store_true')
+    modes.add_argument('--log-result',action='store_true');modes.add_argument('--log-controls',action='store_true')
+    args=parser.parse_args()
+    if args.log_result or args.log_controls:log_result(args.log_controls)
+    elif args.publish:publish()
     else:native()

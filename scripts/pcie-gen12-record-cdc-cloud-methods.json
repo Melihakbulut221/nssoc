@@ -6,10 +6,10 @@
   "source_only_reviewed_basis": "50708f2c75c4c44246a7226cb4b9cb86dd2f10af",
   "refinement_source": "078c1c3b7bf6a7305176a1e3ab38c18c9ace4a47",
   "protected": {
-    ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml": "f79dc0012416d56ef9c9b4c3b172e468cab557489b1dc079322611eff4b58d5f",
+    ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml": "13303124e2c8b00e8ff5e8480a5f7f69654f259dc758aa856beeb87abecdbd72",
     "docs/evidence/pcie-gen12-record-cdc-independent-source-review-20261025.json": "982bc88139bac7f9e5631e654cce069e36dd01f06541f5537da240efa0c6fd6f",
     "docs/evidence/pcie-gen12-training-record-noshare-native-pass-20261025.json": "23f194ff593e30c340f7562ab92c1a66f7107b5f35ff3abda7f0d293a50bd10f",
-    "docs/pcie-gen12-record-cdc-hosted-proof-20261025.md": "cddd80aedf963209ac97ccb7629c5e63335a0898a8b3dc5a03091e2cf4754f5e",
+    "docs/pcie-gen12-record-cdc-hosted-proof-20261025.md": "d4f9735ced057f12e6c35e314f04899884bc28ad62b35033ac780a253e386460",
     "docs/pcie-gen12-record-cdc-implementation-20261025.md": "32b0160e2d959c15dd60e081f4be10aad3dd005321237f54ef219ad1bff5b52c",
     "docs/pcie-gen12-record-cdc-proof-refinements-20261025.md": "618af28582d274bafe2bd4ca38efd7b93304f4acc93bad38c81d899505e40dc5",
     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-source-freeze.json": "80e7abc3badad6ea90426c029068eac697f1a881f251aac9c73f63a84613a874",
@@ -85,13 +85,18 @@
     "hw/soc/tb/cocotb/test_soc_pcie_gen12_record_cdc_v1.py": "5d1d386c3fe5a7dfedc9279066f9bd8f8cf3d75e42ef1d463d49868e9580ce32",
     "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py": "c6e71e6c8fa440f20d0d9619fac0ea9015eef662dfe6c89497edcb39a16fa102",
     "scripts/check_pcie_gen12_raw32_rx.py": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da",
-    "scripts/check_pcie_gen12_record_cdc_cloud.py": "81580872c497abfbcf63273c2a66b137bf5f75c4a9f5232eae8b4b5f8f8a5ae5",
+    "scripts/check_pcie_gen12_record_cdc_cloud.py": "af50952ecf48e81baf778f972daf40d2389b4b603165f760a21058a837e7f4fa",
     "scripts/check_pcie_gen12_record_cdc_source.py": "91c601c3cbc4fb8a23dda5d602acbc392f8b53dbdbcc15a3ced9cb8c3a081d67",
-    "scripts/cloud_pcie_gen12_record_cdc.py": "5c7d0411c60a407041e54723a1633f824509586e28cbee9fe6dca7cfa5b6082d",
+    "scripts/cloud_chunked_results.py": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
+    "scripts/cloud_pcie_gen12_record_cdc.py": "ba531f7d3d5ef3be1b34ab39f8115b0dfee8b8b3e3122031a7b222d6a0a52a78",
+    "scripts/ensure_cloud_tested_source_release.py": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e",
+    "scripts/migrate_outputs_to_cloud.py": "52fa3ef7adc92b6e6071b304ccb1b07908f31ccde7dacf39a7258e07356fa512",
     "scripts/pcie-gen12-record-cdc-methods.json": "2ad89118f825c8c777a0f97843e104422015eb4ba4d130cb39ed822b2320bf03",
     "scripts/pcie-gen12-record-cdc-mutations.json": "5d7f7457ee47d257d62424610363836132eff63acf8a0aff46fd566fb3d6aeab",
     "scripts/pcie-gen12-record-cdc-proposal.json": "bf7b09fb1127d62e4be85c39f65eb09a58467a20c4f811cddde39eab1a9feacf",
     "scripts/pcie-gen12-record-cdc-requirements.txt": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070",
+    "scripts/publish_cloud_results.py": "a5cd154c1a7e3f838f5880e6cabef115245d696485c9eda2bd0451da8e1e1296",
+    "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73",
     "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
   },
   "vendor": {
@@ -146,5 +151,22 @@
     "actual hosted source/supervision/classification controls",
     "all66 RTL and33 mapped tests plus18 compiled faults",
     "root reviewed activation and sole future workflow dispatch"
-  ]
+  ],
+  "publication": {
+    "group": "pcie-gen12-record-cdc",
+    "externally_reserved_exact_source_prerelease_required_before_bootstrap": true,
+    "read_only_wait_seconds": 300,
+    "supervised_wait_seconds": 360,
+    "release_controls": 17,
+    "wait_positives": 3,
+    "wait_faults": 4,
+    "archive_faults": 6,
+    "actual_readonly_program_positive": 1,
+    "actual_readonly_program_faults": 3,
+    "summary_and_verified_complete_parts": true,
+    "small_controls_and_results_complete_chunked_log": true,
+    "always_90_day_fallback": true,
+    "original_failed_disposition_preserved": true,
+    "helper_source": "85f1aeee0e92eb4ad8c4f16fa98814ea30c3f60c"
+  }
 }
