@@ -3,7 +3,7 @@
 """Synthetic same-row and interval controls only; no capture acceptance."""
 import copy
 import numpy as np
-from tx_phase_reset334_saved_diagnosis import bracket,crossing_rows,hbt_state,pair_state,window_events,HBT_FIELDS
+from tx_phase_reset334_saved_diagnosis import bracket,crossing_rows,hbt_state,pair_state,window_events,HBT_FIELDS,bind_crossing_frames,validate_crossing_frames
 
 def controls():
     t=np.array([0.,1.,2.,3.]);y=np.array([-1.,0.,1.,-1.])
@@ -14,6 +14,14 @@ def controls():
     selected=window_events(edges,1.5,2.5,2.)
     assert [e['relative_to_prescribed_event_s']for e in selected]==[[-1.,0.],[0.,1.]]
     assert all('linear_estimate_s'not in e for e in edges)
+    frames={}
+    def frame(row):
+        frames.setdefault(str(row),dict(row=row,time_s=float(t[row])))
+        return str(row)
+    linked=bind_crossing_frames(selected,frame,frames)
+    assert [e['frames']for e in linked]==[['1','2'],['2','3']]
+    assert set(frames)=={'1','2','3'}and validate_crossing_frames(linked,frames)
+    assert [{k:v for k,v in e.items()if k!='frames'}for e in linked]==selected
     values={'v(c)':np.array([0.,1.3,1.1,1.2]),'v(b)':np.array([0.,1.1,1.,.9]),
       'v(e)':np.array([0.,.4,.8,.5]),'v(sub)':np.zeros(4),'@q.x.qnpn13g2[ic]':np.array([0.,.004,.006,.002])}
     spec=dict(nx=2,terminals=['c','b','e','sub'])
@@ -40,7 +48,14 @@ def controls():
     reject('wrong_Nx',lambda:hbt_state(values,'x',dict(spec,nx=3),2))
     reject('wrong_row',lambda:hbt_state(values,'x',spec,4))
     reject('same_pair_node',lambda:pair_state(values,['c','c'],2))
-    assert len(bad)==16
+    for label,mutate in [
+        ('wrong_crossing_frame_row',lambda es,fs:fs['1'].__setitem__('row',0)),
+        ('wrong_crossing_frame_time',lambda es,fs:fs['2'].__setitem__('time_s',1.5)),
+        ('missing_crossing_frame',lambda es,fs:es[0]['frames'].pop()),
+        ('swapped_crossing_frames',lambda es,fs:es[0]['frames'].reverse())]:
+        es,fs=copy.deepcopy(linked),copy.deepcopy(frames);mutate(es,fs)
+        reject(label,lambda:validate_crossing_frames(es,fs))
+    assert len(bad)==20
     return dict(status='PASS_SYNTHETIC318_SAME_ROW_INTERVAL_CONTROLS_ONLY',rejected=bad,
         native_capture_read=False,original_failure_replayed=False,readback_authorized=False)
 if __name__=='__main__':

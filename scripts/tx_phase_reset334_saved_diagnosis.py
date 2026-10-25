@@ -48,6 +48,19 @@ def window_events(events,lo,hi,origin):
     return [dict(e,relative_to_prescribed_event_s=[e['times_s'][0]-origin,e['times_s'][1]-origin])
             for e in events if e['times_s'][0]<=hi and e['times_s'][1]>=lo]
 
+def validate_crossing_frames(events,frames):
+    for event in events:
+        assert len(event['rows'])==len(event['times_s'])==len(event['frames'])==2
+        assert event['rows'][1]==event['rows'][0]+1
+        for row,at,key in zip(event['rows'],event['times_s'],event['frames'],strict=True):
+            assert key==str(row)and frames[key]['row']==row and frames[key]['time_s']==at
+    return True
+
+def bind_crossing_frames(events,frame,frames):
+    result=[dict(event,frames=[frame(row)for row in event['rows']])for event in events]
+    validate_crossing_frames(result,frames)
+    return result
+
 def contract_check(raw,result):
     assert digest(raw)==result['outputs']['work/contract.json']
     c=json.loads(raw)
@@ -145,7 +158,7 @@ def analyze(t,values,c,original):
                 sample(name+':first_fall_'+str(index)+':'+suffix,at)
             lo,hi=fall-UI,fall+2*UI
             windows[name+':first_fall_'+str(index)]=dict(prescribed_event=event,bounds_s=[lo,hi],
-                pair_crossings={n:{level:window_events(events,lo,hi,fall)for level,events in levels.items()}
+                pair_crossings={n:{level:bind_crossing_frames(window_events(events,lo,hi,fall),frame,frames)for level,events in levels.items()}
                     for n,levels in allcross.items()},original_limit_s=UI/2)
     for name,key in [('reset_assert','reset_assert_s'),('reset_release','reset_release_s')]:
         at=c['timing'][key]
@@ -156,6 +169,7 @@ def analyze(t,values,c,original):
     return dict(status='DIAGNOSIS_ONLY_COMPLETE318_LOADED_REJECTION_REMAINS',accepted=False,
         original_rejection_reproduced=True,original_first_fall_limit_s=UI/2,observed_phase_fitted=False,
         diagnostic_crossings_interpolated=False,original_review_interpolation_unchanged=True,
+        first_fall_crossing_frames_are_additional_native_observations=True,
         original_failed_HBT_count=17,contract_hbt_roles=c['hbt'],source_hierarchy_groups=role_groups,
         hbt_state_fields=HBT_FIELDS,pair_state_fields=PAIR_FIELDS,native_pair_nodes=pairmap,
         frames=frames,pair_extrema_both_signs=ranges,failed_hbt_same_row_extrema=extrema,
