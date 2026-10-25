@@ -24,6 +24,16 @@ def fixture():
     change={NAME:dict(before=snap['before'][NAME],after=snap['after'][NAME])}
     return before,after,snap,change
 
+
+def metadata_def_seam(native):
+    calls={n.args[-1].value:n for n in ast.walk(native)
+        if isinstance(n,ast.Call)and isinstance(n.func,ast.Name)and n.func.id=='metadata_base'
+        and isinstance(n.args[-1],ast.Constant)}
+    assert set(calls)=={'fixed-metadata-only','unfixed-metadata-only'}
+    for label,call in calls.items():
+        assert isinstance(call.args[3],ast.Name)and call.args[3].id=='fixed',label
+    return calls
+
 def controls():
     assert c.source_gate()['source_controls_authorized']is True,'source controls not authorized'
     positives=[];failures=[]
@@ -57,6 +67,10 @@ def controls():
     assert c.validate_metadata_transition(after,old,target)
     assert c.validate_metadata_transition(old,after,{name:row['metadata']for name,row in old.items()})
     positives.append('independent_metadata_set_and_restore_preserve_encoding')
+    # A metadata-only native observation can export the same FIXED text; decoder admission still rejects it.
+    c.verify_exact(fixed,fixed)
+    reject('fixed_DEF_does_not_prove_encoded_FIXED',lambda:c.validate_encoded(after,
+        {n:'FIXED'if v is not None else None for n,v in original.items()}))
     for label,edit in [
         ('metadata_not_set',lambda x:x[NAME].__setitem__('metadata','ROUTED')),
         ('metadata_changes_path',lambda x:x[NAME].__setitem__('paths',['FIXED','FIXED'])),
@@ -143,8 +157,13 @@ def controls():
     new=[n for n in selected.body if isinstance(n,ast.Assign)]
     assert len(old)==len(new)==2 and [ast.dump(n,include_attributes=False)for n in old]==[ast.dump(n,include_attributes=False)for n in new]
     positives.append('exact_original_full_selector_AST')
+    metadata_def_seam(native);positives.append('actual_metadata_export_overlay_seam')
+    for label in ('fixed-metadata-only','unfixed-metadata-only'):
+        bad=copy.deepcopy(native);calls=metadata_def_seam(bad)
+        calls[label].args[3]=ast.Name(id='expected',ctx=ast.Load())
+        reject('wrong_DEF_expectation_'+label,lambda bad=bad:metadata_def_seam(bad))
     assert c.file_sha(c.ROOT/c.GATE)==c.GATE_SHA
-    assert len(failures)==len(set(failures))==52 and len(positives)==7
+    assert len(failures)==len(set(failures))==55 and len(positives)==8
     return dict(status='SOURCE_CONTROLS_ONLY_NOT_NATIVE_EXECUTION',positives=positives,
         refusals=failures,positive_count=len(positives),refusal_count=len(failures),
         native_import_executed=False,actual_FIXED_roundtrip_executed=False,

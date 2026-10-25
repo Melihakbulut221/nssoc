@@ -234,13 +234,13 @@ def main():
                     back,_=c.patch_def(expected,{n:restored_records[n]for n in names})
                     (out/'fixed-patch.def').write_bytes(patch);(out/'unfixed-patch.def').write_bytes(back)
                     target={name:'FIXED'if classes[name]is not None else r['encoded'][name]['metadata']for name in classes}
-                    intermediate=metadata_base(restored,out/'fixed-import-base.odb',target,expected,r,out,'fixed-metadata-only')
+                    intermediate=metadata_base(restored,out/'fixed-import-base.odb',target,fixed,r,out,'fixed-metadata-only')
                     witness=[name for name in classes if classes[name]is not None and
                         intermediate['encoded'][name]['metadata']=='FIXED'and
                         any(kind!='FIXED'for kind in intermediate['encoded'][name]['paths'])]
                     assert witness,'metadata-only control needs an actually non-FIXED encoded route'
                     result['metadata_only_negative_control']=dict(witness_names=witness,
-                        encoded_paths_unchanged=True,full_DEF_byte_unchanged=True,
+                        encoded_paths_unchanged=True,full_DEF_exact_planned_fixed_class_overlay=True,
                         cannot_be_accepted_as_encoded_FIXED=True,odb_sha256=c.file_sha(out/'fixed-import-base.odb'))
                     (out/'fixed.tcl').write_text(import_tcl(out/'fixed-import-base.odb',out/'fixed-patch.def',out,'fixed'))
                     result['status']='PREPARED_FIXED_ENCODING_ROUNDTRIP_NO_ROUTING'
