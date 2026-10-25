@@ -1,0 +1,599 @@
+﻿2026-10-25T15:51:16.1157423Z Current runner version: '2.338.0'
+2026-10-25T15:51:16.1172777Z ##[group]Runner Image Provisioner
+2026-10-25T15:51:16.1173340Z Hosted Compute Agent
+2026-10-25T15:51:16.1173661Z Version: 20261021.618
+2026-10-25T15:51:16.1173989Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-25T15:51:16.1174399Z Build Date: 2026-10-21T00:45:21Z
+2026-10-25T15:51:16.1174770Z Worker ID: {2342a674-2b9d-46bc-a1dd-956412c9feb0}
+2026-10-25T15:51:16.1175173Z Region: westus2
+2026-10-25T15:51:16.1175470Z Cloud: Azure
+2026-10-25T15:51:16.1175746Z ##[endgroup]
+2026-10-25T15:51:16.1176703Z ##[group]Operating System
+2026-10-25T15:51:16.1177025Z Ubuntu
+2026-10-25T15:51:16.1177317Z 22.04.5
+2026-10-25T15:51:16.1177603Z LTS
+2026-10-25T15:51:16.1177871Z ##[endgroup]
+2026-10-25T15:51:16.1178177Z ##[group]Runner Image
+2026-10-25T15:51:16.1178488Z Image: ubuntu-22.04
+2026-10-25T15:51:16.1178808Z Version: 20261012.322.1
+2026-10-25T15:51:16.1179466Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261012.322/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-25T15:51:16.1180266Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261012.322
+2026-10-25T15:51:16.1180769Z ##[endgroup]
+2026-10-25T15:51:16.1181416Z ##[group]GITHUB_TOKEN Permissions
+2026-10-25T15:51:16.1182469Z Actions: read
+2026-10-25T15:51:16.1182810Z Contents: read
+2026-10-25T15:51:16.1183109Z Metadata: read
+2026-10-25T15:51:16.1183400Z ##[endgroup]
+2026-10-25T15:51:16.1184580Z Secret source: Actions
+2026-10-25T15:51:16.1185055Z Cache mode: write
+2026-10-25T15:51:16.1185659Z Prepare workflow directory
+2026-10-25T15:51:16.1365670Z Prepare all required actions
+2026-10-25T15:51:16.1394025Z Getting action download info
+2026-10-25T15:51:16.4714923Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-25T15:51:16.5443333Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-25T15:51:16.6659384Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-25T15:51:16.8483877Z Complete job name: controls
+2026-10-25T15:51:16.8935049Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-25T15:51:16.8935544Z with:
+2026-10-25T15:51:16.8935778Z   persist-credentials: false
+2026-10-25T15:51:16.8936172Z   repository: Melihakbulut221/nssoc
+2026-10-25T15:51:16.8938254Z   token: ***
+2026-10-25T15:51:16.8938473Z   ssh-strict: true
+2026-10-25T15:51:16.8938701Z   ssh-user: git
+2026-10-25T15:51:16.8938924Z   clean: true
+2026-10-25T15:51:16.8939160Z   sparse-checkout-cone-mode: true
+2026-10-25T15:51:16.8939433Z   fetch-depth: 1
+2026-10-25T15:51:16.8939660Z   fetch-tags: false
+2026-10-25T15:51:16.8939893Z   show-progress: true
+2026-10-25T15:51:16.8940125Z   lfs: false
+2026-10-25T15:51:16.8940338Z   submodules: false
+2026-10-25T15:51:16.8940573Z   set-safe-directory: true
+2026-10-25T15:51:16.8940856Z   allow-unsafe-pr-checkout: false
+2026-10-25T15:51:16.8941197Z ##[endgroup]
+2026-10-25T15:51:16.9514400Z Syncing repository: Melihakbulut221/nssoc
+2026-10-25T15:51:16.9516349Z ##[group]Getting Git version info
+2026-10-25T15:51:16.9516955Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-25T15:51:16.9517811Z [command]/usr/bin/git version
+2026-10-25T15:51:16.9544512Z git version 2.55.0
+2026-10-25T15:51:16.9564296Z ##[endgroup]
+2026-10-25T15:51:16.9574681Z Temporarily overriding HOME='/home/runner/work/_temp/fecc09de-1b5a-4bab-975d-89156b47e2ca' before making global git config changes
+2026-10-25T15:51:16.9576166Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T15:51:16.9578196Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T15:51:16.9626863Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-25T15:51:16.9627955Z ##[group]Initializing the repository
+2026-10-25T15:51:16.9628759Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-25T15:51:16.9668406Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-25T15:51:16.9669461Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-25T15:51:16.9671914Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-25T15:51:16.9672705Z hint: call:
+2026-10-25T15:51:16.9673188Z hint:
+2026-10-25T15:51:16.9674038Z hint: 	git config --global init.defaultBranch <name>
+2026-10-25T15:51:16.9674648Z hint:
+2026-10-25T15:51:16.9675109Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-25T15:51:16.9675883Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-25T15:51:16.9676713Z hint:
+2026-10-25T15:51:16.9677066Z hint: 	git branch -m <name>
+2026-10-25T15:51:16.9677505Z hint:
+2026-10-25T15:51:16.9677846Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-25T15:51:16.9678408Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-25T15:51:16.9679506Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-25T15:51:16.9709651Z ##[endgroup]
+2026-10-25T15:51:16.9710462Z ##[group]Disabling automatic garbage collection
+2026-10-25T15:51:16.9712062Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-25T15:51:16.9733372Z ##[endgroup]
+2026-10-25T15:51:16.9733812Z ##[group]Setting up auth
+2026-10-25T15:51:16.9738926Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T15:51:16.9757004Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T15:51:16.9945503Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T15:51:16.9967050Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T15:51:17.0080717Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T15:51:17.0099292Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T15:51:17.0195551Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-25T15:51:17.0216338Z ##[endgroup]
+2026-10-25T15:51:17.0216985Z ##[group]Fetching the repository
+2026-10-25T15:51:17.0221603Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +7e0ee3af53df6bbfc91075a4f7c1d7bc10f2e0fc:refs/remotes/origin/codex/mainchip-saved-postroute
+2026-10-25T15:51:29.6737999Z From https://github.com/Melihakbulut221/nssoc
+2026-10-25T15:51:29.6739792Z  * [new ref]           7e0ee3af53df6bbfc91075a4f7c1d7bc10f2e0fc -> origin/codex/mainchip-saved-postroute
+2026-10-25T15:51:29.6742548Z ##[endgroup]
+2026-10-25T15:51:29.6745267Z ##[group]Determining the checkout info
+2026-10-25T15:51:29.6746485Z ##[endgroup]
+2026-10-25T15:51:29.6747153Z [command]/usr/bin/git sparse-checkout disable
+2026-10-25T15:51:29.6771321Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-25T15:51:29.6786249Z ##[group]Checking out the ref
+2026-10-25T15:51:29.6788688Z [command]/usr/bin/git checkout --progress --force -B codex/mainchip-saved-postroute refs/remotes/origin/codex/mainchip-saved-postroute
+2026-10-25T15:51:30.7717381Z Updating files:  15% (4711/30021)
+2026-10-25T15:51:30.8717648Z Updating files:  16% (4804/30021)
+2026-10-25T15:51:30.9423459Z Updating files:  17% (5104/30021)
+2026-10-25T15:51:30.9667556Z Updating files:  18% (5404/30021)
+2026-10-25T15:51:30.9767424Z Updating files:  19% (5704/30021)
+2026-10-25T15:51:30.9857332Z Updating files:  20% (6005/30021)
+2026-10-25T15:51:31.0357709Z Updating files:  21% (6305/30021)
+2026-10-25T15:51:31.0728161Z Updating files:  22% (6605/30021)
+2026-10-25T15:51:31.0876795Z Updating files:  23% (6905/30021)
+2026-10-25T15:51:31.1017377Z Updating files:  24% (7206/30021)
+2026-10-25T15:51:31.1102985Z Updating files:  25% (7506/30021)
+2026-10-25T15:51:31.1157299Z Updating files:  26% (7806/30021)
+2026-10-25T15:51:31.1215095Z Updating files:  27% (8106/30021)
+2026-10-25T15:51:31.1281056Z Updating files:  28% (8406/30021)
+2026-10-25T15:51:31.1364218Z Updating files:  29% (8707/30021)
+2026-10-25T15:51:31.1407645Z Updating files:  30% (9007/30021)
+2026-10-25T15:51:31.1473488Z Updating files:  31% (9307/30021)
+2026-10-25T15:51:31.1533335Z Updating files:  32% (9607/30021)
+2026-10-25T15:51:31.1609198Z Updating files:  33% (9907/30021)
+2026-10-25T15:51:31.1674376Z Updating files:  34% (10208/30021)
+2026-10-25T15:51:31.1854739Z Updating files:  35% (10508/30021)
+2026-10-25T15:51:31.1976186Z Updating files:  36% (10808/30021)
+2026-10-25T15:51:31.2162976Z Updating files:  37% (11108/30021)
+2026-10-25T15:51:31.2211402Z Updating files:  38% (11408/30021)
+2026-10-25T15:51:31.2296008Z Updating files:  39% (11709/30021)
+2026-10-25T15:51:31.2368790Z Updating files:  40% (12009/30021)
+2026-10-25T15:51:31.2406580Z Updating files:  41% (12309/30021)
+2026-10-25T15:51:31.2468487Z Updating files:  42% (12609/30021)
+2026-10-25T15:51:31.2520424Z Updating files:  43% (12910/30021)
+2026-10-25T15:51:31.2575937Z Updating files:  44% (13210/30021)
+2026-10-25T15:51:31.2638446Z Updating files:  45% (13510/30021)
+2026-10-25T15:51:31.2705478Z Updating files:  46% (13810/30021)
+2026-10-25T15:51:31.2797952Z Updating files:  47% (14110/30021)
+2026-10-25T15:51:31.2857360Z Updating files:  48% (14411/30021)
+2026-10-25T15:51:31.2905625Z Updating files:  49% (14711/30021)
+2026-10-25T15:51:31.2955825Z Updating files:  50% (15011/30021)
+2026-10-25T15:51:31.3014832Z Updating files:  51% (15311/30021)
+2026-10-25T15:51:31.3084036Z Updating files:  52% (15611/30021)
+2026-10-25T15:51:31.3157031Z Updating files:  53% (15912/30021)
+2026-10-25T15:51:31.3280097Z Updating files:  54% (16212/30021)
+2026-10-25T15:51:31.3324029Z Updating files:  55% (16512/30021)
+2026-10-25T15:51:31.3380468Z Updating files:  56% (16812/30021)
+2026-10-25T15:51:31.3424458Z Updating files:  57% (17112/30021)
+2026-10-25T15:51:31.3486693Z Updating files:  58% (17413/30021)
+2026-10-25T15:51:31.3543814Z Updating files:  59% (17713/30021)
+2026-10-25T15:51:31.3622288Z Updating files:  60% (18013/30021)
+2026-10-25T15:51:31.3655638Z Updating files:  61% (18313/30021)
+2026-10-25T15:51:31.3690118Z Updating files:  62% (18614/30021)
+2026-10-25T15:51:31.3727883Z Updating files:  63% (18914/30021)
+2026-10-25T15:51:31.3780185Z Updating files:  64% (19214/30021)
+2026-10-25T15:51:31.3921079Z Updating files:  65% (19514/30021)
+2026-10-25T15:51:31.4014520Z Updating files:  66% (19814/30021)
+2026-10-25T15:51:31.4121368Z Updating files:  67% (20115/30021)
+2026-10-25T15:51:31.4201257Z Updating files:  68% (20415/30021)
+2026-10-25T15:51:31.4250106Z Updating files:  69% (20715/30021)
+2026-10-25T15:51:31.4303850Z Updating files:  70% (21015/30021)
+2026-10-25T15:51:31.4346738Z Updating files:  71% (21315/30021)
+2026-10-25T15:51:31.4393895Z Updating files:  72% (21616/30021)
+2026-10-25T15:51:31.4436490Z Updating files:  73% (21916/30021)
+2026-10-25T15:51:31.4478411Z Updating files:  74% (22216/30021)
+2026-10-25T15:51:31.4528663Z Updating files:  75% (22516/30021)
+2026-10-25T15:51:31.4779251Z Updating files:  76% (22816/30021)
+2026-10-25T15:51:31.4908826Z Updating files:  77% (23117/30021)
+2026-10-25T15:51:31.5142377Z Updating files:  78% (23417/30021)
+2026-10-25T15:51:31.5874535Z Updating files:  79% (23717/30021)
+2026-10-25T15:51:31.6006950Z Updating files:  80% (24017/30021)
+2026-10-25T15:51:31.6076913Z Updating files:  81% (24318/30021)
+2026-10-25T15:51:31.6150178Z Updating files:  82% (24618/30021)
+2026-10-25T15:51:31.6289895Z Updating files:  83% (24918/30021)
+2026-10-25T15:51:31.6372902Z Updating files:  84% (25218/30021)
+2026-10-25T15:51:31.6511304Z Updating files:  85% (25518/30021)
+2026-10-25T15:51:31.6582415Z Updating files:  86% (25819/30021)
+2026-10-25T15:51:31.6656800Z Updating files:  87% (26119/30021)
+2026-10-25T15:51:31.6698678Z Updating files:  88% (26419/30021)
+2026-10-25T15:51:31.6759149Z Updating files:  89% (26719/30021)
+2026-10-25T15:51:31.6815451Z Updating files:  90% (27019/30021)
+2026-10-25T15:51:31.6861740Z Updating files:  91% (27320/30021)
+2026-10-25T15:51:31.6937927Z Updating files:  92% (27620/30021)
+2026-10-25T15:51:31.6942275Z Updating files:  92% (27905/30021)
+2026-10-25T15:51:31.7035831Z Updating files:  93% (27920/30021)
+2026-10-25T15:51:31.7117635Z Updating files:  94% (28220/30021)
+2026-10-25T15:51:31.7217620Z Updating files:  95% (28520/30021)
+2026-10-25T15:51:31.7321188Z Updating files:  96% (28821/30021)
+2026-10-25T15:51:31.7406362Z Updating files:  97% (29121/30021)
+2026-10-25T15:51:31.7514435Z Updating files:  98% (29421/30021)
+2026-10-25T15:51:31.7684187Z Updating files:  99% (29721/30021)
+2026-10-25T15:51:31.7684886Z Updating files: 100% (30021/30021)
+2026-10-25T15:51:31.7685385Z Updating files: 100% (30021/30021), done.
+2026-10-25T15:51:31.9261020Z Switched to a new branch 'codex/mainchip-saved-postroute'
+2026-10-25T15:51:31.9261670Z branch 'codex/mainchip-saved-postroute' set up to track 'origin/codex/mainchip-saved-postroute'.
+2026-10-25T15:51:31.9366678Z ##[endgroup]
+2026-10-25T15:51:31.9396975Z [command]/usr/bin/git log -1 --format=%H
+2026-10-25T15:51:31.9410588Z 7e0ee3af53df6bbfc91075a4f7c1d7bc10f2e0fc
+2026-10-25T15:51:31.9417173Z ##[group]Removing auth
+2026-10-25T15:51:31.9419444Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T15:51:31.9435351Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T15:51:31.9569608Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T15:51:31.9582991Z http.https://github.com/.extraheader
+2026-10-25T15:51:31.9586454Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-25T15:51:32.0363822Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T15:51:32.0494695Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T15:51:32.0510974Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T15:51:32.0630868Z ##[endgroup]
+2026-10-25T15:51:32.1479005Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-25T15:51:32.1479223Z with:
+2026-10-25T15:51:32.1479337Z   python-version: 3.12
+2026-10-25T15:51:32.1479472Z   check-latest: false
+2026-10-25T15:51:32.1480859Z   token: ***
+2026-10-25T15:51:32.1480972Z   update-environment: true
+2026-10-25T15:51:32.1481104Z   allow-prereleases: false
+2026-10-25T15:51:32.1481234Z   freethreaded: false
+2026-10-25T15:51:32.1481353Z ##[endgroup]
+2026-10-25T15:51:32.2277301Z ##[group]Installed versions
+2026-10-25T15:51:32.2330739Z (node:2164) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T15:51:32.2331190Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T15:51:32.2331744Z Successfully set up CPython (3.12.15)
+2026-10-25T15:51:32.2332106Z ##[endgroup]
+2026-10-25T15:51:32.3070279Z ##[group]Run python3 scripts/check_mainchip_route12_postroute_sources.py
+2026-10-25T15:51:32.3070671Z [36;1mpython3 scripts/check_mainchip_route12_postroute_sources.py[0m
+2026-10-25T15:51:32.3070920Z [36;1mpython3 scripts/check_mainchip_postroute_inputs_sources.py[0m
+2026-10-25T15:51:32.3071163Z [36;1mpython3 scripts/cloud_mainchip_saved_postroute.py --controls[0m
+2026-10-25T15:51:32.3071498Z [36;1mPYTHONPATH=scripts python3 - <<'PYCODE'[0m
+2026-10-25T15:51:32.3071701Z [36;1mimport json,mainchip_saved_postroute_publisher_base as p[0m
+2026-10-25T15:51:32.3071903Z [36;1mprint(json.dumps(p.controls(),indent=2))[0m
+2026-10-25T15:51:32.3072059Z [36;1mPYCODE[0m
+2026-10-25T15:51:32.3072353Z [36;1mpython3 scripts/check_mainchip_saved_postroute_publication.py > cloud-mainchip-saved-postroute-controls/publication-wrapper.json[0m
+2026-10-25T15:51:32.3072754Z [36;1mcat cloud-mainchip-saved-postroute-controls/publication-wrapper.json[0m
+2026-10-25T15:51:32.3073194Z [36;1mpython3 scripts/wait_cloud_tested_source_release.py --controls > cloud-mainchip-saved-postroute-controls/reservation-wait.json[0m
+2026-10-25T15:51:32.3073570Z [36;1mcat cloud-mainchip-saved-postroute-controls/reservation-wait.json[0m
+2026-10-25T15:51:32.3573708Z shell: /usr/bin/bash -e {0}
+2026-10-25T15:51:32.3573892Z env:
+2026-10-25T15:51:32.3574055Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:51:32.3574306Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T15:51:32.3574538Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:51:32.3574737Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:51:32.3574938Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:51:32.3575142Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T15:51:32.3575314Z ##[endgroup]
+2026-10-25T15:51:33.2969939Z {"status": "PASS_ROUTE12_POSTROUTE_SOURCES_AND_NEGATIVE_CONTROLS_NOT_ROUTE_OR_TIMING_ACCEPTANCE", "timing": {"status": "PASS_POSTROUTE_DECISION_CONTROLS_NOT_NATIVE_ANALYSIS", "nonzero_or_negative_rejected": ["timing__setup__ws", "timing__hold__ws", "timing__setup_vio__count", "timing__hold_vio__count", "design__max_cap_violation__count", "design__max_slew_violation__count", "design__max_fanout_violation__count"]}, "antenna": {"status": "PASS_FINAL_ANTENNA_COUNTS_AND_SEVEN_FAULTS", "rejected": ["wrong_net_metric", "wrong_pin_metric", "removed_violation", "missing_pin", "missing_summary", "extra_net", "duplicate_net"], "stale_route_counter_cannot_override_final_check": true}, "completed": {"status": "PASS_ROUTE12_COMPLETED_DESCRIPTOR_CONTROLS_NOT_NATIVE_PROOF", "rejected": ["live-run", "failed-run", "wrong-source", "old-workflow", "old-group", "incomplete-route", "saved-not-completed", "different-image", "changed-source", "missing-native-log", "relaxed-clock", "relaxed-derate", "wrong-global-source", "negative-drc-count", "no-final-drc-count", "changed-global_candidate_instance_count", "changed-global_odb_sha256", "changed-global_guides_sha256", "changed-candidate_netlist_sha256", "changed-source_sdc_sha256"]}}
+2026-10-25T15:51:33.3388684Z PASS_EXACT_CURRENT_FANOUT_ANCESTRY_TO_INPUT_PACKAGE_NO_NEW_ROUTE
+2026-10-25T15:51:33.6260900Z {
+2026-10-25T15:51:33.6261256Z   "status": "PASS_SAVED_POSTROUTE_SOURCE_ADMISSION_ORIGINAL_GATES_NOT_NATIVE",
+2026-10-25T15:51:33.6261557Z   "source_head": "7e0ee3af53df6bbfc91075a4f7c1d7bc10f2e0fc",
+2026-10-25T15:51:33.6261739Z   "protected_files": 69,
+2026-10-25T15:51:33.6261863Z   "derivation": {
+2026-10-25T15:51:33.6262077Z     "geometry_old_sha256": "52de46aacf9b97ab17ac56560efef838d149a746a2dd09a6f1af87ed41be0c97",
+2026-10-25T15:51:33.6262411Z     "geometry_derived_sha256": "acedd589a8de3c7facdf8caa04f1521a965160808475a2121a915a6db689424a",
+2026-10-25T15:51:33.6262663Z     "geometry_exact_reversible_edits": 3,
+2026-10-25T15:51:33.6262935Z     "postroute_byte_exact_sha256": "c6335c535959286b7f77c3aaf6a5ab631640557c8453079a80dd97c97f58701f",
+2026-10-25T15:51:33.6263433Z     "topology_clock_antenna_RC_STA_algorithms_unchanged": true
+2026-10-25T15:51:33.6263605Z   },
+2026-10-25T15:51:33.6263707Z   "admission": {
+2026-10-25T15:51:33.6263890Z     "status": "PASS_COMPLETED_SAVED_ROUTE_ADMISSION_41_REFUSALS_NOT_NATIVE_SIGNOFF",
+2026-10-25T15:51:33.6264250Z     "positive": "Authenticated critical-field projection only; real archive/runtime is checked separately by native stage",
+2026-10-25T15:51:33.6264605Z     "generated_controller": {
+2026-10-25T15:51:33.6264804Z       "sha256": "9c2b35b0c037541626e710dff6a7461ca47a6f95952616f2c660da14d253e280",
+2026-10-25T15:51:33.6265011Z       "exact_source_edits": [
+2026-10-25T15:51:33.6265150Z         "new-controller-import",
+2026-10-25T15:51:33.6265290Z         "separate-output",
+2026-10-25T15:51:33.6265427Z         "exact-diagnostic-admission",
+2026-10-25T15:51:33.6265576Z         "exact-capsule-restore",
+2026-10-25T15:51:33.6265720Z         "honest-historical-rejection",
+2026-10-25T15:51:33.6265879Z         "current-inputs-before-restore",
+2026-10-25T15:51:33.6266195Z         "streaming-copy-proof",
+2026-10-25T15:51:33.6266378Z         "full-runtime-before-unobserved-budget",
+2026-10-25T15:51:33.6266546Z         "truthful-new-result-group"
+2026-10-25T15:51:33.6266678Z       ],
+2026-10-25T15:51:33.6266785Z       "router_executed": false
+2026-10-25T15:51:33.6266905Z     },
+2026-10-25T15:51:33.6267007Z     "rejected": [
+2026-10-25T15:51:33.6267121Z       "descriptor-run",
+2026-10-25T15:51:33.6267250Z       "descriptor-attempt",
+2026-10-25T15:51:33.6267380Z       "descriptor-group",
+2026-10-25T15:51:33.6267509Z       "descriptor-source_head",
+2026-10-25T15:51:33.6267652Z       "descriptor-controller_sha256",
+2026-10-25T15:51:33.6267797Z       "descriptor-summary_sha256",
+2026-10-25T15:51:33.6267936Z       "descriptor-parts_sha256",
+2026-10-25T15:51:33.6268064Z       "live-status",
+2026-10-25T15:51:33.6268183Z       "live-conclusion",
+2026-10-25T15:51:33.6268300Z       "live-path",
+2026-10-25T15:51:33.6268412Z       "live-head_branch",
+2026-10-25T15:51:33.6268534Z       "live-head_sha",
+2026-10-25T15:51:33.6268652Z       "live-run_attempt",
+2026-10-25T15:51:33.6268768Z       "live-id",
+2026-10-25T15:51:33.6268885Z       "wrapper-routing_complete",
+2026-10-25T15:51:33.6269027Z       "wrapper-continuation_accepted",
+2026-10-25T15:51:33.6269175Z       "wrapper-native_route_returned",
+2026-10-25T15:51:33.6269319Z       "wrapper-gdb_attached",
+2026-10-25T15:51:33.6269449Z       "wrapper-cold_restart",
+2026-10-25T15:51:33.6269602Z       "wrapper-historical_sources_unchanged_proven",
+2026-10-25T15:51:33.6269785Z       "wrapper-old_scheduling_perturbation_retained",
+2026-10-25T15:51:33.6269952Z       "wrapper-new_saved_process_images",
+2026-10-25T15:51:33.6270105Z       "wrapper-generated_program_sha256",
+2026-10-25T15:51:33.6270263Z       "wrapper-inner_controller_result_sha256",
+2026-10-25T15:51:33.6270418Z       "wrapper-full_phy_accepted",
+2026-10-25T15:51:33.6270555Z       "inner-route_complete",
+2026-10-25T15:51:33.6270690Z       "inner-sources_unchanged",
+2026-10-25T15:51:33.6270825Z       "inner-controller_sha256",
+2026-10-25T15:51:33.6270955Z       "inner-image_id",
+2026-10-25T15:51:33.6271074Z       "inner-source_head",
+2026-10-25T15:51:33.6271201Z       "inner-routed_odb_sha256",
+2026-10-25T15:51:33.6271330Z       "inner-global_odb_sha256",
+2026-10-25T15:51:33.6271470Z       "inner-candidate_netlist_sha256",
+2026-10-25T15:51:33.6271614Z       "inner-source_sdc_sha256",
+2026-10-25T15:51:33.6271756Z       "inner-global_candidate_instance_count",
+2026-10-25T15:51:33.6271922Z       "inner-native_process_saved",
+2026-10-25T15:51:33.6272181Z       "inner-retained_timing_contract",
+2026-10-25T15:51:33.6272331Z       "payload-work/detailed-route.odb",
+2026-10-25T15:51:33.6272478Z       "payload-work/native.log",
+2026-10-25T15:51:33.6272626Z       "payload-inner-controller-result.json",
+2026-10-25T15:51:33.6272796Z       "payload-current-inputs-after.json"
+2026-10-25T15:51:33.6272938Z     ],
+2026-10-25T15:51:33.6273043Z     "native_executed": false
+2026-10-25T15:51:33.6273228Z   },
+2026-10-25T15:51:33.6273326Z   "original_timing": {
+2026-10-25T15:51:33.6273489Z     "status": "PASS_POSTROUTE_DECISION_CONTROLS_NOT_NATIVE_ANALYSIS",
+2026-10-25T15:51:33.6273679Z     "nonzero_or_negative_rejected": [
+2026-10-25T15:51:33.6273819Z       "timing__setup__ws",
+2026-10-25T15:51:33.6273945Z       "timing__hold__ws",
+2026-10-25T15:51:33.6274107Z       "timing__setup_vio__count",
+2026-10-25T15:51:33.6274262Z       "timing__hold_vio__count",
+2026-10-25T15:51:33.6274398Z       "design__max_cap_violation__count",
+2026-10-25T15:51:33.6274547Z       "design__max_slew_violation__count",
+2026-10-25T15:51:33.6274696Z       "design__max_fanout_violation__count"
+2026-10-25T15:51:33.6274831Z     ]
+2026-10-25T15:51:33.6274924Z   },
+2026-10-25T15:51:33.6275023Z   "original_antenna": {
+2026-10-25T15:51:33.6275174Z     "status": "PASS_FINAL_ANTENNA_COUNTS_AND_SEVEN_FAULTS",
+2026-10-25T15:51:33.6275339Z     "rejected": [
+2026-10-25T15:51:33.6275450Z       "wrong_net_metric",
+2026-10-25T15:51:33.6275576Z       "wrong_pin_metric",
+2026-10-25T15:51:33.6275700Z       "removed_violation",
+2026-10-25T15:51:33.6275822Z       "missing_pin",
+2026-10-25T15:51:33.6275938Z       "missing_summary",
+2026-10-25T15:51:33.6276117Z       "extra_net",
+2026-10-25T15:51:33.6276226Z       "duplicate_net"
+2026-10-25T15:51:33.6276333Z     ],
+2026-10-25T15:51:33.6276464Z     "stale_route_counter_cannot_override_final_check": true
+2026-10-25T15:51:33.6276629Z   },
+2026-10-25T15:51:33.6276730Z   "original_direct_admission": {
+2026-10-25T15:51:33.6276938Z     "status": "PASS_ROUTE12_COMPLETED_DESCRIPTOR_CONTROLS_NOT_NATIVE_PROOF",
+2026-10-25T15:51:33.6277135Z     "rejected": [
+2026-10-25T15:51:33.6277242Z       "live-run",
+2026-10-25T15:51:33.6277349Z       "failed-run",
+2026-10-25T15:51:33.6277462Z       "wrong-source",
+2026-10-25T15:51:33.6277575Z       "old-workflow",
+2026-10-25T15:51:33.6277686Z       "old-group",
+2026-10-25T15:51:33.6277799Z       "incomplete-route",
+2026-10-25T15:51:33.6277929Z       "saved-not-completed",
+2026-10-25T15:51:33.6278058Z       "different-image",
+2026-10-25T15:51:33.6278177Z       "changed-source",
+2026-10-25T15:51:33.6278298Z       "missing-native-log",
+2026-10-25T15:51:33.6278425Z       "relaxed-clock",
+2026-10-25T15:51:33.6278540Z       "relaxed-derate",
+2026-10-25T15:51:33.6278662Z       "wrong-global-source",
+2026-10-25T15:51:33.6278791Z       "negative-drc-count",
+2026-10-25T15:51:33.6278920Z       "no-final-drc-count",
+2026-10-25T15:51:33.6279059Z       "changed-global_candidate_instance_count",
+2026-10-25T15:51:33.6279218Z       "changed-global_odb_sha256",
+2026-10-25T15:51:33.6279359Z       "changed-global_guides_sha256",
+2026-10-25T15:51:33.6279506Z       "changed-candidate_netlist_sha256",
+2026-10-25T15:51:33.6279651Z       "changed-source_sdc_sha256"
+2026-10-25T15:51:33.6279776Z     ]
+2026-10-25T15:51:33.6279870Z   },
+2026-10-25T15:51:33.6279971Z   "publication_release": {
+2026-10-25T15:51:33.6280133Z     "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+2026-10-25T15:51:33.6280305Z     "rejected": [
+2026-10-25T15:51:33.6280413Z       "local-context",
+2026-10-25T15:51:33.6280528Z       "other-repo",
+2026-10-25T15:51:33.6280639Z       "missing-source",
+2026-10-25T15:51:33.6280753Z       "mutable-source",
+2026-10-25T15:51:33.6280868Z       "invalid-run",
+2026-10-25T15:51:33.6280983Z       "invalid-attempt",
+2026-10-25T15:51:33.6281105Z       "invalid-group",
+2026-10-25T15:51:33.6281232Z       "different-release-target",
+2026-10-25T15:51:33.6281372Z       "different-tag-object",
+2026-10-25T15:51:33.6281498Z       "annotated-tag",
+2026-10-25T15:51:33.6281615Z       "different-tag-name",
+2026-10-25T15:51:33.6281740Z       "draft-release",
+2026-10-25T15:51:33.6281858Z       "production-release",
+2026-10-25T15:51:33.6281987Z       "duplicate-asset-name",
+2026-10-25T15:51:33.6282118Z       "asset-digest-missing",
+2026-10-25T15:51:33.6282252Z       "preexisting-wrong-tag",
+2026-10-25T15:51:33.6282391Z       "read-denied-never-creates"
+2026-10-25T15:51:33.6282518Z     ],
+2026-10-25T15:51:33.6282680Z     "existing_partial_assets_preserved": true,
+2026-10-25T15:51:33.6282842Z     "existing_release_not_recreated": true,
+2026-10-25T15:51:33.6282995Z     "new_release_uses_tested_sha": true,
+2026-10-25T15:51:33.6283142Z     "no_permissions_expanded": true
+2026-10-25T15:51:33.6283270Z   },
+2026-10-25T15:51:33.6283372Z   "native_execution": false,
+2026-10-25T15:51:33.6283538Z   "final_timing_complete": false,
+2026-10-25T15:51:33.6283677Z   "full_phy_accepted": false
+2026-10-25T15:51:33.6283796Z }
+2026-10-25T15:51:34.2910077Z {
+2026-10-25T15:51:34.2910819Z   "status": "PASS_RESERVED_MAINCHIP_PUBLICATION_CONTROLS_NOT_NATIVE",
+2026-10-25T15:51:34.2911364Z   "actual_complete_file_list_positive": true,
+2026-10-25T15:51:34.2911735Z   "real_publisher_fake_transport_positive": true,
+2026-10-25T15:51:34.2912097Z   "already_published_exact_assets_reused": true,
+2026-10-25T15:51:34.2912415Z   "rejected": [
+2026-10-25T15:51:34.2912678Z     "release-target_commitish",
+2026-10-25T15:51:34.2913017Z     "release-draft",
+2026-10-25T15:51:34.2913284Z     "release-prerelease",
+2026-10-25T15:51:34.2913564Z     "release-tag_name",
+2026-10-25T15:51:34.2913832Z     "annotated-tag",
+2026-10-25T15:51:34.2914113Z     "wrong-tag-source",
+2026-10-25T15:51:34.2914391Z     "wrong-existing-digest",
+2026-10-25T15:51:34.2914682Z     "missing-release-no-create",
+2026-10-25T15:51:34.2914989Z     "changed-summary",
+2026-10-25T15:51:34.2915253Z     "changed-part",
+2026-10-25T15:51:34.2915521Z     "wrong-source-directory",
+2026-10-25T15:51:34.2915808Z     "changed-prior-hash",
+2026-10-25T15:51:34.2916257Z     "unrecorded-prior",
+2026-10-25T15:51:34.2916530Z     "missing-prior",
+2026-10-25T15:51:34.2916799Z     "symlink-summary"
+2026-10-25T15:51:34.2917039Z   ],
+2026-10-25T15:51:34.2917299Z   "original_rejected_status_preserved": true,
+2026-10-25T15:51:34.2917616Z   "network_or_native_executed": false
+2026-10-25T15:51:34.2917896Z }
+2026-10-25T15:51:34.4291772Z {
+2026-10-25T15:51:34.4292267Z   "status": "PASS_ACTUAL_SAVED_POSTROUTE_PUBLICATION_WRAPPER_CONTROLS_NOT_NATIVE",
+2026-10-25T15:51:34.4292618Z   "positives": [
+2026-10-25T15:51:34.4292787Z     "failed",
+2026-10-25T15:51:34.4292961Z     "interrupted",
+2026-10-25T15:51:34.4293137Z     "missing"
+2026-10-25T15:51:34.4293295Z   ],
+2026-10-25T15:51:34.4293448Z   "rejected": [
+2026-10-25T15:51:34.4293630Z     "attempt2",
+2026-10-25T15:51:34.4293942Z     "root-symlink",
+2026-10-25T15:51:34.4294131Z     "report-symlink",
+2026-10-25T15:51:34.4294333Z     "descendant-symlink",
+2026-10-25T15:51:34.4294529Z     "root-file",
+2026-10-25T15:51:34.4294699Z     "missing-part",
+2026-10-25T15:51:34.4294878Z     "duplicate-part",
+2026-10-25T15:51:34.4295064Z     "changed-part-bytes",
+2026-10-25T15:51:34.4295264Z     "changed-part-digest",
+2026-10-25T15:51:34.4295467Z     "wrong-source-directory",
+2026-10-25T15:51:34.4295669Z     "changed-summary",
+2026-10-25T15:51:34.4295859Z     "changed-manifest-file",
+2026-10-25T15:51:34.4296219Z     "symlink-summary"
+2026-10-25T15:51:34.4296394Z   ],
+2026-10-25T15:51:34.4296605Z   "actual_pack_and_complete_members_verified": true,
+2026-10-25T15:51:34.4296946Z   "qualified_publisher_used_with_fake_remote_transport": true,
+2026-10-25T15:51:34.4297252Z   "network_or_native_executed": false
+2026-10-25T15:51:34.4297467Z }
+2026-10-25T15:51:34.4516686Z {
+2026-10-25T15:51:34.4516935Z   "status": "PASS_READ_ONLY_RELEASE_WAIT_CONTROLS",
+2026-10-25T15:51:34.4517168Z   "positive_cases": [
+2026-10-25T15:51:34.4517339Z     {
+2026-10-25T15:51:34.4517598Z       "absent_reads": 0,
+2026-10-25T15:51:34.4517794Z       "exact_release_accepted": true
+2026-10-25T15:51:34.4518026Z     },
+2026-10-25T15:51:34.4518176Z     {
+2026-10-25T15:51:34.4518331Z       "absent_reads": 2,
+2026-10-25T15:51:34.4518525Z       "exact_release_accepted": true
+2026-10-25T15:51:34.4518727Z     },
+2026-10-25T15:51:34.4518869Z     {
+2026-10-25T15:51:34.4519022Z       "absent_reads": 60,
+2026-10-25T15:51:34.4519220Z       "exact_release_accepted": true
+2026-10-25T15:51:34.4519390Z     }
+2026-10-25T15:51:34.4519697Z   ],
+2026-10-25T15:51:34.4519792Z   "rejected": [
+2026-10-25T15:51:34.4519916Z     "bounded-missing-reservation",
+2026-10-25T15:51:34.4520088Z     "API-denied-not-retried",
+2026-10-25T15:51:34.4520230Z     "different-release-source",
+2026-10-25T15:51:34.4520373Z     "different-tag-object"
+2026-10-25T15:51:34.4520506Z   ],
+2026-10-25T15:51:34.4520750Z   "maximum_missing_reads": 61,
+2026-10-25T15:51:34.4520951Z   "maximum_scheduled_wait_s": 300,
+2026-10-25T15:51:34.4521091Z   "creation_attempted": false,
+2026-10-25T15:51:34.4521221Z   "native_executed": false
+2026-10-25T15:51:34.4521336Z }
+2026-10-25T15:51:34.4551530Z ##[group]Run sudo apt-get update -qq
+2026-10-25T15:51:34.4551741Z [36;1msudo apt-get update -qq[0m
+2026-10-25T15:51:34.4551927Z [36;1msudo apt-get install -y --no-install-recommends libfuse2[0m
+2026-10-25T15:51:34.4552128Z [36;1mpython3 scripts/bootstrap_flow.py[0m
+2026-10-25T15:51:34.4552354Z [36;1mapp="$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage"[0m
+2026-10-25T15:51:34.4552621Z [36;1m"$app" python scripts/check_onehot_routed_extraction_native.py[0m
+2026-10-25T15:51:34.4552845Z [36;1mPYTHONPATH=hw/soc/pnr "$app" python - <<'PYCODE'[0m
+2026-10-25T15:51:34.4553090Z [36;1mfrom mainchip_completed_postroute_flow import MainchipCompletedPostroute[0m
+2026-10-25T15:51:34.4553323Z [36;1mfrom librelane.steps import OpenROAD,Odb[0m
+2026-10-25T15:51:34.4553504Z [36;1mfrom librelane.state import DesignFormat[0m
+2026-10-25T15:51:34.4553734Z [36;1mfrom replay_onehot_routed_extraction_flow import AuditedRCX,AuditedRoutedSTA[0m
+2026-10-25T15:51:34.4554167Z [36;1massert MainchipCompletedPostroute.Steps==[OpenROAD.CheckAntennas,Odb.ReportDisconnectedPins,AuditedRCX,AuditedRoutedSTA][0m
+2026-10-25T15:51:34.4554523Z [36;1massert AuditedRCX.inputs==[DesignFormat.DEF][0m
+2026-10-25T15:51:34.4554752Z [36;1mprint('PASS_ACTUAL_NATIVE_POSTROUTE_STEP_CONTRACT_NO_ROUTE_EXECUTED')[0m
+2026-10-25T15:51:34.4554949Z [36;1mPYCODE[0m
+2026-10-25T15:51:34.4585654Z shell: /usr/bin/bash -e {0}
+2026-10-25T15:51:34.4585796Z env:
+2026-10-25T15:51:34.4585950Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:51:34.4586278Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T15:51:34.4586502Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:51:34.4586705Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:51:34.4586919Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:51:34.4587123Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T15:51:34.4587306Z ##[endgroup]
+2026-10-25T15:51:42.8867317Z Reading package lists...
+2026-10-25T15:51:43.1150054Z Building dependency tree...
+2026-10-25T15:51:43.1158520Z Reading state information...
+2026-10-25T15:51:43.2699941Z The following NEW packages will be installed:
+2026-10-25T15:51:43.2703025Z   libfuse2
+2026-10-25T15:51:43.2801738Z 0 upgraded, 1 newly installed, 0 to remove and 88 not upgraded.
+2026-10-25T15:51:43.2802008Z Need to get 90.3 kB of archives.
+2026-10-25T15:51:43.2802195Z After this operation, 330 kB of additional disk space will be used.
+2026-10-25T15:51:43.2802417Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-25T15:51:43.5357128Z Get:2 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 libfuse2 amd64 2.9.9-5ubuntu3 [90.3 kB]
+2026-10-25T15:51:43.7294065Z Fetched 90.3 kB in 0s (343 kB/s)
+2026-10-25T15:51:43.7624334Z Selecting previously unselected package libfuse2:amd64.
+2026-10-25T15:51:43.7840620Z (Reading database ... 
+2026-10-25T15:51:43.7840973Z (Reading database ... 5%
+2026-10-25T15:51:43.7841225Z (Reading database ... 10%
+2026-10-25T15:51:43.7841428Z (Reading database ... 15%
+2026-10-25T15:51:43.7841616Z (Reading database ... 20%
+2026-10-25T15:51:43.7841764Z (Reading database ... 25%
+2026-10-25T15:51:43.7841907Z (Reading database ... 30%
+2026-10-25T15:51:43.7842026Z (Reading database ... 35%
+2026-10-25T15:51:43.7842144Z (Reading database ... 40%
+2026-10-25T15:51:43.7842261Z (Reading database ... 45%
+2026-10-25T15:51:43.7842380Z (Reading database ... 50%
+2026-10-25T15:51:43.8496630Z (Reading database ... 55%
+2026-10-25T15:51:44.0981296Z (Reading database ... 60%
+2026-10-25T15:51:44.3492183Z (Reading database ... 65%
+2026-10-25T15:51:44.5621559Z (Reading database ... 70%
+2026-10-25T15:51:44.7431442Z (Reading database ... 75%
+2026-10-25T15:51:44.9986962Z (Reading database ... 80%
+2026-10-25T15:51:45.2648779Z (Reading database ... 85%
+2026-10-25T15:51:45.5015484Z (Reading database ... 90%
+2026-10-25T15:51:45.7489704Z (Reading database ... 95%
+2026-10-25T15:51:45.7490463Z (Reading database ... 100%
+2026-10-25T15:51:45.7490745Z (Reading database ... 261642 files and directories currently installed.)
+2026-10-25T15:51:45.7537091Z Preparing to unpack .../libfuse2_2.9.9-5ubuntu3_amd64.deb ...
+2026-10-25T15:51:45.7561505Z Unpacking libfuse2:amd64 (2.9.9-5ubuntu3) ...
+2026-10-25T15:51:45.7817800Z Setting up libfuse2:amd64 (2.9.9-5ubuntu3) ...
+2026-10-25T15:51:45.7831116Z Processing triggers for libc-bin (2.35-0ubuntu3.15) ...
+2026-10-25T15:51:55.1113612Z 
+2026-10-25T15:51:55.1114308Z Running kernel seems to be up-to-date.
+2026-10-25T15:51:55.1114552Z 
+2026-10-25T15:51:55.1126707Z No services need to be restarted.
+2026-10-25T15:51:55.1126891Z 
+2026-10-25T15:51:55.1126985Z No containers need to be restarted.
+2026-10-25T15:51:55.1127138Z 
+2026-10-25T15:51:55.1127283Z No user sessions are running outdated binaries.
+2026-10-25T15:51:55.1127465Z 
+2026-10-25T15:51:55.1127629Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-25T15:52:19.3354128Z Verified LibreLane 3.0.5: /home/runner/work/nssoc/nssoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage
+2026-10-25T15:52:19.3354730Z Physical tool smoke test, full PDK and design acceptance are separate requirements.
+2026-10-25T15:52:19.8824997Z {"status": "PASS_NATIVE_STA_TRANSFORM_PREFLIGHT_ONLY_NOT_EXTRACTION_OR_TIMING", "native_sha256": "e0096884c1929ed80506366ecc3e809c78c8493180e366fc095e2b09f5c36f53", "derate_guard_sha256": "4514aed16b2b328166be7a32a4af4be83ce640f0a69ac1aef3117bd1f286592f", "rejected": ["missing_spef_read", "duplicate_spef_read", "missing_netlist_load"], "flow_steps": ["NSSOC.OnehotRouteRCX", "NSSOC.OnehotRoutedSTA"]}
+2026-10-25T15:52:20.4483876Z PASS_ACTUAL_NATIVE_POSTROUTE_STEP_CONTRACT_NO_ROUTE_EXECUTED
+2026-10-25T15:52:20.4880979Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-25T15:52:20.4881225Z with:
+2026-10-25T15:52:20.4881372Z   name: saved-postroute-controls-40208896478
+2026-10-25T15:52:20.4881554Z   path: cloud-mainchip-saved-postroute-controls/
+2026-10-25T15:52:20.4881715Z   retention-days: 30
+2026-10-25T15:52:20.4881835Z   if-no-files-found: warn
+2026-10-25T15:52:20.4881961Z   compression-level: 6
+2026-10-25T15:52:20.4882075Z   overwrite: false
+2026-10-25T15:52:20.4882191Z   include-hidden-files: false
+2026-10-25T15:52:20.4882315Z env:
+2026-10-25T15:52:20.4882454Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:52:20.4882679Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T15:52:20.4882899Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:52:20.4883096Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:52:20.4883317Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:52:20.4883519Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T15:52:20.4883686Z ##[endgroup]
+2026-10-25T15:52:20.5848942Z (node:2812) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T15:52:20.5849344Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T15:52:20.5891009Z With the provided path, there will be 3 files uploaded
+2026-10-25T15:52:20.5896575Z Artifact name is valid!
+2026-10-25T15:52:20.5896858Z Root directory input is valid!
+2026-10-25T15:52:20.9700991Z Beginning upload of artifact content to blob storage
+2026-10-25T15:52:20.9822238Z (node:2812) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-25T15:52:21.2587770Z Uploaded bytes 2852
+2026-10-25T15:52:21.3480410Z Finished uploading artifact content to blob storage!
+2026-10-25T15:52:21.3481568Z SHA256 digest of uploaded artifact zip is 0c922118dadc16d92bf7acac95db64d7b4aae5da639f00f50fdb4c778ddd2d2a
+2026-10-25T15:52:21.3482119Z Finalizing artifact upload
+2026-10-25T15:52:21.7854190Z Artifact saved-postroute-controls-40208896478.zip successfully finalized. Artifact ID 12605087554
+2026-10-25T15:52:21.7854814Z Artifact saved-postroute-controls-40208896478 has been successfully uploaded! Final size is 2852 bytes. Artifact ID is 12605087554
+2026-10-25T15:52:21.7859042Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/40208896478/artifacts/12605087554
+2026-10-25T15:52:21.7964919Z Post job cleanup.
+2026-10-25T15:52:21.8635722Z (node:2826) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T15:52:21.8636403Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T15:52:21.8746946Z Post job cleanup.
+2026-10-25T15:52:21.9254700Z [command]/usr/bin/git version
+2026-10-25T15:52:21.9280120Z git version 2.55.0
+2026-10-25T15:52:21.9302055Z Temporarily overriding HOME='/home/runner/work/_temp/92a2b9a5-08bd-419a-a160-8608349d1801' before making global git config changes
+2026-10-25T15:52:21.9302837Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T15:52:21.9305362Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T15:52:21.9330644Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T15:52:21.9351016Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T15:52:21.9532265Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T15:52:21.9557121Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T15:52:21.9722192Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T15:52:21.9748889Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T15:52:21.9976509Z Cleaning up orphan processes
+2026-10-25T15:52:22.0187885Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
