@@ -48,13 +48,17 @@ class ProcAccess:
     def meminfo(self,path):
         self.check();value=Path(path).read_text();self.check();return value
     def members(self,pgid):
-        result=[]
+        result=[];self.enumeration_disappearances=[]
         for path in Path('/proc').iterdir():
             self.check()
             if not path.name.isdecimal():continue
             try:
                 value=identity((path/'stat').read_text());self.check()
-            except FileNotFoundError:continue
+            except (FileNotFoundError,ProcessLookupError)as error:
+                self.enumeration_disappearances.append(dict(pid=int(path.name),
+                  disposition='gone_during_enumeration',identity_unavailable=True,
+                  error_type=type(error).__name__,errno=error.errno))
+                continue
             if value['pid']!=int(path.name):raise CounterError('Proc path PID mismatch')
             if value['pgrp']==pgid and value['state']not in NONRUNNING:result.append(value)
         return sorted(result,key=lambda x:x['pid'])
@@ -89,8 +93,9 @@ def member_observation(access,expected,check=lambda:None):
             def read(name):
                 check();value=original_read(name);check();return value
             try:before=identity(read('stat'))
-            except FileNotFoundError:
-                return dict(**observed,disposition='exited_before_first_held_stat')
+            except (FileNotFoundError,ProcessLookupError)as error:
+                return dict(**observed,disposition='exited_before_first_held_stat',
+                  disappearance_error=dict(type=type(error).__name__,errno=error.errno))
             observed['before']=before
             if not same(expected,before):raise CounterError('Process identity changed before counter')
             if before['state']in NONRUNNING:return dict(**observed,disposition='nonrunning_before_counter')
@@ -98,9 +103,13 @@ def member_observation(access,expected,check=lambda:None):
                 text=read('status')
                 observed['status_sha256']=hashlib.sha256(text.encode()).hexdigest()
                 missing_file=False
-            except FileNotFoundError:text=None;missing_file=True
+            except (FileNotFoundError,ProcessLookupError)as error:
+                text=None;missing_file=True
+                observed['status_read_error']=dict(type=type(error).__name__,errno=error.errno)
             try:after=identity(read('stat'))
-            except FileNotFoundError:return dict(**observed,disposition='exited_after_counter_read')
+            except (FileNotFoundError,ProcessLookupError)as error:
+                return dict(**observed,disposition='exited_after_counter_read',
+                  disappearance_error=dict(type=type(error).__name__,errno=error.errno))
             observed['after']=after
             if not same(before,after):raise CounterError('Process identity changed after counter')
             if after['state']in NONRUNNING:return dict(**observed,disposition='nonrunning_after_counter')
@@ -119,10 +128,11 @@ def member_observation(access,expected,check=lambda:None):
     except CounterError as error:
         error.evidence=observed
         raise
-    except FileNotFoundError:
+    except (FileNotFoundError,ProcessLookupError)as error:
         # No numeric-path rebinding: opening the originally enumerated proc
         # directory failed. No zero or stale RSS is substituted.
-        return dict(**observed,disposition='gone_before_held_directory')
+        return dict(**observed,disposition='gone_before_held_directory',
+          disappearance_error=dict(type=type(error).__name__,errno=error.errno))
 
 def snapshot(pgid,meminfo_path='/proc/meminfo',*,access=None,emit=None,
              clock=time.monotonic,pause=time.sleep):
@@ -141,6 +151,7 @@ def snapshot(pgid,meminfo_path='/proc/meminfo',*,access=None,emit=None,
             current['available_kib']=available
             pending=None;members=[]
             enumerated=access.members(pgid);bound();current['enumerated']=enumerated
+            current['enumeration_disappearances']=getattr(access,'enumeration_disappearances',[])
             for expected in enumerated:
                 bound()
                 if expected['pgrp']!=pgid:raise CounterError('Wrong enumerated process group')
@@ -166,7 +177,8 @@ def snapshot(pgid,meminfo_path='/proc/meminfo',*,access=None,emit=None,
                   sampling_attempts=len(history),sampling_elapsed_seconds=clock()-began,
                   total_snapshot_budget_seconds=RESAMPLE_WINDOW,
                   resampling_evidence=history if len(history)>1 else [],
-                  excluded_nonrunning=[x for x in current['observations']if x['disposition']!='measured_fresh'])
+                  excluded_nonrunning=[x for x in current['observations']if x['disposition']!='measured_fresh'],
+                  enumeration_disappearances=current['enumeration_disappearances'])
                 if len(history)>1:emit('memory_counter_resampling',outcome='fresh_complete',attempts=history)
                 return result
             current['disposition']='retry_missing_live_counter'

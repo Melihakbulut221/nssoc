@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted-only deterministic sampler controls and harmless real process churn."""
-import contextlib, copy, json, os, subprocess, sys, time
+import contextlib, copy, errno, json, os, subprocess, sys, time
 from pathlib import Path
 from unittest import mock
 import pcie_live_memory_sampler as a
@@ -86,11 +86,39 @@ def controls(supervisor):
     assert r['group_rss_kib']==43 and r['sampling_attempts']==2
     passed['held_live_missing_status_then_fresh']=True
 
+    # ENOENT and ESRCH are the only disappearance errnos admitted.
+    gone=lambda:ProcessLookupError(errno.ESRCH,'fixture process gone')
+    for name,record in [
+      ('esrch_open',gone()),
+      ('esrch_first_stat',sample_record(before=gone())),
+      ('esrch_after_stat',sample_record(after=gone())),
+      ('esrch_status_then_gone',sample_record(status=gone(),after=gone()))]:
+        r,e,c=exercise(FakeAccess([record]))
+        assert r['members']==[] and len(r['excluded_nonrunning'])==1 and not c.pauses
+        assert r['excluded_nonrunning'][0]['disappearance_error']['errno']==errno.ESRCH
+        passed[name+'_observed_disappearance']=True
+    r,e,c=exercise(FakeAccess([sample_record(status=gone()),sample_record(status=status('47'))]))
+    assert r['group_rss_kib']==47 and r['sampling_attempts']==2
+    assert e[0]['attempt']['observations'][0]['status_read_error']['errno']==errno.ESRCH
+    passed['esrch_status_still_live_requires_fresh_resample']=True
+    class ExitedEntry:
+        name='71'
+        def __truediv__(self,key):assert key=='stat';return self
+        def read_text(self):raise gone()
+    class ExitedProc:
+        def iterdir(self):return iter([ExitedEntry()])
+    with mock.patch.object(a,'Path',lambda path:ExitedProc()):
+        production=a.ProcAccess();assert production.members(71)==[]
+        assert production.enumeration_disappearances==[dict(pid=71,
+          disposition='gone_during_enumeration',identity_unavailable=True,
+          error_type='ProcessLookupError',errno=errno.ESRCH)]
+    passed['production_enumeration_esrch_disappearance']=True
+
     def reject(name,access,expected,pauses=None,clock=None):
         events=[];clock=clock or Clock()
         try:a.snapshot(71,access=access,clock=clock.now,pause=clock.pause,
           emit=lambda kind,**kw:events.append(dict(event=kind,**kw)))
-        except (a.CounterError,PermissionError,UnicodeError)as error:
+        except (a.CounterError,OSError,UnicodeError)as error:
             assert expected in str(error),(name,repr(error))
             assert events[-1]['outcome']=='rejected'
             if pauses is not None:assert len(clock.pauses)==pauses
@@ -108,6 +136,9 @@ def controls(supervisor):
                'Pid'if name=='missing_PID'else 'VmRSS',0)
     reject('status_permission',FakeAccess([sample_record(status=PermissionError('denied-status'))]),'denied-status',0)
     reject('stat_permission',FakeAccess([sample_record(before=PermissionError('denied-stat'))]),'denied-stat',0)
+    reject('status_other_OSError',FakeAccess([sample_record(status=OSError(errno.EIO,'status-EIO'))]),'status-EIO',0)
+    reject('directory_other_OSError',FakeAccess([OSError(errno.EIO,'directory-EIO')]),'directory-EIO',0)
+    reject('persistent_ESRCH_status_live_stat',FakeAccess([sample_record(status=gone())]),'Persistent',2)
     reject('proc_directory_permission',FakeAccess([PermissionError('denied-directory')]),'denied-directory',0)
     reject('malformed_stat',FakeAccess([sample_record(before='bad')]),'Malformed proc stat',0)
     reject('identity_before',FakeAccess([sample_record(before=stat(start=999))]),'identity changed before',0)
@@ -183,7 +214,7 @@ def controls(supervisor):
     assert all(x['available_kib']>=0 and x['group_rss_kib']>=0 for x in samples)
     assert any(len(x['members'])>=2 for x in samples),'actual child membership never observed'
     passed['real_short_lived_churn_held_proc_identity']=True
-    assert len(passed)==9 and len(rejected)==24
+    assert len(passed)==15 and len(rejected)==27
     return dict(status='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL',
       positives=passed,rejected=rejected,real_churn=dict(samples=len(samples),
       maximum_observed_members=max(len(x['members'])for x in samples),

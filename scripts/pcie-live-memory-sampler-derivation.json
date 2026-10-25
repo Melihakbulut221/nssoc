@@ -1,6 +1,10 @@
 {
   "basis_source": "96ee918510bc3a3c1e24acfd9404459f8d8b75f0",
   "between_attempts_seconds": 0.02,
+  "disappearance_exceptions": [
+    "FileNotFoundError/ENOENT",
+    "ProcessLookupError/ESRCH"
+  ],
   "edits": [
     {
       "count": 1,
@@ -20,16 +24,16 @@
     },
     {
       "count": 1,
-      "derived_sha256": "99028ed587fa40ffa5b77a9b8af1403d6004135e7dc8ec602818c13252d6360a",
-      "new": "          assert len(q['controls'])==13 and all(q['controls'].values())\n          z=r['bounded_memory_sampler_controls']\n          assert z['status']=='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL'\n          assert len(z['positives'])==9 and all(z['positives'].values())\n          assert len(z['rejected'])==24 and all(v['rejected'] for v in z['rejected'].values())\n          assert z['real_churn']['samples']>=3 and z['real_churn']['maximum_observed_members']>=2\n          assert not z['real_churn']['cleanup']['remaining_live']\n",
+      "derived_sha256": "84925e82c5755a2a2d896855c18aba686d7355afe2357a730614addebc099eaf",
+      "new": "          assert len(q['controls'])==13 and all(q['controls'].values())\n          z=r['bounded_memory_sampler_controls']\n          assert z['status']=='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL'\n          assert len(z['positives'])==15 and all(z['positives'].values())\n          assert len(z['rejected'])==27 and all(v['rejected'] for v in z['rejected'].values())\n          assert z['real_churn']['samples']>=3 and z['real_churn']['maximum_observed_members']>=2\n          assert not z['real_churn']['cleanup']['remaining_live']\n",
       "old": "          assert len(q['controls'])==13 and all(q['controls'].values())\n",
       "original_sha256": "52217d88a5123f15246ee9da2085f65f23e807b146fd74c1305468c652294515",
       "path": ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml"
     },
     {
       "count": 1,
-      "derived_sha256": "99028ed587fa40ffa5b77a9b8af1403d6004135e7dc8ec602818c13252d6360a",
-      "new": "          assert len(q['controls'])==13 and all(q['controls'].values())\n          z=r['bounded_memory_sampler_controls']\n          assert z['status']=='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL'\n          assert len(z['positives'])==9 and all(z['positives'].values())\n          assert len(z['rejected'])==24 and all(v['rejected'] for v in z['rejected'].values())\n          assert z['real_churn']['samples']>=3 and z['real_churn']['maximum_observed_members']>=2\n          assert not z['real_churn']['cleanup']['remaining_live']\n",
+      "derived_sha256": "84925e82c5755a2a2d896855c18aba686d7355afe2357a730614addebc099eaf",
+      "new": "          assert len(q['controls'])==13 and all(q['controls'].values())\n          z=r['bounded_memory_sampler_controls']\n          assert z['status']=='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL'\n          assert len(z['positives'])==15 and all(z['positives'].values())\n          assert len(z['rejected'])==27 and all(v['rejected'] for v in z['rejected'].values())\n          assert z['real_churn']['samples']>=3 and z['real_churn']['maximum_observed_members']>=2\n          assert not z['real_churn']['cleanup']['remaining_live']\n",
       "old": "          assert len(q['controls'])==13 and all(q['controls'].values())\n",
       "original_sha256": "52217d88a5123f15246ee9da2085f65f23e807b146fd74c1305468c652294515",
       "path": ".github/workflows/pcie-gen12-record-cdc-cloud.yml"
@@ -40,6 +44,7 @@
   "maximum_attempts": 3,
   "native_execution_authorized": false,
   "original_limits_and_cleanup_unchanged": true,
+  "other_OSError_rejected": true,
   "resampling_window_seconds": 0.1,
   "runtime_scope": "Install one replacement memory_snapshot callable after exact frozen-file and original-function source validation; no frozen file edit, no other supervisor function edit.",
   "schema": "bounded-live-VmRSS-source-adapter-v1",
