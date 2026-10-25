@@ -38,11 +38,26 @@ jobs:
           assert len(r['rejected'])==39
           assert not r['chip_restore_executed'] and not r['chip_attachment_executed']
           PY
+      - name: Prove bounded read-only external release wait
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/wait_cloud_tested_source_release.py --controls > mainchip-userstack-release-wait-controls.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('mainchip-userstack-release-wait-controls.json'))
+          assert d['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'
+          assert len(d['positive_cases'])==3 and len(d['rejected'])==4
+          assert d['maximum_scheduled_wait_s']==300 and not d['creation_attempted'] and not d['native_executed']
+          print(json.dumps(d,indent=2))
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: mainchip-userstack-source-controls-${{ github.run_id }}
-          path: mainchip-userstack-native-source-controls.json
+          path: |
+            mainchip-userstack-native-source-controls.json
+            mainchip-userstack-release-wait-controls.json
           retention-days: 90
 
   exact-saved-userstack:
@@ -81,7 +96,7 @@ jobs:
           p=controls();assert len(p['rejected'])==17
           print(json.dumps(p,indent=2))
           PY
-          python3 scripts/ensure_cloud_tested_source_release.py --group mainchip-route12-userstack
+          python3 scripts/wait_cloud_tested_source_release.py --group mainchip-route12-userstack
       - name: Reserve hosted disk for the authenticated runtime and process images
         run: |
           sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet
@@ -148,7 +163,7 @@ jobs:
           set -euo pipefail
           root=cloud-mainchip-route12-userstack
           stem="mainchip-route12-userstack-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
-          python3 scripts/ensure_cloud_tested_source_release.py --group mainchip-route12-userstack
+          python3 scripts/wait_cloud_tested_source_release.py --group mainchip-route12-userstack
           cp "$root/result.json" "$stem.summary.json"
           python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
           python3 - "$stem" <<'PY'

@@ -1,0 +1,7 @@
+# External release reservation before any native work
+
+Run40178764762 passed its39source controls but the integration token could not create the exact-source release: HTTP403. Runtime installation, process restore and debugger attachment were all skipped. The complete31,007-byte job log, exact244-byte failure result and artifact metadata are retained in docs/evidence/mainchip-userstack-release-preflight-failure-20261025.json. Root subsequently reserved release423271749; its late existence is not evidence of native execution or success.
+
+The only operational correction is a read-only wait for an externally reserved release using the unchanged exact-source context/tag/asset validator. It never creates a release, moves a tag or uploads an asset. It checks at most61times, with at most60five-second pauses; API latency is additional. A denied API read or wrong release/tag identity fails immediately. The same guard runs before native setup and publication. A missing reservation cannot start a chip process.
+
+Hosted controls add three actual mocked read sequences (immediate, two absent reads, and the final permitted read) and four rejected cases (bounded absence, API denial, wrong source and changed tag object). Existing39source controls,17publication controls, all native code and physical/timing/checkpoint checks remain unchanged. The registered workflow is reused. No automatic retry or native acceptance is claimed.
