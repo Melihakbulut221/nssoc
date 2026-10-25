@@ -1,0 +1,107 @@
+# SPDX-License-Identifier: Apache-2.0
+# Unregistered template. Native authorization remains false until reviewed activation.
+name: cdr-v59-binding-rc-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        type: choice
+        description: Controls only, or a separately reviewed native stage
+        default: controls
+        options: [controls, binding, rc, both]
+permissions:
+  contents: read
+concurrency:
+  group: cdr-v59-binding-rc-${{ github.ref }}-${{ inputs.stage }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  controls:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact source, complete archive and projection controls
+        run: |
+          set -euo pipefail
+          mkdir -p hw/soc/out/cdr-v59-binding-rc-controls
+          python3 scripts/check_cdr_v59_binding_rc_source.py | tee hw/soc/out/cdr-v59-binding-rc-controls/source.json
+          python3 scripts/ensure_cloud_tested_source_release.py --controls | tee hw/soc/out/cdr-v59-binding-rc-controls/release.json
+          python3 scripts/cloud_cdr_v59_binding_rc.py --publication-controls | tee hw/soc/out/cdr-v59-binding-rc-controls/publication.json
+          PYTHONPATH=scripts python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from cloud_cdr_v59_binding_rc import emit
+          root=Path('hw/soc/out/cdr-v59-binding-rc-controls')
+          s=json.loads((root/'source.json').read_text())
+          assert s['status']=='PASS_V59_COMPOSED_ADMISSION_DERIVATION_AND_FILESYSTEM_SOURCE_CONTROLS'
+          assert len(s['rejected'])==45 and len(s['derivation']['rejected'])==4 and len(s['filesystem']['rejected'])==17
+          assert s['native_executed']is False and s['geometry_changed']is False
+          assert len(s['inherited']['rejected'])==18 and len(s['inherited']['font']['rejected'])==16
+          r=json.loads((root/'release.json').read_text());assert len(r['rejected'])==17
+          p=json.loads((root/'publication.json').read_text())
+          assert len(p['rejected'])==8 and p['chunk_controls']['negative_controls']==6 and p['release_creation_possible']is False
+          for name in ('source','release','publication'):emit(root/(name+'.json'),'CDR_V59_CONTROLS_'+name.upper())
+          PY
+      - name: Preserve every source-control result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v59-binding-rc-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cdr-v59-binding-rc-controls/
+          retention-days: 90
+  native:
+    if: github.event_name == 'workflow_dispatch' && inputs.stage != 'controls'
+    needs: controls
+    strategy:
+      fail-fast: false
+      matrix:
+        stage: ${{ fromJSON(inputs.stage == 'both' && '["binding","rc"]' || inputs.stage == 'binding' && '["binding"]' || '["rc"]') }}
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Require authorization and precreated exact-source prerelease before dependencies
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_v59_binding_rc.py --stage ${{ matrix.stage }} --preflight
+      - name: Restore the original pinned native CAD runtime
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6
+          python3 -m pip install networkx==3.4.2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Fresh binding or raw RC with complete immutable publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_v59_binding_rc.py --stage ${{ matrix.stage }}
+      - name: Preserve original capsule and every complete or partial output
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v59-${{ matrix.stage }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            hw/soc/out/cloud-cdr-v59-font-recovery/
+            hw/soc/out/cloud-cdr-v59-${{ matrix.stage }}/
+            hw/soc/out/cloud-cdr-v59-${{ matrix.stage }}-evidence/
+            hw/soc/out/cloud-cdr-v59-${{ matrix.stage }}-publication/
+          retention-days: 90
