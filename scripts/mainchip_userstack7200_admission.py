@@ -52,6 +52,7 @@ def transport_identity(run,release,tag):
     assert run['path']=='.github/workflows/mainchip-latest-userstack-controls-cloud.yml'
     assert release['id']==423280373 and release['tag_name']=='cloud-results-'+str(RUN)+'-1-'+GROUP
     assert release['draft']is False and tag['object']['type']=='commit' and tag['object']['sha']==HEAD
+    assert release['target_commitish']==HEAD and tag['ref']=='refs/tags/'+release['tag_name']
     found={a['id']:a for a in release['assets']};assert len(found)==len(release['assets'])
     for ident,size,digest in [(674649253,21030878,SUMMARY),(674649337,1085,PARTS)]:
         a=found[ident];assert a['size']==size and a['digest']=='sha256:'+digest and a['state']=='uploaded'

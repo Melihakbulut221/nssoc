@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
           ref: ${{ github.sha }}
           persist-credentials: false
@@ -34,8 +34,8 @@ jobs:
           python3 - <<'PY'
           import json
           r=json.load(open('mainchip-userstack7200-source-controls.json'))
-          assert r['status']=='PASS58_EXACT_DIAGNOSTIC_ADMISSION_AND_ROUTE_SOURCE_CONTROLS_ONLY'
-          assert len(r['rejected'])==58
+          assert r['status']=='PASS60_EXACT_DIAGNOSTIC_ADMISSION_AND_ROUTE_SOURCE_CONTROLS_ONLY'
+          assert len(r['rejected'])==60
           assert r['original39']['status']=='PASS39_SOURCE_BINDING_CONTROLS_NOT_NATIVE_ATTACH'
           assert not r['native_process_restored'] and not r['chip_started'] and not r['gdb_attached'] and not r['archive_downloaded']
           PY
@@ -52,7 +52,7 @@ jobs:
           assert d['maximum_scheduled_wait_s']==300 and not d['creation_attempted'] and not d['native_executed']
           print(json.dumps(d,indent=2))
           PY
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: mainchip-userstack7200-source-controls-${{ github.run_id }}

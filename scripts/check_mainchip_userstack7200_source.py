@@ -55,6 +55,7 @@ def check():
         ('attempt','run',['run_attempt'],2),('unfinished','run',['status'],'in_progress'),
         ('failed','run',['conclusion'],'failure'),('workflow','run',['path'],'unrelated.yml'),
         ('release-id','release',['id'],1),('release-tag','release',['tag_name'],'wrong'),
+        ('release-target','release',['target_commitish'],'main'),('ref-path','tag',['ref'],'refs/tags/wrong'),
         ('draft','release',['draft'],True),('tag-type','tag',['object','type'],'tag'),
         ('tag-source','tag',['object','sha'],'0'*40)]
     for name,target,path,value in transports:
@@ -117,8 +118,8 @@ def check():
         ('cold-stage-allowed',"assert args.stage=='cross'","assert True"),
         ('source-check-waived',"and sha(tcl)==r['route_script']['sha256'];r['sources_unchanged']=True",";r['sources_unchanged']=True")]:
         assert program.count(old)==1;reject(name,lambda old=old,new=new:validate_generated(program.replace(old,new)))
-    assert len(rejected)==58 and len(set(rejected))==58
-    return dict(status='PASS58_EXACT_DIAGNOSTIC_ADMISSION_AND_ROUTE_SOURCE_CONTROLS_ONLY',
+    assert len(rejected)==60 and len(set(rejected))==60
+    return dict(status='PASS60_EXACT_DIAGNOSTIC_ADMISSION_AND_ROUTE_SOURCE_CONTROLS_ONLY',
         original39=original,rejected=rejected,actual_prior_outer_summary_authenticated=True,
         original_inner_member_restored=False,inner_positive_scope='METADATA SHAPE FIXTURE ONLY',
         native_process_restored=False,chip_started=False,gdb_attached=False,archive_downloaded=False,
