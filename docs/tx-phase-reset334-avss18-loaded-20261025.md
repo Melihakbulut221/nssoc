@@ -1,0 +1,19 @@
+# Current AVSS18 loaded-model preparation and zero OP
+
+This source candidate consumes the actual successful fresh RC run40217002155, source881493acb2670dae88b821c45a697f3215df5aeb. Both polarities and both native orders are preserved. The source authenticates all2717 saved files, not only selected model files, before the original334-device role binder is applied to the current physical geometry, native identities and composed model.
+
+The only physical hypothesis remains the qualified AVSS TopMetal1 trunk width6→18µm. No resistance scaling, aliasing, device resizing, new extraction or geometry generation occurs here. The fresh composed models are P bfe98e32e29aacd8defbb46eed28a62286bcc1513db0af1b6f8e1d514e1c8aa4 and N1e5a2f72577c1923d06afa4e74f879ca2f8bd086581c1400188ff5ac7d95c975.
+
+The original binding functions run with current model hashes and20 actual-input corruptions per polarity. Fresh binding bytes and their source/run identities become the exact inputs to the original four-case preparation functions. The original functions are copied into isolated global dictionaries with identical Python code objects; original module globals are never changed. Only explicit model, binding and preparation provenance is rebound. All function source hashes are recorded in the companion source receipt.
+
+The three actual distributed models retain318 HBTs,390 thermal states, all4726 observations,90 finite body contacts per macro and distinct internal BODY/public SUB/AVSS references. Original five source cards, exact child event oracles,0–34ns duration,0.3125ps maximum timestep,100mV margin and62.5ps first-fall limit are unchanged. No observed-edge fit or phase adjustment is an input. The current source checks the actual complete regenerated vector identity through the original contract and runtime reader; matching vector count alone does not qualify a waveform.
+
+The original full phase318 rejection, including every one of17 failed HBT records and complete numerical review, and the separate failed normal8088 TX result remain explicit inputs and outputs. RC success does not establish that either electrical failure is repaired.
+
+The controller derives the original zero-OP program with one reversible replacement: its former qualified-old-model restore block becomes current authenticated binding/preparation. Runtime installation, every318 OFF readback, full zero-state parser, solver verification,300-second per-case execution limit, four-case loop and original gate remain unchanged. Fresh preparation also runs the original8 input faults and32 path faults. The exact six .lib/.include/pre_osdi path-card substitutions preserve all source, save and instance cards.
+
+The ngspice environment is the original qualified Ubuntu24/Python3.12/NumPy2.3.3 environment with the same103134f6 engine and model manifest. Ubuntu22 was used for AppImage CAD; no AppImage is invoked by this loaded stage.
+
+The manual template has controls, prepare and zero-op modes. All authorizations are false in this candidate; the template is unregistered. Controls exercise24 actual-summary refusals,20 live-metadata refusals,13 isolated-context/source refusals, two real derived-main entry/finally fixtures that stop before restoration, original15+30+12 source faults,13 archive/6 parts refusals, actual reserved-only publication2positive/13faults and read-only waiter3positive/4faults. Publication may only use an exact-source release created beforehand. Complete failures and all saved inputs are retained.
+
+This candidate does not launch a34ns transient. After fresh preparation and current-model zero OP pass, the existing portable Docker/CRIU controller must be rebound to those actual immutable receipts, with its13200-second process budget, full native prefix and source/runtime protections preserved. A partial waveform cannot pass. Full loaded electrical success, routed31-tree, actual PLL and full-PHY acceptance remain unproved.

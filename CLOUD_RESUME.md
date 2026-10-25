@@ -8526,3 +8526,10 @@ Local project/tmp/native processes verified absent. Inventory187 exact cloud han
 CDR source controls now passed with the actual old/fixed main-entry regression; all full proofs independently verified. PLL fresh-RC controls also passed with exact live logs and metadata normalization. Exactly one fresh RC run and one CDR prepare-only retry completed successfully with source-bound complete releases. Their full outer/inner JSON assets were independently rehashed; complete native proofs3920c6f3 and6ad39957 are imported. Simulations/physical acceptance remain unclaimed; mainchip clock-restoration driver is still source work. No local project files or native processes.
 
 Local project/tmp/native processes verified absent. Inventory190 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-25T18:20:06.910430+00:00 — cloud-only checkpoint v55
+
+All source and numerical work remains cloud-only. Mainchip source controls passed after the precise MPin API repair, and one original-clock restoration/read-onlyDRT/FIXED roundtrip diagnostic is running in GitHub. The original ten CDR electrical cases are running after repeated preparation; complete source-bound results are reserved. New PLL loaded source controls passed and current OP remains separately gated. Full failures and all evidence are retained; no fullPHY or timing acceptance is claimed.
+
+Local project/tmp/native processes verified absent. Inventory196 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

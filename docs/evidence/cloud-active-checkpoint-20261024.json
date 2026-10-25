@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T17:51:27.735067+00:00",
+  "updated_at": "2026-10-25T18:20:06.910430+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "ea5fa1c38b8446deaf29a214968708867b1202ed",
+  "root_source_before_receipt": "5d603704a63624ff251752fe413e346afc333bdc",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 54,
+    "inventory_version": 55,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40163484810,
@@ -14,7 +14,130 @@
     "automatic_native_dispatch": false,
     "last_verified_run_status": "ATTENTION_REQUIRED: actual observation succeeded and published; nonzero exit reflects tracked open failures, not MONITOR_ERROR"
   },
-  "active_runs": {},
+  "active_runs": {
+    "mainchip-original-clock-native-diagnostic": {
+      "run": 40220274771,
+      "head_sha": "74bebfabe3e9a4da25ae364853b744adc2b2e34d",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121250159286,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121250274216,
+          "name": "native",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Bounded exact-runtime restore original-clock gate initial DRT and FIXED roundtrip"
+          ]
+        }
+      ]
+    },
+    "cdr-current500-original-ten-loaded-cases": {
+      "run": 40219397958,
+      "head_sha": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+      "status": "queued",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121247472789,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121247587307,
+          "name": "prepare",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121248489080,
+          "name": "loaded (hot_early)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489109,
+          "name": "loaded (cold_early)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489123,
+          "name": "loaded (constant_one)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489133,
+          "name": "loaded (cold_late)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489136,
+          "name": "loaded (constant_zero)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489159,
+          "name": "loaded (hot_late)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489166,
+          "name": "loaded (nominal_late)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original full OP and transient with unchanged electrical gates"
+          ]
+        },
+        {
+          "id": 121248489193,
+          "name": "loaded (vi_bias_off)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489203,
+          "name": "loaded (nominal_early)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original full OP and transient with unchanged electrical gates"
+          ]
+        },
+        {
+          "id": 121248489276,
+          "name": "loaded (clock_stopped)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        }
+      ]
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -1055,13 +1178,15 @@
     },
     "cdr_current500_preparation": "Repaired controls40216764007 PASS at aecc8596:468 source pins,134 named refusals, actual full-main old UnboundLocalError and corrected restore/finally boundaries. Root rehashed all8 full proof files and exact289064B live log, all6 printedJSONs. Sole prepare-only retry40217326111 at84fe96cb PASSED; exact-source release423556153 complete. Full native0a7215cf/outer0649c54d releaseJSONs independently rehashed;5549 inputs unchanged,13 binding controls,1151 native vectors and prepared original deck verified in complete3920c6f3 proof. No simulator/OP/transient/extraction/geometry authorized; full previous failures retained.",
     "pll_avss18_fresh_rc": "Source controls40216096357 PASS; root rehashed all5 full files and exact303614B live log, all3 printedJSONs; proposed171-pin method exactly normalizes to tested166-pin method. Sole fresh both-polarity/both-order RC40217002155 at881493ac PASSED; exact-source release423554242 complete. Full outer00ec7ddd/intrinsic60ea5836/precision76db6828 releaseJSONs independently rehashed;1347R/2545C each polarity and order,334devices/1010terminals/695planes/119components and unchanged original faults. Complete proof6ad39957. Simulation/geometry regeneration false; original17 electrical rejections remain open.",
-    "mainchip_clock_restore": "Corrected sourcec6cd12f0 passed bounded peer review; original218 restoration/original1691 gate retained. Separate dbNet metadata and encoded-path controls account for DEF writer FIXED override. Full cloud driver and whole-design read-only LEF DRC interface are being authored; no restoration/routing/native acceptance."
+    "mainchip_clock_restore": "Complete source controls40219238091 PASS (original8positive/55refusal, driver14/39, archive/publication/wait). Root independently authenticated full6321B result27d447d8 and all chunks of exact31582B live log4ed8f580; MPin getGeometry API correction verified against exact published db.h before execution. Both proposed methods normalize exactly to tested sources. Sole native diagnostic40220274771 at74bebfabe, exact-source release423575143, now running. Scope exact218 restoration/original1691 gate/read-onlyDRT/FIXED roundtrip only; no routing repair/STA/signoff.",
+    "cdr_current500_loaded": "Root verified full current preparation proof, all5549 original input hashes and all5636 native outputs. Sole original10-case loaded run40219397958 at92a8253,495pins; repeated same-run preparation passed, fullproof6114bb85. Two nominal cases entered original OP/transient; remaining8 queued, maxparallel2/failfastfalse. All11 exact-source prereleases verified before any simulator case. Explicit ordering deviation: preparation-first reservation let its dependency installation begin18:04:06Z, last4 releases finished18:04:17Z; all existed before preparation binding/deck and any simulation. Preserved atabc8a781, no bypass/retry. FullPHY/closedloop acceptancefalse.",
+    "pll_avss18_loaded": "Fresh334 loaded sourceb0919d22 passed two independent bounded reviews; original numerical functions frozen and current2717-member RC admission. Hosted source controls40220234035 at1de314d0 passed, native skipped. Complete proof3ff86408 saved (actual full-main pre-restore/finally fixtures, source/publication/wait). Actual current binding/preparation/OFF/zeroOP/transient remain unexecuted; metadata-only zeroOP proposal is being prepared for independent review. Original17 electrical rejections remain open."
   },
   "next_actions": [
-    "Develop current fresh334 RC loaded admission/binding then original318HBT OFF/zeroOP/safety and34ns transient adapter. Require fresh preparation and OP proofs; preserve all original17 electrical rejections,100mV/62.5ps limits and no old R scaling.",
-    "Independently review metadata-only all10 original CDR loaded-case proposal bound to actual40217326111 preparation and full protected sources. No simulation before review;11 source-bound releases required for unchanged preparation+matrix workflow.",
-    "Finish and independently review mainchip exact218-restoration cloud runtime/publication driver; source controls first, then separately gated native original1691-clock and scoped DRC/FIXED roundtrip.",
-    "Keep original20/4/8/8ns clocks,+5% derate, full old failures and cloud-only archives. Continue fullPHY/real electrical and final all-corner timing closure; do not mark signoff complete."
+    "Consume exact native clock40220274771 complete original1691 gate, initial DRT and actual FIXED/original-class roundtrip. Preserve all nonzero markers/failures; zero scoped DRT is not full signoff. No repair or STA authorized by this diagnostic.",
+    "Consume each original CDR loaded case in sole40219397958 with full native/outer/log/parts; preserve electrical rejections and original gates. No auto retries; external8GHz/open-loop scope remains.",
+    "Independently verify full PLL loaded source-controls3ff86408 and concrete metadata-only current zeroOP proposal before any actual four-case fresh binding/preparation/OFF/zeroOP job. No old OP proof may qualify new models; full34ns transient follows only fresh evidence.",
+    "Keep local workspace/tmp/CAD empty, native archives and waves in GitHub, original20/4/8/8ns+5%derate and all historical failures. Existing8h GitHub monitor remains read-only."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -1232,34 +1357,47 @@
     "observed_40216043263": 40216043263,
     "observed_40216764007": 40216764007,
     "observed_40217002155": 40217002155,
-    "observed_40217326111": 40217326111
+    "observed_40217326111": 40217326111,
+    "observed_40219049378": 40219049378,
+    "observed_40219238091": 40219238091,
+    "observed_40220200118": 40220200118,
+    "observed_40220234035": 40220234035
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40216764007,
-      "head_sha": "aecc8596db187d7cfd66578a8f24519203888968",
+      "run": 40219049378,
+      "head_sha": "03e1f757f72d86bdd7ac9b268296379c64285547",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121239478236,
+          "id": 121246426851,
+          "name": "register",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40219238091,
+      "head_sha": "9d4bb539f72b63f5381056213f85610924b842b0",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121246992090,
           "name": "controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121239641859,
-          "name": "loaded",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 121239642102,
-          "name": "prepare",
+          "id": 121247129241,
+          "name": "native",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
@@ -1267,52 +1405,160 @@
       ]
     },
     {
-      "run": 40217002155,
-      "head_sha": "881493acb2670dae88b821c45a697f3215df5aeb",
+      "run": 40220274771,
+      "head_sha": "74bebfabe3e9a4da25ae364853b744adc2b2e34d",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121250159286,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121250274216,
+          "name": "native",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Bounded exact-runtime restore original-clock gate initial DRT and FIXED roundtrip"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 40219397958,
+      "head_sha": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+      "status": "queued",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121247472789,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121247587307,
+          "name": "prepare",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121248489080,
+          "name": "loaded (hot_early)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489109,
+          "name": "loaded (cold_early)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489123,
+          "name": "loaded (constant_one)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489133,
+          "name": "loaded (cold_late)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489136,
+          "name": "loaded (constant_zero)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489159,
+          "name": "loaded (hot_late)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489166,
+          "name": "loaded (nominal_late)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original full OP and transient with unchanged electrical gates"
+          ]
+        },
+        {
+          "id": 121248489193,
+          "name": "loaded (vi_bias_off)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        },
+        {
+          "id": 121248489203,
+          "name": "loaded (nominal_early)",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original full OP and transient with unchanged electrical gates"
+          ]
+        },
+        {
+          "id": 121248489276,
+          "name": "loaded (clock_stopped)",
+          "status": "queued",
+          "conclusion": null,
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40220200118,
+      "head_sha": "d9c41e09df1b231dd2eae79ab5ec812855cb1d45",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121240205568,
+          "id": 121249916731,
+          "name": "register-only",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40220234035,
+      "head_sha": "1de314d02fd2ace4bd80c99e88bcb24a24e434a7",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121250035336,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121240388714,
-          "name": "fresh-two-polarity334-mim-rc",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40217326111,
-      "head_sha": "84fe96cb3c93e0f9d1f9c231216dd6d9c72ad05e",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121241201031,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121241308142,
-          "name": "prepare",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121241988041,
-          "name": "loaded",
+          "id": 121250182543,
+          "name": "current-preparation-or-zero-op",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
@@ -1321,7 +1567,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-25T17:51:27.735067+00:00",
+    "observed_at": "2026-10-25T18:20:06.910430+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -1443,7 +1689,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-25T17:51:27.735067+00:00",
+  "local_workspace_verified_empty_at": "2026-10-25T18:20:06.910430+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -6241,6 +6487,378 @@
       "release": 423556153,
       "tag": "cloud-results-40217326111-1-cdr-v59-loaded-preparation",
       "source": "84fe96cb3c93e0f9d1f9c231216dd6d9c72ad05e"
+    }
+  ],
+  "imported_checkpoint_receipts_v55": [
+    {
+      "path": "docs/evidence/mainchip-original-clock-MPin-API-correction-20261025.json",
+      "source": "e71bbad4d8f598345ad5dbced994e045fc6a1c6d",
+      "git_blob": "6de30ab5348278100a86e067a9e2752b3418c67e",
+      "bytes": 1090,
+      "sha256": "83777f8a5486cea72ec07953595ddcc97e34f404d623b3dcc95a8741e4d87bcd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-source-controls-peer-review-20261025.json",
+      "source": "9d4bb539f72b63f5381056213f85610924b842b0",
+      "git_blob": "607a4db4738a0de03d96140d608c1f8d970d5749",
+      "bytes": 869,
+      "sha256": "7c942fbd53493169685cbc9dd4f4de2b956fbde44ccab6e0b99474d9b731b482",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-source-controls-root-review-20261025.json",
+      "source": "9d4bb539f72b63f5381056213f85610924b842b0",
+      "git_blob": "527976fc1386763d166e036f5ebf8d9fd94c4920",
+      "bytes": 1040,
+      "sha256": "30c0d0319c4856bcb0a55b4263194bd9c4b466bd0144b3d3fc11c9a2c3aeb5d2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-workflow-registration-20261025.json",
+      "source": "9d4bb539f72b63f5381056213f85610924b842b0",
+      "git_blob": "56453968933bd11d4e489faa74017f9973948338",
+      "bytes": 15330,
+      "sha256": "b3d797fe014d7742194fe8536a03457da6b5e509bba66965f1371eab98d71a71",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-source-controls-pass-20261025.job.log",
+      "source": "cafe4aea72f6dc3a8838831155b627c1d61b0e05",
+      "git_blob": "a41f1851e0b73408ee3b5fe784e0ccb0a3aa3559",
+      "bytes": 31582,
+      "sha256": "4ed8f5808c90857d8fb009157b148a9e4ceb58e40ccaaa1a7ba4a38ab2d719a5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-source-controls-pass-20261025.json",
+      "source": "cafe4aea72f6dc3a8838831155b627c1d61b0e05",
+      "git_blob": "5764b549fce45a32d7912c3eed57712507da9480",
+      "bytes": 72213,
+      "sha256": "160f3be1c41a2ee195f67696c7c37baae0e2a1a39a714207ef011383e4c6e271",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-source-controls-pass-20261025.result.json",
+      "source": "cafe4aea72f6dc3a8838831155b627c1d61b0e05",
+      "git_blob": "4fe7cf0c9ecb720b76294ca6ef378620c0d8bd4f",
+      "bytes": 6321,
+      "sha256": "27d447d80f3b11c5990fd21384d44b1696be2bafb14825089a980f032455d87d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-source-controls-pass-20261025.tested-cloud-methods.json",
+      "source": "cafe4aea72f6dc3a8838831155b627c1d61b0e05",
+      "git_blob": "5ca550e32dfeebe296fd2e35dc0574f9d5dc85da",
+      "bytes": 25566,
+      "sha256": "96bcbd3ab5833fca2f91a4eafcc3768274c73331630087a000faafd0bd04b96e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-source-controls-pass-20261025.tested-planner-methods.json",
+      "source": "cafe4aea72f6dc3a8838831155b627c1d61b0e05",
+      "git_blob": "f280300157fcb2310bed168b13e7546883b93613",
+      "bytes": 3639,
+      "sha256": "88a650d3cfa99019b8e76bbe15b8acb837c0521330b4baec77ca4623027b1887",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-native-diagnostic-activation-proposal-20261025.json",
+      "source": "57280708e85083e9eb3d09489332fa5bd7a63754",
+      "git_blob": "7e0b1c9d9391402c8a45e635d712bb3b4efbb636",
+      "bytes": 6744,
+      "sha256": "1b97289e3cb5845c931ce7efa8e9bafa6527b3e67f641da988ec1eee82702331",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-native-diagnostic-root-review-20261025.json",
+      "source": "74bebfabe3e9a4da25ae364853b744adc2b2e34d",
+      "git_blob": "79826791c18cd7f1a1e26cc145d8d40eda032e2c",
+      "bytes": 1735,
+      "sha256": "5951ab7d54634d02b1d505113307e7b8b61f418f55c0f71d50caca7536c227df",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-original-clock-native-diagnostic-dispatch-20261025.json",
+      "source": "f20fddb3427aa0a6126837d3c2b2fe98e4a2129e",
+      "git_blob": "0f767d0a8d6bf6305a30a19166be4f04b9912a9d",
+      "bytes": 27991,
+      "sha256": "d385a59d9ccba4078c9c5bf84f6d8d4356b6361203b2ebbdd5225c1e91e7cefc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/mainchip-original-clock-restoration-source-20261025.md",
+      "source": "9d4bb539f72b63f5381056213f85610924b842b0",
+      "git_blob": "25c1ec725a4d2a4b3d607683fb28f3fd7726f3cf",
+      "bytes": 6844,
+      "sha256": "3510726a5f5a91a2ab2499795c2a2d8287ca244d70d5ca836392ea6e458a1c2e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/mainchip-original-clock-restoration-cloud-20261025.md",
+      "source": "9d4bb539f72b63f5381056213f85610924b842b0",
+      "git_blob": "f4712e4052cd1edf03757e0ecb429ccf0fe73a99",
+      "bytes": 6082,
+      "sha256": "ed69bfc46cfd9a776d8bb6cd77d9dfb27b37331eded614e08b51c7772d682d5c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-activation-proposal-20261025.json",
+      "source": "8e840dbc031927382a4c861f5f4c2668ad9fd812",
+      "git_blob": "3c6592220ad5785ee550353251791f6011eaf27f",
+      "bytes": 15649,
+      "sha256": "ed4b8cb1b272ae800d8e29a0276063e4d48c7e0ba9538854cafdeed81d52f479",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-independent-readiness-review-20261025.json",
+      "source": "8e840dbc031927382a4c861f5f4c2668ad9fd812",
+      "git_blob": "7fb59421dba3104bf6ddf7f2a6461ad08e50d07a",
+      "bytes": 2001,
+      "sha256": "c06d434503b38bc9a8c372560fdd62a599b9aa3b93611d095b85750c983a4ad0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-root-activation-review-20261025.json",
+      "source": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+      "git_blob": "606f23c691d6de5829a8231abf1469ca1b950bae",
+      "bytes": 2673,
+      "sha256": "f792a31593ad60a77339ba94b6044d6941d672f36f51550b1e9cc28044d6b28f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-dispatch-20261025.json",
+      "source": "abc8a78196c9cdf46a93bc82f1fdd7c47f62f249",
+      "git_blob": "35361f88ca6c5c141bd3167abf3d82faa33c7712",
+      "bytes": 13610,
+      "sha256": "cad08e81968d52ddf701efbeeac4f4ea21a7aec381b2e51352b01110e0354798",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.controls-imports.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "6210be75ba495881c952928364328256ed930613",
+      "bytes": 67079,
+      "sha256": "2f263815ec870ef87a25932252fa3a02eaffcd2147c63376450f2c4b79649819",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.controls-publication.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "3f4761ed305153188c7d631e040d5c259127a99c",
+      "bytes": 1170,
+      "sha256": "21a5a9fc54d61d49df2aa0c8a20036124aee183a567cbe9babf967af006f620c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.controls-release.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "059ea13e7ccf270ee0188532d6f82b6272b3afc5",
+      "bytes": 665,
+      "sha256": "b0d5bc89c4f5560335e60f640f8feb9e1ac879030a785d8881b1fb6f71083b00",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.controls-source.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "bfcd924a067733ae5c1e2538f2c9bba5d50ca6a0",
+      "bytes": 5207,
+      "sha256": "223dcd1f26a603e41229ae88986bc5e67ddf4ada39179d48bf29a3fe660eaeda",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.controls-stage.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "8a69d1f260808583c803916033b6d6fca5320583",
+      "bytes": 1800,
+      "sha256": "57adb9d970a0e6611ccb983a18d8345596c75bd45c4f664694b8d686f2033116",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.controls-wait.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.controls.log",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "3e739467c04cd47a7eb96fd1aeba5c765e04b2d5",
+      "bytes": 288817,
+      "sha256": "ebb13f863079514deedd43a0e4f0b6875847766da282637b0ace5566d64def16",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "a0f4c5dbd030d0a4dce4bddd4a3d705ee96cae08",
+      "bytes": 44838,
+      "sha256": "4bfd232d274d9c280d51b36e9fb1ee1e65be4e0f7836200bb43a120cac94f449",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.native-result.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "0210e88569f7cf838787177e311563edc7945f64",
+      "bytes": 2532954,
+      "sha256": "7fd62ab323d32f73bc8ae53afd85c8c7413aff59b037e2ee33e2ef9c1a5911d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.parts.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "4cd7f14cc76f1624fa67e3ae9c705576feb30b15",
+      "bytes": 869,
+      "sha256": "d1ece5bf24a8fa37ef014809afebf990d4a9aba04075241b9d5c3e0d2c92f38c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.prepare.log",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "0d706560db7875924e752fead5dbff5325c4bb92",
+      "bytes": 1401728,
+      "sha256": "52c63a2fc42a7a9037a48174ab805b0afbd79afb862d8cde7dfaa31476ee1ac1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.summary.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "4d8c997f01bea96f997fa60c8286e230e9c0e285",
+      "bytes": 1003543,
+      "sha256": "1c1fe42776e15a96a48c991356dd33efeb10275686919d347fef027a41163ce8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-loaded-ten-case-repeated-preparation-pass-20261025.tested-methods.json",
+      "source": "6114bb855a1af2ff5f151e67d98e3c358660dea3",
+      "git_blob": "996e0184a52c78254215fadc411576bd7b175d59",
+      "bytes": 74301,
+      "sha256": "96db4be13ce0dd1833a5f30ddffa8ad0fab8826ca9df6f425c47a39aec2f173a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-source-20261025.json",
+      "source": "b0919d22e112c85e4206d3b4b92ef15f19f038c4",
+      "git_blob": "eb144aa8a3d737f5890badecd04bc3a817477642",
+      "bytes": 12049,
+      "sha256": "0c1f7cd256d0ffd8c11d3b6ef7d2b5d58854f55d4664918fb478b82fe6636884",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/tx-phase-reset334-avss18-loaded-20261025.md",
+      "source": "b0919d22e112c85e4206d3b4b92ef15f19f038c4",
+      "git_blob": "aa34a8eb85a40de301bdee2ebdf101d3a8a88058",
+      "bytes": 3943,
+      "sha256": "89bf5e59d2cdfbea551e8f90318893c5c27f6e05323fccf165a271f01790adbf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-TX-source-review-20261025.json",
+      "source": "d2cf1a656202532c0d50b98041d028e1d7bf99bc",
+      "git_blob": "5ac605fe83c161ebf5e1e149e847879af8b8be7d",
+      "bytes": 2406,
+      "sha256": "ea2c92ac3100f3bbf5766ba2ea93f097870958efd98e58d194e6a83e6ff6b5cc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-admission-source-review-20261025.json",
+      "source": "3898fd5ba25f5279a6cc1d3a1886ee0df04b12fd",
+      "git_blob": "d3b29a0a5383d9a302a00325c5d9ea07b9a73593",
+      "bytes": 2789,
+      "sha256": "babf0aab2829cdac09eb1e8b133c5bd24af2fd0b83e9913ee9817a8c0ec2fa47",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-root-source-controls-authorization-20261025.json",
+      "source": "1de314d02fd2ace4bd80c99e88bcb24a24e434a7",
+      "git_blob": "d9e5aeef3365cdc9b681aa5e7492733d8fd3506c",
+      "bytes": 1759,
+      "sha256": "71de3c0308ba7429d16c43223f5bd98151862f1469f4e80596c4a414dbe7be38",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-source-controls-dispatch-20261025.json",
+      "source": "f6e0a370fc6e3e3779924b3b7948062ea3790b12",
+      "git_blob": "ad2c9d852f76def2435acb4f99c7be3eba9b6a91",
+      "bytes": 39318,
+      "sha256": "5cc936ef14c049e2936f36994bc89e10b9f7a4516abb5c8be256007d9a710d73",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-source-controls-full-result-20261025.json",
+      "source": "3ff86408839ce4add9902b15b90990168091b813",
+      "git_blob": "2fed147cf27cfa8bd0027ed9cc75dfb97b1d0370",
+      "bytes": 116225,
+      "sha256": "52b544760af18363137fababdedd6041a903d0a577360dfab8ecb82b8409d158",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-source-controls-job-20261025.log",
+      "source": "3ff86408839ce4add9902b15b90990168091b813",
+      "git_blob": "8c244905eb5deb8bfddb7d5dd55642598bf9102a",
+      "bytes": 237999,
+      "sha256": "8e5077baf77442954ac7825bdaf231c103b4a454efd3b0468638bb33d8acccd4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-source-controls-pass-20261025.json",
+      "source": "3ff86408839ce4add9902b15b90990168091b813",
+      "git_blob": "5768a2f3231b9e9da6357fd8876689f698a6e1a4",
+      "bytes": 24533,
+      "sha256": "5e72e985a9e5769c5cdbe24adb67ebaab0aef0f15bd27d569c10fc061660f549",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-source-controls-publication-result-20261025.json",
+      "source": "3ff86408839ce4add9902b15b90990168091b813",
+      "git_blob": "94a8f4bf1e1b684716d1487cc2d12c6289b37841",
+      "bytes": 881,
+      "sha256": "fbd334857861f6548e88fb9c3f8dc6186097c379a52215c08664dc030f863c1d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-source-controls-tested-method-20261025.json",
+      "source": "3ff86408839ce4add9902b15b90990168091b813",
+      "git_blob": "c3e5490996ddcfab1680e8de60ca3905a24ade73",
+      "bytes": 45550,
+      "sha256": "0d1be3aac6285ff78a275da0f89fa66beffa7babde069ec7f29b61a44b16faa2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-loaded-source-controls-wait-result-20261025.json",
+      "source": "3ff86408839ce4add9902b15b90990168091b813",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v55": [
+    {
+      "run": 40220274771,
+      "release": 423575143,
+      "tag": "cloud-results-40220274771-1-mainchip-original-clock-restoration",
+      "source": "74bebfabe3e9a4da25ae364853b744adc2b2e34d"
+    },
+    {
+      "run": 40219397958,
+      "source": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+      "groups": {
+        "preparation": 423569603,
+        "nominal_early": 423569625,
+        "nominal_late": 423569650,
+        "hot_early": 423569678,
+        "hot_late": 423569697,
+        "cold_early": 423569724,
+        "cold_late": 423569744,
+        "constant_zero": 423569768,
+        "constant_one": 423569799,
+        "clock_stopped": 423569822,
+        "vi_bias_off": 423569846
+      },
+      "ordering_deviation_receipt": "docs/evidence/cdr-v59-loaded-ten-case-dispatch-20261025.json"
     }
   ]
 }
