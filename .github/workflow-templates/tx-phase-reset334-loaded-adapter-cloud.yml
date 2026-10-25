@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-loaded-adapter-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      prepared_controls:
+        description: Authenticate completed decks and verify all318 initialization targets without native execution
+        required: true
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-loaded-adapter-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install Python import dependency only
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends python3-numpy
+      - name: Check reversible initialization and full-capture acceptance gates
+        run: |
+          /usr/bin/python3 scripts/cloud_tx_phase_reset334_loaded_adapter.py --source-controls > source-controls.json
+          /usr/bin/python3 - <<'PY'
+          import json
+          d=json.load(open('source-controls.json'))
+          assert d['status']=='PASS318_SOURCE_ADAPTER_CONTROLS_ONLY'
+          assert len(d['source_controls']['negative_controls'])==30
+          assert len(d['publication_controls']['rejected'])==17
+          assert not d['native_simulator_executed'] and not d['electrical_accepted']
+          print(json.dumps(d,indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: reset334-loaded-adapter-source-controls
+          path: source-controls.json
+          retention-days: 90
+  check-four-exact318-deck-adapters:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.prepared_controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install Python import dependency only
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends python3-numpy
+      - name: Verify precreated exact-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: /usr/bin/python3 scripts/ensure_cloud_tested_source_release.py --group tx-phase-reset334-loaded-adapter
+      - name: Authenticate full preparation archive and exercise actual318 targets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: /usr/bin/python3 scripts/cloud_tx_phase_reset334_loaded_adapter.py --prepared-controls
+      - name: Publish complete prepared-adapter evidence
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -s cloud-tx-phase-reset334-loaded-adapter/result.json
+          stem="tx-phase-reset334-loaded-adapter-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-tx-phase-reset334-loaded-adapter/result.json "$stem.summary.json"
+          /usr/bin/python3 scripts/ensure_cloud_tested_source_release.py --group tx-phase-reset334-loaded-adapter
+          /usr/bin/python3 scripts/cloud_chunked_results.py --directory cloud-tx-phase-reset334-loaded-adapter --stem "$stem"
+          /usr/bin/python3 - "$stem" <<'PY'
+          import json,subprocess,sys
+          stem=sys.argv[1];parts=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-phase-reset334-loaded-adapter',
+            stem+'.summary.json',stem+'.parts.json',*[p['name']for p in parts['parts']]],check=True)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome == 'failure'
+        with:
+          name: reset334-loaded-adapter-complete-evidence
+          path: cloud-tx-phase-reset334-loaded-adapter/
+          retention-days: 90
