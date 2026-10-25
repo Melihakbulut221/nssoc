@@ -40,7 +40,7 @@ jobs:
           z=r['bounded_memory_sampler_controls']
           assert z['status']=='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL'
           assert len(z['positives'])==9 and all(z['positives'].values())
-          assert len(z['rejected'])==22 and all(v['rejected'] for v in z['rejected'].values())
+          assert len(z['rejected'])==24 and all(v['rejected'] for v in z['rejected'].values())
           assert z['real_churn']['samples']>=3 and z['real_churn']['maximum_observed_members']>=2
           assert not z['real_churn']['cleanup']['remaining_live']
           assert r['simulations_executed']is False and r['synthesis_executed']is False

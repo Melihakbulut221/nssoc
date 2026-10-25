@@ -3,6 +3,7 @@
 """Hosted-only deterministic sampler controls and harmless real process churn."""
 import contextlib, copy, json, os, subprocess, sys, time
 from pathlib import Path
+from unittest import mock
 import pcie_live_memory_sampler as a
 
 def stat(pid=71,group=71,start=123,state='R'):
@@ -126,6 +127,40 @@ def controls(supervisor):
     reject('finite_window',FakeAccess([sample_record(status=status(None)),sample_record()]),
            'bounded window',1,SlowClock())
 
+    # The real production enumeration loop shares the same total-call budget.
+    class GrowingEntry:
+        def __init__(self,index,clock):self.name=str(100+index);self.clock=clock
+        def __truediv__(self,name):assert name=='stat';return self
+        def read_text(self):
+            self.clock.value+=.011
+            return stat(pid=int(self.name))
+    class GrowingProc:
+        def __init__(self,clock):self.clock=clock;self.read_count=0
+        def iterdir(self):
+            for i in range(1000):
+                self.read_count+=1;yield GrowingEntry(i,self.clock)
+    clk=Clock();directory=GrowingProc(clk)
+    class GrowingAccess(a.ProcAccess):
+        def meminfo(self,path):return 'MemAvailable: 1000 kB\n'
+    production=GrowingAccess()
+    def guard():
+        if clk.now()>a.RESAMPLE_WINDOW:raise a.CounterError('total enumeration bounded window')
+    production.check=guard
+    with mock.patch.object(a,'Path',lambda path:directory):
+        reject('growing_group_total_budget',production,'bounded window',0,clk)
+    assert 1<directory.read_count<1000
+    clk=Clock()
+    class SlowReadAccess(FakeAccess):
+        @contextlib.contextmanager
+        def hold(self,pid):
+            with super().hold(pid)as read:
+                def slow(name):
+                    if name=='status':clk.value+=1
+                    return read(name)
+                yield slow
+    reject('held_member_read_total_budget',SlowReadAccess([sample_record()]),
+           'bounded window',0,clk)
+
     # Real Linux /proc identities under harmless short-lived process churn.
     # No resource stress, compiler, RTL, network or archive operation.
     code=("import subprocess,sys,time\n"
@@ -148,7 +183,7 @@ def controls(supervisor):
     assert all(x['available_kib']>=0 and x['group_rss_kib']>=0 for x in samples)
     assert any(len(x['members'])>=2 for x in samples),'actual child membership never observed'
     passed['real_short_lived_churn_held_proc_identity']=True
-    assert len(passed)==9 and len(rejected)==22
+    assert len(passed)==9 and len(rejected)==24
     return dict(status='PASS_BOUNDED_FRESH_MEMORY_SAMPLER_CONTROLS_NO_RTL',
       positives=passed,rejected=rejected,real_churn=dict(samples=len(samples),
       maximum_observed_members=max(len(x['members'])for x in samples),

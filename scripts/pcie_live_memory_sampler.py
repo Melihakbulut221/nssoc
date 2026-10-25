@@ -44,18 +44,23 @@ def one_field(text,key):
     return rows[0]
 
 class ProcAccess:
-    def meminfo(self,path):return Path(path).read_text()
+    def __init__(self,check=lambda:None):self.check=check
+    def meminfo(self,path):
+        self.check();value=Path(path).read_text();self.check();return value
     def members(self,pgid):
         result=[]
         for path in Path('/proc').iterdir():
+            self.check()
             if not path.name.isdecimal():continue
-            try:value=identity((path/'stat').read_text())
+            try:
+                value=identity((path/'stat').read_text());self.check()
             except FileNotFoundError:continue
             if value['pid']!=int(path.name):raise CounterError('Proc path PID mismatch')
             if value['pgrp']==pgid and value['state']not in NONRUNNING:result.append(value)
         return sorted(result,key=lambda x:x['pid'])
     @contextlib.contextmanager
     def hold(self,pid):
+        self.check()
         fd=os.open('/proc/'+str(pid),os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW|os.O_CLOEXEC)
         try:
             def read(name):
@@ -64,7 +69,9 @@ class ProcAccess:
                 try:
                     chunks=[];size=0
                     while True:
+                        self.check()
                         b=os.read(child,16384)
+                        self.check()
                         if not b:break
                         size+=len(b)
                         if size>1024*1024:raise CounterError('Oversized proc counter file')
@@ -74,10 +81,13 @@ class ProcAccess:
             yield read
         finally:os.close(fd)
 
-def member_observation(access,expected):
+def member_observation(access,expected,check=lambda:None):
     observed=dict(expected=expected)
+    check()
     try:
-        with access.hold(expected['pid'])as read:
+        with access.hold(expected['pid'])as original_read:
+            def read(name):
+                check();value=original_read(name);check();return value
             try:before=identity(read('stat'))
             except FileNotFoundError:
                 return dict(**observed,disposition='exited_before_first_held_stat')
@@ -116,24 +126,29 @@ def member_observation(access,expected):
 
 def snapshot(pgid,meminfo_path='/proc/meminfo',*,access=None,emit=None,
              clock=time.monotonic,pause=time.sleep):
-    access=ProcAccess()if access is None else access
+    began=clock();deadline=began+RESAMPLE_WINDOW
+    def bound():
+        if clock()>deadline:raise CounterError('Total memory snapshot bounded window exhausted')
+    access=ProcAccess(check=bound)if access is None else access
     emit=(lambda *a,**kw:None)if emit is None else emit
-    history=[];identities={};resampling_began=None
+    history=[];identities={}
     try:
         for attempt in range(ATTEMPTS):
+            bound()
             current=dict(attempt=attempt+1,observations=[])
             history.append(current)
-            available=counter(access.meminfo(meminfo_path),'MemAvailable')
+            available=counter(access.meminfo(meminfo_path),'MemAvailable');bound()
             current['available_kib']=available
             pending=None;members=[]
-            enumerated=access.members(pgid);current['enumerated']=enumerated
+            enumerated=access.members(pgid);bound();current['enumerated']=enumerated
             for expected in enumerated:
+                bound()
                 if expected['pgrp']!=pgid:raise CounterError('Wrong enumerated process group')
                 key=expected['pid']
                 if key in identities and not same(identities[key],expected):
                     raise CounterError('PID identity changed across resamples')
                 identities[key]=expected
-                try:entry=member_observation(access,expected)
+                try:entry=member_observation(access,expected,bound)
                 except MissingRSS as error:
                     current['observations'].append(error.evidence);pending=error;break
                 except CounterError as error:
@@ -144,21 +159,21 @@ def snapshot(pgid,meminfo_path='/proc/meminfo',*,access=None,emit=None,
                     members.append(dict(pid=key,starttime=expected['starttime'],
                       pgrp=pgid,rss_kib=entry['rss_kib']))
             if pending is None:
-                if resampling_began is not None and clock()-resampling_began>RESAMPLE_WINDOW:
-                    raise CounterError('Fresh resample exceeded bounded window')
+                bound()
                 current['disposition']='fresh_complete'
                 result=dict(available_kib=available,group_rss_kib=sum(x['rss_kib']for x in members),
                   members=members,group_rss_may_double_count_shared_pages=True,
-                  sampling_attempts=len(history),resampling_evidence=history if len(history)>1 else [],
+                  sampling_attempts=len(history),sampling_elapsed_seconds=clock()-began,
+                  total_snapshot_budget_seconds=RESAMPLE_WINDOW,
+                  resampling_evidence=history if len(history)>1 else [],
                   excluded_nonrunning=[x for x in current['observations']if x['disposition']!='measured_fresh'])
                 if len(history)>1:emit('memory_counter_resampling',outcome='fresh_complete',attempts=history)
                 return result
             current['disposition']='retry_missing_live_counter'
-            if resampling_began is None:resampling_began=clock()
             emit('memory_counter_resample_attempt',attempt=current,
                  maximum_attempts=ATTEMPTS,window_seconds=RESAMPLE_WINDOW)
             if attempt+1==ATTEMPTS:raise CounterError('Persistent unavailable live VmRSS')
-            if clock()-resampling_began+INTERVAL>RESAMPLE_WINDOW:
+            if clock()+INTERVAL>deadline:
                 raise CounterError('Missing-counter resampling window exhausted')
             pause(INTERVAL)
     except Exception as error:
