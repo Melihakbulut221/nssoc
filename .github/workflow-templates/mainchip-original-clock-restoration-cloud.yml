@@ -1,0 +1,97 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-original-clock-restoration-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      execute:
+        type: boolean
+        required: true
+        default: false
+        description: Restore exact original218 clock records and measure initial DRT markers; no routing
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-original-clock-restoration-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact original planner plus real driver archive publication and marker-count controls
+        run: python3 scripts/check_mainchip_original_clock_restoration_driver.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: original-clock-restoration-controls-${{ github.run_id }}
+          path: cloud-mainchip-original-clock-restoration-controls/
+          retention-days: 90
+  native:
+    if: inputs.execute
+    needs: controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 300
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Source and authorization before dependency or archive access
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import cloud_mainchip_original_clock_restoration as d
+          m=d.methods()
+          assert m['native_execution_authorized'] is True and m['cloud_restore_authorized'] is True
+          assert d.c.source_gate()['native_prepare_audit_authorized'] is True
+          PYCODE
+      - name: Read-only wait for externally reserved exact-source prerelease
+        timeout-minutes: 6
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/wait_cloud_tested_source_release.py --group mainchip-original-clock-restoration
+      - name: Exact Ubuntu22.04 FUSE dependency
+        timeout-minutes: 10
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Bounded exact-runtime restore original-clock gate initial DRT and FIXED roundtrip
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLOUD_APPIMAGE: ${{ github.workspace }}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage
+        run: python3 scripts/cloud_mainchip_original_clock_restoration.py
+      - name: Complete bounded result log reconstruction
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          from pathlib import Path
+          from check_mainchip_original_clock_restoration_driver import emit
+          p=Path('cloud-mainchip-original-clock-restoration/result.json').resolve()
+          if p.is_file(): emit(p)
+          else: print('CLOCK_RESTORE_NATIVE_RESULT_MISSING_NO_ACCEPTANCE',flush=True)
+          PYCODE
+      - name: Publish complete summary and authenticated archive parts in reserved source release
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_original_clock_restoration.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: original-clock-restoration-native-${{ github.run_id }}
+          path: |
+            cloud-mainchip-original-clock-restoration/
+            publication-mainchip-original-clock-restoration/
+          retention-days: 90
