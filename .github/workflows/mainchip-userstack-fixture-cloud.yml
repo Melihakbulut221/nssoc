@@ -1,0 +1,13 @@
+name: mainchip-userstack-fixture-registration-only
+on:
+  push:
+    branches: [codex/mainchip-userstack-register]
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - name: Registration only; no fixture or chip execution
+        run: printf 'Workflow registration only; no checkout, fixture, native input or qualification.\n'
