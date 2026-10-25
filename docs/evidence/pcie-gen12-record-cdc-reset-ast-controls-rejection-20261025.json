@@ -1,0 +1,73 @@
+{
+  "actual_failure": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_pcie_gen12_record_cdc_cloud.py\", line 183, in controls\n    assert [n.lineno for n in direct_assertions]==[206,207]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "artifacts_metadata": {
+    "artifacts": [
+      {
+        "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12601411670/zip",
+        "created_at": "2026-10-25T13:59:49Z",
+        "digest": "sha256:bc98b1184dadd765f856fb8b1ceeaf9d38ff1e6bcfa1e3f04bb7b0ab4df66a74",
+        "expired": false,
+        "expires_at": "2027-01-23T13:59:16Z",
+        "id": 12601411670,
+        "name": "gen12-record-cdc-controls-40200111070-1",
+        "node_id": "MDg6QXJ0aWZhY3QxMjYwMTQxMTY3MA==",
+        "size_in_bytes": 42615,
+        "updated_at": "2026-10-25T13:59:49Z",
+        "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12601411670",
+        "workflow_run": {
+          "head_branch": "codex/pcie-gen12-record-cdc",
+          "head_repository_id": 1364721142,
+          "head_sha": "760d7221d05cb62fe719c2bb666c0419d53987d0",
+          "id": 40200111070,
+          "repository_id": 1364721142
+        }
+      }
+    ],
+    "total_count": 1
+  },
+  "attempt": 1,
+  "classifier_controls_accepted": false,
+  "jobs": [
+    {
+      "completed_at": "2026-10-25T13:59:52Z",
+      "conclusion": "failure",
+      "id": 121189313317,
+      "name": "source-controls",
+      "started_at": "2026-10-25T13:59:20Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-25T13:59:52Z",
+      "conclusion": "skipped",
+      "id": 121189445278,
+      "name": "complete-functional-proof",
+      "started_at": "2026-10-25T13:59:52Z",
+      "status": "completed"
+    }
+  ],
+  "log": {
+    "bytes": 180719,
+    "job": 121189313317,
+    "sha256": "6a6760fbdfde29ab75b2e75d40df3fe87262ea46170a77abe26d799237ad2aa5"
+  },
+  "native_job_skipped": true,
+  "new_retry_authorized": false,
+  "next_narrow_source_fix": "Require exact three-statement inventory, assert216 remains unqualified for both reset mutants, then exercise only206/207. No allowed-predicate, controller, harness or RTL change.",
+  "result": {
+    "bytes": 78562,
+    "reconstructed_chunks": 26,
+    "sha256": "b3fee8396dd3dbc560524dcc723692012e7373704236454d22f30b320de29ad8"
+  },
+  "run": 40200111070,
+  "schema": "cdc-reset-ast-controls-fixture-rejection-v1",
+  "simulations_executed": false,
+  "source": "760d7221d05cb62fe719c2bb666c0419d53987d0",
+  "source_cause": "New fixture expected only Link.reset direct asserts206/207, but byte-unchanged harness also has direct assertion216 after startup. Intended mutation acceptance remains only declared206/207 predicates.",
+  "status": "FAIL_CONTROL_FIXTURE_INCOMPLETE_DIRECT_ASSERTION_INVENTORY",
+  "synthesis_executed": false,
+  "unchanged_actual_assertions": {
+    "206": "not self.value('rv') and not self.value('wa')",
+    "207": "self.output() == (0,) * 5",
+    "216": "not self.value('wf') and not self.value('rf')"
+  }
+}
