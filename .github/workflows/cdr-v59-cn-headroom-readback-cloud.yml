@@ -1,0 +1,14 @@
+name: cdr-v59-cn-headroom-readback-cloud
+on:
+  push:
+    branches: [codex/register-cdr-v59-cn-headroom-readback]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Harmless manual workflow registration only
+        run: echo "Registration only; no checkout, dependency, archive, analysis or simulator."
