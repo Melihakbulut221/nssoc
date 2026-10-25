@@ -1,0 +1,148 @@
+{
+  "actual_input_evidence": {
+    "attached_geometry_changes": 0,
+    "changed_records": 218,
+    "classification_scope": "Parent-authenticated218 changed DEF statements, all originally ROUTED;22 USE+NONDEFAULTRULE+ROUTED,196 USE+ROUTED;3 only TAPER,3 same-token-multiset/order,212 other. No physical equivalence inferred.",
+    "classification_source": "6720066d1a2823e1a00a58472488f6fd9bd429fe",
+    "connection_prefix_changes": 0,
+    "diagnostic_run": 40213042958,
+    "full_result_path": "docs/evidence/mainchip-clock-diagnostic-first-native-full-result-20261025.json",
+    "full_result_sha256_prefix": "484c9a2e",
+    "full_result_source": "c5d69d8495e7dfd89f439e55b56f8f45d31d4434",
+    "selected_nets": 1691
+  },
+  "conditional_later_repair": [
+    "If actual restored geometry needs DRC repair, a separate reviewed stage may temporarily encode FIXED paths for every wired member of the entire original1691 protected selection, not only the218 repaired nets. Retain an exact per-path original-class map and reject unsupported mixed/unwired cases rather than invent a default.",
+    "Metadata-only setWireType or dont_touch cannot substitute for encoded FIXED. Validate every encoded path with dbWireDecoder and add the existing metadata-only negative control. Keep clock net logic/attached geometry fixed independently.",
+    "Run only a reviewed repair of remaining signal routes, preserving all original clock paths as fixed and retaining failures. Such repair may alter signal route geometry but must preserve netlist, cells, ports, power, constraints and protected clocks; the initial restoration itself changes no other net.",
+    "After repair, remove only the temporary route-class overlay, restoring the saved original classes and exact route tokens; never normalize TAPER, pins or any actual shape. Reopen and run unchanged all-clock gate again. Require all original topology, DRC, antenna, fresh RC and all-corner20/4/8/8ns+5% timing gates. No clock constraint or gate relaxation."
+  ],
+  "donor_odb_sha256": "2d3dfa6ed917fd0d06b20109f3044073f60bbe263f59d8f31ac4913e1a7a787a",
+  "initial_candidate": [
+    "Authenticate both exact ODBs and complete original diagnostic snapshots. Recompute the unchanged source selector and exact218 changed-name set; do not select by a shortened clock-name pattern or ignore TAPER/order differences.",
+    "Load donor and completed recipient separately. Verify exact selected net names, complete ITerm/BTerm identity, all attached placement/master/orientation/status, nondefault rules and each referenced tech/block via geometry before transfer. Native counts and all wire presence must be measured and bound, not borrowed from historical helpers.",
+    "Build a NETS-only patch from exact original218 donor statements, retaining their original ROUTED class and every route token. Reuse qualified connection-omission mechanics only after exact current/donor connection-prefix equality; include no cells, ports, vias, tracks, rows or other physical sections.",
+    "Import through read_def -floorplan_initialize into a new recipient candidate. Retain the paired-import approach only if exact native exported statement/order proof confirms it; it is not a tolerance. Reject unsupported syntax, changed unrelated property order or missing via/NDR semantics.",
+    "Persist and reopen candidate ODB. Require unchanged frozen ed5669d4 all1691 clock gate, exact complete non-NETS content, every nonselected net record and native full geometry inventory unchanged from the completed recipient. Only the218 intended route replacements may differ.",
+    "First determine actual native DRC on this restored candidate without routing repair. Preserve all markers/connectivity/antenna findings; do not assume restoration creates zero DRC. No expensive incremental signal reroute is proposed until this result exists and is separately reviewed."
+  ],
+  "official_published_source": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "official_sources": [
+    {
+      "finding": "dont_touch permits routing changes; net metadata and encoded wire path are distinct; current dbWire API has append/attach but no dbWire.copy.",
+      "lines": "1870-1877,1980-1986,3631-3791",
+      "path": "src/odb/include/odb/db.h",
+      "sha256": "142810acc2b0495b10c988b59e4d450e54dc27b2569687391588bfe1fad78bda",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/include/odb/db.h"
+    },
+    {
+      "finding": "append requires same database and returns without transfer for cross-block terminal references; via names are resolved/copied. Do not use naive cross-database append.",
+      "lines": "1046-1110",
+      "path": "src/odb/src/db/dbWire.cpp",
+      "sha256": "d69448584d7fd0f251ce58bdbe1a08f611465b70682cffc7725c7d122ee8f229",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbWire.cpp"
+    },
+    {
+      "finding": "FLOORPLAN rejects unknown net names; NETS callback registered only DEFAULT/FLOORPLAN, not INCREMENTAL.",
+      "lines": "706-720,1932-1942",
+      "path": "src/odb/src/defin/definReader.cpp",
+      "sha256": "e23d7bc1f923c49aa5e416c59a733a4583e683077ecf251d446443820124e92d",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/defin/definReader.cpp"
+    },
+    {
+      "finding": "Existing wire is replaced; path type is encoded with newPath; terminal/property list order can reverse at import.",
+      "lines": "45-73,222-279,570-590",
+      "path": "src/odb/src/defin/definNet.cpp",
+      "sha256": "a5c7f0edd15c6c86c4c8f1230a1e91b1b2d8949952061f7e5ab680fd0f696587",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/defin/definNet.cpp"
+    },
+    {
+      "finding": "Router derives fixed state from decoder path type and preserves fixed wires on database update.",
+      "lines": "698-712,3566-3582,3898-3913",
+      "path": "src/drt/src/io/io.cpp",
+      "sha256": "5981b0cf31cae90fdfa2628ffb33c437cf15f33d866310176fd5f53024321c7e",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/io/io.cpp"
+    },
+    {
+      "finding": "canRipup requires not fixed, guides and the applicable incremental-routing predicate.",
+      "lines": "2625-2631",
+      "path": "src/drt/src/dr/FlexDR_init.cpp",
+      "sha256": "cf48ce2c745723c9c73a3431938f26eb9b87ee4c663a0ad8b7d6e185eb511723",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR_init.cpp"
+    },
+    {
+      "finding": "Presence of fixed nets changes ALL strategy steps to incremental; no runtime improvement or convergence claim follows.",
+      "lines": "1962-1994",
+      "path": "src/drt/src/dr/FlexDR.cpp",
+      "sha256": "122e84ca0906d7e53d4e5f4c7216a72e55f085f1a62b0848df06fc9eafd2e3af",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR.cpp"
+    }
+  ],
+  "recipient_odb_sha256": "9cdf9a6fb32d49894a5b23bd12ae4e6f400e1a945a9d2601e728f2d4ec7e0ae8",
+  "repository_source": "c5d69d8495e7dfd89f439e55b56f8f45d31d4434",
+  "repository_sources": [
+    {
+      "finding": "Existing single-net donor identity/via/NETS-only patch and persisted transfer audit. Hardcoded net/count assumptions require a new explicit derivative.",
+      "lines": "14-23,57-91,103-117",
+      "path": "scripts/prepare_onehot_clock_restore.py",
+      "sha256": "e1194afd4ffde69d3c65c26a7e50516e07c9001d3ea33a8e34a6a44558013d9b",
+      "url": "https://github.com/Melihakbulut221/nssoc/blob/c5d69d8495e7dfd89f439e55b56f8f45d31d4434/scripts/prepare_onehot_clock_restore.py"
+    },
+    {
+      "finding": "Existing connection-omitting patch, paired floorplan imports and complete DEF/native decoded geometry proof; historical runtime proof is not current candidate proof.",
+      "lines": "17-47,92-109,120-135",
+      "path": "scripts/run_cloud_fixed_wire_control.py",
+      "sha256": "a99924bc58503263a749e2f207eee075f0ac58ecfd4b946ddd743c2b2bc40d6b",
+      "url": "https://github.com/Melihakbulut221/nssoc/blob/c5d69d8495e7dfd89f439e55b56f8f45d31d4434/scripts/run_cloud_fixed_wire_control.py"
+    },
+    {
+      "finding": "Real metadata-only FIXED negative control; complete instance/net/NDR/power/port and decoder signatures. Old hardcoded census cannot be reused blindly.",
+      "lines": "14-40",
+      "path": "scripts/snapshot_cloud_fixed_wires.py",
+      "sha256": "72e539fc51fcccc16fc025026d210a2f51e311e30f3b241bfcbe35854aa2e6e0",
+      "url": "https://github.com/Melihakbulut221/nssoc/blob/c5d69d8495e7dfd89f439e55b56f8f45d31d4434/scripts/snapshot_cloud_fixed_wires.py"
+    },
+    {
+      "finding": "Frozen complete source CLOCK/fixed/clock-pin/clkbuf selector and exact DEF statement plus attached instance equality must remain unchanged.",
+      "lines": "14-32",
+      "path": "scripts/check_mainchip_route12_all_clocks.py",
+      "sha256": "ed5669d48a87ce30d00fc3213792f7f57001651d4907d9367ca2b705f945c74b",
+      "url": "https://github.com/Melihakbulut221/nssoc/blob/c5d69d8495e7dfd89f439e55b56f8f45d31d4434/scripts/check_mainchip_route12_all_clocks.py"
+    }
+  ],
+  "required_hosted_controls": [
+    "wrong donor or recipient hash",
+    "missing or extra changed net",
+    "changed clock selector",
+    "changed pin or attached instance",
+    "wrong via geometry or NDR",
+    "unknown/duplicate DEF record",
+    "metadata-only FIXED",
+    "lost encoded FIXED path",
+    "unrelated signal/PG/port/placement modification",
+    "one-token clock route or TAPER modification",
+    "partial route restoration",
+    "paired-import/ODB reserialization mismatch"
+  ],
+  "reviewer": "tx_diagnosis",
+  "risks": [
+    "Published package source association is not rebuilt-ELF attestation; actual pinned AppImage API and decoder/import behavior need native verification.",
+    "Original clock routes can conflict with newly completed signal routes; no zero-DRC or repair convergence inference.",
+    "DEF import can reorder terminal/property lists and may expose unsupported NDR/via syntax; exact full snapshots must reject all unintended changes.",
+    "FIXED metadata is not enough, and dont_touch expressly permits routing changes. Temporary encoded FIXED must be removed precisely before the unchanged original equality gate.",
+    "No direct dbWire.copy is available in exact published source, and cross-database append is not safe.",
+    "Existing wire RC and timing are invalidated by actual route changes; fresh extraction and original all-corner limits remain mandatory."
+  ],
+  "schema": "mainchip-original-clock-restoration-source-feasibility-v1",
+  "scope": {
+    "archive_downloaded": false,
+    "candidate_implemented": false,
+    "full_phy_accepted": false,
+    "local_files": false,
+    "native_run": false,
+    "route_accepted": false,
+    "source_only": true,
+    "timing_accepted": false
+  },
+  "status": "SOURCE_ONLY_REVIEWABLE_APPROACH_NOT_IMPLEMENTED_OR_EXECUTED"
+}
