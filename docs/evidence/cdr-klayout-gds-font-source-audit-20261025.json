@@ -1,0 +1,97 @@
+{
+  "schema": "cdr-klayout-gds-font-source-audit-v1",
+  "observed_at_utc": "2026-10-25T10:47:32.930985+00:00",
+  "scope": "Primary source/API analysis only; no runtime, archive or geometry execution.",
+  "actual_observation": {
+    "run": 40185582304,
+    "comparison_asset": 674768821,
+    "bytes": 52200,
+    "sha256": "6d3f73f925ab9767c3b161f293ce0c105074ec03e9052f516ab6f1c2553530f4",
+    "reported_by": "delta_review; root independently inspected",
+    "difference": "Two text records on52/0 and63/0 per O/F lose f=2; all21 shapes/material XOR and two pin boxes otherwise identical."
+  },
+  "runtime": {
+    "appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "release_label": "LibreLane3.0.5",
+    "actual_embedded_pya_version_or_build_not_read_here": true
+  },
+  "source_chain": [
+    {
+      "repository": "librelane/librelane",
+      "commit": "bf87321d2f6099414424a641b10af308ecb01df5",
+      "path": "flake.lock",
+      "sha256": "a805d3278c3d6da9661f39219b389b8fe595351cc4b728b9114ae2e7c246537e",
+      "meaning": "Pins nix-eda8f990fb77529c09e540e453cd836af9930ec58db /6.11.0."
+    },
+    {
+      "repository": "fossi-foundation/nix-eda",
+      "commit": "8f990fb77529c09e540e453cd836af9930ec58db",
+      "path": "nix/klayout.nix",
+      "sha256": "9bba8d5e2aba3a15fc18003fdb1ab469a54abca7bca3764f89fe952078454385",
+      "meaning": "Default0.30.7 source tar and two patches; recipe association, not embedded binary attestation."
+    },
+    {
+      "repository": "KLayout/klayout",
+      "commit": "6dd3e6b10ffc01df4e071e0b4300a545b77fa152",
+      "tag": "v0.30.7",
+      "path": "src/plugins/streamers/gds2/db_plugin/dbGDS2WriterBase.cc",
+      "sha256": "c2f3a8179e2bc7e09703070ddc45a3523d78825148c82e7dbf5d8fcba978f9c8",
+      "lines": [
+        906,
+        914
+      ],
+      "meaning": "Text presentation writer uses unchanged alignment but literal f=0; original-font expression commented out unconditionally."
+    },
+    {
+      "repository": "KLayout/klayout",
+      "commit": "6dd3e6b10ffc01df4e071e0b4300a545b77fa152",
+      "path": "src/plugins/streamers/gds2/db_plugin/dbGDS2ReaderBase.cc",
+      "sha256": "85f369db5494f4afee2eff156bbce89d5c8fd2deac6ae35c173ed4c2323e31cd",
+      "lines": [
+        848,
+        858
+      ],
+      "meaning": "Reader initializes NoFont and deliberately leaves presentation font unparsed."
+    },
+    {
+      "repository": "KLayout/klayout",
+      "commit": "6dd3e6b10ffc01df4e071e0b4300a545b77fa152",
+      "path": "src/db/db/dbHersheyFont.h",
+      "sha256": "dc4ac1f8a467ce6d674b11de0a19d8daa283def28d318f89b82fc8ccd15682ca",
+      "lines": [
+        29,
+        31
+      ],
+      "meaning": "NoFont=-1, DefaultFont=0, GothicFont=1, SansSerifFont=2."
+    },
+    {
+      "repository": "KLayout/klayout",
+      "commit": "6dd3e6b10ffc01df4e071e0b4300a545b77fa152",
+      "path": "src/db/db/dbText.cc",
+      "sha256": "5c00e3776005db0026b03d715d04bf7a559e53d6e2ca6e181a763957eef9d68f",
+      "lines": [
+        172,
+        175
+      ],
+      "meaning": "to_s emits f only for nonnegative font; absent f corresponds to NoFont in this reader path."
+    }
+  ],
+  "upstream_patch_scope": {
+    "abspath_sha256": "63da18b3d573357f3d8317e54a86c0ee88029be162002a42e3e0c7a6852e66a7",
+    "performance_sha256": "7e8accb3363effbbd5fbfe4f97e5d560067fcbf423aeca125de76fd7d08db76d",
+    "reviewed_paths": [
+      "build.sh",
+      "src/db/db/dbHierNetworkProcessor.cc"
+    ],
+    "text_streamer_change_found": false
+  },
+  "primary_api": {
+    "Text_class": "https://www.klayout.de/doc/code/class_Text.html",
+    "SaveLayoutOptions": "https://www.klayout.de/doc/code/class_SaveLayoutOptions.html",
+    "meaning": "Official font setter documentation says font does not play a role for KLayout, retained for compatibility. No GDS font-preservation option found; relevant0.30.7 writer/reader behavior is unconditional."
+  },
+  "conclusion": "The observed roundtrip loses a real font metadata field. Omitted f is NoFont(-1), not DefaultFont(0), according to recipe-associated primary source. This explains the exact display difference but does not itself authorize a general text or raw-shape waiver.",
+  "narrow_scope_required": "Only the actual two specified text labels/layers with font2 to NoFont, every other text field/property/multiplicity/nontext raw/material/pin/signature exact. Native acceptance must still execute the reviewed field guards; no new diagnostic job is implied.",
+  "material_or_electrical_qualification_claimed": false,
+  "files_or_native_work_local": false
+}

@@ -8428,3 +8428,10 @@ Local project/tmp/native processes verified absent. Inventory127 exact cloud han
 CDR40185582304 completed its exact saved-sidecar diagnosis successfully: both O/F cells retain21 shapes, identical all-layer material and exact2pinshapes. The entire mismatch is two label-font fields percell at52/0 and63/0; strings/geometry/alignment/size remain unchanged. Original raw line40 rejection and all339/345/runtime/source integrity are retained; no annotation/strictwire acceptance. Narrowfont handling is the next code repair. NormalTX publication-addon controls40185752188 passed, and sole corrected existing-capture reader40186130564 runs at8fedec64 with release423332416; electricalrejection remains. Mainchip40185550438 has passed strict source/release preflight and entered the same-process continuation step, without GDB/coldrestart or gate changes. No restored-process/routingprogress claim is inferred from workflow step status. All new evidence and continuation state are remote.
 
 Local project/tmp/native processes verified absent. Inventory129 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-25T11:30:27.879966+00:00 — cloud-only checkpoint v41
+
+NativeCDR40188489346 passed exact observed font metadata correction, original annotation recovery and allfour strict-wire stages with original geometry/reference preserved. NativeTX40188423827 passed complete savedcapture diagnostics and31actualinputfaults; original30failedsamples/76HBT rejection remains. Earlier40186130564 obsoleteprobe error preserved. Phase318 sole savedreadback40188858885 and mainchip40185550438 are tracked exactly. Gen12CDC source50708f2c reviewed; hostedcontroller being authored. All work/cloud artifacts stay on GitHub.
+
+Local project/tmp/native processes verified absent. Inventory137 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

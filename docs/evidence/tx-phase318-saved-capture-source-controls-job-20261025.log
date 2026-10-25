@@ -1,0 +1,559 @@
+﻿2026-10-25T11:18:53.2373539Z Current runner version: '2.338.0'
+2026-10-25T11:18:53.2399359Z ##[group]Runner Image Provisioner
+2026-10-25T11:18:53.2400233Z Hosted Compute Agent
+2026-10-25T11:18:53.2401066Z Version: 20261021.618
+2026-10-25T11:18:53.2401733Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-25T11:18:53.2402444Z Build Date: 2026-10-21T00:45:21Z
+2026-10-25T11:18:53.2403537Z Worker ID: {5d876da9-374c-4f7d-8d56-40d7c29f4e48}
+2026-10-25T11:18:53.2404274Z Region: westus
+2026-10-25T11:18:53.2404862Z Cloud: Azure
+2026-10-25T11:18:53.2405413Z ##[endgroup]
+2026-10-25T11:18:53.2406952Z ##[group]Operating System
+2026-10-25T11:18:53.2407665Z Ubuntu
+2026-10-25T11:18:53.2408186Z 24.04.5
+2026-10-25T11:18:53.2408760Z LTS
+2026-10-25T11:18:53.2409317Z ##[endgroup]
+2026-10-25T11:18:53.2409917Z ##[group]Runner Image
+2026-10-25T11:18:53.2410574Z Image: ubuntu-24.04
+2026-10-25T11:18:53.2411137Z Version: 20261012.334.1
+2026-10-25T11:18:53.2412435Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-25T11:18:53.2414313Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-25T11:18:53.2415345Z ##[endgroup]
+2026-10-25T11:18:53.2416466Z ##[group]GITHUB_TOKEN Permissions
+2026-10-25T11:18:53.2418473Z Contents: read
+2026-10-25T11:18:53.2419113Z Metadata: read
+2026-10-25T11:18:53.2419657Z ##[endgroup]
+2026-10-25T11:18:53.2421843Z Secret source: Actions
+2026-10-25T11:18:53.2423627Z Cache mode: write
+2026-10-25T11:18:53.2424448Z Prepare workflow directory
+2026-10-25T11:18:53.2848506Z Prepare all required actions
+2026-10-25T11:18:53.2897754Z Getting action download info
+2026-10-25T11:18:53.6482301Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-25T11:18:53.7977668Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-25T11:18:54.1090724Z Complete job name: source-controls
+2026-10-25T11:18:54.1984347Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-25T11:18:54.1985483Z with:
+2026-10-25T11:18:54.1985942Z   persist-credentials: false
+2026-10-25T11:18:54.1986566Z   repository: Melihakbulut221/nssoc
+2026-10-25T11:18:54.1990491Z   token: ***
+2026-10-25T11:18:54.1991005Z   ssh-strict: true
+2026-10-25T11:18:54.1991516Z   ssh-user: git
+2026-10-25T11:18:54.1992008Z   clean: true
+2026-10-25T11:18:54.1992527Z   sparse-checkout-cone-mode: true
+2026-10-25T11:18:54.1993377Z   fetch-depth: 1
+2026-10-25T11:18:54.1993896Z   fetch-tags: false
+2026-10-25T11:18:54.1994348Z   show-progress: true
+2026-10-25T11:18:54.1994803Z   lfs: false
+2026-10-25T11:18:54.1995209Z   submodules: false
+2026-10-25T11:18:54.1995659Z   set-safe-directory: true
+2026-10-25T11:18:54.1996172Z   allow-unsafe-pr-checkout: false
+2026-10-25T11:18:54.1997009Z ##[endgroup]
+2026-10-25T11:18:54.3152365Z Syncing repository: Melihakbulut221/nssoc
+2026-10-25T11:18:54.3155495Z ##[group]Getting Git version info
+2026-10-25T11:18:54.3156629Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-25T11:18:54.3158384Z [command]/usr/bin/git version
+2026-10-25T11:18:54.3159238Z git version 2.55.0
+2026-10-25T11:18:54.3177323Z ##[endgroup]
+2026-10-25T11:18:54.3203984Z Temporarily overriding HOME='/home/runner/work/_temp/5f0b4d1b-84f3-41c1-91ef-d646f89d2962' before making global git config changes
+2026-10-25T11:18:54.3208937Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T11:18:54.3213002Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T11:18:54.3278403Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-25T11:18:54.3285495Z ##[group]Initializing the repository
+2026-10-25T11:18:54.3292349Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-25T11:18:54.3457323Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-25T11:18:54.3475478Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-25T11:18:54.3484434Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-25T11:18:54.3485718Z hint: call:
+2026-10-25T11:18:54.3486606Z hint:
+2026-10-25T11:18:54.3487459Z hint: 	git config --global init.defaultBranch <name>
+2026-10-25T11:18:54.3488449Z hint:
+2026-10-25T11:18:54.3489411Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-25T11:18:54.3491183Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-25T11:18:54.3492500Z hint:
+2026-10-25T11:18:54.3493356Z hint: 	git branch -m <name>
+2026-10-25T11:18:54.3494131Z hint:
+2026-10-25T11:18:54.3495132Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-25T11:18:54.3496816Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-25T11:18:54.3514667Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-25T11:18:54.3562533Z ##[endgroup]
+2026-10-25T11:18:54.3564309Z ##[group]Disabling automatic garbage collection
+2026-10-25T11:18:54.3576693Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-25T11:18:54.3620703Z ##[endgroup]
+2026-10-25T11:18:54.3622445Z ##[group]Setting up auth
+2026-10-25T11:18:54.3638484Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T11:18:54.3689740Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T11:18:54.4106000Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T11:18:54.4154339Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T11:18:54.4377065Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T11:18:54.4414627Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T11:18:54.4656704Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-25T11:18:54.4700310Z ##[endgroup]
+2026-10-25T11:18:54.4702142Z ##[group]Fetching the repository
+2026-10-25T11:18:54.4714067Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +ef4d60717529725cc6d31b01173330fd48a8cbbd:refs/remotes/origin/codex/phase318-saved-capture-diagnosis
+2026-10-25T11:19:08.1171662Z From https://github.com/Melihakbulut221/nssoc
+2026-10-25T11:19:08.1175350Z  * [new ref]           ef4d60717529725cc6d31b01173330fd48a8cbbd -> origin/codex/phase318-saved-capture-diagnosis
+2026-10-25T11:19:08.1182210Z ##[endgroup]
+2026-10-25T11:19:08.1184882Z ##[group]Determining the checkout info
+2026-10-25T11:19:08.1187711Z ##[endgroup]
+2026-10-25T11:19:08.1189715Z [command]/usr/bin/git sparse-checkout disable
+2026-10-25T11:19:08.1268069Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-25T11:19:08.1306281Z ##[group]Checking out the ref
+2026-10-25T11:19:08.1312104Z [command]/usr/bin/git checkout --progress --force -B codex/phase318-saved-capture-diagnosis refs/remotes/origin/codex/phase318-saved-capture-diagnosis
+2026-10-25T11:19:09.1876381Z Updating files:  12% (3646/29465)
+2026-10-25T11:19:09.3005752Z Updating files:  13% (3831/29465)
+2026-10-25T11:19:09.7016333Z Updating files:  14% (4126/29465)
+2026-10-25T11:19:09.8438521Z Updating files:  15% (4420/29465)
+2026-10-25T11:19:09.9545465Z Updating files:  16% (4715/29465)
+2026-10-25T11:19:09.9891663Z Updating files:  17% (5010/29465)
+2026-10-25T11:19:10.0100980Z Updating files:  18% (5304/29465)
+2026-10-25T11:19:10.0301647Z Updating files:  19% (5599/29465)
+2026-10-25T11:19:10.1198065Z Updating files:  20% (5893/29465)
+2026-10-25T11:19:10.1607388Z Updating files:  21% (6188/29465)
+2026-10-25T11:19:10.1731145Z Updating files:  21% (6413/29465)
+2026-10-25T11:19:10.2019838Z Updating files:  22% (6483/29465)
+2026-10-25T11:19:10.2284150Z Updating files:  23% (6777/29465)
+2026-10-25T11:19:10.2485119Z Updating files:  24% (7072/29465)
+2026-10-25T11:19:10.2624810Z Updating files:  25% (7367/29465)
+2026-10-25T11:19:10.2773659Z Updating files:  26% (7661/29465)
+2026-10-25T11:19:10.2941923Z Updating files:  27% (7956/29465)
+2026-10-25T11:19:10.3140496Z Updating files:  28% (8251/29465)
+2026-10-25T11:19:10.3294194Z Updating files:  29% (8545/29465)
+2026-10-25T11:19:10.3455100Z Updating files:  30% (8840/29465)
+2026-10-25T11:19:10.3610792Z Updating files:  31% (9135/29465)
+2026-10-25T11:19:10.3838675Z Updating files:  32% (9429/29465)
+2026-10-25T11:19:10.3993603Z Updating files:  33% (9724/29465)
+2026-10-25T11:19:10.4251215Z Updating files:  34% (10019/29465)
+2026-10-25T11:19:10.4551148Z Updating files:  35% (10313/29465)
+2026-10-25T11:19:10.4926000Z Updating files:  36% (10608/29465)
+2026-10-25T11:19:10.5095535Z Updating files:  37% (10903/29465)
+2026-10-25T11:19:10.5265301Z Updating files:  38% (11197/29465)
+2026-10-25T11:19:10.5439267Z Updating files:  39% (11492/29465)
+2026-10-25T11:19:10.5602647Z Updating files:  40% (11786/29465)
+2026-10-25T11:19:10.5763364Z Updating files:  41% (12081/29465)
+2026-10-25T11:19:10.5879502Z Updating files:  42% (12376/29465)
+2026-10-25T11:19:10.6022006Z Updating files:  43% (12670/29465)
+2026-10-25T11:19:10.6194462Z Updating files:  44% (12965/29465)
+2026-10-25T11:19:10.6363068Z Updating files:  45% (13260/29465)
+2026-10-25T11:19:10.6515843Z Updating files:  46% (13554/29465)
+2026-10-25T11:19:10.6707093Z Updating files:  47% (13849/29465)
+2026-10-25T11:19:10.6870044Z Updating files:  48% (14144/29465)
+2026-10-25T11:19:10.6999004Z Updating files:  49% (14438/29465)
+2026-10-25T11:19:10.7141959Z Updating files:  50% (14733/29465)
+2026-10-25T11:19:10.7311752Z Updating files:  51% (15028/29465)
+2026-10-25T11:19:10.7465472Z Updating files:  52% (15322/29465)
+2026-10-25T11:19:10.7738658Z Updating files:  53% (15617/29465)
+2026-10-25T11:19:10.7884551Z Updating files:  54% (15912/29465)
+2026-10-25T11:19:10.8025691Z Updating files:  55% (16206/29465)
+2026-10-25T11:19:10.8162570Z Updating files:  56% (16501/29465)
+2026-10-25T11:19:10.8301940Z Updating files:  57% (16796/29465)
+2026-10-25T11:19:10.8449488Z Updating files:  58% (17090/29465)
+2026-10-25T11:19:10.8616980Z Updating files:  59% (17385/29465)
+2026-10-25T11:19:10.8787287Z Updating files:  60% (17679/29465)
+2026-10-25T11:19:10.8905212Z Updating files:  61% (17974/29465)
+2026-10-25T11:19:10.9023733Z Updating files:  62% (18269/29465)
+2026-10-25T11:19:10.9156808Z Updating files:  63% (18563/29465)
+2026-10-25T11:19:10.9299866Z Updating files:  64% (18858/29465)
+2026-10-25T11:19:10.9615066Z Updating files:  65% (19153/29465)
+2026-10-25T11:19:10.9810340Z Updating files:  66% (19447/29465)
+2026-10-25T11:19:11.0022522Z Updating files:  67% (19742/29465)
+2026-10-25T11:19:11.0202552Z Updating files:  68% (20037/29465)
+2026-10-25T11:19:11.0356278Z Updating files:  69% (20331/29465)
+2026-10-25T11:19:11.0513741Z Updating files:  70% (20626/29465)
+2026-10-25T11:19:11.0644622Z Updating files:  71% (20921/29465)
+2026-10-25T11:19:11.0783044Z Updating files:  72% (21215/29465)
+2026-10-25T11:19:11.0912266Z Updating files:  73% (21510/29465)
+2026-10-25T11:19:11.1038605Z Updating files:  74% (21805/29465)
+2026-10-25T11:19:11.1188334Z Updating files:  75% (22099/29465)
+2026-10-25T11:19:11.1615752Z Updating files:  76% (22394/29465)
+2026-10-25T11:19:11.1681116Z Updating files:  76% (22534/29465)
+2026-10-25T11:19:11.1829162Z Updating files:  77% (22689/29465)
+2026-10-25T11:19:11.2363724Z Updating files:  78% (22983/29465)
+2026-10-25T11:19:11.2605322Z Updating files:  79% (23278/29465)
+2026-10-25T11:19:11.2855148Z Updating files:  80% (23572/29465)
+2026-10-25T11:19:11.3017748Z Updating files:  81% (23867/29465)
+2026-10-25T11:19:11.3179025Z Updating files:  82% (24162/29465)
+2026-10-25T11:19:11.3408083Z Updating files:  83% (24456/29465)
+2026-10-25T11:19:11.3695901Z Updating files:  84% (24751/29465)
+2026-10-25T11:19:11.3995349Z Updating files:  85% (25046/29465)
+2026-10-25T11:19:11.4183710Z Updating files:  86% (25340/29465)
+2026-10-25T11:19:11.4364584Z Updating files:  87% (25635/29465)
+2026-10-25T11:19:11.4490142Z Updating files:  88% (25930/29465)
+2026-10-25T11:19:11.4643123Z Updating files:  89% (26224/29465)
+2026-10-25T11:19:11.4800654Z Updating files:  90% (26519/29465)
+2026-10-25T11:19:11.4940350Z Updating files:  91% (26814/29465)
+2026-10-25T11:19:11.5137558Z Updating files:  92% (27108/29465)
+2026-10-25T11:19:11.5336520Z Updating files:  93% (27403/29465)
+2026-10-25T11:19:11.5531036Z Updating files:  94% (27698/29465)
+2026-10-25T11:19:11.5743911Z Updating files:  95% (27992/29465)
+2026-10-25T11:19:11.5952816Z Updating files:  96% (28287/29465)
+2026-10-25T11:19:11.6150182Z Updating files:  97% (28582/29465)
+2026-10-25T11:19:11.6336880Z Updating files:  98% (28876/29465)
+2026-10-25T11:19:11.6648466Z Updating files:  99% (29171/29465)
+2026-10-25T11:19:11.6648945Z Updating files: 100% (29465/29465)
+2026-10-25T11:19:11.6649360Z Updating files: 100% (29465/29465), done.
+2026-10-25T11:19:11.6988813Z Switched to a new branch 'codex/phase318-saved-capture-diagnosis'
+2026-10-25T11:19:11.6994187Z branch 'codex/phase318-saved-capture-diagnosis' set up to track 'origin/codex/phase318-saved-capture-diagnosis'.
+2026-10-25T11:19:11.7149871Z ##[endgroup]
+2026-10-25T11:19:11.7208750Z [command]/usr/bin/git log -1 --format=%H
+2026-10-25T11:19:11.7239647Z ef4d60717529725cc6d31b01173330fd48a8cbbd
+2026-10-25T11:19:11.7250205Z ##[group]Removing auth
+2026-10-25T11:19:11.7254786Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T11:19:11.7293329Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T11:19:11.7559186Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T11:19:11.7590862Z http.https://github.com/.extraheader
+2026-10-25T11:19:11.7598496Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-25T11:19:11.7633743Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T11:19:11.7882598Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T11:19:11.7921313Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T11:19:11.8168705Z ##[endgroup]
+2026-10-25T11:19:11.8491691Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-25T11:19:11.8492124Z with:
+2026-10-25T11:19:11.8492357Z   python-version: 3.12
+2026-10-25T11:19:11.8492611Z   check-latest: false
+2026-10-25T11:19:11.8495376Z   token: ***
+2026-10-25T11:19:11.8495614Z   update-environment: true
+2026-10-25T11:19:11.8495935Z   allow-prereleases: false
+2026-10-25T11:19:11.8496178Z   freethreaded: false
+2026-10-25T11:19:11.8496398Z ##[endgroup]
+2026-10-25T11:19:11.9857256Z ##[group]Installed versions
+2026-10-25T11:19:12.0494367Z (node:2357) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T11:19:12.0495103Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T11:19:12.0496248Z Successfully set up CPython (3.12.15)
+2026-10-25T11:19:12.0497091Z ##[endgroup]
+2026-10-25T11:19:12.0702387Z ##[group]Run python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+2026-10-25T11:19:12.0703630Z [36;1mpython3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2[0m
+2026-10-25T11:19:12.1162677Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T11:19:12.1163612Z env:
+2026-10-25T11:19:12.1163976Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T11:19:12.1164571Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T11:19:12.1165148Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T11:19:12.1165637Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T11:19:12.1166117Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T11:19:12.1166597Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T11:19:12.1167006Z ##[endgroup]
+2026-10-25T11:19:19.8321961Z Collecting numpy==2.3.3
+2026-10-25T11:19:19.8826609Z   Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+2026-10-25T11:19:20.1055593Z Collecting scipy==1.16.2
+2026-10-25T11:19:20.1098982Z   Downloading scipy-1.16.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (62 kB)
+2026-10-25T11:19:20.1546408Z Collecting networkx==3.4.2
+2026-10-25T11:19:20.1581589Z   Downloading networkx-3.4.2-py3-none-any.whl.metadata (6.3 kB)
+2026-10-25T11:19:20.1707241Z Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+2026-10-25T11:19:20.2922258Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 142.9 MB/s  0:00:00
+2026-10-25T11:19:20.2969570Z Downloading scipy-1.16.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (35.7 MB)
+2026-10-25T11:19:20.5260182Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.7/35.7 MB 156.5 MB/s  0:00:00
+2026-10-25T11:19:20.5299931Z Downloading networkx-3.4.2-py3-none-any.whl (1.7 MB)
+2026-10-25T11:19:20.5389168Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 231.3 MB/s  0:00:00
+2026-10-25T11:19:20.9029574Z Installing collected packages: numpy, networkx, scipy
+2026-10-25T11:19:28.5771849Z 
+2026-10-25T11:19:28.5785125Z Successfully installed networkx-3.4.2 numpy-2.3.3 scipy-1.16.2
+2026-10-25T11:19:28.5794081Z 
+2026-10-25T11:19:28.5794751Z [notice] A new release of pip is available: 26.2.1 -> 26.2.2
+2026-10-25T11:19:28.5795512Z [notice] To update, run: pip install --upgrade pip
+2026-10-25T11:19:28.6459366Z ##[group]Run if (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi
+2026-10-25T11:19:28.6460069Z [36;1mif (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi[0m
+2026-10-25T11:19:28.6460707Z [36;1mpython3 scripts/cloud_tx_phase_reset334_saved_capture.py --controls | tee source-controls.json[0m
+2026-10-25T11:19:28.6461230Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T11:19:28.6461484Z [36;1mimport json[0m
+2026-10-25T11:19:28.6461750Z [36;1mx=json.load(open('source-controls.json'))[0m
+2026-10-25T11:19:28.6462197Z [36;1massert x['status']=='PASS_PHASE318_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY'[0m
+2026-10-25T11:19:28.6462641Z [36;1massert len(x['math']['rejected'])==20[0m
+2026-10-25T11:19:28.6462962Z [36;1massert len(x['archive_faults'])==11[0m
+2026-10-25T11:19:28.6463741Z [36;1massert len(x['original_result_faults'])==9[0m
+2026-10-25T11:19:28.6464123Z [36;1massert len(x['metadata']['rejected'])==23[0m
+2026-10-25T11:19:28.6464502Z [36;1massert x['new_simulation'] is False[0m
+2026-10-25T11:19:28.6464783Z [36;1mPYCODE[0m
+2026-10-25T11:19:28.6465224Z [36;1mpython3 scripts/wait_cloud_tested_source_release.py --controls > release-wait-controls.json[0m
+2026-10-25T11:19:28.6465720Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T11:19:28.6465968Z [36;1mimport json[0m
+2026-10-25T11:19:28.6466240Z [36;1mx=json.load(open('release-wait-controls.json'))[0m
+2026-10-25T11:19:28.6466649Z [36;1massert x['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'[0m
+2026-10-25T11:19:28.6467089Z [36;1massert len(x['positive_cases'])==3 and len(x['rejected'])==4[0m
+2026-10-25T11:19:28.6467653Z [36;1massert x['maximum_scheduled_wait_s']==300 and not x['creation_attempted'] and not x['native_executed'][0m
+2026-10-25T11:19:28.6468154Z [36;1mprint(json.dumps(x,indent=2))[0m
+2026-10-25T11:19:28.6468604Z [36;1mPYCODE[0m
+2026-10-25T11:19:28.6535277Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T11:19:28.6535636Z env:
+2026-10-25T11:19:28.6535918Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T11:19:28.6536371Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T11:19:28.6536824Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T11:19:28.6537206Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T11:19:28.6537600Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T11:19:28.6537994Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T11:19:28.6538323Z ##[endgroup]
+2026-10-25T11:19:29.1085840Z {
+2026-10-25T11:19:29.1086516Z   "status": "PASS_PHASE318_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY",
+2026-10-25T11:19:29.1086952Z   "math": {
+2026-10-25T11:19:29.1087288Z     "status": "PASS_SYNTHETIC318_SAME_ROW_INTERVAL_CONTROLS_ONLY",
+2026-10-25T11:19:29.1087708Z     "rejected": [
+2026-10-25T11:19:29.1087985Z       "before_capture",
+2026-10-25T11:19:29.1088249Z       "after_capture",
+2026-10-25T11:19:29.1088508Z       "duplicate_time",
+2026-10-25T11:19:29.1088783Z       "reverse_time",
+2026-10-25T11:19:29.1089035Z       "nonfinite_time",
+2026-10-25T11:19:29.1089292Z       "nonfinite_request",
+2026-10-25T11:19:29.1089577Z       "nonfinite_crossing",
+2026-10-25T11:19:29.1089860Z       "wrong_crossing_shape",
+2026-10-25T11:19:29.1090151Z       "nonfinite_threshold",
+2026-10-25T11:19:29.1090424Z       "bad_window",
+2026-10-25T11:19:29.1090663Z       "bad_origin",
+2026-10-25T11:19:29.1090903Z       "missing_current",
+2026-10-25T11:19:29.1091504Z       "missing_body",
+2026-10-25T11:19:29.1091750Z       "wrong_Nx",
+2026-10-25T11:19:29.1091987Z       "wrong_row",
+2026-10-25T11:19:29.1092225Z       "same_pair_node",
+2026-10-25T11:19:29.1092494Z       "wrong_crossing_frame_row",
+2026-10-25T11:19:29.1092804Z       "wrong_crossing_frame_time",
+2026-10-25T11:19:29.1093368Z       "missing_crossing_frame",
+2026-10-25T11:19:29.1093695Z       "swapped_crossing_frames"
+2026-10-25T11:19:29.1093970Z     ],
+2026-10-25T11:19:29.1094449Z     "native_capture_read": false,
+2026-10-25T11:19:29.1094762Z     "original_failure_replayed": false,
+2026-10-25T11:19:29.1095081Z     "readback_authorized": false
+2026-10-25T11:19:29.1095342Z   },
+2026-10-25T11:19:29.1095542Z   "metadata": {
+2026-10-25T11:19:29.1095775Z     "actual_metadata_positives": {
+2026-10-25T11:19:29.1096060Z       "native_source": {
+2026-10-25T11:19:29.1096307Z         "identity": {
+2026-10-25T11:19:29.1096547Z           "source_run": {
+2026-10-25T11:19:29.1096799Z             "id": 40178775666,
+2026-10-25T11:19:29.1097118Z             "run_attempt": 1,
+2026-10-25T11:19:29.1097496Z             "status": "completed",
+2026-10-25T11:19:29.1097780Z             "conclusion": "failure",
+2026-10-25T11:19:29.1098158Z             "head_sha": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+2026-10-25T11:19:29.1098578Z             "head_branch": "codex/tx-clock-phase-parent",
+2026-10-25T11:19:29.1099074Z             "path": ".github/workflows/tx-phase-reset334-transient-cloud.yml"
+2026-10-25T11:19:29.1099498Z           },
+2026-10-25T11:19:29.1099727Z           "publication": {
+2026-10-25T11:19:29.1100283Z             "tag": "cloud-results-40178775666-1-tx-phase-reset334-transient-native-initial-p-initial-high",
+2026-10-25T11:19:29.1100969Z             "tested_source": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+2026-10-25T11:19:29.1101366Z             "release_id": 423271065,
+2026-10-25T11:19:29.1101660Z             "existing_assets": [
+2026-10-25T11:19:29.1102016Z               {
+2026-10-25T11:19:29.1102342Z                 "id": 674653444,
+2026-10-25T11:19:29.1103392Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.parts.json",
+2026-10-25T11:19:29.1104339Z                 "bytes": 1701,
+2026-10-25T11:19:29.1105061Z                 "digest": "sha256:d79555d3d82e93bb293f7287bad774947491bb748f2da3b3060d4557ce03116b"
+2026-10-25T11:19:29.1106171Z               },
+2026-10-25T11:19:29.1106483Z               {
+2026-10-25T11:19:29.1106828Z                 "id": 674653306,
+2026-10-25T11:19:29.1107385Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.summary.json",
+2026-10-25T11:19:29.1107932Z                 "bytes": 318284,
+2026-10-25T11:19:29.1108330Z                 "digest": "sha256:815b8422d6d8ba88f9f8596d3c417591a90f86a593e37d841332cbe006b1f402"
+2026-10-25T11:19:29.1108745Z               },
+2026-10-25T11:19:29.1108941Z               {
+2026-10-25T11:19:29.1109138Z                 "id": 674653573,
+2026-10-25T11:19:29.1109646Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0000",
+2026-10-25T11:19:29.1110195Z                 "bytes": 1073741824,
+2026-10-25T11:19:29.1110621Z                 "digest": "sha256:6f1e5ec09054af7585946bdf34ad38f4fa05a5845d15ae612a24418a2ccfe714"
+2026-10-25T11:19:29.1111080Z               },
+2026-10-25T11:19:29.1111375Z               {
+2026-10-25T11:19:29.1111568Z                 "id": 674655002,
+2026-10-25T11:19:29.1112087Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0001",
+2026-10-25T11:19:29.1112627Z                 "bytes": 1073741824,
+2026-10-25T11:19:29.1113035Z                 "digest": "sha256:cd7bd64121f06191eaab6895b8120d450d3f4060bceef1e0243ccfd5daf15875"
+2026-10-25T11:19:29.1113879Z               },
+2026-10-25T11:19:29.1114073Z               {
+2026-10-25T11:19:29.1114279Z                 "id": 674656412,
+2026-10-25T11:19:29.1114783Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0002",
+2026-10-25T11:19:29.1115315Z                 "bytes": 1073741824,
+2026-10-25T11:19:29.1115729Z                 "digest": "sha256:8d3a78ad51a855e7a9a78edce091d0752e9b8138a5833774f21d9529d53d5218"
+2026-10-25T11:19:29.1116153Z               },
+2026-10-25T11:19:29.1116339Z               {
+2026-10-25T11:19:29.1116543Z                 "id": 674658008,
+2026-10-25T11:19:29.1117344Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0003",
+2026-10-25T11:19:29.1117893Z                 "bytes": 826138849,
+2026-10-25T11:19:29.1118315Z                 "digest": "sha256:8c2adbe4509f07c76fefcac2bf2b13677515908d5af119decd10275f77d64ebc"
+2026-10-25T11:19:29.1118738Z               }
+2026-10-25T11:19:29.1118921Z             ],
+2026-10-25T11:19:29.1119127Z             "target_verified": true,
+2026-10-25T11:19:29.1119397Z             "assets_overwritten": false
+2026-10-25T11:19:29.1119650Z           },
+2026-10-25T11:19:29.1119875Z           "tested_source_is_release_target": true
+2026-10-25T11:19:29.1120156Z         },
+2026-10-25T11:19:29.1120336Z         "parts": 4
+2026-10-25T11:19:29.1120528Z       },
+2026-10-25T11:19:29.1120722Z       "prepared_source": {
+2026-10-25T11:19:29.1120957Z         "identity": {
+2026-10-25T11:19:29.1121167Z           "source_run": {
+2026-10-25T11:19:29.1121393Z             "id": 40171468821,
+2026-10-25T11:19:29.1121623Z             "run_attempt": 1,
+2026-10-25T11:19:29.1121865Z             "status": "completed",
+2026-10-25T11:19:29.1122120Z             "conclusion": "success",
+2026-10-25T11:19:29.1122433Z             "head_sha": "e6c48d4d363a0bdb865dbdbd83e38350ff7291a7",
+2026-10-25T11:19:29.1122807Z             "head_branch": "codex/tx-clock-phase-parent",
+2026-10-25T11:19:29.1123535Z             "path": ".github/workflows/tx-phase-reset334-loaded-preparation-cloud.yml"
+2026-10-25T11:19:29.1123953Z           },
+2026-10-25T11:19:29.1124154Z           "publication": {
+2026-10-25T11:19:29.1124524Z             "tag": "cloud-results-40171468821-1-tx-phase-reset334-loaded-preparation",
+2026-10-25T11:19:29.1125012Z             "tested_source": "e6c48d4d363a0bdb865dbdbd83e38350ff7291a7",
+2026-10-25T11:19:29.1125366Z             "release_id": 423204104,
+2026-10-25T11:19:29.1125623Z             "existing_assets": [
+2026-10-25T11:19:29.1126030Z               {
+2026-10-25T11:19:29.1126227Z                 "id": 674346341,
+2026-10-25T11:19:29.1126610Z                 "name": "tx-phase-reset334-loaded-preparation-40171468821-1.parts.json",
+2026-10-25T11:19:29.1127021Z                 "bytes": 889,
+2026-10-25T11:19:29.1127427Z                 "digest": "sha256:df73e849b0aa18cd39816021a0f56b7e8f12cbf32a3dfbab285ebcec574f2de0"
+2026-10-25T11:19:29.1127856Z               },
+2026-10-25T11:19:29.1128043Z               {
+2026-10-25T11:19:29.1128235Z                 "id": 674346276,
+2026-10-25T11:19:29.1128621Z                 "name": "tx-phase-reset334-loaded-preparation-40171468821-1.summary.json",
+2026-10-25T11:19:29.1129040Z                 "bytes": 11244,
+2026-10-25T11:19:29.1129446Z                 "digest": "sha256:7a5da3a0e8e7afd80ace24da03365dd4aad223ba9dc4f9fbdedf08bf2b1b9be4"
+2026-10-25T11:19:29.1129875Z               },
+2026-10-25T11:19:29.1130062Z               {
+2026-10-25T11:19:29.1130260Z                 "id": 674346396,
+2026-10-25T11:19:29.1130658Z                 "name": "tx-phase-reset334-loaded-preparation-40171468821-1.tar.gz.part0000",
+2026-10-25T11:19:29.1131090Z                 "bytes": 356475,
+2026-10-25T11:19:29.1131492Z                 "digest": "sha256:c9f227d485aecdc9d923a148cf91cd36c8c51144bdbdad115c2e7b0c0b6eb365"
+2026-10-25T11:19:29.1131909Z               }
+2026-10-25T11:19:29.1132094Z             ],
+2026-10-25T11:19:29.1132302Z             "target_verified": true,
+2026-10-25T11:19:29.1132574Z             "assets_overwritten": false
+2026-10-25T11:19:29.1132830Z           },
+2026-10-25T11:19:29.1133051Z           "tested_source_is_release_target": true
+2026-10-25T11:19:29.1133706Z         },
+2026-10-25T11:19:29.1133899Z         "parts": 1
+2026-10-25T11:19:29.1134097Z       }
+2026-10-25T11:19:29.1134264Z     },
+2026-10-25T11:19:29.1134440Z     "rejected": [
+2026-10-25T11:19:29.1134647Z       "native_source:id",
+2026-10-25T11:19:29.1134916Z       "native_source:run_attempt",
+2026-10-25T11:19:29.1135170Z       "native_source:status",
+2026-10-25T11:19:29.1135421Z       "native_source:conclusion",
+2026-10-25T11:19:29.1135672Z       "native_source:head_sha",
+2026-10-25T11:19:29.1136084Z       "native_source:head_branch",
+2026-10-25T11:19:29.1136354Z       "native_source:path",
+2026-10-25T11:19:29.1136635Z       "native_source:release_id",
+2026-10-25T11:19:29.1136891Z       "native_source:release_target",
+2026-10-25T11:19:29.1137152Z       "native_source:tag_commit",
+2026-10-25T11:19:29.1137412Z       "prepared_source:actual_run_source",
+2026-10-25T11:19:29.1137695Z       "prepared_source:container_id",
+2026-10-25T11:19:29.1137970Z       "prepared_source:container_target",
+2026-10-25T11:19:29.1138258Z       "prepared_source:container_commit",
+2026-10-25T11:19:29.1138536Z       "prepared_source:container_draft",
+2026-10-25T11:19:29.1138809Z       "native_source:part_id",
+2026-10-25T11:19:29.1139056Z       "native_source:part_size",
+2026-10-25T11:19:29.1139306Z       "native_source:part_digest",
+2026-10-25T11:19:29.1139561Z       "native_source:part_name",
+2026-10-25T11:19:29.1139816Z       "prepared_source:part_id",
+2026-10-25T11:19:29.1140065Z       "prepared_source:part_size",
+2026-10-25T11:19:29.1140330Z       "prepared_source:part_digest",
+2026-10-25T11:19:29.1140595Z       "prepared_source:part_name"
+2026-10-25T11:19:29.1140835Z     ]
+2026-10-25T11:19:29.1141012Z   },
+2026-10-25T11:19:29.1141200Z   "original_result_faults": [
+2026-10-25T11:19:29.1141442Z     "native_exit_code",
+2026-10-25T11:19:29.1141669Z     "native_process_saved",
+2026-10-25T11:19:29.1141897Z     "full_capture",
+2026-10-25T11:19:29.1142099Z     "source_head",
+2026-10-25T11:19:29.1142291Z     "case",
+2026-10-25T11:19:29.1142491Z     "electrical_screen_passed",
+2026-10-25T11:19:29.1142740Z     "sources_unchanged",
+2026-10-25T11:19:29.1142987Z     "continuation:native_process_saved",
+2026-10-25T11:19:29.1143549Z     "continuation:next_phase"
+2026-10-25T11:19:29.1143782Z   ],
+2026-10-25T11:19:29.1143965Z   "archive_faults": [
+2026-10-25T11:19:29.1144176Z     "missing_original",
+2026-10-25T11:19:29.1144537Z     "unknown_original",
+2026-10-25T11:19:29.1144751Z     "changed_unselected",
+2026-10-25T11:19:29.1144984Z     "unknown_selection",
+2026-10-25T11:19:29.1145197Z     "traversal",
+2026-10-25T11:19:29.1145387Z     "absolute",
+2026-10-25T11:19:29.1145577Z     "backslash",
+2026-10-25T11:19:29.1145767Z     "wrong_root",
+2026-10-25T11:19:29.1145960Z     "symlink",
+2026-10-25T11:19:29.1146148Z     "hardlink",
+2026-10-25T11:19:29.1146339Z     "noncanonical"
+2026-10-25T11:19:29.1146529Z   ],
+2026-10-25T11:19:29.1146700Z   "parts": {
+2026-10-25T11:19:29.1146907Z     "positive_roundtrip": true,
+2026-10-25T11:19:29.1147151Z     "negative_controls": 6,
+2026-10-25T11:19:29.1147411Z     "all_native_payload_bytes_preserved": true
+2026-10-25T11:19:29.1147684Z   },
+2026-10-25T11:19:29.1147864Z   "selected_archive": {
+2026-10-25T11:19:29.1148096Z     "exact_native_payload_roundtrip": true,
+2026-10-25T11:19:29.1148375Z     "negative_controls": [
+2026-10-25T11:19:29.1148629Z       "missing",
+2026-10-25T11:19:29.1148842Z       "wrong_selected_hash",
+2026-10-25T11:19:29.1149060Z       "order",
+2026-10-25T11:19:29.1149246Z       "whole_hash",
+2026-10-25T11:19:29.1149456Z       "selection_escape",
+2026-10-25T11:19:29.1149672Z       "symlink",
+2026-10-25T11:19:29.1149863Z       "traversal",
+2026-10-25T11:19:29.1150057Z       "wrong_root"
+2026-10-25T11:19:29.1150241Z     ]
+2026-10-25T11:19:29.1150408Z   },
+2026-10-25T11:19:29.1150599Z   "publication": {
+2026-10-25T11:19:29.1150877Z     "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+2026-10-25T11:19:29.1151206Z     "rejected": [
+2026-10-25T11:19:29.1151409Z       "local-context",
+2026-10-25T11:19:29.1151625Z       "other-repo",
+2026-10-25T11:19:29.1151833Z       "missing-source",
+2026-10-25T11:19:29.1152047Z       "mutable-source",
+2026-10-25T11:19:29.1152268Z       "invalid-run",
+2026-10-25T11:19:29.1152480Z       "invalid-attempt",
+2026-10-25T11:19:29.1152706Z       "invalid-group",
+2026-10-25T11:19:29.1152933Z       "different-release-target",
+2026-10-25T11:19:29.1153533Z       "different-tag-object",
+2026-10-25T11:19:29.1153794Z       "annotated-tag",
+2026-10-25T11:19:29.1154160Z       "different-tag-name",
+2026-10-25T11:19:29.1154398Z       "draft-release",
+2026-10-25T11:19:29.1154614Z       "production-release",
+2026-10-25T11:19:29.1154852Z       "duplicate-asset-name",
+2026-10-25T11:19:29.1155098Z       "asset-digest-missing",
+2026-10-25T11:19:29.1155351Z       "preexisting-wrong-tag",
+2026-10-25T11:19:29.1155607Z       "read-denied-never-creates"
+2026-10-25T11:19:29.1155844Z     ],
+2026-10-25T11:19:29.1156061Z     "existing_partial_assets_preserved": true,
+2026-10-25T11:19:29.1156370Z     "existing_release_not_recreated": true,
+2026-10-25T11:19:29.1156659Z     "new_release_uses_tested_sha": true,
+2026-10-25T11:19:29.1156939Z     "no_permissions_expanded": true
+2026-10-25T11:19:29.1157182Z   },
+2026-10-25T11:19:29.1157373Z   "readback_authorized": false,
+2026-10-25T11:19:29.1157618Z   "new_simulation": false,
+2026-10-25T11:19:29.1157872Z   "actual_input_controls_executed": false
+2026-10-25T11:19:29.1158138Z }
+2026-10-25T11:19:29.2121900Z {
+2026-10-25T11:19:29.2122381Z   "status": "PASS_READ_ONLY_RELEASE_WAIT_CONTROLS",
+2026-10-25T11:19:29.2122865Z   "positive_cases": [
+2026-10-25T11:19:29.2123473Z     {
+2026-10-25T11:19:29.2123815Z       "absent_reads": 0,
+2026-10-25T11:19:29.2124167Z       "exact_release_accepted": true
+2026-10-25T11:19:29.2124529Z     },
+2026-10-25T11:19:29.2124774Z     {
+2026-10-25T11:19:29.2125032Z       "absent_reads": 2,
+2026-10-25T11:19:29.2125388Z       "exact_release_accepted": true
+2026-10-25T11:19:29.2125748Z     },
+2026-10-25T11:19:29.2125991Z     {
+2026-10-25T11:19:29.2126249Z       "absent_reads": 60,
+2026-10-25T11:19:29.2126586Z       "exact_release_accepted": true
+2026-10-25T11:19:29.2126937Z     }
+2026-10-25T11:19:29.2127175Z   ],
+2026-10-25T11:19:29.2127421Z   "rejected": [
+2026-10-25T11:19:29.2127740Z     "bounded-missing-reservation",
+2026-10-25T11:19:29.2128171Z     "API-denied-not-retried",
+2026-10-25T11:19:29.2128838Z     "different-release-source",
+2026-10-25T11:19:29.2129202Z     "different-tag-object"
+2026-10-25T11:19:29.2129523Z   ],
+2026-10-25T11:19:29.2129795Z   "maximum_missing_reads": 61,
+2026-10-25T11:19:29.2130153Z   "maximum_scheduled_wait_s": 300,
+2026-10-25T11:19:29.2130531Z   "creation_attempted": false,
+2026-10-25T11:19:29.2130884Z   "native_executed": false
+2026-10-25T11:19:29.2131197Z }
+2026-10-25T11:19:29.2264743Z Post job cleanup.
+2026-10-25T11:19:29.3471850Z (node:2410) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T11:19:29.3473032Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T11:19:29.3633683Z Post job cleanup.
+2026-10-25T11:19:29.4604157Z [command]/usr/bin/git version
+2026-10-25T11:19:29.4629132Z git version 2.55.0
+2026-10-25T11:19:29.4675079Z Temporarily overriding HOME='/home/runner/work/_temp/9583630a-3c2e-4034-a12c-bdcc895dc24c' before making global git config changes
+2026-10-25T11:19:29.4676091Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T11:19:29.4682024Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T11:19:29.4727478Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T11:19:29.4791165Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T11:19:29.5090191Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T11:19:29.5128460Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T11:19:29.5434111Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T11:19:29.5477312Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T11:19:29.5891500Z Cleaning up orphan processes
+2026-10-25T11:19:29.6274529Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
