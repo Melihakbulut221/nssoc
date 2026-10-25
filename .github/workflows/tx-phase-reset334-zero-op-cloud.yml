@@ -1,0 +1,13 @@
+name: tx-phase-reset334-zero-op-cloud
+on:
+  push:
+    branches: [codex/register-reset334-zero-op-20261025]
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Register reviewed workflow path without checkout or native work
+        run: echo "Registration only; no project code or simulator executes."
