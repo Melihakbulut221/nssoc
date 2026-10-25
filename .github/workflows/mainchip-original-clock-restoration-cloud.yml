@@ -1,0 +1,13 @@
+name: mainchip-original-clock-restoration-cloud
+on:
+  push:
+    branches: [codex/mainchip-original-clock-registration-20261025]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 1
+    steps:
+      - run: printf 'Manual workflow registration only; no checkout or native work.\n'
