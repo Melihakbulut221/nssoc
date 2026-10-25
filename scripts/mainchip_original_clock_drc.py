@@ -45,6 +45,11 @@ def measure_report(category,report,reexport):
     result.update(report_bytes=len(raw),report_sha256=c.digest(raw))
     return result
 
+def master_pin_boxes(pin):
+    """dbMPin box geometry includes polygon decomposition, not original polygon identity."""
+    return sorted((b.getTechLayer().getName(),b.xMin(),b.yMin(),b.xMax(),b.yMax())
+                  for b in pin.getGeometry(True))
+
 def geometry_projection(db,block,native):
     """Stream native nonmarker connectivity/placement/pin/via geometry plus exact DEF separately."""
     import hashlib
@@ -61,12 +66,12 @@ def geometry_projection(db,block,native):
         for i in sorted(block.getInsts(),key=lambda i:i.getName())))
     masters={i.getMaster().getName():i.getMaster()for i in block.getInsts()}
     feed('master-pin',([name,t.getName(),str(t.getIoType()),str(t.getSigType()),
-        [native.boxes(p)for p in t.getMPins()]]
+        [master_pin_boxes(p)for p in t.getMPins()]]
         for name,master in sorted(masters.items())for t in sorted(master.getMTerms(),key=lambda t:t.getName())))
     used=native.vias(db,block,[n.getName()for n in nets])
     feed('used-via',sorted(used.items()))
     return dict(sha256=digest.hexdigest(),counts=counts,
-       scope='All native net terminals/BTerms/NDR projection/encoded classes, every instance placement, instantiated master pin boxes and all used via boxes. Full DEF is compared separately; not a claim of byte-identical serialized database.')
+       scope='All native net terminals/BTerms/NDR projection/encoded classes, every instance placement, instantiated master pin getGeometry(True) boxes including decomposed polygons and all used via boxes; original polygon segmentation/vertex identity is not separately projected. Full DEF is compared separately; not a claim of byte-identical serialized database.')
 
 def main():
     import odb

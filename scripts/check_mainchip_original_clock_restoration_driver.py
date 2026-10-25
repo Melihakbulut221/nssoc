@@ -4,6 +4,7 @@
 import ast,base64,copy,hashlib,json,os,tempfile,traceback
 from pathlib import Path
 from unittest.mock import patch
+from types import SimpleNamespace
 import mainchip_original_clock_restoration as c
 import mainchip_original_clock_drc as drc
 import cloud_mainchip_original_clock_restoration as driver
@@ -55,6 +56,49 @@ def controls():
         try:fn()
         except (AssertionError,KeyError,ValueError,TypeError,AttributeError,FileNotFoundError):negative.append(name)
         else:raise AssertionError('control accepted '+name)
+    class Layer:
+        def getName(self):return 'M1'
+    class Box:
+        def getTechLayer(self):return Layer()
+        def xMin(self):return 1
+        def yMin(self):return 2
+        def xMax(self):return 3
+        def yMax(self):return 4
+    class MPinGeometryOnly:
+        def getGeometry(self,include_decomposed_polygons=True):
+            assert include_decomposed_polygons is True
+            return [Box()]
+    pin=MPinGeometryOnly()
+    assert not hasattr(pin,'getBoxes')
+    assert drc.master_pin_boxes(pin)==[('M1',1,2,3,4)]
+    term=SimpleNamespace(getName=lambda:'A',getIoType=lambda:'INPUT',
+        getSigType=lambda:'SIGNAL',getMPins=lambda:[pin])
+    master=SimpleNamespace(getName=lambda:'fixture_master',getMTerms=lambda:[term])
+    inst=SimpleNamespace(getName=lambda:'fixture_instance',getMaster=lambda:master,
+        getLocation=lambda:(0,0),getOrient=lambda:'R0',getPlacementStatus=lambda:'PLACED',getOrigin=lambda:(0,0))
+    block=SimpleNamespace(getNets=lambda:[],getInsts=lambda:[inst])
+    native=SimpleNamespace(vias=lambda db,block,names:{})
+    baseline=drc.geometry_projection(None,block,native)
+    assert baseline['counts']=={'net':0,'instance':1,'master-pin':1,'used-via':0}
+    positive.append('actual_projection_getGeometry_only_MPin_with_polygon_decomposition')
+    # Execute the genuinely wrong previous projection seam against the same typed fixture.
+    source=c.regular(c.ROOT/'scripts/mainchip_original_clock_drc.py').read_text()
+    node=next(n for n in ast.parse(source).body if isinstance(n,ast.FunctionDef)and n.name=='geometry_projection')
+    actual_projection=ast.get_source_segment(source,node)
+    assert actual_projection.count('master_pin_boxes(p)')==1
+    wrong=actual_projection.replace('master_pin_boxes(p)','native.boxes(p)',1)
+    ns={'c':c}
+    exec(compile(wrong,'<old_mpin_getBoxes_seam>','exec'),ns)
+    native.boxes=lambda p:sorted((b.getTechLayer().getName(),b.xMin(),b.yMin(),b.xMax(),b.yMax())for b in p.getBoxes())
+    try:ns['geometry_projection'](None,block,native)
+    except AttributeError as error:
+        assert "getBoxes" in str(error)
+        negative.append('actual_old_MPin_getBoxes_projection_refused')
+    else:raise AssertionError('wrong MPin API accepted')
+    def changed_pin_projection():
+        with patch.object(Box,'xMax',return_value=5):
+            assert drc.geometry_projection(None,block,native)==baseline
+    reject('actual_MPin_coordinate_projection_change',changed_pin_projection)
     actual=c.diagnosis(c.regular(c.ROOT/c.DIAG).read_bytes())['restore']
     assert driver.admit_restore_proof(actual)==actual
     positive.append('actual_original_629603913_byte_archive_projection')
@@ -157,7 +201,7 @@ def controls():
     archive_result=archive.controls()
     import wait_cloud_tested_source_release as waiter
     wait_result=waiter.controls()
-    assert len(positive)==13 and len(negative)==37,(len(positive),len(negative))
+    assert len(positive)==14 and len(negative)==39,(len(positive),len(negative))
     return dict(status='PASS_CLOCK_RESTORATION_DRIVER_SOURCE_CONTROLS_NOT_NATIVE',positives=positive,refusals=negative,
         original=original_result,qualified_publication=publication,qualified_archive=archive_result,
         qualified_wait=wait_result,phase_sequence=order,protected=len(m['protected']),
