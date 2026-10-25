@@ -32,7 +32,32 @@ def source_identity(run,info,ref,spec):
     assert run['status']=='completed' and run['conclusion']==spec['conclusion']
     assert run['head_sha']==spec['source'] and run['head_branch']==spec['branch']
     assert run['path']==spec['workflow']
-    return release.validate_release(info,ref,spec['tag'],spec['source'])
+    assert info['id']==spec['release_id']
+    legacy=spec.get('historical_container')
+    if legacy is None:
+        return dict(source_run=run,publication=release.validate_release(info,ref,spec['tag'],spec['source']),
+                    tested_source_is_release_target=True)
+    assert legacy['not_source_attestation'] is True
+    assert info['tag_name']==spec['tag'] and info['target_commitish']==legacy['target_commitish']
+    assert info['draft'] is False and info['prerelease'] is True
+    assert ref['ref']=='refs/tags/'+spec['tag'] and ref['object']['type']=='commit'
+    assert ref['object']['sha']==legacy['tag_commit']
+    assert len({a['id']for a in info['assets']})==len({a['name']for a in info['assets']})==len(info['assets'])
+    return dict(source_run=run,publication_container=dict(release_id=info['id'],tag=spec['tag'],
+        target_commitish=info['target_commitish'],tag_commit=ref['object']['sha']),
+        tested_source_is_release_target=False,source_evidence='Exact successful run, summary and prior native model/parts hashes; legacy tag is not source attestation')
+
+def asset_plan(info,spec,manifest):
+    assets={a['name']:a for a in info['assets']};assert len(assets)==len(info['assets'])
+    assert len(manifest['parts'])==len(spec['part_asset_ids'])
+    rows=[]
+    for i,p in enumerate(manifest['parts']):
+        assert p['index']==i
+        a=assets[p['name']]
+        assert a['size']==p['bytes'] and a['digest']=='sha256:'+p['sha256']
+        assert a['id']==spec['part_asset_ids'][i]
+        rows.append(dict(id=a['id'],name=p['name'],bytes=p['bytes'],sha256=p['sha256']))
+    return rows
 
 def precreated(group):
     tag,source=release.context(group,os.environ)
@@ -49,13 +74,9 @@ def restore_parts(spec,manifest,folder):
     run=api('actions/runs/'+str(spec['run']))
     info=api('releases/tags/'+spec['tag']);ref=api('git/ref/tags/'+spec['tag'])
     identity=source_identity(run,info,ref,spec)
-    assets={a['name']:a for a in info['assets']};assert len(assets)==len(info['assets'])
+    rows=asset_plan(info,spec,manifest)
     folder.mkdir(exist_ok=False)
-    for p in manifest['parts']:
-        a=assets[p['name']]
-        assert a['size']==p['bytes'] and a['digest']=='sha256:'+p['sha256']
-        assert a['id']==spec['part_asset_ids'][p['index']]
-        fetch_asset(dict(id=a['id'],bytes=p['bytes'],sha256=p['sha256']),folder/p['name'])
+    for row in rows:fetch_asset(row,folder/row['name'])
     return identity
 
 def safe_relative(entry,prefix):
@@ -143,6 +164,7 @@ def actual_controls(contract,bench,model,qualified):
     positive=validate_contract(contract,bench,model,qualified);bad=[]
     def reject(label,change):
         c,b,m,q=copy.deepcopy((contract,bench,model,qualified));c,b,m,q=change(c,b,m,q)
+        assert (c,b,m,q)!=(contract,bench,model,qualified),'Mutation must change an actual input'
         try:validate_contract(c,b,m,q)
         except(AssertionError,KeyError,ValueError,StopIteration):bad.append(label)
         else:raise AssertionError('Accepted actual input corruption '+label)
@@ -169,16 +191,54 @@ def actual_controls(contract,bench,model,qualified):
     def role(c,b,m,q):q['binding']['all589_actual_devices'][0]['devices'][0]['role']='wrong';return c,b,m,q
     reject('changed_native_role',role)
     reject('missing_physical_model',lambda c,b,m,q:(c,b,'',q))
-    reject('wrong_top_instance',lambda c,b,m,q:(c,b.replace('\nxtree ','\nwrongtree '),m,q))
+    def wrong_top(c,b,m,q):
+        b,count=re.subn(r'(?mi)^xtree ','wrongtree ',b);assert count==1
+        return c,b,m,q
+    reject('wrong_top_instance',wrong_top)
     assert len(bad)==19
     return dict(positive=positive,rejected=bad,full_waveform_review_repeated=False)
+
+def metadata_controls(m):
+    recorded=json.loads((ROOT/m['metadata_path']).read_bytes());bad=[];positives={}
+    manifests={k:json.loads((ROOT/m[p]).read_bytes())for k,p in
+               [('native_source','native_parts_path'),('prepared_source','prepared_parts_path')]}
+    def checked(k,x):
+        proof=source_identity(x['run'],x['release'],x['ref'],m[k])
+        rows=asset_plan(x['release'],m[k],manifests[k])
+        return dict(identity=proof,parts=len(rows))
+    for k,x in recorded.items():positives[k]=checked(k,x)
+    def reject(k,label,mutate):
+        x=copy.deepcopy(recorded[k]);mutate(x);assert x!=recorded[k]
+        try:checked(k,x)
+        except(AssertionError,KeyError,ValueError):bad.append(k+':'+label)
+        else:raise AssertionError('Accepted metadata corruption '+label)
+    for key,value in [('id',0),('run_attempt',2),('status','in_progress'),('conclusion','success'),
+        ('head_sha','0'*40),('head_branch','main'),('path','other.yml')]:
+        reject('native_source',key,lambda x,key=key,value=value:x['run'].__setitem__(key,value))
+    reject('native_source','release_id',lambda x:x['release'].__setitem__('id',0))
+    reject('native_source','release_target',lambda x:x['release'].__setitem__('target_commitish','main'))
+    reject('native_source','tag_commit',lambda x:x['ref']['object'].__setitem__('sha','0'*40))
+    reject('prepared_source','actual_run_source',lambda x:x['run'].__setitem__('head_sha','0'*40))
+    reject('prepared_source','container_id',lambda x:x['release'].__setitem__('id',0))
+    reject('prepared_source','container_target',lambda x:x['release'].__setitem__('target_commitish','other'))
+    reject('prepared_source','container_commit',lambda x:x['ref']['object'].__setitem__('sha','0'*40))
+    reject('prepared_source','container_draft',lambda x:x['release'].__setitem__('draft',True))
+    for k in recorded:
+        for field,value in [('id',0),('size',0),('digest','sha256:'+'0'*64),('name','missing-part')]:
+            name=manifests[k]['parts'][0]['name']
+            def mutation(x,field=field,value=value,name=name):
+                next(a for a in x['release']['assets']if a['name']==name)[field]=value
+            reject(k,'part_'+field,mutation)
+    assert len(bad)==23
+    return dict(actual_metadata_positives=positives,rejected=bad)
+
 
 def source_controls():
     m=methods();from check_tx_normal_saved_capture_diagnosis import main as math_controls
     math=math_controls();assert len(math['negative_controls'])==20
-    parts=parts_controls();selected=selected_archive_controls();publication=release.controls()
+    parts=parts_controls();selected=selected_archive_controls();publication=release.controls();metadata=metadata_controls(m)
     with tempfile.TemporaryDirectory()as td:
-        root=Path(td);d=root/'fixture';d.mkdir();(d/'a').write_bytes(b'actual\\x1b opaque bytes');(d/'b').write_bytes(b'keep inventory')
+        root=Path(td);d=root/'fixture';d.mkdir();(d/'a').write_bytes(b'actual\x1b opaque bytes');(d/'b').write_bytes(b'keep inventory')
         manifest=pack(d,'fixture',root,32);expected={n:sha(d/n)for n in ('a','b')}
         positive=audit_complete(manifest,root,root/'good',expected,{'a'})
         assert (root/'good/a').read_bytes()==(d/'a').read_bytes() and not(root/'good/b').exists()
@@ -199,7 +259,7 @@ def source_controls():
             reject(name,lambda entry=entry:safe_relative(entry,'fixture'))
         assert len(bad)==11
     return dict(status='PASS_SOURCE_MATH_AND_TRANSPORT_CONTROLS_ONLY',math=math,parts=parts,
-        selected_archive=selected,strict_archive_faults=bad,publication=publication,
+        selected_archive=selected,strict_archive_faults=bad,publication=publication,metadata=metadata,
         readback_authorized=m['readback_authorized'],native_simulation=False)
 
 def main():
@@ -227,8 +287,17 @@ def main():
         selected={'work/'+n for n in ('wave.raw','bench.cir','contract.json','native.log','op.dat')}
         result['native_archive']=audit_complete(parts,work/'native-parts',work/'native',expected,selected);save()
         prep=json.loads((ROOT/m['prepared_summary_path']).read_bytes());pp=json.loads((ROOT/m['prepared_parts_path']).read_bytes())
-        assert prep['outputs']['whole8088/source/composed/output8088-wire.spice']==m['model_sha256']
-        assert source['preparation_source']['summary_sha256']==m['prepared_summary_sha256']
+        assert prep['status']=='READY_ACTUAL8088_BRANCHTAILFEED_PHYSICAL_WIRE_DECK_NOT_SIMULATED'
+        assert prep['source_head']==m['prepared_source']['source'] and prep['fault']=='none' and prep['source_unchanged']
+        assert prep['outputs']['whole8088/source/composed/output8088-wire.spice']==prep['model_sha256']==m['model_sha256']
+        prior=source['preparation_source']
+        assert prior['run']==m['prepared_source']['run'] and prior['summary_sha256']==m['prepared_summary_sha256']
+        assert prior['manifest_sha256']==sha(ROOT/m['prepared_parts_path'])
+        assert prior['restore']['archive']['sha256']==pp['sha256'] and prior['restore']['archive']['bytes']==pp['bytes']
+        for name in ('whole8088/source/composed/output8088-wire.spice','whole8088/source/composed/composition.json'):
+            assert prior['restore']['selected_files'][name]['sha256']==prep['outputs'][name]
+        runtime_models=[h for p,h in source['runtime_inputs'].items()if p.endswith('/whole8088/source/composed/output8088-wire.spice')]
+        assert runtime_models==[m['model_sha256']]
         result['prepared_source_identity']=restore_parts(m['prepared_source'],pp,work/'prep-parts');save()
         chosen={n:prep['outputs'][n]for n in ('whole8088/source/composed/output8088-wire.spice','whole8088/source/composed/composition.json')}
         result['prepared_model_restore']=extract_verified(pp,work/'prep-parts',work/'model',chosen);save()

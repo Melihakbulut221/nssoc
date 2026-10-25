@@ -18,10 +18,11 @@
     "scripts/ensure_cloud_tested_source_release.py": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e",
     "scripts/publish_cloud_results.py": "a5cd154c1a7e3f838f5880e6cabef115245d696485c9eda2bd0451da8e1e1296",
     "scripts/migrate_outputs_to_cloud.py": "52fa3ef7adc92b6e6071b304ccb1b07908f31ccde7dacf39a7258e07356fa512",
-    "scripts/cloud_tx_normal_saved_capture.py": "e60935e151b74ccfd0e03d1be341461619848744c82db29ab3b96eb0b8f81dd6",
-    ".github/workflow-templates/tx-normal-saved-capture-diagnosis-cloud.yml": "2917322b22dc14d31033fd8fb175b753efd7a7bc77555a53147b26f52170717c",
+    "scripts/cloud_tx_normal_saved_capture.py": "a25d04c7284c8e9e17577ef1141042efb9e50a23a58b76a563551a6e98ae83eb",
+    ".github/workflow-templates/tx-normal-saved-capture-diagnosis-cloud.yml": "307d873d63bb0c8e72a2a5e9e99fe6975308ee355851b690366e9b499a804bab",
     "docs/evidence/tx-normal-source-preparation-summary-20261025.json": "a4af07a2d955d54ce9c1c0d92574fbcd5f3736594afee391784053ff05c5d571",
-    "docs/evidence/tx-normal-source-preparation-parts-20261025.json": "317441c2d26199f63be0cf5ad162023fe415b555ae577ca86ceb63180ae173ff"
+    "docs/evidence/tx-normal-source-preparation-parts-20261025.json": "317441c2d26199f63be0cf5ad162023fe415b555ae577ca86ceb63180ae173ff",
+    "docs/evidence/tx-normal-restore-api-metadata-20261025.json": "d215916eb2d23c7d78b9452b27cb3892123667df105756ab4d459566aa3190d6"
   },
   "native_source": {
     "run": 40168554741,
@@ -38,7 +39,8 @@
       674316804,
       674317824,
       674318973
-    ]
+    ],
+    "release_id": 423184197
   },
   "native_parts_path": "docs/evidence/tx-normal-complete-rejected-parts-20261025.json",
   "source_summary_sha256": "c131efdcef18e4c35d0a034e524241356878cc34c95452819078179b80f9c372",
@@ -52,7 +54,13 @@
     "tag": "cloud-results-40085025627-1-tx-output8088-branchtailfeed-prepared-wire-nominal-none",
     "part_asset_ids": [
       671985986
-    ]
+    ],
+    "release_id": 422667392,
+    "historical_container": {
+      "target_commitish": "codex/complete-open-work",
+      "tag_commit": "47080043bb505d4eb0e1410fb6459b62b8a270e1",
+      "not_source_attestation": true
+    }
   },
   "prepared_summary_path": "docs/evidence/tx-normal-source-preparation-summary-20261025.json",
   "prepared_parts_path": "docs/evidence/tx-normal-source-preparation-parts-20261025.json",
@@ -66,6 +74,9 @@
   "caveats": [
     "XD5644 full output role remains unclassified until independent original source topology binding; actual model C/B/E/S/Nx is still required.",
     "No original thermal state exists.",
-    "Native memory-map validation is repeated for diagnostic access; the original full electrical review executes exactly once."
-  ]
+    "Native memory-map validation is repeated for diagnostic access; the original full electrical review executes exactly once.",
+    "The old preparation release is a byte-pinned historical container with a different tag commit. Actual preparation source is bound independently by run78b185, exact summary, prior native restore and model bytes; its tag is not source attestation."
+  ],
+  "metadata_path": "docs/evidence/tx-normal-restore-api-metadata-20261025.json",
+  "metadata_faults": 23
 }
