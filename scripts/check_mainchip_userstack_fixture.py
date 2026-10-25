@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Real harmless hosted GDB fixture plus strict metadata/cleanup controls; no chip run."""
-import copy,hashlib,http.client,http.server,json,os,shutil,subprocess,sys,threading,time,traceback
+import base64,copy,hashlib,http.client,http.server,json,os,shutil,subprocess,sys,threading,time,traceback
 from pathlib import Path
 import mainchip_userstack_observer as obs
 import mainchip_latest_stack_admission as admission
@@ -231,6 +231,10 @@ def controls():
             actual=OUT/'error-finally-detach/command'/name
             assert record['sha256']==file_sha(actual)and record['bytes']==actual.stat().st_size
             assert sum(x['bytes']for x in record['selected'])<=8192
+            for chunk in record['selected']:
+                raw=base64.b64decode(chunk['base64'],validate=True)
+                assert len(raw)==chunk['bytes']and hashlib.sha256(raw).hexdigest()==chunk['sha256']
+                assert raw==actual.read_bytes()[chunk['offset']:chunk['offset']+chunk['bytes']]
         bounded=OUT/'bounded-console';bounded.mkdir()
         (bounded/'stdout.log').write_bytes(b'a'*9000)
         (bounded/'stderr.log').write_bytes(b'\xfffailure\n')
@@ -238,6 +242,7 @@ def controls():
         assert stream['streams']['stdout.log']['omitted_bytes']==808
         assert [x['offset']for x in stream['streams']['stdout.log']['selected']]==[0,4904]
         assert stream['streams']['stderr.log']['omitted_bytes']==0
+        assert base64.b64decode(stream['streams']['stderr.log']['selected'][0]['base64'],validate=True)==(bounded/'stderr.log').read_bytes()
         passed('failure-publication',dict(actual_partial_failure_files_preserved=True,
             bounded_console_streams_verified=True,
             remote_artifact_upload_not_proven_by_checker=True))

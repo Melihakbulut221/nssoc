@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Bounded GDB supervision. OpenROAD attachment remains explicitly disabled."""
-import hashlib,json,os,signal,subprocess,time
+import base64,hashlib,json,os,signal,subprocess,time
 from pathlib import Path
 from mainchip_userstack_identity import snapshot,module_inventory,file_sha,stat_record,check_frames,ProcessPin
 ROOT=Path(__file__).resolve().parents[1]
@@ -79,7 +79,7 @@ def emit_bounded_command_outputs(folder):
             else:
                 head=f.read(4096);f.seek(size-4096);chunks=[(0,head),(size-4096,f.read(4096))]
         selected=[dict(offset=o,bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),
-                       text=b.decode('utf-8',errors='backslashreplace'))for o,b in chunks]
+                       base64=base64.b64encode(b).decode('ascii'),text=b.decode('utf-8',errors='backslashreplace'))for o,b in chunks]
         report=dict(bytes=size,sha256=file_sha(path),selected=selected,
                     omitted_bytes=size-sum(len(b)for o,b in chunks),complete_raw_file_preserved=True)
         print('USERSTACK_COMMAND_STREAM '+json.dumps(dict(name=name,**report),ensure_ascii=True),flush=True)
