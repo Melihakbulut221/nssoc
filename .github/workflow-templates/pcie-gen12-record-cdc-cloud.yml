@@ -1,0 +1,94 @@
+# SPDX-License-Identifier: Apache-2.0
+# Unregistered source-only template; active workflow must be byte-identical.
+name: PCIe complete-record recovered-clock CDC proof
+on:
+  workflow_dispatch:
+    inputs:
+      execute:
+        description: 'Execute the reviewed complete functional proof after controls'
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: pcie-gen12-record-cdc-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Exact source, thirteen real supervision fixtures and strict result classification
+        run: |
+          python3 -u scripts/check_pcie_gen12_record_cdc_cloud.py | tee cdc-controls-console.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-record-cdc/controls.json').read_text())
+          assert r['status']=='PASS_CDC_CONTROLLER_SOURCE_AND_CLASSIFICATION_CONTROLS_NO_RTL'
+          assert r['classification_control_count']==36 and len(r['controls'])==36
+          assert all(x.get('passed')is True or x.get('rejected')is True for x in r['controls'].values())
+          q=r['qualified_supervision_controls']
+          assert len(q['controls'])==13 and all(q['controls'].values())
+          assert r['simulations_executed']is False and r['synthesis_executed']is False
+          assert r['terminal_source_pins_unchanged']is True
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: gen12-record-cdc-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            hw/soc/out/cloud-pcie-gen12-record-cdc
+            cdc-controls-console.log
+          retention-days: 90
+          if-no-files-found: warn
+  complete-functional-proof:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.execute
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Bounded exact tools, two RTL simulators, mapped oracle and eighteen compiled faults
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONUNBUFFERED: '1'
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 -u scripts/cloud_pcie_gen12_record_cdc.py --native | tee cdc-native-console.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-record-cdc/result.json').read_text())
+          assert r['status']=='PASS_RECORD_CDC_66_RTL_33_MAPPED_18_COMPILED_FAULTS'
+          assert r['engineering_accepted']is True and r['terminal_source_pins_unchanged']is True
+          assert len(r['rtl'])==12 and sum(len(x['tests'])for x in r['rtl'])==66
+          assert len(r['mapped'])==6 and sum(len(x['tests'])for x in r['mapped'])==33
+          assert all(t['disposition']=='PASS'for x in r['rtl']+r['mapped']for t in x['tests'])
+          assert len(r['synthesis'])==6 and all(x['full_synth_and_check']for x in r['synthesis'])
+          assert len(r['mutations'])==18 and len({x['mutation']for x in r['mutations']})==18
+          assert all(x['compile_returncode']==0 and x['run_returncode']!=0 and
+                     sum(t['disposition']=='DETECTED_ASSERTION'for t in x['tests'])==1 for x in r['mutations'])
+          assert all(value is False for value in r['scope'].values())
+          PY
+      - name: Preserve complete small result before artifact upload
+        if: always()
+        run: python3 -u scripts/cloud_pcie_gen12_record_cdc.py --log-result
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: gen12-record-cdc-proof-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            hw/soc/out/cloud-pcie-gen12-record-cdc
+            cdc-native-console.log
+          retention-days: 90
+          if-no-files-found: warn
