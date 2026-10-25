@@ -1,0 +1,13 @@
+# Harmless orphan registration; no repository source or native job is present.
+name: tx-phase-reset334-transient-cloud
+on:
+  push:
+    branches: [codex/register-reset334-transient-20261025]
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - run: echo 'Register only; no simulator, checkout or repository mutation.'
