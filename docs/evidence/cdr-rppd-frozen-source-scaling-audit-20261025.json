@@ -140,5 +140,20 @@
     "operating_point_current_or_headroom_accepted": false,
     "CDR_candidate_accepted": false
   },
-  "meaning": "Length changes retain a real contact floor. The numeric examples are explicitly drawn-sheet-plus-contact sensitivity approximations, not compact-model effective resistance, transient current, KCL or candidate acceptance. Keep all native model corrections and original electrical gates."
+  "meaning": "Length changes retain a real contact floor. The numeric examples are explicitly drawn-sheet-plus-contact sensitivity approximations, not compact-model effective resistance, transient current, KCL or candidate acceptance. Keep all native model corrections and original electrical gates.",
+  "normalization_caveat": {
+    "df_default": 0.0001,
+    "dp_default": 1000,
+    "r0_factor": "1-1e-4*sqrt(1000)=0.9968377223398316",
+    "not_zero": true,
+    "macro_source": {
+      "path": "ihp-sg13g2/libs.tech/verilog-a/r3_cmc/r3_cmc_macros.include",
+      "git_blob": "d8a4f7ac71cbf9521155e942d0d66cfb9a7084e7",
+      "bytes": 36457,
+      "sha256": "66e1bf0b43495a9c17454a1ac203171db5488edc7e19563f4f645389ba7eebb4",
+      "matches_native_manifest": true
+    },
+    "equations": "r3.va gf=1/r0 for sw_accpo0; macro799-805 dpfctr=1-df*sqrt(pe+VrbEff), geff=gf*dpfctr/(1+rmu), Irb=sdFlip*geff*VrbEff. At Vrb=0 AND Vc1=Vc2=0, rmu=0 and dpfctr equals the r0 factor, cancelling in reported1/geff. Actual incremental I/V also includes the VrbEff smoothing derivative.",
+    "safe_reference": "Geometry+mismatch formula plus70/W may be labeled normalized zero-control-bias/isothermal model-report reference. Zero differential voltage alone does not remove real substrate/common-mode modulation; never label it actual transient resistance/current."
+  }
 }
