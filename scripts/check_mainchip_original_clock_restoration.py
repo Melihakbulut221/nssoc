@@ -51,6 +51,19 @@ def controls():
         'clock_unwired':dict(wire_present=False,metadata='NONE',paths=[])}
     c.validate_encoded(encoded,{n:'FIXED'if k is not None else None for n,k in original.items()})
     positives.append('all_encoded_paths_not_metadata_only')
+    old=copy.deepcopy(encoded);old[NAME]['metadata']='ROUTED';old[NAME]['paths']=['ROUTED','ROUTED']
+    after=copy.deepcopy(old);after[NAME]['metadata']='FIXED'
+    target={name:row['metadata']for name,row in after.items()}
+    assert c.validate_metadata_transition(after,old,target)
+    assert c.validate_metadata_transition(old,after,{name:row['metadata']for name,row in old.items()})
+    positives.append('independent_metadata_set_and_restore_preserve_encoding')
+    for label,edit in [
+        ('metadata_not_set',lambda x:x[NAME].__setitem__('metadata','ROUTED')),
+        ('metadata_changes_path',lambda x:x[NAME].__setitem__('paths',['FIXED','FIXED'])),
+        ('metadata_drops_wire',lambda x:x[NAME].__setitem__('wire_present',False)),
+        ('metadata_missing_member',lambda x:x.pop('other_fixed'))]:
+        bad=copy.deepcopy(after);edit(bad)
+        reject(label,lambda bad=bad:c.validate_metadata_transition(bad,old,target))
     for name,raw in [
         ('clock_coordinate',expected.replace(b'( 10 20 )',b'( 12 20 )')),
         ('signal_coordinate',expected.replace(b'( 41 50 )',b'( 40 50 )')),
@@ -131,7 +144,7 @@ def controls():
     assert len(old)==len(new)==2 and [ast.dump(n,include_attributes=False)for n in old]==[ast.dump(n,include_attributes=False)for n in new]
     positives.append('exact_original_full_selector_AST')
     assert c.file_sha(c.ROOT/c.GATE)==c.GATE_SHA
-    assert len(failures)==len(set(failures))==48 and len(positives)==6
+    assert len(failures)==len(set(failures))==52 and len(positives)==7
     return dict(status='SOURCE_CONTROLS_ONLY_NOT_NATIVE_EXECUTION',positives=positives,
         refusals=failures,positive_count=len(positives),refusal_count=len(failures),
         native_import_executed=False,actual_FIXED_roundtrip_executed=False,

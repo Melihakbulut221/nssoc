@@ -145,6 +145,22 @@ def audit_view(path,expected,baseline,out,label):
     assert got['ndr']==baseline['ndr'],'complete native NDR changed'
     return got
 
+
+def metadata_base(source,destination,target,expected,baseline,out,label):
+    # Qualified onehot method: change the independent dbNet flag on a separate DB.
+    db,b=load(source)
+    try:
+        assert set(target)==set(baseline['names'])
+        for name,kind in target.items():
+            net=b.findNet(name);assert net
+            if str(net.getWireType())!=kind:net.setWireType(kind)
+            assert str(net.getWireType())==kind
+        odb.write_db(db,str(destination))
+    finally:odb.dbDatabase.destroy(db)
+    got=audit_view(destination,expected,baseline,out,label)
+    c.validate_metadata_transition(got['encoded'],baseline['encoded'],target)
+    return got
+
 def original_gate(donor,candidate,out,label):
     assert c.file_sha(c.ROOT/c.GATE)==c.GATE_SHA
     keys={'NSSOC_CLOCK_BEFORE':str(donor),'NSSOC_CLOCK_AFTER':str(candidate),
@@ -217,14 +233,27 @@ def main():
                     patch,_=c.patch_def(expected,{n:fixed_records[n]for n in names})
                     back,_=c.patch_def(expected,{n:restored_records[n]for n in names})
                     (out/'fixed-patch.def').write_bytes(patch);(out/'unfixed-patch.def').write_bytes(back)
-                    (out/'fixed.tcl').write_text(import_tcl(restored,out/'fixed-patch.def',out,'fixed'))
-                    (out/'unfixed.tcl').write_text(import_tcl(out/'fixed.odb',out/'unfixed-patch.def',out,'unfixed'))
+                    target={name:'FIXED'if classes[name]is not None else r['encoded'][name]['metadata']for name in classes}
+                    intermediate=metadata_base(restored,out/'fixed-import-base.odb',target,expected,r,out,'fixed-metadata-only')
+                    witness=[name for name in classes if classes[name]is not None and
+                        intermediate['encoded'][name]['metadata']=='FIXED'and
+                        any(kind!='FIXED'for kind in intermediate['encoded'][name]['paths'])]
+                    assert witness,'metadata-only control needs an actually non-FIXED encoded route'
+                    result['metadata_only_negative_control']=dict(witness_names=witness,
+                        encoded_paths_unchanged=True,full_DEF_byte_unchanged=True,
+                        cannot_be_accepted_as_encoded_FIXED=True,odb_sha256=c.file_sha(out/'fixed-import-base.odb'))
+                    (out/'fixed.tcl').write_text(import_tcl(out/'fixed-import-base.odb',out/'fixed-patch.def',out,'fixed'))
                     result['status']='PREPARED_FIXED_ENCODING_ROUNDTRIP_NO_ROUTING'
                 else:
                     f=audit_view(c.regular(out/'fixed.odb'),fixed,b,out,'fixed')
                     c.validate_encoded(f['encoded'],{n:'FIXED'if v is not None else None for n,v in classes.items()})
                     assert c.restore_classes(f['raw'],classes)==expected,'temporary class overlay is not reversible'
                     if mode=='audit-fixed':
+                        target={name:r['encoded'][name]['metadata']for name in classes}
+                        intermediate=metadata_base(out/'fixed.odb',out/'unfixed-import-base.odb',target,fixed,f,out,'unfixed-metadata-only')
+                        result['original_metadata_restored_without_encoded_route_change']=True
+                        result['unfixed_import_base_sha256']=c.file_sha(out/'unfixed-import-base.odb')
+                        (out/'unfixed.tcl').write_text(import_tcl(out/'unfixed-import-base.odb',out/'unfixed-patch.def',out,'unfixed'))
                         result['status']='PASS_ACTUAL_FIXED_ENCODING_REQUIRES_ORIGINAL_CLASS_ROUNDTRIP'
                     else:
                         u=audit_view(c.regular(out/'unfixed.odb'),expected,b,out,'unfixed')

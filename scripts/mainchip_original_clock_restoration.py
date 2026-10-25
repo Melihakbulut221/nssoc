@@ -227,3 +227,13 @@ def validate_encoded(records, expected):
             assert r['wire_present'] is True and r['paths'] and r['metadata']==kind
             assert all(x==kind for x in r['paths']), ('encoded path class',n)
     return True
+
+def validate_metadata_transition(actual, baseline, target):
+    """Independent native metadata intent; encoded route observations must not move."""
+    assert set(actual)==set(baseline)==set(target), 'metadata transition census'
+    for n,before in baseline.items():
+        after=actual[n]
+        assert set(after)==set(before)=={'wire_present','metadata','paths'}
+        assert after['wire_present']==before['wire_present'] and after['paths']==before['paths'], ('metadata step changed encoded wire',n)
+        assert after['metadata']==target[n], ('metadata setter not retained',n)
+    return True

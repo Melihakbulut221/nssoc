@@ -1,0 +1,71 @@
+{
+  "accepted": false,
+  "correction": "Separate import-base ODB metadata setter; actual metadata-only negative retains non-FIXED paths and exact DEF; encoded FIXED paired import; original metadata restored separately before original-class paired import.",
+  "initial_218_restoration_unchanged": true,
+  "local_files_written": false,
+  "native_executed": false,
+  "original_all_clock_gate_unchanged": true,
+  "primary_source": {
+    "commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "files": [
+      {
+        "lines": [
+          222,
+          234
+        ],
+        "path": "src/odb/src/defin/definNet.cpp",
+        "sha256": "a5c7f0edd15c6c86c4c8f1230a1e91b1b2d8949952061f7e5ab680fd0f696587",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/defin/definNet.cpp#L222"
+      },
+      {
+        "lines": [
+          564,
+          588
+        ],
+        "path": "src/odb/src/db/dbNet.cpp",
+        "sha256": "5105f249925c773cc16eabbf438381451cfb8dd50fe66c520bc3ed4218637e28",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbNet.cpp#L564"
+      }
+    ],
+    "repository": "The-OpenROAD-Project/OpenROAD"
+  },
+  "reason": "DEF import encodes route classes separately from dbNet metadata; prior plan demanded metadata without setting it.",
+  "source_controls": {
+    "added_positive": 1,
+    "added_refusals": 4,
+    "executed": false,
+    "positive_groups": 7,
+    "refusals": 52
+  },
+  "source_delta": {
+    "scripts/check_mainchip_original_clock_restoration.py": {
+      "added_functions": [],
+      "after_sha256": "08bee1b99f57f239de9bc2683080e903296dc54353dd58426a23e11cbf0feb97",
+      "before_sha256": "a4d7bfb006f85056c500f35c11e7ff2c41727060361241c91e44bc320d852e08",
+      "changed_functions": [
+        "controls"
+      ]
+    },
+    "scripts/mainchip_original_clock_restoration.py": {
+      "added_functions": [
+        "validate_metadata_transition"
+      ],
+      "after_sha256": "fd69f21bae8beed99f1886accec86a9b35bfa7db5437cdb792813a76e60f9194",
+      "before_sha256": "2afa13885c043b16dae47af86b6cd4ba6b919c74d6aa57e3566d235ca0040105",
+      "changed_functions": []
+    },
+    "scripts/mainchip_original_clock_restoration_native.py": {
+      "added_functions": [
+        "metadata_base"
+      ],
+      "after_sha256": "c92be1cf2691a6961fb5705bf597b0bb34fb477b47a743112d0f05e703e0a8ab",
+      "before_sha256": "09397bfad9a02ee815b24dbaa78c1471993b7d1681f4baa3177078a91a5aec2d",
+      "changed_functions": [
+        "main"
+      ]
+    }
+  },
+  "source_tests_executed": false,
+  "status": "SOURCE_ONLY_INDEPENDENT_METADATA_ENCODING_CORRECTION",
+  "supersedes": "d30a30f16b84940ed179e9d1ca043cbbf6c4d2b3"
+}
