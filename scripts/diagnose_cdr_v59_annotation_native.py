@@ -126,7 +126,8 @@ def main():
         assert module.TOP==TOP and module.METALS==METALS and module.MODELS==MODELS
         proof,frame=original_failure(module);result['original_failure']=proof;save()
         signature=frame['signature'];target_layout=frame['L'];target=frame['c']
-        assert target_layout.cell(TOP)is not None
+        assert target_layout.cell(TOP)is not None and target_layout.dbu==.001
+        result['target_dbu_um']=target_layout.dbu
         assert set(frame['inputs'])=={str(f)for f in(capsule/'parent/inputs').rglob('*.gds')}
         result['native_controls']=native_controls(pya)
         source_rows=[];source_objects=[];actual_keys={}
