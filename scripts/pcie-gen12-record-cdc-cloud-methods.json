@@ -2,7 +2,7 @@
   "collector_reset_diagnostic": {
     "activation_proposal": {
       "path": "docs/evidence/pcie-gen12-collector-reset-targeted-activation-proposal-20261025.json",
-      "root_review_pending": true,
+      "root_review_pending": false,
       "sha256": "1d1507362be337c2a0127189f6811606bb742fd5ad325d98831a6cbf50815825"
     },
     "actual_source_controls": {
@@ -21,7 +21,7 @@
     },
     "admission_control_positives": 4,
     "admission_control_refusals": 32,
-    "authorized": false,
+    "authorized": true,
     "checker_path": "scripts/check_pcie_gen12_collector_reset_diagnostic.py",
     "compiled_fault_runs": 2,
     "controller_path": "scripts/cloud_pcie_gen12_collector_reset_diagnostic.py",
@@ -39,7 +39,15 @@
     "mutation": "collector_reset_POR_only",
     "original_complete_controller_unchanged": true,
     "positive_named_tests": 15,
-    "review_receipt": null,
+    "review_receipt": {
+      "path": "docs/evidence/pcie-gen12-collector-reset-targeted-final-protected-review-20261025.json",
+      "sha256": "ee11f20154ccff0e1cfd046d90c4e6f7bcf08ae298380879e55e2143ecd89ace"
+    },
+    "root_review": {
+      "path": "docs/evidence/pcie-gen12-collector-reset-targeted-root-activation-review-20261025.json",
+      "sha256": "feb4ea1f4e179614c0a17a95bd814ad1d933bce8da2557640031c065bb82a949",
+      "source": "21f664f8f06cbd889c56765f7e7c16846a4d1631"
+    },
     "rtl_engines": [
       "icarus",
       "verilator"
@@ -49,7 +57,7 @@
       "sha256": "427d84d152c3a5d097955c36c165b609b1884b3b1f68df8a6e3b11c5a543aefc",
       "status": "CLEARED_ONE_CONTROLS_ONLY"
     },
-    "source_only": true,
+    "source_only": false,
     "synthesis_checks": 1
   },
   "collector_reset_witness": {
@@ -64,11 +72,11 @@
     "prior_mapped_pass": 33,
     "prior_qualified_mutants": 16,
     "prior_synthesis_pass": 6,
-    "status": "SOURCE_ONLY_UNEXECUTED",
+    "status": "TARGETED_DIAGNOSTIC_AUTHORIZED_COMPLETE_PROOF_DISABLED",
     "supplemental_source_positive_cases": 2,
     "supplemental_source_refusals": 26,
     "targeted_controller_implemented": true,
-    "targeted_native_authorized": false,
+    "targeted_native_authorized": true,
     "targeted_plan_path": "docs/evidence/pcie-gen12-record-cdc-collector-reset-targeted-proof-plan-20261025.json",
     "wrong_mutant_guard_refusals": 34
   },
@@ -140,6 +148,7 @@
     "docs/evidence/pcie-gen12-collector-reset-targeted-controls-joblog-20261025.log": "cf463be2ce4a4a1ae5a40e051bd480e9164602b4e6f1f1b0fec08b3ad4d292f9",
     "docs/evidence/pcie-gen12-collector-reset-targeted-controls-pass-20261025.json": "0dffb51769505be8fb4761a7aeb2f81fc132975a886180e099de15603402f3b8",
     "docs/evidence/pcie-gen12-collector-reset-targeted-controls-result-20261025.json": "95386c32e3aec67934ee6ca07fbe0080aba0cb0968106cccaac42b345fd8508e",
+    "docs/evidence/pcie-gen12-collector-reset-targeted-root-activation-review-20261025.json": "feb4ea1f4e179614c0a17a95bd814ad1d933bce8da2557640031c065bb82a949",
     "docs/evidence/pcie-gen12-collector-reset-targeted-source-controls-review-20261025.json": "427d84d152c3a5d097955c36c165b609b1884b3b1f68df8a6e3b11c5a543aefc",
     "docs/evidence/pcie-gen12-collector-reset-witness-independent-review-20261025.json": "36164c59fc9274c5a24e29198cc9f73ba3c7c4fc2b432c30edd017e6abc3bedb",
     "docs/evidence/pcie-gen12-record-cdc-assertion-site-native-rejection-20261025.json": "54d124970a9b4c1ae1ce5a2aef24e1e9b3f0f74bdd93cdb8f9633f054284c5e4",
@@ -350,7 +359,7 @@
     "strict_rejected_mutant": "ignore_read_reset"
   },
   "review_status": "SOURCE_ONLY_REVIEW_PENDING",
-  "root_metadata_review_required_before_dispatch": true,
+  "root_metadata_review_required_before_dispatch": false,
   "schema": "gen12-record-cdc-hosted-proof-source-v1",
   "scope": {
     "LTSSM_implemented": false,
@@ -385,9 +394,9 @@
     "verilator_tag": "v5.040"
   },
   "unfinished": [
-    "Root review and metadata-only target activation are pending; all native execution remains disabled.",
-    "One actual targeted15-positive/one-synthesis/two-compiled-fault diagnostic remains unexecuted.",
-    "Authenticate the targeted result before a separate complete66/33/six/18 native activation.",
+    "Exactly one targeted15-positive/one-synthesis/two-compiled-fault diagnostic is authorized but unexecuted.",
+    "Authenticate complete actual public traces and strict guard dispositions; preserve any failure without retry.",
+    "Complete66/33/six/18 native proof requires separate actual target result and root activation.",
     "Complete CDC and protocol/physical/full-PHY acceptance remain false."
   ],
   "vendor": {
