@@ -67,6 +67,49 @@ def copy_controls():
             else:extra.write_bytes(b'extra')
             assert check()!=0,fault;bad.append(fault)
     return bad
+def budget_seam(source):
+    """Execute actual setup/budget AST with fake Docker calls; no native process."""
+    from types import SimpleNamespace
+    main=next(n for n in ast.parse(source).body if isinstance(n,ast.FunctionDef)and n.name=='main')
+    stores=[n for n in ast.walk(main)if isinstance(n,ast.Name)and isinstance(n.ctx,ast.Store)and n.id=='config']
+    assert len(stores)==1,'Methods configuration was shadowed by a later setup assignment'
+    selected=[]
+    for n in ast.walk(main):
+        if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id in ('config','docker_config_program','seconds')for t in n.targets):
+            selected.append(n)
+        elif isinstance(n,ast.Expr)and isinstance(n.value,ast.Call)and isinstance(n.value.func,ast.Name)and n.value.func.id=='run'and n.value.args and isinstance(n.value.args[0],ast.Constant)and n.value.args[0].value=='docker-experimental':
+            selected.append(n)
+        elif isinstance(n,ast.Assert)and any(isinstance(v,ast.Name)and v.id=='seconds'for v in ast.walk(n)):
+            selected.append(n)
+    assert len(selected)==5
+    budget_assert=next(n for n in selected if isinstance(n,ast.Assert))
+    assert any(isinstance(n,ast.Subscript)and isinstance(n.value,ast.Name)and n.value.id=='config'and
+      isinstance(n.slice,ast.Constant)and n.slice.value=='segment_seconds'for n in ast.walk(budget_assert))
+    selected.sort(key=lambda n:n.lineno)
+    contract=dict(segment_seconds=13200,native_transient_authorized=False,protected={})
+    calls=[]
+    env=dict(review=SimpleNamespace(methods=lambda:contract),os=SimpleNamespace(environ={'NSSOC_TX_SECONDS':'13200'}),
+      run=lambda *args,**kwargs:calls.append((args,kwargs)))
+    exec(compile(ast.fix_missing_locations(ast.Module(body=selected,type_ignores=[])),'<mocked-setup-budget-seam>','exec'),env)
+    assert env['config']is contract and env['seconds']==13200
+    assert len(calls)==1 and calls[0][0][0]=='docker-experimental'
+    assert calls[0][0][1]==['sudo','python3','-c',env['docker_config_program']]
+    assert contract['native_transient_authorized']is False
+    return True
+def budget_controls():
+    source=(ROOT/'scripts/cloud_tx_phase_reset334_transient.py').read_text()
+    assert budget_seam(source)
+    edits=[
+      ('old-Docker-config-shadow','docker_config_program','config'),
+      ('budget-reads-program-string',"seconds==config['segment_seconds']","seconds==docker_config_program['segment_seconds']"),
+      ('unbound-fixed-budget',"seconds==config['segment_seconds']==13200","seconds==13200"),
+      ('changed-budget-contract',"config=review.methods()","config=dict(segment_seconds=13200,protected={})")]
+    faults=[]
+    for name,old,new in edits:
+        assert old in source
+        faulty=source.replace(old,new)
+        faults.append(rejected(name,lambda:budget_seam(faulty)))
+    return faults
 def positive_fixture():
     names=['xdut.xd'+str(i)for i in range(318)]
     c=dict(hbt={n:{}for n in names},vectors=['v(n'+str(i)+')'for i in range(4726)],
@@ -162,8 +205,8 @@ def controls():
     for key in identity:
         other=copy.deepcopy(identity);other[key]=['different']if isinstance(other[key],list)else'different'
         faults.append(rejected('runtime-'+key,lambda:support.compatible(identity,other)))
-    faults.extend(copy_controls())
-    assert len(faults)==48
+    faults.extend(copy_controls());faults.extend(budget_controls())
+    assert len(faults)==52
     return dict(status='PASS_PHYSICAL334_TRANSIENT_SOURCE_CONTROLS_NOT_DUT_ACCEPTANCE',
       reversible_source_derivation=der,inherited_zero_OP_controls=old,portable_controls=portable,
       negative_controls=faults,protected_files=len(m['protected']),source_fixture_is_synthetic=True,

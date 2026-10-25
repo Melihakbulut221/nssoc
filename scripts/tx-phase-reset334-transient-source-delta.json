@@ -4,7 +4,7 @@
   "baseline_path": "scripts/frozen_tx8088_branchtailfeed_native.py",
   "baseline_sha256": "e10466f715a933a79444b3f27525f0c2e16275d6fd071f428816a87786842ab6",
   "candidate_path": "scripts/cloud_tx_phase_reset334_transient.py",
-  "candidate_sha256": "6d803dadfee103b9fb0fd8b9e2e22a9464c583c7e1152d43c7639d3edc4fc20c",
+  "candidate_sha256": "db0108b0b553d24d1ce8d4813806f41821bbf607053538a2ebe59127629eb0f0",
   "edits": [
     {
       "before": "Run the unchanged full8088 TX transient with durable native process capsules.",
@@ -144,6 +144,11 @@
     {
       "before": "            compare=\"import pathlib,hashlib,sys;scan=lambda d:{str(p.relative_to(d)):hashlib.sha256(p.read_bytes()).hexdigest()for p in d.rglob('*')if p.is_file()};assert scan(pathlib.Path(sys.argv[1]))==scan(pathlib.Path(sys.argv[2]))\"",
       "after": "            compare=\"import pathlib,hashlib,sys\\ndef sha(path):\\n    with path.open('rb') as stream:\\n        return hashlib.file_digest(stream, 'sha256').hexdigest()\\nscan=lambda d:{str(p.relative_to(d)):sha(p)for p in d.rglob('*')if p.is_file()}\\nassert scan(pathlib.Path(sys.argv[1]))==scan(pathlib.Path(sys.argv[2]))\"",
+      "count": 1
+    },
+    {
+      "before": "        config=\"import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;p.write_text(json.dumps(d))\"\n        run('docker-experimental',['sudo','python3','-c',config]);run('docker-restart',['sudo','systemctl','restart','docker'])",
+      "after": "        docker_config_program=\"import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;p.write_text(json.dumps(d))\"\n        run('docker-experimental',['sudo','python3','-c',docker_config_program]);run('docker-restart',['sudo','systemctl','restart','docker'])",
       "count": 1
     }
   ],

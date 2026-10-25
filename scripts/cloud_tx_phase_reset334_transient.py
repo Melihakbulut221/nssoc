@@ -209,8 +209,8 @@ def main():
         assert build['source_commit']==CRIU and sha(Path('/usr/sbin/criu'))==build['binary_sha256'];r['criu_build']=build;r['runtime_identity']=review.runtime_identity(build)
         run('criu-check',['sudo','criu','check','--all'],False)
         run('kernel',['uname','-a']);run('cpu',['lscpu','--json'])
-        config="import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;p.write_text(json.dumps(d))"
-        run('docker-experimental',['sudo','python3','-c',config]);run('docker-restart',['sudo','systemctl','restart','docker'])
+        docker_config_program="import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;p.write_text(json.dumps(d))"
+        run('docker-experimental',['sudo','python3','-c',docker_config_program]);run('docker-restart',['sudo','systemctl','restart','docker'])
         if stage=='initial':
             assert not(case/'wave.raw').exists() and not(case/'boots.log').exists()
             assert shutil.disk_usage(case).free>=72*1024**3,'Insufficient space for full capture and durable process publication'
