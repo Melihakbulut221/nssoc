@@ -133,17 +133,33 @@ EXPRESSIONS={
  'bypass_arming':('link.reads - before == 2',),
  'collector_reset_POR_only':('link.reads - before == 5',),
  'ignore_polarity':('link.reads - before == 3',)}
+def assertion_site(node,name):
+    if isinstance(node,ast.Assert):
+        message=node.msg.value if isinstance(node.msg,ast.Constant)and isinstance(node.msg.value,str)else None
+        expression=ast.unparse(node.test)
+        if message in MESSAGES[name]or expression in EXPRESSIONS.get(name,()):
+            return {'message':message,'expression':expression}
+    elif isinstance(node,ast.Raise)and node.cause is None:
+        call=node.exc
+        # The existing bounded public-port wait uses this explicit literal raise.
+        # No dynamic message, arbitrary exception, alias, chained cause or re-raise.
+        if (isinstance(call,ast.Call)and isinstance(call.func,ast.Name)and
+            call.func.id=='AssertionError'and len(call.args)==1 and not call.keywords and
+            isinstance(call.args[0],ast.Constant)and
+            call.args[0].value=='bounded public-port scenario timeout'and
+            call.args[0].value in MESSAGES[name]):
+            return {'message':call.args[0].value,'expression':ast.unparse(node),
+                    'kind':'explicit_literal_AssertionError_raise'}
+    return None
+
 def assertion_sites(mutation):
     top=Path(mutation['path']).stem
     sites={}
     for path in (HARNESS,BENCH/('test_'+top+'.py')):
         tree=ast.parse(path.read_text())
         for node in ast.walk(tree):
-            if not isinstance(node,ast.Assert):continue
-            message=node.msg.value if isinstance(node.msg,ast.Constant)and isinstance(node.msg.value,str)else None
-            expression=ast.unparse(node.test)
-            if message in MESSAGES[mutation['name']]or expression in EXPRESSIONS.get(mutation['name'],()):
-                sites[(str(path.resolve()),node.lineno)]={'message':message,'expression':expression}
+            site=assertion_site(node,mutation['name'])
+            if site is not None:sites[(str(path.resolve()),node.lineno)]=site
     assert sites,mutation['name']
     return sites
 

@@ -134,6 +134,44 @@ def controls():
             rows=c.xml_review(encoded(tree),mt,2,mutation=mutation,log=log)
             assert sum(x['disposition']=='DETECTED_ASSERTION'for x in rows)==1
         found['all18_exact_assertion_classifier_positives']={'passed':True,'count':18}
+        # Exercise the actual pinned harness raise through the same XML classifier.
+        raised=next(x for x in mutations if x['name']=='hide_loss')
+        rt=Path(raised['path']).stem
+        raised_sites={key:value for key,value in c.assertion_sites(raised).items()
+                      if value.get('kind')=='explicit_literal_AssertionError_raise'}
+        assert len(raised_sites)==1
+        ro,rs=next(iter(raised_sites.items()))
+        assert ro[0]==str(c.HARNESS.resolve())
+        raise_tree=fixture(rt,raised)
+        case(raise_tree,raised['test']).find('failure').set('error_msg',rs['message'])
+        raise_trace='  File "%s", line %d, in until\n'%(ro[0],ro[1])
+        rows=c.xml_review(encoded(raise_tree),rt,2,mutation=raised,log=raise_trace)
+        assert sum(x['disposition']=='DETECTED_ASSERTION'for x in rows)==1
+        found['qualified_literal_raise_positive']={'passed':True,'source':list(ro)}
+        def bad_raise(change,trace=raise_trace):
+            bad=copy.deepcopy(raise_tree);change(bad)
+            return lambda:c.xml_review(encoded(bad),rt,2,mutation=raised,log=trace)
+        reject('raised_nonbehavioral_RuntimeError',bad_raise(lambda r:
+            case(r,raised['test']).find('failure').set('error_type','RuntimeError')))
+        reject('raised_wrong_message',bad_raise(lambda r:
+            case(r,raised['test']).find('failure').set('error_msg','unrelated timeout')))
+        reject('raised_unqualified_line',bad_raise(lambda r:None,
+               trace='  File "%s", line 1, in until\n'%ro[0]))
+        reject('raised_unqualified_file',bad_raise(lambda r:None,
+               trace='  File "/tmp/unreviewed.py", line %d, in until\n'%ro[1]))
+        def require_raise_site(source):
+            node=ast.parse(source).body[0]
+            assert c.assertion_site(node,raised['name'])is not None
+        for name,source in [
+            ('wrong_type',"raise RuntimeError('bounded public-port scenario timeout')"),
+            ('wrong_message',"raise AssertionError('unrelated timeout')"),
+            ('dynamic_message',"raise AssertionError(message)"),
+            ('reraise','raise'),
+            ('attribute_call',"raise errors.AssertionError('bounded public-port scenario timeout')"),
+            ('keyword',"raise AssertionError(message='bounded public-port scenario timeout')"),
+            ('chained_cause',"raise AssertionError('bounded public-port scenario timeout') from error"),
+            ('extra_argument',"raise AssertionError('bounded public-port scenario timeout', other)")]:
+            reject('source_raise_'+name,lambda source=source:require_raise_site(source))
         mutation=mutations[0];mt=Path(mutation['path']).stem;tree=fixture(mt,mutation)
         origin,site=next(iter(c.assertion_sites(mutation).items()))
         case(tree,mutation['test']).find('failure').set('error_msg',site['message'])
@@ -165,7 +203,7 @@ def controls():
         c.pins()
         result.update(status='PASS_CDC_CONTROLLER_SOURCE_AND_CLASSIFICATION_CONTROLS_NO_RTL',
                       controls=found,classification_control_count=len(found),terminal_source_pins_unchanged=True)
-        assert len(found)==36
+        assert len(found)==49
     except BaseException as error:
         result.update(status='FAIL_OR_INTERRUPTED',error=repr(error),traceback=traceback.format_exc())
         raise

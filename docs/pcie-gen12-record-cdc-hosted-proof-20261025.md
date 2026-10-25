@@ -51,7 +51,7 @@ inconclusive proof failures, never counted as detected behavioral mutants.
 The stale-output fault must reach the explicit epoch barrier assertion on known
 held data; the collector-reset fault must reach an explicit data/epoch assertion.
 
-The controller checker defines 36 source/XML/classification controls in addition
+The controller checker defines 49 source/XML/classification controls in addition
 to the 13 actual supervisor fixtures. Publication also requires the unchanged
 17 exact-source release controls, three positive/four negative bounded-wait cases,
 six archive-integrity faults, and the actual extracted read-only publisher program
@@ -82,3 +82,5 @@ Primary sources:
 - https://docs.cocotb.org/en/v2.0.1/simulator_support.html
 - https://github.com/cocotb/cocotb/tree/v2.0.1/src/cocotb_tools/makefiles/simulators
 - https://github.com/verilator/verilator/commit/51cdf52d0f3a3e59b51fd87762646a851e9f4aff
+
+The [explicit assertion correction](pcie-gen12-record-cdc-literal-raise-correction-20261025.md) preserves the first rejected controls run and documents the thirteen additional classifier controls. No RTL or public-port test oracle changed.

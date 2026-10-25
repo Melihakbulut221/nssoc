@@ -33,7 +33,7 @@ jobs:
           from pathlib import Path
           r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-record-cdc/controls.json').read_text())
           assert r['status']=='PASS_CDC_CONTROLLER_SOURCE_AND_CLASSIFICATION_CONTROLS_NO_RTL'
-          assert r['classification_control_count']==36 and len(r['controls'])==36
+          assert r['classification_control_count']==49 and len(r['controls'])==49
           assert all(x.get('passed')is True or x.get('rejected')is True for x in r['controls'].values())
           q=r['qualified_supervision_controls']
           assert len(q['controls'])==13 and all(q['controls'].values())
