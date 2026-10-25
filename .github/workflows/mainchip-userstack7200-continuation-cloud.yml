@@ -1,0 +1,16 @@
+# SPDX-License-Identifier: Apache-2.0
+name: Mainchip exact same-process 7200-second continuation
+on:
+  push:
+    branches: [codex/mainchip7200-register-20261025]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 1
+    steps:
+      - name: Register filename only; no qualification
+        shell: bash
+        run: printf '%s\n' 'REGISTRATION_ONLY_NO_CHECKOUT_NO_NATIVE_NO_QUALIFICATION'
