@@ -2,6 +2,23 @@
   "compiling_behavioral_mutations": 18,
   "controller_controls": 49,
   "mapped_named_executions": 33,
+  "memory_sampler_actual_controls": {
+    "attempt": 1,
+    "classification": 49,
+    "full_result_bytes": 89873,
+    "full_result_path": "docs/evidence/pcie-gen12-record-cdc-memory-sampler-controls-result-20261025.json",
+    "full_result_sha256": "01b90521761c201d9654b6bbe88e67d59832f7cd2d4bb5fb609c983a65b79d60",
+    "job": 121177215169,
+    "native_job_skipped": true,
+    "real_churn_samples": 109,
+    "receipt_path": "docs/evidence/pcie-gen12-record-cdc-memory-sampler-controls-pass-20261025.json",
+    "receipt_sha256": "9bfec6bcdc19a03639a4d5f7ff8530e9df99491523a7f16d48b5bb9abb8a5be0",
+    "run": 40196122448,
+    "sampler_positives": 15,
+    "sampler_refusals": 27,
+    "source": "dbb4e3754a01a0318f01ce1ffb49a3f056d7083c",
+    "supervision": 13
+  },
   "memory_sampler_adapter": {
     "actual_failure_result_sha256": "4e1057e4980f5a55df81838262216238c8db1ab0d20e9f5fda7df45f9ca907f5",
     "actual_failure_run": 40193110968,
@@ -26,8 +43,11 @@
     "total_snapshot_window_seconds": 0.1
   },
   "mutations_executed": false,
-  "native_execution_authorized": false,
-  "native_review_receipt": null,
+  "native_execution_authorized": true,
+  "native_review_receipt": {
+    "path": "docs/evidence/pcie-gen12-record-cdc-memory-sampler-native-activation-review-20261025.json",
+    "sha256": "77a944b71f114d2058adaf77922b7e37c4d7b506b4a498d7b17ec87249ae1b7d"
+  },
   "positive_named_executions": 66,
   "previous_source_controls": {
     "result_sha256": "1e4de76573238bd327ebbcae67beb5e2ca300446545a01da22ffa050fd5ac9c1",
@@ -52,6 +72,11 @@
     "docs/evidence/pcie-gen12-record-cdc-controls-rejected-result-20261025.json": "69e5415121c88131f77831175e5018fede9b01f47b6fe5baa39f92048d2c54d2",
     "docs/evidence/pcie-gen12-record-cdc-controls-rejection-20261025.json": "73e021eea701cc36811a37d94b72cfd463916c8419c01bec72c941d3c7545fca",
     "docs/evidence/pcie-gen12-record-cdc-independent-source-review-20261025.json": "982bc88139bac7f9e5631e654cce069e36dd01f06541f5537da240efa0c6fd6f",
+    "docs/evidence/pcie-gen12-record-cdc-memory-sampler-controls-dispatch-20261025.json": "cbc5f908a6be5ee2969fba5684d33b37b4ccfa4280b3d2ebd3e202300a3708f6",
+    "docs/evidence/pcie-gen12-record-cdc-memory-sampler-controls-pass-20261025.json": "9bfec6bcdc19a03639a4d5f7ff8530e9df99491523a7f16d48b5bb9abb8a5be0",
+    "docs/evidence/pcie-gen12-record-cdc-memory-sampler-controls-plan-20261025.json": "01dfd73ce05707cdc0aaa59e75a5aedcf3c9bbec4bb5809ae64bf6fd013ff624",
+    "docs/evidence/pcie-gen12-record-cdc-memory-sampler-controls-result-20261025.json": "01b90521761c201d9654b6bbe88e67d59832f7cd2d4bb5fb609c983a65b79d60",
+    "docs/evidence/pcie-gen12-record-cdc-memory-sampler-peer-review-20261025.json": "e0eab481f0d9ed7ad5750ad0462ef2748b73ef55455d8b6b50687c3f6d494f65",
     "docs/evidence/pcie-gen12-record-cdc-native-rejected-result-20261025.json": "4e1057e4980f5a55df81838262216238c8db1ab0d20e9f5fda7df45f9ca907f5",
     "docs/evidence/pcie-gen12-record-cdc-native-tool-setup-rejection-20261025.json": "a41c279a75a2b83dd7d6e32fe2b3d77b1f0ab99aff2b74c6733718480f1f9e76",
     "docs/evidence/pcie-gen12-training-record-noshare-native-pass-20261025.json": "23f194ff593e30c340f7562ab92c1a66f7107b5f35ff3abda7f0d293a50bd10f",
@@ -168,7 +193,7 @@
     "wait_positives": 3
   },
   "refinement_source": "078c1c3b7bf6a7305176a1e3ab38c18c9ace4a47",
-  "review_status": "SOURCE_ONLY_REVIEW_PENDING",
+  "review_status": "REVIEWED_FOR_ONE_HOSTED_PROOF",
   "schema": "gen12-record-cdc-hosted-proof-source-v1",
   "scope": {
     "LTSSM_implemented": false,
@@ -182,7 +207,7 @@
     "x4_lane_mapping": false
   },
   "simulations_executed": false,
-  "source_controls_executed": false,
+  "source_controls_executed": true,
   "source_only_reviewed_basis": "50708f2c75c4c44246a7226cb4b9cb86dd2f10af",
   "supervisor_reuse": {
     "archived_protected_count": 52,
@@ -203,9 +228,7 @@
     "verilator_tag": "v5.040"
   },
   "unfinished": [
-    "Independent review of bounded memory sampler adapter",
-    "Hosted 15 positive / 27 negative sampler controls and real harmless churn, plus all inherited controls",
-    "Separate metadata activation review before any native retry",
+    "Final root metadata review before the one proposed native retry",
     "Actual 66 RTL / 33 mapped / 18 compiled-fault proof remains entirely unexecuted"
   ],
   "vendor": {
