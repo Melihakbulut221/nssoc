@@ -1,0 +1,426 @@
+{
+  "status": "REGISTERED_ETH_MBIST_VERIFIED_NEW_PHYSICAL_VALIDATION_PENDING",
+  "at": "2026-10-11T08:36:49.160477+03:00",
+  "rtl_changes": {
+    "hw/soc/rtl/dft/soc_sram_mbist.v": "d0b4cf57631705fb7b64e1cecb5e6433d36b79f9cba37b1a4445d2dbbce85c23",
+    "hw/soc/rtl/dft/soc_eth_fifo_sram.v": "27791f5a82cfd71cf4a3d389edd98a2af02657abe3534e2605e981e59866d1b6",
+    "hw/soc/tb/tb_soc_sram_mbist.v": "4a1e3f3ba0b5354ff4d45919f3d1fa8d8a1e9d24f84ac81d5b96067fc91dcabe",
+    "hw/soc/tb/cocotb/test_soc_pcie_ethernet.py": "00ef9a721816bd9504e9a365b0573cee2bce849616e09e3db664551645307a95",
+    "sw/tests/test_soc_sram_mbist.py": "ca55efe71c8d56c2e5e563164214f99b57980fdf0501dd346bdf09ad117da319"
+  },
+  "mbist": {
+    "tests": 96,
+    "skipped": 0,
+    "native_vendor_fifo_cases": 37,
+    "native_sources_unchanged": true,
+    "mapped_response_bits": 64,
+    "mapped_clock_domains": {
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_a.response_q": "eth_rx_clk_i",
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.u_b.response_q": "clk_i",
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.u_a.response_q": "clk_i",
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.u_b.response_q": "eth_tx_clk_i"
+    },
+    "startup_bound": {
+      "old_architecture_ns": 5275648,
+      "new_architecture_ns": 6995968,
+      "new_test_limit_ns": 7200000,
+      "extra_cycles_per_port": 61440
+    },
+    "joint04": "CANCELLED_OBSOLETE_5P6MS_STARTUP_BOUND_PRESERVED",
+    "joint11": "RUNNING",
+    "new_physical": "physical12 queued after corrected joint11, then floorplan-through-postCTS and fresh allgroup readback13; no route or acceptance"
+  },
+  "both28_completed": {
+    "status": "FAIL_NATIVE_PARENT753_FINITE_POINT",
+    "functional_checks": {
+      "vco_first": false,
+      "first_second": false,
+      "second_received": false,
+      "received_count": false,
+      "count_feedback": false,
+      "vco_feedback": false,
+      "mod5_state_and_complement_rails": false,
+      "feedback_swing": false
+    },
+    "all753_electrical_pass": true,
+    "wave": {
+      "bytes": 2507138782,
+      "sha256": "123b65e8c7f02da721b28c3556eb71e0a03981b0c833ca4758843f2b4b1b4cea"
+    },
+    "phase": "FAIL_CAUSAL_PHASE_FINITE_PARENT753_REVIEW_ONLY"
+  },
+  "rail80": {
+    "drc_markers": 0,
+    "drc_categories": 560,
+    "hierarchical_lvs_pairs": 9,
+    "flat_lvs_devices": 753,
+    "parent_R": 91,
+    "parent_C": 224,
+    "total_wire_records": 7961,
+    "planes": 61,
+    "rail_path_resistance_ohm": {
+      "A_div1_DIV_AVDD": 2.4779065,
+      "A_div1_AVSS": 2.1548365
+    },
+    "transient": "RUNNING_FRESH_50NS_753_DEVICES_ORIGINAL_EIGHT_FUNCTIONAL_CRITERIA",
+    "qualified_pex": false,
+    "main_chip_integrated": false
+  },
+  "timing": {
+    "postcts_global_slack_ns": {
+      "slow_max": -1.795591,
+      "slow_min": -0.25106,
+      "typical_max": -0.16207,
+      "typical_min": -0.211342,
+      "fast_max": 0.651847,
+      "fast_min": -0.215361
+    },
+    "setup1000": {
+      "slow_max": {
+        "before": -1.795591,
+        "after": -1.722623
+      },
+      "slow_min": {
+        "before": -0.25106,
+        "after": -0.248513
+      },
+      "typical_max": {
+        "before": -0.16207,
+        "after": -0.164523
+      },
+      "typical_min": {
+        "before": -0.211342,
+        "after": -0.209626
+      },
+      "fast_max": {
+        "before": 0.651847,
+        "after": 0.649319
+      },
+      "fast_min": {
+        "before": -0.215361,
+        "after": -0.214078
+      }
+    },
+    "trials": {
+      "targeted-hold": {
+        "graph": {
+          "original_cells": 112709,
+          "original_pins": 577599,
+          "original_ports": 354,
+          "identity_delay_cells": 253
+        },
+        "fault_controls": [
+          "wrong_cell",
+          "short_to_ground",
+          "old_pin_rewired",
+          "output_rewired"
+        ],
+        "allgroup_slack_comparison_ns": {
+          "slow_max": {
+            "old": -1.795591,
+            "new": -2.405218,
+            "delta": -0.6096270000000001,
+            "eth_gtx": 2.311099
+          },
+          "slow_min": {
+            "old": -0.25106,
+            "new": -0.092495,
+            "delta": 0.158565,
+            "eth_gtx": 1.597635
+          },
+          "typical_max": {
+            "old": -0.16207,
+            "new": -0.536487,
+            "delta": -0.37441700000000006,
+            "eth_gtx": 3.422792
+          },
+          "typical_min": {
+            "old": -0.211342,
+            "new": -0.112572,
+            "delta": 0.09877,
+            "eth_gtx": 0.723537
+          },
+          "fast_max": {
+            "old": 0.651847,
+            "new": 0.393624,
+            "delta": -0.258223,
+            "eth_gtx": 4.02707
+          },
+          "fast_min": {
+            "old": -0.215361,
+            "new": -0.109806,
+            "delta": 0.105555,
+            "eth_gtx": 0.253492
+          }
+        },
+        "adopted": false,
+        "scope": "Placement-estimated corners only. Setup/hold regressions prevent acceptance, including 242delay trial whose three hold minima are positive."
+      },
+      "ethernet-hold": {
+        "graph": {
+          "original_cells": 112709,
+          "original_pins": 577599,
+          "original_ports": 354,
+          "identity_delay_cells": 20
+        },
+        "fault_controls": [
+          "wrong_cell",
+          "short_to_ground",
+          "old_pin_rewired",
+          "output_rewired"
+        ],
+        "allgroup_slack_comparison_ns": {
+          "slow_max": {
+            "old": -1.795591,
+            "new": -1.811501,
+            "delta": -0.01591000000000009,
+            "eth_gtx": 2.323711
+          },
+          "slow_min": {
+            "old": -0.25106,
+            "new": -0.248513,
+            "delta": 0.0025469999999999937,
+            "eth_gtx": 1.598636
+          },
+          "typical_max": {
+            "old": -0.16207,
+            "new": -0.164825,
+            "delta": -0.0027550000000000074,
+            "eth_gtx": 3.430663
+          },
+          "typical_min": {
+            "old": -0.211342,
+            "new": -0.209626,
+            "delta": 0.0017159999999999953,
+            "eth_gtx": 0.724196
+          },
+          "fast_max": {
+            "old": 0.651847,
+            "new": 0.649154,
+            "delta": -0.0026929999999999454,
+            "eth_gtx": 4.032343
+          },
+          "fast_min": {
+            "old": -0.215361,
+            "new": -0.180441,
+            "delta": 0.03492000000000001,
+            "eth_gtx": 0.253854
+          }
+        },
+        "adopted": false,
+        "scope": "Placement-estimated corners only. Setup/hold regressions prevent acceptance, including 242delay trial whose three hold minima are positive."
+      },
+      "critical-drive": {
+        "graph": {
+          "original_cells": 112709,
+          "original_pins": 577599,
+          "original_ports": 354,
+          "upsized_cells": 42
+        },
+        "fault_controls": [
+          "wrong_cell",
+          "old_pin_rewired",
+          "output_rewired",
+          "extra_cell"
+        ],
+        "allgroup_slack_comparison_ns": {
+          "slow_max": {
+            "old": -1.795591,
+            "new": -1.805632,
+            "delta": -0.010040999999999967
+          },
+          "slow_min": {
+            "old": -0.25106,
+            "new": -0.550392,
+            "delta": -0.299332
+          },
+          "typical_max": {
+            "old": -0.16207,
+            "new": 0.13371,
+            "delta": 0.29578
+          },
+          "typical_min": {
+            "old": -0.211342,
+            "new": -0.375985,
+            "delta": -0.164643
+          },
+          "fast_max": {
+            "old": 0.651847,
+            "new": 1.007791,
+            "delta": 0.35594400000000015
+          },
+          "fast_min": {
+            "old": -0.215361,
+            "new": -0.278157,
+            "delta": -0.06279599999999999
+          }
+        },
+        "adopted": false,
+        "scope": "Placement-estimated corners only. Setup/hold regressions prevent acceptance, including 242delay trial whose three hold minima are positive."
+      },
+      "endpoint-hold": {
+        "graph": {
+          "original_cells": 112709,
+          "original_pins": 577599,
+          "original_ports": 354,
+          "identity_delay_cells": 241
+        },
+        "fault_controls": [
+          "wrong_cell",
+          "short_to_ground",
+          "old_pin_rewired",
+          "output_rewired"
+        ],
+        "allgroup_slack_comparison_ns": {
+          "slow_max": {
+            "old": -1.795591,
+            "new": -2.351941,
+            "delta": -0.5563500000000001,
+            "eth_gtx": 2.311099
+          },
+          "slow_min": {
+            "old": -0.25106,
+            "new": 0.150626,
+            "delta": 0.401686,
+            "eth_gtx": 1.597635
+          },
+          "typical_max": {
+            "old": -0.16207,
+            "new": -0.299736,
+            "delta": -0.137666,
+            "eth_gtx": 3.422792
+          },
+          "typical_min": {
+            "old": -0.211342,
+            "new": 0.048177,
+            "delta": 0.259519,
+            "eth_gtx": 0.723537
+          },
+          "fast_max": {
+            "old": 0.651847,
+            "new": 0.648833,
+            "delta": -0.003013999999999961,
+            "eth_gtx": 4.02707
+          },
+          "fast_min": {
+            "old": -0.215361,
+            "new": -0.022907,
+            "delta": 0.192454,
+            "eth_gtx": 0.253492
+          }
+        },
+        "adopted": false,
+        "scope": "Placement-estimated corners only. Setup/hold regressions prevent acceptance, including 242delay trial whose three hold minima are positive."
+      },
+      "endpoint-reset-hold": {
+        "graph": {
+          "original_cells": 112709,
+          "original_pins": 577599,
+          "original_ports": 354,
+          "identity_delay_cells": 242
+        },
+        "fault_controls": [
+          "wrong_cell",
+          "short_to_ground",
+          "old_pin_rewired",
+          "output_rewired"
+        ],
+        "allgroup_slack_comparison_ns": {
+          "slow_max": {
+            "old": -1.795591,
+            "new": -2.336161,
+            "delta": -0.5405700000000002,
+            "eth_gtx": 2.311099
+          },
+          "slow_min": {
+            "old": -0.25106,
+            "new": 0.150626,
+            "delta": 0.401686,
+            "eth_gtx": 1.597635
+          },
+          "typical_max": {
+            "old": -0.16207,
+            "new": -0.290166,
+            "delta": -0.128096,
+            "eth_gtx": 3.422792
+          },
+          "typical_min": {
+            "old": -0.211342,
+            "new": 0.123405,
+            "delta": 0.334747,
+            "eth_gtx": 0.723537
+          },
+          "fast_max": {
+            "old": 0.651847,
+            "new": 0.662277,
+            "delta": 0.01043000000000005,
+            "eth_gtx": 4.02707
+          },
+          "fast_min": {
+            "old": -0.215361,
+            "new": 0.000667,
+            "delta": 0.216028,
+            "eth_gtx": 0.253492
+          }
+        },
+        "adopted": false,
+        "scope": "Placement-estimated corners only. Setup/hold regressions prevent acceptance, including 242delay trial whose three hold minima are positive."
+      }
+    },
+    "unconstrained_endpoint_note": "Readback reports one unconstrained D endpoint, mapped to external_irq_sync_q[0]; this summary does not waive or qualify the endpoint or its constraint."
+  },
+  "full_serial_phy_accepted": false,
+  "main_chip_route_accepted": false,
+  "final_timing_accepted": false,
+  "manufacturing_accepted": false,
+  "cache_eviction": {
+    "manifest06.json": 4158605352,
+    "manifest07.json": 3992451806
+  },
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/dft/soc_sram_mbist.v": "d0b4cf57631705fb7b64e1cecb5e6433d36b79f9cba37b1a4445d2dbbce85c23",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/dft/soc_eth_fifo_sram.v": "27791f5a82cfd71cf4a3d389edd98a2af02657abe3534e2605e981e59866d1b6",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_soc_sram_mbist.v": "4a1e3f3ba0b5354ff4d45919f3d1fa8d8a1e9d24f84ac81d5b96067fc91dcabe",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_ethernet.py": "00ef9a721816bd9504e9a365b0573cee2bce849616e09e3db664551645307a95",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_soc_sram_mbist.py": "ca55efe71c8d56c2e5e563164214f99b57980fdf0501dd346bdf09ad117da319",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-targeted-hold-20261011/audit03.json": "ba6c81ebf155fa610bf5a0b1bb2ba18963783c0311b1d94d55eb769ff49c3b9a",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-ethernet-hold-20261011/audit03.json": "7649e44e89ebfa28f57cefb15236e4c7e2f067c7c3bfd6d90356fe519a8e4cc7",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-critical-drive-20261011/audit03.json": "7ebffc4a43c4f6a3945f1fdcb0787ed2cbbf86ee92573167913bc8c0df21d45b",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-endpoint-hold-20261011/audit03.json": "03f1dc3d50e40f6097e70bf7e31cbe2f068f19769ba17235c26e3c39caca397b",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-endpoint-reset-hold-20261011/audit03.json": "bbbd72bab5d5bb4eef86ffa9b435f55fc1900a5abb011cdc4834f7c4d75e44f4",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/summarize14.py": "b354dba52f1d4d04eeb2ea07ef402685c50d8229116f5001f03180bbfcf5dc59",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/tests09.log": "846aab2f87a129cca25c18a6aac01c7c22982768c430a2adf3c69e4c22b6efe1",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/native-eth01/result.json": "52c22fc736654c074012f3b08c8c108c9b8fb535a0f34a52873281b4b40b9c41",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/map-result03.json": "31a1ef0943d3f003536ea042cd4d9fd2678c4b4b5ea5d3de5230ac2cf796c7e6",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/constraints03/result.json": "9309e6d744b3b5bfb63680aa99e6da49c8caa2e9ea5bccc291522467fd65606a",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/joint-cancel10.json": "cf7fad27c8a7809b8dcf22d1d35874ced0360fbc8f35cf9839264ca0f31b593f",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/physical-superseded12.json": "136fd35953aeaafe6f144142724925d2a12bb3e471ec46e7a2033e759f3da9e9",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-both28-native753-20261011/native01/closed-01/result.json": "609e8def9e18eca4b5361b349e62a59955c2864dcacb7f53def331224608cefc",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-both28-native753-20261011/functional-review01.json": "422355f663faeffd0e035108b5fc6832344fd0a525aec4b49fef6caa0724ecdc",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-both28-native753-20261011/electrical-review01.json": "1245ceb1f321eea595ab298931c72c1de5189bce4f27185484da3ab1924e4493",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-both28-native753-20261011/phase-review04.json": "810aac662c36d23d17a439ed8fd8016fb231b3d2c47a23bd54076ae9e6cc570a",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-both28-parent753-20261011/rail80/check22/result.json": "cfeb984d2bed1d88bf23fa4a58e9375ab8a0335c91b89a2486485ab6665155c2",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-both28-parent753-20261011/rail80/check23/result.json": "0c3ed9211f7f38e413d750640fbcaf97e77f0f05eba1e6e7f276499924fa28b9",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-both28-parent753-20261011/rail80/parent-model32/composition.json": "f57385b03e5ce4ed5953d3a85c46b6ff8d8cf32b5e4f7614500355edae01c41c",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-both28-parent753-20261011/rail80/parent-rc26.json": "89a73697734b21cd4a428a87cf61c82d07c06e238565a0d52a2a233b93c6eb5e",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-both28-parent753-20261011/rail80/planes30.json": "29cd8c7cf142341cec6648dfd3dba531b4d593fb9290f920bb9d882c374f5488",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-postcts-20261011/readback02/screen.log": "158bd7a4f52946a17d69e48403f3baef753e0761cd66f32f2fff101eca5b852a",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-metadata-setup-20261011/comparison02.json": "0a374f41f77640c72a8da9e0988aaddbd4ae035f6a400f398b5677817d6cbc88"
+  },
+  "evidence_capsule": {
+    "members": 557,
+    "archive": {
+      "name": "nssoc-rail80-mbist-records-20261011.tar.gz",
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rail80-mbist-delivery-20261011/nssoc-rail80-mbist-records-20261011.tar.gz",
+      "bytes": 177902149,
+      "sha256": "53624c77706dc1f8d1d18fbd7191bd6ae181ce4169077bb945453adbf6b4a7b2"
+    },
+    "public_readback": {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-rail80-mbist-records-20261011.tar.gz",
+      "name": "nssoc-rail80-mbist-records-20261011.tar.gz",
+      "bytes": 177902149,
+      "sha256": "53624c77706dc1f8d1d18fbd7191bd6ae181ce4169077bb945453adbf6b4a7b2"
+    }
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "status": "FROZEN_SOURCE_ONLY_REQUIRES_INDEPENDENT_REVIEW",
+  "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/postroute_repair04.py",
+  "parent_pin": {
+    "bytes": 10869,
+    "sha256": "d4257d9b352db4463f0b12d198699ff0113e65c0d621af8d48fd52f2381ea123"
+  },
+  "candidate": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/postroute_repair05.py",
+  "candidate_pin": {
+    "bytes": 14023,
+    "sha256": "53e84f2d5214f20df9829ff7402d687ecb57355181b99375dffa5483c0ab32b1"
+  },
+  "substitutions": [
+    {
+      "before": "nssoc-tx-path-v4-postroute-repair-04",
+      "after": "nssoc-tx-path-v4-postroute-repair-05",
+      "count": 1
+    },
+    {
+      "before": "TX04",
+      "after": "TX05",
+      "count": 6
+    },
+    {
+      "before": "lines += report('TX05_GRT_BEFORE_BROAD_REPAIR')",
+      "after": "lines += report('TX05_GRT_BEFORE_BROAD_REPAIR')\n# Keep the initialized global-route topology for incremental edits, but start\n# optimization from the actual unchanged baseline SPEF instead of optimistic\n# fresh GRT estimates. Modified nets may receive GRT estimates during repair:\n# this is explicitly a mixed-RC optimization experiment, never signoff timing.\nlines += [f'read_spef -corner {corner} {{{X / \"routed.spef\"}}}' for corner in ('slow', 'typical', 'fast')]\nlines += [f'report_worst_slack -max -digits 6 > {{{O / \"reloaded-actual-worst.rpt\"}}}',\n          f'set worst_file [open {{{O / \"reloaded-actual-worst.rpt\"}}} r]',\n          'set actual_worst [read $worst_file]', 'close $worst_file',\n          'if {[string first \"worst slack max -0.601762\" $actual_worst] < 0} {error \"Reloaded baseline actual RC differs\"}',\n          'puts EXACT_ACTUAL_BASELINE_RC_RESTORED_BEFORE_REPAIR']\nlines += report('TX05_RELOADED_ACTUAL_RC_BEFORE_REPAIR')",
+      "count": 1
+    },
+    {
+      "before": "          f'global_route -end_incremental -congestion_iterations 100 -guide_file {{{O / \"repaired.guide\"}}}',\n          'estimate_parasitics -global_routing']",
+      "after": "          f'global_route -end_incremental -congestion_iterations 100 -guide_file {{{O / \"incremental.guide\"}}}',\n          f'write_verilog {{{O / \"before_final_grt.v\"}}}',\n          'puts TX05_FRESH_FULL_GRT_FINAL',\n          'foreach net [[ord::get_db_block] getNets] {',\n          '  if {[$net getSigType] in {POWER GROUND}} {continue}',\n          '  set wire [$net getWire]',\n          '  if {$wire != \"NULL\"} {odb::dbWire_destroy $wire}',\n          '  $net clearGuides', '}',\n          f'global_route -congestion_iterations 100 -guide_file {{{O / \"repaired.guide\"}}}',\n          'estimate_parasitics -global_routing']",
+      "count": 1
+    },
+    {
+      "before": "    assert 'NATIVE_TX05_BROAD_CANDIDATE_COMPLETE' in log",
+      "after": "    assert 'NATIVE_TX05_BROAD_CANDIDATE_COMPLETE' in log\n    assert 'EXACT_ACTUAL_BASELINE_RC_RESTORED_BEFORE_REPAIR' in log\n    final_log = log.split('TX05_FRESH_FULL_GRT_FINAL\\n', 1)[1]\n    assert not any(x in final_log for x in ('Missing route to pin', 'Fail to restore routing segments')), 'Incomplete final route context'\n    assert pin(O / 'before_final_grt.v') == pin(O / 'repaired.v'), 'Final GRT changed logical netlist'",
+      "count": 1
+    },
+    {
+      "before": "Fresh broad TX05 setup/hold candidate from exact closed TX03; GRT estimates only.",
+      "after": "Actual-SPEF-first TX05 mixed-RC optimization from closed TX03; no signoff.",
+      "count": 1
+    },
+    {
+      "before": "fresh global route estimates then setup sequence clone,sizeup,buffer,split allTNS/0.25ns margin and guarded hold0.05ns.",
+      "after": "fresh global-route topology then exact baseline SPEF reloaded and worstslack asserted before setup sequence clone,sizeup,buffer,split allTNS/0.25ns margin and guarded hold0.05ns. During optimization changed nets may use estimates. Final complete nonincremental GRT rescreen.",
+      "count": 1
+    },
+    {
+      "before": "GRT estimates only; new graph proof",
+      "after": "Mixed-RC optimization and final GRT estimates only; new graph proof",
+      "count": 1
+    },
+    {
+      "before": "EXACT_WIDE_BASIS = {'/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/wide-paths-review01.json': {'bytes': 2143633, 'sha256': '554032f11bc2e07e6c9eb74128adcb6732b16ae85c791910ee5a90d4eff33240'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/actual-paths01/result.json': {'bytes': 9414, 'sha256': '0494f5342af6fdc61cebb56c1373112db6d18a3c498fe1f0332e19df3a4331b2'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/actual-paths01/native.log': {'bytes': 1990916, 'sha256': 'ec1f38c08ea4e7a052fd00388498120eda5a258b436cee1d7773a001909c96f9'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair03-peer/release.json': {'bytes': 3528, 'sha256': '531c2cd8dba1c6c20be0cabd9cf149bf87eff7c68de4f6fbc7bdc761da915c5c'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/current-tool-help.log': {'bytes': 1778, 'sha256': '1ef7b473dc6d4ed63779517d0fafd417a98a29fccc0a2fdde24118f723aaef5a'}}",
+      "after": "EXACT_WIDE_BASIS = {'/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/wide-paths-review01.json': {'bytes': 2143633, 'sha256': '554032f11bc2e07e6c9eb74128adcb6732b16ae85c791910ee5a90d4eff33240'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/actual-paths01/result.json': {'bytes': 9414, 'sha256': '0494f5342af6fdc61cebb56c1373112db6d18a3c498fe1f0332e19df3a4331b2'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/actual-paths01/native.log': {'bytes': 1990916, 'sha256': 'ec1f38c08ea4e7a052fd00388498120eda5a258b436cee1d7773a001909c96f9'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair03-peer/release.json': {'bytes': 3528, 'sha256': '531c2cd8dba1c6c20be0cabd9cf149bf87eff7c68de4f6fbc7bdc761da915c5c'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/current-tool-help.log': {'bytes': 1778, 'sha256': '1ef7b473dc6d4ed63779517d0fafd417a98a29fccc0a2fdde24118f723aaef5a'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/postroute_repair04.py': {'bytes': 10869, 'sha256': 'd4257d9b352db4463f0b12d198699ff0113e65c0d621af8d48fd52f2381ea123'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair04-source/broad-candidate-source-only-peer-rx.json': {'bytes': 9126, 'sha256': '08bd1f3ce10f7b5fa2516923f49e817ffb25331feae623d0cc124e7c562ecdff'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair15_v3.py': {'bytes': 12215, 'sha256': 'a75b1e33b3844781c76eb6791f84d8315cc07cbac2ae702314a2b80fdd3081ff'}, '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/repair15-source/broad-candidate-v3-source-only-peer-vco.json': {'bytes': 20484, 'sha256': '5b16fb448e006731297023883748d8a4b13c1b2e195ff8f16d2238098850a692'}, '/dev/shm/nssoc-tx-path-v4-postroute-repair-04/result.json': {'bytes': 11801, 'sha256': 'c38c5bf7353c04bf310ad7d8880c0d27097b9b1adeeaaca9d33f708a4369e0fb'}, '/dev/shm/nssoc-tx-path-v4-postroute-repair-04/native.log': {'bytes': 6348862, 'sha256': '440bf54d888850558e8943efcfd7f135098a27343e01db7a412586e96e77f9c9'}}",
+      "count": 1
+    }
+  ],
+  "full_inverse_equal": true,
+  "final_grt_source": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-receive-prefetch-v2-20261004/postroute_repair15_v3.py",
+  "final_grt_parent_pin": {
+    "bytes": 12215,
+    "sha256": "a75b1e33b3844781c76eb6791f84d8315cc07cbac2ae702314a2b80fdd3081ff"
+  }
+}

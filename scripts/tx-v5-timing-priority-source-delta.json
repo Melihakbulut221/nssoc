@@ -1,0 +1,143 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/plan_tx_v5_minimax_rows.py",
+      "candidate_path": "scripts/plan_tx_v5_timing_priority_rows.py",
+      "edits": [
+        {
+          "before": "\"\"\"Minimax placement of the actual60 routed TX legs; geometry planning only.\"\"\"",
+          "after": "\"\"\"Prioritize actual fast TX data legs on the original native row lattice.\"\"\"",
+          "count": 1
+        },
+        {
+          "before": "def solve_rows(labels,fixed,edges,spacing,old,row_quantum=None):",
+          "after": "def solve_rows(labels,fixed,edges,spacing,old,row_quantum=None,weights=None,length_ceiling=None):",
+          "count": 1
+        },
+        {
+          "before": "    n=len(labels);m=len(edges);ix={s:i for i,s in enumerate(labels)}",
+          "after": "    n=len(labels);m=len(edges);ix={s:i for i,s in enumerate(labels)}\n    weights=[1.]*m if weights is None else list(weights)\n    assert len(weights)==m and all(math.isfinite(w)and w>0 for w in weights)\n    assert length_ceiling is None or (math.isfinite(length_ceiling)and length_ceiling>0)",
+          "count": 1
+        },
+        {
+          "before": "        row=np.zeros(n+m+1);row[n+j]=1;row[-1]=-1;constraints.append(row);bounds.append(0)",
+          "after": "        row=np.zeros(n+m+1);row[n+j]=weights[j];row[-1]=-1;constraints.append(row);bounds.append(0)",
+          "count": 1
+        },
+        {
+          "before": "    limits=[(fixed[k],fixed[k])if k in fixed else(0.,max(old.values()))for k in labels]+[(0,None)]*(m+1)",
+          "after": "    limits=[(fixed[k],fixed[k])if k in fixed else(0.,max(old.values()))for k in labels]+[(0,length_ceiling)]*m+[(0,None)]",
+          "count": 1
+        },
+        {
+          "before": "    limits[-1]=(0,optimum+.001);c[:]=0;c[n:n+m]=1",
+          "after": "    limits[-1]=(0,optimum+.001);c[:]=0;c[n:n+m]=weights",
+          "count": 1
+        },
+        {
+          "before": "    assert max(lengths)<=optimum+.02",
+          "after": "    assert max(w*l for w,l in zip(weights,lengths,strict=True))<=optimum+max(weights)*.02\n    assert length_ceiling is None or max(lengths)<=length_ceiling+.02",
+          "count": 1
+        },
+        {
+          "before": "    return ys,dict(first_objective_lower_bound_um=optimum,rounded_max_fixed_track_length_um=max(lengths),",
+          "after": "    return ys,dict(first_objective_lower_bound_um=optimum,rounded_max_fixed_track_length_um=max(lengths),\n                   rounded_max_weighted_fixed_track_length_um=max(w*l for w,l in zip(weights,lengths,strict=True)),\n                   weights=weights,length_ceiling_um=length_ceiling,",
+          "count": 1
+        },
+        {
+          "before": "                   lexicographic_objectives=['minimum maximum actual-leg length','minimum total length at fixed maximum'])",
+          "after": "                   lexicographic_objectives=['minimum maximum stride-weighted actual-leg length','minimum weighted total length at fixed maximum'])",
+          "count": 1
+        },
+        {
+          "before": "    assert allocate([('a',0,100),('b',10,20),('c',112,150)],[1,2])==dict(a=1,b=2,c=1)",
+          "after": "    chain=[('a','b',0.,10.),('b','c',0.,10.),('c','d',0.,10.)]\n    yw,rw=solve_rows(list(old),dict(a=0.,d=900.),chain,[],old,weights=[1.,2.,4.])\n    assert abs(rw['first_objective_lower_bound_um']-930/(1+1/2+1/4))<1e-7\n    assert abs(yw['b']-(930/(1+1/2+1/4)-10))<.02\n    yl,rl=solve_rows(list(old),dict(a=0.,d=900.),chain,[],old,row_quantum=100.,weights=[1.,2.,4.],length_ceiling=700.)\n    assert yl==dict(a=0.,b=600.,c=800.,d=900.)and abs(rl['first_objective_lower_bound_um']-610)<1e-7\n    assert allocate([('a',0,100),('b',10,20),('c',112,150)],[1,2])==dict(a=1,b=2,c=1)",
+          "count": 1
+        },
+        {
+          "before": "    return dict(chain_exact_optimum=True,integer_lattice_exact_optimum=True,overlap_separation_and_disjoint_reuse=True,rejected=bad)",
+          "after": "    return dict(chain_exact_optimum=True,integer_lattice_exact_optimum=True,weighted_chain_exact_optimum=True,weighted_lattice_exact_optimum=True,overlap_separation_and_disjoint_reuse=True,rejected=bad)",
+          "count": 1
+        },
+        {
+          "before": "    ys,solver=solve_rows(labels,fixed,edges,spacing,old,row_quantum=600.)",
+          "after": "    root=Path(__file__).resolve().parents[1]\n    prior=json.loads((root/'docs/evidence/tx-v5-minimax-physical-pass-20261019.json').read_text())\n    assert prior['source_run']==39265712814 and prior['summary_sha256']=='5d81376ebdd2147693e30888276bf60a460aa5191c5454ae891b6516526b43d9'\n    before_priority=prior['report']['layout']['signal_routes']\n    assert len(before_priority)==len(edges)==60\n    def stride(parent):\n        if parent=='f':return 1\n        if parent in ('a','b'):return 2\n        m=re.fullmatch(r'p(4|8)_(\\d+)',parent);assert m,parent\n        return int(m[1])\n    weights=[16/stride(r['endpoints'][1].split('.')[0])for r in record['signal_routes']]\n    assert {w:weights.count(w)for w in set(weights)}=={2.:32,4.:16,8.:8,16.:4}\n    # Bound the actual horizontal increase over every permitted rail-aware track.\n    # This retains the original independent maximum-length gate after allocation.\n    original_max=max(r['centerline_length_um']for r in record['signal_routes'])\n    extra=[]\n    for r,edge in zip(record['signal_routes'],edges,strict=True):\n        (a,ap),(b,bp)=[v.split('.')for v in r['endpoints']]\n        col=box(p[b]['bbox_um'])[0]\n        right=max(box(bb)[2]for k in columns[col]for bb in p[k]['ports'].values())\n        x0=center(p[a]['ports'][ap])[0];x1=center(p[b]['ports'][bp])[0]\n        for offset in (40,52,64,76,88,100,112,172,184,220,232,244,256):\n            track=right+offset;extra.append(abs(x0-track)+abs(x1-track)-edge[3])\n    reserve=max(0.,max(extra))+.05\n    ceiling=original_max*.8-reserve\n    ys,solver=solve_rows(labels,fixed,edges,spacing,old,row_quantum=600.,weights=weights,length_ceiling=ceiling)",
+          "count": 1
+        },
+        {
+          "before": "    return dict(status='PLANNED_ALL60_LEG_MINIMAX_ROWS_AND_RAIL_AWARE_CHANNELS_NOT_PHYSICAL_OR_ELECTRICAL_ACCEPTANCE',",
+          "after": "    prior_by={r['net']:r for r in before_priority};assert set(prior_by)=={r['net']for r in lengths}\n    weighted=[];stage_metrics={}\n    for q,w in zip(lengths,weights,strict=True):\n        previous=prior_by[q['net']];assert previous['endpoints']==q['endpoints']\n        q.update(weight=w,previous_minimax_um=previous['centerline_length_um'])\n        weighted.append(dict(net=q['net'],before=previous['centerline_length_um']*w,after=q['after_um']*w))\n        parent=q['endpoints'][1].split('.')[0];st=str(stride(parent))\n        stage_metrics.setdefault(st,[]).append(q)\n    priority=dict(maximum_weighted_before=max(x['before']for x in weighted),\n        maximum_weighted_after=max(x['after']for x in weighted),\n        stage_maxima={k:dict(before=max(x['previous_minimax_um']for x in v),after=max(x['after_um']for x in v))for k,v in stage_metrics.items()},\n        regressed_legs=[q for q in lengths if q['after_um']>q['previous_minimax_um']+1e-7],\n        original_maximum_ceiling_um=original_max*.8,\n        physical_input_review_run=39301708644,\n        meaning='16/receiver stride is a geometry priority proxy, not measured delay. Original clocks, bit phases and electrical gates remain unchanged; every regressed leg requires fresh full-wave testing.')\n    assert priority['maximum_weighted_after']<priority['maximum_weighted_before']\n    assert priority['stage_maxima']['1']['after']<priority['stage_maxima']['1']['before']\n    return dict(status='PLANNED_ALL60_LEG_TIMING_PRIORITY_ROWS_AND_RAIL_AWARE_CHANNELS_NOT_PHYSICAL_OR_ELECTRICAL_ACCEPTANCE',\n        timing_priority=priority,",
+          "count": 1
+        },
+        {
+          "before": "        scope='All60 original intermacro legs planned together; fixed16leaf rows/final row, all macro X coordinates and minimum600um same-column separation, all original600um row residues preserved. Child geometry, device cards, clocks, source bits, electrical gates unchanged. Original rail widths remain. Every regressed leg retained; actual GDS DRC/LVS and fresh RC/fullwave gates still required.')",
+          "after": "        scope='All60 original intermacro legs prioritized by receiver stride, with original16leaf/final fixed rows, macro X,600um separation/residues, children, devices, clocks and electrical gates preserved. Original global route ceiling remains; every regression against measured minimax routes is retained. DRC/LVS and fresh RC/fullwave must decide acceptance.')",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "58027de5621d71ae6e136ac12cb54130b2d2a0d675df15e6cfba64a6f75af7da",
+      "candidate_sha256": "d278fdd536d0e7f300a0ba8b78960bce5c5bc51eba1537afbc0abd0651092721"
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_v5_minimax_assembly.py",
+      "candidate_path": "scripts/cloud_tx_v5_timing_priority_assembly.py",
+      "edits": [
+        {
+          "before": "tx-v5-minimax",
+          "after": "tx-v5-timing-priority",
+          "count": 1
+        },
+        {
+          "before": "tx_v5_minimax",
+          "after": "tx_v5_timing_priority",
+          "count": 4
+        },
+        {
+          "before": "v5_minimax_core",
+          "after": "v5_timing_priority_core",
+          "count": 1
+        },
+        {
+          "before": "minimax-geometry",
+          "after": "timing-priority-geometry",
+          "count": 2
+        },
+        {
+          "before": "MINIMAX",
+          "after": "TIMING_PRIORITY",
+          "count": 1
+        },
+        {
+          "before": "by minimax row placement",
+          "after": "by receiver-stride-weighted row placement",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "7055e92bd0c8c43d93b648fdcecfbd386caf5dbe866cebdca3716c2f4c3ab3f9",
+      "candidate_sha256": "44f0528266658d26b86d9cdeccedb49acd19330675b5978b214cb7dab9c61478"
+    },
+    {
+      "baseline_path": "scripts/check_tx_v5_minimax_geometry.py",
+      "candidate_path": "scripts/check_tx_v5_timing_priority_geometry.py",
+      "edits": [
+        {
+          "before": "minimax-geometry",
+          "after": "timing-priority-geometry",
+          "count": 1
+        },
+        {
+          "before": "MINIMAX",
+          "after": "TIMING_PRIORITY",
+          "count": 2
+        },
+        {
+          "before": "    assert record['parent_signal_centerline_max_um']<old['parent_signal_centerline_max_um']*.8",
+          "after": "    assert record['parent_signal_centerline_max_um']<old['parent_signal_centerline_max_um']*.8\n    # Independent arithmetic on actual generated routes, compared to the failed minimax layout.\n    prior_pin=json.loads((ROOT/'docs/evidence/tx-v5-minimax-physical-pass-20261019.json').read_text())\n    assert prior_pin['source_run']==39265712814 and prior_pin['summary_sha256']=='5d81376ebdd2147693e30888276bf60a460aa5191c5454ae891b6516526b43d9'\n    previous={r['net']:r for r in prior_pin['report']['layout']['signal_routes']}\n    assert set(previous)=={r['net']for r in record['signal_routes']}\n    weighted_before=[];weighted_after=[];final_before=[];final_after=[];regressed=[]\n    for r in record['signal_routes']:\n        o=previous[r['net']];assert o['endpoints']==r['endpoints']\n        parent=r['endpoints'][1].split('.')[0]\n        stride=1 if parent=='f'else 2 if parent in ('a','b')else int(re.fullmatch(r'p(4|8)_\\d+',parent)[1])\n        w=16/stride;weighted_before.append(w*o['centerline_length_um']);weighted_after.append(w*r['centerline_length_um'])\n        if parent=='f':final_before.append(o['centerline_length_um']);final_after.append(r['centerline_length_um'])\n        if r['centerline_length_um']>o['centerline_length_um']+1e-7:regressed.append(r['net'])\n    assert max(weighted_after)<max(weighted_before)and max(final_after)<max(final_before)\n    q=plan['timing_priority']\n    assert abs(max(weighted_before)-q['maximum_weighted_before'])<1e-7\n    assert abs(max(weighted_after)-q['maximum_weighted_after'])<1e-7\n    assert set(regressed)=={r['net']for r in q['regressed_legs']}\n",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "e53cc43bc8e11ae77ca489f07d052c4e2e92954377cc4e60ba3cd98b9e93ea47",
+      "candidate_sha256": "48666c6fa2de71440f7bb78276d1a5849c98a17b6188e042cfa4910f5bc3a22b"
+    }
+  ]
+}

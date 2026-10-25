@@ -1,0 +1,94 @@
+{
+  "status": "PASS_SOURCE_ONLY_V25_REGISTERED_RING_COMMAND_CONTRACT",
+  "contract": {
+    "bytes": 11823,
+    "sha256": "d9a2be36142de3aab93737344376421944d5689e51cd9c2847d01433c8c02257"
+  },
+  "integration_audit": {
+    "bytes": 3401,
+    "sha256": "d9489793d8d845e6927055dd6fa0fc202fe853c5132ac90440d23b46bec45adc"
+  },
+  "findings": [],
+  "method": {
+    "bytes": 5163,
+    "sha256": "8212be939676b1ff701b38eca7981d397b19eb80a4e3ae6636c6eed0eadcafd7"
+  },
+  "verified_inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v23.v": {
+      "bytes": 197239,
+      "sha256": "505db8d1daa5c5263a16a3584175bc89a73d1b6e35f16e10b64f1f9f6483dde6"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v23.v": {
+      "bytes": 3324,
+      "sha256": "5cfd68e487881df352512575122e695076d01b538e3d38cc8d08533e61e2172a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/slow-critical-path.txt": {
+      "bytes": 5808,
+      "sha256": "de32c467a87a785eb3c71053da6248700f81914f12d87929794be21fd890a519"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/critical-path-attribution.json": {
+      "bytes": 38512,
+      "sha256": "259aaec7f31351286db48c7795e6b9b721eba64c5af7f905b4096be975b61a37"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/timing-comparison.json": {
+      "bytes": 3865,
+      "sha256": "88bb268620e50544e608cce9ec6b72848a4c80833045f1390d5165711df89ab9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v23-20261006/ready-finite.json": {
+      "bytes": 50385,
+      "sha256": "42ffcfe07eb9fb9bfe2b2aee4997cd5b237832146fa182f31ace5e083c4c109e"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/slow-critical-path.txt": {
+      "bytes": 5538,
+      "sha256": "112d35c7d88cb9c95efc4ffce2f7c86104d1702a4c7df97c7d3291c82be15ff7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/critical-path-attribution.json": {
+      "bytes": 41558,
+      "sha256": "c9659f51be37ff4022b2e8fbf8348679e9b234d1165efd180191f535ba519ef6"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/timing-comparison.json": {
+      "bytes": 4136,
+      "sha256": "7bfb463e722c20b6bb5bfce67cc6b687fa9274f31775542cfec62db1683385a9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v24-20261006/ready-finite.json": {
+      "bytes": 43714,
+      "sha256": "40be867848ea683086eb92d206bbbd78280243c2aaa06549ae26ec1757fdb2a5"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v11.v": {
+      "bytes": 3324,
+      "sha256": "e7771bd2832bab07b7dad8576a27b7d6edc7eddf0084b2b00afb32771cd67203"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v5.v": {
+      "bytes": 3712,
+      "sha256": "776d3748a2e18bf43d164688e042da3c8088c1aa0dc3b9fcfaa79133c5a47970"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v": {
+      "bytes": 6729,
+      "sha256": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_owned_v2.v": {
+      "bytes": 4195,
+      "sha256": "697bb3f119cb0b7b0f005de62be937054750eda7aaca330582678bd1f32559b7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v6.v": {
+      "bytes": 17774,
+      "sha256": "263d91fb910ab27e5ac3e2efe49b4e93366aff2d47a498afc483dfd587c679dc"
+    }
+  },
+  "exact_contract01_to02_wording_delta": true,
+  "checks": [
+    "Complete command includes preincrement address, all seven slot-array payload/metadata fields, ordered verdict writes and parser commit; no partial cache-only stage.",
+    "Parser commit remains separate from visible commit; existing commit_n default uses parser frontier. Slot/tag/verdict/cache application and visible frontier share one old-command edge, while retirement sees preedge visible state.",
+    "Old valid command applies independently of current step/current_valid/ending; simultaneous replacement uses NBA old fields. Bubble clears valid and cannot replay. EDS requires pending empty and both frontiers/read/write/descriptor/public drain.",
+    "Fault/reset/start/flush/abort invalidate command and both frontiers before new epoch; scoreboard uses actual preedge public handshake. Inaccessible array differences are explicitly allowed only behind invalid ownership.",
+    "Occupancy remains reserved write_ptr minus actual read_ptr. Pending command is not subtracted to create free space; extended tags and lane last-writer priority remain unchanged.",
+    "Nominal extra output cycle is a restricted testable hypothesis, not universal equivalence. Stalled/fault/capacity behavior uses independent transaction ownership scoreboard, exact once/in-order data and known fault diagnostics.",
+    "Required controls cover final zero-keep drain, pending invalidation, four lane collisions, literal X/Z/procedural controls, capacity/wrap/reuse, actual sustained throughput, and eight real command-stage mutations.",
+    "Mapped command Q-to-ring/cache/verdict D ancestry and exclusion of direct parser payload bypass remain explicit future gates; unchanged4ns timing is measured after functional peer and no adoption follows source contract alone.",
+    "Source-limited integration audit correctly observes only two current wrapper definitions and separate owned paths; event pulses remain parser-timed while visible data is delayed, requiring consumer audit before integration."
+  ],
+  "scope": "Full temporal contract and relevant baseline parser/capacity/retire/writer/cache/control paths read; current named integration wrappers verified. This is permission to develop the separately reviewed experimental stage, not evidence of implemented function, universal cycle equivalence, timing gain, integration or adoption. No RTL or test generation, simulation, native mapping or source edit.",
+  "functional_acceptance": false,
+  "timing_acceptance": false,
+  "physical_acceptance": false
+}

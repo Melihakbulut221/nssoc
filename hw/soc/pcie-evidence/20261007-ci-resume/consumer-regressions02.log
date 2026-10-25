@@ -1,0 +1,129 @@
+......................FF.F..F...                                         [100%]
+=================================== FAILURES ===================================
+________ test_actual_forwarding_and_scatter_faults_rejected[no_forward] ________
+
+tmp_path = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/consumer-regressions02/test_actual_forwarding_and_sca0')
+name = 'no_forward', before = 'if(body_write[previous] &&', after = "if(1'b0 &&"
+case = 'nonadjacent_same_ids_and_zero_keep_gaps'
+
+>   ???
+
+sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/consumer-regressions02/test_actual_forwarding_and_sca0')
+mutation = ('if(body_write[previous] &&', "if(1'b0 &&")
+case = 'nonadjacent_same_ids_and_zero_keep_gaps'
+
+        ("sticky_error_lost", "}=incoming_context;", "}=incoming_context;local_entry_error=0;", "prior_lane_error_survives_later_valid_same_id"),
+    ]
+    
+    
+    def run(tmp, mutation=None, case=None):
+        cmd = [sys.executable, str(ROOT / "scripts/check_pcie_gen3_dllp_consumer_forwarding_v5.py"),
+>              "--out", str(tmp / "capture"), "--iverilog-dir", str(Path(shutil.which("iverilog")).parent)]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E              AssertionError: assert 0 == 1
+E               +  where 0 = <built-in method count of str object at 0x7312a90>('if(body_write[previous] &&')
+E               +    where <built-in method count of str object at 0x7312a90> = '// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n// SPDX-License-Identifier: CERN-OHL-W-2.0\n`default_nettype non...[q];received[q]<=nr[q];seq[q]<=nseq[q];raw[q]<=nraw[q];end\n     end\n   end\n end\nendmodule\n`default_nettype wire\n'.count
+
+sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py:32: AssertionError
+__ test_actual_forwarding_and_scatter_faults_rejected[only_immediate_forward] __
+
+tmp_path = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/consumer-regressions02/test_actual_forwarding_and_sca1')
+name = 'only_immediate_forward', before = 'if(body_write[previous] &&'
+after = 'if(previous==body_lane-1 && body_write[previous] &&'
+case = 'nonadjacent_same_ids_and_zero_keep_gaps'
+
+>   ???
+
+sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/consumer-regressions02/test_actual_forwarding_and_sca1')
+mutation = ('if(body_write[previous] &&', 'if(previous==body_lane-1 && body_write[previous] &&')
+case = 'nonadjacent_same_ids_and_zero_keep_gaps'
+
+        ("sticky_error_lost", "}=incoming_context;", "}=incoming_context;local_entry_error=0;", "prior_lane_error_survives_later_valid_same_id"),
+    ]
+    
+    
+    def run(tmp, mutation=None, case=None):
+        cmd = [sys.executable, str(ROOT / "scripts/check_pcie_gen3_dllp_consumer_forwarding_v5.py"),
+>              "--out", str(tmp / "capture"), "--iverilog-dir", str(Path(shutil.which("iverilog")).parent)]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E              AssertionError: assert 0 == 1
+E               +  where 0 = <built-in method count of str object at 0x73170e0>('if(body_write[previous] &&')
+E               +    where <built-in method count of str object at 0x73170e0> = '// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n// SPDX-License-Identifier: CERN-OHL-W-2.0\n`default_nettype non...[q];received[q]<=nr[q];seq[q]<=nseq[q];raw[q]<=nraw[q];end\n     end\n   end\n end\nendmodule\n`default_nettype wire\n'.count
+
+sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py:32: AssertionError
+_____ test_actual_forwarding_and_scatter_faults_rejected[earliest_forward] _____
+
+tmp_path = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/consumer-regressions02/test_actual_forwarding_and_sca3')
+name = 'earliest_forward'
+before = 'for(previous=0;previous<body_lane;previous=previous+1)'
+after = 'for(previous=body_lane-1;previous>=0;previous=previous-1)'
+case = 'latest_earlier_same_id_for_four_lane_tlp'
+
+>   ???
+
+sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py:51: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/consumer-regressions02/test_actual_forwarding_and_sca3')
+mutation = ('for(previous=0;previous<body_lane;previous=previous+1)', 'for(previous=body_lane-1;previous>=0;previous=previous-1)')
+case = 'latest_earlier_same_id_for_four_lane_tlp'
+
+        ("sticky_error_lost", "}=incoming_context;", "}=incoming_context;local_entry_error=0;", "prior_lane_error_survives_later_valid_same_id"),
+    ]
+    
+    
+    def run(tmp, mutation=None, case=None):
+        cmd = [sys.executable, str(ROOT / "scripts/check_pcie_gen3_dllp_consumer_forwarding_v5.py"),
+>              "--out", str(tmp / "capture"), "--iverilog-dir", str(Path(shutil.which("iverilog")).parent)]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E              AssertionError: assert 0 == 1
+E               +  where 0 = <built-in method count of str object at 0x7341790>('for(previous=0;previous<body_lane;previous=previous+1)')
+E               +    where <built-in method count of str object at 0x7341790> = '// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n// SPDX-License-Identifier: CERN-OHL-W-2.0\n`default_nettype non...[q];received[q]<=nr[q];seq[q]<=nseq[q];raw[q]<=nraw[q];end\n     end\n   end\n end\nendmodule\n`default_nettype wire\n'.count
+
+sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py:32: AssertionError
+___________ test_actual_next_state_mutants_rejected[forwarding_lost] ___________
+
+tmp_path = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/consumer-regressions02/test_actual_next_state_mutants0')
+before = 'if(body_write[previous] &&', after = "if(1'b0 &&"
+
+    @pytest.mark.parametrize("before,after", [
+        ("(body_write[prior_lane] &&", "(1'b0 &&"),
+        ("for(scatter_lane=0;scatter_lane<4;scatter_lane=scatter_lane+1)", "for(scatter_lane=3;scatter_lane>=0;scatter_lane=scatter_lane-1)"),
+        ("}=incoming_context;", "}=incoming_context;local_entry_error=0;"),
+        ("if(released[entry]) begin", "if(1'b0) begin"),
+    ], ids=["forwarding_lost", "last_writer_lost", "sticky_error_lost", "release_lost"])
+    def test_actual_next_state_mutants_rejected(tmp_path, before, after):
+>       result = run(tmp_path, (before, after))
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+sw/tests/test_pcie_gen3_dllp_consumer_state_miter_v5.py:175: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+tmp = PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/consumer-regressions02/test_actual_next_state_mutants0')
+mutation = ('if(body_write[previous] &&', "if(1'b0 &&")
+
+    def run(tmp, mutation=None):
+        src = tmp / "test.v"
+        src.write_text(bench())
+        candidate = NEW
+        if mutation:
+            before, after = mutation
+            source = NEW.read_text()
+>           assert source.count(before) == 1
+E           AssertionError: assert 0 == 1
+E            +  where 0 = <built-in method count of str object at 0x731b730>('if(body_write[previous] &&')
+E            +    where <built-in method count of str object at 0x731b730> = '// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n// SPDX-License-Identifier: CERN-OHL-W-2.0\n`default_nettype non...[q];received[q]<=nr[q];seq[q]<=nseq[q];raw[q]<=nraw[q];end\n     end\n   end\n end\nendmodule\n`default_nettype wire\n'.count
+
+sw/tests/test_pcie_gen3_dllp_consumer_state_miter_v5.py:142: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py::test_actual_forwarding_and_scatter_faults_rejected[no_forward]
+FAILED sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py::test_actual_forwarding_and_scatter_faults_rejected[only_immediate_forward]
+FAILED sw/tests/test_pcie_gen3_dllp_consumer_forwarding_v5.py::test_actual_forwarding_and_scatter_faults_rejected[earliest_forward]
+FAILED sw/tests/test_pcie_gen3_dllp_consumer_state_miter_v5.py::test_actual_next_state_mutants_rejected[forwarding_lost]
+4 failed, 28 passed in 237.24s (0:03:57)

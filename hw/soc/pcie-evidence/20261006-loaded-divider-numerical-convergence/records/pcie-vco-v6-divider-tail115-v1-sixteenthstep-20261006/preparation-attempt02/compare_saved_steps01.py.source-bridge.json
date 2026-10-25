@@ -1,0 +1,1176 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-eighthstep-20261006/compare_saved_steps01.py",
+    "bytes": 6585,
+    "sha256": "bc670e327d323d20acd622101a13c99800295a19cfddaf0cce8afd27aa986ae4"
+  },
+  "child": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-sixteenthstep-20261006/compare_saved_steps01.py",
+    "bytes": 6979,
+    "sha256": "5a0f7b3a7beedf883597354683adb44b0fba216fe5e83645e968a8cbd5d308af"
+  },
+  "full_diff": "--- \n+++ \n@@ -4,12 +4,16 @@\n from pathlib import Path\n import gzip,hashlib,json,os,resource\n import numpy as np\n+import sys\n+sys.path.insert(0,str(Path.cwd()/'hw/soc/out/pcie-tail115-streaming-replay-v1-20261006'))\n+from raw_table01 import open_table\n os.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\n R=Path.cwd();B=Path(__file__).resolve().parent\n OLD=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-wire-06-01')\n MID=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-halfstep-06-01')\n QUARTER=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-quarterstep-06-01')\n-NEW=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eighthstep-06-01')\n+EIGHTH=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eighthstep-06-01')\n+NEW=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-sixteenthstep-06-01')\n def pin(p):\n  p=Path(p)\n  with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n@@ -25,38 +29,41 @@\n assert pin(OLD/'result.json')==dict(bytes=426335,sha256='04f18138303887b2755c09b08afb47c2c5e6c830a40c810578f069f6ecfc2ab7')\n assert pin(MID/'result.json')==dict(bytes=426324,sha256='cd144211f9316debabcdd621847310ee7d49919726d6af341c6b1b9b7433ddc5')\n assert pin(QUARTER/'result.json')==dict(bytes=426389,sha256='765615872aa97b2cbd9849139d5870ae9fe69bc341a0478c84e79135e2d05a76')\n+assert pin(EIGHTH/'result.json')==dict(bytes=426392,sha256='03977b90f4877791934cf74b13274b3476f41ae790307f3c3005481ab6d709ff')\n results=[]\n-for root,step in [(OLD,5e-12),(MID,2.5e-12),(QUARTER,1.25e-12),(NEW,6.25e-13)]:\n+for root,step in [(OLD,5e-12),(MID,2.5e-12),(QUARTER,1.25e-12),(EIGHTH,6.25e-13),(NEW,3.125e-13)]:\n  r=json.loads((root/'result.json').read_text());assert r['status']in('PASS_NATIVE_LOADED_FEEDBACK_SCREEN','FAIL_NATIVE_LOADED_FEEDBACK_SCREEN')\n  assert len(r['devices'])==455 and r['config']['step_s']==step and r['config']['stop_s']==34e-9 and r['config']['window_s']==[4e-9,34e-9]\n  for p,v in r['inputs'].items():assert pin(p)==v\n  for p,v in r['outputs'].items():assert pin(root/p)==v\n- raw=gzip.decompress((root/'wave.raw.gz').read_bytes());assert hashlib.sha256(raw).hexdigest()==r['raw_sha256']\n- header,payload=raw.split(b'Binary:\\n',1);names=[s.decode().split()[1]for s in header.split(b'Variables:\\n')[1].splitlines()];assert len(names)==957 and len(set(names))==957\n- size=r['rows']*957*8;assert payload[size:]==str(r['rows']).encode();assert hashlib.sha256(payload[:size]).hexdigest()==r['payload_sha256']\n- a=np.frombuffer(payload[:size],'<f8').reshape(r['rows'],957);assert np.isfinite(a).all();d=dict(zip(names,a.T));t=d['time'];assert np.all(np.diff(t)>0)and t[-1]==34e-9\n- full_ce=crossings(t,d['v(qp)']-d['v(qn)']);full_ve=crossings(t,d['v(clkp)']-d['v(clkn)'])\n- ce=[e for e in full_ce if 4e-9<=e['time_s']<34e-9]\n- ve=[e for e in full_ve if 4e-9<=e['time_s']<34e-9]\n- fb=[e['time_s']for e in crossings(t,d['v(fb)']-1.25)if 4e-9<=e['time_s']<34e-9]\n- assert fb==r['measurement']['edge_times']['feedback']\n- ct=np.array([e['time_s']for e in ce]);vt=np.array([e['time_s']for e in ve]);assert ct.tolist()==r['measurement']['edge_times']['cml']\n- counts=[int(sum(x<=e<y for e in vt))for x,y in zip(ct[:-1],ct[1:])];assert counts==r['measurement']['actual_vco_period_counts']['native_hbt_div4']\n- first=int(np.argmin(abs(vt-ct[0])));nearest=[int(np.argmin(abs(vt-e)))for e in ct];rows=[]\n- for i,e in enumerate(ct):\n-  fixed=first+4*i;z=dict(cml_index=i,cml_edge=ce[i],nearest_vco_index=nearest[i],nearest_vco_edge=ve[nearest[i]],nearest_phase_ps=float((e-vt[nearest[i]])*1e12),fixed_vco_index=fixed)\n-  if fixed<len(vt):z['fixed_phase_ps']=float((e-vt[fixed])*1e12)\n-  if i<len(counts):\n-   z.update(bucket_count=counts[i],cml_period_ps=float((ct[i+1]-e)*1e12),nearest_ordinal_advance=nearest[i+1]-nearest[i])\n-   if fixed+4<len(vt):z['fixed_four_vco_period_ps']=float((vt[fixed+4]-vt[fixed])*1e12)\n-  rows.append(z)\n- results.append(dict(step_s=step,native_status=r['status'],source_inputs={str(root/p):pin(root/p)for p in ['result.json','wave.raw.gz']},full_values=int(a.size),electrical_pass=r['safety']['passed'],unchanged_all_checks=r['measurement']['checks'],cml_edges=len(ce),vco_edges=len(ve),bucket_counts=counts,bad_bucket_indices=[i for i,v in enumerate(counts)if v!=4],nearest_ordinal_advances=[b-a for a,b in zip(nearest[:-1],nearest[1:])],cml_boundaries=rows))\n- fv=np.array([e['time_s']for e in full_ve]);pre=[e['time_s']for e in full_ce if e['time_s']<4e-9]\n- assert pre\n- vfreq=1/float(np.mean(np.diff(vt)));ffreq=1/float(np.mean(np.diff(fb)))\n- assert float(vfreq)==r['measurement']['vco_frequency_hz'] and float(ffreq)==r['measurement']['feedback_frequency_hz']\n- results[-1].update(vco_frequency_hz=float(vfreq),feedback_frequency_hz=float(ffreq),initial_mapping=dict(vco_before_window=int(sum(fv<4e-9)),first_cml_nearest_global_vco=int(np.argmin(abs(fv-ct[0]))),feedback_nearest_global_vco=[int(np.argmin(abs(fv-v)))for v in fb],previous_cml_s=pre[-1],first_cml_s=float(ct[0]),startup_cml_edges=len(pre)),numerical_edge_times=dict(vco=fv[30:274].tolist(),cml=ct.tolist(),feedback=fb))\n- del raw,payload,a,d\n+ names=r['columns'];assert len(names)==957 and len(set(names))==957\n+ with open_table(root/'wave.raw.gz',rows=r['rows'],columns=names,compressed_pin=r['outputs']['wave.raw.gz'],raw_sha256=r['raw_sha256'],payload_sha256=r['payload_sha256'],raw_bytes=r['raw_bytes'],scratch_directory=B,scratch_limit=1024**3)as table:\n+  a=table['matrix'];d=dict(zip(names,a.T));t=d['time'];assert np.all(np.diff(t)>0)and t[-1]==34e-9\n+  full_ce=crossings(t,d['v(qp)']-d['v(qn)']);full_ve=crossings(t,d['v(clkp)']-d['v(clkn)'])\n+  ce=[e for e in full_ce if 4e-9<=e['time_s']<34e-9]\n+  ve=[e for e in full_ve if 4e-9<=e['time_s']<34e-9]\n+  fb=[e['time_s']for e in crossings(t,d['v(fb)']-1.25)if 4e-9<=e['time_s']<34e-9]\n+  assert fb==r['measurement']['edge_times']['feedback']\n+  ct=np.array([e['time_s']for e in ce]);vt=np.array([e['time_s']for e in ve]);assert ct.tolist()==r['measurement']['edge_times']['cml']\n+  counts=[int(sum(x<=e<y for e in vt))for x,y in zip(ct[:-1],ct[1:])];assert counts==r['measurement']['actual_vco_period_counts']['native_hbt_div4']\n+  first=int(np.argmin(abs(vt-ct[0])));nearest=[int(np.argmin(abs(vt-e)))for e in ct];rows=[]\n+  for i,e in enumerate(ct):\n+   fixed=first+4*i;z=dict(cml_index=i,cml_edge=ce[i],nearest_vco_index=nearest[i],nearest_vco_edge=ve[nearest[i]],nearest_phase_ps=float((e-vt[nearest[i]])*1e12),fixed_vco_index=fixed)\n+   if fixed<len(vt):z['fixed_phase_ps']=float((e-vt[fixed])*1e12)\n+   if i<len(counts):\n+    z.update(bucket_count=counts[i],cml_period_ps=float((ct[i+1]-e)*1e12),nearest_ordinal_advance=nearest[i+1]-nearest[i])\n+    if fixed+4<len(vt):z['fixed_four_vco_period_ps']=float((vt[fixed+4]-vt[fixed])*1e12)\n+   rows.append(z)\n+  results.append(dict(step_s=step,native_status=r['status'],source_inputs={str(root/p):pin(root/p)for p in ['result.json','wave.raw.gz']},full_values=int(a.size),electrical_pass=r['safety']['passed'],unchanged_all_checks=r['measurement']['checks'],cml_edges=len(ce),vco_edges=len(ve),bucket_counts=counts,bad_bucket_indices=[i for i,v in enumerate(counts)if v!=4],nearest_ordinal_advances=[b-a for a,b in zip(nearest[:-1],nearest[1:])],cml_boundaries=rows))\n+  fv=np.array([e['time_s']for e in full_ve]);pre=[e['time_s']for e in full_ce if e['time_s']<4e-9]\n+  assert pre\n+  vfreq=1/float(np.mean(np.diff(vt)));ffreq=1/float(np.mean(np.diff(fb)))\n+  assert float(vfreq)==r['measurement']['vco_frequency_hz'] and float(ffreq)==r['measurement']['feedback_frequency_hz']\n+  results[-1].update(vco_frequency_hz=float(vfreq),feedback_frequency_hz=float(ffreq),initial_mapping=dict(vco_before_window=int(sum(fv<4e-9)),first_cml_nearest_global_vco=int(np.argmin(abs(fv-ct[0]))),feedback_nearest_global_vco=[int(np.argmin(abs(fv-v)))for v in fb],previous_cml_s=pre[-1],first_cml_s=float(ct[0]),startup_cml_edges=len(pre)),numerical_edge_times=dict(vco=fv[30:274].tolist(),cml=ct.tolist(),feedback=fb))\n+  del a,d,t\n+for path,value in json.loads((B/'source-freeze01.json').read_text())['pins'].items():assert pin(path)==value\n+for entry in results:\n+ for path,value in entry['source_inputs'].items():assert pin(path)==value\n # This is numerical evidence, not an alternative pass predicate.\n summary=dict(status='SAVED_COMPLETE_34NS_STEP_COMPARISON_ORIGINAL_VERDICTS_RETAINED',method=pin(__file__),source_freeze=pin(B/'source-freeze01.json'),captures=results,all_acceptance_unchanged=True,scope='Exact complete34ns native records. Original455 safety and strict half-open count flags preserved. Fixed-ordinal tracking, phase and CML/four-VCO periods are descriptive convergence diagnostics; neither counts nor thresholds nor windows are shifted. A pass of either run alone is not pairwise numerical, PVT, extended-time, PLL, or fullPHY qualification.')\n (B/'step-comparison01.json').write_text(json.dumps(summary,indent=2)+'\\n')\n",
+  "opcodes": [
+    {
+      "tag": "equal",
+      "a0": 0,
+      "a1": 251,
+      "b0": 0,
+      "b1": 251,
+      "old": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Post-completion raw comparison. Descriptive metrics never alter acceptance.\"\"\"\nfrom pathlib import Path\nimport gzip,hashlib,json,os,resource\nimport numpy as np",
+      "new": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Post-completion raw comparison. Descriptive metrics never alter acceptance.\"\"\"\nfrom pathlib import Path\nimport gzip,hashlib,json,os,resource\nimport numpy as np"
+    },
+    {
+      "tag": "insert",
+      "a0": 251,
+      "a1": 251,
+      "b0": 251,
+      "b1": 387,
+      "old": "",
+      "new": "\nimport sys\nsys.path.insert(0,str(Path.cwd()/'hw/soc/out/pcie-tail115-streaming-replay-v1-20261006'))\nfrom raw_table01 import open_table"
+    },
+    {
+      "tag": "equal",
+      "a0": 251,
+      "a1": 589,
+      "b0": 387,
+      "b1": 725,
+      "old": "\nos.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\nR=Path.cwd();B=Path(__file__).resolve().parent\nOLD=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-wire-06-01')\nMID=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-halfstep-06-01')\nQUARTER=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-quarterstep-06-01')\n",
+      "new": "\nos.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\nR=Path.cwd();B=Path(__file__).resolve().parent\nOLD=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-wire-06-01')\nMID=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-halfstep-06-01')\nQUARTER=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-quarterstep-06-01')\n"
+    },
+    {
+      "tag": "delete",
+      "a0": 589,
+      "a1": 590,
+      "b0": 725,
+      "b1": 725,
+      "old": "N",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 590,
+      "a1": 591,
+      "b0": 725,
+      "b1": 726,
+      "old": "E",
+      "new": "E"
+    },
+    {
+      "tag": "replace",
+      "a0": 591,
+      "a1": 592,
+      "b0": 726,
+      "b1": 731,
+      "old": "W",
+      "new": "IGHTH"
+    },
+    {
+      "tag": "equal",
+      "a0": 592,
+      "a1": 644,
+      "b0": 731,
+      "b1": 783,
+      "old": "=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eigh",
+      "new": "=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eigh"
+    },
+    {
+      "tag": "insert",
+      "a0": 644,
+      "a1": 644,
+      "b0": 783,
+      "b1": 856,
+      "old": "",
+      "new": "thstep-06-01')\nNEW=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-sixteen"
+    },
+    {
+      "tag": "equal",
+      "a0": 644,
+      "a1": 1776,
+      "b0": 856,
+      "b1": 1988,
+      "old": "thstep-06-01')\ndef pin(p):\n p=Path(p)\n with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\ndef crossings(t,v):\n ans=[]\n for i in range(1,len(t)):\n  if v[i-1]<0<=v[i]:\n   ans.append(dict(time_s=float(t[i-1]+(t[i]-t[i-1])*(0-v[i-1])/(v[i]-v[i-1])),rows=[i-1,i],times_s=[float(t[i-1]),float(t[i])],volts=[float(v[i-1]),float(v[i])]))\n return ans\ncontroller=json.loads((B/'native06-controller.json').read_text());assert controller['status']=='CLOSED_FINITE_NATIVE_RESULT'\nowner=json.loads((NEW/'owned-processes.json').read_text());assert all(p['status']=='REAPED_NO_LIVE_MEMBERS'for p in owner['processes'])\nfor p,v in json.loads((B/'source-freeze01.json').read_text())['pins'].items():assert pin(p)==v\nassert pin(OLD/'result.json')==dict(bytes=426335,sha256='04f18138303887b2755c09b08afb47c2c5e6c830a40c810578f069f6ecfc2ab7')\nassert pin(MID/'result.json')==dict(bytes=426324,sha256='cd144211f9316debabcdd621847310ee7d49919726d6af341c6b1b9b7433ddc5')\nassert pin(QUARTER/'result.json')==dict(bytes=426389,sha256='765615872aa97b2cbd9849139d5870ae9fe69bc341a0478c84e79135e2d05a76')\n",
+      "new": "thstep-06-01')\ndef pin(p):\n p=Path(p)\n with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\ndef crossings(t,v):\n ans=[]\n for i in range(1,len(t)):\n  if v[i-1]<0<=v[i]:\n   ans.append(dict(time_s=float(t[i-1]+(t[i]-t[i-1])*(0-v[i-1])/(v[i]-v[i-1])),rows=[i-1,i],times_s=[float(t[i-1]),float(t[i])],volts=[float(v[i-1]),float(v[i])]))\n return ans\ncontroller=json.loads((B/'native06-controller.json').read_text());assert controller['status']=='CLOSED_FINITE_NATIVE_RESULT'\nowner=json.loads((NEW/'owned-processes.json').read_text());assert all(p['status']=='REAPED_NO_LIVE_MEMBERS'for p in owner['processes'])\nfor p,v in json.loads((B/'source-freeze01.json').read_text())['pins'].items():assert pin(p)==v\nassert pin(OLD/'result.json')==dict(bytes=426335,sha256='04f18138303887b2755c09b08afb47c2c5e6c830a40c810578f069f6ecfc2ab7')\nassert pin(MID/'result.json')==dict(bytes=426324,sha256='cd144211f9316debabcdd621847310ee7d49919726d6af341c6b1b9b7433ddc5')\nassert pin(QUARTER/'result.json')==dict(bytes=426389,sha256='765615872aa97b2cbd9849139d5870ae9fe69bc341a0478c84e79135e2d05a76')\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 1776,
+      "a1": 1776,
+      "b0": 1988,
+      "b1": 2115,
+      "old": "",
+      "new": "assert pin(EIGHTH/'result.json')==dict(bytes=426392,sha256='03977b90f4877791934cf74b13274b3476f41ae790307f3c3005481ab6d709ff')\n"
+    },
+    {
+      "tag": "equal",
+      "a0": 1776,
+      "a1": 1851,
+      "b0": 2115,
+      "b1": 2190,
+      "old": "results=[]\nfor root,step in [(OLD,5e-12),(MID,2.5e-12),(QUARTER,1.25e-12),(",
+      "new": "results=[]\nfor root,step in [(OLD,5e-12),(MID,2.5e-12),(QUARTER,1.25e-12),("
+    },
+    {
+      "tag": "insert",
+      "a0": 1851,
+      "a1": 1851,
+      "b0": 2190,
+      "b1": 2208,
+      "old": "",
+      "new": "EIGHTH,6.25e-13),("
+    },
+    {
+      "tag": "equal",
+      "a0": 1851,
+      "a1": 1855,
+      "b0": 2208,
+      "b1": 2212,
+      "old": "NEW,",
+      "new": "NEW,"
+    },
+    {
+      "tag": "replace",
+      "a0": 1855,
+      "a1": 1856,
+      "b0": 2212,
+      "b1": 2213,
+      "old": "6",
+      "new": "3"
+    },
+    {
+      "tag": "equal",
+      "a0": 1856,
+      "a1": 1857,
+      "b0": 2213,
+      "b1": 2214,
+      "old": ".",
+      "new": "."
+    },
+    {
+      "tag": "insert",
+      "a0": 1857,
+      "a1": 1857,
+      "b0": 2214,
+      "b1": 2215,
+      "old": "",
+      "new": "1"
+    },
+    {
+      "tag": "equal",
+      "a0": 1857,
+      "a1": 2254,
+      "b0": 2215,
+      "b1": 2612,
+      "old": "25e-13)]:\n r=json.loads((root/'result.json').read_text());assert r['status']in('PASS_NATIVE_LOADED_FEEDBACK_SCREEN','FAIL_NATIVE_LOADED_FEEDBACK_SCREEN')\n assert len(r['devices'])==455 and r['config']['step_s']==step and r['config']['stop_s']==34e-9 and r['config']['window_s']==[4e-9,34e-9]\n for p,v in r['inputs'].items():assert pin(p)==v\n for p,v in r['outputs'].items():assert pin(root/p)==v\n ",
+      "new": "25e-13)]:\n r=json.loads((root/'result.json').read_text());assert r['status']in('PASS_NATIVE_LOADED_FEEDBACK_SCREEN','FAIL_NATIVE_LOADED_FEEDBACK_SCREEN')\n assert len(r['devices'])==455 and r['config']['step_s']==step and r['config']['stop_s']==34e-9 and r['config']['window_s']==[4e-9,34e-9]\n for p,v in r['inputs'].items():assert pin(p)==v\n for p,v in r['outputs'].items():assert pin(root/p)==v\n "
+    },
+    {
+      "tag": "delete",
+      "a0": 2254,
+      "a1": 2407,
+      "b0": 2612,
+      "b1": 2612,
+      "old": "raw=gzip.decompress((root/'wave.raw.gz').read_bytes());assert hashlib.sha256(raw).hexdigest()==r['raw_sha256']\n header,payload=raw.split(b'Binary:\\n',1);",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2407,
+      "a1": 2413,
+      "b0": 2612,
+      "b1": 2618,
+      "old": "names=",
+      "new": "names="
+    },
+    {
+      "tag": "insert",
+      "a0": 2413,
+      "a1": 2413,
+      "b0": 2618,
+      "b1": 2619,
+      "old": "",
+      "new": "r"
+    },
+    {
+      "tag": "equal",
+      "a0": 2413,
+      "a1": 2414,
+      "b0": 2619,
+      "b1": 2620,
+      "old": "[",
+      "new": "["
+    },
+    {
+      "tag": "replace",
+      "a0": 2414,
+      "a1": 2418,
+      "b0": 2620,
+      "b1": 2621,
+      "old": "s.de",
+      "new": "'"
+    },
+    {
+      "tag": "equal",
+      "a0": 2418,
+      "a1": 2420,
+      "b0": 2621,
+      "b1": 2623,
+      "old": "co",
+      "new": "co"
+    },
+    {
+      "tag": "replace",
+      "a0": 2420,
+      "a1": 2425,
+      "b0": 2623,
+      "b1": 2627,
+      "old": "de().",
+      "new": "lumn"
+    },
+    {
+      "tag": "equal",
+      "a0": 2425,
+      "a1": 2426,
+      "b0": 2627,
+      "b1": 2628,
+      "old": "s",
+      "new": "s"
+    },
+    {
+      "tag": "delete",
+      "a0": 2426,
+      "a1": 2458,
+      "b0": 2628,
+      "b1": 2628,
+      "old": "plit()[1]for s in header.split(b",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2458,
+      "a1": 2459,
+      "b0": 2628,
+      "b1": 2629,
+      "old": "'",
+      "new": "'"
+    },
+    {
+      "tag": "delete",
+      "a0": 2459,
+      "a1": 2489,
+      "b0": 2629,
+      "b1": 2629,
+      "old": "Variables:\\n')[1].splitlines()",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2489,
+      "a1": 2540,
+      "b0": 2629,
+      "b1": 2680,
+      "old": "];assert len(names)==957 and len(set(names))==957\n ",
+      "new": "];assert len(names)==957 and len(set(names))==957\n "
+    },
+    {
+      "tag": "insert",
+      "a0": 2540,
+      "a1": 2540,
+      "b0": 2680,
+      "b1": 2718,
+      "old": "",
+      "new": "with open_table(root/'wave.raw.gz',row"
+    },
+    {
+      "tag": "equal",
+      "a0": 2540,
+      "a1": 2541,
+      "b0": 2718,
+      "b1": 2719,
+      "old": "s",
+      "new": "s"
+    },
+    {
+      "tag": "delete",
+      "a0": 2541,
+      "a1": 2544,
+      "b0": 2719,
+      "b1": 2719,
+      "old": "ize",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2544,
+      "a1": 2554,
+      "b0": 2719,
+      "b1": 2729,
+      "old": "=r['rows']",
+      "new": "=r['rows']"
+    },
+    {
+      "tag": "replace",
+      "a0": 2554,
+      "a1": 2561,
+      "b0": 2729,
+      "b1": 2739,
+      "old": "*957*8;",
+      "new": ",columns=n"
+    },
+    {
+      "tag": "equal",
+      "a0": 2561,
+      "a1": 2562,
+      "b0": 2739,
+      "b1": 2740,
+      "old": "a",
+      "new": "a"
+    },
+    {
+      "tag": "insert",
+      "a0": 2562,
+      "a1": 2562,
+      "b0": 2740,
+      "b1": 2750,
+      "old": "",
+      "new": "mes,compre"
+    },
+    {
+      "tag": "equal",
+      "a0": 2562,
+      "a1": 2565,
+      "b0": 2750,
+      "b1": 2753,
+      "old": "sse",
+      "new": "sse"
+    },
+    {
+      "tag": "insert",
+      "a0": 2565,
+      "a1": 2565,
+      "b0": 2753,
+      "b1": 2759,
+      "old": "",
+      "new": "d_pin="
+    },
+    {
+      "tag": "equal",
+      "a0": 2565,
+      "a1": 2566,
+      "b0": 2759,
+      "b1": 2760,
+      "old": "r",
+      "new": "r"
+    },
+    {
+      "tag": "insert",
+      "a0": 2566,
+      "a1": 2566,
+      "b0": 2760,
+      "b1": 2764,
+      "old": "",
+      "new": "['ou"
+    },
+    {
+      "tag": "equal",
+      "a0": 2566,
+      "a1": 2567,
+      "b0": 2764,
+      "b1": 2765,
+      "old": "t",
+      "new": "t"
+    },
+    {
+      "tag": "replace",
+      "a0": 2567,
+      "a1": 2568,
+      "b0": 2765,
+      "b1": 2814,
+      "old": " ",
+      "new": "puts']['wave.raw.gz'],raw_sha256=r['raw_sha256'],"
+    },
+    {
+      "tag": "equal",
+      "a0": 2568,
+      "a1": 2575,
+      "b0": 2814,
+      "b1": 2821,
+      "old": "payload",
+      "new": "payload"
+    },
+    {
+      "tag": "replace",
+      "a0": 2575,
+      "a1": 2623,
+      "b0": 2821,
+      "b1": 2822,
+      "old": "[size:]==str(r['rows']).encode();assert hashlib.",
+      "new": "_"
+    },
+    {
+      "tag": "equal",
+      "a0": 2623,
+      "a1": 2629,
+      "b0": 2822,
+      "b1": 2828,
+      "old": "sha256",
+      "new": "sha256"
+    },
+    {
+      "tag": "delete",
+      "a0": 2629,
+      "a1": 2658,
+      "b0": 2828,
+      "b1": 2828,
+      "old": "(payload[:size]).hexdigest()=",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2658,
+      "a1": 2678,
+      "b0": 2828,
+      "b1": 2848,
+      "old": "=r['payload_sha256']",
+      "new": "=r['payload_sha256']"
+    },
+    {
+      "tag": "replace",
+      "a0": 2678,
+      "a1": 2680,
+      "b0": 2848,
+      "b1": 2850,
+      "old": "\n ",
+      "new": ",r"
+    },
+    {
+      "tag": "equal",
+      "a0": 2680,
+      "a1": 2681,
+      "b0": 2850,
+      "b1": 2851,
+      "old": "a",
+      "new": "a"
+    },
+    {
+      "tag": "replace",
+      "a0": 2681,
+      "a1": 2689,
+      "b0": 2851,
+      "b1": 2853,
+      "old": "=np.from",
+      "new": "w_"
+    },
+    {
+      "tag": "equal",
+      "a0": 2689,
+      "a1": 2690,
+      "b0": 2853,
+      "b1": 2854,
+      "old": "b",
+      "new": "b"
+    },
+    {
+      "tag": "delete",
+      "a0": 2690,
+      "a1": 2698,
+      "b0": 2854,
+      "b1": 2854,
+      "old": "uffer(pa",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2698,
+      "a1": 2699,
+      "b0": 2854,
+      "b1": 2855,
+      "old": "y",
+      "new": "y"
+    },
+    {
+      "tag": "replace",
+      "a0": 2699,
+      "a1": 2719,
+      "b0": 2855,
+      "b1": 2856,
+      "old": "load[:size],'<f8').r",
+      "new": "t"
+    },
+    {
+      "tag": "equal",
+      "a0": 2719,
+      "a1": 2721,
+      "b0": 2856,
+      "b1": 2858,
+      "old": "es",
+      "new": "es"
+    },
+    {
+      "tag": "replace",
+      "a0": 2721,
+      "a1": 2726,
+      "b0": 2858,
+      "b1": 2859,
+      "old": "hape(",
+      "new": "="
+    },
+    {
+      "tag": "equal",
+      "a0": 2726,
+      "a1": 2730,
+      "b0": 2859,
+      "b1": 2863,
+      "old": "r['r",
+      "new": "r['r"
+    },
+    {
+      "tag": "replace",
+      "a0": 2730,
+      "a1": 2731,
+      "b0": 2863,
+      "b1": 2864,
+      "old": "o",
+      "new": "a"
+    },
+    {
+      "tag": "equal",
+      "a0": 2731,
+      "a1": 2732,
+      "b0": 2864,
+      "b1": 2865,
+      "old": "w",
+      "new": "w"
+    },
+    {
+      "tag": "insert",
+      "a0": 2732,
+      "a1": 2732,
+      "b0": 2865,
+      "b1": 2870,
+      "old": "",
+      "new": "_byte"
+    },
+    {
+      "tag": "equal",
+      "a0": 2732,
+      "a1": 2736,
+      "b0": 2870,
+      "b1": 2874,
+      "old": "s'],",
+      "new": "s'],"
+    },
+    {
+      "tag": "replace",
+      "a0": 2736,
+      "a1": 2739,
+      "b0": 2874,
+      "b1": 2915,
+      "old": "957",
+      "new": "scratch_directory=B,scratch_limit=1024**3"
+    },
+    {
+      "tag": "equal",
+      "a0": 2739,
+      "a1": 2740,
+      "b0": 2915,
+      "b1": 2916,
+      "old": ")",
+      "new": ")"
+    },
+    {
+      "tag": "delete",
+      "a0": 2740,
+      "a1": 2741,
+      "b0": 2916,
+      "b1": 2916,
+      "old": ";",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2741,
+      "a1": 2743,
+      "b0": 2916,
+      "b1": 2918,
+      "old": "as",
+      "new": "as"
+    },
+    {
+      "tag": "replace",
+      "a0": 2743,
+      "a1": 2744,
+      "b0": 2918,
+      "b1": 2923,
+      "old": "s",
+      "new": " tabl"
+    },
+    {
+      "tag": "equal",
+      "a0": 2744,
+      "a1": 2745,
+      "b0": 2923,
+      "b1": 2924,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "insert",
+      "a0": 2745,
+      "a1": 2745,
+      "b0": 2924,
+      "b1": 2940,
+      "old": "",
+      "new": ":\n  a=table['mat"
+    },
+    {
+      "tag": "equal",
+      "a0": 2745,
+      "a1": 2746,
+      "b0": 2940,
+      "b1": 2941,
+      "old": "r",
+      "new": "r"
+    },
+    {
+      "tag": "delete",
+      "a0": 2746,
+      "a1": 2751,
+      "b0": 2941,
+      "b1": 2941,
+      "old": "t np.",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2751,
+      "a1": 2752,
+      "b0": 2941,
+      "b1": 2942,
+      "old": "i",
+      "new": "i"
+    },
+    {
+      "tag": "replace",
+      "a0": 2752,
+      "a1": 2768,
+      "b0": 2942,
+      "b1": 2945,
+      "old": "sfinite(a).all()",
+      "new": "x']"
+    },
+    {
+      "tag": "equal",
+      "a0": 2768,
+      "a1": 2848,
+      "b0": 2945,
+      "b1": 3025,
+      "old": ";d=dict(zip(names,a.T));t=d['time'];assert np.all(np.diff(t)>0)and t[-1]==34e-9\n",
+      "new": ";d=dict(zip(names,a.T));t=d['time'];assert np.all(np.diff(t)>0)and t[-1]==34e-9\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 2848,
+      "a1": 2848,
+      "b0": 3025,
+      "b1": 3026,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 2848,
+      "a1": 2940,
+      "b0": 3026,
+      "b1": 3118,
+      "old": " full_ce=crossings(t,d['v(qp)']-d['v(qn)']);full_ve=crossings(t,d['v(clkp)']-d['v(clkn)'])\n ",
+      "new": " full_ce=crossings(t,d['v(qp)']-d['v(qn)']);full_ve=crossings(t,d['v(clkp)']-d['v(clkn)'])\n "
+    },
+    {
+      "tag": "insert",
+      "a0": 2940,
+      "a1": 2940,
+      "b0": 3118,
+      "b1": 3119,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 2940,
+      "a1": 2992,
+      "b0": 3119,
+      "b1": 3171,
+      "old": "ce=[e for e in full_ce if 4e-9<=e['time_s']<34e-9]\n ",
+      "new": "ce=[e for e in full_ce if 4e-9<=e['time_s']<34e-9]\n "
+    },
+    {
+      "tag": "insert",
+      "a0": 2992,
+      "a1": 2992,
+      "b0": 3171,
+      "b1": 3172,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 2992,
+      "a1": 3043,
+      "b0": 3172,
+      "b1": 3223,
+      "old": "ve=[e for e in full_ve if 4e-9<=e['time_s']<34e-9]\n",
+      "new": "ve=[e for e in full_ve if 4e-9<=e['time_s']<34e-9]\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3043,
+      "a1": 3043,
+      "b0": 3223,
+      "b1": 3224,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3043,
+      "a1": 3125,
+      "b0": 3224,
+      "b1": 3306,
+      "old": " fb=[e['time_s']for e in crossings(t,d['v(fb)']-1.25)if 4e-9<=e['time_s']<34e-9]\n ",
+      "new": " fb=[e['time_s']for e in crossings(t,d['v(fb)']-1.25)if 4e-9<=e['time_s']<34e-9]\n "
+    },
+    {
+      "tag": "insert",
+      "a0": 3125,
+      "a1": 3125,
+      "b0": 3306,
+      "b1": 3307,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3125,
+      "a1": 3179,
+      "b0": 3307,
+      "b1": 3361,
+      "old": "assert fb==r['measurement']['edge_times']['feedback']\n",
+      "new": "assert fb==r['measurement']['edge_times']['feedback']\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3179,
+      "a1": 3179,
+      "b0": 3361,
+      "b1": 3362,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3179,
+      "a1": 3314,
+      "b0": 3362,
+      "b1": 3497,
+      "old": " ct=np.array([e['time_s']for e in ce]);vt=np.array([e['time_s']for e in ve]);assert ct.tolist()==r['measurement']['edge_times']['cml']\n",
+      "new": " ct=np.array([e['time_s']for e in ce]);vt=np.array([e['time_s']for e in ve]);assert ct.tolist()==r['measurement']['edge_times']['cml']\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3314,
+      "a1": 3314,
+      "b0": 3497,
+      "b1": 3498,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3314,
+      "a1": 3463,
+      "b0": 3498,
+      "b1": 3647,
+      "old": " counts=[int(sum(x<=e<y for e in vt))for x,y in zip(ct[:-1],ct[1:])];assert counts==r['measurement']['actual_vco_period_counts']['native_hbt_div4']\n ",
+      "new": " counts=[int(sum(x<=e<y for e in vt))for x,y in zip(ct[:-1],ct[1:])];assert counts==r['measurement']['actual_vco_period_counts']['native_hbt_div4']\n "
+    },
+    {
+      "tag": "insert",
+      "a0": 3463,
+      "a1": 3463,
+      "b0": 3647,
+      "b1": 3648,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3463,
+      "a1": 3555,
+      "b0": 3648,
+      "b1": 3740,
+      "old": "first=int(np.argmin(abs(vt-ct[0])));nearest=[int(np.argmin(abs(vt-e)))for e in ct];rows=[]\n ",
+      "new": "first=int(np.argmin(abs(vt-ct[0])));nearest=[int(np.argmin(abs(vt-e)))for e in ct];rows=[]\n "
+    },
+    {
+      "tag": "insert",
+      "a0": 3555,
+      "a1": 3555,
+      "b0": 3740,
+      "b1": 3741,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3555,
+      "a1": 3581,
+      "b0": 3741,
+      "b1": 3767,
+      "old": "for i,e in enumerate(ct):\n",
+      "new": "for i,e in enumerate(ct):\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3581,
+      "a1": 3581,
+      "b0": 3767,
+      "b1": 3768,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3581,
+      "a1": 3767,
+      "b0": 3768,
+      "b1": 3954,
+      "old": "  fixed=first+4*i;z=dict(cml_index=i,cml_edge=ce[i],nearest_vco_index=nearest[i],nearest_vco_edge=ve[nearest[i]],nearest_phase_ps=float((e-vt[nearest[i]])*1e12),fixed_vco_index=fixed)\n  ",
+      "new": "  fixed=first+4*i;z=dict(cml_index=i,cml_edge=ce[i],nearest_vco_index=nearest[i],nearest_vco_edge=ve[nearest[i]],nearest_phase_ps=float((e-vt[nearest[i]])*1e12),fixed_vco_index=fixed)\n  "
+    },
+    {
+      "tag": "insert",
+      "a0": 3767,
+      "a1": 3767,
+      "b0": 3954,
+      "b1": 3955,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3767,
+      "a1": 3832,
+      "b0": 3955,
+      "b1": 4020,
+      "old": "if fixed<len(vt):z['fixed_phase_ps']=float((e-vt[fixed])*1e12)\n  ",
+      "new": "if fixed<len(vt):z['fixed_phase_ps']=float((e-vt[fixed])*1e12)\n  "
+    },
+    {
+      "tag": "insert",
+      "a0": 3832,
+      "a1": 3832,
+      "b0": 4020,
+      "b1": 4021,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3832,
+      "a1": 3850,
+      "b0": 4021,
+      "b1": 4039,
+      "old": "if i<len(counts):\n",
+      "new": "if i<len(counts):\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 3850,
+      "a1": 3850,
+      "b0": 4039,
+      "b1": 4040,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3850,
+      "a1": 3975,
+      "b0": 4040,
+      "b1": 4165,
+      "old": "   z.update(bucket_count=counts[i],cml_period_ps=float((ct[i+1]-e)*1e12),nearest_ordinal_advance=nearest[i+1]-nearest[i])\n   ",
+      "new": "   z.update(bucket_count=counts[i],cml_period_ps=float((ct[i+1]-e)*1e12),nearest_ordinal_advance=nearest[i+1]-nearest[i])\n   "
+    },
+    {
+      "tag": "insert",
+      "a0": 3975,
+      "a1": 3975,
+      "b0": 4165,
+      "b1": 4166,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 3975,
+      "a1": 4062,
+      "b0": 4166,
+      "b1": 4253,
+      "old": "if fixed+4<len(vt):z['fixed_four_vco_period_ps']=float((vt[fixed+4]-vt[fixed])*1e12)\n  ",
+      "new": "if fixed+4<len(vt):z['fixed_four_vco_period_ps']=float((vt[fixed+4]-vt[fixed])*1e12)\n  "
+    },
+    {
+      "tag": "insert",
+      "a0": 4062,
+      "a1": 4062,
+      "b0": 4253,
+      "b1": 4254,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 4062,
+      "a1": 4077,
+      "b0": 4254,
+      "b1": 4269,
+      "old": "rows.append(z)\n",
+      "new": "rows.append(z)\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 4077,
+      "a1": 4077,
+      "b0": 4269,
+      "b1": 4270,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 4077,
+      "a1": 4535,
+      "b0": 4270,
+      "b1": 4728,
+      "old": " results.append(dict(step_s=step,native_status=r['status'],source_inputs={str(root/p):pin(root/p)for p in ['result.json','wave.raw.gz']},full_values=int(a.size),electrical_pass=r['safety']['passed'],unchanged_all_checks=r['measurement']['checks'],cml_edges=len(ce),vco_edges=len(ve),bucket_counts=counts,bad_bucket_indices=[i for i,v in enumerate(counts)if v!=4],nearest_ordinal_advances=[b-a for a,b in zip(nearest[:-1],nearest[1:])],cml_boundaries=rows))\n ",
+      "new": " results.append(dict(step_s=step,native_status=r['status'],source_inputs={str(root/p):pin(root/p)for p in ['result.json','wave.raw.gz']},full_values=int(a.size),electrical_pass=r['safety']['passed'],unchanged_all_checks=r['measurement']['checks'],cml_edges=len(ce),vco_edges=len(ve),bucket_counts=counts,bad_bucket_indices=[i for i,v in enumerate(counts)if v!=4],nearest_ordinal_advances=[b-a for a,b in zip(nearest[:-1],nearest[1:])],cml_boundaries=rows))\n "
+    },
+    {
+      "tag": "insert",
+      "a0": 4535,
+      "a1": 4535,
+      "b0": 4728,
+      "b1": 4729,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 4535,
+      "a1": 4633,
+      "b0": 4729,
+      "b1": 4827,
+      "old": "fv=np.array([e['time_s']for e in full_ve]);pre=[e['time_s']for e in full_ce if e['time_s']<4e-9]\n ",
+      "new": "fv=np.array([e['time_s']for e in full_ve]);pre=[e['time_s']for e in full_ce if e['time_s']<4e-9]\n "
+    },
+    {
+      "tag": "insert",
+      "a0": 4633,
+      "a1": 4633,
+      "b0": 4827,
+      "b1": 4828,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 4633,
+      "a1": 4644,
+      "b0": 4828,
+      "b1": 4839,
+      "old": "assert pre\n",
+      "new": "assert pre\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 4644,
+      "a1": 4644,
+      "b0": 4839,
+      "b1": 4840,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 4644,
+      "a1": 4717,
+      "b0": 4840,
+      "b1": 4913,
+      "old": " vfreq=1/float(np.mean(np.diff(vt)));ffreq=1/float(np.mean(np.diff(fb)))\n",
+      "new": " vfreq=1/float(np.mean(np.diff(vt)));ffreq=1/float(np.mean(np.diff(fb)))\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 4717,
+      "a1": 4717,
+      "b0": 4913,
+      "b1": 4914,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 4717,
+      "a1": 4836,
+      "b0": 4914,
+      "b1": 5033,
+      "old": " assert float(vfreq)==r['measurement']['vco_frequency_hz'] and float(ffreq)==r['measurement']['feedback_frequency_hz']\n",
+      "new": " assert float(vfreq)==r['measurement']['vco_frequency_hz'] and float(ffreq)==r['measurement']['feedback_frequency_hz']\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 4836,
+      "a1": 4836,
+      "b0": 5033,
+      "b1": 5034,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 4836,
+      "a1": 5261,
+      "b0": 5034,
+      "b1": 5459,
+      "old": " results[-1].update(vco_frequency_hz=float(vfreq),feedback_frequency_hz=float(ffreq),initial_mapping=dict(vco_before_window=int(sum(fv<4e-9)),first_cml_nearest_global_vco=int(np.argmin(abs(fv-ct[0]))),feedback_nearest_global_vco=[int(np.argmin(abs(fv-v)))for v in fb],previous_cml_s=pre[-1],first_cml_s=float(ct[0]),startup_cml_edges=len(pre)),numerical_edge_times=dict(vco=fv[30:274].tolist(),cml=ct.tolist(),feedback=fb))\n ",
+      "new": " results[-1].update(vco_frequency_hz=float(vfreq),feedback_frequency_hz=float(ffreq),initial_mapping=dict(vco_before_window=int(sum(fv<4e-9)),first_cml_nearest_global_vco=int(np.argmin(abs(fv-ct[0]))),feedback_nearest_global_vco=[int(np.argmin(abs(fv-v)))for v in fb],previous_cml_s=pre[-1],first_cml_s=float(ct[0]),startup_cml_edges=len(pre)),numerical_edge_times=dict(vco=fv[30:274].tolist(),cml=ct.tolist(),feedback=fb))\n "
+    },
+    {
+      "tag": "insert",
+      "a0": 5261,
+      "a1": 5261,
+      "b0": 5459,
+      "b1": 5460,
+      "old": "",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 5261,
+      "a1": 5265,
+      "b0": 5460,
+      "b1": 5464,
+      "old": "del ",
+      "new": "del "
+    },
+    {
+      "tag": "insert",
+      "a0": 5265,
+      "a1": 5265,
+      "b0": 5464,
+      "b1": 5472,
+      "old": "",
+      "new": "a,d,t\nfo"
+    },
+    {
+      "tag": "equal",
+      "a0": 5265,
+      "a1": 5266,
+      "b0": 5472,
+      "b1": 5473,
+      "old": "r",
+      "new": "r"
+    },
+    {
+      "tag": "replace",
+      "a0": 5266,
+      "a1": 5269,
+      "b0": 5473,
+      "b1": 5474,
+      "old": "aw,",
+      "new": " "
+    },
+    {
+      "tag": "equal",
+      "a0": 5269,
+      "a1": 5271,
+      "b0": 5474,
+      "b1": 5476,
+      "old": "pa",
+      "new": "pa"
+    },
+    {
+      "tag": "replace",
+      "a0": 5271,
+      "a1": 5272,
+      "b0": 5476,
+      "b1": 5493,
+      "old": "y",
+      "new": "th,value in json."
+    },
+    {
+      "tag": "equal",
+      "a0": 5272,
+      "a1": 5276,
+      "b0": 5493,
+      "b1": 5497,
+      "old": "load",
+      "new": "load"
+    },
+    {
+      "tag": "insert",
+      "a0": 5276,
+      "a1": 5276,
+      "b0": 5497,
+      "b1": 5610,
+      "old": "",
+      "new": "s((B/'source-freeze01.json').read_text())['pins'].items():assert pin(path)==value\nfor entry in results:\n for path"
+    },
+    {
+      "tag": "equal",
+      "a0": 5276,
+      "a1": 5277,
+      "b0": 5610,
+      "b1": 5611,
+      "old": ",",
+      "new": ","
+    },
+    {
+      "tag": "insert",
+      "a0": 5277,
+      "a1": 5277,
+      "b0": 5611,
+      "b1": 5612,
+      "old": "",
+      "new": "v"
+    },
+    {
+      "tag": "equal",
+      "a0": 5277,
+      "a1": 5278,
+      "b0": 5612,
+      "b1": 5613,
+      "old": "a",
+      "new": "a"
+    },
+    {
+      "tag": "replace",
+      "a0": 5278,
+      "a1": 5280,
+      "b0": 5613,
+      "b1": 5674,
+      "old": ",d",
+      "new": "lue in entry['source_inputs'].items():assert pin(path)==value"
+    },
+    {
+      "tag": "equal",
+      "a0": 5280,
+      "a1": 6585,
+      "b0": 5674,
+      "b1": 6979,
+      "old": "\n# This is numerical evidence, not an alternative pass predicate.\nsummary=dict(status='SAVED_COMPLETE_34NS_STEP_COMPARISON_ORIGINAL_VERDICTS_RETAINED',method=pin(__file__),source_freeze=pin(B/'source-freeze01.json'),captures=results,all_acceptance_unchanged=True,scope='Exact complete34ns native records. Original455 safety and strict half-open count flags preserved. Fixed-ordinal tracking, phase and CML/four-VCO periods are descriptive convergence diagnostics; neither counts nor thresholds nor windows are shifted. A pass of either run alone is not pairwise numerical, PVT, extended-time, PLL, or fullPHY qualification.')\n(B/'step-comparison01.json').write_text(json.dumps(summary,indent=2)+'\\n')\nprint([(x['step_s'],x['native_status'],x['bad_bucket_indices'])for x in results])\n\nfrom convergence_policy01 import evaluate\npolicy=json.loads((B/'numerical-policy01.json').read_text())\nassert results[-2]['step_s']==policy['reference_step_s'] and results[-1]['step_s']==policy['candidate_step_s']\nresult=evaluate(results[-2],results[-1],policy)\nresult.update(policy=pin(B/'numerical-policy01.json'),method=pin(B/'convergence_policy01.py'),comparison=pin(B/'step-comparison01.json'))\n(B/'numerical-convergence01.json').write_text(json.dumps(result,indent=2)+'\\n')\nprint(result['status'],result['checks'])\n",
+      "new": "\n# This is numerical evidence, not an alternative pass predicate.\nsummary=dict(status='SAVED_COMPLETE_34NS_STEP_COMPARISON_ORIGINAL_VERDICTS_RETAINED',method=pin(__file__),source_freeze=pin(B/'source-freeze01.json'),captures=results,all_acceptance_unchanged=True,scope='Exact complete34ns native records. Original455 safety and strict half-open count flags preserved. Fixed-ordinal tracking, phase and CML/four-VCO periods are descriptive convergence diagnostics; neither counts nor thresholds nor windows are shifted. A pass of either run alone is not pairwise numerical, PVT, extended-time, PLL, or fullPHY qualification.')\n(B/'step-comparison01.json').write_text(json.dumps(summary,indent=2)+'\\n')\nprint([(x['step_s'],x['native_status'],x['bad_bucket_indices'])for x in results])\n\nfrom convergence_policy01 import evaluate\npolicy=json.loads((B/'numerical-policy01.json').read_text())\nassert results[-2]['step_s']==policy['reference_step_s'] and results[-1]['step_s']==policy['candidate_step_s']\nresult=evaluate(results[-2],results[-1],policy)\nresult.update(policy=pin(B/'numerical-policy01.json'),method=pin(B/'convergence_policy01.py'),comparison=pin(B/'step-comparison01.json'))\n(B/'numerical-convergence01.json').write_text(json.dumps(result,indent=2)+'\\n')\nprint(result['status'],result['checks'])\n"
+    }
+  ]
+}

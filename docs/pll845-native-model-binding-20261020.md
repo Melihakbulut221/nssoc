@@ -1,0 +1,19 @@
+# Whole PLL845 native compact model binding — 2026-10-20
+
+After the complete wire RC audit, the next requirement is exact intrinsic device binding. The scope is the entire845-device original PLL LVS:132 LV NMOS,57 HV NMOS,130 LV PMOS,58 HV PMOS,102 HBT,89 rppd,26 MIM,60 ntap1 and191 ptap1 devices, with2737 terminals and17 public ports. No child-only proxy or synthetic substitute is accepted.
+
+The native KLayout database is exported again on a hosted runner and compared against the frozen full-PLL geometry inventory and original LVS SPICE. Every named terminal, native cluster, parameter and device identity must match. Exact decimal SPICE parameters remain authoritative; native binary-float readback may differ by at most one binary64 ULP. The four MOS classes retain the native S/G/D/B to PDK D/G/S/B mapping and every L/W/AS/AD/PS/PD/rfmode parameter. All area/perimeter fields must be positive to avoid invoking fabricated model-default junction geometry.
+
+The pinned PDK tap subcircuits explicitly use only R; w/l are declared for compatibility but unused. Each of251 tap resistances is calculated from its actual native area/perimeter and the pinned PDK coefficients. Native TIE polygons independently confirm area/perimeter. The actual pinned CbTapCalc implementation is also executed for rectangular native polygons and compared within eight binary64 ULPs of equation-evaluation roundoff; this is not a geometry tolerance. No fixed2x2um tap or arbitrary rectangular substitute is used. Nonrectangular shapes, if present, retain their exact native area/perimeter and are explicitly identified rather than falsely claimed to have passed a rectangular PCell evaluation.
+
+All9 model classes must reject a missing device, altered valid numerical parameter and changed terminal (27 cases). All4 MOS classes must additionally reject a swapped gate/source and altered body (8 cases). The compact binding remains separate from distributed wire composition and actual loaded transient validation. No substrate spreading, full PEX, closed-loop PLL, full serial PHY or mainchip timing acceptance follows from a binding pass.
+
+PDK sources are fixed at c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c and checked by existing immutable hashes. The full electrical model archive is manifest-verified. All CAD, tests, outputs and failures remain in GitHub-hosted runners/releases; the local project directory remains empty.
+
+## Native binding passed
+
+[Run39354573228](https://github.com/Melihakbulut221/nssoc/actions/runs/39354573228) completed successfully. All845 devices,2737 terminals and17 ports matched the native LVS SPICE and geometry inventory; all35 corruption cases were rejected.
+
+All251 tap polygons are rectangular and, in this particular layout, all are2x2um (A4um²/P8um). Their dimensions were measured rather than assumed. Every tap's independently executed pinned PDK CbTapCalc result matched the area/perimeter conversion within the documented equation-roundoff bound. All four MOS classes retain their actual parameters and required model pin order. No loaded simulation or full PEX acceptance is claimed.
+
+The composition step preserves each MIM's actual extracted R-network attachment node, not just its conductor owner or a different same-net reference point. The26 native MIM cards are projected exactly once into the corresponding native device models, preserving all3380 R/5104 C tokens. Explicit intrinsic tap models must provide a metal connection for every body group; if regular well contacts remain outside the native device census, composition must fail with an explicit list instead of silently accepting floating bulks.

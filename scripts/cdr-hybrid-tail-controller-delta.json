@@ -1,0 +1,124 @@
+{
+  "baseline_path": "scripts/cloud_cdr_sampler_native.py",
+  "baseline_sha256": "b8e995d6b1693b6afdecf5f84879f2adeb612601c36e54d92cd6899abccb1ae7",
+  "candidate_path": "scripts/cloud_cdr_sampler_hybrid_tail.py",
+  "candidate_sha256": "3b22c28f84a5cce2f82c2557fe7b5ba21195a93ce0ef137f0629f7c066abd2a7",
+  "edits": [
+    {
+      "before": "SOURCE=ROOT/'hw/soc/analog/pcie/rx_sampler_hbt_v2.spice'",
+      "after": "SOURCE=ROOT/'hw/soc/analog/pcie/rx_sampler_hybrid_tail_v1.spice'",
+      "count": 1
+    },
+    {
+      "before": "SOURCE_SHA='2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f'",
+      "after": "SOURCE_SHA='dcf0b8ee36f2b4ed181c64a80ae4998f47376043204d9e15a42b0d5b05d20ae5'",
+      "count": 1
+    },
+    {
+      "before": "nssoc_cml_latch",
+      "after": "nssoc_cml_latch_hybrid_tail_v1",
+      "count": 1
+    },
+    {
+      "before": "nssoc_rx_sampler_hbt",
+      "after": "nssoc_rx_sampler_hybrid_tail_v1",
+      "count": 3
+    },
+    {
+      "before": "devices={};resistors={}",
+      "after": "devices={};resistors={};mos={}",
+      "count": 1
+    },
+    {
+      "before": "            elif len(f)>4 and f[4]=='rppd':",
+      "after": "            elif len(f)>5 and f[5]=='sg13_lv_nmos':\n                params=dict(x.split('=')for x in f[6:]);assert set(params)=={'w','l','ng'}\n                assert params==dict(w='8u'if name=='xsamp.xref'else'32u',l='.3u',ng='1')\n                mos[name]=dict(nodes=[node(n)for n in f[1:5]],parameters=params)\n            elif len(f)>4 and f[4]=='rppd':",
+      "count": 1
+    },
+    {
+      "before": "assert len(devices)==15 and len(resistors)==12",
+      "after": "assert len(devices)==12 and len(resistors)==12 and len(mos)==3",
+      "count": 1
+    },
+    {
+      "before": "assert sum(x['nx']for x in devices.values())==41",
+      "after": "assert sum(x['nx']for x in devices.values())==32",
+      "count": 1
+    },
+    {
+      "before": "assert set(devices)=={'xsamp.xref'}|{'xsamp.x'+stage+'.x'+name for stage in ('m','s')for name in ('dp','dn','lp','ln','cs','ch','t')}",
+      "after": "assert set(devices)=={'xsamp.x'+stage+'.x'+name for stage in ('m','s')for name in ('dp','dn','lp','ln','cs','ch')}\n    assert set(mos)=={'xsamp.xref','xsamp.xm.xt','xsamp.xs.xt'}",
+      "count": 1
+    },
+    {
+      "before": "return devices,resistors",
+      "after": "return devices,resistors,mos",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-sampler-native-",
+      "after": "cloud-cdr-sampler-hybrid-tail-",
+      "count": 1
+    },
+    {
+      "before": "Original15HBT/12nativeR CML master/slave sampler",
+      "after": "Candidate12HBT/3nativeLVNMOS/12nativeR CML master/slave sampler",
+      "count": 1
+    },
+    {
+      "before": "        assert sha(SOURCE)==SOURCE_SHA",
+      "after": "        assert sha(SOURCE)==SOURCE_SHA\n        from check_cdr_hybrid_tail_source import check\n        r['source_delta_guard']=check()",
+      "count": 1
+    },
+    {
+      "before": "devices,resistors=bind(SOURCE.read_text(),output)",
+      "after": "devices,resistors,mos=bind(SOURCE.read_text(),output)",
+      "count": 1
+    },
+    {
+      "before": "nodes={n for x in devices.values()for n in x['nodes']}|",
+      "after": "nodes={n for x in [*devices.values(),*mos.values()]for n in x['nodes']}|",
+      "count": 1
+    },
+    {
+      "before": "vectors=['v('+n+')'for n in sorted(nodes)]+['@q.'+n+'.qnpn13g2[ic]'for n in devices]",
+      "after": "vectors=['v('+n+')'for n in sorted(nodes)]+['@q.'+n+'.qnpn13g2[ic]'for n in devices]+['@n.'+n+'.nsg13_lv_nmos[ids]'for n in mos]",
+      "count": 1
+    },
+    {
+      "before": "bits=primitive.prbs(0x7f);models=lib/'models/models'",
+      "after": "bits=primitive.prbs(0x7f);models=lib/'models/models'\n        mos_osdi={}\n        for name in ('psp103.osdi','psp103_nqs.osdi'):\n            matches=list(lib.rglob(name));assert len(matches)==1,(name,matches)\n            mos_osdi[name]=matches[0]\n        r['mos_runtime']={str(p.relative_to(lib)):sha(p)for p in mos_osdi.values()}",
+      "count": 1
+    },
+    {
+      "before": "f'.lib \"{models}/cornerRES.lib\" {c[\"res\"]}',f'.include",
+      "after": "f'.lib \"{models}/cornerRES.lib\" {c[\"res\"]}',f'.lib \"{models}/cornerMOSlv.lib\" {c[\"mos\"]}',f'.include",
+      "count": 1
+    },
+    {
+      "before": "'.control',f'pre_osdi {lib/\"models/r3_cmc.osdi\"}','set wr_singlescale'",
+      "after": "'.control',f'pre_osdi {lib/\"models/r3_cmc.osdi\"}',*[f'pre_osdi {p}'for p in mos_osdi.values()],'set wr_singlescale'",
+      "count": 1
+    },
+    {
+      "before": "r.update(devices=devices,resistors=resistors,vectors=vectors",
+      "after": "r.update(devices=devices,resistors=resistors,mos_devices=mos,vectors=vectors",
+      "count": 1
+    },
+    {
+      "before": "        tails={name:float(d['@q.'+name+'.qnpn13g2[ic]'][active].min())for name in ('xsamp.xm.xt','xsamp.xs.xt')};safe=safe and min(tails.values())>=.0005",
+      "after": "        mos_checks={}\n        for name,dev in mos.items():\n            vd,vg,vs,vb=map(v,dev['nodes']);ids=d['@n.'+name+'.nsg13_lv_nmos[ids]']\n            peaks={label:float(abs(value).max())for label,value in [('vds',vd-vs),('vgs',vg-vs),('vgd',vg-vd),('vdb',vd-vb),('vsb',vs-vb)]}\n            mos_checks[name]=dict(peaks_v=peaks,limit_v=1.32,minimum_active_vds_v=float((vd-vs)[active].min()),minimum_active_drain_current_a=float(ids[active].min()),maximum_alltime_abs_drain_current_a=float(abs(ids).max()),passed=max(peaks.values())<=1.32 and float((vd-vs)[active].min())>=0)\n        tails={name:mos_checks[name]['minimum_active_drain_current_a']for name in ('xsamp.xm.xt','xsamp.xs.xt')}\n        safe=safe and all(x['passed']for x in mos_checks.values())and min(tails.values())>=.0005\n        r['mos_checks']=mos_checks",
+      "count": 1
+    },
+    {
+      "before": "PASS_NATIVE_SAMPLER_SCREEN_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "after": "PASS_NATIVE_HYBRID_TAIL_SCREEN_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "count": 1
+    },
+    {
+      "before": "REJECTED_NATIVE_SAMPLER_SCREEN",
+      "after": "REJECTED_NATIVE_HYBRID_TAIL_SCREEN",
+      "count": 1
+    }
+  ],
+  "scope": "Native device replacement adds PSP models/drain probes/MOS bounds. All original waveform/load/timing/data/HBT gates retained. Existing15HBT sampler and rejected physical captures remain unchanged."
+}

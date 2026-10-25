@@ -1,0 +1,57 @@
+{
+  "utc": "2026-10-04T12:13:36.386880+00:00",
+  "status": "PASS_PUBLICATION_AFTER_README_LENGTH_CORRECTION",
+  "sources": {
+    "README.md": {
+      "bytes": 8453,
+      "sha256": "92c6fd6f78e351a230a28190eaa512d5ee2988e208af85ef79d609b0d509d0ac"
+    },
+    "docs/00-index.md": {
+      "bytes": 223780,
+      "sha256": "7003c98744cf5fce515bc7cc015c7d70ee5ee97691ccfeb4c0a1f261a428da66"
+    },
+    "docs/113-pcie-clocked-pads-and-transport.md": {
+      "bytes": 10628,
+      "sha256": "59c4c5ae4d3d39f6062027942d13accf2421261a6a73b4bce0fac61887133b71"
+    },
+    "docs/114-pcie-timing-divider-and-native-taps.md": {
+      "bytes": 9709,
+      "sha256": "d9a2b09b9db87d092954a72e3569eb0758f552615e82079f5c0c26cb398165dd"
+    }
+  },
+  "checks": {
+    "first_command": "pytest test_doc_links.py test_doc_publication.py test_project_status.py",
+    "first_passed": 207,
+    "first_failed": 1,
+    "failure": "README126lines exceeds existing125line conciseREADMEguard",
+    "correction": "Join new relatedstatussentence toexistingparagraph; preserve guard and allcontent",
+    "corrected_project_status_passed": 63,
+    "corrected_project_status_failed": 0,
+    "strict_site": {
+      "documents": 133,
+      "pages": 134,
+      "local_links": 10444,
+      "broken_links": 0,
+      "assets": 816,
+      "total_asset_bytes": 100646881
+    }
+  },
+  "logs": {
+    "nssoc-doc114-tests.log": {
+      "bytes": 2614,
+      "sha256": "40fed4e48cbef8fe2befcc5c5d89ffe3e1fda6b32b25728b2c1bb3eb2990e20c",
+      "text": "........................................................................ [ 34%]\n........................................................................ [ 69%]\n...............................F................................         [100%]\n=================================== FAILURES ===================================\n_____________ test_readme_migration_preserves_every_original_byte ______________\n\n    def test_readme_migration_preserves_every_original_byte():\n        record = json.loads((ROOT / \"docs/evidence/readme-migration-20260920.json\").read_text())\n        archive = (ROOT / record[\"archive\"]).read_bytes()\n        marker = record[\"archive_body_marker\"].encode()\n        assert archive.count(marker) == 1\n        original = archive.split(marker, 1)[1]\n        assert len(original) == record[\"original_bytes\"]\n        assert hashlib.sha256(original).hexdigest() == record[\"original_sha256\"]\n>       assert len((ROOT / \"README.md\").read_text().splitlines()) <= 125\nE       AssertionError: assert 126 <= 125\nE        +  where 126 = len(['# NSSOC \u2014 Building an Open-Source GR801 Counterpart', '', '[![checks](https://github.com/Melihakbulut221/nssoc/actio...tions.**', 'NSSOC brings together fault-tolerant computing, neuromorphic acceleration and spacecraft interfaces.', ...])\nE        +    where ['# NSSOC \u2014 Building an Open-Source GR801 Counterpart', '', '[![checks](https://github.com/Melihakbulut221/nssoc/actio...tions.**', 'NSSOC brings together fault-tolerant computing, neuromorphic acceleration and spacecraft interfaces.', ...] = <built-in method splitlines of str object at 0x56f07e5d8880>()\nE        +      where <built-in method splitlines of str object at 0x56f07e5d8880> = '# NSSOC \u2014 Building an Open-Source GR801 Counterpart\\n\\n[![checks](https://github.com/Melihakbulut221/nssoc/actions/wo...TRIBUTING.md) for development, [SECURITY.md](SECURITY.md) for reports, and [CHANGELOG.md](CHANGELOG.md) for changes.\\n'.splitlines\nE        +        where '# NSSOC \u2014 Building an Open-Source GR801 Counterpart\\n\\n[![checks](https://github.com/Melihakbulut221/nssoc/actions/wo...TRIBUTING.md) for development, [SECURITY.md](SECURITY.md) for reports, and [CHANGELOG.md](CHANGELOG.md) for changes.\\n' = read_text()\nE        +          where read_text = (PosixPath('/home/hasanmelih/Documents/ChatGPT/nnsoc') / 'README.md').read_text\n\nsw/tests/test_project_status.py:110: AssertionError\n=========================== short test summary info ============================\nFAILED sw/tests/test_project_status.py::test_readme_migration_preserves_every_original_byte\n1 failed, 207 passed in 26.51s\n"
+    },
+    "nssoc-doc114-readme-fixed.log": {
+      "bytes": 99,
+      "sha256": "64bd8432348c4a363d13804849e72a4064c1b8079fa4de172701190a70f6cb75",
+      "text": "...............................................................          [100%]\n63 passed in 3.91s\n"
+    },
+    "nssoc-doc114-site-final.log": {
+      "bytes": 278,
+      "sha256": "5a62eda5170873a248b10e70fad8e29ab928e0001ac9c36e92d3f71dea56aea3",
+      "text": "backend:               builtin\nsource documents:      133\npages written:         134\ncross-references:      8351 resolved\nunresolved references: 0\nlocal link targets:    10444 checked / 0 broken\npublished assets:      816\noutput:                /dev/shm/nssoc-doc114-site-final\n"
+    }
+  },
+  "scope": "Publication integrity only; no physical acceptance"
+}

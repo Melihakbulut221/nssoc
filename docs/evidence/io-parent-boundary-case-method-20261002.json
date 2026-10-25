@@ -1,0 +1,197 @@
+{
+  "status": "PASS_EXACT_NATIVE_PORT_CASE_FIX_LOCAL_VALIDATION_AWAITING_CLOUD",
+  "source_sha256": {
+    "hw/soc/flow/io_parent_boundary.py": "0dccf7918d078fdb25ab838e8378276c3c33fef31ac9d551af6a4a2b5637ea00",
+    "sw/tests/test_io_parent_boundary.py": "835c3bea83b3a2709d9bb09f0115119fc8916b7b9b0ca19980e986a9223cb4cb",
+    "scripts/run_io_parent_boundary.py": "f522a04d23e1c3bb9a7a1671b25f6e52726eaaddb0d160a22c4a06b344f057b9",
+    ".github/workflows/io-parent-boundary.yml": "9acbf4b47d7261610a5b2a3b2a4ad7e44ab5e3bb782db79300f16ba97a109c6d"
+  },
+  "change": "Use exact native reference port spellings from pinned prior LVSdb; physical annotation points/layers unchanged; no conductor geometry, tap A/P or comparison rule changes.",
+  "original_failing_run": 36998483392,
+  "original_failing_source": "4474871516d61f2fef885b0f3ee7ff1f6a8cd2c5",
+  "original_failure_review": {
+    "path": "hw/soc/out/resume-20261002-0800/boundary-cloud/review.json",
+    "bytes": 155123,
+    "sha256": "cc23c54d604ac53426062015248ad0d6099a7914f879fdc1158c55f3296c9015"
+  },
+  "original_native_review": {
+    "path": "hw/soc/out/resume-20261002-0800/boundary-cloud/native-review.json",
+    "bytes": 63963,
+    "sha256": "66cf405ae5dd87e72e49950fbf4bc51ab729dc13c4e95dfd30dd92ffa4267f54"
+  },
+  "native_controls": {
+    "status": "PASS_TINY_NATIVE_BOUNDARY_CONTROLS",
+    "cases": {
+      "connected": {
+        "compare": true,
+        "strict_ports": true,
+        "expected": true
+      },
+      "case_mismatch": {
+        "compare": true,
+        "strict_ports": false,
+        "expected": false
+      },
+      "parameter_mismatch": {
+        "compare": false,
+        "strict_ports": true,
+        "expected": false
+      },
+      "mislabeled": {
+        "compare": true,
+        "strict_ports": false,
+        "expected": false
+      },
+      "open_substrate": {
+        "compare": false,
+        "strict_ports": true,
+        "expected": false
+      },
+      "same_name_open": {
+        "compare": false,
+        "strict_ports": true,
+        "expected": false
+      },
+      "missing_substrate_label": {
+        "compare": true,
+        "strict_ports": false,
+        "expected": false
+      }
+    },
+    "annotation_roundtrip": {
+      "status": "PASS_ALL_POLYGONS_INSTANCES_AND_NON_BOUNDARY_TEXTS_PRESERVED",
+      "cells": 2,
+      "layer_pairs": 5
+    },
+    "scope": "Generic resistor geometry; label attachment never joins disjoint bodies. Not IHP validation."
+  },
+  "native_controls_receipt": {
+    "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/result.json",
+    "bytes": 1075,
+    "sha256": "1d37fa4ed843c95fc90349745388d5942558544f130cefca2c91300eb8bd0f5f"
+  },
+  "native_control_files": {
+    "annotation-original.gds": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/annotation-original.gds",
+      "bytes": 378,
+      "sha256": "bde96d150c932153e16a72f995c6dc5be77e0793737f60aaf668cac691ee56e7"
+    },
+    "annotation-wrapper.gds": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/annotation-wrapper.gds",
+      "bytes": 538,
+      "sha256": "e1af528109f72b2ec5218d7f583ea452791747d3fab9552488670e129f991606"
+    },
+    "case_mismatch.lvsdb.gz": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/case_mismatch.lvsdb.gz",
+      "bytes": 1046,
+      "sha256": "87a76cc4fd0fdd97c7e40c21ab8fa580347133d672583c702f2db7bca9c8e1fa"
+    },
+    "connected.lvsdb.gz": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/connected.lvsdb.gz",
+      "bytes": 956,
+      "sha256": "697ef62a10d9226597b8f9e39b70a98af30a410b29401cb5b0cef303ccc1b39b"
+    },
+    "mislabeled.lvsdb.gz": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/mislabeled.lvsdb.gz",
+      "bytes": 1016,
+      "sha256": "9904a500ed69111b15476abc8cd539366ffb6072d10d4d925bef59d4b0ef189f"
+    },
+    "missing_substrate_label.lvsdb.gz": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/missing_substrate_label.lvsdb.gz",
+      "bytes": 995,
+      "sha256": "6ca772091ae5d89816b8d4c8a089dc50962e53d78eca670f15e3a6a713c9c283"
+    },
+    "open_substrate.lvsdb.gz": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/open_substrate.lvsdb.gz",
+      "bytes": 1076,
+      "sha256": "77364debb4218f52ef2c2017d3cd05c30395e149cf3bd3c885feaacc31415ebd"
+    },
+    "parameter_mismatch.lvsdb.gz": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/parameter_mismatch.lvsdb.gz",
+      "bytes": 968,
+      "sha256": "0e9809c6e71602182c5ba00b6e65e1de5cd7a4851efce0f6aa2ce46031bac791"
+    },
+    "result.json": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/result.json",
+      "bytes": 1075,
+      "sha256": "1d37fa4ed843c95fc90349745388d5942558544f130cefca2c91300eb8bd0f5f"
+    },
+    "same_name_open.lvsdb.gz": {
+      "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/native-controls-final2/same_name_open.lvsdb.gz",
+      "bytes": 1065,
+      "sha256": "ef59e72df6356fc188da70ec9e49a315d31167743d632cbbf16aa1e012e84d64"
+    }
+  },
+  "actual_read_only_witness": {
+    "path": "hw/soc/out/resume-20261002-0800/boundary-case-repair/actual-captured-boundary-witness.json",
+    "bytes": 24563,
+    "sha256": "4f8c2c9aef28d6f585db8af7289b663a3d2ab5f08124ae4414a99b640516d3a0"
+  },
+  "runtime_verified_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "tests": {
+    "command": ".venv/bin/python -m pytest -q sw/tests/test_io_parent_boundary.py sw/tests/test_io_parent_marker_repair.py sw/tests/test_io_strict_parent_lvs.py sw/tests/test_io_parent_path_probe.py sw/tests/test_extract_gds_hierarchy.py",
+    "passed": 92
+  },
+  "ruff": "PASS",
+  "actionlint": "PASS",
+  "diff_check": "PASS",
+  "original_53_deck_files_unchanged": true,
+  "original_pinned_files_reverified": 54,
+  "actual_corrected_wrapper_built": false,
+  "actual_corrected_wrapper_compared": false,
+  "scope": "Tiny synthetic native controls plus read-only completed seven-instance LVSdb inspection under 2 GiB limit. No actual GDS/native chip extraction or routing locally.",
+  "current_actual_strict_port_status": "FAIL_CASE_SPELLING",
+  "current_actual_lvs_status": "FAIL",
+  "primitive_state": "Original actual flat extraction: 16 Match, 2 ptap1 MatchWithWarning for A/P; all 18 original primitive parameter sets unchanged.",
+  "qualified_deck_acceptance": false,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false,
+  "workflow_after_review_sha256": "76d058f852f218166c7105c5c3cc3ba9a26ccc45243c3e006d98ff071929f490",
+  "root_independent_native_controls": {
+    "status": "PASS_TINY_NATIVE_BOUNDARY_CONTROLS",
+    "cases": {
+      "connected": {
+        "compare": true,
+        "strict_ports": true,
+        "expected": true
+      },
+      "case_mismatch": {
+        "compare": true,
+        "strict_ports": false,
+        "expected": false
+      },
+      "parameter_mismatch": {
+        "compare": false,
+        "strict_ports": true,
+        "expected": false
+      },
+      "mislabeled": {
+        "compare": true,
+        "strict_ports": false,
+        "expected": false
+      },
+      "open_substrate": {
+        "compare": false,
+        "strict_ports": true,
+        "expected": false
+      },
+      "same_name_open": {
+        "compare": false,
+        "strict_ports": true,
+        "expected": false
+      },
+      "missing_substrate_label": {
+        "compare": true,
+        "strict_ports": false,
+        "expected": false
+      }
+    },
+    "annotation_roundtrip": {
+      "status": "PASS_ALL_POLYGONS_INSTANCES_AND_NON_BOUNDARY_TEXTS_PRESERVED",
+      "cells": 2,
+      "layer_pairs": 5
+    },
+    "scope": "Generic resistor geometry; label attachment never joins disjoint bodies. Not IHP validation."
+  },
+  "root_focused_tests_passed": 40
+}

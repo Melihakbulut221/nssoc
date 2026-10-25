@@ -1,0 +1,83 @@
+{
+  "scripts/cloud_tx_output8088_power128return32_composition.py": {
+    "baseline_path": "scripts/cloud_tx_output8088_power128feed32_composition.py",
+    "baseline_sha256": "b77749a865f372fe0b4657ad0345c15c1ab86ad26fe1afca2c1460e0d7396ad4",
+    "candidate_sha256": "bcf93f137507adaaa2ce070cfd906655b49cbe4632116fdf7877a424b93e8d54",
+    "changes": [
+      {
+        "start": 270,
+        "end": 397,
+        "replacement": "import compose_tx_output8088_power128return32_native as compose\nimport cloud_tx_output8088_power128return32_intrinsic as intrinsic\n"
+      },
+      {
+        "start": 446,
+        "end": 556,
+        "replacement": "ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-tx-output8088-power128return32-composition'\n"
+      },
+      {
+        "start": 693,
+        "end": 810,
+        "replacement": "    spec=json.loads((ROOT/'docs/evidence/tx-output8088-power128return32-composition-input-20261022.json').read_text())\n"
+      },
+      {
+        "start": 1678,
+        "end": 1795,
+        "replacement": "    receipt=json.loads((ROOT/'docs/evidence/tx-output8088-power128return32-precision-pass-20261022.json').read_text())\n"
+      },
+      {
+        "start": 1881,
+        "end": 2101,
+        "replacement": "    stem='tx-output8088-power128return32-precision-'+str(spec['run'])+'-1'\n    base='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-'+str(spec['run'])+'-1-tx-output8088-power128return32-precision/'\n"
+      },
+      {
+        "start": 2625,
+        "end": 2750,
+        "replacement": "    assert r['status']=='PASS_ACTUAL8088_POWER128RETURN32_NATIVE_RC_DOUBLE_TOTALS_TWO_ORDERS_AND13_CONTROLS_EACH_NOT_FULL_PHY'\n"
+      },
+      {
+        "start": 4114,
+        "end": 4227,
+        "replacement": "        adaptation=json.loads((ROOT/'scripts/tx-output8088-power128return32-composition-method.json').read_text())\n"
+      },
+      {
+        "start": 4835,
+        "end": 5055,
+        "replacement": "        bp=json.loads((ROOT/'docs/evidence/tx-output8088-power128return32-intrinsic-pass-20261022.json').read_text())\n        assert bp['run']==39762727581 and bp['source_head']=='74a1707ca8613bf97dbe06b360b906ae425f4623'\n"
+      },
+      {
+        "start": 5251,
+        "end": 5407,
+        "replacement": "        prior,proof=reports.restore_report('tx-output8088-power128return32-precision',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'rc',selected)\n"
+      },
+      {
+        "start": 5739,
+        "end": 5897,
+        "replacement": "        bound,bproof=reports.restore_report('tx-output8088-power128return32-intrinsic',bp['run'],bp['summary_sha256'],bp['parts_sha256'],OUT/'intrinsic',names)\n"
+      },
+      {
+        "start": 8087,
+        "end": 8550,
+        "replacement": "        result.update(status='PASS_ACTUAL_FULL8088_POWER128RETURN32_PARENT_WIRE_COMPOSITION_AND25_CONTROLS_REQUIRES_LOADED_NATIVE_WAVES',sources_unchanged=True,counts=formal['counts'],model_sha256=sha(final),composition_sha256=sha(OUT/'composition.json'),methods={p:sha(ROOT/p)for p in ['scripts/cloud_tx_output8088_power128return32_composition.py','scripts/compose_tx_output8088_power128return32_native.py','scripts/cloud_tx_output8088_power128return32_intrinsic.py']})\n"
+      }
+    ],
+    "scope": "Only return32 stage names and immutable verified native-source pins/date. All8088 device parameters, native terminal planes, actual140222R99906C and twenty-five corruption controls unchanged."
+  },
+  "scripts/compose_tx_output8088_power128return32_native.py": {
+    "baseline_path": "scripts/compose_tx_output8088_power128feed32_native.py",
+    "baseline_sha256": "ee068f9a178f6139a3a362cf7c227b3079672c1dc5f585e09c11f80c6b23cc64",
+    "candidate_sha256": "29e725fd520133cb131c67f9c98ac4ee317d1787900982ba978ee6bea7b40438",
+    "changes": [
+      {
+        "start": 265,
+        "end": 330,
+        "replacement": "import cloud_tx_output8088_power128return32_intrinsic as intrinsic\n"
+      },
+      {
+        "start": 1276,
+        "end": 1426,
+        "replacement": "    assert w[0][:2]==['.subckt','full_tx_output8088_power128return32_wires']and w[-1]in (['.ends'],['.ends','full_tx_output8088_power128return32_wires'])\n"
+      }
+    ],
+    "scope": "Only return32 stage names and immutable verified native-source pins/date. All8088 device parameters, native terminal planes, actual140222R99906C and twenty-five corruption controls unchanged."
+  }
+}

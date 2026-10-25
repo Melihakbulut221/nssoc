@@ -1,0 +1,4 @@
+# Actual v25 loaded rejection
+Both original full256-bit early/late captures finished with native return0 and no diagnostics. All120HBT and46MOS device gates pass, but sampler timing/margins and phase/current acceptance fail. The Nx4-to3 data/hold change is therefore not accepted. Complete source waveforms and immutable pins are retained; see the electrical-rejection receipt for compact per-sampler measurements.
+
+The new cloud diagnosis reopens those same full native waves and actual geometry, reproduces all120 transistor checks and all4 original sampler results, and reconstructs real master/slave and parallel clock-selector paths. Only source provenance and the actual data/hold Nx3 census are adapted from the prior diagnosis. Nearest-edge statistics are diagnostic observations, not proof of ordinal lock or causal delay. Use this evidence to choose the next physical correction; do not move sampling times or relax the original acceptance thresholds.

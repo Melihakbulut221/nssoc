@@ -1,0 +1,68 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_via_rich_v7_mim_loaded.py",
+      "candidate_path": "scripts/cloud_cdr_via_rich_v7_mim_streamed.py",
+      "baseline_sha256": "413890661f34a90cee496dbaa44a04ee1ac3e79ceeea9694f7cd16f5110f7022",
+      "candidate_sha256": "3053884c800fc9af66d9ac45e4d6a81f049fb0692801d24f124d27e95da9ca87",
+      "edits": [
+        {
+          "before": "import argparse,copy,hashlib,json,os,re,shutil,subprocess",
+          "after": "import argparse,copy,hashlib,json,os,re,shutil,subprocess,traceback",
+          "count": 1
+        },
+        {
+          "before": "import numpy as np",
+          "after": "import numpy as np\nimport cloud_tx_stream as stream\nfrom run_cloud_tx_mux4 import native_save_commands",
+          "count": 1
+        },
+        {
+          "before": "out=ROOT/('cloud-cdr-via-rich-v7-mim-loaded-'",
+          "after": "out=ROOT/('cloud-cdr-via-rich-v7-mim-streamed-'",
+          "count": 1
+        },
+        {
+          "before": "'save '+' '.join(vectors)",
+          "after": "*native_save_commands(vectors)",
+          "count": 1
+        },
+        {
+          "before": "        r['readback_controls']=readback_controls()",
+          "after": "        r['readback_controls']=readback_controls()\n        assert sha(Path(stream.__file__))=='2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb'\n        assert sha(ROOT/'scripts/run_cloud_tx_mux4.py')=='bb7f5c5ef736dd54c5ed560424d97d248894f4aa6fa6119f1e95c5f5c3df4b52'\n        tp=json.loads((ROOT/'docs/evidence/cdr-via-rich-stream-transport-pass-20261019.json').read_text())\n        assert tp['report']['status']=='PASS_FULL_CDR_MODEL_ALL_VECTOR_3NS_STREAM_TRANSPORT_REQUIRES_FULL_LOADED_SCREEN'and tp['report']['sources_unchanged']\n        assert tp['report']['stream_capture']['columns']==1108 and tp['report']['transport_comparison']['vectors']==1107\n        r['transport_control_source']=dict(run=tp['run'],summary_sha256=tp['summary_sha256'],parts_sha256=tp['parts_sha256'])",
+          "count": 1
+        },
+        {
+          "before": "        native=out/'native';native.mkdir();(native/'bench.cir').write_text('\\n'.join(deck)+'\\n');(native/'spinit').write_text('set num_threads=1\\n')",
+          "after": "        native=out/'native';native.mkdir()\n        original_deck='\\n'.join(deck)+'\\n';saves=native_save_commands(vectors)\n        assert len(vectors)==1107 and len(saves)==9 and [n for line in saves for n in line.split()[1:]]==vectors\n        r['native_save_commands']=saves\n        (native/'original-bench.cir').write_text(original_deck)\n        (native/'bench.cir').write_text(stream.streaming_deck(original_deck,dict(vectors=vectors)))\n        (native/'spinit').write_text('set num_threads=1\\n')",
+          "count": 1
+        },
+        {
+          "before": "ROOT/'scripts/cloud_vbic_tree32_backend.py',engine,native/'bench.cir'",
+          "after": "ROOT/'scripts/cloud_vbic_tree32_backend.py',Path(stream.__file__),ROOT/'scripts/run_cloud_tx_mux4.py',engine,native/'bench.cir',native/'original-bench.cir'",
+          "count": 1
+        },
+        {
+          "before": "log=(native/'native.log').read_text();opts,notes,_=backend_readback(log,'klu');r.update",
+          "after": "log=(native/'native.log').read_text();opts,notes,_=backend_readback(log,'klu');notes += [line for line in log.splitlines()if 'too many arg'in line.lower()or 'no such vector'in line.lower()];r.update",
+          "count": 1
+        },
+        {
+          "before": "        with(native/'wave.dat').open()as f:header=f.readline().lower().split()\n        assert header==['time',*vectors]\n        wave=np.loadtxt(native/'wave.dat',skiprows=1);t=wave[:,0];assert wave.shape[1]==len(vectors)+1 and np.isfinite(wave).all()and t[0]==0 and abs(t[-1]-STOP)<1e-15 and np.all(np.diff(t)>0)and np.diff(t).max()<=STEP*1.00001\n        d={n:wave[:,i+1]for i,n in enumerate(vectors)};active=t>=START",
+          "after": "        t,d,capture=stream.read_streamed_wave(native/'wave.raw',vectors,STOP,STEP)\n        r['raw_capture']=capture;active=t>=START",
+          "count": 1
+        },
+        {
+          "before": "        r['error']=repr(error);raise",
+          "after": "        r['error']=repr(error);r['traceback']=traceback.format_exc();raise",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "unchanged_dependencies": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/run_cloud_tx_mux4.py": "bb7f5c5ef736dd54c5ed560424d97d248894f4aa6fa6119f1e95c5f5c3df4b52",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_xor.py": "3ec870fa6a30d9f94038368d6b74c984c314c2d7248ecaab94c687867587fabe"
+  }
+}

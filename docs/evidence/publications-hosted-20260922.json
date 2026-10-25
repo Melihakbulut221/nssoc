@@ -1,0 +1,277 @@
+{
+  "status": "PASS",
+  "scope": "Four actual fresh publication builds and selected transcription checks only; outstanding scientific claims and product gates remain OPEN.",
+  "documents": {
+    "paper-soc": {
+      "inputs": {
+        "docs/evidence/s83ant/metrics.json": "dd13011cdfdc65b7972a37042bedadd86dc6f9aa32767fef37e5885959cecac7",
+        "docs/evidence/s83romecc5/metrics.json": "cf6a56ac6b8b56ffbc47292e2fc1bb8b180c926efdcf54de79d972a8146fa31f",
+        "paper/check_claims.py": "ffeac597b1dac9130f71bf8f5d78a47394b26a0abc314873b51d6fdd7503e284",
+        "paper-soc/Makefile": "efd1b62e7e670d4c272d01d4d4f7fc8afec188c821ca1667dc2b8d6140e10fc5",
+        "paper-soc/claims.yaml": "ab1626f113d1407dae7559d61c70a15ae085c4e82dacdae8e3d56f2bcbb210f5",
+        "paper-soc/figures/floorplan_macros.pdf": "f3c34c4b547e3df241918cba9228b303ed6faa152ed2a7c9ebf72ebd4511d9ac",
+        "paper-soc/figures/layout_panels.pdf": "01381655d3f0b4a6096120fc43c6c3de773053c3cd809bb86752139502a7a9ad",
+        "paper-soc/figures/layout_regions.pdf": "71f23d20e17223a703c4c6104cf2d81e4a779f85051ac6682fda22d7969643c5",
+        "paper-soc/main.tex": "904ebf92927c3eb7030d03234ad7887f17907099ec7684ebda28b211ac4655d6",
+        "paper-soc/refs.bib": "6ab3ebb2a52b3f15e0c3db5906e17fe1f81f9b3cff946023e05432979d46f741",
+        "scripts/check_publications.py": "57f27f2cc2d439e19442be27ee454d02be0b1ec8d02ebfb7fee0851b12777b68",
+        "scripts/pdf_overlap_check.py": "dba57f7aa65573c387bc55b6ba64e689721f197d32cad93d6f69a7242eaecfa6",
+        "scripts/tex_lint.py": "0f563dfd4e80eb8a42cb604e9760b4b23855bbfdda8e3a5c000016f3b0a4512e"
+      },
+      "commands": [
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/scripts/tex_lint.py",
+            "<repo>/hw/soc/out/publications/paper-soc/main.tex"
+          ],
+          "returncode": 0,
+          "log_sha256": "76465a0c9db0a287d93b0324c6528d58a495f021afec5bb230b6ea4b90aee239"
+        },
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/paper/check_claims.py",
+            "--claims",
+            "<repo>/paper-soc/claims.yaml"
+          ],
+          "returncode": 0,
+          "log_sha256": "9575c2864fbefca9602c99561cc5acc43445d71f0c4a50924b90f0dc8681b7b9"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "<repo>/hw/soc/out/publications/paper-soc",
+            "arxiv",
+            "TECTONIC=<repo>/hw/soc/tools/publications/tectonic"
+          ],
+          "returncode": 0,
+          "log_sha256": "78a335cd9fd01e3a7ec1859046a516442700e352627f3b49384be99ef15ea175"
+        },
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/scripts/pdf_overlap_check.py",
+            "<repo>/hw/soc/out/publications/paper-soc/main.pdf",
+            "--quiet"
+          ],
+          "returncode": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "pdf_sha256": "519b8328456d770e9922087b886c2d2eb2549ffc05d2d70596e55b27e82e0c08",
+      "bbl_sha256": "76bb765d4ab32a0497a083701dcbf11327d4210ffc9fe703116b2bf0e5f84266",
+      "text_sha256": "22a351c260d4545e0a5ee82244593976c83379f089654c6963bc3f4338d4fc9b",
+      "archive_sha256": "52923e089c4c111e66a79ac91950f3d6ccffc6c890103609501a74e9570db8f6"
+    },
+    "paper-design": {
+      "inputs": {
+        "docs/evidence/s83ant/metrics.json": "dd13011cdfdc65b7972a37042bedadd86dc6f9aa32767fef37e5885959cecac7",
+        "docs/evidence/s83romecc5/metrics.json": "cf6a56ac6b8b56ffbc47292e2fc1bb8b180c926efdcf54de79d972a8146fa31f",
+        "paper/check_claims.py": "ffeac597b1dac9130f71bf8f5d78a47394b26a0abc314873b51d6fdd7503e284",
+        "paper-design/Makefile": "003388d762bc062911458cf8eebc4af3f05a3dacaaa1c7c96c661b414d8bba2f",
+        "paper-design/claims.yaml": "6b3f6dfce5d90de93f4aa0a070ab8866ac9d99878af98d76f84f312bf3a36d20",
+        "paper-design/main.tex": "5bbbf6267f225ea0ce0c3a093f27307388a163b74768e231e116178b053e03d4",
+        "paper-design/refs.bib": "3c51e6930c086e4d0a1b2a5a607e724db53a36e6aed17cbdd9c568550fb486fa",
+        "scripts/check_publications.py": "57f27f2cc2d439e19442be27ee454d02be0b1ec8d02ebfb7fee0851b12777b68",
+        "scripts/pdf_overlap_check.py": "dba57f7aa65573c387bc55b6ba64e689721f197d32cad93d6f69a7242eaecfa6",
+        "scripts/tex_lint.py": "0f563dfd4e80eb8a42cb604e9760b4b23855bbfdda8e3a5c000016f3b0a4512e"
+      },
+      "commands": [
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/scripts/tex_lint.py",
+            "<repo>/hw/soc/out/publications/paper-design/main.tex"
+          ],
+          "returncode": 0,
+          "log_sha256": "5fc430d325ebd29b73cb3ae1067bfc6500c746953bc946fe2cfe3941240915d6"
+        },
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/paper/check_claims.py",
+            "--claims",
+            "<repo>/paper-design/claims.yaml"
+          ],
+          "returncode": 0,
+          "log_sha256": "e5fcf5a36470100af62773d9ed34b2a205edb3f6e7cbb9a9002c1a7886635cdf"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "<repo>/hw/soc/out/publications/paper-design",
+            "arxiv",
+            "TECTONIC=<repo>/hw/soc/tools/publications/tectonic"
+          ],
+          "returncode": 0,
+          "log_sha256": "71ec0029912bf7c4166135bf886e0de0eb6581b740272f2c61c796896d9c6ea3"
+        },
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/scripts/pdf_overlap_check.py",
+            "<repo>/hw/soc/out/publications/paper-design/main.pdf",
+            "--quiet"
+          ],
+          "returncode": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "pdf_sha256": "6b2d4990cc827a77a91c6ba0edfa2dcbc8f92a68d656ba7ca7333ec3633c5bfe",
+      "bbl_sha256": "91e2f32418f1f9e138326863d806f366837aa2225898a8ddc18d04a6858c67d6",
+      "text_sha256": "ba19099580ee2d0ffe20949685c7a06acabc65ed55b3843db7f29bd654a59a59",
+      "archive_sha256": "9cc5f6e1a7eb07c07ec37c5956da1692e14b38825bc19f8b085c62910777d38b"
+    },
+    "paper-residual": {
+      "inputs": {
+        "docs/evidence/s83ant/metrics.json": "dd13011cdfdc65b7972a37042bedadd86dc6f9aa32767fef37e5885959cecac7",
+        "paper/check_claims.py": "ffeac597b1dac9130f71bf8f5d78a47394b26a0abc314873b51d6fdd7503e284",
+        "paper-residual/Makefile": "5cde4d2888faf4645e5e802e2b4af297ee11e5aec6e247274d188c1d8df8569a",
+        "paper-residual/claims.yaml": "7feacb8a7482eff2e4e753b4479307bae63e70e56ca43d3bee16429a0155420d",
+        "paper-residual/main.tex": "2ee7590d1e8bb314468bf07dc0b9fd8532e554903c583a8c89bd0ff31bc88443",
+        "paper-residual/refs.bib": "be054248ebee5d35d17f56969a572ecf941cd7773e9c0cf262d7daa6c824d2c9",
+        "scripts/check_publications.py": "57f27f2cc2d439e19442be27ee454d02be0b1ec8d02ebfb7fee0851b12777b68",
+        "scripts/pdf_overlap_check.py": "dba57f7aa65573c387bc55b6ba64e689721f197d32cad93d6f69a7242eaecfa6",
+        "scripts/tex_lint.py": "0f563dfd4e80eb8a42cb604e9760b4b23855bbfdda8e3a5c000016f3b0a4512e"
+      },
+      "commands": [
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/scripts/tex_lint.py",
+            "<repo>/hw/soc/out/publications/paper-residual/main.tex"
+          ],
+          "returncode": 0,
+          "log_sha256": "14bb92df26dacdafc6f1976fb31e8f67a1c71de2d68ff64b948c8af2a1026b90"
+        },
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/paper/check_claims.py",
+            "--claims",
+            "<repo>/paper-residual/claims.yaml"
+          ],
+          "returncode": 0,
+          "log_sha256": "32b7dcc221c7afbc72c109a46ccbc2d4062d1ed6d4acc4aa02a03ef3698e1ca2"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "<repo>/hw/soc/out/publications/paper-residual",
+            "arxiv",
+            "TECTONIC=<repo>/hw/soc/tools/publications/tectonic"
+          ],
+          "returncode": 0,
+          "log_sha256": "13067f9013c049897d849531167d5e7ba57ac5e9f932d62ea05b748b01d5e4c9"
+        },
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/scripts/pdf_overlap_check.py",
+            "<repo>/hw/soc/out/publications/paper-residual/main.pdf",
+            "--quiet"
+          ],
+          "returncode": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "pdf_sha256": "9340dfb2fc1287c0aadc4d85b1d97d590a96311b1a616fa76e33e8a7bc9c87ce",
+      "bbl_sha256": "6781b8e18fda48db1c60238c915f1decb62fe0fa69af6a93e9c21527bebcceda",
+      "text_sha256": "6122be2397674c66dcd1b96a94cec94b81662ad7c67fcb9b616ffde1ce8f3102",
+      "archive_sha256": "885992168d798b7fb1cc6c487d09290039efb8301cbb2dabfaa47825a5c9a309"
+    },
+    "thesis": {
+      "inputs": {
+        "docs/evidence/s83romecc5/metrics.json": "cf6a56ac6b8b56ffbc47292e2fc1bb8b180c926efdcf54de79d972a8146fa31f",
+        "paper/check_claims.py": "ffeac597b1dac9130f71bf8f5d78a47394b26a0abc314873b51d6fdd7503e284",
+        "scripts/check_publications.py": "57f27f2cc2d439e19442be27ee454d02be0b1ec8d02ebfb7fee0851b12777b68",
+        "scripts/pdf_overlap_check.py": "dba57f7aa65573c387bc55b6ba64e689721f197d32cad93d6f69a7242eaecfa6",
+        "scripts/tex_lint.py": "0f563dfd4e80eb8a42cb604e9760b4b23855bbfdda8e3a5c000016f3b0a4512e",
+        "thesis/Makefile": "11cf5012c4c7c89ea630fcbefe57c65d1b5d304ae303d48fe62b089bd3a7eaf9",
+        "thesis/chapters/arch.tex": "fecb29ff2c2ab9f9312ffd842affe33e2f3aef25a69eced67730ee8fd7c1b9f8",
+        "thesis/chapters/conclusion.tex": "7dfda4a042b16fc553b07c9437ec9cea48ff4b2126cfaa79e7a078d7f3a748f0",
+        "thesis/chapters/harden.tex": "aa523399ddcaa4b49ac3e8cb79c9cbcac5c52c904c4b2c79fe7f29961db6c27b",
+        "thesis/chapters/intro.tex": "41f408afc4b772641255a55e4cb59d9b8b560110e5edba579d68d4b041d50744",
+        "thesis/chapters/npu.tex": "d98a9bc1f33a90bc8a1f1a7d37ac2621b6a1df5efb87727c085d2f83ad2d6242",
+        "thesis/chapters/phys.tex": "7bc4d73675c7fc143fc16396fb2068347b05a07130ec5836fc594f7e0307e9bd",
+        "thesis/chapters/results.tex": "64ebae49dad3c65d3805561f668a7a06dcb3f4ab2397df1ff7459e2d03313b4c",
+        "thesis/chapters/verif.tex": "4c5c4a880e34b76e866a8b5e502d31fdf3668498848d9be60fbed840a6110b4a",
+        "thesis/claims.yaml": "bf0c6a0d02520c3d3aa6b2f2a524b66010dd94c57e7ff34b32bb01644b30ae43",
+        "thesis/figures/floorplan_macros.pdf": "f3c34c4b547e3df241918cba9228b303ed6faa152ed2a7c9ebf72ebd4511d9ac",
+        "thesis/figures/layout_blocks.pdf": "b5da932c2c62d1ce0d42f8edf9fcdd4c3415064d69103e19b715880eb3627036",
+        "thesis/figures/layout_density.pdf": "b7c1c722c1570f26eef40690bd48de53ac89978cf0736a2dd59b5158e89e627e",
+        "thesis/figures/layout_ibex_npu.pdf": "25fff5a1d506fbe23d0f9aa38cafdefedc654c95869bc591a3079d03c5201e09",
+        "thesis/figures/layout_panels.pdf": "01381655d3f0b4a6096120fc43c6c3de773053c3cd809bb86752139502a7a9ad",
+        "thesis/figures/layout_regions.pdf": "71f23d20e17223a703c4c6104cf2d81e4a779f85051ac6682fda22d7969643c5",
+        "thesis/main.tex": "379bd73379fdeaf0b94ef0ee772785149460ea06efe267fe227adce7038cc905",
+        "thesis/refs.bib": "4f2817a2cdadbb9dd72d8cff893755576baf62e1937a58e99501e32c9e86550e"
+      },
+      "commands": [
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/scripts/tex_lint.py",
+            "<repo>/hw/soc/out/publications/thesis/main.tex"
+          ],
+          "returncode": 0,
+          "log_sha256": "4772a6d0a9134b761c9dfbf25fff2d700eb890f628c2902aece1c443c3934e74"
+        },
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/paper/check_claims.py",
+            "--claims",
+            "<repo>/thesis/claims.yaml"
+          ],
+          "returncode": 0,
+          "log_sha256": "701a395be185c23b5327297379927a5eb34682a4f6bebe6b6bfc680136689385"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "<repo>/hw/soc/out/publications/thesis",
+            "arxiv",
+            "TECTONIC=<repo>/hw/soc/tools/publications/tectonic"
+          ],
+          "returncode": 0,
+          "log_sha256": "ff8df21f2d5126ee96abf4182f844d37d8c2ee7536c64634462d3eab734b5f9f"
+        },
+        {
+          "command": [
+            "/opt/hostedtoolcache/Python/3.12.14/x64/bin/python3",
+            "<repo>/scripts/pdf_overlap_check.py",
+            "<repo>/hw/soc/out/publications/thesis/main.pdf",
+            "--quiet"
+          ],
+          "returncode": 0,
+          "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "pdf_sha256": "6db4e12ea6ff515ecaf1c9c7f5d391e3c6e90a5c9821e51eb2f5474c55284f8f",
+      "bbl_sha256": "0ff0703902aa8c78b0f067ced8b2b5ef54f7a42129ecec835747c7ef74699366",
+      "text_sha256": "8d2092aabfc7320726f82ea00a1188afef8700d46dcbf52dbba4fb14d951a3e3",
+      "archive_sha256": "568fd530b9fed7875d30efa2e09433163be487df17a8feff3ca34e799abdfd46"
+    }
+  },
+  "verified_scope": "Actual hosted artifacts, all per-command log digests, PDFs/bibliographies/archives, all Git-bound inputs and fresh PDF text compared with the accepted local build.",
+  "git": {
+    "branch_head": "c42a29c691fe905c28adf08d83c5237baaf447f1",
+    "tested_merge": "e684b8b4446bf1ae94b81d35ed2f6c0ff03361ad",
+    "tree": "aaa45ba1ad74e4e7b9d4a5186fd6a417016b6cbe",
+    "merge_equals_branch_tree": true
+  },
+  "hosted": {
+    "run_id": 35672519255,
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/35672519255",
+    "event": "pull_request",
+    "conclusion": "success",
+    "artifact_id": 10671338474,
+    "artifact_sha256": "c74097db1cacea0381aa8f9c5a229a1b3436bb587080dc621aceb6a8265e7393"
+  },
+  "date": "2026-09-22"
+}

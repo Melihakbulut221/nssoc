@@ -1,0 +1,159 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-transient-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source controls or the separately authorized first p-high native process
+        type: choice
+        default: source-controls
+        required: true
+        options: [source-controls, native]
+      stage:
+        description: Fresh initial process or exact saved-process continuation
+        type: choice
+        default: initial
+        required: true
+        options: [initial, cross]
+      source_descriptor:
+        description: Exact successful saved-process descriptor for cross only
+        type: string
+        default: '{}'
+        required: true
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-transient-p-initial-high
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact portable lifecycle and every native-measurement refusal gate
+        run: |
+          python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+          if (exit 7) | tee deliberately-failed-pipeline.log; then exit 1; fi
+          python3 scripts/check_tx_phase_reset334_transient.py > controls.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('controls.json'))
+          assert d['status']=='PASS_PHYSICAL334_TRANSIENT_SOURCE_CONTROLS_NOT_DUT_ACCEPTANCE'
+          assert len(d['negative_controls'])==52 and d['portable_controls']['count']==22
+          assert d['reversible_source_derivation']['reversible_edits']==29
+          assert not d['native_simulator_invoked'] and not d['transient_executed']
+          print(json.dumps(d,indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: reset334-transient-source-controls
+          path: controls.json
+          retention-days: 90
+  exact318-p-high-native:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'native'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify precreated exact-source release before installing native runtime
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROOF_STAGE: ${{ inputs.stage }}
+        run: |
+          test "$PROOF_STAGE" = initial || test "$PROOF_STAGE" = cross
+          python3 scripts/ensure_cloud_tested_source_release.py --group "tx-phase-reset334-transient-native-$PROOF_STAGE-p-initial-high"
+      - name: Install original pinned portable runtime dependencies and CRIU
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+          git init "$RUNNER_TEMP/criu-src"
+          git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
+          git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          git -C "$RUNNER_TEMP/criu-src" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/criu-src" rev-parse HEAD)" = 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          make -C "$RUNNER_TEMP/criu-src" -j2 criu PYTHON=/usr/bin/python3 2>&1 | tee "$RUNNER_TEMP/criu-build.log"
+          sudo install -m 755 "$RUNNER_TEMP/criu-src/criu/criu" /usr/sbin/criu
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          p=pathlib.Path('/usr/sbin/criu')
+          d=dict(source_commit='9539417f3e3cfa4eb84c319cd71f4d52f1f08645',
+            binary_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
+            version=subprocess.check_output([str(p),'--version'],text=True),
+            libraries=subprocess.check_output(['ldd',str(p)],text=True))
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
+          PY
+      - name: Run first actual p-high process or restore its exact native capsule
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROOF_STAGE: ${{ inputs.stage }}
+          NSSOC_TX_SOURCE: ${{ inputs.source_descriptor }}
+          NSSOC_TX_SECONDS: '13200'
+        run: |
+          if [ "$PROOF_STAGE" = initial ]; then test "$NSSOC_TX_SOURCE" = '{}'; fi
+          python3 scripts/cloud_tx_phase_reset334_transient.py --stage "$PROOF_STAGE" --case p-initial-high
+      - name: Preserve small result even for rejected full capture or saved partial process
+        if: always()
+        env:
+          PROOF_STAGE: ${{ inputs.stage }}
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          root=Path('cloud-tx-phase-reset334-transient-native-'+os.environ['PROOF_STAGE']+'-p-initial-high')
+          root.mkdir(exist_ok=True)
+          p=root/'result.json'
+          if not p.exists():p.write_text(json.dumps(dict(status='FAIL_MISSING_NATIVE_RESULT',source_head=os.environ['GITHUB_SHA'],
+            full_capture=False,electrical_screen_passed=False,full_PHY_accepted=False))+'\n')
+          raw=p.read_bytes()
+          assert len(raw)<=8_000_000
+          print('RESULT_SHA256',hashlib.sha256(raw).hexdigest());print('RESULT_BYTES',len(raw))
+          data=base64.b64encode(raw).decode();chunks=[data[i:i+4096]for i in range(0,len(data),4096)]
+          for i,c in enumerate(chunks):print(f'RESULT_BASE64 {i}/{len(chunks)} {c}')
+          PY
+      - name: Publish every native raw byte, log and any saved process capsule
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROOF_STAGE: ${{ inputs.stage }}
+        run: |
+          group="tx-phase-reset334-transient-native-$PROOF_STAGE-p-initial-high"
+          root="cloud-$group"
+          stem="$group-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/ensure_cloud_tested_source_release.py --group "$group"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" "$group" <<'PY'
+          import json,subprocess,sys
+          stem,group=sys.argv[1:]
+          parts=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,
+            stem+'.summary.json',stem+'.parts.json',*[p['name']for p in parts['parts']]],check=True)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome == 'failure'
+        with:
+          name: reset334-p-high-complete-evidence-${{ inputs.stage }}
+          path: cloud-tx-phase-reset334-transient-native-${{ inputs.stage }}-p-initial-high/
+          retention-days: 90

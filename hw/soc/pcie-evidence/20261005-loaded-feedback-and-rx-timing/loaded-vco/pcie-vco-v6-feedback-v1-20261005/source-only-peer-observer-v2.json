@@ -1,0 +1,77 @@
+{
+  "status": "PASS_SOURCE_ONLY_VCO_V2_PUBLIC_OBSERVER_BOUNDARY",
+  "utc": "2026-10-05T13:36:07.625225+00:00",
+  "reviewer": "rx_route_resume",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-feedback-v1-20261005/source-freeze-observer-v2.json": {
+      "bytes": 1494,
+      "sha256": "5a2e4abdf709cad9c22a3216388007506f7a1695e2a407f00a3d81c546e40d94"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-feedback-v1-20261005/controls03-observer-v2.log": {
+      "bytes": 99,
+      "sha256": "bf6defe8c385e729b9aa0f8bac5da7f3d07b10468ca3003fcddd5911381c1eea"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_feedback_v1.py": {
+      "bytes": 20439,
+      "sha256": "0658aa499361c2eba01b3af7671cdb1b2e97da7f64e41d7afe72b4fd659a841a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_feedback_vco_v6_wire_v1.spice": {
+      "bytes": 651,
+      "sha256": "31543ff47012caaa280ae91f3187aa59ce79a9cccd21a238659ff505ded31c8a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_vco_v6_feedback_v1.py": {
+      "bytes": 4337,
+      "sha256": "dae1328203a9de5f3b07408a748353004cc8d663d7ba3f610a5d2daabc73b3a9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/fixtures/pcie_vco_v6_feedback_v1/hybrid-open.spice.license": {
+      "bytes": 89,
+      "sha256": "63040fe3b304e6d5cbf13ec77ebb156503ba7e551f6f3d6e9b3f718412750103"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/fixtures/pcie_vco_v6_feedback_v1/composition.json.license": {
+      "bytes": 84,
+      "sha256": "e331385a4e3b8c9ae9d7ff00acb9410c53c85862bd0b049c488a01e8293fe678"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/fixtures/pcie_vco_v6_feedback_v1/composition.json": {
+      "bytes": 77538,
+      "sha256": "619ac16d7bb31a5a25b594c768bb551b232439d736745697b79923beb8811ff1"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/fixtures/pcie_vco_v6_feedback_v1/hybrid-open.spice": {
+      "bytes": 71443,
+      "sha256": "37673a8cba095790d53b477db96cda8c782e94166a52b3998c92203d7649805b"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_feedback_v2.py": {
+      "bytes": 1789,
+      "sha256": "2a8061c1db5988e932a3bc289f5b9120724ca3b87a5b0c4300e0231536d42af0"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_vco_v6_feedback_v2.py": {
+      "bytes": 2276,
+      "sha256": "224a4be4d4e0d849f659c3057bc6e90e050c3034dac031e8726df826fb9836ff"
+    }
+  },
+  "exact_cloned_function_code_objects": [
+    "topology",
+    "measurement",
+    "guard",
+    "capture",
+    "deck",
+    "native_limit",
+    "run_native",
+    "run",
+    "main"
+  ],
+  "checks": {
+    "nominal06_085_configs_circuits_and_vectors_equal_v1": true,
+    "wrong_modulus_config_circuit_vectors_equal_v1": true,
+    "disconnect_changes_only_missing_public_v_clkn_observation": true,
+    "same437_native_records_and_actual_faulted_connections": true,
+    "no_voltage_source_or_behavioral_clock_added": true,
+    "private_namespace_does_not_mutate_previous_config_or_run_globals": true,
+    "physics_measurement_resource_lifecycle_function_code_objects_exact": true,
+    "Meter_class_and_OFF_startup_screen_unchanged": true,
+    "declared785_vectors_unique_after_correction": true
+  },
+  "prior_controls_observed_not_rerun": "17 passed",
+  "findings": [],
+  "new_native_or_waveform_replay_by_peer": false,
+  "scope": "Observer/source-only correction. Preserves original disconnect capture error. Native disconnect-02 waveform and real-fault measurement must be verified separately. No PLL/PHY/PVT/jitter/qualifiedRC acceptance."
+}

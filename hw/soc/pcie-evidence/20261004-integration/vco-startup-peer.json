@@ -1,0 +1,196 @@
+{
+  "status": "PASS_BOUNDED_SOURCE_AND_NINE_PILOT_RAW_REVIEW_NOT_ALL_CORNER_ACCEPTANCE",
+  "utc": "2026-10-04T09:09:39.178115+00:00",
+  "sources": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/diagnose_pcie_clock_zero_start_v2.py",
+      "bytes": 11924,
+      "sha256": "0bab52f600f609d4f0e71849a7df492272c1320066815e9017cd7b67d791a0e4"
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_clock_zero_start_v2.py",
+      "bytes": 3070,
+      "sha256": "34c2416ee7b6e5dd4f55e7b7abfab038acaf7126edbe584d130defa29d09057a"
+    }
+  ],
+  "parent": {
+    "path": "/dev/shm/nssoc-clock-vco-full-20261004/result.json",
+    "bytes": 405383,
+    "sha256": "2d14f5ddf828203f62bfd8af9e895b687d0962a83f0d82d3c69560f30f689807"
+  },
+  "native_result": {
+    "path": "/dev/shm/nssoc-vco-zero-v2-pilot/result.json",
+    "bytes": 89729,
+    "sha256": "dfb609512140a1e03d9486f128e7860836712b8ba64c57a124e025d67d310ec7"
+  },
+  "tests_passed": 13,
+  "cases": [
+    {
+      "case": "nominal",
+      "numerical_clean": true,
+      "screen_pass": true,
+      "checks": {
+        "edges": true,
+        "edge_order": true,
+        "differential_swing": true,
+        "frequency": true,
+        "deterministic_period_spread": true,
+        "duty": true,
+        "headroom": true,
+        "maximum_vce": true,
+        "current_density": true
+      },
+      "min_vce_v": 0.5458465787609998
+    },
+    {
+      "case": "half_step",
+      "numerical_clean": true,
+      "screen_pass": true,
+      "checks": {
+        "edges": true,
+        "edge_order": true,
+        "differential_swing": true,
+        "frequency": true,
+        "deterministic_period_spread": true,
+        "duty": true,
+        "headroom": true,
+        "maximum_vce": true,
+        "current_density": true
+      },
+      "min_vce_v": 0.545836991951
+    },
+    {
+      "case": "hbt_typ_mos_tt_125",
+      "numerical_clean": true,
+      "screen_pass": true,
+      "checks": {
+        "edges": true,
+        "edge_order": true,
+        "differential_swing": true,
+        "frequency": true,
+        "deterministic_period_spread": true,
+        "duty": true,
+        "headroom": true,
+        "maximum_vce": true,
+        "current_density": true
+      },
+      "min_vce_v": 0.4498553283989999
+    },
+    {
+      "case": "hbt_bcs_mos_ss_125",
+      "numerical_clean": true,
+      "screen_pass": false,
+      "checks": {
+        "edges": true,
+        "edge_order": true,
+        "differential_swing": true,
+        "frequency": true,
+        "deterministic_period_spread": true,
+        "duty": true,
+        "headroom": false,
+        "maximum_vce": true,
+        "current_density": true
+      },
+      "min_vce_v": 0.39975432543400014
+    },
+    {
+      "case": "hbt_wcs_mos_ss_125",
+      "numerical_clean": true,
+      "screen_pass": true,
+      "checks": {
+        "edges": true,
+        "edge_order": true,
+        "differential_swing": true,
+        "frequency": true,
+        "deterministic_period_spread": true,
+        "duty": true,
+        "headroom": true,
+        "maximum_vce": true,
+        "current_density": true
+      },
+      "min_vce_v": 0.47728276750199994
+    },
+    {
+      "case": "no_bias",
+      "numerical_clean": true,
+      "screen_pass": false,
+      "checks": {
+        "edges": false,
+        "edge_order": true,
+        "differential_swing": false,
+        "frequency": false,
+        "deterministic_period_spread": false,
+        "duty": false,
+        "headroom": true,
+        "maximum_vce": false,
+        "current_density": true
+      },
+      "min_vce_v": 0.6242039511903
+    },
+    {
+      "case": "no_feedback",
+      "numerical_clean": true,
+      "screen_pass": false,
+      "checks": {
+        "edges": false,
+        "edge_order": true,
+        "differential_swing": false,
+        "frequency": false,
+        "deterministic_period_spread": false,
+        "duty": false,
+        "headroom": true,
+        "maximum_vce": true,
+        "current_density": true
+      },
+      "min_vce_v": 0.8666772245987
+    },
+    {
+      "case": "same_clock",
+      "numerical_clean": true,
+      "screen_pass": false,
+      "checks": {
+        "edges": false,
+        "edge_order": false,
+        "differential_swing": false,
+        "frequency": true,
+        "deterministic_period_spread": false,
+        "duty": false,
+        "headroom": true,
+        "maximum_vce": true,
+        "current_density": true
+      },
+      "min_vce_v": 0.545328916171
+    },
+    {
+      "case": "overload",
+      "numerical_clean": true,
+      "screen_pass": false,
+      "checks": {
+        "edges": true,
+        "edge_order": true,
+        "differential_swing": false,
+        "frequency": true,
+        "deterministic_period_spread": true,
+        "duty": true,
+        "headroom": true,
+        "maximum_vce": true,
+        "current_density": false
+      },
+      "min_vce_v": 0.546465218766
+    }
+  ],
+  "remeasured_full_waves": [
+    "nominal",
+    "hbt_bcs_mos_ss_125"
+  ],
+  "source_reading": [
+    "Original VDD/VCTRL ramp, dimensions, all18HBTs, compiled native models, thresholds, transients and observation vectors are byte-preserved. Only actual native initial-OFF commands and zero-op/SHOW evidence are added.",
+    "Actual SHOW covers every18HBTs in exact order; initial OP file is re-read and bounded. Native failures stay numerical/control failure, not functional-negative pass.",
+    "Aggregate CLEAN_NATIVE_STARTUP_WITH_CHARACTERIZATION_LIMITS means numerically clean startup only; the true hot-XBN headroom failure remains in positive_characterization_failures."
+  ],
+  "limitations": [
+    "No new native simulations. Full72case run still separate, not independently remeasured here.",
+    "Only nominal and hot headroom-failure pilot full waves are retained/recomputed; all9 pilot logs/decks/circuit/OP/flags/output hashes verified.",
+    "No PLL/CDR/fanout/physical qualification or all-corner VCO acceptance."
+  ]
+}

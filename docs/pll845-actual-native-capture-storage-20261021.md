@@ -1,0 +1,9 @@
+# Actual archived PLL capture differs from the assumed reader contract
+
+Cloud header observation39580323368 verified the complete small diagnostic archive and reproduced the frozen reader rejection. The raw member previously hashed by39571416471 contains5106 columns: time,5088 voltages and17 currents. The native header is196539 bytes; declared point count0 is the unfinished native header. The1695-column assumption is contradicted. Original source archive verification remains incomplete until the renewed census finishes.
+
+Some recorded internal voltage names include nested flow(...) node syntax. The frozen reader assumed only simple v(...) names and voltage units, so it rejects before its width check. No full acquisition acceptance was established or is being retroactively granted.
+
+The storage observer is now pinned to this exact archived header SHA44cef9ce591b2c6bb87ba9416e78a4da9f233666e0169d2bcb3bd0e469084577 and exact raw SHA17a116d880d748a3bf773f6d8268b16b7fa06c914a19dabbf8439819acb8e88a. Before reading the full archive it verifies the small source archive and eight header corruption controls. This observer computes only the last complete row time with the actual5106-column stride. It does not validate electrical values, acquire lock or change the original final reader. All raw columns and bytes remain intact.
+
+The complete archive census also retains the original prepared vector and circuit metadata for subsequent exact coverage mapping. Before native continuation or final acceptance, the actual retained1694 requested voltage probes must be mapped and checked against all additional raw columns; the full original1us,.3125ps,100ppm,50ps and no-slip gates remain mandatory. Capacity and native reserve still require a measured correction. No native restart is authorized by this diagnostic result.

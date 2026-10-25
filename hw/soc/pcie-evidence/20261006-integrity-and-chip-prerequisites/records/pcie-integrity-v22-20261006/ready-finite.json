@@ -1,0 +1,827 @@
+{
+  "status": "READY_V22_CACHE_QUALIFICATION_NATIVE_SETUP_REJECTED_NOT_ADOPTED",
+  "utc": "2026-10-06T03:29:13.795916+00:00",
+  "source_allowlist": [
+    {
+      "repository_path": "scripts/generate_pcie_integrity_cache_v22.py",
+      "bytes": 1577,
+      "sha256": "dfb7d4d2700c772dbe68ddb0b865dd071a4f541617b9f8837eca96753e49c06a"
+    },
+    {
+      "repository_path": "scripts/check_pcie_gen3_continuous_rx_integrity_v22.py",
+      "bytes": 11276,
+      "sha256": "c830431e7b194927d5a4956da0a2b459ebe93278475b17bd221f86e1cb513d2f"
+    },
+    {
+      "repository_path": "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v22.v",
+      "bytes": 194845,
+      "sha256": "b18c84d1cd1a7db7a6681939624a96a07af8f1cda1726bde987a4b08e89ad5d6"
+    },
+    {
+      "repository_path": "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v22.v",
+      "bytes": 3324,
+      "sha256": "29495da25ca84bfff6c7dca6cb541c498debb64ac64e4cfdc863905abe854a01"
+    },
+    {
+      "repository_path": "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v22",
+      "bytes": 1528,
+      "sha256": "606f14de8fc0f440bce0ad965032e361c41e9e55408cf9ca18c0c34625e510f8"
+    },
+    {
+      "repository_path": "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v22.py",
+      "bytes": 29641,
+      "sha256": "7ac5d2f384c15396f2e536b26783770c79f7a41020d020240a7ca01b3e918088"
+    },
+    {
+      "repository_path": "sw/tests/test_pcie_gen3_continuous_rx_integrity_v22.py",
+      "bytes": 6470,
+      "sha256": "69528fd9f87e698377f2eb62b96723ad008d19c943cd84609d2e2a77e402f538"
+    },
+    {
+      "repository_path": "sw/tests/test_pcie_gen3_integrity_v22_cache.py",
+      "bytes": 5535,
+      "sha256": "c8e98a352bea96aec33dfac4f7571a99381f09b9a57ca4ec452d6ac2521fefe6"
+    },
+    {
+      "repository_path": "sw/tests/test_pcie_gen3_integrity_v22_miter.py",
+      "bytes": 13672,
+      "sha256": "842ecf1202253835e6c4639f7b7d8e2c4a7d2eb27bbee9b968da865ad5981cf7"
+    }
+  ],
+  "controls": {
+    "current_selected_predicates_covered": 29,
+    "pytest_executions": 38,
+    "passed_executions": 35,
+    "historical_failed_executions": 3,
+    "original_campaign": [
+      26,
+      3
+    ],
+    "targeted_corrected_campaign": [
+      9,
+      0
+    ],
+    "public_direct_profile_cases": 17,
+    "full_miter_cases": 17,
+    "cache_fault_epoch_witnesses": [
+      8,
+      8,
+      8
+    ],
+    "literal_vectors": 4096,
+    "literal_mutants": 6,
+    "actual_miter_mutants": 6,
+    "inherited_public_mutants": 12,
+    "MAX4118_profile_excluded": true,
+    "complete_direct_profile_rerun": false
+  },
+  "functional_source_peer": {
+    "bytes": 3964,
+    "sha256": "ad49c858a89c28c828480b251af60d7807cf6606e367f6b10edfafbfc900f3bd"
+  },
+  "saved_controls_peer": {
+    "bytes": 1810,
+    "sha256": "42772978a1ebadadb74ee385903fc8b08a72a2821218f7e52b4e48e562c55231"
+  },
+  "native_recovery_peer": {
+    "bytes": 3106,
+    "sha256": "ff7f45bcc971c06c527fcb0e6d84fed7e10557955754cffd258594656971d761"
+  },
+  "native_saved_peer": {
+    "bytes": 6119,
+    "sha256": "ac52cf47410b7110fa5e7793a3a8bcc3f743b3de4a220676e07d84a768c12195"
+  },
+  "native": {
+    "status": "FINITE_NATIVE_SCREEN_COMPLETE_NOT_ADOPTED",
+    "native_cells": 101044,
+    "flops": 9612,
+    "cell_delta_vs_V21": -59,
+    "setup_ns": {
+      "slow": -3.544282,
+      "typical": -0.745996,
+      "fast": 0.857332
+    },
+    "hold_ns": {
+      "slow": 0.370623,
+      "typical": 0.260212,
+      "fast": 0.176
+    },
+    "delta_vs_V21": {
+      "slow_max": 0.02044099999999993,
+      "slow_min": -0.00028400000000000647,
+      "typical_max": 0.012978000000000045,
+      "typical_min": -1.0000000000287557e-06,
+      "fast_max": 0.00988599999999995,
+      "fast_min": 0.0
+    },
+    "delta_vs_V17": {
+      "slow_max": -0.20799900000000004,
+      "slow_min": -0.030382999999999993,
+      "typical_max": -0.13443899999999998,
+      "typical_min": 0.0,
+      "fast_max": -0.08620099999999997,
+      "fast_min": 0.0
+    },
+    "delta_vs_V11": {
+      "slow_max": 0.007728999999999875,
+      "slow_min": -0.02881100000000003,
+      "typical_max": 0.012693999999999983,
+      "typical_min": -0.00019900000000000473,
+      "fast_max": 0.0009270000000000111,
+      "fast_min": -0.00019199999999999773
+    },
+    "all_three_setup_nonnegative": false,
+    "all_three_hold_nonnegative": true,
+    "actual_descriptor_payload_flops": 200,
+    "stable_baseline": "V11",
+    "adopted": false,
+    "physical_acceptance": false,
+    "scope": "Original4ns SS/TT/FF preplacement only. V22 invalid cache fault qualification from V21;17case cyclemiter, eight actual fault/cachewrite witnesses, meaningful negatives passed. SS gain20.441ps insufficient; setup remainsnegative. No mappedfunctional replay/CTS/routeRC/fullchip/PHYsignoff."
+  },
+  "registered_boundary": {
+    "bytes": 92294,
+    "sha256": "3708cc3b310a8c9ed2bbc0015c82d59c2048396254566b5ca4b36955fc286c96"
+  },
+  "critical_path": {
+    "bytes": 48743,
+    "sha256": "3bcd838197f4ac9f14f773ee5d6c3ba8360b3fe93e6b7feb70db0d00405fbf4e"
+  },
+  "releases": {
+    "functional-release01.json": {
+      "bytes": 5087,
+      "sha256": "5040f0fe44d30133e220307a3e69a1659b15b9e52b5b43c45e7f9e1de31ec460"
+    },
+    "native-release01.json": {
+      "bytes": 3459,
+      "sha256": "95792743c1058a84c39e4d48a894dfcea96b742826acbaa0ddbefb2746746b4a"
+    }
+  },
+  "assets": [
+    {
+      "name": "pcie-integrity-v22-failed-functional01-20261006.tar.xz",
+      "asset_id": 614307975,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-failed-functional01-20261006.tar.xz",
+      "bytes": 5708936,
+      "sha256": "f41a3e44e30f960a05f868a8e271f5e7a1be8bd72696f67d5db0ffa3d442fdd5",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-failed-functional01-validation-20261006.json",
+      "asset_id": 614308962,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-failed-functional01-validation-20261006.json",
+      "bytes": 61255,
+      "sha256": "6f085499e0792ac51bd33476c374398814c48509c21123b287d0dd0cddd0d3c4",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-controls-20261006.tar.xz",
+      "asset_id": 614309075,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-controls-20261006.tar.xz",
+      "bytes": 8759956,
+      "sha256": "b2811caf71410058e0ccc9ce103b402f16c2f15a3386e2f47bdd75e777157f4c",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-controls-validation-20261006.json",
+      "asset_id": 614309313,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-controls-validation-20261006.json",
+      "bytes": 22822,
+      "sha256": "7f2cc718100dec87730aef6cb20447e02e9c17f3580fe6a82c331bcdbcccb756",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-functional-package-20261006.json",
+      "asset_id": 614309433,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-functional-package-20261006.json",
+      "bytes": 3554,
+      "sha256": "6cb36836067ae5dd339e5c92be0faf4175e5a4cb45485dcd961b9866a102b204",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-native-preplacement-20261006.tar.xz",
+      "asset_id": 614357324,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-native-preplacement-20261006.tar.xz",
+      "bytes": 11789500,
+      "sha256": "f3281acd64b6d59fc8731ab9d7d7fcc338444f78c7687b288f35f598a72cda1f",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-native-validation-20261006.json",
+      "asset_id": 614357551,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-native-validation-20261006.json",
+      "bytes": 10114,
+      "sha256": "4d0562820d734bf8762f2a6894cb94400fa0ad1b4f2c9af67426e9d512c0afe5",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-native-package-20261006.json",
+      "asset_id": 614357685,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-native-package-20261006.json",
+      "bytes": 9728,
+      "sha256": "61776e32dd29f583b1e5777aaa56de2a0f4d297ab413330bead95a3b17a169bc",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    }
+  ],
+  "evidence": {
+    "hw/soc/out/pcie-integrity-v22-20261006/analyze_critical_path.py": {
+      "bytes": 6018,
+      "sha256": "4712ecd50f0f0d1df1ae33293d190e2763da3cebe1a220d903827c59a2d3f785"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/balanced-import-graph-proof.json": {
+      "bytes": 1352,
+      "sha256": "882aa3a1b9e473bfdf1ddb87be4e9b2116fc1cd1673f4df417a35b834dbe261c"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/balanced_import.py": {
+      "bytes": 4830,
+      "sha256": "8dca396ba74fa928a1b676c6e511cb39396428f77c162d3f23e79c9a70dbfaa0"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/balanced_import02.py": {
+      "bytes": 5134,
+      "sha256": "5f70dda21dbda28c6e92b1682d69f3c58c67cdb9a4acaff8d9b730f8a5580f3d"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/balanced_preplacement.py": {
+      "bytes": 5986,
+      "sha256": "c91f17d28768bcf6347daac3e8616c36b9d94702fc51aa4051aca8dc4104322d"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/balanced_preplacement02.py": {
+      "bytes": 6366,
+      "sha256": "5e3381eb38db81238e0562f77503f44becd3d6357e606c45f49ba70b37c23585"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/candidate-decision.json": {
+      "bytes": 1545,
+      "sha256": "f95382be68330da331314440e514abf0255028a8da29a515ff36ad2a6576d8d7"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/collection01.log": {
+      "bytes": 3331,
+      "sha256": "ba945a48fc7e3f25cdf5e88f10c67bb6a5e739569e51692d65115672a5fa5d4d"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continuation-owner02.json": {
+      "bytes": 2512,
+      "sha256": "33780198aabfced57b0b6121641a28a9d5287ca6c46708fd1ce53c5038a22593"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continuation-owner04.json": {
+      "bytes": 2746,
+      "sha256": "3c83cb61857df32d809dba308661029386ad156afd3db2285931cc4b924ac3ca"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continuation-policy01.json": {
+      "bytes": 6271,
+      "sha256": "0481d2e69e3ff0cdd1b0fddcb4ba1771512cdde3e87fb1ec425d7e50d68fb1c6"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continuation-policy02.json": {
+      "bytes": 8819,
+      "sha256": "4c83365a59baadf48cbd511b4e0165cde313728b197b77e9b5d53f9ce5c71026"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continuation-policy03.json": {
+      "bytes": 9755,
+      "sha256": "863200cfdb8e822950c1532bda3024442b3bf2784aa1e860a6fb51acf59adb56"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continuation-policy04.json": {
+      "bytes": 9758,
+      "sha256": "12b825ea1e1a87a8198736c2ada9813eaf1626801f9f3139dd06217c47fbb7ea"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continuation-status02.json": {
+      "bytes": 3322,
+      "sha256": "5c526a1d6981eb1ff9773a51e79d56b9a38c060da4932837f69052ee8097a655"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continuation-status04.json": {
+      "bytes": 3992,
+      "sha256": "69b51ed042a5b7a3bc5b5ac39f8d32c4ed5324b8d5f8240660de9dc167b61496"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continue_native01.py": {
+      "bytes": 5543,
+      "sha256": "27866a42c751647789142e6956cf7ebaf3e1190effeb4724078c97be23625333"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continue_native02.py": {
+      "bytes": 5551,
+      "sha256": "55c111b6bacf2c5614756202848a09c1f46c6894fa38efb05e37293026d083b5"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continue_native03.py": {
+      "bytes": 4889,
+      "sha256": "c8d40e8db845315876c59896e32b39fb6496ed6bd81935d6ada37258539900a1"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/continue_native04.py": {
+      "bytes": 4911,
+      "sha256": "c67371729f33f0374812e5af506e3c1d062e55107aee28d3548944aa0cb2b275"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-detached-once01.json": {
+      "bytes": 215,
+      "sha256": "da317730dca4afe147ed2f245058d965a7494ffa156283b42b11000d11614280"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-detached-once03.json": {
+      "bytes": 215,
+      "sha256": "0245828d872f8ea9eca8dce2d23a18debbb4e4c9c1cad67d68b61208162ac20d"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-detached-receipt01.json": {
+      "bytes": 810,
+      "sha256": "631de97c5fe7caa8fd9db6b2d2e033d98df341b61f0d3eed75628db0721ceb37"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-detached-receipt03.json": {
+      "bytes": 810,
+      "sha256": "beed505f2b3592c6cfef0528fa9b310ba63ad74cfbb06b6b67cf13fa128b5660"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-launch01.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-launch03.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-owner01.json": {
+      "bytes": 1046,
+      "sha256": "3e5367ab5fda8aa303fb819aea949a6665f18cddc7a8ded249200227de1931c0"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-owner03.json": {
+      "bytes": 1036,
+      "sha256": "b079d94e8bb72fa8930a76847833ecf3cf79a1c2d3c1a4e765154e21b7e43f2f"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-status01.json": {
+      "bytes": 1392,
+      "sha256": "ca63a25d19a8ebaeffa32340004af5482e5541f64f61af1afd5f49f4cd093c67"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls-status03.json": {
+      "bytes": 1405,
+      "sha256": "4e691f4d45195ba4c2434a31ba12926e91d0e7bc356e1432bb0843891c1733ab"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls01.log": {
+      "bytes": 6869,
+      "sha256": "594819f04f73015368e8bbc59f53e79e1b095f9970bf5f45764457679a120d2c"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls01.xml": {
+      "bytes": 12041,
+      "sha256": "5505d8dfad525ad9d30843bb09fec6f095891972fbeff0dc0c2e40f310a3a223"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls03.log": {
+      "bytes": 124,
+      "sha256": "f52f03c02efe86632310c2b5d342c69521a9bea5d5918e24b8a910f5c9950efd"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/controls03.xml": {
+      "bytes": 1552,
+      "sha256": "9820d3bebb83afd062fcfa69ef4eb80b5271287c8943d88268250e91330b5868"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/critical-path-attribution.json": {
+      "bytes": 48743,
+      "sha256": "3bcd838197f4ac9f14f773ee5d6c3ba8360b3fe93e6b7feb70db0d00405fbf4e"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/critical_path.recovery04.controller.log": {
+      "bytes": 1136,
+      "sha256": "77fc19b58466b6bc131db7527fc3387857695c7a214d06dc5e6c0f36c966feff"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detach_controls01.py": {
+      "bytes": 1838,
+      "sha256": "ecccbba4184324b91cb2302c86ad96726ce3c1c7e92143e5557f2d77da9d5697"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detach_controls02.py": {
+      "bytes": 1838,
+      "sha256": "bfa213634e82e94fd715efcc22dff5b15f1c2d7776fe14c857f8482b8b7d6d15"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detach_controls03.py": {
+      "bytes": 1838,
+      "sha256": "11d5fd9c93d9a850f60d1beacb681b152da50901d99a41088fb387e0cf7ace39"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detach_native01.py": {
+      "bytes": 2099,
+      "sha256": "211ebb280cbacdecdd46fde30014e90a52f794c6eafa00a3b80a658716f87cee"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detach_native02.py": {
+      "bytes": 2099,
+      "sha256": "69cf7eb58d552ae4bd09451a69eff31ab4e1ee96f02ac4e43b117dc941820b25"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detach_native03.py": {
+      "bytes": 2091,
+      "sha256": "a9821e3b421870a159ed832904076a575c2027cc462d42f436ba72022dd3492d"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detach_native04.py": {
+      "bytes": 2178,
+      "sha256": "fae05ed5fd5b164684848c69188fc43d388ae8eec9b3e8986ac2c8feecfafd0d"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detached-native02-once.json": {
+      "bytes": 259,
+      "sha256": "041f4ad45b40c87a1b87b51d0f981243b9ee7a2a5d31ecab0078bf14f8ab8f1a"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detached-native02-receipt.json": {
+      "bytes": 843,
+      "sha256": "afe9cd78a0a20f9dac433bef31e8d4fb4283000496200407485c9dff4c116c22"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detached-native02-supervisor.log": {
+      "bytes": 558,
+      "sha256": "a921ee5bac00b61cd023ef8062a2c8ad43bb90def964410111acc0bada84d7fe"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detached-native04-once.json": {
+      "bytes": 259,
+      "sha256": "be87806ba5b1a0292effdc3ae6623aaeffefa66adb832729a16d015c87a9f47b"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detached-native04-receipt.json": {
+      "bytes": 843,
+      "sha256": "68f7c1f4598e7a0dd9b6c35272cbd071974bf4927d0b63e5c85a63cd7022edb7"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/detached-native04-supervisor.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/failed-controls01-validation.json": {
+      "bytes": 61255,
+      "sha256": "6f085499e0792ac51bd33476c374398814c48509c21123b287d0dd0cddd0d3c4"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/functional-release01-launch.json": {
+      "bytes": 1131,
+      "sha256": "5ef647373b6dfd3b6b22b589545989a38803c9236f591e90950f2c5e0995b3af"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/functional-release01.json": {
+      "bytes": 5087,
+      "sha256": "5040f0fe44d30133e220307a3e69a1659b15b9e52b5b43c45e7f9e1de31ec460"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/functional-release01.log": {
+      "bytes": 313,
+      "sha256": "7e4350db0ddd4e6544042110ee0eb6b43a175c565ffff667b2ed4aac54359f78"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/import.controller.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/import_graph_proof.controller.log": {
+      "bytes": 221,
+      "sha256": "52a5b3851b7866ecca4bc04aaacab232ddebadd103fd107350e069dca6d38408"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/import_graph_proof.recovery04.controller.log": {
+      "bytes": 61,
+      "sha256": "5778068f3981485b60b57b57dd884590babfd11b017237b51b4a46cd1b560b69"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/launch-source-freeze01.json": {
+      "bytes": 1255,
+      "sha256": "fbd2dea577d2e8cdc24cabeaefa791f30a81c3d073f6876599df4200a615e5ba"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/launch-source-freeze02.json": {
+      "bytes": 1391,
+      "sha256": "45ffbd3fc28d851d5cc5b4cf81a7aa82b8d9dfc288910b7b9ab2b9459db0e499"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/launch-source-freeze03.json": {
+      "bytes": 910,
+      "sha256": "e9704c4e87d7f2c58deb8f2e53e8a11590be7f2a0ecd6c2ddd7b513f297432ee"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/launch_controls01.py": {
+      "bytes": 3378,
+      "sha256": "d23e60a7dbc23aa13f1ceecdb680c388df838f2e341f4b630d602a4caa648803"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/launch_controls02.py": {
+      "bytes": 3378,
+      "sha256": "c743ff7643d66487bb96ab60d1b4fa01cf9cbb28756009c454db6b30685eae88"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/launch_controls03.py": {
+      "bytes": 3365,
+      "sha256": "aa71f7b99aef0ec99db392795d3a32b254b34631213ce9f3583db39721440ab4"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-controls02.json": {
+      "bytes": 2796,
+      "sha256": "8a88212d6818709bfe79045b653ab1c1d98c75bcfabd96c34f8be285614bbc4b"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-controls02.log": {
+      "bytes": 44,
+      "sha256": "febfe0f68ac1b6cda676c9673c2285ec8aad46f4c161fda1a5e7fe62676f9b55"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-signal-birth02.json": {
+      "bytes": 97,
+      "sha256": "6d20357506a1e4cd7291b7b1b961c8619cee036b9b500a9b73bd3b20808fe600"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-signal-receipt02.json": {
+      "bytes": 165,
+      "sha256": "a18d215772e1a3ea29e9dabff4a41905b64327ae01b00948c9f66f868df877a8"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-signal-worker02.py": {
+      "bytes": 605,
+      "sha256": "3e014e117a1066dbd2a15fdbff72f6c9999c82e28d4a13a17fca041b1c1fa0f7"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/lifecycle_controls02.py": {
+      "bytes": 4154,
+      "sha256": "877f1ec18f2cf8c5ac4572d0becd2a9b9a10dd4cf1c1cfab2c402a87a137928b"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/map.controller.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/measure_registered_boundary.py": {
+      "bytes": 6751,
+      "sha256": "f5e7f22ff0461864e2bedb47a81df134eb85556d5602ca015481d9d0dee5c8c0"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-members.json": {
+      "bytes": 65171,
+      "sha256": "80410b500d947bd90f76dcbf2ec34d70b2453ae1b88341bfa98559a593e69851"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-peer02-stage-path-correction.json": {
+      "bytes": 1098,
+      "sha256": "a4563a83a2f909513e69732ff08d8dff90a5675b53ed77f5051a980584223d0b"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-recovery-basis03.json": {
+      "bytes": 9466,
+      "sha256": "b6eaa93bd4806281b20592204db3119c14e5b90ceb777a5a89c802029c83d1b3"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-registered-boundary.json": {
+      "bytes": 92294,
+      "sha256": "3708cc3b310a8c9ed2bbc0015c82d59c2048396254566b5ca4b36955fc286c96"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-release01-detached.json": {
+      "bytes": 1785,
+      "sha256": "67e21f0dc8fe78ba06606d43cfcbe80fd43fc5a3a0f3f16526f83eab329df6f9"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-release01.controller.log": {
+      "bytes": 181,
+      "sha256": "73b0406b69a8d00694e84736f7db49648bf99b61ed7e3611bb57c43487f2641a"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-release01.json": {
+      "bytes": 3459,
+      "sha256": "95792743c1058a84c39e4d48a894dfcea96b742826acbaa0ddbefb2746746b4a"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-source-bridge-attempt01.json": {
+      "bytes": 18423,
+      "sha256": "3a616455bfebef98bcd79f12b0ea6b70e847689378d420c92209449051bfccd1"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-source-bridge.json": {
+      "bytes": 18904,
+      "sha256": "28caf1ef8e7f05d80cb0a0d46a2e494394e78f621a8547aa9dbfec7bcf98f81b"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-vco-attempt01.log": {
+      "bytes": 322,
+      "sha256": "d72fb13711e83dad0eda7d1538978ee4c9ded9d4ef3e7a0704983b79faed50fa"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-vco.json": {
+      "bytes": 6119,
+      "sha256": "ac52cf47410b7110fa5e7793a3a8bcc3f743b3de4a220676e07d84a768c12195"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-vco.log": {
+      "bytes": 6119,
+      "sha256": "ac52cf47410b7110fa5e7793a3a8bcc3f743b3de4a220676e07d84a768c12195"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-bridges01.json": {
+      "bytes": 10742,
+      "sha256": "af055c2ac4f29df5949e6cf8626534485041536ee6a858a257188af4b38406ec"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-only-peer01-findings-vco.json": {
+      "bytes": 1815,
+      "sha256": "02dcac3c9e4e16371dcbff5ef8d308dc8f9829308218faabd8899258aff6189c"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-only-peer02.json": {
+      "bytes": 2158,
+      "sha256": "916bb404ead086290058f1e0e65716587c8afd21aab4c931a2293c5ca95e5945"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-only-peer03-findings-vco.json": {
+      "bytes": 987,
+      "sha256": "135fbb468447549cc69ee92ba9ccc9ff288b692066f83410f0fdee479c359adf"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-only-peer04.json": {
+      "bytes": 3106,
+      "sha256": "ff7f45bcc971c06c527fcb0e6d84fed7e10557955754cffd258594656971d761"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-recovery-bridge03.json": {
+      "bytes": 1855,
+      "sha256": "ec1ddf8ba3902d83dce4f64752e151b91c18e28d29d10bc960e6af9d6024e997"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco01-attempt01.log": {
+      "bytes": 241,
+      "sha256": "1f1aaa8958aabaa012c6e195397e99e97e902c37a43bdaedc3b5bf6e3472dc54"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco01.log": {
+      "bytes": 94,
+      "sha256": "ac8f4d6562a608433a5fd7df18ceef1f847bb80061ecc7700c5ef0f99138243d"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco02-attempt01.log": {
+      "bytes": 223,
+      "sha256": "8ce084bcc5ed51a0d57aaa36f981ddb4ef0fa533d9f9dd978b3dd02951480c8e"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco02.log": {
+      "bytes": 94,
+      "sha256": "3773149d8411ffcfaeb2d81304a3dbbbd6880dfc46b3c3a6fb3d117449258f21"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco04.log": {
+      "bytes": 94,
+      "sha256": "2102e79dde4fad9de5c2f5238a343636a5de39b558cbe5de8b839133b6a1bbea"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native-source-supplement02.json": {
+      "bytes": 7269,
+      "sha256": "cbb443a9c9bab7d9be9c74838ba213241267148783f7f2b258aeb2bb3c77dab9"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/native_lifecycle02.py": {
+      "bytes": 1808,
+      "sha256": "286843c88d3b48c3e0c1d81bf12b502f9987c179bbc613b39a5f01aee49c2b40"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/observer-stimulus-correction03.json": {
+      "bytes": 983,
+      "sha256": "34d4387e0f635473f329c94dd191ae5d7ca93f591d14d05cf927f072f68f0c26"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-controls-validation-20261006.json": {
+      "bytes": 22822,
+      "sha256": "7f2cc718100dec87730aef6cb20447e02e9c17f3580fe6a82c331bcdbcccb756"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-failed-functional01-validation-20261006.json": {
+      "bytes": 61255,
+      "sha256": "6f085499e0792ac51bd33476c374398814c48509c21123b287d0dd0cddd0d3c4"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-functional-package-20261006.json": {
+      "bytes": 3554,
+      "sha256": "6cb36836067ae5dd339e5c92be0faf4175e5a4cb45485dcd961b9866a102b204"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-native-package-20261006.json": {
+      "bytes": 9728,
+      "sha256": "61776e32dd29f583b1e5777aaa56de2a0f4d297ab413330bead95a3b17a169bc"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-native-validation-20261006.json": {
+      "bytes": 10114,
+      "sha256": "4d0562820d734bf8762f2a6894cb94400fa0ad1b4f2c9af67426e9d512c0afe5"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/pre-execution-count-correction02.json": {
+      "bytes": 747,
+      "sha256": "52e40f1b6dadd55d021bccf88be93d7bb6e1001acba446e8b55db177361ca2df"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/prepare_native01.py": {
+      "bytes": 6421,
+      "sha256": "11f3de454361ac260792b6cefa20cc7e499e8df73e2be3ece38e91263532c3af"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/prepare_native02.py": {
+      "bytes": 5538,
+      "sha256": "1b7ad4602d18d5803af931623ea55a2591fa5685debe358505712eb6f583cae2"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/prepare_recovery03.py": {
+      "bytes": 6063,
+      "sha256": "5a36df7e6411dd3a946880eeac6cae7b1015496a0fb075424753002c7eccab0f"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/preplacement.recovery04.controller.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/prove_balanced_import.py": {
+      "bytes": 3541,
+      "sha256": "5b1f4bfe5ebfa4a2766b1753418ceb35dc3eebdce70f3ff8d58d058d7cf8b2b7"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/quarantine-relation01.json": {
+      "bytes": 3065,
+      "sha256": "2d48758a62252634910e24adf278906dbca6c327fa2a847929b127b19885e948"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/registered_boundary.controller.log": {
+      "bytes": 62,
+      "sha256": "e9b190467f94718ca71917ec294b09ff2d4a7f0378935611e6f3c5252719a8a2"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_native_recovery_vco04.py": {
+      "bytes": 5083,
+      "sha256": "347b35dd4c5a3d4e62ae6c7df40f02def243ea289e664daaca7f23f6d8930685"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_native_source_vco01-attempt01.py": {
+      "bytes": 2615,
+      "sha256": "5a87fdced4ba36f2eb6211fa124d6eb1ff764beb98b93e21451c08e00d8cf693"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_native_source_vco01.py": {
+      "bytes": 2733,
+      "sha256": "67847f1b54fcc646d9c6b2d25b5ba944e12ea7401e7affe8f9befd54d38e562a"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_native_source_vco02-attempt01.py": {
+      "bytes": 5362,
+      "sha256": "f23137abca489060ec9b85e622b07c5db35662d906f8e37c54ab4df5f415af8e"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_native_source_vco02.py": {
+      "bytes": 5620,
+      "sha256": "3e3d2e48f4887989d499051715bfc881624f05ad7c26a3e73bf8754eea9499fd"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_saved_controls_vco.py": {
+      "bytes": 5450,
+      "sha256": "b1b97e8a02db47311e4f2691e3b99a2299cbb2a08b18bbeb8ca199e24499f98f"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_saved_native_vco-attempt01.py": {
+      "bytes": 8499,
+      "sha256": "c93d72d7c86c61259dd56ae1d84a0397a1cb4cb176cc45495efa88a33c105a6b"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_saved_native_vco.py": {
+      "bytes": 8558,
+      "sha256": "ab2e2c300b288ad696eeaaa4d2e8bc896d622013a222b7b298db991078e2e236"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_source_vco02.py": {
+      "bytes": 8276,
+      "sha256": "eb00ae494f4f650c7807a72ca459ecad2b895cbf1168d93a10ed72bf05acd789"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_source_vco03-attempt01.py": {
+      "bytes": 5733,
+      "sha256": "5c12a761846af7457eb7a4f1edb2b3ea912d5d0b86397d0dcafb6d2fee4efec4"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_source_vco03.py": {
+      "bytes": 5733,
+      "sha256": "85e133c587acf4c059ae3da1b49e3b6709a5dc295cd5c1623df74c37455ee075"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/review_timing.py": {
+      "bytes": 3288,
+      "sha256": "ace9739e2bdc3369684744be0eeb580b008b88f0ea2033766899f0c301d06383"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/run_balanced_map.py": {
+      "bytes": 5648,
+      "sha256": "a781cc6f399e5f245aabb91a01ddd4f2c88cd805a97dc327aef58fadc0517772"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/run_balanced_map02.py": {
+      "bytes": 5952,
+      "sha256": "68582e10f3e05f788b5ec67841652ff9a53211cd661bd6d220d3aad0b109b924"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/saved-controls-peer-vco.json": {
+      "bytes": 1810,
+      "sha256": "42772978a1ebadadb74ee385903fc8b08a72a2821218f7e52b4e48e562c55231"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/saved-controls-peer-vco.log": {
+      "bytes": 151,
+      "sha256": "d9b05159b5160aeaacbf7b6ebfbd2138e150a6f44b956598158f8d353fe68e75"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/saved_map_boundary_import.recovery04.controller.log": {
+      "bytes": 47,
+      "sha256": "30de1db3b84f96139d22bc2530a3dbb3ec670c30544a771764ea6d7c08c7af0d"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/seal-controls03.log": {
+      "bytes": 146,
+      "sha256": "70d801f005dc7276ca8208b4f445376e764ca985d880340c93d52546b1dd293f"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/seal-failed-controls01.log": {
+      "bytes": 294,
+      "sha256": "011d46627b0a1b995289106a2dec831b81961580e5f701df954c12dea4145c77"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/seal-native04.log": {
+      "bytes": 1791,
+      "sha256": "51506547f5509b5c492f2b171bf2986d870de0202bfec7e6e288b796d931b697"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/seal_controls03.py": {
+      "bytes": 7750,
+      "sha256": "d7aadb5d3e864b4b60f4d386a123af10b1b18159a459237103c999ae6850cc50"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/seal_failed_controls01.py": {
+      "bytes": 2781,
+      "sha256": "2fdad92b214e92dbe302a8b27a6de2bf024fc854165007ed12812baf3f69e972"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/seal_native04.py": {
+      "bytes": 6757,
+      "sha256": "c1461d2ef22c2f543e743c427b1333c3637fe72b1293d783bb21c322df300a58"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/signed-wire-census.json": {
+      "bytes": 58882,
+      "sha256": "1b6bcfd410a32f4bf6228a4ad5908b61423897037ab3e3269d5718670bfd6e8a"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/slow-critical-path.txt": {
+      "bytes": 5870,
+      "sha256": "91b631a7ef2a49f23039d4069b3e92d3a12188bb9baf1aa5315b8499e19065e1"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/source-freeze01.json": {
+      "bytes": 2242,
+      "sha256": "1d506b43ba008cc8f534edefabd4797807762c40c85e7b2a77bad370a30272c0"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/source-freeze02.json": {
+      "bytes": 2533,
+      "sha256": "fe7b6055e64f1498052da96b5e1d8da2bbe67667dbedf411cf94240b40ebc02d"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/source-freeze03.json": {
+      "bytes": 2636,
+      "sha256": "46d599c89a5a19fee6e87dd9fbfa006a7d29f81922530256ab348685ea50e21c"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/source-only-peer-vco01-findings.json": {
+      "bytes": 745,
+      "sha256": "5b9d62ba3daffdd712f80f5d9e50585c1ae179172ae3af9528d8c02189d9665a"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/source-only-peer-vco02.json": {
+      "bytes": 7339,
+      "sha256": "8fb5a82071f1015c334d8b3a51a4785e369e6ecae62d154fb8a2ef22fb249604"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/source-only-peer-vco03.json": {
+      "bytes": 3964,
+      "sha256": "ad49c858a89c28c828480b251af60d7807cf6606e367f6b10edfafbfc900f3bd"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/source-review-vco02.log": {
+      "bytes": 133,
+      "sha256": "d86ca37e747536ce116c3e1d7fa97854f1714ae4422fb54d289bbe422edde01a"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/source-review-vco03-attempt01.log": {
+      "bytes": 1488,
+      "sha256": "42170e174958e5dda61ca0610c5cda25eb7ac9c41c56dad70c445be511156b20"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/source-review-vco03.log": {
+      "bytes": 133,
+      "sha256": "e75aae914691a47fb6c69932e50efaaf3c7fe118efb3cf5cc47eef16adb544a4"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/targeted_controls03.py": {
+      "bytes": 619,
+      "sha256": "5d871c34df389a7932b4ff476c771b805289b4c3f8cd0c3d8b89a79241f1f1f1"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/timing-comparison.json": {
+      "bytes": 3890,
+      "sha256": "771be3ad0427b5bc4db7f12ce726d6d4ea0cd52cc2ca52e0c98249fa4e4733bc"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/timing_review.recovery04.controller.log": {
+      "bytes": 1781,
+      "sha256": "24623df3778280641cdb41b339a88364b72d92d5893970bacf5c354dbb288d8a"
+    },
+    "hw/soc/out/pcie-integrity-v22-20261006/verify_saved_native03.py": {
+      "bytes": 1213,
+      "sha256": "22e643f39e40f51e0d32f7ef3fee76b5abf5dcef6bc6901ce52beb02bdd39dc9"
+    }
+  },
+  "stable_baseline": "V11",
+  "adopted": false,
+  "physical_acceptance": false,
+  "scope": "Finite original4ns/2GiB same profile native experiment. Full 374-member functional and 220-member native capture independently rehashed; failed source/observer/native-dispatch history retained. Initial 26PASS3FAIL and corrected9PASS remain distinct; no MAX4118, full formal, routedRC, full PHY, or final-chip signoff claim."
+}

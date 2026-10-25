@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pll-structure-20261006/compare_static01.py", line 51, in <module>
+    old_defs=definitions(includes(P));new_defs=definitions(includes(N));old_rows,old_rc=expand(old_defs,old['config']['roots']);new_rows,new_rc=expand(new_defs,new['config']['roots'])
+                                                                                        ~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pll-structure-20261006/compare_static01.py", line 48, in expand
+    for model,path,nets in roots:walk(model.lower(),path.lower(),[x.lower()for x in nets])
+                                 ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pll-structure-20261006/compare_static01.py", line 45, in walk
+    if w[-1]in defs:walk(w[-1],here,[node(x)for x in w[1:-1]],stack+(model,));continue
+                    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pll-structure-20261006/compare_static01.py", line 45, in walk
+    if w[-1]in defs:walk(w[-1],here,[node(x)for x in w[1:-1]],stack+(model,));continue
+                    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-pll-structure-20261006/compare_static01.py", line 47, in walk
+    m,n=found;rows.append(dict(path=here,model=m,nets=[node(x)for x in w[1:n+1]],params=dict(x.split('=')for x in w[n+2:])))
+    ^^^
+ValueError: not enough values to unpack (expected 2, got 1)

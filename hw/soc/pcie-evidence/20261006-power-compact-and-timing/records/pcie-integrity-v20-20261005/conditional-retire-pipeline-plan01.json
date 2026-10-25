@@ -1,0 +1,38 @@
+{
+  "status": "CONDITIONAL_ARCHITECTURE_PLAN_NOT_IMPLEMENTED",
+  "basis": {
+    "path": "hw/soc/out/pcie-integrity-v19-20261005/critical-path-attribution.json",
+    "bytes": 26153,
+    "sha256": "c55d262f8036b1820648f351d7d4021860bd20fb867e27b4becbd7bec9491530"
+  },
+  "measured_dependency": "V19 slow path read_ptr[3] to current_valid crosses read selection, retire, capacity/step and global parser-fault gating. V20 first measures a pure known-eligibility shortcut; no pipeline changes yet.",
+  "candidate": "Separate registered retire payload stage plus existing output hold stage, each one128-bit/16-byte mask beat; ring pointer frees a word only when its data/metadata is copied into the retirement stage. Stage drain/output may progress concurrently with next ring read; sustained one128-bitbeat perclock remains required.",
+  "latency_contract": "Explicit +one internal retirement cycle after original eligible ring observation; compared by ordered transaction scoreboard and control/fault event relations, never by silently disabling old cycle miter. External valid/data/metadata stay stable under ready-low. Ring depth remains same; two owned register stages provide bounded additional holding capacity, whose overflow behavior must be specified explicitly.",
+  "protocol_invariants": [
+    "Only slots with committed pointer coverage and resolved good verdict may enter retired stage; sampled data/metadata and eligibility from same old ring state. Same-edge incoming verdict/commit updates become visible on subsequent stagecapture, avoiding speculative release.",
+    "Read pointer advance and capture must be atomic; physical slot reuse allowed only after all corresponding bits/metadata are registered. Ring occupancy plus both stage validbits conserves accepted good bytes.",
+    "Reset, start, flush, abort and parser/header/buffer fault clear both validbits with declared existing priority. No uncommitted or previous epoch data can become externallyvalid after restart; copied invalid payload may differ but remains unobservable.",
+    "A legal output held during a later malformed packet requires explicit cancellation semantics matching public fault/epoch contract. Stage pipeline must not expose a beat on fault edge merely because it was copied earlier; valid gating and abort priority require independent review.",
+    "Pure zero-keep groups can be discarded on ringcapture without consuming payload stage when safe, or enter an emptytoken stage and drain unconditionally. In either case forward progress under a held valid output must be proved; V20 aligned55-retirement witness remains mandatory.",
+    "Combinational stage-ready path must not recreate ring payload/eligibility to step/fault/current_valid path. If full stage means no ringfree, continuous physical ingress still uses finitebuffer overflow/halt; no assumption of unlimited upstream backpressure."
+  ],
+  "required_tests": [
+    "Separate new source from V11/V17/V19/V20; exact transformed cone inventory and deliberate latency specification.",
+    "Independent byte/event scoreboard at sustained minimum packets, maximum packets, allalignment/CRC/EDB/EDS cases, multiple ring and verdict-tagwraps.",
+    "Every stall position around newstage full/empty and simultaneous capture/drain; mixed packet boundary and lastzero-keep groups.",
+    "Fault/start/reset/abort/flush at every state combination of ring+stage+output and sameedge commit/verdict; epoch-labelled oracle forbids oldpacket leakage.",
+    "Actual missingclear, prematurefree, verdictdelay, payloadmix, lostready and output-unstable mutants; meaningful conservation assertions.",
+    "SameCPU6/2GiB mapping and original4ns SS/TT/FF; analyze actual newcritical path, not latency alone."
+  ],
+  "open_design_decisions": [
+    "Can final public faultvalid gating be decoupled without weakening immediate cancellation? This may require an explicit registered fault boundary or retaining only externalvalid mask; source proof first.",
+    "Where to derive credit/capacity when retirestage accepts zero-keep groups and output isstalled; avoid stale read_any or stalecommit caching.",
+    "A cycle-difference in exposed overflow onset caused by addedstage storage is expected but must be a declared strengthened buffering contract; it cannot be claimed exactoldbehavior."
+  ],
+  "not_claimed": [
+    "Implementation",
+    "Functional proof",
+    "Timing gain",
+    "FullPCIe PHY orproduction closure"
+  ]
+}

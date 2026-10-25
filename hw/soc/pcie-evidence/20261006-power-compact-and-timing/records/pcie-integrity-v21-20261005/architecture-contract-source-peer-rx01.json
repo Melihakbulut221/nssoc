@@ -1,0 +1,62 @@
+{
+  "status": "PASS_SOURCE_ONLY_V21_REGISTERED_RETIRE_DESCRIPTOR_CONTRACT",
+  "contract": {
+    "bytes": 10798,
+    "sha256": "b547913785a996155405d5d9892a25f79d550654c965621652bbf5aaa9e2b39a"
+  },
+  "findings": [],
+  "inputs_rehashed": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v21-20261005/architecture-contract01.json": {
+      "bytes": 10798,
+      "sha256": "b547913785a996155405d5d9892a25f79d550654c965621652bbf5aaa9e2b39a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v17.v": {
+      "bytes": 192776,
+      "sha256": "7aeb0b29e6b56978bed7f83a48b14e8e11a005bf16342cfd8b616225ba9d8160"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/critical-path-attribution.json": {
+      "bytes": 30566,
+      "sha256": "ee4a4d2f3402fa8e6755a499ed0f200587213d196eabb99c3393e95c0cb7a94e"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/slow-critical-path.txt": {
+      "bytes": 6039,
+      "sha256": "669922c961e49756a0722b1138e65c1f0ec2de693d0d3bd2d4af27e37804750f"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/timing-comparison.json": {
+      "bytes": 3883,
+      "sha256": "f10f3d35f623ee85befa423c07d646e6094610561802cdd0be282a89962e1e5c"
+    }
+  },
+  "review": [
+    "Independently read the full proposed contract and the original V17 parser, retirement, bank writer, reset/flush/start/fault priority, output ownership and EDS drain blocks. This is approval of a concrete architecture contract before RTL, not executed functional proof.",
+    "With old-state nonblocking semantics, simultaneous pop and capture moves the old descriptor into output and atomically replaces all six descriptor payload fields; capture wins only descriptor ownership. No same-edge new payload bypass is allowed.",
+    "When output is held, a nonempty descriptor cannot pop or be overwritten. A zero-keep descriptor can pop and be replaced while leaving held output untouched. The separate has_data register must remain procedural known 0/1; selected X/Z data must remain literal in payload storage.",
+    "Original reset, flush/start (flush dominant), explicit abort and parser fault priorities clear descriptor validity. Payload copies on a parser fault edge are permitted only while invalid and must be fully overwritten before the next valid capture. Do not mask existing valid_o with prospective fault_now: an already-visible beat may handshake on that edge, then future ownership is cleared.",
+    "EDS additionally tests old retire_valid. The last descriptor must reach output before epoch completion; output consumption and stream_end can coincide only under existing ready/valid sampling rules. Empty descriptors must drain too.",
+    "Ring capacity counts only slots not yet copied. The extra descriptor adds up to four DWORDs buffering, so exact overflow cycle and stall-dependent beat grouping can differ. Permanent-stall overflow remains required; encoded-byte/metadata epoch scoreboards must not waive dropped or duplicated handshakes.",
+    "Under uninterrupted ready=1 and nonfault active ingress, retire_room remains true. V17 ring read-pointer/parser/CRC/acceptance cadence should correspond while both epochs are active, and public output is delayed one cycle. EDS/active completion is intentionally shifted. This restricted relation should supplement, never replace, adversarial transaction/ownership tests.",
+    "The new boundary removes selected read payload from retirement availability, but committed/count/capacity and fanout paths remain. Actual same-4ns mapped timing is necessary; architecture alone does not imply closure."
+  ],
+  "mandatory_next_gates": [
+    "Bounded literal sequential descriptor test exhausts oldvalid/hasdata/outputvalid/ready/capture/count combinations and priorities, includes simultaneous pop/capture, unknown selected payload X/Z, reset and pointerwrap. Compare a separately written queue-state oracle, not a duplicated generated block.",
+    "Run original13 public encoder/byte-oracle cases atMAX150; preserve all assertion semantics. Add cases that deterministically place descriptor/output in empty/valid-data/zero-keep combinations before fault/start/flush/reset/abort and every ready transition.",
+    "Sustained raw ingress and minimum packets must produce no overflow or input rejection and preserve all1024 packets. Monitor accepted block cadence and parser events; no artificial input bubbles permitted.",
+    "Run final aligned DLLP/IDL held-output case, requiring actual empty-descriptor pops while output held, ringfree progress and exact final byte/EDS scoreboard. Require full-ring replacement and actual permanentstall overflow under the new advertised extra stage capacity.",
+    "Fault controls deliberately remove descriptor flush, invert has-data, overwrite full descriptor, miswire metadata, drop simultaneous capture, premature EDS, lose zero-keep pop, advance pointer withoutcopy and duplicate output; each must fail a specific semantic assertion, not compilation.",
+    "Real direct candidate vs V17 transaction/event comparison on nonoverflow stimulus may complement independent encoded-byte oracle, but no timestamp/beat grouping equality assertion for output. Fault epochs use declared cancellation model, not arbitrary queue masking.",
+    "After independent source review and actual functional gates, sameCPU6/2GiB map, graph proof and original4ns SS/TT/FF STA. Source peer checks new register boundary is actually emitted. MAX4118 exhaustive positive simulations remain a separate declared gate; no full product acceptance fromMAX150 screen."
+  ],
+  "execution": {
+    "RTL_generated_or_modified": false,
+    "HDL_or_native_executed": false
+  },
+  "limitations": [
+    "No V21 RTL exists at this reviewed cut.",
+    "No cycle equivalence for arbitrary stalls/faults is claimed.",
+    "MAX150 functional/timing screen cannot close MAX4118 or full PHY acceptance."
+  ],
+  "method": {
+    "bytes": 4026,
+    "sha256": "b621388f2de5e13b5a369bb361fff30fbb0611cb67bd40be5cc1da54c3f9303d"
+  }
+}

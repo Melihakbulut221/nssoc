@@ -1,0 +1,7 @@
+# Locate CDR wire resistance bottlenecks without changing acceptance
+
+Native strapped-v6 CDR captures still fail sampler and HBT operating limits. Their measured load-terminal drops separate supply wiring, intrinsic rppd and collector wiring; for bqp these are approximately 0.226 V, 0.069 V and 0.099 V. A further physical change needs to identify which actual wire segments cause the loss.
+
+The hosted wire-bottleneck job first repeats the unchanged source-bound native waveform diagnosis, then solves the complete finite resistor component between each supply/load and load/collector terminal. It evaluates all 64 pairs from the existing report. For a unit test-current excitation, KCL residuals and the energy identity verify the linear solve; known series/parallel values, reciprocity, disconnected terminals and an increased resistor are controls. The largest R*i^2 contributions identify exact raw resistor names and nodes to inspect in physical geometry.
+
+The 1 A excitation is mathematical only. These pairwise wire-only DC sensitivities do not substitute for the multi-terminal analog operating point, transient simulation, current density, RF qualification or production approval. The original full native waveform gates remain failed. No wire, device, bit, clock, load, sample phase or threshold is changed. Only GitHub-hosted analysis is run; all source and failure evidence are retained.

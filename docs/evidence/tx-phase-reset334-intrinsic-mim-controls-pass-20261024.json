@@ -1,0 +1,496 @@
+{
+  "schema": 1,
+  "status": "PASS_SOURCE_CONTROLS_NATIVE_NOT_YET_EXECUTED",
+  "run": 40122671188,
+  "source": "007c62b50078105590c5b50728c212d3c071184f",
+  "job": 120957416581,
+  "log": {
+    "bytes": 51320,
+    "sha256": "a5a87522b50c0d6feb4299a2c7d6ff2e9ac86b3df1c6fb85581c7f81cbab8d18"
+  },
+  "full_controls": {
+    "status": "PASS_RESET334_MIM_SOURCE9_PHYSICAL16_PUBLICATION17_CONTROLS_NO_NATIVE",
+    "prerequisite": {
+      "run": 40120130880,
+      "head": "2e1f26e9c4fdf37d63433a0c859c2d305db3486b",
+      "job": 120949804811,
+      "summary_sha256": "5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913"
+    },
+    "derivations": {
+      "derivations": [
+        {
+          "kind": "native",
+          "polarity": "p",
+          "original_path": "scripts/pll_divider_load3p2_native.py",
+          "original_sha256": "01233ad006ebc53e98499becc37a291f88fb448e73c77293c2403b63a5784d46",
+          "generated_sha256": "9d49403088ec0e0e6b030a7e363b0ca9136cd37fa88a304b1c907157e98ff2f9",
+          "reversible_edits": [
+            [
+              "PORTS=['CLKP','CLKN','QP','QN','DIV_AVDD','AVSS','SUB']",
+              "PORTS=['CLKP', 'CLKN', 'MP', 'MN', 'QP', 'QN', 'ARM_P', 'ARM_N', 'DIV_AVDD', 'AVSS', 'SUB']",
+              1
+            ],
+            [
+              "nssoc_clock_div4_load3p2_v1_layout",
+              "nssoc_tx_phase_reset244_p_v1",
+              1
+            ],
+            [
+              "ee95597fc6307f2476d49d9ac5560ed6b06d4dcda956f7716e0d7ea5611731f6",
+              "601e5611ae555d4a39891a095bce443851665853439d379377d9a1f6cb60c834",
+              1
+            ],
+            [
+              "root=source/'source/wire';gds=root/'source/layout'/(TOP+'.gds');database=root/'raw_flat/result.lvsdb'",
+              "root=source;gds=root/'layout'/(TOP+'.gds');database=root/'flat_lvs/result.lvsdb'",
+              1
+            ],
+            [
+              "source/'anchors03.json'",
+              "source/'anchors.json'",
+              1
+            ],
+            [
+              "root/'source/layout/result.json'",
+              "root/'layout/result.json'",
+              1
+            ],
+            [
+              "c.pin_count()==7",
+              "c.pin_count()==11",
+              1
+            ],
+            [
+              "==91",
+              "==334",
+              1
+            ],
+            [
+              "Counter(npn13G2=34,rppd=33,cap_cmim=6,ptap1=18)",
+              "Counter(npn13G2=106,rppd=130,cap_cmim=8,ptap1=90)",
+              1
+            ],
+            [
+              "len(names)==38 and len(set(names.values()))==38",
+              "len(names)==120 and len(set(names.values()))==120",
+              1
+            ],
+            [
+              "==283",
+              "==1010",
+              2
+            ],
+            [
+              "EXPORTED_NATIVE_DIVIDER91_AND283_TERMINALS_NOT_ELECTRICAL_ACCEPTANCE",
+              "EXPORTED_NATIVE_RESET334_AND1010_TERMINALS_NOT_ELECTRICAL_ACCEPTANCE",
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "intrinsic",
+          "polarity": "p",
+          "original_path": "scripts/pll_divider_load3p2_intrinsic.py",
+          "original_sha256": "e6ee69991a85cf8dd19f8a92773d8875baf60c69ab37b9959dd0c7e9ab9a0305",
+          "generated_sha256": "42ab8e4bb3f4d8db48dd6662e6519f6c30f93953d17404bb3aece6e58c40e47f",
+          "reversible_edits": [
+            [
+              "from pll_divider_load3p2_native import ORDER,PORTS",
+              "from tx_phase_reset334_p_native_generated import ORDER,PORTS",
+              1
+            ],
+            [
+              "Native divider intrinsic 91 devices",
+              "Native reset intrinsic 334 devices",
+              1
+            ],
+            [
+              "91-device",
+              "334-device",
+              1
+            ],
+            [
+              "==91",
+              "==334",
+              1
+            ],
+            [
+              "dict(devices=91,hbt=34,resistors=33,mim=6,finite_contacts=18,ports=PORTS)",
+              "dict(devices=334,hbt=106,resistors=130,mim=8,finite_contacts=90,ports=PORTS)",
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "mim",
+          "polarity": "p",
+          "original_path": "scripts/tx_phase55_mim_native.py",
+          "original_sha256": "e033ef082734f10e5617d4c9b42b048ed59441582c810aa9aae24011d3f76e6b",
+          "generated_sha256": "b794bf29847a38b7a8f0764b6a499a94146af96c375b3beeb1a5d761a4bafeea",
+          "reversible_edits": [
+            [
+              "Bind actual phase55 MIM drawings",
+              "Bind actual reset334 MIM drawings",
+              1
+            ],
+            [
+              "TOP='nssoc_tx_phase_divider55_v1'",
+              "TOP='nssoc_tx_phase_reset244_p_v1'",
+              1
+            ],
+            [
+              "gds=source/'source/layout'/(TOP+'.gds');dbpath=source/'source/flat_lvs/result.lvsdb'",
+              "gds=source/'layout'/(TOP+'.gds');dbpath=source/'flat_lvs/result.lvsdb'",
+              1
+            ],
+            [
+              "c.pin_count()==9",
+              "c.pin_count()==11",
+              1
+            ],
+            [
+              "len(rows)==168 and len(labels)==126 and a['counts']['wire_components']==24",
+              "len(rows)==1010 and len(labels)==695 and a['counts']['wire_components']==119",
+              1
+            ],
+            [
+              "len(caps)==4",
+              "len(caps)==8",
+              1
+            ],
+            [
+              "len(leaves)==4",
+              "len(leaves)==8",
+              1
+            ],
+            [
+              "actual four placed leaf drawings",
+              "actual eight placed leaf drawings",
+              1
+            ],
+            [
+              "len(matched)==len(set(matched))==4",
+              "len(matched)==len(set(matched))==8",
+              1
+            ],
+            [
+              "for x in a['anchors']})==126",
+              "for x in a['anchors']})==695",
+              1
+            ],
+            [
+              "WT.name=='phase_divider55_wires'",
+              "WT.name=='phase_reset334_wires'",
+              1
+            ],
+            [
+              "PASS_ACTUAL_FOUR_MIM_DRAWINGS_AND_ALL126_NATIVE_PLANES_WITH_SIX_FAULTS_REQUIRES_RC",
+              "PASS_ACTUAL_EIGHT_MIM_DRAWINGS_AND_ALL695_NATIVE_PLANES_WITH_SIX_FAULTS_REQUIRES_RC",
+              1
+            ],
+            [
+              "actual_mim_devices=4,physical_points=126,wire_components=24",
+              "actual_mim_devices=8,physical_points=695,wire_components=119",
+              1
+            ],
+            [
+              "all126_native_and_physical_owners_verified",
+              "all695_native_and_physical_owners_verified",
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "native",
+          "polarity": "n",
+          "original_path": "scripts/pll_divider_load3p2_native.py",
+          "original_sha256": "01233ad006ebc53e98499becc37a291f88fb448e73c77293c2403b63a5784d46",
+          "generated_sha256": "d07b56d1b5c3a80f73dacbd6a935809849bf95b9238d5eb7530ee51410bb2f8f",
+          "reversible_edits": [
+            [
+              "PORTS=['CLKP','CLKN','QP','QN','DIV_AVDD','AVSS','SUB']",
+              "PORTS=['CLKP', 'CLKN', 'MP', 'MN', 'QP', 'QN', 'ARM_P', 'ARM_N', 'DIV_AVDD', 'AVSS', 'SUB']",
+              1
+            ],
+            [
+              "nssoc_clock_div4_load3p2_v1_layout",
+              "nssoc_tx_phase_reset244_n_v1",
+              1
+            ],
+            [
+              "ee95597fc6307f2476d49d9ac5560ed6b06d4dcda956f7716e0d7ea5611731f6",
+              "c30c73110c4e8f0507b2a10058a2dbfe9a7e2abb22dcb1af7cad1213e4df167b",
+              1
+            ],
+            [
+              "root=source/'source/wire';gds=root/'source/layout'/(TOP+'.gds');database=root/'raw_flat/result.lvsdb'",
+              "root=source;gds=root/'layout'/(TOP+'.gds');database=root/'flat_lvs/result.lvsdb'",
+              1
+            ],
+            [
+              "source/'anchors03.json'",
+              "source/'anchors.json'",
+              1
+            ],
+            [
+              "root/'source/layout/result.json'",
+              "root/'layout/result.json'",
+              1
+            ],
+            [
+              "c.pin_count()==7",
+              "c.pin_count()==11",
+              1
+            ],
+            [
+              "==91",
+              "==334",
+              1
+            ],
+            [
+              "Counter(npn13G2=34,rppd=33,cap_cmim=6,ptap1=18)",
+              "Counter(npn13G2=106,rppd=130,cap_cmim=8,ptap1=90)",
+              1
+            ],
+            [
+              "len(names)==38 and len(set(names.values()))==38",
+              "len(names)==120 and len(set(names.values()))==120",
+              1
+            ],
+            [
+              "==283",
+              "==1010",
+              2
+            ],
+            [
+              "EXPORTED_NATIVE_DIVIDER91_AND283_TERMINALS_NOT_ELECTRICAL_ACCEPTANCE",
+              "EXPORTED_NATIVE_RESET334_AND1010_TERMINALS_NOT_ELECTRICAL_ACCEPTANCE",
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "intrinsic",
+          "polarity": "n",
+          "original_path": "scripts/pll_divider_load3p2_intrinsic.py",
+          "original_sha256": "e6ee69991a85cf8dd19f8a92773d8875baf60c69ab37b9959dd0c7e9ab9a0305",
+          "generated_sha256": "001c8b9e640c9fc044ec7ac4f16d3fe167c3f5347a6e04746137f0c62d8fcc57",
+          "reversible_edits": [
+            [
+              "from pll_divider_load3p2_native import ORDER,PORTS",
+              "from tx_phase_reset334_n_native_generated import ORDER,PORTS",
+              1
+            ],
+            [
+              "Native divider intrinsic 91 devices",
+              "Native reset intrinsic 334 devices",
+              1
+            ],
+            [
+              "91-device",
+              "334-device",
+              1
+            ],
+            [
+              "==91",
+              "==334",
+              1
+            ],
+            [
+              "dict(devices=91,hbt=34,resistors=33,mim=6,finite_contacts=18,ports=PORTS)",
+              "dict(devices=334,hbt=106,resistors=130,mim=8,finite_contacts=90,ports=PORTS)",
+              1
+            ]
+          ]
+        },
+        {
+          "kind": "mim",
+          "polarity": "n",
+          "original_path": "scripts/tx_phase55_mim_native.py",
+          "original_sha256": "e033ef082734f10e5617d4c9b42b048ed59441582c810aa9aae24011d3f76e6b",
+          "generated_sha256": "1da48558d6f89a3006b610529bdd1fbeda05f9a4e99ea4b38a9ea64ea866b365",
+          "reversible_edits": [
+            [
+              "Bind actual phase55 MIM drawings",
+              "Bind actual reset334 MIM drawings",
+              1
+            ],
+            [
+              "TOP='nssoc_tx_phase_divider55_v1'",
+              "TOP='nssoc_tx_phase_reset244_n_v1'",
+              1
+            ],
+            [
+              "gds=source/'source/layout'/(TOP+'.gds');dbpath=source/'source/flat_lvs/result.lvsdb'",
+              "gds=source/'layout'/(TOP+'.gds');dbpath=source/'flat_lvs/result.lvsdb'",
+              1
+            ],
+            [
+              "c.pin_count()==9",
+              "c.pin_count()==11",
+              1
+            ],
+            [
+              "len(rows)==168 and len(labels)==126 and a['counts']['wire_components']==24",
+              "len(rows)==1010 and len(labels)==695 and a['counts']['wire_components']==119",
+              1
+            ],
+            [
+              "len(caps)==4",
+              "len(caps)==8",
+              1
+            ],
+            [
+              "len(leaves)==4",
+              "len(leaves)==8",
+              1
+            ],
+            [
+              "actual four placed leaf drawings",
+              "actual eight placed leaf drawings",
+              1
+            ],
+            [
+              "len(matched)==len(set(matched))==4",
+              "len(matched)==len(set(matched))==8",
+              1
+            ],
+            [
+              "for x in a['anchors']})==126",
+              "for x in a['anchors']})==695",
+              1
+            ],
+            [
+              "WT.name=='phase_divider55_wires'",
+              "WT.name=='phase_reset334_wires'",
+              1
+            ],
+            [
+              "PASS_ACTUAL_FOUR_MIM_DRAWINGS_AND_ALL126_NATIVE_PLANES_WITH_SIX_FAULTS_REQUIRES_RC",
+              "PASS_ACTUAL_EIGHT_MIM_DRAWINGS_AND_ALL695_NATIVE_PLANES_WITH_SIX_FAULTS_REQUIRES_RC",
+              1
+            ],
+            [
+              "actual_mim_devices=4,physical_points=126,wire_components=24",
+              "actual_mim_devices=8,physical_points=695,wire_components=119",
+              1
+            ],
+            [
+              "all126_native_and_physical_owners_verified",
+              "all695_native_and_physical_owners_verified",
+              1
+            ]
+          ]
+        }
+      ],
+      "rejected": [
+        "p-native-changed-source",
+        "p-intrinsic-changed-source",
+        "p-mim-changed-source",
+        "n-native-changed-source",
+        "n-intrinsic-changed-source",
+        "n-mim-changed-source",
+        "ambiguous-edit",
+        "missing-edit",
+        "wrong-polarity"
+      ],
+      "native_execution": false,
+      "RC_accepted": false,
+      "electrical_accepted": false
+    },
+    "physical_faults": [
+      "source",
+      "status",
+      "sources",
+      "errors",
+      "missing-polarity",
+      "GDS",
+      "DRC-markers",
+      "DRC-category",
+      "LVS-devices",
+      "LVS-ports",
+      "native-terminals",
+      "body-terminals",
+      "physical-fault",
+      "anchor-fault",
+      "offset-length",
+      "false-electrical"
+    ],
+    "publication_controls": {
+      "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+      "rejected": [
+        "local-context",
+        "other-repo",
+        "missing-source",
+        "mutable-source",
+        "invalid-run",
+        "invalid-attempt",
+        "invalid-group",
+        "different-release-target",
+        "different-tag-object",
+        "annotated-tag",
+        "different-tag-name",
+        "draft-release",
+        "production-release",
+        "duplicate-asset-name",
+        "asset-digest-missing",
+        "preexisting-wrong-tag",
+        "read-denied-never-creates"
+      ],
+      "existing_partial_assets_preserved": true,
+      "existing_release_not_recreated": true,
+      "new_release_uses_tested_sha": true,
+      "no_permissions_expanded": true
+    },
+    "native_execution": false,
+    "wire_rc_extracted": false,
+    "electrical_accepted": false,
+    "full_phy_accepted": false
+  },
+  "native_job_skipped": true,
+  "artifacts": [
+    {
+      "id": 12572370469,
+      "node_id": "MDg6QXJ0aWZhY3QxMjU3MjM3MDQ2OQ==",
+      "name": "reset334-intrinsic-mim-controls",
+      "size_in_bytes": 2795,
+      "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12572370469",
+      "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12572370469/zip",
+      "expired": false,
+      "digest": "sha256:277015f2df278d446846ef06582fdeb86c17fedcd37d924ab15abd254c9ec511",
+      "created_at": "2026-10-24T18:52:46Z",
+      "updated_at": "2026-10-24T18:52:46Z",
+      "expires_at": "2027-01-22T18:52:05Z",
+      "workflow_run": {
+        "id": 40122671188,
+        "repository_id": 1364721142,
+        "head_repository_id": 1364721142,
+        "head_branch": "codex/tx-clock-phase-parent",
+        "head_sha": "007c62b50078105590c5b50728c212d3c071184f"
+      }
+    }
+  ],
+  "tag_trigger_delta_audit": {
+    "baseline_source": "2e1f26e9c4fdf37d63433a0c859c2d305db3486b",
+    "baseline_workflows": 1330,
+    "current_workflows": 1332,
+    "changed": [
+      {
+        "path": ".github/workflows/tx-canonical-clock-roles-cloud.yml",
+        "git_blob_sha": "f260028b9112730a5fd6797b1c95e1f911483ada",
+        "sha256": "a8f991caf6dc8d100af5b0882b7f2bcc4d5802e77a981e904884334d9d91814b",
+        "manual_only": true
+      },
+      {
+        "path": ".github/workflows/tx-phase-reset334-intrinsic-mim-cloud.yml",
+        "git_blob_sha": "bf26bbfb85c26baff60fb804ec8dabfce4463838",
+        "sha256": "618baeca3854286c8a75ab36aaab7689a63b1471adb65c9f2a353f7a81ccfa3e",
+        "manual_only": true
+      }
+    ],
+    "unrelated_existing_workflows_identical": true,
+    "policy": "Only source-bound cloud-results-* evidence tags; no codex/* tag."
+  },
+  "electrical_accepted": false,
+  "full_phy_accepted": false
+}

@@ -1,0 +1,30 @@
+rm -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_forwarding_v5/results.xml
+"make" -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_dllp_consumer_forwarding_v5 /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_forwarding_v5/results.xml
+make[1]: Entering directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_forwarding_v5'
+mkdir -p /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_forwarding_v5/sim
+/home/hasanmelih/.local/bin/iverilog -o /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_forwarding_v5/sim/sim.vvp -s soc_pcie_gen3_dllp_consumer_forwarding_v5 -g2012 -g2012 -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_forwarding_v5/sim/cmds.f  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/soc_pcie_gen3_dllp_consumer_forwarding_v5.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v1.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v2.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v3.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v4.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v5.v
+rm -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_forwarding_v5/results.xml
+COCOTB_TEST_MODULES=test_soc_pcie_gen3_dllp_consumer_forwarding_v5 COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=soc_pcie_gen3_dllp_consumer_forwarding_v5 TOPLEVEL_LANG=verilog \
+         /home/hasanmelih/.local/bin/vvp -M /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_forwarding_v5/sim/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1791400066
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_forwarding_v5.nonadjacent_same_ids_and_zero_keep_gaps (1/3)
+  1560.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_forwarding_v5.nonadjacent_same_ids_and_zero_keep_gaps passed
+  1560.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_forwarding_v5.latest_earlier_same_id_for_four_lane_tlp (2/3)
+  2768.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_forwarding_v5.latest_earlier_same_id_for_four_lane_tlp passed
+  2768.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_dllp_consumer_forwarding_v5.prior_lane_error_survives_later_valid_same_id (3/3)
+  2944.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_dllp_consumer_forwarding_v5.prior_lane_error_survives_later_valid_same_id passed
+  2944.00ns INFO     cocotb.regression                  ******************************************************************************************************************************************************
+                                                        ** TEST                                                                                          STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        ******************************************************************************************************************************************************
+                                                        ** test_soc_pcie_gen3_dllp_consumer_forwarding_v5.nonadjacent_same_ids_and_zero_keep_gaps         PASS        1560.00           5.64        276.49  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_forwarding_v5.latest_earlier_same_id_for_four_lane_tlp        PASS        1208.00           3.85        314.14  **
+                                                        ** test_soc_pcie_gen3_dllp_consumer_forwarding_v5.prior_lane_error_survives_later_valid_same_id   PASS         176.00           0.66        264.67  **
+                                                        ******************************************************************************************************************************************************
+                                                        ** TESTS=3 PASS=3 FAIL=0 SKIP=0                                                                               2944.00          10.15        289.93  **
+                                                        ******************************************************************************************************************************************************
+make[1]: Leaving directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_dllp_consumer_forwarding_v5'

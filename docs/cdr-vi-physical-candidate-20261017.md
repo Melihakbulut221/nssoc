@@ -1,0 +1,7 @@
+# Native CDR V/I physical candidate
+
+The actual phase-detector converter now has a fresh physical generator for its unchanged eight Nx1 HBTs, four rppd resistors and40um-square MIM capacitor. Thirteen explicit substrate contacts preserve a distinct SUB port. Ports and each device terminal/geometry derive from the frozen native SPICE SHA9f13b4eeca782f34feb3a858937de871f61b2e7ab5a06ffc43ecfdfb5f5268ef. The MIM top/bottom escape stacks lie outside both plates and use separate vertical Metal4 tracks. Public pins have real Metal5 access; substrate and AVSS remain separate conductors.
+
+The generator extends the existing native gain/follower layout machinery; cap access follows the existing pump/filter PCell approach with explicit plate-boundary checks. New native checks require all560DRCrules, deep and flat LVS with26physical devices and11ports, plus actual output open, supply short, offgrid, missing HBT and wrong emitter count. No results are presumed from inherited code. Native generation, DRC, LVS and all output archives run only in GitHub. Failed geometry and original logs are retained.
+
+The independent13-case loaded PD/V-I electrical campaign39061446683 is still running. Physical leaf results do not qualify the entire campaign, parent routing, new RC, extracted loaded transient response, VCO tuning conversion, recovered-clock acquisition or Gen3x4. These remain mandatory before full-PHY/mainchip adoption. This leaf is a circuit-layout candidate, not production signoff.

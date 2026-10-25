@@ -1,0 +1,124 @@
+{
+  "status": "PASS_SOURCE_ONLY_LOADED455_WIRE_MODEL",
+  "freeze": {
+    "bytes": 53065,
+    "sha256": "ec5babdee2e8251d478a5691d8701726a303074c1c2c2ee4abe51d3339ee2cb0"
+  },
+  "findings": [],
+  "review_method": {
+    "bytes": 3859,
+    "sha256": "9f02c2802604f856046e292faaae50f4f6f8f0de7f8b35b7581aaf050b5eb732"
+  },
+  "verified_pins": 196,
+  "new_product_sources": 20,
+  "whole_byte_bridges": [
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_feedback_vco_v6_divider_wire_v1.spice",
+        "bytes": 829,
+        "sha256": "35795ed607ea841d0f902eaca781525209e059e79414410a001ee4a433e4518f"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_feedback_vco_v6_divider_power_v2_wire_v1.spice",
+        "bytes": 856,
+        "sha256": "ba5875d12b48cd352834b56a4899e96783116201dce159c1fa85e6438fe07ab8"
+      }
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_divider_wire_v1.py",
+        "bytes": 20146,
+        "sha256": "a11a66a65289cd81d34fa5645fe60115e9abc9e963c2156aeb5d8e3f704e94bb"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_vco_v6_divider_power_v2_wire_v1.py",
+        "bytes": 20200,
+        "sha256": "a4202815a5231a2fc24916bdcee517db7dae31af2b136a48724d190d357101b9"
+      }
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_vco_v6_divider_wire_v1.py",
+        "bytes": 11340,
+        "sha256": "24e75c5793260ad9dab4c54433f2f0b435628ad08ee4b059342f9c1279d14919"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py",
+        "bytes": 11349,
+        "sha256": "40ba02117c9da87bed7d3f11cc1db9b615002170f455351545a362702369f2a8"
+      }
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-wire-v1-20261005/launch_probe02.py",
+        "bytes": 4402,
+        "sha256": "4f3d13acbacb3f47f21639292feab2d29d9cbef936217a4c94718ca00ece1101"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-power-v2-wire-v1-20261006/launch_probe01.py",
+        "bytes": 4420,
+        "sha256": "51f2a7b3e0d8a96dac53f6b3bf4bb5990c265e2d57446bff98458786f81b98dc"
+      }
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-wire-v1-20261005/test_launcher02_handoff.py",
+        "bytes": 2848,
+        "sha256": "3229f65cdbff506613120e8f4932616da2e28305e9582ea69ac1e39d741888b8"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-power-v2-wire-v1-20261006/test_launcher01_handoff.py",
+        "bytes": 2854,
+        "sha256": "ca98e2971fea043c93c1e7f28415f57d4863452a5f6bca71366b6b8b0d47d24d"
+      }
+    }
+  ],
+  "changed_characterizer_functions": [
+    "topology",
+    "config",
+    "guard"
+  ],
+  "source_controls": {
+    "returncode": 0,
+    "passed": 25,
+    "command": [
+      "taskset",
+      "-c",
+      "10",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "sw/tests/test_pcie_vco_v6_divider_power_v2_wire_v1.py",
+      "--basetemp",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-power-v2-wire-v1-20261006/pytest02"
+    ],
+    "seconds": 1.3866143980048946,
+    "log": {
+      "bytes": 99,
+      "sha256": "8658745ca245cce2e1c19c74accd294259381338ce377a8fb1ad5620f8579372"
+    }
+  },
+  "handoff_controls": {
+    "returncode": 0,
+    "passed": 4,
+    "command": [
+      "taskset",
+      "-c",
+      "10",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+      "-m",
+      "pytest",
+      "-q",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-power-v2-wire-v1-20261006/test_launcher01_handoff.py",
+      "--basetemp",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-power-v2-wire-v1-20261006/pytest-handoff01"
+    ],
+    "seconds": 0.31059915899822954,
+    "log": {
+      "bytes": 98,
+      "sha256": "2207aede3effc76057a2a3e57150b95838d002e9383df950aadd0fec45f590e8"
+    }
+  },
+  "scope": "Full changed sources/launcher read; all untouched safety/streaming/deck/measurement functions AST exact. Actual455 devices,64 HBT OFF,31 contacts,956vectors and distinct body/wire ideal bench references retained. Measured combined1273R1422C replaces old1201R1383C. Initial five failed stale-census tests preserved; final25+4 saved controls pinned. No simulation or reviewed production method executed by peer. Physical headroom/division/frequency still require actual native results; no qualified substrate PEX or full PHY claim."
+}

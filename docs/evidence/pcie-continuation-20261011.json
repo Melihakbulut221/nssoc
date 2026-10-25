@@ -1,0 +1,247 @@
+{
+  "status": "ACTIVE_PHY_AND_ROUTE_RECOVERY_INTERMEDIATE_TIMING_NOT_CLOSED",
+  "at": "2026-10-11T11:55:59.044605+03:00",
+  "interruption": {
+    "cause": "Unknown external termination of session-owned processes, no native completion footer/outputODB; originals retained.",
+    "recovery": "Independent systemd user services with RuntimeMaxSec=infinity; native07 fresh757/50ns run and fresh postCTS from verified CTS+2identity reset delays."
+  },
+  "setup_checkpoint": {
+    "status": "PASS_AFTER_SETUP_WORST_PATH_RTL_SIGNAL_TRACE",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset-repair-recovery-20261011/physical01/runs/reset-postcts01/01-openroad-resizertimingpostcts/after_setup.v": "fdb039360041858d7f0a9f98c8ff6e3b814e7b267e70e9e690c2728e142f7707",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset-repair-recovery-20261011/setup-readback04/result.json": "e47702d777fc994e41e2895ceff081c46c8ac2cfdf8205cc92496aa6a8ce60f4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset-repair-recovery-20261011/setup-readback04/screen.log": "97a661d60c30b92f4988a43e43fb660e50ebca3599eb87e305bdca26f10a521f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-reset-repair-recovery-20261011/setup-readback04/all-groups05.json": "42128299f1d04a38f76e189f314437e61e4289218e026932bb0bcdff41f45bb0"
+    },
+    "links": [
+      {
+        "cell": "\\$auto$ff.cc:337:slice$1165467",
+        "q": "u_pcie.credit_data_consumed_o [29]",
+        "instance": "\\$auto$ff.cc:337:slice$1165467  (.RESET_B(net32932),\n    .D(\\$abc$1702876$auto$rtlil.cc:3513:MuxGate$1681846 ),\n    .Q(\\u_pcie.credit_data_consumed_o [29]),\n    .CLK(clknet_leaf_248_pcie_clk_i));"
+      },
+      {
+        "cell": "\\$auto$ff.cc:337:slice$1165728",
+        "q": "u_pcie.credit_header_limit_o [22]",
+        "instance": "\\$auto$ff.cc:337:slice$1165728  (.RESET_B(net33010),\n    .D(\\$abc$1702876$auto$rtlil.cc:3513:MuxGate$1681994 ),\n    .Q(\\u_pcie.credit_header_limit_o [22]),\n    .CLK(clknet_leaf_264_pcie_clk_i));"
+      }
+    ],
+    "setup_ns": -1.614687,
+    "scope": "Exact after_setup placed netlist and slow-corner worst reported path; pre-hold placement-RC estimate, not routed signoff."
+  },
+  "setup_all_groups": {
+    "slow_max": -1.614687,
+    "slow_min": -0.824862,
+    "typical_max": 0.02845,
+    "typical_min": -0.639819,
+    "fast_max": 0.751208,
+    "fast_min": -0.676601
+  },
+  "ack_expected_candidate": {
+    "status": "COMPLETE_ACK_EXPECTED_ALLGROUP_UNPLACED_COMPARISON",
+    "comparison_ns": {
+      "slow_max": {
+        "old": -1.367352,
+        "new": -1.579711,
+        "delta": -0.2123590000000002
+      },
+      "slow_min": {
+        "old": -0.507171,
+        "new": -0.536587,
+        "delta": -0.029415999999999998
+      },
+      "typical_max": {
+        "old": 0.367535,
+        "new": 0.3256,
+        "delta": -0.041935
+      },
+      "typical_min": {
+        "old": -0.53948,
+        "new": -0.53948,
+        "delta": 0.0
+      },
+      "fast_max": {
+        "old": 1.243015,
+        "new": 1.21595,
+        "delta": -0.027064999999999895
+      },
+      "fast_min": {
+        "old": -0.601382,
+        "new": -0.601382,
+        "delta": 0.0
+      }
+    },
+    "worst_paths": {
+      "slow_max": {
+        "group": "pcie_clk_i",
+        "corner": "slow",
+        "path_type": "max",
+        "startpoint": "$auto$ff.cc:337:slice$1187931",
+        "endpoint": "$auto$ff.cc:337:slice$1185245",
+        "slack_ns": -1.579711
+      },
+      "slow_min": {
+        "group": "clk_i",
+        "corner": "slow",
+        "path_type": "min",
+        "startpoint": "$auto$ff.cc:337:slice$1157748",
+        "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0",
+        "slack_ns": -0.536587
+      },
+      "typical_max": {
+        "group": "pcie_clk_i",
+        "corner": "typical",
+        "path_type": "max",
+        "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+        "endpoint": "$auto$ff.cc:337:slice$1164404",
+        "slack_ns": 0.3256
+      },
+      "typical_min": {
+        "group": "eth_gtx",
+        "corner": "typical",
+        "path_type": "min",
+        "startpoint": "$auto$ff.cc:337:slice$1582577",
+        "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+        "slack_ns": -0.53948
+      },
+      "fast_max": {
+        "group": "pcie_clk_i",
+        "corner": "fast",
+        "path_type": "max",
+        "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+        "endpoint": "$auto$ff.cc:337:slice$1164404",
+        "slack_ns": 1.21595
+      },
+      "fast_min": {
+        "group": "eth_gtx",
+        "corner": "fast",
+        "path_type": "min",
+        "startpoint": "$auto$ff.cc:337:slice$1582577",
+        "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+        "slack_ns": -0.601382
+      }
+    },
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-ack-expected-decode-20261011/compare09.py": "98a47a37d318665a7b1135be0e689b1db95441a72023244954bdfe956de943cf",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/read_opensta_phase_slacks.py": "dfade1f0ac09bcbaa9a0c5f63869e0d2a545324003538a5dcb847d1dbc950273",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/preplacement19/result.json": "2dcb1b78b7f12a80830884d430dcb2bde81c00eaf1f2d49599fe3ed1c768232f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-ack-expected-decode-20261011/preplacement07/result.json": "adb08e136e4d75d36d939587c83eeecf4c890a00cdda7a9ae733ca33c795aaa2",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/preplacement19/screen.log": "b73eff9ec740e20c6338cf5c8c96625447f7941194f8978d79b765f8842645e3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-ack-expected-decode-20261011/preplacement07/screen.log": "575e867257734d4761ae6f02f66d298f2f40a94f51d83caf1e1b5d8dfd507366",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-ack-expected-decode-20261011/composition05.json": "7ca24dfde4ea44eadf1e9930d4adc784e3c95cb0337a49adcae5c3812ff5170a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-ack-expected-decode-20261011/map-result06.json": "f65b02f2c12021d6a4043362196a27e0a85a0dbd8f526dc99b835b90229fd48f"
+    },
+    "adopted": false,
+    "timing_accepted": false,
+    "scope": "Whole chip unplaced all-group three-corner minima under same clocks. No route or signoff. Exact composition of separate proved replay and credit changes; actual combined mapped wholechip."
+  },
+  "registered_decode_candidate": {
+    "status": "COMPLETE_REGISTERED_DECODE_ALLGROUP_UNPLACED_COMPARISON",
+    "comparison_ns": {
+      "slow_max": {
+        "old": -1.367352,
+        "new": -1.394221,
+        "delta": -0.026869000000000032
+      },
+      "slow_min": {
+        "old": -0.507171,
+        "new": -0.51295,
+        "delta": -0.005778999999999979
+      },
+      "typical_max": {
+        "old": 0.367535,
+        "new": 0.48147,
+        "delta": 0.11393500000000001
+      },
+      "typical_min": {
+        "old": -0.53948,
+        "new": -0.53948,
+        "delta": 0.0
+      },
+      "fast_max": {
+        "old": 1.243015,
+        "new": 1.327413,
+        "delta": 0.08439799999999997
+      },
+      "fast_min": {
+        "old": -0.601382,
+        "new": -0.601382,
+        "delta": 0.0
+      }
+    },
+    "worst_paths": {
+      "slow_max": {
+        "group": "pcie_clk_i",
+        "corner": "slow",
+        "path_type": "max",
+        "startpoint": "$auto$ff.cc:337:slice$1164823",
+        "endpoint": "$auto$ff.cc:337:slice$1278329",
+        "slack_ns": -1.394221
+      },
+      "slow_min": {
+        "group": "clk_i",
+        "corner": "slow",
+        "path_type": "min",
+        "startpoint": "$auto$ff.cc:337:slice$1180798",
+        "endpoint": "u_ram.g_ram_2048x64_ecc.u_b0",
+        "slack_ns": -0.51295
+      },
+      "typical_max": {
+        "group": "pcie_clk_i",
+        "corner": "typical",
+        "path_type": "max",
+        "startpoint": "$auto$ff.cc:337:slice$1164823",
+        "endpoint": "$auto$ff.cc:337:slice$1278329",
+        "slack_ns": 0.48147
+      },
+      "typical_min": {
+        "group": "eth_gtx",
+        "corner": "typical",
+        "path_type": "min",
+        "startpoint": "$auto$ff.cc:337:slice$1580951",
+        "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+        "slack_ns": -0.53948
+      },
+      "fast_max": {
+        "group": "pcie_clk_i",
+        "corner": "fast",
+        "path_type": "max",
+        "startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+        "endpoint": "$auto$ff.cc:337:slice$1278329",
+        "slack_ns": 1.327413
+      },
+      "fast_min": {
+        "group": "eth_gtx",
+        "corner": "fast",
+        "path_type": "min",
+        "startpoint": "$auto$ff.cc:337:slice$1580951",
+        "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+        "slack_ns": -0.601382
+      }
+    },
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-registered-decode-20261011/compare09.py": "b49a24c2dc31f6b1032b46503fe84faadbe5c713fa4a0d62366e0cc777eb565d",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/read_opensta_phase_slacks.py": "dfade1f0ac09bcbaa9a0c5f63869e0d2a545324003538a5dcb847d1dbc950273",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/preplacement19/result.json": "2dcb1b78b7f12a80830884d430dcb2bde81c00eaf1f2d49599fe3ed1c768232f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-registered-decode-20261011/preplacement07/result.json": "efcfc21293bb306c568eda14c6814f2a6c98d724a76db97b6e9dd33d75942586",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-mbist-pipeline-20261011/preplacement19/screen.log": "b73eff9ec740e20c6338cf5c8c96625447f7941194f8978d79b765f8842645e3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-registered-decode-20261011/preplacement07/screen.log": "4f1add96888b8de868c0f28b7f1e1ed969381f3b93f2f255d0c107d0d8fa24da",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-registered-decode-20261011/composition05.json": "4968ea532ad1a095a7007b795a1393b80c2f868bf554359f0a53487e147137b3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-registered-decode-20261011/map-result06.json": "36e3ed8e12b2609230305de104df15930a1620f1bf082c4b462c664e17ece9d2"
+    },
+    "adopted": false,
+    "timing_accepted": false,
+    "scope": "Whole chip unplaced all-group three-corner minima under same clocks. No route or signoff. Exact composition of separate proved replay and credit changes; actual combined mapped wholechip."
+  },
+  "optional_8x64_formal": "Minisat OutOfMemoryException at configured4GiB; unproven.4x38/2x18/3x38 pass; no all-parameter claim.",
+  "public_records": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-continuation-records-20261011.tar.gz",
+    "name": "nssoc-continuation-records-20261011.tar.gz",
+    "bytes": 53185052,
+    "sha256": "f7f0936041818c743e43e458fe7dec19ee3956d5deba30db2d5a1e16e0cc56c5"
+  },
+  "full_serial_phy": false,
+  "routed_main_chip": false,
+  "final_setup_hold": false,
+  "production_accepted": false
+}

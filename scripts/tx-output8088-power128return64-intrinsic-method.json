@@ -1,0 +1,29 @@
+{
+  "baseline_path": "scripts/cloud_tx_output8088_power128_intrinsic.py",
+  "baseline_sha256": "e40131152e06941e562532b04faaa458602c7149e6eff7602da570c647083ee3",
+  "candidate_path": "scripts/cloud_tx_output8088_power128return64_intrinsic.py",
+  "candidate_sha256": "a90da46b0aa6e000a4ac4cbae28f65dc4f4f5e8cb5e3ae6b65120dd1ddbcd7d7",
+  "changes": [
+    {
+      "start": 629,
+      "end": 731,
+      "replacement": "ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-tx-output8088-power128return64-intrinsic'\n"
+    },
+    {
+      "start": 12084,
+      "end": 12180,
+      "replacement": "    delta=json.loads((ROOT/'scripts/tx-output8088-power128return64-intrinsic-method.json').read_text())\n"
+    },
+    {
+      "start": 13090,
+      "end": 13339,
+      "replacement": "        pin=json.loads((ROOT/'docs/evidence/tx-output8088-power128return64-native-anchors-pass-20261023.json').read_text())\n        assert pin['run']==39898478620 and pin['summary_sha256']=='350eabcb2b1014a6fad1c76512800b51392906d4c2a859697562f58cf829ce0b'\n"
+    },
+    {
+      "start": 13441,
+      "end": 13600,
+      "replacement": "        prior,proof=reports.restore_report('tx-output8088-power128return64-native-anchors',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',selected)\n"
+    }
+  ],
+  "scope": "Only isolated staging paths and immutable actual source pins. All native device/terminal/body/model/19-fault predicates unchanged."
+}

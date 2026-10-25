@@ -1,0 +1,1007 @@
+{
+  "schema": 1,
+  "status": "SOURCE_BOUND_FRONTIER_METHOD_AND_REAL_TINY_CONTROLS_PASS_WHOLE_CHIP_PENDING",
+  "recorded": "2026-10-03T22:19:47.726116+00:00",
+  "prior_evidence": "docs/evidence/npu-cone-final-native-20261003.json",
+  "source_selection": {
+    "schema": 1,
+    "status": "EXACT_SOURCE_FRONTIER_AND_SEMANTIC_COUNTERPARTS_IDENTIFIED_NOT_A_REPAIR",
+    "first_x_review": {
+      "bytes": 235457,
+      "sha256": "bed0f4ce3528191725c40897193ea9b9d9a935913c447244d727a4d7e78ba831"
+    },
+    "netlist_acquisition": {
+      "bytes": 1400,
+      "sha256": "7028f102d7b35d314fbb44e68cf97f33c78db16b4250146961c275d557e61425"
+    },
+    "candidate_frontier_driver_source_excerpts": {
+      "_084115_": {
+        "type": "sg13g2_nand2_1",
+        "ports": {
+          "A": "_024138_",
+          "B": "_028687_",
+          "Y": "_028688_"
+        },
+        "source": "  sg13g2_nand2_1 _084115_ (\n    .A(_024138_),\n    .B(_028687_),\n    .Y(_028688_)\n  );",
+        "sequential": false,
+        "model": "module sg13g2_nand2_1 (Y, A, B);\n\toutput Y;\n\tinput A, B;\n\n\t// Function\n\twire int_fwire_0;\n\n\tand (int_fwire_0, A, B);\n\tnot (Y, int_fwire_0);\n\n\t// Timing\n\tspecify\n\t\t(A => Y) = 0;\n\t\t(B => Y) = 0;\n\tendspecify\nendmodule"
+      },
+      "_084116_": {
+        "type": "sg13g2_nand3_1",
+        "ports": {
+          "A": "_024284_",
+          "B": "_009734_",
+          "C": "_028688_",
+          "Y": "_028689_"
+        },
+        "source": "  sg13g2_nand3_1 _084116_ (\n    .A(_024284_),\n    .B(_009734_),\n    .C(_028688_),\n    .Y(_028689_)\n  );",
+        "sequential": false,
+        "model": "module sg13g2_nand3_1 (Y, A, B, C);\n\toutput Y;\n\tinput A, B, C;\n\n\t// Function\n\twire int_fwire_0;\n\n\tand (int_fwire_0, A, B, C);\n\tnot (Y, int_fwire_0);\n\n\t// Timing\n\tspecify\n\t\t(A => Y) = 0;\n\t\t(B => Y) = 0;\n\t\t(C => Y) = 0;\n\tendspecify\nendmodule"
+      },
+      "_079096_": {
+        "type": "sg13g2_nand2_1",
+        "ports": {
+          "A": "_009373_",
+          "B": "_024137_",
+          "Y": "_024138_"
+        },
+        "source": "  sg13g2_nand2_1 _079096_ (\n    .A(_009373_),\n    .B(_024137_),\n    .Y(_024138_)\n  );",
+        "sequential": false,
+        "model": "module sg13g2_nand2_1 (Y, A, B);\n\toutput Y;\n\tinput A, B;\n\n\t// Function\n\twire int_fwire_0;\n\n\tand (int_fwire_0, A, B);\n\tnot (Y, int_fwire_0);\n\n\t// Timing\n\tspecify\n\t\t(A => Y) = 0;\n\t\t(B => Y) = 0;\n\tendspecify\nendmodule"
+      },
+      "_084114_": {
+        "type": "sg13g2_nor2_1",
+        "ports": {
+          "A": "_009736_",
+          "B": "_028686_",
+          "Y": "_028687_"
+        },
+        "source": "  sg13g2_nor2_1 _084114_ (\n    .A(_009736_),\n    .B(_028686_),\n    .Y(_028687_)\n  );",
+        "sequential": false,
+        "model": "module sg13g2_nor2_1 (Y, A, B);\n\toutput Y;\n\tinput A, B;\n\n\t// Function\n\twire int_fwire_0;\n\n\tor (int_fwire_0, A, B);\n\tnot (Y, int_fwire_0);\n\n\t// Timing\n\tspecify\n\t\t(A => Y) = 0;\n\t\t(B => Y) = 0;\n\tendspecify\nendmodule"
+      },
+      "_079249_": {
+        "type": "sg13g2_buf_1",
+        "ports": {
+          "A": "\\u_npu.blk_rst_n ",
+          "X": "_024284_"
+        },
+        "source": "  sg13g2_buf_1 _079249_ (\n    .A(\\u_npu.blk_rst_n ),\n    .X(_024284_)\n  );",
+        "sequential": false,
+        "model": "module sg13g2_buf_1 (X, A);\n\toutput X;\n\tinput A;\n\n\t// Function\n\tbuf (X, A);\n\n\t// Timing\n\tspecify\n\t\t(A => X) = 0;\n\tendspecify\nendmodule"
+      },
+      "_063663_": {
+        "type": "sg13g2_nor2b_1",
+        "ports": {
+          "A": "\\u_npu.ev_state [2]",
+          "B_N": "_009701_",
+          "Y": "_009734_"
+        },
+        "source": "  sg13g2_nor2b_1 _063663_ (\n    .A(\\u_npu.ev_state [2]),\n    .B_N(_009701_),\n    .Y(_009734_)\n  );",
+        "sequential": false,
+        "model": "module sg13g2_nor2b_1 (Y, A, B_N);\n\toutput Y;\n\tinput A, B_N;\n\n\t// Function\n\twire B_N__bar, int_fwire_0;\n\n\tnot (B_N__bar, B_N);\n\tor (int_fwire_0, A, B_N__bar);\n\tnot (Y, int_fwire_0);\n\n\t// Timing\n\tspecify\n\t\t(A => Y) = 0;\n\t\t(B_N => Y) = 0;\n\tendspecify\nendmodule"
+      }
+    },
+    "semantic_conductors": [
+      "\\u_npu.blk_rst_n",
+      "\\u_npu.ev_state [0]",
+      "\\u_npu.ev_state [1]",
+      "\\u_npu.ev_state [2]",
+      "\\u_npu.ev_state [3]",
+      "\\u_npu.g_cfg_tmr.qb [14]",
+      "\\u_npu.g_cfg_tmr.qb [1]",
+      "\\u_npu.g_cfg_tmr.qc [14]",
+      "\\u_npu.g_cfg_tmr.qc [1]",
+      "\\u_npu.g_cfg_tmr.u_cfg_a.bits [1]",
+      "\\u_npu.g_cfg_tmr.u_cfg_b.bits [1]",
+      "\\u_npu.g_cfg_tmr.u_cfg_c.bits [14]",
+      "\\u_npu.g_cfg_tmr.u_cfg_c.bits [1]",
+      "\\u_npu.g_cfg_tmr.u_cfg_c.bits [2]",
+      "\\u_npu.u_cap.rd_idx [1]",
+      "\\u_npu.u_cap.rd_idx [2]",
+      "\\u_npu.u_cap.rd_ptr_b [0]",
+      "\\u_npu.u_cap.rd_ptr_b [1]",
+      "\\u_npu.u_cap.rd_ptr_b [2]",
+      "\\u_npu.u_cap.rd_ptr_b [3]",
+      "\\u_npu.u_cap.rd_ptr_c [0]",
+      "\\u_npu.u_cap.rd_ptr_c [1]",
+      "\\u_npu.u_cap.rd_ptr_c [2]",
+      "\\u_npu.u_cap.rd_ptr_c [3]",
+      "\\u_npu.u_cap.u_par.wr_addr [0]",
+      "\\u_npu.u_cap.u_par.wr_addr [1]",
+      "\\u_npu.u_cap.u_rptr_a.bits [0]",
+      "\\u_npu.u_cap.u_rptr_a.bits [1]",
+      "\\u_npu.u_cap.u_rptr_a.bits [2]",
+      "\\u_npu.u_cap.u_rptr_a.bits [3]",
+      "\\u_npu.u_cap.u_rptr_c.bits [0]",
+      "\\u_npu.u_cap.u_rptr_c.bits [1]",
+      "\\u_npu.u_cap.u_rptr_c.bits [2]",
+      "\\u_npu.u_cap.u_rptr_c.bits [3]",
+      "\\u_npu.u_cap.u_wptr_a.bits [0]",
+      "\\u_npu.u_cap.u_wptr_a.bits [1]",
+      "\\u_npu.u_cap.u_wptr_a.bits [2]",
+      "\\u_npu.u_cap.u_wptr_a.bits [3]",
+      "\\u_npu.u_cap.u_wptr_b.q [0]",
+      "\\u_npu.u_cap.u_wptr_b.q [1]",
+      "\\u_npu.u_cap.u_wptr_b.q [2]",
+      "\\u_npu.u_cap.u_wptr_b.q [3]",
+      "\\u_npu.u_cap.u_wptr_c.bits [0]",
+      "\\u_npu.u_cap.u_wptr_c.bits [1]",
+      "\\u_npu.u_cap.u_wptr_c.bits [2]",
+      "\\u_npu.u_cap.u_wptr_c.bits [3]",
+      "\\u_npu.u_cap.u_wptr_c.q [0]",
+      "\\u_npu.u_cap.u_wptr_c.q [1]",
+      "\\u_npu.u_cap.u_wptr_c.q [2]",
+      "\\u_npu.u_cap.u_wptr_c.q [3]",
+      "\\u_npu.u_node0.oh_valid_b",
+      "\\u_npu.u_node0.u_ohv_a.bits"
+    ],
+    "bindings": {
+      "original": {
+        "netlist": {
+          "bytes": 10274923,
+          "sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8"
+        },
+        "binding": {
+          "bytes": 388484,
+          "sha256": "2873b71a431c741c773f27ae0947b2f47e49b9bf8933e7b65decf8d3d8ad0cd4"
+        },
+        "canonical_binding_sha256": "75f9b5d624ecdcdfc99264fbc35cba1d2c57117ab9e58813840982e564e9b340",
+        "cells": 116,
+        "signals": 728,
+        "semantic_conductors": 52,
+        "closed_cells": 70,
+        "sequential_boundary": 38,
+        "immediate_driver_records": 114,
+        "retained_observation_frontiers": 61
+      },
+      "candidate": {
+        "netlist": {
+          "bytes": 10370597,
+          "sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c"
+        },
+        "binding": {
+          "bytes": 446344,
+          "sha256": "9f33b608c8b4d1a7bc5d53f88b8f1267fe61ca6fdd9d4d1a23930f5dc5153bbd"
+        },
+        "canonical_binding_sha256": "f2a9f1ad144a8f49e8b749765b36b92e408bc645f4a94ea3fef2833faddd0aa3",
+        "cells": 156,
+        "signals": 884,
+        "semantic_conductors": 52,
+        "closed_cells": 110,
+        "sequential_boundary": 38,
+        "immediate_driver_records": 114,
+        "retained_observation_frontiers": 50
+      }
+    },
+    "interpretation": "The earliest observed selected unknown enters native first-X drivers fed by capture-FIFO pointer comparison and node-output-valid/TMR configuration logic. All complete predecessor paths terminate at38 actual registers. Paired52 readable conductor identities have unique exact original/candidate source witnesses; this is an observation mapping, not a new equivalence proof. Which boundary input/clock/reset becomes unknown first remains to be observed.",
+    "source_netlist_bytes_selectively_restored_to_ram": true,
+    "full_chip_native_executed_locally": false,
+    "candidate_adopted": false
+  },
+  "author_validation": {
+    "schema": 1,
+    "status": "FROZEN_FIXED_FRONTIER_METHOD_SOURCE_BINDINGS_AND_NATIVE_CONTROLS_PASS",
+    "recorded_at": "2026-10-03T22:14:46.189935+00:00",
+    "sources": {
+      "scripts/run_cloud_npu_frontier_trace.py": {
+        "bytes": 22083,
+        "sha256": "ed033955a372510b6f70a7717816e60940eb10973d656ac0bde9ec4c8d4d5d97"
+      },
+      "hw/soc/tb/npu_frontier_event_trace.v": {
+        "bytes": 2450,
+        "sha256": "2dcf84d6592b3ddf2fb47f4525dde079673c7c370492edb26a04946ffd4304e4"
+      },
+      "hw/soc/pnr/npu-frontier-trace-input.lock.json": {
+        "bytes": 5444,
+        "sha256": "0483e983e5e0beeba063a89cb5c6d1cb0c6b7fe010e4daf6b32f31f688d58d83"
+      },
+      "sw/tests/test_npu_frontier_trace.py": {
+        "bytes": 11528,
+        "sha256": "acfe37a94c3b04cdffb5efc8be720c49e17a160e6f5a834c1a3d894f7cdac686"
+      },
+      ".github/workflows/timing-npu-frontier-trace.yml": {
+        "bytes": 2655,
+        "sha256": "e758b8f39c705bd061e9c91994828b4ece9d0710dd49749e579d383082494a7a"
+      }
+    },
+    "checks": [
+      {
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "--basetemp=/dev/shm/nssoc-frontier-final-tests",
+          "sw/tests/test_npu_frontier_trace.py",
+          "sw/tests/test_npu_cone_trace.py",
+          "sw/tests/test_npu_state_trace.py",
+          "sw/tests/test_alu_qualification.py"
+        ],
+        "returncode": 0,
+        "output": "........................................................................ [ 53%]\n...............................................................          [100%]\n135 passed in 1.14s\n",
+        "log": {
+          "bytes": 180,
+          "sha256": "933c0228b6a23f12985b956aac6b7ba41e495a577b6c98be7250d5ee587fb78f"
+        }
+      },
+      {
+        "command": [
+          "hw/soc/tools/dev-env/bin/ruff",
+          "check",
+          "scripts/run_cloud_npu_frontier_trace.py",
+          "sw/tests/test_npu_frontier_trace.py"
+        ],
+        "returncode": 0,
+        "output": "All checks passed!\n",
+        "log": {
+          "bytes": 19,
+          "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+        }
+      },
+      {
+        "command": [
+          "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+          ".github/workflows/timing-npu-frontier-trace.yml"
+        ],
+        "returncode": 0,
+        "output": "",
+        "log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "focused_tests": 135,
+    "native_validation": {
+      "bytes": 29071,
+      "sha256": "a2190524b3f0e06f4ea68cd4065b7b6e4d027abe00838b53dd3edb54b4acede9"
+    },
+    "native_archive": {
+      "bytes": 14628,
+      "sha256": "7189fdd99a2d64dac3208c7084ed4bb8e9e8a2682a8c62519f8c6d135593f971"
+    },
+    "native_cases": 5,
+    "native_processes": 20,
+    "native_seconds": 0.35719576000701636,
+    "model": {
+      "bytes": 53835,
+      "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    },
+    "runtime": {
+      "iverilog": {
+        "bytes": 453,
+        "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+      },
+      "vvp": {
+        "bytes": 485,
+        "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+      }
+    },
+    "frozen_original_dependency_count": 24,
+    "original_dependency_pins": {
+      "scripts/run_cloud_alu_qualification.py": "cc918fbe661e7cd18f935795a08133c8b5438a256b5f50202195840f544fd429",
+      "scripts/run_cloud_alu_prefix.py": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea",
+      "scripts/prepare_alu_prefix.py": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5",
+      "scripts/run_cloud_eco_logic_proof.py": "093cd8bfedce21561b57c049d935f1a80d3b6a09fd06b673b1ea0c58659f1c6e",
+      "scripts/run_cloud_timing_experiment.py": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524",
+      "scripts/bootstrap_oss.py": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277",
+      ".github/workflows/timing-alu-qualification.yml": "777d566224bb3af9667cf997b3797b1b6829e721995bf31809aefafd4fd7352a",
+      "hw/soc/pnr/alu-qualification-input.lock.json": "5848b42bbdf8817205d629d7db2ef9619f82a62f12d8667fd85e749f219511c2",
+      "hw/soc/pnr/alu-prefix-c10-input.lock.json": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c",
+      "docs/evidence/timing-cloud-input-20260930.json": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a",
+      "hw/soc/flow/sim_logic_boot_gl.py": "85bf0e22c0ba246973953ac5c8ee79e4c7219fcee2c78c5d55babcc121385830",
+      "hw/soc/flow/gen_logic_boot_rom.py": "5f3510003984edf7decf2be3240fe9a13074547d7d87bcf2cfa4f73d9e3dc117",
+      "scripts/run_cloud_alu_boot_trace.py": "a1a47d79de7893ef69bafe290b49fc68afcd68e5af106c987750cf536c48a5f2",
+      "hw/soc/tb/alu_boot_trace.v": "3cd442dcc7828c5579019d8ac8884ed220b814d5e979cd8e86d713eca2ea10fc",
+      "sw/tests/test_alu_boot_trace.py": "d303f420c342895f7a136fd49077821732c09509b605fc5cd7670e3566444674",
+      ".github/workflows/timing-alu-boot-trace.yml": "524516ba46e1437eb3ce270c73c89d49b55a1054f77c1f22359426f9336e4e7b",
+      "scripts/run_cloud_npu_state_trace.py": "c877425001c16eae37c85f69bfd8ed6f457e7fde3501586532efee60e9a23e14",
+      "hw/soc/tb/npu_state_event_trace.v": "909131caa1d65d3554846f11daff0f9538474ffaa3ae2acf1d720a120f5eec9b",
+      "sw/tests/test_npu_state_trace.py": "6b693e274a1a1e0a3915738ea6faec44cc62252d90cdef30af86ce99a9cc6ba7",
+      ".github/workflows/timing-npu-state-trace.yml": "3dba8c0537b1e0ff81ea2cc58d55a76e7b3a1320639907c0298302ad6a6c8808",
+      "scripts/run_cloud_npu_cone_trace.py": "15f1189dcc72096fedcbf678b2d70270cac7339b64e30dfe696282358372262a",
+      "hw/soc/tb/npu_cone_event_trace.v": "3bfeda92de9c7058fc48f9db27a24eb80c6928b578b84d3f377e0aadc7f04706",
+      "sw/tests/test_npu_cone_trace.py": "8d8113dd752600487417289d3ec7b2bec25b871c7312fb9c4b9812abe684af09",
+      ".github/workflows/timing-npu-cone-trace.yml": "7b989d1b31af8e70e2fca5cde820c3bc970a6aa205b09f1a383d0725148335df"
+    },
+    "binding_results": {
+      "original": {
+        "netlist": {
+          "bytes": 10274923,
+          "sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8"
+        },
+        "binding": {
+          "bytes": 388484,
+          "sha256": "2873b71a431c741c773f27ae0947b2f47e49b9bf8933e7b65decf8d3d8ad0cd4"
+        },
+        "canonical_binding_sha256": "75f9b5d624ecdcdfc99264fbc35cba1d2c57117ab9e58813840982e564e9b340",
+        "cells": 116,
+        "signals": 728,
+        "semantic_conductors": 52,
+        "closed_cells": 70,
+        "sequential_boundary": 38,
+        "immediate_driver_records": 114,
+        "retained_observation_frontiers": 61
+      },
+      "candidate": {
+        "netlist": {
+          "bytes": 10370597,
+          "sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c"
+        },
+        "binding": {
+          "bytes": 446344,
+          "sha256": "9f33b608c8b4d1a7bc5d53f88b8f1267fe61ca6fdd9d4d1a23930f5dc5153bbd"
+        },
+        "canonical_binding_sha256": "f2a9f1ad144a8f49e8b749765b36b92e408bc645f4a94ea3fef2833faddd0aa3",
+        "cells": 156,
+        "signals": 884,
+        "semantic_conductors": 52,
+        "closed_cells": 110,
+        "sequential_boundary": 38,
+        "immediate_driver_records": 114,
+        "retained_observation_frontiers": 50
+      }
+    },
+    "binding_snapshot_archive": {
+      "bytes": 28920,
+      "sha256": "e019470aedb3603b779318aa26e1b0f63618211d0138b12fb8443f7780b1acdd"
+    },
+    "source_graph_scope": "Only exact original/candidate netlist members were selectively restored into /dev/shm under64MiB RAM-file cap, CRC and both expectedSHA verified. Both source bindings fully reconstructed locally. No full native SoC simulation, synthesis, physical netlist or proof graph execution.",
+    "prior_native_review": {
+      "bytes": 235457,
+      "sha256": "bed0f4ce3528191725c40897193ea9b9d9a935913c447244d727a4d7e78ba831"
+    },
+    "static_analysis": {
+      "bytes": 7544,
+      "sha256": "011e59b508c4c7096293e7ac4985a892a336481170bf75e686ae6ab21a772f56"
+    },
+    "window": [
+      1569360,
+      1569520
+    ],
+    "initialization_cycle": 1569359,
+    "event_cycle_bounds": [
+      1569359,
+      1569520
+    ],
+    "original_qualification_cycle_bound": 3000000,
+    "bounds": {
+      "cells": 160,
+      "signals": 1024,
+      "events": 100000
+    },
+    "limitations": [
+      "No actual upstream cause or safe RTL/model repair is yet established. This is a fixed targeted observation, not an optimization or adoption.",
+      "Selected driver inputs beyond the explicit38-register predecessor closure are observation frontiers; no closure or logical assumption is claimed past them.",
+      "Sequential boundaries include D, clock, reset and internal native-model fields; immediate native drivers are included without inventing register correspondence from numeric names.",
+      "Observed callback order can coalesce transients and is not a simulator delta index or lossless glitch trace.",
+      "Original3M candidate boot is still failed. New whole-chip diagnostic requires its own cloud result."
+    ],
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "root_validation": {
+    "recorded": "2026-10-03T22:16:26.429869+00:00",
+    "status": "ROOT_EXACT_BINDING_AND_REAL_NATIVE_MONITOR_CONTROLS_PASS_ONLY",
+    "methods": {
+      "scripts/run_cloud_npu_frontier_trace.py": {
+        "bytes": 22083,
+        "sha256": "ed033955a372510b6f70a7717816e60940eb10973d656ac0bde9ec4c8d4d5d97"
+      },
+      "hw/soc/tb/npu_frontier_event_trace.v": {
+        "bytes": 2450,
+        "sha256": "2dcf84d6592b3ddf2fb47f4525dde079673c7c370492edb26a04946ffd4304e4"
+      },
+      "hw/soc/pnr/npu-frontier-trace-input.lock.json": {
+        "bytes": 5444,
+        "sha256": "0483e983e5e0beeba063a89cb5c6d1cb0c6b7fe010e4daf6b32f31f688d58d83"
+      },
+      "sw/tests/test_npu_frontier_trace.py": {
+        "bytes": 11528,
+        "sha256": "acfe37a94c3b04cdffb5efc8be720c49e17a160e6f5a834c1a3d894f7cdac686"
+      },
+      ".github/workflows/timing-npu-frontier-trace.yml": {
+        "bytes": 2655,
+        "sha256": "e758b8f39c705bd061e9c91994828b4ece9d0710dd49749e579d383082494a7a"
+      }
+    },
+    "frozen_dependency_count": 24,
+    "model": {
+      "bytes": 53835,
+      "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    },
+    "variants": {
+      "original": {
+        "binding_sha256": "75f9b5d624ecdcdfc99264fbc35cba1d2c57117ab9e58813840982e564e9b340",
+        "netlist": {
+          "bytes": 10274923,
+          "sha256": "5d05a3bc48cdd8c92dd51e61f1cff81f52e7ffcb973c2a8256f21b6648857fd8"
+        },
+        "cells": 116,
+        "signals": 728,
+        "sequential_boundaries": 38,
+        "closed_cells": 70,
+        "remaining_observation_frontiers": 61
+      },
+      "candidate": {
+        "binding_sha256": "f2a9f1ad144a8f49e8b749765b36b92e408bc645f4a94ea3fef2833faddd0aa3",
+        "netlist": {
+          "bytes": 10370597,
+          "sha256": "ff0fa54dac1855c21c43e3c463042ff21eefa3be65f8481ba79701742c5f796c"
+        },
+        "cells": 156,
+        "signals": 884,
+        "sequential_boundaries": 38,
+        "closed_cells": 110,
+        "remaining_observation_frontiers": 50
+      }
+    },
+    "native_controls": {
+      "known": {
+        "compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/known/tiny.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/known/tiny.v",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/npu_frontier_event_trace.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.02680851597688161,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/known/tiny.vvp",
+            "+npu_frontier_dir=/dev/shm/nssoc-root-frontier-8a47l_iw/controls/known"
+          ],
+          "returncode": 0,
+          "seconds": 0.01615754998056218,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 398,
+            "sha256": "7a5937ee68d99f56eb37f486da7c904c42a1cd564fe4b5e53ee2bffae06ad628"
+          }
+        },
+        "observation": {
+          "start": 2,
+          "last": 7,
+          "width": 5,
+          "events": 3,
+          "samples": 6,
+          "sequence": 10,
+          "final_cycle": 9,
+          "initialization_cycle": 1,
+          "event_cycle_bounds": [
+            1,
+            7
+          ],
+          "initial_static_unknowns": [],
+          "new_unknown_transitions": [],
+          "first_new_unknown": null,
+          "raw_event_file": {
+            "bytes": 532,
+            "sha256": "497da18a4538a7afc102ed8c7d97393907af7772a1e20acf8a938b6ba518fb15"
+          }
+        },
+        "baseline_compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/known/baseline.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/known/baseline.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.03538894798839465,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "baseline_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/known/baseline.vvp"
+          ],
+          "returncode": 0,
+          "seconds": 0.015411258995300159,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 305,
+            "sha256": "241c03b5674d5ffd7f34aa7002df9c588f9800a7110db6e09f3885bfab44c695"
+          }
+        },
+        "native_output_trajectory_unchanged": true
+      },
+      "static_x_masked": {
+        "compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/static_x_masked/tiny.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/static_x_masked/tiny.v",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/npu_frontier_event_trace.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.028333638998446986,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/static_x_masked/tiny.vvp",
+            "+npu_frontier_dir=/dev/shm/nssoc-root-frontier-8a47l_iw/controls/static_x_masked"
+          ],
+          "returncode": 0,
+          "seconds": 0.018718056002398953,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 407,
+            "sha256": "6cf92c998cce0f06361cf15ad6967f27bc5c20d072a22a1bcedc0056606c457e"
+          }
+        },
+        "observation": {
+          "start": 2,
+          "last": 7,
+          "width": 5,
+          "events": 1,
+          "samples": 6,
+          "sequence": 8,
+          "final_cycle": 9,
+          "initialization_cycle": 1,
+          "event_cycle_bounds": [
+            1,
+            7
+          ],
+          "initial_static_unknowns": [
+            {
+              "signal": 1,
+              "value": "x"
+            }
+          ],
+          "new_unknown_transitions": [],
+          "first_new_unknown": null,
+          "raw_event_file": {
+            "bytes": 389,
+            "sha256": "0b33e31d0f0f6281fa681eb98043f81449547e0951692558885ac86ac515c96a"
+          }
+        },
+        "baseline_compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/static_x_masked/baseline.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/static_x_masked/baseline.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.03069081698777154,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "baseline_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/static_x_masked/baseline.vvp"
+          ],
+          "returncode": 0,
+          "seconds": 0.01515739198657684,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 315,
+            "sha256": "fb41ea34afaa351021e2d27fa483cdf8329fb58f937084ec474e659ce188ecfb"
+          }
+        },
+        "native_output_trajectory_unchanged": true
+      },
+      "shared_input_x": {
+        "compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/shared_input_x/tiny.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/shared_input_x/tiny.v",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/npu_frontier_event_trace.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.028735134023008868,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/shared_input_x/tiny.vvp",
+            "+npu_frontier_dir=/dev/shm/nssoc-root-frontier-8a47l_iw/controls/shared_input_x"
+          ],
+          "returncode": 0,
+          "seconds": 0.016293486987706274,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 407,
+            "sha256": "fc3e7ea11fb0cec612a73c0614470b226ddb370754ecf759ac52ffabc707f611"
+          }
+        },
+        "observation": {
+          "start": 2,
+          "last": 7,
+          "width": 5,
+          "events": 7,
+          "samples": 6,
+          "sequence": 14,
+          "final_cycle": 9,
+          "initialization_cycle": 1,
+          "event_cycle_bounds": [
+            1,
+            7
+          ],
+          "initial_static_unknowns": [],
+          "new_unknown_transitions": [
+            {
+              "sequence": 3,
+              "cycle": 3,
+              "realtime_ns": "30.000",
+              "signal": 1,
+              "prior": "0",
+              "value": "x"
+            },
+            {
+              "sequence": 4,
+              "cycle": 3,
+              "realtime_ns": "30.000",
+              "signal": 3,
+              "prior": "1",
+              "value": "x"
+            },
+            {
+              "sequence": 6,
+              "cycle": 4,
+              "realtime_ns": "35.000",
+              "signal": 4,
+              "prior": "1",
+              "value": "x"
+            }
+          ],
+          "first_new_unknown": {
+            "sequence": 3,
+            "cycle": 3,
+            "realtime_ns": "30.000",
+            "signal": 1,
+            "prior": "0",
+            "value": "x"
+          },
+          "raw_event_file": {
+            "bytes": 820,
+            "sha256": "d527868e2e7794fe933813a506e0af44a362c5350a5ea065bd8111ba730e4974"
+          }
+        },
+        "baseline_compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/shared_input_x/baseline.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/shared_input_x/baseline.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.02838857300230302,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "baseline_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/shared_input_x/baseline.vvp"
+          ],
+          "returncode": 0,
+          "seconds": 0.016537281015189365,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 314,
+            "sha256": "ef721ac051827a0b59c655efc965d453c770a1f3cdc49e2ff2f960168b34325b"
+          }
+        },
+        "native_output_trajectory_unchanged": true
+      },
+      "latent_x_unmasked": {
+        "compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/latent_x_unmasked/tiny.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/latent_x_unmasked/tiny.v",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/npu_frontier_event_trace.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.028205690992763266,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/latent_x_unmasked/tiny.vvp",
+            "+npu_frontier_dir=/dev/shm/nssoc-root-frontier-8a47l_iw/controls/latent_x_unmasked"
+          ],
+          "returncode": 0,
+          "seconds": 0.015560667990939692,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 410,
+            "sha256": "7ab5dd3f6db3890d7affd9f45292bc5fe3e6441fd97b47ab832502f6e22439c9"
+          }
+        },
+        "observation": {
+          "start": 2,
+          "last": 7,
+          "width": 5,
+          "events": 7,
+          "samples": 6,
+          "sequence": 14,
+          "final_cycle": 9,
+          "initialization_cycle": 1,
+          "event_cycle_bounds": [
+            1,
+            7
+          ],
+          "initial_static_unknowns": [
+            {
+              "signal": 1,
+              "value": "x"
+            }
+          ],
+          "new_unknown_transitions": [
+            {
+              "sequence": 4,
+              "cycle": 3,
+              "realtime_ns": "30.000",
+              "signal": 3,
+              "prior": "0",
+              "value": "x"
+            },
+            {
+              "sequence": 6,
+              "cycle": 4,
+              "realtime_ns": "35.000",
+              "signal": 4,
+              "prior": "0",
+              "value": "x"
+            }
+          ],
+          "first_new_unknown": {
+            "sequence": 4,
+            "cycle": 3,
+            "realtime_ns": "30.000",
+            "signal": 3,
+            "prior": "0",
+            "value": "x"
+          },
+          "raw_event_file": {
+            "bytes": 820,
+            "sha256": "0496be1c87ea045ca252f0408a88d2669b8242e33c70c8e092e78b1e928e808e"
+          }
+        },
+        "baseline_compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/latent_x_unmasked/baseline.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/latent_x_unmasked/baseline.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.026676353008951992,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "baseline_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/latent_x_unmasked/baseline.vvp"
+          ],
+          "returncode": 0,
+          "seconds": 0.01650795599562116,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 317,
+            "sha256": "478050e1363afb6eefa27f353a1bd2546cc5a9b56c7a909157a9b1af8950e48f"
+          }
+        },
+        "native_output_trajectory_unchanged": true
+      },
+      "coalesced_pulse": {
+        "compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/coalesced_pulse/tiny.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/coalesced_pulse/tiny.v",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/npu_frontier_event_trace.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.030357486015418544,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/coalesced_pulse/tiny.vvp",
+            "+npu_frontier_dir=/dev/shm/nssoc-root-frontier-8a47l_iw/controls/coalesced_pulse"
+          ],
+          "returncode": 0,
+          "seconds": 0.019412384019233286,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 408,
+            "sha256": "a2b9e370c6ad87e75563ff9509fd7ac399b9622e2720b097cc281eaca9431b9f"
+          }
+        },
+        "observation": {
+          "start": 2,
+          "last": 7,
+          "width": 5,
+          "events": 3,
+          "samples": 6,
+          "sequence": 10,
+          "final_cycle": 9,
+          "initialization_cycle": 1,
+          "event_cycle_bounds": [
+            1,
+            7
+          ],
+          "initial_static_unknowns": [],
+          "new_unknown_transitions": [],
+          "first_new_unknown": null,
+          "raw_event_file": {
+            "bytes": 532,
+            "sha256": "497da18a4538a7afc102ed8c7d97393907af7772a1e20acf8a938b6ba518fb15"
+          }
+        },
+        "baseline_compile": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog",
+            "-g2005-sv",
+            "-DFUNCTIONAL",
+            "-s",
+            "tiny",
+            "-o",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/coalesced_pulse/baseline.vvp",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/coalesced_pulse/baseline.v",
+            "/dev/shm/nssoc-frontier-native-20261003/sg13g2_stdcell.v"
+          ],
+          "returncode": 0,
+          "seconds": 0.028273837990127504,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 984,
+            "sha256": "498abb8592ae786e0ad54f9c0d6e93f2ec78689b3d75882de565736196b37661"
+          }
+        },
+        "baseline_execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp",
+            "-i",
+            "/dev/shm/nssoc-root-frontier-8a47l_iw/controls/coalesced_pulse/baseline.vvp"
+          ],
+          "returncode": 0,
+          "seconds": 0.016293852997478098,
+          "memory_bytes": 2147483648,
+          "log": {
+            "bytes": 315,
+            "sha256": "57d101a6346bf112b2adb4f534c6f7cd2dc2134694b0c82ee7c0e98dbb72f2f5"
+          }
+        },
+        "native_output_trajectory_unchanged": true
+      }
+    },
+    "archive": {
+      "bytes": 10696,
+      "sha256": "a3dd9d7322b1bbac6566d7d0cdb621c9fd5bd51f173d665ad0e8243cea99c382"
+    },
+    "elapsed_seconds": 6.271166396996705,
+    "full_chip_simulation_executed": false,
+    "rtl_or_model_modified": false,
+    "candidate_adopted": false,
+    "scope": "Exact restored netlist/model binding plus five real IHP gate/DFF observer controls including coalesced callbacks and static-X unmasking; baseline D/Q unchanged. No whole-chip boot result."
+  },
+  "root_focused_tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest sw/tests/test_npu_frontier_trace.py sw/tests/test_npu_cone_trace.py sw/tests/test_alu_qualification.py -q",
+    "passed": 107,
+    "skipped": 0
+  },
+  "native_control_archive": {
+    "path": "docs/evidence/npu-frontier-native-controls-20261003.tar.xz",
+    "bytes": 10696,
+    "sha256": "a3dd9d7322b1bbac6566d7d0cdb621c9fd5bd51f173d665ad0e8243cea99c382"
+  },
+  "full_chip_boot_executed": false,
+  "rtl_or_cell_model_modified": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "next": "Execute one exact original/candidate paired frontier diagnostic, inspect both actual startup bindings before interpreting long-run results, and retain any boot failures."
+}

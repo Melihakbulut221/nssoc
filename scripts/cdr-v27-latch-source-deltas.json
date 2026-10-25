@@ -1,0 +1,74 @@
+{
+  "protected": {
+    ".github/workflows/cdr-v27-latch-timing-cloud.yml": "70e458e585784262537978b7b829942abaffd7c06e51b2ce03c115fb99a7183f",
+    "scripts/check_cdr_v27_latch_sources.py": "d278636ab6723d1df9494cc3eb78008a5496854d7af8ce7db7507d27a72a85ad",
+    "docs/evidence/cdr-bias-access-v27-electrical-rejection-20261021.json": "0fba5e0cffb0a67e12a2e0dc10e906c192dc067f0a0bbd7915c955126f622f81",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "docs/evidence/cdr-bias-access-v27-mim-parent-capture-pass-20261021.json": "f332a766ab2e2e6e4559b1f4416802716c86167f400a253e55c4f8631af67a9f"
+  },
+  "diagnostic": {
+    "baseline_path": "scripts/cloud_cdr_v26_latch_timing.py",
+    "baseline_sha256": "04196cb02d04ad896244ee60c26a1eb036db85fcec0aeefee489116c00ca652f",
+    "candidate_path": "scripts/cloud_cdr_v27_latch_timing.py",
+    "candidate_sha256": "7a25783cf86340a2f5b093aa8a6fbc6da05914fb85874927c2afc6446facc451",
+    "edits": [
+      {
+        "before": "PINS={'nominal_early': ('f792ae4d208a6949966a2a5c275723849db12dcfb193e7a454dd6066f1692361', '83bfa49e0d963ebd0312a3e9b331618251446d8708ba492d20b5b73c0d67e1a1'), 'nominal_late': ('9201d4cb17d2fa974283e887c9664d507d4253dc42509070d724eafac4dedcb1', 'd515a8b83ab7f146b514b244c8b7e60dcf6f9e0b40c93ec506b47b725b0d1f5b')}",
+        "after": "PINS={'nominal_early': ('5d7f6cdfb1076d5209654bdc4f41670accdc7ab28b34a8521795328dce06f4ae', 'cdf2fefc22a49c113c5feb2608b118c1c6768adfb3f3a42763535eb06a8e20b4'), 'nominal_late': ('68ea3d52b7f35d131a8162e06a92ccfde69869467d9278c5cce0e1045eba0e9f', '3c065a5670a7b0a7f34604ca09baea244706a871becd161da5279e4fb22932f7')}",
+        "count": 1
+      },
+      {
+        "before": "cdr-v26-latch",
+        "after": "cdr-v27-latch",
+        "count": 2
+      },
+      {
+        "before": "cdr-input-access-v26",
+        "after": "cdr-bias-access-v27",
+        "count": 4
+      },
+      {
+        "before": "39534542949",
+        "after": "39548690293",
+        "count": 2
+      },
+      {
+        "before": "7da9f0569b831854f6b3b43d23661de2b9028a58",
+        "after": "3a1e7db11456f4d0c0af5384cca56362783108aa",
+        "count": 1
+      },
+      {
+        "before": "and prior['sources_unchanged']and not prior['devices_passed']",
+        "after": "and prior['sources_unchanged']and prior['devices_passed']",
+        "count": 1
+      },
+      {
+        "before": "39532836299",
+        "after": "39547470228",
+        "count": 1
+      },
+      {
+        "before": "dc8d837daa706d973287704cea244e09eea21fbf71a4a54a3625964951f66149",
+        "after": "af4e99efb0dfe42510302a84951a97bccfd88ddf6afc8f67883614038693de0f",
+        "count": 1
+      },
+      {
+        "before": "aa9069fe2dff75eea63a2a845851ef2367cb9f12",
+        "after": "40389f8567f6f8e771b17b767cdcb5deb62103c9",
+        "count": 1
+      },
+      {
+        "before": "dict(devices=476,R=17674,C=12694)",
+        "after": "dict(devices=476,R=17694,C=12714)",
+        "count": 1
+      },
+      {
+        "before": "assert violations==pin['hbt_violations'] and set(violations)=={'xpd.xd0055','xpd.xd0056','xpd.xd0105','xpd.xd0106'}",
+        "after": "assert violations==pin['hbt_violations'] and len(violations)==0",
+        "count": 1
+      }
+    ]
+  }
+}

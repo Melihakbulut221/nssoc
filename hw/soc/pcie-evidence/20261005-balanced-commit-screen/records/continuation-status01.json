@@ -1,0 +1,176 @@
+{
+  "status": "COMPLETE_NATIVE_SCREEN_FINITE_REVIEW_AND_PUBLICATION_REQUIRED",
+  "controller": {
+    "pid": 92343,
+    "state": "R",
+    "process_group": 92342,
+    "start_ticks": "1126641"
+  },
+  "affinity": [
+    6
+  ],
+  "policy": {
+    "bytes": 7574,
+    "sha256": "9800524b84d1a49a2a093b290b1897930449d65ce5b82844165ca487f667c90b"
+  },
+  "stages": [
+    {
+      "name": "map",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/run_balanced_map.py"
+      ],
+      "started_utc": "2026-10-05T18:00:38.505069+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 92344,
+        "state": "R",
+        "process_group": 92344,
+        "start_ticks": "1126646"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T18:01:19.609265+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "read_depth",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/measure_native_read_depth.py",
+        "--candidate",
+        "/dev/shm/nssoc-integrity-v18-balanced-map-01/mapped.json",
+        "--rejected",
+        "/dev/shm/nssoc-integrity-v14-balanced-map-01/mapped.json",
+        "--out",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/native-read-depth-comparison.json"
+      ],
+      "started_utc": "2026-10-05T18:01:19.610599+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 92457,
+        "state": "R",
+        "process_group": 92457,
+        "start_ticks": "1130757"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T18:01:21.426052+00:00",
+      "log": {
+        "bytes": 905,
+        "sha256": "3054bc67fcd4ad880ae9b85400231b9adb6b5b0b7bd33b7a8e05c5aaacfdb823"
+      }
+    },
+    {
+      "name": "import",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/balanced_import.py"
+      ],
+      "started_utc": "2026-10-05T18:01:21.863811+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 92467,
+        "state": "R",
+        "process_group": 92467,
+        "start_ticks": "1130982"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T18:01:26.840448+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "import_graph_proof",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/prove_balanced_import.py"
+      ],
+      "started_utc": "2026-10-05T18:01:26.841721+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 92498,
+        "state": "R",
+        "process_group": 92498,
+        "start_ticks": "1131480"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T18:01:30.758508+00:00",
+      "log": {
+        "bytes": 61,
+        "sha256": "f7a11c455c81382661a4a8889a77130dc8317d96504d4671973691805cbad941"
+      }
+    },
+    {
+      "name": "preplacement",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/balanced_preplacement.py"
+      ],
+      "started_utc": "2026-10-05T18:01:30.759695+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 92532,
+        "state": "R",
+        "process_group": 92532,
+        "start_ticks": "1131872"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T18:02:32.270437+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "timing_review",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/review_timing.py"
+      ],
+      "started_utc": "2026-10-05T18:02:32.271677+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 92806,
+        "state": "R",
+        "process_group": 92806,
+        "start_ticks": "1138023"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T18:02:32.381337+00:00",
+      "log": {
+        "bytes": 1767,
+        "sha256": "3b39176a8ec291d4e28857f9bd797238d858b38f2141128b8fbc6dea54fc83f3"
+      }
+    },
+    {
+      "name": "critical_path",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v18-20261005/analyze_critical_path.py"
+      ],
+      "started_utc": "2026-10-05T18:02:32.382575+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 92807,
+        "state": "R",
+        "process_group": 92807,
+        "start_ticks": "1138034"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T18:02:34.844340+00:00",
+      "log": {
+        "bytes": 539,
+        "sha256": "3fab8731f44b61193480f19be193712b8d8097aa3f4f2787d756fe34ae50fc9c"
+      }
+    }
+  ],
+  "elapsed_watchdog_seconds": null,
+  "physical_acceptance": false,
+  "utc": "2026-10-05T18:02:34.845234+00:00",
+  "explicit_stop": false,
+  "stop_reason": null
+}

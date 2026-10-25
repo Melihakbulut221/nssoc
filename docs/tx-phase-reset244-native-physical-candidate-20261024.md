@@ -1,0 +1,11 @@
+# Fresh244 physical execution candidate
+
+Both P and N source plans passed hosted run40118554214 with27 source/placement faults,39 measured source crossings and334 expected native devices. That result includes no CAD execution. This new controller will generate each complete244-device schematic with90 finite2×2µm substrate contacts, using the exact passed intrinsic L20µm assertion resistor and all243 other unchanged source devices.
+
+The physical job requires a precreated release bound to its exact source, the immutable planning run/log, the pinned native AppImage and original PDK/decks at5e6d592. Both polarities are generated independently. Each must pass all560 DRC categories, unsimplified deep and flat LVS with334 actual devices and11 exact top pins. Nine real faults per polarity cover the master output open/short, removal of one real body-contact instance, feedback polarity, seed area, reverted assertion resistance, wrong HBT size, missing HBT and off-grid metal.
+
+Fresh wire extraction follows on those same GDS/database bytes. The original full-metal/via graph and actual terminal-plane algorithms are derived reversibly with only exact top/path/hash and census substitutions. All334 devices and1010 terminals (684 metal,326 body),11 ports and seven actual contact/ownership corruption controls are required. Component counts come from the new native graph; the source-control example count39 is not a native count prediction. Every original metal/via polygon and no-label-union rule remains checked. HBT collector/base planes and MIM top/bottom planes remain distinct; no floating metal is waived.
+
+The native pipeline preserves all failures and attempts the other polarity if one fails. No old55 geometry, IDs, netlists or RC are restored as this circuit. Terminal anchors do not yet provide MIM-aware RC: the eight actual intrinsic masks and outside-bottom-plate rebinding, two-order extraction, exact device composition and loaded reset/phase/safety gates follow only after this pass. All real selector loading,31-clock reset distribution, actual PLL and full-PHY flags remain false.
+
+The missing-contact mutation uses the documented KLayout Cell.erase(Instance) API: https://www.klayout.de/doc/code/class_Cell.html . It deletes one actual top-level finite contact selected by exact native placement; the original GDS remains hashed and unchanged.

@@ -1,0 +1,6 @@
+# Balanced CRC candidate and complete packet timing screen
+The registered word selector alone reduced its address cone but regressed the worst LCRC timing; it remains unadopted. The current CRC primitive expresses eight serial polynomial steps. This experiment generates the mathematically identical parallel transform with a balanced XOR tree and measures whether the mapped implementation helps.
+
+The workflow proves all 40 defined primitive inputs against the unchanged original CRC, rejects a wrong output bit, and proves full unmasked explicit-clock-event LCRC equivalence both with and without the earlier registered word selector. It uses the existing RTL and IHP-mapped port tests for LCRC and the complete reliable-packet top, then compares baseline, parallel CRC and parallel CRC plus cursor at all three corners. The canonical RTL and all clocks/loads are unchanged. The original native STA runtime and corresponding source are reused from run39896567224.
+
+Fixed diagnostic conditions remain 4 ns, 0.25 ns uncertainty, 5% derates, 0.05 ns transition and 0.01 pF load with ideal clock and zero wire RC. No candidate may be described as routed timing closure. All failures and negative controls remain in released evidence. Inspect full packet results before deciding whether to adopt any source change.

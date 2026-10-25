@@ -1,0 +1,86 @@
+{
+  "status": "PASS_BOUNDED_SOURCE_REVIEW_V12_QUARANTINED_SLOT_WRITES",
+  "utc": "2026-10-05T12:50:41.246572+00:00",
+  "reviewer": "rx_route_resume",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v12-20261005/source-freeze.json": {
+      "bytes": 1939,
+      "sha256": "8d6b34668903941f766510f09690736dbaa26bc52320fa084cdf4d399efe10df"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v11.v": {
+      "bytes": 190744,
+      "sha256": "d4f0419f035c45bb159c9653f6b0aa5a68d1e03e41436ad219ce1f26481dbd24"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/generate_pcie_integrity_slots_v12.py": {
+      "bytes": 2539,
+      "sha256": "4180e4c7e5638098578b559b285e4a7924efd54397f3a324ca1417871c6622a8"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_gen3_continuous_rx_integrity_v12.py": {
+      "bytes": 11276,
+      "sha256": "17b11aa74be5962f0425f96a7fa88fc2efbda0d2fe6dfe28a1b0c5e51e25c3a9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v12.v": {
+      "bytes": 191605,
+      "sha256": "eb9eeb7123be347808239a6614ea9efe59ed342fe18fd96b5984a073aa76db09"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v12.v": {
+      "bytes": 3324,
+      "sha256": "89309f8c46dc06894309bf88f783827f695e74932dc37e36c18b7cd85e0693fe"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v12": {
+      "bytes": 1528,
+      "sha256": "8937b66d17a9790da2772839a472a60f288cc2a7b2ce30e2f88e8bd581e00ff8"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v12.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_gen3_integrity_v12_slots.py": {
+      "bytes": 6216,
+      "sha256": "b13d1d5e27048be536f15d80ac8aed1e0d2643a486b2659e0d8daaee99d0b252"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_gen3_integrity_v12_miter.py": {
+      "bytes": 9759,
+      "sha256": "56fe412c109a1dbfbb7becddb6354de83043ac6a7375052857df2667398d6c3e"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_gen3_continuous_rx_integrity_v12.py": {
+      "bytes": 4805,
+      "sha256": "fccc88c381c5e66e2a5d2a4243dcd63ce28b3f35bf2e4865ec184afbe9a0ad5b"
+    },
+    "/dev/shm/nssoc-integrity-v12-controls01/test_v11_v12_cycle_exact_all_p0/capture/result.json": {
+      "bytes": 5527,
+      "sha256": "ff7d8b0fb2abc37eeefd1ad102438b4554013203cf3e02869c9d064ed2b491a1"
+    },
+    "/dev/shm/nssoc-integrity-v12-controls01/test_v11_v12_cycle_exact_all_p0/capture/results.xml": {
+      "bytes": 4558,
+      "sha256": "5d45c599c94e44b16516b22f8c9c31d5630444b5dcecaff1fded13b8f07ef11a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v12-20261005/controls01.log": {
+      "bytes": 125,
+      "sha256": "3d5252008e8cb5643959f0ecd573509ad8dca95febb3f3e9c314ec3668de6724"
+    }
+  },
+  "checks": {
+    "exact_inverse_to_frozen_V11_except_declared_changes": true,
+    "all_public_output_fault_abort_flush_priority_code_identical": true,
+    "pointers_validity_commit_CRC_control_code_identical": true,
+    "single_writer_per_slot_array": true,
+    "cache_and_slot_arrays_share_step_gate": true,
+    "four_verdict_last_writer_priority_preserved": true,
+    "step_excludes_reset_flush_start_abort_ring_overflow": true,
+    "faulted_step_empties_and_halts_same_edge": true,
+    "retirement_reads_preedge_arrays_unchanged_NBA_semantics": true
+  },
+  "stale_tag_analysis": "Fault-edge arrays may diverge, including cached verdicts in old occupied slots; fault control empties and halts the epoch at that edge. Restart writes slot data/keep/tag and cached verdict together before occupancy. Nonzero-keep packet slots commit only after matching current-packet verdict is written and broadcast to matching slots. Zero-keep token slots do not expose stale verdict. Extended-pointer tag lifetime assumptions are unchanged. This is source reasoning, not exhaustive reachable-state proof.",
+  "saved_capture_recount": {
+    "maximum_encoded_bytes": 150,
+    "cases": 13,
+    "failed": 0,
+    "skipped": 0,
+    "scope": "Every falling-edge public outputs, occupied slot metadata, committed nonzero-keep verdicts, ring pointers, valid banks and ingress controls compared to frozenV11."
+  },
+  "author_controls_observed": "21 pytest executions passed, 2 MAX4118 executions deselected; not rerun by reviewer. Includes duplicate inverse test invocation.",
+  "findings": [],
+  "reviewer_check_note": "An initial auxiliary source-slice assertion used an unanchored end-string split and truncated the existing loop end. Corrected to exact suffix removal; full inverse byte identity passed before and after. No DUT, generator or tests changed and no new simulation launched.",
+  "remaining_scope": "No MAX4118/fullformal/newnative_mapping/timing/physical acceptance; these remain separate work."
+}

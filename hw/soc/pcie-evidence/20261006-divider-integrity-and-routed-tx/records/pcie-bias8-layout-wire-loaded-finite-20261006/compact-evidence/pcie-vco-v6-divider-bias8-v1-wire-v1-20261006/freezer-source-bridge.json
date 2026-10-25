@@ -1,0 +1,79 @@
+{
+  "before": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-cap24-v1-wire-v1-20261006/freeze_source01.py",
+    "bytes": 3645,
+    "sha256": "2d8c2447d2bfe97bd4baf9a6789369fe5df9d599080f6979679baf71d7eac6c3"
+  },
+  "after": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-bias8-v1-wire-v1-20261006/freeze_source01.py",
+    "bytes": 3646,
+    "sha256": "5c1406052240e51262fe66f4d9f434eb6632e55cbe5640ef7dbe0ad978f49f8d"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "\"\"\"Freeze all new loaded455 sources, exact fixtures and actual controls.\"\"\"\nfrom pathlib import Path\nimport hashlib\nimport json\nimport sys\n\nR = Path.cwd()\nB = Path(__file__).resolve().parent\nsys.path.insert(0, str(R / 'scripts'))\n",
+      "after": "\"\"\"Freeze all new loaded455 sources, exact fixtures and actual controls.\"\"\"\nfrom pathlib import Path\nimport hashlib\nimport json\nimport sys\n\nR = Path.cwd()\nB = Path(__file__).resolve().parent\nsys.path.insert(0, str(R / 'scripts'))\n"
+    },
+    {
+      "tag": "replace",
+      "before": "import characterize_pcie_vco_v6_divider_cap24_v1_wire_v1 as m\n",
+      "after": "import characterize_pcie_vco_v6_divider_bias8_v1_wire_v1 as m\n"
+    },
+    {
+      "tag": "equal",
+      "before": "\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return dict(bytes=p.stat().st_size, sha256=hashlib.file_digest(f, 'sha256').hexdigest())\n\nassert not (B / 'source-freeze01.json').exists()\ncontrols = json.loads((B / 'source-controls-receipt.json').read_text())\n",
+      "after": "\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return dict(bytes=p.stat().st_size, sha256=hashlib.file_digest(f, 'sha256').hexdigest())\n\nassert not (B / 'source-freeze01.json').exists()\ncontrols = json.loads((B / 'source-controls-receipt.json').read_text())\n"
+    },
+    {
+      "tag": "replace",
+      "before": "assert controls['returncode'] == 0 and controls['passed'] == 28\n",
+      "after": "assert controls['returncode'] == 0 and controls['passed'] == 30\n"
+    },
+    {
+      "tag": "equal",
+      "before": "handoff = json.loads((B / 'handoff-controls-receipt.json').read_text())\nassert handoff['returncode'] == 0 and handoff['passed'] == 4\n",
+      "after": "handoff = json.loads((B / 'handoff-controls-receipt.json').read_text())\nassert handoff['returncode'] == 0 and handoff['passed'] == 4\n"
+    },
+    {
+      "tag": "replace",
+      "before": "rc = B.parent / 'pcie-divider-v8-cap-v1-wire-rc-v1-20261006'\n",
+      "after": "rc = B.parent / 'pcie-divider-v9-bias-v1-wire-rc-v1-20261006'\n"
+    },
+    {
+      "tag": "equal",
+      "before": "rc_peer = json.loads((rc / 'saved-rc-peer-pll.json').read_text())\n",
+      "after": "rc_peer = json.loads((rc / 'saved-rc-peer-pll.json').read_text())\n"
+    },
+    {
+      "tag": "replace",
+      "before": "assert rc_peer['status'] == 'PASS_INDEPENDENT_SAVED_CAP24_V1_DIVIDER_WIRE_GRAPH_AND_CAPACITANCE' and rc_peer['findings'] == []\n",
+      "after": "assert rc_peer['status'] == 'PASS_INDEPENDENT_SAVED_BIAS8_V1_DIVIDER_WIRE_GRAPH_AND_CAPACITANCE' and rc_peer['findings'] == []\n"
+    },
+    {
+      "tag": "equal",
+      "before": "assert rc_peer['inputs'] == {p: pin(p) for p in rc_peer['inputs']}\n",
+      "after": "assert rc_peer['inputs'] == {p: pin(p) for p in rc_peer['inputs']}\n"
+    },
+    {
+      "tag": "replace",
+      "before": "products = [R / 'scripts/build_pcie_clock_div4_v8_cap24_v1_hybrid_v1.py',\n            R / 'scripts/characterize_pcie_vco_v6_divider_cap24_v1_wire_v1.py',\n            m.CHAIN, R / 'sw/tests/test_pcie_vco_v6_divider_cap24_v1_wire_v1.py',\n",
+      "after": "products = [R / 'scripts/build_pcie_clock_div4_v9_bias8_v1_hybrid_v1.py',\n            R / 'scripts/characterize_pcie_vco_v6_divider_bias8_v1_wire_v1.py',\n            m.CHAIN, R / 'sw/tests/test_pcie_vco_v6_divider_bias8_v1_wire_v1.py',\n"
+    },
+    {
+      "tag": "equal",
+      "before": "            *[p for p in m.DIVIDER.rglob('*') if p.is_file()]]\npaths = set(products)\nfor module in list(sys.modules.values()):\n    raw = getattr(module, '__file__', None)\n    if raw and Path(raw).is_relative_to(R / 'scripts') and raw.endswith('.py'):\n        paths.add(Path(raw))\nfor bias, fault in [(.6, ''), (.85, ''), (.6, 'disconnect_divider_clock'), (.6, 'wrong_feedback_modulus')]:\n    c, rows, texts = m.config(bias, fault)\n    paths.update(Path(p) for p in c['sources'])\n    assert len(rows) == 455 and len(m.n.vectors(rows, c['extra_vectors'])) == 956\n    (B / ('recipe-' + str(bias) + '-' + (fault or 'nominal') + '.json')).write_text(json.dumps(dict(\n        config=c, devices=rows, vector_count=956,\n        included_texts={name: dict(bytes=len(text.encode()), sha256=hashlib.sha256(text.encode()).hexdigest()) for name, text in texts.items()},\n    ), indent=2) + '\\n')\npaths.update(m.n.MODELS.glob('*.lib'))\npaths.update(m.n.OSDI)\npaths.add(m.n.NG)\npaths.update(m.core.HYBRID / x for x in m.core.PINS)\npaths.update(Path(p) for p in rc_peer['inputs'])\npaths.add(rc / 'saved-rc-peer-pll.json')\npaths.update(p for p in B.rglob('*') if p.is_file() and p.suffix != '.pyc' and '__pycache__' not in p.parts)\n",
+      "after": "            *[p for p in m.DIVIDER.rglob('*') if p.is_file()]]\npaths = set(products)\nfor module in list(sys.modules.values()):\n    raw = getattr(module, '__file__', None)\n    if raw and Path(raw).is_relative_to(R / 'scripts') and raw.endswith('.py'):\n        paths.add(Path(raw))\nfor bias, fault in [(.6, ''), (.85, ''), (.6, 'disconnect_divider_clock'), (.6, 'wrong_feedback_modulus')]:\n    c, rows, texts = m.config(bias, fault)\n    paths.update(Path(p) for p in c['sources'])\n    assert len(rows) == 455 and len(m.n.vectors(rows, c['extra_vectors'])) == 956\n    (B / ('recipe-' + str(bias) + '-' + (fault or 'nominal') + '.json')).write_text(json.dumps(dict(\n        config=c, devices=rows, vector_count=956,\n        included_texts={name: dict(bytes=len(text.encode()), sha256=hashlib.sha256(text.encode()).hexdigest()) for name, text in texts.items()},\n    ), indent=2) + '\\n')\npaths.update(m.n.MODELS.glob('*.lib'))\npaths.update(m.n.OSDI)\npaths.add(m.n.NG)\npaths.update(m.core.HYBRID / x for x in m.core.PINS)\npaths.update(Path(p) for p in rc_peer['inputs'])\npaths.add(rc / 'saved-rc-peer-pll.json')\npaths.update(p for p in B.rglob('*') if p.is_file() and p.suffix != '.pyc' and '__pycache__' not in p.parts)\n"
+    },
+    {
+      "tag": "replace",
+      "before": "record = dict(status='FROZEN_SOURCE_ONLY_455_DEVICE_ACTUAL_VCO_DIVIDER_CAP24_V1_WIRE_MODEL',\n",
+      "after": "record = dict(status='FROZEN_SOURCE_ONLY_455_DEVICE_ACTUAL_VCO_DIVIDER_BIAS8_V1_WIRE_MODEL',\n"
+    },
+    {
+      "tag": "equal",
+      "before": "              new_sources={str(p.relative_to(R)): pin(p) for p in products},\n              pins={str(p.resolve()): pin(p) for p in sorted(paths)},\n              controls=controls, actual_handoff_controls=handoff,\n              predeclared=dict(vctrl=.6, stop_s=34e-9, step_s=5e-12,\n                               window_s=[4e-9, 34e-9], intrinsics=455, HBT=64,\n                               finite_contacts=31, vectors=956, wire_R=json.loads((B/'builder-source-freeze.json').read_text())['total_chain_resistors'], wire_C=json.loads((B/'builder-source-freeze.json').read_text())['total_chain_capacitors'],\n                               CPU=10, AS=2*1024**3, own_limit=80*1024**2,\n                               floor=512*1024**2, elapsed_watchdog=None),\n              source_peer_required_before_native=True, qualified_PEX=False,\n              main_chip_integrated=False)\n(B / 'source-freeze01.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint(len(paths), len(products), pin(B / 'source-freeze01.json'))\n",
+      "after": "              new_sources={str(p.relative_to(R)): pin(p) for p in products},\n              pins={str(p.resolve()): pin(p) for p in sorted(paths)},\n              controls=controls, actual_handoff_controls=handoff,\n              predeclared=dict(vctrl=.6, stop_s=34e-9, step_s=5e-12,\n                               window_s=[4e-9, 34e-9], intrinsics=455, HBT=64,\n                               finite_contacts=31, vectors=956, wire_R=json.loads((B/'builder-source-freeze.json').read_text())['total_chain_resistors'], wire_C=json.loads((B/'builder-source-freeze.json').read_text())['total_chain_capacitors'],\n                               CPU=10, AS=2*1024**3, own_limit=80*1024**2,\n                               floor=512*1024**2, elapsed_watchdog=None),\n              source_peer_required_before_native=True, qualified_PEX=False,\n              main_chip_integrated=False)\n(B / 'source-freeze01.json').write_text(json.dumps(record, indent=2) + '\\n')\nprint(len(paths), len(products), pin(B / 'source-freeze01.json'))\n"
+    }
+  ]
+}

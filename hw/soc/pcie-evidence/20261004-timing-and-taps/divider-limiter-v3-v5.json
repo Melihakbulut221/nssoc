@@ -1,0 +1,782 @@
+{
+  "status": "PASS_BOUNDED_V5_DIV4_WITH_PRIOR_V3_V4_FAILURES_PRESERVED",
+  "source_pins": {
+    "scripts/characterize_pcie_div4_v3.py": {
+      "bytes": 5105,
+      "sha256": "65c4599e06f3dcf9e0a14d30c7237802ec635b71207ae14defd36a8b5dd0c1a1"
+    },
+    "scripts/characterize_pcie_div4_v4.py": {
+      "bytes": 6959,
+      "sha256": "ce9ce96ff0844a8c5f87f377c097b422c4bcc70e76156b7413168fda6a1c3395"
+    },
+    "scripts/characterize_pcie_div4_v5.py": {
+      "bytes": 3082,
+      "sha256": "55bbcb9116f7bd1410b6c3c9d46615be5a53fa9ff3e6c39f9cedabc79e237de2"
+    },
+    "hw/soc/analog/pcie/clock_div4_hbt_v3.spice": {
+      "bytes": 2255,
+      "sha256": "04faa0abc6f0b0febd0a0ebe24f1cef0d3693c9118e919dd5570a7f5d9295705"
+    },
+    "hw/soc/analog/pcie/clock_div4_hbt_v4.spice": {
+      "bytes": 1368,
+      "sha256": "8ef81ef1d8227f2271d6e4d3414811702df0517a713e7b18444e1e54fc2374b1"
+    },
+    "hw/soc/analog/pcie/clock_div4_hbt_v5.spice": {
+      "bytes": 1378,
+      "sha256": "e68db6846dbfee30afa526a988ff1d585e1f74e10aab06ed65a10de300c944fc"
+    },
+    "sw/tests/test_pcie_div4_v3.py": {
+      "bytes": 4453,
+      "sha256": "feaa363bf894e1022b8e241e445fdc37ad793fd9319f8737b082b530cb289e2f"
+    },
+    "sw/tests/test_pcie_div4_v4.py": {
+      "bytes": 4667,
+      "sha256": "2142f96761969489edf1e34c77001fe33e80961900753ec738be209f507c8a96"
+    },
+    "sw/tests/test_pcie_div4_v5.py": {
+      "bytes": 2965,
+      "sha256": "85e700681c6fb7588988c31722b02c6f39b2478a73b2d33ded6b1ffb6666ba36"
+    }
+  },
+  "capsule": {
+    "path": "publication-div4-limiter-v3-v5.tar.xz",
+    "bytes": 391592,
+    "sha256": "5d358842dbbfce65bd8f8fb77891bcb011b28cbc0bf3cf9a4e3a331098e8eff6",
+    "members": 51
+  },
+  "raw_public_assets": [
+    {
+      "name": "pcie-div4-v3-pilot-full-waves-20261004.tar",
+      "asset_id": 609690081,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/pcie-div4-v3-pilot-full-waves-20261004.tar",
+      "bytes": 66222080,
+      "sha256": "b0d4578dbaac7501af9451453587a54af2bb15ac4b722bef3af6d3b47910e440",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-div4-v4-pilot-full-waves-20261004.tar",
+      "asset_id": 609723030,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/pcie-div4-v4-pilot-full-waves-20261004.tar",
+      "bytes": 80353280,
+      "sha256": "0058b42ff72f400bb300450b1098f667633eba0af32194af92cf6812f7d9d9c6",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-div4-v5-pilot-full-waves-20261004.tar",
+      "asset_id": 609736951,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/pcie-div4-v5-pilot-full-waves-20261004.tar",
+      "bytes": 80373760,
+      "sha256": "162d07fab8aeb597c8d0e689a9128acf6b66df1cc09c20930e9ae07c7ace92cd",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-div4-v5-finite-full-waves-20261004-part01.tar",
+      "asset_id": 609749580,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/pcie-div4-v5-finite-full-waves-20261004-part01.tar",
+      "bytes": 201318400,
+      "sha256": "452da4cea627ca8319d2711fbbed27788a95336d488ea0645e221d638f55a244",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-div4-v5-finite-full-waves-20261004-part02.tar",
+      "asset_id": 609755569,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/pcie-div4-v5-finite-full-waves-20261004-part02.tar",
+      "bytes": 201338880,
+      "sha256": "d3bcc897b54157fc5881e44827ee2818eba6b80dc582fac42742da6cf8073ed9",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-div4-v5-finite-full-waves-20261004-part03.tar",
+      "asset_id": 609763072,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/pcie-div4-v5-finite-full-waves-20261004-part03.tar",
+      "bytes": 121128960,
+      "sha256": "6b1287582c3a3e556abdc4390fdabfa6161fe0e0da7cb05d1c2f57d92a8052f9",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    }
+  ],
+  "author_full_wave_replay": {
+    "v3_pilots": 2,
+    "v4_pilots": 2,
+    "v5_pilots": 2,
+    "v5_finite": 12,
+    "total": 18
+  },
+  "v5_native_result": {
+    "bytes": 931647,
+    "sha256": "0bf024f7bbe5bcf6ae5aa7f665186e30475559f580b0ce9766a2d5053eb2423c"
+  },
+  "v5_observations": [
+    {
+      "case": {
+        "hbt": "hbt_typ",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 27,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "",
+        "role": "required",
+        "name": "nominal"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": true,
+      "screen_pass": true,
+      "checks": {
+        "first_divide": true,
+        "second_divide": true,
+        "exactly_four_input_periods": true,
+        "period_ratio": true,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "nominal_vco_frequency": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        8047292717.869381,
+        2011899747.4548745
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.37919878372499993,
+          0.3777581977240001
+        ],
+        "common_mode_range_v": [
+          1.3502409473355002,
+          1.3913673670635
+        ]
+      },
+      "min_settled_vce_v": 0.5140901076212,
+      "max_capture_vce_v": 1.441034079445,
+      "max_capture_ic_a_per_nx": 0.0017674796368295
+    },
+    {
+      "case": {
+        "hbt": "hbt_typ",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 27,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 5e-13,
+        "fault": "",
+        "role": "required",
+        "name": "half_step"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": true,
+      "screen_pass": true,
+      "checks": {
+        "first_divide": true,
+        "second_divide": true,
+        "exactly_four_input_periods": true,
+        "period_ratio": true,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "nominal_vco_frequency": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        8049146732.779184,
+        2012311521.3621016
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.379195088753,
+          0.3777479609879999
+        ],
+        "common_mode_range_v": [
+          1.350169595303,
+          1.39135916681
+        ]
+      },
+      "min_settled_vce_v": 0.5140394656755,
+      "max_capture_vce_v": 1.441051561114,
+      "max_capture_ic_a_per_nx": 0.0017674570465375
+    },
+    {
+      "case": {
+        "hbt": "hbt_wcs",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": -40,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "",
+        "role": "required",
+        "name": "cold_slow"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": true,
+      "screen_pass": true,
+      "checks": {
+        "first_divide": true,
+        "second_divide": true,
+        "exactly_four_input_periods": true,
+        "period_ratio": true,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        8030858899.867385,
+        2007727957.5862072
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.35985999447899997,
+          0.35861659397900003
+        ],
+        "common_mode_range_v": [
+          1.3569577570184999,
+          1.3987593573705
+        ]
+      },
+      "min_settled_vce_v": 0.4053105566983,
+      "max_capture_vce_v": 1.381163475203,
+      "max_capture_ic_a_per_nx": 0.001802391859564
+    },
+    {
+      "case": {
+        "hbt": "hbt_bcs",
+        "resistor": "res_bcs",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": -40,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "",
+        "role": "required",
+        "name": "cold_fast"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": true,
+      "screen_pass": true,
+      "checks": {
+        "first_divide": true,
+        "second_divide": true,
+        "exactly_four_input_periods": true,
+        "period_ratio": true,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        9422181812.94988,
+        2355535153.0613847
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.4091099062529999,
+          0.40715321047599984
+        ],
+        "common_mode_range_v": [
+          1.348506232716,
+          1.391326533722
+        ]
+      },
+      "min_settled_vce_v": 0.4173356271301,
+      "max_capture_vce_v": 1.397833968758,
+      "max_capture_ic_a_per_nx": 0.0019079881034325
+    },
+    {
+      "case": {
+        "hbt": "hbt_wcs",
+        "resistor": "res_wcs",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 125,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "",
+        "role": "required",
+        "name": "hot_slow"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": true,
+      "screen_pass": true,
+      "checks": {
+        "first_divide": true,
+        "second_divide": true,
+        "exactly_four_input_periods": true,
+        "period_ratio": true,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        6797744554.618512,
+        1699451540.9225268
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.3069142064450001,
+          0.3072754519119998
+        ],
+        "common_mode_range_v": [
+          1.352595135226,
+          1.3840063272590002
+        ]
+      },
+      "min_settled_vce_v": 0.49186412247099986,
+      "max_capture_vce_v": 1.510376747643,
+      "max_capture_ic_a_per_nx": 0.001611919246527
+    },
+    {
+      "case": {
+        "hbt": "hbt_bcs",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 125,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "",
+        "role": "required",
+        "name": "hot_fast"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": true,
+      "screen_pass": true,
+      "checks": {
+        "first_divide": true,
+        "second_divide": true,
+        "exactly_four_input_periods": true,
+        "period_ratio": true,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        7871983653.504486,
+        1968138753.1446254
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.3976548739149999,
+          0.39631110375800005
+        ],
+        "common_mode_range_v": [
+          1.34163938363,
+          1.381039662444
+        ]
+      },
+      "min_settled_vce_v": 0.43398582882399994,
+      "max_capture_vce_v": 1.530540202427,
+      "max_capture_ic_a_per_nx": 0.0017515988974355
+    },
+    {
+      "case": {
+        "hbt": "hbt_typ",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 27,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 2e-09,
+        "step_s": 1e-12,
+        "fault": "",
+        "role": "required",
+        "name": "slow_ramp"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": true,
+      "screen_pass": true,
+      "checks": {
+        "first_divide": true,
+        "second_divide": true,
+        "exactly_four_input_periods": true,
+        "period_ratio": true,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        8045443373.552655,
+        2011346756.0599384
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.37891099795100014,
+          0.377483416954
+        ],
+        "common_mode_range_v": [
+          1.350339900104,
+          1.3942899221979999
+        ]
+      },
+      "min_settled_vce_v": 0.5142690837924,
+      "max_capture_vce_v": 1.440995638854,
+      "max_capture_ic_a_per_nx": 0.001767197592418
+    },
+    {
+      "case": {
+        "hbt": "hbt_typ",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 27,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 1e-13,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "",
+        "role": "required",
+        "name": "load100fF"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": true,
+      "screen_pass": true,
+      "checks": {
+        "first_divide": true,
+        "second_divide": true,
+        "exactly_four_input_periods": true,
+        "period_ratio": true,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        8047292941.508932,
+        2011901355.6447446
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.378597548491,
+          0.3770167794570001
+        ],
+        "common_mode_range_v": [
+          1.3503665963255,
+          1.389596652048
+        ]
+      },
+      "min_settled_vce_v": 0.5140905133809,
+      "max_capture_vce_v": 1.441034053777,
+      "max_capture_ic_a_per_nx": 0.0017674786039965
+    },
+    {
+      "case": {
+        "hbt": "hbt_typ",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 27,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "second_no_toggle",
+        "role": "negative",
+        "name": "second_no_toggle"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": false,
+      "screen_pass": false,
+      "checks": {
+        "first_divide": true,
+        "second_divide": false,
+        "exactly_four_input_periods": false,
+        "period_ratio": false,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        8047291288.992063,
+        null
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.37984449090500005,
+          0.3793109322350001
+        ],
+        "common_mode_range_v": [
+          1.3503963910015,
+          1.3918973089689999
+        ]
+      },
+      "min_settled_vce_v": 0.5140887480955,
+      "max_capture_vce_v": 1.441033444815,
+      "max_capture_ic_a_per_nx": 0.0017674773587715
+    },
+    {
+      "case": {
+        "hbt": "hbt_typ",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 27,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "second_same_phase",
+        "role": "negative",
+        "name": "second_same_phase"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": false,
+      "screen_pass": false,
+      "checks": {
+        "first_divide": true,
+        "second_divide": false,
+        "exactly_four_input_periods": false,
+        "period_ratio": false,
+        "vco_swing": true,
+        "settled_headroom": true,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        8047293548.014224,
+        14800087830.684465
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.37943284617899997,
+          0.38030920995899997
+        ],
+        "common_mode_range_v": [
+          1.3510125014019998,
+          1.388094311324
+        ]
+      },
+      "min_settled_vce_v": 0.5140720298676,
+      "max_capture_vce_v": 1.441034448616,
+      "max_capture_ic_a_per_nx": 0.0017674618511215
+    },
+    {
+      "case": {
+        "hbt": "hbt_typ",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 27,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "second_no_bias",
+        "role": "negative",
+        "name": "second_no_bias"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": false,
+      "screen_pass": false,
+      "checks": {
+        "first_divide": true,
+        "second_divide": false,
+        "exactly_four_input_periods": false,
+        "period_ratio": false,
+        "vco_swing": true,
+        "settled_headroom": false,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        8047291715.439549,
+        24152173521.90621
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.3848165348510002,
+          0.3847976292470001
+        ],
+        "common_mode_range_v": [
+          1.3670698525645,
+          1.3895117272725002
+        ]
+      },
+      "min_settled_vce_v": -0.001782703362307,
+      "max_capture_vce_v": 1.441035527834,
+      "max_capture_ic_a_per_nx": 0.0017674617868645
+    },
+    {
+      "case": {
+        "hbt": "hbt_typ",
+        "resistor": "res_typ",
+        "mos": "mos_tt",
+        "cap": "cap_typ",
+        "temp": 27,
+        "supply": 2.3,
+        "divider_supply": 2.5,
+        "control": 0.85,
+        "clock_load_f": 5e-14,
+        "output_load_f": 5e-14,
+        "ramp_s": 5e-10,
+        "step_s": 1e-12,
+        "fault": "second_same_clock",
+        "role": "negative",
+        "name": "second_same_clock"
+      },
+      "expected_outcome_observed": true,
+      "native_clean": true,
+      "returncode": 0,
+      "functional_divide_pass": false,
+      "screen_pass": false,
+      "checks": {
+        "first_divide": true,
+        "second_divide": false,
+        "exactly_four_input_periods": false,
+        "period_ratio": false,
+        "vco_swing": true,
+        "settled_headroom": false,
+        "full_capture_maximum_vce": true,
+        "full_capture_current_density": true,
+        "positive_model_resistance": true,
+        "second_clock_target_0p30_v": true
+      },
+      "frequency_hz": [
+        8047291177.261912,
+        25682645238.460636
+      ],
+      "second_clock": {
+        "diff_range_v": [
+          -0.418678397496,
+          0.41152837275599996
+        ],
+        "common_mode_range_v": [
+          1.335400148248,
+          1.425867033504
+        ]
+      },
+      "min_settled_vce_v": 0.3450193925847,
+      "max_capture_vce_v": 1.441032387441,
+      "max_capture_ic_a_per_nx": 0.001767477294841
+    }
+  ],
+  "halfstep_frequency_relative_delta": 0.0002046273168223589,
+  "tests": {
+    "combined_passed": 89,
+    "new_v5": 11,
+    "ruff_pass": true,
+    "log": {
+      "bytes": 179,
+      "sha256": "2b156b32225e9629a6a55cda179f82638ef873b08cb771078c085b43ce367aa1"
+    }
+  },
+  "physical_epochs": [
+    "V3 changes four second-stage latch collector loads2.12to2.4um. NominalPASS; hot_slow electricalPASS but repeated extra output edges violate divide relation, retained asFAIL.",
+    "V4 returns frozen latch cores and adds a real four-HBT interstage limiter. Both pilots have correct divide and inherited electrical gates; hot_slow clock\u00b10.287V fails explicit0.30V target, retained asFAIL.",
+    "V5 changes only two actual limiter collector rppd lengths4.0to4.4um. Both pilots and all8selectedpositives pass unchanged guards; all4actual functionalfault controls produce expected division failures."
+  ],
+  "scope": [
+    "Native30-HBT VCOv3 plus two15-HBT /2cores and4-HBT limiter;64HBT,42rppd,12CMIM,1HVPMOS. No ideal clock, behavioral gain, IC, UIC or nodeset.",
+    "Every actual nativeHBT initializationOFF flag and exact zeroOP is source-derived and read back; native diagnostics must be clean.",
+    "VCE lower0.4V guard applies4to20ns; upper1.6V and3mA-per-Nx current guards cover complete0to20ns. Both /2 edge relations and exact /4 input-edge count apply every observed output period.",
+    "Coldest slow positive margin is only5.31mV above minimumVCE; hot slow second-clock margin only6.91mV. This is finite schematic evidence, not robustness or signoff.",
+    "Negative no_bias/same_clock cases also violate electrical bounds. Their negative acceptance requires first stage divide correctly and secondstage actual functional division failure; they are never counted as positive-safe results.",
+    "Full wave preservation uses verified authenticated+anonymous immutable assets; exact duplicated local waves were removed only after member/hash checks. Nonwave native receipts, original failed epochs and source pins remain."
+  ],
+  "limitations": [
+    "No fullCartesianPVT/supply/mismatch/jitter/thermalconvergence/extractedRC/layout qualification.",
+    "No PLL/PFD/chargepump/filter/CDR/LTSSM/fullPCS/PCIe link qualification or integrated main-chip clock adoption.",
+    "Author full raw remeasurement is explicit; no new independent SPICE rerun or independent fullwave review is claimed forv3-v5."
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "source": "scripts/prepare_cloud_critical_load_eco.py",
+  "target": "scripts/prepare_onehot_routed_load_eco.py",
+  "original_sha256": "86908fec780e11a0acbb53345db359a935e918f617fbefffe5f68c0f1d93db46",
+  "adapted_sha256": "8c087ed28050ad1cf51c1887c6fd62ea462b8c250e414aa8b911fef0c2072830",
+  "edits": [
+    {
+      "before": "from critical_load_targets import",
+      "after": "from onehot_routed_load_targets import"
+    },
+    {
+      "before": "SOURCE=ROOT/'cloud-routed-extraction/source/routed.odb'",
+      "after": "SOURCE=Path(os.environ['NSSOC_ONEHOT_SOURCE'])\nassert hashlib.sha256(SOURCE.read_bytes()).hexdigest()=='b5a244a5e24109c2c5fb0ed5e92d98b999e7adbed50eaa9e70db5cdc50531835'"
+    },
+    {
+      "before": "113791",
+      "after": "145038"
+    },
+    {
+      "before": "original={i.getName():signature(i) for i in b.getInsts()};fixed=fixed_data(db);changes=[]",
+      "after": "original={i.getName():signature(i) for i in b.getInsts()};original_net_count=len(b.getNets());fixed=fixed_data(db);changes=[]"
+    },
+    {
+      "before": "dict(original=original,fixed_data_sha256=fixed,changes=changes,accepted=False)",
+      "after": "dict(original=original,original_net_count=original_net_count,fixed_data_sha256=fixed,changes=changes,accepted=False)"
+    },
+    {
+      "before": "113863+COUNT",
+      "after": "json.loads((OUT/'preparation.json').read_text())['original_net_count']+COUNT"
+    },
+    {
+      "before": "nssoc_critical_load_",
+      "after": "nssoc_onehot_load_"
+    }
+  ]
+}

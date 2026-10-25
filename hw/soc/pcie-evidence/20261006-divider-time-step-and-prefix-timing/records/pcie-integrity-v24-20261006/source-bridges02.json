@@ -1,0 +1,78 @@
+{
+  "reason": "Additive dependency closure after independent source peer finding; all10product source bytes unchanged. No controls launched.",
+  "previous_freeze": {
+    "bytes": 16885,
+    "sha256": "9e0f9271fdc43e8301293521bee04edfdc75d23fd668f81a437703b16d38ad9d"
+  },
+  "freeze": {
+    "bytes": 46859,
+    "sha256": "9d3664382a341df2633b57d24b3373e6566c60ce447bf695a6ca6a62df02d52a"
+  },
+  "products": {
+    "scripts/generate_pcie_integrity_prefix_v24.py": {
+      "bytes": 6926,
+      "sha256": "8bbb6e106a67caf94bb7e55e02f5675995efa5b46fc7a878103c7e3e28bf6729"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v24.v": {
+      "bytes": 201313,
+      "sha256": "af26a2dcd2b1510c90b3374b208287844023d836dd9495b3bc98049d4026e89e"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v24.v": {
+      "bytes": 3324,
+      "sha256": "8df8cef6c5189ec691b4574bfa220cd9f5242f798dfe0f39871bcf1478e76846"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v24": {
+      "bytes": 1528,
+      "sha256": "70a777e021e1163dd3e68c17fd56ced6a88aceea58789afbde180b6d8fcf19a1"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v24.py": {
+      "bytes": 11276,
+      "sha256": "712b139e48d51c5c49d12a285ba73818cf1a020de7c66c99f5110c323622aeed"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v24.py": {
+      "bytes": 31920,
+      "sha256": "b9ca02c318ab54f857593b22d026e83371272536c128d9115a27f9ef576d1c9b"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v24.py": {
+      "bytes": 6540,
+      "sha256": "3b555f35accbc04c4cb386361d9eea5407fb6597ef41f967560f642d04c96785"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v24_miter.py": {
+      "bytes": 27329,
+      "sha256": "585a46ae8c549ee0797679f7ca97863af59501a48515aa7e88d6a396d85a2f98"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v24_block_burst.py": {
+      "bytes": 11313,
+      "sha256": "fea32134187949d23e0bf76d8c409ff5ea1c75c972f86994f5dc8ad227173176"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v24_prefix.py": {
+      "bytes": 10178,
+      "sha256": "3adce7f586a17fc4195c3fb99473e42cd6aad69bc4422e4eda693b28ad336d73"
+    }
+  },
+  "sources": 192,
+  "support": {
+    "launch_controls02.py": {
+      "parent_pin": {
+        "bytes": 4167,
+        "sha256": "47e3d4c8d3ee9d7471c9828ec04e5952afb2a2ff8a55a2ce08423d4c847bcee5"
+      },
+      "candidate_pin": {
+        "bytes": 4167,
+        "sha256": "24b59b29e1a073ad5caa8fcb164b6fd9b4c28b6abffa51db4e164fad3468a430"
+      },
+      "whole_diff": "--- \n+++ \n@@ -10,7 +10,7 @@\n  with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n assert pin(life.__file__)['sha256']=='39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886'\n assert os.sched_getaffinity(0)=={6}\n-freeze=B/'source-freeze01.json';assert pin(freeze)['sha256']=='9e0f9271fdc43e8301293521bee04edfdc75d23fd668f81a437703b16d38ad9d'\n+freeze=B/'source-freeze02.json';assert pin(freeze)['sha256']=='9d3664382a341df2633b57d24b3373e6566c60ce447bf695a6ca6a62df02d52a'\n f=json.loads(freeze.read_text())\n for p,v in f['sources'].items():assert pin(R/p)==v\n for name,expected in f['selected_tools'].items():\n@@ -21,7 +21,7 @@\n  assert free>=minimum,('Shared scratch floor breached',free,minimum)\n  return free\n entry_free=shared_floor(1024**3)\n-peer=B/'source-only-peer-vco01.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V24_PREFIX_CONTEXT_IMPLEMENTATION' and not j['findings']\n+peer=B/'source-only-peer-vco02.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V24_PREFIX_CONTEXT_IMPLEMENTATION' and not j['findings']\n assert j['freeze']==pin(freeze) and j['launcher']==pin(Path(__file__))\n D=Path('/dev/shm/nssoc-integrity-v24-full-controls01');assert not D.exists() and not (B/'status01.json').exists()\n command=[sys.executable,'-m','pytest','-q','-p','no:cacheprovider',str(R/'sw/tests/test_pcie_gen3_continuous_rx_integrity_v24.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v24_miter.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v24_block_burst.py'),str(R/'sw/tests/test_pcie_gen3_integrity_v24_prefix.py'),'-k','not 4118','--basetemp='+str(D),'--junitxml='+str(B/'controls01.xml')]\n"
+    },
+    "detach_controls02.py": {
+      "parent_pin": {
+        "bytes": 1987,
+        "sha256": "24e6d98b6b6152ba0604fd8a3d4c691dbf8f691ad247105e1aa1f8ba7296c9ff"
+      },
+      "candidate_pin": {
+        "bytes": 1987,
+        "sha256": "3af7a26d5d5c6c37050604836d0999c9e6d826eaf074be491570b913e6090eee"
+      },
+      "whole_diff": "--- \n+++ \n@@ -3,14 +3,14 @@\n import json,hashlib,subprocess,os\n R=Path.cwd();B=Path(__file__).resolve().parent\n def pin(p):return dict(bytes=p.stat().st_size,sha256=hashlib.sha256(p.read_bytes()).hexdigest())\n-assert pin(B/'launch_controls01.py')=={'bytes': 4167, 'sha256': '47e3d4c8d3ee9d7471c9828ec04e5952afb2a2ff8a55a2ce08423d4c847bcee5'}\n-freeze=B/'source-freeze01.json';assert pin(freeze)=={'bytes': 16885, 'sha256': '9e0f9271fdc43e8301293521bee04edfdc75d23fd668f81a437703b16d38ad9d'}\n+assert pin(B/'launch_controls02.py')=={'bytes': 4167, 'sha256': '24b59b29e1a073ad5caa8fcb164b6fd9b4c28b6abffa51db4e164fad3468a430'}\n+freeze=B/'source-freeze02.json';assert pin(freeze)=={'bytes': 46859, 'sha256': '9d3664382a341df2633b57d24b3373e6566c60ce447bf695a6ca6a62df02d52a'}\n for n,v in json.loads(freeze.read_text())['sources'].items():assert pin(R/n)==v\n-peer=B/'source-only-peer-vco01.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V24_PREFIX_CONTEXT_IMPLEMENTATION' and j['freeze']==pin(freeze) and not j['findings']\n-assert j['launcher']==pin(B/'launch_controls01.py') and j['detacher']==pin(Path(__file__))\n+peer=B/'source-only-peer-vco02.json';j=json.loads(peer.read_text());assert j['status']=='PASS_SOURCE_ONLY_V24_PREFIX_CONTEXT_IMPLEMENTATION' and j['freeze']==pin(freeze) and not j['findings']\n+assert j['launcher']==pin(B/'launch_controls02.py') and j['detacher']==pin(Path(__file__))\n assert not Path('/dev/shm/nssoc-integrity-v24-full-controls01').exists()and not(B/'status01.json').exists()\n with(B/'detached-once01.json').open('x')as f:json.dump(dict(source_freeze=pin(freeze),peer=pin(peer)),f)\n-command=['taskset','-c','6',str(R/'.venv/bin/python'),str(B/'launch_controls01.py')]\n+command=['taskset','-c','6',str(R/'.venv/bin/python'),str(B/'launch_controls02.py')]\n with(B/'launch01.log').open('x')as f:c=subprocess.Popen(command,stdin=subprocess.DEVNULL,stdout=f,stderr=subprocess.STDOUT,start_new_session=True,close_fds=True,cwd=R,env={**{k:v for k,v in os.environ.items()if k not in ('PYTHONPATH','PYTHONHOME','PYTHONEXECUTABLE')},'PYTHONDONTWRITEBYTECODE':'1'})\n a=Path(f'/proc/{c.pid}/stat').read_text().split(') ',1)[1].split()\n r=dict(status='DETACHED_CONTROL_LAUNCH_ACTUAL_PROGRESS_REQUIRED',controller=dict(pid=c.pid,start_ticks=a[19],process_group=int(a[2])),boot_id=Path('/proc/sys/kernel/random/boot_id').read_text().strip(),command=command,launcher=pin(Path(__file__)),source_freeze=pin(freeze),peer=pin(peer))\n"
+    }
+  }
+}

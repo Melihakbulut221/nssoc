@@ -1,0 +1,11 @@
+# CDR v40 selector emitter-area experiment
+
+The completed v39 current analysis shows stronger follower pull-down current improves some data errors but lowers C master-selector VCE to0.400970V, leaving only0.970mV above the original0.4V nominal limit. It leaves current-steering observations near14–15ps, while actual selector-base clock zero crossings are around4ps. These descriptive observations motivate a different bounded experiment; they do not prove the cause or predict a passing size.
+
+Both new candidates start from v39follower_l18, whose measured early-data C minimum VCE is0.412677V. slave_select4 changes only16 slave selector HBT emitter counts Nx3→4. all_select34 additionally changes16 master selectors Nx2→3. Data/hold HBTs, bias dimensions, all MOS/resistors,8GHz external phase,256bits,150fF/50fF loads, full34.25ns capture and original acceptance conditions remain unchanged relative to that parent. Actual current is not assumed unchanged merely because bias dimensions remain fixed.
+
+Every selected HBT is bound to the completed native graph: unique track/hold banks, collector connection to the actual data/hold emitter bank, shared tail emitter, opposing clock bases and exact original Nx. Six actual-graph corruptions must reject before native simulation. Four scalar area faults also reject. All476 native records remain; reversing declared parameters must reproduce the original model contract exactly. Relative to original v32 the changed primitive census is76 for slave_select4 and92 for all_select34, without duplicate changes to the already-resized slave selectors.
+
+The screen keeps all17918R/12850C frozen, and retains the inherited54um MOS diffusion hypothesis explicitly. A source-bound intrinsic experiment is not a new layout, extraction or physical acceptance. Increasing HBT area can increase loading or worsen VCE; all original device, sampler, phase and VI failures remain failures. A remains outside its parent output limits and is still fully checked. Any useful candidate requires actual GDS, DRC/LVS, fresh RC, full-loop, PVT and eventualx4 integration checks.
+
+All source checks, fault controls and native runs execute on GitHub-hosted runners. Raw waveforms and failures remain in immutable cloud releases.

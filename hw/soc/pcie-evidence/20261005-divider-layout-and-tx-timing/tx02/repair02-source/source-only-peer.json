@@ -1,0 +1,30 @@
+{
+  "status": "CLEAN_BOUNDED_TX02_PREEXECUTION_SOURCE_REVIEW",
+  "source": {
+    "bytes": 11580,
+    "sha256": "4ab98f2e372e6913626988e5d84c402efbffc704b244ac47aa43ae8a003ed698"
+  },
+  "freeze": {
+    "bytes": 3526,
+    "sha256": "d4b5f9491a9223665e459b2f46777ed8b466d258a0caf8eaa146b21f1a33a08d"
+  },
+  "target_census": {
+    "bytes": 4574,
+    "sha256": "21ebc025080e5f80a967d0e8b8af01d984cae51781739225652530c4c361fa76"
+  },
+  "independently_rehashed_baseline_count": 10,
+  "checks": [
+    "All six literal driver/master/pin/load lists exactly match frozen target census. Tcl requires exact master, all input ITerms, no external BTerms, then inserts a noninverting native buf4 at the measured driver location. Nine replacements require original buf1 master; hold buffer requires exact FF master and original D net.",
+    "Original detailed ODB/SDC/Verilog/SPEF and result/logs are hash-bound. Original actual SPEF is reported before clearing only copied signal-wire geometry/guides; exported logical netlist is asserted identical across that removal. No write targets the original detailed source.",
+    "Initial fresh global route and estimate establish the candidate RC context. Final reports follow incremental global-route completion and fresh estimate after insertion/resizing/placement. Original actual SPEF is never reloaded onto modified nets; resulting reports remain global-route estimates only.",
+    "Timing constraints come from the exact original routed SDC; three native Liberty corners are included and pinned along with generated Tcl and the actual OpenROAD binary/launcher. No period, I/O delay or load relaxation is introduced.",
+    "Process cleanup and native limits ASTs exactly match the frozen RX11 source. Signal masking closes child-registration race; errors invoke TERM then unconditional group KILL and wait. Healthy execution has no elapsed watchdog; 1 GiB admission, 528 MiB ongoing and 2.5 GiB native address cap remain explicit.",
+    "Before/after source/input pins and actual returncode are required before COMPLETE_CANDIDATE_REQUIRES_EQUIVALENCE_ROUTE_RC. Receipt has qualified_rc=false and physical_acceptance=false."
+  ],
+  "limitations": [
+    "Source and finite census review only; no Tcl/native execution, tests, route, graph proof, port replay or raw timing reduction by this reviewer.",
+    "Buffer choices and resulting setup/hold/recovery behavior require actual native characterization; source review does not establish improved timing.",
+    "Final repaired netlist still requires exact full-state/function proof, native ports, fresh DRT and extracted RC.",
+    "Initial candidate report uses a global-route estimate context; it is not actual detailed-RC acceptance and is separate from the final rerouted candidate report."
+  ]
+}

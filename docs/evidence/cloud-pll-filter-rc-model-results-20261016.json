@@ -1,0 +1,116 @@
+{
+  "observed_at": "2026-10-16T05:24:00.185369+00:00",
+  "cloud_only": true,
+  "accepted": false,
+  "qualified_pex": false,
+  "full_serial_phy_complete": false,
+  "extraction": {
+    "run": 38853877930,
+    "source_head": "29112feda460a0cbec2a7fd1d2ceb488e53ae7d2",
+    "summary_asset": 646208614,
+    "summary_sha256": "3d7f1ddd048ec3440eda2b3efe059470fe240edf1b347fc46486fe14573386b0",
+    "parts": {
+      "asset": 646208677,
+      "sha256": "76e67891b5591edefab68d6002367db72ea3b4fda6702b6c93f4c2f8f9b6106d",
+      "manifest": {
+        "format": "ordered-tar-gzip-parts-v1",
+        "stem": "pll-filter-rc-9-38853877930-1",
+        "source_directory": "cloud-pll-filter-rc",
+        "bytes": 5921475,
+        "sha256": "954a9fdf95bf0683f1f89087e6865f31774a2dcb420192a9bc95dd32bb44686c",
+        "parts": [
+          {
+            "index": 0,
+            "name": "pll-filter-rc-9-38853877930-1.tar.gz.part0000",
+            "bytes": 5921475,
+            "sha256": "954a9fdf95bf0683f1f89087e6865f31774a2dcb420192a9bc95dd32bb44686c"
+          }
+        ],
+        "part_limit_bytes": 1073741824,
+        "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+        "verification": {
+          "parts": 1,
+          "bytes": 5921475,
+          "sha256": "954a9fdf95bf0683f1f89087e6865f31774a2dcb420192a9bc95dd32bb44686c",
+          "all_parts_and_combined_bytes_verified": true
+        }
+      }
+    },
+    "status": "PASS_ACTUAL_C9_PUMP_NATIVE_WIRE_RC_AND_CONTROLS_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE",
+    "actual_capacitor": {
+      "native_id": 1,
+      "model": "cap_cmim",
+      "terminals": {
+        "mim_top": "vctrl",
+        "mim_btm": "avss"
+      },
+      "parameters": {
+        "w": 9.0,
+        "l": 9.0,
+        "A": 81.0,
+        "P": 36.0,
+        "m": 1.0
+      }
+    },
+    "gds_sha256": "abbe380e4aaeeacfa9074d594f8cbf572a82717386c7d15725b7619876235a78",
+    "resistors": 84,
+    "capacitors": 155,
+    "wire_components": 12,
+    "physical_reference_points": 59,
+    "metal_device_terminals": 52,
+    "unmodeled_body_well_terminals": 29,
+    "raw_corruption_controls": 13,
+    "wires_sha256": "b03fee702efce3835da8d1f03906dc39ea92161c6137405b6ab33d943e69e6ed"
+  },
+  "composition": {
+    "run": 38855219697,
+    "source_head": "731cf67ed95568a14f31a6f5b2b81fca1c9149ad",
+    "summary_asset": 646237740,
+    "summary_sha256": "1a0f49cda2ed993128e20eaa299f68cd31eaba33db4e52aa98a0a7325b9f11e3",
+    "parts": {
+      "asset": 646237852,
+      "sha256": "58cb4aebb847b46d9849312ac57868acb677a69d1a7ca62edf2f5c819ad74d14",
+      "manifest": {
+        "format": "ordered-tar-gzip-parts-v1",
+        "stem": "pll-filter-compose-9-38855219697-1",
+        "source_directory": "cloud-pll-filter-compose",
+        "bytes": 99800,
+        "sha256": "8d6de28ba5081c04f3b476f06590c1a9beb25248d8d269aacdb2ef861b0e82ef",
+        "parts": [
+          {
+            "index": 0,
+            "name": "pll-filter-compose-9-38855219697-1.tar.gz.part0000",
+            "bytes": 99800,
+            "sha256": "8d6de28ba5081c04f3b476f06590c1a9beb25248d8d269aacdb2ef861b0e82ef"
+          }
+        ],
+        "part_limit_bytes": 1073741824,
+        "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+        "verification": {
+          "parts": 1,
+          "bytes": 99800,
+          "sha256": "8d6de28ba5081c04f3b476f06590c1a9beb25248d8d269aacdb2ef861b0e82ef",
+          "all_parts_and_combined_bytes_verified": true
+        }
+      }
+    },
+    "status": "PASS_ACTUAL_C9_PUMP_PHYSICAL_MODEL_AND_FAULTS_NOT_PARENT_OR_ELECTRICAL_ACCEPTANCE",
+    "model_sha256": "99b64ceade493f98b9c562b3fd05eb947178002ffd37c16314eb44de8eadc20c",
+    "native_binding": "PASS_NATIVE30_TERMINALS_AND_PARAMETERS",
+    "devices": 30,
+    "wire_records": 239,
+    "fault_controls": 6,
+    "source_unchanged": true,
+    "failed_predecessor": {
+      "run": 38854848227,
+      "summary_asset": 646229573,
+      "summary_sha256": "cd61d43df618a71bd2aeccbf50dba6b1451a6014b5918c853e966513bb03243f",
+      "reason": "Missing NumPy dependency after native binding passed; preserved. Fixed pinned NumPy2.1.3 and fixture-import preflight."
+    }
+  },
+  "next_required": [
+    "Bind the actual 845-device candidate parent and its physical parent-wire reference planes to this newly composed pump model. Do not reuse old parent RC without exact native graph and anchor evidence.",
+    "Compose all 845 devices and all required wire records against native parent LVS, then run the complete original 1 us acquisition and controls on the physical candidate model.",
+    "Substrate spreading, RF/RC qualification, complete serial PHY, x4 and mainchip timing remain open."
+  ]
+}

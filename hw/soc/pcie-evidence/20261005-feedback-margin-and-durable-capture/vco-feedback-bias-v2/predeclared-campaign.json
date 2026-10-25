@@ -1,0 +1,51 @@
+{
+  "status": "PREDECLARED_BEFORE_SOURCE_PEER_AND_NATIVE",
+  "source_freeze": {
+    "bytes": 811,
+    "sha256": "54bb7037018b4c7cd59c88e4777e309d8a3df41b1d77d8009974ba833c461798"
+  },
+  "sequence": [
+    {
+      "case": "disconnect-01",
+      "vctrl": 0.6,
+      "fault": "disconnect_divider_clock"
+    },
+    {
+      "case": "085-01",
+      "vctrl": 0.85,
+      "fault": ""
+    },
+    {
+      "case": "06-01",
+      "vctrl": 0.6,
+      "fault": ""
+    },
+    {
+      "case": "modulus-01",
+      "vctrl": 0.6,
+      "fault": "wrong_feedback_modulus"
+    }
+  ],
+  "preserved_native": {
+    "devices": 437,
+    "hbt_off_flags": 64,
+    "ordered_vectors_without_time": 785,
+    "step_ps": 5,
+    "stop_ns": 34,
+    "active_start_ns": 4,
+    "temp_C": 27,
+    "public_load_each_fF": 50,
+    "real_feedback_load": true,
+    "vco_wire_R": 889,
+    "vco_wire_C": 765,
+    "all_inherited_measurement_and_screens_identical": true
+  },
+  "required_additional_review": {
+    "public_complete_cycle_minimum_signed_swing_v": 0.3,
+    "require_every_complete_cycle": true,
+    "producer_native_status_not_rewritten": true
+  },
+  "conditional_progress": "Every actual result and failure is retained. Proceed sequentially only while resource/runtime and declared electrical limits remain compatible; require both nominal cases to pass before the final wrong-modulus probe. Do not turn an electrical-screen failure into an accepted healthy functional negative. Parent reviews failures before scope expansion.",
+  "capture_policy": "Keep aggregate native VCO scratch below80MiB; archive closed capture on SSD within four41MB cap budget, publish and independently replay, then reclaim only exact closed public RAM wave duplicate. Preserve shared floor512MiB and launch floor1GiB. No elapsed healthy-process timeout.",
+  "next_native_command": "taskset -c 10 env -u PYTHONPATH -u PYTHONHOME -u PYTHONEXECUTABLE hw/soc/tools/cocotb-venv/bin/python scripts/characterize_pcie_vco_v6_feedback_bias_v2.py --out /dev/shm/nssoc-vco-v6-feedback-bias-v2-disconnect-01 --vctrl 0.6 --fault disconnect_divider_clock"
+}

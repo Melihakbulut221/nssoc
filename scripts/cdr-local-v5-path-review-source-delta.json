@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_power_v4_path_review.py",
+      "candidate_path": "scripts/cloud_cdr_local_v5_path_review.py",
+      "baseline_sha256": "d199ca8f3652482f2f2d588c8aae5cff636cb7ecaeb5be2f9562be5ab44de30f",
+      "candidate_sha256": "c86b6f817d502f36b4095505b14f0d5c595fc9ecb6bb76083430ef3338989b27",
+      "edits": [
+        {
+          "before": "power_v4",
+          "after": "local_v5",
+          "count": 1
+        },
+        {
+          "before": "power-v4",
+          "after": "local-v5",
+          "count": 4
+        },
+        {
+          "before": "dict(devices=484,R=3538,C=4038)",
+          "after": "dict(devices=484,R=3250,C=3841)",
+          "count": 1
+        },
+        {
+          "before": "len(resistors)==3538 and len(capacitors)==4038",
+          "after": "len(resistors)==3250 and len(capacitors)==3841",
+          "count": 1
+        },
+        {
+          "before": "        assert all(sha(source/n)==prior['outputs'][n]for n in selected)",
+          "after": "        # Separate the measured intrinsic load drop from the actual wire drop\n        # to each collector. No DC current approximation or adjusted sampling.\n        load_reviews=[];load_ids=[]\n        for name,dev in records.items():\n            if dev['model']!='rppd':continue\n            if parser.number(dev['parameters']['w'])!=parser.number('32u') or parser.number(dev['parameters']['l'])!=parser.number('2.12u'):continue\n            ts={z['terminal']:z for z in dev['terminals']};a=ts['rppd_1'];b=ts['rppd_2']\n            assert a['native_net']=='avdd'\n            sinks=[q for q in hbts if q['terminals']['C']['native_cluster']==b['native_cluster'] and q['terminals']['C']['native_net']==b['native_net']]\n            assert len(sinks)==2\n            load_ids.append(name)\n            va,vb=v(global_node(a['node'])),v(global_node(b['node']))\n            for q in sinks:\n                vc=v(q['terminals']['C']['node'])\n                load_reviews.append(dict(load=name,collector=q['device'],native_net=b['native_net'],logical_net=logical.get((b['native_cluster'],b['native_net'])),native_parameters=dev['parameters'],supply_wire_drop=stats(v('avdd')-va),intrinsic_load_drop=stats(va-vb),load_to_collector_wire_drop=stats(vb-vc),total_external_to_collector_drop=stats(v('avdd')-vc)))\n        assert len(load_ids)==16 and len(set(load_ids))==16 and len(load_reviews)==32\n        r['sampler_load_and_collector_wire_drop_review']=load_reviews\n        assert all(sha(source/n)==prior['outputs'][n]for n in selected)",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

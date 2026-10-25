@@ -1,0 +1,83 @@
+[
+  {
+    "baseline_path": "scripts/cloud_tx_fast_wire24_clock_adapter.py",
+    "baseline_sha256": "6d23ce2e39aa5a2e1ac0edae82e668a42413a08f42ff574df6917e9af388d696",
+    "candidate_path": "scripts/cloud_tx_wire24_g234_clock_adapter.py",
+    "candidate_sha256": "1106a3cd4583da4c3d62913d8e24e17da8ab86946e312135cfac4dbea913f751",
+    "edits": [
+      {
+        "before": "    assert sha(model)==MODEL_SHA",
+        "after": "    assert sha(model)==MODEL_SHA\n    assert first_group_model is not None\n    lower_groups=(0,2,3,4)\n    for group,names in {2:['sp4_3','sp8_0','sp8_1'],3:['sp8_2','sp8_3','sp8_4'],4:['sp8_5','sp8_6','sp8_7']}.items():\n        assert [c['name']for c in contract['tree_plan']['clocks']if c['reference']=='clkbias_g'+str(group)]==names",
+        "count": 1
+      },
+      {
+        "before": "first_group_model if index==0 and first_group_model is not None else model",
+        "after": "first_group_model if index in lower_groups else model",
+        "count": 1
+      },
+      {
+        "before": "('missing_clock','swapped_ports','missing_hbt_probe','duplicate_feed')",
+        "after": "('missing_clock','swapped_ports','missing_hbt_probe','duplicate_feed','wrong_native_clock_variant')",
+        "count": 1
+      },
+      {
+        "before": "            else:bad=bad.replace(line,line+'\\n'+oldfeeds[index])",
+        "after": "            elif fault=='duplicate_feed':bad=bad.replace(line,line+'\\n'+oldfeeds[index])\n            else:\n                words=list(replacement)\n                words[-1]='nssoc_clock_reference_l6p25_native6_wire_v1'if index in lower_groups else'nssoc_clock_reference_l5p7_native6_wire_v1'\n                bad=bad.replace(line,' '.join(words))",
+        "count": 1
+      },
+      {
+        "before": "len(controls)==44",
+        "after": "len(controls)==55",
+        "count": 1
+      },
+      {
+        "before": "clock_variants=['l5p7'if first_group_model is not None else'l6p25']+['l6p25']*10,",
+        "after": "clock_variants=['l5p7'if i in lower_groups else'l6p25'for i in range(11)],\n        changed_from_original_first_only_groups=[2,3,4],fixed_for_all_device_corners=True,",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "baseline_path": "scripts/cloud_tx_fast_wire24_wave.py",
+    "baseline_sha256": "2c9fa70fa7546cde17d3323cbf0e6d6146957f6d9801736e78f0a6c9d3cb7e5a",
+    "candidate_path": "scripts/cloud_tx_wire24_g234_wave.py",
+    "candidate_sha256": "832dae99720331d0bcf58404ce0751da7a946a442ca463e35a48e1dc9c382594",
+    "edits": [
+      {
+        "before": "cloud-tx-fast-wire24-wave-",
+        "after": "cloud-tx-wire24-g234-wave-",
+        "count": 1
+      },
+      {
+        "before": "cloud_tx_fast_wire24_clock_adapter",
+        "after": "cloud_tx_wire24_g234_clock_adapter",
+        "count": 3
+      },
+      {
+        "before": "['l5p7']+['l6p25']*10",
+        "after": "['l5p7'if i in (0,2,3,4)else'l6p25'for i in range(11)]",
+        "count": 1
+      },
+      {
+        "before": "Actual l5p7 macro replaces shared sa/sb/s reference only; all other ten groups retain l6p25. No per-corner tuning.",
+        "after": "Actual l5p7 macros at fixed groups0,2,3,4; other seven groups retain l6p25. Groups2/3/4 are the only new changes; no per-corner tuning.",
+        "count": 1
+      },
+      {
+        "before": "   result['clock_source']=clock_receipt",
+        "after": "   assert result['physical_clock_binding']['changed_from_original_first_only_groups']==[2,3,4]\n   assert len(result['physical_clock_binding']['controls'])==55\n   result['clock_source']=clock_receipt",
+        "count": 1
+      },
+      {
+        "before": " try:\n  receipt=json.loads",
+        "after": " try:\n  from check_tx_wire24_g234_evidence import validate\n  result['selection_evidence']=validate(out);save()\n  receipt=json.loads",
+        "count": 1
+      },
+      {
+        "before": "  protected += [ROOT/'scripts/cloud_tx_fast_wire24_model_compare.py'",
+        "after": "  protected += [ROOT/'scripts/check_tx_wire24_g234_evidence.py',out/'selection-proof.json',out/'selection-source-summary.json',out/'selection-source.tar.gz']\n  protected += [ROOT/'scripts/cloud_tx_fast_wire24_model_compare.py'",
+        "count": 1
+      }
+    ]
+  }
+]

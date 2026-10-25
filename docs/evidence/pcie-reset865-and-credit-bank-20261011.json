@@ -1,0 +1,353 @@
+{
+  "at": "2026-10-11T19:47:05.438713+03:00",
+  "status": "INTERMEDIATE_COMPONENT_AND_PARENT_REPAIR_NOT_CLOSURE",
+  "full_serial_phy_complete": false,
+  "mainchip_route_accepted": false,
+  "final_timing_accepted": false,
+  "reset108": {
+    "nominal_pass": 7,
+    "pvt_pass": 27,
+    "pvt_fail": 0,
+    "all_34_complete_captures_reviewed": true,
+    "corners": "NativeMOS TT/SS/FF x -40/27/125C x nominal/reassert/200fF. CAP/RES typical; wire RC unqualified.",
+    "criteria": "Original900ps90percentrecovery/100ps10percentremoval/1nssettle/600psasync/1.5Vabsolute. No statistical metastability or foundry lifetime qualification."
+  },
+  "parent865": {
+    "devices": 865,
+    "native_drc_categories": 560,
+    "drc_markers": 0,
+    "hierarchical_and_flat_lvs": true,
+    "parent_wire_R": 98,
+    "parent_wire_C": 242,
+    "parent_nets": 25,
+    "parent_anchors": 83,
+    "parent_raw_corruption_controls": 12,
+    "rebound_child_R": 236,
+    "rebound_child_C": 529,
+    "child_raw_rc_controls": 13,
+    "child_composition_controls": 6,
+    "all_wire_elements": 8783,
+    "parent_composition_controls": 7,
+    "unchanged_original_device_count": 757,
+    "unchanged_macro_planes": 61,
+    "qualified_pex": false,
+    "wrapper_failures_preserved": [
+      "Wrongfirsthierarchicalcell selected instead of named top; parent-physical03 corrects actual865 census.",
+      "extract04 log-name IndexError beforeMagic; retry05Magicpassed but systemdpython lackednetworkx. ExistingMagic output independently audited using absolute miniconda python; nohealthyCADrerun."
+    ]
+  },
+  "loaded_parent": {
+    "status": "RUNNING_50NS_NOT_ACCEPTED",
+    "devices": 865,
+    "columns": 2438,
+    "step_ps": 0.3125,
+    "stop_ns": 50,
+    "native_start": "2026-10-11T19:01:16+03:00",
+    "synthetic_wave_faults": 11,
+    "boundary_faults": 6,
+    "criteria": "Two actual resetcell risingedges;destinationRESET_B900ps recoveryat90percent/100ps removalat10percent/1nssettle/noglitches;firstdividerfixedphaseanchorbefore8ns;otherrawdivisionandrailcriteriaunchanged. Old3.1nsrawdiagnostic retained.",
+    "electrical_limits_unchanged": true,
+    "prefix_diagnostic": {
+      "last_time_ns": 18.52484374998592,
+      "not_complete_capture": true,
+      "powerup_peak_v": 0.2406202803463745,
+      "powerup_peak_time_ns": 0.3743053681583517,
+      "original_oracle_issue": "Originalglobal10percentcountseespowerupcrossingandlaterresetrelease;itsverdictwillremainunchanged. Nativecapturecontinues.",
+      "recovery90_ns": 1.4309662917727934,
+      "request_associated_removal10_ns": 0.4926161532015611,
+      "independent_corrected_reader": "Requestinterval10/90percentcrossingsascomponentoracle, allrawedgesretained. Same900ps/100ps andlowrailfrom1ns, noglobal50percentglitchwaiver. ThirteenwavefaultcontrolsPASS, fullcapturereadqueued;notnativeverdictreclassification."
+    }
+  },
+  "routing": {
+    "status": "AUTOMATIC_SECOND_ANTENNA_REPAIR_ACTIVE",
+    "first_pass_route_violations": 18,
+    "first_antenna_repair_route_violations": 0,
+    "initial_antenna_net_violations": 514,
+    "initial_antenna_pin_violations": 599,
+    "latest_antenna_net_violations": 49,
+    "latest_antenna_pin_violations": 54,
+    "not_final_drc": true,
+    "elapsed_timeout": false
+  },
+  "credit_width": {
+    "status": "REJECTED_TIMING_REGRESSION",
+    "three_config_temporal_equivalence": true,
+    "port_tests_passed": 10,
+    "port_tests_skipped": 0,
+    "actual_mutants_rejected": 3,
+    "mapped_slot_FFs_before": 36,
+    "mapped_slot_FFs_after": 8,
+    "active_slots": 4,
+    "comparison_ns": {
+      "slow_max": {
+        "old": -1.099456,
+        "new": -1.426042,
+        "delta": -0.32658600000000004
+      },
+      "slow_min": {
+        "old": -0.500955,
+        "new": -0.58496,
+        "delta": -0.084005
+      },
+      "typical_max": {
+        "old": 0.641544,
+        "new": 0.199377,
+        "delta": -0.442167
+      },
+      "typical_min": {
+        "old": -0.53948,
+        "new": -0.53948,
+        "delta": 0.0
+      },
+      "fast_max": {
+        "old": 1.415919,
+        "new": 1.127131,
+        "delta": -0.2887879999999998
+      },
+      "fast_min": {
+        "old": -0.601382,
+        "new": -0.601382,
+        "delta": 0.0
+      }
+    },
+    "mapped_driver_controls": 6,
+    "wrapper_failure": "Expected6storage names/literalzeros; actual4slots aliases+physicaltielo. validate-map06 exactdrivers and faults pass; originalerror preserved.",
+    "proof_scope": "equiv_induct8 equal-observation temporalinduction. No independently established resetreachability claim.",
+    "adopted": false
+  },
+  "fc_sent_banks": {
+    "status": "REJECTED_UNPLACED_SETUP_REGRESSION",
+    "change": "Replacevariablewrite partselects withthreeconstantclassbanks;sameacceptedEOPcycle/reset/linkdown behavior.",
+    "equivalence_cases": [
+      128,
+      0,
+      -1
+    ],
+    "old_port_tests": 8,
+    "new_stalled_eop_test_gold_and_candidate_pass": true,
+    "new_actual_mutants_rejected": 3,
+    "prior_test_gap": "ThreeexistingFCtests missed unacceptedEOPupdate; separate newporttestchecks bothsnapshotsat everycycle aroundfourcycle EOPstall. Originalmiss preserved.",
+    "parameter_wrapper_failure": "Yosyschparamrejects literal-1; freshproof06usesexplicit32signedhexallones; samegold/candidatebytes.",
+    "adopted": false,
+    "comparison_ns": {
+      "slow_max": {
+        "old": -1.099456,
+        "new": -1.365932,
+        "delta": -0.26647599999999994
+      },
+      "slow_min": {
+        "old": -0.500955,
+        "new": -0.470141,
+        "delta": 0.030814000000000064
+      },
+      "typical_max": {
+        "old": 0.641544,
+        "new": 0.397006,
+        "delta": -0.24453799999999998
+      },
+      "typical_min": {
+        "old": -0.53948,
+        "new": -0.53948,
+        "delta": 0.0
+      },
+      "fast_max": {
+        "old": 1.415919,
+        "new": 1.265692,
+        "delta": -0.1502269999999999
+      },
+      "fast_min": {
+        "old": -0.601382,
+        "new": -0.601382,
+        "delta": 0.0
+      }
+    }
+  },
+  "inputs": {
+    "hw/soc/out/pcie-reset-gated108-20261011/pvt12/matrix01.json": {
+      "bytes": 46404,
+      "sha256": "7c925612c1a20206db2ffaba4c594150e5ea8a07dd194346ebc6de4025a04258"
+    },
+    "hw/soc/out/pcie-reset-gated108-20261011/independent-pvt13/result.json": {
+      "bytes": 923369,
+      "sha256": "8aa0b8737cf02da65780f49d4f66caa663140ca124b0819159f84ea65b1c751d"
+    },
+    "hw/soc/out/pcie-reset-gated108-20261011/independent10/result.json": {
+      "bytes": 238222,
+      "sha256": "b0dd31c219cff509d1dee860aa26d98c70a61f9ac8b489f8951d65723b4a0262"
+    },
+    "hw/soc/out/pcie-reset865-parent-20261011/parent-physical03.json": {
+      "bytes": 2484,
+      "sha256": "6bd51f7e2d36895633bac70188855e18b6b15723af68d597313b0361cb32903a"
+    },
+    "hw/soc/out/pcie-reset865-parent-20261011/parent-rc08.json": {
+      "bytes": 27463,
+      "sha256": "51a38dfa5be04e47c938c0992abc761e858ef320fe17e098358c0476566b9cbe"
+    },
+    "hw/soc/out/pcie-reset865-parent-20261011/parent-mutations09.json": {
+      "bytes": 9136,
+      "sha256": "c074ab55ab26601538f1a7e4c193da50259e89fef61503f6802940d0730c381f"
+    },
+    "hw/soc/out/pcie-reset865-composition-20261011/model02/composition.json": {
+      "bytes": 1768467,
+      "sha256": "2d84d7524bdaa4a06c821c621b155b6dc2d506b69b3be54b5c1a39866d292acd"
+    },
+    "hw/soc/out/pcie-reset865-composition-20261011/rebind-result02.json": {
+      "bytes": 1475,
+      "sha256": "208af9691ec5c314d7826e1bc77cae787756f49c8ddfffddaa3de5c2fbf0a950"
+    },
+    "hw/soc/out/pcie-reset865-native-20261011/composition01.json": {
+      "bytes": 2019289,
+      "sha256": "9b527b181c1c659f75f1c6d73e2599d964ad05d25f9686fef7856ae370f68117"
+    },
+    "hw/soc/out/pcie-reset865-native-20261011/measurement-controls01.json": {
+      "bytes": 82572,
+      "sha256": "3fceecf0920a4695fa1c02016abf3b7cbb37cc507e3cfc170568878aa9ff47e5"
+    },
+    "hw/soc/out/pcie-reset865-native-20261011/boundary-controls01.json": {
+      "bytes": 2214,
+      "sha256": "4eca8a2e965324504624874cb0cafe7d365ae616560ac851e58f370cb82e2802"
+    },
+    "hw/soc/out/pcie-rx-credit-units-view-20261011/formal02/result.json": {
+      "bytes": 2292,
+      "sha256": "48fa63844f8c6cb64221915b90fe8684e337fa4312bd7c62162865ed20b6c53b"
+    },
+    "hw/soc/out/pcie-rx-credit-units-view-20261011/validation06.json": {
+      "bytes": 4787,
+      "sha256": "343135a3752763c7a207819e731aaec5922b4c5554978d76111d5e7e37125a27"
+    },
+    "hw/soc/out/pcie-rx-credit-units-view-20261011/comparison08.json": {
+      "bytes": 4014,
+      "sha256": "9c857837fbe85e53728cc89615c516658709d8b7203666a482b3fb5aabe24bac"
+    },
+    "hw/soc/out/pcie-rx-credit-units-view-20261011/decision09.json": {
+      "bytes": 1088,
+      "sha256": "1b72d4d491c8a2676b5518b59e50b1c97ca155fb9d28885f3472090b49012ca2"
+    },
+    "hw/soc/out/pcie-fc-sent-banks-20261011/formal06/result.json": {
+      "bytes": 1559,
+      "sha256": "4c0800bb46f3effb8dee62c06c3dec1297c46f012fdd4cf8d8081d66543effa0"
+    },
+    "hw/soc/out/pcie-fc-sent-banks-20261011/tests03.json": {
+      "bytes": 652,
+      "sha256": "b76115c16ef4a3e3f5b7a7b60ab59ef5e7620d07359648371339bc24b8a5cd40"
+    },
+    "hw/soc/out/pcie-fc-sent-banks-20261011/eop07/result.json": {
+      "bytes": 7319,
+      "sha256": "66fc298cac906ed82c4e0e8d69dbe7e3527e0dd6d6a0db0799c12c1d24edcd85"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_fc_tx_eop.py": {
+      "bytes": 1327,
+      "sha256": "f77e8aa127f8d6688752b9e24cc1b0a3c25c1fba135ae63078f09d8633f41737"
+    },
+    "hw/soc/out/pcie-reset-gated-records-20261011/delivery.json": {
+      "bytes": 396,
+      "sha256": "111c3e646dd50ea8938ae615c0f29f5cf47c5fab4f5b7fcfdb95853da1b2d9c9"
+    },
+    "hw/soc/out/pcie-reset865-records-20261011/delivery.json": {
+      "bytes": 398,
+      "sha256": "79d8b8c7c07c9c6a0abbd955cb35c897a45ee1994b68d48329843b6b5db11f9d"
+    },
+    "hw/soc/out/pcie-fc-sent-records-20261011/delivery.json": {
+      "bytes": 390,
+      "sha256": "853398a7de33f4c7d527b6ee351db4d745fb72c7151c72bab5a6b35e49304136"
+    },
+    "hw/soc/out/pcie-fc-sent-banks-20261011/comparison10.json": {
+      "bytes": 3996,
+      "sha256": "5f92f1c9c1964ee2722ac113e32f7033d5ecd867130c95512d3dd6af676845e9"
+    },
+    "hw/soc/out/pcie-fc-sent-banks-20261011/decision11.json": {
+      "bytes": 967,
+      "sha256": "f7577ab3e5ee426bbac8aa308e9103c70fc6cf0a2f9bbe5ac2dd4db99b7542fb"
+    },
+    "hw/soc/out/pcie-parent865-prefix-20261011/result02.json": {
+      "bytes": 2390,
+      "sha256": "8caffa57bda65118a577b76e3dd514ca387544d1b5057807db8a0f717a0a9d4a"
+    },
+    "hw/soc/out/pcie-parent865-prefix-20261011/measurement-controls03.json": {
+      "bytes": 163285,
+      "sha256": "fe36c62aac17c5e0ce6a9afc7748f636cdf627fd25b932abd50305bb22da6784"
+    },
+    "hw/soc/out/pcie-parent865-prefix-20261011/measurement03.py": {
+      "bytes": 5233,
+      "sha256": "f83fd5909645aa2b7b43395f2ee316d0882c0015761fe100186f99a66699ccb5"
+    },
+    "hw/soc/out/pcie-parent865-prefix-20261011/review04.py": {
+      "bytes": 2657,
+      "sha256": "754f21b5132f23fe83297b2b5ed285963c4d3eef449190fbde996bf60645501a"
+    },
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/proof05.json": {
+      "bytes": 1946,
+      "sha256": "c520b343ff3d2b12a0ddff617c6a405020f77863defb3c39c37bcfa6599095c1"
+    },
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/proof07.json": {
+      "bytes": 2498,
+      "sha256": "e9df96a8e074b8d038583872232dbd3be14fba815e8df5a28ad476589196a5e1"
+    },
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/design07.json": {
+      "bytes": 1781,
+      "sha256": "b68bc6e90cc1465e6c34b4cfd9eb98a96279adffb773412b0a0d4d4b7c944f2e"
+    },
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/method04.json": {
+      "bytes": 713,
+      "sha256": "a069c4d9eb11d951ba64b0284cc2c698d28622a8921e20c895bbce9e5a4de5fb"
+    },
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/method05.json": {
+      "bytes": 1375,
+      "sha256": "1e7a0f09bd17f89a6aad810e9b8e2f5e0921ef3188605ffe029e0c3384674be6"
+    },
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/tests08.json": {
+      "bytes": 590,
+      "sha256": "2d476c66eec73cdc4c051ae4702910c54d3af260eb58bfe64667721ccbd6c6f9"
+    },
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/faults06/result.json": {
+      "bytes": 1494,
+      "sha256": "faa825fd9b59753add39d1726681a3c6c9d746e9339b50925f7451e7c6e4bd78"
+    },
+    "hw/soc/out/pcie-fc-eop-ownership-20261011/faults09/result.json": {
+      "bytes": 2766,
+      "sha256": "41dfe7a64e8dff8eb9265b83d37d3cfca60192b85725e39e3a1fb29392242f21"
+    },
+    "hw/soc/out/pcie-fc-eop-ci-20261011/result01.json": {
+      "bytes": 23937,
+      "sha256": "db44cc9de23778ce737ffc45f5529d9923a6b486acee5e18e9c59d36bf7a4e35"
+    }
+  },
+  "public_full_capture_archive": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset-gated106-gated108-full-captures-20261011.tar.gz",
+    "name": "nssoc-reset-gated106-gated108-full-captures-20261011.tar.gz",
+    "bytes": 1669863932,
+    "sha256": "4ab66e6ac59cd7e4e1dec761e7406ce8cfb2a548043ee5a28727564e7e88b76d"
+  },
+  "public_parent_and_rejections_archive": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset865-physical-and-credit-rejections-20261011.tar.gz",
+    "name": "nssoc-reset865-physical-and-credit-rejections-20261011.tar.gz",
+    "bytes": 42752543,
+    "sha256": "64759d83ed7156b8e8ccf85f1ca5eae466a3a6ea6198f2a520b7c5641dcaa14d"
+  },
+  "public_fc_sent_bank_archive": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-fc-sent-bank-rejection-and-eop-test-20261011.tar.gz",
+    "name": "nssoc-fc-sent-bank-rejection-and-eop-test-20261011.tar.gz",
+    "bytes": 18919625,
+    "sha256": "df0f14efc5393cbf2a98c56e431e507a6fc9a46a08d7d47e6c0067e4fe1e67a6"
+  },
+  "fc_eop_ready": {
+    "status": "WHOLECHIP_MAPPING_ACTIVE_NOT_ACCEPTED",
+    "change": "UseactualregisteredownershipforFC EOPready;otherbeatsretainoriginalchoice.",
+    "proof": "ExactgoldFCplusarbiter/egresscone witharbitraryflow/peer/credit/readyinputs. Fromresetjointlyprove2statedigitalclass/phase/indexboundsandallnonSOPownership;actualreadytransfersequalunderFCvalid. Onlyonefanout,FCreadsreadyonlyunderthatvalid;oneassignmentchangedbyte-inversechecked. Compositionalstep-equivalence,notmonolithicSoCmiter or analog/Xpropqualification.",
+    "proof_method_failures": "Earlierownership-onlyinductioncouldnotclosebecauseunreachableclass3producesundefinedindexedreads. Jointstateboundsareproved,notassumed;oldincompleterunsandcounterexamplesretained.",
+    "proof_mutants_rejected": 3,
+    "buffered_port_tests_passed": 5,
+    "skipped": 0,
+    "actual_ready_mutants_rejected": 3,
+    "adopted": false
+  },
+  "canonical_eop_regression": {
+    "make_target": "hw/soc/tb/cocotb/Makefile.soc_pcie_fc_tx_eop",
+    "local_test_passed": 1,
+    "skipped": 0,
+    "workflow": ".github/workflows/pcie-buffered-soc.yml"
+  }
+}

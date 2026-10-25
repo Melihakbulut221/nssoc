@@ -1,0 +1,52 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-physical-tree-diagnosis-cloud
+on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths:
+      - .github/workflows/tx-physical-tree-diagnosis-cloud.yml
+      - scripts/analyze_cloud_physical_tree.py
+      - sw/tests/test_cloud_physical_tree_diagnosis.py
+  workflow_dispatch:
+    inputs:
+      study:
+        description: Exact source-bound compact and wire capture pair
+        type: choice
+        options: [tight_hot, shifted_outputs_hot, v8_tc_hot, v8_tc_hot_res_bcs, prestage_only, both_power, both_interleaved, both_kelvin, both_dense, v8_nominal, dense_v8_hot, local_tail_hot, cascade16_local_tail_hot, supply_feed_hot, supply_feed_cold, local_internal_hot, low_critical_hot, low_critical_cold, v9_cascade158_hot, v8_low_selects_hot, v8_shortrows_hot, v8_low_ports_hot, v8_low_ports_shunts_hot, v8_loads_shunts_hot]
+        default: prestage_only
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check nonuniform physical-time integration and mismatched input rejection
+        run: |
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
+          python3 -m pytest -q sw/tests/test_cloud_physical_tree_diagnosis.py sw/tests/test_cloud_tx_stage_delay.py
+      - name: Compare actual compact and metal-RC device voltages and currents
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/analyze_cloud_physical_tree.py --study '${{ inputs.study || 'prestage_only' }}'
+      - name: Preserve successful and failed diagnosis
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-physical-tree-diagnosis-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-physical-tree-diagnosis
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-physical-tree-diagnosis/result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group physical-tree-diagnosis "$archive" "$archive.sha256" "$summary"

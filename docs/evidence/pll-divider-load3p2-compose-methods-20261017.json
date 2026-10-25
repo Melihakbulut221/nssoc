@@ -1,0 +1,87 @@
+{
+  "status": "IMPLEMENTED_AWAITING_CLOUD_EXECUTION",
+  "source_rc_run": 38971785699,
+  "source_rc_summary_sha256": "f3b8172501491956a3fcee1f5c0505f6e55b60f4d9b61933f79a7a2c17ba7aa3",
+  "source_rc_parts_sha256": "94fcfaaa471e39d9b2009e038f0fd994325d23840e8b84e0ce472d7da95c5041",
+  "rc_positive": {
+    "resistors": 382,
+    "capacitors": 649,
+    "planes": 205,
+    "wire_components": 37,
+    "negative_controls": 13
+  },
+  "preserved_failure": 38971194744,
+  "composition_method": {
+    "template": "scripts/cloud_tx_clock_reference_compose.py",
+    "template_sha256": "8e90a4e06fab37db0d7f4524fe92f901d3dc2ac23fde37d19ce773d9543d8702",
+    "exact_function_edits": [
+      [
+        "len(devices)==6",
+        "len(devices)==91"
+      ],
+      [
+        "'clock_reference_wires'",
+        "'divider_load3p2_wires'"
+      ],
+      [
+        "dict(R=13,C=28)",
+        "dict(R=382,C=649)"
+      ],
+      [
+        "})==41",
+        "})==1031"
+      ],
+      [
+        "len(anchors)==14",
+        "len(anchors)==205"
+      ],
+      [
+        "len(lines[0][2:])==14",
+        "len(lines[0][2:])==205"
+      ],
+      [
+        "len(public)==4",
+        "len(public)==7"
+      ],
+      [
+        "len(by_terminal)==16",
+        "len(by_terminal)==283"
+      ],
+      [
+        "raw6 clock devices and13R28C",
+        "raw91 divider devices and382R649C"
+      ],
+      [
+        "len(actual)==6",
+        "len(actual)==91"
+      ],
+      [
+        "len(actual_wires)==41",
+        "len(actual_wires)==1031"
+      ],
+      [
+        "len(owner)==5 and len(components)==5",
+        "len(owner)==37 and len(components)==37"
+      ],
+      [
+        "count==16",
+        "count==283"
+      ],
+      [
+        "devices=6,wire_resistors=13,wire_capacitors=28",
+        "devices=91,wire_resistors=382,wire_capacitors=649"
+      ],
+      [
+        "wire_components=5",
+        "wire_components=37"
+      ]
+    ]
+  },
+  "scope": "Native91 intrinsic parameters and all283 terminal planes into actual fresh wire network. No source-name guessed connectivity. Finite18 body contacts retained. Poly/diffusionR and body spreading unmodeled; no acquisition, PVT, serial PHY or chip acceptance.",
+  "cloud_only": true,
+  "preserved_model_signature_failure": {
+    "run": 38972966356,
+    "summary_sha256": "df3862cb74a76ad8036996577d05966b1f44f0299b5124f2617f26e52769b6e6",
+    "reason": "Native export succeeded. Model signature check expected 1,2 while exact pinned cap_cmim definition uses PLUS,MINUS. Corrected expected names; native mim_top -> PLUS, mim_btm -> MINUS order unchanged."
+  }
+}

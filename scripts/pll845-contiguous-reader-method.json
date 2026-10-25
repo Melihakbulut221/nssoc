@@ -1,0 +1,66 @@
+{
+  "format": "pll845-exact-reader-storage-adaptation-v1",
+  "parent": "aee7f6a8b051a35bb0eec587d5944895fca5df1d",
+  "protected_files": {
+    "scripts/read_pll845_sparse_completed.py": "d64fe3b401035bac1477ac60804e382f0088a01e32c71c32115948c9edc0567e",
+    "scripts/cloud_pll845_complete_terminal_envelopes.py": "21a75715c524681edcd10c4937e5d7923546232de3ff911fb3c62943743a0766",
+    "scripts/run_cloud_pll865_snapshot.py": "c38656c2e64d5e2ce9902c845020442082b6b605c664644ee1e78ea34195fb9f",
+    "scripts/review_pcie_pll_acquisition_v1.py": "168a1563ed1847e752c67e3058b823200bfe2b3f4e2b345046a0ed13318530db",
+    "scripts/read_pll845_all_native_transient.py": "792c402154e1f3122f6f4f197d721e7e16632dba3dab05e4ac7e705e51922da1",
+    "scripts/pll845_terminal_envelopes.py": "313031d4b7f2eb694c232ba8b1cb53da1b780bbb61b47418d147fa8f8fb22e7a",
+    ".github/workflows/pll845-complete-terminal-envelopes-cloud.yml": "e048eef8e15c3ef8fb77caae3718a3764ad712b113943a14606c6ab030dbdd4a",
+    "scripts/pll845_contiguous_columns.py": "2ef236c006a70c29a2d14c81fe931f5d9778871c8b195304237b9c72c6fc47d4",
+    ".github/workflows/pll845-contiguous-reader-cloud.yml": "b9308910ffe90ac7df81251ad411abf7ee2593a1b73b09c174f356d0d2fd1daf"
+  },
+  "driver_sha256": "e4465f05d0fbfb85fed2f88a8265e28000733c280cb82452b7d98b77b65c6f9d",
+  "reader_edits": [
+    {
+      "before": "        names,values,capture=wave.capture(raw,contract)",
+      "after": "        _phase(\"VALIDATE_EVERY_ORIGINAL_NATIVE_COLUMN\")\n        names,values,capture=wave.capture(raw,contract)"
+    },
+    {
+      "before": "        columns={n:values[:,i]for i,n in enumerate(names)}",
+      "after": "        save()\n        columns=_cached_columns(names,values)"
+    },
+    {
+      "before": "        r['cycle_diagnosis']=pll.acquisition_cycle_diagnosis(columns,result)",
+      "after": "        _phase('FROZEN_CYCLE_DIAGNOSIS')\n        r['cycle_diagnosis']=pll.acquisition_cycle_diagnosis(columns,result)"
+    },
+    {
+      "before": "        chunks=storage.source_member_chunks(manifest,inputs/'part-staging',download,storage.RAW,source['bytes'])",
+      "after": "        _phase('RESTORE_EXACT_COMPLETE_NATIVE_RAW')\n        chunks=storage.source_member_chunks(manifest,inputs/'part-staging',download,storage.RAW,source['bytes'])"
+    },
+    {
+      "before": "        assert raw.stat().st_size==source['bytes']and archive.sha(raw)==source['sha256']",
+      "after": "        _phase('VERIFY_COMPLETE_ORIGINAL_RAW_SHA256')\n        assert raw.stat().st_size==source['bytes']and archive.sha(raw)==source['sha256']"
+    },
+    {
+      "before": "        contract=disk.load_contract(root,prior['preparation']['vectors'])",
+      "after": "        _phase('LOAD_ORIGINAL_READER_CONTRACT')\n        contract=disk.load_contract(root,prior['preparation']['vectors'])"
+    }
+  ],
+  "wrapper_edits": [
+    {
+      "before": "        binding_stage.main()",
+      "after": "        _phase('ORIGINAL_BINDING_AND_CONTROLS')\n        binding_stage.main()"
+    },
+    {
+      "before": "        try: original.main()",
+      "after": "        _phase('FULL_READER_WITH_BYTE_EXACT_COLUMN_COPIES')\n        try: original.main()"
+    },
+    {
+      "before": "        names,values,capture=wave.capture(raw,contract)",
+      "after": "        _phase('REVALIDATE_FULL_NATIVE_CAPTURE_FOR_ENVELOPES')\n        names,values,capture=wave.capture(raw,contract)"
+    },
+    {
+      "before": "        observed=envelope.envelopes(names,values,plan['measurements'])",
+      "after": "        _phase('ALL_SAMPLE_ALL_TERMINAL_ENVELOPES')\n        observed=envelope.envelopes(names,values,plan['measurements'])"
+    }
+  ],
+  "scope": "Source files remain unchanged. Declared execution delta copies eight analyzer vectors into contiguous binary64 arrays after unchanged all5106-column validation; no sample, threshold, native waveform, time window or circuit modification. Full envelope pass remains unchanged.",
+  "original_raw_bytes": 130771392219,
+  "original_rows": 3201410,
+  "original_columns": 5106,
+  "native_activation": false,
+  "actual_full_capture_acceptance": false
+}

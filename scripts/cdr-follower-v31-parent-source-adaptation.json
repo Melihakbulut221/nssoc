@@ -1,0 +1,113 @@
+{
+  "baseline_path": "scripts/cloud_cdr_input_impedance_v30_parent.py",
+  "baseline_sha256": "50cef9efc57c86a4fb2e3264d26566667f37235f61f91de0fdb1d12c0f2caf9b",
+  "candidate_path": "scripts/cloud_cdr_follower_v31_parent.py",
+  "candidate_sha256": "0b50e937ec4d8f431769b713a1273e7845b57af583f34941f5a053f68bb266dc",
+  "edits": [
+    {
+      "before": "OUT=ROOT/'hw/soc/out/cloud-cdr-input-impedance-v30-parent'",
+      "after": "OUT=ROOT/'hw/soc/out/cloud-cdr-follower-v31-parent'",
+      "count": 1
+    },
+    {
+      "before": "LEAF='nssoc_rx_sampler_input_access_layout_v26'",
+      "after": "LEAF='nssoc_cdr_retime_follower_layout_v23'",
+      "count": 1
+    },
+    {
+      "before": "cdr-gain-headroom-v29-parent",
+      "after": "cdr-input-impedance-v30-parent",
+      "count": 2
+    },
+    {
+      "before": "39692037466",
+      "after": "39706018326",
+      "count": 1
+    },
+    {
+      "before": "5e7ab07191831d3f378a7719d355cacc591f76553d5302ce10b53cad21788b6f",
+      "after": "c73830e98e87cbee1d1287c658dd29504e6a04275067b90bea7bd6dfbb4e9ae6",
+      "count": 1
+    },
+    {
+      "before": "PASS_PD476_GAIN_HEADROOM_V29_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+      "after": "PASS_PD476_INPUT_IMPEDANCE_V30_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+      "count": 1
+    },
+    {
+      "before": "c3b2ce62c374a3614c137969ea15fd8c94e839ce2fac3b95c1f39a6f02bdb851",
+      "after": "49914cacf6d66660c7e0373c8a60ce59e0b389c5c86b538daa54a2062324ea42",
+      "count": 1
+    },
+    {
+      "before": "cdr-sampler-input-impedance-v30-physical",
+      "after": "cdr-follower-v31-physical",
+      "count": 2
+    },
+    {
+      "before": "39703416443",
+      "after": "39717037237",
+      "count": 1
+    },
+    {
+      "before": "17dffb1c636237b5dbf154ca393338fd4a9096d7",
+      "after": "9b8c43b1c910765387d7abc83d482c3347333067",
+      "count": 1
+    },
+    {
+      "before": "PASS_INPUT_IMPEDANCE_V30_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES",
+      "after": "PASS_CDR_FOLLOWER_V31_LEAF_PHYSICAL_REQUIRES_PARENT_RC_AND_LOADED_WAVES",
+      "count": 1
+    },
+    {
+      "before": "PASS_INPUT_IMPEDANCE_V30_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWENTY_FAULTS",
+      "after": "PASS_NATIVE_PDK_CDR_FOLLOWER8_DRC_LVS_AND_SEVEN_FAULT_CONTROLS",
+      "count": 1
+    },
+    {
+      "before": ",'primitive-identity.json'",
+      "after": "",
+      "count": 1
+    },
+    {
+      "before": "  ident=json.loads((OUT/'data/primitive-identity.json').read_text())\n  assert ident['unchanged_primitive_drawings']==50 and set(ident['changed_input_and_bias_resistors'])=={'IP','IN','BP','BN'} and len(ident['rejected'])==7\n",
+      "after": "",
+      "count": 1
+    },
+    {
+      "before": "inputs/sampler/",
+      "after": "inputs/rc_retime/",
+      "count": 3
+    },
+    {
+      "before": "manifest['children']['sampler']",
+      "after": "manifest['children']['rc_retime']",
+      "count": 1
+    },
+    {
+      "before": "ROOT/'scripts/repair_cdr_v30_parent_m4_notches.py',ROOT/'scripts/cdr-v30-parent-m4-diagnosis.json',ROOT/'scripts/diagnose_cdr_v30_parent_m4.py',",
+      "after": "",
+      "count": 1
+    },
+    {
+      "before": "generate_cdr_input_impedance_v30_parent.py",
+      "after": "generate_cdr_follower_v31_parent.py",
+      "count": 2
+    },
+    {
+      "before": "   ('metal4_diagnosis',[app,'python',ROOT/'scripts/diagnose_cdr_v30_parent_m4.py','--root',OUT]),\n",
+      "after": "",
+      "count": 1
+    },
+    {
+      "before": "assert len(r['replacement']['changed_reference_devices'])==16",
+      "after": "assert len(r['replacement']['changed_reference_devices'])==4 and r['replacement']['parent_geometry_unchanged']",
+      "count": 1
+    },
+    {
+      "before": "  r.update(status='PASS_PD476_INPUT_IMPEDANCE_V30_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES',\n   sources_unchanged=True,protected_inputs=protected,scope='Sixteen actual input/bias resistor length changes in four samplers (IP/IN2.4um->1.2um and BP/BN2.2um->1.1um; collector loads unchanged); all Nx4 data/hold and Nx2 selectors retained; every original parent polygon, collector/retime trunk, transform and all other children retained; the existing v29 M4 notch fills remain unchanged; eight new measured40nm same-component slots are filled with0.392um2 actual additional metal and no new via contact. Full native DRC/LVS. Requires fresh whole-parent extraction and original complete early/late and fault waveforms.')",
+      "after": "  r.update(status='PASS_PD476_FOLLOWER_SINK_V31_PARENT_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES',\n   sources_unchanged=True,protected_inputs=protected,scope='Four actual follower pull-down resistor lengths4.5um->2.25um in ac/bd only; all fourNx4 follower HBTs, v30samplers and every other device retained. Every original parent polygon, label, transform, collector/retime trunk, historical M4 fill and other child retained. Full native DRC/LVS. Requires fresh whole-parent extraction and original complete early/late and fault waveforms.')",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,346 @@
+{
+  "protected": {
+    "docs/evidence/cdr-v28-native-latch-diagnosis-20261021.json": "cd2709aab4613de92f5335f037aad6106f3d4e6c4b3fc97796cf4415872f2388",
+    "docs/evidence/cdr-input-loading-v28-electrical-rejection-20261021.json": "5b67b494c05443647dbac093045388a122d9858e0cd3774a92c795abf47aa7d0",
+    "docs/evidence/cdr-sampler-input-loading-v28-physical-pass-20261021.json": "65740c87e8d36b42cc141ff9d8e97056cbbb8e8d1ff80bcbd171dfab02c82a2e",
+    "docs/evidence/cdr-v28-native-retime-transfer-20261021.json": "0d407968878a1e627c5e26f9f1b5939ad3a9433eb63bc59424e99f427f0a78e5"
+  },
+  "files": [
+    {
+      "baseline": "hw/soc/analog/pcie/rx_sampler_input_loading_v28.spice",
+      "baseline_sha256": "17a5a52d6be61b4d2fec52ce8a6f2008d1d1ce068d3d4417740cf9c3ca4885fa",
+      "candidate": "hw/soc/analog/pcie/rx_sampler_gain_headroom_v29.spice",
+      "candidate_sha256": "38e71777c11da02176a02308c2ebe99f4c3ab23616bf14b7bfdd0b2f12de06d9",
+      "changes": [
+        {
+          "start": 0,
+          "end": 281,
+          "replacement": "* Candidate v29: six native resistor lengths change relative to measured v28.\n* Four collector loads2.12um ->2.6um; two BP/BN pullups2.4um ->2.2um.\n* IP/IN2.4um, every transistor, bias, source/load/clock and gate retained.\n* Unproven gain/headroom hypothesis; fresh physical and loaded RC proofs required.\n"
+        },
+        {
+          "start": 1007,
+          "end": 1085,
+          "replacement": ".subckt nssoc_cml_latch_gain_headroom_v29 dp dn qp qn cp cn avdd avss sub ref\n"
+        },
+        {
+          "start": 1529,
+          "end": 1623,
+          "replacement": "XRP avdd qp sub rppd w=32u l=2.6u b=0 sw_et=1\nXRN avdd qn sub rppd w=32u l=2.6u b=0 sw_et=1\n"
+        },
+        {
+          "start": 1785,
+          "end": 1825,
+          "replacement": ".ends nssoc_cml_latch_gain_headroom_v29\n"
+        },
+        {
+          "start": 1892,
+          "end": 1970,
+          "replacement": ".subckt nssoc_cml_slave_gain_headroom_v29 dp dn qp qn cp cn avdd avss sub ref\n"
+        },
+        {
+          "start": 2414,
+          "end": 2508,
+          "replacement": "XRP avdd qp sub rppd w=32u l=2.6u b=0 sw_et=1\nXRN avdd qn sub rppd w=32u l=2.6u b=0 sw_et=1\n"
+        },
+        {
+          "start": 2669,
+          "end": 2709,
+          "replacement": ".ends nssoc_cml_slave_gain_headroom_v29\n"
+        },
+        {
+          "start": 2710,
+          "end": 2794,
+          "replacement": ".subckt nssoc_rx_sampler_gain_headroom_v29 dp dn qp qn clkp clkn avdd avss sub iref\n"
+        },
+        {
+          "start": 2933,
+          "end": 3023,
+          "replacement": "XBP avdd lp sub rppd w=4u l=2.2u b=0 sw_et=1\nXBN avdd ln sub rppd w=4u l=2.2u b=0 sw_et=1\n"
+        },
+        {
+          "start": 3100,
+          "end": 3297,
+          "replacement": "XM lp ln mp mn clkn clkp avdd avss sub iref nssoc_cml_latch_gain_headroom_v29\nXS mp mn qp qn clkp clkn avdd avss sub iref nssoc_cml_slave_gain_headroom_v29\n.ends nssoc_rx_sampler_gain_headroom_v29\n"
+        }
+      ]
+    },
+    {
+      "baseline": "hw/soc/flow/make_pcie_sampler_input_loading_v28.py",
+      "baseline_sha256": "e3e7c36f49e0ecbbc2552c25256281f079fe7ee4c93540a0a047a02e651eb82e",
+      "candidate": "hw/soc/flow/make_pcie_sampler_gain_headroom_v29.py",
+      "candidate_sha256": "96b8e0391e3a15032d757e8997aa988a0ee9cb05b0276618cb9e9330ccf3103f",
+      "changes": [
+        {
+          "start": 457,
+          "end": 607,
+          "replacement": "CIRCUIT = \"hw/soc/analog/pcie/rx_sampler_gain_headroom_v29.spice\"\nCIRCUIT_SHA256 = \"38e71777c11da02176a02308c2ebe99f4c3ab23616bf14b7bfdd0b2f12de06d9\"\n"
+        },
+        {
+          "start": 915,
+          "end": 994,
+          "replacement": "        raise ValueError(\"Sampler circuit differs from the frozen v29 source\")\n"
+        },
+        {
+          "start": 2602,
+          "end": 2668,
+          "replacement": "    expand(\"NSSOC_RX_SAMPLER_GAIN_HEADROOM_V29\", list(PORTS), \"\")\n"
+        },
+        {
+          "start": 11281,
+          "end": 11399,
+          "replacement": "    assert source_layout['source_circuit_sha256']=='17a5a52d6be61b4d2fec52ce8a6f2008d1d1ce068d3d4417740cf9c3ca4885fa'\n"
+        },
+        {
+          "start": 11584,
+          "end": 11619,
+          "replacement": "    selected={'BP':(4,2.4,2.2),'BN':(4,2.4,2.2),**{n:(32,2.12,2.6)for n in ('M_RP','M_RN','S_RP','S_RN')}}\n"
+        },
+        {
+          "start": 11825,
+          "end": 11953,
+          "replacement": "            width,previous,candidate=selected[name]\n            assert old['kind']=='resistor'and old['width_um']==width and old['length_um']==previous\n            expected['length_um']=candidate\n"
+        },
+        {
+          "start": 13288,
+          "end": 13502,
+          "replacement": "       original_37_primitive_positions_preserved=True,changed_gain_and_bias_resistor_lengths=sorted(selected),\n       cost_metadata_scope='Inherited v28 planning metadata; no new placement optimization claimed.')\n"
+        }
+      ]
+    },
+    {
+      "baseline": "hw/soc/flow/check_pcie_sampler_input_loading_v28.py",
+      "baseline_sha256": "0b97a4741c5d190929dc019ef2c4ffd36b4080b3fd9543ca1228dc713932ead4",
+      "candidate": "hw/soc/flow/check_pcie_sampler_gain_headroom_v29.py",
+      "candidate_sha256": "d1e797305811313410f5e82be342548ff75d0ba1b75959757d09a2b8817ee9f8",
+      "changes": [
+        {
+          "start": 433,
+          "end": 552,
+          "replacement": "from make_pcie_sampler_gain_headroom_v29 import CIRCUIT, CIRCUIT_SHA256, PORTS, TOP, physical_reference, use_direction\n"
+        },
+        {
+          "start": 1183,
+          "end": 1288,
+          "replacement": "        \"wrong_bias_length\": (\"RBP AVDD LP BULK rppd w=4u l=2.2u\", \"RBP AVDD LP BULK rppd w=4u l=0.9u\"),\n"
+        },
+        {
+          "start": 1390,
+          "end": 1598,
+          "replacement": "        \"old_bias_width\": (\"RBP AVDD LP BULK rppd w=4u l=2.2u\", \"RBP AVDD LP BULK rppd w=1u l=2.2u\"),\n        \"wrong_load\": (\"RM_RP AVDD MP BULK rppd w=32u l=2.6u\", \"RM_RP AVDD MP BULK rppd w=32u l=2.04u\"),\n"
+        },
+        {
+          "start": 15355,
+          "end": 15466,
+          "replacement": "        record[\"status\"] = \"PASS_GAIN_HEADROOM_V29_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWENTY_FAULTS\"\n"
+        }
+      ]
+    },
+    {
+      "baseline": "scripts/check_cdr_sampler_input_loading_v28_geometry.py",
+      "baseline_sha256": "bf9946111853ca1a46b9421d217d4cc6ddb0afe3e24babad0afe0a2843677664",
+      "candidate": "scripts/check_cdr_sampler_gain_headroom_v29_geometry.py",
+      "candidate_sha256": "7240a893b53bf90dfe734a8a13cafb843b1e80ee3a89deeeffd60c70f38fefe2",
+      "changes": [
+        {
+          "start": 423,
+          "end": 463,
+          "replacement": "RESISTOR_CHANGES={'BP':(4,2.4,2.2),'BN':(4,2.4,2.2),**{n:(32,2.12,2.6)for n in ('M_RP','M_RN','S_RP','S_RN')}}\nCHANGED_RESISTORS=set(RESISTOR_CHANGES)\n"
+        },
+        {
+          "start": 934,
+          "end": 1071,
+          "replacement": "            width,previous,candidate=RESISTOR_CHANGES[name]\n            assert x[name]['length_um']==previous and y[name]['length_um']==candidate\n            assert x[name]['width_um']==y[name]['width_um']==width\n"
+        },
+        {
+          "start": 1366,
+          "end": 1578,
+          "replacement": "    assert a['source_circuit_sha256']=='17a5a52d6be61b4d2fec52ce8a6f2008d1d1ce068d3d4417740cf9c3ca4885fa'\n    assert b['source_circuit_sha256']=='38e71777c11da02176a02308c2ebe99f4c3ab23616bf14b7bfdd0b2f12de06d9'\n"
+        },
+        {
+          "start": 4254,
+          "end": 4358,
+          "replacement": "    # Exactly six collector/bias resistor PCells must change; all other primitive drawings stay identical.\n"
+        },
+        {
+          "start": 5884,
+          "end": 5995,
+          "replacement": "        _,previous,candidate=RESISTOR_CHANGES[name]\n        expected=''.join(line.replace(f'l={previous:g}u',f'l={candidate:g}u')if line.startswith(anchor)else line for line in lines)\n"
+        },
+        {
+          "start": 7770,
+          "end": 8089,
+          "replacement": "    altered=copy.deepcopy(all_data[1]);next(d for d in altered['instances']if d['name']=='M_RP')['length_um']=2.12\n    try:check_records(all_data[0],altered)\n    except AssertionError:faults.append('old_collector_length')\n    else:raise AssertionError('Unchanged collector resistor length accepted')\n    assert len(faults)==7\n    r=dict(status='PASS_EXACT_SIX_GAIN_BIAS_LENGTH_CHANGES_AND48_UNCHANGED_NATIVE_DRAWINGS',\n        inputs=inputs,primitive_count=54,changed_gain_and_bias_resistors=sorted(CHANGED_RESISTORS),\n        resistor_length_changes=RESISTOR_CHANGES,unchanged_primitive_drawings=48,rejected=faults,\n"
+        }
+      ]
+    },
+    {
+      "baseline": "scripts/cloud_cdr_sampler_input_loading_v28_physical.py",
+      "baseline_sha256": "003ee22c24ef143682ffd040aabd6c08ab138f2f7ddca6959d5483106c6fdea0",
+      "candidate": "scripts/cloud_cdr_sampler_gain_headroom_v29_physical.py",
+      "candidate_sha256": "93a7ad0606434f65810d1b658ba3142c23f5d8f1019d18fefdefe178db6a215c",
+      "changes": [
+        {
+          "start": 403,
+          "end": 470,
+          "replacement": "OUT=ROOT/'hw/soc/out/cloud-cdr-sampler-gain-headroom-v29-physical'\n"
+        },
+        {
+          "start": 772,
+          "end": 1172,
+          "replacement": "           scope='Six collector/bias resistor lengths change relative to measured v28: M_RP/M_RN/S_RP/S_RN2.12um to2.6um and BP/BN2.4um to2.2um. All48 other primitive drawings/parameters, original positions/ports and transistor sizes retained. Fresh54-device DRC/deep-flatLVS/LEF with20faults including wrong input and bias lengths. Requires fresh parent RC and original full loaded gates; not electrical acceptance.')\n"
+        },
+        {
+          "start": 1267,
+          "end": 2340,
+          "replacement": "        analog=ROOT/'hw/soc/analog/pcie/rx_sampler_gain_headroom_v29.spice'\n        assert sha(analog)=='38e71777c11da02176a02308c2ebe99f4c3ab23616bf14b7bfdd0b2f12de06d9'\n        assert sha(ROOT/'hw/soc/flow/make_pcie_sampler_gain_headroom_v29.py')=='96b8e0391e3a15032d757e8997aa988a0ee9cb05b0276618cb9e9330ccf3103f'\n        paths=[Path(__file__),analog,*[ROOT/p for p in ('hw/soc/flow/make_pcie_sampler_compact_v1.py','hw/soc/flow/make_pcie_sampler_gain_headroom_v29.py','hw/soc/flow/check_pcie_sampler_compact_v1.py','hw/soc/flow/check_pcie_sampler_gain_headroom_v29.py','scripts/check_cdr_sampler_gain_headroom_v29_sources.py','scripts/cdr-sampler-gain-headroom-v29-source-delta.json','hw/soc/flow/check_pcie_sampler_left_v1.py','scripts/check_cdr_sampler_gain_headroom_v29_geometry.py')]]\n        subprocess.run([sys.executable,ROOT/'scripts/check_cdr_sampler_gain_headroom_v29_sources.py'],check=True)\n        paths.extend([ROOT/'docs/evidence/cdr-v28-native-latch-diagnosis-20261021.json',ROOT/'docs/evidence/cdr-input-loading-v28-electrical-rejection-20261021.json'])\n"
+        },
+        {
+          "start": 5475,
+          "end": 5914,
+          "replacement": "        baseline_pin=json.loads((ROOT/'docs/evidence/cdr-sampler-input-loading-v28-physical-pass-20261021.json').read_text())\n        assert baseline_pin['run']==39557261382 and baseline_pin['source_head']=='4e8f6193d1173dc4027cbba4934444c772428578'\n        assert baseline_pin['group']=='cdr-sampler-input-loading-v28-physical'\n        assert baseline_pin['summary_sha256']=='ce6909069a755465caece6c2d600fb7f7de0ad06a4734a5ad8486471751b21fd'\n"
+        },
+        {
+          "start": 6456,
+          "end": 7046,
+          "replacement": "          ('generation',[app,'python',ROOT/'hw/soc/flow/make_pcie_sampler_gain_headroom_v29.py','--pdk',ROOT/'pdk','--out',OUT/'layout','--placement-baseline',OUT/'baseline/layout/result.json']),\n          ('primitive_identity',[app,'python',ROOT/'scripts/check_cdr_sampler_gain_headroom_v29_geometry.py','--baseline',OUT/'baseline/layout','--candidate',OUT/'layout','--output',OUT/'primitive-identity.json']),\n          ('physical',[sys.executable,ROOT/'hw/soc/flow/check_pcie_sampler_gain_headroom_v29.py','--layout',OUT/'layout','--pdk',ROOT/'pdk','--out',OUT/'physical','--app',app])]:\n"
+        },
+        {
+          "start": 7479,
+          "end": 7598,
+          "replacement": "        assert physical['status']=='PASS_GAIN_HEADROOM_V29_SAMPLER54_UNSIMPLIFIED_DEEP_FLAT_DRC_LEF_AND_TWENTY_FAULTS'\n"
+        },
+        {
+          "start": 7663,
+          "end": 7797,
+          "replacement": "        r.update(status='PASS_GAIN_HEADROOM_V29_SAMPLER54_PHYSICAL_REQUIRES_FRESH_PARENT_RC_AND_LOADED_WAVES',sources_unchanged=True)\n"
+        }
+      ]
+    },
+    {
+      "baseline": ".github/workflows/cdr-sampler-input-loading-v28-physical-cloud.yml",
+      "baseline_sha256": "ac3f9e362f189c27c6d80c58beba918762c5e1248a3cef0a50bcc9dfe3007972",
+      "candidate": ".github/workflows/cdr-sampler-gain-headroom-v29-physical-cloud.yml",
+      "candidate_sha256": "9c0c5a23347882fc300df2fbd10d1cbd7c798e83ec6f4146dbe77ffec5604a5b",
+      "changes": [
+        {
+          "start": 182,
+          "end": 233,
+          "replacement": "name: cdr-sampler-gain-headroom-v29-physical-cloud\n"
+        },
+        {
+          "start": 286,
+          "end": 366,
+          "replacement": "    paths: [.github/workflows/cdr-sampler-gain-headroom-v29-physical-cloud.yml]\n"
+        },
+        {
+          "start": 430,
+          "end": 496,
+          "replacement": "  group: cdr-sampler-gain-headroom-v29-physical-${{ github.ref }}\n"
+        },
+        {
+          "start": 954,
+          "end": 1259,
+          "replacement": "        run: python3 -m py_compile scripts/cloud_cdr_sampler_gain_headroom_v29_physical.py hw/soc/flow/make_pcie_sampler_gain_headroom_v29.py hw/soc/flow/check_pcie_sampler_gain_headroom_v29.py scripts/check_cdr_sampler_gain_headroom_v29_geometry.py scripts/check_cdr_sampler_gain_headroom_v29_sources.py\n"
+        },
+        {
+          "start": 1362,
+          "end": 1438,
+          "replacement": "        run: python3 scripts/check_cdr_sampler_gain_headroom_v29_sources.py\n"
+        },
+        {
+          "start": 2199,
+          "end": 2276,
+          "replacement": "        run: python3 scripts/cloud_cdr_sampler_gain_headroom_v29_physical.py\n"
+        },
+        {
+          "start": 2438,
+          "end": 2509,
+          "replacement": "          root=hw/soc/out/cloud-cdr-sampler-gain-headroom-v29-physical\n"
+        },
+        {
+          "start": 2697,
+          "end": 2788,
+          "replacement": "          stem=\"cdr-sampler-gain-headroom-v29-physical-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT\"\n"
+        },
+        {
+          "start": 3087,
+          "end": 3289,
+          "replacement": "          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','cdr-sampler-gain-headroom-v29-physical',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)\n"
+        },
+        {
+          "start": 3514,
+          "end": 3663,
+          "replacement": "          name: cdr-sampler-gain-headroom-v29-physical-${{ github.run_id }}\n          path: hw/soc/out/cloud-cdr-sampler-gain-headroom-v29-physical/\n"
+        },
+        {
+          "start": 3693,
+          "end": 3780,
+          "replacement": "# Preserve actual v28 primitive positions and ports; never relax body-contact spacing.\n"
+        }
+      ]
+    },
+    {
+      "baseline": "scripts/check_cdr_sampler_input_loading_v28_sources.py",
+      "baseline_sha256": "c587a481e3a8ff028c5883a4660450524193a8e980a5b82192b8d5c5b2d9c993",
+      "candidate": "scripts/check_cdr_sampler_gain_headroom_v29_sources.py",
+      "candidate_sha256": "34a90804e6a77ad1166774d375921b6ab6346aae1d0672e40cc55d3d1538b80c",
+      "changes": [
+        {
+          "start": 61,
+          "end": 151,
+          "replacement": "\"\"\"Bind six real collector/bias resistor changes while retaining original physical gates.\"\"\"\n"
+        },
+        {
+          "start": 290,
+          "end": 381,
+          "replacement": "m=json.loads((root/'scripts/cdr-sampler-gain-headroom-v29-source-delta.json').read_text())\n"
+        },
+        {
+          "start": 955,
+          "end": 1111,
+          "replacement": "old=(root/'hw/soc/analog/pcie/rx_sampler_input_loading_v28.spice').read_text()\nnew=(root/'hw/soc/analog/pcie/rx_sampler_gain_headroom_v29.spice').read_text()\n"
+        },
+        {
+          "start": 1325,
+          "end": 1547,
+          "replacement": "    renamed=before.replace('input_loading_v28','gain_headroom_v29')\n    if renamed.startswith(('XRP ','XRN ')):\n        assert ' w=32u l=2.12u 'in renamed and after==renamed.replace(' l=2.12u ',' l=2.6u ');count+=1\n    elif renamed.startswith(('XBP ','XBN ')):\n        assert ' w=4u l=2.4u 'in renamed and after==renamed.replace(' l=2.4u ',' l=2.2u ');count+=1\n"
+        },
+        {
+          "start": 1578,
+          "end": 1766,
+          "replacement": "assert count==6\nprior=runpy.run_path(str(root/'hw/soc/flow/make_pcie_sampler_input_loading_v28.py'))\ncandidate=runpy.run_path(str(root/'hw/soc/flow/make_pcie_sampler_gain_headroom_v29.py'))\n"
+        },
+        {
+          "start": 1844,
+          "end": 1844,
+          "replacement": "changes={'BP':(4,2.4,2.2),'BN':(4,2.4,2.2),**{n:(32,2.12,2.6)for n in ('M_RP','M_RN','S_RP','S_RN')}}\n"
+        },
+        {
+          "start": 1909,
+          "end": 2091,
+          "replacement": "    if x['name']in changes:\n        width,before,after=changes[x['name']]\n        assert x['kind']=='resistor'and x['width_um']==width and x['length_um']==before\n        expected['length_um']=after;changed.append(x['name'])\n"
+        },
+        {
+          "start": 2156,
+          "end": 2202,
+          "replacement": "assert set(changed)==set(changes)\n"
+        },
+        {
+          "start": 2408,
+          "end": 2455,
+          "replacement": "assert reference.count('rppd w=4u l=2.4u ')==2\nassert reference.count('rppd w=4u l=2.2u ')==2\nassert reference.count('rppd w=32u l=2.6u ')==4\n"
+        },
+        {
+          "start": 2498,
+          "end": 2680,
+          "replacement": "physical=runpy.run_path(str(root/'hw/soc/flow/check_pcie_sampler_gain_headroom_v29.py'))\nprior_physical=runpy.run_path(str(root/'hw/soc/flow/check_pcie_sampler_input_loading_v28.py'))\n"
+        },
+        {
+          "start": 2958,
+          "end": 3060,
+          "replacement": "print('PASS_EXACT_SIX_GAIN_BIAS_LENGTH_CHANGES_UNCHANGED48_PRIMITIVES_AND_ORIGINAL_PHYSICAL_GATES')\n"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,132 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: corrpre-banked-placement-cloud
+run-name: "corrpre-banked-placement-cloud / boot ${{ inputs.boot_run || 'controls' }}"
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths:
+      - .github/workflows/corrpre-banked-placement-cloud.yml
+      - scripts/check_pcie_banked_boot_source.py
+      - scripts/preserve_corrpre_pcie_mbist_boot_evidence.py
+      - scripts/cloud_corrpre_mbist_placement.py
+  workflow_dispatch:
+    inputs:
+      boot_run:
+        description: Completed banked-RTL native boot run
+        required: true
+        type: string
+      boot_head:
+        description: Exact source commit of completed boot
+        required: true
+        type: string
+      boot_artifact:
+        description: Original full native boot artifact ID
+        required: true
+        type: string
+      boot_zip_sha256:
+        description: SHA256 of original artifact zip
+        required: true
+        type: string
+      protocol_run:
+        description: Successful native protocol run using identical RTL
+        required: true
+        type: string
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: corrpre-banked-placement-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check cloud source and physical continuation syntax
+        run: |
+          python3 -m py_compile scripts/check_pcie_banked_boot_source.py scripts/preserve_corrpre_pcie_mbist_boot_evidence.py scripts/cloud_corrpre_mbist_placement.py scripts/cloud_tx_tree32_wave.py scripts/cloud_tx_tree32_clock_adapter.py scripts/cloud_tx_tree32_firstclock.py
+  archive-completed-evidence:
+    if: github.event_name == 'workflow_dispatch'
+    needs: controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Bind all six bank proofs and native protocol to exact boot RTL
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BOOT_RUN: ${{ inputs.boot_run }}
+          BOOT_HEAD: ${{ inputs.boot_head }}
+          BOOT_ARTIFACT: ${{ inputs.boot_artifact }}
+          BOOT_ZIP_SHA256: ${{ inputs.boot_zip_sha256 }}
+          PROTOCOL_RUN: ${{ inputs.protocol_run }}
+        run: |
+          python3 scripts/check_pcie_banked_boot_source.py --boot-run "$BOOT_RUN" --boot-head "$BOOT_HEAD" --artifact "$BOOT_ARTIFACT" --zip-sha256 "$BOOT_ZIP_SHA256" --protocol-run "$PROTOCOL_RUN" --out banked-boot-source.json
+      - name: Preserve exact completed artifact and inspect actual verdicts
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/preserve_corrpre_pcie_mbist_boot_evidence.py --source-spec banked-boot-source.json
+      - name: Publish original archive and source-bound receipt
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p cloud-corrpre-pcie-mbist-boot-evidence
+          if [ ! -f cloud-corrpre-pcie-mbist-boot-evidence/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > cloud-corrpre-pcie-mbist-boot-evidence/result.json
+          fi
+          stem="corrpre-pcie-mbist-boot-evidence-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-corrpre-pcie-mbist-boot-evidence/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory cloud-corrpre-pcie-mbist-boot-evidence --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','corrpre-pcie-mbist-boot-evidence',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Prepare exact physical runtime
+        run: |
+          python3 -m py_compile scripts/cloud_corrpre_mbist_placement.py
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
+      - name: Native floorplan placement and CTS of exact boot-proven netlist
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_corrpre_mbist_placement.py --source-spec banked-boot-source.json
+      - name: Preserve native stage and failures permanently
+        if: always()
+        id: publish_native
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p hw/soc/out/cloud-corrpre-mbist-placement
+          if [ ! -f hw/soc/out/cloud-corrpre-mbist-placement/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > hw/soc/out/cloud-corrpre-mbist-placement/result.json
+          fi
+          stem="corrpre-banked-placement-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp hw/soc/out/cloud-corrpre-mbist-placement/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory hw/soc/out/cloud-corrpre-mbist-placement --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','corrpre-banked-placement',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence if permanent publication fails
+        if: always() && steps.publish_native.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: corrpre-mbist-placement-${{ github.run_id }}
+          retention-days: 30
+          path: hw/soc/out/cloud-corrpre-mbist-placement/

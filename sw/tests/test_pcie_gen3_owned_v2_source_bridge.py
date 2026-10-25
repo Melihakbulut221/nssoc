@@ -1,0 +1,45 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""The portability revision may only move declarations and rename modules."""
+
+import hashlib
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[2]
+SOURCES = {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_owned_v1.v": "1db1bb426126bc4adb63e32e155d0d1e8013dad1cb274a087aebe0f7cf4dc11a",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_owned_v1.v": "1847a5d2051a7a608364c82b0871bf26b879dcd82ede99d1faa4638f554eee4d",
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_owned_v1": "0e5026b6ed1bf3ccba403485df999fa6c46e78d6c2516ff40a17fe3784167c76",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_owned_v1.py": "f6ff16859c9f55572849989327663e0aaccc8ba4f702717edf2fccb58d611bcd",
+    "scripts/check_pcie_gen3_continuous_rx_owned_v1.py": "b0b588f1d98e5899d3f1e641199434b87a8d1d0dc106082f2402f87ee597ee48",
+    "sw/tests/test_pcie_gen3_continuous_rx_owned_v1.py": "63b91a5d95f5d168e84cf6e74c4e0a1300480b53a3b3be69d707a36ad5bcb9f2",
+    "sw/tests/test_pcie_gen3_owned_runner_lifecycle_v1.py": "8890c558c7b1320bd4f1c4df0ab487ea784a850f1880a3e17c611513f8b60fec",
+}
+DECLARATIONS = """ reg output_valid;
+ reg [127:0] output_data;
+ reg [15:0] output_keep,output_sop,output_eop,output_dllp;
+ reg [47:0] output_sequence;
+ reg error_pulse,overflow_sticky;
+ wire enabled=rst_ni && !flush_i && !stream_start_i && !stream_abort_i;
+"""
+
+
+def test_exact_parent_source_and_declaration_only_revision():
+    for name, digest in SOURCES.items():
+        original_path = ROOT / name
+        if name.endswith("framer_rx_owned_v1.v"):
+            original_path = ROOT / "hw/soc/pcie-evidence/20261004-owned-portability/prior-sources/framer-owned-v1-original.v.txt"
+        prior = original_path.read_bytes()
+        assert hashlib.sha256(prior).hexdigest() == digest
+        new_name = name.replace("owned_v1", "owned_v2").replace(
+            "lifecycle_v1", "lifecycle_v2"
+        )
+        expected = prior.decode().replace("owned_v1", "owned_v2")
+        if name.endswith("framer_rx_owned_v1.v"):
+            assert expected.count(DECLARATIONS) == 1
+            expected = expected.replace(DECLARATIONS, "").replace(
+                " // Each live identity", DECLARATIONS + " // Each live identity", 1
+            )
+        assert (ROOT / new_name).read_text() == expected
+        if name.endswith("framer_rx_owned_v1.v"):
+            assert (ROOT / name).read_text() == expected.replace("owned_v2", "owned_v1")

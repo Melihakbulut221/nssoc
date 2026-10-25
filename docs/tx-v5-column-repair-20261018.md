@@ -1,0 +1,5 @@
+# TX column-only routing repair
+
+Original full loaded return64 capture39087664998 remains rejected:227/768 wrong output signs and28HBT minimum-VCE failures. The verified layout spans4698.785 by9902.93um;60 intermacro signal routes total104983.2um, maximum3538.8um. Actual low-stage cells are353.985 by592.04um. Thus row compression to422um is invalid;600um is retained.
+
+The new physical candidate reduces only parent column pitch1000 to700um. Actual child widths plus300um reserved channels fit; the existing generator enforces both row and column bounds. It preserves all source devices/connections, native child drawing regions, full32 selector truth table, 64um AVSS widths, source clock mapping and original acceptance thresholds. Expected route reduction is18000um total and300um maximum. Native geometry must confirm that change, then full DRC/LVS and fault controls must pass. No RC element is scaled, and old extracted RC/waves cannot accept this geometry. Fresh extraction/composition/full native loaded gates are mandatory before any electrical improvement claim.

@@ -1,0 +1,91 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-rejected-capture-readback-cloud
+on:
+  push:
+    branches: [codex/tx-clock-phase-parent]
+    paths:
+      - scripts/cloud_tx_phase_rejected_capture_readback.py
+      - scripts/tx-phase-rejected-capture-readback-methods.json
+      - .github/workflows/tx-phase-rejected-capture-readback-cloud.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: tx-phase-rejected-capture-readback
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Reject damaged raw, archive and acceptance laundering
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/cloud_tx_phase_rejected_capture_readback.py --controls | tee controls.json
+          python3 - <<'PYCODE'
+          import json
+          d=json.load(open('controls.json'))
+          assert d['status']=='PASS_REJECTED_CAPTURE_READER_CONTROLS_NO_NATIVE'
+          assert len(d['negative_controls'])==13 and not d['native_execution']
+          assert len(d['archive_controls']['negative_controls'])==8
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: rejected-capture-controls-${{ github.run_id }}
+          path: controls.json
+          retention-days: 30
+  full-capture-readback:
+    if: github.event_name == 'workflow_dispatch'
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Observe all original columns and unchanged gates without executing DUT
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/cloud_tx_phase_rejected_capture_readback.py --readback
+      - name: Publish diagnostic result while preserving original rejected evidence
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import json,os,pathlib,subprocess,sys
+          root=pathlib.Path('hw/soc/out/cloud-tx-phase-rejected-capture-readback')
+          root.mkdir(parents=True,exist_ok=True)
+          p=root/'result.json'
+          if not p.exists():p.write_text(json.dumps(dict(status='FAIL_MISSING_READBACK',original_native_accepted=False,full_PHY_accepted=False))+'\n')
+          group='tx-phase-rejected-capture-readback';stem=group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+          summary=pathlib.Path(stem+'.summary.json');summary.write_bytes(p.read_bytes())
+          subprocess.run([sys.executable,'scripts/cloud_chunked_results.py','--directory',str(root),'--stem',stem],check=True)
+          manifest=pathlib.Path(stem+'.parts.json');d=json.loads(manifest.read_text())
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,str(summary),str(manifest),*[x['name']for x in d['parts']]],check=True)
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: rejected-capture-readback-${{ github.run_id }}
+          path: hw/soc/out/cloud-tx-phase-rejected-capture-readback/result.json
+          retention-days: 30

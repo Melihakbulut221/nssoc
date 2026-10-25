@@ -1,0 +1,162 @@
+{
+  "status": "PASS_SOURCE_ONLY_DIVIDER_V7_WIRE_RC",
+  "freeze": {
+    "bytes": 302743,
+    "sha256": "d84e336d75a2578cd0e41967ba4dd1b924c885a502314179186c5123bed95f69"
+  },
+  "findings": [],
+  "source_pins_rehashed": 1419,
+  "full_inverse_bridges": [
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-wire-rc-v1-20261005/run_native_rc.py",
+        "bytes": 7805,
+        "sha256": "1d75d4a3f513c1d6c552ff3ad5c464e8c478dc6fbc1bd8b48198239f50ea6838"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-rc-v1-20261006/run_native_rc.py",
+        "bytes": 7838,
+        "sha256": "7bd38a95906f93a77a5cdef5f03638c93e9974bc456adf3149d7d05ddc3d8a8f"
+      },
+      "edits": [
+        {
+          "tag": "replace",
+          "before": "GEOMETRY = B.parent / 'pcie-divider-v7-wire-v5-20261005'\nO = Path('/dev/shm/nssoc-div4-v7-wire-rc-01')\nW = Path('/dev/shm/nssoc-div4-v7-wire-geometry-05/wires.gds')\n",
+          "after": "GEOMETRY = B.parent / 'pcie-divider-v7-power-v2-wire-v2-20261006'\nO = Path('/dev/shm/nssoc-div4-v7-power-v2-wire-rc-01')\nW = Path('/dev/shm/nssoc-div4-v7-power-v2-wire-geometry-02/wires.gds')\n"
+        },
+        {
+          "tag": "replace",
+          "before": "            ('mutations', [AUDIT_PYTHON, B / 'check_native_mutations.py'], B),\n",
+          "after": "            ('mutations', [AUDIT_PYTHON, B / 'check_native_mutations_v2.py'], B),\n"
+        },
+        {
+          "tag": "replace",
+          "before": "                assert json.loads((B / 'native-mutations.json').read_text())['status'] == 'PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS'\n",
+          "after": "                assert json.loads((B / 'native-mutations-v2.json').read_text())['status'] == 'PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS'\n"
+        }
+      ]
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-wire-rc-v1-20261005/audit_wire_rc.py",
+        "bytes": 12297,
+        "sha256": "cef33d8e1532b5a79a2c4746b0cdd0691c84cd6c3f4fb2b057c51e3bc0f55e37"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-rc-v1-20261006/audit_wire_rc.py",
+        "bytes": 12306,
+        "sha256": "ed683eb1c6174338a4e42ca5f29535745bf7e80cbeb3d03abb51f47857d24bc9"
+      },
+      "edits": [
+        {
+          "tag": "replace",
+          "before": "GEOMETRY=B.parent/'pcie-divider-v7-wire-v5-20261005'\n",
+          "after": "GEOMETRY=B.parent/'pcie-divider-v7-power-v2-wire-v2-20261006'\n"
+        }
+      ]
+    },
+    {
+      "before": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-wire-rc-v1-20261005/check_native_mutations_v2.py",
+        "bytes": 4999,
+        "sha256": "fcee62ef701e859e1f440fde40f4aae98d8a67927d0c0e3b9b2a713bc97aa2e2"
+      },
+      "after": {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-power-v2-wire-rc-v1-20261006/check_native_mutations_v2.py",
+        "bytes": 6776,
+        "sha256": "2970f670dfe52f2d71e5038893d019422912a67e966934fba38303bdd6d92e91"
+      },
+      "edits": [
+        {
+          "tag": "replace",
+          "before": "B=Path(__file__).resolve().parent;P=Path('/dev/shm/nssoc-div4-v7-wire-rc-01')\n",
+          "after": "B=Path(__file__).resolve().parent;P=Path('/dev/shm/nssoc-div4-v7-power-v2-wire-rc-01')\n"
+        },
+        {
+          "tag": "insert",
+          "before": "",
+          "after": "# Select an actual unique resistor bridge that separates real geometry probes.\n# The physical overlay may change export ordering; reject an actual open, not\n# merely a missing bookkeeping row. No extraction or geometry is modified.\nassert nx.number_connected_components(graph)==37\nbridge_edges={frozenset(e) for e in nx.bridges(graph)}\nresistor_rows=[(i,line.split()) for i,line in enumerate(rows) if line.startswith('R') and len(line.split())==4]\nchosen=None\nfor i,f in resistor_rows:\n if frozenset(f[1:3]) not in bridge_edges:continue\n if sum(frozenset(g[1:3])==frozenset(f[1:3]) for _,g in resistor_rows)!=1:continue\n trial=graph.copy();trial.remove_edge(f[1],f[2])\n left=set(nx.node_connected_component(trial,f[1]));right=set(nx.node_connected_component(trial,f[2]))\n if not (left&set(anchor) and right&set(anchor)):continue\n assert nx.number_connected_components(trial)==38\n assert {anchor[n] for n in (left|right)&set(anchor)}=={owner[f[1]]}\n chosen=(i,f,left,right);break\nassert chosen is not None,'No meaningful actual unique bridge joining real probes'\nri,rf,left,right=chosen\ndropped_resistor_rows=rows.copy();del dropped_resistor_rows[ri]\nbridge_control=dict(raw_line=rows[ri],endpoints=rf[1:3],physical_component=owner[rf[1]],\n original_components=37,mutated_components=38,\n left_real_probes=sorted(left&set(anchor)),right_real_probes=sorted(right&set(anchor)))\n"
+        },
+        {
+          "tag": "insert",
+          "before": "",
+          "after": "assert anchor['P004']!=anchor['P005'],'Actual short control must cross conductors'\nci,cf=next((i,line.split()) for i,line in enumerate(rows) if line.startswith('C') and len(line.split())==4 and line.split()[2]!='sub')\nassert owner[cf[1]]!=owner[cf[2]] and Decimal(cf[3])!=Decimal('1e-12')\ndropped_cap_rows=rows.copy();del dropped_cap_rows[ci]\nchanged_cap_rows=rows.copy();changed_cap_rows[ci]=' '.join([*cf[:3],'1e-12'])\n"
+        },
+        {
+          "tag": "replace",
+          "before": " ('dropped_resistor',{'wires.spice':re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)},'Physical wire R graph open or incomplete'),\n",
+          "after": " ('dropped_resistor',{'wires.spice':'\\n'.join(dropped_resistor_rows)+'\\n'},'Physical wire R graph open or incomplete'),\n"
+        },
+        {
+          "tag": "replace",
+          "before": " ('dropped_cap',{'wires.spice':re.sub(r'^C\\d+ .*\\n','',text,count=1,flags=re.M)},'Mutual C native attachment changed'),\n ('changed_cap',{'wires.spice':re.sub(r'^(C\\d+ \\S+ \\S+) \\S+$',r'\\1 1e-12',text,count=1,flags=re.M)},'Mutual C native value changed'),\n",
+          "after": " ('dropped_cap',{'wires.spice':'\\n'.join(dropped_cap_rows)+'\\n'},'Mutual C native attachment changed'),\n ('changed_cap',{'wires.spice':'\\n'.join(changed_cap_rows)+'\\n'},'Mutual C native value changed'),\n"
+        },
+        {
+          "tag": "replace",
+          "before": "r=dict(status='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS',positive_status=positive['status'],cases=results,seconds=time.monotonic()-start,inputs={str(p):m.pin(p) for p in [Path(__file__),B/'audit_wire_rc.py',m.PRIOR,m.GEOMETRY/'anchors.json',*[P/n for n in ('bank_wires.ext','bank_wires.res.ext','native.log','wires.spice','baseline.spice')]]})\n",
+          "after": "r=dict(status='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS',positive_status=positive['status'],actual_open_control=bridge_control,cases=results,seconds=time.monotonic()-start,inputs={str(p):m.pin(p) for p in [Path(__file__),B/'audit_wire_rc.py',m.PRIOR,m.GEOMETRY/'anchors.json',*[P/n for n in ('bank_wires.ext','bank_wires.res.ext','native.log','wires.spice','baseline.spice')]]})\n"
+        }
+      ]
+    }
+  ],
+  "unchanged13_expected_diagnostics": [
+    [
+      "dropped_actual_port",
+      "Export port loss/duplication"
+    ],
+    [
+      "dropped_resistor",
+      "Physical wire R graph open or incomplete"
+    ],
+    [
+      "wrong_resistor",
+      "Native/export resistor topology/value differs"
+    ],
+    [
+      "cross_conductor_short",
+      "R network has unanchored component or cross-conductor short"
+    ],
+    [
+      "ground_redistribution_same_matrix",
+      "Per-point ground C export changed"
+    ],
+    [
+      "mutual_anchor_shift_same_matrix",
+      "Mutual C native attachment changed"
+    ],
+    [
+      "dropped_cap",
+      "Mutual C native attachment changed"
+    ],
+    [
+      "changed_cap",
+      "Mutual C native value changed"
+    ],
+    [
+      "cap_scale",
+      "Source capacitance scale changed"
+    ],
+    [
+      "missing_native_completion",
+      "Missing/duplicate native completion"
+    ],
+    [
+      "changed_body",
+      "Original body/well identities changed"
+    ],
+    [
+      "missing_body",
+      "Body/metal disposition changed"
+    ],
+    [
+      "wrong_actual_metal_point",
+      "Actual metal terminal witness changed"
+    ]
+  ],
+  "saved_geometry_peer": {
+    "bytes": 2029,
+    "sha256": "f4af8b8e3eb20193a731d8f22a17f82882b8e3e9f383828c1b09a6c0206f3fba"
+  },
+  "scope": "Source-only independent review. Entire runner/auditor/control harness read, all1419pins and3whole-source inverses verified. Existing Tcl AST/owned resource helper/runtime unchanged; fresh205anchor geometry gate and source bijection retained. New resistor control chooses unique physical bridge separating actual probes,37to38components; C controls target actual mutualC, short crosses distinct conductors. No RC extraction, HDL, SPICE or negative-control execution performed; actual native positive+13control pass still required. Not qualified fullPEX or PHY signoff."
+}

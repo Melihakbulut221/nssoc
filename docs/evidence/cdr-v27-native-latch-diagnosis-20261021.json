@@ -1,0 +1,4627 @@
+{
+  "run": 39555076416,
+  "full_phy_accepted": false,
+  "cases": {
+    "nominal_early": {
+      "run": 39555076416,
+      "group": "cdr-v27-latch-timing-nominal_early",
+      "source_head": "5fbdc825643d76b74b70c45b5c5b921e9da9d74f",
+      "summary_asset": 661573586,
+      "summary_sha256": "35a4df7168da164c05abd5ddee7211758685cfa02e614c9d0f2a52bee7818abc",
+      "parts_asset": 661573715,
+      "parts_sha256": "c2d7c7d895e3bb9b999a76ee6118158d2839ef6392b5bf4d6228b07e9e40e1f0",
+      "parts": {
+        "format": "ordered-tar-gzip-parts-v1",
+        "stem": "cdr-v27-latch-timing-nominal_early-39555076416-1",
+        "source_directory": "cloud-cdr-v27-latch-timing-nominal_early",
+        "bytes": 1556912,
+        "sha256": "01054b4361d9bdcc4ee275c1f341a48a11be53fd9516fbd239265cb1339fde1d",
+        "parts": [
+          {
+            "index": 0,
+            "name": "cdr-v27-latch-timing-nominal_early-39555076416-1.tar.gz.part0000",
+            "bytes": 1556912,
+            "sha256": "01054b4361d9bdcc4ee275c1f341a48a11be53fd9516fbd239265cb1339fde1d"
+          }
+        ],
+        "part_limit_bytes": 1073741824,
+        "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+        "verification": {
+          "parts": 1,
+          "bytes": 1556912,
+          "sha256": "01054b4361d9bdcc4ee275c1f341a48a11be53fd9516fbd239265cb1339fde1d",
+          "all_parts_and_combined_bytes_verified": true
+        }
+      },
+      "status": "COMPLETE_REJECTED_CDR_NATIVE_MASTER_SLAVE_TOPOLOGY_AND_TRANSFER_TIMING_NOT_ACCEPTANCE",
+      "source_unchanged": true,
+      "all120original_hbt_checks_reproduced": true,
+      "all4original_sampler_checks_reproduced": true,
+      "original_hbt_violations_reproduced": {},
+      "original_devices_passed": true,
+      "original_phase_passed": false,
+      "original_vi_passed": false,
+      "controls": {
+        "original_active_window_and_per_emitter_current_checked": true,
+        "swapped_collectors_emitters_detected": true,
+        "missing_and_ambiguous_physical_owner_rejected": true
+      },
+      "parallel_bank_controls": {
+        "two_by_two_bank_keeps_all_four_combinations": true,
+        "different_emitter_not_paired": true,
+        "duplicate_device_rejected": true
+      },
+      "stages": {
+        "a": {
+          "physical_macro": "sa",
+          "physical_kind": "sampler",
+          "hbt_count": 16,
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 97,
+              "minimum_signed_margin_v": 0.051278970574642244,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.2029523088611337,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.15193266896137275,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "latches": {
+            "native_graph": {
+              "master": {
+                "data_positive": "xpd.xd0084",
+                "data_negative": "xpd.xd0086",
+                "hold_pair": [
+                  "xpd.xd0087",
+                  "xpd.xd0088"
+                ],
+                "track_selectors": [
+                  "xpd.xd0089",
+                  "xpd.xd0090"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0093",
+                  "xpd.xd0094"
+                ],
+                "positive_output_native": 83,
+                "negative_output_native": 82,
+                "positive_input_native": 81,
+                "negative_input_native": 80,
+                "input_nodes": [
+                  "xpd.w_t084_b",
+                  "xpd.w_t086_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t086_c",
+                  "xpd.w_t084_c"
+                ]
+              },
+              "slave": {
+                "data_positive": "xpd.xd0085",
+                "data_negative": "xpd.xd0083",
+                "hold_pair": [
+                  "xpd.xd0081",
+                  "xpd.xd0082"
+                ],
+                "track_selectors": [
+                  "xpd.xd0095",
+                  "xpd.xd0096"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0091",
+                  "xpd.xd0092"
+                ],
+                "positive_output_native": 85,
+                "negative_output_native": 84,
+                "positive_input_native": 83,
+                "negative_input_native": 82,
+                "input_nodes": [
+                  "xpd.w_t085_b",
+                  "xpd.w_t083_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t083_c",
+                  "xpd.w_t085_c"
+                ]
+              }
+            },
+            "graph_faults": [
+              {
+                "name": "missing_actual_parallel_selector",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_slave_input",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_collector_reference",
+                "rejected": true
+              }
+            ],
+            "phase_summary": [
+              {
+                "offset_ui": -0.5,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": 0.059493203770819826
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2832881260162176
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.28376391587766087
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.3721626835556686
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.11113895195538921
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.04662725660305514
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.06705673356845733
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2631550963847366
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12181760983847038
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.18961319575345778
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.16302494111120192
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2403592399250576
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.0,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12480042589424392
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.19641280710085532
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1688968060716155
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.251950691201216
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1262676892931131
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.17610316852233968
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.15420381129784005
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.24109804118446396
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1241531818412393
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.23121004405090853
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.22323234283058804
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 97,
+                    "minimum_signed_v": 0.051278970574642244
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.6,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.10939926813784905
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.20900818477980115
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.21352278527642088
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.2029523088611337
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.9,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.12518997547204472
+                  },
+                  "master_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.20406219160541528
+                  },
+                  "slave_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.17585226167612414
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.15193266896137275
+                  }
+                }
+              }
+            ],
+            "master_input_at_edge_vs_slave_output_at_09ui": {
+              "(False, False)": 255
+            },
+            "simultaneous_track_observation": {
+              "sample_count": 1,
+              "duration_lower_bound_s": 0.0,
+              "duration_upper_bound_s": 6.249999999998815e-13,
+              "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+            },
+            "marker_scope": "100mV at internal nodes is only a diagnostic marker, not a new input acceptance gate; original output gate remains unchanged."
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.7054574150791216e-06,
+              "maximum_track_a": 0.008259597493824159,
+              "minimum_hold_a": -7.145597052105091e-06,
+              "maximum_hold_a": 0.00840821765010732,
+              "positive_crossings": 257,
+              "negative_crossings": 258
+            },
+            "slave": {
+              "minimum_track_a": -7.867500339796422e-06,
+              "maximum_track_a": 0.008139055588654603,
+              "minimum_hold_a": -2.981500955700455e-06,
+              "maximum_hold_a": 0.008061961091017646,
+              "positive_crossings": 258,
+              "negative_crossings": 257
+            }
+          },
+          "clock_base_pairs": [
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0093",
+              "negative_device": "xpd.xd0089",
+              "native_shared_emitter": 86,
+              "parallel_positive_devices": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "positive_base_node": "xpd.w_t093_b",
+              "negative_base_node": "xpd.w_t089_b",
+              "differential_range_v": [
+                -0.2986139162169408,
+                0.2815099427254599
+              ],
+              "commonmode_range_v": [
+                1.2783563214004174,
+                1.296860534028401
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0093",
+              "negative_device": "xpd.xd0090",
+              "native_shared_emitter": 86,
+              "parallel_positive_devices": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "positive_base_node": "xpd.w_t093_b",
+              "negative_base_node": "xpd.w_t090_b",
+              "differential_range_v": [
+                -0.2986029268852859,
+                0.28148328077146223
+              ],
+              "commonmode_range_v": [
+                1.278478976514413,
+                1.2966293038183565
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0094",
+              "negative_device": "xpd.xd0089",
+              "native_shared_emitter": 86,
+              "parallel_positive_devices": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "positive_base_node": "xpd.w_t094_b",
+              "negative_base_node": "xpd.w_t089_b",
+              "differential_range_v": [
+                -0.29861425280146836,
+                0.28150650662133003
+              ],
+              "commonmode_range_v": [
+                1.2782286118270894,
+                1.2970433097183536
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0094",
+              "negative_device": "xpd.xd0090",
+              "native_shared_emitter": 86,
+              "parallel_positive_devices": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "positive_base_node": "xpd.w_t094_b",
+              "negative_base_node": "xpd.w_t090_b",
+              "differential_range_v": [
+                -0.2986032634698135,
+                0.28147984466733234
+              ],
+              "commonmode_range_v": [
+                1.2783512669410848,
+                1.2968120795083091
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0095",
+              "negative_device": "xpd.xd0091",
+              "native_shared_emitter": 89,
+              "parallel_positive_devices": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_base_node": "xpd.w_t095_b",
+              "negative_base_node": "xpd.w_t091_b",
+              "differential_range_v": [
+                -0.29860200904599266,
+                0.2814911017135864
+              ],
+              "commonmode_range_v": [
+                1.2783973984619466,
+                1.2967430612152244
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0095",
+              "negative_device": "xpd.xd0092",
+              "native_shared_emitter": 89,
+              "parallel_positive_devices": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_base_node": "xpd.w_t095_b",
+              "negative_base_node": "xpd.w_t092_b",
+              "differential_range_v": [
+                -0.2985994696934169,
+                0.2814870762651158
+              ],
+              "commonmode_range_v": [
+                1.278418004546599,
+                1.2967059634560683
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0096",
+              "negative_device": "xpd.xd0091",
+              "native_shared_emitter": 89,
+              "parallel_positive_devices": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_base_node": "xpd.w_t096_b",
+              "negative_base_node": "xpd.w_t091_b",
+              "differential_range_v": [
+                -0.2986021132709302,
+                0.2814930959503066
+              ],
+              "commonmode_range_v": [
+                1.2783388257552168,
+                1.2968306431468783
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0096",
+              "negative_device": "xpd.xd0092",
+              "native_shared_emitter": 89,
+              "parallel_positive_devices": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_base_node": "xpd.w_t096_b",
+              "negative_base_node": "xpd.w_t092_b",
+              "differential_range_v": [
+                -0.29859957391835446,
+                0.281489070501836
+              ],
+              "commonmode_range_v": [
+                1.2783594318398692,
+                1.2967935453877222
+              ]
+            }
+          ]
+        },
+        "b": {
+          "physical_macro": "sb",
+          "physical_kind": "sampler",
+          "hbt_count": 16,
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 68,
+              "minimum_signed_margin_v": 0.06859809995479539,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.25454444252803055,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.24403409550543143,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "latches": {
+            "native_graph": {
+              "master": {
+                "data_positive": "xpd.xd0068",
+                "data_negative": "xpd.xd0070",
+                "hold_pair": [
+                  "xpd.xd0071",
+                  "xpd.xd0072"
+                ],
+                "track_selectors": [
+                  "xpd.xd0073",
+                  "xpd.xd0074"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0077",
+                  "xpd.xd0078"
+                ],
+                "positive_output_native": 54,
+                "negative_output_native": 53,
+                "positive_input_native": 52,
+                "negative_input_native": 51,
+                "input_nodes": [
+                  "xpd.w_t068_b",
+                  "xpd.w_t070_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t070_c",
+                  "xpd.w_t068_c"
+                ]
+              },
+              "slave": {
+                "data_positive": "xpd.xd0069",
+                "data_negative": "xpd.xd0067",
+                "hold_pair": [
+                  "xpd.xd0065",
+                  "xpd.xd0066"
+                ],
+                "track_selectors": [
+                  "xpd.xd0079",
+                  "xpd.xd0080"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0075",
+                  "xpd.xd0076"
+                ],
+                "positive_output_native": 56,
+                "negative_output_native": 55,
+                "positive_input_native": 54,
+                "negative_input_native": 53,
+                "input_nodes": [
+                  "xpd.w_t069_b",
+                  "xpd.w_t067_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t067_c",
+                  "xpd.w_t069_c"
+                ]
+              }
+            },
+            "graph_faults": [
+              {
+                "name": "missing_actual_parallel_selector",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_slave_input",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_collector_reference",
+                "rejected": true
+              }
+            ],
+            "phase_summary": [
+              {
+                "offset_ui": -0.5,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.1320101183728061
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2984601365323729
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2957276363293188
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.3808027792966685
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.13097929671394698
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.22205165615508807
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.20277290036709536
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.26731414093192907
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.09091079613136191
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.20381427338620217
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.1804218215250175
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2804623791509413
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.0,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": 0.05338972052544479
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.012152886741898055
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.024979330314921604
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2922386369277028
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1047015951892781
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.10457476927197266
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": 0.0850273645916814
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2751827874343126
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12475652557899414
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.23128994068621866
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.2233837434962353
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 68,
+                    "minimum_signed_v": 0.06859809995479539
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.6,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.13060160578960167
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.2108409506262248
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.2100276662235407
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.25454444252803055
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.9,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": 0.08727022810093804
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1973415195174239
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.17455180761344857
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.24403409550543143
+                  }
+                }
+              }
+            ],
+            "master_input_at_edge_vs_slave_output_at_09ui": {
+              "(True, False)": 129,
+              "(False, False)": 126
+            },
+            "simultaneous_track_observation": {
+              "sample_count": 3,
+              "duration_lower_bound_s": 0.0,
+              "duration_upper_bound_s": 1.8750000000004717e-12,
+              "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+            },
+            "marker_scope": "100mV at internal nodes is only a diagnostic marker, not a new input acceptance gate; original output gate remains unchanged."
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.100657100720336e-05,
+              "maximum_track_a": 0.008263209081246817,
+              "minimum_hold_a": -5.179039311851594e-07,
+              "maximum_hold_a": 0.008452125235137992,
+              "positive_crossings": 258,
+              "negative_crossings": 257
+            },
+            "slave": {
+              "minimum_track_a": -4.213876812913938e-06,
+              "maximum_track_a": 0.008175173299133903,
+              "minimum_hold_a": -1.1952726254981721e-05,
+              "maximum_hold_a": 0.008068919592562687,
+              "positive_crossings": 257,
+              "negative_crossings": 258
+            }
+          },
+          "clock_base_pairs": [
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0073",
+              "negative_device": "xpd.xd0077",
+              "native_shared_emitter": 57,
+              "parallel_positive_devices": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_base_node": "xpd.w_t073_b",
+              "negative_base_node": "xpd.w_t077_b",
+              "differential_range_v": [
+                -0.29874093102487453,
+                0.28293250237968715
+              ],
+              "commonmode_range_v": [
+                1.281859653365316,
+                1.2944838934121043
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0073",
+              "negative_device": "xpd.xd0078",
+              "native_shared_emitter": 57,
+              "parallel_positive_devices": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_base_node": "xpd.w_t073_b",
+              "negative_base_node": "xpd.w_t078_b",
+              "differential_range_v": [
+                -0.29873595371872175,
+                0.2829212270016692
+              ],
+              "commonmode_range_v": [
+                1.281864730513588,
+                1.29473123471347
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0074",
+              "negative_device": "xpd.xd0077",
+              "native_shared_emitter": 57,
+              "parallel_positive_devices": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_base_node": "xpd.w_t074_b",
+              "negative_base_node": "xpd.w_t077_b",
+              "differential_range_v": [
+                -0.2987413753663375,
+                0.28290886024507755
+              ],
+              "commonmode_range_v": [
+                1.2817068804846214,
+                1.2942446413388322
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0074",
+              "negative_device": "xpd.xd0078",
+              "native_shared_emitter": 57,
+              "parallel_positive_devices": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_base_node": "xpd.w_t074_b",
+              "negative_base_node": "xpd.w_t078_b",
+              "differential_range_v": [
+                -0.2987363980601847,
+                0.2828975848670596
+              ],
+              "commonmode_range_v": [
+                1.2817119576328935,
+                1.294491982640198
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0075",
+              "negative_device": "xpd.xd0079",
+              "native_shared_emitter": 60,
+              "parallel_positive_devices": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "positive_base_node": "xpd.w_t075_b",
+              "negative_base_node": "xpd.w_t079_b",
+              "differential_range_v": [
+                -0.29873795401219594,
+                0.282916180856716
+              ],
+              "commonmode_range_v": [
+                1.281766999882206,
+                1.2943873337842164
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0075",
+              "negative_device": "xpd.xd0080",
+              "native_shared_emitter": 60,
+              "parallel_positive_devices": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "positive_base_node": "xpd.w_t075_b",
+              "negative_base_node": "xpd.w_t080_b",
+              "differential_range_v": [
+                -0.29873648226273586,
+                0.282911958341604
+              ],
+              "commonmode_range_v": [
+                1.2817454817144005,
+                1.2945180577096789
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0076",
+              "negative_device": "xpd.xd0079",
+              "native_shared_emitter": 60,
+              "parallel_positive_devices": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "positive_base_node": "xpd.w_t076_b",
+              "negative_base_node": "xpd.w_t079_b",
+              "differential_range_v": [
+                -0.29873803482417305,
+                0.2829114537854136
+              ],
+              "commonmode_range_v": [
+                1.2817400798475085,
+                1.2943493664736123
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0076",
+              "negative_device": "xpd.xd0080",
+              "native_shared_emitter": 60,
+              "parallel_positive_devices": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "positive_base_node": "xpd.w_t076_b",
+              "negative_base_node": "xpd.w_t080_b",
+              "differential_range_v": [
+                -0.29873656307471297,
+                0.2829072312703016
+              ],
+              "commonmode_range_v": [
+                1.2817185616797029,
+                1.2944800903990745
+              ]
+            }
+          ]
+        },
+        "c": {
+          "physical_macro": "sc",
+          "physical_kind": "sampler",
+          "hbt_count": 16,
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 129,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.19686868245840344,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 64
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 129,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.282302165354889,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 64
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 129,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.25769687010728043,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 64
+            }
+          ],
+          "latches": {
+            "native_graph": {
+              "master": {
+                "data_positive": "xpd.xd0100",
+                "data_negative": "xpd.xd0102",
+                "hold_pair": [
+                  "xpd.xd0103",
+                  "xpd.xd0104"
+                ],
+                "track_selectors": [
+                  "xpd.xd0105",
+                  "xpd.xd0106"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0109",
+                  "xpd.xd0110"
+                ],
+                "positive_output_native": 114,
+                "negative_output_native": 100,
+                "positive_input_native": 113,
+                "negative_input_native": 112,
+                "input_nodes": [
+                  "xpd.w_t100_b",
+                  "xpd.w_t102_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t102_c",
+                  "xpd.w_t100_c"
+                ]
+              },
+              "slave": {
+                "data_positive": "xpd.xd0101",
+                "data_negative": "xpd.xd0099",
+                "hold_pair": [
+                  "xpd.xd0097",
+                  "xpd.xd0098"
+                ],
+                "track_selectors": [
+                  "xpd.xd0111",
+                  "xpd.xd0112"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0107",
+                  "xpd.xd0108"
+                ],
+                "positive_output_native": 116,
+                "negative_output_native": 115,
+                "positive_input_native": 114,
+                "negative_input_native": 100,
+                "input_nodes": [
+                  "xpd.w_t101_b",
+                  "xpd.w_t099_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t099_c",
+                  "xpd.w_t101_c"
+                ]
+              }
+            },
+            "graph_faults": [
+              {
+                "name": "missing_actual_parallel_selector",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_slave_input",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_collector_reference",
+                "rejected": true
+              }
+            ],
+            "phase_summary": [
+              {
+                "offset_ui": -0.5,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.006022718592392526
+                  },
+                  "master_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 149,
+                    "minimum_signed_v": -0.2670343582353652
+                  },
+                  "slave_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 152,
+                    "minimum_signed_v": -0.265677473854279
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 131,
+                    "minimum_signed_v": -0.3445207859116085
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.008508232775201663
+                  },
+                  "master_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 132,
+                    "minimum_signed_v": -0.14997535195214187
+                  },
+                  "slave_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 132,
+                    "minimum_signed_v": -0.1499505607429288
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.2644862073793456
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.006822169677155633
+                  },
+                  "master_output": {
+                    "wrong_sign": 122,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.029132684791314308
+                  },
+                  "slave_input": {
+                    "wrong_sign": 124,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.02720816448743072
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.2681263490545711
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.0,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.004192391173893825
+                  },
+                  "master_output": {
+                    "wrong_sign": 73,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.015681331917929572
+                  },
+                  "slave_input": {
+                    "wrong_sign": 77,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.014274800488629672
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.2778640464259918
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 32,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.0018327368877985699
+                  },
+                  "master_output": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.008178584266217237
+                  },
+                  "slave_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.007498293038244514
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.27122909038868087
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 32,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.0034955489253222036
+                  },
+                  "master_output": {
+                    "wrong_sign": 119,
+                    "below_100mv_marker": 131,
+                    "minimum_signed_v": -0.05368148551981862
+                  },
+                  "slave_input": {
+                    "wrong_sign": 120,
+                    "below_100mv_marker": 134,
+                    "minimum_signed_v": -0.05239810271498093
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.19686868245840344
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.6,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 65,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.007170010312019029
+                  },
+                  "master_output": {
+                    "wrong_sign": 127,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.22687505821168957
+                  },
+                  "slave_input": {
+                    "wrong_sign": 127,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2273565218808364
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.282302165354889
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.9,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 65,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.01871182738952895
+                  },
+                  "master_output": {
+                    "wrong_sign": 123,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.04681162037186428
+                  },
+                  "slave_input": {
+                    "wrong_sign": 125,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.042087492418663934
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.25769687010728043
+                  }
+                }
+              }
+            ],
+            "master_input_at_edge_vs_slave_output_at_09ui": {
+              "(True, True)": 129,
+              "(True, False)": 126
+            },
+            "simultaneous_track_observation": {
+              "sample_count": 0,
+              "duration_lower_bound_s": 0.0,
+              "duration_upper_bound_s": 0.0,
+              "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+            },
+            "marker_scope": "100mV at internal nodes is only a diagnostic marker, not a new input acceptance gate; original output gate remains unchanged."
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.7804116803642182e-06,
+              "maximum_track_a": 0.008225355630707669,
+              "minimum_hold_a": -6.991044492054638e-06,
+              "maximum_hold_a": 0.008384397513569305,
+              "positive_crossings": 257,
+              "negative_crossings": 258
+            },
+            "slave": {
+              "minimum_track_a": -7.775156642550018e-06,
+              "maximum_track_a": 0.0081216177957001,
+              "minimum_hold_a": -4.443789156048128e-06,
+              "maximum_hold_a": 0.008057736255510447,
+              "positive_crossings": 258,
+              "negative_crossings": 257
+            }
+          },
+          "clock_base_pairs": [
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0109",
+              "negative_device": "xpd.xd0105",
+              "native_shared_emitter": 117,
+              "parallel_positive_devices": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "positive_base_node": "xpd.w_t109_b",
+              "negative_base_node": "xpd.w_t105_b",
+              "differential_range_v": [
+                -0.2985751494630484,
+                0.28144516798176067
+              ],
+              "commonmode_range_v": [
+                1.2781543598160847,
+                1.2970568089522017
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0109",
+              "negative_device": "xpd.xd0106",
+              "native_shared_emitter": 117,
+              "parallel_positive_devices": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "positive_base_node": "xpd.w_t109_b",
+              "negative_base_node": "xpd.w_t106_b",
+              "differential_range_v": [
+                -0.29856414761277583,
+                0.2814163724917649
+              ],
+              "commonmode_range_v": [
+                1.2782773120535404,
+                1.2968295455524979
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0110",
+              "negative_device": "xpd.xd0105",
+              "native_shared_emitter": 117,
+              "parallel_positive_devices": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "positive_base_node": "xpd.w_t110_b",
+              "negative_base_node": "xpd.w_t105_b",
+              "differential_range_v": [
+                -0.2985755320309369,
+                0.28144644641236183
+              ],
+              "commonmode_range_v": [
+                1.2780282599074617,
+                1.2972356866840946
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0110",
+              "negative_device": "xpd.xd0106",
+              "native_shared_emitter": 117,
+              "parallel_positive_devices": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "positive_base_node": "xpd.w_t110_b",
+              "negative_base_node": "xpd.w_t106_b",
+              "differential_range_v": [
+                -0.2985645301806643,
+                0.28141765092236604
+              ],
+              "commonmode_range_v": [
+                1.2781512121449174,
+                1.2970082213832113
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0111",
+              "negative_device": "xpd.xd0107",
+              "native_shared_emitter": 120,
+              "parallel_positive_devices": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_base_node": "xpd.w_t111_b",
+              "negative_base_node": "xpd.w_t107_b",
+              "differential_range_v": [
+                -0.29856390342093286,
+                0.2814066410573859
+              ],
+              "commonmode_range_v": [
+                1.2782454334935407,
+                1.2969465358618848
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0111",
+              "negative_device": "xpd.xd0108",
+              "native_shared_emitter": 120,
+              "parallel_positive_devices": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_base_node": "xpd.w_t111_b",
+              "negative_base_node": "xpd.w_t108_b",
+              "differential_range_v": [
+                -0.29856137874727384,
+                0.2814018417930717
+              ],
+              "commonmode_range_v": [
+                1.278265822001563,
+                1.2969101850796823
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0112",
+              "negative_device": "xpd.xd0107",
+              "native_shared_emitter": 120,
+              "parallel_positive_devices": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_base_node": "xpd.w_t112_b",
+              "negative_base_node": "xpd.w_t107_b",
+              "differential_range_v": [
+                -0.29856401855093373,
+                0.28141044429532025
+              ],
+              "commonmode_range_v": [
+                1.278186760645063,
+                1.2970301905580381
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0112",
+              "negative_device": "xpd.xd0108",
+              "native_shared_emitter": 120,
+              "parallel_positive_devices": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_base_node": "xpd.w_t112_b",
+              "negative_base_node": "xpd.w_t108_b",
+              "differential_range_v": [
+                -0.2985614938772747,
+                0.28140564503100607
+              ],
+              "commonmode_range_v": [
+                1.278207149153085,
+                1.2969938397758356
+              ]
+            }
+          ]
+        },
+        "d": {
+          "physical_macro": "sd",
+          "physical_kind": "sampler",
+          "hbt_count": 16,
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 124,
+              "below_100mv": 131,
+              "minimum_signed_margin_v": -0.1974099778609766,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 60
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 118,
+              "below_100mv": 128,
+              "minimum_signed_margin_v": -0.2655642317923083,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 54
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 120,
+              "below_100mv": 126,
+              "minimum_signed_margin_v": -0.25637693461195915,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 56
+            }
+          ],
+          "latches": {
+            "native_graph": {
+              "master": {
+                "data_positive": "xpd.xd0050",
+                "data_negative": "xpd.xd0052",
+                "hold_pair": [
+                  "xpd.xd0053",
+                  "xpd.xd0054"
+                ],
+                "track_selectors": [
+                  "xpd.xd0055",
+                  "xpd.xd0056"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0059",
+                  "xpd.xd0060"
+                ],
+                "positive_output_native": 18,
+                "negative_output_native": 3,
+                "positive_input_native": 17,
+                "negative_input_native": 16,
+                "input_nodes": [
+                  "xpd.w_t050_b",
+                  "xpd.w_t052_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t052_c",
+                  "xpd.w_t050_c"
+                ]
+              },
+              "slave": {
+                "data_positive": "xpd.xd0051",
+                "data_negative": "xpd.xd0049",
+                "hold_pair": [
+                  "xpd.xd0047",
+                  "xpd.xd0048"
+                ],
+                "track_selectors": [
+                  "xpd.xd0061",
+                  "xpd.xd0062"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0057",
+                  "xpd.xd0058"
+                ],
+                "positive_output_native": 21,
+                "negative_output_native": 20,
+                "positive_input_native": 18,
+                "negative_input_native": 3,
+                "input_nodes": [
+                  "xpd.w_t051_b",
+                  "xpd.w_t049_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t049_c",
+                  "xpd.w_t051_c"
+                ]
+              }
+            },
+            "graph_faults": [
+              {
+                "name": "missing_actual_parallel_selector",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_slave_input",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_collector_reference",
+                "rejected": true
+              }
+            ],
+            "phase_summary": [
+              {
+                "offset_ui": -0.5,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.022244380427960703
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 162,
+                    "minimum_signed_v": -0.2829830319700298
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 162,
+                    "minimum_signed_v": -0.28137946066382485
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 157,
+                    "minimum_signed_v": -0.3583474629381737
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.027256171433473378
+                  },
+                  "master_output": {
+                    "wrong_sign": 130,
+                    "below_100mv_marker": 162,
+                    "minimum_signed_v": -0.16706940094251183
+                  },
+                  "slave_input": {
+                    "wrong_sign": 131,
+                    "below_100mv_marker": 161,
+                    "minimum_signed_v": -0.16362287421099606
+                  },
+                  "slave_output": {
+                    "wrong_sign": 131,
+                    "below_100mv_marker": 153,
+                    "minimum_signed_v": -0.2724341049463282
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.015246718413441461
+                  },
+                  "master_output": {
+                    "wrong_sign": 101,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.04747485781938654
+                  },
+                  "slave_input": {
+                    "wrong_sign": 104,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.043619392676282925
+                  },
+                  "slave_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 141,
+                    "minimum_signed_v": -0.2744043416514012
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.0,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.0077047596215096235
+                  },
+                  "master_output": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.0262014176175835
+                  },
+                  "slave_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.023958204232819226
+                  },
+                  "slave_output": {
+                    "wrong_sign": 127,
+                    "below_100mv_marker": 138,
+                    "minimum_signed_v": -0.28320351531627086
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.00113710822001779
+                  },
+                  "master_output": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.011331746755899505
+                  },
+                  "slave_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.010756225115884421
+                  },
+                  "slave_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 137,
+                    "minimum_signed_v": -0.2751110922711847
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": 0.005392198170226524
+                  },
+                  "master_output": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 132,
+                    "minimum_signed_v": -0.04590268986835727
+                  },
+                  "slave_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 134,
+                    "minimum_signed_v": -0.04548470180946609
+                  },
+                  "slave_output": {
+                    "wrong_sign": 124,
+                    "below_100mv_marker": 131,
+                    "minimum_signed_v": -0.1974099778609766
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.6,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": 0.008621251856329039
+                  },
+                  "master_output": {
+                    "wrong_sign": 93,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.20644241500857713
+                  },
+                  "slave_input": {
+                    "wrong_sign": 93,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.20719505746341693
+                  },
+                  "slave_output": {
+                    "wrong_sign": 118,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.2655642317923083
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.9,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.009100337821761319
+                  },
+                  "master_output": {
+                    "wrong_sign": 92,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.02667112802981575
+                  },
+                  "slave_input": {
+                    "wrong_sign": 89,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.02418034199186824
+                  },
+                  "slave_output": {
+                    "wrong_sign": 120,
+                    "below_100mv_marker": 126,
+                    "minimum_signed_v": -0.25637693461195915
+                  }
+                }
+              }
+            ],
+            "master_input_at_edge_vs_slave_output_at_09ui": {
+              "(True, False)": 129,
+              "(True, True)": 126
+            },
+            "simultaneous_track_observation": {
+              "sample_count": 0,
+              "duration_lower_bound_s": 0.0,
+              "duration_upper_bound_s": 0.0,
+              "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+            },
+            "marker_scope": "100mV at internal nodes is only a diagnostic marker, not a new input acceptance gate; original output gate remains unchanged."
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.4510132868783768e-06,
+              "maximum_track_a": 0.008325324494798846,
+              "minimum_hold_a": -6.955846347973358e-06,
+              "maximum_hold_a": 0.00848318935154708,
+              "positive_crossings": 257,
+              "negative_crossings": 258
+            },
+            "slave": {
+              "minimum_track_a": -7.727458729995598e-06,
+              "maximum_track_a": 0.008212854149057782,
+              "minimum_hold_a": -4.2321440194327045e-06,
+              "maximum_hold_a": 0.00814720750402494,
+              "positive_crossings": 258,
+              "negative_crossings": 257
+            }
+          },
+          "clock_base_pairs": [
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0059",
+              "negative_device": "xpd.xd0055",
+              "native_shared_emitter": 23,
+              "parallel_positive_devices": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "positive_base_node": "xpd.w_t059_b",
+              "negative_base_node": "xpd.w_t055_b",
+              "differential_range_v": [
+                -0.2986283525623121,
+                0.28183084142531456
+              ],
+              "commonmode_range_v": [
+                1.278541499471073,
+                1.2971636040038321
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0059",
+              "negative_device": "xpd.xd0056",
+              "native_shared_emitter": 23,
+              "parallel_positive_devices": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "positive_base_node": "xpd.w_t059_b",
+              "negative_base_node": "xpd.w_t056_b",
+              "differential_range_v": [
+                -0.29861722553550685,
+                0.2818025974065246
+              ],
+              "commonmode_range_v": [
+                1.278665275487354,
+                1.29693207949554
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0060",
+              "negative_device": "xpd.xd0055",
+              "native_shared_emitter": 23,
+              "parallel_positive_devices": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "positive_base_node": "xpd.w_t060_b",
+              "negative_base_node": "xpd.w_t055_b",
+              "differential_range_v": [
+                -0.29862873015184177,
+                0.2818313287201899
+              ],
+              "commonmode_range_v": [
+                1.2784155695117216,
+                1.2973479342426153
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0060",
+              "negative_device": "xpd.xd0056",
+              "native_shared_emitter": 23,
+              "parallel_positive_devices": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "positive_base_node": "xpd.w_t060_b",
+              "negative_base_node": "xpd.w_t056_b",
+              "differential_range_v": [
+                -0.2986176031250365,
+                0.2818030847013999
+              ],
+              "commonmode_range_v": [
+                1.2785393455280025,
+                1.2971164097343233
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0061",
+              "negative_device": "xpd.xd0057",
+              "native_shared_emitter": 26,
+              "parallel_positive_devices": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_base_node": "xpd.w_t061_b",
+              "negative_base_node": "xpd.w_t057_b",
+              "differential_range_v": [
+                -0.29861697235816265,
+                0.28179154540560525
+              ],
+              "commonmode_range_v": [
+                1.2786338142325326,
+                1.2970609657544472
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0061",
+              "negative_device": "xpd.xd0058",
+              "native_shared_emitter": 26,
+              "parallel_positive_devices": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_base_node": "xpd.w_t061_b",
+              "negative_base_node": "xpd.w_t058_b",
+              "differential_range_v": [
+                -0.2986144145785836,
+                0.2817868472692038
+              ],
+              "commonmode_range_v": [
+                1.2786543589784096,
+                1.2970240214226294
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0062",
+              "negative_device": "xpd.xd0057",
+              "native_shared_emitter": 26,
+              "parallel_positive_devices": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_base_node": "xpd.w_t062_b",
+              "negative_base_node": "xpd.w_t057_b",
+              "differential_range_v": [
+                -0.29861708666814923,
+                0.28179479514058725
+              ],
+              "commonmode_range_v": [
+                1.2785754535260994,
+                1.2971481918591243
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0062",
+              "negative_device": "xpd.xd0058",
+              "native_shared_emitter": 26,
+              "parallel_positive_devices": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_base_node": "xpd.w_t062_b",
+              "negative_base_node": "xpd.w_t058_b",
+              "differential_range_v": [
+                -0.2986145288885702,
+                0.2817900970041858
+              ],
+              "commonmode_range_v": [
+                1.278595998271976,
+                1.2971112475273068
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "nominal_late": {
+      "run": 39555076416,
+      "group": "cdr-v27-latch-timing-nominal_late",
+      "source_head": "5fbdc825643d76b74b70c45b5c5b921e9da9d74f",
+      "summary_asset": 661574612,
+      "summary_sha256": "081931069a3e0be32befd93c0075717d79ea79763261f1d1e9634f2a77b5e902",
+      "parts_asset": 661574680,
+      "parts_sha256": "982a6a137225582a46d389d32e8cb24480ede18e35bcf4c5c33b53ae4aa1a5aa",
+      "parts": {
+        "format": "ordered-tar-gzip-parts-v1",
+        "stem": "cdr-v27-latch-timing-nominal_late-39555076416-1",
+        "source_directory": "cloud-cdr-v27-latch-timing-nominal_late",
+        "bytes": 1552438,
+        "sha256": "b2b1156ed50edbe8d67949c757640b5a6c3b0ec35f1c3126a567a6183930d647",
+        "parts": [
+          {
+            "index": 0,
+            "name": "cdr-v27-latch-timing-nominal_late-39555076416-1.tar.gz.part0000",
+            "bytes": 1552438,
+            "sha256": "b2b1156ed50edbe8d67949c757640b5a6c3b0ec35f1c3126a567a6183930d647"
+          }
+        ],
+        "part_limit_bytes": 1073741824,
+        "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+        "verification": {
+          "parts": 1,
+          "bytes": 1552438,
+          "sha256": "b2b1156ed50edbe8d67949c757640b5a6c3b0ec35f1c3126a567a6183930d647",
+          "all_parts_and_combined_bytes_verified": true
+        }
+      },
+      "status": "COMPLETE_REJECTED_CDR_NATIVE_MASTER_SLAVE_TOPOLOGY_AND_TRANSFER_TIMING_NOT_ACCEPTANCE",
+      "source_unchanged": true,
+      "all120original_hbt_checks_reproduced": true,
+      "all4original_sampler_checks_reproduced": true,
+      "original_hbt_violations_reproduced": {},
+      "original_devices_passed": true,
+      "original_phase_passed": true,
+      "original_vi_passed": true,
+      "controls": {
+        "original_active_window_and_per_emitter_current_checked": true,
+        "swapped_collectors_emitters_detected": true,
+        "missing_and_ambiguous_physical_owner_rejected": true
+      },
+      "parallel_bank_controls": {
+        "two_by_two_bank_keeps_all_four_combinations": true,
+        "different_emitter_not_paired": true,
+        "duplicate_device_rejected": true
+      },
+      "stages": {
+        "a": {
+          "physical_macro": "sa",
+          "physical_kind": "sampler",
+          "hbt_count": 16,
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 112,
+              "minimum_signed_margin_v": 0.048466863799989574,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.2029251665818285,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.18921155662181413,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "latches": {
+            "native_graph": {
+              "master": {
+                "data_positive": "xpd.xd0084",
+                "data_negative": "xpd.xd0086",
+                "hold_pair": [
+                  "xpd.xd0087",
+                  "xpd.xd0088"
+                ],
+                "track_selectors": [
+                  "xpd.xd0089",
+                  "xpd.xd0090"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0093",
+                  "xpd.xd0094"
+                ],
+                "positive_output_native": 83,
+                "negative_output_native": 82,
+                "positive_input_native": 81,
+                "negative_input_native": 80,
+                "input_nodes": [
+                  "xpd.w_t084_b",
+                  "xpd.w_t086_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t086_c",
+                  "xpd.w_t084_c"
+                ]
+              },
+              "slave": {
+                "data_positive": "xpd.xd0085",
+                "data_negative": "xpd.xd0083",
+                "hold_pair": [
+                  "xpd.xd0081",
+                  "xpd.xd0082"
+                ],
+                "track_selectors": [
+                  "xpd.xd0095",
+                  "xpd.xd0096"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0091",
+                  "xpd.xd0092"
+                ],
+                "positive_output_native": 85,
+                "negative_output_native": 84,
+                "positive_input_native": 83,
+                "negative_input_native": 82,
+                "input_nodes": [
+                  "xpd.w_t085_b",
+                  "xpd.w_t083_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t083_c",
+                  "xpd.w_t085_c"
+                ]
+              }
+            },
+            "graph_faults": [
+              {
+                "name": "missing_actual_parallel_selector",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_slave_input",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_collector_reference",
+                "rejected": true
+              }
+            ],
+            "phase_summary": [
+              {
+                "offset_ui": -0.5,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.1296485408881808
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2977153278629862
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.29488087008044594
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.37155734651842276
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.09129381265289711
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.21715253423546652
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2030514865129767
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.27352059711894716
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 15,
+                    "minimum_signed_v": 0.09996269104036501
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.11303025408977041
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": 0.0900571961675143
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2693971541033039
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.0,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.11720056231358074
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.16929541892781338
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.14337083763668584
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.266443103478053
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12408418624706866
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.16931511475240546
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.14765542839134577
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.24649693455287394
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12415178197243089
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.2321933049786465
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.22425369403824394
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 112,
+                    "minimum_signed_v": 0.048466863799989574
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.6,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12769098249819816
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.22216299310136578
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.22139093609494442
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.2029251665818285
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.9,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.10389852761019076
+                  },
+                  "master_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.11962432807805749
+                  },
+                  "slave_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.09509987795606899
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.18921155662181413
+                  }
+                }
+              }
+            ],
+            "master_input_at_edge_vs_slave_output_at_09ui": {
+              "(False, False)": 255
+            },
+            "simultaneous_track_observation": {
+              "sample_count": 1,
+              "duration_lower_bound_s": 0.0,
+              "duration_upper_bound_s": 6.249999999998815e-13,
+              "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+            },
+            "marker_scope": "100mV at internal nodes is only a diagnostic marker, not a new input acceptance gate; original output gate remains unchanged."
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.0516694102478548e-06,
+              "maximum_track_a": 0.008254251449965689,
+              "minimum_hold_a": -7.145597052105091e-06,
+              "maximum_hold_a": 0.00839696045553907,
+              "positive_crossings": 257,
+              "negative_crossings": 258
+            },
+            "slave": {
+              "minimum_track_a": -7.867500339796422e-06,
+              "maximum_track_a": 0.00812827657082686,
+              "minimum_hold_a": -2.923766112322156e-06,
+              "maximum_hold_a": 0.0080612672507132,
+              "positive_crossings": 258,
+              "negative_crossings": 257
+            }
+          },
+          "clock_base_pairs": [
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0093",
+              "negative_device": "xpd.xd0089",
+              "native_shared_emitter": 86,
+              "parallel_positive_devices": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "positive_base_node": "xpd.w_t093_b",
+              "negative_base_node": "xpd.w_t089_b",
+              "differential_range_v": [
+                -0.2986139162169408,
+                0.2815800838850655
+              ],
+              "commonmode_range_v": [
+                1.2783563214004174,
+                1.297107144993225
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0093",
+              "negative_device": "xpd.xd0090",
+              "native_shared_emitter": 86,
+              "parallel_positive_devices": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "positive_base_node": "xpd.w_t093_b",
+              "negative_base_node": "xpd.w_t090_b",
+              "differential_range_v": [
+                -0.2986029268852859,
+                0.2815534316415589
+              ],
+              "commonmode_range_v": [
+                1.278478976514413,
+                1.2968759189535084
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0094",
+              "negative_device": "xpd.xd0089",
+              "native_shared_emitter": 86,
+              "parallel_positive_devices": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "positive_base_node": "xpd.w_t094_b",
+              "negative_base_node": "xpd.w_t089_b",
+              "differential_range_v": [
+                -0.29861425280146836,
+                0.28157665664985965
+              ],
+              "commonmode_range_v": [
+                1.2782286118270894,
+                1.2972893878764835
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0094",
+              "negative_device": "xpd.xd0090",
+              "native_shared_emitter": 86,
+              "parallel_positive_devices": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "positive_base_node": "xpd.w_t094_b",
+              "negative_base_node": "xpd.w_t090_b",
+              "differential_range_v": [
+                -0.2986032634698135,
+                0.281550004406353
+              ],
+              "commonmode_range_v": [
+                1.2783512669410848,
+                1.297058161836767
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0095",
+              "negative_device": "xpd.xd0091",
+              "native_shared_emitter": 89,
+              "parallel_positive_devices": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_base_node": "xpd.w_t095_b",
+              "negative_base_node": "xpd.w_t091_b",
+              "differential_range_v": [
+                -0.29860200904599266,
+                0.2815612441733464
+              ],
+              "commonmode_range_v": [
+                1.2783973984619466,
+                1.2969721307523487
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0095",
+              "negative_device": "xpd.xd0092",
+              "native_shared_emitter": 89,
+              "parallel_positive_devices": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_base_node": "xpd.w_t095_b",
+              "negative_base_node": "xpd.w_t092_b",
+              "differential_range_v": [
+                -0.2985994696934169,
+                0.2815572203124057
+              ],
+              "commonmode_range_v": [
+                1.278418004546599,
+                1.2969347895384646
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0096",
+              "negative_device": "xpd.xd0091",
+              "native_shared_emitter": 89,
+              "parallel_positive_devices": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_base_node": "xpd.w_t096_b",
+              "negative_base_node": "xpd.w_t091_b",
+              "differential_range_v": [
+                -0.2986021132709302,
+                0.28156323873142997
+              ],
+              "commonmode_range_v": [
+                1.2783388257552168,
+                1.2970588945119355
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0096",
+              "negative_device": "xpd.xd0092",
+              "native_shared_emitter": 89,
+              "parallel_positive_devices": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_base_node": "xpd.w_t096_b",
+              "negative_base_node": "xpd.w_t092_b",
+              "differential_range_v": [
+                -0.29859957391835446,
+                0.2815592148704893
+              ],
+              "commonmode_range_v": [
+                1.2783594318398692,
+                1.2970215532980514
+              ]
+            }
+          ]
+        },
+        "b": {
+          "physical_macro": "sb",
+          "physical_kind": "sampler",
+          "hbt_count": 16,
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 64,
+              "minimum_signed_margin_v": 0.07724276720028032,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.250209619553423,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.1824843082228586,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "latches": {
+            "native_graph": {
+              "master": {
+                "data_positive": "xpd.xd0068",
+                "data_negative": "xpd.xd0070",
+                "hold_pair": [
+                  "xpd.xd0071",
+                  "xpd.xd0072"
+                ],
+                "track_selectors": [
+                  "xpd.xd0073",
+                  "xpd.xd0074"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0077",
+                  "xpd.xd0078"
+                ],
+                "positive_output_native": 54,
+                "negative_output_native": 53,
+                "positive_input_native": 52,
+                "negative_input_native": 51,
+                "input_nodes": [
+                  "xpd.w_t068_b",
+                  "xpd.w_t070_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t070_c",
+                  "xpd.w_t068_c"
+                ]
+              },
+              "slave": {
+                "data_positive": "xpd.xd0069",
+                "data_negative": "xpd.xd0067",
+                "hold_pair": [
+                  "xpd.xd0065",
+                  "xpd.xd0066"
+                ],
+                "track_selectors": [
+                  "xpd.xd0079",
+                  "xpd.xd0080"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0075",
+                  "xpd.xd0076"
+                ],
+                "positive_output_native": 56,
+                "negative_output_native": 55,
+                "positive_input_native": 54,
+                "negative_input_native": 53,
+                "input_nodes": [
+                  "xpd.w_t069_b",
+                  "xpd.w_t067_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t067_c",
+                  "xpd.w_t069_c"
+                ]
+              }
+            },
+            "graph_faults": [
+              {
+                "name": "missing_actual_parallel_selector",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_slave_input",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_collector_reference",
+                "rejected": true
+              }
+            ],
+            "phase_summary": [
+              {
+                "offset_ui": -0.5,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12528399114409372
+                  },
+                  "master_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.2395499717506227
+                  },
+                  "slave_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.2417631335017637
+                  },
+                  "slave_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.36302369415610614
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1189662366395312
+                  },
+                  "master_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.02523318118915926
+                  },
+                  "slave_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.047483634318746706
+                  },
+                  "slave_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.2530345007405028
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12530512907932245
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1992763560579652
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1714119320644633
+                  },
+                  "slave_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.2336613198455822
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.0,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12776603723163446
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.19812179870727167
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1702046245816802
+                  },
+                  "slave_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.24793409570198421
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.12881038323507785
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1727911214152314
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.15177718252820213
+                  },
+                  "slave_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 128,
+                    "minimum_signed_v": -0.24117056028731282
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.06679823964731803
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.17225659919536343
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1753477628763424
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 64,
+                    "minimum_signed_v": 0.07724276720028032
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.6,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.12962594150335247
+                  },
+                  "master_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.15941039340948032
+                  },
+                  "slave_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.16400893183827125
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.250209619553423
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.9,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.12860120535089492
+                  },
+                  "master_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2121108494517769
+                  },
+                  "slave_input": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.18305347139888561
+                  },
+                  "slave_output": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 0,
+                    "minimum_signed_v": 0.1824843082228586
+                  }
+                }
+              }
+            ],
+            "master_input_at_edge_vs_slave_output_at_09ui": {
+              "(False, False)": 255
+            },
+            "simultaneous_track_observation": {
+              "sample_count": 3,
+              "duration_lower_bound_s": 0.0,
+              "duration_upper_bound_s": 1.8749999999996446e-12,
+              "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+            },
+            "marker_scope": "100mV at internal nodes is only a diagnostic marker, not a new input acceptance gate; original output gate remains unchanged."
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.100657100720336e-05,
+              "maximum_track_a": 0.008253839814811781,
+              "minimum_hold_a": 7.082740189079364e-07,
+              "maximum_hold_a": 0.008441151048770097,
+              "positive_crossings": 258,
+              "negative_crossings": 257
+            },
+            "slave": {
+              "minimum_track_a": -1.3765202530189184e-06,
+              "maximum_track_a": 0.008163267740674884,
+              "minimum_hold_a": -1.1952726254981721e-05,
+              "maximum_hold_a": 0.008056067744430871,
+              "positive_crossings": 257,
+              "negative_crossings": 258
+            }
+          },
+          "clock_base_pairs": [
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0073",
+              "negative_device": "xpd.xd0077",
+              "native_shared_emitter": 57,
+              "parallel_positive_devices": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_base_node": "xpd.w_t073_b",
+              "negative_base_node": "xpd.w_t077_b",
+              "differential_range_v": [
+                -0.29874093102487453,
+                0.2830012351282438
+              ],
+              "commonmode_range_v": [
+                1.281859653365316,
+                1.2946820672340578
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0073",
+              "negative_device": "xpd.xd0078",
+              "native_shared_emitter": 57,
+              "parallel_positive_devices": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_base_node": "xpd.w_t073_b",
+              "negative_base_node": "xpd.w_t078_b",
+              "differential_range_v": [
+                -0.29873595371872175,
+                0.28298996465122306
+              ],
+              "commonmode_range_v": [
+                1.281864730513588,
+                1.2949306449278648
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0074",
+              "negative_device": "xpd.xd0077",
+              "native_shared_emitter": 57,
+              "parallel_positive_devices": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_base_node": "xpd.w_t074_b",
+              "negative_base_node": "xpd.w_t077_b",
+              "differential_range_v": [
+                -0.2987413753663375,
+                0.2829776329538618
+              ],
+              "commonmode_range_v": [
+                1.2817068804846214,
+                1.294443022664225
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0074",
+              "negative_device": "xpd.xd0078",
+              "native_shared_emitter": 57,
+              "parallel_positive_devices": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_base_node": "xpd.w_t074_b",
+              "negative_base_node": "xpd.w_t078_b",
+              "differential_range_v": [
+                -0.2987363980601847,
+                0.28296636247684104
+              ],
+              "commonmode_range_v": [
+                1.2817119576328935,
+                1.2946916003580315
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0075",
+              "negative_device": "xpd.xd0079",
+              "native_shared_emitter": 60,
+              "parallel_positive_devices": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "positive_base_node": "xpd.w_t075_b",
+              "negative_base_node": "xpd.w_t079_b",
+              "differential_range_v": [
+                -0.29873795401219594,
+                0.2829850041043276
+              ],
+              "commonmode_range_v": [
+                1.281766999882206,
+                1.2945786774186592
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0075",
+              "negative_device": "xpd.xd0080",
+              "native_shared_emitter": 60,
+              "parallel_positive_devices": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "positive_base_node": "xpd.w_t075_b",
+              "negative_base_node": "xpd.w_t080_b",
+              "differential_range_v": [
+                -0.29873648226273586,
+                0.2829807844393042
+              ],
+              "commonmode_range_v": [
+                1.2817454817144005,
+                1.29470992653844
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0076",
+              "negative_device": "xpd.xd0079",
+              "native_shared_emitter": 60,
+              "parallel_positive_devices": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "positive_base_node": "xpd.w_t076_b",
+              "negative_base_node": "xpd.w_t079_b",
+              "differential_range_v": [
+                -0.29873803482417305,
+                0.28298028545086584
+              ],
+              "commonmode_range_v": [
+                1.2817400798475085,
+                1.2945405987243235
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0076",
+              "negative_device": "xpd.xd0080",
+              "native_shared_emitter": 60,
+              "parallel_positive_devices": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "positive_base_node": "xpd.w_t076_b",
+              "negative_base_node": "xpd.w_t080_b",
+              "differential_range_v": [
+                -0.29873656307471297,
+                0.28297606578584245
+              ],
+              "commonmode_range_v": [
+                1.2817185616797029,
+                1.2946718478441044
+              ]
+            }
+          ]
+        },
+        "c": {
+          "physical_macro": "sc",
+          "physical_kind": "sampler",
+          "hbt_count": 16,
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 129,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.1905139265003568,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 64
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 128,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.2720680113395475,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 64
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 129,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.2561692569015288,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 64
+            }
+          ],
+          "latches": {
+            "native_graph": {
+              "master": {
+                "data_positive": "xpd.xd0100",
+                "data_negative": "xpd.xd0102",
+                "hold_pair": [
+                  "xpd.xd0103",
+                  "xpd.xd0104"
+                ],
+                "track_selectors": [
+                  "xpd.xd0105",
+                  "xpd.xd0106"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0109",
+                  "xpd.xd0110"
+                ],
+                "positive_output_native": 114,
+                "negative_output_native": 100,
+                "positive_input_native": 113,
+                "negative_input_native": 112,
+                "input_nodes": [
+                  "xpd.w_t100_b",
+                  "xpd.w_t102_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t102_c",
+                  "xpd.w_t100_c"
+                ]
+              },
+              "slave": {
+                "data_positive": "xpd.xd0101",
+                "data_negative": "xpd.xd0099",
+                "hold_pair": [
+                  "xpd.xd0097",
+                  "xpd.xd0098"
+                ],
+                "track_selectors": [
+                  "xpd.xd0111",
+                  "xpd.xd0112"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0107",
+                  "xpd.xd0108"
+                ],
+                "positive_output_native": 116,
+                "negative_output_native": 115,
+                "positive_input_native": 114,
+                "negative_input_native": 100,
+                "input_nodes": [
+                  "xpd.w_t101_b",
+                  "xpd.w_t099_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t099_c",
+                  "xpd.w_t101_c"
+                ]
+              }
+            },
+            "graph_faults": [
+              {
+                "name": "missing_actual_parallel_selector",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_slave_input",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_collector_reference",
+                "rejected": true
+              }
+            ],
+            "phase_summary": [
+              {
+                "offset_ui": -0.5,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.006533005310884263
+                  },
+                  "master_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 161,
+                    "minimum_signed_v": -0.26891269526024636
+                  },
+                  "slave_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 161,
+                    "minimum_signed_v": -0.2675858080368435
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 132,
+                    "minimum_signed_v": -0.3469752692648679
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.008779848687172876
+                  },
+                  "master_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 137,
+                    "minimum_signed_v": -0.15024393826375296
+                  },
+                  "slave_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 137,
+                    "minimum_signed_v": -0.15016440396635392
+                  },
+                  "slave_output": {
+                    "wrong_sign": 130,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.26507742399631246
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.0060591047824354646
+                  },
+                  "master_output": {
+                    "wrong_sign": 119,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.02860688709620459
+                  },
+                  "slave_input": {
+                    "wrong_sign": 122,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.0268711537774395
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.26756805922243637
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.0,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.002773001383059637
+                  },
+                  "master_output": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.013881746171202242
+                  },
+                  "slave_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.012819273407092598
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.2770815166470453
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 3,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.00010900334080633896
+                  },
+                  "master_output": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.005705638624108603
+                  },
+                  "slave_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.00539764519752301
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.27034194284324803
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 32,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.002327177516802665
+                  },
+                  "master_output": {
+                    "wrong_sign": 117,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.04629508914979073
+                  },
+                  "slave_input": {
+                    "wrong_sign": 117,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.04521135004667591
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.1905139265003568
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.6,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 65,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.007278487856167475
+                  },
+                  "master_output": {
+                    "wrong_sign": 127,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.21778583187001052
+                  },
+                  "slave_input": {
+                    "wrong_sign": 127,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.21805477232642795
+                  },
+                  "slave_output": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2720680113395475
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.9,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 65,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.018249521592486148
+                  },
+                  "master_output": {
+                    "wrong_sign": 120,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.04618045267885903
+                  },
+                  "slave_input": {
+                    "wrong_sign": 123,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.04151981674140842
+                  },
+                  "slave_output": {
+                    "wrong_sign": 129,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2561692569015288
+                  }
+                }
+              }
+            ],
+            "master_input_at_edge_vs_slave_output_at_09ui": {
+              "(True, True)": 129,
+              "(True, False)": 126
+            },
+            "simultaneous_track_observation": {
+              "sample_count": 0,
+              "duration_lower_bound_s": 0.0,
+              "duration_upper_bound_s": 0.0,
+              "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+            },
+            "marker_scope": "100mV at internal nodes is only a diagnostic marker, not a new input acceptance gate; original output gate remains unchanged."
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.7048861421220383e-06,
+              "maximum_track_a": 0.008216972535256772,
+              "minimum_hold_a": -6.991044492054638e-06,
+              "maximum_hold_a": 0.008372282582365234,
+              "positive_crossings": 257,
+              "negative_crossings": 258
+            },
+            "slave": {
+              "minimum_track_a": -7.775156642550018e-06,
+              "maximum_track_a": 0.00810985522664312,
+              "minimum_hold_a": -4.3702584710386155e-06,
+              "maximum_hold_a": 0.00804446623991945,
+              "positive_crossings": 258,
+              "negative_crossings": 257
+            }
+          },
+          "clock_base_pairs": [
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0109",
+              "negative_device": "xpd.xd0105",
+              "native_shared_emitter": 117,
+              "parallel_positive_devices": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "positive_base_node": "xpd.w_t109_b",
+              "negative_base_node": "xpd.w_t105_b",
+              "differential_range_v": [
+                -0.2985751494630484,
+                0.28151592034189576
+              ],
+              "commonmode_range_v": [
+                1.2781543598160847,
+                1.2974837927179803
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0109",
+              "negative_device": "xpd.xd0106",
+              "native_shared_emitter": 117,
+              "parallel_positive_devices": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "positive_base_node": "xpd.w_t109_b",
+              "negative_base_node": "xpd.w_t106_b",
+              "differential_range_v": [
+                -0.29856414761277583,
+                0.281487122629398
+              ],
+              "commonmode_range_v": [
+                1.2782773120535404,
+                1.297256762155985
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0110",
+              "negative_device": "xpd.xd0105",
+              "native_shared_emitter": 117,
+              "parallel_positive_devices": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "positive_base_node": "xpd.w_t110_b",
+              "negative_base_node": "xpd.w_t105_b",
+              "differential_range_v": [
+                -0.2985755320309369,
+                0.28151722013550096
+              ],
+              "commonmode_range_v": [
+                1.2780282599074617,
+                1.2976625739767242
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0110",
+              "negative_device": "xpd.xd0106",
+              "native_shared_emitter": 117,
+              "parallel_positive_devices": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "positive_base_node": "xpd.w_t110_b",
+              "negative_base_node": "xpd.w_t106_b",
+              "differential_range_v": [
+                -0.2985645301806643,
+                0.2814884224230032
+              ],
+              "commonmode_range_v": [
+                1.2781512121449174,
+                1.297435543414729
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0111",
+              "negative_device": "xpd.xd0107",
+              "native_shared_emitter": 120,
+              "parallel_positive_devices": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_base_node": "xpd.w_t111_b",
+              "negative_base_node": "xpd.w_t107_b",
+              "differential_range_v": [
+                -0.29856390342093286,
+                0.28147736081432684
+              ],
+              "commonmode_range_v": [
+                1.2782454334935407,
+                1.297376360595911
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0111",
+              "negative_device": "xpd.xd0108",
+              "native_shared_emitter": 120,
+              "parallel_positive_devices": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_base_node": "xpd.w_t111_b",
+              "negative_base_node": "xpd.w_t108_b",
+              "differential_range_v": [
+                -0.29856137874727384,
+                0.2814725594137073
+              ],
+              "commonmode_range_v": [
+                1.278265822001563,
+                1.2973400980670062
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0112",
+              "negative_device": "xpd.xd0107",
+              "native_shared_emitter": 120,
+              "parallel_positive_devices": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_base_node": "xpd.w_t112_b",
+              "negative_base_node": "xpd.w_t107_b",
+              "differential_range_v": [
+                -0.29856401855093373,
+                0.28148117169663056
+              ],
+              "commonmode_range_v": [
+                1.278186760645063,
+                1.2974601063671183
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0112",
+              "negative_device": "xpd.xd0108",
+              "native_shared_emitter": 120,
+              "parallel_positive_devices": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_base_node": "xpd.w_t112_b",
+              "negative_base_node": "xpd.w_t108_b",
+              "differential_range_v": [
+                -0.2985614938772747,
+                0.281476370296011
+              ],
+              "commonmode_range_v": [
+                1.278207149153085,
+                1.2974238438382137
+              ]
+            }
+          ]
+        },
+        "d": {
+          "physical_macro": "sd",
+          "physical_kind": "sampler",
+          "hbt_count": 16,
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 126,
+              "below_100mv": 132,
+              "minimum_signed_margin_v": -0.19785487781856345,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 61
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 121,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.2690245077752788,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 57
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 122,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.257548567439021,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 58
+            }
+          ],
+          "latches": {
+            "native_graph": {
+              "master": {
+                "data_positive": "xpd.xd0050",
+                "data_negative": "xpd.xd0052",
+                "hold_pair": [
+                  "xpd.xd0053",
+                  "xpd.xd0054"
+                ],
+                "track_selectors": [
+                  "xpd.xd0055",
+                  "xpd.xd0056"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0059",
+                  "xpd.xd0060"
+                ],
+                "positive_output_native": 18,
+                "negative_output_native": 3,
+                "positive_input_native": 17,
+                "negative_input_native": 16,
+                "input_nodes": [
+                  "xpd.w_t050_b",
+                  "xpd.w_t052_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t052_c",
+                  "xpd.w_t050_c"
+                ]
+              },
+              "slave": {
+                "data_positive": "xpd.xd0051",
+                "data_negative": "xpd.xd0049",
+                "hold_pair": [
+                  "xpd.xd0047",
+                  "xpd.xd0048"
+                ],
+                "track_selectors": [
+                  "xpd.xd0061",
+                  "xpd.xd0062"
+                ],
+                "hold_selectors": [
+                  "xpd.xd0057",
+                  "xpd.xd0058"
+                ],
+                "positive_output_native": 21,
+                "negative_output_native": 20,
+                "positive_input_native": 18,
+                "negative_input_native": 3,
+                "input_nodes": [
+                  "xpd.w_t051_b",
+                  "xpd.w_t049_b"
+                ],
+                "output_nodes": [
+                  "xpd.w_t049_c",
+                  "xpd.w_t051_c"
+                ]
+              }
+            },
+            "graph_faults": [
+              {
+                "name": "missing_actual_parallel_selector",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_slave_input",
+                "rejected": true
+              },
+              {
+                "name": "wrong_actual_collector_reference",
+                "rejected": true
+              }
+            ],
+            "phase_summary": [
+              {
+                "offset_ui": -0.5,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.018654637818248956
+                  },
+                  "master_output": {
+                    "wrong_sign": 120,
+                    "below_100mv_marker": 162,
+                    "minimum_signed_v": -0.2808546222084595
+                  },
+                  "slave_input": {
+                    "wrong_sign": 120,
+                    "below_100mv_marker": 162,
+                    "minimum_signed_v": -0.2793404641220613
+                  },
+                  "slave_output": {
+                    "wrong_sign": 131,
+                    "below_100mv_marker": 148,
+                    "minimum_signed_v": -0.356736143605188
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 128,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.023517887997873035
+                  },
+                  "master_output": {
+                    "wrong_sign": 115,
+                    "below_100mv_marker": 161,
+                    "minimum_signed_v": -0.1630609036603005
+                  },
+                  "slave_input": {
+                    "wrong_sign": 117,
+                    "below_100mv_marker": 161,
+                    "minimum_signed_v": -0.160108944953464
+                  },
+                  "slave_output": {
+                    "wrong_sign": 127,
+                    "below_100mv_marker": 142,
+                    "minimum_signed_v": -0.2718343171985718
+                  }
+                }
+              },
+              {
+                "offset_ui": -0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.01344452520774184
+                  },
+                  "master_output": {
+                    "wrong_sign": 96,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.04360244159632436
+                  },
+                  "slave_input": {
+                    "wrong_sign": 97,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.04015619864504031
+                  },
+                  "slave_output": {
+                    "wrong_sign": 130,
+                    "below_100mv_marker": 137,
+                    "minimum_signed_v": -0.27404361193537724
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.0,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.006987043527232938
+                  },
+                  "master_output": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.02401082359063432
+                  },
+                  "slave_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.02194080973364773
+                  },
+                  "slave_output": {
+                    "wrong_sign": 130,
+                    "below_100mv_marker": 134,
+                    "minimum_signed_v": -0.2828338140867274
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.1,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 38,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.0012623279192074208
+                  },
+                  "master_output": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.010718574684293998
+                  },
+                  "slave_input": {
+                    "wrong_sign": 64,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.010120527653881576
+                  },
+                  "slave_output": {
+                    "wrong_sign": 130,
+                    "below_100mv_marker": 133,
+                    "minimum_signed_v": -0.2747298839056395
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.3,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": 0.004342057325492721
+                  },
+                  "master_output": {
+                    "wrong_sign": 68,
+                    "below_100mv_marker": 130,
+                    "minimum_signed_v": -0.04699300372255601
+                  },
+                  "slave_input": {
+                    "wrong_sign": 68,
+                    "below_100mv_marker": 131,
+                    "minimum_signed_v": -0.04647387164122047
+                  },
+                  "slave_output": {
+                    "wrong_sign": 126,
+                    "below_100mv_marker": 132,
+                    "minimum_signed_v": -0.19785487781856345
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.6,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 0,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": 0.004993615138430382
+                  },
+                  "master_output": {
+                    "wrong_sign": 104,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.21122592149680824
+                  },
+                  "slave_input": {
+                    "wrong_sign": 104,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.21187032746736167
+                  },
+                  "slave_output": {
+                    "wrong_sign": 121,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.2690245077752788
+                  }
+                }
+              },
+              {
+                "offset_ui": 0.9,
+                "samples": 255,
+                "signals": {
+                  "master_input": {
+                    "wrong_sign": 65,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.011160282523931205
+                  },
+                  "master_output": {
+                    "wrong_sign": 97,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.03116133883941275
+                  },
+                  "slave_input": {
+                    "wrong_sign": 96,
+                    "below_100mv_marker": 255,
+                    "minimum_signed_v": -0.028193921345611075
+                  },
+                  "slave_output": {
+                    "wrong_sign": 122,
+                    "below_100mv_marker": 129,
+                    "minimum_signed_v": -0.257548567439021
+                  }
+                }
+              }
+            ],
+            "master_input_at_edge_vs_slave_output_at_09ui": {
+              "(True, True)": 129,
+              "(True, False)": 126
+            },
+            "simultaneous_track_observation": {
+              "sample_count": 0,
+              "duration_lower_bound_s": 0.0,
+              "duration_upper_bound_s": 0.0,
+              "scope": "Observed simultaneous positive track-minus-hold collector currents, not proof of an actual data race"
+            },
+            "marker_scope": "100mV at internal nodes is only a diagnostic marker, not a new input acceptance gate; original output gate remains unchanged."
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.3823037346034878e-06,
+              "maximum_track_a": 0.00831854451464601,
+              "minimum_hold_a": -6.955846347973358e-06,
+              "maximum_hold_a": 0.008468532042638935,
+              "positive_crossings": 257,
+              "negative_crossings": 258
+            },
+            "slave": {
+              "minimum_track_a": -7.727458729995598e-06,
+              "maximum_track_a": 0.008199885363135623,
+              "minimum_hold_a": -4.163468970506762e-06,
+              "maximum_hold_a": 0.008138960684465516,
+              "positive_crossings": 258,
+              "negative_crossings": 257
+            }
+          },
+          "clock_base_pairs": [
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0059",
+              "negative_device": "xpd.xd0055",
+              "native_shared_emitter": 23,
+              "parallel_positive_devices": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "positive_base_node": "xpd.w_t059_b",
+              "negative_base_node": "xpd.w_t055_b",
+              "differential_range_v": [
+                -0.2986283525623121,
+                0.2818984476288644
+              ],
+              "commonmode_range_v": [
+                1.278541499471073,
+                1.29734829393366
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0059",
+              "negative_device": "xpd.xd0056",
+              "native_shared_emitter": 23,
+              "parallel_positive_devices": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "positive_base_node": "xpd.w_t059_b",
+              "negative_base_node": "xpd.w_t056_b",
+              "differential_range_v": [
+                -0.29861722553550685,
+                0.2818700226170756
+              ],
+              "commonmode_range_v": [
+                1.278665275487354,
+                1.2971179861963391
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0060",
+              "negative_device": "xpd.xd0055",
+              "native_shared_emitter": 23,
+              "parallel_positive_devices": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "positive_base_node": "xpd.w_t060_b",
+              "negative_base_node": "xpd.w_t055_b",
+              "differential_range_v": [
+                -0.29862873015184177,
+                0.2818989614004921
+              ],
+              "commonmode_range_v": [
+                1.2784155695117216,
+                1.2975317086025555
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0060",
+              "negative_device": "xpd.xd0056",
+              "native_shared_emitter": 23,
+              "parallel_positive_devices": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "positive_base_node": "xpd.w_t060_b",
+              "negative_base_node": "xpd.w_t056_b",
+              "differential_range_v": [
+                -0.2986176031250365,
+                0.2818705363887033
+              ],
+              "commonmode_range_v": [
+                1.2785393455280025,
+                1.2973014008652344
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0061",
+              "negative_device": "xpd.xd0057",
+              "native_shared_emitter": 26,
+              "parallel_positive_devices": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_base_node": "xpd.w_t061_b",
+              "negative_base_node": "xpd.w_t057_b",
+              "differential_range_v": [
+                -0.29861697235816265,
+                0.28185695912052444
+              ],
+              "commonmode_range_v": [
+                1.2786338142325326,
+                1.2972434202714207
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0061",
+              "negative_device": "xpd.xd0058",
+              "native_shared_emitter": 26,
+              "parallel_positive_devices": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_base_node": "xpd.w_t061_b",
+              "negative_base_node": "xpd.w_t058_b",
+              "differential_range_v": [
+                -0.2986144145785836,
+                0.28185219571128917
+              ],
+              "commonmode_range_v": [
+                1.2786543589784096,
+                1.297206699314564
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0062",
+              "negative_device": "xpd.xd0057",
+              "native_shared_emitter": 26,
+              "parallel_positive_devices": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_base_node": "xpd.w_t062_b",
+              "negative_base_node": "xpd.w_t057_b",
+              "differential_range_v": [
+                -0.29861708666814923,
+                0.2818602090729809
+              ],
+              "commonmode_range_v": [
+                1.2785754535260994,
+                1.2973296809176187
+              ]
+            },
+            {
+              "logical_pair": [
+                "cp",
+                "cn"
+              ],
+              "positive_device": "xpd.xd0062",
+              "negative_device": "xpd.xd0058",
+              "native_shared_emitter": 26,
+              "parallel_positive_devices": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "parallel_negative_devices": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_base_node": "xpd.w_t062_b",
+              "negative_base_node": "xpd.w_t058_b",
+              "differential_range_v": [
+                -0.2986145288885702,
+                0.28185544566374565
+              ],
+              "commonmode_range_v": [
+                1.278595998271976,
+                1.2972929599607619
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}

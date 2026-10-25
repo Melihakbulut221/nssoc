@@ -1,0 +1,1429 @@
+{
+  "run": 39519171722,
+  "cases": {
+    "nominal_early": {
+      "run": 39519171722,
+      "group": "cdr-v25-latch-timing-nominal_early",
+      "source_head": "c128aead803be26719be741eb5f9ec51a1539c19",
+      "summary_asset": 660850832,
+      "summary_sha256": "fbf6bf01dbc7a4a473773eac30a3a058a3a594c2ac1b6113a44b503aa4a84300",
+      "parts_asset": 660850943,
+      "parts_sha256": "52d9ed2905fd0541dd240bfb874859e513a66c96e5ba296c4ee4a54b97600500",
+      "status": "COMPLETE_REJECTED_CDR_NATIVE_MASTER_SLAVE_TOPOLOGY_AND_TRANSFER_TIMING_NOT_ACCEPTANCE",
+      "all120original_hbt_checks_reproduced": true,
+      "all4original_sampler_checks_reproduced": true,
+      "original_rejection_preserved": true,
+      "stages": {
+        "a": {
+          "original_sampler_check": {
+            "samples": 765,
+            "minimum_signed_margin_v": 0.04533599485567931,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 99,
+            "maximum_clock_to_valid_s": 4.3828124999995575e-11,
+            "passed": false
+          },
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 99,
+              "minimum_signed_margin_v": 0.04533599485567931,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.20269199017102538,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.14880518547462254,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "native_graph": {
+            "master": {
+              "data_positive": "xpd.xd0084",
+              "data_negative": "xpd.xd0086",
+              "hold_pair": [
+                "xpd.xd0087",
+                "xpd.xd0088"
+              ],
+              "track_selectors": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "hold_selectors": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "positive_output_native": 81,
+              "negative_output_native": 80,
+              "positive_input_native": 83,
+              "negative_input_native": 82,
+              "input_nodes": [
+                "xpd.w_t084_b",
+                "xpd.w_t086_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t086_c",
+                "xpd.w_t084_c"
+              ]
+            },
+            "slave": {
+              "data_positive": "xpd.xd0085",
+              "data_negative": "xpd.xd0083",
+              "hold_pair": [
+                "xpd.xd0081",
+                "xpd.xd0082"
+              ],
+              "track_selectors": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "hold_selectors": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_output_native": 85,
+              "negative_output_native": 84,
+              "positive_input_native": 81,
+              "negative_input_native": 80,
+              "input_nodes": [
+                "xpd.w_t085_b",
+                "xpd.w_t083_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t083_c",
+                "xpd.w_t085_c"
+              ]
+            }
+          },
+          "phase_summary": {
+            "items": 8
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.7068012202858907e-06,
+              "maximum_track_a": 0.008270209051102399,
+              "minimum_hold_a": -7.108065924875016e-06,
+              "maximum_hold_a": 0.008425213206449775,
+              "positive_crossings_s": {
+                "items": 257
+              },
+              "negative_crossings_s": {
+                "items": 258
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.8908660681504404e-11,
+                "maximum_s": 2.0173611525407176e-10,
+                "median_s": -4.840644102688652e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1074581445783142e-10,
+                "maximum_s": 2.638079005866943e-10,
+                "median_s": 1.3866296385870612e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -7.798825464590012e-06,
+              "maximum_track_a": 0.00815666034507817,
+              "minimum_hold_a": -2.5387860540436008e-06,
+              "maximum_hold_a": 0.008069019143189986,
+              "positive_crossings_s": {
+                "items": 258
+              },
+              "negative_crossings_s": {
+                "items": 257
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1069781224643064e-10,
+                "maximum_s": 2.6396042007172503e-10,
+                "median_s": 1.4012618621872146e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.887779701008791e-11,
+                "maximum_s": 2.016879960844551e-10,
+                "median_s": -4.845103227966759e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "actual_selector_nx": {
+            "xpd.xd0089": 2,
+            "xpd.xd0090": 2,
+            "xpd.xd0091": 2,
+            "xpd.xd0092": 2,
+            "xpd.xd0093": 2,
+            "xpd.xd0094": 2,
+            "xpd.xd0095": 2,
+            "xpd.xd0096": 2
+          },
+          "actual_data_hold_nx": {
+            "xpd.xd0081": 3,
+            "xpd.xd0082": 3,
+            "xpd.xd0083": 3,
+            "xpd.xd0084": 3,
+            "xpd.xd0085": 3,
+            "xpd.xd0086": 3,
+            "xpd.xd0087": 3,
+            "xpd.xd0088": 3
+          }
+        },
+        "b": {
+          "original_sampler_check": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.009154915087342601,
+            "wrong_sign_samples": 64,
+            "below_100mv_samples": 129,
+            "maximum_clock_to_valid_s": 4.640625000004896e-11,
+            "passed": false
+          },
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 64,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.009154915087342601,
+              "wrong_on_changed_expected": 64,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.2380638484366344,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.23271246615150246,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "native_graph": {
+            "master": {
+              "data_positive": "xpd.xd0068",
+              "data_negative": "xpd.xd0070",
+              "hold_pair": [
+                "xpd.xd0071",
+                "xpd.xd0072"
+              ],
+              "track_selectors": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "hold_selectors": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_output_native": 52,
+              "negative_output_native": 51,
+              "positive_input_native": 54,
+              "negative_input_native": 53,
+              "input_nodes": [
+                "xpd.w_t068_b",
+                "xpd.w_t070_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t070_c",
+                "xpd.w_t068_c"
+              ]
+            },
+            "slave": {
+              "data_positive": "xpd.xd0069",
+              "data_negative": "xpd.xd0067",
+              "hold_pair": [
+                "xpd.xd0065",
+                "xpd.xd0066"
+              ],
+              "track_selectors": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "hold_selectors": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "positive_output_native": 56,
+              "negative_output_native": 55,
+              "positive_input_native": 52,
+              "negative_input_native": 51,
+              "input_nodes": [
+                "xpd.w_t069_b",
+                "xpd.w_t067_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t067_c",
+                "xpd.w_t069_c"
+              ]
+            }
+          },
+          "phase_summary": {
+            "items": 8
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.0889574577077859e-05,
+              "maximum_track_a": 0.00829757864695295,
+              "minimum_hold_a": 1.7562813561322872e-07,
+              "maximum_hold_a": 0.008461109958166176,
+              "positive_crossings_s": {
+                "items": 258
+              },
+              "negative_crossings_s": {
+                "items": 257
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -4.9960135684183814e-11,
+                "maximum_s": 3.25189047582402e-10,
+                "median_s": -4.9769530334464794e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": 1.235753561444509e-11,
+                "maximum_s": 2.626365085177157e-10,
+                "median_s": 1.253651755803446e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -3.236207866057423e-06,
+              "maximum_track_a": 0.008187554887181148,
+              "minimum_hold_a": -1.1885206884123462e-05,
+              "maximum_hold_a": 0.008100595579961217,
+              "positive_crossings_s": {
+                "items": 257
+              },
+              "negative_crossings_s": {
+                "items": 258
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": 1.2405730414240641e-11,
+                "maximum_s": 2.6280831420052444e-10,
+                "median_s": 1.2690187976189e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -4.9929193167085516e-11,
+                "maximum_s": 3.251367216125024e-10,
+                "median_s": -4.9814948940859935e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "actual_selector_nx": {
+            "xpd.xd0073": 2,
+            "xpd.xd0074": 2,
+            "xpd.xd0075": 2,
+            "xpd.xd0076": 2,
+            "xpd.xd0077": 2,
+            "xpd.xd0078": 2,
+            "xpd.xd0079": 2,
+            "xpd.xd0080": 2
+          },
+          "actual_data_hold_nx": {
+            "xpd.xd0065": 3,
+            "xpd.xd0066": 3,
+            "xpd.xd0067": 3,
+            "xpd.xd0068": 3,
+            "xpd.xd0069": 3,
+            "xpd.xd0070": 3,
+            "xpd.xd0071": 3,
+            "xpd.xd0072": 3
+          }
+        },
+        "c": {
+          "original_sampler_check": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.05351482576596744,
+            "wrong_sign_samples": 50,
+            "below_100mv_samples": 117,
+            "maximum_clock_to_valid_s": 5.890624999998993e-11,
+            "passed": false
+          },
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 50,
+              "below_100mv": 117,
+              "minimum_signed_margin_v": -0.05351482576596744,
+              "wrong_on_changed_expected": 50,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.15902674517106657,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.12079808890240443,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "native_graph": {
+            "master": {
+              "data_positive": "xpd.xd0100",
+              "data_negative": "xpd.xd0102",
+              "hold_pair": [
+                "xpd.xd0103",
+                "xpd.xd0104"
+              ],
+              "track_selectors": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "hold_selectors": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "positive_output_native": 112,
+              "negative_output_native": 111,
+              "positive_input_native": 114,
+              "negative_input_native": 113,
+              "input_nodes": [
+                "xpd.w_t100_b",
+                "xpd.w_t102_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t102_c",
+                "xpd.w_t100_c"
+              ]
+            },
+            "slave": {
+              "data_positive": "xpd.xd0101",
+              "data_negative": "xpd.xd0099",
+              "hold_pair": [
+                "xpd.xd0097",
+                "xpd.xd0098"
+              ],
+              "track_selectors": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "hold_selectors": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_output_native": 116,
+              "negative_output_native": 115,
+              "positive_input_native": 112,
+              "negative_input_native": 111,
+              "input_nodes": [
+                "xpd.w_t101_b",
+                "xpd.w_t099_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t099_c",
+                "xpd.w_t101_c"
+              ]
+            }
+          },
+          "phase_summary": {
+            "items": 8
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.2717179880795623e-06,
+              "maximum_track_a": 0.008233730569192074,
+              "minimum_hold_a": -6.855111668090442e-06,
+              "maximum_hold_a": 0.008419581385159792,
+              "positive_crossings_s": {
+                "items": 257
+              },
+              "negative_crossings_s": {
+                "items": 258
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.859684808150785e-11,
+                "maximum_s": 2.021140293855721e-10,
+                "median_s": -4.80287336565058e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1048682479433221e-10,
+                "maximum_s": 2.6403973605306007e-10,
+                "median_s": 1.410070308893932e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -7.609724947994511e-06,
+              "maximum_track_a": 0.00814900784394674,
+              "minimum_hold_a": -2.165542071507287e-06,
+              "maximum_hold_a": 0.008065004570270163,
+              "positive_crossings_s": {
+                "items": 258
+              },
+              "negative_crossings_s": {
+                "items": 257
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1043019108172996e-10,
+                "maximum_s": 2.6426077457349235e-10,
+                "median_s": 1.4300300256484445e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.858715523799514e-11,
+                "maximum_s": 2.0196919389851814e-10,
+                "median_s": -4.8152920971394035e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "actual_selector_nx": {
+            "xpd.xd0105": 2,
+            "xpd.xd0106": 2,
+            "xpd.xd0107": 2,
+            "xpd.xd0108": 2,
+            "xpd.xd0109": 2,
+            "xpd.xd0110": 2,
+            "xpd.xd0111": 2,
+            "xpd.xd0112": 2
+          },
+          "actual_data_hold_nx": {
+            "xpd.xd0097": 3,
+            "xpd.xd0098": 3,
+            "xpd.xd0099": 3,
+            "xpd.xd0100": 3,
+            "xpd.xd0101": 3,
+            "xpd.xd0102": 3,
+            "xpd.xd0103": 3,
+            "xpd.xd0104": 3
+          }
+        },
+        "d": {
+          "original_sampler_check": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.13126413072629495,
+            "wrong_sign_samples": 97,
+            "below_100mv_samples": 137,
+            "maximum_clock_to_valid_s": 1.1890625000006168e-10,
+            "passed": false
+          },
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 97,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": -0.13126413072629495,
+              "wrong_on_changed_expected": 96,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.10044333217008836,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 8,
+              "minimum_signed_margin_v": 0.09049273688865489,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "native_graph": {
+            "master": {
+              "data_positive": "xpd.xd0050",
+              "data_negative": "xpd.xd0052",
+              "hold_pair": [
+                "xpd.xd0053",
+                "xpd.xd0054"
+              ],
+              "track_selectors": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "hold_selectors": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "positive_output_native": 15,
+              "negative_output_native": 14,
+              "positive_input_native": 17,
+              "negative_input_native": 16,
+              "input_nodes": [
+                "xpd.w_t050_b",
+                "xpd.w_t052_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t052_c",
+                "xpd.w_t050_c"
+              ]
+            },
+            "slave": {
+              "data_positive": "xpd.xd0051",
+              "data_negative": "xpd.xd0049",
+              "hold_pair": [
+                "xpd.xd0047",
+                "xpd.xd0048"
+              ],
+              "track_selectors": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "hold_selectors": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_output_native": 19,
+              "negative_output_native": 18,
+              "positive_input_native": 15,
+              "negative_input_native": 14,
+              "input_nodes": [
+                "xpd.w_t051_b",
+                "xpd.w_t049_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t049_c",
+                "xpd.w_t051_c"
+              ]
+            }
+          },
+          "phase_summary": {
+            "items": 8
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -9.196413246305102e-07,
+              "maximum_track_a": 0.008332451910153443,
+              "minimum_hold_a": -6.826379709522392e-06,
+              "maximum_hold_a": 0.00852144527750465,
+              "positive_crossings_s": {
+                "items": 257
+              },
+              "negative_crossings_s": {
+                "items": 258
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.897060725015646e-11,
+                "maximum_s": 2.0173888987885814e-10,
+                "median_s": -4.840100485642728e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1084595212165648e-10,
+                "maximum_s": 2.636538370857895e-10,
+                "median_s": 1.3725408136328308e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -7.560976270548327e-06,
+              "maximum_track_a": 0.008249488766252061,
+              "minimum_hold_a": -2.017695291368258e-06,
+              "maximum_hold_a": 0.008151525749631655,
+              "positive_crossings_s": {
+                "items": 258
+              },
+              "negative_crossings_s": {
+                "items": 257
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1078840302233773e-10,
+                "maximum_s": 2.638705021211839e-10,
+                "median_s": 1.3919989056823485e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.895910353809377e-11,
+                "maximum_s": 2.01607811955448e-10,
+                "median_s": -4.8513908699069596e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "actual_selector_nx": {
+            "xpd.xd0055": 2,
+            "xpd.xd0056": 2,
+            "xpd.xd0057": 2,
+            "xpd.xd0058": 2,
+            "xpd.xd0059": 2,
+            "xpd.xd0060": 2,
+            "xpd.xd0061": 2,
+            "xpd.xd0062": 2
+          },
+          "actual_data_hold_nx": {
+            "xpd.xd0047": 3,
+            "xpd.xd0048": 3,
+            "xpd.xd0049": 3,
+            "xpd.xd0050": 3,
+            "xpd.xd0051": 3,
+            "xpd.xd0052": 3,
+            "xpd.xd0053": 3,
+            "xpd.xd0054": 3
+          }
+        }
+      }
+    },
+    "nominal_late": {
+      "run": 39519171722,
+      "group": "cdr-v25-latch-timing-nominal_late",
+      "source_head": "c128aead803be26719be741eb5f9ec51a1539c19",
+      "summary_asset": 660851806,
+      "summary_sha256": "3c9dceaf0ec79d54a3cd39f2ca9ad2c5c487e01899071b3157f09b203451bf92",
+      "parts_asset": 660851892,
+      "parts_sha256": "5196b3754238bf6d5fab8841e153f96d453fde0300fb32a24646db1be865d644",
+      "status": "COMPLETE_REJECTED_CDR_NATIVE_MASTER_SLAVE_TOPOLOGY_AND_TRANSFER_TIMING_NOT_ACCEPTANCE",
+      "all120original_hbt_checks_reproduced": true,
+      "all4original_sampler_checks_reproduced": true,
+      "original_rejection_preserved": true,
+      "stages": {
+        "a": {
+          "original_sampler_check": {
+            "samples": 765,
+            "minimum_signed_margin_v": 0.033295521129863274,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 129,
+            "maximum_clock_to_valid_s": 4.515624999999129e-11,
+            "passed": false
+          },
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 129,
+              "minimum_signed_margin_v": 0.033295521129863274,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.19787244259653008,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.17997471308454982,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "native_graph": {
+            "master": {
+              "data_positive": "xpd.xd0084",
+              "data_negative": "xpd.xd0086",
+              "hold_pair": [
+                "xpd.xd0087",
+                "xpd.xd0088"
+              ],
+              "track_selectors": [
+                "xpd.xd0089",
+                "xpd.xd0090"
+              ],
+              "hold_selectors": [
+                "xpd.xd0093",
+                "xpd.xd0094"
+              ],
+              "positive_output_native": 81,
+              "negative_output_native": 80,
+              "positive_input_native": 83,
+              "negative_input_native": 82,
+              "input_nodes": [
+                "xpd.w_t084_b",
+                "xpd.w_t086_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t086_c",
+                "xpd.w_t084_c"
+              ]
+            },
+            "slave": {
+              "data_positive": "xpd.xd0085",
+              "data_negative": "xpd.xd0083",
+              "hold_pair": [
+                "xpd.xd0081",
+                "xpd.xd0082"
+              ],
+              "track_selectors": [
+                "xpd.xd0095",
+                "xpd.xd0096"
+              ],
+              "hold_selectors": [
+                "xpd.xd0091",
+                "xpd.xd0092"
+              ],
+              "positive_output_native": 85,
+              "negative_output_native": 84,
+              "positive_input_native": 81,
+              "negative_input_native": 80,
+              "input_nodes": [
+                "xpd.w_t085_b",
+                "xpd.w_t083_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t083_c",
+                "xpd.w_t085_c"
+              ]
+            }
+          },
+          "phase_summary": {
+            "items": 8
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -6.048432332747471e-07,
+              "maximum_track_a": 0.008267996499393474,
+              "minimum_hold_a": -7.108065924875016e-06,
+              "maximum_hold_a": 0.00843011211918888,
+              "positive_crossings_s": {
+                "items": 257
+              },
+              "negative_crossings_s": {
+                "items": 258
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.892373343608318e-11,
+                "maximum_s": 2.0180193158613535e-10,
+                "median_s": -4.8427410436438946e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1074581445783142e-10,
+                "maximum_s": 2.637871369060112e-10,
+                "median_s": 1.3861617461605595e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -7.798825464590012e-06,
+              "maximum_track_a": 0.008167938043746742,
+              "minimum_hold_a": -2.4757592417989426e-06,
+              "maximum_hold_a": 0.008072182675598932,
+              "positive_crossings_s": {
+                "items": 258
+              },
+              "negative_crossings_s": {
+                "items": 257
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1069781224643064e-10,
+                "maximum_s": 2.6393977498266907e-10,
+                "median_s": 1.3997326865309785e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.8885878576720854e-11,
+                "maximum_s": 2.0175273974639537e-10,
+                "median_s": -4.8471438235093265e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "actual_selector_nx": {
+            "xpd.xd0089": 2,
+            "xpd.xd0090": 2,
+            "xpd.xd0091": 2,
+            "xpd.xd0092": 2,
+            "xpd.xd0093": 2,
+            "xpd.xd0094": 2,
+            "xpd.xd0095": 2,
+            "xpd.xd0096": 2
+          },
+          "actual_data_hold_nx": {
+            "xpd.xd0081": 3,
+            "xpd.xd0082": 3,
+            "xpd.xd0083": 3,
+            "xpd.xd0084": 3,
+            "xpd.xd0085": 3,
+            "xpd.xd0086": 3,
+            "xpd.xd0087": 3,
+            "xpd.xd0088": 3
+          }
+        },
+        "b": {
+          "original_sampler_check": {
+            "samples": 765,
+            "minimum_signed_margin_v": 0.07572559670408345,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 64,
+            "maximum_clock_to_valid_s": 3.984375000001918e-11,
+            "passed": false
+          },
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 64,
+              "minimum_signed_margin_v": 0.07572559670408345,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.24670496381560733,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.17265555121355214,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "native_graph": {
+            "master": {
+              "data_positive": "xpd.xd0068",
+              "data_negative": "xpd.xd0070",
+              "hold_pair": [
+                "xpd.xd0071",
+                "xpd.xd0072"
+              ],
+              "track_selectors": [
+                "xpd.xd0073",
+                "xpd.xd0074"
+              ],
+              "hold_selectors": [
+                "xpd.xd0077",
+                "xpd.xd0078"
+              ],
+              "positive_output_native": 52,
+              "negative_output_native": 51,
+              "positive_input_native": 54,
+              "negative_input_native": 53,
+              "input_nodes": [
+                "xpd.w_t068_b",
+                "xpd.w_t070_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t070_c",
+                "xpd.w_t068_c"
+              ]
+            },
+            "slave": {
+              "data_positive": "xpd.xd0069",
+              "data_negative": "xpd.xd0067",
+              "hold_pair": [
+                "xpd.xd0065",
+                "xpd.xd0066"
+              ],
+              "track_selectors": [
+                "xpd.xd0079",
+                "xpd.xd0080"
+              ],
+              "hold_selectors": [
+                "xpd.xd0075",
+                "xpd.xd0076"
+              ],
+              "positive_output_native": 56,
+              "negative_output_native": 55,
+              "positive_input_native": 52,
+              "negative_input_native": 51,
+              "input_nodes": [
+                "xpd.w_t069_b",
+                "xpd.w_t067_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t067_c",
+                "xpd.w_t069_c"
+              ]
+            }
+          },
+          "phase_summary": {
+            "items": 8
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.0889574577077859e-05,
+              "maximum_track_a": 0.008311051243188665,
+              "minimum_hold_a": 9.94391015086606e-07,
+              "maximum_hold_a": 0.008441043907587077,
+              "positive_crossings_s": {
+                "items": 258
+              },
+              "negative_crossings_s": {
+                "items": 257
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -4.995196133433152e-11,
+                "maximum_s": 3.251684410748961e-10,
+                "median_s": -4.978185370971436e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": 1.2335988685655196e-11,
+                "maximum_s": 2.627000493805492e-10,
+                "median_s": 1.2501046058069583e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -1.239224430512487e-06,
+              "maximum_track_a": 0.008163899345584195,
+              "minimum_hold_a": -1.1885206884123462e-05,
+              "maximum_hold_a": 0.00810959281818002,
+              "positive_crossings_s": {
+                "items": 257
+              },
+              "negative_crossings_s": {
+                "items": 258
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": 1.2378718938410462e-11,
+                "maximum_s": 2.628713678666628e-10,
+                "median_s": 1.2649893387872963e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -4.991535837382969e-11,
+                "maximum_s": 3.2511768111449127e-10,
+                "median_s": -4.982467121269068e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "actual_selector_nx": {
+            "xpd.xd0073": 2,
+            "xpd.xd0074": 2,
+            "xpd.xd0075": 2,
+            "xpd.xd0076": 2,
+            "xpd.xd0077": 2,
+            "xpd.xd0078": 2,
+            "xpd.xd0079": 2,
+            "xpd.xd0080": 2
+          },
+          "actual_data_hold_nx": {
+            "xpd.xd0065": 3,
+            "xpd.xd0066": 3,
+            "xpd.xd0067": 3,
+            "xpd.xd0068": 3,
+            "xpd.xd0069": 3,
+            "xpd.xd0070": 3,
+            "xpd.xd0071": 3,
+            "xpd.xd0072": 3
+          }
+        },
+        "c": {
+          "original_sampler_check": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.038627654735748,
+            "wrong_sign_samples": 43,
+            "below_100mv_samples": 128,
+            "maximum_clock_to_valid_s": 5.546874999999058e-11,
+            "passed": false
+          },
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 43,
+              "below_100mv": 128,
+              "minimum_signed_margin_v": -0.038627654735748,
+              "wrong_on_changed_expected": 43,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.17182965972673356,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.13165666071126533,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "native_graph": {
+            "master": {
+              "data_positive": "xpd.xd0100",
+              "data_negative": "xpd.xd0102",
+              "hold_pair": [
+                "xpd.xd0103",
+                "xpd.xd0104"
+              ],
+              "track_selectors": [
+                "xpd.xd0105",
+                "xpd.xd0106"
+              ],
+              "hold_selectors": [
+                "xpd.xd0109",
+                "xpd.xd0110"
+              ],
+              "positive_output_native": 112,
+              "negative_output_native": 111,
+              "positive_input_native": 114,
+              "negative_input_native": 113,
+              "input_nodes": [
+                "xpd.w_t100_b",
+                "xpd.w_t102_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t102_c",
+                "xpd.w_t100_c"
+              ]
+            },
+            "slave": {
+              "data_positive": "xpd.xd0101",
+              "data_negative": "xpd.xd0099",
+              "hold_pair": [
+                "xpd.xd0097",
+                "xpd.xd0098"
+              ],
+              "track_selectors": [
+                "xpd.xd0111",
+                "xpd.xd0112"
+              ],
+              "hold_selectors": [
+                "xpd.xd0107",
+                "xpd.xd0108"
+              ],
+              "positive_output_native": 116,
+              "negative_output_native": 115,
+              "positive_input_native": 112,
+              "negative_input_native": 111,
+              "input_nodes": [
+                "xpd.w_t101_b",
+                "xpd.w_t099_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t099_c",
+                "xpd.w_t101_c"
+              ]
+            }
+          },
+          "phase_summary": {
+            "items": 8
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -1.2211135426953415e-06,
+              "maximum_track_a": 0.008223944032436148,
+              "minimum_hold_a": -6.855111668090442e-06,
+              "maximum_hold_a": 0.00843253614438082,
+              "positive_crossings_s": {
+                "items": 257
+              },
+              "negative_crossings_s": {
+                "items": 258
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.86064127353488e-11,
+                "maximum_s": 2.0218185036007833e-10,
+                "median_s": -4.8043423388980586e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1048682479433221e-10,
+                "maximum_s": 2.640175168155153e-10,
+                "median_s": 1.4093510409422166e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -7.609724947994511e-06,
+              "maximum_track_a": 0.008161572577058789,
+              "minimum_hold_a": -2.115839190845064e-06,
+              "maximum_hold_a": 0.008051845245595633,
+              "positive_crossings_s": {
+                "items": 258
+              },
+              "negative_crossings_s": {
+                "items": 257
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1043019108172996e-10,
+                "maximum_s": 2.64238474947399e-10,
+                "median_s": 1.42917873657274e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.8596763201321794e-11,
+                "maximum_s": 2.0203557021612014e-10,
+                "median_s": -4.816484443714282e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "actual_selector_nx": {
+            "xpd.xd0105": 2,
+            "xpd.xd0106": 2,
+            "xpd.xd0107": 2,
+            "xpd.xd0108": 2,
+            "xpd.xd0109": 2,
+            "xpd.xd0110": 2,
+            "xpd.xd0111": 2,
+            "xpd.xd0112": 2
+          },
+          "actual_data_hold_nx": {
+            "xpd.xd0097": 3,
+            "xpd.xd0098": 3,
+            "xpd.xd0099": 3,
+            "xpd.xd0100": 3,
+            "xpd.xd0101": 3,
+            "xpd.xd0102": 3,
+            "xpd.xd0103": 3,
+            "xpd.xd0104": 3
+          }
+        },
+        "d": {
+          "original_sampler_check": {
+            "samples": 765,
+            "minimum_signed_margin_v": -0.09869438219288401,
+            "wrong_sign_samples": 90,
+            "below_100mv_samples": 128,
+            "maximum_clock_to_valid_s": 6.296875000000405e-11,
+            "passed": false
+          },
+          "phase_breakdown": [
+            {
+              "phase_ui": 0.3,
+              "samples": 255,
+              "wrong": 90,
+              "below_100mv": 128,
+              "minimum_signed_margin_v": -0.09869438219288401,
+              "wrong_on_changed_expected": 90,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.6,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.14288396108157458,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            },
+            {
+              "phase_ui": 0.9,
+              "samples": 255,
+              "wrong": 0,
+              "below_100mv": 0,
+              "minimum_signed_margin_v": 0.12006757210082565,
+              "wrong_on_changed_expected": 0,
+              "wrong_on_unchanged_expected": 0
+            }
+          ],
+          "native_graph": {
+            "master": {
+              "data_positive": "xpd.xd0050",
+              "data_negative": "xpd.xd0052",
+              "hold_pair": [
+                "xpd.xd0053",
+                "xpd.xd0054"
+              ],
+              "track_selectors": [
+                "xpd.xd0055",
+                "xpd.xd0056"
+              ],
+              "hold_selectors": [
+                "xpd.xd0059",
+                "xpd.xd0060"
+              ],
+              "positive_output_native": 15,
+              "negative_output_native": 14,
+              "positive_input_native": 17,
+              "negative_input_native": 16,
+              "input_nodes": [
+                "xpd.w_t050_b",
+                "xpd.w_t052_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t052_c",
+                "xpd.w_t050_c"
+              ]
+            },
+            "slave": {
+              "data_positive": "xpd.xd0051",
+              "data_negative": "xpd.xd0049",
+              "hold_pair": [
+                "xpd.xd0047",
+                "xpd.xd0048"
+              ],
+              "track_selectors": [
+                "xpd.xd0061",
+                "xpd.xd0062"
+              ],
+              "hold_selectors": [
+                "xpd.xd0057",
+                "xpd.xd0058"
+              ],
+              "positive_output_native": 19,
+              "negative_output_native": 18,
+              "positive_input_native": 15,
+              "negative_input_native": 14,
+              "input_nodes": [
+                "xpd.w_t051_b",
+                "xpd.w_t049_b"
+              ],
+              "output_nodes": [
+                "xpd.w_t049_c",
+                "xpd.w_t051_c"
+              ]
+            }
+          },
+          "phase_summary": {
+            "items": 8
+          },
+          "steering": {
+            "master": {
+              "minimum_track_a": -8.76791201629356e-07,
+              "maximum_track_a": 0.008326943588612346,
+              "minimum_hold_a": -6.826379709522392e-06,
+              "maximum_hold_a": 0.008535871251518366,
+              "positive_crossings_s": {
+                "items": 257
+              },
+              "negative_crossings_s": {
+                "items": 258
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.898006686685953e-11,
+                "maximum_s": 2.018028264802293e-10,
+                "median_s": -4.842577297349632e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1084595212165648e-10,
+                "maximum_s": 2.6363089310533516e-10,
+                "median_s": 1.3717392900467858e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            },
+            "slave": {
+              "minimum_track_a": -7.560976270548327e-06,
+              "maximum_track_a": 0.008263103399112546,
+              "minimum_hold_a": -1.9715931387817388e-06,
+              "maximum_hold_a": 0.0081459629210986,
+              "positive_crossings_s": {
+                "items": 258
+              },
+              "negative_crossings_s": {
+                "items": 257
+              },
+              "track_on_nearest_expected_edge": {
+                "count": 258,
+                "minimum_s": -1.1078840302233773e-10,
+                "maximum_s": 2.638498165932133e-10,
+                "median_s": 1.3911699412619182e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              },
+              "track_off_nearest_expected_edge": {
+                "count": 257,
+                "minimum_s": -4.896864184363941e-11,
+                "maximum_s": 2.0166144386659757e-10,
+                "median_s": -4.854272709686269e-11,
+                "scope": "Nearest observed reference edge only; no ordinal-lock or causal-delay acceptance"
+              }
+            }
+          },
+          "actual_selector_nx": {
+            "xpd.xd0055": 2,
+            "xpd.xd0056": 2,
+            "xpd.xd0057": 2,
+            "xpd.xd0058": 2,
+            "xpd.xd0059": 2,
+            "xpd.xd0060": 2,
+            "xpd.xd0061": 2,
+            "xpd.xd0062": 2
+          },
+          "actual_data_hold_nx": {
+            "xpd.xd0047": 3,
+            "xpd.xd0048": 3,
+            "xpd.xd0049": 3,
+            "xpd.xd0050": 3,
+            "xpd.xd0051": 3,
+            "xpd.xd0052": 3,
+            "xpd.xd0053": 3,
+            "xpd.xd0054": 3
+          }
+        }
+      }
+    }
+  },
+  "accepted": false,
+  "full_phy_accepted": false
+}

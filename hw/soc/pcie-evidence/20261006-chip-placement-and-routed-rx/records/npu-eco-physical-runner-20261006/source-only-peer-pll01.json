@@ -1,0 +1,46 @@
+{
+  "status": "FINDINGS_SOURCE_ONLY_MATCHED_NPU_PHYSICAL_RUNNER",
+  "freeze": {
+    "bytes": 6062,
+    "sha256": "d665716f334fe276d85120ed8d1195af58eef7efca78e325dec1b7feb0fbd900"
+  },
+  "method": {
+    "bytes": 3921,
+    "sha256": "0d4629d6abe0b224804e632f670e4146e2e968448251bf25ce0a9173db88df51"
+  },
+  "findings": [
+    {
+      "priority": 2,
+      "file": "scripts/run_npu_eco_physical.py",
+      "functions": [
+        "preserve",
+        "compare"
+      ],
+      "title": "Preserve actual template geometry for independent saved comparison",
+      "body": "The initial run checks actual template versus final geometry, but only final GEOMETRY is captured. preserve excludes the template TSV/TXT files. compare calls audit_check(capture,capture), so saved evidence cannot independently re-establish that original pin/template relation. Preserve the actual template GEOMETRY inventory separately with exact pins, pass it as template_step in compare, and reject an actual copied-template pin geometry mutation."
+    }
+  ],
+  "saved_controls": {
+    "actual_cases": 52,
+    "counts_by_class": {
+      "sw.tests.test_npu_eco_physical": 19,
+      "sw.tests.test_cloud_alu_physical": 33
+    },
+    "all_passed": true,
+    "rerun": false
+  },
+  "process_helper_whole_byte_identity": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pcie-evidence/20261006-compact-rc-and-repair/records/pcie-gen3-transmit-v4-repair-20261005/owned_lifecycle05.py",
+    "bytes": 4133,
+    "sha256": "39dedf775c53370fe7696fab46b198bf3d727c3dbf52dbd4148c3d70134ff526"
+  },
+  "reviewed_scope": [
+    "All three new source bodies plus exact old fresh_config/geometry_check/audit_check/capture_audit, readiness check/gate and resource/preexec functions read.",
+    "Native gate re-runs strict complete boot and mapped binary readiness before creating physicalwork; original failed boot/proof guards remain unchanged. Before/after runtime/bundle and source/method pins retained; returned record remains estimate-only.",
+    "Actual owned helper is byte-identical to reviewed TX05. SIGINT/TERM blocked across launch, unreaped leader anchors group identity, WNOWAIT detects exited leader with descendants, failure-only TERM/KILL cleanup avoids reaped-leader reuse. No healthy elapsed-time stop.",
+    "Resource function checks9GiBmemory/3GiBdisk at entry and before native; native per-process8GiBAS inherited. These are entry checks, not a claimed continuous9GiB memory reserve.",
+    "Comparison replays full strict boot evidence, actual endpoint/hold/constraints audits and matched config/method/runtime inputs; template capture/replay gap above remains blocking for independent geometry evidence."
+  ],
+  "native_or_tests_executed": false,
+  "scope": "Source-only review and saved52-case XML/pin recount. No EDA, live boot assumption, timing acceptance or full-chip claim."
+}

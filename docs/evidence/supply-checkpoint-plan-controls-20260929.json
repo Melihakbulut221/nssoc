@@ -1,0 +1,61 @@
+{
+  "status": "PASS_SYNTHETIC_WHOLE_PLAN_CONTROLS_ONLY",
+  "cases": {
+    "connected": {
+      "exit_code": 0,
+      "status": "PASS_ALL_DECLARED_IO_SUPPLY_WINDOWS_ONLY",
+      "errors": [],
+      "bad_window_indices": [],
+      "result_sha256": "50745b2ae68735d8a2705133734c67e35ac5bb5ee67b0f6697c99faeb2f1fdbe",
+      "manifest_sha256": "16fd2caa2c6c319f61efd886c98eb99e4f13675087b2acd5f7c8ff8c72602f7a",
+      "plan_sha256": "03bfb61656de92ba1445cd4fc3b3a04a4cb42b915a04ab0784233e5a65c1cf33"
+    },
+    "short": {
+      "exit_code": 1,
+      "status": "FAIL_OR_UNRESOLVED_IO_SUPPLY_WINDOWS",
+      "errors": [
+        "Different supply pins share a physical cluster"
+      ],
+      "bad_window_indices": [],
+      "result_sha256": "3a9581e8f497df369de7a5d5fae350088df8a26d805707bad0219fca383e83a8",
+      "manifest_sha256": "9b33bc9f821d447d28085e8de53614ccd750217dc7888710ec3e0c118edeb868",
+      "plan_sha256": "b951d0a7dcbeb44ca7d7b65862b69aaba630984ef96c48369dd5473f63038c28"
+    },
+    "split": {
+      "exit_code": 1,
+      "status": "FAIL_OR_UNRESOLVED_IO_SUPPLY_WINDOWS",
+      "errors": [
+        "iovss has 2 distinct probe identities"
+      ],
+      "bad_window_indices": [],
+      "result_sha256": "8d9548263d31977d6d1d50c17c2118ec3a9916f7e2b9969068e30ce65c239548",
+      "manifest_sha256": "d667b9d00653062f8f83346e224522319b9c029d67b83e75226f8214d9d444a2",
+      "plan_sha256": "ad66aff051169f14bd78fcd26ce580c5f5d5eb4b6e1e1fb376d8a570e32e235e"
+    },
+    "missing_port": {
+      "exit_code": 1,
+      "status": "FAIL_OR_UNRESOLVED_IO_SUPPLY_WINDOWS",
+      "errors": [
+        "1 supply windows unresolved or failed"
+      ],
+      "bad_window_indices": [
+        1
+      ],
+      "result_sha256": "e5f08fd3d0b30a4d8a9bf72187feeb11dc80d9910faf326bb19950854020594a",
+      "manifest_sha256": "3f9256a005d54246d430d2f0e967212bc4b74057a7dbc7a7f9ba9a24ced06801",
+      "plan_sha256": "371e595dc58ba6de59fa31890ed6c4fa8ce4cb256648a16bfd90df204eb7c5e3"
+    },
+    "different_gds_rejected": "Window plan and checkpoint must bind the same GDS"
+  },
+  "input_sha256": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-ring-offset-20260929/test_whole_supply_plan.py": "1c0a5e11c2b8ab4e530ca10a507dceec5888e2db893cc641bc5593faf628c8bc",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/audit_supply_checkpoint.py": "7d3545747581e42b34d08f2755d8370cf58f48137d6c62757a1fc206a3e7f3d5",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/supply_checkpoint.py": "4ff26dafeab0f286187c5c7d7cff2d31f74972d54d4ea5c7d7324ece2afb721b",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_supply_components.py": "54e2ef8d6c5426ce8aa4fbf34539076c435e2b6a637598b2963fb439cbfbd631"
+  },
+  "chip_connectivity_accepted": false,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false,
+  "raw_assets_manifest": "docs/evidence/supply-checkpoint-plan-controls-assets-20260929.json",
+  "scope": "Synthetic end-to-end consumer controls only, not actual 314-instance chip connectivity. Four layouts plus wrong-GDS rejection. All declared IO windows must be tied to the same checkpoint GDS; transistor/substrate LVS, timing and manufacturing remain open."
+}

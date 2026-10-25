@@ -1,0 +1,45 @@
+{
+  "baseline_path": "scripts/cloud_cdr_v44_l39_observation.py",
+  "baseline_sha256": "df64b4fbe8952dd08b74f0f9584b96ebe810906ea30d175953398ae6cd513148",
+  "candidate_path": "scripts/cloud_cdr_v47_drive_load_observation.py",
+  "candidate_sha256": "91ca836d9645b1c27e56c3c5d497d21ef72df5b69bd7b206a9a44c395c972437",
+  "edits": [
+    {
+      "before": "PINS={'cd_master_l39-nominal_early': ['bec2ab47a567f0a6ff2f8a0e403c179e8eeb2952388dcef28906693b8846f82a', 'ad051e05236c150f348186e5098436af2b821823f454437e65591a96f59094d3'], 'cd_master_l39-nominal_late': ['95f13c2d46aaa09c59e5233e43d5bfc245e8986333df952ef1aff727cbcfdcb8', '11c21155c23b89f4ccf5ef19d7107b59f34c3ab790e8629a84c59c1a4dcdd372']}",
+      "after": "PINS={'sampler_drive125_load080-nominal_early': ['fd1d0b7cdb60edcbbc28108cfe7a73d78344fd9524c6707e1f3ead471e73c938', 'f21d8bb9782df9c694b42b02c994e13b1452fdb78febed70f87e783b881d9b59'], 'sampler_drive125_load080-nominal_late': ['819093addb98163fff4bd84db26da24514902e389438f747381b200561e98b65', '4368e52b1e98ab05b304025e16a79e9eea805b71b1cdb34a26e47d582fcb9c0f']}",
+      "count": 1
+    },
+    {
+      "before": "choices=('cd_master_l39',)",
+      "after": "choices=('sampler_drive125_load080',)",
+      "count": 1
+    },
+    {
+      "before": "cdr-v44-l39-observation",
+      "after": "cdr-v47-drive-load-observation",
+      "count": 5
+    },
+    {
+      "before": "pin['run']==39952318814",
+      "after": "pin['run']==40012128810",
+      "count": 1
+    },
+    {
+      "before": "len(screen['changes'])==84",
+      "after": "len(screen['changes'])==112",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cdr_capture_windows.py": "7b3c4107d4fa80a6638f6d645883f7659230aa5c92ea5475e1216b3806e7b771",
+    "scripts/cdr_candidate_input_bias_observation.py": "e905529803587c3b2a6a0ea21381d67ff43ce51538553e3fa53b6e768588b0e8",
+    "scripts/cdr_selector_headroom.py": "0ec3dd048430d941fbcd26a19695d342f77dbcf0915f10ecdf4504cbcac6054b",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "docs/evidence/cdr-v47-drive-load-observation-input-20261023.json": "42d18bdd734d813e527b8fb63e12b321fec31183c7a01e9a51c56974e0d74465"
+  },
+  "native_simulation_started": false,
+  "original_observation_equations_unchanged": true,
+  "scope": "Same complete rejected v47 waveforms and original observation equations; actual112 parameter deltas verified, all120HBT/four samplers reproduced. No new native simulation or acceptance gate, geometry or freshRC claim."
+}

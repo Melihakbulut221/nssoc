@@ -1,0 +1,49 @@
+# Actual output AVSS centred via-array candidate
+
+The completed original return64 capture remains rejected. Source-bound analysis
+39980682925 identifies9.87597ohm R139947 as95.6373% of output-tail effective
+ground resistance. Native endpoint records were bound by39981981822 to the
+exact precision extraction. Previous middle-width32->64um improved effective
+resistance only12.383116441782459->10.326486441861093ohm. This motivates testing
+the endpoint/via contribution rather than asserting another width increment
+will close the measured0.35156V tail-device VCE.
+
+Candidate power128return64via3 keeps the original64um long-span metal,6/32um
+access, every device, all165 external ports, clocks, loads and gates. It adds
+native centred three-column TopVia arrays at the five existing AVSS transition
+points only. The centre cut must coincide with the old cut; the generator
+requires all original via material to remain contained in the enlarged native
+pattern. Original single vias remain in the parent. The proven6um TopMetal2
+landing-width cover extends across the new cuts. The SUB route and signal
+handoffs retain their original construction.
+
+The exact textual generator/controller delta and all protected DRC/LVS/interface
+methods are pinned. Existing geometry collision checks, full560-category DRC,
+deep/flat8088-device LVS, exact165-pin identity and all physical fault controls
+must pass. Results and rejected candidates remain available. A pass here requires
+fresh actual anchors/RC and a complete loaded native capture before any
+electrical benefit can be claimed. This does not close the82 selector or two
+core-tail failures, CDR/PLL, full serial Gen3x4, mainchip route or final timing.
+
+
+Generation39984154536 and witness39985152584 were rejected before DRC/LVS.
+The actual native three-column array retains every centre cut exactly. Its
+TopMetal2 native surface is1.9um high, while the single-column native minimum
+surface is2.0um high. At endpoint(632000,56890)dbu the containment difference is
+two50nm strips on layer134, total200000dbu2. Layers126 and133 lose no area.
+The candidate already specified a6um TopMetal2 cover, but tested containment
+before adding it. The corrected construction applies that same cover first,
+then retains the exact original containment check on every layer. Original
+materials/cuts, collision checks and physical/electrical gates remain required.
+
+
+Corrected run39986288644 passed all11 physical cases. DRC reports0 markers across
+560 categories. Deep and flat LVS each match8088 native devices with exactly165
+external port names, and every injected fault has the expected rejection.
+The original single-via material guard now passes after its required landing
+cover. New GDS SHA256 is853fcb891bad225640d3f37a1cd234f9a3ad82923ad56d6dbeeded523ea95a4e.
+
+This establishes physical geometry consistency within the pinned deck scope.
+It does not establish lower RC or electrical closure. A fresh native metal/via
+graph is launched for this exact GDS; old return64 RC and waveforms must not be
+reused as validation of via3.

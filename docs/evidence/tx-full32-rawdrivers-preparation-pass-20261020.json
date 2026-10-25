@@ -1,0 +1,108 @@
+{
+  ".summary.json": {
+    "id": 659888902,
+    "sha256": "e29e16dcae6c9dc76af22e308bfbdd4e5faa1e8baab0246699f6c891018a03ef"
+  },
+  "result": {
+    "status": "READY_FULL32_RAW64_DRIVER_DECK_NOT_SIMULATED",
+    "native_binding": {
+      "actual_input_legs": 124,
+      "actual_data_bases": 372,
+      "hbt_count": 604,
+      "mos_count": 5376,
+      "public_data_pins": 64,
+      "all_interface_probes_are_bound_terminals": true
+    },
+    "capture_preflight": {
+      "columns": 11708,
+      "minimum_rows": 68001,
+      "minimum_raw_payload_bytes": 6369245664,
+      "free_disk_bytes": 87095181312,
+      "retained_every_raw_mos_terminal": true,
+      "retained_every_hbt_and_original_interface": true,
+      "estimate_scope": "Strict lower bound from maximum integration step; adaptive rows and archive space add to this. No sampling reduction."
+    },
+    "electrical_screen_passed": false,
+    "simulator_checked": false
+  },
+  "pilot": {
+    "status": "PASS_NATIVE10032_DISTINCT_OP_VALUES_AND_FIVE_TRANSPORT_FAULTS",
+    "native_vectors": 10032,
+    "native_chunks": 20,
+    "original_aggregate_reference_columns": 256,
+    "all10032_analytical_voltages_checked": true,
+    "analytical_decimal_atol": "2e-14",
+    "original_aggregate_decimal_values_exact": true,
+    "full_phy_accepted": false,
+    "scope": "Native transport only; no DUT voltage or acceptance limit changed."
+  },
+  "pilot_controls": [
+    {
+      "fault": "missing_chunk",
+      "rejected": true
+    },
+    {
+      "fault": "swapped_column_header",
+      "rejected": true
+    },
+    {
+      "fault": "truncated_data_row",
+      "rejected": true
+    },
+    {
+      "fault": "extra_data_row",
+      "rejected": true
+    },
+    {
+      "fault": "nonfinite_value",
+      "rejected": true
+    }
+  ],
+  "driver_controls": [
+    {
+      "fault": "missing_driver",
+      "rejected": true,
+      "error": "Actual driver instance or port order changed"
+    },
+    {
+      "fault": "swapped_driver_ports",
+      "rejected": true,
+      "error": "Actual driver instance or port order changed"
+    },
+    {
+      "fault": "missing_terminal_probe",
+      "rejected": true,
+      "error": "Unobserved actual MOS terminal"
+    }
+  ],
+  "driver": {
+    "driver_instances": 64,
+    "raw_devices": 6400,
+    "raw_mos": 5376,
+    "wire_cref_boundary": "external ideal ground, separate from intrinsic substrate node",
+    "model_sha256": "c624e9d1597ac8b68a2fb4772673ad0ffade0c35a21a027cbd449de1e2acf3d6",
+    "driver_models_are_unmodified": true,
+    "actual_driver_instances": 64,
+    "actual_raw_devices": 6400,
+    "actual_raw_mos": 5376,
+    "metal_resistors_per_driver": 260,
+    "metal_capacitors_per_driver": 295,
+    "external_interconnect_scope": "Driver/core boundary wires and chip supplies remain ideal. This is a loaded native macro simulation, not an assembled full-PHY layout.",
+    "full_phy_accepted": false,
+    "mainchip_integrated": false
+  },
+  "out_hashes": {
+    "raw-drivers/binding.json": "ea941b0f211d35c4ebc498193750e8a9d305fc2293b397fa82cae8549cabfb57",
+    "op-transport-control/result.json": "126e79c71b7e127fee078d2725e0c0990c4b5178f879f25d0bc46963a897b708",
+    "native/bench.cir": "d8624b2bc9d4c233716851d84ed2a792afa1d9564816fb0aa43c44b975786e26",
+    "native/contract.json": "37c865f5f4cafc40af22ba14e23b7c6bc5902ae12e8b50c2d050fcbbdf7df8c0"
+  },
+  ".parts.json": {
+    "id": 659889023,
+    "sha256": "871aba20a19ed393f8e3be1488cce564b514e33f32f19efb634a93633b24924b"
+  },
+  "source_run": 39459369542,
+  "source_head": "36b2250c75b4ba514969b57acf66020c14ff321e",
+  "accepted": false,
+  "full_phy_accepted": false
+}

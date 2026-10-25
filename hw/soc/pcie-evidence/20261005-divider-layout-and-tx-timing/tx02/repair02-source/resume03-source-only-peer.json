@@ -1,0 +1,74 @@
+{
+  "status": "PASS_BOUNDED_TX03_ROUTE_RC_AND_CONTINUATION_SOURCE_ONLY_PEER",
+  "utc": "2026-10-05T15:02:07.207011+00:00",
+  "sources": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-resume03-bridge.json": {
+      "bytes": 717,
+      "sha256": "11815bec436df236a7e6d37b0b016c6b3a18861b435d9a62172c6f36deb049b2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/drt_repair02_resume02.py": {
+      "bytes": 6177,
+      "sha256": "e53eeb2a01e6e4fab8cbbfeda249b3a257d46ae4b66b13efe9095fe6e12cdad7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/drt_repair02_resume03.py": {
+      "bytes": 6177,
+      "sha256": "af3852dd03f6adf3a6333b8de87e32aeb2e94fa31dba8fb3e017a5af621e6955"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-resume03-rc-bridge.json": {
+      "bytes": 1024,
+      "sha256": "a15d8a62eac4cdbf19e86f42d7314e257cccc0f96010a976a04881256a98f1b3"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/detailed_rc_repair02.py": {
+      "bytes": 5228,
+      "sha256": "ff95f29a60cbc548dbc1013766809e1d4ced8a9e06265301c14904f74a3dc9c9"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/detailed_rc_repair02_resume03.py": {
+      "bytes": 5228,
+      "sha256": "b24d086741f136cd202814f4f5e586cd438932db9d2935e0fedf590023fffc31"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/tx02-continuation-v3-bridge.json": {
+      "bytes": 1523,
+      "sha256": "0e0c13e92e770d7a7eb93764ac6d9d87e78bafb69edee0c8a8552856653d2b81"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/continue_tx02_v2.py": {
+      "bytes": 3305,
+      "sha256": "626ab62499684fe873dbe43aa08967c02dd97f464a627ce1ec438bfaf3c3c309"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/continue_tx02_v3.py": {
+      "bytes": 3320,
+      "sha256": "dc97106cc7b1c083b39e4c7f08198068bbfd0fa92a98e3b74d7647e74b138b68"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_clock_trim_stream_v2.py": {
+      "bytes": 19742,
+      "sha256": "39312e364fa2a788784d88f3a63845f64db25bb420e2ee5d58c07a8c805bc886"
+    }
+  },
+  "exact_bridges": [
+    {
+      "bridge": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-resume03-bridge.json",
+      "substitution_count": 1,
+      "inverse_byte_exact": true
+    },
+    {
+      "bridge": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-resume03-rc-bridge.json",
+      "substitution_count": 2,
+      "inverse_byte_exact": true
+    },
+    {
+      "bridge": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/tx02-continuation-v3-bridge.json",
+      "substitution_count": 7,
+      "inverse_byte_exact": true
+    }
+  ],
+  "findings": [
+    "DRT only changes fresh output02\u219203; candidate02 source, proof-execution gate, saved3 port-input pins, 3850states/11680targets/10 controls,1GiB admission and528MiB live floor,2.5GiB AS,1CPU inherited, Tcl and unchanged constraints byte-identical after inverse.",
+    "RC only changes DRT03 input and RC02 output. Before extraction it requires completed zeroDRC receipt, byte-exact candidate netlist, ALL declared route input/output hashes. Nominal rules/index0, coupling/model/context/via controls, sameRC across3cellcorners and allreports unchanged. No qualified RC implication.",
+    "Watcher changes only fresh output, DRT03 receipt/owner-command binding, RC method path+SHA, new peer path and RC02 receipt. Startup gets native PID from DRT03 result and controller from that process parent; binds controller exact start_ticks and expected command. It waits only that controller identity, then requires successful exact route status and returncode before launching frozen RC.",
+    "Original tested lifecycle is imported in its own watcher process; outer15s failure grace retained versus inner5s RC cleanup. Healthy route has no elapsed watchdog. Resource/CPU inheritance retained. The watcher owns only its newly launched RC subtree, not original DRT.",
+    "Complete read-through and literal inverse source checks only; no new DRT/RC/controller run or failure-control execution performed by peer. Existing native route completion and future extraction outputs still require separate review."
+  ],
+  "issues_found": [],
+  "native_executed_by_peer": false,
+  "qualified_rc": false,
+  "physical_acceptance": false
+}

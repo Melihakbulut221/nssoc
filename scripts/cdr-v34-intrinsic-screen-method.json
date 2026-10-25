@@ -1,0 +1,62 @@
+{
+  "files": {
+    "screen": {
+      "baseline": "scripts/cloud_cdr_v33_intrinsic_screen.py",
+      "baseline_sha256": "ce8eb0a0d58c7545717f6eb543ff45a47459acdaebf67625e5f80465d7b89fee",
+      "candidate": "scripts/cloud_cdr_v34_intrinsic_screen.py",
+      "candidate_sha256": "982ae115d7499a768a243e67335d8bbc88b38a60739c5a4a824dfa8d4a806e1c"
+    },
+    "stage": {
+      "baseline": "scripts/cloud_cdr_v33_intrinsic_stage.py",
+      "baseline_sha256": "3751c4aedf4f37574e976445ffc449c68475559e0f8e872dd9499973f48c2166",
+      "candidate": "scripts/cloud_cdr_v34_intrinsic_stage.py",
+      "candidate_sha256": "70c90da5fb7e80823adc0c598faa5dead7886dc641fb38cb619152cab4e39d34"
+    }
+  },
+  "edits": [
+    {
+      "target": "screen",
+      "before": "v33",
+      "after": "v34",
+      "count": 3
+    },
+    {
+      "target": "screen",
+      "before": "['bleed12','load20','load16']",
+      "after": "['slave_area15','all_area15','all_area20']",
+      "count": 1
+    },
+    {
+      "target": "screen",
+      "before": "ROOT/'scripts/cloud_cdr_v34_intrinsic_mutator.py',baseline_model",
+      "after": "ROOT/'scripts/cloud_cdr_v34_intrinsic_mutator.py',ROOT/'scripts/cloud_cdr_v33_intrinsic_mutator.py',baseline_model",
+      "count": 1
+    },
+    {
+      "target": "stage",
+      "before": "v33",
+      "after": "v34",
+      "count": 4
+    },
+    {
+      "target": "stage",
+      "before": "['bleed12','load20','load16']",
+      "after": "['slave_area15','all_area15','all_area20']",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_xor.py": "3ec870fa6a30d9f94038368d6b74c984c314c2d7248ecaab94c687867587fabe",
+    "scripts/check_cdr_sampler_settling_v32_streamed_sources.py": "faf57f6ca97f74ac8c869b7962c557b2ee32645e032cb5121345ee2d43721b1e",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "docs/evidence/cdr-sampler-settling-v32-fullwave-input-20261022.json": "6733a68a384209cee6bc0e0882488fed39e7fd1dbd894ad632bf96fb92b1d7f6",
+    "scripts/cloud_cdr_v33_intrinsic_mutator.py": "e986b387a9ecd1982fd3a38d89b8f8f1bca1707ce02699fc57239a8fad577ca7",
+    "scripts/cloud_cdr_v34_intrinsic_mutator.py": "be9b1ada8aabb9b5103de2dfd825a3d2053654ff92d985bfcb65879da4606de3",
+    "scripts/check_cdr_v34_intrinsic_screen_sources.py": "4957914869ebd74f25433a4e92efa00f546707cd0ff5f57bff3c90a1b9bf2a6d",
+    ".github/workflows/cdr-v34-intrinsic-screen-cloud.yml": "017924deac016d26d22f94a2728c2d1d5f55104da6d327bd9d8f8993fb5427bb",
+    "docs/evidence/cdr-v33-native-steering-diagnosis-pass-20261022.json": "105177b0b87d38a5a4016e7bfa143ab73f2245317a99657c24edb652510f2667"
+  },
+  "scope": "Only explicit area-screen variants, isolated namespace and additional old mutator protection. Same full476 devices17918R12850C and all original cases, vectors,34.25ns stimulus, clock phases,150fF/50fF loads,100mV/37.5ps, phase/VI and per-emitter safety gates."
+}

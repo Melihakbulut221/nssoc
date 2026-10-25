@@ -1,0 +1,83 @@
+{
+  "baseline_path": "scripts/cloud_cdr_v32_transfer.py",
+  "baseline_sha256": "6c9acbd98512c7d7efaabe16777583efd3609b2085d7732f909ca0f3ecfdb18a",
+  "candidate_path": "scripts/cloud_cdr_v33_transfer.py",
+  "candidate_sha256": "c902861e5d56846f91ad2da6b2175182e84e73c98174593aa768a39ef0cfc711",
+  "changes": [
+    {
+      "start": 502,
+      "end": 502,
+      "replacement": "from cdr_capture_windows import observe as window_observe, controls as window_controls\n"
+    },
+    {
+      "start": 543,
+      "end": 853,
+      "replacement": "PINS={'bleed12-nominal_early': ['cc7a98fac7345bfed4670d39dca28dc4c9eb6c60515197599bc708a38c2b2d96', '7db920a2867d4da183a24ccfd11112f5376c427ea7163437a54398302d3391f2'], 'bleed12-nominal_late': ['bd861d38595781b937b334c6af51d7bcb7c10c748ee73345562618ec5c115ec6', '05954edbc9aca9ec3e929dbd6ab9e6b0e427792c5f9304c47d741d1e6815d7f4'], 'load20-nominal_early': ['1fbfcdd19834de5aa55aa59c1fbc178cbb6e6a5a1c86bae31e83a3c6f387e2d1', '30fab360fd267f0551548271b791bbfdf074976c199468536c4b09c3755c37fa'], 'load20-nominal_late': ['9df74a9e936415787d377ba106a5cc1d9d8b2e9edb3b10e9ca285c8f644cdf1d', 'b3b306ca71d78b664dc5f84d4d55d9bcbb3a2852c4ae3ed13d6afdd1aad73df6'], 'load16-nominal_early': ['4df4007b3aeff63dd7bed265c059f34f2ae6c8ad4b51eeb349b62b8675b0ebc0', '5baa75b6323440e4fe6f9bd9e81a501148324e7709e5437fb886082a871295f1'], 'load16-nominal_late': ['46e0323e5bc3ab65c24078633d56682402df4f9250ce681ea80ebb126c95593f', 'cd84e08f5ba552cc082fe3ad7fec76dbd6dfc59541ac015ef7bb59197048117a']}\n"
+    },
+    {
+      "start": 6463,
+      "end": 6571,
+      "replacement": " p=argparse.ArgumentParser();p.add_argument('--case',choices=('nominal_early','nominal_late'),required=True);p.add_argument('--variant',choices=('bleed12','load20','load16'),required=True);args=p.parse_args()\n"
+    },
+    {
+      "start": 6620,
+      "end": 6941,
+      "replacement": " out=ROOT/('cloud-cdr-v33-transfer-timing-'+args.variant+'-'+args.case);out.mkdir(exist_ok=False)\n inputs=ROOT/('cdr-v33-transfer-inputs-'+args.variant+'-'+args.case);inputs.mkdir(exist_ok=False);reports.OUT=inputs\n r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],case=args.case,variant=args.variant,accepted=False,full_phy_accepted=False,no_new_simulation=True)\n"
+    },
+    {
+      "start": 7027,
+      "end": 7102,
+      "replacement": "  r['controls']=controls();r['parallel_bank_controls']=parallel_controls();r['steering_window_controls']=window_controls()\n"
+    },
+    {
+      "start": 7244,
+      "end": 7803,
+      "replacement": "  receipt=json.loads((ROOT/'docs/evidence/cdr-v33-transfer-diagnostic-input-20261022.json').read_text())\n  pin=receipt['cases'][args.variant+'-'+args.case];assert receipt['run']==39762220156\n  sh,ph=PINS[args.variant+'-'+args.case];assert receipt['run']==39762220156 and pin['summary_sha256']==sh and pin['parts_sha256']==ph\n  prior,proof=reports.restore_report('cdr-v33-intrinsic-screen-'+args.variant+'-'+args.case,receipt['run'],sh,ph,inputs/'wave',['native/wave.raw','composed/composition.json','exploratory-composition.json','exploratory-'+args.variant+'.spice','planes/native-planes.json'])\n  assert prior['status']=='REJECTED_EXPLORATORY_INTRINSIC_SCREEN'\n"
+    },
+    {
+      "start": 8338,
+      "end": 8441,
+      "replacement": "  assert prior['case']==args.case and prior['source_head']=='8fb2f18abf6fa9bb0c185117e1f049dfdfa77a33'\n"
+    },
+    {
+      "start": 9302,
+      "end": 9379,
+      "replacement": "  original_contract=json.loads((inputs/'wave/composed/composition.json').read_text())\n  contract=json.loads((inputs/'wave/exploratory-composition.json').read_text())\n  screen=prior['intrinsic_screen'];assert screen==pin['intrinsic_screen']and screen['variant']==args.variant\n  assert not screen['actual_candidate_layout_verified']and not screen['fresh_candidate_rc']\n  assert screen['all_wire_cards_unchanged']and screen['all_other_native_cards_unchanged']and screen['unchanged_original_gates']\n  assert sha(inputs/'wave'/('exploratory-'+args.variant+'.spice'))==screen['candidate_model_sha256']\n  original_records={r['instance'].lower():r for r in original_contract['device_records']}\n  rebuilt=copy.deepcopy(contract);rebuilt_records={r['instance'].lower():r for r in rebuilt['device_records']}\n  assert len(original_records)==len(rebuilt_records)==476 and original_records.keys()==rebuilt_records.keys()\n  assert len(screen['changes'])==(8 if args.variant=='bleed12' else 24)\n  assert len({c['instance']for c in screen['changes']})==len(screen['changes'])\n  for changed in screen['changes']:\n   record=rebuilt_records[changed['instance']];original=original_records[changed['instance']]\n   assert record['model']==original['model']=='rppd'\n   assert record['parameters']['l']==changed['new_length_um']+'u'\n   record['parameters']['l']=original['parameters']['l']\n  assert rebuilt==original_contract,'Unexpected topology, HBT or other parameter change'\n  r['exploratory_intrinsic_source']=screen\n  r['geometry_scope']='HBT ownership uses unchanged frozen v32 HBT locations; changed resistor dimensions have no new accepted layout or RC.'\n"
+    },
+    {
+      "start": 9981,
+      "end": 10172,
+      "replacement": "  frozen={str(q):sha(q)for q in [Path(__file__),Path(stream.__file__),Path(timing.__file__),ROOT/'scripts/cloud_cdr_source_access_headroom.py',ROOT/'scripts/cdr_capture_windows.py',*[q for q in inputs.rglob('*')if q.is_file()]]}\n"
+    },
+    {
+      "start": 13595,
+      "end": 13969,
+      "replacement": "   retime[macro]=dict(actual_parent_pins=pins,actual_devices=rows,input_differential_v=stats(differential_in),output_differential_v=stats(differential_out),input_commonmode_v=stats(common_in),output_commonmode_v=stats(common_out),scope='Observed native HBT bases/emitters/currents on same complete exploratory v33 waveform. Statistics are not a new electrical gate or proof of cause.')\n"
+    },
+    {
+      "start": 19396,
+      "end": 19396,
+      "replacement": "    steering_transition_windows=window_observe(t,edges,expected[tag],steering['master']['negative_crossings_s'],signals,UI),\n"
+    }
+  ],
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "scripts/check_cdr_v30_transfer_sources.py": "fc30625539282f2e17b33055aaeae072eb4e87b4737a5b16a06f4fad43d55dad",
+    "scripts/check_cdr_v30_latch_sources.py": "66e8434184cbdea53ee27e6da41df7d8d29a82c7bc7ff77ae657c2caa67d55e0",
+    "scripts/cdr-v30-transfer-source-adaptation.json": "a31e90d2f362c9283926e1a8a8ad7bab02e1a7525b4fc8ffa0eefcb97b21e0cc",
+    "scripts/cdr-v30-latch-source-deltas.json": "508b677017f4eaeb35a00775c34e9a3ee626919464d9e605c8aa0bffc12701f4",
+    "scripts/check_cdr_v31_transfer_sources.py": "935311a89c42b62f625ec52d10dc12d8dcc03a31a060c609f199585182c69f5d",
+    "scripts/cdr-v31-transfer-source-adaptation.json": "d9eef1bf5ba97ac9857f526e4f32ba8bbb8978f42ab0b3de72a18d41ea4f75d1",
+    "docs/evidence/cdr-sampler-settling-v32-mim-parent-capture-pass-20261022.json": "b7cd5204955a723c34fc03392e2e62965a41dde5cb030c5ae24d688d06346c86",
+    "docs/evidence/cdr-sampler-settling-v32-diagnostic-input-20261022.json": "b206e46107351476a37e26c6928b64cf6b0d7e09e4bd85ca5a55bafdd9e5c0dd",
+    "docs/evidence/cdr-v33-transfer-diagnostic-input-20261022.json": "8c7215364db4e36ec638eff577ad2674f7848b05944313d926f93af4c0c7eefc",
+    "scripts/cdr_capture_windows.py": "7b3c4107d4fa80a6638f6d645883f7659230aa5c92ea5475e1216b3806e7b771",
+    "scripts/check_cdr_v33_transfer_sources.py": "a61336e503e4977eb37657e5b80ad7b543060dc940c3e1519df09374998d79b4",
+    ".github/workflows/cdr-v33-transfer-timing-cloud.yml": "1efd5214e320c104334d481ac22c575b69b8729a7a51b255961d0b45bb60b1c1"
+  },
+  "scope": "Six exact rejected exploratory captures and actual intrinsic contracts. Original120HBT and4sampler reproductions unchanged; added non-causal diagnostic at uniquely associated native steering crossings. No waveform rewriting, new simulation, resampling, shifted clocks or electrical acceptance."
+}

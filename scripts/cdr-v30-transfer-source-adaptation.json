@@ -1,0 +1,23 @@
+{
+  "baseline_path": "scripts/cloud_cdr_v30_latch_timing.py",
+  "baseline_sha256": "f922e4ba83df76bde48ef406028f8ce8dcbdf9267ba5b2dc2b700a1e57fcb661",
+  "candidate_path": "scripts/cloud_cdr_v30_transfer.py",
+  "candidate_sha256": "b2716095df32a2639890216da9566736d3a6b8838d01f8c2117347913236a910",
+  "edits": [
+    {
+      "before": "cdr-v30-latch-timing",
+      "after": "cdr-v30-transfer-timing",
+      "count": 1
+    },
+    {
+      "before": "cdr-v30-latch-inputs",
+      "after": "cdr-v30-transfer-inputs",
+      "count": 1
+    },
+    {
+      "before": "  bits=prior['source_bits'];",
+      "after": "  # Additional observations on the two real emitter followers; never regenerate data.\n  retime={}\n  for macro in ('ac','bd'):\n   plan=next(n for n in layout['source_plan']['nodes']if n['tag']==macro)\n   pins={k.lower():value for k,value in plan['pins'].items()}\n   assert {'ip','inn','op','on','avdd','avss','sub'}<=set(pins)\n   members={n:d for n,d in prior['devices'].items()if owned[n]==macro}\n   assert len(members)==2 and all(d['nx']==4 for d in members.values())\n   endpoints={}\n   for name,dev in members.items():\n    card=records[dev['native_id']];terms={x['terminal']:x for x in card['terminals']}\n    matches=[polarity for polarity,pin in [('positive','op'),('negative','on')]if terms['E']['native_cluster']==logical[pins[pin]][0]]\n    assert len(matches)==1 and matches[0]not in endpoints\n    polarity=matches[0];input_pin='ip'if polarity=='positive'else'inn'\n    assert terms['B']['native_cluster']==logical[pins[input_pin]][0]\n    endpoints[polarity]=(name,dev)\n   assert set(endpoints)=={'positive','negative'}\n   positive=endpoints['positive'][1];negative=endpoints['negative'][1]\n   differential_in=v(positive['nodes'][1])-v(negative['nodes'][1])\n   differential_out=v(positive['nodes'][2])-v(negative['nodes'][2])\n   common_in=(v(positive['nodes'][1])+v(negative['nodes'][1]))/2\n   common_out=(v(positive['nodes'][2])+v(negative['nodes'][2]))/2\n   def stats(values):\n    data=values[active]\n    return dict(minimum=float(data.min()),maximum=float(data.max()),mean=float(data.mean()))\n   rows={}\n   for polarity,(name,dev)in endpoints.items():\n    vc,vb,ve,_=map(v,dev['nodes']);ic=w['@q.'+name+'.qnpn13g2[ic]']\n    rows[polarity]=dict(name=name,native_id=dev['native_id'],collector_current_a=stats(ic),vce_v=stats(vc-ve),vbe_v=stats(vb-ve),base_v=stats(vb),emitter_v=stats(ve),fraction_nonpositive_collector_current=float(np.mean(ic[active]<=0)),fraction_vbe_below_05v=float(np.mean((vb-ve)[active]<.5)))\n   retime[macro]=dict(actual_parent_pins=pins,actual_devices=rows,input_differential_v=stats(differential_in),output_differential_v=stats(differential_out),input_commonmode_v=stats(common_in),output_commonmode_v=stats(common_out),scope='Observed native HBT bases/emitters/currents on same complete v30 waveform. Statistics are not a new electrical gate or proof of cause.')\n  r['retime_transfer']=retime\n  bits=prior['source_bits'];",
+      "count": 1
+    }
+  ]
+}

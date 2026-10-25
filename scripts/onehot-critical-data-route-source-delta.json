@@ -1,0 +1,70 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_onehot_routed_drive_route.py",
+      "baseline_sha256": "2a5b01be20d02b72d310627eff4b4f6ffb7c30a770ef6fe9a251defd43aad24c",
+      "candidate_path": "scripts/cloud_onehot_critical_data_route.py",
+      "candidate_sha256": "f256634141c239f66aa6af79e80e66e332752a17c1b16e36e4b05e5f0318be87",
+      "edits": [
+        {
+          "before": "OUT=ROOT/'hw/soc/out/cloud-onehot-routed-drive-route'",
+          "after": "OUT=ROOT/'hw/soc/out/cloud-onehot-critical-data-route'",
+          "count": 1
+        },
+        {
+          "before": "scope='Route39 measured positive near-driver buffers with native geometry and logic proofs. All148832 source cells including antenna diodes retained.",
+          "after": "scope='Route33 measured critical-data positive buffers with native geometry and logic proofs. All149592 source cells including antenna diodes retained.",
+          "count": 1
+        },
+        {
+          "before": "        saved_candidate_odb=odb",
+          "after": "\n        # Continue from the exact measured route, preserving every earlier proof.\n        critical_baseline_pin=json.loads((ROOT/'docs/evidence/onehot-near-driver-route-result-20261019.json').read_text())\n        critical_baseline_run=api('actions/runs/'+str(critical_baseline_pin['run']))\n        assert critical_baseline_pin['run']==39243328773\n        assert critical_baseline_run['status']=='completed'and critical_baseline_run['conclusion']=='success'\n        assert critical_baseline_run['head_sha']==critical_baseline_pin['source_head']=='25874ce85d044e5297a2be157eb078c2f595b9ef'\n        assert critical_baseline_run['run_attempt']==1 and critical_baseline_run['path']=='.github/workflows/onehot-routed-drive-route-cloud.yml'\n        critical_baseline,critical_baseline_sha,critical_baseline_parts=logic.summary(critical_baseline_pin['group'],critical_baseline_run)\n        assert critical_baseline==critical_baseline_pin['report']\n        assert critical_baseline_sha==critical_baseline_pin['summary_sha256']and critical_baseline_parts==critical_baseline_pin['parts_sha256']\n        assert critical_baseline['sources_unchanged']and critical_baseline['returncode']==0 and critical_baseline['detailed_route_complete']\n        assert critical_baseline['native_routing_drc_errors']==0 and critical_baseline['critical_disconnected_pins']==0\n        assert critical_baseline['near_driver_buffer_source']['summary_sha256']==bp['summary_sha256']\n        assert critical_baseline['near_driver_buffer_geometry']==bg\n        assert critical_baseline['near_driver_buffer_equation_proof']==buffered['proof']\n        cb_topology=critical_baseline['routed_candidate_topology']\n        assert cb_topology['proof']['retained_instances']==148871 and cb_topology['proof']['added_diode_count']==721\n        assert cb_topology['inputs'][str(odb)]==sha(odb)\n        cp=json.loads((ROOT/'docs/evidence/onehot-critical-data-prepare-pass-20261019.json').read_text())\n        cr=api('actions/runs/'+str(cp['run']))\n        assert cp['run']==39292665637 and cp['source_head']=='173311bb553b200285893690a3feca7aa47fcc36'\n        assert cr['status']=='completed'and cr['conclusion']=='success'and cr['head_sha']==cp['source_head']and cr['run_attempt']==1\n        assert cr['path']=='.github/workflows/onehot-critical-data-prepare-cloud.yml'\n        critical_root=ROOT/'hw/soc/out/cloud-onehot-critical-data-prepare'\n        critical_names=['candidate.odb','candidate.v','candidate-state.json','trial-config.json','proof/result.json','controls/result.json','geometry-proof.json','geometry.json','targets.json','actual-new-buffer-inversion-control.log']\n        critical,critical_proof=reports.restore_report(cp['group'],cp['run'],cp['summary_sha256'],cp['parts_sha256'],critical_root,critical_names)\n        assert critical==cp['report']and critical['sources_unchanged']\n        assert critical['status']=='PASS_NATIVE_CRITICAL_DATA_BUFFER_PREPARATION_REQUIRES_ROUTE_RC_ALL_CORNERS'\n        assert critical['source']['summary_sha256']==critical_baseline_sha and critical['source']['manifest_sha256']==critical_baseline_parts\n        assert critical['original_route']==dict(odb_sha256=critical_baseline['routed_odb_sha256'],netlist_sha256=critical_baseline['routed_netlist_sha256'])\n        assert critical['original_measurements']==critical_baseline['measurements']\n        assert critical['proof']['status']=='PASS within scope'and critical['controls']['status']=='PASS_NATIVE_ECO_CONTROLS'and critical['inversion_control']['rejected']\n        assert critical['proof']['positive_buffers_after']-critical['proof']['positive_buffers_before']==33\n        assert critical['proof']['unobserved_output_port_changes']==0\n        cg=critical['geometry']\n        assert cg['original_instances']==149592 and len(cg['added'])==len(cg['changes'])==33 and cg['maximum_driver_to_buffer_um']<=80\n        assert all(cg[k]for k in ('all_original_cells_geometry_preserved','all_expected_net_memberships_preserved','pg_ports_ndr_unchanged'))\n        assert json.loads((critical_root/'proof/result.json').read_text())==critical['proof']\n        assert json.loads((critical_root/'geometry-proof.json').read_text())==cg\n        assert json.loads((critical_root/'controls/result.json').read_text())==critical['controls']\n        assert json.loads((critical_root/'geometry.json').read_text())==critical['source_geometry']\n        assert json.loads((critical_root/'targets.json').read_text())==critical['selection']\n        assert critical['source_geometry']['source_instance_count']==149592\n        assert json.loads((critical_root/'trial-config.json').read_text())==cfg\n        state_path=critical_root/'candidate-state.json';state=json.loads(state_path.read_text())\n        odb=Path(state['odb']);netlist=Path(state['nl'])\n        assert odb==critical_root/'candidate.odb'and netlist==critical_root/'candidate.v'\n        assert sha(odb)==critical['candidate_odb_sha256']=='d53c65ecd69fa09f8d0112653fc4c2143ebf0f2116c819408bb784ba37e37d34'\n        assert sha(netlist)==critical['candidate_netlist_sha256']=='be29f14ebae7a4685b16f854e0db8192f6313ce9ec14a9bcc61c902c4f425ecc'\n        assert state['spef']is None and state['def']is None and not state['metrics']\n        critical_baseline_root=ROOT/'hw/soc/out/cloud-onehot-routed-drive-route';critical_missing=set()\n        def collect_critical_missing(value):\n            if isinstance(value,dict):\n                for v in value.values():collect_critical_missing(v)\n            elif isinstance(value,list):\n                for v in value:collect_critical_missing(v)\n            elif isinstance(value,str)and value.startswith('/')and not Path(value).is_file():\n                p=Path(value);assert p.is_relative_to(critical_baseline_root),('Unbound critical-data state dependency',value)\n                rel=str(p.relative_to(critical_baseline_root));assert rel in critical_baseline['outputs'];critical_missing.add(rel)\n        collect_critical_missing(state)\n        if critical_missing:\n            restored_cb,cb_view_proof=reports.restore_report(critical_baseline_pin['group'],critical_baseline_pin['run'],critical_baseline_sha,critical_baseline_parts,critical_baseline_root,sorted(critical_missing))\n            assert restored_cb==critical_baseline\n            dependency_hashes.update({str(critical_baseline_root/n):critical_baseline['outputs'][n]for n in critical_missing})\n            r['critical_state_dependency_source']=cb_view_proof\n        assert all(sha(p)==v for p,v in dependency_hashes.items())\n        r['restored_exact_state_dependencies']['files']=dependency_hashes\n        r['source_routed_measurements']=critical_baseline['measurements']\n        r['critical_data_buffer_source']=critical_proof\n        r['critical_data_buffer_geometry']=cg\n        r['critical_data_buffer_equation_proof']=critical['proof']\n        r['previous_native_routed_baseline']=r['native_routed_baseline']\n        r['native_routed_baseline']=dict(run=critical_baseline_pin['run'],summary_sha256=critical_baseline_sha,parts_sha256=critical_baseline_parts,antenna=critical_baseline['final_antenna'],timing_and_electrical_counts_met=critical_baseline['all_reported_timing_and_electrical_gates_met'])\n\n        saved_candidate_odb=odb",
+          "count": 1
+        },
+        {
+          "before": "        protected.update({str(buffer_root/n):buffered['outputs'][n]for n in buffer_names})",
+          "after": "        protected.update({str(buffer_root/n):buffered['outputs'][n]for n in buffer_names})\n        protected.update({str(critical_root/n):critical['outputs'][n]for n in critical_names})",
+          "count": 1
+        },
+        {
+          "before": "RUNNING_NATIVE_NEAR_DRIVER_BUFFER_ROUTE_AND_FRESH_RC_STA",
+          "after": "RUNNING_NATIVE_CRITICAL_DATA_BUFFER_ROUTE_AND_FRESH_RC_STA",
+          "count": 1
+        },
+        {
+          "before": "scripts/check_onehot_routed_drive_routed_topology.py",
+          "after": "scripts/check_onehot_critical_data_routed_topology.py",
+          "count": 1
+        },
+        {
+          "before": "assert r['routed_candidate_topology']['proof']['retained_instances']==148871",
+          "after": "assert r['routed_candidate_topology']['proof']['retained_instances']==149625",
+          "count": 1
+        },
+        {
+          "before": "COMPLETE_NATIVE_NEAR_DRIVER_BUFFER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+          "after": "COMPLETE_NATIVE_CRITICAL_DATA_BUFFER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_onehot_routed_drive_routed_topology.py",
+      "baseline_sha256": "31ef4902b04b74b400ce07b933a82d1700fa034eb0726a25f02423981eeae446",
+      "candidate_path": "scripts/check_onehot_critical_data_routed_topology.py",
+      "candidate_sha256": "6770175a2820ba147eb2b2e4610cbba59c71a937a9db2822b600c6252bee91eb",
+      "edits": [
+        {
+          "before": "assert len(before['instances'])==148871",
+          "after": "assert len(before['instances'])==149625",
+          "count": 1
+        },
+        {
+          "before": "PASS_NATIVE_NEAR_DRIVER_BUFFER_ROUTED_TOPOLOGY_AND_GEOMETRY_NOT_LVS",
+          "after": "PASS_NATIVE_CRITICAL_DATA_BUFFER_ROUTED_TOPOLOGY_AND_GEOMETRY_NOT_LVS",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+--- qualified_original_active_drt.py
++++ repaired_candidate_active_drt.py
+@@ -10,13 +10,13 @@
+ import compare_cloud_routed_endpoints as reports
+ from run_cloud_tx_layout_repair import sha
+ from cloud_mainchip_process_checkpoint import TUNABLES,CRIU_COMMIT
+-ROOT=Path(__file__).resolve().parents[1];BASE=ROOT/'cloud-mainchip-active-drt-runtime'
++ROOT=Path(__file__).resolve().parents[1];BASE=ROOT/'cloud-mainchip-repair-deep-drt-runtime'
+ REPO='repos/Melihakbulut221/nssoc/'
+ PREFIX='source/run/1-openroad-detailedrouting/'
+ def api(path):return json.loads(subprocess.check_output(['gh','api',REPO+path]))
+ def digest(b):return hashlib.sha256(b).hexdigest()
+ def initial_receipt():
+-    run=int(os.environ['GITHUB_RUN_ID']);group='mainchip-active-drt-initial'
++    run=int(os.environ['GITHUB_RUN_ID']);group='mainchip-repair-deep-drt-initial'
+     rel=api('releases/tags/cloud-results-'+str(run)+'-1-'+group);got={}
+     for suffix in ('.summary.json','.parts.json'):
+         a=next(a for a in rel['assets']if a['name'].endswith(suffix))
+@@ -51,7 +51,7 @@
+ def main():
+     parser=argparse.ArgumentParser();parser.add_argument('--stage',choices=('initial','cross'),required=True);args=parser.parse_args()
+     assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ['GITHUB_RUN_ATTEMPT']=='1'
+-    out=ROOT/('cloud-mainchip-active-drt-'+args.stage);out.mkdir(exist_ok=False);BASE.mkdir(exist_ok=False);reports.OUT=out
++    out=ROOT/('cloud-mainchip-repair-deep-drt-'+args.stage);out.mkdir(exist_ok=False);BASE.mkdir(exist_ok=False);reports.OUT=out
+     case=BASE/'work';case.mkdir()
+     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],stage=args.stage,route_complete=False,final_timing_complete=False,full_phy_accepted=False,
+         scope='Actual saved-global mainchip detailed routing, original native DRT parameters. Antenna repair, disconnected pins, fixed-clock/topology checks, RC and original20/4/8/8ns three-corner STA remain mandatory after routing. No old interrupted optimization state is reused.')
+@@ -66,12 +66,14 @@
+     def state(name):return json.loads(subprocess.check_output(['docker','inspect',name]))[0]['State']
+     owned=[];save()
+     try:
++        methods=json.loads((ROOT/'scripts/mainchip-repair-deep-drt-methods.json').read_text())
++        assert all(sha(ROOT/n)==h for n,h in methods.items())
+         portable=json.loads((ROOT/'docs/evidence/mainchip-portable-runtime-pass-20261020.json').read_text())
+         checkpoint=json.loads((ROOT/'docs/evidence/mainchip-cross-runner-native-checkpoint-pass-20261021.json').read_text())
+         assert checkpoint['report']['status']=='PASS_ACTUAL_OPENROAD_LOADED_DB_PROCESS_ACROSS_DISTINCT_RUNNERS_REQUIRES_ACTIVE_DRT_PROOF'
+         assert checkpoint['report']['boot_id']!=checkpoint['report']['previous_boot_id']
+         assert checkpoint['report']['runtime_source']['summary_sha256']==portable['summary_sha256']
+-        names=['native-image.tar','runtime-inventory.json',*[PREFIX+n for n in ('fresh-fanout-global.odb','fresh_fanout_native.tcl','fresh-fanout.guide','_env.tcl','config.json')]]
++        names=['native-image.tar','runtime-inventory.json']
+         runtime,proof=reports.restore_report(portable['group'],portable['run'],portable['summary_sha256'],portable['parts_sha256'],BASE/'input',names)
+         assert runtime==portable['report']and runtime['sources_unchanged'];r['runtime_source']=proof;r['image_id']=runtime['image_id']
+         r['loaded_process_portability_source']={k:checkpoint[k]for k in ('run','summary_sha256','parts_sha256')}
+@@ -88,7 +90,32 @@
+         info=json.loads(run('exact-image',['docker','image','inspect',r['image_id']]).stdout)[0];assert info['Id']==r['image_id']
+         native_env=[]
+         for key,value in sorted(inventory['environment'].items()):native_env+=['-e',key+'='+value]
+-        source=BASE/'input'/PREFIX
++        gp=json.loads((ROOT/'docs/evidence/mainchip-repair-deep-global-pass-20261021.json').read_text())
++        glive=api('actions/runs/'+str(gp['run']))
++        assert glive['status']=='completed'and glive['conclusion']=='success'and glive['run_attempt']==1
++        assert glive['head_sha']==gp['source_head']and glive['path']=='.github/workflows/mainchip-repair-deep-global-cloud.yml'
++        global_names=['trial-config.json','candidate-state.json','geometry/result.json','fixed-clock.json',
++            *[gp['report']['step_path']+'/'+n for n in ('fresh-fanout-global.odb','fresh_fanout_native.tcl','fresh-fanout.guide','_env.tcl','config.json')]]
++        global_report,global_proof=reports.restore_report(gp['group'],gp['run'],gp['summary_sha256'],gp['parts_sha256'],BASE/'global',global_names)
++        assert global_report==gp['report']and global_report['sources_unchanged']
++        assert global_report['status']=='PASS_NATIVE_FRESH_GLOBAL_REQUIRES_RESUMABLE_DETAIL_ROUTE_AND_FRESH_RC_STA'
++        assert global_report['native_global_complete']and not global_report['detailed_route_complete']
++        assert global_report['candidate_instance_count']==153130 and global_report['geometry']['instance_count']==153130
++        assert global_report['geometry']['sram_instances']==20 and len(global_report['geometry']['rejected'])==2
++        assert global_report['fixed_clock']['original_physical_route_preserved']
++        assert global_report['candidate_netlist_sha256']=='3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030'
++        assert global_report['source_sdc_sha256']=='19fdfb6dab9889037a4d1f486dadd4c46ac9ccc109a64c78422376c116233597'
++        assert global_report['original_clock_periods_ns']==[20,4,8,8]and global_report['derating_percent']==5
++        source=BASE/'global'/global_report['step_path']
++        assert sha(source/'fresh-fanout-global.odb')==global_report['global_odb_sha256']
++        assert sha(source/'fresh-fanout.guide')==global_report['global_guides_sha256']
++        assert sha(source/'fresh_fanout_native.tcl')=='dcfb68741ea369b67c9dcd551c8d7b4aca4e7387ec999568cefa3a68c13f684e'
++        assert json.loads((BASE/'global/geometry/result.json').read_text())==global_report['geometry']
++        assert json.loads((BASE/'global/fixed-clock.json').read_text())==global_report['fixed_clock']
++        r.update(global_source=global_proof,global_candidate_instance_count=153130,
++            global_odb_sha256=global_report['global_odb_sha256'],global_guides_sha256=global_report['global_guides_sha256'],
++            candidate_netlist_sha256=global_report['candidate_netlist_sha256'],source_sdc_sha256=global_report['source_sdc_sha256'])
++        save()
+         # Ask the actual pinned Tcl runtime to interpret the original generated
+         # environment, rather than approximate Tcl quoting with a Python parser.
+         inspect=case/'inspect-environment.tcl'
+@@ -103,11 +130,12 @@
+         original_cfg=json.loads((source/'config.json').read_text())
+         # Librelane's per-step config intentionally omits STA-only options.
+         # Bind those guards to the exact full flow config, never a default.
+-        fp=json.loads((ROOT/'docs/evidence/mainchip-native-route-interruption-20261020.json').read_text())
+-        assert fp['run']==runtime['source']['run'] and fp['summary_sha256']==runtime['source']['summary_sha256']
+-        full,full_proof=reports.restore_report(fp['group'],fp['run'],fp['summary_sha256'],fp['parts_sha256'],BASE/'flow-config',['trial-config.json'])
+-        assert full['source_head']==fp['source_head'] and full['status']=='INTERRUPTED_NATIVE_STAGE_RETAINED_NOT_ACCEPTED'
+-        assert sha(BASE/'flow-config/trial-config.json')==fp['outputs']['trial-config.json']==full['outputs']['trial-config.json']
++        # This repaired candidate carries the same original full flow contract.
++        # Restore it from its own passed global run, without replaying old routing.
++        (BASE/'flow-config').mkdir()
++        shutil.copyfile(BASE/'global/trial-config.json',BASE/'flow-config/trial-config.json')
++        full=global_report;full_proof=global_proof
++        assert sha(BASE/'flow-config/trial-config.json')==full['outputs']['trial-config.json']=='b86cade4259c9e0a650c0950882b6a9e08d15e3ebade31d31a001b507279832f'
+         flow_cfg=json.loads((BASE/'flow-config/trial-config.json').read_text())
+         for key in ('CLOCK_PORT','CLOCK_PERIOD','TIME_DERATING_CONSTRAINT'):
+             assert original_cfg[key]==flow_cfg[key],('Step and original full-flow config differ',key)
+@@ -137,7 +165,7 @@
+ set ::env(STEP_DIR) $case
+ read_db $::env(NSSOC_DRT_ODB)
+ set block [ord::get_db_block]
+-if {[llength [$block getInsts]] != 152762} {error "Saved global instance census changed"}
++if {[llength [$block getInsts]] != 153130} {error "Saved global instance census changed"}
+ set fixed [$block findNet clknet_3_5_0_pcie_clk_i]
+ if {$fixed eq "NULL" || [$fixed getWireType] ne "FIXED"} {error "Original fixed clock metadata missing"}
+ set fixed_wire [$fixed getWire]
+@@ -161,7 +189,7 @@
+             already_executed_global_route_replaced_by_hash_pinned_saved_global=True,
+             sta_before_global_route_provenance_only_no_new_timing_acceptance=True)
+         r['controller_sha256']=sha(Path(__file__))
+-        expected=runtime['isolated_db_equivalence']['original_global_odb_sha256']
++        expected=global_report['global_odb_sha256']
+         assert sha(source/'fresh-fanout-global.odb')==expected;save()
+         def command(name,create=False):
+             env=['-e','GLIBC_TUNABLES='+TUNABLES,'-e','NSSOC_DRT_CASE='+str(case),'-e','NSSOC_DRT_ODB='+str(source/'fresh-fanout-global.odb'),
+@@ -253,11 +281,13 @@
+         assert all(sha(BASE/'input'/n)==runtime['outputs'][n]for n in names)
+         if args.stage=='cross':assert r['consumed_downloads_removed_after_verified_restore'] and r['restored_work_prefixes_verified']
+         assert sha(BASE/'flow-config/trial-config.json')==full['outputs']['trial-config.json']
++        assert all(sha(BASE/'global'/n)==global_report['outputs'][n]for n in global_names)
++        assert all(sha(ROOT/n)==h for n,h in methods.items())
+         assert sha(Path(__file__))==r['controller_sha256']and sha(tcl)==r['route_script']['sha256'];r['sources_unchanged']=True
+         r['status']=('COMPLETE_NATIVE_DRT_REQUIRES_ALL_POSTROUTE_PHYSICAL_RC_STA_GATES'if r['route_complete']else
+             'SAVED_ACTUAL_ACTIVE_DRT_PROCESS_REQUIRES_CROSS_RUNNER_CONTINUATION'if args.stage=='initial'else
+             'SAVED_CROSS_RUNNER_ACTIVE_DRT_PROGRESS_REQUIRES_FURTHER_CONTINUATION_AND_SIGNOFF')
+-        r['continuation']=dict(run=int(os.environ['GITHUB_RUN_ID']),attempt=1,group='mainchip-active-drt-'+args.stage,
++        r['continuation']=dict(run=int(os.environ['GITHUB_RUN_ID']),attempt=1,group='mainchip-repair-deep-drt-'+args.stage,
+             source_head=os.environ['GITHUB_SHA'],controller_sha256=r['controller_sha256'],native_process_saved=r.get('native_process_saved',False),
+             next_phase='postroute_validation'if r['route_complete']else'continue_same_native_process')
+         r['next_action']='Continue the exact saved process, never cold-start or replay the completed prefix. On native completion run original fixed-clock/topology/antenna/disconnect/RC/STA gates before acceptance.'

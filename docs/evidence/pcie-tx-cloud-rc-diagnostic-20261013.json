@@ -1,0 +1,596 @@
+{
+  "status": "COMPLETE_FOUR_CAUSAL_INTERCONNECT_DIAGNOSTICS",
+  "run": 38309293263,
+  "adopted": false,
+  "scope": "Artificial parasitic mutations diagnose mechanism only; no layout or PHY acceptance. All original models, sample times, output margins and device limits retained.",
+  "results": [
+    {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-rc-diagnostic-low_r-38309293263-1.summary.json",
+      "sha256": "0d52661136aee4d1d3fcfab3b5640b2d72ed26385033f2f064770bb39f0f67ad",
+      "result": {
+        "status": "COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE",
+        "point": "baseline",
+        "kind": "wire",
+        "interconnect": "low_r",
+        "operating_point": {
+          "data_common_mode_v": 1.93,
+          "data_amplitude_v": 0.15,
+          "select_common_mode_v": 1.23,
+          "select_amplitude_v": 0.3
+        },
+        "accepted": false,
+        "scope": "Final2:1 mux plus compact TX driver only. Ideal input common modes and bias; development distributed wire RC is not qualified RF PEX. Full serializer/PLL/CDR/PHY and production acceptance remain open.",
+        "diagnostic_mutation": {
+          "resistors": 229,
+          "capacitors": 301,
+          "original_sha256": "b49f96660773e0c1a3d1677b4a288dc2183054ddc543740995994383e816bcb4",
+          "mutated_sha256": "eb7280cea959c109a60ee3eff9aedf630b40dfe11f7a625a0fa05cbc698009ed",
+          "note": "Causal diagnostic only. Explicit metal resistors become1milliohm and/or metal capacitors are removed. Device models, layout and measurement limits unchanged. Mutated parasitics cannot be adopted or used as physical acceptance."
+        },
+        "independent_status": "FAIL_INDEPENDENT_SUPPORTED_COMPONENT_SCREEN",
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.09638203502216869,
+          "wrong_sign_samples": 0,
+          "passed": false
+        },
+        "failed_devices": {},
+        "diagnostics": []
+      }
+    },
+    {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-rc-diagnostic-actual-38309293263-1.summary.json",
+      "sha256": "4f937138c2eb4063abadd01e0073ddb86c0e206bea0238c9537a53ae563ae2ac",
+      "result": {
+        "status": "COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE",
+        "point": "baseline",
+        "kind": "wire",
+        "interconnect": "actual",
+        "operating_point": {
+          "data_common_mode_v": 1.93,
+          "data_amplitude_v": 0.15,
+          "select_common_mode_v": 1.23,
+          "select_amplitude_v": 0.3
+        },
+        "accepted": false,
+        "scope": "Final2:1 mux plus compact TX driver only. Ideal input common modes and bias; development distributed wire RC is not qualified RF PEX. Full serializer/PLL/CDR/PHY and production acceptance remain open.",
+        "independent_status": "FAIL_INDEPENDENT_SUPPORTED_COMPONENT_SCREEN",
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": -0.26647000795532216,
+          "wrong_sign_samples": 128,
+          "passed": false
+        },
+        "failed_devices": {
+          "xmux.xd0037": {
+            "min_vce_v": 0.25133618273577185,
+            "max_vce_v": 0.9786386521902786,
+            "max_abs_vbe_v": 0.8190904116190472,
+            "max_abs_ic_per_emitter_a": 0.00022904557138615238,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9786386521902786,
+            "whole_startup_peak_abs_vbe_v": 0.8202685721273091,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00024267147522114108,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0038": {
+            "min_vce_v": 0.25099752956009436,
+            "max_vce_v": 0.9786950807761194,
+            "max_abs_vbe_v": 0.8233594820920067,
+            "max_abs_ic_per_emitter_a": 0.00025823149802364244,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9786950807761194,
+            "whole_startup_peak_abs_vbe_v": 0.8243348630257936,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0002716777456630327,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0039": {
+            "min_vce_v": 0.24079148126691363,
+            "max_vce_v": 0.9717787227413521,
+            "max_abs_vbe_v": 0.8244328700773185,
+            "max_abs_ic_per_emitter_a": 0.00026165386454969706,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9717787227413521,
+            "whole_startup_peak_abs_vbe_v": 0.8244328700773185,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00026165386454969706,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0040": {
+            "min_vce_v": 0.25384749103950455,
+            "max_vce_v": 0.9930328408384934,
+            "max_abs_vbe_v": 0.8224117434513594,
+            "max_abs_ic_per_emitter_a": 0.0002522234865661254,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9930328408384934,
+            "whole_startup_peak_abs_vbe_v": 0.8224117434513594,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0002522234865661254,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0041": {
+            "min_vce_v": 0.3011895627864025,
+            "max_vce_v": 0.9341994803930774,
+            "max_abs_vbe_v": 0.8378968843446843,
+            "max_abs_ic_per_emitter_a": 0.0003518286176927743,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9341994803930774,
+            "whole_startup_peak_abs_vbe_v": 0.8378968843446843,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0003518286176927743,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0042": {
+            "min_vce_v": 0.259735315079449,
+            "max_vce_v": 1.0025618772501346,
+            "max_abs_vbe_v": 0.8233773739234977,
+            "max_abs_ic_per_emitter_a": 0.0002563723080595629,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 1.0025618772501346,
+            "whole_startup_peak_abs_vbe_v": 0.8233773739234977,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0002563723080595629,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0043": {
+            "min_vce_v": 0.3042056989130484,
+            "max_vce_v": 0.9346848073408948,
+            "max_abs_vbe_v": 0.8401752842252471,
+            "max_abs_ic_per_emitter_a": 0.0003705234490514913,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9346848073408948,
+            "whole_startup_peak_abs_vbe_v": 0.8401752842252471,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0003705234490514913,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0044": {
+            "min_vce_v": 0.25384443787321365,
+            "max_vce_v": 0.992453045666754,
+            "max_abs_vbe_v": 0.819656315464391,
+            "max_abs_ic_per_emitter_a": 0.00023349460526765706,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.992453045666754,
+            "whole_startup_peak_abs_vbe_v": 0.819656315464391,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00023349460526765706,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0045": {
+            "min_vce_v": 0.2512302599852059,
+            "max_vce_v": 0.9786575730982681,
+            "max_abs_vbe_v": 0.8205085437160116,
+            "max_abs_ic_per_emitter_a": 0.00023844226304482874,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9786575730982681,
+            "whole_startup_peak_abs_vbe_v": 0.8216197289529745,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0002520449239468679,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0046": {
+            "min_vce_v": 0.30273258651155666,
+            "max_vce_v": 0.9396931865382668,
+            "max_abs_vbe_v": 0.8398042467786211,
+            "max_abs_ic_per_emitter_a": 0.0003708212615055474,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9396931865382668,
+            "whole_startup_peak_abs_vbe_v": 0.8398042467786211,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0003748084354751771,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0047": {
+            "min_vce_v": 0.29972135536369193,
+            "max_vce_v": 0.9391949014918454,
+            "max_abs_vbe_v": 0.8375121016033634,
+            "max_abs_ic_per_emitter_a": 0.0003537329766661795,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9391949014918454,
+            "whole_startup_peak_abs_vbe_v": 0.8375121016033634,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.000358455809259806,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0048": {
+            "min_vce_v": 0.2538216643439528,
+            "max_vce_v": 0.9921618079153722,
+            "max_abs_vbe_v": 0.8182855639193263,
+            "max_abs_ic_per_emitter_a": 0.00022458671630790249,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9921618079153722,
+            "whole_startup_peak_abs_vbe_v": 0.8182855639193263,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00022458671630790249,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0049": {
+            "min_vce_v": 0.2813290941470389,
+            "max_vce_v": 0.3765508624639019,
+            "max_abs_vbe_v": 0.8326603491052714,
+            "max_abs_ic_per_emitter_a": 0.00034400432242973224,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.433898510737498,
+            "whole_startup_peak_abs_vbe_v": 0.8342414129538631,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00035547375427671566,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0050": {
+            "min_vce_v": 0.25975880724752876,
+            "max_vce_v": 1.0020161877366196,
+            "max_abs_vbe_v": 0.8205456367420134,
+            "max_abs_ic_per_emitter_a": 0.00023683173164945682,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 1.0020161877366196,
+            "whole_startup_peak_abs_vbe_v": 0.8205456367420134,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00023683173164945682,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0051": {
+            "min_vce_v": 0.24128135491211977,
+            "max_vce_v": 0.9717235361823335,
+            "max_abs_vbe_v": 0.8214988795857627,
+            "max_abs_ic_per_emitter_a": 0.00024103871194923698,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9717235361823335,
+            "whole_startup_peak_abs_vbe_v": 0.8214988795857627,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00024103871194923698,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0052": {
+            "min_vce_v": 0.2598212789616059,
+            "max_vce_v": 1.0041559987004736,
+            "max_abs_vbe_v": 0.8196598015225212,
+            "max_abs_ic_per_emitter_a": 0.0002319414101145791,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 1.0041559987004736,
+            "whole_startup_peak_abs_vbe_v": 0.8196598015225212,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0002319414101145791,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0053": {
+            "min_vce_v": 0.28568728681420674,
+            "max_vce_v": 0.37932654509070723,
+            "max_abs_vbe_v": 0.8331932139201729,
+            "max_abs_ic_per_emitter_a": 0.00034879261137536483,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.4343782844914745,
+            "whole_startup_peak_abs_vbe_v": 0.8347758613929404,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00036022406939244825,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0054": {
+            "min_vce_v": 0.24244496044924668,
+            "max_vce_v": 0.9713553613788302,
+            "max_abs_vbe_v": 0.8207905659371968,
+            "max_abs_ic_per_emitter_a": 0.00023507626850873277,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9713553613788302,
+            "whole_startup_peak_abs_vbe_v": 0.8207905659371968,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00023507626850873277,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xtx.xtail": {
+            "min_vce_v": 0.36352023608120576,
+            "max_vce_v": 0.5077106149385873,
+            "max_abs_vbe_v": 0.9132593219510386,
+            "max_abs_ic_per_emitter_a": 0.001536041901580781,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.5077106149385873,
+            "whole_startup_peak_abs_vbe_v": 0.91329503103336,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.001536041901580781,
+            "post_passed": false,
+            "whole_upper_passed": true
+          }
+        },
+        "diagnostics": [],
+        "previous_failed_wire_baseline_reproduced": true
+      }
+    },
+    {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-rc-diagnostic-low_r_no_cap-38309293263-1.summary.json",
+      "sha256": "3f78f6b9a6e51eba0718edf18ee1b3ad33a0e965f7c7f9e77a2cec4ca876e78b",
+      "result": {
+        "status": "COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE",
+        "point": "baseline",
+        "kind": "wire",
+        "interconnect": "low_r_no_cap",
+        "operating_point": {
+          "data_common_mode_v": 1.93,
+          "data_amplitude_v": 0.15,
+          "select_common_mode_v": 1.23,
+          "select_amplitude_v": 0.3
+        },
+        "accepted": false,
+        "scope": "Final2:1 mux plus compact TX driver only. Ideal input common modes and bias; development distributed wire RC is not qualified RF PEX. Full serializer/PLL/CDR/PHY and production acceptance remain open.",
+        "diagnostic_mutation": {
+          "resistors": 229,
+          "capacitors": 301,
+          "original_sha256": "b49f96660773e0c1a3d1677b4a288dc2183054ddc543740995994383e816bcb4",
+          "mutated_sha256": "1ca65dd84ee4357fdb447e79420f123b413731f35dfd8822dd2988cee90f860b",
+          "note": "Causal diagnostic only. Explicit metal resistors become1milliohm and/or metal capacitors are removed. Device models, layout and measurement limits unchanged. Mutated parasitics cannot be adopted or used as physical acceptance."
+        },
+        "independent_status": "PASS_INDEPENDENT_SUPPORTED_COMPONENT_SCREEN",
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.2703327547439913,
+          "wrong_sign_samples": 0,
+          "passed": true
+        },
+        "failed_devices": {},
+        "diagnostics": []
+      }
+    },
+    {
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-rc-diagnostic-no_cap-38309293263-1.summary.json",
+      "sha256": "47ca9df70472eefd5ee6e4cf6f46f1d84d479bd68f52ecfa144df85efb3d3133",
+      "result": {
+        "status": "COMPLETE_FIXED_ORACLE_COMPONENT_STUDY_NOT_PHY_ACCEPTANCE",
+        "point": "baseline",
+        "kind": "wire",
+        "interconnect": "no_cap",
+        "operating_point": {
+          "data_common_mode_v": 1.93,
+          "data_amplitude_v": 0.15,
+          "select_common_mode_v": 1.23,
+          "select_amplitude_v": 0.3
+        },
+        "accepted": false,
+        "scope": "Final2:1 mux plus compact TX driver only. Ideal input common modes and bias; development distributed wire RC is not qualified RF PEX. Full serializer/PLL/CDR/PHY and production acceptance remain open.",
+        "diagnostic_mutation": {
+          "resistors": 229,
+          "capacitors": 301,
+          "original_sha256": "b49f96660773e0c1a3d1677b4a288dc2183054ddc543740995994383e816bcb4",
+          "mutated_sha256": "22cd19b9c74ea6e8063603c986a8c76933fd3f2e7a7b99dc9bf6e16b36784f63",
+          "note": "Causal diagnostic only. Explicit metal resistors become1milliohm and/or metal capacitors are removed. Device models, layout and measurement limits unchanged. Mutated parasitics cannot be adopted or used as physical acceptance."
+        },
+        "independent_status": "FAIL_INDEPENDENT_SUPPORTED_COMPONENT_SCREEN",
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": -0.11028368264390265,
+          "wrong_sign_samples": 96,
+          "passed": false
+        },
+        "failed_devices": {
+          "xmux.xd0037": {
+            "min_vce_v": 0.23302973068769628,
+            "max_vce_v": 0.9838762625036761,
+            "max_abs_vbe_v": 0.8202949566611908,
+            "max_abs_ic_per_emitter_a": 0.00023238306575652136,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9838762625036761,
+            "whole_startup_peak_abs_vbe_v": 0.8202949566611908,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00023351876784358727,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0038": {
+            "min_vce_v": 0.23249738185658364,
+            "max_vce_v": 0.9839342179594943,
+            "max_abs_vbe_v": 0.8248841100670974,
+            "max_abs_ic_per_emitter_a": 0.00026358782812227856,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9839342179594943,
+            "whole_startup_peak_abs_vbe_v": 0.8248841100670974,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00026358782812227856,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0039": {
+            "min_vce_v": 0.22554165866082654,
+            "max_vce_v": 0.9838154370429013,
+            "max_abs_vbe_v": 0.8250720046220803,
+            "max_abs_ic_per_emitter_a": 0.0002641050019911406,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9838154370429013,
+            "whole_startup_peak_abs_vbe_v": 0.8250720046220803,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0002641050019911406,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0040": {
+            "min_vce_v": 0.25185699456553245,
+            "max_vce_v": 1.0267099101732642,
+            "max_abs_vbe_v": 0.8241110898054,
+            "max_abs_ic_per_emitter_a": 0.00026011500022655245,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 1.0267099101732642,
+            "whole_startup_peak_abs_vbe_v": 0.8241110898054,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00026011500022655245,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0041": {
+            "min_vce_v": 0.29080996885569677,
+            "max_vce_v": 0.9723762751353653,
+            "max_abs_vbe_v": 0.835220255758605,
+            "max_abs_ic_per_emitter_a": 0.0003528960657846438,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9723762751353653,
+            "whole_startup_peak_abs_vbe_v": 0.835220255758605,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0003528960657846438,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0042": {
+            "min_vce_v": 0.25368211514131,
+            "max_vce_v": 1.027429434995915,
+            "max_abs_vbe_v": 0.8240735519646394,
+            "max_abs_ic_per_emitter_a": 0.00026011025142601643,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 1.027429434995915,
+            "whole_startup_peak_abs_vbe_v": 0.8240735519646394,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00026011025142601643,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0043": {
+            "min_vce_v": 0.29384399326627875,
+            "max_vce_v": 0.9729185556430127,
+            "max_abs_vbe_v": 0.8374464012281415,
+            "max_abs_ic_per_emitter_a": 0.00036927836059750006,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9729185556430127,
+            "whole_startup_peak_abs_vbe_v": 0.8374464012281415,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00036927836059750006,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0044": {
+            "min_vce_v": 0.2518318388606695,
+            "max_vce_v": 1.0260304553935018,
+            "max_abs_vbe_v": 0.8211689510339724,
+            "max_abs_ic_per_emitter_a": 0.00023990678684491937,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 1.0260304553935018,
+            "whole_startup_peak_abs_vbe_v": 0.8211689510339724,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00023990678684491937,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0045": {
+            "min_vce_v": 0.23285163522856678,
+            "max_vce_v": 0.9838930927647476,
+            "max_abs_vbe_v": 0.8218189938299947,
+            "max_abs_ic_per_emitter_a": 0.00024238276466540207,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9838930927647476,
+            "whole_startup_peak_abs_vbe_v": 0.8218189938299947,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00024238276466540207,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0046": {
+            "min_vce_v": 0.2892595480899721,
+            "max_vce_v": 0.9792400361059436,
+            "max_abs_vbe_v": 0.8370637768463131,
+            "max_abs_ic_per_emitter_a": 0.00037150653660210435,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9792400361059436,
+            "whole_startup_peak_abs_vbe_v": 0.8370637768463131,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00037150653660210435,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0047": {
+            "min_vce_v": 0.286251465287909,
+            "max_vce_v": 0.9787273658837664,
+            "max_abs_vbe_v": 0.8349142979214018,
+            "max_abs_ic_per_emitter_a": 0.0003549632163806691,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9787273658837664,
+            "whole_startup_peak_abs_vbe_v": 0.8349142979214018,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0003549632163806691,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0048": {
+            "min_vce_v": 0.25181958184620745,
+            "max_vce_v": 1.0256882695198455,
+            "max_abs_vbe_v": 0.8197059382711471,
+            "max_abs_ic_per_emitter_a": 0.00023034964482796454,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 1.0256882695198455,
+            "whole_startup_peak_abs_vbe_v": 0.8197059382711471,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00023034964482796454,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0049": {
+            "min_vce_v": 0.281254899162124,
+            "max_vce_v": 0.37775717275937987,
+            "max_abs_vbe_v": 0.833257087729105,
+            "max_abs_ic_per_emitter_a": 0.0003500059346702263,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.47112050756841606,
+            "whole_startup_peak_abs_vbe_v": 0.8339294175427032,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00035266901660585364,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0050": {
+            "min_vce_v": 0.25365361790761454,
+            "max_vce_v": 1.0267478769654668,
+            "max_abs_vbe_v": 0.8211345085042054,
+            "max_abs_ic_per_emitter_a": 0.00023991143353487202,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 1.0267478769654668,
+            "whole_startup_peak_abs_vbe_v": 0.8211345085042054,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00023991143353487202,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0051": {
+            "min_vce_v": 0.22588890053490696,
+            "max_vce_v": 0.9837738906467659,
+            "max_abs_vbe_v": 0.8219969100001336,
+            "max_abs_ic_per_emitter_a": 0.00024285386505497051,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9837738906467659,
+            "whole_startup_peak_abs_vbe_v": 0.8219969100001336,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00024285386505497051,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0052": {
+            "min_vce_v": 0.25363969227387284,
+            "max_vce_v": 1.0264046350969382,
+            "max_abs_vbe_v": 0.8196732960342152,
+            "max_abs_ic_per_emitter_a": 0.00023035780011886517,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 1.0264046350969382,
+            "whole_startup_peak_abs_vbe_v": 0.8196732960342152,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00023035780011886517,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0053": {
+            "min_vce_v": 0.28281271371397854,
+            "max_vce_v": 0.3804076888295921,
+            "max_abs_vbe_v": 0.8337869725383674,
+            "max_abs_ic_per_emitter_a": 0.00035481583502373464,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.47116933689331664,
+            "whole_startup_peak_abs_vbe_v": 0.8344634616536465,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.00035743832260366905,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xmux.xd0054": {
+            "min_vce_v": 0.22606351912805467,
+            "max_vce_v": 0.9837555480045865,
+            "max_abs_vbe_v": 0.8204685761296928,
+            "max_abs_ic_per_emitter_a": 0.0002328326447369248,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.9837555480045865,
+            "whole_startup_peak_abs_vbe_v": 0.8204685761296928,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0002328326447369248,
+            "post_passed": false,
+            "whole_upper_passed": true
+          },
+          "xtx.xtail": {
+            "min_vce_v": 0.3662034330680376,
+            "max_vce_v": 0.5221527676400672,
+            "max_abs_vbe_v": 0.9145733839529631,
+            "max_abs_ic_per_emitter_a": 0.0015628186602121878,
+            "nx": 8,
+            "whole_startup_peak_abs_vce_v": 0.5221527676400672,
+            "whole_startup_peak_abs_vbe_v": 0.9145733839529631,
+            "whole_startup_peak_abs_ic_per_emitter_a": 0.0015628186602121878,
+            "post_passed": false,
+            "whole_upper_passed": true
+          }
+        },
+        "diagnostics": []
+      }
+    }
+  ]
+}

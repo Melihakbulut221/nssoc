@@ -1,0 +1,1589 @@
+{
+  "status": "PASS_FINITE_V22_REJECTION_AND_NPU_PHYSICAL_PREREQUISITES",
+  "sources": {
+    "scripts/generate_pcie_integrity_cache_v22.py": {
+      "bytes": 1577,
+      "sha256": "dfb7d4d2700c772dbe68ddb0b865dd071a4f541617b9f8837eca96753e49c06a"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v22.py": {
+      "bytes": 11276,
+      "sha256": "c830431e7b194927d5a4956da0a2b459ebe93278475b17bd221f86e1cb513d2f"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v22.v": {
+      "bytes": 194845,
+      "sha256": "b18c84d1cd1a7db7a6681939624a96a07af8f1cda1726bde987a4b08e89ad5d6"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v22.v": {
+      "bytes": 3324,
+      "sha256": "29495da25ca84bfff6c7dca6cb541c498debb64ac64e4cfdc863905abe854a01"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v22": {
+      "bytes": 1528,
+      "sha256": "606f14de8fc0f440bce0ad965032e361c41e9e55408cf9ca18c0c34625e510f8"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v22.py": {
+      "bytes": 29641,
+      "sha256": "7ac5d2f384c15396f2e536b26783770c79f7a41020d020240a7ca01b3e918088"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v22.py": {
+      "bytes": 6470,
+      "sha256": "69528fd9f87e698377f2eb62b96723ad008d19c943cd84609d2e2a77e402f538"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v22_cache.py": {
+      "bytes": 5535,
+      "sha256": "c8e98a352bea96aec33dfac4f7571a99381f09b9a57ca4ec452d6ac2521fefe6"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v22_miter.py": {
+      "bytes": 13672,
+      "sha256": "842ecf1202253835e6c4639f7b7d8e2c4a7d2eb27bbee9b968da865ad5981cf7"
+    },
+    "scripts/check_npu_eco_physical_readiness.py": {
+      "bytes": 18400,
+      "sha256": "3c082f1df3d3e8403de8e41d9a4b60d59e7244ba820926074a53fc450ce4dec4"
+    },
+    "sw/tests/test_npu_eco_physical_readiness.py": {
+      "bytes": 9366,
+      "sha256": "dd65001f1f9beb6a1a53851f0652c9bccd38b33c5c53c248184f9f7d9fe44864"
+    },
+    "scripts/run_npu_eco_physical.py": {
+      "bytes": 18183,
+      "sha256": "ccf10a23cd473acc46f29f26b210fd8afeec4c71299016d2fac65759ee1e3196"
+    },
+    "scripts/npu_physical_process.py": {
+      "bytes": 4133,
+      "sha256": "39dedf775c53370fe7696fab46b198bf3d727c3dbf52dbd4148c3d70134ff526"
+    },
+    "sw/tests/test_npu_eco_physical.py": {
+      "bytes": 9952,
+      "sha256": "8698f2dd61affff5c9ceded77dabf32f1b4411adb75a6c175958090ca0e7a35b"
+    }
+  },
+  "files": {
+    "records/npu-eco-physical-readiness-20261006/NOTICES.txt": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/NOTICES.txt",
+      "bytes": 453,
+      "sha256": "4c1fcde974b5c22c550ee82a35367e6b255128a2fabce8c2e1e4459edd602513"
+    },
+    "records/npu-eco-physical-readiness-20261006/controls01.log": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/controls01.log",
+      "bytes": 99,
+      "sha256": "e07fc189925c6241982ee0c6baa48e9f453304b0bdcba2eb2576a1e6a98b415c"
+    },
+    "records/npu-eco-physical-readiness-20261006/controls01.xml": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/controls01.xml",
+      "bytes": 6868,
+      "sha256": "03cc66227519058174d1cff7796174a285dc2e9bc1bbc498ea45f7413dd6472a"
+    },
+    "records/npu-eco-physical-readiness-20261006/nssoc-npu-eco-readiness-source-validation-20261006.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/nssoc-npu-eco-readiness-source-validation-20261006.json",
+      "bytes": 4746,
+      "sha256": "97441275b9a4d1d2bffd21ea37b3a927b25f2e531c8796fc88d17f64deab4885"
+    },
+    "records/npu-eco-physical-readiness-20261006/publish-launch01.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/publish-launch01.json",
+      "bytes": 857,
+      "sha256": "5b4acef09eb4fee5637af2c68dfece232eaad57ea296c413c83e435aa40eff0e"
+    },
+    "records/npu-eco-physical-readiness-20261006/publish01.log": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/publish01.log",
+      "bytes": 130,
+      "sha256": "1b956665411e6bbed086ae6f9a4533e868291da9e0cb9f68d9de06e82ab3f2fc"
+    },
+    "records/npu-eco-physical-readiness-20261006/readiness-draft01.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/readiness-draft01.json",
+      "bytes": 2749,
+      "sha256": "c7b0a93b890466954f71a8922ab9b3f07660bc3ece48b2a2d652967e9e73d411"
+    },
+    "records/npu-eco-physical-readiness-20261006/readiness02.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/readiness02.json",
+      "bytes": 3165,
+      "sha256": "4f3f5573daea92c32d7693544a521650b8de70842da1783622cab62d9727c93f"
+    },
+    "records/npu-eco-physical-readiness-20261006/ready-finite.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/ready-finite.json",
+      "bytes": 23647,
+      "sha256": "5ac8c1729fc93f4175451c98f894dd84027d26b777d81a2002d3cb6e63ded67b"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.json",
+      "bytes": 2722,
+      "sha256": "7d6fa45b8c535ad03fa096702300d3b999527c3fba9685f2cc64fe4e8c13155d"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0001-metadata-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0001-metadata-attempt1/owned-processes.json",
+      "bytes": 608,
+      "sha256": "3d60488bf0cc7ebbe3fd05a8f5d664fc66b5a1926140870209d7276b86603a9a"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0001-metadata-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0001-metadata-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "06a78f52432d627320e31d3d0fde63c0dc7eb79b0e1cefd3ea8574d306892074"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0001-metadata-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0001-metadata-attempt1/stdout.bin.gz",
+      "bytes": 72128,
+      "sha256": "316a104a4efbe2f575102a2361a42f48621878dca169a40443133c845eddc2a1"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0002-upload-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0002-upload-attempt1/owned-processes.json",
+      "bytes": 794,
+      "sha256": "1a25843439a9642051601375e0003fb8fd8ed0cfa896709fd4495e17b21dcd4a"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0002-upload-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0002-upload-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "72db5671f02b1342b3ff06fb254462d454b30d035e1ed796697378f5a10e88d2"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0002-upload-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0002-upload-attempt1/stdout.bin.gz",
+      "bytes": 31,
+      "sha256": "32e5dc3c89e3af579fd22b9ff3ffc8cfa6b1f522c18b662071684e4b50d7e0a6"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0003-metadata-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0003-metadata-attempt1/owned-processes.json",
+      "bytes": 608,
+      "sha256": "a7ced373162e277502c2397cd37b6d14470b7b017211e995f9e35b389bdcecd3"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0003-metadata-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0003-metadata-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "3223555600958d4a6a5fa2a8f2b3d6d78eca5ac87d3f5e515aa7ab5dc175ebf0"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0003-metadata-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0003-metadata-attempt1/stdout.bin.gz",
+      "bytes": 72257,
+      "sha256": "0edea34ea068b1ba8c09a0b21f1416c934710eff1f5ff7b90cc830fc5c48a15b"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0004-authenticated-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0004-authenticated-attempt1/owned-processes.json",
+      "bytes": 642,
+      "sha256": "c4e3be4ca7859ef4c5dbb293bbebe03bc1edc6837eadf5458aca017950132455"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0004-authenticated-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0004-authenticated-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "41c402e29035e0fdf67bc90952688595a2240eea7aa6d0938b22122a807a1075"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0004-authenticated-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0004-authenticated-attempt1/stdout.bin.gz",
+      "bytes": 31,
+      "sha256": "17fc3ca0f924531b2f30a4fc8ed5504ccf4d3f1baaecd190a9cdc21df159fc07"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/http-response.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/http-response.json",
+      "bytes": 1183,
+      "sha256": "d42620b4cfaa247f363a8348b7d675b502550b6c94cf3aa9330d3258a1482f1a"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/owned-processes.json",
+      "bytes": 1027,
+      "sha256": "85af2f9e2e9660778c6f1eeaae2ed8072aaba337dae323d31ac5b8983a192d05"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "41c402e29035e0fdf67bc90952688595a2240eea7aa6d0938b22122a807a1075"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/stdout.bin.gz",
+      "bytes": 31,
+      "sha256": "17fc3ca0f924531b2f30a4fc8ed5504ccf4d3f1baaecd190a9cdc21df159fc07"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0006-metadata-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0006-metadata-attempt1/owned-processes.json",
+      "bytes": 608,
+      "sha256": "9384535adafa68da0fbbe046dc903fba933142e967578edc494e05a17910e11d"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0006-metadata-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0006-metadata-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "064223d528d5dd8300391dcae6df880f42d260f083d2c441d250866162e60834"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0006-metadata-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0006-metadata-attempt1/stdout.bin.gz",
+      "bytes": 69322,
+      "sha256": "6d1743e53df3afa2d9f6baf153e68cf8e9a507b6832f43253ca1f2cf9f7ca580"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0007-upload-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0007-upload-attempt1/owned-processes.json",
+      "bytes": 794,
+      "sha256": "4dc26b8541354fcde236dfa98ca521b95f126d2a1bd5177d3abe7edb3b7f4e16"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0007-upload-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0007-upload-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "58f0b83b0be12a17cdc4f09901e47967199a776ef4bf991802892c75870e909a"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0007-upload-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0007-upload-attempt1/stdout.bin.gz",
+      "bytes": 31,
+      "sha256": "abb26749bce938fa1c8581d7a7f4731a580324ca3eb006304a57dffe56903f1e"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0008-metadata-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0008-metadata-attempt1/owned-processes.json",
+      "bytes": 608,
+      "sha256": "3a5eb8093f49894759ced9bd45f968ffa89b721d37bd660a642029a303216ac4"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0008-metadata-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0008-metadata-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "58f0b83b0be12a17cdc4f09901e47967199a776ef4bf991802892c75870e909a"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0008-metadata-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0008-metadata-attempt1/stdout.bin.gz",
+      "bytes": 69437,
+      "sha256": "6703afb676aca44ec8571a07218cfd65d4881f625104b3861253287e3075a012"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0009-authenticated-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0009-authenticated-attempt1/owned-processes.json",
+      "bytes": 642,
+      "sha256": "6dd9acbd8526180b45fcaa93885d0d5379f73a65bd21eb30c71975f9ca6d0662"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0009-authenticated-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0009-authenticated-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "cd807a8b91082e7dc58f706948b20e5782ac1307346756b9745edaade8779621"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0009-authenticated-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0009-authenticated-attempt1/stdout.bin.gz",
+      "bytes": 31,
+      "sha256": "60979a238e14705b3019f7192f0110a581e6b84bc6e0264fa311283cbb2c1730"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/http-response.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/http-response.json",
+      "bytes": 1182,
+      "sha256": "cb2814c6680dc17350bb01e908b98f33d8465c6e7e2f7675066cfaa232aab0e8"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/owned-processes.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/owned-processes.json",
+      "bytes": 1027,
+      "sha256": "a9679e8c0fd63c40a115bee3d068744f0b6afa4dc8645dc178b552f1c7437378"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/stderr.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/stderr.bin.gz",
+      "bytes": 31,
+      "sha256": "a9429ca24f7e12a47e6de85ff5da907d25c1376788d1a802df60a28c900080ae"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/stdout.bin.gz": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/stdout.bin.gz",
+      "bytes": 31,
+      "sha256": "4fd7a1f72d56f66ca0bfc5f5571e4c1ce1f39babe5805aff5bb4fda34a86b71a"
+    },
+    "records/npu-eco-physical-readiness-20261006/release01.transport/attempts.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/release01.transport/attempts.json",
+      "bytes": 29612,
+      "sha256": "5cc41c06ba3143586542fb696d7d7953e30e37d2c25065b6c12676cdeaaf6de2"
+    },
+    "records/npu-eco-physical-readiness-20261006/root-controls01.log": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/root-controls01.log",
+      "bytes": 99,
+      "sha256": "79bc0f903bbd1262fffbe756c25c4bb454b096f04b7d64a4c27fb4a1d488e447"
+    },
+    "records/npu-eco-physical-readiness-20261006/root-controls01.xml": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/root-controls01.xml",
+      "bytes": 6868,
+      "sha256": "57f05364b6e35fc154cff6ddf09a4b3a3ef041c8dc7d17c177b4b65b697c07bd"
+    },
+    "records/npu-eco-physical-readiness-20261006/ruff01.log": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/ruff01.log",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "records/npu-eco-physical-readiness-20261006/seal01.py": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/seal01.py",
+      "bytes": 3661,
+      "sha256": "213e17e67aa6fcb75135a6891d5169531e2189d68f58047133ca8deda420f1fb"
+    },
+    "records/npu-eco-physical-readiness-20261006/source-freeze01.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/source-freeze01.json",
+      "bytes": 8674,
+      "sha256": "f51805a74c6c512ed7c063f7e2f296bb45684da6745fefc1993be35d70f9d00c"
+    },
+    "records/npu-eco-physical-readiness-20261006/source-saved-peer-root01.json": {
+      "source": "hw/soc/out/npu-eco-physical-readiness-20261006/source-saved-peer-root01.json",
+      "bytes": 4910,
+      "sha256": "11bbdf0fba2156c138a7cdf469d3bfb3ad79fe393d584fa1c2e1de6be86011ff"
+    },
+    "records/npu-eco-physical-runner-20261006/actual-blocked-entry01.json": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/actual-blocked-entry01.json",
+      "bytes": 3983,
+      "sha256": "fbe2752adee6d14b5df6c122a29bceaba34b946b3752fa505ca0767b29fd2b9b"
+    },
+    "records/npu-eco-physical-runner-20261006/bundle-preparation01.json": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/bundle-preparation01.json",
+      "bytes": 682,
+      "sha256": "99e7bc51754eee5fc30eba64eff1599a2163dca3a6d64f6c562a496d62426c40"
+    },
+    "records/npu-eco-physical-runner-20261006/bundle-preparation01.log": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/bundle-preparation01.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "records/npu-eco-physical-runner-20261006/controls01.log": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/controls01.log",
+      "bytes": 99,
+      "sha256": "e30c544681c673550ef8d246ec898a104febcb0cb0e235b9389bba935a40bd62"
+    },
+    "records/npu-eco-physical-runner-20261006/controls01.xml": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/controls01.xml",
+      "bytes": 7523,
+      "sha256": "15260804198967afc1377902ddde3d383ed22da5ec3fa09c9d01685857fffcf7"
+    },
+    "records/npu-eco-physical-runner-20261006/controls02.log": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/controls02.log",
+      "bytes": 99,
+      "sha256": "d2b0b9594e3769cb9c80311a54fc16418f84ac00d3111e0158970071c1510786"
+    },
+    "records/npu-eco-physical-runner-20261006/controls02.xml": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/controls02.xml",
+      "bytes": 8099,
+      "sha256": "b4f2e934329d684ea1c4bf691b8005caca5a1c7cdc1311a5d3aab57a48070d54"
+    },
+    "records/npu-eco-physical-runner-20261006/controls03.log": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/controls03.log",
+      "bytes": 99,
+      "sha256": "d963a883a882a7a2dab7d573495da12fe45b999632d6e3880015313c53027db7"
+    },
+    "records/npu-eco-physical-runner-20261006/controls03.xml": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/controls03.xml",
+      "bytes": 8240,
+      "sha256": "e64b46bd9a95125ed412fbdd93ce8b9965d7716ae81b78f47b95b68996baa6dc"
+    },
+    "records/npu-eco-physical-runner-20261006/prepare_bundle01.py": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/prepare_bundle01.py",
+      "bytes": 991,
+      "sha256": "dbb4b113e7cde08f2b788ffd31ab2f215734a0f503dee664e9ac3e34a7e1e8a5"
+    },
+    "records/npu-eco-physical-runner-20261006/process-source01.py": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/process-source01.py",
+      "bytes": 4133,
+      "sha256": "39dedf775c53370fe7696fab46b198bf3d727c3dbf52dbd4148c3d70134ff526"
+    },
+    "records/npu-eco-physical-runner-20261006/ruff02.log": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/ruff02.log",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "records/npu-eco-physical-runner-20261006/ruff03.log": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/ruff03.log",
+      "bytes": 19,
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    "records/npu-eco-physical-runner-20261006/runner-source01.py": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/runner-source01.py",
+      "bytes": 16449,
+      "sha256": "4fc9835ac5038d297a7c3e084d84163001fae97e68a125263a9d0e40e868b007"
+    },
+    "records/npu-eco-physical-runner-20261006/source-freeze01.json": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/source-freeze01.json",
+      "bytes": 6062,
+      "sha256": "d665716f334fe276d85120ed8d1195af58eef7efca78e325dec1b7feb0fbd900"
+    },
+    "records/npu-eco-physical-runner-20261006/source-freeze03.json": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/source-freeze03.json",
+      "bytes": 6677,
+      "sha256": "81cd1ac90fd7806fcc61ab706d6dd51d2c138da1e19d4d04a7f6b440db622e5e"
+    },
+    "records/npu-eco-physical-runner-20261006/source-only-peer-pll01.json": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/source-only-peer-pll01.json",
+      "bytes": 2864,
+      "sha256": "00fbee6cb0adbe4ae32690a60e5f6e86765e52620ccc08f6efa4045e4492ed19"
+    },
+    "records/npu-eco-physical-runner-20261006/source-only-peer-pll03.json": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/source-only-peer-pll03.json",
+      "bytes": 4211,
+      "sha256": "c025dbbee28245ce8a3964033606d2272735da96677f319605c1ddbd7baf6acf"
+    },
+    "records/npu-eco-physical-runner-20261006/source-peer-pll01.log": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/source-peer-pll01.log",
+      "bytes": 143,
+      "sha256": "9c3fd8ef1e0f2725b7048c39feedce61cbbfded336a437d6b4f4c57730588a3b"
+    },
+    "records/npu-eco-physical-runner-20261006/source-peer-pll03.log": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/source-peer-pll03.log",
+      "bytes": 139,
+      "sha256": "da73ea1d89a86c5dd498f73d7b603c204e335562cfd3d3f785f2f1427038e635"
+    },
+    "records/npu-eco-physical-runner-20261006/source_peer_pll01.py": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/source_peer_pll01.py",
+      "bytes": 3921,
+      "sha256": "0d4629d6abe0b224804e632f670e4146e2e968448251bf25ce0a9173db88df51"
+    },
+    "records/npu-eco-physical-runner-20261006/source_peer_pll03.py": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/source_peer_pll03.py",
+      "bytes": 5570,
+      "sha256": "69c6d500cb0a3e43a8400445cc6ed0cc8b2fef159008ac4b23bb2564a1da528b"
+    },
+    "records/npu-eco-physical-runner-20261006/tests-source01.py": {
+      "source": "hw/soc/out/npu-eco-physical-runner-20261006/tests-source01.py",
+      "bytes": 7402,
+      "sha256": "a8b4ed14e489fcf0bd59b524ec446f9d57b30bb6be29742938d9b61d732ad0bf"
+    },
+    "records/pcie-integrity-v22-20261006/analyze_critical_path.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/analyze_critical_path.py",
+      "bytes": 6018,
+      "sha256": "4712ecd50f0f0d1df1ae33293d190e2763da3cebe1a220d903827c59a2d3f785"
+    },
+    "records/pcie-integrity-v22-20261006/balanced-import-graph-proof.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/balanced-import-graph-proof.json",
+      "bytes": 1352,
+      "sha256": "882aa3a1b9e473bfdf1ddb87be4e9b2116fc1cd1673f4df417a35b834dbe261c"
+    },
+    "records/pcie-integrity-v22-20261006/balanced_import.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/balanced_import.py",
+      "bytes": 4830,
+      "sha256": "8dca396ba74fa928a1b676c6e511cb39396428f77c162d3f23e79c9a70dbfaa0"
+    },
+    "records/pcie-integrity-v22-20261006/balanced_import02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/balanced_import02.py",
+      "bytes": 5134,
+      "sha256": "5f70dda21dbda28c6e92b1682d69f3c58c67cdb9a4acaff8d9b730f8a5580f3d"
+    },
+    "records/pcie-integrity-v22-20261006/balanced_preplacement.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/balanced_preplacement.py",
+      "bytes": 5986,
+      "sha256": "c91f17d28768bcf6347daac3e8616c36b9d94702fc51aa4051aca8dc4104322d"
+    },
+    "records/pcie-integrity-v22-20261006/balanced_preplacement02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/balanced_preplacement02.py",
+      "bytes": 6366,
+      "sha256": "5e3381eb38db81238e0562f77503f44becd3d6357e606c45f49ba70b37c23585"
+    },
+    "records/pcie-integrity-v22-20261006/candidate-decision.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/candidate-decision.json",
+      "bytes": 1545,
+      "sha256": "f95382be68330da331314440e514abf0255028a8da29a515ff36ad2a6576d8d7"
+    },
+    "records/pcie-integrity-v22-20261006/collection01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/collection01.log",
+      "bytes": 3331,
+      "sha256": "ba945a48fc7e3f25cdf5e88f10c67bb6a5e739569e51692d65115672a5fa5d4d"
+    },
+    "records/pcie-integrity-v22-20261006/continuation-owner02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continuation-owner02.json",
+      "bytes": 2512,
+      "sha256": "33780198aabfced57b0b6121641a28a9d5287ca6c46708fd1ce53c5038a22593"
+    },
+    "records/pcie-integrity-v22-20261006/continuation-owner04.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continuation-owner04.json",
+      "bytes": 2746,
+      "sha256": "3c83cb61857df32d809dba308661029386ad156afd3db2285931cc4b924ac3ca"
+    },
+    "records/pcie-integrity-v22-20261006/continuation-policy01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continuation-policy01.json",
+      "bytes": 6271,
+      "sha256": "0481d2e69e3ff0cdd1b0fddcb4ba1771512cdde3e87fb1ec425d7e50d68fb1c6"
+    },
+    "records/pcie-integrity-v22-20261006/continuation-policy02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continuation-policy02.json",
+      "bytes": 8819,
+      "sha256": "4c83365a59baadf48cbd511b4e0165cde313728b197b77e9b5d53f9ce5c71026"
+    },
+    "records/pcie-integrity-v22-20261006/continuation-policy03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continuation-policy03.json",
+      "bytes": 9755,
+      "sha256": "863200cfdb8e822950c1532bda3024442b3bf2784aa1e860a6fb51acf59adb56"
+    },
+    "records/pcie-integrity-v22-20261006/continuation-policy04.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continuation-policy04.json",
+      "bytes": 9758,
+      "sha256": "12b825ea1e1a87a8198736c2ada9813eaf1626801f9f3139dd06217c47fbb7ea"
+    },
+    "records/pcie-integrity-v22-20261006/continuation-status02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continuation-status02.json",
+      "bytes": 3322,
+      "sha256": "5c526a1d6981eb1ff9773a51e79d56b9a38c060da4932837f69052ee8097a655"
+    },
+    "records/pcie-integrity-v22-20261006/continuation-status04.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continuation-status04.json",
+      "bytes": 3992,
+      "sha256": "69b51ed042a5b7a3bc5b5ac39f8d32c4ed5324b8d5f8240660de9dc167b61496"
+    },
+    "records/pcie-integrity-v22-20261006/continue_native01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continue_native01.py",
+      "bytes": 5543,
+      "sha256": "27866a42c751647789142e6956cf7ebaf3e1190effeb4724078c97be23625333"
+    },
+    "records/pcie-integrity-v22-20261006/continue_native02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continue_native02.py",
+      "bytes": 5551,
+      "sha256": "55c111b6bacf2c5614756202848a09c1f46c6894fa38efb05e37293026d083b5"
+    },
+    "records/pcie-integrity-v22-20261006/continue_native03.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continue_native03.py",
+      "bytes": 4889,
+      "sha256": "c8d40e8db845315876c59896e32b39fb6496ed6bd81935d6ada37258539900a1"
+    },
+    "records/pcie-integrity-v22-20261006/continue_native04.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/continue_native04.py",
+      "bytes": 4911,
+      "sha256": "c67371729f33f0374812e5af506e3c1d062e55107aee28d3548944aa0cb2b275"
+    },
+    "records/pcie-integrity-v22-20261006/controls-detached-once01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-detached-once01.json",
+      "bytes": 215,
+      "sha256": "da317730dca4afe147ed2f245058d965a7494ffa156283b42b11000d11614280"
+    },
+    "records/pcie-integrity-v22-20261006/controls-detached-once03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-detached-once03.json",
+      "bytes": 215,
+      "sha256": "0245828d872f8ea9eca8dce2d23a18debbb4e4c9c1cad67d68b61208162ac20d"
+    },
+    "records/pcie-integrity-v22-20261006/controls-detached-receipt01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-detached-receipt01.json",
+      "bytes": 810,
+      "sha256": "631de97c5fe7caa8fd9db6b2d2e033d98df341b61f0d3eed75628db0721ceb37"
+    },
+    "records/pcie-integrity-v22-20261006/controls-detached-receipt03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-detached-receipt03.json",
+      "bytes": 810,
+      "sha256": "beed505f2b3592c6cfef0528fa9b310ba63ad74cfbb06b6b67cf13fa128b5660"
+    },
+    "records/pcie-integrity-v22-20261006/controls-launch01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-launch01.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "records/pcie-integrity-v22-20261006/controls-launch03.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-launch03.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "records/pcie-integrity-v22-20261006/controls-owner01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-owner01.json",
+      "bytes": 1046,
+      "sha256": "3e5367ab5fda8aa303fb819aea949a6665f18cddc7a8ded249200227de1931c0"
+    },
+    "records/pcie-integrity-v22-20261006/controls-owner03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-owner03.json",
+      "bytes": 1036,
+      "sha256": "b079d94e8bb72fa8930a76847833ecf3cf79a1c2d3c1a4e765154e21b7e43f2f"
+    },
+    "records/pcie-integrity-v22-20261006/controls-status01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-status01.json",
+      "bytes": 1392,
+      "sha256": "ca63a25d19a8ebaeffa32340004af5482e5541f64f61af1afd5f49f4cd093c67"
+    },
+    "records/pcie-integrity-v22-20261006/controls-status03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls-status03.json",
+      "bytes": 1405,
+      "sha256": "4e691f4d45195ba4c2434a31ba12926e91d0e7bc356e1432bb0843891c1733ab"
+    },
+    "records/pcie-integrity-v22-20261006/controls01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls01.log",
+      "bytes": 6869,
+      "sha256": "594819f04f73015368e8bbc59f53e79e1b095f9970bf5f45764457679a120d2c"
+    },
+    "records/pcie-integrity-v22-20261006/controls01.xml": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls01.xml",
+      "bytes": 12041,
+      "sha256": "5505d8dfad525ad9d30843bb09fec6f095891972fbeff0dc0c2e40f310a3a223"
+    },
+    "records/pcie-integrity-v22-20261006/controls03.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls03.log",
+      "bytes": 124,
+      "sha256": "f52f03c02efe86632310c2b5d342c69521a9bea5d5918e24b8a910f5c9950efd"
+    },
+    "records/pcie-integrity-v22-20261006/controls03.xml": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/controls03.xml",
+      "bytes": 1552,
+      "sha256": "9820d3bebb83afd062fcfa69ef4eb80b5271287c8943d88268250e91330b5868"
+    },
+    "records/pcie-integrity-v22-20261006/critical-path-attribution.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/critical-path-attribution.json",
+      "bytes": 48743,
+      "sha256": "3bcd838197f4ac9f14f773ee5d6c3ba8360b3fe93e6b7feb70db0d00405fbf4e"
+    },
+    "records/pcie-integrity-v22-20261006/critical_path.recovery04.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/critical_path.recovery04.controller.log",
+      "bytes": 1136,
+      "sha256": "77fc19b58466b6bc131db7527fc3387857695c7a214d06dc5e6c0f36c966feff"
+    },
+    "records/pcie-integrity-v22-20261006/detach_controls01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detach_controls01.py",
+      "bytes": 1838,
+      "sha256": "ecccbba4184324b91cb2302c86ad96726ce3c1c7e92143e5557f2d77da9d5697"
+    },
+    "records/pcie-integrity-v22-20261006/detach_controls02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detach_controls02.py",
+      "bytes": 1838,
+      "sha256": "bfa213634e82e94fd715efcc22dff5b15f1c2d7776fe14c857f8482b8b7d6d15"
+    },
+    "records/pcie-integrity-v22-20261006/detach_controls03.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detach_controls03.py",
+      "bytes": 1838,
+      "sha256": "11d5fd9c93d9a850f60d1beacb681b152da50901d99a41088fb387e0cf7ace39"
+    },
+    "records/pcie-integrity-v22-20261006/detach_native01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detach_native01.py",
+      "bytes": 2099,
+      "sha256": "211ebb280cbacdecdd46fde30014e90a52f794c6eafa00a3b80a658716f87cee"
+    },
+    "records/pcie-integrity-v22-20261006/detach_native02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detach_native02.py",
+      "bytes": 2099,
+      "sha256": "69cf7eb58d552ae4bd09451a69eff31ab4e1ee96f02ac4e43b117dc941820b25"
+    },
+    "records/pcie-integrity-v22-20261006/detach_native03.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detach_native03.py",
+      "bytes": 2091,
+      "sha256": "a9821e3b421870a159ed832904076a575c2027cc462d42f436ba72022dd3492d"
+    },
+    "records/pcie-integrity-v22-20261006/detach_native04.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detach_native04.py",
+      "bytes": 2178,
+      "sha256": "fae05ed5fd5b164684848c69188fc43d388ae8eec9b3e8986ac2c8feecfafd0d"
+    },
+    "records/pcie-integrity-v22-20261006/detached-native02-once.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detached-native02-once.json",
+      "bytes": 259,
+      "sha256": "041f4ad45b40c87a1b87b51d0f981243b9ee7a2a5d31ecab0078bf14f8ab8f1a"
+    },
+    "records/pcie-integrity-v22-20261006/detached-native02-receipt.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detached-native02-receipt.json",
+      "bytes": 843,
+      "sha256": "afe9cd78a0a20f9dac433bef31e8d4fb4283000496200407485c9dff4c116c22"
+    },
+    "records/pcie-integrity-v22-20261006/detached-native02-supervisor.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detached-native02-supervisor.log",
+      "bytes": 558,
+      "sha256": "a921ee5bac00b61cd023ef8062a2c8ad43bb90def964410111acc0bada84d7fe"
+    },
+    "records/pcie-integrity-v22-20261006/detached-native04-once.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detached-native04-once.json",
+      "bytes": 259,
+      "sha256": "be87806ba5b1a0292effdc3ae6623aaeffefa66adb832729a16d015c87a9f47b"
+    },
+    "records/pcie-integrity-v22-20261006/detached-native04-receipt.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detached-native04-receipt.json",
+      "bytes": 843,
+      "sha256": "68f7c1f4598e7a0dd9b6c35272cbd071974bf4927d0b63e5c85a63cd7022edb7"
+    },
+    "records/pcie-integrity-v22-20261006/detached-native04-supervisor.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/detached-native04-supervisor.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "records/pcie-integrity-v22-20261006/failed-controls01-validation.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/failed-controls01-validation.json",
+      "bytes": 61255,
+      "sha256": "6f085499e0792ac51bd33476c374398814c48509c21123b287d0dd0cddd0d3c4"
+    },
+    "records/pcie-integrity-v22-20261006/functional-release01-launch.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/functional-release01-launch.json",
+      "bytes": 1131,
+      "sha256": "5ef647373b6dfd3b6b22b589545989a38803c9236f591e90950f2c5e0995b3af"
+    },
+    "records/pcie-integrity-v22-20261006/functional-release01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/functional-release01.json",
+      "bytes": 5087,
+      "sha256": "5040f0fe44d30133e220307a3e69a1659b15b9e52b5b43c45e7f9e1de31ec460"
+    },
+    "records/pcie-integrity-v22-20261006/functional-release01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/functional-release01.log",
+      "bytes": 313,
+      "sha256": "7e4350db0ddd4e6544042110ee0eb6b43a175c565ffff667b2ed4aac54359f78"
+    },
+    "records/pcie-integrity-v22-20261006/import.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/import.controller.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "records/pcie-integrity-v22-20261006/import_graph_proof.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/import_graph_proof.controller.log",
+      "bytes": 221,
+      "sha256": "52a5b3851b7866ecca4bc04aaacab232ddebadd103fd107350e069dca6d38408"
+    },
+    "records/pcie-integrity-v22-20261006/import_graph_proof.recovery04.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/import_graph_proof.recovery04.controller.log",
+      "bytes": 61,
+      "sha256": "5778068f3981485b60b57b57dd884590babfd11b017237b51b4a46cd1b560b69"
+    },
+    "records/pcie-integrity-v22-20261006/launch-source-freeze01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/launch-source-freeze01.json",
+      "bytes": 1255,
+      "sha256": "fbd2dea577d2e8cdc24cabeaefa791f30a81c3d073f6876599df4200a615e5ba"
+    },
+    "records/pcie-integrity-v22-20261006/launch-source-freeze02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/launch-source-freeze02.json",
+      "bytes": 1391,
+      "sha256": "45ffbd3fc28d851d5cc5b4cf81a7aa82b8d9dfc288910b7b9ab2b9459db0e499"
+    },
+    "records/pcie-integrity-v22-20261006/launch-source-freeze03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/launch-source-freeze03.json",
+      "bytes": 910,
+      "sha256": "e9704c4e87d7f2c58deb8f2e53e8a11590be7f2a0ecd6c2ddd7b513f297432ee"
+    },
+    "records/pcie-integrity-v22-20261006/launch_controls01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/launch_controls01.py",
+      "bytes": 3378,
+      "sha256": "d23e60a7dbc23aa13f1ceecdb680c388df838f2e341f4b630d602a4caa648803"
+    },
+    "records/pcie-integrity-v22-20261006/launch_controls02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/launch_controls02.py",
+      "bytes": 3378,
+      "sha256": "c743ff7643d66487bb96ab60d1b4fa01cf9cbb28756009c454db6b30685eae88"
+    },
+    "records/pcie-integrity-v22-20261006/launch_controls03.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/launch_controls03.py",
+      "bytes": 3365,
+      "sha256": "aa71f7b99aef0ec99db392795d3a32b254b34631213ce9f3583db39721440ab4"
+    },
+    "records/pcie-integrity-v22-20261006/lifecycle-controls02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-controls02.json",
+      "bytes": 2796,
+      "sha256": "8a88212d6818709bfe79045b653ab1c1d98c75bcfabd96c34f8be285614bbc4b"
+    },
+    "records/pcie-integrity-v22-20261006/lifecycle-controls02.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-controls02.log",
+      "bytes": 44,
+      "sha256": "febfe0f68ac1b6cda676c9673c2285ec8aad46f4c161fda1a5e7fe62676f9b55"
+    },
+    "records/pcie-integrity-v22-20261006/lifecycle-signal-birth02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-signal-birth02.json",
+      "bytes": 97,
+      "sha256": "6d20357506a1e4cd7291b7b1b961c8619cee036b9b500a9b73bd3b20808fe600"
+    },
+    "records/pcie-integrity-v22-20261006/lifecycle-signal-receipt02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-signal-receipt02.json",
+      "bytes": 165,
+      "sha256": "a18d215772e1a3ea29e9dabff4a41905b64327ae01b00948c9f66f868df877a8"
+    },
+    "records/pcie-integrity-v22-20261006/lifecycle-signal-worker02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/lifecycle-signal-worker02.py",
+      "bytes": 605,
+      "sha256": "3e014e117a1066dbd2a15fdbff72f6c9999c82e28d4a13a17fca041b1c1fa0f7"
+    },
+    "records/pcie-integrity-v22-20261006/lifecycle_controls02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/lifecycle_controls02.py",
+      "bytes": 4154,
+      "sha256": "877f1ec18f2cf8c5ac4572d0becd2a9b9a10dd4cf1c1cfab2c402a87a137928b"
+    },
+    "records/pcie-integrity-v22-20261006/map.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/map.controller.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "records/pcie-integrity-v22-20261006/measure_registered_boundary.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/measure_registered_boundary.py",
+      "bytes": 6751,
+      "sha256": "f5e7f22ff0461864e2bedb47a81df134eb85556d5602ca015481d9d0dee5c8c0"
+    },
+    "records/pcie-integrity-v22-20261006/native-members.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-members.json",
+      "bytes": 65171,
+      "sha256": "80410b500d947bd90f76dcbf2ec34d70b2453ae1b88341bfa98559a593e69851"
+    },
+    "records/pcie-integrity-v22-20261006/native-peer02-stage-path-correction.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-peer02-stage-path-correction.json",
+      "bytes": 1098,
+      "sha256": "a4563a83a2f909513e69732ff08d8dff90a5675b53ed77f5051a980584223d0b"
+    },
+    "records/pcie-integrity-v22-20261006/native-recovery-basis03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-recovery-basis03.json",
+      "bytes": 9466,
+      "sha256": "b6eaa93bd4806281b20592204db3119c14e5b90ceb777a5a89c802029c83d1b3"
+    },
+    "records/pcie-integrity-v22-20261006/native-registered-boundary.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-registered-boundary.json",
+      "bytes": 92294,
+      "sha256": "3708cc3b310a8c9ed2bbc0015c82d59c2048396254566b5ca4b36955fc286c96"
+    },
+    "records/pcie-integrity-v22-20261006/native-release01-detached.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-release01-detached.json",
+      "bytes": 1785,
+      "sha256": "67e21f0dc8fe78ba06606d43cfcbe80fd43fc5a3a0f3f16526f83eab329df6f9"
+    },
+    "records/pcie-integrity-v22-20261006/native-release01.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-release01.controller.log",
+      "bytes": 181,
+      "sha256": "73b0406b69a8d00694e84736f7db49648bf99b61ed7e3611bb57c43487f2641a"
+    },
+    "records/pcie-integrity-v22-20261006/native-release01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-release01.json",
+      "bytes": 3459,
+      "sha256": "95792743c1058a84c39e4d48a894dfcea96b742826acbaa0ddbefb2746746b4a"
+    },
+    "records/pcie-integrity-v22-20261006/native-saved-peer-source-bridge-attempt01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-source-bridge-attempt01.json",
+      "bytes": 18423,
+      "sha256": "3a616455bfebef98bcd79f12b0ea6b70e847689378d420c92209449051bfccd1"
+    },
+    "records/pcie-integrity-v22-20261006/native-saved-peer-source-bridge.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-source-bridge.json",
+      "bytes": 18904,
+      "sha256": "28caf1ef8e7f05d80cb0a0d46a2e494394e78f621a8547aa9dbfec7bcf98f81b"
+    },
+    "records/pcie-integrity-v22-20261006/native-saved-peer-vco-attempt01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-vco-attempt01.log",
+      "bytes": 322,
+      "sha256": "d72fb13711e83dad0eda7d1538978ee4c9ded9d4ef3e7a0704983b79faed50fa"
+    },
+    "records/pcie-integrity-v22-20261006/native-saved-peer-vco.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-vco.json",
+      "bytes": 6119,
+      "sha256": "ac52cf47410b7110fa5e7793a3a8bcc3f743b3de4a220676e07d84a768c12195"
+    },
+    "records/pcie-integrity-v22-20261006/native-saved-peer-vco.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-saved-peer-vco.log",
+      "bytes": 6119,
+      "sha256": "ac52cf47410b7110fa5e7793a3a8bcc3f743b3de4a220676e07d84a768c12195"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-bridges01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-bridges01.json",
+      "bytes": 10742,
+      "sha256": "af055c2ac4f29df5949e6cf8626534485041536ee6a858a257188af4b38406ec"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-only-peer01-findings-vco.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-only-peer01-findings-vco.json",
+      "bytes": 1815,
+      "sha256": "02dcac3c9e4e16371dcbff5ef8d308dc8f9829308218faabd8899258aff6189c"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-only-peer02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-only-peer02.json",
+      "bytes": 2158,
+      "sha256": "916bb404ead086290058f1e0e65716587c8afd21aab4c931a2293c5ca95e5945"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-only-peer03-findings-vco.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-only-peer03-findings-vco.json",
+      "bytes": 987,
+      "sha256": "135fbb468447549cc69ee92ba9ccc9ff288b692066f83410f0fdee479c359adf"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-only-peer04.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-only-peer04.json",
+      "bytes": 3106,
+      "sha256": "ff7f45bcc971c06c527fcb0e6d84fed7e10557955754cffd258594656971d761"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-recovery-bridge03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-recovery-bridge03.json",
+      "bytes": 1855,
+      "sha256": "ec1ddf8ba3902d83dce4f64752e151b91c18e28d29d10bc960e6af9d6024e997"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-review-vco01-attempt01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco01-attempt01.log",
+      "bytes": 241,
+      "sha256": "1f1aaa8958aabaa012c6e195397e99e97e902c37a43bdaedc3b5bf6e3472dc54"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-review-vco01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco01.log",
+      "bytes": 94,
+      "sha256": "ac8f4d6562a608433a5fd7df18ceef1f847bb80061ecc7700c5ef0f99138243d"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-review-vco02-attempt01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco02-attempt01.log",
+      "bytes": 223,
+      "sha256": "8ce084bcc5ed51a0d57aaa36f981ddb4ef0fa533d9f9dd978b3dd02951480c8e"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-review-vco02.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco02.log",
+      "bytes": 94,
+      "sha256": "3773149d8411ffcfaeb2d81304a3dbbbd6880dfc46b3c3a6fb3d117449258f21"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-review-vco04.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-review-vco04.log",
+      "bytes": 94,
+      "sha256": "2102e79dde4fad9de5c2f5238a343636a5de39b558cbe5de8b839133b6a1bbea"
+    },
+    "records/pcie-integrity-v22-20261006/native-source-supplement02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native-source-supplement02.json",
+      "bytes": 7269,
+      "sha256": "cbb443a9c9bab7d9be9c74838ba213241267148783f7f2b258aeb2bb3c77dab9"
+    },
+    "records/pcie-integrity-v22-20261006/native_lifecycle02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/native_lifecycle02.py",
+      "bytes": 1808,
+      "sha256": "286843c88d3b48c3e0c1d81bf12b502f9987c179bbc613b39a5f01aee49c2b40"
+    },
+    "records/pcie-integrity-v22-20261006/observer-stimulus-correction03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/observer-stimulus-correction03.json",
+      "bytes": 983,
+      "sha256": "34d4387e0f635473f329c94dd191ae5d7ca93f591d14d05cf927f072f68f0c26"
+    },
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-controls-validation-20261006.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-controls-validation-20261006.json",
+      "bytes": 22822,
+      "sha256": "7f2cc718100dec87730aef6cb20447e02e9c17f3580fe6a82c331bcdbcccb756"
+    },
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-failed-functional01-validation-20261006.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-failed-functional01-validation-20261006.json",
+      "bytes": 61255,
+      "sha256": "6f085499e0792ac51bd33476c374398814c48509c21123b287d0dd0cddd0d3c4"
+    },
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-functional-package-20261006.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-functional-package-20261006.json",
+      "bytes": 3554,
+      "sha256": "6cb36836067ae5dd339e5c92be0faf4175e5a4cb45485dcd961b9866a102b204"
+    },
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-native-package-20261006.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-native-package-20261006.json",
+      "bytes": 9728,
+      "sha256": "61776e32dd29f583b1e5777aaa56de2a0f4d297ab413330bead95a3b17a169bc"
+    },
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-native-validation-20261006.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-native-validation-20261006.json",
+      "bytes": 10114,
+      "sha256": "4d0562820d734bf8762f2a6894cb94400fa0ad1b4f2c9af67426e9d512c0afe5"
+    },
+    "records/pcie-integrity-v22-20261006/pre-execution-count-correction02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/pre-execution-count-correction02.json",
+      "bytes": 747,
+      "sha256": "52e40f1b6dadd55d021bccf88be93d7bb6e1001acba446e8b55db177361ca2df"
+    },
+    "records/pcie-integrity-v22-20261006/prepare_native01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/prepare_native01.py",
+      "bytes": 6421,
+      "sha256": "11f3de454361ac260792b6cefa20cc7e499e8df73e2be3ece38e91263532c3af"
+    },
+    "records/pcie-integrity-v22-20261006/prepare_native02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/prepare_native02.py",
+      "bytes": 5538,
+      "sha256": "1b7ad4602d18d5803af931623ea55a2591fa5685debe358505712eb6f583cae2"
+    },
+    "records/pcie-integrity-v22-20261006/prepare_recovery03.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/prepare_recovery03.py",
+      "bytes": 6063,
+      "sha256": "5a36df7e6411dd3a946880eeac6cae7b1015496a0fb075424753002c7eccab0f"
+    },
+    "records/pcie-integrity-v22-20261006/preplacement.recovery04.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/preplacement.recovery04.controller.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "records/pcie-integrity-v22-20261006/prove_balanced_import.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/prove_balanced_import.py",
+      "bytes": 3541,
+      "sha256": "5b1f4bfe5ebfa4a2766b1753418ceb35dc3eebdce70f3ff8d58d058d7cf8b2b7"
+    },
+    "records/pcie-integrity-v22-20261006/quarantine-relation01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/quarantine-relation01.json",
+      "bytes": 3065,
+      "sha256": "2d48758a62252634910e24adf278906dbca6c327fa2a847929b127b19885e948"
+    },
+    "records/pcie-integrity-v22-20261006/ready-finite.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/ready-finite.json",
+      "bytes": 36925,
+      "sha256": "d3dceff6ac92403635f1d80d783692a633ad2bd0897823dc735049938cf984c8"
+    },
+    "records/pcie-integrity-v22-20261006/registered_boundary.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/registered_boundary.controller.log",
+      "bytes": 62,
+      "sha256": "e9b190467f94718ca71917ec294b09ff2d4a7f0378935611e6f3c5252719a8a2"
+    },
+    "records/pcie-integrity-v22-20261006/review_native_recovery_vco04.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_native_recovery_vco04.py",
+      "bytes": 5083,
+      "sha256": "347b35dd4c5a3d4e62ae6c7df40f02def243ea289e664daaca7f23f6d8930685"
+    },
+    "records/pcie-integrity-v22-20261006/review_native_source_vco01-attempt01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_native_source_vco01-attempt01.py",
+      "bytes": 2615,
+      "sha256": "5a87fdced4ba36f2eb6211fa124d6eb1ff764beb98b93e21451c08e00d8cf693"
+    },
+    "records/pcie-integrity-v22-20261006/review_native_source_vco01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_native_source_vco01.py",
+      "bytes": 2733,
+      "sha256": "67847f1b54fcc646d9c6b2d25b5ba944e12ea7401e7affe8f9befd54d38e562a"
+    },
+    "records/pcie-integrity-v22-20261006/review_native_source_vco02-attempt01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_native_source_vco02-attempt01.py",
+      "bytes": 5362,
+      "sha256": "f23137abca489060ec9b85e622b07c5db35662d906f8e37c54ab4df5f415af8e"
+    },
+    "records/pcie-integrity-v22-20261006/review_native_source_vco02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_native_source_vco02.py",
+      "bytes": 5620,
+      "sha256": "3e3d2e48f4887989d499051715bfc881624f05ad7c26a3e73bf8754eea9499fd"
+    },
+    "records/pcie-integrity-v22-20261006/review_saved_controls_vco.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_saved_controls_vco.py",
+      "bytes": 5450,
+      "sha256": "b1b97e8a02db47311e4f2691e3b99a2299cbb2a08b18bbeb8ca199e24499f98f"
+    },
+    "records/pcie-integrity-v22-20261006/review_saved_native_vco-attempt01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_saved_native_vco-attempt01.py",
+      "bytes": 8499,
+      "sha256": "c93d72d7c86c61259dd56ae1d84a0397a1cb4cb176cc45495efa88a33c105a6b"
+    },
+    "records/pcie-integrity-v22-20261006/review_saved_native_vco.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_saved_native_vco.py",
+      "bytes": 8558,
+      "sha256": "ab2e2c300b288ad696eeaaa4d2e8bc896d622013a222b7b298db991078e2e236"
+    },
+    "records/pcie-integrity-v22-20261006/review_source_vco02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_source_vco02.py",
+      "bytes": 8276,
+      "sha256": "eb00ae494f4f650c7807a72ca459ecad2b895cbf1168d93a10ed72bf05acd789"
+    },
+    "records/pcie-integrity-v22-20261006/review_source_vco03-attempt01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_source_vco03-attempt01.py",
+      "bytes": 5733,
+      "sha256": "5c12a761846af7457eb7a4f1edb2b3ea912d5d0b86397d0dcafb6d2fee4efec4"
+    },
+    "records/pcie-integrity-v22-20261006/review_source_vco03.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_source_vco03.py",
+      "bytes": 5733,
+      "sha256": "85e133c587acf4c059ae3da1b49e3b6709a5dc295cd5c1623df74c37455ee075"
+    },
+    "records/pcie-integrity-v22-20261006/review_timing.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/review_timing.py",
+      "bytes": 3288,
+      "sha256": "ace9739e2bdc3369684744be0eeb580b008b88f0ea2033766899f0c301d06383"
+    },
+    "records/pcie-integrity-v22-20261006/run_balanced_map.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/run_balanced_map.py",
+      "bytes": 5648,
+      "sha256": "a781cc6f399e5f245aabb91a01ddd4f2c88cd805a97dc327aef58fadc0517772"
+    },
+    "records/pcie-integrity-v22-20261006/run_balanced_map02.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/run_balanced_map02.py",
+      "bytes": 5952,
+      "sha256": "68582e10f3e05f788b5ec67841652ff9a53211cd661bd6d220d3aad0b109b924"
+    },
+    "records/pcie-integrity-v22-20261006/saved-controls-peer-vco.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/saved-controls-peer-vco.json",
+      "bytes": 1810,
+      "sha256": "42772978a1ebadadb74ee385903fc8b08a72a2821218f7e52b4e48e562c55231"
+    },
+    "records/pcie-integrity-v22-20261006/saved-controls-peer-vco.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/saved-controls-peer-vco.log",
+      "bytes": 151,
+      "sha256": "d9b05159b5160aeaacbf7b6ebfbd2138e150a6f44b956598158f8d353fe68e75"
+    },
+    "records/pcie-integrity-v22-20261006/saved_map_boundary_import.recovery04.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/saved_map_boundary_import.recovery04.controller.log",
+      "bytes": 47,
+      "sha256": "30de1db3b84f96139d22bc2530a3dbb3ec670c30544a771764ea6d7c08c7af0d"
+    },
+    "records/pcie-integrity-v22-20261006/seal-controls03.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/seal-controls03.log",
+      "bytes": 146,
+      "sha256": "70d801f005dc7276ca8208b4f445376e764ca985d880340c93d52546b1dd293f"
+    },
+    "records/pcie-integrity-v22-20261006/seal-failed-controls01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/seal-failed-controls01.log",
+      "bytes": 294,
+      "sha256": "011d46627b0a1b995289106a2dec831b81961580e5f701df954c12dea4145c77"
+    },
+    "records/pcie-integrity-v22-20261006/seal-native04.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/seal-native04.log",
+      "bytes": 1791,
+      "sha256": "51506547f5509b5c492f2b171bf2986d870de0202bfec7e6e288b796d931b697"
+    },
+    "records/pcie-integrity-v22-20261006/seal_controls03.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/seal_controls03.py",
+      "bytes": 7750,
+      "sha256": "d7aadb5d3e864b4b60f4d386a123af10b1b18159a459237103c999ae6850cc50"
+    },
+    "records/pcie-integrity-v22-20261006/seal_failed_controls01.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/seal_failed_controls01.py",
+      "bytes": 2781,
+      "sha256": "2fdad92b214e92dbe302a8b27a6de2bf024fc854165007ed12812baf3f69e972"
+    },
+    "records/pcie-integrity-v22-20261006/seal_native04.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/seal_native04.py",
+      "bytes": 6757,
+      "sha256": "c1461d2ef22c2f543e743c427b1333c3637fe72b1293d783bb21c322df300a58"
+    },
+    "records/pcie-integrity-v22-20261006/signed-wire-census.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/signed-wire-census.json",
+      "bytes": 58882,
+      "sha256": "1b6bcfd410a32f4bf6228a4ad5908b61423897037ab3e3269d5718670bfd6e8a"
+    },
+    "records/pcie-integrity-v22-20261006/slow-critical-path.txt": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/slow-critical-path.txt",
+      "bytes": 5870,
+      "sha256": "91b631a7ef2a49f23039d4069b3e92d3a12188bb9baf1aa5315b8499e19065e1"
+    },
+    "records/pcie-integrity-v22-20261006/source-freeze01.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/source-freeze01.json",
+      "bytes": 2242,
+      "sha256": "1d506b43ba008cc8f534edefabd4797807762c40c85e7b2a77bad370a30272c0"
+    },
+    "records/pcie-integrity-v22-20261006/source-freeze02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/source-freeze02.json",
+      "bytes": 2533,
+      "sha256": "fe7b6055e64f1498052da96b5e1d8da2bbe67667dbedf411cf94240b40ebc02d"
+    },
+    "records/pcie-integrity-v22-20261006/source-freeze03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/source-freeze03.json",
+      "bytes": 2636,
+      "sha256": "46d599c89a5a19fee6e87dd9fbfa006a7d29f81922530256ab348685ea50e21c"
+    },
+    "records/pcie-integrity-v22-20261006/source-only-peer-vco01-findings.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/source-only-peer-vco01-findings.json",
+      "bytes": 745,
+      "sha256": "5b9d62ba3daffdd712f80f5d9e50585c1ae179172ae3af9528d8c02189d9665a"
+    },
+    "records/pcie-integrity-v22-20261006/source-only-peer-vco02.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/source-only-peer-vco02.json",
+      "bytes": 7339,
+      "sha256": "8fb5a82071f1015c334d8b3a51a4785e369e6ecae62d154fb8a2ef22fb249604"
+    },
+    "records/pcie-integrity-v22-20261006/source-only-peer-vco03.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/source-only-peer-vco03.json",
+      "bytes": 3964,
+      "sha256": "ad49c858a89c28c828480b251af60d7807cf6606e367f6b10edfafbfc900f3bd"
+    },
+    "records/pcie-integrity-v22-20261006/source-review-vco02.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/source-review-vco02.log",
+      "bytes": 133,
+      "sha256": "d86ca37e747536ce116c3e1d7fa97854f1714ae4422fb54d289bbe422edde01a"
+    },
+    "records/pcie-integrity-v22-20261006/source-review-vco03-attempt01.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/source-review-vco03-attempt01.log",
+      "bytes": 1488,
+      "sha256": "42170e174958e5dda61ca0610c5cda25eb7ac9c41c56dad70c445be511156b20"
+    },
+    "records/pcie-integrity-v22-20261006/source-review-vco03.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/source-review-vco03.log",
+      "bytes": 133,
+      "sha256": "e75aae914691a47fb6c69932e50efaaf3c7fe118efb3cf5cc47eef16adb544a4"
+    },
+    "records/pcie-integrity-v22-20261006/targeted_controls03.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/targeted_controls03.py",
+      "bytes": 619,
+      "sha256": "5d871c34df389a7932b4ff476c771b805289b4c3f8cd0c3d8b89a79241f1f1f1"
+    },
+    "records/pcie-integrity-v22-20261006/timing-comparison.json": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/timing-comparison.json",
+      "bytes": 3890,
+      "sha256": "771be3ad0427b5bc4db7f12ce726d6d4ea0cd52cc2ca52e0c98249fa4e4733bc"
+    },
+    "records/pcie-integrity-v22-20261006/timing_review.recovery04.controller.log": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/timing_review.recovery04.controller.log",
+      "bytes": 1781,
+      "sha256": "24623df3778280641cdb41b339a88364b72d92d5893970bacf5c354dbb288d8a"
+    },
+    "records/pcie-integrity-v22-20261006/verify_saved_native03.py": {
+      "source": "hw/soc/out/pcie-integrity-v22-20261006/verify_saved_native03.py",
+      "bytes": 1213,
+      "sha256": "22e643f39e40f51e0d32f7ef3fee76b5abf5dcef6bc6901ce52beb02bdd39dc9"
+    },
+    "records/pcie-phase29-delivery-20261006/build_inventory01.py": {
+      "source": "hw/soc/out/pcie-phase29-delivery-20261006/build_inventory01.py",
+      "bytes": 3009,
+      "sha256": "115f3e4ec5a975d06b02dce7bcf99dbed5552b80568683b176444de2aae6222d"
+    },
+    "records/pcie-phase29-delivery-20261006/closed-review01.json": {
+      "source": "hw/soc/out/pcie-phase29-delivery-20261006/closed-review01.json",
+      "bytes": 231326,
+      "sha256": "e4ac5fbe377a5204a6d17983fb4a9f2bb50b7c97e73053e68b45ae1e1d452614"
+    },
+    "records/pcie-phase29-delivery-20261006/closed-review01.log": {
+      "source": "hw/soc/out/pcie-phase29-delivery-20261006/closed-review01.log",
+      "bytes": 273,
+      "sha256": "8b1c3416bca1674741f455d9066ab71de4124ad2bbcfae5f2174bd1055444550"
+    },
+    "records/pcie-phase29-delivery-20261006/doc140-peer-rx.json": {
+      "source": "hw/soc/out/pcie-phase29-delivery-20261006/doc140-peer-rx.json",
+      "bytes": 7645,
+      "sha256": "14b86065c19df8c9d4e7eebe4a2349566abbdc4982a9cc83c635d9d4ae92debb"
+    },
+    "records/pcie-phase29-delivery-20261006/doc140_review_rx.py": {
+      "source": "hw/soc/out/pcie-phase29-delivery-20261006/doc140_review_rx.py",
+      "bytes": 8180,
+      "sha256": "54620711b0672e50533875e80ef4806496a68d333b901e2faf58f16fbcb7c001"
+    },
+    "records/pcie-phase29-delivery-20261006/inspect_closed01.py": {
+      "source": "hw/soc/out/pcie-phase29-delivery-20261006/inspect_closed01.py",
+      "bytes": 3119,
+      "sha256": "686d861f13e068eaf09808ad710fe08309767c8d48e82263f20ade17102d4872"
+    }
+  },
+  "sidecars": [
+    "records/npu-eco-physical-readiness-20261006/NOTICES.txt.license",
+    "records/npu-eco-physical-readiness-20261006/controls01.log.license",
+    "records/npu-eco-physical-readiness-20261006/controls01.xml.license",
+    "records/npu-eco-physical-readiness-20261006/nssoc-npu-eco-readiness-source-validation-20261006.json.license",
+    "records/npu-eco-physical-readiness-20261006/publish-launch01.json.license",
+    "records/npu-eco-physical-readiness-20261006/publish01.log.license",
+    "records/npu-eco-physical-readiness-20261006/readiness-draft01.json.license",
+    "records/npu-eco-physical-readiness-20261006/readiness02.json.license",
+    "records/npu-eco-physical-readiness-20261006/ready-finite.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0001-metadata-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0001-metadata-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0001-metadata-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0002-upload-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0002-upload-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0002-upload-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0003-metadata-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0003-metadata-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0003-metadata-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0004-authenticated-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0004-authenticated-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0004-authenticated-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/http-response.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0005-anonymous-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0006-metadata-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0006-metadata-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0006-metadata-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0007-upload-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0007-upload-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0007-upload-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0008-metadata-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0008-metadata-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0008-metadata-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0009-authenticated-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0009-authenticated-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0009-authenticated-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/http-response.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/owned-processes.json.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/stderr.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/0010-anonymous-attempt1/stdout.bin.gz.license",
+    "records/npu-eco-physical-readiness-20261006/release01.transport/attempts.json.license",
+    "records/npu-eco-physical-readiness-20261006/root-controls01.log.license",
+    "records/npu-eco-physical-readiness-20261006/root-controls01.xml.license",
+    "records/npu-eco-physical-readiness-20261006/ruff01.log.license",
+    "records/npu-eco-physical-readiness-20261006/seal01.py.license",
+    "records/npu-eco-physical-readiness-20261006/source-freeze01.json.license",
+    "records/npu-eco-physical-readiness-20261006/source-saved-peer-root01.json.license",
+    "records/npu-eco-physical-runner-20261006/actual-blocked-entry01.json.license",
+    "records/npu-eco-physical-runner-20261006/bundle-preparation01.json.license",
+    "records/npu-eco-physical-runner-20261006/bundle-preparation01.log.license",
+    "records/npu-eco-physical-runner-20261006/controls01.log.license",
+    "records/npu-eco-physical-runner-20261006/controls01.xml.license",
+    "records/npu-eco-physical-runner-20261006/controls02.log.license",
+    "records/npu-eco-physical-runner-20261006/controls02.xml.license",
+    "records/npu-eco-physical-runner-20261006/controls03.log.license",
+    "records/npu-eco-physical-runner-20261006/controls03.xml.license",
+    "records/npu-eco-physical-runner-20261006/prepare_bundle01.py.license",
+    "records/npu-eco-physical-runner-20261006/process-source01.py.license",
+    "records/npu-eco-physical-runner-20261006/ruff02.log.license",
+    "records/npu-eco-physical-runner-20261006/ruff03.log.license",
+    "records/npu-eco-physical-runner-20261006/runner-source01.py.license",
+    "records/npu-eco-physical-runner-20261006/source-freeze01.json.license",
+    "records/npu-eco-physical-runner-20261006/source-freeze03.json.license",
+    "records/npu-eco-physical-runner-20261006/source-only-peer-pll01.json.license",
+    "records/npu-eco-physical-runner-20261006/source-only-peer-pll03.json.license",
+    "records/npu-eco-physical-runner-20261006/source-peer-pll01.log.license",
+    "records/npu-eco-physical-runner-20261006/source-peer-pll03.log.license",
+    "records/npu-eco-physical-runner-20261006/source_peer_pll01.py.license",
+    "records/npu-eco-physical-runner-20261006/source_peer_pll03.py.license",
+    "records/npu-eco-physical-runner-20261006/tests-source01.py.license",
+    "records/pcie-integrity-v22-20261006/analyze_critical_path.py.license",
+    "records/pcie-integrity-v22-20261006/balanced-import-graph-proof.json.license",
+    "records/pcie-integrity-v22-20261006/balanced_import.py.license",
+    "records/pcie-integrity-v22-20261006/balanced_import02.py.license",
+    "records/pcie-integrity-v22-20261006/balanced_preplacement.py.license",
+    "records/pcie-integrity-v22-20261006/balanced_preplacement02.py.license",
+    "records/pcie-integrity-v22-20261006/candidate-decision.json.license",
+    "records/pcie-integrity-v22-20261006/collection01.log.license",
+    "records/pcie-integrity-v22-20261006/continuation-owner02.json.license",
+    "records/pcie-integrity-v22-20261006/continuation-owner04.json.license",
+    "records/pcie-integrity-v22-20261006/continuation-policy01.json.license",
+    "records/pcie-integrity-v22-20261006/continuation-policy02.json.license",
+    "records/pcie-integrity-v22-20261006/continuation-policy03.json.license",
+    "records/pcie-integrity-v22-20261006/continuation-policy04.json.license",
+    "records/pcie-integrity-v22-20261006/continuation-status02.json.license",
+    "records/pcie-integrity-v22-20261006/continuation-status04.json.license",
+    "records/pcie-integrity-v22-20261006/continue_native01.py.license",
+    "records/pcie-integrity-v22-20261006/continue_native02.py.license",
+    "records/pcie-integrity-v22-20261006/continue_native03.py.license",
+    "records/pcie-integrity-v22-20261006/continue_native04.py.license",
+    "records/pcie-integrity-v22-20261006/controls-detached-once01.json.license",
+    "records/pcie-integrity-v22-20261006/controls-detached-once03.json.license",
+    "records/pcie-integrity-v22-20261006/controls-detached-receipt01.json.license",
+    "records/pcie-integrity-v22-20261006/controls-detached-receipt03.json.license",
+    "records/pcie-integrity-v22-20261006/controls-launch01.log.license",
+    "records/pcie-integrity-v22-20261006/controls-launch03.log.license",
+    "records/pcie-integrity-v22-20261006/controls-owner01.json.license",
+    "records/pcie-integrity-v22-20261006/controls-owner03.json.license",
+    "records/pcie-integrity-v22-20261006/controls-status01.json.license",
+    "records/pcie-integrity-v22-20261006/controls-status03.json.license",
+    "records/pcie-integrity-v22-20261006/controls01.log.license",
+    "records/pcie-integrity-v22-20261006/controls01.xml.license",
+    "records/pcie-integrity-v22-20261006/controls03.log.license",
+    "records/pcie-integrity-v22-20261006/controls03.xml.license",
+    "records/pcie-integrity-v22-20261006/critical-path-attribution.json.license",
+    "records/pcie-integrity-v22-20261006/critical_path.recovery04.controller.log.license",
+    "records/pcie-integrity-v22-20261006/detach_controls01.py.license",
+    "records/pcie-integrity-v22-20261006/detach_controls02.py.license",
+    "records/pcie-integrity-v22-20261006/detach_controls03.py.license",
+    "records/pcie-integrity-v22-20261006/detach_native01.py.license",
+    "records/pcie-integrity-v22-20261006/detach_native02.py.license",
+    "records/pcie-integrity-v22-20261006/detach_native03.py.license",
+    "records/pcie-integrity-v22-20261006/detach_native04.py.license",
+    "records/pcie-integrity-v22-20261006/detached-native02-once.json.license",
+    "records/pcie-integrity-v22-20261006/detached-native02-receipt.json.license",
+    "records/pcie-integrity-v22-20261006/detached-native02-supervisor.log.license",
+    "records/pcie-integrity-v22-20261006/detached-native04-once.json.license",
+    "records/pcie-integrity-v22-20261006/detached-native04-receipt.json.license",
+    "records/pcie-integrity-v22-20261006/detached-native04-supervisor.log.license",
+    "records/pcie-integrity-v22-20261006/failed-controls01-validation.json.license",
+    "records/pcie-integrity-v22-20261006/functional-release01-launch.json.license",
+    "records/pcie-integrity-v22-20261006/functional-release01.json.license",
+    "records/pcie-integrity-v22-20261006/functional-release01.log.license",
+    "records/pcie-integrity-v22-20261006/import.controller.log.license",
+    "records/pcie-integrity-v22-20261006/import_graph_proof.controller.log.license",
+    "records/pcie-integrity-v22-20261006/import_graph_proof.recovery04.controller.log.license",
+    "records/pcie-integrity-v22-20261006/launch-source-freeze01.json.license",
+    "records/pcie-integrity-v22-20261006/launch-source-freeze02.json.license",
+    "records/pcie-integrity-v22-20261006/launch-source-freeze03.json.license",
+    "records/pcie-integrity-v22-20261006/launch_controls01.py.license",
+    "records/pcie-integrity-v22-20261006/launch_controls02.py.license",
+    "records/pcie-integrity-v22-20261006/launch_controls03.py.license",
+    "records/pcie-integrity-v22-20261006/lifecycle-controls02.json.license",
+    "records/pcie-integrity-v22-20261006/lifecycle-controls02.log.license",
+    "records/pcie-integrity-v22-20261006/lifecycle-signal-birth02.json.license",
+    "records/pcie-integrity-v22-20261006/lifecycle-signal-receipt02.json.license",
+    "records/pcie-integrity-v22-20261006/lifecycle-signal-worker02.py.license",
+    "records/pcie-integrity-v22-20261006/lifecycle_controls02.py.license",
+    "records/pcie-integrity-v22-20261006/map.controller.log.license",
+    "records/pcie-integrity-v22-20261006/measure_registered_boundary.py.license",
+    "records/pcie-integrity-v22-20261006/native-members.json.license",
+    "records/pcie-integrity-v22-20261006/native-peer02-stage-path-correction.json.license",
+    "records/pcie-integrity-v22-20261006/native-recovery-basis03.json.license",
+    "records/pcie-integrity-v22-20261006/native-registered-boundary.json.license",
+    "records/pcie-integrity-v22-20261006/native-release01-detached.json.license",
+    "records/pcie-integrity-v22-20261006/native-release01.controller.log.license",
+    "records/pcie-integrity-v22-20261006/native-release01.json.license",
+    "records/pcie-integrity-v22-20261006/native-saved-peer-source-bridge-attempt01.json.license",
+    "records/pcie-integrity-v22-20261006/native-saved-peer-source-bridge.json.license",
+    "records/pcie-integrity-v22-20261006/native-saved-peer-vco-attempt01.log.license",
+    "records/pcie-integrity-v22-20261006/native-saved-peer-vco.json.license",
+    "records/pcie-integrity-v22-20261006/native-saved-peer-vco.log.license",
+    "records/pcie-integrity-v22-20261006/native-source-bridges01.json.license",
+    "records/pcie-integrity-v22-20261006/native-source-only-peer01-findings-vco.json.license",
+    "records/pcie-integrity-v22-20261006/native-source-only-peer02.json.license",
+    "records/pcie-integrity-v22-20261006/native-source-only-peer03-findings-vco.json.license",
+    "records/pcie-integrity-v22-20261006/native-source-only-peer04.json.license",
+    "records/pcie-integrity-v22-20261006/native-source-recovery-bridge03.json.license",
+    "records/pcie-integrity-v22-20261006/native-source-review-vco01-attempt01.log.license",
+    "records/pcie-integrity-v22-20261006/native-source-review-vco01.log.license",
+    "records/pcie-integrity-v22-20261006/native-source-review-vco02-attempt01.log.license",
+    "records/pcie-integrity-v22-20261006/native-source-review-vco02.log.license",
+    "records/pcie-integrity-v22-20261006/native-source-review-vco04.log.license",
+    "records/pcie-integrity-v22-20261006/native-source-supplement02.json.license",
+    "records/pcie-integrity-v22-20261006/native_lifecycle02.py.license",
+    "records/pcie-integrity-v22-20261006/observer-stimulus-correction03.json.license",
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-controls-validation-20261006.json.license",
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-failed-functional01-validation-20261006.json.license",
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-functional-package-20261006.json.license",
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-native-package-20261006.json.license",
+    "records/pcie-integrity-v22-20261006/pcie-integrity-v22-native-validation-20261006.json.license",
+    "records/pcie-integrity-v22-20261006/pre-execution-count-correction02.json.license",
+    "records/pcie-integrity-v22-20261006/prepare_native01.py.license",
+    "records/pcie-integrity-v22-20261006/prepare_native02.py.license",
+    "records/pcie-integrity-v22-20261006/prepare_recovery03.py.license",
+    "records/pcie-integrity-v22-20261006/preplacement.recovery04.controller.log.license",
+    "records/pcie-integrity-v22-20261006/prove_balanced_import.py.license",
+    "records/pcie-integrity-v22-20261006/quarantine-relation01.json.license",
+    "records/pcie-integrity-v22-20261006/ready-finite.json.license",
+    "records/pcie-integrity-v22-20261006/registered_boundary.controller.log.license",
+    "records/pcie-integrity-v22-20261006/review_native_recovery_vco04.py.license",
+    "records/pcie-integrity-v22-20261006/review_native_source_vco01-attempt01.py.license",
+    "records/pcie-integrity-v22-20261006/review_native_source_vco01.py.license",
+    "records/pcie-integrity-v22-20261006/review_native_source_vco02-attempt01.py.license",
+    "records/pcie-integrity-v22-20261006/review_native_source_vco02.py.license",
+    "records/pcie-integrity-v22-20261006/review_saved_controls_vco.py.license",
+    "records/pcie-integrity-v22-20261006/review_saved_native_vco-attempt01.py.license",
+    "records/pcie-integrity-v22-20261006/review_saved_native_vco.py.license",
+    "records/pcie-integrity-v22-20261006/review_source_vco02.py.license",
+    "records/pcie-integrity-v22-20261006/review_source_vco03-attempt01.py.license",
+    "records/pcie-integrity-v22-20261006/review_source_vco03.py.license",
+    "records/pcie-integrity-v22-20261006/review_timing.py.license",
+    "records/pcie-integrity-v22-20261006/run_balanced_map.py.license",
+    "records/pcie-integrity-v22-20261006/run_balanced_map02.py.license",
+    "records/pcie-integrity-v22-20261006/saved-controls-peer-vco.json.license",
+    "records/pcie-integrity-v22-20261006/saved-controls-peer-vco.log.license",
+    "records/pcie-integrity-v22-20261006/saved_map_boundary_import.recovery04.controller.log.license",
+    "records/pcie-integrity-v22-20261006/seal-controls03.log.license",
+    "records/pcie-integrity-v22-20261006/seal-failed-controls01.log.license",
+    "records/pcie-integrity-v22-20261006/seal-native04.log.license",
+    "records/pcie-integrity-v22-20261006/seal_controls03.py.license",
+    "records/pcie-integrity-v22-20261006/seal_failed_controls01.py.license",
+    "records/pcie-integrity-v22-20261006/seal_native04.py.license",
+    "records/pcie-integrity-v22-20261006/signed-wire-census.json.license",
+    "records/pcie-integrity-v22-20261006/slow-critical-path.txt.license",
+    "records/pcie-integrity-v22-20261006/source-freeze01.json.license",
+    "records/pcie-integrity-v22-20261006/source-freeze02.json.license",
+    "records/pcie-integrity-v22-20261006/source-freeze03.json.license",
+    "records/pcie-integrity-v22-20261006/source-only-peer-vco01-findings.json.license",
+    "records/pcie-integrity-v22-20261006/source-only-peer-vco02.json.license",
+    "records/pcie-integrity-v22-20261006/source-only-peer-vco03.json.license",
+    "records/pcie-integrity-v22-20261006/source-review-vco02.log.license",
+    "records/pcie-integrity-v22-20261006/source-review-vco03-attempt01.log.license",
+    "records/pcie-integrity-v22-20261006/source-review-vco03.log.license",
+    "records/pcie-integrity-v22-20261006/targeted_controls03.py.license",
+    "records/pcie-integrity-v22-20261006/timing-comparison.json.license",
+    "records/pcie-integrity-v22-20261006/timing_review.recovery04.controller.log.license",
+    "records/pcie-integrity-v22-20261006/verify_saved_native03.py.license",
+    "records/pcie-phase29-delivery-20261006/build_inventory01.py.license",
+    "records/pcie-phase29-delivery-20261006/closed-review01.json.license",
+    "records/pcie-phase29-delivery-20261006/closed-review01.log.license",
+    "records/pcie-phase29-delivery-20261006/doc140-peer-rx.json.license",
+    "records/pcie-phase29-delivery-20261006/doc140_review_rx.py.license",
+    "records/pcie-phase29-delivery-20261006/inspect_closed01.py.license"
+  ],
+  "archives": [
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-failed-functional01-20261006.tar.xz",
+      "pin": {
+        "bytes": 5708936,
+        "sha256": "f41a3e44e30f960a05f868a8e271f5e7a1be8bd72696f67d5db0ffa3d442fdd5"
+      },
+      "members": 266,
+      "public_asset": {
+        "name": "pcie-integrity-v22-failed-functional01-20261006.tar.xz",
+        "asset_id": 614307975,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-failed-functional01-20261006.tar.xz",
+        "bytes": 5708936,
+        "sha256": "f41a3e44e30f960a05f868a8e271f5e7a1be8bd72696f67d5db0ffa3d442fdd5",
+        "authenticated_roundtrip": true,
+        "anonymous_roundtrip": true
+      }
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-controls-20261006.tar.xz",
+      "pin": {
+        "bytes": 8759956,
+        "sha256": "b2811caf71410058e0ccc9ce103b402f16c2f15a3386e2f47bdd75e777157f4c"
+      },
+      "members": 374,
+      "public_asset": {
+        "name": "pcie-integrity-v22-controls-20261006.tar.xz",
+        "asset_id": 614309075,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-controls-20261006.tar.xz",
+        "bytes": 8759956,
+        "sha256": "b2811caf71410058e0ccc9ce103b402f16c2f15a3386e2f47bdd75e777157f4c",
+        "authenticated_roundtrip": true,
+        "anonymous_roundtrip": true
+      }
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/pcie-integrity-v22-native-preplacement-20261006.tar.xz",
+      "pin": {
+        "bytes": 11789500,
+        "sha256": "f3281acd64b6d59fc8731ab9d7d7fcc338444f78c7687b288f35f598a72cda1f"
+      },
+      "members": 220,
+      "public_asset": {
+        "name": "pcie-integrity-v22-native-preplacement-20261006.tar.xz",
+        "asset_id": 614357324,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-native-preplacement-20261006.tar.xz",
+        "bytes": 11789500,
+        "sha256": "f3281acd64b6d59fc8731ab9d7d7fcc338444f78c7687b288f35f598a72cda1f",
+        "authenticated_roundtrip": true,
+        "anonymous_roundtrip": true
+      }
+    },
+    {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/npu-eco-physical-readiness-20261006/nssoc-npu-eco-readiness-source-controls-20261006.tar.xz",
+      "pin": {
+        "bytes": 16864,
+        "sha256": "4b93e9798dea47a8391b1ded9fb975dd98d1c8816807b97f645564df91d46f7a"
+      },
+      "members": 14,
+      "public_asset": {
+        "name": "nssoc-npu-eco-readiness-source-controls-20261006.tar.xz",
+        "asset_id": 614376745,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/nssoc-npu-eco-readiness-source-controls-20261006.tar.xz",
+        "bytes": 16864,
+        "sha256": "4b93e9798dea47a8391b1ded9fb975dd98d1c8816807b97f645564df91d46f7a",
+        "authenticated_roundtrip": true,
+        "anonymous_roundtrip": true
+      }
+    }
+  ],
+  "public_assets": [
+    {
+      "name": "pcie-integrity-v22-failed-functional01-20261006.tar.xz",
+      "asset_id": 614307975,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-failed-functional01-20261006.tar.xz",
+      "bytes": 5708936,
+      "sha256": "f41a3e44e30f960a05f868a8e271f5e7a1be8bd72696f67d5db0ffa3d442fdd5",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-failed-functional01-validation-20261006.json",
+      "asset_id": 614308962,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-failed-functional01-validation-20261006.json",
+      "bytes": 61255,
+      "sha256": "6f085499e0792ac51bd33476c374398814c48509c21123b287d0dd0cddd0d3c4",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-controls-20261006.tar.xz",
+      "asset_id": 614309075,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-controls-20261006.tar.xz",
+      "bytes": 8759956,
+      "sha256": "b2811caf71410058e0ccc9ce103b402f16c2f15a3386e2f47bdd75e777157f4c",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-controls-validation-20261006.json",
+      "asset_id": 614309313,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-controls-validation-20261006.json",
+      "bytes": 22822,
+      "sha256": "7f2cc718100dec87730aef6cb20447e02e9c17f3580fe6a82c331bcdbcccb756",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-functional-package-20261006.json",
+      "asset_id": 614309433,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-functional-package-20261006.json",
+      "bytes": 3554,
+      "sha256": "6cb36836067ae5dd339e5c92be0faf4175e5a4cb45485dcd961b9866a102b204",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-native-preplacement-20261006.tar.xz",
+      "asset_id": 614357324,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-native-preplacement-20261006.tar.xz",
+      "bytes": 11789500,
+      "sha256": "f3281acd64b6d59fc8731ab9d7d7fcc338444f78c7687b288f35f598a72cda1f",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-native-validation-20261006.json",
+      "asset_id": 614357551,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-native-validation-20261006.json",
+      "bytes": 10114,
+      "sha256": "4d0562820d734bf8762f2a6894cb94400fa0ad1b4f2c9af67426e9d512c0afe5",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-integrity-v22-native-package-20261006.json",
+      "asset_id": 614357685,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-integrity-v22-native-package-20261006.json",
+      "bytes": 9728,
+      "sha256": "61776e32dd29f583b1e5777aaa56de2a0f4d297ab413330bead95a3b17a169bc",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "nssoc-npu-eco-readiness-source-controls-20261006.tar.xz",
+      "asset_id": 614376745,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/nssoc-npu-eco-readiness-source-controls-20261006.tar.xz",
+      "bytes": 16864,
+      "sha256": "4b93e9798dea47a8391b1ded9fb975dd98d1c8816807b97f645564df91d46f7a",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "nssoc-npu-eco-readiness-source-validation-20261006.json",
+      "asset_id": 614376876,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/nssoc-npu-eco-readiness-source-validation-20261006.json",
+      "bytes": 4746,
+      "sha256": "97441275b9a4d1d2bffd21ea37b3a927b25f2e531c8796fc88d17f64deab4885",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    }
+  ],
+  "members": 874,
+  "full_phy_acceptance": false,
+  "full_chip_final_timing_accepted": false,
+  "production_acceptance": false,
+  "native_chip_physical_executed": false,
+  "scope": "V22 cache experiment retains actualsetupFAILand historicaltest failures; sourcebound NPU readiness remainsBLOCKED awaitingstrictboot. No activeV23/Cap24/TX/RX/PLL/MAXornewchipphysicalresults inthiscut."
+}

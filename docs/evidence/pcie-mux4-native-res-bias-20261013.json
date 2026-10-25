@@ -1,0 +1,326 @@
+{
+  "run": 38332104799,
+  "source_head": "ff614051",
+  "status": "PASS_FOUR_COMPONENT_SCREENS_NOT_FULL_PHY",
+  "scope": "Same physical native rppd w2um l22um on each prestage reference, replacing two ideal currents. Resistor, rail and loaded reference-HBT corner dependence is simulated natively. All 62HBT and64MOS inspected. External clock modulation and three final/TX/clock-reference ideal currents remain.",
+  "validation": "18 hosted source-bit, topology and capture controls pass in each job. All768 original samples at unchanged0.3/0.5/0.7UI and100mV; both768-sample interstage screens at150mV with1.8..2.05V common mode. Device voltage/current limits unchanged.",
+  "conclusion": "Nominal289.383mV, quarterstep289.387mV, hot230.496mV, cold241.489mV all pass without numerical diagnostics. Actual prestage reference median572.066uA nominal,496.852uA hot,669.657uA cold. Wider PVT and actual fault campaign38332663087 pending. No layout/PEX or full32:1/PLL/CDR/PHY/main-chip acceptance.",
+  "cases": {
+    "nominal": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-res-bias-nominal-38332104799-1.summary.json",
+      "summary_sha256": "1e18c490205f8a1050ef2126e850d02f09c8fb4a62eaf98680cfe17faad7a2e3",
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "component_screen_passed": true,
+      "diagnostics": [],
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.2893834990433797,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.290095576675544,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2893834990433797,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.290766151660079,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.2675352485014697,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.890388002738693,
+            1.897882964918205
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.23517486288099176,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9128215665936104,
+            1.9368450370951724
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "prestage_native_bias_current_a": {
+        "ra": {
+          "minimum": 0.0005701484135755543,
+          "median": 0.000572066350828636,
+          "maximum": 0.0005763337617316107
+        },
+        "rb": {
+          "minimum": 0.000570221177864545,
+          "median": 0.0005720673197392209,
+          "maximum": 0.0005762897327971185
+        }
+      },
+      "native_off_flags_count": 62,
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "de8df37af4d175b6260451e5947bf43627b77ca743642da268b9f514215f53e4"
+      }
+    },
+    "quarter_step": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-res-bias-quarter_step-38332104799-1.summary.json",
+      "summary_sha256": "bc06d5dca4fde15221dbc99f99321af5a9240adad9cf1b4ee0a0cd2d2bc4aaf2",
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "component_screen_passed": true,
+      "diagnostics": [],
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.2893872335742056,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.29010192088636155,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.2893872335742056,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.29076942049360555,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.267536895493635,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.890385949034954,
+            1.8978819360704673
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.2351931841856607,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9128144399231488,
+            1.936849586677541
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "prestage_native_bias_current_a": {
+        "ra": {
+          "minimum": 0.0005701470165100316,
+          "median": 0.0005720607346701662,
+          "maximum": 0.0005763355916578546
+        },
+        "rb": {
+          "minimum": 0.0005702201565043652,
+          "median": 0.0005720620933738554,
+          "maximum": 0.0005762913249191438
+        }
+      },
+      "native_off_flags_count": 62,
+      "raw_wave": {
+        "bytes": 524998045,
+        "sha256": "c0ea68090ade55507a43623da883c58e0190ed7e700068b0b62365239b583a9c"
+      }
+    },
+    "hot_low": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-res-bias-hot_low-38332104799-1.summary.json",
+      "summary_sha256": "bb795f3f84942b3d8a72a416729236ab32ba777ecb37de14bd9b509c99fc3869",
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "component_screen_passed": true,
+      "diagnostics": [],
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.23049572531329532,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.23049572531329532,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.32644986233152107,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.32182860626330423,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.18315555875927614,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8346998477435057,
+            1.8397859073434288
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.1666804674331086,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.8162514297471861,
+            1.8539550970905219
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "prestage_native_bias_current_a": {
+        "ra": {
+          "minimum": 0.0004955197994740585,
+          "median": 0.0004968516364827442,
+          "maximum": 0.0005002875180598503
+        },
+        "rb": {
+          "minimum": 0.0004955054631858331,
+          "median": 0.0004968498726906562,
+          "maximum": 0.0005003321553144789
+        }
+      },
+      "native_off_flags_count": 62,
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "315803030946c8c10ad4939206ebded648bf7245cc455230377b929acf295690"
+      }
+    },
+    "cold_high": {
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-migration-20261012-000/tx-mux4-res-bias-cold_high-38332104799-1.summary.json",
+      "summary_sha256": "80fd600f20c924d672fe83700d00bc984df0b257c4aa527ddcd566789142c0d1",
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "component_screen_passed": true,
+      "diagnostics": [],
+      "signals": {
+        "samples": 768,
+        "minimum_margin_v": 0.24148933818933838,
+        "wrong_sign_samples": 0,
+        "below_100mv_samples": 0,
+        "phases": {
+          "0.3": {
+            "samples": 256,
+            "minimum_margin_v": 0.24148933818933838,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.5": {
+            "samples": 256,
+            "minimum_margin_v": 0.24230168802140906,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          },
+          "0.7": {
+            "samples": 256,
+            "minimum_margin_v": 0.24213499102830904,
+            "wrong_sign_samples": 0,
+            "below_100mv_samples": 0
+          }
+        },
+        "passed": true,
+        "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+        "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+      },
+      "interfaces": {
+        "cmos": {
+          "samples": 768,
+          "minimum_margin_v": 0.3014748140071164,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9677969068140304,
+            1.9777792504398226
+          ],
+          "passed": true
+        },
+        "final": {
+          "samples": 768,
+          "minimum_margin_v": 0.3131589301937454,
+          "wrong_sign_samples": 0,
+          "below_150mv_samples": 0,
+          "common_mode_range_v": [
+            1.9922273674961215,
+            2.024791168413612
+          ],
+          "passed": true
+        }
+      },
+      "failed_hbts": {},
+      "failed_mos": {},
+      "prestage_native_bias_current_a": {
+        "ra": {
+          "minimum": 0.0006669951859736659,
+          "median": 0.0006696566042432427,
+          "maximum": 0.0006744084108961413
+        },
+        "rb": {
+          "minimum": 0.0006670160402995326,
+          "median": 0.0006696575016260558,
+          "maximum": 0.0006743695528804442
+        }
+      },
+      "native_off_flags_count": 62,
+      "raw_wave": {
+        "bytes": 265442045,
+        "sha256": "f0c920a27a3ecd67fef150a1005c080d567f53d2319480ff95965be207de7636"
+      }
+    }
+  }
+}

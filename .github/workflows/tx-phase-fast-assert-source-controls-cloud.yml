@@ -1,0 +1,45 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-fast-assert-source-controls-cloud
+on:
+  push:
+    branches: [codex/tx-clock-phase-parent]
+    paths:
+      - scripts/build_tx_phase_fast_assert_source.py
+      - scripts/check_tx_phase_fast_assert_source.py
+      - scripts/tx-phase-fast-assert-source-methods.json
+      - hw/soc/analog/pcie/clock_div2_fast_assert_firstfall_v3.spice
+      - .github/workflows/tx-phase-fast-assert-source-controls-cloud.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  fast-assert-source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact original recovery and real fan-in connections
+        run: |
+          python3 scripts/check_tx_phase_fast_assert_source.py | tee controls.json
+          python3 - <<'PYCODE'
+          import json
+          d=json.load(open('controls.json'))
+          assert d['status']=='PASS_FAST_ASSERT244_SOURCE_CONNECTIONS_AND_CENSUS_NOT_ELECTRICAL'
+          assert len(d['negative_controls'])==11 and not d['native_execution']
+          assert all(c['primitives']==244 for c in d['counts'].values())
+          assert not d['reset_hardware_qualified'] and not d['full_PHY_accepted']
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: phase-fast-assert-source-${{ github.run_id }}
+          path: controls.json
+          retention-days: 30

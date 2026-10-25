@@ -1,0 +1,7 @@
+# v29 sampler passed; four-copy parent verification starts
+
+Leaf run39686764938/source9cac885023d077f3fc8a7e3ad9283e7b8cdebe4b passed actual560-category DRC with zero markers, unsimplified deep/flat54-device LVS, LEF and20 actual faults. The physical circuit still has16HBT/9MOS/12rppd/17taps. New GDS88af7c31ec9aa275c4f71442bae5a701d59017043a4a18d268263db8c16e391a retains the1003x243.63um boundary and all original ports/primitive positions. The new six-resistor geometry comparison retained48 unchanged drawings and passed seven rejection controls.
+
+The parent flow restores the exact passed v28 parent39558088682 and replaces its four actual sampler hierarchies with this verified leaf. Only the24 corresponding intrinsic resistor reference lengths change:16 collector loads2.12->2.6um and8 bias pull-ups2.4->2.2um. Original parent polygons, shortened retime/collector trunks, placements, all other leaf drawings and public interfaces must remain exactly equal after GDS serialization. Actual full476-device native DRC/deep-flatLVS and fault gates rerun.
+
+This is still a gain/headroom hypothesis, not electrical improvement. After parent physical passage, regenerate whole-parent wire and intrinsic RC/MIM models, then rerun the unchanged full256-bit early/late and negative cases. Do not reuse old v28 electrical acceptance (it failed), old RC, an ideal buffer, relaxed sample timing or weakened device limits. FullserialPHY and mainchip integration remain open.

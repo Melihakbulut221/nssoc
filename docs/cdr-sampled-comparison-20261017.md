@@ -1,0 +1,11 @@
+# Connected sampled-comparison candidate, 2026-10-17
+
+This is an actual electrical connection of two unchanged native samplers, eight native rppd conversion resistors and the hash-bound fresh-layout shunt-v4 XOR model.116native devices (49HBT,40rppd,27finitebodycontacts) and every original XOR4020R/2641C are present. There is no internal ideal gain, fitted waveform replay, hidden voltage driver or replacement behavioral XOR.
+
+Two independent256bit PRBS inputs share an external8GHz clock through10ohms. Each sampler retains150fF/output in addition to the actual resistor/XOR load. XORoutput load is50fF. Three500uA external ideal bias sources and ideal external data/clock waveforms remain explicit bench boundaries. The sampler/converter geometry and interconnect are not yet physically implemented/extracted; the XOR geometry alone has native physical proof.
+
+Sampler A feeds the XOR data domain through seriesL1.8/W1,shuntL10.8/W1 perleg. Sampler B feeds the select domain through seriesL3/W1,shuntL4.3/W1 perleg. These are initial transistor-simulation candidates; output common modes are solved by the native simulator under actual loading, never prescribed. Nominal/hot/cold and actual XORoutputswap/stoppedclock faults run separately.
+
+All49HBTs must satisfy the same clean zero-source/OFF/diagnostic and voltage/current bounds as the sampler screen. Both loaded sampler outputs must retain their original100mVmargin and37.5psclock-to-valid. A new connected-path timing contract is fixed BEFORE running: XOR100mVmargin at0.6/0.75/0.9UI after each declared sampler rising edge and at most0.6UI(75ps) to remain valid. No retrospective phase fitting or modified source-bit oracle is allowed; expected output is the XOR of the original two source streams. This timing contract does not relax the prior standalone primitive tests; it measures the added real path.
+
+Passing would establish a sampled comparison under five finite cases only. A coherent rising/falling-edge Alexander detector, early/late polarity/deadzone, native V/I feedback, acquisition/offset/missingtransitions, noise/jitter/BER/PVT, all new physical routing/RC and fullGen3x4mainchip integration remain mandatory. Rejections retain every native waveform and all device/interface observations for repair.

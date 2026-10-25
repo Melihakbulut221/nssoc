@@ -1,0 +1,34 @@
+{
+  "baseline_path": "scripts/cloud_tx_output8088_power128_precision.py",
+  "baseline_sha256": "d637061e2b5c8565a65fd61db5472f47721930c8a41a5d051dde80899725d113",
+  "candidate_path": "scripts/cloud_tx_output8088_power128feed32_precision.py",
+  "candidate_sha256": "9a69474cc78026b4760e66f419ffab1afdd8d0218fde49690dcf67f6dc748588",
+  "edits": [
+    {
+      "before": "power128",
+      "after": "power128feed32",
+      "count": 9
+    },
+    {
+      "before": "POWER128",
+      "after": "POWER128FEED32",
+      "count": 1
+    },
+    {
+      "before": "39618886679",
+      "after": "39651408848",
+      "count": 1
+    },
+    {
+      "before": "63f854ffcfc38453d2b0b484e0f3e502a1db737e25657e131650134bc93c0551",
+      "after": "33b10be2956e36ec8b630cb3e76d5f9f0b6f47c54acf6748f17f081d0d88510d",
+      "count": 1
+    },
+    {
+      "before": "    OUT.mkdir(parents=True,exist_ok=False);reports.OUT=OUT",
+      "after": "    method=json.loads((ROOT/'scripts/tx-output8088-power128feed32-precision-method.json').read_text())\n    baseline=ROOT/method['baseline_path'];assert sha(baseline)==method['baseline_sha256']\n    source=baseline.read_text()\n    for edit in method['edits']:\n        assert source.count(edit['before'])==edit['count']\n        source=source.replace(edit['before'],edit['after'])\n    assert source==Path(__file__).read_text()and sha(Path(__file__))==method['candidate_sha256']\n    OUT.mkdir(parents=True,exist_ok=False);reports.OUT=OUT",
+      "count": 1
+    }
+  ],
+  "scope": "Only actual new source pins/stage/conductor names plus runtime derivation verification. Both native input orders, exact R/C multisets, independent topology/capacitance conservation and13 raw controls per order remain."
+}

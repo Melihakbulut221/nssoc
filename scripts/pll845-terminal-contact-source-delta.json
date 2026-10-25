@@ -1,0 +1,72 @@
+{
+  "baseline_commit": "6911db2dcd7723c65879fdccb7607cf9142c4ca2",
+  "baseline_sha256": "c3d16859666f221528bffd9d56ad2ab672ce4cd74380ad2dd7443100f5b535e3",
+  "candidate_sha256": "2ece5e41effadb18efea43dfedcc1361ae74a66c0e365c45d67818036ec3113e",
+  "edits": [
+    {
+      "before": " hbt_cells=[];hierarchy=Counter()",
+      "after": " hbt_cells=[];rppd_cells=[];hierarchy=Counter()",
+      "count": 1
+    },
+    {
+      "before": "   hbt_cells.append((cell,tr));return",
+      "after": "   hbt_cells.append((cell,tr));return\n  if cell.name.split('$')[0].endswith('rppd'):\n   rppd_cells.append((cell,tr));return",
+      "count": 1
+    },
+    {
+      "before": "matched_hbt_instances=len(hbt_cells),matched_hbt_cells=",
+      "after": "matched_rppd_instances=len(rppd_cells),matched_rppd_cells=sorted({cell.name for cell,tr in rppd_cells}),matched_hbt_instances=len(hbt_cells),matched_hbt_cells=",
+      "count": 1
+    },
+    {
+      "before": " assert len(hbt_cells)==102,('Actual namespaced HBT instance census',len(hbt_cells))",
+      "after": " assert len(hbt_cells)==102,('Actual namespaced HBT instance census',len(hbt_cells))\n assert len(rppd_cells)==89,('Actual namespaced resistor census',len(rppd_cells))",
+      "count": 1
+    },
+    {
+      "before": "rows=[];anchors=[];unresolved=[];shared={};used_hbt={}",
+      "after": "rows=[];anchors=[];unresolved=[];shared={};used_hbt={};used_rppd={}",
+      "count": 1
+    },
+    {
+      "before": "  for contact in contacts.inside(area).each():",
+      "after": "  for contact in contacts.interacting(area).each():\n   if (pya.Region(contact)&area).area()==0:continue",
+      "count": 1
+    },
+    {
+      "before": "   else:\n    area=poly.interacting(reg).merged()if cls.startswith('sg13_')and name=='G'else reg",
+      "after": "   elif cls=='rppd':\n    enclosure=pya.Box()\n    ends={t:terminals[did,t]['region'].bbox() for t in ('rppd_1','rppd_2')}\n    for b in ends.values():enclosure+=b\n    matches=[(cell,tr)for cell,tr in rppd_cells if(cell.bbox().transformed(tr)&enclosure)==enclosure]\n    assert len(matches)==1,('Unique resistor primitive enclosure',did,len(matches))\n    cell,tr=matches[0];used_rppd[did]=(cell.cell_index(),str(tr))\n    pins=[shape.box.transformed(tr)for shape in cell.each_shape(L.layer(8,2))if shape.is_box()]\n    assert len(pins)==2,'Exactly two original resistor metal pins required'\n    selected={}\n    for terminal,box in ends.items():\n     center=box.center()\n     ranked=sorted(((b.center().x-center.x)**2+(b.center().y-center.y)**2,i)for i,b in enumerate(pins))\n     assert ranked[0][0]<ranked[1][0],'Ambiguous resistor physical end'\n     selected[terminal]=ranked[0][1]\n    assert len(set(selected.values()))==2,'Resistor ends must retain distinct physical planes'\n    box=pins[selected[name]];assert(pya.Region(box)-metals[8]).is_empty()\n    q=box.center();choices=[(8,q,point_probe(8,q,nid))];selection='unique_original_resistor_end_pin'\n   else:\n    area=poly.interacting(reg).merged()if cls.startswith('sg13_')and name=='G'else reg",
+      "count": 1
+    },
+    {
+      "before": "   unresolved.append(dict(device=did,model=cls,terminal=name,native_cluster=nid,reason=str(error)))",
+      "after": "   detail=dict(device=did,model=cls,terminal=name,native_cluster=nid,reason=str(error))\n   if cls.startswith('sg13_') and name in ('S','D'):\n    nearby=[]\n    for contact in contacts.interacting(pya.Region(reg.bbox().enlarged(2000))).each():\n     box=contact.bbox();q=box.center()\n     nn=native.probe_net(native.layer_by_index(mapping[8]),q)\n     nearby.append(dict(box_dbu=[box.left,box.bottom,box.right,box.top],overlap_area_dbu2=(pya.Region(contact)&reg).area(),metal_native_cluster=None if nn is None else nn.cluster_id))\n    detail.update(terminal_shapes=[p.to_s()for p in reg.each()],nearby_contacts=nearby)\n   unresolved.append(detail)",
+      "count": 1
+    },
+    {
+      "before": " assert len(used_hbt)==102 and len(set(used_hbt.values()))==102",
+      "after": " assert len(used_hbt)==102 and len(set(used_hbt.values()))==102\n assert len(used_rppd)==89 and len(set(used_rppd.values()))==89",
+      "count": 1
+    },
+    {
+      "before": "'mim_plates_swapped','hbt_base_collector_swapped'):",
+      "after": "'mim_plates_swapped','hbt_base_collector_swapped','rppd_ends_swapped'):",
+      "count": 1
+    },
+    {
+      "before": "kind,first,second=('cap_cmim','mim_top','mim_btm')if fault=='mim_plates_swapped'else('npn13G2','B','C')",
+      "after": "kind,first,second=('cap_cmim','mim_top','mim_btm')if fault=='mim_plates_swapped'else('rppd','rppd_1','rppd_2')if fault=='rppd_ends_swapped'else('npn13G2','B','C')",
+      "count": 1
+    },
+    {
+      "before": " assert len(result['negative_controls'])==7",
+      "after": " assert len(result['negative_controls'])==8",
+      "count": 1
+    },
+    {
+      "before": "counts=result['counts'],controls=7",
+      "after": "counts=result['counts'],controls=8",
+      "count": 1
+    }
+  ]
+}

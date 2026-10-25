@@ -1,0 +1,62 @@
+{
+  "status": "PASS_SOURCE_ONLY_V19_QUARANTINED_SLOTS",
+  "freeze": {
+    "bytes": 2347,
+    "sha256": "a35f9dd90b06fa08f649984ad4782c722589f3e25042cb7166b4c8250fa6e24a"
+  },
+  "findings": [],
+  "method": {
+    "bytes": 3736,
+    "sha256": "6ec58a04af569cba161293fc992ba21e1d63731d24f39b5916dee8b4e7353a33"
+  },
+  "source_pins": {
+    "scripts/generate_pcie_integrity_slots_v19.py": {
+      "bytes": 2489,
+      "sha256": "ce64083b5fb5ed16ea7a1c91ffd01c430f623ffcb59cced95b941fb487586062"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v19.py": {
+      "bytes": 11276,
+      "sha256": "bec86d0cce08256a913535da10bdfd1c8c8723203b1f3bc8f860cb1186331ad9"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v19.v": {
+      "bytes": 193788,
+      "sha256": "f9025c41e9c2aa5f6208f852e30286384bbc9462b164923485d0498600f9daea"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v19.v": {
+      "bytes": 3324,
+      "sha256": "e70b440f3518f85ca241d0356fe431960c2d4e62cd66db2ee933a5637d6aef4e"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v19.py": {
+      "bytes": 24630,
+      "sha256": "f7df53270b1918800633577b01e9723a0baabbeea43d911e665f8ac886fdf7df"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v19": {
+      "bytes": 1528,
+      "sha256": "7396a57309fb7034f1028db143984f27b5d6a2d2759a95caba96994c0167ecfc"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v19_miter.py": {
+      "bytes": 12565,
+      "sha256": "b84d84866ff5e4892bf2978489b5df05f991e806e00bb3e2ea4d9e365fa47056"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v19.py": {
+      "bytes": 4805,
+      "sha256": "4bfd7bd24bc416abe678f948999e72861809f5e204eb3f939e8221aac6b6a34c"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v19_slots.py": {
+      "bytes": 5103,
+      "sha256": "c815cffb88c52d582232a24f4272651610c330206ab00415cab3291b807ae710"
+    }
+  },
+  "prior_peer": {
+    "bytes": 4999,
+    "sha256": "85f77a8495d4a38eca4d12fbba564cc8a03e0d25b12728880ca2e1e0fb6aaee4"
+  },
+  "review": [
+    "Exact inverse removes only eleven new lines in the four-malformation/four-recovery oracle case. Product and eight other source files, first thirteen oracle cases and all public/occupied/cache miter predicates remain byte-identical.",
+    "The added stimulus sends valid nonzero DLLPs with ready false until measured public overflow and halt, asserts both and restarts through unchanged Ports.begin reset/start. It never changes DUT arrays or disables comparisons. Fixed RING+16 packet input plus idle tail bounds the prefill.",
+    "The original strict observed-invalid-difference, actual fault-step, held-output, parser-before-capacity, halted-drain and recovery/wrap assertions remain intact. Prefill is intended to produce a real stored-data difference; whether it does is still an actual functional gate, not assumed by this review.",
+    "Original source and actual 26-pass/1-failure campaign remain separate. Only affected full miter and changed direct case require a new run; previous successful unrelated controls need not be repeated."
+  ],
+  "actual_new_simulation": false,
+  "physical_acceptance": false
+}

@@ -1,0 +1,129 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-zero-op-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source controls, exact prepared paths, or separately authorized fresh zero OP
+        required: true
+        type: choice
+        default: source-controls
+        options:
+          - source-controls
+          - prepared-paths
+          - native-op
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-zero-op
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify frozen initialization and expanded zero-OP gate controls
+        run: |
+          python3 -m pip install numpy==2.3.3
+          python3 scripts/cloud_tx_phase_reset334_zero_op.py --source-controls > controls.json
+          python3 - <<'PY'
+          import json
+          d=json.load(open('controls.json'))
+          assert d['status']=='PASS_FROZEN318_AND_NEW_ZERO_OP_SOURCE_CONTROLS_ONLY'
+          assert len(d['initialization_controls']['negative_controls'])==30
+          assert len(d['zero_OP_gate_controls']['negative_controls'])==12
+          assert len(d['publication_controls']['rejected'])==17
+          assert len(d['prerequisite_controls']['negative_controls'])==15
+          assert not d['native_simulator_invoked'] and not d['transient_executed']
+          print(json.dumps(d,indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: reset334-zero-op-source-controls
+          path: controls.json
+          retention-days: 90
+  exact318-runtime-paths-or-zero-OP:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.mode != 'source-controls'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify precreated exact-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ensure_cloud_tested_source_release.py --group tx-phase-reset334-zero-op
+      - name: Qualify exact prepared paths or execute separately authorized zero OP
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PROOF_MODE: ${{ inputs.mode }}
+        run: |
+          if [ "$PROOF_MODE" = native-op ]; then
+            sudo apt-get update -qq
+            sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          fi
+          python3 -m pip install numpy==2.3.3
+          if [ "$PROOF_MODE" = native-op ]; then
+            python3 scripts/cloud_tx_phase_reset334_zero_op.py --native-op
+          else
+            test "$PROOF_MODE" = prepared-paths
+            python3 scripts/cloud_tx_phase_reset334_zero_op.py --prepared-controls
+          fi
+      - name: Preserve complete small result including every rejection
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          p=Path('cloud-tx-phase-reset334-zero-op/result.json')
+          if not p.exists():
+              p.parent.mkdir(parents=True,exist_ok=True)
+              p.write_text(json.dumps(dict(status='FAIL_MISSING318_ZERO_OP_RESULT',
+                source_head=os.environ['GITHUB_SHA'],transient_executed=False,full_PHY_accepted=False))+'\n')
+          raw=p.read_bytes()
+          assert len(raw)<=4_000_000
+          print('RESULT_SHA256',hashlib.sha256(raw).hexdigest());print('RESULT_BYTES',len(raw))
+          data=base64.b64encode(raw).decode();chunks=[data[i:i+4096]for i in range(0,len(data),4096)]
+          for i,c in enumerate(chunks):print(f'RESULT_BASE64 {i}/{len(chunks)} {c}')
+          PY
+      - name: Publish every OP/log/source/model byte without transient
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          stem="tx-phase-reset334-zero-op-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-tx-phase-reset334-zero-op/result.json "$stem.summary.json"
+          python3 scripts/ensure_cloud_tested_source_release.py --group tx-phase-reset334-zero-op
+          python3 scripts/cloud_chunked_results.py --directory cloud-tx-phase-reset334-zero-op --stem "$stem"
+          python3 - "$stem" <<'PY'
+          import json,subprocess,sys
+          stem=sys.argv[1];parts=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-phase-reset334-zero-op',
+            stem+'.summary.json',stem+'.parts.json',*[p['name']for p in parts['parts']]],check=True)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome == 'failure'
+        with:
+          name: reset334-zero-op-complete-evidence
+          path: cloud-tx-phase-reset334-zero-op/
+          retention-days: 90

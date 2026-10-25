@@ -1,0 +1,11 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Candidate clock common-mode reference: only native offset length6.5to7.5um.
+* The native loaded feed remains tx_clock_bias_feed_v1.inc, never an ideal bias.
+* Targets measured hot tail minimum-VCE loss; every original gate stays fixed.
+* Differential phases are external; this schematic is not a physical clock tree.
+* Fresh loaded PVT and physical DRC/LVS/PEX are required before integration.
+.subckt nssoc_tx_clock_common_bias_v2 cm avss sub
+XREF cm cm er sub npn13G2 Nx=1
+XOFFSET er avss sub rppd w=2u l=7.5u b=0 sw_et=1
+.ends nssoc_tx_clock_common_bias_v2

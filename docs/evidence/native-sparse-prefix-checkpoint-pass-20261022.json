@@ -1,0 +1,367 @@
+{
+  "run": 39713442944,
+  "source_head": "c7304c5bb0fec479ecc68123bfefb9c07c2d1701",
+  "summary_asset": 664488489,
+  "summary_sha256": "f78273232e4d256d507872f148d895537cd30fe05e3b8dfac9c8254e5942a08b",
+  "parts_asset": 664488532,
+  "parts_sha256": "a9f355c10df4bfc64071c542519cca71198b12f9b6489c7f5801eaf6db47fe3b",
+  "report": {
+    "status": "PASS_NATIVE_PHYSICAL845_SPARSE_PREFIX_BIT_EXACT_BOUNDED4NS_NOT_CROSS_JOB_OR_ACQUISITION",
+    "source_head": "c7304c5bb0fec479ecc68123bfefb9c07c2d1701",
+    "native_checkpoint_proven": true,
+    "cross_job_native_restore_proven": false,
+    "full_capture": false,
+    "acquisition_accepted": false,
+    "full_phy_accepted": false,
+    "scope": "Bounded4ns exact physical845/102HBT/3OSDI runtime test with original34probes/.3125ps/KLU/zeroOP/OFF/solver and circuit. Host versus container baseline then native checkpoint/restore must be bit-exact. Not original1us acquisition, full-device safety, PVT, x4 or PHY acceptance.",
+    "glibc_tunables": "glibc.cpu.hwcaps=-AVX512F,-AVX512CD,-AVX512BW,-AVX512DQ,-AVX512ER,-AVX512PF,-AVX512VL,-RTM",
+    "portability_hypothesis": "Disable glibc AVX512 and RTM IFUNC choices before any native process starts. Original simulator/circuit/model libraries and bounded native numerical trajectory must remain exact. Cross-job portability not yet proven.",
+    "boot_id": "d35a67d1-dd0a-4aa9-8603-9cb3a2e6db43",
+    "runner_name": "GitHub Actions 1000027022",
+    "run_id": "39713442944",
+    "criu_build": {
+      "source_repository": "https://github.com/checkpoint-restore/criu",
+      "source_tag": "v4.2.1",
+      "source_commit": "9539417f3e3cfa4eb84c319cd71f4d52f1f08645",
+      "binary_sha256": "f7330ebdd7b3a29284028a9e73ceacb0925e0e4ecba44110d9e5d90fcb4dac46",
+      "version": "Version: 4.2.1\nGitID: 9539417\n",
+      "libraries": "\tlinux-vdso.so.1 (0x00007f0c71a91000)\n\tlibbsd.so.0 => /lib/x86_64-linux-gnu/libbsd.so.0 (0x00007f0c718ad000)\n\tlibprotobuf-c.so.1 => /lib/x86_64-linux-gnu/libprotobuf-c.so.1 (0x00007f0c718a2000)\n\tlibnl-3.so.200 => /lib/x86_64-linux-gnu/libnl-3.so.200 (0x00007f0c71880000)\n\tlibnet.so.1 => /lib/x86_64-linux-gnu/libnet.so.1 (0x00007f0c71865000)\n\tlibuuid.so.1 => /lib/x86_64-linux-gnu/libuuid.so.1 (0x00007f0c7185b000)\n\tlibc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x00007f0c71600000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00007f0c71a93000)\n\tlibmd.so.0 => /lib/x86_64-linux-gnu/libmd.so.0 (0x00007f0c7184a000)\n"
+    },
+    "image_id": "sha256:d46bfe75a44a6b094c45a50a48ec8d76c6c78f6f88a2a11d5d3968d2333203fe",
+    "native_image_sha256": "be126288f59de3c79f195fc84e23404a9a9b1c3f0cddb2895f83d04e221c9d6c",
+    "host": {
+      "capture": {
+        "header_points": 12818,
+        "observed_rows": 12818,
+        "width": 35,
+        "header_bytes": 1190,
+        "payload_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "header_matches_observed": true,
+        "payload_has_only_complete_rows": true,
+        "excluded_trailing_bytes": 0,
+        "excluded_trailing_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "complete_rows_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "interrupted_diagnostic": false
+      },
+      "start_s": 0.0,
+      "end_s": 4e-09,
+      "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+      "native_options": {
+        "backend": "klu",
+        "numeric": {
+          "reltol": 0.0001,
+          "abstol": 1e-12,
+          "vntol": 1e-06,
+          "trtol": 7.0,
+          "maxord": 2.0,
+          "itl4": 10.0
+        },
+        "method": "TRAPEZOIDAL",
+        "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+      },
+      "zero_source_operating_point": {
+        "maximum_abs_v": 0.0,
+        "columns": [
+          "v(clkp)",
+          "v(clkn)",
+          "v(down)",
+          "v(fb)",
+          "v(fbbar)",
+          "v(qn)",
+          "v(qp)",
+          "v(reference)",
+          "v(reset)",
+          "v(up)",
+          "v(vctrl)",
+          "v(xloop.a_count_vss)",
+          "v(xloop.a_release_clk)",
+          "v(xloop.a_release_reset_b)",
+          "v(xloop.bn)",
+          "v(xloop.bp)",
+          "v(xloop.clk)",
+          "v(xloop.count)",
+          "v(xloop.countb)",
+          "v(xloop.counter_reset_b)",
+          "v(xloop.qn2)",
+          "v(xloop.qp2)",
+          "v(xloop.releaseb)",
+          "v(xloop.xcount.q0)",
+          "v(xloop.xcount.q1)",
+          "v(xloop.xpfd.t001_d)",
+          "v(xloop.xpfd.t003_d)",
+          "v(xloop.xpfd.t005_g)",
+          "v(xloop.xpfd.t007_g)",
+          "v(xloop.xpfd.t009_g)",
+          "v(xloop.xpfd.t012_d)",
+          "v(xloop.xpfd.t013_d)",
+          "v(xloop.xpfd.t014_d)",
+          "v(xloop.xpfd.t016_d)"
+        ],
+        "sha256": "5da0007849e8cc25155e168e093e0c8b4815ccec9a41d494af996c340f5ba63b"
+      },
+      "diagnostics": []
+    },
+    "reference": {
+      "capture": {
+        "header_points": 12818,
+        "observed_rows": 12818,
+        "width": 35,
+        "header_bytes": 1190,
+        "payload_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "header_matches_observed": true,
+        "payload_has_only_complete_rows": true,
+        "excluded_trailing_bytes": 0,
+        "excluded_trailing_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "complete_rows_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "interrupted_diagnostic": false
+      },
+      "start_s": 0.0,
+      "end_s": 4e-09,
+      "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+      "native_options": {
+        "backend": "klu",
+        "numeric": {
+          "reltol": 0.0001,
+          "abstol": 1e-12,
+          "vntol": 1e-06,
+          "trtol": 7.0,
+          "maxord": 2.0,
+          "itl4": 10.0
+        },
+        "method": "TRAPEZOIDAL",
+        "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+      },
+      "zero_source_operating_point": {
+        "maximum_abs_v": 0.0,
+        "columns": [
+          "v(clkp)",
+          "v(clkn)",
+          "v(down)",
+          "v(fb)",
+          "v(fbbar)",
+          "v(qn)",
+          "v(qp)",
+          "v(reference)",
+          "v(reset)",
+          "v(up)",
+          "v(vctrl)",
+          "v(xloop.a_count_vss)",
+          "v(xloop.a_release_clk)",
+          "v(xloop.a_release_reset_b)",
+          "v(xloop.bn)",
+          "v(xloop.bp)",
+          "v(xloop.clk)",
+          "v(xloop.count)",
+          "v(xloop.countb)",
+          "v(xloop.counter_reset_b)",
+          "v(xloop.qn2)",
+          "v(xloop.qp2)",
+          "v(xloop.releaseb)",
+          "v(xloop.xcount.q0)",
+          "v(xloop.xcount.q1)",
+          "v(xloop.xpfd.t001_d)",
+          "v(xloop.xpfd.t003_d)",
+          "v(xloop.xpfd.t005_g)",
+          "v(xloop.xpfd.t007_g)",
+          "v(xloop.xpfd.t009_g)",
+          "v(xloop.xpfd.t012_d)",
+          "v(xloop.xpfd.t013_d)",
+          "v(xloop.xpfd.t014_d)",
+          "v(xloop.xpfd.t016_d)"
+        ],
+        "sha256": "ebc3f7ecb2d1962432fd2e995c9962f8628a637381342034cdcc1dfa8d73aea8"
+      },
+      "diagnostics": []
+    },
+    "host_container_equivalence": {
+      "all_native_times_and_all34_probes_bit_exact": true,
+      "rows": 12818,
+      "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+      "single_entrypoint": true
+    },
+    "actual_native_environment": [
+      "SPICE_SCRIPTS=/home/runner/work/nssoc/nssoc/cloud-native-sparse-prefix-checkpoint/resumed",
+      "OMP_NUM_THREADS=1",
+      "RAYON_NUM_THREADS=1",
+      "GLIBC_TUNABLES=glibc.cpu.hwcaps=-AVX512F,-AVX512CD,-AVX512BW,-AVX512DQ,-AVX512ER,-AVX512PF,-AVX512VL,-RTM",
+      "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+    ],
+    "checkpoint_prefix": {
+      "bytes": 562342,
+      "payload_bytes": 561152,
+      "sha256": "a17f7245c42bd363cbbbb8accff840e2c649e58cd0bd16599e08601c709f7086",
+      "payload_sha256": "11e159b4087492c866a39546e2ed8996c706396cb6a7051bfc3a4bce69a7e820"
+    },
+    "sparse_prefix": {
+      "source": {
+        "bytes": 562342,
+        "sha256": "a17f7245c42bd363cbbbb8accff840e2c649e58cd0bd16599e08601c709f7086",
+        "header_bytes": 1190,
+        "payload_bytes": 561152,
+        "payload_sha256": "11e159b4087492c866a39546e2ed8996c706396cb6a7051bfc3a4bce69a7e820"
+      },
+      "plan": {
+        "format": "native-raw-sparse-prefix-v1",
+        "source": {
+          "bytes": 562342,
+          "sha256": "a17f7245c42bd363cbbbb8accff840e2c649e58cd0bd16599e08601c709f7086",
+          "header_bytes": 1190,
+          "payload_bytes": 561152,
+          "payload_sha256": "11e159b4087492c866a39546e2ed8996c706396cb6a7051bfc3a4bce69a7e820"
+        },
+        "block_bytes": 131072,
+        "head_keep_bytes": 131072,
+        "tail_keep_bytes": 131072,
+        "hole_start": 131072,
+        "hole_stop": 393216
+      },
+      "before": {
+        "bytes": 562342,
+        "sha256": "a17f7245c42bd363cbbbb8accff840e2c649e58cd0bd16599e08601c709f7086",
+        "header_bytes": 1190,
+        "payload_bytes": 561152,
+        "payload_sha256": "11e159b4087492c866a39546e2ed8996c706396cb6a7051bfc3a4bce69a7e820",
+        "original_payload_preserved": true,
+        "physical_allocated_bytes": 303104,
+        "native_activation_qualified": false,
+        "waveform_reader_qualified": false
+      },
+      "helper_sha256": "aabbcab1164bc709a4a7b8d14ae6ad4f138f674f5436a0e05775d944689c9f14",
+      "immutable_prefix_retained": true,
+      "original1us_checkpoint_modified": false,
+      "after": {
+        "bytes": 3590230,
+        "sha256": "6be66685cf1cf005f2f678f3359dab498d450e44043c54814110558c2f0efa11",
+        "header_bytes": 1190,
+        "payload_bytes": 3589040,
+        "payload_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "original_payload_preserved": true,
+        "physical_allocated_bytes": 3330048,
+        "native_activation_qualified": false,
+        "waveform_reader_qualified": false
+      }
+    },
+    "checkpoint_images": {
+      "pstree.img": "14d914057fb14ec294b37c00b8676c1c0d9a956d35859b0360237f7316b37207",
+      "files.img": "482bcd43d6453b0d72240378c2ef952fd1c9a47652dd3de0eaa91cebf9aa50d2",
+      "mountpoints-12.img": "5828b3b53569d66a0323311c31d3a973bdc3615220da132d646ac1716c16a8f8",
+      "fdinfo-2.img": "26aa510dabe8637954a181cf70dc5d018d16ddfb80e27c2c4704a7a3ca2701c7",
+      "timens-0.img": "b3b6b48bd881d87383abe1ccaae6da202eea29c6c7b311d4729232dad768bd69",
+      "tmpfs-dev-62.tar.gz.img": "a31e2554f8ddb44bd9dcdf0fdf5ec3cd2a730a4f3334a9fb3081f256d842e578",
+      "tmpfs-dev-59.tar.gz.img": "cfc06ea24707dafb39d2974eccbc98e0ffb3d9ae7abcb8a468ca89719ef57d79",
+      "ipcns-var-10.img": "2c6811e94d6ee6661be7bbfbc5ba6fd86325e32599233fb8fe872e79b4047e22",
+      "core-1.img": "2b47605e7d703f8a6a9c974aff835157041096472e464724e8fed51a658c9341",
+      "utsns-11.img": "2476fd0136a613307df21285227a5cfb0268c7ca6989705722b1e3d9715c5562",
+      "tmpfs-dev-61.tar.gz.img": "a31e2554f8ddb44bd9dcdf0fdf5ec3cd2a730a4f3334a9fb3081f256d842e578",
+      "inventory.img": "8878c236656e836610e830cc99311d9480e966fc810b6837627ab2019decb699",
+      "descriptors.json": "ee7dd30c7c006f314a9099845f083a3740e2703b7fa5794b62a3492f6c6929da",
+      "ids-1.img": "fb75ef1d70871f72c5f43edc76c6b0cd8035e55d5d5ec792490d7c59dd9a232a",
+      "cgroup.img": "447d0d2b39947bae8cb6a96a0e46430d91c2662514c3ae2ba3340dd13cbf4b82",
+      "pagemap-1.img": "981d75ffab0e6c58098e064fa7d6730850473ecb2fd0523e506c7adb413f6619",
+      "seccomp.img": "957296853c04f6368f4ba65b5e86dc74860fec6d7017e51428e65632052e88dd",
+      "pages-1.img": "c2027d1665bf4e3872cbb5d9b08b47c714b74ade370b4cccb7b9c6499ec62de0",
+      "mm-1.img": "c61d8a42b4a2ebc1c9ea35aa56e76870a0eaa63ffe4ebcf9d6fb031c3eb78e95",
+      "fs-1.img": "b19d457673c827e42adee1fea9fe3a91850d9fdc2b03ba7be09e350e5c58a8c3"
+    },
+    "sparse_direct_reader_rejected": true,
+    "restored": {
+      "capture": {
+        "header_points": 12818,
+        "observed_rows": 12818,
+        "width": 35,
+        "header_bytes": 1190,
+        "payload_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "header_matches_observed": true,
+        "payload_has_only_complete_rows": true,
+        "excluded_trailing_bytes": 0,
+        "excluded_trailing_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "complete_rows_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+        "interrupted_diagnostic": false
+      },
+      "start_s": 0.0,
+      "end_s": 4e-09,
+      "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+      "native_options": {
+        "backend": "klu",
+        "numeric": {
+          "reltol": 0.0001,
+          "abstol": 1e-12,
+          "vntol": 1e-06,
+          "trtol": 7.0,
+          "maxord": 2.0,
+          "itl4": 10.0
+        },
+        "method": "TRAPEZOIDAL",
+        "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+      },
+      "zero_source_operating_point": {
+        "maximum_abs_v": 0.0,
+        "columns": [
+          "v(clkp)",
+          "v(clkn)",
+          "v(down)",
+          "v(fb)",
+          "v(fbbar)",
+          "v(qn)",
+          "v(qp)",
+          "v(reference)",
+          "v(reset)",
+          "v(up)",
+          "v(vctrl)",
+          "v(xloop.a_count_vss)",
+          "v(xloop.a_release_clk)",
+          "v(xloop.a_release_reset_b)",
+          "v(xloop.bn)",
+          "v(xloop.bp)",
+          "v(xloop.clk)",
+          "v(xloop.count)",
+          "v(xloop.countb)",
+          "v(xloop.counter_reset_b)",
+          "v(xloop.qn2)",
+          "v(xloop.qp2)",
+          "v(xloop.releaseb)",
+          "v(xloop.xcount.q0)",
+          "v(xloop.xcount.q1)",
+          "v(xloop.xpfd.t001_d)",
+          "v(xloop.xpfd.t003_d)",
+          "v(xloop.xpfd.t005_g)",
+          "v(xloop.xpfd.t007_g)",
+          "v(xloop.xpfd.t009_g)",
+          "v(xloop.xpfd.t012_d)",
+          "v(xloop.xpfd.t013_d)",
+          "v(xloop.xpfd.t014_d)",
+          "v(xloop.xpfd.t016_d)"
+        ],
+        "sha256": "84ba4d7bfd31125cc9cd2ca31db989a33cb6c5440997ad8e70d9b4f159462fb7"
+      },
+      "diagnostics": []
+    },
+    "positive": {
+      "all_native_times_and_all34_probes_bit_exact": true,
+      "rows": 12818,
+      "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+      "single_entrypoint": true
+    },
+    "controls": [
+      {
+        "fault": "truncation",
+        "rejected": true,
+        "error": "Missing samples or probes"
+      },
+      {
+        "fault": "state_corruption",
+        "rejected": true,
+        "error": "Native times or voltage states changed"
+      },
+      {
+        "fault": "cold_restart",
+        "rejected": true,
+        "error": "Cold restart detected"
+      }
+    ],
+    "original_bounded_trajectory_unchanged": true,
+    "native_same_host_sparse_resume_proven": true,
+    "cross_job_sparse_resume_proven": false,
+    "original_full_column_reader_qualified": false
+  }
+}

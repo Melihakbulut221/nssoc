@@ -1,0 +1,63 @@
+{
+  "status": "PRELIMINARY_SOURCE_REVIEW_V25_COMMAND_COMPONENT_AND_UNKNOWN_ENABLE_NO_FINAL_APPROVAL",
+  "reviewer": "/root/vco_loaded_feedback",
+  "method": {
+    "bytes": 4831,
+    "sha256": "79b60bbef1f17f1fb16b1d0c9b2efa707b5dc40ab57da06b6007dbf3d1134bca"
+  },
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/generate_pcie_integrity_command_v25.py": {
+      "bytes": 8391,
+      "sha256": "fd7f756201a663987dc1d3563576f83e1f5bd691992e424f71b27c3879b2d34a"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v25.v": {
+      "bytes": 199988,
+      "sha256": "4504ffb6acd21df918f751d62396e8ca8dcdb42e91a5f276bfe3cbb12f406295"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v23.v": {
+      "bytes": 197239,
+      "sha256": "505db8d1daa5c5263a16a3584175bc89a73d1b6e35f16e10b64f1f9f6483dde6"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/test_pcie_gen3_integrity_v25_command.py": {
+      "bytes": 14667,
+      "sha256": "21999b5d6ae3b1bdf439fa21e31e0e931b2f5aee448a06d26a855ea3b84b4ace"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/source-bridge-draft02.json": {
+      "bytes": 7087,
+      "sha256": "d03af12b8b393053fd5235dd4dfd50ec12ddab914bbaf255fe2e2b7e81cf244b"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/draft-before-unknown-control02/generate_pcie_integrity_command_v25.py": {
+      "bytes": 8219,
+      "sha256": "a8568a8f4e41e6b233d1c94c2a36aa980f282e8d33169f33fe9efc92f0fdb863"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/draft-before-unknown-control02/soc_pcie_gen3_framer_rx_integrity_v25.v": {
+      "bytes": 199816,
+      "sha256": "fc6bbeebcca9c849d076007c2948a7652b5df8a251474103bce4f73679c50289"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/draft-before-unknown-control02/test_pcie_gen3_integrity_v25_command.py": {
+      "bytes": 10623,
+      "sha256": "880e34e8c1b0b85e02005868efe0e1b8a9b10801d883d286fe4653141062e5c2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v25-20261006/draft-before-unknown-control02/manifest.json": {
+      "bytes": 1214,
+      "sha256": "c2de70959ab17a479791a9275a5df75536e982ec1fed4d95ce59da68050a4879"
+    }
+  },
+  "whole_byte_forward_inverse": 14,
+  "exact_generator_and_product_delta": "Explicit enabled procedural guard plus explanatory comments around valid consume/replacement, and removal of inactive else-clear so non-true active also holds; all other generator/product bytes equal preserved draft.",
+  "reviewed_arguments": [
+    "NBA apply reads complete previous command while simultaneous capture replaces every payload/metadata field.",
+    "Reference writer snapshot before edge is compared after candidate apply: all seven slot fields, cache, verdict array and visible commit frontier.",
+    "4102 planned one-edge comparisons =4096 randomized/XZ payload trials +3 duplicate/prior-verdict trials +3 ending/drain trials; actual native execution remains pending.",
+    "Unknown flush/start/abort/reset makes enabled X/Z-derived unknown and both APPLY and CAPTURE valid replacement skip; pending ownership retained and resumes after known enable.",
+    "Unknown fault expression with enabled true follows original procedural fallthrough; pending command applies and consumes.",
+    "Five separate epoch invalidations reject stale valid/frontier; eleven literal real writer mutations require specific diagnostics; no forced DUT state."
+  ],
+  "limitations": [
+    "Source-only preliminary reading; no reviewed producer imports, test collection, HDL compilation, simulation or native map.",
+    "Component controls do not establish full-DUT transaction/backpressure/fault/latency equivalence. RX owns final source gate after complete test packet.",
+    "Actual cache contents may change on known fault as already documented; epoch quarantine must be witnessed by full-DUT controls.",
+    "This component holds active_o=1 throughout, so removal of inactive else-clear is source-reviewed only: original full-DUT known inactive exits are reset/flush/fault or ending with no pending command. Unknown active handling is not among these eight unknown external-inhibit trials."
+  ],
+  "findings": []
+}

@@ -1,0 +1,120 @@
+{
+  "status": "SEALED_SOURCE_BOUND_FRONTEND_DEVELOPMENT",
+  "utc": "2026-10-04T16:00:37.638403+00:00",
+  "sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_v3.v": {
+      "bytes": 8145,
+      "sha256": "75d9b20fd210eeea87920750d70eae4ea97eb07682b961aa561ac4cf24ce0343"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx.v": {
+      "bytes": 3131,
+      "sha256": "17e2ebdc22ec2d7ea2c6230be33ed7d7e37df5f8c0286c9082cbf3c31d64bbf1"
+    },
+    "scripts/check_pcie_gen3_ingress.py": {
+      "bytes": 8852,
+      "sha256": "0c085a845b152228dc558d2cc819e3334e5cd8f8c4291953c7335425e3598e5a"
+    },
+    "scripts/check_pcie_gen3_continuous_rx.py": {
+      "bytes": 8617,
+      "sha256": "9b12563ad2c7627c8193db2ec0a373f1cc5f5a741b2549f0f00b2477ec931dec"
+    },
+    "scripts/check_pcie_gen3_receive_v3.py": {
+      "bytes": 10379,
+      "sha256": "00affb56e7e4ff60efeb062571569fb777b4e2e4488ad7186af49c8a488c417b"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx.py": {
+      "bytes": 7006,
+      "sha256": "3cf4f1099e90e078ac2b1f83c026addfa893d4cc3db86dec909d33b81f87d14e"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx": {
+      "bytes": 1309,
+      "sha256": "bb6586bec6d642dfb12e3e92e1cf1fac49b8fc052458880e5dbdab3386187d73"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx.py": {
+      "bytes": 3628,
+      "sha256": "949adb40e386061ec534bd2a1f60f5034fb9c73b787a5493fd6c7ffee36fc4f0"
+    }
+  },
+  "archive": {
+    "path": "/dev/shm/pcie-continuous-rx-native-development-20261004.tar.xz",
+    "bytes": 21489900,
+    "sha256": "dcb0f355508c6005989c112229baf3332689569ff07d9dcb22295ebbd026677a",
+    "members": 550,
+    "all_members_rechecked": true
+  },
+  "results": {
+    "nssoc-gen3-ingress-rtl-01": {
+      "status": "PASS_PORT_ONLY_PCIE_GEN3_FIXED_INGRESS",
+      "tests": {
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": null,
+      "mode": "rtl"
+    },
+    "nssoc-gen3-ingress-native-01": {
+      "status": "PASS_PORT_ONLY_PCIE_GEN3_FIXED_INGRESS",
+      "tests": {
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": 11756,
+      "mode": "native"
+    },
+    "nssoc-gen3-rx-v3-rtl-01": {
+      "status": "PASS_GEN3_RECEIVE_V3_PORTS",
+      "tests": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": null,
+      "mode": "rtl"
+    },
+    "nssoc-gen3-continuous-rx-rtl-01": {
+      "status": "FAIL",
+      "tests": null,
+      "mapped_cells": null,
+      "mode": "rtl"
+    },
+    "nssoc-gen3-continuous-rx-rtl-02": {
+      "status": "PASS_PORT_ONLY_PCIE_GEN3_CONTINUOUS_DATA_RX",
+      "tests": {
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": null,
+      "mode": "rtl"
+    },
+    "nssoc-gen3-continuous-rx-native-01": {
+      "status": "PASS_PORT_ONLY_PCIE_GEN3_CONTINUOUS_DATA_RX",
+      "tests": {
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": 54368,
+      "mode": "native"
+    }
+  },
+  "public_preservation_pending": true,
+  "limitations": [
+    "Externally aligned and deskewed fixed130-bit Data Stream blocks only; no SKP/OS/blocksearch or CDC.",
+    "Byte-wide consumer still overflows on dense packets; tested overflow halts the epoch until explicit restart.",
+    "Native models emit unsupported timing-check warnings; no SDF/timing acceptance.",
+    "OSS vvp wrapper overrides PYTHONEXECUTABLE with its bundled interpreter and cocotb reports sys.executable mismatch while all six mapped tests execute. Exact logs/runtime are retained; not a clean-diagnostic claim.",
+    "Initial four-entry FIFO/overflow-flag failure and first incomplete mutation coverage are preserved as failures.",
+    "No full PCS/LTSSM/analogPMA/mainchip or manufacturing acceptance."
+  ]
+}

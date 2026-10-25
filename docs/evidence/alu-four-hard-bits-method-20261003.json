@@ -1,0 +1,952 @@
+{
+  "author": {
+    "candidate_adopted": false,
+    "checks": [
+      {
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "sw/tests/test_alu_hard_bits.py",
+          "sw/tests/test_alu_remaining_bits.py",
+          "sw/tests/test_alu_state_bit_benchmark.py",
+          "sw/tests/test_alu_state_refinement.py",
+          "sw/tests/test_alu_state_partitions.py",
+          "--basetemp=/dev/shm/nssoc-hard-bits-combined-0547"
+        ],
+        "log": {
+          "bytes": 340,
+          "sha256": "a05f0589ae21e75d216a240572453a89de2ce28ff059efc62da641d864802bc0"
+        },
+        "returncode": 0,
+        "seconds": 9.652841517992783
+      },
+      {
+        "command": [
+          "hw/soc/tools/dev-env/bin/ruff",
+          "check",
+          "scripts/prove_alu_hard_bits.py",
+          "sw/tests/test_alu_hard_bits.py"
+        ],
+        "log": {
+          "bytes": 19,
+          "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+        },
+        "returncode": 0,
+        "seconds": 0.013302574006957002
+      },
+      {
+        "command": [
+          "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+          ".github/workflows/timing-alu-hard-bits.yml"
+        ],
+        "log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 0,
+        "seconds": 0.0040156960021704435
+      }
+    ],
+    "dispatched": false,
+    "four_observation_projection": "PASS_EXACT_FOUR_OBSERVATION_EXPORT_AND_ORIGINAL_GRAPH_CEX_REPLAY",
+    "frozen_dependencies": {
+      ".github/workflows/timing-alu-state-bit-benchmark.yml": {
+        "bytes": 1988,
+        "sha256": "61dd34583da412172e00519559c7ca6cc64175ce4e553550f49fc222bf4e0106"
+      },
+      ".github/workflows/timing-alu-state-bits-complete.yml": {
+        "bytes": 7928,
+        "sha256": "722688aebfede9d3956bc13396837e89905a2828f65eca9e8b6e4aedfc092e61"
+      },
+      ".github/workflows/timing-alu-state-partitions.yml": {
+        "bytes": 5354,
+        "sha256": "5bf83968bb5cca722a30d20a5c20b46a28221b6a180620a135d0f8a52ad03542"
+      },
+      ".github/workflows/timing-alu-state-refinement.yml": {
+        "bytes": 5494,
+        "sha256": "4418f24ddfa360bddbc77e45a87437ef90d7a794ae9b884834be7b0125225a70"
+      },
+      "docs/evidence/timing-cloud-input-20260930.json": {
+        "bytes": 1089565,
+        "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+      },
+      "hw/soc/pnr/alu-prefix-c10-input.lock.json": {
+        "bytes": 43759,
+        "sha256": "816eb1c44531345b1e8ad5b6fae5c099977ba30c5236e47a28e2bf1282a8006c"
+      },
+      "hw/soc/pnr/alu-state-bit-benchmark-input.lock.json": {
+        "bytes": 5826,
+        "sha256": "1273fe62a2c3fa7d1b7ff375cd2c581e3e70fd4d4f74ee45c7bfea2da18a2a3b"
+      },
+      "hw/soc/pnr/alu-state-bits-complete-input.lock.json": {
+        "bytes": 7508,
+        "sha256": "b5e70537bf69e7454a46880778e82b69ddadcf0a5cd64c5de812aa2e526c0750"
+      },
+      "hw/soc/pnr/alu-state-refinement-input.lock.json": {
+        "bytes": 3135,
+        "sha256": "1f883357ff93e0ed1a379d711cc132f105fcdbd57ac03771e289f0d70033a6b5"
+      },
+      "scripts/benchmark_alu_state_bits.py": {
+        "bytes": 21781,
+        "sha256": "c02f2998e53ccdfd252e264568c1c6184c1bb2b50f360a43549dee646b4b627e"
+      },
+      "scripts/bootstrap_oss.py": {
+        "bytes": 4879,
+        "sha256": "e721a22cd15131fcce79f0283863f0b6db2accb9c7349324360602e0f1c81277"
+      },
+      "scripts/prepare_alu_prefix.py": {
+        "bytes": 3824,
+        "sha256": "ae22ae3b8e2206ade9d5f6499bc5c9f032d4143cc9b25eda9427f78500e020b5"
+      },
+      "scripts/prove_alu_mapped_state.py": {
+        "bytes": 25957,
+        "sha256": "4ea03404cd11bdeda05dc018c8b9b4032f8622754f15dca7b6faef4b6d922335"
+      },
+      "scripts/prove_alu_remaining_bits.py": {
+        "bytes": 33644,
+        "sha256": "e028cda72e90573a2a794d3dbdf8b3f572a8b6c56a49e1c6e69bf8ff4720987c"
+      },
+      "scripts/prove_alu_state_partitions.py": {
+        "bytes": 29376,
+        "sha256": "c548c9c436a074ff13e978d14dbf6dd9edfa6f107854ea1eaab9dd8766cea7b8"
+      },
+      "scripts/prove_alu_state_refinement.py": {
+        "bytes": 26265,
+        "sha256": "0f37ca66568a3a6f8d5e4d318fa2c525215e0b666fd618cf7aaa98f2b18a192f"
+      },
+      "scripts/prove_alu_state_repair.py": {
+        "bytes": 15236,
+        "sha256": "d44cb8d809c1d9649b0c33435e41a044d3610044316f16701027d612abfaeea5"
+      },
+      "scripts/replay_alu_state_counterexample.py": {
+        "bytes": 13385,
+        "sha256": "82568b1092fc4c1640faff1f92c3b898a91060366569ba8538981d21af0b8d4c"
+      },
+      "scripts/run_cloud_alu_prefix.py": {
+        "bytes": 14684,
+        "sha256": "d7b390371a6f2a871b4861edcc6728d0856b9a5736308e5cc84b4bca393e5fea"
+      },
+      "scripts/run_cloud_timing_experiment.py": {
+        "bytes": 32423,
+        "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+      },
+      "sw/tests/test_alu_remaining_bits.py": {
+        "bytes": 11229,
+        "sha256": "2ab672422d233b505de2d45332e082160dcc9704ff2636edd5d5d0163e9063a9"
+      },
+      "sw/tests/test_alu_state_bit_benchmark.py": {
+        "bytes": 13527,
+        "sha256": "293661d9eea054f60dfc80956902069e9d8f70a037f031b15c54731743823382"
+      },
+      "sw/tests/test_alu_state_partitions.py": {
+        "bytes": 12506,
+        "sha256": "9625cef3b41047ab1fb2be2ab46fff8887de70962a619707c6a27715b3602cc4"
+      },
+      "sw/tests/test_alu_state_refinement.py": {
+        "bytes": 18337,
+        "sha256": "7b1e1514a352e40c2de644c56b56644052ae693616c6bac9a0594693169e5ad9"
+      }
+    },
+    "full_chip_graph_locally_run": false,
+    "hard_original_bits": [
+      [
+        "__mapped_state_equiv_ff_d",
+        738
+      ],
+      [
+        "__mapped_state_equiv_ff_d",
+        5732
+      ],
+      [
+        "__mapped_state_equiv_gate_enable",
+        0
+      ],
+      [
+        "__mapped_state_equiv_gate_next",
+        0
+      ]
+    ],
+    "native_execution_count": 11,
+    "native_executions": [
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/dev/shm/nssoc-hard-bit-publish-controls-0547/wrong_output/export.ys"
+        ],
+        "log": {
+          "bytes": 12036,
+          "sha256": "e1947297b4b173f13baf83a55d0ee858c2ffd13588dbeec8cdeb4761d581a49c"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-controls/wrong_output/export-execution.json",
+        "returncode": 0,
+        "seconds": 0.5633921420085244
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys-abc",
+          "-c",
+          "read_aiger /dev/shm/nssoc-hard-bit-publish-controls-0547/wrong_output/miter.aig; &get -n; &cec -m -T 10 -v; write_cex /dev/shm/nssoc-hard-bit-publish-controls-0547/wrong_output/counterexample.txt"
+        ],
+        "log": {
+          "bytes": 773,
+          "sha256": "712985b44b1daa8dceffe25220a671ae575629770b443b9824582ab3e52c76b3"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-controls/wrong_output/abc-execution.json",
+        "returncode": 0,
+        "seconds": 0.3966566030139802
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/dev/shm/nssoc-hard-bit-publish-controls-0547/wrong_output/replay.ys"
+        ],
+        "log": {
+          "bytes": 8001,
+          "sha256": "b86781b35e9028cfab0c2e3408cf029892503eb0a2923f06650177861083f980"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-controls/wrong_output/replay-execution.json",
+        "returncode": 0,
+        "seconds": 0.6369024849991547
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/dev/shm/nssoc-hard-bit-publish-controls-0547/equal/export.ys"
+        ],
+        "log": {
+          "bytes": 12015,
+          "sha256": "7ffb5f37be67ce55ce4c82a77228d321a2f643350b2ef35dc174245b9fcb6e94"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-controls/equal/export-execution.json",
+        "returncode": 0,
+        "seconds": 0.4494098060094984
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys-abc",
+          "-c",
+          "read_aiger /dev/shm/nssoc-hard-bit-publish-controls-0547/equal/miter.aig; &get -n; &cec -m -T 10 -v; write_cex /dev/shm/nssoc-hard-bit-publish-controls-0547/equal/counterexample.txt"
+        ],
+        "log": {
+          "bytes": 2311,
+          "sha256": "ff6283f5bf91fda3df2e41a2c53b2aa394015202a69cd20e2a294dc22156333d"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-controls/equal/abc-execution.json",
+        "returncode": 0,
+        "seconds": 0.30601523199584335
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/dev/shm/nssoc-hard-bit-projection-final-0547/source.ys"
+        ],
+        "log": {
+          "bytes": 7597,
+          "sha256": "6514a78b98d6bcb74711368ea36a3716c9273be5582b0e0fb7878fc3f1a7c94b"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-projection/original-execution.json",
+        "returncode": 0,
+        "seconds": 0.3068388449901249
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/dev/shm/nssoc-hard-bit-projection-final-0547/exports.ys"
+        ],
+        "log": {
+          "bytes": 39940,
+          "sha256": "1d70ebd694fba08363866a3671fc09bbe488479af182b2455c2dbc5b09b8dbb9"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-projection/exports-execution.json",
+        "returncode": 0,
+        "seconds": 0.5031187850108836
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys-abc",
+          "-c",
+          "read_aiger /dev/shm/nssoc-hard-bit-projection-final-0547/1/miter.aig; &get -n; &cec -m -T 10 -v; write_cex /dev/shm/nssoc-hard-bit-projection-final-0547/solve1/counterexample.txt"
+        ],
+        "log": {
+          "bytes": 734,
+          "sha256": "ea60df4def4884850dfeef3051a6d13e40f5eb6b2ea1b81c052393b1f42dad12"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-projection/solve1/abc-execution.json",
+        "returncode": 0,
+        "seconds": 0.2546318909880938
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/dev/shm/nssoc-hard-bit-projection-final-0547/solve1/replay.ys"
+        ],
+        "log": {
+          "bytes": 6863,
+          "sha256": "e01d8a79743950ad94cc9dd7491e27a910d1f687cb041db8915a190fa9fc6f50"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-projection/solve1/replay-execution.json",
+        "returncode": 0,
+        "seconds": 0.4252116130082868
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "yosys-abc",
+          "-c",
+          "read_aiger /dev/shm/nssoc-hard-bit-projection-final-0547/0/miter.aig; &get -n; &cec -m -T 10 -v; write_cex /dev/shm/nssoc-hard-bit-projection-final-0547/solve0/counterexample.txt"
+        ],
+        "log": {
+          "bytes": 2308,
+          "sha256": "6d631c7e28f5a4f1d7aa7ff8ed06dff779c35651ada57e2d434794bdda324da4"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-projection/solve0/abc-execution.json",
+        "returncode": 0,
+        "seconds": 0.2642878430051496
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+          "python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/heartbeat-20261003-0547/hard-bit-source/native-identity/native-identity.py"
+        ],
+        "log": {
+          "bytes": 1560,
+          "sha256": "c1b7f16fdd68d0ff2e2579ca9d0d56492c6bbe9708f448a9c48a08cba51cec35"
+        },
+        "memory_limit_bytes": 2147483648,
+        "path": "native-identity/native-identity-execution.json",
+        "returncode": 0,
+        "seconds": 0.9978418990067439
+      }
+    ],
+    "native_identity": {
+      "binaries": {
+        "yosys": {
+          "bytes": 37119496,
+          "sha256": "3a9560d83e60d9e98f34a03cdbedbb49adefc8a63096bd77c7c4108bc9ccdef2"
+        },
+        "yosys-abc": {
+          "bytes": 18857768,
+          "sha256": "c4ff60740cc2d6f0afe72f0dda58f65342cce10d64eddb6bf169577c7fa69f71"
+        }
+      },
+      "bindings": {
+        "yosys": {
+          "entry": {
+            "bytes": 16032,
+            "path": "/nix/store/vqq4mi8prw8x5rfwz7b3136rqi8v70m7-yosys-with-plugins-0.62-python3-3.13.9-env/bin/yosys",
+            "sha256": "63b1229caf9f50360cf9c61d6b812a82b2d81155306e3d3c72fd89b675b732ba"
+          },
+          "intermediate": {
+            "bytes": 623,
+            "path": "/nix/store/4bmfi4470w0i3ixcaidfki18d3fyqvva-yosys-with-plugins-0.62/bin/yosys",
+            "sha256": "163a52612b0d0540474b54ecf8ec66cd231a2031acca99f379324a694c62ff65"
+          },
+          "launcher_reference_verified": true,
+          "target": {
+            "bytes": 37119496,
+            "path": "/nix/store/f1q0w7rd0a4ny4hqvfxlhs4cmariidcy-yosys-0.62/bin/yosys",
+            "sha256": "3a9560d83e60d9e98f34a03cdbedbb49adefc8a63096bd77c7c4108bc9ccdef2"
+          }
+        },
+        "yosys-abc": {
+          "entry": {
+            "bytes": 16032,
+            "path": "/nix/store/vqq4mi8prw8x5rfwz7b3136rqi8v70m7-yosys-with-plugins-0.62-python3-3.13.9-env/bin/yosys-abc",
+            "sha256": "7073d013ccef8a7ab7e6b8add91bf08fcd73d0728f7abd8bb25c9248b9ec6401"
+          },
+          "intermediate": {
+            "bytes": 18857768,
+            "path": "/nix/store/4bmfi4470w0i3ixcaidfki18d3fyqvva-yosys-with-plugins-0.62/bin/yosys-abc",
+            "sha256": "c4ff60740cc2d6f0afe72f0dda58f65342cce10d64eddb6bf169577c7fa69f71"
+          },
+          "launcher_reference_verified": true,
+          "target": {
+            "bytes": 18857768,
+            "path": "/nix/store/f1q0w7rd0a4ny4hqvfxlhs4cmariidcy-yosys-0.62/bin/yosys-abc",
+            "sha256": "c4ff60740cc2d6f0afe72f0dda58f65342cce10d64eddb6bf169577c7fa69f71"
+          }
+        }
+      }
+    },
+    "native_seconds": 5.104307144036284,
+    "nontrivial_controls": {
+      "equal": {
+        "aig": "aig 227 18 0 1 209",
+        "inputs": 18,
+        "metadata_only_undefined_alias_bits": 4,
+        "verdict": "PROVED_ALL_BINARY_BOUNDARY_EQUATIONS"
+      },
+      "wrong_output": {
+        "aig": "aig 231 18 0 1 213",
+        "inputs": 18,
+        "metadata_only_undefined_alias_bits": 4,
+        "verdict": "COUNTEREXAMPLE_REPLAYED_ON_ORIGINAL"
+      }
+    },
+    "outputs": {
+      "check-0.log": {
+        "bytes": 340,
+        "sha256": "a05f0589ae21e75d216a240572453a89de2ce28ff059efc62da641d864802bc0"
+      },
+      "check-1.log": {
+        "bytes": 19,
+        "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+      },
+      "check-2.log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "methods/.github/workflows/timing-alu-hard-bits.yml": {
+        "bytes": 5429,
+        "sha256": "80b3f797eda3359e61920acc0f1c55a8fa8baebd34988dfd4700b51529cad4aa"
+      },
+      "methods/hw/soc/pnr/alu-hard-bits-input.lock.json": {
+        "bytes": 4994,
+        "sha256": "2775cc7597700895e19528b13844fa58502819ae65daf0fc3428b9ec01692e72"
+      },
+      "methods/scripts/prove_alu_hard_bits.py": {
+        "bytes": 35592,
+        "sha256": "96a983c56b0c397482c26b66423454573a707e9b1cf069a5c1723578676b409b"
+      },
+      "methods/sw/tests/test_alu_hard_bits.py": {
+        "bytes": 13260,
+        "sha256": "a931b8a670d41f74b9e1e6320e21362b1c2262ad6dd6e4f7995683cb69467f86"
+      },
+      "native-controls/equal/abc-execution.json": {
+        "bytes": 545,
+        "sha256": "c81630e5a1b378d614e158c7dae2a335a95b758b49a56076484f38baa05c9cc9"
+      },
+      "native-controls/equal/abc.log": {
+        "bytes": 2311,
+        "sha256": "ff6283f5bf91fda3df2e41a2c53b2aa394015202a69cd20e2a294dc22156333d"
+      },
+      "native-controls/equal/export-execution.json": {
+        "bytes": 441,
+        "sha256": "917d6306ae10084e7f5c3d90f854cf7b8b11bdb8db44b253554d792e18bca801"
+      },
+      "native-controls/equal/export.log": {
+        "bytes": 12015,
+        "sha256": "7ffb5f37be67ce55ce4c82a77228d321a2f643350b2ef35dc174245b9fcb6e94"
+      },
+      "native-controls/equal/export.ys": {
+        "bytes": 419,
+        "sha256": "440db795a5f7868ae5b5d5bef77261f9d98247d66249f798b61e0cee954888a6"
+      },
+      "native-controls/equal/interface.json": {
+        "bytes": 267779,
+        "sha256": "ce03fafe658a8df74fb74fa33365bc2daf2ab777a98173ef0ef2a77db22ae2c4"
+      },
+      "native-controls/equal/miter.aig": {
+        "bytes": 790,
+        "sha256": "2cc95ed4608accd4fad5290fc99b0f151fd8df8b792f33ceecf4ab0198637ac8"
+      },
+      "native-controls/equal/observe.v": {
+        "bytes": 2525,
+        "sha256": "ccfac4eca51df1cce8820ef854125e1aafc35651aa53912e6d4c5df24d61a9e3"
+      },
+      "native-controls/equal/ports.map": {
+        "bytes": 279,
+        "sha256": "e9ffdeb7cfe955113a3f0fe4c6085655e55da18e67ad374684e3af8b3bd4407d"
+      },
+      "native-controls/result.json": {
+        "bytes": 5611,
+        "sha256": "e59abf2b7d3aa3fc958c7a8035234cba65edaaf6317607fdcf330213eebe5858"
+      },
+      "native-controls/wrong_output/abc-execution.json": {
+        "bytes": 557,
+        "sha256": "e49d2a11b2bc408e9a06cc9b60bf15f9d631312b95d62147bd913ac85812539b"
+      },
+      "native-controls/wrong_output/abc.log": {
+        "bytes": 773,
+        "sha256": "712985b44b1daa8dceffe25220a671ae575629770b443b9824582ab3e52c76b3"
+      },
+      "native-controls/wrong_output/counterexample.txt": {
+        "bytes": 25,
+        "sha256": "e2ddd5edf26fb8a660e69db8fa58a2735194df210dea403bf464f6870400598b"
+      },
+      "native-controls/wrong_output/export-execution.json": {
+        "bytes": 448,
+        "sha256": "aa6c9b5eecdaf7d82dffc26caa2576574ccc19ff56ad688ada6ffe4e1706997d"
+      },
+      "native-controls/wrong_output/export.log": {
+        "bytes": 12036,
+        "sha256": "e1947297b4b173f13baf83a55d0ee858c2ffd13588dbeec8cdeb4761d581a49c"
+      },
+      "native-controls/wrong_output/export.ys": {
+        "bytes": 447,
+        "sha256": "77583e7a6756b5a4f0eb01fc49029c9c21cd1f2cf49e15b984b77f9932004735"
+      },
+      "native-controls/wrong_output/interface.json": {
+        "bytes": 274070,
+        "sha256": "eba0ed10f851a25d7cae99ab0b736bac262e33d4ad9f87fc78b0d154faf82ed7"
+      },
+      "native-controls/wrong_output/miter.aig": {
+        "bytes": 801,
+        "sha256": "de5b88283246f8e519f5128d2a5dfd1155f91d68dc0b52f9635a2b9f80864024"
+      },
+      "native-controls/wrong_output/observe.v": {
+        "bytes": 2543,
+        "sha256": "12ce0c8a698ae3fcdfe477db00aacabd8797709ca42bc3c20ee1e75b7ae25ddf"
+      },
+      "native-controls/wrong_output/original-cex.json": {
+        "bytes": 298,
+        "sha256": "4f82c6e63891dc00a61bcb91c0665a937554edb52ffb73eefffd51380e25732b"
+      },
+      "native-controls/wrong_output/ports.map": {
+        "bytes": 279,
+        "sha256": "e9ffdeb7cfe955113a3f0fe4c6085655e55da18e67ad374684e3af8b3bd4407d"
+      },
+      "native-controls/wrong_output/replay-execution.json": {
+        "bytes": 447,
+        "sha256": "40f90e5804de74f64805f2a830b4da1c5f773db5b0c4a77d3f0cd96c8ea89f2c"
+      },
+      "native-controls/wrong_output/replay.log": {
+        "bytes": 8001,
+        "sha256": "b86781b35e9028cfab0c2e3408cf029892503eb0a2923f06650177861083f980"
+      },
+      "native-controls/wrong_output/replay.ys": {
+        "bytes": 325,
+        "sha256": "b5a82afd58017d50f9566af35571b898f0fe55ffedd15a95d706a96cf4677dba"
+      },
+      "native-identity/native-identity-execution.json": {
+        "bytes": 476,
+        "sha256": "2e0bd450f5c1236752935468602f0b360164a3845f29c07410c13ae39edc0605"
+      },
+      "native-identity/native-identity.log": {
+        "bytes": 1560,
+        "sha256": "c1b7f16fdd68d0ff2e2579ca9d0d56492c6bbe9708f448a9c48a08cba51cec35"
+      },
+      "native-identity/native-identity.py": {
+        "bytes": 1049,
+        "sha256": "e30d842afc1c70ad6784eb13546fa55992917767da1870eef78f4cf4e1f0ea8b"
+      },
+      "native-projection-control.py": {
+        "bytes": 2428,
+        "sha256": "48983f4ed062eacffbc768128f638af83c99ead71455bea02e5ce21c961192db"
+      },
+      "native-projection/0/interface.json": {
+        "bytes": 267875,
+        "sha256": "1bed53944b231fdc1bae970b09ca33a39c5dad40a91a2efc3b5c1061287de329"
+      },
+      "native-projection/0/miter.aig": {
+        "bytes": 844,
+        "sha256": "ea3c83425a95291e7f2c1d679068726219b60639ed0ca12f979e8f6d58c750f8"
+      },
+      "native-projection/0/observe.v": {
+        "bytes": 364,
+        "sha256": "86b3c9540cb2ed1df8b0f0ef53febd61bce48bbbdd3b17538f6e249b4d848ecd"
+      },
+      "native-projection/0/ports.map": {
+        "bytes": 333,
+        "sha256": "7a2b404ea779be4a30d19e0208f20a8d0ea23aa9db2c531026798ad815447640"
+      },
+      "native-projection/1/interface.json": {
+        "bytes": 273084,
+        "sha256": "97933da67ea8e4893a71243b6cc742e4b6652655e5753f92194b6f67580835a5"
+      },
+      "native-projection/1/miter.aig": {
+        "bytes": 855,
+        "sha256": "ae20fa45eb5ab0f5798e339ae0a53d4bdcee955e622d1c81585ce5f2c0a6c0b4"
+      },
+      "native-projection/1/observe.v": {
+        "bytes": 364,
+        "sha256": "a4ee28f42196088bf484355dc04dc3098211bc6bc280295f67e2a00105047670"
+      },
+      "native-projection/1/ports.map": {
+        "bytes": 333,
+        "sha256": "7a2b404ea779be4a30d19e0208f20a8d0ea23aa9db2c531026798ad815447640"
+      },
+      "native-projection/2/interface.json": {
+        "bytes": 2129,
+        "sha256": "c8d62b9d9e9f3ed412ef8e799e9c68e52421c75a9ee9f720fef9cd9364d8b132"
+      },
+      "native-projection/2/miter.aig": {
+        "bytes": 369,
+        "sha256": "ec5db129a4ca444740f7875e77891465e4b2ecdea392e610acca12706ed5381a"
+      },
+      "native-projection/2/observe.v": {
+        "bytes": 364,
+        "sha256": "b2841dd6edebc81a18511d4b73a2e7a7ef59d17a882cf230fd73ded17340ab8c"
+      },
+      "native-projection/2/ports.map": {
+        "bytes": 318,
+        "sha256": "ddb90c46f687aa3ab5fd7d73e82892a9873453f82522b51e2ff7cec938627cc1"
+      },
+      "native-projection/3/interface.json": {
+        "bytes": 2127,
+        "sha256": "44a1e524ea2c724c9309e9653a8d2f39d0dc8b83c7a2d429c1a5be4a833a2b53"
+      },
+      "native-projection/3/miter.aig": {
+        "bytes": 369,
+        "sha256": "c79ee8581261ab9b3cc43e8026a27120f7b78cd895c7861ef5e047919907bc29"
+      },
+      "native-projection/3/observe.v": {
+        "bytes": 364,
+        "sha256": "92ab131bed405cd0f137cd260de5e6d6847e2246066c9bbf90ec94c090626458"
+      },
+      "native-projection/3/ports.map": {
+        "bytes": 333,
+        "sha256": "7a2b404ea779be4a30d19e0208f20a8d0ea23aa9db2c531026798ad815447640"
+      },
+      "native-projection/exports-execution.json": {
+        "bytes": 436,
+        "sha256": "9b3ce51ba16bc14eaf7a542f64d0bb268241e6189d590e136555afdd46216be2"
+      },
+      "native-projection/exports.log": {
+        "bytes": 39940,
+        "sha256": "1d70ebd694fba08363866a3671fc09bbe488479af182b2455c2dbc5b09b8dbb9"
+      },
+      "native-projection/exports.ys": {
+        "bytes": 1968,
+        "sha256": "3d67612832a082fe0fbf74da3e2c1bada7aa42e77d23e86fbc3d136745ba596f"
+      },
+      "native-projection/original-execution.json": {
+        "bytes": 434,
+        "sha256": "2900f174d9c313dfce755e67a49e9f6b0641ef04288c6e2faf518af9494aedac"
+      },
+      "native-projection/original.il": {
+        "bytes": 92095,
+        "sha256": "fe19be9bc55ee68f9df14a249e817e29696f86eb99f64d9c3900b90c62f1dacd"
+      },
+      "native-projection/original.log": {
+        "bytes": 7597,
+        "sha256": "6514a78b98d6bcb74711368ea36a3716c9273be5582b0e0fb7878fc3f1a7c94b"
+      },
+      "native-projection/result.json": {
+        "bytes": 10389,
+        "sha256": "70d53716077d143c384757f1089cb7a5a3992754896b9c5c021d442685e3951e"
+      },
+      "native-projection/solve0/abc-execution.json": {
+        "bytes": 541,
+        "sha256": "66bb0edde5a0c23325c74a052a514c82d63c186f5fa672f86409e7d6462fa517"
+      },
+      "native-projection/solve0/abc.log": {
+        "bytes": 2308,
+        "sha256": "6d631c7e28f5a4f1d7aa7ff8ed06dff779c35651ada57e2d434794bdda324da4"
+      },
+      "native-projection/solve1/abc-execution.json": {
+        "bytes": 540,
+        "sha256": "e269201e9071390647fbd254ca2799d5e3c882f049f9f3c52adf55208b9094b9"
+      },
+      "native-projection/solve1/abc.log": {
+        "bytes": 734,
+        "sha256": "ea60df4def4884850dfeef3051a6d13e40f5eb6b2ea1b81c052393b1f42dad12"
+      },
+      "native-projection/solve1/counterexample.txt": {
+        "bytes": 25,
+        "sha256": "76ad67d17ec30ebb242e7937a90369075c26a432ffab75677f3b0e13235e1c6c"
+      },
+      "native-projection/solve1/original-cex.json": {
+        "bytes": 310,
+        "sha256": "723bd3907cffbcb6c2bd5186bb76999c28e9f44c38eb6825bd2c30aa80c9a488"
+      },
+      "native-projection/solve1/replay-execution.json": {
+        "bytes": 441,
+        "sha256": "beabd06007076afec6eb0e5378289e91755941eaa6df3e80f7f3d42076fc275a"
+      },
+      "native-projection/solve1/replay.log": {
+        "bytes": 6863,
+        "sha256": "e01d8a79743950ad94cc9dd7491e27a910d1f687cb041db8915a190fa9fc6f50"
+      },
+      "native-projection/solve1/replay.ys": {
+        "bytes": 426,
+        "sha256": "b145cf617d03155f84ea31c4628ffb0543480852d2ab37a73d6e23b3a45fb53c"
+      },
+      "native-projection/source.v": {
+        "bytes": 5619,
+        "sha256": "1a184d3a9ca546d7de30324a6bea894357b374703b71c7c9bc830b0c31eb1e03"
+      },
+      "native-projection/source.ys": {
+        "bytes": 163,
+        "sha256": "4ec8629658f56bc94d5c881810a7f26dc10999565b36015aba0e059f42d1063e"
+      },
+      "preflight.py": {
+        "bytes": 3665,
+        "sha256": "d952bd25224587a0c3c6fdfc172a971e6e009a322c0dd9e9858bb3895a97b1e5"
+      }
+    },
+    "relocated_capture_replay_passed": true,
+    "runtime": {
+      "bytes": 1398053408,
+      "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+    },
+    "source_files": {
+      ".github/workflows/timing-alu-hard-bits.yml": {
+        "bytes": 5429,
+        "sha256": "80b3f797eda3359e61920acc0f1c55a8fa8baebd34988dfd4700b51529cad4aa"
+      },
+      "hw/soc/pnr/alu-hard-bits-input.lock.json": {
+        "bytes": 4994,
+        "sha256": "2775cc7597700895e19528b13844fa58502819ae65daf0fc3428b9ec01692e72"
+      },
+      "scripts/prove_alu_hard_bits.py": {
+        "bytes": 35592,
+        "sha256": "96a983c56b0c397482c26b66423454573a707e9b1cf069a5c1723578676b409b"
+      },
+      "sw/tests/test_alu_hard_bits.py": {
+        "bytes": 13260,
+        "sha256": "a931b8a670d41f74b9e1e6320e21362b1c2262ad6dd6e4f7995683cb69467f86"
+      }
+    },
+    "source_graph_bytes": 143063944,
+    "state_bijection_proved": false,
+    "status": "PASS_SOURCE_NATIVE_CONTROLS_AND_CAPTURE_REPLAY_READY_FOR_PEER",
+    "symbolic_inputs": 10828
+  },
+  "independent_review": {
+    "author_receipt": {
+      "bytes": 26789,
+      "sha256": "3b3862215fed818b223c28e2552b60d138e088213e60684177cac5687c68a312"
+    },
+    "blockers": [],
+    "candidate_adopted": false,
+    "checks": [
+      "All four source files and 24 frozen Git dependencies unchanged.",
+      "Full 143063944-byte source graph is pinned; no reuse of the smaller selected benchmark graph.",
+      "Every original symbolic input remains an independent port and AIG PI; exact name/bit bijection includes clocks and unused inputs.",
+      "No latch, assumption, assertion or constraint cells accepted; X/Z rejected on functional inputs, output and cell connections.",
+      "Undefined unused debug aliases are counted without introducing symbolic inputs.",
+      "Constant bad output requires matching defined native JSON value, AIG literal and o0 bad symbol; only its redundant map row may be omitted.",
+      "Complete plain native CEX vector includes every input; original RTLIL replay assigns all inputs and requires native bad=1.",
+      "Two nontrivial positive native ABC receipts and two real negative native CEX receipts reparsed; original-RTLIL projection replay verified.",
+      "All four graph save/restore wrappers and exports match the generated source; selected sources and full input set preserved.",
+      "Timeout, undecided, native error and missing or duplicate capture remain separate from proof.",
+      "One hosted job retains exact native paths, full Git history and hidden method captures; every bit runs independently after successful preparation."
+    ],
+    "dependency_count": 24,
+    "exact_selected_originals": [
+      {
+        "bit": 11,
+        "original": [
+          "__mapped_state_equiv_ff_d",
+          738
+        ],
+        "parent": "__nssoc_obligation_0039"
+      },
+      {
+        "bit": 13,
+        "original": [
+          "__mapped_state_equiv_ff_d",
+          5732
+        ],
+        "parent": "__nssoc_obligation_0111"
+      },
+      {
+        "bit": 14,
+        "original": [
+          "__mapped_state_equiv_gate_enable",
+          0
+        ],
+        "parent": "__nssoc_obligation_0148"
+      },
+      {
+        "bit": 1,
+        "original": [
+          "__mapped_state_equiv_gate_next",
+          0
+        ],
+        "parent": "__nssoc_obligation_0149"
+      }
+    ],
+    "four_projection_exports": [
+      "aig 227 18 0 1 209",
+      "aig 231 18 0 1 213",
+      "aig 18 18 0 1 0",
+      "aig 18 18 0 1 0"
+    ],
+    "frozen_git_commit": "14f5b2f38ce6040433b888b3522800b1b264a04d",
+    "full_chip_graph_locally_run": false,
+    "full_graph": {
+      "bytes": 143063944,
+      "sha256": "30a72098dbe310b987cd868b590e548428a3f1fc03b3e232e06886c33c0c6151"
+    },
+    "limitations": [
+      "Peer performed source review, pure tests and read-only replay of saved tiny native outputs; no full graph or new native process was run.",
+      "Full AppImage pin is inherited from the source-bound author receipt and locked producer; peer did not hash the 1.4 GB runtime again.",
+      "The 800-bit concurrent results are deliberately not merged by this method.",
+      "No sequential or four-state boot acceptance, candidate adoption, final timing or manufacturing approval follows from this review."
+    ],
+    "native_controls": {
+      "equal": {
+        "aig": "aig 227 18 0 1 209",
+        "inputs": 18,
+        "verdict": "PROVED_ALL_BINARY_BOUNDARY_EQUATIONS"
+      },
+      "wrong_output": {
+        "aig": "aig 231 18 0 1 213",
+        "inputs": 18,
+        "verdict": "COUNTEREXAMPLE_REPLAYED_ON_ORIGINAL"
+      }
+    },
+    "native_execution_records_reparsed": 11,
+    "native_identity": {
+      "binaries": {
+        "yosys": {
+          "bytes": 37119496,
+          "sha256": "3a9560d83e60d9e98f34a03cdbedbb49adefc8a63096bd77c7c4108bc9ccdef2"
+        },
+        "yosys-abc": {
+          "bytes": 18857768,
+          "sha256": "c4ff60740cc2d6f0afe72f0dda58f65342cce10d64eddb6bf169577c7fa69f71"
+        }
+      },
+      "bindings": {
+        "yosys": {
+          "entry": {
+            "bytes": 16032,
+            "path": "/nix/store/vqq4mi8prw8x5rfwz7b3136rqi8v70m7-yosys-with-plugins-0.62-python3-3.13.9-env/bin/yosys",
+            "sha256": "63b1229caf9f50360cf9c61d6b812a82b2d81155306e3d3c72fd89b675b732ba"
+          },
+          "intermediate": {
+            "bytes": 623,
+            "path": "/nix/store/4bmfi4470w0i3ixcaidfki18d3fyqvva-yosys-with-plugins-0.62/bin/yosys",
+            "sha256": "163a52612b0d0540474b54ecf8ec66cd231a2031acca99f379324a694c62ff65"
+          },
+          "launcher_reference_verified": true,
+          "target": {
+            "bytes": 37119496,
+            "path": "/nix/store/f1q0w7rd0a4ny4hqvfxlhs4cmariidcy-yosys-0.62/bin/yosys",
+            "sha256": "3a9560d83e60d9e98f34a03cdbedbb49adefc8a63096bd77c7c4108bc9ccdef2"
+          }
+        },
+        "yosys-abc": {
+          "entry": {
+            "bytes": 16032,
+            "path": "/nix/store/vqq4mi8prw8x5rfwz7b3136rqi8v70m7-yosys-with-plugins-0.62-python3-3.13.9-env/bin/yosys-abc",
+            "sha256": "7073d013ccef8a7ab7e6b8add91bf08fcd73d0728f7abd8bb25c9248b9ec6401"
+          },
+          "intermediate": {
+            "bytes": 18857768,
+            "path": "/nix/store/4bmfi4470w0i3ixcaidfki18d3fyqvva-yosys-with-plugins-0.62/bin/yosys-abc",
+            "sha256": "c4ff60740cc2d6f0afe72f0dda58f65342cce10d64eddb6bf169577c7fa69f71"
+          },
+          "launcher_reference_verified": true,
+          "target": {
+            "bytes": 18857768,
+            "path": "/nix/store/f1q0w7rd0a4ny4hqvfxlhs4cmariidcy-yosys-0.62/bin/yosys-abc",
+            "sha256": "c4ff60740cc2d6f0afe72f0dda58f65342cce10d64eddb6bf169577c7fa69f71"
+          }
+        }
+      }
+    },
+    "native_processes_run": 0,
+    "output_pins_verified": 70,
+    "pending_800_not_merged": true,
+    "preserved_proved": 33517,
+    "projection_original_replay_verdict": "COUNTEREXAMPLE_REPLAYED_ON_ORIGINAL",
+    "reviewed_at_utc": "2026-10-03T07:01:30.752005+00:00",
+    "source_edits": false,
+    "source_files": {
+      ".github/workflows/timing-alu-hard-bits.yml": {
+        "bytes": 5429,
+        "sha256": "80b3f797eda3359e61920acc0f1c55a8fa8baebd34988dfd4700b51529cad4aa"
+      },
+      "hw/soc/pnr/alu-hard-bits-input.lock.json": {
+        "bytes": 4994,
+        "sha256": "2775cc7597700895e19528b13844fa58502819ae65daf0fc3428b9ec01692e72"
+      },
+      "scripts/prove_alu_hard_bits.py": {
+        "bytes": 35592,
+        "sha256": "96a983c56b0c397482c26b66423454573a707e9b1cf069a5c1723578676b409b"
+      },
+      "sw/tests/test_alu_hard_bits.py": {
+        "bytes": 13260,
+        "sha256": "a931b8a670d41f74b9e1e6320e21362b1c2262ad6dd6e4f7995683cb69467f86"
+      }
+    },
+    "state_bijection_proved": false,
+    "status": "PASS_INDEPENDENT_FOUR_HARD_METHOD_REVIEW",
+    "symbolic_input_bits": 10828,
+    "tests": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest -q -p no:cacheprovider --basetemp=/dev/shm/nssoc-hard-peer-tests sw/tests/test_alu_hard_bits.py sw/tests/test_alu_remaining_bits.py sw/tests/test_alu_state_bit_benchmark.py sw/tests/test_alu_state_refinement.py",
+      "passed": 233,
+      "returncode": 0,
+      "seconds": 8.02
+    }
+  },
+  "root_review": {
+    "author": {
+      "bytes": 26789,
+      "sha256": "3b3862215fed818b223c28e2552b60d138e088213e60684177cac5687c68a312"
+    },
+    "candidate_adopted": false,
+    "checks": [
+      "Exactoriginal143063944bytegraph and all10828independent binary inputs; no internal assumptions or latches.",
+      "Four exact original hard bit identities preserved independently of800bit job.",
+      "Source save/restore and source-bound per-bit projection; pinned native launcher-to-ELF identity.",
+      "Native map/symbol/input bijection and defined functional bad output/cells; metadata-only unused X aliases counted separately.",
+      "Missing output-map row allowed only for a defined native constant matching exact binary AIG output literal.",
+      "Full plain-vector CEX reconstructed on all original inputs and replayed against original unlowered equation.",
+      "Timeout, undecided, native failure and missing outputs cannot become proof; prior boot failure preserved."
+    ],
+    "frozen_dependencies_rehashed": 24,
+    "full_chip_locally_executed": false,
+    "peer": {
+      "bytes": 6856,
+      "sha256": "5c824c527b4fa9b010dc20d0d3ec4ab81ac2a97765cdda26fce665139d616d8a"
+    },
+    "source_files": {
+      ".github/workflows/timing-alu-hard-bits.yml": {
+        "bytes": 5429,
+        "sha256": "80b3f797eda3359e61920acc0f1c55a8fa8baebd34988dfd4700b51529cad4aa"
+      },
+      "hw/soc/pnr/alu-hard-bits-input.lock.json": {
+        "bytes": 4994,
+        "sha256": "2775cc7597700895e19528b13844fa58502819ae65daf0fc3428b9ec01692e72"
+      },
+      "scripts/prove_alu_hard_bits.py": {
+        "bytes": 35592,
+        "sha256": "96a983c56b0c397482c26b66423454573a707e9b1cf069a5c1723578676b409b"
+      },
+      "sw/tests/test_alu_hard_bits.py": {
+        "bytes": 13260,
+        "sha256": "a931b8a670d41f74b9e1e6320e21362b1c2262ad6dd6e4f7995683cb69467f86"
+      }
+    },
+    "state_bijection_proved": false,
+    "status": "ROOT_FINAL_SOURCE_AND_PIN_REVIEW_PASS",
+    "utc": "2026-10-03T07:02:49.891770+00:00"
+  },
+  "schema": 1,
+  "scope": "Validated method and tiny native controls; actual four chip equations not yet run with this method."
+}

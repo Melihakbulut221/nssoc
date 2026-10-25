@@ -1,0 +1,178 @@
+{
+  "run": 38349537241,
+  "source_head": "df64cc97",
+  "status": "REJECTED_NATIVE_LVS_EA_TO_AVDD_SHORT",
+  "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38349537241-1-layout-final_drive_v5-critical_buses_power_trunks/tx-layout-repair-cloud-final_drive_v5-critical_buses_power_trunks-38349537241-1.summary.json",
+  "summary_sha256": "a388c917a0145d6e4b9d453214e944aa2d65512214d699534823b2bf72ff765d",
+  "source_equivalence": {
+    "status": "PASS_CORE_TO_NATIVE54_GENERATOR_CONTRACT",
+    "core_sha256": "c74d1e0d2b7d7f1093653ee1d5ece27649ae97b1485e998fe3f4ff1b78cbfcdf",
+    "native_sha256": "75242abe73341e04ba62b2d4a41abf5e55b725ecec6eeb55dbf6abbbe8f2232d",
+    "generated_sha256": null,
+    "hbts": 19,
+    "resistors": 8,
+    "substrate_contacts": 27,
+    "body_port_separate": true,
+    "length_rounding_metres": "1e-18",
+    "scope": "Device connectivity, model parameters and contact geometry only. Native physical LVS/DRC and fresh extracted model remain required; contact resistance is checked in the input model, not extracted by this audit."
+  },
+  "generated_reference_equivalence": {
+    "status": "PASS_CORE_TO_NATIVE54_AND_GENERATED_REFERENCE",
+    "core_sha256": "c74d1e0d2b7d7f1093653ee1d5ece27649ae97b1485e998fe3f4ff1b78cbfcdf",
+    "native_sha256": "75242abe73341e04ba62b2d4a41abf5e55b725ecec6eeb55dbf6abbbe8f2232d",
+    "generated_sha256": "5867af1ac32bf492a6f8cfdfcb1064837032475e271988f22f016e67065ff4ab",
+    "hbts": 19,
+    "resistors": 8,
+    "substrate_contacts": 27,
+    "body_port_separate": true,
+    "length_rounding_metres": "1e-18",
+    "scope": "Device connectivity, model parameters and contact geometry only. Native physical LVS/DRC and fresh extracted model remain required; contact resistance is checked in the input model, not extracted by this audit."
+  },
+  "physical": {
+    "status": "FAIL",
+    "steps": {
+      "drc": {
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_final_drive_v5_layout_v1.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_final_drive_v5_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/drc/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/drc/drc.lyrdb",
+            "-rd",
+            "threads=2",
+            "-rd",
+            "no_recommended=False",
+            "-rd",
+            "precheck_drc=False"
+          ],
+          "returncode": 0,
+          "seconds": 5.6947643700000015,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "42fb8942b362e208e2ec844f2931bc34fc6891393472f1e39b372c7c99875b0e"
+        },
+        "measurement": {
+          "status": "PASS",
+          "process_returncode": 0,
+          "markers": 0,
+          "categories": {},
+          "category_count": 560,
+          "report_sha256": "bf129ba7e8031c93c52fbf00fe011aff12ea5d643cb972fb917c3990cb28e24e",
+          "log_sha256": "42fb8942b362e208e2ec844f2931bc34fc6891393472f1e39b372c7c99875b0e"
+        },
+        "status": "PASS"
+      },
+      "lvs": {
+        "execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "klayout",
+            "-b",
+            "-zz",
+            "-r",
+            "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+            "-rd",
+            "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/nssoc_tx_mux2_final_drive_v5_layout_v1.gds",
+            "-rd",
+            "topcell=nssoc_tx_mux2_final_drive_v5_layout_v1",
+            "-rd",
+            "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log",
+            "-rd",
+            "run_mode=deep",
+            "-rd",
+            "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/layout/schematic.cir",
+            "-rd",
+            "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb",
+            "-rd",
+            "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/extracted.cir",
+            "-rd",
+            "thr=2",
+            "-rd",
+            "no_simplify=true",
+            "-rd",
+            "top_lvl_pins=true"
+          ],
+          "returncode": 0,
+          "seconds": 4.104508449999997,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "e8f87d7ac59afcb89005653f925e19ab9e1b9710a9d3828d05578d1d9944409f"
+        },
+        "audit_execution": {
+          "command": [
+            "/home/runner/work/_temp/librelane.AppImage",
+            "python",
+            "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb",
+            "--top",
+            "nssoc_tx_mux2_final_drive_v5_layout_v1",
+            "--deck-log",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log",
+            "--output",
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/audit.json"
+          ],
+          "returncode": 1,
+          "seconds": 0.7856923889999905,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+        },
+        "audit": {
+          "status": "FAIL",
+          "top": "nssoc_tx_mux2_final_drive_v5_layout_v1",
+          "reasons": [
+            "Non-matching, skipped, missing or warning circuit",
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "NoMatch": 1
+          },
+          "circuits": [
+            {
+              "layout": "nssoc_tx_mux2_final_drive_v5_layout_v1",
+              "schematic": "NSSOC_TX_MUX2_FINAL_DRIVE_V5_LAYOUT_V1",
+              "status": "NoMatch",
+              "layout_devices_recursive": 54,
+              "schematic_devices_recursive": 54
+            }
+          ],
+          "inputs": {
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/result.lvsdb": {
+              "bytes": 273382,
+              "sha256": "ab71578a078630ee01946311215e1a061526cbb70c89edfca68f2cd6d13dad19"
+            },
+            "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-layout-repair/physical/lvs/deck.log": {
+              "bytes": 37159,
+              "sha256": "5e2c6c4a0a3904c4751c11f24af91facfcae1f450caa02903b5a05900e215519"
+            }
+          }
+        }
+      }
+    },
+    "serial_phy_complete": false,
+    "main_chip_integrated": false,
+    "qualified_pex": false,
+    "error": "ValueError('Strict transistor comparison failed')"
+  },
+  "diagnosis": {
+    "native_report_reader": 38349791003,
+    "native_extracted_netlist": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38349791003-1-summary/tx-layout-repair-cloud-final_drive_v5-critical_buses_power_trunks-38349537241-1.5e00ddb3291c.summary.json",
+    "observation": "Native extraction maps AP/AN emitters and SP selector collectors to avdd instead of internal ea. Resistor D20 avdd pin midpoint365.4um at y29.72 and D21 ea escape lane366um at samey. Wider18um resistor made different-net Metal3 access overlap.",
+    "repair": "Increase finalv5 resistor bank pitch19.2 to28.8um; all circuit values and acceptance limits unchanged. Must rerun nativeDRC/LVS/faults."
+  },
+  "adopted": false
+}

@@ -1,0 +1,38 @@
+{
+  "status": "CLEAN_BOUNDED_SOURCE_ONLY_REVIEW",
+  "sources": {
+    "hw/soc/flow/make_pcie_clock_vco_v4_local_v7.py": {
+      "bytes": 32971,
+      "sha256": "1b55f085629a77ef7add09da0ffc2654892242f374b8c30c283fab791bb36163"
+    },
+    "hw/soc/flow/check_pcie_clock_vco_v4_local_v7.py": {
+      "bytes": 34097,
+      "sha256": "c978ea44b96bc5e6ec375f199c7e6af26c4060444211b30195875e2808bc3c35"
+    },
+    "sw/tests/test_pcie_clock_vco_v4_local_v7.py": {
+      "bytes": 22501,
+      "sha256": "e6f762086d254cd9d13be8abe76d2a5762ff22b57100678c2af9b548c4efcc3b"
+    }
+  },
+  "prior_generator": {
+    "bytes": 30812,
+    "sha256": "02579a53482835490dc7308d22a0da2ba8324129be0f24216bd167d9138c2a35"
+  },
+  "exact_unchanged_function_asts": [
+    "placement",
+    "devices",
+    "physical_reference",
+    "lef",
+    "use_direction"
+  ],
+  "findings": [
+    "Exact source parser, all49 primitive parameters/nets, placement function, physical reference and finite substrate/well contact equations are unchanged from V6. Six public ports and rail/body separation are unchanged.",
+    "Main generator changes are restricted to real PCell via arrays on twelve collector/base native escapes, twelve M3-to-M4 escapes and twenty-six ring-net M4-to-M5 bus landings, plus witness metadata. Existing0.4um M3 route rectangles remain literal. Via landing/enclosure polygons can change with native PCell parameters; no claim of unchanged total conductor geometry.",
+    "Ring roles are limited to actual P0/N0/P1/N1/P2/N2 nets and legal layer/array tuples. Existing return roles are mutually exclusive. No new ideal net union, virtual body join or primitive parameter substitution found.",
+    "Checker requires twelve actual C/B route identities and fifty unique ring-via roles; each native lower-level array has eight distinct finite positive boxes per layer. Bus x coordinates are validated through the producer/physical evidence chain, not independently reconstructed by this helper alone."
+  ],
+  "limitations": [
+    "No native rerun, test execution, GDS polygon/cut audit, DRC/LVS/RC replay or powered-wave acceptance. Native spacing/connectivity and actual via geometry remain the separate author/root physical checks.",
+    "No device-SOA, PVT, jitter, PLL/CDR or frequency acceptance claim from this source review."
+  ]
+}

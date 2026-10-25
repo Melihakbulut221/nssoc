@@ -1,0 +1,177 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-data3-v25-extraction-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/cdr-data3-v25-extraction-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr-data3-v25-extraction-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  planes:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Compile and verify exact dependency receipt paths and native gates
+        run: |
+          python3 -m py_compile scripts/cloud_cdr_data3_v25_extraction_stage.py scripts/cloud_cdr_data3_v25_*.py scripts/check_cdr_data3_v25_extraction_sources.py
+          python3 scripts/check_cdr_data3_v25_extraction_sources.py
+      - name: Restore pinned native runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6
+          python3 -m pip install networkx==3.4.2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Native stage and immutable publication
+        id: native
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_data3_v25_extraction_stage.py --stage planes
+      - name: Preserve raw failed stage if publication or native verification failed
+        if: always() && steps.native.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-data3-v25-planes-${{ github.run_id }}
+          path: |
+            hw/soc/out/cloud-cdr-data3-v25-*/
+            cdr-data3-v25-*.json
+          retention-days: 30
+  wire-inputs:
+    needs: planes
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Compile and verify exact dependency receipt paths and native gates
+        run: |
+          python3 -m py_compile scripts/cloud_cdr_data3_v25_extraction_stage.py scripts/cloud_cdr_data3_v25_*.py scripts/check_cdr_data3_v25_extraction_sources.py
+          python3 scripts/check_cdr_data3_v25_extraction_sources.py
+      - name: Restore pinned native runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6
+          python3 -m pip install networkx==3.4.2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Native stage and immutable publication
+        id: native
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_data3_v25_extraction_stage.py --stage wire-inputs
+      - name: Preserve raw failed stage if publication or native verification failed
+        if: always() && steps.native.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-data3-v25-wire-inputs-${{ github.run_id }}
+          path: |
+            hw/soc/out/cloud-cdr-data3-v25-*/
+            cdr-data3-v25-*.json
+          retention-days: 30
+  binding:
+    needs: wire-inputs
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Compile and verify exact dependency receipt paths and native gates
+        run: |
+          python3 -m py_compile scripts/cloud_cdr_data3_v25_extraction_stage.py scripts/cloud_cdr_data3_v25_*.py scripts/check_cdr_data3_v25_extraction_sources.py
+          python3 scripts/check_cdr_data3_v25_extraction_sources.py
+      - name: Restore pinned native runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6
+          python3 -m pip install networkx==3.4.2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Native stage and immutable publication
+        id: native
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_data3_v25_extraction_stage.py --stage binding
+      - name: Preserve raw failed stage if publication or native verification failed
+        if: always() && steps.native.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-data3-v25-binding-${{ github.run_id }}
+          path: |
+            hw/soc/out/cloud-cdr-data3-v25-*/
+            cdr-data3-v25-*.json
+          retention-days: 30
+  rc:
+    needs: wire-inputs
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Compile and verify exact dependency receipt paths and native gates
+        run: |
+          python3 -m py_compile scripts/cloud_cdr_data3_v25_extraction_stage.py scripts/cloud_cdr_data3_v25_*.py scripts/check_cdr_data3_v25_extraction_sources.py
+          python3 scripts/check_cdr_data3_v25_extraction_sources.py
+      - name: Restore pinned native runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6 tk8.6
+          python3 -m pip install networkx==3.4.2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Native stage and immutable publication
+        id: native
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_data3_v25_extraction_stage.py --stage rc
+      - name: Preserve raw failed stage if publication or native verification failed
+        if: always() && steps.native.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-data3-v25-rc-${{ github.run_id }}
+          path: |
+            hw/soc/out/cloud-cdr-data3-v25-*/
+            cdr-data3-v25-*.json
+          retention-days: 30
+
+
+# Fresh extraction of v25 physical parent39508843412. All original native
+# device/terminal/conductor/point, raw RC and corruption gates remain required.

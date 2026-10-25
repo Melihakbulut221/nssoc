@@ -1,0 +1,5 @@
+# Fresh v5 full32 physical parent
+
+The two qualified v5 leaves replace all30prestage macros in the31macro serializer core:28Nx1,2Nx3 and the independently proven final77emitter macro. The resulting expected census remains1674physical devices and719HBT emitters. Inputs pin native physical run39063246309, complete archive hashes, full summary content and generated GDS/LEF/reference hashes. Candidate circuit hashes also match qualified native full32run39060767622.
+
+Actual new Nx1 height is592.04um, Nx3 height387.24um. The older422um tight row pitch would overlap the Nx1cells. This candidate therefore permits only the original1000um column/600um row placement and explicitly rejects child-height/channel violations before routing. It preserves all60intermacro data wires and actual supply/substrate connections. Fresh geometry is mandatory; no old compact parent or RC is reused. The existing exact topology selection control,719emitter census,560DRCrules, deep/flat1674device LVS and five reference/geometry faults remain enabled. This is not an electrical, RF, all-corner or completePHY qualification. New RC and loaded transient response are still required.

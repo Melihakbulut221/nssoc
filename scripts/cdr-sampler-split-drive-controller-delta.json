@@ -1,0 +1,73 @@
+{
+  "baseline_path": "scripts/cloud_cdr_sampler_load_drive.py",
+  "baseline_sha256": "c2df89c55e95f8aa9a0a25222c828d21006767fa944304589c01edb14d25869b",
+  "candidate_path": "scripts/cloud_cdr_sampler_split_drive.py",
+  "candidate_sha256": "5c0f1b71b4a74f5aae04d7626a81d09fe891c8f5b9062fa02820715429237d16",
+  "edits": [
+    {
+      "before": "rx_sampler_load_drive_v2.spice",
+      "after": "rx_sampler_split_drive_v3.spice",
+      "count": 1
+    },
+    {
+      "before": "973930e61f732a729c751c9a7048e41f6eb81720aac23e620efa0a120b192f70",
+      "after": "801d27fa6cbe5acd6e64acd9255c69d66400d42ee567fe954497d72d97711514",
+      "count": 1
+    },
+    {
+      "before": "load_drive_v2",
+      "after": "split_drive_v3",
+      "count": 4
+    },
+    {
+      "before": "len(devices)==12",
+      "after": "len(devices)==16",
+      "count": 1
+    },
+    {
+      "before": "('dp','dn','lp','ln','cs','ch')",
+      "after": "('dp','dn','lp','ln','cs0','cs1','ch0','ch1')",
+      "count": 1
+    },
+    {
+      "before": "assert sum(x['nx']for x in devices.values())==128",
+      "after": "assert all(1<=x['nx']<=10 for x in devices.values()), 'HBT multiplicity outside native model domain'\n    assert sum(x['nx']for x in devices.values())==128",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-sampler-load-drive-",
+      "after": "cloud-cdr-sampler-split-drive-",
+      "count": 1
+    },
+    {
+      "before": "Candidate12HBT/",
+      "after": "Candidate16HBT/",
+      "count": 1
+    },
+    {
+      "before": "Fourfold HBT Nx/tail width/collector resistor width relative to original hybrid sampler.",
+      "after": "Fourfold total HBT emitter count/tail width/collector resistor width relative to original hybrid sampler; each formerly invalid Nx16 clock device is two separate native Nx8 devices.",
+      "count": 1
+    },
+    {
+      "before": "from check_cdr_sampler_load_drive_source import check",
+      "after": "from check_cdr_sampler_split_drive_source import check",
+      "count": 1
+    },
+    {
+      "before": "        nodes={n for x in [*devices.values(),*mos.values()]",
+      "after": "        model=lib/'models/models/sg13g2_hbt_mod.lib'\n        assert sha(model)=='ae9288f885dd30fab24b07ed1e7e02e69eac9154022a0a6da576985183b0bd79'\n        text=model.read_bytes().decode('latin-1')\n        assert re.search(r'(?i)Valid numbers:\\s*NX\\s*=\\s*1\\s*-\\s*10',text)\n        assert \"Csub s1 bn C = '2.30E-14-(1.50E-15*Nx)'\"in text\n        assert all(1<=d['nx']<=10 and 2.30e-14-1.50e-15*d['nx']>0 for d in devices.values())\n        rejected=[]\n        for bad in (0,11,16):\n            corrupted=SOURCE.read_text().replace('Nx=8','Nx='+str(bad),1)\n            try:bind(corrupted,output)\n            except AssertionError:rejected.append(bad)\n        assert rejected==[0,11,16]\n        r['native_model_domain']=dict(model_sha256=sha(model),minimum_nx=1,maximum_nx=10,actual_nx=8,device_count=16,total_nx=128,minimum_csub_f=1.10e-14,rejected_source_multiplicities=rejected,independent_physical_devices_required=True)\n        nodes={n for x in [*devices.values(),*mos.values()]",
+      "count": 1
+    },
+    {
+      "before": "PASS_NATIVE_LOAD_DRIVE_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "after": "PASS_NATIVE_SPLIT_DRIVE_STRESS_NOT_CDR_OR_PHYSICAL_ACCEPTANCE",
+      "count": 1
+    },
+    {
+      "before": "REJECTED_NATIVE_LOAD_DRIVE_STRESS",
+      "after": "REJECTED_NATIVE_SPLIT_DRIVE_STRESS",
+      "count": 1
+    }
+  ]
+}

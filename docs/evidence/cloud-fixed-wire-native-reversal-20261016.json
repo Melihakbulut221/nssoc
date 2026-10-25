@@ -1,0 +1,233 @@
+{
+  "run": 38827797297,
+  "job": 116739230740,
+  "source": "49ad36d9e83d5fc93122afa296f49618ec71b0ba",
+  "accepted": false,
+  "status": "REJECTED_NATIVE_UNCONDITIONAL_TERMINAL_REVERSAL",
+  "summary_sha256": "532d3eee3d2951775d3ea29557fcc8406ff10138f298698da6b35ae12ba57e35",
+  "manifest_sha256": "548951b3eea85d82a3a93f2946648824fdcf7dad0516c40fa141813a30ed79e5",
+  "summary": {
+    "status": "FAIL_OR_ERROR",
+    "accepted": false,
+    "source_run": 38788529905,
+    "source_head": "49ad36d9e83d5fc93122afa296f49618ec71b0ba",
+    "controls": {
+      "positive_exact_change": true,
+      "negative_controls": [
+        "coordinate",
+        "missing_route",
+        "wrong_class",
+        "missing_nets",
+        "count",
+        "duplicate_nets",
+        "broken_connection"
+      ]
+    },
+    "full_serial_phy_complete": false,
+    "final_timing_complete": false,
+    "scope": "Native FIXED encoding and exact existing design preservation only. No physical ECO or reroute, no fresh RC, no signoff. Original antenna and global overflow failures remain open.",
+    "source_sha256": "4ecf6f150c7288c43b99fb944bec72e5ad45f693234181ff47c1df7566957493",
+    "source_summary_sha256": "e7ba93109d4aa057dd421fff97d1deb3275743ed8beecb3980f9e7fe36c632b2",
+    "source_archive_sha256": "ce430c94dd6da745f2a15420eb5f8031842e9ddd78b6ad70aa0bb56634c0b964",
+    "before_warnings": [
+      "[WARNING ORD-0039] .openroad ignored with -python"
+    ],
+    "before": {
+      "counts": {
+        "instances": 113791,
+        "nets": 113863,
+        "wired_nets": 113556
+      },
+      "instances_sha256": "9a6cf2a978874eed787e37f824997d064825b32d06e5ae8b13da58286ec8af8e",
+      "nets_sha256": "dd5ce9f06114f4e9730539d37f581eba47e019da7ce705384d2b4828d8dc6bb8",
+      "fixed_data_sha256": "70c5c35c41837048ffd08ebb41bbaa2235789b6f14d3535afe9bfaf226ef20e8",
+      "wire_type_net_counts": {
+        "ROUTED": 113556
+      },
+      "encoded_path_counts": {
+        "ROUTED": 1787710
+      },
+      "metadata_only_negative_control": [
+        {
+          "net": "$abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132399",
+          "metadata": "FIXED",
+          "encoded": "ROUTED"
+        }
+      ],
+      "metadata_only_negative_control_rejected": true
+    },
+    "export-def_warnings": [],
+    "converted_route_clauses": 113556,
+    "encode-fixed_warnings": [],
+    "after_warnings": [
+      "[WARNING ORD-0039] .openroad ignored with -python"
+    ],
+    "after": {
+      "counts": {
+        "instances": 113791,
+        "nets": 113863,
+        "wired_nets": 113556
+      },
+      "instances_sha256": "9a6cf2a978874eed787e37f824997d064825b32d06e5ae8b13da58286ec8af8e",
+      "nets_sha256": "dd5ce9f06114f4e9730539d37f581eba47e019da7ce705384d2b4828d8dc6bb8",
+      "fixed_data_sha256": "70c5c35c41837048ffd08ebb41bbaa2235789b6f14d3535afe9bfaf226ef20e8",
+      "wire_type_net_counts": {
+        "FIXED": 113556
+      },
+      "encoded_path_counts": {
+        "FIXED": 1787710
+      },
+      "metadata_only_negative_control": [],
+      "metadata_only_negative_control_rejected": false
+    },
+    "full_def_exact_expected": false,
+    "def_difference": {
+      "differing_lines": 121325,
+      "first_lines": [
+        {
+          "line": 117528,
+          "expected": "    - VGND ( PIN VGND ) ( * VSS ) ( * VSS! ) + USE GROUND",
+          "actual": "    - VGND ( PIN VGND ) ( * VSS! ) ( * VSS ) + USE GROUND"
+        },
+        {
+          "line": 170760,
+          "expected": "    - VPWR ( PIN VPWR ) ( * VDD ) ( * VDDARRAY! ) ( * VDD! ) + USE POWER",
+          "actual": "    - VPWR ( PIN VPWR ) ( * VDD! ) ( * VDDARRAY! ) ( * VDD ) + USE POWER"
+        },
+        {
+          "line": 222873,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132399 ( $auto$ff.cc:337:slice$1187664 D ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1724030 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132399 ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1724030 Y ) ( $auto$ff.cc:337:slice$1187664 D ) + USE SIGNAL"
+        },
+        {
+          "line": 222881,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132598 ( place27938 A ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1743894 B1 ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725727 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132598 ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725727 Y ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1743894 B1 ) ( place27938 A ) + USE SIGNAL"
+        },
+        {
+          "line": 222895,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132682 ( $auto$ff.cc:337:slice$1186950 D ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1724207 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132682 ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1724207 Y ) ( $auto$ff.cc:337:slice$1186950 D ) + USE SIGNAL"
+        },
+        {
+          "line": 222903,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132858 ( $auto$ff.cc:337:slice$1186542 D ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1724263 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132858 ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1724263 Y ) ( $auto$ff.cc:337:slice$1186542 D ) + USE SIGNAL"
+        },
+        {
+          "line": 222911,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132947 ( $auto$ff.cc:337:slice$1186377 D ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1734949 C ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1728407 A_N ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725169 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1132947 ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725169 Y ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1728407 A_N ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1734949 C ) ( $auto$ff.cc:337:slice$1186377 D ) + USE SIGNAL"
+        },
+        {
+          "line": 222929,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1133443 ( hold59601 A ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1726440 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1133443 ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1726440 Y ) ( hold59601 A ) + USE SIGNAL"
+        },
+        {
+          "line": 222933,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1133456 ( hold58733 A ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725197 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:118:implement_pattern_cache$1133456 ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725197 Y ) ( hold58733 A ) + USE SIGNAL"
+        },
+        {
+          "line": 222941,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:170:map_fsm$1132160\\[2\\] ( $auto$ff.cc:337:slice$1188151 D ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1724234 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:170:map_fsm$1132160\\[2\\] ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1724234 Y ) ( $auto$ff.cc:337:slice$1188151 D ) + USE SIGNAL"
+        },
+        {
+          "line": 222946,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:170:map_fsm$1132259\\[1\\] ( $auto$ff.cc:337:slice$1187912 D ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725251 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:170:map_fsm$1132259\\[1\\] ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725251 Y ) ( $auto$ff.cc:337:slice$1187912 D ) + USE SIGNAL"
+        },
+        {
+          "line": 222956,
+          "expected": "    - $abc$1603216$auto$fsm_map.cc:170:map_fsm$1132259\\[2\\] ( $auto$ff.cc:337:slice$1187913 D ) ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725438 Y ) + USE SIGNAL",
+          "actual": "    - $abc$1603216$auto$fsm_map.cc:170:map_fsm$1132259\\[2\\] ( $abc$1705011$auto$blifparse.cc:397:parse_blif$1725438 Y ) ( $auto$ff.cc:337:slice$1187913 D ) + USE SIGNAL"
+        }
+      ],
+      "expected_bytes": 130481394,
+      "actual_bytes": 130481394
+    },
+    "shapes-baseline_warnings": [
+      "[WARNING ORD-0039] .openroad ignored with -python"
+    ],
+    "shapes-fixed_warnings": [
+      "[WARNING ORD-0039] .openroad ignored with -python"
+    ],
+    "decoded_shapes_sha256": {
+      "before": "c9e0e1b926d817b1e52edc414d34fe09d4e27bd445d903b3a2e10e88cb99eb4c",
+      "after": "5e3fb8556fd4fae6bcf6c5f3f839e9f8a71ae29dc12640b03eb33f5b45fd6fe3"
+    },
+    "decoded_shapes_identical": false,
+    "error": "AssertionError('Native full DEF changed beyond explicit route class conversion')",
+    "outputs": {
+      "fixed.odb": "b28b798d14073e172fe7623899fe4243a906fe6e8cd692105e6b53f9389839eb",
+      "shapes-baseline.log": "52767af553d987c802e171e259d7e33166af145d29103edf541c9500586b0a4b",
+      "export-def.log": "c578139f95817d2b3b47ddf72cee609cd74079e0f8a8ab6ab9ab83fa3f0aebad",
+      "shapes-fixed.log": "52767af553d987c802e171e259d7e33166af145d29103edf541c9500586b0a4b",
+      "after.def": "7b0aac17b6bd5ad7f73ffbf32b6dd4a92d1ea3bf4ca46df6e9a8c3eb493bf8b6",
+      "before.json": "5608b60c5b9878052100318c4f4a82aa0c99fd3e25a49ed1eeda0af3b09ebeed",
+      "encode-fixed.tcl": "4f975c2c2f80a60b8a0eb3c0eff12ba99f14e9f9ea4d7a97905d3a51074cc8da",
+      "after.json": "8ded19994ab621fa3bd5e36ad636a8a52132df8d2e48fd8b290d038140b5748e",
+      "encode-fixed.log": "94ea1fe6dc587969cda82c63fbaad89c8b09c23873e337934ad838fb35840644",
+      "after.log": "e5d56a7259d0972908c18e72723150c69c28ca1d52b980750ca379fcc7621328",
+      "before.log": "13fed0b24f3a5fbbc7f60190f3fdeeda9fbf01d787b98e924dc4272507ddbd05",
+      "expected-fixed.def": "680ad3ab5503420252c4f619741612d1fd6bc6d26e05122ddca57a67b542da9a",
+      "export-def.tcl": "958fef5304012d97ddd51a3ce9695460ad9365062c9b6e1c70db3900a591746c",
+      "fixed-nets.def": "8193a4119fec69a60722d60fde6b6836dbab72711cbc1c7a9c3b88f923431f2b",
+      "before.def": "0f8db02230efda1a76ddbb5dbb367500b82fba6a3195bffaa8485e336b6b548d",
+      "baseline/native-capabilities.json": "f55dd2b7e7fe2874f14fbb679b103642ae45f5f56a76811474fce3fcef3b70cb",
+      "baseline/export.json": "a676a8905001ace2403e631501c61bb04f739a970c84e2553b1a6d6022972d91",
+      "baseline/signal-geometry.jsonl.gz": "b7c38e903391c698b3f811bcd7d3ef4a3ceef4d16bb36484704434df84a59ac1",
+      "source/routed.odb": "4ecf6f150c7288c43b99fb944bec72e5ad45f693234181ff47c1df7566957493",
+      "source/summary.json": "e7ba93109d4aa057dd421fff97d1deb3275743ed8beecb3980f9e7fe36c632b2",
+      "fixed/native-capabilities.json": "f55dd2b7e7fe2874f14fbb679b103642ae45f5f56a76811474fce3fcef3b70cb",
+      "fixed/export.json": "a676a8905001ace2403e631501c61bb04f739a970c84e2553b1a6d6022972d91",
+      "fixed/signal-geometry.jsonl.gz": "a7d25b5f34f31e21423e02df1ca02c1ba3ec026c0631fc254d634a875d5bff3a",
+      "baseline/source/routed.odb": "4ecf6f150c7288c43b99fb944bec72e5ad45f693234181ff47c1df7566957493",
+      "fixed/source/routed.odb": "b28b798d14073e172fe7623899fe4243a906fe6e8cd692105e6b53f9389839eb"
+    }
+  },
+  "archive": {
+    "format": "ordered-tar-gzip-parts-v1",
+    "stem": "fixed-wire-control-38827797297-1",
+    "source_directory": "cloud-fixed-wire-control",
+    "bytes": 204514966,
+    "sha256": "2e0d9939d2bff92fc5ae37b6c73dd69576042e091a74dc348988483c0d515c12",
+    "parts": [
+      {
+        "index": 0,
+        "name": "fixed-wire-control-38827797297-1.tar.gz.part0000",
+        "bytes": 204514966,
+        "sha256": "2e0d9939d2bff92fc5ae37b6c73dd69576042e091a74dc348988483c0d515c12"
+      }
+    ],
+    "part_limit_bytes": 1073741824,
+    "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+    "verification": {
+      "parts": 1,
+      "bytes": 204514966,
+      "sha256": "2e0d9939d2bff92fc5ae37b6c73dd69576042e091a74dc348988483c0d515c12",
+      "all_parts_and_combined_bytes_verified": true
+    }
+  },
+  "primary_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/defin/definNet.cpp",
+      "sha256": "a5c7f0edd15c6c86c4c8f1230a1e91b1b2d8949952061f7e5ab680fd0f696587",
+      "lines": [
+        570,
+        589
+      ]
+    },
+    {
+      "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbITermItr.cpp",
+      "sha256": "730be9efa259bf0eb5bd182fd0f8e97796e640e53566aea9916e756586687771",
+      "lines": [
+        26,
+        35
+      ]
+    }
+  ],
+  "correction": "definNet::end reverses native netITerms even with0connections because dbNetITermItr::orderReversed alwaysreturns true. Apply identical NETS-only FIXED patch twice to restore original iterator order; this does not disconnect pins or modify dont_touch. ExactfullDEF andrawindependentgeometry equality retained; actualnativeproof required."
+}

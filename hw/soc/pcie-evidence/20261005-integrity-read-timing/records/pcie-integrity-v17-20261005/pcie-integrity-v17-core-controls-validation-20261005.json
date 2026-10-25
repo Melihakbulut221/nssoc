@@ -1,0 +1,32 @@
+{
+  "status": "PASS_BALANCED_PAYLOAD_TREE_AND_ACTUAL_PUBLIC_FAULT_CONTROLS",
+  "source_freeze": {
+    "bytes": 2299,
+    "sha256": "48a78275df28c51417f5e318750ccc77d933ccf34fd7188cdc3158445e101dcd"
+  },
+  "pytest_executions": 39,
+  "distinct_predicates": 38,
+  "duplicate_predicate": "Literal inverse executed standalone and throughmiter module",
+  "positive_public_cases": 26,
+  "actual_RTL_mutants": 30,
+  "literal_read_cases": 12288,
+  "directed_fourstate_cases": 59,
+  "isolated_sensitivity_cases": 31,
+  "literal_ring_sizes": [
+    16,
+    64,
+    128
+  ],
+  "literal_read_output_bits": 243,
+  "default_whole_DUT_MAX_ENCODED_BYTES": 150,
+  "default_ring_dwords": 64,
+  "excluded_MAX4118_test_ids": 2,
+  "archive": {
+    "path": "/dev/shm/pcie-integrity-v17-default-controls-20261005.tar.xz",
+    "bytes": 3437920,
+    "sha256": "01327ddae08e71b1e13a96ecec7a879a0d9595929de3a946d717bf99cabf6f9b",
+    "members": 232
+  },
+  "full_readback": true,
+  "scope": "V17 balanced known-eligibility and payload-mux tree from frozenV11. Original dynamic read versus actual candidate across4096states each at rings16/64/128;59 directed selected X/Z cases for everyfield/fourlanes and unknown ptr/count/keep/verdict plus unselected X/Z isolation. Ten select/mask/tree mutants and one payloadOR Z-conversion mutant fail actualHDL comparisons. Serial oracle13 and V11/V17 public cyclemiter13 include occupiedslot metadata and committedverdict;2miter faults and8parser/CRC faults detected. Exactinverse preserves allV11writers/control. Thirtyone isolated event cases cover each input changing alone, hidden-to-visible verdict/keep/count transitions and unknown address recovery; nine actual omitted-event/wrong-word sensitivity mutants fail comparison. Sourcepeer PASS. No fullformal/MAX4118, mappedfunctional replay or physicaltimingclaim."
+}

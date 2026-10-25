@@ -1,0 +1,176 @@
+{
+  "schema": 1,
+  "status": "PREPARED_CORRECTED_STATE_BIJECTION_PENDING_FULL_UNCONSTRAINED_CLOUD_PROOF",
+  "validation": {
+    "frozen": true,
+    "at_utc": "2026-10-02T12:46:51.304001+00:00",
+    "source_pins": {
+      "scripts/prove_alu_state_repair.py": {
+        "bytes": 15236,
+        "sha256": "d44cb8d809c1d9649b0c33435e41a044d3610044316f16701027d612abfaeea5"
+      },
+      "sw/tests/test_alu_state_repair.py": {
+        "bytes": 6939,
+        "sha256": "bb574c460be3cc128b1bf7f1562b83114eb5ebc8f5b9c6f16e647a4e25daff9b"
+      },
+      ".github/workflows/timing-alu-state-repair.yml": {
+        "bytes": 1870,
+        "sha256": "9ce2c3acb2ed2ffd23ba2aad1c2b82d4e0168eb15d5a09c908eff1c1dbc6a38e"
+      }
+    },
+    "old_methods_unchanged": {
+      "scripts/prove_alu_mapped_state.py": {
+        "bytes": 25957,
+        "sha256": "4ea03404cd11bdeda05dc018c8b9b4032f8622754f15dca7b6faef4b6d922335"
+      },
+      "scripts/replay_alu_state_counterexample.py": {
+        "bytes": 13385,
+        "sha256": "82568b1092fc4c1640faff1f92c3b898a91060366569ba8538981d21af0b8d4c"
+      }
+    },
+    "checks": {
+      "tests": {
+        "command": [
+          "hw/soc/tools/cocotb-venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "sw/tests/test_alu_state_repair.py",
+          "sw/tests/test_alu_state_counterexample.py",
+          "sw/tests/test_alu_mapped_state.py"
+        ],
+        "returncode": 0,
+        "output": "........................................................................ [ 97%]\n..                                                                       [100%]\n74 passed in 0.32s\n"
+      },
+      "ruff": {
+        "command": [
+          "hw/soc/tools/dev-env/bin/ruff",
+          "check",
+          "scripts/prove_alu_state_repair.py",
+          "sw/tests/test_alu_state_repair.py"
+        ],
+        "returncode": 0,
+        "output": "All checks passed!\n"
+      },
+      "actionlint": {
+        "command": [
+          "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+          ".github/workflows/timing-alu-state-repair.yml"
+        ],
+        "returncode": 0,
+        "output": ""
+      }
+    },
+    "tiny_native_receipt": {
+      "bytes": 2792,
+      "sha256": "ae0f47e37bb4a568cbac600c135c363954f0833e58a92ff37ba9d66b032df4f5"
+    },
+    "corrected_diagnosis": {
+      "bytes": 9043,
+      "sha256": "e549a6ee62f4305bd42c3b2640c86ad44f7db8aadf236eeab6d44941a2a00508"
+    },
+    "actual_full_chip_proof_executed_locally": false,
+    "all_production_claims": false
+  },
+  "tiny_native": {
+    "scope": "Actual tiny native permutation controls only; no full chip frontend or proof locally",
+    "runtime": {
+      "bytes": 1398053408,
+      "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+    },
+    "liberty": {
+      "bytes": 1715351,
+      "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+    },
+    "controls": {
+      "wrong_three_cycle": {
+        "verdict": "COUNTEREXAMPLE_PRESERVED",
+        "execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "yosys",
+            "-Q",
+            "-T",
+            "-s",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-state-repair-source/tiny-native/wrong_three_cycle.ys"
+          ],
+          "returncode": 1,
+          "seconds": 0.2659661329998926,
+          "script": {
+            "bytes": 1468,
+            "sha256": "7518e1c60fd62b94aa712210c7b19966ecea3d2f5286054efbdc238eaff2a4c2"
+          },
+          "log": {
+            "bytes": 21884,
+            "sha256": "53769e260969a277e3449587bec0aa4fda404adc32909e9d0ff8169766bdc335"
+          }
+        }
+      },
+      "corrected_three_cycle": {
+        "verdict": "PROVED_ALL_BINARY_BOUNDARY_EQUATIONS",
+        "execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "yosys",
+            "-Q",
+            "-T",
+            "-s",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-state-repair-source/tiny-native/corrected_three_cycle.ys"
+          ],
+          "returncode": 0,
+          "seconds": 0.31601852499807137,
+          "script": {
+            "bytes": 1480,
+            "sha256": "af3149ca251be865a4adf0b37b73775ffc2e0410f5e6668d3a4171c1bb9736f7"
+          },
+          "log": {
+            "bytes": 22087,
+            "sha256": "80e1683c96aa7c3e5337c74aa9a6e061f205cc296137fff1d2b4e8e0e6f1e72a"
+          }
+        }
+      },
+      "wrong_reset": {
+        "verdict": "COUNTEREXAMPLE_PRESERVED",
+        "execution": {
+          "command": [
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+            "yosys",
+            "-Q",
+            "-T",
+            "-s",
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/alu-state-repair-source/tiny-native/wrong_reset.ys"
+          ],
+          "returncode": 1,
+          "seconds": 0.3158245539998461,
+          "script": {
+            "bytes": 1450,
+            "sha256": "36b3fb8435c17493902a4faee27fbcbb1022915910094ced23aea842e33dddaa"
+          },
+          "log": {
+            "bytes": 22989,
+            "sha256": "0289e0f7f3327ced31a8a916d975d60bc3fbec599c253ee7ef372939f8463ed5"
+          }
+        }
+      }
+    }
+  },
+  "root_review": {
+    "source_and_native_log_pins": "PASS",
+    "focused_tests": 125,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "actual_full_chip_proof_executed_locally": false
+  },
+  "corrected_indices": [
+    9982,
+    9983,
+    9988
+  ],
+  "symbolic_input_bits": 10828,
+  "compared_boundary_bits": 34321,
+  "scope": "Complete binary mapped boundary equations under explicit corresponding initial state and identical opaque SRAM behavior; no fixed input assignment or internal cutpoint assumptions. Full proof has not yet run.",
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "transistor_lvs_pass": false,
+  "manufacturing_approval": false
+}

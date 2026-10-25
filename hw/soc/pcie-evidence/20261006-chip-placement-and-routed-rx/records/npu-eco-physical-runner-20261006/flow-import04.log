@@ -1,0 +1,124 @@
+Usage: npu_eco_physical_flow.py [OPTIONS]
+                                [CONFIG_FILES]...
+
+  Runs an LibreLane flow via the commandline using a design configuration
+  object.
+
+  Try 'python3 -m librelane.steps --help' for step-specific options, including
+  reproducibles and running a step standalone.
+
+Copy final views:
+  --save-views-to DIRECTORY      A directory to copy the final views to, where
+                                 each format is saved under a directory named
+                                 after the corner ID (much like the 'final'
+                                 directory after running a flow.)
+  --ef-save-views-to DIRECTORY   A directory to copy the final views to in the
+                                 Efabless format, compatible with Caravel User
+                                 Project.
+
+Containerization options:
+  -m, --docker-mount, --container-mount TEXT
+                                 Used to mount more directories in dockerized
+                                 mode. If a valid directory is specified, it
+                                 will be mounted in the same path in the
+                                 container. Otherwise, the value of the option
+                                 will be passed to the container engine
+                                 verbatim. Must be passed before
+                                 --containerized/--dockerized, has no effect if
+                                 not set.
+  --docker-tty, --container-tty / --docker-no-tty, --container-no-tty
+                                 Controls the allocation of a virtual terminal
+                                 by passing -t to the Docker-compatible
+                                 container engine invocation. Must be passed
+                                 before --containerized/--dockerized, has no
+                                 effect if not set.  [default: docker-tty]
+  --dockerized, --containerized  Run the remaining flags using a containerized
+                                 version of LibreLane. Some caveats apply. Must
+                                 precede all options except
+                                 --{docker,container}-mount,
+                                 --{docker,container}-[no-]tty.
+
+Subcommands: [mutually exclusive]
+  --version                      Prints version information and exits
+  --smoke-test                   Runs a basic LibreLane smoke test, the results
+                                 of which are temporary and discarded.
+  --run-example TEXT             Copies one of the LibreLane examples to the
+                                 current working directory and runs it.
+
+PDK options:
+  --volare-pdk, --ciel-pdk / --manual-pdk, --manual-pdk
+                                 Automatically use Ciel for PDK version
+                                 installation and enablement. Set --manual if
+                                 you want to use a custom PDK version.
+                                 [default: volare-pdk]
+  --pdk-root DIRECTORY           Override Ciel PDK root folder. Required if
+                                 Ciel is not installed, but a default value can
+                                 also be set via the environment variable
+                                 PDK_ROOT.
+  -p, --pdk TEXT                 The process design kit to use.  [default:
+                                 sky130A]
+  -s, --scl TEXT                 The standard cell library to use. If None, the
+                                 PDK's default standard cell library is used.
+  --pad TEXT                     The standard pad library to use. If None, the
+                                 PDK's default standard cell library is used
+                                 (if it exists).
+
+Sequential flow controls:
+  -F, --from TEXT                Start from a step with this id. Supported by
+                                 sequential flows.
+  -T, --to TEXT                  Stop at a step with this id. Supported by
+                                 sequential flows.
+  --only TEXT                    Shorthand to set both --from and --to to the
+                                 same value. Overrides the values from both.
+  -S, --skip TEXT                Skip these steps. Supported by sequential
+                                 flows.
+
+Run options: [mutually exclusive]
+  --run-tag TEXT                 An optional name to use for this particular
+                                 run of an LibreLane-based flow. Used to create
+                                 the run directory.
+  --last-run                     Use the last run as the run tag.
+
+Flow configuration options:
+  -f, --flow [optimizing|classic|vhdlclassic|chip|openinklayout|openinopenroad|openinmagic|synthesisexploration|alufreshphysical|npuecofreshphysical]
+                                 The built-in LibreLane flow to use for this
+                                 run
+  -c, --override-config TEXT     For this run only- override a configuration
+                                 variable with a certain value. In the format
+                                 KEY=VALUE. Can be specified multiple times.
+                                 Values must be valid JSON values, and keys
+                                 must not use their deprecated names.
+
+Other options:
+  -e, --initial-state-element-override TEXT
+                                 Elements to override in the used initial state
+                                 in the format DESIGN_FORMAT_ID=PATH
+  -j, --jobs INTEGER             The maximum number of threads or processes
+                                 that can be used by LibreLane.  [default: 20]
+  --condensed / --full           In condensed mode, subprocess logs are
+                                 suppressed regardless of step, --hide-
+                                 progress-bar is the default, and the log
+                                 messages themselves are a bit more terse.
+                                 Useful for debugging.  [default: full]
+  --show-progress-bar / --hide-progress-bar
+                                 Whether to show the progress bar when running
+                                 Flows. [default: show]
+  --log-level [ALL or 0|DEBUG or 10|SUBPROCESS or 12|VERBOSE or 15|INFO or 20|WARNING or 30|ERROR or 40|CRITICAL or 50]
+                                 A logging level. Set to VERBOSE or higher to
+                                 silence subprocess logs. [default: unchanged
+                                 from SUBPROCESS]
+  --reproducible TEXT            Create a reproducible for the step matching
+                                 this ID, then abort the flow. Supported by
+                                 sequential flows.
+  --overwrite                    Overwrite run, if exists.
+  --design-dir DIRECTORY         The top-level directory for your design that
+                                 configuration objects may resolve paths
+                                 relative to.
+  -i, --with-initial-state FILE  Use these JSON files as an initial state. If
+                                 multiple are provided, they are merged with
+                                 keys in later files overriding keys in prior
+                                 files. If none are specified, the latest
+                                 `state_out.json` of the run directory will be
+                                 used. If none exist, an empty initial state is
+                                 created.
+  --help                         Show this message and exit.

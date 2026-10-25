@@ -1,0 +1,96 @@
+{
+  "status": "FAIL",
+  "top": "soc_pcie_gen3_continuous_rx",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_v3.v": {
+      "bytes": 8145,
+      "sha256": "75d9b20fd210eeea87920750d70eae4ea97eb07682b961aa561ac4cf24ce0343"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx.v": {
+      "bytes": 2755,
+      "sha256": "d7b842dd1325e55e52ffcd9eb19d8506f707ec12d0c413d599e526533953a5f4"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx.py": {
+      "bytes": 5881,
+      "sha256": "ff91d4a15f0059b47a3db22678f7cb86d5bfb806b2bb851142182dfb58bac759"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/test_soc_pcie_gen3_packet_duplex.py": {
+      "bytes": 18525,
+      "sha256": "2d43c6208e8cbe58db5cbe25ae7a5f8c3094bc5cfdc2fc3ef838d24cca70f3ff"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx": {
+      "bytes": 1309,
+      "sha256": "bb6586bec6d642dfb12e3e92e1cf1fac49b8fc052458880e5dbdab3386187d73"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_gen3_continuous_rx.py": {
+      "bytes": 8617,
+      "sha256": "9b12563ad2c7627c8193db2ec0a373f1cc5f5a741b2549f0f00b2477ec931dec"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    }
+  },
+  "expected_tests": 4,
+  "mode": "rtl",
+  "commands": [
+    {
+      "argv": [
+        "make",
+        "-f",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx",
+        "--no-print-directory",
+        "VERILOG_SOURCES=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_v3.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx.v",
+        "SIM_BUILD=/dev/shm/nssoc-gen3-continuous-rx-rtl-01/sim",
+        "COCOTB_RESULTS_FILE=/dev/shm/nssoc-gen3-continuous-rx-rtl-01/results.xml",
+        "PCIE_NATIVE=0"
+      ],
+      "returncode": 2,
+      "log": "simulation.log",
+      "log_pin": {
+        "bytes": 10922,
+        "sha256": "8ebb1bf0da39ed61d735b53c5ee2b40773e9d13ef1c7af2cfbeb32215ded6bb8"
+      }
+    }
+  ],
+  "runtime": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog": {
+      "bytes": 453,
+      "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp": {
+      "bytes": 485,
+      "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+    }
+  },
+  "address_space_limit_bytes": 2147483648,
+  "yosys_max_threads": 1,
+  "scope": "Continuous raw32-bit/lane input, whole-block data descrambler and context-safe IDL bypass. Packet output remains byte-wide and can overflow on dense traffic. External Data Stream epoch/alignment/deskew; no variableSKP, OS, CDC, PMA, fullPCS/LTSSM or physicalfrequency acceptance.",
+  "error": "RuntimeError('Control failed: /dev/shm/nssoc-gen3-continuous-rx-rtl-01/simulation.log')",
+  "outputs": {
+    "results.xml": {
+      "bytes": 2380,
+      "sha256": "e3553f6e7cb4c4ae3308bb87cd63dc965c106b0f43b073cf94f17eaea3d80acf"
+    },
+    "simulation.log": {
+      "bytes": 10922,
+      "sha256": "8ebb1bf0da39ed61d735b53c5ee2b40773e9d13ef1c7af2cfbeb32215ded6bb8"
+    }
+  }
+}

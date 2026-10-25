@@ -1,0 +1,30 @@
+name: cdr-v50-drc-marker-inspection-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/cdr-v50-drc-marker-inspection-cloud.yml, scripts/cloud_cdr_v50_drc_marker_inspection.py]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: cdr-v50-drc-marker-inspection
+  cancel-in-progress: false
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Read actual immutable DRC marker coordinates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_v50_drc_marker_inspection.py
+      - name: Publish marker receipt
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          stem="cdr-v50-drc-marker-inspection-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-cdr-v50-drc-marker-inspection/result.json "$stem.summary.json"
+          python3 scripts/publish_cloud_results.py --group cdr-v50-drc-marker-inspection "$stem.summary.json"

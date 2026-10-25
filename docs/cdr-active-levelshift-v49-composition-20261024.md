@@ -1,0 +1,9 @@
+# v49 exact physical component composition
+
+Native binding run40028786566 passed all18device/50terminal/8port matches and9negative controls. Actual extracted geometry maps to2Nx4HBT,3LVNMOS(width8um once,36um twice),4rppd and9finite ptap1 contacts. The contacts each use the exact pinned PDK CbTapCalc area/perimeter equation:81.66666666666666666666666668ohm for2um by2um. This is finite contact resistance, not a3D substrate-spreading model.
+
+The composition stage independently restores that binding and audited fresh RC run40028080567, checking that both derive from the same physical wire source. All50intrinsic terminal references map through40actual physical points or preserved body identities. All18primitive models are emitted exactly once together with53wire resistors and93wire capacitors. Raw R/C names and values are retained, with an injective node-name map preserving topology. The8physical pins are extended with an explicit wire_cref extraction-reference pin; no ideal body-to-supply or conductor-alias shorts are inserted.
+
+The existing strict composer/verification equations are reused with only measured leaf census/interface changes. MIM-only faults are inapplicable because this leaf has no MIM. Ten applicable original faults plus four explicit MOS faults must reject missing/changed primitives, wrong terminal/body/reference ties, lost/changed wire R/C and added aliases.
+
+This is model composition, not a loaded-waveform pass. Next restore native models/runtime, provide the finite ptap1 compact subcircuit with its source-bound resistance, and repeat original full34.25ns/256bit data,load,solver,device and common-mode gates on the complete extracted model. Then integrate with real C/D sampler load and existing bias network, preserving a single intended XREF. Whole parent,PVT/loop,serialPHY and mainchip timing remain open.

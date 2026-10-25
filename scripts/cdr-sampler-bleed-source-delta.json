@@ -1,0 +1,23 @@
+{
+  "baseline_path": "hw/soc/analog/pcie/rx_sampler_headroom_v4.spice",
+  "baseline_sha256": "30be15f01bac35e18b353d2083d21df6737428bcc0b94cea1e64c45856809cbf",
+  "candidate_path": "hw/soc/analog/pcie/rx_sampler_bleed_v5.spice",
+  "candidate_sha256": "160cabecd3c44f4e9b00c34504790cb9389a2edf39839083acd4b153fb66ee4f",
+  "edits": [
+    {
+      "before": "headroom_v4",
+      "after": "bleed_v5",
+      "count": 6
+    },
+    {
+      "before": ".ends nssoc_cml_latch_bleed_v5",
+      "after": ".ends nssoc_cml_latch_bleed_v5\n\n* Explicit slave-only4x native emitter bleeds; master unchanged.\n.subckt nssoc_cml_slave_bleed_v5 dp dn qp qn cp cn avdd avss sub ref\nXDP qn dp se sub npn13G2 Nx=8\nXDN qp dn se sub npn13G2 Nx=8\nXLP qn qp he sub npn13G2 Nx=8\nXLN qp qn he sub npn13G2 Nx=8\nXCS0 se cp te sub npn13G2 Nx=8\nXCS1 se cp te sub npn13G2 Nx=8\nXCH0 he cn te sub npn13G2 Nx=8\nXCH1 he cn te sub npn13G2 Nx=8\nXT te ref avss sub sg13_lv_nmos w=128u l=.3u ng=1\nXRP avdd qp sub rppd w=32u l=2.12u b=0 sw_et=1\nXRN avdd qn sub rppd w=32u l=2.12u b=0 sw_et=1\n* Weak native bleeders keep the inactive emitter nodes from floating.\nXBS se avss sub rppd w=1u l=9.6u b=0 sw_et=1\nXBH he avss sub rppd w=1u l=9.6u b=0 sw_et=1\n.ends nssoc_cml_slave_bleed_v5",
+      "count": 1
+    },
+    {
+      "before": "XS mp mn qp qn clkp clkn avdd avss sub iref nssoc_cml_latch_bleed_v5",
+      "after": "XS mp mn qp qn clkp clkn avdd avss sub iref nssoc_cml_slave_bleed_v5",
+      "count": 1
+    }
+  ]
+}

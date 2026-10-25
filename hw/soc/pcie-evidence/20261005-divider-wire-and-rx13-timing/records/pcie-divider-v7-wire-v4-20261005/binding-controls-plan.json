@@ -1,0 +1,34 @@
+{
+  "status": "PREDECLARED_AFTER_POSITIVE_NATIVE_GEOMETRY_BEFORE_WIRE_RC",
+  "positive": "Replay exact production bind_source_ids.py body against copies of actual frozen native geometry and physical generator record; only fixture file roots differ. Baseline must pass first.",
+  "controls": [
+    {
+      "name": "reference_clock_swap",
+      "change": "Only DIV__XFIRST__XSP first source net CLKP changes to CLKN",
+      "expected": "Source/net bijection fails against actual geometry."
+    },
+    {
+      "name": "reference_pullup_length",
+      "change": "Only source DIV__XFIRST__XUP rppd length4.0 changes to6.4um",
+      "expected": "Exact actual native device parameters mismatch."
+    },
+    {
+      "name": "reference_missing_tap",
+      "change": "Delete only physical TAP0 from copied source layout instance list",
+      "expected": "Actual native TAP0 location lacks source correspondence."
+    },
+    {
+      "name": "native_mim_area_corruption",
+      "change": "Only one actual cap_cmim device parameterA multiplied by1.02 in copied native geometry JSON",
+      "expected": "Complete native/source W/L/A/P parameter check rejects corruption."
+    }
+  ],
+  "rules": [
+    "Preserve all actual source/GDS/nativeL2N files immutable, plus all failed historical runs.",
+    "Save complete fixture inputs, exact method-body inverse, before/after hashes and raw native child logs/owned receipts.",
+    "Use original CPU10/2GiB/80MiB own+24MiB reserve/1GiBentry512MiBcontinuous rules and exact tested ownership.",
+    "A rejected fixture is method-integrity evidence, not an actual electrical failure of unchanged nominal divider.",
+    "Independent geometry/graph review and these controls precede native wire-RC extraction."
+  ],
+  "native_or_controls_executed": false
+}

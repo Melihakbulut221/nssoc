@@ -1,0 +1,121 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+
+# cocotb + Icarus suite for hw/soc/rtl/soc_mem.v, and since docs/67 for
+# the codec and the scrubber under it, hw/soc/rtl/soc_mem_ecc.v.
+#
+#   cd hw/soc/tb/cocotb && make -f Makefile.soc_mem                 the RAM
+#   cd hw/soc/tb/cocotb && make -f Makefile.soc_mem RDREG=1 \
+#       SIM_BUILD=sim_build_soc_mem_rdreg \
+#       COCOTB_RESULTS_FILE=results_soc_mem_rdreg.xml               RDREG = 1
+#   cd hw/soc/tb/cocotb && make -f Makefile.soc_mem RO=1 ECC_BYTE=0 \
+#       SIM_BUILD=sim_build_soc_mem_rom \
+#       COCOTB_RESULTS_FILE=results_soc_mem_rom.xml                 the ROM
+#   cd hw/soc/tb/cocotb && make -f Makefile.soc_mem HARDEN=0 \
+#       SIM_BUILD=sim_build_soc_mem_h0 \
+#       COCOTB_RESULTS_FILE=results_soc_mem_h0.xml                  docs/47's
+#   cd hw/soc/tb/cocotb && make -f Makefile.soc_mem lint
+#
+# FOUR CONFIGURATIONS AND ONE SUITE. The seven protocol tests run in all
+# of them, because the codec must not change the slave's behaviour on
+# the bus; the docs/67 tests skip at HARDEN=0 and adapt to the code
+# shape, so the same file measures the RAM's byte code, the ROM's word
+# code and the design of record before either existed.
+#
+# hw/rtl/secded_enc.v and hw/rtl/secded_dec.v are READ from the pilot's
+# directory and never modified, as Makefile.ibex_regfile_secded and
+# Makefile.soc_clint read them.
+#
+# WHY THIS SUITE EXISTS AND WHY IT IS NEW IN docs/50. Until docs/50 the
+# only memory in this project was one always block, and the whole-SoC
+# simulation was proportionate verification of it. docs/50 gives it a
+# second response stage and a parameter that selects between them, which
+# makes it a slave with a protocol obligation -- soc_bus.v's S1 to S4 --
+# that nothing had ever checked directly. The system-level run exercises
+# the memory only through Ibex, so a protocol defect that Ibex happens
+# not to provoke would not show there.
+#
+# THE PARAMETER IS PASSED BY -P AND THE SUITE ASSERTS WHAT IT GOT. soc_mem
+# is the TOP module here, so Icarus's -P does reach it -- docs/49 section
+# 8.1's finding is that -P is dropped in silence on a NON-root instance,
+# which is a different case and is why hw/soc/flow/sim_soc.sh uses a
+# defparam instead. Here the guard is test_soc_mem.py's first test, which
+# measures the latency the design actually has and compares it with the
+# RDREG the Makefile says it built. A dropped override fails the run
+# rather than passing a suite for the other arm.
+#
+# Standalone by design, same structure and the same rootless tool
+# discovery as Makefile.soc_bus.
+
+SIM ?= icarus
+TOPLEVEL_LANG ?= verilog
+
+THIS_MK := $(lastword $(MAKEFILE_LIST))
+
+VENV_BIN := $(abspath $(dir $(THIS_MK))/../../../.venv/bin)
+
+ifeq ($(shell command -v cocotb-config 2>/dev/null),)
+
+GOALS := $(if $(MAKECMDGOALS),$(MAKECMDGOALS),sim)
+.PHONY: $(GOALS)
+$(GOALS):
+	@PATH="$(VENV_BIN):$$PATH" $(MAKE) -f $(THIS_MK) --no-print-directory $@
+
+else
+
+RTL = $(PWD)/../../rtl
+PILOT_RTL = $(PWD)/../../../rtl
+
+SOC_MEM_SRC ?= $(RTL)/soc_mem.v
+# The codec file, separately overridable so a mutation run can point the
+# suite at a modified copy of soc_mem_ecc.v alone (mutate_soc_mem.py).
+SOC_MEM_ECC_SRC ?= $(RTL)/soc_mem_ecc.v
+
+VERILOG_SOURCES = $(SOC_MEM_SRC) $(SOC_MEM_ECC_SRC) \
+                  $(PILOT_RTL)/secded_enc.v $(PILOT_RTL)/secded_dec.v
+TOPLEVEL = soc_mem
+MODULE = test_soc_mem
+
+# Small enough that a test can walk the whole array, large enough that the
+# word index is more than one bit. The suite reads WORDS off the DUT
+# rather than assuming it.
+WORDS ?= 64
+RDREG ?= 0
+HARDEN ?= 1
+RO ?= 0
+ECC_BYTE ?= 1
+
+SIM_BUILD ?= sim_build_soc_mem
+COCOTB_RESULTS_FILE ?= results_soc_mem.xml
+export COCOTB_RESULTS_FILE
+
+# The suite needs to know which arm it is checking, and it must not learn
+# it from the same place the build learns it or the check would be
+# circular in one direction only. The Makefile tells the test what it
+# ASKED for; the test measures what it GOT.
+export SOC_MEM_RDREG = $(RDREG)
+export SOC_MEM_WORDS = $(WORDS)
+export SOC_MEM_HARDEN = $(HARDEN)
+export SOC_MEM_RO = $(RO)
+export SOC_MEM_ECC_BYTE = $(ECC_BYTE)
+
+COMPILE_ARGS += -Psoc_mem.WORDS=$(WORDS) -Psoc_mem.RDREG=$(RDREG)
+COMPILE_ARGS += -Psoc_mem.HARDEN=$(HARDEN) -Psoc_mem.RO=$(RO)
+COMPILE_ARGS += -Psoc_mem.ECC_BYTE=$(ECC_BYTE)
+COMPILE_ARGS += $(EXTRA_COMPILE_ARGS)
+
+include $(shell cocotb-config --makefiles)/Makefile.sim
+
+VERILATOR ?= $(firstword $(shell command -v verilator 2>/dev/null) \
+	$(wildcard $(HOME)/oss-cad-suite/bin/verilator \
+	           $(HOME)/Documents/gt2n-soc/tools/oss-cad-suite/bin/verilator \
+	           $(HOME)/Downloads/oss-cad-suite-linux-x64-20260804/oss-cad-suite/bin/verilator))
+
+.PHONY: lint
+lint:
+	@test -n "$(VERILATOR)" || \
+		{ echo "verilator not found: install oss-cad-suite or put it on PATH"; exit 1; }
+	$(VERILATOR) --lint-only -I$(RTL) --top-module soc_mem $(SOC_MEM_SRC) \
+		$(SOC_MEM_ECC_SRC) $(PILOT_RTL)/secded_enc.v $(PILOT_RTL)/secded_dec.v
+
+endif

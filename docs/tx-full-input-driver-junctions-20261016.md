@@ -1,0 +1,17 @@
+# Full TX driver native junction binding
+
+The original full driver physical assembly passed native DRC and raw/combined, flat/deep LVS in run38869466336. Its six-pin LEF passed run38870205745. The native MOS reference reader checks W/L and does not compare junction area/perimeter. Therefore these physical results alone do not establish an electrically equivalent extracted driver.
+
+`scripts/cloud_tx_driver_junctions.py` restores the exact hashed full-driver proof in GitHub Actions. It exports both raw100-device and combined12-device native databases, probes actual M3/M5 conductors to establish logical nets, and keeps finite bulk/well contact nodes distinct from rails. All84MOS fingers must bind to the original8MOS devices with unchanged total width, length, finger count and topology. The four equivalent HV devices are separated by their actual GDS instance bounding boxes. Every native terminal shape, parameter and D/S direction is retained.
+
+Junction sums are normalized by physical drain/source nets, not extractor device orientation. The audit compares those sums with the separately combined database and with the original cell parameters. A disagreement is recorded as a disagreement, never waived or represented as electrical acceptance. Five actual exported-record corruptions must fail structural binding. No electrical model is emitted: full interconnect RC, correct compact-model junction handling, substrate qualification and electrical/PVT/loaded tree simulations still follow. All work and artifacts remain cloud-only.
+
+## Actual measurement and repair
+
+Run38872251021 bound all84fingers and passed all5corruption controls. It found3combined groups whose net-oriented junction totals differ from the raw devices: input NMOS, input PMOS and the combined40um HV group. For the HV group the raw drain/source areas are7.6/8.8um2, while the combined database gives8.2/8.2um2. The original buffer source-area defaults also differ from the real raw geometry. The first failed run38871988854 is retained: it probed layer50 instead of actual Metal3 layer30, fixed without changing geometry.
+
+`cloud_tx_driver_intrinsic.py` repairs the electrical conversion by retaining all100raw devices. It uses native named D/G/S/B terminals, each finger's actual AS/AD/PS/PD, ng=1 and unchanged native W/L; it does not copy parameters from the combined database. Four resistors and twelve finite contacts are preserved. The unmodified pinned IHP compact-model MOS order is checked directly, and each contact uses the actual native area/perimeter in the PDK conductance formula. The embedded buffer ties are3.6um2/24.6um, not the added contacts'4um2/8um.
+
+A separate parser checks every emitted device, named terminal, SI parameter and contact conductance; seven actual corrupted model files must fail. The resulting intrinsic model still needs fresh actual wires, simulator execution, loaded electrical/PVT checks and substrate/RF qualification. It is not accepted as a full extracted PHY model.
+
+Run38873849859 completed: the raw100-device intrinsic model passed named-terminal/SI-parameter/contact-conductance verification and all7actual corrupted-model controls. Exact SHA256 is `f0a4f8dae1fa2e7ae7894c6325d21ea35c9aadf8253f7bc4b90313113fdd2ca5`. This is a model-conversion result; no simulator or wire-RC acceptance is implied. The pinned contact-law newline failure38873632011 remains archived.

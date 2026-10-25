@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-normal-saved-capture-diagnosis-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        description: Authenticate and read existing completed TX capture without any simulation
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: tx-normal-saved-capture-diagnosis-${{ github.ref }}
+  cancel-in-progress: false
+defaults:
+  run:
+    shell: bash
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install numpy==2.3.3
+      - name: Real failed-pipeline refusal and source math transport controls
+        run: |
+          if (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi
+          python3 scripts/cloud_tx_normal_saved_capture.py --controls | tee source-controls.json
+          python3 - <<'PYCODE'
+          import json
+          x=json.load(open('source-controls.json'))
+          assert x['status']=='PASS_SOURCE_MATH_AND_TRANSPORT_CONTROLS_ONLY'
+          assert len(x['math']['negative_controls'])==30
+          assert len(x['strict_archive_faults'])==11
+          assert len(x['publication_addon_controls']['rejected'])==13
+          assert x['publication_addon_controls']['required_additions']==['criu-build.log']
+          assert len(x['metadata']['rejected'])==23
+          assert x['native_simulation'] is False
+          PYCODE
+          python3 scripts/wait_cloud_tested_source_release.py --controls > release-wait-controls.json
+          python3 - <<'PYCODE'
+          import json
+          x=json.load(open('release-wait-controls.json'))
+          assert x['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'
+          assert len(x['positive_cases'])==3 and len(x['rejected'])==4
+          assert x['maximum_scheduled_wait_s']==300 and not x['creation_attempted'] and not x['native_executed']
+          print(json.dumps(x,indent=2))
+          PYCODE
+  saved-capture-readback:
+    if: inputs.readback
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install numpy==2.3.3
+      - name: Wait read-only for externally reserved exact-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/wait_cloud_tested_source_release.py --group tx-normal-saved-capture-diagnosis
+      - name: Authenticate every original archive byte then read unchanged full capture once
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_tx_normal_saved_capture.py --readback
+      - name: Publish compact index and full native-row witness separately
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          group=tx-normal-saved-capture-diagnosis
+          root=cloud-$group
+          test -f "$root/result.json"
+          stem="$group-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/wait_cloud_tested_source_release.py --group "$group"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" "$group" "$root" <<'PYCODE'
+          import json,pathlib,subprocess,sys
+          stem,group,root=sys.argv[1:]
+          parts=json.load(open(stem+'.parts.json'))
+          separate=[str(p) for p in pathlib.Path(root).glob('*.json') if p.name!='result.json']
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group',group,
+            stem+'.summary.json',stem+'.parts.json',*separate,*[p['name']for p in parts['parts']]],check=True)
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: tx-normal-existing-capture-diagnostic-evidence
+          path: cloud-tx-normal-saved-capture-diagnosis/
+          retention-days: 90

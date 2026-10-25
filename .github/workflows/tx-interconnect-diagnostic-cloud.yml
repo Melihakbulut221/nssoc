@@ -1,0 +1,136 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-interconnect-diagnostic-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      study:
+        description: Frozen older component or current source-bound physical tree
+        type: choice
+        options: [original_component, dense_wide_tree, v11_hot_low_inputs, v11_data_area, v11_nx4_wire_rc, v11_feedback_tc, v8_feedback_tc_physical, v8_feedback_tc_compact_hot, v8_feedback_tc_direct_hot, v8_feedback_tc_short_pre_hot]
+        default: original_component
+      cases:
+        description: Run all cases or only failed sensitivity preparations
+        type: choice
+        options: [all, mutations_only]
+        default: all
+permissions:
+  contents: read
+concurrency:
+  group: tx-interconnect-diagnostic-cloud-${{ github.ref }}-${{ inputs.study || 'original_component' }}-${{ inputs.cases || 'all' }}
+  cancel-in-progress: false
+jobs:
+  native-transient:
+    if: inputs.study != 'v11_data_area' && inputs.study != 'v11_feedback_tc' && inputs.study != 'v8_feedback_tc_physical' && inputs.study != 'v8_feedback_tc_compact_hot' && inputs.study != 'v8_feedback_tc_direct_hot' && inputs.study != 'v8_feedback_tc_short_pre_hot'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        interconnect: ${{ fromJSON(inputs.study == 'v11_nx4_wire_rc' && '["low_r","low_r_internal","low_r_outputs"]' || inputs.study == 'v11_hot_low_inputs' && '["low_r_inputs"]' || inputs.cases == 'mutations_only' && '["low_r","low_r_supply","low_r_return","low_r_inputs","low_r_internal","low_r_bias","low_r_outputs"]' || '["actual","low_r","low_r_supply","low_r_return","low_r_inputs","low_r_internal","low_r_bias","low_r_outputs"]') }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact native simulator with hosted dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
+          curl --fail --location --retry 4 'https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb' -o "$RUNNER_TEMP/ngspice.deb"
+          echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
+          dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
+          echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Check graph ownership and unchanged source-bit gates
+        run: python3 -m pytest -q sw/tests/test_cloud_metal_resistance.py sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py
+      - name: Run fixed-oracle native study and independent complete-wave review
+        if: inputs.study == 'original_component'
+        run: python3 scripts/run_cloud_tx_operating_point.py --point baseline --kind wire --interconnect '${{ matrix.interconnect }}'
+      - name: Run source-bound wide-via tree metal-R sensitivity
+        if: inputs.study == 'dense_wide_tree'
+        run: |
+          class='${{ matrix.interconnect }}'
+          if [ "$class" = low_r ]; then class=all; else class="${class#low_r_}"; fi
+          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition nominal --fault none --prestage physical_wire --physical-profile power_trunks_vias --physical-final physical_wire --physical-final-profile kelvin_dense_wide --frontend damped_strong --clock-bias native_res --final-drive double_taps_margin --pre-bias native_res --output-bias native_res --diagnostic-final-r "$class"
+      - name: Diagnose V11 hot-low final input metal contribution without physical acceptance
+        if: inputs.study == 'v11_hot_low_inputs'
+        run: python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition hot_low --fault none --prestage physical_wire --physical-profile cascade158_kelvin_supply_direct --physical-final physical_wire --physical-final-profile v11_kelvin_low_ports_loads_shunts_series --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias native_res --output-bias native_res --diagnostic-final-r inputs
+      - name: Locate remaining Nx4 hot-wire failure with unchanged C and source bits
+        if: inputs.study == 'v11_nx4_wire_rc'
+        run: |
+          class='${{ matrix.interconnect }}'
+          if [ "$class" = low_r ]; then class=all; else class="${class#low_r_}"; fi
+          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition hot_low --fault none --prestage physical_wire --physical-profile cascade158_kelvin_supply_direct --physical-final physical_wire --physical-final-profile v11_kelvin_low_ports_loads_shunts_series --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias output_feedback --output-bias native_res --diagnostic-final-nx 4 --diagnostic-final-r "$class"
+      - name: Preserve current tree sensitivity captures and all failures
+        if: always() && (inputs.study == 'dense_wide_tree' || inputs.study == 'v11_hot_low_inputs' || inputs.study == 'v11_nx4_wire_rc')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-tree-rc-${{ matrix.interconnect }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-tx-mux4
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-tx-mux4/result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group 'tree-rc-${{ matrix.interconnect }}' "$archive" "$archive.sha256" "$summary"
+      - name: Preserve all successful and failed native captures permanently
+        if: always() && inputs.study == 'original_component' 
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-rc-diagnostic-${{ matrix.interconnect }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-tx-operating-point
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-tx-operating-point/result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group 'component-rc-${{ matrix.interconnect }}' "$archive" "$archive.sha256" "$summary"
+
+  data-area-sensitivity:
+    if: inputs.study == 'v11_data_area' || inputs.study == 'v11_feedback_tc' || inputs.study == 'v8_feedback_tc_physical' || inputs.study == 'v8_feedback_tc_compact_hot' || inputs.study == 'v8_feedback_tc_direct_hot' || inputs.study == 'v8_feedback_tc_short_pre_hot'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        nx: ${{ fromJSON(startsWith(inputs.study, 'v8_feedback_tc_') && '[0]' || inputs.study == 'v11_feedback_tc' && '[4]' || '[4,5,6,8]') }}
+        condition: ${{ fromJSON((inputs.study == 'v8_feedback_tc_compact_hot' || inputs.study == 'v8_feedback_tc_direct_hot' || inputs.study == 'v8_feedback_tc_short_pre_hot') && '["hot_low","hot_low_res_bcs"]' || (inputs.study == 'v11_feedback_tc' || inputs.study == 'v8_feedback_tc_physical') && '["hot_low","hot_low_res_bcs","cold_high_hbt_wcs","cold_high_res_wcs"]' || '["hot_low","cold_high_hbt_wcs"]') }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact native simulator with hosted dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
+          curl --fail --location --retry 4 'https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb' -o "$RUNNER_TEMP/ngspice.deb"
+          echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
+          dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
+          echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Check graph ownership and unchanged source-bit gates
+        run: python3 -m pytest -q sw/tests/test_cloud_metal_resistance.py sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py
+      - name: Screen explicit circuit with unchanged bits and electrical limits
+        run: |
+          kind='${{ inputs.study != 'v8_feedback_tc_compact_hot' && startsWith(matrix.condition, 'hot_low') && 'physical_wire' || 'physical_compact' }}'
+          python3 scripts/run_cloud_tx_mux4.py --streams 4 --condition '${{ matrix.condition }}' --fault none --prestage "$kind" --physical-profile '${{ inputs.study == 'v8_feedback_tc_short_pre_hot' && 'cascade158_kelvin_supply_direct_low_outputs' || 'cascade158_kelvin_supply_direct' }}' --physical-final "$kind" --physical-final-profile '${{ (inputs.study == 'v8_feedback_tc_direct_hot' || inputs.study == 'v8_feedback_tc_short_pre_hot') && 'v8_kelvin_low_ports_loads_shunts_series_direct' || startsWith(inputs.study, 'v8_feedback_tc_') && 'v8_kelvin_low_ports_loads_shunts_series' || 'v11_kelvin_low_ports_loads_shunts_series' }}' --frontend damped_strong --clock-bias native_res --clock-reference stiff65 --final-drive double_taps_margin --pre-bias '${{ (inputs.study == 'v11_feedback_tc' || startsWith(inputs.study, 'v8_feedback_tc_')) && 'output_feedback_tc' || 'output_feedback' }}' --output-bias native_res --diagnostic-final-nx '${{ matrix.nx }}'
+      - name: Preserve every candidate and unchanged-Nx8 control
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-${{ inputs.study }}-nx${{ matrix.nx }}-${{ matrix.condition }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-tx-mux4
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-tx-mux4/result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.study }}-nx${{ matrix.nx }}-${{ matrix.condition }}' "$archive" "$archive.sha256" "$summary"

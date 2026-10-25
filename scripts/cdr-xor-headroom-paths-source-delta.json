@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_source_access_headroom.py",
+      "candidate_path": "scripts/cloud_cdr_xor_headroom_paths.py",
+      "edits": [
+        {
+          "before": "cloud-cdr-source-access-headroom-",
+          "after": "cloud-cdr-xor-headroom-paths-",
+          "count": 1
+        },
+        {
+          "before": "cdr-headroom-inputs-",
+          "after": "cdr-xor-path-inputs-",
+          "count": 1
+        },
+        {
+          "before": "['native/wave.raw','composed/composition.json']",
+          "after": "['native/wave.raw','composed/composition.json','planes/native-planes.json']",
+          "count": 1
+        },
+        {
+          "before": "  assert measured==prior['device_checks']",
+          "after": "  assert measured==prior['device_checks']\n  planes=json.loads((inputs/'wave/planes/native-planes.json').read_text())\n  logical={}\n  for plane in planes['anchors']:\n   pair=(plane['native_cluster'],plane['native_name'])\n   assert logical.setdefault(plane['logical_net'],pair)==pair\n  assert len(logical)==51 and 'avdd'in logical and 'avss'in logical\n  all_bound={n:g for group in prior['binding']['groups'].values()for n,g in group.items()}\n  assert len(all_bound)==484\n  by_macro={}\n  for name,dev in all_bound.items():\n   card=records[dev['native_id']];box=rect(devices[dev['native_id']]['pcell']['bbox'])\n   tag=owner(box,placements)\n   assert 'xpd.'+card['instance'].lower()==name and card['parameters']==dev['parameters']\n   by_macro.setdefault(tag,{})[name]=(dev,card,box)\n  networks={}\n  for tag in ('x','y'):\n   members=by_macro[tag];assert len(members)==59\n   trigger_name,trigger=min(((n,x)for n,x in details.items()if x['macro']==tag),key=lambda pair:pair[1]['original_check']['minimum_active_vce_v'])\n   i=trigger['worst_vce_sample']['index'];snapshot={}\n   for name,(dev,card,box)in members.items():\n    terms=[]\n    for native,node in zip(card['terminals'],dev['nodes'],strict=True):\n     values=v(node)\n     net=(native['native_cluster'],native['native_net'])\n     labels=sorted(k for k,pair in logical.items()if pair==net)\n     row=dict(terminal=native['terminal'],native_net=native['native_net'],native_cluster=native['native_cluster'],composed_node=node,logical_planes=labels,\n       voltage_at_worst_vce_v=float(values[i]),minimum_active_voltage_v=float(values[active].min()),maximum_active_voltage_v=float(values[active].max()))\n     if 'avdd'in labels:\n      delta=v('avdd')-values\n      row['drop_from_public_supply_v']=dict(at_worst_vce=float(delta[i]),minimum_active=float(delta[active].min()),maximum_active=float(delta[active].max()))\n     terms.append(row)\n    item=dict(native_id=dev['native_id'],model=card['model'],parameters=card['parameters'],primitive_bbox_um=box,terminals=terms)\n    if card['model']=='npn13g2':\n     item['collector_current_at_worst_vce_a']=float(d['@q.'+name+'.qnpn13g2[ic]'][i])\n    elif card['model']=='sg13_lv_nmos':\n     item['drain_current_at_worst_vce_a']=float(d['@n.'+name+'.nsg13_lv_nmos[ids]'][i])\n    elif card['model']=='rppd':\n     assert len(terms)==3\n     item['terminal_a_minus_b_v']=float(v(dev['nodes'][0])[i]-v(dev['nodes'][1])[i])\n    snapshot[name]=item\n   resistors={n:x for n,x in snapshot.items()if x['model']=='rppd'}\n   pullups={n:x for n,x in resistors.items()if any('avdd'in q['logical_planes']for q in x['terminals'][:2])}\n   assert len(resistors)==8 and len(pullups)==2\n   networks[tag]=dict(trigger_device=trigger_name,time_s=float(t[i]),sample_index=i,\n      devices=snapshot,resistors=resistors,pullups=pullups,original_failed_check=trigger['original_check'],\n      interpretation='Direct saved native terminal voltages and currents only. Metal branch currents and an effective load resistance are not inferred from terminal differences.')\n  r['xor_networks']=networks",
+          "count": 1
+        },
+        {
+          "before": "COMPLETE_ORIGINAL_REJECTED_HBT_CHECKS_AND_NATIVE_MACRO_MAPPING_NOT_ACCEPTANCE",
+          "after": "COMPLETE_ORIGINAL_XOR_SUPPLY_LOAD_TERMINAL_OBSERVATIONS_NOT_ACCEPTANCE",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+      "candidate_sha256": "f20edd885620d77a457db0c59172d1f2e5ff7056f1b94ab0f0905debf63d1d61"
+    }
+  ]
+}

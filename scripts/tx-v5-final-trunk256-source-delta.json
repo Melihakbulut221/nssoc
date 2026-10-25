@@ -1,0 +1,52 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_final_strap6_assembly.py",
+      "baseline_sha256": "96b690a30fb4958aee9d98a2c76b4c9f86c70694ff486f76b904ff72e097589d",
+      "candidate_path": "scripts/cloud_tx_v5_final_trunk256_assembly.py",
+      "candidate_sha256": "46678d5c9a9b94cb953e9a609d76ce1d9d2a456c546cef7a1dbef592bd3dda62",
+      "edits": [
+        {
+          "before": "cloud-tx-v5-final-strap6-assembly",
+          "after": "cloud-tx-v5-final-trunk256-assembly",
+          "count": 1
+        },
+        {
+          "before": "nssoc_tx_tree32_budget_balanced_v5_final_strap6_core_v1",
+          "after": "nssoc_tx_tree32_budget_balanced_v5_final_trunk256_core_v1",
+          "count": 1
+        },
+        {
+          "before": "return_width if level<4 else 128.",
+          "after": "return_width if level<4 else 256.",
+          "count": 1
+        },
+        {
+          "before": "final_column_trunk_width_um=128.",
+          "after": "final_column_trunk_width_um=256.",
+          "count": 1
+        },
+        {
+          "before": "Final-column AVSS TM1 trunk widens64to128um and moves80um outward; local final AVSS TM1 strap widens4to6um while the2x2 topvia array retains its exact baseline geometry.",
+          "after": "Final-column AVSS TM1 trunk widens128to256um at its existing center. The6um local final strap and all via arrays retain the exact verified strap6 geometry.",
+          "count": 1
+        },
+        {
+          "before": "scripts/check_tx_v5_final_strap6_geometry.py",
+          "after": "scripts/check_tx_v5_final_trunk256_geometry.py",
+          "count": 1
+        },
+        {
+          "before": "result['strap_geometry_delta']=json.loads((OUT/'strap6-geometry-delta.json').read_text())",
+          "after": "result['trunk_geometry_delta']=json.loads((OUT/'trunk256-geometry-delta.json').read_text())",
+          "count": 1
+        },
+        {
+          "before": "'exact-strap6-geometry'",
+          "after": "'exact-trunk256-geometry'",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

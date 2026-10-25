@@ -1,0 +1,93 @@
+{
+  "baseline_path": "scripts/cloud_native_portable_cross_job.py",
+  "baseline_sha256": "b64430f6a94026228b40283bae3fb2505ab462d6b0c21caba0a293a8f3f64a11",
+  "candidate_path": "scripts/cloud_native_btrfs_cross_job.py",
+  "candidate_sha256": "f5b289411856a6eade21f5cde5b948521fb0250d926fdec5e024442d8dd8d809",
+  "edits": [
+    {
+      "before": "OUT=ROOT/'cloud-native-portable-cross-job'",
+      "after": "OUT=ROOT/'cloud-native-btrfs-cross-job'",
+      "count": 1
+    },
+    {
+      "before": "import numpy as np",
+      "after": "import numpy as np\nimport cloud_native_btrfs_case as compressed",
+      "count": 1
+    },
+    {
+      "before": "        assert not result['destination_has_avx512f'],'Diagnostic CPU target not met: select a runner without AVX512; no source restored'",
+      "after": "        result['probe_target']='Ext4 checkpoint to compressed Btrfs, then native Btrfs checkpoint/restore; CPU features recorded independently'",
+      "count": 1
+    },
+    {
+      "before": "        result['criu_build']=json.loads",
+      "after": "        result['compressed_case']=compressed.mount_case(case,OUT,run);save()\n        result['criu_build']=json.loads",
+      "count": 1
+    },
+    {
+      "before": "        exitcode=run('wait-native'",
+      "after": "        run('pre-redump-log',['docker','logs',clone],False)\n        result['compressed_redump']=compressed.redump(clone,cmd,OUT,run);save()\n        exitcode=run('wait-native'",
+      "count": 1
+    },
+    {
+      "before": "log=(source/'original-prefix-log.log').read_text()+(OUT/'continued-log.log').read_text()",
+      "after": "log=(source/'original-prefix-log.log').read_text()+(OUT/'pre-redump-log.log').read_text()+(OUT/'continued-log.log').read_text()",
+      "count": 1
+    },
+    {
+      "before": "PASS_NATIVE_PHYSICAL845_MASKED_AVX512_TO_NON_AVX512_RESTORE_BIT_EXACT_BOUNDED4NS_NOT_ACQUISITION",
+      "after": "PASS_NATIVE_PHYSICAL845_EXT4_TO_ZSTD_BTRFS_REDUMP_RESTORE_BIT_EXACT_BOUNDED4NS_NOT_FULL_STORAGE_OR_ACQUISITION",
+      "count": 1
+    },
+    {
+      "before": "        result['controls']=controls;assert all(sha(p)==v for p,v in protected.items())",
+      "after": "        result['controls']=controls;assert all(sha(p)==v for p,v in protected.items())\n        result['compressed_case']['final_compression']=run('btrfs-final-compression',['sudo','compsize','-b',str(case/'actual-acquisition.raw')]).stdout",
+      "count": 1
+    },
+    {
+      "before": "d['experimental']=True;p.write_text(json.dumps(d))",
+      "after": "d['experimental']=True;d['debug']=True;p.write_text(json.dumps(d))",
+      "count": 1
+    },
+    {
+      "before": "        if started.returncode:\n            run('restore-native-detail'",
+      "after": "        if started.returncode:\n            compressed.restore_failure(clone_id,OUT,run)\n            run('restore-native-detail'",
+      "count": 1
+    },
+    {
+      "before": "        result['compressed_case']=compressed.mount_case(case,OUT,run);save()",
+      "after": "        result['compressed_case']=compressed.mount_case(case,OUT,run);save()\n        result['criu_log_configuration']=compressed.durable_logs(OUT,run);save()",
+      "count": 1
+    },
+    {
+      "before": "        result['outputs']={str(p.relative_to(OUT))",
+      "after": "        run('readable-durable-criu-log',['sudo','chown',str(os.getuid())+':'+str(os.getgid()),str(OUT/'criu-durable.log')],False)\n        result['outputs']={str(p.relative_to(OUT))",
+      "count": 1
+    },
+    {
+      "before": "        started=run('restore-native'",
+      "after": "        result['external_superblock']=compressed.verify_external_superblock(clone,case,OUT,run);save()\n        started=run('restore-native'",
+      "count": 1
+    },
+    {
+      "before": "        result['external_superblock']=compressed.verify_external_superblock(clone,case,OUT,run);save()\n",
+      "after": "",
+      "count": 1
+    },
+    {
+      "before": "        run('pre-redump-log',['docker','logs',clone],False)",
+      "after": "        result['external_superblock']=compressed.verify_external_superblock(clone,case,OUT,run);save()\n        run('pre-redump-log',['docker','logs',clone],False)",
+      "count": 1
+    },
+    {
+      "before": "        assert not run('empty-runner',['docker','ps','-aq']).stdout.strip()",
+      "after": "        result['external_path_controls']=compressed.external_path_controls();save()\n        assert not run('empty-runner',['docker','ps','-aq']).stdout.strip()",
+      "count": 1
+    }
+  ],
+  "pins": {
+    "scripts/cloud_native_btrfs_cross_job.py": "f5b289411856a6eade21f5cde5b948521fb0250d926fdec5e024442d8dd8d809",
+    "scripts/cloud_native_btrfs_case.py": "b4c30536e1fb64b8af9389bf4571b691c7418070b3187cac272e3e365e6ea947",
+    ".github/workflows/native-btrfs-cross-job-cloud.yml": "109509a000d1ab53c2e2ba7ec89b22e05c1d2484ad568aa4695ccbf2dd3a6691"
+  }
+}

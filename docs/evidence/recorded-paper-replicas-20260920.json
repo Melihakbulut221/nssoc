@@ -1,0 +1,75 @@
+{
+  "date": "2026-09-20",
+  "scope": "Six paper claims execute the unchanged frozen replica_placement instrument on exact original historical DEF/netlist bytes restored in temporary scratch. No new layout or radiation qualification. Live file disagreement and archive corruption remain fatal. The historical SRAM-black-box Netgen stdout also matches its pre-existing digest and is checked directly; no transistor LVS inferred.",
+  "command": ".venv/bin/python paper/check_claims.py",
+  "result": {
+    "rederived": 27,
+    "manual": 15,
+    "need_build_output": 0,
+    "wrong": 0
+  },
+  "checks": "19 targeted controls passed: actual CLI measurement for six paper values, changed expected numbers fail, absent provenance fails, altered/missing recorded LVS log and live-log disagreement fail, safe bundle controls.",
+  "artifacts": {
+    "scripts/measure_recorded_replicas.py": {
+      "bytes": 1445,
+      "sha256": "2430af0ce6b5f67dde2424ddcc3580c4a87a7c77d80b7a083a6c741adc7cd636"
+    },
+    "paper/check_claims.py": {
+      "bytes": 15809,
+      "sha256": "c6e117149707e17c9114bc92b3b42ca1aefa93b1c158ee7b839da77af1540c2f"
+    },
+    "paper/claims.yaml": {
+      "bytes": 31415,
+      "sha256": "27b74b25fd29a5f1d27274225e5cd59f84714169d87cef42c2f2da491383e4ab"
+    },
+    "sw/tests/test_recorded_replica_claims.py": {
+      "bytes": 2187,
+      "sha256": "866d3c623ac0b4308244f5dfbc1dfec2173021b30a986c90ab7d317af8591a88"
+    },
+    "hw/soc/out/external-review-20260919/paper-recovered-measurement.log": {
+      "bytes": 4775,
+      "sha256": "e6a8f0e1add9ad8066f7c638510fdbcbb50e25d4ad3c6adec2f77fecb7424850"
+    },
+    "sw/tests/test_recorded_text_claims.py": {
+      "bytes": 2268,
+      "sha256": "429ef4901465478b47a107fbd7afb3b006800967dafdae317668c041f86b4ef1"
+    },
+    "sw/tests/evidence.py": {
+      "bytes": 11906,
+      "sha256": "0a630fb47b77941601d460cb9029af2baa93d523afda8a401b4ecdf08cf3be59"
+    },
+    "docs/evidence/s77lvs-b-blackbox/netgen-lvs.log": {
+      "bytes": 67302,
+      "sha256": "53505c833bceb44c2578c6ff2bfbb415e7c37b89630a07d06860a99241bec06a"
+    },
+    "docs/evidence/s77lvs-b-blackbox/recovery.json": {
+      "bytes": 1703,
+      "sha256": "5801a18c2144becd0503a9c6fa3bbddf0f797dd5b704a16f00b432d267d5e5f0"
+    },
+    "hw/soc/out/external-review-20260919/paper-recovered-all-output.log": {
+      "bytes": 4798,
+      "sha256": "9e4d798e32e5cec24377b9c3e3be3a50b4422fa347f5f73080ad2bfa487384c8"
+    },
+    "scripts/collect_evidence.py": {
+      "bytes": 8878,
+      "sha256": "77f8ba127f41d353173b0a89db122a7257563e9e8b5909be305a9ab61691cfcb"
+    },
+    "scripts/artefact_digests.py": {
+      "bytes": 61215,
+      "sha256": "ae6a4611fdd99975a1b30024ee08c83f72a9843bc511c4f80a5d45d182bda9cc"
+    },
+    "sw/tests/test_artefact_digests.py": {
+      "bytes": 9177,
+      "sha256": "598db16a3f3354fc8ac1cfc2b7101669c3181408f11b29efacf9a71eece17f6f"
+    },
+    "docs/evidence/s77lvs-b-blackbox/metrics.json": {
+      "bytes": 10587,
+      "sha256": "7c5ec04e9203b4cc5780eb9c74d6bdec916add5ac049eda28c2b72b97dd5a05b"
+    },
+    "docs/evidence/s77lvs-b-blackbox/resolved.json": {
+      "bytes": 32028,
+      "sha256": "dbfe37eeedecbf28738ec936d242fe218f035c76cdb29cdbdde61109d521a62e"
+    }
+  },
+  "companion_checks": "63 evidence/digest/paper tests PASS after registering the historical LVS run and adding its stdout to collection and digest coverage."
+}

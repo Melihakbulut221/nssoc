@@ -1,0 +1,50 @@
+{
+  "negative": {
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_loop_hbt_v1.spice",
+    "parent_pin": {
+      "bytes": 1099,
+      "sha256": "2c1d0268da591654679e1c64bc2d811df660de1ca9b8ba0eda271060454233ec"
+    },
+    "target": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-source-20261006/loop-negative01.spice",
+    "target_pin": {
+      "bytes": 902,
+      "sha256": "34ee1975142347040e013b8eefd9a090e49274932a02f685e2792ed42ce5a6ab"
+    },
+    "original_complete_text": "* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n* SPDX-License-Identifier: CERN-OHL-W-2.0\n* Original connected schematic startup fixture: real HBT VCO and /80 feedback.\n* Negative Kvco requires feedback at the PFD positive input and REF at negative.\n* The pump drives VCTRL through a finite native biased RC filter; no ideal\n* internal clock/divider/detector/control clamp and no lock/signoff assertion.\n* Separate VCO2.3V, divider/PFD2.5V and logic1.2V nominal supplies.\n.subckt nssoc_pll_loop_hbt_v1 ref reset clearb clkp clkn qp qn fb fbbar up down vctrl vco_avdd div_avdd core_vdd avss sub\nXCHAIN vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub nssoc_pll_feedback_chain_v1\nXDET fb ref reset up down vctrl div_avdd avss sub nssoc_pll_pfd_cp_hv_v1\n* Finite DC bias near0.851V before pump correction; actual resistor/capacitor\n* models determine voltage, pole and ripple. This is not a type-II ideal loop.\nXRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1\nXRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1\nXC vctrl avss cap_cmim w=10u l=10u\n.ends nssoc_pll_loop_hbt_v1\n",
+    "resulting_complete_text": "* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n* SPDX-License-Identifier: CERN-OHL-W-2.0\n* Source-only candidate; polarity NOT SELECTED. Actual loaded tuning is prerequisite.\n* Four independent body/wire reference ports. No internal ideal sources.\n.subckt nssoc_pll_tail115_connected570_negative_v1 ref reset clearb clkp clkn qp qn fb fbbar up down vctrl vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref\nXCHAIN vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref nssoc_pll_feedback_vco_v6_divider_tail115_v1_wire_v1\nXDET fb ref reset up down vctrl div_avdd avss sub nssoc_pll_pfd_cp_hv_v1\nXRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1\nXRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1\nXC vctrl avss cap_cmim w=10u l=10u\n.ends nssoc_pll_tail115_connected570_negative_v1\n",
+    "full_unified_diff": "--- \n+++ \n@@ -1,16 +1,11 @@\n * SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n * SPDX-License-Identifier: CERN-OHL-W-2.0\n-* Original connected schematic startup fixture: real HBT VCO and /80 feedback.\n-* Negative Kvco requires feedback at the PFD positive input and REF at negative.\n-* The pump drives VCTRL through a finite native biased RC filter; no ideal\n-* internal clock/divider/detector/control clamp and no lock/signoff assertion.\n-* Separate VCO2.3V, divider/PFD2.5V and logic1.2V nominal supplies.\n-.subckt nssoc_pll_loop_hbt_v1 ref reset clearb clkp clkn qp qn fb fbbar up down vctrl vco_avdd div_avdd core_vdd avss sub\n-XCHAIN vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub nssoc_pll_feedback_chain_v1\n+* Source-only candidate; polarity NOT SELECTED. Actual loaded tuning is prerequisite.\n+* Four independent body/wire reference ports. No internal ideal sources.\n+.subckt nssoc_pll_tail115_connected570_negative_v1 ref reset clearb clkp clkn qp qn fb fbbar up down vctrl vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref\n+XCHAIN vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref nssoc_pll_feedback_vco_v6_divider_tail115_v1_wire_v1\n XDET fb ref reset up down vctrl div_avdd avss sub nssoc_pll_pfd_cp_hv_v1\n-* Finite DC bias near0.851V before pump correction; actual resistor/capacitor\n-* models determine voltage, pole and ripple. This is not a type-II ideal loop.\n XRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1\n XRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1\n XC vctrl avss cap_cmim w=10u l=10u\n-.ends nssoc_pll_loop_hbt_v1\n+.ends nssoc_pll_tail115_connected570_negative_v1\n",
+    "unchanged_filter_lines": [
+      "XRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1",
+      "XRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1",
+      "XC vctrl avss cap_cmim w=10u l=10u"
+    ],
+    "unchanged_pfd_cp_source": {
+      "bytes": 3740,
+      "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+    }
+  },
+  "positive": {
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/pll_loop_hbt_v1.spice",
+    "parent_pin": {
+      "bytes": 1099,
+      "sha256": "2c1d0268da591654679e1c64bc2d811df660de1ca9b8ba0eda271060454233ec"
+    },
+    "target": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-tail115-connected570-source-20261006/loop-positive01.spice",
+    "target_pin": {
+      "bytes": 902,
+      "sha256": "8f8a51442b770dc9667847eea3efe50d9f2c76ccace98d3911311d0ae2de133e"
+    },
+    "original_complete_text": "* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n* SPDX-License-Identifier: CERN-OHL-W-2.0\n* Original connected schematic startup fixture: real HBT VCO and /80 feedback.\n* Negative Kvco requires feedback at the PFD positive input and REF at negative.\n* The pump drives VCTRL through a finite native biased RC filter; no ideal\n* internal clock/divider/detector/control clamp and no lock/signoff assertion.\n* Separate VCO2.3V, divider/PFD2.5V and logic1.2V nominal supplies.\n.subckt nssoc_pll_loop_hbt_v1 ref reset clearb clkp clkn qp qn fb fbbar up down vctrl vco_avdd div_avdd core_vdd avss sub\nXCHAIN vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub nssoc_pll_feedback_chain_v1\nXDET fb ref reset up down vctrl div_avdd avss sub nssoc_pll_pfd_cp_hv_v1\n* Finite DC bias near0.851V before pump correction; actual resistor/capacitor\n* models determine voltage, pole and ripple. This is not a type-II ideal loop.\nXRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1\nXRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1\nXC vctrl avss cap_cmim w=10u l=10u\n.ends nssoc_pll_loop_hbt_v1\n",
+    "resulting_complete_text": "* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n* SPDX-License-Identifier: CERN-OHL-W-2.0\n* Source-only candidate; polarity NOT SELECTED. Actual loaded tuning is prerequisite.\n* Four independent body/wire reference ports. No internal ideal sources.\n.subckt nssoc_pll_tail115_connected570_positive_v1 ref reset clearb clkp clkn qp qn fb fbbar up down vctrl vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref\nXCHAIN vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref nssoc_pll_feedback_vco_v6_divider_tail115_v1_wire_v1\nXDET ref fb reset up down vctrl div_avdd avss sub nssoc_pll_pfd_cp_hv_v1\nXRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1\nXRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1\nXC vctrl avss cap_cmim w=10u l=10u\n.ends nssoc_pll_tail115_connected570_positive_v1\n",
+    "full_unified_diff": "--- \n+++ \n@@ -1,16 +1,11 @@\n * SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n * SPDX-License-Identifier: CERN-OHL-W-2.0\n-* Original connected schematic startup fixture: real HBT VCO and /80 feedback.\n-* Negative Kvco requires feedback at the PFD positive input and REF at negative.\n-* The pump drives VCTRL through a finite native biased RC filter; no ideal\n-* internal clock/divider/detector/control clamp and no lock/signoff assertion.\n-* Separate VCO2.3V, divider/PFD2.5V and logic1.2V nominal supplies.\n-.subckt nssoc_pll_loop_hbt_v1 ref reset clearb clkp clkn qp qn fb fbbar up down vctrl vco_avdd div_avdd core_vdd avss sub\n-XCHAIN vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub nssoc_pll_feedback_chain_v1\n-XDET fb ref reset up down vctrl div_avdd avss sub nssoc_pll_pfd_cp_hv_v1\n-* Finite DC bias near0.851V before pump correction; actual resistor/capacitor\n-* models determine voltage, pole and ripple. This is not a type-II ideal loop.\n+* Source-only candidate; polarity NOT SELECTED. Actual loaded tuning is prerequisite.\n+* Four independent body/wire reference ports. No internal ideal sources.\n+.subckt nssoc_pll_tail115_connected570_positive_v1 ref reset clearb clkp clkn qp qn fb fbbar up down vctrl vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref\n+XCHAIN vctrl clearb clkp clkn qp qn fb fbbar vco_avdd div_avdd core_vdd avss sub body_substrate wire_cref div_body_substrate div_wire_cref nssoc_pll_feedback_vco_v6_divider_tail115_v1_wire_v1\n+XDET ref fb reset up down vctrl div_avdd avss sub nssoc_pll_pfd_cp_hv_v1\n XRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1\n XRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1\n XC vctrl avss cap_cmim w=10u l=10u\n-.ends nssoc_pll_loop_hbt_v1\n+.ends nssoc_pll_tail115_connected570_positive_v1\n",
+    "unchanged_filter_lines": [
+      "XRHI vco_avdd vctrl sub rppd w=1u l=80u b=0 sw_et=1",
+      "XRLO vctrl avss sub rppd w=1u l=47u b=0 sw_et=1",
+      "XC vctrl avss cap_cmim w=10u l=10u"
+    ],
+    "unchanged_pfd_cp_source": {
+      "bytes": 3740,
+      "sha256": "194a50048f88614b3f3c0bbbac88cdf8be7f71a8cd62eac3f14914b652d865fc"
+    }
+  }
+}

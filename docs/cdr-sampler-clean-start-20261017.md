@@ -1,0 +1,9 @@
+# Clean native sampler prerequisite for CDR integration, 2026-10-17
+
+The fresh-layout shunt-v4 XOR now passes its loaded primitive tests. Connecting it into a phase detector requires measured sampler output levels and loading, rather than treating the existing external-clock sampler as recovered-clock evidence.
+
+This cloud campaign keeps the original rx_sampler_hbt_v2.spice hash25400147 unchanged. A recursive hierarchy binder checks all15HBT/12nativeR instances and41emitters. It captures every HBT voltage/current, actual native OFF flags, zero-source operating point, all native solver diagnostics and256fixed source bits. Supply/bias/data/clock start from zero without nodesets. Inputs are ideal sources through10ohms,1.65Vcommon mode/300mVdifferential; clock8GHz/1.29Vcommon mode/300mVdifferential. Outputs retain150fF each. These are explicit standalone bench conditions, not the actual RX/XOR load.
+
+Nominal, hot/low and cold/high cases retain100mV data margin,0.4Vminimum activeVCE/1.6VmaximumVCE/3mA-per-emitter and0.5mAminimum tailcurrent limits, and0.3UI clock-to-valid. An additional1VabsoluteVBE bound and clean zero-source startup make this a new stricter campaign, not a relabeling of old121case results. Original fixed half-UI sampling edge and three output sampling phases(.3/.6/.9UI) are used without fitted delay.34.25ns includes all256bits and the final hold interval at0.3125psmaximum timestep. Actual swapped-output and stopped-clock faults must fail the source-bit measurement; their electrical bounds are still reported.
+
+If any normal case fails, retain its full trajectory and repair the native circuit before sampler/XOR integration. If it passes, output common-mode and swing observations guide real level conversion/fanout design. No result here closes physical sampler routing, aperture/PVT/jitter/noise/BER, a coherent multiedge phase detector, V/I feedback, recoveredclock, PLL acquisition or fullGen3x4PHY.

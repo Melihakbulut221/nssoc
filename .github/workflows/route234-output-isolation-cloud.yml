@@ -1,0 +1,75 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: route234-output-isolation-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/route234-output-isolation-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: route234-output-isolation-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-five-buffer-feasibility:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore pinned native runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Insert and legalize only five actual buffers, prove wholechip logic
+        run: |
+          python3 -m py_compile scripts/prepare_route234_output_isolation.py scripts/cloud_route234_output_isolation.py
+          python3 scripts/cloud_route234_output_isolation.py
+      - name: Preserve actual source, proposed placement and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p cloud-route234-output-isolation
+          if [ ! -f cloud-route234-output-isolation/result.json ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > cloud-route234-output-isolation/result.json
+          fi
+          stem="route234-output-isolation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-route234-output-isolation/result.json "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory cloud-route234-output-isolation --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','route234-output-isolation',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence on publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: route234-output-isolation-${{ github.run_id }}
+          path: cloud-route234-output-isolation/
+          retention-days: 30
+      - name: Require measured feasibility without claiming timing
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          import json,os
+          r=json.load(open('cloud-route234-output-isolation/result.json'))
+          assert r['source_head']==os.environ['GITHUB_SHA']
+          assert r['status']=='PASS_FIVE_BUFFER_PLACEMENT_AND_RESTRICTED_LOGIC_NOT_ROUTED_OR_TIMED',r.get('error')
+          assert r['logic']['status']=='PASS within scope' and r['inversion_control']=='REJECTED'
+          assert r['physical_feasibility']['added_cells']==5 and r['source_unchanged']
+          assert not r['accepted'] and not r['timing_improvement_proven'] and not r['routed_candidate']
+          PYCODE

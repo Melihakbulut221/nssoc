@@ -1,0 +1,108 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_minimax_composition.py",
+      "candidate_path": "scripts/cloud_tx_v5_timing_priority_composition.py",
+      "edits": [
+        {
+          "before": "_minimax_core_v1",
+          "after": "_timing_priority_core_v1",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-minimax",
+          "after": "tx-v5-timing-priority",
+          "count": 2
+        },
+        {
+          "before": "39266340959",
+          "after": "39305590019",
+          "count": 1
+        },
+        {
+          "before": "6c9d4e17692580caa4154781d714cdf18b228792",
+          "after": "6a619b640aed880cdcb22f6bb00de6220d25e0e3",
+          "count": 2
+        },
+        {
+          "before": "4ef6f8ba13bf63adea2abf78a43b0e279d020ebfc34beeee3522b31e1d807b2c",
+          "after": "dfcd1f83ac11cef5285899e261ded8a58f6dfe48bd12120fc5dc145d1c9f25c0",
+          "count": 1
+        },
+        {
+          "before": "a9ed5db8bdeab173bbf075db9baa42e8783c5993cee2b0511327f49220bae919",
+          "after": "70de720c88613198364186d95fe538a6e73533c8f6153671ae4f4cf9ffd93355",
+          "count": 1
+        },
+        {
+          "before": "'C': 77516",
+          "after": "'C': 77538",
+          "count": 1
+        },
+        {
+          "before": "5d81376ebdd2147693e30888276bf60a460aa5191c5454ae891b6516526b43d9",
+          "after": "03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d",
+          "count": 1
+        },
+        {
+          "before": "PASS_MINIMAX_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS",
+          "after": "PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS",
+          "count": 1
+        },
+        {
+          "before": "bind_tx_v5_minimax_interfaces.py",
+          "after": "bind_tx_v5_timing_priority_interfaces.py",
+          "count": 1
+        },
+        {
+          "before": "        result['independent_data_route_geometry']=gp",
+          "after": "        priority=gp['plan']['timing_priority']\n        assert priority['maximum_weighted_after']<priority['maximum_weighted_before']\n        assert priority['stage_maxima']['1']['after']<priority['stage_maxima']['1']['before']\n        assert gp['maximum_after_um']<priority['original_maximum_ceiling_um']\n        assert len(priority['regressed_legs'])==24\n        result['independent_data_route_geometry']=gp",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "f21f233301f73128153742c5e319776650eb3e12340673eaa7ca0556f256ad47",
+      "candidate_sha256": "403da5320d21cb509260d7f58034cb42dfd8acba13b14f13c3f833e8ccb7de3b"
+    },
+    {
+      "baseline_path": "scripts/bind_tx_v5_minimax_interfaces.py",
+      "candidate_path": "scripts/bind_tx_v5_timing_priority_interfaces.py",
+      "edits": [
+        {
+          "before": "dc89fcfbd2ae748dab23e25dbe6401966932ea99",
+          "after": "5cbdd0d6eebd458ae85af5c631f5165afba1dd8f",
+          "count": 1
+        },
+        {
+          "before": "_minimax",
+          "after": "_timing_priority",
+          "count": 2
+        },
+        {
+          "before": "29c4eb72b54ab2127d1b1cf5753449e394e8191e2b4b7545d3928aca6835cb72",
+          "after": "6b8a3d68e6f94cc7a0812ab89c360a8098633d6e41fa238654c8e16c5ea73057",
+          "count": 1
+        }
+      ],
+      "baseline_sha256": "d411d62bf9376073b9e66ad1efa9cb8fcc0c8bc61e22afda98857340f69bbdf4",
+      "candidate_sha256": "db8877dae9d5da12a66b4e77960ddfd5c7af2286ac2024b57d7cda355a6bc58d"
+    },
+    {
+      "baseline_path": ".github/workflows/tx-v5-minimax-composition-cloud.yml",
+      "candidate_path": ".github/workflows/tx-v5-timing-priority-composition-cloud.yml",
+      "edits": [
+        {
+          "before": "tx-v5-minimax",
+          "after": "tx-v5-timing-priority",
+          "count": 8
+        },
+        {
+          "before": "tx_v5_minimax",
+          "after": "tx_v5_timing_priority",
+          "count": 4
+        }
+      ],
+      "baseline_sha256": "81f8617170bfb3fff19ab945075c79ab1564fbc03e0563a727430159e0d1b93d",
+      "candidate_sha256": "ad94f390ca8c148b6251a57aa929283267c10f21660412b2006c0bbca4116c03"
+    }
+  ]
+}

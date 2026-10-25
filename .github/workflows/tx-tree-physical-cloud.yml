@@ -1,0 +1,110 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-tree-physical-cloud
+on:
+  push:
+    branches: ['codex/complete-open-work']
+    paths:
+      - .github/workflows/tx-tree-physical-cloud.yml
+      - docs/evidence/pcie-cascade14-composition-20261013.json
+  workflow_dispatch:
+    inputs:
+      capture_transport:
+        description: Binary streaming keeps all probes; control compares every sample against original wrdata on the same four-input circuit
+        type: choice
+        options: [legacy, binary, control]
+        default: legacy
+      study:
+        description: Independent engineering checks using the same native circuit and original bit oracle
+        type: choice
+        options: [nominal, temperature_voltage, failing_corners, independent_corners, mos_corners, quarter_step, hot_low_quarter_step, physical_faults]
+        default: nominal
+      pre_bias:
+        description: Native stage bias topology; feedback is a schematic candidate, not a qualified layout
+        type: choice
+        options: [native_res, output_feedback]
+        default: native_res
+      streams:
+        description: Tree size for the actual physical macro experiment
+        type: choice
+        options: ['4', '32', both]
+        default: both
+      clock_reference:
+        description: Native clock common-mode resistor geometry; external clock phases unchanged
+        type: choice
+        options: [baseline, offset75, stiff65]
+        default: baseline
+      physical_final_profile:
+        description: Exact final-stage physical geometry and source-bound RC
+        type: choice
+        options: [power_trunks, interleaved, kelvin_return, kelvin_short, kelvin_short_vias, kelvin_dense, kelvin_dense_wide, kelvin_signal_trunks, kelvin_m3_10, v6_kelvin_dense_wide, v7_kelvin_dense_wide, v8_kelvin_dense_wide, v8_kelvin_tail_paths, v8_kelvin_local_tail, v8_kelvin_local_return, v8_kelvin_local_supply, v8_kelvin_local_internal, v8_kelvin_compact_internal, v8_kelvin_low_internal, v8_kelvin_low_critical, v8_kelvin_low_selects, v8_kelvin_low_selects_m3, v8_kelvin_low_selects_rows, v8_kelvin_low_ports, v8_kelvin_low_ports_deep, v8_kelvin_low_ports_loads, v8_kelvin_low_ports_shunts, v8_kelvin_low_ports_loads_shunts, v8_kelvin_low_ports_loads_shunts_series, v9_kelvin_low_critical, v10_kelvin_low_critical, v10_kelvin_low_ports_loads_shunts_series, v11_kelvin_low_ports_loads_shunts_series, v10_kelvin_low_ports_loads_shunts_series_boundary, v10_kelvin_low_ports_loads_shunts_series_nearest, v10_kelvin_low_ports_loads_shunts_series_tight, v10_kelvin_low_ports_loads_shunts_series_left_outputs, v10_kelvin_low_ports_loads_shunts_series_direct_tight]
+        default: power_trunks
+      physical_final:
+        description: Include the selected final physical macro; matched compares compact and wired controls
+        type: choice
+        options: [off, matched, physical_compact, physical_wire]
+        default: off
+      physical_profile:
+        description: Exact source-bound physical composition
+        type: choice
+        options: [baseline, wide_access, supply_access, power_trunks, power_trunks_vias, kelvin_dense_wide, kelvin_supply_feed, kelvin_supply_direct, cascade16_kelvin_dense_wide, cascade158_kelvin_supply_direct, cascade158_kelvin_supply_direct_boundary, cascade158_kelvin_supply_direct_nearest, cascade158_kelvin_supply_direct_tight]
+        default: baseline
+permissions:
+  contents: read
+concurrency:
+  group: tx-tree-physical-cloud-${{ github.ref }}-${{ inputs.physical_profile || 'baseline' }}-${{ inputs.physical_final || 'off' }}-${{ inputs.physical_final_profile || 'power_trunks' }}-${{ inputs.streams || 'both' }}-${{ inputs.study || 'nominal' }}-${{ inputs.clock_reference || 'baseline' }}-${{ inputs.pre_bias || 'native_res' }}
+  cancel-in-progress: false
+jobs:
+  native-transient:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        streams: ${{ fromJSON(inputs.streams == '4' && '[4]' || inputs.streams == '32' && '[32]' || '[4,32]') }}
+        prestage: [physical_compact, physical_wire]
+        condition: ${{ fromJSON(inputs.study == 'temperature_voltage' && '["hot_low","cold_high"]' || inputs.study == 'failing_corners' && '["hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'independent_corners' && '["hbt_typ_res_bcs","hbt_typ_res_wcs","hbt_bcs_res_typ","hbt_bcs_res_bcs","hbt_bcs_res_wcs","hbt_wcs_res_typ","hbt_wcs_res_bcs","hbt_wcs_res_wcs","hot_low_res_bcs","hot_low_hbt_bcs","cold_high_res_wcs","cold_high_hbt_wcs"]' || inputs.study == 'mos_corners' && '["mos_ss","mos_ff","lv_ss_hv_ff","lv_ff_hv_ss","mos_sf","mos_fs"]' || inputs.study == 'hot_low_quarter_step' && '["hot_low_quarter_step"]' || inputs.study == 'quarter_step' && '["quarter_step"]' || '["nominal"]') }}
+        fault: ${{ fromJSON(inputs.study == 'physical_faults' && '["swap_pre_a_select","disable_pre_b_bias","swap_leaf_select"]' || '["none"]') }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact native simulator with hosted dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 pytest==8.4.2
+          curl --fail --location --retry 4 'https://deb.debian.org/debian/pool/main/n/ngspice/ngspice_47+ds-1~bpo13+1_amd64.deb' -o "$RUNNER_TEMP/ngspice.deb"
+          echo "400d2ebaefc1dcaaaf9693ac4731535d910fa2c0544552736970aa9ebaad760b  $RUNNER_TEMP/ngspice.deb" | sha256sum --check
+          dpkg-deb -x "$RUNNER_TEMP/ngspice.deb" "$RUNNER_TEMP/ngspice"
+          echo "CLOUD_NGSPICE=$RUNNER_TEMP/ngspice/usr/bin/ngspice" >> "$GITHUB_ENV"
+      - name: Reject source-bit corruption and incomplete output captures
+        run: python3 -m pytest -q sw/tests/test_cloud_tx_original_bits.py sw/tests/test_cloud_tx_mux4.py sw/tests/test_cloud_result_publication.py sw/tests/test_cloud_tx_stream.py
+      - name: Run actual complete tree and full-wave engineering screen
+        run: python3 scripts/${{ inputs.capture_transport == 'control' && 'cloud_tx_stream.py' || 'run_cloud_tx_mux4.py' }} ${{ inputs.capture_transport == 'control' && '--' || inputs.capture_transport == 'binary' && '--stream-raw' || '' }} --condition '${{ matrix.condition }}' --streams '${{ matrix.streams }}' --prestage '${{ matrix.prestage }}' --physical-profile '${{ inputs.physical_profile || 'baseline' }}' --physical-final-profile '${{ inputs.physical_final_profile || 'power_trunks' }}' --physical-final '${{ inputs.physical_final == 'matched' && matrix.prestage || inputs.physical_final || 'off' }}' --frontend damped_strong --clock-bias native_res --clock-reference '${{ inputs.clock_reference || 'baseline' }}' --final-drive '${{ inputs.physical_final && inputs.physical_final != 'off' && 'double_taps_margin' || 'double_taps_guard' }}' --pre-bias '${{ inputs.pre_bias || 'native_res' }}' --output-bias native_res --fault '${{ matrix.fault }}'
+      - name: Preserve all successful and failed native captures permanently
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-tree-physical-${{ matrix.streams }}-${{ matrix.prestage }}-${{ matrix.condition }}-${{ matrix.fault }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" cloud-tx-mux4
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp cloud-tx-mux4/result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group 'tree-${{ matrix.streams }}-${{ matrix.prestage }}-${{ matrix.condition }}-${{ matrix.fault }}' "$archive" "$archive.sha256" "$summary"
+      - name: Retain capture if permanent publication fails
+        if: failure()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tree-${{ matrix.streams }}-${{ matrix.prestage }}-${{ matrix.condition }}-${{ matrix.fault }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: tx-tree-physical-*
+          if-no-files-found: warn
+          retention-days: 30

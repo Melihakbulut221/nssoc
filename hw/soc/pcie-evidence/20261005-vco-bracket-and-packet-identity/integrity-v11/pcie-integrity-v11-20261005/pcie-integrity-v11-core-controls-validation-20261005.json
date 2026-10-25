@@ -1,0 +1,112 @@
+{
+  "status": "PASS_QUARANTINED_INGRESS_AND_ACTUAL_PUBLIC_FAULT_CONTROLS",
+  "source_freeze": {
+    "bytes": 1782,
+    "sha256": "9a8f767c8d42d7f3a9829aee5a8bce7623989f87190ebf08a817cafc908bfe71"
+  },
+  "sources": {
+    "scripts/generate_pcie_integrity_ingress_v11.py": {
+      "bytes": 2671,
+      "sha256": "b3ee05c26b9f0a6107c093cf99cdaf020e337110bb5c32d7961ed4fcca5857ab"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v11.py": {
+      "bytes": 11276,
+      "sha256": "711b75c8998094c890d4bf872348517667f9e3a015142cc4da96aaf6667fdffb"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_ingress_integrity_v11.v": {
+      "bytes": 3605,
+      "sha256": "258db2e080cae28b0bbfc9180bfb0238c17c16307d3bcad0cb4376955b331cde"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v11.v": {
+      "bytes": 190744,
+      "sha256": "d4f0419f035c45bb159c9653f6b0aa5a68d1e03e41436ad219ce1f26481dbd24"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v11.v": {
+      "bytes": 3324,
+      "sha256": "e7771bd2832bab07b7dad8576a27b7d6edc7eddf0084b2b00afb32771cd67203"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v11": {
+      "bytes": 1528,
+      "sha256": "7c0bcb40c50b05cdca57d350b9e7e3f2f368c64487f164cd95d98eaf15ac695b"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v11.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v11_ingress.py": {
+      "bytes": 5461,
+      "sha256": "31048a58bf7d4e8959978b2e4428bcfc9c95fd6809d42670e9546cdab66406f5"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v11_miter.py": {
+      "bytes": 8234,
+      "sha256": "d8901ca4f3f2ebf2b9ffee0d32502623dbcdb490d96e87955cdfe9d9d0cc10bc"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v11.py": {
+      "bytes": 4805,
+      "sha256": "f0554889e15bfd488d4cbbf72b4446178b4970677f33af522e5562b94736e1b6"
+    }
+  },
+  "pytest_executions_passed": 20,
+  "distinct_pytest_predicates": 20,
+  "literal_fifo_cycles": 24576,
+  "fifo_coverage": [
+    {
+      "depth": 1,
+      "cycles": 8192,
+      "fullpop": 787,
+      "fullfault": 255,
+      "valid": 4495,
+      "restart": 435,
+      "wrap": 787,
+      "hidden": 1167,
+      "flush": 81,
+      "reset": 43
+    },
+    {
+      "depth": 3,
+      "cycles": 8192,
+      "fullpop": 340,
+      "fullfault": 35,
+      "valid": 7292,
+      "restart": 245,
+      "wrap": 400,
+      "hidden": 130,
+      "flush": 81,
+      "reset": 43
+    },
+    {
+      "depth": 4,
+      "cycles": 8192,
+      "fullpop": 300,
+      "fullfault": 33,
+      "valid": 9243,
+      "restart": 242,
+      "wrap": 270,
+      "hidden": 107,
+      "flush": 81,
+      "reset": 43
+    }
+  ],
+  "positive_public_cases": 26,
+  "public_profiles": [
+    "13 default150 unchanged serial-oracle cases",
+    "13 default150 cycle-exact V10/V11 cases, with identical FIFO control state/every occupied slot plus original framer payload/predecode companion checks"
+  ],
+  "actual_RTL_mutants": {
+    "ingress_writer": 4,
+    "public_behavior": 8,
+    "cycle_miter": 2
+  },
+  "preserved_first_attempt": "Stimulus drained full FIFO before the next complete block, observing zero full+pop events; three positives and the lost-full-pop negative failed closed (4FAIL4PASS). Exact test/source/log retained. Corrected only ready stimulus, RTL unchanged.",
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v11-20261005/pcie-integrity-v11-default-controls-20261005.tar.xz",
+    "bytes": 2023336,
+    "sha256": "ba23bc097107a3888b13fc5959e2116bbd85909ed0e81d452210e43a73aca830"
+  },
+  "manifest": {
+    "bytes": 66805,
+    "sha256": "c7560077fa579e934c6e6a4951e64abf6a7722a0fce1bca38f25d8c1bb9ba71a"
+  },
+  "members": 208,
+  "scope": "Only initialized reachable valid FIFO-slot/public-output equivalence. Full/no-pop overflow may write hidden payload on the same edge the original controls invalidate the entire queue. Pointers/count/overflow/flush/reset and V10 framer/control remain exact. No arbitrary hidden-state/four-state equivalence, full-DUT all-state proof, V11MAX4118 public profile, mapped replay or physical timing qualification. Frozen original ingress and V10/V8 unchanged."
+}

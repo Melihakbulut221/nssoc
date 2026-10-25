@@ -1,0 +1,107 @@
+{
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "docs/evidence/cdr-follower-v23-mim-parent-capture-pass-20261020.json": "20f41398a593c448d66acf883dff494361bec0e529ab0ba43062982d3bdd787d",
+    ".github/workflows/cdr-v23-latch-timing-cloud.yml": "a01f6cccc9cef103feffa658333fef9b78526a753196bb0755f114389582409f",
+    "docs/evidence/cdr-follower-v23-electrical-rejection-20261020.json": "27af8ef3ef436a36e107c332ad0c32b66f87379cd99253683d9f233727930cd4",
+    "scripts/check_cdr_v23_latch_sources.py": "dc6674569fa96a22febfed553b248a4e89545a45339d274d810b1323c05e60f7",
+    "scripts/cdr-v23-latch-source-deltas.json": "acf3871496102f48fd75a834b77759c8960551b9551f21a15ca52d182800b586",
+    "docs/evidence/cdr-selector-small-v24-mim-parent-capture-pass-20261020.json": "f6908936c439b5c33f89a3ae345077f6eaa10df1697245a930cf6a0db80ca330",
+    "docs/evidence/cdr-selector-small-v24-electrical-rejection-20261021.json": "c4e4bb02dc5426aa38b005cef14fb0c55d169ce8b87ed1455cd49b9e201baabf"
+  },
+  "diagnostic": {
+    "baseline_path": "scripts/cloud_cdr_v23_latch_timing.py",
+    "baseline_sha256": "58733fa5abfc5eafdbb1322c12acf43ca3402654051826de61cd67f2e14a5402",
+    "candidate_path": "scripts/cloud_cdr_v24_latch_timing.py",
+    "candidate_sha256": "9cfd967fd818c3c1412ba005842b31d5287d1f2364a7a493b02e6f9aeb12c468",
+    "edits": [
+      {
+        "before": "cdr-v23-latch",
+        "after": "cdr-v24-latch",
+        "count": 2
+      },
+      {
+        "before": "cdr-follower-v23-electrical-rejection-20261020.json",
+        "after": "cdr-selector-small-v24-electrical-rejection-20261021.json",
+        "count": 1
+      },
+      {
+        "before": "39479905700",
+        "after": "39497247685",
+        "count": 2
+      },
+      {
+        "before": "cdr-follower-v23-mim-streamed-",
+        "after": "cdr-selector-small-v24-mim-streamed-",
+        "count": 1
+      },
+      {
+        "before": "d873cde28d768838e68af35917da5d8e92814a15",
+        "after": "c6d06da249dd52f5a0a629dd62d0942bd438f033",
+        "count": 1
+      },
+      {
+        "before": "f7dc25fd952e3c0e7d35ffaf662b3a392f9f8f1647de77a628c764961e734dcf",
+        "after": "21b0df5eeecd7f4e266ce5915f6d6f2706921c72f658e8d945531ea214cc2aec",
+        "count": 1
+      },
+      {
+        "before": "26ddd39333632b8eb75de42b63d2c6ba219a27180c2e83ae00c203f66e68b3cc",
+        "after": "a2bfcf71ef616d460ae17897b8acf4191e76925f8aeafa77b9c64bbb3a5b3522",
+        "count": 1
+      },
+      {
+        "before": "38a4fe0fbc8688d95d0d060c88324f7b6d76d1e25c3f96ba3f13df063cd820c8",
+        "after": "e24398d8031ddaf734caf0b1f2319438a0827acf1ac40ab8361fea6bcf2a5b9f",
+        "count": 1
+      },
+      {
+        "before": "063a69708764486d6555a47a7d0d06bc27d4328ddd72f480b08e340691858039",
+        "after": "6eb0c33404eff21eab3a71cfb4073f5c629dc4a48b6e3ea0044e34baed2c0399",
+        "count": 1
+      },
+      {
+        "before": "and not prior['devices_passed']",
+        "after": "and prior['devices_passed']",
+        "count": 1
+      },
+      {
+        "before": "and len(violations)==2",
+        "after": "and len(violations)==0",
+        "count": 1
+      },
+      {
+        "before": "all(members[n]['nx']==4 for n in selector_names)",
+        "after": "all(members[n]['nx']==2 for n in selector_names)",
+        "count": 1
+      },
+      {
+        "before": "cdr-follower-v23-mim-parent-capture-pass-20261020.json",
+        "after": "cdr-selector-small-v24-mim-parent-capture-pass-20261020.json",
+        "count": 1
+      },
+      {
+        "before": "39477040744",
+        "after": "39494983590",
+        "count": 1
+      },
+      {
+        "before": "c976da9b66f9236dc7cdfb3797d0d7e1d887f2791a326fabb1c02e02148ecd9e",
+        "after": "717fafe89cbf9bac0492628a8b33b888a85223804e6e7b0cf8cc492362766aba",
+        "count": 1
+      },
+      {
+        "before": "cdr-follower-v23-mim-parent-rc",
+        "after": "cdr-selector-small-v24-mim-parent-rc",
+        "count": 1
+      },
+      {
+        "before": "b66dcdb3d72b5fcbc1055b2f05247ca2a6e791c3",
+        "after": "b70e7dfd55449c452669843c7a047f1e97170383",
+        "count": 1
+      }
+    ]
+  }
+}

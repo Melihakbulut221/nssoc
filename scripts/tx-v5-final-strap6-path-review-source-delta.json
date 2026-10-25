@@ -1,0 +1,45 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_fast_stage_isolated_path_review.py",
+      "baseline_sha256": "d9fe6f53856bcf06dab27515057ef300e5f12646cc8291fd72bcd16e74e112c3",
+      "candidate_path": "scripts/cloud_tx_v5_final_strap6_path_review.py",
+      "candidate_sha256": "7f67255ee304b1400365dd09fbafbc1f6376e764eba6435fd26956064db0090b",
+      "edits": [
+        {
+          "before": "cloud_tx_v5_fast_stage_isolated_builder",
+          "after": "cloud_tx_v5_final_strap6_builder",
+          "count": 2
+        },
+        {
+          "before": "tx-v5-fast-stage-isolated-path-review",
+          "after": "tx-v5-final-strap6-path-review",
+          "count": 2
+        },
+        {
+          "before": "pin=json.loads((ROOT/'docs/evidence/tx-v5-fast-stage-isolated-wave-rejection-20261019.json').read_text())['cases']['none']",
+          "after": "pin=json.loads((ROOT/'docs/evidence/tx-v5-final-strap6-nominal-rejection-20261019.json').read_text())",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-fast-stage-isolated-wave-wire-nominal-none",
+          "after": "tx-v5-final-strap6-wave-wire-nominal-none",
+          "count": 1
+        },
+        {
+          "before": "selected=['native/wave.raw','native/op.dat','native/contract.json','all-interfaces.json']",
+          "after": "selected=['native/wave.raw','native/op.dat','native/contract.json','all-interfaces.json','source/cloud-tx-v5-final-strap6-assembly/wire96/tree1674-wire01.spice']",
+          "count": 1
+        },
+        {
+          "before": "        assert all(sha(source/n)==prior['outputs'][n]for n in selected)",
+          "after": "        from review_tx_native_clock_terminals import inspect\n        clock_review=inspect(source/'source/cloud-tx-v5-final-strap6-assembly/wire96/tree1674-wire01.spice',contract,t,values,tree.START)\n        (OUT/'native-clock-terminals.json').write_text(json.dumps(clock_review,indent=2)+'\\n')\n        r['native_clock_review']={k:v for k,v in clock_review.items()if k!='clocks'}\n        r['native_clock_review']['report_sha256']=sha(OUT/'native-clock-terminals.json')\n        assert all(sha(source/n)==prior['outputs'][n]for n in selected)",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "helpers": {
+    "scripts/review_tx_native_clock_terminals.py": "e2aead56be4626f4cdf323fa87fed01dede70e380be763213c5201e61bff0cf0"
+  }
+}

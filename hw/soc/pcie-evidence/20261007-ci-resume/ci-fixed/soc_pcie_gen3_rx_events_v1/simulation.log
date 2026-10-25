@@ -1,0 +1,30 @@
+rm -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_rx_events_v1/results.xml
+"make" -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_rx_events_v1 /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_rx_events_v1/results.xml
+make[1]: Entering directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_rx_events_v1'
+mkdir -p /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_rx_events_v1/sim
+/home/hasanmelih/.local/bin/iverilog -o /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_rx_events_v1/sim/sim.vvp -s soc_pcie_gen3_rx_events_v1 -g2012 -g2012 -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_rx_events_v1/sim/cmds.f  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v1.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v1.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_owned_v2.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_owned_v2.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v
+rm -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_rx_events_v1/results.xml
+COCOTB_TEST_MODULES=test_soc_pcie_gen3_rx_events_v1 COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=soc_pcie_gen3_rx_events_v1 TOPLEVEL_LANG=verilog \
+         /home/hasanmelih/.local/bin/vvp -M /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_rx_events_v1/sim/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1791399938
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_rx_events_v1.actual_raw_x4_crc_discard_and_ordered_fields (1/3)
+  2620.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_rx_events_v1.actual_raw_x4_crc_discard_and_ordered_fields passed
+  2620.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_rx_events_v1.actual_raw_x4_no_idle_dllps_exceed_every_buffer (2/3)
+  6280.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_rx_events_v1.actual_raw_x4_no_idle_dllps_exceed_every_buffer passed
+  6280.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_rx_events_v1.held_event_abort_ready_same_edge_discards_old_epoch (3/3)
+  7648.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_rx_events_v1.held_event_abort_ready_same_edge_discards_old_epoch passed
+  7648.00ns INFO     cocotb.regression                  *********************************************************************************************************************************************
+                                                        ** TEST                                                                                 STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        *********************************************************************************************************************************************
+                                                        ** test_soc_pcie_gen3_rx_events_v1.actual_raw_x4_crc_discard_and_ordered_fields          PASS        2620.00           1.09       2405.77  **
+                                                        ** test_soc_pcie_gen3_rx_events_v1.actual_raw_x4_no_idle_dllps_exceed_every_buffer       PASS        3660.00           1.32       2764.81  **
+                                                        ** test_soc_pcie_gen3_rx_events_v1.held_event_abort_ready_same_edge_discards_old_epoch   PASS        1368.00           0.28       4838.01  **
+                                                        *********************************************************************************************************************************************
+                                                        ** TESTS=3 PASS=3 FAIL=0 SKIP=0                                                                      7648.00           2.70       2835.62  **
+                                                        *********************************************************************************************************************************************
+make[1]: Leaving directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_rx_events_v1'

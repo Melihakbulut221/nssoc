@@ -1,0 +1,60 @@
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-active-levelshift-v53-composition-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/cdr-active-levelshift-v53-composition-cloud.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr-active-levelshift-v53-composition-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-rc:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check immutable methods and actual native source receipt
+        run: |
+          python3 -m py_compile scripts/cloud_cdr_active_levelshift_v53_composition.py
+          PYTHONPATH=scripts python3 -c "from cloud_cdr_active_levelshift_v53_composition import check; check()"
+      - name: Compose actual eighteen devices and every wire element with fourteen corruption controls
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_active_levelshift_v53_composition.py
+      - name: Preserve complete native composition and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-cdr-active-levelshift-v53-composition
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","qualified_pex":false,"full_phy_accepted":false}' > "$root/result.json"
+          fi
+          stem="cdr-active-levelshift-v53-composition-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];m=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','cdr-active-levelshift-v53-composition',stem+'.summary.json',stem+'.parts.json',*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-active-levelshift-v53-composition-${{ github.run_id }}
+          path: hw/soc/out/cloud-cdr-active-levelshift-v53-composition/
+          retention-days: 30
+

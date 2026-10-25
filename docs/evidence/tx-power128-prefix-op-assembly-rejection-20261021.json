@@ -1,0 +1,39 @@
+{
+  "run": 39643000497,
+  "source_head": "61506fb30176092b676d83af6e707c2f2cdd4184",
+  "summary_asset": 663258920,
+  "summary_sha256": "a1525feb23488b3715d89ee59f8b3715f3c7b9f5e47cdc0cd777e450ae470f3d",
+  "parts_asset": 663259000,
+  "parts_sha256": "69daea5788f1a4728f8a0c02f07bb0aec3899142743f2d3277cfe4e8e8a8ab13",
+  "report": {
+    "status": "FAIL_OR_ERROR",
+    "source_head": "61506fb30176092b676d83af6e707c2f2cdd4184",
+    "no_new_simulation": true,
+    "full_capture": false,
+    "electrical_accepted": false,
+    "full_phy_accepted": false,
+    "original_review_math_unchanged": true,
+    "prefix_transport_controls": {
+      "status": "PASS_PREFIX_DIAGNOSTIC_CONTROLS_ONLY",
+      "rejected": [
+        "changed_vector",
+        "changed_payload",
+        "truncated_prefix",
+        "lost_partial_tail",
+        "omitted_vector",
+        "nonfinite_value",
+        "nonmonotonic_time",
+        "oversized_step"
+      ],
+      "original_full_capture_reader_still_rejects_prefix": true,
+      "full_capture": false
+    },
+    "error": "KeyError('work/op.dat')",
+    "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_tx_power128_prefix_counterexamples.py\", line 105, in main\n    original,proof=reports.restore_report(spec['group'],spec['run'],spec['summary_sha256'],spec['parts_sha256'],\n                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/compare_cloud_routed_endpoints.py\", line 106, in restore_report\n    expected={n:result['outputs'][n] for n in selected};expected['result.json']=summary_sha\n                ~~~~~~~~~~~~~~~~~^^^\nKeyError: 'work/op.dat'\n",
+    "outputs": {
+      "tx-output8088-power128-native-cross-none-source/summary.json": "9bbdf06044d327d4fecdf8fe41b681fc77bc8077c7629c0c11e9f6b8f2f6f12f",
+      "tx-output8088-power128-native-cross-none-source/parts.json": "012e6d99a205cfdbb7a2c9a1639ed20d1cd29669de8d730f0792929db25ec12e"
+    }
+  },
+  "explanation": "Native continuation retains28 exact OP chunks; aggregate op.dat is created only during final review. Observer wrongly requested aggregate before completion. Restore every original chunk and exact bench, verify original wrdata commands, then use unchanged lossless assembly and zeroOP check."
+}

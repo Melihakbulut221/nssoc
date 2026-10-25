@@ -1,0 +1,54 @@
+rm -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_recovered_events_v1/results.xml
+"make" -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_recovered_events_v1 /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_recovered_events_v1/results.xml
+make[1]: Entering directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_recovered_events_v1'
+mkdir -p /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_recovered_events_v1/sim
+/home/hasanmelih/.local/bin/iverilog -o /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_recovered_events_v1/sim/sim.vvp -s soc_pcie_gen3_recovered_events_v1 -g2012 -g2012 -Psoc_pcie_gen3_recovered_events_v1.FIFO_DEPTH=32 -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_recovered_events_v1/sim/cmds.f  /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v1.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_owned_v3.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_recovered_owned_rx_v1.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v5.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v3.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_sds_deskew_v2.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_record_descrambler_v1.v /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/ext/verilog-ethernet/lib/axis/rtl/axis_async_fifo.v
+rm -f /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_recovered_events_v1/results.xml
+COCOTB_TEST_MODULES=test_soc_pcie_gen3_recovered_events_v1 COCOTB_TESTCASE= COCOTB_TEST_FILTER= COCOTB_TOPLEVEL=soc_pcie_gen3_recovered_events_v1 TOPLEVEL_LANG=verilog \
+         /home/hasanmelih/.local/bin/vvp -M /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_recovered_events_v1/sim/sim.vvp   
+     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python3
+     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered
+     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)
+     0.00ns INFO     cocotb                             Seeding Python random module with 1791400078
+     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb
+     0.00ns INFO     cocotb                             Running tests
+     0.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.crc_bad_nullified_ack_nak_fc_and_owner_wrap (1/11)
+  2163.00ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.crc_bad_nullified_ack_nak_fc_and_owner_wrap passed
+  2163.00ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.complete_dllp_density_exceeds_every_owner_buffer (2/11)
+  5502.01ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.complete_dllp_density_exceeds_every_owner_buffer passed
+  5502.01ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.independent_tlp_and_event_backpressure (3/11)
+  7677.01ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.independent_tlp_and_event_backpressure passed
+  7677.01ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.all_32_raw_phases_preserve_owners_and_events (4/11)
+ 11609.04ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.all_32_raw_phases_preserve_owners_and_events passed
+ 11609.04ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.eieos_drains_all_owned_outputs (5/11)
+ 13772.04ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.eieos_drains_all_owned_outputs passed
+ 13772.04ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.normal_end_keeps_held_events_during_later_lane_fault (6/11)
+ 16183.04ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.normal_end_keeps_held_events_during_later_lane_fault passed
+ 16183.04ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.normal_end_waits_for_events_after_body_drains (7/11)
+ 18574.05ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.normal_end_waits_for_events_after_body_drains passed
+ 18574.05ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.finite_owner_exhaustion_aborts_without_stale_events (8/11)
+ 18905.05ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.finite_owner_exhaustion_aborts_without_stale_events passed
+ 18905.05ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.bad_token_aborts_owned_epoch (9/11)
+ 19260.06ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.bad_token_aborts_owned_epoch passed
+ 19260.06ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.missing_eds_aborts_owned_epoch (10/11)
+ 19711.06ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.missing_eds_aborts_owned_epoch passed
+ 19711.06ns INFO     cocotb.regression                  running test_soc_pcie_gen3_recovered_events_v1.explicit_abort_suppresses_held_event_before_edge_and_reset_recovers (11/11)
+ 20634.08ns INFO     cocotb.regression                  test_soc_pcie_gen3_recovered_events_v1.explicit_abort_suppresses_held_event_before_edge_and_reset_recovers passed
+ 20634.08ns INFO     cocotb.regression                  ********************************************************************************************************************************************************************
+                                                        ** TEST                                                                                                        STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **
+                                                        ********************************************************************************************************************************************************************
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.crc_bad_nullified_ack_nak_fc_and_owner_wrap                           PASS        2163.00           1.67       1297.94  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.complete_dllp_density_exceeds_every_owner_buffer                      PASS        3339.00           2.73       1222.39  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.independent_tlp_and_event_backpressure                                PASS        2175.00           1.56       1391.12  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.all_32_raw_phases_preserve_owners_and_events                          PASS        3932.02           2.27       1733.98  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.eieos_drains_all_owned_outputs                                        PASS        2163.00           1.64       1317.29  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.normal_end_keeps_held_events_during_later_lane_fault                  PASS        2411.00           1.00       2418.30  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.normal_end_waits_for_events_after_body_drains                         PASS        2391.00           0.95       2506.66  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.finite_owner_exhaustion_aborts_without_stale_events                   PASS         331.00           0.17       1949.38  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.bad_token_aborts_owned_epoch                                          PASS         355.00           0.19       1891.53  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.missing_eds_aborts_owned_epoch                                        PASS         451.00           0.27       1672.86  **
+                                                        ** test_soc_pcie_gen3_recovered_events_v1.explicit_abort_suppresses_held_event_before_edge_and_reset_recovers   PASS         923.01           0.53       1750.09  **
+                                                        ********************************************************************************************************************************************************************
+                                                        ** TESTS=11 PASS=11 FAIL=0 SKIP=0                                                                                          20634.08          12.98       1589.68  **
+                                                        ********************************************************************************************************************************************************************
+make[1]: Leaving directory '/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261007/ci-fixed/soc_pcie_gen3_recovered_events_v1'

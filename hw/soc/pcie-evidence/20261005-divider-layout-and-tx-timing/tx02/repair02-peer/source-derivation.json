@@ -1,0 +1,86 @@
+{
+  "status": "EXACT_DOCUMENTED_INVERSE_AND_AST_PARSE",
+  "prior": {
+    "path": "hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair01-peer/review.py",
+    "bytes": 10801,
+    "sha256": "da5fa9aff38de6d4285584d72867236198729de7a8589167c046df6aec76c6ae"
+  },
+  "new": {
+    "path": "hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-peer/review.py",
+    "bytes": 11693,
+    "sha256": "ea2e2562db390abc8254c705c865063f2f6ef655a906c9ed6440322063ae868a"
+  },
+  "changes": [
+    {
+      "before": "completed TX01 outputs",
+      "after": "completed TX02 outputs",
+      "count": 1
+    },
+    {
+      "before": "nssoc-tx-path-v4-repair01-drt-01",
+      "after": "nssoc-tx-path-v4-repair02-drt-03",
+      "count": 1
+    },
+    {
+      "before": "nssoc-tx-path-v4-repair01-detailed-rc-01",
+      "after": "nssoc-tx-path-v4-repair02-detailed-rc-02",
+      "count": 1
+    },
+    {
+      "before": "nssoc-tx-path-v4-postroute-repair-01",
+      "after": "nssoc-tx-path-v4-postroute-repair-02",
+      "count": 1
+    },
+    {
+      "before": "nssoc-tx-path-v4-repair01-equivalence",
+      "after": "nssoc-tx-path-v4-repair02-equivalence",
+      "count": 1
+    },
+    {
+      "before": "nssoc-tx-path-v4-repair01-physical-replay-01",
+      "after": "nssoc-tx-path-v4-repair02-physical-replay-01",
+      "count": 1
+    },
+    {
+      "before": "old = N / 'nssoc-tx-path-v4-detailed-rc-01/result.json'",
+      "after": "old = N / 'nssoc-tx-path-v4-repair01-detailed-rc-01/result.json'",
+      "count": 1
+    },
+    {
+      "before": "tx01_review_kernel",
+      "after": "tx02_review_kernel",
+      "count": 1
+    },
+    {
+      "before": "B / 'proof/",
+      "after": "B / 'proof02/",
+      "count": 3
+    },
+    {
+      "before": "assert slacks['slow']['setup'] == -0.463298 and slacks['slow']['hold'] == -0.015427 and slacks['slow']['recovery'] == -0.170263",
+      "after": "# The new measured slacks are not known in advance; record all four classes.\nassert all(math.isfinite(value) for corner in slacks.values() for value in corner.values())",
+      "count": 1
+    },
+    {
+      "before": "mutations = j(E / 'mutation-controls.json')",
+      "after": "binding_spec = importlib.util.spec_from_file_location('tx02_saved_binding', B / 'proof_gate_repair02.py')\nbinding_module = importlib.util.module_from_spec(binding_spec)\nbinding_spec.loader.exec_module(binding_module)\nbinding_record = binding_module.verify_binding(E)\nassert binding_record['before_inputs'] == binding_record['after_inputs']\nfor path, expected in binding_record['before_inputs'].items():\n    assert pin(path) == expected\n    inputs[path] = expected\ninputs[str(E / 'proof-execution-binding.json')] = pin(E / 'proof-execution-binding.json')\nmutations = j(E / 'mutation-controls.json')",
+      "count": 1
+    },
+    {
+      "before": "'status': 'REVIEWED_TX01_ZERO_ROUTER_DRC_AND_FUNCTION__NOMINAL_SS_SETUP_HOLD_RECOVERY_FAIL'",
+      "after": "'status': 'REVIEWED_TX02_ZERO_ROUTER_DRC_AND_FUNCTION__MEASURED_NOMINAL_TIMING',\n    'nominal_all_cell_corners_pass': {kind: all(v[kind] >= 0 for v in slacks.values()) for kind in ('setup', 'hold', 'recovery', 'removal')},\n    'physical_acceptance': False, 'qualified_rc': False",
+      "count": 1
+    },
+    {
+      "before": "SS setup, hold and recovery stillFAIL.",
+      "after": "All measured setup, hold, recovery and removal values are retained without a predetermined pass result.",
+      "count": 1
+    },
+    {
+      "before": "B / 'proof02/mutations.py', P / 'repaired.v'",
+      "after": "B / 'proof02/mutations.py', B / 'proof_gate_repair02.py', P / 'repaired.v'",
+      "count": 1
+    }
+  ],
+  "scope": "Source preparation only. No new native route or RC result yet. Same SPEF/CTS/constraints checks; new TX02 measured results not hardcoded; exact completed proof execution binding additionally required."
+}

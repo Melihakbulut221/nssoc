@@ -1,0 +1,239 @@
+{
+  "scripts/compose_tx_output8088_native.py": {
+    "baseline_path": "scripts/compose_tx_raw64_native.py",
+    "baseline_sha256": "679ad635a09d9e6b5798118a1163e25acdad21bdd9a5b8c86d08cf8d566a57fc",
+    "candidate_sha256": "036ba70f662ecf1ff10a1ef8e83fff73b0dfab2a6148bf0e93822d6c2947bc3b",
+    "changes": [
+      {
+        "start": 88,
+        "end": 90,
+        "replacement": "88"
+      },
+      {
+        "start": 281,
+        "end": 286,
+        "replacement": "output8088"
+      },
+      {
+        "start": 326,
+        "end": 327,
+        "replacement": "o"
+      },
+      {
+        "start": 328,
+        "end": 336,
+        "replacement": "tput"
+      },
+      {
+        "start": 338,
+        "end": 340,
+        "replacement": "88"
+      },
+      {
+        "start": 463,
+        "end": 465,
+        "replacement": "88"
+      },
+      {
+        "start": 478,
+        "end": 480,
+        "replacement": "6"
+      },
+      {
+        "start": 481,
+        "end": 481,
+        "replacement": "0"
+      },
+      {
+        "start": 490,
+        "end": 491,
+        "replacement": "5"
+      },
+      {
+        "start": 515,
+        "end": 518,
+        "replacement": "703"
+      },
+      {
+        "start": 582,
+        "end": 584,
+        "replacement": "88"
+      },
+      {
+        "start": 597,
+        "end": 599,
+        "replacement": "6"
+      },
+      {
+        "start": 600,
+        "end": 600,
+        "replacement": "0"
+      },
+      {
+        "start": 620,
+        "end": 622,
+        "replacement": "32"
+      },
+      {
+        "start": 640,
+        "end": 642,
+        "replacement": "88"
+      },
+      {
+        "start": 658,
+        "end": 659,
+        "replacement": "5"
+      },
+      {
+        "start": 687,
+        "end": 689,
+        "replacement": "70"
+      },
+      {
+        "start": 706,
+        "end": 709,
+        "replacement": "703"
+      },
+      {
+        "start": 826,
+        "end": 827,
+        "replacement": "5"
+      },
+      {
+        "start": 929,
+        "end": 931,
+        "replacement": "70"
+      },
+      {
+        "start": 1064,
+        "end": 1065,
+        "replacement": "5"
+      },
+      {
+        "start": 1298,
+        "end": 1303,
+        "replacement": "tx"
+      },
+      {
+        "start": 1304,
+        "end": 1305,
+        "replacement": ""
+      },
+      {
+        "start": 1306,
+        "end": 1308,
+        "replacement": "utput8088"
+      },
+      {
+        "start": 1354,
+        "end": 1359,
+        "replacement": "tx"
+      },
+      {
+        "start": 1360,
+        "end": 1361,
+        "replacement": ""
+      },
+      {
+        "start": 1362,
+        "end": 1364,
+        "replacement": "utput8088"
+      },
+      {
+        "start": 1423,
+        "end": 1425,
+        "replacement": "70"
+      },
+      {
+        "start": 1515,
+        "end": 1519,
+        "replacement": "9838"
+      },
+      {
+        "start": 1523,
+        "end": 1527,
+        "replacement": "9650"
+      },
+      {
+        "start": 2509,
+        "end": 2512,
+        "replacement": "703"
+      },
+      {
+        "start": 2913,
+        "end": 2915,
+        "replacement": "6"
+      },
+      {
+        "start": 2916,
+        "end": 2916,
+        "replacement": "0"
+      },
+      {
+        "start": 3184,
+        "end": 3186,
+        "replacement": "88"
+      },
+      {
+        "start": 3348,
+        "end": 3350,
+        "replacement": "88"
+      },
+      {
+        "start": 5199,
+        "end": 5201,
+        "replacement": "88"
+      },
+      {
+        "start": 5229,
+        "end": 5230,
+        "replacement": "9"
+      },
+      {
+        "start": 5231,
+        "end": 5233,
+        "replacement": "88"
+      },
+      {
+        "start": 5606,
+        "end": 5608,
+        "replacement": "88"
+      },
+      {
+        "start": 5629,
+        "end": 5633,
+        "replacement": "9838"
+      },
+      {
+        "start": 5635,
+        "end": 5639,
+        "replacement": "9650"
+      },
+      {
+        "start": 6393,
+        "end": 6395,
+        "replacement": "88"
+      },
+      {
+        "start": 6441,
+        "end": 6445,
+        "replacement": "9838"
+      },
+      {
+        "start": 6449,
+        "end": 6453,
+        "replacement": "9650"
+      },
+      {
+        "start": 10278,
+        "end": 10278,
+        "replacement": "\n    for fault in ('missing_output_rsil','wrong_output_rsil_length','output_rsil_self_heating_disabled','output_rsil_body_short','same_net_output_reference_hbt_cb_swap'):\n        rows=[row.copy()for row in original]\n        if fault=='same_net_output_reference_hbt_cb_swap':\n            # This C/B tie is the actual newly integrated output reference.\n            # Their logical net is shared but their physical RC planes differ.\n            cluster=contract['owner']['P_tr']\n            witness=next(w for w in contract['witnesses']if w['model']=='npn13g2'\n                and w['terminals'][0]['terminal']=='C'and w['terminals'][1]['terminal']=='B'\n                and w['terminals'][0]['native_cluster']==w['terminals'][1]['native_cluster']==cluster\n                and w['terminals'][0]['reference_label']!=w['terminals'][1]['reference_label'])\n            i=next(i for i,row in enumerate(rows)if row[0]==witness['instance'])\n            assert rows[i][1]!=rows[i][2]\n            rows[i][1],rows[i][2]=rows[i][2],rows[i][1]\n        else:\n            i=next(i for i,row in enumerate(rows)if 'rsil'in row)\n            if fault=='missing_output_rsil':del rows[i]\n            elif fault=='output_rsil_body_short':\n                assert rows[i][3].startswith('body');rows[i][3]='avss'\n            else:\n                key='l'if fault=='wrong_output_rsil_length'else'sw_et'\n                j=next(j for j,x in enumerate(rows[i])if x.startswith(key+'='))\n                rows[i][j]=key+('=1u'if key=='l'else'=0')\n        assert rows!=original,('No actual physical change',fault)\n        changed='\\n'.join(' '.join(row)for row in rows)+'\\n'\n        try:verify(changed,contract)\n        except (AssertionError,ValueError):results.append(dict(name=fault,rejected=True,sha256=hashlib.sha256(changed.encode()).hexdigest()))\n        else:raise AssertionError('Accepted '+fault)\n"
+      },
+      {
+        "start": 10304,
+        "end": 10305,
+        "replacement": "5"
+      }
+    ]
+  }
+}

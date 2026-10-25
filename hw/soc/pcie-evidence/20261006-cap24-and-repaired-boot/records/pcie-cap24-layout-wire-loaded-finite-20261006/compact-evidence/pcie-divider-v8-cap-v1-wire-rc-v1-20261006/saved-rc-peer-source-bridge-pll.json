@@ -1,0 +1,15 @@
+{
+  "status": "EXACT_COMPLETE_SOURCE_INVERSE_PLUS_ACTUAL_STAGE_OWNER_CHECK",
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-compact-v2-wire-rc-v1-20261006/saved_rc_review_pll.py",
+    "bytes": 7232,
+    "sha256": "7fdd112f2bb9b7d0361ccc4eaabe79387fb950fe2e1859ebbf813d1e9b64027f"
+  },
+  "child": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v8-cap-v1-wire-rc-v1-20261006/saved_rc_review_pll.py",
+    "bytes": 7875,
+    "sha256": "b04cb3259a3ce7a34031ebe58033d1a64356f5143dc29468c10948a11e6a0f48"
+  },
+  "added": "# Additive saved lifecycle readback for each of the three actual stage exits.\nlifecycle_files=[]\nfor stage in native['steps']:\n directory=O if stage['name']=='native' else B\n op=directory/(stage['name']+'.owned.json');lp=directory/(stage['name']+'.log')\n e=stage['execution'];assert pin(op)['sha256']==e['process_owner_sha256'] and pin(lp)['sha256']==e['log_sha256']\n own=json.loads(op.read_text());assert own['status']=='HEALTHY' and len(own['processes'])==1\n child=own['processes'][0];assert child['status']=='REAPED_NO_LIVE_MEMBERS' and child['returncode']==0 and not child['members_at_leader_exit']\n lifecycle_files.extend([op,lp])\n",
+  "whole_body_inverse_equal": true
+}

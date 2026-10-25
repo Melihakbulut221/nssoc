@@ -1,0 +1,74 @@
+{
+  "baseline_head": "8aef467f5b205bbcab0f475f2ab22c00325a68da",
+  "baseline_file": "scripts/cloud_tx_v5_return64_extraction.py",
+  "baseline_sha256": "678f253eb56bc904f850e3efecc2eba8d3b9f9313a0c40bf618568153833d43f",
+  "candidate_file": "scripts/cloud_tx_v5_columns_extraction.py",
+  "candidate_sha256": "2dd298b1448cb1580b3040b8b1345bb07f962b8a3e4012a4b69c1e9f57c96b93",
+  "changes": [
+    {
+      "before": "choices=('original',),default='original'",
+      "after": "choices=('compact_columns',),default='compact_columns'",
+      "count": 1
+    },
+    {
+      "before": "_original_return64_core_v1",
+      "after": "_columns_return64_core_v1",
+      "count": 1
+    },
+    {
+      "before": "tx-v5-return64-physical-pass-20261018.json",
+      "after": "tx-v5-columns-physical-pass-20261018.json",
+      "count": 1
+    },
+    {
+      "before": "39086629991",
+      "after": "39110049165",
+      "count": 1
+    },
+    {
+      "before": "671f86f8d41fafc474ecb879ba4438ced28c1ff7",
+      "after": "5ac146781cf625dce9814630842ade3467e4e3f6",
+      "count": 1
+    },
+    {
+      "before": "b36cfefa462a850db1ffc7bee5f7e3654b43967e9196b544674308cdc228de96",
+      "after": "011bdc1b9e8f18239c5d1e7edc032beb8f786f39d301cab27a50876f2ccce4b4",
+      "count": 1
+    },
+    {
+      "before": "69956baa8447853bb6df994d5d4955fad7c96e32669106cc66b61530407218f8",
+      "after": "59e1b2e8fd0503e04893d0d6d6ba6f1afe9696f819e41436db523e6d29de4e68",
+      "count": 1
+    },
+    {
+      "before": "cloud-tx-balanced-v5-return64-assembly",
+      "after": "cloud-tx-v5-columns-assembly",
+      "count": 1
+    },
+    {
+      "before": "dict(name='original',column_um=1000.,row_um=600.,inverse_topology_matches_original=True)",
+      "after": "dict(name='compact_columns',column_um=700.,row_um=600.,inverse_topology_matches_original=True)",
+      "count": 1
+    },
+    {
+      "before": "dict(name='original',column_um=1000.,row_um=600.)",
+      "after": "dict(name='compact_columns',column_um=700.,row_um=600.)",
+      "count": 1
+    },
+    {
+      "before": "return-geometry-delta.json",
+      "after": "column-geometry-delta.json",
+      "count": 1
+    },
+    {
+      "before": "len(result['geometry_delta']['controls'])==3 and all(x['rejected']for x in result['geometry_delta']['controls'])",
+      "after": "result['geometry_delta']['controls']==['wrong_column','moved_row','actual_child_conductor_removed']",
+      "count": 1
+    },
+    {
+      "before": "PASS_EXACT_SIX_AVSS_EXPANSIONS_ALL_OTHER_DRAWING_GEOMETRY_UNCHANGED",
+      "after": "PASS_COLUMNS700_ROWS600_FROZEN_CHILDREN_TOPOLOGY_AND_NATIVE_PLACEMENT",
+      "count": 1
+    }
+  ]
+}

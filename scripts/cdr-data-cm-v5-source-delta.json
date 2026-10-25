@@ -1,0 +1,162 @@
+{
+  "scope": "Data header geometry candidate only. Baseline sources and electrical gates preserved.",
+  "files": [
+    {
+      "baseline_path": "hw/soc/analog/pcie/cdr_sampled_compare_buffered_v4.spice",
+      "baseline_sha256": "8b9ade6650c8d5153f3d872660b04d8cac1970220a6fc5fc233ec05489bb2d7c",
+      "candidate_path": "hw/soc/analog/pcie/cdr_sampled_compare_data_cm_v5.spice",
+      "candidate_sha256": "9aa0379ae8ced00a3047119636523f95b1906a247fa221b21d864279d45f878b",
+      "edits": [
+        {
+          "before": " dp dn qp qn avdd avss sub iref\nXREF iref iref avss sub npn13G2 Nx=1\nXDP qn dp tail sub npn13G2 Nx=2\nXDN qp dn tail sub npn13G2 Nx=2\nXT tail iref avss sub npn13G2 Nx=4\nXHDR avdd load sub rppd w=8u l=2u b=0 sw_et=1\nXRP load qp sub rppd w=8u l=1.8u b=0 sw_et=1\nXRN load qn sub rppd w=8u l=1.8u b=0 sw_et=1\n",
+          "after": " dp dn qp qn avdd avss sub iref\nXREF iref iref avss sub npn13G2 Nx=1\nXDP qn dp tail sub npn13G2 Nx=2\nXDN qp dn tail sub npn13G2 Nx=2\nXT tail iref avss sub npn13G2 Nx=4\nXHDR avdd load sub rppd w=8u l=2.4u b=0 sw_et=1\nXRP load qp sub rppd w=8u l=1.8u b=0 sw_et=1\nXRN load qn sub rppd w=8u l=1.8u b=0 sw_et=1\n",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_data_buffer_v4",
+          "after": "nssoc_cdr_data_buffer_cm_v5",
+          "count": 3
+        },
+        {
+          "before": "nssoc_cdr_sampled_compare_buffered_v4",
+          "after": "nssoc_cdr_sampled_compare_data_cm_v5",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_cdr_buffers_v4.py",
+      "baseline_sha256": "a79f72a08810035be5107d471669d71f7a5a129596a311537cacfcd24c2cefc1",
+      "candidate_path": "hw/soc/flow/make_pcie_cdr_data_cm_v5.py",
+      "candidate_sha256": "d8725cae025aca9a1658da8dfa896f4471b5cab5cdd8d882fc4e71e0281a0357",
+      "edits": [
+        {
+          "before": "hw/soc/analog/pcie/cdr_sampled_compare_buffered_v4.spice",
+          "after": "hw/soc/analog/pcie/cdr_sampled_compare_data_cm_v5.spice",
+          "count": 1
+        },
+        {
+          "before": "8b9ade6650c8d5153f3d872660b04d8cac1970220a6fc5fc233ec05489bb2d7c",
+          "after": "9aa0379ae8ced00a3047119636523f95b1906a247fa221b21d864279d45f878b",
+          "count": 1
+        },
+        {
+          "before": "cell=cells['nssoc_cdr_'+kind+'_buffer_v4']",
+          "after": "cell=cells['nssoc_cdr_data_buffer_cm_v5' if kind=='data' else 'nssoc_cdr_select_buffer_v4']",
+          "count": 1
+        },
+        {
+          "before": "lengths=['2u']+(['4.2u']if kind=='select'else[])+['1.8u','1.8u']",
+          "after": "lengths=['2.4u' if kind=='data' else '2u']+(['4.2u']if kind=='select'else[])+['1.8u','1.8u']",
+          "count": 1
+        },
+        {
+          "before": "choices=(\"data\", \"select\")",
+          "after": "choices=(\"data\",)",
+          "count": 1
+        },
+        {
+          "before": "TOP = \"nssoc_cdr_\" + args.kind + \"_buffer_layout_v4\"",
+          "after": "TOP = \"nssoc_cdr_data_buffer_cm_layout_v5\"",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_buffers_v4.py",
+      "baseline_sha256": "4e918a47fda977d98179a791483a6dcdd253bd56a3d23524295ae1b5643fd8ec",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_data_cm_v5.py",
+      "candidate_sha256": "461ef314d252a10d0ea63df8ea10bb56425ed83a38a1ca1af412fd3985308151",
+      "edits": [
+        {
+          "before": "prefix = \"QD0 \" if name == \"wrong_finger_count\" else \"QD1 \"",
+          "after": "prefix = \"RD4 \" if name == \"old_header_length\" else \"QD0 \" if name == \"wrong_finger_count\" else \"QD1 \"",
+          "count": 1
+        },
+        {
+          "before": "if name == \"wrong_finger_count\":\n        assert",
+          "after": "if name == \"old_header_length\":\n        assert lines[i].count(\"l=2.4u\") == 1\n        lines[i] = lines[i].replace(\"l=2.4u\", \"l=2u\")\n    elif name == \"wrong_finger_count\":\n        assert",
+          "count": 1
+        },
+        {
+          "before": "\"make_pcie_cdr_buffers_v4.py\"",
+          "after": "\"make_pcie_cdr_data_cm_v5.py\"",
+          "count": 1
+        },
+        {
+          "before": "            \"wrong_finger_count\",\n            \"missing_hbt\",",
+          "after": "            \"old_header_length\",\n            \"wrong_finger_count\",\n            \"missing_hbt\",",
+          "count": 1
+        },
+        {
+          "before": "if name in (\"wrong_finger_count\", \"missing_hbt\"):",
+          "after": "if name in (\"old_header_length\", \"wrong_finger_count\", \"missing_hbt\"):",
+          "count": 1
+        },
+        {
+          "before": "choices=(\"data\", \"select\")",
+          "after": "choices=(\"data\",)",
+          "count": 1
+        },
+        {
+          "before": "TOP=\"nssoc_cdr_\"+KIND+\"_buffer_layout_v4\"",
+          "after": "TOP=\"nssoc_cdr_data_buffer_cm_layout_v5\"",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_buffers_physical.py",
+      "baseline_sha256": "0e7888ab7ddb0ef74a835257d1422c8c02bcba9959d19d9cee3aefcbc12259de",
+      "candidate_path": "scripts/cloud_cdr_data_cm_v5_physical.py",
+      "candidate_sha256": "4e30048c1d9b5ac0bc8f98497da92bffeaa3243bb17f4181f1afba203bf0a87a",
+      "edits": [
+        {
+          "before": "choices=('data','select')",
+          "after": "choices=('data',)",
+          "count": 1
+        },
+        {
+          "before": "'hw/soc/out/cloud-cdr-buffer-'+args.kind+'-physical'",
+          "after": "'hw/soc/out/cloud-cdr-data-cm-v5-physical'",
+          "count": 1
+        },
+        {
+          "before": "    assert os.environ.get('GITHUB_ACTIONS')=='true'\n",
+          "after": "    assert os.environ.get('GITHUB_ACTIONS')=='true'\n    from check_cdr_data_cm_v5_sources import check\n    check()\n",
+          "count": 1
+        },
+        {
+          "before": "Exact data/select buffer from native retimed PD/V-I campaign39061446683: four HBT Nx1/2/2/4 and three/four rppd, seven/eight separate substrate contacts. Native560rule DRC, deep/flat14/16device LVS and five actual/reference faults. Retimed PD parent routing, fresh RC, loaded feedback and closed-loop recovery remain required.",
+          "after": "Physical data buffer header-length candidate: actual rppd width8um length2.4um instead of2um; all HBTs, load resistors, contacts and interface unchanged. Baseline native campaign39061446683 is ancestry only, not candidate electrical acceptance. Native560rule DRC, deep/flat14device LVS and six actual/reference faults including old2um header. Parent integration, fresh RC and all original loaded waveform gates remain required.",
+          "count": 1
+        },
+        {
+          "before": "hw/soc/analog/pcie/cdr_sampled_compare_buffered_v4.spice",
+          "after": "hw/soc/analog/pcie/cdr_sampled_compare_data_cm_v5.spice",
+          "count": 1
+        },
+        {
+          "before": "8b9ade6650c8d5153f3d872660b04d8cac1970220a6fc5fc233ec05489bb2d7c",
+          "after": "9aa0379ae8ced00a3047119636523f95b1906a247fa221b21d864279d45f878b",
+          "count": 1
+        },
+        {
+          "before": "hw/soc/flow/make_pcie_cdr_buffers_v4.py",
+          "after": "hw/soc/flow/make_pcie_cdr_data_cm_v5.py",
+          "count": 2
+        },
+        {
+          "before": "hw/soc/flow/check_pcie_cdr_buffers_v4.py",
+          "after": "hw/soc/flow/check_pcie_cdr_data_cm_v5.py",
+          "count": 2
+        },
+        {
+          "before": "r.update(status='PASS_CDR_BUFFER_LEAF_PHYSICAL_NOT_PARENT_RC_OR_CLOSED_LOOP',sources_unchanged=True)",
+          "after": "check()\n        r.update(status='PASS_CDR_DATA_CM_V5_LEAF_PHYSICAL_NOT_PARENT_RC_OR_LOADED_ACCEPTANCE',sources_unchanged=True)",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "status": "PASS_AUTHOR_RAW_STREAM_REPLAY",
+  "native_result_sha256": "5f3d83e9f2909a86a89a83e3d73fcc0503d0ec7dcc79acab79030f7fa190d2d5",
+  "source_sha256": {
+    "scripts/probe_pcie_clock_stream_capture_v1.py": "13e370d57778999a1bbd97dfeeb6aaef8dbe65e6fcdd4fa0393d1b2fec985c07"
+  },
+  "original_input_count": 96,
+  "cases": [
+    {
+      "name": "normal_file",
+      "samples": 2011,
+      "columns": 167,
+      "payload_bytes": 2686696,
+      "payload_sha256": "62a0cec5cdca1bf7c4159ad94b6dd49ef25b040fb82b912f09a087c4a583b50a",
+      "all_output_count": 16,
+      "native_peak_mb": 30.113,
+      "elapsed_seconds": 1.0689299990190193,
+      "latefault_detected": false,
+      "first_fault_s": null,
+      "chunks": 8,
+      "compressed_chunk_bytes": 1718036
+    },
+    {
+      "name": "normal_fifo",
+      "samples": 2011,
+      "columns": 167,
+      "payload_bytes": 2686696,
+      "payload_sha256": "62a0cec5cdca1bf7c4159ad94b6dd49ef25b040fb82b912f09a087c4a583b50a",
+      "all_output_count": 15,
+      "native_peak_mb": 30.109,
+      "elapsed_seconds": 1.1697167399979662,
+      "latefault_detected": false,
+      "first_fault_s": null,
+      "chunks": 8,
+      "compressed_chunk_bytes": 1718036
+    },
+    {
+      "name": "latefault_file",
+      "samples": 2027,
+      "columns": 167,
+      "payload_bytes": 2708072,
+      "payload_sha256": "d946cee6ca2bd7191dcefb684e2950bfb6ecc0b17179fa8f5ab80c320ca9bbea",
+      "all_output_count": 16,
+      "native_peak_mb": 30.105,
+      "elapsed_seconds": 0.9692222459998447,
+      "latefault_detected": true,
+      "first_fault_s": 7.500166051088529e-10,
+      "chunks": 8,
+      "compressed_chunk_bytes": 1738796
+    },
+    {
+      "name": "latefault_fifo",
+      "samples": 2027,
+      "columns": 167,
+      "payload_bytes": 2708072,
+      "payload_sha256": "d946cee6ca2bd7191dcefb684e2950bfb6ecc0b17179fa8f5ab80c320ca9bbea",
+      "all_output_count": 15,
+      "native_peak_mb": 30.109,
+      "elapsed_seconds": 1.0731645119958557,
+      "latefault_detected": true,
+      "first_fault_s": 7.500166051088529e-10,
+      "chunks": 8,
+      "compressed_chunk_bytes": 1738796
+    }
+  ],
+  "all_native_outputs_checked": 62,
+  "original_failed_parser_result": {
+    "path": "/dev/shm/nssoc-clock-stream-capture-v1-pilot/result.json",
+    "sha256": "758f89038808de5ff215a325d9c60741e75f8191ddccffc6b5e0ec9e10abc946",
+    "status": "ERROR",
+    "error": "ValueError('Only1-point OP vectors retained')"
+  },
+  "two_pairs_byte_identical": true,
+  "independent_native_reexecution": false,
+  "source_and_byte_replay_only": true,
+  "full_1us_vco_executed": false
+}

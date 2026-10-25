@@ -1,0 +1,331 @@
+{
+  "schema": 1,
+  "status": "COMPLETED_NATIVE_SETUP_PROBE_ENDPOINT_REPLAY_AND_CLOUD_FULL_ARCHIVE_VERIFIED",
+  "source_run": 36901798029,
+  "source_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36901798029",
+  "source_commit": "df3dd93fca89487dac46e6506c005713dd294430",
+  "producer_workflow_status": "completed",
+  "producer_workflow_conclusion": "failure",
+  "producer_workflow_updated_utc": "2026-10-01T18:03:09Z",
+  "native_result_status": "COMPLETE_DIAGNOSTIC_ONLY",
+  "native_phases": {
+    "native-controls": {
+      "returncode": 0,
+      "elapsed_seconds": 15.004700942999989,
+      "completed": "2026-10-01T17:48:05.167219+00:00"
+    },
+    "native-diagnostic": {
+      "returncode": 0,
+      "elapsed_seconds": 855.060948964,
+      "completed": "2026-10-01T18:02:23.140538+00:00"
+    }
+  },
+  "native_completion_marker": "NSSOC_SETUP_HOLD_PROBE_COMPLETE_NO_ADOPTION",
+  "workflow_failure": {
+    "phase": "Independent final capture validation after native completion",
+    "error": "Independent diagnostic reconstruction differs",
+    "root_cause": "Nonempty comparison records emitted Python tuples for before_seconds/after_seconds; persistence as JSON creates lists, so exact dictionary equality failed on reconstruction. Numeric values and all endpoint guards were unchanged.",
+    "fix_commit": "bebfbe704748d8ab347db9a4db86b53670a6624c",
+    "fix_source_pins": {
+      "scripts/compare_full_hold_endpoints.py": {
+        "bytes": 11551,
+        "sha256": "b51ca5a52d53b166623935bbfebe1275c24d1e43f967ec4bf3fbb829fa1144cb"
+      },
+      "sw/tests/test_compare_full_hold_endpoints.py": {
+        "bytes": 10518,
+        "sha256": "0756aaec059533e5a3a870bd81815d97abfb598b17d4e93c9237005f18369472"
+      }
+    },
+    "changed_endpoint_persisted_roundtrip_regression": "FAIL with original code, PASS after array representation fix",
+    "comparison_tests_passed": 24,
+    "real_saved_comparisons_replayed": 5,
+    "nonempty_comparisons": 3,
+    "tuple_list_fields_changed": 666,
+    "all_saved_comparisons_match_corrected_reconstruction_exactly": true,
+    "original_comparator_semantics_match_saved_json": true
+  },
+  "original_artifact": {
+    "id": 11183060623,
+    "name": "setup-probe-final-1",
+    "bytes": 269855333,
+    "sha256": "0fdb41dedd3fbd36c63919d34e20b2eff0e5b7f71c4f60a56a83de16a8cdfa50",
+    "whole_zip_sha256_independently_verified": true,
+    "full_geometry_and_parasitic_output_replay": "PASS_CLOUD_EXACT_PRODUCER_VERIFIER_WITH_JSON_REPRESENTATION_OVERLAY",
+    "durable_complete_archive_publication": "PASS_PUBLISHED_AND_INDEPENDENT_COMPACT_REVIEWED",
+    "verification_location": "GitHub Actions; local compact receipt/source replay",
+    "assets_evidence": "docs/evidence/cloud-setup-probe-complete-assets-20261001.json"
+  },
+  "native_repair_invocation": {
+    "call_count": 1,
+    "max_iterations": 1,
+    "max_passes": 2,
+    "effective_global_pass_budget": 1,
+    "max_repairs_per_pass": 4,
+    "skip_last_gasp": true,
+    "skip_crit_vt_swap": true,
+    "elapsed_ms": 152438,
+    "actual_instance_growth": 0,
+    "global_instance_growth_budget": 41478,
+    "granularity": "One global endpoint optimization iteration and thus at most one executed endpoint pass despite a configured per-endpoint cap of two. Up to four successful driver moves; a move may mutate multiple cells. No post-loop last-gasp or critical-VT sweep."
+  },
+  "census": {
+    "native_endpoint_identities_per_stage": 23527,
+    "endpoint_corner_rows_per_stage": 70581,
+    "stages": 4,
+    "corners": 3,
+    "constrained_per_corner": 17145,
+    "unconstrained_per_corner": 6382,
+    "complete_export_is_not_complete_constraint_coverage": true
+  },
+  "provisional_stages": [
+    "after_repair_native"
+  ],
+  "stage_metrics": {
+    "matched_before": {
+      "setup_wns_ns": -4.909516349016485,
+      "hold_wns_ns": -1.8409653801398915,
+      "setup_tns_ns": -4320.800144341774,
+      "hold_tns_ns": -26.461044910774945,
+      "setup_violating_endpoints": 1384,
+      "hold_violating_endpoints": 113,
+      "slew_violations": 0,
+      "capacitance_violations": 1,
+      "instance_count": 103697
+    },
+    "after_repair_native": {
+      "setup_wns_ns": -4.738650360991414,
+      "hold_wns_ns": -1.8409653801398915,
+      "setup_tns_ns": -4104.378149349941,
+      "hold_tns_ns": -26.461044910774945,
+      "setup_violating_endpoints": 1377,
+      "hold_violating_endpoints": 113,
+      "slew_violations": 0,
+      "capacitance_violations": 1,
+      "instance_count": 103697
+    },
+    "after_setup": {
+      "setup_wns_ns": -4.738764047829136,
+      "hold_wns_ns": -1.8409653801398915,
+      "setup_tns_ns": -4104.394975001924,
+      "hold_tns_ns": -26.461044910774945,
+      "setup_violating_endpoints": 1377,
+      "hold_violating_endpoints": 113,
+      "slew_violations": 0,
+      "capacitance_violations": 1,
+      "instance_count": 103697
+    },
+    "after_full_update": {
+      "setup_wns_ns": -4.738764047829136,
+      "hold_wns_ns": -1.8409653801398915,
+      "setup_tns_ns": -4104.394975001924,
+      "hold_tns_ns": -26.461044910774945,
+      "setup_violating_endpoints": 1377,
+      "hold_violating_endpoints": 113,
+      "slew_violations": 0,
+      "capacitance_violations": 1,
+      "instance_count": 103697
+    }
+  },
+  "setup_change": {
+    "wns_before_ns": -4.909516349016485,
+    "wns_after_ns": -4.738764047829136,
+    "wns_improvement_ns": 0.17075230118734908,
+    "tns_before_ns": -4320.800144341774,
+    "tns_after_ns": -4104.394975001924,
+    "tns_improvement_ns": 216.40516933985054,
+    "violating_before": 1384,
+    "violating_after": 1377
+  },
+  "hold_analysis": {
+    "changed_global_endpoint_values": 37,
+    "changed_endpoint_corner_pairs": 111,
+    "all_113_negative_global_endpoint_slacks_unchanged": true,
+    "global_hold_wns_ns": -1.8409653801398915,
+    "global_native_hold_tns_ns": -26.461044910774945,
+    "per_corner": {
+      "nom_typ_1p20V_25C": {
+        "changed_endpoint_minima": 37,
+        "regressed": 16,
+        "improved": 21,
+        "all_changed_minima_positive_before_and_after": true,
+        "minimum_changed_before_ps": 184.23484959839698,
+        "minimum_changed_after_ps": 169.4475670888096,
+        "worst_minimum_delta_ps": -112.28440399690953,
+        "negative_endpoints": 31,
+        "all_negative_rise_fall_min_values_unchanged": true,
+        "negative_slack_fsum_delta_seconds": 0.0,
+        "native_hold_tns_delta_seconds": 0.0
+      },
+      "nom_slow_1p08V_125C": {
+        "changed_endpoint_minima": 37,
+        "regressed": 15,
+        "improved": 22,
+        "all_changed_minima_positive_before_and_after": true,
+        "minimum_changed_before_ps": 476.3791583428656,
+        "minimum_changed_after_ps": 440.7687548280137,
+        "worst_minimum_delta_ps": -192.0323899895493,
+        "negative_endpoints": 10,
+        "all_negative_rise_fall_min_values_unchanged": true,
+        "negative_slack_fsum_delta_seconds": 0.0,
+        "native_hold_tns_delta_seconds": 0.0
+      },
+      "nom_fast_1p32V_m40C": {
+        "changed_endpoint_minima": 37,
+        "regressed": 15,
+        "improved": 22,
+        "all_changed_minima_positive_before_and_after": true,
+        "minimum_changed_before_ps": 26.215030146659046,
+        "minimum_changed_after_ps": 17.773338356619206,
+        "worst_minimum_delta_ps": -73.57670028795837,
+        "negative_endpoints": 113,
+        "all_negative_rise_fall_min_values_unchanged": true,
+        "negative_slack_fsum_delta_seconds": 0.0,
+        "native_hold_tns_delta_seconds": 0.0
+      }
+    },
+    "legalization_and_rc_changed_hold_pairs": 0,
+    "cache_update_changed_hold_pairs": 0,
+    "previous_14_210854715_fs_tns_difference_reproduced": false,
+    "conclusion": "Positive hold margins did regress on some endpoints. Every changed minimum stays positive; all negative endpoint rise/fall/min values and native/independent negative-slack sums remain exactly unchanged in this one-iteration experiment. This does not explain the earlier larger setup campaigns TNS difference."
+  },
+  "selected_replay": {
+    "status": "PASS_PINNED_COMPLETE_ENDPOINT_REPLAY_JSON_REPRESENTATION_FIX_ONLY",
+    "stage_files_checked": 16,
+    "additional_source_config_checked": true,
+    "crc_capture_output_and_native_stage_pins_verified": true,
+    "all_endpoint_corner_rise_fall_min_values_replayed": true,
+    "selected_stage_file_pins": {
+      "run/01-openroad-resizertimingpostgrt/matched_before/native.json": {
+        "bytes": 2389,
+        "sha256": "c94dbd114d41c48593c15e2b42d20d728f8f97efc21a344221bee34c022ce69d"
+      },
+      "run/01-openroad-resizertimingpostgrt/matched_before/constraints.sdc": {
+        "bytes": 56724,
+        "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+      },
+      "run/01-openroad-resizertimingpostgrt/matched_before/endpoints.tsv": {
+        "bytes": 902494,
+        "sha256": "55c9c19e53c272ee43d3ddf1408080749ad1b185b4a663e42e84e19566a21060"
+      },
+      "run/01-openroad-resizertimingpostgrt/matched_before/hold-endpoints.tsv": {
+        "bytes": 6799850,
+        "sha256": "c1181c6e2ba546933167197ceb1d7a77c1e199984c00894275c6cf1202ce4dc5"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_repair_native/native.json": {
+        "bytes": 2394,
+        "sha256": "51fa7aee5f16ce89dc70f8b1853b0467f79eb7e6cc586e81dd8ad5567e6884b8"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_repair_native/constraints.sdc": {
+        "bytes": 56724,
+        "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_repair_native/endpoints.tsv": {
+        "bytes": 902495,
+        "sha256": "aae772d7931c1dbdeeddc57b079b53b6560c9981ae0c5fa9400912ffb6108fbd"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_repair_native/hold-endpoints.tsv": {
+        "bytes": 6799845,
+        "sha256": "c4967a4126d8cdada112b5696217695ba9517c0482d5482f00338b76d4fdc69a"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_setup/native.json": {
+        "bytes": 2386,
+        "sha256": "bd051cb9657ebe1090303014bedb2cdcbf5c59850fb3837a37302fb32b688030"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_setup/constraints.sdc": {
+        "bytes": 56724,
+        "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_setup/endpoints.tsv": {
+        "bytes": 902495,
+        "sha256": "aae772d7931c1dbdeeddc57b079b53b6560c9981ae0c5fa9400912ffb6108fbd"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_setup/hold-endpoints.tsv": {
+        "bytes": 6799845,
+        "sha256": "c4967a4126d8cdada112b5696217695ba9517c0482d5482f00338b76d4fdc69a"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_full_update/native.json": {
+        "bytes": 2392,
+        "sha256": "3e0fe28c230bb68163a6592f8165fd16692b19d7297b3215c293f622ef60d08a"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_full_update/constraints.sdc": {
+        "bytes": 56724,
+        "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_full_update/endpoints.tsv": {
+        "bytes": 902495,
+        "sha256": "aae772d7931c1dbdeeddc57b079b53b6560c9981ae0c5fa9400912ffb6108fbd"
+      },
+      "run/01-openroad-resizertimingpostgrt/after_full_update/hold-endpoints.tsv": {
+        "bytes": 6799845,
+        "sha256": "c4967a4126d8cdada112b5696217695ba9517c0482d5482f00338b76d4fdc69a"
+      }
+    },
+    "source_sdc_sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+    "source_sram_macro_count_reported": 32,
+    "sram_preservation_independent_geometry_scope": "Local replay covers selected endpoint/SDC files. The separate completed cloud archive verification checks the full captured placement/inventory and producer preservation record; it does not qualify SRAM timing models."
+  },
+  "evidence": [
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/repair-review/replay.json",
+      "bytes": 21855,
+      "sha256": "bf6f5233ad644af81ad66479e6d53b1e5452cf86f9984c8e2b658299256ddf8f"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/repair-review/replay.py",
+      "bytes": 9625,
+      "sha256": "598c6a84b39fc84a6cf4b82c5fbebc592ac36e75353d95f439431dce472e36aa"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/repair-review/before-fix-tests.log",
+      "bytes": 3290,
+      "sha256": "89c90737a6979251a059bcb051b29694fef9fbb126a21270fb369056795421d5"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/repair-review/after-fix-tests.log",
+      "bytes": 99,
+      "sha256": "cafad75a79093740238130e07207fe460b41db8a4f60deb3955765fccd7138fc"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/tables-selected-review.json",
+      "bytes": 4216,
+      "sha256": "1c23d00e3aa3818de5a2919f3dd2761f86d3220530352b72e3f74794f6acf8e1"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/probe-run.json",
+      "bytes": 13455,
+      "sha256": "0c1cf334c938840a4f62acdf2c5811aeb070fc260af6cb3245a81d8b2122c696"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/failed-workflow.log",
+      "bytes": 50165,
+      "sha256": "9481a8771292289ffa28af7321446152de94ba42c88cca6e8463010e0126e7e8"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/selected/result.json",
+      "bytes": 234136,
+      "sha256": "b363599a6654751c9198a67dfeb9b7fa8590f674b274516283e4d668a3199479"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/selected/capture.json",
+      "bytes": 31877,
+      "sha256": "8dcef8c061f1150c4783a5baec4d6ddc852a8ccae60d751052d4d8acfc110f21"
+    },
+    {
+      "path": "hw/soc/out/timing-heartbeat-20261001-2228/selected/run/01-openroad-resizertimingpostgrt/setup-probe.json",
+      "bytes": 19315,
+      "sha256": "eba6243f4563dd6ee4984b1780230b5b8c0cee859389c55ea2de0027017ac82d"
+    }
+  ],
+  "prior_failure_archive": "docs/evidence/cloud-setup-probe-failure-assets-20261001.json",
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "thresholds_changed": false,
+  "native_reexecuted_for_representation_fix": false,
+  "limitations": [
+    "Selected endpoint/metadata replay does not verify the complete ZIP or raw geometry/parasitic closure.",
+    "Global-route estimates, missing SRAM Liberty coverage and existing SDC warnings remain; this is not final extracted timing.",
+    "The historical C10 versus fresh rebuilt hold WNS difference and older14.210854715fs TNS drift remain unresolved.",
+    "Setup and hold violations remain; no physical candidate is promoted."
+  ]
+}

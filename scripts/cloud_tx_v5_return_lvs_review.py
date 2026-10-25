@@ -1,0 +1,74 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Read actual failed LVS clusters without accepting or editing the geometry."""
+import argparse,json,os,re,subprocess
+from pathlib import Path
+from collections import Counter
+import compare_cloud_routed_endpoints as reports
+from run_cloud_tx_layout_repair import sha
+ROOT=Path(__file__).resolve().parents[1]
+OUT=ROOT/'hw/soc/out/cloud-tx-v5-return-lvs-review'
+TOP='nssoc_tx_tree32_budget_balanced_v5_finalreturn_core_v1'
+def native():
+    import pya
+    source=OUT/'source';g=json.loads((source/'layout/result.json').read_text())
+    audit=json.loads((source/'physical/lvs/audit.json').read_text())
+    assert audit['status']=='FAIL' and not audit['extraction_diagnostics']
+    assert audit['circuits'][0]['layout_devices_recursive']==audit['circuits'][0]['schematic_devices_recursive']==1674
+    L=pya.Layout();L.read(str(source/'layout'/(TOP+'.gds')));T=L.cell(TOP);assert T is not None
+    db=pya.LayoutVsSchematic();db.read(str(source/'physical/lvs/result.lvsdb'));c=db.netlist().top_circuit();assert c.name==TOP
+    census=dict(Counter(d.device_class().name.lower()for d in c.each_device()));assert census==dict(npn13g2=589,rppd=248,ptap1=837)
+    layers={}
+    for metal in (134,):
+        full=pya.Region(T.begin_shapes_rec(L.layer(metal,0))).merged()
+        hits=[i for i in db.layer_indexes()if(db.layer_by_index(i)^full).is_empty()]
+        assert len(hits)==1,(metal,hits);layers[metal]=db.layer_by_index(hits[0])
+    rows=[]
+    def bind(label,raw,metal,net):
+        values=list(map(float,re.findall(r'-?\d+(?:\.\d+)?',raw)));assert len(values)==4
+        point=pya.DBox(*values).to_itype(L.dbu).center();n=db.probe_net(layers[metal],point)
+        rows.append(dict(label=label,logical_net=net,point_dbu=[point.x,point.y],metal=metal,native_cluster=None if n is None else n.cluster_id,native_name=None if n is None else n.name))
+    plan=json.loads((source/'plan.json').read_text());dx,dy=g['origin_translation_um']
+    for node in plan['nodes']:
+        tag=node['label']
+        for pin,net in plan['maps'][tag].items():
+            raw=g['placements'][tag]['ports'][pin];box=pya.DBox.from_s(raw).transformed(pya.DTrans(dx,dy))
+            bind('A_'+tag+'_'+pin,str(box),134,net)
+    for port,raw in g['ports'].items():bind('P_'+port,raw,134,port)
+    assert len(rows)==534
+    clusters={};nets={}
+    for r in rows:
+        clusters.setdefault(str(r['native_cluster']),[]).append(r)
+        nets.setdefault(r['logical_net'],set()).add(r['native_cluster'])
+    shorted={k:v for k,v in clusters.items()if len({r['logical_net']for r in v})>1}
+    opened={k:sorted(v,key=lambda x:str(x))for k,v in nets.items()if len(v)>1 or None in v}
+    devices=[]
+    for d in c.each_device():
+        dc=d.device_class();devices.append(dict(id=d.id(),model=dc.name,parameters={p.name:d.parameter(p.id())for p in dc.parameter_definitions()},terminals={t.name:dict(cluster=d.net_for_terminal(t.id()).cluster_id,name=d.net_for_terminal(t.id()).name)for t in dc.terminal_definitions()}))
+    result=dict(status='DIAGNOSED_NATIVE_FAILED_LVS_NOT_ACCEPTANCE',native_census=census,anchors=rows,shorted_logical_groups=shorted,opened_logical_nets=opened,devices=devices,public_pins=[dict(name=p.name(),cluster=c.net_for_pin(p.id()).cluster_id)for p in c.each_pin()])
+    (OUT/'native.json').write_text(json.dumps(result,indent=2)+'\n')
+    print(json.dumps(dict(shorted={k:sorted({r['logical_net']for r in v})for k,v in shorted.items()},opened=opened),indent=2),flush=True)
+def main():
+    p=argparse.ArgumentParser();p.add_argument('--native',action='store_true');args=p.parse_args();assert os.environ.get('GITHUB_ACTIONS')=='true'
+    if args.native:native();return
+    OUT.mkdir(parents=True,exist_ok=False);reports.OUT=OUT;r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],accepted=False,full_phy_accepted=False)
+    try:
+        pin=json.loads((ROOT/'docs/evidence/tx-v5-return-repair-lvs-rejection-20261018.json').read_text())
+        selected=['plan.json','layout/result.json','layout/schematic.cir','layout/'+TOP+'.gds',*['physical/lvs/'+n for n in ('result.lvsdb','extracted.cir','deck.log','run.log','audit.json')]]
+        prior,proof=reports.restore_report('tx-v5-return-repair-assembly',pin['run'],pin['summary_sha256'],pin['parts_sha256'],OUT/'source',selected)
+        assert prior==pin['report']and prior['source_head']==pin['source_head'];r['original_source']=proof
+        app=Path(os.environ['CLOUD_APPIMAGE']);assert sha(app)=='d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466'
+        with (OUT/'native.log').open('w')as log:rc=subprocess.call([str(app),'python',str(Path(__file__).resolve()),'--native'],cwd=ROOT,stdout=log,stderr=subprocess.STDOUT)
+        r['returncode']=rc
+        if rc:print((OUT/'native.log').read_text()[-16000:],flush=True)
+        assert rc==0;r['native']=json.loads((OUT/'native.json').read_text())
+        r['native_extracted_reference']=(OUT/'source/physical/lvs/extracted.cir').read_text();r['schematic_reference']=(OUT/'source/layout/schematic.cir').read_text()
+        r['deck_log']=(OUT/'source/physical/lvs/deck.log').read_text()
+        assert all(sha(OUT/'source'/n)==prior['outputs'][n]for n in selected)
+        r['status']='COMPLETE_ORIGINAL1674_LVS_CLUSTER_DIAGNOSIS_NOT_ACCEPTANCE'
+    except BaseException as e:r.update(status='FAIL_REVIEW',error=repr(e));raise
+    finally:
+        r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}
+        (OUT/'result.json').write_text(json.dumps(r,indent=2)+'\n')
+if __name__=='__main__':main()

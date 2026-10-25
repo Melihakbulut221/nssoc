@@ -1,0 +1,131 @@
+{
+  "utc": "2026-10-05T15:57:20.539223+00:00",
+  "status": "NATIVE_STARTED_FRESH_TIME_ZERO_UNCHANGED_2P5PS_1US_CRITERIA",
+  "identities": [
+    {
+      "pid": 38669,
+      "start_ticks": "383026",
+      "state": "S",
+      "process_group": 38667,
+      "affinity": [
+        12
+      ],
+      "command": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python /home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_acquisition_v3.py --out /dev/shm/nssoc-pll-acquisition-v3-step25-after-reboot-01 --prefix pcie-pll-acquisition-v3-step25-after-reboot-20261005 --step-ps 2.5 --reference /dev/shm/nssoc-pll-loop-stream-v1-evidence/original-public-replay-v2.json --reference-sha 27bd5f99f3ee3660ce567e4bcc4af4eaa018cfa44193975713ff8e13854acb35 --prerequisites /dev/shm/nssoc-pll-acquisition-v1-evidence/second1us-prerequisites.json --prerequisites-sha b3e59bd79d68ad2a712f445773977da9bc0a8482a3520bef72aa950ef947e631 "
+    },
+    {
+      "pid": 38676,
+      "start_ticks": "383153",
+      "state": "S",
+      "process_group": 38676,
+      "affinity": [
+        12
+      ],
+      "command": "/dev/shm/nssoc-ngspice47-20261004/root/usr/bin/ngspice -n -b bench.cir "
+    }
+  ],
+  "owner_snapshot": {
+    "status": "HEALTHY",
+    "reason": null,
+    "elapsed_watchdog_seconds": null,
+    "failure_grace_seconds": 5.0,
+    "processes": [
+      {
+        "kind": "native",
+        "command": [
+          "/dev/shm/nssoc-ngspice47-20261004/root/usr/bin/ngspice",
+          "-n",
+          "-b",
+          "bench.cir"
+        ],
+        "identity": {
+          "pid": 38676,
+          "state": "R",
+          "process_group": 38676,
+          "start_ticks": "383153"
+        },
+        "process_group": 38676,
+        "status": "ACTIVE",
+        "returncode": null
+      },
+      {
+        "kind": "publisher",
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/cocotb-venv/bin/python",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/publish_pcie_native_capture_v3.py",
+          "--tag",
+          "evidence-20261005-pcie-continuation",
+          "--out",
+          "/dev/shm/nssoc-pll-acquisition-v3-step25-after-reboot-01/capture/parts/publication-00000.json",
+          "/dev/shm/nssoc-pll-acquisition-v3-step25-after-reboot-01/capture/parts/pcie-pll-acquisition-v3-step25-after-reboot-20261005-part00000.bin.xz"
+        ],
+        "identity": {
+          "pid": 38828,
+          "state": "R",
+          "process_group": 38828,
+          "start_ticks": "386095"
+        },
+        "process_group": 38828,
+        "status": "ACTIVE",
+        "returncode": null
+      }
+    ],
+    "cleanup": null
+  },
+  "command_runtime": {
+    "bytes": 4552,
+    "sha256": "28403e0a4d489d3b84685d4f996ef23534729a8fce81280cb757b66fce4ab57f"
+  },
+  "bench": {
+    "bytes": 50533,
+    "sha256": "77b4a8a2d6d525c8fd9507adeb12ae521f1deb334719968527f5ebd625820be4"
+  },
+  "old_bench": {
+    "bytes": 50533,
+    "sha256": "77b4a8a2d6d525c8fd9507adeb12ae521f1deb334719968527f5ebd625820be4"
+  },
+  "source_freeze": {
+    "bytes": 3086,
+    "sha256": "a3d94ff1223739762e37fa257254adc35e917ed0e45142ed53e443b00f18f153"
+  },
+  "source_peer": {
+    "bytes": 6597,
+    "sha256": "badef7b0d0e2fab64e34873129d193e4b87f369113b0b08991f97043225d6f68"
+  },
+  "portable_peer": {
+    "bytes": 2328,
+    "sha256": "4e60de6862277ec27db4429ff67deaed9006a5acd83718fcfdab5518f9d4587c"
+  },
+  "source_bridges": {
+    "publisher": {
+      "original_sha256": "f13bb3e1d22a3062697b4e526c6baa39ed63a31e57fb5337d0a1c7fa6155bf39",
+      "modified_sha256": "8dfc032d8cfb1fcb8a2ba98e94132b7c55b38c638bc5b9b7011f4f0b59c29f0c",
+      "exact_replacements": [
+        [
+          "class OwnedPublisherV2:",
+          "class OwnedPublisherV3:"
+        ]
+      ]
+    },
+    "run": {
+      "original_sha256": "981f2bb4c3b5f2ba08717df9d96521a4fdfbed38b984b4d36f5569ba4b7f4e0d",
+      "modified_sha256": "abe03ca11ee6703e5b4c2c3b99d27563e2a19ff7febc677f0038f5cb0fe73e9c",
+      "exact_replacements": [
+        [
+          "OwnedPublisherV2(owner)",
+          "OwnedPublisherV3(owner)"
+        ],
+        [
+          "+ [__file__, str(reference)]",
+          "+ [__file__, str(publication.__file__), str(publication.lifecycle.__file__), str(reference)]"
+        ]
+      ]
+    }
+  },
+  "out": "/dev/shm/nssoc-pll-acquisition-v3-step25-after-reboot-01",
+  "original_failure_result": {
+    "bytes": 282794,
+    "sha256": "e2e62bab9a0c670ef28fcb10fab6ed9f681dc584796a470a0e5fcbbf10bdc9e3"
+  },
+  "capture_status": "RUNNING",
+  "physical_acceptance": false
+}

@@ -1,0 +1,71 @@
+{
+  "protected": {
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "docs/evidence/cdr-input-impedance-v30-mim-parent-capture-pass-20261022.json": "f1388bb10c211865e5b0225dd38fe62d99bb51c29b4ca582b736310fb2be2621",
+    "docs/evidence/cdr-input-impedance-v30-electrical-rejection-20261022.json": "053b011b02d9cca4c593d723295134116be8527ec8358b63f46f9e4d0f3988b9",
+    "scripts/check_cdr_v30_latch_sources.py": "66e8434184cbdea53ee27e6da41df7d8d29a82c7bc7ff77ae657c2caa67d55e0",
+    ".github/workflows/cdr-v30-latch-timing-cloud.yml": "f88080e040777750334c7c059afe75c179a03c66bf09a4d9438fcd424a234982"
+  },
+  "diagnostic": {
+    "baseline_path": "scripts/cloud_cdr_v29_latch_timing.py",
+    "baseline_sha256": "6be2d0181c27d9e0481332b5573eacf7c9f481efc09a2a36bc41a996dcaa8b8a",
+    "candidate_path": "scripts/cloud_cdr_v30_latch_timing.py",
+    "candidate_sha256": "f922e4ba83df76bde48ef406028f8ce8dcbdf9267ba5b2dc2b700a1e57fcb661",
+    "edits": [
+      {
+        "before": "PINS={\"nominal_early\":[\"f9418fb4bf9ac32a398aa51691536f95dd2d5fbf03894c6277d3539dbbba798a\",\"3398065de43d7faa4dd2296d7bcdc09bcbca8c27f7d9ff7edd4c1ead8a54b5f1\"],\"nominal_late\":[\"20f62cab499e59d3ad6d6a3b55e4c326756531de7dc92440b2128e923661df81\",\"6801521d5ec03baa31076285012f5cec57e05553d19c9286829bd8c979df13d6\"]}",
+        "after": "PINS={\"nominal_early\":[\"6d174b3f3f5a62a847403f8de023659611a494668d18447959bbf18749324e9f\",\"8d39eaab6be341b93aa7a4dad9005bb150d9036efaed4e9b6d11eec33b4681fd\"],\"nominal_late\":[\"402651c9298f99065d6738ee084d0b27dd144f991a10f6911dedf85a551b1f0e\",\"025d8e2f01bbae27decda5f34b96d7d4601abb39bdcf8fb139e073a7d310980d\"]}",
+        "count": 1
+      },
+      {
+        "before": "cdr-v29-latch",
+        "after": "cdr-v30-latch",
+        "count": 2
+      },
+      {
+        "before": "cdr-gain-headroom-v29",
+        "after": "cdr-input-impedance-v30",
+        "count": 4
+      },
+      {
+        "before": "39695370523",
+        "after": "39709128571",
+        "count": 2
+      },
+      {
+        "before": "c875a4f6effbd936d054a58f22f90bdaaf27d3e3",
+        "after": "0337485e3e0bbacd89385703b21c1a35cce4c539",
+        "count": 1
+      },
+      {
+        "before": "39694160820",
+        "after": "39708084548",
+        "count": 1
+      },
+      {
+        "before": "ccfe6913daa977fe9de26cb413c993e408ba38ab53430cd6a24e74b3065da1a8",
+        "after": "260420a91547b8b245e6f7bca362e52991a11669f45f42d48801b1a2f8ea6a51",
+        "count": 1
+      },
+      {
+        "before": "d4b48ffbf77a10a048166681a5054d9e1fbb4c12",
+        "after": "ea39f289a589d3a1bf2973a6c46b7e8d3406efc8",
+        "count": 1
+      },
+      {
+        "before": "dict(devices=476,R=17906,C=12834)",
+        "after": "dict(devices=476,R=17918,C=12850)",
+        "count": 1
+      },
+      {
+        "before": "assert set(violations)==(set() if args.case=='nominal_early' else {'xpd.xd0105'})",
+        "after": "assert not violations",
+        "count": 1
+      }
+    ]
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "status": "REVIEWED_NEW_PAIRED_WRITE_TRACE_PREPARATION_NO_BOOT_RESULT",
+  "sources": {
+    "scripts/run_cloud_npu_evq_trace.py": {
+      "bytes": 30798,
+      "sha256": "01bbf49336d06b173fc7c54544af5e9550231df91e4edda06b05b50862f53df4"
+    },
+    "sw/tests/test_npu_evq_trace.py": {
+      "bytes": 16430,
+      "sha256": "0e49f1bc4ac1afb78757f6d9a7311cb1d83e8b44657c0be4a6cbc4a67177e788"
+    },
+    "scripts/run_cloud_npu_write_trace.py": {
+      "bytes": 27201,
+      "sha256": "cd6ad34a7e6ce5578f9d6e61b52da0b6ab4c64448c6ac61a140f99c39c8f3a6d"
+    },
+    "sw/tests/test_npu_write_trace.py": {
+      "bytes": 5730,
+      "sha256": "93dd7721f90cda19dda11955423ed31ed1b14cfe0bbf14b58eb635f28cac34a8"
+    },
+    "hw/soc/tb/npu_write_event_trace.v": {
+      "bytes": 2670,
+      "sha256": "33befae04f430c3e51e65d6decc81369d64c0b86c6b2bf330031a039376eaa89"
+    },
+    "hw/soc/pnr/npu-write-trace-input.lock.json": {
+      "bytes": 1520,
+      "sha256": "1055d4920262467086260ad99c68b7916b8c5b36aad50d50ba9fbf5e07459128"
+    },
+    ".github/workflows/timing-npu-write-trace.yml": {
+      "bytes": 2608,
+      "sha256": "5f050eaaef2e4ccdecd2cb59f3d73dcb07bd262d8671b9ab072296d49510c633"
+    }
+  },
+  "previous_run": "https://github.com/Melihakbulut221/nssoc/actions/runs/37187157260",
+  "previous_head": "3fead2e8288aae9f2b6a8733ca08aef0d9818f0d",
+  "historical_failures_preserved": true,
+  "review": {
+    "original": {
+      "path": "hw/soc/out/chip-closure-resume-20261005-1900/evq37187157260/original-review02.json",
+      "bytes": 263695,
+      "sha256": "aa4033a6f2f46e1bdbe3008c34bf822451439154463b9d0483ba0d27ad95edf1",
+      "events": 46389,
+      "samples": 161,
+      "live_snapshot_disagreements": 18,
+      "new_unknowns": 158,
+      "first_new_unknown": {
+        "sequence": 22062,
+        "cycle": 1569459,
+        "realtime_ns": "31389570.000",
+        "signal": 463,
+        "prior": "1",
+        "value": "x",
+        "signal_binding": {
+          "index": 463,
+          "instance": "_077330_",
+          "field": "A",
+          "expression": "dut._077330_.A",
+          "role": "native"
+        },
+        "conductor": "\\u_npu.u_node0.u_evq_out.head_par "
+      },
+      "boot_pass": true,
+      "complete_chip_accepted": false
+    },
+    "candidate": {
+      "path": "hw/soc/out/chip-closure-resume-20261005-1900/evq37187157260/candidate-review02.json",
+      "bytes": 11873673,
+      "sha256": "8b6c36237c6226a463870c5a11488558119f421bb605726ae8fcc98263803d38",
+      "events": 57465,
+      "samples": 161,
+      "live_snapshot_disagreements": 6,
+      "new_unknowns": 21287,
+      "first_new_unknown": {
+        "sequence": 8628,
+        "cycle": 1569426,
+        "realtime_ns": "31388910.000",
+        "signal": 1487,
+        "prior": "0",
+        "value": "x",
+        "signal_binding": {
+          "index": 1487,
+          "instance": "_137360_",
+          "field": "D",
+          "expression": "dut._137360_.D",
+          "role": "native"
+        },
+        "conductor": "\\u_npu.u_node0.u_evq_out.u_wptr_a.d [0]"
+      },
+      "boot_pass": false,
+      "complete_chip_accepted": false
+    }
+  },
+  "new_binding": {
+    "schema": 1,
+    "producer": {
+      "run_id": 36998734236,
+      "source_commit": "b4387d7dc2436f0b223be17f93310b883c7344c1",
+      "artifact_id": 11223062019,
+      "artifact_name": "alu-prefix-synthesis-1",
+      "bytes": 10989784,
+      "sha256": "bc8345496dbcee984b9497eb6d3fd0d39b287a38e6d1e16d795c713bc11f5871",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-alu-prefix-36998734236-20261002.zip"
+    },
+    "prior": {
+      "run_id": 37187157260,
+      "source_commit": "3fead2e8288aae9f2b6a8733ca08aef0d9818f0d",
+      "first_candidate_unknown_cycle": 1569426,
+      "candidate_final": {
+        "artifact_id": 11301014889,
+        "bytes": 1549446,
+        "sha256": "2c538b61cdd4111e4b3c6bb3c18c66bef1942c83ac0fe32159ecd8201e6723df"
+      },
+      "original_final": {
+        "artifact_id": 11299662694,
+        "bytes": 1454521,
+        "sha256": "92fae97377c456d16c993756c28e512e63b82c46fad2b6786d6cc4922754d1b9"
+      }
+    },
+    "bounds": {
+      "cells": 2304,
+      "signals": 8192,
+      "events": 500000
+    },
+    "cycle_bound": 3000000,
+    "window": [
+      1569360,
+      1569520
+    ],
+    "variants": {
+      "original": {
+        "binding_sha256": "30c9f605495e12565208b82427561971197b661c5d60af388e16b35be65e0b15",
+        "cells": 2048,
+        "signals": 7040,
+        "sequential_boundaries": 625
+      },
+      "candidate": {
+        "binding_sha256": "65f525e08de1edf194b90cd64d89e83da71b073db892eada364c69c05c274975",
+        "cells": 2041,
+        "signals": 7033,
+        "sequential_boundaries": 625
+      }
+    }
+  },
+  "focused_tests": {
+    "passed": 115,
+    "failed": 0,
+    "log": {
+      "bytes": 180,
+      "sha256": "0acb15c49828cd3cd594f9e3893ff289d550b72e62416d4ba69fd0bb9016c578"
+    }
+  },
+  "source_peer": {
+    "path": "hw/soc/out/chip-closure-resume-20261005-1900/write-source-only-peer-rx.json",
+    "bytes": 15101,
+    "sha256": "bdbf392a595e96ca47114270c5de64e5e3e2455eb209c3d48e7694c07c2ea873"
+  },
+  "native_controls": {
+    "cases": 5,
+    "record": {
+      "bytes": 20229,
+      "sha256": "e89b83e22027f90bd21a3b07490b27eb5656678e8c6481ec94dc1fa8001d12a1"
+    }
+  },
+  "scope": "Postprocesses existing failed jobs; does not change old outcomes. New paired native boots await this reviewed source commit. No timing or fullchip/PHY acceptance."
+}

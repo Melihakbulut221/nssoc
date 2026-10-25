@@ -1,0 +1,29 @@
+{
+  "status": "PASS_EXACT_WHOLE_BYTE_V2_CONTROL_BRIDGE",
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-wire-rc-v1-20261005/check_native_mutations.py",
+    "bytes": 5001,
+    "sha256": "60d188f660c9cd58ea1fffeaa80ff70b09846016dc3b61c937934c59627e4445"
+  },
+  "new": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-wire-rc-v1-20261005/check_native_mutations_v2.py",
+    "bytes": 4999,
+    "sha256": "fcee62ef701e859e1f440fde40f4aae98d8a67927d0c0e3b9b2a713bc97aa2e2"
+  },
+  "operations": [
+    {
+      "old": " ('dropped_resistor',{'wires.spice':re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)},'Native/export resistor topology/value differs'),\n",
+      "new": " ('dropped_resistor',{'wires.spice':re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)},'Physical wire R graph open or incomplete'),\n",
+      "count": 1
+    },
+    {
+      "old": "B/'native-mutations.json'",
+      "new": "B/'native-mutations-v2.json'",
+      "count": 1
+    }
+  ],
+  "diff": "--- \n+++ \n@@ -28,7 +28,7 @@\n   alternate=next(n for n in groups[owner[f[1]]] if n!=f[1]);shifted[i]=' '.join([f[0],alternate,*f[2:]]);break\n cases=[\n  ('dropped_actual_port',{'wires.spice':text.replace(' '+next(n for n in parsed['ports'] if n.startswith('T'))+' ',' ',1)},'Export port loss/duplication'),\n- ('dropped_resistor',{'wires.spice':re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)},'Native/export resistor topology/value differs'),\n+ ('dropped_resistor',{'wires.spice':re.sub(r'^R\\d+ .*\\n','',text,count=1,flags=re.M)},'Physical wire R graph open or incomplete'),\n  ('wrong_resistor',{'wires.spice':re.sub(r'^(R\\d+ \\S+ \\S+) \\S+$',r'\\1 12345',text,count=1,flags=re.M)},'Native/export resistor topology/value differs'),\n  ('cross_conductor_short',{'wires.spice':text.replace('.ends','R_EXTRA P004 P005 1\\n.ends')},'R network has unanchored component or cross-conductor short'),\n  ('ground_redistribution_same_matrix',{'wires.spice':'\\n'.join(redistributed)+'\\n'},'Per-point ground C export changed'),\n@@ -56,4 +56,4 @@\n  else:raise AssertionError(name)\n  assert observed==wanted,(name,observed,wanted);results.append(dict(control=name,rejected_by=observed))\n r=dict(status='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS',positive_status=positive['status'],cases=results,seconds=time.monotonic()-start,inputs={str(p):m.pin(p) for p in [Path(__file__),B/'audit_wire_rc.py',m.PRIOR,m.GEOMETRY/'anchors.json',*[P/n for n in ('bank_wires.ext','bank_wires.res.ext','native.log','wires.spice','baseline.spice')]]})\n-(B/'native-mutations.json').write_text(json.dumps(r,indent=2)+'\\n');print(r['status'],r['seconds'])\n+(B/'native-mutations-v2.json').write_text(json.dumps(r,indent=2)+'\\n');print(r['status'],r['seconds'])\n",
+  "whole_byte_inverse": true,
+  "native_auditor_changed": false,
+  "no_any_error_acceptance": true
+}

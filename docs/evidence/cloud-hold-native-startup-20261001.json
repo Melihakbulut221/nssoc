@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "status": "VERIFIED_NATIVE_CONTROLS_AND_FULL_CHIP_STARTUP_ONLY",
+  "source_commit": "ad4d8bb3a1294693f80e0e633d2312104f9899e3",
+  "github_run_id": 36813322010,
+  "github_run_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36813322010",
+  "native_phase_at_capture": "native-diagnostic",
+  "native_status_at_capture": "RUNNING",
+  "artifact": {
+    "id": 11140926752,
+    "name": "hold-diagnostic-startup-1",
+    "bytes": 11990240,
+    "sha256": "24696c39a7ba3e4ded629d0334e0adea75d42ec6641e2aeabbaa79ec07d85451"
+  },
+  "resources_before_native": {
+    "available_memory_bytes": 15689404416,
+    "free_disk_bytes": 88399355904
+  },
+  "native_address_space_limit_bytes": 8589934592,
+  "native_elapsed_watchdog": false,
+  "native_controls": {
+    "cases": [
+      "complete_coverage",
+      "bad_coverage",
+      "corrupt_units",
+      "route_mutation"
+    ],
+    "independent_replay": "PASS",
+    "stages": 5,
+    "corners": 3,
+    "all_endpoints_per_stage": 12,
+    "negative_endpoints": 2,
+    "method_and_output_pins_verified": true,
+    "no_op_physical_fingerprints_unchanged": true,
+    "actual_route_mutation_rejected": true
+  },
+  "full_chip_progress": {
+    "source_sram_macros": 32,
+    "blockages": 55952,
+    "clock_nets": 1313,
+    "global_route_extra_iteration": 1,
+    "global_route_extra_iteration_limit": 50
+  },
+  "verified_capture_files": 80,
+  "method_files": {
+    ".github/workflows/timing-hold-diagnostic.yml": {
+      "bytes": 5961,
+      "sha256": "6812068c3abe067d3c2cb00beca5f7c73c34116bd8f9de079b43306251e05359"
+    },
+    "scripts/run_cloud_hold_diagnostic.py": {
+      "bytes": 35439,
+      "sha256": "51a4bcacffcd389cbf884a7b82e9445e0cdd8619a67f178026c513d12b7fc294"
+    },
+    "scripts/run_cloud_timing_experiment.py": {
+      "bytes": 32423,
+      "sha256": "689c4dbd5a036fc1919d25c0d816f1740a878b11d7dfef432ae7e41c31197524"
+    },
+    "hw/soc/pnr/timing_hold_reproducibility.tcl": {
+      "bytes": 16850,
+      "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+    },
+    "hw/soc/pnr/timing_hold_diagnostic_step.tcl": {
+      "bytes": 5244,
+      "sha256": "691e0b2106ec5796fd9032bb2c2c6d1b4e2b70039efc8d005c6e0c88fc77079e"
+    },
+    "sw/tests/hold_reproducibility_native.py": {
+      "bytes": 4906,
+      "sha256": "5a3b79315d5eb0e291ac9cae1caf6d6d5d5a35c372f53c3f982d1af2b8852225"
+    },
+    "sw/tests/timing_hold_reproducibility_native.tcl": {
+      "bytes": 5861,
+      "sha256": "1d35aaba397502bcd0e1a20f03982b33347219b3a2f13dce04061a347b7cd6f5"
+    }
+  },
+  "source_bundle_sha256": "1bebb586c3ad2891808f69a8cd813be496d626fcefc461a888768821845bb41f",
+  "runtime_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "all_capture_files_present": true,
+  "capture_is_atomic": false,
+  "diagnostic_complete": false,
+  "restart_checkpoint_accepted": false,
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "prior_failures": [
+    {
+      "run_id": 36812467876,
+      "reason": "Native layer range colon syntax and hidden workflow omitted from original artifact; corrected, original evidence remains failed/incomplete."
+    },
+    {
+      "run_id": 36812843776,
+      "reason": "Incorrect exact binary64-vs-native-binary32 unit metadata assertion; corrected without slack/constraint changes."
+    }
+  ],
+  "asset_manifest": "cloud-hold-native-startup-assets-20261001.json",
+  "scope": "Actual tiny native control proof and live full-chip start only. Startup is neither a complete diagnostic nor timing closure. Later native result must be inspected independently."
+}

@@ -1,0 +1,156 @@
+{
+  "baseline_ref": "2e63863abb0309c245d89e2a3d4934fe40a2b2ed",
+  "baseline_repository_path": "scripts/cloud_tx_output8088_branchtailfeed_native.py",
+  "baseline_path": "scripts/frozen_tx8088_branchtailfeed_native.py",
+  "baseline_sha256": "e10466f715a933a79444b3f27525f0c2e16275d6fd071f428816a87786842ab6",
+  "candidate_path": "scripts/cloud_tx_phase_reset334_transient.py",
+  "candidate_sha256": "db0108b0b553d24d1ce8d4813806f41821bbf607053538a2ebe59127629eb0f0",
+  "edits": [
+    {
+      "before": "Run the unchanged full8088 TX transient with durable native process capsules.",
+      "after": "Run the exact physical334 three-model fixture with the preserved portable native process lifecycle.",
+      "count": 1
+    },
+    {
+      "before": "import cloud_tx_p4_drive3_builder as review\nfrom cloud_tx_chunked_op import assemble_op",
+      "after": "import tx_phase_reset334_transient_support as review",
+      "count": 1
+    },
+    {
+      "before": "tx-output8088-branchtailfeed",
+      "after": "tx-phase-reset334-transient",
+      "count": 10
+    },
+    {
+      "before": "tx8088-branchtailfeed",
+      "after": "reset334-portable",
+      "count": 4
+    },
+    {
+      "before": "ACTUAL8088_BRANCHTAILFEED",
+      "after": "PHYSICAL334_THREE_MODEL",
+      "count": 9
+    },
+    {
+      "before": "codex/tx-via3-rail-diagnosis",
+      "after": "codex/tx-clock-phase-parent",
+      "count": 2
+    },
+    {
+      "before": "('none','swap_leaf_select')",
+      "after": "('p-initial-high','p-initial-low','n-initial-high','n-initial-low')",
+      "count": 2
+    },
+    {
+      "before": "case='none'",
+      "after": "case='p-initial-high'",
+      "count": 2
+    },
+    {
+      "before": "initial-none",
+      "after": "initial-p-initial-high",
+      "count": 1
+    },
+    {
+      "before": "'wrong_case','report','case','swap_leaf_select'",
+      "after": "'wrong_case','report','case','n-initial-high'",
+      "count": 1
+    },
+    {
+      "before": "    assert run['path']in ('.github/workflows/tx-phase-reset334-transient-native-initial-cloud.yml','.github/workflows/tx-phase-reset334-transient-native-continuation-cloud.yml')",
+      "after": "    assert run['path']=='.github/workflows/tx-phase-reset334-transient-cloud.yml'",
+      "count": 1
+    },
+    {
+      "before": "path='.github/workflows/tx-phase-reset334-transient-native-initial-cloud.yml'",
+      "after": "path='.github/workflows/tx-phase-reset334-transient-cloud.yml'",
+      "count": 1
+    },
+    {
+      "before": "assert len(osdis)==3 and len(set(osdis))==3",
+      "after": "assert len(osdis)==1 and len(set(osdis))==1",
+      "count": 1
+    },
+    {
+      "before": "for i in range(3)]",
+      "after": "for i in range(1)]",
+      "count": 1
+    },
+    {
+      "before": "    methods=json.loads((ROOT/'scripts/tx-phase-reset334-transient-native-methods.json').read_text())",
+      "after": "    config=review.methods();methods=config['protected']\n    assert config['native_transient_authorized']is True",
+      "count": 1
+    },
+    {
+      "before": "    prepared_root=ROOT/('cloud-tx-phase-reset334-transient-prepared-wire-nominal-'+case_name)",
+      "after": "    prepared_root=ROOT/('cloud-tx-phase-reset334-prepared-'+case_name)",
+      "count": 1
+    },
+    {
+      "before": "controller_sha256=sha(Path(__file__)),full_capture=False,full_serial_phy=False,mainchip_integrated=False,qualified_pex=False,electrical_screen_passed=False,native_process_saved=False)",
+      "after": "controller_sha256=sha(Path(__file__)),full_capture=False,full_serial_phy=False,qualified_pex=False,macro_RC_qualified=True,electrical_screen_passed=False,native_process_saved=False,**review.FLAGS)",
+      "count": 1
+    },
+    {
+      "before": "json.dumps(r,indent=2)+'\\n'",
+      "after": "json.dumps(r,indent=2,allow_nan=False)+'\\n'",
+      "count": 1
+    },
+    {
+      "before": "        preparations=json.loads((ROOT/'docs/evidence/tx-phase-reset334-transient-preparation-pass-20261024.json').read_text())\n        assert preparations['status']=='PASS_BOTH_PHYSICAL334_THREE_MODEL_PREPARATIONS_NO_DUT_TRANSIENT'\n        assert set(preparations['cases'])=={'none','swap_leaf_select'}\n        assert all(v['run']==40085025627 and v['source_head']=='78b185040777ba65f93d1199295b4dfd52dea476' and v['status']=='READY_PHYSICAL334_THREE_MODEL_PHYSICAL_WIRE_DECK_NOT_SIMULATED' and v['model_sha256']=='8286d54832432603f78739f30d0087e99a46f026d82a37ecd5e450d2167231c8' and v['core_counts']==dict(devices=8088,R=141473,C=100694) for v in preparations['cases'].values())\n        prep_pin=preparations['cases'][case_name]\n        assert prep_pin['run']==40085025627 and prep_pin['source_head']=='78b185040777ba65f93d1199295b4dfd52dea476'\n        prepared,proof=reports.restore_report(prep_pin['group'],prep_pin['run'],prep_pin['summary_sha256'],prep_pin['parts_sha256'],prepared_root,list(prep_pin['outputs']))\n        assert prepared['status']=='READY_PHYSICAL334_THREE_MODEL_PHYSICAL_WIRE_DECK_NOT_SIMULATED' and prepared['source_unchanged']\n        assert prepared['output_parent_binding']['no_ideal_driver_core_or_output_interconnect'] and len(prepared['output_parent_binding']['controls'])==10\n        assert prepared['output_parent_binding']['separate_schematic_output_removed']\n        assert prepared['output_parent_binding']['original_stimuli_solver_timestep_external_loads_and_gates_unchanged']\n        assert prepared['model_sha256']=='8286d54832432603f78739f30d0087e99a46f026d82a37ecd5e450d2167231c8'\n        assert prepared['core_counts']==dict(devices=8088,R=141473,C=100694)\n        assert prepared['capture_preflight']['columns']==14182 and prepared['capture_preflight']['minimum_rows']==68001\n        assert prepared['new_trajectory_contract']==dict(fresh_initialization_required=True,old_model_process_checkpoint_reuse_allowed=False,transient_dispatched=False,duration_ns=34,bits=256,ui_ps=125,streams=32,source_bits_sha256='5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825',native_engine_sha256=ENGINE_SHA)\n        assert all(c['rejected']for c in prepared['output_parent_binding']['controls'])\n        contract=json.loads((case/'contract.json').read_text());assert len(contract['hbt'])==604 and len(contract['mos'])==5376 and len(contract['vectors'])==14181\n        assert contract['source_bits_sha256']=='5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825'\n        engine=prepared_root/'runtime/patched-ngspice';engine.chmod(0o755);assert sha(engine)==ENGINE_SHA\n        required,osdis=runtime_files(case/'bench.cir',prepared)\n        required[str(engine)]=ENGINE_SHA\n        for f in ('contract.json','spinit'):\n            assert sha(case/f)==prepared['outputs']['native/'+f];required[str(case/f)]=sha(case/f)\n        r['preparation_source']=proof;r['runtime_inputs']=required;r['prepared_case']=case_name\n",
+      "after": "        prepared,proof,contract,engine,prep_pin=review.prepare(case_name,prepared_root,out,group)\n        required,osdis=runtime_files(case/'bench.cir',prepared)\n        required[str(engine)]=ENGINE_SHA\n        for f in ('contract.json','spinit'):\n            assert sha(case/f)==prepared['outputs']['native/'+f];required[str(case/f)]=sha(case/f)\n        r['preparation_source']=proof;r['runtime_inputs']=required;r['prepared_case']=case_name\n        r['original_parent_TX_rejection']=proof['original_parent_TX_rejection']\n        assert not r['original_parent_TX_rejection']['electrical_screen_passed']\n",
+      "count": 1
+    },
+    {
+      "before": "r['criu_build']=build",
+      "after": "r['criu_build']=build;r['runtime_identity']=review.runtime_identity(build)",
+      "count": 1
+    },
+    {
+      "before": "['gh','api',REPO+'releases/assets/'",
+      "after": "['gh','api','--allow-escape-sequences',REPO+'releases/assets/'",
+      "count": 1
+    },
+    {
+      "before": "            assert prior['runtime_inputs']==required and prior['glibc_tunables']==TUNABLES",
+      "after": "            assert prior['runtime_inputs']==required and prior['glibc_tunables']==TUNABLES\n            review.compatible(r['runtime_identity'],prior['runtime_identity'])",
+      "count": 1
+    },
+    {
+      "before": "14182",
+      "after": "4727",
+      "count": 3
+    },
+    {
+      "before": "seconds=int(os.environ.get('NSSOC_TX_SECONDS','600' if stage=='initial' else'3600'));assert 300<=seconds<=7200",
+      "after": "seconds=int(os.environ.get('NSSOC_TX_SECONDS','13200'));assert seconds==config['segment_seconds']==13200",
+      "count": 1
+    },
+    {
+      "before": "        if r['full_capture']:\n            log=(case/'native.log').read_text()\n            r['solver_options']=review.verify_solver_options(log,'breakpoint_tight_trap')\n            r['diagnostics']=review.native_diagnostics(log,'breakpoint_tight_trap')\n            flags=re.findall(r'(?ms)^NSSOC_NATIVE_FLAG_BEGIN (\\S+)\\n(.*?)^NSSOC_NATIVE_FLAG_END\\s*$',log)\n            assert [n for n,_ in flags]==['q.'+n+'.qnpn13g2'for n in contract['hbt']]\n            assert all(re.findall(r'(?m)^\\s*off\\s+([01])\\s*$',body)==['1']for _,body in flags)\n            r['op_reassembly']=assemble_op(case,prepared['op_chunk_spec'])\n            r['review']=review.review(case,contract)\n            assert set(r['review']['interfaces'])=={'cmos','final','level_4','level_8','level_16'}\n            assert all(v['samples']==6912 for v in r['review']['interfaces'].values())\n            r['electrical_screen_passed']=case_name=='none' and r['review']['all_engineering_gates_passed'] and not r['diagnostics']\n            if case_name!='none':\n                r['original_fault_detected']=not r['review']['signals']['passed'];assert r['original_fault_detected']\n            r['status']='COMPLETE_PHYSICAL334_THREE_MODEL_FULL_NATIVE_CAPTURE_REQUIRES_REVIEW_AND_FULL_PHY'\n            if case_name=='none' and not r['electrical_screen_passed']:r['status']='REJECTED_PHYSICAL334_THREE_MODEL_ORIGINAL_LOADED_GATES'\n",
+      "after": "        if r['full_capture']:\n            r['review']=review.review_capture(case,contract,r['native_exit_code'])\n            r['electrical_screen_passed']=r['review']['passed']\n            r['status']='COMPLETE_PHYSICAL334_THREE_MODEL_FULL_NATIVE_CAPTURE_REQUIRES_REVIEW_AND_FULL_PHY'\n            if not r['electrical_screen_passed']:r['status']='REJECTED_PHYSICAL334_THREE_MODEL_ORIGINAL_LOADED_GATES'\n",
+      "count": 1
+    },
+    {
+      "before": "Original full loaded electrical gates rejected",
+      "after": "Original three-model loaded electrical gates rejected",
+      "count": 1
+    },
+    {
+      "before": "Native TX process restore failed",
+      "after": "Native three-model process restore failed",
+      "count": 1
+    },
+    {
+      "before": "            compare=\"import pathlib,hashlib,sys;scan=lambda d:{str(p.relative_to(d)):hashlib.sha256(p.read_bytes()).hexdigest()for p in d.rglob('*')if p.is_file()};assert scan(pathlib.Path(sys.argv[1]))==scan(pathlib.Path(sys.argv[2]))\"",
+      "after": "            compare=\"import pathlib,hashlib,sys\\ndef sha(path):\\n    with path.open('rb') as stream:\\n        return hashlib.file_digest(stream, 'sha256').hexdigest()\\nscan=lambda d:{str(p.relative_to(d)):sha(p)for p in d.rglob('*')if p.is_file()}\\nassert scan(pathlib.Path(sys.argv[1]))==scan(pathlib.Path(sys.argv[2]))\"",
+      "count": 1
+    },
+    {
+      "before": "        config=\"import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;p.write_text(json.dumps(d))\"\n        run('docker-experimental',['sudo','python3','-c',config]);run('docker-restart',['sudo','systemctl','restart','docker'])",
+      "after": "        docker_config_program=\"import json,pathlib;p=pathlib.Path('/etc/docker/daemon.json');d=json.loads(p.read_text())if p.exists()else{};d['experimental']=True;p.write_text(json.dumps(d))\"\n        run('docker-experimental',['sudo','python3','-c',docker_config_program]);run('docker-restart',['sudo','systemctl','restart','docker'])",
+      "count": 1
+    }
+  ],
+  "scope": "Existing owned Docker/CRIU lifecycle retained; exact declared preparation, complete readback, namespace,1 OSDI,13200s budget,unchanged72GiB initial reserve and stricter runtime compatibility changes. No native execution from source proof."
+}

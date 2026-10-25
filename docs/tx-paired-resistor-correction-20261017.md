@@ -1,0 +1,11 @@
+# TX paired-resistor correction after the native v3 rejection
+
+All execution remains in GitHub Actions. This is an unvalidated candidate, not a physical or PHY pass.
+
+Native v3 run39055820343/source9a12e63608607c9cc3a74da4d644690516c0c3f1 passed nominal, hot_low and the actual leaf-selector fault. Cold_high failed only the final interstage common-mode gate: 2.0451829016..2.0683497842 V exceeds the unchanged 2.05 V ceiling. All 768 serial sample signs and the 100 mV margin gate passed (minimum273.8746 mV); all604HBT/512MOS bounds passed. The hot result has no failed HBT/MOS and minimum230.4635 mV. Full four native reports, exact summary SHA256 and release URLs are retained in evidence/tx-margin-v3-rejection-20261017.json. The waiting physical successor39057426221 did not establish fresh-layout acceptance.
+
+A shunt-only change creates competing hot internal-VCE and cold output-common-mode limits. The next candidate changes both high-stage output series resistors from W6/L1.8 to W6/L2.4 um and both shunts from W1.5/L7.5 to W1.5/L7.935 um. Low stages remain W4/L3.6 and W1/L12.77. All HBT sizes, load resistors, connections, clocks, source bits, temperature/supply/model corners and gates remain unchanged.
+
+For sheet-normalized Rc=1.1/3, Rs=Lseries/6 and Rf=Lshunt/1.5, the constant-current collector approximation gives Vout=(Vdd-I*Rc)*Rf/(Rc+Rs+Rf), and Vcollector=Vout*(1+Rs/Rf). The chosen high pair preserves Rf/(Rc+Rs+Rf) exactly relative to a6.9um shunt with the old1.8um series, while increasing Rs/Rf and thus internal collector headroom. This is a design hypothesis, not DC equivalence of the nonlinear compact-model circuit. Junction loading, self-heating and settling must be measured afresh.
+
+scripts/cloud_tx_tree32_balanced.py preserves the v3 controller and source. Its native-only geometry controls require exact fractions, all unchanged devices and reject four actual corruptions per cell. GitHub runs the original34ns/256bits, three sampling phases, every device/interface limit, zero-source startup and actual deepest-selector fault. No phase fitting, signal reconstruction or limit relaxation is introduced. Fresh GDS/DRC/LVS/RC and loaded full-tree simulation remain mandatory after a native pass.

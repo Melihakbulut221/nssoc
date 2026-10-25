@@ -1,0 +1,25 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Exact high-common-mode input network and second toggle from div4v10.
+* Schematic instance; independent physical extraction pending.
+.subckt nssoc_clock_div2_high_input_v1 clkp clkn qp qn avdd avss sub
+XLSP clkp bip sub rppd w=2u l=3.6u b=0 sw_et=1
+XLSN clkn bin sub rppd w=2u l=3.6u b=0 sw_et=1
+XLDP bip avss sub rppd w=1u l=16u b=0 sw_et=1
+XLDN bin avss sub rppd w=1u l=16u b=0 sw_et=1
+XLB avdd lref sub rppd w=1u l=9u b=0 sw_et=1
+XLREF lref lref avss sub npn13G2 Nx=1
+XLP ln bip lt sub npn13G2 Nx=2
+XLN lp bin lt sub npn13G2 Nx=2
+XLT lt lref avss sub npn13G2 Nx=4
+XLRP avdd lp sub rppd w=8u l=4.4u b=0 sw_et=1
+XLRN avdd ln sub rppd w=8u l=4.4u b=0 sw_et=1
+* The unchanged real MIM feed-forward topology preserves clock swing.
+XSP lp ckp sub rppd w=2u l=8u b=0 sw_et=1
+XSN ln ckn sub rppd w=2u l=8u b=0 sw_et=1
+XDP ckp avss sub rppd w=1u l=8u b=0 sw_et=1
+XDN ckn avss sub rppd w=1u l=8u b=0 sw_et=1
+XCP lp ckp cap_cmim w=24u l=24u
+XCN ln ckn cap_cmim w=24u l=24u
+XSECOND ckp ckn qp qn avdd avss sub nssoc_clock_div2_tail_v10
+.ends nssoc_clock_div2_high_input_v1

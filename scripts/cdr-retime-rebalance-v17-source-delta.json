@@ -1,0 +1,78 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_retime_data_v16_mim_streamed.py",
+      "baseline_sha256": "45446bd105a6f733f9bc0649d718b2247b8ba3b9a8ef76b16ed47ec1e2905571",
+      "candidate_path": "scripts/cloud_cdr_retime_rebalance_v17_diagnostic.py",
+      "candidate_sha256": "aec054335af8ccbc768989be5464b42347fdb85a3dd28565fa128ad04c065831",
+      "edits": [
+        {
+          "before": "Loaded whole PD484 native MIM-aware transient; not a recovered-clock loop.",
+          "after": "Whole PD484 intrinsic-resistor sensitivity on frozen old metal; not layout acceptance.",
+          "count": 1
+        },
+        {
+          "before": "MODEL='nssoc_cdr_pd484_retime_data_mim_wire_v16'",
+          "after": "MODEL='nssoc_cdr_pd484_retime_rebalance_diagnostic_v17'",
+          "count": 1
+        },
+        {
+          "before": "out=ROOT/('cloud-cdr-retime-data-v16-mim-streamed-'+args.case)",
+          "after": "out=ROOT/('cloud-cdr-retime-rebalance-v17-diagnostic-'+args.case)",
+          "count": 1
+        },
+        {
+          "before": "scope='Actual PD484 complete native MIM-aware wire model:",
+          "after": "scope='Diagnostic12 intrinsic resistor lengths on frozen v16 metal; circuit no longer matches original device geometry. Source network:",
+          "count": 1
+        },
+        {
+          "before": "        r['composition_source']=proof;r['binding_controls']=binding_controls(model.read_text(),contract,planes)",
+          "after": "        # Verify original physical composition before creating a separate sensitivity model.\n        import cloud_cdr_retime_data_v16_mim_streamed as original_screen\n        r['original_binding_controls']=original_screen.binding_controls(model.read_text(),contract,planes)\n        original_screen.bind_native(model.read_text(),contract,planes)\n        from cdr_retime_rebalance_v17_mutation import mutate\n        model,contract,r['intrinsic_sensitivity']=mutate(model.read_text(),contract,out/'candidate')\n        r['source_geometry_matches_candidate']=False;r['layout_integrated']=False;r['adopted']=False\n        r['composition_source']=proof;r['binding_controls']=binding_controls(model.read_text(),contract,planes)",
+          "count": 1
+        },
+        {
+          "before": "model,pinpath,pp,ROOT/'scripts/cloud_cdr_xor.py'",
+          "after": "model,pinpath,pp,ROOT/'scripts/cdr_retime_rebalance_v17_mutation.py',ROOT/'docs/evidence/cdr-v16-retime-passive-networks-20261020.json',out/'candidate/mutation.json',out/'candidate/candidate-contract.json',ROOT/'scripts/cloud_cdr_xor.py'",
+          "count": 1
+        },
+        {
+          "before": "        r['status']='PASS_WHOLE_MIM_PD484_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF'if passed else'REJECTED_WHOLE_MIM_PD484_LOADED'",
+          "after": "        r['diagnostic_screen_passed']=passed and not fault\n        r['status']='COMPLETE_INTRINSIC_SENSITIVITY_ORIGINAL_SCREEN_PASSED_NOT_PHYSICAL_ACCEPTANCE'if passed else'REJECTED_INTRINSIC_SENSITIVITY_ORIGINAL_SCREEN'\n        assert not r['accepted']and not r['full_phy_accepted']and not r['source_geometry_matches_candidate']",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retime_data_v16_fullwave_stage.py",
+      "baseline_sha256": "b73641d34ff367e3aff8257bb4c4a7930e1e745873cd1dc6ff6d7014c84d6541",
+      "candidate_path": "scripts/cloud_cdr_retime_rebalance_v17_stage.py",
+      "candidate_sha256": "181cad7bbb93b1ba097cfbda9453e7856206a0df8e14d04b22cceb5ffccf70ca",
+      "edits": [
+        {
+          "before": "Run original loaded gates only after exact fresh v16 audit and composition.",
+          "after": "Run fixed-metal circuit sensitivity after the original v16 audit/composition gates.",
+          "count": 1
+        },
+        {
+          "before": "from check_cdr_retime_data_v16_streamed_sources import check",
+          "after": "from check_cdr_retime_rebalance_v17_sources import check",
+          "count": 1
+        },
+        {
+          "before": "ROOT/'scripts/cloud_cdr_retime_data_v16_mim_streamed.py'",
+          "after": "ROOT/'scripts/cloud_cdr_retime_rebalance_v17_diagnostic.py'",
+          "count": 1
+        },
+        {
+          "before": "'cloud-cdr-retime-data-v16-mim-streamed-'",
+          "after": "'cloud-cdr-retime-rebalance-v17-diagnostic-'",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "pinned_sources": {
+    "scripts/cdr_retime_rebalance_v17_mutation.py": "f64c4ac55973db69e0b02f1249e1ff5050c8c4706fb6574a470f430ca2b0942c"
+  }
+}

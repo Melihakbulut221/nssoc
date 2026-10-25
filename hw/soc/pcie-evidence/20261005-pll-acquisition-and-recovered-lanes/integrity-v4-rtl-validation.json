@@ -1,0 +1,88 @@
+{
+  "status": "PASS_BOUNDED_PREFIX_CONTROL_RTL_COMPARISONS_AND_ACTUAL_FAULTS",
+  "sources": {
+    "scripts/generate_pcie_integrity_control_v4.py": {
+      "bytes": 9238,
+      "sha256": "dc23c8e85a5197d3c4175f21af4548356c0a4d46f5cf173fb1565571835675a7"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v4.py": {
+      "bytes": 11193,
+      "sha256": "9eaa27030a33d6181891cd0c6c084a5e33f187c5ef37b1645b5af2953fd9cae0"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v4.v": {
+      "bytes": 183139,
+      "sha256": "c7805937b44c03707c1f9c4c3d5a8fc7ee90b78b8fc9a48ae47dde8eb132bded"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v4.v": {
+      "bytes": 3308,
+      "sha256": "25b44000074d504adf78f24b0fae4e504bc7cf60347e202363671af4c5d042c6"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v4.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v4": {
+      "bytes": 1508,
+      "sha256": "97bad653ce7440ad777adc305388230ce551f2a68891628d0a3d5e374a07b097"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v4_control.py": {
+      "bytes": 7122,
+      "sha256": "1eb570081b323b4b6c0a8e06e34a47257d92fa89a746fb62872ccbce99ebdfec"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v4_frontiers.py": {
+      "bytes": 3754,
+      "sha256": "6c7f28aca2bfbc8803cd641bd3af6b1f1ce98a2f3f10479b95f581b01d18f997"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v4_miter.py": {
+      "bytes": 6593,
+      "sha256": "b7c4ed210abce3660d67bad236d88b21117b3c6d9bcc137650668223215c6923"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v4.py": {
+      "bytes": 4787,
+      "sha256": "1560fdf1545cffab3b26fa44d0bcc886eff48ba19c9026de0131c4a1a3baa110"
+    }
+  },
+  "pytest_passed": 28,
+  "distinct_test_predicates": 27,
+  "duplicate_bridge_execution": "Exact inverse source bridge is also called by the public miter suite.",
+  "logs": {
+    "control-tests01.log": {
+      "bytes": 111,
+      "sha256": "70a564ad1df63d5574baac83fe830ea84e785d6545ee4dc112730ba3b38e33c7"
+    },
+    "frontier-tests01.log": {
+      "bytes": 99,
+      "sha256": "24738e9374b636f869fd014b641e432095394a6db7abbf3c2ab735097d1c3ec4"
+    },
+    "public150-tests01.log": {
+      "bytes": 110,
+      "sha256": "6609257c531b3f296ba52e211a652a5b6c41a11fff9d8464b43998fad8ccad85"
+    },
+    "remaining-port-tests01.log": {
+      "bytes": 125,
+      "sha256": "bf142f858707d514a4a463b367850f23207c1f9e6ffda3f79d4c5363d23beac2"
+    }
+  },
+  "actual_function_vectors": 4736,
+  "actual_arbitrary_prestate_parser_comparisons": 32768,
+  "actual_independent_control_frontier_comparisons": 8192,
+  "public_cases_per_run": 13,
+  "public_profiles": [
+    150,
+    4118
+  ],
+  "public_modes": [
+    "direct serial oracle",
+    "cycle-exact v3/v4 miter"
+  ],
+  "public_positive_cases_total": 52,
+  "actual_mutations_rejected": {
+    "transition_or_composition": 3,
+    "parser_control": 4,
+    "independent_frontiers": 2,
+    "public_function": 8,
+    "public_miter": 2
+  },
+  "source_conservation": "Inverse generated-body bridge restores exact frozen v3 after six explicit control substitutions; wrapper, checker and 13-case oracle differ only by version names and required RTL nettype guards.",
+  "scope": "Actual native Icarus RTL execution, not SG13 mapped simulation. Finite arbitrary-prestate comparisons and independent cross products are not exhaustive all-state formal equivalence. No preplacement, placement, routing, physical timing or complete PCIe acceptance."
+}

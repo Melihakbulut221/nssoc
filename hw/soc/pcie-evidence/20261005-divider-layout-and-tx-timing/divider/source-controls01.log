@@ -1,0 +1,27 @@
+................................F....                                    [100%]
+=================================== FAILURES ===================================
+______ test_strict_extracted_body_or_device_changes_are_rejected[m=1-m=4] ______
+
+old = 'm=1', new = 'm=4'
+
+    @pytest.mark.parametrize(
+        "old,new",
+        [
+            ("A=72p", "A=68p"),
+            ("P=144u", "P=136u"),
+            ("ptap1", "ntap1"),
+            ("Nx=2", "Nx=1"),
+            ("we=70n", "we=71n"),
+            ("m=1", "m=4"),
+        ],
+    )
+    def test_strict_extracted_body_or_device_changes_are_rejected(old, new):
+        good = normalized_reference_fixture()
+        c.validate_expanded_devices(good)
+>       with pytest.raises(ValueError):
+E       Failed: DID NOT RAISE ValueError
+
+sw/tests/test_pcie_clock_div4_v7_layout.py:207: Failed
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_clock_div4_v7_layout.py::test_strict_extracted_body_or_device_changes_are_rejected[m=1-m=4]
+1 failed, 36 passed in 1.31s

@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "status": "SOURCE_CONTROLS_REJECTED_JSON_TUPLE_LIST_COMPARISON_NO_NATIVE",
+  "run": {
+    "id": 40124509003,
+    "head_sha": "5b97142c901abfee03f88322c9a8f146085872a2",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "failure",
+    "path": ".github/workflows/tx-phase-reset334-mim-precision-cloud.yml",
+    "head_branch": "codex/tx-clock-phase-parent"
+  },
+  "jobs": [
+    {
+      "id": 120962947345,
+      "name": "controls",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-24T19:16:08Z",
+      "completed_at": "2026-10-24T19:16:35Z"
+    },
+    {
+      "id": 120963068336,
+      "name": "fresh-two-polarity334-mim-precision",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-10-24T19:16:36Z",
+      "completed_at": "2026-10-24T19:16:35Z"
+    }
+  ],
+  "log": {
+    "path": "docs/evidence/tx-phase-reset334-rc-controls-json-container-failure-20261024.log",
+    "bytes": 26093,
+    "sha256": "61198f866b3c222dc3965b13a3fdb557b02b8f3f013e185ece69f262fab46ecb"
+  },
+  "failure": {
+    "file": "scripts/cloud_tx_phase_reset334_mim_precision.py",
+    "line": 50,
+    "assertion": "proof==expected",
+    "cause": "Frozen JSON serializes tuple reversible_edits as lists; the unchanged helper returns tuples. Direct Python container equality rejects despite exact source/generated hashes and values."
+  },
+  "repair_scope": "JSON-serialize only expected proof containers at both comparison sites; retain all fields/values and add six actual roundtrip positives plus four changed-proof faults.",
+  "native_executed": false,
+  "native_RC_accepted": false,
+  "electrical_accepted": false,
+  "full_phy_accepted": false
+}

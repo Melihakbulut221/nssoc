@@ -1,0 +1,50 @@
+{
+  "schema": "cloud-evidence-tag-workflow-delta-audit-v1",
+  "observed_utc": "2026-10-24T17:00:28.558Z",
+  "base_audit": {
+    "path": "docs/evidence/cloud-evidence-tag-trigger-audit-20261024.json",
+    "sha256": "66207076e4055a97b475a302479f39925fd82573ac358b576626109bbc1876c8",
+    "base_name": "roles_live"
+  },
+  "base": "d9d3e8453dbb5831354bb84b40e042dd73c61211",
+  "candidate": "76f611901f5e7acd32ddf71a87f5e5194d25c4d5",
+  "base_count": 1321,
+  "candidate_count": 1325,
+  "base_inventory_sha256": "e67398760dbe131e7bc6b756811f4252d4ff79b2ed49a15d287e0bdf7c3390e0",
+  "candidate_inventory_sha256": "3afaeecc4a76e82c14541de85b4a31e01ad61b9870a50d6dc24ab160d337ce7a",
+  "deltas": [
+    {
+      "path": ".github/workflows/tx-native-clock-role-failure-readback-cloud.yml",
+      "old_blob": null,
+      "new_blob": "8a87b3ac4b663c8b3753b9c4c597f1c07b96705b",
+      "sha256": "6042f54145db710ac6b6c3686cacb19283a5146a2a7b438af1f7409e8edf11ba",
+      "on": "on:\n  push:\n    branches: [codex/tx-clock-phase-parent]\n    paths:\n      - scripts/read_tx_native_clock_role_failure.py\n      - scripts/tx-native-clock-role-failure-readback-methods.json\n      - .github/workflows/tx-native-clock-role-failure-readback-cloud.yml\n  workflow_dispatch:"
+    },
+    {
+      "path": ".github/workflows/tx-native-clock-role-parameters-cloud.yml",
+      "old_blob": null,
+      "new_blob": "22fecd551726360e98aa4bacbb839257ee261c52",
+      "sha256": "0aa72b488775a1ae8d5fa32bf0d43b83257c32df7946fbd1246f67143b9143f2",
+      "on": "on:\n  workflow_dispatch:\n    inputs:\n      observe_native:\n        description: 'Read the exact existing native database after controls; no extraction or simulation'\n        type: boolean\n        default: false"
+    },
+    {
+      "path": ".github/workflows/tx-phase-assert-offset-preparation-cloud.yml",
+      "old_blob": null,
+      "new_blob": "de8963636dcdaaa0f8771b6c03411df0c1f8308c",
+      "sha256": "412a42e61db645b85894750bce79cfce75ecbd0cc47bc823ed99ee45c13747a2",
+      "on": "on:\n  workflow_dispatch:"
+    },
+    {
+      "path": ".github/workflows/tx-phase-assert-offset-source-controls-cloud.yml",
+      "old_blob": null,
+      "new_blob": "23c145bf1d06eccc3f5bce589142801eb6e25c10",
+      "sha256": "3dbeb24a0ef072f9fde45c25e18b413553f444c78f835b9d3c23ec7b3516f44a",
+      "on": "on:\n  workflow_dispatch:"
+    }
+  ],
+  "classification": "All1321 inherited workflow path/blob pairs unchanged; new4 are3 manual-only and1branch-only push excluding tags. No new create/release/workflow_run/workflow_job event.",
+  "cloud_results_tags_safe_at_exact_candidate": true,
+  "main_target_prohibited": true,
+  "no_release_created": true,
+  "final_installed_native_source_must_be_compared": true
+}

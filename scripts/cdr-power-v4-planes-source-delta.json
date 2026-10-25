@@ -1,0 +1,53 @@
+{
+  "baseline_path": "scripts/cloud_cdr_retimed_parallel_v3_planes.py",
+  "candidate_path": "scripts/cloud_cdr_retimed_power_v4_planes.py",
+  "baseline_sha256": "e80f5bcaa0092b3e9270faa4a337e6df1cb0679347facec9b856547641c6b668",
+  "candidate_sha256": "6c8e9d22d9ca7cbdae55e0e0a6bedeff2e8460eb8245e520b9917cc9ada13e5d",
+  "edits": [
+    {
+      "before": "cloud-cdr-retimed-parallel-v3-planes",
+      "after": "cloud-cdr-retimed-power-v4-planes",
+      "count": 1
+    },
+    {
+      "before": "nssoc_cdr_pd484_parallel_tail_v2",
+      "after": "nssoc_cdr_pd484_power_access_v4",
+      "count": 1
+    },
+    {
+      "before": "cdr-parallel484-parent-physical-pass-20261018.json",
+      "after": "cdr-power484-parent-physical-pass-20261018.json",
+      "count": 1
+    },
+    {
+      "before": "reports.restore_report('cdr-retimed-parallel-v3-parent'",
+      "after": "reports.restore_report('cdr-retimed-power-v4-parent'",
+      "count": 1
+    },
+    {
+      "before": "    record=json.loads((A/'result.json').read_text());plan=record['source_plan']",
+      "after": "    record=json.loads((A/'result.json').read_text());plan=record['source_plan']\n    from check_cdr_power_v4_parent_geometry import check\n    parent_geometry=check(P,OUT/'baseline-parent')",
+      "count": 1
+    },
+    {
+      "before": "result=dict(status='PASS_PD484_NATIVE158_PLANES_51_NETS_19_FAULTS',anchors=rows",
+      "after": "result=dict(status='PASS_PD484_NATIVE158_PLANES_51_NETS_19_FAULTS',parent_geometry=parent_geometry,anchors=rows",
+      "count": 1
+    },
+    {
+      "before": "if n.startswith(('layout/','physical/lvs_flat/'))]",
+      "after": "if n.startswith(('layout/','physical/lvs_flat/','geometry-baseline/layout/','inputs/xor/layout/'))]",
+      "count": 1
+    },
+    {
+      "before": "        r['physical_source']=proof",
+      "after": "        r['physical_source']=proof\n        baseline=json.loads((ROOT/'docs/evidence/cdr-parallel484-parent-physical-pass-20261018.json').read_text())\n        selected_baseline=[n for n in baseline['report']['outputs']if n.startswith('layout/')]\n        original,baseline_proof=reports.restore_report('cdr-retimed-parallel-v3-parent',baseline['run'],baseline['summary_sha256'],baseline['parts_sha256'],OUT/'baseline-parent',selected_baseline)\n        assert original==baseline['report'] and original['sources_unchanged']\n        r['baseline_parent_source']=baseline_proof",
+      "count": 1
+    },
+    {
+      "before": "        r['sources_unchanged']=True",
+      "after": "        assert all(sha(OUT/'baseline-parent'/n)==original['outputs'][n]for n in selected_baseline)\n        r['sources_unchanged']=True",
+      "count": 1
+    }
+  ]
+}

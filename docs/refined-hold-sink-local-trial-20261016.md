@@ -1,0 +1,9 @@
+# Sink-local hold trial on the measured141-cell parent
+
+This prospective146-cell candidate adds exactly five positive delay cells to the source-bound141-cell route38859276266. Measurements come from complete endpoint census38874773944; full path review38879206055 (summarySHA63c9e1a1f6a913bec4b727488de088e097a159106b222ff5159511ca44710ad8) preserves all six paths per target.
+
+Targets: Ethernet RX SRAM bank4 A_MEN; bank6 A_ADDR[5] and A_MEN; bank7 A_ADDR[5] and A_MEN. Bank6 A_MEN has only0.607889ns slow setup headroom, so it receives the shorter `sg13g2_dlygate4sd1_1`; the other four receive `sg13g2_dlygate4sd3_1`. Existing measured sd3 stages consume about0.637ns even at small slow-corner load: blindly adding sd3 to all five is inappropriate. These choices are hypotheses, not timing acceptance.
+
+Initial locations use actual transformed sink-pin boxes at the nearest vertical SRAM edge; only new cells may move during legalization. This avoids intentionally placing a weak delay cell at the far driving end of a long SRAM connection. [OpenDB documents dbITerm.getBBox as the transformed pin bounds](https://openroad.readthedocs.io/en/latest/doxygen_output/html/classodb_1_1dbITerm.html). The pinned runtime must validate the actual API and legal placement.
+
+Every prior cell signature, declared topology,PG,NDR and port stays checked. Restricted whole-netlist Boolean equivalence and an actual inversion fault, selected-net guide generation, full detailed reroute, fresh nominalRC and all three cell corners are required. Allendpoint comparison, independent geometry/antenna and annotation reviews remain mandatory after a completed route; source141 already has setup/hold/antenna regressions and is not adopted.86other hold targets still conflict with setup. This experiment does not claim final timing, qualifiedRC, fullLVS or fullPHY.

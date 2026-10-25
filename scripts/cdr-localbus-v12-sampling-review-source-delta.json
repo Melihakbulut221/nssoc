@@ -1,0 +1,53 @@
+{
+  "scope": "Read-only exact localbus failed captures. Same original sampler phases, native transistor voltages and raw wire graph. Only source namespace, pinned existing case receipts, measured11490C and exact two known failed devices change.",
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_folded_v11_sampling_review.py",
+      "baseline_sha256": "3ffb83d5258f66dbeed47e09323eecce29a28a2bf4c90a6d035ce744207d73d5",
+      "candidate_path": "scripts/cloud_cdr_localbus_v12_sampling_review.py",
+      "candidate_sha256": "c50732477896e57538bf2f7cd649bda9e40876325101422de50e40bc388e6575",
+      "edits": [
+        {
+          "before": "CDR folded-layout captures",
+          "after": "CDR local-bus-layout captures",
+          "count": 1
+        },
+        {
+          "before": "cdr-folded-v11",
+          "after": "cdr-localbus-v12",
+          "count": 4
+        },
+        {
+          "before": "cloud_cdr_folded_v11_mim_streamed",
+          "after": "cloud_cdr_localbus_v12_mim_streamed",
+          "count": 1
+        },
+        {
+          "before": "pinfile=ROOT/'docs/evidence/cdr-localbus-v12-streamed-native-input-20261019.json';pin=json.loads(pinfile.read_text());case=pin['cases'][args.case]",
+          "after": "pinfile=ROOT/'docs/evidence'/('cdr-localbus-v12-fullwave-'+args.case+'-20261019.json');pin=json.loads(pinfile.read_text());case=pin",
+          "count": 1
+        },
+        {
+          "before": "prior['devices_passed'] is (args.case=='nominal_late')",
+          "after": "not prior['devices_passed']",
+          "count": 1
+        },
+        {
+          "before": "11590",
+          "after": "11490",
+          "count": 2
+        },
+        {
+          "before": "expected_failed==({'xpd.xd0129'}if args.case=='nominal_early'else set())",
+          "after": "expected_failed=={'xpd.xd0129','xpd.xd0147'}",
+          "count": 1
+        },
+        {
+          "before": "COMPLETE_NATIVE_CDR_FOLDED_PATH_DIAGNOSIS_ORIGINAL_GATES_REMAIN_FAILED",
+          "after": "COMPLETE_NATIVE_CDR_LOCALBUS_PATH_DIAGNOSIS_ORIGINAL_GATES_REMAIN_FAILED",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "status": "MAPPED_AND_PIN_GRAPH_VERIFIED_TIMING_OPEN",
+  "scope": "Whole soc_top with CPU, NPU, packet-async PCIe, Ethernet, native SRAM and MBIST; base interface profile, no serial PHY or new main-chip layout",
+  "source_commit_before_flow_changes": "dbc15e5ffb4fe6d544b64ddf1e8ef02bffa589e8",
+  "mapped_cells": 77787,
+  "ports": 101,
+  "macros": {
+    "RM_IHPSG13_1P_2048x64_c2_bm_bist": 4,
+    "RM_IHPSG13_2P_256x16_c2_bm_bist": 16
+  },
+  "packet_clock_ns": 4,
+  "cpu_clock_ns": 20,
+  "gmii_clock_ns": 8,
+  "mapping_target_ps": 4000,
+  "mapping_sha256": "d6b37135d502912c8b6179cba004bccec15831f63f53b7a7d56971c84ad40703",
+  "repaired_graph": {
+    "ports": 101,
+    "non_buffer_cells": 73209,
+    "original_buffers": 4578,
+    "repaired_buffers": 14978,
+    "resized": 2133,
+    "pin_bits": 278235,
+    "rejected_graph_faults": [
+      "data",
+      "clock",
+      "reset",
+      "tie",
+      "missing_buffer",
+      "port",
+      "wrong_function"
+    ]
+  },
+  "repaired_worst_reported_slack_ns": {
+    "slow_max": -5.646589,
+    "slow_min": -0.493968,
+    "typical_max": -2.206412,
+    "typical_min": -0.53948,
+    "fast_max": -0.19462,
+    "fast_min": -0.601382
+  },
+  "critical_packet_path": "u_pcie.flow.packets.retry.head[1] -> u_pcie.credit_data_limit_o[0]",
+  "cdc_data_registers": {
+    "request": 49,
+    "response": 33
+  },
+  "native_fullchip_boot_replayed": false,
+  "qualified_sram_rc": false,
+  "layout_complete": false,
+  "full_serial_phy": false,
+  "manufacturing_approval": false,
+  "current_acceptance": "Physical preparation only; remaining setup/hold and serial PHY must not be marked closed"
+}

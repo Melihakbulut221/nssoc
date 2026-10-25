@@ -1,0 +1,85 @@
+{
+  "protected": {
+    "docs/evidence/cdr-data3-v25-electrical-rejection-20261021.json": "1046651f48aeab467dd17c766d6568489eb92f384b9b59a564084b0ab1ef230d",
+    ".github/workflows/cdr-v25-latch-timing-cloud.yml": "fbe96f63db1e7cbe21373016001ce873b22b5448fb7ec53edb5e19e05fc39b40",
+    "scripts/check_cdr_v25_latch_sources.py": "c59bbe6580375765f9e267ceccc850333bbbebfcf6df12189d909d85dcbe7a3f",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "docs/evidence/cdr-data3-v25-mim-parent-capture-pass-20261021.json": "c332701fd3a5a5d5f354d379e9a0a608cf09baf1e6f1a85b82f811ac1738a484"
+  },
+  "diagnostic": {
+    "baseline_path": "scripts/cloud_cdr_v24_latch_timing.py",
+    "baseline_sha256": "9cfd967fd818c3c1412ba005842b31d5287d1f2364a7a493b02e6f9aeb12c468",
+    "candidate_path": "scripts/cloud_cdr_v25_latch_timing.py",
+    "candidate_sha256": "51f1be5d99756668d3a5741b69302668a625a971b8b894cfc2598eb7e19e04a0",
+    "edits": [
+      {
+        "before": "cdr-selector-small-v24-mim-parent-capture-pass-20261020.json",
+        "after": "cdr-data3-v25-mim-parent-capture-pass-20261021.json",
+        "count": 1
+      },
+      {
+        "before": "cdr-selector-small-v24",
+        "after": "cdr-data3-v25",
+        "count": 3
+      },
+      {
+        "before": "cdr-v24-latch",
+        "after": "cdr-v25-latch",
+        "count": 2
+      },
+      {
+        "before": "39497247685",
+        "after": "39514312697",
+        "count": 2
+      },
+      {
+        "before": "c6d06da249dd52f5a0a629dd62d0942bd438f033",
+        "after": "f336dd36b3ed8e66622dd1cf5bf187121117fff3",
+        "count": 1
+      },
+      {
+        "before": "39494983590",
+        "after": "39510847222",
+        "count": 1
+      },
+      {
+        "before": "717fafe89cbf9bac0492628a8b33b888a85223804e6e7b0cf8cc492362766aba",
+        "after": "43fe7f46d64ec948d3e77f0b1c38241f310244da33dae710dadd17809898646c",
+        "count": 1
+      },
+      {
+        "before": "b70e7dfd55449c452669843c7a047f1e97170383",
+        "after": "328927ad1ae5aef7fb2816dce02bfc83dfce6333",
+        "count": 1
+      },
+      {
+        "before": "all(members[n]['nx']==4 for n in set(members)-selector_names)",
+        "after": "all(members[n]['nx']==3 for n in set(members)-selector_names)",
+        "count": 1
+      },
+      {
+        "before": "21b0df5eeecd7f4e266ce5915f6d6f2706921c72f658e8d945531ea214cc2aec",
+        "after": "c92112a621bd140ea1c6e89aae27f522a29c3009309ac20818a9a87fdae80e2d",
+        "count": 1
+      },
+      {
+        "before": "a2bfcf71ef616d460ae17897b8acf4191e76925f8aeafa77b9c64bbb3a5b3522",
+        "after": "bc3ceb57dcbed1b266837324abfb3f13cfaf7cef5d2fd6d764ac2545a5766841",
+        "count": 1
+      },
+      {
+        "before": "e24398d8031ddaf734caf0b1f2319438a0827acf1ac40ab8361fea6bcf2a5b9f",
+        "after": "410e6ba6d5660f43c3096190e3b0eecce942f85ba388df585c06fb89d0826889",
+        "count": 1
+      },
+      {
+        "before": "6eb0c33404eff21eab3a71cfb4073f5c629dc4a48b6e3ea0044e34baed2c0399",
+        "after": "78ddb7e73a8c7639abd18f7348ae56355f68975ea330cb6a54e59932f9e603b9",
+        "count": 1
+      }
+    ]
+  },
+  "scope": "Only immutable actual v25 source pins and independently verified data/hold Nx3 census differ. Same whole native waveform reproduction, physical graph and every actual parallel selector path. No acceptance changes."
+}

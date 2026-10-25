@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="4" time="226.583" timestamp="2026-10-05T22:36:46.288543+03:00" hostname="pop-os"><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_retire" name="test_exact_generated_inverse_and_wrapper_bridge" time="0.004" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_actual_miter_fault_is_observed[retire_never_empty]" time="2.704" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v20_miter" name="test_v17_v20_cycle_exact_all_public_outputs[150]" time="222.430"><failure message="AssertionError: assert (1 == 0)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...'--rtl-dir', '/dev/shm/nssoc-integrity-v20-public-controls03/test_v17_v20_cycle_exact_all_p0/miter-rtl'], returncode=1).returncode">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v20-public-controls03/test_v17_v20_cycle_exact_all_p0')
+maximum = 150
+
+    @pytest.mark.parametrize("maximum", [150, 4118])
+    def test_v17_v20_cycle_exact_all_public_outputs(tmp_path, maximum):
+        helper = runpy.run_path(
+            str(ROOT / "sw/tests/test_pcie_gen3_continuous_rx_integrity_v20.py")
+        )
+        rtl = miter(tmp_path / "miter-rtl")
+        result, record, cases, out = helper["run"](tmp_path, maximum=maximum, rtl=rtl)
+&gt;       assert result.returncode == 0 and record["tests"] == {
+            "passed": 15,
+            "failed": 0,
+            "skipped": 0,
+        }
+E       AssertionError: assert (1 == 0)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...'--rtl-dir', '/dev/shm/nssoc-integrity-v20-public-controls03/test_v17_v20_cycle_exact_all_p0/miter-rtl'], returncode=1).returncode
+
+sw/tests/test_pcie_gen3_integrity_v20_miter.py:255: AssertionError</failure></testcase><testcase classname="hw.soc.out.pcie-integrity-v20-20261005.targeted_controls03" name="test_appended_stalled_empty_retire_case_direct" time="1.195"><failure message="AssertionError: assert (1 == 0)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...rilog-dir', '/home/hasanmelih/.local/bin', '--test', 'stalled_output_retires_committed_zero_keep_words'], returncode=1).returncode">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v20-public-controls03/test_appended_stalled_empty_re0')
+
+    def test_appended_stalled_empty_retire_case_direct(tmp_path):
+        ns=runpy.run_path(str(Path.cwd()/'sw/tests/test_pcie_gen3_continuous_rx_integrity_v20.py'))
+        result,record,cases,out=ns['run'](tmp_path,maximum=150,case='stalled_output_retires_committed_zero_keep_words')
+&gt;       assert result.returncode==0 and record['tests']==dict(passed=1,failed=0,skipped=14)
+E       AssertionError: assert (1 == 0)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...rilog-dir', '/home/hasanmelih/.local/bin', '--test', 'stalled_output_retires_committed_zero_keep_words'], returncode=1).returncode
+
+hw/soc/out/pcie-integrity-v20-20261005/targeted_controls03.py:8: AssertionError</failure></testcase></testsuite></testsuites>

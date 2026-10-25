@@ -1,0 +1,66 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-sampler-active-input-v57-parent-m4-wire-path-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/cdr-sampler-active-input-v57-parent-m4-wire-path-cloud.yml, scripts/cloud_cdr_sampler_active_input_v57_parent_m4_wire_path.py]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr-sampler-active-input-v57-parent-m4-wire-path-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  native-physical:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Compile exact physical methods in the cloud
+        run: python3 -m py_compile scripts/cloud_cdr_sampler_active_input_v57_parent_m4_wire_path.py
+      - name: Restore pinned native CAD runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Trace actual drawing-only metal and via path between AVSS and SUB
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_sampler_active_input_v57_parent_m4_wire_path.py
+      - name: Preserve physical results and failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=hw/soc/out/cloud-cdr-sampler-active-input-v57-parent-m4-wire-path
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","accepted":false}' > "$root/result.json"
+          fi
+          stem="cdr-sampler-active-input-v57-parent-m4-wire-path-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','cdr-sampler-active-input-v57-parent-m4-wire-path',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-sampler-active-input-v57-parent-m4-wire-path-${{ github.run_id }}
+          path: hw/soc/out/cloud-cdr-sampler-active-input-v57-parent-m4-wire-path/
+          retention-days: 30

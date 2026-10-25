@@ -1,0 +1,155 @@
+{
+  "date": "2026-09-19",
+  "installed_pdk": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+  "source": "https://github.com/IHP-GmbH/IHP-Open-PDK",
+  "comparisons": [
+    {
+      "path": "libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_2048x64_c2_bm_bist.gds",
+      "local_git_blob_sha1": "7b0c7dadf8e881780643e85b769765bd9c7227dc",
+      "upstream_git_blob_sha1": "3b70b484ca96bfa4afec75fc9d0d3befcd908c5f",
+      "identical": false
+    },
+    {
+      "path": "libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_2048x64_c2_bm_bist.lef",
+      "local_git_blob_sha1": "572918707cca76c3146c3e2007fadc83456abb7e",
+      "upstream_git_blob_sha1": "572918707cca76c3146c3e2007fadc83456abb7e",
+      "identical": true
+    },
+    {
+      "path": "libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_1024x32_c2_bm_bist.gds",
+      "local_git_blob_sha1": "f5197b1d6c771ec60d4100378da59596d607661a",
+      "upstream_git_blob_sha1": "e316ecd5a329f1032fc2f69df76f0793e6fd89bb",
+      "identical": false
+    },
+    {
+      "path": "libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_1024x32_c2_bm_bist.lef",
+      "local_git_blob_sha1": "0b75577755a711ad7af252006b71108224c20ce1",
+      "upstream_git_blob_sha1": "0b75577755a711ad7af252006b71108224c20ce1",
+      "identical": true
+    },
+    {
+      "path": "libs.ref/sg13g2_sram/gds/RM_IHPSG13_1P_512x16_c2_bm_bist.gds",
+      "local_git_blob_sha1": "f78608dacdc3f5e53675c1eaff1c4c5bf5cdf8af",
+      "upstream_git_blob_sha1": "f43f6a972a4ebb0a170169067a1f1ccc9d75a320",
+      "identical": false
+    },
+    {
+      "path": "libs.ref/sg13g2_sram/lef/RM_IHPSG13_1P_512x16_c2_bm_bist.lef",
+      "local_git_blob_sha1": "f18d627bbda954e96697e7a31a22d350c20e68cf",
+      "upstream_git_blob_sha1": "f18d627bbda954e96697e7a31a22d350c20e68cf",
+      "identical": true
+    },
+    {
+      "path": "libs.ref/sg13g2_sram/gds/RM_IHPSG13_2P_256x16_c2_bm_bist.gds",
+      "local_git_blob_sha1": "306f28a413ec067096b5b0b9d19a26901b81a850",
+      "upstream_git_blob_sha1": "6c7273d8b9e00593a0d67ab4135c5b9dd43271b6",
+      "identical": false
+    },
+    {
+      "path": "libs.ref/sg13g2_sram/lef/RM_IHPSG13_2P_256x16_c2_bm_bist.lef",
+      "local_git_blob_sha1": "72f4fd920a9eb90498d46888c3e8c84010287ec6",
+      "upstream_git_blob_sha1": "72f4fd920a9eb90498d46888c3e8c84010287ec6",
+      "identical": true
+    }
+  ],
+  "upstream_commit": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+  "upstream_commit_date": "2026-09-01T13:31:34Z",
+  "commands": [
+    "gh api 'repos/IHP-GmbH/IHP-Open-PDK/git/trees/main?recursive=1'",
+    "gh api repos/IHP-GmbH/IHP-Open-PDK/commits/main",
+    "Download the four active SRAM GDS files from the immutable upstream commit and verify each Git blob SHA-1 against the API inventory.",
+    "/home/hasanmelih/.local/opt/llbin/klayout -b -r hw/soc/out/external-review-20260919/compare_macro_gds.py"
+  ],
+  "physical_xor": {
+    "scope": "Flattened physical polygon XOR for each active SRAM macro, all layer/datatype pairs. Text labels and timestamps are not polygon geometry. No PDK replaced or signoff inferred.",
+    "macros": [
+      {
+        "macro": "RM_IHPSG13_1P_1024x32_c2_bm_bist",
+        "polygon_differences": [
+          {
+            "layer": [
+              189,
+              4
+            ],
+            "xor_polygons": 1,
+            "xor_area_um2": 93.744
+          }
+        ],
+        "old_sha256": "ea72ed7528034e1daca6c3a779f76eed714e90f5dd11f815218ad264745c9ef9",
+        "new_sha256": "4d1178811e3b83a8f6fc85f017fdd8d9b43629f785929ad60dbbaa2a763b96b1"
+      },
+      {
+        "macro": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+        "polygon_differences": [
+          {
+            "layer": [
+              189,
+              4
+            ],
+            "xor_polygons": 1,
+            "xor_area_um2": 461281.266
+          }
+        ],
+        "old_sha256": "48be5102bf97e56daee4cda1f63eaf6e7bb3450a68d48a2825060b1172011d00",
+        "new_sha256": "507b6668e0eb3533f788bcd6973f80a23b3300105781a6e3e750984c68f65528"
+      },
+      {
+        "macro": "RM_IHPSG13_1P_512x16_c2_bm_bist",
+        "polygon_differences": [
+          {
+            "layer": [
+              189,
+              4
+            ],
+            "xor_polygons": 1,
+            "xor_area_um2": 53.28
+          }
+        ],
+        "old_sha256": "43dd72f78e7d5966850fc6f135845f9bb40400b99ee9e31918639ffe0bdfb47e",
+        "new_sha256": "478b0e29801c2c3d285c42b668a2e51f3326efc31c67793b77a5ee7c4ea11bf6"
+      },
+      {
+        "macro": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+        "polygon_differences": [
+          {
+            "layer": [
+              189,
+              4
+            ],
+            "xor_polygons": 2,
+            "xor_area_um2": 96.5885
+          }
+        ],
+        "old_sha256": "420b5223d14e2f873a2464849e3decbbec2b5b16b3c6a0f8cd2bb21b0d52365b",
+        "new_sha256": "57f41e9b7e6f9a935fdb151d27e33009e1bab99b177a6c55f0627284ed3c6721"
+      }
+    ]
+  },
+  "conclusion": "All four active LEF files are byte-identical. GDS polygon differences are confined to prBoundary.boundary (189/4); no other layer/datatype polygon difference was found. A macro-geometry update alone therefore supplies no demonstrated remedy for the observed manufacturing-layer SRAM DRC failures. Latest DRC decks were not evaluated; no installed PDK or active flow input was changed.",
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/ihp-current-tree.json": {
+      "bytes": 1851604,
+      "sha256": "3ae0d4e54088a4733c147c5d123acc923589ee4e33e506dbcdc96ca2676346fd"
+    },
+    "hw/soc/out/external-review-20260919/ihp-current-commit.json": {
+      "bytes": 131,
+      "sha256": "5f43cf89984fad98d5b1c2685b1f030ca08b7ec8c358d85dd4ab9f3861f8e978"
+    },
+    "hw/soc/out/external-review-20260919/ihp-macro-comparison.json": {
+      "bytes": 2352,
+      "sha256": "99290b52221c5f13dc02637119b0c44f04df77c64c34d990b35020b097bf2394"
+    },
+    "hw/soc/out/external-review-20260919/compare_macro_gds.py": {
+      "bytes": 1509,
+      "sha256": "dd948106c6f3f309e501e1cea91f4ae9934dec251b20541ec1aa9d5adef58c0e"
+    },
+    "hw/soc/out/external-review-20260919/ihp-macro-gds-xor.log": {
+      "bytes": 1198,
+      "sha256": "349b2eaf2a03858130b29add298bdb4a0428138f7f4fb6a1544cc793d7a0b258"
+    },
+    "hw/soc/out/external-review-20260919/ihp-macro-gds-xor.json": {
+      "bytes": 1916,
+      "sha256": "77dbf5d57896daa9e349c286f3730e9b496b36574aeec75589abd3aad4294757"
+    }
+  }
+}

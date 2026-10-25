@@ -1,0 +1,386 @@
+[
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/normalize_repair02.py",
+      "bytes": 4046,
+      "sha256": "e72a5fba6753cc19b78b7585b11dfef24ad2abbe951fbaa97dfaddfe6c3b204c"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/normalize_repair03.py",
+      "bytes": 5678,
+      "sha256": "43907cb6df2547396b665bc2fc6b81dbefe940827afa8e056086678c97a08db1"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nimport hashlib,json,os,pathlib,resource,subprocess,time,signal,gzip,shutil\ndef on_signal(signum,frame):raise InterruptedError(f'Parent signal {signum}')\nfor s in (signal.SIGTERM,signal.SIGINT):signal.signal(s,on_signal)\nroot=pathlib.Path.cwd()\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nimport hashlib,json,os,pathlib,resource,subprocess,time,signal,gzip,shutil\ndef on_signal(signum,frame):raise InterruptedError(f'Parent signal {signum}')\nfor s in (signal.SIGTERM,signal.SIGINT):signal.signal(s,on_signal)\nroot=pathlib.Path.cwd()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "out=pathlib.Path('/dev/shm/nssoc-tx-path-v4-repair02-equivalence')\n",
+        "after": "out=pathlib.Path('/dev/shm/nssoc-tx-path-v4-repair03-equivalence')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "while shutil.disk_usage('/dev/shm').free<1024**3:time.sleep(5)\nout.mkdir(exist_ok=False)\nlib=pathlib.Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib')\nyosys=root/'hw/soc/tools/oss-cad-suite/bin/yosys'\n",
+        "after": "while shutil.disk_usage('/dev/shm').free<1024**3:time.sleep(5)\nout.mkdir(exist_ok=False)\nlib=pathlib.Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib')\nyosys=root/'hw/soc/tools/oss-cad-suite/bin/yosys'\n"
+      },
+      {
+        "tag": "replace",
+        "before": "inputs=[pathlib.Path(__file__).resolve(),lib,yosys,root/'hw/soc/tools/oss-cad-suite/libexec/yosys',pathlib.Path('/dev/shm/nssoc-tx-path-v4-drt-01/routed.v'),pathlib.Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-02/repaired.v')]\n",
+        "after": "inputs=[pathlib.Path(__file__).resolve(),lib,yosys,root/'hw/soc/tools/oss-cad-suite/libexec/yosys',pathlib.Path('/dev/shm/nssoc-tx-path-v4-drt-01/routed.v'),pathlib.Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-03/repaired.v')]\n"
+      },
+      {
+        "tag": "equal",
+        "before": "sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()\n",
+        "after": "sha=lambda p:hashlib.sha256(p.read_bytes()).hexdigest()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "assert {'bytes':inputs[-1].stat().st_size,'sha256':sha(inputs[-1])} == {'bytes': 4174181, 'sha256': '5e964dabf6aa8a0d8a42a8ac9adbd0320b668ab350bf3a3ad9f9bd0402f62c90'}\n",
+        "after": "assert {'bytes':inputs[-1].stat().st_size,'sha256':sha(inputs[-1])} == {'bytes': 4175074, 'sha256': '6a284e00cc05f36537fd2b0abfe2854cab433fb41f634989d947a3d987a00c97'}\n# Reuse identical completed originalgold native expansion; only new gate is run.\nold_gold=pathlib.Path('/dev/shm/nssoc-tx-path-v4-repair02-equivalence')\nold_normalization=json.loads((old_gold/'normalization.json').read_text())\nassert old_normalization['inputs']=={p:{'bytes':pathlib.Path(p).stat().st_size,'sha256':sha(pathlib.Path(p))} for p in old_normalization['inputs']}\ngoldrow=old_normalization['runs'][0]\nassert goldrow['name']=='gold' and goldrow['returncode']==0\nassert sha(old_gold/'gold.ys')==goldrow['script_sha256']\nassert sha(old_gold/'gold.log')==goldrow['log_sha256']\nassert sha(old_gold/'gold.json.gz')==goldrow['expanded_json']['lossless_gzip_sha256']\nwith gzip.open(old_gold/'gold.json.gz','rb') as stream:\n h=hashlib.sha256();size=0\n while data:=stream.read(1024**2):h.update(data);size+=len(data)\nassert {'bytes':size,'sha256':h.hexdigest()}=={k:goldrow['expanded_json'][k] for k in ('bytes','sha256')}\nfor suffix in ['.ys','.log','.json.gz']:\n source=old_gold/('gold'+suffix);target=out/('gold'+suffix)\n with source.open('rb') as a,target.open('xb') as z:shutil.copyfileobj(a,z,1024**2)\n assert sha(source)==sha(target)\ninputs += [old_gold/'normalization.json',old_gold/'gold.ys',old_gold/'gold.log',old_gold/'gold.json.gz',*(pathlib.Path(p) for p in old_normalization['inputs'])]\n"
+      },
+      {
+        "tag": "equal",
+        "before": "pins={str(p):{'bytes':p.stat().st_size,'sha256':sha(p)} for p in inputs}\n",
+        "after": "pins={str(p):{'bytes':p.stat().st_size,'sha256':sha(p)} for p in inputs}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "record={'inputs':pins,'scope':'Native Liberty functional expansion, no blackboxes or assumptions','runs':[]}\n",
+        "after": "record={'inputs':pins,'scope':'Originalgold is byte-verified reuse of previously completed native expansion; fresh gate native Liberty functional expansion, no blackboxes or assumptions','runs':[dict(goldrow, reused_from=str(old_gold), native_reexecuted=False)],'reused_gold_normalization_pin':{'bytes':(old_gold/'normalization.json').stat().st_size,'sha256':sha(old_gold/'normalization.json')}}\n"
+      },
+      {
+        "tag": "equal",
+        "before": "def limits():\n resource.setrlimit(resource.RLIMIT_CORE,(0,0))\n resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3))\n os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})\n signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGINT,signal.SIGTERM})\ndef stop_failed_group(process, grace_seconds=5.0):\n    try:\n        try:\n            os.killpg(process.pid, signal.SIGTERM)\n        except ProcessLookupError:\n            pass\n        deadline = time.monotonic() + grace_seconds\n        while time.monotonic() < deadline:\n            time.sleep(min(0.05, max(0, deadline - time.monotonic())))\n    finally:\n        try:\n            os.killpg(process.pid, signal.SIGKILL)\n        except ProcessLookupError:\n            pass\n        finally:\n            process.wait()\n",
+        "after": "def limits():\n resource.setrlimit(resource.RLIMIT_CORE,(0,0))\n resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,2*1024**3))\n os.sched_setaffinity(0,{min(os.sched_getaffinity(0))})\n signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGINT,signal.SIGTERM})\ndef stop_failed_group(process, grace_seconds=5.0):\n    try:\n        try:\n            os.killpg(process.pid, signal.SIGTERM)\n        except ProcessLookupError:\n            pass\n        deadline = time.monotonic() + grace_seconds\n        while time.monotonic() < deadline:\n            time.sleep(min(0.05, max(0, deadline - time.monotonic())))\n    finally:\n        try:\n            os.killpg(process.pid, signal.SIGKILL)\n        except ProcessLookupError:\n            pass\n        finally:\n            process.wait()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "for name,net in [('gold',inputs[-2]),('gate',inputs[-1])]:\n",
+        "after": "for name,net in [('gate',pathlib.Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-03/repaired.v'))]:\n"
+      },
+      {
+        "tag": "equal",
+        "before": " script=out/(name+'.ys')\n script.write_text(f'read_liberty -ignore_miss_func {lib}\\nread_verilog {net}\\nhierarchy -check -top soc_pcie_gen3_tx_path_v4\\nflatten\\nproc\\nopt_clean\\ncheck -assert\\nstat\\nwrite_json {out}/{name}.json\\n')\n started=time.monotonic()\n with (out/(name+'.log')).open('w') as f:\n  p=None;complete=False\n  try:\n   previous_mask=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGINT,signal.SIGTERM})\n   try:p=subprocess.Popen([str(yosys),'-T','-s',str(script)],stdout=f,stderr=subprocess.STDOUT,preexec_fn=limits,start_new_session=True,env={**os.environ,'YOSYS_MAX_THREADS':'1'})\n   finally:signal.pthread_sigmask(signal.SIG_SETMASK,previous_mask)\n   while p.poll() is None:\n    if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n    time.sleep(.2)\n   p.wait()\n   if p.returncode!=0:raise RuntimeError(f'Native normalization exit {p.returncode}')\n   complete=True\n  finally:\n   if p is not None and not complete:stop_failed_group(p)\n record['runs'].append({'name':name,'returncode':p.returncode,'elapsed_seconds':time.monotonic()-started,'script_sha256':sha(script),'log_sha256':sha(out/(name+'.log'))})\n (out/'normalization.json').write_text(json.dumps(record,indent=2)+'\\n')\n assert p.returncode==0\n plain=out/(name+'.json');compressed=out/(name+'.json.gz')\n digest=sha(plain)\n with plain.open('rb') as a,gzip.open(compressed,'wb',compresslevel=1) as z:shutil.copyfileobj(a,z)\n with gzip.open(compressed,'rb') as z:assert hashlib.file_digest(z,'sha256').hexdigest()==digest\n record['runs'][-1]['expanded_json']={'bytes':plain.stat().st_size,'sha256':digest,'lossless_gzip_sha256':sha(compressed)}\n (out/'normalization.json').write_text(json.dumps(record,indent=2)+'\\n')\n plain.unlink()\n assert all(sha(pathlib.Path(p))==row['sha256'] for p,row in pins.items())\nprint(json.dumps(record,indent=2))\n",
+        "after": " script=out/(name+'.ys')\n script.write_text(f'read_liberty -ignore_miss_func {lib}\\nread_verilog {net}\\nhierarchy -check -top soc_pcie_gen3_tx_path_v4\\nflatten\\nproc\\nopt_clean\\ncheck -assert\\nstat\\nwrite_json {out}/{name}.json\\n')\n started=time.monotonic()\n with (out/(name+'.log')).open('w') as f:\n  p=None;complete=False\n  try:\n   previous_mask=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGINT,signal.SIGTERM})\n   try:p=subprocess.Popen([str(yosys),'-T','-s',str(script)],stdout=f,stderr=subprocess.STDOUT,preexec_fn=limits,start_new_session=True,env={**os.environ,'YOSYS_MAX_THREADS':'1'})\n   finally:signal.pthread_sigmask(signal.SIG_SETMASK,previous_mask)\n   while p.poll() is None:\n    if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n    time.sleep(.2)\n   p.wait()\n   if p.returncode!=0:raise RuntimeError(f'Native normalization exit {p.returncode}')\n   complete=True\n  finally:\n   if p is not None and not complete:stop_failed_group(p)\n record['runs'].append({'name':name,'returncode':p.returncode,'elapsed_seconds':time.monotonic()-started,'script_sha256':sha(script),'log_sha256':sha(out/(name+'.log'))})\n (out/'normalization.json').write_text(json.dumps(record,indent=2)+'\\n')\n assert p.returncode==0\n plain=out/(name+'.json');compressed=out/(name+'.json.gz')\n digest=sha(plain)\n with plain.open('rb') as a,gzip.open(compressed,'wb',compresslevel=1) as z:shutil.copyfileobj(a,z)\n with gzip.open(compressed,'rb') as z:assert hashlib.file_digest(z,'sha256').hexdigest()==digest\n record['runs'][-1]['expanded_json']={'bytes':plain.stat().st_size,'sha256':digest,'lossless_gzip_sha256':sha(compressed)}\n (out/'normalization.json').write_text(json.dumps(record,indent=2)+'\\n')\n plain.unlink()\n assert all(sha(pathlib.Path(p))==row['sha256'] for p,row in pins.items())\nprint(json.dumps(record,indent=2))\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof_gate_repair02.py",
+      "bytes": 7670,
+      "sha256": "8148d6d51332b5c035d3896898734d73cd613db2ee4cfabd9f127e507105df0f"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof_gate_repair03.py",
+      "bytes": 7670,
+      "sha256": "415090cb70e8bbf91503255a77ab9284a548aea3befe49eb858c394c33699236"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n"
+      },
+      {
+        "tag": "replace",
+        "before": "\"\"\"Bind actual TX02 proof execution to exact native-expanded graphs and kernels.\"\"\"\n",
+        "after": "\"\"\"Bind actual TX03 proof execution to exact native-expanded graphs and kernels.\"\"\"\n"
+      },
+      {
+        "tag": "equal",
+        "before": "import ast\nimport gzip\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport signal\nimport subprocess\nimport sys\nimport time\nimport shutil\n\nB = Path(__file__).resolve().parent\n",
+        "after": "import ast\nimport gzip\nimport hashlib\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport signal\nimport subprocess\nimport sys\nimport time\nimport shutil\n\nB = Path(__file__).resolve().parent\n"
+      },
+      {
+        "tag": "replace",
+        "before": "E = Path('/dev/shm/nssoc-tx-path-v4-repair02-equivalence')\nNET = Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-02/repaired.v')\nEXPECTED_NET = {'bytes': 4174181, 'sha256': '5e964dabf6aa8a0d8a42a8ac9adbd0320b668ab350bf3a3ad9f9bd0402f62c90'}\n",
+        "after": "E = Path('/dev/shm/nssoc-tx-path-v4-repair03-equivalence')\nNET = Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-03/repaired.v')\nEXPECTED_NET = {'bytes': 4175074, 'sha256': '6a284e00cc05f36537fd2b0abfe2854cab433fb41f634989d947a3d987a00c97'}\n"
+      },
+      {
+        "tag": "equal",
+        "before": "KINDS = ['invert_D', 'invert_clock', 'invert_reset', 'invert_output', 'missing_state', 'unknown_function', 'unknown_output', 'undriven_reset', 'duplicate_driver', 'changed_port_census']\n\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef load(p):\n    return json.loads(Path(p).read_text())\n\n\ndef graph_pins(directory=E):\n    normalization = load(directory / 'normalization.json')\n    assert normalization['inputs'][str(NET)] == EXPECTED_NET == pin(NET)\n    assert normalization['inputs'] == {p: pin(p) for p in normalization['inputs']}\n    answer = {}\n    assert [r['name'] for r in normalization['runs']] == ['gold', 'gate']\n    for row in normalization['runs']:\n        assert row['returncode'] == 0\n        name = row['name']\n        assert pin(directory / (name + '.ys'))['sha256'] == row['script_sha256']\n        assert pin(directory / (name + '.log'))['sha256'] == row['log_sha256']\n        p = directory / (name + '.json.gz')\n        assert pin(p)['sha256'] == row['expanded_json']['lossless_gzip_sha256']\n        digest = hashlib.sha256()\n        size = 0\n        with gzip.open(p, 'rb') as f:\n            while data := f.read(1024**2):\n                digest.update(data)\n                size += len(data)\n        actual = {'bytes': size, 'sha256': digest.hexdigest()}\n        assert actual == {k: row['expanded_json'][k] for k in ('bytes', 'sha256')}\n        answer[name] = {'compressed': pin(p), 'expanded': actual}\n    return answer\n\n\ndef input_paths(directory=E):\n",
+        "after": "KINDS = ['invert_D', 'invert_clock', 'invert_reset', 'invert_output', 'missing_state', 'unknown_function', 'unknown_output', 'undriven_reset', 'duplicate_driver', 'changed_port_census']\n\n\ndef pin(p):\n    p = Path(p)\n    with p.open('rb') as f:\n        return {'bytes': p.stat().st_size, 'sha256': hashlib.file_digest(f, 'sha256').hexdigest()}\n\n\ndef load(p):\n    return json.loads(Path(p).read_text())\n\n\ndef graph_pins(directory=E):\n    normalization = load(directory / 'normalization.json')\n    assert normalization['inputs'][str(NET)] == EXPECTED_NET == pin(NET)\n    assert normalization['inputs'] == {p: pin(p) for p in normalization['inputs']}\n    answer = {}\n    assert [r['name'] for r in normalization['runs']] == ['gold', 'gate']\n    for row in normalization['runs']:\n        assert row['returncode'] == 0\n        name = row['name']\n        assert pin(directory / (name + '.ys'))['sha256'] == row['script_sha256']\n        assert pin(directory / (name + '.log'))['sha256'] == row['log_sha256']\n        p = directory / (name + '.json.gz')\n        assert pin(p)['sha256'] == row['expanded_json']['lossless_gzip_sha256']\n        digest = hashlib.sha256()\n        size = 0\n        with gzip.open(p, 'rb') as f:\n            while data := f.read(1024**2):\n                digest.update(data)\n                size += len(data)\n        actual = {'bytes': size, 'sha256': digest.hexdigest()}\n        assert actual == {k: row['expanded_json'][k] for k in ('bytes', 'sha256')}\n        answer[name] = {'compressed': pin(p), 'expanded': actual}\n    return answer\n\n\ndef input_paths(directory=E):\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    return [Path(__file__), B / 'proof02/compare.py', B / 'proof02/mutations.py', B / 'postroute_repair02.py', NET, directory / 'normalization.json', *(directory / (name + suffix) for name in ('gold', 'gate') for suffix in ('.json.gz', '.ys', '.log'))]\n",
+        "after": "    return [Path(__file__), B / 'proof03/compare.py', B / 'proof03/mutations.py', B / 'postroute_repair03.py', NET, directory / 'normalization.json', *(directory / (name + suffix) for name in ('gold', 'gate') for suffix in ('.json.gz', '.ys', '.log'))]\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\n\ndef verify_binding(directory=E):\n    record = load(directory / 'proof-execution-binding.json')\n",
+        "after": "\n\ndef verify_binding(directory=E):\n    record = load(directory / 'proof-execution-binding.json')\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    assert record['status'] == 'PASS_ACTUAL_TX02_PROOF_AND_MUTATION_EXECUTION_BOUND'\n",
+        "after": "    assert record['status'] == 'PASS_ACTUAL_TX03_PROOF_AND_MUTATION_EXECUTION_BOUND'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    assert record['before_inputs'] == record['after_inputs'] == {str(p): pin(p) for p in input_paths(directory)}\n    assert record['expanded_graphs_before'] == record['expanded_graphs_after'] == graph_pins(directory)\n    assert record['outputs'] == {name: pin(directory / name) for name in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}\n    assert record['runtime_before'] == record['runtime_after']\n    assert record['runtime_before']['pin'] == pin(record['runtime_before']['path'])\n    assert [(x['method'], x['returncode']) for x in record['runs']] == [('compare.py', 0), ('mutations.py', 0)]\n    for row in record['runs']:\n        assert row['command'][0] == record['runtime_before']['path']\n",
+        "after": "    assert record['before_inputs'] == record['after_inputs'] == {str(p): pin(p) for p in input_paths(directory)}\n    assert record['expanded_graphs_before'] == record['expanded_graphs_after'] == graph_pins(directory)\n    assert record['outputs'] == {name: pin(directory / name) for name in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}\n    assert record['runtime_before'] == record['runtime_after']\n    assert record['runtime_before']['pin'] == pin(record['runtime_before']['path'])\n    assert [(x['method'], x['returncode']) for x in record['runs']] == [('compare.py', 0), ('mutations.py', 0)]\n    for row in record['runs']:\n        assert row['command'][0] == record['runtime_before']['path']\n"
+      },
+      {
+        "tag": "replace",
+        "before": "        assert row['command'][1:] == [str(B / 'proof02' / row['method'])]\n",
+        "after": "        assert row['command'][1:] == [str(B / 'proof03' / row['method'])]\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    eq = load(directory / 'equivalence.json')\n    assert eq['status'] == 'PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY'\n    assert eq['states'] == 3850 and eq['matched'] == eq['targets'] == 11680 and not eq['mismatches']\n    faults = load(directory / 'mutation-controls.json')\n    assert faults['status'] == 'PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS'\n    assert faults['positive']['matched'] == faults['positive']['targets'] == 11680 and not faults['positive']['mismatches']\n    assert [c['kind'] for c in faults['controls']] == KINDS\n    assert all(c['status'].startswith('REJECTED_') for c in faults['controls'])\n    return record\n\n\ndef run():\n    assert not (E / 'proof-execution-binding.json').exists()\n",
+        "after": "    eq = load(directory / 'equivalence.json')\n    assert eq['status'] == 'PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY'\n    assert eq['states'] == 3850 and eq['matched'] == eq['targets'] == 11680 and not eq['mismatches']\n    faults = load(directory / 'mutation-controls.json')\n    assert faults['status'] == 'PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS'\n    assert faults['positive']['matched'] == faults['positive']['targets'] == 11680 and not faults['positive']['mismatches']\n    assert [c['kind'] for c in faults['controls']] == KINDS\n    assert all(c['status'].startswith('REJECTED_') for c in faults['controls'])\n    return record\n\n\ndef run():\n    assert not (E / 'proof-execution-binding.json').exists()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    record = {'status': 'RUNNING_BOUND_TX02_PROOF', 'before_inputs': {str(p): pin(p) for p in input_paths()}, 'expanded_graphs_before': graph_pins(), 'runtime_before': {'path': sys.executable, 'pin': pin(sys.executable)}, 'runs': [], 'scope': 'Same canonical binary kernel and ten actual kernel faults; exact completed native-expanded graphs and all methods pinned before/after. No new normalization or physical timing claim.'}\n    tree = ast.parse((B / 'postroute_repair02.py').read_text())\n",
+        "after": "    record = {'status': 'RUNNING_BOUND_TX03_PROOF', 'before_inputs': {str(p): pin(p) for p in input_paths()}, 'expanded_graphs_before': graph_pins(), 'runtime_before': {'path': sys.executable, 'pin': pin(sys.executable)}, 'runs': [], 'scope': 'Same canonical binary kernel and ten actual kernel faults; exact completed native-expanded graphs and all methods pinned before/after. No new normalization or physical timing claim.'}\n    tree = ast.parse((B / 'postroute_repair03.py').read_text())\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    helper = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'stop_failed_group')\n    ns = {'os': os, 'signal': signal, 'time': time}\n",
+        "after": "    helper = next(n for n in tree.body if isinstance(n, ast.FunctionDef) and n.name == 'stop_failed_group')\n    ns = {'os': os, 'signal': signal, 'time': time}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    exec(compile(ast.Module(body=[helper], type_ignores=[]), str(B / 'postroute_repair02.py'), 'exec'), ns)\n",
+        "after": "    exec(compile(ast.Module(body=[helper], type_ignores=[]), str(B / 'postroute_repair03.py'), 'exec'), ns)\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\n    def stop_signal(number, frame):\n        raise InterruptedError(f'Parent signal {number}')\n\n    def limits():\n        resource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\n        resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n        os.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\n        signal.pthread_sigmask(signal.SIG_UNBLOCK, {signal.SIGINT, signal.SIGTERM})\n\n    for sig in (signal.SIGINT, signal.SIGTERM):\n        signal.signal(sig, stop_signal)\n    try:\n        for method, logname in [('compare.py', 'bound-compare.log'), ('mutations.py', 'bound-mutations.log')]:\n",
+        "after": "\n    def stop_signal(number, frame):\n        raise InterruptedError(f'Parent signal {number}')\n\n    def limits():\n        resource.setrlimit(resource.RLIMIT_AS, (2 * 1024**3,) * 2)\n        resource.setrlimit(resource.RLIMIT_CORE, (0, 0))\n        os.sched_setaffinity(0, {min(os.sched_getaffinity(0))})\n        signal.pthread_sigmask(signal.SIG_UNBLOCK, {signal.SIGINT, signal.SIGTERM})\n\n    for sig in (signal.SIGINT, signal.SIGTERM):\n        signal.signal(sig, stop_signal)\n    try:\n        for method, logname in [('compare.py', 'bound-compare.log'), ('mutations.py', 'bound-mutations.log')]:\n"
+      },
+      {
+        "tag": "replace",
+        "before": "            command = [sys.executable, str(B / 'proof02' / method)]\n",
+        "after": "            command = [sys.executable, str(B / 'proof03' / method)]\n"
+      },
+      {
+        "tag": "equal",
+        "before": "            process = None\n            complete = False\n            with (E / logname).open('x') as log:\n                try:\n                    old = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGINT, signal.SIGTERM})\n                    try:\n                        process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, env={**os.environ, 'NSSOC_EQUIVALENCE_CAPTURE': str(E)}, start_new_session=True, preexec_fn=limits)\n                    finally:\n                        signal.pthread_sigmask(signal.SIG_SETMASK, old)\n                    while process.poll() is None:\n                        if shutil.disk_usage('/dev/shm').free < 528 * 1024**2:\n                            raise RuntimeError('Shared scratch floor')\n                        time.sleep(.25)\n                    code = process.wait()\n                    record['runs'].append({'method': method, 'command': command, 'returncode': code})\n                    assert code == 0\n                    complete = True\n                finally:\n                    if process is not None and not complete:\n                        ns['stop_failed_group'](process)\n        record['after_inputs'] = {str(p): pin(p) for p in input_paths()}\n        record['expanded_graphs_after'] = graph_pins()\n        assert record['before_inputs'] == record['after_inputs'] and record['expanded_graphs_before'] == record['expanded_graphs_after']\n        record['outputs'] = {name: pin(E / name) for name in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}\n        record['runtime_after'] = {'path': sys.executable, 'pin': pin(sys.executable)}\n",
+        "after": "            process = None\n            complete = False\n            with (E / logname).open('x') as log:\n                try:\n                    old = signal.pthread_sigmask(signal.SIG_BLOCK, {signal.SIGINT, signal.SIGTERM})\n                    try:\n                        process = subprocess.Popen(command, stdout=log, stderr=subprocess.STDOUT, env={**os.environ, 'NSSOC_EQUIVALENCE_CAPTURE': str(E)}, start_new_session=True, preexec_fn=limits)\n                    finally:\n                        signal.pthread_sigmask(signal.SIG_SETMASK, old)\n                    while process.poll() is None:\n                        if shutil.disk_usage('/dev/shm').free < 528 * 1024**2:\n                            raise RuntimeError('Shared scratch floor')\n                        time.sleep(.25)\n                    code = process.wait()\n                    record['runs'].append({'method': method, 'command': command, 'returncode': code})\n                    assert code == 0\n                    complete = True\n                finally:\n                    if process is not None and not complete:\n                        ns['stop_failed_group'](process)\n        record['after_inputs'] = {str(p): pin(p) for p in input_paths()}\n        record['expanded_graphs_after'] = graph_pins()\n        assert record['before_inputs'] == record['after_inputs'] and record['expanded_graphs_before'] == record['expanded_graphs_after']\n        record['outputs'] = {name: pin(E / name) for name in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}\n        record['runtime_after'] = {'path': sys.executable, 'pin': pin(sys.executable)}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "        record['status'] = 'PASS_ACTUAL_TX02_PROOF_AND_MUTATION_EXECUTION_BOUND'\n",
+        "after": "        record['status'] = 'PASS_ACTUAL_TX03_PROOF_AND_MUTATION_EXECUTION_BOUND'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    except BaseException as error:\n        record.update(status='FAIL_PROOF_BINDING_RETAINED', error=repr(error))\n        raise\n    finally:\n        (E / 'proof-execution-binding.json').write_text(json.dumps(record, indent=2) + '\\n')\n    verify_binding()\n    print(record['status'])\n\n\nif __name__ == '__main__':\n    run()\n",
+        "after": "    except BaseException as error:\n        record.update(status='FAIL_PROOF_BINDING_RETAINED', error=repr(error))\n        raise\n    finally:\n        (E / 'proof-execution-binding.json').write_text(json.dumps(record, indent=2) + '\\n')\n    verify_binding()\n    print(record['status'])\n\n\nif __name__ == '__main__':\n    run()\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/replay_repair02.py",
+      "bytes": 5238,
+      "sha256": "c33226c7e2cc4cba53ebd1fd39ef3f3acd88ede043b1d684b955aaf1c11ac3c0"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/replay_repair03.py",
+      "bytes": 5238,
+      "sha256": "b6eeed8b921513c8166d054bb02feb0cfa2bb1c3894f1773f67e33141f8664ef"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n"
+      },
+      {
+        "tag": "replace",
+        "before": "\"\"\"Replay unchanged three-case TX oracle against exact bound candidate02.\"\"\"\n",
+        "after": "\"\"\"Replay unchanged three-case TX oracle against exact bound candidate03.\"\"\"\n"
+      },
+      {
+        "tag": "equal",
+        "before": "import ast\nimport gzip\nimport hashlib\nimport importlib.util\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport shutil\nimport signal\nimport subprocess\nimport sys\nimport time\n\nassert sys.version_info[:2]==(3,12)\nR=Path.cwd();B=Path(__file__).resolve().parent\n",
+        "after": "import ast\nimport gzip\nimport hashlib\nimport importlib.util\nimport json\nimport os\nfrom pathlib import Path\nimport resource\nimport shutil\nimport signal\nimport subprocess\nimport sys\nimport time\n\nassert sys.version_info[:2]==(3,12)\nR=Path.cwd();B=Path(__file__).resolve().parent\n"
+      },
+      {
+        "tag": "replace",
+        "before": "OUT=Path('/dev/shm/nssoc-tx-path-v4-repair02-physical-replay-01')\nNET=Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-02/repaired.v')\nE=Path('/dev/shm/nssoc-tx-path-v4-repair02-equivalence')\n",
+        "after": "OUT=Path('/dev/shm/nssoc-tx-path-v4-repair03-physical-replay-01')\nNET=Path('/dev/shm/nssoc-tx-path-v4-postroute-repair-03/repaired.v')\nE=Path('/dev/shm/nssoc-tx-path-v4-repair03-equivalence')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "MODEL=Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v')\nsys.path.insert(0,str(R/'scripts'))\nfrom check_pcie_integrity import tool_environment\nfrom check_pcie_integrity_native import MODEL_SHA\nfrom cocotb_results import count_results\n\ndef pin(p):\n    with p.open('rb') as f:return {'bytes':p.stat().st_size,'sha256':hashlib.file_digest(f,'sha256').hexdigest()}\n\ndef interrupted(n,f):raise InterruptedError(f'Parent signal{n}')\nfor s in (signal.SIGTERM,signal.SIGINT):signal.signal(s,interrupted)\n",
+        "after": "MODEL=Path('/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v')\nsys.path.insert(0,str(R/'scripts'))\nfrom check_pcie_integrity import tool_environment\nfrom check_pcie_integrity_native import MODEL_SHA\nfrom cocotb_results import count_results\n\ndef pin(p):\n    with p.open('rb') as f:return {'bytes':p.stat().st_size,'sha256':hashlib.file_digest(f,'sha256').hexdigest()}\n\ndef interrupted(n,f):raise InterruptedError(f'Parent signal{n}')\nfor s in (signal.SIGTERM,signal.SIGINT):signal.signal(s,interrupted)\n"
+      },
+      {
+        "tag": "replace",
+        "before": "spec=importlib.util.spec_from_file_location('tx02_bound_proof',B/'proof_gate_repair02.py');gate=importlib.util.module_from_spec(spec);spec.loader.exec_module(gate)\n",
+        "after": "spec=importlib.util.spec_from_file_location('tx03_bound_proof',B/'proof_gate_repair03.py');gate=importlib.util.module_from_spec(spec);spec.loader.exec_module(gate)\n"
+      },
+      {
+        "tag": "equal",
+        "before": "binding=gate.verify_binding();assert pin(MODEL)['sha256']==MODEL_SHA\nbench=R/'hw/soc/tb/cocotb/test_soc_pcie_gen3_tx_path_v4.py';make=bench.with_name('Makefile.soc_pcie_gen3_tx_path_v4');runtime=R/'hw/soc/tools/oss-cad-suite'\n",
+        "after": "binding=gate.verify_binding();assert pin(MODEL)['sha256']==MODEL_SHA\nbench=R/'hw/soc/tb/cocotb/test_soc_pcie_gen3_tx_path_v4.py';make=bench.with_name('Makefile.soc_pcie_gen3_tx_path_v4');runtime=R/'hw/soc/tools/oss-cad-suite'\n"
+      },
+      {
+        "tag": "replace",
+        "before": "files=[Path(__file__),B/'proof_gate_repair02.py',E/'proof-execution-binding.json',*gate.input_paths(),B/'normalize_repair02.py',NET,MODEL,bench,make,R/'scripts/check_pcie_integrity.py',R/'scripts/check_pcie_integrity_native.py',R/'scripts/cocotb_results.py']\n",
+        "after": "files=[Path(__file__),B/'proof_gate_repair03.py',E/'proof-execution-binding.json',*gate.input_paths(),B/'normalize_repair03.py',NET,MODEL,bench,make,R/'scripts/check_pcie_integrity.py',R/'scripts/check_pcie_integrity_native.py',R/'scripts/cocotb_results.py']\n"
+      },
+      {
+        "tag": "equal",
+        "before": "files += [runtime/d/n for d,names in [('bin',['iverilog','vvp']),('libexec',['iverilog','vvp'])] for n in names]\nbefore={str(p):pin(p) for p in files}\nwhile shutil.disk_usage('/dev/shm').free<1024**3:time.sleep(5)\nOUT.mkdir()\ncommand=['make','-f',str(make),'--no-print-directory','VERILOG_SOURCES='+str(NET)+' '+str(MODEL),'SIM_BUILD='+str(OUT/'sim'),'COCOTB_RESULTS_FILE='+str(OUT/'results.xml'),'PCIE_NATIVE=1']\n",
+        "after": "files += [runtime/d/n for d,names in [('bin',['iverilog','vvp']),('libexec',['iverilog','vvp'])] for n in names]\nbefore={str(p):pin(p) for p in files}\nwhile shutil.disk_usage('/dev/shm').free<1024**3:time.sleep(5)\nOUT.mkdir()\ncommand=['make','-f',str(make),'--no-print-directory','VERILOG_SOURCES='+str(NET)+' '+str(MODEL),'SIM_BUILD='+str(OUT/'sim'),'COCOTB_RESULTS_FILE='+str(OUT/'results.xml'),'PCIE_NATIVE=1']\n"
+      },
+      {
+        "tag": "replace",
+        "before": "record={'status':'RUNNING_EXACT_BOUND_TX02_NATIVE_PORTS','inputs':before,'command':command,'allowed_cpu_affinity':sorted(os.sched_getaffinity(0)),'address_space_limit_bytes':2*1024**3,'elapsed_watchdog_seconds':None,'scope':'Original3 independent TX serial-word port cases; exact repaired native cell netlist, specify models,4ns clock; no SDF/parasitic or fullPHY timing acceptance.'}\n",
+        "after": "record={'status':'RUNNING_EXACT_BOUND_TX03_NATIVE_PORTS','inputs':before,'command':command,'allowed_cpu_affinity':sorted(os.sched_getaffinity(0)),'address_space_limit_bytes':2*1024**3,'elapsed_watchdog_seconds':None,'scope':'Original3 independent TX serial-word port cases; exact repaired native cell netlist, specify models,4ns clock; no SDF/parasitic or fullPHY timing acceptance.'}\n"
+      },
+      {
+        "tag": "equal",
+        "before": "def save():(OUT/'result.json').write_text(json.dumps(record,indent=2)+'\\n')\ndef limits():\n    resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))});signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGTERM,signal.SIGINT})\n",
+        "after": "def save():(OUT/'result.json').write_text(json.dumps(record,indent=2)+'\\n')\ndef limits():\n    resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2);resource.setrlimit(resource.RLIMIT_CORE,(0,0));os.sched_setaffinity(0,{min(os.sched_getaffinity(0))});signal.pthread_sigmask(signal.SIG_UNBLOCK,{signal.SIGTERM,signal.SIGINT})\n"
+      },
+      {
+        "tag": "replace",
+        "before": "tree=ast.parse((B/'postroute_repair02.py').read_text());helper=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='stop_failed_group');ns={'os':os,'signal':signal,'time':time};exec(compile(ast.Module(body=[helper],type_ignores=[]),str(B/'postroute_repair02.py'),'exec'),ns)\n",
+        "after": "tree=ast.parse((B/'postroute_repair03.py').read_text());helper=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='stop_failed_group');ns={'os':os,'signal':signal,'time':time};exec(compile(ast.Module(body=[helper],type_ignores=[]),str(B/'postroute_repair03.py'),'exec'),ns)\n"
+      },
+      {
+        "tag": "equal",
+        "before": "process=None;complete=False;save()\ntry:\n    with (OUT/'simulation.log').open('x') as log:\n        try:\n            old=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGTERM,signal.SIGINT})\n            try:process=subprocess.Popen(command,cwd=OUT,env=tool_environment(runtime/'bin'),stdout=log,stderr=subprocess.STDOUT,start_new_session=True,preexec_fn=limits)\n            finally:signal.pthread_sigmask(signal.SIG_SETMASK,old)\n            record['pid']=process.pid;save()\n            while process.poll() is None:\n                if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n                time.sleep(.25)\n            record['returncode']=process.wait();assert record['returncode']==0;complete=True\n        finally:\n            if process is not None and not complete:ns['stop_failed_group'](process)\n    counts=count_results([OUT/'results.xml']);record['tests']=dict(zip(('passed','failed','skipped'),counts));assert counts==(3,0,0)\n    assert before=={str(p):pin(p) for p in files};assert gate.verify_binding()==binding\n    raw=OUT/'sim/sim.vvp';original=pin(raw);zipped=raw.with_name(raw.name+'.gz')\n    with raw.open('rb') as source,gzip.open(zipped,'xb',compresslevel=1) as dest:shutil.copyfileobj(source,dest)\n    digest=hashlib.sha256();size=0\n    with gzip.open(zipped,'rb') as f:\n        while data:=f.read(1024**2):digest.update(data);size+=len(data)\n    assert {'bytes':size,'sha256':digest.hexdigest()}==original==pin(raw)\n    record['lossless_closed_program']={'raw':original,'gzip':pin(zipped),'full_readback':True};raw.unlink()\n",
+        "after": "process=None;complete=False;save()\ntry:\n    with (OUT/'simulation.log').open('x') as log:\n        try:\n            old=signal.pthread_sigmask(signal.SIG_BLOCK,{signal.SIGTERM,signal.SIGINT})\n            try:process=subprocess.Popen(command,cwd=OUT,env=tool_environment(runtime/'bin'),stdout=log,stderr=subprocess.STDOUT,start_new_session=True,preexec_fn=limits)\n            finally:signal.pthread_sigmask(signal.SIG_SETMASK,old)\n            record['pid']=process.pid;save()\n            while process.poll() is None:\n                if shutil.disk_usage('/dev/shm').free<528*1024**2:raise RuntimeError('Shared scratch floor')\n                time.sleep(.25)\n            record['returncode']=process.wait();assert record['returncode']==0;complete=True\n        finally:\n            if process is not None and not complete:ns['stop_failed_group'](process)\n    counts=count_results([OUT/'results.xml']);record['tests']=dict(zip(('passed','failed','skipped'),counts));assert counts==(3,0,0)\n    assert before=={str(p):pin(p) for p in files};assert gate.verify_binding()==binding\n    raw=OUT/'sim/sim.vvp';original=pin(raw);zipped=raw.with_name(raw.name+'.gz')\n    with raw.open('rb') as source,gzip.open(zipped,'xb',compresslevel=1) as dest:shutil.copyfileobj(source,dest)\n    digest=hashlib.sha256();size=0\n    with gzip.open(zipped,'rb') as f:\n        while data:=f.read(1024**2):digest.update(data);size+=len(data)\n    assert {'bytes':size,'sha256':digest.hexdigest()}==original==pin(raw)\n    record['lossless_closed_program']={'raw':original,'gzip':pin(zipped),'full_readback':True};raw.unlink()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    record['status']='PASS_EXACT_BOUND_TX02_PHYSICAL_NETLIST_PORT_REPLAY'\n",
+        "after": "    record['status']='PASS_EXACT_BOUND_TX03_PHYSICAL_NETLIST_PORT_REPLAY'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "except BaseException as error:record.update(status='FAIL_RETAINED',error=repr(error));raise\nfinally:\n    record['outputs']={str(p.relative_to(OUT)):pin(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()\nprint(record['status'],record['tests'])\n",
+        "after": "except BaseException as error:record.update(status='FAIL_RETAINED',error=repr(error));raise\nfinally:\n    record['outputs']={str(p.relative_to(OUT)):pin(p) for p in OUT.rglob('*') if p.is_file() and p.name!='result.json'};save()\nprint(record['status'],record['tests'])\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof02/compare.py",
+      "bytes": 5570,
+      "sha256": "43cfb91da15d5a5e5d6d70a657ac39f0689603ec406657c7a84a1b191ad93fd0"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof03/compare.py",
+      "bytes": 5570,
+      "sha256": "54c328ddfa79d02c0a134f83a19ad01ed657ba9c87672a0a596ef67d8b569b0d"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nimport collections,copy,hashlib,json,os,pathlib,re,sys,time,gzip\nsys.setrecursionlimit(20000)\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nimport collections,copy,hashlib,json,os,pathlib,re,sys,time,gzip\nsys.setrecursionlimit(20000)\n"
+      },
+      {
+        "tag": "replace",
+        "before": "ROOT=pathlib.Path(os.environ.get('NSSOC_EQUIVALENCE_CAPTURE','/dev/shm/nssoc-tx-path-v4-repair02-equivalence'))\n",
+        "after": "ROOT=pathlib.Path(os.environ.get('NSSOC_EQUIVALENCE_CAPTURE','/dev/shm/nssoc-tx-path-v4-repair03-equivalence'))\n"
+      },
+      {
+        "tag": "equal",
+        "before": "TOP='soc_pcie_gen3_tx_path_v4'\nALLOWED={'$_AND_','$_OR_','$_NOT_','$_XOR_','$_DFF_PP0_','$scopeinfo'}\ndef read(name):\n d=json.loads(gzip.decompress((ROOT/(name+'.json.gz')).read_bytes()))\n assert set(d['modules'])=={TOP},'Unexpected nonflattened modules'\n m=d['modules'][TOP]\n assert not int(m['attributes'].get('blackbox','0'),2)\n assert set(x['type'] for x in m['cells'].values())<=ALLOWED\n return m\nclass Intern:\n def __init__(self): self.table={}; self.nodes={}\n def get(self, key):\n  if key not in self.table:\n   n=len(self.table); self.table[key]=n; self.nodes[n]=key\n  return self.table[key]\n def op(self,t,args):\n  if t=='$_NOT_':\n   a=args[0]; n=self.nodes[a]\n   if n[0]=='$_NOT_':return n[1]\n   if n[0]=='const': return self.get(('const',1-n[1]))\n   return self.get((t,a))\n  if t in ('$_AND_','$_OR_','$_XOR_'):\n   flat=[]\n   for a in args:\n    n=self.nodes[a]\n    flat.extend(n[1:] if n[0]==t else [a])\n   args=flat\n  if t in ('$_AND_','$_OR_'):\n   args=list(set(args))\n  args=tuple(sorted(args))\n  if len(args)==1:return args[0]\n  return self.get((t,*args))\ndef state_name(name):\n match=re.fullmatch(r'(\\$flatten.*)\\.\\$auto\\$liberty\\.cc:242:create_ff\\$[0-9]+',name)\n assert match,('unexpected native ff expansion name',name)\n return match[1]\nclass Circuit:\n def __init__(self,m,intern):\n  self.m,self.i=m,intern\n  assert all(c[\"type\"] in ALLOWED for c in m[\"cells\"].values())\n  assert not any(\"init\" in n.get(\"attributes\",{}) for n in m[\"netnames\"].values()), \"Unexpected initial-state restriction\"\n  self.ff={state_name(k):v for k,v in m['cells'].items() if v['type']=='$_DFF_PP0_'}\n  assert len(self.ff)==sum(v['type']=='$_DFF_PP0_' for v in m['cells'].values())\n  self.driver={}; self.memo={'0':intern.get(('const',0)),'1':intern.get(('const',1))}; self.active=set()\n  for p,v in sorted(m['ports'].items()):\n   assert v['direction'] in ('input','output')\n   if v['direction']=='input':\n    for ix,b in enumerate(v['bits']):\n     assert isinstance(b,int) and b not in self.driver\n     self.driver[b]=('input',p,ix)\n  for name,c in sorted(m['cells'].items()):\n   if c['type']=='$scopeinfo':continue\n   assert not c['parameters']\n   expected={'$_DFF_PP0_':{'C':'input','D':'input','R':'input','Q':'output'},'$_NOT_':{'A':'input','Y':'output'}}.get(c['type'],{'A':'input','B':'input','Y':'output'})\n   assert c['port_directions']==expected and set(c['connections'])==set(expected)\n   assert all(len(x)==1 for x in c['connections'].values())\n   output='Q' if c['type']=='$_DFF_PP0_' else 'Y'\n   b=c['connections'][output][0]\n   assert isinstance(b,int) and b not in self.driver,('multiple driver',name,b)\n   self.driver[b]=('state',state_name(name)) if output=='Q' else ('cell',name)\n def bit(self,b):\n  if b in self.memo:return self.memo[b]\n  assert isinstance(b,int) and b not in self.active,('unknown or combinational cycle',b)\n  self.active.add(b)\n  d=self.driver[b]\n  if d[0]!='cell': value=self.i.get(d)\n  else:\n   c=self.m['cells'][d[1]]\n   args=[self.bit(c['connections'][p][0]) for p in ('A','B') if p in c['connections']]\n   value=self.i.op(c['type'],args)\n  self.active.remove(b); self.memo[b]=value\n  return value\n def boundaries(self):\n  targets={}\n  for name,c in sorted(self.ff.items()):\n   for p in ('C','D','R'):targets['state:'+name+':'+p]=self.bit(c['connections'][p][0])\n  for name,p in sorted(self.m['ports'].items()):\n   if p['direction']=='output':\n    for ix,b in enumerate(p['bits']):targets[f'output:{name}:{ix}']=self.bit(b)\n  for b in self.driver:self.bit(b)\n  return targets\n\ndef compare(a,b):\n assert {k:(v['direction'],len(v['bits'])) for k,v in a['ports'].items()}=={k:(v['direction'],len(v['bits'])) for k,v in b['ports'].items()}\n i=Intern(); x=Circuit(a,i);y=Circuit(b,i)\n assert set(x.ff)==set(y.ff),'Exact bijective native state instance map'\n ax=x.boundaries();by=y.boundaries()\n assert ax.keys()==by.keys()\n mismatch=[k for k in ax if ax[k]!=by[k]]\n return {'states':len(x.ff),'input_bits':sum(len(p['bits']) for p in a['ports'].values() if p['direction']=='input'),'output_bits':sum(len(p['bits']) for p in a['ports'].values() if p['direction']=='output'),'targets':len(ax),'canonical_nodes':len(i.table),'mismatches':mismatch,'matched':len(ax)-len(mismatch)}\nif __name__==\"__main__\":\n start=time.monotonic();gold,gate=read('gold'),read('gate');result=compare(gold,gate)\n result['elapsed_seconds']=time.monotonic()-start\n result['logic_cell_census']={n:dict(collections.Counter(c['type'] for c in m['cells'].values())) for n,m in [('gold',gold),('gate',gate)]}\n result['status']='PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY' if not result['mismatches'] else 'INCOMPLETE_STRUCTURAL_COMPARISON'\n result['scope']='Native Liberty binary Boolean functions; bijective same-instance FF state map, all D/clock/reset and all external outputs. No blackboxes, unconstrained omitted cells, new assumptions or timing equivalence.'\n result['rules']=['exact primitive semantics','commutative binary operand order','double Boolean inversion','literal 0/1 negation','associative Boolean operator grouping','AND/OR idempotence','collision-free tuple interning']\n (ROOT/'equivalence.json').write_text(json.dumps(result,indent=2)+'\\n')\n print(json.dumps({k:(v[:5] if k=='mismatches' else v) for k,v in result.items()},indent=2))\n",
+        "after": "TOP='soc_pcie_gen3_tx_path_v4'\nALLOWED={'$_AND_','$_OR_','$_NOT_','$_XOR_','$_DFF_PP0_','$scopeinfo'}\ndef read(name):\n d=json.loads(gzip.decompress((ROOT/(name+'.json.gz')).read_bytes()))\n assert set(d['modules'])=={TOP},'Unexpected nonflattened modules'\n m=d['modules'][TOP]\n assert not int(m['attributes'].get('blackbox','0'),2)\n assert set(x['type'] for x in m['cells'].values())<=ALLOWED\n return m\nclass Intern:\n def __init__(self): self.table={}; self.nodes={}\n def get(self, key):\n  if key not in self.table:\n   n=len(self.table); self.table[key]=n; self.nodes[n]=key\n  return self.table[key]\n def op(self,t,args):\n  if t=='$_NOT_':\n   a=args[0]; n=self.nodes[a]\n   if n[0]=='$_NOT_':return n[1]\n   if n[0]=='const': return self.get(('const',1-n[1]))\n   return self.get((t,a))\n  if t in ('$_AND_','$_OR_','$_XOR_'):\n   flat=[]\n   for a in args:\n    n=self.nodes[a]\n    flat.extend(n[1:] if n[0]==t else [a])\n   args=flat\n  if t in ('$_AND_','$_OR_'):\n   args=list(set(args))\n  args=tuple(sorted(args))\n  if len(args)==1:return args[0]\n  return self.get((t,*args))\ndef state_name(name):\n match=re.fullmatch(r'(\\$flatten.*)\\.\\$auto\\$liberty\\.cc:242:create_ff\\$[0-9]+',name)\n assert match,('unexpected native ff expansion name',name)\n return match[1]\nclass Circuit:\n def __init__(self,m,intern):\n  self.m,self.i=m,intern\n  assert all(c[\"type\"] in ALLOWED for c in m[\"cells\"].values())\n  assert not any(\"init\" in n.get(\"attributes\",{}) for n in m[\"netnames\"].values()), \"Unexpected initial-state restriction\"\n  self.ff={state_name(k):v for k,v in m['cells'].items() if v['type']=='$_DFF_PP0_'}\n  assert len(self.ff)==sum(v['type']=='$_DFF_PP0_' for v in m['cells'].values())\n  self.driver={}; self.memo={'0':intern.get(('const',0)),'1':intern.get(('const',1))}; self.active=set()\n  for p,v in sorted(m['ports'].items()):\n   assert v['direction'] in ('input','output')\n   if v['direction']=='input':\n    for ix,b in enumerate(v['bits']):\n     assert isinstance(b,int) and b not in self.driver\n     self.driver[b]=('input',p,ix)\n  for name,c in sorted(m['cells'].items()):\n   if c['type']=='$scopeinfo':continue\n   assert not c['parameters']\n   expected={'$_DFF_PP0_':{'C':'input','D':'input','R':'input','Q':'output'},'$_NOT_':{'A':'input','Y':'output'}}.get(c['type'],{'A':'input','B':'input','Y':'output'})\n   assert c['port_directions']==expected and set(c['connections'])==set(expected)\n   assert all(len(x)==1 for x in c['connections'].values())\n   output='Q' if c['type']=='$_DFF_PP0_' else 'Y'\n   b=c['connections'][output][0]\n   assert isinstance(b,int) and b not in self.driver,('multiple driver',name,b)\n   self.driver[b]=('state',state_name(name)) if output=='Q' else ('cell',name)\n def bit(self,b):\n  if b in self.memo:return self.memo[b]\n  assert isinstance(b,int) and b not in self.active,('unknown or combinational cycle',b)\n  self.active.add(b)\n  d=self.driver[b]\n  if d[0]!='cell': value=self.i.get(d)\n  else:\n   c=self.m['cells'][d[1]]\n   args=[self.bit(c['connections'][p][0]) for p in ('A','B') if p in c['connections']]\n   value=self.i.op(c['type'],args)\n  self.active.remove(b); self.memo[b]=value\n  return value\n def boundaries(self):\n  targets={}\n  for name,c in sorted(self.ff.items()):\n   for p in ('C','D','R'):targets['state:'+name+':'+p]=self.bit(c['connections'][p][0])\n  for name,p in sorted(self.m['ports'].items()):\n   if p['direction']=='output':\n    for ix,b in enumerate(p['bits']):targets[f'output:{name}:{ix}']=self.bit(b)\n  for b in self.driver:self.bit(b)\n  return targets\n\ndef compare(a,b):\n assert {k:(v['direction'],len(v['bits'])) for k,v in a['ports'].items()}=={k:(v['direction'],len(v['bits'])) for k,v in b['ports'].items()}\n i=Intern(); x=Circuit(a,i);y=Circuit(b,i)\n assert set(x.ff)==set(y.ff),'Exact bijective native state instance map'\n ax=x.boundaries();by=y.boundaries()\n assert ax.keys()==by.keys()\n mismatch=[k for k in ax if ax[k]!=by[k]]\n return {'states':len(x.ff),'input_bits':sum(len(p['bits']) for p in a['ports'].values() if p['direction']=='input'),'output_bits':sum(len(p['bits']) for p in a['ports'].values() if p['direction']=='output'),'targets':len(ax),'canonical_nodes':len(i.table),'mismatches':mismatch,'matched':len(ax)-len(mismatch)}\nif __name__==\"__main__\":\n start=time.monotonic();gold,gate=read('gold'),read('gate');result=compare(gold,gate)\n result['elapsed_seconds']=time.monotonic()-start\n result['logic_cell_census']={n:dict(collections.Counter(c['type'] for c in m['cells'].values())) for n,m in [('gold',gold),('gate',gate)]}\n result['status']='PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY' if not result['mismatches'] else 'INCOMPLETE_STRUCTURAL_COMPARISON'\n result['scope']='Native Liberty binary Boolean functions; bijective same-instance FF state map, all D/clock/reset and all external outputs. No blackboxes, unconstrained omitted cells, new assumptions or timing equivalence.'\n result['rules']=['exact primitive semantics','commutative binary operand order','double Boolean inversion','literal 0/1 negation','associative Boolean operator grouping','AND/OR idempotence','collision-free tuple interning']\n (ROOT/'equivalence.json').write_text(json.dumps(result,indent=2)+'\\n')\n print(json.dumps({k:(v[:5] if k=='mismatches' else v) for k,v in result.items()},indent=2))\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof02/mutations.py",
+      "bytes": 2881,
+      "sha256": "29ec81bc7b02edcabe500a8e943b1645b9a8558c82613926c1d1f82097e32bf4"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/proof03/mutations.py",
+      "bytes": 2881,
+      "sha256": "29ec81bc7b02edcabe500a8e943b1645b9a8558c82613926c1d1f82097e32bf4"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nimport copy,hashlib,json,pathlib,time\nimport compare as m\nroot=m.ROOT;gold,gate=m.read('gold'),m.read('gate')\nbase=m.compare(gold,gate);assert base['mismatches']==[]\nfirst=next(k for k,c in gate['cells'].items() if c['type']=='$_DFF_PP0_')\nmaxbit=max(b for c in gate['cells'].values() for bits in c['connections'].values() for b in bits if isinstance(b,int))\nrows=[]\nfor kind in ['invert_D','invert_clock','invert_reset','invert_output','missing_state','unknown_function','unknown_output','undriven_reset','duplicate_driver','changed_port_census']:\n bad={**gate,'cells':gate['cells'].copy(),'ports':copy.deepcopy(gate['ports'])}\n if kind in ('invert_D','invert_clock','invert_reset','invert_output'):\n  if kind=='invert_output':\n   p=bad['ports']['word_o'];bit=p['bits'][0];p['bits'][0]=maxbit+1\n  else:\n   p={'invert_D':'D','invert_clock':'C','invert_reset':'R'}[kind]\n   c=copy.deepcopy(bad['cells'][first]);bit=c['connections'][p][0];c['connections'][p]=[maxbit+1];bad['cells'][first]=c\n  bad['cells']['peer_fault_inverter']={'type':'$_NOT_','parameters':{},'port_directions':{'A':'input','Y':'output'},'connections':{'A':[bit],'Y':[maxbit+1]}}\n elif kind=='missing_state':del bad['cells'][first]\n elif kind=='unknown_function':\n  bad['cells'][first]=copy.deepcopy(bad['cells'][first]);bad['cells'][first]['type']='PEER_BLACKBOX'\n elif kind=='unknown_output':bad['ports']['word_o']['bits'][0]='x'\n elif kind=='undriven_reset':\n  c=copy.deepcopy(bad['cells'][first]);c['connections']['R']=[maxbit+2];bad['cells'][first]=c\n elif kind=='duplicate_driver':bad['cells']['peer_duplicate']={'type':'$_NOT_','parameters':{},'port_directions':{'A':'input','Y':'output'},'connections':{'A':[bad['ports']['clk_i']['bits'][0]],'Y':bad['cells'][first]['connections']['Q']}}\n else:bad['ports']['payload_i']['bits'].pop()\n try:\n  result=m.compare(gold,bad)\n except (AssertionError,KeyError) as error:\n  assert not kind.startswith('invert'),(kind,error)\n  rows.append(dict(kind=kind,status='REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH',error=repr(error)))\n else:\n  assert result['mismatches'],kind\n  assert len(result['mismatches'])==1,(kind,result['mismatches'])\n  rows.append(dict(kind=kind,status='REJECTED_ACTUAL_BOOLEAN_COMPLEMENT',mismatches=result['mismatches'],reason='Direct inversion of the selected Boolean boundary differs for every input/state valuation.'))\nrecord={'status':'PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS','positive':base,'controls':rows,'scope':'Four real Boolean boundary-inversion faults and six fail-closed graph/coverage faults, including the actual failed-physical undriven-reset class on exact native-expanded candidate. No altered source netlist written.'}\n(root/'mutation-controls.json').write_text(json.dumps(record,indent=2)+'\\n');print(json.dumps(record,indent=2))\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nimport copy,hashlib,json,pathlib,time\nimport compare as m\nroot=m.ROOT;gold,gate=m.read('gold'),m.read('gate')\nbase=m.compare(gold,gate);assert base['mismatches']==[]\nfirst=next(k for k,c in gate['cells'].items() if c['type']=='$_DFF_PP0_')\nmaxbit=max(b for c in gate['cells'].values() for bits in c['connections'].values() for b in bits if isinstance(b,int))\nrows=[]\nfor kind in ['invert_D','invert_clock','invert_reset','invert_output','missing_state','unknown_function','unknown_output','undriven_reset','duplicate_driver','changed_port_census']:\n bad={**gate,'cells':gate['cells'].copy(),'ports':copy.deepcopy(gate['ports'])}\n if kind in ('invert_D','invert_clock','invert_reset','invert_output'):\n  if kind=='invert_output':\n   p=bad['ports']['word_o'];bit=p['bits'][0];p['bits'][0]=maxbit+1\n  else:\n   p={'invert_D':'D','invert_clock':'C','invert_reset':'R'}[kind]\n   c=copy.deepcopy(bad['cells'][first]);bit=c['connections'][p][0];c['connections'][p]=[maxbit+1];bad['cells'][first]=c\n  bad['cells']['peer_fault_inverter']={'type':'$_NOT_','parameters':{},'port_directions':{'A':'input','Y':'output'},'connections':{'A':[bit],'Y':[maxbit+1]}}\n elif kind=='missing_state':del bad['cells'][first]\n elif kind=='unknown_function':\n  bad['cells'][first]=copy.deepcopy(bad['cells'][first]);bad['cells'][first]['type']='PEER_BLACKBOX'\n elif kind=='unknown_output':bad['ports']['word_o']['bits'][0]='x'\n elif kind=='undriven_reset':\n  c=copy.deepcopy(bad['cells'][first]);c['connections']['R']=[maxbit+2];bad['cells'][first]=c\n elif kind=='duplicate_driver':bad['cells']['peer_duplicate']={'type':'$_NOT_','parameters':{},'port_directions':{'A':'input','Y':'output'},'connections':{'A':[bad['ports']['clk_i']['bits'][0]],'Y':bad['cells'][first]['connections']['Q']}}\n else:bad['ports']['payload_i']['bits'].pop()\n try:\n  result=m.compare(gold,bad)\n except (AssertionError,KeyError) as error:\n  assert not kind.startswith('invert'),(kind,error)\n  rows.append(dict(kind=kind,status='REJECTED_MALFORMED_OR_UNSUPPORTED_GRAPH',error=repr(error)))\n else:\n  assert result['mismatches'],kind\n  assert len(result['mismatches'])==1,(kind,result['mismatches'])\n  rows.append(dict(kind=kind,status='REJECTED_ACTUAL_BOOLEAN_COMPLEMENT',mismatches=result['mismatches'],reason='Direct inversion of the selected Boolean boundary differs for every input/state valuation.'))\nrecord={'status':'PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS','positive':base,'controls':rows,'scope':'Four real Boolean boundary-inversion faults and six fail-closed graph/coverage faults, including the actual failed-physical undriven-reset class on exact native-expanded candidate. No altered source netlist written.'}\n(root/'mutation-controls.json').write_text(json.dumps(record,indent=2)+'\\n');print(json.dumps(record,indent=2))\n"
+      }
+    ]
+  },
+  {
+    "before": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair02-source/test_proof_binding.py",
+      "bytes": 4662,
+      "sha256": "69865f57cf776e8af6e69baee2a4d094bef8026000a1c98f558c05fbe0c70e87"
+    },
+    "after": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-transmit-v4-repair-20261005/repair03-source/test_proof_binding.py",
+      "bytes": 4662,
+      "sha256": "30915d41ddc253b9edd36cfea15cfdaada60db9ebe9fd1dd2486c1cba9718d0e"
+    },
+    "opcodes": [
+      {
+        "tag": "equal",
+        "before": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Actual file mutation controls for the proof-binding gate, no fake DUT verdict.\"\"\"\nimport gzip\nimport importlib.util\nimport json\nfrom pathlib import Path\nimport sys\nimport pytest\n\n",
+        "after": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Actual file mutation controls for the proof-binding gate, no fake DUT verdict.\"\"\"\nimport gzip\nimport importlib.util\nimport json\nfrom pathlib import Path\nimport sys\nimport pytest\n\n"
+      },
+      {
+        "tag": "replace",
+        "before": "METHOD = Path(__file__).resolve().parents[1] / 'proof_gate_repair02.py'\n",
+        "after": "METHOD = Path(__file__).resolve().parents[1] / 'proof_gate_repair03.py'\n"
+      },
+      {
+        "tag": "equal",
+        "before": "\n\n@pytest.fixture\ndef fixture(tmp_path):\n    spec = importlib.util.spec_from_file_location('tested_proof_gate', METHOD)\n    m = importlib.util.module_from_spec(spec)\n    spec.loader.exec_module(m)\n    m.B = tmp_path / 'methods'\n    m.E = tmp_path / 'capture'\n    m.NET = tmp_path / 'netlist.v'\n    m.B.mkdir()\n    m.E.mkdir()\n",
+        "after": "\n\n@pytest.fixture\ndef fixture(tmp_path):\n    spec = importlib.util.spec_from_file_location('tested_proof_gate', METHOD)\n    m = importlib.util.module_from_spec(spec)\n    spec.loader.exec_module(m)\n    m.B = tmp_path / 'methods'\n    m.E = tmp_path / 'capture'\n    m.NET = tmp_path / 'netlist.v'\n    m.B.mkdir()\n    m.E.mkdir()\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    (m.B / 'proof02').mkdir()\n",
+        "after": "    (m.B / 'proof03').mkdir()\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    m.NET.write_text('tiny explicitly synthetic fixture netlist\\n')\n    m.EXPECTED_NET = m.pin(m.NET)\n",
+        "after": "    m.NET.write_text('tiny explicitly synthetic fixture netlist\\n')\n    m.EXPECTED_NET = m.pin(m.NET)\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    for name in ['proof02/compare.py', 'proof02/mutations.py', 'postroute_repair02.py']:\n",
+        "after": "    for name in ['proof03/compare.py', 'proof03/mutations.py', 'postroute_repair03.py']:\n"
+      },
+      {
+        "tag": "equal",
+        "before": "        (m.B / name).write_text('synthetic fixture byte pin only\\n')\n    normalization = {'inputs': {str(m.NET): m.pin(m.NET)}, 'runs': []}\n    for name in ('gold', 'gate'):\n        raw = ('synthetic graph ' + name).encode()\n        (m.E / (name + '.json.gz')).write_bytes(gzip.compress(raw))\n        (m.E / (name + '.ys')).write_text('synthetic script\\n')\n        (m.E / (name + '.log')).write_text('synthetic log\\n')\n        import hashlib\n        normalization['runs'].append({'name': name, 'returncode': 0, 'script_sha256': m.pin(m.E / (name + '.ys'))['sha256'], 'log_sha256': m.pin(m.E / (name + '.log'))['sha256'], 'expanded_json': {'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest(), 'lossless_gzip_sha256': m.pin(m.E / (name + '.json.gz'))['sha256']}})\n    (m.E / 'normalization.json').write_text(json.dumps(normalization))\n    eq = {'status': 'PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY', 'states': 3850, 'matched': 11680, 'targets': 11680, 'mismatches': []}\n    (m.E / 'equivalence.json').write_text(json.dumps(eq))\n    mutations = {'status': 'PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS', 'positive': eq, 'controls': [{'kind': k, 'status': 'REJECTED_SYNTHETIC_FIXTURE'} for k in m.KINDS]}\n    (m.E / 'mutation-controls.json').write_text(json.dumps(mutations))\n    for name in ('bound-compare.log', 'bound-mutations.log'):\n        (m.E / name).write_text('synthetic fixture\\n')\n    inputs = {str(p): m.pin(p) for p in m.input_paths(m.E)}\n    graphs = m.graph_pins(m.E)\n    runtime = {'path': sys.executable, 'pin': m.pin(sys.executable)}\n",
+        "after": "        (m.B / name).write_text('synthetic fixture byte pin only\\n')\n    normalization = {'inputs': {str(m.NET): m.pin(m.NET)}, 'runs': []}\n    for name in ('gold', 'gate'):\n        raw = ('synthetic graph ' + name).encode()\n        (m.E / (name + '.json.gz')).write_bytes(gzip.compress(raw))\n        (m.E / (name + '.ys')).write_text('synthetic script\\n')\n        (m.E / (name + '.log')).write_text('synthetic log\\n')\n        import hashlib\n        normalization['runs'].append({'name': name, 'returncode': 0, 'script_sha256': m.pin(m.E / (name + '.ys'))['sha256'], 'log_sha256': m.pin(m.E / (name + '.log'))['sha256'], 'expanded_json': {'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest(), 'lossless_gzip_sha256': m.pin(m.E / (name + '.json.gz'))['sha256']}})\n    (m.E / 'normalization.json').write_text(json.dumps(normalization))\n    eq = {'status': 'PASS_COMPLETE_STATE_TRANSITION_AND_OUTPUT_FUNCTION_EQUALITY', 'states': 3850, 'matched': 11680, 'targets': 11680, 'mismatches': []}\n    (m.E / 'equivalence.json').write_text(json.dumps(eq))\n    mutations = {'status': 'PASS_TEN_MEANINGFUL_EQUIVALENCE_KERNEL_CONTROLS', 'positive': eq, 'controls': [{'kind': k, 'status': 'REJECTED_SYNTHETIC_FIXTURE'} for k in m.KINDS]}\n    (m.E / 'mutation-controls.json').write_text(json.dumps(mutations))\n    for name in ('bound-compare.log', 'bound-mutations.log'):\n        (m.E / name).write_text('synthetic fixture\\n')\n    inputs = {str(p): m.pin(p) for p in m.input_paths(m.E)}\n    graphs = m.graph_pins(m.E)\n    runtime = {'path': sys.executable, 'pin': m.pin(sys.executable)}\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    record = {'status': 'PASS_ACTUAL_TX02_PROOF_AND_MUTATION_EXECUTION_BOUND', 'before_inputs': inputs, 'after_inputs': inputs, 'expanded_graphs_before': graphs, 'expanded_graphs_after': graphs, 'runtime_before': runtime, 'runtime_after': runtime, 'outputs': {n: m.pin(m.E / n) for n in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}, 'runs': [{'method': n, 'returncode': 0, 'command': [sys.executable, str(m.B / 'proof02' / n)]} for n in ('compare.py', 'mutations.py')]}\n",
+        "after": "    record = {'status': 'PASS_ACTUAL_TX03_PROOF_AND_MUTATION_EXECUTION_BOUND', 'before_inputs': inputs, 'after_inputs': inputs, 'expanded_graphs_before': graphs, 'expanded_graphs_after': graphs, 'runtime_before': runtime, 'runtime_after': runtime, 'outputs': {n: m.pin(m.E / n) for n in ('equivalence.json', 'mutation-controls.json', 'bound-compare.log', 'bound-mutations.log')}, 'runs': [{'method': n, 'returncode': 0, 'command': [sys.executable, str(m.B / 'proof03' / n)]} for n in ('compare.py', 'mutations.py')]}\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    (m.E / 'proof-execution-binding.json').write_text(json.dumps(record))\n    return m\n\n\ndef test_consistent_synthetic_binding(fixture):\n    assert fixture.verify_binding(fixture.E)['status'].startswith('PASS_')\n\n\n@pytest.mark.parametrize('name', ['gate.json.gz', 'gold.json.gz', 'equivalence.json', 'mutation-controls.json', 'normalization.json', 'bound-compare.log'])\ndef test_real_file_mutation_is_rejected(fixture, name):\n    path = fixture.E / name\n    path.write_bytes(path.read_bytes() + b'\\n')\n    with pytest.raises(AssertionError):\n        fixture.verify_binding(fixture.E)\n\n\ndef test_same_size_success_from_other_proof_rejected(fixture):\n    path = fixture.E / 'equivalence.json'\n    data = json.loads(path.read_text())\n    data['other_proof_with_same_counts'] = True\n    path.write_text(json.dumps(data))\n    with pytest.raises(AssertionError):\n        fixture.verify_binding(fixture.E)\n\n\ndef test_changed_kernel_is_rejected(fixture):\n",
+        "after": "    (m.E / 'proof-execution-binding.json').write_text(json.dumps(record))\n    return m\n\n\ndef test_consistent_synthetic_binding(fixture):\n    assert fixture.verify_binding(fixture.E)['status'].startswith('PASS_')\n\n\n@pytest.mark.parametrize('name', ['gate.json.gz', 'gold.json.gz', 'equivalence.json', 'mutation-controls.json', 'normalization.json', 'bound-compare.log'])\ndef test_real_file_mutation_is_rejected(fixture, name):\n    path = fixture.E / name\n    path.write_bytes(path.read_bytes() + b'\\n')\n    with pytest.raises(AssertionError):\n        fixture.verify_binding(fixture.E)\n\n\ndef test_same_size_success_from_other_proof_rejected(fixture):\n    path = fixture.E / 'equivalence.json'\n    data = json.loads(path.read_text())\n    data['other_proof_with_same_counts'] = True\n    path.write_text(json.dumps(data))\n    with pytest.raises(AssertionError):\n        fixture.verify_binding(fixture.E)\n\n\ndef test_changed_kernel_is_rejected(fixture):\n"
+      },
+      {
+        "tag": "replace",
+        "before": "    (fixture.B / 'proof02/compare.py').write_text('changed proof method\\n')\n",
+        "after": "    (fixture.B / 'proof03/compare.py').write_text('changed proof method\\n')\n"
+      },
+      {
+        "tag": "equal",
+        "before": "    with pytest.raises(AssertionError):\n        fixture.verify_binding(fixture.E)\n\n\ndef test_expanded_graph_mismatch_rejected_even_after_outer_pin_update(fixture):\n    p = fixture.E / 'proof-execution-binding.json'\n    data = json.loads(p.read_text())\n    norm = fixture.E / 'normalization.json'\n    n = json.loads(norm.read_text())\n    n['runs'][1]['expanded_json']['sha256'] = '0' * 64\n    norm.write_text(json.dumps(n))\n    data['before_inputs'][str(norm)] = fixture.pin(norm)\n    data['after_inputs'][str(norm)] = fixture.pin(norm)\n    p.write_text(json.dumps(data))\n    with pytest.raises(AssertionError):\n        fixture.verify_binding(fixture.E)\n",
+        "after": "    with pytest.raises(AssertionError):\n        fixture.verify_binding(fixture.E)\n\n\ndef test_expanded_graph_mismatch_rejected_even_after_outer_pin_update(fixture):\n    p = fixture.E / 'proof-execution-binding.json'\n    data = json.loads(p.read_text())\n    norm = fixture.E / 'normalization.json'\n    n = json.loads(norm.read_text())\n    n['runs'][1]['expanded_json']['sha256'] = '0' * 64\n    norm.write_text(json.dumps(n))\n    data['before_inputs'][str(norm)] = fixture.pin(norm)\n    data['after_inputs'][str(norm)] = fixture.pin(norm)\n    p.write_text(json.dumps(data))\n    with pytest.raises(AssertionError):\n        fixture.verify_binding(fixture.E)\n"
+      }
+    ]
+  }
+]

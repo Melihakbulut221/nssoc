@@ -1,0 +1,173 @@
+{
+  "baseline_path": "scripts/bind_tx_raw8074_interfaces.py",
+  "baseline_sha256": "0964a658ec548a2471a49108b813c6ddccfd365b6b8feb3e884f895343579d43",
+  "candidate_path": "scripts/bind_tx_output8088_interfaces.py",
+  "candidate_sha256": "6a7088813e086ec393aaf1eab8048e81f54c19656a2a3e988afa16fafe380d95",
+  "changes": [
+    {
+      "start": 114,
+      "end": 116,
+      "replacement": "88"
+    },
+    {
+      "start": 359,
+      "end": 360,
+      "replacement": "o"
+    },
+    {
+      "start": 361,
+      "end": 365,
+      "replacement": "tput8088"
+    },
+    {
+      "start": 366,
+      "end": 366,
+      "replacement": "pa"
+    },
+    {
+      "start": 367,
+      "end": 374,
+      "replacement": "e"
+    },
+    {
+      "start": 375,
+      "end": 387,
+      "replacement": ""
+    },
+    {
+      "start": 388,
+      "end": 389,
+      "replacement": ""
+    },
+    {
+      "start": 787,
+      "end": 788,
+      "replacement": "5"
+    },
+    {
+      "start": 856,
+      "end": 858,
+      "replacement": "88"
+    },
+    {
+      "start": 1363,
+      "end": 1365,
+      "replacement": "6"
+    },
+    {
+      "start": 1366,
+      "end": 1366,
+      "replacement": "0"
+    },
+    {
+      "start": 1387,
+      "end": 1389,
+      "replacement": "88"
+    },
+    {
+      "start": 1463,
+      "end": 1465,
+      "replacement": "88"
+    },
+    {
+      "start": 1470,
+      "end": 1474,
+      "replacement": "9838"
+    },
+    {
+      "start": 1478,
+      "end": 1482,
+      "replacement": "9650"
+    },
+    {
+      "start": 1500,
+      "end": 1501,
+      "replacement": "6"
+    },
+    {
+      "start": 1519,
+      "end": 1520,
+      "replacement": "5"
+    },
+    {
+      "start": 1547,
+      "end": 1549,
+      "replacement": "70"
+    },
+    {
+      "start": 1574,
+      "end": 1577,
+      "replacement": "703"
+    },
+    {
+      "start": 1590,
+      "end": 1592,
+      "replacement": "6"
+    },
+    {
+      "start": 1593,
+      "end": 1593,
+      "replacement": "0"
+    },
+    {
+      "start": 2699,
+      "end": 2707,
+      "replacement": "P"
+    },
+    {
+      "start": 2709,
+      "end": 2709,
+      "replacement": "core-metadata/"
+    },
+    {
+      "start": 2775,
+      "end": 2783,
+      "replacement": "P"
+    },
+    {
+      "start": 2785,
+      "end": 2785,
+      "replacement": "core-metadata/"
+    },
+    {
+      "start": 3876,
+      "end": 3877,
+      "replacement": ""
+    },
+    {
+      "start": 3878,
+      "end": 3878,
+      "replacement": "3"
+    },
+    {
+      "start": 8227,
+      "end": 8227,
+      "replacement": "\nintegration=json.loads((physical/'integration-result.json').read_text())\nassert integration['native_material_preserved']and integration['serialized_geometry_verified']\nassert integration['all_four_handoffs_routed']\nassert set(public)==set(integration['external_ports'])and 'mp'not in public and 'mn'not in public\noutput_ports={}\nfor name in ('op','on','tvdd','tr'):\n    info=integration['external_ports'][name];point=pya.Box.from_s(info['box_dbu']).center()\n    net=probe(info['layer'],point)\n    assert net.cluster_id==public[name]\n    label='P_'+name\n    matching=[x for x in anchors['public']if x['name']==name]\n    assert len(matching)==1 and matching[0]['reference_label']==label\n    assert contract['wire_node_map'][label]==name\n    output_ports[name]=dict(native_cluster=net.cluster_id,point_dbu=[point.x,point.y],metal=info['layer'],reference_label=label,node=name)\nassert len({v['native_cluster']for v in output_ports.values()})==4\noutput_controls=[]\nfor first,second in (('op','on'),('tvdd','tr')):\n    wrong=copy.deepcopy(output_ports);wrong[first],wrong[second]=wrong[second],wrong[first]\n    try:\n        assert wrong==output_ports,'Actual output polarity/supply/bias plane changed'\n    except AssertionError as error:output_controls.append(dict(first=first,second=second,rejected=True,reason=str(error)))\n    else:raise AssertionError('Accepted output port swap')\n"
+    },
+    {
+      "start": 8260,
+      "end": 8262,
+      "replacement": "88"
+    },
+    {
+      "start": 8305,
+      "end": 8305,
+      "replacement": "S_FOUR_OUTPUT_PORT"
+    },
+    {
+      "start": 8369,
+      "end": 8369,
+      "replacement": "s,output_ports=output_ports,output_port_controls=output_control"
+    },
+    {
+      "start": 8640,
+      "end": 8642,
+      "replacement": "6"
+    },
+    {
+      "start": 8643,
+      "end": 8643,
+      "replacement": "0"
+    }
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "baseline_path": "hw/soc/analog/pcie/rx_sampler_bleed_v5.spice",
+  "baseline_sha256": "160cabecd3c44f4e9b00c34504790cb9389a2edf39839083acd4b153fb66ee4f",
+  "candidate_path": "hw/soc/analog/pcie/rx_sampler_balanced_v6.spice",
+  "candidate_sha256": "3f36d9a3d081e3b336572ff51c20e642f3f78a225a327cf70aac62f085cfcece",
+  "edits": [
+    {
+      "before": "bleed_v5",
+      "after": "balanced_v6",
+      "count": 8
+    },
+    {
+      "before": "XBS se avss sub rppd w=1u l=9.6u",
+      "after": "XBS se avss sub rppd w=1u l=12.8u",
+      "count": 1
+    },
+    {
+      "before": "Explicit slave-only4x native emitter bleeds; master unchanged.",
+      "after": "Explicit slave native bleeds: data3x, hold4x; master unchanged.",
+      "count": 1
+    }
+  ]
+}

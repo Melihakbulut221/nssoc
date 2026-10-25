@@ -1,0 +1,114 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_columns_composition.py",
+      "candidate_path": "scripts/cloud_tx_v5_return_repair_composition.py",
+      "baseline_sha256": "de748662b09861b94edee7cb28ccf0a9a06dd5b1adeed92056bce0e32fa5ebdb",
+      "candidate_sha256": "79327629bd1e8a269e638ff883384441d8d6068331790da094e41bc898d0115f",
+      "edits": [
+        {
+          "before": "_columns_return64_core_v1",
+          "after": "_finalreturn_core_v1",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-columns-extraction-pass-20261018.json",
+          "after": "tx-v5-return-repair-extraction-pass-20261018.json",
+          "count": 1
+        },
+        {
+          "before": "39110863847",
+          "after": "39135318667",
+          "count": 1
+        },
+        {
+          "before": "de7165ec7a1fcd4a9a7b6785fd66c8d320b08182",
+          "after": "ada805308e5373c1964d43a9728b05044d984bdc",
+          "count": 2
+        },
+        {
+          "before": "9735f60b0d932170e2fd170e0e5d448f0e2ce4bdfcfb55ed4001a5dd44098b68",
+          "after": "b3c1c6042044383ed043de8518b5f02d5b9968a13a9ab679a0dbd4562834adc5",
+          "count": 1
+        },
+        {
+          "before": "8b0fc2b094c669f991dd5b0e7569b278d518ddbcb6a21472e531351ec7f0c0eb",
+          "after": "7b48d01be0f0410a0151c9d7c867f6a829af945718400c07595b71a9834b5220",
+          "count": 1
+        },
+        {
+          "before": "011bdc1b9e8f18239c5d1e7edc032beb8f786f39d301cab27a50876f2ccce4b4",
+          "after": "ef1518d2b71ff637f0ef4fa46abd2e62aa17215e35621a5c523ca0d6463f5f26",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-columns-assembly",
+          "after": "cloud-tx-v5-return-repair-assembly",
+          "count": 1
+        },
+        {
+          "before": "scripts/bind_tx_v5_columns_interfaces.py",
+          "after": "scripts/bind_tx_v5_return_repair_interfaces.py",
+          "count": 1
+        },
+        {
+          "before": "        assert extraction['audit']['actual_exported_resistors']==expected_counts['R']",
+          "after": "        assert extraction['independent_return_geometry']==receipt['independent_return_geometry']\n        assert extraction['independent_return_geometry']['all_drawing_layers_checked']==25\n        assert extraction['return_rail']['final_column_trunk_width_um']==128.\n        assert extraction['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert extraction['audit']['actual_exported_resistors']==expected_counts['R']",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/bind_tx_v5_columns_interfaces.py",
+      "candidate_path": "scripts/bind_tx_v5_return_repair_interfaces.py",
+      "baseline_sha256": "2a3fea137f3325a563ccc371f21f6737152591e86e03dc71681122b106fd78a7",
+      "candidate_sha256": "c9f62856a4bb4d7b8a7290d29c30f0b15930ddf588fb9591722b6f720001c1eb",
+      "edits": [
+        {
+          "before": "5ac146781cf625dce9814630842ade3467e4e3f6",
+          "after": "f4d800262d2fd3da4e0aaa0835c6543df8515dbc",
+          "count": 1
+        },
+        {
+          "before": "519bc6c072e4307a2c6e314c9e39d22d89c287244f511ca120822f99b8db4e45",
+          "after": "d8ce0ce4e70bcb8bb641144127fea0b665a3074fed8fc48032902a21d823b27c",
+          "count": 1
+        },
+        {
+          "before": "_columns_return64",
+          "after": "_finalreturn",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_v5_columns_return_review.py",
+      "candidate_path": "scripts/cloud_tx_v5_return_repair_resistance.py",
+      "baseline_sha256": "a9efbc3b24468656da5824f9c45558a3b46d302e2c249637346db2fe78d9f014",
+      "candidate_sha256": "817e80393e1f48ff8dfc4ae37466975361b0ec0e718335416566573d2dec611c",
+      "edits": [
+        {
+          "before": "cloud-tx-v5-columns-return-review",
+          "after": "cloud-tx-v5-return-repair-resistance",
+          "count": 1
+        },
+        {
+          "before": "        pin=json.loads((ROOT/'docs/evidence/tx-v5-columns-stage-review-input-20261018.json').read_text());source=pin['composition']\n        extrema=json.loads((ROOT/'docs/evidence/tx-v5-columns-native-extrema-20261018.json').read_text())\n        assert extrema['report']['all604_original_hbt_metrics_identical']\n        r['observed_wave_source']=dict(run=39112087217,summary_sha256=pin['wave_summary_sha256'],extrema_run=extrema['run'],extrema_summary_sha256=extrema['summary_sha256'])\n        archive=OUT/'source.tar.gz';fetch(source['url'],source['sha256'],archive);assert archive.stat().st_size==source['bytes']\n        inputs=OUT/'inputs';inputs.mkdir();receipts={}\n        with tarfile.open(archive)as tar:\n            names=tar.getnames()\n            def extract(rel,expected):\n                hits=[n for n in names if n=='cloud-tx-v5-columns-assembly/'+rel];assert len(hits)==1,(rel,hits)\n                raw=tar.extractfile(hits[0]).read();assert hashlib.sha256(raw).hexdigest()==expected\n                path=inputs/rel;path.parent.mkdir(parents=True,exist_ok=True);path.write_bytes(raw)\n                receipts[rel]=dict(sha256=expected,bytes=len(raw),member=hits[0]);return raw\n            binding=json.loads(extract('binding96/binding01.json',source['outputs']['binding96/binding01.json']))\n            interface=json.loads(extract('wire96/all-interface-probes.json',source['outputs']['wire96/all-interface-probes.json']))\n            def dependency(rel):\n                hits=[h for p,h in interface['inputs'].items()if p.endswith('/'+rel)];assert len(hits)==1,(rel,hits)\n                return json.loads(extract(rel,hits[0]))\n            layout=dependency('layout/result.json');locations=dependency('wire96/device-locations01.json')\n            text=extract('wire96/tree1674-wire01.spice',source['outputs']['wire96/tree1674-wire01.spice']).decode()\n        archive.unlink();rows=parser.statements(text)\n",
+          "after": "        inputs=ROOT/'hw/soc/out/cloud-tx-v5-return-repair-assembly'\n        source=json.loads((inputs/'composition-result.json').read_text())\n        assert source['status']=='PASS_ACTUAL_TREE1674_SOURCE_BOUND_RC_COMPOSITION_AND_FAULTS_REQUIRES_TRANSIENT'\n        assert source['source_head']==os.environ['GITHUB_SHA']\n        assert source['source']['source_run']==39135318667\n        assert all(sha(inputs/p)==v for p,v in source['outputs'].items())\n        receipts={p:dict(sha256=sha(inputs/p)) for p in ['composition-result.json','binding96/binding01.json','layout/result.json','wire96/device-locations01.json','wire96/tree1674-wire01.spice']}\n        binding=json.loads((inputs/'binding96/binding01.json').read_text())\n        interface=json.loads((inputs/'wire96/all-interface-probes.json').read_text())\n        layout=json.loads((inputs/'layout/result.json').read_text())\n        locations=json.loads((inputs/'wire96/device-locations01.json').read_text())\n        for rel in ['layout/result.json','wire96/device-locations01.json']:\n            expected=[v for p,v in interface['inputs'].items() if p.endswith('/'+rel)]\n            assert expected==[sha(inputs/rel)]\n        text=(inputs/'wire96/tree1674-wire01.spice').read_text();rows=parser.statements(text)\n        baseline=json.loads((ROOT/'docs/evidence/tx-v5-columns-native-return-diagnosis-20261018.json').read_text())\n        assert baseline['run']==39133064102 and baseline['summary_sha256']=='696c27c19cab691a46dc1f48a1f72c12574e8cf78cf226df0741419a804cf41a'\n        prior={(v['physical_macro'],v['native_id']):v for v in baseline['report']['return_paths']}\n        r['baseline_source']=dict(run=baseline['run'],summary_sha256=baseline['summary_sha256'])\n",
+          "count": 1
+        },
+        {
+          "before": ";entry['observed_worst_vce']=next(x['minimum_vce_sample']for x in extrema['report']['failed_devices']if x['native_id']==d['native_id'])",
+          "after": "",
+          "count": 1
+        },
+        {
+          "before": "        assert set(solutions)=={114,115}",
+          "after": "        assert len(selected)==len(prior)\n        delta=[]\n        for v in selected:\n            old=prior[v['physical_macro'],v['native_id']]\n            assert old['nx']==v['nx'] and old['instance']==v['instance']\n            before=old['effective_return_resistance_ohm'];after=v['effective_return_resistance_ohm']\n            delta.append(dict(instance=v['instance'],native_id=v['native_id'],physical_macro=v['physical_macro'],before_ohm=before,after_ohm=after,change_ohm=after-before,change_percent=100*(after/before-1)))\n        r['resistance_comparison']=delta\n        r['comparison_scope']='Static metal return resistance only. Original failed waveform is not a measurement of this repaired geometry. No electrical acceptance.'\n        assert set(solutions)=={114,115}",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "scope": "Exact adaptations preserve native model binding, all RC values, six composition faults, two actual interface faults and independent DC solver gates."
+}

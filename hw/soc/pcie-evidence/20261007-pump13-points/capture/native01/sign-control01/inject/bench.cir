@@ -1,0 +1,11 @@
+Independent current-source sign control
+VCTRL vctrl 0 0.6
+ITEST 0 vctrl 1u
+.control
+set filetype=binary
+save v(vctrl) i(vctrl)
+op
+write sign.raw all
+quit
+.endc
+.end

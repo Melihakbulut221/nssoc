@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "status": "SOURCE_ONLY_FROZEN_RPPD_PIN_AUDIT_NO_NATIVE_GENERATION",
+  "IHP_source_ref": "564881f65039ab77bab026c01a5b1055a762e4a0",
+  "actual_physical_summary_asset": 672301614,
+  "sources": {
+    "ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/rppd_code.py": "58d53384ef0bb92a4fa413d3c92e8dcbcb8f422c5205da9260129049f07f1d6b",
+    "ihp-sg13g2/libs.tech/klayout/python/sg13g2_pycell_lib/ihp/geometry.py": "479a648a1d25678af42ebe495ae6cd855e8441fb071f49817972529eee5713e2"
+  },
+  "runtime_summary_both_hashes_match": true,
+  "findings": [
+    {
+      "lines": "rppd_code.py:27,30-95",
+      "fact": "Frozen renderer directly subclasses DloGen, has no ResistorBase or NumberOfSegments. Newer arraying source is inapplicable."
+    },
+    {
+      "lines": "rppd_code.py:275-276,443-444",
+      "fact": "Actual pin names are literal PLUS and MINUS, not PLUS0/MINUS0."
+    },
+    {
+      "lines": "geometry.py:437-445",
+      "fact": "MkPin fixes rectangle orientation then registers addPin(termName,termName,bBox,layer); no placement normalization/translation."
+    },
+    {
+      "lines": "rppd_code.py:166-172,194-212,269-291",
+      "fact": "For explicit b=0 and unchanged W/other parameters above minimum, body starts y0, PLUS is independent of L, body ends yL and MINUS translates by exact delta L."
+    },
+    {
+      "lines": "rppd_code.py:174-187,194-208",
+      "fact": "Minimum dimension clamping and nonzero-b bend/contactpush branches must not be silently assumed away; bind actual b0 and old geometry equality."
+    }
+  ],
+  "candidate_topology": "Same original placement and shorter actual b0 cell plus measured M1 bridge from new MINUS metal to original owned MINUS metal is source-level coherent only. Actual pin rectangles must be transformed/measured; do not use names as connectivity proof.",
+  "required_native": [
+    "old rendered PCell equality under exact runtime",
+    "unchanged PLUS and transformed MINUS endpoint overlap",
+    "foreign clearance and strict native component ownership",
+    "exact extracted new L with all other device params preserved",
+    "fresh DRC and deep/flat LVS",
+    "fresh RC and loaded electrical gates"
+  ],
+  "native_execution": false,
+  "DRC_accepted": false,
+  "LVS_accepted": false,
+  "electrical_accepted": false
+}

@@ -1,0 +1,196 @@
+{
+  "status": "PASS_FROZEN318_AND_NEW_ZERO_OP_SOURCE_CONTROLS_ONLY",
+  "protected_files": 141,
+  "initialization_controls": {
+    "status": "PASS_SOURCE_ONLY318_INITIALIZATION_AND_GATE_CONTROLS",
+    "source_derivations": [
+      {
+        "path": "scripts/cloud_tx_phase_zero_op_initialization.py",
+        "function": "targets",
+        "original_sha256": "f04cefb6faced62d70e31677899c51ec45093a4353083fe57758f091a3295795",
+        "derived_sha256": "4449fc36ebc7174773a89f1a3a3a0f8d274461650c0a52d64776d124bf166cd7",
+        "edits": [
+          [
+            "==106",
+            "==318",
+            1
+          ]
+        ],
+        "byte_exact_reversal": true
+      },
+      {
+        "path": "scripts/cloud_tx_phase_zero_op_initialization.py",
+        "function": "flag_block",
+        "original_sha256": "3ea42932da62cf2be147e8410a616fd56e385aebd51ec969a7c90913d4fd0943",
+        "derived_sha256": "3ea42932da62cf2be147e8410a616fd56e385aebd51ec969a7c90913d4fd0943",
+        "edits": [],
+        "byte_exact_reversal": true
+      },
+      {
+        "path": "scripts/cloud_tx_phase_zero_op_initialization.py",
+        "function": "op_only",
+        "original_sha256": "ade67778b22bb8db5f48ffa467bc5c021b2e6d9dc56fa55f84b6262dd287726f",
+        "derived_sha256": "ade67778b22bb8db5f48ffa467bc5c021b2e6d9dc56fa55f84b6262dd287726f",
+        "edits": [],
+        "byte_exact_reversal": true
+      },
+      {
+        "path": "scripts/cloud_tx_phase_zero_op_initialization.py",
+        "function": "flags",
+        "original_sha256": "bc6c6b801fbecccd065965f8f998058f2d78336886c9651637fad60e6d9a84ce",
+        "derived_sha256": "2988ca8fbc549ccd70c9df455cba7fb4a4bbb0cec02c527084187268a40d12a1",
+        "edits": [
+          [
+            "actual_HBT_targets=106",
+            "actual_HBT_targets=318",
+            1
+          ]
+        ],
+        "byte_exact_reversal": true
+      },
+      {
+        "path": "scripts/cloud_tx_phase_assert_offset_intrinsic.py",
+        "function": "initialized_deck",
+        "original_sha256": "214ab36e47f1ca38ff5ce317205f830812163c6dce4f9390fb959d76bd19e63e",
+        "derived_sha256": "214ab36e47f1ca38ff5ce317205f830812163c6dce4f9390fb959d76bd19e63e",
+        "edits": [],
+        "byte_exact_reversal": true
+      },
+      {
+        "path": "scripts/cloud_tx_phase_assert_offset_intrinsic.py",
+        "function": "gate",
+        "original_sha256": "fb62d408051c8ec953e13926f487a0931a30449b8972cf65fc6de92e39653b47",
+        "derived_sha256": "a452c448a3435388d67bc9f6e3b9b57fa40c8beac5aea9a05fc994173c463fac",
+        "edits": [
+          [
+            "all106_flags",
+            "all318_flags",
+            1
+          ],
+          [
+            "actual_HBT_targets=106",
+            "actual_HBT_targets=318",
+            1
+          ],
+          [
+            "(358,359)",
+            "(4726,4727)",
+            1
+          ]
+        ],
+        "byte_exact_reversal": true
+      }
+    ],
+    "negative_controls": [
+      "missing-native-target",
+      "wrong-OFF-value",
+      "wrong-native-target",
+      "duplicate-native-target",
+      "reordered-native-target",
+      "missing-HBT",
+      "extra-HBT",
+      "old106-HBT-census",
+      "preexisting-alter",
+      "added-IC",
+      "added-UIC",
+      "missing-transient",
+      "changed-frozen-source-scripts/cloud_tx_phase_zero_op_initialization.py",
+      "changed-frozen-source-scripts/cloud_tx_phase_assert_offset_intrinsic.py",
+      "native-failure",
+      "numerical-diagnostic",
+      "missing-solver-proof",
+      "old106-flags",
+      "missing-flag-readback",
+      "wrong-OFF-gate",
+      "nonzero-OP",
+      "old358-OP-columns",
+      "missing-full-capture",
+      "wrong-raw-columns",
+      "rejected-measurement",
+      "failed-one-HBT",
+      "failed-child-phase",
+      "missing-HBT-screen",
+      "missing-child-screen",
+      "prior-validation-error"
+    ],
+    "synthetic_marker_fixture_only": true,
+    "actual_prepared_contracts_exercised": false,
+    "native_simulator_executed": false,
+    "electrical_accepted": false,
+    "all31_clock_tree_accepted": false,
+    "PLL_connected": false,
+    "full_PHY_accepted": false
+  },
+  "zero_OP_gate_controls": {
+    "status": "PASS_SOURCE_ONLY_EXPANDED_ZERO_OP_GATE_LOGIC",
+    "negative_controls": [
+      "native-nonzero-return",
+      "numerical-diagnostic",
+      "missing-solver",
+      "old106-targets",
+      "selective-OFF-value",
+      "missing-native-readback",
+      "multiple-OP-rows",
+      "old358-vector-set",
+      "nonzero-OP-state",
+      "unexpected-transient-file",
+      "changed-source-or-runtime",
+      "retained-validation-error"
+    ],
+    "actual_prepared_path_test_executed": false,
+    "native_executed": false,
+    "zero_OP_accepted": false,
+    "transient_accepted": false
+  },
+  "publication_controls": {
+    "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+    "rejected": [
+      "local-context",
+      "other-repo",
+      "missing-source",
+      "mutable-source",
+      "invalid-run",
+      "invalid-attempt",
+      "invalid-group",
+      "different-release-target",
+      "different-tag-object",
+      "annotated-tag",
+      "different-tag-name",
+      "draft-release",
+      "production-release",
+      "duplicate-asset-name",
+      "asset-digest-missing",
+      "preexisting-wrong-tag",
+      "read-denied-never-creates"
+    ],
+    "existing_partial_assets_preserved": true,
+    "existing_release_not_recreated": true,
+    "new_release_uses_tested_sha": true,
+    "no_permissions_expanded": true
+  },
+  "prerequisite_controls": {
+    "status": "PASS_EXACT_COMPLETED318_PREPARATION_PREREQUISITE_CONTROLS",
+    "negative_controls": [
+      "run-id",
+      "run-source",
+      "run-failure",
+      "summary-run",
+      "summary-source",
+      "wrong-status",
+      "prior-validation-error",
+      "changed-sources",
+      "missing-case",
+      "old106-target-count",
+      "missing-actual-name",
+      "marker-not-synthetic",
+      "missing-target-fault",
+      "native-executed-claim",
+      "electrical-acceptance-claim"
+    ],
+    "actual_summary_sha256": "40a37f8f8b9cf2e69484d1a862af55440de8f406bbe8c9ed57f1b10517858a8c",
+    "run": 40173307881,
+    "native_executed": false
+  },
+  "native_simulator_invoked": false,
+  "transient_executed": false
+}

@@ -1,0 +1,324 @@
+{
+  "date": "2026-09-23",
+  "status": "PASS: bounded physical open/device-deletion controls; hardened auditor rejects a formerly accepted must-connect warning",
+  "scope": "Diagnostic two-inverter hierarchy, not SRAM or SoC acceptance. Original vendor inverter GDS/CDL; new parent wiring and a separately copied experimental deck with cell-scoped connect_implicit and top_level(strict). Production and pinned upstream decks remain unchanged.",
+  "tool": "KLayout 0.30.7",
+  "upstream_documentation": "https://www.klayout.de/doc/manual/lvs_connect.html",
+  "geometry_control": {
+    "status": "PASS within scope",
+    "scope": "The joined/cut GDS pairs differ only by one top-level Metal1 VDD bridge; all cells, instances, labels and remaining polygons match.",
+    "differences": [
+      {
+        "cell": "MC_TOP",
+        "layer": "8/0",
+        "bridge_dbu": [
+          600,
+          3700,
+          4850,
+          3880
+        ]
+      }
+    ],
+    "input_sha256": {
+      "joined.gds": "c89c7bf3cc0ff8e62e32d61d0c28e181c4b394bacfda0b46fc7e2ee924fb4f17",
+      "cut.gds": "e0c42d2c5feb6ee3cc799376774d03a87e2581b9c1527631f570e0c78291ac69"
+    }
+  },
+  "cases": [
+    {
+      "case": "joined-strict",
+      "producer_returncode": 0,
+      "result": "PASS within comparison scope"
+    },
+    {
+      "case": "cut-strict",
+      "producer_returncode": 1,
+      "result": "Extraction fails with must-connect top-level error; no comparison accepted"
+    },
+    {
+      "case": "cut-soft",
+      "producer_returncode": 0,
+      "legacy_result": "PASS within comparison scope despite missing physical VDD bridge",
+      "fixed_result": "FAIL: database extraction warning retained even though circuit pairs and text verdict match"
+    },
+    {
+      "case": "joined-missing-device",
+      "producer_returncode": 0,
+      "result": "FAIL: missing reference NMOS detected"
+    }
+  ],
+  "fixed_audits": {
+    "auditor_sha256": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+    "cases": [
+      {
+        "case": "joined-strict",
+        "returncode": 0,
+        "result": {
+          "status": "PASS within comparison scope",
+          "top": "MC_TOP",
+          "reasons": [],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "Match": 3
+          },
+          "circuits": [
+            {
+              "layout": "MC_BLOCK",
+              "schematic": "MC_BLOCK",
+              "status": "Match",
+              "layout_devices_recursive": 4,
+              "schematic_devices_recursive": 4
+            },
+            {
+              "layout": "MC_TOP",
+              "schematic": "MC_TOP",
+              "status": "Match",
+              "layout_devices_recursive": 4,
+              "schematic_devices_recursive": 4
+            },
+            {
+              "layout": "sg13g2_inv_1",
+              "schematic": "SG13G2_INV_1",
+              "status": "Match",
+              "layout_devices_recursive": 2,
+              "schematic_devices_recursive": 2
+            }
+          ],
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/must-connect-control/joined-strict/MC_TOP.lvsdb": {
+              "bytes": 13117,
+              "sha256": "871f249265f208b6837982b3029deee0d4145c3d8281ab40fd19cb4053ae0574"
+            },
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/must-connect-control/joined-strict/deck.log": {
+              "bytes": 37291,
+              "sha256": "f377cd562164d741b6ada1c49f4be3a6c2e1cfe32745581a3e5939a0c43b027d"
+            }
+          }
+        }
+      },
+      {
+        "case": "cut-soft",
+        "returncode": 1,
+        "result": {
+          "status": "FAIL",
+          "top": "MC_TOP",
+          "reasons": [
+            "Unresolved extraction warning, error or must-connect requirement"
+          ],
+          "extraction_diagnostics": [
+            {
+              "severity": "Warning",
+              "category": "must-connect",
+              "cell": "MC_TOP",
+              "net": "",
+              "message": "Must-connect subnets of VDD of circuit MC_BLOCK must be connected further up in the hierarchy - this is an error at chip top level.\nInstance path: MC_TOP/MC_BLOCK[r0 0,0]:$1"
+            }
+          ],
+          "circuit_status_counts": {
+            "Match": 3
+          },
+          "circuits": [
+            {
+              "layout": "MC_BLOCK",
+              "schematic": "MC_BLOCK",
+              "status": "Match",
+              "layout_devices_recursive": 4,
+              "schematic_devices_recursive": 4
+            },
+            {
+              "layout": "MC_TOP",
+              "schematic": "MC_TOP",
+              "status": "Match",
+              "layout_devices_recursive": 4,
+              "schematic_devices_recursive": 4
+            },
+            {
+              "layout": "sg13g2_inv_1",
+              "schematic": "SG13G2_INV_1",
+              "status": "Match",
+              "layout_devices_recursive": 2,
+              "schematic_devices_recursive": 2
+            }
+          ],
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/must-connect-control/cut-soft/MC_TOP.lvsdb": {
+              "bytes": 13345,
+              "sha256": "24c31caa5039028ec2c952c91cd2f662fcbf69c166cd7ceba5c4c8e7efd4e139"
+            },
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/must-connect-control/cut-soft/deck.log": {
+              "bytes": 37276,
+              "sha256": "a33afac89d562e7f07ad22f470f17a3b17202e593d9fdc7e3c460637bb504180"
+            }
+          }
+        }
+      },
+      {
+        "case": "joined-missing-device",
+        "returncode": 1,
+        "result": {
+          "status": "FAIL",
+          "top": "MC_TOP",
+          "reasons": [
+            "Non-matching, skipped, missing or warning circuit",
+            "Missing explicit successful deck verdict",
+            "Deck explicitly reported a mismatch"
+          ],
+          "extraction_diagnostics": [],
+          "circuit_status_counts": {
+            "Skipped": 2,
+            "NoMatch": 1
+          },
+          "circuits": [
+            {
+              "layout": "MC_BLOCK",
+              "schematic": "MC_BLOCK",
+              "status": "Skipped",
+              "layout_devices_recursive": 4,
+              "schematic_devices_recursive": 2
+            },
+            {
+              "layout": "MC_TOP",
+              "schematic": "MC_TOP",
+              "status": "Skipped",
+              "layout_devices_recursive": 4,
+              "schematic_devices_recursive": 2
+            },
+            {
+              "layout": "sg13g2_inv_1",
+              "schematic": "SG13G2_INV_1",
+              "status": "NoMatch",
+              "layout_devices_recursive": 2,
+              "schematic_devices_recursive": 1
+            }
+          ],
+          "inputs": {
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/must-connect-control/joined-missing-device/MC_TOP.lvsdb": {
+              "bytes": 13656,
+              "sha256": "3abe3472067406534d51c005c12860bbc2b479b65de33e075d915aeb2c03f633"
+            },
+            "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/must-connect-control/joined-missing-device/deck.log": {
+              "bytes": 37299,
+              "sha256": "45b54edd5eb5fc843e9ea24952842e06dc94b7711ca7333b41a157c0e257620d"
+            }
+          }
+        }
+      }
+    ]
+  },
+  "legacy_auditor": {
+    "revision": "80610c1db454371dd4b9b100a3c9329296b52a97",
+    "sha256": "126db9bd1cb6880a6ca8f9e325b19290671fe60265070147c03ccf1bb9283a8e",
+    "reproduced_result": {
+      "status": "PASS within comparison scope",
+      "top": "MC_TOP",
+      "reasons": [],
+      "circuit_status_counts": {
+        "Match": 3
+      },
+      "circuits": [
+        {
+          "layout": "MC_BLOCK",
+          "schematic": "MC_BLOCK",
+          "status": "Match",
+          "layout_devices_recursive": 4,
+          "schematic_devices_recursive": 4
+        },
+        {
+          "layout": "MC_TOP",
+          "schematic": "MC_TOP",
+          "status": "Match",
+          "layout_devices_recursive": 4,
+          "schematic_devices_recursive": 4
+        },
+        {
+          "layout": "sg13g2_inv_1",
+          "schematic": "SG13G2_INV_1",
+          "status": "Match",
+          "layout_devices_recursive": 2,
+          "schematic_devices_recursive": 2
+        }
+      ],
+      "inputs": {
+        "hw/soc/out/external-review-20260919/route-closure-20260923/must-connect-control/cut-soft/MC_TOP.lvsdb": {
+          "bytes": 13345,
+          "sha256": "24c31caa5039028ec2c952c91cd2f662fcbf69c166cd7ceba5c4c8e7efd4e139"
+        },
+        "hw/soc/out/external-review-20260919/route-closure-20260923/must-connect-control/cut-soft/deck.log": {
+          "bytes": 37276,
+          "sha256": "a33afac89d562e7f07ad22f470f17a3b17202e593d9fdc7e3c460637bb504180"
+        }
+      }
+    }
+  },
+  "sources": {
+    "hw/soc/flow/audit_klayout_lvs.py": "bcfc03cf993de873193fd55f80edb903ab9b3730198a1c374667671a67508568",
+    "sw/tests/test_klayout_lvs_audit.py": "70f4ed496f907e73651bcb59ef48879bd759b43e59fb4c09f3adbdb13a1013d6"
+  },
+  "validation": "24 auditor unit controls pass; real report replay preserves the valid joined case and rejects both the hidden open and missing-device cases.",
+  "remaining": "The real SRAM model/label/context-extraction issues remain unresolved. This control validates a strict method for investigating partial hierarchical connections, not a blanket power merge or product waiver.",
+  "archive": {
+    "path": "docs/evidence/must-connect-lvs-controls-20260923.tar.gz",
+    "sha256": "1223d2b82d3d645890b6ab29b6cc92b16765e9694a82f7451d3dff939857f374",
+    "bytes": 76985,
+    "members": {
+      "prepare_must_connect.py": "7bdb4612358574dd55f00c6b142407078b2d91a239901ef5cdf3d3fb3a4691c5",
+      "run_must_connect.py": "ef8b42a495a8eeedc56370f449b55bff5e73b2c07364f683e6198b1a9fe87757",
+      "reaudit_must_connect.py": "4c79748832348dbb36747f14bc76fa48724e0b0e3b219fe046d54c74769d85d7",
+      "check_must_connect_geometry.py": "3c0a7608379b967d4e3a386b197dfdd9cafbb0c803811daa10ece6effa3c304e",
+      "legacy_lvs_auditor.py": "126db9bd1cb6880a6ca8f9e325b19290671fe60265070147c03ccf1bb9283a8e",
+      "must-connect-driver.log": "64e60d329d1c5434e94defba91b50398342986596ae182175727caa6232b6551",
+      "must-connect-reaudit-final.log": "b38986f8321685d71e1f23258dd6dca3aef86cba9540621bd62edeb4229fd112",
+      "must-connect-audit-tests.log": "316dff144480d3c5409a169f48f63aa01e669b719f39ad1359bc50fef2f9b4e8",
+      "must-connect-control/results.json": "2e2886ee4e57db2b099e5f59baef7b50bd5bd18cafa47810764a5dc79d79f306",
+      "must-connect-control/cut.gds": "e0c42d2c5feb6ee3cc799376774d03a87e2581b9c1527631f570e0c78291ac69",
+      "must-connect-control/joined.gds": "c89c7bf3cc0ff8e62e32d61d0c28e181c4b394bacfda0b46fc7e2ee924fb4f17",
+      "must-connect-control/missing-nmos.cdl": "f37e39370abc565fb6a672174bcb2c569d0aeea352483900dadce5b5a679c971",
+      "must-connect-control/geometry-control.json": "3408aa9c2fd570c66ee83d767beee2992ea0c06b82f465bbf13d207230ba7373",
+      "must-connect-control/reaudit-initial-results.json": "c66abf0e9b5f770fb3395047847353fa8fc2bf037e6dca2ecb6962041876a740",
+      "must-connect-control/reference.cdl": "19bfb409f6e00cfaf6d79ab8c052eebeac62d4ec2f9bd6ca6be77022d1f8acba",
+      "must-connect-control/reaudit-results.json": "20e091f28f8a07e77693d0a72692fb0aef2558aa9d3ace5aa51ffd165e074940",
+      "must-connect-control/inputs.json": "ed01f443a02ed69fa2bb5b0ad2b287f4f9bb0c5de920b5b062c898b9fa60fa5f",
+      "must-connect-control/cut-strict/result.json": "bce0c53983c1f99602ca0b5e2096edfb6c2027c5acbd6b9af501b5c282e80726",
+      "must-connect-control/cut-strict/run.log": "556fd26e78e11b44783c5765560f8e5ebdbabe6817e88d4d79c46b6262dacf49",
+      "must-connect-control/cut-strict/deck.log": "3ccd06bab4f50e69a3227ff445e0137e0791b1b75079d084f1c768d6c8bc4124",
+      "must-connect-control/cut-strict/extracted.cir": "7bfd618cad76546671efd06487918cb7d00d4e37fa78af489f063f770cfec4c2",
+      "must-connect-control/cut-soft/audit-with-extraction-final.json": "b6e2dde23647c58fb1abe4e3c4b57790badecc59d48f5f3d0e34c44999d72a6b",
+      "must-connect-control/cut-soft/MC_TOP.lvsdb": "24c31caa5039028ec2c952c91cd2f662fcbf69c166cd7ceba5c4c8e7efd4e139",
+      "must-connect-control/cut-soft/result.json": "62503bdc4e68114add845ea37c9a0cdec0201dfc09b75df36af5ba5b1bae333f",
+      "must-connect-control/cut-soft/run.log": "45a91fc33ce71ae4cdf59999b997e1b97765b7ba64f2223e6e266875e4f1f5ab",
+      "must-connect-control/cut-soft/audit-legacy-replay.json": "76e8002bd5198bfc3ed0ffe7eb481883228bca452faec4cab29590c658b2524c",
+      "must-connect-control/cut-soft/audit-with-extraction-final.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "must-connect-control/cut-soft/deck.log": "a33afac89d562e7f07ad22f470f17a3b17202e593d9fdc7e3c460637bb504180",
+      "must-connect-control/cut-soft/audit-with-extraction.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "must-connect-control/cut-soft/audit-with-extraction.json": "b6e2dde23647c58fb1abe4e3c4b57790badecc59d48f5f3d0e34c44999d72a6b",
+      "must-connect-control/cut-soft/audit.json": "5aceb928eb681327853248f96813babce90dcb26c51f0178fcac3fa09b702aaf",
+      "must-connect-control/cut-soft/extracted.cir": "1749f5a9d6e6455d4434ca67de93982232fa84b422f58e3d41da40e5e43f9ea5",
+      "must-connect-control/cut-soft/audit-legacy-replay.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+      "must-connect-control/cut-soft/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+      "must-connect-control/joined-strict/audit-with-extraction-final.json": "b79f12ac12a4ec3b5ec385075e6b28336e91793577dc79b65d8c5e92b42f6371",
+      "must-connect-control/joined-strict/MC_TOP.lvsdb": "871f249265f208b6837982b3029deee0d4145c3d8281ab40fd19cb4053ae0574",
+      "must-connect-control/joined-strict/result.json": "3e6599d9889b899f15a3ad371f9088ed60cd9f501302dacd5c363ac1c499b1a4",
+      "must-connect-control/joined-strict/run.log": "b892c68218de82b1809b49902109f0b56a0b5e7002258a3ff275a115900f0d92",
+      "must-connect-control/joined-strict/audit-with-extraction-final.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+      "must-connect-control/joined-strict/deck.log": "f377cd562164d741b6ada1c49f4be3a6c2e1cfe32745581a3e5939a0c43b027d",
+      "must-connect-control/joined-strict/audit-with-extraction.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+      "must-connect-control/joined-strict/audit-with-extraction.json": "b79f12ac12a4ec3b5ec385075e6b28336e91793577dc79b65d8c5e92b42f6371",
+      "must-connect-control/joined-strict/audit.json": "b8c9a51c156ff31a7aa047d9abe015397ce3a666b5bab57cd6bf98c9fa687116",
+      "must-connect-control/joined-strict/extracted.cir": "61aaa0b879de0cca3f3edd48d6a240c30da14625d3542a1210323d33e04226c0",
+      "must-connect-control/joined-strict/audit.log": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046",
+      "must-connect-control/joined-missing-device/audit-with-extraction-final.json": "806964fb01b80beec1839c98d6ae6f292a99063b82b828768de2986dc2c514a2",
+      "must-connect-control/joined-missing-device/MC_TOP.lvsdb": "3abe3472067406534d51c005c12860bbc2b479b65de33e075d915aeb2c03f633",
+      "must-connect-control/joined-missing-device/result.json": "04100b8bc9bdf1a9bcdef8d13ded2b2193ca31d2833f4d4bbe448b84df907710",
+      "must-connect-control/joined-missing-device/run.log": "f7a8d6b8eb3b7effbafd44d61190f7212aefcb5dce357eaa1db0c589be3efc7e",
+      "must-connect-control/joined-missing-device/audit-with-extraction-final.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "must-connect-control/joined-missing-device/deck.log": "45b54edd5eb5fc843e9ea24952842e06dc94b7711ca7333b41a157c0e257620d",
+      "must-connect-control/joined-missing-device/audit-with-extraction.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "must-connect-control/joined-missing-device/audit-with-extraction.json": "806964fb01b80beec1839c98d6ae6f292a99063b82b828768de2986dc2c514a2",
+      "must-connect-control/joined-missing-device/audit.json": "60955a348c0f98a58867cfe65be5ecb7aa07640c3c86bb19503afbf623f9dac8",
+      "must-connect-control/joined-missing-device/extracted.cir": "61aaa0b879de0cca3f3edd48d6a240c30da14625d3542a1210323d33e04226c0",
+      "must-connect-control/joined-missing-device/audit.log": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5",
+      "must-connect-control/deck/sg13g2.lvs": "5df8fcfc0a848a3c4060df6cf59ec4f58db5ee2065ed790dbd1abc821820aea9",
+      "upstream-LICENSE.txt": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    }
+  }
+}

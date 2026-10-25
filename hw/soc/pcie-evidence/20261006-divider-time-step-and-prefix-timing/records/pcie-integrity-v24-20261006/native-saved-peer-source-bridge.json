@@ -1,0 +1,72 @@
+{
+  "parent": "hw/soc/out/pcie-integrity-v23-20261006/review_saved_native_vco.py",
+  "parent_pin": {
+    "bytes": 8773,
+    "sha256": "cd5fa9fd623912dc6d7dcf960e30a6a35e248d732751f46b1a75a24492869503"
+  },
+  "child": "hw/soc/out/pcie-integrity-v24-20261006/review_saved_native_vco.py",
+  "child_pin": {
+    "bytes": 8774,
+    "sha256": "6678765ff58711e262919d51a6a57cf89087deb73a44d11fc5057430b0330abb"
+  },
+  "substitutions": [
+    [
+      "v23",
+      "v24"
+    ],
+    [
+      "V23",
+      "V24"
+    ],
+    [
+      "bytes=9805,sha256='21e165b9de75a49a673df6c2865cedab5841e743516ae3613bf7857483e3964f'",
+      "bytes=10117,sha256='a5b334892a6e744648c3b354dbe13c2f8dbf46d03c253c097ed2cd20188760a9'"
+    ],
+    [
+      "bytes=11071356,sha256='6f693221c4dc8d5925de8083cc21202179c6bfc05023bc359ac7e2f08e1c31e7'",
+      "bytes=11671964,sha256='3fedc934238750dc85812dd2bf2632a68b72df8606ba81cfd8654762964bbff8'"
+    ],
+    [
+      "==240",
+      "==182"
+    ],
+    [
+      "All240",
+      "All182"
+    ],
+    [
+      "344798",
+      "360012"
+    ],
+    [
+      "94742",
+      "98919"
+    ],
+    [
+      "8846",
+      "9490"
+    ],
+    [
+      "-3.191682",
+      "-3.634856"
+    ],
+    [
+      "-.549377",
+      "-.827638"
+    ],
+    [
+      ".998914",
+      ".823255"
+    ],
+    [
+      "delta_SS_vs_V22_ns",
+      "delta_SS_vs_V23_ns"
+    ],
+    [
+      "(-3.544282)",
+      "(-3.191682)"
+    ]
+  ],
+  "full_diff": "--- hw/soc/out/pcie-integrity-v23-20261006/review_saved_native_vco.py\n+++ hw/soc/out/pcie-integrity-v24-20261006/review_saved_native_vco.py\n@@ -3,29 +3,29 @@\n from pathlib import Path\n import functools,hashlib,json,os,re,resource,tarfile,shutil\n resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2);os.sched_setaffinity(0,{10})\n-B=Path(__file__).resolve().parent;TOP='soc_pcie_gen3_continuous_rx_integrity_v23'\n+B=Path(__file__).resolve().parent;TOP='soc_pcie_gen3_continuous_rx_integrity_v24'\n @functools.lru_cache(None)\n def pin(path):\n  p=Path(path)\n  with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n-validation=B/'pcie-integrity-v23-native-validation-20261006.json'\n-assert pin(str(validation))==dict(bytes=9805,sha256='21e165b9de75a49a673df6c2865cedab5841e743516ae3613bf7857483e3964f')\n+validation=B/'pcie-integrity-v24-native-validation-20261006.json'\n+assert pin(str(validation))==dict(bytes=10117,sha256='a5b334892a6e744648c3b354dbe13c2f8dbf46d03c253c097ed2cd20188760a9')\n policy=B/'continuation-policy01.json';pol=json.loads(policy.read_text())\n for key in('method_pins','source_pins'):\n  for p,v in pol[key].items():assert pin(p)==v\n assert shutil.disk_usage('/dev/shm').free > 1024**3\n members=json.loads((B/'native-members.json').read_text()); members['members.json']=pin(str(B/'native-members.json')); seen=set()\n-archive=B/'pcie-integrity-v23-native-preplacement-20261006.tar.xz'\n-assert pin(str(archive))==dict(bytes=11071356,sha256='6f693221c4dc8d5925de8083cc21202179c6bfc05023bc359ac7e2f08e1c31e7')\n+archive=B/'pcie-integrity-v24-native-preplacement-20261006.tar.xz'\n+assert pin(str(archive))==dict(bytes=11671964,sha256='3fedc934238750dc85812dd2bf2632a68b72df8606ba81cfd8654762964bbff8')\n with tarfile.open(archive,'r|xz') as tf:\n  for m in tf:\n   assert m.isfile() and m.name not in seen and m.name in members\n   v=members[m.name]; f=tf.extractfile(m); assert f is not None\n   assert m.size==v['bytes'] and hashlib.file_digest(f,'sha256').hexdigest()==v['sha256'];seen.add(m.name)\n-assert seen==set(members) and len(seen)==240\n+assert seen==set(members) and len(seen)==182\n state=json.loads((B/'continuation-status01.json').read_text());assert state['status']=='COMPLETE_NATIVE_SCREEN_FINITE_REVIEW_AND_PUBLICATION_REQUIRED'and len(state['stages'])==7\n for stage in state['stages']:assert stage['returncode']==0 and stage['status']=='COMPLETE'\n-roots={k:Path('/dev/shm/nssoc-integrity-v23-balanced-'+k+'-01')for k in('map','import','sta')}\n+roots={k:Path('/dev/shm/nssoc-integrity-v24-balanced-'+k+'-01')for k in('map','import','sta')}\n for k in('map','import'):\n  d=roots[k];j=json.loads((d/'result.json').read_text());assert j['returncode']==0\n  for p,v in j['inputs'].items():assert pin(p)==v\n@@ -59,10 +59,10 @@\n  for p,bs in c['connections'].items():assert canonical(bs,ad)==canonical(z['connections'][p],zd);checked+=len(bs)\n assert A['ports'].keys()==Z['ports'].keys()\n for n,p in A['ports'].items():assert p['direction']==Z['ports'][n]['direction']and canonical(p['bits'],ad)==canonical(Z['ports'][n]['bits'],zd)\n-assert checked==344798 and len(A['cells'])==94742 and len(A['ports'])==24\n+assert checked==360012 and len(A['cells'])==98919 and len(A['ports'])==24\n del Z,zd\n cells=A['cells'];nets=A['netnames'];flops={n for n,c in cells.items()if 'CLK'in c['port_directions']}\n-assert len(flops)==8846\n+assert len(flops)==9490\n @functools.lru_cache(None)\n def support(bit):\n  if not isinstance(bit,int)or bit not in ad or ad[bit][0]!='cell':return frozenset([bit])\n@@ -93,8 +93,8 @@\n assert {x['fault'] for x in graph['actual_graph_fault_controls']}=={'data_input_inversion','clock_disconnection','cell_model_change','public_output_inversion','port_width_change','extra_parameter'} and all(x['rejected'] for x in graph['actual_graph_fault_controls'])\n reported=json.loads((B/'timing-comparison.json').read_text());assert timing==reported['groups']and reported['acceptance']is False\n actual={x['corner']+'_'+x['direction']:x['worst_slack_ns']for x in timing if x['stage']=='PREPLACEMENT_REPAIRED'}\n-assert actual['slow_max']==-3.191682 and actual['typical_max']==-.549377 and actual['fast_max']==.998914\n-r=dict(status='PASS_SAVED_V23_FINITE_NATIVE_RECOUNT_TIMING_REJECTED',findings=[],method=pin(str(Path(__file__))),policy=pin(str(policy)),source_receipts={str(B/n):pin(str(B/n))for n in('continuation-status01.json','native-registered-boundary.json','balanced-import-graph-proof.json','timing-comparison.json','critical-path-attribution.json')},closed_stage_count=7,actual_native_cells=94742,actual_native_FFs=8846,complete_import_pin_bits=checked,publicports=24,added_ties=2,independently_recomputed_descriptor_Q_to_output_D_bits=count,distinct_descriptor_payload_FFs=len(desc),original_ring_Q_count=len(ring),actual_availability_D_cuts=8,all24raw_STA_group_values_reparsed=timing,repaired_slacks_ns=actual,scope='Independent saved graph/FFsupport/import and rawSTA reader only; no EDA or completed tests rerun. Allseven fresh V23 stages completed; no dispatch recovery. All240 sealed archive members independently streamed; original functional harness failures remain in separate frozen composite capsule. Saved six graph fault outcomes checked, not rerun. Same4ns preplacement SS/TT setup stillnegative; no routed/extracted timing, allmapped-functional replay, mainchip or fullPHY acceptance.')\n+assert actual['slow_max']==-3.634856 and actual['typical_max']==-.827638 and actual['fast_max']==.823255\n+r=dict(status='PASS_SAVED_V24_FINITE_NATIVE_RECOUNT_TIMING_REJECTED',findings=[],method=pin(str(Path(__file__))),policy=pin(str(policy)),source_receipts={str(B/n):pin(str(B/n))for n in('continuation-status01.json','native-registered-boundary.json','balanced-import-graph-proof.json','timing-comparison.json','critical-path-attribution.json')},closed_stage_count=7,actual_native_cells=98919,actual_native_FFs=9490,complete_import_pin_bits=checked,publicports=24,added_ties=2,independently_recomputed_descriptor_Q_to_output_D_bits=count,distinct_descriptor_payload_FFs=len(desc),original_ring_Q_count=len(ring),actual_availability_D_cuts=8,all24raw_STA_group_values_reparsed=timing,repaired_slacks_ns=actual,scope='Independent saved graph/FFsupport/import and rawSTA reader only; no EDA or completed tests rerun. Allseven fresh V24 stages completed; no dispatch recovery. All182 sealed archive members independently streamed; original functional harness failures remain in separate frozen composite capsule. Saved six graph fault outcomes checked, not rerun. Same4ns preplacement SS/TT setup stillnegative; no routed/extracted timing, allmapped-functional replay, mainchip or fullPHY acceptance.')\n assert shutil.disk_usage('/dev/shm').free > 512*1024**2\n-r.update(validation=pin(str(validation)),archive=pin(str(archive)),archive_members=len(seen),source_derivation=pin(str(B/'native-saved-peer-source-bridge.json')),saved_graph_negative_controls=graph['actual_graph_fault_controls'],delta_SS_vs_V22_ns=actual['slow_max']-(-3.544282))\n+r.update(validation=pin(str(validation)),archive=pin(str(archive)),archive_members=len(seen),source_derivation=pin(str(B/'native-saved-peer-source-bridge.json')),saved_graph_negative_controls=graph['actual_graph_fault_controls'],delta_SS_vs_V23_ns=actual['slow_max']-(-3.191682))\n (B/'native-saved-peer-vco.json').write_text(json.dumps(r,indent=2)+'\\n');print(json.dumps(r,indent=2))\n",
+  "scope": "Saved-only V23 reader derivative; independent raw graph census confirms98919/9490/360012; original constraints and rejection retained."
+}

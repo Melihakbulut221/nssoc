@@ -1,0 +1,1626 @@
+{
+  "schema": 1,
+  "status": "PASS_LIMITED_NATIVE_DIV2_NOMINAL_CORNERS_EXPLORATORY",
+  "author_replay": true,
+  "independent_peer_review": false,
+  "source_files": {
+    "hw/soc/analog/pcie/clock_div2_hbt.spice": {
+      "bytes": 891,
+      "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+    },
+    "scripts/characterize_pcie_div2.py": {
+      "bytes": 22477,
+      "sha256": "8dd9818c28d3db09e550b41f70340ea196387bc40e7c691a2ec9f32ef50b28ce"
+    },
+    "sw/tests/test_pcie_div2.py": {
+      "bytes": 7647,
+      "sha256": "4b6727c064e65924f509783e4fdaecf516530a794c51e90b5e1ef0427f238abc"
+    }
+  },
+  "frozen_parents": {
+    "hw/soc/analog/pcie/clock_vco_hbt.spice": {
+      "bytes": 2046,
+      "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+    },
+    "hw/soc/analog/pcie/rx_sampler_hbt_v2.spice": {
+      "bytes": 1604,
+      "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+    }
+  },
+  "native_result": {
+    "bytes": 289434,
+    "sha256": "eb479e0ef336532bd56cfc7e5677997394b920b7299573c41711e0d94088509d"
+  },
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_div2_hbt.spice": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/clock_vco_hbt.spice": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/analog/pcie/rx_sampler_hbt_v2.spice": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_div2.py": "8dd9818c28d3db09e550b41f70340ea196387bc40e7c691a2ec9f32ef50b28ce",
+    "/dev/shm/nssoc-ngspice47-20261004/root/usr/bin/ngspice": "eaca52dad06845779fed4f50420a6a0cf4a32776e6a572432275f350002b87b8",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/openvaf-23.5.0/openvaf": "6918195bc6cca54016095923bea190f7a1d96dd8b062104c602e8c28578cb5e3",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_mod.lib": "94b569e695fd8a223a5a49a5b5a6b0d8a62408820bf0c2ed9dbcb0a8ab7d957e",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_mod_mismatch.lib": "8ebc8369966951cfec0e91d603685f1975fbf9ceff2eef493a25357ce9ae5492",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/capacitors_stat.lib": "68d2ef41174bcfae5997b355c4fd3dbe4f2b8ec4be30ff79d474052b3be1715a",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerCAP.lib": "4fc4a0f17ca2aef66ca38c2d2e7cead3307b69508d304ed073129565ec1c3e56",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerDIO.lib": "28e747e8f7437a3f539c5cc36f50c9d17c57c03ed463a4c9ee8f0a93a823fe0b",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerHBT.lib": "bae3d705445de8d6b8de4aa798a0e3e5e7cab617d6495d9c56473bc5377de462",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOShv.lib": "5a1f862dc304fdfe2fb9758b15d54809a688d83c3ce981dad2e8473b3e93481a",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib": "03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib": "2c18502104146804444a567abfe7d00520752bf75426809f9d79f40198fe9c1e",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/diodes.lib": "66fa37819fa8a5c8af4dbb85f11208c3e38faa49c117de55c35a1538786715e8",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod_mismatch.lib": "f0aa7d90b6489112ed256aaf4cb0a11b9ab17ebe0c3ce092f4f8c5ecb1fd1e15",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_stat.lib": "183eb9192bf711db991b8df87e031bab2ca5e559c73393edc756fa02a2720d40",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_bondpad.lib": "19b3edd62d507bfaf03633b3dc3e89b4ab4d43187a309e8fc665cc5af28a0a4f",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_dschottky_nbl1_mod.lib": "a5b4771593fdc6942eee9f74c58c42dd7dc777cf18a56814ad51c670c47ba351",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_dschottky_nbl1_stat.lib": "730c857bbaabb0c7876eb21b9b60a6882955db388956d082615763559c61d262",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_esd.lib": "4a4fb26a87f64bc6ed807f161cc7b3afaeb8d5ca7230b08ebba728e805caa925",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod.lib": "ae9288f885dd30fab24b07ed1e7e02e69eac9154022a0a6da576985183b0bd79",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_mod_mismatch.lib": "1e493f25150b25b64985acd3f1e7ed2eb2e6ca4b712adf45b2de2ce2ba1a0eb2",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_hbt_stat.lib": "80d1893eb06a3417d05400335d8e58c8309b9c80061ca96ceff8f8fd68c9a7db",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mismatch.lib": "2e9612bdb8252c281f422511039dc9b3ea983892aec89f8ef3361592e68fed09",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mod.lib": "d4b348b494998d7057bdde6fb111c60153d8b86175fafcfc6de461737e7a644b",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_mod_mismatch.lib": "be170c9619bed19215f7f7b55141e0869344874e3fcf7f30b2d2aa37659b1a0e",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_parm.lib": "eea5bbed39184cb1e2654ae29425a9ed6ee2f2341d6cb76c472591c75237bd35",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moshv_stat.lib": "cd30f22637e41fdbbaba506ebe0f17746b8438027e4651a7a87b241a39d68903",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mismatch.lib": "2d3251e2d42eadb0f8af152a4915fdc60a68bceb95a2d17a52f90cfb34b7e63e",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mod.lib": "124c48af28aee8f4788170b50dbb4d798e7d830c6bb37516f749e16f676fa9db",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_mod_mismatch.lib": "67672ffa1f224294a90270f687d11b804a24dbf268071c5cd98923ab1b3e2f84",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_parm.lib": "cbf10b8453a18bb70b8ad0d6e40faa0937338e699b5460947a94900db6c92a6e",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_moslv_stat.lib": "7f4cf8df714e327348ba3975a2630e9d7dd7ae1a7a88817df4890e82745f0f52",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_svaricaphv_mod.lib": "1462f67e80da7f5fa6f6b51efb0eb0e4dc7ef2da28d8bfde95a19ce2a780580a",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/sg13g2_svaricaphv_mod_mismatch.lib": "16da7669ee7e963645a604f64770d2f8d871fa8483c34e3dddaa9fcf01c51f50",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/r3_cmc/Changelog": "14e460005858ebdbdd21f83d9c7a3176e761825e86bfb82723a9bcd8d0e3bbf3",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/r3_cmc/LICENSE.txt": "60436a82eb1cff9e3e7fb4ba8c913b8adf72ff8578836d5134e376088a2bc698",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/r3_cmc/NOTICE.txt": "fa3dc18885dd09baaffbf02fda561438df81787d1dd255f6218bcc2764f34132",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/r3_cmc/r3_cmc.va": "398746f45048a9e075913e85a982258b929c9042257339bf1fc47d7e25303551",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/r3_cmc/r3_cmc_macros.include": "66e1bf0b43495a9c17454a1ac203171db5488edc7e19563f4f645389ba7eebb4",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/Changelog": "4abd4ceaa840ad79d727c099c46f78f82cc57df217d37938900a54f846fd282d",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/Common103_macrodefs.include": "6e5d3ddee77dfee0c8229e88cce579988ed39246c366ce3ee73631bd5d90bdd1",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/JUNCAP200_InitModel.include": "19f597782a20b62e273cb0aeb17f5a983205ffd44ab179b630c9d79fbb4d280a",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/JUNCAP200_macrodefs.include": "62d5271df8aab2d171e4cf694dc7ab96f7f2b60e65aee8c6405d42b5986fe09b",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/JUNCAP200_parlist.include": "5189b125ba65900d15ca372ac665adcf501beab145ef44643773cd875bab764b",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/JUNCAP200_varlist1.include": "352d34aea53cc433b1f201374c946e6ee416aa873ba4d4ebbb6a93f6d97afb91",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/JUNCAP200_varlist2.include": "198fa59fc940dce7fb3d93a7ed435a8304fa9eb3a8f8acbce3df027fddeac88c",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/PSP103_ChargesNQS.include": "4c748973f874ad8599153fab85f92a9b3fc6fa17375f83023ef0a4dbe9878681",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/PSP103_InitNQS.include": "b619748704483c1e09b49a09a9502a7e9ad89d00d664475a636ec90c0803dfd9",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/PSP103_SPCalculation.include": "9f5dddb3be0a021306663ca1da0da8fd8b3c39de1876c5d69910d9ac12e9fe2d",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/PSP103_binning.include": "9005565ed830799e59f970ee75e2b7da16562d6efb4fb9966ee77228a1b5b2a8",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/PSP103_binpars.include": "a8a3467dcc15491c3ce57ec764c5606fd0010555c6e9f4993bfb84ea99bf72f5",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/PSP103_macrodefs.include": "dc1acff3800d3d98c43c213503300a767633c9e529be97170b44a0119d862fd9",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/PSP103_module.include": "cb8e10863ea8c01605274abf5809f9ba33ceead71a1001d0d2cec7d8cb3b1bdc",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/PSP103_nqs_macrodefs.include": "033aeafd76ac708008a92397aa5d543fe28bc7139775e860c53c9ad9431f4318",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/README.md": "b5301fb60c1f92250c4f1a08c637e25b5ecf6c08ba9647aea3d773cb24c7cf39",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/juncap200.va": "fd2d31d987d63d955d8c477709266a06dc90bfe16d2961c0e43a17e6270cf9f1",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/psp103.va": "127be82891919323e60eec7ae02b0c034b396800884e8daf5561c9d3588684ba",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/psp103_nqs.va": "5612aa9e75aa467e320f19db7cc40f01dbb9a81212e9660e3939cf3bc2cac00d",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/psp103t.va": "cc0c4ec3546a027d005db0fb85d561f467a7aaa2cf92c40b3b4b91a216c64c0f",
+    "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/psp103/releasenotesPSP103p6.txt": "e75fd608f593442bfafbe1a2d6637d0a3b21c522903f71df42d4a675bed59261"
+  },
+  "compiled_models": {
+    "/dev/shm/nssoc-div2-native-final/r3_cmc.osdi": "9b41facf3c49d2266e542406547ed00677304f09c1dd281f3bf90414ee053828",
+    "/dev/shm/nssoc-div2-native-final/psp103.osdi": "e4a50ec48e3fab3aa7af76f1d0816863c8aa06223e0efcded362ddadb49681a8",
+    "/dev/shm/nssoc-div2-native-final/psp103_nqs.osdi": "523382d47f1f747c991a938b2f93cc6d9bab27ebf44f708c4e995820dc0bee88"
+  },
+  "complete_input_output_and_all_12_raw_wave_reparse": true,
+  "native_case_count": 12,
+  "required_clean_safe_positive_cases": 4,
+  "actual_functional_negative_cases": 4,
+  "exploratory_cases": 4,
+  "exploratory_safe_clean_passes": 0,
+  "cases": [
+    {
+      "name": "nominal",
+      "role": "required",
+      "fault": "",
+      "functional_divide_pass": true,
+      "numeric_limits_pass": true,
+      "numerical_clean": true,
+      "expected_outcome_observed": true,
+      "input_frequency_hz": 8019331640.3428135,
+      "output_frequency_hz": 4009605620.9089427,
+      "input_rising_edges": 64,
+      "output_rising_edges": 32,
+      "min_operating_vce_v": 0.472033958891,
+      "max_capture_vce_v": 1.474550867642,
+      "max_capture_abs_ic_a_per_nx": 0.0017654990915185,
+      "failed_checks": [],
+      "diagnostics": []
+    },
+    {
+      "name": "half_step",
+      "role": "required",
+      "fault": "",
+      "functional_divide_pass": true,
+      "numeric_limits_pass": true,
+      "numerical_clean": true,
+      "expected_outcome_observed": true,
+      "input_frequency_hz": 8021162266.615645,
+      "output_frequency_hz": 4010518453.833972,
+      "input_rising_edges": 64,
+      "output_rising_edges": 32,
+      "min_operating_vce_v": 0.4719197200765,
+      "max_capture_vce_v": 1.474389172924,
+      "max_capture_abs_ic_a_per_nx": 0.001765517009997,
+      "failed_checks": [],
+      "diagnostics": []
+    },
+    {
+      "name": "slow_ramp",
+      "role": "required",
+      "fault": "",
+      "functional_divide_pass": true,
+      "numeric_limits_pass": true,
+      "numerical_clean": true,
+      "expected_outcome_observed": true,
+      "input_frequency_hz": 8015087787.358959,
+      "output_frequency_hz": 4007455504.084797,
+      "input_rising_edges": 64,
+      "output_rising_edges": 32,
+      "min_operating_vce_v": 0.4724965179511,
+      "max_capture_vce_v": 1.474534256665,
+      "max_capture_abs_ic_a_per_nx": 0.001762420374499,
+      "failed_checks": [],
+      "diagnostics": []
+    },
+    {
+      "name": "load100fF",
+      "role": "required",
+      "fault": "",
+      "functional_divide_pass": true,
+      "numeric_limits_pass": true,
+      "numerical_clean": true,
+      "expected_outcome_observed": true,
+      "input_frequency_hz": 8019324823.28245,
+      "output_frequency_hz": 4009607399.9367166,
+      "input_rising_edges": 64,
+      "output_rising_edges": 32,
+      "min_operating_vce_v": 0.4718274149062,
+      "max_capture_vce_v": 1.474619375246,
+      "max_capture_abs_ic_a_per_nx": 0.0017654994233525,
+      "failed_checks": [],
+      "diagnostics": []
+    },
+    {
+      "name": "cold_fast",
+      "role": "exploration",
+      "fault": "",
+      "functional_divide_pass": true,
+      "numeric_limits_pass": false,
+      "numerical_clean": true,
+      "expected_outcome_observed": false,
+      "input_frequency_hz": 9390875787.080715,
+      "output_frequency_hz": 4695490268.049327,
+      "input_rising_edges": 75,
+      "output_rising_edges": 37,
+      "min_operating_vce_v": 0.3758966655798,
+      "max_capture_vce_v": 1.425663074985,
+      "max_capture_abs_ic_a_per_nx": 0.0019054814433055,
+      "failed_checks": [
+        "operating_headroom"
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "hot_slow",
+      "role": "exploration",
+      "fault": "",
+      "functional_divide_pass": true,
+      "numeric_limits_pass": true,
+      "numerical_clean": false,
+      "expected_outcome_observed": false,
+      "input_frequency_hz": 6770043926.535564,
+      "output_frequency_hz": 3385055760.3939276,
+      "input_rising_edges": 55,
+      "output_rising_edges": 27,
+      "min_operating_vce_v": 0.47771147804899994,
+      "max_capture_vce_v": 1.550350902329,
+      "max_capture_abs_ic_a_per_nx": 0.001609971329252,
+      "failed_checks": [],
+      "diagnostics": [
+        "The temperature limiting function received NaN.",
+        "Note: Starting dynamic gmin stepping",
+        "Note: Dynamic gmin stepping completed"
+      ]
+    },
+    {
+      "name": "cold_slow",
+      "role": "exploration",
+      "fault": "",
+      "functional_divide_pass": true,
+      "numeric_limits_pass": false,
+      "numerical_clean": true,
+      "expected_outcome_observed": false,
+      "input_frequency_hz": 8006234778.321841,
+      "output_frequency_hz": 4003044859.134039,
+      "input_rising_edges": 64,
+      "output_rising_edges": 33,
+      "min_operating_vce_v": 0.3585317582511,
+      "max_capture_vce_v": 1.414380361811,
+      "max_capture_abs_ic_a_per_nx": 0.0018021879985835,
+      "failed_checks": [
+        "operating_headroom"
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "hot_fast",
+      "role": "exploration",
+      "fault": "",
+      "functional_divide_pass": true,
+      "numeric_limits_pass": true,
+      "numerical_clean": false,
+      "expected_outcome_observed": false,
+      "input_frequency_hz": 7838696053.225693,
+      "output_frequency_hz": 3919331598.1330075,
+      "input_rising_edges": 63,
+      "output_rising_edges": 32,
+      "min_operating_vce_v": 0.41283083829700007,
+      "max_capture_vce_v": 1.56589563954,
+      "max_capture_abs_ic_a_per_nx": 0.001745086518684,
+      "failed_checks": [],
+      "diagnostics": [
+        "The temperature limiting function received NaN.",
+        "Note: Starting dynamic gmin stepping",
+        "Note: Dynamic gmin stepping completed"
+      ]
+    },
+    {
+      "name": "no_toggle",
+      "role": "negative",
+      "fault": "no_toggle",
+      "functional_divide_pass": false,
+      "numeric_limits_pass": false,
+      "numerical_clean": true,
+      "expected_outcome_observed": true,
+      "input_frequency_hz": 8019336153.22509,
+      "output_frequency_hz": null,
+      "input_rising_edges": 64,
+      "output_rising_edges": 0,
+      "min_operating_vce_v": 0.4718530196248,
+      "max_capture_vce_v": 1.476193092441,
+      "max_capture_abs_ic_a_per_nx": 0.001765533380254,
+      "failed_checks": [
+        "output_edges",
+        "output_edge_order",
+        "exactly_two_input_periods",
+        "one_output_toggle_each_input_rise",
+        "rising_edge_latency",
+        "period_ratio",
+        "output_swing",
+        "duty"
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "same_phase",
+      "role": "negative",
+      "fault": "same_phase",
+      "functional_divide_pass": false,
+      "numeric_limits_pass": false,
+      "numerical_clean": true,
+      "expected_outcome_observed": true,
+      "input_frequency_hz": 8019320042.870105,
+      "output_frequency_hz": 24057167684.224358,
+      "input_rising_edges": 64,
+      "output_rising_edges": 193,
+      "min_operating_vce_v": 0.4720015895558,
+      "max_capture_vce_v": 1.472566124397,
+      "max_capture_abs_ic_a_per_nx": 0.001765544540248,
+      "failed_checks": [
+        "exactly_two_input_periods",
+        "one_output_toggle_each_input_rise",
+        "rising_edge_latency",
+        "period_ratio",
+        "output_swing",
+        "duty"
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "no_bias",
+      "role": "negative",
+      "fault": "no_bias",
+      "functional_divide_pass": false,
+      "numeric_limits_pass": false,
+      "numerical_clean": true,
+      "expected_outcome_observed": true,
+      "input_frequency_hz": 8019133470.431435,
+      "output_frequency_hz": 24064444457.337704,
+      "input_rising_edges": 64,
+      "output_rising_edges": 192,
+      "min_operating_vce_v": -0.006782509416436,
+      "max_capture_vce_v": 1.471807628181,
+      "max_capture_abs_ic_a_per_nx": 0.0017655395466615,
+      "failed_checks": [
+        "exactly_two_input_periods",
+        "one_output_toggle_each_input_rise",
+        "rising_edge_latency",
+        "period_ratio",
+        "output_swing",
+        "duty",
+        "operating_headroom"
+      ],
+      "diagnostics": []
+    },
+    {
+      "name": "same_clock",
+      "role": "negative",
+      "fault": "same_clock",
+      "functional_divide_pass": false,
+      "numeric_limits_pass": false,
+      "numerical_clean": true,
+      "expected_outcome_observed": true,
+      "input_frequency_hz": 8018515428.503844,
+      "output_frequency_hz": 25433146693.50509,
+      "input_rising_edges": 64,
+      "output_rising_edges": 204,
+      "min_operating_vce_v": 0.1762121337761,
+      "max_capture_vce_v": 1.476688333373,
+      "max_capture_abs_ic_a_per_nx": 0.001765566792392,
+      "failed_checks": [
+        "exactly_two_input_periods",
+        "one_output_toggle_each_input_rise",
+        "rising_edge_latency",
+        "period_ratio",
+        "operating_headroom"
+      ],
+      "diagnostics": []
+    }
+  ],
+  "nominal": {
+    "rows": 8001,
+    "input_frequency_hz": 8019331640.3428135,
+    "output_frequency_hz": 4009605620.9089427,
+    "period_ratio_to_exact_two": 1.0000150137614907,
+    "input_rising_edges": 64,
+    "output_rising_edges": 32,
+    "input_edges_per_output_period": [
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "output_toggle_input_edge_steps": [
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "edge_delay_range_s": [
+      7.572485875693527e-12,
+      7.631684153152613e-12
+    ],
+    "duty_range": [
+      0.5000537778856556,
+      0.5000830866351729
+    ],
+    "output_diff_range_v": [
+      -0.20159978686100022,
+      0.2016724462420001
+    ],
+    "devices": {
+      "xosc.xref": {
+        "nx": 1,
+        "terminals": [
+          "xosc.ref",
+          "xosc.ref",
+          "0"
+        ],
+        "min_operating_vce_v": 0.8663172913802,
+        "max_operating_vce_v": 0.8693381292734,
+        "min_capture_vce_v": -2.186506683009e-19,
+        "max_capture_vce_v": 0.8718003813989,
+        "max_abs_ic_a_per_nx": 0.0007820715584635,
+        "max_capture_abs_ic_a_per_nx": 0.0007948039388209
+      },
+      "xosc.xp0": {
+        "nx": 2,
+        "terminals": [
+          "xosc.p0",
+          "xosc.p2",
+          "xosc.t0"
+        ],
+        "min_operating_vce_v": 0.6593446990510001,
+        "max_operating_vce_v": 1.0215816907920001,
+        "min_capture_vce_v": -0.0008093151633560003,
+        "max_capture_vce_v": 1.0215816907920001,
+        "max_abs_ic_a_per_nx": 0.0017654990915185,
+        "max_capture_abs_ic_a_per_nx": 0.0017654990915185
+      },
+      "xosc.xn0": {
+        "nx": 2,
+        "terminals": [
+          "xosc.n0",
+          "xosc.n2",
+          "xosc.t0"
+        ],
+        "min_operating_vce_v": 0.6578220933949999,
+        "max_operating_vce_v": 1.02322133947,
+        "min_capture_vce_v": -0.0007796086937410002,
+        "max_capture_vce_v": 1.02322133947,
+        "max_abs_ic_a_per_nx": 0.00176430011433,
+        "max_capture_abs_ic_a_per_nx": 0.00176430011433
+      },
+      "xosc.xt0": {
+        "nx": 4,
+        "terminals": [
+          "xosc.t0",
+          "xosc.ref",
+          "0"
+        ],
+        "min_operating_vce_v": 1.166045852375,
+        "max_operating_vce_v": 1.284487234024,
+        "min_capture_vce_v": -1.73394548431e-19,
+        "max_capture_vce_v": 1.291307699426,
+        "max_abs_ic_a_per_nx": 0.000868605277445,
+        "max_capture_abs_ic_a_per_nx": 0.000868605277445
+      },
+      "xosc.xp1": {
+        "nx": 2,
+        "terminals": [
+          "xosc.p1",
+          "xosc.p0",
+          "xosc.t1"
+        ],
+        "min_operating_vce_v": 0.659196354973,
+        "max_operating_vce_v": 1.029017779149,
+        "min_capture_vce_v": -0.0011094292620960002,
+        "max_capture_vce_v": 1.029017779149,
+        "max_abs_ic_a_per_nx": 0.001755377474625,
+        "max_capture_abs_ic_a_per_nx": 0.001755377474625
+      },
+      "xosc.xn1": {
+        "nx": 2,
+        "terminals": [
+          "xosc.n1",
+          "xosc.n0",
+          "xosc.t1"
+        ],
+        "min_operating_vce_v": 0.657695688112,
+        "max_operating_vce_v": 1.0283847203849998,
+        "min_capture_vce_v": -0.0011088526687249999,
+        "max_capture_vce_v": 1.0283847203849998,
+        "max_abs_ic_a_per_nx": 0.0017560065953975,
+        "max_capture_abs_ic_a_per_nx": 0.0017560065953975
+      },
+      "xosc.xt1": {
+        "nx": 4,
+        "terminals": [
+          "xosc.t1",
+          "xosc.ref",
+          "0"
+        ],
+        "min_operating_vce_v": 1.164172593971,
+        "max_operating_vce_v": 1.277480180178,
+        "min_capture_vce_v": 1.473879355941e-19,
+        "max_capture_vce_v": 1.28464365749,
+        "max_abs_ic_a_per_nx": 0.00086512533383525,
+        "max_capture_abs_ic_a_per_nx": 0.00086512533383525
+      },
+      "xosc.xp2": {
+        "nx": 2,
+        "terminals": [
+          "xosc.p2",
+          "xosc.p1",
+          "xosc.t2"
+        ],
+        "min_operating_vce_v": 0.652496799181,
+        "max_operating_vce_v": 1.0295825584269997,
+        "min_capture_vce_v": -0.001008002730444,
+        "max_capture_vce_v": 1.0295825584269997,
+        "max_abs_ic_a_per_nx": 0.001762605468293,
+        "max_capture_abs_ic_a_per_nx": 0.001762605468293
+      },
+      "xosc.xn2": {
+        "nx": 2,
+        "terminals": [
+          "xosc.n2",
+          "xosc.n1",
+          "xosc.t2"
+        ],
+        "min_operating_vce_v": 0.6525459297210001,
+        "max_operating_vce_v": 1.0294514984890002,
+        "min_capture_vce_v": -0.0010074261607929996,
+        "max_capture_vce_v": 1.0294514984890002,
+        "max_abs_ic_a_per_nx": 0.001763023102001,
+        "max_capture_abs_ic_a_per_nx": 0.001763023102001
+      },
+      "xosc.xt2": {
+        "nx": 4,
+        "terminals": [
+          "xosc.t2",
+          "xosc.ref",
+          "0"
+        ],
+        "min_operating_vce_v": 1.16646117495,
+        "max_operating_vce_v": 1.281774399741,
+        "min_capture_vce_v": -1.180327664474e-19,
+        "max_capture_vce_v": 1.288693750302,
+        "max_abs_ic_a_per_nx": 0.0008676255309495,
+        "max_capture_abs_ic_a_per_nx": 0.0008676255309495
+      },
+      "xosc.xbref": {
+        "nx": 1,
+        "terminals": [
+          "xosc.bref",
+          "xosc.bref",
+          "0"
+        ],
+        "min_operating_vce_v": 0.9000508317207,
+        "max_operating_vce_v": 0.9061703072034,
+        "min_capture_vce_v": 4.392882318126e-30,
+        "max_capture_vce_v": 0.90882232959,
+        "max_abs_ic_a_per_nx": 0.001416294880087,
+        "max_capture_abs_ic_a_per_nx": 0.001416294880087
+      },
+      "xosc.xbp": {
+        "nx": 2,
+        "terminals": [
+          "xosc.bo_n",
+          "xosc.p0",
+          "xosc.bt"
+        ],
+        "min_operating_vce_v": 0.5433958864350001,
+        "max_operating_vce_v": 1.101104563495,
+        "min_capture_vce_v": 1.84273204241885e-21,
+        "max_capture_vce_v": 1.101104563495,
+        "max_abs_ic_a_per_nx": 0.001566120090922,
+        "max_capture_abs_ic_a_per_nx": 0.001566120090922
+      },
+      "xosc.xbn": {
+        "nx": 2,
+        "terminals": [
+          "xosc.bo_p",
+          "xosc.n0",
+          "xosc.bt"
+        ],
+        "min_operating_vce_v": 0.541236266598,
+        "max_operating_vce_v": 1.101006589994,
+        "min_capture_vce_v": 1.8427320424188537e-21,
+        "max_capture_vce_v": 1.101006589994,
+        "max_abs_ic_a_per_nx": 0.0015661600738685,
+        "max_capture_abs_ic_a_per_nx": 0.0015661600738685
+      },
+      "xosc.xbt": {
+        "nx": 2,
+        "terminals": [
+          "xosc.bt",
+          "xosc.bref",
+          "0"
+        ],
+        "min_operating_vce_v": 1.169498762235,
+        "max_operating_vce_v": 1.286600675826,
+        "min_capture_vce_v": -1.842732042415e-21,
+        "max_capture_vce_v": 1.293847612023,
+        "max_abs_ic_a_per_nx": 0.001562050437234,
+        "max_capture_abs_ic_a_per_nx": 0.001562050437234
+      },
+      "xosc.xfp": {
+        "nx": 4,
+        "terminals": [
+          "avdd",
+          "xosc.bo_p",
+          "clkp"
+        ],
+        "min_operating_vce_v": 0.8254491323579998,
+        "max_operating_vce_v": 1.3130574612139998,
+        "min_capture_vce_v": 1.566371733901e-25,
+        "max_capture_vce_v": 1.3130574612139998,
+        "max_abs_ic_a_per_nx": 0.000992190435203,
+        "max_capture_abs_ic_a_per_nx": 0.000992190435203
+      },
+      "xosc.xfn": {
+        "nx": 4,
+        "terminals": [
+          "avdd",
+          "xosc.bo_n",
+          "clkn"
+        ],
+        "min_operating_vce_v": 0.8268757099539998,
+        "max_operating_vce_v": 1.3125004174441999,
+        "min_capture_vce_v": 1.698218379868e-25,
+        "max_capture_vce_v": 1.3125004174441999,
+        "max_abs_ic_a_per_nx": 0.00099267375247275,
+        "max_capture_abs_ic_a_per_nx": 0.00099267375247275
+      },
+      "xosc.xftp": {
+        "nx": 1,
+        "terminals": [
+          "clkp",
+          "xosc.bref",
+          "0"
+        ],
+        "min_operating_vce_v": 0.986942538786,
+        "max_operating_vce_v": 1.474550867642,
+        "min_capture_vce_v": -1.566371733901e-25,
+        "max_capture_vce_v": 1.474550867642,
+        "max_abs_ic_a_per_nx": 0.001497278714547,
+        "max_capture_abs_ic_a_per_nx": 0.001497278714547
+      },
+      "xosc.xftn": {
+        "nx": 1,
+        "terminals": [
+          "clkn",
+          "xosc.bref",
+          "0"
+        ],
+        "min_operating_vce_v": 0.9874995825558,
+        "max_operating_vce_v": 1.473124290046,
+        "min_capture_vce_v": -1.698218379868e-25,
+        "max_capture_vce_v": 1.473124290046,
+        "max_abs_ic_a_per_nx": 0.001496475941921,
+        "max_capture_abs_ic_a_per_nx": 0.001496475941921
+      },
+      "xdiv.xref": {
+        "nx": 1,
+        "terminals": [
+          "xdiv.ref",
+          "xdiv.ref",
+          "0"
+        ],
+        "min_operating_vce_v": 0.8276023758488,
+        "max_operating_vce_v": 0.8575861550372,
+        "min_capture_vce_v": 6.044319856245e-34,
+        "max_capture_vce_v": 0.8592437453358,
+        "max_abs_ic_a_per_nx": 0.0006208129408264,
+        "max_capture_abs_ic_a_per_nx": 0.0006246951021799
+      },
+      "xdiv.xm.xdp": {
+        "nx": 2,
+        "terminals": [
+          "xdiv.mn",
+          "qn",
+          "xdiv.xm.se"
+        ],
+        "min_operating_vce_v": 0.6146937143500002,
+        "max_operating_vce_v": 0.93604248298,
+        "min_capture_vce_v": -2.317653830164313e-33,
+        "max_capture_vce_v": 0.93604248298,
+        "max_abs_ic_a_per_nx": 0.0013952400354065,
+        "max_capture_abs_ic_a_per_nx": 0.0013952400354065
+      },
+      "xdiv.xm.xdn": {
+        "nx": 2,
+        "terminals": [
+          "xdiv.mp",
+          "qp",
+          "xdiv.xm.se"
+        ],
+        "min_operating_vce_v": 0.6146225385160002,
+        "max_operating_vce_v": 0.9358753090559997,
+        "min_capture_vce_v": -2.317653830164313e-33,
+        "max_capture_vce_v": 0.9404722861950001,
+        "max_abs_ic_a_per_nx": 0.0013952532972145,
+        "max_capture_abs_ic_a_per_nx": 0.0013952532972145
+      },
+      "xdiv.xm.xlp": {
+        "nx": 2,
+        "terminals": [
+          "xdiv.mn",
+          "xdiv.mp",
+          "xdiv.xm.he"
+        ],
+        "min_operating_vce_v": 0.5769517880189998,
+        "max_operating_vce_v": 0.9137236608069998,
+        "min_capture_vce_v": -2.1461210139899962e-08,
+        "max_capture_vce_v": 0.9137236608069998,
+        "max_abs_ic_a_per_nx": 0.001500273527226,
+        "max_capture_abs_ic_a_per_nx": 0.001500273527226
+      },
+      "xdiv.xm.xln": {
+        "nx": 2,
+        "terminals": [
+          "xdiv.mp",
+          "xdiv.mn",
+          "xdiv.xm.he"
+        ],
+        "min_operating_vce_v": 0.5768477742089999,
+        "max_operating_vce_v": 0.9137394123040001,
+        "min_capture_vce_v": -3.050715754329999e-08,
+        "max_capture_vce_v": 0.9146978256539999,
+        "max_abs_ic_a_per_nx": 0.001499561132555,
+        "max_capture_abs_ic_a_per_nx": 0.001499561132555
+      },
+      "xdiv.xm.xcs": {
+        "nx": 4,
+        "terminals": [
+          "xdiv.xm.se",
+          "clkn",
+          "xdiv.xm.te"
+        ],
+        "min_operating_vce_v": 0.9368114889582999,
+        "max_operating_vce_v": 1.272208653447,
+        "min_capture_vce_v": -4.265909727462462e-25,
+        "max_capture_vce_v": 1.272208653447,
+        "max_abs_ic_a_per_nx": 0.00070608591720125,
+        "max_capture_abs_ic_a_per_nx": 0.00070608591720125
+      },
+      "xdiv.xm.xch": {
+        "nx": 4,
+        "terminals": [
+          "xdiv.xm.he",
+          "clkp",
+          "xdiv.xm.te"
+        ],
+        "min_operating_vce_v": 0.9421290830039999,
+        "max_operating_vce_v": 1.2766061737004,
+        "min_capture_vce_v": -4.265909731769758e-25,
+        "max_capture_vce_v": 1.2766061737004,
+        "max_abs_ic_a_per_nx": 0.00071572265093325,
+        "max_capture_abs_ic_a_per_nx": 0.00071572265093325
+      },
+      "xdiv.xm.xt": {
+        "nx": 4,
+        "terminals": [
+          "xdiv.xm.te",
+          "xdiv.ref",
+          "0"
+        ],
+        "min_operating_vce_v": 0.472033958891,
+        "max_operating_vce_v": 0.625521219619,
+        "min_capture_vce_v": 4.265909750639e-25,
+        "max_capture_vce_v": 0.625521219619,
+        "max_abs_ic_a_per_nx": 0.00063663967159475,
+        "max_capture_abs_ic_a_per_nx": 0.00063663967159475
+      },
+      "xdiv.xs.xdp": {
+        "nx": 2,
+        "terminals": [
+          "qn",
+          "xdiv.mp",
+          "xdiv.xs.se"
+        ],
+        "min_operating_vce_v": 0.598820310802,
+        "max_operating_vce_v": 0.908319812759,
+        "min_capture_vce_v": -5.132461663770002e-06,
+        "max_capture_vce_v": 0.9084531445670001,
+        "max_abs_ic_a_per_nx": 0.001495526194723,
+        "max_capture_abs_ic_a_per_nx": 0.001495526194723
+      },
+      "xdiv.xs.xdn": {
+        "nx": 2,
+        "terminals": [
+          "qp",
+          "xdiv.mn",
+          "xdiv.xs.se"
+        ],
+        "min_operating_vce_v": 0.598864190936,
+        "max_operating_vce_v": 0.9084291233699999,
+        "min_capture_vce_v": -5.132461395779999e-06,
+        "max_capture_vce_v": 0.9089283887639998,
+        "max_abs_ic_a_per_nx": 0.0014948762805045,
+        "max_capture_abs_ic_a_per_nx": 0.0014948762805045
+      },
+      "xdiv.xs.xlp": {
+        "nx": 2,
+        "terminals": [
+          "qn",
+          "qp",
+          "xdiv.xs.he"
+        ],
+        "min_operating_vce_v": 0.592578520332,
+        "max_operating_vce_v": 0.9076383462550002,
+        "min_capture_vce_v": -3.8681251407279996e-07,
+        "max_capture_vce_v": 0.9076383462550002,
+        "max_abs_ic_a_per_nx": 0.0013973209780325,
+        "max_capture_abs_ic_a_per_nx": 0.0013973209780325
+      },
+      "xdiv.xs.xln": {
+        "nx": 2,
+        "terminals": [
+          "qp",
+          "qn",
+          "xdiv.xs.he"
+        ],
+        "min_operating_vce_v": 0.5926246500949999,
+        "max_operating_vce_v": 0.907652581864,
+        "min_capture_vce_v": -3.8681251406839994e-07,
+        "max_capture_vce_v": 0.907652581864,
+        "max_abs_ic_a_per_nx": 0.001397182824134,
+        "max_capture_abs_ic_a_per_nx": 0.001397182824134
+      },
+      "xdiv.xs.xcs": {
+        "nx": 4,
+        "terminals": [
+          "xdiv.xs.se",
+          "clkp",
+          "xdiv.xs.te"
+        ],
+        "min_operating_vce_v": 0.9416882748745999,
+        "max_operating_vce_v": 1.2764618780336001,
+        "min_capture_vce_v": 8.22455882903996e-25,
+        "max_capture_vce_v": 1.2764618780336001,
+        "max_abs_ic_a_per_nx": 0.00071572528874275,
+        "max_capture_abs_ic_a_per_nx": 0.00071572528874275
+      },
+      "xdiv.xs.xch": {
+        "nx": 4,
+        "terminals": [
+          "xdiv.xs.he",
+          "clkn",
+          "xdiv.xs.te"
+        ],
+        "min_operating_vce_v": 0.9368566521246001,
+        "max_operating_vce_v": 1.2723661370109,
+        "min_capture_vce_v": 8.224558833347256e-25,
+        "max_capture_vce_v": 1.2723661370109,
+        "max_abs_ic_a_per_nx": 0.000706042438555,
+        "max_capture_abs_ic_a_per_nx": 0.000706042438555
+      },
+      "xdiv.xs.xt": {
+        "nx": 4,
+        "terminals": [
+          "xdiv.xs.te",
+          "xdiv.ref",
+          "0"
+        ],
+        "min_operating_vce_v": 0.4720416366397,
+        "max_operating_vce_v": 0.6255207589096,
+        "min_capture_vce_v": -8.224558807694e-25,
+        "max_capture_vce_v": 0.6255207589096,
+        "max_abs_ic_a_per_nx": 0.00063664122855225,
+        "max_capture_abs_ic_a_per_nx": 0.00063664122855225
+      }
+    },
+    "resistor_max_selfheat_k": {
+      "xosc.xrp0": 0.2535776591131,
+      "xosc.xrn0": 0.2550014706129,
+      "xosc.xrp1": 0.2570513146709,
+      "xosc.xrn1": 0.2569204716854,
+      "xosc.xrp2": 0.2585642437583,
+      "xosc.xrn2": 0.2578541984823,
+      "xosc.xrb": 2.376766584084,
+      "xosc.xbrp": 0.3077404748464,
+      "xosc.xbrn": 0.3089303387545,
+      "xdiv.xbias": 1.136193098929,
+      "xdiv.xm.xrp": 0.2018424384538,
+      "xdiv.xm.xrn": 0.2011797801834,
+      "xdiv.xm.xbs": 0.1256699542657,
+      "xdiv.xm.xbh": 0.1260961575508,
+      "xdiv.xs.xrp": 0.1929618497754,
+      "xdiv.xs.xrn": 0.1940469786926,
+      "xdiv.xs.xbs": 0.1260973787166,
+      "xdiv.xs.xbh": 0.1256725378566
+    },
+    "checks": {
+      "input_edges": true,
+      "output_edges": true,
+      "input_edge_order": true,
+      "output_edge_order": true,
+      "exactly_two_input_periods": true,
+      "one_output_toggle_each_input_rise": true,
+      "rising_edge_latency": true,
+      "period_ratio": true,
+      "output_swing": true,
+      "input_swing": true,
+      "duty": true,
+      "operating_headroom": true,
+      "full_capture_maximum_vce": true,
+      "current_density": true
+    },
+    "functional_divide_pass": true,
+    "screen_pass": true,
+    "mean_divider_supply_power_w": 0.012775347900193489,
+    "mean_vco_supply_power_w": 0.04200685548799988
+  },
+  "half_step_frequency_relative_delta": 0.00022760970571189532,
+  "tests": {
+    "passed": 24,
+    "log": {
+      "bytes": 99,
+      "sha256": "fd625b1930329310ce74d561a9f3964c79cccfb165a1d915487bb0ab40e3adf8"
+    }
+  },
+  "source_and_model_equations_unchanged": true,
+  "hardware_inventory": {
+    "hbt": 33,
+    "divider_hbt": 15,
+    "resistors": 18,
+    "divider_native_mim": 2
+  },
+  "full_capture_duration_s": 1.2e-08,
+  "functional_window_s": [
+    4e-09,
+    1.2e-08
+  ],
+  "limits": {
+    "min_input_edges": 40,
+    "min_output_edges": 20,
+    "min_peak_v": 0.1,
+    "nominal_input_min_hz": 7500000000.0,
+    "nominal_input_max_hz": 8500000000.0,
+    "min_duty": 0.4,
+    "max_duty": 0.6,
+    "max_period_ratio_error": 0.005,
+    "min_vce_v": 0.4,
+    "max_vce_v": 1.6,
+    "max_ic_a_per_nx": 0.003,
+    "observation_begin_s": 4e-09,
+    "observation_end_s": 1.2e-08,
+    "max_step_relative_excess": 1e-05
+  },
+  "compact_capsule": {
+    "bytes": 7576340,
+    "sha256": "2f83a138be5cc0eb10960787d99610a6faa832b82f6d2410375861f8fb385614",
+    "path": "hw/soc/out/pcie-div2-20261004/div2-native-compact.tar.xz",
+    "members": {
+      "sources/hw/soc/analog/pcie/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "sources/scripts/characterize_pcie_div2.py": {
+        "bytes": 22477,
+        "sha256": "8dd9818c28d3db09e550b41f70340ea196387bc40e7c691a2ec9f32ef50b28ce"
+      },
+      "sources/sw/tests/test_pcie_div2.py": {
+        "bytes": 7647,
+        "sha256": "4b6727c064e65924f509783e4fdaecf516530a794c51e90b5e1ef0427f238abc"
+      },
+      "sources/hw/soc/analog/pcie/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "sources/hw/soc/analog/pcie/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "review/seal.py": {
+        "bytes": 8684,
+        "sha256": "768edfd75b0be99e947d2daafdde972d2b446eae1e30669b7152172de204c6fc"
+      },
+      "review/pytest.log": {
+        "bytes": 99,
+        "sha256": "fd625b1930329310ce74d561a9f3964c79cccfb165a1d915487bb0ab40e3adf8"
+      },
+      "native-final/cold_fast/bench.cir": {
+        "bytes": 4438,
+        "sha256": "a1b03d9e0025c0d4987dc58ac665579d9f8f415b2781c8dbfce8ac9f1f59f25e"
+      },
+      "native-final/cold_fast/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "native-final/cold_fast/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/cold_fast/run.log": {
+        "bytes": 6744,
+        "sha256": "8948bb96d8ea5d68d1a9d7b67b0d616e70fe86da054e76f2173bcb21b630cc1c"
+      },
+      "native-final/cold_fast/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/cold_slow/bench.cir": {
+        "bytes": 4438,
+        "sha256": "ccb4b6b8768950b2f09febe999875b8ec8c4a4e398279704e30197cbd67474c5"
+      },
+      "native-final/cold_slow/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "native-final/cold_slow/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/cold_slow/run.log": {
+        "bytes": 6744,
+        "sha256": "ac4003656ec7aebafae3effc8086270e62cf9bdf166e5c38eabbaa82b3d2ba57"
+      },
+      "native-final/cold_slow/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/half_step/bench.cir": {
+        "bytes": 4437,
+        "sha256": "f4592ca193488c9d9bb433b9bfea71897f3e3be0092f75bcf74f86a069ef6135"
+      },
+      "native-final/half_step/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "native-final/half_step/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/half_step/run.log": {
+        "bytes": 7223,
+        "sha256": "1915e19081f9fc5b559f35745461628b49905e18a40e41841f5796774501fc95"
+      },
+      "native-final/half_step/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/hot_fast/bench.cir": {
+        "bytes": 4438,
+        "sha256": "b2c4b808cf290a5a36ff67d01808961ab40e07c94a3fc43c415238b3313fa1a7"
+      },
+      "native-final/hot_fast/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "native-final/hot_fast/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/hot_fast/run.log": {
+        "bytes": 6980,
+        "sha256": "53a3d7ce8a386acbcc7bd57809c1c22b4b000da25eb3672b002abeffebed909f"
+      },
+      "native-final/hot_fast/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/hot_slow/bench.cir": {
+        "bytes": 4438,
+        "sha256": "59695dc956faaf03fe83491f19ea47a3552860f4a0f47478c4f1c0d0bf485819"
+      },
+      "native-final/hot_slow/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "native-final/hot_slow/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/hot_slow/run.log": {
+        "bytes": 7140,
+        "sha256": "6e70b37ea967504abdb617695b273553b7123371d91de2094a0d176b24ce46b9"
+      },
+      "native-final/hot_slow/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/load100fF/bench.cir": {
+        "bytes": 4437,
+        "sha256": "def839ceadb1b21487d32a65ac7af3a32bd22eadb362505a02331587cce55764"
+      },
+      "native-final/load100fF/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "native-final/load100fF/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/load100fF/run.log": {
+        "bytes": 6743,
+        "sha256": "e3bb82ba325132153a439cbf34d216df7eae257282ff54f3cbe8133617964d72"
+      },
+      "native-final/load100fF/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/no_bias/bench.cir": {
+        "bytes": 4437,
+        "sha256": "c718d51c3ef3c84de11833db1ac7562c880a909261a1a70ee50e3d1da5037f93"
+      },
+      "native-final/no_bias/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "77b7f88c606c1774bc121a973e820bfdc7112bb9eb59bc70785dd4d1f590a6b5"
+      },
+      "native-final/no_bias/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/no_bias/run.log": {
+        "bytes": 6743,
+        "sha256": "94ff71f4cfc15d4ee52c7bd7f923ac2261f6116b1eac843ae3b3926ac71c506d"
+      },
+      "native-final/no_bias/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/no_toggle/bench.cir": {
+        "bytes": 4437,
+        "sha256": "c718d51c3ef3c84de11833db1ac7562c880a909261a1a70ee50e3d1da5037f93"
+      },
+      "native-final/no_toggle/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1927cf081a0c6f303a373a10809164942de352d7f8075980be2ec25b46b28dc0"
+      },
+      "native-final/no_toggle/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/no_toggle/run.log": {
+        "bytes": 6743,
+        "sha256": "a13b5fb78f5a6f24e77b44eac2786454226ca50f6874de321ec5780b262346c7"
+      },
+      "native-final/no_toggle/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/nominal/bench.cir": {
+        "bytes": 4437,
+        "sha256": "c718d51c3ef3c84de11833db1ac7562c880a909261a1a70ee50e3d1da5037f93"
+      },
+      "native-final/nominal/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "native-final/nominal/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/nominal/run.log": {
+        "bytes": 6743,
+        "sha256": "88e9514996199b9f0c6a2c35f2f61c27adc2fea12d831fc5ff6a581a83f043d5"
+      },
+      "native-final/nominal/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/psp103-compile.log": {
+        "bytes": 37,
+        "sha256": "27651404e83e396dae9a2f2793b1a0106e019e48a5513628d109b433bea26b9e"
+      },
+      "native-final/psp103_nqs-compile.log": {
+        "bytes": 42,
+        "sha256": "aca921fad2dca0cdfcbba121b2df1664dbbf976d2b80a3176e992a8ba3a65e35"
+      },
+      "native-final/r3_cmc-compile.log": {
+        "bytes": 1712,
+        "sha256": "b439ce6e4229c821bf5934ba6b338aa7e6c5e89d93f91c7e227fdea869a3fd2a"
+      },
+      "native-final/result.json": {
+        "bytes": 289434,
+        "sha256": "eb479e0ef336532bd56cfc7e5677997394b920b7299573c41711e0d94088509d"
+      },
+      "native-final/same_clock/bench.cir": {
+        "bytes": 4437,
+        "sha256": "3a170d5c82d9706f5ff7935b444b689d2dbb8fc6445639c82a3441000cfa0024"
+      },
+      "native-final/same_clock/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "native-final/same_clock/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/same_clock/run.log": {
+        "bytes": 6775,
+        "sha256": "753010505d88791ee489c080163ff8abfe405eb4f0c58fe733cd4abc4d204aa3"
+      },
+      "native-final/same_clock/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/same_phase/bench.cir": {
+        "bytes": 4437,
+        "sha256": "c718d51c3ef3c84de11833db1ac7562c880a909261a1a70ee50e3d1da5037f93"
+      },
+      "native-final/same_phase/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "e0ac2c5c2b21ca74b9acff4ccef654971d34b90980f1c09e52e714481689f53c"
+      },
+      "native-final/same_phase/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/same_phase/run.log": {
+        "bytes": 6775,
+        "sha256": "e7f47c9887f2663a57cbb6e6d790db3ab8208a3d2eb5f6fbe967630d5f9d72e4"
+      },
+      "native-final/same_phase/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/slow_ramp/bench.cir": {
+        "bytes": 4437,
+        "sha256": "940caa00babd9b0b0a848479b434fbabac392fff57cad4a036ea885208de6be9"
+      },
+      "native-final/slow_ramp/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "native-final/slow_ramp/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "native-final/slow_ramp/run.log": {
+        "bytes": 6743,
+        "sha256": "643c061414134321e8d37b3ee8a5748e824e860ea011874197648b6406e9476d"
+      },
+      "native-final/slow_ramp/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "native-final/spinit": {
+        "bytes": 74,
+        "sha256": "edd8f691938b980777be3c9a10ebe65abd413107c04c725b2b0fe245f6930383"
+      },
+      "history/nssoc-div2-native-01/producer-before-thread-limit.py": {
+        "bytes": 17226,
+        "sha256": "a51c127758e8ad727cbb273e6e80ca62092eae13c4e2bf84110bd27a75fa2d50"
+      },
+      "history/nssoc-div2-native-01/r3_cmc-compile.log": {
+        "bytes": 1733,
+        "sha256": "5ab8742dc49a0acb3d904e4be81002945b25826e7493dca6a54a06eb8ec7b6d9"
+      },
+      "history/nssoc-div2-native-01/result.json": {
+        "bytes": 14654,
+        "sha256": "958a61905e8ab40fdf5b825575914f223ddff61e5e6b0ca7b422af38c6a68a42"
+      },
+      "history/nssoc-div2-native-01/spinit": {
+        "bytes": 74,
+        "sha256": "edd8f691938b980777be3c9a10ebe65abd413107c04c725b2b0fe245f6930383"
+      },
+      "history/nssoc-div2-native-02/half_step/bench.cir": {
+        "bytes": 4428,
+        "sha256": "56788920f7636fdd34b5c08a5806bea52ba16015b3f02fb8b10ce6a459d35f8f"
+      },
+      "history/nssoc-div2-native-02/half_step/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "history/nssoc-div2-native-02/half_step/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "history/nssoc-div2-native-02/half_step/run.log": {
+        "bytes": 7223,
+        "sha256": "cf5cacbd3acf45aca0aa705b7bd5ba0b2c90cb3ca0ca039738a263374d8c378e"
+      },
+      "history/nssoc-div2-native-02/half_step/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "history/nssoc-div2-native-02/load100fF/bench.cir": {
+        "bytes": 4428,
+        "sha256": "7df5b77f415089fd914c09e8a52dc1bdf5a73cdab8200be8f1395d9f1b4d6a07"
+      },
+      "history/nssoc-div2-native-02/load100fF/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "history/nssoc-div2-native-02/load100fF/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "history/nssoc-div2-native-02/load100fF/run.log": {
+        "bytes": 6743,
+        "sha256": "bfbbe44f465a69b5348d64a271f74dc948b92761c11f6d55795f7ec95d748bc7"
+      },
+      "history/nssoc-div2-native-02/load100fF/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "history/nssoc-div2-native-02/no_bias/bench.cir": {
+        "bytes": 4428,
+        "sha256": "0f612469614c30b04362e17b3b8ecb37bf5f6ab9b5afa693ab8e8d44d49325b3"
+      },
+      "history/nssoc-div2-native-02/no_bias/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "77b7f88c606c1774bc121a973e820bfdc7112bb9eb59bc70785dd4d1f590a6b5"
+      },
+      "history/nssoc-div2-native-02/no_bias/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "history/nssoc-div2-native-02/no_bias/run.log": {
+        "bytes": 6999,
+        "sha256": "2474dc7e90f9ed4f11acd26931cc63c7308ccc1fdfe866856adc6d16722ac5b3"
+      },
+      "history/nssoc-div2-native-02/no_bias/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "history/nssoc-div2-native-02/no_toggle/bench.cir": {
+        "bytes": 4428,
+        "sha256": "0f612469614c30b04362e17b3b8ecb37bf5f6ab9b5afa693ab8e8d44d49325b3"
+      },
+      "history/nssoc-div2-native-02/no_toggle/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1927cf081a0c6f303a373a10809164942de352d7f8075980be2ec25b46b28dc0"
+      },
+      "history/nssoc-div2-native-02/no_toggle/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "history/nssoc-div2-native-02/no_toggle/run.log": {
+        "bytes": 6775,
+        "sha256": "5d1d608828bc2d5ec40d90fb11e41a3c142a02a2bcefaeeea7e8b359b7c0b63c"
+      },
+      "history/nssoc-div2-native-02/no_toggle/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "history/nssoc-div2-native-02/nominal/bench.cir": {
+        "bytes": 4428,
+        "sha256": "0f612469614c30b04362e17b3b8ecb37bf5f6ab9b5afa693ab8e8d44d49325b3"
+      },
+      "history/nssoc-div2-native-02/nominal/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "history/nssoc-div2-native-02/nominal/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "history/nssoc-div2-native-02/nominal/run.log": {
+        "bytes": 6743,
+        "sha256": "7a90b6ffa872dd7dbeb78c3215d56622b8612c9962322834b27795a091ed79c9"
+      },
+      "history/nssoc-div2-native-02/nominal/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "history/nssoc-div2-native-02/producer-at-run.py": {
+        "bytes": 17269,
+        "sha256": "ccb9bd54a372cde311892f116343c75a0cdadb3dcba11c7331a5e96aa93cc261"
+      },
+      "history/nssoc-div2-native-02/psp103-compile.log": {
+        "bytes": 37,
+        "sha256": "45e3ff3c383c44790f95fe69433316ac0ca5fda9804dcbf3c5b1aa3f100cfb01"
+      },
+      "history/nssoc-div2-native-02/psp103_nqs-compile.log": {
+        "bytes": 42,
+        "sha256": "a9b9e86580e9e19c83e09151e6a78ce8abb2988dc45589054a70921629b9af67"
+      },
+      "history/nssoc-div2-native-02/r3_cmc-compile.log": {
+        "bytes": 1712,
+        "sha256": "45725dbdd12825b18ff7d316f312146ad6a3b730a242bad77c4fdf0ca5ee634c"
+      },
+      "history/nssoc-div2-native-02/result.json": {
+        "bytes": 185846,
+        "sha256": "218204992842756224c0f994856cf308485d9400ca8f6aeda1e25b8c90e050ea"
+      },
+      "history/nssoc-div2-native-02/same_clock/bench.cir": {
+        "bytes": 4428,
+        "sha256": "242467f12699b25d1a1d0254f4b5bb367086f87d503dff2a63e2e31e7f000324"
+      },
+      "history/nssoc-div2-native-02/same_clock/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "history/nssoc-div2-native-02/same_clock/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "history/nssoc-div2-native-02/same_clock/run.log": {
+        "bytes": 6743,
+        "sha256": "fee782c2af4bdb57081686608dde4b9e4e8ee11346a6cc5b28144de33ce7ae58"
+      },
+      "history/nssoc-div2-native-02/same_clock/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "history/nssoc-div2-native-02/same_phase/bench.cir": {
+        "bytes": 4428,
+        "sha256": "0f612469614c30b04362e17b3b8ecb37bf5f6ab9b5afa693ab8e8d44d49325b3"
+      },
+      "history/nssoc-div2-native-02/same_phase/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "e0ac2c5c2b21ca74b9acff4ccef654971d34b90980f1c09e52e714481689f53c"
+      },
+      "history/nssoc-div2-native-02/same_phase/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "history/nssoc-div2-native-02/same_phase/run.log": {
+        "bytes": 6743,
+        "sha256": "62cb4644a38d999cec842f61c9aa04636b86f00bb7f3d3b3e52f45d0320ef655"
+      },
+      "history/nssoc-div2-native-02/same_phase/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "history/nssoc-div2-native-02/slow_ramp/bench.cir": {
+        "bytes": 4428,
+        "sha256": "1008451961a99e05329fb3cad63e1e96c2cbede2c5f96792e705869489cb7c5d"
+      },
+      "history/nssoc-div2-native-02/slow_ramp/clock_div2_hbt.spice": {
+        "bytes": 891,
+        "sha256": "1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7"
+      },
+      "history/nssoc-div2-native-02/slow_ramp/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "history/nssoc-div2-native-02/slow_ramp/run.log": {
+        "bytes": 6775,
+        "sha256": "cd31e94d4812c8fdcdb7c85ade1f7cea55d744494a1462af0f8b8b6d1be392c9"
+      },
+      "history/nssoc-div2-native-02/slow_ramp/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "history/nssoc-div2-native-02/spinit": {
+        "bytes": 74,
+        "sha256": "edd8f691938b980777be3c9a10ebe65abd413107c04c725b2b0fe245f6930383"
+      },
+      "history/nssoc-div2-prototype-01/bench.cir": {
+        "bytes": 1562,
+        "sha256": "18ec3c55dcd46ea818732b559b0e915bc92e4033476cb9808bcc9cac8325cdcc"
+      },
+      "history/nssoc-div2-prototype-01/clock_div2_hbt.spice": {
+        "bytes": 464,
+        "sha256": "ba1ea35ccf1932e332668775822b4c552a29b47417998d7ed4bfcff1378dd404"
+      },
+      "history/nssoc-div2-prototype-01/clock_vco_hbt.spice": {
+        "bytes": 2046,
+        "sha256": "b93e478e3d6a766051b82aabd5796d6fa8f2dbac68f25f1c1757d411369d5426"
+      },
+      "history/nssoc-div2-prototype-01/result.json": {
+        "bytes": 559,
+        "sha256": "2b4e2513da6e71d496ee786bcb6e74728aae5b95032199edcf3d716ef363d8fc"
+      },
+      "history/nssoc-div2-prototype-01/run.log": {
+        "bytes": 6659,
+        "sha256": "cde083a2bb9927300aa6373091686665e5fa30bb907e17cf3a8251c6f05ef46a"
+      },
+      "history/nssoc-div2-prototype-01/rx_sampler_hbt_v2.spice": {
+        "bytes": 1604,
+        "sha256": "2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f"
+      },
+      "history/nssoc-div2-prototype-01/spinit": {
+        "bytes": 53,
+        "sha256": "d1b9437e0e29627eca5f856dcea41e1f7be7978fae3c4b302790dae1214aca64"
+      },
+      "native-final/nominal/wave.dat.gz": {
+        "bytes": 7512355,
+        "sha256": "64ea456f97013b5f927116729b81c7a21fca9bbc54e2b5d469e4e9b6cafe425c"
+      }
+    }
+  },
+  "full_waves": {
+    "bytes": 97495040,
+    "sha256": "6921f220a6e9be7594fc003af6e544ed496d25bb9c52eaeeadad36a170ff7702",
+    "path": "hw/soc/out/pcie-div2-20261004/div2-native-full-waves.tar",
+    "compression": "Each of 12 native wave members is gzip-compressed; outer tar is uncompressed.",
+    "members": {
+      "cold_fast/wave.dat.gz": {
+        "bytes": 7533113,
+        "sha256": "93c142eac5ad0ed157eb234c1cc60386e3894faaf61285cd364b4a8ed338f298"
+      },
+      "cold_slow/wave.dat.gz": {
+        "bytes": 7531099,
+        "sha256": "9b9cecea37a760303795b805322b17fdf2e648c087c2dc1f0ebe2b8f0afd9e83"
+      },
+      "half_step/wave.dat.gz": {
+        "bytes": 14871392,
+        "sha256": "71140544a09014510fdd13b322120f39aaa8d7a21c953b17ea9a77d710fef5a8"
+      },
+      "hot_fast/wave.dat.gz": {
+        "bytes": 7496371,
+        "sha256": "ddf12d3833a9c2ac312c29fb7ac905e6be8981413ff457f29b7c78d0923c82ec"
+      },
+      "hot_slow/wave.dat.gz": {
+        "bytes": 7475299,
+        "sha256": "7f11ce07c5cd3bdf67ad565b44a466ab36742a9f9a9447b5089d3a1e91c6bb43"
+      },
+      "load100fF/wave.dat.gz": {
+        "bytes": 7515314,
+        "sha256": "1807e603b9cfb015e1b90150c001e949685c86a50063a404d9a44f6823639a36"
+      },
+      "no_bias/wave.dat.gz": {
+        "bytes": 7507976,
+        "sha256": "71b571dd2a094b7b606d1e616e1d7a077cc9be5cf3cd6961e71a734f45f41dce"
+      },
+      "no_toggle/wave.dat.gz": {
+        "bytes": 7516234,
+        "sha256": "c0bd2347a832af8dc3c3d43f3cfc3423b96fa54ee13edff00000ddcd7ce4b79f"
+      },
+      "nominal/wave.dat.gz": {
+        "bytes": 7512355,
+        "sha256": "64ea456f97013b5f927116729b81c7a21fca9bbc54e2b5d469e4e9b6cafe425c"
+      },
+      "same_clock/wave.dat.gz": {
+        "bytes": 7475092,
+        "sha256": "bf5b5de2421213901f1bc2140a8442afd545080ec975bd3f7a3782b629c04bdc"
+      },
+      "same_phase/wave.dat.gz": {
+        "bytes": 7530017,
+        "sha256": "913c219a7434aa9005e6185fb13c1ab309ca32bcbc894f0542a9b6677add0506"
+      },
+      "slow_ramp/wave.dat.gz": {
+        "bytes": 7504400,
+        "sha256": "333d2d0db30cb7146cf0933da7853c64237b27c45f4293bc3f3f5619ff1beef4"
+      }
+    }
+  },
+  "first_compile_failure_preserved": "history/nssoc-div2-native-01: OpenVAF parallel runtime failed under 2 GiB; one-thread compile fixed runtime configuration. No native functional result existed in that failed attempt.",
+  "historical_quick_scope": "The earlier quick producer lacked the final full-current/latency guards. Its original producer and raw result are retained as history, not substituted for the final run.",
+  "scope": "Actual frozen native VCO drives a two-native-latch toggle prescaler, nominally 8.01933 GHz to 4.00961 GHz. Four required finite operating cases pass. Cold exploratory VCE failures and hot exploratory initialization warnings prevent full PVT qualification.",
+  "physical_qualification": false,
+  "pll_implemented": false,
+  "cdr_implemented": false,
+  "full_pvt_qualification": false,
+  "extracted_layout_timing": false,
+  "limitations": [
+    "One simulator ngspice 47 native campaign; no ngspice 42 cross-version run.",
+    "No full 81-corner matrix, statistical mismatch, phase noise, random jitter, or RF/package extraction.",
+    "Finite 4\u201312 ns measurement window after the actual zero-source supply ramp; minimum VCE is an operating-window screen. Maximum VCE and collector-current density cover the entire 0\u201312 ns capture.",
+    "Analytical pytest waveforms test measurement predicates only; transistor evidence comes exclusively from the retained native waveforms.",
+    "No PCIe link or PLL/CDR compliance claim."
+  ]
+}

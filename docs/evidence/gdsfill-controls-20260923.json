@@ -1,0 +1,390 @@
+{
+  "date": "2026-09-23",
+  "status": "Small adjusted/windowed controls pass; full-core attempt pending",
+  "scope": "No full-core fill, DRC, density, fill-aware timing, LVS or manufacturing acceptance.",
+  "upstream_commit": "db268cbf366dd219d1e077d9b2c68782c48c00c5",
+  "rustc_version": "rustc 1.97.0 (2d8144b78 2026-07-07)",
+  "boundary": {
+    "commit": "db268cbf366dd219d1e077d9b2c68782c48c00c5",
+    "original_command": [
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/gdsfill-original",
+      "-j",
+      "2",
+      "fill",
+      "--process",
+      "ihp-sg13g2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/unmodified-input.gds"
+    ],
+    "original_returncode": 1,
+    "original_binary_sha256": "c2b55591d6e847de46dc8aba7a2409c26ea31d4241234d00405a80eb812b4784",
+    "scope": "Experimental core-only boundary adapter. Only SG13G2 fill and density selection changes from seal layers 39/0 and 39/4 to the existing explicit DEF-derived 189/0 boundary. No fabricated seal ring, algorithm/spacing changes or physical acceptance."
+  },
+  "physical_controls": {
+    "control": {
+      "main": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac"
+      },
+      "density": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 2,
+        "categories": {
+          "'TM1.c'": 1,
+          "'TM2.c'": 1
+        },
+        "category_count": 9,
+        "report_sha256": "a9d743d3b54d31aad56eba12f24b85ec065224c134e8265dd305767464086e78"
+      }
+    },
+    "target60": {
+      "main": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac"
+      },
+      "density": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 7,
+        "report_sha256": "f6260560873dd65ddb97ba018f23b632e5be5476b043061182712b242e81336e"
+      }
+    },
+    "window": {
+      "main": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac"
+      },
+      "density": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 7,
+        "report_sha256": "f6260560873dd65ddb97ba018f23b632e5be5476b043061182712b242e81336e"
+      }
+    }
+  },
+  "geometries": {
+    "default": {
+      "status": "PASS within geometry-preservation scope",
+      "errors": [],
+      "input_sha256": {
+        "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control.gds": "bc657136f923d2f86051bfb3d8949e3905104dce9e025c794c79b3df96ab4b6d",
+        "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-filled.gds": "81b3a7cb5b885ac7a5a54268b45bae5c9e969b16b5a0410d02af323f54a38424"
+      },
+      "source_cells": 1,
+      "new_cells": 0,
+      "added_fill_shape_definitions": 1297,
+      "scope": "All original per-cell shapes and instances retained; additions confined to designated fill layers. Excludes DRC, LVS, density compliance, parasitic extraction, timing and manufacturing approval."
+    },
+    "target60": {
+      "status": "PASS within geometry-preservation scope",
+      "errors": [],
+      "input_sha256": {
+        "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control.gds": "bc657136f923d2f86051bfb3d8949e3905104dce9e025c794c79b3df96ab4b6d",
+        "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-target60.gds": "d79cd5a06d7f50bb9afd9e2b8c4b766a854586e14fdf7da323030aa71d6f6498"
+      },
+      "source_cells": 1,
+      "new_cells": 0,
+      "added_fill_shape_definitions": 1329,
+      "scope": "All original per-cell shapes and instances retained; additions confined to designated fill layers. Excludes DRC, LVS, density compliance, parasitic extraction, timing and manufacturing approval."
+    },
+    "windowed": {
+      "status": "PASS within geometry-preservation scope",
+      "errors": [],
+      "input_sha256": {
+        "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/control200.gds": "27a4e4da837342b90b33d40bf7780e0d9ef0aef2c7a606bdbedb86ce2210ea5e",
+        "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/checkpoint.gds": "e158fa2c8886b9ae4cf55f94831d436eedcf2420c5fdf0c9eedca2921e7c5f61"
+      },
+      "source_cells": 1,
+      "new_cells": 4,
+      "added_fill_shape_definitions": 5316,
+      "scope": "All original per-cell shapes and instances retained; additions confined to designated fill layers. Excludes DRC, LVS, density compliance, parasitic extraction, timing and manufacturing approval."
+    }
+  },
+  "pause_resume": {
+    "status": "GENERATED_ALL_TILES",
+    "scope": "Experimental clipped-input fill; no physical or timing acceptance.",
+    "expected_tiles": 4,
+    "requested_tiles": 4,
+    "tile_size_um": 100.0,
+    "halo_um": 30,
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/control200.gds": "27a4e4da837342b90b33d40bf7780e0d9ef0aef2c7a606bdbedb86ce2210ea5e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/target/release/gdsfill": "c412138f03b5c1a1c429f9ef4882c026c4fa5fc5c88d628fec597227ba1cde3d",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-density-targets.yaml": "2dc53ea96ecec8dd9298b1aa9bb9bdc2b69e8dfa84834d839b180a649d735d0e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/fill_gdsfill_windows.py": "763b1f20a7ee58e7328240509fe626e163f7458ff38976505aa4249f42fc7686",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/audit_fill_preservation.py": "33511e01ea6732fb15b6d2b961ee3264a3b3e14a08cce545db672219e302b035"
+    },
+    "completed_tiles": [
+      {
+        "index": 0,
+        "bounds_um": [
+          0.0,
+          0.0,
+          100.0,
+          100.0
+        ],
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/target/release/gdsfill",
+          "-j",
+          "2",
+          "fill",
+          "--process",
+          "ihp-sg13g2",
+          "--config-file",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-density-targets.yaml",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-000/after.gds"
+        ],
+        "returncode": 0,
+        "before_sha256": "bcb122ae8c73cac090e26be03ae43f75a219f6000528709cbcce5a9e114cf0d4",
+        "elapsed_seconds": 0.01937661699776072,
+        "after_sha256": "446dabd08aa800935bc7fa40a947bc7e879cc934a1b7495bc755da35b6e51637",
+        "added_polygons": 1329,
+        "checkpoint_sha256": "e54a40b80c9c4c01d56f852d7dfd61c0a9de0a704571b6eec62bbaff8a2c659b",
+        "checkpoint": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-000/checkpoint.gds"
+      },
+      {
+        "index": 1,
+        "bounds_um": [
+          100.0,
+          0.0,
+          200.0,
+          100.0
+        ],
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/target/release/gdsfill",
+          "-j",
+          "2",
+          "fill",
+          "--process",
+          "ihp-sg13g2",
+          "--config-file",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-density-targets.yaml",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-001/after.gds"
+        ],
+        "returncode": 0,
+        "before_sha256": "f5be3fb284af88f918e3e4b8bdd92f597582ea9f48b232f316d81803cfc3dc13",
+        "elapsed_seconds": 0.049889280009665526,
+        "after_sha256": "1fa00b32b68af0c3a23f5516b85e3e786d7f6927e5b1176c31a5499cbd8fc1ef",
+        "added_polygons": 1329,
+        "checkpoint_sha256": "414228a6ede6ad71165a0f1a9b8f1a0c81b4e7dd9ea120ca47a27742b8b02563",
+        "checkpoint": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-001/checkpoint.gds"
+      },
+      {
+        "index": 2,
+        "bounds_um": [
+          0.0,
+          100.0,
+          100.0,
+          200.0
+        ],
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/target/release/gdsfill",
+          "-j",
+          "2",
+          "fill",
+          "--process",
+          "ihp-sg13g2",
+          "--config-file",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-density-targets.yaml",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-002/after.gds"
+        ],
+        "returncode": 0,
+        "before_sha256": "a519b49059c9b1102451923df34cb6bbcccf3fee8ea92380a6a66393631aac4a",
+        "elapsed_seconds": 0.038281172994174995,
+        "after_sha256": "a922d055bafdd7ca6dfe22509dbd14a182eee6ee45207115c8d05e6aa978c082",
+        "added_polygons": 1329,
+        "checkpoint_sha256": "729b58b46eac7402f94226f0a5404b171c9e33bb79a5fce0e46ea4ed77153f44",
+        "checkpoint": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-002/checkpoint.gds"
+      },
+      {
+        "index": 3,
+        "bounds_um": [
+          100.0,
+          100.0,
+          200.0,
+          200.0
+        ],
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/target/release/gdsfill",
+          "-j",
+          "2",
+          "fill",
+          "--process",
+          "ihp-sg13g2",
+          "--config-file",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-density-targets.yaml",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/after.gds"
+        ],
+        "returncode": 0,
+        "before_sha256": "40c2217d1480a84cb2ae3d5c1b0a3125f67b583176028e47d79b1fdea84558b8",
+        "elapsed_seconds": 0.0391808080021292,
+        "after_sha256": "0f593ae2afc60d8fe4d8c510bd9a6dc029f595937e7cd9e86216936d92a389f4",
+        "added_polygons": 1329,
+        "checkpoint_sha256": "e158fa2c8886b9ae4cf55f94831d436eedcf2420c5fdf0c9eedca2921e7c5f61",
+        "checkpoint": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/checkpoint.gds"
+      }
+    ],
+    "diearea_um": [
+      0.0,
+      0.0,
+      200.0,
+      200.0
+    ],
+    "resumed_from_count": 2,
+    "elapsed_seconds": 1.324856646999251,
+    "latest_checkpoint": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/checkpoint.gds"
+  },
+  "corrupted_checkpoint": {
+    "scope": "Deliberately incorrect digest; source checkpoint is unchanged.",
+    "expected_failure": true,
+    "returncode": 1,
+    "rejected_before_filling": true
+  },
+  "direct_full_core_failure": {
+    "process_returncode": -6,
+    "elapsed_seconds": 28.491852261999156,
+    "inputs_unchanged": true,
+    "output_sha256": "38b87ad550ef7925da392fbfd025f4ab008e969fb87d20fc32736a0dcab8e350",
+    "output_bytes": 102056628,
+    "status": "ERROR"
+  },
+  "first_full_layout_checkpoint_geometry": {
+    "status": "PASS within geometry-preservation scope",
+    "errors": [],
+    "input_sha256": {
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/baseline-with-boundary.gds": "38b87ad550ef7925da392fbfd025f4ab008e969fb87d20fc32736a0dcab8e350",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-baseline/tile-000/checkpoint.gds": "61ec7a0a39450b68940fd3d882fee5e3fe65e9c58cafd93ab650200d710c32cb"
+    },
+    "source_cells": 425,
+    "new_cells": 1,
+    "added_fill_shape_definitions": 22063,
+    "scope": "All original per-cell shapes and instances retained; additions confined to designated fill layers. Excludes DRC, LVS, density compliance, parasitic extraction, timing and manufacturing approval."
+  },
+  "method": "Clip actual source geometry with original layer-index metadata and 30um context. Audit each filled clip, then merge only new designated fill geometry within the window. Existing neighboring fill participates in subsequent clips. Preserve complete GDS checkpoints.",
+  "archive": {
+    "path": "docs/evidence/gdsfill-controls-20260923.tar.gz",
+    "sha256": "68af70021f4d71957f794039136f3e01b36e0edd61ee9b38ce8e3a427e60eb84",
+    "bytes": 375273,
+    "members": {
+      "hw/soc/out/route-closure-gdsfill-control-main-20260923/inputs.json": "cb3fa69661285d291e7a20f04a145bb937a0d17ff2e79143f4cd2395f5a43e24",
+      "hw/soc/out/route-closure-gdsfill-control-main-20260923/result.json": "6943135c5ec5a7cd002ba9b5cc6ac708edc6b71f86ece59084733152f2814dad",
+      "hw/soc/out/route-closure-gdsfill-control-main-20260923/run.log": "a9755245d3e9bd84e994af0a64b5bbc6e6ffdec4f4ab1c694516519768a3e742",
+      "hw/soc/out/route-closure-gdsfill-control-main-20260923/drc.lyrdb": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac",
+      "hw/soc/out/route-closure-gdsfill-control-density-20260923/inputs.json": "23fb5bc16eb358493cb83e28e405cfc48a54227443d875c9c22dfc34e8551732",
+      "hw/soc/out/route-closure-gdsfill-control-density-20260923/result.json": "8fd1dde3f14912ac48b770fc9592cdb61f6408acd26c324908f132a26d4e63a2",
+      "hw/soc/out/route-closure-gdsfill-control-density-20260923/run.log": "f75a3893d30202cc069721e13b53cb84fb56cefef23062858e33411d9711903d",
+      "hw/soc/out/route-closure-gdsfill-control-density-20260923/drc.lyrdb": "a9d743d3b54d31aad56eba12f24b85ec065224c134e8265dd305767464086e78",
+      "hw/soc/out/route-closure-gdsfill-target60-main-20260923/inputs.json": "686946635fe3d61242c70283cc73978828408af3876e1dd4d209e39444c3d247",
+      "hw/soc/out/route-closure-gdsfill-target60-main-20260923/result.json": "6943135c5ec5a7cd002ba9b5cc6ac708edc6b71f86ece59084733152f2814dad",
+      "hw/soc/out/route-closure-gdsfill-target60-main-20260923/run.log": "3a7ff5ad3a0a438fef922746f5c1994a0f0f12f212afcfdd3dafb305e9eb9432",
+      "hw/soc/out/route-closure-gdsfill-target60-main-20260923/drc.lyrdb": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac",
+      "hw/soc/out/route-closure-gdsfill-target60-density-20260923/inputs.json": "0ea8681f7b27d945dedd9d69994a8d2f99033d7f642b479138437b1609a5e423",
+      "hw/soc/out/route-closure-gdsfill-target60-density-20260923/result.json": "55331d1a18fc689bad1812faa3d45aff0544a0febb224c826c854f96c422a438",
+      "hw/soc/out/route-closure-gdsfill-target60-density-20260923/run.log": "b2a6c7164162ad5d13ef179fdb0df0018a8744702ce01e6ecae1b880d230d9ad",
+      "hw/soc/out/route-closure-gdsfill-target60-density-20260923/drc.lyrdb": "f6260560873dd65ddb97ba018f23b632e5be5476b043061182712b242e81336e",
+      "hw/soc/out/route-closure-gdsfill-window-main-20260923/inputs.json": "ad39e670ec4f06c0ebacdd702ca89ea4d893d2f352c56da9993d955e97c84d4e",
+      "hw/soc/out/route-closure-gdsfill-window-main-20260923/result.json": "6943135c5ec5a7cd002ba9b5cc6ac708edc6b71f86ece59084733152f2814dad",
+      "hw/soc/out/route-closure-gdsfill-window-main-20260923/run.log": "332c1b3fa919266524ebf46bd00ade0eab402626f20f49f85f93fa3a463e264f",
+      "hw/soc/out/route-closure-gdsfill-window-main-20260923/drc.lyrdb": "f4301b152c97acc8ed9f054c4b8d460a54479dae12c4fe0d49537505048ccdac",
+      "hw/soc/out/route-closure-gdsfill-window-density-20260923/inputs.json": "53a0a115e606f18f631c8e76b09b04f8fa2ee5727c1b27ad6a407c99823a5699",
+      "hw/soc/out/route-closure-gdsfill-window-density-20260923/result.json": "55331d1a18fc689bad1812faa3d45aff0544a0febb224c826c854f96c422a438",
+      "hw/soc/out/route-closure-gdsfill-window-density-20260923/run.log": "1be43d934badbde862c5a55abb6a3e9e2280f53d2af88ff2bd8efdb3c2887363",
+      "hw/soc/out/route-closure-gdsfill-window-density-20260923/drc.lyrdb": "f6260560873dd65ddb97ba018f23b632e5be5476b043061182712b242e81336e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-density-targets.yaml": "2dc53ea96ecec8dd9298b1aa9bb9bdc2b69e8dfa84834d839b180a649d735d0e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/target60-geometry.json": "5c30e851e326aaaa6041b15b583ec02ed5455af9910c6468e98bb2db76771932",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-filled.gds": "81b3a7cb5b885ac7a5a54268b45bae5c9e969b16b5a0410d02af323f54a38424",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-target60.gds": "d79cd5a06d7f50bb9afd9e2b8c4b766a854586e14fdf7da323030aa71d6f6498",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/geometry.json": "28481692f814c005fe67064cbd4d4f64bee3b8933367b902bd15f1113567aacd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/unmodified-input.gds": "bc657136f923d2f86051bfb3d8949e3905104dce9e025c794c79b3df96ab4b6d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-fill.log": "525e8cf8247b0dd004ef5d9b1f382804c4c1c43e268fe1364cadfc935454c51f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-fill-result.json": "e9ccc5e0900b812ef4c57071d84277300c257be310c637265cce1ec41c54a5a0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/boundary-adaptation.json": "0ca1df47224fa718026b349f152693bf254816cef895e51a9a284611ba2ffb41",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-boundary.patch": "19465d307b3d2bab33ce3994dc4360641c2c60841f6c03726b9a5845b993e08b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/core-target60.log": "15447e4d9cfb8a99b060fead5c237e420d43a0ed0c1cac8663f32ae9a2322ccf",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/control200.gds": "27a4e4da837342b90b33d40bf7780e0d9ef0aef2c7a606bdbedb86ce2210ea5e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-control/original-boundary.log": "1d503571b0a3e43897ccdf85b89d2fa4d98914d0ee22cb50d9b569531a486132",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/progress.json": "026f1557655377ae16bf07659e209d153f53f807f5b3586f49885072e0a753e5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/final-geometry.json": "22ccc146d3a0ad4312dd555102751beeabddfaeef3bca072c704f1eb3250a934",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-002/result.json": "42b4663f4c074857a2f7d7a88e668aa6b5a973c8e68665b069b0ab4a171b3afc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-002/run.log": "2b4b924a223c2bcd602f9c7955c2d96c6e4d28fb2a6bedd9c5ba839c822d59e4",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-002/geometry.json": "7e1dee971fd90b5fce6c5fbf67101796d6e902813614033a808ad292a3e9f54e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-002/after.gds": "a922d055bafdd7ca6dfe22509dbd14a182eee6ee45207115c8d05e6aa978c082",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-002/geometry.log": "7e1dee971fd90b5fce6c5fbf67101796d6e902813614033a808ad292a3e9f54e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-002/before.gds": "a519b49059c9b1102451923df34cb6bbcccf3fee8ea92380a6a66393631aac4a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-002/checkpoint.gds": "729b58b46eac7402f94226f0a5404b171c9e33bb79a5fce0e46ea4ed77153f44",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-000/result.json": "fd96e0a895a0960043d770fd3d3ca300e90e039ac7c10b63cf729c73781c152c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-000/run.log": "9680616b8c22163cc936c447fc3f3f5745b0d11848a00d40bc3d4dccccde62de",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-000/geometry.json": "c1e39d10ed0e61f0647fa81c2b63634c70ff5527a05f1eacc890a9fdecf8dad5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-000/after.gds": "446dabd08aa800935bc7fa40a947bc7e879cc934a1b7495bc755da35b6e51637",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-000/geometry.log": "c1e39d10ed0e61f0647fa81c2b63634c70ff5527a05f1eacc890a9fdecf8dad5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-000/before.gds": "bcb122ae8c73cac090e26be03ae43f75a219f6000528709cbcce5a9e114cf0d4",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-000/checkpoint.gds": "e54a40b80c9c4c01d56f852d7dfd61c0a9de0a704571b6eec62bbaff8a2c659b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/result.json": "318a9cf101ca4cea9bad7a902f8f709fb5cf4c18171ffa26dbe4b71d8a4c81c4",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/run.log": "673816b8109f64618f7884f9f34ce2a4487e11119f11043f25a1317ded49ea81",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/geometry.json": "eca98369bcf93c82f7690732ef4ea8d9de79e05594549ebc5f1747703e5498cb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/after.gds": "0f593ae2afc60d8fe4d8c510bd9a6dc029f595937e7cd9e86216936d92a389f4",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/geometry.log": "eca98369bcf93c82f7690732ef4ea8d9de79e05594549ebc5f1747703e5498cb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/before.gds": "40c2217d1480a84cb2ae3d5c1b0a3125f67b583176028e47d79b1fdea84558b8",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-003/checkpoint.gds": "e158fa2c8886b9ae4cf55f94831d436eedcf2420c5fdf0c9eedca2921e7c5f61",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-001/result.json": "d018007baadb1894660242351d8a6b14025acd7b87d2c11cfbaa9c4b368684fd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-001/run.log": "686d8973c67ca04fa4ba0960965eb395b3c7fc8be4a38e59dd81253334a57d5d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-001/geometry.json": "0ebe4d8e5773590596723230f1c8d1e80a709e165f919477d8c0a130143ebcf1",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-001/after.gds": "1fa00b32b68af0c3a23f5516b85e3e786d7f6927e5b1176c31a5499cbd8fc1ef",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-001/geometry.log": "0ebe4d8e5773590596723230f1c8d1e80a709e165f919477d8c0a130143ebcf1",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-001/before.gds": "f5be3fb284af88f918e3e4b8bdd92f597582ea9f48b232f316d81803cfc3dc13",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-control4/tile-001/checkpoint.gds": "414228a6ede6ad71165a0f1a9b8f1a0c81b4e7dd9ea120ca47a27742b8b02563",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-resume-negative/progress.json": "f53bb4bee04e91752193afa3dd1d665bfafbdcb36f543e5b84cba28ef3787c2f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-resume-negative/result.json": "e8a3b5be6f932754c90255603867058694bc3289b7bd4ecff0adc65d6564525a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-resume-negative/run.log": "42f780cfc7fdd3ee81e1dc7f29b16837f8878104fd7925c7b827de919d59a7f2",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-baseline/inputs.json": "4aff8fcd24902fc55d044a63f8aa6f169446ff0de1d3686da7f82f86691ec2b5",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-baseline/result.json": "0b812cd24c4a656be67d85eb40194fe70a6a471db23fc497afba7acbca0488f7",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-baseline/run.log": "47fbda873d651a63a2f2bd826d9377714b51be429836067c3d2d33f9245228bb",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-window-baseline/first-full-checkpoint-geometry.json": "30250d3cc6796436abbd240ada6146f6694fa987b0876b316bd1ee4b89736086",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/record_gdsfill_controls.py": "16ba869ddbd5e0c8868b3968cba8826450e6611554556c13d7bdd55f239a29e0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/fill_gdsfill_windows.py": "763b1f20a7ee58e7328240509fe626e163f7458ff38976505aa4249f42fc7686",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/run_gdsfill_core.py": "c1c9c5f992e710186981ccdb9d08b75f746f8897949f0f0bbdfeb64cbf3cd7dc",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/audit_fill_preservation.py": "33511e01ea6732fb15b6d2b961ee3264a3b3e14a08cce545db672219e302b035",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/core-fill/control.gds": "bc657136f923d2f86051bfb3d8949e3905104dce9e025c794c79b3df96ab4b6d",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-build.log": "b42ed23e050425661af21613815ee1514c0d9f9b13f8484a250657953b80873f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-core-build.log": "41bc86b04c7852c4d5a56a592d83ab7ec50520d1493652f3c020d9a1cea7ed75",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/main.rs": "8180cf45ceef4d223d82f5dc60658c2f59c3e705290e81c8bfd4a77e342127fd",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/config.rs": "17c9bab1ceaf4b0772b798c58e40d00bdf4a0fb6cf113cb8e78ae544bf929547",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/lib.rs": "835230113b9bb5e3d36d47da700bf0bfd27d4d8bdd75f1047a2b2d8cfa373ef1",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/erase.rs": "c8372e971628b698548ce6f0ac66df9ac7bfbff04c53b7944ee4e571d52336f4",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/fill.rs": "ba9ba34eca8afe033a630b5f9d371858fdf3d95465c070852c1c368f70e5d4b8",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/density.rs": "3a7db9b1e762167cd00a5f934aaca6196c4355a661fa6a320be2ef1b87a4735c",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/configs/gf180mcuA.yaml": "53876430ff66dfa9ee8c0791ce825596004a33a5d3624b7953a5d0150165e98a",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/configs/gf180mcuB.yaml": "789581d6e14d5928f0a4c6ba0840613f5e538399b51fc70d18b747f06da23b39",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/configs/ihp-sg13g2.yaml": "f63af16425278e22ace95c04073bd1e5dde166ab912ed87fcbad4cf7390ee9a4",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/configs/gf180mcuD.yaml": "6391536a98dbc6578b2df22b5e8858d9af5cbc738b5cf797671551cfc54d4a8e",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/configs/gf180mcuC.yaml": "ed13db97c09097fe25b7785bd8df1313bae378287d9ae22c18e4af6c85a75d72",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/configs/ihp-sg13cmos5l.yaml": "8ec69e56329e069a547986ceed75e6e8458afab602c8ee71ca654db49165eb2f",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/pdk/gf180mcu.rs": "a2cf5763320dce044d3d0b85317a2dbec378f20224b567db468ebecd3f8a92d7",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/pdk/ihp_sg13.rs": "64feeac39d3e44645ba9523a77092f7e79851d90f535ecea08372863c8c85f74",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/src/pdk/mod.rs": "f6ddec45b50dda7ac62fd679e12e3c1bd6a9aa1c57e43192d6786c78068d128b",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/Cargo.toml": "0bcdd23ed7861d04976c4ddf0c4860d056cdb263c1a6d1cd6920c850de4cb6a0",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/Cargo.lock": "d757f598fa55d562c757e850bf4e99edf9d84154a1e7b4b6c6583fcc02c0ded6",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/LICENSE": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/README.md": "a60ab3d0b20de5e97c2ec70317af07fde85898477097b2239208bc5808f23004",
+      "hw/soc/out/external-review-20260919/route-closure-20260923/gdsfill-source/LICENSES/AGPL-3.0-or-later.txt": "d8a6cc31abc16b6748c7a21f21611f5a1ec33f67d22ca23d7da1c19b95496bee",
+      "hw/soc/tools/ihp-drc-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "docs/evidence/gdsfill-controls-20260923-NOTICES.txt": "f46fcb601cbcc380a2476275fa6da4c2e5dd3106932b7fd53bf6b839026f6bf3"
+    }
+  }
+}

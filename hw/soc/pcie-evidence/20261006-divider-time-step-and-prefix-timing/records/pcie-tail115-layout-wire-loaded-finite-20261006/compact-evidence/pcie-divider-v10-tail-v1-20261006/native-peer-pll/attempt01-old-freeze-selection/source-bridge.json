@@ -1,0 +1,121 @@
+[
+  {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v10-tail-v1-20261006/native-peer-pll/read_raw_databases.py",
+    "pin": {
+      "bytes": 1582,
+      "sha256": "70dda491cf1ed880d300ba3f804053f0c49d22028dc015fd211146e9f3d73b95"
+    },
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v9-bias-v1-20261006/native-peer-pll/read_raw_databases.py",
+    "parent_pin": {
+      "bytes": 1581,
+      "sha256": "b25a3d9bf4e4f0328bb5fabff448b98c38fa9e8a2a2fa385161dc139db58ec93"
+    },
+    "replacements": [
+      {
+        "before": "v9-bias-v1",
+        "after": "v10-tail-v1",
+        "count": 1
+      }
+    ],
+    "full_diff": "--- \n+++ \n@@ -4,7 +4,7 @@\n from pathlib import Path\n import hashlib,json\n import klayout.db as db\n-D=Path('/dev/shm/nssoc-div4-v9-bias-v1-checks-01');B=Path(__file__).resolve().parent\n+D=Path('/dev/shm/nssoc-div4-v10-tail-v1-checks-01');B=Path(__file__).resolve().parent\n \n def pin(p):\n  with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n"
+  },
+  {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v10-tail-v1-20261006/native-peer-pll/run_database_reader.py",
+    "pin": {
+      "bytes": 612,
+      "sha256": "f831fd00888ae6793a50398c25ac29b77dc75b22f27034fe4cdaeb0464fededd"
+    },
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v9-bias-v1-20261006/native-peer-pll/run_database_reader.py",
+    "parent_pin": {
+      "bytes": 612,
+      "sha256": "f831fd00888ae6793a50398c25ac29b77dc75b22f27034fe4cdaeb0464fededd"
+    },
+    "replacements": [],
+    "full_diff": ""
+  },
+  {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v10-tail-v1-20261006/native-peer-pll/review_saved_native.py",
+    "pin": {
+      "bytes": 13474,
+      "sha256": "a6352670447751dddb30492454cf800d3c7141562fc2ba1a33e630a95c2fab21"
+    },
+    "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v9-bias-v1-20261006/native-peer-pll/review_saved_native.py",
+    "parent_pin": {
+      "bytes": 13034,
+      "sha256": "8a47da68ae14da26a94478bfeb3c0ecfffc14423db3036b27d65da2a27edd6f9"
+    },
+    "replacements": [
+      {
+        "before": "v9-bias-v1",
+        "after": "v10-tail-v1",
+        "count": 2
+      },
+      {
+        "before": "v9_bias_v1",
+        "after": "v10_tail_v1",
+        "count": 6
+      },
+      {
+        "before": "V9_BIAS_V1",
+        "after": "V10_TAIL_V1",
+        "count": 2
+      },
+      {
+        "before": "BIAS8_V1",
+        "after": "TAIL115_V1",
+        "count": 1
+      },
+      {
+        "before": "Bias8V1",
+        "after": "Tail115V1",
+        "count": 2
+      },
+      {
+        "before": "==327",
+        "after": "==340",
+        "count": 1
+      },
+      {
+        "before": "full_member_readback=327",
+        "after": "full_member_readback=340",
+        "count": 1
+      },
+      {
+        "before": "with327 archive",
+        "after": "with340 archive",
+        "count": 1
+      },
+      {
+        "before": "PASS_ACTUAL_BIAS8_TWO_RPPD_DELTA_CAP24_POWER_AND_EIGHT_GEOMETRY_CONTROLS",
+        "after": "PASS_ACTUAL_TAIL115_ONE_RPPD_DELTA_BIAS8_CAP24_AND_TEN_GEOMETRY_CONTROLS",
+        "count": 1
+      },
+      {
+        "before": "len(geometry['controls'])==8",
+        "after": "len(geometry['controls'])==10",
+        "count": 1
+      },
+      {
+        "before": "'restore_shorter_actual_pulldown']",
+        "after": "'restore_shorter_actual_pulldown','remove_actual_reference_resistor_body','restore_old_reference_length']",
+        "count": 1
+      },
+      {
+        "before": "assert geometry['changed_pulldown_length_um']=={'DIV__XDN':[7,8],'DIV__XDP':[7,8]} and geometry['unchanged_intrinsics']==89",
+        "after": "assert geometry['changed_reference_length_um']=={'DIV__XSECOND__XBIAS':[12.7,11.5]} and geometry['unchanged_intrinsics']==90\nassert geometry['retained_bias8_pulldown_names']==['DIV__XDN','DIV__XDP']\nfor name,length in [('DIV__XSECOND__XBIAS',11.5),('DIV__XFIRST__XCORE__XBIAS',12.7)]:\n row=next(x for x in layout['instances']if x['name']==name)\n assert row['kind']=='resistor'and row['width_um']==1 and row['length_um']==length",
+        "count": 1
+      },
+      {
+        "before": "two pull-down rppd L7to8um deltas with both24um MIMs retained and89unchanged intrinsic geometries",
+        "after": "one SECOND reference rppd L12.7to11.5um delta with FIRST L12.7, both pull-down L8 and both24um MIMs retained and90unchanged intrinsic geometries",
+        "count": 1
+      },
+      {
+        "before": "and8actualgeometryfaults",
+        "after": "and10actualgeometryfaults",
+        "count": 1
+      }
+    ],
+    "full_diff": "--- \n+++ \n@@ -1,10 +1,10 @@\n # SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n # SPDX-License-Identifier: Apache-2.0\n-\"\"\"Independent saved Bias8V1 evidence readback; never rerun physical checks.\"\"\"\n+\"\"\"Independent saved Tail115V1 evidence readback; never rerun physical checks.\"\"\"\n from pathlib import Path\n import collections,datetime,hashlib,json,re,tarfile,xml.etree.ElementTree as ET\n from decimal import Decimal\n-B=Path(__file__).resolve().parent;D=B.parent;N=Path('/dev/shm/nssoc-div4-v9-bias-v1-checks-01');L=Path('/dev/shm/nssoc-div4-v9-bias-v1-layout-01');R=D.parents[3]\n+B=Path(__file__).resolve().parent;D=B.parent;N=Path('/dev/shm/nssoc-div4-v10-tail-v1-checks-01');L=Path('/dev/shm/nssoc-div4-v10-tail-v1-layout-01');R=D.parents[3]\n def pin(p):\n  p=Path(p)\n  with p.open('rb') as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n@@ -15,13 +15,13 @@\n  return dict(bytes=n,sha256=h.hexdigest())\n backup=j(D/'native-archive01.json');manifest=backup['members'];archive=Path(backup['archive']['path']);assert pin(archive)=={k:backup['archive'][k]for k in ['bytes','sha256']}\n with tarfile.open(archive,'r:xz') as t:\n- assert len(t.getmembers())==len(manifest)==327 and set(t.getnames())==set(manifest)\n+ assert len(t.getmembers())==len(manifest)==340 and set(t.getnames())==set(manifest)\n  for m in t.getmembers():\n   assert m.isfile() and m.size==manifest[m.name]['bytes']\n   with t.extractfile(m) as f:assert stream_pin(f)=={k:manifest[m.name][k]for k in ['bytes','sha256']}\n ready=j(D/'native-finite-review-ready01.json');assert len(ready['closed_native_files'])==195\n for name,value in ready['closed_native_files'].items():assert pin(name)==value\n-record=j(N/'result.json');assert record['status']=='PASS_DIV4_V9_BIAS_V1_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY'\n+record=j(N/'result.json');assert record['status']=='PASS_DIV4_V10_TAIL_V1_STANDALONE_MAIN_DRC_STRICT_DEEP_FLAT_LVS_LEF_NEGATIVE_CONTROLS_ONLY'\n for name,digest in record['inputs'].items():assert pin(name)['sha256']==digest\n for name,digest in record['outputs'].items():assert pin(N/name)['sha256']==digest\n layout=j(L/'result.json')\n@@ -32,14 +32,18 @@\n for n,v in freeze['inputs'].items():assert pin(n)==v\n for n,v in source.items():assert pin(n)==v\n peer=j(D/'source-only-peer01-rx.json');assert peer['findings']==[] and peer['source_pins']==source\n-geometry=j(N/'power-geometry.json');assert geometry['status']=='PASS_ACTUAL_BIAS8_TWO_RPPD_DELTA_CAP24_POWER_AND_EIGHT_GEOMETRY_CONTROLS'\n+geometry=j(N/'power-geometry.json');assert geometry['status']=='PASS_ACTUAL_TAIL115_ONE_RPPD_DELTA_BIAS8_CAP24_AND_TEN_GEOMETRY_CONTROLS'\n for name,value in geometry['inputs'].items():assert pin(name)==value\n assert geometry['physical_primitives']==91 and geometry['native_instances']==725 and geometry['native_vias']==634\n assert geometry['power_arrays']==47 and geometry['power_straps']==8 and geometry['local_buses']==47\n-assert len(geometry['controls'])==8 and all(x['status']=='EXPECTED_REJECTION' for x in geometry['controls'])\n-assert [x['fault'] for x in geometry['controls']]==['remove_actual_hbt','remove_hbt_metal1','remove_power_via4','remove_power_straps','remove_actual_changed_mim_plate','restore_undersized_actual_mim','remove_actual_changed_resistor_body','restore_shorter_actual_pulldown']\n+assert len(geometry['controls'])==10 and all(x['status']=='EXPECTED_REJECTION' for x in geometry['controls'])\n+assert [x['fault'] for x in geometry['controls']]==['remove_actual_hbt','remove_hbt_metal1','remove_power_via4','remove_power_straps','remove_actual_changed_mim_plate','restore_undersized_actual_mim','remove_actual_changed_resistor_body','restore_shorter_actual_pulldown','remove_actual_reference_resistor_body','restore_old_reference_length']\n assert geometry['retained_layout_owners'] and not geometry['full_route_identity_claim'] and not geometry['qualified_pex']\n-assert geometry['changed_pulldown_length_um']=={'DIV__XDN':[7,8],'DIV__XDP':[7,8]} and geometry['unchanged_intrinsics']==89\n+assert geometry['changed_reference_length_um']=={'DIV__XSECOND__XBIAS':[12.7,11.5]} and geometry['unchanged_intrinsics']==90\n+assert geometry['retained_bias8_pulldown_names']==['DIV__XDN','DIV__XDP']\n+for name,length in [('DIV__XSECOND__XBIAS',11.5),('DIV__XFIRST__XCORE__XBIAS',12.7)]:\n+ row=next(x for x in layout['instances']if x['name']==name)\n+ assert row['kind']=='resistor'and row['width_um']==1 and row['length_um']==length\n assert geometry['retained_cap24_mim_names']==['DIV__XCN','DIV__XCP']\n for name in ['DIV__XDN','DIV__XDP']:\n  row=next(x for x in layout['instances']if x['name']==name)\n@@ -60,11 +64,11 @@\n   outcomes.append(dict(name=name,categories=560,markers=len(items),marker_categories=counts));continue\n  if 'audit' in step:\n   d=database[name];assert pin(d['input']['path'])=={k:d['input'][k] for k in ['bytes','sha256']};assert len(d['pairs'])==1 and not d['extraction_diagnostics']\n-  pair=d['pairs'][0];assert pair['layout']=='nssoc_clock_div4_v9_bias_v1_layout' and pair['schematic']=='NSSOC_CLOCK_DIV4_V9_BIAS_V1_LAYOUT'\n+  pair=d['pairs'][0];assert pair['layout']=='nssoc_clock_div4_v10_tail_v1_layout' and pair['schematic']=='NSSOC_CLOCK_DIV4_V10_TAIL_V1_LAYOUT'\n   audit=j(nd/'audit.json');assert audit==step['audit']\n   for n,v in audit['inputs'].items():assert pin(n)==v\n   assert audit['circuits'][0]['status']==pair['status'] and audit['circuits'][0]['layout_devices_recursive']==pair['layout_devices'] and audit['circuits'][0]['schematic_devices_recursive']==pair['schematic_devices']\n-  log=(nd/'deck.log').read_text();ports=re.search(r'^\\.SUBCKT nssoc_clock_div4_v9_bias_v1_layout (.*)$',(nd/'extracted.cir').read_text(),re.M).group(1).split()\n+  log=(nd/'deck.log').read_text();ports=re.search(r'^\\.SUBCKT nssoc_clock_div4_v10_tail_v1_layout (.*)$',(nd/'extracted.cir').read_text(),re.M).group(1).split()\n   assert 'strict port mode' in log and 'flag_missing_ports enabled' in log\n   if name in ['lvs','lvs_flat']:\n    assert pair['status']=='Match' and pair['layout_devices']==pair['schematic_devices']==74 and set(ports)==set(layout['ports']);assert 'INFO : Congratulations! Netlists match.' in log and \"ERROR : Netlists don't match\" not in log\n@@ -100,7 +104,7 @@\n    if name=='clock_open':assert pair['status']=='Match' and len(ports)==6 and set(ports)==set(layout['ports'])-{'CLKP'}\n    else:assert pair['status']=='NoMatch'\n    physical=nd/'wrong.gds';reference=nd/'wrong.cir'\n-   if physical.exists():assert pin(physical)!=pin(L/'nssoc_clock_div4_v9_bias_v1_layout.gds') and step['mutation_execution']['returncode']==0\n+   if physical.exists():assert pin(physical)!=pin(L/'nssoc_clock_div4_v10_tail_v1_layout.gds') and step['mutation_execution']['returncode']==0\n    else:assert reference.exists() and pin(reference)!=pin(L/'schematic.cir')\n   outcomes.append(dict(name=name,pair=pair,extracted_ports=ports,deck_verdict='MATCH' if name in ['lvs','lvs_flat'] else 'NO_MATCH',audit_reasons=audit['reasons']));continue\n  log=(nd/'native.log').read_text();tcl=(nd/'inspect.tcl').read_text();assert tcl.count('findMTerm ')==7\n@@ -113,7 +117,7 @@\n  else:raise AssertionError(name)\n  outcomes.append(dict(name=name,native_returncode=step['execution']['returncode'],native_seven_pin_tcl_checked=True))\n assert len(positive)==4 and len(negative)==17 and len(record['steps'])==21\n-lef=(L/'nssoc_clock_div4_v9_bias_v1_layout.lef').read_text()\n+lef=(L/'nssoc_clock_div4_v10_tail_v1_layout.lef').read_text()\n for name,value in layout['ports'].items():\n  p=re.search(r'  PIN '+name+r'\\n(.*?)  END '+name,lef,re.S).group(1)\n  direction='INPUT' if name in ['CLKP','CLKN'] else 'OUTPUT' if name in ['QP','QN'] else 'INOUT';use='POWER' if name=='DIV_AVDD' else 'GROUND' if name in ['AVSS','SUB'] else 'SIGNAL'\n@@ -125,5 +129,5 @@\n  for entry in owner['processes']:assert entry['status']=='REAPED_NO_LIVE_MEMBERS' and entry['members_at_leader_exit']==[]\n  owners.append(dict(path=str(path),**pin(path)))\n read_owner=j(B/'saved-database-reader.owned.json');assert read_owner['cleanup'] is None and all(x['status']=='REAPED_NO_LIVE_MEMBERS' and not x['members_at_leader_exit'] for x in read_owner['processes'])\n-result=dict(reviewer='PLL independent saved-byte reviewer',status='PASS_INDEPENDENT_SAVED_BIAS8_V1_NATIVE_RESULT',findings=[],checks=pin(N/'result.json'),geometry=pin(N/'power-geometry.json'),GDS=pin(L/'nssoc_clock_div4_v9_bias_v1_layout.gds'),ready=pin(D/'native-finite-review-ready01.json'),utc=datetime.datetime.now(datetime.UTC).isoformat(),method=pin(__file__),archive=dict(path=str(archive),**pin(archive)),full_member_readback=327,native_inputs_rehashed=len(record['inputs']),native_outputs_rehashed=len(record['outputs']),immutable_generated_gds=pin(L/'nssoc_clock_div4_v9_bias_v1_layout.gds'),launch_layout_files_equal=True,source_pins=source,source_peer=pin(D/'source-only-peer01-rx.json'),raw_database_read=pin(B/'raw-database-read.json'),raw_reader_execution=pin(B/'reader-execution.json'),positive_stages=positive,expected_negative_stages=negative,stage_details=outcomes,closed_native_owner_receipts=owners,scope='All21 saved standalone Bias8V1 divider native stages checked with327 archive members and195 closed raw files and16 raw LVS databases independently read through KLayout API. Raw mainDRC560categories0markers, realoffgrid6markers, deep+flat74/74and7ports;8reference+6physicalfaults plusoffgrid and2LEFfaults rejected. Clockopen xref remainsMatch but actual CLKP port is missing and strictdeck rejects; this distinction is retained. All source-test failures and additive metadata correction remain preserved. Hash-bound actualGDS audit verifies two pull-down rppd L7to8um deltas with both24um MIMs retained and89unchanged intrinsic geometries at725declared placements,634nativevias,47powerarrays,8powerstraps,47localbuses and8actualgeometryfaults. Independent positive netlist census additionally checks every passive W/L, MIM area/perimeter, HBT Nx/geometry and finite body contacts. Route identity is explicitly not claimed after changed placement. Read-only database reader invoked; generation/extraction/DRC/LVS/LEF and tests were not rerun.',manufacturing_approval=False,qualified_pex=False,extracted_division=False,clockbank_integration=False,phy_complete=False,physical_acceptance=False)\n+result=dict(reviewer='PLL independent saved-byte reviewer',status='PASS_INDEPENDENT_SAVED_TAIL115_V1_NATIVE_RESULT',findings=[],checks=pin(N/'result.json'),geometry=pin(N/'power-geometry.json'),GDS=pin(L/'nssoc_clock_div4_v10_tail_v1_layout.gds'),ready=pin(D/'native-finite-review-ready01.json'),utc=datetime.datetime.now(datetime.UTC).isoformat(),method=pin(__file__),archive=dict(path=str(archive),**pin(archive)),full_member_readback=340,native_inputs_rehashed=len(record['inputs']),native_outputs_rehashed=len(record['outputs']),immutable_generated_gds=pin(L/'nssoc_clock_div4_v10_tail_v1_layout.gds'),launch_layout_files_equal=True,source_pins=source,source_peer=pin(D/'source-only-peer01-rx.json'),raw_database_read=pin(B/'raw-database-read.json'),raw_reader_execution=pin(B/'reader-execution.json'),positive_stages=positive,expected_negative_stages=negative,stage_details=outcomes,closed_native_owner_receipts=owners,scope='All21 saved standalone Tail115V1 divider native stages checked with340 archive members and195 closed raw files and16 raw LVS databases independently read through KLayout API. Raw mainDRC560categories0markers, realoffgrid6markers, deep+flat74/74and7ports;8reference+6physicalfaults plusoffgrid and2LEFfaults rejected. Clockopen xref remainsMatch but actual CLKP port is missing and strictdeck rejects; this distinction is retained. All source-test failures and additive metadata correction remain preserved. Hash-bound actualGDS audit verifies one SECOND reference rppd L12.7to11.5um delta with FIRST L12.7, both pull-down L8 and both24um MIMs retained and90unchanged intrinsic geometries at725declared placements,634nativevias,47powerarrays,8powerstraps,47localbuses and10actualgeometryfaults. Independent positive netlist census additionally checks every passive W/L, MIM area/perimeter, HBT Nx/geometry and finite body contacts. Route identity is explicitly not claimed after changed placement. Read-only database reader invoked; generation/extraction/DRC/LVS/LEF and tests were not rerun.',manufacturing_approval=False,qualified_pex=False,extracted_division=False,clockbank_integration=False,phy_complete=False,physical_acceptance=False)\n p=D/'native-saved-peer-rx.json';assert not p.exists();p.write_text(json.dumps(result,indent=2)+'\\n');print(json.dumps(dict(path=str(p),**pin(p))))\n"
+  }
+]

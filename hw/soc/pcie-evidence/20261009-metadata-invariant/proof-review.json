@@ -1,0 +1,60 @@
+{
+  "status": "PASS_DEFAULT_NATIVE_PDR_METADATA_INVARIANT_AND_TWO_RTL_FAULTS",
+  "parameters": {
+    "DEPTH": 4,
+    "MAX_BYTES": 38,
+    "TIMEOUT_CYCLES": 1024,
+    "MAX_REPLAYS": 3
+  },
+  "qualified_only_when_reserve_valid": true,
+  "unbounded_reset_based": true,
+  "functional_rtl_unabstracted": true,
+  "all_other_logic_text_identical": true,
+  "positive_tests": {
+    "replay01": {
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    "flow01": {
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    "buffered01": {
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    }
+  },
+  "rejected_actual_rtl_mutants": {
+    "class": {
+      "error_type": "AssertionError",
+      "error_msg": "assert [(0, 0, 0), (0, 1, 0), (0, 2, 0), (0, 0, 0)] == [(1, 0, 0), (0, 1, 0), (2, 2, 0), (0, 0, 0)]\n +  where [(0, 0, 0), (0, 1, 0), (0, 2, 0), (0, 0, 0)] = <test_soc_pcie_replay_tx.Bench object at 0x79fe61e78c50>.reservations"
+    },
+    "payload": {
+      "error_type": "AssertionError",
+      "error_msg": "assert [(1, 0, 0), (0, 0, 0), (2, 0, 0), (0, 0, 0)] == [(1, 0, 0), (0, 1, 0), (2, 2, 0), (0, 0, 0)]\n +  where [(1, 0, 0), (0, 0, 0), (2, 0, 0), (0, 0, 0)] = <test_soc_pcie_replay_tx.Bench object at 0x7a8497278c50>.reservations"
+    }
+  },
+  "earlier_two_state_induction_gap_retained": true,
+  "nondefault_proof_pending": true,
+  "rtl_adopted": false,
+  "timing_closed": false,
+  "scope": "New metadata registers equal unchanged slot decode whenever reserve_valid. Exact other RTL text preserved, so internal control, byte storage, outputs and handshake latency remain unchanged for identical inputs. Idle metadata is not compared. Native PDR model/guard are authoritative: copied run receipt scope text incorrectly says abstract commit; that description belongs only to the separate earlier abstract trial.",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/review-invariant02.py": "dbda97b2b13edc91ced1ba9d5e74acd549a4247d6ecd1c0f756c77f7e16e1622",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/candidate.v": "94c178b063f55b6092d2ebdbfd3585a47607be022f816edbd0a6fc0496b41503",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-class-verdict-20261009/candidate01/soc_pcie_replay_tx.v": "cc069ae0f6af9c54e8b24d1fdb9a386d9ef012ecf8b433b1ab7a51c393bae366",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/invariant-pdr-native01/model.v": "dc7d69a8c8e38d6c2791549b5a64a58e1dffb039e36051c4fdbf972e088ce9b9",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/invariant-pdr-native01/proof.sby": "525a150cf6abf6e9d72ea04ffd7112fb181035de727af9486280bb0854c985a7",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/invariant-pdr-native01/result.json": "dbe8b5a4166dd43b4f56f36fe95e85ec9bd3c53ba5410a3851a012dd01514045",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/invariant-pdr-native01/proof/status": "a6c63e3678056df93337e9b9abbba89b080fa5fdebcd990f12997864180bce37",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/invariant-pdr-native01/proof/logfile.txt": "ff5a99e1da8e6b406eb92232832be2029998c0ea7edad7f2ed294dc8e480660b",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/replay01/result.json": "3493eb8cf6cf0dc6b540d6c9e208f8784b8c83bf8ad325ea121b436a44742f80",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/flow01/result.json": "60ea0d0700f9ecedd289dba5c3127f6ef4be6927025ded471d69800612731c71",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/buffered01/result.json": "268193bba6c696fa37c3f68403ad64851066cd71996b165be880998b5a835ae4",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/rtl-fault-class-test/results.xml": "b170843bcced416b38c774a9da07c0ddce2b3199f7c3dfaac7706ecadc7a639a",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-metadata-lookahead-20261009/rtl-fault-payload-test/results.xml": "30ce72dba530e92755481fed239cf1bdcc928331c18e9921c5079a874f919540"
+  }
+}

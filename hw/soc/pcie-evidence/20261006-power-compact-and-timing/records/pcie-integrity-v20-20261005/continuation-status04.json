@@ -1,0 +1,72 @@
+{
+  "status": "FAILED_RETAINED",
+  "controller": {
+    "pid": 131735,
+    "state": "R",
+    "process_group": 131735,
+    "start_ticks": "1791123"
+  },
+  "affinity": [
+    6
+  ],
+  "policy": {
+    "bytes": 7769,
+    "sha256": "f1abb77236bbedb3dc1d76395751660101b3200ef49411a34214f407ef83aa4f"
+  },
+  "stages": [
+    {
+      "name": "map",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/run_balanced_map04.py"
+      ],
+      "started_utc": "2026-10-05T19:51:23.365797+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 131736,
+        "state": "R",
+        "process_group": 131736,
+        "start_ticks": "1791132"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-05T19:52:26.267452+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "read_depth",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/measure_native_read_depth.py",
+        "--candidate",
+        "/dev/shm/nssoc-integrity-v20-balanced-map-01/mapped.json",
+        "--rejected",
+        "/dev/shm/nssoc-integrity-v14-balanced-map-01/mapped.json",
+        "--out",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v20-20261005/native-read-depth-comparison.json"
+      ],
+      "started_utc": "2026-10-05T19:52:26.270128+00:00",
+      "status": "FAILED_RETAINED",
+      "identity": {
+        "pid": 132042,
+        "state": "R",
+        "process_group": 132042,
+        "start_ticks": "1797423"
+      },
+      "returncode": 1,
+      "finished_utc": "2026-10-05T19:52:27.087165+00:00",
+      "log": {
+        "bytes": 635,
+        "sha256": "8585f1eda072c0f227250961e85489f5ad965238d1286acac3134afc260a3e77"
+      }
+    }
+  ],
+  "elapsed_watchdog_seconds": null,
+  "physical_acceptance": false,
+  "utc": "2026-10-05T19:52:27.088132+00:00",
+  "error": "AssertionError(('read_depth', 1))",
+  "explicit_stop": false,
+  "stop_reason": "('read_depth', 1)"
+}

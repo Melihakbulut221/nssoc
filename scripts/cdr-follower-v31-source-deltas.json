@@ -1,0 +1,118 @@
+{
+  "candidates": [
+    {
+      "baseline_path": "hw/soc/analog/pcie/cdr_retime_follower_v23.spice",
+      "baseline_sha256": "82e880bbba3660af3064f6eda688d4ae78c7a110fda460f6f930beb695ff128d",
+      "candidate_path": "hw/soc/analog/pcie/cdr_retime_follower_v31.spice",
+      "candidate_sha256": "29d98dbb56cb32a7496da2c45aaca47a1233c2d29cdae497c782ec4ec11106d9",
+      "edits": [
+        {
+          "before": "follower_v23",
+          "after": "follower_v31",
+          "count": 2
+        },
+        {
+          "before": "l=4.5u",
+          "after": "l=2.25u",
+          "count": 2
+        },
+        {
+          "before": "* Candidate active C/D retime drive; not an accepted CDR or PHY.",
+          "after": "* v31 candidate: halve only pull-down resistor lengths4.5u to2.25u.\n* Addresses observed v30 follower cutoff under stronger sampler pull-up loading.\n* Actual current, stress, timing and full parent acceptance remain unproven.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/make_pcie_cdr_retime_follower_v23.py",
+      "baseline_sha256": "86ecb6a2a3c3608877b3c943de0e4f58eab2df616fd4b23faf67345f87005dc0",
+      "candidate_path": "hw/soc/flow/make_pcie_cdr_retime_follower_v31.py",
+      "candidate_sha256": "8271b90e76dc226eec568ffa3f1b706cb65c9a1e7b9ce9d5a89b61b784e245a7",
+      "edits": [
+        {
+          "before": "cdr_retime_follower_v23.spice",
+          "after": "cdr_retime_follower_v31.spice",
+          "count": 1
+        },
+        {
+          "before": "82e880bbba3660af3064f6eda688d4ae78c7a110fda460f6f930beb695ff128d",
+          "after": "29d98dbb56cb32a7496da2c45aaca47a1233c2d29cdae497c782ec4ec11106d9",
+          "count": 1
+        },
+        {
+          "before": "l='4.5u'",
+          "after": "l='2.25u'",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_retime_follower_v23.py",
+      "baseline_sha256": "1c0042eb3b546252f18fed1adb9622d24727b1f0765e120bc1b0a6f3ee6a7857",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retime_follower_v31.py",
+      "candidate_sha256": "6ae46b59d36027106d23ecdf4f004d9596b05685045695449a4add2b5b52c5bb",
+      "edits": [
+        {
+          "before": "make_pcie_cdr_retime_follower_v23.py",
+          "after": "make_pcie_cdr_retime_follower_v31.py",
+          "count": 1
+        },
+        {
+          "before": " l=4.5u ",
+          "after": " l=2.25u ",
+          "count": 2
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_follower_v23_physical.py",
+      "baseline_sha256": "6a439140d29af260565a6928705d718d396374b5c116ddcfe47a8cb635037863",
+      "candidate_path": "scripts/cloud_cdr_follower_v31_physical.py",
+      "candidate_sha256": "796c6dae1abf2ea36c5fa2c02cc5ea454d74067845783792101934b2eda92ea6",
+      "edits": [
+        {
+          "before": "v23",
+          "after": "v31",
+          "count": 7
+        },
+        {
+          "before": "V23",
+          "after": "V31",
+          "count": 1
+        },
+        {
+          "before": "w4u/l4.5u",
+          "after": "w4u/l2.25u",
+          "count": 1
+        },
+        {
+          "before": "82e880bbba3660af3064f6eda688d4ae78c7a110fda460f6f930beb695ff128d",
+          "after": "29d98dbb56cb32a7496da2c45aaca47a1233c2d29cdae497c782ec4ec11106d9",
+          "count": 1
+        },
+        {
+          "before": "docs/evidence/cdr-v22-native-latch-diagnosis-20261020.json",
+          "after": "docs/evidence/cdr-v30-native-follower-diagnosis-20261022.json",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/cdr-follower-v23-physical-cloud.yml",
+      "baseline_sha256": "6de53d7ccefa7b54900e1189778cf3ab0fb39cfa41ef9113aa31555f530cc6a4",
+      "candidate_path": ".github/workflows/cdr-follower-v31-physical-cloud.yml",
+      "candidate_sha256": "44614024878566dd23e62de2150943a3689fe23c02d344ea7b78a351e7326bc5",
+      "edits": [
+        {
+          "before": "v23",
+          "after": "v31",
+          "count": 13
+        }
+      ]
+    }
+  ],
+  "protected": {
+    "docs/evidence/cdr-v30-native-follower-diagnosis-20261022.json": "207f432af26d2fac427726da5f2906b5b11bbc9b36bb893e45bb0692a59b5591",
+    "scripts/check_cdr_follower_v31_sources.py": "4276ee07bf60b019369676875737c5dc9f071966c38dce8a3d6423c279478fc6"
+  }
+}

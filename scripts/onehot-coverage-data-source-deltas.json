@@ -1,0 +1,196 @@
+[
+  {
+    "baseline_path": "scripts/cloud_onehot_critical_data_prepare.py",
+    "baseline_sha256": "84f21ae778fa3d9bc9c62c48960d661cacc4d5ce0a14d4df8de5667384bb42cb",
+    "candidate_path": "scripts/cloud_onehot_coverage_data_prepare.py",
+    "candidate_sha256": "823f5c7c590736030c6a6ffb181a5b1f9dde199e9edd4189fe200e131dede1ce",
+    "edits": [
+      {
+        "before": "onehot-critical-data-prepare",
+        "after": "onehot-coverage-data-prepare",
+        "count": 1
+      },
+      {
+        "before": "onehot_critical_data",
+        "after": "onehot_coverage_data",
+        "count": 5
+      },
+      {
+        "before": "nssoc_critical_data",
+        "after": "nssoc_coverage_data",
+        "count": 1
+      },
+      {
+        "before": "149592",
+        "after": "150291",
+        "count": 2
+      },
+      {
+        "before": "7bcceba57841a8e293918580db654163fa3d45010ec1bbe0e2a50e3b275316ba",
+        "after": "782c6fb2990e35dd422f817eaab7a5aa7a98bab35b8da1ee2c15dcc2f8bc3d90",
+        "count": 1
+      },
+      {
+        "before": "onehot-near-driver-route-result-20261019.json",
+        "after": "onehot-critical-data-route-result-20261020.json",
+        "count": 1
+      },
+      {
+        "before": "onehot-near-driver-path-review-pass-20261019.json",
+        "after": "onehot-critical-data-path-review-pass-20261020.json",
+        "count": 1
+      },
+      {
+        "before": "39243328773",
+        "after": "39293720171",
+        "count": 1
+      },
+      {
+        "before": "39288404219",
+        "after": "39328156931",
+        "count": 1
+      },
+      {
+        "before": "86ca4f8ba0c1fb15fdcd01dcf6e61837fb2ab54194f8b6c5e38c88e309406251",
+        "after": "206246763d36b45f2d6ab03ec9b4a022531dd3233db4a1530af32c51b8bdbfea",
+        "count": 1
+      },
+      {
+        "before": "ac898e7aef87a2f57cc7c215f69ad79b69b95336ce558eadb8f42f9c09c58207",
+        "after": "1788358f43996dc914a773b20788193b8dcd31922ff6b49aa76a828a952075d1",
+        "count": 1
+      },
+      {
+        "before": "COMPLETE_NATIVE_NEAR_DRIVER_PATH_REVIEW_NOT_TIMING_CLOSURE",
+        "after": "COMPLETE_NATIVE_CRITICAL_DATA_PATH_REVIEW_NOT_TIMING_CLOSURE",
+        "count": 1
+      },
+      {
+        "before": "topology['retained_instances']==148871 and topology['added_diode_count']==721",
+        "after": "topology['retained_instances']==149625 and topology['added_diode_count']==666",
+        "count": 1
+      },
+      {
+        "before": "selection=select(diag);targets=selection['targets'];count=len(targets)",
+        "after": "selection=select(diag,actual);targets=selection['targets'];count=len(targets)",
+        "count": 1
+      },
+      {
+        "before": "        assert any(t['instance']=='$abc$1804206$auto$blifparse.cc:397:parse_blif$1824847' and t['pin']=='Y'for t in targets)\n",
+        "after": "        assert 1<=count<=128 and selection['hold_screen_ns']==.2\n",
+        "count": 1
+      },
+      {
+        "before": "PASS_NATIVE_CRITICAL_DATA_BUFFER_PREPARATION_REQUIRES_ROUTE_RC_ALL_CORNERS",
+        "after": "PASS_NATIVE_HOLD_SCREENED_COVERAGE_BUFFER_PREPARATION_REQUIRES_ROUTE_RC_ALL_CORNERS",
+        "count": 1
+      },
+      {
+        "before": "        pattern=r'sg13g2_buf_16\\s+'+name+r'\\s*\\((.*?)\\);';match=re.search(pattern,text,re.S);assert match",
+        "after": "        first_master=r['geometry']['changes'][0]['buffer_master'];assert first_master in ('sg13g2_buf_16','sg13g2_buf_8','sg13g2_buf_4')\n        pattern=first_master+r'\\s+'+name+r'\\s*\\((.*?)\\);';match=re.search(pattern,text,re.S);assert match",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "baseline_path": "scripts/prepare_onehot_critical_data_buffers.py",
+    "baseline_sha256": "ed9e901c689ef8845824a4f8fa5ac388fe3318a1e19b589ae79ab8ef0cd5f203",
+    "candidate_path": "scripts/prepare_onehot_coverage_data_buffers.py",
+    "candidate_sha256": "687cfbd1754a2da1e4b742b557d2dd5ac85f01f047f97c45cbe750a4a7a134f0",
+    "edits": [
+      {
+        "before": "onehot-critical-data-prepare",
+        "after": "onehot-coverage-data-prepare",
+        "count": 1
+      },
+      {
+        "before": "nssoc_critical_data",
+        "after": "nssoc_coverage_data",
+        "count": 2
+      },
+      {
+        "before": "149592",
+        "after": "150291",
+        "count": 4
+      },
+      {
+        "before": "7bcceba57841a8e293918580db654163fa3d45010ec1bbe0e2a50e3b275316ba",
+        "after": "782c6fb2990e35dd422f817eaab7a5aa7a98bab35b8da1ee2c15dcc2f8bc3d90",
+        "count": 1
+      },
+      {
+        "before": "including721latest route diodes",
+        "after": "including666latest route diodes",
+        "count": 1
+      },
+      {
+        "before": "def prepare():",
+        "after": "def place_near_driver(block,buffer,driver_term,occupied_rows):\n    import math\n    dx,dy=point(driver_term);width=buffer.getMaster().getWidth();height=buffer.getMaster().getHeight()\n    site=buffer.getMaster().getSite().getName();candidates=[]\n    for row,intervals in occupied_rows:\n        box=row.getBBox();pitch=row.getSite().getWidth()\n        if row.getSite().getName()!=site or box.yMax()-box.yMin()!=height:continue\n        if abs(box.yMin()+height/2-dy)>80*block.getDbUnitsPerMicron()+height:continue\n        assert pitch>0\n        buffer.setOrient(row.getOrient());buffer.setLocation(box.xMin(),box.yMin())\n        ax,ay=point(buffer.findITerm('A'));offset=ax-box.xMin()\n        # Merge actual occupied rectangles intersecting this row. Legal abutment\n        # is allowed; overlap is never allowed. Original instances stay fixed.\n        cursor=box.xMin();gaps=[]\n        for lo,hi in sorted(intervals):\n            lo=max(lo,box.xMin());hi=min(hi,box.xMax())\n            if hi<=box.xMin() or lo>=box.xMax():continue\n            if lo>cursor:gaps.append((cursor,lo))\n            cursor=max(cursor,hi)\n        if cursor<box.xMax():gaps.append((cursor,box.xMax()))\n        for lo,hi in gaps:\n            low=math.ceil((lo-box.xMin())/pitch);high=math.floor((hi-width-box.xMin())/pitch)\n            if low>high:continue\n            ideal=(dx-offset-box.xMin())/pitch\n            for q in {max(low,min(high,math.floor(ideal))),max(low,min(high,math.ceil(ideal)))}:\n                x=box.xMin()+q*pitch\n                distance=abs(x+offset-dx)+abs(ay-dy)\n                candidates.append((distance,row.getName(),x,box.yMin(),row))\n    assert candidates,('No vacant native site',driver_term.getInst().getName())\n    distance,_,x,y,row=min(candidates,key=lambda v:v[:4])\n    assert distance/block.getDbUnitsPerMicron()<=80,('No vacant site within original80um limit',driver_term.getInst().getName(),distance/block.getDbUnitsPerMicron())\n    buffer.setOrient(row.getOrient());buffer.setLocation(x,y);buffer.setPlacementStatus('PLACED')\n    b=buffer.getBBox()\n    for other,intervals in occupied_rows:\n        rb=other.getBBox()\n        if rb.yMin()<b.yMax() and b.yMin()<rb.yMax():intervals.append((b.xMin(),b.xMax()))\n    assert sum(abs(a-c)for a,c in zip(point(driver_term),point(buffer.findITerm('A'))))==distance\n    return dict(row=row.getName(),distance_um=distance/block.getDbUnitsPerMicron(),native_site_width_dbu=row.getSite().getWidth())\n\ndef prepare():",
+        "count": 1
+      },
+      {
+        "before": "    original={i.getName():signature(i)for i in b.getInsts()}",
+        "after": "    original={i.getName():signature(i)for i in b.getInsts()}\n    import bisect\n    occupied_rows=sorted([(row,[])for row in b.getRows()],key=lambda pair:pair[0].getBBox().yMin())\n    row_bottoms=[row.getBBox().yMin()for row,_ in occupied_rows]\n    max_row_height=max(row.getBBox().yMax()-row.getBBox().yMin()for row,_ in occupied_rows)\n    for inst in b.getInsts():\n        box=inst.getBBox();start=bisect.bisect_right(row_bottoms,box.yMin()-max_row_height)\n        for index in range(start,len(occupied_rows)):\n            row,intervals=occupied_rows[index];rb=row.getBBox()\n            if rb.yMin()>=box.yMax():break\n            if box.yMin()<rb.yMax():intervals.append((box.xMin(),box.xMax()))",
+        "count": 1
+      },
+      {
+        "before": "        buffer.setOrient(driver.getOrient());x,y=driver.getLocation()\n        buffer.setLocation(x+driver.getMaster().getWidth(),y);buffer.setPlacementStatus('PLACED')",
+        "after": "        placement=place_near_driver(b,buffer,term,occupied_rows)",
+        "count": 1
+      },
+      {
+        "before": "initial_buffer_location_dbu=list(buffer.getLocation()),original_terminal_count=",
+        "after": "initial_buffer_location_dbu=list(buffer.getLocation()),vacant_native_site=placement,original_terminal_count=",
+        "count": 1
+      },
+      {
+        "before": "    assert candidates,('No vacant native site',driver_term.getInst().getName())",
+        "after": "    if not candidates:return dict(accepted=False,reason='no_vacant_site',distance_um=None)",
+        "count": 1
+      },
+      {
+        "before": "    assert distance/block.getDbUnitsPerMicron()<=80,('No vacant site within original80um limit',driver_term.getInst().getName(),distance/block.getDbUnitsPerMicron())",
+        "after": "    if distance/block.getDbUnitsPerMicron()>80:return dict(accepted=False,reason='nearest_site_exceeds80um',distance_um=distance/block.getDbUnitsPerMicron())",
+        "count": 1
+      },
+      {
+        "before": "    return dict(row=row.getName(),distance_um=",
+        "after": "    return dict(accepted=True,row=row.getName(),distance_um=",
+        "count": 1
+      },
+      {
+        "before": "    master=db.findMaster('sg13g2_buf_16');assert master\n    assert {p.getName():str(p.getIoType())for p in master.getMTerms()if str(p.getSigType())=='SIGNAL'}=={'A':'INPUT','X':'OUTPUT'}",
+        "after": "    masters=[db.findMaster('sg13g2_buf_'+str(strength))for strength in (16,8,4)]\n    assert all(masters)\n    for master in masters:\n        assert {p.getName():str(p.getIoType())for p in master.getMTerms()if str(p.getSigType())=='SIGNAL'}=={'A':'INPUT','X':'OUTPUT'}",
+        "count": 1
+      },
+      {
+        "before": "        local_net=odb.dbNet.create(b,local);buffer=odb.dbInst.create(b,master,added);assert buffer and local_net\n        placement=place_near_driver(b,buffer,term,occupied_rows)",
+        "after": "        local_net=odb.dbNet.create(b,local);assert local_net\n        attempts=[]\n        for master in masters:\n            buffer=odb.dbInst.create(b,master,added);assert buffer\n            placement=place_near_driver(b,buffer,term,occupied_rows)\n            attempts.append(dict(master=master.getName(),**placement))\n            if placement['accepted']:break\n            odb.dbInst.destroy(buffer);buffer=None\n        observations=OUT/'native-site-attempts.json'\n        previous=json.loads(observations.read_text())if observations.is_file()else[]\n        previous.append(dict(driver=t['instance'],attempts=attempts))\n        observations.write_text(json.dumps(previous,indent=2)+'\\n')\n        assert buffer is not None,('No buf16/buf8/buf4 vacant site within original80um',t['instance'],attempts)",
+        "count": 1
+      },
+      {
+        "before": "assert i and i.getMaster().getName()=='sg13g2_buf_16'and i.isPlaced()",
+        "after": "assert i and i.getMaster().getName()==r['buffer_master'] and r['buffer_master'] in ('sg13g2_buf_16','sg13g2_buf_8','sg13g2_buf_4')and i.isPlaced()",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "baseline_path": "scripts/inspect_onehot_critical_data_geometry.py",
+    "baseline_sha256": "22fd3ae26445dd19ed50d79b43d70667fdaedd51c5c78b7be20205efe6a6a84c",
+    "candidate_path": "scripts/inspect_onehot_coverage_data_geometry.py",
+    "candidate_sha256": "4450580d3309406a9a7fa5cd00f5fc030c8116c324c3380fed65bafc86dbb939",
+    "edits": [
+      {
+        "before": "onehot-critical-data-prepare",
+        "after": "onehot-coverage-data-prepare",
+        "count": 1
+      },
+      {
+        "before": "7bcceba57841a8e293918580db654163fa3d45010ec1bbe0e2a50e3b275316ba",
+        "after": "782c6fb2990e35dd422f817eaab7a5aa7a98bab35b8da1ee2c15dcc2f8bc3d90",
+        "count": 1
+      }
+    ]
+  }
+]

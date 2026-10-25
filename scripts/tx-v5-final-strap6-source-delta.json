@@ -1,0 +1,48 @@
+{
+  "scope": "Only actual final TM1 strap4to6um, original vias and circuit unchanged; add exact GDS delta gate before unchanged native DRC/LVS/faults.",
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_fast_stage_isolated_assembly.py",
+      "baseline_sha256": "fb8da2699c4e1547ba53982588d6f94022aafc5df15561342d572bf3b57853f6",
+      "candidate_path": "scripts/cloud_tx_v5_final_strap6_assembly.py",
+      "candidate_sha256": "96b690a30fb4958aee9d98a2c76b4c9f86c70694ff486f76b904ff72e097589d",
+      "edits": [
+        {
+          "before": "cloud-tx-v5-fast-stage-isolated-assembly",
+          "after": "cloud-tx-v5-final-strap6-assembly",
+          "count": 1
+        },
+        {
+          "before": "nssoc_tx_tree32_budget_balanced_v5_faststage_isolated_core_v1",
+          "after": "nssoc_tx_tree32_budget_balanced_v5_final_strap6_core_v1",
+          "count": 1
+        },
+        {
+          "before": "box('TopMetal1',x-2,yy+130.230,x+2,end_y+2);via(x,end_y,params=dict(vt2_columns=2,vt2_rows=2))",
+          "after": "box('TopMetal1',x-3,yy+130.230,x+3,end_y+2);via(x,end_y,params=dict(vt2_columns=2,vt2_rows=2))",
+          "count": 1
+        },
+        {
+          "before": "local_final_strap_width_um=4.",
+          "after": "local_final_strap_width_um=6.",
+          "count": 1
+        },
+        {
+          "before": "# Retain the original final-emitter return strap after native AVSS/SUB short diagnosis.",
+          "after": "# Widen only the final TM1 strap4to6um; retain the original via arrays.",
+          "count": 1
+        },
+        {
+          "before": "local final AVSS TM1 strap and2x2 topvia array retain their exact baseline geometry.",
+          "after": "local final AVSS TM1 strap widens4to6um while the2x2 topvia array retains its exact baseline geometry.",
+          "count": 1
+        },
+        {
+          "before": "generated=json.loads((OUT/'layout/result.json').read_text());result['layout']=generated",
+          "after": "generated=json.loads((OUT/'layout/result.json').read_text());result['layout']=generated\n        run([app,'python',ROOT/'scripts/check_tx_v5_final_strap6_geometry.py',OUT],'exact-strap6-geometry')\n        result['strap_geometry_delta']=json.loads((OUT/'strap6-geometry-delta.json').read_text())",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

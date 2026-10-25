@@ -1,0 +1,408 @@
+{
+  "run": 39881471453,
+  "source_head": "c095d21f9fcb01f17f3694795bb79b06799fae49",
+  "summary_asset": 667573346,
+  "summary_sha256": "dd916fb419a298fba776f36ee3dbb96210cb8a33410e22a1a1cc4b5bec214db5",
+  "scope": "Exact native placement-estimated paths of the repaired candidate now being routed. Not extracted routed timing, repair or full timing closure.",
+  "corners": {
+    "nom_slow_1p08V_125C": {
+      "max": {
+        "reported_paths": 7,
+        "paths": [
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1200752",
+            "Endpoint": "$auto$ff.cc:337:slice$1179729",
+            "Path Group": "asynchronous",
+            "Path Type": "max",
+            "reported_slack": -0.650139093,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1179637",
+            "Endpoint": "$auto$ff.cc:337:slice$1179744",
+            "Path Group": "path delay",
+            "Path Type": "max",
+            "reported_slack": 1.941096425,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1196234",
+            "Endpoint": "$auto$ff.cc:337:slice$1196173",
+            "Path Group": "clk_i",
+            "Path Type": "max",
+            "reported_slack": 4.280956268,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1676891",
+            "Endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "Path Group": "eth_gtx",
+            "Path Type": "max",
+            "reported_slack": 2.840081215,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "Endpoint": "$auto$ff.cc:337:slice$1178866",
+            "Path Group": "eth_rx_clk_i",
+            "Path Type": "max",
+            "reported_slack": 0.843150914,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "Endpoint": "$auto$ff.cc:337:slice$1183440",
+            "Path Group": "eth_tx_clk_i",
+            "Path Type": "max",
+            "reported_slack": 1.460412264,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1173770",
+            "Endpoint": "$auto$ff.cc:337:slice$1178177",
+            "Path Group": "pcie_clk_i",
+            "Path Type": "max",
+            "reported_slack": -3.271100044,
+            "native_slack_label": "VIOLATED"
+          }
+        ],
+        "path_groups": {
+          "asynchronous": 1,
+          "path delay": 1,
+          "clk_i": 1,
+          "eth_gtx": 1,
+          "eth_rx_clk_i": 1,
+          "eth_tx_clk_i": 1,
+          "pcie_clk_i": 1
+        }
+      },
+      "min": {
+        "reported_paths": 6,
+        "paths": [
+          {
+            "Startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1315556",
+            "Path Group": "asynchronous",
+            "Path Type": "min",
+            "reported_slack": -0.399132192,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1181678",
+            "Endpoint": "u_ram.g_ram_2048x64_ecc.u_b0",
+            "Path Group": "clk_i",
+            "Path Type": "min",
+            "reported_slack": -0.664255142,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1676847",
+            "Endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "Path Group": "eth_gtx",
+            "Path Type": "min",
+            "reported_slack": 0.618645847,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1171141",
+            "Endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[0].u_mem",
+            "Path Group": "eth_rx_clk_i",
+            "Path Type": "min",
+            "reported_slack": 0.194793522,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1163482",
+            "Endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[2].u_mem",
+            "Path Group": "eth_tx_clk_i",
+            "Path Type": "min",
+            "reported_slack": -0.092247657,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "pcie_rx_valid_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1192852",
+            "Path Group": "pcie_clk_i",
+            "Path Type": "min",
+            "reported_slack": -0.233929545,
+            "native_slack_label": "VIOLATED"
+          }
+        ],
+        "path_groups": {
+          "asynchronous": 1,
+          "clk_i": 1,
+          "eth_gtx": 1,
+          "eth_rx_clk_i": 1,
+          "eth_tx_clk_i": 1,
+          "pcie_clk_i": 1
+        }
+      }
+    },
+    "nom_typ_1p20V_25C": {
+      "max": {
+        "reported_paths": 7,
+        "paths": [
+          {
+            "Startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1338117",
+            "Path Group": "asynchronous",
+            "Path Type": "max",
+            "reported_slack": -1.917537332,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1179637",
+            "Endpoint": "$auto$ff.cc:337:slice$1179744",
+            "Path Group": "path delay",
+            "Path Type": "max",
+            "reported_slack": 2.373634577,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1194817",
+            "Endpoint": "$auto$ff.cc:337:slice$1170589",
+            "Path Group": "clk_i",
+            "Path Type": "max",
+            "reported_slack": 3.776921988,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1676893",
+            "Endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+            "Path Group": "eth_gtx",
+            "Path Type": "max",
+            "reported_slack": 3.432549715,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "Endpoint": "$auto$ff.cc:337:slice$1178866",
+            "Path Group": "eth_rx_clk_i",
+            "Path Type": "max",
+            "reported_slack": 3.295298815,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[5].u_mem",
+            "Endpoint": "$auto$ff.cc:337:slice$1182939",
+            "Path Group": "eth_tx_clk_i",
+            "Path Type": "max",
+            "reported_slack": 3.500925064,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1176775",
+            "Path Group": "pcie_clk_i",
+            "Path Type": "max",
+            "reported_slack": -3.411071539,
+            "native_slack_label": "VIOLATED"
+          }
+        ],
+        "path_groups": {
+          "asynchronous": 1,
+          "path delay": 1,
+          "clk_i": 1,
+          "eth_gtx": 1,
+          "eth_rx_clk_i": 1,
+          "eth_tx_clk_i": 1,
+          "pcie_clk_i": 1
+        }
+      },
+      "min": {
+        "reported_paths": 6,
+        "paths": [
+          {
+            "Startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1315557",
+            "Path Group": "asynchronous",
+            "Path Type": "min",
+            "reported_slack": -0.141152427,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1195169",
+            "Endpoint": "$auto$ff.cc:337:slice$1195169",
+            "Path Group": "clk_i",
+            "Path Type": "min",
+            "reported_slack": 0.03024625,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1676847",
+            "Endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "Path Group": "eth_gtx",
+            "Path Type": "min",
+            "reported_slack": 0.561020553,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1194124",
+            "Endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "Path Group": "eth_rx_clk_i",
+            "Path Type": "min",
+            "reported_slack": 0.21189107,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1183459",
+            "Endpoint": "$auto$ff.cc:337:slice$1178892",
+            "Path Group": "eth_tx_clk_i",
+            "Path Type": "min",
+            "reported_slack": 0.276314259,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "pcie_rx_valid_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1192852",
+            "Path Group": "pcie_clk_i",
+            "Path Type": "min",
+            "reported_slack": -0.468539834,
+            "native_slack_label": "VIOLATED"
+          }
+        ],
+        "path_groups": {
+          "asynchronous": 1,
+          "clk_i": 1,
+          "eth_gtx": 1,
+          "eth_rx_clk_i": 1,
+          "eth_tx_clk_i": 1,
+          "pcie_clk_i": 1
+        }
+      }
+    },
+    "nom_fast_1p32V_m40C": {
+      "max": {
+        "reported_paths": 7,
+        "paths": [
+          {
+            "Startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1164182",
+            "Path Group": "asynchronous",
+            "Path Type": "max",
+            "reported_slack": 1.623486996,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1179637",
+            "Endpoint": "$auto$ff.cc:337:slice$1179744",
+            "Path Group": "path delay",
+            "Path Type": "max",
+            "reported_slack": 2.668981791,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1517725",
+            "Endpoint": "double_fault_seen_o (output port clocked by clk_i)",
+            "Path Group": "clk_i",
+            "Path Type": "max",
+            "reported_slack": 12.195061684,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1676891",
+            "Endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+            "Path Group": "eth_gtx",
+            "Path Type": "max",
+            "reported_slack": 4.305535316,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "eth_rx_dv_i (input port clocked by eth_rx_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1676813",
+            "Path Group": "eth_rx_clk_i",
+            "Path Type": "max",
+            "reported_slack": 4.198257923,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[6].u_mem",
+            "Endpoint": "$auto$ff.cc:337:slice$1183440",
+            "Path Group": "eth_tx_clk_i",
+            "Path Type": "max",
+            "reported_slack": 5.401426792,
+            "native_slack_label": "MET"
+          },
+          {
+            "Startpoint": "pcie_link_up_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "pcie_tx_data_o[1] (output port clocked by pcie_clk_i)",
+            "Path Group": "pcie_clk_i",
+            "Path Type": "max",
+            "reported_slack": -0.107056148,
+            "native_slack_label": "VIOLATED"
+          }
+        ],
+        "path_groups": {
+          "asynchronous": 1,
+          "path delay": 1,
+          "clk_i": 1,
+          "eth_gtx": 1,
+          "eth_rx_clk_i": 1,
+          "eth_tx_clk_i": 1,
+          "pcie_clk_i": 1
+        }
+      },
+      "min": {
+        "reported_paths": 6,
+        "paths": [
+          {
+            "Startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1315556",
+            "Path Group": "asynchronous",
+            "Path Type": "min",
+            "reported_slack": -0.222508237,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1181678",
+            "Endpoint": "u_ram.g_ram_2048x64_ecc.u_b0",
+            "Path Group": "clk_i",
+            "Path Type": "min",
+            "reported_slack": -0.397209823,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1676847",
+            "Endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+            "Path Group": "eth_gtx",
+            "Path Type": "min",
+            "reported_slack": -0.228118196,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1171141",
+            "Endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem",
+            "Path Group": "eth_rx_clk_i",
+            "Path Type": "min",
+            "reported_slack": -0.069978639,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "$auto$ff.cc:337:slice$1163482",
+            "Endpoint": "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank[2].u_mem",
+            "Path Group": "eth_tx_clk_i",
+            "Path Type": "min",
+            "reported_slack": -0.149677947,
+            "native_slack_label": "VIOLATED"
+          },
+          {
+            "Startpoint": "pcie_rx_valid_i (input port clocked by pcie_clk_i)",
+            "Endpoint": "$auto$ff.cc:337:slice$1192852",
+            "Path Group": "pcie_clk_i",
+            "Path Type": "min",
+            "reported_slack": -0.133275956,
+            "native_slack_label": "VIOLATED"
+          }
+        ],
+        "path_groups": {
+          "asynchronous": 1,
+          "clk_i": 1,
+          "eth_gtx": 1,
+          "eth_rx_clk_i": 1,
+          "eth_tx_clk_i": 1,
+          "pcie_clk_i": 1
+        }
+      }
+    }
+  }
+}

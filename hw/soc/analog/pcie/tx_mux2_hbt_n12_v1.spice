@@ -1,0 +1,25 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Development final 2:1 serializer stage, not a complete SERDES or PCIe PHY.
+* Native SG13G2 HBTs and self-heating substrate-connected resistors.
+* Positive select chooses differential input A; negative select chooses B.
+* Output emitter followers directly drive the existing native TX input pair.
+* External 2.5V rail, 0.5mA reference and four-GHz differential select required.
+.subckt nssoc_tx_mux2_hbt_n12_v1 ap an bp bn sp sn op on avdd avss sub iref
+XREF iref iref avss sub npn13G2 Nx=1
+XAP qn ap ea sub npn13G2 Nx=12
+XAN qp an ea sub npn13G2 Nx=12
+XBP qn bp eb sub npn13G2 Nx=12
+XBN qp bn eb sub npn13G2 Nx=12
+XSA ea sp tail sub npn13G2 Nx=4
+XSB eb sn tail sub npn13G2 Nx=4
+XT tail iref avss sub npn13G2 Nx=4
+XRP avdd qp sub rppd w=8u l=4.4u b=0 sw_et=1
+XRN avdd qn sub rppd w=8u l=4.4u b=0 sw_et=1
+XBA ea avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XBB eb avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XFP avdd qp op sub npn13G2 Nx=2
+XFN avdd qn on sub npn13G2 Nx=2
+XFPR op avss sub rppd w=2u l=8u b=0 sw_et=1
+XFNR on avss sub rppd w=2u l=8u b=0 sw_et=1
+.ends nssoc_tx_mux2_hbt_n12_v1

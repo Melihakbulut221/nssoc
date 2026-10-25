@@ -1,0 +1,36 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/continue_native02.py",
+    "bytes": 5551,
+    "sha256": "55c111b6bacf2c5614756202848a09c1f46c6894fa38efb05e37293026d083b5"
+  },
+  "removed_completed_stages": "  stage('map',[sys.executable,str(B/'run_balanced_map02.py')])\n  mapped=Path('/dev/shm/nssoc-integrity-v22-balanced-map-01/mapped.json')\n  stage('registered_boundary',[sys.executable,str(B/'measure_registered_boundary.py')])\n  module=json.loads(mapped.read_text())['modules']['soc_pcie_gen3_continuous_rx_integrity_v22']\n  census=dict(source=pin(mapped),signed={n:v['bits'] for n,v in module['netnames'].items() if v.get('signed')},scope='Only mapped native wire-label signedness, not cell/port graph, is normalized for OpenSTA. All pin-driver relations proved after literal ties.')\n  assert not (B/'signed-wire-census.json').exists();life.atomic(B/'signed-wire-census.json',census)\n  stage('import',[sys.executable,str(B/'balanced_import02.py')])\n",
+  "replacement": "  stage('saved_map_boundary_import',[sys.executable,str(B/'verify_saved_native03.py')])\n",
+  "replacements": [
+    [
+      "continuation-status02.json",
+      "continuation-status03.json"
+    ],
+    [
+      "continuation-policy02.json",
+      "continuation-policy03.json"
+    ],
+    [
+      "continuation-owner02.json",
+      "continuation-owner03.json"
+    ],
+    [
+      "native-source-only-peer02.json",
+      "native-source-only-peer03.json"
+    ],
+    [
+      "prove_balanced_import02.py",
+      "prove_balanced_import.py"
+    ]
+  ],
+  "after": {
+    "bytes": 4889,
+    "sha256": "c8d40e8db845315876c59896e32b39fb6496ed6bd81935d6ada37258539900a1"
+  },
+  "scope": "Same owning stage lifecycle; only actual completed stages replaced by source/output gate, correct missing proof filename, fresh receipts."
+}

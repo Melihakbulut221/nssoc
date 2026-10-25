@@ -1,0 +1,160 @@
+{
+  "at": "2026-10-11T18:34:53.189379+03:00",
+  "status": "INTERMEDIATE_REPAIRS_NOT_FULL_PHY_OR_TIMING_ACCEPTANCE",
+  "rising98b": {
+    "nominal_pass": 7,
+    "pvt_pass": 22,
+    "pvt_fail": 5,
+    "all_34_captures_independently_reviewed": true
+  },
+  "gated106": {
+    "mos": 102,
+    "mim": 4,
+    "native_drc_categories": 560,
+    "hierarchical_and_flat_lvs": true,
+    "actual_fault_controls": 5,
+    "physical_terms": 416,
+    "wire_resistors": 229,
+    "wire_capacitors": 483,
+    "nominal_pass": 7,
+    "pvt_pass": 25,
+    "pvt_fail": 2,
+    "failing_cases": [
+      "ff_-40_reassert",
+      "ff_27_reassert"
+    ],
+    "remaining_failure": "Absolute transistor voltage; three previously failing SS async assertion cases now pass.",
+    "all_34_captures_independently_reviewed": true
+  },
+  "gated108": {
+    "mos": 102,
+    "mim": 6,
+    "native_drc_categories": 560,
+    "hierarchical_and_flat_lvs": true,
+    "actual_fault_controls": 5,
+    "physical_terms": 420,
+    "unique_wire_probes": 187,
+    "wire_resistors": 235,
+    "wire_capacitors": 528,
+    "raw_rc_fault_controls": 13,
+    "composition_fault_controls": 6,
+    "native_full_capture_columns": 295,
+    "physical_change": "Add contacts to both SYNC.NET3 PMOS diffusion nodes, extend inter-gate diffusion600nm below20um without gate intersection, preserve existing MIM devices, add2x2um MIMs toVDD.",
+    "transients": "PVT active; no acceptance.",
+    "nominal_pass": 7,
+    "all_seven_captures_independently_reviewed": true
+  },
+  "credit_keep": {
+    "status": "REJECTED",
+    "setup_delta_ns": {
+      "SS": -0.502436,
+      "TT": -0.27936,
+      "FF": -0.019282
+    },
+    "actual_chip_equivalence_passed": true,
+    "mapped_six_keep_cutpoints_verified": true,
+    "adopted": false
+  },
+  "bounded_units": {
+    "status": "NEW_UNPROVEN_CANDIDATE",
+    "port_tests_passed": 10,
+    "skipped": 0,
+    "formal": "Bothinitial andforward-deduplicated4GiB temporalinduction attempts exhaustmemory; resultsretained. No mapping/adoption.",
+    "timing": "Both map05/map07 controllersstopbeforeCAD onfailedproof.",
+    "change": "Bound per-slot units width using ceil(payload/4)<=floor(MAX_TLP_DWORDS/4); keep advertised counters12bits andsamecycles.",
+    "actual_mutants_rejected": 3
+  },
+  "routing": {
+    "status": "ANTENNA_REPAIR_INCREMENTAL_DRT_ACTIVE",
+    "first_pass_remaining_violations": 18,
+    "first_antenna_net_violations": 514,
+    "first_antenna_pin_violations": 599,
+    "current_iteration_0_at_40percent_violations": 4487,
+    "final_accepted": false
+  },
+  "source_files": {
+    "hw/soc/out/pcie-reset-rising98b-20261011/completion16.json": {
+      "bytes": 3466,
+      "sha256": "f5f77f8119de085fc13775c63230e28a618cfdebc0ba5d99ca55af09a6fe4b2e"
+    },
+    "hw/soc/out/pcie-reset-gated106-20261011/layout01/result.json": {
+      "bytes": 8286,
+      "sha256": "74994cd071e4c573ea04389c45e69d4cd52d10fa295ac31ed21ffd2d3c5b4fd5"
+    },
+    "hw/soc/out/pcie-reset-gated106-20261011/check01/result.json": {
+      "bytes": 53809,
+      "sha256": "dc931aa765434e5d35e8930c69a43193fb0d64a8ddd989db856f6d4ffe7fb48c"
+    },
+    "hw/soc/out/pcie-reset-gated106-20261011/wire04/composition01.json": {
+      "bytes": 168920,
+      "sha256": "e3130c7f49b16ccba9db1a1e2240a63fee95545596d99650a9fd86f1dce01f25"
+    },
+    "hw/soc/out/pcie-reset-gated106-20261011/pvt06/matrix01.json": {
+      "bytes": 46421,
+      "sha256": "6cd7216a8aa16099ea57bace9e40d974798f92049dd19fc788c34d3982e57b27"
+    },
+    "hw/soc/out/pcie-reset-gated106-20261011/independent-pvt07/result.json": {
+      "bytes": 911368,
+      "sha256": "05ed0309b133ad469c4851771b7133c89175ca4e994accd42632a5768ab14331"
+    },
+    "hw/soc/out/pcie-reset-gated108-20261011/layout06/result.json": {
+      "bytes": 11573,
+      "sha256": "146fe2f85529b45624a911a92cb3b53b51e7b7601b94798ac120a89c4385af07"
+    },
+    "hw/soc/out/pcie-reset-gated108-20261011/check06/result.json": {
+      "bytes": 53493,
+      "sha256": "2dcfb81d9820a1a4305af586fdbadf11f3f89174fb59fde737261929ffb4e52c"
+    },
+    "hw/soc/out/pcie-reset-gated108-20261011/wire08/composition01.json": {
+      "bytes": 178336,
+      "sha256": "f270de59a76314d5073db6b680b3556d4481f0129c9a6b05cc05c220e928f091"
+    },
+    "hw/soc/out/pcie-rx-credit-presum-keep-20261011/comparison08.json": {
+      "bytes": 3991,
+      "sha256": "901e9d762f3015fb24238957e58d97143eb84ef32198ba08dadfe95f70837594"
+    },
+    "hw/soc/out/pcie-rx-credit-presum-keep-20261011/decision09.json": {
+      "bytes": 940,
+      "sha256": "f4cfe3c4491046d44833607315db104202fa4d8eaae79ce8b58573e98c807efb"
+    },
+    "hw/soc/out/pcie-rx-credit-units-width-20261011/tests03.json": {
+      "bytes": 678,
+      "sha256": "65891c64c0780ddeb987d3c5f27e19a34a18e8262d73f739da75610fd279fba8"
+    },
+    "hw/soc/out/pcie-reset-gated108-20261011/independent10/result.json": {
+      "bytes": 238222,
+      "sha256": "b0dd31c219cff509d1dee860aa26d98c70a61f9ac8b489f8951d65723b4a0262"
+    },
+    "hw/soc/out/pcie-rx-credit-units-width-20261011/faults04/result.json": {
+      "bytes": 2778,
+      "sha256": "a22575ce38a9ba5f842ceb1c793dcbfb47d8103f8f2870a266572de2d755c40c"
+    }
+  },
+  "full_serial_phy_accepted": false,
+  "final_setup_hold_accepted": false,
+  "manufacturing_accepted": false,
+  "verified_publications": [
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset-direct-rising-and-rx-presum-20261011.tar.gz",
+      "name": "nssoc-reset-direct-rising-and-rx-presum-20261011.tar.gz",
+      "bytes": 1152296493,
+      "sha256": "b08180d8cf1b90534a2a200ac88c4499d602f80466669441d9b323bf216acbb2",
+      "members": 1156
+    },
+    {
+      "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-reset-rising98b-pvt-and-node-diagnosis-20261011.tar.gz",
+      "name": "nssoc-reset-rising98b-pvt-and-node-diagnosis-20261011.tar.gz",
+      "bytes": 772335600,
+      "sha256": "db746f0e9abe325f692f69453afb2f6f7f865e71bdbb643cb13bbea7afd7aa1d",
+      "members": 583
+    }
+  ],
+  "bounded_units_view": {
+    "status": "UNPROVEN_FRESH_ORIGINAL_GOLD_EQUIVALENCE_RUNNING",
+    "root": "hw/soc/out/pcie-rx-credit-units-view-20261011",
+    "change": "Two-bit per-slotstorage plusactualtwelvebitzeroextended named unitsviews; originalgold proofrequired, no assumptions added.",
+    "adopted": false
+  }
+}

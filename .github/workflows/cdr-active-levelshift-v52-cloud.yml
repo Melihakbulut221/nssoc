@@ -1,0 +1,99 @@
+name: cdr-active-levelshift-v52-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths:
+      - .github/workflows/cdr-active-levelshift-v52-cloud.yml
+      - scripts/cloud_cdr_active_levelshift_v52.py
+      - scripts/cdr-active-levelshift-v52-method.json
+      - hw/soc/analog/pcie/cdr_active_levelshift_v52.spice
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr-active-levelshift-v52
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - run: |
+          python3 -m pip install numpy==2.3.3
+          python3 -m py_compile scripts/cloud_cdr_active_levelshift_v52.py
+          PYTHONPATH=scripts python3 -c "from cloud_cdr_active_levelshift_v52 import source_check,controls; source_check(); print(controls())"
+      - name: Require exact original solver stimulus and gates apart from five intended device dimensions
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          baseline=Path('scripts/cloud_cdr_active_levelshift_v49.py').read_text()
+          candidate=Path('scripts/cloud_cdr_active_levelshift_v52.py').read_text()
+          old="'xref':['iref','iref','avss','sub','sg13_lv_nmos','w=8u'"
+          assert baseline.count(old)==1
+          expected=baseline.replace('v49','v52').replace(old,old.replace('w=8u','w=5.4u')).replace('l=2.8u','l=1.8u').replace('l=9.6u','l=8.0u')
+          assert candidate==expected
+          baseline=Path('hw/soc/analog/pcie/cdr_active_levelshift_v49.spice').read_text()
+          candidate=Path('hw/soc/analog/pcie/cdr_active_levelshift_v52.spice').read_text()
+          old='XREF iref iref avss sub sg13_lv_nmos w=8u'
+          assert baseline.count(old)==1
+          expected=baseline.replace('v49','v52').replace(old,old.replace('w=8u','w=5.4u')).replace('l=2.8u','l=1.8u').replace('l=9.6u','l=8.0u')
+          assert candidate==expected
+          print('PASS_EXACT_ORIGINAL_GATES_STIMULUS_SOLVER_ONLY_INTENDED_DEVICE_DIMENSIONS_CHANGED')
+          PYCODE
+  native:
+    needs: controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        case: [nominal, hot_low, cold_high, swap_output, bias_off]
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore native simulator dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+      - name: Test actual HBT MOS resistor level shifter with full source and load stress
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_active_levelshift_v52.py --case ${{ matrix.case }}
+      - name: Preserve complete component evidence including all failures
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=cloud-cdr-active-levelshift-v52-${{ matrix.case }}
+          mkdir -p "$root"
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","full_phy_accepted":false}' > "$root/result.json"
+          fi
+          stem="cdr-active-levelshift-v52-${{ matrix.case }}-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];m=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','cdr-active-levelshift-v52-${{ matrix.case }}',stem+'.summary.json',stem+'.parts.json',*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Retain evidence after publication failure
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-active-levelshift-v52-${{ matrix.case }}-${{ github.run_id }}
+          path: cloud-cdr-active-levelshift-v52-${{ matrix.case }}/
+          retention-days: 30

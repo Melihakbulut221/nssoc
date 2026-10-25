@@ -1,0 +1,62 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_parallel_v3_lvs_review.py",
+      "baseline_sha256": "f4764d598e900dd763c12176435527287092e3478e4bee7fdb6b44b410bb5cfa",
+      "candidate_path": "scripts/cloud_tx_v5_return_lvs_review.py",
+      "candidate_sha256": "3cf98fbcf9ea2a4ad10f61f82a1291bed3b34eca01305c0a91ec6bfb96f9ea85",
+      "edits": [
+        {
+          "before": "cloud-cdr-parallel-v3-lvs-review",
+          "after": "cloud-tx-v5-return-lvs-review",
+          "count": 1
+        },
+        {
+          "before": "nssoc_cdr_pd484_parallel_tail_v2",
+          "after": "nssoc_tx_tree32_budget_balanced_v5_finalreturn_core_v1",
+          "count": 1
+        },
+        {
+          "before": "==484",
+          "after": "==1674",
+          "count": 1
+        },
+        {
+          "before": "assert census==g['primitive_census']",
+          "after": "assert census==dict(npn13g2=589,rppd=248,ptap1=837)",
+          "count": 1
+        },
+        {
+          "before": "for metal in (67,134):",
+          "after": "for metal in (134,):",
+          "count": 1
+        },
+        {
+          "before": "cdr-parallel484-drc-pass-lvs-rejection-20261018.json",
+          "after": "tx-v5-return-repair-lvs-rejection-20261018.json",
+          "count": 1
+        },
+        {
+          "before": "selected=['layout/result.json'",
+          "after": "selected=['plan.json','layout/result.json'",
+          "count": 1
+        },
+        {
+          "before": "cdr-retimed-parallel-v3-parent",
+          "after": "tx-v5-return-repair-assembly",
+          "count": 1
+        },
+        {
+          "before": "ORIGINAL484",
+          "after": "ORIGINAL1674",
+          "count": 1
+        },
+        {
+          "before": "    plan=g['source_plan']\n    for node in plan['nodes']:\n        for pin,net in node['pins'].items():bind('A_'+node['tag']+'_'+pin,g['placements'][node['tag']]['ports'][pin],plan['types'][node['kind']]['layer'],net)\n    for port,raw in g['ports'].items():bind('P_'+port,raw,134,port)\n    assert len(rows)==158",
+          "after": "    plan=json.loads((source/'plan.json').read_text());dx,dy=g['origin_translation_um']\n    for node in plan['nodes']:\n        tag=node['label']\n        for pin,net in plan['maps'][tag].items():\n            raw=g['placements'][tag]['ports'][pin];box=pya.DBox.from_s(raw).transformed(pya.DTrans(dx,dy))\n            bind('A_'+tag+'_'+pin,str(box),134,net)\n    for port,raw in g['ports'].items():bind('P_'+port,raw,134,port)\n    assert len(rows)==534",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

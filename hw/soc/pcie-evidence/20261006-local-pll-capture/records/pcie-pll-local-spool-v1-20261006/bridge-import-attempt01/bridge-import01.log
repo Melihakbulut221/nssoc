@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+    import sys; sys.path.insert(0,"scripts"); import characterize_pcie_pll_acquisition_v5 as m; print(m.BRIDGES.keys())
+                                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_acquisition_v5.py", line 76, in <module>
+    native_wait_source = bridge(inspect.getsource(previous.namespace['native_wait']), [
+        ('    fifo.unlink()\n    return captured',
+    ...<2 lines>...
+         'native_group_owned=True, network_in_native_capture=False,'),
+    ], 'native_wait')
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_acquisition_v5.py", line 38, in bridge
+    require(source.count(before) == 1, 'Unique local capture bridge: ' + name)
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/characterize_pcie_pll_loop_stream_v1.py", line 82, in require
+    raise ValueError(reason)
+ValueError: Unique local capture bridge: native_wait

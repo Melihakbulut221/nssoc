@@ -1,0 +1,114 @@
+{
+  "schema": 1,
+  "repository": "Melihakbulut221/nssoc",
+  "target_branch": "codex/complete-open-work",
+  "stall_seconds": 21600,
+  "automatic_native_dispatch": false,
+  "runs": [
+    {
+      "label": "Mainchip detailed routing",
+      "run": 40075970481,
+      "branch": "codex/complete-open-work",
+      "head_sha": "f9bd0466deff765c062143a4b5ec5cff4939537f"
+    },
+    {
+      "label": "PLL native continuation",
+      "run": 40071288423,
+      "branch": "codex/complete-open-work",
+      "head_sha": "c61befbd80140a2e22a821f6a35dd31e3a5b36e9"
+    },
+    {
+      "label": "TX native wires and anchors",
+      "run": 40071267004,
+      "branch": "codex/tx-via3-rail-diagnosis",
+      "head_sha": "737bef27ae4bd8ddb0b2740f2e0562cb51f8991b"
+    },
+    {
+      "label": "TX model and RC followthrough",
+      "run": 40071489977,
+      "branch": "codex/tx-via3-rail-diagnosis",
+      "head_sha": "b00c6f400c60190ff4ddcba200bbe0d6f92c8fe7"
+    },
+    {
+      "label": "TX two-order precision",
+      "run": 40072842481,
+      "branch": "codex/tx-via3-rail-diagnosis",
+      "head_sha": "12a42514bee086c800ba8f296a09b2b78556275f"
+    },
+    {
+      "label": "TX composition comparison",
+      "run": 40072977220,
+      "branch": "codex/tx-via3-rail-diagnosis",
+      "head_sha": "380763d925826786ff567e4e9bce75f770eaedc0"
+    },
+    {
+      "label": "CDR terminal-free native metal diagnosis",
+      "run": 40074893232,
+      "branch": "codex/cdr500-floating-wire-diagnosis",
+      "head_sha": "76035ad72360346508254d3342e555f9e473aa1e"
+    },
+    {
+      "label": "TX remaining driver and final-tail native geometry",
+      "run": 40075242137,
+      "branch": "codex/tx-via3-rail-diagnosis",
+      "head_sha": "f9dfeee4ebdd1970109eee34b9289bc29fd0eef1"
+    },
+    {
+      "label": "CDR guarded floating-metal physical cleanup and strict extraction",
+      "run": 40076590920,
+      "branch": "codex/cdr500-floating-wire-diagnosis",
+      "head_sha": "2627eb651ebff31b96abac985d19e1bc9b76d6a8"
+    }
+  ],
+  "latest_workflows": [
+    {
+      "label": "CDR newest actual-parent physical pipeline",
+      "workflow": "cdr-sampler-active-input-v57-parent-cloud.yml",
+      "branch": "codex/complete-open-work",
+      "optional": false,
+      "production_jobs": [
+        "native-physical"
+      ]
+    },
+    {
+      "label": "PLL latest complete-capture reader",
+      "workflow": "pll-rhi120-c8-delta-reader-cloud.yml",
+      "branch": "codex/complete-open-work",
+      "event": "workflow_dispatch",
+      "production_jobs": [
+        "completed-reader"
+      ],
+      "optional": true
+    },
+    {
+      "label": "CDR latest guarded cleanup and unchanged strict extraction",
+      "workflow": "cdr500-floating-wire-cleanup-cloud.yml",
+      "branch": "codex/cdr500-floating-wire-diagnosis",
+      "optional": false,
+      "production_jobs": [
+        "native-physical"
+      ]
+    },
+    {
+      "label": "CDR fresh cleaned native binding and RC",
+      "workflow": "cdr500-cleaned-binding-rc-cloud.yml",
+      "branch": "codex/cdr500-floating-wire-diagnosis",
+      "optional": false,
+      "production_jobs": [
+        "native (binding)",
+        "native (rc)"
+      ]
+    },
+    {
+      "label": "TX real upstream branch and final-tail physical candidate",
+      "workflow": "tx-output8088-branch-tail-feed-cloud.yml",
+      "branch": "codex/tx-via3-rail-diagnosis",
+      "optional": false,
+      "production_jobs": [
+        "diagnose"
+      ]
+    }
+  ],
+  "inventory_version": 7,
+  "inventory_updated_at": "2026-10-24T08:28:03.943256+00:00"
+}

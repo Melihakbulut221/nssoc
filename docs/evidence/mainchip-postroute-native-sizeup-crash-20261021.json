@@ -1,0 +1,62 @@
+{
+  "run": 39661771876,
+  "source_head": "5281afb56d8caedff2da130c4ab44180b0594d86",
+  "summary_asset_id": 663579388,
+  "summary_sha256": "9ca33a022838202e3219f0d60bcea23df11b9d505e8c55b1e46f81c32dd7ed98",
+  "parts_asset_id": 663579470,
+  "parts_sha256": "fda18460efc6ce2cb3efb881cd64825dc8f26abf6c0a240243b5ae4d2235df14",
+  "status": "FAIL_NATIVE_RESIZER_STAGE_NO_ACCEPTANCE",
+  "error": "AssertionError(('native-repair', -11))",
+  "native_baseline": {
+    "nom_typ_1p20V_25C": {
+      "max": -8.36810112,
+      "min": -0.401364625
+    },
+    "nom_slow_1p08V_125C": {
+      "max": -18.079616547,
+      "min": -0.478825212
+    },
+    "nom_fast_1p32V_m40C": {
+      "max": -4.183832169,
+      "min": -0.342085212
+    }
+  },
+  "expected_baseline": {
+    "nom_typ_1p20V_25C": {
+      "max": -8.36810111556323,
+      "min": -0.40136461956708186
+    },
+    "nom_slow_1p08V_125C": {
+      "max": -18.079616537838234,
+      "min": -0.4788252152528217
+    },
+    "nom_fast_1p32V_m40C": {
+      "max": -4.1838320658841885,
+      "min": -0.34208520318025615
+    }
+  },
+  "commands": [
+    {
+      "label": "native-baseline",
+      "returncode": 0,
+      "elapsed_s": 76.65316094699995
+    },
+    {
+      "label": "native-repair",
+      "returncode": -11,
+      "elapsed_s": 169.974545272
+    }
+  ],
+  "preserved_electrical_checkpoint": {
+    "electrical-checkpoint.odb": "d1bd5fc8e9d81d67462469142356a91f6b1981b0a34778fdab067f40bd8e6310",
+    "electrical-checkpoint.v": "8e78cc1e5f566a758cdc5889cba357e7e7ee8f0d41551e0a17d84afd225f08c2"
+  },
+  "observed_stack": [
+    "sta::RiseFallMinMax::maxValue",
+    "sta::LibertyPort::capacitance",
+    "rsz::BaseMove::upsizeCell",
+    "rsz::SizeUpMove::doMove"
+  ],
+  "hypothesis": "Stale path/port or concurrent mutation is unproven. Next isolated one-thread/one-move experiment retains all timing/geometry gates.",
+  "accepted": false
+}

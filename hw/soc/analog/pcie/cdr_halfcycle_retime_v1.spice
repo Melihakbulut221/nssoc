@@ -1,0 +1,13 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Actual half-cycle sampler cascade; not a full phase detector or recovered clock.
+.subckt nssoc_cdr_halfcycle_retime_v1 dp dn cp cn qp qn avdd avss sub ira irb
+XSA dp dn aqp aqn cp cn avdd avss sub ira nssoc_rx_sampler_hbt
+XRSP aqp udp sub rppd w=1u l=5.4u b=0 sw_et=1
+XRSN aqn udn sub rppd w=1u l=5.4u b=0 sw_et=1
+XRGP udp avss sub rppd w=1u l=12.6u b=0 sw_et=1
+XRGN udn avss sub rppd w=1u l=12.6u b=0 sw_et=1
+XCFP aqp udp cap_cmim w=3.6u l=3.6u
+XCFN aqn udn cap_cmim w=3.6u l=3.6u
+XSB udp udn qp qn cn cp avdd avss sub irb nssoc_rx_sampler_hbt
+.ends nssoc_cdr_halfcycle_retime_v1

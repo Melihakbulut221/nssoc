@@ -1,0 +1,354 @@
+{
+  "status": "CLEAN_BOUNDED_FULL_ARCHIVE_AND_CAPTURE_REVIEW",
+  "reviewer": "tap_mask_next_step",
+  "inputs": {
+    "hw/soc/out/pcie-recovered-x4-20261005/package.json": {
+      "bytes": 32339,
+      "sha256": "d7e662da1f81ea14e2167cce9b8d6ea85e6f891c134171efb308a8defdb4ae6e"
+    },
+    "hw/soc/out/pcie-recovered-x4-20261005/validation.json": {
+      "bytes": 2754,
+      "sha256": "848013e4e217c20cadb196b20cee7b951b113ff04a59438bbeb85ad6cd460807"
+    },
+    "hw/soc/out/pcie-recovered-x4-20261005/release.json": {
+      "bytes": 976,
+      "sha256": "f339a88c5549a9130ef4283a42ef5a81490252dd36affb58b0da97e1e63d98b9"
+    },
+    "hw/soc/out/pcie-recovered-x4-20261005/source-freeze.json": {
+      "bytes": 1782,
+      "sha256": "79b5007c70ed5ec8cbc348b2d5f91f0f4f9d5e8d66260119df0f8b319f41e30a"
+    },
+    "hw/soc/out/pcie-recovered-x4-20261005/source-only-peer/review.json": {
+      "bytes": 5895,
+      "sha256": "914ee9a5653a1c610672d0fa0872f6b17f3ef1c97c203dde1a746da1b165a07c"
+    },
+    "hw/soc/out/pcie-recovered-x4-20261005/source-only-peer/diagnostic-addendum.json": {
+      "bytes": 2493,
+      "sha256": "3aa99be405602659797f73e20fe839f1072b8f2ea1dd2dd26e8848cdf2a044e5"
+    },
+    "hw/soc/out/pcie-recovered-x4-20261005/source-only-peer/review_archive.py": {
+      "bytes": 6474,
+      "sha256": "4f541abfda0007ae4cfe3da2ef893a67e670a29b56ccd9a8f74e8b841e94664e"
+    }
+  },
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-recovered-x4-20261005/pcie-recovered-x4-rtl-and-controls02-20261005.tar.xz",
+    "bytes": 299756,
+    "sha256": "0de7a58cd7336b3a84ecc024df569f38350e739d856b2322ae9a7365a702b15f"
+  },
+  "verified_member_count": 157,
+  "verified_current_sources": 8,
+  "capture_input_pin_occurrences_covered_by_exact_archive_bytes": 165,
+  "current_runtime_pins": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/iverilog": {
+      "bytes": 453,
+      "sha256": "6d84be4052a92cf7184c7149506f5db6ac251f99e438a96ae3ce33f326e2ff9d"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/vvp": {
+      "bytes": 485,
+      "sha256": "9f6d770762b5e77d81216e5f21a634028a9ee062a724eeb116980bdb6cb110cc"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/lib/ld-linux-x86-64.so.2": {
+      "bytes": 254864,
+      "sha256": "c5e80a563850d6ab5c2f2482e4202d9c1b71fbf44854b8c399e63527202c64e1"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libexec/vvp": {
+      "bytes": 36688,
+      "sha256": "06d344b672d461fc739815abee2aae17fe85e2a08b3d6d86aa094f791488aafd"
+    }
+  },
+  "saved_results": [
+    {
+      "result_member": "captures/nssoc-recovered-x4-rtl-01/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 7,
+      "skipped_unselected_names": [],
+      "failed_cases": [
+        "all_bit_phases_variable_skp_and_independent_clocks",
+        "independent_lane_stalls_hold_all_record_bits",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-rtl-02/result.json",
+      "status": "PASS_ACTUAL_RECOVERED_X4_RTL",
+      "actual_xml_cases": 7,
+      "skipped_unselected_names": [],
+      "failed_cases": []
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_four_recovered_clocks_ful0/capture/result.json",
+      "status": "PASS_ACTUAL_RECOVERED_X4_RTL",
+      "actual_xml_cases": 7,
+      "skipped_unselected_names": [],
+      "failed_cases": []
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_actual_x4_wire_fault_is_r0/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "independent_lane_stalls_hold_all_record_bits",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "all_bit_phases_variable_skp_and_independent_clocks"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_actual_x4_wire_fault_is_r1/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "independent_lane_stalls_hold_all_record_bits",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "all_bit_phases_variable_skp_and_independent_clocks"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_actual_x4_wire_fault_is_r2/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "independent_lane_stalls_hold_all_record_bits",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "all_bit_phases_variable_skp_and_independent_clocks"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_actual_x4_wire_fault_is_r3/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "independent_lane_stalls_hold_all_record_bits",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "all_bit_phases_variable_skp_and_independent_clocks"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_actual_x4_wire_fault_is_r4/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "all_bit_phases_variable_skp_and_independent_clocks",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "independent_lane_stalls_hold_all_record_bits"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_actual_x4_wire_fault_is_r5/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "all_bit_phases_variable_skp_and_independent_clocks",
+        "independent_lane_stalls_hold_all_record_bits",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_actual_x4_wire_fault_is_r6/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "all_bit_phases_variable_skp_and_independent_clocks",
+        "independent_lane_stalls_hold_all_record_bits",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "explicit_realign_fault_is_not_silent_lane_reordering"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_actual_x4_wire_fault_is_r7/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "all_bit_phases_variable_skp_and_independent_clocks",
+        "independent_lane_stalls_hold_all_record_bits",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "stopped_recovered_clock_holds_common_startup"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_actual_x4_wire_fault_is_r8/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "independent_lane_stalls_hold_all_record_bits",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "all_bit_phases_variable_skp_and_independent_clocks"
+      ]
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_invalid_per_lane_capacity0/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 0,
+      "skipped_unselected_names": [],
+      "failed_cases": []
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls01/test_invalid_per_lane_capacity1/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 0,
+      "skipped_unselected_names": [],
+      "failed_cases": []
+    },
+    {
+      "result_member": "captures/nssoc-recovered-x4-controls02/test_actual_x4_wire_fault_is_r0/capture/result.json",
+      "status": "FAIL",
+      "actual_xml_cases": 1,
+      "skipped_unselected_names": [
+        "independent_lane_stalls_hold_all_record_bits",
+        "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+        "overflowing_one_unthrottleable_lane_aborts_epoch",
+        "explicit_realign_fault_is_not_silent_lane_reordering",
+        "stopped_recovered_clock_holds_common_startup",
+        "reset_discards_all_four_held_records"
+      ],
+      "failed_cases": [
+        "all_bit_phases_variable_skp_and_independent_clocks"
+      ]
+    }
+  ],
+  "actual_faults": [
+    {
+      "fault": "reversed_physical_lanes",
+      "case": "all_bit_phases_variable_skp_and_independent_clocks",
+      "observed_diagnostic": "Unexpected lane epoch fault",
+      "mutant": {
+        "bytes": 3306,
+        "sha256": "02d8c1a85586b5115dcab0d6ff0e16f78a16b67e55068e1779b955a0dff49a16"
+      }
+    },
+    {
+      "fault": "truncated_194bit_record",
+      "case": "all_bit_phases_variable_skp_and_independent_clocks",
+      "observed_diagnostic": "Serialized lane oracle mismatch",
+      "mutant": {
+        "bytes": 3317,
+        "sha256": "a57c6d3ac04c686effc0ad31c293181ffd155f12b1912b6bd34c4319c25ed561"
+      }
+    },
+    {
+      "fault": "fixed_length_metadata",
+      "case": "all_bit_phases_variable_skp_and_independent_clocks",
+      "observed_diagnostic": "Serialized lane oracle mismatch",
+      "mutant": {
+        "bytes": 3294,
+        "sha256": "a0cc300b2fbe0e659b4dc5fc3619f98b3f5f428ede09d4005df0e0f2f46bbb88"
+      }
+    },
+    {
+      "fault": "lost_realign_metadata",
+      "case": "all_bit_phases_variable_skp_and_independent_clocks",
+      "observed_diagnostic": "Serialized lane oracle mismatch",
+      "mutant": {
+        "bytes": 3299,
+        "sha256": "4951aaca8290aeb5b655c2c6bfef4f97aa9dd91c12075cbadfcfc79e86d15345"
+      }
+    },
+    {
+      "fault": "ignored_downstream_lane_stall",
+      "case": "independent_lane_stalls_hold_all_record_bits",
+      "observed_diagnostic": "Held lane record changed",
+      "mutant": {
+        "bytes": 3285,
+        "sha256": "50e56391a9d88b46a2823c1add76b806286337b64c1bc3094ed0213672bf4036"
+      }
+    },
+    {
+      "fault": "lost_alignment_fault",
+      "case": "one_lane_loss_aborts_all_and_coordinated_reset_restarts",
+      "observed_diagnostic": "Bounded four-lane scenario did not complete",
+      "mutant": {
+        "bytes": 3302,
+        "sha256": "0d12c35086aa908e35eff48c7bd76c006698146d314979d89c15513c72fa23f6"
+      }
+    },
+    {
+      "fault": "lost_force_realign_command",
+      "case": "explicit_realign_fault_is_not_silent_lane_reordering",
+      "observed_diagnostic": "Bounded four-lane scenario did not complete",
+      "mutant": {
+        "bytes": 3285,
+        "sha256": "0c3fe8a335e243d27e8728692d143645cea929614222d376b31759b2fa94b4b7"
+      }
+    },
+    {
+      "fault": "any_lane_startup_instead_of_all",
+      "case": "stopped_recovered_clock_holds_common_startup",
+      "observed_diagnostic": "Stopped fourth lane escaped all-lane startup barrier",
+      "mutant": {
+        "bytes": 3302,
+        "sha256": "766c07dafc0d246728f470c716ba2ce0fc879f2088e92a9f48ab46dbb170f80b"
+      }
+    },
+    {
+      "fault": "read_clock_substituted_for_recovered",
+      "case": "all_bit_phases_variable_skp_and_independent_clocks",
+      "observed_diagnostic": "Serialized lane oracle mismatch",
+      "mutant": {
+        "bytes": 3293,
+        "sha256": "028a92e40ea935aa7aa653dd8b975349086d43e3480489986d25ece8a1a25e19"
+      }
+    }
+  ],
+  "positive_complete_public_cases": 7,
+  "positive_saved_runs": 2,
+  "parameter_elaboration_failures": 2,
+  "old_fixture_and_wrong_expected_diagnostic_failures_retained": true,
+  "selected_test_xml_scope": "Selected fault runs retain six explicit unselected skipped names; each exact requested test alone actually ran and failed. Complete positive runs have seven actual passes and no skips.",
+  "scope": "Independent whole/member hashes, eight current sources, saved RTL XML/log disposition and exact nine mutation bridges. Prior manual composition/reset/source review remains additive. No fresh simulator run, raw-bitstream remeasurement, physical CDC/STA, deskew or fullPCS acceptance. Existing dual public-roundtrip receipts checked; reviewer did not redownload asset."
+}

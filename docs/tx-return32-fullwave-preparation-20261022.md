@@ -1,0 +1,6 @@
+# Return32 complete loaded-wave preparation
+Run39769220171 passed the actual physical interface binding: 124 input legs, 372 native data bases, 64 driver handoffs, four output ports and all28,620 native terminals. Eight record corruptions, two independently probed endpoint polarity faults and two output swaps were rejected. The new return metal's physical open and width faults remain mandatory upstream.
+
+The cloud preparation restores the exact newly composed return32 model and these native interfaces. It preserves the original 256-bit34ns stimulus,604HBT/5376MOS observations, all terminal columns, loads, solver/timestep, sampling phases and device/electrical gates. Both nominal and swapped-selector decks are prepared. Runtime source derivation is checked, including the previous preparation's full source checker.
+
+Preparation alone is not simulation acceptance. After both preparations pass, activate the original complete native waveform controller against these exact prepared source hashes and retain the entire capture even if the electrical checks reject it. Original rejected waveforms stay immutable. Full serial PHY, qualified device-access/body/RF PEX and mainchip timing remain open. All computation and artifacts are in GitHub-hosted runners and releases.

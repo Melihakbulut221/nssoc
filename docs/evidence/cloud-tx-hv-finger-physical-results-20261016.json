@@ -1,0 +1,797 @@
+{
+  "run": 38866034515,
+  "source_head": "1815e480106b18b63daa2c207ac075ea662fdf20",
+  "status": "PASS_NATIVE_NG10_ROUTING_DRC_RAW_AND_AGGREGATE_LVS_AND_FAULTS_NOT_FULL_DRIVER",
+  "summary": {
+    "id": 646499371,
+    "bytes": 47767,
+    "sha256": "c7b896892fa001eb427769ce08e449a874bc0e6bbf3de0de7d1c4692be878c49"
+  },
+  "parts": {
+    "id": 646499468,
+    "bytes": 820,
+    "sha256": "a719263ce50c087b9da2bf33cb10472e33e2985438fdd79759df88246110dacf"
+  },
+  "archive": {
+    "format": "ordered-tar-gzip-parts-v1",
+    "stem": "tx-hv-fingers-38866034515-1",
+    "source_directory": "cloud-tx-hv-fingers",
+    "bytes": 152865,
+    "sha256": "3dd698fa73de68204da704c9148c6861cdfb3f5e2eeb2299aabc4dfcad530c7f",
+    "parts": [
+      {
+        "index": 0,
+        "name": "tx-hv-fingers-38866034515-1.tar.gz.part0000",
+        "bytes": 152865,
+        "sha256": "3dd698fa73de68204da704c9148c6861cdfb3f5e2eeb2299aabc4dfcad530c7f"
+      }
+    ],
+    "part_limit_bytes": 1073741824,
+    "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+    "verification": {
+      "parts": 1,
+      "bytes": 152865,
+      "sha256": "3dd698fa73de68204da704c9148c6861cdfb3f5e2eeb2299aabc4dfcad530c7f",
+      "all_parts_and_combined_bytes_verified": true
+    }
+  },
+  "outputs": {
+    "base/aggregate.cir": "e011edb9858aadcc564fd97f946bfaae34e80d9adbfca6bd88fce9755c4b1717",
+    "base/layout.gds": "d84cfd74705b832370fb91ca9e6c00096316a7c0a0b430a350662883af8738bb",
+    "base/wrong_width.cir": "33f7b45c25f8e95fe4f2ec4792872f80c5c6d3443638146a7548a5663d4863fe",
+    "base/result.json": "aa6da8a3bdb64cc01498de8a960725bbe9f16e69e91d3c787130493531c1adfd",
+    "base/fingers.cir": "2d27da1cf051e59d70e6d2da0433e4b8e08ede76e97e91faca34da6cd6cb67ce"
+  },
+  "checks": {
+    "raw_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_hv_ng10_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-raw_lvs/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/base/fingers.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-raw_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-raw_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 4.444641180999952,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "64953042e136251f5c6c09f7db227ac6db9ff4c56e47a7233d2daf2f68e46d30"
+      },
+      "combine_devices": false,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-raw_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_hv_ng10_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-raw_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-raw_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.9004992140000923,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_hv_ng10_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_hv_ng10_v1",
+            "schematic": "NSSOC_TX_HV_NG10_V1",
+            "status": "Match",
+            "layout_devices_recursive": 11,
+            "schematic_devices_recursive": 11
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-raw_lvs/result.lvsdb": {
+            "bytes": 20672,
+            "sha256": "81d9e1cbfca44dc741d93f937427a456a702b4c5bde28b7559a88a227b06d188"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-raw_lvs/deck.log": {
+            "bytes": 37066,
+            "sha256": "b605a9505abbceebcbd44cdcb4578160ad0de473045c5cdc3a4b057b93c6e493"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 07:16\n\n.SUBCKT nssoc_tx_hv_ng10_v1 gate drain source sub\nR$1 sub \\$6 ptap1 A=4p P=8u\nM$2 source gate drain \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.34p AD=0.19p PS=2.68u\n+ PD=1.38u rfmode=0\nM$3 drain gate source \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$4 source gate drain \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$5 drain gate source \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$6 source gate drain \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$7 drain gate source \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$8 source gate drain \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$9 drain gate source \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$10 source gate drain \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$11 drain gate source \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\n.ENDS nssoc_tx_hv_ng10_v1\n",
+      "expected_verdict_observed": true
+    },
+    "aggregate_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_hv_ng10_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-aggregate_lvs/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/base/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-aggregate_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-aggregate_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 4.391277427999967,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "207e4cf588a1ba9b124e4aa041d1f357a1ec2c1f1b925f9152f423b338060664"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-aggregate_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_hv_ng10_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-aggregate_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-aggregate_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.9190222300001096,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_hv_ng10_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_hv_ng10_v1",
+            "schematic": "NSSOC_TX_HV_NG10_V1",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-aggregate_lvs/result.lvsdb": {
+            "bytes": 18339,
+            "sha256": "4018a7dfae0b0a776ad3f7e1b9c73389a8a2ee6144d386a2052f4fbffed2c29f"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-aggregate_lvs/deck.log": {
+            "bytes": 37079,
+            "sha256": "527b4d6819b86906e96b4256af79294f0533541c46dbefddef6e5c18744a86d2"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 07:16\n\n.SUBCKT nssoc_tx_hv_ng10_v1 gate drain source sub\nR$1 sub \\$6 ptap1 A=4p P=8u\nM$2 source gate drain \\$6 sg13_hv_nmos L=0.45u W=10u AS=2.05p AD=2.05p PS=15.1u\n+ PD=15.1u rfmode=0\n.ENDS nssoc_tx_hv_ng10_v1\n",
+      "expected_verdict_observed": true
+    },
+    "flat_aggregate_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_hv_ng10_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-flat_aggregate_lvs/deck.log",
+          "-rd",
+          "run_mode=flat",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/base/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-flat_aggregate_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-flat_aggregate_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 4.549561716000198,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "3104c170d662b677ad53ba3cea26e1ea08906db281712f513c36c37ed5742c0e"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-flat_aggregate_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_hv_ng10_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-flat_aggregate_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-flat_aggregate_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.9167716310000742,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_hv_ng10_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_hv_ng10_v1",
+            "schematic": "NSSOC_TX_HV_NG10_V1",
+            "status": "Match",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-flat_aggregate_lvs/result.lvsdb": {
+            "bytes": 16191,
+            "sha256": "6e40aed4981305c6c674412aaa603becad0fdd29cfc26c5696f55a23268e1f59"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-flat_aggregate_lvs/deck.log": {
+            "bytes": 37085,
+            "sha256": "1a61a4c23db86fb5879077afedaa4651e463f3e649ab9fe15f3edf342e4896b5"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 07:16\n\n.SUBCKT nssoc_tx_hv_ng10_v1 sub source drain gate\nM$1 source gate drain \\$1 sg13_hv_nmos L=0.45u W=10u AS=2.05p AD=2.05p PS=15.1u\n+ PD=15.1u rfmode=0\nR$11 sub \\$1 ptap1 A=4p P=8u\n.ENDS nssoc_tx_hv_ng10_v1\n",
+      "expected_verdict_observed": true
+    },
+    "wrong_width": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_hv_ng10_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-wrong_width/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/base/wrong_width.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-wrong_width/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-wrong_width/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 4.387575319999996,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "88f8eb36b350e18726097d18df20e9b314b633921a56ead80789365eb59c5d0d"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-wrong_width/result.lvsdb",
+          "--top",
+          "nssoc_tx_hv_ng10_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-wrong_width/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-wrong_width/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.9005087429998184,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_hv_ng10_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_hv_ng10_v1",
+            "schematic": "NSSOC_TX_HV_NG10_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-wrong_width/result.lvsdb": {
+            "bytes": 18722,
+            "sha256": "7b90f27447c56745266e153011d29e8b873e966875ef67fa5ed38aa6ea49d6be"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-wrong_width/deck.log": {
+            "bytes": 37066,
+            "sha256": "694f529d474479b88614d7bbc9c23dae0969795ad217fa327d99bf28a0997f0d"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 07:16\n\n.SUBCKT nssoc_tx_hv_ng10_v1 gate drain source sub\nR$1 sub \\$6 ptap1 A=4p P=8u\nM$2 source gate drain \\$6 sg13_hv_nmos L=0.45u W=10u AS=2.05p AD=2.05p PS=15.1u\n+ PD=15.1u rfmode=0\n.ENDS nssoc_tx_hv_ng10_v1\n",
+      "expected_verdict_observed": true
+    },
+    "gate_open": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/gate_open/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_hv_ng10_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-gate_open/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/gate_open/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-gate_open/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-gate_open/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 4.451272670000208,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "9df264c91515a70c2b3e2ba9177b1408f696e5fb7c69be78683a031bad6352d0"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-gate_open/result.lvsdb",
+          "--top",
+          "nssoc_tx_hv_ng10_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-gate_open/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-gate_open/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.9039085330000489,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_hv_ng10_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_hv_ng10_v1",
+            "schematic": "NSSOC_TX_HV_NG10_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 2
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-gate_open/result.lvsdb": {
+            "bytes": 18906,
+            "sha256": "391901e02c0cc9cee368d796c63193fdcec02a792981ddf22e5234b9ba2d7454"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-gate_open/deck.log": {
+            "bytes": 37070,
+            "sha256": "3c31ffdc014a640a536665e3111421aeb4150bcf4065419f574ad702e913d82a"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 07:16\n\n.SUBCKT nssoc_tx_hv_ng10_v1 gate drain source sub\nR$1 sub \\$6 ptap1 A=4p P=8u\nM$2 source gate drain \\$6 sg13_hv_nmos L=0.45u W=9u AS=1.86p AD=1.71p PS=13.72u\n+ PD=12.42u rfmode=0\nM$11 drain \\$7 source \\$6 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\n.ENDS nssoc_tx_hv_ng10_v1\n",
+      "expected_verdict_observed": true
+    },
+    "drain_open": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/drain_open/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_hv_ng10_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drain_open/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/drain_open/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drain_open/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drain_open/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 4.367680543999995,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "5e7a5241b96b43ff58182b14a8c80dc1de9169f91816c99eadf5d082516a2bea"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drain_open/result.lvsdb",
+          "--top",
+          "nssoc_tx_hv_ng10_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drain_open/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drain_open/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.908347842000012,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_hv_ng10_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_hv_ng10_v1",
+            "schematic": "NSSOC_TX_HV_NG10_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 3,
+            "schematic_devices_recursive": 2
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drain_open/result.lvsdb": {
+            "bytes": 18951,
+            "sha256": "5a634619d13835bcc8c5b1a309395ebd2cde3270c7c6ffeb707282f6f3f39cd0"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drain_open/deck.log": {
+            "bytes": 37074,
+            "sha256": "b9569d32925e02d8d385d8f3fbd79cc4a5df70abf2beddf511f4c77c849a5127"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 07:17\n\n.SUBCKT nssoc_tx_hv_ng10_v1 gate drain source sub\nR$1 sub \\$6 ptap1 A=4p P=8u\nM$2 source gate drain \\$6 sg13_hv_nmos L=0.45u W=8u AS=1.67p AD=1.52p PS=12.34u\n+ PD=11.04u rfmode=0\nM$10 source gate \\$I27 \\$6 sg13_hv_nmos L=0.45u W=2u AS=0.38p AD=0.53p PS=2.76u\n+ PD=4.06u rfmode=0\n.ENDS nssoc_tx_hv_ng10_v1\n",
+      "expected_verdict_observed": true
+    },
+    "short": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/short/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_hv_ng10_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-short/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/short/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-short/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-short/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 4.421009254000182,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "e2ffea052ae5ade560cc511f4573e6350147f660ddec52da51f7498f0b5f1843"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-short/result.lvsdb",
+          "--top",
+          "nssoc_tx_hv_ng10_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-short/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-short/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.910710624000103,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_hv_ng10_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_hv_ng10_v1",
+            "schematic": "NSSOC_TX_HV_NG10_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 2,
+            "schematic_devices_recursive": 2
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-short/result.lvsdb": {
+            "bytes": 18692,
+            "sha256": "7040437c31a461f2b8b0364a5ebcedd341043a53f42db54bc975e5f3925653a6"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-short/deck.log": {
+            "bytes": 37054,
+            "sha256": "ff9cfcde4e10a11bfc162d04753c3ceb0a20dc2da98d72e75f0c75396ed72dcd"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 07:17\n\n.SUBCKT nssoc_tx_hv_ng10_v1 gate drain|source sub\nR$1 sub \\$5 ptap1 A=4p P=8u\nM$2 drain|source gate drain|source \\$5 sg13_hv_nmos L=0.45u W=10u AS=2.05p\n+ AD=2.05p PS=15.1u PD=15.1u rfmode=0\n.ENDS nssoc_tx_hv_ng10_v1\n",
+      "expected_verdict_observed": true
+    },
+    "drc": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_hv_ng10_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drc/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-drc/drc.lyrdb",
+          "-rd",
+          "threads=2",
+          "-rd",
+          "no_recommended=False",
+          "-rd",
+          "precheck_drc=False"
+        ],
+        "returncode": 0,
+        "seconds": 6.203339832999973,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "722a902fff60649e98b5e8c41c7f75595904760395a4b8a604e3f400655b5082"
+      },
+      "combine_devices": false,
+      "no_simplify": true,
+      "measurement": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "329e498ab3a7530dc5ef61c87b2158247cf4c083d63dc56c7b705ab77a35db07",
+        "log_sha256": "722a902fff60649e98b5e8c41c7f75595904760395a4b8a604e3f400655b5082"
+      },
+      "expected_verdict_observed": true
+    },
+    "offgrid": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/offgrid/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_hv_ng10_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-offgrid/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-hv-fingers/check-offgrid/drc.lyrdb",
+          "-rd",
+          "threads=2",
+          "-rd",
+          "no_recommended=False",
+          "-rd",
+          "precheck_drc=False"
+        ],
+        "returncode": 0,
+        "seconds": 6.175123585000165,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "fe6db89c09305345f79e23314bf9d9705e5b7af268845a0a9b902caa7df23251"
+      },
+      "combine_devices": false,
+      "no_simplify": true,
+      "measurement": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 4,
+        "categories": {
+          "metal2_drw_Offgrid": 4
+        },
+        "category_count": 560,
+        "report_sha256": "fcb4624cca1fd10f2b7d526fea4be91e6885d0c4117bbefe50b41ef6cd1491db",
+        "log_sha256": "fe6db89c09305345f79e23314bf9d9705e5b7af268845a0a9b902caa7df23251"
+      },
+      "expected_verdict_observed": true
+    }
+  },
+  "failed_run": 38864608050,
+  "failure_summary_sha256": "77650da609ff151e2ac6144de2e89b7e80fb25924adc0624e0a5689f1e152c57",
+  "native_failure_evidence_runs": [
+    38865073101,
+    38865577476
+  ],
+  "cause": "Integer pya.DTrans arguments selected rotation/mirror overload; transistor and ptap overlapped at origin. Explicit float translations and per-placement rectangle assertions fixed geometry without changing references or native decks.",
+  "scope": "One real ng10 HV transistor with all finger connections and one finite substrate tap. Raw11-device and combined2-device native LVS, deep/flat aggregate LVS,560-category mainDRC and5physical/reference faults. Not four-driver assembly, buf16/resistor integration, qualified substrate/interconnect RC, electrical acceptance or PHY.",
+  "full_input_driver_complete": false,
+  "serial_phy_complete": false,
+  "mainchip_integrated": false,
+  "qualified_pex": false
+}

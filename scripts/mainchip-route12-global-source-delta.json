@@ -1,0 +1,124 @@
+{
+  "baseline_path": "scripts/cloud_mainchip_repair_deep_global.py",
+  "baseline_sha256": "e3b76db11c8d0268019cb276a942bbbdcca174213e24ef7420ecc7c8e37306c7",
+  "candidate_path": "scripts/cloud_mainchip_route12_global.py",
+  "candidate_sha256": "0c21bc7e994075134791798c42fb0c965312ee227f9db060b77f85ec3c0a96cb",
+  "edits": [
+    {
+      "before": "def validate(r):\n    assert r['source_head']==HEAD and r['sources_unchanged']\n    assert r['status']=='PASS_PROVEN_REPAIR_INPUT_READY_FOR_FRESH_GLOBAL_AND_DETAIL_ROUTE'\n    assert r['candidate_instance_count']==153130 and r['fresh_odb_sha256']==FRESH\n    assert r['candidate_netlist_sha256']==NETLIST and r['source_sdc_sha256']==SDC\n    assert r['fresh_fixed_clock']['original_physical_route_preserved']\n    assert r['fresh_preparation']['proof']['all_non_wire_physical_def_preserved']\n    assert r['fresh_preparation']['proof']['all_other_net_records_preserved']\n    assert len(r['rejected_candidate_controls'])==4\n    assert len(r['fresh_preparation']['controls'])==3\n    assert all(v['rejected']for v in r['fresh_preparation']['controls'])\n    assert r['candidate_proof']['status']=='PASS within scope'\n    assert not r['native_routing_started'] and r['stale_spef_and_metrics_discarded']\n",
+      "after": "def validate(r):\n    assert r['source_head']==HEAD and r['sources_unchanged']\n    assert r['status']=='PASS_NATIVE_MEASURED_BUFFER_RESIZING_REQUIRES_ROUTE_RC_ALL_CORNER_STA'\n    assert r['candidate_odb_sha256']==FRESH and r['candidate_netlist_sha256']==NETLIST\n    assert r['inversion_control']['rejected']and r['controls']['status']=='PASS_NATIVE_ECO_CONTROLS'\n    assert r['proof']['status']=='PASS within scope'and r['proof']['unobserved_output_port_changes']==0\n    assert r['proof']['positive_buffers_after']==r['proof']['positive_buffers_before']==36629\n    g=r['geometry']\n    assert g['instances']==153130 and len(g['changes'])==128\n    assert g['all_net_memberships_unchanged']and g['all_other_instances_unchanged']and g['pg_ports_ndr_unchanged']\n    assert r['fixed_clock']['original_physical_route_preserved']\n    assert not r['detailed_route_complete']and not r['final_timing_complete']\n",
+      "count": 1
+    },
+    {
+      "before": "mainchip-repair-deep-global",
+      "after": "mainchip-route12-global",
+      "count": 2
+    },
+    {
+      "before": "HANDOFF=ROOT/'cloud-mainchip-repair-deep-handoff'",
+      "after": "HANDOFF=ROOT/'cloud-mainchip-route12-inputs'",
+      "count": 1
+    },
+    {
+      "before": "RUN=39678505610",
+      "after": "RUN=39909564054",
+      "count": 1
+    },
+    {
+      "before": "HEAD='7fa406886aeffd0ee5822764e8abb0031ad8e5ba'",
+      "after": "HEAD='a420ff6fbba5816df3e4422f1bc237ccb9dd175d'",
+      "count": 1
+    },
+    {
+      "before": "90a1b21adb413d239ed80b74322242f925e53109b82f3352076fa9678a6ebde7",
+      "after": "31f3d60b610e5beb6d326a1b8fc6b1886ca6ed7474a3e6d8a9dbb368417af408",
+      "count": 1
+    },
+    {
+      "before": "b6ebd219945fa614f5a0da8b2df02dc66fe604c256067badf3958075bbbb371f",
+      "after": "255ccaac9bf28004b25ced3742f5a8c9cdc2278a3e534f705047460b5fde8d4d",
+      "count": 1
+    },
+    {
+      "before": "22a6238e7786b75a715ac69ef06c0dc3ec17e590260d62ba869732e0f1d35551",
+      "after": "e045d10be101f672672a2d14250d6960879f932fc96ea952c826059e05aacf3d",
+      "count": 1
+    },
+    {
+      "before": "3a200ea79143bc3b723905495085c317083deac7cc6b10ad3033b186293d7030",
+      "after": "3c053c4cda51a001b926cce347b97de5c825cbff2082de550eeb9e31ff7fe5cd",
+      "count": 1
+    },
+    {
+      "before": ".github/workflows/mainchip-repair-deep-handoff-cloud.yml",
+      "after": ".github/workflows/mainchip-route12-resize-cloud.yml",
+      "count": 1
+    },
+    {
+      "before": "scripts/cloud_mainchip_repair_deep_handoff.py",
+      "after": "scripts/cloud_mainchip_route12_resize.py",
+      "count": 2
+    },
+    {
+      "before": "'mainchip-repair-deep-handoff'",
+      "after": "'mainchip-route12-resize'",
+      "count": 2
+    },
+    {
+      "before": "('wrong-fresh-odb',lambda x:x.update(fresh_odb_sha256='0'*64))",
+      "after": "('wrong-fresh-odb',lambda x:x.update(candidate_odb_sha256='0'*64))",
+      "count": 1
+    },
+    {
+      "before": "('changed-clock',lambda x:x['fresh_fixed_clock'].update(original_physical_route_preserved=False))",
+      "after": "('changed-clock',lambda x:x['fixed_clock'].update(original_physical_route_preserved=False))",
+      "count": 1
+    },
+    {
+      "before": "('changed-census',lambda x:x.update(candidate_instance_count=152988))",
+      "after": "('changed-census',lambda x:x['geometry'].update(instances=152988))",
+      "count": 1
+    },
+    {
+      "before": "('stale-parasitics',lambda x:x.update(stale_spef_and_metrics_discarded=False))",
+      "after": "('missing-equivalence',lambda x:x['proof'].update(status='UNPROVEN'))",
+      "count": 1
+    },
+    {
+      "before": "names=['fresh/candidate.odb','repair/candidate.v','candidate-state.json','trial-config.json','repair/native-repair.log']",
+      "after": "names=['candidate.odb','candidate.v','candidate-state.json','trial-config.json','source/geometry/routed/work/detailed-route.odb']",
+      "count": 1
+    },
+    {
+      "before": "descriptor=source['original_input_descriptor']",
+      "after": "descriptor={k:v for k,v in json.loads((ROOT/'docs/evidence/mainchip-postroute-inputs-pass-20261021.json').read_text()).items()if k in ('run','group','source_head','controller_sha256','summary_sha256','parts_sha256')};descriptor['attempt']=1",
+      "count": 1
+    },
+    {
+      "before": "contract=pr['input_contract'];assert contract==source['original_input_contract']",
+      "after": "contract=pr['input_contract'];assert contract['clocks_ns']==[20,4,8,8]and contract['derating_percent']==5",
+      "count": 1
+    },
+    {
+      "before": "state=json.loads((HANDOFF/'candidate-state.json').read_text())",
+      "after": "for name in ('candidate.odb','candidate.v'):\n            shutil.copyfile(HANDOFF/name,OUT/name)\n        state=json.loads((package/'candidate-state.json').read_text())\n        state.update(odb=str(OUT/'candidate.odb'),nl=str(OUT/'candidate.v'),metrics={})\n        for k in ('def','spef','pnl','sdf'):state[k]=None\n        run([app,'openroad','-exit','-python',ROOT/'scripts/check_mainchip_route12_all_clocks.py'],'all-source-clocks',\n            dict(NSSOC_CLOCK_BEFORE=str(HANDOFF/'source/geometry/routed/work/detailed-route.odb'),NSSOC_CLOCK_AFTER=state['odb'],NSSOC_CLOCK_AUDIT=str(OUT/'all-clocks')))\n        r['all_clock_preservation']=json.loads((OUT/'all-clocks/result.json').read_text())\n        assert r['all_clock_preservation']['all_source_clock_and_fixed_records_preserved']\n        save()",
+      "count": 1
+    },
+    {
+      "before": "assert all(sha(p)==h for p,h in source['state_dependencies'].items())",
+      "after": "assert all(sha(ROOT/p)==v['sha256']for p,v in contract['input_files'].items())",
+      "count": 1
+    },
+    {
+      "before": "trial=OUT/'trial-config.json';shutil.copyfile(HANDOFF/'trial-config.json',trial)",
+      "after": "assert json.loads((HANDOFF/'trial-config.json').read_text())==json.loads((package/'trial-config.json').read_text())\n        trial=OUT/'trial-config.json';shutil.copyfile(package/'trial-config.json',trial)",
+      "count": 1
+    },
+    {
+      "before": "initial=OUT/'initial-state.json';shutil.copyfile(HANDOFF/'candidate-state.json',initial)",
+      "after": "initial=OUT/'initial-state.json';initial.write_text(json.dumps(state,indent=2)+'\\n')",
+      "count": 1
+    }
+  ],
+  "scope": "Bind route12 sizing result, prove all original clock records, discard stale analysis, use identical global router and original native configuration."
+}

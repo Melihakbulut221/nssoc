@@ -1,0 +1,39 @@
+..FF                                                                     [100%]
+=================================== FAILURES ===================================
+_______________ test_v17_v20_cycle_exact_all_public_outputs[150] _______________
+
+tmp_path = PosixPath('/dev/shm/nssoc-integrity-v20-public-controls03/test_v17_v20_cycle_exact_all_p0')
+maximum = 150
+
+    @pytest.mark.parametrize("maximum", [150, 4118])
+    def test_v17_v20_cycle_exact_all_public_outputs(tmp_path, maximum):
+        helper = runpy.run_path(
+            str(ROOT / "sw/tests/test_pcie_gen3_continuous_rx_integrity_v20.py")
+        )
+        rtl = miter(tmp_path / "miter-rtl")
+        result, record, cases, out = helper["run"](tmp_path, maximum=maximum, rtl=rtl)
+>       assert result.returncode == 0 and record["tests"] == {
+            "passed": 15,
+            "failed": 0,
+            "skipped": 0,
+        }
+E       AssertionError: assert (1 == 0)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...'--rtl-dir', '/dev/shm/nssoc-integrity-v20-public-controls03/test_v17_v20_cycle_exact_all_p0/miter-rtl'], returncode=1).returncode
+
+sw/tests/test_pcie_gen3_integrity_v20_miter.py:255: AssertionError
+________________ test_appended_stalled_empty_retire_case_direct ________________
+
+tmp_path = PosixPath('/dev/shm/nssoc-integrity-v20-public-controls03/test_appended_stalled_empty_re0')
+
+    def test_appended_stalled_empty_retire_case_direct(tmp_path):
+        ns=runpy.run_path(str(Path.cwd()/'sw/tests/test_pcie_gen3_continuous_rx_integrity_v20.py'))
+        result,record,cases,out=ns['run'](tmp_path,maximum=150,case='stalled_output_retires_committed_zero_keep_words')
+>       assert result.returncode==0 and record['tests']==dict(passed=1,failed=0,skipped=14)
+E       AssertionError: assert (1 == 0)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...rilog-dir', '/home/hasanmelih/.local/bin', '--test', 'stalled_output_retires_committed_zero_keep_words'], returncode=1).returncode
+
+hw/soc/out/pcie-integrity-v20-20261005/targeted_controls03.py:8: AssertionError
+=========================== short test summary info ============================
+FAILED sw/tests/test_pcie_gen3_integrity_v20_miter.py::test_v17_v20_cycle_exact_all_public_outputs[150]
+FAILED hw/soc/out/pcie-integrity-v20-20261005/targeted_controls03.py::test_appended_stalled_empty_retire_case_direct
+2 failed, 2 passed in 226.58s (0:03:46)

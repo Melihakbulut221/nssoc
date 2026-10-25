@@ -1,0 +1,36 @@
+{
+  "wave": {
+    "baseline_path": "scripts/cloud_tx_wire24_g234_wave.py",
+    "baseline_sha256": "832dae99720331d0bcf58404ce0751da7a946a442ca463e35a48e1dc9c382594",
+    "candidate_path": "scripts/cloud_tx_wire24_g234_bridge_wave.py",
+    "candidate_sha256": "5133c45eb2110d27f36db5f40838e53c1ece7a2af5f55a83c671bf2703c0a96a",
+    "edits": [
+      {
+        "before": "cloud-tx-wire24-g234-wave-",
+        "after": "cloud-tx-wire24-g234-bridge-wave-",
+        "count": 1
+      },
+      {
+        "before": "  assert len(contract['hbt'])==604 and len(contract['mos'])==512 and len(contract['interface_probes'])==124",
+        "after": "  from cloud_tx_wire24_final_bridge_adapter import restore_and_adapt\n  deck,contract,result['final_clock_bridge'],bridge_source=restore_and_adapt(out,inputs,deck,contract)\n  result['scope']+=' Final clock sp/sn additionally loads actual native2/3R8C bridge; no waveform acceptance assumed.'\n  assert len(contract['hbt'])==604 and len(contract['mos'])==512 and len(contract['interface_probes'])==124",
+        "count": 1
+      },
+      {
+        "before": "  result['protected_inputs']={str(q):sha(q)for q in protected};save()",
+        "after": "  protected += [ROOT/'scripts/cloud_tx_wire24_final_bridge_adapter.py',*[q for q in bridge_source.rglob('*')if q.is_file()]]\n  result['protected_inputs']={str(q):sha(q)for q in protected};save()",
+        "count": 1
+      }
+    ]
+  },
+  "protected": {
+    "scripts/cloud_tx_wire24_g234_clock_adapter.py": "1106a3cd4583da4c3d62913d8e24e17da8ab86946e312135cfac4dbea913f751",
+    "scripts/cloud_tx_fast_wire24_builder.py": "65d0574f266a2eb8dd0abc5b81b6621363732a1cf8df04505e7429585f33c311",
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/check_tx_wire24_g234_evidence.py": "7ff5452387c940857bfd1169ba5b0014d5eecaca355b961b7acfae76e8953ed4",
+    "scripts/compare_cloud_routed_endpoints.py": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42",
+    "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "scripts/cloud_tx_wire24_final_bridge_adapter.py": "c615687e9c06da90d290fdc3dfc42931d7764bac846e85e8f6f491a5d8f26c39",
+    "scripts/cloud_tx_wire24_g234_bridge_wave.py": "5133c45eb2110d27f36db5f40838e53c1ece7a2af5f55a83c671bf2703c0a96a",
+    "scripts/check_tx_wire24_g234_bridge_sources.py": "3b2ac2e0b71faf7232737ef2043859211327d4063aa5c04d51485ea9980b8ea7"
+  }
+}

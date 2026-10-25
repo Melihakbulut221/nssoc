@@ -1,0 +1,1529 @@
+{
+  "before": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/make_pcie_clock_div4_v7_power_v2.py",
+    "bytes": 26993,
+    "sha256": "303a79555db00ddcd5b100ed073b43ea72a398333d458776d9d01713c5e97d34"
+  },
+  "after": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/flow/make_pcie_clock_div4_v7_compact_v1.py",
+    "bytes": 28745,
+    "sha256": "8d341c09b837e59163c31f305aada4d2b93dfdf0280ba0341eefaf7364cf95a0"
+  },
+  "opcodes": [
+    {
+      "tag": "equal",
+      "before": "#!/usr/bin/env python3\n# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Standalone divider v7 ",
+      "after": "#!/usr/bin/env python3\n# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\n\"\"\"Standalone divider v7 "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "act v1: unchanged devices with sh"
+    },
+    {
+      "tag": "equal",
+      "before": "o",
+      "after": "o"
+    },
+    {
+      "tag": "replace",
+      "before": "w",
+      "after": "rt"
+    },
+    {
+      "tag": "equal",
+      "before": "er ",
+      "after": "er "
+    },
+    {
+      "tag": "delete",
+      "before": "v2: para",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "l",
+      "after": "l"
+    },
+    {
+      "tag": "replace",
+      "before": "lel upper-met",
+      "after": "oc"
+    },
+    {
+      "tag": "equal",
+      "before": "al ",
+      "after": "al "
+    },
+    {
+      "tag": "replace",
+      "before": "p",
+      "after": "r"
+    },
+    {
+      "tag": "equal",
+      "before": "o",
+      "after": "o"
+    },
+    {
+      "tag": "replace",
+      "before": "w",
+      "after": "ut"
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "delete",
+      "before": "r ",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "s",
+      "after": "s"
+    },
+    {
+      "tag": "delete",
+      "before": "traps only",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": ".\"\"\"\n\nimport argparse\nfrom collections import Counter\nimport hashlib\nimport json\nfrom pathlib import Path\nimport re\nimport sys\nimport xml.etree.ElementTree as ET\n\nTOP = \"nssoc_clock_div4_v7_",
+      "after": ".\"\"\"\n\nimport argparse\nfrom collections import Counter\nimport hashlib\nimport json\nfrom pathlib import Path\nimport re\nimport sys\nimport xml.etree.ElementTree as ET\n\nTOP = \"nssoc_clock_div4_v7_"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": "_v",
+      "after": "_v"
+    },
+    {
+      "tag": "replace",
+      "before": "2",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": "_layout\"\nPORTS = (\"CLKP\", \"CLKN\", \"QP\", \"QN\", \"DIV_AVDD\", \"AVSS\", \"SUB\")\nTAPS = 18\nSOURCES = {\n    \"hw/soc/analog/pcie/rx_sampler_hbt_v2.spice\": \"2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f\",\n    \"hw/soc/analog/pcie/clock_div2_hbt.spice\": \"1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7\",\n    \"hw/soc/analog/pcie/clock_div2_conditioned_hbt_v3.spice\": \"158720385252c1dde2d11d4920baeb4a062674894620aa0ffbefe979f101135c\",\n    \"hw/soc/analog/pcie/clock_div4_hbt_v7.spice\": \"49226d5b3a40fc4f8faafbaee3adb5580d8346222a825b79daaddc0358b2c65c\",\n}\n\n\ndef sha(path):\n    with Path(path).open(\"rb\") as stream:\n        return hashlib.file_digest(stream, \"sha256\").hexdigest()\n\n\ndef source_texts(root):\n    texts = {}\n    for path, pin in SOURCES.items():\n        p = Path(root) / path\n        if sha(p) != pin:\n            raise ValueError(\"Frozen source differs: \" + path)\n        texts[path] = p.read_text()\n    return texts\n\n\ndef flatten(texts):\n    \"\"\"Only reachable native primitives; exact per-instance formal-to-actual mapping.\"\"\"\n    definitions = {}\n    current = None\n    for text in texts.values():\n        for line in text.splitlines():\n            words = line.upper().split()\n            if not words or words[0].startswith(\"*\"):\n                continue\n            if words[0] == \".SUBCKT\":\n                if current is not None or words[1] in definitions:\n                    raise ValueError(\"Duplicate/nested subcircuit\")\n                current = words[1]\n                definitions[current] = (words[2:], [])\n            elif words[0] == \".ENDS\":\n                if current is None or words != [\".ENDS\", current]:\n                    raise ValueError(\"Exact subcircuit end\")\n                current = None\n            elif current is not None:\n                definitions[current][1].append(words)\n            else:\n                raise ValueError(\"Statement outside subcircuit\")\n        if current is not None:\n            raise ValueError(\"Unclosed subcircuit\")\n    rows = []\n\n    def walk(name, prefix, actual, stack):\n        if name in stack:\n            raise ValueError(\"Recursive circuit\")\n        ports, statements = definitions[name]\n        if len(ports) != len(actual) or len(set(ports)) != len(ports):\n            raise ValueError(\"Exact port arity\")\n        binding = dict(zip(ports, actual))\n\n        def node(n):\n            if not re.fullmatch(r\"[A-Z][A-Z0-9_]*\", n) or \"__\" in n:\n                raise ValueError(\"Unambiguous literal node\")\n            return binding.get(n, prefix + \"__\" + n)\n\n        names = set()\n        for w in statements:\n            if not re.fullmatch(r\"X[A-Z0-9_]+\", w[0]) or \"__\" in w[0] or w[0] in names:\n                raise ValueError(\"Unique native instance\")\n            names.add(w[0])\n            ident = prefix + \"__\" + w[0]\n            if w[-1] in definitions:\n                walk(w[-1], ident, [node(n) for n in w[1:-1]], stack + (name,))\n                continue\n            kinds = {\n                \"NPN13G2\": (\"hbt\", 4),\n                \"RPPD\": (\"resistor\", 3),\n                \"CAP_CMIM\": (\"capacitor\", 2),\n            }\n            found = [\n                (model, kind, n)\n                for model, (kind, n) in kinds.items()\n                if len(w) > n + 1 and w[n + 1] == model\n            ]\n            if len(found) != 1:\n                raise ValueError(\"Only exact native primitive models\")\n            model, kind, n = found[0]\n            params = {}\n            for value in w[n + 2 :]:\n                k, v = value.split(\"=\")\n                if k in params:\n                    raise ValueError(\"Duplicate parameter\")\n                params[k] = v\n            row = dict(\n                kind=kind,\n                name=ident,\n                nets=[node(v) for v in w[1 : n + 1]],\n                source_subcircuit=name,\n                source_instance=w[0],\n            )\n\n            def um(k):\n                if not re.fullmatch(r\"[0-9]+(?:\\.[0-9]+)?U\", params[k]):\n                    raise ValueError(\"Literal micron geometry\")\n                return float(params[k][:-1])\n\n            if kind == \"hbt\":\n                if set(params) != {\"NX\"} or not params[\"NX\"].isdigit():\n                    raise ValueError(\"Exact HBT geometry\")\n                row[\"nx\"] = int(params[\"NX\"])\n                if row[\"nx\"] not in (1, 2, 4):\n                    raise ValueError(\"Supported native Nx\")\n            elif kind == \"resistor\":\n                if (\n                    set(params) != {\"W\", \"L\", \"B\", \"SW_ET\"}\n                    or params[\"B\"] != \"0\"\n                    or params[\"SW_ET\"] != \"1\"\n                ):\n                    raise ValueError(\"Exact self-heated straight resistor\")\n                row.update(width_um=um(\"W\"), length_um=um(\"L\"))\n            elif kind == \"capacitor\":\n                if set(params) != {\"W\", \"L\"}:\n                    raise ValueError(\"Exact native capacitor geometry\")\n                row.update(width_um=um(\"W\"), length_um=um(\"L\"))\n            rows.append(row)\n\n    walk(\n        \"NSSOC_CLOCK_DIV4_HBT_V7\",\n        \"DIV\",\n        [\"CLKP\", \"CLKN\", \"QP\", \"QN\", \"DIV_AVDD\", \"AVSS\", \"SUB\"],\n        (),\n    )\n    if Counter(r[\"kind\"] for r in rows) != dict(hbt=34, resistor=33, capacitor=6):\n        raise ValueError(\"Exact reached primitive census\")\n    if len({r[\"name\"] for r in rows}) != len(rows):\n        raise ValueError(\"Unique flattened device identity\")\n    return rows\n\n\ndef devices(root):\n    return flatten(source_texts(root))\n\n\ndef physical_reference(root):\n    lines = [\n        \"* SPDX\" + \"-FileCopyrightText: 2026 Hasan Melih Akbulut\",\n        \"* SPDX\" + \"-License-Identifier: CERN-OHL-W-2.0\",\n        \".subckt \" + TOP + \" \" + \" \".join(PORTS),\n    ]\n    for row in devices(root):\n        ns = [\"BULK\" if n == \"SUB\" else n for n in row[\"nets\"]]\n        if row[\"kind\"] == \"hbt\":\n            lines.append(\n                f\"Q{row['name']} {' '.join(ns)} npn13G2 Nx={row['nx']} we=0.07u le=0.9u m=1\"\n            )\n        elif row[\"kind\"] == \"resistor\":\n            lines.append(\n                f\"R{row['name']} {' '.join(ns)} rppd w={row['width_um']:g}u l={row['length_um']:g}u b=0 m=1\"\n            )\n        elif row[\"kind\"] == \"capacitor\":\n            lines.append(\n                f\"C{row['name']} {' '.join(ns)} cap_cmim w={row['width_um']:g}u l={row['length_um']:g}u m=1\"\n            )\n    lines += [f\"RTAP{i} SUB BULK ptap1 A=4p P=8u\" for i in range(TAPS)]\n    lines += [\".ends \" + TOP, \"\"]\n    return \"\\n\".join(lines)\n\n\ndef use_direction(name):\n    if name == \"DIV_AVDD\":\n        return \"POWER\", \"INOUT\"\n    if name in (\"AVSS\", \"SUB\"):\n        return \"GROUND\", \"INOUT\"\n    return \"SIGNAL\", \"OUTPUT\" if name in (\"QP\", \"QN\") else \"INPUT\"\n\n\ndef lef(pya, dbu, box, ports):\n    if set(ports) != set(PORTS):\n        raise ValueError(\"Divider physical pin inventory differs\")\n    result = [\n        \"VERSION 5.8 ;\",\n        'BUSBITCHARS \"[]\" ;',\n        'DIVIDERCHAR \"/\" ;',\n        \"MACRO \" + TOP,\n        \"  CLASS BLOCK ;\",\n        \"  ORIGIN 0 0 ;\",\n        f\"  SIZE {box.width():.3f} BY {box.height():.3f} ;\",\n    ]\n    for name in PORTS:\n        metal, b = ports[name]\n        use, direction = use_direction(name)\n        result += [\n            \"  PIN \" + name,\n            \"    DIRECTION \" + direction + \" ;\",\n            \"    USE \" + use + \" ;\",\n            \"    PORT\",\n            \"      LAYER \" + metal + \" ;\",\n            f\"      RECT {b.left:.3f} {b.bottom:.3f} {b.right:.3f} {b.top:.3f} ;\",\n            \"    END\",\n            \"  END \" + name,\n        ]\n    result += [\"  OBS\"]\n    for metal in (\n        \"Metal1\",\n        \"Metal2\",\n        \"Metal3\",\n        \"Metal4\",\n        \"Metal5\",\n        \"TopMetal1\",\n        \"TopMetal2\",\n    ):\n        region = pya.Region(box.to_itype(dbu))\n        for layer, b in ports.values():\n            if layer == metal:\n                region -= pya.Region(b.to_itype(dbu))\n        result += [\"    LAYER \" + metal + \" ;\"]\n        for polygon in region.decompose_trapezoids_to_region().each():\n            if polygon.area() != polygon.bbox().area():\n                raise ValueError(\"Nonrectangular obstruction\")\n            b = polygon.bbox().to_dtype(dbu)\n            result += [\n                f\"      RECT {b.left:.3f} {b.bottom:.3f} {b.right:.3f} {b.top:.3f} ;\"\n            ]\n    return \"\\n\".join(result + [\"  END\", \"END \" + TOP, \"END LIBRARY\", \"\"])\n\n\ndef ",
+      "after": "_layout\"\nPORTS = (\"CLKP\", \"CLKN\", \"QP\", \"QN\", \"DIV_AVDD\", \"AVSS\", \"SUB\")\nTAPS = 18\nSOURCES = {\n    \"hw/soc/analog/pcie/rx_sampler_hbt_v2.spice\": \"2540014752d39b9cafceb81caf5c95b8be5bda947b8c1f14272940cf1aa4341f\",\n    \"hw/soc/analog/pcie/clock_div2_hbt.spice\": \"1b18a732c7736ad8c9805131c77fe1d5e467364ae8d6a2b7eb07061131cea4d7\",\n    \"hw/soc/analog/pcie/clock_div2_conditioned_hbt_v3.spice\": \"158720385252c1dde2d11d4920baeb4a062674894620aa0ffbefe979f101135c\",\n    \"hw/soc/analog/pcie/clock_div4_hbt_v7.spice\": \"49226d5b3a40fc4f8faafbaee3adb5580d8346222a825b79daaddc0358b2c65c\",\n}\n\n\ndef sha(path):\n    with Path(path).open(\"rb\") as stream:\n        return hashlib.file_digest(stream, \"sha256\").hexdigest()\n\n\ndef source_texts(root):\n    texts = {}\n    for path, pin in SOURCES.items():\n        p = Path(root) / path\n        if sha(p) != pin:\n            raise ValueError(\"Frozen source differs: \" + path)\n        texts[path] = p.read_text()\n    return texts\n\n\ndef flatten(texts):\n    \"\"\"Only reachable native primitives; exact per-instance formal-to-actual mapping.\"\"\"\n    definitions = {}\n    current = None\n    for text in texts.values():\n        for line in text.splitlines():\n            words = line.upper().split()\n            if not words or words[0].startswith(\"*\"):\n                continue\n            if words[0] == \".SUBCKT\":\n                if current is not None or words[1] in definitions:\n                    raise ValueError(\"Duplicate/nested subcircuit\")\n                current = words[1]\n                definitions[current] = (words[2:], [])\n            elif words[0] == \".ENDS\":\n                if current is None or words != [\".ENDS\", current]:\n                    raise ValueError(\"Exact subcircuit end\")\n                current = None\n            elif current is not None:\n                definitions[current][1].append(words)\n            else:\n                raise ValueError(\"Statement outside subcircuit\")\n        if current is not None:\n            raise ValueError(\"Unclosed subcircuit\")\n    rows = []\n\n    def walk(name, prefix, actual, stack):\n        if name in stack:\n            raise ValueError(\"Recursive circuit\")\n        ports, statements = definitions[name]\n        if len(ports) != len(actual) or len(set(ports)) != len(ports):\n            raise ValueError(\"Exact port arity\")\n        binding = dict(zip(ports, actual))\n\n        def node(n):\n            if not re.fullmatch(r\"[A-Z][A-Z0-9_]*\", n) or \"__\" in n:\n                raise ValueError(\"Unambiguous literal node\")\n            return binding.get(n, prefix + \"__\" + n)\n\n        names = set()\n        for w in statements:\n            if not re.fullmatch(r\"X[A-Z0-9_]+\", w[0]) or \"__\" in w[0] or w[0] in names:\n                raise ValueError(\"Unique native instance\")\n            names.add(w[0])\n            ident = prefix + \"__\" + w[0]\n            if w[-1] in definitions:\n                walk(w[-1], ident, [node(n) for n in w[1:-1]], stack + (name,))\n                continue\n            kinds = {\n                \"NPN13G2\": (\"hbt\", 4),\n                \"RPPD\": (\"resistor\", 3),\n                \"CAP_CMIM\": (\"capacitor\", 2),\n            }\n            found = [\n                (model, kind, n)\n                for model, (kind, n) in kinds.items()\n                if len(w) > n + 1 and w[n + 1] == model\n            ]\n            if len(found) != 1:\n                raise ValueError(\"Only exact native primitive models\")\n            model, kind, n = found[0]\n            params = {}\n            for value in w[n + 2 :]:\n                k, v = value.split(\"=\")\n                if k in params:\n                    raise ValueError(\"Duplicate parameter\")\n                params[k] = v\n            row = dict(\n                kind=kind,\n                name=ident,\n                nets=[node(v) for v in w[1 : n + 1]],\n                source_subcircuit=name,\n                source_instance=w[0],\n            )\n\n            def um(k):\n                if not re.fullmatch(r\"[0-9]+(?:\\.[0-9]+)?U\", params[k]):\n                    raise ValueError(\"Literal micron geometry\")\n                return float(params[k][:-1])\n\n            if kind == \"hbt\":\n                if set(params) != {\"NX\"} or not params[\"NX\"].isdigit():\n                    raise ValueError(\"Exact HBT geometry\")\n                row[\"nx\"] = int(params[\"NX\"])\n                if row[\"nx\"] not in (1, 2, 4):\n                    raise ValueError(\"Supported native Nx\")\n            elif kind == \"resistor\":\n                if (\n                    set(params) != {\"W\", \"L\", \"B\", \"SW_ET\"}\n                    or params[\"B\"] != \"0\"\n                    or params[\"SW_ET\"] != \"1\"\n                ):\n                    raise ValueError(\"Exact self-heated straight resistor\")\n                row.update(width_um=um(\"W\"), length_um=um(\"L\"))\n            elif kind == \"capacitor\":\n                if set(params) != {\"W\", \"L\"}:\n                    raise ValueError(\"Exact native capacitor geometry\")\n                row.update(width_um=um(\"W\"), length_um=um(\"L\"))\n            rows.append(row)\n\n    walk(\n        \"NSSOC_CLOCK_DIV4_HBT_V7\",\n        \"DIV\",\n        [\"CLKP\", \"CLKN\", \"QP\", \"QN\", \"DIV_AVDD\", \"AVSS\", \"SUB\"],\n        (),\n    )\n    if Counter(r[\"kind\"] for r in rows) != dict(hbt=34, resistor=33, capacitor=6):\n        raise ValueError(\"Exact reached primitive census\")\n    if len({r[\"name\"] for r in rows}) != len(rows):\n        raise ValueError(\"Unique flattened device identity\")\n    return rows\n\n\ndef devices(root):\n    return flatten(source_texts(root))\n\n\ndef physical_reference(root):\n    lines = [\n        \"* SPDX\" + \"-FileCopyrightText: 2026 Hasan Melih Akbulut\",\n        \"* SPDX\" + \"-License-Identifier: CERN-OHL-W-2.0\",\n        \".subckt \" + TOP + \" \" + \" \".join(PORTS),\n    ]\n    for row in devices(root):\n        ns = [\"BULK\" if n == \"SUB\" else n for n in row[\"nets\"]]\n        if row[\"kind\"] == \"hbt\":\n            lines.append(\n                f\"Q{row['name']} {' '.join(ns)} npn13G2 Nx={row['nx']} we=0.07u le=0.9u m=1\"\n            )\n        elif row[\"kind\"] == \"resistor\":\n            lines.append(\n                f\"R{row['name']} {' '.join(ns)} rppd w={row['width_um']:g}u l={row['length_um']:g}u b=0 m=1\"\n            )\n        elif row[\"kind\"] == \"capacitor\":\n            lines.append(\n                f\"C{row['name']} {' '.join(ns)} cap_cmim w={row['width_um']:g}u l={row['length_um']:g}u m=1\"\n            )\n    lines += [f\"RTAP{i} SUB BULK ptap1 A=4p P=8u\" for i in range(TAPS)]\n    lines += [\".ends \" + TOP, \"\"]\n    return \"\\n\".join(lines)\n\n\ndef use_direction(name):\n    if name == \"DIV_AVDD\":\n        return \"POWER\", \"INOUT\"\n    if name in (\"AVSS\", \"SUB\"):\n        return \"GROUND\", \"INOUT\"\n    return \"SIGNAL\", \"OUTPUT\" if name in (\"QP\", \"QN\") else \"INPUT\"\n\n\ndef lef(pya, dbu, box, ports):\n    if set(ports) != set(PORTS):\n        raise ValueError(\"Divider physical pin inventory differs\")\n    result = [\n        \"VERSION 5.8 ;\",\n        'BUSBITCHARS \"[]\" ;',\n        'DIVIDERCHAR \"/\" ;',\n        \"MACRO \" + TOP,\n        \"  CLASS BLOCK ;\",\n        \"  ORIGIN 0 0 ;\",\n        f\"  SIZE {box.width():.3f} BY {box.height():.3f} ;\",\n    ]\n    for name in PORTS:\n        metal, b = ports[name]\n        use, direction = use_direction(name)\n        result += [\n            \"  PIN \" + name,\n            \"    DIRECTION \" + direction + \" ;\",\n            \"    USE \" + use + \" ;\",\n            \"    PORT\",\n            \"      LAYER \" + metal + \" ;\",\n            f\"      RECT {b.left:.3f} {b.bottom:.3f} {b.right:.3f} {b.top:.3f} ;\",\n            \"    END\",\n            \"  END \" + name,\n        ]\n    result += [\"  OBS\"]\n    for metal in (\n        \"Metal1\",\n        \"Metal2\",\n        \"Metal3\",\n        \"Metal4\",\n        \"Metal5\",\n        \"TopMetal1\",\n        \"TopMetal2\",\n    ):\n        region = pya.Region(box.to_itype(dbu))\n        for layer, b in ports.values():\n            if layer == metal:\n                region -= pya.Region(b.to_itype(dbu))\n        result += [\"    LAYER \" + metal + \" ;\"]\n        for polygon in region.decompose_trapezoids_to_region().each():\n            if polygon.area() != polygon.bbox().area():\n                raise ValueError(\"Nonrectangular obstruction\")\n            b = polygon.bbox().to_dtype(dbu)\n            result += [\n                f\"      RECT {b.left:.3f} {b.bottom:.3f} {b.right:.3f} {b.top:.3f} ;\"\n            ]\n    return \"\\n\".join(result + [\"  END\", \"END \" + TOP, \"END LIBRARY\", \"\"])\n\n\ndef "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "bus_offset(ordered, net):\n    \"\"\"Four-micron signal pitch; eight beside each six-micron supply strap.\"\"\"\n    y = 72.0\n    for index, current in enumerate(ordered):\n        if index:\n            previous = ordered[index - 1]\n            y += 8.0 if {previous, current} & {\"DIV_AVDD\", \"AVSS\"} else 4.0\n        if current == net:\n            return y\n    raise ValueError(\"Declared row bus absent\")\n\n\ndef "
+    },
+    {
+      "tag": "equal",
+      "before": "placement_plan(rows):\n    \"\"\"",
+      "after": "placement_plan(rows):\n    \"\"\""
+    },
+    {
+      "tag": "replace",
+      "before": "Fix",
+      "after": "Unchang"
+    },
+    {
+      "tag": "equal",
+      "before": "ed",
+      "after": "ed"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " three"
+    },
+    {
+      "tag": "equal",
+      "before": " topology group",
+      "after": " topology group"
+    },
+    {
+      "tag": "replace",
+      "before": "ing;",
+      "after": "s,"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "local d"
+    },
+    {
+      "tag": "equal",
+      "before": "ev",
+      "after": "ev"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "ice ord"
+    },
+    {
+      "tag": "equal",
+      "before": "er",
+      "after": "er"
+    },
+    {
+      "tag": "delete",
+      "before": "y",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "pr",
+      "after": "and 73 "
+    },
+    {
+      "tag": "equal",
+      "before": "i",
+      "after": "i"
+    },
+    {
+      "tag": "replace",
+      "before": "m",
+      "after": "dent"
+    },
+    {
+      "tag": "equal",
+      "before": "iti",
+      "after": "iti"
+    },
+    {
+      "tag": "delete",
+      "before": "v",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "delete",
+      "before": " appear",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "s",
+      "after": "s"
+    },
+    {
+      "tag": "delete",
+      "before": " once, circuit unchanged",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": ".\"\"\"\n    by_name = {r[\"name\"]: r for r in rows}\n    if len(rows) != 73 or len(by_name) != len(rows):\n        raise ValueError(\"Exact 73 primitive placement census required\")\n    first = [n for n in by_name if n.startswith(\"DIV__XFIRST__\")]\n    second = [n for n in by_name if n.startswith(\"DIV__XSECOND__\")]\n    interstage = [",
+      "after": ".\"\"\"\n    by_name = {r[\"name\"]: r for r in rows}\n    if len(rows) != 73 or len(by_name) != len(rows):\n        raise ValueError(\"Exact 73 primitive placement census required\")\n    first = [n for n in by_name if n.startswith(\"DIV__XFIRST__\")]\n    second = [n for n in by_name if n.startswith(\"DIV__XSECOND__\")]\n    interstage = ["
+    },
+    {
+      "tag": "delete",
+      "before": "\n        ",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "n for n in by_name if",
+      "after": "n for n in by_name if"
+    },
+    {
+      "tag": "delete",
+      "before": " n.startswith(\"DIV__\") and",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " n not in first + second",
+      "after": " n not in first + second"
+    },
+    {
+      "tag": "delete",
+      "before": "\n    ",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "]\n    groups = [",
+      "after": "]\n    groups = ["
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "list(reversed("
+    },
+    {
+      "tag": "equal",
+      "before": "first",
+      "after": "first"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "))"
+    },
+    {
+      "tag": "equal",
+      "before": ", interstage, ",
+      "after": ", interstage, "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "list(reversed("
+    },
+    {
+      "tag": "equal",
+      "before": "second",
+      "after": "second"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "))"
+    },
+    {
+      "tag": "equal",
+      "before": "]\n    ",
+      "after": "]\n    "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "i"
+    },
+    {
+      "tag": "equal",
+      "before": "f",
+      "after": "f"
+    },
+    {
+      "tag": "delete",
+      "before": "lat =",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " [",
+      "after": " ["
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "le"
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "(g)"
+    },
+    {
+      "tag": "equal",
+      "before": " for g",
+      "after": " for g"
+    },
+    {
+      "tag": "delete",
+      "before": "roup",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " in groups",
+      "after": " in groups"
+    },
+    {
+      "tag": "delete",
+      "before": " for n in group",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "]",
+      "after": "]"
+    },
+    {
+      "tag": "delete",
+      "before": "\n    if len(flat)",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " != ",
+      "after": " != "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "[30, 1"
+    },
+    {
+      "tag": "equal",
+      "before": "7",
+      "after": "7"
+    },
+    {
+      "tag": "replace",
+      "before": "3",
+      "after": ","
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "or len(set(flat)) != 73",
+      "after": "26]"
+    },
+    {
+      "tag": "equal",
+      "before": " or set(",
+      "after": " or set("
+    },
+    {
+      "tag": "replace",
+      "before": "flat",
+      "after": "sum(groups, [])"
+    },
+    {
+      "tag": "equal",
+      "before": ") != set(by_name):\n        raise ValueError(\"Topology group",
+      "after": ") != set(by_name):\n        raise ValueError(\"Topology group"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " "
+    },
+    {
+      "tag": "equal",
+      "before": "i",
+      "after": "i"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "de"
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "delete",
+      "before": "g omi",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "t",
+      "after": "t"
+    },
+    {
+      "tag": "delete",
+      "before": "ted/duplicated an exact prim",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "iti",
+      "after": "iti"
+    },
+    {
+      "tag": "delete",
+      "before": "ve\")\n    if [len(group) for group in groups] != [30, 17, 26]:\n        raise ValueError(\"Topology group siz",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "es changed\")",
+      "after": "es changed\")"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "\n    # Explicit ordering selected from saved actual endpoint losses; it changes\n    # physical track locations, never the source graph, models, or bias values.\n    priority = [\n        [\"DIV__XFIRST__XCORE__XS__SE\", \"DIV__XFIRST__XCORE__XS__TE\",\n         \"DIV__S1P\", \"DIV__XFIRST__XCORE__MN\", \"DIV__S1N\",\n         \"DIV__XFIRST__XCORE__MP\", \"DIV__XFIRST__XCORE__XS__HE\",\n         \"DIV__XFIRST__XCORE__XM__SE\", \"DIV__XFIRST__XCORE__XM__TE\",\n         \"DIV__XFIRST__XCORE__XM__HE\", \"DIV__XFIRST__CKP\",\n         \"DIV__XFIRST__CKN\", \"DIV__XFIRST__XCORE__REF\"],\n        [\"DIV__LP\", \"DIV__S1P\", \"DIV__S1N\", \"DIV__LN\", \"DIV__LT\",\n         \"DIV__CKP\", \"DIV__CKN\", \"DIV__LREF\", \"DIV__BIP\", \"DIV__BIN\"],\n        [\"DIV__XSECOND__XS__TE\", \"DIV__XSECOND__XM__TE\",\n         \"DIV__XSECOND__MN\", \"DIV__XSECOND__XS__HE\",\n         \"DIV__XSECOND__XM__SE\", \"DIV__XSECOND__MP\",\n         \"DIV__XSECOND__XS__SE\", \"DIV__XSECOND__XM__HE\",\n         \"DIV__CKP\", \"DIV__CKN\", \"DIV__XSECOND__REF\"],\n    ]"
+    },
+    {
+      "tag": "equal",
+      "before": "\n    starts, net_rows, plan = {}, {}, {}\n    base = ",
+      "after": "\n    starts, net_rows, plan = {}, {}, {}\n    base = "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "0."
+    },
+    {
+      "tag": "equal",
+      "before": "0\n    for rid, group in enumerate(groups):\n        nets = {\"SUB\"}\n        for name in group:\n            row = by_name[name]\n            count = {\"hbt\": 3, \"resistor\": 2, \"capacitor\": 2}[row[\"kind\"]]\n            nets.update(row[\"nets\"][:count])\n        ordered = [n for n in PORTS if n in nets] + ",
+      "after": "0\n    for rid, group in enumerate(groups):\n        nets = {\"SUB\"}\n        for name in group:\n            row = by_name[name]\n            count = {\"hbt\": 3, \"resistor\": 2, \"capacitor\": 2}[row[\"kind\"]]\n            nets.update(row[\"nets\"][:count])\n        ordered = [n for n in PORTS if n in nets] + "
+    },
+    {
+      "tag": "replace",
+      "before": "s",
+      "after": "pri"
+    },
+    {
+      "tag": "equal",
+      "before": "or",
+      "after": "or"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "i"
+    },
+    {
+      "tag": "equal",
+      "before": "t",
+      "after": "t"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "y[rid]\n        if len(order"
+    },
+    {
+      "tag": "equal",
+      "before": "ed",
+      "after": "ed"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": ") != len"
+    },
+    {
+      "tag": "equal",
+      "before": "(",
+      "after": "("
+    },
+    {
+      "tag": "replace",
+      "before": "n",
+      "after": "s"
+    },
+    {
+      "tag": "equal",
+      "before": "et",
+      "after": "et"
+    },
+    {
+      "tag": "replace",
+      "before": "s",
+      "after": "(ordered))"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "-",
+      "after": "or"
+    },
+    {
+      "tag": "equal",
+      "before": " set(",
+      "after": " set("
+    },
+    {
+      "tag": "replace",
+      "before": "PORTS",
+      "after": "ordered"
+    },
+    {
+      "tag": "equal",
+      "before": ")",
+      "after": ")"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " != nets:\n            raise ValueError(\"Exact topology-local row net census\""
+    },
+    {
+      "tag": "equal",
+      "before": ")\n        starts[rid], net_rows[rid] = base, ordered\n        ",
+      "after": ")\n        starts[rid], net_rows[rid] = base, ordered\n        "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "x = 160.0\n        "
+    },
+    {
+      "tag": "equal",
+      "before": "for",
+      "after": "for"
+    },
+    {
+      "tag": "delete",
+      "before": " index,",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " name in ",
+      "after": " name in "
+    },
+    {
+      "tag": "delete",
+      "before": "enumerate(",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "group",
+      "after": "group"
+    },
+    {
+      "tag": "delete",
+      "before": ")",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": ":\n            ",
+      "after": ":\n            "
+    },
+    {
+      "tag": "replace",
+      "before": "c",
+      "after": "r"
+    },
+    {
+      "tag": "equal",
+      "before": "o",
+      "after": "o"
+    },
+    {
+      "tag": "replace",
+      "before": "l",
+      "after": "w"
+    },
+    {
+      "tag": "equal",
+      "before": " = ",
+      "after": " = "
+    },
+    {
+      "tag": "replace",
+      "before": "l",
+      "after": "by_nam"
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "["
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "replace",
+      "before": "(group)",
+      "after": "ame]\n"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "delete",
+      "before": "-",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "delete",
+      "before": "1",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "delete",
+      "before": "-",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "index",
+      "after": "       "
+    },
+    {
+      "tag": "equal",
+      "before": " if r",
+      "after": " if r"
+    },
+    {
+      "tag": "replace",
+      "before": "id ",
+      "after": "ow[\"k"
+    },
+    {
+      "tag": "equal",
+      "before": "in",
+      "after": "in"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "d\"]"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "(",
+      "after": "== \"hbt\":\n                y = 56."
+    },
+    {
+      "tag": "equal",
+      "before": "0",
+      "after": "0"
+    },
+    {
+      "tag": "replace",
+      "before": ",",
+      "after": "\n"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "2)",
+      "after": "           elif row[\"kind\"] == \"resistor\":\n                y = 60.0 - row[\"length_um\"] - 0.61\n           "
+    },
+    {
+      "tag": "equal",
+      "before": " else",
+      "after": " else"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": ":\n"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "i",
+      "after": "               y = 60.0 - row[\"le"
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "replace",
+      "before": "dex",
+      "after": "gth_um\"] - 0.60"
+    },
+    {
+      "tag": "equal",
+      "before": "\n            plan[name] = (rid, ",
+      "after": "\n            plan[name] = (rid, "
+    },
+    {
+      "tag": "replace",
+      "before": "160.0 + col * 40",
+      "after": "x"
+    },
+    {
+      "tag": "equal",
+      "before": ", ",
+      "after": ", "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "round(("
+    },
+    {
+      "tag": "equal",
+      "before": "base + ",
+      "after": "base + "
+    },
+    {
+      "tag": "replace",
+      "before": "2",
+      "after": "y) / "
+    },
+    {
+      "tag": "equal",
+      "before": "0.0",
+      "after": "0.0"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "05) * 0.005)\n            x += 36.0 if row[\"kind\"] == \"capacitor\" and row[\"width_um\"] == 20 else 24.0\n        if x > 900.0:\n            raise ValueError(\"Compact device band exceeds fixed 960 micron width\""
+    },
+    {
+      "tag": "equal",
+      "before": ")\n        base += ",
+      "after": ")\n        base += "
+    },
+    {
+      "tag": "replace",
+      "before": "90 + l",
+      "after": "bus_offs"
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "replace",
+      "before": "n",
+      "after": "t"
+    },
+    {
+      "tag": "equal",
+      "before": "(ordered",
+      "after": "(ordered"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": ", ordered[-1]"
+    },
+    {
+      "tag": "equal",
+      "before": ")",
+      "after": ")"
+    },
+    {
+      "tag": "delete",
+      "before": " * 10",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " + ",
+      "after": " + "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "2"
+    },
+    {
+      "tag": "equal",
+      "before": "4",
+      "after": "4"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "."
+    },
+    {
+      "tag": "equal",
+      "before": "0\n    return plan, starts, net_rows\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=__doc__)\n    for name in (\"pdk\", \"out\"):\n        parser.add_argument(\"--\" + name, type=Path, required=True)\n    args = parser.parse_args()\n    root = Path(__file__).resolve().parents[3]\n    out = args.out.resolve()\n    if out.exists() or not (\n        out.is_relative_to(root / \"hw/soc/out\")\n        or out.is_relative_to(Path(\"/dev/shm\"))\n        and out.name.startswith(\"nssoc-div4-\")\n    ):\n        parser.error(\"Use a fresh project or /dev/shm/nssoc-div4- directory\")\n    rows = devices(root)\n    plan, row_starts, row_nets = placement_plan(rows)\n    source = args.pdk.resolve() / \"libs.tech/klayout/python\"\n    lyp = source.parent / \"tech/sg13g2.lyp\"\n    inputs = [\n        *source.rglob(\"*.py\"),\n        *source.rglob(\"*.json\"),\n        lyp,\n        *(root / p for p in SOURCES),\n        Path(__file__).resolve(),\n    ]\n    pins = {str(path): sha(path) for path in inputs}\n    sys.dont_write_bytecode = True\n    sys.path[:0] = [str(source), str(source / \"pycell4klayout-api/source/python\")]\n    import pya\n    import sg13g2_pycell_lib  # noqa: F401 -- native PCell registration\n\n    layout = pya.Layout()\n    top = layout.create_cell(TOP)\n    layers = {\n        prop.findtext(\"name\")[:-8]: int(prop.findtext(\"source\").split(\"/\")[0])\n        for prop in ET.parse(lyp).getroot().iter(\"properties\")\n        if prop.findtext(\"name\", \"\").endswith(\".drawing\")\n    }\n    records, routes, vias, terminals, ports = [], [], [], {}, {}\n\n    def pc(name, parameters):\n        cell = layout.create_cell(name, \"SG13_dev\", parameters)\n        if cell is None or cell.is_empty():\n            raise ValueError(\"Native PCell failed: \" + name)\n        return cell\n\n    def instance(cell, x, y):\n        trans = pya.DTrans(round(x / 0.005) * 0.005, round(y / 0.005) * 0.005)\n        top.insert(pya.DCellInstArray(cell.cell_index(), trans))\n        return trans\n\n    def rect(metal, x1, y1, x2, y2):\n        box = pya.DBox(min(x1, x2), min(y1, y2), max(x1, x2), max(y1, y2))\n        top.shapes(layout.layer(layers[\"Metal\" + str(metal)], 0)).insert(box)\n        return box\n\n    def via(bottom, upper, x, y, net, cols=2):\n        cell = pc(\n            \"via_stack\",\n            dict(\n                b_layer=\"Metal\" + str(bottom),\n                t_layer=\"Metal\" + str(upper),\n                vn_columns=cols,\n                vn_rows=1,\n            ),\n        )\n        b = cell.dbbox()\n        t = instance(cell, x - b.center().x, y - b.center().y)\n        b = b.transformed(t)\n        vias.append(\n            dict(net=net, bottom=bottom, top=upper, center_um=[x, y], bbox_um=str(b))\n        )\n        return b\n\n    def escape(pin, metal, net, lane, label, cols, offset=0):\n        y = round((pin.center().y + offset) / 0.005) * 0.005\n        x = round(pin.center().x / 0.005) * 0.005\n        via(metal, 3, x, y, net, cols)\n        rect(3, lane - 0.2, y - 0.2, x + 0.2, y + 0.2)\n        via(3, 4, lane, y, net)\n        terminals.setdefault(net, []).append((row_id, lane, y))\n        routes.append(\n            dict(\n                device=label,\n                net=net,\n                source_layer=metal,\n                actual_pin_um=str(pin),\n                escape_lane_um=lane,\n                escape_y_um=y,\n            )\n        )\n\n    for row in rows:\n        row_id, x, y = plan[row[\"name\"]]\n        if row[\"kind\"] == \"hbt\":\n            cell = pc(\"npn13G2\", {\"Nx\": row[\"nx\"]})\n            t = instance(cell, x, y)\n            m1 = sorted(\n                [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))],\n                key=lambda b: b.center().y,\n            )\n            m2 = [\n                s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(10, 2))\n            ]\n            if len(m1) != 2 or len(m2) != 1:\n                raise ValueError(\"Native HBT pin inventory differs\")\n            base, collector = m1\n            for pin, metal, net, lane, offset in [\n                (collector, 1, row[\"nets\"][0], x - 9, 0.04),\n                (base, 1, row[\"nets\"][1], x - 6, -0.04),\n                (m2[0], 2, row[\"nets\"][2], x - 3, 0),\n            ]:\n                escape(pin, metal, net, lane, row[\"name\"], 4, offset)\n        elif row[\"kind\"] == \"resistor\":\n            cell = pc(\n                \"rppd\", {\"w\": f\"{row['width_um']:g}u\", \"l\": f\"{row['length_um']:g}u\"}\n            )\n            t = instance(cell, x, y)\n            ps = sorted(\n                [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))],\n                key=lambda b: b.center().y,\n            )\n            if len(ps) != 2:\n                raise ValueError(\"Native rppd pin inventory differs\")\n            for k, pin in enumerate(ps):\n                escape(\n                    pin,\n                    1,\n                    row[\"nets\"][k],\n                    x - 6 + 3 * k,\n                    row[\"name\"],\n                    1 if row[\"width_um\"] == 1 else 4,\n                )\n        else:\n            cell = pc(\n                \"cmim\", {\"w\": f\"{row['width_um']:g}u\", \"l\": f\"{row['length_um']:g}u\"}\n            )\n            t = instance(cell, x, y)\n            # Native cmim exposes pin objects but no GDS pin-purpose shapes.\n            # Its version-pinned code defines PLUS=TopMetal1, MINUS=Metal5;\n            # measure each actual plate, rather than infer a contact in MIM.\n            plates = {}\n            for metal in (\"Metal5\", \"TopMetal1\"):\n                shapes = [\n                    s.dbbox().transformed(t)\n                    for s in cell.each_shape(layout.layer(layers[metal], 0))\n                    if s.is_box()\n                ]\n                if len(shapes) != 1:\n                    raise ValueError(\"Native MIM plate inventory differs\")\n                plates[metal] = shapes[0]\n            plus, minus = plates[\"TopMetal1\"], plates[\"Metal5\"]\n            py = round(plus.center().y / 0.005) * 0.005\n            px = x - 9\n            top.shapes(layout.layer(layers[\"TopMetal1\"], 0)).insert(\n                pya.DBox(px - 1.2, py - 1.2, plus.right, py + 1.2)\n            )\n            cv = pc(\n                \"via_stack\",\n                dict(b_layer=\"Metal5\", t_layer=\"TopMetal1\", vt1_columns=2, vt1_rows=1),\n            )\n            cb = cv.dbbox()\n            ct = instance(cv, px - cb.center().x, py - cb.center().y)\n            top.shapes(layout.layer(layers[\"TopMetal1\"], 0)).insert(\n                pya.DBox(px - 1.2, py - 1.2, px + 1.2, py + 1.2)\n            )\n            via(4, 5, px, py, row[\"nets\"][0], 2)\n            terminals.setdefault(row[\"nets\"][0], []).append((row_id, px, py))\n            mx = x - 5\n            rect(5, mx - 0.6, py - 0.6, minus.center().x, py + 0.6)\n            via(4, 5, mx, py, row[\"nets\"][1], 2)\n            terminals.setdefault(row[\"nets\"][1], []).append((row_id, mx, py))\n            routes.append(\n                dict(\n                    device=row[\"name\"],\n                    plus_net=row[\"nets\"][0],\n                    minus_net=row[\"nets\"][1],\n                    plus_native_plate_um=str(plus),\n                    minus_native_plate_um=str(minus),\n                    plus_contact_outside_native_mim=True,\n                    plus_escape_um=[px, py],\n                    minus_escape_um=[mx, py],\n                )\n            )\n        records.append(\n            dict(\n                **row,\n                placement_row=row_id,\n                placement_um=[x, y],\n                bbox_um=str(cell.dbbox().transformed(t)),\n            )\n        )\n    # Independent square taps: SUB is a real conductor, BULK is the extracted substrate.\n    for index in range(TAPS):\n        row_id = index // 6\n        x, y = 180 + (index % 6) * ",
+      "after": "0\n    return plan, starts, net_rows\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=__doc__)\n    for name in (\"pdk\", \"out\"):\n        parser.add_argument(\"--\" + name, type=Path, required=True)\n    args = parser.parse_args()\n    root = Path(__file__).resolve().parents[3]\n    out = args.out.resolve()\n    if out.exists() or not (\n        out.is_relative_to(root / \"hw/soc/out\")\n        or out.is_relative_to(Path(\"/dev/shm\"))\n        and out.name.startswith(\"nssoc-div4-\")\n    ):\n        parser.error(\"Use a fresh project or /dev/shm/nssoc-div4- directory\")\n    rows = devices(root)\n    plan, row_starts, row_nets = placement_plan(rows)\n    source = args.pdk.resolve() / \"libs.tech/klayout/python\"\n    lyp = source.parent / \"tech/sg13g2.lyp\"\n    inputs = [\n        *source.rglob(\"*.py\"),\n        *source.rglob(\"*.json\"),\n        lyp,\n        *(root / p for p in SOURCES),\n        Path(__file__).resolve(),\n    ]\n    pins = {str(path): sha(path) for path in inputs}\n    sys.dont_write_bytecode = True\n    sys.path[:0] = [str(source), str(source / \"pycell4klayout-api/source/python\")]\n    import pya\n    import sg13g2_pycell_lib  # noqa: F401 -- native PCell registration\n\n    layout = pya.Layout()\n    top = layout.create_cell(TOP)\n    layers = {\n        prop.findtext(\"name\")[:-8]: int(prop.findtext(\"source\").split(\"/\")[0])\n        for prop in ET.parse(lyp).getroot().iter(\"properties\")\n        if prop.findtext(\"name\", \"\").endswith(\".drawing\")\n    }\n    records, routes, vias, terminals, ports = [], [], [], {}, {}\n\n    def pc(name, parameters):\n        cell = layout.create_cell(name, \"SG13_dev\", parameters)\n        if cell is None or cell.is_empty():\n            raise ValueError(\"Native PCell failed: \" + name)\n        return cell\n\n    def instance(cell, x, y):\n        trans = pya.DTrans(round(x / 0.005) * 0.005, round(y / 0.005) * 0.005)\n        top.insert(pya.DCellInstArray(cell.cell_index(), trans))\n        return trans\n\n    def rect(metal, x1, y1, x2, y2):\n        box = pya.DBox(min(x1, x2), min(y1, y2), max(x1, x2), max(y1, y2))\n        top.shapes(layout.layer(layers[\"Metal\" + str(metal)], 0)).insert(box)\n        return box\n\n    def via(bottom, upper, x, y, net, cols=2):\n        cell = pc(\n            \"via_stack\",\n            dict(\n                b_layer=\"Metal\" + str(bottom),\n                t_layer=\"Metal\" + str(upper),\n                vn_columns=cols,\n                vn_rows=1,\n            ),\n        )\n        b = cell.dbbox()\n        t = instance(cell, x - b.center().x, y - b.center().y)\n        b = b.transformed(t)\n        vias.append(\n            dict(net=net, bottom=bottom, top=upper, center_um=[x, y], bbox_um=str(b))\n        )\n        return b\n\n    def escape(pin, metal, net, lane, label, cols, offset=0):\n        y = round((pin.center().y + offset) / 0.005) * 0.005\n        x = round(pin.center().x / 0.005) * 0.005\n        via(metal, 3, x, y, net, cols)\n        rect(3, lane - 0.2, y - 0.2, x + 0.2, y + 0.2)\n        via(3, 4, lane, y, net)\n        terminals.setdefault(net, []).append((row_id, lane, y))\n        routes.append(\n            dict(\n                device=label,\n                net=net,\n                source_layer=metal,\n                actual_pin_um=str(pin),\n                escape_lane_um=lane,\n                escape_y_um=y,\n            )\n        )\n\n    for row in rows:\n        row_id, x, y = plan[row[\"name\"]]\n        if row[\"kind\"] == \"hbt\":\n            cell = pc(\"npn13G2\", {\"Nx\": row[\"nx\"]})\n            t = instance(cell, x, y)\n            m1 = sorted(\n                [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))],\n                key=lambda b: b.center().y,\n            )\n            m2 = [\n                s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(10, 2))\n            ]\n            if len(m1) != 2 or len(m2) != 1:\n                raise ValueError(\"Native HBT pin inventory differs\")\n            base, collector = m1\n            for pin, metal, net, lane, offset in [\n                (collector, 1, row[\"nets\"][0], x - 9, 0.04),\n                (base, 1, row[\"nets\"][1], x - 6, -0.04),\n                (m2[0], 2, row[\"nets\"][2], x - 3, 0),\n            ]:\n                escape(pin, metal, net, lane, row[\"name\"], 4, offset)\n        elif row[\"kind\"] == \"resistor\":\n            cell = pc(\n                \"rppd\", {\"w\": f\"{row['width_um']:g}u\", \"l\": f\"{row['length_um']:g}u\"}\n            )\n            t = instance(cell, x, y)\n            ps = sorted(\n                [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))],\n                key=lambda b: b.center().y,\n            )\n            if len(ps) != 2:\n                raise ValueError(\"Native rppd pin inventory differs\")\n            for k, pin in enumerate(ps):\n                escape(\n                    pin,\n                    1,\n                    row[\"nets\"][k],\n                    x - 6 + 3 * k,\n                    row[\"name\"],\n                    1 if row[\"width_um\"] == 1 else 4,\n                )\n        else:\n            cell = pc(\n                \"cmim\", {\"w\": f\"{row['width_um']:g}u\", \"l\": f\"{row['length_um']:g}u\"}\n            )\n            t = instance(cell, x, y)\n            # Native cmim exposes pin objects but no GDS pin-purpose shapes.\n            # Its version-pinned code defines PLUS=TopMetal1, MINUS=Metal5;\n            # measure each actual plate, rather than infer a contact in MIM.\n            plates = {}\n            for metal in (\"Metal5\", \"TopMetal1\"):\n                shapes = [\n                    s.dbbox().transformed(t)\n                    for s in cell.each_shape(layout.layer(layers[metal], 0))\n                    if s.is_box()\n                ]\n                if len(shapes) != 1:\n                    raise ValueError(\"Native MIM plate inventory differs\")\n                plates[metal] = shapes[0]\n            plus, minus = plates[\"TopMetal1\"], plates[\"Metal5\"]\n            py = round(plus.center().y / 0.005) * 0.005\n            px = x - 9\n            top.shapes(layout.layer(layers[\"TopMetal1\"], 0)).insert(\n                pya.DBox(px - 1.2, py - 1.2, plus.right, py + 1.2)\n            )\n            cv = pc(\n                \"via_stack\",\n                dict(b_layer=\"Metal5\", t_layer=\"TopMetal1\", vt1_columns=2, vt1_rows=1),\n            )\n            cb = cv.dbbox()\n            ct = instance(cv, px - cb.center().x, py - cb.center().y)\n            top.shapes(layout.layer(layers[\"TopMetal1\"], 0)).insert(\n                pya.DBox(px - 1.2, py - 1.2, px + 1.2, py + 1.2)\n            )\n            via(4, 5, px, py, row[\"nets\"][0], 2)\n            terminals.setdefault(row[\"nets\"][0], []).append((row_id, px, py))\n            mx = x - 5\n            rect(5, mx - 0.6, py - 0.6, minus.center().x, py + 0.6)\n            via(4, 5, mx, py, row[\"nets\"][1], 2)\n            terminals.setdefault(row[\"nets\"][1], []).append((row_id, mx, py))\n            routes.append(\n                dict(\n                    device=row[\"name\"],\n                    plus_net=row[\"nets\"][0],\n                    minus_net=row[\"nets\"][1],\n                    plus_native_plate_um=str(plus),\n                    minus_native_plate_um=str(minus),\n                    plus_contact_outside_native_mim=True,\n                    plus_escape_um=[px, py],\n                    minus_escape_um=[mx, py],\n                )\n            )\n        records.append(\n            dict(\n                **row,\n                placement_row=row_id,\n                placement_um=[x, y],\n                bbox_um=str(cell.dbbox().transformed(t)),\n            )\n        )\n    # Independent square taps: SUB is a real conductor, BULK is the extracted substrate.\n    for index in range(TAPS):\n        row_id = index // 6\n        x, y = 180 + (index % 6) * "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": "2",
+      "after": "2"
+    },
+    {
+      "tag": "delete",
+      "before": "0",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "0.0, row_starts[row_id] + 4.0\n        cell = pc(\"ptap1\", {\"w\": \"2u\", \"l\": \"2u\"})\n        t = instance(cell, x, y)\n        ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))]\n        if len(ps) != 1:\n            raise ValueError(\"Native substrate contact pin differs\")\n        pin = ps[0]\n        via(1, 4, pin.center().x, pin.center().y, \"SUB\", 3)\n        terminals.setdefault(\"SUB\", []).append((row_id, pin.center().x, pin.center().y))\n        records.append(\n            dict(\n                kind=\"substrate_tap\",\n                name=f\"TAP{index}\",\n                nets=[\"SUB\", \"BULK\"],\n                placement_um=[x, y],\n                area_um2=4,\n                perimeter_um=8,\n            )\n        )\n    width = ",
+      "after": "0.0, row_starts[row_id] + 4.0\n        cell = pc(\"ptap1\", {\"w\": \"2u\", \"l\": \"2u\"})\n        t = instance(cell, x, y)\n        ps = [s.dbbox().transformed(t) for s in cell.each_shape(layout.layer(8, 2))]\n        if len(ps) != 1:\n            raise ValueError(\"Native substrate contact pin differs\")\n        pin = ps[0]\n        via(1, 4, pin.center().x, pin.center().y, \"SUB\", 3)\n        terminals.setdefault(\"SUB\", []).append((row_id, pin.center().x, pin.center().y))\n        records.append(\n            dict(\n                kind=\"substrate_tap\",\n                name=f\"TAP{index}\",\n                nets=[\"SUB\", \"BULK\"],\n                placement_um=[x, y],\n                area_um2=4,\n                perimeter_um=8,\n            )\n        )\n    width = "
+    },
+    {
+      "tag": "replace",
+      "before": "152",
+      "after": "96"
+    },
+    {
+      "tag": "equal",
+      "before": "0.0\n    actual_by_row = {\n        i: {n for n, ts in terminals.items() if any(t[0] == i for t in ts)}\n        for i in row_starts\n    }\n    if actual_by_row != {i: set(v) for i, v in row_nets.items()}:\n        raise ValueError(\"Actual native terminal census differs from placement plan\")\n    nets = list(PORTS) + sorted(set(terminals) - set(PORTS))\n    crossing = [n for n in nets if len({t[0] for t in terminals[n]}) > 1]\n    if len(crossing) > 24:\n        raise ValueError(\"Peripheral trunk capacity exceeded\")\n    trunks, buses = {}, []\n    for net in nets:\n        ts = terminals[net]\n        ids = sorted({t[0] for t in ts})\n        side = (\n            (\"right\" if net in (\"CLKP\", \"CLKN\") else \"left\")\n            if net in PORTS\n            else (\"left\" if sum(t[1] for t in ts) <= len(ts) * width / 2 else \"right\")\n        )\n        tx = None\n        if net in crossing:\n            idx = crossing.index(net)\n            tx = 12 + idx * 4 if side == \"left\" else width - 12 - idx * 4\n        ys = []\n        for rid in ids:\n            y = row_starts[rid] + ",
+      "after": "0.0\n    actual_by_row = {\n        i: {n for n, ts in terminals.items() if any(t[0] == i for t in ts)}\n        for i in row_starts\n    }\n    if actual_by_row != {i: set(v) for i, v in row_nets.items()}:\n        raise ValueError(\"Actual native terminal census differs from placement plan\")\n    nets = list(PORTS) + sorted(set(terminals) - set(PORTS))\n    crossing = [n for n in nets if len({t[0] for t in terminals[n]}) > 1]\n    if len(crossing) > 24:\n        raise ValueError(\"Peripheral trunk capacity exceeded\")\n    trunks, buses = {}, []\n    for net in nets:\n        ts = terminals[net]\n        ids = sorted({t[0] for t in ts})\n        side = (\n            (\"right\" if net in (\"CLKP\", \"CLKN\") else \"left\")\n            if net in PORTS\n            else (\"left\" if sum(t[1] for t in ts) <= len(ts) * width / 2 else \"right\")\n        )\n        tx = None\n        if net in crossing:\n            idx = crossing.index(net)\n            tx = 12 + idx * 4 if side == \"left\" else width - 12 - idx * 4\n        ys = []\n        for rid in ids:\n            y = row_starts[rid] + "
+    },
+    {
+      "tag": "replace",
+      "before": "90 + ",
+      "after": "bus_offset("
+    },
+    {
+      "tag": "equal",
+      "before": "row_nets[rid]",
+      "after": "row_nets[rid]"
+    },
+    {
+      "tag": "replace",
+      "before": ".index(",
+      "after": ", "
+    },
+    {
+      "tag": "equal",
+      "before": "net)",
+      "after": "net)"
+    },
+    {
+      "tag": "delete",
+      "before": " * 10",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "\n            xs = []\n            for _, x, start in [t for t in ts if t[0] == rid]:\n                if not row_starts[rid] <= start < row_starts[rid] + ",
+      "after": "\n            xs = []\n            for _, x, start in [t for t in ts if t[0] == rid]:\n                if not row_starts[rid] <= start < row_starts[rid] + "
+    },
+    {
+      "tag": "replace",
+      "before": "85",
+      "after": "70"
+    },
+    {
+      "tag": "equal",
+      "before": ":\n                    raise ValueError(\n                        \"Native terminal outside its isolated row escape band\"\n                    )\n                rect(4, x - 0.6, start - 0.2, x + 0.6, y + 0.2)\n                via(4, 5, x, y, net, 2)\n                xs.append(x)\n            left, right = min(xs) - 1, max(xs) + 1\n            if tx is not None:\n                left, right = min(left, tx - 1), max(right, tx + 1)\n                via(4, 5, tx, y, net, 2)\n            if net in PORTS and rid == ids[0]:\n                if side == \"right\":\n                    right = width\n                    b = pya.DBox(width - 2, y - 1, width, y + 1)\n                else:\n                    left = 0\n                    b = pya.DBox(0, y - 1, 2, y + 1)\n                ports[net] = (\"Metal5\", b)\n                top.shapes(layout.layer(layers[\"Metal5\"], 2)).insert(b)\n                top.shapes(layout.layer(layers[\"Metal5\"], 25)).insert(\n                    pya.DText(net, pya.DTrans(b.center().x, y))\n                )\n            rect(5, left, y - 1, right, y + 1)\n            buses.append(dict(net=net, row=rid, y_um=y, left_um=left, right_um=right))\n            ys.append(y)\n        if tx is not None:\n            rect(4, tx - 0.6, min(ys) - 0.2, tx + 0.6, max(ys) + 0.2)\n            trunks[net] = dict(\n                x_um=tx, lower_y_um=min(ys), upper_y_um=max(ys), side=side, rows=ids\n            )\n    # ",
+      "after": ":\n                    raise ValueError(\n                        \"Native terminal outside its isolated row escape band\"\n                    )\n                rect(4, x - 0.6, start - 0.2, x + 0.6, y + 0.2)\n                via(4, 5, x, y, net, 2)\n                xs.append(x)\n            left, right = min(xs) - 1, max(xs) + 1\n            if tx is not None:\n                left, right = min(left, tx - 1), max(right, tx + 1)\n                via(4, 5, tx, y, net, 2)\n            if net in PORTS and rid == ids[0]:\n                if side == \"right\":\n                    right = width\n                    b = pya.DBox(width - 2, y - 1, width, y + 1)\n                else:\n                    left = 0\n                    b = pya.DBox(0, y - 1, 2, y + 1)\n                ports[net] = (\"Metal5\", b)\n                top.shapes(layout.layer(layers[\"Metal5\"], 2)).insert(b)\n                top.shapes(layout.layer(layers[\"Metal5\"], 25)).insert(\n                    pya.DText(net, pya.DTrans(b.center().x, y))\n                )\n            rect(5, left, y - 1, right, y + 1)\n            buses.append(dict(net=net, row=rid, y_um=y, left_um=left, right_um=right))\n            ys.append(y)\n        if tx is not None:\n            rect(4, tx - 0.6, min(ys) - 0.2, tx + 0.6, max(ys) + 0.2)\n            trunks[net] = dict(\n                x_um=tx, lower_y_um=min(ys), upper_y_um=max(ys), side=side, rows=ids\n            )\n    # "
+    },
+    {
+      "tag": "replace",
+      "before": "Add only supply rou",
+      "after": "Re"
+    },
+    {
+      "tag": "equal",
+      "before": "t",
+      "after": "t"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "a"
+    },
+    {
+      "tag": "equal",
+      "before": "in",
+      "after": "in"
+    },
+    {
+      "tag": "delete",
+      "before": "g above",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " the ",
+      "after": " the "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "validated power strap topology in the compact co"
+    },
+    {
+      "tag": "equal",
+      "before": "or",
+      "after": "or"
+    },
+    {
+      "tag": "replace",
+      "before": "ig",
+      "after": "d"
+    },
+    {
+      "tag": "equal",
+      "before": "ina",
+      "after": "ina"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "te p"
+    },
+    {
+      "tag": "equal",
+      "before": "l",
+      "after": "l"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "an.\n    # Exact intrinsic"
+    },
+    {
+      "tag": "equal",
+      "before": " geometry",
+      "after": " geometry"
+    },
+    {
+      "tag": "delete",
+      "before": ".",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "L",
+      "after": "and all source c"
+    },
+    {
+      "tag": "equal",
+      "before": "on",
+      "after": "on"
+    },
+    {
+      "tag": "replace",
+      "before": "g",
+      "after": "nections"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "th",
+      "after": "rema"
+    },
+    {
+      "tag": "equal",
+      "before": "in ",
+      "after": "in "
+    },
+    {
+      "tag": "delete",
+      "before": "M5 b",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "u",
+      "after": "u"
+    },
+    {
+      "tag": "replace",
+      "before": "s",
+      "after": "nchang"
+    },
+    {
+      "tag": "equal",
+      "before": "e",
+      "after": "e"
+    },
+    {
+      "tag": "replace",
+      "before": "s",
+      "after": "d;"
+    },
+    {
+      "tag": "equal",
+      "before": "\n    # a",
+      "after": "\n    # a"
+    },
+    {
+      "tag": "delete",
+      "before": "nd M4 cross-row trunks caused measured ground rise in the frozen wire\n    # simu",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "l",
+      "after": "l"
+    },
+    {
+      "tag": "delete",
+      "before": "ation; primitive topo",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "l",
+      "after": "l"
+    },
+    {
+      "tag": "delete",
+      "before": "ogy,",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " placements and ",
+      "after": " placements and "
+    },
+    {
+      "tag": "replace",
+      "before": "every old",
+      "after": "bus"
+    },
+    {
+      "tag": "equal",
+      "before": " route",
+      "after": " route"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "s"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "require fre"
+    },
+    {
+      "tag": "equal",
+      "before": "s",
+      "after": "s"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "h DRC/LVS/RC measuremen"
+    },
+    {
+      "tag": "equal",
+      "before": "t",
+      "after": "t"
+    },
+    {
+      "tag": "replace",
+      "before": "ay exact",
+      "after": "s"
+    },
+    {
+      "tag": "equal",
+      "before": ".\n    # MIM plates ",
+      "after": ".\n    # MIM plates "
+    },
+    {
+      "tag": "delete",
+      "before": "a",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "re",
+      "after": "re"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "main"
+    },
+    {
+      "tag": "equal",
+      "before": " in the isolated device bands",
+      "after": " in the isolated device bands"
+    },
+    {
+      "tag": "delete",
+      "before": ",",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " below the",
+      "after": " below the"
+    },
+    {
+      "tag": "delete",
+      "before": "se row",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " bus tracks.\n    power_straps, power_vias = [], []\n\n    def power_rect(layer, net, x1, y1, x2, y2, role):\n        b = pya.DBox(min(x1, x2), min(y1, y2), max(x1, x2), max(y1, y2))\n        top.shapes(layout.layer(layers[layer], 0)).insert(b)\n        power_straps.append(\n            dict(\n                net=net,\n                layer=layer,\n                role=role,\n                rect_um=[b.left, b.bottom, b.right, b.top],\n            )\n        )\n\n    def power_via(bottom, upper, x, y, net, role):\n        parameters = dict(\n            b_layer=bottom,\n            t_layer=upper,\n            vn_columns=2,\n            vn_rows=3,\n            vt1_columns=2,\n            vt1_rows=2,\n            vt2_columns=2,\n            vt2_rows=2,\n        )\n        cell = pc(\"via_stack\", parameters)\n        b = cell.dbbox()\n        t = instance(cell, x - b.center().x, y - b.center().y)\n        b = b.transformed(t)\n        if b.width() > 6 or b.height() > 6:\n            raise ValueError(\"Power native via array outside six-micron corridor\")\n        power_vias.append(\n            dict(\n                net=net,\n                role=role,\n                parameters=parameters,\n                center_um=[x, y],\n                bbox_um=str(b),\n            )\n        )\n\n    for net, trunk_x in ((\"DIV_AVDD\", 96.0), (\"AVSS\", 112.0)):\n        selected = [b for b in buses if b[\"net\"] == net]\n        if [b[\"row\"] for b in selected] != [0, 1, 2]:\n            raise ValueError(\"All three actual power row buses required\")\n        power_rect(\n            \"TopMetal1\",\n            net,\n            trunk_x - 3,\n            selected[0][\"y_um\"] - 3,\n            trunk_x + 3,\n            selected[-1][\"y_um\"] + 3,\n            \"cross_row_trunk\",\n        )\n        for bus in selected:\n            rid, y = bus[\"row\"], bus[\"y_um\"]\n            left, right = bus[\"left_um\"], bus[\"right_um\"]\n            if not (left <= trunk_x - 3 and trunk_x + 3 <= right):\n                raise ValueError(\"Power trunk must overlap existing actual bus extent\")\n            power_rect(\"TopMetal2\", net, left, y - 3, right, y + 3, \"row_bus\")\n            power_via(\"TopMetal1\", \"TopMetal2\", trunk_x, y, net, \"trunk_join\")\n            for _, x, start in [t for t in terminals[net] if t[0] == rid]:\n                if not row_starts[rid] <= start < row_starts[rid] + ",
+      "after": " bus tracks.\n    power_straps, power_vias = [], []\n\n    def power_rect(layer, net, x1, y1, x2, y2, role):\n        b = pya.DBox(min(x1, x2), min(y1, y2), max(x1, x2), max(y1, y2))\n        top.shapes(layout.layer(layers[layer], 0)).insert(b)\n        power_straps.append(\n            dict(\n                net=net,\n                layer=layer,\n                role=role,\n                rect_um=[b.left, b.bottom, b.right, b.top],\n            )\n        )\n\n    def power_via(bottom, upper, x, y, net, role):\n        parameters = dict(\n            b_layer=bottom,\n            t_layer=upper,\n            vn_columns=2,\n            vn_rows=3,\n            vt1_columns=2,\n            vt1_rows=2,\n            vt2_columns=2,\n            vt2_rows=2,\n        )\n        cell = pc(\"via_stack\", parameters)\n        b = cell.dbbox()\n        t = instance(cell, x - b.center().x, y - b.center().y)\n        b = b.transformed(t)\n        if b.width() > 6 or b.height() > 6:\n            raise ValueError(\"Power native via array outside six-micron corridor\")\n        power_vias.append(\n            dict(\n                net=net,\n                role=role,\n                parameters=parameters,\n                center_um=[x, y],\n                bbox_um=str(b),\n            )\n        )\n\n    for net, trunk_x in ((\"DIV_AVDD\", 96.0), (\"AVSS\", 112.0)):\n        selected = [b for b in buses if b[\"net\"] == net]\n        if [b[\"row\"] for b in selected] != [0, 1, 2]:\n            raise ValueError(\"All three actual power row buses required\")\n        power_rect(\n            \"TopMetal1\",\n            net,\n            trunk_x - 3,\n            selected[0][\"y_um\"] - 3,\n            trunk_x + 3,\n            selected[-1][\"y_um\"] + 3,\n            \"cross_row_trunk\",\n        )\n        for bus in selected:\n            rid, y = bus[\"row\"], bus[\"y_um\"]\n            left, right = bus[\"left_um\"], bus[\"right_um\"]\n            if not (left <= trunk_x - 3 and trunk_x + 3 <= right):\n                raise ValueError(\"Power trunk must overlap existing actual bus extent\")\n            power_rect(\"TopMetal2\", net, left, y - 3, right, y + 3, \"row_bus\")\n            power_via(\"TopMetal1\", \"TopMetal2\", trunk_x, y, net, \"trunk_join\")\n            for _, x, start in [t for t in terminals[net] if t[0] == rid]:\n                if not row_starts[rid] <= start < row_starts[rid] + "
+    },
+    {
+      "tag": "replace",
+      "before": "85",
+      "after": "70"
+    },
+    {
+      "tag": "equal",
+      "before": ":\n                    raise ValueError(\"Actual power branch outside original device band\")\n                power_via(\"Metal4\", \"TopMetal2\", x, y, net, \"actual_branch\")\n            if rid == 0:\n                # Existing M5 pin and old bus remain unchanged; join at x=2 so\n                # the entire native upper-via enclosure stays inside the macro.\n                power_via(\"Metal5\", \"TopMetal2\", 2.0, y, net, \"public_port\")\n    if len(power_straps) != 8:\n        raise ValueError(\"Exact six row straps and two cross-row power trunks\")\n    box = top.dbbox()\n    dx, dy = -box.left, -box.bottom\n    top.transform(pya.Trans(round(dx / layout.dbu), round(dy / layout.dbu)))\n    ports = {\n        n: (metal, b.transformed(pya.DTrans(dx, dy))) for n, (metal, b) in ports.items()\n    }\n    box = top.dbbox()\n    if (\n        box.left != 0\n        or box.bottom != 0\n        or any(not (b.left == 0 or b.right == box.right) for _, b in ports.values())\n    ):\n        raise ValueError(\"Physical port boundary/origin differs\")\n    out.mkdir(parents=True)\n    (out / \"schematic.cir\").write_text(physical_reference(root))\n    layout.write(str(out / (TOP + \".gds\")))\n    (out / (TOP + \".lef\")).write_text(lef(pya, layout.dbu, box, ports))\n    if any(sha(path) != expected for path, expected in pins.items()):\n        raise ValueError(\"Generation input changed\")\n    result = dict(\n        status=\"GENERATED_REQUIRES_NATIVE_DRC_LVS_AND_PEX\",\n        input_sha256=pins,\n        output_sha256={p.name: sha(p) for p in out.iterdir()},\n        source_circuit_sha256={p: sha(root / p) for p in SOURCES},\n        instances=records,\n        row_starts_um=row_starts,\n        local_buses=buses,\n        additive_power_straps=power_straps,\n        additive_power_vias=power_vias,\n        peripheral_trunks=trunks,\n        placement_method=\"Three ",
+      "after": ":\n                    raise ValueError(\"Actual power branch outside original device band\")\n                power_via(\"Metal4\", \"TopMetal2\", x, y, net, \"actual_branch\")\n            if rid == 0:\n                # Existing M5 pin and old bus remain unchanged; join at x=2 so\n                # the entire native upper-via enclosure stays inside the macro.\n                power_via(\"Metal5\", \"TopMetal2\", 2.0, y, net, \"public_port\")\n    if len(power_straps) != 8:\n        raise ValueError(\"Exact six row straps and two cross-row power trunks\")\n    box = top.dbbox()\n    dx, dy = -box.left, -box.bottom\n    top.transform(pya.Trans(round(dx / layout.dbu), round(dy / layout.dbu)))\n    ports = {\n        n: (metal, b.transformed(pya.DTrans(dx, dy))) for n, (metal, b) in ports.items()\n    }\n    box = top.dbbox()\n    if (\n        box.left != 0\n        or box.bottom != 0\n        or any(not (b.left == 0 or b.right == box.right) for _, b in ports.values())\n    ):\n        raise ValueError(\"Physical port boundary/origin differs\")\n    out.mkdir(parents=True)\n    (out / \"schematic.cir\").write_text(physical_reference(root))\n    layout.write(str(out / (TOP + \".gds\")))\n    (out / (TOP + \".lef\")).write_text(lef(pya, layout.dbu, box, ports))\n    if any(sha(path) != expected for path, expected in pins.items()):\n        raise ValueError(\"Generation input changed\")\n    result = dict(\n        status=\"GENERATED_REQUIRES_NATIVE_DRC_LVS_AND_PEX\",\n        input_sha256=pins,\n        output_sha256={p.name: sha(p) for p in out.iterdir()},\n        source_circuit_sha256={p: sha(root / p) for p in SOURCES},\n        instances=records,\n        row_starts_um=row_starts,\n        local_buses=buses,\n        additive_power_straps=power_straps,\n        additive_power_vias=power_vias,\n        peripheral_trunks=trunks,\n        placement_method=\"Three "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "unchanged "
+    },
+    {
+      "tag": "equal",
+      "before": "topology groups",
+      "after": "topology groups"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": ","
+    },
+    {
+      "tag": "equal",
+      "before": " wi",
+      "after": " wi"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "d"
+    },
+    {
+      "tag": "equal",
+      "before": "th",
+      "after": "th"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "-aware"
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "compact placement and loss-p"
+    },
+    {
+      "tag": "equal",
+      "before": "r",
+      "after": "r"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "i"
+    },
+    {
+      "tag": "equal",
+      "before": "o",
+      "after": "o"
+    },
+    {
+      "tag": "replace",
+      "before": "w-",
+      "after": "ritized "
+    },
+    {
+      "tag": "equal",
+      "before": "local ",
+      "after": "local "
+    },
+    {
+      "tag": "replace",
+      "before": "escapes/buses and periphe",
+      "after": "t"
+    },
+    {
+      "tag": "equal",
+      "before": "ra",
+      "after": "ra"
+    },
+    {
+      "tag": "delete",
+      "before": "l ",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "c",
+      "after": "c"
+    },
+    {
+      "tag": "delete",
+      "before": "ross-row trun",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "ks\",\n        routes=routes,\n        vias=vias,\n        origin_translation_um=[dx, dy],\n        ports={\n            n: dict(layer=metal, rect_um=[b.left, b.bottom, b.right, b.top])\n            for n, (metal, b) in ports.items()\n        },\n        bbox_um=[0, 0, box.right, box.top],\n        primitive_counts=dict(hbt=34, rppd=33, cmim=6, physical_ptap=TAPS),\n        klayout_version=pya.__version__,\n        phy_complete=False,\n        main_chip_integrated=False,\n        qualified_pex=False,\n        manufacturing_approval=False,\n        scope=\"Exact standalone divider v7 ",
+      "after": "ks\",\n        routes=routes,\n        vias=vias,\n        origin_translation_um=[dx, dy],\n        ports={\n            n: dict(layer=metal, rect_um=[b.left, b.bottom, b.right, b.top])\n            for n, (metal, b) in ports.items()\n        },\n        bbox_um=[0, 0, box.right, box.top],\n        primitive_counts=dict(hbt=34, rppd=33, cmim=6, physical_ptap=TAPS),\n        klayout_version=pya.__version__,\n        phy_complete=False,\n        main_chip_integrated=False,\n        qualified_pex=False,\n        manufacturing_approval=False,\n        scope=\"Exact standalone divider v7 "
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "com"
+    },
+    {
+      "tag": "equal",
+      "before": "p",
+      "after": "p"
+    },
+    {
+      "tag": "replace",
+      "before": "ower",
+      "after": "act"
+    },
+    {
+      "tag": "equal",
+      "before": " v",
+      "after": " v"
+    },
+    {
+      "tag": "replace",
+      "before": "2",
+      "after": "1"
+    },
+    {
+      "tag": "equal",
+      "before": ", L4 first conditioner, 73",
+      "after": ", L4 first conditioner, 73"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " unchanged"
+    },
+    {
+      "tag": "equal",
+      "before": " primitives and 18 finite substrate contacts. \"\n        \"",
+      "after": " primitives and 18 finite substrate contacts. \"\n        \""
+    },
+    {
+      "tag": "replace",
+      "before": "O",
+      "after": "Compact placements and sho"
+    },
+    {
+      "tag": "equal",
+      "before": "r",
+      "after": "r"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": "ter local s"
+    },
+    {
+      "tag": "equal",
+      "before": "ig",
+      "after": "ig"
+    },
+    {
+      "tag": "delete",
+      "before": "i",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "nal",
+      "after": "nal"
+    },
+    {
+      "tag": "insert",
+      "before": "",
+      "after": " tracks; same native primitive"
+    },
+    {
+      "tag": "equal",
+      "before": " geometry ",
+      "after": " geometry "
+    },
+    {
+      "tag": "delete",
+      "before": "ret",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "a",
+      "after": "a"
+    },
+    {
+      "tag": "delete",
+      "before": "i",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "n",
+      "after": "n"
+    },
+    {
+      "tag": "delete",
+      "before": "e",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "d",
+      "after": "d"
+    },
+    {
+      "tag": "delete",
+      "before": " with additive TopMetal2",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " power ",
+      "after": " power "
+    },
+    {
+      "tag": "delete",
+      "before": "row ",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "strap",
+      "after": "strap"
+    },
+    {
+      "tag": "delete",
+      "before": "s",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": " ",
+      "after": " "
+    },
+    {
+      "tag": "replace",
+      "before": "and T",
+      "after": "t"
+    },
+    {
+      "tag": "equal",
+      "before": "op",
+      "after": "op"
+    },
+    {
+      "tag": "replace",
+      "before": "Meta",
+      "after": "o"
+    },
+    {
+      "tag": "equal",
+      "before": "l",
+      "after": "l"
+    },
+    {
+      "tag": "delete",
+      "before": "1 p",
+      "after": ""
+    },
+    {
+      "tag": "equal",
+      "before": "o",
+      "after": "o"
+    },
+    {
+      "tag": "replace",
+      "before": "wer trunks",
+      "after": "gy"
+    },
+    {
+      "tag": "equal",
+      "before": ". \"\n        \"No oscillator, CMOS feedback chain, extracted division, qualified RC, PLL or complete PHY acceptance.\",\n    )\n    (out / \"result.json\").write_text(json.dumps(result, indent=2) + \"\\n\")\n\n\nif __name__ == \"__main__\":\n    main()\n",
+      "after": ". \"\n        \"No oscillator, CMOS feedback chain, extracted division, qualified RC, PLL or complete PHY acceptance.\",\n    )\n    (out / \"result.json\").write_text(json.dumps(result, indent=2) + \"\\n\")\n\n\nif __name__ == \"__main__\":\n    main()\n"
+    }
+  ]
+}

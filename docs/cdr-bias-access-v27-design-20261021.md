@@ -1,0 +1,6 @@
+# v27 input bias headroom candidate
+Actual v26 full-wave diagnosis39540450970 reproduces both complete failed captures. The four0.4V VCE violations are the two master track selectors in each of sc/sd, at0.282--0.302V. At the late D sampling edge the master input minimum signed differential remains-3.90mV, and at0.3UI its minimum is58.27mV. All original output gates remain unchanged.
+
+The next physical candidate retains v26 IP/IN0.9um and changes only BP/BN from2.4um to0.9um, at4um width. These are actual pull-up rppd devices between AVDD and the master input bases. Increasing pull-up conductance targets input common mode and selector collector headroom while retaining shorter input access. It also increases source loading and may reduce differential gain; no electrical improvement is assumed. Native PCell geometry, DRC and LVS must pass before full parent integration and fresh RC extraction. Old RC is not evidence for the new geometry.
+
+All37 primitive positions, all52 other native primitive drawings,54-device census,10 ports and outline are retained. The original19 physical fault controls remain; wrong bias length adds a twentieth. The complete34.25ns/256bit loaded test,37.5ps clock-to-valid,100mV samples,30mV phase,50uA VI and all transistor limits remain mandatory. This candidate addresses a measured failure, not complete CDR or PHY closure.

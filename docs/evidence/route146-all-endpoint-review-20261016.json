@@ -1,0 +1,452 @@
+{
+  "run": 38890552952,
+  "summary_asset": 647058122,
+  "summary_sha256": "37d829d48fa0a712cbac4ef371b17f0e8bae22e80d1e07596b5e7c2c88625344",
+  "status": "COMPLETE_ALL_ENDPOINT_ROUTED_ECO_COMPARISON_NOT_SIGNOFF",
+  "endpoint_count": 22544,
+  "endpoint_corner_delay_rows": 135264,
+  "exact_graph_coverage": {
+    "build": {
+      "revision": "857316ff001b2a8dbbdc5996944d08a6d38c87ab",
+      "sources": {
+        "util/Fuzzy.cc": "6994742a570428caba13dae80d6293c3da9d7658f6762ed013c4a6cc5fc7c26c",
+        "include/sta/Fuzzy.hh": "d2d2b15c94ab2bd5b5bc85db0a56bb62be7756a78d6214f6a62d945a4e071ac2",
+        "include/sta/MinMax.hh": "88e2b4b6b2b4246f88fbb7b905a9e1daee1016897ed640f23f678d21788b7843",
+        "include/sta/Iterator.hh": "89a17969378e841c794aa88fd58008ce69d2feae34915e39206740b53fd7b6dc"
+      },
+      "command": [
+        "g++",
+        "-std=c++17",
+        "-O2",
+        "-fno-fast-math",
+        "-ffp-contract=off",
+        "-ffunction-sections",
+        "-fdata-sections",
+        "-Wl,--gc-sections",
+        "-I",
+        "/home/runner/work/nssoc/nssoc/cloud-eco-endpoint-compare/native-selection-source",
+        "/home/runner/work/nssoc/nssoc/cloud-eco-endpoint-compare/native-selection-source/driver.cc",
+        "/home/runner/work/nssoc/nssoc/cloud-eco-endpoint-compare/native-selection-source/Fuzzy.cc",
+        "-o",
+        "/home/runner/work/nssoc/nssoc/cloud-eco-endpoint-compare/native-selection-source/native-selection"
+      ],
+      "driver_sha256": "b7cc3771e4962bffb0c6d8916612786da8f698944b2784ea79717ec8883cde36",
+      "executable_sha256": "dc18eda2a66d38a7bf10dd67afdd42ba871c10de751ac69c29709d9756eaac20"
+    },
+    "controls": {
+      "valid_native_case": 1,
+      "malformed_cases_rejected": 13,
+      "exact_minimum_gate_unchanged": true
+    },
+    "verification": {
+      "status": "PASS_EXACT_GRAPH_MINIMA_AND_NATIVE_SELECTION_NOT_TIMING_ACCEPTANCE",
+      "accepted": false,
+      "endpoint_delay_checks": 45088,
+      "exact_minimum_equality": true,
+      "original_guard_failures_preserved": [],
+      "native_selection": []
+    },
+    "native_report": {
+      "status": "COMPLETE_EXACT_GRAPH_PATH_COVERAGE_REQUIRES_NATIVE_SELECTION_CHECK",
+      "accepted": false,
+      "checks": [
+        {
+          "delay": "min",
+          "endpoints": 22544,
+          "constrained": 21427,
+          "raw_graph_paths": 260373,
+          "negative": 90,
+          "graph_minimum_exactly_equals_pathend_minimum": true
+        },
+        {
+          "delay": "max",
+          "endpoints": 22544,
+          "constrained": 21472,
+          "raw_graph_paths": 340490,
+          "negative": 9330,
+          "graph_minimum_exactly_equals_pathend_minimum": true
+        }
+      ],
+      "mismatches": [],
+      "original_guard_failures": [],
+      "value_units": "seconds"
+    }
+  },
+  "all_five_target_timing_passed": true,
+  "targets": [
+    {
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[4].u_mem/A_MEN",
+      "native_pin": {
+        "kind": "instance",
+        "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[4\\].u_mem",
+        "pin": "A_MEN"
+      },
+      "before_hold_seconds": {
+        "slow": 5.011049353242925e-10,
+        "typical": 1.4970313877427088e-10,
+        "fast": -5.972300431977828e-11
+      },
+      "after_hold_seconds": {
+        "slow": 1.6355671261791827e-09,
+        "typical": 8.587257571690543e-10,
+        "fast": 4.301582423593686e-10
+      },
+      "before_setup_seconds": {
+        "slow": 1.644449909576906e-09,
+        "typical": 3.998458009135675e-09,
+        "fast": 5.329313879087749e-09
+      },
+      "after_setup_seconds": {
+        "slow": 4.291846877890748e-10,
+        "typical": 3.2123179671827984e-09,
+        "fast": 4.795153607517477e-09
+      },
+      "hold_nonnegative_all_corners": true,
+      "setup_nonnegative_all_corners": true,
+      "target_timing_passed": true
+    },
+    {
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem/A_ADDR[5]",
+      "native_pin": {
+        "kind": "instance",
+        "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[6\\].u_mem",
+        "pin": "A_ADDR[5]"
+      },
+      "before_hold_seconds": {
+        "slow": 9.069855977372754e-10,
+        "typical": 1.564166574041792e-10,
+        "fast": -2.1191837173972772e-10
+      },
+      "after_hold_seconds": {
+        "slow": 2.203706550574225e-09,
+        "typical": 1.008784611400415e-09,
+        "fast": 4.0904801767993604e-10
+      },
+      "before_setup_seconds": {
+        "slow": 3.101549683748317e-09,
+        "typical": 5.018374604759401e-09,
+        "fast": 6.134926344714131e-09
+      },
+      "after_setup_seconds": {
+        "slow": 1.6091741272816762e-09,
+        "typical": 4.0301708637002776e-09,
+        "fast": 5.4400470794746525e-09
+      },
+      "hold_nonnegative_all_corners": true,
+      "setup_nonnegative_all_corners": true,
+      "target_timing_passed": true
+    },
+    {
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[6].u_mem/A_MEN",
+      "native_pin": {
+        "kind": "instance",
+        "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[6\\].u_mem",
+        "pin": "A_MEN"
+      },
+      "before_hold_seconds": {
+        "slow": 8.821672281555948e-10,
+        "typical": 2.6946167519525943e-10,
+        "fast": -4.2824299661958776e-11
+      },
+      "after_hold_seconds": {
+        "slow": 1.2250955805370722e-09,
+        "typical": 4.5330805775734007e-10,
+        "fast": 2.6297186650481308e-11
+      },
+      "before_setup_seconds": {
+        "slow": 6.078888503679991e-10,
+        "typical": 3.42429107291764e-09,
+        "fast": 5.002834146949908e-09
+      },
+      "after_setup_seconds": {
+        "slow": 1.9451196209274713e-10,
+        "typical": 3.2217593037842107e-09,
+        "fast": 4.902105388282507e-09
+      },
+      "hold_nonnegative_all_corners": true,
+      "setup_nonnegative_all_corners": true,
+      "target_timing_passed": true
+    },
+    {
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_ADDR[5]",
+      "native_pin": {
+        "kind": "instance",
+        "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[7\\].u_mem",
+        "pin": "A_ADDR[5]"
+      },
+      "before_hold_seconds": {
+        "slow": 9.081095875274059e-10,
+        "typical": 1.5949619402988446e-10,
+        "fast": -2.097630957820229e-10
+      },
+      "after_hold_seconds": {
+        "slow": 2.16960005516853e-09,
+        "typical": 9.917273668946791e-10,
+        "fast": 3.9750092106771717e-10
+      },
+      "before_setup_seconds": {
+        "slow": 3.099099643577574e-09,
+        "typical": 5.01627583915365e-09,
+        "fast": 6.132133467673384e-09
+      },
+      "after_setup_seconds": {
+        "slow": 1.650379388706824e-09,
+        "typical": 4.056441404998168e-09,
+        "fast": 5.456652019120156e-09
+      },
+      "hold_nonnegative_all_corners": true,
+      "setup_nonnegative_all_corners": true,
+      "target_timing_passed": true
+    },
+    {
+      "endpoint": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank[7].u_mem/A_MEN",
+      "native_pin": {
+        "kind": "instance",
+        "instance": "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[7\\].u_mem",
+        "pin": "A_MEN"
+      },
+      "before_hold_seconds": {
+        "slow": 5.208504738618558e-10,
+        "typical": 7.328571083320412e-11,
+        "fast": -1.5179990597857795e-10
+      },
+      "after_hold_seconds": {
+        "slow": 1.3938183940354065e-09,
+        "typical": 5.910418821031271e-10,
+        "fast": 1.614250955128682e-10
+      },
+      "before_setup_seconds": {
+        "slow": 2.277167787667622e-09,
+        "typical": 4.429502542535602e-09,
+        "fast": 5.670448999239852e-09
+      },
+      "after_setup_seconds": {
+        "slow": 1.3029151091359381e-09,
+        "typical": 3.8787146827701235e-09,
+        "fast": 5.326977969843938e-09
+      },
+      "hold_nonnegative_all_corners": true,
+      "setup_nonnegative_all_corners": true,
+      "target_timing_passed": true
+    }
+  ],
+  "comparison_to_141": {
+    "fast_max": {
+      "improved": 10562,
+      "regressed": 10909,
+      "unchanged": 1073,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 1,
+      "negative_before": 2,
+      "negative_after": 1,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -8.982770083321157e-11,
+      "worst_after_seconds": -6.850520151147066e-12
+    },
+    "fast_min": {
+      "improved": 12100,
+      "regressed": 9327,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 4,
+      "resolved_negative": 5,
+      "negative_before": 91,
+      "negative_after": 90,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": -2.1191837173972772e-10,
+      "worst_after_seconds": -1.5481960158325592e-10
+    },
+    "slow_max": {
+      "improved": 9653,
+      "regressed": 11819,
+      "unchanged": 1072,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 4,
+      "resolved_negative": 53,
+      "negative_before": 9379,
+      "negative_after": 9330,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -5.862069940576475e-09,
+      "worst_after_seconds": -5.744924536088547e-09
+    },
+    "slow_min": {
+      "improved": 11606,
+      "regressed": 9821,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 0,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": 3.096600753593748e-11,
+      "worst_after_seconds": 1.131428284395497e-12
+    },
+    "typical_max": {
+      "improved": 9993,
+      "regressed": 11479,
+      "unchanged": 1072,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 15,
+      "resolved_negative": 15,
+      "negative_before": 481,
+      "negative_after": 481,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -2.046646407904973e-09,
+      "worst_after_seconds": -1.907365376752068e-09
+    },
+    "typical_min": {
+      "improved": 11776,
+      "regressed": 9651,
+      "unchanged": 1117,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 0,
+      "negative_before": 1,
+      "negative_after": 1,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": -1.625011236683349e-11,
+      "worst_after_seconds": -1.9669710304981436e-11
+    }
+  },
+  "comparison_to_original": {
+    "fast_max": {
+      "improved": 15066,
+      "regressed": 6401,
+      "unchanged": 1077,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 52,
+      "negative_before": 53,
+      "negative_after": 1,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -2.97877278399028e-09,
+      "worst_after_seconds": -6.850520151147066e-12
+    },
+    "fast_min": {
+      "improved": 11730,
+      "regressed": 9696,
+      "unchanged": 1118,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 2,
+      "resolved_negative": 3,
+      "negative_before": 91,
+      "negative_after": 90,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": -1.5106649264851058e-10,
+      "worst_after_seconds": -1.5481960158325592e-10
+    },
+    "slow_max": {
+      "improved": 15452,
+      "regressed": 6018,
+      "unchanged": 1074,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 1,
+      "resolved_negative": 272,
+      "negative_before": 9601,
+      "negative_after": 9330,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -1.1940512578689777e-08,
+      "worst_after_seconds": -5.744924536088547e-09
+    },
+    "slow_min": {
+      "improved": 9497,
+      "regressed": 11929,
+      "unchanged": 1118,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 0,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 0,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": 4.578548651323899e-11,
+      "worst_after_seconds": 1.131428284395497e-12
+    },
+    "typical_max": {
+      "improved": 15633,
+      "regressed": 5837,
+      "unchanged": 1074,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 9,
+      "resolved_negative": 813,
+      "negative_before": 1285,
+      "negative_after": 481,
+      "unconstrained_before": 1072,
+      "unconstrained_after": 1072,
+      "worst_before_seconds": -6.233345839490312e-09,
+      "worst_after_seconds": -1.907365376752068e-09
+    },
+    "typical_min": {
+      "improved": 10045,
+      "regressed": 11381,
+      "unchanged": 1118,
+      "became_unconstrained": 0,
+      "became_constrained": 0,
+      "new_negative": 1,
+      "resolved_negative": 0,
+      "negative_before": 0,
+      "negative_after": 1,
+      "unconstrained_before": 1117,
+      "unconstrained_after": 1117,
+      "worst_before_seconds": 4.2721381987576024e-13,
+      "worst_after_seconds": -1.9669710304981436e-11
+    }
+  },
+  "parent_new_violations": {
+    "fast_max": {
+      "rise": 0,
+      "fall": 0,
+      "worst": 0
+    },
+    "fast_min": {
+      "rise": 1,
+      "fall": 4,
+      "worst": 4
+    },
+    "slow_max": {
+      "rise": 6,
+      "fall": 4,
+      "worst": 4
+    },
+    "slow_min": {
+      "rise": 0,
+      "fall": 0,
+      "worst": 0
+    },
+    "typical_max": {
+      "rise": 15,
+      "fall": 3,
+      "worst": 15
+    },
+    "typical_min": {
+      "rise": 0,
+      "fall": 0,
+      "worst": 0
+    }
+  },
+  "all_constrained_endpoint_slacks_nonnegative": false,
+  "any_loss_of_constraints": false,
+  "accepted": false
+}

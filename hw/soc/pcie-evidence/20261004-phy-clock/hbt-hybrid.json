@@ -1,0 +1,461 @@
+{
+  "status": "PASS_ISOLATED_DEVICE_WIRE_BRIDGE_WITH_MAGIC_MULTIPLICITY_LIMIT",
+  "recorded_utc": "2026-10-04T10:05:57.703354+00:00",
+  "sources": {
+    "scripts/patch_magic_hbt_contract_v2.py": {
+      "bytes": 2571,
+      "sha256": "fd60624109cfed9eb3060f5f07b5e461048adc1b65bd053fb681bd9600479ae3"
+    },
+    "scripts/check_magic_hbt_hybrid_v2.py": {
+      "bytes": 18620,
+      "sha256": "842730408679458f7af2a39e0729e33674fa5ba5a6bc41604613f8d949d3f3a0"
+    },
+    "sw/tests/test_magic_hbt_contract_v2.py": {
+      "bytes": 4098,
+      "sha256": "a0cfa0f526724c3bd4308ec9de7df4ef39f713ac13fc83fc7bac87a0ada477e5"
+    }
+  },
+  "tests": {
+    "command": "PYTHONDONTWRITEBYTECODE=1 TMPDIR=/dev/shm .venv/bin/python -m pytest sw/tests/test_magic_hbt_contract_v2.py sw/tests/test_magic_hbt_axis_v1.py sw/tests/test_magic_coupled_cap_v2.py -q -p no:cacheprovider",
+    "passed": 80,
+    "own_tests": 42,
+    "ruff": "PASS"
+  },
+  "native_positive": {
+    "status": "PASS_ISOLATED_24_HBT_73_PORT_DEVICE_WIRE_BRIDGE_ONLY",
+    "hbts": 24,
+    "tap_devices": 1,
+    "ports": 73,
+    "wire_endpoints": 146,
+    "wire_resistors": 73,
+    "matrix_dimension": 73,
+    "native_body": "\\$1",
+    "finite_tap_preserved": true,
+    "exact_device_graph_contraction": true,
+    "geometry": {
+      "bytes": 34170,
+      "sha256": "3b5313577ae20dcea03232dd05197b8efb81dca6a98be388879777e4ed135340"
+    },
+    "method": {
+      "bytes": 18620,
+      "sha256": "842730408679458f7af2a39e0729e33674fa5ba5a6bc41604613f8d949d3f3a0"
+    },
+    "inputs": {
+      "/dev/shm/nssoc-hbt-hybrid-final3-v2/run.json": {
+        "bytes": 7404,
+        "sha256": "5ca5f8022b4914a093780943372779054fd9beb0784651c3d2495c97250be28e"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-v2/wires.spice": {
+        "bytes": 12882,
+        "sha256": "d1169b0ca3b2c2abedf9700448aaeb3de0dadadd9dfb03c6812f345e38390c7f"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-v2/hbt_wires.res.ext": {
+        "bytes": 11415,
+        "sha256": "4c5ab00af2becbec7b4fa0cc854de40b985d3af3d2a1297e93b37735d7daab0d"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-v2/hbt_wires.nodes": {
+        "bytes": 1673,
+        "sha256": "1f62b82ee28c0111fca852ae8dc01a5807b01d3c53d1bd635e9666dddde81ef6"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-v2/hbt_wires.sim": {
+        "bytes": 1494,
+        "sha256": "72db10a8ffe8f0a00d60d8e35431fa66c710e78423bfc4eb0b742a7561b56d27"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-v2/hbt_wires.ext": {
+        "bytes": 18673,
+        "sha256": "99e5bdc9248f74924eb0040b15d42828e280cc9ccf4ef3437e09fdf1d8410d68"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-v2/hbt_wires.mag": {
+        "bytes": 69481,
+        "sha256": "c107bf24b650fb24cd3e8bb45ae784ed109536945b5722beef0776b09c07df8e"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-v2/native.log": {
+        "bytes": 16972,
+        "sha256": "afcb2a1fcd53c90844724169a6cadb907a77da3d2f539f8d6eeb8ae8b125b3ca"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-v2/native.tcl": {
+        "bytes": 22945,
+        "sha256": "5b2ef3a276288887104809c87f5cd1ba74dade2f2b326f821c2c6944c306c8df"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-baseline/run.json": {
+        "bytes": 7495,
+        "sha256": "7a51a10a13d7da81bdc283530fc8528aec55747e475d7aa886a3b05993351561"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-baseline/wires.spice": {
+        "bytes": 12816,
+        "sha256": "059fdd4322586b2a02582f75cb193a4ab228bf72fd2297f9148345ee814074ce"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-baseline/hbt_wires.res.ext": {
+        "bytes": 8604,
+        "sha256": "75c5d3facad646ab5526c884af72df6051a8cf860ec5ec7a93062d2acb09d239"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-baseline/hbt_wires.nodes": {
+        "bytes": 1673,
+        "sha256": "1f62b82ee28c0111fca852ae8dc01a5807b01d3c53d1bd635e9666dddde81ef6"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-baseline/hbt_wires.sim": {
+        "bytes": 1494,
+        "sha256": "72db10a8ffe8f0a00d60d8e35431fa66c710e78423bfc4eb0b742a7561b56d27"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-baseline/hbt_wires.ext": {
+        "bytes": 18673,
+        "sha256": "3be5fcca3bb658ba89938095f1b0617a61ea486ccb9f24e648adee72a4fbc440"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-baseline/hbt_wires.mag": {
+        "bytes": 69481,
+        "sha256": "8f866cc153197ae27930b87aea0b2995141b177f6d43dd1bb904d4ce4aa35fbc"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-baseline/native.log": {
+        "bytes": 11639,
+        "sha256": "d89af166c49660360880fc03c363d3a4686731e2b0849a67e108c552779a2875"
+      },
+      "/dev/shm/nssoc-hbt-hybrid-final3-baseline/native.tcl": {
+        "bytes": 22951,
+        "sha256": "44d77684633375dfef9143f304e5bbd79abb958168d27a243a69480a4f623dd7"
+      }
+    },
+    "outputs": {
+      "rc-audit.json": {
+        "bytes": 291346,
+        "sha256": "982cea170da29b8bcf1934627d92f29902edbe4a7a28ab9b788cf63e13543e44"
+      },
+      "hybrid.cir": {
+        "bytes": 15322,
+        "sha256": "97182384b8f8c08ed10ea842de0f48a7931011bdabc75ad29e411ee0a5f189fc"
+      },
+      "stable-cap-order-1.ext": {
+        "bytes": 18673,
+        "sha256": "a905c2f8e42f8bad63ebc8416f5d57157a00a1fa2abe8ab34faa22b4203ea5a3"
+      },
+      "normalized-1.spice": {
+        "bytes": 12715,
+        "sha256": "f85a28dc44a109e5108ba3d1453178d727627072bbdba81eb15b836bfd594665"
+      },
+      "stable-cap-order-0.ext": {
+        "bytes": 18673,
+        "sha256": "b335ef54c3cb180fc7afc1666e0fb426cec0125261e261cfc1319d14f31f71ff"
+      },
+      "normalized-0.spice": {
+        "bytes": 12781,
+        "sha256": "009e91abecce97c6f243436333ad92a254dbc534418df608361427422b3b5002"
+      }
+    },
+    "qualified_pex": false,
+    "limitations": [
+      "Wire-only Metal1/Via1/Metal2 technology RC at explicit terminal reference planes.",
+      "No intrinsic-terminal spreading, device/wire coupling, substrate spreading, RF or full-bank qualification.",
+      "Native LVS Q/R device syntax retained; no claim of simulator-ready foundry model translation."
+    ]
+  },
+  "comparison": {
+    "axis_only": {
+      "hbts": 18,
+      "correct_CBE": [],
+      "wrong_CBE": [
+        "N4_T3",
+        "N1_T0",
+        "N1_T6",
+        "N1_T2",
+        "N2_T3",
+        "N2_T6",
+        "N1_T5",
+        "N2_T0",
+        "N4_T2",
+        "N2_T5",
+        "N1_T4",
+        "N2_T4",
+        "N4_T0",
+        "N4_T5",
+        "N4_T6",
+        "N4_T4",
+        "N2_T2",
+        "N1_T3"
+      ],
+      "nonunity_missing_Nx": [
+        "N4_T3",
+        "N2_T3",
+        "N2_T6",
+        "N2_T0",
+        "N4_T2",
+        "N2_T5",
+        "N2_T4",
+        "N4_T0",
+        "N4_T5",
+        "N4_T6",
+        "N4_T4",
+        "N2_T2"
+      ],
+      "source": {
+        "bytes": 2170,
+        "sha256": "8bb00c2a4916f9c31889245d66a9376b68ac156af709936766607b77ff9ac6ba"
+      }
+    },
+    "contact_only": {
+      "hbts": 18,
+      "correct_CBE": [
+        "N4_T3",
+        "N1_T0",
+        "N1_T6",
+        "N1_T2",
+        "N2_T3",
+        "N2_T6",
+        "N1_T5",
+        "N2_T0",
+        "N4_T2",
+        "N2_T5",
+        "N1_T4",
+        "N2_T4",
+        "N4_T0",
+        "N4_T5",
+        "N4_T6",
+        "N4_T4",
+        "N2_T2",
+        "N1_T3"
+      ],
+      "wrong_CBE": [],
+      "nonunity_missing_Nx": [
+        "N4_T3",
+        "N2_T3",
+        "N2_T6",
+        "N2_T0",
+        "N4_T2",
+        "N2_T5",
+        "N2_T4",
+        "N4_T0",
+        "N4_T5",
+        "N4_T6",
+        "N4_T4",
+        "N2_T2"
+      ],
+      "source": {
+        "bytes": 2053,
+        "sha256": "e57a15d6b2a81e8bc3619ba0b45a56c078fbccaf06f432c08730f44ceac81f3e"
+      }
+    },
+    "contact_and_per_tile_fix": {
+      "hbts": 24,
+      "correct_CBE": [
+        "N4_T3",
+        "N1_T0",
+        "N1_T6",
+        "N1_T2",
+        "N2_T3",
+        "N2_T6",
+        "N1_T5",
+        "N2_T0",
+        "N1_T1",
+        "N2_T1",
+        "N4_T2",
+        "N4_T7",
+        "N2_T5",
+        "N1_T4",
+        "N1_T7",
+        "N2_T4",
+        "N4_T0",
+        "N4_T1",
+        "N2_T7",
+        "N4_T5",
+        "N4_T6",
+        "N4_T4",
+        "N2_T2",
+        "N1_T3"
+      ],
+      "wrong_CBE": [],
+      "nonunity_missing_Nx": [
+        "N4_T3",
+        "N2_T3",
+        "N2_T6",
+        "N2_T0",
+        "N2_T1",
+        "N4_T2",
+        "N4_T7",
+        "N2_T5",
+        "N2_T4",
+        "N4_T0",
+        "N4_T1",
+        "N2_T7",
+        "N4_T5",
+        "N4_T6",
+        "N4_T4",
+        "N2_T2"
+      ],
+      "source": {
+        "bytes": 2509,
+        "sha256": "5f3e7b5cb198ea5d0bc7fb25ec378c5f19235f463d041301957149c0bca7a52f"
+      }
+    }
+  },
+  "geometry_control_outcomes": {
+    "base_collector_short_N4_T6": {
+      "native_exit": 0,
+      "checker_exit": 2,
+      "native_seconds": 3.351663028995972,
+      "log": {
+        "bytes": 37053,
+        "sha256": "d830ab07afb1518abe3ed04c460631d081601bf6d4717a8777b8d91d766bc2c8"
+      }
+    },
+    "emitter_via_open_N2_T1": {
+      "native_exit": 0,
+      "checker_exit": 2,
+      "native_seconds": 3.315508517989656,
+      "log": {
+        "bytes": 37041,
+        "sha256": "51c515dddca35b23e90a7ed7ace0e2d38cd7b0e3b40eed27a9e9d8cdf5e18e4a"
+      }
+    },
+    "emitter_width_N1_T1": {
+      "native_exit": 0,
+      "checker_exit": 2,
+      "native_seconds": 3.256015283986926,
+      "log": {
+        "bytes": 37032,
+        "sha256": "6be09ec2648da6a37b50a7e5e9faa5c4a2ef631292afafc424bb89cf848caf3d"
+      }
+    },
+    "missing_finger_N4_T7": {
+      "native_exit": 0,
+      "checker_exit": 2,
+      "native_seconds": 3.25574252899969,
+      "log": {
+        "bytes": 37035,
+        "sha256": "0f35dfc0db824c8a46656efe16ade676714e336ae58f081230cf573cc16606dd"
+      }
+    },
+    "missing_tap_contact": {
+      "native_exit": 0,
+      "checker_exit": 2,
+      "native_seconds": 3.244267501984723,
+      "log": {
+        "bytes": 37032,
+        "sha256": "1277d146b6bbc81d9adb8de5b0425bf052e2a84134841eae2076f8debd738b70"
+      }
+    },
+    "unchanged_clone_N4_T7": {
+      "native_exit": 0,
+      "checker_exit": 0,
+      "native_seconds": 3.2493917199899442,
+      "log": {
+        "bytes": 37049,
+        "sha256": "c3c248ec72aa7ab3d87021d1923817f07e7f89dd73dfdc074c77b22417c14cc8"
+      }
+    }
+  },
+  "native_method_limit_bytes": 2147483648,
+  "source_builds": {
+    "private-build-1": {
+      "parent_result_sha": "f7c3e9e971136a49dc1023f7a7c65c2af16f121e265b9b121ce6030f1eb66cee",
+      "source_before_sha": "af8677dd211d49841dab8423179c588adc582c53de9d8c00371bedd479e6b0db",
+      "source_after_sha": "3dfe57bdb4021400554c4fda773a93926e7602f11a0d6129a761441c173b63fd",
+      "method_sha": "b7b63b61c44b4611e5609b3cb01af7bacb15f2bb1d1fad228c9155f9418ba421",
+      "execution": [
+        {
+          "command": [
+            "make",
+            "-C",
+            "/dev/shm/nssoc-hbt-terminal-build-01/source/extract",
+            "module"
+          ],
+          "returncode": 0,
+          "seconds": 0.4483035269950051,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "57b57eaaf7cc051209bf56bfc465c728d9b73dab3759a285f55fc0c3b8037abc"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "/dev/shm/nssoc-hbt-terminal-build-01/source/magic",
+            "tcl-main"
+          ],
+          "returncode": 0,
+          "seconds": 0.14861078301328234,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "00bb20bf89e9880c54f7db2faefe1366cbff33fd5475c03e443cc87dc89760c9"
+        }
+      ],
+      "runtime_sha": "e95c68073b5a89237dbbd6bfa2e6cb9b915dfa154a37219407ad0d650df185b0",
+      "qualification": false
+    },
+    "private-build-2": {
+      "parent_result_sha": "f7c3e9e971136a49dc1023f7a7c65c2af16f121e265b9b121ce6030f1eb66cee",
+      "source_before_sha": "af8677dd211d49841dab8423179c588adc582c53de9d8c00371bedd479e6b0db",
+      "source_after_sha": "b09c5b536fcf5cc320a04fe0b9f23382edc05bbaa86cdd546fcb9a453a93e0be",
+      "method_sha": "ae5edaa4d01a62876d3efb535cc27359743acef6da7f552093e1553ec46ce469",
+      "execution": [
+        {
+          "command": [
+            "make",
+            "-C",
+            "/dev/shm/nssoc-hbt-terminal-build-02/source/extract",
+            "module"
+          ],
+          "returncode": 0,
+          "seconds": 0.38059222599258646,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "3416831e269577559a214865c6792c83dd36ac06f8a31a7939f66614bc41a2ab"
+        },
+        {
+          "command": [
+            "make",
+            "-C",
+            "/dev/shm/nssoc-hbt-terminal-build-02/source/magic",
+            "tcl-main"
+          ],
+          "returncode": 0,
+          "seconds": 0.14522877399576828,
+          "memory_limit_bytes": 2147483648,
+          "elapsed_watchdog": null,
+          "log_sha256": "3819cee48300ea660e9f6036a1670a6a9ca6d35c87c8096999893f986e5b2f79"
+        }
+      ],
+      "runtime_sha": "86f185bddae3b2384a173086cb204e13774d4185f32ddd097403ffd23c0d6ab4",
+      "qualification": false
+    }
+  },
+  "source_integrity": {
+    "ExtBasic.c": {
+      "original_sha": "af8677dd211d49841dab8423179c588adc582c53de9d8c00371bedd479e6b0db",
+      "unchanged": true
+    },
+    "ihp-sg13g2.tech": {
+      "original_sha": "5ce21ab6a4c487d9115fe42d289af5fa0ba1612c4c2f5a3c9cc153fffbd1a967",
+      "unchanged": true
+    },
+    "ihp-sg13g2-cifin.tech": {
+      "original_sha": "f536a548ec16644fcd474bc9f25af7e301c6488ba8cc1bc25a8a8147b48ff002",
+      "unchanged": true
+    }
+  },
+  "archive": {
+    "bytes": 156488,
+    "sha256": "5a85d909ddf00f0b1ac74d177b3f8bf6282d2f322b77b3fcb05972c12a5d6987"
+  },
+  "archive_members": 183,
+  "reproduction": {
+    "geometry_command": "hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python scripts/check_magic_hbt_hybrid_v2.py geometry --gds FIXTURE/fixture.gds --fixture FIXTURE/result.json --report NATIVE_LVS/result.lvsdb --deck-log NATIVE_LVS/deck.log --extracted NATIVE_LVS/extracted.cir --output NEW_GEOMETRY",
+    "wire_command": "python scripts/check_magic_hbt_hybrid_v2.py tcl NEW_GEOMETRY/geometry.json NEW_NATIVE; execute the generated native.tcl under each exact runtime with the documented 2 GiB runner and run.json inventory, as in methods/evidence/run_final3_wire.py",
+    "audit_command": "python scripts/check_magic_hbt_hybrid_v2.py audit --geometry NEW_GEOMETRY/geometry.json --native-dir NEW_NATIVE_V2 --baseline-dir NEW_NATIVE_BASELINE --output NEW_AUDIT",
+    "controls": "methods/evidence/make_geometry_negatives3.py and run_geometry_negatives3.py; actual native source paths and arguments retained in native-results.json"
+  },
+  "limitations": [
+    "Private C correction fixes per-tile terminal search only; it has no regression qualification for every other Magic device class.",
+    "All 24 Magic HBTs now connect C/B/E correctly, but 16 Nx2/Nx4 instances still lose multiplicity; ngspice() also omits the finite tap. This Magic device output remains rejected.",
+    "Hybrid retains all native KLayout device/model/parameter tokens and the finite tap, and separately proves 73 wire conductors, 146 anchors, 73 R edges and full collapsed C matrix.",
+    "Metal/via-only RC excludes intrinsic terminal distribution, metal-device coupling, substrate spreading and RF calibration. This is not full-bank PEX or PHY adoption.",
+    "First flattened geometry controls are confounded by a separate native KLayout orientation-dependent dimension swap. They are not accepted negative proof; hierarchy-preserving controls plus unchanged-clone positive are the accepted set.",
+    "Native deck exits zero on several genuine mismatches; actual comparison/log status, exact census and database terminal/parameter binding decide acceptance.",
+    "Reference points are explicit long-axis endpoints within the real pin shapes; failed short-axis anchor attempts retain killed/missing native nodes and remain rejected."
+  ],
+  "external_sources": {
+    "magic_license": {
+      "bytes": 533,
+      "sha256": "54f8e7db87bb74ccd25d62a32d2c613b9131fd8e21b6d9ce499d2d67ddbdf196"
+    },
+    "distributed_vendor_runtime": false,
+    "distributed_vendor_implementation": false
+  }
+}

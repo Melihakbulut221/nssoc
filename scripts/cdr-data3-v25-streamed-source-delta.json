@@ -1,0 +1,79 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_selector_small_v24_mim_streamed.py",
+      "baseline_sha256": "473f2bc4d9cd3db5bf03b7fe21a2aedc4819e9107aeb35faafd15de15de714e4",
+      "candidate_path": "scripts/cloud_cdr_data3_v25_mim_streamed.py",
+      "candidate_sha256": "b50c67c2708d37facc941f10a6c8631f34e9a9faae7b4c4d241a902a3d574768",
+      "edits": [
+        {
+          "before": "cdr-selector-small-v24",
+          "after": "cdr-data3-v25",
+          "count": 6
+        },
+        {
+          "before": "nssoc_cdr_pd476_retime_mim_wire_v24",
+          "after": "nssoc_cdr_pd476_retime_mim_wire_v25",
+          "count": 1
+        },
+        {
+          "before": "20261020",
+          "after": "20261021",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_selector_small_v24_fullwave_stage.py",
+      "baseline_sha256": "497c3bda227d3ef1690019743919f251044f13d71face24575f60a7e67bdbd3a",
+      "candidate_path": "scripts/cloud_cdr_data3_v25_fullwave_stage.py",
+      "candidate_sha256": "6e9207718287bd90257fa2c6797c5f40bfbf498ab7ca0ec73635188bbc245e8d",
+      "edits": [
+        {
+          "before": "cdr-selector-small-v24",
+          "after": "cdr-data3-v25",
+          "count": 4
+        },
+        {
+          "before": "cdr_selector_small_v24",
+          "after": "cdr_data3_v25",
+          "count": 2
+        },
+        {
+          "before": "20261020",
+          "after": "20261021",
+          "count": 2
+        },
+        {
+          "before": "from pathlib import Path",
+          "after": "from pathlib import Path\nfrom cloud_cdr_data3_v25_mim_stage import receipt_path",
+          "count": 1
+        },
+        {
+          "before": "        dest=ROOT/('docs/evidence/cdr-data3-v25-'+stage+'-pass-20261021.json')",
+          "after": "        dest=receipt_path(stage)",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/cdr-selector-small-v24-mim-streamed-cloud.yml",
+      "baseline_sha256": "004cc6d1f393213c65ef0e7fc7c0719b2eab0312be1edda342149f28e0453eac",
+      "candidate_path": ".github/workflows/cdr-data3-v25-mim-streamed-cloud.yml",
+      "candidate_sha256": "17183a24968a603960abb346f962af4de7cfcb663498d756557ad7ce3b3fc7c5",
+      "edits": [
+        {
+          "before": "cdr-selector-small-v24",
+          "after": "cdr-data3-v25",
+          "count": 8
+        },
+        {
+          "before": "cdr_selector_small_v24",
+          "after": "cdr_data3_v25",
+          "count": 4
+        }
+      ]
+    }
+  ],
+  "scope": "Only names/provenance/model identity and shared receipt path change. Original complete 256-bit stimuli, time steps, native backend/model hashes, loads, all transistor/current/data/phase gates and corruption controls unchanged."
+}

@@ -1,0 +1,80 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_timing_priority_extraction.py",
+      "candidate_path": "scripts/cloud_tx_fast_wire24_extraction.py",
+      "baseline_sha256": "5bb0ef05259319236c03311f1df3286f760fbcd9410fca8b314baac7971a0763",
+      "candidate_sha256": "35e3b857a4ac9dbea812b639bb71e6fb32fb807abce2e9ba02f464fb844554a3",
+      "edits": [
+        {
+          "before": "if wide64:receipt_name='tx-v5-timing-priority-physical-pass-20261019.json'",
+          "after": "if wide64:receipt_name='tx-fast-wire24-physical-pass-20261020.json'",
+          "count": 1
+        },
+        {
+          "before": "assert receipt['source_run']==39304550527 and receipt['source_head']=='5cbdd0d6eebd458ae85af5c631f5165afba1dd8f'",
+          "after": "assert receipt['source_run']==39339196396 and receipt['source_head']=='7a4d047b8bae3cb3da682550b99bf87866107d7d'",
+          "count": 1
+        },
+        {
+          "before": "assert receipt['summary_sha256']=='03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d'",
+          "after": "assert receipt['summary_sha256']=='00aa1d6cef157845fe73f185e0350b54f372d2c6e0c7dba2773ed629131f6263'",
+          "count": 1
+        },
+        {
+          "before": "assert receipt['sha256']=='58fdbf05331785c3c3d42dc0192d0682ff45a5eb53a960a9a018afb30ee2a411'",
+          "after": "assert receipt['sha256']=='6e131bf83bb44258874986fcfd85a2189f8e99964c6588257605f89567fcb410'",
+          "count": 1
+        },
+        {
+          "before": "if wide64:out=ROOT/'hw/soc/out/cloud-tx-v5-timing-priority-assembly'",
+          "after": "if wide64:out=ROOT/'hw/soc/out/cloud-tx-fast-wire24-physical'",
+          "count": 1
+        },
+        {
+          "before": "assert physical['status']=='PASS_TREE32_1674_NATIVE_DRC_LVS_FAULTS_NOT_RC_OR_ELECTRICAL_ACCEPTANCE'",
+          "after": "assert physical['status']=='PASS_TX28_FAST_DATA_WIRE24_NATIVE_PHYSICAL_REQUIRES_FRESH_RC_AND_LOADED_GATES'",
+          "count": 1
+        },
+        {
+          "before": "        assert physical['variant']==selected\n        assert physical==receipt['report'], 'Exact physical parent summary changed'\n        assert all(sha(out/n)==v for n,v in physical['outputs'].items()), 'Physical archive member changed'\n        assert physical['placement_pitch']==dict(name='compact_columns',column_um=700.,row_um=600.,inverse_topology_matches_original=True)\n        if tight:\n            assert physical['placement_pitch']==dict(name='tight',column_um=700.,row_um=422.,inverse_topology_matches_original=True)\n            assert receipt['placement_pitch']==physical['placement_pitch']\n        result['placement_pitch']=physical.get('placement_pitch',dict(name='compact_columns',column_um=700.,row_um=600.))\n        if wide64:\n            assert physical['return_rail']==receipt['return_rail']\n            assert physical['return_rail']['profile']=='wide64'and physical['return_rail']['trunk_and_bus_width_um']==64.\n            result['return_rail']=physical['return_rail']\n        assert physical['emitter_budget']['reference_emitters']==(719 if high3 else 899)\n        assert physical['emitter_budget']['recommended_rules_enabled'] and not physical['emitter_budget']['waiver']\n        assert physical['layout']['outputs']==receipt['layout_outputs']\n        gp=json.loads((out/'timing-priority-geometry-delta.json').read_text())\n        assert gp==physical['geometry_delta']\n        assert gp['status']=='PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n        assert gp['controls']==['wrong_actual_row_metadata','native_child_conductor_removed','actual_parent_trunk_cut']\n        assert gp['reference_devices_unchanged']and gp['actual_native_children_unchanged']\n        assert gp['fixed_leaf_and_final_rows']==17 and gp['signal_legs']==60\n        assert gp['plan']==physical['data_route_plan']\n        assert gp['maximum_after_um']==physical['layout']['parent_signal_centerline_max_um']\n        assert gp['maximum_after_um']<gp['maximum_before_um']*.8\n        assert gp['plan']['row_lattice']['quantum_um']==600.\n        assert gp['plan']['row_lattice']['private_diagnosis_run']==39263440258\n        assert all(abs((v-gp['plan']['original_rows_um'][k])/600.-round((v-gp['plan']['original_rows_um'][k])/600.))<1e-9 for k,v in gp['plan']['row_targets_um'].items())\n        assert gp['plan']['solver']['first_mip_gap']==gp['plan']['solver']['second_mip_gap']==0.\n        priority=gp['plan']['timing_priority']\n        assert priority['maximum_weighted_after']<priority['maximum_weighted_before']\n        assert priority['stage_maxima']['1']['after']<priority['stage_maxima']['1']['before']\n        assert physical['return_rail']['final_column_trunk_width_um']==128. and physical['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert physical['return_rail']['local_final_strap_width_um']==6. and physical['return_rail']['final_strap_top_via_columns']==physical['return_rail']['final_strap_top_via_rows']==2\n        from check_tx_v5_timing_priority_sources import check\n        check()\n        for method in ['scripts/cloud_tx_v5_timing_priority_assembly.py','scripts/check_tx_v5_timing_priority_geometry.py']:\n            bound=physical['layout']['inputs']if method.endswith('_assembly.py')else gp['inputs']\n            assert sha(ROOT/method)==bound[str(ROOT/method)]\n        assert sha(ROOT/'scripts/plan_tx_v5_timing_priority_rows.py')==physical['planner_sha256']\n        result['independent_data_route_geometry']=gp\n",
+          "after": "        basepin=json.loads((ROOT/'docs/evidence/tx-v5-timing-priority-physical-pass-20261019.json').read_text())\n        assert basepin['run']==39304550527 and basepin['summary_sha256']=='03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d'\n        baseline=basepin['report']\n        assert baseline['variant']==selected\n        assert physical==basepin['report'], 'Exact physical parent summary changed'\n        assert all(sha(out/n)==v for n,v in physical['outputs'].items()), 'Physical archive member changed'\n        assert baseline['placement_pitch']==dict(name='compact_columns',column_um=700.,row_um=600.,inverse_topology_matches_original=True)\n        if tight:\n            assert baseline['placement_pitch']==dict(name='tight',column_um=700.,row_um=422.,inverse_topology_matches_original=True)\n            assert basepin['placement_pitch']==baseline['placement_pitch']\n        result['placement_pitch']=baseline.get('placement_pitch',dict(name='compact_columns',column_um=700.,row_um=600.))\n        if wide64:\n            assert baseline['return_rail']==basepin['return_rail']\n            assert baseline['return_rail']['profile']=='wide64'and baseline['return_rail']['trunk_and_bus_width_um']==64.\n            result['return_rail']=baseline['return_rail']\n        assert baseline['emitter_budget']['reference_emitters']==(719 if high3 else 899)\n        assert baseline['emitter_budget']['recommended_rules_enabled'] and not baseline['emitter_budget']['waiver']\n        assert baseline['layout']['outputs']==basepin['layout_outputs']\n        gp=baseline['geometry_delta']\n        assert gp==baseline['geometry_delta']\n        assert gp['status']=='PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n        assert gp['controls']==['wrong_actual_row_metadata','native_child_conductor_removed','actual_parent_trunk_cut']\n        assert gp['reference_devices_unchanged']and gp['actual_native_children_unchanged']\n        assert gp['fixed_leaf_and_final_rows']==17 and gp['signal_legs']==60\n        assert gp['plan']==baseline['data_route_plan']\n        assert gp['maximum_after_um']==baseline['layout']['parent_signal_centerline_max_um']\n        assert gp['maximum_after_um']<gp['maximum_before_um']*.8\n        assert gp['plan']['row_lattice']['quantum_um']==600.\n        assert gp['plan']['row_lattice']['private_diagnosis_run']==39263440258\n        assert all(abs((v-gp['plan']['original_rows_um'][k])/600.-round((v-gp['plan']['original_rows_um'][k])/600.))<1e-9 for k,v in gp['plan']['row_targets_um'].items())\n        assert gp['plan']['solver']['first_mip_gap']==gp['plan']['solver']['second_mip_gap']==0.\n        priority=gp['plan']['timing_priority']\n        assert priority['maximum_weighted_after']<priority['maximum_weighted_before']\n        assert priority['stage_maxima']['1']['after']<priority['stage_maxima']['1']['before']\n        assert baseline['return_rail']['final_column_trunk_width_um']==128. and baseline['return_rail']['final_column_trunk_offset_from_right_um']==340.\n        assert baseline['return_rail']['local_final_strap_width_um']==6. and baseline['return_rail']['final_strap_top_via_columns']==baseline['return_rail']['final_strap_top_via_rows']==2\n        from check_tx_v5_timing_priority_sources import check\n        check()\n        for method in ['scripts/cloud_tx_v5_timing_priority_assembly.py','scripts/check_tx_v5_timing_priority_geometry.py']:\n            bound=baseline['layout']['inputs']if method.endswith('_assembly.py')else gp['inputs']\n            assert sha(ROOT/method)==bound[str(ROOT/method)]\n        assert sha(ROOT/'scripts/plan_tx_v5_timing_priority_rows.py')==baseline['planner_sha256']\n        result['independent_data_route_geometry']=gp\n\n        # Preserve every prior placement/return/child gate on the immutable baseline.\n        # New physical verification independently proves the only allowed width delta.\n        result['baseline_data_route_geometry']=gp\n        gp=json.loads((out/'geometry-delta.json').read_text())\n        assert gp==physical['geometry_delta']and physical['sources_unchanged']\n        assert gp['status']=='PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS'\n        assert gp['original_vias_children_placements_pins_and_other_layers_equal']and gp['serialized_gds_verified']\n        assert gp['widths_um']==dict(original=4.,candidate=2.4,retained_landings=4.)\n        assert {x['name']for x in gp['controls']}=={'restore_removed_wide_metal','cut_actual_narrow_trunk','change_native_child_geometry'}\n        assert all(x['rejected']for x in gp['controls'])and len(gp['controls'])==3\n        assert gp['source_gds_sha256']==basepin['layout_outputs'][top+'.gds']\n        assert gp['candidate_gds_sha256']==physical['layout']['outputs'][top+'.gds']\n        assert physical['physical_source']['summary_sha256']==basepin['summary_sha256']\n        assert physical['outputs']['source/verify-tree32.py']==basepin['outputs']['verify-tree32.py']\n        assert physical['layout']['outputs']==receipt['layout_outputs']\n        for key in ('ports','bbox_um','placements','origin_translation_um','total_devices','core_devices','substrate_contacts','parent_signal_centerline_sum_um','parent_signal_centerline_max_um'):\n            assert physical['layout'][key]==baseline['layout'][key],key\n        for ext in ('.lef',):\n            assert physical['layout']['outputs'][top+ext]==baseline['layout']['outputs'][top+ext]\n        assert physical['layout']['outputs']['schematic.cir']==baseline['layout']['outputs']['schematic.cir']\n        changed=[]\n        for old,new in zip(baseline['layout']['signal_routes'],physical['layout']['signal_routes'],strict=True):\n            wanted=dict(old)\n            if not old['net'].startswith('p16_'):\n                wanted.update(width_um=2.4,landing_width_um=4.);changed.append(old['net'])\n            assert new==wanted\n        assert changed==gp['changed_routes']and len(changed)==28\n        from check_tx_fast_wire24_sources import check as current_geometry\n        current_geometry()\n        result['independent_data_route_geometry']=gp\n",
+          "count": 1
+        },
+        {
+          "before": "        if wide64:\n            result['geometry_delta']=json.loads((out/'timing-priority-geometry-delta.json').read_text())\n            assert result['geometry_delta']==physical['geometry_delta']==gp\n            assert result['geometry_delta']['controls']==['wrong_actual_row_metadata','native_child_conductor_removed','actual_parent_trunk_cut']\n            assert result['geometry_delta']['status']=='PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n",
+          "after": "        if wide64:\n            result['geometry_delta']=json.loads((out/'geometry-delta.json').read_text())\n            assert result['geometry_delta']==physical['geometry_delta']==gp\n            assert all(c['rejected']for c in gp['controls'])and len(gp['controls'])==3\n            assert gp['status']=='PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS'\n",
+          "count": 1
+        },
+        {
+          "before": "assert physical==basepin['report'], 'Exact physical parent summary changed'",
+          "after": "assert physical==receipt['report'], 'Exact physical parent summary changed'",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/tx-v5-timing-priority-extraction-cloud.yml",
+      "candidate_path": ".github/workflows/tx-fast-wire24-extraction-cloud.yml",
+      "baseline_sha256": "9d84103bd95ecbbd654f58b8e54dc9db14a749865b275e65d8bbd09da062687c",
+      "candidate_sha256": "b02a21c0a92b78e1a9d51737f23a7192d95f8ab93d52bc70182f0e7ab30e1c19",
+      "edits": [
+        {
+          "before": "tx-v5-timing-priority-extraction",
+          "after": "tx-fast-wire24-extraction",
+          "count": 6
+        },
+        {
+          "before": "tx_v5_timing_priority_extraction",
+          "after": "tx_fast_wire24_extraction",
+          "count": 3
+        },
+        {
+          "before": "cloud-tx-v5-timing-priority-assembly",
+          "after": "cloud-tx-fast-wire24-physical",
+          "count": 2
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+# Fresh v3 RC and conservative congestion-column trial
+
+Fresh v3 native RC39045292467 passed all13actual corruption controls with4020R/2641C and exact native resistor/capacitor values and attachment accounting. These counts happen to equalv2; the actual new geometry and newly extracted values are separately hash-bound, not reused. Composition now binds this exact new network to54native devices and repeats all six composition controls before any loaded waveform acceptance.
+
+Read-only native OpenDB inspection39045205430 bound all final congestion nets and20SRAM macros to original repairedODB a1ad2156c0757c34ba81db3bc5d0034f3555aa41e49b2dc96d936dca62038ca6. Of142overflow,53lie in x3096um column and29in x2340um column, close to Ethernet SRAM banks6/7. Local cell coverage is not a routing-capacity proof.
+
+A separate region-routing trial adds only two positive50percent Metal5 resource reductions around those columns. This encourages redistribution through other routes/layers; it does not fabricate capacity. Native Metal5 has106of142overflow, but the region files omit layer labels, so per-region Metal5 attribution is an experiment hypothesis. The measured columns span96regions overall, y1706.4..2160um; the declared regions add14.4um halo around the target columns and full measured y-range. Exact originalODB, global20percent reserve,200searchiterations, clockMetal4..TopMetal2, NDR, clocks/5percent derate and zero-overflow acceptance remain unchanged. Do not interpret completion as detailed-route or final timing acceptance.
+
+API references: [OpenDB native Python](https://openroad.readthedocs.io/en/latest/main/src/odb/README.html#python) and [OpenROAD regional routing adjustment](https://openroad.readthedocs.io/en/latest/main/src/grt/README.html#set-global-routing-region-adjustment). All CAD execution, archives, source commits and evidence remain cloud-only.

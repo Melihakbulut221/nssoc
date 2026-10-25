@@ -1,0 +1,55 @@
+{
+  "status": "PASS_STAGED_NATIVE_CONTROLS_ONLY",
+  "cases": {
+    "wrong_pin": "Prepared manifest hash mismatch",
+    "database": "Checkpoint database hash/size mismatch",
+    "snapshot": "Checkpoint replay differs",
+    "method": "Checkpoint method or tool version differs",
+    "input": "Checkpoint input hash mismatch",
+    "connected": {
+      "status": "PASS_SINGLE_TOP_NET_WINDOW_ONLY",
+      "manifest_sha256": "5b181b0dba830bcbee01e3e271bcfef153e7f201f68f2c71c3e62a15cbe2084b",
+      "producer": {
+        "pid": 2444990,
+        "birth": "64530756",
+        "boot_id": "bf1c8f14-eb13-40b0-827a-52ec2169f625"
+      },
+      "verifier": {
+        "pid": 2445009,
+        "birth": "64530807",
+        "boot_id": "bf1c8f14-eb13-40b0-827a-52ec2169f625"
+      }
+    },
+    "connected_overwrite_rejected": true,
+    "floating": {
+      "status": "UNRESOLVED_OR_FAILED_WINDOW",
+      "manifest_sha256": "9067fe0ae80da08ef560ba3e7e45de44a18d22be88e994da6bb33b4ab1d0810f",
+      "producer": {
+        "pid": 2445010,
+        "birth": "64530832",
+        "boot_id": "bf1c8f14-eb13-40b0-827a-52ec2169f625"
+      },
+      "verifier": {
+        "pid": 2445011,
+        "birth": "64530857",
+        "boot_id": "bf1c8f14-eb13-40b0-827a-52ec2169f625"
+      }
+    },
+    "floating_overwrite_rejected": true
+  },
+  "address_space_cap_bytes": 268435456,
+  "klayout_version": "0.30.7",
+  "input_sha256": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/supply_checkpoint_staged_native.py": "8700c836019b8dcf176dd06580a31d72afebb72caf0672c91b40ede647c7771a",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/supply_checkpoint_staged.py": "6f82571c307993114f05847293ab95f7f5ab24c345f92bb3d9b9f1d02870d796",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/supply_checkpoint.py": "4ff26dafeab0f286187c5c7d7cff2d31f74972d54d4ea5c7d7324ece2afb721b",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/probe_supply_components.py": "54e2ef8d6c5426ce8aa4fbf34539076c435e2b6a637598b2963fb439cbfbd631"
+  },
+  "chip_connectivity_accepted": false,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false,
+  "raw_assets_manifest": "docs/evidence/supply-checkpoint-staged-controls-assets-20260929.json",
+  "scope": "Separate-process native checkpoint controls: connected and floating hierarchy survive; live producer, prepared-only checkpoint, bad provenance/database/snapshot and overwrite are rejected. Synthetic 256MiB controls only; no full-chip checkpoint, memory benchmark, LVS or manufacturing acceptance.",
+  "producer_and_verifier_graphs_never_coexist_in_one_process": true,
+  "full_chip_memory_usage_measured": false
+}

@@ -1,0 +1,37 @@
+{
+  "baseline_generator": "hw/soc/flow/make_pcie_sampler_cell.py",
+  "baseline_sha256": "9d6689ba659eb99f878e8bfd0696e8e758f31c00313edcacaef502bef8c113d1",
+  "candidate_generator": "hw/soc/flow/make_pcie_sampler_compact_v1.py",
+  "candidate_sha256": "a94f1938100002b9eca7c70ecde985dc73f5d18b1879ae60c8ad884e40a7e2d9",
+  "exact_replacements": [
+    {
+      "before": "Native SG13G2 layout of the fixed external-clock HBT sampler v2.",
+      "after": "Compact physical candidate for the unchanged external-clock HBT sampler v2."
+    },
+    {
+      "before": "TOP = \"nssoc_rx_sampler_hbt_v2_layout\"",
+      "after": "TOP = \"nssoc_rx_sampler_hbt_v2_compact_v1\""
+    },
+    {
+      "before": "x, y = 20.0 + index * 32, 20.0",
+      "after": "x, y = 20.0 + index * 20, 20.0"
+    },
+    {
+      "before": "x, y = 30 + index * 96.0, 4.0",
+      "after": "x, y = 22 + index * 60.0, 4.0"
+    },
+    {
+      "before": "width = 880.0",
+      "after": "width = 560.0"
+    },
+    {
+      "before": "y = 80.0 + index * 10",
+      "after": "y = 80.0 + index * 6"
+    }
+  ],
+  "baseline_checker": "hw/soc/flow/check_pcie_sampler_unsimplified.py",
+  "baseline_checker_sha256": "3b41df5e32aa4b61205f65bd2c15d2d4bc378619ca66c752af49a4912edd8d84",
+  "candidate_checker": "hw/soc/flow/check_pcie_sampler_compact_v1.py",
+  "candidate_checker_sha256": "017c7af34fab39cf49adbe61dd3f27ce977b39118f646dbf04ed67ac36b9db2b",
+  "checker_only_change": "Import candidate physical top/reference; all gates and physical faults unchanged."
+}

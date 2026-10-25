@@ -1,0 +1,80 @@
+{
+  "status": "PASS_V17_EXPLICIT_CONSTANT_WORD_SENSITIVITY_SOURCE_ONLY_PEER",
+  "utc": "2026-10-05T17:09:03.494583+00:00",
+  "reviewer": "/root/rx_route_resume",
+  "findings": [],
+  "source_freeze": {
+    "bytes": 2299,
+    "sha256": "48a78275df28c51417f5e318750ccc77d933ccf34fd7188cdc3158445e101dcd"
+  },
+  "source_pins": {
+    "scripts/generate_pcie_integrity_read_v17.py": {
+      "bytes": 3770,
+      "sha256": "e9fa966925f92652f056cadb9fbc191cc2a96530b0b215ff333c30438028ff0c"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v17.py": {
+      "bytes": 11276,
+      "sha256": "18b8dbaa85ca2d96adb2820219c79965e80df9d77865cbfc284c0082f68fe5d4"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v17.v": {
+      "bytes": 192776,
+      "sha256": "7aeb0b29e6b56978bed7f83a48b14e8e11a005bf16342cfd8b616225ba9d8160"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v17.v": {
+      "bytes": 3324,
+      "sha256": "b831abd6e23a36bb00fb011f0a4842293d5f989e718f0eea6517b1d454e442a1"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v17.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v17": {
+      "bytes": 1528,
+      "sha256": "2f9179e9812fe0907b173ec2078507a8c769904043798ca83401326d08c85697"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v17_read.py": {
+      "bytes": 14300,
+      "sha256": "6aa4bb1893867a24476caa97457ad21ba5a1e7cf76b86805fb050eefb1167095"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v17_miter.py": {
+      "bytes": 9758,
+      "sha256": "be5e2aa81f3d86f6477a2b4a10e0083aac46735b77d38de9cb80d31eaef9baae"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v17.py": {
+      "bytes": 4805,
+      "sha256": "44401a8ec5ecfa4359ab2623439084eeb32c4843a36017bf12613d4f4661fbdc"
+    }
+  },
+  "method": {
+    "bytes": 5847,
+    "sha256": "516f46280563663f27bacac641f58056aed9f0db342894a199c025bb8fb85909"
+  },
+  "inherited_v16_source_peer": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v16-20261005/source-only-peer-rx.json",
+    "bytes": 4364,
+    "sha256": "cdeb51278874bb0a6414f71386cd138d4cfc78ed02d9ac307211c0ff583d2e36"
+  },
+  "events": [
+    "read_address",
+    "slot_data[read_slot]",
+    "slot_keep[read_slot]",
+    "slot_sop[read_slot]",
+    "slot_eop[read_slot]",
+    "slot_dllp[read_slot]",
+    "slot_sequence[read_slot]",
+    "slot_verdict[read_slot]"
+  ],
+  "checks": [
+    "Rehashed all9 V17 and all9 inheritedV16 source pins. GeneratedV17 equals checked-in RTL; exact fullV11 inverse restores all writers/control/parser/fault/pointers/commit logic.",
+    "After only comments/version and explicit leaf event-list normalization, complete read block is byte-identical to independently reviewed staticV16 tree. All wrappers/checkers/miter/directcontrols remain exact version bridges; readtest retains entire V16 prefix and adds only isolated-event controls.",
+    "Independently enumerated actual leaf RHS dependencies: read_address plus exactly six60bit payload fields and verdict. Keep is both qualifier and returned field and is listed once. Constant genvarread_slot itself never changes and requires no event; read_address captures read_ptr+constantlane changes. No leaf input is omitted.",
+    "Outer visible-output count gate remains separate always@*: committed/count changes can reveal previously cached leaf outputs; leaf still listens to payload/verdict/keep while hidden. Unknown address/keep/verdict continues procedural not-true masking and selected X/Z payload still propagates through muxes, not OR.",
+    "New realHDL sensitivity harness compares original V11 literal dynamic read with candidate at31 sequential checks: sixfields independently changed through known/X/Z values, isolated verdict/keep disable/re-enable with hidden writes, address/unknownaddress, committed0 hiddenwrite/committed4. Full243bit vector compared with four-state case inequality.",
+    "Nine actual source mutants remove each of8event terms or watch wrong dataword; each runs changed Verilog and requires native simulation mismatch, not textual rejection. Independent scalar input changes make missing dependency observable; pure source peer did not execute them.",
+    "V16 actual long compilation/incompletion remains separate and unchanged. Existing default150/fullmiter and literal16/64/128 requirements remain; MAX4118 cases are still separate, and mapped depth/2GiBnative/original4ns timing must be measured."
+  ],
+  "simulations_rerun": false,
+  "native_executed": false,
+  "physical_acceptance": false,
+  "scope": "Complete source and event-dependency review only. No timing, synthesis-memory improvement, native tree depth or full suite completion claimed here. Existing diagnostic compile/simulation and currently running inherited suite remain their own evidence."
+}

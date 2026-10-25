@@ -1,0 +1,123 @@
+{
+  "status": "PASS_FULL_BYTE_AUDIT_DERIVATION_ONLY",
+  "methods": [
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-local-v1-wire-20261005/audit_wire_rc.py",
+      "parent_pin": {
+        "bytes": 12237,
+        "sha256": "bb8c4adfa9126eea2889d33cd9b96f39886d637d713968a74b8522dad71f3ddb"
+      },
+      "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-wire-rc-v1-20261005/audit_wire_rc.py",
+      "new_pin": {
+        "bytes": 12297,
+        "sha256": "cef33d8e1532b5a79a2c4746b0cdd0691c84cd6c3f4fb2b057c51e3bc0f55e37"
+      },
+      "operations": [
+        {
+          "old": "B=Path(__file__).resolve().parent",
+          "new": "B=Path(__file__).resolve().parent\nGEOMETRY=B.parent/'pcie-divider-v7-wire-v5-20261005'",
+          "count": 1
+        },
+        {
+          "old": "parent=B/'terminal-reference-planes.json'",
+          "new": "parent=GEOMETRY/'terminal-reference-planes.json'",
+          "count": 1
+        },
+        {
+          "old": "==20",
+          "new": "==37",
+          "count": 6
+        },
+        {
+          "old": "range(1,21)",
+          "new": "range(1,38)",
+          "count": 2
+        },
+        {
+          "old": "==151",
+          "new": "==205",
+          "count": 3
+        },
+        {
+          "old": "==145",
+          "new": "==198",
+          "count": 1
+        },
+        {
+          "old": "==56",
+          "new": "==85",
+          "count": 2
+        },
+        {
+          "old": "==['21']",
+          "new": "==['38']",
+          "count": 1
+        },
+        {
+          "old": "==['20']",
+          "new": "==['37']",
+          "count": 1
+        },
+        {
+          "old": "original_devices=62,public_ports=6,physical_wire_components=20,geometry_probes=151,metal_device_terminals=145",
+          "new": "original_devices=91,public_ports=7,physical_wire_components=37,geometry_probes=205,metal_device_terminals=198",
+          "count": 1
+        },
+        {
+          "old": "unmodeled_body_well_terminals=56",
+          "new": "unmodeled_body_well_terminals=85",
+          "count": 1
+        },
+        {
+          "old": "connected_wire_components=20",
+          "new": "connected_wire_components=37",
+          "count": 1
+        },
+        {
+          "old": "collapsed_matrix_entries=21**2",
+          "new": "collapsed_matrix_entries=38**2",
+          "count": 1
+        }
+      ],
+      "whole_byte_inverse": true,
+      "diff": "--- \n+++ \n@@ -6,6 +6,7 @@\n import hashlib,importlib.util,json,math,re,shlex,sys\n import networkx as nx\n B=Path(__file__).resolve().parent\n+GEOMETRY=B.parent/'pcie-divider-v7-wire-v5-20261005'\n PRIOR=B.parent/'pcie-magic-resis-terminals-v1-20261004/audit_pilot.py'\n spec=importlib.util.spec_from_file_location('frozen_raw_parser',PRIOR);rawparser=importlib.util.module_from_spec(spec);spec.loader.exec_module(rawparser)\n \n@@ -17,9 +18,9 @@\n def close(a,b):return math.isclose(a,b,rel_tol=3e-6,abs_tol=1e-4)\n def edge(a,b):return tuple(sorted((a,b)))\n def audit(p,anchors):\n- p=Path(p);a={r['label']:r for r in anchors['anchors']};require(len(a)==151,'Missing/duplicate geometry probes')\n- require(anchors['actual_metal_terminals']==145 and anchors['body_well_terminals']==56 and len(anchors['unmodeled_body_well_terminals'])==56,'Body/metal disposition changed')\n- parent=B/'terminal-reference-planes.json'\n+ p=Path(p);a={r['label']:r for r in anchors['anchors']};require(len(a)==205,'Missing/duplicate geometry probes')\n+ require(anchors['actual_metal_terminals']==198 and anchors['body_well_terminals']==85 and len(anchors['unmodeled_body_well_terminals'])==85,'Body/metal disposition changed')\n+ parent=GEOMETRY/'terminal-reference-planes.json'\n  require(pin(parent)==anchors['inputs'][str(parent)],'Frozen terminal witness changed')\n  native_rows=json.loads(parent.read_text())['rows']\n  require(anchors['unmodeled_body_well_terminals']==[r for r in native_rows if r['disposition']!='ACTUAL_METAL_POINT_REFERENCE'],'Original body/well identities changed')\n@@ -32,10 +33,10 @@\n  require([r[1:] for r in rep if r[0]=='scale']==[['1000','1','0.5']],'Replacement scale changed')\n  require([r[1:] for r in rows if r[0]=='style']==[['ngspice()']],'Wrong native extraction style')\n  require(not re.search(r'Missing (?:gate|substrate|terminal|source|drain)|Orphaned node|Error in extracting node|Unknown (?:layer|statement)|Error: Node with no area',log),'Native failure')\n- require(re.findall(r'^Total Nets: (\\d+)$',log,re.M)==['21'],'Wrong full native node count')\n- for key in ('Nets extracted','Nets output'):require(re.findall(r'^'+key+r': (\\d+)',log,re.M)==['20'],'Incomplete native wire extraction')\n+ require(re.findall(r'^Total Nets: (\\d+)$',log,re.M)==['38'],'Wrong full native node count')\n+ for key in ('Nets extracted','Nets output'):require(re.findall(r'^'+key+r': (\\d+)',log,re.M)==['37'],'Incomplete native wire extraction')\n  require(log.count('\\nNSSOC_WIRE_RC_COMPLETE\\n')==1,'Missing/duplicate native completion')\n- ports=[r for r in rows if r[0]=='port'];require(len(ports)==151 and {r[1] for r in ports}==set(a),'Incomplete native port census')\n+ ports=[r for r in rows if r[0]=='port'];require(len(ports)==205 and {r[1] for r in ports}==set(a),'Incomplete native port census')\n  # Magic internal port coordinates are integer 5 nm units in this exact import.\n  coordinate_deltas=[]\n  for r in ports:\n@@ -43,7 +44,7 @@\n   xy=[int(v)*5 for v in r[3:5]];delta=[v-w for v,w in zip(xy,anchor['point_dbu'])]\n   require(all(abs(d)<=2 for d in delta),'Probe moved beyond native nearest 5 nm quantization')\n   coordinate_deltas.append(dict(label=r[1],source_dbu=anchor['point_dbu'],magic_dbu=xy,delta_nm=delta))\n- nodes={r[1]:float(r[3]) for r in rows if r[0]=='node'};require(len(nodes)==20,'Wrong wire node count')\n+ nodes={r[1]:float(r[3]) for r in rows if r[0]=='node'};require(len(nodes)==37,'Wrong wire node count')\n  subs=[r for r in rows if r[0]=='substrate'];require(len(subs)==1 and subs[0][1]=='sub!' and float(subs[0][3])==0,'Wire capacitance reference changed')\n  # Original aliases validate physical owner correspondence only. They are NEVER\n  # edges in the exported resistor graph, where they would conceal broken probes.\n@@ -53,13 +54,13 @@\n    require(r[1] in original and r[2] in a and r[2] not in original,'Unsupported intrinsic alias')\n    require(original[r[1]]==a[r[2]]['wire_component'],'Native conductor contradicts geometry')\n    original[r[2]]=original[r[1]]\n- require(set(original)==set(a) and set(original.values())==set(range(1,21)),'Incomplete physical conductor ownership')\n+ require(set(original)==set(a) and set(original.values())==set(range(1,38)),'Incomplete physical conductor ownership')\n  short_warnings=re.findall(r'^Warning:  Ports \"([^\"]+)\" and \"([^\"]+)\" are electrically shorted\\.$',log,re.M)\n  require(all(x in a and y in a and original[x]==original[y] for x,y in short_warnings),'Actual unexpected port short warning')\n  after=rawparser.parse_spice((p/'wires.spice').read_text());before=rawparser.parse_spice((p/'baseline.spice').read_text())\n- require(len(after['ports'])==151 and set(after['ports'])==set(a),'Export port loss/duplication')\n+ require(len(after['ports'])==205 and set(after['ports'])==set(a),'Export port loss/duplication')\n  require(not after['devices'] and not before['devices'] and not before['resistors'],'Device insertion into wire-only graph')\n- require(len(before['ports'])==20 and all(n in original for n in before['ports']) and {original[n] for n in before['ports']}==set(range(1,21)),'Baseline conductor port set differs')\n+ require(len(before['ports'])==37 and all(n in original for n in before['ports']) and {original[n] for n in before['ports']}==set(range(1,38)),'Baseline conductor port set differs')\n  graph=nx.Graph();graph.add_nodes_from(a)\n  for x,y,value in after['resistors']:\n   require(x!=y and value>0,'Invalid distributed resistor')\n@@ -72,7 +73,7 @@\n   comps.append(dict(component=owner,nodes=len(component),probes=sorted(component&set(a))))\n   if len(component)==1:isolated+=list(component)\n  connected=[c for c in comps if c['nodes']>1]\n- require(len(connected)==20 and len({c['component'] for c in connected})==20,'Physical wire R graph open or incomplete')\n+ require(len(connected)==37 and len({c['component'] for c in connected})==37,'Physical wire R graph open or incomplete')\n  native_r=Counter((edge(r[1],r[2]),rawparser.number(r[3])) for r in rep if r[0]=='resist')\n  export_r=Counter((edge(x,y),v) for x,y,v in after['resistors'])\n  require(native_r==export_r,'Native/export resistor topology/value differs')\n@@ -99,7 +100,7 @@\n  missing_caps=sorted(expected.keys()-actual.keys());extra_caps=sorted(actual.keys()-expected.keys())\n  wrong_caps=[dict(a=k[0],b=k[1],expected=v,actual=actual[k]) for k,v in expected.items() if k in actual and not close(v,actual[k])]\n  cap_pass=not (missing_caps or extra_caps or wrong_caps)\n- retire=[r for r in rep if r[0] in ('subcap','killnode')];require(len(retire)==20 and {r[1] for r in retire}==set(nodes),'Missing/duplicate original node retirement')\n+ retire=[r for r in rep if r[0] in ('subcap','killnode')];require(len(retire)==37 and {r[1] for r in retire}==set(nodes),'Missing/duplicate original node retirement')\n  for r in retire:\n   if r[0]=='subcap':require(close(-float(r[2]),nodes[r[1]]),'Wrong retained-node intrinsic C retirement')\n  points=defaultdict(float)\n@@ -109,7 +110,7 @@\n    points[owners[r[1]]]+=float(r[3])\n  wrong_ground=[dict(node=n,component=original[n],expected=v,actual=points[original[n]]) for n,v in nodes.items() if not close(v,points[original[n]])]\n  markers=re.findall(r'^NSSOC_V2_INTRINSIC_DISTRIBUTION (\\S+) total=(\\S+) intrinsic=(\\S+)$',log,re.M)\n- require(len(markers)==20 and {r[0] for r in markers}==set(nodes),'Native unreduced branch census differs')\n+ require(len(markers)==37 and {r[0] for r in markers}==set(nodes),'Native unreduced branch census differs')\n  wrong_markers=[]\n  for n,total,intrinsic in markers:\n   owner=original[n];incident=sum(v for (x,y),v in expected.items() if x and y and owner in (x,y))\n@@ -130,13 +131,13 @@\n  require(wanted_mutual.keys()==export_mutual.keys(),'Mutual C native attachment changed')\n  require(all(close(v,export_mutual[n]) for n,v in wanted_mutual.items()),'Mutual C native value changed')\n  result=dict(status='FAIL_EXPORTED_TERMINAL_AND_CAPACITANCE_CONTRACT' if isolated or not cap_pass or wrong_ground or wrong_markers else 'PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY',\n-  original_devices=62,public_ports=6,physical_wire_components=20,geometry_probes=151,metal_device_terminals=145,\n-  unmodeled_body_well_terminals=56,actual_exported_resistors=len(after['resistors']),actual_exported_capacitors=len(after['capacitors']),\n-  resistor_components=len(comps),connected_wire_components=20,disconnected_probes=[a[n] for n in sorted(isolated)],\n+  original_devices=91,public_ports=7,physical_wire_components=37,geometry_probes=205,metal_device_terminals=198,\n+  unmodeled_body_well_terminals=85,actual_exported_resistors=len(after['resistors']),actual_exported_capacitors=len(after['capacitors']),\n+  resistor_components=len(comps),connected_wire_components=37,disconnected_probes=[a[n] for n in sorted(isolated)],\n   disconnected_by_kind=dict(Counter(a[n]['kind'] for n in isolated)),\n   native_export_r_edge_value_multiset_exact=True,geometry_conductor_ownership_exact=True,\n   every_native_point_ground_capacitance_preserved=True,every_native_mutual_attachment_and_value_preserved=True,\n-  collapsed_capacitance_edge_count=len(expected),collapsed_matrix_entries=21**2,\n+  collapsed_capacitance_edge_count=len(expected),collapsed_matrix_entries=38**2,\n   complete_collapsed_capacitance_conserved=cap_pass,per_conductor_intrinsic_ground_c_conserved=not wrong_ground,\n   wrong_native_branch_witnesses=wrong_markers,\n   missing_capacitance_edges=[dict(a=x,b=y,source_af=expected[x,y]) for x,y in missing_caps],extra_capacitance_edges=[dict(a=x,b=y,actual_af=actual[x,y]) for x,y in extra_caps],wrong_capacitance_values=wrong_caps,wrong_intrinsic_ground_values=wrong_ground,\n"
+    },
+    {
+      "parent": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-local-v1-wire-20261005/check_native_mutations.py",
+      "parent_pin": {
+        "bytes": 4998,
+        "sha256": "5d47040c190cc28c65f292d0dc028f55cc3c156446de1d12d590deea3afeefb2"
+      },
+      "new": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-divider-v7-wire-rc-v1-20261005/check_native_mutations.py",
+      "new_pin": {
+        "bytes": 5001,
+        "sha256": "60d188f660c9cd58ea1fffeaa80ff70b09846016dc3b61c937934c59627e4445"
+      },
+      "operations": [
+        {
+          "old": "P=Path('/dev/shm/nssoc-vco-v4-mim-v6-local-v1-wire-rc-01')",
+          "new": "P=Path('/dev/shm/nssoc-div4-v7-wire-rc-01')",
+          "count": 1
+        },
+        {
+          "old": "a=json.loads((B/'anchors.json').read_text())",
+          "new": "a=json.loads((m.GEOMETRY/'anchors.json').read_text())",
+          "count": 1
+        },
+        {
+          "old": "B/'anchors.json',",
+          "new": "m.GEOMETRY/'anchors.json',",
+          "count": 1
+        }
+      ],
+      "whole_byte_inverse": true,
+      "diff": "--- \n+++ \n@@ -6,11 +6,11 @@\n from decimal import Decimal\n import copy,hashlib,importlib.util,json,re,time\n import networkx as nx\n-B=Path(__file__).resolve().parent;P=Path('/dev/shm/nssoc-vco-v4-mim-v6-local-v1-wire-rc-01')\n+B=Path(__file__).resolve().parent;P=Path('/dev/shm/nssoc-div4-v7-wire-rc-01')\n from unittest.mock import patch\n import difflib\n spec=importlib.util.spec_from_file_location('strict_wire',B/'audit_wire_rc.py');m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)\n-a=json.loads((B/'anchors.json').read_text());positive=m.audit(P,a);assert positive['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'\n+a=json.loads((m.GEOMETRY/'anchors.json').read_text());positive=m.audit(P,a);assert positive['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'\n text=(P/'wires.spice').read_text();rows=text.splitlines();parsed=m.rawparser.parse_spice(text);graph=nx.Graph();graph.add_edges_from((x,y) for x,y,v in parsed['resistors']);anchor={r['label']:r['wire_component'] for r in a['anchors']};owner={};groups={}\n for c in nx.connected_components(graph):\n  ids={anchor[n] for n in c if n in anchor};assert len(ids)==1;idx=next(iter(ids));owner.update({n:idx for n in c});groups[idx]=sorted(c)\n@@ -55,5 +55,5 @@\n  except ValueError as e:observed=str(e)\n  else:raise AssertionError(name)\n  assert observed==wanted,(name,observed,wanted);results.append(dict(control=name,rejected_by=observed))\n-r=dict(status='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS',positive_status=positive['status'],cases=results,seconds=time.monotonic()-start,inputs={str(p):m.pin(p) for p in [Path(__file__),B/'audit_wire_rc.py',m.PRIOR,B/'anchors.json',*[P/n for n in ('bank_wires.ext','bank_wires.res.ext','native.log','wires.spice','baseline.spice')]]})\n+r=dict(status='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS',positive_status=positive['status'],cases=results,seconds=time.monotonic()-start,inputs={str(p):m.pin(p) for p in [Path(__file__),B/'audit_wire_rc.py',m.PRIOR,m.GEOMETRY/'anchors.json',*[P/n for n in ('bank_wires.ext','bank_wires.res.ext','native.log','wires.spice','baseline.spice')]]})\n (B/'native-mutations.json').write_text(json.dumps(r,indent=2)+'\\n');print(r['status'],r['seconds'])\n"
+    }
+  ],
+  "native_executed": false,
+  "all_original_graph_capacitance_and_attachment_rules_unchanged": true,
+  "method": {
+    "bytes": 3178,
+    "sha256": "17c70531fbb11401fdb940f89a1d7ea631cd1d4c41c76f651137c6d56014fa7a"
+  }
+}

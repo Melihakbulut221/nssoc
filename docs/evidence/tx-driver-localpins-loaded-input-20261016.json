@@ -1,0 +1,77 @@
+{
+  "source": {
+    "run": 38909917993,
+    "group": "tx-driver-localpins-compose",
+    "root": "cloud-tx-driver-localpins-compose",
+    "bytes": 8396068,
+    "sha": "94875bf3eefe06ee39ba3ce115867fe2c5df2017e5cfaf15da2a49441ca82259",
+    "summary": "ed35b35933e6514ad4e4b1a694513f04f4783b68147005d2852019929cc55209"
+  },
+  "summary_asset": 647463392,
+  "model_sha256": "c624e9d1597ac8b68a2fb4772673ad0ffade0c35a21a027cbd449de1e2acf3d6",
+  "counts": {
+    "devices": 100,
+    "wire_resistors": 260,
+    "wire_capacitors": 295,
+    "terminals": 372,
+    "wire_components": 10,
+    "body_nodes": 2,
+    "ports": [
+      "din",
+      "dout",
+      "avdd",
+      "dvdd",
+      "avss",
+      "sub",
+      "wire_cref"
+    ]
+  },
+  "adaptations": [
+    {
+      "path": "scripts/cloud_tx_driver_localpins_loaded.py",
+      "edits": [
+        {
+          "before": "8189a71869008cd996a4ef21243cd4a7ae45f1725ef9fc7b19b0e30eda52872a",
+          "after": "c624e9d1597ac8b68a2fb4772673ad0ffade0c35a21a027cbd449de1e2acf3d6",
+          "count": 1
+        },
+        {
+          "before": "==300",
+          "after": "==295",
+          "count": 1
+        },
+        {
+          "before": "(300 if",
+          "after": "(295 if",
+          "count": 1
+        },
+        {
+          "before": "260R300C",
+          "after": "260R295C",
+          "count": 2
+        },
+        {
+          "before": "all300wireC",
+          "after": "all295wireC",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "path": "scripts/cloud_tx_driver_localpins_wire_metrics.py",
+      "edits": [
+        {
+          "before": "8189a71869008cd996a4ef21243cd4a7ae45f1725ef9fc7b19b0e30eda52872a",
+          "after": "c624e9d1597ac8b68a2fb4772673ad0ffade0c35a21a027cbd449de1e2acf3d6",
+          "count": 1
+        },
+        {
+          "before": "==300",
+          "after": "==295",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "unchanged": "Original full34ns256bits/8GT/s, all672MOS and62HBT probes and limits, native options/zeroOP/OFF, clocks/sources/load, voltage phases and acceptance criteria. Byte-identical intrinsic control reused; actual driver wire geometry only changed. Not PHY/mainchip acceptance."
+}

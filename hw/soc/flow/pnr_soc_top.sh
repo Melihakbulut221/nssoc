@@ -1,0 +1,376 @@
+#!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+
+# Place and route soc_top -- the WHOLE SoC -- through LibreLane on IHP
+# SG13G2, with the RM_IHPSG13 SRAM macros of soc_mem_sram.v.
+#
+#   pnr_soc_top.sh <run-tag> [librelane args...]
+#
+#   pnr_soc_top.sh probe -T OpenROAD.STAPrePNR   # lint+synth+STA, minutes
+#   pnr_soc_top.sh full                          # the whole flow
+#   pnr_soc_top.sh full -F OpenROAD.CTS          # resume from a step
+#
+# docs/45 section 9 item 1: "Until something is placed, the honest
+# summary of this document is 'it synthesises, and the number that
+# decides the part is not a synthesis number'." This is the script that
+# places it. docs/47 is the run.
+#
+# =====================================================================
+# THE PILOT IS FROZEN AND THIS SCRIPT CANNOT TOUCH IT
+# =====================================================================
+#
+# docs/34 pins the TTIHP26b submission by git blob hash and the shuttle
+# closes 2026-09-21. hw/openlane/ -- run_trial.sh, pilot_ihp/,
+# sram_pilot/, aer_fifo/ and all 36 of their run directories -- is READ
+# by this script and never written. Three things follow and all three
+# are enforced rather than intended:
+#
+#   * the config lives in hw/soc/pnr/, not hw/openlane/;
+#   * the run directories are hw/soc/pnr/runs/<tag>, gitignored, named
+#     by --run-tag so LibreLane cannot pick one for itself;
+#   * this script refuses to run if its config directory would land
+#     inside hw/openlane/.
+#
+# The settings this config takes from hw/openlane/sram_pilot and
+# hw/openlane/pilot_ihp are COPIED with their reasons restated, and
+# hw/soc/pnr/pdn_macro.tcl is a new file with the same content as the
+# pilot's rather than a reference to it, so nothing here depends on a
+# frozen file staying where it is.
+#
+# =====================================================================
+# THE TOOLCHAIN IS THE PILOT'S, ROOTLESS, AND IT IS ASSERTED
+# =====================================================================
+#
+# Same discipline hw/openlane/run_trial.sh established in docs/12: no
+# docker, no root, no system package install. Per-tool shim wrappers in
+# an explicitly configured tool directory that each set LD_LIBRARY_PATH (the
+# OpenROAD build ships a newer glibc that segfaults host binaries if it
+# leaks into the ambient environment), a LibreLane virtualenv, and an
+# oss-cad-suite checkout for Yosys.
+#
+# Two traps this script asserts against rather than hoping about:
+#
+#   1. --pdk MUST be on the command line. LibreLane's ciel wrapper
+#      resolves and installs the PDK from the CLI option (default
+#      sky130A) BEFORE config.json is read, so "PDK": "ihp-sg13g2" in
+#      the config is then looked up inside the sky130 tree and the run
+#      dies with "PDK not found".
+#   2. A STALE ENABLED PDK DOES NOT ANNOUNCE ITSELF. ciel exposes one
+#      version through the $PDK_ROOT/<pdk> symlink and everything
+#      resolves through it, so hardening against a PDK the tool was
+#      never tested on looks exactly like hardening against the right
+#      one. The pin is read out of the installed wheel's
+#      pdk_hashes.yaml, not hard-coded here, and compared.
+#
+# =====================================================================
+# WHY VERILOG_FILES IS NOT IN config.json
+# =====================================================================
+#
+# The source list is about forty paths and its composition is a
+# DECISION: flow/ibex_sources.sh chooses hw/soc/rtl/ibex_regfile_secded.v
+# over hw/soc/gen/ibex_register_file_ff.v at IBEX_REGFILE=secded, and
+# hw/soc/genp/ibex_top.v over hw/soc/gen/ibex_top.v at
+# IBEX_FAULT_PORT=1, and exactly one of each pair may be in the list.
+# Duplicating that logic in JSON would create a second place that has
+# to agree with flow/syn_soc_top.sh and that nothing compares -- which
+# is the defect docs/44 section 5.4 and docs/45 section 4.1 both refuse
+# one level up.
+#
+# So this script merges the list into a RESOLVED COPY of config.json in
+# the run directory, and then ASSERTS that VERILOG_FILES is the only key
+# it added or changed apart from the explicit interface profile flag. docs/34 section 8.5's trap was a generator that
+# silently deleted a hand-added fix from a config; the assertion is what
+# stops this one from being able to. The resolved config is written
+# beside config.json, because LibreLane resolves `dir::` and the run
+# directory relative to the config file it is handed.
+
+set -euo pipefail
+
+RUN_TAG=${1:?usage: pnr_soc_top.sh <run-tag> [librelane args...]}
+shift || true
+
+SOC_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)
+PNR=$SOC_DIR/pnr
+# Refuse an out-of-scope config before preparation or tool availability can
+# obscure the actual error. resolve() also rejects an escaping symlink.
+if [ -n "${PNR_CONFIG:-}" ]; then
+  python3 - "$PNR" "$PNR_CONFIG" <<'PY'
+from pathlib import Path
+import sys
+if not Path(sys.argv[2]).resolve().is_relative_to(Path(sys.argv[1]).resolve()):
+    raise SystemExit('refusing: PNR_CONFIG must be under '+sys.argv[1])
+PY
+fi
+# Profile verification rejects stale or modified dependency bundles.
+SOC_INTERFACE_SETTINGS=$(python3 "$SOC_DIR/flow/interface_profile.py")
+eval "$SOC_INTERFACE_SETTINGS"
+REPO=$(cd "$SOC_DIR/../.." && pwd -P)
+PNR=$SOC_DIR/pnr
+# LibreLane resolves `dir::` against the config file's own directory and
+# puts its run directories in <that directory>/runs/<tag>, so the
+# resolved config has to sit beside config.json for the pdk_dir:: and
+# dir:: paths in it to mean what they say. hw/soc/pnr/runs/ and
+# hw/soc/pnr/config.resolved*.json are gitignored; nothing generated is
+# ever committed, by the rule docs/38 section 11 already applies.
+RUN_DIR=$PNR/runs
+
+case "$PNR" in
+  */hw/openlane/*) echo "refusing: config dir is inside the frozen hw/openlane/" >&2
+                   exit 1 ;;
+esac
+
+# shellcheck source=hw/soc/flow/physical_env.sh
+. "$SOC_DIR/flow/physical_env.sh"
+
+PDK=ihp-sg13g2
+SCL=sg13g2_stdcell
+
+[ -x "$FLOW_OPENROAD" ] || { echo "missing OpenROAD; configure physical tools (docs/98)" >&2; exit 1; }
+[ -x "$LIBRELANE" ] || { echo "missing LibreLane; configure physical tools (docs/98)" >&2; exit 1; }
+[ -x "$FLOW_PY" ] || { echo "missing FLOW_PY interpreter: $FLOW_PY" >&2; exit 1; }
+
+# ---- the PDK pin, read out of the tool rather than written down ------
+PIN="$("$FLOW_PY" - "$PDK" <<'PY'
+import sys, importlib.util, os, re
+spec = importlib.util.find_spec("librelane")
+path = os.path.join(os.path.dirname(spec.origin), "pdk_hashes.yaml")
+want = sys.argv[1]
+for line in open(path):
+    m = re.match(r"\s*([\w.-]+)\s*:\s*(\S+)", line)
+    if m and m.group(1) == want:
+        print(m.group(2)); break
+PY
+)"
+[ -n "$PIN" ] || { echo "no $PDK pin in this LibreLane's pdk_hashes.yaml" >&2; exit 1; }
+
+ENABLED=""
+if TARGET="$(readlink -e "$PDK_ROOT/$PDK" 2>/dev/null)"; then
+    ENABLED="$(basename "$(dirname "$TARGET")")"
+fi
+if [ "$ENABLED" != "$PIN" ]; then
+  echo "PDK version mismatch."
+  echo "  enabled: ${ENABLED:-<none>}"
+  echo "  pinned:  $PIN"
+  echo "Fix with: ciel enable --pdk-family $PDK $PIN"
+  exit 1
+fi
+
+# ---- the source list, from the one place that knows it ---------------
+IBEX_REGFILE=${IBEX_REGFILE:-secded}
+IBEX_FAULT_PORT=${IBEX_FAULT_PORT:-1}
+export IBEX_REGFILE IBEX_FAULT_PORT
+# shellcheck source=hw/soc/flow/ibex_sources.sh
+. "$SOC_DIR/flow/ibex_sources.sh"
+
+RTL=$SOC_DIR/rtl
+PILOT_RTL=$(cd "$SOC_DIR/../rtl" && pwd -P)
+
+for f in "$RTL/soc_memmap.vh" "$RTL/soc_pnp_rom.vh" "$RTL/soc_apb_pnp_rom.vh"; do
+  [ -f "$f" ] || { echo "missing $f: run 'python regmap/generate_memmap.py'" >&2
+                   exit 1; }
+done
+
+SRCS=$(
+  echo "$RTL/prim_clock_gating.v"
+  ibex_sources "$SOC_DIR"
+  echo "$IF_BUNDLE"
+  for f in soc_eth soc_spw soc_i2c soc_spi soc_can soc_apb_wb soc_bus soc_req_pipe soc_apb_bridge soc_uart soc_gpio soc_qspi soc_pnp soc_apb_pnp \
+           soc_clint soc_gptimer soc_wdog soc_busstat soc_scrub soc_boot \
+           soc_mem_ecc soc_tmr_bank; do
+    echo "$RTL/$f.v"
+  done
+  # READ from the pilot's directory and never modified, exactly as
+  # flow/syn_soc_top.sh reads them.
+  echo "$PILOT_RTL/tmr_voter.v"
+  # THE ACCELERATOR. docs/51 put `u_npu` inside soc_top.v and neither
+  # this list nor flow/syn_soc_top.sh's was updated, so `full3` -- the
+  # sign-off run docs/47 through docs/53 report from -- was hardened
+  # from a netlist with no accelerator in it. docs/57 section 3.2 and
+  # docs/59 section 7 found it independently; docs/61 is the re-run.
+  # soc_npu.v instantiates hw/rtl/pilot_top.v, the FROZEN pilot, so the
+  # four files below are READ out of hw/rtl/ and never modified.
+  echo "$RTL/soc_npu.v"
+  echo "$RTL/soc_npu_ser.v"
+  echo "$PILOT_RTL/pilot_top.v"
+  echo "$PILOT_RTL/lif_core.v"
+  echo "$PILOT_RTL/aer_fifo.v"
+  echo "$PILOT_RTL/scrub.v"
+  # secded_enc.v and secded_dec.v have two consumers -- the register-file
+  # codec and lif_core's weight-word ECC -- and ibex_sources() already
+  # emits them in the secded configuration. The rule is
+  # flow/syn_soc_top.sh's and flow/sim_soc.sh's: exactly one copy.
+  [ "$IBEX_REGFILE" = secded ] || {
+    echo "$PILOT_RTL/secded_enc.v"; echo "$PILOT_RTL/secded_dec.v"; }
+  # THE REAL MEMORIES. soc_mem.v is deliberately absent: two files
+  # declaring `soc_mem` would be a redeclaration, and the behavioural
+  # one is 589,824 registers.
+  echo "$RTL/soc_mem_sram.v"
+  echo "$RTL/soc_top.v"
+)
+
+# The base configuration. PNR_CONFIG selects a FLOORPLAN VARIANT written
+# by hw/soc/pnr/floorplan.py -- docs/48 measures what the floorplan of
+# docs/47 costs, and a second floorplan cannot be expressed on the
+# LibreLane command line: `-c KEY=VALUE` inserts the value as a STRING
+# and re-parses it with permissive typing, so `-c DIE_AREA=[0, 0, ...]`
+# is split on the commas and arrives as the Decimal '[0'. MACROS is a
+# dictionary of Macro objects and cannot be passed at all. So a variant
+# is a whole config file, generated, and it must live under hw/soc/pnr/
+# for the same reason config.json does: the refusal above is what keeps
+# this script out of the frozen hw/openlane/, and an arbitrary config
+# path would walk around it.
+# Match the actual mapped macro hierarchy, including ECC and packet SRAMs.
+# The old six-macro default silently disagreed with hardened RTL defaults.
+SYN_NETLIST=${SYN_NETLIST:-$SOC_DIR/out/s47-sram/soc_top.netlist.v}
+python3 "$SOC_DIR/flow/interface_profile.py" --netlist "$SYN_NETLIST" --bundle-only >/dev/null
+PROFILE_ARGS=(--netlist "$SYN_NETLIST" --directory "$PNR" --rom "${SOC_BOOT_ROM:-legacy}")
+if [ -n "${PNR_CONFIG:-}" ]; then PROFILE_ARGS+=(--config "$PNR_CONFIG"); fi
+PNR_CONFIG=$("$FLOW_PY" "$SOC_DIR/flow/select_pnr_profile.py" "${PROFILE_ARGS[@]}")
+PNR_CONFIG=$(cd "$(dirname "$PNR_CONFIG")" && pwd -P)/$(basename "$PNR_CONFIG")
+case "$PNR_CONFIG" in
+  "$PNR"/*) ;;
+  *) echo "refusing: PNR_CONFIG must be under $PNR" >&2; exit 1 ;;
+esac
+[ -f "$PNR_CONFIG" ] || { echo "no such config: $PNR_CONFIG" >&2; exit 1; }
+
+# The immutable ROM must be the same generated module in lint, synthesis
+# and physical source views. The config owns the define; never inject it
+# silently into a legacy profile. Keep each image in its own build directory.
+case "${SOC_BOOT_ROM:-legacy}" in
+  legacy) ;;
+  logic)
+    : "${SOC_BOOT_ROM_IMAGE:?Set SOC_BOOT_ROM_IMAGE to the compiled loader binary}"
+    : "${SOC_BOOT_ROM_DIR:?Set SOC_BOOT_ROM_DIR to the generated ROM directory}"
+    python3 "$SOC_DIR/flow/gen_logic_boot_rom.py" --image "$SOC_BOOT_ROM_IMAGE" --output "$SOC_BOOT_ROM_DIR"
+    SRCS="$SRCS
+$(cd "$SOC_BOOT_ROM_DIR" && pwd -P)/soc_logic_boot_rom.v"
+    ;;
+  *) echo 'SOC_BOOT_ROM must be legacy or logic' >&2; exit 2 ;;
+esac
+export SOC_BOOT_ROM="${SOC_BOOT_ROM:-legacy}"
+export SOC_ETH_SRAM="${SOC_ETH_SRAM:-0}"
+export SOC_SRAM_MBIST="${SOC_SRAM_MBIST:-0}"
+case "$SOC_SRAM_MBIST" in
+  0) ;;
+  1)
+    [ "$SOC_BOOT_ROM" = logic ] || { echo 'MBIST requires logic boot ROM' >&2; exit 2; }
+    SRCS="$SRCS
+$RTL/dft/soc_sram_mbist.v
+$RTL/dft/soc_sram_test_port.v
+$RTL/dft/soc_eth_fifo_sram.v
+$RTL/dft/soc_sram_zero_check.v"
+    # A pre-MBIST netlist must never masquerade as an integrated layout.
+    python3 - "$SYN_NETLIST" <<'PY_CHECK'
+import os, re, sys
+text = open(sys.argv[1]).read()
+for name in ("mbist_done_o", "mbist_failed_o", "mbist_fail_addr_o"):
+    assert re.search(r"\boutput\s+(?:\[[^]]+\]\s*)?" + name + r"\b", text), name
+assert "u_test_port" in text, "MBIST hierarchy absent from supplied netlist"
+if os.environ.get("SOC_ETH_SRAM") == "1":
+    assert "eth_mbist_done_o" in text and "u_sram.u_b" in text, "Ethernet MBIST absent from supplied netlist"
+PY_CHECK
+    ;;
+  *) echo 'SOC_SRAM_MBIST must be 0 or 1' >&2; exit 2 ;;
+esac
+
+# Concurrent variants must never rewrite a config that another LibreLane
+# invocation is about to read. Keep the unique snapshot beside config.json
+# so that all dir:: paths retain their original meaning.
+RESOLVED=$(mktemp "$PNR/config.resolved.XXXXXXXX.json")
+"$FLOW_PY" - "$PNR_CONFIG" "$RESOLVED" <<PY
+import json, os, sys
+src, dst = sys.argv[1], sys.argv[2]
+base = json.load(open(src))
+logic_rom = "SOC_LOGIC_BOOT_ROM" in (base.get("VERILOG_DEFINES") or [])
+assert logic_rom == (os.environ["SOC_BOOT_ROM"] == "logic"), \
+    "SOC_BOOT_ROM and config VERILOG_DEFINES select different ROM implementations"
+assert os.environ.get("SOC_SRAM_MBIST", "0") != "1" or logic_rom, \
+    "MBIST requires immutable logic ROM"
+srcs = """$SRCS""".split()
+assert srcs, "empty source list"
+assert "VERILOG_FILES" not in base, \
+    "config.json must not carry VERILOG_FILES; this script supplies it"
+out = dict(base)
+out["VERILOG_FILES"] = srcs
+# Only the explicitly selected interface flag may differ from the source
+# configuration. Preserve every unrelated definition and physical setting.
+defines = list(base.get("VERILOG_DEFINES") or [])
+if "SOC_SRAM_MBIST" in defines:
+    assert os.environ.get("SOC_SRAM_MBIST", "0") == "1", "MBIST config/profile mismatch"
+elif os.environ.get("SOC_SRAM_MBIST", "0") == "1":
+    defines.append("SOC_SRAM_MBIST")
+eth_mbist = os.environ.get("SOC_SRAM_MBIST", "0") == "1" and os.environ.get("SOC_ETH_SRAM", "0") == "1"
+if "SOC_ETH_MBIST" in defines:
+    assert eth_mbist, "Ethernet MBIST config/profile mismatch"
+elif eth_mbist:
+    defines.append("SOC_ETH_MBIST")
+if "SOC_LGPL_INTERFACES" in defines:
+    assert bool("$IF_DEFINE"), "Full-profile config cannot implement the base profile"
+elif "$IF_DEFINE":
+    defines.append("SOC_LGPL_INTERFACES")
+if defines or "VERILOG_DEFINES" in base:
+    out["VERILOG_DEFINES"] = defines
+# THE ASSERTION. Only source files and the exact profile flag may differ.
+added  = set(out) - set(base)
+changed = {k for k in base if base[k] != out[k]}
+assert "VERILOG_FILES" in added and added <= {"VERILOG_FILES", "VERILOG_DEFINES"}, f"generator added {added}"
+assert changed <= {"VERILOG_DEFINES"}, f"generator changed {changed}"
+assert [d for d in out.get("VERILOG_DEFINES", []) if d not in ("SOC_LGPL_INTERFACES", "SOC_SRAM_MBIST", "SOC_ETH_MBIST")] == \
+       [d for d in (base.get("VERILOG_DEFINES") or []) if d not in ("SOC_LGPL_INTERFACES", "SOC_SRAM_MBIST", "SOC_ETH_MBIST")], "unrelated defines changed"
+json.dump(out, open(dst, "w"), indent=4)
+print(f"resolved config: {dst}  ({len(srcs)} verilog files)")
+PY
+
+# ---- the netlist this flow hardens ----------------------------------
+#
+# LibreLane's own synthesis is NOT used, and hw/soc/pnr/config.json's
+# "//hierarchy" note carries the measurement behind that: both of its
+# hierarchy modes are wrong for this design, in opposite directions, and
+# neither is fixable from a configuration file. The initial state
+# written below names hw/soc/flow/syn_soc_top.sh's netlist, which folds
+# soc_top.v's constants into ibex_top AND releases soc_tmr_bank's
+# keep_hierarchy after technology mapping. It holds an absolute path, so
+# it is GENERATED here and gitignored rather than committed.
+#
+#   SOC_MEM=sram hw/soc/flow/syn_soc_top.sh 20 hw/soc/out/s47-sram
+#   hw/soc/flow/pnr_soc_top.sh <tag> -F Yosys.JsonHeader \
+#       -S Yosys.Synthesis -S Checker.YosysUnmappedCells \
+#       -S Checker.YosysSynthChecks -S Checker.NetlistAssignStatements \
+#       -i hw/soc/pnr/state/syn_soc_top.state.json
+#
+# PNR_STATE names the file that is written, and it defaults to the path
+# the command above passes. It exists because that path is SHARED: two
+# runs of this script started together -- a change and its baseline, the
+# comparison docs/61, docs/62 and docs/67 all needed -- would race on
+# one file and the second would silently harden the first one's netlist.
+# docs/68 ran exactly that pair and gives each its own state file. The
+# default is unchanged, so every command in every earlier document still
+# means what it said.
+SYN_NETLIST=${SYN_NETLIST:-$SOC_DIR/out/s47-sram/soc_top.netlist.v}
+PNR_STATE=${PNR_STATE:-$PNR/state/syn_soc_top.state.json}
+if [ -f "$SYN_NETLIST" ]; then
+  mkdir -p "$(dirname "$PNR_STATE")"
+  "$FLOW_PY" -c "import json,os,sys; json.dump({'nl': os.path.abspath(sys.argv[1]), 'metrics': {}}, open(sys.argv[2],'w'), indent=1)" \
+      "$SYN_NETLIST" "$PNR_STATE"
+  echo "netlist:   $SYN_NETLIST"
+  echo "state:     $PNR_STATE"
+else
+  echo "netlist:   $SYN_NETLIST not found; run flow/syn_soc_top.sh first"
+  echo "           (needed only for the -i form above)"
+fi
+
+echo "config:    $PNR_CONFIG"
+echo "run tag:   $RUN_TAG"
+echo "run dir:   $RUN_DIR/$RUN_TAG"
+echo "sources:   $(echo "$SRCS" | wc -l) verilog files"
+echo "pdk:       $PDK @ $PIN"
+echo "librelane: $("$LIBRELANE" --version 2>/dev/null | head -1)"
+
+LANE=("$LIBRELANE")
+if [ "${SOC_INTERFACE_FLOW:-0}" = 1 ]; then
+  LANE=("$FLOW_PY" "$PNR/interface_flow.py" --flow Interfaces)
+fi
+exec "${LANE[@]}" --pdk "$PDK" --scl "$SCL" \
+     --run-tag "$RUN_TAG" \
+     ${@+"$@"} "$RESOLVED"

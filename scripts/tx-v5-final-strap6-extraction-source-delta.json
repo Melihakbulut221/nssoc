@@ -1,0 +1,62 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_fast_stage_isolated_extraction.py",
+      "baseline_sha256": "696a3b751ffeef5ea2bf987b516a1ddb27f7e3982850b7f6cc356d9077f6a2a0",
+      "candidate_path": "scripts/cloud_tx_v5_final_strap6_extraction.py",
+      "candidate_sha256": "71ae5f00422abd0a09c8def17e958602b294c3f9f3a07a253e32e4d788aa41f9",
+      "edits": [
+        {
+          "before": "_faststage_isolated_core_v1",
+          "after": "_final_strap6_core_v1",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-fast-stage-isolated-physical-pass-20261018.json",
+          "after": "tx-v5-final-strap6-physical-pass-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "receipt['source_run']==39156383821 and receipt['source_head']=='4d9516cc5f2ce25ed4123be9426aef6912ff4988'",
+          "after": "receipt['source_run']==39217390888 and receipt['source_head']=='9be1ff7728c315c8b895ac02a7359e4ff1cabc03'",
+          "count": 1
+        },
+        {
+          "before": "e1c75799b04645647e12b078dbc26e2b829ef3e92f9faedc67d371b04d09ddef",
+          "after": "434b4ac63466d194c814a918d3f5d42a0e87ad249f0fb42d1ae8e61e16987068",
+          "count": 1
+        },
+        {
+          "before": "7c415e44d33ce74bdef89ee8c15cd204aa2f288de041cc9be06a3cf9bc6a971c",
+          "after": "66b00b9660184ccdadc0223f5ebef22fa1b9edb4faedba5fdd9010631848e2a5",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-fast-stage-isolated-assembly",
+          "after": "cloud-tx-v5-final-strap6-assembly",
+          "count": 1
+        },
+        {
+          "before": "physical['return_rail']['local_final_strap_width_um']==4.",
+          "after": "physical['return_rail']['local_final_strap_width_um']==6.",
+          "count": 1
+        },
+        {
+          "before": "from check_tx_v5_fast_stage_isolated_sources import check",
+          "after": "from check_tx_v5_final_strap6_sources import check",
+          "count": 1
+        },
+        {
+          "before": "scripts/cloud_tx_v5_fast_stage_isolated_assembly.py",
+          "after": "scripts/cloud_tx_v5_final_strap6_assembly.py",
+          "count": 1
+        },
+        {
+          "before": "result['independent_fast_stage_geometry']=gp",
+          "after": "result['independent_fast_stage_geometry']=gp\n        sg=json.loads((out/'strap6-geometry-delta.json').read_text());assert sg==physical['strap_geometry_delta']\n        assert sg['status']=='PASS_ONLY_FINAL_TM1_STRAP4TO6_GDS_DELTA' and sg['controls']==['old_width','removed_strap','unrelated_metal']\n        assert sg['before_width_um']==4 and sg['after_width_um']==6 and sg['original_vias_unchanged']\n        guard=ROOT/'scripts/check_tx_v5_final_strap6_geometry.py';assert sha(guard)==sg['inputs'][str(guard)]\n        result['independent_strap_geometry']=sg",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

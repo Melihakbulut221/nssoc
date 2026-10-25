@@ -1,0 +1,72 @@
+{
+  "status": "PASS_COMPLETE_NATIVE_STATE_FUNCTION_EQUIVALENCE_TWO_ACTUAL_RECIPES",
+  "peer": {
+    "bytes": 12913,
+    "sha256": "bcbbdda5539b586cabefca146997a83c6ee0028a83f45bd97a1ac0915d505165"
+  },
+  "native_monolithic_result": {
+    "bytes": 308902,
+    "sha256": "d1369d366c7e6e6f4b0b1b99df31423bc8906327782486651045647e914d92a2"
+  },
+  "native_partitioned_result": {
+    "bytes": 2721,
+    "sha256": "812d2e9fe33527cf54830be11461a4dd66ddc3d13217683bab401db486c45077"
+  },
+  "native_state_provenance_result": {
+    "bytes": 4650,
+    "sha256": "f711d3418c37621e902e915ac42b2bad9ad2dc016ba7b37b81f594988003e34d"
+  },
+  "covered_FF": 8426,
+  "independent_inputs": 8560,
+  "all_function_outputs": 25588,
+  "ordered_symbols": 34148,
+  "partition_ids": 4288,
+  "archive": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v2-20261004/terminal-proof-peer/pcie-integrity-v2-complete-native-equivalence-20261005.tar.xz",
+    "bytes": 37028984,
+    "sha256": "03f16b277166f94fcf3a3ed65c354983ee385dad26a199f233148647774b6a32"
+  },
+  "manifest": {
+    "bytes": 32994,
+    "sha256": "58a33ad3aad34ca8c75a612220ea15cefde525de6b4bb85b9b148ebf7e2786d3"
+  },
+  "members": 124,
+  "runtime_inventory_at_seal": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": {
+      "bytes": 540,
+      "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+      "historically_pinned": true
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys-abc": {
+      "bytes": 392,
+      "sha256": "9a47b87ed0f705246d61b289669c5540a42f31203da2c7971e35baed9fdfb4cf",
+      "historically_pinned": true
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libexec/yosys": {
+      "bytes": 33850192,
+      "sha256": "feb0030e6d6d42e0a013a7a023b532a0c5e3817a72b34d414a751bcfcb669224",
+      "historically_pinned": false
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/libexec/yosys-abc": {
+      "bytes": 20890624,
+      "sha256": "a5838e54cb489824ff8e2595aaa9ee7fe9af9c6597025de407dd4652007d282b",
+      "historically_pinned": true
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/lib/ld-linux-x86-64.so.2": {
+      "bytes": 254864,
+      "sha256": "c5e80a563850d6ab5c2f2482e4202d9c1b71fbf44854b8c399e63527202c64e1",
+      "historically_pinned": false
+    }
+  },
+  "preserved_failure_directories": [
+    "nssoc-integrity-v2-balanced-equivalence-01",
+    "nssoc-integrity-v2-balanced-equivalence-02"
+  ],
+  "scope": "Every final native state cut and all original cell fields/ports reconstructed exactly;8426 FF semantic bijection,8560 unconstrained input bits,25588 D/CLK/reset/public output bits,34148 identical ordered AIGER symbols. Actual completed monolithic and partitioned CEC both equivalent. PreABC partial graph is used only for state names, not functions. No solver/native rerun, timing or native port replay qualification; binary same-state transition functions only, no X/metastability/reset recovery-removal/full-PHY acceptance.",
+  "limitations": [
+    "Binary all-state function equivalence between exact default150 mapped V1/V2 graphs; no all-parameter claim.",
+    "No timing qualification, new native public-port replay, X/metastability/reset-recovery/removal or full PCIe/PHY acceptance.",
+    "Exact source/Liberty/cut/AIG inputs and actual tool binaries are archived; Yosys implementation binary and loader inventory is additive at seal, not a retroactive prelaunch pin.",
+    "Original failed attempts and earlier provisional peer are immutable; this is additive completed-proof evidence."
+  ]
+}

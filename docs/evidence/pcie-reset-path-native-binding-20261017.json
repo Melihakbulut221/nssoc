@@ -1,0 +1,2341 @@
+{
+  "source_run": 39017193590,
+  "source_head": "896e587db07244701baf32db1ec0b6a32b299700",
+  "summary_asset": 649962958,
+  "summary_sha256": "b2ac54b87f22af17e4fee618d6c5f0b27e1a8884fae2da84c8b37c01bd4c8781",
+  "status": "COMPLETE_EXACT_NATIVE_RETRAIN_TX_PATH_CELL_NET_BINDING_NOT_REPAIR",
+  "source": {
+    "proof_run": 39014414337,
+    "proof_summary_sha256": "982d8434120bf1a0ef84be1e500e3231b66d8ac7ec025492ad869e2eb7a6db6f",
+    "proof_archive_sha256": "276a5cac3bc74ff4c9c900802d7463fe72fdc70e6edb34b6f341d55b354348dc",
+    "path_summary_sha256": "a448aaed7067c8b7ba77256f18635877ce1a76f44bcaa8fc332a2e664b1770be",
+    "mapped_json_sha256": "cc6e3f09e7fcee3d50441ed62d872b3b837148dc7d1aa32510816af10a47d25e",
+    "native_netlist_sha256": "9422efa621bda80469cc82b43bc79bef6b9b95e712ce612536a2d89200ace814"
+  },
+  "scope": "Read-only exact saved native STA and post-ECO mapped JSON cell connectivity. No timing exception, new CAD run or circuit modification.",
+  "failed_observer_run_preserved": 39016835023,
+  "observer_fix": "Unique leading Verilog escape spelling normalization; every native cell type, pin direction, adjacent net and endpoint bit still matched. No physical data or timing exception changed.",
+  "paths": {
+    "nom_typ_1p20V_25C-max": {
+      "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+      "endpoint": "pcie_tx_data_o[5] (output port clocked by pcie_clk_i)",
+      "slack_ns": -3.791396,
+      "stages": [
+        {
+          "cell": "input48",
+          "native_cell": "input48",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "pcie_retrain_done_i",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net48",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "pcie_retrain_done_i",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "hold20120",
+          "native_cell": "hold20120",
+          "type": "sg13g2_dlygate4sd3_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "net48",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net20120",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net48",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1805615",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1805615",
+          "type": "sg13g2_nor2_1",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "net20120",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n31783",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n31782",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "net20120",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1805616",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1805616",
+          "type": "sg13g2_nand2_2",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n31783",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n31784",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "packet_rst_n",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n31783",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "fanout7365",
+          "native_cell": "fanout7365",
+          "type": "sg13g2_buf_4",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n31784",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net7365",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n31784",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1807570",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1807570",
+          "type": "sg13g2_inv_2",
+          "entry": "A",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "net7365",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33738",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net7365",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "fanout6813",
+          "native_cell": "fanout6813",
+          "type": "sg13g2_buf_4",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33738",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net6813",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33738",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1807571",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1807571",
+          "type": "sg13g2_nand2_1",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "net6813",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33739",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "u_pcie.flow.packets.endpoint.transmitter.ack_encoder.busy",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "net6813",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1807572",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1807572",
+          "type": "sg13g2_nor2_1",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33739",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33740",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net20532",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33739",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1807573",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1807573",
+          "type": "sg13g2_a22oi_1",
+          "entry": "B2",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33740",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33741",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "u_pcie.flow.packets.endpoint.transmitter.select_dllp",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "net20532",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33737",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B2": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33740",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810541",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810541",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33741",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36709",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33741",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "fanout4530",
+          "native_cell": "fanout4530",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36709",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net4530",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36709",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810542",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810542",
+          "type": "sg13g2_or2_1",
+          "entry": "B",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "net4530",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36710",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33739",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "net4530",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810543",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810543",
+          "type": "sg13g2_nor2_1",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36710",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36711",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "u_pcie.flow.packets.prefer_retry",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36710",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810544",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810544",
+          "type": "sg13g2_nor3_1",
+          "entry": "C",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36711",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36712",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net20270",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36708",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36711",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810545",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810545",
+          "type": "sg13g2_a21oi_1",
+          "entry": "B1",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36712",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36713",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "net20176",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "net20270",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36712",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1829869",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1829869",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36713",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56037",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36713",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "fanout2775",
+          "native_cell": "fanout2775",
+          "type": "sg13g2_buf_2",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56037",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net2775",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56037",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830527",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830527",
+          "type": "sg13g2_a21oi_1",
+          "entry": "B1",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "net2775",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56695",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "u_pcie.flow.packets.retry.bytes[22]",
+                  "bit": 5,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56181",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "net2775",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830529",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830529",
+          "type": "sg13g2_nand4_1",
+          "entry": "C",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56695",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56697",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56693",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56694",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56695",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "D": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56696",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830530",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830530",
+          "type": "sg13g2_nor4_2",
+          "entry": "D",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56697",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56698",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56684",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56689",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56692",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "D": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56697",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830531",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830531",
+          "type": "sg13g2_nand4_1",
+          "entry": "D",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56698",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56699",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56663",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56668",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56679",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "D": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56698",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830548",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830548",
+          "type": "sg13g2_nor4_2",
+          "entry": "D",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56699",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56716",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56715",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56705",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56710",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "D": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56699",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830549",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830549",
+          "type": "sg13g2_nand2b_2",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56716",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56717",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A_N": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56642",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56716",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830550",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830550",
+          "type": "sg13g2_o21ai_1",
+          "entry": "B1",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56717",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56718",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56612",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56613",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56717",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830557",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830557",
+          "type": "sg13g2_o21ai_1",
+          "entry": "A2",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56718",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net308",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56023",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56718",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56724",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "output308",
+          "native_cell": "output308",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "net308",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "pcie_tx_data_o",
+              "bit": 5,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net308",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    },
+    "nom_fast_1p32V_m40C-max": {
+      "startpoint": "pcie_retrain_done_i (input port clocked by pcie_clk_i)",
+      "endpoint": "pcie_tx_data_o[5] (output port clocked by pcie_clk_i)",
+      "slack_ns": -1.704735,
+      "stages": [
+        {
+          "cell": "input48",
+          "native_cell": "input48",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "pcie_retrain_done_i",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net48",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "pcie_retrain_done_i",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "hold20120",
+          "native_cell": "hold20120",
+          "type": "sg13g2_dlygate4sd3_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "net48",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net20120",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net48",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1805615",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1805615",
+          "type": "sg13g2_nor2_1",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "net20120",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n31783",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n31782",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "net20120",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1805616",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1805616",
+          "type": "sg13g2_nand2_2",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n31783",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n31784",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "packet_rst_n",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n31783",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "fanout7365",
+          "native_cell": "fanout7365",
+          "type": "sg13g2_buf_4",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n31784",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net7365",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n31784",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1807570",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1807570",
+          "type": "sg13g2_inv_2",
+          "entry": "A",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "net7365",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33738",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net7365",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "fanout6813",
+          "native_cell": "fanout6813",
+          "type": "sg13g2_buf_4",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33738",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net6813",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33738",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1807571",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1807571",
+          "type": "sg13g2_nand2_1",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "net6813",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33739",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "u_pcie.flow.packets.endpoint.transmitter.ack_encoder.busy",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "net6813",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1807572",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1807572",
+          "type": "sg13g2_nor2_1",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33739",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33740",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net20532",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33739",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1807573",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1807573",
+          "type": "sg13g2_a22oi_1",
+          "entry": "B2",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33740",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33741",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "u_pcie.flow.packets.endpoint.transmitter.select_dllp",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "net20532",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33737",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B2": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33740",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810541",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810541",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n33741",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36709",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33741",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "fanout4530",
+          "native_cell": "fanout4530",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36709",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net4530",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36709",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810542",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810542",
+          "type": "sg13g2_or2_1",
+          "entry": "B",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "net4530",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36710",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n33739",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "net4530",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810543",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810543",
+          "type": "sg13g2_nor2_1",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36710",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36711",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "u_pcie.flow.packets.prefer_retry",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36710",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810544",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810544",
+          "type": "sg13g2_nor3_1",
+          "entry": "C",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36711",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36712",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net20270",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36708",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36711",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1810545",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1810545",
+          "type": "sg13g2_a21oi_1",
+          "entry": "B1",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36712",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36713",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "net20176",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "net20270",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36712",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1829869",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1829869",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n36713",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56037",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n36713",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "fanout2775",
+          "native_cell": "fanout2775",
+          "type": "sg13g2_buf_2",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56037",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net2775",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56037",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830527",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830527",
+          "type": "sg13g2_a21oi_1",
+          "entry": "B1",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "net2775",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56695",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "u_pcie.flow.packets.retry.bytes[22]",
+                  "bit": 5,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56181",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "net2775",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830529",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830529",
+          "type": "sg13g2_nand4_1",
+          "entry": "C",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56695",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56697",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56693",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56694",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56695",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "D": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56696",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830530",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830530",
+          "type": "sg13g2_nor4_2",
+          "entry": "D",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56697",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56698",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56684",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56689",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56692",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "D": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56697",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830531",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830531",
+          "type": "sg13g2_nand4_1",
+          "entry": "D",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56698",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56699",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56663",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56668",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56679",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "D": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56698",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830548",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830548",
+          "type": "sg13g2_nor4_2",
+          "entry": "D",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56699",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56716",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56715",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56705",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "C": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56710",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "D": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56699",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830549",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830549",
+          "type": "sg13g2_nand2b_2",
+          "entry": "B",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56716",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56717",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A_N": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56642",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56716",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830550",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830550",
+          "type": "sg13g2_o21ai_1",
+          "entry": "B1",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56717",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56718",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56612",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56613",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56717",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "$abc$1804358$auto$blifparse.cc:397:parse_blif$1830557",
+          "native_cell": "\\$abc$1804358$auto$blifparse.cc:397:parse_blif$1830557",
+          "type": "sg13g2_o21ai_1",
+          "entry": "A2",
+          "exit": "Y",
+          "input_aliases": [
+            {
+              "net": "\\$abc$1804358$new_n56718",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "net308",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56023",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "A2": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56718",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ],
+            "B1": [
+              [
+                {
+                  "net": "\\$abc$1804358$new_n56724",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        },
+        {
+          "cell": "output308",
+          "native_cell": "output308",
+          "type": "sg13g2_buf_1",
+          "entry": "A",
+          "exit": "X",
+          "input_aliases": [
+            {
+              "net": "net308",
+              "bit": 0,
+              "hidden": false
+            }
+          ],
+          "output_aliases": [
+            {
+              "net": "pcie_tx_data_o",
+              "bit": 5,
+              "hidden": false
+            }
+          ],
+          "all_inputs": {
+            "A": [
+              [
+                {
+                  "net": "net308",
+                  "bit": 0,
+                  "hidden": false
+                }
+              ]
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "interpretation": "Actual retrain path enters ACK-encoder busy/select_dllp and prefer_retry arbitration before gating retry.bytes[22][5] and the wide data-selection reduction. This supports measuring the already-running banked RTL candidate before adding another speculative reset or latency change. hold20120 is a real input delay cell; removing it without new hold proof is not authorized by this result.",
+  "final_timing_complete": false,
+  "full_phy_accepted": false
+}

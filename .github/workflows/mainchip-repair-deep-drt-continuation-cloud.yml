@@ -1,0 +1,110 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-repair-deep-drt-continuation-cloud
+on:
+  push:
+    branches: [codex/complete-open-work]
+    paths: [.github/workflows/mainchip-repair-deep-drt-continuation-cloud.yml, scripts/cloud_mainchip_repair_deep_drt_continuation.py, scripts/check_mainchip_repair_deep_drt_continuation_sources.py, scripts/mainchip-repair-deep-drt-continuation-delta.json]
+  workflow_dispatch:
+    inputs:
+      source_checkpoint:
+        description: Exact completed cross-stage descriptor plus summary/parts hashes
+        required: true
+        type: string
+      seconds:
+        description: Native work seconds before saving the same process
+        required: true
+        default: '3600'
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: mainchip-repair-deep-drt-continuation-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact source compatibility and reject malformed checkpoints
+        run: |
+          python3 scripts/check_mainchip_repair_deep_drt_continuation_sources.py
+          python3 -m py_compile scripts/cloud_mainchip_repair_deep_drt_continuation.py
+          PYTHONPATH=scripts python3 -c "import json; from cloud_mainchip_repair_deep_drt_continuation import source_controls; print(json.dumps(source_controls()))"
+  continuation:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-22.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact source bytes
+        run: |
+          echo 'd033e54252166ab930a50e5d3039bee45ac114d6f5088a8316fb4fd8652c5ffc  scripts/cloud_mainchip_repair_deep_drt_continuation.py' | sha256sum --check
+      - name: Reserve cloud disk for actual routing process images
+        run: |
+          sudo rm -rf /usr/local/lib/android /opt/ghc /usr/share/dotnet
+          df -h /
+      - name: Install cloud-only checkpoint dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev
+          git init "$RUNNER_TEMP/criu-src"
+          git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
+          git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          git -C "$RUNNER_TEMP/criu-src" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/criu-src" rev-parse HEAD)" = 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          make -C "$RUNNER_TEMP/criu-src" -j2 criu PYTHON=/usr/bin/python3 2>&1 | tee "$RUNNER_TEMP/criu-build.log"
+          sudo install -m 755 "$RUNNER_TEMP/criu-src/criu/criu" /usr/sbin/criu
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          p=pathlib.Path('/usr/sbin/criu')
+          d=dict(source_repository='https://github.com/checkpoint-restore/criu',source_tag='v4.2.1',source_commit='9539417f3e3cfa4eb84c319cd71f4d52f1f08645',binary_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),version=subprocess.check_output([str(p),'--version'],text=True),libraries=subprocess.check_output(['ldd',str(p)],text=True))
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
+          PYCODE
+          python3 -m py_compile scripts/cloud_mainchip_repair_deep_drt_continuation.py
+      - name: Continue exact pinned active detailed-route process
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NSSOC_DRT_SOURCE: ${{ inputs.source_checkpoint }}
+          NSSOC_DRT_SECONDS: ${{ inputs.seconds }}
+        run: python3 scripts/cloud_mainchip_repair_deep_drt_continuation.py --stage cross
+      - name: Publish active router state and complete raw failure evidence
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          root=cloud-mainchip-repair-deep-drt-cross
+          mkdir -p "$root"
+          if [ -f "$RUNNER_TEMP/criu-build.log" ]; then cp "$RUNNER_TEMP/criu-build.log" "$root/criu-build.log"; fi
+          if [ ! -f "$root/result.json" ]; then
+            printf '%s\n' '{"status":"FAIL_MISSING_REPORT","route_complete":false,"final_timing_complete":false}' > "$root/result.json"
+          fi
+          stem="mainchip-repair-deep-drt-cross-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" <<'PYCODE'
+          import json,subprocess,sys
+          stem=sys.argv[1];manifest=stem+'.parts.json';m=json.load(open(manifest))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','mainchip-repair-deep-drt-cross',stem+'.summary.json',manifest,*[p['name']for p in m['parts']]],check=True)
+          PYCODE
+      - name: Preserve failed publication
+        if: always() && steps.publish.outcome == 'failure'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mainchip-repair-deep-drt-cross
+          path: cloud-mainchip-repair-deep-drt-cross/
+          retention-days: 30

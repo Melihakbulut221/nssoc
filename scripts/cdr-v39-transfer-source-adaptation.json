@@ -1,0 +1,72 @@
+{
+  "format": "cdr-v39-existing-full-record-observation-adaptation-v1",
+  "baseline_path": "scripts/cloud_cdr_v36_v37_transfer.py",
+  "baseline_sha256": "ed89420684077d276e2bb718707db7e252ee61e53bd49fa8d667ecba3fdbd0d6",
+  "candidate_path": "scripts/cloud_cdr_v39_transfer.py",
+  "candidate_sha256": "2a0fbfc551c345e31bb7f6be94c2f1bcc2baf8552090fe08e203aa1c40d301b0",
+  "edits": [
+    {
+      "before": "PINS={'slave_drive15_load12-nominal_early': ['5b01e77a251fa6f53a70d27de99521a8ba12f51ed98a7e51ed383fcc81990f63', '0a531dd66b10e409f121959aa75b3736321bdd3b662b4122a01d56cd48620c43'], 'slave_drive15_load12-nominal_late': ['52c07d1a7ab4b003ea7562a5ca7cdaa98deea9527a4c90e58cdb53ff0a1952b5', 'aec22382e8c614d18e360049c26fb50a12beb17a53f095ed6f226a7fc53602ca'], 'cdbias15-nominal_early': ['89989972ba6e72e976715725f5774b5af009d72a1d4e5b07b1da9c9c2e75dfa0', 'a263edfde17c78030c9dbcdefa8cecb09ff9b738d4e7584f43dafd17ecd6b1d5'], 'cdbias15-nominal_late': ['89a63b8e32236ea0e34e3a7f2faef939a390f2f9878786b271adbe186d35e468', 'f9f58aa633a0ebba354fdedcc830b10a6b91d673ce199aa5b435b12950c8b364']}",
+      "after": "PINS={'follower_l18-nominal_early': ['87fd7afc490796f004c89144b3e7a252474fc3c0ee03d956e846d95ef0fd73a9', 'a862b59874b2c18cb216af702e97e4a89aaf55219b1710b9d188d786c7118166'], 'follower_l18-nominal_late': ['52c08ff3ddf368080f84b1ca2857351835541b0cf1c85ea8c337077341139759', '81814a3606306a5a927cfcdc0640018e5ae1063133cc4483c0a27d22fb088eb0'], 'follower_l15-nominal_early': ['8b76c06b460dbac98bd7fd7ec5e45fd1f6702c223ecd214cd99d29d025ba73ba', 'dadf5ed87780efb25849f74dfaed9b633280af7bfb40c624fa2891747004b1c7'], 'follower_l15-nominal_late': ['5fd6ca740b229b608d22331195378efc5d254cc41a525ef63c24adde7a403556', '828d5f353b51d58c6ccb98f3427b98439e59c044c0fc705d727cf0aae12102aa']}",
+      "count": 1
+    },
+    {
+      "before": "choices=('slave_drive15_load12','cdbias15')",
+      "after": "choices=('follower_l18','follower_l15')",
+      "count": 1
+    },
+    {
+      "before": "cloud-cdr-v36-v37-transfer-",
+      "after": "cloud-cdr-v39-transfer-",
+      "count": 1
+    },
+    {
+      "before": "cdr-v36-v37-transfer-inputs-",
+      "after": "cdr-v39-transfer-inputs-",
+      "count": 1
+    },
+    {
+      "before": "docs/evidence/cdr-v36-v37-transfer-input-20261023.json",
+      "after": "docs/evidence/cdr-v39-transfer-input-20261023.json",
+      "count": 2
+    },
+    {
+      "before": "assert pin['run'] in (39850649751,39857552791)",
+      "after": "assert pin['run']==39869412251",
+      "count": 1
+    },
+    {
+      "before": "assert len(screen['changes'])==(64 if args.variant=='slave_drive15_load12'else 72)",
+      "after": "assert len(screen['changes'])==76",
+      "count": 1
+    },
+    {
+      "before": "scripts/cdr-v36-v37-transfer-source-adaptation.json",
+      "after": "scripts/cdr-v39-transfer-source-adaptation.json",
+      "count": 1
+    },
+    {
+      "before": "scripts/check_cdr_v36_v37_transfer_sources.py",
+      "after": "scripts/check_cdr_v39_transfer_sources.py",
+      "count": 1
+    },
+    {
+      "before": "input_width_um=4 if args.variant=='slave_drive15_load12'else 6",
+      "after": "input_width_um=6",
+      "count": 1
+    },
+    {
+      "before": "same complete exploratory v35 waveform",
+      "after": "same complete exploratory v39 waveform",
+      "count": 1
+    }
+  ],
+  "protected": {
+    "scripts/check_cdr_v39_transfer_sources.py": "05781d8fcfd97de09c7155da2bdf5e38b053b6d759689e0ef221fe9c16477841",
+    ".github/workflows/cdr-v39-transfer-cloud.yml": "7a034b9806d47023ed56c4dabdd4c98200e87e5f66e3902055078cd71b8f6539",
+    "docs/evidence/cdr-v39-transfer-input-20261023.json": "2c93f46f8540619209a79be5fbd871431250b1ab6405130ff1752fd24f684d71"
+  },
+  "native_simulation_started": false,
+  "original_observation_equations_unchanged": true,
+  "scope": "Only four immutable input recordings,76-declared-device accounting,6um C/D input resistors and report paths change; existing whole-capture/HBT/sampler reproduction, topology, transfer, headroom and steering equations remain identical."
+}

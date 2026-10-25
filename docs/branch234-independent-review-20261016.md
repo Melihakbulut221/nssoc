@@ -1,0 +1,7 @@
+# Independent review of the234cell routed candidate
+
+The endpoint, geometry and native RC annotation reviewers now accept `branch_hold_batch`, exactly234cumulative cells and88new cells on parent146. Each requires the actual completed source-bound report and ordered archive SHA256, invokes branch_hold_targets.validate_child, preserves the full logic/inversion, original constraints, DRT0 and source guards, and verifies the parent geometry/ODB and declared88branches after routing.
+
+Endpoint comparison remeasures every22544endpoint and135264corner/delay rows. It compares against both original baseline and the independently measured146parent38890552952, whose physical parent is38880596259. Selected88branch endpoints receive an additional explicit before/after report; their old fast hold and allcorner setup values must match the pinned recipe within1fs. This supplement never replaces the full census, global negative-slack counts, regressions or loss-of-constraint detection.
+
+The main physical run38896397749 is still computing. No child waveform/ODB/result hash is guessed, no review is dispatched against incomplete evidence, and no timing closure is asserted. Only the reviewer control jobs run on this change. Once the route release exists, verify its actual final report and run all three independent reviewers using exact summary/parts hashes. Retain the known obsolete inline assertion failure if it occurs; validate the actual report under the corrected234/88/146 contract separately.

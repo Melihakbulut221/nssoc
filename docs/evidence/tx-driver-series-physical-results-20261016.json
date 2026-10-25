@@ -1,0 +1,2857 @@
+{
+  "run": 38944147428,
+  "group": "tx-input-driver-pullup-l2p4-series-l6p2",
+  "source_head": "4f17848a3ac042528fb92d978697808c0584ad22",
+  "summary": {
+    "asset": 648150666,
+    "sha256": "05b76749dd3bf044096a98724e4bc2fb37d261849871e002d9be69b823c36b7b"
+  },
+  "parts": {
+    "asset": 648150739,
+    "sha256": "08b4af56bd30b4124e1c0dda572cc5498ce3148b1f67389de34004fb02ba4b0f"
+  },
+  "status": "PASS_FULL_DRIVER_NATIVE_PHYSICAL_GATES_NOT_EXTRACTED_ELECTRICAL_OR_PHY_ACCEPTANCE",
+  "geometry": {
+    "status": "GENERATED_UNVERIFIED_FULL_DRIVER",
+    "routing_profile": "compact_placement_local_public_pins",
+    "routing_width_um": {
+      "Metal3": 1.2,
+      "Metal4": 2.0,
+      "Metal5_signal": 2.4,
+      "Metal5_power": 6.0
+    },
+    "upper_vias": {
+      "columns": 2,
+      "rows": 2
+    },
+    "placement_pitch_um": {
+      "hv": 24,
+      "resistor": 28,
+      "spine": 7
+    },
+    "spine_start_y_um": 60,
+    "public_pin_policy": "near_first_actual_contact_without_x0_extension",
+    "rail_spans_um": {
+      "drv": [
+        71,
+        165
+      ],
+      "gate": [
+        167,
+        218
+      ],
+      "sink": [
+        67,
+        242
+      ],
+      "din": [
+        210,
+        216
+      ],
+      "dout": [
+        242,
+        300
+      ],
+      "dvdd": [
+        169,
+        183
+      ],
+      "avdd": [
+        266,
+        272
+      ],
+      "avss": [
+        61,
+        304
+      ],
+      "sub": [
+        57,
+        308
+      ]
+    },
+    "external_chip_connections_not_yet_routed": true,
+    "metal1_access_changed": false,
+    "fault": "base",
+    "original_source_sha256": "de22ecc19975aab5b35cf441f0c4b0ee289ae2dae9f1727625b22e2ae595f135",
+    "original_core_rows": [
+      {
+        "path": "xdriver.xgate",
+        "model": "rppd",
+        "nets": [
+          "din",
+          "gate",
+          "sub"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "12u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xdriver.xbuf.xn1",
+        "model": "sg13_lv_nmos",
+        "nets": [
+          "xbuf.net1",
+          "gate",
+          "avss",
+          "avss"
+        ],
+        "params": {
+          "w": "4.44u",
+          "l": "130.00n",
+          "ng": "6",
+          "ad": "8.436e-13",
+          "as": "1.066e-12",
+          "pd": "6.72e-06",
+          "ps": "8.8e-06",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xdriver.xbuf.xn0",
+        "model": "sg13_lv_nmos",
+        "nets": [
+          "drv",
+          "xbuf.net1",
+          "avss",
+          "avss"
+        ],
+        "params": {
+          "w": "11.84u",
+          "l": "130.00n",
+          "ng": "16",
+          "ad": "2.25e-12",
+          "as": "2.472e-12",
+          "pd": "1.792e-05",
+          "ps": "2e-05",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xdriver.xbuf.xp1",
+        "model": "sg13_lv_pmos",
+        "nets": [
+          "drv",
+          "xbuf.net1",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "17.92u",
+          "l": "130.00n",
+          "ng": "16",
+          "ad": "3.405e-12",
+          "as": "3.741e-12",
+          "pd": "2.4e-05",
+          "ps": "2.684e-05",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xdriver.xbuf.xp0",
+        "model": "sg13_lv_pmos",
+        "nets": [
+          "xbuf.net1",
+          "gate",
+          "dvdd",
+          "dvdd"
+        ],
+        "params": {
+          "w": "6.72u",
+          "l": "130.00n",
+          "ng": "6",
+          "ad": "1.277e-12",
+          "as": "1.613e-12",
+          "pd": "9e-06",
+          "ps": "1.184e-05",
+          "m": "1"
+        }
+      },
+      {
+        "path": "xdriver.xhv_0",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "sink",
+          "drv",
+          "avss",
+          "sub"
+        ],
+        "params": {
+          "w": "10u",
+          "l": ".45u",
+          "ng": "10"
+        }
+      },
+      {
+        "path": "xdriver.xhv_1",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "sink",
+          "drv",
+          "avss",
+          "sub"
+        ],
+        "params": {
+          "w": "10u",
+          "l": ".45u",
+          "ng": "10"
+        }
+      },
+      {
+        "path": "xdriver.xhv_2",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "sink",
+          "drv",
+          "avss",
+          "sub"
+        ],
+        "params": {
+          "w": "10u",
+          "l": ".45u",
+          "ng": "10"
+        }
+      },
+      {
+        "path": "xdriver.xhv_3",
+        "model": "sg13_hv_nmos",
+        "nets": [
+          "sink",
+          "drv",
+          "avss",
+          "sub"
+        ],
+        "params": {
+          "w": "10u",
+          "l": ".45u",
+          "ng": "10"
+        }
+      },
+      {
+        "path": "xdriver.xin",
+        "model": "rppd",
+        "nets": [
+          "sink",
+          "dout",
+          "sub"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "6.2u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xdriver.xup",
+        "model": "rppd",
+        "nets": [
+          "avdd",
+          "dout",
+          "sub"
+        ],
+        "params": {
+          "w": "4u",
+          "l": "2.4u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      },
+      {
+        "path": "xdriver.xdown",
+        "model": "rppd",
+        "nets": [
+          "dout",
+          "avss",
+          "sub"
+        ],
+        "params": {
+          "w": "2u",
+          "l": "7.10u",
+          "b": "0",
+          "sw_et": "1"
+        }
+      }
+    ],
+    "core_devices": 12,
+    "raw_mos_fingers": 84,
+    "finite_taps": 12,
+    "explicit_added_taps": 10,
+    "intrinsic_buf_ties": {
+      "ntap1": {
+        "area_um2": 3.5999999999999996,
+        "perimeter_um": 24.6,
+        "polygon_dbu": "(0,3630;0,3930;12000,3930;12000,3630) props={}",
+        "derivation": "Activ intersect NWell minus pSD and GatPoly"
+      },
+      "ptap1": {
+        "area_um2": 3.5999999999999996,
+        "perimeter_um": 24.6,
+        "polygon_dbu": "(0,-150;0,150;12000,150;12000,-150) props={}",
+        "derivation": "Activ intersect pSD minus NWell and GatPoly"
+      }
+    },
+    "raw_reference_devices": 100,
+    "aggregate_reference_devices_before_combination": 24,
+    "substrate_mapping": [
+      {
+        "path": "xdriver.xgate",
+        "original_body": "sub",
+        "physical_body": "BULK"
+      },
+      {
+        "path": "xdriver.xbuf.xn1",
+        "original_body": "avss",
+        "physical_body": "BULK"
+      },
+      {
+        "path": "xdriver.xbuf.xn0",
+        "original_body": "avss",
+        "physical_body": "BULK"
+      },
+      {
+        "path": "xdriver.xbuf.xp1",
+        "original_body": "dvdd",
+        "physical_body": "NWELL"
+      },
+      {
+        "path": "xdriver.xbuf.xp0",
+        "original_body": "dvdd",
+        "physical_body": "NWELL"
+      },
+      {
+        "path": "xdriver.xhv_0",
+        "original_body": "sub",
+        "physical_body": "BULK"
+      },
+      {
+        "path": "xdriver.xhv_1",
+        "original_body": "sub",
+        "physical_body": "BULK"
+      },
+      {
+        "path": "xdriver.xhv_2",
+        "original_body": "sub",
+        "physical_body": "BULK"
+      },
+      {
+        "path": "xdriver.xhv_3",
+        "original_body": "sub",
+        "physical_body": "BULK"
+      },
+      {
+        "path": "xdriver.xin",
+        "original_body": "sub",
+        "physical_body": "BULK"
+      },
+      {
+        "path": "xdriver.xup",
+        "original_body": "sub",
+        "physical_body": "BULK"
+      },
+      {
+        "path": "xdriver.xdown",
+        "original_body": "sub",
+        "physical_body": "BULK"
+      }
+    ],
+    "common_substrate_model_qualified": false,
+    "original_junction_parameters_retained_in_aggregate_reference": true,
+    "raw_reference_not_simulation_substitute": true,
+    "imported_material_and_pin_geometry_unchanged": {
+      "nssoc_tx_hv_ng10_v1": "2aff9cabcfbb26dc32e47c0c31debec8845bed19f61ed46ff675fb81ac14259a",
+      "sg13g2_buf_16": "d79686e590e9a6032e395da36f70940b33d3e8e02f437c269eb906199fe15046"
+    },
+    "buffer_substrate_annotation": "cell-local Substrate rectangle and sub! labels, absent only in missing_body_marker fault",
+    "placements": [
+      {
+        "cell": "nssoc_tx_hv_ng10_v1",
+        "x_um": 0,
+        "y_um": 0,
+        "native_transform": "r0 0,0"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 53.0,
+        "y_um": 21.0,
+        "native_transform": "r0 53,21"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 60.0,
+        "y_um": 21.0,
+        "native_transform": "r0 60,21"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 53.0,
+        "y_um": 27.0,
+        "native_transform": "r0 53,27"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 64.0,
+        "y_um": 27.0,
+        "native_transform": "r0 64,27"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 53.0,
+        "y_um": 33.0,
+        "native_transform": "r0 53,33"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 68.0,
+        "y_um": 33.0,
+        "native_transform": "r0 68,33"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 53.0,
+        "y_um": 35.0,
+        "native_transform": "r0 53,35"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 72.0,
+        "y_um": 35.0,
+        "native_transform": "r0 72,35"
+      },
+      {
+        "cell": "nssoc_tx_hv_ng10_v1",
+        "x_um": 24,
+        "y_um": 0,
+        "native_transform": "r0 24,0"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 77.0,
+        "y_um": 21.0,
+        "native_transform": "r0 77,21"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 84.0,
+        "y_um": 21.0,
+        "native_transform": "r0 84,21"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 77.0,
+        "y_um": 27.0,
+        "native_transform": "r0 77,27"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 88.0,
+        "y_um": 27.0,
+        "native_transform": "r0 88,27"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 77.0,
+        "y_um": 33.0,
+        "native_transform": "r0 77,33"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 92.0,
+        "y_um": 33.0,
+        "native_transform": "r0 92,33"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 77.0,
+        "y_um": 35.0,
+        "native_transform": "r0 77,35"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 96.0,
+        "y_um": 35.0,
+        "native_transform": "r0 96,35"
+      },
+      {
+        "cell": "nssoc_tx_hv_ng10_v1",
+        "x_um": 48,
+        "y_um": 0,
+        "native_transform": "r0 48,0"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 101.0,
+        "y_um": 21.0,
+        "native_transform": "r0 101,21"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 108.0,
+        "y_um": 21.0,
+        "native_transform": "r0 108,21"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 101.0,
+        "y_um": 27.0,
+        "native_transform": "r0 101,27"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 112.0,
+        "y_um": 27.0,
+        "native_transform": "r0 112,27"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 101.0,
+        "y_um": 33.0,
+        "native_transform": "r0 101,33"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 116.0,
+        "y_um": 33.0,
+        "native_transform": "r0 116,33"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 101.0,
+        "y_um": 35.0,
+        "native_transform": "r0 101,35"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 120.0,
+        "y_um": 35.0,
+        "native_transform": "r0 120,35"
+      },
+      {
+        "cell": "nssoc_tx_hv_ng10_v1",
+        "x_um": 72,
+        "y_um": 0,
+        "native_transform": "r0 72,0"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 125.0,
+        "y_um": 21.0,
+        "native_transform": "r0 125,21"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 132.0,
+        "y_um": 21.0,
+        "native_transform": "r0 132,21"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 125.0,
+        "y_um": 27.0,
+        "native_transform": "r0 125,27"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 136.0,
+        "y_um": 27.0,
+        "native_transform": "r0 136,27"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 125.0,
+        "y_um": 33.0,
+        "native_transform": "r0 125,33"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 140.0,
+        "y_um": 33.0,
+        "native_transform": "r0 140,33"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 125.0,
+        "y_um": 35.0,
+        "native_transform": "r0 125,35"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 144.0,
+        "y_um": 35.0,
+        "native_transform": "r0 144,35"
+      },
+      {
+        "cell": "sg13g2_buf_16",
+        "x_um": 144,
+        "y_um": 30,
+        "native_transform": "r0 144,30"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 146.0,
+        "y_um": 31.68,
+        "native_transform": "r0 146,31.68"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 146.0,
+        "y_um": 38.0,
+        "native_transform": "r0 146,38"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 164.0,
+        "y_um": 38.0,
+        "native_transform": "r0 164,38"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 154.85,
+        "y_um": 31.68,
+        "native_transform": "r0 154.85,31.68"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 154.85,
+        "y_um": 40.0,
+        "native_transform": "r0 154.85,40"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 168.0,
+        "y_um": 40.0,
+        "native_transform": "r0 168,40"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 144.4,
+        "y_um": 33.78,
+        "native_transform": "r0 144.4,33.78"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 144.4,
+        "y_um": 42.0,
+        "native_transform": "r0 144.4,42"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 172.0,
+        "y_um": 42.0,
+        "native_transform": "r0 172,42"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 150.0,
+        "y_um": 30.0,
+        "native_transform": "r0 150,30"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 150.0,
+        "y_um": 44.0,
+        "native_transform": "r0 150,44"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 176.0,
+        "y_um": 44.0,
+        "native_transform": "r0 176,44"
+      },
+      {
+        "cell": "ntap1",
+        "x_um": 158,
+        "y_um": 32,
+        "native_transform": "r0 158,32"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 159.0,
+        "y_um": 33.0,
+        "native_transform": "r0 159,33"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 159.0,
+        "y_um": 46.0,
+        "native_transform": "r0 159,46"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 180.0,
+        "y_um": 46.0,
+        "native_transform": "r0 180,46"
+      },
+      {
+        "cell": "ptap1",
+        "x_um": 158,
+        "y_um": 24,
+        "native_transform": "r0 158,24"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 159.0,
+        "y_um": 25.0,
+        "native_transform": "r0 159,25"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 159.0,
+        "y_um": 25.0,
+        "native_transform": "r0 159,25"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 184.0,
+        "y_um": 25.0,
+        "native_transform": "r0 184,25"
+      },
+      {
+        "cell": "rppd",
+        "x_um": 196,
+        "y_um": 30,
+        "native_transform": "r0 196,30"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 197.0,
+        "y_um": 29.72,
+        "native_transform": "r0 197,29.72"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 197.0,
+        "y_um": 29.72,
+        "native_transform": "r0 197,29.72"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 213.0,
+        "y_um": 29.72,
+        "native_transform": "r0 213,29.72"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 197.0,
+        "y_um": 42.28,
+        "native_transform": "r0 197,42.28"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 197.0,
+        "y_um": 42.28,
+        "native_transform": "r0 197,42.28"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 217.0,
+        "y_um": 42.28,
+        "native_transform": "r0 217,42.28"
+      },
+      {
+        "cell": "ptap1",
+        "x_um": 206,
+        "y_um": 20,
+        "native_transform": "r0 206,20"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 207.0,
+        "y_um": 21.0,
+        "native_transform": "r0 207,21"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 207.0,
+        "y_um": 21.0,
+        "native_transform": "r0 207,21"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 221.0,
+        "y_um": 21.0,
+        "native_transform": "r0 221,21"
+      },
+      {
+        "cell": "rppd$1",
+        "x_um": 224,
+        "y_um": 30,
+        "native_transform": "r0 224,30"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 225.0,
+        "y_um": 29.72,
+        "native_transform": "r0 225,29.72"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 225.0,
+        "y_um": 29.72,
+        "native_transform": "r0 225,29.72"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 241.0,
+        "y_um": 29.72,
+        "native_transform": "r0 241,29.72"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 225.0,
+        "y_um": 36.480000000000004,
+        "native_transform": "r0 225,36.48"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 225.0,
+        "y_um": 36.480000000000004,
+        "native_transform": "r0 225,36.48"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 245.0,
+        "y_um": 36.480000000000004,
+        "native_transform": "r0 245,36.48"
+      },
+      {
+        "cell": "ptap1",
+        "x_um": 234,
+        "y_um": 20,
+        "native_transform": "r0 234,20"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 235.0,
+        "y_um": 21.0,
+        "native_transform": "r0 235,21"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 235.0,
+        "y_um": 21.0,
+        "native_transform": "r0 235,21"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 249.0,
+        "y_um": 21.0,
+        "native_transform": "r0 249,21"
+      },
+      {
+        "cell": "rppd$2",
+        "x_um": 252,
+        "y_um": 30,
+        "native_transform": "r0 252,30"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 254.0,
+        "y_um": 29.72,
+        "native_transform": "r0 254,29.72"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 254.0,
+        "y_um": 29.72,
+        "native_transform": "r0 254,29.72"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 269.0,
+        "y_um": 29.72,
+        "native_transform": "r0 269,29.72"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 254.0,
+        "y_um": 32.68,
+        "native_transform": "r0 254,32.68"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 254.0,
+        "y_um": 32.68,
+        "native_transform": "r0 254,32.68"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 273.0,
+        "y_um": 32.68,
+        "native_transform": "r0 273,32.68"
+      },
+      {
+        "cell": "ptap1",
+        "x_um": 262,
+        "y_um": 20,
+        "native_transform": "r0 262,20"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 263.0,
+        "y_um": 21.0,
+        "native_transform": "r0 263,21"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 263.0,
+        "y_um": 21.0,
+        "native_transform": "r0 263,21"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 277.0,
+        "y_um": 21.0,
+        "native_transform": "r0 277,21"
+      },
+      {
+        "cell": "rppd$3",
+        "x_um": 280,
+        "y_um": 30,
+        "native_transform": "r0 280,30"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 281.0,
+        "y_um": 29.72,
+        "native_transform": "r0 281,29.72"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 281.0,
+        "y_um": 29.72,
+        "native_transform": "r0 281,29.72"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 297.0,
+        "y_um": 29.72,
+        "native_transform": "r0 297,29.72"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 281.0,
+        "y_um": 37.38,
+        "native_transform": "r0 281,37.38"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 281.0,
+        "y_um": 37.38,
+        "native_transform": "r0 281,37.38"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 301.0,
+        "y_um": 37.38,
+        "native_transform": "r0 301,37.38"
+      },
+      {
+        "cell": "ptap1",
+        "x_um": 290,
+        "y_um": 20,
+        "native_transform": "r0 290,20"
+      },
+      {
+        "cell": "via_stack",
+        "x_um": 291.0,
+        "y_um": 21.0,
+        "native_transform": "r0 291,21"
+      },
+      {
+        "cell": "via_stack$1",
+        "x_um": 291.0,
+        "y_um": 21.0,
+        "native_transform": "r0 291,21"
+      },
+      {
+        "cell": "via_stack$2",
+        "x_um": 305.0,
+        "y_um": 21.0,
+        "native_transform": "r0 305,21"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 72.0,
+        "y_um": 60.0,
+        "native_transform": "r0 72,60"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 96.0,
+        "y_um": 60.0,
+        "native_transform": "r0 96,60"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 120.0,
+        "y_um": 60.0,
+        "native_transform": "r0 120,60"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 144.0,
+        "y_um": 60.0,
+        "native_transform": "r0 144,60"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 164.0,
+        "y_um": 60.0,
+        "native_transform": "r0 164,60"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 168.0,
+        "y_um": 67.0,
+        "native_transform": "r0 168,67"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 217.0,
+        "y_um": 67.0,
+        "native_transform": "r0 217,67"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 68.0,
+        "y_um": 74.0,
+        "native_transform": "r0 68,74"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 92.0,
+        "y_um": 74.0,
+        "native_transform": "r0 92,74"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 116.0,
+        "y_um": 74.0,
+        "native_transform": "r0 116,74"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 140.0,
+        "y_um": 74.0,
+        "native_transform": "r0 140,74"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 241.0,
+        "y_um": 74.0,
+        "native_transform": "r0 241,74"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 213.0,
+        "y_um": 81.0,
+        "native_transform": "r0 213,81"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 245.0,
+        "y_um": 88.0,
+        "native_transform": "r0 245,88"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 273.0,
+        "y_um": 88.0,
+        "native_transform": "r0 273,88"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 297.0,
+        "y_um": 88.0,
+        "native_transform": "r0 297,88"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 172.0,
+        "y_um": 95.0,
+        "native_transform": "r0 172,95"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 180.0,
+        "y_um": 95.0,
+        "native_transform": "r0 180,95"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 269.0,
+        "y_um": 102.0,
+        "native_transform": "r0 269,102"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 64.0,
+        "y_um": 109.0,
+        "native_transform": "r0 64,109"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 88.0,
+        "y_um": 109.0,
+        "native_transform": "r0 88,109"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 112.0,
+        "y_um": 109.0,
+        "native_transform": "r0 112,109"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 136.0,
+        "y_um": 109.0,
+        "native_transform": "r0 136,109"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 176.0,
+        "y_um": 109.0,
+        "native_transform": "r0 176,109"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 301.0,
+        "y_um": 109.0,
+        "native_transform": "r0 301,109"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 60.0,
+        "y_um": 116.0,
+        "native_transform": "r0 60,116"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 84.0,
+        "y_um": 116.0,
+        "native_transform": "r0 84,116"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 108.0,
+        "y_um": 116.0,
+        "native_transform": "r0 108,116"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 132.0,
+        "y_um": 116.0,
+        "native_transform": "r0 132,116"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 184.0,
+        "y_um": 116.0,
+        "native_transform": "r0 184,116"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 221.0,
+        "y_um": 116.0,
+        "native_transform": "r0 221,116"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 249.0,
+        "y_um": 116.0,
+        "native_transform": "r0 249,116"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 277.0,
+        "y_um": 116.0,
+        "native_transform": "r0 277,116"
+      },
+      {
+        "cell": "via_stack$3",
+        "x_um": 305.0,
+        "y_um": 116.0,
+        "native_transform": "r0 305,116"
+      }
+    ],
+    "routes": [
+      {
+        "net": "sub",
+        "source_um": [
+          53,
+          21
+        ],
+        "lane_um": 60,
+        "connection_present": true
+      },
+      {
+        "net": "avss",
+        "source_um": [
+          53,
+          27
+        ],
+        "lane_um": 64,
+        "connection_present": true
+      },
+      {
+        "net": "sink",
+        "source_um": [
+          53,
+          33
+        ],
+        "lane_um": 68,
+        "connection_present": true
+      },
+      {
+        "net": "drv",
+        "source_um": [
+          53,
+          35
+        ],
+        "lane_um": 72,
+        "connection_present": true
+      },
+      {
+        "net": "sub",
+        "source_um": [
+          77,
+          21
+        ],
+        "lane_um": 84,
+        "connection_present": true
+      },
+      {
+        "net": "avss",
+        "source_um": [
+          77,
+          27
+        ],
+        "lane_um": 88,
+        "connection_present": true
+      },
+      {
+        "net": "sink",
+        "source_um": [
+          77,
+          33
+        ],
+        "lane_um": 92,
+        "connection_present": true
+      },
+      {
+        "net": "drv",
+        "source_um": [
+          77,
+          35
+        ],
+        "lane_um": 96,
+        "connection_present": true
+      },
+      {
+        "net": "sub",
+        "source_um": [
+          101,
+          21
+        ],
+        "lane_um": 108,
+        "connection_present": true
+      },
+      {
+        "net": "avss",
+        "source_um": [
+          101,
+          27
+        ],
+        "lane_um": 112,
+        "connection_present": true
+      },
+      {
+        "net": "sink",
+        "source_um": [
+          101,
+          33
+        ],
+        "lane_um": 116,
+        "connection_present": true
+      },
+      {
+        "net": "drv",
+        "source_um": [
+          101,
+          35
+        ],
+        "lane_um": 120,
+        "connection_present": true
+      },
+      {
+        "net": "sub",
+        "source_um": [
+          125,
+          21
+        ],
+        "lane_um": 132,
+        "connection_present": true
+      },
+      {
+        "net": "avss",
+        "source_um": [
+          125,
+          27
+        ],
+        "lane_um": 136,
+        "connection_present": true
+      },
+      {
+        "net": "sink",
+        "source_um": [
+          125,
+          33
+        ],
+        "lane_um": 140,
+        "connection_present": true
+      },
+      {
+        "net": "drv",
+        "source_um": [
+          125,
+          35
+        ],
+        "lane_um": 144,
+        "connection_present": true
+      },
+      {
+        "net": "drv",
+        "source_um": [
+          146.0,
+          38.0
+        ],
+        "lane_um": 164,
+        "connection_present": true
+      },
+      {
+        "net": "gate",
+        "source_um": [
+          154.85,
+          40.0
+        ],
+        "lane_um": 168,
+        "connection_present": true
+      },
+      {
+        "net": "dvdd",
+        "source_um": [
+          144.4,
+          42.0
+        ],
+        "lane_um": 172,
+        "connection_present": true
+      },
+      {
+        "net": "avss",
+        "source_um": [
+          150.0,
+          44.0
+        ],
+        "lane_um": 176,
+        "connection_present": true
+      },
+      {
+        "net": "dvdd",
+        "source_um": [
+          159.0,
+          46
+        ],
+        "lane_um": 180,
+        "connection_present": true
+      },
+      {
+        "net": "sub",
+        "source_um": [
+          159.0,
+          25.0
+        ],
+        "lane_um": 184,
+        "connection_present": true
+      },
+      {
+        "net": "din",
+        "source_um": [
+          197.0,
+          29.72
+        ],
+        "lane_um": 213,
+        "connection_present": true
+      },
+      {
+        "net": "gate",
+        "source_um": [
+          197.0,
+          42.28
+        ],
+        "lane_um": 217,
+        "connection_present": true
+      },
+      {
+        "net": "sub",
+        "source_um": [
+          207.0,
+          21.0
+        ],
+        "lane_um": 221,
+        "connection_present": true
+      },
+      {
+        "net": "sink",
+        "source_um": [
+          225.0,
+          29.72
+        ],
+        "lane_um": 241,
+        "connection_present": true
+      },
+      {
+        "net": "dout",
+        "source_um": [
+          225.0,
+          36.480000000000004
+        ],
+        "lane_um": 245,
+        "connection_present": true
+      },
+      {
+        "net": "sub",
+        "source_um": [
+          235.0,
+          21.0
+        ],
+        "lane_um": 249,
+        "connection_present": true
+      },
+      {
+        "net": "avdd",
+        "source_um": [
+          254.0,
+          29.72
+        ],
+        "lane_um": 269,
+        "connection_present": true
+      },
+      {
+        "net": "dout",
+        "source_um": [
+          254.0,
+          32.68
+        ],
+        "lane_um": 273,
+        "connection_present": true
+      },
+      {
+        "net": "sub",
+        "source_um": [
+          263.0,
+          21.0
+        ],
+        "lane_um": 277,
+        "connection_present": true
+      },
+      {
+        "net": "dout",
+        "source_um": [
+          281.0,
+          29.72
+        ],
+        "lane_um": 297,
+        "connection_present": true
+      },
+      {
+        "net": "avss",
+        "source_um": [
+          281.0,
+          37.38
+        ],
+        "lane_um": 301,
+        "connection_present": true
+      },
+      {
+        "net": "sub",
+        "source_um": [
+          291.0,
+          21.0
+        ],
+        "lane_um": 305,
+        "connection_present": true
+      }
+    ],
+    "ports": {
+      "din": "(210,79.8;214,82.2)",
+      "dout": "(242,86.8;246,89.2)",
+      "dvdd": "(169,92;173,98)",
+      "avdd": "(266,99;270,105)",
+      "avss": "(61,106;65,112)",
+      "sub": "(57,113;61,119)"
+    },
+    "full_driver_accepted": false,
+    "qualified_pex": false,
+    "serial_phy_complete": false,
+    "pullup_variant": "l2p4",
+    "series_variant": "l6p2",
+    "physical_series_length_um": 6.2,
+    "declared_source_device_changes": [
+      {
+        "index": 9,
+        "path": "xdriver.xin",
+        "original": {
+          "path": "xdriver.xin",
+          "model": "rppd",
+          "nets": [
+            "xdriver.sink",
+            "dout",
+            "sub"
+          ],
+          "params": {
+            "w": "2u",
+            "l": "6.92u",
+            "b": "0",
+            "sw_et": "1"
+          }
+        },
+        "physical": {
+          "path": "xdriver.xin",
+          "model": "rppd",
+          "nets": [
+            "sink",
+            "dout",
+            "sub"
+          ],
+          "params": {
+            "w": "2u",
+            "l": "6.2u",
+            "b": "0",
+            "sw_et": "1"
+          }
+        }
+      },
+      {
+        "index": 10,
+        "path": "xdriver.xup",
+        "original": {
+          "path": "xdriver.xup",
+          "model": "rppd",
+          "nets": [
+            "avdd",
+            "dout",
+            "sub"
+          ],
+          "params": {
+            "w": "4u",
+            "l": "3.08u",
+            "b": "0",
+            "sw_et": "1"
+          }
+        },
+        "physical": {
+          "path": "xdriver.xup",
+          "model": "rppd",
+          "nets": [
+            "avdd",
+            "dout",
+            "sub"
+          ],
+          "params": {
+            "w": "4u",
+            "l": "2.4u",
+            "b": "0",
+            "sw_et": "1"
+          }
+        }
+      }
+    ],
+    "effective_driver_source_sha256": "5d7523617f4b60710558ecc90fc2bd47b8f66cae276a077822ee7ef7dae75a7f",
+    "physical_resistor_length_um": 2.4
+  },
+  "checks": {
+    "raw_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_lvs/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/raw.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 2.653340500000013,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "a82b664a065bfc63c8a9ddf973f24d975fd35432e88d6988c5017c8422c20790"
+      },
+      "combine_devices": false,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.5178883479999854,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "Match",
+            "layout_devices_recursive": 100,
+            "schematic_devices_recursive": 100
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_lvs/result.lvsdb": {
+            "bytes": 129558,
+            "sha256": "bd36cc4bdf55984992617111e3aa6f13907e4e968eadfe3e642493a38938d06b"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_lvs/deck.log": {
+            "bytes": 37196,
+            "sha256": "52f38ebd162980c4e6dcb71ae8803b63fc80b413970bcc72d76cc383e8a18b59"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:02\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ dout avdd din dvdd\nR$1 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$18 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 din \\$33 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$5 dvdd \\$15 ntap1 A=4p P=8u\nM$6 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.2516p AD=0.1406p\n+ PS=2.16u PD=1.12u rfmode=0\nM$7 \\$23 \\$I262 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$8 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$9 \\$23 \\$I262 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$10 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$11 \\$23 \\$I262 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$12 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$13 \\$23 \\$I262 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$14 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$15 \\$23 \\$I262 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$16 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$17 \\$23 \\$I262 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$18 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$19 \\$23 \\$I262 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$20 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$21 \\$23 \\$I262 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$22 avss \\$33 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$23 \\$I262 \\$33 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$24 avss \\$33 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$25 \\$I262 \\$33 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$26 avss \\$33 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$27 \\$I262 \\$33 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.2516p\n+ PS=1.12u PD=2.16u rfmode=0\nM$28 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.3976p AD=0.2128p\n+ PS=2.95u PD=1.5u rfmode=0\nM$29 \\$23 \\$I262 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$30 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$31 \\$23 \\$I262 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$32 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$33 \\$23 \\$I262 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$34 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$35 \\$23 \\$I262 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$36 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$37 \\$23 \\$I262 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$38 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$39 \\$23 \\$I262 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$40 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$41 \\$23 \\$I262 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$42 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$43 \\$23 \\$I262 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$44 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$45 \\$I262 \\$33 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$46 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$47 \\$I262 \\$33 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$48 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$49 \\$I262 \\$33 dvdd \\$15 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.3808p\n+ PS=1.5u PD=2.92u rfmode=0\nR$50 dvdd \\$15 ntap1 A=3.6p P=24.6u\nR$51 avss \\$1 ptap1 A=3.6p P=24.6u\nR$52 sub \\$1 ptap1 A=4p P=8u\nR$53 sub \\$1 ptap1 A=4p P=8u\nR$54 sub \\$1 ptap1 A=4p P=8u\nR$55 sub \\$1 ptap1 A=4p P=8u\nR$56 sub \\$1 ptap1 A=4p P=8u\nR$57 sub \\$1 ptap1 A=4p P=8u\nR$58 sub \\$1 ptap1 A=4p P=8u\nR$59 sub \\$1 ptap1 A=4p P=8u\nR$60 sub \\$1 ptap1 A=4p P=8u\nM$61 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.34p AD=0.19p PS=2.68u\n+ PD=1.38u rfmode=0\nM$62 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$63 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$64 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$65 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$66 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$67 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$68 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$69 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$70 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\nM$71 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.34p AD=0.19p PS=2.68u\n+ PD=1.38u rfmode=0\nM$72 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$73 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$74 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$75 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$76 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$77 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$78 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$79 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$80 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\nM$81 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.34p AD=0.19p PS=2.68u\n+ PD=1.38u rfmode=0\nM$82 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$83 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$84 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$85 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$86 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$87 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$88 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$89 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$90 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\nM$91 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.34p AD=0.19p PS=2.68u\n+ PD=1.38u rfmode=0\nM$92 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$93 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$94 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$95 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$96 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$97 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$98 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$99 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$100 \\$18 \\$23 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "raw_flat_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_flat_lvs/deck.log",
+          "-rd",
+          "run_mode=flat",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/raw.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_flat_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_flat_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=false"
+        ],
+        "returncode": 0,
+        "seconds": 2.590058899999974,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "c36a242f6b6713300ef0d3e8d0d48a2387ff6c51c98f0a00147a34a1bddb9979"
+      },
+      "combine_devices": false,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_flat_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_flat_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_flat_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.5282295779999799,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "Match",
+            "layout_devices_recursive": 100,
+            "schematic_devices_recursive": 100
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_flat_lvs/result.lvsdb": {
+            "bytes": 103608,
+            "sha256": "5313a52b2bde7c1f7e08be0cf6572a5b6b7428b27301b4a97c9ea48d5b28bfa9"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-raw_flat_lvs/deck.log": {
+            "bytes": 37193,
+            "sha256": "4f9059b28956d827b965d643f13866e4248acbbfb294e3d32151b030996a6d41"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:02\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ din avdd dvdd dout\nM$1 avss \\$28 \\$38 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.2516p AD=0.1406p\n+ PS=2.16u PD=1.12u rfmode=0\nM$2 \\$38 \\$28 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$3 avss \\$28 \\$38 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$4 \\$38 \\$28 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$5 avss \\$28 \\$38 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$6 \\$38 \\$28 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$7 avss \\$28 \\$38 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$8 \\$38 \\$28 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$9 avss \\$28 \\$38 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$10 \\$38 \\$28 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$11 avss \\$28 \\$38 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$12 \\$38 \\$28 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$13 avss \\$28 \\$38 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$14 \\$38 \\$28 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$15 avss \\$28 \\$38 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$16 \\$38 \\$28 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$17 avss \\$29 \\$28 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$18 \\$28 \\$29 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$19 avss \\$29 \\$28 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$20 \\$28 \\$29 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$21 avss \\$29 \\$28 \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.1406p\n+ PS=1.12u PD=1.12u rfmode=0\nM$22 \\$28 \\$29 avss \\$1 sg13_lv_nmos L=0.13u W=0.74u AS=0.1406p AD=0.2516p\n+ PS=1.12u PD=2.16u rfmode=0\nM$23 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.34p AD=0.19p PS=2.68u\n+ PD=1.38u rfmode=0\nM$24 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$25 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$26 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$27 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$28 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$29 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$30 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$31 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$32 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\nM$33 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.34p AD=0.19p PS=2.68u\n+ PD=1.38u rfmode=0\nM$34 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$35 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$36 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$37 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$38 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$39 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$40 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$41 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$42 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\nM$43 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.34p AD=0.19p PS=2.68u\n+ PD=1.38u rfmode=0\nM$44 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$45 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$46 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$47 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$48 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$49 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$50 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$51 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$52 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\nM$53 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.34p AD=0.19p PS=2.68u\n+ PD=1.38u rfmode=0\nM$54 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$55 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$56 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$57 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$58 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$59 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$60 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$61 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.19p PS=1.38u\n+ PD=1.38u rfmode=0\nM$62 \\$24 \\$38 avss \\$1 sg13_hv_nmos L=0.45u W=1u AS=0.19p AD=0.34p PS=1.38u\n+ PD=2.68u rfmode=0\nM$63 dvdd \\$28 \\$38 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.3976p AD=0.2128p\n+ PS=2.95u PD=1.5u rfmode=0\nM$64 \\$38 \\$28 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$65 dvdd \\$28 \\$38 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$66 \\$38 \\$28 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$67 dvdd \\$28 \\$38 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$68 \\$38 \\$28 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$69 dvdd \\$28 \\$38 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$70 \\$38 \\$28 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$71 dvdd \\$28 \\$38 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$72 \\$38 \\$28 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$73 dvdd \\$28 \\$38 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$74 \\$38 \\$28 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$75 dvdd \\$28 \\$38 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$76 \\$38 \\$28 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$77 dvdd \\$28 \\$38 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$78 \\$38 \\$28 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$79 dvdd \\$29 \\$28 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$80 \\$28 \\$29 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$81 dvdd \\$29 \\$28 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$82 \\$28 \\$29 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$83 dvdd \\$29 \\$28 \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.2128p\n+ PS=1.5u PD=1.5u rfmode=0\nM$84 \\$28 \\$29 dvdd \\$27 sg13_lv_pmos L=0.13u W=1.12u AS=0.2128p AD=0.3808p\n+ PS=1.5u PD=2.92u rfmode=0\nR$85 din \\$29 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$86 \\$24 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$87 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$88 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$89 dvdd \\$27 ntap1 A=3.6p P=24.6u\nR$90 dvdd \\$27 ntap1 A=4p P=8u\nR$91 sub \\$1 ptap1 A=4p P=8u\nR$92 sub \\$1 ptap1 A=4p P=8u\nR$93 sub \\$1 ptap1 A=4p P=8u\nR$94 sub \\$1 ptap1 A=4p P=8u\nR$95 sub \\$1 ptap1 A=4p P=8u\nR$96 sub \\$1 ptap1 A=4p P=8u\nR$97 sub \\$1 ptap1 A=4p P=8u\nR$98 sub \\$1 ptap1 A=4p P=8u\nR$99 sub \\$1 ptap1 A=4p P=8u\nR$100 avss \\$1 ptap1 A=3.6p P=24.6u\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "aggregate_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_lvs/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.6234527159999743,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "587445e89c2287665ac6f3cc5e637f512dc57657eea6fc96e7ae34ad183539f8"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.5070595870000147,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "Match",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_lvs/result.lvsdb": {
+            "bytes": 106511,
+            "sha256": "4396d9bdd287f32db9f4177c32cc2229eec3ef360dde6b0ddd351442dde1bd53"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_lvs/deck.log": {
+            "bytes": 37213,
+            "sha256": "a6b15d599de28e2dd27b3472dd0d91cf3f618634a4262b55065077185e22f49c"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:02\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ dout avdd din dvdd\nR$1 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$18 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 din \\$33 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$5 dvdd \\$15 ntap1 A=7.6p P=32.6u\nM$6 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p AD=2.2496p\n+ PS=18.96u PD=17.92u rfmode=0\nM$22 avss \\$33 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p AD=0.9546p\n+ PS=6.72u PD=7.76u rfmode=0\nM$28 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$44 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$51 avss \\$1 ptap1 A=3.6p P=24.6u\nR$52 sub \\$1 ptap1 A=36p P=72u\nM$61 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=40u AS=8.2p AD=8.2p PS=60.4u\n+ PD=60.4u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "aggregate_flat_lvs": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_flat_lvs/deck.log",
+          "-rd",
+          "run_mode=flat",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_flat_lvs/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_flat_lvs/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.6068032560000347,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "c3b91c39e65061030828680e43a5b2a3c9ea2e36ca6279567d683f963386edf7"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_flat_lvs/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_flat_lvs/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_flat_lvs/audit.json"
+        ],
+        "returncode": 0,
+        "seconds": 0.509772125999973,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4b1037791b92dbe3cd45336824a7f0463acb7449831c636927aaaab7e57f5046"
+      },
+      "audit": {
+        "status": "PASS within comparison scope",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "Match",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_flat_lvs/result.lvsdb": {
+            "bytes": 80522,
+            "sha256": "f36187bb00078df787fdd4c4d31dd3eac3c59f35300f2bc46c3bd1eea259db31"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-aggregate_flat_lvs/deck.log": {
+            "bytes": 37210,
+            "sha256": "bdbe19539b875bf60ec9671143ae41180896e310b9bc0ea158867b005582dc4c"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:02\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ din avdd dvdd dout\nM$1 avss \\$28 \\$38 \\$1 sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p AD=2.2496p\n+ PS=18.96u PD=17.92u rfmode=0\nM$17 avss \\$29 \\$28 \\$1 sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p AD=0.9546p\n+ PS=6.72u PD=7.76u rfmode=0\nM$23 avss \\$38 \\$24 \\$1 sg13_hv_nmos L=0.45u W=40u AS=8.2p AD=8.2p PS=60.4u\n+ PD=60.4u rfmode=0\nM$63 dvdd \\$28 \\$38 \\$27 sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$79 dvdd \\$29 \\$28 \\$27 sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$85 din \\$29 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$86 \\$24 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$87 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$88 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$89 dvdd \\$27 ntap1 A=7.6p P=32.6u\nR$91 sub \\$1 ptap1 A=36p P=72u\nR$100 avss \\$1 ptap1 A=3.6p P=24.6u\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "wrong_width": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_width/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/wrong_width.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_width/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_width/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.612020077000011,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "38a70c7cd3c07d1afeddccffcdcb9d4b9f38c86cde79bfb3e1dd1ab55cba9fc3"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_width/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_width/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_width/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.5210979379999685,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_width/result.lvsdb": {
+            "bytes": 106511,
+            "sha256": "f1facc0526591f1bb4cde1a39d83d0ed999b9ab262ee13fec9bc20fb4cae896c"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_width/deck.log": {
+            "bytes": 37200,
+            "sha256": "cc85e2ed5ef2d32879f57d1b568c83d90b8359e77ae73ad0cb87c294f87335ac"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:02\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ dout avdd din dvdd\nR$1 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$18 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 din \\$33 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$5 dvdd \\$15 ntap1 A=7.6p P=32.6u\nM$6 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p AD=2.2496p\n+ PS=18.96u PD=17.92u rfmode=0\nM$22 avss \\$33 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p AD=0.9546p\n+ PS=6.72u PD=7.76u rfmode=0\nM$28 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$44 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$51 avss \\$1 ptap1 A=3.6p P=24.6u\nR$52 sub \\$1 ptap1 A=36p P=72u\nM$61 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=40u AS=8.2p AD=8.2p PS=60.4u\n+ PD=60.4u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "hv_gate_open": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/hv_gate_open/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-hv_gate_open/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/hv_gate_open/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-hv_gate_open/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-hv_gate_open/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.6020428639999977,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "2d5af6357a96289dc7b798862ab016e51f3ba3b1f304b4cb76209c6ad46fe27f"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-hv_gate_open/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-hv_gate_open/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-hv_gate_open/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.5241487280000001,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 13,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-hv_gate_open/result.lvsdb": {
+            "bytes": 106968,
+            "sha256": "f63885abb0b3140d8d03e49ddf4250430027faff949b50f1013157cb04ceba05"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-hv_gate_open/deck.log": {
+            "bytes": 37216,
+            "sha256": "9e828bb169b34da164845a59411ce389c594cbb45c8bfccef37fa6b61f40ea21"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:02\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ dout avdd din dvdd\nR$1 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$18 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 din \\$33 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$5 dvdd \\$15 ntap1 A=7.6p P=32.6u\nM$6 avss \\$I262 \\$24 \\$1 sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p AD=2.2496p\n+ PS=18.96u PD=17.92u rfmode=0\nM$22 avss \\$33 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p AD=0.9546p\n+ PS=6.72u PD=7.76u rfmode=0\nM$28 dvdd \\$I262 \\$24 \\$15 sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$44 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$51 avss \\$1 ptap1 A=3.6p P=24.6u\nR$52 sub \\$1 ptap1 A=36p P=72u\nM$61 avss \\$24 \\$18 \\$1 sg13_hv_nmos L=0.45u W=30u AS=6.15p AD=6.15p PS=45.3u\n+ PD=45.3u rfmode=0\nM$91 avss \\$I159 \\$18 \\$1 sg13_hv_nmos L=0.45u W=10u AS=2.05p AD=2.05p PS=15.1u\n+ PD=15.1u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "input_open": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/input_open/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-input_open/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/input_open/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-input_open/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-input_open/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.613664483999969,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "cc9b52f93e50bf9eb9aa39ee088b41bd4b6d976e4746fd44fa65da21229f810f"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-input_open/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-input_open/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-input_open/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.5336112129999719,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "Match": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "Match",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-input_open/result.lvsdb": {
+            "bytes": 106529,
+            "sha256": "b461e6b9e72eace52affcb72a951bb754316fce621343bb864b6a0c15485ea7b"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-input_open/deck.log": {
+            "bytes": 37208,
+            "sha256": "95a3759c5ff6ae81f1e1329edea72b8c2ad39f5aaea72f6d66280b9dac28bdc8"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:02\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ dout avdd dvdd\nR$1 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$18 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 \\$I61 \\$34 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$5 dvdd \\$15 ntap1 A=7.6p P=32.6u\nM$6 avss \\$I262 \\$20 \\$1 sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p AD=2.2496p\n+ PS=18.96u PD=17.92u rfmode=0\nM$22 avss \\$34 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p AD=0.9546p\n+ PS=6.72u PD=7.76u rfmode=0\nM$28 dvdd \\$I262 \\$20 \\$15 sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$44 dvdd \\$34 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$51 avss \\$1 ptap1 A=3.6p P=24.6u\nR$52 sub \\$1 ptap1 A=36p P=72u\nM$61 avss \\$20 \\$18 \\$1 sg13_hv_nmos L=0.45u W=40u AS=8.2p AD=8.2p PS=60.4u\n+ PD=60.4u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "missing_well_tap": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/missing_well_tap/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_well_tap/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/missing_well_tap/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_well_tap/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_well_tap/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.6532988820000014,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "7be7e0332840e00708f72c37916ddb89f7340ca83d880087598fc0dabb3195b9"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_well_tap/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_well_tap/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_well_tap/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.5126075869999909,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 11,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_well_tap/result.lvsdb": {
+            "bytes": 104318,
+            "sha256": "2cb19ef5240ea2168136c9c6e16a21f074c61a03173c152581a86927dd225fdf"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_well_tap/deck.log": {
+            "bytes": 37228,
+            "sha256": "271c48f4a4d3f696d778e275f865968fa47476c96e38f4c429238ae49dca66c7"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:02\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ dout avdd din dvdd\nR$1 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$16 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 din \\$52 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nM$5 avss \\$I253 \\$31 \\$1 sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p AD=2.2496p\n+ PS=18.96u PD=17.92u rfmode=0\nM$21 avss \\$52 \\$I253 \\$1 sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p AD=0.9546p\n+ PS=6.72u PD=7.76u rfmode=0\nM$27 dvdd \\$I253 \\$31 dvdd sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$43 dvdd \\$52 \\$I253 dvdd sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$49 avss \\$1 ptap1 A=3.6p P=24.6u\nR$50 sub \\$1 ptap1 A=36p P=72u\nM$59 avss \\$31 \\$16 \\$1 sg13_hv_nmos L=0.45u W=40u AS=8.2p AD=8.2p PS=60.4u\n+ PD=60.4u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "missing_body_marker": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/missing_body_marker/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_body_marker/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/missing_body_marker/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_body_marker/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_body_marker/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.617363945999955,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "a48265467d5aa7974ce95986a4af547ce20f23cfc2fe5376b3c1eec808be4020"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_body_marker/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_body_marker/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_body_marker/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.522716507000041,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 11,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_body_marker/result.lvsdb": {
+            "bytes": 106674,
+            "sha256": "f201627ccab7201eb38fb553efdad1baa5c83374e978463a3e8dcb37bdd6a571"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-missing_body_marker/deck.log": {
+            "bytes": 37243,
+            "sha256": "b53dcc491045e937adb0e375025d0b684359969f984e15095cbe96f5a595359b"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:02\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 avss sub\n+ dout avdd din dvdd\nR$1 avdd dout avss rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$18 dout avss rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 din \\$33 avss rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss avss rppd w=2u l=7.1u ps=0u b=0 m=1\nR$5 dvdd \\$15 ntap1 A=7.6p P=32.6u\nM$6 avss \\$I262 \\$23 avss sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p AD=2.2496p\n+ PS=18.96u PD=17.92u rfmode=0\nM$22 avss \\$33 \\$I262 avss sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p AD=0.9546p\n+ PS=6.72u PD=7.76u rfmode=0\nM$28 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$44 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$51 sub avss ptap1 A=36p P=72u\nM$60 avss \\$23 \\$18 avss sg13_hv_nmos L=0.45u W=40u AS=8.2p AD=8.2p PS=60.4u\n+ PD=60.4u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "body_short": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/body_short/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-body_short/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/body_short/aggregate.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-body_short/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-body_short/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.6030363469999998,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "6878207fe3fb84179c070372a85b0737571de12667de13e40ad126695cb4cfcd"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-body_short/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-body_short/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-body_short/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.5161754860000087,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 11,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-body_short/result.lvsdb": {
+            "bytes": 106610,
+            "sha256": "7ecaafca32045f86094b75dd831ef5518e74f7f36d6fc16179f6f57640065877"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-body_short/deck.log": {
+            "bytes": 37208,
+            "sha256": "3620abb139e64b776bc5d67f3c563f47a3cc48ff6b13aa86a3133058f94e1305"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:03\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 avss|sub\n+ dout avdd din dvdd\nR$1 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$18 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 din \\$33 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss|sub \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$5 dvdd \\$15 ntap1 A=7.6p P=32.6u\nM$6 avss|sub \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p\n+ AD=2.2496p PS=18.96u PD=17.92u rfmode=0\nM$22 avss|sub \\$33 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p\n+ AD=0.9546p PS=6.72u PD=7.76u rfmode=0\nM$28 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$44 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$51 avss|sub \\$1 ptap1 A=39.6p P=96.6u\nM$61 avss|sub \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=40u AS=8.2p AD=8.2p PS=60.4u\n+ PD=60.4u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "drc": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-drc/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-drc/drc.lyrdb",
+          "-rd",
+          "threads=2",
+          "-rd",
+          "no_recommended=False",
+          "-rd",
+          "precheck_drc=False"
+        ],
+        "returncode": 0,
+        "seconds": 3.4832303709999906,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "436343798f901766f07f1040d3f012c603ac9daf73e16834d4aab8f5adf39677"
+      },
+      "combine_devices": false,
+      "no_simplify": true,
+      "measurement": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "1572117b7a6aeca6d0b4bebac3632e90245521928cccd73da5ff40da1bfdb9ce",
+        "log_sha256": "436343798f901766f07f1040d3f012c603ac9daf73e16834d4aab8f5adf39677"
+      },
+      "marker_items": [],
+      "expected_verdict_observed": true
+    },
+    "offgrid": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-drc-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/drc/ihp-sg13g2.drc",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/offgrid/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-offgrid/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-offgrid/drc.lyrdb",
+          "-rd",
+          "threads=2",
+          "-rd",
+          "no_recommended=False",
+          "-rd",
+          "precheck_drc=False"
+        ],
+        "returncode": 0,
+        "seconds": 3.490136784000015,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "b560e8bc4844fc86c6896000868ccbca0b9a62c950c465b1441108a1467c9dd3"
+      },
+      "combine_devices": false,
+      "no_simplify": true,
+      "measurement": {
+        "status": "FAIL",
+        "process_returncode": 0,
+        "markers": 4,
+        "categories": {
+          "metal3_drw_Offgrid": 4
+        },
+        "category_count": 560,
+        "report_sha256": "306b38c295c4a102d5741e04e9ed70b0f3efbe0c6ae8a0adada1b9c7eea33c95",
+        "log_sha256": "b560e8bc4844fc86c6896000868ccbca0b9a62c950c465b1441108a1467c9dd3"
+      },
+      "marker_items": [
+        "<item>\n   <tags />\n   <category>metal3_drw_Offgrid</category>\n   <cell>nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1</cell>\n   <visited>false</visited>\n   <multiplicity>1</multiplicity>\n   <comment />\n   <image />\n   <values>\n    <value>edge-pair: (52.401,20.4;52.401,20.4)/(52.401,20.4;52.401,20.4)</value>\n   </values>\n  </item>\n  ",
+        "<item>\n   <tags />\n   <category>metal3_drw_Offgrid</category>\n   <cell>nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1</cell>\n   <visited>false</visited>\n   <multiplicity>1</multiplicity>\n   <comment />\n   <image />\n   <values>\n    <value>edge-pair: (52.401,21.6;52.401,21.6)/(52.401,21.6;52.401,21.6)</value>\n   </values>\n  </item>\n  ",
+        "<item>\n   <tags />\n   <category>metal3_drw_Offgrid</category>\n   <cell>nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1</cell>\n   <visited>false</visited>\n   <multiplicity>1</multiplicity>\n   <comment />\n   <image />\n   <values>\n    <value>edge-pair: (60.601,21.6;60.601,21.6)/(60.601,21.6;60.601,21.6)</value>\n   </values>\n  </item>\n  ",
+        "<item>\n   <tags />\n   <category>metal3_drw_Offgrid</category>\n   <cell>nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1</cell>\n   <visited>false</visited>\n   <multiplicity>1</multiplicity>\n   <comment />\n   <image />\n   <values>\n    <value>edge-pair: (60.601,20.4;60.601,20.4)/(60.601,20.4;60.601,20.4)</value>\n   </values>\n  </item>\n "
+      ],
+      "expected_verdict_observed": true
+    },
+    "wrong_pullup": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_pullup/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/wrong_pullup.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_pullup/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_pullup/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.616604053000003,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "8b047cfd0dd9511a494e278a769b3c1ced93624c4384e894576653c90b34117d"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_pullup/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_pullup/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_pullup/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.5191058119999639,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_pullup/result.lvsdb": {
+            "bytes": 106512,
+            "sha256": "f1970db09a508cbd674189b609ceb38468cb54d2f6b74d6286ba413aa67c79bd"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_pullup/deck.log": {
+            "bytes": 37203,
+            "sha256": "dc43bbf5f60c51c89502adb497979d4a2c4f82f83db26b327c6c0fbdff74de81"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:03\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ dout avdd din dvdd\nR$1 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$18 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 din \\$33 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$5 dvdd \\$15 ntap1 A=7.6p P=32.6u\nM$6 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p AD=2.2496p\n+ PS=18.96u PD=17.92u rfmode=0\nM$22 avss \\$33 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p AD=0.9546p\n+ PS=6.72u PD=7.76u rfmode=0\nM$28 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$44 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$51 avss \\$1 ptap1 A=3.6p P=24.6u\nR$52 sub \\$1 ptap1 A=36p P=72u\nM$61 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=40u AS=8.2p AD=8.2p PS=60.4u\n+ PD=60.4u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    },
+    "wrong_series": {
+      "execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "klayout",
+          "-b",
+          "-zz",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+          "-rd",
+          "input=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/layout.gds",
+          "-rd",
+          "topcell=nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "-rd",
+          "log=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_series/deck.log",
+          "-rd",
+          "run_mode=deep",
+          "-rd",
+          "schematic=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/base/wrong_series.cir",
+          "-rd",
+          "report=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_series/result.lvsdb",
+          "-rd",
+          "target_netlist=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_series/extracted.cir",
+          "-rd",
+          "thr=2",
+          "-rd",
+          "no_simplify=true",
+          "-rd",
+          "top_lvl_pins=true",
+          "-rd",
+          "combine_devices=true"
+        ],
+        "returncode": 0,
+        "seconds": 2.6436926169999992,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "f4aa73c4d7ee559ca37bcf420180828cda3a6b5fb98604e5d4a8588a66a569d9"
+      },
+      "combine_devices": true,
+      "no_simplify": true,
+      "audit_execution": {
+        "command": [
+          "/home/runner/work/_temp/librelane.AppImage",
+          "python",
+          "/home/runner/work/nssoc/nssoc/hw/soc/flow/audit_klayout_lvs.py",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_series/result.lvsdb",
+          "--top",
+          "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+          "--deck-log",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_series/deck.log",
+          "--output",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_series/audit.json"
+        ],
+        "returncode": 1,
+        "seconds": 0.5239040459999842,
+        "memory_limit_bytes": 2147483648,
+        "elapsed_watchdog": null,
+        "log_sha256": "4f8e9e45f8a9e1843b81eaf3bdf52a6b778d415d23bf985774a9d34a43f69bd5"
+      },
+      "audit": {
+        "status": "FAIL",
+        "top": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+        "reasons": [
+          "Non-matching, skipped, missing or warning circuit",
+          "Missing explicit successful deck verdict",
+          "Deck explicitly reported a mismatch"
+        ],
+        "extraction_diagnostics": [],
+        "circuit_status_counts": {
+          "NoMatch": 1
+        },
+        "circuits": [
+          {
+            "layout": "nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1",
+            "schematic": "NSSOC_TX_INPUT_DRIVER_V7_PHYSICAL_PULLUP_L2P4_SERIES_L6P2_V1",
+            "status": "NoMatch",
+            "layout_devices_recursive": 12,
+            "schematic_devices_recursive": 12
+          }
+        ],
+        "inputs": {
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_series/result.lvsdb": {
+            "bytes": 106510,
+            "sha256": "f43c6c0bf49f09267b2847c82ece45aa280a89b67ce8e3bfc7b37f43025e10b8"
+          },
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-input-driver-pullup-l2p4-series-l6p2/check-wrong_series/deck.log": {
+            "bytes": 37203,
+            "sha256": "cb2bfb6d94dfdc2b599e26313976cbd4bc56674d6df7e0f946a7bb89761dcfbf"
+          }
+        }
+      },
+      "extracted_netlist": "* Extracted by KLayout with SG13G2 LVS runset on : 16/10/2026 18:03\n\n.SUBCKT nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1 sub avss\n+ dout avdd din dvdd\nR$1 avdd dout \\$1 rppd w=4u l=2.4u ps=0u b=0 m=1\nR$2 \\$18 dout \\$1 rppd w=2u l=6.2u ps=0u b=0 m=1\nR$3 din \\$33 \\$1 rppd w=2u l=12u ps=0u b=0 m=1\nR$4 dout avss \\$1 rppd w=2u l=7.1u ps=0u b=0 m=1\nR$5 dvdd \\$15 ntap1 A=7.6p P=32.6u\nM$6 avss \\$I262 \\$23 \\$1 sg13_lv_nmos L=0.13u W=11.84u AS=2.3606p AD=2.2496p\n+ PS=18.96u PD=17.92u rfmode=0\nM$22 avss \\$33 \\$I262 \\$1 sg13_lv_nmos L=0.13u W=4.44u AS=0.8436p AD=0.9546p\n+ PS=6.72u PD=7.76u rfmode=0\nM$28 dvdd \\$I262 \\$23 \\$15 sg13_lv_pmos L=0.13u W=17.92u AS=3.5896p AD=3.4048p\n+ PS=25.45u PD=24u rfmode=0\nM$44 dvdd \\$33 \\$I262 \\$15 sg13_lv_pmos L=0.13u W=6.72u AS=1.2768p AD=1.4448p\n+ PS=9u PD=10.42u rfmode=0\nR$51 avss \\$1 ptap1 A=3.6p P=24.6u\nR$52 sub \\$1 ptap1 A=36p P=72u\nM$61 avss \\$23 \\$18 \\$1 sg13_hv_nmos L=0.45u W=40u AS=8.2p AD=8.2p PS=60.4u\n+ PD=60.4u rfmode=0\n.ENDS nssoc_tx_input_driver_v7_physical_pullup_l2p4_series_l6p2_v1\n",
+      "expected_verdict_observed": true
+    }
+  },
+  "physical_acceptance": false,
+  "qualified_pex": false,
+  "serial_phy_complete": false,
+  "key_output_hashes": {
+    "check-raw_flat_lvs/result.lvsdb": "5313a52b2bde7c1f7e08be0cf6572a5b6b7428b27301b4a97c9ea48d5b28bfa9",
+    "check-raw_flat_lvs/extracted.cir": "37824f199bf42471cde348212737c91c52dfd5b16a5bd0901df7a3e32442de48",
+    "check-raw_flat_lvs/audit.json": "502577a842bba1460695b95d3d2244c15d654636992cdcff4ccd73c35bfd9b19",
+    "check-missing_well_tap/result.lvsdb": "2cb19ef5240ea2168136c9c6e16a21f074c61a03173c152581a86927dd225fdf",
+    "check-missing_well_tap/extracted.cir": "af5abea0ace96cd47049037f4c994a2043f7d79083bb5ab00ddfdda24cd2339b",
+    "check-missing_well_tap/audit.json": "d0e6a434a54362c1b19a272c08d8fce8ac9823f0387f22c74a76c8063be676ba",
+    "check-wrong_width/result.lvsdb": "f1facc0526591f1bb4cde1a39d83d0ed999b9ab262ee13fec9bc20fb4cae896c",
+    "check-wrong_width/extracted.cir": "fb38002bde37abc40995c54f6ddb1fdc76e5ee9cd5a8c99c13759cf766c1c7a9",
+    "check-wrong_width/audit.json": "f88d90c6e2588e40d2343a8c9d7923a854977b2c4ed07312622b5972387d4a68",
+    "check-aggregate_flat_lvs/result.lvsdb": "f36187bb00078df787fdd4c4d31dd3eac3c59f35300f2bc46c3bd1eea259db31",
+    "check-aggregate_flat_lvs/extracted.cir": "74894154124a0860a434a59f999c4876ea3e4c9501736aa1eb0c0fbe864e3bf6",
+    "check-aggregate_flat_lvs/audit.json": "a1593b5b89d3853056fce5a92afae741bb0a2f7a896bca487a2a48fe296dd3f6",
+    "check-raw_lvs/result.lvsdb": "bd36cc4bdf55984992617111e3aa6f13907e4e968eadfe3e642493a38938d06b",
+    "check-raw_lvs/extracted.cir": "67c47da5a074e99c53ae2328059e9ea9c50ebbef4ade8e8e2420196a7f02e20b",
+    "check-raw_lvs/audit.json": "e4b074636a0de0b8d403035a0066f6a8360013c917df1a630403ce338568e78d",
+    "check-hv_gate_open/result.lvsdb": "f63885abb0b3140d8d03e49ddf4250430027faff949b50f1013157cb04ceba05",
+    "check-hv_gate_open/extracted.cir": "30a9ef83108e833001536f1e55b137dbf8a7d7dda5e90e5503f8963878856bb6",
+    "check-hv_gate_open/audit.json": "ce71ea7df02b786c56461e80bc24cc1382849aa05d643f47b8a75f21e658977c",
+    "check-body_short/result.lvsdb": "7ecaafca32045f86094b75dd831ef5518e74f7f36d6fc16179f6f57640065877",
+    "check-body_short/extracted.cir": "a43c7bd00a2ce92c0cb47b8a016370fde10997617e440f27c0414d70e3e51e62",
+    "check-body_short/audit.json": "a4cbd715b7ba69142576afcb5b001f2c32e708db4c21a533598ffa6ad69163d9",
+    "check-aggregate_lvs/result.lvsdb": "4396d9bdd287f32db9f4177c32cc2229eec3ef360dde6b0ddd351442dde1bd53",
+    "check-aggregate_lvs/extracted.cir": "fb38002bde37abc40995c54f6ddb1fdc76e5ee9cd5a8c99c13759cf766c1c7a9",
+    "check-aggregate_lvs/audit.json": "e1927d5eb5727497773e90de9b512289b72cb51e99b629f8055f94774b751632",
+    "check-wrong_series/result.lvsdb": "f43c6c0bf49f09267b2847c82ece45aa280a89b67ce8e3bfc7b37f43025e10b8",
+    "check-wrong_series/extracted.cir": "b2cdd7cfc65941dd63b250d154e1abf6a50141d72a87a1a5f77db8d7f5f909e4",
+    "check-wrong_series/audit.json": "ffb112f9857360469562494eeb1c5373b05680f69769b021f682d085f990740e",
+    "base/aggregate.cir": "40b2a8797e0e074bf3d7b77223148472ab4864d61d270b831da24de8454be8df",
+    "base/layout.gds": "a151458075fc0ae554b34151bc785525a87e336d0e6df3ddecd3d59189654262",
+    "base/wrong_pullup.cir": "57b6d7f48bd5d0279c0b20efc558f4c5807337dfec49b068e11d8a0e6fe76e65",
+    "base/wrong_width.cir": "97958ffff01d12413a0c2bb455373ed96defc28f24223435ca197b3ab0500d81",
+    "base/raw.cir": "d4415c4d145a3281b5c05c249d55b38aa14d29cbe42d93743355d87a27a9ea46",
+    "base/effective-driver.inc": "5d7523617f4b60710558ecc90fc2bd47b8f66cae276a077822ee7ef7dae75a7f",
+    "base/wrong_series.cir": "d24819a72ad033b578f0018b5e10573f25967db38d0052d8884581b327a0e88f",
+    "base/result.json": "9895c72052a52ab9460bef99cdbd5d6c5bd47fa82c6e7c2e61b0cd1d0b41da72",
+    "check-wrong_pullup/result.lvsdb": "f1970db09a508cbd674189b609ceb38468cb54d2f6b74d6286ba413aa67c79bd",
+    "check-wrong_pullup/extracted.cir": "b2cdd7cfc65941dd63b250d154e1abf6a50141d72a87a1a5f77db8d7f5f909e4",
+    "check-wrong_pullup/audit.json": "b46027df106e1f9cfccfc28e7c52b3e6e760249c0df8a28b5ee73da5237652ea",
+    "check-input_open/result.lvsdb": "b461e6b9e72eace52affcb72a951bb754316fce621343bb864b6a0c15485ea7b",
+    "check-input_open/extracted.cir": "c64188cb2ee799a2744954ba5e9c4e5917feff51216d096c84099e756c274005",
+    "check-input_open/audit.json": "eba43a06fd7103092ac331d5b10ed3367e38bb64ba2287d23a79b8802e71c3a5",
+    "check-missing_body_marker/result.lvsdb": "f201627ccab7201eb38fb553efdad1baa5c83374e978463a3e8dcb37bdd6a571",
+    "check-missing_body_marker/extracted.cir": "d823d2774791c3650548c142cc74adb5a74398f5056c505b8c6b8e12d704965c",
+    "check-missing_body_marker/audit.json": "2436c8a7a8af9d6ad9881b85510eae7871045364a501de9d6045d894eb61b9ca",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-drain_open/result.lvsdb": "5a634619d13835bcc8c5b1a309395ebd2cde3270c7c6ffeb707282f6f3f39cd0",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-drain_open/extracted.cir": "64235d2287c4affee2496648f0870caaaae34c25018bf8b832295bdfa5cc1dbe",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-drain_open/audit.json": "7d4eca9451a5a039445256faf209efbfa112ebf02ab43c162a0c2305017eb0ef",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-wrong_width/result.lvsdb": "7b90f27447c56745266e153011d29e8b873e966875ef67fa5ed38aa6ea49d6be",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-wrong_width/extracted.cir": "1ef2852e5c1519c623f296f33c40d750b72e7a232af6bc8be46c914a376cd838",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-wrong_width/audit.json": "dc7cc3ced5324802102d668a1d983b9a450f44942758add0b78e8bd43a80d9ec",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-raw_lvs/result.lvsdb": "81d9e1cbfca44dc741d93f937427a456a702b4c5bde28b7559a88a227b06d188",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-raw_lvs/extracted.cir": "681a29447846df2b4e9c28a7717a082d6d6c6324d0c014ba2393868979bab7d4",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-raw_lvs/audit.json": "adff390721bea2930b6e786c984e9583845487dab5d973363c06952c927acfc5",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-aggregate_lvs/result.lvsdb": "4018a7dfae0b0a776ad3f7e1b9c73389a8a2ee6144d386a2052f4fbffed2c29f",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-aggregate_lvs/extracted.cir": "1ef2852e5c1519c623f296f33c40d750b72e7a232af6bc8be46c914a376cd838",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-aggregate_lvs/audit.json": "44c3fd07168f0414eca4da930bcf229f591d7527b4e06fef621fa517436fd6d1",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-short/result.lvsdb": "7040437c31a461f2b8b0364a5ebcedd341043a53f42db54bc975e5f3925653a6",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-short/extracted.cir": "2a300bebc6e35f8e0c870e4ea3317ed55f4f4d88aad9a703bcd18ea07758a1ca",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-short/audit.json": "9350ee344683c5b56cce380b85688f7b4e7d4b51e1bda112633ad2ef3d446675",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-gate_open/result.lvsdb": "391901e02c0cc9cee368d796c63193fdcec02a792981ddf22e5234b9ba2d7454",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-gate_open/extracted.cir": "c3205050a36caac0d774d802bacdf1c824aa8d8b6094d10f26937fd3e6f5cc51",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-gate_open/audit.json": "2301dac4a81e28ff43214b17f4205d25ef027052fe95d08a928cf737a7fb69bd",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-flat_aggregate_lvs/result.lvsdb": "6e40aed4981305c6c674412aaa603becad0fdd29cfc26c5696f55a23268e1f59",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-flat_aggregate_lvs/extracted.cir": "942afde589dbd55c74f8efcd11fc6775e4dbb827b3bc460427fd6b835f440611",
+    "inputs/tx-hv-fingers/cloud-tx-hv-fingers/check-flat_aggregate_lvs/audit.json": "d4925d091ae4277954df6a53175e783e9cf87edacf56fb2a23e8f3daef12ac51"
+  }
+}

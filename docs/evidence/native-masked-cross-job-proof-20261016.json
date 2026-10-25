@@ -1,0 +1,50 @@
+{
+  "status": "PASS_NATIVE_PHYSICAL845_MASKED_AVX512_TO_NON_AVX512_RESTORE_BIT_EXACT_BOUNDED4NS_NOT_ACQUISITION",
+  "source_head": "d881cbea31e48ca736f1a3fbdbe43cb9ce0ff89b",
+  "source": {
+    "run": 38904997140,
+    "group": "native-portable-checkpoint",
+    "root": "cloud-native-portable-checkpoint",
+    "bytes": 59772311,
+    "sha": "30bad1656b8c6f291d805b3161b8336825d7608c3a04355c57e10a6f8c0f7331",
+    "summary": "5f261d535f386661979ef9854e26dead27b6ba1d4d681eed931d5c300faed176"
+  },
+  "positive": {
+    "all_native_times_and_all34_probes_bit_exact": true,
+    "rows": 12818,
+    "values_sha256": "633f0aaa88c7c08655e6d1b7f99d08284916746331f7c50c03091161ca2bbd1e",
+    "single_entrypoint": true
+  },
+  "controls": [
+    {
+      "fault": "truncation",
+      "rejected": true,
+      "error": "Missing samples or probes"
+    },
+    {
+      "fault": "state_corruption",
+      "rejected": true,
+      "error": "Native times or voltage states changed"
+    },
+    {
+      "fault": "cold_restart",
+      "rejected": true,
+      "error": "Cold restart detected"
+    }
+  ],
+  "source_has_avx512f": true,
+  "destination_has_avx512f": false,
+  "glibc_tunables": "glibc.cpu.hwcaps=-AVX512F,-AVX512CD,-AVX512BW,-AVX512DQ,-AVX512ER,-AVX512PF,-AVX512VL,-RTM",
+  "complete_raw_sha256": "38dc869d06bfb9691d4dc49f91ba15df6a60875d9c833ac130fbaea44346877a",
+  "unchanged_native_inputs": true,
+  "cross_job_native_restore_proven": true,
+  "full_capture": false,
+  "acquisition_accepted": false,
+  "full_phy_accepted": false,
+  "run": 38906315749,
+  "summary_asset": 647396896,
+  "summary_sha256": "fccc1d9f00d142f43013ac7900f80fb3daa26c9821d025b14cea6f9f43f343a0",
+  "source_cpu": "AMD EPYC 9V74 80-Core Processor",
+  "destination_cpu": "AMD EPYC 7763 64-Core Processor",
+  "scope": "Actual saved native physical845 process on different cloud job/CPU; bounded4ns proof only. Original full1us acquisition still required; no cold restart or splicing."
+}

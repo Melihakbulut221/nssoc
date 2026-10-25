@@ -1,0 +1,18 @@
+# Production integration after the real logical-capsule proof
+
+Run 39727525708 passed on source cafc2de6b6c0817fc14a3481fd095109fe56913f. All 1,825 runtime/checkpoint/reference files survived the hosted capsule roundtrip. A different-host native process restored, redumped on compressed Btrfs, and continued through the original bounded 4 ns trajectory. Every one of 12,818 timestamps and all 34 probes matched bit-for-bit. The ordinary complete raw SHA256 remained 38dc869d06bfb9691d4dc49f91ba15df6a60875d9c833ac130fbaea44346877a after real hosted output publication/restoration. Truncation, state corruption and cold restart were rejected.
+
+The separate all-column proof in run 39726696717 retained all bytes of the actual 5,106-column prefix, including 21,605 bytes of an incomplete final row, and reproduced the original 16 reader controls. Neither proof is the full 1 us acquisition. The real checkpoint remains immutable at 892.691247612 ns in run 39674830790.
+
+## Required production path
+
+1. Adapt the frozen proof-namespace controller through an exact source delta and explicit method-hash compatibility validation. Keep its original native command, protected circuit/model files, 102 OFF checks, zero-source operating point, KLU options, 1 us stop and 0.3125 ps maximum step. Unknown or changed native methods must still be rejected.
+2. Retain the already qualified preallocated shared Btrfs workspace. Restore the large immutable ordinary archive directly into a new sparse raw working file using the verified source checkpoint's complete raw and payload hashes. Verify every other file and the whole ordered archive before any CRIU activation. Preserve the original-path/model/boot/image guards.
+3. Keep an explicit immutable predecessor descriptor and sparse plan. A source iterator must read the exact raw member from verified predecessor archive parts and exhaust the whole archive before accepting its SHA. Use it for the stopped-process logical snapshot and publication. Never hash a sparse zero-filled raw file and label that as the native capture. Retained head/tail payload changes, writes in the archived-only hole and concurrent mutation must fail.
+4. Save logical raw hashes and physical storage metadata separately. The summary's native raw output hash must be the complete reconstructed stream's hash. Manifest publication follows complete source and hosted-part verification. Failed or partially published data must not become a resumable accepted capsule.
+5. After actual native completion, keep complete-capture/acquisition acceptance pending. Restore only the full ordinary raw onto a separate static reader host after checking the actual byte size against current free space. Invoke the unchanged full 5,106-column reader, original full-duration/step gates and acquisition analysis there; never run them directly on the sparse working file.
+6. Keep the original 12 GiB native checkpoint, 4 GiB backing and 6 GiB allocation safeguards. The separate static reader's measured 4 GiB reserve does not relax native reserves. No vector omission, row thinning, waveform splicing, shortened stop time or cold restart is permitted.
+
+The original source functions needing explicit storage adaptation are restore_source, the stopped-process payload/prefix checks, the raw member of outputs, and complete-capture dispatch in cloud_pll845_proof_namespace_acquisition.py, plus the publisher. Native process construction and verification remain frozen. Production activation is the next implementation step, not an already completed result.
+
+CDR v31 full-wave cases, exact mainchip route continuation and the saved TX negative-control continuation are independent cloud jobs recorded in the companion evidence. Local project storage remains empty.

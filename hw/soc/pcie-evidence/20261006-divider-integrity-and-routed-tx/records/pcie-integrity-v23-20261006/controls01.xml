@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="35" time="284.634" timestamp="2026-10-06T07:00:54.495612+03:00" hostname="pop-os"><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_header" name="test_exact_generated_inverse_and_wrapper_bridge" time="0.003" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_header" name="test_actual_adjacent_relation_literal_and_binary[None]" time="13.603" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_header" name="test_actual_adjacent_relation_literal_and_binary[wrong_previous]" time="0.007" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_header" name="test_actual_adjacent_relation_literal_and_binary[current_tail]" time="0.007" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_header" name="test_actual_adjacent_relation_literal_and_binary[omit_format]" time="0.116" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_header" name="test_actual_adjacent_relation_literal_and_binary[equal_length]" time="0.008" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_header" name="test_actual_adjacent_relation_literal_and_binary[wrong_expected_bit]" time="0.007" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_v22_v23_cycle_exact_all_public_outputs[150]" time="147.737" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[public_data_inversion]" time="1.509" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[unqualified_speculative_fault]" time="2.578" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[cache_skips_step]" time="1.463" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[cache_inverts_value]" time="1.406" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[cache_stale_new_owner]" time="1.946" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[fault_keeps_ring_owner]" time="1.876" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[header_wrong_predecessor]" time="1.313"><failure message="AssertionError: assert (1 != 0 and False)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode&#10; +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bb86a40&gt;)">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls01/test_actual_miter_fault_is_obs6')
+fault = 'header_wrong_predecessor'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "cache_skips_step",
+            "cache_inverts_value",
+            "cache_stale_new_owner",
+            "fault_keeps_ring_owner",
+            *HEADER_FAULTS,
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v23.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "cache_fault_write_and_new_epoch_reuse"
+            if fault.startswith(("cache_", "fault_"))
+            else "adjacent_header_all_positions_and_bank_boundaries"
+            if fault in HEADER_FAULTS else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+&gt;       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V23_OCCUPIED_SLOT_VERDICT_MISMATCH",
+                "V23_DESCRIPTOR_OWNERSHIP_MISMATCH",
+                "V23_OWNED_DESCRIPTOR_PAYLOAD_MISMATCH",
+                "V23_FAULT_QUARANTINE_NOT_ATOMIC",
+                "V23_HEADER_BANK_RELATION",
+                "V23_FIRST_HEADER_RELATION",
+                "V23_CARRIED_HEADER_RELATION",
+            )
+        )
+E       AssertionError: assert (1 != 0 and False)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode
+E        +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bb86a40&gt;)
+
+sw/tests/test_pcie_gen3_integrity_v23_miter.py:337: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[header_current_input_tail]" time="1.338"><failure message="AssertionError: assert (1 != 0 and False)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode&#10; +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bb865e0&gt;)">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls01/test_actual_miter_fault_is_obs7')
+fault = 'header_current_input_tail'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "cache_skips_step",
+            "cache_inverts_value",
+            "cache_stale_new_owner",
+            "fault_keeps_ring_owner",
+            *HEADER_FAULTS,
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v23.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "cache_fault_write_and_new_epoch_reuse"
+            if fault.startswith(("cache_", "fault_"))
+            else "adjacent_header_all_positions_and_bank_boundaries"
+            if fault in HEADER_FAULTS else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+&gt;       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V23_OCCUPIED_SLOT_VERDICT_MISMATCH",
+                "V23_DESCRIPTOR_OWNERSHIP_MISMATCH",
+                "V23_OWNED_DESCRIPTOR_PAYLOAD_MISMATCH",
+                "V23_FAULT_QUARANTINE_NOT_ATOMIC",
+                "V23_HEADER_BANK_RELATION",
+                "V23_FIRST_HEADER_RELATION",
+                "V23_CARRIED_HEADER_RELATION",
+            )
+        )
+E       AssertionError: assert (1 != 0 and False)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode
+E        +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bb865e0&gt;)
+
+sw/tests/test_pcie_gen3_integrity_v23_miter.py:337: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[header_shift_wrong]" time="1.291"><failure message="AssertionError: assert (1 != 0 and False)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode&#10; +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bb84120&gt;)">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls01/test_actual_miter_fault_is_obs8')
+fault = 'header_shift_wrong'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "cache_skips_step",
+            "cache_inverts_value",
+            "cache_stale_new_owner",
+            "fault_keeps_ring_owner",
+            *HEADER_FAULTS,
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v23.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "cache_fault_write_and_new_epoch_reuse"
+            if fault.startswith(("cache_", "fault_"))
+            else "adjacent_header_all_positions_and_bank_boundaries"
+            if fault in HEADER_FAULTS else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+&gt;       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V23_OCCUPIED_SLOT_VERDICT_MISMATCH",
+                "V23_DESCRIPTOR_OWNERSHIP_MISMATCH",
+                "V23_OWNED_DESCRIPTOR_PAYLOAD_MISMATCH",
+                "V23_FAULT_QUARANTINE_NOT_ATOMIC",
+                "V23_HEADER_BANK_RELATION",
+                "V23_FIRST_HEADER_RELATION",
+                "V23_CARRIED_HEADER_RELATION",
+            )
+        )
+E       AssertionError: assert (1 != 0 and False)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode
+E        +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bb84120&gt;)
+
+sw/tests/test_pcie_gen3_integrity_v23_miter.py:337: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[header_promote_stale]" time="1.296"><failure message="AssertionError: assert (1 != 0 and False)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode&#10; +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bcfd9a0&gt;)">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls01/test_actual_miter_fault_is_obs9')
+fault = 'header_promote_stale'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "cache_skips_step",
+            "cache_inverts_value",
+            "cache_stale_new_owner",
+            "fault_keeps_ring_owner",
+            *HEADER_FAULTS,
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v23.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "cache_fault_write_and_new_epoch_reuse"
+            if fault.startswith(("cache_", "fault_"))
+            else "adjacent_header_all_positions_and_bank_boundaries"
+            if fault in HEADER_FAULTS else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+&gt;       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V23_OCCUPIED_SLOT_VERDICT_MISMATCH",
+                "V23_DESCRIPTOR_OWNERSHIP_MISMATCH",
+                "V23_OWNED_DESCRIPTOR_PAYLOAD_MISMATCH",
+                "V23_FAULT_QUARANTINE_NOT_ATOMIC",
+                "V23_HEADER_BANK_RELATION",
+                "V23_FIRST_HEADER_RELATION",
+                "V23_CARRIED_HEADER_RELATION",
+            )
+        )
+E       AssertionError: assert (1 != 0 and False)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode
+E        +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bcfd9a0&gt;)
+
+sw/tests/test_pcie_gen3_integrity_v23_miter.py:337: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[header_carried_invert]" time="1.292"><failure message="AssertionError: assert (1 != 0 and False)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode&#10; +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bcfd620&gt;)">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls01/test_actual_miter_fault_is_obs10')
+fault = 'header_carried_invert'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "cache_skips_step",
+            "cache_inverts_value",
+            "cache_stale_new_owner",
+            "fault_keeps_ring_owner",
+            *HEADER_FAULTS,
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v23.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "cache_fault_write_and_new_epoch_reuse"
+            if fault.startswith(("cache_", "fault_"))
+            else "adjacent_header_all_positions_and_bank_boundaries"
+            if fault in HEADER_FAULTS else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+&gt;       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V23_OCCUPIED_SLOT_VERDICT_MISMATCH",
+                "V23_DESCRIPTOR_OWNERSHIP_MISMATCH",
+                "V23_OWNED_DESCRIPTOR_PAYLOAD_MISMATCH",
+                "V23_FAULT_QUARANTINE_NOT_ATOMIC",
+                "V23_HEADER_BANK_RELATION",
+                "V23_FIRST_HEADER_RELATION",
+                "V23_CARRIED_HEADER_RELATION",
+            )
+        )
+E       AssertionError: assert (1 != 0 and False)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode
+E        +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bcfd620&gt;)
+
+sw/tests/test_pcie_gen3_integrity_v23_miter.py:337: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_miter_fault_is_observed[header_carried_always_bad]" time="1.344"><failure message="AssertionError: assert (1 != 0 and False)&#10; +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode&#10; +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bcfd540&gt;)">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls01/test_actual_miter_fault_is_obs11')
+fault = 'header_carried_always_bad'
+
+    @pytest.mark.parametrize(
+        "fault",
+        [
+            "public_data_inversion",
+            "unqualified_speculative_fault",
+            "cache_skips_step",
+            "cache_inverts_value",
+            "cache_stale_new_owner",
+            "fault_keeps_ring_owner",
+            *HEADER_FAULTS,
+        ],
+    )
+    def test_actual_miter_fault_is_observed(tmp_path, fault):
+        rtl = miter(tmp_path / "fault-rtl", fault)
+        out = tmp_path / "capture"
+        tool = Path(shutil.which("iverilog") or "/usr/bin/iverilog")
+        command = [
+            sys.executable,
+            str(ROOT / "scripts/check_pcie_gen3_continuous_rx_integrity_v23.py"),
+            "--out",
+            str(out),
+            "--rtl-dir",
+            str(rtl),
+            "--iverilog-dir",
+            str(tool.parent),
+            "--test",
+            "cache_fault_write_and_new_epoch_reuse"
+            if fault.startswith(("cache_", "fault_"))
+            else "adjacent_header_all_positions_and_bank_boundaries"
+            if fault in HEADER_FAULTS else "sustained_minimum_packets_exceed_every_buffer",
+        ]
+        with (tmp_path / "launch.log").open("w") as f:
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                stdout=f,
+                stderr=subprocess.STDOUT,
+                env={**os.environ, "PYTHONDONTWRITEBYTECODE": "1"},
+            )
+        log = (out / "simulation.log").read_text()
+&gt;       assert result.returncode != 0 and any(
+            message in log
+            for message in (
+                "PCIE_CYCLE_MITER_OUTPUT_MISMATCH",
+                "PCIE_RING_CONTROL_MISMATCH",
+                "PCIE_OCCUPIED_SLOT_MISMATCH",
+                "V23_OCCUPIED_SLOT_VERDICT_MISMATCH",
+                "V23_DESCRIPTOR_OWNERSHIP_MISMATCH",
+                "V23_OWNED_DESCRIPTOR_PAYLOAD_MISMATCH",
+                "V23_FAULT_QUARANTINE_NOT_ATOMIC",
+                "V23_HEADER_BANK_RELATION",
+                "V23_FIRST_HEADER_RELATION",
+                "V23_CARRIED_HEADER_RELATION",
+            )
+        )
+E       AssertionError: assert (1 != 0 and False)
+E        +  where 1 = CompletedProcess(args=['/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python', '/home/hasanmelih/Documents/ChatGP...ilog-dir', '/home/hasanmelih/.local/bin', '--test', 'adjacent_header_all_positions_and_bank_boundaries'], returncode=1).returncode
+E        +  and   False = any(&lt;generator object test_actual_miter_fault_is_observed.&lt;locals&gt;.&lt;genexpr&gt; at 0x72523bcfd540&gt;)
+
+sw/tests/test_pcie_gen3_integrity_v23_miter.py:337: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_only_registered_header_edits_to_frozen_sources" time="0.006" /><testcase classname="sw.tests.test_pcie_gen3_integrity_v23_miter" name="test_actual_old_predecessor_observer_negative" time="1.300"><failure message="assert 'V23_OBSERVER_OLD_PREDECESSOR' in 'rm -f /dev/shm/nssoc-integrity-v23-public-controls01/test_actual_old_predecessor_ob0/observer-capture/results.xml\n&quot;m...GPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb_tools/makefiles/Makefile.inc:17: sim] Error 2\n'&#10; +  where 'rm -f /dev/shm/nssoc-integrity-v23-public-controls01/test_actual_old_predecessor_ob0/observer-capture/results.xml\n&quot;m...GPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb_tools/makefiles/Makefile.inc:17: sim] Error 2\n' = read_text()&#10; +    where read_text = (PosixPath('/dev/shm/nssoc-integrity-v23-public-controls01/test_actual_old_predecessor_ob0/observer-capture') / 'simulation.log').read_text">tmp_path = PosixPath('/dev/shm/nssoc-integrity-v23-public-controls01/test_actual_old_predecessor_ob0')
+
+    def test_actual_old_predecessor_observer_negative(tmp_path):
+        # A deliberately broken observer must not count newtail as old ownership.
+        # This is observer validation, not a DUT protocol failure or timing result.
+        rtl=miter(tmp_path/'observer-fault', 'observer_forgets_old_predecessor')
+        out=tmp_path/'observer-capture'
+        tool=Path(shutil.which('iverilog') or '/usr/bin/iverilog')
+        command=[sys.executable,str(ROOT/'scripts/check_pcie_gen3_continuous_rx_integrity_v23.py'),
+                 '--out',str(out),'--rtl-dir',str(rtl),'--iverilog-dir',str(tool.parent),
+                 '--test','adjacent_header_all_positions_and_bank_boundaries']
+        with (tmp_path/'observer-launch.log').open('w') as log:
+            result=subprocess.run(command,cwd=ROOT,stdout=log,stderr=subprocess.STDOUT,
+                                  env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'})
+        assert result.returncode!=0
+&gt;       assert 'V23_OBSERVER_OLD_PREDECESSOR' in (out/'simulation.log').read_text()
+E       assert 'V23_OBSERVER_OLD_PREDECESSOR' in 'rm -f /dev/shm/nssoc-integrity-v23-public-controls01/test_actual_old_predecessor_ob0/observer-capture/results.xml\n"m...GPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb_tools/makefiles/Makefile.inc:17: sim] Error 2\n'
+E        +  where 'rm -f /dev/shm/nssoc-integrity-v23-public-controls01/test_actual_old_predecessor_ob0/observer-capture/results.xml\n"m...GPT/nnsoc/hw/soc/tools/cocotb-venv/lib/python3.12/site-packages/cocotb_tools/makefiles/Makefile.inc:17: sim] Error 2\n' = read_text()
+E        +    where read_text = (PosixPath('/dev/shm/nssoc-integrity-v23-public-controls01/test_actual_old_predecessor_ob0/observer-capture') / 'simulation.log').read_text
+
+sw/tests/test_pcie_gen3_integrity_v23_miter.py:375: AssertionError</failure></testcase><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_full_positive_profiles[150]" time="73.391" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[selector_loses_stp]" time="1.420" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[sequence_byte_order]" time="1.422" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[carry_word_order]" time="1.368" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[stp_suffix_word_order]" time="1.419" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[initial_dllp_loses_carry]" time="1.677" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[dllp_preceding_seed_order]" time="1.194" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[look_drops_successor]" time="1.423" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[edb_releases_bad]" time="2.228" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[fault_descriptor_survives]" time="2.716" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[restart_descriptor_survives]" time="3.021" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[empty_descriptor_blocks]" time="2.868" /><testcase classname="sw.tests.test_pcie_gen3_continuous_rx_integrity_v23" name="test_actual_wide_rx_fault_rejected[full_descriptor_overwrite]" time="8.851" /></testsuite></testsuites>

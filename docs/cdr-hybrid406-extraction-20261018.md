@@ -1,0 +1,9 @@
+# Fresh hybrid406 parasitic model and loaded verification
+
+The native physical parent `nssoc_cdr_pd406_hybrid_tail_v1` contains110HBT,12LVNMOS,102rppd,11MIM and171finite contacts. It passed560-category DRC and unsimplified deep/flat406-device LVS. Every158 macro/public interface maps to51 native nets;19 binding faults are rejected. All1158 device terminals map through actual PCell geometry:763metal references,395intrinsic body references and25public pins produce788 unique physical points on111 conductors.
+
+Fresh native wire extraction and13 raw corruption controls passed. MIM-aware capture retains original metal/vias and exactly eleven actual MIM masks. Its independently audited network contains9970R and7795C. The22 raw/intrinsic corruption controls passed. Composition preserves every raw wire token and all406 native devices, emits each intrinsic capacitor once and rejects19 composition faults, including MOS omission/width/terminal/body changes. Receipts in `docs/evidence/cdr-retimed-hybrid-*` and `cdr-hybrid-mim-*` bind source, summary, archive and actual output hashes.
+
+The hosted loaded test uses the original clock, bit stream, fixed early/late phases, loads, data/delay/phase/current/HBT/MIM gates. Native MOS checks add the same1.32V voltage and tail-current limits used for the candidate schematic screen. Its exact source adaptation is recorded in `scripts/cdr-hybrid-loaded-source-delta.json`. Four initial cases run independently; negative controls cannot substitute for successful nominal trajectories.
+
+Still unproven: loaded electrical behavior of this new model, recovered-clock closed loop, fullPVT/timestep/RF/substrate qualification, full serial Gen3x4 and mainchip integration. This network retains intrinsic body identities and finite contacts but does not model distributed substrate spreading. No physical/model result here grants production acceptance or final chip timing.

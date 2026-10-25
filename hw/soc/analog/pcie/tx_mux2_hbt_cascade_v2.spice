@@ -1,0 +1,38 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Prospective first-stage 2:1 mux for a 4:1 serializer tree.
+* Same 19 HBT and 8 native resistors as passive_fast_v1; only two
+* output-to-ground divider resistors lengthened from 9um (v1) to 14um.
+* Target measured hot/low interstage common-mode loss under real loading.
+* Intended to drive the next mux data bases directly, including base current.
+* No ideal gain, delay or voltage-level shifter between mux stages.
+* Schematic candidate only; no physical, PVT or full PHY acceptance.
+.subckt nssoc_tx_mux2_hbt_cascade_v2 ap an bp bn sp sn op on avdd avss sub iref
+XREF iref iref avss sub npn13G2 Nx=1
+XAP_0 qn ap ea sub npn13G2 Nx=8
+XAP_1 qn ap ea sub npn13G2 Nx=8
+XAP_2 qn ap ea sub npn13G2 Nx=8
+XAN_0 qp an ea sub npn13G2 Nx=8
+XAN_1 qp an ea sub npn13G2 Nx=8
+XAN_2 qp an ea sub npn13G2 Nx=8
+XBP_0 qn bp eb sub npn13G2 Nx=8
+XBP_1 qn bp eb sub npn13G2 Nx=8
+XBP_2 qn bp eb sub npn13G2 Nx=8
+XBN_0 qp bn eb sub npn13G2 Nx=8
+XBN_1 qp bn eb sub npn13G2 Nx=8
+XBN_2 qp bn eb sub npn13G2 Nx=8
+XSA_0 ea sp tail sub npn13G2 Nx=8
+XSA_1 ea sp tail sub npn13G2 Nx=8
+XSB_0 eb sn tail sub npn13G2 Nx=8
+XSB_1 eb sn tail sub npn13G2 Nx=8
+XT_0 tail iref avss sub npn13G2 Nx=8
+XT_1 tail iref avss sub npn13G2 Nx=8
+XRP avdd qp sub rppd w=8u l=1.1u b=0 sw_et=1
+XRN avdd qn sub rppd w=8u l=1.1u b=0 sw_et=1
+XBA ea avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XBB eb avss sub rppd w=1u l=38.4u b=0 sw_et=1
+XFPR op avss sub rppd w=4u l=14.0u b=0 sw_et=1
+XFNR on avss sub rppd w=4u l=14.0u b=0 sw_et=1
+XSP qp op sub rppd w=4u l=1.8u b=0 sw_et=1
+XSN qn on sub rppd w=4u l=1.8u b=0 sw_et=1
+.ends nssoc_tx_mux2_hbt_cascade_v2

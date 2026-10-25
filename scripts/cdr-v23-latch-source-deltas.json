@@ -1,0 +1,103 @@
+{
+  "protected": {
+    "scripts/cloud_tx_stream.py": "2894eede2e5e087c23cadee9cec9dbdca359315a786cec0cabfe7f8da37449cb",
+    "scripts/cloud_cdr_pd_vi.py": "a319d6ba9b7a26964e29355e76b34685fff7ff35199ca5a8dbdd4a62031d9c33",
+    "scripts/cloud_cdr_source_access_headroom.py": "d75aea5b838e78e623b93e02860dab118279567b99fc2c73fb1ddbaa543ca97a",
+    "docs/evidence/cdr-follower-v23-mim-parent-capture-pass-20261020.json": "20f41398a593c448d66acf883dff494361bec0e529ab0ba43062982d3bdd787d",
+    ".github/workflows/cdr-v23-latch-timing-cloud.yml": "a01f6cccc9cef103feffa658333fef9b78526a753196bb0755f114389582409f",
+    "docs/evidence/cdr-follower-v23-electrical-rejection-20261020.json": "27af8ef3ef436a36e107c332ad0c32b66f87379cd99253683d9f233727930cd4"
+  },
+  "diagnostic": {
+    "baseline_path": "scripts/cloud_cdr_v22_latch_timing.py",
+    "baseline_sha256": "22ba366e444690c5a65591ba2916fd04e72c3e1d9f24fb00fdf5291bbf03f8ee",
+    "candidate_path": "scripts/cloud_cdr_v23_latch_timing.py",
+    "candidate_sha256": "58733fa5abfc5eafdbb1322c12acf43ca3402654051826de61cd67f2e14a5402",
+    "edits": [
+      {
+        "before": "cdr-v22-latch",
+        "after": "cdr-v23-latch",
+        "count": 2
+      },
+      {
+        "before": "cdr-retime-trunks-v22",
+        "after": "cdr-follower-v23",
+        "count": 4
+      },
+      {
+        "before": "39458941860",
+        "after": "39479905700",
+        "count": 2
+      },
+      {
+        "before": "53c1a650ef7b6ab60deaf6d2e9ad207a4a66b1b7",
+        "after": "d873cde28d768838e68af35917da5d8e92814a15",
+        "count": 1
+      },
+      {
+        "before": "39456445937",
+        "after": "39477040744",
+        "count": 1
+      },
+      {
+        "before": "c425b1cd54e2426848910d3261edd3fd7d60f596e95511cb072569dec3e8ed32",
+        "after": "c976da9b66f9236dc7cdfb3797d0d7e1d887f2791a326fabb1c02e02148ecd9e",
+        "count": 1
+      },
+      {
+        "before": "7f458f0c6cc7cf330214a56bba36a1a0c441984b",
+        "after": "b66dcdb3d72b5fcbc1055b2f05247ca2a6e791c3",
+        "count": 1
+      },
+      {
+        "before": "164f96b0ee0bebfdd84524a85aa78fd438aa71e9f86cf5c8a56f5d828942af42",
+        "after": "f7dc25fd952e3c0e7d35ffaf662b3a392f9f8f1647de77a628c764961e734dcf",
+        "count": 1
+      },
+      {
+        "before": "0a6784df3afa54da2b1b2bba3cbe7aa73ef3c6921a8d1a50265fd495ee25b26e",
+        "after": "26ddd39333632b8eb75de42b63d2c6ba219a27180c2e83ae00c203f66e68b3cc",
+        "count": 1
+      },
+      {
+        "before": "44ebde907fbd15ef85b81705f299d8180c2b61869126917be6fe52486a6a0a34",
+        "after": "38a4fe0fbc8688d95d0d060c88324f7b6d76d1e25c3f96ba3f13df063cd820c8",
+        "count": 1
+      },
+      {
+        "before": "124b2ad92f20678deb65a4636baeb931953d1ddb8c287b881eafffeb19c93626",
+        "after": "063a69708764486d6555a47a7d0d06bc27d4328ddd72f480b08e340691858039",
+        "count": 1
+      },
+      {
+        "before": "PD484",
+        "after": "PD476",
+        "count": 1
+      },
+      {
+        "before": "dict(devices=484,R=17674,C=12700)",
+        "after": "dict(devices=476,R=17654,C=12682)",
+        "count": 1
+      },
+      {
+        "before": "len(devices)==484",
+        "after": "len(devices)==476",
+        "count": 1
+      },
+      {
+        "before": "and prior['sources_unchanged']and prior['devices_passed']",
+        "after": "and prior['sources_unchanged']and not prior['devices_passed']",
+        "count": 1
+      },
+      {
+        "before": "  assert len(checked)==116 and min(x['minimum_active_vce_v']for x in checked.values())>=.4",
+        "after": "  assert len(checked)==120\n  violations={n:c for n,c in checked.items()if c['minimum_active_vce_v']<.4 or c['maximum_alltime_abs_vce_v']>1.6 or c['maximum_alltime_abs_vbe_v']>1 or c['maximum_alltime_abs_ic_per_emitter_a']>.003}\n  assert violations==pin['hbt_violations'] and len(violations)==2\n  r['original_hbt_violations_reproduced']={n:dict(measurements=c,physical_macro=owned[n],device=prior['devices'][n],native_record=records[prior['devices'][n]['native_id']])for n,c in violations.items()}",
+        "count": 1
+      },
+      {
+        "before": "all116original_hbt_checks_reproduced",
+        "after": "all120original_hbt_checks_reproduced",
+        "count": 1
+      }
+    ]
+  }
+}

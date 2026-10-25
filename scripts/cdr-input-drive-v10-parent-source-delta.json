@@ -1,0 +1,155 @@
+{
+  "scope": "Only sampler input widths and retime networks change; original parent gates retained plus three rollback geometry faults.",
+  "files": [
+    {
+      "baseline_path": "scripts/cdr_retimed_data_cm_v9_parent_plan.py",
+      "baseline_sha256": "3de42a59def4e14406b3297196a68fbae7dd1b5b8b194d07e273d4437a1b5442",
+      "candidate_path": "scripts/cdr_retimed_input_drive_v10_parent_plan.py",
+      "candidate_sha256": "c049f46b268f2252945008f781b0fe82ffddbf23e25c179520c940ebf769adcc",
+      "edits": [
+        {
+          "before": "cdr_retimed_data_cm_pd_vi_v9",
+          "after": "cdr_retimed_input_drive_pd_vi_v10",
+          "count": 2
+        },
+        {
+          "before": "dc8e9b7ff879780f2568161649e5bf2258fc1c8b8490994f0e3953d0beb57c26",
+          "after": "92f3456be30328010ebacdae2046205fe96e60d70379068e4042aecba0dc6503",
+          "count": 1
+        },
+        {
+          "before": "rx_sampler_parallel_drive_v8",
+          "after": "rx_sampler_input_drive_v13",
+          "count": 2
+        },
+        {
+          "before": "876bd1d55af65726ebfcb979d56036b83faccc691e3427f0fb09333d8100acc3",
+          "after": "aa9dd47123e10fd611087384d62e90e42493044ea95b8cbd8194f5217a7c67c4",
+          "count": 1
+        },
+        {
+          "before": "nssoc_rx_sampler_collector_access_layout_v12",
+          "after": "nssoc_rx_sampler_input_drive_layout_v13",
+          "count": 1
+        },
+        {
+          "before": "for k in ('rc_retime','rc_data','rc_select')}}",
+          "after": "for k in ('rc_retime','rc_data','rc_select')},\n 'rc_retime':dict(top='nssoc_cdr_retime_drive_feedforward_layout_v2',devices=12,layer=67)}",
+          "count": 1
+        },
+        {
+          "before": "'rc_retime':(('5.4u','12.6u'),'3.6u')",
+          "after": "'rc_retime':(('5.4u','12.6u'),'7.2u')",
+          "count": 1
+        },
+        {
+          "before": "dict(w='1u',l=lengths[0]",
+          "after": "dict(w='4u'if kind=='rc_retime'else'1u',l=lengths[0]",
+          "count": 1
+        },
+        {
+          "before": "dict(w='1u',l=lengths[1]",
+          "after": "dict(w='4u'if kind=='rc_retime'else'1u',l=lengths[1]",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/generate_cdr_retimed_data_cm_v9_parent.py",
+      "baseline_sha256": "88a3c6b8b204291ee1f34abc467a98cd255e08b2f9018bbf998a2bd6345e4040",
+      "candidate_path": "scripts/generate_cdr_retimed_input_drive_v10_parent.py",
+      "candidate_sha256": "338caf0c4b160fdf1bef3a9b5a032f32fc0e5f471e262c93d9add78d217e7e35",
+      "edits": [
+        {
+          "before": "data_cm_v9",
+          "after": "input_drive_v10",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/check_cdr_data_cm_v9_parent_geometry.py",
+      "baseline_sha256": "a503ff050fbd269e9e20b1699e2f6110d6f74c0f4882b5cd8591a53d8481cb56",
+      "candidate_path": "scripts/check_cdr_input_drive_v10_parent_geometry.py",
+      "candidate_sha256": "fd221cfcec8c4eadb3eadf5e831f08a0eed843e813b2897e2a802ad6988a9062",
+      "edits": [
+        {
+          "before": "data_cm_v9",
+          "after": "input_drive_v10",
+          "count": 2
+        },
+        {
+          "before": "pya.Region(T.begin_shapes_rec(li)).merged()",
+          "after": "pya.Region(T.begin_shapes_rec(li)).flatten().merged()",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "hw/soc/flow/check_pcie_cdr_retimed_data_cm_v9_parent.py",
+      "baseline_sha256": "0125c1b22b3ab1026bd049a4f2b8f465abc74708b55088d5a86860589938d35c",
+      "candidate_path": "hw/soc/flow/check_pcie_cdr_retimed_input_drive_v10_parent.py",
+      "candidate_sha256": "92d2bce7940f20ef8a4840d01326b959cc9d06026c7a2ac6c7dc389f191830a4",
+      "edits": [
+        {
+          "before": "data_cm_v9",
+          "after": "input_drive_v10",
+          "count": 4
+        },
+        {
+          "before": "def reference_fault(text, name):\n",
+          "after": "def reference_fault(text, name):\n    if name in ('old_sampler_input_width','old_retime_width','old_retime_mim'):\n        lines=text.splitlines(keepends=True);hits=[]\n        targets={f'R{tag}_{pin}' for tag in ('sa','sb','sc','sd') for pin in ('IP','IN','BP','BN')}\n        for i,line in enumerate(lines):\n            f=line.split()\n            if not f:continue\n            hit=(name=='old_sampler_input_width' and f[0]in targets) or (name=='old_retime_width' and f[0].startswith(('Rac_','Rbd_')) and 'rppd'in f) or (name=='old_retime_mim' and f[0].startswith(('Cac_','Cbd_')) and 'cap_cmim'in f)\n            if not hit:continue\n            before,after=(' w=7.2u l=7.2u ',' w=3.6u l=3.6u ')if name=='old_retime_mim'else(' w=4u ',' w=1u ')\n            assert line.count(before)==1\n            lines[i]=line.replace(before,after);hits.append(i)\n        assert len(hits)=={'old_sampler_input_width':16,'old_retime_width':8,'old_retime_mim':4}[name]\n        return ''.join(lines)\n",
+          "count": 1
+        },
+        {
+          "before": "            \"old_data_header_length\",\n",
+          "after": "            \"old_sampler_input_width\",\n            \"old_retime_width\",\n            \"old_retime_mim\",\n            \"old_data_header_length\",\n",
+          "count": 1
+        },
+        {
+          "before": "if name in (\"old_data_header_length\", \"wrong_finger_count\", \"missing_hbt\"):",
+          "after": "if name in (\"old_sampler_input_width\", \"old_retime_width\", \"old_retime_mim\", \"old_data_header_length\", \"wrong_finger_count\", \"missing_hbt\"):",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_data_cm_v9_parent.py",
+      "baseline_sha256": "298346688bdc2e749cbbbda04610b2c973e184054b56ba8639fb11971e5f7f8c",
+      "candidate_path": "scripts/cloud_cdr_retimed_input_drive_v10_parent.py",
+      "candidate_sha256": "f15a6408b57c82fb24e8ab265262f62097253284eda6d9454628143dca167abe",
+      "edits": [
+        {
+          "before": "data_cm_v9",
+          "after": "input_drive_v10",
+          "count": 8
+        },
+        {
+          "before": "data-cm-v9",
+          "after": "input-drive-v10",
+          "count": 3
+        },
+        {
+          "before": "check_cdr_sampler_collector_access_geometry.py",
+          "after": "check_cdr_sampler_input_drive_geometry.py",
+          "count": 2
+        },
+        {
+          "before": "cdr-retimed-via-rich-v7-parent-children-20261018.json",
+          "after": "cdr-retimed-data-cm-v9-parent-children-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "nssoc_rx_sampler_via_rich_layout_v11",
+          "after": "nssoc_rx_sampler_collector_access_layout_v12",
+          "count": 1
+        },
+        {
+          "before": "PASS_ALL54_NATIVE_PRIMITIVE_DRAWINGS_REFERENCE_AND_THREE_CONTROLS",
+          "after": "PASS_50_UNCHANGED_AND_FOUR_NATIVE_RESIZED_RESISTOR_DRAWINGS_AND_THREE_CONTROLS",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

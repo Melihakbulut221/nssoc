@@ -1,0 +1,160 @@
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+name: tx-layout-extraction-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      recover_direct_extraction:
+        description: Recover exact completed run38521648860 artifact without rerunning extraction
+        type: boolean
+        default: false
+      boundary_policy:
+        description: Exact physical boundary access policy; nearest_pair requires its own verified source receipt
+        type: choice
+        options: [left, nearest_pair, nearest_pair_tight]
+        default: left
+      boundary_pins:
+        description: Extract only the pinned physically verified boundary-pin geometry
+        type: boolean
+        default: false
+      circuit_profile:
+        description: Proven physical circuit to extract
+        type: choice
+        options: [baseline, cascade14, cascade16, cascade158, final_drive_v5, final_drive_v6, final_drive_v7, final_drive_v8, final_drive_v9, final_drive_v10, final_drive_v11]
+        default: baseline
+      variant:
+        description: Source-bound physical routing variant
+        type: choice
+        options: [baseline, topmetal_trunks, topmetal_trunks_narrow_bus, critical_buses, critical_buses_wide_escape, critical_buses_supply_escape, critical_buses_power_trunks, critical_buses_power_trunks_vias, critical_buses_interleaved_resistors, critical_buses_kelvin_return, critical_buses_kelvin_short, critical_buses_kelvin_short_vias, critical_buses_kelvin_dense, critical_buses_kelvin_dense_wide, critical_buses_kelvin_supply_feed, critical_buses_kelvin_supply_direct, critical_buses_kelvin_supply_direct_low_outputs, critical_buses_kelvin_tail_paths, critical_buses_kelvin_local_tail, critical_buses_kelvin_local_return, critical_buses_kelvin_local_supply, critical_buses_kelvin_local_internal, critical_buses_kelvin_compact_internal, critical_buses_kelvin_low_internal, critical_buses_kelvin_low_critical, critical_buses_kelvin_low_selects, critical_buses_kelvin_low_selects_m3, critical_buses_kelvin_low_selects_rows, critical_buses_kelvin_low_ports, critical_buses_kelvin_low_ports_deep, critical_buses_kelvin_low_ports_loads, critical_buses_kelvin_low_ports_shunts, critical_buses_kelvin_low_ports_loads_shunts, critical_buses_kelvin_low_ports_loads_shunts_series, critical_buses_kelvin_low_ports_loads_shunts_series_left_outputs, critical_buses_kelvin_low_ports_loads_shunts_series_direct, critical_buses_kelvin_signal_trunks, critical_buses_kelvin_m3_10]
+        default: baseline
+permissions:
+  contents: read
+concurrency:
+  group: tx-layout-extraction-cloud-${{ github.ref }}-${{ inputs.circuit_profile }}-${{ inputs.boundary_pins }}-${{ inputs.boundary_policy }}
+  cancel-in-progress: false
+jobs:
+  native-extraction:
+    if: ${{ !inputs.recover_direct_extraction }}
+    strategy:
+      fail-fast: false
+      matrix:
+        variant: ["${{ inputs.variant || 'baseline' }}"]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify exact native runtime on hosted runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
+          python3 -m pip install networkx==3.5
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Extract new geometry and check every native RC edge and thirteen fault controls
+        run: python3 scripts/run_cloud_tx_layout_extraction.py --variant '${{ matrix.variant }}' --circuit-profile '${{ inputs.circuit_profile || 'baseline' }}' ${{ inputs.boundary_pins && '--boundary-pins' || '' }} --boundary-policy '${{ inputs.boundary_policy || 'left' }}'
+      - name: Keep full geometry, timing, proof and failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: tx-layout-extraction-cloud-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cloud-tx-layout-repair/
+          compression-level: 1
+          retention-days: 30
+          if-no-files-found: error
+      - name: Preserve complete evidence permanently
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-layout-extraction-cloud-${{ inputs.circuit_profile || 'baseline' }}-${{ matrix.variant }}-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" hw/soc/out/cloud-tx-layout-repair
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp hw/soc/out/cloud-tx-layout-repair/extraction-result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group '${{ inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair_tight' && format('extract-boundary-tight-{0}', inputs.circuit_profile) || inputs.boundary_pins && inputs.boundary_policy == 'nearest_pair' && format('extract-boundary-nearest-{0}', inputs.circuit_profile) || inputs.boundary_pins && format('extract-boundary-{0}', inputs.circuit_profile) || (matrix.variant == 'critical_buses_kelvin_low_ports_loads_shunts_series_direct' && 'extract-v8-direct-supply' || format('extract-{0}-{1}', inputs.circuit_profile || 'baseline', matrix.variant)) }}' "$archive" "$archive.sha256" "$summary"
+
+  recover-direct-extraction:
+    if: inputs.recover_direct_extraction
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Restore exact source-bound passing extraction artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib, io, json, os, subprocess, zipfile
+          from pathlib import Path, PurePosixPath
+          assert os.environ['GITHUB_ACTIONS']=='true'
+          repo='repos/'+os.environ['GITHUB_REPOSITORY']
+          def api(path):
+              return subprocess.check_output(['gh','api',repo+'/'+path])
+          run=json.loads(api('actions/runs/38521648860'))
+          assert run['status']=='completed' and run['conclusion']=='failure'
+          assert run['head_sha']=='007001ba7a2ff1423ceb32f41c4346b65db9f21c' and run['run_attempt']==1
+          jobs=json.loads(api('actions/runs/38521648860/jobs'))['jobs']
+          assert len(jobs)==1 and jobs[0]['id']==115712481875
+          steps={s['name']:s['conclusion'] for s in jobs[0]['steps']}
+          assert steps['Extract new geometry and check every native RC edge and thirteen fault controls']=='success'
+          assert steps['Preserve complete evidence permanently']=='failure'
+          meta=json.loads(api('actions/artifacts/11873244348'))
+          assert not meta['expired'] and meta['workflow_run']['id']==38521648860
+          data=api('actions/artifacts/11873244348/zip')
+          digest=hashlib.sha256(data).hexdigest()
+          assert digest=='b0243b497deb490258f86b6f7ef26d07d6fe29247e345dae5aacb9837a549e46'
+          assert meta['digest']=='sha256:'+digest and len(data)==7118011
+          out=Path('hw/soc/out/cloud-tx-layout-repair');out.mkdir(parents=True,exist_ok=False)
+          inventory={}
+          with zipfile.ZipFile(io.BytesIO(data)) as archive:
+              assert sum(m.file_size for m in archive.infolist())<1024**3
+              for member in archive.infolist():
+                  name=PurePosixPath(member.filename)
+                  assert not name.is_absolute() and '..' not in name.parts and member.filename not in inventory
+                  if member.is_dir():
+                      continue
+                  assert member.file_size<200000000
+                  raw=archive.read(member)
+                  target=out.joinpath(*name.parts);target.parent.mkdir(parents=True,exist_ok=True)
+                  target.write_bytes(raw)
+                  inventory[member.filename]=dict(bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest())
+          assert len(inventory)==516
+          result=json.loads((out/'extraction-result.json').read_text())
+          assert result['status']=='PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS'
+          assert result['variant']=='critical_buses_kelvin_low_ports_loads_shunts_series_direct'
+          assert result['circuit_profile']=='final_drive_v8' and result['adopted'] is False
+          assert result['controls']['status']=='PASS_REAL_NATIVE_BASELINE_AND13_RAW_CORRUPTION_CONTROLS'
+          physical=json.loads((out/'result.json').read_text())
+          assert physical['status']=='PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS'
+          for name,digest in physical['layout']['outputs'].items():
+              assert hashlib.sha256((out/'layout'/name).read_bytes()).hexdigest()==digest
+          receipt=dict(status='PASS_EXACT_ORIGINAL_EXTRACTION_ARTIFACT_RECOVERED_NO_NATIVE_RERUN',source_run=38521648860,source_commit=run['head_sha'],artifact_id=11873244348,artifact_zip_sha256=meta['digest'],inventory=inventory)
+          Path('direct-extraction-recovery.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          print(json.dumps({k:result[k] for k in ('status','variant','audit')},indent=2))
+          PYCODE
+      - name: Permanently preserve recovered native evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          archive='tx-extraction-recovered-${{ github.run_id }}-${{ github.run_attempt }}.tar.gz'
+          tar -czf "$archive" hw/soc/out/cloud-tx-layout-repair
+          sha256sum "$archive" > "$archive.sha256"
+          summary="${archive%.tar.gz}.summary.json"
+          cp hw/soc/out/cloud-tx-layout-repair/extraction-result.json "$summary"
+          python3 scripts/publish_cloud_results.py --group 'extract-v8-direct-recovered' "$archive" "$archive.sha256" "$summary" direct-extraction-recovery.json

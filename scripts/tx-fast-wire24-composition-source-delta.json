@@ -1,0 +1,95 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_timing_priority_composition.py",
+      "baseline_sha256": "403da5320d21cb509260d7f58034cb42dfd8acba13b14f13c3f833e8ccb7de3b",
+      "candidate_path": "scripts/cloud_tx_fast_wire24_composition.py",
+      "candidate_sha256": "bd418fa9a43c71878139a5110d12f5b532dce07811716b2969ffd565be391d0b",
+      "edits": [
+        {
+          "before": "    if wide64:receipt_name='tx-v5-timing-priority-extraction-pass-20261019.json'\n    receipt=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())",
+          "after": "    if wide64:receipt_name='tx-fast-wire24-extraction-recovered-pass-20261020.json'\n    pin=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())\n    assert pin['run']==39340687625 and pin['original_run_conclusion']=='failure'\n    assert pin['native_step_conclusion']=='success' and pin['recovery_run']==39341750762\n    recovery=json.loads((ROOT/'docs/evidence/tx-wire24-publication-recovery-pass-20261020.json').read_text())\n    assert recovery['summary_sha256']=='65f72cfc21d8fdd85603e7416cfccd0c2ef6bb73eb5646ae846391413ad2c11c'\n    assert recovery['report']['status']=='PASS_ORIGINAL_NATIVE_EXTRACTION_BYTES_RECOVERED_NO_CAD_RERUN'\n    assert recovery['report']['original_summary_sha256']==pin['summary_sha256']\n    e=pin['report']\n    # Normalize storage metadata only; source report and original failure remain intact.\n    receipt=dict(source_run=pin['run'],source_head=pin['source_head'],\n        summary_sha256=pin['summary_sha256'],\n        url='https://api.github.com/repos/Melihakbulut221/nssoc/releases/assets/657719407',\n        sha256='bcf58ad5044105b25379f39c3de24b7b5b92f4937ca047034e8914f73a1bfce9',\n        bytes=19732285,resistors=e['audit']['actual_exported_resistors'],\n        capacitors=e['audit']['actual_exported_capacitors'],devices=1674,ports=162,conductors=377,probes=3262,\n        physical_source_summary_sha256=e['physical_source']['summary_sha256'])\n    for key in ('native_geometry_census','audit','controls','placement_pitch','return_rail','geometry_delta','independent_data_route_geometry'):\n        receipt[key]=e[key]\n    basepin=json.loads((ROOT/'docs/evidence/tx-v5-timing-priority-physical-pass-20261019.json').read_text())\n    assert basepin['run']==39304550527 and basepin['summary_sha256']=='03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d'\n    baseline=basepin['report']\n    physpin=json.loads((ROOT/'docs/evidence/tx-fast-wire24-physical-pass-20261020.json').read_text())\n    assert physpin['summary_sha256']=='00aa1d6cef157845fe73f185e0350b54f372d2c6e0c7dba2773ed629131f6263'",
+          "count": 1
+        },
+        {
+          "before": "39305590019",
+          "after": "39340687625",
+          "count": 1
+        },
+        {
+          "before": "6a619b640aed880cdcb22f6bb00de6220d25e0e3",
+          "after": "1b51dd2c56591b87b3b614c28315d4d44bd51d4f",
+          "count": 2
+        },
+        {
+          "before": "dfcd1f83ac11cef5285899e261ded8a58f6dfe48bd12120fc5dc145d1c9f25c0",
+          "after": "38c4acb3606e4e8f58a1721ac40bf75bbef0516b24da9dafe9acb33ef60622ba",
+          "count": 1
+        },
+        {
+          "before": "assert receipt['sha256']=='70de720c88613198364186d95fe538a6e73533c8f6153671ae4f4cf9ffd93355'",
+          "after": "assert receipt['sha256']=='bcf58ad5044105b25379f39c3de24b7b5b92f4937ca047034e8914f73a1bfce9'",
+          "count": 1
+        },
+        {
+          "before": "if wide64:out=ROOT/'hw/soc/out/cloud-tx-v5-timing-priority-assembly'",
+          "after": "if wide64:out=ROOT/'hw/soc/out/cloud-tx-fast-wire24-physical'",
+          "count": 1
+        },
+        {
+          "before": "assert extraction['physical_source']['summary_sha256']==receipt['physical_source_summary_sha256']=='03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d'",
+          "after": "assert extraction['physical_source']['summary_sha256']==receipt['physical_source_summary_sha256']=='00aa1d6cef157845fe73f185e0350b54f372d2c6e0c7dba2773ed629131f6263'\n        assert extraction==pin['report']",
+          "count": 1
+        },
+        {
+          "before": "            assert extraction['geometry_delta']['status']=='PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n            assert extraction['geometry_delta']['controls']==['wrong_actual_row_metadata','native_child_conductor_removed','actual_parent_trunk_cut']",
+          "after": "            delta=extraction['geometry_delta']\n            assert delta['status']=='PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS'\n            assert delta==physpin['report']['geometry_delta']\n            assert delta['widths_um']==dict(original=4.,candidate=2.4,retained_landings=4.)\n            assert delta['original_vias_children_placements_pins_and_other_layers_equal'] and delta['serialized_gds_verified']\n            assert len(delta['changed_routes'])==28\n            assert len(delta['controls'])==3 and all(c['rejected'] for c in delta['controls'])\n            assert {c['name']for c in delta['controls']}=={'restore_removed_wide_metal','cut_actual_narrow_trunk','change_native_child_geometry'}\n            assert delta['candidate_gds_sha256']=='bab4f236232c592e03a280adee5cc7f4fdc49861e7076c572ec13aa7f704c238'\n            assert delta['source_gds_sha256']=='6b8a3d68e6f94cc7a0812ab89c360a8098633d6e41fa238654c8e16c5ea73057'",
+          "count": 1
+        },
+        {
+          "before": "        gp=extraction['independent_data_route_geometry']\n        assert gp==receipt['independent_data_route_geometry']==extraction['geometry_delta']",
+          "after": "        assert extraction['independent_data_route_geometry']==receipt['independent_data_route_geometry']==delta\n        gp=extraction['baseline_data_route_geometry']\n        assert gp==baseline['geometry_delta']\n        assert gp['status']=='PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'\n        assert gp['controls']==['wrong_actual_row_metadata','native_child_conductor_removed','actual_parent_trunk_cut']\n        physical=json.loads((out/'result.json').read_text())\n        assert sha(out/'result.json')==physpin['summary_sha256'] and physical==physpin['report']\n        assert all(sha(out/n)==v for n,v in physical['outputs'].items())\n        assert sha(out/'source/result.json')==basepin['summary_sha256']\n        assert json.loads((out/'source/result.json').read_text())==baseline\n        assert physical['physical_source']['summary_sha256']==basepin['summary_sha256']\n        for key in ('ports','bbox_um','placements','origin_translation_um','total_devices','core_devices','substrate_contacts','parent_signal_centerline_sum_um','parent_signal_centerline_max_um'):\n            assert physical['layout'][key]==baseline['layout'][key],key\n        assert physical['layout']['outputs']['schematic.cir']==baseline['layout']['outputs']['schematic.cir']\n        assert physical['layout']['outputs'][TOP+'.lef']==baseline['layout']['outputs'][TOP+'.lef']\n        result['baseline_data_route_geometry']=gp",
+          "count": 1
+        },
+        {
+          "before": "result['independent_data_route_geometry']=gp",
+          "after": "result['independent_data_route_geometry']=delta",
+          "count": 1
+        },
+        {
+          "before": "'scripts/bind_tx_v5_timing_priority_interfaces.py'",
+          "after": "'scripts/bind_tx_fast_wire24_interfaces.py'",
+          "count": 1
+        },
+        {
+          "before": "https://api.github.com/repos/Melihakbulut221/nssoc/releases/assets/657719407",
+          "after": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-39340687625-1-tx-fast-wire24-extraction/tx-fast-wire24-extraction-39340687625-1.tar.gz.part0000",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/bind_tx_v5_timing_priority_interfaces.py",
+      "baseline_sha256": "db8877dae9d5da12a66b4e77960ddfd5c7af2286ac2024b57d7cda355a6bc58d",
+      "candidate_path": "scripts/bind_tx_fast_wire24_interfaces.py",
+      "candidate_sha256": "3791cfaa4ec3af2f39649d937a22ae51a8a77711a6f5fdac4aaa54bb4c8fece6",
+      "edits": [
+        {
+          "before": "assert physical['variant']=='budget_balanced_v5'",
+          "after": "candidate=physical\nassert candidate['source_head']=='7a4d047b8bae3cb3da682550b99bf87866107d7d'\nassert candidate['status']=='PASS_TX28_FAST_DATA_WIRE24_NATIVE_PHYSICAL_REQUIRES_FRESH_RC_AND_LOADED_GATES'\nassert hashlib.sha256((P/'result.json').read_bytes()).hexdigest()=='00aa1d6cef157845fe73f185e0350b54f372d2c6e0c7dba2773ed629131f6263'\nassert candidate['geometry_delta']['candidate_gds_sha256']=='bab4f236232c592e03a280adee5cc7f4fdc49861e7076c572ec13aa7f704c238'\nassert candidate['geometry_delta']['original_vias_children_placements_pins_and_other_layers_equal']\n# The immutable source supplies unchanged topology only; probe the new GDS and LVS.\nphysical=json.loads((P/'source/result.json').read_text())\nassert hashlib.sha256((P/'source/result.json').read_bytes()).hexdigest()=='03caa3a4f54f8e14402894a81321e33796f6ec6c502ec39fcc59e4db20e1dd5d'\nassert layout==candidate['layout']\nfor key in ('placements','ports','bbox_um','origin_translation_um'):\n assert layout[key]==physical['layout'][key],key\nassert physical['variant']=='budget_balanced_v5'",
+          "count": 1
+        },
+        {
+          "before": "assert layout['outputs']['nssoc_tx_tree32_budget_balanced_v5_timing_priority_core_v1.gds']=='6b8a3d68e6f94cc7a0812ab89c360a8098633d6e41fa238654c8e16c5ea73057'",
+          "after": "assert layout['outputs']['nssoc_tx_tree32_budget_balanced_v5_timing_priority_core_v1.gds']=='bab4f236232c592e03a280adee5cc7f4fdc49861e7076c572ec13aa7f704c238'",
+          "count": 1
+        },
+        {
+          "before": "Path(__file__),P/'result.json',P/'layout/result.json'",
+          "after": "Path(__file__),P/'result.json',P/'source/result.json',P/'layout/result.json'",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

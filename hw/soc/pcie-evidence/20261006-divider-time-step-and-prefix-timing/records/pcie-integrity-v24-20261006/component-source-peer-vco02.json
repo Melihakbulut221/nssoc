@@ -1,0 +1,37 @@
+{
+  "status": "PASS_SOURCE_ONLY_V24_MATRIX_COMPONENT_CONTROLS",
+  "freeze": {
+    "bytes": 10721,
+    "sha256": "5bac8dc9531a542919b05ebd76cd397a33a64a31d69c03e9754d92626f6f84c9"
+  },
+  "launcher": {
+    "bytes": 4025,
+    "sha256": "91e810c0958c2d1a0b9f99c697bf759ed52f73e7472235ebaec7ba27a6b66180"
+  },
+  "detacher": {
+    "bytes": 2043,
+    "sha256": "6acd58326229caa5f140714e089492317a194604d5de13559ab32567757b0709"
+  },
+  "findings": [],
+  "method": {
+    "bytes": 5964,
+    "sha256": "b4a7ca922ecb4de2be3d4fb56d2ad14fe46b8bc2e2b3ba1bd354707cb7ed7102"
+  },
+  "input_files": 49,
+  "prior_findings": {
+    "bytes": 1194,
+    "sha256": "a694cc1c77c4f7b1f0563c36db11565708b1cbf3065ec294abad525e68d0b5a9"
+  },
+  "full_source_review": [
+    "Read all candidate Verilog, actual HDL testbench, frozen transition/compose/apply functions, architecture contract and both generations of launchers. No reviewed helper or HDL executed.",
+    "96-bit context covers exactly twelve eight-bit vectors. Three carried-prefix equations enumerate first/middle/last exits from mode1 plus absorbing badmode7; non-carried columns0/2/3 use original compose order. Mode1 cannot be entered from other modes in the frozen transition function.",
+    "Actual HDL test enumerates16384 literal0/1/X/Z classifications, requires known matrices, checks noncarry independence and destination support, and enumerates every finite matrix triple against nine actual initial-state mode patterns at allthree prefixes. Four mutants alter distinct column/exit/suffix terms and must reach the exact relation fatal, not any compile failure.",
+    "Four-state index suppression remains the original Verilog behavior. Candidate gates only known transition entries with initial0/1/X modes; no assumed two-state replacement. Component does not yet establish bank ownership, public port behavior or full product timing.",
+    "All49 frozen inputs rehashed; candidate/test/contract identical across01/02. Both complete source-generation diffs independently reconstructed. Selected lexical wrappers and underlying pinned Icarus resources now bound; shared1GiB entry and528MiB continuous/terminal checks added with owned cancellation/cleanup and post-context stop check. CPU6/2GiB, sanitized detached launch, no healthy elapsed timeout."
+  ],
+  "limits": [
+    "Source-only approval to execute the finite component proof. No tests or mutants have run yet; failure/survival must be retained.",
+    "Word0/default path and product bank/context capture are outside this three-prefix component experiment and require subsequent product integration controls.",
+    "Earlier runtime/floor findings retained in source01; no original failure or incomplete product claim erased."
+  ]
+}

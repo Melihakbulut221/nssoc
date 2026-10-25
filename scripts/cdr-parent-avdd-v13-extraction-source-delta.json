@@ -1,0 +1,114 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_localbus_v12_planes.py",
+      "baseline_sha256": "49cc4cd7e2b9e549b3bb44580a78e13564520f7c0b53b59f89e6a393a989fdb2",
+      "candidate_path": "scripts/cloud_cdr_parent_avdd_v13_planes.py",
+      "candidate_sha256": "3f2e9de5fa4e5e7edc7248016e52f9350ab814edddefa1665120eb6b13766a0d",
+      "edits": [
+        {
+          "before": "'cdr-retimed-localbus-v12-parent'",
+          "after": "'cdr-parent-avdd-v13'",
+          "count": 1
+        },
+        {
+          "before": "docs/evidence/cdr-localbus-v12-parent-physical-pass-20261019.json",
+          "after": "docs/evidence/cdr-parent-avdd-v13-physical-pass-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "cdr-retimed-localbus-v12",
+          "after": "cdr-parent-avdd-v13",
+          "count": 1
+        },
+        {
+          "before": "PASS_PD484_HYBRID_PHYSICAL_REQUIRES_NEW_RC_AND_ORIGINAL_LOADED_GATES",
+          "after": "PASS_PD484_PARENT_AVDD_FEEDS_PHYSICAL_REQUIRES_FRESH_RC_AND_ORIGINAL_LOADED_GATES",
+          "count": 1
+        },
+        {
+          "before": "        r['physical_source']=proof",
+          "after": "        overlay=prior['parent_avdd_geometry']\n        assert overlay['status']=='PASS_FROZEN_PARENT_PLUS_ELEVEN_NATIVE_AVDD_FEEDS_AND_THREE_FAULTS'\n        assert overlay['immutable_passed_parent_geometry_reproduced'] and overlay['all_layers_exact']\n        assert overlay['native_via_stacks']==33 and len(overlay['rejected'])==3\n        assert set(overlay['feed_tags'])=={'sa','sb','sc','sd','da','dc','s0','s1','x','y','vi'}\n        r['parent_avdd_geometry']=overlay\n        r['physical_source']=proof",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_localbus_v12_wire_inputs.py",
+      "baseline_sha256": "2f5052a53c0e012bde5b7c400c73a006471e4493b71b0fdbb64dbc76d05e7a1a",
+      "candidate_path": "scripts/cloud_cdr_parent_avdd_v13_wire_inputs.py",
+      "candidate_sha256": "e17556c0cfd3d4bad95660591cf82f0f2af5837b8fcb312769fe6cd89e2d4710",
+      "edits": [
+        {
+          "before": "'cdr-retimed-localbus-v12-parent'",
+          "after": "'cdr-parent-avdd-v13'",
+          "count": 1
+        },
+        {
+          "before": "docs/evidence/cdr-localbus-v12-parent-physical-pass-20261019.json",
+          "after": "docs/evidence/cdr-parent-avdd-v13-physical-pass-20261019.json",
+          "count": 1
+        },
+        {
+          "before": "cdr-retimed-localbus-v12",
+          "after": "cdr-parent-avdd-v13",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_localbus_v12_binding.py",
+      "baseline_sha256": "09a2cadba17c7a536fad98b0bcb3693ecedcb0500df6bc657861df4fc7b8d597",
+      "candidate_path": "scripts/cloud_cdr_parent_avdd_v13_binding.py",
+      "candidate_sha256": "63551e21a091480f9895c4bc7af91de6ae57aa9bdbee63d305923edc0cee60de",
+      "edits": [
+        {
+          "before": "cdr-retimed-localbus-v12",
+          "after": "cdr-parent-avdd-v13",
+          "count": 3
+        },
+        {
+          "before": "nssoc_cdr_pd484_localbus_compact_v12",
+          "after": "nssoc_cdr_pd484_parent_avdd_compact_v13",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_retimed_localbus_v12_rc.py",
+      "baseline_sha256": "532feb6678f4ec99fa895e43e91a20d776eb67a88285d557fbd7c64eb1841657",
+      "candidate_path": "scripts/cloud_cdr_parent_avdd_v13_rc.py",
+      "candidate_sha256": "1b53b4597786d7d076cb5d07dd0a3c53d5bc1492634cce6eaa25c7e26a392aa0",
+      "edits": [
+        {
+          "before": "cdr-retimed-localbus-v12",
+          "after": "cdr-parent-avdd-v13",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_cdr_localbus_v12_extraction_stage.py",
+      "baseline_sha256": "e2541f16c739afcc17a8b0bcbb8898995b714e7625cf58c32cd0c810be223f9a",
+      "candidate_path": "scripts/cloud_cdr_parent_avdd_v13_extraction_stage.py",
+      "candidate_sha256": "36231b9bd3e8d24b09aed38fb2f8a4ec380e6da344cf03771a202ab59aa6851c",
+      "edits": [
+        {
+          "before": "check_cdr_localbus_v12_extraction_sources",
+          "after": "check_cdr_parent_avdd_v13_extraction_sources",
+          "count": 1
+        },
+        {
+          "before": "cdr-retimed-localbus-v12",
+          "after": "cdr-parent-avdd-v13",
+          "count": 4
+        },
+        {
+          "before": "cloud_cdr_retimed_localbus_v12_",
+          "after": "cloud_cdr_parent_avdd_v13_",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

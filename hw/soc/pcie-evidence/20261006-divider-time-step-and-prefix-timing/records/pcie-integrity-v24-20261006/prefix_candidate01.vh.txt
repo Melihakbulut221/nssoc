@@ -1,0 +1,63 @@
+// SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+// SPDX-License-Identifier: Apache-2.0
+// Standalone candidate fragment; not yet integrated into product RTL.
+function automatic [95:0] token_prefix_context;
+ input [63:0] t0,t1,t2;
+ reg [63:0] p2,p3,suffix2;
+ integer d;
+ begin
+  p2=control_compose(t1,t0);
+  p3=control_compose(t2,p2);
+  suffix2=control_compose(t2,t1);
+  for(d=0;d<8;d=d+1) begin
+   token_prefix_context[0+d]=t0[d*8+0];
+   token_prefix_context[8+d]=t0[d*8+2];
+   token_prefix_context[16+d]=t0[d*8+3];
+   token_prefix_context[24+d]=p2[d*8+0];
+   token_prefix_context[32+d]=p2[d*8+2];
+   token_prefix_context[40+d]=p2[d*8+3];
+   token_prefix_context[48+d]=p3[d*8+0];
+   token_prefix_context[56+d]=p3[d*8+2];
+   token_prefix_context[64+d]=p3[d*8+3];
+   token_prefix_context[72+d]=t1[d*8+2];
+   token_prefix_context[80+d]=suffix2[d*8+2];
+   token_prefix_context[88+d]=t2[d*8+2];
+  end
+ end
+endfunction
+function automatic [7:0] context_prefix_modes;
+ input [95:0] context_bits;
+ input [7:0] initial_mode,c0,c1,c2;
+ input [1:0] word_index;
+ reg [7:0] noncarry,carry;
+ begin
+  noncarry=0;carry=0;
+  case(word_index)
+   1:begin
+    noncarry=({8{initial_mode[0]}}&context_bits[0+:8])|
+             ({8{initial_mode[2]}}&context_bits[8+:8])|
+             ({8{initial_mode[3]}}&context_bits[16+:8]);
+    carry=c0;
+   end
+   2:begin
+    noncarry=({8{initial_mode[0]}}&context_bits[24+:8])|
+             ({8{initial_mode[2]}}&context_bits[32+:8])|
+             ({8{initial_mode[3]}}&context_bits[40+:8]);
+    carry=({8{c0[2]}}&context_bits[72+:8])|
+          ({8{c0[7]}}&8'h80)|({8{c0[1]}}&c1);
+   end
+   3:begin
+    noncarry=({8{initial_mode[0]}}&context_bits[48+:8])|
+             ({8{initial_mode[2]}}&context_bits[56+:8])|
+             ({8{initial_mode[3]}}&context_bits[64+:8]);
+    carry=((({8{c0[2]}}&context_bits[80+:8])|
+            ({8{c0[7]}}&8'h80))|
+           (({8{c0[1]&c1[2]}}&context_bits[88+:8])|
+            ({8{c0[1]&c1[7]}}&8'h80)))|
+          ({8{c0[1]&c1[1]}}&c2);
+   end
+   default:begin noncarry=initial_mode;carry=0;end
+  endcase
+  context_prefix_modes=noncarry|({8{initial_mode[1]}}&carry);
+ end
+endfunction

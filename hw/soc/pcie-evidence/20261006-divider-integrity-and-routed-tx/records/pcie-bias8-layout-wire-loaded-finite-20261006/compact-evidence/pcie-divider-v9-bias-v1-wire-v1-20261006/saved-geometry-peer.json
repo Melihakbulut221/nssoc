@@ -1,0 +1,108 @@
+{
+  "reviewer": "PLL independent saved-byte review",
+  "actual_two_bias8_resistors": [
+    {
+      "source_name": "DIV__XDP",
+      "native_id": 55,
+      "parameters": {
+        "w": 1.0,
+        "l": 8.0,
+        "ps": 0.0,
+        "b": 0.0,
+        "m": 1.0
+      },
+      "native_terminals": {
+        "rppd_1": 45,
+        "rppd_2": 34,
+        "rppd_sub": 1
+      }
+    },
+    {
+      "source_name": "DIV__XDN",
+      "native_id": 56,
+      "parameters": {
+        "w": 1.0,
+        "l": 8.0,
+        "ps": 0.0,
+        "b": 0.0,
+        "m": 1.0
+      },
+      "native_terminals": {
+        "rppd_1": 47,
+        "rppd_2": 34,
+        "rppd_sub": 1
+      }
+    }
+  ],
+  "status": "PASS_DIVIDER_V9_BIAS8_SAVED_GEOMETRY_AND_BINDING_CONTROLS",
+  "findings": [],
+  "method": {
+    "bytes": 11925,
+    "sha256": "437292465d98a87d08ea0b5842977152b1c630be80c76c120d291bdcc0abb851"
+  },
+  "geometry_execution": {
+    "bytes": 371296,
+    "sha256": "238a9957148e34c7033d6cd5b3760f3d4bf6312762b158453b19e3eac03f5767"
+  },
+  "binding_controls": {
+    "bytes": 118542,
+    "sha256": "c75b78edc253a1d8a91045aaeda3e5cfe9d7bddc5bd259450a357b2444084d3b"
+  },
+  "source_peer": {
+    "bytes": 2934,
+    "sha256": "9103e521a568e73a306b361ca6b9430a6a2b337a44263e1373b9172b662538c6"
+  },
+  "binding_source_peer": {
+    "bytes": 3036,
+    "sha256": "14ad17e1dc8de0d73e7e4df11f2327e6a1484e65001fd41870650f31bbe19b29"
+  },
+  "native_database": {
+    "bytes": 270650,
+    "sha256": "c3933d1cf1d5fcff46dd1259e5ddd5ec63b0056dfa9f24e585982dea297acf74"
+  },
+  "source_inputs_rehashed": 1607,
+  "closed_stage_count": 12,
+  "raw_native_devices": 91,
+  "raw_native_terminals": 283,
+  "raw_clusters_retained": 72,
+  "electrical_clusters": 38,
+  "auxiliary_clusters_without_terminal_metal_or_public_pin": 34,
+  "metal_components": 37,
+  "metal_terminals": 198,
+  "body_terminals": 85,
+  "real_anchors": 205,
+  "minimum_anchors_per_component": 2,
+  "public_ports": 7,
+  "all_source_device_ids_and_net_bijection_rechecked": true,
+  "actual_binding_controls": {
+    "positive": 1,
+    "declared_rejections": 4
+  },
+  "native_reexecution": false,
+  "reviewer_correction": "Initial additive resistor check confused source-device schematic SUB with native binder BULK body domain. Actual original join correctly separates BULK and public SUB; preserve attempt01 and check both explicitly. No producer or geometry edits.",
+  "actual_two_cap24_devices": [
+    {
+      "source_name": "DIV__XCP",
+      "native_id": 70,
+      "parameters": {
+        "w": 24.0,
+        "l": 24.0,
+        "A": 576.0,
+        "P": 96.0,
+        "m": 1.0
+      }
+    },
+    {
+      "source_name": "DIV__XCN",
+      "native_id": 72,
+      "parameters": {
+        "w": 24.0,
+        "l": 24.0,
+        "A": 576.0,
+        "P": 96.0,
+        "m": 1.0
+      }
+    }
+  ],
+  "scope": "Saved immutable Bias8 graph/geometry/output; actual two native rppd W1/L8 and two retained24um MIM devices independently matched. Remaining91-device/source mapping verified. Graph/geometry/output and owned lifecycle review, including independent ASCII database terminal recount and complete source-net/terminal join. Actual geometry algorithms were executed by the frozen owned producer, not rerun here. All72 raw clusters retained; no net/device purge. Five copied-input tests verify binder sensitivity; they are not electrical fault simulations. Point-reference wire-only RC remains a future experiment. No distributed intrinsic-terminal, substrate resistance, qualified PEX, extracted clock division, main-chip or full PHY acceptance."
+}

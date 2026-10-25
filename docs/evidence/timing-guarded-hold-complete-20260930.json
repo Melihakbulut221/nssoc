@@ -1,0 +1,3111 @@
+{
+  "schema_version": 1,
+  "recorded": "2026-09-30T15:00:19.295789+03:00",
+  "source_head": "761f1478dd876b21e2136326d091036af26d5bfc",
+  "status": "GUARDED_HOLD_COMPLETE_REJECTED_C10_RETAINED_SETUP_WAITING_FOR_RESOURCES",
+  "completed_hold": {
+    "recorded": "2026-09-30T14:28:23.544928+03:00",
+    "scope": "Read-only archive and report validation; completed global-route estimate only. No heavy chip DB opened or archive restored.",
+    "campaign_snapshot_sha256": "41699c2ec493dae509317576b4152c756a4ec2e247e2a89c5ef89f00b528370b",
+    "stage_status": "COMPLETE_ESTIMATE_ONLY",
+    "returncode": 0,
+    "started": "2026-09-30T02:33:19.719024+03:00",
+    "completed": "2026-09-30T11:23:51.986909+03:00",
+    "elapsed_seconds": 31832.270145506947,
+    "archive": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-three-methods-20260930-retry1/hold_guarded.tar.gz",
+      "bytes": 43181945,
+      "sha256": "5c37b2ecaa3f1df6e66e779d8edf1312e773b79590a32c82926d2bebbdc8b704",
+      "verified_members": 31,
+      "total_uncompressed_bytes": 210553536,
+      "all_members_stream_hash_verified": true,
+      "inventory_reference": "campaign-result.snapshot.json:stages[profile=hold_guarded].archive.inventory"
+    },
+    "source_checkpoint_metrics": {
+      "setup_wns_ns": -4.710829,
+      "hold_wns_ns": -1.840329
+    },
+    "fresh_before": {
+      "profile": "hold_guarded",
+      "phase": "before",
+      "parasitics": "global_route_estimates",
+      "signoff": false,
+      "setup_wns_ns": -4.909516349016485,
+      "hold_wns_ns": -1.8409653801398917,
+      "setup_tns_ns": -4320.800144341774,
+      "hold_tns_ns": -26.461044910774945,
+      "setup_violating_endpoints": 1384,
+      "hold_violating_endpoints": 113,
+      "slew_violations": 0,
+      "capacitance_violations": 1,
+      "instance_count": 103697,
+      "area_um2": 4092933.0680228304,
+      "utilization_fraction": 0.5351749703292155
+    },
+    "after_legalize_incremental_grt": {
+      "profile": "hold_guarded",
+      "phase": "after",
+      "parasitics": "global_route_estimates",
+      "signoff": false,
+      "setup_wns_ns": -4.875383652347409,
+      "hold_wns_ns": -1.0781484593991308,
+      "setup_tns_ns": -4283.189809939358,
+      "hold_tns_ns": -4.776081308222047,
+      "setup_violating_endpoints": 1385,
+      "hold_violating_endpoints": 11,
+      "slew_violations": 0,
+      "capacitance_violations": 1,
+      "instance_count": 108085,
+      "area_um2": 4164587.6081020106,
+      "utilization_fraction": 0.5445441875209845
+    },
+    "deltas_from_fresh": {
+      "setup_wns_ns": 0.03413269666907581,
+      "hold_wns_ns": 0.7628169207407609,
+      "setup_tns_ns": 37.6103344024159,
+      "hold_tns_ns": 21.684963602552898,
+      "setup_violating_endpoints": 1,
+      "hold_violating_endpoints": -102,
+      "slew_violations": 0,
+      "capacitance_violations": 0,
+      "instance_count": 4388,
+      "area_um2": 71654.54007918015
+    },
+    "rejection_reproduced": true,
+    "rejection_reasons": [
+      {
+        "comparison": "fresh_initial_global_estimate",
+        "metric": "setup_violating_endpoints",
+        "before": 1384,
+        "after": 1385,
+        "delta": 1
+      },
+      {
+        "comparison": "selected_C10_checkpoint",
+        "metric": "setup_wns_ns",
+        "before": -4.710829,
+        "after": -4.875383652347409,
+        "delta": -0.16455465234740885
+      }
+    ],
+    "selected_checkpoint_preserved": true,
+    "native_completion_markers_verified": [
+      "ALL_32_HARD_MACRO_MASTERS_LOCATIONS_ORIENTATIONS_PRESERVED",
+      "EXPERIMENT_NATIVE_TIMING_CONSTRAINTS_BYTE_IDENTICAL",
+      "EXPERIMENT_COMPLETE_REQUIRES_ROUTING_RCX_STA_EQUIVALENCE hold_guarded"
+    ],
+    "sdc_identical_to_source_and_before_after": true,
+    "sdc_sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+    "independently_verified_macro_count": 32,
+    "macro_master_placement_orientation_unchanged": true,
+    "independently_verified_top_pin_count": 303,
+    "top_pin_def_records_unchanged": true,
+    "source_def_sha256": "4428577aa08f10a83af55ca7fe2a7cfa27bb11347760206f7bf729e0c63e0b9f",
+    "candidate_def_sha256": "2c3c99b3131e9f216f7fe4ea5304f37452c6cbc69fc62674da5e494c1846abb5",
+    "macros": {
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[0\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2340000,
+        "y_dbu": 60480,
+        "orientation": "FS"
+      },
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[1\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2340000,
+        "y_dbu": 351540,
+        "orientation": "N"
+      },
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[2\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2340000,
+        "y_dbu": 642600,
+        "orientation": "FS"
+      },
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[3\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2340000,
+        "y_dbu": 933660,
+        "orientation": "N"
+      },
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[4\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2340000,
+        "y_dbu": 1224720,
+        "orientation": "FS"
+      },
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[5\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2340000,
+        "y_dbu": 1515780,
+        "orientation": "N"
+      },
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[6\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2340000,
+        "y_dbu": 1806840,
+        "orientation": "FS"
+      },
+      "u_eth.u_mac.rx_fifo.fifo_inst.u_sram.g_bank\\[7\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2340000,
+        "y_dbu": 2097900,
+        "orientation": "N"
+      },
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[0\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2808000,
+        "y_dbu": 60480,
+        "orientation": "FS"
+      },
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[1\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2808000,
+        "y_dbu": 351540,
+        "orientation": "N"
+      },
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[2\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2808000,
+        "y_dbu": 642600,
+        "orientation": "FS"
+      },
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[3\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2808000,
+        "y_dbu": 933660,
+        "orientation": "N"
+      },
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[4\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2808000,
+        "y_dbu": 1224720,
+        "orientation": "FS"
+      },
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[5\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2808000,
+        "y_dbu": 1515780,
+        "orientation": "N"
+      },
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[6\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2808000,
+        "y_dbu": 1806840,
+        "orientation": "FS"
+      },
+      "u_eth.u_mac.tx_fifo.fifo_inst.u_sram.g_bank\\[7\\].u_mem.mem": {
+        "master": "DP8TSRAMDP256x16",
+        "placement_status": "FIXED",
+        "x_dbu": 2808000,
+        "y_dbu": 2097900,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank\\[0\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 120000,
+        "y_dbu": 60480,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank\\[1\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 120000,
+        "y_dbu": 250740,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank\\[2\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 120000,
+        "y_dbu": 441000,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b0.bank_adapter.bank\\[3\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 120000,
+        "y_dbu": 631260,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[0\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 944640,
+        "y_dbu": 60480,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[1\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 944640,
+        "y_dbu": 250740,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[2\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 944640,
+        "y_dbu": 441000,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b1.bank_adapter.bank\\[3\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 944640,
+        "y_dbu": 631260,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b2.bank_adapter.bank\\[0\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 120000,
+        "y_dbu": 1640520,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b2.bank_adapter.bank\\[1\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 120000,
+        "y_dbu": 1830780,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b2.bank_adapter.bank\\[2\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 120000,
+        "y_dbu": 2021040,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b2.bank_adapter.bank\\[3\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 120000,
+        "y_dbu": 2211300,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b3.bank_adapter.bank\\[0\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 944640,
+        "y_dbu": 1640520,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b3.bank_adapter.bank\\[1\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 944640,
+        "y_dbu": 1830780,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b3.bank_adapter.bank\\[2\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 944640,
+        "y_dbu": 2021040,
+        "orientation": "N"
+      },
+      "u_ram.g_ram_2048x64_ecc.u_b3.bank_adapter.bank\\[3\\].mem": {
+        "master": "SP6TSRAM512x64",
+        "placement_status": "FIXED",
+        "x_dbu": 944640,
+        "y_dbu": 2211300,
+        "orientation": "N"
+      }
+    },
+    "verified_output_pins": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-three-methods-20260930-retry1/hold_guarded/01-openroad-resizertimingpostgrt/state_out.json": {
+        "sha256": "de315c4702f4f6ce4d897d4f1b5860c6062f8ff50253d1e490cf80aee630ff67",
+        "verified_in_archive": "01-openroad-resizertimingpostgrt/state_out.json"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-three-methods-20260930-retry1/hold_guarded/01-openroad-resizertimingpostgrt/soc_top.nl.v": {
+        "sha256": "f6b6b592c5d92e150ae0535ddd0a5ace6197204ba115c49b85ea8463bbd8342b",
+        "verified_in_archive": "01-openroad-resizertimingpostgrt/soc_top.nl.v"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/01-yosys-jsonheader/soc_top.h.json": {
+        "sha256": "b0c4c09ff3d4536d8bffd9e46c0543f403e5271ce24e1645ce0d1271150904a7",
+        "verified_external_file": true,
+        "inherited_view_not_new_signoff": true
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-three-methods-20260930-retry1/hold_guarded/01-openroad-resizertimingpostgrt/soc_top.odb": {
+        "sha256": "66f167a1f81571ccd04bc0462488997c1f13ab0672c549d670d2b7b6ad71b7d1",
+        "verified_in_archive": "01-openroad-resizertimingpostgrt/soc_top.odb"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-three-methods-20260930-retry1/hold_guarded/01-openroad-resizertimingpostgrt/soc_top.def": {
+        "sha256": "2c3c99b3131e9f216f7fe4ea5304f37452c6cbc69fc62674da5e494c1846abb5",
+        "verified_in_archive": "01-openroad-resizertimingpostgrt/soc_top.def"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-three-methods-20260930-retry1/hold_guarded/01-openroad-resizertimingpostgrt/soc_top.sdc": {
+        "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+        "verified_in_archive": "01-openroad-resizertimingpostgrt/soc_top.sdc"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-three-methods-20260930-retry1/hold_guarded/01-openroad-resizertimingpostgrt/soc_top.pnl.v": {
+        "sha256": "167b45af49153064d08e3eb8e8cf56f16d77ac88037f430a5de9e129335cf5ab",
+        "verified_in_archive": "01-openroad-resizertimingpostgrt/soc_top.pnl.v"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-pipeline-20260927/run/20-odb-writeverilogheader/soc_top.vh": {
+        "sha256": "740d8c14adbfb87d815fcd24e530163c4c4a6e8d1994e04c3c0448a7c43f055a",
+        "verified_external_file": true,
+        "inherited_view_not_new_signoff": true
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_fast_1p32V_m40C/soc_top__nom_fast_1p32V_m40C.sdf": {
+        "sha256": "03d9558405f9e1de18214ae1fde43ac4728a94fa04dac3d301de8102fbf1b8a4",
+        "verified_external_file": true,
+        "inherited_view_not_new_signoff": true
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_typ_1p20V_25C/soc_top__nom_typ_1p20V_25C.sdf": {
+        "sha256": "fcb20d0032e146248363c8a729d49cc8fa84bc3f068f0532de38b220e7b0dd3f",
+        "verified_external_file": true,
+        "inherited_view_not_new_signoff": true
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_slow_1p08V_125C/soc_top__nom_slow_1p08V_125C.sdf": {
+        "sha256": "4fdeca7ad6f29843881f1b0897456196da6cb6d679a45aa12d22479db7281be8",
+        "verified_external_file": true,
+        "inherited_view_not_new_signoff": true
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_fast_1p32V_m40C/soc_top__nom_fast_1p32V_m40C.lib": {
+        "sha256": "b159f25721333a4bf5e48b23e91c260e09a19285946c05ed4fc34319b130fe0f",
+        "verified_external_file": true,
+        "inherited_view_not_new_signoff": true
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_typ_1p20V_25C/soc_top__nom_typ_1p20V_25C.lib": {
+        "sha256": "f3974e31dc0388ecfe31f0751422794e6d8b0bbc88148c71dddeaec8b7e4b2cc",
+        "verified_external_file": true,
+        "inherited_view_not_new_signoff": true
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/03-openroad-stapostpnr/nom_slow_1p08V_125C/soc_top__nom_slow_1p08V_125C.lib": {
+        "sha256": "0a265ec96fa42277fbae68f149abbd7748fd51362d1f79cd2107c43863d94067",
+        "verified_external_file": true,
+        "inherited_view_not_new_signoff": true
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/physical-recovery-20260927/pipeline-retry-v2/run/04-klayout-streamout/soc_top.klayout.gds": {
+        "sha256": "9f008dfd488c2a5af4a673b17f81f645268019091c9ed29181bc56ab3dabab80",
+        "verified_external_file": true,
+        "inherited_view_not_new_signoff": true
+      }
+    },
+    "warnings": [
+      "No libs found for macro SP6TSRAM512x64 at corner nom_fast_1p32V_m40C. The module will be black-boxed.",
+      "No libs found for macro DP8TSRAMDP256x16 at corner nom_fast_1p32V_m40C. The module will be black-boxed.",
+      "No libs found for macro SP6TSRAM512x64 at corner nom_typ_1p20V_25C. The module will be black-boxed.",
+      "No libs found for macro DP8TSRAMDP256x16 at corner nom_typ_1p20V_25C. The module will be black-boxed.",
+      "No libs found for macro SP6TSRAM512x64 at corner nom_slow_1p08V_125C. The module will be black-boxed.",
+      "No libs found for macro DP8TSRAMDP256x16 at corner nom_slow_1p08V_125C. The module will be black-boxed.",
+      "Multi-clock files are not currently supported by the base SDC file. Only the first clock will be constrained.",
+      "[RSZ-0064] Unable to repair all hold checks within margin."
+    ],
+    "current_snapshot_status": "WAITING_FOR_LOCAL_RESOURCES",
+    "current_resources": {
+      "available_memory_bytes": 3244421120,
+      "free_disk_bytes": 1062965248
+    },
+    "reports_sha256": {
+      "01-openroad-resizertimingpostgrt/COMMANDS": "6fca8ab75dcaab039669e25a302ae5420f059f44586597c286a205499961f085",
+      "01-openroad-resizertimingpostgrt/experiment-after-electrical.rpt": "a8e9a8768b0c2248799c749a563263b42f22ee1baed9485670b8684aced48b97",
+      "01-openroad-resizertimingpostgrt/experiment-after-hold.rpt": "14c7ee98e76fa8a0f8862910cbe9c1ac06475c52c1654da3eee70f9cbe3d458b",
+      "01-openroad-resizertimingpostgrt/experiment-after-setup.rpt": "e8d64536186dcc338e576dc84bbfd6575bd6d8a803e37d16d28581be93fe83d9",
+      "01-openroad-resizertimingpostgrt/experiment-after.json": "f4dc737a6e0caad0a39460bc71fb049e47d8a11c82fee54f44ad779c7ac5bd9c",
+      "01-openroad-resizertimingpostgrt/experiment-after.sdc": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+      "01-openroad-resizertimingpostgrt/experiment-before-electrical.rpt": "a8e9a8768b0c2248799c749a563263b42f22ee1baed9485670b8684aced48b97",
+      "01-openroad-resizertimingpostgrt/experiment-before-hold.rpt": "ed77d8c54f64e4a3de2c03649110852ee362f9c207412b868936dd47c3ff7226",
+      "01-openroad-resizertimingpostgrt/experiment-before-setup.rpt": "e934e661650385da9c99575eba75e1df90ea1100e16cc513443fa328d9c0f839",
+      "01-openroad-resizertimingpostgrt/experiment-before.json": "f2941b8e2063a2ac82f7cb7313a30cc918d92c556bfafcb295eb7cc3602cf597",
+      "01-openroad-resizertimingpostgrt/experiment-before.sdc": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+      "01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.log": "bafc3696368a2f2a1ad401eb1023ce2290267327876e8491ada5895ec24f95a6",
+      "01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.process_stats.json": "96781b82ba685a94711e61e947e4bf6db30243f757159b84c17753f52680388e",
+      "01-openroad-resizertimingpostgrt/or_metrics_out.json": "6213a62404123eee7d00e6a3f6fef62a3e6b37fcebdd301baa0f164f46667dbc",
+      "01-openroad-resizertimingpostgrt/runtime.txt": "d3d728dde3c7bf8f05f6aefd81e815631ece114cddac8f50c85ff1f26bb4849f",
+      "01-openroad-resizertimingpostgrt/soc_top.sdc": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3",
+      "01-openroad-resizertimingpostgrt/state_in.json": "a24b1abe1435a0a7f7d3fdd8ec9175239f4f5b1b927b40ae89e4f66b0d2c76f4",
+      "01-openroad-resizertimingpostgrt/state_out.json": "de315c4702f4f6ce4d897d4f1b5860c6062f8ff50253d1e490cf80aee630ff67",
+      "error.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "flow.log": "3ea6ed4c2b3e2e0554407b90423a908848c72b761599f043abf8aad890625672",
+      "warning.log": "b6f67279035ec6d9b5ad64d2bc8625846adabd56e204d1cd2c6c8300c0eae886"
+    },
+    "manufacturing_approval": false,
+    "final_timing_acceptance": false,
+    "reported_path_samples": {
+      "experiment-before-setup.rpt": [
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129813_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.567427,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129841_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.567825,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129812_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.567845,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129843_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.568615,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129836_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.572196,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129837_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.572507,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129838_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.572718,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129814_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.688212,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129844_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.11553,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129840_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.117469,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134542_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134757_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.873755,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134542_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134758_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.873028,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134542_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134732_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.871741,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134542_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134733_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.871456,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134709_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.04534,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_129766_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.089891,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_129764_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.090824,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.090857,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134700_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.09318,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134708_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.367985,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132609_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.909516,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_128487_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.903319,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_128254_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.89869,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132935_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.889392,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132862_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.888422,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132866_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.880446,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_126138_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.87983,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132861_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.875426,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_130195_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.874235,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132860_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.872936,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135274_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.731488,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135275_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.746646,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135258_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.759108,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135257_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.76897,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135273_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.772483,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135277_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.77415,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135278_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.781702,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135272_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.793666,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_131617_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.812644,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135276_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 3.815734,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_127766_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.980556,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_127765_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.844111,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_127764_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.730565,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129330_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.659896,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129331_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.649475,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129332_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.646892,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_127763_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.579508,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129329_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.567048,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129335_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.564253,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129336_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.563457,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127789_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.460298,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127790_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.454255,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127788_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.040844,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127787_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.848052,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129834_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.71091,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129840_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.707628,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129843_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.706367,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129835_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.703666,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129841_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.702769,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129842_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.69659,
+          "status": "VIOLATED"
+        }
+      ],
+      "experiment-after-hold.rpt": [
+        {
+          "startpoint": "_134733_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_134633_ (removal check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.147257,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134733_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_134738_ (removal check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.14745,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134733_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_134739_ (removal check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.14747,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134733_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_134693_ (removal check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.147988,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_134525_ (removal check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.159982,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129846_ (removal check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.16011,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_134524_ (removal check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.161344,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135248_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132479_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.185524,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135248_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132477_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.186761,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135248_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132478_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.187401,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134915_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_oe_o[0] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.078148,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134918_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_oe_o[3] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.865023,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134917_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_oe_o[2] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.770517,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134927_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_sck_o (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.650309,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134916_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_oe_o[1] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.564448,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129677_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_cs_no[1] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.376796,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135214_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_135215_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.157756,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135205_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_135206_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.120381,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129676_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_cs_no[0] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.048969,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_126033_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132893_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.021215,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_131617_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.189261,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135258_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.199472,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135277_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.204736,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135257_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.215865,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135276_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.225772,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135272_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.234592,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135275_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.240227,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135273_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.253815,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135274_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.274731,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135278_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.28398,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_129328_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129328_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.119064,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_129332_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129333_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.142946,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134656_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_134664_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.150397,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139343_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_139342_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.150407,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139510_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_139497_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.15095,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139467_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_139467_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.151019,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_129634_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129694_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.152194,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_130779_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_130798_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.153001,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139235_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_139235_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.153313,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134662_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_134670_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.153824,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134732_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_134733_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.122518,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135259_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129873_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.115862,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139697_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_139691_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.116865,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139697_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_139692_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.120116,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135259_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129872_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.120671,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_129831_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129830_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.133537,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_129900_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129900_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.136277,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_129843_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129844_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.143466,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_127808_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_132389_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.145139,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_129900_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129901_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.145504,
+          "status": "MET"
+        }
+      ],
+      "experiment-before-hold.rpt": [
+        {
+          "startpoint": "_134721_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_129808_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.043243,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134721_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_129848_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.09377,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134721_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134519_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.099616,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134725_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129426_ (removal check against rising-edge clock eth_rx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.113915,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135246_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_135247_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.12311,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135246_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_135248_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.123517,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134721_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_127776_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.125171,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134542_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_128081_ (removal check against rising-edge clock clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.126968,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134725_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129326_ (removal check against rising-edge clock eth_rx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.131798,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134725_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129427_ (removal check against rising-edge clock eth_rx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.132442,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134918_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_oe_o[3] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.840965,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134915_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_oe_o[0] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.829541,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134917_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_oe_o[2] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.781129,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134916_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_oe_o[1] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.674056,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134927_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_sck_o (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.669388,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129676_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_cs_no[0] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.489944,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134919_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_o[0] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.435001,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129677_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_cs_no[1] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.416312,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134921_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_o[2] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.217737,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134920_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "qspi_io_o[1] (output port clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -1.0882,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_131617_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.523334,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135276_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.518499,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135272_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.510349,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135278_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.505183,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135273_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.504261,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135277_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.503446,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135258_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.503306,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135257_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.501617,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135275_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.495314,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135274_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.486722,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "eth_rx_er_i (input port clocked by eth_rx_clk_i)",
+          "endpoint": "_134685_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_typ_1p20V_25C",
+          "slack_ns": -0.292405,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "eth_rxd_i[6] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "_134651_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_typ_1p20V_25C",
+          "slack_ns": -0.27661,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "eth_rxd_i[7] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "_134652_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_typ_1p20V_25C",
+          "slack_ns": -0.275381,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "eth_rxd_i[2] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "_134647_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_typ_1p20V_25C",
+          "slack_ns": -0.265542,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "eth_rxd_i[4] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "_134649_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_typ_1p20V_25C",
+          "slack_ns": -0.25986,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "eth_rxd_i[5] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "_134650_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_typ_1p20V_25C",
+          "slack_ns": -0.258806,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "eth_rxd_i[1] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "_134646_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_typ_1p20V_25C",
+          "slack_ns": -0.250206,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "eth_rxd_i[3] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "_134648_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.232606,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "eth_rxd_i[0] (input port clocked by eth_rx_clk_i)",
+          "endpoint": "_134645_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.230808,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134503_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129427_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.05982,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134732_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_134733_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.122518,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129832_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129832_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.039832,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_127790_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127790_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.025886,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139580_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_139580_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": -0.006645,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139591_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_139591_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.006489,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134524_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127784_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.014421,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139594_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_139594_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.018849,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139587_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_139587_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.035618,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139582_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_139582_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.036939,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_132398_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_135273_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_fast_1p32V_m40C",
+          "slack_ns": 0.037026,
+          "status": "MET"
+        }
+      ],
+      "experiment-after-setup.rpt": [
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129813_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.567427,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129841_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.567825,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129812_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.567845,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129843_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.568615,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129836_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.572196,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129837_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.572507,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129838_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.572718,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134701_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129814_ (recovery check against rising-edge clock eth_tx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.688212,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134725_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129424_ (recovery check against rising-edge clock eth_rx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.974612,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134725_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_134503_ (recovery check against rising-edge clock eth_rx_clk_i)",
+          "group": "asynchronous",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.974686,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134542_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134757_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.883537,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134542_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134758_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.88281,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134542_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134732_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.881523,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_134542_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134733_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.881237,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129795_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134708_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 4.943098,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134709_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.044545,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_129766_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.089097,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_129764_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.090029,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.090062,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_134538_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_134700_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "path delay",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 5.092386,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_128487_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.875384,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132609_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.872428,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_128254_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.861891,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_126138_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.858148,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132862_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.857775,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_130183_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.855864,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132935_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.854439,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132866_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.849797,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_130195_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.846074,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_133640_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "endpoint": "_132861_ (rising edge-triggered flip-flop clocked by clk_i)",
+          "group": "clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -4.844932,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_135278_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[6] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.648856,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135274_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[2] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.672285,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135273_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[1] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.727975,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135275_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[3] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.762691,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135272_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[0] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.783488,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135276_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[4] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.810053,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135257_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[7] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.834596,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135277_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_txd_o[5] (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.862328,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_135258_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_tx_en_o (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.863609,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_131617_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "eth_tx_er_o (output port clocked by eth_gtx)",
+          "group": "eth_gtx",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": 1.889081,
+          "status": "MET"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_127766_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -2.001581,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_127765_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.865238,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_127764_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.751605,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129330_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.675165,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129331_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.640575,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129332_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.638003,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_127763_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.609015,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129329_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.558232,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129335_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.555445,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_139544_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "endpoint": "_129336_ (rising edge-triggered flip-flop clocked by eth_rx_clk_i)",
+          "group": "eth_rx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.554652,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127789_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.477609,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127790_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.471487,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127788_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -1.058155,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_127787_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.865374,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129834_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.723973,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129840_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.72176,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129843_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.719425,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129835_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.716724,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129841_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.715826,
+          "status": "VIOLATED"
+        },
+        {
+          "startpoint": "_129765_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "endpoint": "_129842_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+          "group": "eth_tx_clk_i",
+          "corner": "nom_slow_1p08V_125C",
+          "slack_ns": -0.709647,
+          "status": "VIOLATED"
+        }
+      ]
+    },
+    "report_sample_scope": "At most 10 paths per group; these are not a full census of all setup/hold endpoints.",
+    "reported_remaining_negative_hold_paths": [
+      {
+        "startpoint": "_134915_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "qspi_io_oe_o[0] (output port clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -1.078148,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_134918_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "qspi_io_oe_o[3] (output port clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.865023,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_134917_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "qspi_io_oe_o[2] (output port clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.770517,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_134927_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "qspi_sck_o (output port clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.650309,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_134916_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "qspi_io_oe_o[1] (output port clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.564448,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_129677_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "qspi_cs_no[1] (output port clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.376796,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_135214_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "_135215_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.157756,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_135205_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "_135206_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.120381,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_129676_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "qspi_cs_no[0] (output port clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.048969,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_126033_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "endpoint": "_132893_ (rising edge-triggered flip-flop clocked by clk_i)",
+        "group": "clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.021215,
+        "status": "VIOLATED"
+      },
+      {
+        "startpoint": "_134732_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+        "endpoint": "_134733_ (rising edge-triggered flip-flop clocked by eth_tx_clk_i)",
+        "group": "eth_tx_clk_i",
+        "corner": "nom_fast_1p32V_m40C",
+        "slack_ns": -0.122518,
+        "status": "VIOLATED"
+      }
+    ],
+    "native_process_stats": {
+      "time": {
+        "cpu_time_user": "15:45:16.120",
+        "cpu_time_system": "06:55:50.779",
+        "runtime": "08:50:16.103",
+        "cpu_time_iowait": "00:00:00.000"
+      },
+      "peak_resources": {
+        "cpu_percent": 318.7,
+        "memory_rss": "4GiB",
+        "memory_vms": "4GiB",
+        "threads": 3
+      },
+      "avg_resources": {
+        "cpu_percent": 256.67365472484437,
+        "memory_rss": "3GiB",
+        "memory_vms": "4GiB",
+        "threads": 2.999911526235659
+      }
+    },
+    "electrical_remaining": {
+      "slew_violations": 0,
+      "capacitance_violations": 1,
+      "pin": "fanout1228/X",
+      "limit_pF": 0.3,
+      "actual_pF": 0.315134,
+      "slack_pF": -0.015134,
+      "before_after_report_byte_identical": true
+    },
+    "native_sdc_clocks": [
+      "create_clock -name clk_i -period 20.0000 [get_ports {clk_i}]",
+      "create_clock -name eth_rx_clk_i -period 8.0000 [get_ports {eth_rx_clk_i}]",
+      "create_clock -name eth_tx_clk_i -period 8.0000 [get_ports {eth_tx_clk_i}]",
+      "create_generated_clock -name eth_gtx -source [get_ports {eth_tx_clk_i}] -divide_by 1 [get_ports {eth_gtx_clk_o}]"
+    ],
+    "area_growth_percent": 1.7506892707090937,
+    "cell_count_growth_percent": 4.231559254366091,
+    "native_progress_counter": {
+      "source": "reports/01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.log",
+      "source_sha256": "bafc3696368a2f2a1ad401eb1023ce2290267327876e8491ada5895ec24f95a6",
+      "final_reported_inserted_buffers": 42,
+      "actual_def_instance_count_increase": 4388,
+      "counter_is_not_cumulative_instance_growth": true,
+      "pre_legalization_final_progress_hold_wns_ns": -1.091,
+      "pre_legalization_final_progress_hold_tns_ns": -4.843,
+      "progress_values_are_rounded_and_not_final_after_global_route_metrics": true,
+      "interpretation": "Native insertion-counter resets on rollback were established in the earlier pinned RepairHold source review. Actual before/after DEF and DB instance counts, rather than this native progress counter, govern aggregate candidate growth."
+    },
+    "after_repair_placement": {
+      "total_displacement_um": 24931.7,
+      "average_displacement_um": 0.2,
+      "maximum_displacement_um": 26.7,
+      "original_hpwl_um": 8535996.7,
+      "legalized_hpwl_um": 8640741.1,
+      "mirrored_instances": 52946,
+      "after_mirroring_hpwl_um": 8542787.0,
+      "sequence": "native hold repair -> detailed placement / mirroring -> global_route -end_incremental -> estimate_parasitics -global_routing -> after measurements",
+      "source_recipe": "hw/soc/out/timing-three-methods-20260930-retry1/methods/timing_experiment_step.tcl",
+      "repair_elapsed_seconds_including_legalization_and_parasitic_refresh": 31643.061
+    },
+    "next_actions": [
+      "Keep selected C10 as accepted estimate and preserve rejected hold archive; do not silently adopt this candidate.",
+      "Resolve campaign resource gate with verified recoverable cleanup, then complete original setup_baseline/setup_batch4 A/B from the retained starting checkpoint.",
+      "Evaluate future opt-in hold_guarded_targeted in an isolated candidate using actual negative endpoints and bounded global DB growth; keep setup/hold margins, setup guard and full acceptance criteria unchanged. Active pinned campaign does not use this profile.",
+      "Record a complete before/after setup-violator endpoint census on a future candidate; current capped per-group reports cannot uniquely identify the added setup-violating endpoint.",
+      "A salvage experiment based on the rejected hold candidate must explicitly repair both setup rejection conditions and pass post-legalization measurements and downstream routing, RCX, equivalence and signoff gates before adoption."
+    ],
+    "limitations": [
+      "SRAM timing masters remain blackboxed in all three corners; preserved physical macros do not constitute qualified SRAM timing.",
+      "Global-route parasitic estimates only; no new detailed routing, RCX, DRC, LVS, equivalence or manufacturing approval established.",
+      "Inherited SDF/LIB/GDS entries in output state are prior views, not freshly produced candidate signoff artifacts.",
+      "Report samples are capped at ten paths per group; setup endpoint-count regression is measured but identity is not fully recoverable from saved samples.",
+      "Resource state and campaign selection refer to the timestamped copied result, not an indefinite live assertion."
+    ],
+    "finalized": "2026-09-30T14:33:42.981559+03:00"
+  },
+  "active_method_commit_verification": {
+    "launch_base_commit": "9c80233fece829900f0b11d321643c507bf5bfb5",
+    "method_delivery_commit": "f20628639d550ee665156b872c0bcdc46f730cfe",
+    "exact_method_source_matches": {
+      "scripts/run_timing_experiments.py": true,
+      "scripts/timing_process_guard.py": true,
+      "hw/soc/pnr/timing_experiment_flow.py": true,
+      "hw/soc/pnr/timing_experiment_step.tcl": true,
+      "hw/soc/pnr/timing_repair_experiment.tcl": true,
+      "hw/soc/pnr/critical_xnor_placement.tcl": true
+    }
+  },
+  "independent_verification": {
+    "recorded": "2026-09-30T14:33:42.983682+03:00",
+    "passed": true,
+    "review_sha256": "3d50888159798a30d88905cb739775bab5c4e036ce267a165f0ebafdd1ff0c29",
+    "campaign_snapshot_sha256": "41699c2ec493dae509317576b4152c756a4ec2e247e2a89c5ef89f00b528370b",
+    "copied_reports_verified_against_campaign_inventory": [
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/COMMANDS",
+        "sha256": "6fca8ab75dcaab039669e25a302ae5420f059f44586597c286a205499961f085"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-after-electrical.rpt",
+        "sha256": "a8e9a8768b0c2248799c749a563263b42f22ee1baed9485670b8684aced48b97"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-after-hold.rpt",
+        "sha256": "14c7ee98e76fa8a0f8862910cbe9c1ac06475c52c1654da3eee70f9cbe3d458b"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-after-setup.rpt",
+        "sha256": "e8d64536186dcc338e576dc84bbfd6575bd6d8a803e37d16d28581be93fe83d9"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-after.json",
+        "sha256": "f4dc737a6e0caad0a39460bc71fb049e47d8a11c82fee54f44ad779c7ac5bd9c"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-after.sdc",
+        "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-before-electrical.rpt",
+        "sha256": "a8e9a8768b0c2248799c749a563263b42f22ee1baed9485670b8684aced48b97"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-before-hold.rpt",
+        "sha256": "ed77d8c54f64e4a3de2c03649110852ee362f9c207412b868936dd47c3ff7226"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-before-setup.rpt",
+        "sha256": "e934e661650385da9c99575eba75e1df90ea1100e16cc513443fa328d9c0f839"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-before.json",
+        "sha256": "f2941b8e2063a2ac82f7cb7313a30cc918d92c556bfafcb295eb7cc3602cf597"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/experiment-before.sdc",
+        "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.log",
+        "sha256": "bafc3696368a2f2a1ad401eb1023ce2290267327876e8491ada5895ec24f95a6"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/openroad-resizertimingpostgrt.process_stats.json",
+        "sha256": "96781b82ba685a94711e61e947e4bf6db30243f757159b84c17753f52680388e"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/or_metrics_out.json",
+        "sha256": "6213a62404123eee7d00e6a3f6fef62a3e6b37fcebdd301baa0f164f46667dbc"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/runtime.txt",
+        "sha256": "d3d728dde3c7bf8f05f6aefd81e815631ece114cddac8f50c85ff1f26bb4849f"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/soc_top.sdc",
+        "sha256": "f4e36f32b52f02a47e941c79371ad25daaa9066441dfc41d47cc47b7126501c3"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/state_in.json",
+        "sha256": "a24b1abe1435a0a7f7d3fdd8ec9175239f4f5b1b927b40ae89e4f66b0d2c76f4"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/01-openroad-resizertimingpostgrt/state_out.json",
+        "sha256": "de315c4702f4f6ce4d897d4f1b5860c6062f8ff50253d1e490cf80aee630ff67"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/error.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/flow.log",
+        "sha256": "3ea6ed4c2b3e2e0554407b90423a908848c72b761599f043abf8aad890625672"
+      },
+      {
+        "path": "hw/soc/out/timing-heartbeat-20260930-1425/hold-review/reports/warning.log",
+        "sha256": "b6f67279035ec6d9b5ad64d2bc8625846adabd56e204d1cd2c6c8300c0eae886"
+      }
+    ],
+    "native_metrics_equal_campaign_receipt": true,
+    "archive_stream_verification_record": "review.json:archive",
+    "archive_inventory_record": "campaign-result.snapshot.json:stages[profile=hold_guarded].archive.inventory",
+    "review_markdown_sha256": "6db47cf7b2899ce8acba62584f4c9a9d5b62cffe8085cb5f92725632a9bc233b"
+  },
+  "github": {
+    "recorded": "2026-09-30T14:28:46.803016+03:00",
+    "status": "VERIFIED_FOUR_SUCCESS_WORKFLOWS_NO_CI_FIX_NEEDED",
+    "source_sha": "761f1478dd876b21e2136326d091036af26d5bfc",
+    "checkout": {
+      "branch_sha": "761f1478dd876b21e2136326d091036af26d5bfc",
+      "pr_merge_sha": "572f613704a434ee69bb0b4db9ee0fd1fe2735b6",
+      "identical_git_tree": "4d0a68d5d990958a8fc89da69308782eb9f9537c",
+      "merge_parents": [
+        "473b84f56cb26ab97aa2a5d409c779568c2507a3",
+        "761f1478dd876b21e2136326d091036af26d5bfc"
+      ]
+    },
+    "runs": [
+      {
+        "run_id": 36666388224,
+        "name": "publications",
+        "event": "pull_request",
+        "head_sha": "761f1478dd876b21e2136326d091036af26d5bfc",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36666388224",
+        "jobs": [
+          {
+            "id": 109731853132,
+            "name": "manuscripts",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          }
+        ]
+      },
+      {
+        "run_id": 36666388239,
+        "name": "pcie-transaction",
+        "event": "pull_request",
+        "head_sha": "761f1478dd876b21e2136326d091036af26d5bfc",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36666388239",
+        "jobs": [
+          {
+            "id": 109731852938,
+            "name": "block-verification",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          }
+        ]
+      },
+      {
+        "run_id": 36666388237,
+        "name": "checks",
+        "event": "pull_request",
+        "head_sha": "761f1478dd876b21e2136326d091036af26d5bfc",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36666388237",
+        "jobs": [
+          {
+            "id": 109731853733,
+            "name": "python-quality",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731853873,
+            "name": "memory-parity",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731853914,
+            "name": "rtl",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731853940,
+            "name": "formal-and-boot",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731853983,
+            "name": "formal-sweep (soc)",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731853990,
+            "name": "checks",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731853996,
+            "name": "formal-sweep (pilot)",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731854708,
+            "name": "native-boot",
+            "status": "completed",
+            "conclusion": "skipped",
+            "all_present_steps_success": true
+          }
+        ]
+      },
+      {
+        "run_id": 36666384702,
+        "name": "checks",
+        "event": "push",
+        "head_sha": "761f1478dd876b21e2136326d091036af26d5bfc",
+        "status": "completed",
+        "conclusion": "success",
+        "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36666384702",
+        "jobs": [
+          {
+            "id": 109731841955,
+            "name": "rtl",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731842099,
+            "name": "formal-sweep (pilot)",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731842102,
+            "name": "python-quality",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731842117,
+            "name": "formal-and-boot",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731842129,
+            "name": "memory-parity",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731842201,
+            "name": "formal-sweep (soc)",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731842214,
+            "name": "checks",
+            "status": "completed",
+            "conclusion": "success",
+            "all_present_steps_success": true
+          },
+          {
+            "id": 109731843064,
+            "name": "native-boot",
+            "status": "completed",
+            "conclusion": "skipped",
+            "all_present_steps_success": true
+          }
+        ]
+      }
+    ],
+    "tests": {
+      "pytest_passed": 2043,
+      "pytest_failed": 0,
+      "pytest_skipped": 126,
+      "delta_passed_vs_f206286": 3,
+      "rtl_cocotb_passed": 503,
+      "rtl_cocotb_failed": 0,
+      "rtl_cocotb_reported_skipped": 22,
+      "rtl_default_disabled_suites": [
+        "fi",
+        "gl",
+        "glfi"
+      ],
+      "rtl_memory_parity_separate_job": true,
+      "ci_gate_passed": 19,
+      "ci_gate_failed": 0,
+      "ci_gate_skipped": 2,
+      "ci_gate_skips": [
+        "flow checker interpreter unavailable in general checks job",
+        "prepared whole-SoC lint unavailable in general checks job"
+      ],
+      "native_boot_job": "Skipped by workflow_dispatch/native_boot opt-in condition",
+      "counts_not_summed_across_duplicate_push_and_pr": true
+    },
+    "formal": {
+      "soc": {
+        "head": "572f613704a434ee69bb0b4db9ee0fd1fe2735b6",
+        "passed": true,
+        "task_count": 116,
+        "all_status_files_pass": true,
+        "all_task_log_hashes_match": true,
+        "all_source_states_clean": true,
+        "sources_unchanged": true,
+        "exclusions": {
+          "hw/soc/formal/regfile_scrub_prove": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+          "hw/soc/formal/regfile_scrub_bmc": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+          "hw/soc/formal/regfile_scrub_cover": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+          "hw/soc/formal/regfile_scrub_prove_pdr": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+          "hw/soc/formal/regfile_scrub_bmc_btor": "Historical engine attempts in docs/63 section 23 remain stalled/timed out. The same real-codec fault-free R1-R4 contract now closes with asserted invariants in mandatory regfile_scrub_complete.sby (both SYNPRE settings, docs/87); these old engine results are not retroactively PASS.",
+          "hw/soc/formal/regfile_scrub_abs_prove12": "docs/63 section 23: depth-12 k-induction returned UNKNOWN. The unbounded prove_pdr task remains mandatory."
+        },
+        "same_tasks_and_exclusions_as_f206286": true,
+        "source_pin_changes_since_f206286": [
+          "scripts/run_timing_experiments.py"
+        ],
+        "stage_commands": [
+          {
+            "command": [
+              "make",
+              "-k",
+              "-C",
+              "hw/soc/formal",
+              "all"
+            ],
+            "returncode": 0,
+            "elapsed_s": 8214.745506179
+          }
+        ]
+      },
+      "pilot": {
+        "head": "572f613704a434ee69bb0b4db9ee0fd1fe2735b6",
+        "passed": true,
+        "task_count": 54,
+        "all_status_files_pass": true,
+        "all_task_log_hashes_match": true,
+        "all_source_states_clean": true,
+        "sources_unchanged": true,
+        "exclusions": {},
+        "same_tasks_and_exclusions_as_f206286": true,
+        "source_pin_changes_since_f206286": [
+          "scripts/run_timing_experiments.py"
+        ],
+        "stage_commands": [
+          {
+            "command": [
+              "make",
+              "-k",
+              "-C",
+              "formal",
+              "everything"
+            ],
+            "returncode": 0,
+            "elapsed_s": 6944.44907428
+          }
+        ]
+      }
+    },
+    "pcie": {
+      "pcie-native": {
+        "top": "soc_pcie_tlp_regs",
+        "status": "PASS",
+        "scope": "IHP mapped block simulation; no SDF/layout/link/PHY",
+        "tests": {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0
+        },
+        "mapped_cells": 916,
+        "all_output_hashes_match": true
+      },
+      "pcie-stream-native": {
+        "top": "soc_pcie_tlp_stream",
+        "status": "PASS",
+        "scope": "IHP mapped block simulation; no SDF/layout/link/PHY",
+        "tests": {
+          "passed": 6,
+          "failed": 0,
+          "skipped": 0
+        },
+        "mapped_cells": 1942,
+        "all_output_hashes_match": true
+      },
+      "formal_statuses": {
+        "formal/soc_pcie_tlp_regs_bmc/status": "PASS",
+        "formal/soc_pcie_tlp_regs_cover/status": "PASS",
+        "formal/soc_pcie_tlp_regs_prove/status": "PASS",
+        "formal/soc_pcie_tlp_stream_bmc/status": "PASS",
+        "formal/soc_pcie_tlp_stream_cover/status": "PASS",
+        "formal/soc_pcie_tlp_stream_prove/status": "PASS"
+      },
+      "pcie-controls": {
+        "top": "soc_pcie_tlp_regs",
+        "scope": "Transaction-layer RTL controls, no link or PHY",
+        "baseline_configurations": 3,
+        "tests_per_configuration": 6,
+        "detected_mutants": 5
+      },
+      "pcie-stream-controls": {
+        "top": "soc_pcie_tlp_stream",
+        "scope": "Transaction-layer RTL controls, no link or PHY",
+        "baseline_configurations": 3,
+        "tests_per_configuration": 6,
+        "detected_mutants": 5
+      }
+    },
+    "publications": {
+      "status": "PASS",
+      "scope": "Fresh PDF/source/archive and selected historical metric checks only. Outstanding scientific claims and product gates remain open.",
+      "documents": [
+        "paper-soc",
+        "paper-design",
+        "paper-residual",
+        "thesis"
+      ],
+      "all_commands_exit_zero": true
+    },
+    "comparison_to_f206286": {
+      "previous_source_sha": "f20628639d550ee665156b872c0bcdc46f730cfe",
+      "previous_diagnosis": "hw/soc/out/timing-heartbeat-20260930-0625/github/diagnosis.json",
+      "previous_diagnosis_sha256": "99a4f2301ab3eacaac1c347aa4ae73b30778fb46fee223b513fdaa1822bff012",
+      "all_workflows_remain_success": true,
+      "pytest_delta": 3,
+      "skip_counts_unchanged": true,
+      "formal_task_and_exclusion_sets_unchanged": true,
+      "pcie_and_publication_scope_unchanged": true
+    },
+    "evidence_lines": [
+      {
+        "file": "36666388224-job-109731853132-log.stdout",
+        "line": 301,
+        "text": "2026-09-30T03:54:37.1109613Z PASS: four fresh manuscript builds; no product or complete scientific-claim acceptance"
+      },
+      {
+        "file": "36666388239-job-109731852938-log.stdout",
+        "line": 1086,
+        "text": "2026-09-30T03:55:13.5736584Z PASS mapped IHP block, six native-model tests"
+      },
+      {
+        "file": "36666388239-job-109731852938-log.stdout",
+        "line": 1087,
+        "text": "2026-09-30T03:55:18.8529052Z PASS mapped IHP block, six native-model tests"
+      },
+      {
+        "file": "36666388237-job-109731853914-log.stdout",
+        "line": 287,
+        "text": "2026-09-30T03:53:43.8587976Z   fi                           skipped (see SKIP_DEFAULT)"
+      },
+      {
+        "file": "36666388237-job-109731853914-log.stdout",
+        "line": 288,
+        "text": "2026-09-30T03:53:43.8600383Z   gl                           skipped (see SKIP_DEFAULT)"
+      },
+      {
+        "file": "36666388237-job-109731853914-log.stdout",
+        "line": 289,
+        "text": "2026-09-30T03:53:43.8612930Z   glfi                         skipped (see SKIP_DEFAULT)"
+      },
+      {
+        "file": "36666388237-job-109731853914-log.stdout",
+        "line": 333,
+        "text": "2026-09-30T04:03:03.8551228Z cocotb: 503 passed, 0 failed, 0 suite(s) not clean, 22 skipped"
+      },
+      {
+        "file": "36666388237-job-109731853983-log.stdout",
+        "line": 282,
+        "text": "2026-09-30T06:11:04.0446651Z PASS soc: 116 fresh formal tasks; 6 explicit historical non-closing tasks excluded"
+      },
+      {
+        "file": "36666388237-job-109731853990-log.stdout",
+        "line": 526,
+        "text": "2026-09-30T03:55:30.0267194Z   the flow's own gates still gate                skip  (no librelane interpreter at /home/runner/work/nssoc/nssoc/hw/soc/tools/flow-venv/bin/python; set FLOW_PY)"
+      },
+      {
+        "file": "36666388237-job-109731853990-log.stdout",
+        "line": 662,
+        "text": "2026-09-30T03:57:40.5847635Z 2043 passed, 126 skipped in 129.16s (0:02:09)"
+      },
+      {
+        "file": "36666388237-job-109731853990-log.stdout",
+        "line": 665,
+        "text": "2026-09-30T03:57:40.5848235Z   prepared whole-SoC lint                        skip  (run soc-rtl-prepare and install pinned OSS CAD Suite; hardware CI requires this gate)"
+      },
+      {
+        "file": "36666388237-job-109731853990-log.stdout",
+        "line": 667,
+        "text": "2026-09-30T03:57:40.5848657Z 19 passed, 0 failed, 2 skipped"
+      },
+      {
+        "file": "36666388237-job-109731853996-log.stdout",
+        "line": 282,
+        "text": "2026-09-30T05:49:53.6182641Z PASS pilot: 54 fresh formal tasks; 0 explicit historical non-closing tasks excluded"
+      },
+      {
+        "file": "36666384702-job-109731841955-log.stdout",
+        "line": 271,
+        "text": "2026-09-30T03:53:51.5741218Z   fi                           skipped (see SKIP_DEFAULT)"
+      },
+      {
+        "file": "36666384702-job-109731841955-log.stdout",
+        "line": 272,
+        "text": "2026-09-30T03:53:51.5753949Z   gl                           skipped (see SKIP_DEFAULT)"
+      },
+      {
+        "file": "36666384702-job-109731841955-log.stdout",
+        "line": 273,
+        "text": "2026-09-30T03:53:51.5764243Z   glfi                         skipped (see SKIP_DEFAULT)"
+      },
+      {
+        "file": "36666384702-job-109731841955-log.stdout",
+        "line": 317,
+        "text": "2026-09-30T04:01:40.3036197Z cocotb: 503 passed, 0 failed, 0 suite(s) not clean, 22 skipped"
+      },
+      {
+        "file": "36666384702-job-109731842099-log.stdout",
+        "line": 265,
+        "text": "2026-09-30T05:25:22.7222002Z PASS pilot: 54 fresh formal tasks; 0 explicit historical non-closing tasks excluded"
+      },
+      {
+        "file": "36666384702-job-109731842201-log.stdout",
+        "line": 265,
+        "text": "2026-09-30T06:13:50.3426103Z PASS soc: 116 fresh formal tasks; 6 explicit historical non-closing tasks excluded"
+      },
+      {
+        "file": "36666384702-job-109731842214-log.stdout",
+        "line": 510,
+        "text": "2026-09-30T03:55:23.2335625Z   the flow's own gates still gate                skip  (no librelane interpreter at /home/runner/work/nssoc/nssoc/hw/soc/tools/flow-venv/bin/python; set FLOW_PY)"
+      },
+      {
+        "file": "36666384702-job-109731842214-log.stdout",
+        "line": 646,
+        "text": "2026-09-30T03:57:33.5541103Z 2043 passed, 126 skipped in 128.93s (0:02:08)"
+      },
+      {
+        "file": "36666384702-job-109731842214-log.stdout",
+        "line": 649,
+        "text": "2026-09-30T03:57:33.5541720Z   prepared whole-SoC lint                        skip  (run soc-rtl-prepare and install pinned OSS CAD Suite; hardware CI requires this gate)"
+      },
+      {
+        "file": "36666384702-job-109731842214-log.stdout",
+        "line": 651,
+        "text": "2026-09-30T03:57:33.5542175Z 19 passed, 0 failed, 2 skipped"
+      }
+    ],
+    "remote_mutations": false,
+    "scope_limit": "CI regression evidence only. Full PCIe link/PHY, final timing, layout and manufacturing approval are not accepted by these results.",
+    "production_acceptance": false,
+    "action": "No CI repair required; continue the local timing and physical verification work.",
+    "artifact_download_bytes": 12457424,
+    "not_downloaded": "Push duplicate artifacts, both approximately 52.5 MB paper-and-site archives, and previous-run artifacts were not downloaded.",
+    "raw_sha256": {
+      "36666384702-artifacts.receipt.json": "16f96494889d3572fccf6a5d900c2012cb31bc065bf2905aab463955d4ea4af5",
+      "36666384702-artifacts.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666384702-artifacts.stdout": "e3f436b7f6755112e812597b814efcb1691e130b17905db256851d9824b309aa",
+      "36666384702-job-109731841955-log.receipt.json": "e4ecd5b743ce84d83b074bf2a2a66aca3657110c079cffe2227219d326a3d6f4",
+      "36666384702-job-109731841955-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666384702-job-109731841955-log.stdout": "763bf14f4cadaa12655bc54007ba5c1246a556e115c739ba999c02f3118dbabd",
+      "36666384702-job-109731842099-log.receipt.json": "9ff412d93f6146fdb7153c26825a4129c75ef4ca05a43d3a2bf0e99781b726f3",
+      "36666384702-job-109731842099-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666384702-job-109731842099-log.stdout": "af9d4224e5697ff34f9cb93c37145264e834f1e4fc04643d257b64e624d56ccb",
+      "36666384702-job-109731842102-log.receipt.json": "40033325fe05c0b3329066aac2f2185cfd9ee69e033a422474d46c0c6a608c42",
+      "36666384702-job-109731842102-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666384702-job-109731842102-log.stdout": "434b566539d6ea19733ed664df52fa4a1ac2c81b3f1747a98843bcfc46091f63",
+      "36666384702-job-109731842117-log.receipt.json": "668dbda1d33816bcb1838f8f4896d0be5b9ad8de45be57000dc7b8fb87c59935",
+      "36666384702-job-109731842117-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666384702-job-109731842117-log.stdout": "d96e3b99b92214c09424aa057be4aeb8d8d40102ef0d4627df9550426cccbd1b",
+      "36666384702-job-109731842129-log.receipt.json": "47672425abf961245fc3d3a533f0fcb138d157d0897fc3c4c0924cb5fe48b4c7",
+      "36666384702-job-109731842129-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666384702-job-109731842129-log.stdout": "5444357183f262665573723afd6b2cec7e2d1515e65b2ec9e933c375afa1e70a",
+      "36666384702-job-109731842201-log.receipt.json": "f016ecc8784181c3ab5eae65cb39bce53f4408878a3271e48d043a46bcac2793",
+      "36666384702-job-109731842201-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666384702-job-109731842201-log.stdout": "48fd343c1aa9e152e87aa9a532318b4be8398df4471253e9aa85f801480669b4",
+      "36666384702-job-109731842214-log.receipt.json": "7305fcec9689f84261c9580ee28061bf3a091092d99a85d6f47680fc3ef5b663",
+      "36666384702-job-109731842214-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666384702-job-109731842214-log.stdout": "310108178f41609e7c0213f98eb8c42e9efbc05716a9442fbfe67c20f30e3a2b",
+      "36666384702-run.receipt.json": "46325ab34bd84882dfe4057f750fd4b5a9da37cd71bf54fe31946140d15ab91b",
+      "36666384702-run.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666384702-run.stdout": "c77251c194247e37ac8a414923e64fa56be2933458eab5da3d4db6a723039af4",
+      "36666388224-artifacts.receipt.json": "e5dcc7bab4381c7652dfd908154cb9e99a4d7854717d2a2b78ff3d0864484dc0",
+      "36666388224-artifacts.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388224-artifacts.stdout": "9956d430ac83763bf288fd6ebe35d0c043ac8178f2223290cc8d4b31a89db52f",
+      "36666388224-job-109731853132-log.receipt.json": "c77bf96c334297951be4f05f9ca3cc19342411a80fca2de017fd96521a8d64e1",
+      "36666388224-job-109731853132-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388224-job-109731853132-log.stdout": "e912eda363f184b267070bbbdef66f01734c6f80368998bfcadb90096c3bacfb",
+      "36666388224-publication-results-result.json": "501e75a384c940139380d606dcded2bf0190aef4242c99fada0099234e55f1bf",
+      "36666388224-publication-results.receipt.json": "15ae8d3d53392b54ea7d461d98a73ab6cf18259449b9244abd76c6c5df6672a2",
+      "36666388224-publication-results.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388224-publication-results.zip": "9a1f40c3af627e86b882153d7d01b50960397b9ffa9ffb756e3da70db16913ce",
+      "36666388224-run.receipt.json": "f3ab9bc71300656239fbec34f2285d1569843e50acdadf1456eed28adb8a12c1",
+      "36666388224-run.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388224-run.stdout": "bd63929fb4bd7e544bf712fa2c530762b95e6ef965c4784b69b2dec174a9a3f3",
+      "36666388237-artifacts.receipt.json": "260362e1c2131ebde452e48667a7805e41f3c6d0d01079a77a3c787b835c8c22",
+      "36666388237-artifacts.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-artifacts.stdout": "2d2041d2125d5f8ddb63797ac0441d5d45a135f19d5191aa4d9ff1346232e0d5",
+      "36666388237-formal-sweep-results-pilot-hw-soc-out-formal-sweep-result.json": "1dcfd80a73aa0241b46c6766a11a0baea8b747c9e3d7956398e787be17cd6f66",
+      "36666388237-formal-sweep-results-pilot.receipt.json": "8512089516ddf37a6bb1ca2e42218cff50f8f4b2b94083458bcb61c0448d963b",
+      "36666388237-formal-sweep-results-pilot.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-formal-sweep-results-pilot.zip": "5b6971fc0e4f6c37cc278377f74a573c5996b876faaed78791067d73b4f44745",
+      "36666388237-formal-sweep-results-soc-hw-soc-out-formal-sweep-result.json": "e3e97db25796d87bbcb6d746e7dbad28d4a940546c29f8d6b2ed09d454f94dd2",
+      "36666388237-formal-sweep-results-soc-hw-soc-out-peripheral-contracts-controls-3xqsz1x5-result.json": "97ae6a356a2e0c9246d9d035a1cf3ae65f0e0596fd58b6dbce75f1278c7508ad",
+      "36666388237-formal-sweep-results-soc-hw-soc-out-regfile-scrub-controls-controls-vslx_e8m-result.json": "c027b58c56a41bea3a8aca3703ffb382857cffce5092c6befd270b8326a20c6a",
+      "36666388237-formal-sweep-results-soc.receipt.json": "5eaa81083d777058c39fcb862601dbbebb48a207ba6e872bcbfa5cb47a028844",
+      "36666388237-formal-sweep-results-soc.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-formal-sweep-results-soc.zip": "25d2ee0acd59bdda378d77d3949752c34af5b409f56db8541695fbbdf49e1490",
+      "36666388237-job-109731853733-log.receipt.json": "a3542d6fccc2a8ced1d90b1bada22499245589f95e771b911da1dfd21648a07b",
+      "36666388237-job-109731853733-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-job-109731853733-log.stdout": "5cd8c4da3bbf30f16ded28639023c6a3e3509dd75d32aeb3ca63d95f6997defb",
+      "36666388237-job-109731853873-log.receipt.json": "ce9d175f189faec5529cb90cfdb9298634333b6ecb002e9b7655bd2764f158b6",
+      "36666388237-job-109731853873-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-job-109731853873-log.stdout": "f8a00ac6556ae47f05b37a9167bdb8263b5ff414e5fe26cefeeb8e6d51f4fb44",
+      "36666388237-job-109731853914-log.receipt.json": "ab047553eca786fae39b76fb6979368fd177cd1387ec3a2374306c058803c4e5",
+      "36666388237-job-109731853914-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-job-109731853914-log.stdout": "ff2ec11da6a68f741ba9a9bb70ccfc53c0d763a0e10b4ca297abed76deab43d1",
+      "36666388237-job-109731853940-log.receipt.json": "16e4e344554ae5bb8038907430f3bc4ae825050e24e212572b215904b7c1fd4e",
+      "36666388237-job-109731853940-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-job-109731853940-log.stdout": "87e85ec96e5d53c14c5816e5979e199d9a7886eee43d9b76844d3b7b81c6afd1",
+      "36666388237-job-109731853983-log.receipt.json": "c966b2acefabc9aa5f98a091611e38b735fb1a7a37325ba5a263e44f72cb067a",
+      "36666388237-job-109731853983-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-job-109731853983-log.stdout": "6fb79f15c91f557208aabcb87f0eff1dd9724f0484e859246ff4220d4bc050cf",
+      "36666388237-job-109731853990-log.receipt.json": "ebe2b019abac45d5d209a5a7edf02d9e02a876f11824ad0d004f6c10f5cfc738",
+      "36666388237-job-109731853990-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-job-109731853990-log.stdout": "ac9f866769791fe8ae545d2d2b62f6859d0d47d3d84465e9f4bb1e472263dedc",
+      "36666388237-job-109731853996-log.receipt.json": "0f84ad9d6cedb883f26c1cef746b14df37838b54b1570a97fc8480400b61b448",
+      "36666388237-job-109731853996-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-job-109731853996-log.stdout": "5619f6c7aefc4871a8626d3ab85b28acfd4b6f9575377dfcbef1e93f8111050f",
+      "36666388237-run.receipt.json": "d8aa292cd6388fddff57faa14c81eb845cc2bc2da5b6e4eb5d0b58665584e4c7",
+      "36666388237-run.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388237-run.stdout": "d18b065afad14182a38baba91965767cd00631c16f508503a8a822a8c4438dbf",
+      "36666388239-artifacts.receipt.json": "a81a802d6090ffcbe72f72cb76e0c5bd18f5825c393a29b2edf3d00f54a95980",
+      "36666388239-artifacts.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388239-artifacts.stdout": "b95b0b72492edb8fb9e76b5f68a1cc43057f855ff36368ba84014b5a104971a5",
+      "36666388239-job-109731852938-log.receipt.json": "a640db7a99b302d06a65561c27b000ff596058b9f03e4923735a75a22bbf5fd9",
+      "36666388239-job-109731852938-log.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388239-job-109731852938-log.stdout": "98ea1fcc7e7a686afc3087447a01aad58934c615137c05a082aaaa77517878e1",
+      "36666388239-pcie-transaction-results-out-pcie-controls-result.json": "20c03d6f5f5b7474432940a55c3b6a07145b8f793792e7b5c784842c175143a2",
+      "36666388239-pcie-transaction-results-out-pcie-native-result.json": "d83e24f27d32ad17787642d35420c1ba72c1080f58cc6b71753387ecdbd06d47",
+      "36666388239-pcie-transaction-results-out-pcie-stream-controls-result.json": "c646646b41b73e692476cb314df77c0b617bcc3a9aab9281d531782472c2b250",
+      "36666388239-pcie-transaction-results-out-pcie-stream-native-result.json": "2b963aa27b4e5365ebac3938850298494c4695c9da55f06a5408b231023fa8e1",
+      "36666388239-pcie-transaction-results.receipt.json": "a9d6602f5a9f73e63e35c41c532cfaf9bd662cf62d68db8f8e18dfc0ae8dcfa8",
+      "36666388239-pcie-transaction-results.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388239-pcie-transaction-results.zip": "da92ba7c939ca5c45d87fa28e27c947acd9f989e08f73c868166cea441401b03",
+      "36666388239-run.receipt.json": "8191c2810018b489cd74f4de7c71b0eef47fe1b2f4a15af758748b8be4c3f37d",
+      "36666388239-run.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "36666388239-run.stdout": "d02a67cc2a3ae0d1faad74232062f2fdc75ad6f2297aed937038cf9a8fe4b154",
+      "formal-merge-commit.receipt.json": "36f5476ff40effb6bbc1249bdac2497d10b479a96280602f4cd6533cc4a44dc0",
+      "formal-merge-commit.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "formal-merge-commit.stdout": "8c4adfb2637a004f9b4254d29a873c68e48359db63a5d88e2354056ba3ad012f"
+    }
+  },
+  "resource_wait": {
+    "pending_profile": "setup_baseline",
+    "recorded": "2026-09-30T14:33:11.956300+03:00",
+    "resources": {
+      "available_memory_bytes": 3245604864,
+      "free_disk_bytes": 1058435072,
+      "required_available_memory_bytes": 5368709120,
+      "required_free_disk_bytes": 1073741824,
+      "missing_memory_bytes": 2123104256,
+      "missing_disk_bytes": 15306752
+    },
+    "supply_reservation_released_at": "2026-09-30T11:23:54.934914+03:00",
+    "active_controller_not_restarted": true,
+    "active_method_pins_unchanged": 19,
+    "thresholds_unchanged": true,
+    "scope": "Resource availability is an observation, not proof of native progress. Full live process snapshots remain in local continuation records."
+  },
+  "observer_fix": {
+    "source_sha256": {
+      "scripts/run_timing_experiments.py": "e81f2fe7cca268c4dc54c806b9ab6a91f1da37482555d413fae1c07329b306cf",
+      "sw/tests/test_timing_experiments.py": "f189a1ff060b8788215a5eeff291f28dc5940705cb4c3bf313dfd7f23ec0abb3"
+    },
+    "scope": "Future controller copies retain pending stage/request time and exact resource shortfall. Active pinned copies unchanged.",
+    "regression": {
+      "recorded": "2026-09-30T14:30:40.838787+03:00",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "sw/tests/test_timing_experiments.py",
+        "sw/tests/test_timing_process_guard.py"
+      ],
+      "exit_code": 0,
+      "elapsed_seconds": 0.7079558940604329,
+      "sha256": {
+        "resource-controller-tests.stdout": "e2a8fbbe10dd190dacf97432e76e7c4410148803c0d6bf79e873d0d8fdddf318",
+        "resource-controller-tests.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "evidence_sha256": {
+    "hold-review/review.json": "3d50888159798a30d88905cb739775bab5c4e036ce267a165f0ebafdd1ff0c29",
+    "hold-review/verification.json": "4024b68c5e070bd8faa4756921a24d23d255e7cf195eddaf4697213a7098af6d",
+    "github/diagnosis.json": "5ccf9bd60313f2ca5ad4e7aad81f9630b1bca24cbc31376f9956741828aa6572"
+  },
+  "raw_assets_manifest": "docs/evidence/timing-guarded-hold-complete-assets-20260930.json",
+  "candidate_accepted": false,
+  "final_timing_complete": false,
+  "manufacturing_approval": false,
+  "delivery_validation": {
+    "engineering_pytest_passed": 168,
+    "evidence_doc_pytest_passed": 141,
+    "spdx": "PASS",
+    "reuse": "PASS",
+    "license_inventory": "PASS",
+    "paper_claims": "27 re-derived,15 manual/outstanding,0 wrong",
+    "five_generators": "PASS",
+    "strict_docs": "PASS",
+    "raw_validation_asset": "timing-hold-io-repair-delivery-validation-20260930.tar.gz"
+  }
+}

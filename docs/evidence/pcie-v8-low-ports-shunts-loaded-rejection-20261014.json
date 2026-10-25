@@ -1,0 +1,1883 @@
+{
+  "status": "REJECTED_HOT_LOW_MARGIN_AND_HBT_HEADROOM_NOT_PHY_ACCEPTANCE",
+  "adopted": false,
+  "source_commit": "ce3939ac41846701becf4172a7fafccbd9412fdf",
+  "all_cases": [
+    {
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "streams": 4,
+      "condition": "nominal",
+      "fault": "none",
+      "prestage": "physical_compact",
+      "frontend": "damped_strong",
+      "clock_bias": "native_res",
+      "clock_reference": "stiff65",
+      "final_drive": "double_taps_margin",
+      "pre_bias": "native_res",
+      "accepted": false,
+      "scope": "Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.",
+      "physical_prestage_scope": {
+        "mode": "physical_compact",
+        "profile": "cascade158_kelvin_supply_direct",
+        "instances": 2,
+        "circuit_profile": "cascade158",
+        "native_devices_per_instance": 54,
+        "substrate_contacts_per_instance": 27,
+        "metal_resistors_per_instance": 0,
+        "metal_capacitors_per_instance": 0,
+        "source": "docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json",
+        "source_sha256": "0e9914b3dc93c7f46fd8974ac177fef691f28e3ecab484ae89f191fc02f1050f",
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "physical_final_scope": {
+        "mode": "physical_compact",
+        "profile": "v8_kelvin_low_ports_shunts",
+        "circuit_profile": "final_drive_v8",
+        "instances": 1,
+        "source": "docs/evidence/pcie-final-v8-kelvin-low-ports-shunts-composition-20261013.json",
+        "source_sha256": "30d291242fc9505f8e0651d5cedbd162f68b408fbbc2941edade2740ad57d729",
+        "original_model_sha256": "75b099f010f2feb3f43fce760419c6cdc38dad61bcbc3e4ede2c7798c8e27c53",
+        "namespaced_model_sha256": "9201519b3dafc1da70d4137b68e1a240b1bbf51795682d13eece71706cd89d07",
+        "native_devices": 54,
+        "substrate_contacts": 27,
+        "metal_resistors": 0,
+        "metal_capacitors": 0,
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "output_bias": "native_res",
+      "returncode": 0,
+      "elapsed_s": 110.50241350800002,
+      "diagnostics": [],
+      "review": {
+        "native_bias_current_a": {
+          "final_feed": {
+            "minimum": 0.0010149508082968675,
+            "median": 0.001019482006364982,
+            "maximum": 0.0010256814243184394
+          },
+          "tx_feed": {
+            "minimum": 0.001437292761535321,
+            "median": 0.0014510165381639336,
+            "maximum": 0.001460006891540801
+          },
+          "clkbias": {
+            "minimum": 0.001153179952618817,
+            "median": 0.0011659068233464372,
+            "maximum": 0.0012018504453596866
+          },
+          "ra": {
+            "minimum": 0.0005699967897296365,
+            "median": 0.0005721071023574632,
+            "maximum": 0.0005764028465756759
+          },
+          "rb": {
+            "minimum": 0.0005700888173355577,
+            "median": 0.0005721093385618822,
+            "maximum": 0.0005763578659133657
+          }
+        },
+        "prestage_native_bias_current_a": {
+          "ra": {
+            "minimum": 0.0005699967897296365,
+            "median": 0.0005721071023574632,
+            "maximum": 0.0005764028465756759
+          },
+          "rb": {
+            "minimum": 0.0005700888173355577,
+            "median": 0.0005721093385618822,
+            "maximum": 0.0005763578659133657
+          }
+        },
+        "clock_common_mode_range_v": {
+          "sa": [
+            1.3437513410474788,
+            1.3945044770611428
+          ],
+          "sb": [
+            1.3440275348508097,
+            1.3944322388097414
+          ],
+          "s": [
+            1.3479099796245957,
+            1.3942667361434167
+          ]
+        },
+        "zero_source_op": true,
+        "rows": 69541,
+        "coverage_s": [
+          0.0,
+          3.4e-08
+        ],
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.28136121467712494,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.28136121467712494,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2817661141747967,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2817165729035065,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.2667222647365697,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8888400353813342,
+              1.8989573667530384
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.2922775321007718,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9484816983721633,
+              1.97274581178802
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "all_engineering_gates_passed": true
+      },
+      "raw_wave": {
+        "bytes": 278794153,
+        "sha256": "d95b9c8e421030e888553bd06bd8b638fccb2c31cd8049bce1d959a11ab39cdb"
+      },
+      "native_off_flags_count": 62,
+      "component_screen_passed": true,
+      "run": 38486057531,
+      "summary_sha256": "80be2057432ba8270f99c0d0b1bfe1751c78f8dcf15ac7c29504c2cec4224fdf",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38486057531-1-tree-4-physical_compact-nominal-none/tx-tree-physical-4-physical_compact-nominal-none-38486057531-1.summary.json",
+      "assets": [
+        {
+          "id": 638599462,
+          "name": "tx-tree-physical-4-physical_compact-nominal-none-38486057531-1.summary.json",
+          "size": 60193,
+          "digest": "sha256:80be2057432ba8270f99c0d0b1bfe1751c78f8dcf15ac7c29504c2cec4224fdf"
+        },
+        {
+          "id": 638598969,
+          "name": "tx-tree-physical-4-physical_compact-nominal-none-38486057531-1.tar.gz",
+          "size": 110695629,
+          "digest": "sha256:4931793d5b56bdf5b8e8e97167936e381fc038212f6f5b77e7a9628b0443c207"
+        },
+        {
+          "id": 638599363,
+          "name": "tx-tree-physical-4-physical_compact-nominal-none-38486057531-1.tar.gz.sha256",
+          "size": 136,
+          "digest": "sha256:6fcc37a7c7ee756c413497c5bfa56493132f10e16be8ae8b4eff42ee5af2540d"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "streams": 4,
+      "condition": "nominal",
+      "fault": "none",
+      "prestage": "physical_wire",
+      "frontend": "damped_strong",
+      "clock_bias": "native_res",
+      "clock_reference": "stiff65",
+      "final_drive": "double_taps_margin",
+      "pre_bias": "native_res",
+      "accepted": false,
+      "scope": "Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.",
+      "physical_prestage_scope": {
+        "mode": "physical_wire",
+        "profile": "cascade158_kelvin_supply_direct",
+        "instances": 2,
+        "circuit_profile": "cascade158",
+        "native_devices_per_instance": 54,
+        "substrate_contacts_per_instance": 27,
+        "metal_resistors_per_instance": 3870,
+        "metal_capacitors_per_instance": 2579,
+        "source": "docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json",
+        "source_sha256": "0e9914b3dc93c7f46fd8974ac177fef691f28e3ecab484ae89f191fc02f1050f",
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "physical_final_scope": {
+        "mode": "physical_wire",
+        "profile": "v8_kelvin_low_ports_shunts",
+        "circuit_profile": "final_drive_v8",
+        "instances": 1,
+        "source": "docs/evidence/pcie-final-v8-kelvin-low-ports-shunts-composition-20261013.json",
+        "source_sha256": "30d291242fc9505f8e0651d5cedbd162f68b408fbbc2941edade2740ad57d729",
+        "original_model_sha256": "0b39858216b82b4304413f60ec57e6ded247a4e16c6c55311e8743ae36ccbc18",
+        "namespaced_model_sha256": "6bae0da375ffdd3110f3222ec846e9767b9d7fc6b5d6d0b74577132dd8a469aa",
+        "native_devices": 54,
+        "substrate_contacts": 27,
+        "metal_resistors": 4021,
+        "metal_capacitors": 2636,
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "output_bias": "native_res",
+      "returncode": 0,
+      "elapsed_s": 393.595103563,
+      "diagnostics": [],
+      "review": {
+        "native_bias_current_a": {
+          "final_feed": {
+            "minimum": 0.0010061938458313193,
+            "median": 0.001010105674735719,
+            "maximum": 0.0010157252931777344
+          },
+          "tx_feed": {
+            "minimum": 0.0014357691125217332,
+            "median": 0.0014508907388536025,
+            "maximum": 0.0014620861924237996
+          },
+          "clkbias": {
+            "minimum": 0.0011503356190020056,
+            "median": 0.0011611520089038108,
+            "maximum": 0.0011810982295084459
+          },
+          "ra": {
+            "minimum": 0.0005679946573203938,
+            "median": 0.0005696566110293375,
+            "maximum": 0.0005727865987756511
+          },
+          "rb": {
+            "minimum": 0.0005681840816342015,
+            "median": 0.0005696475199519674,
+            "maximum": 0.0005727537161528371
+          }
+        },
+        "prestage_native_bias_current_a": {
+          "ra": {
+            "minimum": 0.0005679946573203938,
+            "median": 0.0005696566110293375,
+            "maximum": 0.0005727865987756511
+          },
+          "rb": {
+            "minimum": 0.0005681840816342015,
+            "median": 0.0005696475199519674,
+            "maximum": 0.0005727537161528371
+          }
+        },
+        "clock_common_mode_range_v": {
+          "sa": [
+            1.3672884769454936,
+            1.3969864959989564
+          ],
+          "sb": [
+            1.365354358983913,
+            1.3970248660080558
+          ],
+          "s": [
+            1.3674032449684406,
+            1.3972635565193938
+          ]
+        },
+        "zero_source_op": true,
+        "rows": 69541,
+        "coverage_s": [
+          0.0,
+          3.4e-08
+        ],
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.22363639585980932,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.22363639585980932,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2758592972047529,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.27242341742977993,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.27180488554610793,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.894799035828099,
+              1.8979721969352004
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.20582218413329256,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9118453795374075,
+              1.9402817761514233
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "all_engineering_gates_passed": true
+      },
+      "raw_wave": {
+        "bytes": 539159401,
+        "sha256": "724f667ea6b1c49ba74f24d2ae9b01217eda52fa043bdc7e2d5d1dd3c608735b"
+      },
+      "native_off_flags_count": 62,
+      "component_screen_passed": true,
+      "run": 38486057531,
+      "summary_sha256": "5ae821019f774d48e7708012e8cdb0056a60d758a91fffa18cbb262d7afbd698",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38486057531-1-tree-4-physical_wire-nominal-none/tx-tree-physical-4-physical_wire-nominal-none-38486057531-1.summary.json",
+      "assets": [
+        {
+          "id": 638610769,
+          "name": "tx-tree-physical-4-physical_wire-nominal-none-38486057531-1.summary.json",
+          "size": 60232,
+          "digest": "sha256:5ae821019f774d48e7708012e8cdb0056a60d758a91fffa18cbb262d7afbd698"
+        },
+        {
+          "id": 638610290,
+          "name": "tx-tree-physical-4-physical_wire-nominal-none-38486057531-1.tar.gz",
+          "size": 232436713,
+          "digest": "sha256:a5fad0da40ea0ed749b3424a3d5d868c571a151122bd89c9f5d7b64fe0047e7d"
+        },
+        {
+          "id": 638610703,
+          "name": "tx-tree-physical-4-physical_wire-nominal-none-38486057531-1.tar.gz.sha256",
+          "size": 133,
+          "digest": "sha256:2bdc9a43c5716af047b121fa097275b20acb4f5b42ebede08c06347c19611636"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "streams": 4,
+      "condition": "hot_low",
+      "fault": "none",
+      "prestage": "physical_compact",
+      "frontend": "damped_strong",
+      "clock_bias": "native_res",
+      "clock_reference": "stiff65",
+      "final_drive": "double_taps_margin",
+      "pre_bias": "native_res",
+      "accepted": false,
+      "scope": "Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.",
+      "physical_prestage_scope": {
+        "mode": "physical_compact",
+        "profile": "cascade158_kelvin_supply_direct",
+        "instances": 2,
+        "circuit_profile": "cascade158",
+        "native_devices_per_instance": 54,
+        "substrate_contacts_per_instance": 27,
+        "metal_resistors_per_instance": 0,
+        "metal_capacitors_per_instance": 0,
+        "source": "docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json",
+        "source_sha256": "0e9914b3dc93c7f46fd8974ac177fef691f28e3ecab484ae89f191fc02f1050f",
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "physical_final_scope": {
+        "mode": "physical_compact",
+        "profile": "v8_kelvin_low_ports_shunts",
+        "circuit_profile": "final_drive_v8",
+        "instances": 1,
+        "source": "docs/evidence/pcie-final-v8-kelvin-low-ports-shunts-composition-20261013.json",
+        "source_sha256": "30d291242fc9505f8e0651d5cedbd162f68b408fbbc2941edade2740ad57d729",
+        "original_model_sha256": "75b099f010f2feb3f43fce760419c6cdc38dad61bcbc3e4ede2c7798c8e27c53",
+        "namespaced_model_sha256": "9201519b3dafc1da70d4137b68e1a240b1bbf51795682d13eece71706cd89d07",
+        "native_devices": 54,
+        "substrate_contacts": 27,
+        "metal_resistors": 0,
+        "metal_capacitors": 0,
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "output_bias": "native_res",
+      "returncode": 0,
+      "elapsed_s": 65.411860306,
+      "diagnostics": [],
+      "review": {
+        "native_bias_current_a": {
+          "final_feed": {
+            "minimum": 0.0008805012419699309,
+            "median": 0.0008835708947271995,
+            "maximum": 0.0008888722656191304
+          },
+          "tx_feed": {
+            "minimum": 0.0012657735582802824,
+            "median": 0.0012750214001762562,
+            "maximum": 0.0012806045370837372
+          },
+          "clkbias": {
+            "minimum": 0.001027896968872151,
+            "median": 0.0010363366481367594,
+            "maximum": 0.001061862413984057
+          },
+          "ra": {
+            "minimum": 0.0004954359323327071,
+            "median": 0.0004968801279280719,
+            "maximum": 0.0005003749098902153
+          },
+          "rb": {
+            "minimum": 0.0004954039378395886,
+            "median": 0.000496886225853215,
+            "maximum": 0.0005003887336685769
+          }
+        },
+        "prestage_native_bias_current_a": {
+          "ra": {
+            "minimum": 0.0004954359323327071,
+            "median": 0.0004968801279280719,
+            "maximum": 0.0005003749098902153
+          },
+          "rb": {
+            "minimum": 0.0004954039378395886,
+            "median": 0.000496886225853215,
+            "maximum": 0.0005003887336685769
+          }
+        },
+        "clock_common_mode_range_v": {
+          "sa": [
+            1.2337428454880333,
+            1.272455667090042
+          ],
+          "sb": [
+            1.2330394356998213,
+            1.2721607332617981
+          ],
+          "s": [
+            1.2350859542517347,
+            1.2720014635677708
+          ]
+        },
+        "zero_source_op": true,
+        "rows": 69541,
+        "coverage_s": [
+          0.0,
+          3.4e-08
+        ],
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.22988173910490262,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.22988173910490262,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.26494945317811824,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.26561018673505665,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.18360240307878972,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8324306352679098,
+              1.8390895594598282
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.23044635727834173,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8674844517601064,
+              1.8846472354463024
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "all_engineering_gates_passed": true
+      },
+      "raw_wave": {
+        "bytes": 278794153,
+        "sha256": "1f58ee1742fc20537b025be8a67d220b166b57f59b04e94777dc58fcc7a1fc84"
+      },
+      "native_off_flags_count": 62,
+      "component_screen_passed": true,
+      "run": 38486031136,
+      "summary_sha256": "56d0ad519bbee92a7262fcfe670e5f3f23ff0506a2e2a5ce0a74662e1225b31f",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38486031136-1-tree-4-physical_compact-hot_low-none/tx-tree-physical-4-physical_compact-hot_low-none-38486031136-1.summary.json",
+      "assets": [
+        {
+          "id": 638597158,
+          "name": "tx-tree-physical-4-physical_compact-hot_low-none-38486031136-1.summary.json",
+          "size": 60258,
+          "digest": "sha256:56d0ad519bbee92a7262fcfe670e5f3f23ff0506a2e2a5ce0a74662e1225b31f"
+        },
+        {
+          "id": 638596941,
+          "name": "tx-tree-physical-4-physical_compact-hot_low-none-38486031136-1.tar.gz",
+          "size": 109890785,
+          "digest": "sha256:033dcc98ecfff5b2036420e26e5e70618caf2dbaedf911e9e0cd4829336f74ce"
+        },
+        {
+          "id": 638597099,
+          "name": "tx-tree-physical-4-physical_compact-hot_low-none-38486031136-1.tar.gz.sha256",
+          "size": 136,
+          "digest": "sha256:3b73e93bdc6c3cf2ed00d39a1956b959b1f9751463205486476d41798528bab0"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "streams": 4,
+      "condition": "hot_low",
+      "fault": "none",
+      "prestage": "physical_wire",
+      "frontend": "damped_strong",
+      "clock_bias": "native_res",
+      "clock_reference": "stiff65",
+      "final_drive": "double_taps_margin",
+      "pre_bias": "native_res",
+      "accepted": false,
+      "scope": "Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.",
+      "physical_prestage_scope": {
+        "mode": "physical_wire",
+        "profile": "cascade158_kelvin_supply_direct",
+        "instances": 2,
+        "circuit_profile": "cascade158",
+        "native_devices_per_instance": 54,
+        "substrate_contacts_per_instance": 27,
+        "metal_resistors_per_instance": 3870,
+        "metal_capacitors_per_instance": 2579,
+        "source": "docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json",
+        "source_sha256": "0e9914b3dc93c7f46fd8974ac177fef691f28e3ecab484ae89f191fc02f1050f",
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "physical_final_scope": {
+        "mode": "physical_wire",
+        "profile": "v8_kelvin_low_ports_shunts",
+        "circuit_profile": "final_drive_v8",
+        "instances": 1,
+        "source": "docs/evidence/pcie-final-v8-kelvin-low-ports-shunts-composition-20261013.json",
+        "source_sha256": "30d291242fc9505f8e0651d5cedbd162f68b408fbbc2941edade2740ad57d729",
+        "original_model_sha256": "0b39858216b82b4304413f60ec57e6ded247a4e16c6c55311e8743ae36ccbc18",
+        "namespaced_model_sha256": "6bae0da375ffdd3110f3222ec846e9767b9d7fc6b5d6d0b74577132dd8a469aa",
+        "native_devices": 54,
+        "substrate_contacts": 27,
+        "metal_resistors": 4021,
+        "metal_capacitors": 2636,
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "output_bias": "native_res",
+      "returncode": 0,
+      "elapsed_s": 388.887531265,
+      "diagnostics": [],
+      "review": {
+        "native_bias_current_a": {
+          "final_feed": {
+            "minimum": 0.0008729221545701716,
+            "median": 0.0008755380578242118,
+            "maximum": 0.0008801267031469419
+          },
+          "tx_feed": {
+            "minimum": 0.0012644434111927958,
+            "median": 0.0012747835962076558,
+            "maximum": 0.0012829390664423161
+          },
+          "clkbias": {
+            "minimum": 0.001015961432357916,
+            "median": 0.0010251374279673167,
+            "maximum": 0.0010406342560503087
+          },
+          "ra": {
+            "minimum": 0.0004934951790703185,
+            "median": 0.0004947464892150775,
+            "maximum": 0.0004971850459090066
+          },
+          "rb": {
+            "minimum": 0.0004936789194685009,
+            "median": 0.0004947394049384244,
+            "maximum": 0.0004971918762416851
+          }
+        },
+        "prestage_native_bias_current_a": {
+          "ra": {
+            "minimum": 0.0004934951790703185,
+            "median": 0.0004947464892150775,
+            "maximum": 0.0004971850459090066
+          },
+          "rb": {
+            "minimum": 0.0004936789194685009,
+            "median": 0.0004947394049384244,
+            "maximum": 0.0004971918762416851
+          }
+        },
+        "clock_common_mode_range_v": {
+          "sa": [
+            1.2586127559461704,
+            1.285088325876699
+          ],
+          "sb": [
+            1.2572408210432635,
+            1.2849621346277433
+          ],
+          "s": [
+            1.258881032386881,
+            1.2854264581524042
+          ]
+        },
+        "zero_source_op": true,
+        "rows": 69541,
+        "coverage_s": [
+          0.0,
+          3.4e-08
+        ],
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.08667905465623105,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 57,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.08667905465623105,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 57
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2540068150092365,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2644651719760984,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.1808005998236184,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.83621039594596,
+              1.8418230444220403
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.1740903908502891,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8090275290554332,
+              1.8465468662679996
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0044": {
+            "min_post_vce_v": 0.398654237985129,
+            "max_post_vce_v": 0.9888231304894617,
+            "max_whole_abs_vce_v": 0.9888231304894617,
+            "max_whole_abs_vbe_v": 0.809389040246238,
+            "max_whole_abs_ic_per_emitter_a": 0.0008237270400362783,
+            "passed": false
+          },
+          "xmux.xd0053": {
+            "min_post_vce_v": 0.39869464038286084,
+            "max_post_vce_v": 0.9888292022425174,
+            "max_whole_abs_vce_v": 0.9888292022425174,
+            "max_whole_abs_vbe_v": 0.8096017687174377,
+            "max_whole_abs_ic_per_emitter_a": 0.0008261967305979328,
+            "passed": false
+          },
+          "xmux.xd0054": {
+            "min_post_vce_v": 0.39888594240554265,
+            "max_post_vce_v": 0.9888597219695616,
+            "max_whole_abs_vce_v": 0.9888597219695616,
+            "max_whole_abs_vbe_v": 0.8102634563591051,
+            "max_whole_abs_ic_per_emitter_a": 0.0008339044851926167,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "all_engineering_gates_passed": false
+      },
+      "raw_wave": {
+        "bytes": 539159401,
+        "sha256": "c764e6a640cef75e2c2d6b5e08e1ad8eb800a4aa4c0ed7c9f61e07f5b5122574"
+      },
+      "native_off_flags_count": 62,
+      "component_screen_passed": false,
+      "run": 38486031136,
+      "summary_sha256": "447cc0d7a5165682a12dfdf01bcda6031753fe04a8349e0802fcdf4dd645f9ed",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38486031136-1-tree-4-physical_wire-hot_low-none/tx-tree-physical-4-physical_wire-hot_low-none-38486031136-1.summary.json",
+      "assets": [
+        {
+          "id": 638610023,
+          "name": "tx-tree-physical-4-physical_wire-hot_low-none-38486031136-1.summary.json",
+          "size": 61200,
+          "digest": "sha256:447cc0d7a5165682a12dfdf01bcda6031753fe04a8349e0802fcdf4dd645f9ed"
+        },
+        {
+          "id": 638609542,
+          "name": "tx-tree-physical-4-physical_wire-hot_low-none-38486031136-1.tar.gz",
+          "size": 231774933,
+          "digest": "sha256:f8358b39ad0b5306922aae6f32c9ee9423327d40b9777e53d2809b4e074834c8"
+        },
+        {
+          "id": 638609936,
+          "name": "tx-tree-physical-4-physical_wire-hot_low-none-38486031136-1.tar.gz.sha256",
+          "size": 133,
+          "digest": "sha256:c467ffc1ff5c8f518dde8966376f3fcdb89e3155305af5f2a2e4c0c3c0e372bb"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "streams": 4,
+      "condition": "cold_high",
+      "fault": "none",
+      "prestage": "physical_compact",
+      "frontend": "damped_strong",
+      "clock_bias": "native_res",
+      "clock_reference": "stiff65",
+      "final_drive": "double_taps_margin",
+      "pre_bias": "native_res",
+      "accepted": false,
+      "scope": "Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.",
+      "physical_prestage_scope": {
+        "mode": "physical_compact",
+        "profile": "cascade158_kelvin_supply_direct",
+        "instances": 2,
+        "circuit_profile": "cascade158",
+        "native_devices_per_instance": 54,
+        "substrate_contacts_per_instance": 27,
+        "metal_resistors_per_instance": 0,
+        "metal_capacitors_per_instance": 0,
+        "source": "docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json",
+        "source_sha256": "0e9914b3dc93c7f46fd8974ac177fef691f28e3ecab484ae89f191fc02f1050f",
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "physical_final_scope": {
+        "mode": "physical_compact",
+        "profile": "v8_kelvin_low_ports_shunts",
+        "circuit_profile": "final_drive_v8",
+        "instances": 1,
+        "source": "docs/evidence/pcie-final-v8-kelvin-low-ports-shunts-composition-20261013.json",
+        "source_sha256": "30d291242fc9505f8e0651d5cedbd162f68b408fbbc2941edade2740ad57d729",
+        "original_model_sha256": "75b099f010f2feb3f43fce760419c6cdc38dad61bcbc3e4ede2c7798c8e27c53",
+        "namespaced_model_sha256": "9201519b3dafc1da70d4137b68e1a240b1bbf51795682d13eece71706cd89d07",
+        "native_devices": 54,
+        "substrate_contacts": 27,
+        "metal_resistors": 0,
+        "metal_capacitors": 0,
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "output_bias": "native_res",
+      "returncode": 0,
+      "elapsed_s": 99.34079332800002,
+      "diagnostics": [],
+      "review": {
+        "native_bias_current_a": {
+          "final_feed": {
+            "minimum": 0.0011890849636115,
+            "median": 0.001195484373417127,
+            "maximum": 0.0012021201625299124
+          },
+          "tx_feed": {
+            "minimum": 0.0016797064424869457,
+            "median": 0.0016992871575444444,
+            "maximum": 0.0017119793193590234
+          },
+          "clkbias": {
+            "minimum": 0.0013346044726206137,
+            "median": 0.0013549305881494105,
+            "maximum": 0.001406754266866384
+          },
+          "ra": {
+            "minimum": 0.0006667001423781089,
+            "median": 0.0006697076548489154,
+            "maximum": 0.0006742983794082531
+          },
+          "rb": {
+            "minimum": 0.0006667751092709725,
+            "median": 0.0006697089203276803,
+            "maximum": 0.0006743217257397629
+          }
+        },
+        "prestage_native_bias_current_a": {
+          "ra": {
+            "minimum": 0.0006667001423781089,
+            "median": 0.0006697076548489154,
+            "maximum": 0.0006742983794082531
+          },
+          "rb": {
+            "minimum": 0.0006667751092709725,
+            "median": 0.0006697089203276803,
+            "maximum": 0.0006743217257397629
+          }
+        },
+        "clock_common_mode_range_v": {
+          "sa": [
+            1.4146111237600967,
+            1.4809200656793524
+          ],
+          "sb": [
+            1.4148410639999844,
+            1.4803026417389216
+          ],
+          "s": [
+            1.418361402153399,
+            1.4805116144280563
+          ]
+        },
+        "zero_source_op": true,
+        "rows": 69541,
+        "coverage_s": [
+          0.0,
+          3.4e-08
+        ],
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.2726476088681118,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.2726476088681118,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2749105321856349,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.27501309709399235,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.30159976371078523,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9647287379180276,
+              1.9798933145413737
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.36008388201485886,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              2.0274432759938623,
+              2.0454897193848467
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "all_engineering_gates_passed": true
+      },
+      "raw_wave": {
+        "bytes": 278794153,
+        "sha256": "85f1df3cd0aafe97232d612d7f574e7ffc8331f489db6181c8ced52e40a553b3"
+      },
+      "native_off_flags_count": 62,
+      "component_screen_passed": true,
+      "run": 38486031136,
+      "summary_sha256": "95905d141e96a8c677819ec6ec000cc193c1f844253160dfd2d95be6423cb587",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38486031136-1-tree-4-physical_compact-cold_high-none/tx-tree-physical-4-physical_compact-cold_high-none-38486031136-1.summary.json",
+      "assets": [
+        {
+          "id": 638598528,
+          "name": "tx-tree-physical-4-physical_compact-cold_high-none-38486031136-1.summary.json",
+          "size": 60224,
+          "digest": "sha256:95905d141e96a8c677819ec6ec000cc193c1f844253160dfd2d95be6423cb587"
+        },
+        {
+          "id": 638598237,
+          "name": "tx-tree-physical-4-physical_compact-cold_high-none-38486031136-1.tar.gz",
+          "size": 110589615,
+          "digest": "sha256:a5abb0d24b6c2d1344b3545c215bfadbcafe643207570e3f780a32a411dccef1"
+        },
+        {
+          "id": 638598455,
+          "name": "tx-tree-physical-4-physical_compact-cold_high-none-38486031136-1.tar.gz.sha256",
+          "size": 138,
+          "digest": "sha256:6754a301a2fb927ec89d323de305873689e5e9a6c97732ff5ebbc545fb2a73ee"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "streams": 4,
+      "condition": "cold_high",
+      "fault": "none",
+      "prestage": "physical_wire",
+      "frontend": "damped_strong",
+      "clock_bias": "native_res",
+      "clock_reference": "stiff65",
+      "final_drive": "double_taps_margin",
+      "pre_bias": "native_res",
+      "accepted": false,
+      "scope": "Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.",
+      "physical_prestage_scope": {
+        "mode": "physical_wire",
+        "profile": "cascade158_kelvin_supply_direct",
+        "instances": 2,
+        "circuit_profile": "cascade158",
+        "native_devices_per_instance": 54,
+        "substrate_contacts_per_instance": 27,
+        "metal_resistors_per_instance": 3870,
+        "metal_capacitors_per_instance": 2579,
+        "source": "docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json",
+        "source_sha256": "0e9914b3dc93c7f46fd8974ac177fef691f28e3ecab484ae89f191fc02f1050f",
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "physical_final_scope": {
+        "mode": "physical_wire",
+        "profile": "v8_kelvin_low_ports_shunts",
+        "circuit_profile": "final_drive_v8",
+        "instances": 1,
+        "source": "docs/evidence/pcie-final-v8-kelvin-low-ports-shunts-composition-20261013.json",
+        "source_sha256": "30d291242fc9505f8e0651d5cedbd162f68b408fbbc2941edade2740ad57d729",
+        "original_model_sha256": "0b39858216b82b4304413f60ec57e6ded247a4e16c6c55311e8743ae36ccbc18",
+        "namespaced_model_sha256": "6bae0da375ffdd3110f3222ec846e9767b9d7fc6b5d6d0b74577132dd8a469aa",
+        "native_devices": 54,
+        "substrate_contacts": 27,
+        "metal_resistors": 4021,
+        "metal_capacitors": 2636,
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "output_bias": "native_res",
+      "returncode": 0,
+      "elapsed_s": 460.59821576999997,
+      "diagnostics": [],
+      "review": {
+        "native_bias_current_a": {
+          "final_feed": {
+            "minimum": 0.0011784250507989554,
+            "median": 0.001184227535311588,
+            "maximum": 0.0011910034407346779
+          },
+          "tx_feed": {
+            "minimum": 0.001678986528883569,
+            "median": 0.001699187712607611,
+            "maximum": 0.0017126179544848224
+          },
+          "clkbias": {
+            "minimum": 0.001341616273219804,
+            "median": 0.0013529234114830182,
+            "maximum": 0.0013800294742469692
+          },
+          "ra": {
+            "minimum": 0.0006644985763097693,
+            "median": 0.0006667313344163036,
+            "maximum": 0.0006704724424913976
+          },
+          "rb": {
+            "minimum": 0.0006646250020769021,
+            "median": 0.0006667221961764236,
+            "maximum": 0.0006704146471047445
+          }
+        },
+        "prestage_native_bias_current_a": {
+          "ra": {
+            "minimum": 0.0006644985763097693,
+            "median": 0.0006667313344163036,
+            "maximum": 0.0006704724424913976
+          },
+          "rb": {
+            "minimum": 0.0006646250020769021,
+            "median": 0.0006667221961764236,
+            "maximum": 0.0006704146471047445
+          }
+        },
+        "clock_common_mode_range_v": {
+          "sa": [
+            1.439467448330316,
+            1.4745298852818711
+          ],
+          "sb": [
+            1.4397939932104507,
+            1.4741956149982582
+          ],
+          "s": [
+            1.4400029592510304,
+            1.4747292233395175
+          ]
+        },
+        "zero_source_op": true,
+        "rows": 69541,
+        "coverage_s": [
+          0.0,
+          3.4e-08
+        ],
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.26324114267315135,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.26447246370536637,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.263746968345306,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.26324114267315135,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.3121441362128381,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.9730538475601946,
+              1.9764264248824213
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.2146479488473616,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              2.0124419103509497,
+              2.0341411228311523
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "all_engineering_gates_passed": true
+      },
+      "raw_wave": {
+        "bytes": 539159401,
+        "sha256": "c9064097eb5744fb4fad97e43d6705a4b26520f94ea8747dbb6d705a6ec3c622"
+      },
+      "native_off_flags_count": 62,
+      "component_screen_passed": true,
+      "run": 38486031136,
+      "summary_sha256": "60b6b166955d36988046e6cfd22fe550241ae5d1fb3df414ebcbbf4ff95e78a6",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38486031136-1-tree-4-physical_wire-cold_high-none/tx-tree-physical-4-physical_wire-cold_high-none-38486031136-1.summary.json",
+      "assets": [
+        {
+          "id": 638612018,
+          "name": "tx-tree-physical-4-physical_wire-cold_high-none-38486031136-1.summary.json",
+          "size": 60211,
+          "digest": "sha256:60b6b166955d36988046e6cfd22fe550241ae5d1fb3df414ebcbbf4ff95e78a6"
+        },
+        {
+          "id": 638611693,
+          "name": "tx-tree-physical-4-physical_wire-cold_high-none-38486031136-1.tar.gz",
+          "size": 232055209,
+          "digest": "sha256:cf542bf3310ce233903bde48e996cd085dfb1ca6ba47fe68c4bfb27f18d7063f"
+        },
+        {
+          "id": 638611972,
+          "name": "tx-tree-physical-4-physical_wire-cold_high-none-38486031136-1.tar.gz.sha256",
+          "size": 135,
+          "digest": "sha256:8a1db068c1964b69706e88887910bbe4a31cf7ff37829c868f9941f3d2fddda0"
+        }
+      ]
+    }
+  ],
+  "cases": [
+    {
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "streams": 4,
+      "condition": "hot_low",
+      "fault": "none",
+      "prestage": "physical_compact",
+      "frontend": "damped_strong",
+      "clock_bias": "native_res",
+      "clock_reference": "stiff65",
+      "final_drive": "double_taps_margin",
+      "pre_bias": "native_res",
+      "accepted": false,
+      "scope": "Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.",
+      "physical_prestage_scope": {
+        "mode": "physical_compact",
+        "profile": "cascade158_kelvin_supply_direct",
+        "instances": 2,
+        "circuit_profile": "cascade158",
+        "native_devices_per_instance": 54,
+        "substrate_contacts_per_instance": 27,
+        "metal_resistors_per_instance": 0,
+        "metal_capacitors_per_instance": 0,
+        "source": "docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json",
+        "source_sha256": "0e9914b3dc93c7f46fd8974ac177fef691f28e3ecab484ae89f191fc02f1050f",
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "physical_final_scope": {
+        "mode": "physical_compact",
+        "profile": "v8_kelvin_low_ports_shunts",
+        "circuit_profile": "final_drive_v8",
+        "instances": 1,
+        "source": "docs/evidence/pcie-final-v8-kelvin-low-ports-shunts-composition-20261013.json",
+        "source_sha256": "30d291242fc9505f8e0651d5cedbd162f68b408fbbc2941edade2740ad57d729",
+        "original_model_sha256": "75b099f010f2feb3f43fce760419c6cdc38dad61bcbc3e4ede2c7798c8e27c53",
+        "namespaced_model_sha256": "9201519b3dafc1da70d4137b68e1a240b1bbf51795682d13eece71706cd89d07",
+        "native_devices": 54,
+        "substrate_contacts": 27,
+        "metal_resistors": 0,
+        "metal_capacitors": 0,
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "output_bias": "native_res",
+      "returncode": 0,
+      "elapsed_s": 65.411860306,
+      "diagnostics": [],
+      "review": {
+        "native_bias_current_a": {
+          "final_feed": {
+            "minimum": 0.0008805012419699309,
+            "median": 0.0008835708947271995,
+            "maximum": 0.0008888722656191304
+          },
+          "tx_feed": {
+            "minimum": 0.0012657735582802824,
+            "median": 0.0012750214001762562,
+            "maximum": 0.0012806045370837372
+          },
+          "clkbias": {
+            "minimum": 0.001027896968872151,
+            "median": 0.0010363366481367594,
+            "maximum": 0.001061862413984057
+          },
+          "ra": {
+            "minimum": 0.0004954359323327071,
+            "median": 0.0004968801279280719,
+            "maximum": 0.0005003749098902153
+          },
+          "rb": {
+            "minimum": 0.0004954039378395886,
+            "median": 0.000496886225853215,
+            "maximum": 0.0005003887336685769
+          }
+        },
+        "prestage_native_bias_current_a": {
+          "ra": {
+            "minimum": 0.0004954359323327071,
+            "median": 0.0004968801279280719,
+            "maximum": 0.0005003749098902153
+          },
+          "rb": {
+            "minimum": 0.0004954039378395886,
+            "median": 0.000496886225853215,
+            "maximum": 0.0005003887336685769
+          }
+        },
+        "clock_common_mode_range_v": {
+          "sa": [
+            1.2337428454880333,
+            1.272455667090042
+          ],
+          "sb": [
+            1.2330394356998213,
+            1.2721607332617981
+          ],
+          "s": [
+            1.2350859542517347,
+            1.2720014635677708
+          ]
+        },
+        "zero_source_op": true,
+        "rows": 69541,
+        "coverage_s": [
+          0.0,
+          3.4e-08
+        ],
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.22988173910490262,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.22988173910490262,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.26494945317811824,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.26561018673505665,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": true,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.18360240307878972,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8324306352679098,
+              1.8390895594598282
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.23044635727834173,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8674844517601064,
+              1.8846472354463024
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {},
+        "failed_mos": {},
+        "all_engineering_gates_passed": true
+      },
+      "raw_wave": {
+        "bytes": 278794153,
+        "sha256": "1f58ee1742fc20537b025be8a67d220b166b57f59b04e94777dc58fcc7a1fc84"
+      },
+      "native_off_flags_count": 62,
+      "component_screen_passed": true,
+      "run": 38486031136,
+      "summary_sha256": "56d0ad519bbee92a7262fcfe670e5f3f23ff0506a2e2a5ce0a74662e1225b31f",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38486031136-1-tree-4-physical_compact-hot_low-none/tx-tree-physical-4-physical_compact-hot_low-none-38486031136-1.summary.json",
+      "assets": [
+        {
+          "id": 638597158,
+          "name": "tx-tree-physical-4-physical_compact-hot_low-none-38486031136-1.summary.json",
+          "size": 60258,
+          "digest": "sha256:56d0ad519bbee92a7262fcfe670e5f3f23ff0506a2e2a5ce0a74662e1225b31f"
+        },
+        {
+          "id": 638596941,
+          "name": "tx-tree-physical-4-physical_compact-hot_low-none-38486031136-1.tar.gz",
+          "size": 109890785,
+          "digest": "sha256:033dcc98ecfff5b2036420e26e5e70618caf2dbaedf911e9e0cd4829336f74ce"
+        },
+        {
+          "id": 638597099,
+          "name": "tx-tree-physical-4-physical_compact-hot_low-none-38486031136-1.tar.gz.sha256",
+          "size": 136,
+          "digest": "sha256:3b73e93bdc6c3cf2ed00d39a1956b959b1f9751463205486476d41798528bab0"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE_NATIVE_TREE_STUDY_NOT_PHY_ACCEPTANCE",
+      "streams": 4,
+      "condition": "hot_low",
+      "fault": "none",
+      "prestage": "physical_wire",
+      "frontend": "damped_strong",
+      "clock_bias": "native_res",
+      "clock_reference": "stiff65",
+      "final_drive": "double_taps_margin",
+      "pre_bias": "native_res",
+      "accepted": false,
+      "scope": "Actual selectable4/8/16/32:1 transistor tree. Every actual HBT/MOS is bound and screened. Native clock common-mode references each drive at most three actual selector pairs. Differential clock phases remain external ideal sources; output_bias=native_res replaces final/TX reference currents with native resistor feeds. pre_bias=native_res replaces all prestage ideal currents; clock_bias=native_res also replaces the clock-reference ideal current with a real loaded resistor feed. Each input is8Gb/s divided by stream count; final8GT/s256-bit original oracle unchanged. Clock modulation is still externally imposed. No PLL/CDR, physical tree layout/PEX, ESD, jitter/BER or fullPHY acceptance.",
+      "physical_prestage_scope": {
+        "mode": "physical_wire",
+        "profile": "cascade158_kelvin_supply_direct",
+        "instances": 2,
+        "circuit_profile": "cascade158",
+        "native_devices_per_instance": 54,
+        "substrate_contacts_per_instance": 27,
+        "metal_resistors_per_instance": 3870,
+        "metal_capacitors_per_instance": 2579,
+        "source": "docs/evidence/pcie-cascade158-kelvin-supply-direct-composition-20261013.json",
+        "source_sha256": "0e9914b3dc93c7f46fd8974ac177fef691f28e3ecab484ae89f191fc02f1050f",
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "physical_final_scope": {
+        "mode": "physical_wire",
+        "profile": "v8_kelvin_low_ports_shunts",
+        "circuit_profile": "final_drive_v8",
+        "instances": 1,
+        "source": "docs/evidence/pcie-final-v8-kelvin-low-ports-shunts-composition-20261013.json",
+        "source_sha256": "30d291242fc9505f8e0651d5cedbd162f68b408fbbc2941edade2740ad57d729",
+        "original_model_sha256": "0b39858216b82b4304413f60ec57e6ded247a4e16c6c55311e8743ae36ccbc18",
+        "namespaced_model_sha256": "6bae0da375ffdd3110f3222ec846e9767b9d7fc6b5d6d0b74577132dd8a469aa",
+        "native_devices": 54,
+        "substrate_contacts": 27,
+        "metal_resistors": 4021,
+        "metal_capacitors": 2636,
+        "intermacro_connections_ideal": true,
+        "assembled_tree_gds": false,
+        "qualified_substrate_resistance": false,
+        "qualified_rf_distribution": false
+      },
+      "output_bias": "native_res",
+      "returncode": 0,
+      "elapsed_s": 388.887531265,
+      "diagnostics": [],
+      "review": {
+        "native_bias_current_a": {
+          "final_feed": {
+            "minimum": 0.0008729221545701716,
+            "median": 0.0008755380578242118,
+            "maximum": 0.0008801267031469419
+          },
+          "tx_feed": {
+            "minimum": 0.0012644434111927958,
+            "median": 0.0012747835962076558,
+            "maximum": 0.0012829390664423161
+          },
+          "clkbias": {
+            "minimum": 0.001015961432357916,
+            "median": 0.0010251374279673167,
+            "maximum": 0.0010406342560503087
+          },
+          "ra": {
+            "minimum": 0.0004934951790703185,
+            "median": 0.0004947464892150775,
+            "maximum": 0.0004971850459090066
+          },
+          "rb": {
+            "minimum": 0.0004936789194685009,
+            "median": 0.0004947394049384244,
+            "maximum": 0.0004971918762416851
+          }
+        },
+        "prestage_native_bias_current_a": {
+          "ra": {
+            "minimum": 0.0004934951790703185,
+            "median": 0.0004947464892150775,
+            "maximum": 0.0004971850459090066
+          },
+          "rb": {
+            "minimum": 0.0004936789194685009,
+            "median": 0.0004947394049384244,
+            "maximum": 0.0004971918762416851
+          }
+        },
+        "clock_common_mode_range_v": {
+          "sa": [
+            1.2586127559461704,
+            1.285088325876699
+          ],
+          "sb": [
+            1.2572408210432635,
+            1.2849621346277433
+          ],
+          "s": [
+            1.258881032386881,
+            1.2854264581524042
+          ]
+        },
+        "zero_source_op": true,
+        "rows": 69541,
+        "coverage_s": [
+          0.0,
+          3.4e-08
+        ],
+        "signals": {
+          "samples": 768,
+          "minimum_margin_v": 0.08667905465623105,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 57,
+          "phases": {
+            "0.3": {
+              "samples": 256,
+              "minimum_margin_v": 0.08667905465623105,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 57
+            },
+            "0.5": {
+              "samples": 256,
+              "minimum_margin_v": 0.2540068150092365,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            },
+            "0.7": {
+              "samples": 256,
+              "minimum_margin_v": 0.2644651719760984,
+              "wrong_sign_samples": 0,
+              "below_100mv_samples": 0
+            }
+          },
+          "passed": false,
+          "source_bits_sha256": "5dd4496031f00ffea20c2af8cd828d95a868960129829389125dc5055bdb6825",
+          "method": "All original source bits at unchanged 0.3/0.5/0.7 UI; 100mV limit. No fitted latency, resampling phase adjustment, or actual-input-derived oracle."
+        },
+        "interfaces": {
+          "cmos": {
+            "samples": 768,
+            "minimum_margin_v": 0.1808005998236184,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.83621039594596,
+              1.8418230444220403
+            ],
+            "passed": true
+          },
+          "final": {
+            "samples": 768,
+            "minimum_margin_v": 0.1740903908502891,
+            "wrong_sign_samples": 0,
+            "below_150mv_samples": 0,
+            "common_mode_range_v": [
+              1.8090275290554332,
+              1.8465468662679996
+            ],
+            "passed": true
+          }
+        },
+        "failed_hbts": {
+          "xmux.xd0044": {
+            "min_post_vce_v": 0.398654237985129,
+            "max_post_vce_v": 0.9888231304894617,
+            "max_whole_abs_vce_v": 0.9888231304894617,
+            "max_whole_abs_vbe_v": 0.809389040246238,
+            "max_whole_abs_ic_per_emitter_a": 0.0008237270400362783,
+            "passed": false
+          },
+          "xmux.xd0053": {
+            "min_post_vce_v": 0.39869464038286084,
+            "max_post_vce_v": 0.9888292022425174,
+            "max_whole_abs_vce_v": 0.9888292022425174,
+            "max_whole_abs_vbe_v": 0.8096017687174377,
+            "max_whole_abs_ic_per_emitter_a": 0.0008261967305979328,
+            "passed": false
+          },
+          "xmux.xd0054": {
+            "min_post_vce_v": 0.39888594240554265,
+            "max_post_vce_v": 0.9888597219695616,
+            "max_whole_abs_vce_v": 0.9888597219695616,
+            "max_whole_abs_vbe_v": 0.8102634563591051,
+            "max_whole_abs_ic_per_emitter_a": 0.0008339044851926167,
+            "passed": false
+          }
+        },
+        "failed_mos": {},
+        "all_engineering_gates_passed": false
+      },
+      "raw_wave": {
+        "bytes": 539159401,
+        "sha256": "c764e6a640cef75e2c2d6b5e08e1ad8eb800a4aa4c0ed7c9f61e07f5b5122574"
+      },
+      "native_off_flags_count": 62,
+      "component_screen_passed": false,
+      "run": 38486031136,
+      "summary_sha256": "447cc0d7a5165682a12dfdf01bcda6031753fe04a8349e0802fcdf4dd645f9ed",
+      "summary_url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-38486031136-1-tree-4-physical_wire-hot_low-none/tx-tree-physical-4-physical_wire-hot_low-none-38486031136-1.summary.json",
+      "assets": [
+        {
+          "id": 638610023,
+          "name": "tx-tree-physical-4-physical_wire-hot_low-none-38486031136-1.summary.json",
+          "size": 61200,
+          "digest": "sha256:447cc0d7a5165682a12dfdf01bcda6031753fe04a8349e0802fcdf4dd645f9ed"
+        },
+        {
+          "id": 638609542,
+          "name": "tx-tree-physical-4-physical_wire-hot_low-none-38486031136-1.tar.gz",
+          "size": 231774933,
+          "digest": "sha256:f8358b39ad0b5306922aae6f32c9ee9423327d40b9777e53d2809b4e074834c8"
+        },
+        {
+          "id": 638609936,
+          "name": "tx-tree-physical-4-physical_wire-hot_low-none-38486031136-1.tar.gz.sha256",
+          "size": 133,
+          "digest": "sha256:c467ffc1ff5c8f518dde8966376f3fcdb89e3155305af5f2a2e4c0c3c0e372bb"
+        }
+      ]
+    }
+  ],
+  "comparison": {
+    "previous_low_ports_hot_margin_v": 0.07425230056,
+    "new_hot_margin_v": 0.08667905465623105,
+    "below100mv_samples": 57,
+    "failed_hbts": 3
+  },
+  "next": "Source-bound full-wave compact/wire diagnosis before further geometry or circuit changes. Keep original sample phase and all voltage limits.",
+  "scope": "Six source-bound 4:1 macro composition cases; external ideal clocks and ideal intermacro wiring. Not32:1, assembled layout, PLL/CDR, full PHY or chip STA.",
+  "completed_hot_diagnosis": {
+    "run": 38487471013,
+    "summary_asset_id": 638624589,
+    "summary_sha256": "fa4d6d6922dc9120ffb0a84976944cc58802fb1bd2383c6f714312afb116e70a",
+    "transitions": {
+      "physical_compact": {
+        "clock_to_mux_zero_ps": {
+          "count": 128,
+          "minimum": 9.34302203436066,
+          "median": 9.491111200655883,
+          "maximum": 9.581434892876558
+        },
+        "mux_to_tx_zero_ps": {
+          "count": 128,
+          "minimum": 5.855782845254846,
+          "median": 5.9712200913279645,
+          "maximum": 6.09829029383962
+        },
+        "source_to_output_100mv_ps": {
+          "count": 128,
+          "minimum": 26.961707918106384,
+          "median": 27.179796408673198,
+          "maximum": 27.4264716742218
+        }
+      },
+      "physical_wire": {
+        "clock_to_mux_zero_ps": {
+          "count": 128,
+          "minimum": 15.437348942052626,
+          "median": 17.54838624259397,
+          "maximum": 18.98749890877277
+        },
+        "mux_to_tx_zero_ps": {
+          "count": 128,
+          "minimum": 5.8094192415294605,
+          "median": 6.0888208965025274,
+          "maximum": 6.449019885761282
+        },
+        "source_to_output_100mv_ps": {
+          "count": 128,
+          "minimum": 33.07769694088524,
+          "median": 35.9420035938698,
+          "maximum": 38.37732951036276
+        }
+      }
+    },
+    "failed_bank_devices": {
+      "xmux.xd0044": {
+        "compact_terminals": [
+          "xmux.n_14",
+          "ap",
+          "xmux.n_15",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t044_c",
+          "xmux.t044_b",
+          "xmux.t044_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.1514270009376859,
+          "base_v": -0.030561656232080514,
+          "emitter_v": -0.04267352284276016,
+          "vce_v": -0.10875347809492575,
+          "vbe_v": 0.012111866610679423,
+          "collector_current_a": -0.0003142497536439678
+        }
+      },
+      "xmux.xd0053": {
+        "compact_terminals": [
+          "xmux.n_14",
+          "ap",
+          "xmux.n_15",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t053_c",
+          "xmux.t053_b",
+          "xmux.t053_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.1513784547530337,
+          "base_v": -0.030562276162977353,
+          "emitter_v": -0.04272899577841338,
+          "vce_v": -0.10864945897461986,
+          "vbe_v": 0.012166719615435917,
+          "collector_current_a": -0.00031203335547388955
+        }
+      },
+      "xmux.xd0054": {
+        "compact_terminals": [
+          "xmux.n_14",
+          "ap",
+          "xmux.n_15",
+          "xmux.n_1"
+        ],
+        "wire_terminals": [
+          "xmux.t054_c",
+          "xmux.t054_b",
+          "xmux.t054_e",
+          "xmux.n_1"
+        ],
+        "wire_minus_compact_time_mean": {
+          "collector_v": -0.15129020607376842,
+          "base_v": -0.030562723129573977,
+          "emitter_v": -0.04283770968211287,
+          "vce_v": -0.10845249639165522,
+          "vbe_v": 0.012274986552539002,
+          "collector_current_a": -0.00030643912182273727
+        }
+      }
+    },
+    "interpretation": "The actual ap data bank loses about151mV mean collector potential and109mV Vce versus compact. Original early-output57 failures remain, maximum100mV arrival38.377ps vs37.5ps sample. This motivates shortening the actual collector supply/load paths in the measured shunt geometry, not changing limits or sample times."
+  },
+  "next_geometry": {
+    "variant": "critical_buses_kelvin_low_ports_loads_shunts",
+    "changes": "Combine existing native R19/R20 y=-18um collector-load placement with R23/R24 output-shunts geometry and corrected149.6um avss lane. Same54devices,values,metal widths and bit oracle.",
+    "acceptance": "Fresh zero-marker native DRC, strict hierarchical/flat LVS and five faults, then native RC with13controls, source-bound composition and all six4:1PVT cases before32:1 or physical adoption.",
+    "adopted": false,
+    "physical_result": {
+      "run": 38487899624,
+      "source_commit": "1f73afa74261f5d082c28d9b57c7535ffece0336",
+      "summary_asset_id": 638636513,
+      "summary_sha256": "2e4b4e7d531e8a5e28251fec54339cc34cbd055ef9269ed901a552cd7d3b4676",
+      "archive_asset_id": 638636356,
+      "archive_bytes": 396054,
+      "archive_sha256": "bb8dca8dc8eeb9d246dfc7f6c746cbb2995506031af8a9dd8d822bc85e37ef46",
+      "status": "PASS_REAL_LAYOUT_DRC_LVS_FAULTS_REQUIRES_NATIVE_EXTRACTION_AND_WAVEFORMS",
+      "drc": {
+        "status": "PASS",
+        "process_returncode": 0,
+        "markers": 0,
+        "categories": {},
+        "category_count": 560,
+        "report_sha256": "9362644f1330028659c4b1ed944affff0a77bb6f62ee01a6a5709c1aa96a7ccf",
+        "log_sha256": "92a1a5417d6e518807d444f8573880b33dc1ab36cb651cc28a20fba136464000"
+      },
+      "steps": {
+        "drc": "PASS",
+        "lvs": "PASS",
+        "lvs_flat": "PASS",
+        "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+        "missing_hbt": "REJECTED_EXPECTED_FAULT",
+        "q_open": "REJECTED_EXPECTED_FAULT",
+        "rail_short": "REJECTED_EXPECTED_FAULT",
+        "offgrid": "REJECTED_EXPECTED_FAULT"
+      }
+    },
+    "first_extraction_failure": {
+      "run": 38488355472,
+      "source_commit": "2021de9ca4b0d30888dc8c0ddeba74e8a3d65f86",
+      "summary_asset_id": 638642635,
+      "summary_sha256": "9a9cc514b71b6edd552ae8e224f6ad34fc2cd45dd3aeee2887028d2e669afb06",
+      "archive_asset_id": 638642435,
+      "archive_bytes": 6284890,
+      "archive_sha256": "45e9ebff2ac27ca0abf2b76d38c9eaab37be85f11e29d0e7e9045d032ab8f053",
+      "pristine_audit": "PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY",
+      "failure": "dropped_resistor rejected by 'Physical wire R graph open or incomplete', while the specific control expected 'Native/export resistor topology/value differs'",
+      "repair": "Select an actual non-bridge resistor for this dedicated topology-mismatch mutation, assert exactly one R removed and unchanged node/component sets, retain the original expected rejection and all13controls. Frozen pristine audit, geometry, R/C and thresholds unchanged. No extraction acceptance until corrected cloud controls pass."
+    },
+    "corrected_extraction": {
+      "run": 38489084202,
+      "source_commit": "6573d4047e32cf3977d67508b6f322693391a53d",
+      "status": "PASS_ACTUAL_NATIVE_RC_GRAPH_AND_13_FAULT_CONTROLS_REQUIRES_WAVEFORMS",
+      "summary_asset_id": 638657110,
+      "summary_sha256": "2e5a28efbf294820aa707d7e1340de27fad9d66ffa0f67c28337a206aaebb24f",
+      "archive_asset_id": 638656991,
+      "archive_bytes": 6290047,
+      "archive_sha256": "21aae0eb69a70b67629d92e46f72f8bc79d40cb2f68e620cfd81d1202231c602",
+      "devices": 54,
+      "R": 4021,
+      "C": 2636,
+      "controls": [
+        {
+          "control": "dropped_actual_port",
+          "rejected_by": "Export port loss/duplication"
+        },
+        {
+          "control": "dropped_resistor",
+          "rejected_by": "Native/export resistor topology/value differs"
+        },
+        {
+          "control": "wrong_resistor",
+          "rejected_by": "Native/export resistor topology/value differs"
+        },
+        {
+          "control": "cross_conductor_short",
+          "rejected_by": "R network has unanchored component or cross-conductor short"
+        },
+        {
+          "control": "ground_redistribution_same_matrix",
+          "rejected_by": "Per-point ground C export changed"
+        },
+        {
+          "control": "mutual_anchor_shift_same_matrix",
+          "rejected_by": "Mutual C native attachment changed"
+        },
+        {
+          "control": "dropped_cap",
+          "rejected_by": "Mutual C native attachment changed"
+        },
+        {
+          "control": "changed_cap",
+          "rejected_by": "Mutual C native value changed"
+        },
+        {
+          "control": "cap_scale",
+          "rejected_by": "Source capacitance scale changed"
+        },
+        {
+          "control": "missing_native_completion",
+          "rejected_by": "Missing/duplicate native completion"
+        },
+        {
+          "control": "changed_body",
+          "rejected_by": "Original body/well identities changed"
+        },
+        {
+          "control": "missing_body",
+          "rejected_by": "Body/metal disposition changed"
+        },
+        {
+          "control": "wrong_actual_metal_point",
+          "rejected_by": "Actual metal terminal witness changed"
+        }
+      ],
+      "qualified_pex": false,
+      "scope": "Native distributed R topology and C attachment/value conservation;54body/well terminals remain without substrate R. Full RF/substrate extraction and waveform acceptance still open."
+    }
+  }
+}

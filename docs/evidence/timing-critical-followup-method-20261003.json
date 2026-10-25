@@ -1,0 +1,1715 @@
+{
+  "schema": 1,
+  "status": "PASS_SOURCE_AND_TINY_NATIVE_VALIDATION",
+  "source_pins": {
+    "hw/soc/pnr/timing-critical-followup-input.lock.json": {
+      "bytes": 15730,
+      "sha256": "da773dbd21a6351f69f0d1f535555c3ff7b4d18b8f6feaff758c47d809cb3448"
+    },
+    "scripts/run_cloud_critical_followup.py": {
+      "bytes": 36896,
+      "sha256": "53da919d78a4acf7fd946a99f2ab270243c85b7f7f1665139254aaa9d1264d2e"
+    },
+    "hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+      "bytes": 8712,
+      "sha256": "9c3b93b5440fff3d40195758934f45f8966e583da92aaa663a8b963c61b2217a"
+    },
+    "hw/soc/pnr/timing_critical_followup_step.tcl": {
+      "bytes": 6920,
+      "sha256": "2482135d3e01fc972cea652b50e9acd8c28addabb319d6e8c8a87a610db3996f"
+    },
+    "hw/soc/pnr/timing_critical_hold_child.tcl": {
+      "bytes": 2895,
+      "sha256": "acedf7b333a6ce569d58ed25bfe72fcd165fdb2d83f60d5e990e54da5d92d1e1"
+    },
+    "sw/tests/timing_critical_followup_native.tcl": {
+      "bytes": 9039,
+      "sha256": "3ab7670d9e8dc8f01e4a0f5a0b6de891a9915cc7133916595076058969f4be4c"
+    },
+    "sw/tests/test_cloud_critical_followup.py": {
+      "bytes": 28637,
+      "sha256": "0807ca3b6c4631d2c8d5354828296d0eea885da0de224e1d538ae58b63ccd9db"
+    },
+    ".github/workflows/timing-critical-followup.yml": {
+      "bytes": 6316,
+      "sha256": "f159fc69c06d858693003f34f0a0b2f73b29b03e44c96713999a8c2deaad7855"
+    }
+  },
+  "scope": "New isolated method only. No complete chip loaded locally; no new full-chip timing result, adopted candidate, final routing, signoff extraction, LVS/DRC or manufacturing acceptance.",
+  "source_contract": {
+    "total_captured_methods": 56,
+    "frozen_prior_methods": 48,
+    "exact_residual_result": {
+      "bytes": 33732264,
+      "sha256": "d0543a057890bc6623f93375b730caa42fc741ed66e4673e00ba2e971ae312d4"
+    },
+    "exact_residual_artifact": {
+      "run_id": 37032282750,
+      "source_commit": "90a545bce08500e72e1b0dcaf9b4d3491c4e56d5",
+      "artifact_id": 11240586806,
+      "artifact_name": "residual-repair-final-1",
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/closure-residual-repair-final-37032282750-20261003.zip",
+      "bytes": 429913419,
+      "sha256": "1349d706ef331eff73c2466fc5442266f87e487d152d86a16a5d58723588c271",
+      "entrypoint": "scripts/run_cloud_residual_repair.py",
+      "kind": "candidate_residual_repair",
+      "candidate_prefix": "run/01-openroad-resizertimingpostgrt/candidate"
+    },
+    "six_historical_references": [
+      "combined_parent",
+      "electrical_first",
+      "electrical_margin_parent",
+      "matched_c10",
+      "residual_parent",
+      "selected_c10"
+    ],
+    "source_corners": [
+      "nom_fast_1p32V_m40C",
+      "nom_slow_1p08V_125C",
+      "nom_typ_1p20V_25C"
+    ],
+    "frozen_producer_files_modified": false,
+    "default_rtl_modified": false
+  },
+  "validation": {
+    "pytest": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m pytest sw/tests/test_cloud_critical_followup.py sw/tests/test_cloud_residual_repair.py sw/tests/test_cloud_electrical_margin.py sw/tests/test_cloud_combined_repair.py -q --basetemp=/dev/shm/nssoc-critical-final-suite -p no:cacheprovider",
+      "returncode": 0,
+      "passed": 367,
+      "reported_seconds": 0.7
+    },
+    "ruff": {
+      "command": "hw/soc/tools/dev-env/bin/ruff check scripts/run_cloud_critical_followup.py sw/tests/test_cloud_critical_followup.py",
+      "returncode": 0
+    },
+    "actionlint": {
+      "command": "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint .github/workflows/timing-critical-followup.yml",
+      "returncode": 0
+    },
+    "tcl_scripts_complete": true,
+    "exact_parent_contract_replayed": true,
+    "peer_review": {
+      "path": "hw/soc/out/resume-20261003/critical-followup-source/peer-review.json",
+      "bytes": 6128,
+      "sha256": "675beb2659822aec2bb5fe846aacaad9c626f605fa247683c3b049b7222344fc"
+    },
+    "native_control": {
+      "receipt_path": "hw/soc/out/resume-20261003/critical-followup-source/native-size-control-witness/validation.json",
+      "receipt_pin": {
+        "bytes": 11052,
+        "sha256": "36a3e7864c68c8140777ec90a375ad5e12e08a5884905af3d7f6fdca31c1cc80"
+      },
+      "runtime": {
+        "bytes": 1398053408,
+        "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+      },
+      "returncode": 0,
+      "seconds": 0.9700871999957599,
+      "address_space_bound": 2147483648,
+      "output_pins_rehashed": 20,
+      "raw_result_sdc_three_corner_reports_and_log_replayed": true,
+      "negative_controls": 18,
+      "actual_native_graph_placement_and_pg_observed": true
+    }
+  },
+  "method": {
+    "hold": {
+      "endpoint": "_135215_/D",
+      "driver": "_135214_/Q",
+      "debug_levels": {
+        "repair_hold": 3,
+        "resizer": 1,
+        "journal": 1
+      },
+      "policy": {
+        "setup_margin_seconds": 1e-10,
+        "hold_margin_seconds": 2e-11,
+        "allow_setup_violations": false,
+        "max_passes": 1,
+        "max_added_cells": 32
+      },
+      "independent_child": true,
+      "mutation_never_used_for_sizing": true,
+      "limitation": "Native journal/transition diagnostics expose no transient slew/WNS values inside the rollback OR predicate; unobserved subpredicate is not inferred."
+    },
+    "sizing": {
+      "instance": "fanout639",
+      "input_pin": "A",
+      "output_pin": "X",
+      "before_master": "sg13g2_buf_4",
+      "after_master": "sg13g2_buf_8",
+      "output_net": "net639"
+    },
+    "reloads": 2,
+    "full_endpoint_census_each_stage": true,
+    "original_constraints_unchanged": true,
+    "protected_connections_and_32_sram_geometry_required": true,
+    "limited_eco_proofs_required": 2,
+    "all_ancestors_plus_fresh_before_guarded": true,
+    "strict_setup_gain_required": true,
+    "complete_repeatable_reload_required": true
+  },
+  "workflow": {
+    "cloud_only_chip": true,
+    "own_path_push_trigger": true,
+    "workflow_dispatch": true,
+    "platform_ceiling_minutes": 360,
+    "native_elapsed_watchdog": false,
+    "hidden_files_all_four_uploads": true,
+    "full_git_history": true,
+    "permissions": {
+      "contents": "read",
+      "actions": "read"
+    },
+    "launch_token_for_acquisition_only": true,
+    "native_and_proof_credentials_removed": true
+  },
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "independent_source_review": {
+    "checks": [
+      {
+        "command": [
+          "hw/soc/tools/cocotb-venv/bin/python",
+          "-m",
+          "pytest",
+          "-q",
+          "-p",
+          "no:cacheprovider",
+          "sw/tests/test_cloud_critical_followup.py"
+        ],
+        "log": {
+          "bytes": 260,
+          "sha256": "c98ecbb70c8289b93d3aa68a02ba756ba2684e56a108d2bfed95b5a58c0928f3"
+        },
+        "returncode": 0
+      },
+      {
+        "command": [
+          "hw/soc/tools/dev-env/bin/ruff",
+          "check",
+          "scripts/run_cloud_critical_followup.py",
+          "sw/tests/test_cloud_critical_followup.py"
+        ],
+        "log": {
+          "bytes": 19,
+          "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+        },
+        "returncode": 0
+      },
+      {
+        "command": [
+          "hw/soc/out/cloud-migration-20260930/workflow-schema-repair/actionlint",
+          ".github/workflows/timing-critical-followup.yml"
+        ],
+        "log": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "returncode": 0
+      }
+    ],
+    "existing_native_control_replay": {
+      "directory": "hw/soc/out/resume-20261003/critical-followup-source/native-size-control-witness",
+      "log": {
+        "bytes": 5166,
+        "sha256": "4559ca151a19fc969379a80d76d2c081f5b6d2e31257921f69b637ac93104f75"
+      },
+      "native_result_status": "PASS_NATIVE_CRITICAL_SIZE_CONTROL",
+      "negative_controls": [
+        "wrong_input",
+        "wrong_graph",
+        "wrong_place",
+        "clock_net",
+        "protected_net",
+        "protected_driver",
+        "protected_load",
+        "protected_input",
+        "fixed_driver",
+        "unplaced_driver",
+        "missing_VDD",
+        "missing_VSS",
+        "incompatible_width_guard",
+        "incompatible_height_guard",
+        "incompatible_site_guard",
+        "incompatible_site_width_guard",
+        "incompatible_site_height_guard",
+        "incompatible_pinmap_guard"
+      ],
+      "new_native_execution": false,
+      "raw_timing_sdc_pins": {
+        "native/after-fast.rpt": {
+          "bytes": 4180,
+          "sha256": "153b79ede9c1dd6313727d7b61760c6ff0b9f55ef249570af9d966c824e179e8"
+        },
+        "native/after-slow.rpt": {
+          "bytes": 4180,
+          "sha256": "238577a8e14fd63ba18ccc02aa52c4d5df285bb971373c5e1dfb39c2a0b5a5cf"
+        },
+        "native/after-typical.rpt": {
+          "bytes": 4186,
+          "sha256": "60121dbdc3c802e8246ccad90ced0a08cd688702a09693d1c0615bc028d4c795"
+        },
+        "native/after.sdc": {
+          "bytes": 1624,
+          "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+        },
+        "native/before.sdc": {
+          "bytes": 1624,
+          "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+        }
+      },
+      "result": {
+        "bytes": 3246,
+        "sha256": "b4ce016d756bd5982b5fcc29751befb2f938a15d11ac07996b55f16337d6a9b4"
+      }
+    },
+    "independent_review": {
+      "api_controls": "Existing actual 4-cell fixture verifies one native replace_cell, 18 rejection cases, native overlap detection/legalization, three timed corners and unchanged SDC/PG/connectivity. Raw saved control independently reparsed. Root supplied separate native hold-report API check; not repeated here.",
+      "corners": "Shared validator preserves receipt order. Frozen native snapshot sorts corner names; new stage guard requires that exact order and matches independent negative endpoint count.",
+      "limits": [
+        "No actual full-chip execution or acceptance in this review.",
+        "Hold journal diagnostics do not observe the transient rollback OR subpredicate and explicitly refuse that causal claim.",
+        "Sizing is estimated global-route timing; no detailed route, signoff RC or production claim."
+      ],
+      "logic_and_acceptance": "One-master structural guard is supplementary: both frozen limited-ECO proofs remain mandatory with exact chain and raw return codes. All six historical guards plus fresh-before and full endpoint comparisons retained. Candidate, timing and manufacturing flags stay false.",
+      "native_lifecycle": "Hold child loads exact residual overlay after the preserved io reset bridge; original source is rehashed and independently reloaded before sizing. Exported hold mutation never feeds sizing. Two distinct later reloads bind candidate ODB/SDC/ELF.",
+      "source_and_capture": "Exact original producer, permanent ZIP, 48 prior methods, candidate views, all ancestor metrics, target graph and placement remain bound. Actions token available only for acquisition, scrubbed before native. New physical capture whitelist tested."
+    },
+    "old_methods_verified": 48,
+    "review_blockers": [],
+    "schema": 1,
+    "source_files": {
+      ".github/workflows/timing-critical-followup.yml": {
+        "bytes": 6316,
+        "sha256": "f159fc69c06d858693003f34f0a0b2f73b29b03e44c96713999a8c2deaad7855"
+      },
+      "hw/soc/pnr/timing-critical-followup-input.lock.json": {
+        "bytes": 15730,
+        "sha256": "da773dbd21a6351f69f0d1f535555c3ff7b4d18b8f6feaff758c47d809cb3448"
+      },
+      "hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+        "bytes": 8712,
+        "sha256": "9c3b93b5440fff3d40195758934f45f8966e583da92aaa663a8b963c61b2217a"
+      },
+      "hw/soc/pnr/timing_critical_followup_step.tcl": {
+        "bytes": 6920,
+        "sha256": "2482135d3e01fc972cea652b50e9acd8c28addabb319d6e8c8a87a610db3996f"
+      },
+      "hw/soc/pnr/timing_critical_hold_child.tcl": {
+        "bytes": 2895,
+        "sha256": "acedf7b333a6ce569d58ed25bfe72fcd165fdb2d83f60d5e990e54da5d92d1e1"
+      },
+      "scripts/run_cloud_critical_followup.py": {
+        "bytes": 36896,
+        "sha256": "53da919d78a4acf7fd946a99f2ab270243c85b7f7f1665139254aaa9d1264d2e"
+      },
+      "sw/tests/test_cloud_critical_followup.py": {
+        "bytes": 28637,
+        "sha256": "0807ca3b6c4631d2c8d5354828296d0eea885da0de224e1d538ae58b63ccd9db"
+      },
+      "sw/tests/timing_critical_followup_native.tcl": {
+        "bytes": 9039,
+        "sha256": "3ab7670d9e8dc8f01e4a0f5a0b6de891a9915cc7133916595076058969f4be4c"
+      }
+    },
+    "status": "PASS_PURE_GUARDS_AND_INDEPENDENT_STATIC_REVIEW",
+    "test_count": 155,
+    "utc": "2026-10-02T22:56:06.578768+00:00"
+  },
+  "native_control_evidence": {
+    "status": "PASS_TINY_NATIVE_CRITICAL_SIZING_FIXTURE",
+    "scope": "Four real IHP cells only; no chip loaded, no placement or timing acceptance for fanout639.",
+    "source_pins": {
+      "sw/tests/timing_critical_followup_native.tcl": "3ab7670d9e8dc8f01e4a0f5a0b6de891a9915cc7133916595076058969f4be4c",
+      "hw/soc/pnr/timing_critical_followup_helpers.tcl": "9c3b93b5440fff3d40195758934f45f8966e583da92aaa663a8b963c61b2217a",
+      "hw/soc/pnr/timing_residual_repair_helpers.tcl": "fc313a3273f216c4370ef1a64c69d735aea5964e9c18d1334c6e13bc7f5ce040",
+      "hw/soc/pnr/timing_electrical_margin_helpers.tcl": "96551b16108caa44afb9726435cf6560ec2ab4a01f441dc814582586091875bc",
+      "hw/soc/pnr/timing_electrical_repair_helpers.tcl": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac",
+      "hw/soc/pnr/timing_hold_reproducibility.tcl": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+    },
+    "native": {
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "openroad",
+        "-exit",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/timing_critical_followup_native.tcl"
+      ],
+      "returncode": 0,
+      "seconds": 0.9700871999957599,
+      "source_pins": {
+        "sw/tests/timing_critical_followup_native.tcl": "3ab7670d9e8dc8f01e4a0f5a0b6de891a9915cc7133916595076058969f4be4c",
+        "hw/soc/pnr/timing_critical_followup_helpers.tcl": "9c3b93b5440fff3d40195758934f45f8966e583da92aaa663a8b963c61b2217a",
+        "hw/soc/pnr/timing_residual_repair_helpers.tcl": "fc313a3273f216c4370ef1a64c69d735aea5964e9c18d1334c6e13bc7f5ce040",
+        "hw/soc/pnr/timing_electrical_margin_helpers.tcl": "96551b16108caa44afb9726435cf6560ec2ab4a01f441dc814582586091875bc",
+        "hw/soc/pnr/timing_electrical_repair_helpers.tcl": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac",
+        "hw/soc/pnr/timing_hold_reproducibility.tcl": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+      },
+      "source_pins_after": {
+        "sw/tests/timing_critical_followup_native.tcl": "3ab7670d9e8dc8f01e4a0f5a0b6de891a9915cc7133916595076058969f4be4c",
+        "hw/soc/pnr/timing_critical_followup_helpers.tcl": "9c3b93b5440fff3d40195758934f45f8966e583da92aaa663a8b963c61b2217a",
+        "hw/soc/pnr/timing_residual_repair_helpers.tcl": "fc313a3273f216c4370ef1a64c69d735aea5964e9c18d1334c6e13bc7f5ce040",
+        "hw/soc/pnr/timing_electrical_margin_helpers.tcl": "96551b16108caa44afb9726435cf6560ec2ab4a01f441dc814582586091875bc",
+        "hw/soc/pnr/timing_electrical_repair_helpers.tcl": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac",
+        "hw/soc/pnr/timing_hold_reproducibility.tcl": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+      },
+      "rlimit_address_space": 2147483648,
+      "full_chip_loaded": false
+    },
+    "result": {
+      "wrong_input_rejected": true,
+      "wrong_graph_rejected": true,
+      "wrong_place_rejected": true,
+      "clock_net_rejected": true,
+      "protected_net_rejected": true,
+      "protected_driver_rejected": true,
+      "protected_load_rejected": true,
+      "protected_input_rejected": true,
+      "fixed_driver_rejected": true,
+      "unplaced_driver_rejected": true,
+      "missing_VDD_rejected": true,
+      "missing_VSS_rejected": true,
+      "incompatible_width_guard_rejected": true,
+      "incompatible_height_guard_rejected": true,
+      "incompatible_site_guard_rejected": true,
+      "incompatible_site_width_guard_rejected": true,
+      "incompatible_site_height_guard_rejected": true,
+      "incompatible_pinmap_guard_rejected": true,
+      "status": "PASS_NATIVE_CRITICAL_SIZE_CONTROL",
+      "negative_control_messages": {
+        "wrong_input": "Sizing input net differs or is protected",
+        "wrong_graph": "Sizing output graph differs",
+        "wrong_place": "Sizing source placement differs",
+        "clock_net": "Electrical target missing, protected, clock, or unplaced: driver target",
+        "protected_net": "Electrical target missing, protected, clock, or unplaced: driver target",
+        "protected_driver": "Electrical target missing, protected, clock, or unplaced: driver target",
+        "protected_load": "Sizing output touches a protected instance",
+        "protected_input": "Sizing input net differs or is protected",
+        "fixed_driver": "Electrical target missing, protected, clock, or unplaced: driver target",
+        "unplaced_driver": "Electrical target missing, protected, clock, or unplaced: driver target",
+        "missing_VDD": "Sizing power/ground terminal disconnected",
+        "missing_VSS": "Sizing power/ground terminal disconnected",
+        "incompatible_width_guard": "Buffer width/height differs from pinned eight/thirteen-site shapes",
+        "incompatible_height_guard": "Incompatible replacement height",
+        "incompatible_site_guard": "Incompatible replacement site",
+        "incompatible_site_width_guard": "Incompatible replacement site_width",
+        "incompatible_site_height_guard": "Incompatible replacement site_height",
+        "incompatible_pinmap_guard": "Incompatible replacement pinmap"
+      },
+      "synthetic_shape_guard_scope": "Mutated copies of native measured master properties; not alternate-layout validation.",
+      "call": {
+        "instance": "driver",
+        "original_master": "sg13g2_buf_4",
+        "replacement_master": "sg13g2_buf_8",
+        "native_calls": 1,
+        "instance_count": 4,
+        "original_width": 3840,
+        "replacement_width": 6240,
+        "site_width": 480,
+        "connectivity_preserved": true,
+        "immediate_placement_preserved": true,
+        "observed_input_net": "d",
+        "observed_output_net": "target",
+        "observed_output_terminals": [
+          [
+            "driver",
+            "sg13g2_buf_4",
+            "X"
+          ],
+          [
+            "sink",
+            "sg13g2_dfrbpq_1",
+            "D"
+          ],
+          [
+            "sink2",
+            "sg13g2_dfrbpq_1",
+            "D"
+          ]
+        ],
+        "observed_placement": [
+          "20160",
+          "15120",
+          "R0",
+          "PLACED"
+        ],
+        "observed_all_pin_nets": {
+          "A": "d",
+          "VDD": "VDD",
+          "VSS": "VSS",
+          "X": "target"
+        }
+      },
+      "native_overlap_detected": true,
+      "native_overlap_repaired": true,
+      "native_overlap_error": "DPL-0033",
+      "all_three_corners_loaded_and_timed": true,
+      "constraints_preserved": true,
+      "pg_bindings_preserved": true,
+      "all_instance_connections_preserved": true,
+      "pre_sdc_sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79",
+      "post_sdc_sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79",
+      "debug_hold_resizer_journal_api_called": true,
+      "native_report_buffers_called": true,
+      "native_report_buffers_cmd_zero_called": true,
+      "candidate_adopted": false,
+      "timing_accepted": false,
+      "manufacturing_approval": false
+    },
+    "negative_count": 18,
+    "inputs": {
+      "lef/sg13g2_tech.lef": {
+        "bytes": 28396,
+        "sha256": "e3470344dfac5347b176fb3f8e0f0548d17a66b8f433626a8987dcb2ae4828b6"
+      },
+      "lef/sg13g2_stdcell.lef": {
+        "bytes": 188966,
+        "sha256": "c7575039af0b124e1834c407bfb9ac7a2db576d1e3533d98474dad3fbc2af589"
+      },
+      "lib/sg13g2_stdcell_fast_1p32V_m40C.lib": {
+        "bytes": 1716550,
+        "sha256": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e"
+      },
+      "lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+        "bytes": 1715351,
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      },
+      "lib/sg13g2_stdcell_slow_1p08V_125C.lib": {
+        "bytes": 1711183,
+        "sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d"
+      }
+    },
+    "runtime": {
+      "bytes": 1398053408,
+      "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+    },
+    "outputs": {
+      "execution.json": {
+        "bytes": 1873,
+        "sha256": "ba428931f070af8222e5650b1bee4e18ae2386e43b95205811bca82db8702458"
+      },
+      "methods/hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+        "bytes": 8712,
+        "sha256": "9c3b93b5440fff3d40195758934f45f8966e583da92aaa663a8b963c61b2217a"
+      },
+      "methods/hw/soc/pnr/timing_electrical_margin_helpers.tcl": {
+        "bytes": 1654,
+        "sha256": "96551b16108caa44afb9726435cf6560ec2ab4a01f441dc814582586091875bc"
+      },
+      "methods/hw/soc/pnr/timing_electrical_repair_helpers.tcl": {
+        "bytes": 4291,
+        "sha256": "cb53b0a34571835727ec142900201bcc53aa795d3aff7e53e6518226ad0a40ac"
+      },
+      "methods/hw/soc/pnr/timing_hold_reproducibility.tcl": {
+        "bytes": 16850,
+        "sha256": "5514527288fd387ee42d2bfa8dc52b39abe1da16a106e82d4684cb5422bba6e6"
+      },
+      "methods/hw/soc/pnr/timing_residual_repair_helpers.tcl": {
+        "bytes": 3920,
+        "sha256": "fc313a3273f216c4370ef1a64c69d735aea5964e9c18d1334c6e13bc7f5ce040"
+      },
+      "methods/sw/tests/timing_critical_followup_native.tcl": {
+        "bytes": 9039,
+        "sha256": "3ab7670d9e8dc8f01e4a0f5a0b6de891a9915cc7133916595076058969f4be4c"
+      },
+      "native/after-fast.rpt": {
+        "bytes": 4180,
+        "sha256": "153b79ede9c1dd6313727d7b61760c6ff0b9f55ef249570af9d966c824e179e8"
+      },
+      "native/after-slow.rpt": {
+        "bytes": 4180,
+        "sha256": "238577a8e14fd63ba18ccc02aa52c4d5df285bb971373c5e1dfb39c2a0b5a5cf"
+      },
+      "native/after-typical.rpt": {
+        "bytes": 4186,
+        "sha256": "60121dbdc3c802e8246ccad90ced0a08cd688702a09693d1c0615bc028d4c795"
+      },
+      "native/after.odb": {
+        "bytes": 359171,
+        "sha256": "280e9863ad9216aa99d5ed7bef1ab175e534d3a82fbecccb663d21b9bbe8489c"
+      },
+      "native/after.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "native/after.v": {
+        "bytes": 452,
+        "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+      },
+      "native/before.odb": {
+        "bytes": 351560,
+        "sha256": "48f8be61bf23291a0cd8518f3ffa01d7e8095716d1b5f2352b4d7ba720bb57bf"
+      },
+      "native/before.sdc": {
+        "bytes": 1624,
+        "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+      },
+      "native/before.v": {
+        "bytes": 332,
+        "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+      },
+      "native/mapped-before.v": {
+        "bytes": 452,
+        "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+      },
+      "native/overlapping-after-swap.def": {
+        "bytes": 3970,
+        "sha256": "4c737b022171fb00e130e46f29140375f66bb76931915a2ca7520c99e379f0c5"
+      },
+      "native/result.json": {
+        "bytes": 3246,
+        "sha256": "b4ce016d756bd5982b5fcc29751befb2f938a15d11ac07996b55f16337d6a9b4"
+      },
+      "native.log": {
+        "bytes": 5166,
+        "sha256": "4559ca151a19fc969379a80d76d2c081f5b6d2e31257921f69b637ac93104f75"
+      }
+    },
+    "all_corners_observed_real_buf8_path": true,
+    "deliberate_overlap_report_expected": true,
+    "supersedes_helper_receipt": {
+      "bytes": 10454,
+      "sha256": "9e8d3fb54bb196a3e63d71472c5b1a1e12e721f76fac7326a3db72607c698fe0"
+    }
+  },
+  "root_review": {
+    "verified_at": "2026-10-02T22:58:36.648223+00:00",
+    "method_pins_rehashed": 8,
+    "tiny_native_output_pins_rehashed": 20,
+    "separate_native_api_controls": {
+      "hw/soc/out/resume-20261003/critical-followup-source/root-native-size/independent-review.json": {
+        "pin": {
+          "bytes": 5773,
+          "sha256": "adbb9e20005a3c8ff8e86156bdb06551fc0a2a6f5e48723c7cde9537761c047d"
+        },
+        "evidence": {
+          "status": "ROOT_TINY_NATIVE_SIZING_REPLAY_PASS",
+          "seconds": 0.9674973529981798,
+          "returncode": 0,
+          "methods": {
+            "sw/tests/timing_critical_followup_native.tcl": {
+              "bytes": 9039,
+              "sha256": "3ab7670d9e8dc8f01e4a0f5a0b6de891a9915cc7133916595076058969f4be4c"
+            },
+            "hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+              "bytes": 7704,
+              "sha256": "22c2e8c163cbd608fe005719d5d4b4dca494de47e6bb20562ba56cb27687fde9"
+            }
+          },
+          "native_result": {
+            "wrong_input_rejected": true,
+            "wrong_graph_rejected": true,
+            "wrong_place_rejected": true,
+            "clock_net_rejected": true,
+            "protected_net_rejected": true,
+            "protected_driver_rejected": true,
+            "protected_load_rejected": true,
+            "protected_input_rejected": true,
+            "fixed_driver_rejected": true,
+            "unplaced_driver_rejected": true,
+            "missing_VDD_rejected": true,
+            "missing_VSS_rejected": true,
+            "incompatible_width_guard_rejected": true,
+            "incompatible_height_guard_rejected": true,
+            "incompatible_site_guard_rejected": true,
+            "incompatible_site_width_guard_rejected": true,
+            "incompatible_site_height_guard_rejected": true,
+            "incompatible_pinmap_guard_rejected": true,
+            "status": "PASS_NATIVE_CRITICAL_SIZE_CONTROL",
+            "negative_control_messages": {
+              "wrong_input": "Sizing input net differs or is protected",
+              "wrong_graph": "Sizing output graph differs",
+              "wrong_place": "Sizing source placement differs",
+              "clock_net": "Electrical target missing, protected, clock, or unplaced: driver target",
+              "protected_net": "Electrical target missing, protected, clock, or unplaced: driver target",
+              "protected_driver": "Electrical target missing, protected, clock, or unplaced: driver target",
+              "protected_load": "Sizing output touches a protected instance",
+              "protected_input": "Sizing input net differs or is protected",
+              "fixed_driver": "Electrical target missing, protected, clock, or unplaced: driver target",
+              "unplaced_driver": "Electrical target missing, protected, clock, or unplaced: driver target",
+              "missing_VDD": "Sizing power/ground terminal disconnected",
+              "missing_VSS": "Sizing power/ground terminal disconnected",
+              "incompatible_width_guard": "Buffer width/height differs from pinned eight/thirteen-site shapes",
+              "incompatible_height_guard": "Incompatible replacement height",
+              "incompatible_site_guard": "Incompatible replacement site",
+              "incompatible_site_width_guard": "Incompatible replacement site_width",
+              "incompatible_site_height_guard": "Incompatible replacement site_height",
+              "incompatible_pinmap_guard": "Incompatible replacement pinmap"
+            },
+            "synthetic_shape_guard_scope": "Mutated copies of native measured master properties; not alternate-layout validation.",
+            "call": {
+              "instance": "driver",
+              "original_master": "sg13g2_buf_4",
+              "replacement_master": "sg13g2_buf_8",
+              "native_calls": 1,
+              "instance_count": 4,
+              "original_width": 3840,
+              "replacement_width": 6240,
+              "site_width": 480,
+              "connectivity_preserved": true,
+              "immediate_placement_preserved": true
+            },
+            "native_overlap_detected": true,
+            "native_overlap_repaired": true,
+            "native_overlap_error": "DPL-0033",
+            "all_three_corners_loaded_and_timed": true,
+            "constraints_preserved": true,
+            "pg_bindings_preserved": true,
+            "all_instance_connections_preserved": true,
+            "pre_sdc_sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79",
+            "post_sdc_sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79",
+            "debug_hold_resizer_journal_api_called": true,
+            "native_report_buffers_called": true,
+            "native_report_buffers_cmd_zero_called": true,
+            "candidate_adopted": false,
+            "timing_accepted": false,
+            "manufacturing_approval": false
+          },
+          "outputs": {
+            "native/after-fast.rpt": {
+              "bytes": 4180,
+              "sha256": "153b79ede9c1dd6313727d7b61760c6ff0b9f55ef249570af9d966c824e179e8"
+            },
+            "native/after-slow.rpt": {
+              "bytes": 4180,
+              "sha256": "238577a8e14fd63ba18ccc02aa52c4d5df285bb971373c5e1dfb39c2a0b5a5cf"
+            },
+            "native/after-typical.rpt": {
+              "bytes": 4186,
+              "sha256": "60121dbdc3c802e8246ccad90ced0a08cd688702a09693d1c0615bc028d4c795"
+            },
+            "native/after.odb": {
+              "bytes": 359171,
+              "sha256": "280e9863ad9216aa99d5ed7bef1ab175e534d3a82fbecccb663d21b9bbe8489c"
+            },
+            "native/after.sdc": {
+              "bytes": 1624,
+              "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+            },
+            "native/after.v": {
+              "bytes": 452,
+              "sha256": "95d7f9ebc2a3de3b952636c307cbd010e909589ceafebaf07b4008271382b609"
+            },
+            "native/before.odb": {
+              "bytes": 351560,
+              "sha256": "48f8be61bf23291a0cd8518f3ffa01d7e8095716d1b5f2352b4d7ba720bb57bf"
+            },
+            "native/before.sdc": {
+              "bytes": 1624,
+              "sha256": "7fda1ed9f072c998e1ac056262d608df32e5383e21530124da50718dc1c63e79"
+            },
+            "native/before.v": {
+              "bytes": 332,
+              "sha256": "31deb3a2ede2092606fb5ea6a3cc80f457a298b749a280485c02645dcaa4a53c"
+            },
+            "native/mapped-before.v": {
+              "bytes": 452,
+              "sha256": "05850ecf39e54fe1540d65e57bdf5c2f991012998a4f2e02a73309af2e5114cc"
+            },
+            "native/overlapping-after-swap.def": {
+              "bytes": 3970,
+              "sha256": "4c737b022171fb00e130e46f29140375f66bb76931915a2ca7520c99e379f0c5"
+            },
+            "native/result.json": {
+              "bytes": 2943,
+              "sha256": "d2fd85c1e5156ec2baf7923b5029131c58830e429bcb225992a949eb885be235"
+            },
+            "native.log": {
+              "bytes": 5166,
+              "sha256": "4559ca151a19fc969379a80d76d2c081f5b6d2e31257921f69b637ac93104f75"
+            }
+          },
+          "full_chip_run": false,
+          "candidate_adopted": false
+        }
+      },
+      "hw/soc/out/resume-20261003/critical-followup-source/root-hold-report-api/independent-review.json": {
+        "pin": {
+          "bytes": 5897,
+          "sha256": "2a5b951d2bef6c687dd3be561758d10039aa532fd1e557da16b3a7df2f945e8c"
+        },
+        "evidence": {
+          "status": "ROOT_ACTUAL_HOLD_REPORT_APIS_PASS",
+          "seconds": 1.9221001420009998,
+          "scope": "Only exact four-cell legacy control with temporary endpoint-name substitution; no chip, no permanent fixture changes, no sizing acceptance.",
+          "source_sha256": "907ad813259ca5238c2b1bbfd65ec49f091bd7d767e265fe0f3bafe7248c067d",
+          "helper_sha256": "22c2e8c163cbd608fe005719d5d4b4dca494de47e6bb20562ba56cb27687fde9",
+          "returncode": 0,
+          "generated_reports": 15,
+          "outputs": {
+            "native.log": {
+              "bytes": 2969,
+              "sha256": "a0f2740348a89a885090952020e4452b01105343e75cdf0bdd287c5d19119944"
+            },
+            "report-api.tcl": {
+              "bytes": 6819,
+              "sha256": "712f7a2e5dfb6b41cce845df64b1de652c39c10cf29e122443fca24dc3155c63"
+            },
+            "native/after-_135215_2_D-fast-max.rpt": {
+              "bytes": 2158,
+              "sha256": "39d413a5475e21c52de272fbf86f0e0f9f3c564216102df72ce23568b911b877"
+            },
+            "native/after.v": {
+              "bytes": 588,
+              "sha256": "da67a67780188b5e92c38a784551054c7e25026099f720375a6fe965927f5844"
+            },
+            "native/after-_135215__D-fast-min.rpt": {
+              "bytes": 2544,
+              "sha256": "4ea31df236697f66bba4dc832ee00ac859d9370c46b305f2a1f69d900d1a3f0e"
+            },
+            "native/after-_135215__D-typical-min.rpt": {
+              "bytes": 2542,
+              "sha256": "5a47406bd5818814f1e21b189b6378af01f634be154b7898fc5210c11f797aa3"
+            },
+            "native/after-_135215__D-slow-min.rpt": {
+              "bytes": 2539,
+              "sha256": "988b35e516128599d6d249038a17481e55b5cd81bfa2ddbfebc3378aa46c177e"
+            },
+            "native/result.json": {
+              "bytes": 1211,
+              "sha256": "419da4a072bd98b623ea2dd610862154af082d4b041d4393a501600017d56973"
+            },
+            "native/critical_api-fast-max-rise.rpt": {
+              "bytes": 2540,
+              "sha256": "d00df49228e1a9b0ecece0d008650f350794e9f41ae0d8a41f74fa78d1a6e9f3"
+            },
+            "native/after-_135215__D-fast-max.rpt": {
+              "bytes": 2540,
+              "sha256": "056f0c3518d73e95ff146d865498bee5ed40ead7731b6b8d52aefad0bf8e9034"
+            },
+            "native/after-_135215__D-typical-max.rpt": {
+              "bytes": 2543,
+              "sha256": "f0e92fefbd6dfa2ef42871d4fdafdd9ecd03177d3666ce29dc462356a1c200e5"
+            },
+            "native/critical_api-fast-driver-electrical.rpt": {
+              "bytes": 320,
+              "sha256": "8e3edb2858e225ce0492db068f765565ce0def2174bbc74500c31e2afb26fa01"
+            },
+            "native/after-_135215_2_D-slow-max.rpt": {
+              "bytes": 2158,
+              "sha256": "beb1c3460e9dd6ed1ce6d59d53b591a98e5eeccbcf6f0a6b9752debdabf51f7d"
+            },
+            "native/critical_api-fast-max-fall.rpt": {
+              "bytes": 2540,
+              "sha256": "056f0c3518d73e95ff146d865498bee5ed40ead7731b6b8d52aefad0bf8e9034"
+            },
+            "native/before.v": {
+              "bytes": 456,
+              "sha256": "a87027efa350a0b9e7512b3951723dff1e3f818497311f44a3d57e4dafd3b60b"
+            },
+            "native/critical_api-typical-driver-electrical.rpt": {
+              "bytes": 326,
+              "sha256": "22c735a7caf9040242da5c0924af61ee06c418a6b27559094d0a197a7c2c22e2"
+            },
+            "native/critical_api-fast-min-rise.rpt": {
+              "bytes": 2544,
+              "sha256": "e9031d23bf33caa9ad1bbdfde5f6e13a8a9684550d2e351a5c2e63fd5b578be2"
+            },
+            "native/critical_api-typical-min-fall.rpt": {
+              "bytes": 2542,
+              "sha256": "25d8e9f538472c010c4778d994ac63fe5df0c66493a9c8028c123894ad92a768"
+            },
+            "native/critical_api-typical-max-fall.rpt": {
+              "bytes": 2543,
+              "sha256": "f0e92fefbd6dfa2ef42871d4fdafdd9ecd03177d3666ce29dc462356a1c200e5"
+            },
+            "native/critical_api-slow-min-rise.rpt": {
+              "bytes": 2539,
+              "sha256": "988b35e516128599d6d249038a17481e55b5cd81bfa2ddbfebc3378aa46c177e"
+            },
+            "native/critical_api-slow-max-rise.rpt": {
+              "bytes": 2540,
+              "sha256": "864845a5acd51d7cd52999166ec3c37010121442aa5abf3fffeb233755735658"
+            },
+            "native/after-_135215_2_D-fast-min.rpt": {
+              "bytes": 2157,
+              "sha256": "52d2202302ce1780bec97acb04978a4fc2c8b574c639b8d01ce4bb43437feeb0"
+            },
+            "native/after-_135215_2_D-typical-max.rpt": {
+              "bytes": 2161,
+              "sha256": "c731da2f9b8f63817f2ccb7a83218780f45f47605eb0ad638cc771c258229295"
+            },
+            "native/after-_135215_2_D-typical-min.rpt": {
+              "bytes": 2160,
+              "sha256": "b73b4bc9137533321e5919b9ee874c2d90d33537bb749b81ae28eb35ff8f0b16"
+            },
+            "native/after.sdc": {
+              "bytes": 1459,
+              "sha256": "4f6fe76e1744aaa0bc9364fd071fdd6a682e8b41c586972b44d6cf2f8b9f403a"
+            },
+            "native/after-_135215_2_D-slow-min.rpt": {
+              "bytes": 2157,
+              "sha256": "0c4c1cd1e8e7d5430e5561dadfd2dc0079869c4e24d66379b7c0f3b7d8b0f6f9"
+            },
+            "native/critical_api-typical-min-rise.rpt": {
+              "bytes": 2542,
+              "sha256": "5a47406bd5818814f1e21b189b6378af01f634be154b7898fc5210c11f797aa3"
+            },
+            "native/critical_api-fast-min-fall.rpt": {
+              "bytes": 2544,
+              "sha256": "4ea31df236697f66bba4dc832ee00ac859d9370c46b305f2a1f69d900d1a3f0e"
+            },
+            "native/critical_api-slow-driver-electrical.rpt": {
+              "bytes": 320,
+              "sha256": "c13377e7327ad7407adcffa5354efbe1ec7e9a08a3ff251e12be3a175a0fbc20"
+            },
+            "native/after-_135215__D-slow-max.rpt": {
+              "bytes": 2540,
+              "sha256": "16724bbb1b99dff3024b03381cc2dc47ebc51b6ce2cb33a24bb97491683ecf9a"
+            },
+            "native/critical_api-slow-max-fall.rpt": {
+              "bytes": 2540,
+              "sha256": "16724bbb1b99dff3024b03381cc2dc47ebc51b6ce2cb33a24bb97491683ecf9a"
+            },
+            "native/critical_api-slow-min-fall.rpt": {
+              "bytes": 2539,
+              "sha256": "ec5c0f43772bd0f2e3e9f6f452ba0e57c04a5d1268195ae609b149d0dd71721f"
+            },
+            "native/before.sdc": {
+              "bytes": 1459,
+              "sha256": "4f6fe76e1744aaa0bc9364fd071fdd6a682e8b41c586972b44d6cf2f8b9f403a"
+            },
+            "native/critical_api-typical-max-rise.rpt": {
+              "bytes": 2543,
+              "sha256": "3f9d7f7e4eb949f5e4411aa9a2eb4b4d81a7ae853465826dbf8b0cfabb2edf96"
+            },
+            "native/tiny.v": {
+              "bytes": 336,
+              "sha256": "2dfca2bf74a330c7425b032945c9b9a2d6b32b28ab9cd58825b0cd40dd3aef1d"
+            }
+          },
+          "full_chip_run": false
+        }
+      },
+      "hw/soc/out/resume-20261003/critical-followup-source/sizing-source-peer-review.json": {
+        "pin": {
+          "bytes": 3949,
+          "sha256": "a23c7d0ff068e0bde8ed0a6a024a044edc400c86725b914f209a50dc3e2dd372"
+        },
+        "evidence": {
+          "status": "NO_LAUNCH_BLOCKER_FOUND_IN_SOURCE_AND_TINY_NATIVE_SCOPE",
+          "reviewed_utc": "2026-10-02T22:57:46.356025+00:00",
+          "source_files": {
+            "scripts/run_cloud_critical_followup.py": {
+              "bytes": 36896,
+              "sha256": "53da919d78a4acf7fd946a99f2ab270243c85b7f7f1665139254aaa9d1264d2e"
+            },
+            "hw/soc/pnr/timing-critical-followup-input.lock.json": {
+              "bytes": 15730,
+              "sha256": "da773dbd21a6351f69f0d1f535555c3ff7b4d18b8f6feaff758c47d809cb3448"
+            },
+            "hw/soc/pnr/timing_critical_followup_helpers.tcl": {
+              "bytes": 8712,
+              "sha256": "9c3b93b5440fff3d40195758934f45f8966e583da92aaa663a8b963c61b2217a"
+            },
+            "hw/soc/pnr/timing_critical_followup_step.tcl": {
+              "bytes": 6920,
+              "sha256": "2482135d3e01fc972cea652b50e9acd8c28addabb319d6e8c8a87a610db3996f"
+            },
+            "hw/soc/pnr/timing_critical_hold_child.tcl": {
+              "bytes": 2895,
+              "sha256": "acedf7b333a6ce569d58ed25bfe72fcd165fdb2d83f60d5e990e54da5d92d1e1"
+            },
+            "sw/tests/timing_critical_followup_native.tcl": {
+              "bytes": 9039,
+              "sha256": "3ab7670d9e8dc8f01e4a0f5a0b6de891a9915cc7133916595076058969f4be4c"
+            },
+            "sw/tests/test_cloud_critical_followup.py": {
+              "bytes": 28637,
+              "sha256": "0807ca3b6c4631d2c8d5354828296d0eea885da0de224e1d538ae58b63ccd9db"
+            },
+            ".github/workflows/timing-critical-followup.yml": {
+              "bytes": 6316,
+              "sha256": "f159fc69c06d858693003f34f0a0b2f73b29b03e44c96713999a8c2deaad7855"
+            }
+          },
+          "frozen_prior_source_files_rehashed": 48,
+          "native_fixture_receipt": {
+            "bytes": 11052,
+            "sha256": "36a3e7864c68c8140777ec90a375ad5e12e08a5884905af3d7f6fdca31c1cc80"
+          },
+          "native_fixture_authorship": "This reviewer authored and ran the four-cell fixture; parent performs an additional independent replay. Runner, lock, helper, main step and hold child independently reviewed read-only.",
+          "library_review": {
+            "bytes": 19619,
+            "sha256": "c912a73d7957d69327eddf7a0f7003b78af227c7374bdba65e96b5cbedd46f3a"
+          },
+          "tests": {
+            "command": [
+              ".venv/bin/python",
+              "-m",
+              "pytest",
+              "sw/tests/test_cloud_critical_followup.py",
+              "-q",
+              "-p",
+              "no:cacheprovider"
+            ],
+            "returncode": 0,
+            "passed": 155,
+            "seconds_reported": 0.24,
+            "native_chip_execution": false
+          },
+          "checks": {
+            "exact_parent_archive_and_run_source_bound": true,
+            "original_producer_validation_in_separate_interpreter": true,
+            "hold_child_exits_before_parent_loads_original_candidate": true,
+            "hold_mutated_odb_never_used_for_sizing": true,
+            "native_graph_input_place_and_pg_witness_checked": true,
+            "one_buf4_to_buf8_change_only": true,
+            "all_six_historical_guards_and_current_parent_preserved": true,
+            "both_fresh_sized_candidate_reloads_required": true,
+            "full_endpoint_corner_census_and_32_macro_geometry_required": true,
+            "protected_status_and_power_connections_retained": true,
+            "original_to_parent_and_parent_to_candidate_limited_eco_proofs_required": true,
+            "actual_source_netlist_and_liberty_macro_proof_pins_required": true,
+            "native_sizing_controls_before_actual_chip_load": true,
+            "immutable_startup_progress_final_capture_with_hidden_sources": true,
+            "no_native_elapsed_watchdog_added": true
+          },
+          "limitations": [
+            "The actual fanout639 graph, placement, upstream capacitance and legalization outcome are verified only by the cloud run against original native ODB; tiny success does not guarantee chip timing improvement.",
+            "Fresh global-route RC remains an estimate. No final route, manufacturing, complete LVS/DRC or default checkpoint adoption is implied.",
+            "Fixed six-corner Library/LEF study establishes pin/function/site compatibility and an extra five-site width requirement; actual RC/timing must be remeasured."
+          ],
+          "candidate_adopted": false,
+          "source_edits_by_reviewer": [
+            "sw/tests/timing_critical_followup_native.tcl"
+          ],
+          "heavy_chip_loaded": false
+        }
+      },
+      "hw/soc/out/resume-20261003/fanout639-library-review/evidence.json": {
+        "pin": {
+          "bytes": 19619,
+          "sha256": "c912a73d7957d69327eddf7a0f7003b78af227c7374bdba65e96b5cbedd46f3a"
+        },
+        "evidence": {
+          "status": "PINNED_LIBRARY_EQUIVALENT_BUT_IN_PLACE_LEGALITY_UNPROVEN",
+          "utc": "2026-10-02T22:24:27.984473+00:00",
+          "liberty": [
+            {
+              "library": "sg13g2_stdcell_fast_1p32V_m40C.lib",
+              "pin": {
+                "path": "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p32V_m40C.lib",
+                "bytes": 1716550,
+                "sha256": "547c5fb3ef0eabe0362de7fb361ff736f6791987996b4b1af39b70deb569a72e"
+              },
+              "used_by_parent": true,
+              "time_unit": "1ns",
+              "capacitive_load_unit": "1,pf",
+              "cells": {
+                "sg13g2_buf_4": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "14.5152",
+                  "input_capacitance_pf": "0.00399415",
+                  "max_output_capacitance_pf": "1.2",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "f41f26769081644b10634ea032e28cc7c24dd98a0a499ee03f4122e4b59833d6"
+                },
+                "sg13g2_buf_8": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "23.5872",
+                  "input_capacitance_pf": "0.00924632",
+                  "max_output_capacitance_pf": "2.4",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "31f1cfd913923ae8e830fe5bb310917e58240a1b7223d730ec57a9f5104d83bb"
+                }
+              }
+            },
+            {
+              "library": "sg13g2_stdcell_fast_1p65V_m40C.lib",
+              "pin": {
+                "path": "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_fast_1p65V_m40C.lib",
+                "bytes": 1710497,
+                "sha256": "010f68955d1d999e85fb080942edb97ee5ca5c72384665dbc7c5740c1bedd52f"
+              },
+              "used_by_parent": false,
+              "time_unit": "1ns",
+              "capacitive_load_unit": "1,pf",
+              "cells": {
+                "sg13g2_buf_4": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "14.5152",
+                  "input_capacitance_pf": "0.00419591",
+                  "max_output_capacitance_pf": "1.2",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "b943d49eb4e2e2cd17167506127cc929237eadaf0f13d065b678e664697e81ae"
+                },
+                "sg13g2_buf_8": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "23.5872",
+                  "input_capacitance_pf": "0.00972672",
+                  "max_output_capacitance_pf": "2.4",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "41c4ed220b538fb6904536aedfdb0f8a3737b79d2ce8d98cb76332040b7a3017"
+                }
+              }
+            },
+            {
+              "library": "sg13g2_stdcell_slow_1p08V_125C.lib",
+              "pin": {
+                "path": "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p08V_125C.lib",
+                "bytes": 1711183,
+                "sha256": "ed1cff6e4d66d89d200e94c2213b8926a71c451218ca2df9b1157c98460e4b1d"
+              },
+              "used_by_parent": true,
+              "time_unit": "1ns",
+              "capacitive_load_unit": "1,pf",
+              "cells": {
+                "sg13g2_buf_4": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "14.5152",
+                  "input_capacitance_pf": "0.00346371",
+                  "max_output_capacitance_pf": "1.2",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "be22b2cee6aeefc3350e9fe3c5f6f54c8974825b38ef15a832335ddb9d3fd98b"
+                },
+                "sg13g2_buf_8": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "23.5872",
+                  "input_capacitance_pf": "0.00800451",
+                  "max_output_capacitance_pf": "2.4",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "f22dff440077a6ddea2bc967b75f46707b04ff11870ce49819dd9001d6edfa0b"
+                }
+              }
+            },
+            {
+              "library": "sg13g2_stdcell_slow_1p35V_125C.lib",
+              "pin": {
+                "path": "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_slow_1p35V_125C.lib",
+                "bytes": 1709056,
+                "sha256": "75fb5871574543c64fe32563279905b46f6555b75133457c95a77d100804311e"
+              },
+              "used_by_parent": false,
+              "time_unit": "1ns",
+              "capacitive_load_unit": "1,pf",
+              "cells": {
+                "sg13g2_buf_4": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "14.5152",
+                  "input_capacitance_pf": "0.003649",
+                  "max_output_capacitance_pf": "1.2",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "3fd1f258d9846bb335cdab5ded5d3eddcaa0a46a2b979c28272a3e92122068d0"
+                },
+                "sg13g2_buf_8": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "23.5872",
+                  "input_capacitance_pf": "0.00845659",
+                  "max_output_capacitance_pf": "2.4",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "897216fbb45ed9379eba15455b75d8c23dea876418c2172d9d233918e9b40eb4"
+                }
+              }
+            },
+            {
+              "library": "sg13g2_stdcell_typ_1p20V_25C.lib",
+              "pin": {
+                "path": "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib",
+                "bytes": 1715351,
+                "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+              },
+              "used_by_parent": true,
+              "time_unit": "1ns",
+              "capacitive_load_unit": "1,pf",
+              "cells": {
+                "sg13g2_buf_4": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "14.5152",
+                  "input_capacitance_pf": "0.00370215",
+                  "max_output_capacitance_pf": "1.2",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "bf5174d90743a6a12cc939ed039bd13133edf61dc3abb52e136c9af113b0e540"
+                },
+                "sg13g2_buf_8": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "23.5872",
+                  "input_capacitance_pf": "0.00856578",
+                  "max_output_capacitance_pf": "2.4",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "8d1421035b475e2c8e3735553829eb9912cf1bf277312c074a44aa8a16393c89"
+                }
+              }
+            },
+            {
+              "library": "sg13g2_stdcell_typ_1p50V_25C.lib",
+              "pin": {
+                "path": "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p50V_25C.lib",
+                "bytes": 1712445,
+                "sha256": "edce511ee2897a7ae84f9f5c54a839851749cd44486f297dba3c961a5225c165"
+              },
+              "used_by_parent": false,
+              "time_unit": "1ns",
+              "capacitive_load_unit": "1,pf",
+              "cells": {
+                "sg13g2_buf_4": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "14.5152",
+                  "input_capacitance_pf": "0.00389809",
+                  "max_output_capacitance_pf": "1.2",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "5ca53d8ef01d67e12ed75de4d4d42679eb5ec84caa6ab8dc50b7f52e792b05e7"
+                },
+                "sg13g2_buf_8": {
+                  "model": [
+                    {
+                      "X": [
+                        "output",
+                        "A"
+                      ],
+                      "A": [
+                        "input",
+                        null
+                      ]
+                    },
+                    []
+                  ],
+                  "footprint": "BU",
+                  "area_um2": "23.5872",
+                  "input_capacitance_pf": "0.00904286",
+                  "max_output_capacitance_pf": "2.4",
+                  "max_input_transition_ns": "2.5074",
+                  "dont_use_attribute": null,
+                  "cell_source_sha256": "efc828596c744b497dfdce06e6c0451a3b283eab71184fc65e166e13b50847b7"
+                }
+              }
+            }
+          ],
+          "lef": {
+            "pin": {
+              "path": "pdk/ihp-sg13g2/libs.ref/sg13g2_stdcell/lef/sg13g2_stdcell.lef",
+              "bytes": 188966,
+              "sha256": "c7575039af0b124e1834c407bfb9ac7a2db576d1e3533d98474dad3fbc2af589"
+            },
+            "site_body": "    CLASS       CORE ;\n    SYMMETRY    Y ;\n    SIZE        0.48 BY 3.78 ;\n",
+            "macros": {
+              "sg13g2_buf_4": {
+                "size_um": [
+                  3.84,
+                  3.78
+                ],
+                "site": "CoreSite",
+                "origin_um": [
+                  0,
+                  0
+                ],
+                "symmetry": [
+                  "X",
+                  "Y"
+                ],
+                "site_columns": 8,
+                "pins": {
+                  "X": {
+                    "direction": "OUTPUT",
+                    "use": "SIGNAL",
+                    "metal1_rectangles_um": [
+                      [
+                        1.765,
+                        1.995,
+                        2.025,
+                        3.13
+                      ],
+                      [
+                        0.745,
+                        1.065,
+                        2.025,
+                        1.225
+                      ],
+                      [
+                        1.765,
+                        0.645,
+                        2.025,
+                        1.225
+                      ],
+                      [
+                        0.745,
+                        1.995,
+                        2.025,
+                        2.165
+                      ],
+                      [
+                        0.745,
+                        0.605,
+                        1.005,
+                        3.13
+                      ],
+                      [
+                        0.32,
+                        1.525,
+                        1.005,
+                        1.84
+                      ]
+                    ]
+                  },
+                  "A": {
+                    "direction": "INPUT",
+                    "use": "SIGNAL",
+                    "metal1_rectangles_um": [
+                      [
+                        2.7,
+                        1.475,
+                        3.15,
+                        1.885
+                      ]
+                    ]
+                  },
+                  "VDD": {
+                    "direction": "INOUT",
+                    "use": "POWER",
+                    "metal1_rectangles_um": [
+                      [
+                        0.0,
+                        3.56,
+                        3.84,
+                        4.0
+                      ],
+                      [
+                        3.295,
+                        2.64,
+                        3.555,
+                        4.0
+                      ],
+                      [
+                        2.275,
+                        2.08,
+                        2.535,
+                        4.0
+                      ],
+                      [
+                        1.255,
+                        2.49,
+                        1.515,
+                        4.0
+                      ],
+                      [
+                        0.235,
+                        2.115,
+                        0.495,
+                        4.0
+                      ]
+                    ]
+                  },
+                  "VSS": {
+                    "direction": "INOUT",
+                    "use": "GROUND",
+                    "metal1_rectangles_um": [
+                      [
+                        0.0,
+                        -0.22,
+                        3.84,
+                        0.22
+                      ],
+                      [
+                        2.375,
+                        0.61,
+                        2.975,
+                        0.87
+                      ],
+                      [
+                        2.545,
+                        -0.22,
+                        2.805,
+                        0.87
+                      ],
+                      [
+                        1.255,
+                        -0.22,
+                        1.515,
+                        0.87
+                      ],
+                      [
+                        0.235,
+                        -0.22,
+                        0.495,
+                        1.21
+                      ]
+                    ]
+                  }
+                }
+              },
+              "sg13g2_buf_8": {
+                "size_um": [
+                  6.24,
+                  3.78
+                ],
+                "site": "CoreSite",
+                "origin_um": [
+                  0,
+                  0
+                ],
+                "symmetry": [
+                  "X",
+                  "Y"
+                ],
+                "site_columns": 13,
+                "pins": {
+                  "A": {
+                    "direction": "INPUT",
+                    "use": "SIGNAL",
+                    "metal1_rectangles_um": [
+                      [
+                        0.57,
+                        1.5,
+                        1.51,
+                        1.865
+                      ]
+                    ]
+                  },
+                  "X": {
+                    "direction": "OUTPUT",
+                    "use": "SIGNAL",
+                    "metal1_rectangles_um": [
+                      [
+                        5.26,
+                        1.55,
+                        5.95,
+                        1.815
+                      ],
+                      [
+                        5.26,
+                        0.61,
+                        5.52,
+                        3.16
+                      ],
+                      [
+                        2.2,
+                        2.22,
+                        5.52,
+                        2.38
+                      ],
+                      [
+                        2.2,
+                        1.05,
+                        5.52,
+                        1.21
+                      ],
+                      [
+                        4.24,
+                        2.22,
+                        4.5,
+                        3.16
+                      ],
+                      [
+                        4.24,
+                        0.61,
+                        4.5,
+                        1.21
+                      ],
+                      [
+                        3.22,
+                        2.22,
+                        3.48,
+                        3.16
+                      ],
+                      [
+                        3.22,
+                        0.61,
+                        3.48,
+                        1.21
+                      ],
+                      [
+                        2.2,
+                        2.22,
+                        2.46,
+                        3.16
+                      ],
+                      [
+                        2.2,
+                        0.61,
+                        2.46,
+                        1.21
+                      ]
+                    ]
+                  },
+                  "VDD": {
+                    "direction": "INOUT",
+                    "use": "POWER",
+                    "metal1_rectangles_um": [
+                      [
+                        0.0,
+                        3.56,
+                        6.24,
+                        4.0
+                      ],
+                      [
+                        5.77,
+                        2.22,
+                        6.03,
+                        4.0
+                      ],
+                      [
+                        4.75,
+                        2.56,
+                        5.01,
+                        4.0
+                      ],
+                      [
+                        3.73,
+                        2.56,
+                        3.99,
+                        4.0
+                      ],
+                      [
+                        2.71,
+                        2.56,
+                        2.97,
+                        4.0
+                      ],
+                      [
+                        1.69,
+                        2.56,
+                        1.95,
+                        4.0
+                      ],
+                      [
+                        0.67,
+                        2.56,
+                        0.93,
+                        4.0
+                      ]
+                    ]
+                  },
+                  "VSS": {
+                    "direction": "INOUT",
+                    "use": "GROUND",
+                    "metal1_rectangles_um": [
+                      [
+                        0.0,
+                        -0.22,
+                        6.24,
+                        0.22
+                      ],
+                      [
+                        5.77,
+                        -0.22,
+                        6.03,
+                        1.21
+                      ],
+                      [
+                        4.75,
+                        -0.22,
+                        5.01,
+                        0.87
+                      ],
+                      [
+                        3.73,
+                        -0.22,
+                        3.99,
+                        0.87
+                      ],
+                      [
+                        2.71,
+                        -0.22,
+                        2.97,
+                        0.87
+                      ],
+                      [
+                        1.69,
+                        -0.22,
+                        1.95,
+                        0.87
+                      ],
+                      [
+                        0.67,
+                        -0.22,
+                        0.93,
+                        0.87
+                      ]
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "source_manifest": {
+            "bytes": 1089565,
+            "sha256": "b8c3044903eff78728c4a5205a2e054576ad91ccdaa0bff28c59de3d88ae712a"
+          },
+          "resolved_config": {
+            "bytes": 31987,
+            "sha256": "cd49808aec5e2f932ba1c7f028b6a8ab86c85550e1d590cc03c9a1b776b8c677"
+          },
+          "scope": "Only library/source inspection. No full-chip ODB loaded; no instance modified.",
+          "conclusions": [
+            "All six captured Liberty corners prove same stateless positive buffer X=A, input A/output X, BU footprint and positive-unate combinational arc. Only the three 1.20/1.08/1.32 V corners are active in the parent.",
+            "Same CORE site/height and X/Y symmetry permit the same row class/orientation, but buf_8 grows from 8 to13 site columns (+2.4 um). Current free adjacent sites must be proven or native legalization must relocate movable cells.",
+            "A and X Metal1 pin shapes differ substantially; old routes/parasitics cannot establish candidate timing. Route/RC and both fresh reload guards are mandatory.",
+            "Input capacitance increases, so upstream delay and both setup/hold cones must be rechecked. Positive Boolean equivalence alone is not timing or placement acceptance."
+          ],
+          "required_native_guards": [
+            "Exact original instance master, all pin/net identities and net fanout before mutation. Reject clock-net, dont_touch, fixed, unplaced or malformed instance; require matching power-net attachments.",
+            "Exact allowed target master only, same functional pin interface/footprint/site/height/origin, same legalized row orientation, valid power rails.",
+            "Preserve every other master and all connectivity; legalization may move only allowed movable cells and must retain all protected and32 SRAM placements. Require check_placement success and no extra inserted/deleted instances.",
+            "Rebuild routing/RC, compare complete setup/hold/electrical endpoints against all retained baselines, and run both fresh exported-state reloads plus ECO logic proof.",
+            "Tiny positive legal swap and negatives for wrong master/function, fixed/dont_touch, incompatible height/site, clock target, and deliberately overlapping/unlegalized placement."
+          ],
+          "unknowns": [
+            "Actual fanout639 placement and protected/clock status are not present in the compact local selected capture inspected so far; must be established from exact parent/native preflight."
+          ]
+        }
+      }
+    },
+    "source_review": "Producer/run authentication, exact ancestry, native isolation, capture closure, two retained logic proofs and guarded adoption reviewed. Native helper tests use real four-cell IHP fixtures; full chip is cloud only.",
+    "earlier_root_helper_scope": "Root size/report native API runs used helper22c2e8c; final9c3b93 adds explicit observed-connection receipt fields. Final helper was rerun natively by peer and its20outputs rehashed here."
+  },
+  "validation_receipt": {
+    "path": "hw/soc/out/resume-20261003/critical-followup-source/validation.json",
+    "bytes": 6462,
+    "sha256": "b63458fa291d4d897470f5ad2165d16726c8705b76b8b11e23d34fe705713628"
+  }
+}

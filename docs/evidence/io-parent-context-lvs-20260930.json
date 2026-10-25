@@ -1,0 +1,324 @@
+{
+  "status": "VERIFIED_REAL_VDD_DEEP_AND_FLAT_LVS_FAILURE",
+  "method_sha256": {
+    "scripts/run_io_parent_lvs.py": "567502ae8588f2bf773fdf038768d389cc45709397e4b7eb351596bccb2ecef8",
+    "sw/tests/test_io_parent_lvs.py": "5fb87f5ebeb26e920eacf4466de62d5937f721c09c738695ff249d4e648b4028",
+    "sw/tests/io_parent_lvs_native.py": "2313cad65616a165fa7ee234f29e84f2ac7b0a770295eb88247b8680cafe5343",
+    ".github/workflows/io-parent-lvs.yml": "fe7006ea0d3dceca01c957b204bcaefe9a7354e43373cd01612a8df0996602f0"
+  },
+  "pure_tests": 84,
+  "new_runner_pure_tests": 41,
+  "native_cases": 8,
+  "native_controls_receipt": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/timing-heartbeat-20260930-2225/io-parent-native-control-v6/result.json",
+  "native_controls_sha256": "76287807eaad8889c88138d79ca9363144cb9123c95940607f9fbbc8a2539a63",
+  "native_input_pins": 2,
+  "native_output_pins": 40,
+  "native_peak_rss_kib": 132116,
+  "native_fixture_scope": "Generic hierarchical physical extraction and strict flattened comparison; not IHP deck or Vdd acceptance",
+  "pinned_deck_files": 53,
+  "actual_archive_members": 229,
+  "actual_inputs_byte_preserved": true,
+  "actual_vdd_lvs_run": true,
+  "cell_lvs_accepted": false,
+  "full_chip_lvs_accepted": false,
+  "manufacturing_approval": false,
+  "validation_sha256": {
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/actionlint.json": "960a38b50a2a41f856667ffae996ff43952f9d1031fb3e390bed60c5afe16f02",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/actionlint.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/actionlint.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/actual-input-prepare.json": "2a4d708acde99556cb05505ddeecd52a975fe418d40765bb74725db91ba7e5e7",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/actual-input-prepare.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/actual-input-prepare.stdout": "ad082faa41b6286fd7f806252c3114337efd94648962850fb925ec2863231919",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/pure-tests.json": "64b12617cfc700c8b194a319b59ca61a03fe796302883f0a63df9902beb40d18",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/pure-tests.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/pure-tests.stdout": "fcbe66000c985040502f2936946e366b2cc1a8713f631c8b6a37de82de59d05f",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/ruff.json": "5826fbc16d4f02c75ef7783dc67a682bef027345b8705b32fb3ed217cd67aaee",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/ruff.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "hw/soc/out/io-parent-lvs-20260930/validation-final/ruff.stdout": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+  },
+  "recorded": "2026-09-30T22:59:27.362998+03:00",
+  "cloud_run": {
+    "id": 36768228777,
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36768228777",
+    "source_commit": "6699623f2b84a913b632d07ef3557551fb9807d3",
+    "status": "COMPLETED_FAILURE_STRICT_NATIVE_MISMATCH"
+  },
+  "rationale": "Same exact GDS/CDL and unchanged native deep/flat deck. Flat joins the clamp drain fingers through actual parent metal but strict Vdd LVS still fails; two exposed IOVSS components and tap geometry/reference mismatches require further work.",
+  "independent_cloud_review": {
+    "status": "VERIFIED_COMPLETED_STRICT_VDD_LVS_FAILURE",
+    "source_sha": "6699623f2b84a913b632d07ef3557551fb9807d3",
+    "run_id": 36768228777,
+    "artifact_sha256": "43a482db3e398d35c8fc529a1fd1d6ff851733e09a772a59a5de721f66de4791",
+    "artifact_bytes": 625063,
+    "artifact_members": 60,
+    "all_input_pins_verified": 106,
+    "native_control_cases": 8,
+    "native_control_outputs_verified": 40,
+    "cases": {
+      "deep": {
+        "status": "FAIL",
+        "native_seconds": 5.185849989000005,
+        "circuits": [
+          {
+            "layout": "sg13g2_Clamp_N43N43D4R",
+            "schematic": "SG13G2_CLAMP_N43N43D4R",
+            "status": "NoMatch",
+            "layout_devices_recursive": 24,
+            "schematic_devices_recursive": 3
+          },
+          {
+            "layout": "sg13g2_IOPadVdd",
+            "schematic": "SG13G2_IOPADVDD",
+            "status": "Skipped",
+            "layout_devices_recursive": 31,
+            "schematic_devices_recursive": 10
+          },
+          {
+            "layout": "sg13g2_RCClampInverter",
+            "schematic": "SG13G2_RCCLAMPINVERTER",
+            "status": "NoMatch",
+            "layout_devices_recursive": 4,
+            "schematic_devices_recursive": 4
+          },
+          {
+            "layout": "sg13g2_RCClampResistor",
+            "schematic": "SG13G2_RCCLAMPRESISTOR",
+            "status": "Match",
+            "layout_devices_recursive": 1,
+            "schematic_devices_recursive": 1
+          }
+        ]
+      },
+      "flat": {
+        "status": "FAIL",
+        "native_seconds": 5.553912197999992,
+        "circuits": [
+          {
+            "layout": "sg13g2_IOPadVdd",
+            "schematic": "SG13G2_IOPADVDD",
+            "status": "NoMatch",
+            "layout_devices_recursive": 9,
+            "schematic_devices_recursive": 8
+          }
+        ]
+      }
+    },
+    "scope": "Downloaded actual reports/logs; historical same-GDS deep mismatch reproduced; flat still FAIL",
+    "full_chip_lvs_accepted": false,
+    "manufacturing_approval": false
+  },
+  "native_database_replay_status": "PASS_NATIVE_DATABASE_REPLAY_BOTH_VERDICTS_REMAIN_FAIL",
+  "raw_evidence_manifest": "docs/evidence/cloud-supply-and-io-followup-assets-20260930.json",
+  "independent_review_sha256": "5b1cf70094fc0b5b89a0a7f3fd6d83fca5d22f151202d13ab4476d15a290ff4e",
+  "native_database_replay_sha256": "5133ad4fb1bb17863d787391790d1f591237b10e9cb7a43211279f80ae983ead",
+  "diagnosis": {
+    "status": "STRICT_VDD_LVS_FAILURE_CAUSES_BOUND_TO_RAW_EVIDENCE",
+    "run_id": 36768228777,
+    "source_sha": "6699623f2b84a913b632d07ef3557551fb9807d3",
+    "scope": "Single Vdd master only; no chip route re-extraction or rule/reference changes",
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/verified.json": "5b1cf70094fc0b5b89a0a7f3fd6d83fca5d22f151202d13ab4476d15a290ff4e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/native-replay.json": "5133ad4fb1bb17863d787391790d1f591237b10e9cb7a43211279f80ae983ead",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/diagnosis-native-v3.json": "8075c3d2318645be0412f3ff1679e2d94d49efbe2558fda27cf1ced10e89d472",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/artifact/comparison/flat/extracted.cir": "d5fda5772a23f88bd33cd4ca9e8e6d971a675448f1f90a618ecbb7d5b51e688b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/artifact/comparison/flat/lvs.lvsdb.gz": "e764963fb7d15583aa25f52c4e856428013233c9a61edb7625c2c9e1bf30b580",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/artifact/comparison/inputs/schematic.cir": "2b9fc98f1b6279587cecf256b2d0269511ae905fac9c3095474e2ae75282aca8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/make_diagnosis.py": "3918e5ec26cbfa3386bdd024259f9d2042319c8c65ce808676c31a69eada8029",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/diagnose_native.py": "69f5c8cbc10e1cfd470efc65dde7ee215ad598386921a8b43ffcbb61ad820389",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/diagnose_native_v2.py": "0f0eca3648b915ebf5e42514d58e6d5d60e5d483b9b245410846e12dfb12353b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/diagnose_native_v3.py": "c03169ceef7d8a41d9daabfb83b76de9060cf3a2c468ce9dfcf41eaac85edd12",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/diagnose-native.log": "2451ae7f6571f4d4afcc4be6c52556d4b5318b2a1a6ecbec5522b32e98c5baac",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/diagnose-native-v2.log": "011aee3c8b1e6c2f12cfe00bb2b41ab1e5b5ede3796740b9e2119d78be4774c1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/io-parent-lvs-20260930/github/run36768228777/diagnose-native-v3.log": "0a711bb620bbb0ba28d74a4ea2fe5b70a1986b7661889b9e9640d8928234f2f6"
+    },
+    "deep": {
+      "status": "FAIL",
+      "circuit_status_counts": {
+        "NoMatch": 2,
+        "Skipped": 1,
+        "Match": 1
+      },
+      "recursive_devices_layout": 31,
+      "recursive_devices_schematic": 10
+    },
+    "flat": {
+      "status": "FAIL",
+      "recursive_devices_layout": 9,
+      "recursive_devices_schematic": 8,
+      "clamp_mos_width_um": 756.8,
+      "clamp_mos_length_um": 0.6,
+      "clamp_parent_drains_physically_combined": true,
+      "layout_taps": [
+        {
+          "device": "R$276",
+          "tie": "iovss",
+          "well": "\\$1",
+          "area_um2": 65.6472,
+          "perimeter_um": 386.16
+        },
+        {
+          "device": "R$277",
+          "tie": "iovss$1",
+          "well": "\\$1",
+          "area_um2": 2051.93485,
+          "perimeter_um": 727.53
+        },
+        {
+          "device": "R$278",
+          "tie": "vss",
+          "well": "\\$1",
+          "area_um2": 24.0,
+          "perimeter_um": 160.6
+        }
+      ],
+      "reference_taps": [
+        {
+          "device_id": 1,
+          "area_um2": 2104.583,
+          "perimeter_um": 243.16,
+          "raw_database_device": " D(1 PTAP1\n   I('1')\n   E(A 2104.583)\n   E(P 243.16)\n   T(TIE 1)\n   T(WELL 6)\n  )"
+        },
+        {
+          "device_id": 2,
+          "area_um2": 24.01,
+          "perimeter_um": 19.6,
+          "raw_database_device": " D(2 PTAP1\n   I('0')\n   E(A 24.01)\n   E(P 19.6)\n   T(TIE 3)\n   T(WELL 6)\n  )"
+        }
+      ],
+      "unresolved_iovss_native_clusters": 2
+    },
+    "boundary_interpretation": {
+      "status": "BOTH_DISCONNECTED_IOVSS_COMPONENTS_EXPOSED_BY_ORIGINAL_LEF",
+      "topmetal2_ports": [
+        {
+          "lef_rect_um": [
+            0.0,
+            36.0,
+            3.9,
+            58.5
+          ],
+          "fully_covered_clusters": [],
+          "intersecting_clusters": [],
+          "overlap_area_um2": {
+            "3": 0.0,
+            "5": 0.0
+          },
+          "lef_area_um2": 87.75
+        },
+        {
+          "lef_rect_um": [
+            0.0,
+            8.5,
+            3.9,
+            31.0
+          ],
+          "fully_covered_clusters": [
+            3
+          ],
+          "intersecting_clusters": [
+            3
+          ],
+          "overlap_area_um2": {
+            "3": 87.75,
+            "5": 0.0
+          },
+          "lef_area_um2": 87.75
+        },
+        {
+          "lef_rect_um": [
+            76.1,
+            127.5,
+            80.0,
+            132.5
+          ],
+          "fully_covered_clusters": [
+            5
+          ],
+          "intersecting_clusters": [
+            5
+          ],
+          "overlap_area_um2": {
+            "3": 0.0,
+            "5": 19.5
+          },
+          "lef_area_um2": 19.5
+        },
+        {
+          "lef_rect_um": [
+            76.1,
+            36.0,
+            80.0,
+            58.5
+          ],
+          "fully_covered_clusters": [],
+          "intersecting_clusters": [],
+          "overlap_area_um2": {
+            "3": 0.0,
+            "5": 0.0
+          },
+          "lef_area_um2": 87.75
+        },
+        {
+          "lef_rect_um": [
+            76.1,
+            8.5,
+            80.0,
+            31.0
+          ],
+          "fully_covered_clusters": [
+            3
+          ],
+          "intersecting_clusters": [
+            3
+          ],
+          "overlap_area_um2": {
+            "3": 87.75,
+            "5": 0.0
+          },
+          "lef_area_um2": 87.75
+        },
+        {
+          "lef_rect_um": [
+            0.0,
+            127.5,
+            3.9,
+            132.5
+          ],
+          "fully_covered_clusters": [
+            5
+          ],
+          "intersecting_clusters": [
+            5
+          ],
+          "overlap_area_um2": {
+            "3": 0.0,
+            "5": 19.5
+          },
+          "lef_area_um2": 19.5
+        }
+      ],
+      "lef_source_sha256": "8b3dc3960960c08e07a1cde3dd9cd0484f5b12df07c4628726fff551bb775c0c",
+      "basis": "Four LEF TopMetal2 IOVSS rectangles are each wholly covered by exactly one compared native IOVSS component. Lower ports reach cluster3; upper ports reach cluster5. Native regions are subsets of original subset GDS134/0.",
+      "unproven": "The two middle LEF rectangles at y36..58.5 do not overlap either compared IOVSS component in the post-simplification LVS database; no complete six-port equivalence is asserted.",
+      "conclusion": "A real external parent connection must join both exposed IOVSS components. Same name is not a connection. Full-chip supply validation is separate evidence; this diagnostic does not re-extract the routed chip.",
+      "tap_contract_still_open": true
+    },
+    "failed_followup_probes": [
+      {
+        "method": "diagnose_native.py",
+        "outcome": "SIGSEGV in native device-pair introspection; retained original script/log",
+        "not_a_new_lvs_failure": true
+      },
+      {
+        "method": "diagnose_native_v2.py",
+        "outcome": "Full six-rectangle containment assertion rejected; retained. Replaced by exact measured overlaps, no waiver to comparison.",
+        "not_a_new_lvs_failure": true
+      }
+    ],
+    "successful_followup_probe": "diagnose_native_v3.py measures existing per-net shapes at384MiBAS; does not rerun geometry extraction",
+    "cell_lvs_accepted": false,
+    "full_chip_lvs_accepted": false,
+    "manufacturing_approval": false
+  },
+  "diagnosis_sha256": "81126c0e856c44687e81e76e5077b03f900526486cfce5aea38e1ce33e0ba240"
+}

@@ -1,0 +1,10 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Prospective clock common-mode reference with native HBT VBE tracking.
+* External 650uA reference feeds cm and actual selector base-current loads.
+* A substrate-connected native resistor supplies the tail-headroom offset.
+* Differential clock modulation remains external; not a PLL/CDR or clock tree.
+.subckt nssoc_tx_clock_common_bias_v1 cm avss sub
+XREF cm cm er sub npn13G2 Nx=1
+XOFFSET er avss sub rppd w=2u l=6.5u b=0 sw_et=1
+.ends nssoc_tx_clock_common_bias_v1

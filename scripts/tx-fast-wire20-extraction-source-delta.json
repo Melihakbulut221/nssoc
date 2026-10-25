@@ -1,0 +1,57 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_fast_wire24_extraction.py",
+      "baseline_sha256": "35e3b857a4ac9dbea812b639bb71e6fb32fb807abce2e9ba02f464fb844554a3",
+      "candidate_path": "scripts/cloud_tx_fast_wire20_extraction.py",
+      "candidate_sha256": "18bfa29c7be452669c2dcc14c3c6eb13795a4d07a42c53df56c3c4fbf59d0bf7",
+      "edits": [
+        {
+          "before": "wire24",
+          "after": "wire20",
+          "count": 3
+        },
+        {
+          "before": "WIRE24",
+          "after": "WIRE20",
+          "count": 1
+        },
+        {
+          "before": "    receipt=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())",
+          "after": "    pin=json.loads((ROOT/'docs/evidence'/receipt_name).read_text())\n    receipt=dict(pin,source_run=pin['run'],layout_outputs=pin['report']['layout']['outputs'],\n        url='https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-39401920232-1-tx-fast-wire20-physical/tx-fast-wire20-physical-39401920232-1.tar.gz.part0000',\n        sha256='83fc6607218448e26bbb1d7ddb708365cb0e8035b748e810a96bb7851571a648',bytes=2996093)",
+          "count": 1
+        },
+        {
+          "before": "39339196396",
+          "after": "39401920232",
+          "count": 1
+        },
+        {
+          "before": "7a4d047b8bae3cb3da682550b99bf87866107d7d",
+          "after": "d8e768c22fd7c1caec0db12239387238dbfdc5db",
+          "count": 1
+        },
+        {
+          "before": "00aa1d6cef157845fe73f185e0350b54f372d2c6e0c7dba2773ed629131f6263",
+          "after": "8a9da85ef2508a72a0f26722d9e5b5f9a5c8bfb3d88e5f69e4ae2d36c6a17e7a",
+          "count": 1
+        },
+        {
+          "before": "6e131bf83bb44258874986fcfd85a2189f8e99964c6588257605f89567fcb410",
+          "after": "83fc6607218448e26bbb1d7ddb708365cb0e8035b748e810a96bb7851571a648",
+          "count": 1
+        },
+        {
+          "before": "candidate=2.4",
+          "after": "candidate=2.",
+          "count": 1
+        },
+        {
+          "before": "width_um=2.4",
+          "after": "width_um=2.",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

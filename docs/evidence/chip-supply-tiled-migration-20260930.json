@@ -1,0 +1,232 @@
+{
+  "recorded": "2026-09-30T21:27:04.823314+03:00",
+  "status": "CLOUD_INPUT_AND_NATIVE_CONTROLS_PASS_FULL_GEOMETRY_PREPARATION_RUNNING",
+  "source_sha256": {
+    "scripts/cloud_supply_tiles.py": "599832af6a72c7f0562d8143dfc2f4b9bfade6a95a8bcd1538b71359b427387e",
+    "sw/tests/cloud_supply_tiles_native.py": "e320d0a22a469fdd5c720147743570cffbe270d135b450281e6cecf51c20b532",
+    "sw/tests/test_cloud_supply_tiles.py": "9d6dc7f322588c280e5408f8859a5c8ba7661734e8c4f4505327c59cef156a65",
+    ".github/workflows/chip-supply-tiled.yml": "981c5d06d9707df06ac0530b73f974de8c39d977546a6fcd31dfd0f4325e4cb2"
+  },
+  "workflow": ".github/workflows/chip-supply-tiled.yml",
+  "prior_whole_graph_cloud_run": {
+    "run_id": 36551234397,
+    "result": "Six-hour hosted timeout without complete connectivity result"
+  },
+  "production_input": {
+    "gds_sha256": "a5c79c3920154af5a523e3a1224402d6e863b9f7dd91c367ac6256d9045ad8ff",
+    "plan_sha256": "340047aaf8cdc30d00d4af3489759187d1a78366846f2030238d62d32136a109",
+    "io_instances": 314,
+    "port_windows": 10526,
+    "tiles": 64,
+    "face_and_corner_seams": 210
+  },
+  "published_input_manifests": [
+    "docs/evidence/chip-offset-filled-native-input-assets-20260929.json",
+    "docs/evidence/chip-filled-supply-recovery-assets-20260929.json",
+    "docs/evidence/native-io-component-probes-assets-20260929.json"
+  ],
+  "method": {
+    "complete_source_geometry_retained": true,
+    "native_conductor_layers": 7,
+    "native_via_layers": 6,
+    "grid": [
+      8,
+      8
+    ],
+    "halo_dbu": 2,
+    "face_and_corner_seams": 210,
+    "tile_join": "Identical physical overlap polygon hashes plus identical interior witness locations; native physical component identities only. No joins by rail names or reused child IDs.",
+    "checkpoint_chain": "Producer exit before separate native replay; aggregate validates actual prepared and promoted manifests, database SHA/size, input/method/tool/layer/probe pins and canonical replayed witness partitions.",
+    "window_audit": "Every piece of every declared window is included; missing/duplicate tiles, queries, seams or source hashes fail closed.",
+    "clipping_scope": "Integer Manhattan and45degree source edges; arbitrary slopes rejected rather than silently rounded."
+  },
+  "validation": {
+    "native": {
+      "command": "hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage python sw/tests/cloud_supply_tiles_native.py <fresh-output>",
+      "status": "PASS_NATIVE_TILED_CONNECTIVITY_CONTROLS_ONLY",
+      "receipt_sha256": "d9f696ef68ba5c4fc6b5c6f1763b862220f4616eb1ea3919d5dc5a7837b84baa",
+      "physical_scenarios": 13,
+      "corrupted_coverage_or_checkpoint_negatives": 11,
+      "unsafe_rational_clip_negative": 1,
+      "klayout_version": "0.30.7",
+      "peak_rss_kib": 90388,
+      "cases": {
+        "unsupported_rational_clip": {
+          "status": "REJECTED_UNSAFE_ROUNDING",
+          "error": "Non-Manhattan/non-45 source edge requires exact rational clipping"
+        },
+        "connected": {
+          "status": "PASS_ALL_DECLARED_IO_SUPPLY_WINDOWS_TILED_ONLY",
+          "errors": [],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [
+            "checkpoint_hash",
+            "database_hash",
+            "replayed_partition",
+            "missing_tile",
+            "duplicate_tile",
+            "missing_seam",
+            "wrong_hash",
+            "seam_geometry",
+            "seam_point",
+            "child_identity",
+            "missing_window"
+          ],
+          "seam_witnesses": 9
+        },
+        "open": {
+          "status": "FAIL_OR_UNRESOLVED_TILED_IO_SUPPLY_WINDOWS",
+          "errors": [
+            "vdd has 2 distinct physical components"
+          ],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 10
+        },
+        "short": {
+          "status": "FAIL_OR_UNRESOLVED_TILED_IO_SUPPLY_WINDOWS",
+          "errors": [
+            "Different supply rails share a physical component"
+          ],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 8
+        },
+        "missing": {
+          "status": "FAIL_OR_UNRESOLVED_TILED_IO_SUPPLY_WINDOWS",
+          "errors": [
+            "1 required windows contain zero/multiple components"
+          ],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 9
+        },
+        "multiple_crossing": {
+          "status": "PASS_ALL_DECLARED_IO_SUPPLY_WINDOWS_TILED_ONLY",
+          "errors": [],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 9
+        },
+        "corner": {
+          "status": "PASS_ALL_DECLARED_IO_SUPPLY_WINDOWS_TILED_ONLY",
+          "errors": [],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 16
+        },
+        "corner_open": {
+          "status": "FAIL_OR_UNRESOLVED_TILED_IO_SUPPLY_WINDOWS",
+          "errors": [
+            "iovdd has 2 distinct physical components"
+          ],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 16
+        },
+        "via": {
+          "status": "PASS_ALL_DECLARED_IO_SUPPLY_WINDOWS_TILED_ONLY",
+          "errors": [],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 9
+        },
+        "via_stack": {
+          "status": "PASS_ALL_DECLARED_IO_SUPPLY_WINDOWS_TILED_ONLY",
+          "errors": [],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 9
+        },
+        "via_open": {
+          "status": "FAIL_OR_UNRESOLVED_TILED_IO_SUPPLY_WINDOWS",
+          "errors": [
+            "vdd has 2 distinct physical components"
+          ],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 9
+        },
+        "mim_cut": {
+          "status": "FAIL_OR_UNRESOLVED_TILED_IO_SUPPLY_WINDOWS",
+          "errors": [
+            "vdd has 2 distinct physical components"
+          ],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 9
+        },
+        "resistor_cut": {
+          "status": "FAIL_OR_UNRESOLVED_TILED_IO_SUPPLY_WINDOWS",
+          "errors": [
+            "vdd has 2 distinct physical components"
+          ],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 10
+        },
+        "floating_alias": {
+          "status": "FAIL_OR_UNRESOLVED_TILED_IO_SUPPLY_WINDOWS",
+          "errors": [
+            "iovss has 3 distinct physical components"
+          ],
+          "matched_unsplit_native_partitions": true,
+          "rejected_mutations": [],
+          "seam_witnesses": 9
+        }
+      }
+    },
+    "python": {
+      "command": ".venv/bin/python -m pytest -q sw/tests/test_cloud_supply_tiles.py sw/tests/test_chip_supply_probe_plan.py sw/tests/test_supply_checkpoint_plan.py sw/tests/test_chip_supply_connectivity.py",
+      "passed": 51,
+      "log_sha256": "8553c0009b236daf6d9832a39cac23837279cd3aff4d214a2d4ea20fcd1fbdfc"
+    },
+    "ruff": "PASS",
+    "git_diff_check": "PASS",
+    "workflow_yaml_and_embedded_bash_syntax": "PASS",
+    "independent_review": "No first-push blocker found; published reference and plan paths independently verified."
+  },
+  "resources": {
+    "native_memory_gib": 4,
+    "reserve_gib": 1,
+    "max_parallel_cloud_workers": 8,
+    "native_elapsed_watchdog": false,
+    "hosted_job_limit_minutes": 360
+  },
+  "resume": {
+    "inputs": [
+      "resume_run_id",
+      "resume_bundle_sha256"
+    ],
+    "requirements": "Both provided together; independently checked prepared bundle SHA; unchanged input/method hashes. Completed tile native checkpoints are reloaded and measured again; missing tiles are extracted.",
+    "artifact_name_caveat": "Prefer a new workflow dispatch with explicit prior run/hash. Rerun-all in the same run may conflict with existing immutable artifact names.",
+    "production_prepare_memory_runtime_measured": false
+  },
+  "raw_evidence": {
+    "manifest": "docs/evidence/chip-supply-tiled-native-controls-assets-20260930.json",
+    "manifest_sha256": "f896e2679a6ef3a918915d205132286c0665cddeebe4768aa7d6b958d7ed9d13",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/chip-supply-tiled-native-controls-20260930.tar.xz",
+    "asset_sha256": "367dfc7a69d60094064cd0ae3cbd423e19f8e89b12118d77edf9a7c45a4ef40b",
+    "asset_bytes": 81044,
+    "inventory_members": 460,
+    "local_authenticated_anonymous_roundtrips": true,
+    "source_commit_scope": "Base commit plus hash-bound uncommitted supply source snapshots in this asset; files are not claimed committed in the base commit."
+  },
+  "healthy_process_signaled": false,
+  "full_chip_supply_connectivity_accepted": false,
+  "full_chip_lvs_accepted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "cloud_run": {
+    "run_id": 36758126140,
+    "url": "https://github.com/Melihakbulut221/nssoc/actions/runs/36758126140",
+    "source_commit": "97f19045d960dd9f906cefced7a93cd881004ffb",
+    "native_controls": "SUCCESS",
+    "geometry_preparation_started_at": "2026-09-30T18:24:23Z",
+    "prepared_bundle_complete": false
+  },
+  "local_duplicate_queue": "Idle local supply controller intentionally paused after cloud preparation started; exact identity, absence of children and source pins verified. Inputs unchanged.",
+  "migration_validation_and_startup_assets": "docs/evidence/cloud-migration-validation-assets-20260930.json",
+  "local_immutable_inputs_modified": false,
+  "local_idle_controller_paused": true
+}

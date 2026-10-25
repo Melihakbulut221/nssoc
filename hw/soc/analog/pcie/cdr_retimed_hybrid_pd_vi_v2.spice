@@ -1,0 +1,47 @@
+* SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+* SPDX-License-Identifier: CERN-OHL-W-2.0
+* Four-sampler retimed phase detector candidate; not a recovered-clock loop.
+* A=current center, C=previous center, B=falling-edge data, D=retimed B.
+.subckt nssoc_cdr_retimed_hybrid_pd_vi_v2 dp dn cp cn xp xn yp yn avdd avss sub ira irb irc ird irx iry ibda ibdc ibs0 ibs1 wire_cref vip vin irvx irvy
+XSA dp dn aqp aqn cp cn avdd avss sub ira nssoc_rx_sampler_hybrid_tail_v1
+XSB dp dn bqp bqn cn cp avdd avss sub irb nssoc_rx_sampler_hybrid_tail_v1
+XSC cup cun cqp cqn cp cn avdd avss sub irc nssoc_rx_sampler_hybrid_tail_v1
+XSD dup dun dqp dqn cp cn avdd avss sub ird nssoc_rx_sampler_hybrid_tail_v1
+XRACSP aqp cup sub rppd w=1u l=5.4u b=0 sw_et=1
+XRACGP cup avss sub rppd w=1u l=12.6u b=0 sw_et=1
+XCACP aqp cup cap_cmim w=3.6u l=3.6u
+XRACSN aqn cun sub rppd w=1u l=5.4u b=0 sw_et=1
+XRACGN cun avss sub rppd w=1u l=12.6u b=0 sw_et=1
+XCACN aqn cun cap_cmim w=3.6u l=3.6u
+XRBDSP bqp dup sub rppd w=1u l=5.4u b=0 sw_et=1
+XRBDGP dup avss sub rppd w=1u l=12.6u b=0 sw_et=1
+XCBDP bqp dup cap_cmim w=3.6u l=3.6u
+XRBDSN bqn dun sub rppd w=1u l=5.4u b=0 sw_et=1
+XRBDGN dun avss sub rppd w=1u l=12.6u b=0 sw_et=1
+XCBDN bqn dun cap_cmim w=3.6u l=3.6u
+XRDASP aqp uap sub rppd w=1u l=3.6u b=0 sw_et=1
+XRDAGP uap avss sub rppd w=1u l=21.6u b=0 sw_et=1
+XCDAP aqp uap cap_cmim w=3.6u l=3.6u
+XRDASN aqn uan sub rppd w=1u l=3.6u b=0 sw_et=1
+XRDAGN uan avss sub rppd w=1u l=21.6u b=0 sw_et=1
+XCDAN aqn uan cap_cmim w=3.6u l=3.6u
+XRDCSP cqp ucp sub rppd w=1u l=3.6u b=0 sw_et=1
+XRDCGP ucp avss sub rppd w=1u l=21.6u b=0 sw_et=1
+XCDCP cqp ucp cap_cmim w=3.6u l=3.6u
+XRDCSN cqn ucn sub rppd w=1u l=3.6u b=0 sw_et=1
+XRDCGN ucn avss sub rppd w=1u l=21.6u b=0 sw_et=1
+XCDCN cqn ucn cap_cmim w=3.6u l=3.6u
+XRSESP dqp usp sub rppd w=1u l=6u b=0 sw_et=1
+XRSEGP usp avss sub rppd w=1u l=8.6u b=0 sw_et=1
+XCSEP dqp usp cap_cmim w=4.8u l=4.8u
+XRSESN dqn usn sub rppd w=1u l=6u b=0 sw_et=1
+XRSEGN usn avss sub rppd w=1u l=8.6u b=0 sw_et=1
+XCSEN dqn usn cap_cmim w=4.8u l=4.8u
+XDA uap uan adp adn avdd avss sub ibda nssoc_cdr_data_buffer_v4
+XDC ucp ucn cdp cdn avdd avss sub ibdc nssoc_cdr_data_buffer_v4
+XS0 usp usn s0p s0n avdd avss sub ibs0 nssoc_cdr_select_hybrid_tail_v2
+XS1 usp usn s1p s1n avdd avss sub ibs1 nssoc_cdr_select_hybrid_tail_v2
+XX adp adn s0p s0n xp xn avdd avss sub irx nssoc_cdr_xor_hybrid_tail_v2
+XY cdp cdn s1p s1n yp yn avdd avss sub iry nssoc_cdr_xor_hybrid_tail_v2
+XVI xp xn yp yn vip vin avdd avss sub irvx irvy nssoc_cdr_vi_hbt_v1
+.ends nssoc_cdr_retimed_hybrid_pd_vi_v2

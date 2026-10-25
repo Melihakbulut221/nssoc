@@ -1,0 +1,30 @@
+{
+  "source": "scripts/check_pcie_gen3_continuous_rx_integrity_v1.py",
+  "source_sha256": "09ce40e1197e1c97cafd54121b438baa8fa8615788929b1315cdaf10e9089d24",
+  "target": "scripts/check_pcie_gen3_continuous_rx_integrity_native_v2.py",
+  "target_sha256": "f5b5d20960014c24839e879c7019d282c39f5b7c95ec1f37f72fe90c7d1ce563",
+  "edits": [
+    [
+      "\"\"\"Sustained wide CRC/quarantine RX; independent public-port functional controls.\"\"\"",
+      "\"\"\"Bounded structural native mapping of unchanged integrity V1 and its port oracle.\"\"\""
+    ],
+    [
+      "mapping_strategy=\"explicit_no_fsm_optimization_v2\"",
+      "mapping_strategy=\"explicit_no_fsm_structural_balance_v2\""
+    ],
+    [
+      "        if args.native:\n            script = (",
+      "        if args.native:\n            abc_script = out / \"abc-structural.script\"\n            abc_script.write_text(\"strash; balance -x; &get -n; &nf; &put\\n\")\n            record[\"abc_script\"] = pin(abc_script)\n            save()\n            script = ("
+    ],
+    [
+      "                + \"; abc -liberty \"",
+      "                + \"; abc -script \"\n                + quote(abc_script)\n                + \" -liberty \""
+    ],
+    [
+      "        if before != {str(p): pin(p) for p in files}:",
+      "        if args.native and pin(abc_script) != record[\"abc_script\"]:\n            raise ValueError(\"Mapping script changed during verification\")\n        if before != {str(p): pin(p) for p in files}:"
+    ]
+  ],
+  "exact_inverse": true,
+  "unchanged_rtl_oracle_models_limits": true
+}

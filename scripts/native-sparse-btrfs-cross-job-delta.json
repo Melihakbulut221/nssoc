@@ -1,0 +1,70 @@
+{
+  "protected": {
+    "scripts/cloud_native_sparse_prefix_store.py": "aabbcab1164bc709a4a7b8d14ae6ad4f138f674f5436a0e05775d944689c9f14",
+    "scripts/cloud_native_checkpoint_probe.py": "28e3ca20e1d7cce96ac68f4ec19e510326d8e96ed0da77ddc16ab5b3c5e86231",
+    "scripts/cloud_native_btrfs_case.py": "b4c30536e1fb64b8af9389bf4571b691c7418070b3187cac272e3e365e6ea947",
+    "scripts/cloud_tx_input_driver.py": "bc2cce27960b3b2cdc3949da13ca2660fe80986934d356522d79b95ce3337a9b",
+    "scripts/cloud_pll_vbic_acquisition.py": "841b74f19b10a9596af231a3e5250a0654d55fcc1004286bc20f24e273808a30",
+    "scripts/route_cloud_newer_postcts.py": "29997f34ca6e764c40a40b5203388993b890f6d838cbe2651d5ce5c018042b40",
+    "scripts/check_native_sparse_btrfs_sources.py": "8566c12e7a367867a9e66a056af0ace032f3992485c4267b8e8f3d7dfef0b287",
+    ".github/workflows/native-sparse-btrfs-cross-job-cloud.yml": "a7a033348aec49b2b10e7ce4823c292545d696a0b7e0a4a93bce65d09fe25568"
+  },
+  "diagnostic": {
+    "baseline_path": "scripts/cloud_native_btrfs_cross_job.py",
+    "baseline_sha256": "f5b289411856a6eade21f5cde5b948521fb0250d926fdec5e024442d8dd8d809",
+    "candidate_path": "scripts/cloud_native_sparse_btrfs_cross_job.py",
+    "candidate_sha256": "c3230f85196f92054da8d79e8544f0f761220c4d4a98632128d075bf06b0e1a9",
+    "edits": [
+      {
+        "before": "import cloud_native_btrfs_case as compressed",
+        "after": "import cloud_native_btrfs_case as compressed\nimport cloud_native_sparse_prefix_store as sparse",
+        "count": 1
+      },
+      {
+        "before": "OUT=ROOT/'cloud-native-btrfs-cross-job'",
+        "after": "OUT=ROOT/'cloud-native-sparse-btrfs-cross-job'",
+        "count": 1
+      },
+      {
+        "before": "result['different_boot_id_observed']=result['boot_id']!=result['source_boot_id'];save()",
+        "after": "result['different_boot_id_observed']=result['boot_id']!=result['source_boot_id'];assert result['different_boot_id_observed'];save()",
+        "count": 1
+      },
+      {
+        "before": "result['compressed_case']=compressed.mount_case(case,OUT,run);save()",
+        "after": "result['compressed_case']=compressed.mount_case(case,OUT,run);save()\n        # The original immutable fixture prefix stays in the source archive.\n        # Make a sparse working raw only after mounting compressed Btrfs.\n        prefix_contract=dict(bytes=len(prefix),sha256=hashlib.sha256(prefix).hexdigest(),\n            header_bytes=len(prefix)-prior['checkpoint_prefix']['payload_bytes'],\n            payload_bytes=prior['checkpoint_prefix']['payload_bytes'],\n            payload_sha256=prior['checkpoint_prefix']['payload_sha256'])\n        def prefix_chunks():\n            with (source/'checkpoint-prefix.raw').open('rb')as src:\n                while data:=src.read(sparse.CHUNK):yield data\n        staged=case/'sparse-staging.raw'\n        plan=sparse.materialize(staged,prefix_chunks(),prefix_contract,\n            head_keep=sparse.BLOCK,tail_keep=sparse.BLOCK)\n        before=sparse.inspect_logical(staged,prefix_chunks(),plan,prefix_contract)\n        assert before['sha256']==prefix_contract['sha256']\n        assert plan['hole_stop']-plan['hole_start']>=2*sparse.BLOCK\n        staged.replace(case/'actual-acquisition.raw')\n        sparse.unchanged_hole(case/'actual-acquisition.raw',plan,prefix_contract)\n        result['sparse_prefix']=dict(source=prefix_contract,plan=plan,before=before,\n            helper_sha256=sha(sparse.__file__),immutable_prefix_retained=True,\n            original1us_checkpoint_modified=False);save()",
+        "count": 1
+      },
+      {
+        "before": "sn,sv,continued=native.inspect_capture(case,vectors,log);result['continued']=continued",
+        "after": "try:native.inspect_capture(case,vectors,log)\n        except AssertionError:result['sparse_direct_reader_rejected']=True\n        else:raise AssertionError('Sparse raw accepted without complete source reconstruction')\n        after=sparse.inspect_logical(case/'actual-acquisition.raw',prefix_chunks(),plan,prefix_contract)\n        reconstructed=OUT/'reconstructed';reconstructed.mkdir()\n        with (reconstructed/'actual-acquisition.raw').open('xb')as dest:\n            for data in sparse.logical_chunks(case/'actual-acquisition.raw',prefix_chunks(),plan,prefix_contract):dest.write(data)\n        assert sha(reconstructed/'actual-acquisition.raw')==after['sha256']\n        assert sha(source/'checkpoint-prefix.raw')==prefix_contract['sha256']\n        assert sha(sparse.__file__)==result['sparse_prefix']['helper_sha256']\n        shutil.copy2(case/'op.raw',reconstructed/'op.raw')\n        result['sparse_prefix']['after']=after\n        sn,sv,continued=native.inspect_capture(reconstructed,vectors,log);result['continued']=continued",
+        "count": 1
+      },
+      {
+        "before": "raw=(case/'actual-acquisition.raw').read_bytes();assert raw.split",
+        "after": "raw=(reconstructed/'actual-acquisition.raw').read_bytes();assert raw.split",
+        "count": 1
+      },
+      {
+        "before": "assert sha(case/'actual-acquisition.raw')==prior['outputs']['resumed/actual-acquisition.raw'],'Complete native raw bytes differ from original restored process'",
+        "after": "assert sha(reconstructed/'actual-acquisition.raw')==prior['outputs']['resumed/actual-acquisition.raw'],'Complete native raw bytes differ from original restored process'",
+        "count": 1
+      },
+      {
+        "before": "shutil.copyfile(case/'actual-acquisition.raw',OUT/'continued.raw');shutil.copyfile(case/'op.raw',OUT/'op.raw')",
+        "after": "shutil.copyfile(reconstructed/'actual-acquisition.raw',OUT/'continued.raw');shutil.copyfile(case/'op.raw',OUT/'op.raw')",
+        "count": 1
+      },
+      {
+        "before": "PASS_NATIVE_PHYSICAL845_EXT4_TO_ZSTD_BTRFS_REDUMP_RESTORE_BIT_EXACT_BOUNDED4NS_NOT_FULL_STORAGE_OR_ACQUISITION",
+        "after": "PASS_NATIVE_PHYSICAL845_SPARSE_PREFIX_CROSS_HOST_BTRFS_REDUMP_BIT_EXACT_BOUNDED4NS_NOT_FULL_READER_OR_ACQUISITION",
+        "count": 1
+      },
+      {
+        "before": "cross_job_native_restore_proven=True,complete_raw_sha256=",
+        "after": "cross_job_native_restore_proven=True,cross_job_sparse_resume_proven=True,original_full_column_reader_qualified=False,complete_raw_sha256=",
+        "count": 1
+      }
+    ]
+  }
+}

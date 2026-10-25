@@ -1,0 +1,174 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Independent saved-byte/source reader; does not import any reviewed producer."""
+import ast
+from collections import Counter
+import datetime
+import gzip
+import hashlib
+import json
+from pathlib import Path
+import xml.etree.ElementTree as ET
+
+R = Path.cwd()
+B = Path(__file__).resolve().parent
+P = B.parent/'pcie-vco-v6-divider-cap24-v1-wire-v1-20261006'
+def pin(p):
+    p = Path(p)
+    with p.open('rb') as s:
+        return {'bytes':p.stat().st_size, 'sha256':hashlib.file_digest(s,'sha256').hexdigest()}
+def read(p): return json.loads(Path(p).read_text())
+def nodes(s): return {n.name:ast.dump(n,include_attributes=False) for n in ast.parse(s).body if isinstance(n,(ast.FunctionDef,ast.ClassDef))}
+def assignment(s,name):
+    return next(n for n in ast.parse(s).body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id==name for t in n.targets))
+def literal(s,name): return ast.literal_eval(assignment(s,name).value)
+def undo_names(s):
+    return s.replace('v9_bias8','v8_cap24').replace('bias8_v1','cap24_v1').replace('bias8-v1','cap24-v1').replace('div4-v9-bias-v1','div4-v8-cap-v1')
+f = read(B/'source-freeze01.json')
+assert pin(B/'source-freeze01.json') == {'bytes':51375,'sha256':'21a0cbed789e6ee40bc5159be649a89fb6b964b8eb6562fc8fa6e297435cf9da'}
+assert len(f['pins']) == 189 and len(f['new_sources']) == 20
+for path,value in f['pins'].items(): assert pin(path)==value,path
+for path,value in f['new_sources'].items(): assert pin(R/path)==value,path
+bridges=[]
+for name in ('builder-source-bridge.json','characterizer-source-bridge.json','launcher-source-bridge.json','handoff-source-bridge.json','freezer-source-bridge.json','sealer-source-bridge.json'):
+    j=read(B/name)
+    for row in j if isinstance(j,list) else [j]:
+        before=''.join(x['before'] for x in row['opcodes'])
+        after=''.join(x['after'] for x in row['opcodes'])
+        assert all(x['tag']!='equal' or x['before']==x['after'] for x in row['opcodes'])
+        assert before==Path(row['before']['path']).read_text()
+        assert after==Path(row['after']['path']).read_text()
+        for side in ('before','after'):
+            assert pin(row[side]['path']) == {k:row[side][k] for k in ('bytes','sha256')}
+        bridges.append({'method':row['after']['path'],'bridge':pin(B/name),'before':row['before'],'after':row['after']})
+for name in ('launch_probe01.py','test_launcher01_handoff.py','seal_probe01.py'):
+    assert undo_names((B/name).read_text()) == (P/name).read_text(),name
+old=(R/'scripts/characterize_pcie_vco_v6_divider_cap24_v1_wire_v1.py').read_text()
+new=(R/'scripts/characterize_pcie_vco_v6_divider_bias8_v1_wire_v1.py').read_text()
+reverted=undo_names(new).replace('clock_div4_hbt_v9.spice','clock_div4_hbt_v8.spice')
+unchanged=[]
+for name,dump in nodes(old).items():
+    if name in ('reference_rows','config'):continue
+    assert nodes(reverted)[name]==dump,name
+    unchanged.append(name)
+# Complete inverse independent of the author's opcodes. Only the inspected new
+# ancestry function and its two new source bindings require structural replacement.
+for name in ('BUILDER_SHA','REFERENCE_SHA','DIVIDER_PINS'):
+    reverted=reverted.replace(ast.get_source_segment(reverted,assignment(reverted,name)),ast.get_source_segment(old,assignment(old,name)),1)
+for name in ('REFERENCE_PARENT','REFERENCE_PARENT_SHA'):
+    reverted=reverted.replace(ast.get_source_segment(reverted,assignment(reverted,name))+'\n','',1)
+nr=next(n for n in ast.parse(reverted).body if isinstance(n,ast.FunctionDef) and n.name=='reference_rows')
+pr=next(n for n in ast.parse(old).body if isinstance(n,ast.FunctionDef) and n.name=='reference_rows')
+reverted=reverted.replace(ast.get_source_segment(reverted,nr),ast.get_source_segment(old,pr),1)
+reverted=reverted.replace('[str(REFERENCE_PARENT),str(REFERENCE),','[str(REFERENCE),',1)
+assert reverted == old
+builder=(R/'scripts/build_pcie_clock_div4_v9_bias8_v1_hybrid_v1.py').read_text()
+oldbuilder=(R/'scripts/build_pcie_clock_div4_v8_cap24_v1_hybrid_v1.py').read_text()
+reverted=undo_names(builder)
+reverted=reverted.replace(ast.get_source_segment(reverted,assignment(reverted,'PINS')),ast.get_source_segment(oldbuilder,assignment(oldbuilder,'PINS')),1)
+assert reverted==oldbuilder
+def circuit(s): return [x.strip() for x in s.splitlines() if x.strip() and not x.lstrip().startswith('*')]
+v7=(R/'hw/soc/analog/pcie/clock_div4_hbt_v7.spice').read_text()
+v8=(R/'hw/soc/analog/pcie/clock_div4_hbt_v8.spice').read_text()
+v9=(R/'hw/soc/analog/pcie/clock_div4_hbt_v9.spice').read_text()
+expected=v7.replace('nssoc_clock_div4_hbt_v7','nssoc_clock_div4_hbt_v8')
+for name,a,c in [('XCP','lp','ckp'),('XCN','ln','ckn')]:
+    src=f'{name} {a} {c} cap_cmim w=20u l=20u'
+    assert expected.count(src)==1
+    expected=expected.replace(src,src.replace('20u','24u'))
+assert circuit(v8)==circuit(expected)
+expected=v8.replace('nssoc_clock_div4_hbt_v8','nssoc_clock_div4_hbt_v9')
+for name,node in [('XDP','ckp'),('XDN','ckn')]:
+    src=f'{name} {node} avss sub rppd w=1u l=7u b=0 sw_et=1'
+    assert expected.count(src)==1
+    expected=expected.replace(src,src.replace('l=7u','l=8u'))
+assert circuit(v9)==circuit(expected)
+fx=R/'sw/tests/fixtures'
+oldfx=fx/'pcie_clock_div4_v8_cap24_v1_hybrid_v1'
+newfx=fx/'pcie_clock_div4_v9_bias8_v1_hybrid_v1'
+def devices(folder):
+    comp=read(folder/'composition.json'); binding=read(folder/'source-native-bijection.json')
+    by={r['native_id']:r for r in comp['records']}
+    assert len(by)==len(binding['devices'])==91
+    out={}
+    for row in binding['devices']:
+        r=by[row['native_id']]
+        assert r['model']==row['model']
+        out[row['source_name']]={'model':r['model'],'nets':row['source_nets'],'params':r['simulator_parameters'],'native':r['native_parameters']}
+    assert len(out)==91 and sum(t['node']=='BODY_SUBSTRATE' for r in comp['records'] for t in r['terminals'])==85
+    return out,comp
+od,_=devices(oldfx); nd,comp=devices(newfx)
+assert set(nd)==set(od)
+changed={k for k in nd if nd[k]!=od[k]}
+assert changed=={'DIV__XDP','DIV__XDN'}
+for name in changed:
+    target=json.loads(json.dumps(od[name]))
+    assert target['params']=={'w':'1.0u','l':'7.0u','ps':'0.0u','b':'0','m':'1','sw_et':'1'}
+    target['params']['l']='8.0u'; target['native']['l']=8.0
+    assert nd[name]==target
+for name in ('DIV__XCP','DIV__XCN'):
+    assert nd[name]['params']=={'w':'24.0u','l':'24.0u'}
+    assert nd[name]['native']==od[name]['native']
+bp=literal(builder,'PINS'); decompressed={}
+for key,name in [('anchors','anchors.json'),('devices','device-location-geometry.json'),('geometry','wire-component-geometry.json'),('native','extracted.cir'),('wires','wires.spice')]:
+    raw=gzip.decompress((newfx/'inputs'/(name+'.gz')).read_bytes())
+    assert hashlib.sha256(raw).hexdigest()==bp[key]
+    decompressed[name]={'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+for name in ('hybrid-open.spice','composition.json'):
+    assert (newfx/name).read_bytes()==(B/'composed01'/name).read_bytes()
+assert Counter(x[0] for x in (newfx/'hybrid-open.spice').read_text().splitlines() if x and x[0] in 'RC')=={'R':382,'C':649}
+# Four prepared recipes: exact native rows, unchanged VCO/feedback rows, precise
+# terminals and all original capture bounds, without calling config/graph.
+recipes=[]
+for path in sorted(B.glob('recipe-*.json')):
+    j=read(path); prev=read(P/path.name); rows=j['devices']; c=j['config']
+    assert len(rows)==len({x['path'] for x in rows})==455
+    assert sum(x['model']=='npn13g2' for x in rows)==64
+    assert sum(x['model'] in ('ptap1','ntap1') for x in rows)==31
+    assert j['vector_count']==956
+    assert (c['wire_resistors'],c['wire_capacitors'])==(1271,1414)
+    assert (c['step_s'],c['stop_s'],c['window_s'])==(5e-12,34e-9,[4e-9,34e-9])
+    assert c['fixture']==prev['config']['fixture']
+    assert c['fixture'][-2:]==['VDIVBODY div_body_substrate 0 0','VDIVWREF div_wire_cref 0 0']
+    assert [r for r in rows if not r['path'].startswith('xchain.xdiv.')]==[r for r in prev['devices'] if not r['path'].startswith('xchain.xdiv.')]
+    assert sum(n=='div_body_substrate' for r in rows for n in r['nets'])==85
+    native={r['path']:r for r in rows if r['path'].startswith('xchain.xdiv.')}
+    assert len(native)==91
+    portmap={'avss':'0','clkn':'clkp' if 'disconnect' in path.name else 'clkn','clkp':'clkp','div_avdd':'dvdd','qn':'qn','qp':'qp','sub':'0','body_substrate':'div_body_substrate','wire_cref':'div_wire_cref'}
+    for r in comp['records']:
+        words=r['line'].lower().split(); count=len(r['terminals']); actual=native['xchain.xdiv.'+words[0]]
+        assert words[1:count+1]==[t['node'].lower() for t in r['terminals']]
+        assert actual['model']==r['model'].lower()
+        assert actual['params']=={k.lower():v.lower() for k,v in r['simulator_parameters'].items()}
+        assert actual['nets']==[portmap.get(x,'xchain.xdiv.'+x) for x in words[1:count+1]]
+    recipes.append({'path':str(path),'pin':pin(path),'devices':455,'vectors':956,'HBT':64,'contacts':31})
+assert len(recipes)==4
+xml=[]
+for name,count in [('source-controls01.xml',30),('handoff-controls01.xml',4)]:
+    cases=ET.parse(B/name).findall('.//testcase')
+    assert len(cases)==count and all(not any(x.tag in ('failure','error','skipped') for x in c) for c in cases)
+    xml.append({'path':str(B/name),'pin':pin(B/name),'actual_passed':len(cases),'names':[c.attrib['name'] for c in cases]})
+raw_controls=[]; births=[]
+for path in f['pins']:
+    p=Path(path)
+    if not any(x.startswith('pytest') for x in p.parts):continue
+    raw_controls.append({'path':path,'pin':pin(p)})
+    if p.name in ('owned-processes.json','actual-inner-owner.json'):
+        r=read(p); assert r['elapsed_watchdog_seconds'] is None
+        for entry in r['processes']:
+            assert entry['status'] in ('REAPED_NO_LIVE_MEMBERS','FAILURE_REAPED')
+            birth=entry['identity']; proc=Path('/proc')/str(birth['pid'])/'stat'
+            if proc.exists(): assert proc.read_text().rsplit(') ',1)[1].split()[19]!=str(birth['start_ticks'])
+            births.append(birth)
+    if p.name=='handoff-result.json':
+        r=read(p); assert r['status'].startswith('PASS_REAL_SIGNAL_') and r['handlers_restored']
+assert len(raw_controls)==23 and len(births)==6
+assert not Path('/dev/shm/nssoc-vco-v6-divider-bias8-v1-wire-06-01').exists()
+rc=read(B.parent/'pcie-divider-v9-bias-v1-wire-rc-v1-20261006/saved-rc-peer-pll.json')
+assert rc['status']=='PASS_INDEPENDENT_SAVED_BIAS8_V1_DIVIDER_WIRE_GRAPH_AND_CAPACITANCE' and rc['findings']==[]
+receipt={'status':'PASS_SOURCE_ONLY_LOADED455_WIRE_MODEL','findings':[],'freeze':pin(B/'source-freeze01.json'),'source_pins':f['new_sources'],'launcher':pin(B/'launch_probe01.py'),'verified_input_pins':189,'complete_source_bridges':bridges,'independent_complete_builder_characterizer_launcher_handoff_sealer_inverses':True,'unchanged_function_ASTs':unchanged,'only_two_native_primitive_changes':sorted(changed),'unchanged_other_primitives':89,'authoritative_reference_ancestry':'Exact noncomment V7→two Cap24 V8→two pull-down L8 V9; all connections and other values fixed.','decompressed_fixture_inputs':decompressed,'saved_recipes':recipes,'saved_XML':xml,'raw_lifecycle_files':raw_controls,'closed_actual_control_births':births,'read_scope':['Full builder, characterizer including private inherited globals, SPICE top and V7/V8/V9 references','Full source tests, detached launcher and four real handoff controls','Full closed-result sealer and source/history freezer deltas'],'scope':['No reviewed producer, test, simulation, extraction or control was reexecuted. Native loaded455 result remains unmeasured.','Both complete networks total1271R/1414C; all455 screens/956vectors/64HBT/31contacts preserved.','Original34ns/5ps/27C/50fF/300mV functional and electrical predicates remain unchanged.','Explicit85 divider body terminals and separate body/wire reference boundaries retain ideal bench assumptions. No full PEX, RF/PVT, PLL lock, full PHY or chip closure.','Actual teardown boundary inner receipt may retain last HEALTHY write; expected exception and dead exact child birth remain preserved.'],'method':pin(__file__),'utc':datetime.datetime.now(datetime.UTC).isoformat()}
+with (B/'source-only-peer01-rx.json').open('x') as s: json.dump(receipt,s,indent=2);s.write('\n')
+sealer={'status':'PASS_SOURCE_ONLY_BIAS8_LOADED455_CLOSED_SEALER','findings':[],'sealer':pin(B/'seal_probe01.py'),'bridge':pin(B/'sealer-source-bridge.json'),'full_inverse_paths_only':True,'source_peer':pin(B/'source-only-peer01-rx.json'),'scope':'Requires closed controller/native receipts, full input/output hashes, all raw decompressed values/time-grid/455 bounds/cycles and64 nativeOFF replay, then complete archive member readback. Retains failed functional verdict. Run stdout outside the captured directory. No sealer/native execution by reviewer.','method':pin(__file__)}
+with (B/'sealer-source-only-peer-rx.json').open('x') as s: json.dump(sealer,s,indent=2);s.write('\n')
+print(json.dumps({'source_peer':pin(B/'source-only-peer01-rx.json'),'sealer_peer':pin(B/'sealer-source-only-peer-rx.json'),'input_pins':189,'actual_saved_controls':34,'recipes':4}))

@@ -1,0 +1,68 @@
+{
+  "status": "PASS_V16_STATIC_BALANCED_READ_SOURCE_ONLY_PEER",
+  "utc": "2026-10-05T16:10:01.189039+00:00",
+  "reviewer": "/root/rx_route_resume",
+  "source_freeze": {
+    "bytes": 2056,
+    "sha256": "0c818c3e94ad0ef32ccbd93f401e8f4977226f3f29767f39c0f7397b81179e75"
+  },
+  "sources": {
+    "scripts/generate_pcie_integrity_read_v16.py": {
+      "bytes": 3453,
+      "sha256": "ccb0abcb1429d0c3a5950eb0f90866f40fea960ca601c0df4057dfecc3b449ba"
+    },
+    "scripts/check_pcie_gen3_continuous_rx_integrity_v16.py": {
+      "bytes": 11276,
+      "sha256": "ecfa1ac930d1b19f255291138646abb28d918a3d9dc3620872273158aae3ecbf"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_integrity_v16.v": {
+      "bytes": 192433,
+      "sha256": "e607c1056bff7682fcbf2c69e12dba0908237dbbc2e2a7a1f994022cb602f07d"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx_integrity_v16.v": {
+      "bytes": 3324,
+      "sha256": "a95d27aac9ead00b9491e13ca9fc468135574e279a2044ac4901219088b650b1"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx_integrity_v16.py": {
+      "bytes": 19329,
+      "sha256": "eb96c52581e862ca3214b68fb1ce464eb2d86dba9f977d56529e771ffaeaaae9"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx_integrity_v16": {
+      "bytes": 1528,
+      "sha256": "0bfc1da83cb573a17c3e7c8fb9cf6e0e149758460e70c71dc785927dafe5a2f0"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v16_read.py": {
+      "bytes": 10430,
+      "sha256": "7993f77bda335e5413c02f56634eb17a3f16ce2567688828aa564373f5bba3ff"
+    },
+    "sw/tests/test_pcie_gen3_integrity_v16_miter.py": {
+      "bytes": 9758,
+      "sha256": "fcbcd29dafc7f0a4fb0d921928cdd2f5fec4a3fc112b51b3359171e57d6738eb"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx_integrity_v16.py": {
+      "bytes": 4805,
+      "sha256": "c2466aaed5ee726cbcceef5af3f17c9d51b9e882e1e5f1f3bf6dbb00d8a21bd8"
+    }
+  },
+  "baseline": {
+    "bytes": 190744,
+    "sha256": "d4f0419f035c45bb159c9653f6b0aa5a68d1e03e41436ad219ce1f26481dbd24"
+  },
+  "checks": [
+    "Full new generator and control changes inspected. Frozen generated RTL matches candidate() and exact inverse restores whole V11 framer. Wrapper/oracle/Makefile version inverses match V11. All original writers, caches, fault/epoch/commit/pointer/reset controls remain unchanged.",
+    "Four static genvar lanes each own separate wire arrays0..2N-1. Index0 driven explicitly, N leaves driven once, N-1 branch outputs each driven once. Children2i,2i+1 stay within2N-1 and strictly deeper, so tree is acyclic with no unassigned index or multiple driver.",
+    "Each leaf procedural block unconditionally defaults eligibility/payload to0 then gates exact constant-slot fields with unchanged masked address, keep and verdict predicate. Eligibility is known0/1 even when predicates areX/Z; valid power-of-two ring requirement is inherited. Constant-index leaves remove dynamic procedural writes to the whole tree.",
+    "At most one slot matches a known address. Known0/1 OR flags and known-selector payload mux induction retain selected payload X/Z, suppress unselected X/Z and returnzero ifnoneeligible. All six payload fields sum60bits with unchanged order/slices. No payload bitwiseOR conversion.",
+    "The read address is32bits, same width as old integer expression; valid ring mask retains nonnegative low address bits. Final lane<count procedural gate retains original unknown-count rejection and zero defaults. Static continuous assignments add delta scheduling only; settled combinational behavior and public cycle criteria remain the control target.",
+    "Source tests use literal old/new read bodies for16/64/128 rings, targeted59selected X/Z/unknown/unselected cases,10select/tree mutations and actual payloadOR Z-conversion mutation. V11 public/occupied/committed miter predicates remain present. Saved execution completion is not inferred from source inspection."
+  ],
+  "issues_found": [],
+  "source_generation_only": true,
+  "HDL_or_native_executed": false,
+  "controls_rerun": false,
+  "physical_acceptance": false,
+  "limitations": [
+    "Rejected V15 bad_alloc remains separate evidence. V16 static source structure alone does not establish bounded synthesis resource use, emitted gate depth, improved timing or PHY acceptance.",
+    "Actual frontend/mapping/cone and unchanged4ns STA results remain required after controls."
+  ]
+}

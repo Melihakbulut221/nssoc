@@ -1,0 +1,13 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-halfstep-20261006/compare_saved_steps01.py",
+    "bytes": 4735,
+    "sha256": "f5e6eb8ae0a50494570275ceaa685955e5ce9917f39d3f81f351e77009e19a9b"
+  },
+  "child": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-quarterstep-20261006/compare_saved_steps01.py",
+    "bytes": 4945,
+    "sha256": "879be0e3d91f317d42ed761fd3faedd2aed2418388d7e996db2644c9d2140e22"
+  },
+  "full_diff": "--- /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-halfstep-20261006/compare_saved_steps01.py\n+++ /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-quarterstep-20261006/compare_saved_steps01.py\n@@ -7,7 +7,8 @@\n os.sched_setaffinity(0,{10});resource.setrlimit(resource.RLIMIT_AS,(2*1024**3,)*2)\n R=Path.cwd();B=Path(__file__).resolve().parent\n OLD=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-wire-06-01')\n-NEW=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-halfstep-06-01')\n+MID=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-halfstep-06-01')\n+NEW=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-quarterstep-06-01')\n def pin(p):\n  p=Path(p)\n  with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n@@ -21,8 +22,9 @@\n owner=json.loads((NEW/'owned-processes.json').read_text());assert all(p['status']=='REAPED_NO_LIVE_MEMBERS'for p in owner['processes'])\n for p,v in json.loads((B/'source-freeze01.json').read_text())['pins'].items():assert pin(p)==v\n assert pin(OLD/'result.json')==dict(bytes=426335,sha256='04f18138303887b2755c09b08afb47c2c5e6c830a40c810578f069f6ecfc2ab7')\n+assert pin(MID/'result.json')==dict(bytes=426324,sha256='cd144211f9316debabcdd621847310ee7d49919726d6af341c6b1b9b7433ddc5')\n results=[]\n-for root,step in [(OLD,5e-12),(NEW,2.5e-12)]:\n+for root,step in [(OLD,5e-12),(MID,2.5e-12),(NEW,1.25e-12)]:\n  r=json.loads((root/'result.json').read_text());assert r['status']in('PASS_NATIVE_LOADED_FEEDBACK_SCREEN','FAIL_NATIVE_LOADED_FEEDBACK_SCREEN')\n  assert len(r['devices'])==455 and r['config']['step_s']==step and r['config']['stop_s']==34e-9 and r['config']['window_s']==[4e-9,34e-9]\n  for p,v in r['inputs'].items():assert pin(p)==v\n"
+}

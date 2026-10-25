@@ -1,0 +1,112 @@
+{
+  "status": "PASS_ROUTING_PROVENANCE_PLACEMENTS_IRQ_CONNECTION_AND_RING_GAPS_ONLY",
+  "recorded": "2026-09-28T19:30:36.147717+03:00",
+  "run_id": 36445480475,
+  "source_commit": "bf7fcfd5b7f3a0e84ac92c9927c4b93725bada33",
+  "input_bundle_sha256": "21f1475fdc99eacb592d8f1689efa08b1e7ad650716f39cb8080c4b8def9dc1c",
+  "verified_bundle_inputs": 781,
+  "verified_method_pins": 8,
+  "gds": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-irq-buffer-20260928/results/run36445480475/run/41-klayout-streamout/nssoc_chip.klayout.gds",
+  "gds_sha256": "1c9e8edc12f38424812cc067a2a711c48fe713c7bfc13b3def4d5635258adb25",
+  "elapsed_seconds": 978.626520882,
+  "preserved_core_io_instances": 315,
+  "buffer_placement": [
+    "sg13g2_buf_16",
+    2148000,
+    2853900,
+    "N"
+  ],
+  "horizontal_ring_gaps_nm": [
+    5000,
+    5000
+  ],
+  "final_def_irq_nets": {
+    "irq_external_i": {
+      "connections": [
+        [
+          "ANTENNA_11",
+          "A"
+        ],
+        [
+          "ANTENNA_10",
+          "A"
+        ],
+        [
+          "u_pad_irq_external_i",
+          "p2c"
+        ],
+        [
+          "u_irq_antenna_buffer",
+          "A"
+        ]
+      ],
+      "record": "    - irq_external_i ( ANTENNA_11 A ) ( ANTENNA_10 A ) ( u_pad_irq_external_i p2c ) ( u_irq_antenna_buffer A ) + USE SIGNAL\n      + ROUTED Metal2 ( 2148960 2853060 ) ( * 2855580 )\n      NEW Metal3 ( 2314080 300720 ) ( 2347200 * )\n      NEW Metal2 ( 2347200 300720 ) ( * 335160 )\n      NEW Metal2 ( 2244960 181860 ) ( 2244975 * )\n      NEW Metal2 ( 2244975 179970 0 ) ( * 181860 )\n      NEW Metal2 ( 2244960 181860 ) ( * 234780 )\n      NEW Metal2 ( 2314080 266280 ) ( * 300720 )\n      NEW Metal3 ( 2147520 2855580 ) ( 2159040 * )\n      NEW Metal3 ( 2244960 234780 ) ( 2285760 * )\n      NEW Metal3 ( 2347200 335160 ) ( 2393280 * )\n      NEW Metal5 ( 2159040 2855580 ) ( 3608600 * )\n      NEW Metal2 ( 2285760 234780 ) ( * 266280 )\n      NEW Metal3 ( 2285760 266280 ) ( 2314080 * )\n      NEW Metal2 ( 2393280 335160 ) ( * 342300 )\n      NEW Metal4 ( 3568320 342300 ) ( * 356160 )\n      NEW Metal5 ( 3568320 356160 ) ( 3608600 * )\n      NEW Metal3 ( 2393280 342300 ) ( 3568320 * )\n      NEW TopMetal1 ( 3608600 356160 ) ( * 2855580 )\n      NEW Metal1 ( 2147520 2855580 ) Via1_YY\n      NEW Metal2 ( 2147520 2855580 ) Via2_YX\n      NEW Metal1 ( 2148960 2853060 ) Via1_YY\n      NEW Metal2 ( 2148960 2855580 ) Via2_YX\n      NEW Metal2 ( 2244960 234780 ) Via2_YX\n      NEW Metal2 ( 2314080 300720 ) Via2_YX\n      NEW Metal2 ( 2347200 300720 ) Via2_YX\n      NEW Metal2 ( 2347200 335160 ) Via2_YX\n      NEW Metal2 ( 2314080 266280 ) Via2_YX\n      NEW Metal1 ( 2159040 2855580 ) Via1_XY\n      NEW Metal2 ( 2159040 2855580 ) Via2_YX\n      NEW Metal3 ( 2159040 2855580 ) Via3_XY\n      NEW Metal4 ( 2159040 2855580 ) Via4_YX\n      NEW Metal2 ( 2285760 234780 ) Via2_YX\n      NEW Metal2 ( 2393280 335160 ) Via2_YX\n      NEW Metal5 ( 3608600 2855580 ) TopVia1EWNS\n      NEW Metal2 ( 2285760 266280 ) Via2_YX\n      NEW Metal2 ( 2393280 342300 ) Via2_YX\n      NEW Metal3 ( 3568320 342300 ) Via3_XY\n      NEW Metal4 ( 3568320 356160 ) Via4_YX\n      NEW Metal5 ( 3608600 356160 ) TopVia1EWNS\n      NEW Metal2 ( 2147520 2855580 ) RECT ( -100 -570 100 0 ) \n      NEW Metal3 ( 2148960 2855580 ) RECT ( -575 -100 0 100 ) \n      NEW Metal2 ( 2159040 2855580 ) RECT ( -100 -570 100 0 ) \n      NEW Metal3 ( 2159040 2855580 ) RECT ( -570 -100 0 100 ) \n      NEW Metal4 ( 2159040 2855580 ) RECT ( -100 -570 100 0 )  ;"
+    },
+    "irq_external_buffered": {
+      "connections": [
+        [
+          "u_irq_antenna_buffer",
+          "X"
+        ],
+        [
+          "u_core",
+          "irq_external_i"
+        ]
+      ],
+      "record": "    - irq_external_buffered ( u_irq_antenna_buffer X ) ( u_core irq_external_i ) + USE SIGNAL\n      + ROUTED Metal2 ( 2151775 2837750 0 ) ( * 2839620 )\n      NEW Metal2 ( 2151775 2839620 ) ( 2151840 * )\n      NEW Metal2 ( 2151840 2839620 ) ( * 2855580 )\n      NEW Metal1 ( 2151840 2855580 ) Via1_YY ;"
+    }
+  },
+  "router_drc_errors": 0,
+  "router_antenna_nets": 0,
+  "pdn_generation_rails_connected": [
+    "VDD",
+    "VSS",
+    "IOVDD",
+    "IOVSS"
+  ],
+  "audit_input_sha256": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-irq-buffer-20260928/verify_route_v2.py": "367113fba5fc688a540f281de3e831de195a8f24431b8fbc609b0b0da8740c83",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-pdn-spacing-20260928/verify.py": "05f36555fcc0f8e8874f80517fe75c2125613eadec787532b7483fe0a3847e45",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-pdn-spacing-20260928/attempt3/run/11-openroad-generatepdn/nssoc_chip.def": "febdb98d63929b2bbcb4c2131d0a784c3b22deb4655ea7c7cbd40c5b5b0d8730",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-irq-buffer-20260928/results/run36445480475/run/38-odb-cellfrequencytables/nssoc_chip.def": "d4bd039609597a80511486113475b35027d3bb359189a0b3070862d6f1f1ff55",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-irq-buffer-20260928/results/run36445480475/run/37-openroad-fillinsertion/nssoc_chip.nl.v": "87b8191264a41d4458e0054630af7bb178f9a5e235f4124727bd11a74aaacd75",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-irq-buffer-20260928/results/run36445480475/result.json": "2dae61d7eee719f769621899977bb896c51e41fe1558ac1c9a11255248f5c99f",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-irq-buffer-20260928/results/run36445480475/run/final/state.json": "20e133e0c568248507bd495c009dabe0b350d06e7c595b4f8372995d69c5ebb1"
+  },
+  "scope": "Structural IRQ path, fixed core/IO placement and routing provenance only. Requires GDS geometry, native antenna/main/wide/density checks, extracted LVS and final timing.",
+  "physical_acceptance": false,
+  "manufacturing_approval": false,
+  "native_buffer_geometry_status": "PASS_CORE_IO_AND_NATIVE_IRQ_BUFFER_GEOMETRY_ONLY",
+  "embedded_cells_compared": 217,
+  "native_buffer_geometry_matches": true,
+  "boundary_status": "PASS_BOUNDARY_ONLY_TRANSFORM_REQUIRES_NEW_PHYSICAL_CHECKS",
+  "native_check_gds_sha256": "dbaf641d4839e977855e3a6bd4df646ff4a7da9a31a45ec2d67df71e45661ac6",
+  "die_box_dbu": [
+    0,
+    0,
+    4000000,
+    3200000
+  ],
+  "dbu_um": 0.001,
+  "final_power_connectivity": {
+    "status": "PASS_FINAL_ODB_FOUR_POWER_GRIDS_CONNECTED_ONLY",
+    "rails": [
+      "VDD",
+      "VSS",
+      "IOVDD",
+      "IOVSS"
+    ],
+    "input_sha256": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-irq-buffer-20260928/check_power.tcl": "0592e216616c666fab7b54b9c3a08ffb2316caa4f183c90cbc169df239b766b1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-irq-buffer-20260928/results/run36445480475/run/38-odb-cellfrequencytables/nssoc_chip.odb": "59eba8d852be9aa1e32d9baf6b7e720125dae249967347590dd9645d065dfcf5",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/chip-irq-buffer-20260928/check_power.py": "ece4fc755e80354e2fbb30813c3b211ca1703adf63b56fc436c951bc2108e7d0"
+    },
+    "log_sha256": "f68c66ceab75604af0a9806caf0a1133ec9b337ae75583d9b02de6b496ed381f",
+    "scope": "OpenROAD connectivity on final routed database. Not transistor LVS, current/IR/EM, package or manufacturing acceptance.",
+    "physical_acceptance": false
+  },
+  "raw_evidence_manifest": "docs/evidence/chip-irq-routing-completed-assets-20260928.json",
+  "native_measurements_on_new_gds": "PENDING",
+  "density_markers": null
+}

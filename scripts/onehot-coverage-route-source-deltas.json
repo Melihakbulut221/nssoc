@@ -1,0 +1,68 @@
+[
+  {
+    "baseline_path": "scripts/cloud_onehot_critical_data_route.py",
+    "baseline_sha256": "f256634141c239f66aa6af79e80e66e332752a17c1b16e36e4b05e5f0318be87",
+    "candidate_path": "scripts/cloud_onehot_coverage_data_route.py",
+    "candidate_sha256": "5d3d4b8498aca7eb363d0fed959a11da3c307cc762832a12b48ffb3f71bd9bc4",
+    "edits": [
+      {
+        "before": "OUT=ROOT/'hw/soc/out/cloud-onehot-critical-data-route'",
+        "after": "OUT=ROOT/'hw/soc/out/cloud-onehot-coverage-data-route'",
+        "count": 1
+      },
+      {
+        "before": "scope='Route33 measured critical-data positive buffers with native geometry and logic proofs. All149592 source cells including antenna diodes retained.",
+        "after": "scope='Route128 measured hold-screened setup positive buffers with native geometry and logic proofs. All150291 source cells including antenna diodes retained.",
+        "count": 1
+      },
+      {
+        "before": "        saved_candidate_odb=odb",
+        "after": "\n        # Add the new prepared candidate after revalidating every original\n        # boot/logic/placement/route/RC dependency above.\n        coverage_baseline_pin=json.loads((ROOT/'docs/evidence/onehot-critical-data-route-result-20261020.json').read_text())\n        coverage_baseline_run=api('actions/runs/'+str(coverage_baseline_pin['run']))\n        assert coverage_baseline_pin['run']==39293720171\n        assert coverage_baseline_run['status']=='completed' and coverage_baseline_run['conclusion']=='success'\n        assert coverage_baseline_run['head_sha']==coverage_baseline_pin['source_head']=='ca6a4d0e143ec95d836201887b96d187ecdccb39'\n        assert coverage_baseline_run['run_attempt']==1 and coverage_baseline_run['path']=='.github/workflows/onehot-critical-data-route-cloud.yml'\n        coverage_baseline,coverage_baseline_sha,coverage_baseline_parts=logic.summary(coverage_baseline_pin['group'],coverage_baseline_run)\n        assert coverage_baseline==coverage_baseline_pin['report']\n        assert coverage_baseline_sha==coverage_baseline_pin['summary_sha256'] and coverage_baseline_parts==coverage_baseline_pin['parts_sha256']\n        assert coverage_baseline['sources_unchanged'] and coverage_baseline['returncode']==0 and coverage_baseline['detailed_route_complete']\n        assert coverage_baseline['native_routing_drc_errors']==0 and coverage_baseline['critical_disconnected_pins']==0\n        assert coverage_baseline['critical_data_buffer_source']['summary_sha256']==cp['summary_sha256']\n        assert coverage_baseline['critical_data_buffer_geometry']==cg\n        assert coverage_baseline['critical_data_buffer_equation_proof']==critical['proof']\n        cbtop=coverage_baseline['routed_candidate_topology']\n        assert cbtop['proof']['retained_instances']==149625 and cbtop['proof']['added_diode_count']==666\n        assert cbtop['inputs'][str(odb)]==sha(odb)\n        vp=json.loads((ROOT/'docs/evidence/onehot-coverage-data-prepare-pass-20261020.json').read_text())\n        vr=api('actions/runs/'+str(vp['run']))\n        assert vp['run']==39330987654 and vp['source_head']=='f98f85cc304119f256c1406ffda6774f5d43d32c'\n        assert vr['status']=='completed' and vr['conclusion']=='success' and vr['head_sha']==vp['source_head'] and vr['run_attempt']==1\n        assert vr['path']=='.github/workflows/onehot-coverage-data-prepare-cloud.yml'\n        coverage_root=ROOT/'hw/soc/out/cloud-onehot-coverage-data-prepare'\n        coverage_names=['candidate.odb','candidate.v','candidate-state.json','trial-config.json','proof/result.json','controls/result.json','geometry-proof.json','geometry.json','targets.json','native-site-attempts.json','actual-new-buffer-inversion-control.log']\n        coverage,coverage_proof=reports.restore_report(vp['group'],vp['run'],vp['summary_sha256'],vp['parts_sha256'],coverage_root,coverage_names)\n        assert {k:coverage[k]for k in vp['report_excerpt']}==vp['report_excerpt']\n        assert coverage['source_head']==vp['source_head'] and coverage['sources_unchanged']\n        assert coverage['status']=='PASS_NATIVE_HOLD_SCREENED_COVERAGE_BUFFER_PREPARATION_REQUIRES_ROUTE_RC_ALL_CORNERS'\n        assert coverage['source']['summary_sha256']==coverage_baseline_sha and coverage['source']['manifest_sha256']==coverage_baseline_parts\n        assert coverage['original_route']==dict(odb_sha256=coverage_baseline['routed_odb_sha256'],netlist_sha256=coverage_baseline['routed_netlist_sha256'])\n        assert coverage['original_measurements']==coverage_baseline['measurements']\n        assert coverage['proof']['status']=='PASS within scope' and coverage['controls']['status']=='PASS_NATIVE_ECO_CONTROLS' and coverage['inversion_control']['rejected']\n        assert coverage['proof']['positive_buffers_after']-coverage['proof']['positive_buffers_before']==128\n        assert coverage['proof']['unobserved_output_port_changes']==0\n        vg=coverage['geometry']\n        assert vg['original_instances']==150291 and len(vg['added'])==len(vg['changes'])==128 and vg['maximum_driver_to_buffer_um']<=80\n        assert all(vg[k]for k in ('all_original_cells_geometry_preserved','all_expected_net_memberships_preserved','pg_ports_ndr_unchanged'))\n        assert sum(x['buffer_master']=='sg13g2_buf_16'for x in vg['changes'])==124\n        assert sum(x['buffer_master']=='sg13g2_buf_8'for x in vg['changes'])==4\n        for path,key in [('proof/result.json','proof'),('controls/result.json','controls'),('geometry-proof.json','geometry'),('geometry.json','source_geometry'),('targets.json','selection')]:\n            assert json.loads((coverage_root/path).read_text())==coverage[key]\n        assert coverage['source_geometry']['source_instance_count']==150291 and coverage['source_geometry']['selected_net_count']==128\n        assert coverage['selection']['hold_screen_ns']==.2 and len(coverage['selection']['targets'])==128\n        attempts=json.loads((coverage_root/'native-site-attempts.json').read_text())\n        assert len(attempts)==128 and all(a['attempts'][-1]['accepted'] and a['attempts'][-1]['distance_um']<=80 for a in attempts)\n        assert json.loads((coverage_root/'trial-config.json').read_text())==cfg\n        state_path=coverage_root/'candidate-state.json';state=json.loads(state_path.read_text())\n        odb=Path(state['odb']);netlist=Path(state['nl'])\n        assert odb==coverage_root/'candidate.odb' and netlist==coverage_root/'candidate.v'\n        assert sha(odb)==coverage['candidate_odb_sha256']=='6e9ee73448e4cfb0e63129984278b084605f314bc5caa5054b0a72a1e66a5a3b'\n        assert sha(netlist)==coverage['candidate_netlist_sha256']=='97cdc9677282fa0330a752de12b66be3f5ab1659e02d2245184b69ab8d98e97e'\n        assert state['spef']is None and state['def']is None and not state['metrics']\n        coverage_baseline_root=ROOT/'hw/soc/out/cloud-onehot-critical-data-route';coverage_missing=set()\n        def collect_coverage_missing(value):\n            if isinstance(value,dict):\n                for v in value.values():collect_coverage_missing(v)\n            elif isinstance(value,list):\n                for v in value:collect_coverage_missing(v)\n            elif isinstance(value,str)and value.startswith('/')and not Path(value).is_file():\n                p=Path(value);assert p.is_relative_to(coverage_baseline_root),('Unbound coverage state dependency',value)\n                rel=str(p.relative_to(coverage_baseline_root));assert rel in coverage_baseline['outputs'];coverage_missing.add(rel)\n        collect_coverage_missing(state)\n        if coverage_missing:\n            restored_cv,cv_view_proof=reports.restore_report(coverage_baseline_pin['group'],coverage_baseline_pin['run'],coverage_baseline_sha,coverage_baseline_parts,coverage_baseline_root,sorted(coverage_missing))\n            assert restored_cv==coverage_baseline\n            dependency_hashes.update({str(coverage_baseline_root/n):coverage_baseline['outputs'][n]for n in coverage_missing})\n            r['coverage_state_dependency_source']=cv_view_proof\n        assert all(sha(p)==v for p,v in dependency_hashes.items())\n        r['restored_exact_state_dependencies']['files']=dependency_hashes\n        r['source_routed_measurements']=coverage_baseline['measurements']\n        r['coverage_data_buffer_source']=coverage_proof\n        r['coverage_data_buffer_geometry']=vg\n        r['coverage_data_buffer_equation_proof']=coverage['proof']\n        r['coverage_original_native_routed_baseline']=r['native_routed_baseline']\n        r['native_routed_baseline']=dict(run=coverage_baseline_pin['run'],summary_sha256=coverage_baseline_sha,parts_sha256=coverage_baseline_parts,antenna=coverage_baseline['final_antenna'],timing_and_electrical_counts_met=coverage_baseline['all_reported_timing_and_electrical_gates_met'])\n\n        saved_candidate_odb=odb",
+        "count": 1
+      },
+      {
+        "before": "        command=[str(app),'python',str(flow)",
+        "after": "        protected.update({str(coverage_root/n):coverage['outputs'][n]for n in coverage_names})\n        command=[str(app),'python',str(flow)",
+        "count": 1
+      },
+      {
+        "before": "ROOT/'scripts/check_onehot_critical_data_routed_topology.py'",
+        "after": "ROOT/'scripts/check_onehot_coverage_data_routed_topology.py'",
+        "count": 1
+      },
+      {
+        "before": "r['routed_candidate_topology']['proof']['retained_instances']==149625",
+        "after": "r['routed_candidate_topology']['proof']['retained_instances']==150419",
+        "count": 1
+      },
+      {
+        "before": "RUNNING_NATIVE_CRITICAL_DATA_BUFFER_ROUTE_AND_FRESH_RC_STA",
+        "after": "RUNNING_NATIVE_COVERAGE_DATA_BUFFER_ROUTE_AND_FRESH_RC_STA",
+        "count": 1
+      },
+      {
+        "before": "COMPLETE_NATIVE_CRITICAL_DATA_BUFFER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+        "after": "COMPLETE_NATIVE_COVERAGE_DATA_BUFFER_ROUTE_RC_THREE_CORNERS_NOT_SIGNOFF",
+        "count": 1
+      }
+    ]
+  },
+  {
+    "baseline_path": "scripts/check_onehot_critical_data_routed_topology.py",
+    "baseline_sha256": "6770175a2820ba147eb2b2e4610cbba59c71a937a9db2822b600c6252bee91eb",
+    "candidate_path": "scripts/check_onehot_coverage_data_routed_topology.py",
+    "candidate_sha256": "bce3b29357722b067264b17000dbf5ade0f436c8f1f4cbc048a8a33552ac0faa",
+    "edits": [
+      {
+        "before": "149625",
+        "after": "150419",
+        "count": 1
+      },
+      {
+        "before": "PASS_NATIVE_CRITICAL_DATA_BUFFER_ROUTED_TOPOLOGY_AND_GEOMETRY_NOT_LVS",
+        "after": "PASS_NATIVE_COVERAGE_DATA_BUFFER_ROUTED_TOPOLOGY_AND_GEOMETRY_NOT_LVS",
+        "count": 1
+      }
+    ]
+  }
+]

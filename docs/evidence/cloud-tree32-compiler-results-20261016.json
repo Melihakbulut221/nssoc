@@ -1,0 +1,76 @@
+{
+  "observed_at": "2026-10-16T05:24:00.185369+00:00",
+  "run": 38845036374,
+  "source_head": "164c24f6c7cd9d38917f20a149a2fb8f8e3ef029",
+  "summary_asset": 646200421,
+  "summary_sha256": "7e354dee6d800be2a3bc5b3f2740eb510351f15ab63c46671deb8f993c8889fc",
+  "parts": {
+    "asset": 646200465,
+    "sha256": "85a08a0bd6431187d47088ed4e92949b4ed6feaaf707833eb3ffdcd5a344cd55",
+    "manifest": {
+      "format": "ordered-tar-gzip-parts-v1",
+      "stem": "tree32-compiler-38845036374-1",
+      "source_directory": "cloud-tree32-compiler",
+      "bytes": 666998598,
+      "sha256": "e2a9185241abb259ac052036f79fa6bf43e61646d3c63c417ae537cd560f2dab",
+      "parts": [
+        {
+          "index": 0,
+          "name": "tree32-compiler-38845036374-1.tar.gz.part0000",
+          "bytes": 666998598,
+          "sha256": "e2a9185241abb259ac052036f79fa6bf43e61646d3c63c417ae537cd560f2dab"
+        }
+      ],
+      "part_limit_bytes": 1073741824,
+      "meaning": "Concatenate strictly in index order; verify every part and combined SHA256 before extracting. No original waveform samples removed.",
+      "verification": {
+        "parts": 1,
+        "bytes": 666998598,
+        "sha256": "e2a9185241abb259ac052036f79fa6bf43e61646d3c63c417ae537cd560f2dab",
+        "all_parts_and_combined_bytes_verified": true
+      }
+    }
+  },
+  "status": "COMPLETE_PAIRED_FINE_STEP_COMPILER_DIAGNOSIS_NOT_FULL_CAPTURE_OR_PHY_ACCEPTANCE",
+  "accepted": false,
+  "build": {
+    "upstream": "a80f6e3e95d51534905b1f23410a951802666656",
+    "flags": "-O3 -fno-fast-math -ffp-contract=off -march=x86-64-v3 -mtune=generic",
+    "configure_options": [
+      "--without-x",
+      "--with-readline=no",
+      "--disable-openmp"
+    ],
+    "optimized_sha256": "d24ca87940c4c48f864decf0b090ed7167a65077104e3bdfe235e6ee68d13292"
+  },
+  "optimized_runtime_sha256": "d24ca87940c4c48f864decf0b090ed7167a65077104e3bdfe235e6ee68d13292",
+  "same_native_time_grid": true,
+  "voltage_agreement_to_1nv": true,
+  "worst_voltage_difference_v": 0.0,
+  "reverse_worst_voltage_difference_v": 0.0,
+  "wall_speed_ratio": 0.9799975059664432,
+  "cpu_speed_ratio": 0.9799987249926453,
+  "runtime_candidate_for_full_fine_capture": false,
+  "protected_inputs_unchanged": true,
+  "cases": {
+    "reference": {
+      "complete": true,
+      "stop_s": 4e-09,
+      "tmax_s": 2.5e-13,
+      "executable_sha256": "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509",
+      "elapsed_s": 2812.436741014,
+      "cpu_user_s": 2810.161884,
+      "cpu_system_s": 1.226868
+    },
+    "strict_o3": {
+      "complete": true,
+      "stop_s": 4e-09,
+      "tmax_s": 2.5e-13,
+      "executable_sha256": "d24ca87940c4c48f864decf0b090ed7167a65077104e3bdfe235e6ee68d13292",
+      "elapsed_s": 2869.840712748,
+      "cpu_user_s": 2867.5208989999996,
+      "cpu_system_s": 1.2468659999999998
+    }
+  },
+  "next": "Do not rerun full fine capture using strict O3: it is approximately2percent slower. Resolve the hosted six-hour runtime bound with a validated faster execution method or exact state-preserving continuation; retain0.25ps/full34ns/allvector gates."
+}

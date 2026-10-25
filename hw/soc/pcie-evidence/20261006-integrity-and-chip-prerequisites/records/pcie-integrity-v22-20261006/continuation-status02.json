@@ -1,0 +1,108 @@
+{
+  "status": "FAILED_RETAINED",
+  "controller": {
+    "pid": 236901,
+    "state": "R",
+    "process_group": 236901,
+    "start_ticks": "4424066"
+  },
+  "affinity": [
+    6
+  ],
+  "policy": {
+    "bytes": 8819,
+    "sha256": "4c83365a59baadf48cbd511b4e0165cde313728b197b77e9b5d53f9ce5c71026"
+  },
+  "stages": [
+    {
+      "name": "map",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/run_balanced_map02.py"
+      ],
+      "started_utc": "2026-10-06T03:10:12.767651+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 236904,
+        "state": "R",
+        "process_group": 236904,
+        "start_ticks": "4424073"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-06T03:10:51.270297+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "registered_boundary",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/measure_registered_boundary.py"
+      ],
+      "started_utc": "2026-10-06T03:10:51.272079+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 237069,
+        "state": "R",
+        "process_group": 237069,
+        "start_ticks": "4427923"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-06T03:10:52.432697+00:00",
+      "log": {
+        "bytes": 62,
+        "sha256": "e9b190467f94718ca71917ec294b09ff2d4a7f0378935611e6f3c5252719a8a2"
+      }
+    },
+    {
+      "name": "import",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/balanced_import02.py"
+      ],
+      "started_utc": "2026-10-06T03:10:52.888898+00:00",
+      "status": "COMPLETE",
+      "identity": {
+        "pid": 237087,
+        "state": "R",
+        "process_group": 237087,
+        "start_ticks": "4428085"
+      },
+      "returncode": 0,
+      "finished_utc": "2026-10-06T03:10:57.802703+00:00",
+      "log": {
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "import_graph_proof",
+      "command": [
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/.venv/bin/python",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-integrity-v22-20261006/prove_balanced_import02.py"
+      ],
+      "started_utc": "2026-10-06T03:10:57.804275+00:00",
+      "status": "FAILED_RETAINED",
+      "identity": {
+        "pid": 237178,
+        "state": "R",
+        "process_group": 237178,
+        "start_ticks": "4428576"
+      },
+      "returncode": 2,
+      "finished_utc": "2026-10-06T03:10:57.863643+00:00",
+      "log": {
+        "bytes": 221,
+        "sha256": "52a5b3851b7866ecca4bc04aaacab232ddebadd103fd107350e069dca6d38408"
+      }
+    }
+  ],
+  "elapsed_watchdog_seconds": null,
+  "physical_acceptance": false,
+  "utc": "2026-10-06T03:10:57.864519+00:00",
+  "error": "AssertionError(('import_graph_proof', 2))",
+  "explicit_stop": false,
+  "stop_reason": "('import_graph_proof', 2)"
+}

@@ -1,0 +1,291 @@
+{
+  "utc": "2026-10-04T10:21:38.605897+00:00",
+  "status": "PASS_SOURCE_BOUND_SCRAMBLER_PORT_CONTROLS",
+  "positive": [
+    {
+      "mode": "rtl",
+      "tests": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": null,
+      "result_sha256": "a7a6cb8e8e3e5ea4e1f00904bbbfb7852f2bf2c661b9dca914af5af1cdbe505f"
+    },
+    {
+      "mode": "native",
+      "tests": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      "mapped_cells": 2627,
+      "result_sha256": "aaeb41318910bb8b46cb9c8edcf3af17b5893c04e6e82849094937ca070ce206"
+    }
+  ],
+  "actual_source_mutants_rejected": [
+    {
+      "path": "test_real_port_counterexample_6",
+      "result_sha256": "ec63dd900c85b6b200d2539f7949fc828d4efda73ba7672787ea5f705c4e5b18"
+    },
+    {
+      "path": "test_real_port_counterexample_5",
+      "result_sha256": "3522894856d8a8f6d5bd86cd7f8f49ab90ab82a662fc49b8e3f4beca89715026"
+    },
+    {
+      "path": "test_real_port_counterexample_4",
+      "result_sha256": "61b1dada76be2fe53f450d3b370c420ec167e102025aa6ed3bf54a485ee2430a"
+    },
+    {
+      "path": "test_real_port_counterexample_3",
+      "result_sha256": "50401e038c31b0538b03cfe0bf54320ab4b0f20cca68e68ecb4c9a10ace87efa"
+    },
+    {
+      "path": "test_real_port_counterexample_2",
+      "result_sha256": "d68815a6146b83421382037661b6241d285ed8288f0e60f11e0c9b122443b9e4"
+    },
+    {
+      "path": "test_real_port_counterexample_1",
+      "result_sha256": "63fdf5d1745d65a6035e3f98b600c860c6ea57120bf37e1b04bc608556f1c015"
+    },
+    {
+      "path": "test_real_port_counterexample_0",
+      "result_sha256": "9940c1c71160d6004d199d144dd79267f28d247ec9ce7e24b48e748bfcbb4aeb"
+    }
+  ],
+  "inputs_unchanged": true,
+  "runtime_unchanged": true,
+  "raw_outputs_rehashed": true,
+  "scope": "Four logical lanes0..3,32payloadbits/lane. Explicit independent per-byte advance/XOR and after-word reseed controls. Bit-cell equation oracle plus eight published lane0 state anchors; per-lane bit0-first comparison, backpressure, reset/flush. Testbench clock250MHz and TT cell models only, no SDF or physical250MHz closure. Caller still provides ordered-set/DC-balance policy; no full PCS, block alignment, deskew, LTSSM, PMA or main-chip integration.",
+  "primary_references": [
+    "https://www.intel.com/programmable/technical-pdfs/683779.pdf",
+    "https://studylib.net/doc/28447088/pcie-v4.0"
+  ],
+  "members": {
+    "mutations/test_real_port_counterexample_0/mutation.log": {
+      "bytes": 129,
+      "sha256": "fc5f2659d62c62821f171e4453b18d9b044831082e720bff32643740ef498b7e"
+    },
+    "mutations/test_real_port_counterexample_0/rtl/soc_pcie_gen3_scrambler.v": {
+      "bytes": 2304,
+      "sha256": "d06e75c21b2d0802ac6b350f7b1434e3efc06b078a85ba15f2ecc959d8ed8f8a"
+    },
+    "mutations/test_real_port_counterexample_0/run/result.json": {
+      "bytes": 3548,
+      "sha256": "9940c1c71160d6004d199d144dd79267f28d247ec9ce7e24b48e748bfcbb4aeb"
+    },
+    "mutations/test_real_port_counterexample_0/run/results.xml": {
+      "bytes": 3356,
+      "sha256": "b4f2f6028c2b7c0c708bf0498e86c507d6c56b00232a55d532e5f360eb4567f6"
+    },
+    "mutations/test_real_port_counterexample_0/run/simulation.log": {
+      "bytes": 13332,
+      "sha256": "2fb730f39d7702726259c6ab4c27cbffa6017b842702a4f1b62f704480a5965a"
+    },
+    "mutations/test_real_port_counterexample_1/mutation.log": {
+      "bytes": 129,
+      "sha256": "90169c1656063b083e1706db0887cea9d9170c0df5a899541b6259e4787b87c0"
+    },
+    "mutations/test_real_port_counterexample_1/rtl/soc_pcie_gen3_scrambler.v": {
+      "bytes": 2304,
+      "sha256": "42d8305058076da061a6fd3c896d7a5189835dc00c7a746ba133cfff625a26d0"
+    },
+    "mutations/test_real_port_counterexample_1/run/result.json": {
+      "bytes": 3548,
+      "sha256": "63fdf5d1745d65a6035e3f98b600c860c6ea57120bf37e1b04bc608556f1c015"
+    },
+    "mutations/test_real_port_counterexample_1/run/results.xml": {
+      "bytes": 3358,
+      "sha256": "3d116e37391acd2aaca105e609888ae034f2e17713d42234ff5375fb2ce13bad"
+    },
+    "mutations/test_real_port_counterexample_1/run/simulation.log": {
+      "bytes": 13326,
+      "sha256": "fdd8e6e036b2bfba3a34ea95e715376041fb9a8677a3c00ea7e44c45397dfb19"
+    },
+    "mutations/test_real_port_counterexample_2/mutation.log": {
+      "bytes": 129,
+      "sha256": "152809670ef19e865e044470126b53f7cf4fb6e7259b746b57fcac1c5f2ff699"
+    },
+    "mutations/test_real_port_counterexample_2/rtl/soc_pcie_gen3_scrambler.v": {
+      "bytes": 2304,
+      "sha256": "2ce777562b8f5dcf27246a8922f0591247945c5b418043094430b021adfcbb7c"
+    },
+    "mutations/test_real_port_counterexample_2/run/result.json": {
+      "bytes": 3548,
+      "sha256": "d68815a6146b83421382037661b6241d285ed8288f0e60f11e0c9b122443b9e4"
+    },
+    "mutations/test_real_port_counterexample_2/run/results.xml": {
+      "bytes": 3349,
+      "sha256": "5838945b5456d95bd1586c5b6831fab76f28112d31b9b642b37e154668c99d21"
+    },
+    "mutations/test_real_port_counterexample_2/run/simulation.log": {
+      "bytes": 13310,
+      "sha256": "262a0dd137f897a0675915e59693ddda4b97bac01a18480dd971a056f4a965a8"
+    },
+    "mutations/test_real_port_counterexample_3/mutation.log": {
+      "bytes": 129,
+      "sha256": "7b0e2efe39638ae36c5bac8e48e78d5030f8ad2a28c6fa77361de40a7a1543aa"
+    },
+    "mutations/test_real_port_counterexample_3/rtl/soc_pcie_gen3_scrambler.v": {
+      "bytes": 2315,
+      "sha256": "6a0c95594660f2c9e25d5feb8d5e5b6f364f5c59bb737498e2fd8e2642614101"
+    },
+    "mutations/test_real_port_counterexample_3/run/result.json": {
+      "bytes": 3548,
+      "sha256": "50401e038c31b0538b03cfe0bf54320ab4b0f20cca68e68ecb4c9a10ace87efa"
+    },
+    "mutations/test_real_port_counterexample_3/run/results.xml": {
+      "bytes": 2572,
+      "sha256": "2dfd7f401ce18e151c821c1776bd7b7cbb952777cf13b56489b9312c1252d328"
+    },
+    "mutations/test_real_port_counterexample_3/run/simulation.log": {
+      "bytes": 10780,
+      "sha256": "672e292e0b14d37ad8549a76180e9417633a45babe80b11b0b19de2448e10da0"
+    },
+    "mutations/test_real_port_counterexample_4/mutation.log": {
+      "bytes": 129,
+      "sha256": "6687d3fbd80181715dd196268ad3b0908a1f02472bc05e83eac9262a62c03e29"
+    },
+    "mutations/test_real_port_counterexample_4/rtl/soc_pcie_gen3_scrambler.v": {
+      "bytes": 2288,
+      "sha256": "e47d1d6a36797732ed59ec496b0415573f51bc3f8eeb0e561b4b2a8ddff66020"
+    },
+    "mutations/test_real_port_counterexample_4/run/result.json": {
+      "bytes": 3548,
+      "sha256": "61b1dada76be2fe53f450d3b370c420ec167e102025aa6ed3bf54a485ee2430a"
+    },
+    "mutations/test_real_port_counterexample_4/run/results.xml": {
+      "bytes": 3351,
+      "sha256": "c4b0552e519130f5f2fcd9334c125bbd0f97a559662588a743f3a0cf9df215e4"
+    },
+    "mutations/test_real_port_counterexample_4/run/simulation.log": {
+      "bytes": 13340,
+      "sha256": "586582bc55df1b86282fec0461f9a481c539c96e69ff9adaa8648fce7d0abf23"
+    },
+    "mutations/test_real_port_counterexample_5/mutation.log": {
+      "bytes": 129,
+      "sha256": "1197d9cfad71d3c0665212f419f1ebb6afe81590513e8f9b6184d66284c6be4a"
+    },
+    "mutations/test_real_port_counterexample_5/rtl/soc_pcie_gen3_scrambler.v": {
+      "bytes": 2301,
+      "sha256": "b026d15e7ac7832c3467ff1749ae971f39d034eeb7f6fa6f00a37ff939c9586b"
+    },
+    "mutations/test_real_port_counterexample_5/run/result.json": {
+      "bytes": 3546,
+      "sha256": "3522894856d8a8f6d5bd86cd7f8f49ab90ab82a662fc49b8e3f4beca89715026"
+    },
+    "mutations/test_real_port_counterexample_5/run/results.xml": {
+      "bytes": 1797,
+      "sha256": "1e61b614040da7104ebb495a8663b35044efdc7c38b7bb90f04c5f4839c352c7"
+    },
+    "mutations/test_real_port_counterexample_5/run/simulation.log": {
+      "bytes": 8225,
+      "sha256": "06f5211040c44c9fb4a7e0be69c21cafdf4736b353ff6ae3011bd7e0e0e1fde9"
+    },
+    "mutations/test_real_port_counterexample_6/mutation.log": {
+      "bytes": 129,
+      "sha256": "8e5d0327fb5a7dfd04bc1a5c4d247c53f0afee0211341a64e453db1b388e9e02"
+    },
+    "mutations/test_real_port_counterexample_6/rtl/soc_pcie_gen3_scrambler.v": {
+      "bytes": 2278,
+      "sha256": "00b216a1bc6c1d94268ebfa11777d3a465315a7f82749b3b4fdbf1a5c36f8ce4"
+    },
+    "mutations/test_real_port_counterexample_6/run/result.json": {
+      "bytes": 3548,
+      "sha256": "ec63dd900c85b6b200d2539f7949fc828d4efda73ba7672787ea5f705c4e5b18"
+    },
+    "mutations/test_real_port_counterexample_6/run/results.xml": {
+      "bytes": 3360,
+      "sha256": "97ece40774ef8375235acc890b9c9fc4330e6648616bfa2fce59e42f0b3c6764"
+    },
+    "mutations/test_real_port_counterexample_6/run/simulation.log": {
+      "bytes": 13334,
+      "sha256": "16647f531b20f5fb9b26293eb40f28cb052d057a079a975b574d9fbbf3a8756f"
+    },
+    "native/map.log": {
+      "bytes": 202401,
+      "sha256": "1bf5f2690898bdea6e79f8d355422e493954e16f22d68d90aa8fa31ff1999155"
+    },
+    "native/map.ys": {
+      "bytes": 1110,
+      "sha256": "bead5f558fc0b079c4fcbf67639bd73162fc71eed7289977b32051a8031d632d"
+    },
+    "native/mapped.json": {
+      "bytes": 1723237,
+      "sha256": "44fd7cdd2dfe4851241ef41fd00fa14205db738d41d3e6c32c362b66e4718c46"
+    },
+    "native/mapped.v": {
+      "bytes": 278791,
+      "sha256": "a0fb800639e5210a9a6b5781d6bdd4fdeff852681d3330aba93d3d4b022650ae"
+    },
+    "native/result.json": {
+      "bytes": 5233,
+      "sha256": "aaeb41318910bb8b46cb9c8edcf3af17b5893c04e6e82849094937ca070ce206"
+    },
+    "native/results.xml": {
+      "bytes": 1014,
+      "sha256": "3d22139f4341eddc52b723949ba07f188275d1580358ef36ccc10f1ffd64580b"
+    },
+    "native/simulation.log": {
+      "bytes": 34479,
+      "sha256": "9946be29486941b9f454f6ce1cace4918f3250b9b5f3244cefaaa147c6c3e9f0"
+    },
+    "review/seal.py": {
+      "bytes": 3482,
+      "sha256": "e866c6ec5291bb76b6d316cc05d56c4edd1d8856b60d30458b188049222e3428"
+    },
+    "rtl/result.json": {
+      "bytes": 3393,
+      "sha256": "a7a6cb8e8e3e5ea4e1f00904bbbfb7852f2bf2c661b9dca914af5af1cdbe505f"
+    },
+    "rtl/results.xml": {
+      "bytes": 1018,
+      "sha256": "bec30e138e22aa2f3008cc2d0ac4ba829e410e5152cf931889027d5a421fd27c"
+    },
+    "rtl/simulation.log": {
+      "bytes": 4964,
+      "sha256": "00f234ad66203df0598d8a5d3049db71b47c070f603bd5dce7e1f058eb5739d1"
+    },
+    "sources/.github/workflows/pcie-buffered-soc.yml": {
+      "bytes": 6416,
+      "sha256": "3b197da1522dbc29f6cd6c7c940127da65f73866db05cd775f1e8c18f406d7d3"
+    },
+    "sources/hw/soc/rtl/pcie/soc_pcie_gen3_scrambler.v": {
+      "bytes": 2304,
+      "sha256": "4b43b912832e2489f2169485383a4812835b9703435fbde03c81db3530590464"
+    },
+    "sources/hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_scrambler": {
+      "bytes": 1182,
+      "sha256": "722f9a0f2aed453aea5eb275218199c5b5e4a8ee22eb3ef03c36f648337c50dd"
+    },
+    "sources/hw/soc/tb/cocotb/test_soc_pcie_gen3_scrambler.py": {
+      "bytes": 5426,
+      "sha256": "b6da411d6e69316c6bc5052825c1ddcfe27780c54bce736edf5725e2406314e9"
+    },
+    "sources/scripts/check_pcie_gen3_scrambler.py": {
+      "bytes": 8257,
+      "sha256": "bb045caad1e6fc7e23ad590b078e238c828baf41a8dd6e523950ac5b416e0047"
+    },
+    "sources/scripts/check_pcie_integrity.py": {
+      "bytes": 4628,
+      "sha256": "b926f798ba26c02cbd8459350669adf770653ac89a962c106a0a55db916fcd5d"
+    },
+    "sources/scripts/check_pcie_integrity_native.py": {
+      "bytes": 6139,
+      "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+    },
+    "sources/scripts/cocotb_results.py": {
+      "bytes": 1383,
+      "sha256": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2"
+    },
+    "sources/sw/tests/test_pcie_gen3_scrambler.py": {
+      "bytes": 2169,
+      "sha256": "85d5ba02e184b447e6eeaf84b8ae10842e2f3faa00e57cc1e3ad444916ce76a8"
+    }
+  },
+  "capsule": {
+    "path": "hw/soc/pcie-evidence/20261004-phy-clock/scrambler.tar.xz",
+    "bytes": 97812,
+    "sha256": "26de8d15d7db6b83701e48072b38cba7300ec683df43b086eac4c990dc94499d"
+  }
+}

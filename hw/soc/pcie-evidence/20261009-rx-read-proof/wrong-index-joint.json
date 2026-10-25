@@ -1,0 +1,44 @@
+{
+  "status": "FAIL",
+  "kind": "rx",
+  "parameters": {
+    "MAX_TLP_DWORDS": 4,
+    "SLOTS_PER_CLASS": 1,
+    "COMPLETER_ONLY": 1
+  },
+  "returncode": 0,
+  "counts": [
+    [
+      "1173",
+      "0"
+    ]
+  ],
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/fixtures/pcie_chip_timing/flat-rx.v": "ea4977440f6e111cb87967385012835720cf2581d8b1c3d03608d55f097ffae8",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-onehot-read-20261009/wrong-index01.v": "d58adb0f747772bd25d147e521b26591588cb6c51e7425816b5623664423fa37",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_chip_timing_equivalence.py": "0bfa1798757e645cd080f53f855042ae2fa61dd27a4c68224defb63e329cff6e"
+  },
+  "inputs_unchanged": true,
+  "scope": "RTL sequential equivalence at the listed parameters; not native timing or serial PHY acceptance",
+  "arbitrary_memory_read_cut": {
+    "status": "FAIL",
+    "returncode": 1,
+    "parameters": {
+      "MAX_TLP_DWORDS": 4,
+      "SLOTS_PER_CLASS": 1,
+      "COMPLETER_ONLY": 1
+    },
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/fixtures/pcie_chip_timing/flat-rx.v": "ea4977440f6e111cb87967385012835720cf2581d8b1c3d03608d55f097ffae8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-onehot-read-20261009/wrong-index01.v": "d58adb0f747772bd25d147e521b26591588cb6c51e7425816b5623664423fa37",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_rx_read_cut.py": "791aa5fe1492585e1d4406084db00c2d01f8c3759740795199f0e176119c8c0c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-onehot-read-20261009/wrong-index-joint02/read-cut/gold.v": "0c38914a65e98703deaea2d176b9beab1ff70588389c1d1ade9eb28ee5a09494",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-onehot-read-20261009/wrong-index-joint02/read-cut/gate.v": "e651693c198d4efcd757864178582de7d1815486841ad2cdaca5216507040d43",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-onehot-read-20261009/wrong-index-joint02/read-cut/proof.ys": "ae6fa277ac407af34f1cd794617ee131871e222f8a4596cc37acb03a31bccced"
+    },
+    "inputs_unchanged": true,
+    "scope": "Arbitrary defined memory bits, head slot and byte index; all language-defined array addresses including cross-bank reads. No out_valid mask or sequential/physical timing claim."
+  }
+}

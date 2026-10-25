@@ -1,0 +1,235 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_p4_drive3_wave.py",
+      "baseline_sha256": "de6e70bdd4f7d7e9d2bf64a9778094c5fe7473fc8454972cba46b6e141cb3412",
+      "candidate_path": "scripts/cloud_tx_full32_rawdrivers_wave.py",
+      "candidate_sha256": "5884d4de00a7e8114f66bc8a21106801892a209f1b9583b6921026e0d21a270e",
+      "edits": [
+        {
+          "before": "import argparse,json,os,re,resource,subprocess,sys,tarfile,time",
+          "after": "import argparse,json,os,re,resource,subprocess,sys,tarfile,time,math,shutil",
+          "count": 1
+        },
+        {
+          "before": "p=argparse.ArgumentParser();",
+          "after": "p=argparse.ArgumentParser();p.add_argument('--prepare-only',action='store_true');",
+          "count": 1
+        },
+        {
+          "before": "out=ROOT/('cloud-tx-p4-drive3-wave-'",
+          "after": "out=ROOT/('cloud-tx-full32-rawdrivers-wave-'",
+          "count": 1
+        },
+        {
+          "before": "  assert len(contract['hbt'])==604 and len(contract['mos'])==512 and len(contract['interface_probes'])==124\n",
+          "after": "  assert len(contract['hbt'])==604 and len(contract['mos'])==512 and len(contract['interface_probes'])==124\n  from cloud_tx_full32_rawdriver_adapter import restore_and_adapt\n  driver_root=out/'raw-drivers'\n  deck,contract,result['physical_driver_binding']=restore_and_adapt(driver_root,inputs,deck,contract)\n  assert len(contract['hbt'])==604 and len(contract['mos'])==5376 and len(contract['interface_probes'])==124\n  result['scope']+=' All64 CMOS input drivers now use actual native100-device models with each260R295C; driver/core interconnect and supply boundaries still ideal. No composite fullPHY layout acceptance.'\n",
+          "count": 1
+        },
+        {
+          "before": "hbt_count=604,mos_count=512",
+          "after": "hbt_count=604,mos_count=5376",
+          "count": 1
+        },
+        {
+          "before": "  result['protected_inputs']={str(q):sha(q)for q in protected};save()",
+          "after": "  result['protected_inputs']={str(q):sha(q)for q in protected};save()\n  columns=len(contract['vectors'])+1\n  minimum_rows=math.ceil(tree.STOP/(contract['condition']['step_ps']*1e-12))+1\n  result['capture_preflight']=dict(columns=columns,minimum_rows=minimum_rows,\n   minimum_raw_payload_bytes=columns*minimum_rows*8,free_disk_bytes=shutil.disk_usage(out).free,\n   retained_every_raw_mos_terminal=True,retained_every_hbt_and_original_interface=True,\n   estimate_scope='Strict lower bound from maximum integration step; adaptive rows and archive space add to this. No sampling reduction.')\n  if args.prepare_only:\n   assert all(sha(Path(n))==v for n,v in result['protected_inputs'].items())\n   result.update(status='READY_FULL32_RAW64_DRIVER_DECK_NOT_SIMULATED',source_unchanged=True,simulator_checked=False)\n   save();return\n",
+          "count": 1
+        },
+        {
+          "before": "  protected += [ROOT/'scripts/cloud_tx_p4_drive3_model_compare.py',ROOT/'hw/soc/out/cloud-tx-p4-drive3-model-compare/result.json']",
+          "after": "  protected += [ROOT/'scripts/cloud_tx_p4_drive3_model_compare.py',ROOT/'hw/soc/out/cloud-tx-p4-drive3-model-compare/result.json',ROOT/'scripts/cloud_tx_full32_rawdriver_adapter.py',*[q for q in driver_root.rglob('*')if q.is_file()]]",
+          "count": 1
+        },
+        {
+          "before": "from cloud_tx_stream import streaming_deck",
+          "after": "from cloud_tx_chunked_op import chunked_stream,assemble_op,native_pilot\nfrom cloud_tx_stream import streaming_deck",
+          "count": 1
+        },
+        {
+          "before": "  native=out/'native';native.mkdir();(native/'bench.cir').write_text(streaming_deck(deck,contract));",
+          "after": "  result['op_transport_control']=native_pilot(paths['patched'],out/'op-transport-control');save()\n  native=out/'native';native.mkdir();streamed,op_spec=chunked_stream(deck,contract);result['op_chunk_spec']=op_spec;(native/'bench.cir').write_text(streamed);",
+          "count": 1
+        },
+        {
+          "before": "*[q for q in driver_root.rglob('*')if q.is_file()]]",
+          "after": "*[q for q in driver_root.rglob('*')if q.is_file()],ROOT/'scripts/cloud_tx_chunked_op.py',*[q for q in (out/'op-transport-control').rglob('*')if q.is_file()]]",
+          "count": 1
+        },
+        {
+          "before": "result['native_off_flags_count']=len(flags);result['review']=tree.review(native,contract)",
+          "after": "result['native_off_flags_count']=len(flags);result['op_reassembly']=assemble_op(native,op_spec);result['review']=tree.review(native,contract)",
+          "count": 1
+        },
+        {
+          "before": "  def limits():\n",
+          "after": "  pin=json.loads((ROOT/'docs/evidence/tx-full32-rawdrivers-preparation-pass-20261020.json').read_text())\n  assert pin['source_run']==39459369542 and pin['source_head']=='36b2250c75b4ba514969b57acf66020c14ff321e'\n  assert pin['.summary.json']['sha256']=='e29e16dcae6c9dc76af22e308bfbdd4e5faa1e8baab0246699f6c891018a03ef'\n  assert columns==pin['result']['capture_preflight']['columns']==11708\n  assert columns*minimum_rows*8==pin['result']['capture_preflight']['minimum_raw_payload_bytes']==6369245664\n  assert len(result['op_transport_control']['controls'])==5 and all(c['rejected']for c in result['op_transport_control']['controls'])\n  if args.fault=='none':\n   assert sha(native/'bench.cir')==pin['out_hashes']['native/bench.cir']=='d8624b2bc9d4c233716851d84ed2a792afa1d9564816fb0aa43c44b975786e26'\n   assert sha(native/'contract.json')==pin['out_hashes']['native/contract.json']=='37c865f5f4cafc40af22ba14e23b7c6bc5902ae12e8b50c2d050fcbbdf7df8c0'\n  raw_limit=32*1024**3\n  required_free=2*raw_limit+8*1024**3\n  assert shutil.disk_usage(out).free>=required_free,'Insufficient cloud disk for all raw bytes, complete archive and8GiB reserve'\n  result['capture_storage_contract']=dict(raw_file_limit_bytes=raw_limit,minimum_free_bytes=required_free,\n   observed_free_bytes=shutil.disk_usage(out).free,prepared_nominal_deck_byte_identical=(args.fault=='none'),\n   unchanged_all_original_samples=True,preparation_summary_sha256=pin['.summary.json']['sha256'])\n  save()\n  def limits():\n",
+          "count": 1
+        },
+        {
+          "before": "resource.RLIMIT_FSIZE,(8*1024**3,)*2",
+          "after": "resource.RLIMIT_FSIZE,(raw_limit,)*2",
+          "count": 1
+        },
+        {
+          "before": "result['scope']+=' All64 CMOS",
+          "after": "result['scope']=result['scope'].replace('External schematic CMOS, ideal modulation and output frontends remain.','Input CMOS layouts and local RC included; ideal differential clock modulation and output frontends remain.')+' All64 CMOS",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/tx-p4-drive3-loaded-wave-cloud.yml",
+      "baseline_sha256": "286b5250a418c422a1499980e5e21340067911ee349af26f1a1015f390c85ae7",
+      "candidate_path": ".github/workflows/tx-full32-rawdrivers-prepare-cloud.yml",
+      "candidate_sha256": "6361e242a084fc5e569798709a37b179d23219d1dd49eecc81469fa5f7dce0e9",
+      "edits": [
+        {
+          "before": "name: tx-p4-drive3-loaded-wave-cloud",
+          "after": "name: tx-full32-rawdrivers-prepare-cloud",
+          "count": 1
+        },
+        {
+          "before": "paths: [.github/workflows/tx-p4-drive3-loaded-wave-cloud.yml]",
+          "after": "paths: [.github/workflows/tx-full32-rawdrivers-prepare-cloud.yml]",
+          "count": 1
+        },
+        {
+          "before": "group: tx-p4-drive3-loaded-wave-",
+          "after": "group: tx-full32-rawdrivers-prepare-",
+          "count": 1
+        },
+        {
+          "before": "      - name: Check unchanged native gates and new source bindings",
+          "after": "      - name: Check unchanged native gates and all64 raw driver adaptation",
+          "count": 1
+        },
+        {
+          "before": "          python3 scripts/check_tx_p4_drive3_wave_sources.py",
+          "after": "          python3 scripts/check_tx_full32_rawdrivers_sources.py",
+          "count": 1
+        },
+        {
+          "before": "  native-full32:",
+          "after": "  native-full32-prepare:",
+          "count": 1
+        },
+        {
+          "before": "          - {mode: wire, condition: nominal, fault: swap_leaf_select}\n",
+          "after": "",
+          "count": 1
+        },
+        {
+          "before": "      - name: Simulate all eleven physical clock macros loaded by actual full32 tree",
+          "after": "      - name: Build all64 native input drivers and full32 core with all original device probes",
+          "count": 1
+        },
+        {
+          "before": "python3 scripts/cloud_tx_p4_drive3_wave.py --mode",
+          "after": "python3 scripts/cloud_tx_full32_rawdrivers_wave.py --prepare-only --mode",
+          "count": 1
+        },
+        {
+          "before": "tx-p4-drive3-wave-",
+          "after": "tx-full32-rawdrivers-wave-",
+          "count": 5
+        },
+        {
+          "before": "# Native master-substitution correspondence and five real corruptions precede each fullwave run.",
+          "after": "# Native master-substitution correspondence and five real corruptions precede each fullwave run.\n# The raw64 preparation also proves native10032-vector chunked OP export before any DUT simulation.",
+          "count": 1
+        },
+        {
+          "before": "# The raw64 preparation also proves native10032-vector chunked OP export before any DUT simulation.",
+          "after": "# The raw64 preparation also proves native10032-vector chunked OP export before any DUT simulation.\n# Provide the native initialization file explicitly; no missing-init warning is waived.",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": ".github/workflows/tx-full32-rawdrivers-prepare-cloud.yml",
+      "baseline_sha256": "6361e242a084fc5e569798709a37b179d23219d1dd49eecc81469fa5f7dce0e9",
+      "candidate_path": ".github/workflows/tx-full32-rawdrivers-loaded-cloud.yml",
+      "candidate_sha256": "bb91aad0dc3e0fe566389535be2d7712214beeac7a0d380120a27374fa297973",
+      "edits": [
+        {
+          "before": "tx-full32-rawdrivers-prepare-cloud",
+          "after": "tx-full32-rawdrivers-loaded-cloud",
+          "count": 2
+        },
+        {
+          "before": "group: tx-full32-rawdrivers-prepare-",
+          "after": "group: tx-full32-rawdrivers-loaded-",
+          "count": 1
+        },
+        {
+          "before": "  native-full32-prepare:",
+          "after": "  native-full32:",
+          "count": 1
+        },
+        {
+          "before": "          - {mode: wire, condition: nominal, fault: none}",
+          "after": "          - {mode: wire, condition: nominal, fault: none}\n          - {mode: wire, condition: nominal, fault: swap_leaf_select}",
+          "count": 1
+        },
+        {
+          "before": "Build all64 native input drivers and full32 core with all original device probes",
+          "after": "Simulate all64 native input drivers and full32 core with all original device probes",
+          "count": 1
+        },
+        {
+          "before": "cloud_tx_full32_rawdrivers_wave.py --prepare-only --mode",
+          "after": "cloud_tx_full32_rawdrivers_wave.py --mode",
+          "count": 1
+        }
+      ]
+    }
+  ],
+  "adapter": {
+    "baseline_path": "scripts/cloud_tx_driver_localpins_loaded.py",
+    "baseline_sha256": "db95b5b84bf8b2c9551da680efb878ed82712030cb45299361461dce4b6f24d9",
+    "function": "adapt",
+    "edits": [
+      {
+        "before": "len(oldmos)==64",
+        "after": "len(oldmos)==512",
+        "count": 1
+      },
+      {
+        "before": "range(4)",
+        "after": "range(32)",
+        "count": 1
+      },
+      {
+        "before": "len(newmos)==672",
+        "after": "len(newmos)==5376",
+        "count": 2
+      },
+      {
+        "before": "len(vectors)<10000",
+        "after": "len(vectors)<30000",
+        "count": 1
+      },
+      {
+        "before": "len(actual)==8",
+        "after": "len(actual)==64",
+        "count": 1
+      },
+      {
+        "before": "driver_instances=8,raw_devices=800,raw_mos=672",
+        "after": "driver_instances=64,raw_devices=6400,raw_mos=5376",
+        "count": 1
+      },
+      {
+        "before": "deck=deck.replace(oldsave,'\\n'.join(tree.native_save_commands(vectors)))",
+        "after": "deck=deck.replace(oldsave,'\\n'.join(save_commands(vectors)))",
+        "count": 1
+      }
+    ],
+    "candidate_path": "scripts/cloud_tx_full32_rawdriver_adapter.py",
+    "candidate_sha256": "306c952fb39221bf4c1e86ba4122fc9ea9c260abd0ec73c42a8a014a743c7de2"
+  },
+  "protected": {
+    "scripts/cloud_tx_chunked_op.py": "e04bd6f61672f0522c3d5d457fcd0ea365a9cc6a5dc3d10d393613e49b9801ac"
+  }
+}

@@ -1,0 +1,151 @@
+{
+  "files": [
+    {
+      "baseline_path": "scripts/cloud_tx_v5_timing_priority_builder.py",
+      "baseline_sha256": "0e9213159adb68dc39ec2b3dd61e1470a42b5ccd2ba0a96b15e1a739643c7bc5",
+      "candidate_path": "scripts/cloud_tx_fast_wire24_builder.py",
+      "candidate_sha256": "65d0574f266a2eb8dd0abc5b81b6621363732a1cf8df04505e7429585f33c311",
+      "edits": [
+        {
+          "before": "# Exact timing-priority composition39307462428 only; unchanged circuit proven by native topology comparison39308234471.",
+          "after": "# Exact wire24 composition39343496964 only; native topology and corruption checks run before simulation.",
+          "count": 1
+        },
+        {
+          "before": "9311e6c8d230c36239ed3994ea0cc93c40ecfc7a7ec4e1f21c0b33d9c3b73b59",
+          "after": "d04cfc43564d69e5d09fe7629abc65f501f7497062a2233f6a106630b4efc720",
+          "count": 1
+        },
+        {
+          "before": "6de9b40e5f4a300b9610899c34f0b1f1db636811d322cc9abe030d2735fadc87",
+          "after": "92797a39882e9ace4a11d393f44b5c1494540001723746254a871b3965f16dca",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_v5_timing_priority_clock_adapter.py",
+      "baseline_sha256": "f2f48fa845506089798d817660801d184811fdb446b4ed5d6561904eb263fcbc",
+      "candidate_path": "scripts/cloud_tx_fast_wire24_clock_adapter.py",
+      "candidate_sha256": "6d23ce2e39aa5a2e1ac0edae82e668a42413a08f42ff574df6917e9af388d696",
+      "edits": [
+        {
+          "before": "import cloud_tx_v5_timing_priority_builder as tree",
+          "after": "import cloud_tx_fast_wire24_builder as tree",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_v5_timing_priority_model_compare.py",
+      "baseline_sha256": "9d52d86b457a166437f36e88e7fdd572456b1082d90c96e3c9352605e7022da6",
+      "candidate_path": "scripts/cloud_tx_fast_wire24_model_compare.py",
+      "candidate_sha256": "11394da670f8e2adbcf47bf9e3eb734aa6157046a390476da1c1b61170a221c9",
+      "edits": [
+        {
+          "before": "OUT=ROOT/'hw/soc/out/cloud-tx-v5-timing-priority-model-compare'",
+          "after": "OUT=ROOT/'hw/soc/out/cloud-tx-fast-wire24-model-compare'",
+          "count": 1
+        },
+        {
+          "before": "[('baseline','tx-v5-minimax-composition-pass-20261019.json','cloud-tx-v5-minimax-assembly'),('candidate','tx-v5-timing-priority-composition-pass-20261019.json','cloud-tx-v5-timing-priority-assembly')]",
+          "after": "[('baseline','tx-v5-timing-priority-composition-pass-20261019.json','cloud-tx-v5-timing-priority-assembly'),('candidate','tx-fast-wire24-composition-pass-20261020.json','cloud-tx-fast-wire24-physical')]",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "baseline_path": "scripts/cloud_tx_v5_timing_priority_wave.py",
+      "baseline_sha256": "5cfc97c77f5d2a04dc331a7f5e4f569905e793e7509d15efcd6f811827678a83",
+      "candidate_path": "scripts/cloud_tx_fast_wire24_wave.py",
+      "candidate_sha256": "2c9fa70fa7546cde17d3323cbf0e6d6146957f6d9801736e78f0a6c9d3cb7e5a",
+      "edits": [
+        {
+          "before": "import argparse,json,os,re,resource,subprocess,tarfile,time",
+          "after": "import argparse,json,os,re,resource,subprocess,sys,tarfile,time",
+          "count": 1
+        },
+        {
+          "before": "tx-v5-timing-priority-composition-pass-20261019.json",
+          "after": "tx-fast-wire24-composition-pass-20261020.json",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-timing-priority-wave-",
+          "after": "cloud-tx-fast-wire24-wave-",
+          "count": 1
+        },
+        {
+          "before": "cloud-tx-v5-timing-priority-assembly",
+          "after": "cloud-tx-fast-wire24-physical",
+          "count": 1
+        },
+        {
+          "before": "39307462428",
+          "after": "39343496964",
+          "count": 1
+        },
+        {
+          "before": "e45f85a11e3b98430b12929370da32459c7b88f8",
+          "after": "1ff43e1646adadb7deae1a1cdc9c683f15d36cb8",
+          "count": 2
+        },
+        {
+          "before": "d05754a8d9d5a5a47fcad2acd7bdb01edc3f9f9b1a70bab29ef51cef5b939ec6",
+          "after": "4fddd0e0d4a865be5f3e62db351414d1c0cb3823f619a47c02e887e7bc40fb2b",
+          "count": 1
+        },
+        {
+          "before": "b34985ea402fc73dd13295675fd6ccf14770b4d456d0de06eb08cba74cf092cb",
+          "after": "c8ac38a9c87faebd8f3bd56da6f39b28f81c08141e44e9e876da2a1fc93872ba",
+          "count": 1
+        },
+        {
+          "before": "dfcd1f83ac11cef5285899e261ded8a58f6dfe48bd12120fc5dc145d1c9f25c0",
+          "after": "38c4acb3606e4e8f58a1721ac40bf75bbef0516b24da9dafe9acb33ef60622ba",
+          "count": 2
+        },
+        {
+          "before": "assert report['geometry_delta']['status']==receipt['geometry_delta_status']=='PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'",
+          "after": "assert report['geometry_delta']['status']==receipt['geometry_delta_status']=='PASS_EXACT28_PARENT_SIGNAL_WIDTHS_NATIVE_DEVICES_VIAS_PORTS_AND_THREE_FAULTS'",
+          "count": 1
+        },
+        {
+          "before": "  gp=report['independent_data_route_geometry']\n  assert gp==receipt['independent_data_route_geometry']==report['geometry_delta']",
+          "after": "  delta=report['independent_data_route_geometry']\n  assert delta==receipt['independent_data_route_geometry']==report['geometry_delta']\n  assert delta['candidate_gds_sha256']=='bab4f236232c592e03a280adee5cc7f4fdc49861e7076c572ec13aa7f704c238'\n  assert delta['widths_um']==dict(original=4.,candidate=2.4,retained_landings=4.)\n  assert delta['original_vias_children_placements_pins_and_other_layers_equal'] and delta['serialized_gds_verified']\n  assert len(delta['changed_routes'])==28 and len(delta['controls'])==3 and all(c['rejected']for c in delta['controls'])\n  gp=report['baseline_data_route_geometry']\n  assert gp==receipt['baseline_data_route_geometry']\n  assert gp['status']=='PASS_TIMING_PRIORITY_ACTUAL31_PLACEMENTS_FROZEN_CHILDREN_60_ROUTES_AND_THREE_FAULTS'",
+          "count": 1
+        },
+        {
+          "before": "cloud_tx_v5_timing_priority_builder",
+          "after": "cloud_tx_fast_wire24_builder",
+          "count": 2
+        },
+        {
+          "before": "bind_tx_v5_timing_priority_interfaces",
+          "after": "bind_tx_fast_wire24_interfaces",
+          "count": 2
+        },
+        {
+          "before": "check_tx_v5_timing_priority_builder",
+          "after": "check_tx_fast_wire24_builder",
+          "count": 2
+        },
+        {
+          "before": "cloud_tx_v5_timing_priority_clock_adapter",
+          "after": "cloud_tx_fast_wire24_clock_adapter",
+          "count": 3
+        },
+        {
+          "before": "  from check_tx_fast_wire24_builder import check",
+          "after": "  subprocess.run([sys.executable,str(ROOT/'scripts/cloud_tx_fast_wire24_model_compare.py')],cwd=ROOT,check=True)\n  from check_tx_fast_wire24_builder import check",
+          "count": 1
+        },
+        {
+          "before": "  result['protected_inputs']={str(q):sha(q)for q in protected};save()",
+          "after": "  protected += [ROOT/'scripts/cloud_tx_fast_wire24_model_compare.py',ROOT/'hw/soc/out/cloud-tx-fast-wire24-model-compare/result.json']\n  result['protected_inputs']={str(q):sha(q)for q in protected};save()",
+          "count": 1
+        }
+      ]
+    }
+  ]
+}

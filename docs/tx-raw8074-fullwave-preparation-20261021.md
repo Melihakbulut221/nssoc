@@ -1,0 +1,6 @@
+# Actual whole8074 loaded bench preparation
+Native interface binding39516735474 passed all124 input legs,372 actual HBT bases,64 driver handoffs and28582 native terminals, with8 record and2 independent physical wrong-endpoint controls. Its complete immutable report is preserved.
+
+The preparation workflow retains the original256-bit34ns waveform,0.5ps step, solver options, sources, output loads, external clock models and original engineering review. It replaces the1674 core plus64 separately connected drivers with one actual8074-device/137221R/98241C model. All original sources and port permutations (including the deliberate swap-leaf-select fault) stay fixed. Native604HBT/5376MOS observations remain; every whole-parent terminal is added, and all124 interface probes use proven physical RC nodes. Seven adapter faults must reject.
+
+This stage only builds the complete nominal and fault decks and verifies transport. It cannot run the full DUT transient without the explicit prepare-only flag, preventing a repeat of the uncheckpointed six-hour timeout. Next package the exact models/runtime and preserve the actual native simulator process before any runner deadline, then execute and review the entire original waveform. Full serial PHY,11-clock-macro physical assembly, PVT/PEX and mainchip integration remain open.

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="650" viewBox="0 0 1120 650" role="img" aria-labelledby="title desc">
+  <title id="title">Neuromorphic SoC functional architecture</title>
+  <desc id="desc">Ibex CPU, protected memory and the serial NPU bridge share the system interconnect. APB connects timers, watchdog, UART, GPIO, QSPI and spacecraft interfaces. PCIe and physical qualification remain open.</desc>
+  <defs><marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7" fill="#43617b"/></marker></defs>
+  <rect width="1120" height="650" rx="18" fill="#f4f7fb"/>
+  <g font-family="DejaVu Sans, sans-serif" fill="#142b42">
+    <text x="40" y="45" font-size="24" font-weight="bold">Neuromorphic fault tolerant SoC</text>
+    <text x="40" y="70" font-size="14" fill="#52687a">Functional blocks in RTL · IHP SG13G2 implementation work · no silicon qualification</text>
+    <g fill="#ffffff" stroke="#9bb2c8" stroke-width="1.5">
+      <rect x="40" y="105" width="310" height="110" rx="10"/>
+      <rect x="405" y="105" width="310" height="110" rx="10"/>
+      <rect x="770" y="105" width="310" height="110" rx="10"/>
+    </g>
+    <g font-size="19" font-weight="bold">
+      <text x="60" y="137">Ibex management CPU</text>
+      <text x="425" y="137">Memory and boot</text>
+      <text x="790" y="137">Neuromorphic engine</text>
+    </g>
+    <g font-size="15">
+      <text x="60" y="166">RV32IMC · protected register file</text><text x="60" y="192">Interrupts and fault telemetry</text>
+      <text x="425" y="166">SRAM · SECDED · scrub</text><text x="425" y="192">Fixed logic boot ROM → QSPI flash</text>
+      <text x="790" y="166">Serial bridge → frozen pilot</text><text x="790" y="192">LIF state · ECC · TMR · AER queues</text>
+    </g>
+    <g stroke="#43617b" stroke-width="2" fill="none" marker-end="url(#arrow)">
+      <path d="M195 215 V253"/><path d="M560 215 V253"/><path d="M925 215 V253"/>
+      <path d="M165 301 V348"/><path d="M425 301 V348"/><path d="M685 301 V348"/><path d="M945 301 V348"/>
+    </g>
+    <rect x="40" y="253" width="1040" height="48" rx="8" fill="#234e73"/>
+    <text x="560" y="283" fill="white" font-size="18" text-anchor="middle">System interconnect · APB bridge · bounded timeout and retained error reports</text>
+    <g fill="#e9f2fa" stroke="#9bb2c8" stroke-width="1.5">
+      <rect x="40" y="348" width="250" height="122" rx="10"/>
+      <rect x="300" y="348" width="250" height="122" rx="10"/>
+      <rect x="560" y="348" width="250" height="122" rx="10"/>
+      <rect x="820" y="348" width="260" height="122" rx="10"/>
+    </g>
+    <g font-size="18" font-weight="bold">
+      <text x="58" y="380">Timers and watchdog</text><text x="318" y="380">Console and I/O</text>
+      <text x="578" y="380">Spacecraft interfaces</text><text x="838" y="380">Gigabit Ethernet</text>
+    </g>
+    <g font-size="14">
+      <text x="58" y="409">CLINT · GPTIMER · IRQ</text><text x="58" y="434">TMR watchdog · reset retention</text>
+      <text x="318" y="409">UART TX/RX · GPIO · QSPI</text><text x="318" y="434">RX layout remains open</text>
+      <text x="578" y="409">SpaceWire · CAN · SPI · I2C</text><text x="578" y="434">PIO access · pinned IP wrappers</text>
+      <text x="838" y="409">GMII MAC · PIO packet access</text><text x="838" y="434">External PHY required</text>
+    </g>
+    <rect x="40" y="510" width="1040" height="95" rx="10" fill="#fff5dc" stroke="#d6b46b"/>
+    <text x="60" y="541" font-size="18" font-weight="bold">Open product gates</text>
+    <text x="60" y="568" font-size="15">PCIe Gen3 x4 controller/PHY · final timing and LVS · pads/package · clocks/POR · scan/MBIST/debug</text>
+    <text x="60" y="590" font-size="15">Silicon and radiation qualification · see docs/92 and docs/96 for the complete acceptance registers</text>
+    <text x="40" y="630" font-size="12" fill="#52687a">Clock/reset domain crossings and physical pad connections are omitted from this functional diagram.</text>
+  </g>
+</svg>

@@ -1,0 +1,43 @@
+{
+  "baseline_path": "scripts/cloud_cdr_retimed_parallel_v3_wire_inputs.py",
+  "candidate_path": "scripts/cloud_cdr_retimed_power_v4_wire_inputs.py",
+  "baseline_sha256": "608ef28fce21a016255ace4969b61ae7fc2d94c6515b06a09bf46c9b2e22e4a9",
+  "candidate_sha256": "c4bff1047f5b6ccc1976a84627adc2a257cfe5b7d88d0dd58f997020b91dd388",
+  "edits": [
+    {
+      "before": "cloud-cdr-retimed-parallel-v3-wire-inputs",
+      "after": "cloud-cdr-retimed-power-v4-wire-inputs",
+      "count": 1
+    },
+    {
+      "before": "nssoc_cdr_pd484_parallel_tail_v2",
+      "after": "nssoc_cdr_pd484_power_access_v4",
+      "count": 1
+    },
+    {
+      "before": "cdr-parallel484-parent-physical-pass-20261018.json",
+      "after": "cdr-power484-parent-physical-pass-20261018.json",
+      "count": 1
+    },
+    {
+      "before": "reports.restore_report('cdr-retimed-parallel-v3-parent'",
+      "after": "reports.restore_report('cdr-retimed-power-v4-parent'",
+      "count": 1
+    },
+    {
+      "before": "cdr-retimed-parallel-v3-planes-pass-20261018.json",
+      "after": "cdr-retimed-power-v4-planes-pass-20261018.json",
+      "count": 1
+    },
+    {
+      "before": "reports.restore_report('cdr-retimed-parallel-v3-planes'",
+      "after": "reports.restore_report('cdr-retimed-power-v4-planes'",
+      "count": 1
+    },
+    {
+      "before": "        assert plane['report']['native_planes']['native_terminal_count']==1394",
+      "after": "        assert plane['report']['native_planes']['native_terminal_count']==1394\n        geometry=plane['report']['native_planes']['parent_geometry']\n        assert geometry['status']=='PASS_FULL_PD484_DRAWING_DELTA_ONLY_TWO_VERIFIED_XOR_POWER_ADDITIONS'\n        assert geometry['all_drawing_layers_checked']==28 and len(geometry['controls'])==3\n        assert geometry['all_other_geometry_equal'] and geometry['all484_reference_devices_and_connections_unchanged']",
+      "count": 1
+    }
+  ]
+}

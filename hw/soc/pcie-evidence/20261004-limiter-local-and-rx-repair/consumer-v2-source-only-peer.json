@@ -1,0 +1,36 @@
+{
+  "status": "NO_BLOCKER_IN_BOUNDED_SOURCE_ONLY_PRIORITY_REVIEW",
+  "inputs": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v1.v": {
+      "bytes": 10814,
+      "sha256": "e1a19382c2f446f0754b43818bdf497821ac3c34c7087caa1e9bcfb83e247483"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_dllp_consumer_v2.v": {
+      "bytes": 13191,
+      "sha256": "eb4f3146ed1b8c142cf5784f44dc773353973edff94a7256c82d2b235bb5d224"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v1.v": {
+      "bytes": 3712,
+      "sha256": "c4486391c679b48be9399790a659bb668fa820fb98690a52f3a98bfeef8d6a83"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_gen3_rx_events_v2.v": {
+      "bytes": 3712,
+      "sha256": "dfd865feea72d0efaf71c954f76284926ec4710c1c5059e1779dbd86a2798c03"
+    }
+  },
+  "method": "Manual diff and source control/data dependency review; exact wrapper inverse module/instance rename checked by bytes",
+  "findings": [
+    "Each of64 constant owner lanes applies release then descriptors0..3 then body DWORDs0..3 and bytes0..3; later same-ID writes see all earlier updates, as in v1.",
+    "Per-entry error starts0 and is only set, then OR-reduced with unchanged global descriptor order/exclusivity and empty-DWORD checks before any state commit. Errors cannot be erased by a later same-ID update.",
+    "Four literal raw destinations match old received<4 variable slice; received==8191 is diagnosed before increment wraps. Error halts and clears event count rather than committing candidate state.",
+    "Ordered event gather reads final per-entry next state; readiness/release uses registered state and old held event only, with no new combinational feedback path identified.",
+    "Header/FC decode, complete6-bit owner space, epoch/flush, held-event and TLP atomic fork logic are unchanged. Wrapper is byte-identical after the two explicit names are restored.",
+    "The earlier external abort same-edge repair remains in inherited wrapper flush; v1 failure evidence is separate and preserved."
+  ],
+  "limitations": [
+    "No tests or native rerun",
+    "No formal functional equivalence or timing proof",
+    "No all-parameter or malformed untrusted upstream protocol qualification",
+    "Trusted owned CRC-qualified upstream remains the boundary; decoded events do not themselves implement a controller"
+  ]
+}

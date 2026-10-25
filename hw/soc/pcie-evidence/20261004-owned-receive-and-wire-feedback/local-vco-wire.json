@@ -1,0 +1,616 @@
+{
+  "status": "COMPLETE_WIRE_CONSERVATION_AND_PAIRED_NATIVE_DIAGNOSTIC_CLOCK_FAILURE_PRESERVED",
+  "source_freeze": {
+    "scripts/build_pcie_local_vco_hybrid_v1.py": {
+      "bytes": 18967,
+      "sha256": "36e69177d0f838fbe5227472ab91fc425d2671766459e36b1ce606387e05e287"
+    },
+    "scripts/diagnose_pcie_local_vco_powered_v1.py": {
+      "bytes": 25264,
+      "sha256": "f6f5a07ec912646c98c0cff776f3001eb5f9a2addd7bf2dbe3a99f703132ff82"
+    },
+    "sw/tests/test_pcie_local_vco_hybrid_v1.py": {
+      "bytes": 5233,
+      "sha256": "5b6a0e6be092697775f4f4394564741994fd4a0768b3273b6ca2abdd2d097444"
+    }
+  },
+  "geometry": {
+    "devices": 62,
+    "finite_contacts": 13,
+    "metal_terminals": 145,
+    "unmodeled_body_well_terminals": 56,
+    "public_ports": 6,
+    "wire_probes": 151,
+    "wire_components": 20,
+    "resistors": 446,
+    "capacitors": 488
+  },
+  "paired_results": [
+    {
+      "mode": "intrinsic_only",
+      "native_returncode": 0,
+      "numerical_clean": true,
+      "samples": 12011,
+      "active_samples": 6001,
+      "public_clock": {
+        "vectors": [
+          "v(CLKP)",
+          "v(CLKN)"
+        ],
+        "minimum_differential_v": -0.4183650636981422,
+        "maximum_differential_v": 0.41830816263763726,
+        "rising_edges": 48,
+        "mean_frequency_hz": 8067168334.174885
+      },
+      "min_vce": 0.5963931701817771,
+      "max_vce": 1.4383613489236382,
+      "peak_current_per_emitter_a": 0.0018034477333314207,
+      "full_time_upper_vce": 1.4383613489236382,
+      "bounds_pass": true,
+      "finite_clock_screen_pass": true,
+      "raw_wave": {
+        "raw_bytes": 28552718,
+        "complete": true,
+        "raw_sha256": "75eb7d9e669b2ccab4579097be2168b175dcd981674f72241996724ff127e586",
+        "compressed": {
+          "bytes": 8901152,
+          "sha256": "06303bff2bab6f942e6ca1f4bb6cf39dff8b4deb9bce1e51929990cf7fac1c7b"
+        }
+      }
+    },
+    {
+      "mode": "distributed_wire",
+      "native_returncode": 0,
+      "numerical_clean": true,
+      "samples": 12011,
+      "active_samples": 6001,
+      "public_clock": {
+        "vectors": [
+          "v(CLKP)",
+          "v(CLKN)"
+        ],
+        "minimum_differential_v": 0.001053036273679142,
+        "maximum_differential_v": 0.0011350820048721122,
+        "rising_edges": 0,
+        "mean_frequency_hz": null
+      },
+      "min_vce": 0.7725706722890797,
+      "max_vce": 1.1367790324955434,
+      "peak_current_per_emitter_a": 0.001237109033585337,
+      "full_time_upper_vce": 1.1389574899994628,
+      "bounds_pass": true,
+      "finite_clock_screen_pass": false,
+      "raw_wave": {
+        "raw_bytes": 53922062,
+        "complete": true,
+        "raw_sha256": "a6b68b969764c4db2f649612532c3a069aa6e233c53f88aff53ee34056c614ae",
+        "compressed": {
+          "bytes": 19173171,
+          "sha256": "33c307995c6d4628d48c6e16a896a9de97ada2480b8f36478cbe7b40770cea39"
+        }
+      }
+    }
+  ],
+  "passive_native_cases": 73,
+  "dc_cases": 66,
+  "ac_cases": 6,
+  "actual_noC_control": 1,
+  "raw_mutation_controls": 13,
+  "focused_tests": 29,
+  "full_pex_qualified": false,
+  "limits": [
+    "Finite12ns nominal diagnostic; operating bounds6\u201312ns, not thermal/PVT equilibrium or proof that oscillation never starts.",
+    "All62 intrinsic devices,13 finite contacts,145 physical metal and56 body/well terminals retained.",
+    "BODY_SUBSTRATE and WIRE_CREF are independent ideal0V external testbench references; finite well node remains internal. No invented spreading resistance.",
+    "All four HV PMOS are real W8 geometries. No folded out-of-range W32.",
+    "Corrected private wire extractor with original PDK unchanged. Point capacitor export conservation is not RF distribution qualification.",
+    "Passive AC uses one quiet terminal on each other conductor and25ohm source, omits intrinsic junction admittance.",
+    "Physical geometry/DRC/LVS acceptance does not establish functional oscillation; wire-loaded finite clock screen fails."
+  ],
+  "parent_physical_release": {
+    "status": "PASS_IMMUTABLE_RELEASE_ROUNDTRIPS",
+    "repo": "Melihakbulut221/nssoc",
+    "tag": "evidence-20260927-chip-io",
+    "files": [
+      {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-local-20261004/local-vco-v4-native.tar.xz",
+        "name": "local-vco-v4-native.tar.xz",
+        "bytes": 435092,
+        "sha256": "6764b6e4713eaa4d26f4c098db6aa7396c1f5e7c555d96d29f598c26f839c4c9"
+      }
+    ],
+    "assets": [
+      {
+        "name": "local-vco-v4-native.tar.xz",
+        "asset_id": 610454320,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/local-vco-v4-native.tar.xz",
+        "bytes": 435092,
+        "sha256": "6764b6e4713eaa4d26f4c098db6aa7396c1f5e7c555d96d29f598c26f839c4c9",
+        "authenticated_roundtrip": true,
+        "anonymous_roundtrip": true
+      }
+    ],
+    "physical_acceptance": false
+  },
+  "prior_failed_wire_capture": {
+    "status": "COMPLETE_WIRE_CONSERVATION_AND_PAIRED_NATIVE_DIAGNOSTIC_CLOCK_FAILURE_PRESERVED",
+    "source_freeze": {
+      "scripts/build_pcie_compact_vco_hybrid_v1.py": {
+        "bytes": 18971,
+        "sha256": "ef1fb5329558787e39e90d38768716f90da87ed16426e309065e47b4b4ee20d5"
+      },
+      "scripts/diagnose_pcie_compact_vco_powered_v1.py": {
+        "bytes": 25269,
+        "sha256": "13af2afe292581f6492b8347f5516ad2d84cc23cf1288f47481052937f21c211"
+      },
+      "sw/tests/test_pcie_compact_vco_hybrid_v1.py": {
+        "bytes": 5237,
+        "sha256": "d9282d505bf95f05d80cafa2d379c7292aabebad82dcd999ddb576577fb04e8f"
+      }
+    },
+    "geometry": {
+      "devices": 62,
+      "finite_contacts": 13,
+      "metal_terminals": 145,
+      "unmodeled_body_well_terminals": 56,
+      "public_ports": 6,
+      "wire_probes": 151,
+      "wire_components": 20,
+      "resistors": 446,
+      "capacitors": 514
+    },
+    "paired_results": [
+      {
+        "mode": "intrinsic_only",
+        "native_returncode": 0,
+        "numerical_clean": true,
+        "samples": 12011,
+        "active_samples": 6001,
+        "public_clock": {
+          "vectors": [
+            "v(CLKP)",
+            "v(CLKN)"
+          ],
+          "minimum_differential_v": -0.4183650636981484,
+          "maximum_differential_v": 0.41830816263760107,
+          "rising_edges": 48,
+          "mean_frequency_hz": 8067168334.174794
+        },
+        "min_vce": 0.5963931701817564,
+        "max_vce": 1.438361348923602,
+        "peak_current_per_emitter_a": 0.0018034477333314588,
+        "full_time_upper_vce": 1.438361348923602,
+        "bounds_pass": true,
+        "finite_clock_screen_pass": true,
+        "raw_wave": {
+          "raw_bytes": 28552718,
+          "complete": true,
+          "raw_sha256": "aa568a7d2ed0646a8151e41978b8b294abb53e14b899766981b62f906a8cbc23",
+          "compressed": {
+            "bytes": 8952769,
+            "sha256": "14859d9183de6d0181f4c48a44c77e172cd1a2d2e37a98cf3bf0652524bbd82e"
+          }
+        }
+      },
+      {
+        "mode": "distributed_wire",
+        "native_returncode": 0,
+        "numerical_clean": true,
+        "samples": 12011,
+        "active_samples": 6001,
+        "public_clock": {
+          "vectors": [
+            "v(CLKP)",
+            "v(CLKN)"
+          ],
+          "minimum_differential_v": -0.0015738799155384786,
+          "maximum_differential_v": -0.00027754308738403566,
+          "rising_edges": 0,
+          "mean_frequency_hz": null
+        },
+        "min_vce": 0.8034052906647458,
+        "max_vce": 1.0752635303195783,
+        "peak_current_per_emitter_a": 0.001239626319681111,
+        "full_time_upper_vce": 1.0769383062279871,
+        "bounds_pass": true,
+        "finite_clock_screen_pass": false,
+        "raw_wave": {
+          "raw_bytes": 53922062,
+          "complete": true,
+          "raw_sha256": "85e9c9980361e1c8ac0cf0baadc2328428437cf49d247ebb9c188e35e0b07c09",
+          "compressed": {
+            "bytes": 19349726,
+            "sha256": "1fdffda61ed0f07ea73754738f49ad7b2192211582b287bc7317c282440088ab"
+          }
+        }
+      }
+    ],
+    "passive_native_cases": 73,
+    "dc_cases": 66,
+    "ac_cases": 6,
+    "actual_noC_control": 1,
+    "raw_mutation_controls": 13,
+    "focused_tests": 29,
+    "full_pex_qualified": false,
+    "limits": [
+      "Finite12ns nominal diagnostic; operating bounds6\u201312ns, not thermal/PVT equilibrium or proof that oscillation never starts.",
+      "All62 intrinsic devices,13 finite contacts,145 physical metal and56 body/well terminals retained.",
+      "BODY_SUBSTRATE and WIRE_CREF are independent ideal0V external testbench references; finite well node remains internal. No invented spreading resistance.",
+      "All four HV PMOS are real W8 geometries. No folded out-of-range W32.",
+      "Corrected private wire extractor with original PDK unchanged. Point capacitor export conservation is not RF distribution qualification.",
+      "Passive AC uses one quiet terminal on each other conductor and25ohm source, omits intrinsic junction admittance.",
+      "Physical geometry/DRC/LVS acceptance does not establish functional oscillation; wire-loaded finite clock screen fails."
+    ],
+    "parent_physical_release": {
+      "status": "PASS_IMMUTABLE_RELEASE_ROUNDTRIPS",
+      "repo": "Melihakbulut221/nssoc",
+      "tag": "evidence-20260927-chip-io",
+      "files": [
+        {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-compact-20261004/compact-vco-v4-native.tar.xz",
+          "name": "compact-vco-v4-native.tar.xz",
+          "bytes": 386156,
+          "sha256": "6b27d8e26efd25c3f07c9582757198454f12c7cdc23fd4fdb2d790ec5380479d"
+        }
+      ],
+      "assets": [
+        {
+          "name": "compact-vco-v4-native.tar.xz",
+          "asset_id": 610339540,
+          "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/compact-vco-v4-native.tar.xz",
+          "bytes": 386156,
+          "sha256": "6b27d8e26efd25c3f07c9582757198454f12c7cdc23fd4fdb2d790ec5380479d",
+          "authenticated_roundtrip": true,
+          "anonymous_roundtrip": true
+        }
+      ],
+      "physical_acceptance": false
+    },
+    "first_resource_failure_release": {
+      "status": "PASS_IMMUTABLE_RELEASE_ROUNDTRIPS",
+      "repo": "Melihakbulut221/nssoc",
+      "tag": "evidence-20260927-chip-io",
+      "files": [
+        {
+          "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-wires-20261004/compact-vco-v4-first-resource-failure.tar.xz",
+          "name": "compact-vco-v4-first-resource-failure.tar.xz",
+          "bytes": 27532800,
+          "sha256": "3aa7b99af5ebe1ce4be39d3123595bb98edf3ca2941108a65e51cd3dbceb33e6"
+        }
+      ],
+      "assets": [
+        {
+          "name": "compact-vco-v4-first-resource-failure.tar.xz",
+          "asset_id": 610377286,
+          "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/compact-vco-v4-first-resource-failure.tar.xz",
+          "bytes": 27532800,
+          "sha256": "3aa7b99af5ebe1ce4be39d3123595bb98edf3ca2941108a65e51cd3dbceb33e6",
+          "authenticated_roundtrip": true,
+          "anonymous_roundtrip": true
+        }
+      ],
+      "physical_acceptance": false
+    },
+    "artifact": {
+      "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-wires-20261004/compact-vco-v4-wire-native.tar.xz",
+      "members": 464,
+      "bytes": 28523364,
+      "sha256": "5743bb4aae4b8ccd70ff367afe40f402716e87a78ab8836ffc60b8d0347109a8"
+    },
+    "capture_contract": {
+      "bytes": 5996,
+      "sha256": "55b02e3856a8a521a7eadb65c87fd18ed2d15266c6817622244d93d81fb96ac1"
+    },
+    "manifest": {
+      "bytes": 119562,
+      "sha256": "65239b30b4722051cad269c20d6d2d38956865a3930a418fdcce5444f170a2b6"
+    },
+    "native_result_pins": {
+      "/dev/shm/nssoc-vco-v4-powered-02/result.json": {
+        "bytes": 48441,
+        "sha256": "c22dbdb5728fadb7a66ff680807e751cd174bff078c4210e4b132fd0ec0c4423"
+      },
+      "/dev/shm/nssoc-vco-v4-passive-01/result.json": {
+        "bytes": 96975,
+        "sha256": "155eb4908d64f6d9ab0a95b2d579d1d6717a8c69dbcfaf163f390621a1bdd09d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-wires-20261004/rc-review.json": {
+        "bytes": 28278,
+        "sha256": "19e0e6db740f7e8b2352d1742b51bd4fa0824a5c5f57f04760adfd7ccc436c96"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-wires-20261004/terminal-effects.json": {
+        "bytes": 14030,
+        "sha256": "64efda89345220973c48314e51fd7fe7d27b0999f61127b17b065c67ad1abd6d"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-wires-20261004/native-mutations.json": {
+        "bytes": 8507,
+        "sha256": "ba08d037b2086dc731f8a84f998929fd0cacbcb05155a639a4cc8343396460c0"
+      }
+    },
+    "native_raw_retention": "All two completed full powered waves,73 passive outputs and complete extraction/geometry retained; first incomplete waveform separately published and pinned.",
+    "external_redistribution": "No PDK/model implementation, OSDI or simulator binary included. Exact model/runtime identities and original paths in native input records; retrieve official upstream tools/PDK using those receipts.",
+    "source_frozen": true
+  },
+  "prior_failed_wire_release": {
+    "status": "PASS_IMMUTABLE_RELEASE_ROUNDTRIPS",
+    "repo": "Melihakbulut221/nssoc",
+    "tag": "evidence-20260927-chip-io",
+    "files": [
+      {
+        "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-wires-20261004/compact-vco-v4-wire-native.tar.xz",
+        "name": "compact-vco-v4-wire-native.tar.xz",
+        "bytes": 28523364,
+        "sha256": "5743bb4aae4b8ccd70ff367afe40f402716e87a78ab8836ffc60b8d0347109a8"
+      }
+    ],
+    "assets": [
+      {
+        "name": "compact-vco-v4-wire-native.tar.xz",
+        "asset_id": 610403921,
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20260927-chip-io/compact-vco-v4-wire-native.tar.xz",
+        "bytes": 28523364,
+        "sha256": "5743bb4aae4b8ccd70ff367afe40f402716e87a78ab8836ffc60b8d0347109a8",
+        "authenticated_roundtrip": true,
+        "anonymous_roundtrip": true
+      }
+    ],
+    "physical_acceptance": false
+  },
+  "passive_comparison": {
+    "status": "COMPLETE_SAME_RECIPE_PASSIVE_COMPARISON_ONLY",
+    "inputs": {
+      "/dev/shm/nssoc-vco-v4-passive-01/result.json": {
+        "bytes": 96975,
+        "sha256": "155eb4908d64f6d9ab0a95b2d579d1d6717a8c69dbcfaf163f390621a1bdd09d"
+      },
+      "/dev/shm/nssoc-vco-v4-local-passive-01/result.json": {
+        "bytes": 96955,
+        "sha256": "823635a347d903be73205842df4ba2167837f20b457808f65214c1582188ddb4"
+      },
+      "hw/soc/out/pcie-vco-v4-local-wire-20261004/anchors.json": {
+        "bytes": 125589,
+        "sha256": "97192c07bc63c9ca87b39c63f4b2111da615287fc2d2f15963db370494404d33"
+      },
+      "hw/soc/out/pcie-vco-v4-local-wire-20261004/source-native-bijection.json": {
+        "bytes": 63659,
+        "sha256": "98d32d37a60dcbfdd5a0a24b9bd955e4f886b7d55a804e9339471346fdf6b51a"
+      }
+    },
+    "cases": [
+      {
+        "name": "P0_nextbase",
+        "old_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.900508486943802,
+            -0.14832025666268822
+          ],
+          "sense_gain": 0.8363643839328591,
+          "sense_phase_deg": -26.436799708908975,
+          "input_admittance_s": [
+            0.0039796605222479214,
+            0.005932810266507529
+          ]
+        },
+        "new_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9905100761674813,
+            -0.06661196432904398
+          ],
+          "sense_gain": 0.9895247996555978,
+          "sense_phase_deg": -8.807886471959364,
+          "input_admittance_s": [
+            0.0003795969533007468,
+            0.0026644785731617594
+          ]
+        },
+        "new_actual_dc_ohm": 42.91080000000008,
+        "new_source": "T0123",
+        "new_sink": "T0148"
+      },
+      {
+        "name": "P1_nextbase",
+        "old_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9496354117554533,
+            -0.12160946312567673
+          ],
+          "sense_gain": 0.9237536001390209,
+          "sense_phase_deg": -19.478253288942895,
+          "input_admittance_s": [
+            0.0020145835297818715,
+            0.0048643785250270695
+          ]
+        },
+        "new_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9943357611295658,
+            -0.05057587030836437
+          ],
+          "sense_gain": 0.993872277079292,
+          "sense_phase_deg": -5.483892023394132,
+          "input_admittance_s": [
+            0.0002265695548173685,
+            0.002023034812334575
+          ]
+        },
+        "new_actual_dc_ohm": 43.497600000000126,
+        "new_source": "T0147",
+        "new_sink": "T0136"
+      },
+      {
+        "name": "P2_nextbase",
+        "old_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9365096212645871,
+            -0.13341289016709473
+          ],
+          "sense_gain": 0.9040815005427775,
+          "sense_phase_deg": -21.584826685409332,
+          "input_admittance_s": [
+            0.002539615149416516,
+            0.005336515606683789
+          ]
+        },
+        "new_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9899398095452596,
+            -0.06970549114131316
+          ],
+          "sense_gain": 0.9898987353062633,
+          "sense_phase_deg": -7.3604410205276665,
+          "input_admittance_s": [
+            0.000402407618189618,
+            0.0027882196456525264
+          ]
+        },
+        "new_actual_dc_ohm": 49.10020000000001,
+        "new_source": "T0135",
+        "new_sink": "T0124"
+      },
+      {
+        "name": "N0_nextbase",
+        "old_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9116783746596897,
+            -0.15403146158335093
+          ],
+          "sense_gain": 0.8680327260579376,
+          "sense_phase_deg": -26.23044644995457,
+          "input_admittance_s": [
+            0.003532865013612413,
+            0.006161258463334037
+          ]
+        },
+        "new_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9870364163384746,
+            -0.07535527669820047
+          ],
+          "sense_gain": 0.9856745589572986,
+          "sense_phase_deg": -8.521542766984888,
+          "input_admittance_s": [
+            0.0005185433464610159,
+            0.003014211067928019
+          ]
+        },
+        "new_actual_dc_ohm": 46.87079999999999,
+        "new_source": "T0155",
+        "new_sink": "T0172"
+      },
+      {
+        "name": "N1_nextbase",
+        "old_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9576797962192427,
+            -0.11355074505704574
+          ],
+          "sense_gain": 0.9373313015404272,
+          "sense_phase_deg": -17.56396286201359,
+          "input_admittance_s": [
+            0.0016928081512302892,
+            0.00454202980228183
+          ]
+        },
+        "new_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9926282071407272,
+            -0.05631709368749052
+          ],
+          "sense_gain": 0.9916612340817836,
+          "sense_phase_deg": -6.382854433814905,
+          "input_admittance_s": [
+            0.00029487171437091175,
+            0.002252683747499621
+          ]
+        },
+        "new_actual_dc_ohm": 47.45760000000002,
+        "new_source": "T0171",
+        "new_sink": "T0168"
+      },
+      {
+        "name": "N2_nextbase",
+        "old_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.942085354172824,
+            -0.12937459544991925
+          ],
+          "sense_gain": 0.9142855955306337,
+          "sense_phase_deg": -20.23739650703754,
+          "input_admittance_s": [
+            0.00231658583308704,
+            0.00517498381799677
+          ]
+        },
+        "new_8GHz": {
+          "frequency_hz": 8000000000.0,
+          "source_complex_v": [
+            0.9863926340681075,
+            -0.07829304812935485
+          ],
+          "sense_gain": 0.9855148665448707,
+          "sense_phase_deg": -8.638257846015305,
+          "input_admittance_s": [
+            0.0005442946372756982,
+            0.0031317219251741943
+          ]
+        },
+        "new_actual_dc_ohm": 53.0602,
+        "new_source": "T0167",
+        "new_sink": "T0156"
+      }
+    ],
+    "active_oscillation_measured": false,
+    "scope": "Both native passive tests include exact full coupled wire networks,25ohm source, other conductors held quiet at actual points. No intrinsic junction admittance or body spreading; no RF qualification."
+  },
+  "adjacent_tests": 58,
+  "artifact": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-local-wire-20261004/local-vco-v4-wire-native.tar.xz",
+    "members": 464,
+    "bytes": 28148640,
+    "sha256": "f96718bbff6e5c546635d48b81332ee033cd6b557af2e60230fcebca111ddc52"
+  },
+  "capture_contract": {
+    "bytes": 21098,
+    "sha256": "19b57ff26f816e1f50609ba2312bccf1392dbf2227136b8bde388133ebfafdd2"
+  },
+  "manifest": {
+    "bytes": 124530,
+    "sha256": "0debb638d23728d80aa567e35984ece1b105f9938500e30f9518251b22e12e8e"
+  },
+  "native_result_pins": {
+    "/dev/shm/nssoc-vco-v4-local-powered-01/result.json": {
+      "bytes": 47543,
+      "sha256": "f1721755e08dcfe14b8d49e5ffd70c3e5af01f660655b33b946204e1d4a0082a"
+    },
+    "/dev/shm/nssoc-vco-v4-local-passive-01/result.json": {
+      "bytes": 96955,
+      "sha256": "823635a347d903be73205842df4ba2167837f20b457808f65214c1582188ddb4"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-local-wire-20261004/rc-review.json": {
+      "bytes": 24718,
+      "sha256": "388d73ca92ecad2cb91e126ae08ba4d8a6e815a7eb35cb619158cbef39a660b2"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-local-wire-20261004/terminal-effects.json": {
+      "bytes": 14095,
+      "sha256": "a05fb9d314f7ad03051f4176d31fcf151a32103d52e17f2fefd437a8b94f28aa"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v4-local-wire-20261004/native-mutations.json": {
+      "bytes": 8569,
+      "sha256": "0b13202ca6a84240e55b4884933d8dbbf59a1366f09067f49bae930d78458c04"
+    }
+  },
+  "native_raw_retention": "All two completed full powered waves,73 passive outputs and complete extraction/geometry retained. Prior routing failures and all first-attempt errors remain separately published.",
+  "external_redistribution": "No PDK/model implementation, OSDI or simulator binary included. Exact model/runtime identities and original paths in native input records; retrieve official upstream tools/PDK using those receipts.",
+  "source_frozen": true
+}

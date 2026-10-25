@@ -1,0 +1,528 @@
+{
+  "status": "PASS_BOUNDED_CONTINUOUS_FRONTEND_RTL_PEER_REVIEW",
+  "utc": "2026-10-04T15:49:30.248643+00:00",
+  "source_freeze_sha256": "532509ae08e0c04a50fbf66027798f22445f93ddb9adf08de47d1dbb2fec580f",
+  "frozen_sources": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_data_descrambler.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_framer_rx_v3.v": {
+      "bytes": 8145,
+      "sha256": "75d9b20fd210eeea87920750d70eae4ea97eb07682b961aa561ac4cf24ce0343"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_continuous_rx.v": {
+      "bytes": 3131,
+      "sha256": "17e2ebdc22ec2d7ea2c6230be33ed7d7e37df5f8c0286c9082cbf3c31d64bbf1"
+    },
+    "scripts/check_pcie_gen3_ingress.py": {
+      "bytes": 8852,
+      "sha256": "0c085a845b152228dc558d2cc819e3334e5cd8f8c4291953c7335425e3598e5a"
+    },
+    "scripts/check_pcie_gen3_continuous_rx.py": {
+      "bytes": 8617,
+      "sha256": "9b12563ad2c7627c8193db2ec0a373f1cc5f5a741b2549f0f00b2477ec931dec"
+    },
+    "scripts/check_pcie_gen3_receive_v3.py": {
+      "bytes": 10379,
+      "sha256": "00affb56e7e4ff60efeb062571569fb777b4e2e4488ad7186af49c8a488c417b"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen3_continuous_rx.py": {
+      "bytes": 7006,
+      "sha256": "3cf4f1099e90e078ac2b1f83c026addfa893d4cc3db86dec909d33b81f87d14e"
+    },
+    "hw/soc/tb/cocotb/Makefile.soc_pcie_gen3_continuous_rx": {
+      "bytes": 1309,
+      "sha256": "bb6586bec6d642dfb12e3e92e1cf1fac49b8fc052458880e5dbdab3386187d73"
+    },
+    "sw/tests/test_pcie_gen3_continuous_rx.py": {
+      "bytes": 3628,
+      "sha256": "949adb40e386061ec534bd2a1f60f5034fb9c73b787a5493fd6c7ffee36fc4f0"
+    }
+  },
+  "actual_independent_execution": {
+    "context_cases": [
+      "whole_zero_tlp_body_is_data_not_idle",
+      "pending_nonzero_successor_forbids_future_idle_discard",
+      "look_requires_successor_then_repeated_idle_during_emit_is_safe",
+      "zero_dllp_continuation_is_not_idle"
+    ],
+    "context_mutants": [
+      {
+        "name": "drop_zero_tlp_body",
+        "source_sha256": "693b3d77cc3be6064f6ddef526e6518949811b0efb49f3f2a08c138313882b84",
+        "expected_failure_case": "whole_zero_tlp_body_is_data_not_idle",
+        "actual_failed_cases": [
+          "whole_zero_tlp_body_is_data_not_idle"
+        ],
+        "actual_tests": 4,
+        "returncode": 2,
+        "raw_log_sha256": "b7f31799d5d5fd1d1d08d811ab72ea3586c617a5d39339648670ed196dd5e330"
+      },
+      {
+        "name": "drop_future_idle",
+        "source_sha256": "e3d8948cfe2933257c32f32649f27077084991c61c5fe693e3f7b6a3818954b1",
+        "expected_failure_case": "pending_nonzero_successor_forbids_future_idle_discard",
+        "actual_failed_cases": [
+          "whole_zero_tlp_body_is_data_not_idle",
+          "pending_nonzero_successor_forbids_future_idle_discard"
+        ],
+        "actual_tests": 4,
+        "returncode": 2,
+        "raw_log_sha256": "79a7b19e25af3d626023b9225754cdd24a0d7bf4566e4596b743b489bc0bfdc0"
+      },
+      {
+        "name": "drop_zero_dllp_body",
+        "source_sha256": "81696ae574d1cc7601e3088bf6568e5988191b9cf9c05b73335b9276c38ebf25",
+        "expected_failure_case": "zero_dllp_continuation_is_not_idle",
+        "actual_failed_cases": [
+          "zero_dllp_continuation_is_not_idle"
+        ],
+        "actual_tests": 4,
+        "returncode": 2,
+        "raw_log_sha256": "16a2a957f563b05be56ec375cfd48e4e4b52718e05bf8b748b644e334b466fbf"
+      },
+      {
+        "name": "omit_look_successor_release",
+        "source_sha256": "09010742481d0c0f1ca18d7fe2c61179b8b66873a7f4690cd2d0f562a8208b72",
+        "expected_failure_case": "look_requires_successor_then_repeated_idle_during_emit_is_safe",
+        "actual_failed_cases": [
+          "pending_nonzero_successor_forbids_future_idle_discard",
+          "look_requires_successor_then_repeated_idle_during_emit_is_safe"
+        ],
+        "actual_tests": 4,
+        "returncode": 2,
+        "raw_log_sha256": "54c5cea68f25c04182c567b7e7d18d8b4349e745aac1cf2d3db34c751d632db5"
+      }
+    ],
+    "descrambler": {
+      "status": "PASS_SCALAR_BITRECURRENCE_DESCRAMBLER_PORT_REVIEW",
+      "source_sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7",
+      "current_source_unchanged": true,
+      "cycles": 3000,
+      "accepted_blocks": 1836,
+      "delivered_blocks": 1825,
+      "advance_bits_per_accepted_lane": 128,
+      "negative_controls": {
+        "polynomial": {
+          "rejected": true,
+          "returncode": 1,
+          "stdout": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-ingress-20261004/peer/contexts/descrambler/bench.v:11: serial scalar LFSR output           2\n       Time: 10000  Scope: tb\n"
+        },
+        "lane_seed": {
+          "rejected": true,
+          "returncode": 1,
+          "stdout": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-ingress-20261004/peer/contexts/descrambler/bench.v:11: serial scalar LFSR output           2\n       Time: 10000  Scope: tb\n"
+        },
+        "state_advance": {
+          "rejected": true,
+          "returncode": 1,
+          "stdout": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-ingress-20261004/peer/contexts/descrambler/bench.v:11: serial scalar LFSR output           3\n       Time: 14000  Scope: tb\n"
+        },
+        "stall_overwrite": {
+          "rejected": true,
+          "returncode": 1,
+          "stdout": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-gen3-ingress-20261004/peer/contexts/descrambler/bench.v:10: control           3\n       Time: 14000  Scope: tb\n"
+        }
+      },
+      "scope": "Actual tinyRTL port simulation versus scalar forward LFSR; no fixed-mask helper reuse, no internal DUT state reads, no SG13 mapping/STA claim."
+    },
+    "frozen_author_port_oracle_replayed": [
+      "continuous_idle_and_stalled_packet_output",
+      "zero_tlp_payload_is_not_idle_and_nullification_is_preserved",
+      "raw_header_error_and_dense_packet_overflow_require_restart",
+      "dllp_end_of_stream_and_partial_epoch_abort",
+      "lookahead_at_exact_block_boundary_releases_packet",
+      "packed_successor_owns_future_zero_blocks"
+    ]
+  },
+  "source_review": [
+    "Whole-zero blocks bypass only in TOKEN, LOOK or EMIT and only without an unparsed nonzero successor; TLP and DLLP body ownership prevents zero-data loss.",
+    "LOOK without a pending successor releases exactly once on the accepted complete IDL block; EMIT idle acceptance does not alter held-byte position.",
+    "Whole-zero pending TOKEN suffix can be discarded because all remaining lane bytes are zero; word-index resets only when no remaining token exists.",
+    "Public overflow combines raw and sticky flags so held-byte invalidation and fault observation coincide; stream_start masks old abort and reseeds the decoder while resetting ingress.",
+    "Full ingress queue replacement permits simultaneous pop/capture and depth-specific pointer wrap. Current wrapper uses 16 entries, finite burst absorption only."
+  ],
+  "known_capacity_limit": {
+    "raw_blocks_per_cycle": "16/65",
+    "payload_bits_per_block": 512,
+    "old_serial_parse_best_blocks_per_cycle": "1/17 including load",
+    "packet_output_bits_per_cycle": 8,
+    "required_unthrottled_payload_average_bits_per_cycle": "8192/65 (~126.03)",
+    "finite_queue_does_not_prove_dense_packet_line_rate": true,
+    "independent_prior_overload_witness": {
+      "accepted_block_cycles": [
+        6,
+        23
+      ],
+      "overflow_cycle": 29,
+      "receipt_sha256": "4c746b3c3dd651724383fac4874f4ccb5cf39ac87ce437395f4dfec33a44ed2d"
+    }
+  },
+  "runtime": {
+    "kind": "Icarus 12 RTL-only",
+    "wrapper_and_installed_tree_rehashed": true,
+    "closure_files": 83,
+    "prior_runtime_receipt_sha256": "4c746b3c3dd651724383fac4874f4ccb5cf39ac87ce437395f4dfec33a44ed2d"
+  },
+  "reviewer_fixture_failure_preserved": "frozen-frontend-fixture-first records Makefile placeholder collision before compilation; this is not a DUT failure.",
+  "scope": "Independent RTL port execution and bounded source review only. No independent SG13 mapped replay, STA, PEX, SKP/ordered-set search, CDC, PMA, full PCS/LTSSM or dense-traffic acceptance. No production sources changed.",
+  "outputs": {
+    "contexts/Makefile": {
+      "bytes": 781,
+      "sha256": "4b71989ac2d17eb3f440792e499ef8ca57bf21c88a532d0fcd934c301e813341"
+    },
+    "contexts/check_descrambler.py": {
+      "bytes": 4021,
+      "sha256": "9bf4f6d43a0164a4c5115a429d8c67e1bbd96816c80ff325dd339c1d0a68967d"
+    },
+    "contexts/descrambler/bench.v": {
+      "bytes": 871,
+      "sha256": "56177bd22d3102119a17165e626917586f394da18355d05f094c34c5a9348a7b"
+    },
+    "contexts/descrambler/lane_seed.log": {
+      "bytes": 192,
+      "sha256": "fa08d479b20828e446b27570238afdffccd09df59ed3c232b9eb7256c37e9015"
+    },
+    "contexts/descrambler/lane_seed.v": {
+      "bytes": 2147,
+      "sha256": "fcd613ffe0e274df4bdc62659c779f9fa7681724a3f2f8f6e30d35f77db32aa0"
+    },
+    "contexts/descrambler/lane_seed.vvp": {
+      "bytes": 799122,
+      "sha256": "230b6ff656dced8bb669440652646cc888c6775b76f8a5cc304b62ffa3905ea4"
+    },
+    "contexts/descrambler/polynomial.log": {
+      "bytes": 192,
+      "sha256": "fa08d479b20828e446b27570238afdffccd09df59ed3c232b9eb7256c37e9015"
+    },
+    "contexts/descrambler/polynomial.v": {
+      "bytes": 2147,
+      "sha256": "d85419bd7fa6692b5467fd0f94b4736273f4c2661908df65d06cf338988ec05d"
+    },
+    "contexts/descrambler/polynomial.vvp": {
+      "bytes": 799122,
+      "sha256": "208536846ca022c09f5ca5d8d96d221cdf8cfa5fd2faad61465c8bcf890e6b06"
+    },
+    "contexts/descrambler/positive.log": {
+      "bytes": 175,
+      "sha256": "65bbe5f9869018d25edfc4f32decbead5d5aa6ac5f6f0443d622633b4590586b"
+    },
+    "contexts/descrambler/positive.vvp": {
+      "bytes": 799118,
+      "sha256": "eb074d634e85729da5c20a36225bd4a3434743cc1b5041c51dd47fb2a740d49c"
+    },
+    "contexts/descrambler/result.json": {
+      "bytes": 1628,
+      "sha256": "aeeb357fcc25216bba9c6339c6ed5aab69d42a2ee159af2e8f5ba9d7227e78b9"
+    },
+    "contexts/descrambler/source.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "contexts/descrambler/stall_overwrite.log": {
+      "bytes": 174,
+      "sha256": "b9b57c5e4b40259575df0931dbe7c185a4c5cd7e2297d4f95e61c727cc5ff6a9"
+    },
+    "contexts/descrambler/stall_overwrite.v": {
+      "bytes": 2125,
+      "sha256": "edadaf4585343db309934eedacfbf5275a14b1dc5d04c80b6eab81011ad0f308"
+    },
+    "contexts/descrambler/stall_overwrite.vvp": {
+      "bytes": 798844,
+      "sha256": "a15a0e3ab2883884302dc728d4c2162e6f8ff1c2115d5aec79c013ce7d38da02"
+    },
+    "contexts/descrambler/state_advance.log": {
+      "bytes": 192,
+      "sha256": "8a779e1ce59d4d9d3345b5a329f5ae1f5bf66b4ce087c74abc5e5065e2a4fafb"
+    },
+    "contexts/descrambler/state_advance.v": {
+      "bytes": 2147,
+      "sha256": "6cc53bd55129658bf04809aa262797991a22f226220d28da6423cd7af9f8a2e5"
+    },
+    "contexts/descrambler/state_advance.vvp": {
+      "bytes": 799125,
+      "sha256": "47874593a57a529a06502e02b95773f6852e99aaba0a8fe0dd97b934be9461a0"
+    },
+    "contexts/descrambler/vectors.txt": {
+      "bytes": 828000,
+      "sha256": "208d9b9935e9db90d041ac7060f37c2fc7795d669ede39e2c6db7e5e98cc41b8"
+    },
+    "contexts/descrambler-run.log": {
+      "bytes": 1628,
+      "sha256": "aeeb357fcc25216bba9c6339c6ed5aab69d42a2ee159af2e8f5ba9d7227e78b9"
+    },
+    "contexts/drop_future_idle/mutant.v": {
+      "bytes": 8113,
+      "sha256": "e3d8948cfe2933257c32f32649f27077084991c61c5fe693e3f7b6a3818954b1"
+    },
+    "contexts/drop_future_idle/results.xml": {
+      "bytes": 1624,
+      "sha256": "c5d90e05be1eea4049accd52a4366e06819f994a7aab2ed5694a0cdc8bf6e074"
+    },
+    "contexts/drop_future_idle/run.log": {
+      "bytes": 7760,
+      "sha256": "79a7b19e25af3d626023b9225754cdd24a0d7bf4566e4596b743b489bc0bfdc0"
+    },
+    "contexts/drop_future_idle/sim/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "contexts/drop_future_idle/sim/sim.vvp": {
+      "bytes": 46400,
+      "sha256": "d3ebf0ca8d102278a6e9c72b9c03b5809ed394fe471d1d14431077b4a7619069"
+    },
+    "contexts/drop_zero_dllp_body/mutant.v": {
+      "bytes": 8160,
+      "sha256": "81696ae574d1cc7601e3088bf6568e5988191b9cf9c05b73335b9276c38ebf25"
+    },
+    "contexts/drop_zero_dllp_body/results.xml": {
+      "bytes": 1478,
+      "sha256": "02ba01f27fc9e06f8ef0ed75dc8a220fb3ff39d49d371f2c72000aeb3860f605"
+    },
+    "contexts/drop_zero_dllp_body/run.log": {
+      "bytes": 7047,
+      "sha256": "16a2a957f563b05be56ec375cfd48e4e4b52718e05bf8b748b644e334b466fbf"
+    },
+    "contexts/drop_zero_dllp_body/sim/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "contexts/drop_zero_dllp_body/sim/sim.vvp": {
+      "bytes": 47746,
+      "sha256": "1a5f1fba186d1b748ecba4f9ad7103e11dc8af22f3ee49468fbe1933a0618068"
+    },
+    "contexts/drop_zero_tlp_body/mutant.v": {
+      "bytes": 8159,
+      "sha256": "693b3d77cc3be6064f6ddef526e6518949811b0efb49f3f2a08c138313882b84"
+    },
+    "contexts/drop_zero_tlp_body/results.xml": {
+      "bytes": 1479,
+      "sha256": "0d98cc8e9404628875741e312293156ba7af48c1e4b410691abe929342fe195a"
+    },
+    "contexts/drop_zero_tlp_body/run.log": {
+      "bytes": 6895,
+      "sha256": "b7f31799d5d5fd1d1d08d811ab72ea3586c617a5d39339648670ed196dd5e330"
+    },
+    "contexts/drop_zero_tlp_body/sim/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "contexts/drop_zero_tlp_body/sim/sim.vvp": {
+      "bytes": 47745,
+      "sha256": "0a9b1baa0fde3f64958fc9908027d4df75fcdd46d2443d5f1513230b90a8c541"
+    },
+    "contexts/framer-source.v": {
+      "bytes": 8145,
+      "sha256": "75d9b20fd210eeea87920750d70eae4ea97eb07682b961aa561ac4cf24ce0343"
+    },
+    "contexts/input-pins.json": {
+      "bytes": 507,
+      "sha256": "14a8c8c3fef82f1c4925ad2ca853fd5bdda95f36222fca0ba337104d674abb68"
+    },
+    "contexts/mutation-run.log": {
+      "bytes": 1862,
+      "sha256": "12544779954059d3b5ad42c32b478ddcc281b9830894537f24c217bea9ffd027"
+    },
+    "contexts/mutations.json": {
+      "bytes": 2031,
+      "sha256": "a677e1f0f5788a560563bce81d8f47e1b2214bc1fd7340ab8eb3c66bbc5f6020"
+    },
+    "contexts/native-rtl.log": {
+      "bytes": 5260,
+      "sha256": "fc5277af563f65a43aa4afb49c4cab9b15244e3eaa856fb643a8a19ea0ce7b51"
+    },
+    "contexts/omit_look_successor_release/mutant.v": {
+      "bytes": 8120,
+      "sha256": "09010742481d0c0f1ca18d7fe2c61179b8b66873a7f4690cd2d0f562a8208b72"
+    },
+    "contexts/omit_look_successor_release/results.xml": {
+      "bytes": 1654,
+      "sha256": "0ebe19ef591c205e8afe872430d760d6f19bac74cecaed0df1259a6bb75f2f6e"
+    },
+    "contexts/omit_look_successor_release/run.log": {
+      "bytes": 7839,
+      "sha256": "54c5cea68f25c04182c567b7e7d18d8b4349e745aac1cf2d3db34c751d632db5"
+    },
+    "contexts/omit_look_successor_release/sim/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "contexts/omit_look_successor_release/sim/sim.vvp": {
+      "bytes": 46798,
+      "sha256": "dee7b9b10d28c663f5f9fe07429c7edcdfab2d17c7542c1f2830aebe110e1923"
+    },
+    "contexts/peer_context.py": {
+      "bytes": 2434,
+      "sha256": "c84b92f364ccef1ceb02560bf92544860f03d0e8b255f2aecf1ba56a8409f3dd"
+    },
+    "contexts/results.xml": {
+      "bytes": 1359,
+      "sha256": "2451eb6576ba9dedd962dfc980c3790682f6380f692bfad0dffab050c51ba119"
+    },
+    "contexts/run_mutations.py": {
+      "bytes": 2393,
+      "sha256": "105785721fb048da93831d6235f311b861bba80c49e2554db0cafb71572dcd26"
+    },
+    "contexts/sim/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "contexts/sim/sim.vvp": {
+      "bytes": 47309,
+      "sha256": "9fd27184fbc3aa63da358354a267e9f9ab86d451568d9efbea1f2d76475e2a48"
+    },
+    "contexts/test_soc_pcie_gen3_framer_rx.py": {
+      "bytes": 13399,
+      "sha256": "b0df9662ae5c359cd3d76e9ac8fcf99089a1ede4b77c2f55d2a1fc90d57ffb1f"
+    },
+    "frozen-frontend/Makefile": {
+      "bytes": 1230,
+      "sha256": "999f60dd14546b91a678eb70bf5dd0f3b1c8a53e8c9e9886bb5cec7ba3fe0379"
+    },
+    "frozen-frontend/Makefile.soc_pcie_gen3_continuous_rx": {
+      "bytes": 1309,
+      "sha256": "bb6586bec6d642dfb12e3e92e1cf1fac49b8fc052458880e5dbdab3386187d73"
+    },
+    "frozen-frontend/check_pcie_gen3_continuous_rx.py": {
+      "bytes": 8617,
+      "sha256": "9b12563ad2c7627c8193db2ec0a373f1cc5f5a741b2549f0f00b2477ec931dec"
+    },
+    "frozen-frontend/check_pcie_gen3_ingress.py": {
+      "bytes": 8852,
+      "sha256": "0c085a845b152228dc558d2cc819e3334e5cd8f8c4291953c7335425e3598e5a"
+    },
+    "frozen-frontend/check_pcie_gen3_receive_v3.py": {
+      "bytes": 10379,
+      "sha256": "00affb56e7e4ff60efeb062571569fb777b4e2e4488ad7186af49c8a488c417b"
+    },
+    "frozen-frontend/continuous-source-freeze.json": {
+      "bytes": 1566,
+      "sha256": "532509ae08e0c04a50fbf66027798f22445f93ddb9adf08de47d1dbb2fec580f"
+    },
+    "frozen-frontend/result.json": {
+      "bytes": 2469,
+      "sha256": "bde13aa46559209d59dfcfe7de4315038312f560f2685bf9ea25728cb05fb878"
+    },
+    "frozen-frontend/results.xml": {
+      "bytes": 2264,
+      "sha256": "4a2d32b4ab92c7bda58ecd87b181bc8ee110981c290365bdd6224a83e2007c8d"
+    },
+    "frozen-frontend/run.log": {
+      "bytes": 7358,
+      "sha256": "be19eadcfd9ef291929ff3af77ecb828e07cb3742d8058b8140ada5fe77e75a1"
+    },
+    "frozen-frontend/sim/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "frozen-frontend/sim/sim.vvp": {
+      "bytes": 888751,
+      "sha256": "1eda9018f683f8082d07576500a5fc73758065f0c3cc088d049c314f4886dd18"
+    },
+    "frozen-frontend/soc_pcie_gen3_continuous_rx.v": {
+      "bytes": 3131,
+      "sha256": "17e2ebdc22ec2d7ea2c6230be33ed7d7e37df5f8c0286c9082cbf3c31d64bbf1"
+    },
+    "frozen-frontend/soc_pcie_gen3_data_descrambler.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "frozen-frontend/soc_pcie_gen3_framer_rx_v3.v": {
+      "bytes": 8145,
+      "sha256": "75d9b20fd210eeea87920750d70eae4ea97eb07682b961aa561ac4cf24ce0343"
+    },
+    "frozen-frontend/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "frozen-frontend/test_pcie_gen3_continuous_rx.py": {
+      "bytes": 3628,
+      "sha256": "949adb40e386061ec534bd2a1f60f5034fb9c73b787a5493fd6c7ffee36fc4f0"
+    },
+    "frozen-frontend/test_soc_pcie_gen3_continuous_rx.py": {
+      "bytes": 7006,
+      "sha256": "3cf4f1099e90e078ac2b1f83c026addfa893d4cc3db86dec909d33b81f87d14e"
+    },
+    "frozen-frontend/test_soc_pcie_gen3_packet_duplex.py": {
+      "bytes": 18525,
+      "sha256": "2d43c6208e8cbe58db5cbe25ae7a5f8c3094bc5cfdc2fc3ef838d24cca70f3ff"
+    },
+    "frozen-frontend-fixture-first/Makefile": {
+      "bytes": 2046,
+      "sha256": "ea5e91a3e9f2b94f11cbf189e0a0e1bed2b27c49e92e1565511f40865887d148"
+    },
+    "frozen-frontend-fixture-first/Makefile.soc_pcie_gen3_continuous_rx": {
+      "bytes": 1309,
+      "sha256": "bb6586bec6d642dfb12e3e92e1cf1fac49b8fc052458880e5dbdab3386187d73"
+    },
+    "frozen-frontend-fixture-first/check_pcie_gen3_continuous_rx.py": {
+      "bytes": 8617,
+      "sha256": "9b12563ad2c7627c8193db2ec0a373f1cc5f5a741b2549f0f00b2477ec931dec"
+    },
+    "frozen-frontend-fixture-first/check_pcie_gen3_ingress.py": {
+      "bytes": 8852,
+      "sha256": "0c085a845b152228dc558d2cc819e3334e5cd8f8c4291953c7335425e3598e5a"
+    },
+    "frozen-frontend-fixture-first/check_pcie_gen3_receive_v3.py": {
+      "bytes": 10379,
+      "sha256": "00affb56e7e4ff60efeb062571569fb777b4e2e4488ad7186af49c8a488c417b"
+    },
+    "frozen-frontend-fixture-first/continuous-source-freeze.json": {
+      "bytes": 1566,
+      "sha256": "532509ae08e0c04a50fbf66027798f22445f93ddb9adf08de47d1dbb2fec580f"
+    },
+    "frozen-frontend-fixture-first/reviewer-script-at-failure.py": {
+      "bytes": 2577,
+      "sha256": "d0c98926227e7fd49a39e16da5bf1c8d003a165cb6d05e70705f79a8ef0c81f6"
+    },
+    "frozen-frontend-fixture-first/run.log": {
+      "bytes": 142,
+      "sha256": "2d06d7de5ee454922dbf5d45f4843bdc22b0ec086b422aeda4dff0659f5a52c1"
+    },
+    "frozen-frontend-fixture-first/soc_pcie_gen3_continuous_rx.v": {
+      "bytes": 3131,
+      "sha256": "17e2ebdc22ec2d7ea2c6230be33ed7d7e37df5f8c0286c9082cbf3c31d64bbf1"
+    },
+    "frozen-frontend-fixture-first/soc_pcie_gen3_data_descrambler.v": {
+      "bytes": 2147,
+      "sha256": "081764c8fb0172cfe4f562a21afcf8e60dd631c4feb1f6e6a178e6379c2723d7"
+    },
+    "frozen-frontend-fixture-first/soc_pcie_gen3_framer_rx_v3.v": {
+      "bytes": 8145,
+      "sha256": "75d9b20fd210eeea87920750d70eae4ea97eb07682b961aa561ac4cf24ce0343"
+    },
+    "frozen-frontend-fixture-first/soc_pcie_gen3_ingress.v": {
+      "bytes": 3009,
+      "sha256": "d34847efb81b7f6afc77d7165e0c5eb451656e10aaae73465355342d0f0505d2"
+    },
+    "frozen-frontend-fixture-first/test_pcie_gen3_continuous_rx.py": {
+      "bytes": 3628,
+      "sha256": "949adb40e386061ec534bd2a1f60f5034fb9c73b787a5493fd6c7ffee36fc4f0"
+    },
+    "frozen-frontend-fixture-first/test_soc_pcie_gen3_continuous_rx.py": {
+      "bytes": 7006,
+      "sha256": "3cf4f1099e90e078ac2b1f83c026addfa893d4cc3db86dec909d33b81f87d14e"
+    },
+    "frozen-frontend-fixture-first/test_soc_pcie_gen3_packet_duplex.py": {
+      "bytes": 18525,
+      "sha256": "2d43c6208e8cbe58db5cbe25ae7a5f8c3094bc5cfdc2fc3ef838d24cca70f3ff"
+    },
+    "independent-review.json": {
+      "bytes": 24210,
+      "sha256": "4c746b3c3dd651724383fac4874f4ccb5cf39ac87ce437395f4dfec33a44ed2d"
+    },
+    "run_frozen_frontend.py": {
+      "bytes": 2593,
+      "sha256": "811c0544424555f8cafde6598781a233838b1a39cdd6db5898942ce0f05afda5"
+    },
+    "seal_frontend_review.py": {
+      "bytes": 5683,
+      "sha256": "f395ab43224f5b5c9eb76d8e288651187ecc513a9727d83d7266a9bc53c882eb"
+    }
+  }
+}

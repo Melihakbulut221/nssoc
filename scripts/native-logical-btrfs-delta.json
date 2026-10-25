@@ -1,0 +1,48 @@
+{
+  "baseline_path": "scripts/cloud_native_sparse_btrfs_cross_job.py",
+  "candidate_path": "scripts/cloud_native_logical_btrfs_cross_job.py",
+  "edits": [
+    {
+      "before": "import cloud_native_sparse_prefix_store as sparse",
+      "after": "import cloud_native_sparse_prefix_store as sparse\nimport cloud_native_logical_capsule as logical_capsule",
+      "count": 1
+    },
+    {
+      "before": "OUT=ROOT/'cloud-native-sparse-btrfs-cross-job'",
+      "after": "OUT=ROOT/'cloud-native-logical-btrfs-cross-job'",
+      "count": 1
+    },
+    {
+      "before": "        result['compressed_case']=compressed.mount_case(case,OUT,run);save()",
+      "after": "        # Before activation, publish and restore the entire actual native\n        # checkpoint capsule, including its raw prefix, runtime and CRIU images.\n        capsule_contract=dict(bytes=len(prefix),sha256=hashlib.sha256(prefix).hexdigest(),\n            header_bytes=len(prefix)-prior['checkpoint_prefix']['payload_bytes'],\n            payload_bytes=prior['checkpoint_prefix']['payload_bytes'],\n            payload_sha256=prior['checkpoint_prefix']['payload_sha256'])\n        def no_active_native():\n            return not subprocess.check_output(['docker','ps','-q'],text=True).strip()\n        result['logical_checkpoint_capsule']=logical_capsule.checkpoint_roundtrip(\n            source,capsule_contract,OUT/'logical-checkpoint-capsule',no_active_native);save()\n        result['compressed_case']=compressed.mount_case(case,OUT,run);save()",
+      "count": 1
+    },
+    {
+      "before": "        reconstructed=OUT/'reconstructed';reconstructed.mkdir()\n        with (reconstructed/'actual-acquisition.raw').open('xb')as dest:\n            for data in sparse.logical_chunks(case/'actual-acquisition.raw',prefix_chunks(),plan,prefix_contract):dest.write(data)\n",
+      "after": "        def completed_native_stopped():\n            state=json.loads(subprocess.check_output(['docker','inspect',clone],text=True))[0]['State']\n            return state['Running']is False and state['ExitCode']==0\n        reconstructed,archive_proof=logical_capsule.completed_roundtrip(\n            case,source/'checkpoint-prefix.raw',prefix_contract,plan,\n            OUT/'logical-completed-capture',completed_native_stopped)\n        result['logical_completed_capture']=archive_proof;save()\n",
+      "count": 1
+    },
+    {
+      "before": "        shutil.copy2(case/'op.raw',reconstructed/'op.raw')",
+      "after": "        assert sha(case/'op.raw')==sha(reconstructed/'op.raw'),'Archived native operating point changed'",
+      "count": 1
+    },
+    {
+      "before": "status='PASS_NATIVE_PHYSICAL845_SPARSE_PREFIX_CROSS_HOST_BTRFS_REDUMP_BIT_EXACT_BOUNDED4NS_NOT_FULL_READER_OR_ACQUISITION'",
+      "after": "status='PASS_NATIVE_PHYSICAL845_LOGICAL_CAPSULE_AND_COMPLETED_ARCHIVE_CROSS_HOST_BTRFS_BIT_EXACT_BOUNDED4NS_NOT_FULL1US'",
+      "count": 1
+    },
+    {
+      "before": "        assert sha(native.__file__)=='28e3ca20e1d7cce96ac68f4ec19e510326d8e96ed0da77ddc16ab5b3c5e86231'",
+      "after": "        assert sha(native.__file__)=='28e3ca20e1d7cce96ac68f4ec19e510326d8e96ed0da77ddc16ab5b3c5e86231'\n        archive_pins=json.loads((ROOT/'scripts/native-logical-btrfs-pins.json').read_text())\n        assert all(sha(ROOT/p)==h for p,h in archive_pins.items())",
+      "count": 1
+    },
+    {
+      "before": "        result['controls']=controls;assert all(sha(p)==v for p,v in protected.items())",
+      "after": "        result['controls']=controls;assert all(sha(p)==v for p,v in protected.items())\n        assert all(sha(ROOT/p)==h for p,h in archive_pins.items())",
+      "count": 1
+    }
+  ],
+  "baseline_sha256": "c3230f85196f92054da8d79e8544f0f761220c4d4a98632128d075bf06b0e1a9",
+  "candidate_sha256": "e50cb3412a575022532e448ec74534080c5ec741bb88ef33ca72da7b31246b07"
+}

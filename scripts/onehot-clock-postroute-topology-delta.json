@@ -1,0 +1,13 @@
+{
+  "baseline_path": "scripts/check_onehot_coverage_data_routed_topology.py",
+  "baseline_sha256": "bce3b29357722b067264b17000dbf5ade0f436c8f1f4cbc048a8a33552ac0faa",
+  "candidate_path": "scripts/check_onehot_clock_postroute_topology.py",
+  "candidate_sha256": "5ded9b89dd065ac7ba3e8fb51b21a07a8a11e09ee95fb341d5088bcfb95b5f96",
+  "edits": [
+    {
+      "before": "    assert len(before['instances'])==150419",
+      "after": "    # This read-only audit is bound to the exact transferred clock candidate\n    # and its completed routed output; preserve every original cell, pin and net.\n    assert digest(a)=='c13a87d9127193482c96708e2f7bbdce8d83636fe4800876d9dbc14e89c6b23e'\n    assert digest(b)=='bde963927da325e3f66c1c62d6f78f5db4c60b1344670ebabd04d3339c1a5850'",
+      "count": 1
+    }
+  ]
+}

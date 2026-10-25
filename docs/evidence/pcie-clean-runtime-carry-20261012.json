@@ -1,0 +1,191 @@
+{
+  "status": "CLEAN_REPLAY_CONTROLS_PASS_RX_CARRY_ARITHMETIC_AND_PORTS_PASS_FULL_EQUIVALENCE_PENDING",
+  "asset": {
+    "status": "PASS_COMPLETE_ANONYMOUS_PUBLIC_READBACK",
+    "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261006-pcie-closure/nssoc-clean-replay-and-rx-carry-controls-20261012.tar.gz",
+    "name": "nssoc-clean-replay-and-rx-carry-controls-20261012.tar.gz",
+    "bytes": 559151,
+    "sha256": "658b0ee567e7ed134ff3d273bd4d1a9cb8f02b39db134dc2277498a2288d06cc",
+    "members": 121
+  },
+  "clean_replay": {
+    "status": "PASS_CLEAN_REPLAY_SEVEN_PORTS_AND_THREE_ACTUAL_MUTANTS",
+    "cases": [
+      {
+        "name": "baseline",
+        "passed": 7,
+        "failed": [],
+        "skipped": 0,
+        "returncode": 0,
+        "runtime_diagnostics": [],
+        "source_sha256": "ca334ee560f34a0d7484467d8a09ccbe7fc7b2113360f4bee7308f39bbac8e85",
+        "result_sha256": "240951ec95d41e1ef960f7a9271cbbfbc520d625e9bdb4be833740d2b1274667",
+        "log_sha256": "a647623461026666871e8580f5e30fad726557d8fe8e5e751ffeea07c73e4b04",
+        "xml_sha256": "4f41c6f7a3971cfd61cac04bdb0df12f6544217d2862d3e574b4f0faa46fc39e"
+      },
+      {
+        "name": "advance_two",
+        "passed": 1,
+        "failed": [
+          "full_queue_cumulative_ack_only_fully_sent_and_nak_preserves_bytes",
+          "pending_ack_during_replay_and_new_frame_credit_are_atomic",
+          "timeout_duplicate_ack_training_pause_exhaustion_and_recovery",
+          "modulo_wrap_4097_real_packets_and_cumulative_window",
+          "corrupted_source_wrong_sequence_capacity_and_reset_cannot_escape",
+          "expiry_preempts_new_credit_and_frame_but_not_an_inflight_packet"
+        ],
+        "skipped": 0,
+        "returncode": 1,
+        "runtime_diagnostics": [],
+        "source_sha256": "10a5613edc2b85257b017601edf1e6333bebe6c92c366c38f0428e7f9e58a062",
+        "result_sha256": "9a7f06488add97db7a637e2c5ab4c70f2e30ada7138a6f471e466154127825f7",
+        "log_sha256": "4f9b4d4adb7808880dd278b52678887c46e4277ed70d6478bb489ac03f5962fd",
+        "xml_sha256": "385d2b6e2d395ffde3fee067e842be1be79d9d7fdf2c008aa548264eab19bb72"
+      },
+      {
+        "name": "packet_start_two",
+        "passed": 1,
+        "failed": [
+          "full_queue_cumulative_ack_only_fully_sent_and_nak_preserves_bytes",
+          "pending_ack_during_replay_and_new_frame_credit_are_atomic",
+          "timeout_duplicate_ack_training_pause_exhaustion_and_recovery",
+          "modulo_wrap_4097_real_packets_and_cumulative_window",
+          "corrupted_source_wrong_sequence_capacity_and_reset_cannot_escape",
+          "expiry_preempts_new_credit_and_frame_but_not_an_inflight_packet"
+        ],
+        "skipped": 0,
+        "returncode": 1,
+        "runtime_diagnostics": [],
+        "source_sha256": "16577e7e426b2384db16aaee9751d3ea91079f2337bbaf3f4de511c58f0285f1",
+        "result_sha256": "591516ccd7435548a4012137b51306cbc156e3156904310c3e23e23240a58370",
+        "log_sha256": "489651eea32c10c33a7055d5f02644125e9836973a6db1acaedc925f72e51b4e",
+        "xml_sha256": "e03408b2ed977536e903f2254229494d76f6cd51848bfda0c0817054492b7338"
+      },
+      {
+        "name": "advance_frozen",
+        "passed": 0,
+        "failed": [
+          "full_queue_cumulative_ack_only_fully_sent_and_nak_preserves_bytes",
+          "pending_ack_during_replay_and_new_frame_credit_are_atomic",
+          "timeout_duplicate_ack_training_pause_exhaustion_and_recovery",
+          "modulo_wrap_4097_real_packets_and_cumulative_window",
+          "corrupted_source_wrong_sequence_capacity_and_reset_cannot_escape",
+          "expiry_preempts_new_credit_and_frame_but_not_an_inflight_packet",
+          "early_ack_is_classified_before_waiting_for_transmit_end"
+        ],
+        "skipped": 0,
+        "returncode": 1,
+        "runtime_diagnostics": [],
+        "source_sha256": "109c3fb0a9697cb0999b214080e282f6d149566e06b673a7c0f4cd973fbbba98",
+        "result_sha256": "bc1d9ddb29be004e4088762b0364659fe8449c317049656fd291b1529e8beacd",
+        "log_sha256": "b30f11851a12434b3b86ddf6bd8b1092296ed59b661ff372029ddbc10ec575cc",
+        "xml_sha256": "0b6a1784ee2670a33547ab6734c8d4cd1ed384d1a812af4d6b4b9089c5170db4"
+      }
+    ],
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/clean-port18.py": "e90f827423bec8283bb314b01bdb890ca224aeb20a25a87925bd69d279b85e1c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_replay.py": "4191e491fc2641b57aee6028bbeb94779f275859f4bbce730666d3dadba9fa0b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/runtime04/iverilog": "bee22a25187e107a23d7d6b871450ed1c273d6843c670befa3e201762c10d990",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-credit-cofactor-20261011/runtime04/vvp": "14875baa6fd6b5f2c3168d1a726301ceb6a5660bbd2f5c3ee9b1e703052b0333",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-replay-successor-register-20261012/candidate01/soc_pcie_replay_tx.v": "ca334ee560f34a0d7484467d8a09ccbe7fc7b2113360f4bee7308f39bbac8e85"
+    },
+    "scope": "FreshsameRTL/threefaultsources usingdirectnativevvp loader withPythonenvironment sanitized. Allfourlogs requirezeroGPI/runtime diagnostics. Earlier7pass/6-6-7failcounts remainhistorical buttheirUnexpectedsys.executable errors are now explicitlyopenandreplaced bythiscleanreplay. No timing/PHYacceptance."
+  },
+  "formal_fault_review": {
+    "status": "PASS_INDEPENDENT_THREE_FORMAL_MUTANTS_REJECTED_POSTGUARD_FAILURE_PRESERVED",
+    "mutations": [
+      {
+        "name": "reset_zero",
+        "log_sha256": "0a3d8d244250213209007dc1dec0d73e23af9d8ec78eb8a557c05a21d608bfe7",
+        "last_error": "ERROR: Found 1 unproven $equiv cells in 'equiv_status -assert'.",
+        "rejected": true
+      },
+      {
+        "name": "advance_two",
+        "log_sha256": "98a021b4f2b92dda74c8e07b5942dfe0db3d23bd5692c4f59000e36724ebc7c1",
+        "last_error": "ERROR: Found 6 unproven $equiv cells in 'equiv_status -assert'.",
+        "rejected": true
+      },
+      {
+        "name": "packet_start_two",
+        "log_sha256": "a65e2f9cd0483076e1f019bd1a1a8bb101ad371d692bbe716b68db76d19247f7",
+        "last_error": "ERROR: Found 2 unproven $equiv cells in 'equiv_status -assert'.",
+        "rejected": true
+      }
+    ],
+    "scope": "Allthree nativeequiv_statuschecks failed onunprovenstate/outputcells; noOOM/syntaxfailure. reset_zero onlyunproveninternalnext_read_pos[0] doesnotbyitselfshowexternalbehaviorfailure. Exactmutants andsamefull4x38recipe verified. Originalpostguard str.read_bytes errorpreserved; noneofthese results provesphysicaltiming."
+  },
+  "rx_carry_arithmetic": {
+    "status": "PASS_FULL_24BIT_INPUT_SPACE_ADDITION_AND_TWO_FAULTS",
+    "cases": [
+      {
+        "name": "correct",
+        "returncode": 0,
+        "expected_failure": false,
+        "passed": true
+      },
+      {
+        "name": "lost_carry",
+        "returncode": 1,
+        "expected_failure": true,
+        "passed": true
+      },
+      {
+        "name": "wrong_mid",
+        "returncode": 1,
+        "expected_failure": true,
+        "passed": true
+      }
+    ],
+    "scope": "CombinationalSAT overall16,777,216a/bpairs modulo4096; no assumptions or narrowedunits. Twoactualcarryomissionmutantsmustfail. No wholechip timingclaim.",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/add-proof12.py": "2876a5414d5ce1fde4d9b08514acfde7cb801158e55f404a4943d9e9f899dbd9",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/add-contract08.v": "1d5863cf8d8c811e9827cc791b879a954fbbbb9208a61d1f087bf5b93a356aa6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/candidate08/soc_pcie_rx_credit.v": "30a626bad299ce86663cd96a063b0557bd13142c82b05a91181cba3fbac32bcd"
+    }
+  },
+  "rx_carry_port_tests": {
+    "status": "PASS_RX_CREDIT_AND_BUFFERED_PORT_TESTS",
+    "tests": {
+      "soc_pcie_rx_credit": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      "soc_pcie_buffered_flow_packets": {
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/tests15.py": "2b639b516693b7d760c48e9f1762047b687bf9c6676a4abd83015666802bd456",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-rx-credit-carry-select-20261012/candidate08/soc_pcie_rx_credit.v": "30a626bad299ce86663cd96a063b0557bd13142c82b05a91181cba3fbac32bcd"
+    },
+    "adopted": false
+  },
+  "syntax_recovery": {
+    "status": "RECOVERED_ICARUS_FUNCTION_LOCAL_ATTRIBUTE_SYNTAX_WITH_MODULE_WIRES",
+    "before_units": {
+      "nssoc-rx-carry-map05-20261012": "MainPID=3107033\nActiveState=active\n",
+      "nssoc-rx-carry-read07-20261012": "MainPID=3107034\nActiveState=active\n"
+    },
+    "time": "2026-10-12T01:51:46.378471+03:00",
+    "no_map_or_sta_existed": true,
+    "scope": "Oldcandidate01Icaruscompilefailure retained;Yosysformal02continuesuntouched. Onlywaitingmap05/read07stoppedbeforeCAD. Newcandidate08 samearithmeticatmodulescope, freshformal09/tests10/contract12 required beforemap11/read14. No bound/expectedtraffic/clockchange; activephysical13unchanged."
+  },
+  "runtime_recovery": {
+    "status": "CLEAN_INTERPRETER_RERUN_AFTER_FIVE_TEST_PASS_WITH_GPI_DIAGNOSTIC",
+    "before_wait_only_units": {
+      "nssoc-rx-carry-map11-20261012": "MainPID=3109319\nActiveState=active\n",
+      "nssoc-rx-carry-read14-20261012": "MainPID=3109321\nActiveState=active\n"
+    },
+    "no_map_or_sta_existed": true,
+    "time": "2026-10-12T01:54:28.733093+03:00",
+    "scope": "Portable10actual5RXtestsPASSbutUnexpectedsys.executable GPIERROR requirescleanruntime. Fresh15usesexistingdirectbundledloader wrapperwithoutPYTHONHOME/PYTHONEXECUTABLE; no design/expectedtest changes. Old5casecapture retained/notrelabeledclean. Bufferedtestneverstarted. AllhealthyCAD/formalrunsuntouched. map16/read18waitnew4proof+10cleanports."
+  },
+  "full_serial_phy_accepted": false,
+  "routed_main_chip_accepted": false,
+  "final_timing_closed": false
+}

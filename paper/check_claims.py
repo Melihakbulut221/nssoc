@@ -1,0 +1,406 @@
+#!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut
+# SPDX-License-Identifier: Apache-2.0
+"""Re-derive the numbers the paper prints.
+
+    python3 paper/check_claims.py            check every claim
+    python3 paper/check_claims.py --list     what is checked and how
+
+WHY THIS EXISTS
+
+The paper's thesis is that a green result gets read wider than what it
+actually looked at. A paper making that argument while printing figures
+that nobody re-derives would be the thesis committed in its own text.
+
+So `paper/claims.yaml` names every number the paper prints and how it is
+backed, and this script re-derives the ones that can be re-derived. It
+is deliberately unforgiving in one direction: a claim it cannot check is
+reported as UNCHECKED and counted, never quietly passed.
+
+WHAT IT CANNOT DO, AND SAYS SO
+
+Claims marked `manual` are read from an artefact by a person once. This
+script does not verify them; it verifies that each one names an artefact
+and what was read from it. That is weaker than a check and stronger than
+a footnote, and the summary prints how many there are so the ratio is
+visible.
+
+Claims marked `needs_run_tree` depend on a LibreLane run directory,
+which is gitignored build output. In a clone they are reported SKIPPED
+with that reason, not passed.
+
+The six replica-placement claims now re-measure the hash-verified original
+DEF/netlist snapshot in temporary space. Their output explicitly identifies
+the historical source; no physical flow is rerun by this checker.
+"""
+
+import argparse
+import hashlib
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+
+
+def load(path):
+    """A tiny YAML reader for the subset this file uses.
+
+    IT MUST NOT BE MORE TOLERANT THAN YAML. On 2026-09-10 an
+    unterminated quote made claims.yaml invalid, and this reader --
+    which takes the rest of the line and shrugs -- accepted it, so the
+    registry was broken for a day and every check still ran. It now
+    refuses a file that PyYAML would refuse, when PyYAML is available,
+    and says so when it is not.
+
+    Deliberately not a dependency: this script has to run in a bare
+    clone, and a checker that needs `pip install` before it can check
+    anything is a checker that does not get run.
+    """
+    try:
+        import yaml
+    except ImportError:
+        print("note: PyYAML absent, so claims.yaml is parsed leniently and "
+              "a syntax error in it would go unnoticed", file=sys.stderr)
+    else:
+        try:
+            yaml.safe_load(path.read_text())
+        except yaml.YAMLError as exc:
+            raise SystemExit(
+                f"{path} is not valid YAML and the registry is therefore "
+                f"not trustworthy:\n{exc}")
+
+    claims, cur = [], None
+    for raw in path.read_text().splitlines():
+        if not raw.strip() or raw.lstrip().startswith("#"):
+            continue
+        if raw.startswith("claims:"):
+            continue
+        stripped = raw.strip()
+        if stripped.startswith("- "):
+            cur = {}
+            claims.append(cur)
+            stripped = stripped[2:]
+        if cur is None or ":" not in stripped:
+            continue
+        k, _, v = stripped.partition(":")
+        v = v.strip()
+        if len(v) >= 2 and v[0] == v[-1] and v[0] in "\"'":
+            v = v[1:-1]
+        elif v in ("true", "false"):
+            v = v == "true"
+        else:
+            try:
+                v = int(v)
+            except ValueError:
+                try:
+                    v = float(v)
+                except ValueError:
+                    pass
+        cur[k.strip()] = v
+    return claims
+
+
+def dig(obj, path):
+    for part in path.split("."):
+        if isinstance(obj, dict) and part in obj:
+            obj = obj[part]
+        else:
+            # A key with dots in it, e.g. an instance path.
+            for k in list(obj):
+                if path.endswith(k):
+                    return obj[k]
+            return None
+    return obj
+
+
+# A run-tree path -> its committed record, or None when there is none.
+# Two shapes only, because those are the two files collect_evidence.py
+# copies: <tree>/<tag>/final/metrics.json and <tree>/<tag>/resolved.json.
+_EVIDENCE_RE = re.compile(
+    r"^(?:hw/soc/pnr/runs|hw/openlane/[^/]+/runs|hw/soc/out)/"
+    r"([^/]+)/(?:final/(metrics\.json)|(resolved\.json))$")
+
+
+def _recorded(rel):
+    m = _EVIDENCE_RE.match(str(rel))
+    if not m:
+        return None
+    return ROOT / "docs" / "evidence" / m.group(1) / (m.group(2) or m.group(3))
+
+
+def run(cmd):
+    return subprocess.run(cmd, shell=True, cwd=ROOT, capture_output=True,
+                          text=True)
+
+
+def check(c):
+    """Return (state, detail). State is PASS, FAIL, SKIP or UNCHECKED."""
+    kind = c.get("check")
+
+    if kind == "tex_json":
+        # Compare the displayed rounded number with a digest-bound historical
+        # metric. A number present only in a TeX comment cannot satisfy this.
+        f = ROOT / c["file"]
+        tex = ROOT / c["tex"]
+        if not f.is_file() or not tex.is_file():
+            return "FAIL", "missing metric or manuscript"
+        if hashlib.sha256(f.read_bytes()).hexdigest() != c["sha256"]:
+            return "FAIL", "historical metric digest changed"
+        try:
+            got = json.loads(f.read_text())[c["key"]]
+            if isinstance(got, bool) or not isinstance(got, (int, float)):
+                return "FAIL", "metric is not numeric"
+            style = c["format"]
+            if not re.fullmatch(r"[+]?([.]\d{1,6}f|d)", style):
+                return "FAIL", "unsupported numeric format"
+            value = format(got, style)
+            pattern = c["literal"]
+            if pattern.count("@VALUE@") != 1:
+                return "FAIL", "literal must bind exactly one measured value"
+            sys.path.insert(0, str(ROOT / "scripts"))
+            from tex_lint import strip_comments
+            text = strip_comments(tex.read_text())
+            expected = pattern.replace("@VALUE@", value)
+        except (KeyError, ValueError, TypeError) as error:
+            return "FAIL", str(error)
+        return (("PASS", expected + " (historical metric transcription)")
+                if expected in text else ("FAIL", "displayed number missing or differs: " + expected))
+
+    if kind == "outstanding":
+        if not c.get("artefact") or not c.get("read"):
+            return "FAIL", "outstanding review needs a source and reason"
+        return "UNCHECKED", c["read"]
+
+    if kind == "manual":
+        if not c.get("artefact") or not c.get("read"):
+            return "FAIL", "manual claim names no artefact or no reading"
+        return "UNCHECKED", f"read once from {c['artefact']}"
+
+    if kind == "blob":
+        out = run(f"git hash-object {c['path']}")
+        if out.returncode != 0:
+            return "FAIL", out.stderr.strip()
+        got = out.stdout.strip()[:len(str(c["value"]))]
+        return ("PASS", got) if got == c["value"] else ("FAIL", f"{got} != {c['value']}")
+
+    if kind == "file":
+        p = ROOT / c["file"]
+        if not p.is_file():
+            return "FAIL", f"{c['file']} missing"
+        return (("PASS", "present") if str(c["contains"]) in p.read_text()
+                else ("FAIL", f"{c['contains']!r} not in {c['file']}"))
+
+    if kind == "tsv":
+        # The LAST row of an append-only log, by column name. Substring
+        # matching anywhere in the file -- which is what this claim used
+        # to do -- is green on any file that happens to contain the
+        # digits, including in a superseded row the log deliberately
+        # keeps standing.
+        f = ROOT / c["file"]
+        if not f.is_file():
+            return "FAIL", f"{c['file']} missing"
+        rows = [l for l in f.read_text().split("\n")
+                if l.strip() and not l.startswith("#")]
+        if len(rows) < 2:
+            return "FAIL", "no data rows"
+        head, last = rows[0].split("\t"), rows[-1].split("\t")
+        if c["column"] not in head:
+            return "FAIL", f"no column {c['column']!r}"
+        got = last[head.index(c["column"])]
+        return (("PASS", f"{got} (last row, {last[1]})")
+                if str(got) == str(c["value"])
+                else ("FAIL", f"{got} != {c['value']} in the last row"))
+
+    if kind == "grep":
+        # How many live documents still make a claim the evidence no longer
+        # supports. The paper asserts that a sweep happened; this counts
+        # what is left, so the assertion is checked rather than announced.
+        import fnmatch
+        pats = [x.strip() for x in c["pattern"].split("||")]
+        globs = [g.strip() for g in c["paths"].split(",")]
+        hits = []
+        record = None
+        if c.get("recorded_file"):
+            record = ROOT / c["recorded_file"]
+            if not record.is_file():
+                return "FAIL", "recorded text artifact missing"
+            identity = hashlib.sha256(record.read_bytes()).hexdigest()
+            if identity != c.get("recorded_sha256"):
+                return "FAIL", "recorded text artifact digest mismatch"
+            for glob in globs:
+                for live in ROOT.glob(glob):
+                    if live.name == record.name and live.read_bytes() != record.read_bytes():
+                        return "FAIL", "live text artifact differs from its recorded original"
+        # A GLOB THAT MATCHES NOTHING IS A FAILURE, not a zero. On
+        # 2026-09-10 an unterminated quote in claims.yaml swallowed the
+        # rest of the line, so this claim's first glob was the literal
+        # `"README.md` and matched no file -- and the check reported 0
+        # hits and passed. It was reporting that its own paths were
+        # broken, in the shape of a clean result.
+        empty = [g for g in globs if not list(ROOT.glob(g))]
+        use_record = bool(empty and record is not None and len(globs) == 1)
+        if empty and not use_record:
+            # A glob into a gitignored build tree is EMPTY IN A CLONE and
+            # that is not a broken claim, it is an absent artefact. The
+            # first version could not tell the two apart and failed the
+            # LVS claim on a GitHub runner where no run directory can
+            # exist. `needs_run_tree` is the same distinction the `run`
+            # and `json` kinds already make.
+            if c.get("needs_run_tree"):
+                return "SKIP", ("the run tree these globs point into is "
+                                "gitignored build output and is not in "
+                                "this checkout")
+            return "FAIL", ("these path globs match no file, so the check "
+                            "looked at nothing: " + ", ".join(empty))
+        files = [record] if use_record else sorted({f for g in globs for f in ROOT.glob(g)})
+        for f in files:
+            rel = f.relative_to(ROOT)
+            try:
+                text = f.read_text(encoding="utf-8")
+            except (UnicodeDecodeError, FileNotFoundError, IsADirectoryError):
+                continue
+            for i, line in enumerate(text.split("\n"), 1):
+                if any(pat in line for pat in pats):
+                    hits.append(f"{rel}:{i}")
+        got = len(hits)
+        detail = str(got) + ("" if not hits else "  " + ", ".join(hits[:4]))
+        if use_record:
+            detail += " (hash-verified historical recorded log; not a new LVS run)"
+        return (("PASS", detail) if got == int(c["value"])
+                else ("FAIL", f"{detail} != {c['value']}"))
+
+    if kind == "json":
+        # A value read straight out of a file the run itself wrote. This is
+        # the strongest evidence available for a claim about how something
+        # was configured: the artefact is the configuration.
+        f = ROOT / c["file"]
+        recorded = False
+        if not f.is_file():
+            # THE RECORD, when the run tree is not here. docs/evidence/
+            # carries metrics.json and resolved.json for every run a
+            # document cites, put there by scripts/collect_evidence.py so
+            # that a clone can check a layout claim at all. It is a record
+            # and not a run -- it proves what the run reported, not that
+            # the run can be reproduced here -- so the detail says which
+            # answered. Everything else in the run tree is still absent
+            # and still skips.
+            alt = _recorded(c["file"])
+            if alt is not None and alt.is_file():
+                f, recorded = alt, True
+        if not f.is_file():
+            return "SKIP", (f"{c['file']} is build output and is not in this "
+                            "checkout, and docs/evidence/ records only "
+                            "metrics.json and resolved.json")
+        try:
+            got = json.loads(f.read_text())[c["key"]]
+        except KeyError:
+            return "FAIL", f"key {c['key']!r} absent from {c['file']}"
+        except json.JSONDecodeError as exc:
+            return "FAIL", f"not JSON: {exc}"
+        note = " (from the recorded artefact, not a run tree)" if recorded else ""
+        return (("PASS", repr(got) + note) if str(got) == str(c["value"])
+                else ("FAIL", f"{got!r} != {c['value']!r}{note}"))
+
+    if kind == "absent":
+        hits = list(ROOT.glob(c["glob"]))
+        return (("PASS", "nothing matches, as claimed") if not hits
+                else ("FAIL", f"{len(hits)} match {c['glob']}"))
+
+    if kind == "run":
+        note = ""
+        if c.get("needs_run_tree"):
+            probe = ROOT / "hw/openlane/pilot_ihp/runs/signoff-6x2/final/def"
+            if not probe.is_dir():
+                return "SKIP", ("the sign-off run tree is gitignored build "
+                                "output and is not in this checkout")
+        out = run(c["cmd"])
+        if out.returncode != 0:
+            return "FAIL", (out.stderr or out.stdout).strip()[:200]
+        # A claim may name one output that means "this tree cannot
+        # re-derive it, and here is why". That is UNCHECKED -- read by
+        # hand -- and not a wrong number. It is deliberately a value the
+        # command PRINTS rather than a property of the environment, so
+        # that a tree which can re-derive the claim still must.
+        if "unchecked_when" in c and out.stdout.strip() == str(c["unchecked_when"]):
+            return "UNCHECKED", c.get("unchecked_why", "named as not re-derivable here")
+        if "json_path" in c:
+            try:
+                data = json.loads(out.stdout)
+                got = dig(data, c["json_path"])
+            except json.JSONDecodeError as exc:
+                return "FAIL", f"not JSON: {exc}"
+            if "source_json_path" in c:
+                source = dig(data, c["source_json_path"])
+                if not isinstance(source, str) or not source.strip():
+                    return "FAIL", "measurement source missing from output"
+                note = " (" + source + ")"
+        elif "regex" in c:
+            m = re.search(c["regex"], out.stdout)
+            got = m.group(1) if m else None
+        else:
+            got = out.stdout.strip()
+        if got is None:
+            return "FAIL", "value not found in output"
+        try:
+            ok = abs(float(got) - float(c["value"])) < 1e-6
+        except (TypeError, ValueError):
+            ok = str(got) == str(c["value"])
+        return ("PASS", str(got) + note) if ok else ("FAIL", f"{got} != {c['value']}{note}")
+
+    return "FAIL", f"unknown check kind {kind!r}"
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--list", action="store_true")
+    ap.add_argument("--claims", type=Path, default=ROOT / "paper" / "claims.yaml")
+    args = ap.parse_args()
+
+    claims = load(args.claims)
+    if not claims or any(not c.get("id") for c in claims) or len({c["id"] for c in claims}) != len(claims):
+        raise SystemExit("Claims must have nonempty unique IDs")
+    if args.list:
+        for c in claims:
+            print(f"{c['id']:34s} {c.get('check','?'):9s} {c.get('text','')}")
+        return 0
+
+    tally = {"PASS": 0, "FAIL": 0, "SKIP": 0, "UNCHECKED": 0}
+    bad = []
+    # Claims measured on a layout that predates the 2026-09-11 repair of
+    # hw/soc/rtl. Each is still TRUE of the run it names, so every check
+    # below passes -- which is exactly why the count is printed. A
+    # registry that reports green over evidence which has stopped
+    # describing its subject is the failure this paper is about,
+    # arriving through the door marked success.
+    stale = [c["id"] for c in claims if c.get("predates-rtl-fix")]
+    for c in claims:
+        state, detail = check(c)
+        tally[state] += 1
+        mark = {"PASS": "ok  ", "FAIL": "FAIL", "SKIP": "skip",
+                "UNCHECKED": "man "}[state]
+        print(f"{mark} {c['id']:34s} {detail}")
+        if state == "FAIL":
+            bad.append(c["id"])
+
+    print(f"\n{tally['PASS']} re-derived, {tally['UNCHECKED']} manual or outstanding, "
+          f" {tally['SKIP']} need build output not in "
+          f"this checkout, {tally['FAIL']} wrong")
+    if tally["UNCHECKED"]:
+        print("Manual and outstanding claims are not automatically verified; the "
+              "count is printed\nso the ratio is visible rather than implied.")
+    if stale:
+        print(f"\n{len(stale)} of these are measured on a soc_top layout that "
+              f"PREDATES the 2026-09-11\nrepair of hw/soc/rtl. Each is true of "
+              f"the run it names and none describes the\ndesign in the tree. "
+              f"They pass, and that is the point of counting them.")
+    if bad:
+        print("\nwrong: " + ", ".join(bad))
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

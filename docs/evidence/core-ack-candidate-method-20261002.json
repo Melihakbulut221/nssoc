@@ -1,0 +1,868 @@
+{
+  "schema": 1,
+  "status": "ISOLATED_REGISTERED_ACK_CANDIDATE_MODULE_CONTRACT_PASS_CORE_ADOPTION_BLOCKED",
+  "source_head": "622a1ae720ae727fde0cd7b9c070cf6b873c9da8",
+  "ibex_source_revision": "34b0705760ef3dfa00e99637432473d2be8f22f3",
+  "method_and_reference_sources": [
+    {
+      "path": "scripts/prepare_core_ack_register.py",
+      "bytes": 13503,
+      "sha256": "1a51290c5e173d73782834f2e3e50820e05e210824b92781063039e1ad9cdc7c"
+    },
+    {
+      "path": "sw/tests/test_core_ack_register.py",
+      "bytes": 3645,
+      "sha256": "20b407fce74d5c021d6b344472121eaa3c4640644bf77c319222c436a1092ba3"
+    },
+    {
+      "path": "hw/soc/formal/soc_req_pipe_props.v",
+      "bytes": 2001,
+      "sha256": "02ee113e1de776c60a3406b14b7c16bc1ff6e1a95122d2a9cd6e47622f88cbe2"
+    },
+    {
+      "path": "hw/soc/tb/tb_soc_req_pipe.v",
+      "bytes": 3052,
+      "sha256": "5ccd5625bfef427a7b30014ce675d205046b025c58f3f6df823cd3402c44474c"
+    },
+    {
+      "path": "hw/soc/ext/ibex/rtl/ibex_core.sv",
+      "bytes": 108245,
+      "sha256": "88b8bf3907472f1d413380f62234a7fbf53cb1de392a6660e6ef2d684a2416fd"
+    },
+    {
+      "path": "hw/soc/ext/ibex/rtl/ibex_load_store_unit.sv",
+      "bytes": 31058,
+      "sha256": "86e156efaf7ac46a351a405d9d2046b7d2e6a60bd206411ef9ae474666338b35"
+    },
+    {
+      "path": "hw/soc/ext/ibex/rtl/ibex_id_stage.sv",
+      "bytes": 52343,
+      "sha256": "02b40e46ef92df59a9e1d7b80a8d51a366ece0e8e599ca0744fcdf403ccd3aa8"
+    },
+    {
+      "path": "hw/soc/ext/ibex/rtl/ibex_controller.sv",
+      "bytes": 47495,
+      "sha256": "bc3211faf87435b07922e3e61646ef83247ab86c5938d4cd2e108802a4357860"
+    },
+    {
+      "path": "hw/soc/ext/ibex/rtl/ibex_if_stage.sv",
+      "bytes": 41722,
+      "sha256": "8b99f212f06aa942e53e8a768863587ffdc29176f5a486c6e273262311c9f6ae"
+    },
+    {
+      "path": "hw/soc/ext/ibex/rtl/ibex_decoder.sv",
+      "bytes": 59778,
+      "sha256": "842b520e4a942b6a27f3c44f7e8784e4a8dd40d7531a0ec3dd338f624be18217"
+    },
+    {
+      "path": "hw/soc/ext/ibex/doc/03_reference/load_store_unit.rst",
+      "bytes": 9712,
+      "sha256": "64b0974d6a1f25a8a1ea51f1d5315065af78f507ddd441674ba05fa500a902ef"
+    }
+  ],
+  "prior_path_evidence": {
+    "path": "docs/evidence/critical-path-prefix-analysis-20261002.json",
+    "bytes": 18325,
+    "sha256": "5005e6cd888cde913a7446bd287c4db5a1f2a7d6472d3f1cae65df58f41e8c70"
+  },
+  "unchanged_c10_profile": {
+    "CORE_REQ_REG": 1,
+    "CORE_WB_STAGE": 1,
+    "SYNPRE": 1,
+    "MEM_RDREG": 1,
+    "REQ_REG": 1,
+    "WAKE_GNT": 1
+  },
+  "original_c10_source_pins_verified": [
+    {
+      "path": "hw/soc/gen/ibex_branch_predict.v",
+      "bytes": 1877,
+      "sha256": "066d38e5f865eab565a652410ffc2206f71686dc7169a33674d8b82df147c5a3"
+    },
+    {
+      "path": "hw/soc/rtl/soc_boot.v",
+      "bytes": 41696,
+      "sha256": "58c2d4e6b6f9d3069adb5bd188ba32cf36f778b321a9c0ed996237bb140e71ff"
+    },
+    {
+      "path": "hw/rtl/secded_dec.v",
+      "bytes": 5136,
+      "sha256": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0"
+    },
+    {
+      "path": "hw/soc/rtl/soc_scrub.v",
+      "bytes": 12604,
+      "sha256": "9ca39e52ff2889924fcecd476e3773cf2f6dd81363b6519616352340eed9476d"
+    },
+    {
+      "path": "hw/soc/rtl/soc_pnp.v",
+      "bytes": 2646,
+      "sha256": "4837af34c9b8cc14324ded01bd516e61a074f4be60e05717458872ffef8a9d7b"
+    },
+    {
+      "path": "hw/soc/gen/ibex_pmp.v",
+      "bytes": 11375,
+      "sha256": "f6e1ecd2a4dae38a50585a7735dcd25f015f0a3781d95af36a2e988ec039e4c7"
+    },
+    {
+      "path": "hw/soc/genp/ibex_top.v",
+      "bytes": 37867,
+      "sha256": "06d4d33bcf22abb39711a66747056a9f18ed5716592b1eb66efde0f2733399e9"
+    },
+    {
+      "path": "hw/rtl/scrub.v",
+      "bytes": 15044,
+      "sha256": "d894df909bd8da0a8e8c69f6bc29cdc06cb2e52a06eafd58ce38b0f7ec2415d3"
+    },
+    {
+      "path": "hw/rtl/aer_fifo.v",
+      "bytes": 55548,
+      "sha256": "c60c22bbb55cd30d244dc30128eb61d7ac58ea48591ceb6852769508737dd94d"
+    },
+    {
+      "path": "hw/soc/gen/ibex_multdiv_slow.v",
+      "bytes": 8376,
+      "sha256": "73da596d36c6649c8e2cec7189371c5e3354459750e23d9f6fe1cc52b6982605"
+    },
+    {
+      "path": "hw/soc/pnr/RM_IHPSG13_1P_1024x32_c2_bm_bist_bb.v",
+      "bytes": 1871,
+      "sha256": "8b93e94a0c7b23cc253f2893fd1a8ff5d2245a5b2a28dc1b92b5dd3437f7dc14"
+    },
+    {
+      "path": "hw/soc/rtl/soc_i2c.v",
+      "bytes": 6213,
+      "sha256": "5c41e193b6c9bd822acdb4aaeead75f211d00ca78c55c33be1ea567da1021f36"
+    },
+    {
+      "path": "hw/soc/rtl/dft/soc_sram_zero_check.v",
+      "bytes": 1653,
+      "sha256": "0c21e27081729d3eae743d2e6953c08ddf716de4ecd87a88f0c496efe70a5676"
+    },
+    {
+      "path": "hw/soc/gen/ibex_alu.v",
+      "bytes": 35378,
+      "sha256": "81fa8cb2b39fa0b879bd0bc2caa47b4ba69adf6ed361ec15ef8d3eb00165c063"
+    },
+    {
+      "path": "hw/soc/gen/prim_flop.v",
+      "bytes": 333,
+      "sha256": "0aa04d499306b94e801191760a4f62b1b8cbb6885042d44745b1cd286e55904a"
+    },
+    {
+      "path": "hw/soc/rtl/soc_spi.v",
+      "bytes": 4141,
+      "sha256": "016b2392967d99eda8a1ebbe2a3a46898c3a73ea95723ab8ce8d5a64f8f5d373"
+    },
+    {
+      "path": "hw/soc/gen/ibex_prefetch_buffer.v",
+      "bytes": 5154,
+      "sha256": "55f6c149ccd533f4adc4dd7a20d2e951641e35fa79be9efa8ee6a359cb8a1869"
+    },
+    {
+      "path": "hw/soc/gen/ibex_lockstep.v",
+      "bytes": 55121,
+      "sha256": "2a0fce3e60488399d90b880020fbe0f4f500c210d963de46bc02c76cbc3d4bea"
+    },
+    {
+      "path": "hw/soc/rtl/soc_pnp_rom.vh",
+      "bytes": 2169,
+      "sha256": "6a5c1be847a784087598617529fe103f61f6399cae0e71b07433991d03426539"
+    },
+    {
+      "path": "hw/soc/gen/prim_secded_inv_39_32_dec.v",
+      "bytes": 2412,
+      "sha256": "19b2f7b8b9e0e672847c2cd101a8f6628fe7eb4782ad43a964f0d301c1e403d1"
+    },
+    {
+      "path": "hw/soc/pnr/RM_IHPSG13_1P_512x16_c2_bm_bist_bb.v",
+      "bytes": 1567,
+      "sha256": "a4849a8e8bf98bfffa294f532363dc4781d2759b5da0c31f4506be8ec9ab01c7"
+    },
+    {
+      "path": "hw/soc/rtl/soc_gptimer.v",
+      "bytes": 15293,
+      "sha256": "ff3952104c1e03e41351e274ecedd536132870e1eec2b04656b7187996d76d25"
+    },
+    {
+      "path": "hw/soc/gen/ibex_counter.v",
+      "bytes": 2408,
+      "sha256": "943af7b5289592f62ba258483fae9b803777d640863171209cb7a258e9457f01"
+    },
+    {
+      "path": "hw/soc/gen/ibex_fetch_fifo.v",
+      "bytes": 5518,
+      "sha256": "4a4aa8a375b30d02554705c9e48966ceb6bca9c59bf7d00267b8748e0bd730b0"
+    },
+    {
+      "path": "hw/soc/rtl/dft/soc_eth_fifo_sram.v",
+      "bytes": 5413,
+      "sha256": "857ad9421790d69921e08cdcdae9ee9d19b12e32da556b0fe347773d47bf1f4c"
+    },
+    {
+      "path": "hw/soc/rtl/soc_uart.v",
+      "bytes": 12713,
+      "sha256": "25ebe14625427db49b2727fa3a501cb13e4b8354591c99b2d56a3549f6e34d92"
+    },
+    {
+      "path": "hw/soc/rtl/soc_npu_ser.v",
+      "bytes": 18997,
+      "sha256": "5a33b1e887ee64c4abf5ff7995c729303b39addef8f7ceac0daa350f0daeb0a8"
+    },
+    {
+      "path": "hw/soc/rtl/soc_apb_pnp_rom.vh",
+      "bytes": 2104,
+      "sha256": "5aa959e5dd77ccb6011d006a1f12a6f6f5a99d430cdf73a324c8ccb8eeb4f4b6"
+    },
+    {
+      "path": "hw/soc/gen/ibex_icache.v",
+      "bytes": 50551,
+      "sha256": "29836d2ed676b064fa013ca2a2dfd95d2bfc4c892aa1a62689682f55ab28784d"
+    },
+    {
+      "path": "hw/soc/rtl/soc_mem_sram.v",
+      "bytes": 31581,
+      "sha256": "be28b3f37ec2d180db772974b4877531c1675b3745fe1a677ecdf94ab2c50026"
+    },
+    {
+      "path": "hw/soc/gen/prim_clock_mux2.v",
+      "bytes": 233,
+      "sha256": "f3f3f6fa20fd6ea9e73a2b4c414619edf6ed5b774604d0ae8ee3d22fed100922"
+    },
+    {
+      "path": "hw/rtl/npu_regs.vh",
+      "bytes": 5048,
+      "sha256": "724d3d2bbe30c471bf8642ff42a6be1c3a8f92f105ffc3eba600ca39fdebeffb"
+    },
+    {
+      "path": "hw/soc/rtl/soc_npu_regs.vh",
+      "bytes": 5284,
+      "sha256": "75b50df4e34a3f2dcd323444b03f9f3b435267ebd99d1f0807068d6c112b8fb0"
+    },
+    {
+      "path": "hw/soc/rtl/soc_can.v",
+      "bytes": 1601,
+      "sha256": "324e019fa0360c1c5422495376a18acdf29b487cf5eb0b09adac2137fda3e8e5"
+    },
+    {
+      "path": "hw/soc/rtl/soc_bus.v",
+      "bytes": 40346,
+      "sha256": "b833b51730ffb5804f9c021f0e88284b65208138b04f95c36b4e49a1cdd7fc93"
+    },
+    {
+      "path": "hw/soc/rtl/soc_tmr_bank.v",
+      "bytes": 11524,
+      "sha256": "e33fb9d34fcdaee11ac1a98a966cbbcf0d35cfb84a70aaa607b0436f4be43a06"
+    },
+    {
+      "path": "hw/soc/rtl/dft/soc_sram_mbist.v",
+      "bytes": 6373,
+      "sha256": "4bdf54566b8244023ba167df01b539bd1c0b21c985987718329689b8c2f3bb81"
+    },
+    {
+      "path": "hw/soc/gen/ibex_compressed_decoder.v",
+      "bytes": 19909,
+      "sha256": "98511a0a0224cb491f8c1f26387938b1b0e2389b5cdfd994ecfbecaaffa3ac64"
+    },
+    {
+      "path": "hw/soc/rtl/soc_apb_bridge.v",
+      "bytes": 8696,
+      "sha256": "3055923174102efe7691f9688cb76ef0ebd5b4b52de423922f8cf43b0f12b11a"
+    },
+    {
+      "path": "hw/soc/rtl/soc_gpio.v",
+      "bytes": 18354,
+      "sha256": "8cbba74ae3d273e5ccefbae030db3428738bab897e09f97a5640f4eb5e763cb0"
+    },
+    {
+      "path": "hw/soc/rtl/soc_memmap.vh",
+      "bytes": 5422,
+      "sha256": "60b28e0fb7d42bc4abcde51b3f6fd7c0cfb26302a72a6a832c25d635f91fde5f"
+    },
+    {
+      "path": "hw/soc/rtl/dft/soc_sram_test_port.v",
+      "bytes": 2654,
+      "sha256": "bbf044e7a5a5d606cab60e6d7fef09dea7b596a5668586ffc0674d028481854c"
+    },
+    {
+      "path": "hw/soc/gen/ibex_if_stage.v",
+      "bytes": 23523,
+      "sha256": "d42feadf61172b9785546c872c0fe050006f03e2ac4b9ca19cbb485c93b84cfc"
+    },
+    {
+      "path": "hw/soc/rtl/soc_busstat.v",
+      "bytes": 22366,
+      "sha256": "f869a9532c267633bdf9192b5e09c9415a9a64034c63a88165c574778919d388"
+    },
+    {
+      "path": "hw/soc/gen/prim_lfsr.v",
+      "bytes": 14062,
+      "sha256": "62aeeab74660e33e95026da1af24c0372f1010d318b26c5b9b264a116ffe9a6b"
+    },
+    {
+      "path": "hw/soc/rtl/soc_eth.v",
+      "bytes": 7218,
+      "sha256": "055eb892a5ef4a390d6afcb317dc0a836f7f035e35e7cc957f8ddb44e7055deb"
+    },
+    {
+      "path": "hw/soc/gen/interfaces-full.bundle.vh",
+      "bytes": 531018,
+      "sha256": "53bfd786fdaa2837d17c3151c8cfd0e8c49824ed9c469d6d0cf2824104fb6c8a"
+    },
+    {
+      "path": "hw/soc/pnr/RM_IHPSG13_1P_2048x64_c2_bm_bist_bb.v",
+      "bytes": 1873,
+      "sha256": "93d9116767347ee2b5079cabe0aa984b36d367a4ddc61d73733f4d05ce47eaa9"
+    },
+    {
+      "path": "hw/soc/gen/ibex_csr.v",
+      "bytes": 900,
+      "sha256": "46615e34ae2e96f42e51c88eeecb09549fcc6bdccd77dd00a87a5eca0332faa2"
+    },
+    {
+      "path": "hw/soc/rtl/soc_wdog.v",
+      "bytes": 62169,
+      "sha256": "a0c5701adedb6bb579e03e6cd027a9011d23a678128277f9acb2c3ff532bc9b5"
+    },
+    {
+      "path": "hw/soc/gen/ibex_wb_stage.v",
+      "bytes": 9437,
+      "sha256": "963eb68160e79830190d5d01af2449b1b7ae0f5ef2a3bcd160c8963621f6c707"
+    },
+    {
+      "path": "hw/soc/gen/prim_and2.v",
+      "bytes": 220,
+      "sha256": "6fdb4d8240c7edb5398853351709db765306f81a4b0ed2c8c0fdefb9239c9b88"
+    },
+    {
+      "path": "hw/soc/gen/prim_secded_inv_39_32_enc.v",
+      "bytes": 675,
+      "sha256": "fc16d6d64a9799f273b93b7519d73e3a4ac86fd1d67ec658c9e25c0d4ee59192"
+    },
+    {
+      "path": "hw/soc/gen/ibex_dummy_instr.v",
+      "bytes": 3414,
+      "sha256": "e781cb6cb120b067fd88ad2930d5ec4098d4c1ad1bc73125bab654e2a92ac6fa"
+    },
+    {
+      "path": "hw/soc/gen/ibex_multdiv_fast.v",
+      "bytes": 12299,
+      "sha256": "c76ff1a7eb5933741b218335278dac524de6f166e9fa1587b7916780d79e2225"
+    },
+    {
+      "path": "hw/soc/rtl/soc_mem_ecc.v",
+      "bytes": 21177,
+      "sha256": "8a664f0df12a0bcb4e55974566e8602e026f2647c65eabc4bd4f66f273190690"
+    },
+    {
+      "path": "hw/rtl/lif_core.v",
+      "bytes": 67572,
+      "sha256": "0f7631e01e3d5708babcea4c73296a0f6d519f6c21bb8b2ce70d54316cb344e8"
+    },
+    {
+      "path": "hw/soc/gen/ibex_ex_block.v",
+      "bytes": 5497,
+      "sha256": "db91d2d96021c144c76f1257d9f9d250641832aa90a5cff9065f48c634c27c11"
+    },
+    {
+      "path": "hw/soc/rtl/soc_qspi.v",
+      "bytes": 33902,
+      "sha256": "fdfa34d45f71558ec81450bf061ff47ff24ad50770dee471b14d26710ba57260"
+    },
+    {
+      "path": "hw/soc/gen/ibex_decoder.v",
+      "bytes": 35027,
+      "sha256": "7be7b5fca0b3852ed058fba505c959a455ef5e93e23629133a91e69675f48df3"
+    },
+    {
+      "path": "hw/soc/rtl/soc_clint.v",
+      "bytes": 22935,
+      "sha256": "95be0f06e5ccce08ff42eb19d628b17164782ce2b79da5b059820d88c922748b"
+    },
+    {
+      "path": "hw/soc/gen/ibex_cheriot_ex.v",
+      "bytes": 54507,
+      "sha256": "1e98e0a8d9af59ab2c54560ec772b360c7f08f1bc74de241ebc6022e3e255325"
+    },
+    {
+      "path": "hw/soc/rtl/soc_spw.v",
+      "bytes": 4961,
+      "sha256": "3f49527c9c51280a3769c1b9822486471243d4047f74b4f99fc7c8ac6dd4f0a9"
+    },
+    {
+      "path": "hw/rtl/tmr_voter.v",
+      "bytes": 2733,
+      "sha256": "f78a5d9fc531cc14d2922274b8cddbca7d3a657f0cf0a5647b5be3f569159476"
+    },
+    {
+      "path": "hw/soc/gen/ibex_id_stage.v",
+      "bytes": 29661,
+      "sha256": "93d1efa482e24e669ad73dcfad16c6b1df05968ac07dfec0f25e074c6acc78c4"
+    },
+    {
+      "path": "hw/soc/rtl/ibex_regfile_secded.v",
+      "bytes": 36399,
+      "sha256": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0"
+    },
+    {
+      "path": "hw/soc/rtl/soc_apb_pnp.v",
+      "bytes": 1831,
+      "sha256": "05ee8aa89966151ec59b16eb3cdf31def51aa7dd25c7a5a2d2a165b5fe4cc994"
+    },
+    {
+      "path": "hw/soc/gen/prim_buf.v",
+      "bytes": 218,
+      "sha256": "e1f182a1c33f722ac8e76d1fb830c6b6bf36047b2ee12b5107e9136eecec37d1"
+    },
+    {
+      "path": "hw/rtl/secded_enc.v",
+      "bytes": 3180,
+      "sha256": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe"
+    },
+    {
+      "path": "hw/soc/gen/ibex_cs_registers.v",
+      "bytes": 67997,
+      "sha256": "aa7c6ca01df11ccf815c129317018678af7817fa8299f759ccf652e80d43ea61"
+    },
+    {
+      "path": "hw/soc/gen/prim_count.v",
+      "bytes": 2995,
+      "sha256": "de4dca0ff2ba49c2253f80ac8de997ad9a08df68de31a5cc7c90a6489f99738f"
+    },
+    {
+      "path": "hw/soc/rtl/soc_req_pipe.v",
+      "bytes": 1549,
+      "sha256": "3041a7055a57186415284f44d86c8d0d955d8277979460e6348a7837569854ac"
+    },
+    {
+      "path": "hw/soc/gen/ibex_trvk.v",
+      "bytes": 10974,
+      "sha256": "fae1ff15710acfb925312c7f911df93cb3f65083a30b0cec86e3d9f571b57a5e"
+    },
+    {
+      "path": "hw/soc/rtl/soc_top.v",
+      "bytes": 61916,
+      "sha256": "14ad32ea914b1273c2c7359809312a456eafd54864e05e17a003c5d2bd56124a"
+    },
+    {
+      "path": "hw/soc/gen/ibex_controller.v",
+      "bytes": 24980,
+      "sha256": "4dccb7ebb3597383b5df233f4962885b4b486c4823330d0db062eea8c9cae9bf"
+    },
+    {
+      "path": "hw/rtl/pilot_top.v",
+      "bytes": 152344,
+      "sha256": "abeab4ebedfa9c0c5c5c9773700b9368c35edd888be7a6028b03e1bb415eb5af"
+    },
+    {
+      "path": "hw/soc/rtl/soc_npu.v",
+      "bytes": 126435,
+      "sha256": "b4ca641a1144d1eeb09bce76c611fa483e1fda4f41a391ed4f9ae4b485dd4c6a"
+    },
+    {
+      "path": "hw/soc/gen/ibex_core.v",
+      "bytes": 45898,
+      "sha256": "4f9d0cb31ff8baba8ea380cbbba1a9f1eed338f45a43edacece3e9801b2dd989"
+    },
+    {
+      "path": "hw/soc/rtl/prim_clock_gating.v",
+      "bytes": 1872,
+      "sha256": "76232cb6a8056a9d3c524bcaff65e4273886fcbaf4c218b4db4bba92610f7024"
+    },
+    {
+      "path": "hw/soc/gen/ibex_load_store_unit.v",
+      "bytes": 22201,
+      "sha256": "bf0eecf0e6077bee2fcba0adfd893d67650feb1bf2769c9b61b10d115b8ac5a9"
+    },
+    {
+      "path": "hw/soc/rtl/soc_apb_wb.v",
+      "bytes": 14450,
+      "sha256": "3841d43aa38579909881e05d208082f4688dff68fd7d00c873a87858d1dcaf86"
+    }
+  ],
+  "measured_suffix": {
+    "section": "grant/LSU completion, ID advance and RF next read-address control",
+    "start_pin": "_076942_/Y",
+    "end_pin": "_132609_/D",
+    "start_arrival_ns": 21.266342163,
+    "end_arrival_ns": 27.862571716,
+    "delay_ns": 6.596229553
+  },
+  "source_chain": [
+    {
+      "source": "hw/soc/ext/ibex/rtl/ibex_core.sv:1063",
+      "fact": "The external data request is LSU data_req_out AND NOT PMP error; only permission-approved beats reach the SoC request queue."
+    },
+    {
+      "source": "hw/soc/rtl/soc_top.v:781",
+      "fact": "CORE_REQ_REG instantiates u_data_request on the common system reset and ungated SoC clock; instruction fetch bypasses this particular module."
+    },
+    {
+      "source": "hw/soc/rtl/soc_req_pipe.v:27",
+      "fact": "Current gnt_o is rst_ni && req_i && !valid_q; the request/PMP cone therefore remains in same-cycle grant feedback."
+    },
+    {
+      "source": "hw/soc/ext/ibex/rtl/ibex_load_store_unit.sv:470",
+      "fact": "Normal aligned IDLE request with immediate grant stays IDLE; without grant it enters WAIT_GNT. Misaligned requests use WAIT_GNT_MIS / WAIT_RVALID_MIS."
+    },
+    {
+      "source": "hw/soc/ext/ibex/rtl/ibex_load_store_unit.sv:632",
+      "fact": "lsu_req_done uses lsu_go/current FSM and next FSM equal IDLE. Delayed grant changes the cycle of ID/WB progression."
+    },
+    {
+      "source": "hw/soc/ext/ibex/rtl/ibex_id_stage.sv:1095",
+      "fact": "Writeback configuration stalls memory operations until outstanding ownership and LSU request completion allow ID progression; RAW and precise exception behavior must be retained."
+    },
+    {
+      "source": "hw/soc/ext/ibex/rtl/ibex_controller.sv:1015",
+      "fact": "ID and WB stalls gate id_in_ready_o."
+    },
+    {
+      "source": "hw/soc/ext/ibex/rtl/ibex_if_stage.sv:568",
+      "fact": "id_in_ready_i gates IF-ID instruction/PC/flags capture together."
+    },
+    {
+      "source": "hw/soc/ext/ibex/rtl/ibex_decoder.sv:193",
+      "fact": "Read-register address is decoded from instruction bits. The physical raddr_a_i[2] endpoint is an IF-ID instruction-state alias, not an independently movable RF address pipeline."
+    },
+    {
+      "source": "hw/soc/ext/ibex/rtl/ibex_load_store_unit.sv:763",
+      "fact": "LSU busy participates in core clock enable. A pulse generated on ungated SoC clock must be shown to reach a live actual-core sampling edge."
+    }
+  ],
+  "rejected_shortcuts": [
+    "Do not remove req_i from the current combinational gnt_o: the existing payload/valid write conditions would capture a phantom request while idle.",
+    "Even if writes remain permission-qualified, ready-high grant changes the LSU/PMP-error completion and transaction ownership contract; it has not been proved safe.",
+    "Do not move only the physical RF address-labelled flop: the next instruction, PC and flags must stay aligned.",
+    "The existing generic soc_req_pipe proof explicitly permits request/payload changes under backpressure and asserts immediate grant. It cannot be reused as a proof of the narrower delayed-ack contract."
+  ],
+  "candidate_cycle_semantics": [
+    {
+      "cycle": "C0 before capture edge",
+      "state": "Empty queue and permission-approved held request: capture_intent=1, grant=0, downstream_req=0; edge captures payload and sets valid_q/ack_q."
+    },
+    {
+      "cycle": "C1 before acknowledgement edge",
+      "state": "ack_q=1 drives grant=1, downstream_req=0. Upstream request/payload must still match the tentative capture. At this edge ownership transfers; ack_q clears."
+    },
+    {
+      "cycle": "C2 and later",
+      "state": "valid_q=1 and ack_q=0 expose stable payload downstream until downstream grant; no duplicate upstream acknowledgement."
+    },
+    {
+      "cycle": "Denied beat",
+      "state": "Filtered req_i remains 0, so no tentative capture or ack. Actual LSU registered PMP-error handling remains unchanged and still needs whole-core verification."
+    },
+    {
+      "cycle": "Common reset",
+      "state": "Queue valid and ack clear asynchronously and endpoints reset together. Accepted or tentative undelivered tokens are cancelled. Withdrawal without common reset is outside the tested contract."
+    }
+  ],
+  "preparation": {
+    "path": "hw/soc/out/resume-20261002-0800/core-ack-candidate/prepared/preparation.json",
+    "bytes": 2693,
+    "sha256": "949662101f2d9c138cb987da0bde6526db587513af55bb359683d57bfaa0b782"
+  },
+  "native_contract_result": {
+    "path": "hw/soc/out/resume-20261002-0800/core-ack-candidate/contract-native/result.json",
+    "bytes": 11092,
+    "sha256": "ac3fa99f20b3cdf3f3f90cedd7213a71b5d2e12a7d647157c6647c6fafecaad2"
+  },
+  "native_contract_status": "PASS_EXPLICIT_MODULE_CONTRACT_CONTROLS_ONLY",
+  "native_cases": [
+    {
+      "name": "held_and_stalled",
+      "returncode": 0,
+      "expected_rejection": null,
+      "status": "PASS_CONTROL",
+      "source_sha256": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+      "log_sha256": "94dc164061a3c3b2401d8c5ef38e7e8e1e50f23dfdfd0cbe96de5851219cb2ff"
+    },
+    {
+      "name": "withdrawn_request",
+      "returncode": 1,
+      "expected_rejection": "UPSTREAM_CONTRACT withdrawn",
+      "status": "PASS_CONTROL",
+      "source_sha256": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+      "log_sha256": "09874ca55760cd1698a2febbed96a5ca4b567a04eb3c8e53451ad8db8fe86b9e"
+    },
+    {
+      "name": "changed_payload",
+      "returncode": 1,
+      "expected_rejection": "UPSTREAM_CONTRACT payload",
+      "status": "PASS_CONTROL",
+      "source_sha256": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+      "log_sha256": "9b19bee5c90d8bcc2232423f7f5df2ae08f221f590c39c7b68bb063405ab079d"
+    },
+    {
+      "name": "changed_pmp_decision",
+      "returncode": 1,
+      "expected_rejection": "UPSTREAM_CONTRACT withdrawn",
+      "status": "PASS_CONTROL",
+      "source_sha256": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+      "log_sha256": "09874ca55760cd1698a2febbed96a5ca4b567a04eb3c8e53451ad8db8fe86b9e"
+    },
+    {
+      "name": "unsolicited_grant",
+      "returncode": 1,
+      "expected_rejection": "DUT_CONTRACT",
+      "status": "PASS_CONTROL",
+      "source_sha256": "270052f92480af4c74350a8659c0b29e017e6d60cd72e1b6378c29caa3225e9d",
+      "log_sha256": "ca00d8ade7d05b46984eb643fdc4c2a8cea9605f8f23910a53cafbc9e792082f"
+    },
+    {
+      "name": "early_downstream",
+      "returncode": 1,
+      "expected_rejection": "DUT_CONTRACT",
+      "status": "PASS_CONTROL",
+      "source_sha256": "d14aa0ca6a92ec321d670c722c73d8dab57002fb08de8b8c58633a4245cbb90e",
+      "log_sha256": "f96a5968273893d80100cf0f89270b7aa7c14ae4ecb48e3296b1653929638ffc"
+    },
+    {
+      "name": "corrupt_payload",
+      "returncode": 1,
+      "expected_rejection": "DUT_CONTRACT",
+      "status": "PASS_CONTROL",
+      "source_sha256": "a182992a66f7be140e927c0ea183f90da1645b47ee62b216bc077080f513a8a9",
+      "log_sha256": "82cb9fa4b86c145f3cf35d21efdfa027cd52479e9a1db98ffab8982bc41e702e"
+    }
+  ],
+  "native_positive_accounting": {
+    "accepted": 6,
+    "delivered": 5,
+    "discarded_by_common_reset": 1,
+    "stalled_cycles": 17
+  },
+  "validation_commands": {
+    "path": "hw/soc/out/resume-20261002-0800/core-ack-candidate/commands.json",
+    "bytes": 1777,
+    "sha256": "faf80359dfba12a9656cb5fc7360bb8547aca81d0721ffd6ee04dbe6c410a18e"
+  },
+  "pytest": {
+    "passed": 22,
+    "skipped": 0,
+    "scope": "17 isolated candidate/receipt tests and 5 existing default request-pipe tests; Icarus runs candidate positive and six negative controls."
+  },
+  "lint": "PASS",
+  "required_actual_core_proofs": [
+    "Actual Ibex keeps each permission-approved request and its complete payload stable until delayed acknowledgement, except common reset.",
+    "The PMP decision cannot withdraw an already captured request before acknowledgement; denied beats never enter this queue.",
+    "LSU split-beat sequencing, first/second-beat errors, fault address and response ownership remain precise with delayed acknowledgement.",
+    "ID/WB hazards, retirement, branch/interrupt/exception ordering and core clock enable remain correct through the added cycle.",
+    "Common reset cancels queue, core and response endpoints together; no response arrives before its acknowledged request."
+  ],
+  "required_actual_core_scenarios": [
+    "Prove permission-approved request and full 69-bit payload are held from tentative capture through delayed grant, including first-cycle to multicycle ID transition.",
+    "Prove no CSR/PMP update or fault decision can withdraw a tentatively captured beat; no denied beat is forwarded.",
+    "Exercise aligned byte/half/word reads and writes and every split offset with first/second PMP denial, bus error and overlapping grant/response; preserve first-failing address and exact response ownership.",
+    "Exercise load-use RAW, WB forwarding, adjacent stores, and branch stalled behind a store. Keep BranchTargetALU=1 and WritebackStage=1.",
+    "Exercise memory fault versus illegal instruction/IRQ/NMI/debug priorities and WFI/clock gating; prove ack is sampled while the actual core clock is active.",
+    "Reset before capture, during ack, while waiting for downstream grant and while waiting for response; common reset must include queue, core, fabric and response endpoint.",
+    "Use transaction/retirement refinement for latency changes, not fixed-cycle equivalence with unrelated interrupt timing assumptions. Run actual C10 boot/MBIST and precise exception programs before candidate adoption.",
+    "Only after actual-core protocol and architectural gates pass, synthesize an isolated source profile and run fresh setup/hold/electrical/route validation with original constraints and corners."
+  ],
+  "limitations": [
+    "Finite directed actual candidate-module simulation is not a formal proof, actual LSU split-transfer proof, actual PMP proof, whole-core proof or boot regression.",
+    "The synthetic deny wire reproduces the source-level request mask only; real PMP/CSR and core state were not simulated.",
+    "The candidate adds one upstream acknowledgement and one downstream request cycle. Full instruction performance and interrupt-visible timing changes have not been measured.",
+    "The grant feedback cone is structurally registered, but RF/ALU/PMP capture paths remain; no timing improvement or timing closure is claimed.",
+    "No actual RTL, generated Ibex source, ALU candidate input, SDC, corners, PDK or full-chip state was edited. No full-chip native job was run or dispatched."
+  ],
+  "actual_core_protocol_proved": false,
+  "sequential_equivalence_proved": false,
+  "whole_soc_candidate_gate": "BLOCKED_PENDING_ACTUAL_CORE_PROTOCOL_AND_HAZARD_VERIFICATION",
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false,
+  "root_review": {
+    "status": "PASS_INDEPENDENT_SOURCE_PINS_OUTPUT_HASHES_AND_REPEATED_NATIVE_TESTS",
+    "source_head": "166bd17a338b67b1359e69a463f3bd620d316b0f",
+    "pytest_passed": 22,
+    "pytest_skipped": 0,
+    "ruff": "PASS",
+    "verified_c10_source_count": 81,
+    "scope": "Root independently rehashed all method/reference/source pins, prepared candidate and native outputs; repeated all focused tests including actual Icarus controls. Actual Ibex protocol remains unproved."
+  },
+  "native_contract_receipt": {
+    "status": "PASS_EXPLICIT_MODULE_CONTRACT_CONTROLS_ONLY",
+    "cases": [
+      {
+        "name": "held_and_stalled",
+        "returncode": 0,
+        "expected_rejection": null,
+        "status": "PASS_CONTROL",
+        "source_sha256": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+        "log_sha256": "94dc164061a3c3b2401d8c5ef38e7e8e1e50f23dfdfd0cbe96de5851219cb2ff"
+      },
+      {
+        "name": "withdrawn_request",
+        "returncode": 1,
+        "expected_rejection": "UPSTREAM_CONTRACT withdrawn",
+        "status": "PASS_CONTROL",
+        "source_sha256": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+        "log_sha256": "09874ca55760cd1698a2febbed96a5ca4b567a04eb3c8e53451ad8db8fe86b9e"
+      },
+      {
+        "name": "changed_payload",
+        "returncode": 1,
+        "expected_rejection": "UPSTREAM_CONTRACT payload",
+        "status": "PASS_CONTROL",
+        "source_sha256": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+        "log_sha256": "9b19bee5c90d8bcc2232423f7f5df2ae08f221f590c39c7b68bb063405ab079d"
+      },
+      {
+        "name": "changed_pmp_decision",
+        "returncode": 1,
+        "expected_rejection": "UPSTREAM_CONTRACT withdrawn",
+        "status": "PASS_CONTROL",
+        "source_sha256": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+        "log_sha256": "09874ca55760cd1698a2febbed96a5ca4b567a04eb3c8e53451ad8db8fe86b9e"
+      },
+      {
+        "name": "unsolicited_grant",
+        "returncode": 1,
+        "expected_rejection": "DUT_CONTRACT",
+        "status": "PASS_CONTROL",
+        "source_sha256": "270052f92480af4c74350a8659c0b29e017e6d60cd72e1b6378c29caa3225e9d",
+        "log_sha256": "ca00d8ade7d05b46984eb643fdc4c2a8cea9605f8f23910a53cafbc9e792082f"
+      },
+      {
+        "name": "early_downstream",
+        "returncode": 1,
+        "expected_rejection": "DUT_CONTRACT",
+        "status": "PASS_CONTROL",
+        "source_sha256": "d14aa0ca6a92ec321d670c722c73d8dab57002fb08de8b8c58633a4245cbb90e",
+        "log_sha256": "f96a5968273893d80100cf0f89270b7aa7c14ae4ecb48e3296b1653929638ffc"
+      },
+      {
+        "name": "corrupt_payload",
+        "returncode": 1,
+        "expected_rejection": "DUT_CONTRACT",
+        "status": "PASS_CONTROL",
+        "source_sha256": "a182992a66f7be140e927c0ea183f90da1645b47ee62b216bc077080f513a8a9",
+        "log_sha256": "82cb9fa4b86c145f3cf35d21efdfa027cd52479e9a1db98ffab8982bc41e702e"
+      }
+    ],
+    "prepared_sources": {
+      "original.v": "3041a7055a57186415284f44d86c8d0d955d8277979460e6348a7837569854ac",
+      "candidate.v": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c"
+    },
+    "method_sha256": "1a51290c5e173d73782834f2e3e50820e05e210824b92781063039e1ad9cdc7c",
+    "principal_tool_sha256": {
+      "/home/hasanmelih/.local/bin/iverilog": "052eab3e5b71dbc395547dacefe2e13653e9a5e0ac8b1a1fab86c48817e39058",
+      "/home/hasanmelih/.local/bin/vvp": "0172528a53a8cb92a6997ffcb49e25c96def5d22c7537b76816cd1dc9f6d62e8"
+    },
+    "tool_versions": {
+      "iverilog": "Icarus Verilog version 12.0 (stable) ()\n\nCopyright (c) 2000-2021 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\nIcarus Verilog Preprocessor version 12.0 (stable) ()\n\nCopyright (c) 1999-2021 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\nIcarus Verilog Parser/Elaborator version 12.0 (stable) ()\n\nCopyright (c) 1998-2021 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n FLAGS DLL vvp.tgt\nvvp.tgt: Icarus Verilog VVP Code Generator 12.0 (stable) ()\n\nCopyright (c) 2001-2021 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n",
+      "vvp": "Icarus Verilog runtime version 12.0 (stable) ()\n\nCopyright (c) 2001-2021 Stephen Williams (steve@icarus.com)\n\n  This program is free software; you can redistribute it and/or modify\n  it under the terms of the GNU General Public License as published by\n  the Free Software Foundation; either version 2 of the License, or\n  (at your option) any later version.\n\n  This program is distributed in the hope that it will be useful,\n  but WITHOUT ANY WARRANTY; without even the implied warranty of\n  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n  GNU General Public License for more details.\n\n  You should have received a copy of the GNU General Public License along\n  with this program; if not, write to the Free Software Foundation, Inc.,\n  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.\n\n"
+    },
+    "required_actual_core_proofs": [
+      "Actual Ibex keeps each permission-approved request and its complete payload stable until delayed acknowledgement, except common reset.",
+      "The PMP decision cannot withdraw an already captured request before acknowledgement; denied beats never enter this queue.",
+      "LSU split-beat sequencing, first/second-beat errors, fault address and response ownership remain precise with delayed acknowledgement.",
+      "ID/WB hazards, retirement, branch/interrupt/exception ordering and core clock enable remain correct through the added cycle.",
+      "Common reset cancels queue, core and response endpoints together; no response arrives before its acknowledged request."
+    ],
+    "actual_core_protocol_proved": false,
+    "sequential_equivalence_proved": false,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false,
+    "scope": "Actual candidate module simulation under checked held-request/payload contract; adjacent beat-like tokens are not an actual LSU, PMP or full-core proof.",
+    "output_sha256": {
+      "changed_payload-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "changed_payload.log": "9b19bee5c90d8bcc2232423f7f5df2ae08f221f590c39c7b68bb063405ab079d",
+      "changed_payload.v": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+      "changed_payload.vvp": "6a49db9c8133487849919c9e2fa356632b28ced533867f7881e721c84eddebe8",
+      "changed_pmp_decision-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "changed_pmp_decision.log": "09874ca55760cd1698a2febbed96a5ca4b567a04eb3c8e53451ad8db8fe86b9e",
+      "changed_pmp_decision.v": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+      "changed_pmp_decision.vvp": "95bd1dbfc4ca7740c7f49165261650d6fb9c9ba58633ba5dfcb4fca8283b641f",
+      "contract.v": "bda2e6d381b324e30432c94b365df5cc7e7cad24dc59965499d8de4e9814b33c",
+      "corrupt_payload-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "corrupt_payload.log": "82cb9fa4b86c145f3cf35d21efdfa027cd52479e9a1db98ffab8982bc41e702e",
+      "corrupt_payload.v": "a182992a66f7be140e927c0ea183f90da1645b47ee62b216bc077080f513a8a9",
+      "corrupt_payload.vvp": "3c7ff257b78f28ec2899b8992048216f5841de3d3ff77942cbdfd3c13bfb71f1",
+      "early_downstream-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "early_downstream.log": "f96a5968273893d80100cf0f89270b7aa7c14ae4ecb48e3296b1653929638ffc",
+      "early_downstream.v": "d14aa0ca6a92ec321d670c722c73d8dab57002fb08de8b8c58633a4245cbb90e",
+      "early_downstream.vvp": "087fced882125966b01b5ab001070faa1f13bdd0dce13a69c20e6a4c9c574884",
+      "held_and_stalled-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "held_and_stalled.log": "94dc164061a3c3b2401d8c5ef38e7e8e1e50f23dfdfd0cbe96de5851219cb2ff",
+      "held_and_stalled.v": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+      "held_and_stalled.vvp": "cbed6e46cab96a8b058c03dcf627c6431fbef7def9a8178e1effb7dd3550ab77",
+      "unsolicited_grant-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "unsolicited_grant.log": "ca00d8ade7d05b46984eb643fdc4c2a8cea9605f8f23910a53cafbc9e792082f",
+      "unsolicited_grant.v": "270052f92480af4c74350a8659c0b29e017e6d60cd72e1b6378c29caa3225e9d",
+      "unsolicited_grant.vvp": "302feb7def890b9ccbd1a6e2eba95eea71020b9873b49d0c666a43267d9218b7",
+      "withdrawn_request-compile.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "withdrawn_request.log": "09874ca55760cd1698a2febbed96a5ca4b567a04eb3c8e53451ad8db8fe86b9e",
+      "withdrawn_request.v": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c",
+      "withdrawn_request.vvp": "defe3a7b26da4376ce1b79ecb115f4fc8545b3965c79695defae58a25c5d1b5e"
+    }
+  },
+  "native_text_logs": {
+    "changed_payload-compile.log": "",
+    "changed_payload.log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-candidate/contract-native/contract.v:25: UPSTREAM_CONTRACT payload changed before grant\n       Time: 45000  Scope: tb\n",
+    "changed_pmp_decision-compile.log": "",
+    "changed_pmp_decision.log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-candidate/contract-native/contract.v:24: UPSTREAM_CONTRACT withdrawn before grant\n       Time: 45000  Scope: tb\n",
+    "corrupt_payload-compile.log": "",
+    "corrupt_payload.log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-candidate/contract-native/contract.v:30: DUT_CONTRACT lost reordered or corrupted token\n       Time: 55000  Scope: tb\n",
+    "early_downstream-compile.log": "",
+    "early_downstream.log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-candidate/contract-native/contract.v:48: DUT_CONTRACT wrong ack latency\n       Time: 40000  Scope: tb.issue\n",
+    "held_and_stalled-compile.log": "",
+    "held_and_stalled.log": "PASS_MODULE_CONTRACT accepted=6 delivered=5 discarded=1 stalls=17\n/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-candidate/contract-native/contract.v:95: $finish called at 530000 (1ps)\n",
+    "unsolicited_grant-compile.log": "",
+    "unsolicited_grant.log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-candidate/contract-native/contract.v:61: DUT_CONTRACT idle grant\n       Time: 31000  Scope: tb\n",
+    "withdrawn_request-compile.log": "",
+    "withdrawn_request.log": "FATAL: /home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/resume-20261002-0800/core-ack-candidate/contract-native/contract.v:24: UPSTREAM_CONTRACT withdrawn before grant\n       Time: 45000  Scope: tb\n"
+  },
+  "prepared_receipt": {
+    "status": "PREPARED_RETIMING_NOT_ADOPTED",
+    "source_sha256": "3041a7055a57186415284f44d86c8d0d955d8277979460e6348a7837569854ac",
+    "sources": {
+      "original.v": "3041a7055a57186415284f44d86c8d0d955d8277979460e6348a7837569854ac",
+      "candidate.v": "f1a8197ef15ff6ce98ccb78eed39c3a0297edbc4db9cf38164f6311d0f515b5c"
+    },
+    "method_sha256": "1a51290c5e173d73782834f2e3e50820e05e210824b92781063039e1ad9cdc7c",
+    "edits": [
+      {
+        "before": "  reg valid_q;\n",
+        "after": "  // Isolated candidate: capture a held request, acknowledge next cycle,\n  // then expose it downstream. Common reset is the only legal abort.\n  reg ack_q;\n  reg valid_q;\n"
+      },
+      {
+        "before": "  assign gnt_o = rst_ni && req_i && !valid_q;\n  assign req_o = rst_ni && valid_q;\n",
+        "after": "  wire capture_intent = rst_ni && req_i && !valid_q;\n  assign gnt_o = rst_ni && ack_q;\n  assign req_o = rst_ni && valid_q && !ack_q;\n"
+      },
+      {
+        "before": "    else if (gnt_o) valid_q <= 1'b1;\n",
+        "after": "    else if (capture_intent) valid_q <= 1'b1;\n"
+      },
+      {
+        "before": "  // Payload is observable only while req_o is asserted.",
+        "after": "  always @(posedge clk_i or negedge rst_ni)\n    if (!rst_ni) ack_q <= 1'b0;\n    else ack_q <= capture_intent;\n\n  // Payload is observable only while req_o is asserted."
+      },
+      {
+        "before": "    if (gnt_o) payload_q <= {addr_i, we_i, be_i, wdata_i};\n",
+        "after": "    if (capture_intent) payload_q <= {addr_i, we_i, be_i, wdata_i};\n"
+      }
+    ],
+    "downstream_request_latency_added_cycles": 1,
+    "upstream_ack_latency_added_cycles": 1,
+    "required_actual_core_proofs": [
+      "Actual Ibex keeps each permission-approved request and its complete payload stable until delayed acknowledgement, except common reset.",
+      "The PMP decision cannot withdraw an already captured request before acknowledgement; denied beats never enter this queue.",
+      "LSU split-beat sequencing, first/second-beat errors, fault address and response ownership remain precise with delayed acknowledgement.",
+      "ID/WB hazards, retirement, branch/interrupt/exception ordering and core clock enable remain correct through the added cycle.",
+      "Common reset cancels queue, core and response endpoints together; no response arrives before its acknowledged request."
+    ],
+    "upstream_stability_is_required": true,
+    "common_reset_is_only_legal_abort": true,
+    "actual_core_protocol_proved": false,
+    "sequential_equivalence_proved": false,
+    "whole_soc_candidate_gate": "BLOCKED_PENDING_ACTUAL_CORE_PROTOCOL_AND_HAZARD_VERIFICATION",
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  }
+}

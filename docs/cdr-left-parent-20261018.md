@@ -1,0 +1,7 @@
+# Four left-output samplers in the full retimed CDR parent
+
+Cloud-only candidate. Leaf run [39100436556](https://github.com/Melihakbulut221/nssoc/actions/runs/39100436556) at107da2e6dc973db54cb259db1e3301bd7a98bb98 passed the unchanged560-category native DRC,35-device unsimplified deep/flat LVS, LEF and ten fault controls. Its exact geometry delta retains all devices and moves QP/QN to left-edge M5 ports with real M7 output shunts. The immutable receipt binds the summary, native archive manifest and physical source.
+
+`cdr-retimed-left-parent-cloud` restores that actual leaf into all four sampler positions. The other seven child kinds retain their existing exact receipts. The original394-device circuit is unchanged. The deterministic parent placer/router runs afresh for actual new bounds/ports; it does not recycle the old parent wires. The original AVSS256 rail and84 local supply-riser construction remains byte-pinned. The full parent must independently pass560-category DRC, deep/flat LVS and all five original reference/geometry faults.
+
+This is a candidate to reduce the observed output-to-retimed-input attenuation. It is not evidence of electrical improvement. After physical success, regenerate native terminal planes, device binding, raw wire/MIM RC, audited composition and original loaded early/late gates. Never reuse prior RC values or native IDs. Keep the original sampler timing,256-bit data,phase direction,100mV and HBT limits. The previous risers candidate remains electrically rejected.

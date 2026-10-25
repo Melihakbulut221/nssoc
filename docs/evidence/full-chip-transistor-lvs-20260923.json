@@ -1,0 +1,219 @@
+{
+  "date": "2026-09-23",
+  "status": "FAIL",
+  "scope": "Complete routed baseline soc_top GDS against powered implementation connectivity and original full vendor transistor CDL. Locked unmodified IHP deck, deep mode. No SRAM blackboxes, cell exclusions or rule waivers.",
+  "baseline_commit": "496961c0da353aa20638adfff4c37b05c920f49a",
+  "deck_commit": "5e6d592e4002946a4616f798c357f0f3c06cf3b6",
+  "tool": "KLayout 0.30.7 from pinned LibreLane 3.0.5 AppImage",
+  "process": {
+    "returncode": 0,
+    "inputs_unchanged": true,
+    "finished": 1790121148.361537
+  },
+  "circuit_status_counts": {
+    "Mismatch": 5,
+    "Skipped": 3,
+    "Match": 79,
+    "NoMatch": 3
+  },
+  "nonmatching_circuits": [
+    {
+      "layout": null,
+      "schematic": "RSC_IHPSG13_CBUFX8",
+      "status": "Mismatch",
+      "layout_devices_recursive": 0,
+      "schematic_devices_recursive": 4
+    },
+    {
+      "layout": null,
+      "schematic": "RSC_IHPSG13_CINVX2",
+      "status": "Mismatch",
+      "layout_devices_recursive": 0,
+      "schematic_devices_recursive": 2
+    },
+    {
+      "layout": null,
+      "schematic": "RSC_IHPSG13_CINVX8",
+      "status": "Mismatch",
+      "layout_devices_recursive": 0,
+      "schematic_devices_recursive": 2
+    },
+    {
+      "layout": null,
+      "schematic": "RSC_IHPSG13_FILLCAP4",
+      "status": "Mismatch",
+      "layout_devices_recursive": 0,
+      "schematic_devices_recursive": 2
+    },
+    {
+      "layout": null,
+      "schematic": "RSC_IHPSG13_FILLCAP8",
+      "status": "Mismatch",
+      "layout_devices_recursive": 0,
+      "schematic_devices_recursive": 2
+    },
+    {
+      "layout": "RM_IHPSG13_1P_2048x64_c2_bm_bist",
+      "schematic": "RM_IHPSG13_1P_2048X64_C2_BM_BIST",
+      "status": "Skipped",
+      "layout_devices_recursive": 1080304,
+      "schematic_devices_recursive": 1080304
+    },
+    {
+      "layout": "RM_IHPSG13_2P_256x16_c2_bm_bist",
+      "schematic": "RM_IHPSG13_2P_256X16_C2_BM_BIST",
+      "status": "Skipped",
+      "layout_devices_recursive": 62012,
+      "schematic_devices_recursive": 62046
+    },
+    {
+      "layout": "RSC_IHPSG13_CDLYX1_DUMMY",
+      "schematic": "RSC_IHPSG13_CDLYX1_DUMMY",
+      "status": "NoMatch",
+      "layout_devices_recursive": 3,
+      "schematic_devices_recursive": 3
+    },
+    {
+      "layout": "RSC_IHPSG13_DFPQD_MSAFFX2P",
+      "schematic": "RSC_IHPSG13_DFPQD_MSAFFX2P",
+      "status": "NoMatch",
+      "layout_devices_recursive": 19,
+      "schematic_devices_recursive": 19
+    },
+    {
+      "layout": "RSC_IHPSG13_WLDRVX8",
+      "schematic": "RSC_IHPSG13_WLDRVX8",
+      "status": "NoMatch",
+      "layout_devices_recursive": 2,
+      "schematic_devices_recursive": 4
+    },
+    {
+      "layout": "soc_top",
+      "schematic": "SOC_TOP",
+      "status": "Skipped",
+      "layout_devices_recursive": 6633892,
+      "schematic_devices_recursive": 6634436
+    }
+  ],
+  "interpretation": [
+    "CLI zero is not an LVS pass: the unchanged deck explicitly reports mismatch and the independent auditor rejects the completed database.",
+    "The three failing SRAM child circuits prevent comparison of both macro types and soc_top. A skipped top does not establish that top-level connectivity matches.",
+    "Dummy reference uses lvsres whereas extraction uses res_metal1. Sense amplifier extraction exposes split VDD! and VDD!$1 networks. Word-line-driver extraction in this hierarchy has two PMOS devices versus four devices in the reference. These reproduce previously measured macro/extraction problems; no geometry or deck fix is inferred.",
+    "Five schematic-only helper/fill circuits are also reported Mismatch. All 79 matching circuit pairs cannot qualify the complete design.",
+    "Final repaired geometry must undergo its own complete DRC/LVS run."
+  ],
+  "raw_database": {
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/full-lvs-run2/soc_top.lvsdb": {
+      "bytes": 1393637451,
+      "sha256": "bb268e9f35dd8877f4516915b58f2c8068322e2c48795351b0d806dc9c3fc695"
+    },
+    "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/full-lvs-run2/deck.log": {
+      "bytes": 37606,
+      "sha256": "ebeaaf938117de0f23b0cf317e83f1caf260520e5ac51d091dbecc50c9be499a"
+    }
+  },
+  "extracted_netlist": {
+    "path": "hw/soc/out/external-review-20260919/route-closure-20260923/full-lvs-run2/extracted.cir",
+    "bytes": 139184376,
+    "sha256": "b22f6dc7a51b395864d44a7d2d205ea8f4f5a0023d5260c1ed8ebe6ed99a124c"
+  },
+  "input_receipt": {
+    "command": [
+      "klayout",
+      "-b",
+      "-zz",
+      "-r",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs",
+      "-rd",
+      "input=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/selected/pnr/runs/route-resume/final/klayout_gds/soc_top.klayout.gds",
+      "-rd",
+      "schematic=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/full-lvs/schematic.cir",
+      "-rd",
+      "topcell=soc_top",
+      "-rd",
+      "report=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/full-lvs-run2/soc_top.lvsdb",
+      "-rd",
+      "log=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/full-lvs-run2/deck.log",
+      "-rd",
+      "target_netlist=/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/full-lvs-run2/extracted.cir",
+      "-rd",
+      "run_mode=deep",
+      "-rd",
+      "thr=2"
+    ],
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/selected/pnr/runs/route-resume/final/klayout_gds/soc_top.klayout.gds": "c8dc9462313e5f3484111a8ed23d683fedb18b2e1b7e65bec636efc8309ec838",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/route-closure-20260923/full-lvs/schematic.cir": "ebeb744f9e9c119e89f288afd128eb9de48fe1c6c8ec2ed2d85b6cd2d9f2acf8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/ihp-lvs.lock.json": "9a7989016329c26a75f6d2241913f891b8746ba977586146a788f4234b5a7532",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/LICENSE": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/README.md": "50bccaaf677b9648ceb472189c41c013230488c9871765dff039d20fb68e501b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_connections.lvs": "0b3f536a25d8b8d5b37dc5eeb8e1bc8554e78694bb4398f6dd48ac3d9e528c8c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_derivations.lvs": "03fa1f8a2d22639d4e5e478fb89cdc818de8a45ee81fed7a2c799b95b5a94c0b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/bjt_extraction.lvs": "8989e8263a6de8cb40077b5995b559fb938025fd991a3e4f7a52a7ab89d524a3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_connections.lvs": "6d62d634122eb8fe78f4f4382e9d1353d88c67aa6ce225ed46a76722d89fd80f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomf_derivations.lvs": "061c5e94be5cef7074f311d60196a2f39298978648f57151c18d3ac9f71caa1c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_connections.lvs": "87bbea2850a7594859ddddae0b0db56bc4642bd0edc61ee7e89bef935fc8216b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_cmomi_derivations.lvs": "291f94fdd77012f381a6e0bc9eaa030889f01d8365a24f536d033f692b697786",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_connections.lvs": "adba1f9e036ec47b6f431615c1538073aafbab51087ba57dee6b0080699face6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_derivations.lvs": "2122ca992df4983e32dda8e85fdffabab2bc90eed0cebc1372c4069c78ef1157",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/cap_extraction.lvs": "ae5cd8746f7dd4772c7fa618ed09bf009bd394d801a19928ea3c9c0d6ab5b226",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_bjt_extractor.lvs": "0cd07122454e4ffefb702861e1c11bdc0cef779a9564649462bbb750d9b4229b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_classes.lvs": "65eb31e73784b6d5df279b6e9f4a0beca378b4c0ddccc105f6c4312faf8215b1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_combiner.lvs": "2e9f341023b96ab64ef83110d0a57d5f8be8a6906e67db60edbb62cfadeed56d",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_devices.lvs": "b062c2ed0bb15a41fd21b38e5e6e74a1a5cf3abf463f8535b946a2f662453b63",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_extractor.lvs": "6bde15ff3d3702eac7ab372c74b21752c179b66c21c076350d258397986fc8ba",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_isolbox_extractor.lvs": "1ca2293fa3c5c45f04c15e277b0b1fa0ac21735e0504911269580e4afd77499e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mim_extractor.lvs": "2e4a47be7bf2ec9ba87611e2ab32e97d5369f726ded328d2e291d94e845f40dd",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_mom_extractor.lvs": "c59d8439058eb434ec0feb2ea495f6e78e5fcbefd51072e50db4b47254624ca7",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_moscap_extractor.lvs": "47ab35e77bcf6bdc807ca93ec8b9b5fd9ebabfb7ba5a3c4214a311f560998255",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_reader.lvs": "c71b6713d8a62055d3d8e9e75a7f5f78140001bf76e3fa573b9883fab5e49f06",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/custom_writer.lvs": "bada63cfda80316f64ffbd1f6ed2a9cc06cd337b7244fe7d608ae4a20dfc0c36",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/devices_connections.lvs": "f8ddc90801d104b0a517ca90773c7f03b13b95f4bac95b77ebcf96f53513801b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_connections.lvs": "a55896d567a14240ae33faa8799daed545b06bd777245c3731fa4c632e9833f3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_derivations.lvs": "aa366ee04f0ab5030131d12d26e421c9bdf7dc4d7b0840f0ac43309557b411bf",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/diode_extraction.lvs": "9d060ddb655bf8fce7363aabb02800ffe8138b745aa9cff724b34c248770e006",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_connections.lvs": "cdd0aad08c99bfdda7f38ced6a87531192bb4e2051e84c8fb6a6cb35f782f27c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_derivations.lvs": "b1c584735c3228bb6abb178da577d1495debb15669748f5879c9261710757ffd",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/esd_extraction.lvs": "93a26d226548c5a4b871f5016de21ce812eca1d561af781f2909521659d82a86",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_connections.lvs": "bb61656b3564cf08558b83cf27d09854049eb30b5b7ade6610045d43c4b53e97",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/general_derivations.lvs": "d386598b10809388bfa690644b5a6a8f49c532b9d04caf9d2d014f4de12db043",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/globals.lvs": "170fe4fd4b796a1a4db9626506c304fb5c01716070a0ae1903166d75470ed758",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_connections.lvs": "05682e9e05c6a18bc67b512276e0d6b5bb90c051e4982dab44a7a3bc34a33b92",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_derivations.lvs": "af116ba0df67f771852bc4f6e68e480ce3fb356aced52348636b0171512c3da5",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/ind_extraction.lvs": "bcf182be57689e2571d3748973bad31b4e084837faf3cbcc3a9a72c6acc63a2a",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/layers_definitions.lvs": "2165a344d178eff60c2c79ad73108d74b8a1d2b1a5183e8b3492aa249887e58c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_connections.lvs": "f53e17c1f315f49fc973b8ec949ae343e2bb99c2862a51acdaa3f37f49907770",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_derivations.lvs": "ec4ea7cd367ad32d83ebb64234967b13c3dc4c0482570722e8c0a48135b90828",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/mos_extraction.lvs": "dea4df60fced945fb182e2d2e511a73b6b2863d70acfbbb9875e8535bc0caa49",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_connections.lvs": "a42d02de14a62c239850946bd0f1831408b9076ee43c5a38bb261c72659bc448",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_derivations.lvs": "3c32e371d71ddbb7190769db6aac4676d65f75eff1ca994fbf720ceb06255754",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/res_extraction.lvs": "f3913114d4eafc36f6baf8c47a5de4867270e41955572af7f25c5f498ccec4b1",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_connections.lvs": "88d8335742119b8b88811f408defb789cc8fbde2c910c1deb33d9a4837a5b2d3",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_derivations.lvs": "5ae022be71ec90487ebf4636820563bc665815dfc12a36068b331d9571f54677",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_extraction.lvs": "114bafea13d39aff60411442efb768f45b9460068b0fa25f85e36762ee89e3cd",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/rfmos_model_mapping.lvs": "effbefbe9c0007bc2df0d23e1ebb7585487a6bf6dc0a7e11c4167765fee8d33f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/sram_integration.lvs": "447e02305b8896fde8b3ce71de31a686775953695322b88298f04949b4f123de",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_connections.lvs": "b78c5b3cf4e328c915d52f210c6457790ec7ef56eb08d88dedb825ca3bc59b3b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_derivations.lvs": "b6e9ff382b6f8c392ab699d09832ea7e0ad120bc1b35b51a778e8b188b0ce6c2",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/rule_decks/tap_extraction.lvs": "e17c779eacdcab3bfa2287ca265d7836dde0e9e7fec4b4e7bf79bf2b2dd9120b",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/run_lvs.py": "436d912edf27dd653fdde9aab71d7e9df90ad1aa5e271303842b970bfc50d415",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-lvs-5e6d592/ihp-sg13g2/libs.tech/klayout/tech/lvs/sg13g2.lvs": "866c32c88e6e3fbf25fefaf2c19bb710cfce74645a313d91ec06ae05aa051c10"
+    }
+  },
+  "archive": {
+    "path": "docs/evidence/full-chip-transistor-lvs-20260923.tar.gz",
+    "bytes": 14914,
+    "sha256": "07badd88e9c30ec11aa04314cc4ec4bdc15b74a6efec93626f5ff98e65a428d1",
+    "members": {
+      "full-lvs-run2/audit-final.json": "1d7c844c2bda42c0fcf1027bbcc000bd627b803f9fc5c73e7f5d8acd25ee65fb",
+      "full-lvs-run2/inputs.json": "b4c2d5bb972014bdd896e61479a1fb059582322b0df7bd1fe0a982b4734b4872",
+      "full-lvs-run2/process-result.json": "dd678f152b47dfdd51e71f9f6d5a268b3a8ba23943cfd1c43cb3a62b701b7b20",
+      "full-lvs-run2/deck.log": "ebeaaf938117de0f23b0cf317e83f1caf260520e5ac51d091dbecc50c9be499a",
+      "full-lvs-run2/process.log": "801923f391aa0027a5f4ff518b03101a866fdb43dec6587cb0acd1e41d544b31",
+      "full-lvs-run2/extracted-failed-cells.cir": "be309e3675e1b59c51758910e1533db0f86dd3f088cd330e3f4cda0e62b8a1a9",
+      "full-lvs-run2/reference-failed-cells.cir": "ca55c88bf89b894ddad4df8f676e7f532fe8d01c124418f06c5e26d837129d2e",
+      "run_full_lvs.py": "5ddda49e1dbd9baa475be59505c2ceac5ac9e9241ff125e14cfe7dc2dd8aca9d",
+      "wait_and_audit_lvs.py": "ad99a5f792e9b6dc717bf9e93ac26b7ae6f97b6f89803fd6bb986d5ccf3642b4"
+    }
+  }
+}

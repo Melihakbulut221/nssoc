@@ -1,0 +1,744 @@
+{
+  "parent": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-eighthstep-20261006/freeze_source01.py",
+    "bytes": 3671,
+    "sha256": "71056a753970a569f1ffe0f6a291a7489ec5e602a324eb1d70781b7f6485ee5a"
+  },
+  "child": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-vco-v6-divider-tail115-v1-sixteenthstep-20261006/freeze_source01.py",
+    "bytes": 5040,
+    "sha256": "dc4930686b59ac01ef5f617cf326ece0583fa1f19ad63f6dd536f95f7f769f05"
+  },
+  "full_diff": "--- \n+++ \n@@ -2,7 +2,7 @@\n # SPDX-License-Identifier: Apache-2.0\n from pathlib import Path\n import hashlib,json,shutil,sys\n-R=Path.cwd();B=Path(__file__).resolve().parent;L=B.parent/'pcie-vco-v6-divider-tail115-v1-quarterstep-20261006';F=B.parent/'pcie-tail115-layout-wire-loaded-finite-20261006'\n+R=Path.cwd();B=Path(__file__).resolve().parent;L=B.parent/'pcie-vco-v6-divider-tail115-v1-eighthstep-20261006';F=B.parent/'pcie-tail115-layout-wire-loaded-finite-20261006'\n def pin(p):\n  p=Path(p)\n  with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\n@@ -11,13 +11,20 @@\n paths=set(map(Path,old['pins']))\n paths.update([L/'source-freeze01.json',L/'source-only-peer01-root.json',L/'launch-runtime-freeze01.json',L/'validation-06-01.json',L/'members-06-01.json',L/'review-06-01.json',L/'release-06-01.json',F/'event-boundary-diagnosis06.json',F/'event-diagnosis-summary06.json'])\n assert json.loads((L/'release-06-01.json').read_text())['status']=='PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\n-control=json.loads((B/'derivative-controls01.json').read_text());assert control['status']=='PASS_EIGHTHSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS'and len(control['checks'])==7\n+control=json.loads((B/'derivative-controls01.json').read_text());assert control['status']=='PASS_SIXTEENTHSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS'and len(control['checks'])==7\n numerical=json.loads((B/'numerical-controls01.json').read_text());assert numerical['status']=='PASS_ACTUAL_ADDITIONAL_NUMERICAL_GATE_CONTROLS' and len(numerical['checks'])==12\n assert all(pin(p)==v for p,v in numerical['inputs'].items())\n+S=B.parent/'pcie-tail115-streaming-replay-v1-20261006'\n+reader=json.loads((S/'source-freeze01.json').read_text());assert all(pin(p)==v for p,v in reader['pins'].items());paths.update(map(Path,reader['pins']))\n+peer=json.loads((S/'source-only-peer-pll01.json').read_text());assert peer['findings']==[] and peer['freeze']==pin(S/'source-freeze01.json')\n+paths.update([S/'source-freeze01.json',S/'source-only-peer-pll01.json',S/'review_reader_pll01.py',S/'review-reader-pll01.log'])\n+replay=json.loads((B/'saved-replay-controls01.json').read_text());assert replay['status']=='PASS_EXACT_STREAMED_COMPARISON_AND_SEALER_SAVED_AST_CONTROLS' and len(replay['checks'])==2;assert all(pin(p)==v for p,v in replay['inputs'].items())\n+for name in ['pcie-tail115-wave-peer-rx-20261006','pcie-tail115-halfstep-wave-peer-rx-20261006','pcie-tail115-quarterstep-wave-peer-rx-20261006','pcie-tail115-eighthstep-wave-peer-rx-20261006']:\n+ root=B.parent/name;paths.update(p for p in root.rglob('*')if p.is_file()and '__pycache__'not in p.parts and p.suffix!='.pyc')\n for root in [B,L/'pytest-handoff01',L/'pytest01']:\n  paths.update(p for p in root.rglob('*')if p.is_file()and '__pycache__'not in p.parts and p.suffix!='.pyc')\n paths.update([R/'hw/soc/tools/cocotb-venv/bin/python',R/'hw/soc/tools/cocotb-venv/pyvenv.cfg'])\n-N=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-quarterstep-06-01');r=json.loads((N/'result.json').read_text());paths.update(Path(p)for p in r['inputs']);paths.update([N/'result.json',N/'wave.raw.gz'])\n-assert not Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eighthstep-06-01').exists()\n-record=dict(status='FROZEN_SAME_PHYSICS_455_EIGHTHSTEP_COMPLETE_34NS_PENDING_PEER',pins={str(p.absolute()):pin(p)for p in sorted(paths)},new_sources={str(p.absolute()):pin(p)for p in [B/'characterize_eighthstep01.py',B/'launch_probe01.py',B/'seal_probe01.py',B/'compare_saved_steps01.py',B/'convergence_policy01.py']},parent_source_freeze=pin(L/'source-freeze01.json'),actual_derivative_controls=control,actual_numerical_controls=pin(B/'numerical-controls01.json'),numerical_predeclaration=pin(B/'numerical-policy01.json'),inherited_controls=dict(source=old['inherited_controls']['source'],handoff=old['inherited_controls']['handoff']),predeclared=dict(vctrl=.6,stop_s=34e-9,step_s=6.25e-13,window_s=[4e-9,34e-9],intrinsics=455,HBT=64,contacts=31,vectors=956,wire_R=1271,wire_C=1414,CPU=10,AS=2*1024**3,own_limit=512*1024**2,entry_floor=1024**3,shared_floor=512*1024**2,receipt_reserve=2*1024**2,elapsed_watchdog=None),acceptance_changes=False,physical_changes=False,resource_reason='Full1.25ps compressed raw193.62MB; doubled full0.625ps raw does not fit256MiB. Root explicitly approved separately bounded512MiB namespace, keeping AS/shared floors unchanged.',scope='Source-only full34ns restart fromtime0 with unchanged devices/bias/wires/initialization/455safety/strictcount predicates. Original5ps/2.5ps FAIL and1.25ps finitePASS/raw retained. Original functional criteria unchanged. Separate predeclared100ppm and50ps unaligned matched-edge screen applies only adjacent1.25/0.625ps full34ns openloop captures, with fixed originalVCOordinal mapping and no phaseoffset fit.')\n+N=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-eighthstep-06-01');r=json.loads((N/'result.json').read_text());paths.update(Path(p)for p in r['inputs']);paths.update([N/'result.json',N/'wave.raw.gz'])\n+assert not Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-sixteenthstep-06-01').exists()\n+record=dict(status='FROZEN_SAME_PHYSICS_455_SIXTEENTHSTEP_COMPLETE_34NS_PENDING_PEER',pins={str(p.absolute()):pin(p)for p in sorted(paths)},new_sources={str(p.absolute()):pin(p)for p in [B/'characterize_sixteenthstep01.py',B/'launch_probe01.py',B/'seal_probe01.py',B/'compare_saved_steps01.py',B/'convergence_policy01.py']},parent_source_freeze=pin(L/'source-freeze01.json'),actual_derivative_controls=control,streamed_saved_replay_controls=pin(B/'saved-replay-controls01.json'),reader_peer=pin(S/'source-only-peer-pll01.json'),actual_numerical_controls=pin(B/'numerical-controls01.json'),numerical_predeclaration=pin(B/'numerical-policy01.json'),inherited_controls=dict(source=old['inherited_controls']['source'],handoff=old['inherited_controls']['handoff']),predeclared=dict(vctrl=.6,stop_s=34e-9,step_s=3.125e-13,window_s=[4e-9,34e-9],intrinsics=455,HBT=64,contacts=31,vectors=956,wire_R=1271,wire_C=1414,CPU=10,AS=2*1024**3,own_limit=1024*1024**2,entry_floor=1024**3,shared_floor=512*1024**2,receipt_reserve=2*1024**2,elapsed_watchdog=None),acceptance_changes=False,physical_changes=False,resource_reason='Full0.625ps compressed raw386.83MB; full0.3125ps raw requires separately bounded1GiB native namespace. Original2GiBAS/shared floors unchanged. Streamed sealer/comparator use explicit1GiB anonymousSSD payload mapping and1GiB floor; actual saved replay peak456512KiB. Root source/resource peer required before launch.',scope='Source-only full34ns restart fromtime0 with unchanged devices/bias/wires/initialization/455safety/strictcount predicates. Original5ps/2.5ps FAIL and1.25ps/0.625ps finitePASS/raw retained;0.625ps numericalFAIL269.85ppm remains unchanged. Original functional criteria unchanged. Separate predeclared100ppm and50ps unaligned matched-edge screen applies only adjacent0.625/0.3125ps full34ns openloop captures, with fixed originalVCOordinal mapping and no phaseoffset fit.')\n (B/'source-freeze01.json').write_text(json.dumps(record,indent=2)+'\\n');print(len(paths),pin(B/'source-freeze01.json'))\n",
+  "opcodes": [
+    {
+      "tag": "equal",
+      "a0": 0,
+      "a1": 235,
+      "b0": 0,
+      "b1": 235,
+      "old": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nfrom pathlib import Path\nimport hashlib,json,shutil,sys\nR=Path.cwd();B=Path(__file__).resolve().parent;L=B.parent/'pcie-vco-v6-divider-tail115-v1-",
+      "new": "# SPDX-FileCopyrightText: 2026 Hasan Melih Akbulut\n# SPDX-License-Identifier: Apache-2.0\nfrom pathlib import Path\nimport hashlib,json,shutil,sys\nR=Path.cwd();B=Path(__file__).resolve().parent;L=B.parent/'pcie-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "replace",
+      "a0": 235,
+      "a1": 239,
+      "b0": 235,
+      "b1": 239,
+      "old": "quar",
+      "new": "eigh"
+    },
+    {
+      "tag": "equal",
+      "a0": 239,
+      "a1": 240,
+      "b0": 239,
+      "b1": 240,
+      "old": "t",
+      "new": "t"
+    },
+    {
+      "tag": "replace",
+      "a0": 240,
+      "a1": 242,
+      "b0": 240,
+      "b1": 241,
+      "old": "er",
+      "new": "h"
+    },
+    {
+      "tag": "equal",
+      "a0": 242,
+      "a1": 1110,
+      "b0": 241,
+      "b1": 1109,
+      "old": "step-20261006';F=B.parent/'pcie-tail115-layout-wire-loaded-finite-20261006'\ndef pin(p):\n p=Path(p)\n with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nassert not(B/'source-freeze01.json').exists()\nold=json.loads((L/'source-freeze01.json').read_text());assert all(pin(p)==v for p,v in old['pins'].items())\npaths=set(map(Path,old['pins']))\npaths.update([L/'source-freeze01.json',L/'source-only-peer01-root.json',L/'launch-runtime-freeze01.json',L/'validation-06-01.json',L/'members-06-01.json',L/'review-06-01.json',L/'release-06-01.json',F/'event-boundary-diagnosis06.json',F/'event-diagnosis-summary06.json'])\nassert json.loads((L/'release-06-01.json').read_text())['status']=='PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\ncontrol=json.loads((B/'derivative-controls01.json').read_text());assert control['status']=='PASS_",
+      "new": "step-20261006';F=B.parent/'pcie-tail115-layout-wire-loaded-finite-20261006'\ndef pin(p):\n p=Path(p)\n with p.open('rb')as f:return dict(bytes=p.stat().st_size,sha256=hashlib.file_digest(f,'sha256').hexdigest())\nassert not(B/'source-freeze01.json').exists()\nold=json.loads((L/'source-freeze01.json').read_text());assert all(pin(p)==v for p,v in old['pins'].items())\npaths=set(map(Path,old['pins']))\npaths.update([L/'source-freeze01.json',L/'source-only-peer01-root.json',L/'launch-runtime-freeze01.json',L/'validation-06-01.json',L/'members-06-01.json',L/'review-06-01.json',L/'release-06-01.json',F/'event-boundary-diagnosis06.json',F/'event-diagnosis-summary06.json'])\nassert json.loads((L/'release-06-01.json').read_text())['status']=='PASS_IMMUTABLE_RELEASE_ROUNDTRIPS'\ncontrol=json.loads((B/'derivative-controls01.json').read_text());assert control['status']=='PASS_"
+    },
+    {
+      "tag": "insert",
+      "a0": 1110,
+      "a1": 1110,
+      "b0": 1109,
+      "b1": 1113,
+      "old": "",
+      "new": "SIXT"
+    },
+    {
+      "tag": "equal",
+      "a0": 1110,
+      "a1": 1111,
+      "b0": 1113,
+      "b1": 1114,
+      "old": "E",
+      "new": "E"
+    },
+    {
+      "tag": "replace",
+      "a0": 1111,
+      "a1": 1114,
+      "b0": 1114,
+      "b1": 1116,
+      "old": "IGH",
+      "new": "EN"
+    },
+    {
+      "tag": "equal",
+      "a0": 1114,
+      "a1": 1428,
+      "b0": 1116,
+      "b1": 1430,
+      "old": "THSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS'and len(control['checks'])==7\nnumerical=json.loads((B/'numerical-controls01.json').read_text());assert numerical['status']=='PASS_ACTUAL_ADDITIONAL_NUMERICAL_GATE_CONTROLS' and len(numerical['checks'])==12\nassert all(pin(p)==v for p,v in numerical['inputs'].items())\n",
+      "new": "THSTEP_EXACT_RECIPE_DECK_AND_RESOURCE_CONTROLS'and len(control['checks'])==7\nnumerical=json.loads((B/'numerical-controls01.json').read_text());assert numerical['status']=='PASS_ACTUAL_ADDITIONAL_NUMERICAL_GATE_CONTROLS' and len(numerical['checks'])==12\nassert all(pin(p)==v for p,v in numerical['inputs'].items())\n"
+    },
+    {
+      "tag": "insert",
+      "a0": 1428,
+      "a1": 1428,
+      "b0": 1430,
+      "b1": 2470,
+      "old": "",
+      "new": "S=B.parent/'pcie-tail115-streaming-replay-v1-20261006'\nreader=json.loads((S/'source-freeze01.json').read_text());assert all(pin(p)==v for p,v in reader['pins'].items());paths.update(map(Path,reader['pins']))\npeer=json.loads((S/'source-only-peer-pll01.json').read_text());assert peer['findings']==[] and peer['freeze']==pin(S/'source-freeze01.json')\npaths.update([S/'source-freeze01.json',S/'source-only-peer-pll01.json',S/'review_reader_pll01.py',S/'review-reader-pll01.log'])\nreplay=json.loads((B/'saved-replay-controls01.json').read_text());assert replay['status']=='PASS_EXACT_STREAMED_COMPARISON_AND_SEALER_SAVED_AST_CONTROLS' and len(replay['checks'])==2;assert all(pin(p)==v for p,v in replay['inputs'].items())\nfor name in ['pcie-tail115-wave-peer-rx-20261006','pcie-tail115-halfstep-wave-peer-rx-20261006','pcie-tail115-quarterstep-wave-peer-rx-20261006','pcie-tail115-eighthstep-wave-peer-rx-20261006']:\n root=B.parent/name;paths.update(p for p in root.rglob('*')if p.is_file()and '__pycache__'not in p.parts and p.suffix!='.pyc')\n"
+    },
+    {
+      "tag": "equal",
+      "a0": 1428,
+      "a1": 1732,
+      "b0": 2470,
+      "b1": 2774,
+      "old": "for root in [B,L/'pytest-handoff01',L/'pytest01']:\n paths.update(p for p in root.rglob('*')if p.is_file()and '__pycache__'not in p.parts and p.suffix!='.pyc')\npaths.update([R/'hw/soc/tools/cocotb-venv/bin/python',R/'hw/soc/tools/cocotb-venv/pyvenv.cfg'])\nN=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-",
+      "new": "for root in [B,L/'pytest-handoff01',L/'pytest01']:\n paths.update(p for p in root.rglob('*')if p.is_file()and '__pycache__'not in p.parts and p.suffix!='.pyc')\npaths.update([R/'hw/soc/tools/cocotb-venv/bin/python',R/'hw/soc/tools/cocotb-venv/pyvenv.cfg'])\nN=Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "replace",
+      "a0": 1732,
+      "a1": 1736,
+      "b0": 2774,
+      "b1": 2778,
+      "old": "quar",
+      "new": "eigh"
+    },
+    {
+      "tag": "equal",
+      "a0": 1736,
+      "a1": 1737,
+      "b0": 2778,
+      "b1": 2779,
+      "old": "t",
+      "new": "t"
+    },
+    {
+      "tag": "replace",
+      "a0": 1737,
+      "a1": 1739,
+      "b0": 2779,
+      "b1": 2780,
+      "old": "er",
+      "new": "h"
+    },
+    {
+      "tag": "equal",
+      "a0": 1739,
+      "a1": 1944,
+      "b0": 2780,
+      "b1": 2985,
+      "old": "step-06-01');r=json.loads((N/'result.json').read_text());paths.update(Path(p)for p in r['inputs']);paths.update([N/'result.json',N/'wave.raw.gz'])\nassert not Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-",
+      "new": "step-06-01');r=json.loads((N/'result.json').read_text());paths.update(Path(p)for p in r['inputs']);paths.update([N/'result.json',N/'wave.raw.gz'])\nassert not Path('/dev/shm/nssoc-vco-v6-divider-tail115-v1-"
+    },
+    {
+      "tag": "insert",
+      "a0": 1944,
+      "a1": 1944,
+      "b0": 2985,
+      "b1": 2989,
+      "old": "",
+      "new": "sixt"
+    },
+    {
+      "tag": "equal",
+      "a0": 1944,
+      "a1": 1945,
+      "b0": 2989,
+      "b1": 2990,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 1945,
+      "a1": 1948,
+      "b0": 2990,
+      "b1": 2992,
+      "old": "igh",
+      "new": "en"
+    },
+    {
+      "tag": "equal",
+      "a0": 1948,
+      "a1": 2016,
+      "b0": 2992,
+      "b1": 3060,
+      "old": "thstep-06-01').exists()\nrecord=dict(status='FROZEN_SAME_PHYSICS_455_",
+      "new": "thstep-06-01').exists()\nrecord=dict(status='FROZEN_SAME_PHYSICS_455_"
+    },
+    {
+      "tag": "insert",
+      "a0": 2016,
+      "a1": 2016,
+      "b0": 3060,
+      "b1": 3064,
+      "old": "",
+      "new": "SIXT"
+    },
+    {
+      "tag": "equal",
+      "a0": 2016,
+      "a1": 2017,
+      "b0": 3064,
+      "b1": 3065,
+      "old": "E",
+      "new": "E"
+    },
+    {
+      "tag": "replace",
+      "a0": 2017,
+      "a1": 2020,
+      "b0": 3065,
+      "b1": 3067,
+      "old": "IGH",
+      "new": "EN"
+    },
+    {
+      "tag": "equal",
+      "a0": 2020,
+      "a1": 2172,
+      "b0": 3067,
+      "b1": 3219,
+      "old": "THSTEP_COMPLETE_34NS_PENDING_PEER',pins={str(p.absolute()):pin(p)for p in sorted(paths)},new_sources={str(p.absolute()):pin(p)for p in [B/'characterize_",
+      "new": "THSTEP_COMPLETE_34NS_PENDING_PEER',pins={str(p.absolute()):pin(p)for p in sorted(paths)},new_sources={str(p.absolute()):pin(p)for p in [B/'characterize_"
+    },
+    {
+      "tag": "insert",
+      "a0": 2172,
+      "a1": 2172,
+      "b0": 3219,
+      "b1": 3223,
+      "old": "",
+      "new": "sixt"
+    },
+    {
+      "tag": "equal",
+      "a0": 2172,
+      "a1": 2173,
+      "b0": 3223,
+      "b1": 3224,
+      "old": "e",
+      "new": "e"
+    },
+    {
+      "tag": "replace",
+      "a0": 2173,
+      "a1": 2176,
+      "b0": 3224,
+      "b1": 3226,
+      "old": "igh",
+      "new": "en"
+    },
+    {
+      "tag": "equal",
+      "a0": 2176,
+      "a1": 2375,
+      "b0": 3226,
+      "b1": 3425,
+      "old": "thstep01.py',B/'launch_probe01.py',B/'seal_probe01.py',B/'compare_saved_steps01.py',B/'convergence_policy01.py']},parent_source_freeze=pin(L/'source-freeze01.json'),actual_derivative_controls=control",
+      "new": "thstep01.py',B/'launch_probe01.py',B/'seal_probe01.py',B/'compare_saved_steps01.py',B/'convergence_policy01.py']},parent_source_freeze=pin(L/'source-freeze01.json'),actual_derivative_controls=control"
+    },
+    {
+      "tag": "insert",
+      "a0": 2375,
+      "a1": 2375,
+      "b0": 3425,
+      "b1": 3543,
+      "old": "",
+      "new": ",streamed_saved_replay_controls=pin(B/'saved-replay-controls01.json'),reader_peer=pin(S/'source-only-peer-pll01.json')"
+    },
+    {
+      "tag": "equal",
+      "a0": 2375,
+      "a1": 2654,
+      "b0": 3543,
+      "b1": 3822,
+      "old": ",actual_numerical_controls=pin(B/'numerical-controls01.json'),numerical_predeclaration=pin(B/'numerical-policy01.json'),inherited_controls=dict(source=old['inherited_controls']['source'],handoff=old['inherited_controls']['handoff']),predeclared=dict(vctrl=.6,stop_s=34e-9,step_s=",
+      "new": ",actual_numerical_controls=pin(B/'numerical-controls01.json'),numerical_predeclaration=pin(B/'numerical-policy01.json'),inherited_controls=dict(source=old['inherited_controls']['source'],handoff=old['inherited_controls']['handoff']),predeclared=dict(vctrl=.6,stop_s=34e-9,step_s="
+    },
+    {
+      "tag": "replace",
+      "a0": 2654,
+      "a1": 2655,
+      "b0": 3822,
+      "b1": 3823,
+      "old": "6",
+      "new": "3"
+    },
+    {
+      "tag": "equal",
+      "a0": 2655,
+      "a1": 2656,
+      "b0": 3823,
+      "b1": 3824,
+      "old": ".",
+      "new": "."
+    },
+    {
+      "tag": "insert",
+      "a0": 2656,
+      "a1": 2656,
+      "b0": 3824,
+      "b1": 3825,
+      "old": "",
+      "new": "1"
+    },
+    {
+      "tag": "equal",
+      "a0": 2656,
+      "a1": 2785,
+      "b0": 3825,
+      "b1": 3954,
+      "old": "25e-13,window_s=[4e-9,34e-9],intrinsics=455,HBT=64,contacts=31,vectors=956,wire_R=1271,wire_C=1414,CPU=10,AS=2*1024**3,own_limit=",
+      "new": "25e-13,window_s=[4e-9,34e-9],intrinsics=455,HBT=64,contacts=31,vectors=956,wire_R=1271,wire_C=1414,CPU=10,AS=2*1024**3,own_limit="
+    },
+    {
+      "tag": "delete",
+      "a0": 2785,
+      "a1": 2786,
+      "b0": 3954,
+      "b1": 3954,
+      "old": "5",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2786,
+      "a1": 2787,
+      "b0": 3954,
+      "b1": 3955,
+      "old": "1",
+      "new": "1"
+    },
+    {
+      "tag": "insert",
+      "a0": 2787,
+      "a1": 2787,
+      "b0": 3955,
+      "b1": 3956,
+      "old": "",
+      "new": "0"
+    },
+    {
+      "tag": "equal",
+      "a0": 2787,
+      "a1": 2788,
+      "b0": 3956,
+      "b1": 3957,
+      "old": "2",
+      "new": "2"
+    },
+    {
+      "tag": "insert",
+      "a0": 2788,
+      "a1": 2788,
+      "b0": 3957,
+      "b1": 3958,
+      "old": "",
+      "new": "4"
+    },
+    {
+      "tag": "equal",
+      "a0": 2788,
+      "a1": 2960,
+      "b0": 3958,
+      "b1": 4130,
+      "old": "*1024**2,entry_floor=1024**3,shared_floor=512*1024**2,receipt_reserve=2*1024**2,elapsed_watchdog=None),acceptance_changes=False,physical_changes=False,resource_reason='Full",
+      "new": "*1024**2,entry_floor=1024**3,shared_floor=512*1024**2,receipt_reserve=2*1024**2,elapsed_watchdog=None),acceptance_changes=False,physical_changes=False,resource_reason='Full"
+    },
+    {
+      "tag": "replace",
+      "a0": 2960,
+      "a1": 2961,
+      "b0": 4130,
+      "b1": 4131,
+      "old": "1",
+      "new": "0"
+    },
+    {
+      "tag": "equal",
+      "a0": 2961,
+      "a1": 2962,
+      "b0": 4131,
+      "b1": 4132,
+      "old": ".",
+      "new": "."
+    },
+    {
+      "tag": "insert",
+      "a0": 2962,
+      "a1": 2962,
+      "b0": 4132,
+      "b1": 4133,
+      "old": "",
+      "new": "6"
+    },
+    {
+      "tag": "equal",
+      "a0": 2962,
+      "a1": 2981,
+      "b0": 4133,
+      "b1": 4152,
+      "old": "25ps compressed raw",
+      "new": "25ps compressed raw"
+    },
+    {
+      "tag": "delete",
+      "a0": 2981,
+      "a1": 2983,
+      "b0": 4152,
+      "b1": 4152,
+      "old": "19",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2983,
+      "a1": 2984,
+      "b0": 4152,
+      "b1": 4153,
+      "old": "3",
+      "new": "3"
+    },
+    {
+      "tag": "insert",
+      "a0": 2984,
+      "a1": 2984,
+      "b0": 4153,
+      "b1": 4155,
+      "old": "",
+      "new": "86"
+    },
+    {
+      "tag": "equal",
+      "a0": 2984,
+      "a1": 2985,
+      "b0": 4155,
+      "b1": 4156,
+      "old": ".",
+      "new": "."
+    },
+    {
+      "tag": "replace",
+      "a0": 2985,
+      "a1": 2987,
+      "b0": 4156,
+      "b1": 4158,
+      "old": "62",
+      "new": "83"
+    },
+    {
+      "tag": "equal",
+      "a0": 2987,
+      "a1": 2990,
+      "b0": 4158,
+      "b1": 4161,
+      "old": "MB;",
+      "new": "MB;"
+    },
+    {
+      "tag": "delete",
+      "a0": 2990,
+      "a1": 2998,
+      "b0": 4161,
+      "b1": 4161,
+      "old": " doubled",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 2998,
+      "a1": 3005,
+      "b0": 4161,
+      "b1": 4168,
+      "old": " full0.",
+      "new": " full0."
+    },
+    {
+      "tag": "replace",
+      "a0": 3005,
+      "a1": 3006,
+      "b0": 4168,
+      "b1": 4170,
+      "old": "6",
+      "new": "31"
+    },
+    {
+      "tag": "equal",
+      "a0": 3006,
+      "a1": 3015,
+      "b0": 4170,
+      "b1": 4179,
+      "old": "25ps raw ",
+      "new": "25ps raw "
+    },
+    {
+      "tag": "replace",
+      "a0": 3015,
+      "a1": 3017,
+      "b0": 4179,
+      "b1": 4185,
+      "old": "do",
+      "new": "requir"
+    },
+    {
+      "tag": "equal",
+      "a0": 3017,
+      "a1": 3019,
+      "b0": 4185,
+      "b1": 4187,
+      "old": "es",
+      "new": "es"
+    },
+    {
+      "tag": "delete",
+      "a0": 3019,
+      "a1": 3059,
+      "b0": 4187,
+      "b1": 4187,
+      "old": " not fit256MiB. Root explicitly approved",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 3059,
+      "a1": 3078,
+      "b0": 4187,
+      "b1": 4206,
+      "old": " separately bounded",
+      "new": " separately bounded"
+    },
+    {
+      "tag": "delete",
+      "a0": 3078,
+      "a1": 3079,
+      "b0": 4206,
+      "b1": 4206,
+      "old": "5",
+      "new": ""
+    },
+    {
+      "tag": "equal",
+      "a0": 3079,
+      "a1": 3080,
+      "b0": 4206,
+      "b1": 4207,
+      "old": "1",
+      "new": "1"
+    },
+    {
+      "tag": "replace",
+      "a0": 3080,
+      "a1": 3082,
+      "b0": 4207,
+      "b1": 4208,
+      "old": "2M",
+      "new": "G"
+    },
+    {
+      "tag": "equal",
+      "a0": 3082,
+      "a1": 3084,
+      "b0": 4208,
+      "b1": 4210,
+      "old": "iB",
+      "new": "iB"
+    },
+    {
+      "tag": "insert",
+      "a0": 3084,
+      "a1": 3084,
+      "b0": 4210,
+      "b1": 4217,
+      "old": "",
+      "new": " native"
+    },
+    {
+      "tag": "equal",
+      "a0": 3084,
+      "a1": 3094,
+      "b0": 4217,
+      "b1": 4227,
+      "old": " namespace",
+      "new": " namespace"
+    },
+    {
+      "tag": "replace",
+      "a0": 3094,
+      "a1": 3095,
+      "b0": 4227,
+      "b1": 4228,
+      "old": ",",
+      "new": "."
+    },
+    {
+      "tag": "equal",
+      "a0": 3095,
+      "a1": 3096,
+      "b0": 4228,
+      "b1": 4229,
+      "old": " ",
+      "new": " "
+    },
+    {
+      "tag": "replace",
+      "a0": 3096,
+      "a1": 3100,
+      "b0": 4229,
+      "b1": 4233,
+      "old": "keep",
+      "new": "Orig"
+    },
+    {
+      "tag": "equal",
+      "a0": 3100,
+      "a1": 3102,
+      "b0": 4233,
+      "b1": 4235,
+      "old": "in",
+      "new": "in"
+    },
+    {
+      "tag": "replace",
+      "a0": 3102,
+      "a1": 3104,
+      "b0": 4235,
+      "b1": 4241,
+      "old": "g ",
+      "new": "al2GiB"
+    },
+    {
+      "tag": "equal",
+      "a0": 3104,
+      "a1": 3130,
+      "b0": 4241,
+      "b1": 4267,
+      "old": "AS/shared floors unchanged",
+      "new": "AS/shared floors unchanged"
+    },
+    {
+      "tag": "insert",
+      "a0": 3130,
+      "a1": 3130,
+      "b0": 4267,
+      "b1": 4440,
+      "old": "",
+      "new": ". Streamed sealer/comparator use explicit1GiB anonymousSSD payload mapping and1GiB floor; actual saved replay peak456512KiB. Root source/resource peer required before launch"
+    },
+    {
+      "tag": "equal",
+      "a0": 3130,
+      "a1": 3294,
+      "b0": 4440,
+      "b1": 4604,
+      "old": ".',scope='Source-only full34ns restart fromtime0 with unchanged devices/bias/wires/initialization/455safety/strictcount predicates. Original5ps/2.5ps FAIL and1.25ps",
+      "new": ".',scope='Source-only full34ns restart fromtime0 with unchanged devices/bias/wires/initialization/455safety/strictcount predicates. Original5ps/2.5ps FAIL and1.25ps"
+    },
+    {
+      "tag": "insert",
+      "a0": 3294,
+      "a1": 3294,
+      "b0": 4604,
+      "b1": 4612,
+      "old": "",
+      "new": "/0.625ps"
+    },
+    {
+      "tag": "equal",
+      "a0": 3294,
+      "a1": 3316,
+      "b0": 4612,
+      "b1": 4634,
+      "old": " finitePASS/raw retain",
+      "new": " finitePASS/raw retain"
+    },
+    {
+      "tag": "insert",
+      "a0": 3316,
+      "a1": 3316,
+      "b0": 4634,
+      "b1": 4683,
+      "old": "",
+      "new": "ed;0.625ps numericalFAIL269.85ppm remains unchang"
+    },
+    {
+      "tag": "equal",
+      "a0": 3316,
+      "a1": 3446,
+      "b0": 4683,
+      "b1": 4813,
+      "old": "ed. Original functional criteria unchanged. Separate predeclared100ppm and50ps unaligned matched-edge screen applies only adjacent",
+      "new": "ed. Original functional criteria unchanged. Separate predeclared100ppm and50ps unaligned matched-edge screen applies only adjacent"
+    },
+    {
+      "tag": "replace",
+      "a0": 3446,
+      "a1": 3447,
+      "b0": 4813,
+      "b1": 4814,
+      "old": "1",
+      "new": "0"
+    },
+    {
+      "tag": "equal",
+      "a0": 3447,
+      "a1": 3448,
+      "b0": 4814,
+      "b1": 4815,
+      "old": ".",
+      "new": "."
+    },
+    {
+      "tag": "insert",
+      "a0": 3448,
+      "a1": 3448,
+      "b0": 4815,
+      "b1": 4816,
+      "old": "",
+      "new": "6"
+    },
+    {
+      "tag": "equal",
+      "a0": 3448,
+      "a1": 3453,
+      "b0": 4816,
+      "b1": 4821,
+      "old": "25/0.",
+      "new": "25/0."
+    },
+    {
+      "tag": "replace",
+      "a0": 3453,
+      "a1": 3454,
+      "b0": 4821,
+      "b1": 4823,
+      "old": "6",
+      "new": "31"
+    },
+    {
+      "tag": "equal",
+      "a0": 3454,
+      "a1": 3671,
+      "b0": 4823,
+      "b1": 5040,
+      "old": "25ps full34ns openloop captures, with fixed originalVCOordinal mapping and no phaseoffset fit.')\n(B/'source-freeze01.json').write_text(json.dumps(record,indent=2)+'\\n');print(len(paths),pin(B/'source-freeze01.json'))\n",
+      "new": "25ps full34ns openloop captures, with fixed originalVCOordinal mapping and no phaseoffset fit.')\n(B/'source-freeze01.json').write_text(json.dumps(record,indent=2)+'\\n');print(len(paths),pin(B/'source-freeze01.json'))\n"
+    }
+  ]
+}

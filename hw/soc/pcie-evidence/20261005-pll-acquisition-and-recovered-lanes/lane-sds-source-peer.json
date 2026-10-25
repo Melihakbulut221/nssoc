@@ -1,0 +1,27 @@
+{
+  "status": "PASS_BOUNDED_SOURCE_ONLY_LOCAL_SDS_LOCK_REVIEW",
+  "inputs": {
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v2.v": {
+      "bytes": 6602,
+      "sha256": "ad5671d1f04a632118d982e94b3d034251d8fe3ea7e9b7c6f61d0aa68e646fd4"
+    },
+    "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v3.v": {
+      "bytes": 7562,
+      "sha256": "7d8df97bc16c4c1e8dc10de8539dff0de50fefd88d6fe8ec02c20fcf25258cdb"
+    },
+    "sw/tests/test_pcie_gen3_lane_align_v3.py": {
+      "bytes": 27458,
+      "sha256": "140fe0695f3c5d3b10cc8fe94e14092c2d402192e27d49bf1f0db3c8b80b784d"
+    }
+  },
+  "findings": [],
+  "checks": [
+    "Exact130-bit OS-header01 SDS constant is recognized only at an aligned complete block boundary; incomplete prefix, data-header copy and unaligned payload copy cannot set lock.",
+    "Search condition includes external search enable and local !locked; the lock takes effect on the SDS emission edge in the recovered domain, without a common-clock CDC dependency.",
+    "While locked, exact aligned EIEOS is still classified as eieos_o but does not trigger search or realign; pending residual bit ownership follows ordinary exact consumption.",
+    "Reset, raw_valid loss, force realign, ambiguous acquisition and malformed aligned header clear lock; external search enable alone does not discard existing aligned/locked state.",
+    "Original32-bit append and66..194-bit variable-SKP consumption arithmetic remain unchanged; minimum66bits prevents more than one completed block per raw32-bit beat.",
+    "Source test cases explicitly cover32 acquisition phases, all25 SKP-length transitions after lock, unaligned EIEOS payload aliases, malformed/truncated SDS and reset/loss/reacquisition."
+  ],
+  "scope": "Source-only RTL/test inspection and diff against frozenV2. No tests/native rerun, CDC/metastability proof, PVT/physical timing or full LTSSM compliance. Local lock does not enforce SDS legality in LTSSM state or next-block-after-SDS policy."
+}

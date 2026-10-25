@@ -1,0 +1,192 @@
+{
+  "date": "2026-09-20",
+  "status": "Icarus native-cell control PASS; installed Verilator native-cell control FAIL",
+  "scope": "Untouched installed IHP dfrbpq model: reset, rising-edge capture, hold, asynchronous reset reassertion and zero capture. Not a whole-SoC boot PASS.",
+  "iverilog": {
+    "library": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+    "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+    "compile": {
+      "command": [
+        "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+        "-g2005-sv",
+        "-s",
+        "tb_native_cell_gate",
+        "-o",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-cell-canonical-iverilog/sim.vvp",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-cell-canonical-iverilog/tb_native_cell_gate.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 0.015807437001058133
+    },
+    "runs": [
+      {
+        "command": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+          "-i",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-cell-canonical-iverilog/sim.vvp"
+        ],
+        "returncode": 0,
+        "elapsed_s": 0.0038183830001798924,
+        "pass_banner": true
+      }
+    ],
+    "passed": true
+  },
+  "verilator": {
+    "library": "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+    "library_sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+    "compile": {
+      "command": [
+        "/home/hasanmelih/Documents/gt2n-soc/tools/oss-cad-suite/bin/verilator",
+        "--binary",
+        "--timing",
+        "-Wno-fatal",
+        "--top-module",
+        "tb_native_cell_gate",
+        "--Mdir",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-cell-canonical-verilator/obj_dir",
+        "-j",
+        "2",
+        "--x-initial",
+        "unique",
+        "--x-assign",
+        "unique",
+        "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-cell-canonical-verilator/tb_native_cell_gate.v",
+        "/home/hasanmelih/.ciel/ciel/ihp-sg13g2/versions/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v"
+      ],
+      "returncode": 0,
+      "elapsed_s": 2.6710063780010387
+    },
+    "runs": [
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-cell-canonical-verilator/obj_dir/Vtb_native_cell_gate",
+          "+verilator+rand+reset+2",
+          "+verilator+seed+1"
+        ],
+        "returncode": 1,
+        "elapsed_s": 0.0037247990003379527,
+        "pass_banner": false
+      },
+      {
+        "command": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/external-review-20260919/native-cell-canonical-verilator/obj_dir/Vtb_native_cell_gate",
+          "+verilator+rand+reset+2",
+          "+verilator+seed+29"
+        ],
+        "returncode": 1,
+        "elapsed_s": 0.0015704550005466444,
+        "pass_banner": false
+      }
+    ],
+    "passed": false
+  },
+  "diagnosis": "Installed Verilator leaves native delayed_RESET_B without a functional connection from the recrem timing check; generated C++ initializes it randomly and lacks an assignment. Whole mapped CPU progress remains random and constant. A direct one-cell reset-reassertion test fails in Verilator and passes in Icarus. No vendor model changed.",
+  "references": [
+    "https://verilator.org/guide/latest/warnings.html#specifyign",
+    "https://verilator.org/guide/latest/languages.html#specify-blocks"
+  ],
+  "limits": [
+    "This proves an incompatibility for this installed model/tool combination, not a defect in the RTL CPU.",
+    "Whole Icarus boot remains in progress."
+  ],
+  "artifacts": {
+    "hw/soc/out/external-review-20260919/native-cell-canonical-iverilog/sim.vvp": {
+      "bytes": 5326,
+      "sha256": "09cdf301d5d1428cf3da71559d29e6d0be2365174286a50b1d5a680901c05fbd"
+    },
+    "hw/soc/out/external-review-20260919/native-cell-canonical-iverilog/run-0.log": {
+      "bytes": 186,
+      "sha256": "2fcd739ff7e1fe9ea03b20572dd3520be5dc1f7fc5d64e345b36b051ac0e7c09"
+    },
+    "hw/soc/out/external-review-20260919/native-cell-canonical-iverilog/result.json": {
+      "bytes": 1285,
+      "sha256": "8eb0c3669ece3d1330bfbb79b71437b14e600eeb2486118c4aceb3f1c236f809"
+    },
+    "hw/soc/out/external-review-20260919/native-cell-canonical-iverilog/compile.log": {
+      "bytes": 1720,
+      "sha256": "a9ec9c1f144760dd32f0f8479727f7086e4749e7135fd50bbd8ce518b32644f9"
+    },
+    "hw/soc/out/external-review-20260919/native-cell-canonical-iverilog/tb_native_cell_gate.v": {
+      "bytes": 598,
+      "sha256": "661080d5abfefc48d61bd5b0cee4ccf547bc5e72d0fb8334d883b80008999715"
+    },
+    "hw/soc/out/external-review-20260919/native-cell-canonical-verilator/run-0.log": {
+      "bytes": 297,
+      "sha256": "a0055f9ded649213d6f2673e448f43341de7fb456d41d308800a52e52b3d0c57"
+    },
+    "hw/soc/out/external-review-20260919/native-cell-canonical-verilator/result.json": {
+      "bytes": 1804,
+      "sha256": "ce4d22b5f84ad9951c1fb50e043093c20a8bae62587760d7765f969bf683f829"
+    },
+    "hw/soc/out/external-review-20260919/native-cell-canonical-verilator/compile.log": {
+      "bytes": 24902,
+      "sha256": "f6ce218f2c1dc71cd8cc6f89741500a35f87b4a0c01245d49e73d3df5f32237a"
+    },
+    "hw/soc/out/external-review-20260919/native-cell-canonical-verilator/tb_native_cell_gate.v": {
+      "bytes": 598,
+      "sha256": "661080d5abfefc48d61bd5b0cee4ccf547bc5e72d0fb8334d883b80008999715"
+    },
+    "hw/soc/out/external-review-20260919/native-cell-canonical-verilator/run-1.log": {
+      "bytes": 293,
+      "sha256": "37f93e105d9d173fba52b0b28352f9f479308605847c14c8095fdbecc74cbe6d"
+    },
+    "hw/soc/out/external-review-20260919/native-ff-reset-control2/sim.vvp": {
+      "bytes": 4600,
+      "sha256": "7091bb24d9b0c1a7e6bbe053fd256595bc45c74eb9ed577bea226fa284910062"
+    },
+    "hw/soc/out/external-review-20260919/native-ff-reset-control2/iverilog-result.json": {
+      "bytes": 628,
+      "sha256": "0c4f8b8a533392ebfc9dd0e2e975dd7bc29309b1355412549617bc77f70e64cf"
+    },
+    "hw/soc/out/external-review-20260919/native-ff-reset-control2/result.json": {
+      "bytes": 1295,
+      "sha256": "2599c771acc9aec3bb4f4923b32dd27aa10c368c4f2442a83b73d32167fcfaab"
+    },
+    "hw/soc/out/external-review-20260919/native-ff-reset-control2/run.log": {
+      "bytes": 233,
+      "sha256": "a9fd211f627483aa3f57b4cf0d5371c4a8659df1429709da768aecf847d7fb6d"
+    },
+    "hw/soc/out/external-review-20260919/native-ff-reset-control2/compile.log": {
+      "bytes": 24676,
+      "sha256": "142bad2a30dcb90fa56cbd09827052d2d51289cf7ab73e868f16b8f519c62a8b"
+    },
+    "hw/soc/out/external-review-20260919/native-ff-reset-control2/iverilog-compile.log": {
+      "bytes": 1192,
+      "sha256": "3d4d6c5711836b24785edcc4237d5bf4137970a2aced4bb7dff1823c6067e562"
+    },
+    "hw/soc/out/external-review-20260919/native-ff-reset-control2/iverilog-run.log": {
+      "bytes": 133,
+      "sha256": "12d7fa3a5794c3877ae227809c5b5f002286ef317bc93b79aa1d5a3deb260cfe"
+    },
+    "hw/soc/out/external-review-20260919/native-ff-reset-control2/tb.v": {
+      "bytes": 397,
+      "sha256": "189de4a6549cd3c4672933ca6de7972d4896e1be04d16eb42752f11f617b699a"
+    },
+    "hw/soc/out/external-review-20260919/verilator-incompatible-model-stop.json": {
+      "bytes": 812,
+      "sha256": "d8b63f5960da5754c9cb0d5d162d22ab23a0bcb7484380a1b90c91f774a41c6f"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-verilator-cpu-progress/run.log": {
+      "bytes": 1066,
+      "sha256": "237d0bb2b845bc82cc6f88e836d8fa7c581b901d75315b0b27332e13468add93"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-verilator-cpu-progress/result.json": {
+      "bytes": 4720,
+      "sha256": "56f4f5acea4ae7712724b11b1a28e4d8a8d4532f8169f192af01058a4a13baaa"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-gl-canonical-verilator/result.json": {
+      "bytes": 3069,
+      "sha256": "66133b55cfa3d6d64262682f0ceb8a312d784f34ddc7a05fd218f766dd88cb95"
+    },
+    "hw/soc/out/external-review-20260919/logicrom-whole-verilator/result.json": {
+      "bytes": 9769,
+      "sha256": "f24e21ea29aa9e6c3b7f4e5b64998718ed2957d3468d5bc24361c02211b7da82"
+    },
+    "hw/soc/flow/sim_logic_boot_gl.py": {
+      "bytes": 11771,
+      "sha256": "85bf0e22c0ba246973953ac5c8ee79e4c7219fcee2c78c5d55babcc121385830"
+    }
+  }
+}

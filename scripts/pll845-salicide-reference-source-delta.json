@@ -1,0 +1,47 @@
+{
+  "baseline_commit": "b6a76c1d3e24fd0fde2b6bbbc211a16aac2c481d",
+  "baseline_sha256": "2ece5e41effadb18efea43dfedcc1361ae74a66c0e365c45d67818036ec3113e",
+  "candidate_sha256": "95f5b8da9bd3c116322f4d4005b0793021594e701c5cfc72fc612410481d81a2",
+  "edits": [
+    {
+      "before": " contacts=pya.Region(T.begin_shapes_rec(L.layer(6,0))).merged()",
+      "after": " contacts=pya.Region(T.begin_shapes_rec(L.layer(6,0))).merged()\n def mask(layer,datatype=0):return pya.Region(T.begin_shapes_rec(L.layer(layer,datatype))).merged()\n active=(mask(1)+mask(1,22)).merged();gate=(poly+mask(5,22)).merged()\n psd=mask(14);nsd_block=mask(7,21);well=mask(31);salblock=mask(28)\n excluded_tap=(mask(46,21)+mask(40)).merged()\n pdk_pins={'general_derivations.lvs':'f2c2ce6c039b1e28fedd3f5c94fc1dddb6194f19917e19b68f1a3750737894fb',\n           'general_connections.lvs':'d8698e0b7f38cddd1750341e8e72ad020bb9c89fa6d68b82a63c9ddcf1e74ebb'}\n for filename,digest in pdk_pins.items():assert sha(out/filename)==digest",
+      "count": 1
+    },
+    {
+      "before": " def shared_diffusion(nid):",
+      "after": " def salicide_access(reg,cls,nid,blocked=None,available_contacts=None,implant=None):\n  # Pinned IHP rule: unblocked S/D and opposite-type tap can join only at a\n  # positive-length shared salicide edge. Never traverse a well or a PN junction\n  # without this actual drawn salicide boundary and a local tap contact.\n  blocked=salblock if blocked is None else blocked\n  available_contacts=contacts if available_contacts is None else available_contacts\n  implant=psd if implant is None else implant\n  nactive=active-(implant+nsd_block);pactive=active&implant\n  is_n=cls.endswith('_nmos');assert is_n or cls.endswith('_pmos')\n  sd_domain=(nactive-well-gate)if is_n else(pactive&well)-gate\n  tap_domain=(pactive-well-gate-excluded_tap)if is_n else(nactive&well)-gate-excluded_tap\n  assert (reg-sd_domain).is_empty(),'Terminal is not wholly inside the correct S/D diffusion domain'\n  sd=(reg-blocked).merged();tap_domain=(tap_domain-blocked).merged()\n  assert not sd.is_empty(),'Salicide source region blocked'\n  matches=[]\n  for polygon in tap_domain.interacting(sd.sized(1)).each():\n   tap=pya.Region(polygon)\n   boundary=sd.edges()&tap.edges()\n   if boundary.length()<=0:continue\n   joined=(sd+tap).merged()\n   if joined.count()!=1:continue\n   local=[]\n   for contact in available_contacts.inside(tap).each():\n    box=contact.bbox()\n    if contact.area()!=box.area()or not(pya.Region(contact)-metals[8]).is_empty():continue\n    q=box.center();component=point_probe(8,q,nid)\n    local.append((8,q,component))\n   if not local:continue\n   assert len({v[2]for v in local})==1,'Multiple actual metal components on an unmodeled tap access'\n   proof=dict(kind='actual_unblocked_salicide_shared_edge_to_local_tap_contact',\n    boundary_edges_dbu=sorted(e.to_s()for e in boundary.each()),boundary_length_dbu=boundary.length(),\n    sd_shapes=sorted(p.to_s()for p in sd.each()),tap_shapes=[polygon.to_s()],\n    contact_points_dbu=sorted([q.x,q.y]for m,q,cid in local),\n    native_cluster=nid,salicide_diffusion_access_resistance_modeled=False)\n   matches.append((local,proof,tap))\n  assert len(matches)==1,('Unique actual salicide-to-tap access required',len(matches))\n  return matches[0]\n def shared_diffusion(nid):",
+      "count": 1
+    },
+    {
+      "before": "rows=[];anchors=[];unresolved=[];shared={};used_hbt={};used_rppd={}",
+      "after": "rows=[];anchors=[];unresolved=[];shared={};used_hbt={};used_rppd={};salicide_bound={}",
+      "count": 1
+    },
+    {
+      "before": "    if not choices and cls.startswith('sg13_')and name in ('S','D')and not net_wires[nid]:",
+      "after": "    if not choices and cls.startswith('sg13_')and name in ('S','D')and net_wires[nid]:\n     choices,proof,tap=salicide_access(reg,cls,nid)\n     row['salicide_access_proof']=proof;salicide_bound[did,name]=(reg,cls,nid,tap,proof)\n     selection='actual_salicide_abutment_to_local_tap_contact'\n    if not choices and cls.startswith('sg13_')and name in ('S','D')and not net_wires[nid]:",
+      "count": 1
+    },
+    {
+      "before": "out/'npn13G2_code.py']})",
+      "after": "out/'npn13G2_code.py',*[out/name for name in pdk_pins]]})",
+      "count": 1
+    },
+    {
+      "before": "   elif r['disposition'].startswith('RETAINED_SHARED'):",
+      "after": "    if r.get('selection')=='actual_salicide_abutment_to_local_tap_contact':\n     reg,cls,nid,tap,proof=salicide_bound[key]\n     assert salicide_access(reg,cls,nid)[1]==proof==r['salicide_access_proof']\n   elif r['disposition'].startswith('RETAINED_SHARED'):",
+      "count": 1
+    },
+    {
+      "before": " assert len(result['negative_controls'])==8",
+      "after": " assert len(salicide_bound)==30,'Expected precisely the30 previously unresolved actual MOS references'\n for fault in ('salicide_boundary_cut','local_tap_contacts_removed','opposite_implant_removed'):\n  rejected=0\n  for reg,cls,nid,tap,proof in salicide_bound.values():\n   kwargs={}\n   if fault=='salicide_boundary_cut':\n    seam=reg.sized(2)&tap.sized(2)\n    assert not seam.is_empty();kwargs['blocked']=(salblock+seam).merged()\n   elif fault=='local_tap_contacts_removed':\n    kwargs['available_contacts']=contacts-tap\n   else:\n    kwargs['implant']=(psd-tap)if cls.endswith('_nmos')else(psd+tap).merged()\n   try:salicide_access(reg,cls,nid,**kwargs)\n   except AssertionError:rejected+=1\n   else:raise AssertionError('Actual salicide geometry corruption accepted '+fault)\n  assert rejected==30\n  result['negative_controls'].append(dict(fault=fault,rejected=True,actual_geometry_cases=rejected))\n assert len(result['negative_controls'])==11\n result['salicide_reference_count']=len(salicide_bound)",
+      "count": 1
+    },
+    {
+      "before": "counts=result['counts'],controls=8",
+      "after": "counts=result['counts'],controls=11,salicide_references=len(salicide_bound)",
+      "count": 1
+    }
+  ]
+}

@@ -1,0 +1,263 @@
+{
+  "date": "2026-09-21",
+  "status": "PASS",
+  "base_head": "32c52f51339bb4edb2918dfa1567b008608e32d8",
+  "scope": "Fault-free full 31-word real-codec storage and scrub, both SYNPRE settings; unbounded R1-R4 with asserted invariants, both read ports, pointer hold/advance/wrap. No core-level reg_ch0, M-extension, upset or physical claim.",
+  "assumptions": [
+    "Initial reset, inherited from the separately proved architectural contract.",
+    "Symbolic watched index is 1..31.",
+    "After writing the arbitrary 32-bit watched value, no further write to that index until reset; this is the original R1 premise. Other register writes, reads and later resets stay free; writes to x0 are also allowed."
+  ],
+  "tasks": [
+    {
+      "task": "prove",
+      "status": "PASS",
+      "source_state": "clean",
+      "log_sha256": "203b76e7c074688f34c318e8506f84355ef38bd8fe77948528393272cb582f7e",
+      "config_sha256": "73f9cf427a9c681b08f8d791e8ab5b3b81ec2b731828e946dc309d6a2819779e",
+      "elapsed_seconds": 31,
+      "copied_sources": {
+        "secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "ibex_regfile_secded_props.v": "d68dba6f8d03d46ec8a8f89d84063ad6bd337623463a4bbe61f0ab662aa83d85",
+        "ibex_regfile_contract_props.v": "b01aba8492b298bca5d5d7e1dc4cea813dc2deed92ad5bf5acf4d18a51445059",
+        "ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+        "secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0"
+      }
+    },
+    {
+      "task": "prove_synpre",
+      "status": "PASS",
+      "source_state": "clean",
+      "log_sha256": "30ad99b52f0ab03d8de13e29a8cb9a491143d44c55e14fffaf40ccd60c090cf1",
+      "config_sha256": "ac40594652a528956bb72721c1b0511cdac37c0bffb3893a563d04f6b5944849",
+      "elapsed_seconds": 38,
+      "copied_sources": {
+        "secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "ibex_regfile_secded_props.v": "d68dba6f8d03d46ec8a8f89d84063ad6bd337623463a4bbe61f0ab662aa83d85",
+        "ibex_regfile_contract_props.v": "b01aba8492b298bca5d5d7e1dc4cea813dc2deed92ad5bf5acf4d18a51445059",
+        "ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+        "secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0"
+      }
+    },
+    {
+      "task": "cover",
+      "status": "PASS",
+      "source_state": "clean",
+      "log_sha256": "a50bad7416d43a892e208848cd665909610656f8513ccdfaca265fc75ba93c4a",
+      "config_sha256": "266a01f1d352ea3acd5e83296b707e41c5bade4ca8b5aa72ede94bf771afe74d",
+      "elapsed_seconds": 118,
+      "copied_sources": {
+        "secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "ibex_regfile_secded_props.v": "d68dba6f8d03d46ec8a8f89d84063ad6bd337623463a4bbe61f0ab662aa83d85",
+        "ibex_regfile_contract_props.v": "b01aba8492b298bca5d5d7e1dc4cea813dc2deed92ad5bf5acf4d18a51445059",
+        "ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+        "secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0"
+      },
+      "witness": {
+        "visited_registers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31
+        ],
+        "terminal": {
+          "clk_i": 1,
+          "f_scrub_armed": 1,
+          "f_scrub_idx": 31,
+          "f_scrub_seen": 2147483647,
+          "f_scrub_val": 1,
+          "f_scrub_visits": 32,
+          "raddr_a_i": 31,
+          "raddr_b_i": 31,
+          "rdata_a_o": 1,
+          "rdata_b_o": 1,
+          "rst_ni": 1,
+          "scrub_go": 1,
+          "scrub_ptr": 2
+        },
+        "vcd_sha256": "69382729bd848420cb6ca7f57190dbee88774bd0b33a8d3851304976d38e9c2c"
+      },
+      "reached_covers": 5
+    },
+    {
+      "task": "cover_synpre",
+      "status": "PASS",
+      "source_state": "clean",
+      "log_sha256": "5108c4f7e63c89e3b0d1e1c6aaa5320485630caa11954f87cec1a99be90f914e",
+      "config_sha256": "1899f8cb8a376edb766c0d818508eb628b2fa0d4c4bf812375c577b8db17647c",
+      "elapsed_seconds": 236,
+      "copied_sources": {
+        "secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+        "ibex_regfile_secded_props.v": "d68dba6f8d03d46ec8a8f89d84063ad6bd337623463a4bbe61f0ab662aa83d85",
+        "ibex_regfile_contract_props.v": "b01aba8492b298bca5d5d7e1dc4cea813dc2deed92ad5bf5acf4d18a51445059",
+        "ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+        "secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0"
+      },
+      "witness": {
+        "visited_registers": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31
+        ],
+        "terminal": {
+          "clk_i": 1,
+          "f_scrub_armed": 1,
+          "f_scrub_idx": 31,
+          "f_scrub_seen": 2147483647,
+          "f_scrub_val": 1,
+          "f_scrub_visits": 32,
+          "raddr_a_i": 31,
+          "raddr_b_i": 31,
+          "rdata_a_o": 1,
+          "rdata_b_o": 1,
+          "rst_ni": 1,
+          "scrub_go": 1,
+          "scrub_ptr": 2
+        },
+        "vcd_sha256": "8af226d9f0fbcd4adb1baaf043c5c19838b26918ebf194f2956775fc118ca53d"
+      },
+      "reached_covers": 5
+    }
+  ],
+  "controls": {
+    "source_sha256": {
+      "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+      "hw/soc/formal/regfile_scrub_complete.sby": "9bc204dd710a811e63434905b7d46f4a102538fbcbdb47e1c5f3f1417c57f166",
+      "hw/soc/formal/regfile_scrub_complete_props.v": "d68dba6f8d03d46ec8a8f89d84063ad6bd337623463a4bbe61f0ab662aa83d85",
+      "hw/soc/formal/ibex_regfile_contract_props.v": "b01aba8492b298bca5d5d7e1dc4cea813dc2deed92ad5bf5acf4d18a51445059",
+      "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+      "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+      "scripts/check_regfile_scrub.py": "0e100b6c7979933a0d69a3b86e0d5df73ee6d35ca5e6d4f02c4d1773b585a372"
+    },
+    "controls": [
+      {
+        "name": "wrong_write",
+        "status": "FAIL",
+        "returncode": 2,
+        "reachable_counterexample": true,
+        "passed": true,
+        "mutant_sha256": "63c88d5301e06a43f2ba8aa876958ddf7f518c0d06b133b4f72ac04e7aba5627",
+        "log_sha256": "6a03f733c89dd3c677126ae4627e3392ace596047548dfde969f50f1168214b1"
+      },
+      {
+        "name": "wrong_check",
+        "status": "FAIL",
+        "returncode": 2,
+        "reachable_counterexample": true,
+        "passed": true,
+        "mutant_sha256": "f015c7efe1683734aa59edb7990faa797800ffd0ee80842384d5d442b3081ba6",
+        "log_sha256": "1bd9b926c829ddf692ee504b6df0cfcc136c1f5a67122be51c1382c3c420b77e"
+      },
+      {
+        "name": "wrong_port_b",
+        "status": "FAIL",
+        "returncode": 2,
+        "reachable_counterexample": true,
+        "passed": true,
+        "mutant_sha256": "3834b64b00c2702cf191b4a34f150065b7ac0823d1a2c24fbb3f64dc2b6a41a8",
+        "log_sha256": "2fdbf8c1d0ba205dcfc78c18c162c591c03d11f2a9bddb4b178838bacb9cbdbe"
+      },
+      {
+        "name": "scrub_corruption",
+        "status": "FAIL",
+        "returncode": 2,
+        "reachable_counterexample": true,
+        "passed": true,
+        "mutant_sha256": "7e2bc37d5cddf555d191a0b982c3659d59567c992d1eded59027b294a50d0fb7",
+        "log_sha256": "a7729e8fd1a146809db134a67e6f5ba4080a19cf6ddf94f787a58f09f05795df"
+      },
+      {
+        "name": "pointer_skips",
+        "status": "FAIL",
+        "returncode": 2,
+        "reachable_counterexample": true,
+        "passed": true,
+        "mutant_sha256": "b0f0def20168b8c9d29d911f739a95e37ca6538438b0f010a83264005b36f277",
+        "log_sha256": "1601c3f4c27cf856e92c2e2b38dafb63f9db917f8b8a10fdffcd95ad97517a70"
+      },
+      {
+        "name": "pointer_never_stalls",
+        "status": "FAIL",
+        "returncode": 2,
+        "reachable_counterexample": true,
+        "passed": true,
+        "mutant_sha256": "8c2855850983fd7485e368bc465f1a02259bebec1dc8bc4577f769795f8c97f0",
+        "log_sha256": "a56347cc6b522b4a0c5f4bfa57e74153ca7078ae58d457e5e293eae543f27b95"
+      }
+    ],
+    "passed": true,
+    "sources_unchanged": true
+  },
+  "source_sha256": {
+    "hw/soc/formal/regfile_scrub_complete.sby": "9bc204dd710a811e63434905b7d46f4a102538fbcbdb47e1c5f3f1417c57f166",
+    "hw/soc/formal/regfile_scrub_complete_props.v": "d68dba6f8d03d46ec8a8f89d84063ad6bd337623463a4bbe61f0ab662aa83d85",
+    "hw/soc/formal/ibex_regfile_contract_props.v": "b01aba8492b298bca5d5d7e1dc4cea813dc2deed92ad5bf5acf4d18a51445059",
+    "hw/soc/formal/Makefile": "c5c8e298f8fd3559e53741ce3a99513311f83f2c686aefc743b9aab42dc4ca0a",
+    "hw/soc/rtl/ibex_regfile_secded.v": "d5f0d073656bea58bb3b1f7f04dccdb6673669a644b6db68c9926ad3f5ce36f0",
+    "hw/rtl/secded_enc.v": "6f5d21b88675b853f95f3b8ea4cf200e66f75c31e1106cc222ff96d992a99cbe",
+    "hw/rtl/secded_dec.v": "5e1bfe7a49e1287a9688c2043945a36e85ad37f58e9341fe2e213e33e299b6b0",
+    "scripts/check_regfile_scrub.py": "0e100b6c7979933a0d69a3b86e0d5df73ee6d35ca5e6d4f02c4d1773b585a372"
+  },
+  "historical_disposition": "The old regfile_scrub.sby solver attempts and six sweep exclusions retain their historical verdicts. This new proof covers their R1-R4 functional contract; it is not a retroactive PASS for old tasks or a new depth-40 BMC result.",
+  "attempts": [
+    "Exploratory wrapper plus opt-full gave vacuous PASS; its unreachable covers rejected acceptance.",
+    "Explicit anyseq wrapper reached covers but induction was UNKNOWN before adding internal invariants.",
+    "Interrupted and disk-full attempts are not PASS; their inputs/logs remain locally archived.",
+    "Per-word asserted invariants prove both read configurations. Separate visit witnesses were superseded by one stronger witness that visits all31 after a nonzero write and crosses32 scrub cycles."
+  ]
+}

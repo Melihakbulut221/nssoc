@@ -1,0 +1,155 @@
+{
+  "status": "TREE32_NATIVE_LVS_AND_FAULTS_PASS_EMITTER_BUDGET_DRC_FAIL",
+  "source_head": "77d3628b5bc701449fe248d8b02e7216a5e955ea",
+  "run": 38989984341,
+  "summary": {
+    "asset": 649155418,
+    "sha256": "501272489c0d10b2bf6837c2f2380b331e46eb78533c45881db171366d9cc308"
+  },
+  "parts": {
+    "asset": 649155494,
+    "sha256": "55c3325d2c6ea29e5dcf6c704fb109ecacfb160a9bba5de66f28be7bb4eaecf3"
+  },
+  "archive": {
+    "asset": 649155552,
+    "sha256": "3c5672888a1cac7194cdfbc2c157653d9ce43156aa73e9426dd2964b833cc556",
+    "bytes": 3088771
+  },
+  "gds_sha256": "ba5358d2c379e8b564cf4a8e38064939fa4dfcde7db9a52669b5fec9950da617",
+  "geometry_byte_comparison": {
+    "original_gds_sha256": "9af71873f74ce5d24a14d5dc8bbb218e3100d6e9030b5616c7f6db307133828d",
+    "raw_bytes_equal": false,
+    "equal_after_only_BGNLIB_BGNSTR_date_normalization": true,
+    "normalized_sha256": "1be29cf235e7550b2eb7ce56c021134ce302d3aced6d35f3eb07fe40269648d3",
+    "date_records_each": 41,
+    "method": "Parse >HBB GDS records, validate28bytes/type2 for recordtypes1and5, zeroonly24timestampbytes, compareallremainingbytes. All geometric/text/property records retained."
+  },
+  "lvs": {
+    "lvs": {
+      "status": "PASS within comparison scope",
+      "top": "nssoc_tx_tree32_core_v1",
+      "reasons": [],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "Match": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_tx_tree32_core_v1",
+          "schematic": "NSSOC_TX_TREE32_CORE_V1",
+          "status": "Match",
+          "layout_devices_recursive": 1674,
+          "schematic_devices_recursive": 1674
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree32-assembly/physical/lvs/result.lvsdb": {
+          "bytes": 13111834,
+          "sha256": "2b576a6416ccae7743f9bb8f3483724b22387a7260d905e317c42ab9f89d7edb"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree32-assembly/physical/lvs/deck.log": {
+          "bytes": 37217,
+          "sha256": "8de8e376bea0ba306bfa6034b968bc2006b522b01a497278c94fbb65ea57ad4e"
+        }
+      }
+    },
+    "lvs_flat": {
+      "status": "PASS within comparison scope",
+      "top": "nssoc_tx_tree32_core_v1",
+      "reasons": [],
+      "extraction_diagnostics": [],
+      "circuit_status_counts": {
+        "Match": 1
+      },
+      "circuits": [
+        {
+          "layout": "nssoc_tx_tree32_core_v1",
+          "schematic": "NSSOC_TX_TREE32_CORE_V1",
+          "status": "Match",
+          "layout_devices_recursive": 1674,
+          "schematic_devices_recursive": 1674
+        }
+      ],
+      "inputs": {
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree32-assembly/physical/lvs_flat/result.lvsdb": {
+          "bytes": 12107869,
+          "sha256": "147888534608e8ec398847caafaffc806d639656df6b963ed1dc6099ad43ed40"
+        },
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-tx-tree32-assembly/physical/lvs_flat/deck.log": {
+          "bytes": 37219,
+          "sha256": "f12b3b9f90c433cf25e4f37ec2021dfa3187003e73d9128153220ac38bed89b9"
+        }
+      }
+    }
+  },
+  "faults": {
+    "wrong_finger_count": "REJECTED_EXPECTED_FAULT",
+    "missing_hbt": "REJECTED_EXPECTED_FAULT",
+    "q_open": "REJECTED_EXPECTED_FAULT",
+    "rail_short": "REJECTED_EXPECTED_FAULT",
+    "offgrid": "REJECTED_EXPECTED_FAULT"
+  },
+  "drc": {
+    "status": "FAIL",
+    "markers": 1,
+    "categories": {
+      "'npn13G2.bR'": 1
+    },
+    "category_count": 560,
+    "report_sha256": "5bfc309c08ac08eeb2bf97712f15f353bef9a8dc0df2f2493f3d0e95acb9b095",
+    "log_sha256": "4660e1450e450503b2db2c651434fbf5dcc3f962919c6d657282406d9e9a5746"
+  },
+  "emitter_budget": {
+    "reference_hbts": 589,
+    "reference_emitters": 4427,
+    "four_lane_tree_reference_projection": 17708,
+    "recommended_chip_maximum": 4000,
+    "rule": "npn13G2.bR",
+    "recommended_rules_enabled": true,
+    "waiver": false,
+    "source": "IHP-Open-PDK@5e6d592e4002946a4616f798c357f0f3c06cf3b6/ihp-sg13g2/libs.tech/klayout/tech/drc/rule_decks/feol/6_1_npnsubstratetie.drc",
+    "scope": "Reference census; actual geometry independently triggers this native rule. PLL/CDR/clock/TX devices are additional. Needs architectural/device redesign, not a disabled rule."
+  },
+  "live_jobs": [
+    {
+      "run": 38978702458,
+      "jobs": [
+        {
+          "id": 117234218352,
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "run": 38982797234,
+      "jobs": [
+        {
+          "id": 117247299986,
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "id": 117247407978,
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    },
+    {
+      "run": 38984849452,
+      "jobs": [
+        {
+          "id": 117253801191,
+          "status": "in_progress",
+          "conclusion": null
+        }
+      ]
+    }
+  ],
+  "serial_phy_complete": false,
+  "main_chip_integrated": false,
+  "qualified_pex": false,
+  "full_physical_accepted": false,
+  "next_step": "Reduce true physical per-stage emitter usage within whole-chip budget while retaining8Gb/s and original gates. Existing30pre cells each145emitters andfinal77 cannot simply be repeated four lanes. Fresh terminal extraction/RC and full32 electrical tests remain required."
+}

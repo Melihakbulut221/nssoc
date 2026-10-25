@@ -1,0 +1,590 @@
+{
+  "status": "READY_COMPLETE_PLL_NATIVE_REPLAY_AND_FAILED_PHASE_CONVERGENCE",
+  "utc": "2026-10-06T02:27:19.385819+00:00",
+  "source_allowlist": [],
+  "native_completed": {
+    "step_s": 2.5e-12,
+    "stop_s": 1e-06,
+    "rows": 401607,
+    "columns": 826,
+    "values": 331727382,
+    "devices": 539,
+    "status": "PASS_NATIVE_STREAM_FINITE_SCREEN",
+    "strict_numerical_diagnostics_pass": true
+  },
+  "public_replay": {
+    "parts": 159,
+    "status": "PASS_LOSSLESS_AUTHOR_REPLAY_AND_INDEPENDENT_ACQUISITION_ARITHMETIC",
+    "all539_author_safety_records_exact": true,
+    "result": {
+      "bytes": 955514,
+      "sha256": "b4bf9c2457a988ff9c0693f639fc98ed56c744a4e7d379cd38b9465b50affb52"
+    }
+  },
+  "pair_comparison": {
+    "passed": false,
+    "windows": [
+      {
+        "interval_s": [
+          8e-07,
+          9e-07
+        ],
+        "reference_indices": [
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88
+        ],
+        "frequency_difference_ppm": 0.769176965802908,
+        "maximum_matched_phase_difference_s": 6.948340877777602e-10,
+        "checks": {
+          "both_individual_windows_pass": true,
+          "frequency_difference_100ppm": true,
+          "matched_phase_difference_50ps": false
+        },
+        "passed": false
+      },
+      {
+        "interval_s": [
+          9e-07,
+          1e-06
+        ],
+        "reference_indices": [
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98
+        ],
+        "frequency_difference_ppm": 5.948267550617456,
+        "maximum_matched_phase_difference_s": 6.953492779363016e-10,
+        "checks": {
+          "both_individual_windows_pass": true,
+          "frequency_difference_100ppm": true,
+          "matched_phase_difference_50ps": false
+        },
+        "passed": false
+      }
+    ],
+    "status": "FAIL_FINITE_NOMINAL_TIMESTEP_SCREEN",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/compare_pcie_pll_acquisition_pair_v1.py": {
+        "bytes": 8329,
+        "sha256": "7d20c187e38e515cf8876a286bb53effc1e4322071ace8a60463d9e48c78b506"
+      },
+      "/dev/shm/nssoc-pll-acquisition-v1-evidence/pair-screen-declaration.json": {
+        "bytes": 1219,
+        "sha256": "4b8524ffdbba913840e2329374b69675e14a2b29c64af33155d84c4ca6fbff38"
+      },
+      "/dev/shm/nssoc-pll-acquisition-v1-step5-01/result.json": {
+        "bytes": 1025344,
+        "sha256": "38e2bc21a0995b6ceafd136b61c2a554476701369cefe8ef59245d0f99f237f4"
+      },
+      "/dev/shm/nssoc-pll-acquisition-v1-step5-full-review-01/result.json": {
+        "bytes": 200613,
+        "sha256": "960ca00987717903f773516fecc75b3a207d027f8c7b7df860ba17dfba3241eb"
+      },
+      "/dev/shm/nssoc-pll-acquisition-v3-step25-detached-02/result.json": {
+        "bytes": 1626991,
+        "sha256": "072c0b6d8f0c4ae231e7f7160d63a6356c797dda0b438ec6aa68d4a279303b43"
+      },
+      "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/result.json": {
+        "bytes": 955514,
+        "sha256": "b4bf9c2457a988ff9c0693f639fc98ed56c744a4e7d379cd38b9465b50affb52"
+      }
+    },
+    "scope": "Two source-bound nominal1us captures and full public raw replays. Matched phase difference is not zero phase error; no PVT/jitter/thermal/layout/foundry/fullPLL qualification."
+  },
+  "independent_pair_peer": {
+    "bytes": 2447,
+    "sha256": "ffd1564a2b3e857db7349d66d5739d52599f069a9c781ad10387de8dd6adb7b9"
+  },
+  "descriptive_offset": {
+    "bytes": 19994,
+    "sha256": "bd92e4aa5382b5d4b2851623da4960ef7ac07a7c2a885a05508d9f63dffb7260"
+  },
+  "releases": {
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.json": {
+      "bytes": 2832,
+      "sha256": "0c069d9df0e758e195d96d2adc53987c61cd0af720e0e0a776991ba0fe144abd"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.json": {
+      "bytes": 2922,
+      "sha256": "76cb92050edc0142f82c6c2f1c6449232a51d6d1e23bef75d447a6001ab138d9"
+    }
+  },
+  "assets": [
+    {
+      "name": "pcie-pll-step25-public-replay-and-failed-pair-20261006.tar.xz",
+      "asset_id": 614219747,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-pll-step25-public-replay-and-failed-pair-20261006.tar.xz",
+      "bytes": 3304712,
+      "sha256": "d2ea286501dc3c17ad39dc916ffe4cf83747c5a6ae65cf9482e3216933dd0fa8",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-pll-step25-public-replay-pair-validation-20261006.json",
+      "asset_id": 614220533,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-pll-step25-public-replay-pair-validation-20261006.json",
+      "bytes": 4372,
+      "sha256": "b77c1911712e476f257147f073b72aa13fa28074b6aa652d9339be2d23235c55",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-pll-acquisition-v3-step25-completed-native-20261006.tar.xz",
+      "asset_id": 614121017,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-pll-acquisition-v3-step25-completed-native-20261006.tar.xz",
+      "bytes": 2989636,
+      "sha256": "7b50684d1a1b82c565b13fb06372958fad61ebbb708536cdf6a55450c795d5e6",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    },
+    {
+      "name": "pcie-pll-acquisition-v3-step25-completed-native-validation-20261006.json",
+      "asset_id": 614121468,
+      "url": "https://github.com/Melihakbulut221/nssoc/releases/download/evidence-20261005-pcie-continuation/pcie-pll-acquisition-v3-step25-completed-native-validation-20261006.json",
+      "bytes": 117508,
+      "sha256": "0756e96908c191d512409e0126e39f3829207d52c703c15c3fe668f9845ffdb7",
+      "authenticated_roundtrip": true,
+      "anonymous_roundtrip": true
+    }
+  ],
+  "evidence": {
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/detach.py": {
+      "bytes": 1819,
+      "sha256": "9ce62702e99949ec9da5800f263395f80bd5b71181c652fe34fbfb68912986cc"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/detached-launch-receipt.json": {
+      "bytes": 825,
+      "sha256": "46817483af597954bef0c1803b2597bdcc1c34e2b7ec758b69d5fff8ecd1c6d4"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/diagnose_pair_offset01.py": {
+      "bytes": 2408,
+      "sha256": "9746ba555ded2ae681781cdb8748611cb37a18ca0223e45469e3eb705e12c63c"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/execution.json": {
+      "bytes": 1615,
+      "sha256": "31485f4398b1e494d5fd35e6a5fd6abe0f6d3147d29c16de9654d922df34985f"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/launch-once.json": {
+      "bytes": 251,
+      "sha256": "7bb9e38225cbbe5b6f645756e3209c5ec5cbc7a85af12b3a2977beaa46942800"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/owned-processes.json": {
+      "bytes": 996,
+      "sha256": "9b4e7e99217519113955ae42107a6f07c376f5ac2b6c7f382da3ac4d3073ec03"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-comparison.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-execution-observation.json": {
+      "bytes": 660,
+      "sha256": "5a020a081e78e75b9a12d3809a98824c2d9fad61c4897938a913d67b6841fdf4"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-offset-diagnosis01.json": {
+      "bytes": 19994,
+      "sha256": "bd92e4aa5382b5d4b2851623da4960ef7ac07a7c2a885a05508d9f63dffb7260"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-offset-diagnosis01.log": {
+      "bytes": 2565,
+      "sha256": "acac2cc5a1f907d2051926c25cb0e21429bc82ffdd8d9aa51ed38535e0eaa860"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01-detached.json": {
+      "bytes": 821,
+      "sha256": "b7caa19248bb1ec0d5fc7514ef0169bfd189562265e1a4eddca81cf93a328339"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.json": {
+      "bytes": 2832,
+      "sha256": "0c069d9df0e758e195d96d2adc53987c61cd0af720e0e0a776991ba0fe144abd"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.log": {
+      "bytes": 140,
+      "sha256": "488882c915b6b8966511e57b89063719834b558c584419f9cc4e501996d2da9c"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0001-metadata-attempt1/owned-processes.json": {
+      "bytes": 608,
+      "sha256": "6714bf827c7b2a03ed668e81b530d992125fc2cda441668c9016926110bfe67f"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0001-metadata-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "170abe3a5eed98434efbf04b19730fd65e3a81d145bcbb9647801ecbceb01cae"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0001-metadata-attempt1/stdout.bin.gz": {
+      "bytes": 62903,
+      "sha256": "585b0e756ea86a1896251b0fce5543d5f300a79181ac00fae7e122efc78b2c16"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0002-upload-attempt1/owned-processes.json": {
+      "bytes": 814,
+      "sha256": "6fcd8ea02583aff8632262fc9cdeb669a80be0d0007c5866a0132379cf2e9253"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0002-upload-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "befc51183aba3c46f803f1075f921ea16d36c545b3606947f235f5cb2724c1d6"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0002-upload-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "9c37774da81637611a45fa30342f6b0e3052c31ee3ce0fdfebed724e59b22288"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0003-metadata-attempt1/owned-processes.json": {
+      "bytes": 608,
+      "sha256": "29e47a20cda15013aa988fbeb002b6f84a5a8003512d04a5fc65fff19ad1a6ee"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0003-metadata-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "054a3ee44d1f6bdad28114bf99e01ac772be236e552f7eb2156818ea92ed28bf"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0003-metadata-attempt1/stdout.bin.gz": {
+      "bytes": 63043,
+      "sha256": "aabec4bcde7103eb773467f5b00fcfae1674475f603476cbcad85d0e7d6587f2"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0004-authenticated-attempt1/owned-processes.json": {
+      "bytes": 642,
+      "sha256": "fa46b5290ffda8ef624843ba7f45148a3ef9e4acc2300c1e6e370ea1a8af394b"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0004-authenticated-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "214d8cca305e5123764de96bcfacb5598965f924f2bf3fe725d250b26b27316b"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0004-authenticated-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "638c4a077646531c57c64a8587454dc7ab501047753fba50a32ba76d8c0b4696"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0005-anonymous-attempt1/http-response.json": {
+      "bytes": 1192,
+      "sha256": "dc85a18c853a99ca14a6c2742e81c19a2d060729a71a9d0a35fd6ecc41d739fc"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0005-anonymous-attempt1/owned-processes.json": {
+      "bytes": 1032,
+      "sha256": "e8562b246b9a113148e10dd800edfc00cda1fac04541f79aac29d6a6a6799414"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0005-anonymous-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "015368477a91b7221b1b4c1caf6a492c99058246646d2ad7fef90daaa7afee62"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0005-anonymous-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "652ecd77625248c91eef8a488bf8b88cb8a1487cb13ddd678d4df1ac164a67b4"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0006-metadata-attempt1/owned-processes.json": {
+      "bytes": 608,
+      "sha256": "e0407d5f12bca0a668dc5bcd9226fb3467121b5879010e4e87d7cb2cc4e2750b"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0006-metadata-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "7dcdd14fa51be2096bd36e030c28d0deca85903352027a2157c0abb34b1d47d7"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0006-metadata-attempt1/stdout.bin.gz": {
+      "bytes": 63047,
+      "sha256": "9ebf044c30cf345f70dbb876808f6bf7da3e52a515b0f1a85362f33db2ec5751"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0007-upload-attempt1/owned-processes.json": {
+      "bytes": 812,
+      "sha256": "3ee09883d2d1e2503f466bbce4fce2b33f0ede6ec84b717c8f186b145c98d1ba"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0007-upload-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "ca360c9f40d814862328551787d3e743e75581cd9d6d08773470d941545e0c2d"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0007-upload-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "8f9c556cbc2ff87afd71432f48de308a1ee87f434b9b219fa0189f8153dd1819"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0008-metadata-attempt1/owned-processes.json": {
+      "bytes": 608,
+      "sha256": "0cad4bdc5598e2bbd01c422c9b6a7a43b50639b602266bca365be769ff5d8647"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0008-metadata-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "b0836d424886e8bc64e81dc2f79f269a27daa23ea8bfc36f7e7f1fe2d3cb2f0c"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0008-metadata-attempt1/stdout.bin.gz": {
+      "bytes": 63216,
+      "sha256": "c554d6706565bb34fd060dabe173ddeb6b5be231ea85feba3af00955d6324550"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0009-authenticated-attempt1/owned-processes.json": {
+      "bytes": 642,
+      "sha256": "1a818fb4a8c15e5b1e75470b064639b0e0065607b3cdb3fc0aee3ac00d774c47"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0009-authenticated-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "eb4190d8c210afa8e29d168dcd00ebdaa16f1069cbc1ae80fb564fc8b6f091b5"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0009-authenticated-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "f3a87810d4c34c1caa29a73fda99e4470a2ca88135bf7a1531a3d6a63b4878b8"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0010-anonymous-attempt1/http-response.json": {
+      "bytes": 1186,
+      "sha256": "cf09bfcb92fb1f05b28a45b18be964da94631db57a20c815745dba7abba30382"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0010-anonymous-attempt1/owned-processes.json": {
+      "bytes": 1030,
+      "sha256": "f156a9d43bfa25b7861c862a33b96c91eaba4ea24d7ddaa3a65a0313bfab6010"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0010-anonymous-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "dc52b1b545f363e74eb551779705bc32eab7744b48691353f45e4cbb44e68243"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/0010-anonymous-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "df46c805d216d0f3a05b11994f971f88ee9d95ca20c3273d3db9628ec49391b1"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-release01.transport/attempts.json": {
+      "bytes": 30583,
+      "sha256": "4ebf4143c4e87060a3380fe49690f17da51a0e66eb92a157854ace70d4bc3a92"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-result.json": {
+      "bytes": 2525,
+      "sha256": "08fe61d20708cb8e66bdfdbc5dfa1b96740e5ce4c929add330b243360b918bcb"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-saved-peer-vco-original-label.json": {
+      "bytes": 2457,
+      "sha256": "557e818b6769c96192153b0002dd71ea17dc73ffb7c9ba512d2702756cc3e49b"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair-saved-peer-vco.json": {
+      "bytes": 2447,
+      "sha256": "ffd1564a2b3e857db7349d66d5739d52599f069a9c781ad10387de8dd6adb7b9"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair_saved_review_vco.py": {
+      "bytes": 4160,
+      "sha256": "25157c8ec6cc1a4c2f7425e5e77f0d8b80c52f615ff8cd6a5416f95406fbd78f"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pair_saved_review_vco_original_label.py": {
+      "bytes": 4170,
+      "sha256": "c06b383cbfaf5c0dee0d4ba327c9425b99adcca5119a16ce48ba83858f478d45"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pcie-pll-step25-public-replay-and-failed-pair-20261006.tar.xz": {
+      "bytes": 3304712,
+      "sha256": "d2ea286501dc3c17ad39dc916ffe4cf83747c5a6ae65cf9482e3216933dd0fa8"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/pcie-pll-step25-public-replay-pair-validation-20261006.json": {
+      "bytes": 4372,
+      "sha256": "b77c1911712e476f257147f073b72aa13fa28074b6aa652d9339be2d23235c55"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/policy.json": {
+      "bytes": 3074,
+      "sha256": "cd3e757cb33494e39ae57b2e43a9d40160defbbf164d9922cf4fc0e0f69fbfcc"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/replay-pair-members.json": {
+      "bytes": 1121545,
+      "sha256": "ccfd5c34739a161408a81c64ff6e4f3d54a12f7e49379ca20650573e77ae6f19"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/result.json": {
+      "bytes": 955514,
+      "sha256": "b4bf9c2457a988ff9c0693f639fc98ed56c744a4e7d379cd38b9465b50affb52"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/review.log": {
+      "bytes": 4685,
+      "sha256": "36f2e6c0c4ff26e8a4bda18bfaf74e111f0cf61b8f2801ac7b5a81228251dd9b"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/run.py": {
+      "bytes": 3440,
+      "sha256": "f8402e7db61696ff11eb5757af95f5f2f879933e123770142f82e9ea171afe8e"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/seal-replay-pair01.log": {
+      "bytes": 387,
+      "sha256": "e4a1aacb3c02086020fbd2f19608f0f21b49dcb628d75da1b0640c1db1bd4223"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/seal-replay-pair02.log": {
+      "bytes": 411,
+      "sha256": "6dde909295507c204bc13b96e36be63a86db19e7eff535bbaf4148b1abd865e2"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/seal_replay_pair01.py": {
+      "bytes": 4871,
+      "sha256": "447901ed5ac5bf5a5652cc0e0d8cf71ab36ad1099e3f911b1e481a02cf8d6168"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/seal_replay_pair02.py": {
+      "bytes": 4866,
+      "sha256": "3fe0f5da6413ca40bac9c4af87e3ff8e298d1eedc368d5df5373bf25a6a4bb19"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/source-peer-vco.json": {
+      "bytes": 2110,
+      "sha256": "aa0ad12f22d344e6aa306a9fb8c7eff7ea40807211fbf89a98f98f7a5fff5675"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/replay-step25-01/supervisor.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/members.json": {
+      "bytes": 1055639,
+      "sha256": "7d70e2484a406144ae8f830cf397e7c771225d85be0903625f9d0e9816484129"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/pcie-pll-acquisition-v3-step25-completed-native-20261006.tar.xz": {
+      "bytes": 2989636,
+      "sha256": "7b50684d1a1b82c565b13fb06372958fad61ebbb708536cdf6a55450c795d5e6"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/pcie-pll-acquisition-v3-step25-completed-native-validation-20261006.json": {
+      "bytes": 117508,
+      "sha256": "0756e96908c191d512409e0126e39f3829207d52c703c15c3fe668f9845ffdb7"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01-detached.json": {
+      "bytes": 1398,
+      "sha256": "98e793dce0bfd819f3ed20856ac09fc3481a2e38b525786847192aa625462958"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.json": {
+      "bytes": 2922,
+      "sha256": "76cb92050edc0142f82c6c2f1c6449232a51d6d1e23bef75d447a6001ab138d9"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.log": {
+      "bytes": 155,
+      "sha256": "d86565cdcfdca4f800d8f54dfcff8c8af07662cbef2c1467cc4fd117ac9c5d19"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0001-metadata-attempt1/owned-processes.json": {
+      "bytes": 608,
+      "sha256": "895637916194113e7eb1d63d9c93a47930128f176e3a7a567d77ded1e78ded7a"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0001-metadata-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "f80ec0609ae2bf0fac55c559e2250e95ccd5e367d142f44230c75c01c7fd1685"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0001-metadata-attempt1/stdout.bin.gz": {
+      "bytes": 60878,
+      "sha256": "daf612a04510be70c87b22d3e20a00fedce7d4ed64a91540ced98533d33592c0"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0002-upload-attempt1/owned-processes.json": {
+      "bytes": 825,
+      "sha256": "7e8473eae4084bd51ef11ea5188b3094a43e1292b7cf651fb8c4915e599c3cb5"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0002-upload-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "6d7476552b9b042c58befc2f77ead0cebdc6d043b8c7ac6021a3901cd5074062"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0002-upload-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "51d44aa54ebe4eb7d63497705d70a8664d1f53d8e3a951fdc402b76cc948055b"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0003-metadata-attempt1/owned-processes.json": {
+      "bytes": 608,
+      "sha256": "1dfea710c6a7adcb07e0018e1bde7b67515dfd30e26dd262426758ba39c22b5a"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0003-metadata-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "8e72d9c0d39f2ecb7c89966b6e5c7c228e33dd3f524784c5d2e95a3899f6ffa2"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0003-metadata-attempt1/stdout.bin.gz": {
+      "bytes": 61241,
+      "sha256": "8cb1279a283814eeb910fc0474e47cb8ed819c47b87bc22ab3d1bb72eb400366"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0004-authenticated-attempt1/owned-processes.json": {
+      "bytes": 642,
+      "sha256": "f8731d1bd66912bbcf62fd1dbf6ceb0e76fe9c57724117520b75d96773fa3069"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0004-authenticated-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "875de35069713be63a3c3fdb6861df1032fa6fa8576a92482951f3154ac218f3"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0004-authenticated-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "8609241931a7d5d0b803feaa0ed6db586781d1d005e2742d44afadcb02c0cf3e"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0005-anonymous-attempt1/http-response.json": {
+      "bytes": 1192,
+      "sha256": "df7caa6f523d2c943de524d901e1db7db947108f3d376588a79578b59e4aed9b"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0005-anonymous-attempt1/owned-processes.json": {
+      "bytes": 1038,
+      "sha256": "1b0d6f245eecd7a18f8b15fd843e99ffcea8593d2d8aa4e684156723953f04cb"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0005-anonymous-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "d93b4e3f85db0d9730113a0b94b7a4307c79269175e692a0fac5c79146450862"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0005-anonymous-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "3f1bf788fa465b416d2e5422be7c10aafe561dab04075f073e018191aa6490c6"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0006-metadata-attempt1/owned-processes.json": {
+      "bytes": 608,
+      "sha256": "f3835df609a1dc8de6833baf087de0f5cdb22918c4f13f19b0732d6451b46afb"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0006-metadata-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "d93b4e3f85db0d9730113a0b94b7a4307c79269175e692a0fac5c79146450862"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0006-metadata-attempt1/stdout.bin.gz": {
+      "bytes": 61241,
+      "sha256": "5311452fbe3122b69d44132346e736935c63b59387cafa86864ceeecff8612f5"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0007-upload-attempt1/owned-processes.json": {
+      "bytes": 834,
+      "sha256": "650c8403dd0dca0aed23ffb967ae21fda25f54c8723b0f6af40839dea9055de6"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0007-upload-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "eebb191c8fafd41516dd839ef5631d72a6bf6a791744fdfba6cc3598859f26ed"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0007-upload-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "a1587428398b0b9da820e81b5e0aac981b3827ec8c5c150b3358026479dff25a"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0008-metadata-attempt1/owned-processes.json": {
+      "bytes": 608,
+      "sha256": "48477cbc56a9562543d323b888622a77f33d0180294b34d1964ce56692aa3e24"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0008-metadata-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "c7d4c860b68579f3dac54444cdb31fd98e1b573be0f30702ebdcbe87ad4ccb45"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0008-metadata-attempt1/stdout.bin.gz": {
+      "bytes": 61581,
+      "sha256": "5b34178939748c44bc6e5e3fc4e063522edc25d089795f5ed41aa6aaa371d896"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0009-authenticated-attempt1/owned-processes.json": {
+      "bytes": 642,
+      "sha256": "1119023e14a87172d1074ece5fce608cc8f4344fb1ba275c1ce5070f2a30e35d"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0009-authenticated-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "78f4fa7ae854287e381dd2c1dc18e3a185021731690e679f66ab889ae9cb973f"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0009-authenticated-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "72c7801ea9c48eed4eb45cba2bf041f60e647921a09db4eb127382fad0a5067d"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0010-anonymous-attempt1/http-response.json": {
+      "bytes": 1200,
+      "sha256": "5ae2e087c9f3d6cbe9d9a91ce666efcbea266b7630d71c7f6c43b54c78db6b9b"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0010-anonymous-attempt1/owned-processes.json": {
+      "bytes": 1047,
+      "sha256": "6eb50d1208f635e67e9940077d5c1831a09998f3f336106c8f2cfd7e50b034c3"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0010-anonymous-attempt1/stderr.bin.gz": {
+      "bytes": 31,
+      "sha256": "78f4fa7ae854287e381dd2c1dc18e3a185021731690e679f66ab889ae9cb973f"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/0010-anonymous-attempt1/stdout.bin.gz": {
+      "bytes": 31,
+      "sha256": "72c7801ea9c48eed4eb45cba2bf041f60e647921a09db4eb127382fad0a5067d"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/release01.transport/attempts.json": {
+      "bytes": 30950,
+      "sha256": "e081a04c7247c74c43e1fa916918214e7cafc5fc55a3e2acbac19b3820fbe0ae"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/seal.log": {
+      "bytes": 445,
+      "sha256": "273dd10dd06126c0a1f21230ecbf345ec76b772a60e896f202c20b738a016815"
+    },
+    "hw/soc/out/pcie-pll-acquisition-v3-20261005/completed-step25-20261006/seal_completed_native.py": {
+      "bytes": 5288,
+      "sha256": "1a4790f4e75ff44637804d8c4247ec8bf353f732f3cec41f8a38b3f66aa307ee"
+    }
+  },
+  "physical_acceptance": false,
+  "full_nominal_timestep_convergence": false,
+  "scope": "Existing unchanged tracked producer/reviewer/comparator methods, no newSPICE. Both full1us individual finite screens and fullrawreplays pass; predeclared100ppm/50ps pair fails raw matchedphase~695ps. Savedtrace describes settled phaseoffset, not acceptance. No PVT/jitter/layout/extractedfullPLL/fullPHY/chip/foundry signoff."
+}

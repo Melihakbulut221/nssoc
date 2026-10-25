@@ -1,0 +1,139 @@
+{
+  "run-rc01.py": {
+    "path": "scripts/tx_output14_run_rc01.py",
+    "baseline_path": "scripts/tx_clock_reference_run_rc01.py",
+    "baseline_sha256": "299aac73ea4a06844653a8ff1d7f4e3ef94eacd18e4aea7c66bbb8de43c34064",
+    "adapted_sha256": "feb6eae1698401942b3c1585bff852f03e11ea1c87195f18ced96a969f09b986",
+    "edits": [
+      {
+        "before": "clock_reference_wires",
+        "after": "tx_output_wires",
+        "count": 2
+      }
+    ],
+    "native_rc_and_conservation_algorithm_unchanged": true
+  },
+  "audit-rc02.py": {
+    "path": "scripts/tx_output14_audit_rc02.py",
+    "baseline_path": "scripts/tx_clock_reference_audit_rc02.py",
+    "baseline_sha256": "3243839ed93a1b62a1cc72ebda718a7bf5ea26c14f821bc83fc39ed445862ca4",
+    "adapted_sha256": "03113c7cfb2862c39988c8847f322640cb8a60cdd127ae48c6dc6b9f5c62e88d",
+    "edits": [
+      {
+        "before": "clock_reference_wires",
+        "after": "tx_output_wires",
+        "count": 4
+      },
+      {
+        "before": "len(a)==14",
+        "after": "len(a)==32",
+        "count": 1
+      },
+      {
+        "before": "ACTUAL_CONTACT_REFERENCE_WITH_UNMODELED_POLY_DIFFUSION_R=10,RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R=6",
+        "after": "ACTUAL_CONTACT_REFERENCE_WITH_UNMODELED_POLY_DIFFUSION_R=24,RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R=14",
+        "count": 1
+      },
+      {
+        "before": "len(native_rows)==16",
+        "after": "len(native_rows)==38",
+        "count": 1
+      },
+      {
+        "before": "==['6']",
+        "after": "==['10']",
+        "count": 1
+      },
+      {
+        "before": "==['5']",
+        "after": "==['9']",
+        "count": 1
+      },
+      {
+        "before": "len(ports)==14",
+        "after": "len(ports)==32",
+        "count": 1
+      },
+      {
+        "before": "len(nodes)==5",
+        "after": "len(nodes)==9",
+        "count": 1
+      },
+      {
+        "before": "set(range(1,6))",
+        "after": "set(range(1,10))",
+        "count": 2
+      },
+      {
+        "before": "len(after['ports'])==14",
+        "after": "len(after['ports'])==32",
+        "count": 1
+      },
+      {
+        "before": "len(before['ports'])==5",
+        "after": "len(before['ports'])==9",
+        "count": 1
+      },
+      {
+        "before": "len(connected)==5 and len({c['component'] for c in connected})==5",
+        "after": "len(connected)==9 and len({c['component'] for c in connected})==9",
+        "count": 1
+      },
+      {
+        "before": "len(retire)==5",
+        "after": "len(retire)==9",
+        "count": 1
+      },
+      {
+        "before": "len(markers)==5",
+        "after": "len(markers)==9",
+        "count": 1
+      },
+      {
+        "before": "original_devices=6,public_ports=4,physical_wire_components=5,geometry_probes=14,metal_device_terminals=10",
+        "after": "original_devices=14,public_ports=8,physical_wire_components=9,geometry_probes=32,metal_device_terminals=24",
+        "count": 1
+      },
+      {
+        "before": "unmodeled_body_well_terminals=6",
+        "after": "unmodeled_body_well_terminals=14",
+        "count": 1
+      },
+      {
+        "before": "connected_wire_components=5",
+        "after": "connected_wire_components=9",
+        "count": 1
+      },
+      {
+        "before": "collapsed_matrix_entries=6**2",
+        "after": "collapsed_matrix_entries=10**2",
+        "count": 1
+      }
+    ],
+    "native_rc_and_conservation_algorithm_unchanged": true
+  },
+  "mutations01.py": {
+    "path": "scripts/tx_output14_mutations01.py",
+    "baseline_path": "scripts/tx_clock_reference_mutations01.py",
+    "baseline_sha256": "645da880972ceceeb4e58641515d625ff97935d2d4e28430a299f845d31ec65e",
+    "adapted_sha256": "94995b393e5e5166939505a2dbf5d95a8310af153f464a0d215955f5732df700",
+    "edits": [
+      {
+        "before": "clock_reference_wires",
+        "after": "tx_output_wires",
+        "count": 4
+      },
+      {
+        "before": "R_EXTRA P_avdd P_avss 1",
+        "after": "R_EXTRA P_AVDD P_AVSS 1",
+        "count": 1
+      },
+      {
+        "before": "'RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R',5",
+        "after": "'RETAINED_FINITE_CONTACT_COMMON_BODY_NO_SPREADING_R',13",
+        "count": 1
+      }
+    ],
+    "native_rc_and_conservation_algorithm_unchanged": true
+  }
+}

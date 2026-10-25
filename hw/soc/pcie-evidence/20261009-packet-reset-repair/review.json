@@ -1,0 +1,555 @@
+{
+  "status": "LOCAL_RESET_SOURCE_REPAIR_VERIFIED_PHYSICAL_TIMING_PENDING",
+  "utc": "2026-10-08T21:51:07.917463+00:00",
+  "reference_commit": "510483547a81a5ccc124fe00e0c81f31f1f520f7",
+  "structural": {
+    "baseline_data_endpoints": 4414,
+    "top_only": 104,
+    "combined": 0,
+    "all_packet_data_endpoints": 4862,
+    "controls": {
+      "status": "PASS",
+      "actual_map_sha256": "145e5b46897d826e2e348a2dd9d02a914ce13d3e83f40d08f4d463ca2231f431",
+      "checker_sha256": "bdb4ee69b97d032d2d1af1e9d3380021644bc013e8e4c491cb77eead1aaa01cb",
+      "faults": [
+        {
+          "fault": "packet_output",
+          "rejected": true,
+          "reason": [
+            "pcie_tx_data_o[0]"
+          ]
+        },
+        {
+          "fault": "packet_data",
+          "rejected": true,
+          "reason": [
+            "$auto$ff.cc:337:slice$1151142/D"
+          ]
+        },
+        {
+          "fault": "release_clock",
+          "rejected": true,
+          "reason": "Release clock or asynchronous reset binding drift"
+        },
+        {
+          "fault": "release_reset",
+          "rejected": true,
+          "reason": "Release clock or asynchronous reset binding drift"
+        }
+      ]
+    }
+  },
+  "top_reset_proof": {
+    "status": "PASS_AFTER_POR",
+    "fault": null,
+    "returncode": 0,
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/soc_top.v": "b782a7fbe7b9ad5abb0db67bd132907d71e1ef43c9451b9befa2f356b77d4847",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/fixtures/pcie_chip_timing/raw-packet-reset.v": "92b87d6aed56c07b803149f9b547b5ec899107c63d15f94bbcea0351f0dbc453",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_packet_reset.py": "e01c649add2e296c0cd552ef1a146a8f14fdfd3b311e979447b1b212ab6e4c14",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+    },
+    "inputs_unchanged": true,
+    "initial_condition": "rst_sys_n asserted at first event; no subsequent input/clock constraints",
+    "observables": [
+      "packet_rst_n",
+      "release_state[1:0]"
+    ],
+    "scope": "Extracted reset cone only; no four-state startup or analog recovery/PHY signoff"
+  },
+  "cdc_proof": {
+    "status": "PASS",
+    "kind": "cdc",
+    "parameters": {},
+    "returncode": 0,
+    "counts": [
+      [
+        "217",
+        "0"
+      ]
+    ],
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/sw/tests/fixtures/pcie_chip_timing/raw-reset-cdc.v": "4215d7467b9026002e659633fe3c111eecf9f04a9dba90653e8f34572d7cad00",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_apb_cdc.v": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_chip_timing_equivalence.py": "30b6dd5b62188c389eeec4c698474492754985c26113432c18ffcc928ef0c02a"
+    },
+    "inputs_unchanged": true,
+    "scope": "RTL sequential equivalence at the listed parameters; not native timing or serial PHY acceptance"
+  },
+  "native_reset": {
+    "status": "PASS_FUNCTIONAL_AFTER_POR",
+    "checks": 897,
+    "cells": 2,
+    "cell_type": "sg13g2_dfrbpq_1",
+    "iterations": 64,
+    "conditions": [
+      "explicit POR transition",
+      "stopped-clock reset assertion and release",
+      "two rising edges before release",
+      "reset assertion while clock high"
+    ],
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-local-reset-20261009/native04/candidate.v": "8ca73687608efc129e51e7b9d13b111ef340fc4a8da28f8820111e6770cdbdb8",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-local-reset-20261009/native04/gold.v": "c926eaf77f22d7ccd1aeb3374a966c19308d1dbc28710ae1bb1f2a610ffc263e",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-local-reset-20261009/native04/map.ys": "4d8cc7e29971ecd55845eaceb1d4f6f48c5ef16baa1218205ec8f8fd8ce2c1a5",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-local-reset-20261009/native04/tb.v": "59b58cbd9f60e0d87fb0c28975e6a704ce4d59acdf9d46b94ac4e7e79e3b5f6f",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+      "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog": "12d296e5855b2b1800a64ac849d72a8cad07f041e02e5ebf138bc21bbdba35a2",
+      "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp": "42dc23e2f61fbeb330c4319598f664d0ebd51521e6b2d53ba6022b9776c0ca7c",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+    },
+    "outputs": {
+      "sim.vvp": "84d1889ca3adbc3b87756fb7b375112254b816f29e753dbf673442e8eca38a6d",
+      "mapped.v": "a201c51f57fd856521cbde4eac6775bf5a6df535ba393d51072abe99b7f932fa",
+      "candidate.v": "8ca73687608efc129e51e7b9d13b111ef340fc4a8da28f8820111e6770cdbdb8",
+      "compile.log": "0f01bfae5eacb0abba9a8dcd2ad2de09c4fd8093cc4986fd7a2510947f41c21a",
+      "gold.v": "c926eaf77f22d7ccd1aeb3374a966c19308d1dbc28710ae1bb1f2a610ffc263e",
+      "simulation.log": "5fdac1b0e20a95a6492dca046ac3131922d453cfcf34b90329ce2deb9b0a0e80",
+      "mapped.json": "5a0bfc251d146cf8af132b7395cb22b03818721d3581d0c622872092017f6978",
+      "map.ys": "4d8cc7e29971ecd55845eaceb1d4f6f48c5ef16baa1218205ec8f8fd8ce2c1a5",
+      "tb.v": "59b58cbd9f60e0d87fb0c28975e6a704ce4d59acdf9d46b94ac4e7e79e3b5f6f",
+      "map.log": "1a0a94c0c84d4423532088541c32ef0f526668c3a79f6ae1f30c47250d5b02a6"
+    },
+    "limits": "Icarus -gspecify native models emit unsupported timing/ifnone warnings. Functional after-POR comparison only, no SDF, analog recovery, metastability or PHY acceptance.",
+    "earlier_failures": [
+      "native01 duplicate wrapper declaration",
+      "native02 testbench starts low without actual POR edge",
+      "unconstrained formal startup mismatches independent uninitialized states; final proof explicitly starts in POR"
+    ]
+  },
+  "native_cdc": {
+    "status": "PASS",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/rtl/pcie/soc_pcie_apb_cdc.v": {
+        "bytes": 4662,
+        "sha256": "b41af87734e4bc215ff9239546abb6036a0635085cb77b2b0ce0270d41347323"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_pcie_apb_cdc.v": {
+        "bytes": 3927,
+        "sha256": "829b274034bbfe3b1bd0fb8deab655c1d4ae77aa05963a794916620bdae4ea39"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": {
+        "bytes": 1715351,
+        "sha256": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": {
+        "bytes": 53835,
+        "sha256": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4"
+      },
+      "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog": {
+        "bytes": 60144,
+        "sha256": "12d296e5855b2b1800a64ac849d72a8cad07f041e02e5ebf138bc21bbdba35a2"
+      },
+      "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp": {
+        "bytes": 1412440,
+        "sha256": "42dc23e2f61fbeb330c4319598f664d0ebd51521e6b2d53ba6022b9776c0ca7c"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": {
+        "bytes": 540,
+        "sha256": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_apb_cdc_native.py": {
+        "bytes": 5741,
+        "sha256": "7f5a3d66ef7c977027a806336ebf3e3ae7ed16672bcdc9201b9ca0f4ad03b9cf"
+      },
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/scripts/check_pcie_integrity_native.py": {
+        "bytes": 6139,
+        "sha256": "0804a82a824e51ecb0b2a0ba4ed553d7a74bcaae97ccd0019125a12151c870d3"
+      }
+    },
+    "commands": [
+      {
+        "argv": [
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys",
+          "-Q",
+          "-T",
+          "-s",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/map.ys"
+        ],
+        "returncode": 0,
+        "log": "map.log"
+      },
+      {
+        "argv": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+          "-g2012",
+          "-s",
+          "tb_pcie_apb_cdc",
+          "-Ptb_pcie_apb_cdc.SOURCE_HALF=2",
+          "-Ptb_pcie_apb_cdc.DESTINATION_HALF=10",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/2-10.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/mapped.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_pcie_apb_cdc.v"
+        ],
+        "returncode": 0,
+        "log": "2-10-compile.log"
+      },
+      {
+        "argv": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/2-10.vvp"
+        ],
+        "returncode": 0,
+        "log": "2-10-run.log"
+      },
+      {
+        "argv": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+          "-g2012",
+          "-s",
+          "tb_pcie_apb_cdc",
+          "-Ptb_pcie_apb_cdc.SOURCE_HALF=11",
+          "-Ptb_pcie_apb_cdc.DESTINATION_HALF=3",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/11-3.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/mapped.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_pcie_apb_cdc.v"
+        ],
+        "returncode": 0,
+        "log": "11-3-compile.log"
+      },
+      {
+        "argv": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/11-3.vvp"
+        ],
+        "returncode": 0,
+        "log": "11-3-run.log"
+      },
+      {
+        "argv": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/iverilog",
+          "-g2012",
+          "-s",
+          "tb_pcie_apb_cdc",
+          "-Ptb_pcie_apb_cdc.SOURCE_HALF=5",
+          "-Ptb_pcie_apb_cdc.DESTINATION_HALF=7",
+          "-o",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/5-7.vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/mapped.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tb/tb_pcie_apb_cdc.v"
+        ],
+        "returncode": 0,
+        "log": "5-7-compile.log"
+      },
+      {
+        "argv": [
+          "/home/hasanmelih/.local/opt/iverilog13/usr/bin/vvp",
+          "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/cdc-native01/5-7.vvp"
+        ],
+        "returncode": 0,
+        "log": "5-7-run.log"
+      }
+    ],
+    "scope": "Actual mapped IHP cells, three clock ratios, reset and stalled APB. Functional simulation only; no metastability, SDF, CDC physical constraints, placement or chip acceptance.",
+    "mapped_cells": 416,
+    "clock_ratios": 3,
+    "transfers_per_ratio": 97,
+    "inputs_unchanged": true,
+    "outputs": {
+      "11-3.vvp": {
+        "bytes": 473587,
+        "sha256": "f0e708af84be56efb21f82281cc65b42231bd23a47d9282a45c91deaedccf34e"
+      },
+      "11-3-run.log": {
+        "bytes": 172,
+        "sha256": "a3a8b5e585874fe4051ee91783ceed3c3007530a3a963b720f0a2216c98587ea"
+      },
+      "mapped.v": {
+        "bytes": 92615,
+        "sha256": "eb5aa852ffef391bd34b376c41a016cf4569e38648a3c491adf53f3d17eb790a"
+      },
+      "2-10-compile.log": {
+        "bytes": 1632,
+        "sha256": "356ed152c28ba2e2690e9bce464282d3ec0cfc61001f9e9d7f60b7422bb42e9c"
+      },
+      "mapped.json": {
+        "bytes": 353015,
+        "sha256": "5e67b29f6a6e6387284818e7175b567ac3e6805dc8a6608332c8bf7316eaeca4"
+      },
+      "5-7-compile.log": {
+        "bytes": 1632,
+        "sha256": "356ed152c28ba2e2690e9bce464282d3ec0cfc61001f9e9d7f60b7422bb42e9c"
+      },
+      "map.ys": {
+        "bytes": 1218,
+        "sha256": "13ff0803b8772ecaf5190436eaefc51d24722e15202764bb55d5bb311e2dc7ca"
+      },
+      "2-10-run.log": {
+        "bytes": 172,
+        "sha256": "6d8c88bc95dd2f4286621ec8f6ac9a05747a5ac01ff7d03ce44482b00b2d5045"
+      },
+      "2-10.vvp": {
+        "bytes": 473587,
+        "sha256": "0e5be061d7f7a942cb6c393cb49995fd11b5de883fb4a79efd77ebaaeb8f6033"
+      },
+      "11-3-compile.log": {
+        "bytes": 1632,
+        "sha256": "356ed152c28ba2e2690e9bce464282d3ec0cfc61001f9e9d7f60b7422bb42e9c"
+      },
+      "5-7-run.log": {
+        "bytes": 171,
+        "sha256": "82c26a4f447933ea687bd32f905dd1fbcbb778cf1ae7f018ef39d7eada94bdc7"
+      },
+      "map.log": {
+        "bytes": 41191,
+        "sha256": "1ff536655908b84ba85197666bec35cb89f025f092e7fd881980be171a020f47"
+      },
+      "5-7.vvp": {
+        "bytes": 473586,
+        "sha256": "5674139ed90ee22210221465b8a266bc29e38cfd088051bc657bd76788ae6493"
+      }
+    }
+  },
+  "joint_tests": 2,
+  "host_controls": 12,
+  "original_timing": {
+    "worst_reported_slacks_ns": {
+      "slow_max": -2.435288,
+      "slow_min": -0.530313,
+      "typical_max": -0.179899,
+      "typical_min": -0.53948,
+      "fast_max": 0.850311,
+      "fast_min": -0.601382
+    },
+    "group_slacks_ns": {
+      "slow_max": {
+        "asynchronous": 1.15073,
+        "path delay": 2.504547,
+        "clk_i": 1.574598,
+        "eth_gtx": 4.901397,
+        "eth_rx_clk_i": -0.375802,
+        "eth_tx_clk_i": -0.474566,
+        "pcie_clk_i": -2.435288
+      },
+      "slow_min": {
+        "asynchronous": 0.35614,
+        "clk_i": -0.530313,
+        "eth_gtx": -0.43793,
+        "eth_rx_clk_i": -0.465004,
+        "eth_tx_clk_i": -0.410145,
+        "pcie_clk_i": 0.04156
+      },
+      "typical_max": {
+        "asynchronous": 1.819621,
+        "path delay": 2.754427,
+        "clk_i": 8.231146,
+        "eth_gtx": 5.012421,
+        "eth_rx_clk_i": 2.856214,
+        "eth_tx_clk_i": 2.802339,
+        "pcie_clk_i": -0.179899
+      },
+      "typical_min": {
+        "asynchronous": 0.139795,
+        "clk_i": -0.439132,
+        "eth_gtx": -0.53948,
+        "eth_rx_clk_i": -0.383137,
+        "eth_tx_clk_i": -0.363542,
+        "pcie_clk_i": -0.04421
+      },
+      "fast_max": {
+        "asynchronous": 2.199271,
+        "path delay": 2.89721,
+        "clk_i": 12.134264,
+        "eth_gtx": 5.083783,
+        "eth_rx_clk_i": 4.504837,
+        "eth_tx_clk_i": 4.581802,
+        "pcie_clk_i": 0.850311
+      },
+      "fast_min": {
+        "asynchronous": 0.014209,
+        "clk_i": -0.401201,
+        "eth_gtx": -0.601382,
+        "eth_rx_clk_i": -0.364198,
+        "eth_tx_clk_i": -0.350177,
+        "pcie_clk_i": -0.109062
+      }
+    },
+    "scope": "Unplaced wire load; final timing open"
+  },
+  "top_only_timing": {
+    "worst_reported_slacks_ns": {
+      "slow_max": -2.764045,
+      "slow_min": -0.465004,
+      "typical_max": -0.392776,
+      "typical_min": -0.53948,
+      "fast_max": 0.707402,
+      "fast_min": -0.601382
+    },
+    "group_slacks_ns": {
+      "slow_max": {
+        "asynchronous": 1.221996,
+        "path delay": 2.504547,
+        "clk_i": 1.283023,
+        "eth_gtx": 4.901397,
+        "eth_rx_clk_i": -0.369949,
+        "eth_tx_clk_i": -0.600913,
+        "pcie_clk_i": -2.764045
+      },
+      "slow_min": {
+        "asynchronous": 0.35538,
+        "clk_i": -0.438608,
+        "eth_gtx": -0.43793,
+        "eth_rx_clk_i": -0.465004,
+        "eth_tx_clk_i": -0.411617,
+        "pcie_clk_i": 0.04156
+      },
+      "typical_max": {
+        "asynchronous": 1.864344,
+        "path delay": 2.754427,
+        "clk_i": 8.042442,
+        "eth_gtx": 5.012421,
+        "eth_rx_clk_i": 2.851286,
+        "eth_tx_clk_i": 2.712569,
+        "pcie_clk_i": -0.392776
+      },
+      "typical_min": {
+        "asynchronous": 0.139462,
+        "clk_i": -0.386752,
+        "eth_gtx": -0.53948,
+        "eth_rx_clk_i": -0.383263,
+        "eth_tx_clk_i": -0.365032,
+        "pcie_clk_i": -0.04421
+      },
+      "fast_max": {
+        "asynchronous": 2.230417,
+        "path delay": 2.89721,
+        "clk_i": 12.014947,
+        "eth_gtx": 5.083783,
+        "eth_rx_clk_i": 4.507247,
+        "eth_tx_clk_i": 4.544161,
+        "pcie_clk_i": 0.707402
+      },
+      "fast_min": {
+        "asynchronous": 0.014037,
+        "clk_i": -0.36789,
+        "eth_gtx": -0.601382,
+        "eth_rx_clk_i": -0.364305,
+        "eth_tx_clk_i": -0.352246,
+        "pcie_clk_i": -0.109062
+      }
+    },
+    "scope": "Unplaced wire load, vendor SRAM timing. No final timing, routing or serial PHY acceptance."
+  },
+  "combined_timing": {
+    "worst_reported_slacks_ns": {
+      "slow_max": -2.564759,
+      "slow_min": -0.465004,
+      "typical_max": -0.26768,
+      "typical_min": -0.53948,
+      "fast_max": 0.703496,
+      "fast_min": -0.601382
+    },
+    "group_slacks_ns": {
+      "slow_max": {
+        "asynchronous": 1.27507,
+        "path delay": 2.505196,
+        "clk_i": 0.873879,
+        "eth_gtx": 4.901397,
+        "eth_rx_clk_i": -0.59121,
+        "eth_tx_clk_i": -0.413036,
+        "pcie_clk_i": -2.564759
+      },
+      "slow_min": {
+        "asynchronous": 0.367501,
+        "clk_i": -0.449677,
+        "eth_gtx": -0.43793,
+        "eth_rx_clk_i": -0.465004,
+        "eth_tx_clk_i": -0.410581,
+        "pcie_clk_i": 0.04156
+      },
+      "typical_max": {
+        "asynchronous": 1.899506,
+        "path delay": 2.754967,
+        "clk_i": 7.77212,
+        "eth_gtx": 5.012421,
+        "eth_rx_clk_i": 2.72048,
+        "eth_tx_clk_i": 2.834,
+        "pcie_clk_i": -0.26768
+      },
+      "typical_min": {
+        "asynchronous": 0.146141,
+        "clk_i": -0.394785,
+        "eth_gtx": -0.53948,
+        "eth_rx_clk_i": -0.369866,
+        "eth_tx_clk_i": -0.36439,
+        "pcie_clk_i": -0.04421
+      },
+      "fast_max": {
+        "asynchronous": 2.252558,
+        "path delay": 2.897573,
+        "clk_i": 11.845433,
+        "eth_gtx": 5.083783,
+        "eth_rx_clk_i": 4.507245,
+        "eth_tx_clk_i": 4.622058,
+        "pcie_clk_i": 0.703496
+      },
+      "fast_min": {
+        "asynchronous": 0.019162,
+        "clk_i": -0.376225,
+        "eth_gtx": -0.601382,
+        "eth_rx_clk_i": -0.35581,
+        "eth_tx_clk_i": -0.351841,
+        "pcie_clk_i": -0.109062
+      }
+    },
+    "scope": "Unplaced wire load, vendor SRAM timing. No final timing, routing or serial PHY acceptance."
+  },
+  "mapping": {
+    "cells": 78843,
+    "ports": 101,
+    "macro_cells": 20,
+    "input_pins_unchanged": true
+  },
+  "graph": {
+    "resized": 2112,
+    "ports": 101,
+    "non_buffer_cells": 74086,
+    "original_buffers": 4757,
+    "repaired_buffers": 15240,
+    "pin_bits": 281479,
+    "status": "PASS",
+    "inputs": {
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/lib/sg13g2_stdcell_typ_1p20V_25C.lib": "968b0cfdcefc49a88d9a5c48874769eaad9aba3509e1240b5e14a821bb07a3c4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/ihp-native-boot-c4b8b4e/ihp-sg13g2/libs.ref/sg13g2_stdcell/verilog/sg13g2_stdcell.v": "28343754a828972d614c15b7db27892e92a8c16e49fc06ed69d858a659942ed4",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/tools/oss-cad-suite/bin/yosys": "7c3e3396b38c129dd7485be5a0a0f0da8e495a94c8fd486059e3bea043a588d6",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/preplacement01/repaired.v": "189404eb28d25dda37d8bc62da716570d1636acadebfd14ed5b568261fb25245",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/map01/soc_top.mapped.json": "145e5b46897d826e2e348a2dd9d02a914ce13d3e83f40d08f4d463ca2231f431",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/buffer-graph01/import.ys": "03a849a8a76ab66b82d0cd24234c90d64e8e53a1dc90c790c93723ac67609944",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/pcie-packet-source-reset-20261009/check-buffer-graph01.py": "401baad78c10a5232f04eeb2e17a53a21bb273c9004301325296c75cc34014cb",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/RM_IHPSG13_1P_2048x64_c2_bm_bist_bb.v": "93d9116767347ee2b5079cabe0aa984b36d367a4ddc61d73733f4d05ce47eaa9",
+      "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/pnr/RM_IHPSG13_2P_256x16_c2_bm_bist_bb.v": "630430edfda4715b54209bbde622141d7ef7cc0b5f301432b3177be2f379e8c5"
+    },
+    "inputs_unchanged": true,
+    "rejected_graph_faults": [
+      "data",
+      "clock",
+      "reset",
+      "tie",
+      "missing_buffer",
+      "port",
+      "wrong_function"
+    ],
+    "scope": "Exact all-port and non-buffer cell pin graph equality modulo bijective OpenROAD leading escape plus doubled internal backslash serialization, transparent native buffer models and byte-equivalent sized functional model bodies; no RC/SDF/analog claim."
+  },
+  "source_selection": "Retain both reset changes as removal of raw CPU reset data CDC bypass. Same unplaced timing regresses versus replay baseline; no timing improvement/acceptance claimed. Run independent full physical candidate to measure actual consequence.",
+  "full_serial_phy": false,
+  "timing_closed": false,
+  "routed_chip_complete": false,
+  "physical_run_excluded_from_archive": "physical-config01/runs/packet-local-reset02 active. run01 unintended resynthesis retained separately and stopped; successful original-netlist header reused. Entire physical-config01 and launch logs excluded from reset-study capsule.",
+  "earlier_failures": [
+    "Initial formal equivalence/output point failed; unconstrained SAT showed independent uninitialized states before POR. Final induction explicitly starts with POR and observes both release bits.",
+    "Initial native wrapper had duplicate declarations. Next bench initialized reset low without actual POR edge and failed. Final wrapper and explicit POR edge pass; all earlier logs retained."
+  ],
+  "limits": [
+    "No valid-only output masking; all subsequent clocks/reset changes unconstrained in after-POR induction.",
+    "Native Icarus timing/ifnone warnings retained; not SDF or analog reset-recovery/metastability qualification.",
+    "Whole map uses vendor SRAM views and development 4ns packet/20ns CPU/8ns GMII budgets; no final pad or RC qualification."
+  ]
+}

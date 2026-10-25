@@ -1,0 +1,102 @@
+{
+  "status": "FROZEN_EXPERIMENTAL_MARGIN_CONTINUATION_SOURCE_VALIDATED",
+  "files": {
+    "scripts/run_cloud_electrical_margin.py": {
+      "bytes": 31038,
+      "sha256": "ff5db240094f0dfdef592c15cd8f7b906bbe02e9a56c55e4d74ceb4c061d395c"
+    },
+    "hw/soc/pnr/timing_electrical_margin_helpers.tcl": {
+      "bytes": 1588,
+      "sha256": "2e5ba5cc03b9b6ddd4c231d53c6f4063a03095a906d7539d077bcaa33fbc22ee"
+    },
+    "hw/soc/pnr/timing_electrical_margin_step.tcl": {
+      "bytes": 7658,
+      "sha256": "732396fd1f90287d80bbdbbb134b14d961a66828d39413034865ea51bf44c1d3"
+    },
+    "hw/soc/pnr/timing_electrical_margin_baseline.tcl": {
+      "bytes": 799,
+      "sha256": "9948e82cce0a49c29395977dda00fc40e6fb1b2ede73005967c3b2f6238f915b"
+    },
+    "sw/tests/timing_electrical_margin_native.tcl": {
+      "bytes": 5643,
+      "sha256": "23ac7fa55126bd1d18d5c3948473fb364d9ee81247dd9a6bdca8cfdca2fd7beb"
+    },
+    "sw/tests/test_cloud_electrical_margin.py": {
+      "bytes": 15346,
+      "sha256": "9ab2adf6cbc09de2d115af041e44d380d877b19a53f5157d2b4f58f8c2d891cc"
+    },
+    "hw/soc/pnr/timing-electrical-margin-input.lock.json": {
+      "bytes": 8318,
+      "sha256": "3c1fef290a7bbd940846e8e1116e9f96fc8502d2fed335e540b3888610679b36"
+    },
+    ".github/workflows/timing-electrical-margin.yml": {
+      "bytes": 6195,
+      "sha256": "78e52b6177af24edbb1b2f2c79ff784b63c3d35b3a96292eec24a5c6c852089d"
+    }
+  },
+  "tests": {
+    "command": ".venv/bin/python -m pytest sw/tests/test_cloud_electrical_margin.py sw/tests/test_cloud_electrical_repair.py sw/tests/test_cloud_combined_repair.py sw/tests/test_cloud_eco_logic_proof.py -q",
+    "passed": 163
+  },
+  "ruff": "PASS",
+  "actionlint": "PASS",
+  "native_control": {
+    "path": "/home/hasanmelih/Documents/ChatGPT/nnsoc/hw/soc/out/closure-20261002-setup-hold-lvs/electrical-margin-control-01",
+    "execution": {
+      "bytes": 1145,
+      "sha256": "dddb5650727356f6d5e7037cf75650c6678942e25a6faf172b0cd96890fc90f6"
+    },
+    "result": {
+      "bytes": 596,
+      "sha256": "6de88dbab40fd5627a428025138715dc9b2bee2515ee2920a5f977aae01c9b80"
+    },
+    "runtime": {
+      "bytes": 1398053408,
+      "sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
+    },
+    "seconds": 0.9993453820025024,
+    "real_cap_count_before": 2,
+    "real_cap_count_after": 1,
+    "new_buffers": 2,
+    "driver_resizes": 1,
+    "wrong_terminal_graph_rejected": true
+  },
+  "scope": "Tiny actual native controls and pure source tests only. Full candidate margin flow, repeated baseline and final routing replay remain cloud work; no signoff or adoption.",
+  "root_review": {
+    "frozen_sources_and_native_pins_verified": true,
+    "focused_tests": 140,
+    "ruff": "PASS",
+    "actionlint": "PASS",
+    "full_chip_executed_locally": false
+  },
+  "native_control_result": {
+    "status": "PASS_NATIVE_ELECTRICAL_CONTROL",
+    "missing_api_rejected": true,
+    "wrong_net_rejected": true,
+    "missing_driver_rejected": true,
+    "dont_touch_rejected": true,
+    "wrong_graph_rejected": true,
+    "real_capacitance_before": 2,
+    "real_capacitance_after": 1,
+    "unrelated_driver_preserved": true,
+    "call": {
+      "driver": "driver/X",
+      "net": "target",
+      "original_master": "sg13g2_buf_1",
+      "initial_instance_count": 4,
+      "actual_instance_count": 6,
+      "native_calls": 1,
+      "max_length_m": 0,
+      "slew_margin_percent": 20,
+      "cap_margin_percent": 20
+    },
+    "constraints_preserved": true,
+    "candidate_adopted": false,
+    "timing_accepted": false,
+    "manufacturing_approval": false
+  },
+  "headroom_interpretation": "20 percent tighter native repair target, not a proven routing or parasitic error bound. Original SDC/Liberty limits unchanged.",
+  "candidate_adopted": false,
+  "timing_accepted": false,
+  "manufacturing_approval": false
+}

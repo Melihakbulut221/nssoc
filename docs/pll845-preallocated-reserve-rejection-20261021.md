@@ -1,0 +1,5 @@
+# Actual full PLL preallocated-storage rejection
+
+Run39551551389 completed publication of all321 archive parts after failing before native activation: Insufficient native or backing reserve before resume. The report records neither final inside/outside free space nor native last time because those probes followed the failing assertion. The original successful checkpoint39502073954 is still the authoritative resumable source; the new failure archive is preserved as rejected evidence.
+
+The new read-only cloud diagnosis verifies the complete ordered failure archive and every original output digest, retaining only small initialization metadata, the raw header and a file census. It reads the final complete raw row timestamp from the streamed tail without storing or restarting the native process. All source bytes remain in GitHub releases. Initialization capacity must not be misrepresented as post-restore capacity. Do not retry the same native run until capacity constraints are understood; keep original12GiB/4GiB reserves and every terminal/time/electrical gate.
