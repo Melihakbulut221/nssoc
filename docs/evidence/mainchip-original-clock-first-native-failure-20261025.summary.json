@@ -1,0 +1,568 @@
+{
+  "accepted": false,
+  "error": "AssertionError(('drc-audit', \"OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \\nFeatures included (+) or not (-): +GPU +GUI +Python\\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\\nComponents of this program may be licensed under more restrictive licenses which must be honored.\\n[WARNING ORD-0039] .openroad ignored with -python\\nswig/python detected a memory leak of type 'std::set< odb::dbMarker * > *', no destructor found.\\n\", 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 139, in <module>\\n    if __name__==\\'__main__\\':main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 127, in main\\n    result[\\'measurement\\']=measure_report(category,out/\\'initial-drc.rpt\\',out/\\'initial-drc-reread.rpt\\')\\n                          ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 39, in measure_report\\n    result=marker_tree(category)\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 27, in marker_tree\\n    count,rows=walk(category,[CATEGORY])\\n               ~~~~^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 23, in walk\\n    n,more=walk(child,path+[child.getName()]);total+=n;rows+=more\\n           ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 25, in walk\\n    assert len(list(node.getAllMarkers()))==total\\n               ~~~~^^^^^^^^^^^^^^^^^^^^^^\\nTypeError: \\'SwigPyObject\\' object is not iterable\\n'))",
+  "final_timing_complete": false,
+  "full_phy_accepted": false,
+  "native_routing_started": false,
+  "outputs": {
+    "source-admission.json": "72f69212803fabc993660b30cea726b28f91825687e34325d93a8a97f3214ba9",
+    "supervision/read-only-initial-DRT.stdout": "748a1df40bae42148944cae51c25cc6ae7a6472c8dc1d587cea9f54ca7c3d664",
+    "supervision/latest.json": "1c1ffbce48793feb29051d1f353caac5b3f9ae990f843f215c0725807c07ac67",
+    "supervision/prepare.command.json": "5e3168b177d0251ca2d3e5b3c9a4c3128592626c1efbf5db349128cc3d4cf337",
+    "supervision/actual-runtime-version.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/audit-restored.command.json": "399cc7eea822585183f08d8190ecc19382f545da6f56706c78c6c31141050063",
+    "supervision/audit-restored.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/restore-authenticated-original-ODB.stdout": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/drc-audit.stderr": "5bef9b5620216e31e27a8e1263cd196ab6662b603fed56b846161620e6c4b74b",
+    "supervision/bootstrap-exact-runtime.stdout": "0bc6a0c23ed4f97a34eadb98fe01002d7a2448f4e2e9ffe8c6aed8e5a04b2d7c",
+    "supervision/drc-prepare.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/drc-audit.command.json": "0379c6634383e0f9db0679091a6193f25d23331a65abf231fc2cdd9bf0a18a8e",
+    "supervision/bootstrap-exact-runtime.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/actual-runtime-version.command.json": "03ada2bfd2a13d274be9d30a7d6ea0a708838406e0c6903ecaf7675e0c351b74",
+    "supervision/prepare.stdout": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "supervision/paired-original-clock-import.stdout": "be61766225880e96d1195b9d46533b67aff7c917fc2dec3f7f587fdd61b70023",
+    "supervision/paired-original-clock-import.command.json": "b03c616061b89c071510724cfe73385fe578ceaf64019e4a7313aded10aa0930",
+    "supervision/bootstrap-exact-runtime.command.json": "bcc435b8aae3ef00526b8e1180b784fbdd9bb32255e9ea33b106bd1b8d4e423a",
+    "supervision/paired-original-clock-import.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/read-only-initial-DRT.command.json": "3b9e03b2c679608e553a4499a20f3cd8a4470785bc028fb0b435ba27b567f1b2",
+    "supervision/drc-prepare.command.json": "6360e4676e7ec2b9446959378019ae1f5fb5501cf1c2d69816ca3da0bfafb51a",
+    "supervision/actual-runtime-version.stdout": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+    "supervision/drc-prepare.stdout": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "supervision/drc-audit.stdout": "4d27ceb62ed9da302e3333eb536f8ad631d8ffce7d9aeaf6cbda43f4f5968787",
+    "supervision/prepare.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/audit-restored.stdout": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+    "supervision/events.jsonl": "da57f9f4313c6356436de56ec8b0af1dbf093ef35d5b738fedd9b68c02c9d9db",
+    "supervision/read-only-initial-DRT.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "supervision/restore-authenticated-original-ODB.command.json": "b3f5ad4d55c1d54a842f038fd3061b5c50b8f536eb241f3d5af7203dd599a8fa",
+    "supervision/restore-authenticated-original-ODB.stderr": "7b0094de5adf4d9ee3876b63443cd26937efc505343c38b9e4f387ccf5c09e6a",
+    "mainchip-route12-saved-postroute-source/parts.json": "4ae4920f85e70ab51029414c68a0ee4bb69891007642198a02e14da8188d4823",
+    "mainchip-route12-saved-postroute-source/summary.json": "7e09bafa19e24a6de1c6fa3113ec104fc7fe7a43e421ad61b233164308223bd5",
+    "source/result.json": "7e09bafa19e24a6de1c6fa3113ec104fc7fe7a43e421ad61b233164308223bd5",
+    "work/expected-restored.def": "55fbc30c508b42a27301054206a8820b020bbbb3a525beeef0aed73692870ece",
+    "work/initial-drc.rpt": "dd7eef05f595947260df575ec9cb7ef474d880442c28c4d1a5bb5f6577f5500a",
+    "work/restore-patch.def": "62d2b26296477a6b31b0f0afd5a8b96758f9b9eefcc6a15d6325acf4f6eb1bd5",
+    "work/restore.tcl": "86051eda9ecfe24f14de5b5ed4e85b68dd11f644c5d91d4cf248c7bf41c94df5",
+    "work/fresh-before.def": "f8e4c86346c8876fa04ff02ccd8d8f060f018e6fab36fdca834b986d07a4748c",
+    "work/restored.odb": "2d75a1e620c74cbe24a762683db17b1708aaac003a0b3e4b54099c769748c7da",
+    "work/restored.def": "55fbc30c508b42a27301054206a8820b020bbbb3a525beeef0aed73692870ece",
+    "work/fresh-after.def": "031e61ff169d27dbc8f83c0bf630cd43de44483ec9605bf6a4e1d38ccfbe37a7",
+    "work/drc-observed.odb": "9a53e9bda8ff07db73ffe4007d5e738e5b1eb5facf8f88cfd2440aa31f35b5d6",
+    "work/drc-final-reread.def": "55fbc30c508b42a27301054206a8820b020bbbb3a525beeef0aed73692870ece",
+    "work/drc-source-reread.def": "55fbc30c508b42a27301054206a8820b020bbbb3a525beeef0aed73692870ece",
+    "work/drc-after.def": "55fbc30c508b42a27301054206a8820b020bbbb3a525beeef0aed73692870ece",
+    "work/initial-drc.tcl": "e0af35995a4990edb03b4636bc2da843c242a8aba7f99c88b865ca3beacc6b2f",
+    "work/drc-before.def": "55fbc30c508b42a27301054206a8820b020bbbb3a525beeef0aed73692870ece",
+    "work/drc-prepare-result.json": "3425f31b93dadbc6772ed9f1f9f5c11d37288a6f49bbf545a12283984ab97488",
+    "work/restored-single.def": "fbb74846d818327109af49dde64ed6f7a1a11ff7c08dc333d1c0d7f99d67e19b",
+    "work/drc-audit-result.json": "d4389143914fedfafcd7db1c0d6d5528148d20ddbed4a1dbfbad6c0bd411be66",
+    "work/prepare-result.json": "3d466d6cb3d64042ee7662650784d46ec69d3f0bfc379ce59d1b88609caf54dc",
+    "work/audit-restored-result.json": "9d3af1345ac677e1dfeceaaaad3d192cf382ef506b0f28716595d3aaf67a548f",
+    "work/initial-drc-markers.json": "9ac2e9865ce6f0efe37a729b3a1855e65b53efdd2821657271e50851d4090f7b",
+    "work/restored-reread.def": "55fbc30c508b42a27301054206a8820b020bbbb3a525beeef0aed73692870ece",
+    "source/geometry/all-source-clocks.log": "918c26c919aa207380fdb7858d261b2d1e1a377eb987e9d065bfcf3e141f717e",
+    "source/geometry/topology.json": "0bd0dd1790a56a274f13fb33bc7fe41fa940f7a717fe6cf2d036c9c3b767dbf3",
+    "source/geometry/fixed-clock.json": "e8d944b963a701c151cf8d1300243fade2fac98903b3dfb723f8b76f3ad74dcd",
+    "source/geometry/result.json": "6bf71f4846f6e1814922fe6b7246e89eb72d46f76da1dc61aa4507cb333be7fd",
+    "source/geometry/all-clocks/after.def": "031e61ff169d27dbc8f83c0bf630cd43de44483ec9605bf6a4e1d38ccfbe37a7",
+    "source/geometry/all-clocks/before.def": "f8e4c86346c8876fa04ff02ccd8d8f060f018e6fab36fdca834b986d07a4748c",
+    "source/geometry/routed/work/detailed-route.odb": "9cdf9a6fb32d49894a5b23bd12ae4e6f400e1a945a9d2601e728f2d4ec7e0ae8",
+    "source/geometry/routed/work/before-guide-read.odb": "2d3dfa6ed917fd0d06b20109f3044073f60bbe263f59d8f31ac4913e1a7a787a",
+    "work/original-gate-restored/after.def": "55fbc30c508b42a27301054206a8820b020bbbb3a525beeef0aed73692870ece",
+    "work/original-gate-restored/before.def": "f8e4c86346c8876fa04ff02ccd8d8f060f018e6fab36fdca834b986d07a4748c",
+    "work/original-gate-restored/result.json": "b50f8011a28436ade5b14cb519738c37c0011e8df9168c8d6dbe98a9f8e78200"
+  },
+  "phase_results": [
+    {
+      "argv": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+        "/home/runner/work/nssoc/nssoc/scripts/bootstrap_flow.py"
+      ],
+      "elapsed_seconds": 32.82208273799995,
+      "label": "bootstrap-exact-runtime",
+      "last_memory_sentinel_sample": {
+        "available_kib": 15299240,
+        "enumeration_disappearances": [],
+        "excluded_nonrunning": [],
+        "group_rss_kib": 25384,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pgrp": 2832,
+            "pid": 2832,
+            "rss_kib": 25384,
+            "starttime": 49914
+          }
+        ],
+        "resampling_evidence": [],
+        "sampling_attempts": 1,
+        "sampling_elapsed_seconds": 0.00858926800003701,
+        "total_snapshot_budget_seconds": 0.1
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "pid": 2832,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 194,
+      "stdout_sha256": "0bc6a0c23ed4f97a34eadb98fe01002d7a2448f4e2e9ffe8c6aed8e5a04b2d7c",
+      "supervision_failure": null
+    },
+    {
+      "argv": [
+        "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+        "/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_original_clock_restoration.py",
+        "--restore-worker"
+      ],
+      "elapsed_seconds": 27.473104429000045,
+      "label": "restore-authenticated-original-ODB",
+      "last_memory_sentinel_sample": {
+        "available_kib": 15275200,
+        "enumeration_disappearances": [],
+        "excluded_nonrunning": [],
+        "group_rss_kib": 59904,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pgrp": 2840,
+            "pid": 2840,
+            "rss_kib": 59904,
+            "starttime": 53349
+          }
+        ],
+        "resampling_evidence": [],
+        "sampling_attempts": 1,
+        "sampling_elapsed_seconds": 0.00645979500006888,
+        "total_snapshot_budget_seconds": 0.1
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "pid": 2840,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "stderr_bytes": 2455,
+      "stderr_sha256": "7b0094de5adf4d9ee3876b63443cd26937efc505343c38b9e4f387ccf5c09e6a",
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "supervision_failure": null
+    },
+    {
+      "argv": [
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "openroad",
+        "-version"
+      ],
+      "elapsed_seconds": 0.9449219050000011,
+      "label": "actual-runtime-version",
+      "last_memory_sentinel_sample": {
+        "available_kib": 15309600,
+        "enumeration_disappearances": [],
+        "excluded_nonrunning": [],
+        "group_rss_kib": 19440,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pgrp": 2884,
+            "pid": 2884,
+            "rss_kib": 19440,
+            "starttime": 56272
+          }
+        ],
+        "resampling_evidence": [],
+        "sampling_attempts": 1,
+        "sampling_elapsed_seconds": 0.007808128999954533,
+        "total_snapshot_budget_seconds": 0.1
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "pid": 2884,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 42,
+      "stdout_sha256": "b039f741c8c259e5670ae764309103c953521f00e027d210d32e3aef0636acae",
+      "supervision_failure": null
+    },
+    {
+      "argv": [
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "openroad",
+        "-exit",
+        "-python",
+        "/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_restoration_native.py"
+      ],
+      "elapsed_seconds": 47.660786519,
+      "label": "prepare",
+      "last_memory_sentinel_sample": {
+        "available_kib": 13958648,
+        "enumeration_disappearances": [],
+        "excluded_nonrunning": [],
+        "group_rss_kib": 1430352,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pgrp": 2892,
+            "pid": 2892,
+            "rss_kib": 1430352,
+            "starttime": 56368
+          }
+        ],
+        "resampling_evidence": [],
+        "sampling_attempts": 1,
+        "sampling_elapsed_seconds": 0.006828444000007039,
+        "total_snapshot_budget_seconds": 0.1
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "pid": 2892,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 335,
+      "stdout_sha256": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+      "supervision_failure": null
+    },
+    {
+      "argv": [
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "openroad",
+        "-exit",
+        "/home/runner/work/nssoc/nssoc/cloud-mainchip-original-clock-restoration/work/restore.tcl"
+      ],
+      "elapsed_seconds": 6.631555827999932,
+      "label": "paired-original-clock-import",
+      "last_memory_sentinel_sample": {
+        "available_kib": 14942736,
+        "enumeration_disappearances": [],
+        "excluded_nonrunning": [],
+        "group_rss_kib": 427896,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pgrp": 2915,
+            "pid": 2915,
+            "rss_kib": 427896,
+            "starttime": 61136
+          }
+        ],
+        "resampling_evidence": [],
+        "sampling_attempts": 1,
+        "sampling_elapsed_seconds": 0.006907985999987432,
+        "total_snapshot_budget_seconds": 0.1
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "pid": 2915,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 979,
+      "stdout_sha256": "be61766225880e96d1195b9d46533b67aff7c917fc2dec3f7f587fdd61b70023",
+      "supervision_failure": null
+    },
+    {
+      "argv": [
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "openroad",
+        "-exit",
+        "-python",
+        "/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_restoration_native.py"
+      ],
+      "elapsed_seconds": 55.94690294600002,
+      "label": "audit-restored",
+      "last_memory_sentinel_sample": {
+        "available_kib": 13282996,
+        "enumeration_disappearances": [],
+        "excluded_nonrunning": [],
+        "group_rss_kib": 1564364,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pgrp": 2929,
+            "pid": 2929,
+            "rss_kib": 1564364,
+            "starttime": 61801
+          }
+        ],
+        "resampling_evidence": [],
+        "sampling_attempts": 1,
+        "sampling_elapsed_seconds": 0.006789475999994465,
+        "total_snapshot_budget_seconds": 0.1
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "pid": 2929,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 335,
+      "stdout_sha256": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+      "supervision_failure": null
+    },
+    {
+      "argv": [
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "openroad",
+        "-exit",
+        "-python",
+        "/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py"
+      ],
+      "elapsed_seconds": 72.12658711099994,
+      "label": "drc-prepare",
+      "last_memory_sentinel_sample": {
+        "available_kib": 13854448,
+        "enumeration_disappearances": [],
+        "excluded_nonrunning": [],
+        "group_rss_kib": 1459648,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pgrp": 2945,
+            "pid": 2945,
+            "rss_kib": 1459648,
+            "starttime": 67398
+          }
+        ],
+        "resampling_evidence": [],
+        "sampling_attempts": 1,
+        "sampling_elapsed_seconds": 0.006723669999928461,
+        "total_snapshot_budget_seconds": 0.1
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "pid": 2945,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 335,
+      "stdout_sha256": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c",
+      "supervision_failure": null
+    },
+    {
+      "argv": [
+        "/home/runner/work/nssoc/nssoc/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage",
+        "openroad",
+        "-exit",
+        "/home/runner/work/nssoc/nssoc/cloud-mainchip-original-clock-restoration/work/initial-drc.tcl"
+      ],
+      "elapsed_seconds": 244.899183537,
+      "label": "read-only-initial-DRT",
+      "last_memory_sentinel_sample": {
+        "available_kib": 10263564,
+        "enumeration_disappearances": [],
+        "excluded_nonrunning": [],
+        "group_rss_kib": 0,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [],
+        "resampling_evidence": [],
+        "sampling_attempts": 1,
+        "sampling_elapsed_seconds": 0.007834602999992057,
+        "total_snapshot_budget_seconds": 0.1
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "pid": 2961,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 4158,
+      "stdout_sha256": "748a1df40bae42148944cae51c25cc6ae7a6472c8dc1d587cea9f54ca7c3d664",
+      "supervision_failure": null
+    }
+  ],
+  "runtime": {
+    "appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "published_recipe_not_rebuilt_ELF_attestation": true
+  },
+  "source_admission": {
+    "cold_restart": false,
+    "complete_archive_authenticated": true,
+    "exact_selected_native_files": 9,
+    "inputs": {
+      "geometry/all-clocks/after.def": "031e61ff169d27dbc8f83c0bf630cd43de44483ec9605bf6a4e1d38ccfbe37a7",
+      "geometry/all-clocks/before.def": "f8e4c86346c8876fa04ff02ccd8d8f060f018e6fab36fdca834b986d07a4748c",
+      "geometry/all-source-clocks.log": "918c26c919aa207380fdb7858d261b2d1e1a377eb987e9d065bfcf3e141f717e",
+      "geometry/fixed-clock.json": "e8d944b963a701c151cf8d1300243fade2fac98903b3dfb723f8b76f3ad74dcd",
+      "geometry/result.json": "6bf71f4846f6e1814922fe6b7246e89eb72d46f76da1dc61aa4507cb333be7fd",
+      "geometry/routed/work/before-guide-read.odb": "2d3dfa6ed917fd0d06b20109f3044073f60bbe263f59d8f31ac4913e1a7a787a",
+      "geometry/routed/work/detailed-route.odb": "9cdf9a6fb32d49894a5b23bd12ae4e6f400e1a945a9d2601e728f2d4ec7e0ae8",
+      "geometry/topology.json": "0bd0dd1790a56a274f13fb33bc7fe41fa940f7a717fe6cf2d036c9c3b767dbf3",
+      "result.json": "7e09bafa19e24a6de1c6fa3113ec104fc7fe7a43e421ad61b233164308223bd5"
+    },
+    "native_routing_started": false,
+    "original_failed_gate_preserved": true,
+    "restore": {
+      "manifest_sha256": "4ae4920f85e70ab51029414c68a0ee4bb69891007642198a02e14da8188d4823",
+      "restore": {
+        "archive": {
+          "all_parts_and_combined_bytes_verified": true,
+          "bytes": 629603913,
+          "parts": 1,
+          "sha256": "df1269d646d03ff4a03203c1347d0a22a78a1e3fd81ca00e43bd4266cbd91ace"
+        },
+        "full_archive_verified_before_extraction": true,
+        "selected_files": {
+          "geometry/all-clocks/after.def": {
+            "bytes": 185391806,
+            "sha256": "031e61ff169d27dbc8f83c0bf630cd43de44483ec9605bf6a4e1d38ccfbe37a7"
+          },
+          "geometry/all-clocks/before.def": {
+            "bytes": 59000251,
+            "sha256": "f8e4c86346c8876fa04ff02ccd8d8f060f018e6fab36fdca834b986d07a4748c"
+          },
+          "geometry/all-source-clocks.log": {
+            "bytes": 912,
+            "sha256": "918c26c919aa207380fdb7858d261b2d1e1a377eb987e9d065bfcf3e141f717e"
+          },
+          "geometry/fixed-clock.json": {
+            "bytes": 20355,
+            "sha256": "e8d944b963a701c151cf8d1300243fade2fac98903b3dfb723f8b76f3ad74dcd"
+          },
+          "geometry/result.json": {
+            "bytes": 10736,
+            "sha256": "6bf71f4846f6e1814922fe6b7246e89eb72d46f76da1dc61aa4507cb333be7fd"
+          },
+          "geometry/routed/work/before-guide-read.odb": {
+            "bytes": 145147935,
+            "sha256": "2d3dfa6ed917fd0d06b20109f3044073f60bbe263f59d8f31ac4913e1a7a787a"
+          },
+          "geometry/routed/work/detailed-route.odb": {
+            "bytes": 214494861,
+            "sha256": "9cdf9a6fb32d49894a5b23bd12ae4e6f400e1a945a9d2601e728f2d4ec7e0ae8"
+          },
+          "geometry/topology.json": {
+            "bytes": 921,
+            "sha256": "0bd0dd1790a56a274f13fb33bc7fe41fa940f7a717fe6cf2d036c9c3b767dbf3"
+          },
+          "result.json": {
+            "bytes": 4654340,
+            "sha256": "7e09bafa19e24a6de1c6fa3113ec104fc7fe7a43e421ad61b233164308223bd5"
+          }
+        }
+      },
+      "run": 40209284989,
+      "summary_sha256": "7e09bafa19e24a6de1c6fa3113ec104fc7fe7a43e421ad61b233164308223bd5"
+    },
+    "source": {
+      "attempt": 1,
+      "original_native_failure_retained": true,
+      "run": 40209284989,
+      "source": "d861793277aa2b724c083c8b478d52db06725e56"
+    }
+  },
+  "source_head": "74bebfabe3e9a4da25ae364853b744adc2b2e34d",
+  "status": "FAIL_OR_INTERRUPTED_CLOCK_RESTORATION",
+  "storage": [
+    {
+      "free_bytes": 89626832896,
+      "required_bytes": 17179869184,
+      "stage": "initial",
+      "unpacked_bytes": 0
+    },
+    {
+      "free_bytes": 89626632192,
+      "required_bytes": 4294967296,
+      "stage": "phase",
+      "unpacked_bytes": 0
+    },
+    {
+      "free_bytes": 88228515840,
+      "required_bytes": 4294967296,
+      "stage": "phase",
+      "unpacked_bytes": 0
+    },
+    {
+      "free_bytes": 87614558208,
+      "required_bytes": 4294967296,
+      "stage": "phase",
+      "unpacked_bytes": 0
+    },
+    {
+      "free_bytes": 87614521344,
+      "required_bytes": 4294967296,
+      "stage": "phase",
+      "unpacked_bytes": 0
+    },
+    {
+      "free_bytes": 87183831040,
+      "required_bytes": 4294967296,
+      "stage": "phase",
+      "unpacked_bytes": 0
+    },
+    {
+      "free_bytes": 86598565888,
+      "required_bytes": 4294967296,
+      "stage": "phase",
+      "unpacked_bytes": 0
+    },
+    {
+      "free_bytes": 86168645632,
+      "required_bytes": 4294967296,
+      "stage": "phase",
+      "unpacked_bytes": 0
+    },
+    {
+      "free_bytes": 85983162368,
+      "required_bytes": 4294967296,
+      "stage": "phase",
+      "unpacked_bytes": 0
+    },
+    {
+      "free_bytes": 85398876160,
+      "required_bytes": 4294967296,
+      "stage": "phase",
+      "unpacked_bytes": 0
+    }
+  ],
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_original_clock_restoration.py\", line 189, in native_run\n    phase('audit',True)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_original_clock_restoration.py\", line 171, in phase\n    run([str(app),'openroad','-exit','-python',str(ROOT/'scripts'/script)],('drc-'if drc else'')+name)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_mainchip_original_clock_restoration.py\", line 163, in run\n    sup.supervised(args,label,seconds=1200,cwd=ROOT)\n  File \"/home/runner/work/nssoc/nssoc/hw/soc/pcie-evidence/20261025-gen12-record-qualified-source/scripts/cloud_pcie_gen12_training_records_telemetry.py\", line 251, in supervised\n    if passed:assert result.returncode==0,(label,out[-3000:],err[-3000:])\n                     ^^^^^^^^^^^^^^^^^^^^\nAssertionError: ('drc-audit', \"OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0 \\nFeatures included (+) or not (-): +GPU +GUI +Python\\nThis program is licensed under the BSD-3 license. See the LICENSE file for details.\\nComponents of this program may be licensed under more restrictive licenses which must be honored.\\n[WARNING ORD-0039] .openroad ignored with -python\\nswig/python detected a memory leak of type 'std::set< odb::dbMarker * > *', no destructor found.\\n\", 'Traceback (most recent call last):\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 139, in <module>\\n    if __name__==\\'__main__\\':main()\\n                            ~~~~^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 127, in main\\n    result[\\'measurement\\']=measure_report(category,out/\\'initial-drc.rpt\\',out/\\'initial-drc-reread.rpt\\')\\n                          ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 39, in measure_report\\n    result=marker_tree(category)\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 27, in marker_tree\\n    count,rows=walk(category,[CATEGORY])\\n               ~~~~^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 23, in walk\\n    n,more=walk(child,path+[child.getName()]);total+=n;rows+=more\\n           ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_original_clock_drc.py\", line 25, in walk\\n    assert len(list(node.getAllMarkers()))==total\\n               ~~~~^^^^^^^^^^^^^^^^^^^^^^\\nTypeError: \\'SwigPyObject\\' object is not iterable\\n')\n",
+  "zero_DRT_markers": null,
+  "run_id": 40220274771,
+  "run_attempt": 1
+}

@@ -1,0 +1,23 @@
+{
+  "schema": "current-AVSS18-portable-path-seam-source-review-v1",
+  "reviewer": "/root/tx_diagnosis",
+  "scope": "Bounded read-only source/provenance audit, not a review of a finished new adapter. No execution, archive, native work or files.",
+  "reviewed_sources": {
+    "scripts/tx_phase_reset334_transient_support.py": "6e13a8fb79af6cffb3f65c0085ba15ca5e2d565508f7154ffc94c2469383a7df",
+    "scripts/cloud_tx_phase_reset334_transient.py": "db0108b0b553d24d1ce8d4813806f41821bbf607053538a2ebe59127629eb0f0",
+    "scripts/tx_phase_reset334_avss18_loaded_adapter.py": "9494df4bbc881d36f3b991a82f57e6e03d6bdacb4d37580ebfcb2821a7419e1a"
+  },
+  "independently_authenticated_OP_summary": {
+    "asset": 675815955,
+    "bytes": 2216507,
+    "sha256": "af1babab272ca21fc332b79b3a8f3288f8c5e055cacfc0479d9d03686b575002"
+  },
+  "findings": [
+    "Combined OP has fresh-preparation/cases/<label>/bench.cir containing the original34ns deck and <label>/bench.cir containing the OP-only runtime deck. Future support.prepare must consume the former, then apply exactly the original six-path rewrite/OFF addition. Never initialize the saved OP-only bench as a transient.",
+    "Keep returned proof.summary_sha256 and prep_pin.summary_sha256 equal to the nested preparation b9dfd2e1edcda8c30f6e4e81c622249fc4ed21e1818cad254a2002e49a8ad4b0. Outer OP af1babab272ca21fc332b79b3a8f3288f8c5e055cacfc0479d9d03686b575002 must remain separately named, or original cross-run check line245 rejects.",
+    "runtime_files resolves every absolute include/lib/OSDI and verifies protected_inputs. Restoration/model/runtime absolute paths must be identical for initial and cross because original lines243 and270 compare the full required map and native command, not only content.",
+    "runtime_context returns an isolated screen with only initialization/paths replaced. Its OP, METHOD and prepare remain historical. A new explicitly bound prepare/method seam is necessary; inherited prepare would fetch old OP40175085823.",
+    "init.PREPARATION must bind prior OP40222180657/sourcea218dd078115fbb65088de6e0129bb4e5f3100cd and nested preparation hash. bench_context current GITHUB_RUN_ID/GITHUB_SHA equality is unsuitable for a later restored run."
+  ],
+  "verdict": "NO_NEW_BLOCKER_TO_STATED_PLAN; finished adapter remains to be authored and independently reviewed."
+}
