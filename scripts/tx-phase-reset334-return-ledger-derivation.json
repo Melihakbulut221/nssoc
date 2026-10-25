@@ -4,7 +4,7 @@
     "path": "scripts/cloud_tx_phase_reset334_saved_capture.py",
     "source_sha256": "0536cf24a536083a017b32c1fa247d9d502fd8c374bcfdaf8dbd246f45742ee5",
     "destination": "scripts/cloud_tx_phase_reset334_return_ledger.py",
-    "derived_sha256": "98d16f26e2749b9bf364afe6f391538f84d33e78c59a9bf922ce6b209510aa54",
+    "derived_sha256": "b79338ebb46e88a6f25a20f351131f72768ecb91c4d8fc0ffd7548c478b8a9bf",
     "edits": [
       {
         "old": "import tx_phase_reset334_saved_diagnosis as observer\n",
@@ -64,6 +64,11 @@
       {
         "old": "FAIL_PHASE318_SAVED_CAPTURE_DIAGNOSIS",
         "new": "FAIL_PHASE318_AVSS_RETURN_LEDGER",
+        "count": 1
+      },
+      {
+        "old": "    except BaseException as error:\n        result.update(status='FAIL_PHASE318_AVSS_RETURN_LEDGER',error=repr(error),traceback=traceback.format_exc());raise",
+        "new": "    except BaseException as error:\n        ledger_bridge.ledger.coordinates.preserve_failure(result,error,lambda name,value:write(OUT/name,value))\n        result.update(status='FAIL_PHASE318_AVSS_RETURN_LEDGER',error=repr(error),traceback=traceback.format_exc());raise",
         "count": 1
       }
     ]

@@ -223,6 +223,7 @@ def main():
         result.update(status='PASS_PHASE318_AVSS_RETURN_LEDGER_ORIGINAL_ELECTRICAL_REJECTION_REMAINS',diagnostic_index=compact,
           full_original_electrical_review_replays=1,source_capture_sha256=m['raw_sha256'])
     except BaseException as error:
+        ledger_bridge.ledger.coordinates.preserve_failure(result,error,lambda name,value:write(OUT/name,value))
         result.update(status='FAIL_PHASE318_AVSS_RETURN_LEDGER',error=repr(error),traceback=traceback.format_exc());raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p.name!='result.json'}

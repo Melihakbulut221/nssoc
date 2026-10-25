@@ -711,5 +711,35 @@
   "authored_tests_executed": false,
   "readback_authorized": false,
   "new_simulation": false,
-  "geometry_change": false
+  "geometry_change": false,
+  "correction_source_status": "Candidate only; no hosted controls or readback executed",
+  "native_same_conductor_binding": {
+    "producer_function": "tx_phase55_mim_native.generate.probe",
+    "source_lines": [
+      40,
+      47,
+      65,
+      79
+    ],
+    "requirements": [
+      "native.probe_net on actual metal gives recorded native_cluster",
+      "wire.probe_net gives recorded wire_component",
+      "qualified new access lies outside intrinsic mask",
+      "all695 original/native owners rechecked",
+      "all metal/via drawings unchanged"
+    ],
+    "actual_receipt_flags": {
+      "p": {
+        "all_metal_via_drawings_unchanged": true,
+        "all_original_native_terminal_identities_unchanged": true,
+        "all695_native_and_physical_owners_verified": true
+      },
+      "n": {
+        "all_metal_via_drawings_unchanged": true,
+        "all_original_native_terminal_identities_unchanged": true,
+        "all695_native_and_physical_owners_verified": true
+      }
+    }
+  },
+  "failure_reporting": "Exact mismatch carries source_instance, native_id, terminal, reference_label, original physical point/row, loaded binding point, RC-access point and exact qualified relocation witness into result.coordinate_mismatch and a standalone coordinate-mismatch.json before final publication."
 }

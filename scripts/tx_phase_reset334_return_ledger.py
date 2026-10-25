@@ -156,7 +156,7 @@ def inventory(binding_summary_raw,payload_raw,models,rc_raw,physical_raw,raw_inp
         assert digest(selected['anchors'])==audit['inputs'][ap]['sha256']
         assert mim_proof['outputs'][sign+'/mim/anchors.json']==rc['outputs'][sign+'/source/mim/anchors.json']
         planes=json.loads(selected['anchors'])
-        point_map,point_proof=coordinates.validate(physical_proof,mim_proof,sign,planes)
+        point_map,point_proof=coordinates.validate(physical_proof,mim_proof,sign,planes,proofs[sign]['compact_roles'])
         text=selected['res_ext'].decode() if isinstance(selected['res_ext'],bytes) else selected['res_ext']
         graph=raw_graph(text,wire,comp['wire_node_map'],planes,audit)
         roles=proofs[sign]['compact_roles'];terminals=[]
@@ -170,15 +170,8 @@ def inventory(binding_summary_raw,payload_raw,models,rc_raw,physical_raw,raw_inp
                 assert str(t['native_cluster'])==native_cluster and t['model_node']!='BULK'
                 ref=t['reference_label'];assert ref in graph['AVSS_node_geometry']
                 p=planes_by_ref[ref]
-                assert p['device']==role['native_id'] and p['terminal']==terminal
-                assert str(p['native_cluster'])==native_cluster and p['wire_component']==13
                 point=point_map[ref]
-                assert point['native_id']==role['native_id'] and point['terminal']==terminal
-                assert point['native_cluster']==p['native_cluster'] and point['wire_component']==p['wire_component']
-                assert point['original_native_point_dbu']==t['native_point_dbu']
-                assert point['RC_reference_point_dbu']==p['point_dbu']
-                if not point['recorded_MIM_bottom_relocation']:
-                    assert p['point_dbu']==t['native_point_dbu']
+                coordinates.terminal_point(sign,name,role,terminal,t,p,point)
                 assert comp['wire_node_map'][ref]==t['model_node']
                 terminals.append(dict(source_instance=name,native_id=role['native_id'],model=role['model'],
                     terminal=terminal,source_net='AVSS',RC_point_dbu=p['point_dbu'],
