@@ -1,11 +1,11 @@
 # SPDX-License-Identifier: Apache-2.0
 # Hosted-only template. Registered workflow must remain byte-identical.
-name: PCIe static32 candidate-record complete proof
+name: PCIe static32 complete proof with mapped-netlist equivalence
 on:
   workflow_dispatch:
     inputs:
       diagnose:
-        description: 'Run the static32 complete proof after actual equivalence and controls'
+        description: 'Run full synthesis without optional SHARE and check the mapped netlist after controls'
         type: boolean
         default: false
 permissions:
@@ -29,11 +29,11 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          python3 -u scripts/cloud_pcie_gen12_training_records_static_supervision.py --controls | tee telemetry-control-console.log
+          python3 -u scripts/cloud_pcie_gen12_training_records_noshare.py --controls | tee telemetry-control-console.log
           python3 - <<'PY'
           import json
           from pathlib import Path
-          s=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-static-telemetry/controls.json').read_text())
+          s=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-noshare-telemetry/controls.json').read_text())
           assert s['status']=='PASS_RECORD_TELEMETRY_SOURCE_AND_SUPERVISION_CONTROLS_NO_RTL'
           assert len(s['controls'])==13 and all(s['controls'].values())
           assert s['engineering_accepted']is False
@@ -47,14 +47,24 @@ jobs:
           assert len(r['negative_controls'])==20 and all(r['negative_controls'].values())
           assert r['new_RTL_execution']is False
           PY
+          python3 -u scripts/cloud_pcie_gen12_training_records_noshare.py --flow-controls | tee noshare-flow-controls-console.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          f=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-noshare-telemetry/flow-controls.json').read_text())
+          assert f['status']=='PASS_EXACT_NOSHARE_ADAPTER_AND18_FAULTS_NO_RTL'
+          assert len(f['negative_controls'])==18 and all(f['negative_controls'].values())
+          assert f['native_DUT_executed']is False
+          PY
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
         with:
           name: record-static-controls-${{ github.run_id }}
           path: |
-            hw/soc/out/cloud-pcie-gen12-training-records-static-telemetry
+            hw/soc/out/cloud-pcie-gen12-training-records-noshare-telemetry
             telemetry-control-console.log
             static-prerequisite-controls.json
+            noshare-flow-controls-console.log
           retention-days: 90
   complete-proof-with-resource-evidence:
     needs: controls
@@ -77,13 +87,17 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PYTHONUNBUFFERED: '1'
         run: |
-          python3 -u scripts/cloud_pcie_gen12_training_records_static_supervision.py | tee training-records-telemetry-console.log
+          python3 -u scripts/cloud_pcie_gen12_training_records_noshare.py | tee training-records-telemetry-console.log
           python3 - <<'PY'
           import json
           from pathlib import Path
-          a=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-static-telemetry/result.json').read_text())
+          a=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-noshare-telemetry/result.json').read_text())
           r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-training-records-static/result.json').read_text())
-          assert a['status']=='PASS_INSTRUMENTED_STATIC32_COMPLETE_RECORD_PROOF'
+          assert a['status']=='PASS_INSTRUMENTED_STATIC32_NOSHARE_POSTMAP_COMPLETE_RECORD_PROOF'
+          f=a['synthesis_flow']
+          assert f['status']=='PASS_NOSHARE_MAPPED_NETLIST_SAME_ORACLE_AND2_FAULTS'
+          assert f['post_synthesis_icarus']['returncode']==0
+          assert len(f['mapped_negative_controls'])==2 and all(x['returncode']>0 for x in f['mapped_negative_controls'])
           assert r['status']=='PASS_COMPOSED_CANDIDATE16_TRANSPORT_AND24_COMPILED_FAULTS'
           assert len(r['negative_controls'])==24 and all(x['returncode']!=0 for x in r['negative_controls'])
           assert r['protocol_TS_acceptance']is False and r['full_PHY_accepted']is False
@@ -94,7 +108,7 @@ jobs:
           python3 - <<'PY'
           import base64,hashlib,json
           from pathlib import Path
-          for name in ('cloud-pcie-gen12-training-records-static','cloud-pcie-gen12-training-records-static-telemetry'):
+          for name in ('cloud-pcie-gen12-training-records-static','cloud-pcie-gen12-training-records-noshare-telemetry'):
               p=Path('hw/soc/out')/name/'result.json'
               if not p.exists():
                   print('RECORD_DIAGNOSTIC_NO_RESULT '+name);continue
@@ -109,7 +123,7 @@ jobs:
           name: record-static-complete-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             hw/soc/out/cloud-pcie-gen12-training-records-static
-            hw/soc/out/cloud-pcie-gen12-training-records-static-telemetry
+            hw/soc/out/cloud-pcie-gen12-training-records-noshare-telemetry
             training-records-telemetry-console.log
           retention-days: 90
           if-no-files-found: warn
