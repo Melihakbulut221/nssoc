@@ -8327,3 +8327,20 @@ Static32 transport was equivalent but its full proof40125733778 hit the10GiB sen
 Actual334 two-order RC40125124288 passed; full qualified sources were imported at ef66e493. Explicit finite-contact/distributed-node loaded binding is next. CDR22-asset JSON recovery40125550819 passed while all original electrical rejections remain; exact C/D high-VCE and hot A/B low-VCE targets are retained. Absent native currents must not be invented; prepare one bounded current/voltage readback.
 
 Full serial PHY, routed serial main chip and final setup/hold closure remain open.
+
+
+### 2026-10-25T06:57:44.920525+00:00 — cloud-only checkpoint v32
+
+Local workspace is empty. Qualified code and all native evidence live on GitHub; existing eight-hour read-only monitor has99 exact run/source handles. No native job remains active in this snapshot; source-review work continues and no automatic native dispatch is configured.
+
+Both TX trajectories are complete. Normal40168554741 finished34ns/77,681rows and FAILED original electrical gates:14wrong-sign and30under100mV of768samples;76/604HBT fail,0/5376MOS fail. Solver exited0 with no numericaldiagnostics. All7native archiveparts are cloudpublished; summary c131efd... and exact rawjoblog retained. Swapped negativecontrol40125751590 completed and detected its fault. Neither completed process may be resumed or treated as positive acceptance.
+
+Gen12 no-SHARE40169233322 is genuinely qualified for its per-lane scope: complete synthesis12.665s, tool peak320.77MB, original100,859-cycle oracle onRTL andmappednetlist,24original+2mapped faults. Exact canonical productionRTL plus frozen83file proofsnapshot outsideproductionRTL imported303aa1df. Common four-lane recovered-clockCDC/trainingowner and complete protocoltransition remain separate open integration work.
+
+Reset334 physical binding40169988733 passed bothpolarities/40actual-input faults. Its exact108pin implementation closure is imported303aa1df; three-model loaded benche54d7d64 is source-only awaiting peerreview/hostedpreparation, with parentTX rejection preserved.
+
+Mainchip saved-IP40169634355 passed without running router; exactgetRouteShapeCostAdj/mainthread and3futexworker locations are recorded. Its37pin implementation closure is now imported. One savedpoint is not a causalprofile. A bounded latest-capsule20-stack proposal is being prepared with explicit GDBstop/resume perturbation and unchanged original no-log/timing gates.
+
+CDR126-device terminal/current ledgere3357393 is source-only under peerreview. MissingIb/Ie/rppd/internalwire currents remain explicit; no completeKCL or speculative resizing.
+
+FullserialPHY, routedserialmainchip and finalsetup/hold are still open.
