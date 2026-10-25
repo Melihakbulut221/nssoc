@@ -63,6 +63,63 @@ def emit(path,marker):
     print(marker+'_BEGIN '+json.dumps(dict(bytes=len(data),sha256=hashlib.sha256(data).hexdigest(),chunks=(len(encoded)+4095)//4096)),flush=True)
     for index in range(0,len(encoded),4096):print(marker+'_CHUNK '+str(index//4096)+' '+encoded[index:index+4096],flush=True)
     print(marker+'_END',flush=True)
+def publication_files(transport,summary,manifest,packed):
+    """Return only verified, nonempty assets; shared by native and recovery publication."""
+    assert transport.is_dir()and not transport.is_symlink()
+    assert summary.parent==manifest.parent==transport
+    assert summary.name==packed['stem']+'.summary.json'
+    assert manifest.name==packed['stem']+'.parts.json'
+    names=[row['name']for row in packed['parts']]
+    assert names and len(names)==len(set(names))
+    assert all(Path(n).name==n and n not in ('','.','..')and chr(92)not in n for n in names)
+    files=[summary,manifest,*[transport/row['name']for row in packed['parts']]]
+    assert len({p.name for p in files})==len(files)
+    assert {p.name for p in transport.glob(packed['stem']+'.tar.gz.part*')}==set(names)
+    for path in files:
+        assert path.parent==transport and path.is_file()and not path.is_symlink()
+        assert path.stat().st_size>0
+    assert json.loads(manifest.read_text())==packed
+    verify_parts(packed,transport)
+    return files
+def file_list_controls():
+    rejected=[]
+    def reject(name,fn,types=(AssertionError,FileNotFoundError)):
+        try:fn()
+        except types:rejected.append(name)
+        else:raise AssertionError('Accepted '+name)
+    with tempfile.TemporaryDirectory()as folder:
+        base=Path(folder);bundle=base/'bundle';bundle.mkdir();transport=base/'transport';transport.mkdir()
+        (bundle/'a.bin').write_bytes(bytes(range(256))*8);(bundle/'empty.log').write_bytes(b'')
+        packed=pack(bundle,'fixture',transport,127)
+        summary=transport/'fixture.summary.json';summary.write_text('{"actual_fixture":true}\n')
+        manifest=transport/'fixture.parts.json'
+        expected=[summary,manifest,*[transport/row['name']for row in packed['parts']]]
+        assert len(packed['parts'])>1 and publication_files(transport,summary,manifest,packed)==expected
+        one=base/'one';one.mkdir();single=pack(bundle,'single',one,1024**2)
+        one_summary=one/'single.summary.json';one_summary.write_text('{}\n')
+        assert len(single['parts'])==1 and len(publication_files(one,one_summary,one/'single.parts.json',single))==3
+        empty=copy.deepcopy(packed);empty['parts']=[]
+        reject('zero_parts',lambda:publication_files(transport,summary,manifest,empty))
+        extra=transport/'fixture.tar.gz.part9999';extra.write_bytes(b'unexpected')
+        reject('unexpected_part',lambda:publication_files(transport,summary,manifest,packed));extra.unlink()
+        reject('original_path_subscript_regression',lambda:[transport[row['name']]for row in packed['parts']],(TypeError,))
+        part=transport/packed['parts'][0]['name'];saved=part.read_bytes()
+        part.unlink();reject('missing_part',lambda:publication_files(transport,summary,manifest,packed));part.write_bytes(saved)
+        part.write_bytes(bytes([saved[0]^1])+saved[1:]);reject('changed_part',lambda:publication_files(transport,summary,manifest,packed));part.write_bytes(saved)
+        part.write_bytes(b'');reject('empty_part',lambda:publication_files(transport,summary,manifest,packed));part.write_bytes(saved)
+        part.unlink();part.symlink_to(bundle/'a.bin');reject('symlink_part',lambda:publication_files(transport,summary,manifest,packed));part.unlink();part.write_bytes(saved)
+        for name,value in [('duplicate_part',packed['parts'][1]['name']),('traversal_part','../escape'),('absolute_part','/escape'),('backslash_part','a'+chr(92)+'b')]:
+            bad=copy.deepcopy(packed);bad['parts'][0]['name']=value
+            reject(name,lambda:publication_files(transport,summary,manifest,bad))
+        old=summary.read_bytes();summary.write_bytes(b'');reject('empty_summary',lambda:publication_files(transport,summary,manifest,packed));summary.write_bytes(old)
+        bad=copy.deepcopy(packed);bad['sha256']='0'*64
+        reject('manifest_disagrees_with_memory',lambda:publication_files(transport,summary,manifest,bad))
+        foreign=base/summary.name;foreign.write_bytes(old)
+        reject('summary_outside_transport',lambda:publication_files(transport,foreign,manifest,packed))
+        assert publication_files(transport,summary,manifest,packed)==expected
+    assert len(rejected)==14
+    return dict(status='PASS_ACTUAL_PUBLICATION_FILE_LIST_14_FAULTS',rejected=rejected,
+      actual_shared_function_executed=True,actual_packed_files=True,original_bug_reproduced=True)
 def publication_controls():
     env=dict(GITHUB_ACTIONS='true',GITHUB_REPOSITORY=release.REPO,GITHUB_RUN_ID='123',GITHUB_RUN_ATTEMPT='1',GITHUB_SHA='a'*40)
     group='fixture';tag,head=release.context(group,env)
@@ -93,7 +150,7 @@ def publication_controls():
     assert len(rejected)==8
     return dict(status='PASS_READ_ONLY_RELEASE_LOOKUP_AND_STREAM_COPY_8_FAULTS',rejected=rejected,
       existing_release_positive=True,stream_copy_positive=True,empty_file_preserved=True,
-      release_creation_possible=False,chunk_controls=chunk_controls())
+      release_creation_possible=False,chunk_controls=chunk_controls(),file_list_controls=file_list_controls())
 def main():
     p=argparse.ArgumentParser();p.add_argument('--stage',choices=PASS);p.add_argument('--preflight',action='store_true')
     p.add_argument('--publication-controls',action='store_true');a=p.parse_args()
@@ -150,7 +207,7 @@ def main():
         archive_proof=verify_parts(packed,transport)
         manifest=transport/(stem+'.parts.json');write(manifest,packed)
         publication['archive']=archive_proof;write(transport/'publication.json',publication)
-        files=[summary,manifest,*[transport[v['name']]for v in packed['parts']]]
+        files=publication_files(transport,summary,manifest,packed)
         if(stage/'result.json').is_file():
             full=transport/(stem+'.stage-result.json');shutil.copyfile(stage/'result.json',full)
             assert source.sha(full)==source.sha(stage/'result.json');files.append(full)

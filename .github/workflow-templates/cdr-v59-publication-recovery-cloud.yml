@@ -1,0 +1,94 @@
+# SPDX-License-Identifier: Apache-2.0
+# Unregistered. Existing-artifact publication only; no native/CAD dependencies.
+name: cdr-v59-publication-recovery-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        type: choice
+        description: Controls only or exact existing failed-publication artifact
+        default: controls
+        options: [controls, binding, rc, both]
+permissions:
+  contents: read
+concurrency:
+  group: cdr-v59-publication-recovery-${{ github.ref }}-${{ inputs.stage }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  controls:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Original source gates and actual ZIP tar publication controls
+        run: |
+          set -euo pipefail
+          mkdir -p hw/soc/out/cdr-v59-publication-recovery-controls
+          python3 scripts/check_cdr_v59_binding_rc_source.py | tee hw/soc/out/cdr-v59-publication-recovery-controls/original.json
+          python3 scripts/ensure_cloud_tested_source_release.py --controls | tee hw/soc/out/cdr-v59-publication-recovery-controls/release.json
+          python3 scripts/cloud_cdr_v59_publication_recovery.py --controls | tee hw/soc/out/cdr-v59-publication-recovery-controls/recovery.json
+          PYTHONPATH=scripts python3 - <<'PY'
+          import json
+          from pathlib import Path
+          from cloud_cdr_v59_binding_rc import emit
+          root=Path('hw/soc/out/cdr-v59-publication-recovery-controls')
+          s=json.loads((root/'original.json').read_text())
+          assert s['status']=='PASS_V59_COMPOSED_ADMISSION_DERIVATION_AND_FILESYSTEM_SOURCE_CONTROLS'
+          assert len(s['rejected'])==45 and len(s['derivation']['rejected'])==4 and len(s['filesystem']['rejected'])==17
+          assert s['native_executed']is False and s['geometry_changed']is False
+          assert len(s['inherited']['rejected'])==18 and len(s['inherited']['font']['rejected'])==16
+          r=json.loads((root/'release.json').read_text());assert len(r['rejected'])==17
+          q=json.loads((root/'recovery.json').read_text())
+          assert q['status']=='PASS_V59_ARTIFACT_PUBLICATION_RECOVERY_45_CONTROLS'
+          assert len(q['rejected'])==45 and q['metadata_and_log_controls']==24 and q['zip_controls']==13 and q['complete_tar_controls']==8
+          assert q['native_executed']is False and q['actual_archive_downloaded']is False
+          p=q['publication']
+          assert len(p['rejected'])==8 and p['chunk_controls']['negative_controls']==6
+          assert len(p['file_list_controls']['rejected'])==14 and p['file_list_controls']['actual_shared_function_executed']is True
+          for name in ['original','release','recovery']:emit(root/(name+'.json'),'CDR_V59_RECOVERY_CONTROLS_'+name.upper())
+          PY
+      - name: Preserve complete source controls
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v59-publication-recovery-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cdr-v59-publication-recovery-controls/
+          retention-days: 90
+  recovery:
+    if: github.event_name == 'workflow_dispatch' && inputs.stage != 'controls'
+    needs: controls
+    strategy:
+      fail-fast: false
+      matrix:
+        stage: ${{ fromJSON(inputs.stage == 'both' && '["binding","rc"]' || inputs.stage == 'binding' && '["binding"]' || '["rc"]') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate existing artifact and publish to exact original source release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_cdr_v59_publication_recovery.py --stage ${{ matrix.stage }}
+      - name: Preserve all recovery inputs and evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v59-${{ matrix.stage }}-publication-recovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cloud-cdr-v59-${{ matrix.stage }}-publication-recovery/
+          retention-days: 90
