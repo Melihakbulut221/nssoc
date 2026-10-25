@@ -126,12 +126,18 @@ def generate(source,summary,pdk,parent,arm):
  # Render old and new native PCells in a separate owned Layout. Never edit
  # library code, rescale a polygon or infer a pin from nominal W/L.
  N=pya.Layout();owners.append(N)
- params=dict(w=format(a['width'],'g')+'u',l=format(a['old_length'],'g')+'u',b=0,ps=0)
+ params=dict(w=format(a['width'],'g')+'u',l=format(a['old_length'],'g')+'u',b=0,m='1')
  O=N.create_cell('rppd','SG13_dev',params)
  params['l']=format(a['new_length'],'g')+'u'
  F=N.create_cell('rppd','SG13_dev',params)
  assert O is not None and F is not None and not O.is_empty()and not F.is_empty()and N.dbu==.001
  assert not list(O.each_inst())and not list(F.each_inst())
+ old_params=O.pcell_parameters_by_name();new_params=F.pcell_parameters_by_name()
+ assert int(old_params['b'])==0 and float(old_params['m'])==1.
+ assert {k:v for k,v in old_params.items()if k!='l'}=={k:v for k,v in new_params.items()if k!='l'}
+ # ps is the frozen default poly spacing; it is not a series/parallel flag.
+ # It has no bend in this b=0 primitive and must remain unchanged.
+ assert old_params['ps']==new_params['ps']
  def pins(cell):
   boxes=sorted([q.box for q in cell.shapes(N.layer(8,2)).each()if q.is_box()],key=lambda b:b.center().y)
   assert len(boxes)==2 and boxes[0].top<boxes[1].bottom
@@ -285,6 +291,7 @@ def generate(source,summary,pdk,parent,arm):
   frozen_rppd_sha256=RPPD_SHA,frozen_geometry_sha256=GEOMETRY_SHA,
   old_native_render_matches_actual_original=True,native_pin_count=2,literal_terminal_names=['PLUS','MINUS'],
   replacement_native_devices=4,changed_reference_names=names,changed_leaf_reference_names=names_leaf,
+  native_pcell_parameters_before=old_params,native_pcell_parameters_after=new_params,
   native_length_shift_dbu=shift,bridges=bridge_records,controls=controls,
   all_other_original_cell_material_labels_instances_preserved=True,all_parent_routing_and_ports_preserved=True,
   no_transistor_or_external_bias_or_clock_changes=True,changed_only_selected_rppd_lengths_and_owned_m1_bridges=True,

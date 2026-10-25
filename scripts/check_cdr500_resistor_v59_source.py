@@ -39,7 +39,7 @@ def main():
   s=copy.deepcopy(source);edit(s);reject(name,lambda s=s:candidate.validate_summary(s))
  for name,field,value in [('wrong_target_model','model','ptap1'),
  ('wrong_target_width','w',4.1),('wrong_target_length','l',7.3),('bent_target','b',1.),
- ('parallel_target','m',2.),('series_target','ps',1.)]:
+ ('parallel_target','m',2.),('wrong_extracted_poly_spacing','ps',1.)]:
   s=copy.deepcopy(source);d=next(d for d in s['device_locations']['devices']if d['native_id']==184)
   if field=='model':d[field]=value
   else:d['parameters'][field]=value
