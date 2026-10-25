@@ -1,0 +1,112 @@
+        344
+     $_DFFE_PN0P_                  727
+     $_DFF_PN0_                     10
+     $_MUX_                       4838
+     $_NAND_                        90
+     $_NOR_                         39
+     $_NOT_                        260
+     $_ORNOT_                       82
+     $_OR_                        1958
+     $_XNOR_                         2
+     $_XOR_                         12
+     soc_pcie_gen12_raw32_rx         1
+     soc_pcie_gen12_tx_raw32         1
+
+=== soc_pcie_gen12_tx_raw32 ===
+
+   Number of wires:                898
+   Number of wire bits:           1192
+   Number of public wires:          29
+   Number of public wire bits:     246
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               1070
+     $_ANDNOT_                     332
+     $_AND_                         15
+     $_DFFE_PN0P_                    5
+     $_DFF_PN0_                     77
+     $_MUX_                        321
+     $_NAND_                         9
+     $_NOR_                         16
+     $_NOT_                        130
+     $_ORNOT_                        6
+     $_OR_                         128
+     $_XNOR_                         7
+     $_XOR_                         20
+     soc_pcie_gen12_8b10b_encode      4
+
+=== design hierarchy ===
+
+   soc_pcie_gen12_training_records      1
+     soc_pcie_gen12_raw32_rx         1
+       soc_pcie_gen12_8b10b_decode      4
+         nssoc_benz_8b10b_decode      1
+       soc_pcie_gen12_raw32_align      1
+     soc_pcie_gen12_tx_raw32         1
+       soc_pcie_gen12_8b10b_encode      4
+         nssoc_benz_8b10b_encode      1
+
+   Number of wires:              12543
+   Number of wire bits:          15583
+   Number of public wires:         396
+   Number of public wire bits:    2750
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:              14255
+     $_ANDNOT_                    2190
+     $_AND_                        422
+     $_DFFE_PN0P_                  746
+     $_DFF_PN0_                    192
+     $_MUX_                       5704
+     $_NAND_                       317
+     $_NOR_                        237
+     $_NOT_                        542
+     $_ORNOT_                      355
+     $_OR_                        3299
+     $_XNOR_                        83
+     $_XOR_                        168
+
+9.25. Executing CHECK pass (checking for obvious problems).
+Checking module nssoc_benz_8b10b_decode...
+Checking module nssoc_benz_8b10b_encode...
+Checking module soc_pcie_gen12_8b10b_decode...
+Checking module soc_pcie_gen12_8b10b_encode...
+Checking module soc_pcie_gen12_raw32_align...
+Checking module soc_pcie_gen12_raw32_rx...
+Checking module soc_pcie_gen12_training_records...
+Checking module soc_pcie_gen12_tx_raw32...
+Found and reported 0 problems.
+
+10. Executing CHECK pass (checking for obvious problems).
+Checking module nssoc_benz_8b10b_decode...
+Checking module nssoc_benz_8b10b_encode...
+Checking module soc_pcie_gen12_8b10b_decode...
+Checking module soc_pcie_gen12_8b10b_encode...
+Checking module soc_pcie_gen12_raw32_align...
+Checking module soc_pcie_gen12_raw32_rx...
+Checking module soc_pcie_gen12_training_records...
+Checking module soc_pcie_gen12_tx_raw32...
+Found and reported 0 problems.
+
+11. Executing JSON backend.
+
+12. Executing Verilog backend.
+
+12.1. Executing BMUXMAP pass.
+
+12.2. Executing DEMUXMAP pass.
+Dumping module `\nssoc_benz_8b10b_decode'.
+Dumping module `\nssoc_benz_8b10b_encode'.
+Dumping module `\soc_pcie_gen12_8b10b_decode'.
+Dumping module `\soc_pcie_gen12_8b10b_encode'.
+Dumping module `\soc_pcie_gen12_raw32_align'.
+Dumping module `\soc_pcie_gen12_raw32_rx'.
+Dumping module `\soc_pcie_gen12_training_records'.
+Dumping module `\soc_pcie_gen12_tx_raw32'.
+
+Warnings: 1 unique messages, 1 total
+End of script. Logfile hash: aeef1f3be5, CPU: user 11.70s system 0.13s, MEM: 320.77 MB peak
+Yosys 0.33 (git sha1 2584903a060)
+Time spent: 26% 115x opt_expr (3 sec), 16% 62x opt_clean (2 sec), ...
