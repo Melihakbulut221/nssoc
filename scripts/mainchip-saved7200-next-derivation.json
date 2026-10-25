@@ -1,0 +1,80 @@
+{
+  "candidate_path": "scripts/cloud_mainchip_saved7200_next.py",
+  "candidate_sha256": "b59e08eece9cf3ac35d13319959e7a2f7fde50d7a873d7aabb8b5a327905170c",
+  "edits": [
+    {
+      "after": "cloud_mainchip_saved7200_next",
+      "before": "cloud_mainchip_userstack7200_continue",
+      "count": 2,
+      "label": "module"
+    },
+    {
+      "after": "mainchip_saved7200_next_admission",
+      "before": "mainchip_userstack7200_admission",
+      "count": 1,
+      "label": "admission"
+    },
+    {
+      "after": "scripts/mainchip-saved7200-next-methods.json",
+      "before": "scripts/mainchip-userstack7200-methods.json",
+      "count": 1,
+      "label": "method"
+    },
+    {
+      "after": "mainchip-route12-saved7200-next",
+      "before": "mainchip-route12-userstack7200",
+      "count": 1,
+      "label": "group"
+    },
+    {
+      "after": "cloud-mainchip-saved7200-next-program",
+      "before": "cloud-mainchip-userstack7200-program",
+      "count": 1,
+      "label": "program"
+    },
+    {
+      "after": "check_mainchip_saved7200_next_source",
+      "before": "check_mainchip_userstack7200_source",
+      "count": 1,
+      "label": "checker"
+    },
+    {
+      "after": "diag.admission.saved_receipt()",
+      "before": "diag.admission.rejected_receipt()",
+      "count": 1,
+      "label": "receipt"
+    },
+    {
+      "after": "diag.admission.restore_saved_capsule",
+      "before": "diag.admission.restore_failed_capsule",
+      "count": 1,
+      "label": "restore"
+    },
+    {
+      "after": "assert old['sources_unchanged']is True and old['active_drt_cross_runner_progress_proven']is True",
+      "before": "assert 'sources_unchanged'not in old and 'active_drt_cross_runner_progress_proven'not in old",
+      "count": 1,
+      "label": "history"
+    },
+    {
+      "after": "prior_saved_segment_run=admission.RUN",
+      "before": "prior_diagnostic_run=admission.RUN",
+      "count": 1,
+      "label": "prior_label"
+    },
+    {
+      "after": "            r['admitted_prior_evidence']=admission.PRIOR_EVIDENCE\n            if report is not None:r['native_inner_report']=report\n            r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}",
+      "before": "            r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}",
+      "count": 1,
+      "label": "prior_evidence"
+    }
+  ],
+  "generated_candidate_controller_sha256": "9c2b35b0c037541626e710dff6a7461ca47a6f95952616f2c660da14d253e280",
+  "generated_original_controller_sha256": "08b91df1a93d28c4acda1dbeae3b45e53af8393664ceaf71038808bdb0707eee",
+  "generated_original_non_main_functions_identical": true,
+  "original_native_gates_preserved": true,
+  "original_path": "scripts/cloud_mainchip_userstack7200_continue.py",
+  "original_sha256": "fb515b24e438f0c93b10a5a2b6fa715e038414fa67b2f8cce78d1c7db05306b2",
+  "original_source_ref": "85f1aeee0e92eb4ad8c4f16fa98814ea30c3f60c",
+  "schema": "mainchip-saved7200-next-exact-source-derivation-v1"
+}
