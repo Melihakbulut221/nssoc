@@ -1,8 +1,8 @@
 {
   "schema": "pcie-gen12-complete-record-cdc-design-v1",
-  "status": "SOURCE_ONLY_INTERFACE_PROPOSAL_ROOT_REVIEW_PENDING",
+  "status": "SOURCE_ONLY_IMPLEMENTATION_ROOT_DESIGN_APPROVED_PEER_REVIEW_PENDING",
   "base_source": "63b26b74e767e9ac09a88b0c1514d7ea2e199fbd",
-  "rtl_implemented": false,
+  "rtl_implemented": true,
   "tests_executed": false,
   "cloud_dispatch_authorized": false,
   "source_reuse": [
@@ -139,11 +139,12 @@
   },
   "reset_contract": {
     "assertion": "Either clean reset-quality request or POR resets both domains and masks all public traffic asynchronously.",
-    "release": "Reuse exact three local release flops, four boot clocks and two peer-ready flops. Either stopped clock prevents traffic restart.",
-    "collector_reset": "Drive qualified collector rx_rst_ni from CDC wr_running_o, as existing recovered_x4_v4 does for its aligner.",
+    "release": "Exact three local release flops, four boot clocks and two peer-ready flops. A stopped clock prevents startup after reset; no mid-epoch clock-loss detection.",
+    "collector_reset": "Frozen collector reset is internal CDC wr_running, before the public one-edge source_armed gate.",
     "epoch": "No new counter. Reset or synchronized fault invalidates pending downstream state. Already retired valid prefix may precede fault visibility.",
     "flush": "Discard raw32 residue, decoder pending batch, partial16-symbol record, two collector records, FIFO memory/prefetch output.",
-    "polarity": "Must settle while reset/startup. A change in a running epoch becomes sticky loss and requires coordinated reset; no implicit polarity detection."
+    "polarity": "Must settle while reset/startup. A change in a running epoch becomes sticky loss and requires coordinated reset; no implicit polarity detection.",
+    "arming": "After internal CDC running releases collector reset, one recovered edge settles initial polarity. Only then public recovered_running admits raw_valid."
   },
   "loss_contract": {
     "source": "Never backpressure the actual serial source. A complete record presented while the CDC cannot accept faults the epoch; collector ready equals actual acceptance.",
@@ -155,7 +156,8 @@
     ],
     "fault_crossing": "Held bit through two common-clock flops; valid prefix can retire before visibility, then no later records until reset.",
     "classification": "Code/disparity errors and internal COM bits are payload evidence, not CDC fault or TS acceptance.",
-    "startup": "Raw traffic while startup/reset/fault is not admitted; owner must arrange reacquisition after running."
+    "startup": "Raw traffic while startup/reset/fault is not admitted; owner must arrange reacquisition after running.",
+    "mid_epoch_clock_pause": "Writer pause permits queued prefix to drain without automatic fault. Reader pause permits finite backlog then capacity rejection. External owner loss must be held until sampled or coordinated reset asserted."
   },
   "scope": {
     "TS1_TS2_accepted": false,
@@ -165,6 +167,7 @@
     "rate_owner_implemented": false,
     "link_up": false,
     "physical_CDC_qualified": false,
-    "full_PHY_accepted": false
+    "full_PHY_accepted": false,
+    "automatic_clock_loss_detection": false
   }
 }

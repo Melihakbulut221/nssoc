@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: Apache-2.0
+# Source-only candidate. A reviewed hosted controller must authorize invocation.
+ifeq ($(GITHUB_ACTIONS),true)
+else
+$(error This proof is hosted-only; no local simulation)
+endif
+TOPLEVEL_LANG := verilog
+SIM ?= icarus
+TOPLEVEL ?= soc_pcie_gen12_record_cdc_v1
+DEPTH ?= 32
+COCOTB_TEST_MODULES := test_$(TOPLEVEL)
+BENCH := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+ROOT := $(abspath $(BENCH)/../../../..)
+export PYTHONPATH := $(BENCH):$(ROOT)/scripts:$(PYTHONPATH)
+export CDC_DEPTH := $(DEPTH)
+ifeq ($(TOPLEVEL),soc_pcie_gen12_record_cdc_v1)
+PARAM_NAME := DEPTH
+else ifeq ($(TOPLEVEL),soc_pcie_gen12_recovered_records_v1)
+PARAM_NAME := FIFO_DEPTH
+else
+$(error Unknown reviewed top)
+endif
+ifeq ($(SIM),icarus)
+COMPILE_ARGS += -P$(TOPLEVEL).$(PARAM_NAME)=$(DEPTH)
+else ifeq ($(SIM),verilator)
+COMPILE_ARGS += -G$(PARAM_NAME)=$(DEPTH) -Wno-fatal
+else
+$(error Only reviewed Icarus/Verilator engines)
+endif
+# The future controller supplies an explicit protected source list, exactly one
+# hash-verified FIFO vendor file, fresh output path and complete XML disposition.
+ifndef VERILOG_SOURCES
+$(error Explicit protected VERILOG_SOURCES required)
+endif
+include $(shell cocotb-config --makefiles)/Makefile.sim
