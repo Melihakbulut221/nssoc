@@ -9,6 +9,7 @@ import hashlib,json,math,re,shlex
 from collections import Counter,defaultdict,deque
 from decimal import Decimal
 import tx_phase_reset334_loaded_contract as bench
+import tx_phase_reset334_qualified_anchor_points as coordinates
 
 RC_SHA='a11da5bb7ee22134f9373d43a1fffda9d1f6538877b440031ffd910adec56bcf'
 PHYSICAL_SHA='5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913'
@@ -142,6 +143,8 @@ def inventory(binding_summary_raw,payload_raw,models,rc_raw,physical_raw,raw_inp
     assert rc['both_polarities_and_orders_verified'] and rc['native_RC_and_device_records_equal_in_both_orders']
     assert physical['source_head']=='2e1f26e9c4fdf37d63433a0c859c2d305db3486b'
     _,proofs=bench.qualified_inputs(binding_summary_raw,payload_raw,models)
+    physical_proof,mim_proof=coordinates.provenance()
+    assert physical_proof==physical
     output={}
     for sign in ('p','n'):
         _,_,wire=bench.model_records(models[sign],sign)
@@ -151,7 +154,9 @@ def inventory(binding_summary_raw,payload_raw,models,rc_raw,physical_raw,raw_inp
         assert digest(selected['res_ext'])==rc['outputs'][path]
         ap=RC_PREFIX+sign+'/precise/anchors03.json'
         assert digest(selected['anchors'])==audit['inputs'][ap]['sha256']
+        assert mim_proof['outputs'][sign+'/mim/anchors.json']==rc['outputs'][sign+'/source/mim/anchors.json']
         planes=json.loads(selected['anchors'])
+        point_map,point_proof=coordinates.validate(physical_proof,mim_proof,sign,planes)
         text=selected['res_ext'].decode() if isinstance(selected['res_ext'],bytes) else selected['res_ext']
         graph=raw_graph(text,wire,comp['wire_node_map'],planes,audit)
         roles=proofs[sign]['compact_roles'];terminals=[]
@@ -167,10 +172,17 @@ def inventory(binding_summary_raw,payload_raw,models,rc_raw,physical_raw,raw_inp
                 p=planes_by_ref[ref]
                 assert p['device']==role['native_id'] and p['terminal']==terminal
                 assert str(p['native_cluster'])==native_cluster and p['wire_component']==13
-                assert p['point_dbu']==t['native_point_dbu']
+                point=point_map[ref]
+                assert point['native_id']==role['native_id'] and point['terminal']==terminal
+                assert point['native_cluster']==p['native_cluster'] and point['wire_component']==p['wire_component']
+                assert point['original_native_point_dbu']==t['native_point_dbu']
+                assert point['RC_reference_point_dbu']==p['point_dbu']
+                if not point['recorded_MIM_bottom_relocation']:
+                    assert p['point_dbu']==t['native_point_dbu']
                 assert comp['wire_node_map'][ref]==t['model_node']
                 terminals.append(dict(source_instance=name,native_id=role['native_id'],model=role['model'],
-                    terminal=terminal,source_net='AVSS',**{k:v for k,v in t.items() if k!='source_net'}))
+                    terminal=terminal,source_net='AVSS',RC_point_dbu=p['point_dbu'],
+                    coordinate_binding=point,**{k:v for k,v in t.items() if k!='source_net'}))
         assert len(terminals)==85
         assert Counter(t['model'] for t in terminals)==Counter(npn13G2=28,rppd=55,cap_cmim=2)
         assert {t['reference_label'] for t in terminals}|{'P_AVSS'}==(set(graph['AVSS_nodes']) & set(planes_by_ref))|{'P_AVSS'}
@@ -184,7 +196,8 @@ def inventory(binding_summary_raw,payload_raw,models,rc_raw,physical_raw,raw_inp
         assert len(geometry['local_buses'])==15 and len(geometry['straps'])==16 and len(geometry['vias'])==101
         output[sign]=dict(model_sha256=digest(models[sign]),raw_res_sha256=digest(selected['res_ext']),
             anchors_sha256=digest(selected['anchors']),terminals=terminals,graph=graph,
-            actual_geometry=geometry,geometry_coordinates_are_not_all_in_same_origin=True)
+            actual_geometry=geometry,qualified_point_transition=point_proof,
+            geometry_coordinates_are_not_all_in_same_origin=True)
     return dict(status='NATIVE_AVSS_R_GRAPH_INVENTORY_ONLY',polarities=output,**FLAGS)
 def model_node(instance,node):
     ports=dict(zip(bench.binding.PORTS,instance['actual_ports'],strict=True))

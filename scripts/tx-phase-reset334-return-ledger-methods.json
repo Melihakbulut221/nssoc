@@ -1,10 +1,10 @@
 {
   "schema": "phase318-native-AVSS-edge-ledger-source-v1",
-  "readback_authorized": true,
+  "readback_authorized": false,
   "native_simulation_authorized": false,
   "native_extraction_authorized": false,
-  "source_only": false,
-  "controls_executed": true,
+  "source_only": true,
+  "controls_executed": false,
   "original_frozen_review_replays_required": 1,
   "original_electrical_rejection_remains": true,
   "original_first_fall_limit_s": 6.25e-11,
@@ -233,15 +233,22 @@
     "docs/evidence/tx-phase318-saved-capture-source-controls-pass-20261025.json": "1e280fdcfcfcd9c0fc9681eb4131338cbeeaac6142c62c469b1625ead2791599"
   },
   "protected_files": {
-    "scripts/tx_phase_reset334_return_ledger.py": "e86b94a6736e4162a441039660ff8c1ed58b4fadaaea0a8b5e788be32ffa43d1",
-    "scripts/check_tx_phase_reset334_return_ledger.py": "cadc3dbc1479e4f38b08cbc52d4e0027d037dc70cf494155d2c3ec50bfd97e6f",
+    "scripts/tx_phase_reset334_return_ledger.py": "fc7abeeeb3245397a7a843a99d6ac8b0f4cec107b8154124a172768c27e40907",
+    "scripts/check_tx_phase_reset334_return_ledger.py": "515510d184c956a4fd5dfdb6b2c0c151c88093b541906a8fdc03e56a3f665f31",
     "docs/evidence/tx-phase318-AVSS-source-return-inventory-20261025.json": "f206332b15ce15a64ef8ffb86872934c351ada0794c8e1b8b84ca517d263c553",
     "docs/evidence/tx-phase318-loaded-row-engineering-observations-20261025.json": "1de195f7d5da0c542512acb13eb6d85a7400b09ba3e42410a3a9fd0e0c547e3a",
     "docs/evidence/tx-phase318-return-ledger-controls-job-20261025.log": "7e8a0420ac8e5c92edea8d3e2deca9166b6dc1b0c25de9ccc23cf76a997a18b5",
     "docs/evidence/tx-phase318-return-ledger-controls-result-20261025.json": "c269e7195ae766e17d08275b161d4ec89992a5cc296c60bff044ea8b45eda585",
     "docs/evidence/tx-phase318-return-ledger-controls-publication-result-20261025.json": "bcc0c38102836aadf3c79bc1b7341b32b644de81191271c166cb8cc750188a00",
     "docs/evidence/tx-phase318-return-ledger-controls-wait-result-20261025.json": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
-    "docs/evidence/tx-phase318-return-ledger-controls-pass-20261025.json": "3e97a64269cdf1d1d0039339414fc31a4aa8468cd4bc9bcf3ef0a264cd6cb993"
+    "docs/evidence/tx-phase318-return-ledger-controls-pass-20261025.json": "3e97a64269cdf1d1d0039339414fc31a4aa8468cd4bc9bcf3ef0a264cd6cb993",
+    "scripts/tx_phase_reset334_qualified_anchor_points.py": "ab20d77fd6445aba13d65b0ac5317ef78fdcb932801f051fb412e45413000328",
+    "docs/evidence/tx-phase318-qualified-MIM-anchor-relocation-20261025.json": "cd7844940a8c09beba9d12c71a8052be742132fb89813be4f92923fea185afa0",
+    "docs/tx-phase318-qualified-MIM-anchor-relocation-20261025.md": "8462bf501b0155955b6c032cc6f4f7a6889036608356371aa69007aa729042c9",
+    "docs/evidence/tx-phase318-return-ledger-first-rejection-20261025-result.json": "d03979b0a0eae8544f40ff68541f2b27e51e67cdcca58fb83e53063337520c3e",
+    "docs/evidence/tx-phase318-return-ledger-first-rejection-20261025-parts.json": "e49a87a0c129b34a4c189414bb4c25dbb4ca6b499dfdc9842372d0ca842b7a28",
+    "docs/evidence/tx-phase318-return-ledger-first-rejection-20261025-job.log": "e58f1ce6e6a1bb18b4bac877f1e83c37d0e02914085e8e4d58f511fc000541da",
+    "docs/evidence/tx-phase318-return-ledger-first-rejection-20261025.json": "0d81437b3cb57f467c14d9076289472b1a0b1ca69863eaf6c08b3d8d3c0b5589"
   },
   "source_inventory": {
     "path": "docs/evidence/tx-phase318-AVSS-source-return-inventory-20261025.json",
@@ -472,7 +479,7 @@
     "Native material association of actual bottleneck candidates before any geometry edit"
   ],
   "no_new_native_work": true,
-  "hosted_source_controls": {
+  "previous_hosted_source_controls": {
     "run": 40194814568,
     "source": "97486612300ad3d2061a1ae23277d8078df74a03",
     "job": 121173275191,
@@ -481,5 +488,14 @@
     "job_log_sha256": "7e8a0420ac8e5c92edea8d3e2deca9166b6dc1b0c25de9ccc23cf76a997a18b5",
     "publication_actual_program_controls_passed": true,
     "readback_job_skipped": true
+  },
+  "qualified_coordinate_contract": {
+    "MIM_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d",
+    "source_derived_faults": 32,
+    "actual_restored_faults": 32,
+    "other_AVSS_exact": 83,
+    "recorded_AVSS_MIM_changes": 2,
+    "evidence": "docs/evidence/tx-phase318-qualified-MIM-anchor-relocation-20261025.json",
+    "first_failure_receipt": "docs/evidence/tx-phase318-return-ledger-first-rejection-20261025.json"
   }
 }

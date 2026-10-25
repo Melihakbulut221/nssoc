@@ -38,14 +38,20 @@ def synthetic_controls():
     assert ledger.model_node(inst,'BULK')=='xdut.bulk'
     assert ledger.model_node(inst,'w00329')=='xdut.w00329'
     assert len(rejected)==12
+    physical,mim=ledger.coordinates.provenance()
+    coordinate_controls=ledger.coordinates.controls(physical,mim)
     return dict(status='PASS_SYNTHETIC_LEDGER_MATH_ONLY',rejected=rejected,
-        actual_native_R_inventory_executed=False,actual_waveform_rows_executed=False)
+        actual_native_R_inventory_executed=False,actual_waveform_rows_executed=False,
+        qualified_coordinate_controls=coordinate_controls)
 def actual_controls(inputs,contract_raw,time,values,rows):
     """Run only on restored authenticated inputs, before one frozen waveform review.
 
     These inexpensive mutations never repeat the full original waveform review.
     """
     catalog=ledger.inventory(**inputs);rejected=[];positives={}
+    physical,mim=ledger.coordinates.provenance()
+    actual_points={sign:json.loads(inputs['raw_inputs'][sign]['anchors']) for sign in ('p','n')}
+    coordinate_controls=ledger.coordinates.controls(physical,mim,actual_points)
     rc=json.loads(inputs['rc_raw'])
     for sign in ('p','n'):
         comp=rc['polarities'][sign]['composition'];audit=rc['polarities'][sign]['orders']['precise']['audit']
@@ -111,5 +117,6 @@ def actual_controls(inputs,contract_raw,time,values,rows):
     refused('nonfinite_same_row_voltage',lambda:ledger.row_ledger(catalog,contract_raw,time,q,[rows[0]]),rejected)
     assert len(rejected)==36
     return catalog,dict(status='PASS_ACTUAL_GRAPH_AND_ROW_INPUT_REFUSALS_ONLY',
-        positive_graphs=positives,rejected=rejected,original_electrical_review_repeated=False,
+        positive_graphs=positives,rejected=rejected,qualified_coordinate_controls=coordinate_controls,
+        original_electrical_review_repeated=False,
         geometry_or_circuit_acceptance=False)
