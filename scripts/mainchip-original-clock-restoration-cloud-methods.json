@@ -110,6 +110,7 @@
     ".github/workflow-templates/mainchip-original-clock-restoration-cloud.yml": "158af04bf103e2b19c925767555fd3dea6e3607efa96af4d62e766dbd5646479",
     ".github/workflow-templates/mainchip-saved-postroute-cloud.yml": "7bb486d1a7450c63d2d72d5e0e5afd6d558fb238f4ccecdfd715319612c1399b",
     ".github/workflows/mainchip-clock-diagnostic-cloud.yml": "ff78fe6369c94df2209ae7cfd53c8f53054453ec0e34bf7c7c2c967f2f2248a0",
+    ".github/workflows/mainchip-original-clock-restoration-cloud.yml": "158af04bf103e2b19c925767555fd3dea6e3607efa96af4d62e766dbd5646479",
     ".github/workflows/mainchip-saved-postroute-cloud.yml": "7bb486d1a7450c63d2d72d5e0e5afd6d558fb238f4ccecdfd715319612c1399b",
     "docs/evidence/cloud-fixed-wire-preservation-results-20261016.json": "5d2c2b022929a5a03fb6abf4757a5c0123966a7d5268065088eeb76d8b9dadf2",
     "docs/evidence/cloud-native-fixed-wire-parser-control-20261016.json": "7406e2c8beeb7393af6ebb2edfbfa233c191f3b84bcb591c3bd504340a057176",
@@ -128,6 +129,9 @@
     "docs/evidence/mainchip-original-clock-metadata-export-peer-correction-20261025.json": "d9adc81167a84fa64d3838b3fdfdac95201a787e3213d9bc69406dacdc408351",
     "docs/evidence/mainchip-original-clock-restoration-selectors-20261025.json": "ca05e1c5a21fa07d36ba1b41746784dde713fa3874e7fbff15493760d5077056",
     "docs/evidence/mainchip-original-clock-restoration-source-feasibility-20261025.json": "c024fc1cf7ff2ebe697795f68f1197c54d3ff06ad3035af61506f7b9d8c08507",
+    "docs/evidence/mainchip-original-clock-source-controls-peer-review-20261025.json": "7c942fbd53493169685cbc9dd4f4de2b956fbde44ccab6e0b99474d9b731b482",
+    "docs/evidence/mainchip-original-clock-source-controls-root-review-20261025.json": "30c0d0319c4856bcb0a55b4263194bd9c4b466bd0144b3d3fc11c9a2c3aeb5d2",
+    "docs/evidence/mainchip-original-clock-workflow-registration-20261025.json": "b3d797fe014d7742194fe8536a03457da6b5e509bba66965f1371eab98d71a71",
     "docs/evidence/mainchip-portable-runtime-pass-20261020.json": "165629f8ec5b3ff99b9b9c01464b7fb129fb991ee9c5287e19de614c36e62e18",
     "docs/evidence/mainchip-repair-deep-global-pass-20261021.json": "bc1c0d8b2220956a29db91c998d3e36ecd2244eefafff59dc8b877ec41eeb886",
     "docs/evidence/mainchip-repair-deep-handoff-pass-20261021.json": "2aa15559bc6f0375a3846df80af984acb2123227147074bb2e2323c5f05221df",
@@ -224,7 +228,7 @@
     "scripts/export_mainchip_completed_def.py": "a3028e95afee795dc4d563c4bb20a120e66729e4d7f8738a574b5ca038267a77",
     "scripts/export_mainchip_repair_deep_completed_def.py": "b1e608691eb8ea963ea95bf1504923c08f9a5e0bee7089c53c6e340816c9678f",
     "scripts/mainchip-clock-diagnostic-methods.json": "865b780789baea1fbfe27fef7b39184febfd7f8b8ac7aee3a87eb383d9f15862",
-    "scripts/mainchip-original-clock-restoration-methods.json": "e7262915fca60c8ca74e445d0c1d03f4dfc3a350f783597b64a40ea0f87329a1",
+    "scripts/mainchip-original-clock-restoration-methods.json": "88a650d3cfa99019b8e76bbe15b8acb837c0521330b4baec77ca4623027b1887",
     "scripts/mainchip-postroute-geometry-methods.json": "97939d66a48ab3bec41fa70f1d4e57c06867d42b5f93f862d9c23adc79ef5213",
     "scripts/mainchip-repair-deep-drt-continuation-delta.json": "868c7392b054649213a18ffaa63f36997348e0c70739f615c40147ee8347a828",
     "scripts/mainchip-repair-deep-postroute-delta.json": "a2293da5b1722f16dfd1840a3cc6562d8310d27da08c4b393944915da7de3d2f",
@@ -265,6 +269,11 @@
     "qualified_wrapper_sha256": "7f7b4d76261f7fe97a6ed779c32a2cf8c568766e74f5efd6e6139e308fa6b277",
     "reserved_only": true
   },
+  "review": {
+    "peer": "docs/evidence/mainchip-original-clock-source-controls-peer-review-20261025.json",
+    "root": "docs/evidence/mainchip-original-clock-source-controls-root-review-20261025.json",
+    "source": "bca401a6bd43ea7e5aa529257fd126a5c3a99df7"
+  },
   "runtime": {
     "appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
     "bootstrap_supervised": true,
@@ -273,9 +282,17 @@
   },
   "schema": "mainchip-original-clock-restoration-cloud-source-v1",
   "simulation_authorized": false,
-  "source_controls_authorized": false,
+  "source_controls_authorized": true,
+  "source_controls_dispatch_plan": {
+    "automatic_retry": false,
+    "complete_result_required": true,
+    "execute": false,
+    "permitted_runs": 1,
+    "workflow_id": 396241929
+  },
   "source_controls_executed": false,
-  "status": "SOURCE_ONLY_COMPLETE_UNIT_PENDING_REVIEW",
+  "source_peer_reviewed": true,
+  "status": "REVIEWED_ONE_SOURCE_CONTROLS_ONLY_NATIVE_FALSE",
   "supervisor": {
     "maximum_group_rss_kib": 10485760,
     "minimum_available_kib": 2097152,
@@ -293,5 +310,5 @@
     "Separate metadata activation and one bounded actual cloud restore/runtime/native import/DRC/roundtrip diagnostic.",
     "No repair, final DRC/connectivity/antenna/RC/STA/timing/full-PHY acceptance."
   ],
-  "workflow_registered": false
+  "workflow_registered": true
 }
