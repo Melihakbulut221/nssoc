@@ -1,0 +1,106 @@
+{
+  "status": "PASS_EXACT_REJECTED_FIXTURE_ARTIFACT_READBACK_ONLY",
+  "run": 40172782148,
+  "job": 121106975996,
+  "source": "023fe9ce2b2226e3858c5436ebe48f929aed734d",
+  "artifact": {
+    "id": 12590911691,
+    "name": "mainchip-userstack-harmless-fixture",
+    "size_in_bytes": 13840,
+    "digest": "sha256:68e6bf54ac3bb925b92883538a96ec2d584da15f0bbb59c106adc3a09396890f"
+  },
+  "controls": {
+    "status": "PASS_11_SMALL_ARCHIVE_AND_TRANSPORT_CONTROLS_ONLY",
+    "rejected": [
+      "transport-size",
+      "transport-hash",
+      "duplicate",
+      "parent",
+      "absolute",
+      "symlink",
+      "oversize",
+      "directory",
+      "single-backslash",
+      "raw-transport-flag-removed",
+      "metadata-raw-flag-invented"
+    ],
+    "new_fixture_run": false
+  },
+  "members": {
+    "fixture/counter": {
+      "bytes": 21056,
+      "sha256": "2722a6e712bd871f583c191fad2ff551e0017acd71b845128b8cab1333151b91"
+    },
+    "fixture/counter.log": {
+      "bytes": 24,
+      "sha256": "1dea1c1711802c840a274fd1b5587646291618426206f5ae1b5fe2957b0af411"
+    },
+    "fixture/counter-gdb.py": {
+      "bytes": 109,
+      "sha256": "1571366e41c5f173a015b1b147a088da1bdb23bbc8493f1664f2cc7cf4835e2e"
+    },
+    "result.json": {
+      "bytes": 3689,
+      "sha256": "e274559d3fddc80ed02b492395e1d396c7c513f77e521f0c1ec425beccd377b6"
+    },
+    "twenty/result.json": {
+      "bytes": 1674,
+      "sha256": "4a703470e482746ba708cb9931586ac59a46f64df7e3acf2dfdfac2c8fb474c1"
+    },
+    "twenty/sample-00/command/stderr.log": {
+      "bytes": 155,
+      "sha256": "7aeab8d8f8e0207f393a35e5d8565a5f33b312277a346bc5c3c23259aee3746b"
+    },
+    "twenty/sample-00/command/command.json": {
+      "bytes": 878,
+      "sha256": "ccaba4281a204eac90193482c75944b0aed36fa24a1c7801c93d3a201e0d9f43"
+    },
+    "twenty/sample-00/command/stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "twenty/sample-00/context.json": {
+      "bytes": 1857,
+      "sha256": "6e97072fcfc5c036a4ae0723a6649a5f0a946df518a6919674aeaeaf1fd6e11b"
+    },
+    "twenty/sample-00/gdb-result.json": {
+      "bytes": 1913,
+      "sha256": "1c39f6ffd7017ff86bfd0a088cbfcf25c25b4313a2e1d240b77078840fb976fa"
+    },
+    "twenty/sample-00/reader.gdb": {
+      "bytes": 262,
+      "sha256": "c4377a2ab7406d991ed5e0e16685b7e02f19771ed879725e79fbd236b9d26001"
+    },
+    "twenty/sample-00/result.json": {
+      "bytes": 11489,
+      "sha256": "c52222c8d4a6407237f2beb42a05740811e290cbf86986e54905ae25d9b577d7"
+    }
+  },
+  "selected": {
+    "twenty/sample-00/command/stderr.log": {
+      "bytes": 155,
+      "sha256": "7aeab8d8f8e0207f393a35e5d8565a5f33b312277a346bc5c3c23259aee3746b",
+      "text": "/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/twenty/sample-00/reader.gdb:5: Error in sourced command file:\nREJECTED_FIXTURE_STACK_READER\n"
+    },
+    "twenty/sample-00/command/stdout.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "text": ""
+    },
+    "twenty/sample-00/reader.gdb": {
+      "bytes": 262,
+      "sha256": "c4377a2ab7406d991ed5e0e16685b7e02f19771ed879725e79fbd236b9d26001",
+      "text": "python\nimport sys\nsys.path.insert(0,'/home/runner/work/nssoc/nssoc/scripts')\nexec(compile(open('/home/runner/work/nssoc/nssoc/scripts/mainchip_userstack_gdb_reader.py').read(),'/home/runner/work/nssoc/nssoc/scripts/mainchip_userstack_gdb_reader.py',\"exec\"))\nend\n"
+    },
+    "twenty/sample-00/result.json": {
+      "bytes": 11489,
+      "sha256": "c52222c8d4a6407237f2beb42a05740811e290cbf86986e54905ae25d9b577d7",
+      "text": "{\n  \"status\": \"REJECTED_OWNED_FIXTURE_ATTACHMENT\",\n  \"before\": {\n    \"identity\": {\n      \"pid\": 2677,\n      \"starttime\": 11221,\n      \"proc_directory\": {\n        \"device\": 24,\n        \"inode\": 15823\n      },\n      \"exe_path\": \"/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/fixture/counter\",\n      \"exe\": {\n        \"device\": 66305,\n        \"inode\": 9468920\n      },\n      \"exe_bytes\": 21056,\n      \"exe_sha256\": \"2722a6e712bd871f583c191fad2ff551e0017acd71b845128b8cab1333151b91\",\n      \"cmdline_hex\": \"2f686f6d652f72756e6e65722f776f726b2f6e73736f632f6e73736f632f636c6f75642d6d61696e636869702d75736572737461636b2d666978747572652f666978747572652f636f756e74657200\",\n      \"cgroup_hex\": \"303a3a2f73797374656d2e736c6963652f686f737465642d636f6d707574652d6167656e742e736572766963650a\",\n      \"root\": {\n        \"device\": 66305,\n        \"inode\": 2\n      },\n      \"namespaces\": {\n        \"mnt\": \"mnt:[4026531832]\",\n        \"pid\": \"pid:[4026531836]\",\n        \"user\": \"user:[4026531837]\",\n        \"cgroup\": \"cgroup:[4026531835]\"\n      }\n    },\n    \"process\": {\n      \"pid\": 2677,\n      \"state\": \"S\",\n      \"ppid\": 2665,\n      \"pgrp\": 2677,\n      \"session\": 2677,\n      \"utime\": 0,\n      \"stime\": 0,\n      \"starttime\": 11221\n    },\n    \"tracer_pid\": 0,\n    \"tasks\": [\n      {\n        \"pid\": 2677,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      },\n      {\n        \"pid\": 2678,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      },\n      {\n        \"pid\": 2679,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      },\n      {\n        \"pid\": 2680,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      }\n    ]\n  },\n  \"reader_sha256\": \"be1bd0d9736369598f4b9d7c6d6a8fe4b9fbe8300cc081bf082701871251025e\",\n  \"scheduling_perturbed\": true,\n  \"target_memory_or_register_writes_permitted\": false,\n  \"native_attachment_authorized\": false,\n  \"command\": {\n    \"command\": [\n      \"/usr/bin/gdb\",\n      \"--nx\",\n      \"--nh\",\n      \"--quiet\",\n      \"--batch\",\n      \"-iex\",\n      \"set auto-load off\",\n      \"-iex\",\n      \"set debuginfod enabled off\",\n      \"-x\",\n      \"/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/twenty/sample-00/reader.gdb\"\n    ],\n    \"deadline_s\": 10,\n    \"status\": \"COMPLETED_SUPERVISED_COMMAND\",\n    \"debugger_pid\": 2683,\n    \"cleanup\": {\n      \"attempts\": [\n        {\n          \"signal\": 15,\n          \"members\": []\n        }\n      ],\n      \"zombies\": [],\n      \"live_remaining\": false\n    },\n    \"returncode\": 1,\n    \"elapsed_s\": 0.10861210299999868,\n    \"outputs\": {\n      \"stdout.log\": {\n        \"bytes\": 0,\n        \"sha256\": \"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855\"\n      },\n      \"stderr.log\": {\n        \"bytes\": 155,\n        \"sha256\": \"7aeab8d8f8e0207f393a35e5d8565a5f33b312277a346bc5c3c23259aee3746b\"\n      }\n    },\n    \"failure\": null\n  },\n  \"after\": {\n    \"identity\": {\n      \"pid\": 2677,\n      \"starttime\": 11221,\n      \"proc_directory\": {\n        \"device\": 24,\n        \"inode\": 15823\n      },\n      \"exe_path\": \"/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/fixture/counter\",\n      \"exe\": {\n        \"device\": 66305,\n        \"inode\": 9468920\n      },\n      \"exe_bytes\": 21056,\n      \"exe_sha256\": \"2722a6e712bd871f583c191fad2ff551e0017acd71b845128b8cab1333151b91\",\n      \"cmdline_hex\": \"2f686f6d652f72756e6e65722f776f726b2f6e73736f632f6e73736f632f636c6f75642d6d61696e636869702d75736572737461636b2d666978747572652f666978747572652f636f756e74657200\",\n      \"cgroup_hex\": \"303a3a2f73797374656d2e736c6963652f686f737465642d636f6d707574652d6167656e742e736572766963650a\",\n      \"root\": {\n        \"device\": 66305,\n        \"inode\": 2\n      },\n      \"namespaces\": {\n        \"mnt\": \"mnt:[4026531832]\",\n        \"pid\": \"pid:[4026531836]\",\n        \"user\": \"user:[4026531837]\",\n        \"cgroup\": \"cgroup:[4026531835]\"\n      }\n    },\n    \"process\": {\n      \"pid\": 2677,\n      \"state\": \"S\",\n      \"ppid\": 2665,\n      \"pgrp\": 2677,\n      \"session\": 2677,\n      \"utime\": 0,\n      \"stime\": 0,\n      \"starttime\": 11221\n    },\n    \"tracer_pid\": 0,\n    \"tasks\": [\n      {\n        \"pid\": 2677,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      },\n      {\n        \"pid\": 2678,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      },\n      {\n        \"pid\": 2679,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      },\n      {\n        \"pid\": 2680,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      }\n    ]\n  },\n  \"reader\": {\n    \"status\": \"REJECTED_FIXTURE_STACK_READER\",\n    \"identity\": {\n      \"pid\": 2677,\n      \"starttime\": 11221,\n      \"proc_directory\": {\n        \"device\": 24,\n        \"inode\": 15823\n      },\n      \"exe_path\": \"/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/fixture/counter\",\n      \"exe\": {\n        \"device\": 66305,\n        \"inode\": 9468920\n      },\n      \"exe_bytes\": 21056,\n      \"exe_sha256\": \"2722a6e712bd871f583c191fad2ff551e0017acd71b845128b8cab1333151b91\",\n      \"cmdline_hex\": \"2f686f6d652f72756e6e65722f776f726b2f6e73736f632f6e73736f632f636c6f75642d6d61696e636869702d75736572737461636b2d666978747572652f666978747572652f636f756e74657200\",\n      \"cgroup_hex\": \"303a3a2f73797374656d2e736c6963652f686f737465642d636f6d707574652d6167656e742e736572766963650a\",\n      \"root\": {\n        \"device\": 66305,\n        \"inode\": 2\n      },\n      \"namespaces\": {\n        \"mnt\": \"mnt:[4026531832]\",\n        \"pid\": \"pid:[4026531836]\",\n        \"user\": \"user:[4026531837]\",\n        \"cgroup\": \"cgroup:[4026531835]\"\n      }\n    },\n    \"native_attachment_authorized\": false,\n    \"scheduling_perturbed\": true,\n    \"native_memory_writes_permitted\": false,\n    \"threads\": [],\n    \"detach_attempted\": false,\n    \"permissions\": {\n      \"may-write-registers\": false,\n      \"may-write-memory\": false,\n      \"may-insert-breakpoints\": false,\n      \"may-insert-tracepoints\": false,\n      \"may-insert-fast-tracepoints\": false,\n      \"may-call-functions\": false\n    },\n    \"auto_load\": {\n      \"python-scripts\": false,\n      \"gdb-scripts\": false,\n      \"local-gdbinit\": false,\n      \"libthread-db\": false\n    },\n    \"error\": \"AssertionError()\",\n    \"traceback\": \"Traceback (most recent call last):\\n  File \\\"/home/runner/work/nssoc/nssoc/scripts/mainchip_userstack_gdb_reader.py\\\", line 39, in run\\n    assert gdb.current_progspace().filename=='/proc/'+str(pid)+'/exe'\\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\\nAssertionError\\n\",\n    \"detached\": false,\n    \"finished_monotonic_ns\": 112346283346\n  },\n  \"error\": \"AssertionError({'command': ['/usr/bin/gdb', '--nx', '--nh', '--quiet', '--batch', '-iex', 'set auto-load off', '-iex', 'set debuginfod enabled off', '-x', '/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/twenty/sample-00/reader.gdb'], 'deadline_s': 10, 'status': 'COMPLETED_SUPERVISED_COMMAND', 'debugger_pid': 2683, 'cleanup': {'attempts': [{'signal': 15, 'members': []}], 'zombies': [], 'live_remaining': False}, 'returncode': 1, 'elapsed_s': 0.10861210299999868, 'outputs': {'stdout.log': {'bytes': 0, 'sha256': 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855'}, 'stderr.log': {'bytes': 155, 'sha256': '7aeab8d8f8e0207f393a35e5d8565a5f33b312277a346bc5c3c23259aee3746b'}}, 'failure': None})\",\n  \"after_rejection\": {\n    \"identity\": {\n      \"pid\": 2677,\n      \"starttime\": 11221,\n      \"proc_directory\": {\n        \"device\": 24,\n        \"inode\": 15823\n      },\n      \"exe_path\": \"/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/fixture/counter\",\n      \"exe\": {\n        \"device\": 66305,\n        \"inode\": 9468920\n      },\n      \"exe_bytes\": 21056,\n      \"exe_sha256\": \"2722a6e712bd871f583c191fad2ff551e0017acd71b845128b8cab1333151b91\",\n      \"cmdline_hex\": \"2f686f6d652f72756e6e65722f776f726b2f6e73736f632f6e73736f632f636c6f75642d6d61696e636869702d75736572737461636b2d666978747572652f666978747572652f636f756e74657200\",\n      \"cgroup_hex\": \"303a3a2f73797374656d2e736c6963652f686f737465642d636f6d707574652d6167656e742e736572766963650a\",\n      \"root\": {\n        \"device\": 66305,\n        \"inode\": 2\n      },\n      \"namespaces\": {\n        \"mnt\": \"mnt:[4026531832]\",\n        \"pid\": \"pid:[4026531836]\",\n        \"user\": \"user:[4026531837]\",\n        \"cgroup\": \"cgroup:[4026531835]\"\n      }\n    },\n    \"process\": {\n      \"pid\": 2677,\n      \"state\": \"S\",\n      \"ppid\": 2665,\n      \"pgrp\": 2677,\n      \"session\": 2677,\n      \"utime\": 0,\n      \"stime\": 0,\n      \"starttime\": 11221\n    },\n    \"tracer_pid\": 0,\n    \"tasks\": [\n      {\n        \"pid\": 2677,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      },\n      {\n        \"pid\": 2678,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      },\n      {\n        \"pid\": 2679,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      },\n      {\n        \"pid\": 2680,\n        \"state\": \"S\",\n        \"ppid\": 2665,\n        \"pgrp\": 2677,\n        \"session\": 2677,\n        \"utime\": 0,\n        \"stime\": 0,\n        \"starttime\": 11221,\n        \"tracer_pid\": 0\n      }\n    ]\n  },\n  \"status_before_final_binding_rejection\": \"REJECTED_OWNED_FIXTURE_ATTACHMENT\",\n  \"held_pin_after_rejection\": {\n    \"identity\": {\n      \"pid\": 2677,\n      \"starttime\": 11221,\n      \"proc_directory\": {\n        \"device\": 24,\n        \"inode\": 15823\n      },\n      \"exe_path\": \"/home/runner/work/nssoc/nssoc/cloud-mainchip-userstack-fixture/fixture/counter\",\n      \"exe\": {\n        \"device\": 66305,\n        \"inode\": 9468920\n      },\n      \"exe_bytes\": 21056,\n      \"exe_sha256\": \"2722a6e712bd871f583c191fad2ff551e0017acd71b845128b8cab1333151b91\",\n      \"cmdline_hex\": \"2f686f6d652f72756e6e65722f776f726b2f6e73736f632f6e73736f632f636c6f75642d6d61696e636869702d75736572737461636b2d666978747572652f666978747572652f636f756e74657200\",\n      \"cgroup_hex\": \"303a3a2f73797374656d2e736c6963652f686f737465642d636f6d707574652d6167656e742e736572766963650a\",\n      \"root\": {\n        \"device\": 66305,\n        \"inode\": 2\n      },\n      \"namespaces\": {\n        \"mnt\": \"mnt:[4026531832]\",\n        \"pid\": \"pid:[4026531836]\",\n        \"user\": \"user:[4026531837]\",\n        \"cgroup\": \"cgroup:[4026531835]\"\n      }\n    },\n    \"exit_not_observed\": true\n  }\n}\n"
+    }
+  },
+  "original_rejection_preserved": true,
+  "new_fixture_run": false,
+  "native_process_restored": false,
+  "native_attachment_authorized": false,
+  "normal_continuation_accepted": false
+}
