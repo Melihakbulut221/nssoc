@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-25T13:35:48.955170+00:00",
+  "updated_at": "2026-10-25T13:48:23.361307+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "510bf0784916020110df3860ac10742abf4aa3cd",
+  "root_source_before_receipt": "2bc48fcc9a1ad864f77e95a1c41d6a09dea864d4",
   "monitor": {
     "branch": "main",
     "source": "8689cb4b866b050f4136482d34433a62491f95ef",
-    "inventory_version": 44,
+    "inventory_version": 45,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40163484810,
@@ -14,33 +14,7 @@
     "automatic_native_dispatch": false,
     "last_verified_run_status": "ATTENTION_REQUIRED: actual observation succeeded and published; nonzero exit reflects tracked open failures, not MONITOR_ERROR"
   },
-  "active_runs": {
-    "Phase318 corrected exact MIM coordinates saved-capture readback": {
-      "run": 40198176471,
-      "head_sha": "7173cb97e632829ea8bbfeab49263f9730828e40",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121183463770,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121183618129,
-          "name": "saved-capture-readback",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Authenticate every original archive byte then read unchanged full capture once"
-          ]
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -576,16 +550,85 @@
       "sole_corrected_readback_run": 40198176471,
       "corrected_readback_source": "7173cb97e632829ea8bbfeab49263f9730828e40",
       "corrected_release": 423424431
+    },
+    "cdc_v45": {
+      "run": 40196820337,
+      "source": "f028f7f0524cbe8f504fca6b4c21108f6a18cca5",
+      "status": "FAILED_STRICT_MUTATION_SITE_CLASSIFICATION_AFTER_ALL_POSITIVES_PASSED",
+      "summary_asset": 675127920,
+      "summary_sha256": "65b6f9459fa693a91012fa834d31fbfe0d5d78e89aa49aac3679e5e639ae85a8",
+      "RTL_named_passed": 66,
+      "mapped_named_passed": 33,
+      "syntheses_passed": 6,
+      "accepted_compiled_mutants": 9,
+      "required_compiled_mutants": 18,
+      "failed_mutation": "ignore_read_reset",
+      "failed_site": "pcie_gen12_record_cdc_harness.py:206 reset public rv/wa barrier",
+      "failure": "AssertionError('unqualified failure site')",
+      "failed_mutation_accepted": false,
+      "root_cause": "Existing declared predicate differs from ast.unparse formatting only: second not operand gains parentheses. Canonical AST qualification proposed; harness/RTL/oracle remain unchanged.",
+      "remaining_live_processes": 0,
+      "publication_complete": true,
+      "complete_CDC_accepted": false,
+      "full_PHY_accepted": false,
+      "next": "Review narrow canonical expression-site classifier and real exact-site controls; do not weaken compile/setup/resource/unknown error rejection."
+    },
+    "phase318_v45": {
+      "run": 40198176471,
+      "source": "7173cb97e632829ea8bbfeab49263f9730828e40",
+      "status": "REJECTED_PHYSICAL_ROUTE_METADATA_SCHEMA_BEFORE_WAVEFORM_REVIEW",
+      "summary_asset": 675134897,
+      "summary_sha256": "b31c0cad3d4b2b8444c853cd5ef29c3a6db1899ef2a886c720abe438cacde657",
+      "failure": "KeyError('net') in physical generation.routes selection",
+      "actual_waveform_review_executed": false,
+      "rows42_produced": false,
+      "actual_graph_row_controls_completed": false,
+      "actual_route_schema": {
+        "rows_each_polarity": 586,
+        "single_net_records": 578,
+        "dual_plus_minus_MIM_records": 8
+      },
+      "next": "Explicit schema handling must retain83single-net AVSS routes and both seed-MIM bottom routes; no silent missing-net filtering. Source-derived actual-JSON controls before one reviewed retry.",
+      "geometry_changed": false,
+      "electrical_rejection_preserved": true,
+      "first_polarity_coordinate_seam_passed": true,
+      "both_polarities_full_native_inventory_accepted": false
+    },
+    "cloud_only_v45": {
+      "local_project_files": 0,
+      "local_native_processes": 0,
+      "local_native_archives_downloaded": false,
+      "latest_user_cloud_only_instruction_preserved": true,
+      "goal_completed": false
+    },
+    "mainchip_v45": {
+      "latest_saved_process_run": 40185550438,
+      "latest_summary_sha256": "fdaaf970e566fd1fef38163048836fad0084657424b022677a1ff9815e3644db",
+      "source_and_publication_candidate": "13225b8f789a992942e24d360703794602e0b2cc",
+      "root_full_source_review": true,
+      "independent_peer_review_clear": true,
+      "controls_only_dispatch_authorized": true,
+      "native_restore_authorized": false,
+      "cold_restart_authorized": false,
+      "original_timing_preserved": "20/4/8/8 ns plus5percent derating",
+      "routing_complete": false
+    },
+    "cdr_v45": {
+      "recovery_run": 40196976458,
+      "recovery_passed": true,
+      "prerequisite_source": "97c8662b80a70d77bfcdeb1c1f34d0c4812ad8e6",
+      "next_MIM_controller_source_in_preparation": true,
+      "native_extraction_authorized": false,
+      "qualified_PEX": false
     }
   },
   "next_actions": [
-    "Keep all project source, CAD, simulations and native archives in GitHub. Local project/tmp/native processes stay absent; RAM-only source/derived JSON/log orchestration is allowed.",
-    "Consume sole CDC40196820337 actual66 RTL/33mapped/18compiled-fault proof; preserve prior40193110968 setup failure. No automatic retry or relaxed resource/electrical gates.",
-    "Mainchip40185550438 passed original log-progress gate and saved23process images, but routing has not returned. Review next source candidate7e266d... plus actual publication template. Authenticate full current/previous inner reports and native-log prefix in cloud before same-process restore; preserve original7200 budget and20/4/8/8ns+5percent timing.",
-    "CDR40196976458 recovered and published exact existing original artifacts to423388618/423388657. Retain original native publication failures. Bind next MIM/precise-order/composition source to current recovered500-device geometry and238native/114electrical maps; no unreviewed extraction or loaded electrical qualification.",
-    "Phase318 coordinate source controls40197625874 passed all32refusals and inherited gates. Consume sole corrected readback40198176471 at7173cb97/release423424431, requiring actual32coordinate+36graph/row faults,42native rows and one original frozen replay. Original40195581462 failure retained; no new simulation/geometry.",
-    "Actual AVSS currents/headroom still require42native rows and36graph/row plus32actual coordinate refusals and one unchanged frozen electrical replay. Do not infer emitter current from Ic or geometric layers from Magic type0.",
-    "Common Gen3 link-training owner, lane mapping, actual PHY handshakes, loaded analog behavior and final chip signoff remain open. Existing8h read-only monitor retained; no automatic native dispatch."
+    "Keep source, CAD, simulations, native archives and resume evidence on GitHub. Local project/tmp/native processes remain absent; RAM metadata/source/derived-JSON orchestration only.",
+    "CDC40196820337 passed66RTL,33mapped and6syntheses, then rejected mutant10(ignore_read_reset) at unqualified reset-barrier assertion. Preserve9accepted mutants and exactfailure. Fix only canonical AST qualification of already declared expressions; keep RTL/harness/oracle bytes and all error/resource gates unchanged. Hosted controls before any reviewed full-proof retry.",
+    "Phase31840198176471 passed qualified MIM-point mapping but rejected mixed physical route schema before waveform review. Explicitly include83single-net and2seed-MIM AVSS routes, prove both exact schemas with actual pinned JSON controls; preserve original electrical rejection and both failed readbacks. No new simulation/geometry.",
+    "Mainchip40185550438 is saved after original progress gates passed, not route complete. Root+peer cleared source/publication candidate13225b8f. One controls-only registration/run allowed; native restore remains false until actual74+60+39source/15publication controls and separate metadata review. Same saved process, original7200 budget,20/4/8/8ns+5percent timing, no cold restart.",
+    "CDR artifact-only recovery40196976458 is complete. Derive next MIM/precise-two-order/composition source from exact97c8662b prerequisites and current recovered500-device geometry; keep allnative flagsfalse until actual source review/controls.",
+    "Retain full PHY/link-training/lane-mapping/analog/electrical and final physical/RC/STA acceptance boundaries. Existing8h read-only monitor remains; no automated native retry."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -719,95 +762,11 @@
     "observed_40196333080": 40196333080,
     "observed_40196976458": 40196976458,
     "observed_40197625874": 40197625874,
-    "observed_40185550438": 40185550438
+    "observed_40185550438": 40185550438,
+    "observed_40198176471": 40198176471
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
-    {
-      "run": 40194778085,
-      "head_sha": "ad29bca9e304237d7982818ba32c6e77eed183bb",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121173157550,
-          "name": "registration-only",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40194814568,
-      "head_sha": "97486612300ad3d2061a1ae23277d8078df74a03",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121173275191,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121173394827,
-          "name": "saved-capture-readback",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40195581462,
-      "head_sha": "6b831923d5e31631e894aad11a1c95c31cd44050",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121175593506,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121175726288,
-          "name": "saved-capture-readback",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40196122448,
-      "head_sha": "dbb4e3754a01a0318f01ce1ffb49a3f056d7083c",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121177215169,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121177363670,
-          "name": "complete-functional-proof",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
     {
       "run": 40196820337,
       "head_sha": "f028f7f0524cbe8f504fca6b4c21108f6a18cca5",
@@ -832,102 +791,10 @@
       ]
     },
     {
-      "run": 40196100132,
-      "head_sha": "587408ba077b22cacecbc7dca815cccbcf6ef305",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121177139674,
-          "name": "registration-only",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40196333080,
-      "head_sha": "9a7d4be4e5e05e5c336155b96579912d9695e681",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121177852698,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121177952717,
-          "name": "recovery",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40196976458,
-      "head_sha": "5cd87e1ca092463285b3ff885028d21e22f1fe3e",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121179828129,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121179947033,
-          "name": "recovery (rc)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121179947084,
-          "name": "recovery (binding)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40197625874,
-      "head_sha": "3f27e85abd1ec0ffdd18b250cacf04caf1d28d43",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121181797600,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121181922781,
-          "name": "saved-capture-readback",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40198176471,
       "head_sha": "7173cb97e632829ea8bbfeab49263f9730828e40",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
@@ -940,40 +807,15 @@
         {
           "id": 121183618129,
           "name": "saved-capture-readback",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Authenticate every original archive byte then read unchanged full capture once"
-          ]
-        }
-      ]
-    },
-    {
-      "run": 40185550438,
-      "head_sha": "85f1aeee0e92eb4ad8c4f16fa98814ea30c3f60c",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121145461460,
-          "name": "source-controls",
           "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121145553802,
-          "name": "exact-saved-route",
-          "status": "completed",
-          "conclusion": "success",
+          "conclusion": "failure",
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-25T13:35:48.955170+00:00",
+    "observed_at": "2026-10-25T13:48:23.361307+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -1095,7 +937,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-25T13:35:48.955170+00:00",
+  "local_workspace_verified_empty_at": "2026-10-25T13:48:23.361307+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -3587,6 +3429,56 @@
       "id": 423424431,
       "tag_commit_verified": true,
       "prerelease": true
+    }
+  ],
+  "imported_checkpoint_receipts_v45": [
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-assertion-site-native-rejection-20261025.json",
+      "source": "b673062f95192584f0a3e43c2bd733df98efdb84",
+      "git_blob": "c3d021c120e4aa21dd2e50dede9e7f96b081e196",
+      "bytes": 15429,
+      "sha256": "54d124970a9b4c1ae1ce5a2aef24e1e9b3f0f74bdd93cdb8f9633f054284c5e4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-record-cdc-assertion-site-rejected-result-20261025.json",
+      "source": "b673062f95192584f0a3e43c2bd733df98efdb84",
+      "git_blob": "22b0ad89c273e9f0949d5c9135ec9db91acfd959",
+      "bytes": 65229,
+      "sha256": "65b6f9459fa693a91012fa834d31fbfe0d5d78e89aa49aac3679e5e639ae85a8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025-job.log",
+      "source": "c0523696cb6776660b4e5c455e7ff15079474f39",
+      "git_blob": "9f4cdd6e32af71552ebc95f55748b26d24ca7196",
+      "bytes": 97055,
+      "sha256": "f6438ebf4953706993b3b2f80674f79b522e9b35128aae3b672baa32cb65cc3f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025-parts.json",
+      "source": "c0523696cb6776660b4e5c455e7ff15079474f39",
+      "git_blob": "95b46e535895903f30e33316615d7b78147cd843",
+      "bytes": 868,
+      "sha256": "c75c78e0a8a3c2d7bf05de6743634305b63e0f52229dc0f6a64cede143a9a5dd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025-result.json",
+      "source": "c0523696cb6776660b4e5c455e7ff15079474f39",
+      "git_blob": "7cfe3699cc0af9849706a59860466aca2ac7b4fe",
+      "bytes": 45807,
+      "sha256": "b31c0cad3d4b2b8444c853cd5ef29c3a6db1899ef2a886c720abe438cacde657",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025.json",
+      "source": "c0523696cb6776660b4e5c455e7ff15079474f39",
+      "git_blob": "1446c94b9097decd233383a3893a492933041b28",
+      "bytes": 4131,
+      "sha256": "c6bc421e041270086cbe2984bc58254a8fda178f5e24d6ce82b38f04f1c6edae",
+      "existing_identical": false
     }
   ]
 }

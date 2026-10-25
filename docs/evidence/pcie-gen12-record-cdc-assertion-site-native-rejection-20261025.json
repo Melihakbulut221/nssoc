@@ -1,0 +1,267 @@
+{
+  "actual_completed": {
+    "RTL_named_PASS": 66,
+    "accepted_compiling_mutations": 9,
+    "accepted_mutation_names": [
+      "drop_data",
+      "drop_K",
+      "drop_code_error",
+      "drop_disparity",
+      "drop_comma",
+      "swap_code_disparity",
+      "ignore_ready",
+      "hide_loss",
+      "ignore_write_reset"
+    ],
+    "full_synthesis_and_check_PASS": 6,
+    "mapped_named_PASS": 33
+  },
+  "archive_downloaded": false,
+  "artifacts": {
+    "artifacts": [
+      {
+        "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12600681367/zip",
+        "created_at": "2026-10-25T13:16:34Z",
+        "digest": "sha256:0fccaf8471fa82d5efa4c746365e8d37d25a6a359373f93f92e5962dd4fdcdb1",
+        "expired": false,
+        "expires_at": "2027-01-23T13:15:59Z",
+        "id": 12600681367,
+        "name": "gen12-record-cdc-controls-40196820337-1",
+        "node_id": "MDg6QXJ0aWZhY3QxMjYwMDY4MTM2Nw==",
+        "size_in_bytes": 43554,
+        "updated_at": "2026-10-25T13:16:34Z",
+        "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12600681367",
+        "workflow_run": {
+          "head_branch": "codex/pcie-gen12-record-cdc",
+          "head_repository_id": 1364721142,
+          "head_sha": "f028f7f0524cbe8f504fca6b4c21108f6a18cca5",
+          "id": 40196820337,
+          "repository_id": 1364721142
+        }
+      },
+      {
+        "archive_download_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12600543934/zip",
+        "created_at": "2026-10-25T13:32:58Z",
+        "digest": "sha256:3e3b63039e8dc6b4e0e39ce8c8906d059374eded5958f82c93397543a09a5819",
+        "expired": false,
+        "expires_at": "2027-01-23T13:15:59Z",
+        "id": 12600543934,
+        "name": "gen12-record-cdc-proof-40196820337-1",
+        "node_id": "MDg6QXJ0aWZhY3QxMjYwMDU0MzkzNA==",
+        "size_in_bytes": 145167498,
+        "updated_at": "2026-10-25T13:32:58Z",
+        "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/artifacts/12600543934",
+        "workflow_run": {
+          "head_branch": "codex/pcie-gen12-record-cdc",
+          "head_repository_id": 1364721142,
+          "head_sha": "f028f7f0524cbe8f504fca6b4c21108f6a18cca5",
+          "id": 40196820337,
+          "repository_id": 1364721142
+        }
+      }
+    ],
+    "total_count": 2
+  },
+  "assets": [
+    {
+      "digest": "sha256:23d934bb7de1297d9307869c547ea8e64b40e3314d417ae2a400432eab5da365",
+      "id": 675128012,
+      "name": "pcie-gen12-record-cdc-40196820337-1.parts.json",
+      "size": 850
+    },
+    {
+      "digest": "sha256:65b6f9459fa693a91012fa834d31fbfe0d5d78e89aa49aac3679e5e639ae85a8",
+      "id": 675127920,
+      "name": "pcie-gen12-record-cdc-40196820337-1.summary.json",
+      "size": 65229
+    },
+    {
+      "digest": "sha256:4e7cd5f25e58b9d5932c24518afa32c14968a60992314292019773c011fbd8a7",
+      "id": 675128121,
+      "name": "pcie-gen12-record-cdc-40196820337-1.tar.gz.part0000",
+      "size": 73710594
+    }
+  ],
+  "attempt": 1,
+  "classification": "A real named test reached an explicit reset-barrier assertion without a qualified literal message. The strict classifier refused this site. No RTL defect in the unmutated positive runs, resource failure or unknown-conversion failure is established by this result. No retroactive mutation pass is claimed.",
+  "engineering_accepted": false,
+  "full_PHY_accepted": false,
+  "jobs": [
+    {
+      "completed_at": "2026-10-25T13:16:37Z",
+      "conclusion": "success",
+      "id": 121179339374,
+      "name": "source-controls",
+      "started_at": "2026-10-25T13:16:02Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-25T13:33:01Z",
+      "conclusion": "failure",
+      "id": 121179479427,
+      "name": "complete-functional-proof",
+      "started_at": "2026-10-25T13:16:40Z",
+      "status": "completed"
+    }
+  ],
+  "local_native_execution": false,
+  "native_log": {
+    "bytes": 1563461,
+    "result_chunks": 22,
+    "sha256": "52bb0903dfecf8544df511ad16067e2267171cbb5e85e703e91a1881455e4df8"
+  },
+  "native_terminal_source_pins_unchanged": true,
+  "new_retry_authorized": false,
+  "rejected_mutation": {
+    "actual_assertion_expression": "not self.value('rv') and not self.value('wa')",
+    "actual_assertion_file": "hw/soc/tb/cocotb/pcie_gen12_record_cdc_harness.py",
+    "actual_assertion_line": 206,
+    "actual_assertion_message": null,
+    "classifier_disposition": "REJECTED_UNQUALIFIED_SITE_NOT_COUNTED_AS_DETECTED",
+    "compile_returncode": 0,
+    "full_stdout_stderr_and_terminal_supervision": [
+      {
+        "bytes": 4095,
+        "decoded": "rm -f /home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-record-cdc/simulations/mutant-ignore_read_reset/results.xml\nCOCOTB_TEST_MODULES=test_soc_pcie_gen12_record_cdc_v1 COCOTB_TESTCASE= COCOTB_TEST_FILTER=^test_soc_pcie_gen12_record_cdc_v1\\.resets_held_prefetch_and_startup_stopped_clock$ COCOTB_TOPLEVEL=soc_pcie_gen12_record_cdc_v1 TOPLEVEL_LANG=verilog \\\n         /usr/bin/vvp -M /home/runner/work/_temp/record-cdc-40196820337/venv/lib/python3.12/site-packages/cocotb/libs -m libcocotbvpi_icarus   /home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-record-cdc/simulations/mutant-ignore_read_reset/build/sim.vvp -none  \n     -.--ns INFO     gpi                                ..mbed/gpi_embed.cpp:93   in _embed_init_python              Using Python 3.12.4 interpreter at /home/runner/work/_temp/record-cdc-40196820337/venv/bin/python\n     -.--ns INFO     gpi                                ../gpi/GpiCommon.cpp:79   in gpi_print_registered_impl       VPI registered\n     0.00ns INFO     cocotb                             Running on Icarus Verilog version 12.0 (stable)\n     0.00ns INFO     cocotb                             Seeding Python random module with supplied seed 20261025\n     0.00ns INFO     cocotb                             Initialized cocotb v2.0.1 from /home/runner/work/_temp/record-cdc-40196820337/venv/lib/python3.12/site-packages/cocotb\n     0.00ns INFO     cocotb.regression                  pytest not found, install it to enable better AssertionError messages\n     0.00ns INFO     cocotb                             Running tests\n     0.00ns INFO     cocotb.regression                  running test_soc_pcie_gen12_record_cdc_v1.resets_held_prefetch_and_startup_stopped_clock (1/1)\n  1756.30ns WARNING  ..efetch_and_startup_stopped_clock Traceback (most recent call last):\n                                                          File \"/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/test_soc_pcie_gen12_record_cdc_v1.py\", line 53, in resets_held_prefetch_and_startup_stopped_clock\n                                                            await link.reset(reset,stopped=stopped)\n                                                          File \"/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/pcie_gen12_record_cdc_harness.py\", line 206, in reset\n                                                            assert not self.value('rv') and not self.value('wa')\n                                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n                                                        AssertionError\n  1756.30ns WARNING  cocotb.regression                  test_soc_pcie_gen12_record_cdc_v1.resets_held_prefetch_and_startup_stopped_clock failed\n  1756.30ns INFO     cocotb.regression                  ******************************************************************************************************************************************\n                                                        ** TEST                                                                              STATUS  SIM TIME (ns)  REAL TIME (s)  RATIO (ns/s) **\n                                                        ******************************************************************************************************************************************\n                                                        ** test_soc_pcie_gen12_record_cdc_v1.resets_held_prefetch_and_startup_stopped_clock   FAIL        1756.30           0.09      20494.61  **\n                                                        ******************************************************************************************************************************************\n                                                        ** TESTS=1 PASS=0 FAIL=1 SKIP=0                                                                   1756.30           0.09      19384.15  **\n                                                        ******************************************************************************************************************************************\n",
+        "event": "raw_stream_tail",
+        "label": "mutant-ignore_read_reset-simulate",
+        "monotonic_seconds": 968.638599872,
+        "offset": 0,
+        "previous_forwarded_end": 0,
+        "sha256": "96418a80c97bb0fa545006725cf6d47ad6b3f66cc14c9ace09cb453d3b0ae47c",
+        "skipped_bytes": 0,
+        "state": {
+          "child_pid": 8764,
+          "phase": "command:mutant-ignore_read_reset-simulate"
+        },
+        "stream": "stdout",
+        "utc": "2026-10-25T13:32:27Z"
+      },
+      {
+        "bytes": 273,
+        "decoded": "make: *** [/home/runner/work/_temp/record-cdc-40196820337/venv/lib/python3.12/site-packages/cocotb_tools/makefiles/simulators/Makefile.icarus:67: /home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-record-cdc/simulations/mutant-ignore_read_reset/results.xml] Error 1\n",
+        "event": "raw_stream_tail",
+        "label": "mutant-ignore_read_reset-simulate",
+        "monotonic_seconds": 968.639458016,
+        "offset": 0,
+        "previous_forwarded_end": 0,
+        "sha256": "83444bf3aa57f56f937785b9a2f178844391e8958f41993ff61d5119210e2684",
+        "skipped_bytes": 0,
+        "state": {
+          "child_pid": 8764,
+          "phase": "command:mutant-ignore_read_reset-simulate"
+        },
+        "stream": "stderr",
+        "utc": "2026-10-25T13:32:27Z"
+      },
+      {
+        "argv": [
+          "env",
+          "-u",
+          "COCOTB_TESTCASE",
+          "-u",
+          "MODULE",
+          "-u",
+          "TESTCASE",
+          "PATH=/home/runner/work/_temp/record-cdc-40196820337/venv/bin:/home/runner/work/_temp/record-cdc-40196820337/tools/bin:/snap/bin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+          "PYTHONNOUSERSITE=1",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "PYTHONUNBUFFERED=1",
+          "COCOTB_REWRITE_ASSERTION_FILES=",
+          "COCOTB_ANSI_OUTPUT=0",
+          "COCOTB_RANDOM_SEED=20261025",
+          "COCOTB_LOG_LEVEL=INFO",
+          "COCOTB_REDUCED_LOG_FMT=1",
+          "COCOTB_HDL_TIMEUNIT=1ns",
+          "COCOTB_HDL_TIMEPRECISION=1ps",
+          "MAKEFLAGS=",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=4",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-record-cdc/simulations/mutant-ignore_read_reset/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-record-cdc/simulations/mutant-ignore_read_reset/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-record-cdc/mutations/ignore_read_reset/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-record-cdc/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=^test_soc_pcie_gen12_record_cdc_v1\\.resets_held_prefetch_and_startup_stopped_clock$",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-record-cdc/simulations/mutant-ignore_read_reset/results.xml"
+        ],
+        "elapsed_seconds": 0.523565021999957,
+        "event": "command_end",
+        "label": "mutant-ignore_read_reset-simulate",
+        "last_memory_sentinel_sample": {
+          "available_kib": 15266460,
+          "enumeration_disappearances": [],
+          "excluded_nonrunning": [],
+          "group_rss_kib": 12220,
+          "group_rss_may_double_count_shared_pages": true,
+          "members": [
+            {
+              "pgrp": 8764,
+              "pid": 8764,
+              "rss_kib": 2624,
+              "starttime": 96811
+            },
+            {
+              "pgrp": 8764,
+              "pid": 8765,
+              "rss_kib": 9596,
+              "starttime": 96811
+            }
+          ],
+          "resampling_evidence": [],
+          "sampling_attempts": 1,
+          "sampling_elapsed_seconds": 0.0030859620000001087,
+          "total_snapshot_budget_seconds": 0.1
+        },
+        "maximum_group_rss_kib": 10485760,
+        "memory_read_error": null,
+        "minimum_available_kib": 2097152,
+        "monotonic_seconds": 968.640227266,
+        "pid": 8764,
+        "process_group_cleanup": {
+          "remaining_live": [],
+          "remaining_nonrunning": [],
+          "signals": []
+        },
+        "returncode": 2,
+        "state": {
+          "child_pid": 8764,
+          "phase": "command:mutant-ignore_read_reset-simulate"
+        },
+        "stderr_bytes": 273,
+        "stderr_sha256": "83444bf3aa57f56f937785b9a2f178844391e8958f41993ff61d5119210e2684",
+        "stdout_bytes": 4095,
+        "stdout_sha256": "96418a80c97bb0fa545006725cf6d47ad6b3f66cc14c9ace09cb453d3b0ae47c",
+        "supervision_failure": null,
+        "utc": "2026-10-25T13:32:27Z"
+      }
+    ],
+    "name": "ignore_read_reset",
+    "remaining_eight_mutations": "NOT_REACHED",
+    "simulate_returncode": 2,
+    "simulation_time_ns": 1756.3
+  },
+  "release": {
+    "draft": false,
+    "id": 423414284,
+    "prerelease": true,
+    "tag_name": "cloud-results-40196820337-1-pcie-gen12-record-cdc",
+    "target_commitish": "f028f7f0524cbe8f504fca6b4c21108f6a18cca5"
+  },
+  "result_asset": {
+    "bytes": 65229,
+    "chunks": 22,
+    "id": 675127920,
+    "log_reassembled_identical": true,
+    "sha256": "65b6f9459fa693a91012fa834d31fbfe0d5d78e89aa49aac3679e5e639ae85a8"
+  },
+  "run": 40196820337,
+  "schema": "gen12-record-cdc-exact-native-classifier-rejection-v1",
+  "source": "f028f7f0524cbe8f504fca6b4c21108f6a18cca5",
+  "source_pin_count": 111,
+  "status": "FAILED_EXACT_UNQUALIFIED_ASSERTION_SITE_AFTER_COMPLETE_POSITIVES"
+}

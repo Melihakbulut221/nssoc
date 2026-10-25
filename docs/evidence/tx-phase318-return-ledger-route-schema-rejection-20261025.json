@@ -1,0 +1,89 @@
+{
+  "schema": "phase318-return-ledger-route-schema-rejection-v1",
+  "run": {
+    "id": 40198176471,
+    "head_sha": "7173cb97e632829ea8bbfeab49263f9730828e40",
+    "status": "completed",
+    "conclusion": "failure",
+    "run_attempt": 1,
+    "created_at": "2026-10-25T13:33:49Z",
+    "updated_at": "2026-10-25T13:36:23Z",
+    "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40198176471"
+  },
+  "jobs": [
+    {
+      "id": 121183463770,
+      "name": "source-controls",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T13:33:54Z",
+      "completed_at": "2026-10-25T13:34:31Z"
+    },
+    {
+      "id": 121183618129,
+      "name": "saved-capture-readback",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:34:33Z",
+      "completed_at": "2026-10-25T13:36:22Z"
+    }
+  ],
+  "release": {
+    "id": 423424431,
+    "tag_name": "cloud-results-40198176471-1-tx-phase-reset334-return-ledger",
+    "target_commitish": "7173cb97e632829ea8bbfeab49263f9730828e40",
+    "draft": false,
+    "prerelease": true,
+    "html_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-results-40198176471-1-tx-phase-reset334-return-ledger"
+  },
+  "assets": [
+    {
+      "id": 675134994,
+      "name": "tx-phase-reset334-return-ledger-40198176471-1.parts.json",
+      "size": 868,
+      "digest": "sha256:c75c78e0a8a3c2d7bf05de6743634305b63e0f52229dc0f6a64cede143a9a5dd"
+    },
+    {
+      "id": 675134897,
+      "name": "tx-phase-reset334-return-ledger-40198176471-1.summary.json",
+      "size": 45807,
+      "digest": "sha256:b31c0cad3d4b2b8444c853cd5ef29c3a6db1899ef2a886c720abe438cacde657"
+    },
+    {
+      "id": 675135099,
+      "name": "tx-phase-reset334-return-ledger-40198176471-1.tar.gz.part0000",
+      "size": 6590,
+      "digest": "sha256:3af073912b4df9a1f3042722c5d7a132e489a2fbabad33deb9806b463f396a31"
+    }
+  ],
+  "error": "KeyError('net')",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_tx_phase_reset334_return_ledger.py\", line 209, in main\n    catalog,ledger_inputs,ledger_proof=ledger_bridge.prepare_inventory(m,work,inputs,(case/'contract.json').read_bytes())\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/tx_phase_reset334_return_ledger_bridge.py\", line 141, in prepare_inventory\n    catalog=ledger.inventory(**supplied)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/tx_phase_reset334_return_ledger.py\", line 187, in inventory\n    routes=[x for x in gen['routes'] if x['net']=='AVSS'],\n                                        ~^^^^^^^\nKeyError: 'net'\n",
+  "actual_prepared_input_refusals": 24,
+  "waveform_review_executed": false,
+  "original_frozen_review_replays_this_run": 0,
+  "actual_graph_row36_refusals_executed": false,
+  "actual_restored_coordinate32_refusals_executed": false,
+  "ledger42_rows_produced": false,
+  "qualified_coordinate_mapping_reached_before_new_error": true,
+  "qualification": "Source-order inference from exact traceback: first polarity coordinate join completed before route metadata filtering. No complete P/N inventory result was emitted.",
+  "original_electrical_rejection_remains": true,
+  "new_simulation": false,
+  "new_extraction": false,
+  "geometry_edit": false,
+  "retry_dispatched": false,
+  "outputs": {},
+  "files": {
+    "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025-result.json": {
+      "bytes": 45807,
+      "sha256": "b31c0cad3d4b2b8444c853cd5ef29c3a6db1899ef2a886c720abe438cacde657"
+    },
+    "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025-parts.json": {
+      "bytes": 868,
+      "sha256": "c75c78e0a8a3c2d7bf05de6743634305b63e0f52229dc0f6a64cede143a9a5dd"
+    },
+    "docs/evidence/tx-phase318-return-ledger-route-schema-rejection-20261025-job.log": {
+      "bytes": 97055,
+      "sha256": "f6438ebf4953706993b3b2f80674f79b522e9b35128aae3b672baa32cb65cc3f"
+    }
+  }
+}
