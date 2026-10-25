@@ -1,0 +1,57 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset244-avss18-source-cloud
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset244-avss18-source-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    env:
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: "3.12"
+      - name: Exact source-derived rectangle and unchanged circuit plans, both polarities
+        run: |
+          set -euo pipefail
+          if bash -o pipefail -c '(exit 7) | tee /dev/null'; then exit 1; fi
+          python3 scripts/check_tx_phase_reset244_avss18_source.py | tee source-controls.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open("source-controls.json"))
+          assert x["status"] == "PASS_TWO_POLARITY_AVSS18_SOURCE_PLANS_54_FAULTS_NO_NATIVE_PROOF"
+          assert len(x["faults"]) == 54 and all(v["rejected"] for v in x["faults"])
+          assert len(x["derivation"]["edits"]) == 3 and x["derivation"]["exact_reversal"] is True
+          assert set(x["polarity"]) == {"p", "n"}
+          for v in x["polarity"].values():
+              assert len(v["candidate_source_plan"]["straps"]) == 32
+              assert len(v["candidate_source_plan"]["vias"]) == 178
+              assert len(v["overlap"]) == 2
+              assert v["report_comparison"]["source_new_rect_um"] == [103,89,121,2371]
+              assert v["synthetic_report_projection_only"] is True
+              assert v["native_material_proof"] is False
+          assert all(x[k] is False for k in ("native_execution", "native_geometry_proved", "native_DRC_LVS_RC_passed", "electrical_accepted", "all31_clock_tree_accepted", "PLL_connected", "full_PHY_accepted"))
+          assert all(x["source_method"][k] is False for k in ("native_generation_authorized", "simulation_authorized", "extraction_authorized"))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: tx-phase-reset244-avss18-source-controls
+          path: |
+            source-controls.json
+            hw/soc/out/tx-phase-reset244-avss18-source-controls/
+          if-no-files-found: error
+          retention-days: 90
