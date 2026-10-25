@@ -8357,3 +8357,16 @@ CDR current ledger40171679250 PASS preserves all original electrical failures. E
 Harmless GDB fixture initially failed40172782148 before sample0. Exact hosted artifact readback40173543363 identified executable display-string equality. Narrow file-identity repair40174045028 PASS20 samples,24 original controls plus3 spelling positives/8 wrong-file faults with cleanup proof. No chip process was restored or attached. Implement exact latest-capsule/live-container admission before actual bounded chip stack observation. Original no-log/clock/derate gates stay unchanged.
 
 Full serial PHY, routed serial main chip and final setup/hold closure remain open.
+
+
+### 2026-10-25T08:32:05.911323+00:00 — cloud-only checkpoint v34
+
+Local project/tmp artifacts and CAD processes are absent. Sources, proofs and computation remain GitHub. Inventory109 exact handles; existing8h read-only monitor is active. Its latest checked scheduled40163484810 did observe/publish successfully; exit1 means ATTENTION_REQUIRED for tracked open native failures, not MONITOR_ERROR. It does not dispatch repairs automatically.
+
+Four actual fresh318 OPs40175085823 passed: all318 flags and4726 electrical/thermal zero states, clean native exit, unchanged models/sources. Full172-path implementation closure imported7f951fc7. Next firstp-high34ns loaded transient with original source/oracles and full states;220min portable segment leaves checkpoint/publication margin. Preserve same process if saved. Frozen first-fall gate is UI/2=62.5ps, not31.25ps; prior prose is not31.25ps evidence. No actual loaded transient acceptance yet.
+
+C/D shunt candidate40176503143 generated real layout and passes reported original DRC/deep-flat LVS/plane steps but fails annotation recovery. Overall physical/strict-wire/RC/electrical acceptance remains false. Diagnose exact log, preserve candidate and passed evidence, then corrected authenticated recovery; hold A/B arm until shared cause known.
+
+Qualified harmless GDB43-path closure imported81341b09. Latest actual-container binding source0128a77 is not executed; generated-controller identity/descriptor corrected separately and exceptional supervisor final-cleanup proof is under repair. Hosted controls must pass before actual chip attach; original no-log/timing gates unchanged.
+
+Full serial PHY, routed serial chip and final timing remain open.
