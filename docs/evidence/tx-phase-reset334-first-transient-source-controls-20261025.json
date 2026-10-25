@@ -1,0 +1,308 @@
+{
+  "status": "PASS_PHYSICAL334_TRANSIENT_SOURCE_CONTROLS_NOT_DUT_ACCEPTANCE",
+  "reversible_source_derivation": {
+    "reversible_edits": 29,
+    "preserved_functions": {
+      "digest": "5ad57d31673808040a8fc96717e685ddcb175dfb774a3a6d61a30ae1182fa7d3",
+      "api": "c429e6ba22f15e8942e49f7ac9bec74ff0e1aa7f1a12ee5b8ab60ca19589141b",
+      "byte_hash": "73b8725b5f04aeaf8369486537a008ca917d3b6a05a6c7a46b853d7ce2a1b446",
+      "raw_state": "1a4b4a5976af497aeebe06c208822c36d58c0f76cb87c09fbcaa106df38a3611",
+      "verify_prefix": "59747b07229fe7caa9f6e869f632fd99c9b6d84c7d5eee0c375f2d316efc68b4",
+      "spice_lines": "b15319d03d25cb4c6ab4bf8ece15de21537e3837b4f3762c1d3fd3eeee6d404c",
+      "main.run": "c62a081b43310dba352cd67a1f58c9dda50a3df217ab43897dea55588e3c7f16",
+      "main.state": "8575be3b31eb8885293565a142addd8c3617f8da14500b958a70ccaf72b22dac",
+      "main.dump": "5def65fd414669465c81ae2259f8c1847822465ba5ba2b51e67e4367b92e0637"
+    },
+    "no_native_execution": true
+  },
+  "inherited_zero_OP_controls": {
+    "status": "PASS_FROZEN318_AND_NEW_ZERO_OP_SOURCE_CONTROLS_ONLY",
+    "protected_files": 141,
+    "initialization_controls": {
+      "status": "PASS_SOURCE_ONLY318_INITIALIZATION_AND_GATE_CONTROLS",
+      "source_derivations": [
+        {
+          "path": "scripts/cloud_tx_phase_zero_op_initialization.py",
+          "function": "targets",
+          "original_sha256": "f04cefb6faced62d70e31677899c51ec45093a4353083fe57758f091a3295795",
+          "derived_sha256": "4449fc36ebc7174773a89f1a3a3a0f8d274461650c0a52d64776d124bf166cd7",
+          "edits": [
+            [
+              "==106",
+              "==318",
+              1
+            ]
+          ],
+          "byte_exact_reversal": true
+        },
+        {
+          "path": "scripts/cloud_tx_phase_zero_op_initialization.py",
+          "function": "flag_block",
+          "original_sha256": "3ea42932da62cf2be147e8410a616fd56e385aebd51ec969a7c90913d4fd0943",
+          "derived_sha256": "3ea42932da62cf2be147e8410a616fd56e385aebd51ec969a7c90913d4fd0943",
+          "edits": [],
+          "byte_exact_reversal": true
+        },
+        {
+          "path": "scripts/cloud_tx_phase_zero_op_initialization.py",
+          "function": "op_only",
+          "original_sha256": "ade67778b22bb8db5f48ffa467bc5c021b2e6d9dc56fa55f84b6262dd287726f",
+          "derived_sha256": "ade67778b22bb8db5f48ffa467bc5c021b2e6d9dc56fa55f84b6262dd287726f",
+          "edits": [],
+          "byte_exact_reversal": true
+        },
+        {
+          "path": "scripts/cloud_tx_phase_zero_op_initialization.py",
+          "function": "flags",
+          "original_sha256": "bc6c6b801fbecccd065965f8f998058f2d78336886c9651637fad60e6d9a84ce",
+          "derived_sha256": "2988ca8fbc549ccd70c9df455cba7fb4a4bbb0cec02c527084187268a40d12a1",
+          "edits": [
+            [
+              "actual_HBT_targets=106",
+              "actual_HBT_targets=318",
+              1
+            ]
+          ],
+          "byte_exact_reversal": true
+        },
+        {
+          "path": "scripts/cloud_tx_phase_assert_offset_intrinsic.py",
+          "function": "initialized_deck",
+          "original_sha256": "214ab36e47f1ca38ff5ce317205f830812163c6dce4f9390fb959d76bd19e63e",
+          "derived_sha256": "214ab36e47f1ca38ff5ce317205f830812163c6dce4f9390fb959d76bd19e63e",
+          "edits": [],
+          "byte_exact_reversal": true
+        },
+        {
+          "path": "scripts/cloud_tx_phase_assert_offset_intrinsic.py",
+          "function": "gate",
+          "original_sha256": "fb62d408051c8ec953e13926f487a0931a30449b8972cf65fc6de92e39653b47",
+          "derived_sha256": "a452c448a3435388d67bc9f6e3b9b57fa40c8beac5aea9a05fc994173c463fac",
+          "edits": [
+            [
+              "all106_flags",
+              "all318_flags",
+              1
+            ],
+            [
+              "actual_HBT_targets=106",
+              "actual_HBT_targets=318",
+              1
+            ],
+            [
+              "(358,359)",
+              "(4726,4727)",
+              1
+            ]
+          ],
+          "byte_exact_reversal": true
+        }
+      ],
+      "negative_controls": [
+        "missing-native-target",
+        "wrong-OFF-value",
+        "wrong-native-target",
+        "duplicate-native-target",
+        "reordered-native-target",
+        "missing-HBT",
+        "extra-HBT",
+        "old106-HBT-census",
+        "preexisting-alter",
+        "added-IC",
+        "added-UIC",
+        "missing-transient",
+        "changed-frozen-source-scripts/cloud_tx_phase_zero_op_initialization.py",
+        "changed-frozen-source-scripts/cloud_tx_phase_assert_offset_intrinsic.py",
+        "native-failure",
+        "numerical-diagnostic",
+        "missing-solver-proof",
+        "old106-flags",
+        "missing-flag-readback",
+        "wrong-OFF-gate",
+        "nonzero-OP",
+        "old358-OP-columns",
+        "missing-full-capture",
+        "wrong-raw-columns",
+        "rejected-measurement",
+        "failed-one-HBT",
+        "failed-child-phase",
+        "missing-HBT-screen",
+        "missing-child-screen",
+        "prior-validation-error"
+      ],
+      "synthetic_marker_fixture_only": true,
+      "actual_prepared_contracts_exercised": false,
+      "native_simulator_executed": false,
+      "electrical_accepted": false,
+      "all31_clock_tree_accepted": false,
+      "PLL_connected": false,
+      "full_PHY_accepted": false
+    },
+    "zero_OP_gate_controls": {
+      "status": "PASS_SOURCE_ONLY_EXPANDED_ZERO_OP_GATE_LOGIC",
+      "negative_controls": [
+        "native-nonzero-return",
+        "numerical-diagnostic",
+        "missing-solver",
+        "old106-targets",
+        "selective-OFF-value",
+        "missing-native-readback",
+        "multiple-OP-rows",
+        "old358-vector-set",
+        "nonzero-OP-state",
+        "unexpected-transient-file",
+        "changed-source-or-runtime",
+        "retained-validation-error"
+      ],
+      "actual_prepared_path_test_executed": false,
+      "native_executed": false,
+      "zero_OP_accepted": false,
+      "transient_accepted": false
+    },
+    "publication_controls": {
+      "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+      "rejected": [
+        "local-context",
+        "other-repo",
+        "missing-source",
+        "mutable-source",
+        "invalid-run",
+        "invalid-attempt",
+        "invalid-group",
+        "different-release-target",
+        "different-tag-object",
+        "annotated-tag",
+        "different-tag-name",
+        "draft-release",
+        "production-release",
+        "duplicate-asset-name",
+        "asset-digest-missing",
+        "preexisting-wrong-tag",
+        "read-denied-never-creates"
+      ],
+      "existing_partial_assets_preserved": true,
+      "existing_release_not_recreated": true,
+      "new_release_uses_tested_sha": true,
+      "no_permissions_expanded": true
+    },
+    "prerequisite_controls": {
+      "status": "PASS_EXACT_COMPLETED318_PREPARATION_PREREQUISITE_CONTROLS",
+      "negative_controls": [
+        "run-id",
+        "run-source",
+        "run-failure",
+        "summary-run",
+        "summary-source",
+        "wrong-status",
+        "prior-validation-error",
+        "changed-sources",
+        "missing-case",
+        "old106-target-count",
+        "missing-actual-name",
+        "marker-not-synthetic",
+        "missing-target-fault",
+        "native-executed-claim",
+        "electrical-acceptance-claim"
+      ],
+      "actual_summary_sha256": "40a37f8f8b9cf2e69484d1a862af55440de8f406bbe8c9ed57f1b10517858a8c",
+      "run": 40173307881,
+      "native_executed": false
+    },
+    "native_simulator_invoked": false,
+    "transient_executed": false
+  },
+  "portable_controls": {
+    "scope": "Synthetic descriptor, lossless native prefix and byte-preserving SPICE closure controls only",
+    "rejected": [
+      "live_source",
+      "failed_source",
+      "wrong_run",
+      "wrong_head",
+      "unknown_workflow",
+      "wrong_case",
+      "unknown_controller",
+      "cold_source",
+      "changed_sources",
+      "completed_capture",
+      "wrong_engine",
+      "empty_images",
+      "repeated_entrypoint",
+      "bad_summary_digest",
+      "cold_entrypoint",
+      "changed_log",
+      "changed_raw_value",
+      "truncated_raw",
+      "changed_vector",
+      "changed_model_bytes",
+      "unproven_model_input",
+      "missing_model_input"
+    ],
+    "count": 22
+  },
+  "negative_controls": [
+    "OP-live",
+    "OP-failed",
+    "OP-source",
+    "OP-wrong-run",
+    "OP-summary-source",
+    "OP-missing-case",
+    "OP-prior-error",
+    "OP-nonnative-flags",
+    "OP-missing-column",
+    "OP-nonzero-state",
+    "OP-raw-identity",
+    "OP-claimed-transient",
+    "safety-missing-device",
+    "safety-renamed-device",
+    "safety-low-VCE-hidden-by-pass-flag",
+    "safety-high-VCE-hidden-by-pass-flag",
+    "safety-high-VBE-hidden-by-pass-flag",
+    "safety-high-Ic-hidden-by-pass-flag",
+    "safety-NaN",
+    "missing-child",
+    "wrong-child-role",
+    "fewer-fixed-centers",
+    "under100mV-hidden-by-pass-flag",
+    "wrong-fixed-sign",
+    "preset-under100mV",
+    "fitted-phase",
+    "changed-prescribed-fall",
+    "false-delay-summary",
+    "late-edge-hidden-by-pass-flag",
+    "extra-release-edge",
+    "old106-flags",
+    "extra-OP-row",
+    "partial-capture",
+    "missing-saved-vector",
+    "time-not-column-zero",
+    "short-transient",
+    "relaxed-step",
+    "retained-diagnostic",
+    "retained-error",
+    "runtime-kernel_release",
+    "runtime-architecture",
+    "runtime-cpu_flags",
+    "runtime-CRIU_source",
+    "runtime-CRIU_binary_sha256",
+    "runtime-CRIU_version",
+    "checkpoint-changed-byte",
+    "checkpoint-missing-file",
+    "checkpoint-extra-file",
+    "old-Docker-config-shadow",
+    "budget-reads-program-string",
+    "unbound-fixed-budget",
+    "changed-budget-contract"
+  ],
+  "protected_files": 182,
+  "source_fixture_is_synthetic": true,
+  "actual_prior_OP_summary_sha256": "1ea5094100e4815c4ca26dcefcb7457c5a070b1fd849107f9c88cd3293258929",
+  "native_simulator_invoked": false,
+  "transient_executed": false,
+  "all31_clock_tree_accepted": false,
+  "actual_PLL_waveform_replayed": false,
+  "PLL_connected": false,
+  "full_PHY_accepted": false,
+  "mainchip_integrated": false,
+  "routed_parent_accepted": false,
+  "physical_reset_distribution_accepted": false
+}
