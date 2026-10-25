@@ -1,0 +1,367 @@
+{
+  "actual_last_logged_subphase": "9.13. Executing SHARE pass (SAT-based resource sharing).",
+  "actual_yosys_version": "Yosys0.33 git2584903a060; Ubuntu noble package0.33-5build2",
+  "artifacts_metadata_only": [
+    {
+      "digest": "sha256:3a2ffa1f5dfc9be9b054db30750e9442894c8e08027c3bb75d96db9a076147a2",
+      "expired": false,
+      "id": 12573526166,
+      "name": "record-static-complete-40125733778-1",
+      "size_in_bytes": 23462999
+    },
+    {
+      "digest": "sha256:12accb918eefb1b01e8dd279d95acf14a2953b89e820d612db2ee1fb4351507d",
+      "expired": false,
+      "id": 12572716843,
+      "name": "record-static-controls-40125733778",
+      "size_in_bytes": 35138
+    }
+  ],
+  "attempt": 1,
+  "evidence": {
+    "docs/evidence/pcie-gen12-training-record-static32-engineering-rejected-result-20261024.json": {
+      "bytes": 12336,
+      "sha256": "d978312085b6e5562838f87a17dc255d3acf833bed21045c2cb38433d443d0e8"
+    },
+    "docs/evidence/pcie-gen12-training-record-static32-rejected-joblog-20261024.txt": {
+      "bytes": 174946,
+      "sha256": "9e36bb7f7dab6bf278ad43f0fd3ee71c342581fc2d6c7274e1b6b81959f6e461"
+    },
+    "docs/evidence/pcie-gen12-training-record-static32-supervision-rejected-result-20261024.json": {
+      "bytes": 20865,
+      "sha256": "5fc02a015d506255bb5af374c3f1eb3113b0e6cc3aa8b741f34b676fbd864324"
+    },
+    "docs/evidence/pcie-gen12-training-record-static32-synthesis-tail-20261024.txt": {
+      "bytes": 4096,
+      "sha256": "f1ace1e792a21f59939b665baf162fdeb4139a9a4e159f3ab8d833fb3c88b3c2"
+    }
+  },
+  "jobs": [
+    {
+      "completed_at": "2026-10-24T19:32:38Z",
+      "conclusion": "success",
+      "id": 120966619156,
+      "name": "controls",
+      "started_at": "2026-10-24T19:32:11Z",
+      "status": "completed"
+    },
+    {
+      "completed_at": "2026-10-24T19:34:41Z",
+      "conclusion": "failure",
+      "id": 120966728483,
+      "name": "complete-proof-with-resource-evidence",
+      "started_at": "2026-10-24T19:32:41Z",
+      "status": "completed"
+    }
+  ],
+  "last_forwarded_synthesis_tail": {
+    "bytes": 4096,
+    "event": "raw_stream_tail",
+    "label": "synthesis",
+    "monotonic_seconds": 86.891012694,
+    "offset": 281025,
+    "previous_forwarded_end": 2478,
+    "sha256": "f1ace1e792a21f59939b665baf162fdeb4139a9a4e159f3ab8d833fb3c88b3c2",
+    "skipped_bytes": 278547,
+    "state": {
+      "child_pid": 3048,
+      "phase": "command:synthesis"
+    },
+    "stream": "stdout",
+    "utc": "2026-10-24T19:33:40Z"
+  },
+  "next_step": "Inspect exact Yosys SHARE implementation; derive the smallest semantics-preserving flow change with full synth/check and independent post-synthesis oracle. No blind retry.",
+  "passed_positive_commands": [
+    {
+      "argv": [
+        "iverilog",
+        "-g2012",
+        "-s",
+        "tb",
+        "-o",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-training-records-static/positive.vvp",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records_static.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-training-records-static/tb.v"
+      ],
+      "elapsed_seconds": 0.12604014300000443,
+      "event": "command_end",
+      "label": "positive-compile",
+      "last_memory_sentinel_sample": {
+        "available_kib": 15060268,
+        "group_rss_kib": 13944,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pid": 2966,
+            "rss_kib": 1988
+          },
+          {
+            "pid": 2967,
+            "rss_kib": 2052
+          },
+          {
+            "pid": 2969,
+            "rss_kib": 9904
+          }
+        ]
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "monotonic_seconds": 63.764911743,
+      "pid": 2966,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "state": {
+        "child_pid": 2966,
+        "phase": "command:positive-compile"
+      },
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "supervision_failure": null,
+      "utc": "2026-10-24T19:33:17Z"
+    },
+    {
+      "argv": [
+        "vvp",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-training-records-static/positive.vvp"
+      ],
+      "elapsed_seconds": 4.889200251000005,
+      "event": "command_end",
+      "label": "positive",
+      "last_memory_sentinel_sample": {
+        "available_kib": 15157812,
+        "group_rss_kib": 9872,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pid": 2970,
+            "rss_kib": 9872
+          }
+        ]
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "monotonic_seconds": 68.664660056,
+      "pid": 2970,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "state": {
+        "child_pid": 2970,
+        "phase": "command:positive"
+      },
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 173,
+      "stdout_sha256": "1a7b35918515e2f2affcf8a6b7e6eb0436fdc92bd0ef665361893d5f01b9c061",
+      "supervision_failure": null,
+      "utc": "2026-10-24T19:33:22Z"
+    },
+    {
+      "argv": [
+        "verilator",
+        "--binary",
+        "--timing",
+        "-Wno-fatal",
+        "--top-module",
+        "tb",
+        "--Mdir",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-training-records-static/verilator",
+        "-o",
+        "record_test",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records_static.v",
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-training-records-static/tb.v"
+      ],
+      "elapsed_seconds": 12.104041784999993,
+      "event": "command_end",
+      "label": "verilator-build",
+      "last_memory_sentinel_sample": {
+        "available_kib": 15122860,
+        "group_rss_kib": 164276,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pid": 2972,
+            "rss_kib": 13084
+          },
+          {
+            "pid": 2974,
+            "rss_kib": 31048
+          },
+          {
+            "pid": 2975,
+            "rss_kib": 1984
+          },
+          {
+            "pid": 2976,
+            "rss_kib": 2812
+          },
+          {
+            "pid": 3034,
+            "rss_kib": 2052
+          },
+          {
+            "pid": 3037,
+            "rss_kib": 2204
+          },
+          {
+            "pid": 3038,
+            "rss_kib": 111092
+          }
+        ]
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "monotonic_seconds": 80.778683688,
+      "pid": 2972,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "state": {
+        "child_pid": 2972,
+        "phase": "command:verilator-build"
+      },
+      "stderr_bytes": 4917,
+      "stderr_sha256": "2a5eefc92b49cc7e0a25d3b7a6d2ca195a80d619e3e16bec0a0be64490bc84b3",
+      "stdout_bytes": 8374,
+      "stdout_sha256": "c2ad5bbccdd23403837267c0147f65ca871b29da714cdbe0d8aef86edd20e459",
+      "supervision_failure": null,
+      "utc": "2026-10-24T19:33:34Z"
+    },
+    {
+      "argv": [
+        "/home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-training-records-static/verilator/record_test"
+      ],
+      "elapsed_seconds": 1.0354099829999939,
+      "event": "command_end",
+      "label": "verilator",
+      "last_memory_sentinel_sample": {
+        "available_kib": 15183376,
+        "group_rss_kib": 4208,
+        "group_rss_may_double_count_shared_pages": true,
+        "members": [
+          {
+            "pid": 3044,
+            "rss_kib": 4208
+          }
+        ]
+      },
+      "maximum_group_rss_kib": 10485760,
+      "memory_read_error": null,
+      "minimum_available_kib": 2097152,
+      "monotonic_seconds": 81.823799315,
+      "pid": 3044,
+      "process_group_cleanup": {
+        "remaining_live": [],
+        "remaining_nonrunning": [],
+        "signals": []
+      },
+      "returncode": 0,
+      "state": {
+        "child_pid": 3044,
+        "phase": "command:verilator"
+      },
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_bytes": 160,
+      "stdout_sha256": "9b85ee3bc6719411a71447dc8d979d22a578d6157418d16fe4383bfa4475f8a0",
+      "supervision_failure": null,
+      "utc": "2026-10-24T19:33:35Z"
+    }
+  ],
+  "run": 40125733778,
+  "schema": "nssoc-static32-actual-synthesis-memory-rejection-v1",
+  "scope": {
+    "both_original_positive_simulators_passed": true,
+    "complete_synthesis_passed": false,
+    "full_PHY_accepted": false,
+    "host_or_kernel_OOM_claimed": false,
+    "original24_mutations_reached": false,
+    "resource_improvement_proved": false,
+    "static32_equivalence_pass_preserved": true
+  },
+  "source": "61bb6a15ff4f85bebfeb50e0ab5cb0c11e67677c",
+  "source_protected_hashes": 73,
+  "status": "REJECTED_SYNTHESIS_MAXIMUM_GROUP_RSS",
+  "stdout_coverage": "The exact4096-byte tail is preserved;278547 earlier stdout bytes were explicitly skipped in console. Full output directory was uploaded by the workflow; archive/member bytes were not read locally.",
+  "supervision_and_prerequisite_controls": {
+    "actual_equivalence_faults": 20,
+    "actual_supervision_controls": 13,
+    "job": 120966619156,
+    "log_bytes": 75618,
+    "log_sha256": "739bb583af897ebe5aa2eba25fbb2d9929a66fb693aa7b73819cd7de27a82d92"
+  },
+  "synthesis_rejection": {
+    "argv": [
+      "yosys",
+      "-p",
+      "read_verilog /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records_static.v; synth -top soc_pcie_gen12_training_records; check -assert; write_json /home/runner/work/nssoc/nssoc/hw/soc/out/cloud-pcie-gen12-training-records-static/synthesis.json"
+    ],
+    "elapsed_seconds": 61.18392962500002,
+    "event": "command_end",
+    "label": "synthesis",
+    "last_memory_sentinel_sample": {
+      "available_kib": 4720812,
+      "group_rss_kib": 10656344,
+      "group_rss_may_double_count_shared_pages": true,
+      "members": [
+        {
+          "pid": 3048,
+          "rss_kib": 10656344
+        }
+      ]
+    },
+    "maximum_group_rss_kib": 10485760,
+    "memory_read_error": null,
+    "minimum_available_kib": 2097152,
+    "monotonic_seconds": 143.017396542,
+    "pid": 3048,
+    "process_group_cleanup": {
+      "remaining_live": [],
+      "remaining_nonrunning": [],
+      "signals": [
+        "SIGTERM"
+      ]
+    },
+    "returncode": -15,
+    "state": {
+      "child_pid": 3048,
+      "phase": "command:synthesis"
+    },
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_bytes": 285121,
+    "stdout_sha256": "cfcefce70eb6dee3872ab2f61bb0a1461804cbec8d2f76769c93f436a5e69f4e",
+    "supervision_failure": "maximum_group_rss",
+    "utc": "2026-10-24T19:34:36Z"
+  }
+}

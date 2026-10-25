@@ -1,0 +1,92 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-loaded-binding-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      bind:
+        description: Authenticate existing334 models and prove both physical role maps without simulation
+        type: boolean
+        required: true
+        default: false
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-loaded-binding-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install Python numeric import dependency only
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends python3-numpy
+      - name: Prove source pins and exact original device flattenings
+        run: |
+          /usr/bin/python3 scripts/cloud_tx_phase_reset334_loaded_binding.py --source-controls > source-controls.json
+          /usr/bin/python3 - <<'PY'
+          import json
+          d=json.load(open('source-controls.json'))
+          assert d['status']=='PASS_SOURCE_PINS_AND_BOTH_ORIGINAL244_FLATTENINGS_NOT_NATIVE_BINDING'
+          assert d['source_device_counts']=={'p':244,'n':244}
+          assert d['changed_original_source_rejected'] and len(d['publication_faults']['rejected'])==17
+          assert not d['actual_native_binding_executed'] and not d['full_PHY_accepted']
+          print(json.dumps(d,indent=2))
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: reset334-loaded-binding-source-controls
+          path: source-controls.json
+          retention-days: 90
+  actual-two-polarity-binding:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.bind
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install Python import dependency only
+        run: sudo apt-get update -qq && sudo apt-get install -y --no-install-recommends python3-numpy
+      - name: Verify precreated exact-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: /usr/bin/python3 scripts/ensure_cloud_tested_source_release.py --group tx-phase-reset334-loaded-binding
+      - name: Authenticate existing models and prove40 actual-input corruptions
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: /usr/bin/python3 scripts/cloud_tx_phase_reset334_loaded_binding.py
+      - name: Publish complete binding evidence
+        id: publish
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          test -s cloud-tx-phase-reset334-loaded-binding/result.json
+          stem="tx-phase-reset334-loaded-binding-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          cp cloud-tx-phase-reset334-loaded-binding/result.json "$stem.summary.json"
+          /usr/bin/python3 scripts/ensure_cloud_tested_source_release.py --group tx-phase-reset334-loaded-binding
+          /usr/bin/python3 scripts/cloud_chunked_results.py --directory cloud-tx-phase-reset334-loaded-binding --stem "$stem"
+          /usr/bin/python3 - "$stem" <<'PY'
+          import json,subprocess,sys
+          stem=sys.argv[1];parts=json.load(open(stem+'.parts.json'))
+          subprocess.run([sys.executable,'scripts/publish_cloud_results.py','--group','tx-phase-reset334-loaded-binding',
+            stem+'.summary.json',stem+'.parts.json',*[p['name']for p in parts['parts']]],check=True)
+          PY
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome == 'failure'
+        with:
+          name: reset334-loaded-binding-complete-evidence
+          path: cloud-tx-phase-reset334-loaded-binding/
+          retention-days: 90

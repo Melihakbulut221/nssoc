@@ -1,0 +1,44 @@
+# SPDX-License-Identifier: Apache-2.0
+name: pcie-gen12-codec-cloud
+on:
+  push:
+    branches: [codex/pcie-gen12-training]
+    paths:
+      - hw/soc/rtl/pcie/soc_pcie_gen12_*
+      - hw/soc/rtl/pcie/vendor/benz_8b10b_*
+      - third_party/chuck_benz_8b10b/**
+      - sw/tests/rtl/tb_pcie_gen12_codec.v
+      - sw/tests/data/pcie_gen12_ieee8023z_codes.json
+      - scripts/check_pcie_gen12_codec.py
+      - scripts/pcie-gen12-codec-methods.json
+      - .github/workflows/pcie-gen12-codec-cloud.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: pcie-gen12-codec-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  exhaustive-native-rtl:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install native RTL and synthesis tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends iverilog verilator yosys poppler-utils
+      - name: Exhaustive independent table, state, synthesis and corruption controls
+        run: python3 scripts/check_pcie_gen12_codec.py
+      - name: Preserve native evidence including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pcie-gen12-codec-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cloud-pcie-gen12-codec/
+          retention-days: 90
