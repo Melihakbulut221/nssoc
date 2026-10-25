@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-v58-current-ledger-cloud
+on:
+  push:
+    branches: [codex/register-cdr-v58-current-ledger]
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        default: false
+        required: true
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - run: echo 'Workflow registration only; no evidence inputs or qualification.'
