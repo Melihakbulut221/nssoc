@@ -1,0 +1,14 @@
+# Registration only: this isolated orphan tree has no repository or native inputs.
+name: cdr500-resistor-v59-physical-cloud
+on:
+  push:
+    branches: [codex/register-cdr500-v59-physical]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 2
+    steps:
+      - run: echo "Registration only. No source, controls, native physical execution or qualification."
