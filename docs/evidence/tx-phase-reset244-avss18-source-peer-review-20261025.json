@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "scope": "Independent bounded source review only; no authored controls, CAD or geometry executed.",
+  "reviewed_source": "3a1e17e398b2f6645bcc3095d247c0708d8adacc",
+  "reviewer": "/root/tx_diagnosis",
+  "verdict": "CLEAR_NO_CONCRETE_SOURCE_BLOCKER",
+  "protected_files": 42,
+  "protected_bytes": 6252114,
+  "new_paths": {
+    "hw/soc/flow/make_pcie_tx_phase_reset244_avss18_v1.py": {
+      "bytes": 8068,
+      "sha256": "c96b2eae884b1d5abdc70340e512ac149deb979b424d75a430d8748081a81ccf"
+    },
+    "scripts/check_tx_phase_reset244_avss18_source.py": {
+      "bytes": 13088,
+      "sha256": "d3ecd2f06f8c92091a948b947aaae3e7aa2991c891e173c2d6eacabac1de3bce"
+    },
+    ".github/workflow-templates/tx-phase-reset244-avss18-source-cloud.yml": {
+      "bytes": 2551,
+      "sha256": "d254b1805e16f2c1db8ca871d177b4f220fc72dcd8b90d8eb6ffd1f1fe9fd48f"
+    },
+    "docs/tx-phase-reset244-avss18-source-candidate-20261025.md": {
+      "bytes": 5872,
+      "sha256": "c68e50301e0874209ee71c9a2f6ea26e1fe808496dcf6cdbc11b1edcf1229440"
+    },
+    "scripts/tx-phase-reset244-avss18-source-methods.json": {
+      "bytes": 8515,
+      "sha256": "8fb2c543d7814fc472644da3c9ad0c58affbbb31d337ede2190c17d82c41bd0e"
+    }
+  },
+  "frozen_main_sha256": "6d8e294ee39eb9cb7c1f1dcc55af27bf8eb5a8febfffc22c4642b42dc148ede6",
+  "candidate_main_sha256": "83d9a9c358d8f8c49b5e33530a327df987fd6c43e85eab115fc8d5b64084a5dd",
+  "exact_reversible_main_edits": 3,
+  "independent_findings": [
+    "All 42 protected hashes independently matched; original and candidate main reconstructed and reversed byte-exactly.",
+    "Authenticated original 5591fe78 physical report confirms both 334-device variants, 586 routes, 32 straps, 178 vias, exact old AVSS rectangle, unchanged origin and bounds.",
+    "Only AVSS trunk half-width changes; y endpoints, row buses, via centers and arrays remain unchanged. Actual widened overlap guard has both left and right counterexamples.",
+    "Source checker executes only actual extracted power-loop and via-parameter AST against authenticated plans; mixed route schema retains 578 scalar and eight MIM records, 85 AVSS and 61 AVDD branches.",
+    "Qualified q.main wrapper preserves frozen derivation, configuration and census and restores MAIN_EDITS in finally.",
+    "Synthetic report projection is explicitly not native material proof; 54 refusal controls are source-reviewed, not executed."
+  ],
+  "authorization_at_review": {
+    "source_controls": false,
+    "native_generation": false,
+    "simulation": false,
+    "extraction": false
+  },
+  "workflow_registered": false,
+  "hosted_controls_run": null,
+  "native_geometry_or_electrical_accepted": false,
+  "required_next_proofs": [
+    "Root-authorized hosted source controls",
+    "Exact original/new native GDS material and hierarchy delta",
+    "Native ownership, 560-rule DRC and unsimplified deep/flat 334-device LVS with faults",
+    "Fresh measured wire/MIM RC in both orders",
+    "Fresh loaded initialization/zero-OP and unchanged complete waveform gates"
+  ],
+  "original_electrical_rejections_preserved": true,
+  "local_files_tests_archives_or_native_execution": false
+}

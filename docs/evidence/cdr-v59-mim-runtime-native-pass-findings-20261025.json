@@ -1,0 +1,486 @@
+{
+  "schema": "cdr-v59-mim-runtime-native-pass-findings-v1",
+  "status": "PASS_CURRENT_V59_MIM_TWO_ORDERS_COMPOSITION_REQUIRES_ELECTRICAL_VALIDATION",
+  "run_id": 40206349975,
+  "source": "6ba254971226133de9a3977d70831ad332a1f3fe",
+  "summary_sha256": "ecf619ad48f888e37c7a6805b3a0986337fceb006a97fb7408726838227ef2c8",
+  "stage_sha256": "c65d1af69428a4a71b1a08e6404e389d921c885667ec1e6cfa7def7d9ef84ce4",
+  "actual_runtime": {
+    "status": "PASS_PINNED_APPIMAGE_INTERPRETER_AND_PYA_IMPORT",
+    "returncode": 0,
+    "interpreter": {
+      "executable": "/nix/store/jgrv88sgsa97cvxdk0jz9rnxss19vw1p-devshell-dir/bin/python",
+      "executable_sha256": "6089315ff298ff5ef084e0ef5bf693cf3e60bc5782c4a0294612fe51b44f278a",
+      "implementation": "cpython",
+      "platform": "linux",
+      "pya_file": "/nix/store/ffl2vg3m80k0p74pyffnmai83fnv38mf-python3-3.13.9-env/lib/python3.13/site-packages/pya/__init__.py",
+      "pya_file_sha256": "d421fdce8ce77dd5d097215bad2367a02b7bf75664caab1cd3468525b6df9380",
+      "pya_imported": true,
+      "pya_version": "0.30.7",
+      "schema": "cdr-v59-mim-interpreter-v1",
+      "version": "3.13.9 (main, Oct 14 2025, 13:52:31) [GCC 14.3.0]",
+      "version_info": [
+        3,
+        13,
+        9
+      ]
+    },
+    "AppImage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+    "terminal_owned_group_verified": true,
+    "stdout_bytes": 638,
+    "stderr_bytes": 0
+  },
+  "variants": {
+    "precise": {
+      "capture_status": "PASS_PD500_MIM_AWARE_NATIVE_CAPTURE_AND_INTRINSIC_BINDING_REQUIRES_RAW_RC_AUDIT",
+      "audit_status": "PASS_PD500_MIM_AWARE_RAW_RC_AND22_CONTROLS_REQUIRES_COMPOSITION_AND_LOADED_WAVES",
+      "native_returncode": 0,
+      "devices": 500,
+      "mim_devices": [
+        {
+          "native_id": 277,
+          "export": [
+            "X0",
+            "T277_mim_top",
+            "T277_mim_btm",
+            "cap_cmim",
+            "l=3.6u",
+            "w=3.6u"
+          ],
+          "plus_component": 57,
+          "minus_component": 75
+        },
+        {
+          "native_id": 275,
+          "export": [
+            "X1",
+            "T275_mim_top",
+            "T275_mim_btm",
+            "cap_cmim",
+            "l=4.8u",
+            "w=4.8u"
+          ],
+          "plus_component": 10,
+          "minus_component": 73
+        },
+        {
+          "native_id": 279,
+          "export": [
+            "X2",
+            "T279_mim_top",
+            "T279_mim_btm",
+            "cap_cmim",
+            "l=40u",
+            "w=40u"
+          ],
+          "plus_component": 113,
+          "minus_component": 112
+        },
+        {
+          "native_id": 278,
+          "export": [
+            "X3",
+            "T278_mim_top",
+            "T278_mim_btm",
+            "cap_cmim",
+            "l=3.6u",
+            "w=3.6u"
+          ],
+          "plus_component": 56,
+          "minus_component": 76
+        },
+        {
+          "native_id": 276,
+          "export": [
+            "X4",
+            "T276_mim_top",
+            "T276_mim_btm",
+            "cap_cmim",
+            "l=4.8u",
+            "w=4.8u"
+          ],
+          "plus_component": 9,
+          "minus_component": 74
+        },
+        {
+          "native_id": 273,
+          "export": [
+            "X5",
+            "T273_mim_top",
+            "T273_mim_btm",
+            "cap_cmim",
+            "l=3.6u",
+            "w=3.6u"
+          ],
+          "plus_component": 43,
+          "minus_component": 66
+        },
+        {
+          "native_id": 274,
+          "export": [
+            "X6",
+            "T274_mim_top",
+            "T274_mim_btm",
+            "cap_cmim",
+            "l=3.6u",
+            "w=3.6u"
+          ],
+          "plus_component": 42,
+          "minus_component": 67
+        }
+      ],
+      "resistors": 24574,
+      "capacitors": 15694,
+      "physical_components": 113,
+      "connected_wire_components": 113,
+      "geometry_probes": 978,
+      "public_ports": 25,
+      "metal_terminals": 953,
+      "body_well_terminals": 493,
+      "capture_faults": [
+        "missing_mim",
+        "wrong_mim_width",
+        "swapped_mim_plates",
+        "wrong_mim_model",
+        "cross_wire_short"
+      ],
+      "raw_faults": [
+        {
+          "name": "dropped_actual_port",
+          "rejected_by": "Export port loss/duplication"
+        },
+        {
+          "name": "dropped_resistor",
+          "rejected_by": "Native/export resistor topology/value differs"
+        },
+        {
+          "name": "wrong_resistor",
+          "rejected_by": "Native/export resistor topology/value differs"
+        },
+        {
+          "name": "cross_conductor_short",
+          "rejected_by": "R network has unanchored component or cross-conductor short"
+        },
+        {
+          "name": "ground_redistribution_same_matrix",
+          "rejected_by": "Per-point ground C export changed"
+        },
+        {
+          "name": "mutual_anchor_shift_same_matrix",
+          "rejected_by": "Mutual C native attachment changed"
+        },
+        {
+          "name": "dropped_cap",
+          "rejected_by": "Mutual C native attachment changed"
+        },
+        {
+          "name": "changed_cap",
+          "rejected_by": "Mutual C native value changed"
+        },
+        {
+          "name": "cap_scale",
+          "rejected_by": "Source capacitance scale changed"
+        },
+        {
+          "name": "missing_native_completion",
+          "rejected_by": "Missing/duplicate native completion"
+        },
+        {
+          "name": "changed_body",
+          "rejected_by": "Original body/well identities changed"
+        },
+        {
+          "name": "missing_body",
+          "rejected_by": "Body/metal disposition changed"
+        },
+        {
+          "name": "wrong_actual_metal_point",
+          "rejected_by": "Actual metal terminal witness changed"
+        }
+      ],
+      "intrinsic_faults": [
+        "missing_export_mim",
+        "wrong_export_model",
+        "wrong_export_width",
+        "swapped_export_plates",
+        "missing_source_device",
+        "wrong_source_dimension",
+        "missing_replacement_device",
+        "shifted_replacement_location",
+        "wrong_parameter_declaration"
+      ],
+      "collapsed_C_edges": 1113,
+      "collapsed_matrix_entries": 12996,
+      "all_native_R_and_C_attachment_value_checks_passed": true,
+      "output_derived_gds_sha256": "b6b424bb4bc91660846638268f8001b8dae56e2f1d7bbcec3cdfdeb7c04accf6",
+      "full_PEX_qualified": false,
+      "point_attachment_or_RF_distribution_qualified": false,
+      "substrate_R_modeled": false
+    },
+    "precise_reversed": {
+      "capture_status": "PASS_PD500_MIM_AWARE_NATIVE_CAPTURE_AND_INTRINSIC_BINDING_REQUIRES_RAW_RC_AUDIT",
+      "audit_status": "PASS_PD500_MIM_AWARE_RAW_RC_AND22_CONTROLS_REQUIRES_COMPOSITION_AND_LOADED_WAVES",
+      "native_returncode": 0,
+      "devices": 500,
+      "mim_devices": [
+        {
+          "native_id": 277,
+          "export": [
+            "X0",
+            "T277_mim_top",
+            "T277_mim_btm",
+            "cap_cmim",
+            "l=3.6u",
+            "w=3.6u"
+          ],
+          "plus_component": 57,
+          "minus_component": 75
+        },
+        {
+          "native_id": 275,
+          "export": [
+            "X1",
+            "T275_mim_top",
+            "T275_mim_btm",
+            "cap_cmim",
+            "l=4.8u",
+            "w=4.8u"
+          ],
+          "plus_component": 10,
+          "minus_component": 73
+        },
+        {
+          "native_id": 279,
+          "export": [
+            "X2",
+            "T279_mim_top",
+            "T279_mim_btm",
+            "cap_cmim",
+            "l=40u",
+            "w=40u"
+          ],
+          "plus_component": 113,
+          "minus_component": 112
+        },
+        {
+          "native_id": 278,
+          "export": [
+            "X3",
+            "T278_mim_top",
+            "T278_mim_btm",
+            "cap_cmim",
+            "l=3.6u",
+            "w=3.6u"
+          ],
+          "plus_component": 56,
+          "minus_component": 76
+        },
+        {
+          "native_id": 276,
+          "export": [
+            "X4",
+            "T276_mim_top",
+            "T276_mim_btm",
+            "cap_cmim",
+            "l=4.8u",
+            "w=4.8u"
+          ],
+          "plus_component": 9,
+          "minus_component": 74
+        },
+        {
+          "native_id": 273,
+          "export": [
+            "X5",
+            "T273_mim_top",
+            "T273_mim_btm",
+            "cap_cmim",
+            "l=3.6u",
+            "w=3.6u"
+          ],
+          "plus_component": 43,
+          "minus_component": 66
+        },
+        {
+          "native_id": 274,
+          "export": [
+            "X6",
+            "T274_mim_top",
+            "T274_mim_btm",
+            "cap_cmim",
+            "l=3.6u",
+            "w=3.6u"
+          ],
+          "plus_component": 42,
+          "minus_component": 67
+        }
+      ],
+      "resistors": 24574,
+      "capacitors": 15694,
+      "physical_components": 113,
+      "connected_wire_components": 113,
+      "geometry_probes": 978,
+      "public_ports": 25,
+      "metal_terminals": 953,
+      "body_well_terminals": 493,
+      "capture_faults": [
+        "missing_mim",
+        "wrong_mim_width",
+        "swapped_mim_plates",
+        "wrong_mim_model",
+        "cross_wire_short"
+      ],
+      "raw_faults": [
+        {
+          "name": "dropped_actual_port",
+          "rejected_by": "Export port loss/duplication"
+        },
+        {
+          "name": "dropped_resistor",
+          "rejected_by": "Native/export resistor topology/value differs"
+        },
+        {
+          "name": "wrong_resistor",
+          "rejected_by": "Native/export resistor topology/value differs"
+        },
+        {
+          "name": "cross_conductor_short",
+          "rejected_by": "R network has unanchored component or cross-conductor short"
+        },
+        {
+          "name": "ground_redistribution_same_matrix",
+          "rejected_by": "Per-point ground C export changed"
+        },
+        {
+          "name": "mutual_anchor_shift_same_matrix",
+          "rejected_by": "Mutual C native attachment changed"
+        },
+        {
+          "name": "dropped_cap",
+          "rejected_by": "Mutual C native attachment changed"
+        },
+        {
+          "name": "changed_cap",
+          "rejected_by": "Mutual C native value changed"
+        },
+        {
+          "name": "cap_scale",
+          "rejected_by": "Source capacitance scale changed"
+        },
+        {
+          "name": "missing_native_completion",
+          "rejected_by": "Missing/duplicate native completion"
+        },
+        {
+          "name": "changed_body",
+          "rejected_by": "Original body/well identities changed"
+        },
+        {
+          "name": "missing_body",
+          "rejected_by": "Body/metal disposition changed"
+        },
+        {
+          "name": "wrong_actual_metal_point",
+          "rejected_by": "Actual metal terminal witness changed"
+        }
+      ],
+      "intrinsic_faults": [
+        "missing_export_mim",
+        "wrong_export_model",
+        "wrong_export_width",
+        "swapped_export_plates",
+        "missing_source_device",
+        "wrong_source_dimension",
+        "missing_replacement_device",
+        "shifted_replacement_location",
+        "wrong_parameter_declaration"
+      ],
+      "collapsed_C_edges": 1113,
+      "collapsed_matrix_entries": 12996,
+      "all_native_R_and_C_attachment_value_checks_passed": true,
+      "output_derived_gds_sha256": "449a4a27f72ea64f0299410c1ac3dae5a454d7d32b29a9a1d16f1e3b06ca3619",
+      "full_PEX_qualified": false,
+      "point_attachment_or_RF_distribution_qualified": false,
+      "substrate_R_modeled": false
+    }
+  },
+  "native_order_equivalence": {
+    "coupling_records": 1000,
+    "symmetric_endpoint_value_multiset_exact": true,
+    "non_coupling_records_unchanged": true,
+    "original_order_restored": true
+  },
+  "order_faults": [
+    "missing",
+    "value",
+    "endpoint",
+    "node"
+  ],
+  "composition": {
+    "status": "PASS_PD500_FRESH_MIM_COMPOSITION_AND21_CONTROLS_REQUIRES_LOADED_WAVES",
+    "counts": {
+      "devices": 500,
+      "R": 24574,
+      "C": 15694
+    },
+    "device_records": 500,
+    "public_ports": 25,
+    "interface_entries": 26,
+    "additional_interface": "wire_cref extractor reference",
+    "intrinsic_MIM_models": 7,
+    "extracted_MIM_cards_projected_once": 7,
+    "explicit_estimate_double_count_removed": true,
+    "all_raw_wire_tokens_preserved": true,
+    "faults": [
+      "missing_mim",
+      "wrong_mim_width",
+      "swapped_mim_plates",
+      "missing_contact",
+      "wrong_hbt_size",
+      "wrong_metal_terminal",
+      "short_body_supply",
+      "short_cref_sub",
+      "dropped_wire_r",
+      "changed_wire_r",
+      "dropped_wire_c",
+      "changed_wire_c",
+      "extra_alias_resistor",
+      "duplicate_bound_mim",
+      "retained_extractor_mim",
+      "missing_mos",
+      "wrong_mos_width",
+      "swapped_mos_gate_source",
+      "mos_body_short",
+      "rounded_gain_mos_width",
+      "old_gain_mos_width"
+    ],
+    "files": {
+      "composition/verified-wire-projection.spice": "cf04b93ebc2c2a2c718a12f992fcd22578438058f90b8f62676707a434da5d72",
+      "composition/pd500-mim-wire.spice": "5370c7696936a47b5c17cfca47ae8b31b031aa36ee06c599f3cef5ad506825cf",
+      "composition/composition.json": "5ee3131c0cd73c103eb04a9af4185569a082aec3db8546ca9bdc9fd8bd7f5498",
+      "composition/compose.py": "2edc5bd43756ccd5269c2ed418552847951d963020779bafd7e70394a43bed2a"
+    }
+  },
+  "saved_input_integrity": {
+    "all1127_saved_files_unchanged": true,
+    "original706_unchanged": true,
+    "full_binding763_and_rc1136_bundle_hashes_verified": true,
+    "canonical_anchor_paths_unchanged": true
+  },
+  "copied_capsule_files": 1127,
+  "copied_stage_files": 4420,
+  "complete_outputs": 5548,
+  "all_stage_and_capsule_output_hashes_crosschecked": true,
+  "limits": {
+    "simulation_executed": false,
+    "candidate_geometry_regenerated": false,
+    "qualified_PEX": false,
+    "electrical_accepted": false,
+    "full_PHY_accepted": false,
+    "original_ten_case_electrical_gates_passed": false,
+    "mim_device_wire_capacitance_separation_qualified": false,
+    "substrate_R_modeled": false,
+    "archive_downloaded_by_reviewer": false
+  },
+  "next_work": "Source-bound loaded-circuit OP/transient proposal retaining every original electrical case, thresholds and runtime identity; no further dispatch authorized."
+}
