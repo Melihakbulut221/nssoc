@@ -92,6 +92,7 @@
   "protected": {
     ".github/workflow-templates/mainchip-latest-userstack-controls-cloud.yml": "df5a3f98c0fbc5d9469e90301df66e8114f74e0c60671dc9d0aa37b5d50a4e3c",
     ".github/workflow-templates/mainchip-latest-userstack-native-cloud.yml": "833fa925a1a37fdcede93a8f2b5fb626183c648b82ba8cd42a178201bb1e3886",
+    ".github/workflow-templates/mainchip-saved7200-next-cloud.yml": "813999e7f73070df9c8f5e509b69edce0f47b724882a6980e1f08f7f5c912677",
     ".github/workflow-templates/mainchip-userstack-fixture-cloud.yml": "5a0925c5b2e394f9945fbe1c2ea59d6f4859a5110f95dbc2f854af0906a7a1f5",
     ".github/workflow-templates/mainchip-userstack7200-continuation-cloud.yml": "4f5e8cb2aec3f51cc8a4e78299c86528e75a2f632f8655353155c1cc05c70901",
     ".github/workflows/mainchip-latest-userstack-controls-cloud.yml": "833fa925a1a37fdcede93a8f2b5fb626183c648b82ba8cd42a178201bb1e3886",
@@ -134,7 +135,7 @@
     "docs/evidence/mainchip-userstack7200-source-review-20261025.json": "115bd6d33567c8a5a528b49cdac34c1d5e202ea2257aca71986d6d1b8d0e904d",
     "docs/mainchip-latest-userstack-native-candidate-20261025.md": "e1ab89372d00b9fdfe6374fe1ce98c3b2860f9e650615f462b1132e52911b9d7",
     "docs/mainchip-latest-userstack-native-workflow-20261025.md": "6ab5b8c5b9d7ac1cd9006225bfe8ddc7dfabd497a48ede3aeee4804e5a7fb0ed",
-    "docs/mainchip-saved7200-next-source-contract-20261025.md": "129af6d7ed158287af45957db948c5019611687af89617bf350bfa845cddff4a",
+    "docs/mainchip-saved7200-next-source-contract-20261025.md": "3ba449f06cb6a9a4d222ab22b661523270e4e755abd015c2b3a38cd4a91ee6d0",
     "docs/mainchip-user-stack-fixture-candidate-20261025.md": "60297edb5eb106e86ece4731eb31e5e7b4a55cd34a7a31130de781fb67a3890c",
     "docs/mainchip-userstack-external-release-wait-20261025.md": "6783c0a03bfd903e47fcdc9d3ac7980d71d5f5418d568b141ef7ebc36489f157",
     "docs/mainchip-userstack-loaded-executable-repair-20261025.md": "ed4399ca1bcde573f57233f6348d2c1516f3e74a572b08e4dac9170a7d239361",
@@ -177,7 +178,8 @@
     "scripts/mainchip_latest_native_stack_admission.py": "c784290c35a459561ea42e46bd4ee45874c7c93ee966353ba3d39e15bd1bb64e",
     "scripts/mainchip_latest_stack_admission.py": "267a7d6ab6cf724e9b6eead847e8e1e4763376738cbcbbe6a3c5ef95bbd2e23c",
     "scripts/mainchip_latest_userstack_bridge.py": "1c2b13c02f2c3dc9b5b6b0f27aacca7f19439d852ff63f16b7e366fe5f8b2b15",
-    "scripts/mainchip_saved7200_next_admission.py": "80fe7c377d31982139424132ed212b2f8da0adcacb04e6b52f4d21937a584bfa",
+    "scripts/mainchip_saved7200_next_admission.py": "53a77e7fa9488b2184d9adfb75aa734485ccfdf7d5ce478e5cd1bfc77e5297b9",
+    "scripts/mainchip_saved7200_next_publication.py": "63b577fbac2b72037653c2a39486723cfd496edb34e1282850eaeed31a72a553",
     "scripts/mainchip_userstack7200_admission.py": "550b602960a9659c8a0fbfd68118f0a1d6427a90669fb22761800d995e8a7e7a",
     "scripts/mainchip_userstack7200_runtime.py": "021243a919275672b4b880a5d755426bca3940590d4518d7a84e83ed4c3fcd6f",
     "scripts/mainchip_userstack_gdb_reader.py": "cef3626a8dafb263113ea5771de52f1bd4cfbc130054d93c25aa1136754ffb05",
@@ -199,6 +201,23 @@
     "scripts/run_cloud_tx_layout_repair.py": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
     "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73"
   },
+  "publication": {
+    "always_failure_artifact_90_days": true,
+    "complete_archive_and_summary": true,
+    "exact_source_prerelease_required": true,
+    "group": "mainchip-route12-saved7200-next",
+    "original_upload_digest_no_clobber_function_preserved": true,
+    "prior_diagnostics_separate_assets": [
+      "prior-capsule-admission.json",
+      "prior-inner-controller-result.json",
+      "prior-native.log"
+    ],
+    "publication_negative_cases": 15,
+    "publication_positive_cases": 2,
+    "read_only_release_lookup": true,
+    "source_control_full_bounded_chunks": true,
+    "wait_before_dependencies": true
+  },
   "qualified_runtime_and_admission_basis_ref": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
   "route_segment_s": 7200,
   "runtime_closure": "Qualified nofollow/held-process runtime and mapping helpers; no debugger or target calls",
@@ -206,9 +225,11 @@
   "source_controls": 74,
   "status": "SOURCE_ONLY_REVIEW_PENDING",
   "unfinished": [
-    "Independent source review of new exact saved capsule and prefix-log admission",
-    "Source-only hosted controller/template and strict permanent publication of prior inner/native log",
-    "Actual 74 plus inherited60/39 controls",
+    "Independent source review of admission/controller/template/publication",
+    "Actual 74 plus inherited60/39 plus15 publication and3/4 wait controls",
+    "Actual prior inner/native-log authentication before any process restore",
     "Separate metadata activation review and sole native authorization"
-  ]
+  ],
+  "workflow_registered": false,
+  "workflow_template": ".github/workflow-templates/mainchip-saved7200-next-cloud.yml"
 }

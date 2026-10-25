@@ -134,7 +134,7 @@ def native_log_evidence(inner,old_inner,raw,boots):
         routing_complete=False,final_timing_complete=False,historical_sources_unchanged_proven=False,
         old_scheduling_perturbation_retained=True)
 def canonical_member(entry,prefix,seen):
-    name=entry.name;p=PurePosixPath(name)
+    name=entry.name[:-1]if entry.isdir()and entry.name.endswith('/')else entry.name;p=PurePosixPath(name)
     assert isinstance(name,str)and name and '\\'not in name and str(p)==name
     assert not p.is_absolute()and '..'not in p.parts and p.parts[0]==prefix
     assert name not in seen and (entry.isfile()or entry.isdir()),'Duplicate or special member'
