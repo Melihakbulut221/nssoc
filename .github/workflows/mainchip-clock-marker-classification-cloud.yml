@@ -1,0 +1,88 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-clock-marker-classification-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        required: true
+        default: false
+        description: Authenticate existing capture and classify saved marker JSON/TR; no CAD or routing
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-clock-marker-classification-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Complete source classification archive and reserved-publication controls
+        run: python3 scripts/check_mainchip_clock_marker_classification.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: clock-marker-classification-controls-${{ github.run_id }}
+          path: cloud-mainchip-clock-marker-classification-controls/
+          retention-days: 90
+  readback:
+    if: inputs.readback
+    needs: controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact source and readback authorization before archive access
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import cloud_mainchip_clock_marker_classification as d
+          assert d.methods()['cloud_readback_authorized'] is True
+          PYCODE
+      - name: Read-only exact-source prerelease wait
+        timeout-minutes: 6
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/wait_cloud_tested_source_release.py --group mainchip-clock-marker-classification
+      - name: Bounded existing-capture text classification only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_clock_marker_classification.py
+      - name: Full bounded result log reconstruction
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          from pathlib import Path
+          from check_mainchip_original_clock_restoration_driver import emit
+          p=Path('cloud-mainchip-clock-marker-classification/result.json').resolve()
+          if p.is_file(): emit(p)
+          else: print('CLOCK_MARKER_READBACK_RESULT_MISSING_NO_ACCEPTANCE',flush=True)
+          PYCODE
+      - name: Permanent complete readback evidence publication
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_clock_marker_classification.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: clock-marker-classification-readback-${{ github.run_id }}
+          path: |
+            cloud-mainchip-clock-marker-classification/
+            publication-mainchip-clock-marker-classification/
+          retention-days: 90
