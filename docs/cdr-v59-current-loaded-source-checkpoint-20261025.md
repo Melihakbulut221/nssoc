@@ -1,0 +1,7 @@
+# Current v59 loaded source checkpoint
+
+The genuine current 500-device, seven-MIM, two-order composition from run40206349975 replaces only the model identity and provenance/restoration block of the original ten-case loaded controller. The actual model has24574 R and15694 C, with native four W4um/L5um shunt resistors184/185/222/223. All other device geometry, biases, external sources and original tests remain unchanged.
+
+The new admission restores the exact5549-member complete published capsule with whole-part/archive and every member hash validation. It binds the actual run/jobs/source release, complete saved outer/stage results, current native planes/layout/binding, all500 card parameters and original failed-publication history. Original physical qualification limits remain false. All thirteen original binding controls, 124 ordered OFF flags, zero OP, full sample capture, sampler/XOR/VI current, tail/MOS/HBT/MIM and constant/fault verdicts stay in the original controller.
+
+This is an incomplete source-only checkpoint. New corruption/roundtrip source controls, independently reviewed stage/publication wrapper, and workflow are not yet implemented. Preparation, simulation, extraction and geometry regeneration are disabled. No authored function, source test, archive restore, OP or transient was executed to produce this checkpoint. The original ten electrical results remain open. Next work is to finish concrete controls and the reserved-only publication/failure-evidence wrapper before requesting review or dispatch.

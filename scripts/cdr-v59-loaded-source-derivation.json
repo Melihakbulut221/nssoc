@@ -1,0 +1,42 @@
+{
+  "edits": [
+    {
+      "label": "current_model_identity",
+      "before": "MODEL='nssoc_cdr_pd500_input_access_mim_wire_v58'",
+      "after": "MODEL='nssoc_cdr_pd500_resistor_mim_wire_v59'"
+    },
+    {
+      "label": "current_admission_import",
+      "before": "import compare_cloud_routed_endpoints as reports\n",
+      "after": "import compare_cloud_routed_endpoints as reports\nimport cdr_v59_loaded_admission as current\n"
+    },
+    {
+      "label": "new_method_lock",
+      "before": "scripts/cdr500-v58-loaded-methods.json",
+      "after": "scripts/cdr-v59-loaded-methods.json"
+    },
+    {
+      "label": "separate_case_output",
+      "before": "cloud-cdr500-v58-loaded-",
+      "after": "cloud-cdr-v59-loaded-"
+    },
+    {
+      "label": "authenticated_current_source_restoration",
+      "before": "        pinpath=ROOT/'docs/evidence/cdr500-v58-mim-precision-pass-20261024.json';pin=json.loads(pinpath.read_text())\n        prior,proof=reports.restore_report('cdr500-v58-mim-precision',pin['run'],pin['summary_sha256'],pin['parts_sha256'],out/'composed',['composition/pd500-mim-wire.spice','composition/composition.json'])\n        assert prior==pin['report']and prior['sources_unchanged']and len(prior['composition']['controls'])==21 and prior['both_native_orders_verified'] and prior['native_rc_and_device_records_equal_in_both_orders']\n        model=out/'composed/composition/pd500-mim-wire.spice';contract=json.loads((out/'composed/composition/composition.json').read_text());assert contract==prior['composition']['contract']\n        assert all(len(v['audit']['wire_controls']['cases'])==13 and len(v['audit']['intrinsic_controls'])==9 for v in prior['variants'].values())\n        pp=ROOT/'docs/evidence/cdr500-input-access-v58-physical-pass-20261024.json';ppin=json.loads(pp.read_text());planes=ppin['report']['native_planes']\n        assert planes['status']=='PASS_PD500_NATIVE160_PLANES_51_NETS_19_FAULTS'\n        assert len(planes['anchors'])==160\n        plane_report,plane_proof=reports.restore_report('cdr500-input-access-v58-physical',ppin['run'],ppin['summary_sha256'],ppin['parts_sha256'],out/'planes',['native-planes.json'])\n        assert plane_report==ppin['report'] and plane_report['sources_unchanged']\n        assert json.loads((out/'planes/native-planes.json').read_text())==planes\n        bp=json.loads((ROOT/'docs/evidence/cdr500-v58-binding-pass-20261024.json').read_text())\n        assert prior['composition']['binding_summary_sha256']==bp['summary_sha256']\n        layout_hashes=[v for k,v in planes['inputs'].items()if k.endswith('/layout/result.json')]\n        assert layout_hashes==[bp['report']['physical_source']['restore']['selected_files']['parent/layout/result.json']['sha256']]\n        r['native_plane_source']=plane_proof\n",
+      "after": "        pinpath=ROOT/current.SUMMARY;pp=ROOT/current.STAGE\n        prior,proof,model,contract,planes,plane_proof=current.restore(out,args.prepare_only)\n        r['native_plane_source']=plane_proof\n"
+    },
+    {
+      "label": "preserve_terminal_full_source_integrity",
+      "before": "    finally:\n        r['outputs']={str(p.relative_to(out)):sha(p)for p in out.rglob('*')if p.is_file()and p!=out/'result.json'};save();print(r['status'],flush=True)\n",
+      "after": "    finally:\n        integrity_error=None\n        try:\n            if(out/'current-mim-bundle').exists():r['current_saved_input_integrity']=current.verify_restored(out)\n        except BaseException as error:\n            integrity_error=error;r['status']='FAIL_CURRENT_SAVED_INPUT_INTEGRITY';r['input_integrity_error']=repr(error)\n        r['outputs']={str(p.relative_to(out)):sha(p)for p in out.rglob('*')if p.is_file()and p!=out/'result.json'};save();print(r['status'],flush=True)\n        if integrity_error is not None:raise integrity_error\n"
+    }
+  ],
+  "baseline": "scripts/cloud_cdr500_v58_loaded.py",
+  "baseline_sha256": "12fffebb23c7478d0994c00bc0e6fc53e4842b09bfca496db59316c923e86ab2",
+  "generated_path": "scripts/cloud_cdr_v59_loaded.py",
+  "generated_sha256": "b489dd21d11c1d49fb6fc2347f4c5faa2f445b8b298fb0e6c7536394e22b2f9f",
+  "reverse_reconstruction_exact": true,
+  "non_main_functions_AST_identical": true,
+  "original_measurement_and_verdict_unchanged": true,
+  "source_code_executed": false
+}
