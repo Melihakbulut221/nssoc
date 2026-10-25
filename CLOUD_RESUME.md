@@ -8463,3 +8463,10 @@ Local project/tmp/native processes verified absent. Inventory154 exact cloud han
 The current terminal evidence is now explicit: CDC40196820337 passed all66RTL and33mapped named executions and six syntheses, then strict mutation classification rejected the tenth mutant after nine accepted behavioral detections. The existing reset predicate is textually different only because AST formatting inserts parentheses; a canonical structural qualification repair is being prepared without changing the oracle or RTL. Corrected Phase318 readback40198176471 passed the first-polarity MIM coordinate seam but stopped before waveform review because physical routes contain578single-net and8dual-terminal MIM records; explicit schema handling is being prepared. CDR recovered native results remain published; next MIM source is being derived from97c8662b. Mainchip same-process source/publication candidate13225b8f passed root and peer inspection; controls-only execution is allowed, native remains unauthorized. All work and persistent artifacts remain in GitHub; local project/tmp/native processes stay absent.
 
 Local project/tmp/native processes verified absent. Inventory154 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-25T13:50:36.144732+00:00 — cloud-only checkpoint v46
+
+Mainchip next same-process source control workflow is now registered through a harmless sole-file orphan40199176389 and exactly one controls-only run40199301259 atb59db916; native restore remains false and full archive/inner/log evidence will be checked in cloud before any future restore. CDC canonical-AST predicate qualification source2aaa439f is saved for review; no RTL/harness/oracle changes or retry. All previously recorded native failures remain open and retained. Project workspace/tmp/native processes remain absent locally.
+
+Local project/tmp/native processes verified absent. Inventory156 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
