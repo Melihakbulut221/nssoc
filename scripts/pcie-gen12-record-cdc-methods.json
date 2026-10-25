@@ -1,23 +1,48 @@
 {
-  "schema": "gen12-complete-record-cdc-source-v1",
-  "state": "SOURCE_ONLY_REVIEW_PENDING",
   "base_source": "63b26b74e767e9ac09a88b0c1514d7ea2e199fbd",
+  "behavioral_mutations_defined": 18,
+  "behavioral_mutations_executed": false,
   "cloud_dispatch_authorized": false,
+  "collector_reset_witness": {
+    "RTL_oracle_harness_unchanged": true,
+    "asserted_observation_ps": 1100,
+    "executed": false,
+    "generic_timeout_qualified": false,
+    "old_scenarios_retained": true,
+    "parent_engineering_source": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
+    "parent_failed_run": 40202709622,
+    "public_ports": [
+      "boundary_valid_o",
+      "rd_o"
+    ]
+  },
   "new_wrapper_native_proof": false,
-  "vendor_compile_copies": 1,
-  "vendor": {
-    "repository": "https://github.com/alexforencich/verilog-ethernet",
-    "source_ref": "12744433de03b28ba4b0081ad3f49b150327b8fc",
-    "path": "lib/axis/rtl/axis_async_fifo.v",
-    "bytes": 34468,
-    "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250",
-    "git_blob_sha": "b73ae6cd57b98290cc8f46dbac9738a7cf5f65ec",
-    "license": "MIT, preserve original notice",
-    "compile_rule": "Exactly one same-named axis_async_fifo vendor copy; immutable file fetched and hashed in cloud setup, no new RTL-glob duplicate"
+  "planned_positive_cases": {
+    "composed": 5,
+    "depths": [
+      4,
+      8,
+      32
+    ],
+    "direct": 6,
+    "simulators": [
+      "icarus",
+      "verilator"
+    ],
+    "total_named_tests": 66
+  },
+  "pre_execution_refinement": {
+    "executed": false,
+    "known_payload_fault_mask_mutation": true,
+    "named_positive_executions_required": 66,
+    "prior_positive_scenarios_retained": true,
+    "prior_reviewed_source": "50708f2c75c4c44246a7226cb4b9cb86dd2f10af",
+    "same_polarity_partial_and_held_reset": true
   },
   "protected": {
     "docs/evidence/pcie-gen12-training-record-noshare-native-pass-20261025.json": "23f194ff593e30c340f7562ab92c1a66f7107b5f35ff3abda7f0d293a50bd10f",
     "docs/pcie-gen12-record-cdc-implementation-20261025.md": "32b0160e2d959c15dd60e081f4be10aad3dd005321237f54ef219ad1bff5b52c",
+    "docs/pcie-gen12-record-cdc-proof-refinements-20261025.md": "618af28582d274bafe2bd4ca38efd7b93304f4acc93bad38c81d899505e40dc5",
     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-source-freeze.json": "80e7abc3badad6ea90426c029068eac697f1a881f251aac9c73f63a84613a874",
     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-validation.json": "36f55a9a5a5e4d1a11034747df79b67e196fd8852b33ffa407c0ecae160f98fc",
     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-rtl-contract.json": "a51a3b5e9b550a7f5ea6e29044c1637ba355e2b085a966663136cf60c154e3fb",
@@ -36,52 +61,40 @@
     "hw/soc/tb/cocotb/Makefile.gen12_record_cdc": "bdb28508b8599cb6a7c5dc8f0bf29e9343190e797d4b617e8ccd8e2619652817",
     "hw/soc/tb/cocotb/pcie_gen12_record_cdc_harness.py": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979",
     "hw/soc/tb/cocotb/test_soc_pcie_gen12_record_cdc_v1.py": "5d1d386c3fe5a7dfedc9279066f9bd8f8cf3d75e42ef1d463d49868e9580ce32",
-    "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py": "c6e71e6c8fa440f20d0d9619fac0ea9015eef662dfe6c89497edcb39a16fa102",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py": "843962b620d10f143287797b3cc4da80d98b9cdffc429252f5cdd8330e783fb5",
     "scripts/check_pcie_gen12_raw32_rx.py": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da",
     "scripts/check_pcie_gen12_record_cdc_source.py": "91c601c3cbc4fb8a23dda5d602acbc392f8b53dbdbcc15a3ced9cb8c3a081d67",
     "scripts/pcie-gen12-record-cdc-mutations.json": "5d7f7457ee47d257d62424610363836132eff63acf8a0aff46fd566fb3d6aeab",
     "scripts/pcie-gen12-record-cdc-proposal.json": "bf7b09fb1127d62e4be85c39f65eb09a58467a20c4f811cddde39eab1a9feacf",
-    "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438",
-    "docs/pcie-gen12-record-cdc-proof-refinements-20261025.md": "618af28582d274bafe2bd4ca38efd7b93304f4acc93bad38c81d899505e40dc5"
+    "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
   },
-  "planned_positive_cases": {
-    "direct": 6,
-    "composed": 5,
-    "depths": [
-      4,
-      8,
-      32
-    ],
-    "simulators": [
-      "icarus",
-      "verilator"
-    ],
-    "total_named_tests": 66
-  },
-  "behavioral_mutations_defined": 18,
-  "behavioral_mutations_executed": false,
   "root_design_review": {
     "approved_source_only": true,
     "arming_stage_approved": true,
     "mid_epoch_clock_loss_detection": false
   },
+  "schema": "gen12-complete-record-cdc-source-v1",
   "scope": {
-    "TS1_TS2_accepted": false,
     "LTSSM_implemented": false,
-    "x4_lane_mapping": false,
+    "TS1_TS2_accepted": false,
+    "automatic_clock_loss_detection": false,
     "clock_mux_created": false,
-    "rate_owner_implemented": false,
+    "full_PHY_accepted": false,
     "link_up": false,
     "physical_CDC_qualified": false,
-    "full_PHY_accepted": false,
-    "automatic_clock_loss_detection": false
+    "rate_owner_implemented": false,
+    "x4_lane_mapping": false
   },
-  "pre_execution_refinement": {
-    "prior_reviewed_source": "50708f2c75c4c44246a7226cb4b9cb86dd2f10af",
-    "same_polarity_partial_and_held_reset": true,
-    "known_payload_fault_mask_mutation": true,
-    "prior_positive_scenarios_retained": true,
-    "named_positive_executions_required": 66,
-    "executed": false
-  }
+  "state": "SOURCE_ONLY_REVIEW_PENDING",
+  "vendor": {
+    "bytes": 34468,
+    "compile_rule": "Exactly one same-named axis_async_fifo vendor copy; immutable file fetched and hashed in cloud setup, no new RTL-glob duplicate",
+    "git_blob_sha": "b73ae6cd57b98290cc8f46dbac9738a7cf5f65ec",
+    "license": "MIT, preserve original notice",
+    "path": "lib/axis/rtl/axis_async_fifo.v",
+    "repository": "https://github.com/alexforencich/verilog-ethernet",
+    "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250",
+    "source_ref": "12744433de03b28ba4b0081ad3f49b150327b8fc"
+  },
+  "vendor_compile_copies": 1
 }

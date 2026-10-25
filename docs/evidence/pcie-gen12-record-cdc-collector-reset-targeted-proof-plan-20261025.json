@@ -1,0 +1,88 @@
+{
+  "complete_CDC_accepted": false,
+  "engineering_parent": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
+  "failed_run": 40202709622,
+  "implementation_notes": [
+    "Targeted controller still needs implementation/review. Reuse exact pins, tools, supervised commands, synthesis and actual XML admission; keep complete native() disabled.",
+    "Positive filtered-test admission and reset-witness trace admission must be explicit; never classify a positive as a mutation to bypass returncode gates.",
+    "Preserve full XML/streams and compact trace under exact-source prerelease with always-failure fallback.",
+    "No new workflow registration or hosted execution is authorized by this plan."
+  ],
+  "phases": [
+    {
+      "kind": "source_controls",
+      "order": 1,
+      "required": "Original 63 classifier groups, 13 supervisor fixtures, 15/27 memory controls and real churn, all publication controls, plus two actual guard positives and 26 refusals"
+    },
+    {
+      "depth": 4,
+      "kind": "positive_RTL",
+      "order": 2,
+      "required": "Entire existing five-test composed suite including new witness; no skip/error, four witness records per reset test",
+      "simulators": [
+        "icarus",
+        "verilator"
+      ]
+    },
+    {
+      "depth": 4,
+      "kind": "synthesis_and_mapped_positive",
+      "order": 3,
+      "required": "Unchanged full synth -flatten -noshare/check/export; entire five-test composed suite passes mapped oracle, four witness records",
+      "simulator": "icarus"
+    },
+    {
+      "depth": 4,
+      "kind": "compiled_fault",
+      "mutation": "collector_reset_POR_only",
+      "order": 4,
+      "required": "Compile success; selected existing reset test; trace proves actual priming and held reset; final origin is one new explicit public guard; setup/unknown/resource/timeout rejected",
+      "simulators": [
+        "icarus",
+        "verilator"
+      ]
+    },
+    {
+      "kind": "separate_review_before_full_retry",
+      "order": 5,
+      "required": "Authenticate targeted proof and exact source, then separately review one complete 66 RTL/33 mapped/six synthesis/18 fault run; no partial resume/autoretry"
+    }
+  ],
+  "prior_failure_preserved": true,
+  "scenario": {
+    "assertion_messages": [
+      "collector boundary survived coordinated reset",
+      "collector RD survived coordinated reset"
+    ],
+    "depth": 4,
+    "failed_generic_timeout_remains_unqualified": true,
+    "initial_polarities": [
+      0,
+      1
+    ],
+    "interval_ps": 1100,
+    "priming": "Two complete records from unchanged table/serial oracle; public acquired boundary and RD must match before same-polarity asserted reset",
+    "reset_domains": [
+      "wr",
+      "rr"
+    ],
+    "test": "partial_raw_batch_and_complete_record_epoch_reset",
+    "top": "soc_pcie_gen12_recovered_records_v1"
+  },
+  "schema": "gen12-collector-reset-targeted-proof-plan-v1",
+  "status": "SOURCE_ONLY_NOT_DISPATCHABLE",
+  "targeted_controller_implemented": false,
+  "targeted_proof_accepted": false,
+  "unchanged_scope": {
+    "LTSSM_implemented": false,
+    "TS1_TS2_accepted": false,
+    "automatic_clock_loss_detection": false,
+    "clock_mux_created": false,
+    "full_PHY_accepted": false,
+    "link_up": false,
+    "physical_CDC_qualified": false,
+    "rate_owner_implemented": false,
+    "x4_lane_mapping": false
+  },
+  "workflow_activation_authorized": false
+}

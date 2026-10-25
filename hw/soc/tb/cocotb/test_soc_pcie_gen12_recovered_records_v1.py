@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 """Composed frozen raw32/codec/record collector and exact asynchronous FIFO."""
+import json
 import cocotb
+from cocotb.utils import get_sim_time
 from cocotb.triggers import Timer
 from pcie_gen12_record_cdc_harness import DEPTH,Link,stream_words
 
@@ -56,6 +58,41 @@ async def first_public_word_and_startup_reset(d):
 @cocotb.test()
 async def partial_raw_batch_and_complete_record_epoch_reset(d):
     link=Link(d,composed=True);await link.start()
+    # Prime a public boundary before testing coordinated collector reset.
+    # This is an asserted-reset state contract, not a drain/timeout surrogate.
+    # Unchanged polarity prevents its independent flush from hiding a missing reset.
+    for polarity in (0,1):
+        for domain in ('wr','rr'):
+            await link.reset('rr',polarity=polarity)
+            before=link.reads
+            await link.feed(stream_words(0,polarity,count=2),gap=1);await link.drain()
+            assert link.reads-before==2,'collector reset priming did not retire two oracle records'
+            assert link.oracle.start is not None,'collector reset priming oracle did not acquire COM'
+            assert link.value('boundary_valid_o')==1,'collector reset priming public boundary absent'
+            assert link.value('rd_o')==link.oracle.rd,'collector reset priming RD disagrees with oracle'
+            prior=dict(boundary=link.value('boundary_valid_o'),rd=link.value('rd_o'),
+                       oracle_start=link.oracle.start,oracle_rd=link.oracle.rd,
+                       retired_records=link.reads-before)
+            asserted_at=int(get_sim_time(unit='ps'))
+            link.sig(domain).value=1
+            reset_expected=link.oracle.step(0,1,0,polarity,0,0)
+            link.oracle.prev=polarity
+            assert reset_expected==(0,)*9,'independent collector reset oracle did not clear'
+            # Same observation interval already used by frozen Link.reset().
+            await Timer(1100,unit='ps')
+            observed_at=int(get_sim_time(unit='ps'))
+            assert link.value(domain)==1,'collector reset request was not held asserted'
+            if link.error:raise link.error
+            print('CDC_COLLECTOR_RESET_WITNESS '+json.dumps(dict(
+                schema='public-collector-asserted-reset-v1',polarity=polarity,domain=domain,
+                reset_port=link.names[domain],reset_asserted=link.value(domain),
+                asserted_at_ps=asserted_at,observed_at_ps=observed_at,
+                expected_boundary=reset_expected[6],expected_rd=reset_expected[8],
+                prior=prior,actual_boundary=link.value('boundary_valid_o'),
+                actual_rd=link.value('rd_o')),sort_keys=True),flush=True)
+            assert link.value('boundary_valid_o')==0,'collector boundary survived coordinated reset'
+            assert link.value('rd_o')==0,'collector RD survived coordinated reset'
+            await link.reset(domain,polarity=polarity)
     # Five raw words per record. Every prefix length exercises raw residue,
     # pending decoded batch, partial record or full queued record at reset.
     for polarity in (0,1):

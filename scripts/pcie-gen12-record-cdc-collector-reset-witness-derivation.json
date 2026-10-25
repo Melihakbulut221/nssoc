@@ -1,0 +1,78 @@
+{
+  "authored_functions_executed": false,
+  "base": "521c5c99777000283521cf75847b70645f71d482",
+  "controller_functions_AST_identical_except": [
+    "assertion_site"
+  ],
+  "edits": [
+    {
+      "after": "import json\nimport cocotb\nfrom cocotb.utils import get_sim_time\n",
+      "before": "import cocotb\n",
+      "path": "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py"
+    },
+    {
+      "after": "async def partial_raw_batch_and_complete_record_epoch_reset(d):\n    link=Link(d,composed=True);await link.start()\n    # Prime a public boundary before testing coordinated collector reset.\n    # This is an asserted-reset state contract, not a drain/timeout surrogate.\n    # Unchanged polarity prevents its independent flush from hiding a missing reset.\n    for polarity in (0,1):\n        for domain in ('wr','rr'):\n            await link.reset('rr',polarity=polarity)\n            before=link.reads\n            await link.feed(stream_words(0,polarity,count=2),gap=1);await link.drain()\n            assert link.reads-before==2,'collector reset priming did not retire two oracle records'\n            assert link.oracle.start is not None,'collector reset priming oracle did not acquire COM'\n            assert link.value('boundary_valid_o')==1,'collector reset priming public boundary absent'\n            assert link.value('rd_o')==link.oracle.rd,'collector reset priming RD disagrees with oracle'\n            prior=dict(boundary=link.value('boundary_valid_o'),rd=link.value('rd_o'),\n                       oracle_start=link.oracle.start,oracle_rd=link.oracle.rd,\n                       retired_records=link.reads-before)\n            asserted_at=int(get_sim_time(unit='ps'))\n            link.sig(domain).value=1\n            reset_expected=link.oracle.step(0,1,0,polarity,0,0)\n            link.oracle.prev=polarity\n            assert reset_expected==(0,)*9,'independent collector reset oracle did not clear'\n            # Same observation interval already used by frozen Link.reset().\n            await Timer(1100,unit='ps')\n            observed_at=int(get_sim_time(unit='ps'))\n            assert link.value(domain)==1,'collector reset request was not held asserted'\n            if link.error:raise link.error\n            print('CDC_COLLECTOR_RESET_WITNESS '+json.dumps(dict(\n                schema='public-collector-asserted-reset-v1',polarity=polarity,domain=domain,\n                reset_port=link.names[domain],reset_asserted=link.value(domain),\n                asserted_at_ps=asserted_at,observed_at_ps=observed_at,\n                expected_boundary=reset_expected[6],expected_rd=reset_expected[8],\n                prior=prior,actual_boundary=link.value('boundary_valid_o'),\n                actual_rd=link.value('rd_o')),sort_keys=True),flush=True)\n            assert link.value('boundary_valid_o')==0,'collector boundary survived coordinated reset'\n            assert link.value('rd_o')==0,'collector RD survived coordinated reset'\n            await link.reset(domain,polarity=polarity)\n",
+      "before": "async def partial_raw_batch_and_complete_record_epoch_reset(d):\n    link=Link(d,composed=True);await link.start()\n",
+      "path": "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py"
+    },
+    {
+      "after": "COLLECTOR_RESET_GUARDS={'collector boundary survived coordinated reset': \"link.value('boundary_valid_o') == 0\", 'collector RD survived coordinated reset': \"link.value('rd_o') == 0\"}\ndef assertion_site(node,name):\n",
+      "before": "def assertion_site(node,name):\n",
+      "path": "scripts/cloud_pcie_gen12_record_cdc.py"
+    },
+    {
+      "after": "        expression=ast.unparse(node.test)\n        if name=='collector_reset_POR_only'and message in COLLECTOR_RESET_GUARDS:\n            # Both literal message AND exact public reset predicate are mandatory.\n            # Priming failures and the former generic timeout stay unqualified.\n            expected=ast.parse(COLLECTOR_RESET_GUARDS[message],mode='eval').body\n            if ast.dump(node.test,include_attributes=False)==ast.dump(expected,include_attributes=False):\n                return {'message':message,'expression':expression,\n                        'kind':'explicit_public_collector_reset_guard'}\n            return None\n        expression_match=expression in EXPRESSIONS.get(name,())\n",
+      "before": "        expression=ast.unparse(node.test)\n        expression_match=expression in EXPRESSIONS.get(name,())\n",
+      "path": "scripts/cloud_pcie_gen12_record_cdc.py"
+    },
+    {
+      "after": "def collector_reset_witness_controls():\n    \"\"\"Real pinned source sites and strict source/XML refusal fixtures; no RTL.\"\"\"\n    name='collector_reset_POR_only'\n    mutation=next(x for x in c.mutation_list()if x['name']==name)\n    path=c.BENCH/('test_'+c.COMPOSED+'.py')\n    function=next(n for n in ast.parse(path.read_text()).body\n                  if isinstance(n,ast.AsyncFunctionDef)and n.name==mutation['test'])\n    guards=[n for n in ast.walk(function)if isinstance(n,ast.Assert)and\n            isinstance(n.msg,ast.Constant)and n.msg.value in c.COLLECTOR_RESET_GUARDS]\n    assert len(guards)==2 and {n.msg.value for n in guards}==set(c.COLLECTOR_RESET_GUARDS)\n    sites=c.assertion_sites(mutation)\n    explicit={key:site for key,site in sites.items()\n              if site.get('kind')=='explicit_public_collector_reset_guard'}\n    assert set(explicit)=={(str(path.resolve()),n.lineno)for n in guards}\n    positives=[];rejected={}\n    def reject(label,call):\n        try:call()\n        except (AssertionError,ValueError,KeyError,ET.ParseError)as error:\n            rejected[label]={'rejected':True,'exception':type(error).__name__}\n        else:raise AssertionError('Collector reset control survived: '+label)\n    def require_source(text,mutant=name):\n        assert c.assertion_site(ast.parse(text).body[0],mutant)is not None\n    for node in guards:\n        origin=(str(path.resolve()),node.lineno);message=node.msg.value\n        site=c.assertion_site(node,name)\n        assert site['kind']=='explicit_public_collector_reset_guard'\n        actual=fixture(c.COMPOSED,mutation)\n        case(actual,mutation['test']).find('failure').set('error_msg',message)\n        log='  File \"%s\", line %d, in %s\\n'%(*origin,mutation['test'])\n        rows=c.xml_review(encoded(actual),c.COMPOSED,2,mutation=mutation,log=log)\n        assert sum(x['disposition']=='DETECTED_ASSERTION'for x in rows)==1\n        positives.append(dict(source=list(origin),message=message,expression=ast.unparse(node.test)))\n        def bad_xml(change,trace=log,rc=2):\n            altered=copy.deepcopy(actual);change(altered)\n            return lambda:c.xml_review(encoded(altered),c.COMPOSED,rc,mutation=mutation,log=trace)\n        prefix='boundary'if 'boundary'in message else'rd'\n        reject(prefix+'_wrong_message',bad_xml(lambda r:\n            case(r,mutation['test']).find('failure').set('error_msg','unrelated reset failure')))\n        reject(prefix+'_unknown_conversion',bad_xml(lambda r:\n            case(r,mutation['test']).find('failure').set('error_type','ValueError')))\n        reject(prefix+'_wrong_file',bad_xml(lambda r:None,\n            trace='  File \"/tmp/unreviewed.py\", line %d, in reset\\n'%origin[1]))\n        reject(prefix+'_wrong_line',bad_xml(lambda r:None,\n            trace='  File \"%s\", line 1, in reset\\n'%origin[0]))\n        reject(prefix+'_zero_returncode',bad_xml(lambda r:None,rc=0))\n        reject(prefix+'_qualified_frame_not_origin',bad_xml(lambda r:None,\n            trace=log+'  File \"%s\", line 104, in until\\n'%c.HARNESS.resolve()))\n        assert c.assertion_site(ast.parse(\n            'assert (('+c.COLLECTOR_RESET_GUARDS[message]+')), '+repr(message)).body[0],name)==site\n    for label,text in [\n        ('boundary_wrong_port',\"assert link.value('record_valid_o') == 0, 'collector boundary survived coordinated reset'\"),\n        ('boundary_wrong_operator',\"assert link.value('boundary_valid_o') != 0, 'collector boundary survived coordinated reset'\"),\n        ('boundary_wrong_value',\"assert link.value('boundary_valid_o') == 1, 'collector boundary survived coordinated reset'\"),\n        ('boundary_negated',\"assert not (link.value('boundary_valid_o') == 0), 'collector boundary survived coordinated reset'\"),\n        ('boundary_dynamic_message',\"assert link.value('boundary_valid_o') == 0, message\"),\n        ('boundary_wrong_literal',\"assert link.value('boundary_valid_o') == 0, 'unrelated boundary failure'\"),\n        ('rd_wrong_port',\"assert link.value('boundary_valid_o') == 0, 'collector RD survived coordinated reset'\"),\n        ('rd_wrong_operator',\"assert link.value('rd_o') != 0, 'collector RD survived coordinated reset'\"),\n        ('rd_wrong_value',\"assert link.value('rd_o') == 1, 'collector RD survived coordinated reset'\"),\n        ('rd_dynamic_message',\"assert link.value('rd_o') == 0, message\"),\n        ('raise_not_assert',\"raise AssertionError('collector boundary survived coordinated reset')\"),\n        ('non_assert_node',\"link.value('boundary_valid_o') == 0\"),\n        ('generic_timeout',\"raise AssertionError('bounded public-port scenario timeout')\")]:\n        reject('source_'+label,lambda text=text:require_source(text))\n    for node in guards:\n        for other in c.mutation_list():\n            if other['name']!=name:\n                assert c.assertion_site(ast.parse(ast.unparse(node)).body[0],other['name'])is None,other['name']\n    for node in ast.walk(function):\n        if isinstance(node,ast.Assert)and isinstance(node.msg,ast.Constant)and isinstance(node.msg.value,str):\n            if node.msg.value not in c.COLLECTOR_RESET_GUARDS:\n                assert c.assertion_site(node,name)is None,(node.lineno,node.msg.value)\n    timeout=next(n for n in ast.walk(ast.parse(c.HARNESS.read_text()))if isinstance(n,ast.Raise)and\n                 isinstance(n.exc,ast.Call)and isinstance(n.exc.func,ast.Name)and\n                 n.exc.func.id=='AssertionError'and n.exc.args and\n                 isinstance(n.exc.args[0],ast.Constant)and\n                 n.exc.args[0].value=='bounded public-port scenario timeout')\n    assert c.assertion_site(timeout,name)is None\n    assert (str(c.HARNESS.resolve()),timeout.lineno)not in sites\n    reject('xml_generic_timeout',lambda:c.xml_review(encoded(actual),c.COMPOSED,2,\n        mutation=mutation,log='  File \"%s\", line %d, in until\\n'%(c.HARNESS.resolve(),timeout.lineno)))\n    assert len(positives)==2 and len(rejected)==26\n    return dict(status='PASS_LITERAL_PUBLIC_COLLECTOR_RESET_GUARD_CONTROLS_NO_RTL',\n                positives=positives,rejected=rejected,wrong_mutant_refusals=34,\n                priming_assertions_unqualified=True,generic_timeout_unqualified=True,\n                actual_guard_sites=[list(key)for key in explicit],simulations_executed=False)\n\ndef controls():\n",
+      "before": "def controls():\n",
+      "path": "scripts/check_pcie_gen12_record_cdc_cloud.py"
+    },
+    {
+      "after": "        result['collector_reset_witness_controls']=collector_reset_witness_controls()\n        c.save(c.OUT/'controls.json',result)\n        found={}\n",
+      "before": "        found={}\n",
+      "path": "scripts/check_pcie_gen12_record_cdc_cloud.py"
+    },
+    {
+      "after": "          assert r['classification_control_count']==63 and len(r['controls'])==63\n          w=r['collector_reset_witness_controls']\n          assert w['status']=='PASS_LITERAL_PUBLIC_COLLECTOR_RESET_GUARD_CONTROLS_NO_RTL'\n          assert len(w['positives'])==2 and len(w['rejected'])==26\n          assert all(x['rejected'] for x in w['rejected'].values())\n          assert w['wrong_mutant_refusals']==34 and len(w['actual_guard_sites'])==2\n          assert w['priming_assertions_unqualified'] and w['generic_timeout_unqualified']\n          assert w['simulations_executed'] is False\n",
+      "before": "          assert r['classification_control_count']==63 and len(r['controls'])==63\n",
+      "path": ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml"
+    },
+    {
+      "after": "          assert r['classification_control_count']==63 and len(r['controls'])==63\n          w=r['collector_reset_witness_controls']\n          assert w['status']=='PASS_LITERAL_PUBLIC_COLLECTOR_RESET_GUARD_CONTROLS_NO_RTL'\n          assert len(w['positives'])==2 and len(w['rejected'])==26\n          assert all(x['rejected'] for x in w['rejected'].values())\n          assert w['wrong_mutant_refusals']==34 and len(w['actual_guard_sites'])==2\n          assert w['priming_assertions_unqualified'] and w['generic_timeout_unqualified']\n          assert w['simulations_executed'] is False\n",
+      "before": "          assert r['classification_control_count']==63 and len(r['controls'])==63\n",
+      "path": ".github/workflows/pcie-gen12-record-cdc-cloud.yml"
+    }
+  ],
+  "exact_old_selected_test_statements_retained": true,
+  "failed_engineering_source": "81ac935fe1fb1ce6dde4e70032f8aa37957dc4e9",
+  "failed_run": 40202709622,
+  "files": {
+    ".github/workflow-templates/pcie-gen12-record-cdc-cloud.yml": {
+      "after_sha256": "81fd5b8228332c424f8a85967872af01bbe827cf11daaac3020080b76f6b8ca1",
+      "before_sha256": "e95d3ba229e2b9d6c4d3ef9378a410905d316f4b0d93f43d1116ab252495a64d"
+    },
+    ".github/workflows/pcie-gen12-record-cdc-cloud.yml": {
+      "after_sha256": "81fd5b8228332c424f8a85967872af01bbe827cf11daaac3020080b76f6b8ca1",
+      "before_sha256": "e95d3ba229e2b9d6c4d3ef9378a410905d316f4b0d93f43d1116ab252495a64d"
+    },
+    "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py": {
+      "after_sha256": "843962b620d10f143287797b3cc4da80d98b9cdffc429252f5cdd8330e783fb5",
+      "before_sha256": "c6e71e6c8fa440f20d0d9619fac0ea9015eef662dfe6c89497edcb39a16fa102"
+    },
+    "scripts/check_pcie_gen12_record_cdc_cloud.py": {
+      "after_sha256": "20067646bb2e459cbd0924abce90ac270e8a26d55c2bd82d01ed7842ef6152a8",
+      "before_sha256": "1646b734acdd8b920361e9758d808ff797f31b04d7fb261f3bd7b9a46f7a414e"
+    },
+    "scripts/cloud_pcie_gen12_record_cdc.py": {
+      "after_sha256": "d8232a832be1ade7174caa89a207fca5f05e1a2883c8224fb727618500d3d18a",
+      "before_sha256": "a5936ae04e9ab5d194bcb4e6db20fb72654bdc39d59d5dd72745637f9350b406"
+    }
+  },
+  "frozen_harness_sha256": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979",
+  "other_four_test_functions_AST_identical": true,
+  "schema": "gen12-collector-reset-witness-reversible-source-v1",
+  "source_only": true
+}

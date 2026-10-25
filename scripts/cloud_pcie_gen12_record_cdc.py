@@ -135,10 +135,19 @@ EXPRESSIONS={
  'bypass_arming':('link.reads - before == 2',),
  'collector_reset_POR_only':('link.reads - before == 5',),
  'ignore_polarity':('link.reads - before == 3',)}
+COLLECTOR_RESET_GUARDS={'collector boundary survived coordinated reset': "link.value('boundary_valid_o') == 0", 'collector RD survived coordinated reset': "link.value('rd_o') == 0"}
 def assertion_site(node,name):
     if isinstance(node,ast.Assert):
         message=node.msg.value if isinstance(node.msg,ast.Constant)and isinstance(node.msg.value,str)else None
         expression=ast.unparse(node.test)
+        if name=='collector_reset_POR_only'and message in COLLECTOR_RESET_GUARDS:
+            # Both literal message AND exact public reset predicate are mandatory.
+            # Priming failures and the former generic timeout stay unqualified.
+            expected=ast.parse(COLLECTOR_RESET_GUARDS[message],mode='eval').body
+            if ast.dump(node.test,include_attributes=False)==ast.dump(expected,include_attributes=False):
+                return {'message':message,'expression':expression,
+                        'kind':'explicit_public_collector_reset_guard'}
+            return None
         expression_match=expression in EXPRESSIONS.get(name,())
         if name in ('ignore_write_reset','ignore_read_reset'):
             # Only the already-declared reset predicates use structural equality.

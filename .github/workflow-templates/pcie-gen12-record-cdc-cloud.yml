@@ -34,6 +34,13 @@ jobs:
           r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-record-cdc/controls.json').read_text())
           assert r['status']=='PASS_CDC_CONTROLLER_SOURCE_AND_CLASSIFICATION_CONTROLS_NO_RTL'
           assert r['classification_control_count']==63 and len(r['controls'])==63
+          w=r['collector_reset_witness_controls']
+          assert w['status']=='PASS_LITERAL_PUBLIC_COLLECTOR_RESET_GUARD_CONTROLS_NO_RTL'
+          assert len(w['positives'])==2 and len(w['rejected'])==26
+          assert all(x['rejected'] for x in w['rejected'].values())
+          assert w['wrong_mutant_refusals']==34 and len(w['actual_guard_sites'])==2
+          assert w['priming_assertions_unqualified'] and w['generic_timeout_unqualified']
+          assert w['simulations_executed'] is False
           assert all(x.get('passed')is True or x.get('rejected')is True for x in r['controls'].values())
           q=r['qualified_supervision_controls']
           assert len(q['controls'])==13 and all(q['controls'].values())

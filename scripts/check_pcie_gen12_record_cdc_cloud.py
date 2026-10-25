@@ -68,6 +68,93 @@ def readonly_publication_controls(release):
     assert len(rejected)==3
     return dict(actual_extracted_program_positive=True,rejected=rejected,network_or_upload_executed=False)
 
+def collector_reset_witness_controls():
+    """Real pinned source sites and strict source/XML refusal fixtures; no RTL."""
+    name='collector_reset_POR_only'
+    mutation=next(x for x in c.mutation_list()if x['name']==name)
+    path=c.BENCH/('test_'+c.COMPOSED+'.py')
+    function=next(n for n in ast.parse(path.read_text()).body
+                  if isinstance(n,ast.AsyncFunctionDef)and n.name==mutation['test'])
+    guards=[n for n in ast.walk(function)if isinstance(n,ast.Assert)and
+            isinstance(n.msg,ast.Constant)and n.msg.value in c.COLLECTOR_RESET_GUARDS]
+    assert len(guards)==2 and {n.msg.value for n in guards}==set(c.COLLECTOR_RESET_GUARDS)
+    sites=c.assertion_sites(mutation)
+    explicit={key:site for key,site in sites.items()
+              if site.get('kind')=='explicit_public_collector_reset_guard'}
+    assert set(explicit)=={(str(path.resolve()),n.lineno)for n in guards}
+    positives=[];rejected={}
+    def reject(label,call):
+        try:call()
+        except (AssertionError,ValueError,KeyError,ET.ParseError)as error:
+            rejected[label]={'rejected':True,'exception':type(error).__name__}
+        else:raise AssertionError('Collector reset control survived: '+label)
+    def require_source(text,mutant=name):
+        assert c.assertion_site(ast.parse(text).body[0],mutant)is not None
+    for node in guards:
+        origin=(str(path.resolve()),node.lineno);message=node.msg.value
+        site=c.assertion_site(node,name)
+        assert site['kind']=='explicit_public_collector_reset_guard'
+        actual=fixture(c.COMPOSED,mutation)
+        case(actual,mutation['test']).find('failure').set('error_msg',message)
+        log='  File "%s", line %d, in %s\n'%(*origin,mutation['test'])
+        rows=c.xml_review(encoded(actual),c.COMPOSED,2,mutation=mutation,log=log)
+        assert sum(x['disposition']=='DETECTED_ASSERTION'for x in rows)==1
+        positives.append(dict(source=list(origin),message=message,expression=ast.unparse(node.test)))
+        def bad_xml(change,trace=log,rc=2):
+            altered=copy.deepcopy(actual);change(altered)
+            return lambda:c.xml_review(encoded(altered),c.COMPOSED,rc,mutation=mutation,log=trace)
+        prefix='boundary'if 'boundary'in message else'rd'
+        reject(prefix+'_wrong_message',bad_xml(lambda r:
+            case(r,mutation['test']).find('failure').set('error_msg','unrelated reset failure')))
+        reject(prefix+'_unknown_conversion',bad_xml(lambda r:
+            case(r,mutation['test']).find('failure').set('error_type','ValueError')))
+        reject(prefix+'_wrong_file',bad_xml(lambda r:None,
+            trace='  File "/tmp/unreviewed.py", line %d, in reset\n'%origin[1]))
+        reject(prefix+'_wrong_line',bad_xml(lambda r:None,
+            trace='  File "%s", line 1, in reset\n'%origin[0]))
+        reject(prefix+'_zero_returncode',bad_xml(lambda r:None,rc=0))
+        reject(prefix+'_qualified_frame_not_origin',bad_xml(lambda r:None,
+            trace=log+'  File "%s", line 104, in until\n'%c.HARNESS.resolve()))
+        assert c.assertion_site(ast.parse(
+            'assert (('+c.COLLECTOR_RESET_GUARDS[message]+')), '+repr(message)).body[0],name)==site
+    for label,text in [
+        ('boundary_wrong_port',"assert link.value('record_valid_o') == 0, 'collector boundary survived coordinated reset'"),
+        ('boundary_wrong_operator',"assert link.value('boundary_valid_o') != 0, 'collector boundary survived coordinated reset'"),
+        ('boundary_wrong_value',"assert link.value('boundary_valid_o') == 1, 'collector boundary survived coordinated reset'"),
+        ('boundary_negated',"assert not (link.value('boundary_valid_o') == 0), 'collector boundary survived coordinated reset'"),
+        ('boundary_dynamic_message',"assert link.value('boundary_valid_o') == 0, message"),
+        ('boundary_wrong_literal',"assert link.value('boundary_valid_o') == 0, 'unrelated boundary failure'"),
+        ('rd_wrong_port',"assert link.value('boundary_valid_o') == 0, 'collector RD survived coordinated reset'"),
+        ('rd_wrong_operator',"assert link.value('rd_o') != 0, 'collector RD survived coordinated reset'"),
+        ('rd_wrong_value',"assert link.value('rd_o') == 1, 'collector RD survived coordinated reset'"),
+        ('rd_dynamic_message',"assert link.value('rd_o') == 0, message"),
+        ('raise_not_assert',"raise AssertionError('collector boundary survived coordinated reset')"),
+        ('non_assert_node',"link.value('boundary_valid_o') == 0"),
+        ('generic_timeout',"raise AssertionError('bounded public-port scenario timeout')")]:
+        reject('source_'+label,lambda text=text:require_source(text))
+    for node in guards:
+        for other in c.mutation_list():
+            if other['name']!=name:
+                assert c.assertion_site(ast.parse(ast.unparse(node)).body[0],other['name'])is None,other['name']
+    for node in ast.walk(function):
+        if isinstance(node,ast.Assert)and isinstance(node.msg,ast.Constant)and isinstance(node.msg.value,str):
+            if node.msg.value not in c.COLLECTOR_RESET_GUARDS:
+                assert c.assertion_site(node,name)is None,(node.lineno,node.msg.value)
+    timeout=next(n for n in ast.walk(ast.parse(c.HARNESS.read_text()))if isinstance(n,ast.Raise)and
+                 isinstance(n.exc,ast.Call)and isinstance(n.exc.func,ast.Name)and
+                 n.exc.func.id=='AssertionError'and n.exc.args and
+                 isinstance(n.exc.args[0],ast.Constant)and
+                 n.exc.args[0].value=='bounded public-port scenario timeout')
+    assert c.assertion_site(timeout,name)is None
+    assert (str(c.HARNESS.resolve()),timeout.lineno)not in sites
+    reject('xml_generic_timeout',lambda:c.xml_review(encoded(actual),c.COMPOSED,2,
+        mutation=mutation,log='  File "%s", line %d, in until\n'%(c.HARNESS.resolve(),timeout.lineno)))
+    assert len(positives)==2 and len(rejected)==26
+    return dict(status='PASS_LITERAL_PUBLIC_COLLECTOR_RESET_GUARD_CONTROLS_NO_RTL',
+                positives=positives,rejected=rejected,wrong_mutant_refusals=34,
+                priming_assertions_unqualified=True,generic_timeout_unqualified=True,
+                actual_guard_sites=[list(key)for key in explicit],simulations_executed=False)
+
 def controls():
     m=c.pins();c.authorization(m)
     c.OUT.mkdir(parents=True,exist_ok=False)
@@ -97,6 +184,8 @@ def controls():
         result['qualified_supervision_controls']=original
         import check_pcie_live_memory_sampler as memory_controls
         result['bounded_memory_sampler_controls']=memory_controls.controls(s)
+        c.save(c.OUT/'controls.json',result)
+        result['collector_reset_witness_controls']=collector_reset_witness_controls()
         c.save(c.OUT/'controls.json',result)
         found={}
         def reject(name,fn):
