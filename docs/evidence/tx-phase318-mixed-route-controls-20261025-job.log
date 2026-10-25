@@ -1,0 +1,1903 @@
+﻿2026-10-25T14:15:43.3611336Z Current runner version: '2.338.0'
+2026-10-25T14:15:43.3638059Z ##[group]Runner Image Provisioner
+2026-10-25T14:15:43.3639250Z Hosted Compute Agent
+2026-10-25T14:15:43.3639925Z Version: 20261021.618
+2026-10-25T14:15:43.3640555Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-25T14:15:43.3641404Z Build Date: 2026-10-21T00:45:21Z
+2026-10-25T14:15:43.3642086Z Worker ID: {d150070f-cbb9-407a-95dd-acab881a7b62}
+2026-10-25T14:15:43.3642851Z Region: northcentralus
+2026-10-25T14:15:43.3643461Z Cloud: Azure
+2026-10-25T14:15:43.3643986Z ##[endgroup]
+2026-10-25T14:15:43.3645700Z ##[group]Operating System
+2026-10-25T14:15:43.3646399Z Ubuntu
+2026-10-25T14:15:43.3646993Z 24.04.5
+2026-10-25T14:15:43.3647611Z LTS
+2026-10-25T14:15:43.3648130Z ##[endgroup]
+2026-10-25T14:15:43.3648770Z ##[group]Runner Image
+2026-10-25T14:15:43.3649602Z Image: ubuntu-24.04
+2026-10-25T14:15:43.3650224Z Version: 20261012.334.1
+2026-10-25T14:15:43.3651579Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-25T14:15:43.3653199Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-25T14:15:43.3654170Z ##[endgroup]
+2026-10-25T14:15:43.3655368Z ##[group]GITHUB_TOKEN Permissions
+2026-10-25T14:15:43.3657943Z Contents: read
+2026-10-25T14:15:43.3658643Z Metadata: read
+2026-10-25T14:15:43.3659606Z ##[endgroup]
+2026-10-25T14:15:43.3661770Z Secret source: Actions
+2026-10-25T14:15:43.3662877Z Cache mode: write
+2026-10-25T14:15:43.3664284Z Prepare workflow directory
+2026-10-25T14:15:43.4075416Z Prepare all required actions
+2026-10-25T14:15:43.4126011Z Getting action download info
+2026-10-25T14:15:43.6903061Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-25T14:15:43.8048889Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-25T14:15:43.9807704Z Complete job name: source-controls
+2026-10-25T14:15:44.0692431Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-25T14:15:44.0693497Z with:
+2026-10-25T14:15:44.0693966Z   persist-credentials: false
+2026-10-25T14:15:44.0694523Z   repository: Melihakbulut221/nssoc
+2026-10-25T14:15:44.0698550Z   token: ***
+2026-10-25T14:15:44.0699206Z   ssh-strict: true
+2026-10-25T14:15:44.0699672Z   ssh-user: git
+2026-10-25T14:15:44.0700109Z   clean: true
+2026-10-25T14:15:44.0700564Z   sparse-checkout-cone-mode: true
+2026-10-25T14:15:44.0701096Z   fetch-depth: 1
+2026-10-25T14:15:44.0701531Z   fetch-tags: false
+2026-10-25T14:15:44.0701982Z   show-progress: true
+2026-10-25T14:15:44.0702443Z   lfs: false
+2026-10-25T14:15:44.0702862Z   submodules: false
+2026-10-25T14:15:44.0703319Z   set-safe-directory: true
+2026-10-25T14:15:44.0703838Z   allow-unsafe-pr-checkout: false
+2026-10-25T14:15:44.0704613Z ##[endgroup]
+2026-10-25T14:15:44.1694563Z Syncing repository: Melihakbulut221/nssoc
+2026-10-25T14:15:44.1696777Z ##[group]Getting Git version info
+2026-10-25T14:15:44.1697616Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-25T14:15:44.1698669Z [command]/usr/bin/git version
+2026-10-25T14:15:44.1743919Z git version 2.55.0
+2026-10-25T14:15:44.1767511Z ##[endgroup]
+2026-10-25T14:15:44.1783353Z Temporarily overriding HOME='/home/runner/work/_temp/8619027e-11fc-4d52-8b75-981516a74ecb' before making global git config changes
+2026-10-25T14:15:44.1785031Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T14:15:44.1788881Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T14:15:44.1843358Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-25T14:15:44.1853666Z ##[group]Initializing the repository
+2026-10-25T14:15:44.1861463Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-25T14:15:44.1950084Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-25T14:15:44.1952190Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-25T14:15:44.1953780Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-25T14:15:44.1955010Z hint: call:
+2026-10-25T14:15:44.1955637Z hint:
+2026-10-25T14:15:44.1956479Z hint: 	git config --global init.defaultBranch <name>
+2026-10-25T14:15:44.1957504Z hint:
+2026-10-25T14:15:44.1958481Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-25T14:15:44.1960401Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-25T14:15:44.1961619Z hint:
+2026-10-25T14:15:44.1962258Z hint: 	git branch -m <name>
+2026-10-25T14:15:44.1963033Z hint:
+2026-10-25T14:15:44.1964112Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-25T14:15:44.1970857Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-25T14:15:44.1981035Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-25T14:15:44.2031501Z ##[endgroup]
+2026-10-25T14:15:44.2032881Z ##[group]Disabling automatic garbage collection
+2026-10-25T14:15:44.2036252Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-25T14:15:44.2070397Z ##[endgroup]
+2026-10-25T14:15:44.2072032Z ##[group]Setting up auth
+2026-10-25T14:15:44.2078834Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T14:15:44.2114133Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T14:15:44.2475721Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T14:15:44.2514623Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T14:15:44.2739642Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T14:15:44.2775290Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T14:15:44.2997689Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-25T14:15:44.3038873Z ##[endgroup]
+2026-10-25T14:15:44.3041448Z ##[group]Fetching the repository
+2026-10-25T14:15:44.3051065Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +097b3c1bbc45e4ad141cc397ce4de4e1dc38a795:refs/remotes/origin/codex/phase318-saved-capture-diagnosis
+2026-10-25T14:15:55.1135380Z From https://github.com/Melihakbulut221/nssoc
+2026-10-25T14:15:55.1138195Z  * [new ref]           097b3c1bbc45e4ad141cc397ce4de4e1dc38a795 -> origin/codex/phase318-saved-capture-diagnosis
+2026-10-25T14:15:55.1142689Z ##[endgroup]
+2026-10-25T14:15:55.1144063Z ##[group]Determining the checkout info
+2026-10-25T14:15:55.1145489Z ##[endgroup]
+2026-10-25T14:15:55.1148371Z [command]/usr/bin/git sparse-checkout disable
+2026-10-25T14:15:55.1200892Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-25T14:15:55.1233432Z ##[group]Checking out the ref
+2026-10-25T14:15:55.1238188Z [command]/usr/bin/git checkout --progress --force -B codex/phase318-saved-capture-diagnosis refs/remotes/origin/codex/phase318-saved-capture-diagnosis
+2026-10-25T14:15:56.1997369Z Updating files:  12% (3593/29535)
+2026-10-25T14:15:56.3106695Z Updating files:  13% (3840/29535)
+2026-10-25T14:15:56.7083625Z Updating files:  14% (4135/29535)
+2026-10-25T14:15:56.8420781Z Updating files:  15% (4431/29535)
+2026-10-25T14:15:56.9298139Z Updating files:  16% (4726/29535)
+2026-10-25T14:15:56.9840642Z Updating files:  17% (5021/29535)
+2026-10-25T14:15:57.0057846Z Updating files:  18% (5317/29535)
+2026-10-25T14:15:57.0245108Z Updating files:  19% (5612/29535)
+2026-10-25T14:15:57.0976223Z Updating files:  20% (5907/29535)
+2026-10-25T14:15:57.1528393Z Updating files:  21% (6203/29535)
+2026-10-25T14:15:57.1602880Z Updating files:  21% (6465/29535)
+2026-10-25T14:15:57.1955330Z Updating files:  22% (6498/29535)
+2026-10-25T14:15:57.2209416Z Updating files:  23% (6794/29535)
+2026-10-25T14:15:57.2405993Z Updating files:  24% (7089/29535)
+2026-10-25T14:15:57.2567449Z Updating files:  25% (7384/29535)
+2026-10-25T14:15:57.2709108Z Updating files:  26% (7680/29535)
+2026-10-25T14:15:57.2867351Z Updating files:  27% (7975/29535)
+2026-10-25T14:15:57.3066422Z Updating files:  28% (8270/29535)
+2026-10-25T14:15:57.3198506Z Updating files:  29% (8566/29535)
+2026-10-25T14:15:57.3332819Z Updating files:  30% (8861/29535)
+2026-10-25T14:15:57.3514162Z Updating files:  31% (9156/29535)
+2026-10-25T14:15:57.3649517Z Updating files:  32% (9452/29535)
+2026-10-25T14:15:57.3823745Z Updating files:  33% (9747/29535)
+2026-10-25T14:15:57.4075106Z Updating files:  34% (10042/29535)
+2026-10-25T14:15:57.4358935Z Updating files:  35% (10338/29535)
+2026-10-25T14:15:57.4723343Z Updating files:  36% (10633/29535)
+2026-10-25T14:15:57.4872897Z Updating files:  37% (10928/29535)
+2026-10-25T14:15:57.5030035Z Updating files:  38% (11224/29535)
+2026-10-25T14:15:57.5202803Z Updating files:  39% (11519/29535)
+2026-10-25T14:15:57.5361457Z Updating files:  40% (11814/29535)
+2026-10-25T14:15:57.5516111Z Updating files:  41% (12110/29535)
+2026-10-25T14:15:57.5622732Z Updating files:  42% (12405/29535)
+2026-10-25T14:15:57.5770363Z Updating files:  43% (12701/29535)
+2026-10-25T14:15:57.5947761Z Updating files:  44% (12996/29535)
+2026-10-25T14:15:57.6116332Z Updating files:  45% (13291/29535)
+2026-10-25T14:15:57.6263076Z Updating files:  46% (13587/29535)
+2026-10-25T14:15:57.6451603Z Updating files:  47% (13882/29535)
+2026-10-25T14:15:57.6603429Z Updating files:  48% (14177/29535)
+2026-10-25T14:15:57.6740495Z Updating files:  49% (14473/29535)
+2026-10-25T14:15:57.6874820Z Updating files:  50% (14768/29535)
+2026-10-25T14:15:57.7053145Z Updating files:  51% (15063/29535)
+2026-10-25T14:15:57.7197122Z Updating files:  52% (15359/29535)
+2026-10-25T14:15:57.7469253Z Updating files:  53% (15654/29535)
+2026-10-25T14:15:57.7602352Z Updating files:  54% (15949/29535)
+2026-10-25T14:15:57.7742544Z Updating files:  55% (16245/29535)
+2026-10-25T14:15:57.7875471Z Updating files:  56% (16540/29535)
+2026-10-25T14:15:57.8015109Z Updating files:  57% (16835/29535)
+2026-10-25T14:15:57.8157244Z Updating files:  58% (17131/29535)
+2026-10-25T14:15:57.8330215Z Updating files:  59% (17426/29535)
+2026-10-25T14:15:57.8495048Z Updating files:  60% (17721/29535)
+2026-10-25T14:15:57.8610844Z Updating files:  61% (18017/29535)
+2026-10-25T14:15:57.8756107Z Updating files:  62% (18312/29535)
+2026-10-25T14:15:57.8878296Z Updating files:  63% (18608/29535)
+2026-10-25T14:15:57.9025710Z Updating files:  64% (18903/29535)
+2026-10-25T14:15:57.9309150Z Updating files:  65% (19198/29535)
+2026-10-25T14:15:57.9531211Z Updating files:  66% (19494/29535)
+2026-10-25T14:15:57.9730433Z Updating files:  67% (19789/29535)
+2026-10-25T14:15:57.9909274Z Updating files:  68% (20084/29535)
+2026-10-25T14:15:58.0061275Z Updating files:  69% (20380/29535)
+2026-10-25T14:15:58.0212201Z Updating files:  70% (20675/29535)
+2026-10-25T14:15:58.0337325Z Updating files:  71% (20970/29535)
+2026-10-25T14:15:58.0465163Z Updating files:  72% (21266/29535)
+2026-10-25T14:15:58.0589450Z Updating files:  73% (21561/29535)
+2026-10-25T14:15:58.0711671Z Updating files:  74% (21856/29535)
+2026-10-25T14:15:58.0856645Z Updating files:  75% (22152/29535)
+2026-10-25T14:15:58.1358670Z Updating files:  76% (22447/29535)
+2026-10-25T14:15:58.1514386Z Updating files:  77% (22742/29535)
+2026-10-25T14:15:58.1530157Z Updating files:  77% (23010/29535)
+2026-10-25T14:15:58.2092850Z Updating files:  78% (23038/29535)
+2026-10-25T14:15:58.2324755Z Updating files:  79% (23333/29535)
+2026-10-25T14:15:58.2575395Z Updating files:  80% (23628/29535)
+2026-10-25T14:15:58.2733404Z Updating files:  81% (23924/29535)
+2026-10-25T14:15:58.2890952Z Updating files:  82% (24219/29535)
+2026-10-25T14:15:58.3114103Z Updating files:  83% (24515/29535)
+2026-10-25T14:15:58.3315890Z Updating files:  84% (24810/29535)
+2026-10-25T14:15:58.3564438Z Updating files:  85% (25105/29535)
+2026-10-25T14:15:58.3720896Z Updating files:  86% (25401/29535)
+2026-10-25T14:15:58.3887527Z Updating files:  87% (25696/29535)
+2026-10-25T14:15:58.4014093Z Updating files:  88% (25991/29535)
+2026-10-25T14:15:58.4164054Z Updating files:  89% (26287/29535)
+2026-10-25T14:15:58.4312150Z Updating files:  90% (26582/29535)
+2026-10-25T14:15:58.4452005Z Updating files:  91% (26877/29535)
+2026-10-25T14:15:58.4642665Z Updating files:  92% (27173/29535)
+2026-10-25T14:15:58.4830778Z Updating files:  93% (27468/29535)
+2026-10-25T14:15:58.5019709Z Updating files:  94% (27763/29535)
+2026-10-25T14:15:58.5224279Z Updating files:  95% (28059/29535)
+2026-10-25T14:15:58.5428935Z Updating files:  96% (28354/29535)
+2026-10-25T14:15:58.6102304Z Updating files:  97% (28649/29535)
+2026-10-25T14:15:58.6279724Z Updating files:  98% (28945/29535)
+2026-10-25T14:15:58.6580026Z Updating files:  99% (29240/29535)
+2026-10-25T14:15:58.6580461Z Updating files: 100% (29535/29535)
+2026-10-25T14:15:58.6580886Z Updating files: 100% (29535/29535), done.
+2026-10-25T14:15:58.8410335Z Switched to a new branch 'codex/phase318-saved-capture-diagnosis'
+2026-10-25T14:15:58.8872057Z branch 'codex/phase318-saved-capture-diagnosis' set up to track 'origin/codex/phase318-saved-capture-diagnosis'.
+2026-10-25T14:15:58.9034016Z ##[endgroup]
+2026-10-25T14:15:58.9972455Z [command]/usr/bin/git log -1 --format=%H
+2026-10-25T14:15:59.0003956Z 097b3c1bbc45e4ad141cc397ce4de4e1dc38a795
+2026-10-25T14:15:59.0014881Z ##[group]Removing auth
+2026-10-25T14:15:59.0019582Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T14:15:59.0054055Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T14:15:59.0305874Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T14:15:59.0422021Z http.https://github.com/.extraheader
+2026-10-25T14:15:59.0430072Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-25T14:15:59.0476688Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T14:15:59.0721756Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T14:15:59.0753652Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T14:15:59.0995827Z ##[endgroup]
+2026-10-25T14:15:59.2128626Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-25T14:15:59.2129367Z with:
+2026-10-25T14:15:59.2129598Z   python-version: 3.12
+2026-10-25T14:15:59.2129851Z   check-latest: false
+2026-10-25T14:15:59.2132475Z   token: ***
+2026-10-25T14:15:59.2132700Z   update-environment: true
+2026-10-25T14:15:59.2132981Z   allow-prereleases: false
+2026-10-25T14:15:59.2133220Z   freethreaded: false
+2026-10-25T14:15:59.2133434Z ##[endgroup]
+2026-10-25T14:15:59.3424881Z ##[group]Installed versions
+2026-10-25T14:15:59.6428853Z (node:2372) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T14:15:59.6430019Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T14:15:59.6430900Z Successfully set up CPython (3.12.15)
+2026-10-25T14:15:59.6431699Z ##[endgroup]
+2026-10-25T14:15:59.6614376Z ##[group]Run python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+2026-10-25T14:15:59.6615098Z [36;1mpython3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2[0m
+2026-10-25T14:15:59.6908325Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T14:15:59.6909178Z env:
+2026-10-25T14:15:59.6909535Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:15:59.6909982Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T14:15:59.6910421Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:15:59.6910809Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:15:59.6911198Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:15:59.6911584Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T14:15:59.6911913Z ##[endgroup]
+2026-10-25T14:16:02.6225542Z Collecting numpy==2.3.3
+2026-10-25T14:16:02.6768413Z   Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+2026-10-25T14:16:02.8205655Z Collecting scipy==1.16.2
+2026-10-25T14:16:02.8258876Z   Downloading scipy-1.16.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (62 kB)
+2026-10-25T14:16:02.8575351Z Collecting networkx==3.4.2
+2026-10-25T14:16:02.8607054Z   Downloading networkx-3.4.2-py3-none-any.whl.metadata (6.3 kB)
+2026-10-25T14:16:02.8737081Z Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+2026-10-25T14:16:02.9587513Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 206.3 MB/s  0:00:00
+2026-10-25T14:16:02.9621098Z Downloading scipy-1.16.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (35.7 MB)
+2026-10-25T14:16:03.0807133Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.7/35.7 MB 305.2 MB/s  0:00:00
+2026-10-25T14:16:03.0842147Z Downloading networkx-3.4.2-py3-none-any.whl (1.7 MB)
+2026-10-25T14:16:03.0915697Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 286.1 MB/s  0:00:00
+2026-10-25T14:16:03.3363471Z Installing collected packages: numpy, networkx, scipy
+2026-10-25T14:16:10.5220083Z 
+2026-10-25T14:16:10.5231423Z Successfully installed networkx-3.4.2 numpy-2.3.3 scipy-1.16.2
+2026-10-25T14:16:10.5240673Z 
+2026-10-25T14:16:10.5241085Z [notice] A new release of pip is available: 26.2.1 -> 26.2.2
+2026-10-25T14:16:10.5241515Z [notice] To update, run: pip install --upgrade pip
+2026-10-25T14:16:10.5792315Z ##[group]Run if (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi
+2026-10-25T14:16:10.5792983Z [36;1mif (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi[0m
+2026-10-25T14:16:10.5793610Z [36;1mpython3 scripts/cloud_tx_phase_reset334_return_ledger.py --controls | tee source-controls.json[0m
+2026-10-25T14:16:10.5794123Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T14:16:10.5794368Z [36;1mimport json[0m
+2026-10-25T14:16:10.5794633Z [36;1mx=json.load(open('source-controls.json'))[0m
+2026-10-25T14:16:10.5795068Z [36;1massert x['status']=='PASS_PHASE318_RETURN_LEDGER_SOURCE_CONTROLS_ONLY'[0m
+2026-10-25T14:16:10.5795490Z [36;1massert len(x['math']['rejected'])==20[0m
+2026-10-25T14:16:10.5795808Z [36;1massert len(x['archive_faults'])==11[0m
+2026-10-25T14:16:10.5796146Z [36;1massert len(x['original_result_faults'])==9[0m
+2026-10-25T14:16:10.5796502Z [36;1massert len(x['metadata']['rejected'])==23[0m
+2026-10-25T14:16:10.5796865Z [36;1massert x['new_simulation'] is False[0m
+2026-10-25T14:16:10.5797151Z [36;1mq=x['ledger'][0m
+2026-10-25T14:16:10.5797454Z [36;1massert q['status']=='PASS_LEDGER_SOURCE_CONTROLS_ONLY'[0m
+2026-10-25T14:16:10.5797842Z [36;1massert len(q['synthetic']['rejected'])==12[0m
+2026-10-25T14:16:10.5798257Z [36;1massert len(q['RC_metadata_rejected'])==15 and len(q['row_rejected'])==4[0m
+2026-10-25T14:16:10.5798674Z [36;1massert len(q['derivation_rejected'])==2[0m
+2026-10-25T14:16:10.5799426Z [36;1massert q['observer_derivation']['edits']==2 and q['controller_derivation']['edits']==13[0m
+2026-10-25T14:16:10.5799940Z [36;1mc=q['synthetic']['qualified_coordinate_controls'][0m
+2026-10-25T14:16:10.5800384Z [36;1massert c['status']=='PASS_EXACT_RECORDED_MIM_COORDINATE_CONTROLS_ONLY'[0m
+2026-10-25T14:16:10.5800874Z [36;1massert len(c['rejected'])==32 and c['source_derived_JSON_fixture'][0m
+2026-10-25T14:16:10.5801609Z [36;1massert not c['restored_planes_exercised'] and not c['new_geometry_or_simulation'][0m
+2026-10-25T14:16:10.5802219Z [36;1massert c['all32_failure_witnesses_persisted'] and c['unrelated_error_not_reclassified'][0m
+2026-10-25T14:16:10.5802676Z [36;1mfor sign in ('p','n'):[0m
+2026-10-25T14:16:10.5802937Z [36;1m    p=c['positives'][sign][0m
+2026-10-25T14:16:10.5803350Z [36;1m    assert p['all_terminal_rows_exact']==1010 and p['all_anchor_records_exact']==695[0m
+2026-10-25T14:16:10.5803904Z [36;1m    assert p['recorded_MIM_changes']==8 and p['AVSS_original_point_equal']==83[0m
+2026-10-25T14:16:10.5804479Z [36;1m    assert len(p['AVSS_recorded_MIM_changes'])==2 and not p['coordinate_tolerance_used'][0m
+2026-10-25T14:16:10.5804974Z [36;1mr=q['synthetic']['physical_route_controls'][0m
+2026-10-25T14:16:10.5805420Z [36;1massert r['status']=='PASS_PINNED_PHYSICAL_ROUTE_SCHEMA_CONTROLS_ONLY'[0m
+2026-10-25T14:16:10.5805903Z [36;1massert len(r['rejected'])==40 and r['source_terminal_fixture'][0m
+2026-10-25T14:16:10.5806517Z [36;1massert len(r['integration']['rejected'])==4 and r['integration']['actual_inventory_geometry_statements_executed'][0m
+2026-10-25T14:16:10.5807148Z [36;1massert not r['integration']['native_R_graph_or_waveform_executed'][0m
+2026-10-25T14:16:10.5807714Z [36;1massert not r['restored_terminal_owners_exercised'] and not r['new_geometry_or_simulation'][0m
+2026-10-25T14:16:10.5808177Z [36;1mfor sign in ('p','n'):[0m
+2026-10-25T14:16:10.5808434Z [36;1m    p=r['positives'][sign][0m
+2026-10-25T14:16:10.5808831Z [36;1m    assert (p['total_routes'],p['scalar_routes'],p['MIM_pair_routes'])==(586,578,8)[0m
+2026-10-25T14:16:10.5809746Z [36;1m    assert (p['AVSS_terminal_routes'],p['AVSS_scalar_routes'],p['AVSS_MIM_terminal_routes'])==(85,83,2)[0m
+2026-10-25T14:16:10.5810373Z [36;1m    assert p['all586_records_classified'] and p['all85_terminal_owners_matched'][0m
+2026-10-25T14:16:10.5810862Z [36;1massert q['actual_graph_or_waveform_executed'] is False[0m
+2026-10-25T14:16:10.5811204Z [36;1mPYCODE[0m
+2026-10-25T14:16:10.5811794Z [36;1mpython3 scripts/wait_cloud_tested_source_release.py --controls > release-wait-controls.json[0m
+2026-10-25T14:16:10.5812295Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T14:16:10.5812534Z [36;1mimport json[0m
+2026-10-25T14:16:10.5812811Z [36;1mx=json.load(open('release-wait-controls.json'))[0m
+2026-10-25T14:16:10.5813219Z [36;1massert x['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'[0m
+2026-10-25T14:16:10.5813647Z [36;1massert len(x['positive_cases'])==3 and len(x['rejected'])==4[0m
+2026-10-25T14:16:10.5814206Z [36;1massert x['maximum_scheduled_wait_s']==300 and not x['creation_attempted'] and not x['native_executed'][0m
+2026-10-25T14:16:10.5814706Z [36;1mprint(json.dumps(x,indent=2))[0m
+2026-10-25T14:16:10.5814965Z [36;1mPYCODE[0m
+2026-10-25T14:16:10.5882117Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T14:16:10.5882465Z env:
+2026-10-25T14:16:10.5882740Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:16:10.5883179Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T14:16:10.5883612Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:16:10.5883996Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:16:10.5884381Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:16:10.5884776Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T14:16:10.5885097Z ##[endgroup]
+2026-10-25T14:16:13.6057042Z {
+2026-10-25T14:16:13.6057709Z   "status": "PASS_PHASE318_RETURN_LEDGER_SOURCE_CONTROLS_ONLY",
+2026-10-25T14:16:13.6058263Z   "ledger": {
+2026-10-25T14:16:13.6058645Z     "status": "PASS_LEDGER_SOURCE_CONTROLS_ONLY",
+2026-10-25T14:16:13.6059344Z     "synthetic": {
+2026-10-25T14:16:13.6059719Z       "status": "PASS_SYNTHETIC_LEDGER_MATH_ONLY",
+2026-10-25T14:16:13.6060193Z       "rejected": [
+2026-10-25T14:16:13.6060827Z         "native_number_nan",
+2026-10-25T14:16:13.6061247Z         "native_number_inf",
+2026-10-25T14:16:13.6061611Z         "native_number_1meg",
+2026-10-25T14:16:13.6061992Z         "native_number_1 ohm",
+2026-10-25T14:16:13.6062341Z         "self",
+2026-10-25T14:16:13.6062618Z         "zero",
+2026-10-25T14:16:13.6062904Z         "negative",
+2026-10-25T14:16:13.6063205Z         "voltage_nan",
+2026-10-25T14:16:13.6063518Z         "voltage_inf",
+2026-10-25T14:16:13.6063838Z         "resistance_zero",
+2026-10-25T14:16:13.6064197Z         "resistance_overflow",
+2026-10-25T14:16:13.6064561Z         "current_overflow"
+2026-10-25T14:16:13.6064880Z       ],
+2026-10-25T14:16:13.6065204Z       "actual_native_R_inventory_executed": false,
+2026-10-25T14:16:13.6065682Z       "actual_waveform_rows_executed": false,
+2026-10-25T14:16:13.6066151Z       "qualified_coordinate_controls": {
+2026-10-25T14:16:13.6066709Z         "status": "PASS_EXACT_RECORDED_MIM_COORDINATE_CONTROLS_ONLY",
+2026-10-25T14:16:13.6067277Z         "source_derived_JSON_fixture": true,
+2026-10-25T14:16:13.6067737Z         "restored_planes_exercised": false,
+2026-10-25T14:16:13.6068150Z         "positives": {
+2026-10-25T14:16:13.6068481Z           "p": {
+2026-10-25T14:16:13.6069348Z             "physical_summary_sha256": "5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913",
+2026-10-25T14:16:13.6070366Z             "MIM_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d",
+2026-10-25T14:16:13.6071084Z             "all_terminal_rows_exact": 1010,
+2026-10-25T14:16:13.6071523Z             "all_anchor_records_exact": 695,
+2026-10-25T14:16:13.6071985Z             "recorded_MIM_changes": 8,
+2026-10-25T14:16:13.6072399Z             "AVSS_original_point_equal": 83,
+2026-10-25T14:16:13.6072829Z             "AVSS_recorded_MIM_changes": [
+2026-10-25T14:16:13.6073216Z               {
+2026-10-25T14:16:13.6073525Z                 "native_id": 243,
+2026-10-25T14:16:13.6073925Z                 "terminal": "mim_btm",
+2026-10-25T14:16:13.6074323Z                 "model": "cap_cmim",
+2026-10-25T14:16:13.6074711Z                 "reference_label": "A0591",
+2026-10-25T14:16:13.6075351Z                 "native_cluster": 17,
+2026-10-25T14:16:13.6075808Z                 "wire_component": 13,
+2026-10-25T14:16:13.6076244Z                 "original_native_point_dbu": [
+2026-10-25T14:16:13.6076654Z                   873100,
+2026-10-25T14:16:13.6076973Z                   1334430
+2026-10-25T14:16:13.6077284Z                 ],
+2026-10-25T14:16:13.6077604Z                 "RC_reference_point_dbu": [
+2026-10-25T14:16:13.6077998Z                   873100,
+2026-10-25T14:16:13.6078311Z                   1333130
+2026-10-25T14:16:13.6078618Z                 ],
+2026-10-25T14:16:13.6079152Z                 "recorded_MIM_bottom_relocation": true,
+2026-10-25T14:16:13.6079770Z                 "qualified_MIM_access_witness": {
+2026-10-25T14:16:13.6080287Z                   "native_id": 243,
+2026-10-25T14:16:13.6080697Z                   "reference_label": "A0591",
+2026-10-25T14:16:13.6081138Z                   "old_point_dbu": [
+2026-10-25T14:16:13.6081528Z                     873100,
+2026-10-25T14:16:13.6081870Z                     1334430
+2026-10-25T14:16:13.6082189Z                   ],
+2026-10-25T14:16:13.6082504Z                   "new_point_dbu": [
+2026-10-25T14:16:13.6082863Z                     873100,
+2026-10-25T14:16:13.6083178Z                     1333130
+2026-10-25T14:16:13.6083494Z                   ],
+2026-10-25T14:16:13.6083818Z                   "native_cluster": 17,
+2026-10-25T14:16:13.6084214Z                   "wire_component": 13,
+2026-10-25T14:16:13.6084615Z                   "native_parameters": {
+2026-10-25T14:16:13.6085030Z                     "w": 2.2,
+2026-10-25T14:16:13.6085424Z                     "l": 2.0,
+2026-10-25T14:16:13.6085755Z                     "A": 4.4,
+2026-10-25T14:16:13.6086088Z                     "P": 8.4,
+2026-10-25T14:16:13.6086426Z                     "m": 1.0
+2026-10-25T14:16:13.6086777Z                   },
+2026-10-25T14:16:13.6087362Z                   "actual_leaf_cell": "cmim$1",
+2026-10-25T14:16:13.6087875Z                   "actual_leaf_path": [
+2026-10-25T14:16:13.6088387Z                     "nssoc_tx_phase_reset244_p_v1",
+2026-10-25T14:16:13.6088870Z                     "cmim$1"
+2026-10-25T14:16:13.6089436Z                   ],
+2026-10-25T14:16:13.6089859Z                   "actual_leaf_transform": "r0 *1 872000,1333430",
+2026-10-25T14:16:13.6090497Z                   "actual_mask_bbox_dbu": "(872000,1333430;874200,1335430)",
+2026-10-25T14:16:13.6091100Z                   "actual_mask_area_dbu2": 4400000,
+2026-10-25T14:16:13.6091607Z                   "actual_via_area_dbu2": 176400
+2026-10-25T14:16:13.6092180Z                 },
+2026-10-25T14:16:13.6093052Z                 "qualified_native_and_wire_ownership_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+2026-10-25T14:16:13.6094015Z               },
+2026-10-25T14:16:13.6094345Z               {
+2026-10-25T14:16:13.6094692Z                 "native_id": 244,
+2026-10-25T14:16:13.6095124Z                 "terminal": "mim_btm",
+2026-10-25T14:16:13.6095575Z                 "model": "cap_cmim",
+2026-10-25T14:16:13.6096040Z                 "reference_label": "A0593",
+2026-10-25T14:16:13.6096513Z                 "native_cluster": 17,
+2026-10-25T14:16:13.6096964Z                 "wire_component": 13,
+2026-10-25T14:16:13.6097436Z                 "original_native_point_dbu": [
+2026-10-25T14:16:13.6097914Z                   897000,
+2026-10-25T14:16:13.6098281Z                   1334430
+2026-10-25T14:16:13.6098642Z                 ],
+2026-10-25T14:16:13.6099194Z                 "RC_reference_point_dbu": [
+2026-10-25T14:16:13.6099636Z                   897000,
+2026-10-25T14:16:13.6099976Z                   1333130
+2026-10-25T14:16:13.6100296Z                 ],
+2026-10-25T14:16:13.6100679Z                 "recorded_MIM_bottom_relocation": true,
+2026-10-25T14:16:13.6101190Z                 "qualified_MIM_access_witness": {
+2026-10-25T14:16:13.6101680Z                   "native_id": 244,
+2026-10-25T14:16:13.6102123Z                   "reference_label": "A0593",
+2026-10-25T14:16:13.6102759Z                   "old_point_dbu": [
+2026-10-25T14:16:13.6103184Z                     897000,
+2026-10-25T14:16:13.6103545Z                     1334430
+2026-10-25T14:16:13.6103879Z                   ],
+2026-10-25T14:16:13.6104186Z                   "new_point_dbu": [
+2026-10-25T14:16:13.6104533Z                     897000,
+2026-10-25T14:16:13.6104831Z                     1333130
+2026-10-25T14:16:13.6105124Z                   ],
+2026-10-25T14:16:13.6105421Z                   "native_cluster": 17,
+2026-10-25T14:16:13.6105791Z                   "wire_component": 13,
+2026-10-25T14:16:13.6106213Z                   "native_parameters": {
+2026-10-25T14:16:13.6106639Z                     "w": 2.0,
+2026-10-25T14:16:13.6106996Z                     "l": 2.0,
+2026-10-25T14:16:13.6107337Z                     "A": 4.0,
+2026-10-25T14:16:13.6107682Z                     "P": 8.0,
+2026-10-25T14:16:13.6108039Z                     "m": 1.0
+2026-10-25T14:16:13.6108399Z                   },
+2026-10-25T14:16:13.6108800Z                   "actual_leaf_cell": "cmim$2",
+2026-10-25T14:16:13.6109545Z                   "actual_leaf_path": [
+2026-10-25T14:16:13.6110012Z                     "nssoc_tx_phase_reset244_p_v1",
+2026-10-25T14:16:13.6110465Z                     "cmim$2"
+2026-10-25T14:16:13.6110812Z                   ],
+2026-10-25T14:16:13.6111208Z                   "actual_leaf_transform": "r0 *1 896000,1333430",
+2026-10-25T14:16:13.6111951Z                   "actual_mask_bbox_dbu": "(896000,1333430;898000,1335430)",
+2026-10-25T14:16:13.6112590Z                   "actual_mask_area_dbu2": 4000000,
+2026-10-25T14:16:13.6113123Z                   "actual_via_area_dbu2": 176400
+2026-10-25T14:16:13.6113604Z                 },
+2026-10-25T14:16:13.6114500Z                 "qualified_native_and_wire_ownership_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+2026-10-25T14:16:13.6115686Z               }
+2026-10-25T14:16:13.6116080Z             ],
+2026-10-25T14:16:13.6116663Z             "qualified_producer_all695_native_and_physical_owners_verified": true,
+2026-10-25T14:16:13.6117565Z             "qualified_producer_all_metal_via_drawings_unchanged": true,
+2026-10-25T14:16:13.6118397Z             "coordinate_units": "KLayout database units, 0.001 micrometer = 1 nm",
+2026-10-25T14:16:13.6119970Z             "coordinate_frame": "Same translated physical layout frame; original plate center and qualified exterior bottom-metal access are distinct points.",
+2026-10-25T14:16:13.6121178Z             "coordinate_tolerance_used": false,
+2026-10-25T14:16:13.6121705Z             "geometry_regenerated": false
+2026-10-25T14:16:13.6122152Z           },
+2026-10-25T14:16:13.6122444Z           "n": {
+2026-10-25T14:16:13.6123139Z             "physical_summary_sha256": "5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913",
+2026-10-25T14:16:13.6124277Z             "MIM_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d",
+2026-10-25T14:16:13.6125082Z             "all_terminal_rows_exact": 1010,
+2026-10-25T14:16:13.6125575Z             "all_anchor_records_exact": 695,
+2026-10-25T14:16:13.6126067Z             "recorded_MIM_changes": 8,
+2026-10-25T14:16:13.6126552Z             "AVSS_original_point_equal": 83,
+2026-10-25T14:16:13.6127056Z             "AVSS_recorded_MIM_changes": [
+2026-10-25T14:16:13.6127529Z               {
+2026-10-25T14:16:13.6127880Z                 "native_id": 243,
+2026-10-25T14:16:13.6128315Z                 "terminal": "mim_btm",
+2026-10-25T14:16:13.6128772Z                 "model": "cap_cmim",
+2026-10-25T14:16:13.6129431Z                 "reference_label": "A0591",
+2026-10-25T14:16:13.6129911Z                 "native_cluster": 17,
+2026-10-25T14:16:13.6130368Z                 "wire_component": 13,
+2026-10-25T14:16:13.6130847Z                 "original_native_point_dbu": [
+2026-10-25T14:16:13.6131332Z                   873100,
+2026-10-25T14:16:13.6131712Z                   1334430
+2026-10-25T14:16:13.6132035Z                 ],
+2026-10-25T14:16:13.6132374Z                 "RC_reference_point_dbu": [
+2026-10-25T14:16:13.6132978Z                   873100,
+2026-10-25T14:16:13.6133330Z                   1333130
+2026-10-25T14:16:13.6133690Z                 ],
+2026-10-25T14:16:13.6134066Z                 "recorded_MIM_bottom_relocation": true,
+2026-10-25T14:16:13.6134582Z                 "qualified_MIM_access_witness": {
+2026-10-25T14:16:13.6135044Z                   "native_id": 243,
+2026-10-25T14:16:13.6135462Z                   "reference_label": "A0591",
+2026-10-25T14:16:13.6135879Z                   "old_point_dbu": [
+2026-10-25T14:16:13.6136223Z                     873100,
+2026-10-25T14:16:13.6136518Z                     1334430
+2026-10-25T14:16:13.6136814Z                   ],
+2026-10-25T14:16:13.6137107Z                   "new_point_dbu": [
+2026-10-25T14:16:13.6137464Z                     873100,
+2026-10-25T14:16:13.6137791Z                     1333130
+2026-10-25T14:16:13.6138138Z                   ],
+2026-10-25T14:16:13.6138502Z                   "native_cluster": 17,
+2026-10-25T14:16:13.6139174Z                   "wire_component": 13,
+2026-10-25T14:16:13.6139607Z                   "native_parameters": {
+2026-10-25T14:16:13.6140009Z                     "w": 2.2,
+2026-10-25T14:16:13.6140373Z                     "l": 2.0,
+2026-10-25T14:16:13.6140763Z                     "A": 4.4,
+2026-10-25T14:16:13.6141153Z                     "P": 8.4,
+2026-10-25T14:16:13.6141547Z                     "m": 1.0
+2026-10-25T14:16:13.6141935Z                   },
+2026-10-25T14:16:13.6142322Z                   "actual_leaf_cell": "cmim$1",
+2026-10-25T14:16:13.6142798Z                   "actual_leaf_path": [
+2026-10-25T14:16:13.6143232Z                     "nssoc_tx_phase_reset244_n_v1",
+2026-10-25T14:16:13.6143647Z                     "cmim$1"
+2026-10-25T14:16:13.6143961Z                   ],
+2026-10-25T14:16:13.6144356Z                   "actual_leaf_transform": "r0 *1 872000,1333430",
+2026-10-25T14:16:13.6145160Z                   "actual_mask_bbox_dbu": "(872000,1333430;874200,1335430)",
+2026-10-25T14:16:13.6145745Z                   "actual_mask_area_dbu2": 4400000,
+2026-10-25T14:16:13.6146238Z                   "actual_via_area_dbu2": 176400
+2026-10-25T14:16:13.6146687Z                 },
+2026-10-25T14:16:13.6147533Z                 "qualified_native_and_wire_ownership_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+2026-10-25T14:16:13.6148478Z               },
+2026-10-25T14:16:13.6148795Z               {
+2026-10-25T14:16:13.6149352Z                 "native_id": 244,
+2026-10-25T14:16:13.6149774Z                 "terminal": "mim_btm",
+2026-10-25T14:16:13.6150202Z                 "model": "cap_cmim",
+2026-10-25T14:16:13.6150630Z                 "reference_label": "A0593",
+2026-10-25T14:16:13.6151088Z                 "native_cluster": 17,
+2026-10-25T14:16:13.6151520Z                 "wire_component": 13,
+2026-10-25T14:16:13.6151974Z                 "original_native_point_dbu": [
+2026-10-25T14:16:13.6152428Z                   897000,
+2026-10-25T14:16:13.6152789Z                   1334430
+2026-10-25T14:16:13.6153142Z                 ],
+2026-10-25T14:16:13.6153501Z                 "RC_reference_point_dbu": [
+2026-10-25T14:16:13.6153930Z                   897000,
+2026-10-25T14:16:13.6154256Z                   1333130
+2026-10-25T14:16:13.6154573Z                 ],
+2026-10-25T14:16:13.6154938Z                 "recorded_MIM_bottom_relocation": true,
+2026-10-25T14:16:13.6155424Z                 "qualified_MIM_access_witness": {
+2026-10-25T14:16:13.6155872Z                   "native_id": 244,
+2026-10-25T14:16:13.6156306Z                   "reference_label": "A0593",
+2026-10-25T14:16:13.6156738Z                   "old_point_dbu": [
+2026-10-25T14:16:13.6157117Z                     897000,
+2026-10-25T14:16:13.6157459Z                     1334430
+2026-10-25T14:16:13.6157792Z                   ],
+2026-10-25T14:16:13.6158119Z                   "new_point_dbu": [
+2026-10-25T14:16:13.6158520Z                     897000,
+2026-10-25T14:16:13.6158865Z                     1333130
+2026-10-25T14:16:13.6159669Z                   ],
+2026-10-25T14:16:13.6160079Z                   "native_cluster": 17,
+2026-10-25T14:16:13.6160521Z                   "wire_component": 13,
+2026-10-25T14:16:13.6160951Z                   "native_parameters": {
+2026-10-25T14:16:13.6161451Z                     "w": 2.0,
+2026-10-25T14:16:13.6161811Z                     "l": 2.0,
+2026-10-25T14:16:13.6162159Z                     "A": 4.0,
+2026-10-25T14:16:13.6162505Z                     "P": 8.0,
+2026-10-25T14:16:13.6162854Z                     "m": 1.0
+2026-10-25T14:16:13.6163195Z                   },
+2026-10-25T14:16:13.6163538Z                   "actual_leaf_cell": "cmim$2",
+2026-10-25T14:16:13.6163979Z                   "actual_leaf_path": [
+2026-10-25T14:16:13.6164408Z                     "nssoc_tx_phase_reset244_n_v1",
+2026-10-25T14:16:13.6164843Z                     "cmim$2"
+2026-10-25T14:16:13.6165193Z                   ],
+2026-10-25T14:16:13.6165603Z                   "actual_leaf_transform": "r0 *1 896000,1333430",
+2026-10-25T14:16:13.6166252Z                   "actual_mask_bbox_dbu": "(896000,1333430;898000,1335430)",
+2026-10-25T14:16:13.6166823Z                   "actual_mask_area_dbu2": 4000000,
+2026-10-25T14:16:13.6167276Z                   "actual_via_area_dbu2": 176400
+2026-10-25T14:16:13.6167688Z                 },
+2026-10-25T14:16:13.6168486Z                 "qualified_native_and_wire_ownership_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+2026-10-25T14:16:13.6169648Z               }
+2026-10-25T14:16:13.6169969Z             ],
+2026-10-25T14:16:13.6170495Z             "qualified_producer_all695_native_and_physical_owners_verified": true,
+2026-10-25T14:16:13.6171310Z             "qualified_producer_all_metal_via_drawings_unchanged": true,
+2026-10-25T14:16:13.6172079Z             "coordinate_units": "KLayout database units, 0.001 micrometer = 1 nm",
+2026-10-25T14:16:13.6173529Z             "coordinate_frame": "Same translated physical layout frame; original plate center and qualified exterior bottom-metal access are distinct points.",
+2026-10-25T14:16:13.6174638Z             "coordinate_tolerance_used": false,
+2026-10-25T14:16:13.6175128Z             "geometry_regenerated": false
+2026-10-25T14:16:13.6175547Z           }
+2026-10-25T14:16:13.6175821Z         },
+2026-10-25T14:16:13.6176116Z         "rejected": [
+2026-10-25T14:16:13.6176485Z           "p:unlisted_HBT_displacement",
+2026-10-25T14:16:13.6176936Z           "p:MIM_new_point",
+2026-10-25T14:16:13.6177320Z           "p:MIM_old_witness",
+2026-10-25T14:16:13.6177715Z           "p:reversed_points",
+2026-10-25T14:16:13.6178103Z           "p:aliased_seed_access",
+2026-10-25T14:16:13.6178510Z           "p:wrong_reference",
+2026-10-25T14:16:13.6178894Z           "p:wrong_device",
+2026-10-25T14:16:13.6179469Z           "p:wrong_terminal",
+2026-10-25T14:16:13.6179854Z           "p:wrong_cluster",
+2026-10-25T14:16:13.6180240Z           "p:wrong_component",
+2026-10-25T14:16:13.6180619Z           "p:wrong_metal",
+2026-10-25T14:16:13.6181009Z           "p:changed_anchor_point",
+2026-10-25T14:16:13.6181451Z           "p:missing_recorded_change",
+2026-10-25T14:16:13.6181898Z           "p:duplicate_recorded_change",
+2026-10-25T14:16:13.6182342Z           "p:wrong_change_old_point",
+2026-10-25T14:16:13.6182770Z           "p:public_alias",
+2026-10-25T14:16:13.6183182Z           "n:unlisted_HBT_displacement",
+2026-10-25T14:16:13.6183637Z           "n:MIM_new_point",
+2026-10-25T14:16:13.6184034Z           "n:MIM_old_witness",
+2026-10-25T14:16:13.6184427Z           "n:reversed_points",
+2026-10-25T14:16:13.6184821Z           "n:aliased_seed_access",
+2026-10-25T14:16:13.6185228Z           "n:wrong_reference",
+2026-10-25T14:16:13.6185610Z           "n:wrong_device",
+2026-10-25T14:16:13.6185978Z           "n:wrong_terminal",
+2026-10-25T14:16:13.6186346Z           "n:wrong_cluster",
+2026-10-25T14:16:13.6186711Z           "n:wrong_component",
+2026-10-25T14:16:13.6187070Z           "n:wrong_metal",
+2026-10-25T14:16:13.6187460Z           "n:changed_anchor_point",
+2026-10-25T14:16:13.6188231Z           "n:missing_recorded_change",
+2026-10-25T14:16:13.6189171Z           "n:duplicate_recorded_change",
+2026-10-25T14:16:13.6189670Z           "n:wrong_change_old_point",
+2026-10-25T14:16:13.6190129Z           "n:public_alias"
+2026-10-25T14:16:13.6190514Z         ],
+2026-10-25T14:16:13.6190898Z         "all32_failure_witnesses_persisted": true,
+2026-10-25T14:16:13.6191468Z         "unrelated_error_not_reclassified": true,
+2026-10-25T14:16:13.6192004Z         "new_geometry_or_simulation": false
+2026-10-25T14:16:13.6192465Z       },
+2026-10-25T14:16:13.6192805Z       "physical_route_controls": {
+2026-10-25T14:16:13.6193376Z         "status": "PASS_PINNED_PHYSICAL_ROUTE_SCHEMA_CONTROLS_ONLY",
+2026-10-25T14:16:13.6193975Z         "positives": {
+2026-10-25T14:16:13.6194333Z           "p": {
+2026-10-25T14:16:13.6194872Z             "status": "EXACT_PHYSICAL_ROUTE_SCHEMA_AND_SOURCE_TERMINAL_JOIN_ONLY",
+2026-10-25T14:16:13.6195571Z             "total_routes": 586,
+2026-10-25T14:16:13.6196006Z             "scalar_routes": 578,
+2026-10-25T14:16:13.6196432Z             "MIM_pair_routes": 8,
+2026-10-25T14:16:13.6196863Z             "compact_devices": 244,
+2026-10-25T14:16:13.6197299Z             "AVSS_scalar_routes": 83,
+2026-10-25T14:16:13.6197777Z             "AVSS_MIM_terminal_routes": 2,
+2026-10-25T14:16:13.6198259Z             "AVSS_terminal_routes": 85,
+2026-10-25T14:16:13.6198704Z             "all586_records_classified": true,
+2026-10-25T14:16:13.6199396Z             "all85_terminal_owners_matched": true,
+2026-10-25T14:16:13.6200040Z             "route_coordinates_preserved_in_original_generator_frame": true,
+2026-10-25T14:16:13.6200718Z             "RC_access_point_equivalence_inferred": false,
+2026-10-25T14:16:13.6201191Z             "new_geometry_or_simulation": false
+2026-10-25T14:16:13.6201571Z           },
+2026-10-25T14:16:13.6202260Z           "n": {
+2026-10-25T14:16:13.6202814Z             "status": "EXACT_PHYSICAL_ROUTE_SCHEMA_AND_SOURCE_TERMINAL_JOIN_ONLY",
+2026-10-25T14:16:13.6230340Z             "total_routes": 586,
+2026-10-25T14:16:13.6230861Z             "scalar_routes": 578,
+2026-10-25T14:16:13.6231301Z             "MIM_pair_routes": 8,
+2026-10-25T14:16:13.6231796Z             "compact_devices": 244,
+2026-10-25T14:16:13.6232258Z             "AVSS_scalar_routes": 83,
+2026-10-25T14:16:13.6232740Z             "AVSS_MIM_terminal_routes": 2,
+2026-10-25T14:16:13.6233205Z             "AVSS_terminal_routes": 85,
+2026-10-25T14:16:13.6233672Z             "all586_records_classified": true,
+2026-10-25T14:16:13.6234209Z             "all85_terminal_owners_matched": true,
+2026-10-25T14:16:13.6234873Z             "route_coordinates_preserved_in_original_generator_frame": true,
+2026-10-25T14:16:13.6235568Z             "RC_access_point_equivalence_inferred": false,
+2026-10-25T14:16:13.6236105Z             "new_geometry_or_simulation": false
+2026-10-25T14:16:13.6236577Z           }
+2026-10-25T14:16:13.6236872Z         },
+2026-10-25T14:16:13.6237181Z         "rejected": [
+2026-10-25T14:16:13.6237523Z           {
+2026-10-25T14:16:13.6237870Z             "case": "p:unknown_scalar_field",
+2026-10-25T14:16:13.6238343Z             "refusal": {
+2026-10-25T14:16:13.6238744Z               "code": "unknown_route_schema",
+2026-10-25T14:16:13.6239441Z               "index": 5,
+2026-10-25T14:16:13.6239824Z               "record": {
+2026-10-25T14:16:13.6240264Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6240851Z                 "device": "PHASE__XCLK__XLDP",
+2026-10-25T14:16:13.6241337Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6241792Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6242269Z                 "net": "AVSS",
+2026-10-25T14:16:13.6242678Z                 "source_layer": 1,
+2026-10-25T14:16:13.6243099Z                 "unexpected": true
+2026-10-25T14:16:13.6243544Z               }
+2026-10-25T14:16:13.6243875Z             }
+2026-10-25T14:16:13.6244212Z           },
+2026-10-25T14:16:13.6244516Z           {
+2026-10-25T14:16:13.6245072Z             "case": "p:missing_scalar_net",
+2026-10-25T14:16:13.6245558Z             "refusal": {
+2026-10-25T14:16:13.6245943Z               "code": "unknown_route_schema",
+2026-10-25T14:16:13.6246432Z               "index": 5,
+2026-10-25T14:16:13.6246828Z               "record": {
+2026-10-25T14:16:13.6247234Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6247785Z                 "device": "PHASE__XCLK__XLDP",
+2026-10-25T14:16:13.6248270Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6248695Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6249367Z                 "source_layer": 1
+2026-10-25T14:16:13.6249768Z               }
+2026-10-25T14:16:13.6250065Z             }
+2026-10-25T14:16:13.6250361Z           },
+2026-10-25T14:16:13.6250641Z           {
+2026-10-25T14:16:13.6250951Z             "case": "p:wrong_scalar_net",
+2026-10-25T14:16:13.6251476Z             "refusal": {
+2026-10-25T14:16:13.6251887Z               "code": "scalar_source_net",
+2026-10-25T14:16:13.6252367Z               "index": 5,
+2026-10-25T14:16:13.6252683Z               "record": {
+2026-10-25T14:16:13.6253059Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6253549Z                 "device": "PHASE__XCLK__XLDP",
+2026-10-25T14:16:13.6254041Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6254529Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6254946Z                 "net": "NOT_A_SOURCE_NET",
+2026-10-25T14:16:13.6255355Z                 "source_layer": 1
+2026-10-25T14:16:13.6255723Z               },
+2026-10-25T14:16:13.6256054Z               "source_nets": [
+2026-10-25T14:16:13.6256439Z                 "PHASE__XCLK__BIP",
+2026-10-25T14:16:13.6256795Z                 "AVSS"
+2026-10-25T14:16:13.6257108Z               ]
+2026-10-25T14:16:13.6257400Z             }
+2026-10-25T14:16:13.6258007Z           },
+2026-10-25T14:16:13.6258370Z           {
+2026-10-25T14:16:13.6258732Z             "case": "p:scalar_uses_MIM_device",
+2026-10-25T14:16:13.6259424Z             "refusal": {
+2026-10-25T14:16:13.6259798Z               "code": "scalar_kind",
+2026-10-25T14:16:13.6260210Z               "index": 5,
+2026-10-25T14:16:13.6260570Z               "kind": "capacitor",
+2026-10-25T14:16:13.6260949Z               "record": {
+2026-10-25T14:16:13.6261424Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6261925Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6262349Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6262768Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6263167Z                 "net": "AVSS",
+2026-10-25T14:16:13.6263558Z                 "source_layer": 1
+2026-10-25T14:16:13.6263925Z               }
+2026-10-25T14:16:13.6264220Z             }
+2026-10-25T14:16:13.6264515Z           },
+2026-10-25T14:16:13.6264816Z           {
+2026-10-25T14:16:13.6265131Z             "case": "p:missing_scalar_route",
+2026-10-25T14:16:13.6265570Z             "refusal": {
+2026-10-25T14:16:13.6265935Z               "code": "route_census",
+2026-10-25T14:16:13.6266352Z               "expected": 586,
+2026-10-25T14:16:13.6266724Z               "observed": 585
+2026-10-25T14:16:13.6267082Z             }
+2026-10-25T14:16:13.6267371Z           },
+2026-10-25T14:16:13.6267657Z           {
+2026-10-25T14:16:13.6267997Z             "case": "p:duplicate_scalar_route",
+2026-10-25T14:16:13.6268432Z             "refusal": {
+2026-10-25T14:16:13.6268789Z               "code": "route_census",
+2026-10-25T14:16:13.6269376Z               "expected": 586,
+2026-10-25T14:16:13.6269761Z               "observed": 587
+2026-10-25T14:16:13.6270133Z             }
+2026-10-25T14:16:13.6270431Z           },
+2026-10-25T14:16:13.6270716Z           {
+2026-10-25T14:16:13.6271028Z             "case": "p:missing_MIM_pair",
+2026-10-25T14:16:13.6271469Z             "refusal": {
+2026-10-25T14:16:13.6271860Z               "code": "route_census",
+2026-10-25T14:16:13.6272280Z               "expected": 586,
+2026-10-25T14:16:13.6272826Z               "observed": 585
+2026-10-25T14:16:13.6273203Z             }
+2026-10-25T14:16:13.6273482Z           },
+2026-10-25T14:16:13.6273769Z           {
+2026-10-25T14:16:13.6274087Z             "case": "p:duplicate_MIM_pair",
+2026-10-25T14:16:13.6274529Z             "refusal": {
+2026-10-25T14:16:13.6274910Z               "code": "route_census",
+2026-10-25T14:16:13.6275319Z               "expected": 586,
+2026-10-25T14:16:13.6275703Z               "observed": 587
+2026-10-25T14:16:13.6276066Z             }
+2026-10-25T14:16:13.6276372Z           },
+2026-10-25T14:16:13.6276673Z           {
+2026-10-25T14:16:13.6277005Z             "case": "p:swapped_MIM_nets",
+2026-10-25T14:16:13.6277488Z             "refusal": {
+2026-10-25T14:16:13.6277886Z               "code": "MIM_source_nets",
+2026-10-25T14:16:13.6278334Z               "index": 584,
+2026-10-25T14:16:13.6278695Z               "record": {
+2026-10-25T14:16:13.6279285Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6279844Z                 "minus_escape_um": [
+2026-10-25T14:16:13.6280268Z                   867.0,
+2026-10-25T14:16:13.6280638Z                   1338.4
+2026-10-25T14:16:13.6280991Z                 ],
+2026-10-25T14:16:13.6281429Z                 "minus_native_plate_um": "(871.4,1336.8;874.8,1340)",
+2026-10-25T14:16:13.6281976Z                 "minus_net": "MP",
+2026-10-25T14:16:13.6282454Z                 "plus_contact_outside_native_mim": true,
+2026-10-25T14:16:13.6282980Z                 "plus_escape_um": [
+2026-10-25T14:16:13.6283405Z                   863.0,
+2026-10-25T14:16:13.6283762Z                   1338.4
+2026-10-25T14:16:13.6284115Z                 ],
+2026-10-25T14:16:13.6284572Z                 "plus_native_plate_um": "(872.47,1337.77;873.73,1339.03)",
+2026-10-25T14:16:13.6285160Z                 "plus_net": "AVSS"
+2026-10-25T14:16:13.6285559Z               },
+2026-10-25T14:16:13.6286050Z               "source_nets": [
+2026-10-25T14:16:13.6286422Z                 "MP",
+2026-10-25T14:16:13.6286764Z                 "AVSS"
+2026-10-25T14:16:13.6287114Z               ]
+2026-10-25T14:16:13.6287433Z             }
+2026-10-25T14:16:13.6287744Z           },
+2026-10-25T14:16:13.6288076Z           {
+2026-10-25T14:16:13.6288424Z             "case": "p:wrong_MIM_minus_net",
+2026-10-25T14:16:13.6288887Z             "refusal": {
+2026-10-25T14:16:13.6289472Z               "code": "MIM_source_nets",
+2026-10-25T14:16:13.6289929Z               "index": 584,
+2026-10-25T14:16:13.6290313Z               "record": {
+2026-10-25T14:16:13.6290712Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6291164Z                 "minus_escape_um": [
+2026-10-25T14:16:13.6291557Z                   867.0,
+2026-10-25T14:16:13.6291899Z                   1338.4
+2026-10-25T14:16:13.6292235Z                 ],
+2026-10-25T14:16:13.6292675Z                 "minus_native_plate_um": "(871.4,1336.8;874.8,1340)",
+2026-10-25T14:16:13.6293241Z                 "minus_net": "SUB",
+2026-10-25T14:16:13.6293720Z                 "plus_contact_outside_native_mim": true,
+2026-10-25T14:16:13.6294241Z                 "plus_escape_um": [
+2026-10-25T14:16:13.6294659Z                   863.0,
+2026-10-25T14:16:13.6295013Z                   1338.4
+2026-10-25T14:16:13.6295358Z                 ],
+2026-10-25T14:16:13.6295788Z                 "plus_native_plate_um": "(872.47,1337.77;873.73,1339.03)",
+2026-10-25T14:16:13.6296340Z                 "plus_net": "MP"
+2026-10-25T14:16:13.6296716Z               },
+2026-10-25T14:16:13.6297099Z               "source_nets": [
+2026-10-25T14:16:13.6297488Z                 "MP",
+2026-10-25T14:16:13.6297824Z                 "AVSS"
+2026-10-25T14:16:13.6298152Z               ]
+2026-10-25T14:16:13.6298446Z             }
+2026-10-25T14:16:13.6298724Z           },
+2026-10-25T14:16:13.6299213Z           {
+2026-10-25T14:16:13.6299465Z             "case": "p:missing_MIM_plate",
+2026-10-25T14:16:13.6299749Z             "refusal": {
+2026-10-25T14:16:13.6299986Z               "code": "unknown_route_schema",
+2026-10-25T14:16:13.6300259Z               "index": 584,
+2026-10-25T14:16:13.6300645Z               "record": {
+2026-10-25T14:16:13.6300895Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6301175Z                 "minus_escape_um": [
+2026-10-25T14:16:13.6301426Z                   867.0,
+2026-10-25T14:16:13.6301633Z                   1338.4
+2026-10-25T14:16:13.6301840Z                 ],
+2026-10-25T14:16:13.6302044Z                 "minus_net": "AVSS",
+2026-10-25T14:16:13.6302328Z                 "plus_contact_outside_native_mim": true,
+2026-10-25T14:16:13.6302633Z                 "plus_escape_um": [
+2026-10-25T14:16:13.6302877Z                   863.0,
+2026-10-25T14:16:13.6303086Z                   1338.4
+2026-10-25T14:16:13.6303293Z                 ],
+2026-10-25T14:16:13.6303558Z                 "plus_native_plate_um": "(872.47,1337.77;873.73,1339.03)",
+2026-10-25T14:16:13.6303894Z                 "plus_net": "MP"
+2026-10-25T14:16:13.6304134Z               }
+2026-10-25T14:16:13.6304322Z             }
+2026-10-25T14:16:13.6304500Z           },
+2026-10-25T14:16:13.6304682Z           {
+2026-10-25T14:16:13.6304880Z             "case": "p:MIM_contact_flag",
+2026-10-25T14:16:13.6305139Z             "refusal": {
+2026-10-25T14:16:13.6305370Z               "code": "MIM_outside_contact",
+2026-10-25T14:16:13.6305646Z               "index": 584,
+2026-10-25T14:16:13.6305866Z               "record": {
+2026-10-25T14:16:13.6306094Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6306388Z                 "minus_escape_um": [
+2026-10-25T14:16:13.6306635Z                   867.0,
+2026-10-25T14:16:13.6306843Z                   1338.4
+2026-10-25T14:16:13.6307049Z                 ],
+2026-10-25T14:16:13.6307307Z                 "minus_native_plate_um": "(871.4,1336.8;874.8,1340)",
+2026-10-25T14:16:13.6307631Z                 "minus_net": "AVSS",
+2026-10-25T14:16:13.6307914Z                 "plus_contact_outside_native_mim": false,
+2026-10-25T14:16:13.6308349Z                 "plus_escape_um": [
+2026-10-25T14:16:13.6308596Z                   863.0,
+2026-10-25T14:16:13.6308808Z                   1338.4
+2026-10-25T14:16:13.6309257Z                 ],
+2026-10-25T14:16:13.6309533Z                 "plus_native_plate_um": "(872.47,1337.77;873.73,1339.03)",
+2026-10-25T14:16:13.6309875Z                 "plus_net": "MP"
+2026-10-25T14:16:13.6310107Z               }
+2026-10-25T14:16:13.6310294Z             }
+2026-10-25T14:16:13.6310475Z           },
+2026-10-25T14:16:13.6310653Z           {
+2026-10-25T14:16:13.6310875Z             "case": "p:unsupported_tap_route",
+2026-10-25T14:16:13.6311163Z             "refusal": {
+2026-10-25T14:16:13.6311406Z               "code": "unsupported_routed_kind",
+2026-10-25T14:16:13.6311685Z               "index": 5,
+2026-10-25T14:16:13.6311915Z               "kind": "substrate_tap",
+2026-10-25T14:16:13.6312174Z               "record": {
+2026-10-25T14:16:13.6312449Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6312766Z                 "device": "TAP0",
+2026-10-25T14:16:13.6313017Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6313291Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6313539Z                 "net": "AVSS",
+2026-10-25T14:16:13.6313778Z                 "source_layer": 1
+2026-10-25T14:16:13.6314012Z               }
+2026-10-25T14:16:13.6314196Z             }
+2026-10-25T14:16:13.6314375Z           },
+2026-10-25T14:16:13.6314552Z           {
+2026-10-25T14:16:13.6314784Z             "case": "p:duplicate_route_replaces_another",
+2026-10-25T14:16:13.6315085Z             "refusal": {
+2026-10-25T14:16:13.6315320Z               "code": "duplicate_route_record"
+2026-10-25T14:16:13.6315584Z             }
+2026-10-25T14:16:13.6315760Z           },
+2026-10-25T14:16:13.6315962Z           {
+2026-10-25T14:16:13.6316178Z             "case": "p:missing_scalar_terminal",
+2026-10-25T14:16:13.6316453Z             "refusal": {
+2026-10-25T14:16:13.6316692Z               "code": "AVSS_terminal_census",
+2026-10-25T14:16:13.6316962Z               "routes": 85,
+2026-10-25T14:16:13.6317189Z               "terminals": 84
+2026-10-25T14:16:13.6317541Z             }
+2026-10-25T14:16:13.6317724Z           },
+2026-10-25T14:16:13.6317900Z           {
+2026-10-25T14:16:13.6318103Z             "case": "p:missing_MIM_terminal",
+2026-10-25T14:16:13.6318372Z             "refusal": {
+2026-10-25T14:16:13.6318602Z               "code": "AVSS_terminal_census",
+2026-10-25T14:16:13.6318874Z               "routes": 85,
+2026-10-25T14:16:13.6319325Z               "terminals": 84
+2026-10-25T14:16:13.6319547Z             }
+2026-10-25T14:16:13.6319725Z           },
+2026-10-25T14:16:13.6319899Z           {
+2026-10-25T14:16:13.6320111Z             "case": "p:duplicate_terminal",
+2026-10-25T14:16:13.6320380Z             "refusal": {
+2026-10-25T14:16:13.6320610Z               "code": "AVSS_terminal_census",
+2026-10-25T14:16:13.6320879Z               "routes": 85,
+2026-10-25T14:16:13.6321108Z               "terminals": 86
+2026-10-25T14:16:13.6321324Z             }
+2026-10-25T14:16:13.6321511Z           },
+2026-10-25T14:16:13.6321690Z           {
+2026-10-25T14:16:13.6321899Z             "case": "p:wrong_terminal_owner",
+2026-10-25T14:16:13.6322166Z             "refusal": {
+2026-10-25T14:16:13.6322407Z               "code": "AVSS_terminal_owner_join",
+2026-10-25T14:16:13.6322685Z               "extra": [
+2026-10-25T14:16:13.6322888Z                 [
+2026-10-25T14:16:13.6323091Z                   "PHASE__NOT_REAL",
+2026-10-25T14:16:13.6323337Z                   "rppd",
+2026-10-25T14:16:13.6323548Z                   "rppd_2",
+2026-10-25T14:16:13.6323767Z                   "AVSS"
+2026-10-25T14:16:13.6323974Z                 ]
+2026-10-25T14:16:13.6324157Z               ],
+2026-10-25T14:16:13.6324350Z               "missing": [
+2026-10-25T14:16:13.6324559Z                 [
+2026-10-25T14:16:13.6324765Z                   "PHASE__XCLK__XLDP",
+2026-10-25T14:16:13.6325015Z                   "rppd",
+2026-10-25T14:16:13.6325362Z                   "rppd_2",
+2026-10-25T14:16:13.6325575Z                   "AVSS"
+2026-10-25T14:16:13.6325775Z                 ]
+2026-10-25T14:16:13.6325962Z               ]
+2026-10-25T14:16:13.6326143Z             }
+2026-10-25T14:16:13.6326327Z           },
+2026-10-25T14:16:13.6326502Z           {
+2026-10-25T14:16:13.6326702Z             "case": "p:wrong_MIM_terminal",
+2026-10-25T14:16:13.6326968Z             "refusal": {
+2026-10-25T14:16:13.6327203Z               "code": "AVSS_terminal_owner_join",
+2026-10-25T14:16:13.6327479Z               "extra": [
+2026-10-25T14:16:13.6327685Z                 [
+2026-10-25T14:16:13.6327887Z                   "PHASE__XSEEDP",
+2026-10-25T14:16:13.6328132Z                   "cap_cmim",
+2026-10-25T14:16:13.6328359Z                   "mim_top",
+2026-10-25T14:16:13.6328578Z                   "AVSS"
+2026-10-25T14:16:13.6328785Z                 ]
+2026-10-25T14:16:13.6329202Z               ],
+2026-10-25T14:16:13.6329446Z               "missing": [
+2026-10-25T14:16:13.6329672Z                 [
+2026-10-25T14:16:13.6329881Z                   "PHASE__XSEEDP",
+2026-10-25T14:16:13.6330131Z                   "cap_cmim",
+2026-10-25T14:16:13.6330364Z                   "mim_btm",
+2026-10-25T14:16:13.6330584Z                   "AVSS"
+2026-10-25T14:16:13.6330787Z                 ]
+2026-10-25T14:16:13.6330985Z               ]
+2026-10-25T14:16:13.6331170Z             }
+2026-10-25T14:16:13.6331356Z           },
+2026-10-25T14:16:13.6331531Z           {
+2026-10-25T14:16:13.6331735Z             "case": "p:AVSS_as_SUB_terminal",
+2026-10-25T14:16:13.6332005Z             "refusal": {
+2026-10-25T14:16:13.6332251Z               "code": "AVSS_terminal_owner_join",
+2026-10-25T14:16:13.6332534Z               "extra": [
+2026-10-25T14:16:13.6332741Z                 [
+2026-10-25T14:16:13.6332947Z                   "PHASE__XSEEDP",
+2026-10-25T14:16:13.6333191Z                   "cap_cmim",
+2026-10-25T14:16:13.6333420Z                   "mim_btm",
+2026-10-25T14:16:13.6333642Z                   "SUB"
+2026-10-25T14:16:13.6333854Z                 ]
+2026-10-25T14:16:13.6334039Z               ],
+2026-10-25T14:16:13.6334244Z               "missing": [
+2026-10-25T14:16:13.6334585Z                 [
+2026-10-25T14:16:13.6334794Z                   "PHASE__XSEEDP",
+2026-10-25T14:16:13.6335034Z                   "cap_cmim",
+2026-10-25T14:16:13.6335263Z                   "mim_btm",
+2026-10-25T14:16:13.6335481Z                   "AVSS"
+2026-10-25T14:16:13.6335687Z                 ]
+2026-10-25T14:16:13.6335870Z               ]
+2026-10-25T14:16:13.6336055Z             }
+2026-10-25T14:16:13.6336238Z           },
+2026-10-25T14:16:13.6336417Z           {
+2026-10-25T14:16:13.6336619Z             "case": "n:unknown_scalar_field",
+2026-10-25T14:16:13.6336899Z             "refusal": {
+2026-10-25T14:16:13.6337129Z               "code": "unknown_route_schema",
+2026-10-25T14:16:13.6337399Z               "index": 5,
+2026-10-25T14:16:13.6337612Z               "record": {
+2026-10-25T14:16:13.6337869Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6338196Z                 "device": "PHASE__XCLK__XLDP",
+2026-10-25T14:16:13.6338485Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6338754Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6339244Z                 "net": "AVSS",
+2026-10-25T14:16:13.6339486Z                 "source_layer": 1,
+2026-10-25T14:16:13.6339739Z                 "unexpected": true
+2026-10-25T14:16:13.6339969Z               }
+2026-10-25T14:16:13.6340157Z             }
+2026-10-25T14:16:13.6340343Z           },
+2026-10-25T14:16:13.6340522Z           {
+2026-10-25T14:16:13.6340721Z             "case": "n:missing_scalar_net",
+2026-10-25T14:16:13.6340989Z             "refusal": {
+2026-10-25T14:16:13.6341222Z               "code": "unknown_route_schema",
+2026-10-25T14:16:13.6341493Z               "index": 5,
+2026-10-25T14:16:13.6341708Z               "record": {
+2026-10-25T14:16:13.6341969Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6342422Z                 "device": "PHASE__XCLK__XLDP",
+2026-10-25T14:16:13.6342706Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6342974Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6343230Z                 "source_layer": 1
+2026-10-25T14:16:13.6343464Z               }
+2026-10-25T14:16:13.6343652Z             }
+2026-10-25T14:16:13.6343831Z           },
+2026-10-25T14:16:13.6344008Z           {
+2026-10-25T14:16:13.6344205Z             "case": "n:wrong_scalar_net",
+2026-10-25T14:16:13.6344469Z             "refusal": {
+2026-10-25T14:16:13.6344707Z               "code": "scalar_source_net",
+2026-10-25T14:16:13.6344968Z               "index": 5,
+2026-10-25T14:16:13.6345182Z               "record": {
+2026-10-25T14:16:13.6345427Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6345739Z                 "device": "PHASE__XCLK__XLDP",
+2026-10-25T14:16:13.6346017Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6346284Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6346543Z                 "net": "NOT_A_SOURCE_NET",
+2026-10-25T14:16:13.6346810Z                 "source_layer": 1
+2026-10-25T14:16:13.6347046Z               },
+2026-10-25T14:16:13.6347254Z               "source_nets": [
+2026-10-25T14:16:13.6347498Z                 "PHASE__XCLK__BIP",
+2026-10-25T14:16:13.6347737Z                 "AVSS"
+2026-10-25T14:16:13.6347934Z               ]
+2026-10-25T14:16:13.6348115Z             }
+2026-10-25T14:16:13.6348293Z           },
+2026-10-25T14:16:13.6348468Z           {
+2026-10-25T14:16:13.6348669Z             "case": "n:scalar_uses_MIM_device",
+2026-10-25T14:16:13.6349142Z             "refusal": {
+2026-10-25T14:16:13.6349385Z               "code": "scalar_kind",
+2026-10-25T14:16:13.6349631Z               "index": 5,
+2026-10-25T14:16:13.6349860Z               "kind": "capacitor",
+2026-10-25T14:16:13.6350099Z               "record": {
+2026-10-25T14:16:13.6350348Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6350661Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6350930Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6351317Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6351574Z                 "net": "AVSS",
+2026-10-25T14:16:13.6351806Z                 "source_layer": 1
+2026-10-25T14:16:13.6352032Z               }
+2026-10-25T14:16:13.6352215Z             }
+2026-10-25T14:16:13.6352400Z           },
+2026-10-25T14:16:13.6352578Z           {
+2026-10-25T14:16:13.6352779Z             "case": "n:missing_scalar_route",
+2026-10-25T14:16:13.6353047Z             "refusal": {
+2026-10-25T14:16:13.6353271Z               "code": "route_census",
+2026-10-25T14:16:13.6353524Z               "expected": 586,
+2026-10-25T14:16:13.6353757Z               "observed": 585
+2026-10-25T14:16:13.6353974Z             }
+2026-10-25T14:16:13.6354154Z           },
+2026-10-25T14:16:13.6354330Z           {
+2026-10-25T14:16:13.6354536Z             "case": "n:duplicate_scalar_route",
+2026-10-25T14:16:13.6354826Z             "refusal": {
+2026-10-25T14:16:13.6355051Z               "code": "route_census",
+2026-10-25T14:16:13.6355306Z               "expected": 586,
+2026-10-25T14:16:13.6355539Z               "observed": 587
+2026-10-25T14:16:13.6355757Z             }
+2026-10-25T14:16:13.6355935Z           },
+2026-10-25T14:16:13.6356111Z           {
+2026-10-25T14:16:13.6356311Z             "case": "n:missing_MIM_pair",
+2026-10-25T14:16:13.6356571Z             "refusal": {
+2026-10-25T14:16:13.6356790Z               "code": "route_census",
+2026-10-25T14:16:13.6357037Z               "expected": 586,
+2026-10-25T14:16:13.6357274Z               "observed": 585
+2026-10-25T14:16:13.6357489Z             }
+2026-10-25T14:16:13.6357664Z           },
+2026-10-25T14:16:13.6357836Z           {
+2026-10-25T14:16:13.6358030Z             "case": "n:duplicate_MIM_pair",
+2026-10-25T14:16:13.6358294Z             "refusal": {
+2026-10-25T14:16:13.6358516Z               "code": "route_census",
+2026-10-25T14:16:13.6359108Z               "expected": 586,
+2026-10-25T14:16:13.6359458Z               "observed": 587
+2026-10-25T14:16:13.6359679Z             }
+2026-10-25T14:16:13.6359856Z           },
+2026-10-25T14:16:13.6360044Z           {
+2026-10-25T14:16:13.6360243Z             "case": "n:swapped_MIM_nets",
+2026-10-25T14:16:13.6360502Z             "refusal": {
+2026-10-25T14:16:13.6360726Z               "code": "MIM_source_nets",
+2026-10-25T14:16:13.6360983Z               "index": 584,
+2026-10-25T14:16:13.6361236Z               "record": {
+2026-10-25T14:16:13.6361471Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6361753Z                 "minus_escape_um": [
+2026-10-25T14:16:13.6361997Z                   867.0,
+2026-10-25T14:16:13.6362203Z                   1338.4
+2026-10-25T14:16:13.6362406Z                 ],
+2026-10-25T14:16:13.6362666Z                 "minus_native_plate_um": "(871.4,1336.8;874.8,1340)",
+2026-10-25T14:16:13.6362993Z                 "minus_net": "MP",
+2026-10-25T14:16:13.6363272Z                 "plus_contact_outside_native_mim": true,
+2026-10-25T14:16:13.6363585Z                 "plus_escape_um": [
+2026-10-25T14:16:13.6363824Z                   863.0,
+2026-10-25T14:16:13.6364036Z                   1338.4
+2026-10-25T14:16:13.6364238Z                 ],
+2026-10-25T14:16:13.6364500Z                 "plus_native_plate_um": "(872.47,1337.77;873.73,1339.03)",
+2026-10-25T14:16:13.6364839Z                 "plus_net": "AVSS"
+2026-10-25T14:16:13.6365071Z               },
+2026-10-25T14:16:13.6365276Z               "source_nets": [
+2026-10-25T14:16:13.6365501Z                 "MP",
+2026-10-25T14:16:13.6365701Z                 "AVSS"
+2026-10-25T14:16:13.6365900Z               ]
+2026-10-25T14:16:13.6366082Z             }
+2026-10-25T14:16:13.6366264Z           },
+2026-10-25T14:16:13.6366437Z           {
+2026-10-25T14:16:13.6366637Z             "case": "n:wrong_MIM_minus_net",
+2026-10-25T14:16:13.6366897Z             "refusal": {
+2026-10-25T14:16:13.6367120Z               "code": "MIM_source_nets",
+2026-10-25T14:16:13.6367389Z               "index": 584,
+2026-10-25T14:16:13.6367614Z               "record": {
+2026-10-25T14:16:13.6367843Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6368241Z                 "minus_escape_um": [
+2026-10-25T14:16:13.6368488Z                   867.0,
+2026-10-25T14:16:13.6368695Z                   1338.4
+2026-10-25T14:16:13.6368892Z                 ],
+2026-10-25T14:16:13.6369481Z                 "minus_native_plate_um": "(871.4,1336.8;874.8,1340)",
+2026-10-25T14:16:13.6369806Z                 "minus_net": "SUB",
+2026-10-25T14:16:13.6370082Z                 "plus_contact_outside_native_mim": true,
+2026-10-25T14:16:13.6370376Z                 "plus_escape_um": [
+2026-10-25T14:16:13.6370614Z                   863.0,
+2026-10-25T14:16:13.6370831Z                   1338.4
+2026-10-25T14:16:13.6371031Z                 ],
+2026-10-25T14:16:13.6371287Z                 "plus_native_plate_um": "(872.47,1337.77;873.73,1339.03)",
+2026-10-25T14:16:13.6371617Z                 "plus_net": "MP"
+2026-10-25T14:16:13.6371854Z               },
+2026-10-25T14:16:13.6372053Z               "source_nets": [
+2026-10-25T14:16:13.6372275Z                 "MP",
+2026-10-25T14:16:13.6372479Z                 "AVSS"
+2026-10-25T14:16:13.6372674Z               ]
+2026-10-25T14:16:13.6372866Z             }
+2026-10-25T14:16:13.6373051Z           },
+2026-10-25T14:16:13.6373227Z           {
+2026-10-25T14:16:13.6373425Z             "case": "n:missing_MIM_plate",
+2026-10-25T14:16:13.6373685Z             "refusal": {
+2026-10-25T14:16:13.6373915Z               "code": "unknown_route_schema",
+2026-10-25T14:16:13.6374194Z               "index": 584,
+2026-10-25T14:16:13.6374419Z               "record": {
+2026-10-25T14:16:13.6374651Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6374922Z                 "minus_escape_um": [
+2026-10-25T14:16:13.6375165Z                   867.0,
+2026-10-25T14:16:13.6375368Z                   1338.4
+2026-10-25T14:16:13.6375563Z                 ],
+2026-10-25T14:16:13.6375940Z                 "minus_net": "AVSS",
+2026-10-25T14:16:13.6376227Z                 "plus_contact_outside_native_mim": true,
+2026-10-25T14:16:13.6376528Z                 "plus_escape_um": [
+2026-10-25T14:16:13.6376766Z                   863.0,
+2026-10-25T14:16:13.6376966Z                   1338.4
+2026-10-25T14:16:13.6377162Z                 ],
+2026-10-25T14:16:13.6377419Z                 "plus_native_plate_um": "(872.47,1337.77;873.73,1339.03)",
+2026-10-25T14:16:13.6377749Z                 "plus_net": "MP"
+2026-10-25T14:16:13.6377972Z               }
+2026-10-25T14:16:13.6378155Z             }
+2026-10-25T14:16:13.6378329Z           },
+2026-10-25T14:16:13.6378500Z           {
+2026-10-25T14:16:13.6378693Z             "case": "n:MIM_contact_flag",
+2026-10-25T14:16:13.6379182Z             "refusal": {
+2026-10-25T14:16:13.6379427Z               "code": "MIM_outside_contact",
+2026-10-25T14:16:13.6379694Z               "index": 584,
+2026-10-25T14:16:13.6379914Z               "record": {
+2026-10-25T14:16:13.6380159Z                 "device": "PHASE__XSEEDP",
+2026-10-25T14:16:13.6380434Z                 "minus_escape_um": [
+2026-10-25T14:16:13.6380679Z                   867.0,
+2026-10-25T14:16:13.6380897Z                   1338.4
+2026-10-25T14:16:13.6381099Z                 ],
+2026-10-25T14:16:13.6381346Z                 "minus_native_plate_um": "(871.4,1336.8;874.8,1340)",
+2026-10-25T14:16:13.6381664Z                 "minus_net": "AVSS",
+2026-10-25T14:16:13.6381944Z                 "plus_contact_outside_native_mim": false,
+2026-10-25T14:16:13.6382249Z                 "plus_escape_um": [
+2026-10-25T14:16:13.6382490Z                   863.0,
+2026-10-25T14:16:13.6382693Z                   1338.4
+2026-10-25T14:16:13.6382894Z                 ],
+2026-10-25T14:16:13.6383155Z                 "plus_native_plate_um": "(872.47,1337.77;873.73,1339.03)",
+2026-10-25T14:16:13.6383491Z                 "plus_net": "MP"
+2026-10-25T14:16:13.6383717Z               }
+2026-10-25T14:16:13.6383897Z             }
+2026-10-25T14:16:13.6384081Z           },
+2026-10-25T14:16:13.6384263Z           {
+2026-10-25T14:16:13.6384473Z             "case": "n:unsupported_tap_route",
+2026-10-25T14:16:13.6384752Z             "refusal": {
+2026-10-25T14:16:13.6385123Z               "code": "unsupported_routed_kind",
+2026-10-25T14:16:13.6385412Z               "index": 5,
+2026-10-25T14:16:13.6385666Z               "kind": "substrate_tap",
+2026-10-25T14:16:13.6385923Z               "record": {
+2026-10-25T14:16:13.6386178Z                 "actual_pin_um": "(368.02,59.52;368.98,59.82)",
+2026-10-25T14:16:13.6386482Z                 "device": "TAP0",
+2026-10-25T14:16:13.6386732Z                 "escape_lane_um": 365.0,
+2026-10-25T14:16:13.6386996Z                 "escape_y_um": 59.67,
+2026-10-25T14:16:13.6387243Z                 "net": "AVSS",
+2026-10-25T14:16:13.6387476Z                 "source_layer": 1
+2026-10-25T14:16:13.6387706Z               }
+2026-10-25T14:16:13.6387884Z             }
+2026-10-25T14:16:13.6388061Z           },
+2026-10-25T14:16:13.6388242Z           {
+2026-10-25T14:16:13.6388481Z             "case": "n:duplicate_route_replaces_another",
+2026-10-25T14:16:13.6388774Z             "refusal": {
+2026-10-25T14:16:13.6389305Z               "code": "duplicate_route_record"
+2026-10-25T14:16:13.6389665Z             }
+2026-10-25T14:16:13.6389844Z           },
+2026-10-25T14:16:13.6390021Z           {
+2026-10-25T14:16:13.6390236Z             "case": "n:missing_scalar_terminal",
+2026-10-25T14:16:13.6390525Z             "refusal": {
+2026-10-25T14:16:13.6390756Z               "code": "AVSS_terminal_census",
+2026-10-25T14:16:13.6391034Z               "routes": 85,
+2026-10-25T14:16:13.6391274Z               "terminals": 84
+2026-10-25T14:16:13.6391495Z             }
+2026-10-25T14:16:13.6391673Z           },
+2026-10-25T14:16:13.6391849Z           {
+2026-10-25T14:16:13.6392049Z             "case": "n:missing_MIM_terminal",
+2026-10-25T14:16:13.6392320Z             "refusal": {
+2026-10-25T14:16:13.6392553Z               "code": "AVSS_terminal_census",
+2026-10-25T14:16:13.6392968Z               "routes": 85,
+2026-10-25T14:16:13.6393193Z               "terminals": 84
+2026-10-25T14:16:13.6393412Z             }
+2026-10-25T14:16:13.6393591Z           },
+2026-10-25T14:16:13.6393774Z           {
+2026-10-25T14:16:13.6393983Z             "case": "n:duplicate_terminal",
+2026-10-25T14:16:13.6394248Z             "refusal": {
+2026-10-25T14:16:13.6394477Z               "code": "AVSS_terminal_census",
+2026-10-25T14:16:13.6394745Z               "routes": 85,
+2026-10-25T14:16:13.6394972Z               "terminals": 86
+2026-10-25T14:16:13.6395189Z             }
+2026-10-25T14:16:13.6395368Z           },
+2026-10-25T14:16:13.6395548Z           {
+2026-10-25T14:16:13.6395756Z             "case": "n:wrong_terminal_owner",
+2026-10-25T14:16:13.6396023Z             "refusal": {
+2026-10-25T14:16:13.6396273Z               "code": "AVSS_terminal_owner_join",
+2026-10-25T14:16:13.6396553Z               "extra": [
+2026-10-25T14:16:13.6396756Z                 [
+2026-10-25T14:16:13.6396957Z                   "PHASE__NOT_REAL",
+2026-10-25T14:16:13.6397213Z                   "rppd",
+2026-10-25T14:16:13.6397427Z                   "rppd_2",
+2026-10-25T14:16:13.6397645Z                   "AVSS"
+2026-10-25T14:16:13.6397851Z                 ]
+2026-10-25T14:16:13.6398036Z               ],
+2026-10-25T14:16:13.6398229Z               "missing": [
+2026-10-25T14:16:13.6398437Z                 [
+2026-10-25T14:16:13.6398648Z                   "PHASE__XCLK__XLDP",
+2026-10-25T14:16:13.6398899Z                   "rppd",
+2026-10-25T14:16:13.6399270Z                   "rppd_2",
+2026-10-25T14:16:13.6399486Z                   "AVSS"
+2026-10-25T14:16:13.6399687Z                 ]
+2026-10-25T14:16:13.6399876Z               ]
+2026-10-25T14:16:13.6400058Z             }
+2026-10-25T14:16:13.6400236Z           },
+2026-10-25T14:16:13.6400412Z           {
+2026-10-25T14:16:13.6400607Z             "case": "n:wrong_MIM_terminal",
+2026-10-25T14:16:13.6400871Z             "refusal": {
+2026-10-25T14:16:13.6401113Z               "code": "AVSS_terminal_owner_join",
+2026-10-25T14:16:13.6401397Z               "extra": [
+2026-10-25T14:16:13.6401598Z                 [
+2026-10-25T14:16:13.6401800Z                   "PHASE__XSEEDP",
+2026-10-25T14:16:13.6402166Z                   "cap_cmim",
+2026-10-25T14:16:13.6402402Z                   "mim_top",
+2026-10-25T14:16:13.6402625Z                   "AVSS"
+2026-10-25T14:16:13.6402826Z                 ]
+2026-10-25T14:16:13.6403011Z               ],
+2026-10-25T14:16:13.6403206Z               "missing": [
+2026-10-25T14:16:13.6403414Z                 [
+2026-10-25T14:16:13.6403619Z                   "PHASE__XSEEDP",
+2026-10-25T14:16:13.6403858Z                   "cap_cmim",
+2026-10-25T14:16:13.6404083Z                   "mim_btm",
+2026-10-25T14:16:13.6404307Z                   "AVSS"
+2026-10-25T14:16:13.6404509Z                 ]
+2026-10-25T14:16:13.6404694Z               ]
+2026-10-25T14:16:13.6404879Z             }
+2026-10-25T14:16:13.6405063Z           },
+2026-10-25T14:16:13.6405241Z           {
+2026-10-25T14:16:13.6405442Z             "case": "n:AVSS_as_SUB_terminal",
+2026-10-25T14:16:13.6405716Z             "refusal": {
+2026-10-25T14:16:13.6405949Z               "code": "AVSS_terminal_owner_join",
+2026-10-25T14:16:13.6406237Z               "extra": [
+2026-10-25T14:16:13.6406438Z                 [
+2026-10-25T14:16:13.6406635Z                   "PHASE__XSEEDP",
+2026-10-25T14:16:13.6406873Z                   "cap_cmim",
+2026-10-25T14:16:13.6407096Z                   "mim_btm",
+2026-10-25T14:16:13.6407314Z                   "SUB"
+2026-10-25T14:16:13.6407512Z                 ]
+2026-10-25T14:16:13.6407693Z               ],
+2026-10-25T14:16:13.6407889Z               "missing": [
+2026-10-25T14:16:13.6408102Z                 [
+2026-10-25T14:16:13.6408307Z                   "PHASE__XSEEDP",
+2026-10-25T14:16:13.6408544Z                   "cap_cmim",
+2026-10-25T14:16:13.6408768Z                   "mim_btm",
+2026-10-25T14:16:13.6409115Z                   "AVSS"
+2026-10-25T14:16:13.6409323Z                 ]
+2026-10-25T14:16:13.6409507Z               ]
+2026-10-25T14:16:13.6409819Z             }
+2026-10-25T14:16:13.6410001Z           }
+2026-10-25T14:16:13.6410175Z         ],
+2026-10-25T14:16:13.6410409Z         "restored_terminal_owners_exercised": false,
+2026-10-25T14:16:13.6410726Z         "source_terminal_fixture": true,
+2026-10-25T14:16:13.6411018Z         "new_geometry_or_simulation": false,
+2026-10-25T14:16:13.6411290Z         "integration": {
+2026-10-25T14:16:13.6411514Z           "positives": {
+2026-10-25T14:16:13.6411723Z             "p": {
+2026-10-25T14:16:13.6411949Z               "actual_inventory_statements": 4,
+2026-10-25T14:16:13.6412248Z               "retained_scalar_AVSS": 83,
+2026-10-25T14:16:13.6412519Z               "retained_MIM_AVSS": 2
+2026-10-25T14:16:13.6412757Z             },
+2026-10-25T14:16:13.6412941Z             "n": {
+2026-10-25T14:16:13.6413405Z               "actual_inventory_statements": 4,
+2026-10-25T14:16:13.6413793Z               "retained_scalar_AVSS": 83,
+2026-10-25T14:16:13.6414195Z               "retained_MIM_AVSS": 2
+2026-10-25T14:16:13.6414588Z             }
+2026-10-25T14:16:13.6414867Z           },
+2026-10-25T14:16:13.6415198Z           "rejected": [
+2026-10-25T14:16:13.6415566Z             "p:old_uniform_net_filter",
+2026-10-25T14:16:13.6415987Z             "p:silently_omit_MIM",
+2026-10-25T14:16:13.6416439Z             "n:old_uniform_net_filter",
+2026-10-25T14:16:13.6416827Z             "n:silently_omit_MIM"
+2026-10-25T14:16:13.6417176Z           ],
+2026-10-25T14:16:13.6417533Z           "actual_inventory_geometry_statements_executed": true,
+2026-10-25T14:16:13.6418069Z           "native_R_graph_or_waveform_executed": false
+2026-10-25T14:16:13.6418455Z         }
+2026-10-25T14:16:13.6418709Z       }
+2026-10-25T14:16:13.6419196Z     },
+2026-10-25T14:16:13.6427309Z     "RC_positive": {
+2026-10-25T14:16:13.6427549Z       "identity": {
+2026-10-25T14:16:13.6427768Z         "source_run": {
+2026-10-25T14:16:13.6427995Z           "id": 40125124288,
+2026-10-25T14:16:13.6428293Z           "name": "tx-phase-reset334-mim-precision-cloud",
+2026-10-25T14:16:13.6428664Z           "node_id": "WFR_kwLOUVf99s8AAAAJV6TOwA",
+2026-10-25T14:16:13.6429623Z           "head_branch": "codex/tx-clock-phase-parent",
+2026-10-25T14:16:13.6430056Z           "head_sha": "3cb1350dcbda569ac0073b0211cdaa2a47dc70ed",
+2026-10-25T14:16:13.6430512Z           "path": ".github/workflows/tx-phase-reset334-mim-precision-cloud.yml",
+2026-10-25T14:16:13.6430987Z           "display_title": "tx-phase-reset334-mim-precision-cloud",
+2026-10-25T14:16:13.6431334Z           "run_number": 4,
+2026-10-25T14:16:13.6431581Z           "event": "workflow_dispatch",
+2026-10-25T14:16:13.6431870Z           "status": "completed",
+2026-10-25T14:16:13.6432127Z           "conclusion": "success",
+2026-10-25T14:16:13.6432390Z           "workflow_id": 395358081,
+2026-10-25T14:16:13.6432655Z           "check_suite_id": 108759018638,
+2026-10-25T14:16:13.6432987Z           "check_suite_node_id": "CS_kwDOUVf99s8AAAAZUorsjg",
+2026-10-25T14:16:13.6433494Z           "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288",
+2026-10-25T14:16:13.6434080Z           "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40125124288",
+2026-10-25T14:16:13.6434500Z           "pull_requests": [],
+2026-10-25T14:16:13.6434762Z           "created_at": "2026-10-24T19:24:08Z",
+2026-10-25T14:16:13.6435052Z           "updated_at": "2026-10-24T19:27:01Z",
+2026-10-25T14:16:13.6435321Z           "actor": {
+2026-10-25T14:16:13.6435547Z             "login": "Melihakbulut221",
+2026-10-25T14:16:13.6435814Z             "id": 57303760,
+2026-10-25T14:16:13.6436072Z             "node_id": "MDQ6VXNlcjU3MzAzNzYw",
+2026-10-25T14:16:13.6436476Z             "avatar_url": "https://avatars.githubusercontent.com/u/57303760?v=4",
+2026-10-25T14:16:13.6436868Z             "gravatar_id": "",
+2026-10-25T14:16:13.6437171Z             "url": "https://api.github.com/users/Melihakbulut221",
+2026-10-25T14:16:13.6437559Z             "html_url": "https://github.com/Melihakbulut221",
+2026-10-25T14:16:13.6438130Z             "followers_url": "https://api.github.com/users/Melihakbulut221/followers",
+2026-10-25T14:16:13.6438706Z             "following_url": "https://api.github.com/users/Melihakbulut221/following{/other_user}",
+2026-10-25T14:16:13.6439424Z             "gists_url": "https://api.github.com/users/Melihakbulut221/gists{/gist_id}",
+2026-10-25T14:16:13.6439982Z             "starred_url": "https://api.github.com/users/Melihakbulut221/starred{/owner}{/repo}",
+2026-10-25T14:16:13.6440563Z             "subscriptions_url": "https://api.github.com/users/Melihakbulut221/subscriptions",
+2026-10-25T14:16:13.6441105Z             "organizations_url": "https://api.github.com/users/Melihakbulut221/orgs",
+2026-10-25T14:16:13.6441589Z             "repos_url": "https://api.github.com/users/Melihakbulut221/repos",
+2026-10-25T14:16:13.6442089Z             "events_url": "https://api.github.com/users/Melihakbulut221/events{/privacy}",
+2026-10-25T14:16:13.6442661Z             "received_events_url": "https://api.github.com/users/Melihakbulut221/received_events",
+2026-10-25T14:16:13.6443103Z             "type": "User",
+2026-10-25T14:16:13.6443346Z             "user_view_type": "public",
+2026-10-25T14:16:13.6443630Z             "site_admin": false
+2026-10-25T14:16:13.6443868Z           },
+2026-10-25T14:16:13.6444071Z           "run_attempt": 1,
+2026-10-25T14:16:13.6444316Z           "referenced_workflows": [],
+2026-10-25T14:16:13.6444602Z           "run_started_at": "2026-10-24T19:24:08Z",
+2026-10-25T14:16:13.6444889Z           "triggering_actor": {
+2026-10-25T14:16:13.6445142Z             "login": "Melihakbulut221",
+2026-10-25T14:16:13.6445413Z             "id": 57303760,
+2026-10-25T14:16:13.6445674Z             "node_id": "MDQ6VXNlcjU3MzAzNzYw",
+2026-10-25T14:16:13.6446078Z             "avatar_url": "https://avatars.githubusercontent.com/u/57303760?v=4",
+2026-10-25T14:16:13.6446475Z             "gravatar_id": "",
+2026-10-25T14:16:13.6446785Z             "url": "https://api.github.com/users/Melihakbulut221",
+2026-10-25T14:16:13.6447175Z             "html_url": "https://github.com/Melihakbulut221",
+2026-10-25T14:16:13.6447742Z             "followers_url": "https://api.github.com/users/Melihakbulut221/followers",
+2026-10-25T14:16:13.6448312Z             "following_url": "https://api.github.com/users/Melihakbulut221/following{/other_user}",
+2026-10-25T14:16:13.6448525Z             "gists_url": "https://api.github.com/users/Melihakbulut221/gists{/gist_id}",
+2026-10-25T14:16:13.6448764Z             "starred_url": "https://api.github.com/users/Melihakbulut221/starred{/owner}{/repo}",
+2026-10-25T14:16:13.6449141Z             "subscriptions_url": "https://api.github.com/users/Melihakbulut221/subscriptions",
+2026-10-25T14:16:13.6449345Z             "organizations_url": "https://api.github.com/users/Melihakbulut221/orgs",
+2026-10-25T14:16:13.6449530Z             "repos_url": "https://api.github.com/users/Melihakbulut221/repos",
+2026-10-25T14:16:13.6449757Z             "events_url": "https://api.github.com/users/Melihakbulut221/events{/privacy}",
+2026-10-25T14:16:13.6450008Z             "received_events_url": "https://api.github.com/users/Melihakbulut221/received_events",
+2026-10-25T14:16:13.6450104Z             "type": "User",
+2026-10-25T14:16:13.6450203Z             "user_view_type": "public",
+2026-10-25T14:16:13.6450297Z             "site_admin": false
+2026-10-25T14:16:13.6450370Z           },
+2026-10-25T14:16:13.6450652Z           "jobs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/jobs",
+2026-10-25T14:16:13.6450927Z           "logs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/logs",
+2026-10-25T14:16:13.6451211Z           "check_suite_url": "https://api.github.com/repos/Melihakbulut221/nssoc/check-suites/108759018638",
+2026-10-25T14:16:13.6451536Z           "artifacts_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/artifacts",
+2026-10-25T14:16:13.6451821Z           "cancel_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/cancel",
+2026-10-25T14:16:13.6452262Z           "rerun_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/rerun",
+2026-10-25T14:16:13.6452373Z           "previous_attempt_url": null,
+2026-10-25T14:16:13.6452651Z           "workflow_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/workflows/395358081",
+2026-10-25T14:16:13.6452744Z           "head_commit": {
+2026-10-25T14:16:13.6452878Z             "id": "3cb1350dcbda569ac0073b0211cdaa2a47dc70ed",
+2026-10-25T14:16:13.6453029Z             "tree_id": "fed417b3e2e2818143bcd54174246bb9ebc232cf",
+2026-10-25T14:16:13.6453301Z             "message": "Preserve corrected334 RC source controls and source-bound tag audit [skip ci]",
+2026-10-25T14:16:13.6453405Z             "timestamp": "2026-10-24T19:24:03Z",
+2026-10-25T14:16:13.6453491Z             "author": {
+2026-10-25T14:16:13.6453593Z               "name": "Hasan Melih Akbulut",
+2026-10-25T14:16:13.6453774Z               "email": "57303760+Melihakbulut221@users.noreply.github.com"
+2026-10-25T14:16:13.6453854Z             },
+2026-10-25T14:16:13.6453948Z             "committer": {
+2026-10-25T14:16:13.6454062Z               "name": "Hasan Melih Akbulut",
+2026-10-25T14:16:13.6454235Z               "email": "57303760+Melihakbulut221@users.noreply.github.com"
+2026-10-25T14:16:13.6454314Z             }
+2026-10-25T14:16:13.6454387Z           },
+2026-10-25T14:16:13.6454483Z           "repository": {
+2026-10-25T14:16:13.6454567Z             "id": 1364721142,
+2026-10-25T14:16:13.6454670Z             "node_id": "R_kgDOUVf99g",
+2026-10-25T14:16:13.6454755Z             "name": "nssoc",
+2026-10-25T14:16:13.6454873Z             "full_name": "Melihakbulut221/nssoc",
+2026-10-25T14:16:13.6454968Z             "private": false,
+2026-10-25T14:16:13.6455048Z             "owner": {
+2026-10-25T14:16:13.6455154Z               "login": "Melihakbulut221",
+2026-10-25T14:16:13.6455236Z               "id": 57303760,
+2026-10-25T14:16:13.6455352Z               "node_id": "MDQ6VXNlcjU3MzAzNzYw",
+2026-10-25T14:16:13.6455570Z               "avatar_url": "https://avatars.githubusercontent.com/u/57303760?v=4",
+2026-10-25T14:16:13.6455779Z               "gravatar_id": "",
+2026-10-25T14:16:13.6455946Z               "url": "https://api.github.com/users/Melihakbulut221",
+2026-10-25T14:16:13.6456089Z               "html_url": "https://github.com/Melihakbulut221",
+2026-10-25T14:16:13.6456317Z               "followers_url": "https://api.github.com/users/Melihakbulut221/followers",
+2026-10-25T14:16:13.6456577Z               "following_url": "https://api.github.com/users/Melihakbulut221/following{/other_user}",
+2026-10-25T14:16:13.6456796Z               "gists_url": "https://api.github.com/users/Melihakbulut221/gists{/gist_id}",
+2026-10-25T14:16:13.6457050Z               "starred_url": "https://api.github.com/users/Melihakbulut221/starred{/owner}{/repo}",
+2026-10-25T14:16:13.6457293Z               "subscriptions_url": "https://api.github.com/users/Melihakbulut221/subscriptions",
+2026-10-25T14:16:13.6457506Z               "organizations_url": "https://api.github.com/users/Melihakbulut221/orgs",
+2026-10-25T14:16:13.6457700Z               "repos_url": "https://api.github.com/users/Melihakbulut221/repos",
+2026-10-25T14:16:13.6457927Z               "events_url": "https://api.github.com/users/Melihakbulut221/events{/privacy}",
+2026-10-25T14:16:13.6458183Z               "received_events_url": "https://api.github.com/users/Melihakbulut221/received_events",
+2026-10-25T14:16:13.6458269Z               "type": "User",
+2026-10-25T14:16:13.6458375Z               "user_view_type": "public",
+2026-10-25T14:16:13.6458467Z               "site_admin": false
+2026-10-25T14:16:13.6458548Z             },
+2026-10-25T14:16:13.6458704Z             "html_url": "https://github.com/Melihakbulut221/nssoc",
+2026-10-25T14:16:13.6459529Z             "description": "Fault-tolerant neuromorphic SoC in 130 nm on an open PDK, built with open tools. Sources, the 80-document design record, and a preprint about the two levels at which its redundancy claim was false.",
+2026-10-25T14:16:13.6459743Z             "fork": false,
+2026-10-25T14:16:13.6459918Z             "url": "https://api.github.com/repos/Melihakbulut221/nssoc",
+2026-10-25T14:16:13.6460125Z             "forks_url": "https://api.github.com/repos/Melihakbulut221/nssoc/forks",
+2026-10-25T14:16:13.6460345Z             "keys_url": "https://api.github.com/repos/Melihakbulut221/nssoc/keys{/key_id}",
+2026-10-25T14:16:13.6460672Z             "collaborators_url": "https://api.github.com/repos/Melihakbulut221/nssoc/collaborators{/collaborator}",
+2026-10-25T14:16:13.6460873Z             "teams_url": "https://api.github.com/repos/Melihakbulut221/nssoc/teams",
+2026-10-25T14:16:13.6461067Z             "hooks_url": "https://api.github.com/repos/Melihakbulut221/nssoc/hooks",
+2026-10-25T14:16:13.6461397Z             "issue_events_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues/events{/number}",
+2026-10-25T14:16:13.6461603Z             "events_url": "https://api.github.com/repos/Melihakbulut221/nssoc/events",
+2026-10-25T14:16:13.6461866Z             "assignees_url": "https://api.github.com/repos/Melihakbulut221/nssoc/assignees{/user}",
+2026-10-25T14:16:13.6462119Z             "branches_url": "https://api.github.com/repos/Melihakbulut221/nssoc/branches{/branch}",
+2026-10-25T14:16:13.6462315Z             "tags_url": "https://api.github.com/repos/Melihakbulut221/nssoc/tags",
+2026-10-25T14:16:13.6462551Z             "blobs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/blobs{/sha}",
+2026-10-25T14:16:13.6462787Z             "git_tags_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/tags{/sha}",
+2026-10-25T14:16:13.6463021Z             "git_refs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/refs{/sha}",
+2026-10-25T14:16:13.6463254Z             "trees_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/trees{/sha}",
+2026-10-25T14:16:13.6463507Z             "statuses_url": "https://api.github.com/repos/Melihakbulut221/nssoc/statuses/{sha}",
+2026-10-25T14:16:13.6463749Z             "languages_url": "https://api.github.com/repos/Melihakbulut221/nssoc/languages",
+2026-10-25T14:16:13.6464094Z             "stargazers_url": "https://api.github.com/repos/Melihakbulut221/nssoc/stargazers",
+2026-10-25T14:16:13.6464359Z             "contributors_url": "https://api.github.com/repos/Melihakbulut221/nssoc/contributors",
+2026-10-25T14:16:13.6464597Z             "subscribers_url": "https://api.github.com/repos/Melihakbulut221/nssoc/subscribers",
+2026-10-25T14:16:13.6464851Z             "subscription_url": "https://api.github.com/repos/Melihakbulut221/nssoc/subscription",
+2026-10-25T14:16:13.6465085Z             "commits_url": "https://api.github.com/repos/Melihakbulut221/nssoc/commits{/sha}",
+2026-10-25T14:16:13.6465343Z             "git_commits_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/commits{/sha}",
+2026-10-25T14:16:13.6465593Z             "comments_url": "https://api.github.com/repos/Melihakbulut221/nssoc/comments{/number}",
+2026-10-25T14:16:13.6465900Z             "issue_comment_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues/comments{/number}",
+2026-10-25T14:16:13.6466160Z             "contents_url": "https://api.github.com/repos/Melihakbulut221/nssoc/contents/{+path}",
+2026-10-25T14:16:13.6466437Z             "compare_url": "https://api.github.com/repos/Melihakbulut221/nssoc/compare/{base}...{head}",
+2026-10-25T14:16:13.6466646Z             "merges_url": "https://api.github.com/repos/Melihakbulut221/nssoc/merges",
+2026-10-25T14:16:13.6466917Z             "archive_url": "https://api.github.com/repos/Melihakbulut221/nssoc/{archive_format}{/ref}",
+2026-10-25T14:16:13.6467142Z             "downloads_url": "https://api.github.com/repos/Melihakbulut221/nssoc/downloads",
+2026-10-25T14:16:13.6467383Z             "issues_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues{/number}",
+2026-10-25T14:16:13.6467614Z             "pulls_url": "https://api.github.com/repos/Melihakbulut221/nssoc/pulls{/number}",
+2026-10-25T14:16:13.6467961Z             "milestones_url": "https://api.github.com/repos/Melihakbulut221/nssoc/milestones{/number}",
+2026-10-25T14:16:13.6468334Z             "notifications_url": "https://api.github.com/repos/Melihakbulut221/nssoc/notifications{?since,all,participating}",
+2026-10-25T14:16:13.6468559Z             "labels_url": "https://api.github.com/repos/Melihakbulut221/nssoc/labels{/name}",
+2026-10-25T14:16:13.6468797Z             "releases_url": "https://api.github.com/repos/Melihakbulut221/nssoc/releases{/id}",
+2026-10-25T14:16:13.6469360Z             "deployments_url": "https://api.github.com/repos/Melihakbulut221/nssoc/deployments"
+2026-10-25T14:16:13.6469492Z           },
+2026-10-25T14:16:13.6469612Z           "head_repository": {
+2026-10-25T14:16:13.6469697Z             "id": 1364721142,
+2026-10-25T14:16:13.6469805Z             "node_id": "R_kgDOUVf99g",
+2026-10-25T14:16:13.6469891Z             "name": "nssoc",
+2026-10-25T14:16:13.6470012Z             "full_name": "Melihakbulut221/nssoc",
+2026-10-25T14:16:13.6470113Z             "private": false,
+2026-10-25T14:16:13.6470193Z             "owner": {
+2026-10-25T14:16:13.6470300Z               "login": "Melihakbulut221",
+2026-10-25T14:16:13.6470386Z               "id": 57303760,
+2026-10-25T14:16:13.6470503Z               "node_id": "MDQ6VXNlcjU3MzAzNzYw",
+2026-10-25T14:16:13.6470733Z               "avatar_url": "https://avatars.githubusercontent.com/u/57303760?v=4",
+2026-10-25T14:16:13.6470835Z               "gravatar_id": "",
+2026-10-25T14:16:13.6471007Z               "url": "https://api.github.com/users/Melihakbulut221",
+2026-10-25T14:16:13.6471158Z               "html_url": "https://github.com/Melihakbulut221",
+2026-10-25T14:16:13.6471385Z               "followers_url": "https://api.github.com/users/Melihakbulut221/followers",
+2026-10-25T14:16:13.6471648Z               "following_url": "https://api.github.com/users/Melihakbulut221/following{/other_user}",
+2026-10-25T14:16:13.6471869Z               "gists_url": "https://api.github.com/users/Melihakbulut221/gists{/gist_id}",
+2026-10-25T14:16:13.6472131Z               "starred_url": "https://api.github.com/users/Melihakbulut221/starred{/owner}{/repo}",
+2026-10-25T14:16:13.6472515Z               "subscriptions_url": "https://api.github.com/users/Melihakbulut221/subscriptions",
+2026-10-25T14:16:13.6472735Z               "organizations_url": "https://api.github.com/users/Melihakbulut221/orgs",
+2026-10-25T14:16:13.6472923Z               "repos_url": "https://api.github.com/users/Melihakbulut221/repos",
+2026-10-25T14:16:13.6473150Z               "events_url": "https://api.github.com/users/Melihakbulut221/events{/privacy}",
+2026-10-25T14:16:13.6473402Z               "received_events_url": "https://api.github.com/users/Melihakbulut221/received_events",
+2026-10-25T14:16:13.6473493Z               "type": "User",
+2026-10-25T14:16:13.6473597Z               "user_view_type": "public",
+2026-10-25T14:16:13.6473688Z               "site_admin": false
+2026-10-25T14:16:13.6473767Z             },
+2026-10-25T14:16:13.6473921Z             "html_url": "https://github.com/Melihakbulut221/nssoc",
+2026-10-25T14:16:13.6474624Z             "description": "Fault-tolerant neuromorphic SoC in 130 nm on an open PDK, built with open tools. Sources, the 80-document design record, and a preprint about the two levels at which its redundancy claim was false.",
+2026-10-25T14:16:13.6474719Z             "fork": false,
+2026-10-25T14:16:13.6474885Z             "url": "https://api.github.com/repos/Melihakbulut221/nssoc",
+2026-10-25T14:16:13.6475089Z             "forks_url": "https://api.github.com/repos/Melihakbulut221/nssoc/forks",
+2026-10-25T14:16:13.6475311Z             "keys_url": "https://api.github.com/repos/Melihakbulut221/nssoc/keys{/key_id}",
+2026-10-25T14:16:13.6475639Z             "collaborators_url": "https://api.github.com/repos/Melihakbulut221/nssoc/collaborators{/collaborator}",
+2026-10-25T14:16:13.6475846Z             "teams_url": "https://api.github.com/repos/Melihakbulut221/nssoc/teams",
+2026-10-25T14:16:13.6476037Z             "hooks_url": "https://api.github.com/repos/Melihakbulut221/nssoc/hooks",
+2026-10-25T14:16:13.6476445Z             "issue_events_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues/events{/number}",
+2026-10-25T14:16:13.6476650Z             "events_url": "https://api.github.com/repos/Melihakbulut221/nssoc/events",
+2026-10-25T14:16:13.6476904Z             "assignees_url": "https://api.github.com/repos/Melihakbulut221/nssoc/assignees{/user}",
+2026-10-25T14:16:13.6477145Z             "branches_url": "https://api.github.com/repos/Melihakbulut221/nssoc/branches{/branch}",
+2026-10-25T14:16:13.6477342Z             "tags_url": "https://api.github.com/repos/Melihakbulut221/nssoc/tags",
+2026-10-25T14:16:13.6477577Z             "blobs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/blobs{/sha}",
+2026-10-25T14:16:13.6477809Z             "git_tags_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/tags{/sha}",
+2026-10-25T14:16:13.6478045Z             "git_refs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/refs{/sha}",
+2026-10-25T14:16:13.6478275Z             "trees_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/trees{/sha}",
+2026-10-25T14:16:13.6478516Z             "statuses_url": "https://api.github.com/repos/Melihakbulut221/nssoc/statuses/{sha}",
+2026-10-25T14:16:13.6478747Z             "languages_url": "https://api.github.com/repos/Melihakbulut221/nssoc/languages",
+2026-10-25T14:16:13.6479135Z             "stargazers_url": "https://api.github.com/repos/Melihakbulut221/nssoc/stargazers",
+2026-10-25T14:16:13.6479486Z             "contributors_url": "https://api.github.com/repos/Melihakbulut221/nssoc/contributors",
+2026-10-25T14:16:13.6479724Z             "subscribers_url": "https://api.github.com/repos/Melihakbulut221/nssoc/subscribers",
+2026-10-25T14:16:13.6479977Z             "subscription_url": "https://api.github.com/repos/Melihakbulut221/nssoc/subscription",
+2026-10-25T14:16:13.6480209Z             "commits_url": "https://api.github.com/repos/Melihakbulut221/nssoc/commits{/sha}",
+2026-10-25T14:16:13.6480475Z             "git_commits_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/commits{/sha}",
+2026-10-25T14:16:13.6480837Z             "comments_url": "https://api.github.com/repos/Melihakbulut221/nssoc/comments{/number}",
+2026-10-25T14:16:13.6481135Z             "issue_comment_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues/comments{/number}",
+2026-10-25T14:16:13.6481384Z             "contents_url": "https://api.github.com/repos/Melihakbulut221/nssoc/contents/{+path}",
+2026-10-25T14:16:13.6481656Z             "compare_url": "https://api.github.com/repos/Melihakbulut221/nssoc/compare/{base}...{head}",
+2026-10-25T14:16:13.6481860Z             "merges_url": "https://api.github.com/repos/Melihakbulut221/nssoc/merges",
+2026-10-25T14:16:13.6482132Z             "archive_url": "https://api.github.com/repos/Melihakbulut221/nssoc/{archive_format}{/ref}",
+2026-10-25T14:16:13.6482353Z             "downloads_url": "https://api.github.com/repos/Melihakbulut221/nssoc/downloads",
+2026-10-25T14:16:13.6482593Z             "issues_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues{/number}",
+2026-10-25T14:16:13.6482830Z             "pulls_url": "https://api.github.com/repos/Melihakbulut221/nssoc/pulls{/number}",
+2026-10-25T14:16:13.6483091Z             "milestones_url": "https://api.github.com/repos/Melihakbulut221/nssoc/milestones{/number}",
+2026-10-25T14:16:13.6483457Z             "notifications_url": "https://api.github.com/repos/Melihakbulut221/nssoc/notifications{?since,all,participating}",
+2026-10-25T14:16:13.6483681Z             "labels_url": "https://api.github.com/repos/Melihakbulut221/nssoc/labels{/name}",
+2026-10-25T14:16:13.6483916Z             "releases_url": "https://api.github.com/repos/Melihakbulut221/nssoc/releases{/id}",
+2026-10-25T14:16:13.6484156Z             "deployments_url": "https://api.github.com/repos/Melihakbulut221/nssoc/deployments"
+2026-10-25T14:16:13.6484231Z           }
+2026-10-25T14:16:13.6484309Z         },
+2026-10-25T14:16:13.6484513Z         "publication": {
+2026-10-25T14:16:13.6484728Z           "tag": "cloud-results-40125124288-1-tx-phase-reset334-mim-precision",
+2026-10-25T14:16:13.6484896Z           "tested_source": "3cb1350dcbda569ac0073b0211cdaa2a47dc70ed",
+2026-10-25T14:16:13.6484995Z           "release_id": 422935028,
+2026-10-25T14:16:13.6485090Z           "existing_assets": [
+2026-10-25T14:16:13.6485166Z             {
+2026-10-25T14:16:13.6485253Z               "id": 673109070,
+2026-10-25T14:16:13.6485457Z               "name": "tx-phase-reset334-mim-precision-40125124288-1.parts.json",
+2026-10-25T14:16:13.6485548Z               "bytes": 880,
+2026-10-25T14:16:13.6485791Z               "digest": "sha256:258a9cbc9e122b64276c390e94ff3df079f35b94be0fd01e867cf69e73eaa3a5"
+2026-10-25T14:16:13.6485870Z             },
+2026-10-25T14:16:13.6485944Z             {
+2026-10-25T14:16:13.6486028Z               "id": 673109002,
+2026-10-25T14:16:13.6486240Z               "name": "tx-phase-reset334-mim-precision-40125124288-1.summary.json",
+2026-10-25T14:16:13.6486332Z               "bytes": 2344086,
+2026-10-25T14:16:13.6486581Z               "digest": "sha256:a11da5bb7ee22134f9373d43a1fffda9d1f6538877b440031ffd910adec56bcf"
+2026-10-25T14:16:13.6486659Z             },
+2026-10-25T14:16:13.6486730Z             {
+2026-10-25T14:16:13.6486814Z               "id": 673109129,
+2026-10-25T14:16:13.6487028Z               "name": "tx-phase-reset334-mim-precision-40125124288-1.tar.gz.part0000",
+2026-10-25T14:16:13.6487120Z               "bytes": 34039324,
+2026-10-25T14:16:13.6487364Z               "digest": "sha256:1840d7545cfb0d72c5cddec7d0ea0ce280a3cb8d442d4e64724e73d9000560b8"
+2026-10-25T14:16:13.6487437Z             }
+2026-10-25T14:16:13.6487515Z           ],
+2026-10-25T14:16:13.6487611Z           "target_verified": true,
+2026-10-25T14:16:13.6487714Z           "assets_overwritten": false
+2026-10-25T14:16:13.6487788Z         },
+2026-10-25T14:16:13.6487906Z         "tested_source_is_release_target": true
+2026-10-25T14:16:13.6487979Z       },
+2026-10-25T14:16:13.6488067Z       "parts": 1,
+2026-10-25T14:16:13.6488166Z       "all_archive_bytes": 34039324
+2026-10-25T14:16:13.6488241Z     },
+2026-10-25T14:16:13.6488424Z     "RC_metadata_rejected": [
+2026-10-25T14:16:13.6488505Z       "RC_run_id",
+2026-10-25T14:16:13.6488594Z       "RC_attempt",
+2026-10-25T14:16:13.6488668Z       "RC_status",
+2026-10-25T14:16:13.6488755Z       "RC_conclusion",
+2026-10-25T14:16:13.6488830Z       "RC_source",
+2026-10-25T14:16:13.6488914Z       "RC_branch",
+2026-10-25T14:16:13.6489137Z       "RC_workflow",
+2026-10-25T14:16:13.6489214Z       "RC_release",
+2026-10-25T14:16:13.6489293Z       "RC_target",
+2026-10-25T14:16:13.6489368Z       "RC_draft",
+2026-10-25T14:16:13.6489453Z       "RC_tag_source",
+2026-10-25T14:16:13.6489530Z       "RC_part_id",
+2026-10-25T14:16:13.6489616Z       "RC_part_size",
+2026-10-25T14:16:13.6489704Z       "RC_part_digest",
+2026-10-25T14:16:13.6489783Z       "RC_part_name"
+2026-10-25T14:16:13.6489859Z     ],
+2026-10-25T14:16:13.6489941Z     "row_rejected": [
+2026-10-25T14:16:13.6490033Z       "row_duplicate",
+2026-10-25T14:16:13.6490111Z       "row_missing",
+2026-10-25T14:16:13.6490200Z       "row_wrong_time",
+2026-10-25T14:16:13.6490288Z       "row_out_of_range"
+2026-10-25T14:16:13.6490363Z     ],
+2026-10-25T14:16:13.6490461Z     "derivation_rejected": [
+2026-10-25T14:16:13.6490552Z       "derivation_missing_old",
+2026-10-25T14:16:13.6490649Z       "derivation_wrong_count"
+2026-10-25T14:16:13.6490721Z     ],
+2026-10-25T14:16:13.6490816Z     "observer_derivation": {
+2026-10-25T14:16:13.6491075Z       "original_sha256": "2921d29f130f8f95aebeab0b8c0f5a1d9ba1e04ef2f2211e91f3ca61aebe2cce",
+2026-10-25T14:16:13.6491326Z       "derived_sha256": "5b524598cf4b44dd30aed41201228dab09f917b03ddface2082b2af7731bb2ee",
+2026-10-25T14:16:13.6491410Z       "edits": 2,
+2026-10-25T14:16:13.6491499Z       "reversible": true,
+2026-10-25T14:16:13.6491601Z       "frozen_review_call_count": 1,
+2026-10-25T14:16:13.6491702Z       "old_analysis_not_repeated": true
+2026-10-25T14:16:13.6491900Z     },
+2026-10-25T14:16:13.6491994Z     "controller_derivation": {
+2026-10-25T14:16:13.6492076Z       "edits": 13,
+2026-10-25T14:16:13.6492166Z       "reversible": true,
+2026-10-25T14:16:13.6492408Z       "source_sha256": "0536cf24a536083a017b32c1fa247d9d502fd8c374bcfdaf8dbd246f45742ee5",
+2026-10-25T14:16:13.6492645Z       "derived_sha256": "b79338ebb46e88a6f25a20f351131f72768ecb91c4d8fc0ffd7548c478b8a9bf"
+2026-10-25T14:16:13.6492716Z     },
+2026-10-25T14:16:13.6492840Z     "actual_graph_or_waveform_executed": false
+2026-10-25T14:16:13.6492914Z   },
+2026-10-25T14:16:13.6492995Z   "math": {
+2026-10-25T14:16:13.6493161Z     "status": "PASS_SYNTHETIC318_SAME_ROW_INTERVAL_CONTROLS_ONLY",
+2026-10-25T14:16:13.6493247Z     "rejected": [
+2026-10-25T14:16:13.6493337Z       "before_capture",
+2026-10-25T14:16:13.6493420Z       "after_capture",
+2026-10-25T14:16:13.6493512Z       "duplicate_time",
+2026-10-25T14:16:13.6493592Z       "reverse_time",
+2026-10-25T14:16:13.6493681Z       "nonfinite_time",
+2026-10-25T14:16:13.6493773Z       "nonfinite_request",
+2026-10-25T14:16:13.6493867Z       "nonfinite_crossing",
+2026-10-25T14:16:13.6493958Z       "wrong_crossing_shape",
+2026-10-25T14:16:13.6494058Z       "nonfinite_threshold",
+2026-10-25T14:16:13.6494141Z       "bad_window",
+2026-10-25T14:16:13.6494219Z       "bad_origin",
+2026-10-25T14:16:13.6494313Z       "missing_current",
+2026-10-25T14:16:13.6494394Z       "missing_body",
+2026-10-25T14:16:13.6494478Z       "wrong_Nx",
+2026-10-25T14:16:13.6494554Z       "wrong_row",
+2026-10-25T14:16:13.6494642Z       "same_pair_node",
+2026-10-25T14:16:13.6494741Z       "wrong_crossing_frame_row",
+2026-10-25T14:16:13.6494833Z       "wrong_crossing_frame_time",
+2026-10-25T14:16:13.6494927Z       "missing_crossing_frame",
+2026-10-25T14:16:13.6495017Z       "swapped_crossing_frames"
+2026-10-25T14:16:13.6495093Z     ],
+2026-10-25T14:16:13.6495186Z     "native_capture_read": false,
+2026-10-25T14:16:13.6495291Z     "original_failure_replayed": false,
+2026-10-25T14:16:13.6495385Z     "readback_authorized": false
+2026-10-25T14:16:13.6495467Z   },
+2026-10-25T14:16:13.6495550Z   "metadata": {
+2026-10-25T14:16:13.6495646Z     "actual_metadata_positives": {
+2026-10-25T14:16:13.6495851Z       "native_source": {
+2026-10-25T14:16:13.6495939Z         "identity": {
+2026-10-25T14:16:13.6496029Z           "source_run": {
+2026-10-25T14:16:13.6496112Z             "id": 40178775666,
+2026-10-25T14:16:13.6496203Z             "run_attempt": 1,
+2026-10-25T14:16:13.6496297Z             "status": "completed",
+2026-10-25T14:16:13.6496389Z             "conclusion": "failure",
+2026-10-25T14:16:13.6496542Z             "head_sha": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+2026-10-25T14:16:13.6496678Z             "head_branch": "codex/tx-clock-phase-parent",
+2026-10-25T14:16:13.6496874Z             "path": ".github/workflows/tx-phase-reset334-transient-cloud.yml"
+2026-10-25T14:16:13.6496946Z           },
+2026-10-25T14:16:13.6497041Z           "publication": {
+2026-10-25T14:16:13.6497388Z             "tag": "cloud-results-40178775666-1-tx-phase-reset334-transient-native-initial-p-initial-high",
+2026-10-25T14:16:13.6497567Z             "tested_source": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+2026-10-25T14:16:13.6497662Z             "release_id": 423271065,
+2026-10-25T14:16:13.6497757Z             "existing_assets": [
+2026-10-25T14:16:13.6497834Z               {
+2026-10-25T14:16:13.6497916Z                 "id": 674653444,
+2026-10-25T14:16:13.6498256Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.parts.json",
+2026-10-25T14:16:13.6498344Z                 "bytes": 1701,
+2026-10-25T14:16:13.6498589Z                 "digest": "sha256:d79555d3d82e93bb293f7287bad774947491bb748f2da3b3060d4557ce03116b"
+2026-10-25T14:16:13.6498671Z               },
+2026-10-25T14:16:13.6498744Z               {
+2026-10-25T14:16:13.6498833Z                 "id": 674653306,
+2026-10-25T14:16:13.6499299Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.summary.json",
+2026-10-25T14:16:13.6499513Z                 "bytes": 318284,
+2026-10-25T14:16:13.6499760Z                 "digest": "sha256:815b8422d6d8ba88f9f8596d3c417591a90f86a593e37d841332cbe006b1f402"
+2026-10-25T14:16:13.6499832Z               },
+2026-10-25T14:16:13.6499909Z               {
+2026-10-25T14:16:13.6499989Z                 "id": 674653573,
+2026-10-25T14:16:13.6500346Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0000",
+2026-10-25T14:16:13.6500431Z                 "bytes": 1073741824,
+2026-10-25T14:16:13.6500674Z                 "digest": "sha256:6f1e5ec09054af7585946bdf34ad38f4fa05a5845d15ae612a24418a2ccfe714"
+2026-10-25T14:16:13.6500751Z               },
+2026-10-25T14:16:13.6500823Z               {
+2026-10-25T14:16:13.6500908Z                 "id": 674655002,
+2026-10-25T14:16:13.6501255Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0001",
+2026-10-25T14:16:13.6501350Z                 "bytes": 1073741824,
+2026-10-25T14:16:13.6501590Z                 "digest": "sha256:cd7bd64121f06191eaab6895b8120d450d3f4060bceef1e0243ccfd5daf15875"
+2026-10-25T14:16:13.6501674Z               },
+2026-10-25T14:16:13.6501755Z               {
+2026-10-25T14:16:13.6501836Z                 "id": 674656412,
+2026-10-25T14:16:13.6502181Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0002",
+2026-10-25T14:16:13.6502265Z                 "bytes": 1073741824,
+2026-10-25T14:16:13.6502505Z                 "digest": "sha256:8d3a78ad51a855e7a9a78edce091d0752e9b8138a5833774f21d9529d53d5218"
+2026-10-25T14:16:13.6502578Z               },
+2026-10-25T14:16:13.6502655Z               {
+2026-10-25T14:16:13.6502739Z                 "id": 674658008,
+2026-10-25T14:16:13.6503081Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0003",
+2026-10-25T14:16:13.6503172Z                 "bytes": 826138849,
+2026-10-25T14:16:13.6503416Z                 "digest": "sha256:8c2adbe4509f07c76fefcac2bf2b13677515908d5af119decd10275f77d64ebc"
+2026-10-25T14:16:13.6503494Z               }
+2026-10-25T14:16:13.6503676Z             ],
+2026-10-25T14:16:13.6503779Z             "target_verified": true,
+2026-10-25T14:16:13.6503881Z             "assets_overwritten": false
+2026-10-25T14:16:13.6503953Z           },
+2026-10-25T14:16:13.6504073Z           "tested_source_is_release_target": true
+2026-10-25T14:16:13.6504146Z         },
+2026-10-25T14:16:13.6504228Z         "parts": 4
+2026-10-25T14:16:13.6504302Z       },
+2026-10-25T14:16:13.6504395Z       "prepared_source": {
+2026-10-25T14:16:13.6504480Z         "identity": {
+2026-10-25T14:16:13.6504565Z           "source_run": {
+2026-10-25T14:16:13.6504653Z             "id": 40171468821,
+2026-10-25T14:16:13.6504740Z             "run_attempt": 1,
+2026-10-25T14:16:13.6504836Z             "status": "completed",
+2026-10-25T14:16:13.6504923Z             "conclusion": "success",
+2026-10-25T14:16:13.6505083Z             "head_sha": "e6c48d4d363a0bdb865dbdbd83e38350ff7291a7",
+2026-10-25T14:16:13.6505219Z             "head_branch": "codex/tx-clock-phase-parent",
+2026-10-25T14:16:13.6505455Z             "path": ".github/workflows/tx-phase-reset334-loaded-preparation-cloud.yml"
+2026-10-25T14:16:13.6505542Z           },
+2026-10-25T14:16:13.6505628Z           "publication": {
+2026-10-25T14:16:13.6505859Z             "tag": "cloud-results-40171468821-1-tx-phase-reset334-loaded-preparation",
+2026-10-25T14:16:13.6506020Z             "tested_source": "e6c48d4d363a0bdb865dbdbd83e38350ff7291a7",
+2026-10-25T14:16:13.6506110Z             "release_id": 423204104,
+2026-10-25T14:16:13.6506204Z             "existing_assets": [
+2026-10-25T14:16:13.6506277Z               {
+2026-10-25T14:16:13.6506362Z                 "id": 674346341,
+2026-10-25T14:16:13.6506584Z                 "name": "tx-phase-reset334-loaded-preparation-40171468821-1.parts.json",
+2026-10-25T14:16:13.6506671Z                 "bytes": 889,
+2026-10-25T14:16:13.6507006Z                 "digest": "sha256:df73e849b0aa18cd39816021a0f56b7e8f12cbf32a3dfbab285ebcec574f2de0"
+2026-10-25T14:16:13.6507084Z               },
+2026-10-25T14:16:13.6507169Z               {
+2026-10-25T14:16:13.6507250Z                 "id": 674346276,
+2026-10-25T14:16:13.6507486Z                 "name": "tx-phase-reset334-loaded-preparation-40171468821-1.summary.json",
+2026-10-25T14:16:13.6507568Z                 "bytes": 11244,
+2026-10-25T14:16:13.6507827Z                 "digest": "sha256:7a5da3a0e8e7afd80ace24da03365dd4aad223ba9dc4f9fbdedf08bf2b1b9be4"
+2026-10-25T14:16:13.6507900Z               },
+2026-10-25T14:16:13.6507976Z               {
+2026-10-25T14:16:13.6508055Z                 "id": 674346396,
+2026-10-25T14:16:13.6508306Z                 "name": "tx-phase-reset334-loaded-preparation-40171468821-1.tar.gz.part0000",
+2026-10-25T14:16:13.6508391Z                 "bytes": 356475,
+2026-10-25T14:16:13.6508635Z                 "digest": "sha256:c9f227d485aecdc9d923a148cf91cd36c8c51144bdbdad115c2e7b0c0b6eb365"
+2026-10-25T14:16:13.6508716Z               }
+2026-10-25T14:16:13.6508788Z             ],
+2026-10-25T14:16:13.6508882Z             "target_verified": true,
+2026-10-25T14:16:13.6509259Z             "assets_overwritten": false
+2026-10-25T14:16:13.6509406Z           },
+2026-10-25T14:16:13.6509536Z           "tested_source_is_release_target": true
+2026-10-25T14:16:13.6509609Z         },
+2026-10-25T14:16:13.6509693Z         "parts": 1
+2026-10-25T14:16:13.6509766Z       }
+2026-10-25T14:16:13.6509842Z     },
+2026-10-25T14:16:13.6509922Z     "rejected": [
+2026-10-25T14:16:13.6510015Z       "native_source:id",
+2026-10-25T14:16:13.6510114Z       "native_source:run_attempt",
+2026-10-25T14:16:13.6510204Z       "native_source:status",
+2026-10-25T14:16:13.6510303Z       "native_source:conclusion",
+2026-10-25T14:16:13.6510391Z       "native_source:head_sha",
+2026-10-25T14:16:13.6510486Z       "native_source:head_branch",
+2026-10-25T14:16:13.6510577Z       "native_source:path",
+2026-10-25T14:16:13.6510680Z       "native_source:release_id",
+2026-10-25T14:16:13.6510778Z       "native_source:release_target",
+2026-10-25T14:16:13.6510873Z       "native_source:tag_commit",
+2026-10-25T14:16:13.6511131Z       "prepared_source:actual_run_source",
+2026-10-25T14:16:13.6511236Z       "prepared_source:container_id",
+2026-10-25T14:16:13.6511344Z       "prepared_source:container_target",
+2026-10-25T14:16:13.6511444Z       "prepared_source:container_commit",
+2026-10-25T14:16:13.6511548Z       "prepared_source:container_draft",
+2026-10-25T14:16:13.6511639Z       "native_source:part_id",
+2026-10-25T14:16:13.6511737Z       "native_source:part_size",
+2026-10-25T14:16:13.6511839Z       "native_source:part_digest",
+2026-10-25T14:16:13.6511930Z       "native_source:part_name",
+2026-10-25T14:16:13.6512029Z       "prepared_source:part_id",
+2026-10-25T14:16:13.6512121Z       "prepared_source:part_size",
+2026-10-25T14:16:13.6512221Z       "prepared_source:part_digest",
+2026-10-25T14:16:13.6512313Z       "prepared_source:part_name"
+2026-10-25T14:16:13.6512405Z     ]
+2026-10-25T14:16:13.6512482Z   },
+2026-10-25T14:16:13.6512577Z   "original_result_faults": [
+2026-10-25T14:16:13.6512666Z     "native_exit_code",
+2026-10-25T14:16:13.6512762Z     "native_process_saved",
+2026-10-25T14:16:13.6512848Z     "full_capture",
+2026-10-25T14:16:13.6512926Z     "source_head",
+2026-10-25T14:16:13.6513004Z     "case",
+2026-10-25T14:16:13.6513096Z     "electrical_screen_passed",
+2026-10-25T14:16:13.6513190Z     "sources_unchanged",
+2026-10-25T14:16:13.6513298Z     "continuation:native_process_saved",
+2026-10-25T14:16:13.6513391Z     "continuation:next_phase"
+2026-10-25T14:16:13.6513470Z   ],
+2026-10-25T14:16:13.6513554Z   "archive_faults": [
+2026-10-25T14:16:13.6513645Z     "missing_original",
+2026-10-25T14:16:13.6513729Z     "unknown_original",
+2026-10-25T14:16:13.6513826Z     "changed_unselected",
+2026-10-25T14:16:13.6513912Z     "unknown_selection",
+2026-10-25T14:16:13.6513993Z     "traversal",
+2026-10-25T14:16:13.6514075Z     "absolute",
+2026-10-25T14:16:13.6514304Z     "backslash",
+2026-10-25T14:16:13.6514388Z     "wrong_root",
+2026-10-25T14:16:13.6514464Z     "symlink",
+2026-10-25T14:16:13.6514545Z     "hardlink",
+2026-10-25T14:16:13.6514630Z     "noncanonical"
+2026-10-25T14:16:13.6514706Z   ],
+2026-10-25T14:16:13.6514782Z   "parts": {
+2026-10-25T14:16:13.6514879Z     "positive_roundtrip": true,
+2026-10-25T14:16:13.6514972Z     "negative_controls": 6,
+2026-10-25T14:16:13.6515085Z     "all_native_payload_bytes_preserved": true
+2026-10-25T14:16:13.6515162Z   },
+2026-10-25T14:16:13.6515248Z   "selected_archive": {
+2026-10-25T14:16:13.6515358Z     "exact_native_payload_roundtrip": true,
+2026-10-25T14:16:13.6515445Z     "negative_controls": [
+2026-10-25T14:16:13.6515525Z       "missing",
+2026-10-25T14:16:13.6515619Z       "wrong_selected_hash",
+2026-10-25T14:16:13.6515692Z       "order",
+2026-10-25T14:16:13.6515773Z       "whole_hash",
+2026-10-25T14:16:13.6515858Z       "selection_escape",
+2026-10-25T14:16:13.6515939Z       "symlink",
+2026-10-25T14:16:13.6516039Z       "traversal",
+2026-10-25T14:16:13.6516124Z       "wrong_root"
+2026-10-25T14:16:13.6516198Z     ]
+2026-10-25T14:16:13.6516274Z   },
+2026-10-25T14:16:13.6516363Z   "publication": {
+2026-10-25T14:16:13.6516525Z     "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+2026-10-25T14:16:13.6516607Z     "rejected": [
+2026-10-25T14:16:13.6516692Z       "local-context",
+2026-10-25T14:16:13.6516776Z       "other-repo",
+2026-10-25T14:16:13.6516860Z       "missing-source",
+2026-10-25T14:16:13.6516949Z       "mutable-source",
+2026-10-25T14:16:13.6517029Z       "invalid-run",
+2026-10-25T14:16:13.6517118Z       "invalid-attempt",
+2026-10-25T14:16:13.6517204Z       "invalid-group",
+2026-10-25T14:16:13.6517303Z       "different-release-target",
+2026-10-25T14:16:13.6517400Z       "different-tag-object",
+2026-10-25T14:16:13.6517484Z       "annotated-tag",
+2026-10-25T14:16:13.6517578Z       "different-tag-name",
+2026-10-25T14:16:13.6517659Z       "draft-release",
+2026-10-25T14:16:13.6517754Z       "production-release",
+2026-10-25T14:16:13.6517855Z       "duplicate-asset-name",
+2026-10-25T14:16:13.6517946Z       "asset-digest-missing",
+2026-10-25T14:16:13.6518135Z       "preexisting-wrong-tag",
+2026-10-25T14:16:13.6518236Z       "read-denied-never-creates"
+2026-10-25T14:16:13.6518312Z     ],
+2026-10-25T14:16:13.6518426Z     "existing_partial_assets_preserved": true,
+2026-10-25T14:16:13.6518536Z     "existing_release_not_recreated": true,
+2026-10-25T14:16:13.6518635Z     "new_release_uses_tested_sha": true,
+2026-10-25T14:16:13.6518738Z     "no_permissions_expanded": true
+2026-10-25T14:16:13.6518814Z   },
+2026-10-25T14:16:13.6518911Z   "readback_authorized": false,
+2026-10-25T14:16:13.6519142Z   "new_simulation": false,
+2026-10-25T14:16:13.6519255Z   "actual_input_controls_executed": false
+2026-10-25T14:16:13.6519332Z }
+2026-10-25T14:16:13.7071369Z {
+2026-10-25T14:16:13.7071833Z   "status": "PASS_READ_ONLY_RELEASE_WAIT_CONTROLS",
+2026-10-25T14:16:13.7072409Z   "positive_cases": [
+2026-10-25T14:16:13.7072786Z     {
+2026-10-25T14:16:13.7073134Z       "absent_reads": 0,
+2026-10-25T14:16:13.7073550Z       "exact_release_accepted": true
+2026-10-25T14:16:13.7073985Z     },
+2026-10-25T14:16:13.7074299Z     {
+2026-10-25T14:16:13.7074619Z       "absent_reads": 2,
+2026-10-25T14:16:13.7075036Z       "exact_release_accepted": true
+2026-10-25T14:16:13.7075483Z     },
+2026-10-25T14:16:13.7075782Z     {
+2026-10-25T14:16:13.7076098Z       "absent_reads": 60,
+2026-10-25T14:16:13.7076497Z       "exact_release_accepted": true
+2026-10-25T14:16:13.7076920Z     }
+2026-10-25T14:16:13.7077194Z   ],
+2026-10-25T14:16:13.7077455Z   "rejected": [
+2026-10-25T14:16:13.7077810Z     "bounded-missing-reservation",
+2026-10-25T14:16:13.7078320Z     "API-denied-not-retried",
+2026-10-25T14:16:13.7078745Z     "different-release-source",
+2026-10-25T14:16:13.7079501Z     "different-tag-object"
+2026-10-25T14:16:13.7079952Z   ],
+2026-10-25T14:16:13.7080306Z   "maximum_missing_reads": 61,
+2026-10-25T14:16:13.7080757Z   "maximum_scheduled_wait_s": 300,
+2026-10-25T14:16:13.7081491Z   "creation_attempted": false,
+2026-10-25T14:16:13.7081923Z   "native_executed": false
+2026-10-25T14:16:13.7082293Z }
+2026-10-25T14:16:13.7138594Z ##[group]Run python3 scripts/check_tx_phase_reset334_return_publication.py | tee publication-program-controls.json
+2026-10-25T14:16:13.7139799Z [36;1mpython3 scripts/check_tx_phase_reset334_return_publication.py | tee publication-program-controls.json[0m
+2026-10-25T14:16:13.7140347Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T14:16:13.7140590Z [36;1mimport json[0m
+2026-10-25T14:16:13.7140899Z [36;1mp=json.load(open('publication-program-controls.json'))[0m
+2026-10-25T14:16:13.7141402Z [36;1massert p['status']=='PASS_PHASE318_ACTUAL_PUBLICATION_PROGRAM_CONTROLS_ONLY'[0m
+2026-10-25T14:16:13.7141913Z [36;1massert len(p['positive_cases'])==2 and len(p['rejected'])==13[0m
+2026-10-25T14:16:13.7142426Z [36;1massert p['actual_template_program_executed'] and p['real_file_list_assembly'][0m
+2026-10-25T14:16:13.7142925Z [36;1massert p['real_publisher_retry_and_digest_function_used'][0m
+2026-10-25T14:16:13.7143609Z [36;1massert not p['remote_network_or_upload_executed'] and not p['release_creation_executed'] and not p['native_executed'][0m
+2026-10-25T14:16:13.7144146Z [36;1mPYCODE[0m
+2026-10-25T14:16:13.7207462Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T14:16:13.7207817Z env:
+2026-10-25T14:16:13.7208084Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:16:13.7208530Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T14:16:13.7209269Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:16:13.7209704Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:16:13.7210108Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T14:16:13.7210521Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T14:16:13.7210856Z ##[endgroup]
+2026-10-25T14:16:14.4943360Z {
+2026-10-25T14:16:14.4944101Z   "status": "PASS_PHASE318_ACTUAL_PUBLICATION_PROGRAM_CONTROLS_ONLY",
+2026-10-25T14:16:14.4944971Z   "positive_cases": [
+2026-10-25T14:16:14.4945774Z     "actual_program_all8_paths_two_archive_parts_real_publisher_digest_roundtrip",
+2026-10-25T14:16:14.4946711Z     "identical_existing_assets_preserved_without_upload"
+2026-10-25T14:16:14.4947181Z   ],
+2026-10-25T14:16:14.4947447Z   "rejected": [
+2026-10-25T14:16:14.4947768Z     "unbound_legacy_create_seam",
+2026-10-25T14:16:14.4948154Z     "wrong_release_source",
+2026-10-25T14:16:14.4948508Z     "wrong_tag_source",
+2026-10-25T14:16:14.4948832Z     "wrong_release_tag",
+2026-10-25T14:16:14.4949479Z     "missing_reserved_release",
+2026-10-25T14:16:14.4949902Z     "Path_indexed_as_manifest",
+2026-10-25T14:16:14.4950277Z     "post_upload_digest_mismatch",
+2026-10-25T14:16:14.4950680Z     "existing_asset_never_overwritten",
+2026-10-25T14:16:14.4951079Z     "duplicate_part",
+2026-10-25T14:16:14.4951392Z     "traversal_part",
+2026-10-25T14:16:14.4951698Z     "backslash_part",
+2026-10-25T14:16:14.4952019Z     "duplicate_asset_basename",
+2026-10-25T14:16:14.4952352Z     "symlink_json"
+2026-10-25T14:16:14.4952630Z   ],
+2026-10-25T14:16:14.4952918Z   "actual_template_program_executed": true,
+2026-10-25T14:16:14.4953326Z   "real_file_list_assembly": true,
+2026-10-25T14:16:14.4953763Z   "real_publisher_retry_and_digest_function_used": true,
+2026-10-25T14:16:14.4954242Z   "remote_network_or_upload_executed": false,
+2026-10-25T14:16:14.4954674Z   "release_creation_executed": false,
+2026-10-25T14:16:14.4955039Z   "native_executed": false
+2026-10-25T14:16:14.4955342Z }
+2026-10-25T14:16:14.5464853Z Post job cleanup.
+2026-10-25T14:16:14.6604925Z (node:2438) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T14:16:14.6606116Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T14:16:14.6820322Z Post job cleanup.
+2026-10-25T14:16:14.7709771Z [command]/usr/bin/git version
+2026-10-25T14:16:14.7753410Z git version 2.55.0
+2026-10-25T14:16:14.7793491Z Temporarily overriding HOME='/home/runner/work/_temp/12564108-b39c-4606-9294-dd113895db90' before making global git config changes
+2026-10-25T14:16:14.7794813Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T14:16:14.7798821Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T14:16:14.7839789Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T14:16:14.7882294Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T14:16:14.8157462Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T14:16:14.8193339Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T14:16:14.8487296Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T14:16:14.8527528Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T14:16:14.8924572Z Cleaning up orphan processes
+2026-10-25T14:16:14.9307802Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
