@@ -1,0 +1,709 @@
+﻿2026-10-25T15:08:39.8401136Z Current runner version: '2.338.0'
+2026-10-25T15:08:39.8430265Z ##[group]Runner Image Provisioner
+2026-10-25T15:08:39.8431219Z Hosted Compute Agent
+2026-10-25T15:08:39.8432133Z Version: 20261021.618
+2026-10-25T15:08:39.8432796Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-25T15:08:39.8434094Z Build Date: 2026-10-21T00:45:21Z
+2026-10-25T15:08:39.8434850Z Worker ID: {af25a857-f92d-4eb3-ace4-5133a05fd663}
+2026-10-25T15:08:39.8435663Z Region: eastus
+2026-10-25T15:08:39.8436215Z Cloud: Azure
+2026-10-25T15:08:39.8436794Z ##[endgroup]
+2026-10-25T15:08:39.8438305Z ##[group]Operating System
+2026-10-25T15:08:39.8438983Z Ubuntu
+2026-10-25T15:08:39.8439634Z 24.04.5
+2026-10-25T15:08:39.8440147Z LTS
+2026-10-25T15:08:39.8440636Z ##[endgroup]
+2026-10-25T15:08:39.8441244Z ##[group]Runner Image
+2026-10-25T15:08:39.8442062Z Image: ubuntu-24.04
+2026-10-25T15:08:39.8442733Z Version: 20261012.334.1
+2026-10-25T15:08:39.8444892Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-25T15:08:39.8446596Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-25T15:08:39.8447630Z ##[endgroup]
+2026-10-25T15:08:39.8448762Z ##[group]GITHUB_TOKEN Permissions
+2026-10-25T15:08:39.8450844Z Contents: read
+2026-10-25T15:08:39.8452083Z Metadata: read
+2026-10-25T15:08:39.8452699Z ##[endgroup]
+2026-10-25T15:08:39.8455367Z Secret source: Actions
+2026-10-25T15:08:39.8456362Z Cache mode: write
+2026-10-25T15:08:39.8457317Z Prepare workflow directory
+2026-10-25T15:08:39.8884311Z Prepare all required actions
+2026-10-25T15:08:39.8936953Z Getting action download info
+2026-10-25T15:08:40.1058049Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-25T15:08:40.2085736Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-25T15:08:40.2905959Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-25T15:08:40.4989459Z Complete job name: controls
+2026-10-25T15:08:40.5847508Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-25T15:08:40.5848562Z with:
+2026-10-25T15:08:40.5849033Z   ref: e9a543e3705564f92bd6a79ae93f21d20c12bbb6
+2026-10-25T15:08:40.5849634Z   persist-credentials: false
+2026-10-25T15:08:40.5850155Z   repository: Melihakbulut221/nssoc
+2026-10-25T15:08:40.5854261Z   token: ***
+2026-10-25T15:08:40.5854702Z   ssh-strict: true
+2026-10-25T15:08:40.5855135Z   ssh-user: git
+2026-10-25T15:08:40.5855545Z   clean: true
+2026-10-25T15:08:40.5855976Z   sparse-checkout-cone-mode: true
+2026-10-25T15:08:40.5856528Z   fetch-depth: 1
+2026-10-25T15:08:40.5856943Z   fetch-tags: false
+2026-10-25T15:08:40.5857374Z   show-progress: true
+2026-10-25T15:08:40.5857801Z   lfs: false
+2026-10-25T15:08:40.5858198Z   submodules: false
+2026-10-25T15:08:40.5858656Z   set-safe-directory: true
+2026-10-25T15:08:40.5859146Z   allow-unsafe-pr-checkout: false
+2026-10-25T15:08:40.5859934Z env:
+2026-10-25T15:08:40.5860363Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T15:08:40.5860883Z ##[endgroup]
+2026-10-25T15:08:40.6928716Z Syncing repository: Melihakbulut221/nssoc
+2026-10-25T15:08:40.6930505Z ##[group]Getting Git version info
+2026-10-25T15:08:40.6931382Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-25T15:08:40.6932962Z [command]/usr/bin/git version
+2026-10-25T15:08:40.7028351Z git version 2.55.0
+2026-10-25T15:08:40.7054461Z ##[endgroup]
+2026-10-25T15:08:40.7070335Z Temporarily overriding HOME='/home/runner/work/_temp/870c019a-e82e-4ec6-b071-032732ae5864' before making global git config changes
+2026-10-25T15:08:40.7072969Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T15:08:40.7077228Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T15:08:40.7133863Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-25T15:08:40.7138268Z ##[group]Initializing the repository
+2026-10-25T15:08:40.7142160Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-25T15:08:40.7257272Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-25T15:08:40.7259350Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-25T15:08:40.7260317Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-25T15:08:40.7261051Z hint: call:
+2026-10-25T15:08:40.7261446Z hint:
+2026-10-25T15:08:40.7262237Z hint: 	git config --global init.defaultBranch <name>
+2026-10-25T15:08:40.7262854Z hint:
+2026-10-25T15:08:40.7263424Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-25T15:08:40.7265341Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-25T15:08:40.7266061Z hint:
+2026-10-25T15:08:40.7266466Z hint: 	git branch -m <name>
+2026-10-25T15:08:40.7267234Z hint:
+2026-10-25T15:08:40.7268252Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-25T15:08:40.7274834Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-25T15:08:40.7292271Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-25T15:08:40.7353318Z ##[endgroup]
+2026-10-25T15:08:40.7354906Z ##[group]Disabling automatic garbage collection
+2026-10-25T15:08:40.7359430Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-25T15:08:40.7396412Z ##[endgroup]
+2026-10-25T15:08:40.7397600Z ##[group]Setting up auth
+2026-10-25T15:08:40.7404392Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T15:08:40.7440310Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T15:08:40.7822057Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T15:08:40.7860473Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T15:08:40.8097391Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T15:08:40.8142956Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T15:08:40.8389397Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-25T15:08:40.8436799Z ##[endgroup]
+2026-10-25T15:08:40.8438442Z ##[group]Fetching the repository
+2026-10-25T15:08:40.8448382Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin e9a543e3705564f92bd6a79ae93f21d20c12bbb6
+2026-10-25T15:08:51.6093800Z From https://github.com/Melihakbulut221/nssoc
+2026-10-25T15:08:51.6096140Z  * branch              e9a543e3705564f92bd6a79ae93f21d20c12bbb6 -> FETCH_HEAD
+2026-10-25T15:08:51.6101487Z ##[endgroup]
+2026-10-25T15:08:51.6104153Z ##[group]Determining the checkout info
+2026-10-25T15:08:51.6106421Z ##[endgroup]
+2026-10-25T15:08:51.6110163Z [command]/usr/bin/git sparse-checkout disable
+2026-10-25T15:08:51.6176789Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-25T15:08:51.6213387Z ##[group]Checking out the ref
+2026-10-25T15:08:51.6217763Z [command]/usr/bin/git checkout --progress --force e9a543e3705564f92bd6a79ae93f21d20c12bbb6
+2026-10-25T15:08:52.6658306Z Updating files:  11% (3512/29505)
+2026-10-25T15:08:52.7766571Z Updating files:  12% (3541/29505)
+2026-10-25T15:08:52.8247860Z Updating files:  13% (3836/29505)
+2026-10-25T15:08:52.9452971Z Updating files:  14% (4131/29505)
+2026-10-25T15:08:53.3299835Z Updating files:  15% (4426/29505)
+2026-10-25T15:08:53.4687128Z Updating files:  16% (4721/29505)
+2026-10-25T15:08:53.5442894Z Updating files:  17% (5016/29505)
+2026-10-25T15:08:53.5655937Z Updating files:  18% (5311/29505)
+2026-10-25T15:08:53.5832051Z Updating files:  19% (5606/29505)
+2026-10-25T15:08:53.6510008Z Updating files:  20% (5901/29505)
+2026-10-25T15:08:53.6558143Z Updating files:  20% (6177/29505)
+2026-10-25T15:08:53.7178823Z Updating files:  21% (6197/29505)
+2026-10-25T15:08:53.7522725Z Updating files:  22% (6492/29505)
+2026-10-25T15:08:53.7696623Z Updating files:  23% (6787/29505)
+2026-10-25T15:08:53.7972399Z Updating files:  24% (7082/29505)
+2026-10-25T15:08:53.8117502Z Updating files:  25% (7377/29505)
+2026-10-25T15:08:53.8257590Z Updating files:  26% (7672/29505)
+2026-10-25T15:08:53.8417268Z Updating files:  27% (7967/29505)
+2026-10-25T15:08:53.8609834Z Updating files:  28% (8262/29505)
+2026-10-25T15:08:53.8784059Z Updating files:  29% (8557/29505)
+2026-10-25T15:08:53.8918525Z Updating files:  30% (8852/29505)
+2026-10-25T15:08:53.9095562Z Updating files:  31% (9147/29505)
+2026-10-25T15:08:53.9230606Z Updating files:  32% (9442/29505)
+2026-10-25T15:08:53.9403619Z Updating files:  33% (9737/29505)
+2026-10-25T15:08:53.9636820Z Updating files:  34% (10032/29505)
+2026-10-25T15:08:53.9918727Z Updating files:  35% (10327/29505)
+2026-10-25T15:08:54.0298034Z Updating files:  36% (10622/29505)
+2026-10-25T15:08:54.0447767Z Updating files:  37% (10917/29505)
+2026-10-25T15:08:54.0601922Z Updating files:  38% (11212/29505)
+2026-10-25T15:08:54.0777387Z Updating files:  39% (11507/29505)
+2026-10-25T15:08:54.0937708Z Updating files:  40% (11802/29505)
+2026-10-25T15:08:54.1088016Z Updating files:  41% (12098/29505)
+2026-10-25T15:08:54.1197226Z Updating files:  42% (12393/29505)
+2026-10-25T15:08:54.1341160Z Updating files:  43% (12688/29505)
+2026-10-25T15:08:54.1509060Z Updating files:  44% (12983/29505)
+2026-10-25T15:08:54.1668929Z Updating files:  45% (13278/29505)
+2026-10-25T15:08:54.1815466Z Updating files:  46% (13573/29505)
+2026-10-25T15:08:54.2007098Z Updating files:  47% (13868/29505)
+2026-10-25T15:08:54.2158339Z Updating files:  48% (14163/29505)
+2026-10-25T15:08:54.2294787Z Updating files:  49% (14458/29505)
+2026-10-25T15:08:54.2421093Z Updating files:  50% (14753/29505)
+2026-10-25T15:08:54.2589553Z Updating files:  51% (15048/29505)
+2026-10-25T15:08:54.2743795Z Updating files:  52% (15343/29505)
+2026-10-25T15:08:54.3012278Z Updating files:  53% (15638/29505)
+2026-10-25T15:08:54.3149019Z Updating files:  54% (15933/29505)
+2026-10-25T15:08:54.3280865Z Updating files:  55% (16228/29505)
+2026-10-25T15:08:54.3423449Z Updating files:  56% (16523/29505)
+2026-10-25T15:08:54.3550362Z Updating files:  57% (16818/29505)
+2026-10-25T15:08:54.3705718Z Updating files:  58% (17113/29505)
+2026-10-25T15:08:54.3869122Z Updating files:  59% (17408/29505)
+2026-10-25T15:08:54.4037670Z Updating files:  60% (17703/29505)
+2026-10-25T15:08:54.4148025Z Updating files:  61% (17999/29505)
+2026-10-25T15:08:54.4266391Z Updating files:  62% (18294/29505)
+2026-10-25T15:08:54.4387914Z Updating files:  63% (18589/29505)
+2026-10-25T15:08:54.4534680Z Updating files:  64% (18884/29505)
+2026-10-25T15:08:54.4825154Z Updating files:  65% (19179/29505)
+2026-10-25T15:08:54.5017141Z Updating files:  66% (19474/29505)
+2026-10-25T15:08:54.5211561Z Updating files:  67% (19769/29505)
+2026-10-25T15:08:54.5396488Z Updating files:  68% (20064/29505)
+2026-10-25T15:08:54.5545819Z Updating files:  69% (20359/29505)
+2026-10-25T15:08:54.5698867Z Updating files:  70% (20654/29505)
+2026-10-25T15:08:54.5825414Z Updating files:  71% (20949/29505)
+2026-10-25T15:08:54.5990502Z Updating files:  72% (21244/29505)
+2026-10-25T15:08:54.6116832Z Updating files:  73% (21539/29505)
+2026-10-25T15:08:54.6238031Z Updating files:  74% (21834/29505)
+2026-10-25T15:08:54.6381568Z Updating files:  75% (22129/29505)
+2026-10-25T15:08:54.6620046Z Updating files:  76% (22424/29505)
+2026-10-25T15:08:54.6866039Z Updating files:  76% (22585/29505)
+2026-10-25T15:08:54.7006211Z Updating files:  77% (22719/29505)
+2026-10-25T15:08:54.7513442Z Updating files:  78% (23014/29505)
+2026-10-25T15:08:54.7779879Z Updating files:  79% (23309/29505)
+2026-10-25T15:08:54.8086415Z Updating files:  80% (23604/29505)
+2026-10-25T15:08:54.8267708Z Updating files:  81% (23900/29505)
+2026-10-25T15:08:54.8451662Z Updating files:  82% (24195/29505)
+2026-10-25T15:08:54.8677834Z Updating files:  83% (24490/29505)
+2026-10-25T15:08:54.8860019Z Updating files:  84% (24785/29505)
+2026-10-25T15:08:54.9163092Z Updating files:  85% (25080/29505)
+2026-10-25T15:08:54.9367478Z Updating files:  86% (25375/29505)
+2026-10-25T15:08:54.9577195Z Updating files:  87% (25670/29505)
+2026-10-25T15:08:54.9701849Z Updating files:  88% (25965/29505)
+2026-10-25T15:08:54.9884806Z Updating files:  89% (26260/29505)
+2026-10-25T15:08:55.0048875Z Updating files:  90% (26555/29505)
+2026-10-25T15:08:55.0190514Z Updating files:  91% (26850/29505)
+2026-10-25T15:08:55.0371083Z Updating files:  92% (27145/29505)
+2026-10-25T15:08:55.0584574Z Updating files:  93% (27440/29505)
+2026-10-25T15:08:55.0777875Z Updating files:  94% (27735/29505)
+2026-10-25T15:08:55.0994921Z Updating files:  95% (28030/29505)
+2026-10-25T15:08:55.1222234Z Updating files:  96% (28325/29505)
+2026-10-25T15:08:55.1402287Z Updating files:  97% (28620/29505)
+2026-10-25T15:08:55.1590090Z Updating files:  98% (28915/29505)
+2026-10-25T15:08:55.1907226Z Updating files:  99% (29210/29505)
+2026-10-25T15:08:55.1907836Z Updating files: 100% (29505/29505)
+2026-10-25T15:08:55.1908230Z Updating files: 100% (29505/29505), done.
+2026-10-25T15:08:55.2250017Z Note: switching to 'e9a543e3705564f92bd6a79ae93f21d20c12bbb6'.
+2026-10-25T15:08:55.2250498Z 
+2026-10-25T15:08:55.2250857Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-25T15:08:55.2251682Z changes and commit them, and you can discard any commits you make in this
+2026-10-25T15:08:55.2252765Z state without impacting any branches by switching back to a branch.
+2026-10-25T15:08:55.2253237Z 
+2026-10-25T15:08:55.2341304Z If you want to create a new branch to retain commits you create, you may
+2026-10-25T15:08:55.2352627Z do so (now or later) by using -c with the switch command. Example:
+2026-10-25T15:08:55.2352935Z 
+2026-10-25T15:08:55.2353061Z   git switch -c <new-branch-name>
+2026-10-25T15:08:55.2353913Z 
+2026-10-25T15:08:55.2354063Z Or undo this operation with:
+2026-10-25T15:08:55.2354256Z 
+2026-10-25T15:08:55.2354349Z   git switch -
+2026-10-25T15:08:55.2354484Z 
+2026-10-25T15:08:55.2354713Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-25T15:08:55.2355055Z 
+2026-10-25T15:08:55.2355365Z HEAD is now at e9a543e3 Preserve reviewed CDR runtime repair for hosted controls only [skip ci]
+2026-10-25T15:08:55.2456166Z ##[endgroup]
+2026-10-25T15:08:55.2509158Z [command]/usr/bin/git log -1 --format=%H
+2026-10-25T15:08:55.2540432Z e9a543e3705564f92bd6a79ae93f21d20c12bbb6
+2026-10-25T15:08:55.2551201Z ##[group]Removing auth
+2026-10-25T15:08:55.2556246Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T15:08:55.2594815Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T15:08:55.2851225Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T15:08:55.2879051Z http.https://github.com/.extraheader
+2026-10-25T15:08:55.2887684Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-25T15:08:55.2926122Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T15:08:55.3181171Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T15:08:55.3216157Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T15:08:55.3503011Z ##[endgroup]
+2026-10-25T15:08:55.3762834Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-25T15:08:55.3763260Z with:
+2026-10-25T15:08:55.3763920Z   python-version: 3.12
+2026-10-25T15:08:55.3764343Z   check-latest: false
+2026-10-25T15:08:55.3766754Z   token: ***
+2026-10-25T15:08:55.3766975Z   update-environment: true
+2026-10-25T15:08:55.3767226Z   allow-prereleases: false
+2026-10-25T15:08:55.3767472Z   freethreaded: false
+2026-10-25T15:08:55.3767680Z env:
+2026-10-25T15:08:55.3767876Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T15:08:55.3768113Z ##[endgroup]
+2026-10-25T15:08:55.5156227Z ##[group]Installed versions
+2026-10-25T15:08:55.5250850Z (node:2392) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T15:08:55.5252057Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T15:08:55.5252677Z Successfully set up CPython (3.12.15)
+2026-10-25T15:08:55.5253333Z ##[endgroup]
+2026-10-25T15:08:55.5433037Z ##[group]Run set -euo pipefail
+2026-10-25T15:08:55.5433866Z [36;1mset -euo pipefail[0m
+2026-10-25T15:08:55.5434367Z [36;1mmkdir -p hw/soc/out/cdr-v59-mim-controls[0m
+2026-10-25T15:08:55.5435333Z [36;1mPYTHONPATH=scripts python3 scripts/check_cdr_v59_mim_source.py | tee hw/soc/out/cdr-v59-mim-controls/source.json[0m
+2026-10-25T15:08:55.5436222Z [36;1mpython3 - <<'PY'[0m
+2026-10-25T15:08:55.5436583Z [36;1mimport json[0m
+2026-10-25T15:08:55.5437084Z [36;1mr=json.load(open('hw/soc/out/cdr-v59-mim-controls/source.json'))[0m
+2026-10-25T15:08:55.5437870Z [36;1massert r['status']=='PASS_CURRENT_V59_MIM_SOURCE_CONTROLS_NO_NATIVE'[0m
+2026-10-25T15:08:55.5438663Z [36;1massert len(r['rejected'])==83 and len(r['positive']['derivations'])==5[0m
+2026-10-25T15:08:55.5439452Z [36;1massert r['source_controls_only'] and not r['archives_downloaded'][0m
+2026-10-25T15:08:55.5440504Z [36;1massert not r['native_extraction_executed'] and not r['simulation_executed'] and not r['geometry_regenerated'][0m
+2026-10-25T15:08:55.5441355Z [36;1mPY[0m
+2026-10-25T15:08:55.5775247Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T15:08:55.5775634Z env:
+2026-10-25T15:08:55.5775862Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T15:08:55.5776208Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:55.5776658Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T15:08:55.5777091Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:55.5777474Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:55.5777856Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:55.5778242Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T15:08:55.5778561Z ##[endgroup]
+2026-10-25T15:08:57.7120589Z {
+2026-10-25T15:08:57.7121221Z   "status": "PASS_CURRENT_V59_MIM_SOURCE_CONTROLS_NO_NATIVE",
+2026-10-25T15:08:57.7121979Z   "protected_files": 378,
+2026-10-25T15:08:57.7122392Z   "positive": {
+2026-10-25T15:08:57.7122703Z     "derivations": {
+2026-10-25T15:08:57.7123080Z       "scripts/cloud_cdr_v59_mim_capture.py": {
+2026-10-25T15:08:57.7124128Z         "original_sha256": "883c6b6ef126815a8ffbeaa021cb4c753419809bd65b189be5fa01fc898c843c",
+2026-10-25T15:08:57.7125116Z         "generated_sha256": "540b7b41493b4661b6131852c0d81d89edbfc9f9f67f733b7176cb23e45e1115",
+2026-10-25T15:08:57.7125820Z         "edits": 6,
+2026-10-25T15:08:57.7126145Z         "reverse_exact": true,
+2026-10-25T15:08:57.7126518Z         "changed_functions": [
+2026-10-25T15:08:57.7126868Z           "main"
+2026-10-25T15:08:57.7127162Z         ]
+2026-10-25T15:08:57.7127432Z       },
+2026-10-25T15:08:57.7127756Z       "scripts/audit_cdr_v59_mim_intrinsic.py": {
+2026-10-25T15:08:57.7128480Z         "original_sha256": "f86c4859faf34d90975309587ef2aa433d539884809972d7d7f3fa00fe9881b3",
+2026-10-25T15:08:57.7129440Z         "generated_sha256": "5e1f61f64c702b1636aca245a2772f5f8150fb5edd5a42020352ab059f439865",
+2026-10-25T15:08:57.7130388Z         "edits": 2,
+2026-10-25T15:08:57.7130715Z         "reverse_exact": true,
+2026-10-25T15:08:57.7131081Z         "changed_functions": [
+2026-10-25T15:08:57.7131445Z           "validate_mim"
+2026-10-25T15:08:57.7131956Z         ]
+2026-10-25T15:08:57.7132237Z       },
+2026-10-25T15:08:57.7132561Z       "scripts/cloud_cdr_v59_mim_audit.py": {
+2026-10-25T15:08:57.7133242Z         "original_sha256": "d529a4c0e5619ae5f349f5095d387453ba0983a014e3b9508e53dc8ea5147190",
+2026-10-25T15:08:57.7134432Z         "generated_sha256": "0fe300a11f9d9765dc0e21b4c59ddc79e15fd3d3d71a28fc478a06ffb117c233",
+2026-10-25T15:08:57.7135114Z         "edits": 6,
+2026-10-25T15:08:57.7135429Z         "reverse_exact": true,
+2026-10-25T15:08:57.7135793Z         "changed_functions": [
+2026-10-25T15:08:57.7136153Z           "main"
+2026-10-25T15:08:57.7136431Z         ]
+2026-10-25T15:08:57.7136685Z       },
+2026-10-25T15:08:57.7137045Z       "scripts/cdr_v59_mim_composition_derivation.py": {
+2026-10-25T15:08:57.7138075Z         "original_sha256": "cad718aadcee09370cb79ed64937a9b7af95c87d198679e52a8270f9cf84f2eb",
+2026-10-25T15:08:57.7139044Z         "generated_sha256": "ff8633e5c5d3c06a871d7b3b3d9c79cd0d9eb1ae1c65ce3c07485a973a2d7d77",
+2026-10-25T15:08:57.7139809Z         "edits": 1,
+2026-10-25T15:08:57.7140177Z         "reverse_exact": true,
+2026-10-25T15:08:57.7140602Z         "changed_functions": []
+2026-10-25T15:08:57.7140981Z       },
+2026-10-25T15:08:57.7141373Z       "scripts/cloud_cdr_v59_mim_precision.py": {
+2026-10-25T15:08:57.7142430Z         "original_sha256": "36a5b9bf745ce3f61aaf12fc5fc27f919efacb4c3e46c52e5dc61d7743e5a4dd",
+2026-10-25T15:08:57.7143783Z         "generated_sha256": "1339eec60c6d3efa0e382c11312fd6ff6c54e7e6e2be864b777e78798d5e782b",
+2026-10-25T15:08:57.7144551Z         "edits": 11,
+2026-10-25T15:08:57.7144917Z         "reverse_exact": true,
+2026-10-25T15:08:57.7145327Z         "changed_functions": [
+2026-10-25T15:08:57.7145709Z           "check",
+2026-10-25T15:08:57.7146095Z           "compose",
+2026-10-25T15:08:57.7146440Z           "main"
+2026-10-25T15:08:57.7146756Z         ]
+2026-10-25T15:08:57.7147048Z       }
+2026-10-25T15:08:57.7147329Z     },
+2026-10-25T15:08:57.7147689Z     "actual_current_stage_reports": {
+2026-10-25T15:08:57.7148150Z       "binding": {
+2026-10-25T15:08:57.7148725Z         "sha256": "b5389f23f31f9058d0f894c8ca14008c038469ac8811a093be6beb11b0c2e1c4",
+2026-10-25T15:08:57.7149838Z         "status": "PASS_PD500_NATIVE_MODEL_BINDING_14_FAULTS_AND_NATIVE_CONTACT_ORACLE_REQUIRES_WIRE_COMPOSITION_AND_WAVES"
+2026-10-25T15:08:57.7150709Z       },
+2026-10-25T15:08:57.7151013Z       "rc": {
+2026-10-25T15:08:57.7151592Z         "sha256": "bec9b8c416a62efe9cfe9aa5bca0b6dce53dfe6661c7fbef4423dc48a086a303",
+2026-10-25T15:08:57.7152803Z         "status": "PASS_PD500_FRESH_NATIVE_WIRE_RC_AND13_CONTROLS_REQUIRES_LOADED_CLOSED_LOOP"
+2026-10-25T15:08:57.7153406Z       }
+2026-10-25T15:08:57.7153892Z     },
+2026-10-25T15:08:57.7154371Z     "binding_original_summary": "PASS_FRESH_V59_BINDING_REQUIRES_NEXT_REVIEWED_STAGE",
+2026-10-25T15:08:57.7155041Z     "binding_original_publication_failure": {
+2026-10-25T15:08:57.7155461Z       "bytes": 377105,
+2026-10-25T15:08:57.7155976Z       "sha256": "3b5f3bb7caf35934919f50638604737c58a999f6196f28818efce02b535bc3ef",
+2026-10-25T15:08:57.7156706Z       "full_summary_chunks_verified": true,
+2026-10-25T15:08:57.7157316Z       "original_failure_reproduced": true
+2026-10-25T15:08:57.7157766Z     },
+2026-10-25T15:08:57.7158251Z     "rc_original_summary": "PASS_FRESH_V59_RC_REQUIRES_NEXT_REVIEWED_STAGE",
+2026-10-25T15:08:57.7158893Z     "rc_original_publication_failure": {
+2026-10-25T15:08:57.7159336Z       "bytes": 552810,
+2026-10-25T15:08:57.7159939Z       "sha256": "49ab4c67db12fbe0921721212d818fe1a0204f8296779408141f46a4a7f73ff2",
+2026-10-25T15:08:57.7160676Z       "full_summary_chunks_verified": true,
+2026-10-25T15:08:57.7161185Z       "original_failure_reproduced": true
+2026-10-25T15:08:57.7161637Z     },
+2026-10-25T15:08:57.7162254Z     "metadata_fixture_bound_to_actual_ids": true,
+2026-10-25T15:08:57.7163010Z     "real_small_full_archive": {
+2026-10-25T15:08:57.7163435Z       "members": 3,
+2026-10-25T15:08:57.7164075Z       "hidden_and_empty_preserved": true,
+2026-10-25T15:08:57.7164533Z       "parts": 3
+2026-10-25T15:08:57.7164890Z     },
+2026-10-25T15:08:57.7165218Z     "partial_evidence": {
+2026-10-25T15:08:57.7165643Z       "actual_shared_collector": true,
+2026-10-25T15:08:57.7166147Z       "actual_stream_copies": true,
+2026-10-25T15:08:57.7166615Z       "empty_file_preserved": true,
+2026-10-25T15:08:57.7167062Z       "successful_positive": true,
+2026-10-25T15:08:57.7167488Z       "rejected": [
+2026-10-25T15:08:57.7167929Z         "integrity_failure_still_preserves_both_copies",
+2026-10-25T15:08:57.7168533Z         "capsule_copy_failure_still_preserves_stage",
+2026-10-25T15:08:57.7169100Z         "occupied_stage_copy_never_becomes_native_pass",
+2026-10-25T15:08:57.7169709Z         "missing_success_capsule_is_rejected_and_stage_preserved"
+2026-10-25T15:08:57.7170460Z       ]
+2026-10-25T15:08:57.7170770Z     },
+2026-10-25T15:08:57.7171102Z     "noncascading_counts": {
+2026-10-25T15:08:57.7171634Z       "status": "PASS_NONCASCADING_MEASURED_COUNT_DERIVATION",
+2026-10-25T15:08:57.7172426Z       "positive_collision_cases": [
+2026-10-25T15:08:57.7172839Z         {
+2026-10-25T15:08:57.7173122Z           "R": 394,
+2026-10-25T15:08:57.7173458Z           "C": 751,
+2026-10-25T15:08:57.7174265Z           "sha256": "cd97e383ccf57541387dfc5e4ad4fd9abfeaecad186be6d69e48fb96ed78f119"
+2026-10-25T15:08:57.7174905Z         },
+2026-10-25T15:08:57.7175157Z         {
+2026-10-25T15:08:57.7175418Z           "R": 17649,
+2026-10-25T15:08:57.7175725Z           "C": 8933,
+2026-10-25T15:08:57.7176254Z           "sha256": "7f60feab69a5367269b0659be1b5bd4a206af180a30822bf2757665b063cb403"
+2026-10-25T15:08:57.7176922Z         },
+2026-10-25T15:08:57.7177218Z         {
+2026-10-25T15:08:57.7177532Z           "R": 8933,
+2026-10-25T15:08:57.7177885Z           "C": 16582,
+2026-10-25T15:08:57.7178596Z           "sha256": "b098359e14cea7b033a65f8281e8526abcfcc841a43b5119c3f52ae0ef050299"
+2026-10-25T15:08:57.7179225Z         },
+2026-10-25T15:08:57.7179501Z         {
+2026-10-25T15:08:57.7179782Z           "R": 37649,
+2026-10-25T15:08:57.7180104Z           "C": 111394,
+2026-10-25T15:08:57.7180699Z           "sha256": "75bb7be1b691c9ca32421e5e8ae57fa264a017c6fc32e3981207973b85b08b0c"
+2026-10-25T15:08:57.7181390Z         }
+2026-10-25T15:08:57.7181693Z       ],
+2026-10-25T15:08:57.7182193Z       "rejected": [
+2026-10-25T15:08:57.7182567Z         "changed_frozen_source",
+2026-10-25T15:08:57.7182983Z         "zero_R",
+2026-10-25T15:08:57.7183330Z         "negative_C",
+2026-10-25T15:08:57.7183938Z         "boolean_R"
+2026-10-25T15:08:57.7184275Z       ]
+2026-10-25T15:08:57.7184613Z     },
+2026-10-25T15:08:57.7184937Z     "native_cap_order": [
+2026-10-25T15:08:57.7185315Z       "missing",
+2026-10-25T15:08:57.7185613Z       "value",
+2026-10-25T15:08:57.7185903Z       "endpoint",
+2026-10-25T15:08:57.7186208Z       "node"
+2026-10-25T15:08:57.7186482Z     ]
+2026-10-25T15:08:57.7186732Z   },
+2026-10-25T15:08:57.7186996Z   "rejected": [
+2026-10-25T15:08:57.7187333Z     "changed_original_cloud_cdr_v59_mim_capture",
+2026-10-25T15:08:57.7187807Z     "changed_generated_cloud_cdr_v59_mim_capture",
+2026-10-25T15:08:57.7188286Z     "changed_original_audit_cdr_v59_mim_intrinsic",
+2026-10-25T15:08:57.7188837Z     "changed_generated_audit_cdr_v59_mim_intrinsic",
+2026-10-25T15:08:57.7189366Z     "changed_original_cloud_cdr_v59_mim_audit",
+2026-10-25T15:08:57.7189883Z     "changed_generated_cloud_cdr_v59_mim_audit",
+2026-10-25T15:08:57.7190427Z     "changed_original_cdr_v59_mim_composition_derivation",
+2026-10-25T15:08:57.7191038Z     "changed_generated_cdr_v59_mim_composition_derivation",
+2026-10-25T15:08:57.7191641Z     "changed_original_cloud_cdr_v59_mim_precision",
+2026-10-25T15:08:57.7192422Z     "changed_generated_cloud_cdr_v59_mim_precision",
+2026-10-25T15:08:57.7192913Z     "binding_source_head",
+2026-10-25T15:08:57.7193778Z     "binding_sources_unchanged",
+2026-10-25T15:08:57.7194189Z     "binding_status",
+2026-10-25T15:08:57.7194549Z     "binding_qualified_pex",
+2026-10-25T15:08:57.7194955Z     "binding_full_phy_accepted",
+2026-10-25T15:08:57.7195372Z     "binding_closed_loop",
+2026-10-25T15:08:57.7195782Z     "binding_missing_original_integrity",
+2026-10-25T15:08:57.7196216Z     "rc_source_head",
+2026-10-25T15:08:57.7196552Z     "rc_sources_unchanged",
+2026-10-25T15:08:57.7196949Z     "rc_status",
+2026-10-25T15:08:57.7197258Z     "rc_qualified_pex",
+2026-10-25T15:08:57.7197614Z     "rc_full_phy_accepted",
+2026-10-25T15:08:57.7197977Z     "rc_closed_loop",
+2026-10-25T15:08:57.7198324Z     "rc_missing_original_integrity",
+2026-10-25T15:08:57.7198744Z     "binding_missing_device",
+2026-10-25T15:08:57.7199158Z     "binding_missing_electrical_node",
+2026-10-25T15:08:57.7199606Z     "binding_missing_port",
+2026-10-25T15:08:57.7199986Z     "binding_old_target_L7_4",
+2026-10-25T15:08:57.7200361Z     "binding_MIM_l",
+2026-10-25T15:08:57.7200871Z     "binding_MIM_w",
+2026-10-25T15:08:57.7201233Z     "binding_MIM_plate",
+2026-10-25T15:08:57.7201595Z     "binding_missing_native_fault",
+2026-10-25T15:08:57.7202210Z     "binding_accepted_native_fault",
+2026-10-25T15:08:57.7202623Z     "binding_missing_target_fault",
+2026-10-25T15:08:57.7203022Z     "binding_missing_contact",
+2026-10-25T15:08:57.7203413Z     "binding_missing_contact_fault",
+2026-10-25T15:08:57.7204082Z     "rc_native_device_count",
+2026-10-25T15:08:57.7204478Z     "rc_native_terminal_count",
+2026-10-25T15:08:57.7204856Z     "rc_wire_component_count",
+2026-10-25T15:08:57.7205225Z     "rc_native_net_count",
+2026-10-25T15:08:57.7205613Z     "rc_native_electrical_net_count",
+2026-10-25T15:08:57.7206025Z     "rc_logical_anchor_count",
+2026-10-25T15:08:57.7206418Z     "rc_physical_anchor_count",
+2026-10-25T15:08:57.7206814Z     "rc_public_ports",
+2026-10-25T15:08:57.7207188Z     "rc_changed_absolute_anchor_input",
+2026-10-25T15:08:57.7207622Z     "rc_failed_native_return",
+2026-10-25T15:08:57.7208015Z     "rc_missing_raw_fault",
+2026-10-25T15:08:57.7208397Z     "rc_missing_raw_file",
+2026-10-25T15:08:57.7208779Z     "binding_changed_original_summary",
+2026-10-25T15:08:57.7209231Z     "rc_changed_original_summary",
+2026-10-25T15:08:57.7209634Z     "old_conclusion",
+2026-10-25T15:08:57.7209966Z     "old_head_sha",
+2026-10-25T15:08:57.7210289Z     "old_run_attempt",
+2026-10-25T15:08:57.7210619Z     "old_event",
+2026-10-25T15:08:57.7210927Z     "old_path",
+2026-10-25T15:08:57.7211245Z     "new_conclusion",
+2026-10-25T15:08:57.7211588Z     "new_head_sha",
+2026-10-25T15:08:57.7212123Z     "binding_release_prerelease",
+2026-10-25T15:08:57.7212554Z     "binding_release_draft",
+2026-10-25T15:08:57.7212967Z     "binding_release_target_commitish",
+2026-10-25T15:08:57.7213417Z     "binding_release_id",
+2026-10-25T15:08:57.7214047Z     "binding_asset_hash",
+2026-10-25T15:08:57.7214411Z     "rc_release_prerelease",
+2026-10-25T15:08:57.7214780Z     "rc_release_draft",
+2026-10-25T15:08:57.7215147Z     "rc_release_target_commitish",
+2026-10-25T15:08:57.7215538Z     "rc_release_id",
+2026-10-25T15:08:57.7215862Z     "rc_asset_hash",
+2026-10-25T15:08:57.7216206Z     "occupied_restore_root",
+2026-10-25T15:08:57.7216596Z     "missing_member",
+2026-10-25T15:08:57.7216967Z     "unexpected_expected_member",
+2026-10-25T15:08:57.7217394Z     "changed_member_hash",
+2026-10-25T15:08:57.7217796Z     "archive_duplicate",
+2026-10-25T15:08:57.7218164Z     "archive_traversal",
+2026-10-25T15:08:57.7218524Z     "archive_extra",
+2026-10-25T15:08:57.7218866Z     "archive_symlink",
+2026-10-25T15:08:57.7219227Z     "combined_archive_hash",
+2026-10-25T15:08:57.7219592Z     "part_extent",
+2026-10-25T15:08:57.7219917Z     "projection_collision",
+2026-10-25T15:08:57.7220306Z     "projection_symlink",
+2026-10-25T15:08:57.7220827Z     "partial_evidence_integrity_failure_still_preserves_both_copies",
+2026-10-25T15:08:57.7221541Z     "partial_evidence_capsule_copy_failure_still_preserves_stage",
+2026-10-25T15:08:57.7222441Z     "partial_evidence_occupied_stage_copy_never_becomes_native_pass",
+2026-10-25T15:08:57.7223416Z     "partial_evidence_missing_success_capsule_is_rejected_and_stage_preserved"
+2026-10-25T15:08:57.7224257Z   ],
+2026-10-25T15:08:57.7224549Z   "source_controls_only": true,
+2026-10-25T15:08:57.7224939Z   "archives_downloaded": false,
+2026-10-25T15:08:57.7225344Z   "native_extraction_executed": false,
+2026-10-25T15:08:57.7225778Z   "simulation_executed": false,
+2026-10-25T15:08:57.7226167Z   "geometry_regenerated": false,
+2026-10-25T15:08:57.7226623Z   "original_failed_publication_preserved": true
+2026-10-25T15:08:57.7227064Z }
+2026-10-25T15:08:57.7546392Z ##[group]Run set -euo pipefail
+2026-10-25T15:08:57.7546738Z [36;1mset -euo pipefail[0m
+2026-10-25T15:08:57.7547307Z [36;1mPYTHONPATH=scripts python3 scripts/check_cdr_v59_mim_runtime.py --controls | tee hw/soc/out/cdr-v59-mim-controls/runtime.json[0m
+2026-10-25T15:08:57.7547899Z [36;1mpython3 - <<'PY'[0m
+2026-10-25T15:08:57.7548131Z [36;1mimport json[0m
+2026-10-25T15:08:57.7548462Z [36;1mr=json.load(open('hw/soc/out/cdr-v59-mim-controls/runtime.json'))[0m
+2026-10-25T15:08:57.7548965Z [36;1massert r['status']=='PASS_HOSTED_LAUNCHER_TRANSPORT_9_FAULTS_2_POSITIVES'[0m
+2026-10-25T15:08:57.7549453Z [36;1massert len(r['rejected'])==9 and len(r['positive'])==2[0m
+2026-10-25T15:08:57.7549919Z [36;1massert r['actual_subprocesses'] and not r['actual_appimage_executed'][0m
+2026-10-25T15:08:57.7550340Z [36;1massert not r['native_geometry_executed'][0m
+2026-10-25T15:08:57.7550626Z [36;1mPY[0m
+2026-10-25T15:08:57.7618991Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T15:08:57.7619339Z env:
+2026-10-25T15:08:57.7619552Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T15:08:57.7619874Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:57.7620326Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T15:08:57.7620779Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:57.7621178Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:57.7621567Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:57.7622109Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T15:08:57.7622440Z ##[endgroup]
+2026-10-25T15:08:59.0495687Z {
+2026-10-25T15:08:59.0496327Z   "status": "PASS_HOSTED_LAUNCHER_TRANSPORT_9_FAULTS_2_POSITIVES",
+2026-10-25T15:08:59.0496936Z   "rejected": [
+2026-10-25T15:08:59.0497300Z     "actual_exit127_uid_map",
+2026-10-25T15:08:59.0497711Z     "wrong_launcher_hash",
+2026-10-25T15:08:59.0498174Z     "zero_exit_without_interpreter_record",
+2026-10-25T15:08:59.0498664Z     "malformed_interpreter_record",
+2026-10-25T15:08:59.0499128Z     "changed_launcher_after_zero_exit",
+2026-10-25T15:08:59.0499473Z     "actual_launcher_timeout",
+2026-10-25T15:08:59.0499763Z     "actual_pya_import_exception",
+2026-10-25T15:08:59.0500064Z     "zero_exit_invalid_runtime_identity",
+2026-10-25T15:08:59.0500396Z     "actual_leader_exit_with_live_descendant"
+2026-10-25T15:08:59.0500704Z   ],
+2026-10-25T15:08:59.0500898Z   "positive": [
+2026-10-25T15:08:59.0501161Z     "actual_interpreter_and_explicit_stub_import",
+2026-10-25T15:08:59.0501505Z     "exact_nonUTF8_stderr_preserved"
+2026-10-25T15:08:59.0502076Z   ],
+2026-10-25T15:08:59.0502306Z   "actual_subprocesses": true,
+2026-10-25T15:08:59.0502684Z   "pya_module_in_controls": "EXPLICIT_SYNTHETIC_STUB_NOT_NATIVE_PYA",
+2026-10-25T15:08:59.0503093Z   "actual_appimage_executed": false,
+2026-10-25T15:08:59.0503389Z   "native_geometry_executed": false
+2026-10-25T15:08:59.0504150Z }
+2026-10-25T15:08:59.0909875Z ##[group]Run set -euo pipefail
+2026-10-25T15:08:59.0910211Z [36;1mset -euo pipefail[0m
+2026-10-25T15:08:59.0910851Z [36;1mPYTHONPATH=scripts python3 scripts/cloud_cdr_v59_binding_rc.py --publication-controls | tee hw/soc/out/cdr-v59-mim-controls/publication.json[0m
+2026-10-25T15:08:59.0912127Z [36;1mPYTHONPATH=scripts python3 scripts/ensure_cloud_tested_source_release.py --controls | tee hw/soc/out/cdr-v59-mim-controls/release.json[0m
+2026-10-25T15:08:59.0912964Z [36;1mpython3 - <<'PY'[0m
+2026-10-25T15:08:59.0913195Z [36;1mimport json[0m
+2026-10-25T15:08:59.0914481Z [36;1mr=json.load(open('hw/soc/out/cdr-v59-mim-controls/publication.json'))[0m
+2026-10-25T15:08:59.0915054Z [36;1massert len(r['rejected'])==8 and len(r['file_list_controls']['rejected'])==14[0m
+2026-10-25T15:08:59.0915676Z [36;1massert r['file_list_controls']['actual_shared_function_executed'] and not r['release_creation_possible'][0m
+2026-10-25T15:08:59.0916430Z [36;1massert json.load(open('hw/soc/out/cdr-v59-mim-controls/release.json'))['status'].startswith('PASS')[0m
+2026-10-25T15:08:59.0917913Z [36;1mPY[0m
+2026-10-25T15:08:59.0985226Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T15:08:59.0985568Z env:
+2026-10-25T15:08:59.0985773Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T15:08:59.0986092Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.0986545Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T15:08:59.0986987Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.0987363Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.0987759Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.0988154Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T15:08:59.0988480Z ##[endgroup]
+2026-10-25T15:08:59.4562005Z {
+2026-10-25T15:08:59.4562629Z   "status": "PASS_READ_ONLY_RELEASE_LOOKUP_AND_STREAM_COPY_8_FAULTS",
+2026-10-25T15:08:59.4563224Z   "rejected": [
+2026-10-25T15:08:59.4563911Z     "different_requested_tag",
+2026-10-25T15:08:59.4564264Z     "absent_never_create",
+2026-10-25T15:08:59.4564564Z     "wrong_target_commitish",
+2026-10-25T15:08:59.4564875Z     "wrong_prerelease",
+2026-10-25T15:08:59.4565152Z     "wrong_draft",
+2026-10-25T15:08:59.4565409Z     "wrong_tag_source",
+2026-10-25T15:08:59.4565694Z     "copy_destination_exists",
+2026-10-25T15:08:59.4566012Z     "copy_symlink"
+2026-10-25T15:08:59.4566259Z   ],
+2026-10-25T15:08:59.4566505Z   "existing_release_positive": true,
+2026-10-25T15:08:59.4566855Z   "stream_copy_positive": true,
+2026-10-25T15:08:59.4567178Z   "empty_file_preserved": true,
+2026-10-25T15:08:59.4567509Z   "release_creation_possible": false,
+2026-10-25T15:08:59.4567843Z   "chunk_controls": {
+2026-10-25T15:08:59.4568131Z     "positive_roundtrip": true,
+2026-10-25T15:08:59.4568440Z     "negative_controls": 6,
+2026-10-25T15:08:59.4568772Z     "all_native_payload_bytes_preserved": true
+2026-10-25T15:08:59.4569134Z   },
+2026-10-25T15:08:59.4569372Z   "file_list_controls": {
+2026-10-25T15:08:59.4569739Z     "status": "PASS_ACTUAL_PUBLICATION_FILE_LIST_14_FAULTS",
+2026-10-25T15:08:59.4570147Z     "rejected": [
+2026-10-25T15:08:59.4570398Z       "zero_parts",
+2026-10-25T15:08:59.4570662Z       "unexpected_part",
+2026-10-25T15:08:59.4570977Z       "original_path_subscript_regression",
+2026-10-25T15:08:59.4571326Z       "missing_part",
+2026-10-25T15:08:59.4571607Z       "changed_part",
+2026-10-25T15:08:59.4572140Z       "empty_part",
+2026-10-25T15:08:59.4572400Z       "symlink_part",
+2026-10-25T15:08:59.4572669Z       "duplicate_part",
+2026-10-25T15:08:59.4572946Z       "traversal_part",
+2026-10-25T15:08:59.4573243Z       "absolute_part",
+2026-10-25T15:08:59.4573916Z       "backslash_part",
+2026-10-25T15:08:59.4574179Z       "empty_summary",
+2026-10-25T15:08:59.4574408Z       "manifest_disagrees_with_memory",
+2026-10-25T15:08:59.4574698Z       "summary_outside_transport"
+2026-10-25T15:08:59.4574945Z     ],
+2026-10-25T15:08:59.4575393Z     "actual_shared_function_executed": true,
+2026-10-25T15:08:59.4575706Z     "actual_packed_files": true,
+2026-10-25T15:08:59.4575974Z     "original_bug_reproduced": true
+2026-10-25T15:08:59.4576226Z   }
+2026-10-25T15:08:59.4576390Z }
+2026-10-25T15:08:59.5098936Z {
+2026-10-25T15:08:59.5099433Z   "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+2026-10-25T15:08:59.5099971Z   "rejected": [
+2026-10-25T15:08:59.5100422Z     "local-context",
+2026-10-25T15:08:59.5100659Z     "other-repo",
+2026-10-25T15:08:59.5100896Z     "missing-source",
+2026-10-25T15:08:59.5101128Z     "mutable-source",
+2026-10-25T15:08:59.5101357Z     "invalid-run",
+2026-10-25T15:08:59.5101584Z     "invalid-attempt",
+2026-10-25T15:08:59.5102043Z     "invalid-group",
+2026-10-25T15:08:59.5102295Z     "different-release-target",
+2026-10-25T15:08:59.5102573Z     "different-tag-object",
+2026-10-25T15:08:59.5102824Z     "annotated-tag",
+2026-10-25T15:08:59.5103058Z     "different-tag-name",
+2026-10-25T15:08:59.5103314Z     "draft-release",
+2026-10-25T15:08:59.5103616Z     "production-release",
+2026-10-25T15:08:59.5103975Z     "duplicate-asset-name",
+2026-10-25T15:08:59.5104233Z     "asset-digest-missing",
+2026-10-25T15:08:59.5104491Z     "preexisting-wrong-tag",
+2026-10-25T15:08:59.5104765Z     "read-denied-never-creates"
+2026-10-25T15:08:59.5105019Z   ],
+2026-10-25T15:08:59.5105248Z   "existing_partial_assets_preserved": true,
+2026-10-25T15:08:59.5105592Z   "existing_release_not_recreated": true,
+2026-10-25T15:08:59.5105903Z   "new_release_uses_tested_sha": true,
+2026-10-25T15:08:59.5106201Z   "no_permissions_expanded": true
+2026-10-25T15:08:59.5106461Z }
+2026-10-25T15:08:59.5409101Z ##[group]Run PYTHONPATH=scripts python3 - <<'PY'
+2026-10-25T15:08:59.5409512Z [36;1mPYTHONPATH=scripts python3 - <<'PY'[0m
+2026-10-25T15:08:59.5409828Z [36;1mfrom pathlib import Path[0m
+2026-10-25T15:08:59.5410128Z [36;1mfrom cloud_cdr_v59_binding_rc import emit[0m
+2026-10-25T15:08:59.5410567Z [36;1mfor p in sorted(Path('hw/soc/out/cdr-v59-mim-controls').glob('*.json')):[0m
+2026-10-25T15:08:59.5411015Z [36;1m    print('CONTROL_FILE '+p.name,flush=True)[0m
+2026-10-25T15:08:59.5411366Z [36;1m    emit(p,'CDR_V59_MIM_CONTROLS_'+p.stem.upper())[0m
+2026-10-25T15:08:59.5411672Z [36;1mPY[0m
+2026-10-25T15:08:59.5477306Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T15:08:59.5477656Z env:
+2026-10-25T15:08:59.5477864Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T15:08:59.5478200Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.5478639Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T15:08:59.5479092Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.5479472Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.5479850Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.5480265Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T15:08:59.5480587Z ##[endgroup]
+2026-10-25T15:08:59.7330165Z CONTROL_FILE publication.json
+2026-10-25T15:08:59.7331208Z CDR_V59_MIM_CONTROLS_PUBLICATION_BEGIN {"bytes": 1170, "sha256": "21a5a9fc54d61d49df2aa0c8a20036124aee183a567cbe9babf967af006f620c", "chunks": 1}
+2026-10-25T15:08:59.7360626Z CDR_V59_MIM_CONTROLS_PUBLICATION_CHUNK 0 ewogICJzdGF0dXMiOiAiUEFTU19SRUFEX09OTFlfUkVMRUFTRV9MT09LVVBfQU5EX1NUUkVBTV9DT1BZXzhfRkFVTFRTIiwKICAicmVqZWN0ZWQiOiBbCiAgICAiZGlmZmVyZW50X3JlcXVlc3RlZF90YWciLAogICAgImFic2VudF9uZXZlcl9jcmVhdGUiLAogICAgIndyb25nX3RhcmdldF9jb21taXRpc2giLAogICAgIndyb25nX3ByZXJlbGVhc2UiLAogICAgIndyb25nX2RyYWZ0IiwKICAgICJ3cm9uZ190YWdfc291cmNlIiwKICAgICJjb3B5X2Rlc3RpbmF0aW9uX2V4aXN0cyIsCiAgICAiY29weV9zeW1saW5rIgogIF0sCiAgImV4aXN0aW5nX3JlbGVhc2VfcG9zaXRpdmUiOiB0cnVlLAogICJzdHJlYW1fY29weV9wb3NpdGl2ZSI6IHRydWUsCiAgImVtcHR5X2ZpbGVfcHJlc2VydmVkIjogdHJ1ZSwKICAicmVsZWFzZV9jcmVhdGlvbl9wb3NzaWJsZSI6IGZhbHNlLAogICJjaHVua19jb250cm9scyI6IHsKICAgICJwb3NpdGl2ZV9yb3VuZHRyaXAiOiB0cnVlLAogICAgIm5lZ2F0aXZlX2NvbnRyb2xzIjogNiwKICAgICJhbGxfbmF0aXZlX3BheWxvYWRfYnl0ZXNfcHJlc2VydmVkIjogdHJ1ZQogIH0sCiAgImZpbGVfbGlzdF9jb250cm9scyI6IHsKICAgICJzdGF0dXMiOiAiUEFTU19BQ1RVQUxfUFVCTElDQVRJT05fRklMRV9MSVNUXzE0X0ZBVUxUUyIsCiAgICAicmVqZWN0ZWQiOiBbCiAgICAgICJ6ZXJvX3BhcnRzIiwKICAgICAgInVuZXhwZWN0ZWRfcGFydCIsCiAgICAgICJvcmlnaW5hbF9wYXRoX3N1YnNjcmlwdF9yZWdyZXNzaW9uIiwKICAgICAgIm1pc3NpbmdfcGFydCIsCiAgICAgICJjaGFuZ2VkX3BhcnQiLAogICAgICAiZW1wdHlfcGFydCIsCiAgICAgICJzeW1saW5rX3BhcnQiLAogICAgICAiZHVwbGljYXRlX3BhcnQiLAogICAgICAidHJhdmVyc2FsX3BhcnQiLAogICAgICAiYWJzb2x1dGVfcGFydCIsCiAgICAgICJiYWNrc2xhc2hfcGFydCIsCiAgICAgICJlbXB0eV9zdW1tYXJ5IiwKICAgICAgIm1hbmlmZXN0X2Rpc2FncmVlc193aXRoX21lbW9yeSIsCiAgICAgICJzdW1tYXJ5X291dHNpZGVfdHJhbnNwb3J0IgogICAgXSwKICAgICJhY3R1YWxfc2hhcmVkX2Z1bmN0aW9uX2V4ZWN1dGVkIjogdHJ1ZSwKICAgICJhY3R1YWxfcGFja2VkX2ZpbGVzIjogdHJ1ZSwKICAgICJvcmlnaW5hbF9idWdfcmVwcm9kdWNlZCI6IHRydWUKICB9Cn0K
+2026-10-25T15:08:59.7387861Z CDR_V59_MIM_CONTROLS_PUBLICATION_END
+2026-10-25T15:08:59.7388152Z CONTROL_FILE release.json
+2026-10-25T15:08:59.7388726Z CDR_V59_MIM_CONTROLS_RELEASE_BEGIN {"bytes": 665, "sha256": "b0d5bc89c4f5560335e60f640f8feb9e1ac879030a785d8881b1fb6f71083b00", "chunks": 1}
+2026-10-25T15:08:59.7399625Z CDR_V59_MIM_CONTROLS_RELEASE_CHUNK 0 ewogICJzdGF0dXMiOiAiUEFTU19FWEFDVF9URVNURURfU09VUkNFX1JFTEVBU0VfQU5EMTdfQ09OVFJPTFMiLAogICJyZWplY3RlZCI6IFsKICAgICJsb2NhbC1jb250ZXh0IiwKICAgICJvdGhlci1yZXBvIiwKICAgICJtaXNzaW5nLXNvdXJjZSIsCiAgICAibXV0YWJsZS1zb3VyY2UiLAogICAgImludmFsaWQtcnVuIiwKICAgICJpbnZhbGlkLWF0dGVtcHQiLAogICAgImludmFsaWQtZ3JvdXAiLAogICAgImRpZmZlcmVudC1yZWxlYXNlLXRhcmdldCIsCiAgICAiZGlmZmVyZW50LXRhZy1vYmplY3QiLAogICAgImFubm90YXRlZC10YWciLAogICAgImRpZmZlcmVudC10YWctbmFtZSIsCiAgICAiZHJhZnQtcmVsZWFzZSIsCiAgICAicHJvZHVjdGlvbi1yZWxlYXNlIiwKICAgICJkdXBsaWNhdGUtYXNzZXQtbmFtZSIsCiAgICAiYXNzZXQtZGlnZXN0LW1pc3NpbmciLAogICAgInByZWV4aXN0aW5nLXdyb25nLXRhZyIsCiAgICAicmVhZC1kZW5pZWQtbmV2ZXItY3JlYXRlcyIKICBdLAogICJleGlzdGluZ19wYXJ0aWFsX2Fzc2V0c19wcmVzZXJ2ZWQiOiB0cnVlLAogICJleGlzdGluZ19yZWxlYXNlX25vdF9yZWNyZWF0ZWQiOiB0cnVlLAogICJuZXdfcmVsZWFzZV91c2VzX3Rlc3RlZF9zaGEiOiB0cnVlLAogICJub19wZXJtaXNzaW9uc19leHBhbmRlZCI6IHRydWUKfQo=
+2026-10-25T15:08:59.7410664Z CDR_V59_MIM_CONTROLS_RELEASE_END
+2026-10-25T15:08:59.7410945Z CONTROL_FILE runtime.json
+2026-10-25T15:08:59.7411648Z CDR_V59_MIM_CONTROLS_RUNTIME_BEGIN {"bytes": 706, "sha256": "a84531dae9a9186a2cc9bb773031b612b9029701ff92d8c751a3c0dec8089ba7", "chunks": 1}
+2026-10-25T15:08:59.7423429Z CDR_V59_MIM_CONTROLS_RUNTIME_CHUNK 0 ewogICJzdGF0dXMiOiAiUEFTU19IT1NURURfTEFVTkNIRVJfVFJBTlNQT1JUXzlfRkFVTFRTXzJfUE9TSVRJVkVTIiwKICAicmVqZWN0ZWQiOiBbCiAgICAiYWN0dWFsX2V4aXQxMjdfdWlkX21hcCIsCiAgICAid3JvbmdfbGF1bmNoZXJfaGFzaCIsCiAgICAiemVyb19leGl0X3dpdGhvdXRfaW50ZXJwcmV0ZXJfcmVjb3JkIiwKICAgICJtYWxmb3JtZWRfaW50ZXJwcmV0ZXJfcmVjb3JkIiwKICAgICJjaGFuZ2VkX2xhdW5jaGVyX2FmdGVyX3plcm9fZXhpdCIsCiAgICAiYWN0dWFsX2xhdW5jaGVyX3RpbWVvdXQiLAogICAgImFjdHVhbF9weWFfaW1wb3J0X2V4Y2VwdGlvbiIsCiAgICAiemVyb19leGl0X2ludmFsaWRfcnVudGltZV9pZGVudGl0eSIsCiAgICAiYWN0dWFsX2xlYWRlcl9leGl0X3dpdGhfbGl2ZV9kZXNjZW5kYW50IgogIF0sCiAgInBvc2l0aXZlIjogWwogICAgImFjdHVhbF9pbnRlcnByZXRlcl9hbmRfZXhwbGljaXRfc3R1Yl9pbXBvcnQiLAogICAgImV4YWN0X25vblVURjhfc3RkZXJyX3ByZXNlcnZlZCIKICBdLAogICJhY3R1YWxfc3VicHJvY2Vzc2VzIjogdHJ1ZSwKICAicHlhX21vZHVsZV9pbl9jb250cm9scyI6ICJFWFBMSUNJVF9TWU5USEVUSUNfU1RVQl9OT1RfTkFUSVZFX1BZQSIsCiAgImFjdHVhbF9hcHBpbWFnZV9leGVjdXRlZCI6IGZhbHNlLAogICJuYXRpdmVfZ2VvbWV0cnlfZXhlY3V0ZWQiOiBmYWxzZQp9Cg==
+2026-10-25T15:08:59.7434607Z CDR_V59_MIM_CONTROLS_RUNTIME_END
+2026-10-25T15:08:59.7434871Z CONTROL_FILE source.json
+2026-10-25T15:08:59.7435422Z CDR_V59_MIM_CONTROLS_SOURCE_BEGIN {"bytes": 7659, "sha256": "62dcdf865135373dfb6229ab2ae00013543edfd2aa4d12c810f24d0941388365", "chunks": 3}
+2026-10-25T15:08:59.7598112Z CDR_V59_MIM_CONTROLS_SOURCE_CHUNK 0 ewogICJzdGF0dXMiOiAiUEFTU19DVVJSRU5UX1Y1OV9NSU1fU09VUkNFX0NPTlRST0xTX05PX05BVElWRSIsCiAgInByb3RlY3RlZF9maWxlcyI6IDM3OCwKICAicG9zaXRpdmUiOiB7CiAgICAiZGVyaXZhdGlvbnMiOiB7CiAgICAgICJzY3JpcHRzL2Nsb3VkX2Nkcl92NTlfbWltX2NhcHR1cmUucHkiOiB7CiAgICAgICAgIm9yaWdpbmFsX3NoYTI1NiI6ICI4ODNjNmI2ZWYxMjY4MTVhOGZmYmVhYTAyMWNiNGM3NTM0MTk4MDliZDY1YjE4OWJlNWZhMDFmYzg5OGM4NDNjIiwKICAgICAgICAiZ2VuZXJhdGVkX3NoYTI1NiI6ICI1NDBiN2I0MTQ5M2I0NjYxYjYxMzE4NTJjMGQ4MWQ4OWVkYmZjOWY5ZjY3ZjczM2I3MTc2Y2IyM2U0NWUxMTE1IiwKICAgICAgICAiZWRpdHMiOiA2LAogICAgICAgICJyZXZlcnNlX2V4YWN0IjogdHJ1ZSwKICAgICAgICAiY2hhbmdlZF9mdW5jdGlvbnMiOiBbCiAgICAgICAgICAibWFpbiIKICAgICAgICBdCiAgICAgIH0sCiAgICAgICJzY3JpcHRzL2F1ZGl0X2Nkcl92NTlfbWltX2ludHJpbnNpYy5weSI6IHsKICAgICAgICAib3JpZ2luYWxfc2hhMjU2IjogImY4NmM0ODU5ZmFmMzRkOTA5NzUzMDk1ODdlZjJhYTQzM2Q1Mzk4ODQ4MDk5NzJkN2Q3ZjNmYTAwZmU5ODgxYjMiLAogICAgICAgICJnZW5lcmF0ZWRfc2hhMjU2IjogIjVlMWY2MWY2NGM3MDJiMTYzNmFjYTI0NWEyNzcyZjVmODE1MGZiNWVkZDVhNDIwMjAzNTJhYjA1OWY0Mzk4NjUiLAogICAgICAgICJlZGl0cyI6IDIsCiAgICAgICAgInJldmVyc2VfZXhhY3QiOiB0cnVlLAogICAgICAgICJjaGFuZ2VkX2Z1bmN0aW9ucyI6IFsKICAgICAgICAgICJ2YWxpZGF0ZV9taW0iCiAgICAgICAgXQogICAgICB9LAogICAgICAic2NyaXB0cy9jbG91ZF9jZHJfdjU5X21pbV9hdWRpdC5weSI6IHsKICAgICAgICAib3JpZ2luYWxfc2hhMjU2IjogImQ1MjlhNGMwZTU2MTlhZTVmMzQ5ZjUwOTVkMzg3NDUzYmEwOTgzYTAxNGUzYjk1MDhlNTNkYzhlYTUxNDcxOTAiLAogICAgICAgICJnZW5lcmF0ZWRfc2hhMjU2IjogIjBmZTMwMGExMWY5ZDk3NjVkYzBlMjFiNGM1OWRkYzc5ZTE1ZmQzZDNkNzFhMjhmYzQ3OGEwNmZmYjExN2MyMzMiLAogICAgICAgICJlZGl0cyI6IDYsCiAgICAgICAgInJldmVyc2VfZXhhY3QiOiB0cnVlLAogICAgICAgICJjaGFuZ2VkX2Z1bmN0aW9ucyI6IFsKICAgICAgICAgICJtYWluIgogICAgICAgIF0KICAgICAgfSwKICAgICAgInNjcmlwdHMvY2RyX3Y1OV9taW1fY29tcG9zaXRpb25fZGVyaXZhdGlvbi5weSI6IHsKICAgICAgICAib3JpZ2luYWxfc2hhMjU2IjogImNhZDcxOGFhZGNlZTA5MzcwY2I3OWVkNjQ5MzdhOWI3YWY5NWM4N2QxOTg2NzllNTJhODI3MGY5Y2Y4NGYyZWIiLAogICAgICAgICJnZW5lcmF0ZWRfc2hhMjU2IjogImZmODYzM2U1YzVkM2MwNmE4NzFkN2IzYjNkOWM3OWNkMGQ5ZWIxYWUxYzY1Y2UzYzA3NDg1YTk3M2EyZDdkNzciLAogICAgICAgICJlZGl0cyI6IDEsCiAgICAgICAgInJldmVyc2VfZXhhY3QiOiB0cnVlLAogICAgICAgICJjaGFuZ2VkX2Z1bmN0aW9ucyI6IFtdCiAgICAgIH0sCiAgICAgICJzY3JpcHRzL2Nsb3VkX2Nkcl92NTlfbWltX3ByZWNpc2lvbi5weSI6IHsKICAgICAgICAib3JpZ2luYWxfc2hhMjU2IjogIjM2YTViOWJmNzQ1Y2UzZjYxYWFmMTJmYzVmYzI3ZjkxOWVmYWNiNGMzZTQ2YzUyZTVkYzYxZDc3NDNlNWE0ZGQiLAogICAgICAgICJnZW5lcmF0ZWRfc2hhMjU2IjogIjEzMzllZWM2MGM2ZDNlZmEwZTM4MmMxMTMxMmZkNmZmNmM1NGU3ZTZlMmJlODY0Yjc3N2U3ODc5OGQ1ZTc4MmIiLAogICAgICAgICJlZGl0cyI6IDExLAogICAgICAgICJyZXZlcnNlX2V4YWN0IjogdHJ1ZSwKICAgICAgICAiY2hhbmdlZF9mdW5jdGlvbnMiOiBbCiAgICAgICAgICAiY2hlY2siLAogICAgICAgICAgImNvbXBvc2UiLAogICAgICAgICAgIm1haW4iCiAgICAgICAgXQogICAgICB9CiAgICB9LAogICAgImFjdHVhbF9jdXJyZW50X3N0YWdlX3JlcG9ydHMiOiB7CiAgICAgICJiaW5kaW5nIjogewogICAgICAgICJzaGEyNTYiOiAiYjUzODlmMjNmMzFmOTA1OGQwZjg5NGM4Y2ExNDAwOGMwMzg0NjlhYzg4MTFhMDkzYmU2YmViMTFiMGMyZTFjNCIsCiAgICAgICAgInN0YXR1cyI6ICJQQVNTX1BENTAwX05BVElWRV9NT0RFTF9CSU5ESU5HXzE0X0ZBVUxUU19BTkRfTkFUSVZFX0NPTlRBQ1RfT1JBQ0xFX1JFUVVJUkVTX1dJUkVfQ09NUE9TSVRJT05fQU5EX1dBVkVTIgogICAgICB9LAogICAgICAicmMiOiB7CiAgICAgICAgInNoYTI1NiI6ICJiZWM5YjhjNDE2YTYyZWZlOWNmZTlhYTViY2EwYjZkY2U1M2RmZTY2NjFjN2ZiZWY0NDIzZGM0OGEwODZhMzAzIiwKICAgICAgICAic3RhdHVzIjogIlBBU1NfUEQ1MDBfRlJFU0hfTkFUSVZFX1dJUkVfUkNfQU5EMTNfQ09OVFJPTFNfUkVRVUlSRVNfTE9BREVEX0NMT1NFRF9MT09QIgogICAgICB9CiAgICB9LAogICAgImJpbmRpbmdfb3JpZ2luYWxfc3VtbWFyeSI6ICJQQVNTX0ZSRVNIX1Y1OV9CSU5ESU5HX1JFUVVJUkVTX05FWFRfUkVWSUVXRURfU1RBR0UiLAogICAgImJpbmRpbmdfb3JpZ2luYWxfcHVibGljYXRpb25fZmFpbHVyZSI6IHsKICAgICAgImJ5dGVzIjogMzc3MTA1LAogICAgICAic2hhMjU2IjogIjNiNWYzYmI3Y2FmMzU5MzQ5MTlmNTA2Mzg2MDQ3MzdjNThhOTk5ZjYxOTZmMjg4MThlZmNlMDJiNTM1YmMzZWYiLAogICAgICAiZnVsbF9zdW1tYXJ5X2NodW5rc192ZXJpZmllZCI6IHRydWUsCiAgICAgICJvcmlnaW5hbF9mYWlsdXJlX3JlcHJvZHVjZWQiOiB0cnVlCiAgICB9LAogICAgInJjX29yaWdpbmFsX3N1bW1hcnkiOiAiUEFTU19GUkVTSF9WNTlfUkNfUkVRVUlSRVNfTkVYVF9SRVZJRVdFRF9TVEFHRSIsCiAgICAicmNfb3JpZ2luYWxfcHVibGljYXRpb25fZmFpbHVyZSI6IHsKICAgICAgImJ5dGVzIjogNTUyODEwLAogICAgICAic2hhMjU2IjogIjQ5YWI0YzY3ZGIxMmZiZTA5MjE3MjEyMTJkODE4ZmUxYTAyMDRmODI5Njc3OTQwODE0MWY0NmE0YTdmNzNmZjIiLAogICAgICAiZnVsbF9zdW1tYXJ5X2NodW5rc192ZXJpZmllZCI6IHRydWUsCiAgICAgICJvcmlnaW5hbF9mYWlsdXJlX3JlcHJvZHVj
+2026-10-25T15:08:59.7914552Z CDR_V59_MIM_CONTROLS_SOURCE_CHUNK 1 ZWQiOiB0cnVlCiAgICB9LAogICAgIm1ldGFkYXRhX2ZpeHR1cmVfYm91bmRfdG9fYWN0dWFsX2lkcyI6IHRydWUsCiAgICAicmVhbF9zbWFsbF9mdWxsX2FyY2hpdmUiOiB7CiAgICAgICJtZW1iZXJzIjogMywKICAgICAgImhpZGRlbl9hbmRfZW1wdHlfcHJlc2VydmVkIjogdHJ1ZSwKICAgICAgInBhcnRzIjogMwogICAgfSwKICAgICJwYXJ0aWFsX2V2aWRlbmNlIjogewogICAgICAiYWN0dWFsX3NoYXJlZF9jb2xsZWN0b3IiOiB0cnVlLAogICAgICAiYWN0dWFsX3N0cmVhbV9jb3BpZXMiOiB0cnVlLAogICAgICAiZW1wdHlfZmlsZV9wcmVzZXJ2ZWQiOiB0cnVlLAogICAgICAic3VjY2Vzc2Z1bF9wb3NpdGl2ZSI6IHRydWUsCiAgICAgICJyZWplY3RlZCI6IFsKICAgICAgICAiaW50ZWdyaXR5X2ZhaWx1cmVfc3RpbGxfcHJlc2VydmVzX2JvdGhfY29waWVzIiwKICAgICAgICAiY2Fwc3VsZV9jb3B5X2ZhaWx1cmVfc3RpbGxfcHJlc2VydmVzX3N0YWdlIiwKICAgICAgICAib2NjdXBpZWRfc3RhZ2VfY29weV9uZXZlcl9iZWNvbWVzX25hdGl2ZV9wYXNzIiwKICAgICAgICAibWlzc2luZ19zdWNjZXNzX2NhcHN1bGVfaXNfcmVqZWN0ZWRfYW5kX3N0YWdlX3ByZXNlcnZlZCIKICAgICAgXQogICAgfSwKICAgICJub25jYXNjYWRpbmdfY291bnRzIjogewogICAgICAic3RhdHVzIjogIlBBU1NfTk9OQ0FTQ0FESU5HX01FQVNVUkVEX0NPVU5UX0RFUklWQVRJT04iLAogICAgICAicG9zaXRpdmVfY29sbGlzaW9uX2Nhc2VzIjogWwogICAgICAgIHsKICAgICAgICAgICJSIjogMzk0LAogICAgICAgICAgIkMiOiA3NTEsCiAgICAgICAgICAic2hhMjU2IjogImNkOTdlMzgzY2NmNTc1NDEzODdkZmM1ZTRhZDRmZDlhYmZlYWVjYWQxODZiZTZkNjllNDhmYjk2ZWQ3OGYxMTkiCiAgICAgICAgfSwKICAgICAgICB7CiAgICAgICAgICAiUiI6IDE3NjQ5LAogICAgICAgICAgIkMiOiA4OTMzLAogICAgICAgICAgInNoYTI1NiI6ICI3ZjYwZmVhYjY5YTUzNjcyNjliMDY1OWJlMWI1YmQ0YTIwNmFmMTgwYTMwODIyYmYyNzU3NjY1YjA2M2NiNDAzIgogICAgICAgIH0sCiAgICAgICAgewogICAgICAgICAgIlIiOiA4OTMzLAogICAgICAgICAgIkMiOiAxNjU4MiwKICAgICAgICAgICJzaGEyNTYiOiAiYjA5ODM1OWUxNGNlYTdiMDMzYTY1ZjgyODFlODUyNmFiY2ZjYzg0MWE0M2I1MTE5YzNmNTJhZTBlZjA1MDI5OSIKICAgICAgICB9LAogICAgICAgIHsKICAgICAgICAgICJSIjogMzc2NDksCiAgICAgICAgICAiQyI6IDExMTM5NCwKICAgICAgICAgICJzaGEyNTYiOiAiNzViYjdiZTFiNjkxYzljYTMyNDIxZTVlOGFlNTdmYTI2NGEwMTdjNmZjMzJlMzk4MTIwNzk3M2I4NWIwOGIwYyIKICAgICAgICB9CiAgICAgIF0sCiAgICAgICJyZWplY3RlZCI6IFsKICAgICAgICAiY2hhbmdlZF9mcm96ZW5fc291cmNlIiwKICAgICAgICAiemVyb19SIiwKICAgICAgICAibmVnYXRpdmVfQyIsCiAgICAgICAgImJvb2xlYW5fUiIKICAgICAgXQogICAgfSwKICAgICJuYXRpdmVfY2FwX29yZGVyIjogWwogICAgICAibWlzc2luZyIsCiAgICAgICJ2YWx1ZSIsCiAgICAgICJlbmRwb2ludCIsCiAgICAgICJub2RlIgogICAgXQogIH0sCiAgInJlamVjdGVkIjogWwogICAgImNoYW5nZWRfb3JpZ2luYWxfY2xvdWRfY2RyX3Y1OV9taW1fY2FwdHVyZSIsCiAgICAiY2hhbmdlZF9nZW5lcmF0ZWRfY2xvdWRfY2RyX3Y1OV9taW1fY2FwdHVyZSIsCiAgICAiY2hhbmdlZF9vcmlnaW5hbF9hdWRpdF9jZHJfdjU5X21pbV9pbnRyaW5zaWMiLAogICAgImNoYW5nZWRfZ2VuZXJhdGVkX2F1ZGl0X2Nkcl92NTlfbWltX2ludHJpbnNpYyIsCiAgICAiY2hhbmdlZF9vcmlnaW5hbF9jbG91ZF9jZHJfdjU5X21pbV9hdWRpdCIsCiAgICAiY2hhbmdlZF9nZW5lcmF0ZWRfY2xvdWRfY2RyX3Y1OV9taW1fYXVkaXQiLAogICAgImNoYW5nZWRfb3JpZ2luYWxfY2RyX3Y1OV9taW1fY29tcG9zaXRpb25fZGVyaXZhdGlvbiIsCiAgICAiY2hhbmdlZF9nZW5lcmF0ZWRfY2RyX3Y1OV9taW1fY29tcG9zaXRpb25fZGVyaXZhdGlvbiIsCiAgICAiY2hhbmdlZF9vcmlnaW5hbF9jbG91ZF9jZHJfdjU5X21pbV9wcmVjaXNpb24iLAogICAgImNoYW5nZWRfZ2VuZXJhdGVkX2Nsb3VkX2Nkcl92NTlfbWltX3ByZWNpc2lvbiIsCiAgICAiYmluZGluZ19zb3VyY2VfaGVhZCIsCiAgICAiYmluZGluZ19zb3VyY2VzX3VuY2hhbmdlZCIsCiAgICAiYmluZGluZ19zdGF0dXMiLAogICAgImJpbmRpbmdfcXVhbGlmaWVkX3BleCIsCiAgICAiYmluZGluZ19mdWxsX3BoeV9hY2NlcHRlZCIsCiAgICAiYmluZGluZ19jbG9zZWRfbG9vcCIsCiAgICAiYmluZGluZ19taXNzaW5nX29yaWdpbmFsX2ludGVncml0eSIsCiAgICAicmNfc291cmNlX2hlYWQiLAogICAgInJjX3NvdXJjZXNfdW5jaGFuZ2VkIiwKICAgICJyY19zdGF0dXMiLAogICAgInJjX3F1YWxpZmllZF9wZXgiLAogICAgInJjX2Z1bGxfcGh5X2FjY2VwdGVkIiwKICAgICJyY19jbG9zZWRfbG9vcCIsCiAgICAicmNfbWlzc2luZ19vcmlnaW5hbF9pbnRlZ3JpdHkiLAogICAgImJpbmRpbmdfbWlzc2luZ19kZXZpY2UiLAogICAgImJpbmRpbmdfbWlzc2luZ19lbGVjdHJpY2FsX25vZGUiLAogICAgImJpbmRpbmdfbWlzc2luZ19wb3J0IiwKICAgICJiaW5kaW5nX29sZF90YXJnZXRfTDdfNCIsCiAgICAiYmluZGluZ19NSU1fbCIsCiAgICAiYmluZGluZ19NSU1fdyIsCiAgICAiYmluZGluZ19NSU1fcGxhdGUiLAogICAgImJpbmRpbmdfbWlzc2luZ19uYXRpdmVfZmF1bHQiLAogICAgImJpbmRpbmdfYWNjZXB0ZWRfbmF0aXZlX2ZhdWx0IiwKICAgICJiaW5kaW5nX21pc3NpbmdfdGFyZ2V0X2ZhdWx0IiwKICAgICJiaW5kaW5nX21pc3NpbmdfY29udGFjdCIsCiAgICAiYmluZGluZ19taXNzaW5nX2NvbnRhY3RfZmF1bHQiLAogICAgInJjX25hdGl2ZV9kZXZpY2VfY291bnQiLAogICAgInJjX25hdGl2ZV90ZXJtaW5hbF9jb3VudCIsCiAgICAicmNfd2lyZV9jb21wb25lbnRfY291bnQiLAogICAgInJjX25hdGl2ZV9uZXRfY291bnQiLAogICAgInJjX25hdGl2ZV9lbGVjdHJpY2FsX25ldF9jb3VudCIsCiAgICAicmNfbG9naWNh
+2026-10-25T15:08:59.8115668Z CDR_V59_MIM_CONTROLS_SOURCE_CHUNK 2 bF9hbmNob3JfY291bnQiLAogICAgInJjX3BoeXNpY2FsX2FuY2hvcl9jb3VudCIsCiAgICAicmNfcHVibGljX3BvcnRzIiwKICAgICJyY19jaGFuZ2VkX2Fic29sdXRlX2FuY2hvcl9pbnB1dCIsCiAgICAicmNfZmFpbGVkX25hdGl2ZV9yZXR1cm4iLAogICAgInJjX21pc3NpbmdfcmF3X2ZhdWx0IiwKICAgICJyY19taXNzaW5nX3Jhd19maWxlIiwKICAgICJiaW5kaW5nX2NoYW5nZWRfb3JpZ2luYWxfc3VtbWFyeSIsCiAgICAicmNfY2hhbmdlZF9vcmlnaW5hbF9zdW1tYXJ5IiwKICAgICJvbGRfY29uY2x1c2lvbiIsCiAgICAib2xkX2hlYWRfc2hhIiwKICAgICJvbGRfcnVuX2F0dGVtcHQiLAogICAgIm9sZF9ldmVudCIsCiAgICAib2xkX3BhdGgiLAogICAgIm5ld19jb25jbHVzaW9uIiwKICAgICJuZXdfaGVhZF9zaGEiLAogICAgImJpbmRpbmdfcmVsZWFzZV9wcmVyZWxlYXNlIiwKICAgICJiaW5kaW5nX3JlbGVhc2VfZHJhZnQiLAogICAgImJpbmRpbmdfcmVsZWFzZV90YXJnZXRfY29tbWl0aXNoIiwKICAgICJiaW5kaW5nX3JlbGVhc2VfaWQiLAogICAgImJpbmRpbmdfYXNzZXRfaGFzaCIsCiAgICAicmNfcmVsZWFzZV9wcmVyZWxlYXNlIiwKICAgICJyY19yZWxlYXNlX2RyYWZ0IiwKICAgICJyY19yZWxlYXNlX3RhcmdldF9jb21taXRpc2giLAogICAgInJjX3JlbGVhc2VfaWQiLAogICAgInJjX2Fzc2V0X2hhc2giLAogICAgIm9jY3VwaWVkX3Jlc3RvcmVfcm9vdCIsCiAgICAibWlzc2luZ19tZW1iZXIiLAogICAgInVuZXhwZWN0ZWRfZXhwZWN0ZWRfbWVtYmVyIiwKICAgICJjaGFuZ2VkX21lbWJlcl9oYXNoIiwKICAgICJhcmNoaXZlX2R1cGxpY2F0ZSIsCiAgICAiYXJjaGl2ZV90cmF2ZXJzYWwiLAogICAgImFyY2hpdmVfZXh0cmEiLAogICAgImFyY2hpdmVfc3ltbGluayIsCiAgICAiY29tYmluZWRfYXJjaGl2ZV9oYXNoIiwKICAgICJwYXJ0X2V4dGVudCIsCiAgICAicHJvamVjdGlvbl9jb2xsaXNpb24iLAogICAgInByb2plY3Rpb25fc3ltbGluayIsCiAgICAicGFydGlhbF9ldmlkZW5jZV9pbnRlZ3JpdHlfZmFpbHVyZV9zdGlsbF9wcmVzZXJ2ZXNfYm90aF9jb3BpZXMiLAogICAgInBhcnRpYWxfZXZpZGVuY2VfY2Fwc3VsZV9jb3B5X2ZhaWx1cmVfc3RpbGxfcHJlc2VydmVzX3N0YWdlIiwKICAgICJwYXJ0aWFsX2V2aWRlbmNlX29jY3VwaWVkX3N0YWdlX2NvcHlfbmV2ZXJfYmVjb21lc19uYXRpdmVfcGFzcyIsCiAgICAicGFydGlhbF9ldmlkZW5jZV9taXNzaW5nX3N1Y2Nlc3NfY2Fwc3VsZV9pc19yZWplY3RlZF9hbmRfc3RhZ2VfcHJlc2VydmVkIgogIF0sCiAgInNvdXJjZV9jb250cm9sc19vbmx5IjogdHJ1ZSwKICAiYXJjaGl2ZXNfZG93bmxvYWRlZCI6IGZhbHNlLAogICJuYXRpdmVfZXh0cmFjdGlvbl9leGVjdXRlZCI6IGZhbHNlLAogICJzaW11bGF0aW9uX2V4ZWN1dGVkIjogZmFsc2UsCiAgImdlb21ldHJ5X3JlZ2VuZXJhdGVkIjogZmFsc2UsCiAgIm9yaWdpbmFsX2ZhaWxlZF9wdWJsaWNhdGlvbl9wcmVzZXJ2ZWQiOiB0cnVlCn0K
+2026-10-25T15:08:59.8157705Z CDR_V59_MIM_CONTROLS_SOURCE_END
+2026-10-25T15:08:59.8245707Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-25T15:08:59.8246160Z with:
+2026-10-25T15:08:59.8246390Z   name: cdr-v59-mim-controls-40205530980-1
+2026-10-25T15:08:59.8246703Z   path: hw/soc/out/cdr-v59-mim-controls/
+2026-10-25T15:08:59.8246976Z   retention-days: 90
+2026-10-25T15:08:59.8247199Z   if-no-files-found: warn
+2026-10-25T15:08:59.8247432Z   compression-level: 6
+2026-10-25T15:08:59.8247645Z   overwrite: false
+2026-10-25T15:08:59.8247868Z   include-hidden-files: false
+2026-10-25T15:08:59.8248094Z env:
+2026-10-25T15:08:59.8248311Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T15:08:59.8248614Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.8249040Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T15:08:59.8249471Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.8249858Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.8250277Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T15:08:59.8250660Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T15:08:59.8250982Z ##[endgroup]
+2026-10-25T15:08:59.9840810Z (node:2441) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T15:08:59.9842247Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T15:08:59.9902782Z With the provided path, there will be 4 files uploaded
+2026-10-25T15:08:59.9909511Z Artifact name is valid!
+2026-10-25T15:08:59.9910310Z Root directory input is valid!
+2026-10-25T15:09:00.1936736Z Beginning upload of artifact content to blob storage
+2026-10-25T15:09:00.2281569Z (node:2441) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-25T15:09:00.2731584Z Uploaded bytes 4202
+2026-10-25T15:09:00.2905805Z Finished uploading artifact content to blob storage!
+2026-10-25T15:09:00.2907066Z SHA256 digest of uploaded artifact zip is 0bcf0b0c440d0fbd7b493da3675f1e3e323b5d8d1344c8fdbffb21be49e59d17
+2026-10-25T15:09:00.2908613Z Finalizing artifact upload
+2026-10-25T15:09:00.6884219Z Artifact cdr-v59-mim-controls-40205530980-1.zip successfully finalized. Artifact ID 12604000066
+2026-10-25T15:09:00.6885281Z Artifact cdr-v59-mim-controls-40205530980-1 has been successfully uploaded! Final size is 4202 bytes. Artifact ID is 12604000066
+2026-10-25T15:09:00.6886329Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/40205530980/artifacts/12604000066
+2026-10-25T15:09:00.7387933Z Post job cleanup.
+2026-10-25T15:09:00.8667898Z (node:2512) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T15:09:00.8668812Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T15:09:00.9006162Z Post job cleanup.
+2026-10-25T15:09:00.9934020Z [command]/usr/bin/git version
+2026-10-25T15:09:00.9997769Z git version 2.55.0
+2026-10-25T15:09:01.0041094Z Temporarily overriding HOME='/home/runner/work/_temp/c55237e2-baa7-431c-a7f4-96e0fff7f802' before making global git config changes
+2026-10-25T15:09:01.0042321Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T15:09:01.0047625Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T15:09:01.1372352Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T15:09:01.1424089Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T15:09:01.1710108Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T15:09:01.1750644Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T15:09:01.2038417Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T15:09:01.2113022Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T15:09:01.2539270Z Cleaning up orphan processes
+2026-10-25T15:09:01.2927274Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
