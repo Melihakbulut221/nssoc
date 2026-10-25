@@ -1,0 +1,1633 @@
+{
+  "schema": "cdr-v59-four-hbt-source-bound-headroom-diagnosis-v1",
+  "status": "BOUNDED_ACTUAL_NOMINAL_FAILURE_AND_EXACT_NATIVE_TOPOLOGY_NOT_CAUSAL_ACCEPTANCE",
+  "run": 40219397958,
+  "tested_source": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+  "created_utc": "2026-10-25T18:34:32.128043+00:00",
+  "inputs": {
+    "docs/evidence/cdr-v59-mim-runtime-native-pass-stage-20261025.json": {
+      "source": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+      "bytes": 4134128,
+      "sha256": "c65d1af69428a4a71b1a08e6404e389d921c885667ec1e6cfa7def7d9ef84ce4"
+    },
+    "docs/evidence/cdr-v59-loaded-ten-case-nominal_early-terminal-20261025.native-result.json": {
+      "source": "5b4ea854ca830c71950b89f2164fc0f3bf9e4aec",
+      "bytes": 2680207,
+      "sha256": "caaf18f812d63c812b789ffc25d13f498e4a2c70fb3d1a2b0c619fe8526e8a6f"
+    },
+    "docs/evidence/cdr-v59-loaded-ten-case-nominal_late-terminal-20261025.native-result.json": {
+      "source": "5b4ea854ca830c71950b89f2164fc0f3bf9e4aec",
+      "bytes": 2680319,
+      "sha256": "e42b9911a37d7ea2294236214c07c1caa30d05add9736a0e6e8493b3d3a18040"
+    }
+  },
+  "unchanged_original_hbt_limits": {
+    "minimum_active_vce_v": 0.4,
+    "maximum_alltime_abs_vce_v": 1.6,
+    "maximum_alltime_abs_vbe_v": 1,
+    "exclusive_maximum_abs_ic_per_emitter_a": 0.003
+  },
+  "topology": [
+    {
+      "failing_pair": [
+        61,
+        62
+      ],
+      "native_records": [
+        {
+          "native_id": 61,
+          "instance": "XD0061",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "2",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T061_C",
+              "anchor": "T061_C",
+              "native_cluster": 38,
+              "native_net": "$149"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T061_B",
+              "anchor": "T061_B",
+              "native_cluster": 26,
+              "native_net": "cn"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T061_E",
+              "anchor": "T061_E",
+              "native_cluster": 28,
+              "native_net": "$131"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 62,
+          "instance": "XD0062",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "2",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T062_C",
+              "anchor": "T062_C",
+              "native_cluster": 38,
+              "native_net": "$149"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T062_B",
+              "anchor": "T062_B",
+              "native_cluster": 26,
+              "native_net": "cn"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T062_E",
+              "anchor": "T062_E",
+              "native_cluster": 28,
+              "native_net": "$131"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        }
+      ],
+      "collector_and_emitter_complete_connections": {
+        "C": [
+          {
+            "instance": "XD0054",
+            "native_id": 54,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T054_E",
+            "native_cluster": 38,
+            "native_net": "$149"
+          },
+          {
+            "instance": "XD0056",
+            "native_id": 56,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T056_E",
+            "native_cluster": 38,
+            "native_net": "$149"
+          },
+          {
+            "instance": "XD0061",
+            "native_id": 61,
+            "model": "npn13g2",
+            "terminal": "C",
+            "node": "w_T061_C",
+            "native_cluster": 38,
+            "native_net": "$149"
+          },
+          {
+            "instance": "XD0062",
+            "native_id": 62,
+            "model": "npn13g2",
+            "terminal": "C",
+            "node": "w_T062_C",
+            "native_cluster": 38,
+            "native_net": "$149"
+          },
+          {
+            "instance": "XD0179",
+            "native_id": 179,
+            "model": "rppd",
+            "terminal": "rppd_1",
+            "node": "w_T179_rppd_1",
+            "native_cluster": 38,
+            "native_net": "$149"
+          }
+        ],
+        "E": [
+          {
+            "instance": "XD0003",
+            "native_id": 3,
+            "model": "sg13_lv_nmos",
+            "terminal": "D",
+            "node": "w_T003_D",
+            "native_cluster": 28,
+            "native_net": "$131"
+          },
+          {
+            "instance": "XD0004",
+            "native_id": 4,
+            "model": "sg13_lv_nmos",
+            "terminal": "D",
+            "node": "w_T004_D",
+            "native_cluster": 28,
+            "native_net": "$131"
+          },
+          {
+            "instance": "XD0005",
+            "native_id": 5,
+            "model": "sg13_lv_nmos",
+            "terminal": "D",
+            "node": "w_T005_D",
+            "native_cluster": 28,
+            "native_net": "$131"
+          },
+          {
+            "instance": "XD0006",
+            "native_id": 6,
+            "model": "sg13_lv_nmos",
+            "terminal": "D",
+            "node": "w_T006_D",
+            "native_cluster": 28,
+            "native_net": "$131"
+          },
+          {
+            "instance": "XD0061",
+            "native_id": 61,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T061_E",
+            "native_cluster": 28,
+            "native_net": "$131"
+          },
+          {
+            "instance": "XD0062",
+            "native_id": 62,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T062_E",
+            "native_cluster": 28,
+            "native_net": "$131"
+          },
+          {
+            "instance": "XD0064",
+            "native_id": 64,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T064_E",
+            "native_cluster": 28,
+            "native_net": "$131"
+          },
+          {
+            "instance": "XD0065",
+            "native_id": 65,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T065_E",
+            "native_cluster": 28,
+            "native_net": "$131"
+          }
+        ]
+      },
+      "upstream_hbt_records": [
+        {
+          "native_id": 54,
+          "instance": "XD0054",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "4",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T054_C",
+              "anchor": "T054_C",
+              "native_cluster": 11,
+              "native_net": "$55"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T054_B",
+              "anchor": "T054_B",
+              "native_cluster": 22,
+              "native_net": "$99"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T054_E",
+              "anchor": "T054_E",
+              "native_cluster": 38,
+              "native_net": "$149"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 56,
+          "instance": "XD0056",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "4",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T056_C",
+              "anchor": "T056_C",
+              "native_cluster": 12,
+              "native_net": "$56"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T056_B",
+              "anchor": "T056_B",
+              "native_cluster": 21,
+              "native_net": "$98"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T056_E",
+              "anchor": "T056_E",
+              "native_cluster": 38,
+              "native_net": "$149"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        }
+      ],
+      "opposite_clock_hbt_records": [
+        {
+          "native_id": 64,
+          "instance": "XD0064",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "2",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T064_C",
+              "anchor": "T064_C",
+              "native_cluster": 40,
+              "native_net": "$151"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T064_B",
+              "anchor": "T064_B",
+              "native_cluster": 27,
+              "native_net": "cp"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T064_E",
+              "anchor": "T064_E",
+              "native_cluster": 28,
+              "native_net": "$131"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 65,
+          "instance": "XD0065",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "2",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T065_C",
+              "anchor": "T065_C",
+              "native_cluster": 40,
+              "native_net": "$151"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T065_B",
+              "anchor": "T065_B",
+              "native_cluster": 27,
+              "native_net": "cp"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T065_E",
+              "anchor": "T065_E",
+              "native_cluster": 28,
+              "native_net": "$131"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        }
+      ],
+      "tail_mos_records": [
+        {
+          "native_id": 3,
+          "instance": "XD0003",
+          "model": "sg13_lv_nmos",
+          "parameters": {
+            "l": "0.3u",
+            "w": "36u",
+            "as": "12.24p",
+            "ad": "12.24p",
+            "ps": "72.68u",
+            "pd": "72.68u",
+            "rfmode": "0",
+            "ng": "1",
+            "m": "1"
+          },
+          "terminals": [
+            {
+              "terminal": "D",
+              "node": "w_T003_D",
+              "anchor": "T003_D",
+              "native_cluster": 28,
+              "native_net": "$131"
+            },
+            {
+              "terminal": "G",
+              "node": "w_T003_G",
+              "anchor": "T003_G",
+              "native_cluster": 25,
+              "native_net": "ird"
+            },
+            {
+              "terminal": "S",
+              "node": "w_T003_S",
+              "anchor": "T003_S",
+              "native_cluster": 23,
+              "native_net": "avss"
+            },
+            {
+              "terminal": "B",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 4,
+          "instance": "XD0004",
+          "model": "sg13_lv_nmos",
+          "parameters": {
+            "l": "0.3u",
+            "w": "36u",
+            "as": "12.24p",
+            "ad": "12.24p",
+            "ps": "72.68u",
+            "pd": "72.68u",
+            "rfmode": "0",
+            "ng": "1",
+            "m": "1"
+          },
+          "terminals": [
+            {
+              "terminal": "D",
+              "node": "w_T004_D",
+              "anchor": "T004_D",
+              "native_cluster": 28,
+              "native_net": "$131"
+            },
+            {
+              "terminal": "G",
+              "node": "w_T004_G",
+              "anchor": "T004_G",
+              "native_cluster": 25,
+              "native_net": "ird"
+            },
+            {
+              "terminal": "S",
+              "node": "w_T004_S",
+              "anchor": "T004_S",
+              "native_cluster": 23,
+              "native_net": "avss"
+            },
+            {
+              "terminal": "B",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 5,
+          "instance": "XD0005",
+          "model": "sg13_lv_nmos",
+          "parameters": {
+            "l": "0.3u",
+            "w": "36u",
+            "as": "12.24p",
+            "ad": "12.24p",
+            "ps": "72.68u",
+            "pd": "72.68u",
+            "rfmode": "0",
+            "ng": "1",
+            "m": "1"
+          },
+          "terminals": [
+            {
+              "terminal": "D",
+              "node": "w_T005_D",
+              "anchor": "T005_D",
+              "native_cluster": 28,
+              "native_net": "$131"
+            },
+            {
+              "terminal": "G",
+              "node": "w_T005_G",
+              "anchor": "T005_G",
+              "native_cluster": 25,
+              "native_net": "ird"
+            },
+            {
+              "terminal": "S",
+              "node": "w_T005_S",
+              "anchor": "T005_S",
+              "native_cluster": 23,
+              "native_net": "avss"
+            },
+            {
+              "terminal": "B",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 6,
+          "instance": "XD0006",
+          "model": "sg13_lv_nmos",
+          "parameters": {
+            "l": "0.3u",
+            "w": "36u",
+            "as": "12.24p",
+            "ad": "12.24p",
+            "ps": "72.68u",
+            "pd": "72.68u",
+            "rfmode": "0",
+            "ng": "1",
+            "m": "1"
+          },
+          "terminals": [
+            {
+              "terminal": "D",
+              "node": "w_T006_D",
+              "anchor": "T006_D",
+              "native_cluster": 28,
+              "native_net": "$131"
+            },
+            {
+              "terminal": "G",
+              "node": "w_T006_G",
+              "anchor": "T006_G",
+              "native_cluster": 25,
+              "native_net": "ird"
+            },
+            {
+              "terminal": "S",
+              "node": "w_T006_S",
+              "anchor": "T006_S",
+              "native_cluster": 23,
+              "native_net": "avss"
+            },
+            {
+              "terminal": "B",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        }
+      ],
+      "tail_bias": "ird",
+      "collector_shunt_record": {
+        "native_id": 179,
+        "instance": "XD0179",
+        "model": "rppd",
+        "parameters": {
+          "w": "1u",
+          "l": "38.4u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T179_rppd_1",
+            "anchor": "T179_rppd_1",
+            "native_cluster": 38,
+            "native_net": "$149"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T179_rppd_2",
+            "anchor": "T179_rppd_2",
+            "native_cluster": 23,
+            "native_net": "avss"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      }
+    },
+    {
+      "failing_pair": [
+        115,
+        116
+      ],
+      "native_records": [
+        {
+          "native_id": 115,
+          "instance": "XD0115",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "2",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T115_C",
+              "anchor": "T115_C",
+              "native_cluster": 134,
+              "native_net": "$698"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T115_B",
+              "anchor": "T115_B",
+              "native_cluster": 26,
+              "native_net": "cn"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T115_E",
+              "anchor": "T115_E",
+              "native_cluster": 124,
+              "native_net": "$680"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 116,
+          "instance": "XD0116",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "2",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T116_C",
+              "anchor": "T116_C",
+              "native_cluster": 134,
+              "native_net": "$698"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T116_B",
+              "anchor": "T116_B",
+              "native_cluster": 26,
+              "native_net": "cn"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T116_E",
+              "anchor": "T116_E",
+              "native_cluster": 124,
+              "native_net": "$680"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        }
+      ],
+      "collector_and_emitter_complete_connections": {
+        "C": [
+          {
+            "instance": "XD0106",
+            "native_id": 106,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T106_E",
+            "native_cluster": 134,
+            "native_net": "$698"
+          },
+          {
+            "instance": "XD0108",
+            "native_id": 108,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T108_E",
+            "native_cluster": 134,
+            "native_net": "$698"
+          },
+          {
+            "instance": "XD0115",
+            "native_id": 115,
+            "model": "npn13g2",
+            "terminal": "C",
+            "node": "w_T115_C",
+            "native_cluster": 134,
+            "native_net": "$698"
+          },
+          {
+            "instance": "XD0116",
+            "native_id": 116,
+            "model": "npn13g2",
+            "terminal": "C",
+            "node": "w_T116_C",
+            "native_cluster": 134,
+            "native_net": "$698"
+          },
+          {
+            "instance": "XD0217",
+            "native_id": 217,
+            "model": "rppd",
+            "terminal": "rppd_1",
+            "node": "w_T217_rppd_1",
+            "native_cluster": 134,
+            "native_net": "$698"
+          }
+        ],
+        "E": [
+          {
+            "instance": "XD0032",
+            "native_id": 32,
+            "model": "sg13_lv_nmos",
+            "terminal": "D",
+            "node": "w_T032_D",
+            "native_cluster": 124,
+            "native_net": "$680"
+          },
+          {
+            "instance": "XD0033",
+            "native_id": 33,
+            "model": "sg13_lv_nmos",
+            "terminal": "D",
+            "node": "w_T033_D",
+            "native_cluster": 124,
+            "native_net": "$680"
+          },
+          {
+            "instance": "XD0034",
+            "native_id": 34,
+            "model": "sg13_lv_nmos",
+            "terminal": "D",
+            "node": "w_T034_D",
+            "native_cluster": 124,
+            "native_net": "$680"
+          },
+          {
+            "instance": "XD0035",
+            "native_id": 35,
+            "model": "sg13_lv_nmos",
+            "terminal": "D",
+            "node": "w_T035_D",
+            "native_cluster": 124,
+            "native_net": "$680"
+          },
+          {
+            "instance": "XD0115",
+            "native_id": 115,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T115_E",
+            "native_cluster": 124,
+            "native_net": "$680"
+          },
+          {
+            "instance": "XD0116",
+            "native_id": 116,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T116_E",
+            "native_cluster": 124,
+            "native_net": "$680"
+          },
+          {
+            "instance": "XD0118",
+            "native_id": 118,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T118_E",
+            "native_cluster": 124,
+            "native_net": "$680"
+          },
+          {
+            "instance": "XD0119",
+            "native_id": 119,
+            "model": "npn13g2",
+            "terminal": "E",
+            "node": "w_T119_E",
+            "native_cluster": 124,
+            "native_net": "$680"
+          }
+        ]
+      },
+      "upstream_hbt_records": [
+        {
+          "native_id": 106,
+          "instance": "XD0106",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "4",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T106_C",
+              "anchor": "T106_C",
+              "native_cluster": 112,
+              "native_net": "$609"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T106_B",
+              "anchor": "T106_B",
+              "native_cluster": 122,
+              "native_net": "$652"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T106_E",
+              "anchor": "T106_E",
+              "native_cluster": 134,
+              "native_net": "$698"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 108,
+          "instance": "XD0108",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "4",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T108_C",
+              "anchor": "T108_C",
+              "native_cluster": 113,
+              "native_net": "$610"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T108_B",
+              "anchor": "T108_B",
+              "native_cluster": 121,
+              "native_net": "$651"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T108_E",
+              "anchor": "T108_E",
+              "native_cluster": 134,
+              "native_net": "$698"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        }
+      ],
+      "opposite_clock_hbt_records": [
+        {
+          "native_id": 118,
+          "instance": "XD0118",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "2",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T118_C",
+              "anchor": "T118_C",
+              "native_cluster": 136,
+              "native_net": "$708"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T118_B",
+              "anchor": "T118_B",
+              "native_cluster": 27,
+              "native_net": "cp"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T118_E",
+              "anchor": "T118_E",
+              "native_cluster": 124,
+              "native_net": "$680"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 119,
+          "instance": "XD0119",
+          "model": "npn13g2",
+          "parameters": {
+            "nx": "2",
+            "we": "0.070u",
+            "le": "0.900u"
+          },
+          "terminals": [
+            {
+              "terminal": "C",
+              "node": "w_T119_C",
+              "anchor": "T119_C",
+              "native_cluster": 136,
+              "native_net": "$708"
+            },
+            {
+              "terminal": "B",
+              "node": "w_T119_B",
+              "anchor": "T119_B",
+              "native_cluster": 27,
+              "native_net": "cp"
+            },
+            {
+              "terminal": "E",
+              "node": "w_T119_E",
+              "anchor": "T119_E",
+              "native_cluster": 124,
+              "native_net": "$680"
+            },
+            {
+              "terminal": "S",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        }
+      ],
+      "tail_mos_records": [
+        {
+          "native_id": 32,
+          "instance": "XD0032",
+          "model": "sg13_lv_nmos",
+          "parameters": {
+            "l": "0.3u",
+            "w": "36u",
+            "as": "12.24p",
+            "ad": "12.24p",
+            "ps": "72.68u",
+            "pd": "72.68u",
+            "rfmode": "0",
+            "ng": "1",
+            "m": "1"
+          },
+          "terminals": [
+            {
+              "terminal": "D",
+              "node": "w_T032_D",
+              "anchor": "T032_D",
+              "native_cluster": 124,
+              "native_net": "$680"
+            },
+            {
+              "terminal": "G",
+              "node": "w_T032_G",
+              "anchor": "T032_G",
+              "native_cluster": 123,
+              "native_net": "irc"
+            },
+            {
+              "terminal": "S",
+              "node": "w_T032_S",
+              "anchor": "T032_S",
+              "native_cluster": 23,
+              "native_net": "avss"
+            },
+            {
+              "terminal": "B",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 33,
+          "instance": "XD0033",
+          "model": "sg13_lv_nmos",
+          "parameters": {
+            "l": "0.3u",
+            "w": "36u",
+            "as": "12.24p",
+            "ad": "12.24p",
+            "ps": "72.68u",
+            "pd": "72.68u",
+            "rfmode": "0",
+            "ng": "1",
+            "m": "1"
+          },
+          "terminals": [
+            {
+              "terminal": "D",
+              "node": "w_T033_D",
+              "anchor": "T033_D",
+              "native_cluster": 124,
+              "native_net": "$680"
+            },
+            {
+              "terminal": "G",
+              "node": "w_T033_G",
+              "anchor": "T033_G",
+              "native_cluster": 123,
+              "native_net": "irc"
+            },
+            {
+              "terminal": "S",
+              "node": "w_T033_S",
+              "anchor": "T033_S",
+              "native_cluster": 23,
+              "native_net": "avss"
+            },
+            {
+              "terminal": "B",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 34,
+          "instance": "XD0034",
+          "model": "sg13_lv_nmos",
+          "parameters": {
+            "l": "0.3u",
+            "w": "36u",
+            "as": "12.24p",
+            "ad": "12.24p",
+            "ps": "72.68u",
+            "pd": "72.68u",
+            "rfmode": "0",
+            "ng": "1",
+            "m": "1"
+          },
+          "terminals": [
+            {
+              "terminal": "D",
+              "node": "w_T034_D",
+              "anchor": "T034_D",
+              "native_cluster": 124,
+              "native_net": "$680"
+            },
+            {
+              "terminal": "G",
+              "node": "w_T034_G",
+              "anchor": "T034_G",
+              "native_cluster": 123,
+              "native_net": "irc"
+            },
+            {
+              "terminal": "S",
+              "node": "w_T034_S",
+              "anchor": "T034_S",
+              "native_cluster": 23,
+              "native_net": "avss"
+            },
+            {
+              "terminal": "B",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        },
+        {
+          "native_id": 35,
+          "instance": "XD0035",
+          "model": "sg13_lv_nmos",
+          "parameters": {
+            "l": "0.3u",
+            "w": "36u",
+            "as": "12.24p",
+            "ad": "12.24p",
+            "ps": "72.68u",
+            "pd": "72.68u",
+            "rfmode": "0",
+            "ng": "1",
+            "m": "1"
+          },
+          "terminals": [
+            {
+              "terminal": "D",
+              "node": "w_T035_D",
+              "anchor": "T035_D",
+              "native_cluster": 124,
+              "native_net": "$680"
+            },
+            {
+              "terminal": "G",
+              "node": "w_T035_G",
+              "anchor": "T035_G",
+              "native_cluster": 123,
+              "native_net": "irc"
+            },
+            {
+              "terminal": "S",
+              "node": "w_T035_S",
+              "anchor": "T035_S",
+              "native_cluster": 23,
+              "native_net": "avss"
+            },
+            {
+              "terminal": "B",
+              "node": "body_1",
+              "anchor": null,
+              "native_cluster": 1,
+              "native_net": "$1"
+            }
+          ]
+        }
+      ],
+      "tail_bias": "irc",
+      "collector_shunt_record": {
+        "native_id": 217,
+        "instance": "XD0217",
+        "model": "rppd",
+        "parameters": {
+          "w": "1u",
+          "l": "38.4u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T217_rppd_1",
+            "anchor": "T217_rppd_1",
+            "native_cluster": 134,
+            "native_net": "$698"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T217_rppd_2",
+            "anchor": "T217_rppd_2",
+            "native_cluster": 23,
+            "native_net": "avss"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      }
+    }
+  ],
+  "observations": {
+    "nominal_early": {
+      "device_checks": {
+        "xpd.xd0061": {
+          "minimum_active_vce_v": 0.34464772900275364,
+          "maximum_alltime_abs_vce_v": 0.701447642576845,
+          "maximum_alltime_abs_vbe_v": 0.9121859084468548,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014865440871945292,
+          "minimum_vce_deficit_to_0p4_v": 0.05535227099724638,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0062": {
+          "minimum_active_vce_v": 0.34592191779326864,
+          "maximum_alltime_abs_vce_v": 0.701679166719649,
+          "maximum_alltime_abs_vbe_v": 0.9127909324621432,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014983512061279224,
+          "minimum_vce_deficit_to_0p4_v": 0.05407808220673138,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0115": {
+          "minimum_active_vce_v": 0.37874666132652646,
+          "maximum_alltime_abs_vce_v": 0.6756589069190018,
+          "maximum_alltime_abs_vbe_v": 0.9108077335169192,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014672165686610472,
+          "minimum_vce_deficit_to_0p4_v": 0.021253338673473565,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0116": {
+          "minimum_active_vce_v": 0.38016973786396824,
+          "maximum_alltime_abs_vce_v": 0.6758812319801791,
+          "maximum_alltime_abs_vbe_v": 0.9114050667566933,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001478880370339018,
+          "minimum_vce_deficit_to_0p4_v": 0.019830262136031784,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0054": {
+          "minimum_active_vce_v": 0.8821240962085939,
+          "maximum_alltime_abs_vce_v": 1.3477972025400762,
+          "maximum_alltime_abs_vbe_v": 0.9090648778346453,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014460108183058716,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0056": {
+          "minimum_active_vce_v": 0.8733708809042782,
+          "maximum_alltime_abs_vce_v": 1.3519129992968528,
+          "maximum_alltime_abs_vbe_v": 0.9083016313293879,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001440032286151363,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0064": {
+          "minimum_active_vce_v": 0.7530661344617525,
+          "maximum_alltime_abs_vce_v": 1.0810854954214812,
+          "maximum_alltime_abs_vbe_v": 0.9103599959479011,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014806537443256393,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0065": {
+          "minimum_active_vce_v": 0.7545327465878431,
+          "maximum_alltime_abs_vce_v": 1.0763058406283528,
+          "maximum_alltime_abs_vbe_v": 0.9125723206375115,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015216904676222556,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0106": {
+          "minimum_active_vce_v": 0.8785604889424521,
+          "maximum_alltime_abs_vce_v": 1.3153671774877302,
+          "maximum_alltime_abs_vbe_v": 0.9127656065521988,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015139344328884891,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0108": {
+          "minimum_active_vce_v": 0.8712373609040223,
+          "maximum_alltime_abs_vce_v": 1.316520322431206,
+          "maximum_alltime_abs_vbe_v": 0.9110812882746387,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014907127480766717,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0118": {
+          "minimum_active_vce_v": 0.7235410103475791,
+          "maximum_alltime_abs_vce_v": 1.049985605646773,
+          "maximum_alltime_abs_vbe_v": 0.9113127707234031,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014971398941509984,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0119": {
+          "minimum_active_vce_v": 0.7251352247216624,
+          "maximum_alltime_abs_vce_v": 1.045228481038807,
+          "maximum_alltime_abs_vbe_v": 0.9135457236396369,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015383322778807242,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        }
+      },
+      "source_bits_sha256": "19651c736d6053f0fbb954fbc351fb9abcbf4f7d32d83f6034fd00e7e952f870",
+      "probe_witnesses": {
+        "aqp": {
+          "device": "xd0089",
+          "terminal": "C",
+          "native_cluster": 88,
+          "native_net": "$450",
+          "probe": "xpd.w_t089_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "aqn": {
+          "device": "xd0091",
+          "terminal": "C",
+          "native_cluster": 87,
+          "native_net": "$449",
+          "probe": "xpd.w_t091_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "bqp": {
+          "device": "xd0073",
+          "terminal": "C",
+          "native_cluster": 59,
+          "native_net": "$286",
+          "probe": "xpd.w_t073_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "bqn": {
+          "device": "xd0075",
+          "terminal": "C",
+          "native_cluster": 58,
+          "native_net": "$285",
+          "probe": "xpd.w_t075_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "cqp": {
+          "device": "xd0105",
+          "terminal": "C",
+          "native_cluster": 118,
+          "native_net": "$623",
+          "probe": "xpd.w_t105_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "cqn": {
+          "device": "xd0107",
+          "terminal": "C",
+          "native_cluster": 117,
+          "native_net": "$622",
+          "probe": "xpd.w_t107_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "dqp": {
+          "device": "xd0053",
+          "terminal": "C",
+          "native_cluster": 18,
+          "native_net": "$70",
+          "probe": "xpd.w_t053_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "dqn": {
+          "device": "xd0055",
+          "terminal": "C",
+          "native_cluster": 17,
+          "native_net": "$69",
+          "probe": "xpd.w_t055_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        }
+      },
+      "relevant_tail_current_minima": {
+        "irc:$680": 0.003305171432649576,
+        "ird:$131": 0.003357828080795458
+      },
+      "complete_capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "e8d96d9cb9c116e0df63f614ee48beb3a28cdeed08d92afb85e45ba1231a003e",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+      }
+    },
+    "nominal_late": {
+      "device_checks": {
+        "xpd.xd0061": {
+          "minimum_active_vce_v": 0.34054993914507325,
+          "maximum_alltime_abs_vce_v": 0.701188504387835,
+          "maximum_alltime_abs_vbe_v": 0.9120797975880509,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014826645912730336,
+          "minimum_vce_deficit_to_0p4_v": 0.05945006085492677,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0062": {
+          "minimum_active_vce_v": 0.3418403860325231,
+          "maximum_alltime_abs_vce_v": 0.7014204282313999,
+          "maximum_alltime_abs_vbe_v": 0.9126831517841771,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014944203195321572,
+          "minimum_vce_deficit_to_0p4_v": 0.05815961396747693,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0115": {
+          "minimum_active_vce_v": 0.38001810333749675,
+          "maximum_alltime_abs_vce_v": 0.6754572702954358,
+          "maximum_alltime_abs_vbe_v": 0.9103487870846081,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014591466226805212,
+          "minimum_vce_deficit_to_0p4_v": 0.019981896662503273,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0116": {
+          "minimum_active_vce_v": 0.3812999490084107,
+          "maximum_alltime_abs_vce_v": 0.6756799880378805,
+          "maximum_alltime_abs_vbe_v": 0.910942859652088,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014707315161544532,
+          "minimum_vce_deficit_to_0p4_v": 0.018700050991589334,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0054": {
+          "minimum_active_vce_v": 0.8795356259847213,
+          "maximum_alltime_abs_vce_v": 1.3495858680116277,
+          "maximum_alltime_abs_vbe_v": 0.9090146270985622,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014452513553471578,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0056": {
+          "minimum_active_vce_v": 0.8733151316256256,
+          "maximum_alltime_abs_vce_v": 1.3531689379818896,
+          "maximum_alltime_abs_vbe_v": 0.9081883840966747,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001437588153189874,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0064": {
+          "minimum_active_vce_v": 0.7540870052381867,
+          "maximum_alltime_abs_vce_v": 1.0810854954214812,
+          "maximum_alltime_abs_vbe_v": 0.9103858807175323,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014813914154028327,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0065": {
+          "minimum_active_vce_v": 0.7556680502695655,
+          "maximum_alltime_abs_vce_v": 1.0763058406283528,
+          "maximum_alltime_abs_vbe_v": 0.9125822923431747,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001522304038890137,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0106": {
+          "minimum_active_vce_v": 0.8784988159621532,
+          "maximum_alltime_abs_vce_v": 1.3166703739571117,
+          "maximum_alltime_abs_vbe_v": 0.9123113829131506,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001506850273601725,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0108": {
+          "minimum_active_vce_v": 0.8710955121337196,
+          "maximum_alltime_abs_vce_v": 1.3154852717827836,
+          "maximum_alltime_abs_vbe_v": 0.9113619524865436,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0014958588285448548,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0118": {
+          "minimum_active_vce_v": 0.7229233918243937,
+          "maximum_alltime_abs_vce_v": 1.049985605646773,
+          "maximum_alltime_abs_vbe_v": 0.9110025202807924,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.001493361709689301,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        },
+        "xpd.xd0119": {
+          "minimum_active_vce_v": 0.7244852357361901,
+          "maximum_alltime_abs_vce_v": 1.045228481038807,
+          "maximum_alltime_abs_vbe_v": 0.9132302782270945,
+          "maximum_alltime_abs_ic_per_emitter_a": 0.0015358272305418142,
+          "minimum_vce_deficit_to_0p4_v": 0.0,
+          "other_hbt_limits_pass": true
+        }
+      },
+      "source_bits_sha256": "19651c736d6053f0fbb954fbc351fb9abcbf4f7d32d83f6034fd00e7e952f870",
+      "probe_witnesses": {
+        "aqp": {
+          "device": "xd0089",
+          "terminal": "C",
+          "native_cluster": 88,
+          "native_net": "$450",
+          "probe": "xpd.w_t089_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "aqn": {
+          "device": "xd0091",
+          "terminal": "C",
+          "native_cluster": 87,
+          "native_net": "$449",
+          "probe": "xpd.w_t091_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "bqp": {
+          "device": "xd0073",
+          "terminal": "C",
+          "native_cluster": 59,
+          "native_net": "$286",
+          "probe": "xpd.w_t073_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "bqn": {
+          "device": "xd0075",
+          "terminal": "C",
+          "native_cluster": 58,
+          "native_net": "$285",
+          "probe": "xpd.w_t075_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "cqp": {
+          "device": "xd0105",
+          "terminal": "C",
+          "native_cluster": 118,
+          "native_net": "$623",
+          "probe": "xpd.w_t105_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "cqn": {
+          "device": "xd0107",
+          "terminal": "C",
+          "native_cluster": 117,
+          "native_net": "$622",
+          "probe": "xpd.w_t107_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "dqp": {
+          "device": "xd0053",
+          "terminal": "C",
+          "native_cluster": 18,
+          "native_net": "$70",
+          "probe": "xpd.w_t053_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        },
+        "dqn": {
+          "device": "xd0055",
+          "terminal": "C",
+          "native_cluster": 17,
+          "native_net": "$69",
+          "probe": "xpd.w_t055_c",
+          "load_f": 1.5e-13,
+          "selection": "data-pair collector; hold-pair B is opposite output"
+        }
+      },
+      "relevant_tail_current_minima": {
+        "irc:$680": 0.003305171432649576,
+        "ird:$131": 0.003357828080795458
+      },
+      "complete_capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "9b1ca2fbc1998f69d6c39bcdc315a1e29dee6fa5a631eee929ee4041e26448e1",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+      }
+    }
+  },
+  "findings": [
+    "Both complete nominal cases fail on the same four physical HBT instances; each fails only the minimum-active-VCE condition among the original HBT limits.",
+    "The two affected cn-controlled pairs have Nx=2 each and share native connectivity with the irc/ird four-way MOS tails and passing cp-controlled counterpart pairs.",
+    "These four devices are not the eight separately bound sampler data-pair collector probes carrying the added150fF loads.",
+    "Each collector network also joins a separate upper HBT pair emitter network and a native W1um/L38.4um rppd shunt to avss. These are exact native connectivity observations.",
+    "The saved extrema do not provide coincident Vc, Vb, Ve, current, clock phase or time of each minimum. A low VCE proves insufficient instantaneous headroom under the unchanged screen, not a unique cause or resistor-current estimate."
+  ],
+  "limitations": {
+    "source_and_saved_JSON_only": true,
+    "existing_wave_downloaded": false,
+    "archive_downloaded": false,
+    "same_row_samples_available": false,
+    "branch_currents_or_KCL_inferred": false,
+    "numerical_candidate_authored": false,
+    "circuit_changed": false,
+    "threshold_changed": false,
+    "simulation_dispatched": false,
+    "accepted": false,
+    "qualified_pex": false,
+    "full_phy_accepted": false
+  }
+}
