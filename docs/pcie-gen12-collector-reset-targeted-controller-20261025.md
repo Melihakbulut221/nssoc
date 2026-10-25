@@ -1,0 +1,13 @@
+# Targeted collector reset controller, 25 October 2026
+
+Source-only and unexecuted. The prior rejected complete run 40202709622 and the new explicit reset witness remain pinned. Full native execution and targeted execution are both unauthorized.
+
+The new controller reuses the unchanged complete-proof controller's source admission, exact tools, memory sampler/supervisor, compile admission, real XML classifier, full synth/check/export and publisher. It runs the complete five-test composed suite at depth four on Icarus and Verilator, then the same five tests on a fully mapped netlist. Only after all fifteen positives pass does it compile and run the existing collector_reset_POR_only mutation on both engines. The mutated source is generated once, recorded and rechecked after both runs. No original RTL, harness, oracle, mutation definition or complete native() function changes.
+
+Each completed simulation is additionally bound to its actual terminal command record and full stdout/stderr length/hash. Baselines require all four polarity/domain witness samples, proved COM priming and zero public reset fields. A mutant must end at an exact new explicit public reset guard, with its observed public field violating that same guard, after actual priming and held reset. Generic timeout, unknown conversions, failed setup, resource rejection, surviving descendants, missing/duplicate/malformed witnesses and unsupported origins remain failures. Targeted success keeps engineering_accepted and complete_CDC_accepted false.
+
+The existing manual workflow gains a mutually exclusive diagnose input. The targeted job has its own output/group and exact-source prerelease wait before tool setup. It delegates unchanged full summary/parts publication and complete small-result log framing, with always-on artifact fallback. It cannot authorize itself, cannot run together with complete proof, and accepts only attempt one.
+
+Four positive and thirty-two refusal fixtures exercise the actual XML/state/stream validation and terminal file-collection path in hosted source controls. These are explicitly synthetic fixture evidence, not native simulation. Original 63 classifier groups, the new 2/26 public-guard controls, supervisor/sampler and publication controls remain required. No fixture or simulator has run on this source.
+
+Before any targeted execution: independent source review, actual hosted source controls, root metadata review and exact-source release reservation are required. Before a complete retry: authenticate the actual targeted results and obtain separate review; all 66 RTL, 33 mapped, six synthesis and eighteen mutation requirements remain mandatory.

@@ -186,6 +186,8 @@ def controls():
         result['bounded_memory_sampler_controls']=memory_controls.controls(s)
         c.save(c.OUT/'controls.json',result)
         result['collector_reset_witness_controls']=collector_reset_witness_controls()
+        import check_pcie_gen12_collector_reset_diagnostic as targeted
+        result['collector_reset_targeted_controls']=targeted.controls()
         c.save(c.OUT/'controls.json',result)
         found={}
         def reject(name,fn):

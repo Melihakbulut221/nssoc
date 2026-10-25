@@ -8,6 +8,10 @@ on:
         description: 'Execute the reviewed complete functional proof after controls'
         type: boolean
         default: false
+      diagnose:
+        description: 'Execute only the reviewed collector-reset targeted baseline/fault diagnostic'
+        type: boolean
+        default: false
 permissions:
   contents: read
   actions: read
@@ -26,7 +30,16 @@ jobs:
         with:
           persist-credentials: false
       - name: Exact source, thirteen real supervision fixtures and strict result classification
+        env:
+          REQUEST_COMPLETE: '${{ inputs.execute }}'
+          REQUEST_DIAGNOSTIC: '${{ inputs.diagnose }}'
         run: |
+          python3 - <<'PY'
+          import os
+          a=os.environ['REQUEST_COMPLETE'];b=os.environ['REQUEST_DIAGNOSTIC']
+          assert a in ('true','false') and b in ('true','false')
+          assert not (a=='true' and b=='true'),'Choose exactly one native purpose'
+          PY
           python3 -u scripts/check_pcie_gen12_record_cdc_cloud.py | tee cdc-controls-console.log
           python3 - <<'PY'
           import json
@@ -41,6 +54,11 @@ jobs:
           assert w['wrong_mutant_refusals']==34 and len(w['actual_guard_sites'])==2
           assert w['priming_assertions_unqualified'] and w['generic_timeout_unqualified']
           assert w['simulations_executed'] is False
+          t=r['collector_reset_targeted_controls']
+          assert t['status']=='PASS_TARGETED_PUBLIC_RESET_ADMISSION_CONTROLS_NO_RTL'
+          assert len(t['positives'])==4 and all(t['positives'].values())
+          assert len(t['rejected'])==32 and all(x['rejected'] for x in t['rejected'].values())
+          assert t['simulations_executed'] is False and t['synthetic_fixtures_not_native_evidence']
           assert all(x.get('passed')is True or x.get('rejected')is True for x in r['controls'].values())
           q=r['qualified_supervision_controls']
           assert len(q['controls'])==13 and all(q['controls'].values())
@@ -73,7 +91,7 @@ jobs:
           if-no-files-found: warn
   complete-functional-proof:
     needs: source-controls
-    if: github.event_name == 'workflow_dispatch' && inputs.execute
+    if: github.event_name == 'workflow_dispatch' && inputs.execute && !inputs.diagnose
     runs-on: ubuntu-24.04
     timeout-minutes: 360
     permissions:
@@ -121,5 +139,62 @@ jobs:
             hw/soc/out/cloud-pcie-gen12-record-cdc
             hw/soc/out/cloud-pcie-gen12-record-cdc-publication
             cdc-native-console.log
+          retention-days: 90
+          if-no-files-found: warn
+  collector-reset-diagnostic:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.diagnose && !inputs.execute
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Targeted public reset baseline on both simulators, mapped oracle and compiled fault
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONUNBUFFERED: '1'
+          PYTHONDONTWRITEBYTECODE: '1'
+        run: |
+          python3 -u scripts/cloud_pcie_gen12_collector_reset_diagnostic.py --native | tee collector-reset-native-console.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('hw/soc/out/cloud-pcie-gen12-collector-reset-diagnostic/result.json').read_text())
+          assert r['status']=='PASS_TARGETED_PUBLIC_COLLECTOR_RESET_WITNESS'
+          assert r['targeted_witness_accepted'] is True and r['terminal_source_pins_unchanged'] is True
+          assert r['engineering_accepted'] is False and r['complete_CDC_accepted'] is False
+          assert len(r['rtl'])==2 and {x['simulator'] for x in r['rtl']}=={'icarus','verilator'}
+          assert len(r['mapped'])==1 and r['mapped'][0]['simulator']=='icarus'
+          assert len(r['synthesis'])==1 and r['synthesis'][0]['full_synth_and_check']
+          assert sum(len(x['tests']) for x in r['rtl']+r['mapped'])==15
+          assert all(t['disposition']=='PASS' for x in r['rtl']+r['mapped'] for t in x['tests'])
+          assert all(len(x['public_reset_witness']['samples'])==4 for x in r['rtl']+r['mapped'])
+          assert len(r['mutations'])==2 and {x['simulator'] for x in r['mutations']}=={'icarus','verilator'}
+          assert all(x['mutation']=='collector_reset_POR_only' and x['compile_returncode']==0 and
+                     x['run_returncode']!=0 and
+                     x['public_reset_witness']['status']=='OBSERVED_MUTANT_PUBLIC_RESET_VIOLATION' and
+                     len(x['public_reset_witness']['samples'])==1 for x in r['mutations'])
+          assert all(value is False for value in r['scope'].values())
+          PY
+      - name: Preserve complete small result before artifact upload
+        if: always()
+        run: python3 -u scripts/cloud_pcie_gen12_collector_reset_diagnostic.py --log-result
+      - name: Publish exact-source summary and complete verified evidence parts
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 -u scripts/cloud_pcie_gen12_collector_reset_diagnostic.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: gen12-collector-reset-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            hw/soc/out/cloud-pcie-gen12-collector-reset-diagnostic
+            hw/soc/out/cloud-pcie-gen12-collector-reset-diagnostic-publication
+            collector-reset-native-console.log
           retention-days: 90
           if-no-files-found: warn
