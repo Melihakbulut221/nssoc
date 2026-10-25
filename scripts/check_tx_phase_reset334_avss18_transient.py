@@ -68,6 +68,89 @@ def preparation_entry_fixture(use_old=False):
             return dict(original_legacy_prepare_rejected_before_restore=True)
         raise AssertionError('Preparation entry fixture did not stop explicitly')
 
+def prepare_completion_fixture(missing_summary=False):
+    """Run the actual derived prepare to return with synthetic IO/runtime collaborators."""
+    module=d.session();seen=[]
+    if missing_summary:
+        text,_=d.derived_program()
+        node=next(n for n in ast.parse(text).body if isinstance(n,ast.FunctionDef)and n.name=='prepare')
+        function=ast.get_source_segment(text,node)
+        assert function.count('    summary=json.loads(summary_raw)')==1
+        function=function.replace('    summary=json.loads(summary_raw)\n','')
+        exec(compile(function,'<actual-prepare-missing-summary-mutation>','exec'),module.__dict__)
+    def forbidden(*args,**kwargs):raise AssertionError('No real transport or simulator permitted')
+    module.methods=lambda:dict(native_transient_authorized=True,initial_case='p-initial-high')
+    module.publication=types.SimpleNamespace(context=lambda *x:('fixture-tag','a'*40),api=lambda *x:{},validate_release=lambda *x:dict(fixture=True))
+    module.preparation=types.SimpleNamespace(asset=forbidden,api=forbidden)
+    with tempfile.TemporaryDirectory()as directory:
+        root=Path(directory);prepared=root/'prepared';out=root/'out';out.mkdir()
+        contract=dict(fixture='synthetic control-flow contract; not318 device acceptance')
+        summary=dict(original_parent_TX_rejection=dict(electrical_screen_passed=False,fixture='unchanged rejection'))
+        summary_raw=d.encode(summary);models={'p':'fixture-P','n':'fixture-N'}
+        model_hashes={p:d.digest(b)for p,b in models.items()}
+        original=['V'+str(i)+' n'+str(i)+' 0 0\n'for i in range(5)]
+        original+=['.lib old-h hbt_typ\n','.lib old-r res_typ\n','.lib old-c cap_typ\n',
+          '.include old-p\n','.include old-n\n','pre_osdi old-osdi\n',
+          'save v(n)\n','.tran .3125p 34n\n','run wave.raw\n']
+        base=''.join(original);changed=list(original)
+        edits=[]
+        for index in range(5,11):
+            changed[index]=original[index].replace('old-','fixture-runtime-')
+            edits.append(dict(line=index,old=original[index],new=changed[index]))
+        runtime_base=''.join(changed);flag='* synthetic uniform OFF fixture\n';op_deck='synthetic OP-only fixture\n'
+        def check_contract(label,deck,c,raw):
+            assert label=='p-initial-high'and deck==base and c==contract and raw==summary_raw
+            seen.append('contract')
+        adapters=types.SimpleNamespace(op_only=lambda deck,c,active:op_deck,
+          initialized_deck=lambda deck,c:deck+flag,flag_block=lambda c,active:flag)
+        initialization=types.SimpleNamespace(digest=d.digest,prepared_contract=check_contract,adapters=lambda:adapters,
+          PREPARATION=dict(run=a.SOURCE['run'],head=a.SOURCE['head'],summary_sha256=d.digest(summary_raw)))
+        native=types.SimpleNamespace(ENGINE_SHA=d.digest(b'fixture ELF identity only'),OUT=None)
+        manifest=dict(files={'models/fixture.lib':dict(bytes=len(b'fixture library'),sha256=d.digest(b'fixture library'))})
+        engine_proof=dict(engine_sha256=native.ENGINE_SHA,model_manifest=manifest)
+        def fake_runtime():
+            assert native.OUT==prepared/'runtime'and native.OUT.is_dir()
+            engine=native.OUT/'fixture-engine';engine.write_bytes(b'fixture ELF identity only')
+            libs=native.OUT/'libs';(libs/'models').mkdir(parents=True)
+            (libs/'models/fixture.lib').write_bytes(b'fixture library')
+            seen.append('synthetic-runtime-files')
+            return engine,libs,engine_proof
+        native.restore=fake_runtime
+        def fake_paths(label,deck,c,raw,model_values,model_paths,model_dir,osdi):
+            assert label=='p-initial-high'and deck==base and c==contract and raw==summary_raw
+            assert model_values==models and all(model_paths[p].read_text()==models[p]for p in models)
+            assert str(model_dir).endswith('/runtime/libs/models')and str(osdi).endswith('/runtime/libs/r3_cmc.osdi')
+            return op_deck,dict(six_path_cards=edits,runtime_base_sha256=d.digest(runtime_base))
+        paths=types.SimpleNamespace(runtime_deck=fake_paths,bench=types.SimpleNamespace(binding=types.SimpleNamespace(MODELS=model_hashes)))
+        module.initialization=initialization;module.paths=paths;module.native=native
+        def restore(label,prep,destination):
+            assert prep==prepared and destination==out;prep.mkdir()
+            model_paths={p:prep/(p+'.spice')for p in models}
+            for p,path in model_paths.items():path.write_text(models[p])
+            op=dict(cases={label:dict(contract_sha256=d.digest(d.encode(contract)))},runtime_and_models=engine_proof)
+            proof=dict(summary_sha256=initialization.PREPARATION['summary_sha256'],outer_zero_OP_summary_sha256=a.SOURCE['summary'])
+            seen.append('synthetic-current-restoration')
+            return b'fixture outer OP',op,summary_raw,base,contract,model_paths,models,proof,initialization.PREPARATION
+        module._restore_current=restore
+        try:answer=module.prepare('p-initial-high',prepared,out,'fixture')
+        except NameError as error:
+            assert missing_summary and error.name=='summary'
+            assert seen==['synthetic-current-restoration','contract','synthetic-runtime-files']
+            assert(prepared/'native/bench.cir').read_text()==runtime_base+flag
+            return dict(actual_missing_summary_fault_rejected=True,failed_after_final_native_deck_write=True)
+        assert not missing_summary
+        prepared_report,proof,c,engine,spec=answer
+        assert seen==['synthetic-current-restoration','contract','synthetic-runtime-files']
+        assert proof['original_parent_TX_rejection']==summary['original_parent_TX_rejection']
+        assert proof['summary_sha256']==spec['summary_sha256']==d.digest(summary_raw)
+        assert proof['outer_zero_OP_summary_sha256']==a.SOURCE['summary']
+        assert proof['zero_OP_run']==a.SOURCE['run']and proof['zero_OP_summary_sha256']==a.SOURCE['summary']
+        assert c==contract and engine.read_bytes()==b'fixture ELF identity only'
+        assert all(Path(p).is_file()and d.digest(Path(p).read_bytes())==h for p,h in prepared_report['protected_inputs'].items())
+        assert(prepared/'native/bench.cir').read_text()==runtime_base+flag
+    return dict(actual_derived_prepare_return_reached=True,final_original_parent_rejection_assignment_reached=True,
+      complete_prepared_input_map_checked=True,synthetic_runtime_path_helpers_only=True,no_archive_or_native_engine=True)
+
 def context_controls(op):
     source=dict(run_id=a.SOURCE['run'],source_head=a.SOURCE['head'],current_RC_run=a.current_RC.SOURCE['run'],
       current_RC_summary_sha256=a.current_RC.SOURCE['summary'])
@@ -174,6 +257,7 @@ def controls():
     assert current.gate(current_row,contract)==d.frozen.gate(current_row,contract)
     entries=[main_entry_fixture(stage)for stage in ('initial','cross')]
     prepare_entry=preparation_entry_fixture();old_entry=preparation_entry_fixture(True)
+    completion=prepare_completion_fixture();missing_summary_fault=prepare_completion_fixture(True)
     for module in (d.frozen,d.loaded.old_initialization,d.loaded.old_paths,d.loaded.old_bench,d.loaded.old_binding):
         assert all(vars(module)[k]is value for k,value in original_globals[module.__name__].items())
     archive=a.frozen.archive_controls()
@@ -186,6 +270,7 @@ def controls():
       lifecycle_derivation=derivation,support_derivation=source_proof,derivation_faults=derivation_faults,
       numerical_functions_use_exact_original_code_objects=True,original_module_globals_unchanged=True,
       actual_main_entry_positives=entries,actual_preparation_entry=prepare_entry,legacy_preparation_refusal=old_entry,
+      actual_prepare_completion=completion,missing_summary_refusal=missing_summary_fault,
       inherited_original_numerical_controls=original_regression,current_portable_controls=portable,continuation_asset_controls=asset_controls,archive_controls=archive,
       actual_restored18_source_plus32_path_controls_required_before_engine=True,
       actual_restore_executed=False,native_simulator_invoked=False,transient_executed=False,

@@ -64,11 +64,11 @@
     "path": "scripts/tx_phase_reset334_transient_support.py",
     "sha256": "6e13a8fb79af6cffb3f65c0085ba15ca5e2d565508f7154ffc94c2469383a7df"
   },
-  "generated_support_sha256": "1d09e23919736e377bf2e646b3a08731f79ee43e08c0be2a56f67fa3bf29df62",
+  "generated_support_sha256": "593b7c1d0e4f386c3c534693734ec32064a62ef661d2fa436c958dfdb6a6bb8c",
   "support_edits": [
     {
       "before": "    op_raw=preparation.asset(OP['summary_asset'],OP['summary_sha256'])\n    op=json.loads(op_raw);validate_OP(op,preparation.api('actions/runs/'+str(OP['run'])))\n    (out/'qualified-zero-OP.summary.json').write_bytes(op_raw)\n    spec=initialization.PREPARATION\n    old=preparation.api('actions/runs/'+str(spec['run']))\n    assert old['head_sha']==spec['head']and old['run_attempt']==1 and old['status']=='completed'and old['conclusion']=='success'\n    summary_raw=preparation.asset(spec['summary_asset'],spec['summary_sha256']);summary=json.loads(summary_raw)\n    (out/'qualified-preparation.summary.json').write_bytes(summary_raw)\n    prepared_root.mkdir(exist_ok=False)\n    selected=['cases/'+label+'/'+n for n in ('bench.cir','contract.json')]\n    selected+=['qualified-binding/qualified-rc/'+s+'/composition/reset334-wire.spice'for s in ('p','n')]\n    restored,proof=reports.restore_report('tx-phase-reset334-loaded-preparation',spec['run'],\n      spec['summary_sha256'],spec['parts_sha256'],prepared_root/'prepared',selected)\n    assert restored==summary\n    base=(prepared_root/'prepared/cases'/label/'bench.cir').read_text()\n    c=json.loads((prepared_root/'prepared/cases'/label/'contract.json').read_bytes())\n    initialization.prepared_contract(label,base,c,summary_raw)\n    assert op['cases'][label]['contract_sha256']==digest(json.dumps(c,indent=2,allow_nan=False)+'\\n')\n    models_at={s:prepared_root/'prepared/qualified-binding/qualified-rc'/s/'composition/reset334-wire.spice'for s in ('p','n')}\n    models={s:p.read_text()for s,p in models_at.items()}\n",
-      "after": "    op_raw,op,summary_raw,base,c,models_at,models,proof,spec=_restore_current(label,prepared_root,out)\n    initialization.prepared_contract(label,base,c,summary_raw)\n    assert op['cases'][label]['contract_sha256']==digest(json.dumps(c,indent=2,allow_nan=False)+'\\n')\n",
+      "after": "    op_raw,op,summary_raw,base,c,models_at,models,proof,spec=_restore_current(label,prepared_root,out)\n    summary=json.loads(summary_raw)\n    initialization.prepared_contract(label,base,c,summary_raw)\n    assert op['cases'][label]['contract_sha256']==digest(json.dumps(c,indent=2,allow_nan=False)+'\\n')\n",
       "count": 1
     },
     {
