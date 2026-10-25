@@ -1,0 +1,14 @@
+name: tx-phase-reset334-loaded-binding-cloud
+on:
+  push:
+    branches: [codex/register-reset334-loaded-binding-20261025]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Register manual proof path without checkout or native work
+        run: echo 'Registration only; no repository checkout, tests, restoration, or native work.'
