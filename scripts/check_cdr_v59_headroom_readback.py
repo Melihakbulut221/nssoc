@@ -62,6 +62,28 @@ def controls():
     assert [(p['first'],p['last'],p['worst'],p['before'],p['after'])for p in spans]==[(1,2,2,0,3),(4,5,5,3,6)]
     assert sum(p['native_rows']for p in spans)==4;positive.append('all_noncontiguous_native_violation_rows')
     assert c.intervals(tt,np.ones(7),1.,.4)==[];positive.append('explicit_no_violation_intervals')
+    assert spans[0]['left_censored_at_analysis_start']is True
+    assert spans[0]['entry_threshold_bracket_inside_analysis']is False
+    assert spans[0]['before_v']==.5 and spans[0]['first_v']==.25 and spans[0]['last_v']==.125 and spans[0]['after_v']==.5
+    assert spans[0]['first_analysis_row']==1 and spans[0]['first_analysis_row_s']==1.
+    assert spans[1]['left_censored_at_analysis_start']is False and spans[1]['right_censored_at_capture_end']is False
+    assert spans[1]['entry_threshold_bracket_inside_analysis']is True and spans[1]['exit_threshold_bracket_inside_capture']is True
+    positive.append('START_censor_not_mislabeled_threshold_bracket')
+    both=c.intervals(tt,np.full(7,.25),1.5,.4)[0]
+    assert (both['first'],both['last'],both['before'],both['after'])==(2,6,1,None)
+    assert both['left_censored_at_analysis_start']is True and both['right_censored_at_capture_end']is True
+    assert both['first_s']==2. and both['analysis_start_s']==1.5 and both['before_s']==1.
+    assert both['before_v']==both['first_v']==both['last_v']==both['capture_end_v']==.25
+    assert both['after_s']is None and both['after_v']is None
+    assert not both['entry_threshold_bracket_inside_analysis']and not both['exit_threshold_bracket_inside_capture']
+    positive.append('both_censored_between_samples_and_capture_end')
+    right=c.intervals(tt,np.array([.5,.5,.5,.3,.2,.1,.25]),1.,.4)[0]
+    assert right['left_censored_at_analysis_start']is False and right['right_censored_at_capture_end']is True
+    assert right['before_s']==2. and right['before_v']==.5 and right['first_v']==.3 and right['last_v']==.25
+    at_zero=c.intervals(tt,np.full(7,.25),0.,.4)[0]
+    assert at_zero['before']is None and at_zero['before_s']is None and at_zero['before_v']is None and at_zero['left_censored_at_analysis_start']is True
+    assert c.intervals(tt,np.full(7,.25),7.,.4)==[]
+    positive.append('right_only_capture_start_and_empty_window_boundaries')
     b=c.budget(.875,1.25,.625,1.5,1.125,2.)
     assert b['VCE_v']==.25 and b['supply_to_upper_C_v']==.5 and b['upper_VCE_v']==.375 and b['upper_E_to_target_C_access_v']==.25
     assert b['reconstruction_v']==.25 and b['required_VCE_recovery_to_original_0p4_v']==.4-.25
@@ -131,7 +153,7 @@ def controls():
         for label in ('missing_selected','missing_unselected','unselected_bytes','changed_selected','unexpected','duplicate','symlink','hardlink','fifo','path_escape','wrong_root','corrupt_part'):
             manifest,folder=archive_case(label)
             reject('archive_'+label,lambda:a.extract(manifest,folder,folder/'saved',dict(outputs=expected),hashlib.sha256(b'{}').hexdigest()))
-    assert len(positive)==13 and len(negative)==47,(positive,negative)
+    assert len(positive)==16 and len(negative)==47,(positive,negative)
     return dict(status='PASS_SOURCE_FIXTURES_NOT_CAPTURE_ANALYSIS',positive=positive,rejected=negative,
         positives=len(positive),refusals=len(negative),actual_capture_read=False,simulation=False)
 if __name__=='__main__':print(json.dumps(controls(),indent=2))

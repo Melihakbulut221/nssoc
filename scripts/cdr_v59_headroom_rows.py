@@ -74,16 +74,34 @@ def current_sum(d,records,ids):
     assert None not in vv and len(vv)==len(set(vv))
     return sum((d[v]for v in vv),np.zeros_like(d[vv[0]]))
 def intervals(t,signal,start,limit):
-    assert t.shape==signal.shape and np.isfinite(signal).all()
-    ids=np.flatnonzero((t>=start)&(signal<limit));out=[]
+    assert t.ndim==signal.ndim==1 and t.shape==signal.shape and len(t)
+    assert np.isfinite(t).all()and np.isfinite(signal).all()and np.all(np.diff(t)>0)
+    assert np.isfinite(start)and np.isfinite(limit)
+    active=np.flatnonzero(t>=start)
+    ids=active[signal[active]<limit];out=[]
     if not len(ids):return out
+    first_active=int(active[0])
     for run in np.split(ids,np.flatnonzero(np.diff(ids)!=1)+1):
         a,z=int(run[0]),int(run[-1]);worst=int(run[np.argmin(signal[run])])
         before=a-1 if a>0 else None;after=z+1 if z+1<len(t)else None
+        left=a==first_active;right=after is None
         out.append(dict(first=a,last=z,worst=worst,native_rows=len(run),
             before=before,after=after,first_s=float(t[a]),last_s=float(t[z]),
+            first_v=float(signal[a]),last_v=float(signal[z]),
+            before_s=None if before is None else float(t[before]),
+            after_s=None if after is None else float(t[after]),
+            before_v=None if before is None else float(signal[before]),
+            after_v=None if after is None else float(signal[after]),
+            analysis_start_s=float(start),first_analysis_row=first_active,
+            first_analysis_row_s=float(t[first_active]),first_analysis_row_v=float(signal[first_active]),
+            capture_end_s=float(t[-1]),capture_end_v=float(signal[-1]),
+            left_censored_at_analysis_start=left,right_censored_at_capture_end=right,
+            entry_threshold_bracket_inside_analysis=not left,
+            exit_threshold_bracket_inside_capture=not right,
             observed_span_s=float(t[z]-t[a]),minimum_v=float(signal[worst]),
             boundary_times_interpolated=False))
+        if not left:assert before>=first_active and signal[before]>=limit
+        if not right:assert signal[after]>=limit
     assert sum(x['native_rows']for x in out)==len(ids)
     return out
 def budget(c,b,e,uc,ue,dd):
