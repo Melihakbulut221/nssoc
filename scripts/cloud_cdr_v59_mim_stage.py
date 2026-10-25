@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Reserved-only publication of the complete current-geometry MIM experiment."""
-import argparse,json,os,shutil,subprocess,sys
+import argparse,json,os,shutil,subprocess,sys,tempfile
 from pathlib import Path
 import cdr_v59_mim_admission as a
 import cloud_cdr_v59_binding_rc as evidence
@@ -39,6 +39,51 @@ def validate_pipeline(r,code):
     assert comp['non_cascading_count_derivation']['reverse_reconstruction_exact']is True
     assert len(r['count_derivation_controls']['positive_collision_cases'])==len(r['count_derivation_controls']['rejected'])==4
     return True
+def collect_evidence(result,capsule,stage,bundle,verify):
+    """A failed integrity check must not suppress either independent evidence copy."""
+    if capsule.exists()or result.get('native_stage_passed')is True:
+        try:result['saved_input_integrity']=verify()
+        except BaseException as error:
+            result.update(status='FAIL_INPUT_INTEGRITY',native_stage_passed=False,input_integrity_error=repr(error))
+    for label,root,subdir in [('canonical_capsule_copy',capsule,'canonical-source-capsule'),('stage_copy',stage,'stage')]:
+        if root.exists():
+            try:result[label]=evidence.copy_tree(root,bundle/subdir)
+            except BaseException as error:
+                result.update(status='FAIL_EVIDENCE_COPY',native_stage_passed=False)
+                result.setdefault('evidence_errors',{})[label]=repr(error)
+    return result
+def evidence_controls():
+    rejected=[]
+    with tempfile.TemporaryDirectory()as folder:
+        base=Path(folder);capsule=base/'capsule';stage=base/'stage';capsule.mkdir();stage.mkdir()
+        (capsule/'result.json').write_text('{"original":true}\n')
+        (stage/'partial.log').write_text('partial native evidence\n')
+        (stage/'empty.log').write_bytes(b'')
+        def verified():return dict(fixture=True)
+        good=base/'good';good.mkdir();r=collect_evidence(dict(native_stage_passed=True),capsule,stage,good,verified)
+        assert r['native_stage_passed']is True and r['saved_input_integrity']==dict(fixture=True)
+        assert (good/'stage/empty.log').stat().st_size==0
+        def failed():raise AssertionError('actual fixture integrity rejection')
+        dest=base/'integrity';dest.mkdir();r=collect_evidence(dict(native_stage_passed=True),capsule,stage,dest,failed)
+        assert r['native_stage_passed']is False and r['status']=='FAIL_INPUT_INTEGRITY'
+        assert 'canonical_capsule_copy'in r and 'stage_copy'in r
+        assert (dest/'stage/partial.log').read_bytes()==(stage/'partial.log').read_bytes()
+        rejected.append('integrity_failure_still_preserves_both_copies')
+        (capsule/'link').symlink_to(capsule/'result.json')
+        dest=base/'copyfailure';dest.mkdir();r=collect_evidence(dict(native_stage_passed=True),capsule,stage,dest,verified)
+        assert r['native_stage_passed']is False and 'canonical_capsule_copy'in r['evidence_errors']
+        assert 'stage_copy'in r and (dest/'stage/partial.log').read_bytes()==(stage/'partial.log').read_bytes()
+        rejected.append('capsule_copy_failure_still_preserves_stage');(capsule/'link').unlink()
+        dest=base/'occupied';dest.mkdir();(dest/'stage').mkdir()
+        r=collect_evidence(dict(native_stage_passed=True),capsule,stage,dest,verified)
+        assert r['native_stage_passed']is False and 'stage_copy'in r['evidence_errors']and 'canonical_capsule_copy'in r
+        rejected.append('occupied_stage_copy_never_becomes_native_pass')
+        dest=base/'missing';dest.mkdir();missing=base/'missing-capsule'
+        r=collect_evidence(dict(native_stage_passed=True),missing,stage,dest,lambda:a.saved.verify_files(missing,{'result.json':a.sha(capsule/'result.json')}))
+        assert r['native_stage_passed']is False and r['status']=='FAIL_INPUT_INTEGRITY'and 'stage_copy'in r
+        rejected.append('missing_success_capsule_is_rejected_and_stage_preserved')
+    return dict(actual_shared_collector=True,actual_stream_copies=True,empty_file_preserved=True,
+      successful_positive=True,rejected=rejected)
 def publish_existing(result):
     stem=GROUP+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
     TRANSPORT.mkdir(parents=True,exist_ok=False)
@@ -98,14 +143,7 @@ def main():
         r.update(status='PASS_CURRENT_V59_MIM_TWO_ORDERS_COMPOSITION_REQUIRES_ELECTRICAL_VALIDATION',native_stage_passed=True)
     except BaseException as error:r.update(status='FAIL_OR_ERROR',error=repr(error))
     finally:
-        try:
-            if a.saved.CAPSULE.exists():
-                r['saved_input_integrity']=a.verify_restored()
-                r['canonical_capsule_copy']=evidence.copy_tree(a.saved.CAPSULE,BUNDLE/'canonical-source-capsule')
-            if a.OUT.exists():r['stage_copy']=evidence.copy_tree(a.OUT,BUNDLE/'stage')
-        except BaseException as error:
-            r.update(status='FAIL_INTEGRITY_OR_EVIDENCE_COPY',native_stage_passed=False,evidence_error=repr(error))
-            # Keep every partial native output available to the workflow fallback.
+        collect_evidence(r,a.saved.CAPSULE,a.OUT,BUNDLE,a.verify_restored)
         r['outputs']={str(q.relative_to(BUNDLE)):a.sha(q)for q in BUNDLE.rglob('*')if q.is_file()and q!=BUNDLE/'result.json'}
         a.write(BUNDLE/'result.json',r)
     assert r['native_stage_passed']is True,r.get('error',r['status'])

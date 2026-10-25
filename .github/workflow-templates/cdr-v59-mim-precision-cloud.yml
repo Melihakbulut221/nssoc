@@ -38,7 +38,7 @@ jobs:
           import json
           r=json.load(open('hw/soc/out/cdr-v59-mim-controls/source.json'))
           assert r['status']=='PASS_CURRENT_V59_MIM_SOURCE_CONTROLS_NO_NATIVE'
-          assert len(r['rejected'])==79 and len(r['positive']['derivations'])==5
+          assert len(r['rejected'])==83 and len(r['positive']['derivations'])==5
           assert r['source_controls_only'] and not r['archives_downloaded']
           assert not r['native_extraction_executed'] and not r['simulation_executed'] and not r['geometry_regenerated']
           PY

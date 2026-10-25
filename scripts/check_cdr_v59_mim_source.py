@@ -139,6 +139,9 @@ def controls():
         reject('projection_collision',lambda:a.saved.copy_selected(bundle,base/'projection',list(expected),expected))
         target=bundle/'sys/.magicrc';data=target.read_bytes();target.unlink();target.symlink_to(bundle/'result.json')
         reject('projection_symlink',lambda:a.saved.copy_selected(bundle,base/'bad-projection',list(expected),expected))
+    from cloud_cdr_v59_mim_stage import evidence_controls
+    positive['partial_evidence']=evidence_controls()
+    rejected.extend('partial_evidence_'+name for name in positive['partial_evidence']['rejected'])
     positive['noncascading_counts']=count_controls((ROOT/'scripts/cloud_cdr_retimed_composition.py').read_text())
     positive['native_cap_order']=tx_native_cap_order.controls()
     assert len(rejected)==m['source_controls']['faults'],(len(rejected),rejected)
