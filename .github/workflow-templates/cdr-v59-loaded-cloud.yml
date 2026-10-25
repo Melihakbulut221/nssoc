@@ -1,0 +1,192 @@
+# Source only; review and actual source controls precede any preparation or simulation.
+# SPDX-License-Identifier: Apache-2.0
+name: cdr-v59-loaded-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Controls, preparation only, or all original ten loaded cases
+        type: choice
+        required: true
+        default: controls
+        options: [controls, preparation, loaded]
+permissions:
+  contents: read
+concurrency:
+  group: cdr-v59-loaded
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact current admission, six source substitutions and original electrical blocks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p hw/soc/out/cdr-v59-loaded-controls
+          PYTHONPATH=scripts python3 scripts/check_cdr_v59_loaded_source.py | tee hw/soc/out/cdr-v59-loaded-controls/source.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('hw/soc/out/cdr-v59-loaded-controls/source.json'))
+          assert r['status']=='PASS_CURRENT_V59_LOADED_SOURCE_ADMISSION_NOT_PREPARATION_OR_SIMULATION'
+          assert len(r['rejected'])==43
+          assert not r['archive_restore_executed'] and not r['preparation_executed'] and not r['simulation_executed']
+          PY
+      - name: Actual stage publication, complete synthetic archives and terminal verdict refusals
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python3 scripts/check_cdr_v59_loaded_stage.py | tee hw/soc/out/cdr-v59-loaded-controls/stage.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('hw/soc/out/cdr-v59-loaded-controls/stage.json'))
+          assert r['status']=='PASS_CURRENT_V59_LOADED_STAGE_AND_PUBLICATION_CONTROLS_NOT_NATIVE'
+          assert len(r['positives'])==16 and len(r['rejected'])==38
+          assert r['actual_complete_archive_roundtrips']==4 and r['native_verdict_fixtures_are_synthetic']
+          assert r['simulator_or_prior_archive_accessed'] is False
+          PY
+      - name: Qualified publisher and read-only reservation controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_binding_rc.py --publication-controls | tee hw/soc/out/cdr-v59-loaded-controls/publication.json
+          python3 scripts/ensure_cloud_tested_source_release.py --controls | tee hw/soc/out/cdr-v59-loaded-controls/release.json
+          python3 scripts/wait_cloud_tested_source_release.py --controls | tee hw/soc/out/cdr-v59-loaded-controls/wait.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('hw/soc/out/cdr-v59-loaded-controls/publication.json'))
+          assert len(r['rejected'])==8 and len(r['file_list_controls']['rejected'])==14
+          assert r['file_list_controls']['actual_shared_function_executed'] and not r['release_creation_possible']
+          assert json.load(open('hw/soc/out/cdr-v59-loaded-controls/release.json'))['status'].startswith('PASS')
+          r=json.load(open('hw/soc/out/cdr-v59-loaded-controls/wait.json'))
+          assert len(r['positive_cases'])==3 and len(r['rejected'])==4 and not r['creation_attempted']
+          PY
+      - name: Emit complete named control records
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PY'
+          from pathlib import Path
+          from cloud_cdr_v59_binding_rc import emit
+          for p in sorted(Path('hw/soc/out/cdr-v59-loaded-controls').glob('*.json')):
+              print('CONTROL_FILE '+p.name,flush=True)
+              emit(p,'CDR_V59_LOADED_CONTROLS_'+p.stem.upper())
+          PY
+      - name: Retain controls and original failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v59-loaded-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: hw/soc/out/cdr-v59-loaded-controls/
+          retention-days: 90
+          if-no-files-found: warn
+  prepare:
+    needs: controls
+    if: github.event_name == 'workflow_dispatch' && inputs.mode != 'controls'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Require reviewed authorization and exact source reservation before dependencies
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_loaded_stage.py --case nominal_early --prepare-only --preflight
+      - name: Original qualified simulator dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+      - name: Fresh current composition binding and complete original deck without simulator
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_loaded_stage.py --case nominal_early --prepare-only
+      - name: Publish complete case or original rejection without changing its outcome
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_loaded_stage.py --case nominal_early --prepare-only --publish
+      - name: Retain full case and publication fallback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v59-loaded-preparation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            cloud-cdr-v59-loaded-nominal_early/
+            hw/soc/out/cloud-cdr-v59-loaded-preparation-controller/
+            hw/soc/out/cloud-cdr-v59-loaded-preparation-publication/
+          include-hidden-files: true
+          retention-days: 90
+          if-no-files-found: warn
+  loaded:
+    needs: [controls, prepare]
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'loaded'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        case: [nominal_early, nominal_late, hot_early, hot_late, cold_early, cold_late, constant_zero, constant_one, clock_stopped, vi_bias_off]
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Require reviewed authorization and exact source reservation before dependencies
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_loaded_stage.py --case ${{ matrix.case }} --preflight
+      - name: Original qualified simulator dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+      - name: Original full OP and transient with unchanged electrical gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_loaded_stage.py --case ${{ matrix.case }}
+      - name: Publish complete case or original rejection without changing its outcome
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: PYTHONPATH=scripts python3 scripts/cloud_cdr_v59_loaded_stage.py --case ${{ matrix.case }} --publish
+      - name: Retain full case and publication fallback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-v59-loaded-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            cloud-cdr-v59-loaded-${{ matrix.case }}/
+            hw/soc/out/cloud-cdr-v59-loaded-${{ matrix.case }}-controller/
+            hw/soc/out/cloud-cdr-v59-loaded-${{ matrix.case }}-publication/
+          include-hidden-files: true
+          retention-days: 90
+          if-no-files-found: warn
