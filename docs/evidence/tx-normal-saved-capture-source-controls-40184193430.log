@@ -1,0 +1,535 @@
+﻿2026-10-25T10:18:04.6048674Z Current runner version: '2.338.0'
+2026-10-25T10:18:04.6083952Z ##[group]Runner Image Provisioner
+2026-10-25T10:18:04.6085285Z Hosted Compute Agent
+2026-10-25T10:18:04.6086706Z Version: 20261021.618
+2026-10-25T10:18:04.6087800Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-25T10:18:04.6089016Z Build Date: 2026-10-21T00:45:21Z
+2026-10-25T10:18:04.6090274Z Worker ID: {1d203270-af77-452a-9fa1-169af36826e4}
+2026-10-25T10:18:04.6091578Z Region: westus2
+2026-10-25T10:18:04.6092630Z Cloud: Azure
+2026-10-25T10:18:04.6093552Z ##[endgroup]
+2026-10-25T10:18:04.6095839Z ##[group]Operating System
+2026-10-25T10:18:04.6097328Z Ubuntu
+2026-10-25T10:18:04.6098289Z 24.04.5
+2026-10-25T10:18:04.6099317Z LTS
+2026-10-25T10:18:04.6100239Z ##[endgroup]
+2026-10-25T10:18:04.6101240Z ##[group]Runner Image
+2026-10-25T10:18:04.6102475Z Image: ubuntu-24.04
+2026-10-25T10:18:04.6103483Z Version: 20261012.334.1
+2026-10-25T10:18:04.6105855Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-25T10:18:04.6109068Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-25T10:18:04.6111028Z ##[endgroup]
+2026-10-25T10:18:04.6113029Z ##[group]GITHUB_TOKEN Permissions
+2026-10-25T10:18:04.6115773Z Contents: read
+2026-10-25T10:18:04.6117054Z Metadata: read
+2026-10-25T10:18:04.6117943Z ##[endgroup]
+2026-10-25T10:18:04.6120980Z Secret source: Actions
+2026-10-25T10:18:04.6123187Z Cache mode: write
+2026-10-25T10:18:04.6124442Z Prepare workflow directory
+2026-10-25T10:18:04.6611481Z Prepare all required actions
+2026-10-25T10:18:04.6657718Z Getting action download info
+2026-10-25T10:18:05.0190622Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-25T10:18:05.1061445Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-25T10:18:05.2824903Z Complete job name: source-controls
+2026-10-25T10:18:05.3687975Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-25T10:18:05.3689046Z with:
+2026-10-25T10:18:05.3689519Z   persist-credentials: false
+2026-10-25T10:18:05.3690079Z   repository: Melihakbulut221/nssoc
+2026-10-25T10:18:05.3693916Z   token: ***
+2026-10-25T10:18:05.3694374Z   ssh-strict: true
+2026-10-25T10:18:05.3694834Z   ssh-user: git
+2026-10-25T10:18:05.3695273Z   clean: true
+2026-10-25T10:18:05.3695738Z   sparse-checkout-cone-mode: true
+2026-10-25T10:18:05.3696509Z   fetch-depth: 1
+2026-10-25T10:18:05.3696970Z   fetch-tags: false
+2026-10-25T10:18:05.3697445Z   show-progress: true
+2026-10-25T10:18:05.3697920Z   lfs: false
+2026-10-25T10:18:05.3698354Z   submodules: false
+2026-10-25T10:18:05.3698835Z   set-safe-directory: true
+2026-10-25T10:18:05.3699358Z   allow-unsafe-pr-checkout: false
+2026-10-25T10:18:05.3700138Z ##[endgroup]
+2026-10-25T10:18:05.4707630Z Syncing repository: Melihakbulut221/nssoc
+2026-10-25T10:18:05.4710090Z ##[group]Getting Git version info
+2026-10-25T10:18:05.4711299Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-25T10:18:05.4713238Z [command]/usr/bin/git version
+2026-10-25T10:18:05.4782152Z git version 2.55.0
+2026-10-25T10:18:05.4804400Z ##[endgroup]
+2026-10-25T10:18:05.4827833Z Temporarily overriding HOME='/home/runner/work/_temp/bffc2699-40e3-49df-9d56-49f63831391a' before making global git config changes
+2026-10-25T10:18:05.4832703Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T10:18:05.4834187Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T10:18:05.4891000Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-25T10:18:05.4895430Z ##[group]Initializing the repository
+2026-10-25T10:18:05.4899575Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-25T10:18:05.5000576Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-25T10:18:05.5002191Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-25T10:18:05.5003133Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-25T10:18:05.5003859Z hint: call:
+2026-10-25T10:18:05.5004256Z hint:
+2026-10-25T10:18:05.5004781Z hint: 	git config --global init.defaultBranch <name>
+2026-10-25T10:18:05.5005390Z hint:
+2026-10-25T10:18:05.5006281Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-25T10:18:05.5007239Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-25T10:18:05.5007967Z hint:
+2026-10-25T10:18:05.5008381Z hint: 	git branch -m <name>
+2026-10-25T10:18:05.5008852Z hint:
+2026-10-25T10:18:05.5009477Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-25T10:18:05.5015344Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-25T10:18:05.5035137Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-25T10:18:05.5076413Z ##[endgroup]
+2026-10-25T10:18:05.5077952Z ##[group]Disabling automatic garbage collection
+2026-10-25T10:18:05.5079764Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-25T10:18:05.5114667Z ##[endgroup]
+2026-10-25T10:18:05.5116164Z ##[group]Setting up auth
+2026-10-25T10:18:05.5122535Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T10:18:05.5160021Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T10:18:05.5537298Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T10:18:05.5577866Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T10:18:05.5827240Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T10:18:05.5866997Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T10:18:05.6088753Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-25T10:18:05.6130694Z ##[endgroup]
+2026-10-25T10:18:05.6131472Z ##[group]Fetching the repository
+2026-10-25T10:18:05.6139824Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d4dc336e65c7093a58666c1e73517c9b67e2cd7a:refs/remotes/origin/codex/tx-clock-phase-parent
+2026-10-25T10:18:20.3156867Z From https://github.com/Melihakbulut221/nssoc
+2026-10-25T10:18:20.3159083Z  * [new ref]           d4dc336e65c7093a58666c1e73517c9b67e2cd7a -> origin/codex/tx-clock-phase-parent
+2026-10-25T10:18:20.3165752Z ##[endgroup]
+2026-10-25T10:18:20.3167563Z ##[group]Determining the checkout info
+2026-10-25T10:18:20.3169919Z ##[endgroup]
+2026-10-25T10:18:20.3171462Z [command]/usr/bin/git sparse-checkout disable
+2026-10-25T10:18:20.3225493Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-25T10:18:20.3258875Z ##[group]Checking out the ref
+2026-10-25T10:18:20.3262905Z [command]/usr/bin/git checkout --progress --force -B codex/tx-clock-phase-parent refs/remotes/origin/codex/tx-clock-phase-parent
+2026-10-25T10:18:21.3741776Z Updating files:  12% (3685/29424)
+2026-10-25T10:18:21.4846574Z Updating files:  13% (3826/29424)
+2026-10-25T10:18:21.8762753Z Updating files:  14% (4120/29424)
+2026-10-25T10:18:22.0171096Z Updating files:  15% (4414/29424)
+2026-10-25T10:18:22.1293585Z Updating files:  16% (4708/29424)
+2026-10-25T10:18:22.1531076Z Updating files:  17% (5003/29424)
+2026-10-25T10:18:22.1737310Z Updating files:  18% (5297/29424)
+2026-10-25T10:18:22.1940068Z Updating files:  19% (5591/29424)
+2026-10-25T10:18:22.2914494Z Updating files:  20% (5885/29424)
+2026-10-25T10:18:22.3395226Z Updating files:  21% (6180/29424)
+2026-10-25T10:18:22.3551427Z Updating files:  22% (6474/29424)
+2026-10-25T10:18:22.3619967Z Updating files:  22% (6641/29424)
+2026-10-25T10:18:22.3890501Z Updating files:  23% (6768/29424)
+2026-10-25T10:18:22.4068566Z Updating files:  24% (7062/29424)
+2026-10-25T10:18:22.4205236Z Updating files:  25% (7356/29424)
+2026-10-25T10:18:22.4352406Z Updating files:  26% (7651/29424)
+2026-10-25T10:18:22.4514613Z Updating files:  27% (7945/29424)
+2026-10-25T10:18:22.4702097Z Updating files:  28% (8239/29424)
+2026-10-25T10:18:22.4826866Z Updating files:  29% (8533/29424)
+2026-10-25T10:18:22.5053296Z Updating files:  30% (8828/29424)
+2026-10-25T10:18:22.5198784Z Updating files:  31% (9122/29424)
+2026-10-25T10:18:22.5375090Z Updating files:  32% (9416/29424)
+2026-10-25T10:18:22.5534181Z Updating files:  33% (9710/29424)
+2026-10-25T10:18:22.5786590Z Updating files:  34% (10005/29424)
+2026-10-25T10:18:22.6071697Z Updating files:  35% (10299/29424)
+2026-10-25T10:18:22.6416938Z Updating files:  36% (10593/29424)
+2026-10-25T10:18:22.6564255Z Updating files:  37% (10887/29424)
+2026-10-25T10:18:22.6733965Z Updating files:  38% (11182/29424)
+2026-10-25T10:18:22.6884397Z Updating files:  39% (11476/29424)
+2026-10-25T10:18:22.7044701Z Updating files:  40% (11770/29424)
+2026-10-25T10:18:22.7198403Z Updating files:  41% (12064/29424)
+2026-10-25T10:18:22.7311181Z Updating files:  42% (12359/29424)
+2026-10-25T10:18:22.7454373Z Updating files:  43% (12653/29424)
+2026-10-25T10:18:22.7619181Z Updating files:  44% (12947/29424)
+2026-10-25T10:18:22.7783016Z Updating files:  45% (13241/29424)
+2026-10-25T10:18:22.7975419Z Updating files:  46% (13536/29424)
+2026-10-25T10:18:22.8115719Z Updating files:  47% (13830/29424)
+2026-10-25T10:18:22.8274043Z Updating files:  48% (14124/29424)
+2026-10-25T10:18:22.8403325Z Updating files:  49% (14418/29424)
+2026-10-25T10:18:22.8541923Z Updating files:  50% (14712/29424)
+2026-10-25T10:18:22.8706538Z Updating files:  51% (15007/29424)
+2026-10-25T10:18:22.8859977Z Updating files:  52% (15301/29424)
+2026-10-25T10:18:22.9121919Z Updating files:  53% (15595/29424)
+2026-10-25T10:18:22.9261271Z Updating files:  54% (15889/29424)
+2026-10-25T10:18:22.9397345Z Updating files:  55% (16184/29424)
+2026-10-25T10:18:22.9529429Z Updating files:  56% (16478/29424)
+2026-10-25T10:18:22.9664631Z Updating files:  57% (16772/29424)
+2026-10-25T10:18:22.9810050Z Updating files:  58% (17066/29424)
+2026-10-25T10:18:22.9970316Z Updating files:  59% (17361/29424)
+2026-10-25T10:18:23.0133154Z Updating files:  60% (17655/29424)
+2026-10-25T10:18:23.0246771Z Updating files:  61% (17949/29424)
+2026-10-25T10:18:23.0363739Z Updating files:  62% (18243/29424)
+2026-10-25T10:18:23.0491378Z Updating files:  63% (18538/29424)
+2026-10-25T10:18:23.0631956Z Updating files:  64% (18832/29424)
+2026-10-25T10:18:23.0922258Z Updating files:  65% (19126/29424)
+2026-10-25T10:18:23.1109772Z Updating files:  66% (19420/29424)
+2026-10-25T10:18:23.1317112Z Updating files:  67% (19715/29424)
+2026-10-25T10:18:23.1489059Z Updating files:  68% (20009/29424)
+2026-10-25T10:18:23.1636667Z Updating files:  69% (20303/29424)
+2026-10-25T10:18:23.1791056Z Updating files:  70% (20597/29424)
+2026-10-25T10:18:23.1914256Z Updating files:  71% (20892/29424)
+2026-10-25T10:18:23.2045002Z Updating files:  72% (21186/29424)
+2026-10-25T10:18:23.2169071Z Updating files:  73% (21480/29424)
+2026-10-25T10:18:23.2292206Z Updating files:  74% (21774/29424)
+2026-10-25T10:18:23.2434763Z Updating files:  75% (22068/29424)
+2026-10-25T10:18:23.2913570Z Updating files:  76% (22363/29424)
+2026-10-25T10:18:23.3168570Z Updating files:  77% (22657/29424)
+2026-10-25T10:18:23.3553158Z Updating files:  78% (22951/29424)
+2026-10-25T10:18:23.3573981Z Updating files:  78% (23203/29424)
+2026-10-25T10:18:23.3812656Z Updating files:  79% (23245/29424)
+2026-10-25T10:18:23.4058833Z Updating files:  80% (23540/29424)
+2026-10-25T10:18:23.4216165Z Updating files:  81% (23834/29424)
+2026-10-25T10:18:23.4374719Z Updating files:  82% (24128/29424)
+2026-10-25T10:18:23.4596813Z Updating files:  83% (24422/29424)
+2026-10-25T10:18:23.4799915Z Updating files:  84% (24717/29424)
+2026-10-25T10:18:23.5037138Z Updating files:  85% (25011/29424)
+2026-10-25T10:18:23.5298422Z Updating files:  86% (25305/29424)
+2026-10-25T10:18:23.5525824Z Updating files:  87% (25599/29424)
+2026-10-25T10:18:23.5663036Z Updating files:  88% (25894/29424)
+2026-10-25T10:18:23.5831746Z Updating files:  89% (26188/29424)
+2026-10-25T10:18:23.5990265Z Updating files:  90% (26482/29424)
+2026-10-25T10:18:23.6124516Z Updating files:  91% (26776/29424)
+2026-10-25T10:18:23.6314124Z Updating files:  92% (27071/29424)
+2026-10-25T10:18:23.6506911Z Updating files:  93% (27365/29424)
+2026-10-25T10:18:23.6692655Z Updating files:  94% (27659/29424)
+2026-10-25T10:18:23.6899222Z Updating files:  95% (27953/29424)
+2026-10-25T10:18:23.7101976Z Updating files:  96% (28248/29424)
+2026-10-25T10:18:23.7281978Z Updating files:  97% (28542/29424)
+2026-10-25T10:18:23.7459086Z Updating files:  98% (28836/29424)
+2026-10-25T10:18:23.7760962Z Updating files:  99% (29130/29424)
+2026-10-25T10:18:23.7761508Z Updating files: 100% (29424/29424)
+2026-10-25T10:18:23.7761889Z Updating files: 100% (29424/29424), done.
+2026-10-25T10:18:23.8090743Z Switched to a new branch 'codex/tx-clock-phase-parent'
+2026-10-25T10:18:23.8096997Z branch 'codex/tx-clock-phase-parent' set up to track 'origin/codex/tx-clock-phase-parent'.
+2026-10-25T10:18:23.8260497Z ##[endgroup]
+2026-10-25T10:18:23.8310775Z [command]/usr/bin/git log -1 --format=%H
+2026-10-25T10:18:23.8338983Z d4dc336e65c7093a58666c1e73517c9b67e2cd7a
+2026-10-25T10:18:23.8350004Z ##[group]Removing auth
+2026-10-25T10:18:23.8354257Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T10:18:23.8389971Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T10:18:23.8641948Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T10:18:23.8669994Z http.https://github.com/.extraheader
+2026-10-25T10:18:23.8677859Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-25T10:18:23.8712067Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T10:18:23.8952066Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T10:18:23.8984246Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T10:18:23.9216813Z ##[endgroup]
+2026-10-25T10:18:23.9527548Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-25T10:18:23.9527986Z with:
+2026-10-25T10:18:23.9528188Z   python-version: 3.12
+2026-10-25T10:18:23.9528427Z   check-latest: false
+2026-10-25T10:18:23.9530981Z   token: ***
+2026-10-25T10:18:23.9531199Z   update-environment: true
+2026-10-25T10:18:23.9531445Z   allow-prereleases: false
+2026-10-25T10:18:23.9531677Z   freethreaded: false
+2026-10-25T10:18:23.9531889Z ##[endgroup]
+2026-10-25T10:18:24.0858042Z ##[group]Installed versions
+2026-10-25T10:18:24.0949068Z (node:2615) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T10:18:24.0950324Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T10:18:24.0951158Z Successfully set up CPython (3.12.15)
+2026-10-25T10:18:24.0951971Z ##[endgroup]
+2026-10-25T10:18:24.1123828Z ##[group]Run python3 -m pip install numpy==2.3.3
+2026-10-25T10:18:24.1124283Z [36;1mpython3 -m pip install numpy==2.3.3[0m
+2026-10-25T10:18:24.1428509Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T10:18:24.1428881Z env:
+2026-10-25T10:18:24.1429169Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T10:18:24.1429864Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T10:18:24.1430302Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T10:18:24.1430683Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T10:18:24.1431077Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T10:18:24.1431462Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T10:18:24.1431793Z ##[endgroup]
+2026-10-25T10:18:25.1515192Z Collecting numpy==2.3.3
+2026-10-25T10:18:25.2090154Z   Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+2026-10-25T10:18:25.2435945Z Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+2026-10-25T10:18:25.5575714Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 56.5 MB/s  0:00:00
+2026-10-25T10:18:25.6324495Z Installing collected packages: numpy
+2026-10-25T10:18:27.6006135Z Successfully installed numpy-2.3.3
+2026-10-25T10:18:27.6015049Z 
+2026-10-25T10:18:27.6015467Z [notice] A new release of pip is available: 26.2.1 -> 26.2.2
+2026-10-25T10:18:27.6016568Z [notice] To update, run: pip install --upgrade pip
+2026-10-25T10:18:27.6509427Z ##[group]Run if (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi
+2026-10-25T10:18:27.6510058Z [36;1mif (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi[0m
+2026-10-25T10:18:27.6510668Z [36;1mpython3 scripts/cloud_tx_normal_saved_capture.py --controls | tee source-controls.json[0m
+2026-10-25T10:18:27.6511172Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T10:18:27.6511434Z [36;1mimport json[0m
+2026-10-25T10:18:27.6511710Z [36;1mx=json.load(open('source-controls.json'))[0m
+2026-10-25T10:18:27.6512158Z [36;1massert x['status']=='PASS_SOURCE_MATH_AND_TRANSPORT_CONTROLS_ONLY'[0m
+2026-10-25T10:18:27.6512612Z [36;1massert len(x['math']['negative_controls'])==20[0m
+2026-10-25T10:18:27.6512977Z [36;1massert len(x['strict_archive_faults'])==11[0m
+2026-10-25T10:18:27.6513333Z [36;1massert len(x['metadata']['rejected'])==23[0m
+2026-10-25T10:18:27.6513677Z [36;1massert x['native_simulation'] is False[0m
+2026-10-25T10:18:27.6513973Z [36;1mPYCODE[0m
+2026-10-25T10:18:27.6514446Z [36;1mpython3 scripts/wait_cloud_tested_source_release.py --controls > release-wait-controls.json[0m
+2026-10-25T10:18:27.6514951Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T10:18:27.6515205Z [36;1mimport json[0m
+2026-10-25T10:18:27.6515498Z [36;1mx=json.load(open('release-wait-controls.json'))[0m
+2026-10-25T10:18:27.6516217Z [36;1massert x['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'[0m
+2026-10-25T10:18:27.6516704Z [36;1massert len(x['positive_cases'])==3 and len(x['rejected'])==4[0m
+2026-10-25T10:18:27.6517301Z [36;1massert x['maximum_scheduled_wait_s']==300 and not x['creation_attempted'] and not x['native_executed'][0m
+2026-10-25T10:18:27.6517838Z [36;1mprint(json.dumps(x,indent=2))[0m
+2026-10-25T10:18:27.6518133Z [36;1mPYCODE[0m
+2026-10-25T10:18:27.6584411Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T10:18:27.6584766Z env:
+2026-10-25T10:18:27.6585047Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T10:18:27.6585514Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T10:18:27.6586210Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T10:18:27.6586652Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T10:18:27.6587049Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T10:18:27.6587457Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T10:18:27.6587795Z ##[endgroup]
+2026-10-25T10:18:27.8516826Z {
+2026-10-25T10:18:27.8517451Z   "status": "PASS_SOURCE_MATH_AND_TRANSPORT_CONTROLS_ONLY",
+2026-10-25T10:18:27.8517841Z   "math": {
+2026-10-25T10:18:27.8518131Z     "status": "PASS_SYNTHETIC_SAME_ROW_MATH_CONTROLS_ONLY",
+2026-10-25T10:18:27.8518551Z     "negative_controls": [
+2026-10-25T10:18:27.8519231Z       "before",
+2026-10-25T10:18:27.8519495Z       "after",
+2026-10-25T10:18:27.8519837Z       "nan_time",
+2026-10-25T10:18:27.8520222Z       "duplicate_time",
+2026-10-25T10:18:27.8520644Z       "reverse_time",
+2026-10-25T10:18:27.8521039Z       "missing_hbt_current",
+2026-10-25T10:18:27.8521451Z       "wrong_nx",
+2026-10-25T10:18:27.8521795Z       "wrong_model",
+2026-10-25T10:18:27.8522155Z       "missing_substrate",
+2026-10-25T10:18:27.8522548Z       "row_outside",
+2026-10-25T10:18:27.8522894Z       "wrong_sign",
+2026-10-25T10:18:27.8523248Z       "missing_parallel",
+2026-10-25T10:18:27.8523635Z       "aliased_parallel",
+2026-10-25T10:18:27.8524005Z       "shared_leg",
+2026-10-25T10:18:27.8524359Z       "nonfinite_crossing",
+2026-10-25T10:18:27.8524754Z       "crossing_outside",
+2026-10-25T10:18:27.8525150Z       "wrong_crossing_shape",
+2026-10-25T10:18:27.8525560Z       "wrong_segment_shape",
+2026-10-25T10:18:27.8526224Z       "unadmitted_end_truncation",
+2026-10-25T10:18:27.8526694Z       "nonfinite_ui_context"
+2026-10-25T10:18:27.8527093Z     ],
+2026-10-25T10:18:27.8527323Z     "native_capture_read": false,
+2026-10-25T10:18:27.8527620Z     "original_failure_replayed": false,
+2026-10-25T10:18:27.8528148Z     "readback_authorized": false
+2026-10-25T10:18:27.8528416Z   },
+2026-10-25T10:18:27.8528610Z   "parts": {
+2026-10-25T10:18:27.8528845Z     "positive_roundtrip": true,
+2026-10-25T10:18:27.8529113Z     "negative_controls": 6,
+2026-10-25T10:18:27.8529399Z     "all_native_payload_bytes_preserved": true
+2026-10-25T10:18:27.8529694Z   },
+2026-10-25T10:18:27.8529892Z   "selected_archive": {
+2026-10-25T10:18:27.8530162Z     "exact_native_payload_roundtrip": true,
+2026-10-25T10:18:27.8530454Z     "negative_controls": [
+2026-10-25T10:18:27.8530697Z       "missing",
+2026-10-25T10:18:27.8530916Z       "wrong_selected_hash",
+2026-10-25T10:18:27.8531154Z       "order",
+2026-10-25T10:18:27.8531354Z       "whole_hash",
+2026-10-25T10:18:27.8531575Z       "selection_escape",
+2026-10-25T10:18:27.8531811Z       "symlink",
+2026-10-25T10:18:27.8532017Z       "traversal",
+2026-10-25T10:18:27.8532223Z       "wrong_root"
+2026-10-25T10:18:27.8532424Z     ]
+2026-10-25T10:18:27.8532609Z   },
+2026-10-25T10:18:27.8532820Z   "strict_archive_faults": [
+2026-10-25T10:18:27.8533071Z     "missing_inventory",
+2026-10-25T10:18:27.8533308Z     "extra_inventory",
+2026-10-25T10:18:27.8533544Z     "changed_unselected_bytes",
+2026-10-25T10:18:27.8533799Z     "unknown_selection",
+2026-10-25T10:18:27.8534026Z     "traversal",
+2026-10-25T10:18:27.8534234Z     "absolute",
+2026-10-25T10:18:27.8534437Z     "backslash",
+2026-10-25T10:18:27.8534637Z     "wrong_root",
+2026-10-25T10:18:27.8534847Z     "symlink",
+2026-10-25T10:18:27.8535049Z     "hardlink",
+2026-10-25T10:18:27.8535279Z     "noncanonical"
+2026-10-25T10:18:27.8535493Z   ],
+2026-10-25T10:18:27.8535691Z   "publication": {
+2026-10-25T10:18:27.8536270Z     "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+2026-10-25T10:18:27.8536895Z     "rejected": [
+2026-10-25T10:18:27.8537301Z       "local-context",
+2026-10-25T10:18:27.8537743Z       "other-repo",
+2026-10-25T10:18:27.8538248Z       "missing-source",
+2026-10-25T10:18:27.8538677Z       "mutable-source",
+2026-10-25T10:18:27.8539108Z       "invalid-run",
+2026-10-25T10:18:27.8539514Z       "invalid-attempt",
+2026-10-25T10:18:27.8539941Z       "invalid-group",
+2026-10-25T10:18:27.8540390Z       "different-release-target",
+2026-10-25T10:18:27.8540953Z       "different-tag-object",
+2026-10-25T10:18:27.8541413Z       "annotated-tag",
+2026-10-25T10:18:27.8541876Z       "different-tag-name",
+2026-10-25T10:18:27.8542310Z       "draft-release",
+2026-10-25T10:18:27.8542724Z       "production-release",
+2026-10-25T10:18:27.8543183Z       "duplicate-asset-name",
+2026-10-25T10:18:27.8543643Z       "asset-digest-missing",
+2026-10-25T10:18:27.8544113Z       "preexisting-wrong-tag",
+2026-10-25T10:18:27.8544609Z       "read-denied-never-creates"
+2026-10-25T10:18:27.8545048Z     ],
+2026-10-25T10:18:27.8545445Z     "existing_partial_assets_preserved": true,
+2026-10-25T10:18:27.8546590Z     "existing_release_not_recreated": true,
+2026-10-25T10:18:27.8547136Z     "new_release_uses_tested_sha": true,
+2026-10-25T10:18:27.8547672Z     "no_permissions_expanded": true
+2026-10-25T10:18:27.8548138Z   },
+2026-10-25T10:18:27.8548470Z   "metadata": {
+2026-10-25T10:18:27.8548863Z     "actual_metadata_positives": {
+2026-10-25T10:18:27.8549328Z       "native_source": {
+2026-10-25T10:18:27.8549739Z         "identity": {
+2026-10-25T10:18:27.8550122Z           "source_run": {
+2026-10-25T10:18:27.8550531Z             "id": 40168554741,
+2026-10-25T10:18:27.8550959Z             "run_attempt": 1,
+2026-10-25T10:18:27.8551411Z             "status": "completed",
+2026-10-25T10:18:27.8551885Z             "conclusion": "failure",
+2026-10-25T10:18:27.8552453Z             "head_sha": "2e63863abb0309c245d89e2a3d4934fe40a2b2ed",
+2026-10-25T10:18:27.8553126Z             "head_branch": "codex/tx-via3-rail-diagnosis",
+2026-10-25T10:18:27.8554063Z             "path": ".github/workflows/tx-output8088-branchtailfeed-native-continuation-cloud.yml"
+2026-10-25T10:18:27.8554947Z           },
+2026-10-25T10:18:27.8555336Z           "publication": {
+2026-10-25T10:18:27.8556680Z             "tag": "cloud-results-40168554741-1-tx-output8088-branchtailfeed-native-cross-none",
+2026-10-25T10:18:27.8557747Z             "tested_source": "2e63863abb0309c245d89e2a3d4934fe40a2b2ed",
+2026-10-25T10:18:27.8558397Z             "release_id": 423184197,
+2026-10-25T10:18:27.8558868Z             "existing_assets": [
+2026-10-25T10:18:27.8559306Z               {
+2026-10-25T10:18:27.8559665Z                 "id": 674312915,
+2026-10-25T10:18:27.8560464Z                 "name": "tx-output8088-branchtailfeed-native-cross-none-40168554741-1.parts.json",
+2026-10-25T10:18:27.8561339Z                 "bytes": 2340,
+2026-10-25T10:18:27.8562088Z                 "digest": "sha256:91b79f0085d1f44dbfd10ba40e5b1648eeb926380423947ef92d05c3c4f2a01e"
+2026-10-25T10:18:27.8562871Z               },
+2026-10-25T10:18:27.8563244Z               {
+2026-10-25T10:18:27.8563592Z                 "id": 674312838,
+2026-10-25T10:18:27.8564417Z                 "name": "tx-output8088-branchtailfeed-native-cross-none-40168554741-1.summary.json",
+2026-10-25T10:18:27.8565325Z                 "bytes": 2616848,
+2026-10-25T10:18:27.8566372Z                 "digest": "sha256:c131efdcef18e4c35d0a034e524241356878cc34c95452819078179b80f9c372"
+2026-10-25T10:18:27.8567143Z               },
+2026-10-25T10:18:27.8567493Z               {
+2026-10-25T10:18:27.8567858Z                 "id": 674313038,
+2026-10-25T10:18:27.8568719Z                 "name": "tx-output8088-branchtailfeed-native-cross-none-40168554741-1.tar.gz.part0000",
+2026-10-25T10:18:27.8569636Z                 "bytes": 1073741824,
+2026-10-25T10:18:27.8570396Z                 "digest": "sha256:74f836b7316db1dee2cc1eb5999920a9430f56f713ba2f218f0154dc4e7866d9"
+2026-10-25T10:18:27.8571188Z               },
+2026-10-25T10:18:27.8571529Z               {
+2026-10-25T10:18:27.8571876Z                 "id": 674313896,
+2026-10-25T10:18:27.8572729Z                 "name": "tx-output8088-branchtailfeed-native-cross-none-40168554741-1.tar.gz.part0001",
+2026-10-25T10:18:27.8573652Z                 "bytes": 1073741824,
+2026-10-25T10:18:27.8574410Z                 "digest": "sha256:30f2184dc8ea722bc827afe777f54dc54f8db09fcac821fdb27d6e43fbb58879"
+2026-10-25T10:18:27.8575210Z               },
+2026-10-25T10:18:27.8575544Z               {
+2026-10-25T10:18:27.8575891Z                 "id": 674314849,
+2026-10-25T10:18:27.8576957Z                 "name": "tx-output8088-branchtailfeed-native-cross-none-40168554741-1.tar.gz.part0002",
+2026-10-25T10:18:27.8577877Z                 "bytes": 1073741824,
+2026-10-25T10:18:27.8578632Z                 "digest": "sha256:4ddc84af49934c66155d8d89b1774e3e3f40a5815433068ff428e96036adf4ee"
+2026-10-25T10:18:27.8579406Z               },
+2026-10-25T10:18:27.8579798Z               {
+2026-10-25T10:18:27.8580162Z                 "id": 674315871,
+2026-10-25T10:18:27.8581044Z                 "name": "tx-output8088-branchtailfeed-native-cross-none-40168554741-1.tar.gz.part0003",
+2026-10-25T10:18:27.8582250Z                 "bytes": 1073741824,
+2026-10-25T10:18:27.8583151Z                 "digest": "sha256:ee2d0a95b10cf34d13f0046bc23c657e9986f342c75620164ee3decf1ac3b21c"
+2026-10-25T10:18:27.8583992Z               },
+2026-10-25T10:18:27.8584424Z               {
+2026-10-25T10:18:27.8584854Z                 "id": 674316804,
+2026-10-25T10:18:27.8585742Z                 "name": "tx-output8088-branchtailfeed-native-cross-none-40168554741-1.tar.gz.part0004",
+2026-10-25T10:18:27.8586991Z                 "bytes": 1073741824,
+2026-10-25T10:18:27.8587803Z                 "digest": "sha256:570c2a09c0e343e303742a2c96eaf7a133078c263cbaaa9dd34a69f8fd4ad57b"
+2026-10-25T10:18:27.8588607Z               },
+2026-10-25T10:18:27.8589022Z               {
+2026-10-25T10:18:27.8589406Z                 "id": 674317824,
+2026-10-25T10:18:27.8590276Z                 "name": "tx-output8088-branchtailfeed-native-cross-none-40168554741-1.tar.gz.part0005",
+2026-10-25T10:18:27.8591236Z                 "bytes": 1073741824,
+2026-10-25T10:18:27.8592015Z                 "digest": "sha256:f4cc7f9f1a2f116ada779b9d37292f06bc8a7dc7608e7a39a10bf9b8999fbba6"
+2026-10-25T10:18:27.8593097Z               },
+2026-10-25T10:18:27.8593543Z               {
+2026-10-25T10:18:27.8593956Z                 "id": 674318973,
+2026-10-25T10:18:27.8594891Z                 "name": "tx-output8088-branchtailfeed-native-cross-none-40168554741-1.tar.gz.part0006",
+2026-10-25T10:18:27.8595860Z                 "bytes": 599216790,
+2026-10-25T10:18:27.8596967Z                 "digest": "sha256:c210cf3249cb393111ed3420a3538280334e208db77d57a8637000393254bbee"
+2026-10-25T10:18:27.8597762Z               }
+2026-10-25T10:18:27.8598101Z             ],
+2026-10-25T10:18:27.8598468Z             "target_verified": true,
+2026-10-25T10:18:27.8598959Z             "assets_overwritten": false
+2026-10-25T10:18:27.8599428Z           },
+2026-10-25T10:18:27.8599841Z           "tested_source_is_release_target": true
+2026-10-25T10:18:27.8600391Z         },
+2026-10-25T10:18:27.8600730Z         "parts": 7
+2026-10-25T10:18:27.8601092Z       },
+2026-10-25T10:18:27.8601457Z       "prepared_source": {
+2026-10-25T10:18:27.8601882Z         "identity": {
+2026-10-25T10:18:27.8602287Z           "source_run": {
+2026-10-25T10:18:27.8602686Z             "id": 40085025627,
+2026-10-25T10:18:27.8603122Z             "run_attempt": 1,
+2026-10-25T10:18:27.8603580Z             "status": "completed",
+2026-10-25T10:18:27.8604049Z             "conclusion": "success",
+2026-10-25T10:18:27.8604632Z             "head_sha": "78b185040777ba65f93d1199295b4dfd52dea476",
+2026-10-25T10:18:27.8605307Z             "head_branch": "codex/tx-via3-rail-diagnosis",
+2026-10-25T10:18:27.8606421Z             "path": ".github/workflows/tx-output8088-branchtailfeed-prepared-cloud.yml"
+2026-10-25T10:18:27.8607165Z           },
+2026-10-25T10:18:27.8607531Z           "publication_container": {
+2026-10-25T10:18:27.8607995Z             "release_id": 422667392,
+2026-10-25T10:18:27.8608936Z             "tag": "cloud-results-40085025627-1-tx-output8088-branchtailfeed-prepared-wire-nominal-none",
+2026-10-25T10:18:27.8609999Z             "target_commitish": "codex/complete-open-work",
+2026-10-25T10:18:27.8610678Z             "tag_commit": "47080043bb505d4eb0e1410fb6459b62b8a270e1"
+2026-10-25T10:18:27.8611233Z           },
+2026-10-25T10:18:27.8611636Z           "tested_source_is_release_target": false,
+2026-10-25T10:18:27.8612690Z           "source_evidence": "Exact successful run, summary and prior native model/parts hashes; legacy tag is not source attestation"
+2026-10-25T10:18:27.8613681Z         },
+2026-10-25T10:18:27.8614014Z         "parts": 1
+2026-10-25T10:18:27.8614360Z       }
+2026-10-25T10:18:27.8614878Z     },
+2026-10-25T10:18:27.8615208Z     "rejected": [
+2026-10-25T10:18:27.8615584Z       "native_source:id",
+2026-10-25T10:18:27.8616206Z       "native_source:run_attempt",
+2026-10-25T10:18:27.8616744Z       "native_source:status",
+2026-10-25T10:18:27.8617450Z       "native_source:conclusion",
+2026-10-25T10:18:27.8617910Z       "native_source:head_sha",
+2026-10-25T10:18:27.8618357Z       "native_source:head_branch",
+2026-10-25T10:18:27.8618824Z       "native_source:path",
+2026-10-25T10:18:27.8619275Z       "native_source:release_id",
+2026-10-25T10:18:27.8619740Z       "native_source:release_target",
+2026-10-25T10:18:27.8620217Z       "native_source:tag_commit",
+2026-10-25T10:18:27.8620682Z       "prepared_source:actual_run_source",
+2026-10-25T10:18:27.8621259Z       "prepared_source:container_id",
+2026-10-25T10:18:27.8621792Z       "prepared_source:container_target",
+2026-10-25T10:18:27.8622343Z       "prepared_source:container_commit",
+2026-10-25T10:18:27.8622879Z       "prepared_source:container_draft",
+2026-10-25T10:18:27.8623387Z       "native_source:part_id",
+2026-10-25T10:18:27.8623847Z       "native_source:part_size",
+2026-10-25T10:18:27.8624320Z       "native_source:part_digest",
+2026-10-25T10:18:27.8624791Z       "native_source:part_name",
+2026-10-25T10:18:27.8625268Z       "prepared_source:part_id",
+2026-10-25T10:18:27.8625736Z       "prepared_source:part_size",
+2026-10-25T10:18:27.8626662Z       "prepared_source:part_digest",
+2026-10-25T10:18:27.8627456Z       "prepared_source:part_name"
+2026-10-25T10:18:27.8627964Z     ]
+2026-10-25T10:18:27.8628336Z   },
+2026-10-25T10:18:27.8628707Z   "readback_authorized": false,
+2026-10-25T10:18:27.8629254Z   "native_simulation": false
+2026-10-25T10:18:27.8629756Z }
+2026-10-25T10:18:27.9401875Z {
+2026-10-25T10:18:27.9402449Z   "status": "PASS_READ_ONLY_RELEASE_WAIT_CONTROLS",
+2026-10-25T10:18:27.9403098Z   "positive_cases": [
+2026-10-25T10:18:27.9403528Z     {
+2026-10-25T10:18:27.9403945Z       "absent_reads": 0,
+2026-10-25T10:18:27.9404448Z       "exact_release_accepted": true
+2026-10-25T10:18:27.9404962Z     },
+2026-10-25T10:18:27.9405290Z     {
+2026-10-25T10:18:27.9405664Z       "absent_reads": 2,
+2026-10-25T10:18:27.9406376Z       "exact_release_accepted": true
+2026-10-25T10:18:27.9406927Z     },
+2026-10-25T10:18:27.9407352Z     {
+2026-10-25T10:18:27.9407762Z       "absent_reads": 60,
+2026-10-25T10:18:27.9408232Z       "exact_release_accepted": true
+2026-10-25T10:18:27.9408751Z     }
+2026-10-25T10:18:27.9409184Z   ],
+2026-10-25T10:18:27.9409580Z   "rejected": [
+2026-10-25T10:18:27.9410049Z     "bounded-missing-reservation",
+2026-10-25T10:18:27.9410635Z     "API-denied-not-retried",
+2026-10-25T10:18:27.9411179Z     "different-release-source",
+2026-10-25T10:18:27.9411720Z     "different-tag-object"
+2026-10-25T10:18:27.9412180Z   ],
+2026-10-25T10:18:27.9412539Z   "maximum_missing_reads": 61,
+2026-10-25T10:18:27.9412984Z   "maximum_scheduled_wait_s": 300,
+2026-10-25T10:18:27.9413537Z   "creation_attempted": false,
+2026-10-25T10:18:27.9414038Z   "native_executed": false
+2026-10-25T10:18:27.9414525Z }
+2026-10-25T10:18:27.9536921Z Post job cleanup.
+2026-10-25T10:18:28.0742929Z (node:2671) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T10:18:28.0743836Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T10:18:28.1019949Z Post job cleanup.
+2026-10-25T10:18:28.1905063Z [command]/usr/bin/git version
+2026-10-25T10:18:28.1948389Z git version 2.55.0
+2026-10-25T10:18:28.1985700Z Temporarily overriding HOME='/home/runner/work/_temp/3f8def83-1a42-496b-a21f-92fc254cfcac' before making global git config changes
+2026-10-25T10:18:28.1987736Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T10:18:28.1991593Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T10:18:28.2029760Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T10:18:28.2066308Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T10:18:28.2346972Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T10:18:28.2383466Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T10:18:28.2761033Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T10:18:28.2818612Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T10:18:28.3236680Z Cleaning up orphan processes
+2026-10-25T10:18:28.3616677Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
