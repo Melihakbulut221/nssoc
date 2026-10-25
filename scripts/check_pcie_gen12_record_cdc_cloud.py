@@ -180,11 +180,15 @@ def controls():
         reset_nodes=next(n for n in ast.walk(ast.parse(c.HARNESS.read_text()))
                          if isinstance(n,ast.AsyncFunctionDef)and n.name=='reset')
         direct_assertions=[n for n in reset_nodes.body if isinstance(n,ast.Assert)]
-        assert [n.lineno for n in direct_assertions]==[206,207]
+        assert [n.lineno for n in direct_assertions]==[206,207,216]
+        post_reset_assertion=direct_assertions[2]
+        direct_assertions=direct_assertions[:2]
         reset_proofs=[]
         for reset_name in ('ignore_write_reset','ignore_read_reset'):
             reset_mutation=next(x for x in mutations if x['name']==reset_name)
             reset_sites=c.assertion_sites(reset_mutation)
+            assert (str(c.HARNESS.resolve()),216)not in reset_sites
+            assert c.assertion_site(post_reset_assertion,reset_name)is None
             for node in direct_assertions:
                 reset_origin=(str(c.HARNESS.resolve()),node.lineno)
                 assert reset_origin in reset_sites
@@ -197,7 +201,8 @@ def controls():
                 assert sum(x['disposition']=='DETECTED_ASSERTION'for x in rows)==1
                 reset_proofs.append(dict(mutation=reset_name,source=list(reset_origin),
                                          expression=ast.unparse(node.test)))
-        found['actual_reset_predicates_both_mutants']={'passed':True,'sites':reset_proofs}
+        found['actual_reset_predicates_both_mutants']={'passed':True,'sites':reset_proofs,
+            'unlisted_post_reset_assertion_line':216,'unlisted_assertion_remains_unqualified':True}
         for reset_name in ('ignore_write_reset','ignore_read_reset'):
             for text in [
                 "assert not self.value('rv') and not self.value('wa')",

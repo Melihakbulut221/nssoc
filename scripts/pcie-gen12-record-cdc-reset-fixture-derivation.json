@@ -1,0 +1,41 @@
+{
+  "actual_direct_reset_assertion_lines": [
+    206,
+    207,
+    216
+  ],
+  "after_sha256": "1646b734acdd8b920361e9758d808ff797f31b04d7fb261f3bd7b9a46f7a414e",
+  "before_sha256": "a55972638ab6181d6c90ffce332aaa308e13ac90fbdeb0a42bf010b1fa57c72e",
+  "classifier_groups": 63,
+  "controller_and_harness_unchanged": true,
+  "exact_reversible_edits": [
+    {
+      "after": "        assert [n.lineno for n in direct_assertions]==[206,207,216]\n        post_reset_assertion=direct_assertions[2]\n        direct_assertions=direct_assertions[:2]\n",
+      "before": "        assert [n.lineno for n in direct_assertions]==[206,207]\n",
+      "count": 1
+    },
+    {
+      "after": "            reset_sites=c.assertion_sites(reset_mutation)\n            assert (str(c.HARNESS.resolve()),216)not in reset_sites\n            assert c.assertion_site(post_reset_assertion,reset_name)is None\n",
+      "before": "            reset_sites=c.assertion_sites(reset_mutation)\n",
+      "count": 1
+    },
+    {
+      "after": "        found['actual_reset_predicates_both_mutants']={'passed':True,'sites':reset_proofs,\n            'unlisted_post_reset_assertion_line':216,'unlisted_assertion_remains_unqualified':True}\n",
+      "before": "        found['actual_reset_predicates_both_mutants']={'passed':True,'sites':reset_proofs}\n",
+      "count": 1
+    }
+  ],
+  "failed_result_sha256": "b3fee8396dd3dbc560524dcc723692012e7373704236454d22f30b320de29ad8",
+  "failed_run": 40200111070,
+  "failed_source": "760d7221d05cb62fe719c2bb666c0419d53987d0",
+  "hosted_controls_executed": false,
+  "new_dispatch_authorized": false,
+  "path": "scripts/check_pcie_gen12_record_cdc_cloud.py",
+  "post_reset_line216_must_remain_unqualified": true,
+  "qualified_reset_predicate_lines": [
+    206,
+    207
+  ],
+  "schema": "cdc-reset-fixture-inventory-source-correction-v1",
+  "source_AST_inspection_only": true
+}
