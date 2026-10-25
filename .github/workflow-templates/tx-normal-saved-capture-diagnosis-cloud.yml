@@ -37,6 +37,8 @@ jobs:
           assert x['status']=='PASS_SOURCE_MATH_AND_TRANSPORT_CONTROLS_ONLY'
           assert len(x['math']['negative_controls'])==20
           assert len(x['strict_archive_faults'])==11
+          assert len(x['publication_addon_controls']['rejected'])==13
+          assert x['publication_addon_controls']['required_additions']==['criu-build.log']
           assert len(x['metadata']['rejected'])==23
           assert x['native_simulation'] is False
           PYCODE

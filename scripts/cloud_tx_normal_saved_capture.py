@@ -283,7 +283,7 @@ def addon_controls(m):
         reject('missing_required_addition',lambda:audit_complete(missing,root,root/'missing',expected,{'a'},names))
         # Recreate controlled authenticated archives to prove duplicates, extras and links still fail.
         def archive_fault(label,entries):
-            packed=root/(label+'.tar.gz')
+            packed=root/(label+'.tar.gz.part0000')
             with tarfile.open(packed,'w:gz')as tar:
                 for path,data,kind in entries:
                     entry=tarfile.TarInfo('fixture/'+path);entry.type=kind
@@ -292,6 +292,7 @@ def addon_controls(m):
             size=packed.stat().st_size;h=sha(packed)
             fm=dict(format='ordered-tar-gzip-parts-v1',stem=label,source_directory='fixture',bytes=size,sha256=h,
                     parts=[dict(index=0,name=packed.name,bytes=size,sha256=h)])
+            verify_parts(fm,root) # The corrupt member, not a malformed part filename, must cause rejection.
             reject(label,lambda:audit_complete(fm,root,root/('out-'+label),expected,{'a'},names))
         base=[('a',b'original',tarfile.REGTYPE),('criu-build.log',b'build',tarfile.REGTYPE)]
         archive_fault('unknown_extra',[*base,('other.log',b'unknown',tarfile.REGTYPE)])
