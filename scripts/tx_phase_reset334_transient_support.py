@@ -159,7 +159,7 @@ def gate(row,c):
     capture=row.get('capture',{})
     answer['checks'].update(one_zero_OP=row.get('zero_source_op',{}).get('rows')==1,
       exact_native_vector_identity=capture.get('logical_vector_order')is not None and
-        len(capture.get('logical_vector_order',[]))==4727 and set(capture.get('logical_vector_order',[]))=={'time',*c['vectors']},
+        len(capture.get('logical_vector_order',[]))==4727 and capture['logical_vector_order'][0]=='time' and set(capture.get('logical_vector_order',[]))=={'time',*c['vectors']},
       original34ns=capture.get('start_s')==0 and capture.get('end_s')is not None and abs(capture['end_s']-34e-9)<1e-18,
       unchanged_native_maxstep=capture.get('max_step_s')is not None and 0<capture['max_step_s']<=.3125e-12*1.00001)
     answer['passed']=all(answer['checks'].values());answer.update(FLAGS)

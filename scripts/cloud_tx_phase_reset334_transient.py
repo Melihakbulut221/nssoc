@@ -277,7 +277,7 @@ def main():
             target=docker_root/'containers'/ident/'checkpoints/state'
             run('default-checkpoint-parent',['sudo','mkdir','-p',str(target.parent)])
             run('copy-checkpoint',['sudo','cp','-a',str(images),str(target)])
-            compare="import pathlib,hashlib,sys;scan=lambda d:{str(p.relative_to(d)):hashlib.sha256(p.read_bytes()).hexdigest()for p in d.rglob('*')if p.is_file()};assert scan(pathlib.Path(sys.argv[1]))==scan(pathlib.Path(sys.argv[2]))"
+            compare="import pathlib,hashlib,sys\ndef sha(path):\n    with path.open('rb') as stream:\n        return hashlib.file_digest(stream, 'sha256').hexdigest()\nscan=lambda d:{str(p.relative_to(d)):sha(p)for p in d.rglob('*')if p.is_file()}\nassert scan(pathlib.Path(sys.argv[1]))==scan(pathlib.Path(sys.argv[2]))"
             run('checkpoint-copy-proof',['sudo','python3','-c',compare,str(images),str(target)])
             q=run('restore-native',['docker','start','--checkpoint','state',name],False)
             if q.returncode:

@@ -49,8 +49,8 @@ jobs:
           import json
           d=json.load(open('controls.json'))
           assert d['status']=='PASS_PHYSICAL334_TRANSIENT_SOURCE_CONTROLS_NOT_DUT_ACCEPTANCE'
-          assert len(d['negative_controls'])==44 and d['portable_controls']['count']==22
-          assert d['reversible_source_derivation']['reversible_edits']==27
+          assert len(d['negative_controls'])==48 and d['portable_controls']['count']==22
+          assert d['reversible_source_derivation']['reversible_edits']==28
           assert not d['native_simulator_invoked'] and not d['transient_executed']
           print(json.dumps(d,indent=2))
           PY

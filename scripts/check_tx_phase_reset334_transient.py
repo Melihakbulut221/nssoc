@@ -37,6 +37,36 @@ def derivation():
         assert ast.get_source_segment(original,a)==ast.get_source_segment(candidate,b)
         preserved['main.'+name]=support.digest(ast.get_source_segment(original,a))
     return dict(reversible_edits=len(d['edits']),preserved_functions=preserved,no_native_execution=True)
+def copy_controls():
+    import subprocess,sys,tempfile
+    source=(ROOT/'scripts/cloud_tx_phase_reset334_transient.py').read_text()
+    assignments=[n for n in ast.walk(ast.parse(source))if isinstance(n,ast.Assign)and
+      any(isinstance(t,ast.Name)and t.id=='compare'for t in n.targets)]
+    assert len(assignments)==1
+    program=ast.literal_eval(assignments[0].value)
+    pinned=(ROOT/'scripts/run_cloud_tx_layout_repair.py').read_text()
+    a=next(n for n in ast.parse(pinned).body if isinstance(n,ast.FunctionDef)and n.name=='sha')
+    b=next(n for n in ast.parse(program).body if isinstance(n,ast.FunctionDef)and n.name=='sha')
+    assert ast.get_source_segment(pinned,a)==ast.get_source_segment(program,b)
+    bad=[]
+    with tempfile.TemporaryDirectory(dir=ROOT)as directory:
+        left=Path(directory)/'left';right=Path(directory)/'right'
+        for root in (left,right):
+            (root/'nested').mkdir(parents=True)
+            (root/'pages.img').write_bytes(bytes(range(256))*32)
+            (root/'nested/core.img').write_bytes(b'actual full inventory\n')
+        def check():return subprocess.run([sys.executable,'-c',program,str(left),str(right)],capture_output=True).returncode
+        assert check()==0
+        for fault in ('checkpoint-changed-byte','checkpoint-missing-file','checkpoint-extra-file'):
+            (right/'pages.img').write_bytes((left/'pages.img').read_bytes())
+            (right/'nested/core.img').write_bytes((left/'nested/core.img').read_bytes())
+            extra=right/'extra.img'
+            if extra.exists():extra.unlink()
+            if fault=='checkpoint-changed-byte':(right/'pages.img').write_bytes(b'changed'+(left/'pages.img').read_bytes())
+            elif fault=='checkpoint-missing-file':(right/'nested/core.img').unlink()
+            else:extra.write_bytes(b'extra')
+            assert check()!=0,fault;bad.append(fault)
+    return bad
 def positive_fixture():
     names=['xdut.xd'+str(i)for i in range(318)]
     c=dict(hbt={n:{}for n in names},vectors=['v(n'+str(i)+')'for i in range(4726)],
@@ -118,6 +148,7 @@ def controls():
       ('extra-OP-row',lambda r:r['zero_source_op'].update(rows=2)),
       ('partial-capture',lambda r:r['capture'].update(complete_unmodified_rows=False)),
       ('missing-saved-vector',lambda r:r['capture']['logical_vector_order'].pop()),
+      ('time-not-column-zero',lambda r:r['capture']['logical_vector_order'].reverse()),
       ('short-transient',lambda r:r['capture'].update(end_s=33e-9)),
       ('relaxed-step',lambda r:r['capture'].update(max_step_s=1e-12)),
       ('retained-diagnostic',lambda r:r.update(diagnostics=['warning'])),
@@ -131,7 +162,8 @@ def controls():
     for key in identity:
         other=copy.deepcopy(identity);other[key]=['different']if isinstance(other[key],list)else'different'
         faults.append(rejected('runtime-'+key,lambda:support.compatible(identity,other)))
-    assert len(faults)==44
+    faults.extend(copy_controls())
+    assert len(faults)==48
     return dict(status='PASS_PHYSICAL334_TRANSIENT_SOURCE_CONTROLS_NOT_DUT_ACCEPTANCE',
       reversible_source_derivation=der,inherited_zero_OP_controls=old,portable_controls=portable,
       negative_controls=faults,protected_files=len(m['protected']),source_fixture_is_synthetic=True,

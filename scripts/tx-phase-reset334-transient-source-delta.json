@@ -4,7 +4,7 @@
   "baseline_path": "scripts/frozen_tx8088_branchtailfeed_native.py",
   "baseline_sha256": "e10466f715a933a79444b3f27525f0c2e16275d6fd071f428816a87786842ab6",
   "candidate_path": "scripts/cloud_tx_phase_reset334_transient.py",
-  "candidate_sha256": "e6ba27811f488d653a0b85be8882b87e5ebceba88f45ebcce303987b3b4f39ad",
+  "candidate_sha256": "6d803dadfee103b9fb0fd8b9e2e22a9464c583c7e1152d43c7639d3edc4fc20c",
   "edits": [
     {
       "before": "Run the unchanged full8088 TX transient with durable native process capsules.",
@@ -139,6 +139,11 @@
     {
       "before": "Native TX process restore failed",
       "after": "Native three-model process restore failed",
+      "count": 1
+    },
+    {
+      "before": "            compare=\"import pathlib,hashlib,sys;scan=lambda d:{str(p.relative_to(d)):hashlib.sha256(p.read_bytes()).hexdigest()for p in d.rglob('*')if p.is_file()};assert scan(pathlib.Path(sys.argv[1]))==scan(pathlib.Path(sys.argv[2]))\"",
+      "after": "            compare=\"import pathlib,hashlib,sys\\ndef sha(path):\\n    with path.open('rb') as stream:\\n        return hashlib.file_digest(stream, 'sha256').hexdigest()\\nscan=lambda d:{str(p.relative_to(d)):sha(p)for p in d.rglob('*')if p.is_file()}\\nassert scan(pathlib.Path(sys.argv[1]))==scan(pathlib.Path(sys.argv[2]))\"",
       "count": 1
     }
   ],
