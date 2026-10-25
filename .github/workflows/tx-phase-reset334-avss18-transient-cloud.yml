@@ -1,0 +1,14 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-avss18-transient-cloud
+on:
+  push:
+    branches: [codex/register-phase334-avss18-transient-20261025]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - run: echo 'Manual workflow registration only; no checkout or project execution'
