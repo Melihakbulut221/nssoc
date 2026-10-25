@@ -1,0 +1,86 @@
+{
+  "schema": "phase318-return-ledger-terminal-rejection-v1",
+  "run": {
+    "id": 40195581462,
+    "head_sha": "6b831923d5e31631e894aad11a1c95c31cd44050",
+    "status": "completed",
+    "conclusion": "failure",
+    "run_attempt": 1,
+    "created_at": "2026-10-25T12:59:41Z",
+    "updated_at": "2026-10-25T13:03:27Z",
+    "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40195581462"
+  },
+  "jobs": [
+    {
+      "id": 121175593506,
+      "name": "source-controls",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-25T12:59:46Z",
+      "completed_at": "2026-10-25T13:00:17Z"
+    },
+    {
+      "id": 121175726288,
+      "name": "saved-capture-readback",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-25T13:00:20Z",
+      "completed_at": "2026-10-25T13:03:26Z"
+    }
+  ],
+  "release": {
+    "id": 423405748,
+    "tag_name": "cloud-results-40195581462-1-tx-phase-reset334-return-ledger",
+    "target_commitish": "6b831923d5e31631e894aad11a1c95c31cd44050",
+    "draft": false,
+    "prerelease": true,
+    "html_url": "https://github.com/Melihakbulut221/nssoc/releases/tag/cloud-results-40195581462-1-tx-phase-reset334-return-ledger"
+  },
+  "assets": [
+    {
+      "id": 675062769,
+      "name": "tx-phase-reset334-return-ledger-40195581462-1.parts.json",
+      "size": 868,
+      "digest": "sha256:e49a87a0c129b34a4c189414bb4c25dbb4ca6b499dfdc9842372d0ca842b7a28"
+    },
+    {
+      "id": 675062668,
+      "name": "tx-phase-reset334-return-ledger-40195581462-1.summary.json",
+      "size": 45797,
+      "digest": "sha256:d03979b0a0eae8544f40ff68541f2b27e51e67cdcca58fb83e53063337520c3e"
+    },
+    {
+      "id": 675062830,
+      "name": "tx-phase-reset334-return-ledger-40195581462-1.tar.gz.part0000",
+      "size": 6567,
+      "digest": "sha256:665fda74c843d4769e0f21ecf7196aa65e4328984fbd1a495cf71f0d9c91a20b"
+    }
+  ],
+  "error": "AssertionError()",
+  "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_tx_phase_reset334_return_ledger.py\", line 209, in main\n    catalog,ledger_inputs,ledger_proof=ledger_bridge.prepare_inventory(m,work,inputs,(case/'contract.json').read_bytes())\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/tx_phase_reset334_return_ledger_bridge.py\", line 141, in prepare_inventory\n    catalog=ledger.inventory(**supplied)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/tx_phase_reset334_return_ledger.py\", line 170, in inventory\n    assert p['point_dbu']==t['native_point_dbu']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "actual_prepared_input_refusals": 24,
+  "waveform_review_executed": false,
+  "original_frozen_review_replays_this_run": 0,
+  "actual_36_graph_row_refusals_executed": false,
+  "ledger42_rows_produced": false,
+  "outputs": {},
+  "scope": "Failure occurs during restored native anchor inventory before waveform review. Source controls and 24 prepared-input refusals passed; no new AVSS edge/current/headroom result exists.",
+  "original_electrical_rejection_remains": true,
+  "no_new_simulation": true,
+  "no_geometry_edit": true,
+  "no_retry_dispatched": true,
+  "files": {
+    "docs/evidence/tx-phase318-return-ledger-first-rejection-20261025-result.json": {
+      "bytes": 45797,
+      "sha256": "d03979b0a0eae8544f40ff68541f2b27e51e67cdcca58fb83e53063337520c3e"
+    },
+    "docs/evidence/tx-phase318-return-ledger-first-rejection-20261025-parts.json": {
+      "bytes": 868,
+      "sha256": "e49a87a0c129b34a4c189414bb4c25dbb4ca6b499dfdc9842372d0ca842b7a28"
+    },
+    "docs/evidence/tx-phase318-return-ledger-first-rejection-20261025-job.log": {
+      "bytes": 97222,
+      "sha256": "e58f1ce6e6a1bb18b4bac877f1e83c37d0e02914085e8e4d58f511fc000541da"
+    }
+  }
+}

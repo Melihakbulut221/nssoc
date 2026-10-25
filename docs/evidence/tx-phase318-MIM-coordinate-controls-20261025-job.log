@@ -1,0 +1,1211 @@
+﻿2026-10-25T13:26:41.3069007Z Current runner version: '2.338.0'
+2026-10-25T13:26:41.3088050Z ##[group]Runner Image Provisioner
+2026-10-25T13:26:41.3088581Z Hosted Compute Agent
+2026-10-25T13:26:41.3089063Z Version: 20261021.618
+2026-10-25T13:26:41.3089437Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-25T13:26:41.3089900Z Build Date: 2026-10-21T00:45:21Z
+2026-10-25T13:26:41.3090349Z Worker ID: {c479afee-6cf1-418d-be03-db508c283140}
+2026-10-25T13:26:41.3090771Z Region: southcentralus
+2026-10-25T13:26:41.3091166Z Cloud: Azure
+2026-10-25T13:26:41.3091503Z ##[endgroup]
+2026-10-25T13:26:41.3092244Z ##[group]Operating System
+2026-10-25T13:26:41.3092644Z Ubuntu
+2026-10-25T13:26:41.3092957Z 24.04.5
+2026-10-25T13:26:41.3093348Z LTS
+2026-10-25T13:26:41.3093666Z ##[endgroup]
+2026-10-25T13:26:41.3094202Z ##[group]Runner Image
+2026-10-25T13:26:41.3094596Z Image: ubuntu-24.04
+2026-10-25T13:26:41.3094939Z Version: 20261012.334.1
+2026-10-25T13:26:41.3095760Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-25T13:26:41.3096628Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-25T13:26:41.3097218Z ##[endgroup]
+2026-10-25T13:26:41.3097908Z ##[group]GITHUB_TOKEN Permissions
+2026-10-25T13:26:41.3099104Z Contents: read
+2026-10-25T13:26:41.3099467Z Metadata: read
+2026-10-25T13:26:41.3099792Z ##[endgroup]
+2026-10-25T13:26:41.3101091Z Secret source: Actions
+2026-10-25T13:26:41.3101654Z Cache mode: write
+2026-10-25T13:26:41.3102118Z Prepare workflow directory
+2026-10-25T13:26:41.3345361Z Prepare all required actions
+2026-10-25T13:26:41.3386441Z Getting action download info
+2026-10-25T13:26:41.5816779Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-25T13:26:41.6689456Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-25T13:26:41.8192325Z Complete job name: source-controls
+2026-10-25T13:26:41.8716281Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-25T13:26:41.8716800Z with:
+2026-10-25T13:26:41.8717046Z   persist-credentials: false
+2026-10-25T13:26:41.8717338Z   repository: Melihakbulut221/nssoc
+2026-10-25T13:26:41.8719504Z   token: ***
+2026-10-25T13:26:41.8719744Z   ssh-strict: true
+2026-10-25T13:26:41.8719986Z   ssh-user: git
+2026-10-25T13:26:41.8720221Z   clean: true
+2026-10-25T13:26:41.8720467Z   sparse-checkout-cone-mode: true
+2026-10-25T13:26:41.8720756Z   fetch-depth: 1
+2026-10-25T13:26:41.8720994Z   fetch-tags: false
+2026-10-25T13:26:41.8721238Z   show-progress: true
+2026-10-25T13:26:41.8721485Z   lfs: false
+2026-10-25T13:26:41.8721714Z   submodules: false
+2026-10-25T13:26:41.8721966Z   set-safe-directory: true
+2026-10-25T13:26:41.8722249Z   allow-unsafe-pr-checkout: false
+2026-10-25T13:26:41.8722605Z ##[endgroup]
+2026-10-25T13:26:41.9423665Z Syncing repository: Melihakbulut221/nssoc
+2026-10-25T13:26:41.9425213Z ##[group]Getting Git version info
+2026-10-25T13:26:41.9425690Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-25T13:26:41.9438288Z [command]/usr/bin/git version
+2026-10-25T13:26:41.9528639Z git version 2.55.0
+2026-10-25T13:26:41.9541541Z ##[endgroup]
+2026-10-25T13:26:41.9551648Z Temporarily overriding HOME='/home/runner/work/_temp/4ba0547a-f3e5-4c20-9f1d-fdfa059634f9' before making global git config changes
+2026-10-25T13:26:41.9552972Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T13:26:41.9555661Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T13:26:41.9607481Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-25T13:26:41.9619618Z ##[group]Initializing the repository
+2026-10-25T13:26:41.9620610Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-25T13:26:41.9711545Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-25T13:26:41.9712701Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-25T13:26:41.9713488Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-25T13:26:41.9714665Z hint: call:
+2026-10-25T13:26:41.9714994Z hint:
+2026-10-25T13:26:41.9715432Z hint: 	git config --global init.defaultBranch <name>
+2026-10-25T13:26:41.9715958Z hint:
+2026-10-25T13:26:41.9716484Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-25T13:26:41.9717285Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-25T13:26:41.9717936Z hint:
+2026-10-25T13:26:41.9718299Z hint: 	git branch -m <name>
+2026-10-25T13:26:41.9718695Z hint:
+2026-10-25T13:26:41.9719239Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-25T13:26:41.9720322Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-25T13:26:41.9724615Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-25T13:26:41.9769404Z ##[endgroup]
+2026-10-25T13:26:41.9770232Z ##[group]Disabling automatic garbage collection
+2026-10-25T13:26:41.9772219Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-25T13:26:41.9804797Z ##[endgroup]
+2026-10-25T13:26:41.9805433Z ##[group]Setting up auth
+2026-10-25T13:26:41.9810266Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T13:26:41.9844481Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T13:26:42.0118079Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T13:26:42.0148561Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T13:26:42.0324547Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T13:26:42.0353450Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T13:26:42.0526964Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-25T13:26:42.0667874Z ##[endgroup]
+2026-10-25T13:26:42.0668298Z ##[group]Fetching the repository
+2026-10-25T13:26:42.0674021Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +3f27e85abd1ec0ffdd18b250cacf04caf1d28d43:refs/remotes/origin/codex/phase318-saved-capture-diagnosis
+2026-10-25T13:26:52.9469056Z From https://github.com/Melihakbulut221/nssoc
+2026-10-25T13:26:52.9469813Z  * [new ref]           3f27e85abd1ec0ffdd18b250cacf04caf1d28d43 -> origin/codex/phase318-saved-capture-diagnosis
+2026-10-25T13:26:52.9472812Z ##[endgroup]
+2026-10-25T13:26:52.9473323Z ##[group]Determining the checkout info
+2026-10-25T13:26:52.9474257Z ##[endgroup]
+2026-10-25T13:26:52.9478706Z [command]/usr/bin/git sparse-checkout disable
+2026-10-25T13:26:52.9602960Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-25T13:26:52.9799948Z ##[group]Checking out the ref
+2026-10-25T13:26:52.9814230Z [command]/usr/bin/git checkout --progress --force -B codex/phase318-saved-capture-diagnosis refs/remotes/origin/codex/phase318-saved-capture-diagnosis
+2026-10-25T13:26:54.1551636Z Updating files:  14% (4342/29518)
+2026-10-25T13:26:54.2531805Z Updating files:  15% (4428/29518)
+2026-10-25T13:26:54.3238225Z Updating files:  16% (4723/29518)
+2026-10-25T13:26:54.3590358Z Updating files:  17% (5019/29518)
+2026-10-25T13:26:54.3736262Z Updating files:  18% (5314/29518)
+2026-10-25T13:26:54.3859672Z Updating files:  19% (5609/29518)
+2026-10-25T13:26:54.4600125Z Updating files:  20% (5904/29518)
+2026-10-25T13:26:54.5506135Z Updating files:  21% (6199/29518)
+2026-10-25T13:26:54.5747380Z Updating files:  22% (6494/29518)
+2026-10-25T13:26:54.5942477Z Updating files:  23% (6790/29518)
+2026-10-25T13:26:54.6082096Z Updating files:  24% (7085/29518)
+2026-10-25T13:26:54.6180041Z Updating files:  25% (7380/29518)
+2026-10-25T13:26:54.6281928Z Updating files:  26% (7675/29518)
+2026-10-25T13:26:54.6394692Z Updating files:  27% (7970/29518)
+2026-10-25T13:26:54.6533130Z Updating files:  28% (8266/29518)
+2026-10-25T13:26:54.6624694Z Updating files:  29% (8561/29518)
+2026-10-25T13:26:54.6715856Z Updating files:  30% (8856/29518)
+2026-10-25T13:26:54.6854844Z Updating files:  31% (9151/29518)
+2026-10-25T13:26:54.6940304Z Updating files:  32% (9446/29518)
+2026-10-25T13:26:54.7087785Z Updating files:  33% (9741/29518)
+2026-10-25T13:26:54.7398238Z Updating files:  34% (10037/29518)
+2026-10-25T13:26:54.7849949Z Updating files:  35% (10332/29518)
+2026-10-25T13:26:54.8138462Z Updating files:  36% (10627/29518)
+2026-10-25T13:26:54.8251033Z Updating files:  37% (10922/29518)
+2026-10-25T13:26:54.8381702Z Updating files:  38% (11217/29518)
+2026-10-25T13:26:54.8512976Z Updating files:  39% (11513/29518)
+2026-10-25T13:26:54.8644144Z Updating files:  40% (11808/29518)
+2026-10-25T13:26:54.8763940Z Updating files:  41% (12103/29518)
+2026-10-25T13:26:54.8887884Z Updating files:  42% (12398/29518)
+2026-10-25T13:26:54.9040518Z Updating files:  43% (12693/29518)
+2026-10-25T13:26:54.9284705Z Updating files:  44% (12988/29518)
+2026-10-25T13:26:54.9512090Z Updating files:  45% (13284/29518)
+2026-10-25T13:26:54.9616830Z Updating files:  46% (13579/29518)
+2026-10-25T13:26:54.9754320Z Updating files:  47% (13874/29518)
+2026-10-25T13:26:54.9867563Z Updating files:  48% (14169/29518)
+2026-10-25T13:26:54.9959951Z Updating files:  49% (14464/29518)
+2026-10-25T13:26:54.9981458Z Updating files:  50% (14759/29518)
+2026-10-25T13:26:55.0054721Z Updating files:  50% (14824/29518)
+2026-10-25T13:26:55.0179066Z Updating files:  51% (15055/29518)
+2026-10-25T13:26:55.0282795Z Updating files:  52% (15350/29518)
+2026-10-25T13:26:55.0479810Z Updating files:  53% (15645/29518)
+2026-10-25T13:26:55.0571669Z Updating files:  54% (15940/29518)
+2026-10-25T13:26:55.0671923Z Updating files:  55% (16235/29518)
+2026-10-25T13:26:55.0763339Z Updating files:  56% (16531/29518)
+2026-10-25T13:26:55.0864342Z Updating files:  57% (16826/29518)
+2026-10-25T13:26:55.0964866Z Updating files:  58% (17121/29518)
+2026-10-25T13:26:55.1077602Z Updating files:  59% (17416/29518)
+2026-10-25T13:26:55.1192252Z Updating files:  60% (17711/29518)
+2026-10-25T13:26:55.1268855Z Updating files:  61% (18006/29518)
+2026-10-25T13:26:55.1347290Z Updating files:  62% (18302/29518)
+2026-10-25T13:26:55.1435092Z Updating files:  63% (18597/29518)
+2026-10-25T13:26:55.1535218Z Updating files:  64% (18892/29518)
+2026-10-25T13:26:55.2540144Z Updating files:  65% (19187/29518)
+2026-10-25T13:26:55.2675861Z Updating files:  66% (19482/29518)
+2026-10-25T13:26:55.3558073Z Updating files:  67% (19778/29518)
+2026-10-25T13:26:55.3684623Z Updating files:  68% (20073/29518)
+2026-10-25T13:26:55.3795135Z Updating files:  69% (20368/29518)
+2026-10-25T13:26:55.3905513Z Updating files:  70% (20663/29518)
+2026-10-25T13:26:55.3994423Z Updating files:  71% (20958/29518)
+2026-10-25T13:26:55.4086127Z Updating files:  72% (21253/29518)
+2026-10-25T13:26:55.4174406Z Updating files:  73% (21549/29518)
+2026-10-25T13:26:55.4259405Z Updating files:  74% (21844/29518)
+2026-10-25T13:26:55.4360832Z Updating files:  75% (22139/29518)
+2026-10-25T13:26:55.4707053Z Updating files:  76% (22434/29518)
+2026-10-25T13:26:55.4804408Z Updating files:  77% (22729/29518)
+2026-10-25T13:26:55.5172456Z Updating files:  78% (23025/29518)
+2026-10-25T13:26:55.5337259Z Updating files:  79% (23320/29518)
+2026-10-25T13:26:55.5513856Z Updating files:  80% (23615/29518)
+2026-10-25T13:26:55.5623383Z Updating files:  81% (23910/29518)
+2026-10-25T13:26:55.5731963Z Updating files:  82% (24205/29518)
+2026-10-25T13:26:55.5885722Z Updating files:  83% (24500/29518)
+2026-10-25T13:26:55.6027646Z Updating files:  84% (24796/29518)
+2026-10-25T13:26:55.6194215Z Updating files:  85% (25091/29518)
+2026-10-25T13:26:55.6302531Z Updating files:  86% (25386/29518)
+2026-10-25T13:26:55.6416852Z Updating files:  87% (25681/29518)
+2026-10-25T13:26:55.6500703Z Updating files:  88% (25976/29518)
+2026-10-25T13:26:55.6607788Z Updating files:  89% (26272/29518)
+2026-10-25T13:26:55.6711149Z Updating files:  90% (26567/29518)
+2026-10-25T13:26:55.6803542Z Updating files:  91% (26862/29518)
+2026-10-25T13:26:55.6937352Z Updating files:  92% (27157/29518)
+2026-10-25T13:26:55.7069498Z Updating files:  93% (27452/29518)
+2026-10-25T13:26:55.7200006Z Updating files:  94% (27747/29518)
+2026-10-25T13:26:55.7344096Z Updating files:  95% (28043/29518)
+2026-10-25T13:26:55.7487218Z Updating files:  96% (28338/29518)
+2026-10-25T13:26:55.7616958Z Updating files:  97% (28633/29518)
+2026-10-25T13:26:55.7749470Z Updating files:  98% (28928/29518)
+2026-10-25T13:26:55.7974608Z Updating files:  99% (29223/29518)
+2026-10-25T13:26:55.7974836Z Updating files: 100% (29518/29518)
+2026-10-25T13:26:55.7975315Z Updating files: 100% (29518/29518), done.
+2026-10-25T13:26:55.8684509Z Switched to a new branch 'codex/phase318-saved-capture-diagnosis'
+2026-10-25T13:26:55.8706116Z branch 'codex/phase318-saved-capture-diagnosis' set up to track 'origin/codex/phase318-saved-capture-diagnosis'.
+2026-10-25T13:26:55.8857369Z ##[endgroup]
+2026-10-25T13:26:55.8902809Z [command]/usr/bin/git log -1 --format=%H
+2026-10-25T13:26:55.8927807Z 3f27e85abd1ec0ffdd18b250cacf04caf1d28d43
+2026-10-25T13:26:55.8935062Z ##[group]Removing auth
+2026-10-25T13:26:55.8937441Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T13:26:55.8963256Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T13:26:55.9155363Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T13:26:55.9178122Z http.https://github.com/.extraheader
+2026-10-25T13:26:55.9183200Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-25T13:26:55.9295525Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T13:26:55.9481547Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T13:26:55.9506295Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T13:26:55.9691034Z ##[endgroup]
+2026-10-25T13:26:56.0466352Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-25T13:26:56.0466707Z with:
+2026-10-25T13:26:56.0466905Z   python-version: 3.12
+2026-10-25T13:26:56.0467106Z   check-latest: false
+2026-10-25T13:26:56.0469545Z   token: ***
+2026-10-25T13:26:56.0469745Z   update-environment: true
+2026-10-25T13:26:56.0469985Z   allow-prereleases: false
+2026-10-25T13:26:56.0470202Z   freethreaded: false
+2026-10-25T13:26:56.0470404Z ##[endgroup]
+2026-10-25T13:26:56.1271503Z ##[group]Installed versions
+2026-10-25T13:26:56.1363498Z (node:2141) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T13:26:56.1364019Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T13:26:56.1364623Z Successfully set up CPython (3.12.15)
+2026-10-25T13:26:56.1365025Z ##[endgroup]
+2026-10-25T13:26:56.2599789Z ##[group]Run python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+2026-10-25T13:26:56.2600166Z [36;1mpython3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2[0m
+2026-10-25T13:26:56.2885942Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T13:26:56.2886135Z env:
+2026-10-25T13:26:56.2886297Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:26:56.2886855Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T13:26:56.2887216Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:26:56.2887534Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:26:56.2887855Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:26:56.2888151Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T13:26:56.2888328Z ##[endgroup]
+2026-10-25T13:26:57.8381025Z Collecting numpy==2.3.3
+2026-10-25T13:26:57.9200845Z   Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (62 kB)
+2026-10-25T13:26:58.1976379Z Collecting scipy==1.16.2
+2026-10-25T13:26:58.2108972Z   Downloading scipy-1.16.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (62 kB)
+2026-10-25T13:26:58.4530163Z Collecting networkx==3.4.2
+2026-10-25T13:26:58.4641569Z   Downloading networkx-3.4.2-py3-none-any.whl.metadata (6.3 kB)
+2026-10-25T13:26:58.7039306Z Downloading numpy-2.3.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.6 MB)
+2026-10-25T13:26:59.0699453Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.6/16.6 MB 47.6 MB/s  0:00:00
+2026-10-25T13:26:59.0835301Z Downloading scipy-1.16.2-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (35.7 MB)
+2026-10-25T13:26:59.7635383Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 35.7/35.7 MB 52.2 MB/s  0:00:00
+2026-10-25T13:26:59.7756243Z Downloading networkx-3.4.2-py3-none-any.whl (1.7 MB)
+2026-10-25T13:26:59.7821249Z    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.7/1.7 MB 316.0 MB/s  0:00:00
+2026-10-25T13:26:59.8746778Z Installing collected packages: numpy, networkx, scipy
+2026-10-25T13:27:04.3927924Z 
+2026-10-25T13:27:04.3935927Z Successfully installed networkx-3.4.2 numpy-2.3.3 scipy-1.16.2
+2026-10-25T13:27:04.3941460Z 
+2026-10-25T13:27:04.3941638Z [notice] A new release of pip is available: 26.2.1 -> 26.2.2
+2026-10-25T13:27:04.3941933Z [notice] To update, run: pip install --upgrade pip
+2026-10-25T13:27:04.4442688Z ##[group]Run if (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi
+2026-10-25T13:27:04.4443063Z [36;1mif (exit 7) | tee deliberate-pipeline-control.log; then exit 1; fi[0m
+2026-10-25T13:27:04.4443404Z [36;1mpython3 scripts/cloud_tx_phase_reset334_return_ledger.py --controls | tee source-controls.json[0m
+2026-10-25T13:27:04.4443672Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T13:27:04.4443945Z [36;1mimport json[0m
+2026-10-25T13:27:04.4444095Z [36;1mx=json.load(open('source-controls.json'))[0m
+2026-10-25T13:27:04.4444339Z [36;1massert x['status']=='PASS_PHASE318_RETURN_LEDGER_SOURCE_CONTROLS_ONLY'[0m
+2026-10-25T13:27:04.4444561Z [36;1massert len(x['math']['rejected'])==20[0m
+2026-10-25T13:27:04.4444732Z [36;1massert len(x['archive_faults'])==11[0m
+2026-10-25T13:27:04.4444913Z [36;1massert len(x['original_result_faults'])==9[0m
+2026-10-25T13:27:04.4445099Z [36;1massert len(x['metadata']['rejected'])==23[0m
+2026-10-25T13:27:04.4445302Z [36;1massert x['new_simulation'] is False[0m
+2026-10-25T13:27:04.4445468Z [36;1mq=x['ledger'][0m
+2026-10-25T13:27:04.4445632Z [36;1massert q['status']=='PASS_LEDGER_SOURCE_CONTROLS_ONLY'[0m
+2026-10-25T13:27:04.4445831Z [36;1massert len(q['synthetic']['rejected'])==12[0m
+2026-10-25T13:27:04.4446089Z [36;1massert len(q['RC_metadata_rejected'])==15 and len(q['row_rejected'])==4[0m
+2026-10-25T13:27:04.4446309Z [36;1massert len(q['derivation_rejected'])==2[0m
+2026-10-25T13:27:04.4446553Z [36;1massert q['observer_derivation']['edits']==2 and q['controller_derivation']['edits']==13[0m
+2026-10-25T13:27:04.4446816Z [36;1mc=q['synthetic']['qualified_coordinate_controls'][0m
+2026-10-25T13:27:04.4447050Z [36;1massert c['status']=='PASS_EXACT_RECORDED_MIM_COORDINATE_CONTROLS_ONLY'[0m
+2026-10-25T13:27:04.4447310Z [36;1massert len(c['rejected'])==32 and c['source_derived_JSON_fixture'][0m
+2026-10-25T13:27:04.4447586Z [36;1massert not c['restored_planes_exercised'] and not c['new_geometry_or_simulation'][0m
+2026-10-25T13:27:04.4448029Z [36;1massert c['all32_failure_witnesses_persisted'] and c['unrelated_error_not_reclassified'][0m
+2026-10-25T13:27:04.4448273Z [36;1mfor sign in ('p','n'):[0m
+2026-10-25T13:27:04.4448421Z [36;1m    p=c['positives'][sign][0m
+2026-10-25T13:27:04.4448644Z [36;1m    assert p['all_terminal_rows_exact']==1010 and p['all_anchor_records_exact']==695[0m
+2026-10-25T13:27:04.4448939Z [36;1m    assert p['recorded_MIM_changes']==8 and p['AVSS_original_point_equal']==83[0m
+2026-10-25T13:27:04.4449238Z [36;1m    assert len(p['AVSS_recorded_MIM_changes'])==2 and not p['coordinate_tolerance_used'][0m
+2026-10-25T13:27:04.4449504Z [36;1massert q['actual_graph_or_waveform_executed'] is False[0m
+2026-10-25T13:27:04.4449688Z [36;1mPYCODE[0m
+2026-10-25T13:27:04.4449915Z [36;1mpython3 scripts/wait_cloud_tested_source_release.py --controls > release-wait-controls.json[0m
+2026-10-25T13:27:04.4450169Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T13:27:04.4450306Z [36;1mimport json[0m
+2026-10-25T13:27:04.4450465Z [36;1mx=json.load(open('release-wait-controls.json'))[0m
+2026-10-25T13:27:04.4450683Z [36;1massert x['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'[0m
+2026-10-25T13:27:04.4450916Z [36;1massert len(x['positive_cases'])==3 and len(x['rejected'])==4[0m
+2026-10-25T13:27:04.4451215Z [36;1massert x['maximum_scheduled_wait_s']==300 and not x['creation_attempted'] and not x['native_executed'][0m
+2026-10-25T13:27:04.4451478Z [36;1mprint(json.dumps(x,indent=2))[0m
+2026-10-25T13:27:04.4451621Z [36;1mPYCODE[0m
+2026-10-25T13:27:04.4505700Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T13:27:04.4505885Z env:
+2026-10-25T13:27:04.4506036Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:27:04.4506271Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T13:27:04.4506506Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:27:04.4506714Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:27:04.4507065Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:27:04.4507278Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T13:27:04.4507458Z ##[endgroup]
+2026-10-25T13:27:05.5912144Z {
+2026-10-25T13:27:05.5912661Z   "status": "PASS_PHASE318_RETURN_LEDGER_SOURCE_CONTROLS_ONLY",
+2026-10-25T13:27:05.5913017Z   "ledger": {
+2026-10-25T13:27:05.5913233Z     "status": "PASS_LEDGER_SOURCE_CONTROLS_ONLY",
+2026-10-25T13:27:05.5913503Z     "synthetic": {
+2026-10-25T13:27:05.5913843Z       "status": "PASS_SYNTHETIC_LEDGER_MATH_ONLY",
+2026-10-25T13:27:05.5914304Z       "rejected": [
+2026-10-25T13:27:05.5914496Z         "native_number_nan",
+2026-10-25T13:27:05.5914710Z         "native_number_inf",
+2026-10-25T13:27:05.5914927Z         "native_number_1meg",
+2026-10-25T13:27:05.5915137Z         "native_number_1 ohm",
+2026-10-25T13:27:05.5915339Z         "self",
+2026-10-25T13:27:05.5915511Z         "zero",
+2026-10-25T13:27:05.5915685Z         "negative",
+2026-10-25T13:27:05.5915910Z         "voltage_nan",
+2026-10-25T13:27:05.5916095Z         "voltage_inf",
+2026-10-25T13:27:05.5916282Z         "resistance_zero",
+2026-10-25T13:27:05.5916490Z         "resistance_overflow",
+2026-10-25T13:27:05.5916701Z         "current_overflow"
+2026-10-25T13:27:05.5916893Z       ],
+2026-10-25T13:27:05.5917094Z       "actual_native_R_inventory_executed": false,
+2026-10-25T13:27:05.5917365Z       "actual_waveform_rows_executed": false,
+2026-10-25T13:27:05.5917632Z       "qualified_coordinate_controls": {
+2026-10-25T13:27:05.5917930Z         "status": "PASS_EXACT_RECORDED_MIM_COORDINATE_CONTROLS_ONLY",
+2026-10-25T13:27:05.5918251Z         "source_derived_JSON_fixture": true,
+2026-10-25T13:27:05.5918509Z         "restored_planes_exercised": false,
+2026-10-25T13:27:05.5918749Z         "positives": {
+2026-10-25T13:27:05.5918937Z           "p": {
+2026-10-25T13:27:05.5919311Z             "physical_summary_sha256": "5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913",
+2026-10-25T13:27:05.5920156Z             "MIM_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d",
+2026-10-25T13:27:05.5920561Z             "all_terminal_rows_exact": 1010,
+2026-10-25T13:27:05.5920806Z             "all_anchor_records_exact": 695,
+2026-10-25T13:27:05.5921052Z             "recorded_MIM_changes": 8,
+2026-10-25T13:27:05.5921292Z             "AVSS_original_point_equal": 83,
+2026-10-25T13:27:05.5921545Z             "AVSS_recorded_MIM_changes": [
+2026-10-25T13:27:05.5921770Z               {
+2026-10-25T13:27:05.5921946Z                 "native_id": 243,
+2026-10-25T13:27:05.5922263Z                 "terminal": "mim_btm",
+2026-10-25T13:27:05.5922496Z                 "model": "cap_cmim",
+2026-10-25T13:27:05.5922728Z                 "reference_label": "A0591",
+2026-10-25T13:27:05.5922972Z                 "native_cluster": 17,
+2026-10-25T13:27:05.5923197Z                 "wire_component": 13,
+2026-10-25T13:27:05.5923434Z                 "original_native_point_dbu": [
+2026-10-25T13:27:05.5923684Z                   873100,
+2026-10-25T13:27:05.5924010Z                   1334430
+2026-10-25T13:27:05.5924195Z                 ],
+2026-10-25T13:27:05.5924388Z                 "RC_reference_point_dbu": [
+2026-10-25T13:27:05.5924622Z                   873100,
+2026-10-25T13:27:05.5924804Z                   1333130
+2026-10-25T13:27:05.5924979Z                 ],
+2026-10-25T13:27:05.5925181Z                 "recorded_MIM_bottom_relocation": true,
+2026-10-25T13:27:05.5925446Z                 "qualified_MIM_access_witness": {
+2026-10-25T13:27:05.5925691Z                   "native_id": 243,
+2026-10-25T13:27:05.5925919Z                   "reference_label": "A0591",
+2026-10-25T13:27:05.5926153Z                   "old_point_dbu": [
+2026-10-25T13:27:05.5926364Z                     873100,
+2026-10-25T13:27:05.5926551Z                     1334430
+2026-10-25T13:27:05.5926740Z                   ],
+2026-10-25T13:27:05.5926923Z                   "new_point_dbu": [
+2026-10-25T13:27:05.5927131Z                     873100,
+2026-10-25T13:27:05.5927487Z                     1333130
+2026-10-25T13:27:05.5927671Z                   ],
+2026-10-25T13:27:05.5927857Z                   "native_cluster": 17,
+2026-10-25T13:27:05.5928080Z                   "wire_component": 13,
+2026-10-25T13:27:05.5928307Z                   "native_parameters": {
+2026-10-25T13:27:05.5928547Z                     "w": 2.2,
+2026-10-25T13:27:05.5928858Z                     "l": 2.0,
+2026-10-25T13:27:05.5929055Z                     "A": 4.4,
+2026-10-25T13:27:05.5929247Z                     "P": 8.4,
+2026-10-25T13:27:05.5929439Z                     "m": 1.0
+2026-10-25T13:27:05.5929627Z                   },
+2026-10-25T13:27:05.5929845Z                   "actual_leaf_cell": "cmim$1",
+2026-10-25T13:27:05.5930085Z                   "actual_leaf_path": [
+2026-10-25T13:27:05.5930318Z                     "nssoc_tx_phase_reset244_p_v1",
+2026-10-25T13:27:05.5930553Z                     "cmim$1"
+2026-10-25T13:27:05.5930737Z                   ],
+2026-10-25T13:27:05.5930954Z                   "actual_leaf_transform": "r0 *1 872000,1333430",
+2026-10-25T13:27:05.5931267Z                   "actual_mask_bbox_dbu": "(872000,1333430;874200,1335430)",
+2026-10-25T13:27:05.5931558Z                   "actual_mask_area_dbu2": 4400000,
+2026-10-25T13:27:05.5931804Z                   "actual_via_area_dbu2": 176400
+2026-10-25T13:27:05.5932095Z                 },
+2026-10-25T13:27:05.5932507Z                 "qualified_native_and_wire_ownership_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+2026-10-25T13:27:05.5932953Z               },
+2026-10-25T13:27:05.5933115Z               {
+2026-10-25T13:27:05.5933290Z                 "native_id": 244,
+2026-10-25T13:27:05.5933502Z                 "terminal": "mim_btm",
+2026-10-25T13:27:05.5933821Z                 "model": "cap_cmim",
+2026-10-25T13:27:05.5934042Z                 "reference_label": "A0593",
+2026-10-25T13:27:05.5934272Z                 "native_cluster": 17,
+2026-10-25T13:27:05.5934496Z                 "wire_component": 13,
+2026-10-25T13:27:05.5934869Z                 "original_native_point_dbu": [
+2026-10-25T13:27:05.5935100Z                   897000,
+2026-10-25T13:27:05.5935287Z                   1334430
+2026-10-25T13:27:05.5935470Z                 ],
+2026-10-25T13:27:05.5935653Z                 "RC_reference_point_dbu": [
+2026-10-25T13:27:05.5935869Z                   897000,
+2026-10-25T13:27:05.5936045Z                   1333130
+2026-10-25T13:27:05.5936218Z                 ],
+2026-10-25T13:27:05.5936422Z                 "recorded_MIM_bottom_relocation": true,
+2026-10-25T13:27:05.5936685Z                 "qualified_MIM_access_witness": {
+2026-10-25T13:27:05.5936927Z                   "native_id": 244,
+2026-10-25T13:27:05.5937151Z                   "reference_label": "A0593",
+2026-10-25T13:27:05.5937381Z                   "old_point_dbu": [
+2026-10-25T13:27:05.5937587Z                     897000,
+2026-10-25T13:27:05.5937773Z                     1334430
+2026-10-25T13:27:05.5937957Z                   ],
+2026-10-25T13:27:05.5938141Z                   "new_point_dbu": [
+2026-10-25T13:27:05.5938347Z                     897000,
+2026-10-25T13:27:05.5938530Z                     1333130
+2026-10-25T13:27:05.5938712Z                   ],
+2026-10-25T13:27:05.5938896Z                   "native_cluster": 17,
+2026-10-25T13:27:05.5939124Z                   "wire_component": 13,
+2026-10-25T13:27:05.5939348Z                   "native_parameters": {
+2026-10-25T13:27:05.5939569Z                     "w": 2.0,
+2026-10-25T13:27:05.5939764Z                     "l": 2.0,
+2026-10-25T13:27:05.5939958Z                     "A": 4.0,
+2026-10-25T13:27:05.5940158Z                     "P": 8.0,
+2026-10-25T13:27:05.5940352Z                     "m": 1.0
+2026-10-25T13:27:05.5940541Z                   },
+2026-10-25T13:27:05.5940734Z                   "actual_leaf_cell": "cmim$2",
+2026-10-25T13:27:05.5940972Z                   "actual_leaf_path": [
+2026-10-25T13:27:05.5941213Z                     "nssoc_tx_phase_reset244_p_v1",
+2026-10-25T13:27:05.5941566Z                     "cmim$2"
+2026-10-25T13:27:05.5941755Z                   ],
+2026-10-25T13:27:05.5941965Z                   "actual_leaf_transform": "r0 *1 896000,1333430",
+2026-10-25T13:27:05.5942275Z                   "actual_mask_bbox_dbu": "(896000,1333430;898000,1335430)",
+2026-10-25T13:27:05.5942565Z                   "actual_mask_area_dbu2": 4000000,
+2026-10-25T13:27:05.5942815Z                   "actual_via_area_dbu2": 176400
+2026-10-25T13:27:05.5943038Z                 },
+2026-10-25T13:27:05.5943447Z                 "qualified_native_and_wire_ownership_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+2026-10-25T13:27:05.5943996Z               }
+2026-10-25T13:27:05.5944159Z             ],
+2026-10-25T13:27:05.5944422Z             "qualified_producer_all695_native_and_physical_owners_verified": true,
+2026-10-25T13:27:05.5944804Z             "qualified_producer_all_metal_via_drawings_unchanged": true,
+2026-10-25T13:27:05.5945198Z             "coordinate_units": "KLayout database units, 0.001 micrometer = 1 nm",
+2026-10-25T13:27:05.5945855Z             "coordinate_frame": "Same translated physical layout frame; original plate center and qualified exterior bottom-metal access are distinct points.",
+2026-10-25T13:27:05.5946431Z             "coordinate_tolerance_used": false,
+2026-10-25T13:27:05.5946690Z             "geometry_regenerated": false
+2026-10-25T13:27:05.5946919Z           },
+2026-10-25T13:27:05.5947088Z           "n": {
+2026-10-25T13:27:05.5947447Z             "physical_summary_sha256": "5591fe784df1cc1294302ac38a13a8db4b6285f37335fa7c2fbe2d477c7fa913",
+2026-10-25T13:27:05.5948004Z             "MIM_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d",
+2026-10-25T13:27:05.5948404Z             "all_terminal_rows_exact": 1010,
+2026-10-25T13:27:05.5948655Z             "all_anchor_records_exact": 695,
+2026-10-25T13:27:05.5948900Z             "recorded_MIM_changes": 8,
+2026-10-25T13:27:05.5949147Z             "AVSS_original_point_equal": 83,
+2026-10-25T13:27:05.5949519Z             "AVSS_recorded_MIM_changes": [
+2026-10-25T13:27:05.5949753Z               {
+2026-10-25T13:27:05.5949941Z                 "native_id": 243,
+2026-10-25T13:27:05.5950167Z                 "terminal": "mim_btm",
+2026-10-25T13:27:05.5950399Z                 "model": "cap_cmim",
+2026-10-25T13:27:05.5950634Z                 "reference_label": "A0591",
+2026-10-25T13:27:05.5950871Z                 "native_cluster": 17,
+2026-10-25T13:27:05.5951099Z                 "wire_component": 13,
+2026-10-25T13:27:05.5951341Z                 "original_native_point_dbu": [
+2026-10-25T13:27:05.5951584Z                   873100,
+2026-10-25T13:27:05.5951777Z                   1334430
+2026-10-25T13:27:05.5951965Z                 ],
+2026-10-25T13:27:05.5952164Z                 "RC_reference_point_dbu": [
+2026-10-25T13:27:05.5952397Z                   873100,
+2026-10-25T13:27:05.5952588Z                   1333130
+2026-10-25T13:27:05.5952780Z                 ],
+2026-10-25T13:27:05.5952994Z                 "recorded_MIM_bottom_relocation": true,
+2026-10-25T13:27:05.5953280Z                 "qualified_MIM_access_witness": {
+2026-10-25T13:27:05.5953535Z                   "native_id": 243,
+2026-10-25T13:27:05.5953915Z                   "reference_label": "A0591",
+2026-10-25T13:27:05.5954164Z                   "old_point_dbu": [
+2026-10-25T13:27:05.5954383Z                     873100,
+2026-10-25T13:27:05.5954586Z                     1334430
+2026-10-25T13:27:05.5954779Z                   ],
+2026-10-25T13:27:05.5954971Z                   "new_point_dbu": [
+2026-10-25T13:27:05.5955190Z                     873100,
+2026-10-25T13:27:05.5955392Z                     1333130
+2026-10-25T13:27:05.5955582Z                   ],
+2026-10-25T13:27:05.5955773Z                   "native_cluster": 17,
+2026-10-25T13:27:05.5956006Z                   "wire_component": 13,
+2026-10-25T13:27:05.5956239Z                   "native_parameters": {
+2026-10-25T13:27:05.5956485Z                     "w": 2.2,
+2026-10-25T13:27:05.5956802Z                     "l": 2.0,
+2026-10-25T13:27:05.5957011Z                     "A": 4.4,
+2026-10-25T13:27:05.5957214Z                     "P": 8.4,
+2026-10-25T13:27:05.5957417Z                     "m": 1.0
+2026-10-25T13:27:05.5957614Z                   },
+2026-10-25T13:27:05.5957816Z                   "actual_leaf_cell": "cmim$1",
+2026-10-25T13:27:05.5958066Z                   "actual_leaf_path": [
+2026-10-25T13:27:05.5958318Z                     "nssoc_tx_phase_reset244_n_v1",
+2026-10-25T13:27:05.5958574Z                     "cmim$1"
+2026-10-25T13:27:05.5958774Z                   ],
+2026-10-25T13:27:05.5958997Z                   "actual_leaf_transform": "r0 *1 872000,1333430",
+2026-10-25T13:27:05.5959301Z                   "actual_mask_bbox_dbu": "(872000,1333430;874200,1335430)",
+2026-10-25T13:27:05.5959583Z                   "actual_mask_area_dbu2": 4400000,
+2026-10-25T13:27:05.5959824Z                   "actual_via_area_dbu2": 176400
+2026-10-25T13:27:05.5960039Z                 },
+2026-10-25T13:27:05.5960449Z                 "qualified_native_and_wire_ownership_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+2026-10-25T13:27:05.5960916Z               },
+2026-10-25T13:27:05.5961081Z               {
+2026-10-25T13:27:05.5961256Z                 "native_id": 244,
+2026-10-25T13:27:05.5961519Z                 "terminal": "mim_btm",
+2026-10-25T13:27:05.5961752Z                 "model": "cap_cmim",
+2026-10-25T13:27:05.5961978Z                 "reference_label": "A0593",
+2026-10-25T13:27:05.5962212Z                 "native_cluster": 17,
+2026-10-25T13:27:05.5962429Z                 "wire_component": 13,
+2026-10-25T13:27:05.5962665Z                 "original_native_point_dbu": [
+2026-10-25T13:27:05.5962903Z                   897000,
+2026-10-25T13:27:05.5963112Z                   1334430
+2026-10-25T13:27:05.5963303Z                 ],
+2026-10-25T13:27:05.5963496Z                 "RC_reference_point_dbu": [
+2026-10-25T13:27:05.5963839Z                   897000,
+2026-10-25T13:27:05.5964136Z                   1333130
+2026-10-25T13:27:05.5964348Z                 ],
+2026-10-25T13:27:05.5964557Z                 "recorded_MIM_bottom_relocation": true,
+2026-10-25T13:27:05.5964826Z                 "qualified_MIM_access_witness": {
+2026-10-25T13:27:05.5965085Z                   "native_id": 244,
+2026-10-25T13:27:05.5965326Z                   "reference_label": "A0593",
+2026-10-25T13:27:05.5965570Z                   "old_point_dbu": [
+2026-10-25T13:27:05.5965778Z                     897000,
+2026-10-25T13:27:05.5965970Z                     1334430
+2026-10-25T13:27:05.5966188Z                   ],
+2026-10-25T13:27:05.5966380Z                   "new_point_dbu": [
+2026-10-25T13:27:05.5966590Z                     897000,
+2026-10-25T13:27:05.5966777Z                     1333130
+2026-10-25T13:27:05.5966981Z                   ],
+2026-10-25T13:27:05.5967178Z                   "native_cluster": 17,
+2026-10-25T13:27:05.5967412Z                   "wire_component": 13,
+2026-10-25T13:27:05.5967646Z                   "native_parameters": {
+2026-10-25T13:27:05.5967872Z                     "w": 2.0,
+2026-10-25T13:27:05.5968099Z                     "l": 2.0,
+2026-10-25T13:27:05.5968300Z                     "A": 4.0,
+2026-10-25T13:27:05.5968502Z                     "P": 8.0,
+2026-10-25T13:27:05.5968698Z                     "m": 1.0
+2026-10-25T13:27:05.5968888Z                   },
+2026-10-25T13:27:05.5969081Z                   "actual_leaf_cell": "cmim$2",
+2026-10-25T13:27:05.5969323Z                   "actual_leaf_path": [
+2026-10-25T13:27:05.5969564Z                     "nssoc_tx_phase_reset244_n_v1",
+2026-10-25T13:27:05.5969814Z                     "cmim$2"
+2026-10-25T13:27:05.5970006Z                   ],
+2026-10-25T13:27:05.5970238Z                   "actual_leaf_transform": "r0 *1 896000,1333430",
+2026-10-25T13:27:05.5970571Z                   "actual_mask_bbox_dbu": "(896000,1333430;898000,1335430)",
+2026-10-25T13:27:05.5970879Z                   "actual_mask_area_dbu2": 4000000,
+2026-10-25T13:27:05.5971252Z                   "actual_via_area_dbu2": 176400
+2026-10-25T13:27:05.5971486Z                 },
+2026-10-25T13:27:05.5971910Z                 "qualified_native_and_wire_ownership_summary_sha256": "02671c9de96e779054cc37f7be26f0625351f0238b25dc210e78e94cf2e6db1d"
+2026-10-25T13:27:05.5972388Z               }
+2026-10-25T13:27:05.5972566Z             ],
+2026-10-25T13:27:05.5972848Z             "qualified_producer_all695_native_and_physical_owners_verified": true,
+2026-10-25T13:27:05.5973262Z             "qualified_producer_all_metal_via_drawings_unchanged": true,
+2026-10-25T13:27:05.5973664Z             "coordinate_units": "KLayout database units, 0.001 micrometer = 1 nm",
+2026-10-25T13:27:05.5974432Z             "coordinate_frame": "Same translated physical layout frame; original plate center and qualified exterior bottom-metal access are distinct points.",
+2026-10-25T13:27:05.5975020Z             "coordinate_tolerance_used": false,
+2026-10-25T13:27:05.5975290Z             "geometry_regenerated": false
+2026-10-25T13:27:05.5975533Z           }
+2026-10-25T13:27:05.5975704Z         },
+2026-10-25T13:27:05.5975877Z         "rejected": [
+2026-10-25T13:27:05.5976086Z           "p:unlisted_HBT_displacement",
+2026-10-25T13:27:05.5976337Z           "p:MIM_new_point",
+2026-10-25T13:27:05.5976556Z           "p:MIM_old_witness",
+2026-10-25T13:27:05.5976779Z           "p:reversed_points",
+2026-10-25T13:27:05.5977005Z           "p:aliased_seed_access",
+2026-10-25T13:27:05.5977237Z           "p:wrong_reference",
+2026-10-25T13:27:05.5977454Z           "p:wrong_device",
+2026-10-25T13:27:05.5977670Z           "p:wrong_terminal",
+2026-10-25T13:27:05.5977888Z           "p:wrong_cluster",
+2026-10-25T13:27:05.5978106Z           "p:wrong_component",
+2026-10-25T13:27:05.5978322Z           "p:wrong_metal",
+2026-10-25T13:27:05.5978540Z           "p:changed_anchor_point",
+2026-10-25T13:27:05.5978786Z           "p:missing_recorded_change",
+2026-10-25T13:27:05.5979035Z           "p:duplicate_recorded_change",
+2026-10-25T13:27:05.5979291Z           "p:wrong_change_old_point",
+2026-10-25T13:27:05.5979649Z           "p:public_alias",
+2026-10-25T13:27:05.5979872Z           "n:unlisted_HBT_displacement",
+2026-10-25T13:27:05.5980117Z           "n:MIM_new_point",
+2026-10-25T13:27:05.5980332Z           "n:MIM_old_witness",
+2026-10-25T13:27:05.5980557Z           "n:reversed_points",
+2026-10-25T13:27:05.5980781Z           "n:aliased_seed_access",
+2026-10-25T13:27:05.5981010Z           "n:wrong_reference",
+2026-10-25T13:27:05.5981224Z           "n:wrong_device",
+2026-10-25T13:27:05.5981435Z           "n:wrong_terminal",
+2026-10-25T13:27:05.5981647Z           "n:wrong_cluster",
+2026-10-25T13:27:05.5981849Z           "n:wrong_component",
+2026-10-25T13:27:05.5982057Z           "n:wrong_metal",
+2026-10-25T13:27:05.5982269Z           "n:changed_anchor_point",
+2026-10-25T13:27:05.5982504Z           "n:missing_recorded_change",
+2026-10-25T13:27:05.5982748Z           "n:duplicate_recorded_change",
+2026-10-25T13:27:05.5983000Z           "n:wrong_change_old_point",
+2026-10-25T13:27:05.5983249Z           "n:public_alias"
+2026-10-25T13:27:05.5983453Z         ],
+2026-10-25T13:27:05.5983659Z         "all32_failure_witnesses_persisted": true,
+2026-10-25T13:27:05.5984052Z         "unrelated_error_not_reclassified": true,
+2026-10-25T13:27:05.5984333Z         "new_geometry_or_simulation": false
+2026-10-25T13:27:05.5984574Z       }
+2026-10-25T13:27:05.5984737Z     },
+2026-10-25T13:27:05.5984910Z     "RC_positive": {
+2026-10-25T13:27:05.5985110Z       "identity": {
+2026-10-25T13:27:05.5985304Z         "source_run": {
+2026-10-25T13:27:05.5985506Z           "id": 40125124288,
+2026-10-25T13:27:05.5985772Z           "name": "tx-phase-reset334-mim-precision-cloud",
+2026-10-25T13:27:05.5986093Z           "node_id": "WFR_kwLOUVf99s8AAAAJV6TOwA",
+2026-10-25T13:27:05.5986397Z           "head_branch": "codex/tx-clock-phase-parent",
+2026-10-25T13:27:05.5986730Z           "head_sha": "3cb1350dcbda569ac0073b0211cdaa2a47dc70ed",
+2026-10-25T13:27:05.5987295Z           "path": ".github/workflows/tx-phase-reset334-mim-precision-cloud.yml",
+2026-10-25T13:27:05.5987711Z           "display_title": "tx-phase-reset334-mim-precision-cloud",
+2026-10-25T13:27:05.5988021Z           "run_number": 4,
+2026-10-25T13:27:05.5988241Z           "event": "workflow_dispatch",
+2026-10-25T13:27:05.5988486Z           "status": "completed",
+2026-10-25T13:27:05.5988713Z           "conclusion": "success",
+2026-10-25T13:27:05.5988941Z           "workflow_id": 395358081,
+2026-10-25T13:27:05.5989171Z           "check_suite_id": 108759018638,
+2026-10-25T13:27:05.5989446Z           "check_suite_node_id": "CS_kwDOUVf99s8AAAAZUorsjg",
+2026-10-25T13:27:05.5989858Z           "url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288",
+2026-10-25T13:27:05.5990305Z           "html_url": "https://github.com/Melihakbulut221/nssoc/actions/runs/40125124288",
+2026-10-25T13:27:05.5990635Z           "pull_requests": [],
+2026-10-25T13:27:05.5990851Z           "created_at": "2026-10-24T19:24:08Z",
+2026-10-25T13:27:05.5991106Z           "updated_at": "2026-10-24T19:27:01Z",
+2026-10-25T13:27:05.5991353Z           "actor": {
+2026-10-25T13:27:05.5991562Z             "login": "Melihakbulut221",
+2026-10-25T13:27:05.5991811Z             "id": 57303760,
+2026-10-25T13:27:05.5992038Z             "node_id": "MDQ6VXNlcjU3MzAzNzYw",
+2026-10-25T13:27:05.5992397Z             "avatar_url": "https://avatars.githubusercontent.com/u/57303760?v=4",
+2026-10-25T13:27:05.5992745Z             "gravatar_id": "",
+2026-10-25T13:27:05.5993022Z             "url": "https://api.github.com/users/Melihakbulut221",
+2026-10-25T13:27:05.5993369Z             "html_url": "https://github.com/Melihakbulut221",
+2026-10-25T13:27:05.5993870Z             "followers_url": "https://api.github.com/users/Melihakbulut221/followers",
+2026-10-25T13:27:05.5994337Z             "following_url": "https://api.github.com/users/Melihakbulut221/following{/other_user}",
+2026-10-25T13:27:05.5994817Z             "gists_url": "https://api.github.com/users/Melihakbulut221/gists{/gist_id}",
+2026-10-25T13:27:05.5995583Z             "starred_url": "https://api.github.com/users/Melihakbulut221/starred{/owner}{/repo}",
+2026-10-25T13:27:05.5996082Z             "subscriptions_url": "https://api.github.com/users/Melihakbulut221/subscriptions",
+2026-10-25T13:27:05.5996544Z             "organizations_url": "https://api.github.com/users/Melihakbulut221/orgs",
+2026-10-25T13:27:05.5996961Z             "repos_url": "https://api.github.com/users/Melihakbulut221/repos",
+2026-10-25T13:27:05.5997392Z             "events_url": "https://api.github.com/users/Melihakbulut221/events{/privacy}",
+2026-10-25T13:27:05.5997877Z             "received_events_url": "https://api.github.com/users/Melihakbulut221/received_events",
+2026-10-25T13:27:05.5998243Z             "type": "User",
+2026-10-25T13:27:05.5998457Z             "user_view_type": "public",
+2026-10-25T13:27:05.5998690Z             "site_admin": false
+2026-10-25T13:27:05.5998891Z           },
+2026-10-25T13:27:05.5999069Z           "run_attempt": 1,
+2026-10-25T13:27:05.5999290Z           "referenced_workflows": [],
+2026-10-25T13:27:05.5999536Z           "run_started_at": "2026-10-24T19:24:08Z",
+2026-10-25T13:27:05.6019341Z           "triggering_actor": {
+2026-10-25T13:27:05.6019599Z             "login": "Melihakbulut221",
+2026-10-25T13:27:05.6019842Z             "id": 57303760,
+2026-10-25T13:27:05.6020066Z             "node_id": "MDQ6VXNlcjU3MzAzNzYw",
+2026-10-25T13:27:05.6020426Z             "avatar_url": "https://avatars.githubusercontent.com/u/57303760?v=4",
+2026-10-25T13:27:05.6020771Z             "gravatar_id": "",
+2026-10-25T13:27:05.6021048Z             "url": "https://api.github.com/users/Melihakbulut221",
+2026-10-25T13:27:05.6021388Z             "html_url": "https://github.com/Melihakbulut221",
+2026-10-25T13:27:05.6021773Z             "followers_url": "https://api.github.com/users/Melihakbulut221/followers",
+2026-10-25T13:27:05.6022249Z             "following_url": "https://api.github.com/users/Melihakbulut221/following{/other_user}",
+2026-10-25T13:27:05.6022907Z             "gists_url": "https://api.github.com/users/Melihakbulut221/gists{/gist_id}",
+2026-10-25T13:27:05.6023414Z             "starred_url": "https://api.github.com/users/Melihakbulut221/starred{/owner}{/repo}",
+2026-10-25T13:27:05.6024037Z             "subscriptions_url": "https://api.github.com/users/Melihakbulut221/subscriptions",
+2026-10-25T13:27:05.6024497Z             "organizations_url": "https://api.github.com/users/Melihakbulut221/orgs",
+2026-10-25T13:27:05.6024918Z             "repos_url": "https://api.github.com/users/Melihakbulut221/repos",
+2026-10-25T13:27:05.6025358Z             "events_url": "https://api.github.com/users/Melihakbulut221/events{/privacy}",
+2026-10-25T13:27:05.6025854Z             "received_events_url": "https://api.github.com/users/Melihakbulut221/received_events",
+2026-10-25T13:27:05.6026245Z             "type": "User",
+2026-10-25T13:27:05.6026472Z             "user_view_type": "public",
+2026-10-25T13:27:05.6026717Z             "site_admin": false
+2026-10-25T13:27:05.6026939Z           },
+2026-10-25T13:27:05.6027293Z           "jobs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/jobs",
+2026-10-25T13:27:05.6027864Z           "logs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/logs",
+2026-10-25T13:27:05.6028444Z           "check_suite_url": "https://api.github.com/repos/Melihakbulut221/nssoc/check-suites/108759018638",
+2026-10-25T13:27:05.6029062Z           "artifacts_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/artifacts",
+2026-10-25T13:27:05.6029683Z           "cancel_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/cancel",
+2026-10-25T13:27:05.6030274Z           "rerun_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/runs/40125124288/rerun",
+2026-10-25T13:27:05.6030719Z           "previous_attempt_url": null,
+2026-10-25T13:27:05.6031144Z           "workflow_url": "https://api.github.com/repos/Melihakbulut221/nssoc/actions/workflows/395358081",
+2026-10-25T13:27:05.6031696Z           "head_commit": {
+2026-10-25T13:27:05.6031957Z             "id": "3cb1350dcbda569ac0073b0211cdaa2a47dc70ed",
+2026-10-25T13:27:05.6032296Z             "tree_id": "fed417b3e2e2818143bcd54174246bb9ebc232cf",
+2026-10-25T13:27:05.6032754Z             "message": "Preserve corrected334 RC source controls and source-bound tag audit [skip ci]",
+2026-10-25T13:27:05.6033176Z             "timestamp": "2026-10-24T19:24:03Z",
+2026-10-25T13:27:05.6033434Z             "author": {
+2026-10-25T13:27:05.6033659Z               "name": "Hasan Melih Akbulut",
+2026-10-25T13:27:05.6034073Z               "email": "57303760+Melihakbulut221@users.noreply.github.com"
+2026-10-25T13:27:05.6034382Z             },
+2026-10-25T13:27:05.6034566Z             "committer": {
+2026-10-25T13:27:05.6034785Z               "name": "Hasan Melih Akbulut",
+2026-10-25T13:27:05.6035096Z               "email": "57303760+Melihakbulut221@users.noreply.github.com"
+2026-10-25T13:27:05.6035399Z             }
+2026-10-25T13:27:05.6035568Z           },
+2026-10-25T13:27:05.6035735Z           "repository": {
+2026-10-25T13:27:05.6035928Z             "id": 1364721142,
+2026-10-25T13:27:05.6036129Z             "node_id": "R_kgDOUVf99g",
+2026-10-25T13:27:05.6036356Z             "name": "nssoc",
+2026-10-25T13:27:05.6036597Z             "full_name": "Melihakbulut221/nssoc",
+2026-10-25T13:27:05.6036866Z             "private": false,
+2026-10-25T13:27:05.6037080Z             "owner": {
+2026-10-25T13:27:05.6037291Z               "login": "Melihakbulut221",
+2026-10-25T13:27:05.6037535Z               "id": 57303760,
+2026-10-25T13:27:05.6037768Z               "node_id": "MDQ6VXNlcjU3MzAzNzYw",
+2026-10-25T13:27:05.6038143Z               "avatar_url": "https://avatars.githubusercontent.com/u/57303760?v=4",
+2026-10-25T13:27:05.6038482Z               "gravatar_id": "",
+2026-10-25T13:27:05.6038761Z               "url": "https://api.github.com/users/Melihakbulut221",
+2026-10-25T13:27:05.6039215Z               "html_url": "https://github.com/Melihakbulut221",
+2026-10-25T13:27:05.6039605Z               "followers_url": "https://api.github.com/users/Melihakbulut221/followers",
+2026-10-25T13:27:05.6040094Z               "following_url": "https://api.github.com/users/Melihakbulut221/following{/other_user}",
+2026-10-25T13:27:05.6040585Z               "gists_url": "https://api.github.com/users/Melihakbulut221/gists{/gist_id}",
+2026-10-25T13:27:05.6041064Z               "starred_url": "https://api.github.com/users/Melihakbulut221/starred{/owner}{/repo}",
+2026-10-25T13:27:05.6041571Z               "subscriptions_url": "https://api.github.com/users/Melihakbulut221/subscriptions",
+2026-10-25T13:27:05.6042043Z               "organizations_url": "https://api.github.com/users/Melihakbulut221/orgs",
+2026-10-25T13:27:05.6042475Z               "repos_url": "https://api.github.com/users/Melihakbulut221/repos",
+2026-10-25T13:27:05.6042915Z               "events_url": "https://api.github.com/users/Melihakbulut221/events{/privacy}",
+2026-10-25T13:27:05.6043414Z               "received_events_url": "https://api.github.com/users/Melihakbulut221/received_events",
+2026-10-25T13:27:05.6043900Z               "type": "User",
+2026-10-25T13:27:05.6044121Z               "user_view_type": "public",
+2026-10-25T13:27:05.6044364Z               "site_admin": false
+2026-10-25T13:27:05.6044581Z             },
+2026-10-25T13:27:05.6044820Z             "html_url": "https://github.com/Melihakbulut221/nssoc",
+2026-10-25T13:27:05.6045622Z             "description": "Fault-tolerant neuromorphic SoC in 130 nm on an open PDK, built with open tools. Sources, the 80-document design record, and a preprint about the two levels at which its redundancy claim was false.",
+2026-10-25T13:27:05.6046370Z             "fork": false,
+2026-10-25T13:27:05.6046636Z             "url": "https://api.github.com/repos/Melihakbulut221/nssoc",
+2026-10-25T13:27:05.6047042Z             "forks_url": "https://api.github.com/repos/Melihakbulut221/nssoc/forks",
+2026-10-25T13:27:05.6047512Z             "keys_url": "https://api.github.com/repos/Melihakbulut221/nssoc/keys{/key_id}",
+2026-10-25T13:27:05.6048250Z             "collaborators_url": "https://api.github.com/repos/Melihakbulut221/nssoc/collaborators{/collaborator}",
+2026-10-25T13:27:05.6048778Z             "teams_url": "https://api.github.com/repos/Melihakbulut221/nssoc/teams",
+2026-10-25T13:27:05.6049210Z             "hooks_url": "https://api.github.com/repos/Melihakbulut221/nssoc/hooks",
+2026-10-25T13:27:05.6049733Z             "issue_events_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues/events{/number}",
+2026-10-25T13:27:05.6050258Z             "events_url": "https://api.github.com/repos/Melihakbulut221/nssoc/events",
+2026-10-25T13:27:05.6050762Z             "assignees_url": "https://api.github.com/repos/Melihakbulut221/nssoc/assignees{/user}",
+2026-10-25T13:27:05.6051297Z             "branches_url": "https://api.github.com/repos/Melihakbulut221/nssoc/branches{/branch}",
+2026-10-25T13:27:05.6051787Z             "tags_url": "https://api.github.com/repos/Melihakbulut221/nssoc/tags",
+2026-10-25T13:27:05.6052266Z             "blobs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/blobs{/sha}",
+2026-10-25T13:27:05.6052779Z             "git_tags_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/tags{/sha}",
+2026-10-25T13:27:05.6053286Z             "git_refs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/refs{/sha}",
+2026-10-25T13:27:05.6053896Z             "trees_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/trees{/sha}",
+2026-10-25T13:27:05.6054406Z             "statuses_url": "https://api.github.com/repos/Melihakbulut221/nssoc/statuses/{sha}",
+2026-10-25T13:27:05.6054896Z             "languages_url": "https://api.github.com/repos/Melihakbulut221/nssoc/languages",
+2026-10-25T13:27:05.6055398Z             "stargazers_url": "https://api.github.com/repos/Melihakbulut221/nssoc/stargazers",
+2026-10-25T13:27:05.6056008Z             "contributors_url": "https://api.github.com/repos/Melihakbulut221/nssoc/contributors",
+2026-10-25T13:27:05.6056543Z             "subscribers_url": "https://api.github.com/repos/Melihakbulut221/nssoc/subscribers",
+2026-10-25T13:27:05.6057069Z             "subscription_url": "https://api.github.com/repos/Melihakbulut221/nssoc/subscription",
+2026-10-25T13:27:05.6057586Z             "commits_url": "https://api.github.com/repos/Melihakbulut221/nssoc/commits{/sha}",
+2026-10-25T13:27:05.6058087Z             "git_commits_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/commits{/sha}",
+2026-10-25T13:27:05.6058605Z             "comments_url": "https://api.github.com/repos/Melihakbulut221/nssoc/comments{/number}",
+2026-10-25T13:27:05.6059176Z             "issue_comment_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues/comments{/number}",
+2026-10-25T13:27:05.6059748Z             "contents_url": "https://api.github.com/repos/Melihakbulut221/nssoc/contents/{+path}",
+2026-10-25T13:27:05.6060300Z             "compare_url": "https://api.github.com/repos/Melihakbulut221/nssoc/compare/{base}...{head}",
+2026-10-25T13:27:05.6060808Z             "merges_url": "https://api.github.com/repos/Melihakbulut221/nssoc/merges",
+2026-10-25T13:27:05.6061322Z             "archive_url": "https://api.github.com/repos/Melihakbulut221/nssoc/{archive_format}{/ref}",
+2026-10-25T13:27:05.6061851Z             "downloads_url": "https://api.github.com/repos/Melihakbulut221/nssoc/downloads",
+2026-10-25T13:27:05.6062352Z             "issues_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues{/number}",
+2026-10-25T13:27:05.6062856Z             "pulls_url": "https://api.github.com/repos/Melihakbulut221/nssoc/pulls{/number}",
+2026-10-25T13:27:05.6063374Z             "milestones_url": "https://api.github.com/repos/Melihakbulut221/nssoc/milestones{/number}",
+2026-10-25T13:27:05.6064127Z             "notifications_url": "https://api.github.com/repos/Melihakbulut221/nssoc/notifications{?since,all,participating}",
+2026-10-25T13:27:05.6064728Z             "labels_url": "https://api.github.com/repos/Melihakbulut221/nssoc/labels{/name}",
+2026-10-25T13:27:05.6065331Z             "releases_url": "https://api.github.com/repos/Melihakbulut221/nssoc/releases{/id}",
+2026-10-25T13:27:05.6065830Z             "deployments_url": "https://api.github.com/repos/Melihakbulut221/nssoc/deployments"
+2026-10-25T13:27:05.6066194Z           },
+2026-10-25T13:27:05.6066376Z           "head_repository": {
+2026-10-25T13:27:05.6066643Z             "id": 1364721142,
+2026-10-25T13:27:05.6066852Z             "node_id": "R_kgDOUVf99g",
+2026-10-25T13:27:05.6067081Z             "name": "nssoc",
+2026-10-25T13:27:05.6067297Z             "full_name": "Melihakbulut221/nssoc",
+2026-10-25T13:27:05.6067546Z             "private": false,
+2026-10-25T13:27:05.6067747Z             "owner": {
+2026-10-25T13:27:05.6067951Z               "login": "Melihakbulut221",
+2026-10-25T13:27:05.6068192Z               "id": 57303760,
+2026-10-25T13:27:05.6068424Z               "node_id": "MDQ6VXNlcjU3MzAzNzYw",
+2026-10-25T13:27:05.6068811Z               "avatar_url": "https://avatars.githubusercontent.com/u/57303760?v=4",
+2026-10-25T13:27:05.6069138Z               "gravatar_id": "",
+2026-10-25T13:27:05.6069402Z               "url": "https://api.github.com/users/Melihakbulut221",
+2026-10-25T13:27:05.6069739Z               "html_url": "https://github.com/Melihakbulut221",
+2026-10-25T13:27:05.6070123Z               "followers_url": "https://api.github.com/users/Melihakbulut221/followers",
+2026-10-25T13:27:05.6070641Z               "following_url": "https://api.github.com/users/Melihakbulut221/following{/other_user}",
+2026-10-25T13:27:05.6071129Z               "gists_url": "https://api.github.com/users/Melihakbulut221/gists{/gist_id}",
+2026-10-25T13:27:05.6071595Z               "starred_url": "https://api.github.com/users/Melihakbulut221/starred{/owner}{/repo}",
+2026-10-25T13:27:05.6072030Z               "subscriptions_url": "https://api.github.com/users/Melihakbulut221/subscriptions",
+2026-10-25T13:27:05.6072686Z               "organizations_url": "https://api.github.com/users/Melihakbulut221/orgs",
+2026-10-25T13:27:05.6073098Z               "repos_url": "https://api.github.com/users/Melihakbulut221/repos",
+2026-10-25T13:27:05.6073512Z               "events_url": "https://api.github.com/users/Melihakbulut221/events{/privacy}",
+2026-10-25T13:27:05.6074082Z               "received_events_url": "https://api.github.com/users/Melihakbulut221/received_events",
+2026-10-25T13:27:05.6074442Z               "type": "User",
+2026-10-25T13:27:05.6074654Z               "user_view_type": "public",
+2026-10-25T13:27:05.6074884Z               "site_admin": false
+2026-10-25T13:27:05.6075084Z             },
+2026-10-25T13:27:05.6075308Z             "html_url": "https://github.com/Melihakbulut221/nssoc",
+2026-10-25T13:27:05.6076052Z             "description": "Fault-tolerant neuromorphic SoC in 130 nm on an open PDK, built with open tools. Sources, the 80-document design record, and a preprint about the two levels at which its redundancy claim was false.",
+2026-10-25T13:27:05.6076748Z             "fork": false,
+2026-10-25T13:27:05.6077005Z             "url": "https://api.github.com/repos/Melihakbulut221/nssoc",
+2026-10-25T13:27:05.6077380Z             "forks_url": "https://api.github.com/repos/Melihakbulut221/nssoc/forks",
+2026-10-25T13:27:05.6077806Z             "keys_url": "https://api.github.com/repos/Melihakbulut221/nssoc/keys{/key_id}",
+2026-10-25T13:27:05.6078331Z             "collaborators_url": "https://api.github.com/repos/Melihakbulut221/nssoc/collaborators{/collaborator}",
+2026-10-25T13:27:05.6078833Z             "teams_url": "https://api.github.com/repos/Melihakbulut221/nssoc/teams",
+2026-10-25T13:27:05.6079236Z             "hooks_url": "https://api.github.com/repos/Melihakbulut221/nssoc/hooks",
+2026-10-25T13:27:05.6079711Z             "issue_events_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues/events{/number}",
+2026-10-25T13:27:05.6080193Z             "events_url": "https://api.github.com/repos/Melihakbulut221/nssoc/events",
+2026-10-25T13:27:05.6080650Z             "assignees_url": "https://api.github.com/repos/Melihakbulut221/nssoc/assignees{/user}",
+2026-10-25T13:27:05.6081250Z             "branches_url": "https://api.github.com/repos/Melihakbulut221/nssoc/branches{/branch}",
+2026-10-25T13:27:05.6081701Z             "tags_url": "https://api.github.com/repos/Melihakbulut221/nssoc/tags",
+2026-10-25T13:27:05.6082131Z             "blobs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/blobs{/sha}",
+2026-10-25T13:27:05.6082600Z             "git_tags_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/tags{/sha}",
+2026-10-25T13:27:05.6083068Z             "git_refs_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/refs{/sha}",
+2026-10-25T13:27:05.6083555Z             "trees_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/trees{/sha}",
+2026-10-25T13:27:05.6084136Z             "statuses_url": "https://api.github.com/repos/Melihakbulut221/nssoc/statuses/{sha}",
+2026-10-25T13:27:05.6084611Z             "languages_url": "https://api.github.com/repos/Melihakbulut221/nssoc/languages",
+2026-10-25T13:27:05.6085096Z             "stargazers_url": "https://api.github.com/repos/Melihakbulut221/nssoc/stargazers",
+2026-10-25T13:27:05.6085588Z             "contributors_url": "https://api.github.com/repos/Melihakbulut221/nssoc/contributors",
+2026-10-25T13:27:05.6086072Z             "subscribers_url": "https://api.github.com/repos/Melihakbulut221/nssoc/subscribers",
+2026-10-25T13:27:05.6086563Z             "subscription_url": "https://api.github.com/repos/Melihakbulut221/nssoc/subscription",
+2026-10-25T13:27:05.6087044Z             "commits_url": "https://api.github.com/repos/Melihakbulut221/nssoc/commits{/sha}",
+2026-10-25T13:27:05.6087537Z             "git_commits_url": "https://api.github.com/repos/Melihakbulut221/nssoc/git/commits{/sha}",
+2026-10-25T13:27:05.6088045Z             "comments_url": "https://api.github.com/repos/Melihakbulut221/nssoc/comments{/number}",
+2026-10-25T13:27:05.6088681Z             "issue_comment_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues/comments{/number}",
+2026-10-25T13:27:05.6089208Z             "contents_url": "https://api.github.com/repos/Melihakbulut221/nssoc/contents/{+path}",
+2026-10-25T13:27:05.6089720Z             "compare_url": "https://api.github.com/repos/Melihakbulut221/nssoc/compare/{base}...{head}",
+2026-10-25T13:27:05.6090197Z             "merges_url": "https://api.github.com/repos/Melihakbulut221/nssoc/merges",
+2026-10-25T13:27:05.6090675Z             "archive_url": "https://api.github.com/repos/Melihakbulut221/nssoc/{archive_format}{/ref}",
+2026-10-25T13:27:05.6091167Z             "downloads_url": "https://api.github.com/repos/Melihakbulut221/nssoc/downloads",
+2026-10-25T13:27:05.6091642Z             "issues_url": "https://api.github.com/repos/Melihakbulut221/nssoc/issues{/number}",
+2026-10-25T13:27:05.6092113Z             "pulls_url": "https://api.github.com/repos/Melihakbulut221/nssoc/pulls{/number}",
+2026-10-25T13:27:05.6092647Z             "milestones_url": "https://api.github.com/repos/Melihakbulut221/nssoc/milestones{/number}",
+2026-10-25T13:27:05.6093277Z             "notifications_url": "https://api.github.com/repos/Melihakbulut221/nssoc/notifications{?since,all,participating}",
+2026-10-25T13:27:05.6093986Z             "labels_url": "https://api.github.com/repos/Melihakbulut221/nssoc/labels{/name}",
+2026-10-25T13:27:05.6094472Z             "releases_url": "https://api.github.com/repos/Melihakbulut221/nssoc/releases{/id}",
+2026-10-25T13:27:05.6094968Z             "deployments_url": "https://api.github.com/repos/Melihakbulut221/nssoc/deployments"
+2026-10-25T13:27:05.6095330Z           }
+2026-10-25T13:27:05.6095502Z         },
+2026-10-25T13:27:05.6095680Z         "publication": {
+2026-10-25T13:27:05.6096001Z           "tag": "cloud-results-40125124288-1-tx-phase-reset334-mim-precision",
+2026-10-25T13:27:05.6096413Z           "tested_source": "3cb1350dcbda569ac0073b0211cdaa2a47dc70ed",
+2026-10-25T13:27:05.6096722Z           "release_id": 422935028,
+2026-10-25T13:27:05.6096953Z           "existing_assets": [
+2026-10-25T13:27:05.6097269Z             {
+2026-10-25T13:27:05.6097448Z               "id": 673109070,
+2026-10-25T13:27:05.6097767Z               "name": "tx-phase-reset334-mim-precision-40125124288-1.parts.json",
+2026-10-25T13:27:05.6098123Z               "bytes": 880,
+2026-10-25T13:27:05.6098487Z               "digest": "sha256:258a9cbc9e122b64276c390e94ff3df079f35b94be0fd01e867cf69e73eaa3a5"
+2026-10-25T13:27:05.6098865Z             },
+2026-10-25T13:27:05.6099033Z             {
+2026-10-25T13:27:05.6099211Z               "id": 673109002,
+2026-10-25T13:27:05.6099533Z               "name": "tx-phase-reset334-mim-precision-40125124288-1.summary.json",
+2026-10-25T13:27:05.6099883Z               "bytes": 2344086,
+2026-10-25T13:27:05.6100243Z               "digest": "sha256:a11da5bb7ee22134f9373d43a1fffda9d1f6538877b440031ffd910adec56bcf"
+2026-10-25T13:27:05.6100615Z             },
+2026-10-25T13:27:05.6100783Z             {
+2026-10-25T13:27:05.6100963Z               "id": 673109129,
+2026-10-25T13:27:05.6101298Z               "name": "tx-phase-reset334-mim-precision-40125124288-1.tar.gz.part0000",
+2026-10-25T13:27:05.6101662Z               "bytes": 34039324,
+2026-10-25T13:27:05.6102028Z               "digest": "sha256:1840d7545cfb0d72c5cddec7d0ea0ce280a3cb8d442d4e64724e73d9000560b8"
+2026-10-25T13:27:05.6102468Z             }
+2026-10-25T13:27:05.6102640Z           ],
+2026-10-25T13:27:05.6102824Z           "target_verified": true,
+2026-10-25T13:27:05.6103071Z           "assets_overwritten": false
+2026-10-25T13:27:05.6103299Z         },
+2026-10-25T13:27:05.6103498Z         "tested_source_is_release_target": true
+2026-10-25T13:27:05.6103845Z       },
+2026-10-25T13:27:05.6104016Z       "parts": 1,
+2026-10-25T13:27:05.6104216Z       "all_archive_bytes": 34039324
+2026-10-25T13:27:05.6104437Z     },
+2026-10-25T13:27:05.6104616Z     "RC_metadata_rejected": [
+2026-10-25T13:27:05.6104831Z       "RC_run_id",
+2026-10-25T13:27:05.6105014Z       "RC_attempt",
+2026-10-25T13:27:05.6105305Z       "RC_status",
+2026-10-25T13:27:05.6105491Z       "RC_conclusion",
+2026-10-25T13:27:05.6105679Z       "RC_source",
+2026-10-25T13:27:05.6105856Z       "RC_branch",
+2026-10-25T13:27:05.6106033Z       "RC_workflow",
+2026-10-25T13:27:05.6106217Z       "RC_release",
+2026-10-25T13:27:05.6106389Z       "RC_target",
+2026-10-25T13:27:05.6106559Z       "RC_draft",
+2026-10-25T13:27:05.6106745Z       "RC_tag_source",
+2026-10-25T13:27:05.6106870Z       "RC_part_id",
+2026-10-25T13:27:05.6106990Z       "RC_part_size",
+2026-10-25T13:27:05.6107116Z       "RC_part_digest",
+2026-10-25T13:27:05.6107239Z       "RC_part_name"
+2026-10-25T13:27:05.6107357Z     ],
+2026-10-25T13:27:05.6107466Z     "row_rejected": [
+2026-10-25T13:27:05.6107586Z       "row_duplicate",
+2026-10-25T13:27:05.6107710Z       "row_missing",
+2026-10-25T13:27:05.6107827Z       "row_wrong_time",
+2026-10-25T13:27:05.6107954Z       "row_out_of_range"
+2026-10-25T13:27:05.6108076Z     ],
+2026-10-25T13:27:05.6108189Z     "derivation_rejected": [
+2026-10-25T13:27:05.6108333Z       "derivation_missing_old",
+2026-10-25T13:27:05.6108478Z       "derivation_wrong_count"
+2026-10-25T13:27:05.6108609Z     ],
+2026-10-25T13:27:05.6108719Z     "observer_derivation": {
+2026-10-25T13:27:05.6108954Z       "original_sha256": "2921d29f130f8f95aebeab0b8c0f5a1d9ba1e04ef2f2211e91f3ca61aebe2cce",
+2026-10-25T13:27:05.6109289Z       "derived_sha256": "5b524598cf4b44dd30aed41201228dab09f917b03ddface2082b2af7731bb2ee",
+2026-10-25T13:27:05.6109520Z       "edits": 2,
+2026-10-25T13:27:05.6109639Z       "reversible": true,
+2026-10-25T13:27:05.6109777Z       "frozen_review_call_count": 1,
+2026-10-25T13:27:05.6109934Z       "old_analysis_not_repeated": true
+2026-10-25T13:27:05.6110080Z     },
+2026-10-25T13:27:05.6110191Z     "controller_derivation": {
+2026-10-25T13:27:05.6110324Z       "edits": 13,
+2026-10-25T13:27:05.6110444Z       "reversible": true,
+2026-10-25T13:27:05.6110661Z       "source_sha256": "0536cf24a536083a017b32c1fa247d9d502fd8c374bcfdaf8dbd246f45742ee5",
+2026-10-25T13:27:05.6110982Z       "derived_sha256": "b79338ebb46e88a6f25a20f351131f72768ecb91c4d8fc0ffd7548c478b8a9bf"
+2026-10-25T13:27:05.6111303Z     },
+2026-10-25T13:27:05.6111427Z     "actual_graph_or_waveform_executed": false
+2026-10-25T13:27:05.6111582Z   },
+2026-10-25T13:27:05.6111687Z   "math": {
+2026-10-25T13:27:05.6111842Z     "status": "PASS_SYNTHETIC318_SAME_ROW_INTERVAL_CONTROLS_ONLY",
+2026-10-25T13:27:05.6112027Z     "rejected": [
+2026-10-25T13:27:05.6112144Z       "before_capture",
+2026-10-25T13:27:05.6112269Z       "after_capture",
+2026-10-25T13:27:05.6112393Z       "duplicate_time",
+2026-10-25T13:27:05.6112518Z       "reverse_time",
+2026-10-25T13:27:05.6112642Z       "nonfinite_time",
+2026-10-25T13:27:05.6112766Z       "nonfinite_request",
+2026-10-25T13:27:05.6112899Z       "nonfinite_crossing",
+2026-10-25T13:27:05.6113038Z       "wrong_crossing_shape",
+2026-10-25T13:27:05.6113180Z       "nonfinite_threshold",
+2026-10-25T13:27:05.6113309Z       "bad_window",
+2026-10-25T13:27:05.6113425Z       "bad_origin",
+2026-10-25T13:27:05.6113544Z       "missing_current",
+2026-10-25T13:27:05.6113672Z       "missing_body",
+2026-10-25T13:27:05.6113952Z       "wrong_Nx",
+2026-10-25T13:27:05.6114066Z       "wrong_row",
+2026-10-25T13:27:05.6114186Z       "same_pair_node",
+2026-10-25T13:27:05.6114316Z       "wrong_crossing_frame_row",
+2026-10-25T13:27:05.6114467Z       "wrong_crossing_frame_time",
+2026-10-25T13:27:05.6114614Z       "missing_crossing_frame",
+2026-10-25T13:27:05.6114758Z       "swapped_crossing_frames"
+2026-10-25T13:27:05.6114889Z     ],
+2026-10-25T13:27:05.6115008Z     "native_capture_read": false,
+2026-10-25T13:27:05.6115163Z     "original_failure_replayed": false,
+2026-10-25T13:27:05.6115319Z     "readback_authorized": false
+2026-10-25T13:27:05.6115452Z   },
+2026-10-25T13:27:05.6115554Z   "metadata": {
+2026-10-25T13:27:05.6115680Z     "actual_metadata_positives": {
+2026-10-25T13:27:05.6115829Z       "native_source": {
+2026-10-25T13:27:05.6115958Z         "identity": {
+2026-10-25T13:27:05.6116081Z           "source_run": {
+2026-10-25T13:27:05.6116310Z             "id": 40178775666,
+2026-10-25T13:27:05.6116446Z             "run_attempt": 1,
+2026-10-25T13:27:05.6116586Z             "status": "completed",
+2026-10-25T13:27:05.6116736Z             "conclusion": "failure",
+2026-10-25T13:27:05.6116917Z             "head_sha": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+2026-10-25T13:27:05.6117131Z             "head_branch": "codex/tx-clock-phase-parent",
+2026-10-25T13:27:05.6117368Z             "path": ".github/workflows/tx-phase-reset334-transient-cloud.yml"
+2026-10-25T13:27:05.6117568Z           },
+2026-10-25T13:27:05.6117684Z           "publication": {
+2026-10-25T13:27:05.6117964Z             "tag": "cloud-results-40178775666-1-tx-phase-reset334-transient-native-initial-p-initial-high",
+2026-10-25T13:27:05.6118303Z             "tested_source": "7398bb00efc4ec6ff053aeb50e03028570f0cfa0",
+2026-10-25T13:27:05.6118497Z             "release_id": 423271065,
+2026-10-25T13:27:05.6118650Z             "existing_assets": [
+2026-10-25T13:27:05.6118788Z               {
+2026-10-25T13:27:05.6118909Z                 "id": 674653444,
+2026-10-25T13:27:05.6119194Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.parts.json",
+2026-10-25T13:27:05.6119486Z                 "bytes": 1701,
+2026-10-25T13:27:05.6119711Z                 "digest": "sha256:d79555d3d82e93bb293f7287bad774947491bb748f2da3b3060d4557ce03116b"
+2026-10-25T13:27:05.6119939Z               },
+2026-10-25T13:27:05.6120047Z               {
+2026-10-25T13:27:05.6120161Z                 "id": 674653306,
+2026-10-25T13:27:05.6120438Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.summary.json",
+2026-10-25T13:27:05.6120726Z                 "bytes": 318284,
+2026-10-25T13:27:05.6120949Z                 "digest": "sha256:815b8422d6d8ba88f9f8596d3c417591a90f86a593e37d841332cbe006b1f402"
+2026-10-25T13:27:05.6121176Z               },
+2026-10-25T13:27:05.6121287Z               {
+2026-10-25T13:27:05.6121402Z                 "id": 674653573,
+2026-10-25T13:27:05.6121805Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0000",
+2026-10-25T13:27:05.6122105Z                 "bytes": 1073741824,
+2026-10-25T13:27:05.6122334Z                 "digest": "sha256:6f1e5ec09054af7585946bdf34ad38f4fa05a5845d15ae612a24418a2ccfe714"
+2026-10-25T13:27:05.6122561Z               },
+2026-10-25T13:27:05.6122670Z               {
+2026-10-25T13:27:05.6122782Z                 "id": 674655002,
+2026-10-25T13:27:05.6123073Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0001",
+2026-10-25T13:27:05.6123375Z                 "bytes": 1073741824,
+2026-10-25T13:27:05.6123607Z                 "digest": "sha256:cd7bd64121f06191eaab6895b8120d450d3f4060bceef1e0243ccfd5daf15875"
+2026-10-25T13:27:05.6124035Z               },
+2026-10-25T13:27:05.6124184Z               {
+2026-10-25T13:27:05.6124299Z                 "id": 674656412,
+2026-10-25T13:27:05.6124585Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0002",
+2026-10-25T13:27:05.6124887Z                 "bytes": 1073741824,
+2026-10-25T13:27:05.6125115Z                 "digest": "sha256:8d3a78ad51a855e7a9a78edce091d0752e9b8138a5833774f21d9529d53d5218"
+2026-10-25T13:27:05.6125344Z               },
+2026-10-25T13:27:05.6125452Z               {
+2026-10-25T13:27:05.6125565Z                 "id": 674658008,
+2026-10-25T13:27:05.6125848Z                 "name": "tx-phase-reset334-transient-native-initial-p-initial-high-40178775666-1.tar.gz.part0003",
+2026-10-25T13:27:05.6126149Z                 "bytes": 826138849,
+2026-10-25T13:27:05.6126382Z                 "digest": "sha256:8c2adbe4509f07c76fefcac2bf2b13677515908d5af119decd10275f77d64ebc"
+2026-10-25T13:27:05.6126610Z               }
+2026-10-25T13:27:05.6126718Z             ],
+2026-10-25T13:27:05.6126838Z             "target_verified": true,
+2026-10-25T13:27:05.6127087Z             "assets_overwritten": false
+2026-10-25T13:27:05.6127235Z           },
+2026-10-25T13:27:05.6127364Z           "tested_source_is_release_target": true
+2026-10-25T13:27:05.6127522Z         },
+2026-10-25T13:27:05.6127629Z         "parts": 4
+2026-10-25T13:27:05.6127744Z       },
+2026-10-25T13:27:05.6127856Z       "prepared_source": {
+2026-10-25T13:27:05.6127985Z         "identity": {
+2026-10-25T13:27:05.6128110Z           "source_run": {
+2026-10-25T13:27:05.6128240Z             "id": 40171468821,
+2026-10-25T13:27:05.6128377Z             "run_attempt": 1,
+2026-10-25T13:27:05.6128518Z             "status": "completed",
+2026-10-25T13:27:05.6128665Z             "conclusion": "success",
+2026-10-25T13:27:05.6128844Z             "head_sha": "e6c48d4d363a0bdb865dbdbd83e38350ff7291a7",
+2026-10-25T13:27:05.6129052Z             "head_branch": "codex/tx-clock-phase-parent",
+2026-10-25T13:27:05.6129302Z             "path": ".github/workflows/tx-phase-reset334-loaded-preparation-cloud.yml"
+2026-10-25T13:27:05.6129523Z           },
+2026-10-25T13:27:05.6129643Z           "publication": {
+2026-10-25T13:27:05.6129854Z             "tag": "cloud-results-40171468821-1-tx-phase-reset334-loaded-preparation",
+2026-10-25T13:27:05.6130124Z             "tested_source": "e6c48d4d363a0bdb865dbdbd83e38350ff7291a7",
+2026-10-25T13:27:05.6130318Z             "release_id": 423204104,
+2026-10-25T13:27:05.6130468Z             "existing_assets": [
+2026-10-25T13:27:05.6130599Z               {
+2026-10-25T13:27:05.6130713Z                 "id": 674346341,
+2026-10-25T13:27:05.6130925Z                 "name": "tx-phase-reset334-loaded-preparation-40171468821-1.parts.json",
+2026-10-25T13:27:05.6131154Z                 "bytes": 889,
+2026-10-25T13:27:05.6131378Z                 "digest": "sha256:df73e849b0aa18cd39816021a0f56b7e8f12cbf32a3dfbab285ebcec574f2de0"
+2026-10-25T13:27:05.6131612Z               },
+2026-10-25T13:27:05.6131720Z               {
+2026-10-25T13:27:05.6131834Z                 "id": 674346276,
+2026-10-25T13:27:05.6132060Z                 "name": "tx-phase-reset334-loaded-preparation-40171468821-1.summary.json",
+2026-10-25T13:27:05.6132389Z                 "bytes": 11244,
+2026-10-25T13:27:05.6132619Z                 "digest": "sha256:7a5da3a0e8e7afd80ace24da03365dd4aad223ba9dc4f9fbdedf08bf2b1b9be4"
+2026-10-25T13:27:05.6132854Z               },
+2026-10-25T13:27:05.6132961Z               {
+2026-10-25T13:27:05.6133073Z                 "id": 674346396,
+2026-10-25T13:27:05.6133302Z                 "name": "tx-phase-reset334-loaded-preparation-40171468821-1.tar.gz.part0000",
+2026-10-25T13:27:05.6133540Z                 "bytes": 356475,
+2026-10-25T13:27:05.6134017Z                 "digest": "sha256:c9f227d485aecdc9d923a148cf91cd36c8c51144bdbdad115c2e7b0c0b6eb365"
+2026-10-25T13:27:05.6134248Z               }
+2026-10-25T13:27:05.6134357Z             ],
+2026-10-25T13:27:05.6134477Z             "target_verified": true,
+2026-10-25T13:27:05.6134628Z             "assets_overwritten": false
+2026-10-25T13:27:05.6134771Z           },
+2026-10-25T13:27:05.6134900Z           "tested_source_is_release_target": true
+2026-10-25T13:27:05.6135057Z         },
+2026-10-25T13:27:05.6135163Z         "parts": 1
+2026-10-25T13:27:05.6135275Z       }
+2026-10-25T13:27:05.6135376Z     },
+2026-10-25T13:27:05.6135480Z     "rejected": [
+2026-10-25T13:27:05.6135600Z       "native_source:id",
+2026-10-25T13:27:05.6135745Z       "native_source:run_attempt",
+2026-10-25T13:27:05.6135894Z       "native_source:status",
+2026-10-25T13:27:05.6136037Z       "native_source:conclusion",
+2026-10-25T13:27:05.6136182Z       "native_source:head_sha",
+2026-10-25T13:27:05.6136323Z       "native_source:head_branch",
+2026-10-25T13:27:05.6136469Z       "native_source:path",
+2026-10-25T13:27:05.6136606Z       "native_source:release_id",
+2026-10-25T13:27:05.6136755Z       "native_source:release_target",
+2026-10-25T13:27:05.6136904Z       "native_source:tag_commit",
+2026-10-25T13:27:05.6137057Z       "prepared_source:actual_run_source",
+2026-10-25T13:27:05.6137223Z       "prepared_source:container_id",
+2026-10-25T13:27:05.6137473Z       "prepared_source:container_target",
+2026-10-25T13:27:05.6137640Z       "prepared_source:container_commit",
+2026-10-25T13:27:05.6137799Z       "prepared_source:container_draft",
+2026-10-25T13:27:05.6137955Z       "native_source:part_id",
+2026-10-25T13:27:05.6138098Z       "native_source:part_size",
+2026-10-25T13:27:05.6138243Z       "native_source:part_digest",
+2026-10-25T13:27:05.6138390Z       "native_source:part_name",
+2026-10-25T13:27:05.6138535Z       "prepared_source:part_id",
+2026-10-25T13:27:05.6138681Z       "prepared_source:part_size",
+2026-10-25T13:27:05.6138832Z       "prepared_source:part_digest",
+2026-10-25T13:27:05.6138983Z       "prepared_source:part_name"
+2026-10-25T13:27:05.6139118Z     ]
+2026-10-25T13:27:05.6139217Z   },
+2026-10-25T13:27:05.6139328Z   "original_result_faults": [
+2026-10-25T13:27:05.6139468Z     "native_exit_code",
+2026-10-25T13:27:05.6139598Z     "native_process_saved",
+2026-10-25T13:27:05.6139733Z     "full_capture",
+2026-10-25T13:27:05.6139852Z     "source_head",
+2026-10-25T13:27:05.6139970Z     "case",
+2026-10-25T13:27:05.6140087Z     "electrical_screen_passed",
+2026-10-25T13:27:05.6140228Z     "sources_unchanged",
+2026-10-25T13:27:05.6140370Z     "continuation:native_process_saved",
+2026-10-25T13:27:05.6140526Z     "continuation:next_phase"
+2026-10-25T13:27:05.6140655Z   ],
+2026-10-25T13:27:05.6140761Z   "archive_faults": [
+2026-10-25T13:27:05.6140886Z     "missing_original",
+2026-10-25T13:27:05.6141010Z     "unknown_original",
+2026-10-25T13:27:05.6141137Z     "changed_unselected",
+2026-10-25T13:27:05.6141268Z     "unknown_selection",
+2026-10-25T13:27:05.6141390Z     "traversal",
+2026-10-25T13:27:05.6141502Z     "absolute",
+2026-10-25T13:27:05.6141613Z     "backslash",
+2026-10-25T13:27:05.6141726Z     "wrong_root",
+2026-10-25T13:27:05.6141836Z     "symlink",
+2026-10-25T13:27:05.6141946Z     "hardlink",
+2026-10-25T13:27:05.6142060Z     "noncanonical"
+2026-10-25T13:27:05.6142171Z   ],
+2026-10-25T13:27:05.6142273Z   "parts": {
+2026-10-25T13:27:05.6142394Z     "positive_roundtrip": true,
+2026-10-25T13:27:05.6142632Z     "negative_controls": 6,
+2026-10-25T13:27:05.6142782Z     "all_native_payload_bytes_preserved": true
+2026-10-25T13:27:05.6142938Z   },
+2026-10-25T13:27:05.6143044Z   "selected_archive": {
+2026-10-25T13:27:05.6143183Z     "exact_native_payload_roundtrip": true,
+2026-10-25T13:27:05.6143342Z     "negative_controls": [
+2026-10-25T13:27:05.6143468Z       "missing",
+2026-10-25T13:27:05.6143586Z       "wrong_selected_hash",
+2026-10-25T13:27:05.6143832Z       "order",
+2026-10-25T13:27:05.6144009Z       "whole_hash",
+2026-10-25T13:27:05.6144202Z       "selection_escape",
+2026-10-25T13:27:05.6144330Z       "symlink",
+2026-10-25T13:27:05.6144442Z       "traversal",
+2026-10-25T13:27:05.6144554Z       "wrong_root"
+2026-10-25T13:27:05.6144663Z     ]
+2026-10-25T13:27:05.6144764Z   },
+2026-10-25T13:27:05.6144873Z   "publication": {
+2026-10-25T13:27:05.6145035Z     "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+2026-10-25T13:27:05.6145219Z     "rejected": [
+2026-10-25T13:27:05.6145342Z       "local-context",
+2026-10-25T13:27:05.6145464Z       "other-repo",
+2026-10-25T13:27:05.6145586Z       "missing-source",
+2026-10-25T13:27:05.6145710Z       "mutable-source",
+2026-10-25T13:27:05.6145832Z       "invalid-run",
+2026-10-25T13:27:05.6145955Z       "invalid-attempt",
+2026-10-25T13:27:05.6146085Z       "invalid-group",
+2026-10-25T13:27:05.6146219Z       "different-release-target",
+2026-10-25T13:27:05.6146374Z       "different-tag-object",
+2026-10-25T13:27:05.6146511Z       "annotated-tag",
+2026-10-25T13:27:05.6146638Z       "different-tag-name",
+2026-10-25T13:27:05.6146772Z       "draft-release",
+2026-10-25T13:27:05.6146899Z       "production-release",
+2026-10-25T13:27:05.6147042Z       "duplicate-asset-name",
+2026-10-25T13:27:05.6147187Z       "asset-digest-missing",
+2026-10-25T13:27:05.6147333Z       "preexisting-wrong-tag",
+2026-10-25T13:27:05.6147483Z       "read-denied-never-creates"
+2026-10-25T13:27:05.6147624Z     ],
+2026-10-25T13:27:05.6147847Z     "existing_partial_assets_preserved": true,
+2026-10-25T13:27:05.6148022Z     "existing_release_not_recreated": true,
+2026-10-25T13:27:05.6148183Z     "new_release_uses_tested_sha": true,
+2026-10-25T13:27:05.6148342Z     "no_permissions_expanded": true
+2026-10-25T13:27:05.6148482Z   },
+2026-10-25T13:27:05.6148593Z   "readback_authorized": false,
+2026-10-25T13:27:05.6148737Z   "new_simulation": false,
+2026-10-25T13:27:05.6148881Z   "actual_input_controls_executed": false
+2026-10-25T13:27:05.6149032Z }
+2026-10-25T13:27:05.6635258Z {
+2026-10-25T13:27:05.6635629Z   "status": "PASS_READ_ONLY_RELEASE_WAIT_CONTROLS",
+2026-10-25T13:27:05.6635947Z   "positive_cases": [
+2026-10-25T13:27:05.6636150Z     {
+2026-10-25T13:27:05.6636337Z       "absent_reads": 0,
+2026-10-25T13:27:05.6636565Z       "exact_release_accepted": true
+2026-10-25T13:27:05.6636798Z     },
+2026-10-25T13:27:05.6636966Z     {
+2026-10-25T13:27:05.6637141Z       "absent_reads": 2,
+2026-10-25T13:27:05.6637364Z       "exact_release_accepted": true
+2026-10-25T13:27:05.6637592Z     },
+2026-10-25T13:27:05.6637796Z     {
+2026-10-25T13:27:05.6637976Z       "absent_reads": 60,
+2026-10-25T13:27:05.6638193Z       "exact_release_accepted": true
+2026-10-25T13:27:05.6638417Z     }
+2026-10-25T13:27:05.6638574Z   ],
+2026-10-25T13:27:05.6638738Z   "rejected": [
+2026-10-25T13:27:05.6638932Z     "bounded-missing-reservation",
+2026-10-25T13:27:05.6639233Z     "API-denied-not-retried",
+2026-10-25T13:27:05.6639471Z     "different-release-source",
+2026-10-25T13:27:05.6639711Z     "different-tag-object"
+2026-10-25T13:27:05.6639914Z   ],
+2026-10-25T13:27:05.6640095Z   "maximum_missing_reads": 61,
+2026-10-25T13:27:05.6640334Z   "maximum_scheduled_wait_s": 300,
+2026-10-25T13:27:05.6640576Z   "creation_attempted": false,
+2026-10-25T13:27:05.6640806Z   "native_executed": false
+2026-10-25T13:27:05.6641008Z }
+2026-10-25T13:27:05.7303384Z ##[group]Run python3 scripts/check_tx_phase_reset334_return_publication.py | tee publication-program-controls.json
+2026-10-25T13:27:05.7304364Z [36;1mpython3 scripts/check_tx_phase_reset334_return_publication.py | tee publication-program-controls.json[0m
+2026-10-25T13:27:05.7304992Z [36;1mpython3 - <<'PYCODE'[0m
+2026-10-25T13:27:05.7305208Z [36;1mimport json[0m
+2026-10-25T13:27:05.7305475Z [36;1mp=json.load(open('publication-program-controls.json'))[0m
+2026-10-25T13:27:05.7305897Z [36;1massert p['status']=='PASS_PHASE318_ACTUAL_PUBLICATION_PROGRAM_CONTROLS_ONLY'[0m
+2026-10-25T13:27:05.7306327Z [36;1massert len(p['positive_cases'])==2 and len(p['rejected'])==13[0m
+2026-10-25T13:27:05.7306752Z [36;1massert p['actual_template_program_executed'] and p['real_file_list_assembly'][0m
+2026-10-25T13:27:05.7307173Z [36;1massert p['real_publisher_retry_and_digest_function_used'][0m
+2026-10-25T13:27:05.7307748Z [36;1massert not p['remote_network_or_upload_executed'] and not p['release_creation_executed'] and not p['native_executed'][0m
+2026-10-25T13:27:05.7308198Z [36;1mPYCODE[0m
+2026-10-25T13:27:05.7363537Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-25T13:27:05.7363893Z env:
+2026-10-25T13:27:05.7364050Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:27:05.7364395Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T13:27:05.7364627Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:27:05.7364838Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:27:05.7365045Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:27:05.7365255Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T13:27:05.7365441Z ##[endgroup]
+2026-10-25T13:27:06.9905906Z {
+2026-10-25T13:27:06.9906336Z   "status": "PASS_PHASE318_ACTUAL_PUBLICATION_PROGRAM_CONTROLS_ONLY",
+2026-10-25T13:27:06.9906652Z   "positive_cases": [
+2026-10-25T13:27:06.9906979Z     "actual_program_all8_paths_two_archive_parts_real_publisher_digest_roundtrip",
+2026-10-25T13:27:06.9907353Z     "identical_existing_assets_preserved_without_upload"
+2026-10-25T13:27:06.9907601Z   ],
+2026-10-25T13:27:06.9907766Z   "rejected": [
+2026-10-25T13:27:06.9907951Z     "unbound_legacy_create_seam",
+2026-10-25T13:27:06.9908162Z     "wrong_release_source",
+2026-10-25T13:27:06.9908504Z     "wrong_tag_source",
+2026-10-25T13:27:06.9908773Z     "wrong_release_tag",
+2026-10-25T13:27:06.9909289Z     "missing_reserved_release",
+2026-10-25T13:27:06.9909596Z     "Path_indexed_as_manifest",
+2026-10-25T13:27:06.9909927Z     "post_upload_digest_mismatch",
+2026-10-25T13:27:06.9910293Z     "existing_asset_never_overwritten",
+2026-10-25T13:27:06.9910596Z     "duplicate_part",
+2026-10-25T13:27:06.9910912Z     "traversal_part",
+2026-10-25T13:27:06.9911208Z     "backslash_part",
+2026-10-25T13:27:06.9911523Z     "duplicate_asset_basename",
+2026-10-25T13:27:06.9911839Z     "symlink_json"
+2026-10-25T13:27:06.9912096Z   ],
+2026-10-25T13:27:06.9912339Z   "actual_template_program_executed": true,
+2026-10-25T13:27:06.9912705Z   "real_file_list_assembly": true,
+2026-10-25T13:27:06.9913072Z   "real_publisher_retry_and_digest_function_used": true,
+2026-10-25T13:27:06.9923106Z   "remote_network_or_upload_executed": false,
+2026-10-25T13:27:06.9923431Z   "release_creation_executed": false,
+2026-10-25T13:27:06.9923654Z   "native_executed": false
+2026-10-25T13:27:06.9923962Z }
+2026-10-25T13:27:07.0304207Z Post job cleanup.
+2026-10-25T13:27:07.1069271Z (node:2205) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T13:27:07.1069686Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T13:27:07.1211808Z Post job cleanup.
+2026-10-25T13:27:07.1767197Z [command]/usr/bin/git version
+2026-10-25T13:27:07.1797567Z git version 2.55.0
+2026-10-25T13:27:07.1821739Z Temporarily overriding HOME='/home/runner/work/_temp/c0c3c4e4-7a9f-4b95-bb4f-a489d47af746' before making global git config changes
+2026-10-25T13:27:07.1822508Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T13:27:07.1825406Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T13:27:07.1858295Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T13:27:07.1886396Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T13:27:07.2112376Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T13:27:07.2147938Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T13:27:07.2386479Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T13:27:07.2418005Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T13:27:07.2741642Z Cleaning up orphan processes
+2026-10-25T13:27:07.3007931Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

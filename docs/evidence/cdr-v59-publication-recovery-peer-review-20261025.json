@@ -1,0 +1,39 @@
+{
+  "schema": "cdr-v59-publication-recovery-independent-source-review-v1",
+  "status": "CLEARED_BOUNDED_RESTORE_AND_PUBLICATION_SOURCE_REVIEW",
+  "reviewer": "tx_diagnosis",
+  "reviewed_source": "4d263a28fea1829d82da09b9e8cd3d3af2ecfe9d",
+  "methods_path": "scripts/cdr-v59-publication-recovery-methods.json",
+  "methods_sha256": "52f2e2e7640799404144d6a30eab6f10c79d6173cde297302d5f31f1969cb04f",
+  "declared_protected_files": 283,
+  "independently_rehashed_relevant_source_and_receipt_files": 10,
+  "full_closure_repeated": false,
+  "findings": [
+    "No concrete restore/publication blocker in bounded source review.",
+    "Original native wrapper main reconstructed exactly by reversing its sole Path-index to publication_files call change.",
+    "Complete artifact metadata, byte length and SHA256 precede strict ZIP CRC, canonical-name, regular-type and member-inventory checks.",
+    "Canonical log chunks, full root summary, original stage result and all 706 unchanged original input hashes remain mandatory.",
+    "Two hidden Magic files are explicit loose-outer omissions and mandatory in the complete inner tar archive.",
+    "Original failed Actions and publication dispositions remain preserved; only authenticated existing payloads may publish to exact old reserved source releases.",
+    "Every upload revalidates the original release/tag and retains digest verification and no-clobber behavior; no CAD path is called.",
+    "The actual shared publication function is exercised with one and multiple packed parts plus 14 faults; 45 metadata/ZIP/tar faults retain transport-first rejection."
+  ],
+  "limitations": {
+    "source_review_only": true,
+    "archives_downloaded": false,
+    "tests_executed": false,
+    "native_jobs_executed": false,
+    "source_files_mutated_by_reviewer": false,
+    "actual_recovered_publication_qualified": false
+  },
+  "authorization_at_review": {
+    "binding": false,
+    "rc": false,
+    "recovery": false
+  },
+  "required_next": [
+    "Root source and protected-pin closure review",
+    "Hosted controls before artifact recovery",
+    "Separate recovery activation"
+  ]
+}
