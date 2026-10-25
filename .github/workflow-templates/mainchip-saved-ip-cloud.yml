@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   controls:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
@@ -37,7 +37,7 @@ jobs:
   saved-instruction-readback:
     needs: controls
     if: github.event_name == 'workflow_dispatch' && inputs.diagnose
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
       contents: write
@@ -53,7 +53,9 @@ jobs:
       - name: Build only the pinned CRIU image decoder
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends protobuf-compiler python3-protobuf binutils
+          sudo apt-get install -y --no-install-recommends protobuf-compiler libprotobuf-dev python3-protobuf binutils
+          test -f /usr/include/google/protobuf/descriptor.proto
+          /usr/bin/python3 -c 'import hashlib,sys; assert sys.version_info >= (3,11); assert hasattr(hashlib,"file_digest"); print(sys.version)'
           git init "$RUNNER_TEMP/criu-src"
           git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
           git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
