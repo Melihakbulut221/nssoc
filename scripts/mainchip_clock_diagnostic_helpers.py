@@ -38,9 +38,10 @@ def controls():
     a={'clk':dict(statement=['-','clk','(','u','CLK',')','+','FIXED','Metal3','(','0','0',')',';'],
         instances={'u':dict(master='buf',location=[10,20],orientation='R0',status='PLACED')})}
     r=differences(dict(before=a,after=copy.deepcopy(a)));assert r['original_equality_passed']and not r['changes']
+    assert a['clk']['statement'][9:13]==['(','0','0',')']
     names=[]
     for key,mutate in [
-        ('route_coordinate',lambda b:b['clk']['statement'].__setitem__(12,'5')),
+        ('route_coordinate',lambda b:b['clk']['statement'].__setitem__(11,'5')),
         ('route_type',lambda b:b['clk']['statement'].__setitem__(7,'ROUTED')),
         ('clock_pin',lambda b:b['clk']['statement'].__setitem__(4,'D')),
         ('master',lambda b:b['clk']['instances']['u'].__setitem__('master','other')),
