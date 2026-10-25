@@ -1,0 +1,211 @@
+{
+  "schema": "mainchip-bounded-user-stack-proposal-v1",
+  "status": "SOURCE_ONLY_PROPOSAL_NOT_EXECUTABLE_OR_QUALIFIED",
+  "proposal_only": true,
+  "implementation_complete": false,
+  "hosted_fixture_controls_passed": false,
+  "native_execution_authorized": false,
+  "native_process_restored": false,
+  "native_process_started": false,
+  "route_progress_proven": false,
+  "routing_complete": false,
+  "normal_continuation_accepted": false,
+  "final_timing_complete": false,
+  "full_phy_accepted": false,
+  "source_basis": {
+    "root_ref": "0e92f12258126ab828fe9eaac8b2205405b69951",
+    "observer_ref": "fdbbf7998f5b0fbab7314a3296d673689a91a588",
+    "source_inventory": "scripts/mainchip-userstack-proposal-methods.json"
+  },
+  "objective": "Observe repeated main/worker user-stack locations from the exact saved process without cold route or changed routing/timing gates. Repeated stack or active CPU is not proof of cause, useful progress or deadlock.",
+  "saved_capsule": {
+    "run": 40120760532,
+    "attempt": 1,
+    "source_head": "84b513cb437b68af0f4cb22bc4707db1a35958cf",
+    "release_id": 422907570,
+    "group": "mainchip-route12-observed",
+    "summary_sha256": "1e21e2c65b9264727bd6abd502da805023b53c1e3a0d943aba8743c072ebc0c2",
+    "parts_sha256": "1cd467372d2b8629169f2d77290164a611a844ebfc61e5fc486aa68b1a8c36d1",
+    "archive": {
+      "parts": 2,
+      "bytes": 1565967929,
+      "sha256": "f22c8247d21a8a948461fe6d669a1e54944684790bdc113e1959ab096df19e28",
+      "all_parts_and_combined_bytes_verified": true
+    },
+    "inner_controller": {
+      "sha256": "2681afcb8475beca15fc6cf1b1b21c48703a28105abd3e05ae8159b9221a0440",
+      "bytes": 79432
+    },
+    "original_failure_required": true
+  },
+  "runtime": {
+    "image_id": "sha256:113cc2e5500e0152a2137336ae092c7caeccb5f8b95b17874fd649d097b8daf8",
+    "elf_path": "/nix/store/qqz49dx8dpx4q9i5wriif091n7iaa0ld-openroad-2026-02-17/bin/.openroad-wrapped",
+    "elf_sha256": "25a5e9ba1cbb76b820af97cfc8d87b7a2d1bc1203091d83ee4eee859c2e9a04b",
+    "native_file_inventory": {
+      "/nix/store/qqz49dx8dpx4q9i5wriif091n7iaa0ld-openroad-2026-02-17/bin/.openroad-wrapped": {
+        "sha256": "25a5e9ba1cbb76b820af97cfc8d87b7a2d1bc1203091d83ee4eee859c2e9a04b",
+        "bytes": 103633024
+      },
+      "/nix/store/xx7cm72qy2c0643cm1ipngd87aqwkcdp-glibc-2.40-66/lib/libc.so.6": {
+        "sha256": "638059e8bd2e7bee4424e750b13b4353cb8777a4de3f55a89c2d16e83de64201",
+        "bytes": 2400760
+      }
+    },
+    "source": {
+      "run": 39494338440,
+      "summary_sha256": "21e8f082931a30e8ae074d34843c828502a80e0719b778e6a8686a04fc976bc2",
+      "manifest_sha256": "dccdda0edea5954b3284d87636d055cce1157f1a0e4d20b962f30b7476979856",
+      "restore": {
+        "archive": {
+          "parts": 1,
+          "bytes": 826825972,
+          "sha256": "b748abf9ecccc446606ecc49629de8ffef95e7c46b473a3bc83fa2cb301590e9",
+          "all_parts_and_combined_bytes_verified": true
+        },
+        "selected_files": {
+          "result.json": {
+            "sha256": "21e8f082931a30e8ae074d34843c828502a80e0719b778e6a8686a04fc976bc2",
+            "bytes": 8290
+          },
+          "native-image.tar": {
+            "sha256": "c8448ddce6e02b2f23ddd84245a71ae43c2b4b8537c5e1bdaf80fc4ef8882f9d",
+            "bytes": 2665922048
+          },
+          "runtime-inventory.json": {
+            "sha256": "f0dd493a1f5106da8a86bf0de6821d6ddbeed25050717c5706225c3d4fdfdbfa",
+            "bytes": 6246138
+          }
+        },
+        "full_archive_verified_before_extraction": true
+      }
+    }
+  },
+  "architecture": {
+    "frozen_controller_sha256": "08b91df1a93d28c4acda1dbeae3b45e53af8393664ceaf71038808bdb0707eee",
+    "original_no_progress_assertion": "No observable native DRT progress after cross-runner restore",
+    "current_admission_limitation": "Existing mainchip_rejected_capsule_admission.py pins failed40095811631; not admission for later40120760532.",
+    "required_new_adapter": "Separately reviewed exact40120760532 saved-capsule admission with complete23-image census/digests, original log prefix, runtime and inner-controller receipt. Never substitute old capsule or cold route.",
+    "retained_sites": [
+      "adapted_source reversible reconstruction",
+      "current_inputs before/after",
+      "start_probe after verified same-process restore",
+      "finish_probe before checkpoint",
+      "verify_no_progress_site exact AST/traceback",
+      "native_process_saved/single_entrypoint"
+    ],
+    "new_observer": "Separate stack observer; frozen route controller unchanged. Review narrow observer/admission deltas, preserve original functions outside main and checkpoint lifecycle.",
+    "host_preflight": "Pin selected host GDB bytes/version/build and trusted reader; verify every requested command on real hosted fixtures before OpenROAD admission. No compatibility claim yet."
+  },
+  "sampling": {
+    "samples": 20,
+    "frames_per_thread": 16,
+    "max_threads": 64,
+    "detached_interval_seconds": 5,
+    "per_attachment_deadline_seconds": 10,
+    "debugger_cleanup_seconds": 5,
+    "observer_deadline_seconds": 480,
+    "existing_diagnostic_window_seconds": 600,
+    "global_output_limit_bytes": 33554432,
+    "schedule": "Monotonic distinct attach/read/detach cycles, no catch-up bursts; finish verified detach before checkpoint; measure actual stop duration."
+  },
+  "debugger_policy": {
+    "launch_options": [
+      "--nx",
+      "--nh",
+      "--quiet",
+      "--batch"
+    ],
+    "early_commands": [
+      "set auto-load off",
+      "set debuginfod enabled off"
+    ],
+    "environment": {
+      "DEBUGINFOD_URLS": ""
+    },
+    "permissions_required_off": [
+      "may-write-registers",
+      "may-write-memory",
+      "may-insert-breakpoints",
+      "may-insert-tracepoints",
+      "may-insert-fast-tracepoints",
+      "may-call-functions"
+    ],
+    "stop_mode": "Explicit all-stop attachment, not set observer on (also changes interrupt/non-stop). Real fixture must prove support; never relax permissions if attach/unwind fails.",
+    "symbol_resolution": "Exact /proc/PID/exe and sysroot /proc/PID/root, exact target runtime-inventory hashes and actual mapped module offsets/build IDs. No silent host-library substitution.",
+    "forbidden": [
+      "run",
+      "start",
+      "step",
+      "next",
+      "continue",
+      "jump",
+      "call",
+      "inferior expression evaluation",
+      "memory/register assignment",
+      "breakpoint/tracepoint insertion",
+      "target-directed SIGCONT/kill",
+      "target auto-load scripts",
+      "debuginfod network fetch"
+    ],
+    "trusted_read_operations": [
+      "enumerate actual host LWPs",
+      "read native registers for unwind",
+      "read bounded user frames",
+      "record PCs/paths/offsets",
+      "record symbol/unwind limits"
+    ],
+    "libthread_db": "Global auto-load remains off. Fixture must prove all actual LWPs discovered without target libthread_db loading; inability rejects without fallback."
+  },
+  "identity": {
+    "retain": [
+      "container ID",
+      "image digest",
+      "StartedAt",
+      "cpuset",
+      "host PID",
+      "native starttime_ticks",
+      "proc-directory identity",
+      "exe SHA256/device/inode",
+      "cmdline",
+      "cgroup",
+      "target root/namespace identity"
+    ],
+    "phases": [
+      "before attach",
+      "while all stopped before accepting frames",
+      "after detach"
+    ],
+    "proc_handles": "Existing ProcObserver holds proc-directory descriptors, not pidfd. New pidfd may detect exit, but numeric GDB attach still requires in-stop identity validation; not atomic PID binding.",
+    "thread_identity": "Actual host LWP IDs/starttimes, not assumed container TIDs1/7/8/9. Compare stopped native task census with GDB census."
+  },
+  "cleanup": {
+    "normal": "Trusted GDB try/finally requests detach; preserve acknowledgment and verify original identity, every observed TracerPid zero and no tracing-stop state after debugger exit.",
+    "error": "Terminate/escalate only owned debugger group, including descendants after leader exit. Independently prove target detach; unresolved detach rejects, never becomes pass or completed sample.",
+    "no_native_rescue_signal": true,
+    "partial_evidence": "Flush phase/sample/raw stdout/stderr/cleanup before final acceptance; retain partial evidence on failure."
+  },
+  "scope": {
+    "target_temporarily_stopped": true,
+    "scheduling_perturbation_expected": true,
+    "native_memory_or_register_writes_permitted": false,
+    "not_a_nonintrusive_profile": true,
+    "complete_user_stack_claim": false,
+    "stacks_bounded_to_16_frames": true,
+    "success_only_means": "Twenty identity-bound bounded acquisitions with verified detach and retained original rejection; no routing/normal-continuation/deadlock/root-cause proof.",
+    "unknowns": [
+      "actual GDB exact-runtime compatibility with readonly permissions",
+      "whether frames distinguish cost evaluation from finite traversal",
+      "unwind depth/quality",
+      "temporary-stop scheduling effect",
+      "latest-capsule admission implementation and actual controls"
+    ]
+  },
+  "controls_plan": "scripts/mainchip-userstack-proposal-controls.json",
+  "required_next_order": [
+    "Implement/review latest-capsule admission and observer",
+    "Run only hosted sacrificial fixtures/source controls",
+    "Review actual controls and immutable source",
+    "Root authorizes at most one bounded same-process observation; proposal enables no dispatch"
+  ]
+}
