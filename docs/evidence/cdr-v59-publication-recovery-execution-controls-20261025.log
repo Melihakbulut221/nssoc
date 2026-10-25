@@ -1,0 +1,802 @@
+﻿2026-10-25T13:18:10.5932137Z Current runner version: '2.338.0'
+2026-10-25T13:18:10.5956881Z ##[group]Runner Image Provisioner
+2026-10-25T13:18:10.5957779Z Hosted Compute Agent
+2026-10-25T13:18:10.5958498Z Version: 20261021.618
+2026-10-25T13:18:10.5959125Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-25T13:18:10.5959837Z Build Date: 2026-10-21T00:45:21Z
+2026-10-25T13:18:10.5960592Z Worker ID: {61b2c171-c2fd-4676-94ee-4a3d316ed7e3}
+2026-10-25T13:18:10.5961327Z Region: westus
+2026-10-25T13:18:10.5961899Z Cloud: Azure
+2026-10-25T13:18:10.5962458Z ##[endgroup]
+2026-10-25T13:18:10.5963919Z ##[group]Operating System
+2026-10-25T13:18:10.5964639Z Ubuntu
+2026-10-25T13:18:10.5965234Z 24.04.5
+2026-10-25T13:18:10.5965953Z LTS
+2026-10-25T13:18:10.5966586Z ##[endgroup]
+2026-10-25T13:18:10.5967137Z ##[group]Runner Image
+2026-10-25T13:18:10.5967791Z Image: ubuntu-24.04
+2026-10-25T13:18:10.5968392Z Version: 20261012.334.1
+2026-10-25T13:18:10.5969687Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-25T13:18:10.5971245Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-25T13:18:10.5972280Z ##[endgroup]
+2026-10-25T13:18:10.5973398Z ##[group]GITHUB_TOKEN Permissions
+2026-10-25T13:18:10.5975356Z Contents: read
+2026-10-25T13:18:10.5976327Z Metadata: read
+2026-10-25T13:18:10.5976875Z ##[endgroup]
+2026-10-25T13:18:10.5979045Z Secret source: Actions
+2026-10-25T13:18:10.5980461Z Cache mode: write
+2026-10-25T13:18:10.5981207Z Prepare workflow directory
+2026-10-25T13:18:10.6388412Z Prepare all required actions
+2026-10-25T13:18:10.6436776Z Getting action download info
+2026-10-25T13:18:10.9871320Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-25T13:18:11.0800405Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-25T13:18:11.1592280Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-25T13:18:11.3686380Z Complete job name: controls
+2026-10-25T13:18:11.4584517Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-25T13:18:11.4585926Z with:
+2026-10-25T13:18:11.4586390Z   persist-credentials: false
+2026-10-25T13:18:11.4586934Z   repository: Melihakbulut221/nssoc
+2026-10-25T13:18:11.4590960Z   token: ***
+2026-10-25T13:18:11.4591404Z   ssh-strict: true
+2026-10-25T13:18:11.4591850Z   ssh-user: git
+2026-10-25T13:18:11.4592273Z   clean: true
+2026-10-25T13:18:11.4592715Z   sparse-checkout-cone-mode: true
+2026-10-25T13:18:11.4593238Z   fetch-depth: 1
+2026-10-25T13:18:11.4593661Z   fetch-tags: false
+2026-10-25T13:18:11.4594100Z   show-progress: true
+2026-10-25T13:18:11.4594547Z   lfs: false
+2026-10-25T13:18:11.4594952Z   submodules: false
+2026-10-25T13:18:11.4595400Z   set-safe-directory: true
+2026-10-25T13:18:11.4596048Z   allow-unsafe-pr-checkout: false
+2026-10-25T13:18:11.4596889Z env:
+2026-10-25T13:18:11.4597334Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T13:18:11.4597831Z ##[endgroup]
+2026-10-25T13:18:11.5621755Z Syncing repository: Melihakbulut221/nssoc
+2026-10-25T13:18:11.5625011Z ##[group]Getting Git version info
+2026-10-25T13:18:11.5626591Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-25T13:18:11.5628268Z [command]/usr/bin/git version
+2026-10-25T13:18:11.5712261Z git version 2.55.0
+2026-10-25T13:18:11.5747290Z ##[endgroup]
+2026-10-25T13:18:11.5766279Z Temporarily overriding HOME='/home/runner/work/_temp/045c63a4-a05c-40a5-8dd0-0f5c88319702' before making global git config changes
+2026-10-25T13:18:11.5769022Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T13:18:11.5771799Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T13:18:11.5827462Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-25T13:18:11.5832847Z ##[group]Initializing the repository
+2026-10-25T13:18:11.5837445Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-25T13:18:11.5984647Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-25T13:18:11.6006776Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-25T13:18:11.6008208Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-25T13:18:11.6009000Z hint: call:
+2026-10-25T13:18:11.6009422Z hint:
+2026-10-25T13:18:11.6009953Z hint: 	git config --global init.defaultBranch <name>
+2026-10-25T13:18:11.6010587Z hint:
+2026-10-25T13:18:11.6011191Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-25T13:18:11.6012152Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-25T13:18:11.6012908Z hint:
+2026-10-25T13:18:11.6013333Z hint: 	git branch -m <name>
+2026-10-25T13:18:11.6013822Z hint:
+2026-10-25T13:18:11.6014474Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-25T13:18:11.6015481Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-25T13:18:11.6018545Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-25T13:18:11.6049212Z ##[endgroup]
+2026-10-25T13:18:11.6050428Z ##[group]Disabling automatic garbage collection
+2026-10-25T13:18:11.6054239Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-25T13:18:11.6094497Z ##[endgroup]
+2026-10-25T13:18:11.6098894Z ##[group]Setting up auth
+2026-10-25T13:18:11.6102361Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T13:18:11.6153778Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T13:18:11.6529814Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T13:18:11.6569608Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T13:18:11.6821657Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T13:18:11.6864837Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T13:18:11.7116318Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-25T13:18:11.7161420Z ##[endgroup]
+2026-10-25T13:18:11.7162828Z ##[group]Fetching the repository
+2026-10-25T13:18:11.7173474Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +5cd87e1ca092463285b3ff885028d21e22f1fe3e:refs/remotes/origin/codex/cdr-v59-headroom-hypotheses
+2026-10-25T13:18:25.5849904Z From https://github.com/Melihakbulut221/nssoc
+2026-10-25T13:18:25.5851243Z  * [new ref]           5cd87e1ca092463285b3ff885028d21e22f1fe3e -> origin/codex/cdr-v59-headroom-hypotheses
+2026-10-25T13:18:25.5855803Z ##[endgroup]
+2026-10-25T13:18:25.5856940Z ##[group]Determining the checkout info
+2026-10-25T13:18:25.5858717Z ##[endgroup]
+2026-10-25T13:18:25.5865200Z [command]/usr/bin/git sparse-checkout disable
+2026-10-25T13:18:25.5919363Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-25T13:18:25.5951344Z ##[group]Checking out the ref
+2026-10-25T13:18:25.5956591Z [command]/usr/bin/git checkout --progress --force -B codex/cdr-v59-headroom-hypotheses refs/remotes/origin/codex/cdr-v59-headroom-hypotheses
+2026-10-25T13:18:26.6774520Z Updating files:  12% (3729/29442)
+2026-10-25T13:18:26.7343201Z Updating files:  13% (3828/29442)
+2026-10-25T13:18:26.8537109Z Updating files:  14% (4122/29442)
+2026-10-25T13:18:27.2496965Z Updating files:  15% (4417/29442)
+2026-10-25T13:18:27.3854788Z Updating files:  16% (4711/29442)
+2026-10-25T13:18:27.4512973Z Updating files:  17% (5006/29442)
+2026-10-25T13:18:27.4750642Z Updating files:  18% (5300/29442)
+2026-10-25T13:18:27.4946079Z Updating files:  19% (5594/29442)
+2026-10-25T13:18:27.5796860Z Updating files:  20% (5889/29442)
+2026-10-25T13:18:27.6237419Z Updating files:  21% (6183/29442)
+2026-10-25T13:18:27.6413531Z Updating files:  21% (6402/29442)
+2026-10-25T13:18:27.6706353Z Updating files:  22% (6478/29442)
+2026-10-25T13:18:27.6967915Z Updating files:  23% (6772/29442)
+2026-10-25T13:18:27.7162342Z Updating files:  24% (7067/29442)
+2026-10-25T13:18:27.7304594Z Updating files:  25% (7361/29442)
+2026-10-25T13:18:27.7447653Z Updating files:  26% (7655/29442)
+2026-10-25T13:18:27.7616254Z Updating files:  27% (7950/29442)
+2026-10-25T13:18:27.7812262Z Updating files:  28% (8244/29442)
+2026-10-25T13:18:27.7940094Z Updating files:  29% (8539/29442)
+2026-10-25T13:18:27.8073328Z Updating files:  30% (8833/29442)
+2026-10-25T13:18:27.8253560Z Updating files:  31% (9128/29442)
+2026-10-25T13:18:27.8390059Z Updating files:  32% (9422/29442)
+2026-10-25T13:18:27.8569074Z Updating files:  33% (9716/29442)
+2026-10-25T13:18:27.8825101Z Updating files:  34% (10011/29442)
+2026-10-25T13:18:27.9118983Z Updating files:  35% (10305/29442)
+2026-10-25T13:18:27.9474203Z Updating files:  36% (10600/29442)
+2026-10-25T13:18:27.9629135Z Updating files:  37% (10894/29442)
+2026-10-25T13:18:27.9782112Z Updating files:  38% (11188/29442)
+2026-10-25T13:18:27.9957548Z Updating files:  39% (11483/29442)
+2026-10-25T13:18:28.0120537Z Updating files:  40% (11777/29442)
+2026-10-25T13:18:28.0276662Z Updating files:  41% (12072/29442)
+2026-10-25T13:18:28.0384216Z Updating files:  42% (12366/29442)
+2026-10-25T13:18:28.0533962Z Updating files:  43% (12661/29442)
+2026-10-25T13:18:28.0704225Z Updating files:  44% (12955/29442)
+2026-10-25T13:18:28.0869391Z Updating files:  45% (13249/29442)
+2026-10-25T13:18:28.1015506Z Updating files:  46% (13544/29442)
+2026-10-25T13:18:28.1205982Z Updating files:  47% (13838/29442)
+2026-10-25T13:18:28.1363589Z Updating files:  48% (14133/29442)
+2026-10-25T13:18:28.1494482Z Updating files:  49% (14427/29442)
+2026-10-25T13:18:28.1627015Z Updating files:  50% (14721/29442)
+2026-10-25T13:18:28.1804620Z Updating files:  51% (15016/29442)
+2026-10-25T13:18:28.1950968Z Updating files:  52% (15310/29442)
+2026-10-25T13:18:28.2225813Z Updating files:  53% (15605/29442)
+2026-10-25T13:18:28.2361195Z Updating files:  54% (15899/29442)
+2026-10-25T13:18:28.2503281Z Updating files:  55% (16194/29442)
+2026-10-25T13:18:28.2640559Z Updating files:  56% (16488/29442)
+2026-10-25T13:18:28.2776786Z Updating files:  57% (16782/29442)
+2026-10-25T13:18:28.2929399Z Updating files:  58% (17077/29442)
+2026-10-25T13:18:28.3093475Z Updating files:  59% (17371/29442)
+2026-10-25T13:18:28.3257836Z Updating files:  60% (17666/29442)
+2026-10-25T13:18:28.3372415Z Updating files:  61% (17960/29442)
+2026-10-25T13:18:28.3491014Z Updating files:  62% (18255/29442)
+2026-10-25T13:18:28.3613686Z Updating files:  63% (18549/29442)
+2026-10-25T13:18:28.3760483Z Updating files:  64% (18843/29442)
+2026-10-25T13:18:28.4047448Z Updating files:  65% (19138/29442)
+2026-10-25T13:18:28.4240682Z Updating files:  66% (19432/29442)
+2026-10-25T13:18:28.4436555Z Updating files:  67% (19727/29442)
+2026-10-25T13:18:28.4625593Z Updating files:  68% (20021/29442)
+2026-10-25T13:18:28.4777417Z Updating files:  69% (20315/29442)
+2026-10-25T13:18:28.4932533Z Updating files:  70% (20610/29442)
+2026-10-25T13:18:28.5060612Z Updating files:  71% (20904/29442)
+2026-10-25T13:18:28.5193623Z Updating files:  72% (21199/29442)
+2026-10-25T13:18:28.5323377Z Updating files:  73% (21493/29442)
+2026-10-25T13:18:28.5445067Z Updating files:  74% (21788/29442)
+2026-10-25T13:18:28.5590578Z Updating files:  75% (22082/29442)
+2026-10-25T13:18:28.6084968Z Updating files:  76% (22376/29442)
+2026-10-25T13:18:28.6225805Z Updating files:  77% (22671/29442)
+2026-10-25T13:18:28.6232534Z Updating files:  78% (22965/29442)
+2026-10-25T13:18:28.6743902Z Updating files:  78% (22978/29442)
+2026-10-25T13:18:28.6980216Z Updating files:  79% (23260/29442)
+2026-10-25T13:18:28.7302057Z Updating files:  80% (23554/29442)
+2026-10-25T13:18:28.7484874Z Updating files:  81% (23849/29442)
+2026-10-25T13:18:28.7663172Z Updating files:  82% (24143/29442)
+2026-10-25T13:18:28.7894276Z Updating files:  83% (24437/29442)
+2026-10-25T13:18:28.8075895Z Updating files:  84% (24732/29442)
+2026-10-25T13:18:28.8339679Z Updating files:  85% (25026/29442)
+2026-10-25T13:18:28.8490257Z Updating files:  86% (25321/29442)
+2026-10-25T13:18:28.8668804Z Updating files:  87% (25615/29442)
+2026-10-25T13:18:28.8787994Z Updating files:  88% (25909/29442)
+2026-10-25T13:18:28.8938614Z Updating files:  89% (26204/29442)
+2026-10-25T13:18:28.9096558Z Updating files:  90% (26498/29442)
+2026-10-25T13:18:28.9231860Z Updating files:  91% (26793/29442)
+2026-10-25T13:18:28.9406714Z Updating files:  92% (27087/29442)
+2026-10-25T13:18:28.9608898Z Updating files:  93% (27382/29442)
+2026-10-25T13:18:28.9792020Z Updating files:  94% (27676/29442)
+2026-10-25T13:18:28.9997861Z Updating files:  95% (27970/29442)
+2026-10-25T13:18:29.0216044Z Updating files:  96% (28265/29442)
+2026-10-25T13:18:29.0391427Z Updating files:  97% (28559/29442)
+2026-10-25T13:18:29.0572022Z Updating files:  98% (28854/29442)
+2026-10-25T13:18:29.0875035Z Updating files:  99% (29148/29442)
+2026-10-25T13:18:29.0876383Z Updating files: 100% (29442/29442)
+2026-10-25T13:18:29.0877227Z Updating files: 100% (29442/29442), done.
+2026-10-25T13:18:29.1212045Z Switched to a new branch 'codex/cdr-v59-headroom-hypotheses'
+2026-10-25T13:18:29.1218964Z branch 'codex/cdr-v59-headroom-hypotheses' set up to track 'origin/codex/cdr-v59-headroom-hypotheses'.
+2026-10-25T13:18:29.1379065Z ##[endgroup]
+2026-10-25T13:18:29.1430414Z [command]/usr/bin/git log -1 --format=%H
+2026-10-25T13:18:29.1458132Z 5cd87e1ca092463285b3ff885028d21e22f1fe3e
+2026-10-25T13:18:29.1468370Z ##[group]Removing auth
+2026-10-25T13:18:29.1472423Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T13:18:29.1509159Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T13:18:29.1756744Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T13:18:29.1785865Z http.https://github.com/.extraheader
+2026-10-25T13:18:29.1792897Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-25T13:18:29.1851871Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T13:18:29.2111565Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T13:18:29.2149002Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T13:18:29.2397076Z ##[endgroup]
+2026-10-25T13:18:29.2715975Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-25T13:18:29.2716420Z with:
+2026-10-25T13:18:29.2716632Z   python-version: 3.12
+2026-10-25T13:18:29.2716860Z   check-latest: false
+2026-10-25T13:18:29.2719407Z   token: ***
+2026-10-25T13:18:29.2719623Z   update-environment: true
+2026-10-25T13:18:29.2719869Z   allow-prereleases: false
+2026-10-25T13:18:29.2720101Z   freethreaded: false
+2026-10-25T13:18:29.2720314Z env:
+2026-10-25T13:18:29.2720505Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T13:18:29.2720741Z ##[endgroup]
+2026-10-25T13:18:29.4027256Z ##[group]Installed versions
+2026-10-25T13:18:29.4130186Z (node:2374) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T13:18:29.4131795Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T13:18:29.4132449Z Successfully set up CPython (3.12.15)
+2026-10-25T13:18:29.4133824Z ##[endgroup]
+2026-10-25T13:18:29.4313633Z ##[group]Run set -euo pipefail
+2026-10-25T13:18:29.4314042Z [36;1mset -euo pipefail[0m
+2026-10-25T13:18:29.4314447Z [36;1mmkdir -p hw/soc/out/cdr-v59-publication-recovery-controls[0m
+2026-10-25T13:18:29.4315187Z [36;1mpython3 scripts/check_cdr_v59_binding_rc_source.py | tee hw/soc/out/cdr-v59-publication-recovery-controls/original.json[0m
+2026-10-25T13:18:29.4316447Z [36;1mpython3 scripts/ensure_cloud_tested_source_release.py --controls | tee hw/soc/out/cdr-v59-publication-recovery-controls/release.json[0m
+2026-10-25T13:18:29.4317429Z [36;1mpython3 scripts/cloud_cdr_v59_publication_recovery.py --controls | tee hw/soc/out/cdr-v59-publication-recovery-controls/recovery.json[0m
+2026-10-25T13:18:29.4318086Z [36;1mPYTHONPATH=scripts python3 - <<'PY'[0m
+2026-10-25T13:18:29.4318383Z [36;1mimport json[0m
+2026-10-25T13:18:29.4318613Z [36;1mfrom pathlib import Path[0m
+2026-10-25T13:18:29.4318904Z [36;1mfrom cloud_cdr_v59_binding_rc import emit[0m
+2026-10-25T13:18:29.4319353Z [36;1mroot=Path('hw/soc/out/cdr-v59-publication-recovery-controls')[0m
+2026-10-25T13:18:29.4319790Z [36;1ms=json.loads((root/'original.json').read_text())[0m
+2026-10-25T13:18:29.4320306Z [36;1massert s['status']=='PASS_V59_COMPOSED_ADMISSION_DERIVATION_AND_FILESYSTEM_SOURCE_CONTROLS'[0m
+2026-10-25T13:18:29.4321248Z [36;1massert len(s['rejected'])==45 and len(s['derivation']['rejected'])==4 and len(s['filesystem']['rejected'])==17[0m
+2026-10-25T13:18:29.4321865Z [36;1massert s['native_executed']is False and s['geometry_changed']is False[0m
+2026-10-25T13:18:29.4322411Z [36;1massert len(s['inherited']['rejected'])==18 and len(s['inherited']['font']['rejected'])==16[0m
+2026-10-25T13:18:29.4322982Z [36;1mr=json.loads((root/'release.json').read_text());assert len(r['rejected'])==17[0m
+2026-10-25T13:18:29.4323438Z [36;1mq=json.loads((root/'recovery.json').read_text())[0m
+2026-10-25T13:18:29.4323866Z [36;1massert q['status']=='PASS_V59_ARTIFACT_PUBLICATION_RECOVERY_45_CONTROLS'[0m
+2026-10-25T13:18:29.4324537Z [36;1massert len(q['rejected'])==45 and q['metadata_and_log_controls']==24 and q['zip_controls']==13 and q['complete_tar_controls']==8[0m
+2026-10-25T13:18:29.4325209Z [36;1massert q['native_executed']is False and q['actual_archive_downloaded']is False[0m
+2026-10-25T13:18:29.4325877Z [36;1mp=q['publication'][0m
+2026-10-25T13:18:29.4326342Z [36;1massert len(p['rejected'])==8 and p['chunk_controls']['negative_controls']==6[0m
+2026-10-25T13:18:29.4326995Z [36;1massert len(p['file_list_controls']['rejected'])==14 and p['file_list_controls']['actual_shared_function_executed']is True[0m
+2026-10-25T13:18:29.4327759Z [36;1mfor name in ['original','release','recovery']:emit(root/(name+'.json'),'CDR_V59_RECOVERY_CONTROLS_'+name.upper())[0m
+2026-10-25T13:18:29.4328256Z [36;1mPY[0m
+2026-10-25T13:18:29.4689740Z shell: /usr/bin/bash -e {0}
+2026-10-25T13:18:29.4690161Z env:
+2026-10-25T13:18:29.4690492Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T13:18:29.4691055Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:18:29.4691797Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T13:18:29.4692511Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:18:29.4693134Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:18:29.4693751Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:18:29.4694377Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T13:18:29.4694901Z ##[endgroup]
+2026-10-25T13:18:30.6527865Z {
+2026-10-25T13:18:30.6528547Z   "status": "PASS_V59_COMPOSED_ADMISSION_DERIVATION_AND_FILESYSTEM_SOURCE_CONTROLS",
+2026-10-25T13:18:30.6529212Z   "inherited": {
+2026-10-25T13:18:30.6529717Z     "status": "PASS_INHERITED81_PLUS16_FONT_PLUS18_ACTUAL_DIAGNOSTIC_CONTROLS",
+2026-10-25T13:18:30.6530318Z     "inherited": {
+2026-10-25T13:18:30.6530819Z       "status": "PASS52_INHERITED_PLUS9_SOURCE_PLUS20_FAILED_SIDECAR_CONTROLS",
+2026-10-25T13:18:30.6531918Z       "inherited": {
+2026-10-25T13:18:30.6532428Z         "status": "PASS32_ORIGINAL_AND20_STATIC_SOURCE_PREREQUISITE_CONTROLS",
+2026-10-25T13:18:30.6533044Z         "original_capsule_controls": {
+2026-10-25T13:18:30.6533631Z           "status": "PASS_32_EXACT_REJECTED_CAPSULE_CONTROLS_NO_NATIVE_EXECUTION",
+2026-10-25T13:18:30.6534227Z           "rejected": [
+2026-10-25T13:18:30.6534568Z             "source_run_id",
+2026-10-25T13:18:30.6534941Z             "source_run_run_attempt",
+2026-10-25T13:18:30.6535336Z             "source_run_head_sha",
+2026-10-25T13:18:30.6535965Z             "source_run_path",
+2026-10-25T13:18:30.6536325Z             "source_run_event",
+2026-10-25T13:18:30.6536684Z             "source_run_status",
+2026-10-25T13:18:30.6537069Z             "source_run_conclusion",
+2026-10-25T13:18:30.6537450Z             "source_job_id",
+2026-10-25T13:18:30.6537794Z             "source_job_run_id",
+2026-10-25T13:18:30.6538157Z             "source_job_head_sha",
+2026-10-25T13:18:30.6538544Z             "source_job_status",
+2026-10-25T13:18:30.6538916Z             "source_job_conclusion",
+2026-10-25T13:18:30.6539307Z             "changed_status",
+2026-10-25T13:18:30.6539660Z             "claimed_acceptance",
+2026-10-25T13:18:30.6540019Z             "wrong_arm",
+2026-10-25T13:18:30.6540386Z             "invented_historical_sources_check",
+2026-10-25T13:18:30.6540816Z             "invented_wire_pass",
+2026-10-25T13:18:30.6541195Z             "different_failure",
+2026-10-25T13:18:30.6541579Z             "missing_original_failure_command",
+2026-10-25T13:18:30.6542009Z             "changed_original_error_log",
+2026-10-25T13:18:30.6542419Z             "changed_candidate_GDS",
+2026-10-25T13:18:30.6542797Z             "waived_DRC",
+2026-10-25T13:18:30.6543140Z             "missing_old_length_fault",
+2026-10-25T13:18:30.6543525Z             "changed_deep_LVS",
+2026-10-25T13:18:30.6543879Z             "changed_planes",
+2026-10-25T13:18:30.6544220Z             "manifest_bytes",
+2026-10-25T13:18:30.6544578Z             "manifest_sha256",
+2026-10-25T13:18:30.6544944Z             "manifest_source_directory",
+2026-10-25T13:18:30.6545332Z             "manifest_order",
+2026-10-25T13:18:30.6545861Z             "asset_id",
+2026-10-25T13:18:30.6546180Z             "asset_size",
+2026-10-25T13:18:30.6546503Z             "asset_digest"
+2026-10-25T13:18:30.6546812Z           ],
+2026-10-25T13:18:30.6547110Z           "protected_files": 160,
+2026-10-25T13:18:30.6547808Z           "original_report_sha256": "c07cfcd6f1172d54dd1fdda3cf5d8c69e0522121fcc245a0b85d58ac5fa9258f",
+2026-10-25T13:18:30.6548510Z           "native_executed": false,
+2026-10-25T13:18:30.6548905Z           "geometry_changed": false,
+2026-10-25T13:18:30.6549315Z           "qualification": false
+2026-10-25T13:18:30.6549681Z         },
+2026-10-25T13:18:30.6549950Z         "rejected": [
+2026-10-25T13:18:30.6550244Z           "status",
+2026-10-25T13:18:30.6550542Z           "source_head",
+2026-10-25T13:18:30.6550880Z           "run_id",
+2026-10-25T13:18:30.6551250Z           "preserved_candidate_gds_sha256",
+2026-10-25T13:18:30.6551723Z           "preserved_candidate_reference_sha256",
+2026-10-25T13:18:30.6552205Z           "restored_capsule_files_unchanged",
+2026-10-25T13:18:30.6552651Z           "annotation_binding_accepted",
+2026-10-25T13:18:30.6553147Z           "census_bytes",
+2026-10-25T13:18:30.6553483Z           "census_cell_count",
+2026-10-25T13:18:30.6553827Z           "census_cells",
+2026-10-25T13:18:30.6554159Z           "census_top_cells",
+2026-10-25T13:18:30.6554504Z           "census_dbu_um",
+2026-10-25T13:18:30.6554854Z           "census_exact_file_hex",
+2026-10-25T13:18:30.6555225Z           "wrong_failure_line",
+2026-10-25T13:18:30.6555789Z           "wrong_failure_key",
+2026-10-25T13:18:30.6556269Z           "missing_census_fault",
+2026-10-25T13:18:30.6556644Z           "census_runtime_source",
+2026-10-25T13:18:30.6557027Z           "census_runtime_attempt",
+2026-10-25T13:18:30.6557425Z           "census_runtime_not_terminal",
+2026-10-25T13:18:30.6558242Z           "census_runtime_wrong_job"
+2026-10-25T13:18:30.6558619Z         ],
+2026-10-25T13:18:30.6558899Z         "protected_files": 174,
+2026-10-25T13:18:30.6559260Z         "native_executed": false,
+2026-10-25T13:18:30.6559637Z         "geometry_changed": false
+2026-10-25T13:18:30.6559990Z       },
+2026-10-25T13:18:30.6560264Z       "source_controls": {
+2026-10-25T13:18:30.6560722Z         "status": "PASS9_DERIVATION_AND_LOSSLESS_DIFFERENCE_CONTROLS",
+2026-10-25T13:18:30.6561235Z         "rejected": [
+2026-10-25T13:18:30.6561562Z           "changed_frozen_source",
+2026-10-25T13:18:30.6561950Z           "omitted_native_record",
+2026-10-25T13:18:30.6562320Z           "changed_raw_record",
+2026-10-25T13:18:30.6562713Z           "hidden_duplicate_multiplicity",
+2026-10-25T13:18:30.6563132Z           "invented_text_equality",
+2026-10-25T13:18:30.6563509Z           "invented_pin_equality",
+2026-10-25T13:18:30.6563892Z           "invented_material_equality",
+2026-10-25T13:18:30.6564312Z           "invented_annotation_acceptance",
+2026-10-25T13:18:30.6564745Z           "duplicate_layer_report"
+2026-10-25T13:18:30.6565087Z         ],
+2026-10-25T13:18:30.6565351Z         "derivation": {
+2026-10-25T13:18:30.6566206Z           "original_sha256": "fb51f63f3e934747ba1fbc6af8a06a176b7d6e47e52794abaaa5108d2989d217",
+2026-10-25T13:18:30.6567202Z           "generated_sha256": "a48374ae4cac836a818c6797341589be31baabedfcd2688be7545656f376ad64",
+2026-10-25T13:18:30.6567929Z           "reversible_edits": [
+2026-10-25T13:18:30.6568288Z             {
+2026-10-25T13:18:30.6568663Z               "before": "for n in('capsule','pdk','out'):",
+2026-10-25T13:18:30.6569252Z               "after": "for n in('capsule','pdk','out','saved-sidecar'):",
+2026-10-25T13:18:30.6569787Z               "count": 1
+2026-10-25T13:18:30.6570128Z             },
+2026-10-25T13:18:30.6570428Z             {
+2026-10-25T13:18:30.6570772Z               "before": "S.write(str(sidecar))",
+2026-10-25T13:18:30.6572985Z               "after": "assert a.saved_sidecar.resolve()!=sidecar and a.saved_sidecar.stat().st_size==2910\n        assert sha(a.saved_sidecar)=='3a9b62c8597335b253671bb135dfcacf2778a71e5a1d62eb59c0ab72345c354f'\n        sidecar.write_bytes(a.saved_sidecar.read_bytes());assert sha(sidecar)=='3a9b62c8597335b253671bb135dfcacf2778a71e5a1d62eb59c0ab72345c354f'",
+2026-10-25T13:18:30.6574888Z               "count": 1
+2026-10-25T13:18:30.6575243Z             },
+2026-10-25T13:18:30.6575718Z             {
+2026-10-25T13:18:30.6576463Z               "before": "        serialized=[dict(cell=name,**exact_static(pya,N,native,R,cells[name]))\n          for name,native in zip(NAMES,(O,F))]",
+2026-10-25T13:18:30.6582064Z               "after": "        from cdr_v59_serialized_shape_diagnostic import capture\n        capture(pya,N,O,F,R,cells,out/'serialized-comparison.json')\n        try:\n            serialized=[dict(cell=name,**exact_static(pya,N,native,R,cells[name]))\n              for name,native in zip(NAMES,(O,F))]\n        except AssertionError as error:\n            tb=error.__traceback__\n            while tb.tb_next is not None:tb=tb.tb_next\n            assert error.args==('Changed complete raw native shapes',)\n            assert tb.tb_frame.f_code is exact_static.__code__ and tb.tb_lineno==40\n            f=tb.tb_frame.f_locals\n            assert f['native_layout']is N and f['native']is O\n            assert f['static_layout']is R and f['static']is cells[NAMES[0]]\n            result['raw_failure_identity']=dict(function='exact_static',line=40,\n              executing_helper_sha256=sha(Path(__file__)),native_cell=O.name,serialized_cell=NAMES[0],\n              first_native_and_saved_cell_objects_bound=True)\n            save()\n            raise",
+2026-10-25T13:18:30.6587506Z               "count": 1
+2026-10-25T13:18:30.6587873Z             },
+2026-10-25T13:18:30.6588179Z             {
+2026-10-25T13:18:30.6588589Z               "before": "        assert sidecar.stat().st_size>66",
+2026-10-25T13:18:30.6590049Z               "after": "        raise AssertionError('Expected saved raw-shape rejection did not recur; no binding permitted')\n        assert sidecar.stat().st_size>66",
+2026-10-25T13:18:30.6591342Z               "count": 1
+2026-10-25T13:18:30.6591693Z             }
+2026-10-25T13:18:30.6591981Z           ],
+2026-10-25T13:18:30.6592299Z           "unchanged_functions": [
+2026-10-25T13:18:30.6592685Z             "sha",
+2026-10-25T13:18:30.6593033Z             "labels",
+2026-10-25T13:18:30.6593393Z             "raw_shapes",
+2026-10-25T13:18:30.6593772Z             "all_regions",
+2026-10-25T13:18:30.6594161Z             "exact_static",
+2026-10-25T13:18:30.6594566Z             "exact_cell_inventory",
+2026-10-25T13:18:30.6595005Z             "native_controls"
+2026-10-25T13:18:30.6595376Z           ],
+2026-10-25T13:18:30.6595906Z           "original_raw_assertion_line": 40,
+2026-10-25T13:18:30.6596501Z           "binding_blocked_after_original_serialized_checks": true,
+2026-10-25T13:18:30.6597079Z           "original_layout_write_removed": true
+2026-10-25T13:18:30.6597480Z         },
+2026-10-25T13:18:30.6597785Z         "native_executed": false
+2026-10-25T13:18:30.6598139Z       },
+2026-10-25T13:18:30.6598440Z       "rejected": [
+2026-10-25T13:18:30.6598772Z         "status",
+2026-10-25T13:18:30.6599108Z         "source_head",
+2026-10-25T13:18:30.6599465Z         "run_id",
+2026-10-25T13:18:30.6599804Z         "accepted",
+2026-10-25T13:18:30.6600181Z         "geometry_regenerated",
+2026-10-25T13:18:30.6600627Z         "all339_original_files_unchanged",
+2026-10-25T13:18:30.6601050Z         "runtime_files_unchanged",
+2026-10-25T13:18:30.6601429Z         "error",
+2026-10-25T13:18:30.6601748Z         "changed_actual_sidecar",
+2026-10-25T13:18:30.6602156Z         "changed_original_gds",
+2026-10-25T13:18:30.6602589Z         "changed_original_report",
+2026-10-25T13:18:30.6603040Z         "missing_original_member",
+2026-10-25T13:18:30.6603477Z         "runtime_run_attempt",
+2026-10-25T13:18:30.6603890Z         "runtime_head_sha",
+2026-10-25T13:18:30.6604298Z         "runtime_conclusion",
+2026-10-25T13:18:30.6604718Z         "runtime_status",
+2026-10-25T13:18:30.6605106Z         "archive_sha256",
+2026-10-25T13:18:30.6605498Z         "archive_bytes",
+2026-10-25T13:18:30.6606104Z         "asset_wrong_id",
+2026-10-25T13:18:30.6606478Z         "asset_wrong_digest"
+2026-10-25T13:18:30.6606824Z       ],
+2026-10-25T13:18:30.6607123Z       "protected_files": 192,
+2026-10-25T13:18:30.6607493Z       "native_executed": false
+2026-10-25T13:18:30.6607827Z     },
+2026-10-25T13:18:30.6608080Z     "font": {
+2026-10-25T13:18:30.6608515Z       "status": "PASS16_EXACT_FONT_CONTRACT_AND_DERIVATION_SOURCE_CONTROLS",
+2026-10-25T13:18:30.6609042Z       "rejected": [
+2026-10-25T13:18:30.6609374Z         "native_font",
+2026-10-25T13:18:30.6609718Z         "saved_DefaultFont0",
+2026-10-25T13:18:30.6610101Z         "saved_font1",
+2026-10-25T13:18:30.6610437Z         "saved_font2",
+2026-10-25T13:18:30.6610777Z         "changed_string",
+2026-10-25T13:18:30.6611143Z         "changed_transform",
+2026-10-25T13:18:30.6611518Z         "changed_x",
+2026-10-25T13:18:30.6611842Z         "changed_y",
+2026-10-25T13:18:30.6612176Z         "changed_size",
+2026-10-25T13:18:30.6612541Z         "changed_halign",
+2026-10-25T13:18:30.6612908Z         "changed_valign",
+2026-10-25T13:18:30.6613268Z         "changed_layer",
+2026-10-25T13:18:30.6613631Z         "changed_property",
+2026-10-25T13:18:30.6614012Z         "missing_label",
+2026-10-25T13:18:30.6614350Z         "extra_label",
+2026-10-25T13:18:30.6614702Z         "changed_frozen_source"
+2026-10-25T13:18:30.6615079Z       ],
+2026-10-25T13:18:30.6615378Z       "derivation": {
+2026-10-25T13:18:30.6616224Z         "original_sha256": "fb51f63f3e934747ba1fbc6af8a06a176b7d6e47e52794abaaa5108d2989d217",
+2026-10-25T13:18:30.6617235Z         "generated_sha256": "6c445c96df3ad83c47b25c977a9fad4b06daad38187cbeb594b6e75c56d7fc24",
+2026-10-25T13:18:30.6617973Z         "reversible_edits": [
+2026-10-25T13:18:30.6618343Z           {
+2026-10-25T13:18:30.6618893Z             "before": "for n in('capsule','pdk','out'):",
+2026-10-25T13:18:30.6619681Z             "after": "for n in('capsule','pdk','out','saved-sidecar'):",
+2026-10-25T13:18:30.6620230Z             "count": 1
+2026-10-25T13:18:30.6620547Z           },
+2026-10-25T13:18:30.6620836Z           {
+2026-10-25T13:18:30.6621158Z             "before": "S.write(str(sidecar))",
+2026-10-25T13:18:30.6623242Z             "after": "assert a.saved_sidecar.resolve()!=sidecar and a.saved_sidecar.stat().st_size==2910\n        assert sha(a.saved_sidecar)=='3a9b62c8597335b253671bb135dfcacf2778a71e5a1d62eb59c0ab72345c354f'\n        sidecar.write_bytes(a.saved_sidecar.read_bytes());assert sha(sidecar)=='3a9b62c8597335b253671bb135dfcacf2778a71e5a1d62eb59c0ab72345c354f'",
+2026-10-25T13:18:30.6625403Z             "count": 1
+2026-10-25T13:18:30.6625971Z           },
+2026-10-25T13:18:30.6626269Z           {
+2026-10-25T13:18:30.6627103Z             "before": "        serialized=[dict(cell=name,**exact_static(pya,N,native,R,cells[name]))\n          for name,native in zip(NAMES,(O,F))]",
+2026-10-25T13:18:30.6628687Z             "after": "        from cdr_v59_font_roundtrip_contract import admit_all\n        serialized=admit_all(pya,N,O,F,R,cells,exact_static,out/'font-roundtrip.json')",
+2026-10-25T13:18:30.6629762Z             "count": 1
+2026-10-25T13:18:30.6630089Z           }
+2026-10-25T13:18:30.6630399Z         ],
+2026-10-25T13:18:30.6630712Z         "unchanged_functions": [
+2026-10-25T13:18:30.6631106Z           "sha",
+2026-10-25T13:18:30.6631430Z           "labels",
+2026-10-25T13:18:30.6631768Z           "raw_shapes",
+2026-10-25T13:18:30.6632121Z           "all_regions",
+2026-10-25T13:18:30.6632486Z           "exact_static",
+2026-10-25T13:18:30.6632876Z           "exact_cell_inventory",
+2026-10-25T13:18:30.6633280Z           "native_controls"
+2026-10-25T13:18:30.6633651Z         ],
+2026-10-25T13:18:30.6634083Z         "preserialization_native_to_static_exact_unchanged": true,
+2026-10-25T13:18:30.6634777Z         "original_raw_failure_required_before_narrow_admission": true,
+2026-10-25T13:18:30.6635467Z         "original_recovery_and10_native_controls_unchanged": true
+2026-10-25T13:18:30.6636258Z       },
+2026-10-25T13:18:30.6636607Z       "actual_numeric_accessors_executed": false,
+2026-10-25T13:18:30.6637113Z       "native_shapes_executed": false,
+2026-10-25T13:18:30.6638174Z       "positive_scope": "Explicit numeric field fixtures only; actual saved raw comparison authenticated, native accessors remain unexecuted."
+2026-10-25T13:18:30.6639232Z     },
+2026-10-25T13:18:30.6639533Z     "rejected": [
+2026-10-25T13:18:30.6639849Z       "status",
+2026-10-25T13:18:30.6640151Z       "source_head",
+2026-10-25T13:18:30.6640461Z       "run_id",
+2026-10-25T13:18:30.6640745Z       "accepted",
+2026-10-25T13:18:30.6641071Z       "annotation_binding_accepted",
+2026-10-25T13:18:30.6641497Z       "strict_wires_executed",
+2026-10-25T13:18:30.6641902Z       "all345_restored_files_unchanged",
+2026-10-25T13:18:30.6642323Z       "runtime_unchanged",
+2026-10-25T13:18:30.6642718Z       "all339_analysis_originals_unchanged",
+2026-10-25T13:18:30.6643147Z       "sidecar_bytes",
+2026-10-25T13:18:30.6643493Z       "run_run_attempt",
+2026-10-25T13:18:30.6643829Z       "run_head_sha",
+2026-10-25T13:18:30.6644151Z       "run_conclusion",
+2026-10-25T13:18:30.6644473Z       "run_status",
+2026-10-25T13:18:30.6644780Z       "asset_id",
+2026-10-25T13:18:30.6645096Z       "asset_size",
+2026-10-25T13:18:30.6645426Z       "asset_digest",
+2026-10-25T13:18:30.6645987Z       "asset_name"
+2026-10-25T13:18:30.6646306Z     ],
+2026-10-25T13:18:30.6646612Z     "protected_files": 215,
+2026-10-25T13:18:30.6647008Z     "native_executed": false
+2026-10-25T13:18:30.6647373Z   },
+2026-10-25T13:18:30.6647649Z   "rejected": [
+2026-10-25T13:18:30.6647970Z     "summary_status",
+2026-10-25T13:18:30.6648322Z     "summary_source_head",
+2026-10-25T13:18:30.6648677Z     "summary_run_id",
+2026-10-25T13:18:30.6649015Z     "summary_accepted",
+2026-10-25T13:18:30.6649394Z     "summary_geometry_regenerated",
+2026-10-25T13:18:30.6650183Z     "summary_wire_rc_extracted",
+2026-10-25T13:18:30.6650656Z     "summary_original_physical_and_planes_rerun",
+2026-10-25T13:18:30.6651185Z     "summary_annotation_binding_accepted",
+2026-10-25T13:18:30.6651646Z     "summary_strict_wires_executed",
+2026-10-25T13:18:30.6652164Z     "summary_original_font_rejection_preserved",
+2026-10-25T13:18:30.6652736Z     "summary_all339_analysis_originals_unchanged",
+2026-10-25T13:18:30.6653297Z     "summary_all345_restored_files_unchanged",
+2026-10-25T13:18:30.6653810Z     "summary_runtime_unchanged",
+2026-10-25T13:18:30.6654232Z     "wrong_graph",
+2026-10-25T13:18:30.6654568Z     "body_anchor",
+2026-10-25T13:18:30.6654912Z     "missing_output",
+2026-10-25T13:18:30.6655277Z     "candidate_gds",
+2026-10-25T13:18:30.6655842Z     "missing_font_mutation",
+2026-10-25T13:18:30.6656258Z     "missing_positive_font",
+2026-10-25T13:18:30.6656657Z     "wrong_font",
+2026-10-25T13:18:30.6657013Z     "original_recover_changed",
+2026-10-25T13:18:30.6657440Z     "missing_materialization_fault",
+2026-10-25T13:18:30.6657895Z     "missing_wire_command",
+2026-10-25T13:18:30.6658238Z     "run_id",
+2026-10-25T13:18:30.6658508Z     "run_head_sha",
+2026-10-25T13:18:30.6658843Z     "run_run_attempt",
+2026-10-25T13:18:30.6659212Z     "run_conclusion",
+2026-10-25T13:18:30.6659544Z     "run_event",
+2026-10-25T13:18:30.6659868Z     "job_id",
+2026-10-25T13:18:30.6660182Z     "job_run_id",
+2026-10-25T13:18:30.6660503Z     "job_head_sha",
+2026-10-25T13:18:30.6660833Z     "job_conclusion",
+2026-10-25T13:18:30.6661149Z     "asset_id",
+2026-10-25T13:18:30.6661459Z     "asset_size",
+2026-10-25T13:18:30.6661775Z     "asset_digest",
+2026-10-25T13:18:30.6662077Z     "asset_name",
+2026-10-25T13:18:30.6662389Z     "manifest_bytes",
+2026-10-25T13:18:30.6662742Z     "manifest_sha256",
+2026-10-25T13:18:30.6663130Z     "manifest_source_directory",
+2026-10-25T13:18:30.6663562Z     "old_length_184",
+2026-10-25T13:18:30.6663928Z     "old_length_185",
+2026-10-25T13:18:30.6664294Z     "old_length_222",
+2026-10-25T13:18:30.6664664Z     "old_length_223",
+2026-10-25T13:18:30.6665021Z     "target_width",
+2026-10-25T13:18:30.6665362Z     "target_id"
+2026-10-25T13:18:30.6665959Z   ],
+2026-10-25T13:18:30.6666245Z   "derivation": {
+2026-10-25T13:18:30.6666583Z     "proof": [
+2026-10-25T13:18:30.6666890Z       {
+2026-10-25T13:18:30.6667165Z         "stage": "binding",
+2026-10-25T13:18:30.6667547Z         "edits": 8,
+2026-10-25T13:18:30.6667923Z         "unchanged_functions": [
+2026-10-25T13:18:30.6668332Z           "build",
+2026-10-25T13:18:30.6668674Z           "controls",
+2026-10-25T13:18:30.6669064Z           "geometry_readback_controls",
+2026-10-25T13:18:30.6669496Z           "geometry_readback_matches",
+2026-10-25T13:18:30.6669964Z           "native_contact_oracle",
+2026-10-25T13:18:30.6670389Z           "native_export",
+2026-10-25T13:18:30.6670759Z           "verify"
+2026-10-25T13:18:30.6671060Z         ],
+2026-10-25T13:18:30.6671651Z         "original_sha256": "e989a9795312e6da4955e226f80b8c7ca6c2dde6a27717fa989aeea91bc7ae3e",
+2026-10-25T13:18:30.6672770Z         "generated_sha256": "30664f1cc9ecd48d33f705b0ba2b0a26d9cc353fff4ab587cd269e340067c06e",
+2026-10-25T13:18:30.6673522Z         "reverse_exact": true
+2026-10-25T13:18:30.6673912Z       },
+2026-10-25T13:18:30.6674193Z       {
+2026-10-25T13:18:30.6674485Z         "stage": "rc",
+2026-10-25T13:18:30.6674831Z         "edits": 10,
+2026-10-25T13:18:30.6675187Z         "unchanged_functions": [],
+2026-10-25T13:18:30.6676114Z         "original_sha256": "d9e82c2b9eaa57cf4e6ebe2bb7e5ac2d1e61ce58bb2789b122309642529a10e6",
+2026-10-25T13:18:30.6677150Z         "generated_sha256": "5979afeaebd00812c9ae9c73427ca051b616342e99f5beebd543a9f2fbd64f68",
+2026-10-25T13:18:30.6677867Z         "reverse_exact": true
+2026-10-25T13:18:30.6678229Z       }
+2026-10-25T13:18:30.6678502Z     ],
+2026-10-25T13:18:30.6678777Z     "rejected": [
+2026-10-25T13:18:30.6679107Z       "binding_source",
+2026-10-25T13:18:30.6679455Z       "binding_edits",
+2026-10-25T13:18:30.6679796Z       "rc_source",
+2026-10-25T13:18:30.6680324Z       "rc_edits"
+2026-10-25T13:18:30.6680780Z     ]
+2026-10-25T13:18:30.6681067Z   },
+2026-10-25T13:18:30.6681365Z   "filesystem": {
+2026-10-25T13:18:30.6681731Z     "actual_tiny_archive_roundtrip": true,
+2026-10-25T13:18:30.6682262Z     "zero_byte_log_retained": true,
+2026-10-25T13:18:30.6682692Z     "copy_roundtrip": true,
+2026-10-25T13:18:30.6683109Z     "source_result_not_overwritten": true,
+2026-10-25T13:18:30.6683604Z     "rejected": [
+2026-10-25T13:18:30.6683943Z       "part_order",
+2026-10-25T13:18:30.6684236Z       "whole_digest",
+2026-10-25T13:18:30.6684537Z       "extent",
+2026-10-25T13:18:30.6684815Z       "member_hash",
+2026-10-25T13:18:30.6685125Z       "missing",
+2026-10-25T13:18:30.6685445Z       "occupied",
+2026-10-25T13:18:30.6686002Z       "extra",
+2026-10-25T13:18:30.6686349Z       "traversal",
+2026-10-25T13:18:30.6686639Z       "alias",
+2026-10-25T13:18:30.6686907Z       "backslash",
+2026-10-25T13:18:30.6687206Z       "symlink",
+2026-10-25T13:18:30.6687513Z       "hardlink",
+2026-10-25T13:18:30.6687823Z       "duplicate",
+2026-10-25T13:18:30.6688102Z       "copy_occupied",
+2026-10-25T13:18:30.6688423Z       "copy_missing",
+2026-10-25T13:18:30.6688738Z       "copy_changed",
+2026-10-25T13:18:30.6689086Z       "preserved_result_changed"
+2026-10-25T13:18:30.6689455Z     ]
+2026-10-25T13:18:30.6689733Z   },
+2026-10-25T13:18:30.6690022Z   "protected_files": 271,
+2026-10-25T13:18:30.6690389Z   "native_executed": false,
+2026-10-25T13:18:30.6690770Z   "geometry_changed": false,
+2026-10-25T13:18:30.6691145Z   "new_rc_qualified": false
+2026-10-25T13:18:30.6691479Z }
+2026-10-25T13:18:30.7061337Z {
+2026-10-25T13:18:30.7061927Z   "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS",
+2026-10-25T13:18:30.7062535Z   "rejected": [
+2026-10-25T13:18:30.7062888Z     "local-context",
+2026-10-25T13:18:30.7063265Z     "other-repo",
+2026-10-25T13:18:30.7063625Z     "missing-source",
+2026-10-25T13:18:30.7063999Z     "mutable-source",
+2026-10-25T13:18:30.7064361Z     "invalid-run",
+2026-10-25T13:18:30.7064745Z     "invalid-attempt",
+2026-10-25T13:18:30.7065141Z     "invalid-group",
+2026-10-25T13:18:30.7065762Z     "different-release-target",
+2026-10-25T13:18:30.7066223Z     "different-tag-object",
+2026-10-25T13:18:30.7066633Z     "annotated-tag",
+2026-10-25T13:18:30.7067009Z     "different-tag-name",
+2026-10-25T13:18:30.7067403Z     "draft-release",
+2026-10-25T13:18:30.7067774Z     "production-release",
+2026-10-25T13:18:30.7068183Z     "duplicate-asset-name",
+2026-10-25T13:18:30.7068608Z     "asset-digest-missing",
+2026-10-25T13:18:30.7069046Z     "preexisting-wrong-tag",
+2026-10-25T13:18:30.7069482Z     "read-denied-never-creates"
+2026-10-25T13:18:30.7069889Z   ],
+2026-10-25T13:18:30.7070251Z   "existing_partial_assets_preserved": true,
+2026-10-25T13:18:30.7070711Z   "existing_release_not_recreated": true,
+2026-10-25T13:18:30.7071173Z   "new_release_uses_tested_sha": true,
+2026-10-25T13:18:30.7071637Z   "no_permissions_expanded": true
+2026-10-25T13:18:30.7072030Z }
+2026-10-25T13:18:31.5876884Z /opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/zipfile/__init__.py:1650: UserWarning: Duplicate name: 'a'
+2026-10-25T13:18:31.5877734Z   return self._open_to_write(zinfo, force_zip64=force_zip64)
+2026-10-25T13:18:31.6207647Z {
+2026-10-25T13:18:31.6208210Z   "status": "PASS_V59_ARTIFACT_PUBLICATION_RECOVERY_45_CONTROLS",
+2026-10-25T13:18:31.6208772Z   "rejected": [
+2026-10-25T13:18:31.6208990Z     "run_id",
+2026-10-25T13:18:31.6209206Z     "run_run_attempt",
+2026-10-25T13:18:31.6226576Z     "run_head_sha",
+2026-10-25T13:18:31.6226948Z     "run_path",
+2026-10-25T13:18:31.6227262Z     "run_event",
+2026-10-25T13:18:31.6227469Z     "run_status",
+2026-10-25T13:18:31.6227678Z     "run_conclusion",
+2026-10-25T13:18:31.6227898Z     "job_id",
+2026-10-25T13:18:31.6228087Z     "job_run_id",
+2026-10-25T13:18:31.6228282Z     "job_head_sha",
+2026-10-25T13:18:31.6228475Z     "job_status",
+2026-10-25T13:18:31.6228669Z     "job_conclusion",
+2026-10-25T13:18:31.6228871Z     "artifact_id",
+2026-10-25T13:18:31.6229072Z     "artifact_name",
+2026-10-25T13:18:31.6229713Z     "artifact_size_in_bytes",
+2026-10-25T13:18:31.6229954Z     "artifact_digest",
+2026-10-25T13:18:31.6230169Z     "artifact_expired",
+2026-10-25T13:18:31.6230380Z     "artifact_source",
+2026-10-25T13:18:31.6230590Z     "summary_truncated",
+2026-10-25T13:18:31.6230806Z     "summary_changed",
+2026-10-25T13:18:31.6231007Z     "log_truncated",
+2026-10-25T13:18:31.6231205Z     "log_changed",
+2026-10-25T13:18:31.6231420Z     "raw_transport_strips_escapes",
+2026-10-25T13:18:31.6231683Z     "raw_transport_wrong_endpoint",
+2026-10-25T13:18:31.6231934Z     "zip_size_mismatch",
+2026-10-25T13:18:31.6232162Z     "zip_digest_mismatch",
+2026-10-25T13:18:31.6232384Z     "zip_member_count",
+2026-10-25T13:18:31.6232591Z     "zip_traversal",
+2026-10-25T13:18:31.6232784Z     "zip_absolute",
+2026-10-25T13:18:31.6232980Z     "zip_backslash",
+2026-10-25T13:18:31.6233177Z     "zip_alias",
+2026-10-25T13:18:31.6233366Z     "zip_dot",
+2026-10-25T13:18:31.6233556Z     "zip_duplicate",
+2026-10-25T13:18:31.6233768Z     "zip_symlink",
+2026-10-25T13:18:31.6233968Z     "zip_directory",
+2026-10-25T13:18:31.6234168Z     "zip_trailing",
+2026-10-25T13:18:31.6234363Z     "zip_crc",
+2026-10-25T13:18:31.6234566Z     "tar_missing",
+2026-10-25T13:18:31.6234764Z     "tar_extra",
+2026-10-25T13:18:31.6234961Z     "tar_duplicate",
+2026-10-25T13:18:31.6235160Z     "tar_changed",
+2026-10-25T13:18:31.6235350Z     "tar_symlink",
+2026-10-25T13:18:31.6235810Z     "tar_hardlink",
+2026-10-25T13:18:31.6236021Z     "tar_traversal",
+2026-10-25T13:18:31.6236227Z     "tar_wrong_root"
+2026-10-25T13:18:31.6236417Z   ],
+2026-10-25T13:18:31.6236615Z   "metadata_and_log_controls": 24,
+2026-10-25T13:18:31.6236870Z   "zip_controls": 13,
+2026-10-25T13:18:31.6237097Z   "complete_tar_controls": 8,
+2026-10-25T13:18:31.6237334Z   "publication": {
+2026-10-25T13:18:31.6237634Z     "status": "PASS_READ_ONLY_RELEASE_LOOKUP_AND_STREAM_COPY_8_FAULTS",
+2026-10-25T13:18:31.6237993Z     "rejected": [
+2026-10-25T13:18:31.6238206Z       "different_requested_tag",
+2026-10-25T13:18:31.6238462Z       "absent_never_create",
+2026-10-25T13:18:31.6238700Z       "wrong_target_commitish",
+2026-10-25T13:18:31.6238943Z       "wrong_prerelease",
+2026-10-25T13:18:31.6239162Z       "wrong_draft",
+2026-10-25T13:18:31.6239364Z       "wrong_tag_source",
+2026-10-25T13:18:31.6239586Z       "copy_destination_exists",
+2026-10-25T13:18:31.6239823Z       "copy_symlink"
+2026-10-25T13:18:31.6240017Z     ],
+2026-10-25T13:18:31.6240213Z     "existing_release_positive": true,
+2026-10-25T13:18:31.6240486Z     "stream_copy_positive": true,
+2026-10-25T13:18:31.6240737Z     "empty_file_preserved": true,
+2026-10-25T13:18:31.6240990Z     "release_creation_possible": false,
+2026-10-25T13:18:31.6241252Z     "chunk_controls": {
+2026-10-25T13:18:31.6241475Z       "positive_roundtrip": true,
+2026-10-25T13:18:31.6241723Z       "negative_controls": 6,
+2026-10-25T13:18:31.6241984Z       "all_native_payload_bytes_preserved": true
+2026-10-25T13:18:31.6242259Z     },
+2026-10-25T13:18:31.6242453Z     "file_list_controls": {
+2026-10-25T13:18:31.6242742Z       "status": "PASS_ACTUAL_PUBLICATION_FILE_LIST_14_FAULTS",
+2026-10-25T13:18:31.6243065Z       "rejected": [
+2026-10-25T13:18:31.6243274Z         "zero_parts",
+2026-10-25T13:18:31.6243494Z         "unexpected_part",
+2026-10-25T13:18:31.6243749Z         "original_path_subscript_regression",
+2026-10-25T13:18:31.6244029Z         "missing_part",
+2026-10-25T13:18:31.6244238Z         "changed_part",
+2026-10-25T13:18:31.6244444Z         "empty_part",
+2026-10-25T13:18:31.6244644Z         "symlink_part",
+2026-10-25T13:18:31.6244853Z         "duplicate_part",
+2026-10-25T13:18:31.6245080Z         "traversal_part",
+2026-10-25T13:18:31.6245295Z         "absolute_part",
+2026-10-25T13:18:31.6245720Z         "backslash_part",
+2026-10-25T13:18:31.6245958Z         "empty_summary",
+2026-10-25T13:18:31.6246192Z         "manifest_disagrees_with_memory",
+2026-10-25T13:18:31.6246468Z         "summary_outside_transport"
+2026-10-25T13:18:31.6246703Z       ],
+2026-10-25T13:18:31.6247146Z       "actual_shared_function_executed": true,
+2026-10-25T13:18:31.6247435Z       "actual_packed_files": true,
+2026-10-25T13:18:31.6247692Z       "original_bug_reproduced": true
+2026-10-25T13:18:31.6247936Z     }
+2026-10-25T13:18:31.6248108Z   },
+2026-10-25T13:18:31.6248355Z   "actual_committed_full_summaries_and_logs_verified": true,
+2026-10-25T13:18:31.6248726Z   "actual_archive_downloaded": false,
+2026-10-25T13:18:31.6248995Z   "fixture_archive_roundtrip": true,
+2026-10-25T13:18:31.6249253Z   "protected_files": 294,
+2026-10-25T13:18:31.6249480Z   "native_executed": false,
+2026-10-25T13:18:31.6249722Z   "original_native_stages_rerun": false,
+2026-10-25T13:18:31.6249993Z   "recovery_authorized": true
+2026-10-25T13:18:31.6250224Z }
+2026-10-25T13:18:31.8110164Z CDR_V59_RECOVERY_CONTROLS_ORIGINAL_BEGIN {"bytes": 12558, "sha256": "985412c4651a5dada7ac00a805e685a235f5907605bcd050f1365edb54c40c1d", "chunks": 5}
+2026-10-25T13:18:31.8275418Z CDR_V59_RECOVERY_CONTROLS_ORIGINAL_CHUNK 0 ewogICJzdGF0dXMiOiAiUEFTU19WNTlfQ09NUE9TRURfQURNSVNTSU9OX0RFUklWQVRJT05fQU5EX0ZJTEVTWVNURU1fU09VUkNFX0NPTlRST0xTIiwKICAiaW5oZXJpdGVkIjogewogICAgInN0YXR1cyI6ICJQQVNTX0lOSEVSSVRFRDgxX1BMVVMxNl9GT05UX1BMVVMxOF9BQ1RVQUxfRElBR05PU1RJQ19DT05UUk9MUyIsCiAgICAiaW5oZXJpdGVkIjogewogICAgICAic3RhdHVzIjogIlBBU1M1Ml9JTkhFUklURURfUExVUzlfU09VUkNFX1BMVVMyMF9GQUlMRURfU0lERUNBUl9DT05UUk9MUyIsCiAgICAgICJpbmhlcml0ZWQiOiB7CiAgICAgICAgInN0YXR1cyI6ICJQQVNTMzJfT1JJR0lOQUxfQU5EMjBfU1RBVElDX1NPVVJDRV9QUkVSRVFVSVNJVEVfQ09OVFJPTFMiLAogICAgICAgICJvcmlnaW5hbF9jYXBzdWxlX2NvbnRyb2xzIjogewogICAgICAgICAgInN0YXR1cyI6ICJQQVNTXzMyX0VYQUNUX1JFSkVDVEVEX0NBUFNVTEVfQ09OVFJPTFNfTk9fTkFUSVZFX0VYRUNVVElPTiIsCiAgICAgICAgICAicmVqZWN0ZWQiOiBbCiAgICAgICAgICAgICJzb3VyY2VfcnVuX2lkIiwKICAgICAgICAgICAgInNvdXJjZV9ydW5fcnVuX2F0dGVtcHQiLAogICAgICAgICAgICAic291cmNlX3J1bl9oZWFkX3NoYSIsCiAgICAgICAgICAgICJzb3VyY2VfcnVuX3BhdGgiLAogICAgICAgICAgICAic291cmNlX3J1bl9ldmVudCIsCiAgICAgICAgICAgICJzb3VyY2VfcnVuX3N0YXR1cyIsCiAgICAgICAgICAgICJzb3VyY2VfcnVuX2NvbmNsdXNpb24iLAogICAgICAgICAgICAic291cmNlX2pvYl9pZCIsCiAgICAgICAgICAgICJzb3VyY2Vfam9iX3J1bl9pZCIsCiAgICAgICAgICAgICJzb3VyY2Vfam9iX2hlYWRfc2hhIiwKICAgICAgICAgICAgInNvdXJjZV9qb2Jfc3RhdHVzIiwKICAgICAgICAgICAgInNvdXJjZV9qb2JfY29uY2x1c2lvbiIsCiAgICAgICAgICAgICJjaGFuZ2VkX3N0YXR1cyIsCiAgICAgICAgICAgICJjbGFpbWVkX2FjY2VwdGFuY2UiLAogICAgICAgICAgICAid3JvbmdfYXJtIiwKICAgICAgICAgICAgImludmVudGVkX2hpc3RvcmljYWxfc291cmNlc19jaGVjayIsCiAgICAgICAgICAgICJpbnZlbnRlZF93aXJlX3Bhc3MiLAogICAgICAgICAgICAiZGlmZmVyZW50X2ZhaWx1cmUiLAogICAgICAgICAgICAibWlzc2luZ19vcmlnaW5hbF9mYWlsdXJlX2NvbW1hbmQiLAogICAgICAgICAgICAiY2hhbmdlZF9vcmlnaW5hbF9lcnJvcl9sb2ciLAogICAgICAgICAgICAiY2hhbmdlZF9jYW5kaWRhdGVfR0RTIiwKICAgICAgICAgICAgIndhaXZlZF9EUkMiLAogICAgICAgICAgICAibWlzc2luZ19vbGRfbGVuZ3RoX2ZhdWx0IiwKICAgICAgICAgICAgImNoYW5nZWRfZGVlcF9MVlMiLAogICAgICAgICAgICAiY2hhbmdlZF9wbGFuZXMiLAogICAgICAgICAgICAibWFuaWZlc3RfYnl0ZXMiLAogICAgICAgICAgICAibWFuaWZlc3Rfc2hhMjU2IiwKICAgICAgICAgICAgIm1hbmlmZXN0X3NvdXJjZV9kaXJlY3RvcnkiLAogICAgICAgICAgICAibWFuaWZlc3Rfb3JkZXIiLAogICAgICAgICAgICAiYXNzZXRfaWQiLAogICAgICAgICAgICAiYXNzZXRfc2l6ZSIsCiAgICAgICAgICAgICJhc3NldF9kaWdlc3QiCiAgICAgICAgICBdLAogICAgICAgICAgInByb3RlY3RlZF9maWxlcyI6IDE2MCwKICAgICAgICAgICJvcmlnaW5hbF9yZXBvcnRfc2hhMjU2IjogImMwN2NmY2Q2ZjExNzJkNTRkZDFmZGRhM2NmNWQ4YzY5ZTA1MjIxMjFmY2MyNDVhMGI4NWQ1OGFjNWZhOTI1OGYiLAogICAgICAgICAgIm5hdGl2ZV9leGVjdXRlZCI6IGZhbHNlLAogICAgICAgICAgImdlb21ldHJ5X2NoYW5nZWQiOiBmYWxzZSwKICAgICAgICAgICJxdWFsaWZpY2F0aW9uIjogZmFsc2UKICAgICAgICB9LAogICAgICAgICJyZWplY3RlZCI6IFsKICAgICAgICAgICJzdGF0dXMiLAogICAgICAgICAgInNvdXJjZV9oZWFkIiwKICAgICAgICAgICJydW5faWQiLAogICAgICAgICAgInByZXNlcnZlZF9jYW5kaWRhdGVfZ2RzX3NoYTI1NiIsCiAgICAgICAgICAicHJlc2VydmVkX2NhbmRpZGF0ZV9yZWZlcmVuY2Vfc2hhMjU2IiwKICAgICAgICAgICJyZXN0b3JlZF9jYXBzdWxlX2ZpbGVzX3VuY2hhbmdlZCIsCiAgICAgICAgICAiYW5ub3RhdGlvbl9iaW5kaW5nX2FjY2VwdGVkIiwKICAgICAgICAgICJjZW5zdXNfYnl0ZXMiLAogICAgICAgICAgImNlbnN1c19jZWxsX2NvdW50IiwKICAgICAgICAgICJjZW5zdXNfY2VsbHMiLAogICAgICAgICAgImNlbnN1c190b3BfY2VsbHMiLAogICAgICAgICAgImNlbnN1c19kYnVfdW0iLAogICAgICAgICAgImNlbnN1c19leGFjdF9maWxlX2hleCIsCiAgICAgICAgICAid3JvbmdfZmFpbHVyZV9saW5lIiwKICAgICAgICAgICJ3cm9uZ19mYWlsdXJlX2tleSIsCiAgICAgICAgICAibWlzc2luZ19jZW5zdXNfZmF1bHQiLAogICAgICAgICAgImNlbnN1c19ydW50aW1lX3NvdXJjZSIsCiAgICAgICAgICAiY2Vuc3VzX3J1bnRpbWVfYXR0ZW1wdCIsCiAgICAgICAgICAiY2Vuc3VzX3J1bnRpbWVfbm90X3Rlcm1pbmFsIiwKICAgICAgICAgICJjZW5zdXNfcnVudGltZV93cm9uZ19qb2IiCiAgICAgICAgXSwKICAgICAgICAicHJvdGVjdGVkX2ZpbGVzIjogMTc0LAogICAgICAgICJuYXRpdmVfZXhlY3V0ZWQiOiBmYWxzZSwKICAgICAgICAiZ2VvbWV0cnlfY2hhbmdlZCI6IGZhbHNlCiAgICAgIH0sCiAgICAgICJzb3VyY2VfY29udHJvbHMiOiB7CiAgICAgICAgInN0YXR1cyI6ICJQQVNTOV9ERVJJVkFUSU9OX0FORF9MT1NTTEVTU19ESUZGRVJFTkNFX0NPTlRST0xTIiwKICAgICAgICAicmVqZWN0ZWQiOiBbCiAgICAgICAgICAiY2hhbmdlZF9mcm96ZW5fc291cmNlIiwKICAgICAgICAgICJvbWl0dGVkX25hdGl2ZV9yZWNvcmQiLAogICAgICAgICAgImNoYW5nZWRfcmF3X3JlY29yZCIsCiAgICAgICAgICAiaGlkZGVuX2R1cGxpY2F0ZV9tdWx0aXBsaWNpdHkiLAogICAgICAgICAgImludmVudGVkX3RleHRfZXF1YWxpdHkiLAogICAgICAgICAgImludmVudGVkX3Bpbl9lcXVhbGl0eSIsCiAgICAgICAgICAiaW52ZW50ZWRfbWF0ZXJpYWxfZXF1YWxpdHkiLAogICAgICAgICAgImludmVudGVk
+2026-10-25T13:18:31.8596105Z CDR_V59_RECOVERY_CONTROLS_ORIGINAL_CHUNK 1 X2Fubm90YXRpb25fYWNjZXB0YW5jZSIsCiAgICAgICAgICAiZHVwbGljYXRlX2xheWVyX3JlcG9ydCIKICAgICAgICBdLAogICAgICAgICJkZXJpdmF0aW9uIjogewogICAgICAgICAgIm9yaWdpbmFsX3NoYTI1NiI6ICJmYjUxZjYzZjNlOTM0NzQ3YmExZmJjNmFmOGEwNmExNzZiN2Q2ZTQ3ZTUyNzk0YWJhYWE1MTA4ZDI5ODlkMjE3IiwKICAgICAgICAgICJnZW5lcmF0ZWRfc2hhMjU2IjogImE0ODM3NGFlNGNhYzgzNmE4MThjNjc5NzM0MTU4OWJlMzFiYWFiZWRmY2QyNjg4YmU3NTQ1NjU2ZjM3NmFkNjQiLAogICAgICAgICAgInJldmVyc2libGVfZWRpdHMiOiBbCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAiYmVmb3JlIjogImZvciBuIGluKCdjYXBzdWxlJywncGRrJywnb3V0Jyk6IiwKICAgICAgICAgICAgICAiYWZ0ZXIiOiAiZm9yIG4gaW4oJ2NhcHN1bGUnLCdwZGsnLCdvdXQnLCdzYXZlZC1zaWRlY2FyJyk6IiwKICAgICAgICAgICAgICAiY291bnQiOiAxCiAgICAgICAgICAgIH0sCiAgICAgICAgICAgIHsKICAgICAgICAgICAgICAiYmVmb3JlIjogIlMud3JpdGUoc3RyKHNpZGVjYXIpKSIsCiAgICAgICAgICAgICAgImFmdGVyIjogImFzc2VydCBhLnNhdmVkX3NpZGVjYXIucmVzb2x2ZSgpIT1zaWRlY2FyIGFuZCBhLnNhdmVkX3NpZGVjYXIuc3RhdCgpLnN0X3NpemU9PTI5MTBcbiAgICAgICAgYXNzZXJ0IHNoYShhLnNhdmVkX3NpZGVjYXIpPT0nM2E5YjYyYzg1OTczMzViMjUzNjcxYmIxMzVkZmNhY2YyNzc4YTcxZTVhMWQ2MmViNTljMGFiNzIzNDVjMzU0ZidcbiAgICAgICAgc2lkZWNhci53cml0ZV9ieXRlcyhhLnNhdmVkX3NpZGVjYXIucmVhZF9ieXRlcygpKTthc3NlcnQgc2hhKHNpZGVjYXIpPT0nM2E5YjYyYzg1OTczMzViMjUzNjcxYmIxMzVkZmNhY2YyNzc4YTcxZTVhMWQ2MmViNTljMGFiNzIzNDVjMzU0ZiciLAogICAgICAgICAgICAgICJjb3VudCI6IDEKICAgICAgICAgICAgfSwKICAgICAgICAgICAgewogICAgICAgICAgICAgICJiZWZvcmUiOiAiICAgICAgICBzZXJpYWxpemVkPVtkaWN0KGNlbGw9bmFtZSwqKmV4YWN0X3N0YXRpYyhweWEsTixuYXRpdmUsUixjZWxsc1tuYW1lXSkpXG4gICAgICAgICAgZm9yIG5hbWUsbmF0aXZlIGluIHppcChOQU1FUywoTyxGKSldIiwKICAgICAgICAgICAgICAiYWZ0ZXIiOiAiICAgICAgICBmcm9tIGNkcl92NTlfc2VyaWFsaXplZF9zaGFwZV9kaWFnbm9zdGljIGltcG9ydCBjYXB0dXJlXG4gICAgICAgIGNhcHR1cmUocHlhLE4sTyxGLFIsY2VsbHMsb3V0LydzZXJpYWxpemVkLWNvbXBhcmlzb24uanNvbicpXG4gICAgICAgIHRyeTpcbiAgICAgICAgICAgIHNlcmlhbGl6ZWQ9W2RpY3QoY2VsbD1uYW1lLCoqZXhhY3Rfc3RhdGljKHB5YSxOLG5hdGl2ZSxSLGNlbGxzW25hbWVdKSlcbiAgICAgICAgICAgICAgZm9yIG5hbWUsbmF0aXZlIGluIHppcChOQU1FUywoTyxGKSldXG4gICAgICAgIGV4Y2VwdCBBc3NlcnRpb25FcnJvciBhcyBlcnJvcjpcbiAgICAgICAgICAgIHRiPWVycm9yLl9fdHJhY2ViYWNrX19cbiAgICAgICAgICAgIHdoaWxlIHRiLnRiX25leHQgaXMgbm90IE5vbmU6dGI9dGIudGJfbmV4dFxuICAgICAgICAgICAgYXNzZXJ0IGVycm9yLmFyZ3M9PSgnQ2hhbmdlZCBjb21wbGV0ZSByYXcgbmF0aXZlIHNoYXBlcycsKVxuICAgICAgICAgICAgYXNzZXJ0IHRiLnRiX2ZyYW1lLmZfY29kZSBpcyBleGFjdF9zdGF0aWMuX19jb2RlX18gYW5kIHRiLnRiX2xpbmVubz09NDBcbiAgICAgICAgICAgIGY9dGIudGJfZnJhbWUuZl9sb2NhbHNcbiAgICAgICAgICAgIGFzc2VydCBmWyduYXRpdmVfbGF5b3V0J11pcyBOIGFuZCBmWyduYXRpdmUnXWlzIE9cbiAgICAgICAgICAgIGFzc2VydCBmWydzdGF0aWNfbGF5b3V0J11pcyBSIGFuZCBmWydzdGF0aWMnXWlzIGNlbGxzW05BTUVTWzBdXVxuICAgICAgICAgICAgcmVzdWx0WydyYXdfZmFpbHVyZV9pZGVudGl0eSddPWRpY3QoZnVuY3Rpb249J2V4YWN0X3N0YXRpYycsbGluZT00MCxcbiAgICAgICAgICAgICAgZXhlY3V0aW5nX2hlbHBlcl9zaGEyNTY9c2hhKFBhdGgoX19maWxlX18pKSxuYXRpdmVfY2VsbD1PLm5hbWUsc2VyaWFsaXplZF9jZWxsPU5BTUVTWzBdLFxuICAgICAgICAgICAgICBmaXJzdF9uYXRpdmVfYW5kX3NhdmVkX2NlbGxfb2JqZWN0c19ib3VuZD1UcnVlKVxuICAgICAgICAgICAgc2F2ZSgpXG4gICAgICAgICAgICByYWlzZSIsCiAgICAgICAgICAgICAgImNvdW50IjogMQogICAgICAgICAgICB9LAogICAgICAgICAgICB7CiAgICAgICAgICAgICAgImJlZm9yZSI6ICIgICAgICAgIGFzc2VydCBzaWRlY2FyLnN0YXQoKS5zdF9zaXplPjY2IiwKICAgICAgICAgICAgICAiYWZ0ZXIiOiAiICAgICAgICByYWlzZSBBc3NlcnRpb25FcnJvcignRXhwZWN0ZWQgc2F2ZWQgcmF3LXNoYXBlIHJlamVjdGlvbiBkaWQgbm90IHJlY3VyOyBubyBiaW5kaW5nIHBlcm1pdHRlZCcpXG4gICAgICAgIGFzc2VydCBzaWRlY2FyLnN0YXQoKS5zdF9zaXplPjY2IiwKICAgICAgICAgICAgICAiY291bnQiOiAxCiAgICAgICAgICAgIH0KICAgICAgICAgIF0sCiAgICAgICAgICAidW5jaGFuZ2VkX2Z1bmN0aW9ucyI6IFsKICAgICAgICAgICAgInNoYSIsCiAgICAgICAgICAgICJsYWJlbHMiLAogICAgICAgICAgICAicmF3X3NoYXBlcyIsCiAgICAgICAgICAgICJhbGxfcmVnaW9ucyIsCiAgICAgICAgICAgICJleGFjdF9zdGF0aWMiLAogICAgICAgICAgICAiZXhhY3RfY2VsbF9pbnZlbnRvcnkiLAogICAgICAgICAgICAibmF0aXZlX2NvbnRyb2xzIgogICAgICAgICAgXSwKICAgICAgICAgICJvcmlnaW5hbF9yYXdfYXNzZXJ0aW9uX2xpbmUiOiA0MCwKICAgICAgICAgICJiaW5kaW5nX2Jsb2NrZWRfYWZ0ZXJfb3JpZ2luYWxfc2VyaWFsaXplZF9jaGVja3MiOiB0cnVlLAogICAgICAgICAgIm9yaWdpbmFsX2xheW91dF93cml0ZV9yZW1vdmVkIjogdHJ1ZQogICAgICAgIH0sCiAgICAgICAgIm5hdGl2ZV9leGVjdXRlZCI6IGZhbHNlCiAgICAgIH0sCiAgICAgICJyZWplY3RlZCI6IFsKICAgICAgICAic3RhdHVzIiwKICAgICAgICAic291cmNlX2hlYWQiLAogICAgICAgICJy
+2026-10-25T13:18:31.8913809Z CDR_V59_RECOVERY_CONTROLS_ORIGINAL_CHUNK 2 dW5faWQiLAogICAgICAgICJhY2NlcHRlZCIsCiAgICAgICAgImdlb21ldHJ5X3JlZ2VuZXJhdGVkIiwKICAgICAgICAiYWxsMzM5X29yaWdpbmFsX2ZpbGVzX3VuY2hhbmdlZCIsCiAgICAgICAgInJ1bnRpbWVfZmlsZXNfdW5jaGFuZ2VkIiwKICAgICAgICAiZXJyb3IiLAogICAgICAgICJjaGFuZ2VkX2FjdHVhbF9zaWRlY2FyIiwKICAgICAgICAiY2hhbmdlZF9vcmlnaW5hbF9nZHMiLAogICAgICAgICJjaGFuZ2VkX29yaWdpbmFsX3JlcG9ydCIsCiAgICAgICAgIm1pc3Npbmdfb3JpZ2luYWxfbWVtYmVyIiwKICAgICAgICAicnVudGltZV9ydW5fYXR0ZW1wdCIsCiAgICAgICAgInJ1bnRpbWVfaGVhZF9zaGEiLAogICAgICAgICJydW50aW1lX2NvbmNsdXNpb24iLAogICAgICAgICJydW50aW1lX3N0YXR1cyIsCiAgICAgICAgImFyY2hpdmVfc2hhMjU2IiwKICAgICAgICAiYXJjaGl2ZV9ieXRlcyIsCiAgICAgICAgImFzc2V0X3dyb25nX2lkIiwKICAgICAgICAiYXNzZXRfd3JvbmdfZGlnZXN0IgogICAgICBdLAogICAgICAicHJvdGVjdGVkX2ZpbGVzIjogMTkyLAogICAgICAibmF0aXZlX2V4ZWN1dGVkIjogZmFsc2UKICAgIH0sCiAgICAiZm9udCI6IHsKICAgICAgInN0YXR1cyI6ICJQQVNTMTZfRVhBQ1RfRk9OVF9DT05UUkFDVF9BTkRfREVSSVZBVElPTl9TT1VSQ0VfQ09OVFJPTFMiLAogICAgICAicmVqZWN0ZWQiOiBbCiAgICAgICAgIm5hdGl2ZV9mb250IiwKICAgICAgICAic2F2ZWRfRGVmYXVsdEZvbnQwIiwKICAgICAgICAic2F2ZWRfZm9udDEiLAogICAgICAgICJzYXZlZF9mb250MiIsCiAgICAgICAgImNoYW5nZWRfc3RyaW5nIiwKICAgICAgICAiY2hhbmdlZF90cmFuc2Zvcm0iLAogICAgICAgICJjaGFuZ2VkX3giLAogICAgICAgICJjaGFuZ2VkX3kiLAogICAgICAgICJjaGFuZ2VkX3NpemUiLAogICAgICAgICJjaGFuZ2VkX2hhbGlnbiIsCiAgICAgICAgImNoYW5nZWRfdmFsaWduIiwKICAgICAgICAiY2hhbmdlZF9sYXllciIsCiAgICAgICAgImNoYW5nZWRfcHJvcGVydHkiLAogICAgICAgICJtaXNzaW5nX2xhYmVsIiwKICAgICAgICAiZXh0cmFfbGFiZWwiLAogICAgICAgICJjaGFuZ2VkX2Zyb3plbl9zb3VyY2UiCiAgICAgIF0sCiAgICAgICJkZXJpdmF0aW9uIjogewogICAgICAgICJvcmlnaW5hbF9zaGEyNTYiOiAiZmI1MWY2M2YzZTkzNDc0N2JhMWZiYzZhZjhhMDZhMTc2YjdkNmU0N2U1Mjc5NGFiYWFhNTEwOGQyOTg5ZDIxNyIsCiAgICAgICAgImdlbmVyYXRlZF9zaGEyNTYiOiAiNmM0NDVjOTZkZjNhZDgzYzQ3YjI1Yzk3N2E5ZmFkNGIwNmRhYWQzODE4N2NiZWI1OTRiNmU3NWM1NmQ3ZmMyNCIsCiAgICAgICAgInJldmVyc2libGVfZWRpdHMiOiBbCiAgICAgICAgICB7CiAgICAgICAgICAgICJiZWZvcmUiOiAiZm9yIG4gaW4oJ2NhcHN1bGUnLCdwZGsnLCdvdXQnKToiLAogICAgICAgICAgICAiYWZ0ZXIiOiAiZm9yIG4gaW4oJ2NhcHN1bGUnLCdwZGsnLCdvdXQnLCdzYXZlZC1zaWRlY2FyJyk6IiwKICAgICAgICAgICAgImNvdW50IjogMQogICAgICAgICAgfSwKICAgICAgICAgIHsKICAgICAgICAgICAgImJlZm9yZSI6ICJTLndyaXRlKHN0cihzaWRlY2FyKSkiLAogICAgICAgICAgICAiYWZ0ZXIiOiAiYXNzZXJ0IGEuc2F2ZWRfc2lkZWNhci5yZXNvbHZlKCkhPXNpZGVjYXIgYW5kIGEuc2F2ZWRfc2lkZWNhci5zdGF0KCkuc3Rfc2l6ZT09MjkxMFxuICAgICAgICBhc3NlcnQgc2hhKGEuc2F2ZWRfc2lkZWNhcik9PSczYTliNjJjODU5NzMzNWIyNTM2NzFiYjEzNWRmY2FjZjI3NzhhNzFlNWExZDYyZWI1OWMwYWI3MjM0NWMzNTRmJ1xuICAgICAgICBzaWRlY2FyLndyaXRlX2J5dGVzKGEuc2F2ZWRfc2lkZWNhci5yZWFkX2J5dGVzKCkpO2Fzc2VydCBzaGEoc2lkZWNhcik9PSczYTliNjJjODU5NzMzNWIyNTM2NzFiYjEzNWRmY2FjZjI3NzhhNzFlNWExZDYyZWI1OWMwYWI3MjM0NWMzNTRmJyIsCiAgICAgICAgICAgICJjb3VudCI6IDEKICAgICAgICAgIH0sCiAgICAgICAgICB7CiAgICAgICAgICAgICJiZWZvcmUiOiAiICAgICAgICBzZXJpYWxpemVkPVtkaWN0KGNlbGw9bmFtZSwqKmV4YWN0X3N0YXRpYyhweWEsTixuYXRpdmUsUixjZWxsc1tuYW1lXSkpXG4gICAgICAgICAgZm9yIG5hbWUsbmF0aXZlIGluIHppcChOQU1FUywoTyxGKSldIiwKICAgICAgICAgICAgImFmdGVyIjogIiAgICAgICAgZnJvbSBjZHJfdjU5X2ZvbnRfcm91bmR0cmlwX2NvbnRyYWN0IGltcG9ydCBhZG1pdF9hbGxcbiAgICAgICAgc2VyaWFsaXplZD1hZG1pdF9hbGwocHlhLE4sTyxGLFIsY2VsbHMsZXhhY3Rfc3RhdGljLG91dC8nZm9udC1yb3VuZHRyaXAuanNvbicpIiwKICAgICAgICAgICAgImNvdW50IjogMQogICAgICAgICAgfQogICAgICAgIF0sCiAgICAgICAgInVuY2hhbmdlZF9mdW5jdGlvbnMiOiBbCiAgICAgICAgICAic2hhIiwKICAgICAgICAgICJsYWJlbHMiLAogICAgICAgICAgInJhd19zaGFwZXMiLAogICAgICAgICAgImFsbF9yZWdpb25zIiwKICAgICAgICAgICJleGFjdF9zdGF0aWMiLAogICAgICAgICAgImV4YWN0X2NlbGxfaW52ZW50b3J5IiwKICAgICAgICAgICJuYXRpdmVfY29udHJvbHMiCiAgICAgICAgXSwKICAgICAgICAicHJlc2VyaWFsaXphdGlvbl9uYXRpdmVfdG9fc3RhdGljX2V4YWN0X3VuY2hhbmdlZCI6IHRydWUsCiAgICAgICAgIm9yaWdpbmFsX3Jhd19mYWlsdXJlX3JlcXVpcmVkX2JlZm9yZV9uYXJyb3dfYWRtaXNzaW9uIjogdHJ1ZSwKICAgICAgICAib3JpZ2luYWxfcmVjb3ZlcnlfYW5kMTBfbmF0aXZlX2NvbnRyb2xzX3VuY2hhbmdlZCI6IHRydWUKICAgICAgfSwKICAgICAgImFjdHVhbF9udW1lcmljX2FjY2Vzc29yc19leGVjdXRlZCI6IGZhbHNlLAogICAgICAibmF0aXZlX3NoYXBlc19leGVjdXRlZCI6IGZhbHNlLAogICAgICAicG9zaXRpdmVfc2NvcGUiOiAiRXhwbGljaXQgbnVtZXJpYyBmaWVsZCBmaXh0dXJlcyBvbmx5OyBhY3R1YWwgc2F2ZWQgcmF3IGNvbXBhcmlzb24gYXV0aGVudGljYXRlZCwgbmF0aXZlIGFjY2Vzc29ycyByZW1haW4gdW5leGVjdXRlZC4iCiAgICB9LAogICAgInJlamVjdGVkIjogWwogICAgICAic3Rh
+2026-10-25T13:18:31.9226471Z CDR_V59_RECOVERY_CONTROLS_ORIGINAL_CHUNK 3 dHVzIiwKICAgICAgInNvdXJjZV9oZWFkIiwKICAgICAgInJ1bl9pZCIsCiAgICAgICJhY2NlcHRlZCIsCiAgICAgICJhbm5vdGF0aW9uX2JpbmRpbmdfYWNjZXB0ZWQiLAogICAgICAic3RyaWN0X3dpcmVzX2V4ZWN1dGVkIiwKICAgICAgImFsbDM0NV9yZXN0b3JlZF9maWxlc191bmNoYW5nZWQiLAogICAgICAicnVudGltZV91bmNoYW5nZWQiLAogICAgICAiYWxsMzM5X2FuYWx5c2lzX29yaWdpbmFsc191bmNoYW5nZWQiLAogICAgICAic2lkZWNhcl9ieXRlcyIsCiAgICAgICJydW5fcnVuX2F0dGVtcHQiLAogICAgICAicnVuX2hlYWRfc2hhIiwKICAgICAgInJ1bl9jb25jbHVzaW9uIiwKICAgICAgInJ1bl9zdGF0dXMiLAogICAgICAiYXNzZXRfaWQiLAogICAgICAiYXNzZXRfc2l6ZSIsCiAgICAgICJhc3NldF9kaWdlc3QiLAogICAgICAiYXNzZXRfbmFtZSIKICAgIF0sCiAgICAicHJvdGVjdGVkX2ZpbGVzIjogMjE1LAogICAgIm5hdGl2ZV9leGVjdXRlZCI6IGZhbHNlCiAgfSwKICAicmVqZWN0ZWQiOiBbCiAgICAic3VtbWFyeV9zdGF0dXMiLAogICAgInN1bW1hcnlfc291cmNlX2hlYWQiLAogICAgInN1bW1hcnlfcnVuX2lkIiwKICAgICJzdW1tYXJ5X2FjY2VwdGVkIiwKICAgICJzdW1tYXJ5X2dlb21ldHJ5X3JlZ2VuZXJhdGVkIiwKICAgICJzdW1tYXJ5X3dpcmVfcmNfZXh0cmFjdGVkIiwKICAgICJzdW1tYXJ5X29yaWdpbmFsX3BoeXNpY2FsX2FuZF9wbGFuZXNfcmVydW4iLAogICAgInN1bW1hcnlfYW5ub3RhdGlvbl9iaW5kaW5nX2FjY2VwdGVkIiwKICAgICJzdW1tYXJ5X3N0cmljdF93aXJlc19leGVjdXRlZCIsCiAgICAic3VtbWFyeV9vcmlnaW5hbF9mb250X3JlamVjdGlvbl9wcmVzZXJ2ZWQiLAogICAgInN1bW1hcnlfYWxsMzM5X2FuYWx5c2lzX29yaWdpbmFsc191bmNoYW5nZWQiLAogICAgInN1bW1hcnlfYWxsMzQ1X3Jlc3RvcmVkX2ZpbGVzX3VuY2hhbmdlZCIsCiAgICAic3VtbWFyeV9ydW50aW1lX3VuY2hhbmdlZCIsCiAgICAid3JvbmdfZ3JhcGgiLAogICAgImJvZHlfYW5jaG9yIiwKICAgICJtaXNzaW5nX291dHB1dCIsCiAgICAiY2FuZGlkYXRlX2dkcyIsCiAgICAibWlzc2luZ19mb250X211dGF0aW9uIiwKICAgICJtaXNzaW5nX3Bvc2l0aXZlX2ZvbnQiLAogICAgIndyb25nX2ZvbnQiLAogICAgIm9yaWdpbmFsX3JlY292ZXJfY2hhbmdlZCIsCiAgICAibWlzc2luZ19tYXRlcmlhbGl6YXRpb25fZmF1bHQiLAogICAgIm1pc3Npbmdfd2lyZV9jb21tYW5kIiwKICAgICJydW5faWQiLAogICAgInJ1bl9oZWFkX3NoYSIsCiAgICAicnVuX3J1bl9hdHRlbXB0IiwKICAgICJydW5fY29uY2x1c2lvbiIsCiAgICAicnVuX2V2ZW50IiwKICAgICJqb2JfaWQiLAogICAgImpvYl9ydW5faWQiLAogICAgImpvYl9oZWFkX3NoYSIsCiAgICAiam9iX2NvbmNsdXNpb24iLAogICAgImFzc2V0X2lkIiwKICAgICJhc3NldF9zaXplIiwKICAgICJhc3NldF9kaWdlc3QiLAogICAgImFzc2V0X25hbWUiLAogICAgIm1hbmlmZXN0X2J5dGVzIiwKICAgICJtYW5pZmVzdF9zaGEyNTYiLAogICAgIm1hbmlmZXN0X3NvdXJjZV9kaXJlY3RvcnkiLAogICAgIm9sZF9sZW5ndGhfMTg0IiwKICAgICJvbGRfbGVuZ3RoXzE4NSIsCiAgICAib2xkX2xlbmd0aF8yMjIiLAogICAgIm9sZF9sZW5ndGhfMjIzIiwKICAgICJ0YXJnZXRfd2lkdGgiLAogICAgInRhcmdldF9pZCIKICBdLAogICJkZXJpdmF0aW9uIjogewogICAgInByb29mIjogWwogICAgICB7CiAgICAgICAgInN0YWdlIjogImJpbmRpbmciLAogICAgICAgICJlZGl0cyI6IDgsCiAgICAgICAgInVuY2hhbmdlZF9mdW5jdGlvbnMiOiBbCiAgICAgICAgICAiYnVpbGQiLAogICAgICAgICAgImNvbnRyb2xzIiwKICAgICAgICAgICJnZW9tZXRyeV9yZWFkYmFja19jb250cm9scyIsCiAgICAgICAgICAiZ2VvbWV0cnlfcmVhZGJhY2tfbWF0Y2hlcyIsCiAgICAgICAgICAibmF0aXZlX2NvbnRhY3Rfb3JhY2xlIiwKICAgICAgICAgICJuYXRpdmVfZXhwb3J0IiwKICAgICAgICAgICJ2ZXJpZnkiCiAgICAgICAgXSwKICAgICAgICAib3JpZ2luYWxfc2hhMjU2IjogImU5ODlhOTc5NTMxMmU2ZGE0OTU1ZTIyNmY4MGI4YzdjYTZjMmRkZTZhMjc3MTdmYTk4OWFlZWE5MWJjN2FlM2UiLAogICAgICAgICJnZW5lcmF0ZWRfc2hhMjU2IjogIjMwNjY0ZjFjYzllY2Q0OGQzM2Y3MDViMGJhMmIwYTI2ZDljYzM1M2ZmZjRhYjU4N2NkMjY5ZTM0MDA2N2MwNmUiLAogICAgICAgICJyZXZlcnNlX2V4YWN0IjogdHJ1ZQogICAgICB9LAogICAgICB7CiAgICAgICAgInN0YWdlIjogInJjIiwKICAgICAgICAiZWRpdHMiOiAxMCwKICAgICAgICAidW5jaGFuZ2VkX2Z1bmN0aW9ucyI6IFtdLAogICAgICAgICJvcmlnaW5hbF9zaGEyNTYiOiAiZDllODJjMmI5ZWFhNTdjZjRlNmViZTJiYjdlNWFjMmQxZTYxY2U1OGJiMjc4OWIxMjIzMDk2NDI1MjlhMTBlNiIsCiAgICAgICAgImdlbmVyYXRlZF9zaGEyNTYiOiAiNTk3OWFmZWFlYmQwMDgxMmM5YWU5YzczNDI3Y2EwNTFiNjE2MzQyZTk5ZjViZWViZDU0M2E5ZjJmYmQ2NGY2OCIsCiAgICAgICAgInJldmVyc2VfZXhhY3QiOiB0cnVlCiAgICAgIH0KICAgIF0sCiAgICAicmVqZWN0ZWQiOiBbCiAgICAgICJiaW5kaW5nX3NvdXJjZSIsCiAgICAgICJiaW5kaW5nX2VkaXRzIiwKICAgICAgInJjX3NvdXJjZSIsCiAgICAgICJyY19lZGl0cyIKICAgIF0KICB9LAogICJmaWxlc3lzdGVtIjogewogICAgImFjdHVhbF90aW55X2FyY2hpdmVfcm91bmR0cmlwIjogdHJ1ZSwKICAgICJ6ZXJvX2J5dGVfbG9nX3JldGFpbmVkIjogdHJ1ZSwKICAgICJjb3B5X3JvdW5kdHJpcCI6IHRydWUsCiAgICAic291cmNlX3Jlc3VsdF9ub3Rfb3ZlcndyaXR0ZW4iOiB0cnVlLAogICAgInJlamVjdGVkIjogWwogICAgICAicGFydF9vcmRlciIsCiAgICAgICJ3aG9sZV9kaWdlc3QiLAogICAgICAiZXh0ZW50IiwKICAgICAgIm1lbWJlcl9oYXNoIiwKICAgICAgIm1pc3NpbmciLAogICAgICAib2NjdXBpZWQiLAogICAgICAiZXh0cmEiLAogICAgICAidHJhdmVyc2FsIiwKICAgICAgImFsaWFzIiwKICAgICAgImJhY2tzbGFzaCIsCiAgICAgICJz
+2026-10-25T13:18:31.9430417Z CDR_V59_RECOVERY_CONTROLS_ORIGINAL_CHUNK 4 eW1saW5rIiwKICAgICAgImhhcmRsaW5rIiwKICAgICAgImR1cGxpY2F0ZSIsCiAgICAgICJjb3B5X29jY3VwaWVkIiwKICAgICAgImNvcHlfbWlzc2luZyIsCiAgICAgICJjb3B5X2NoYW5nZWQiLAogICAgICAicHJlc2VydmVkX3Jlc3VsdF9jaGFuZ2VkIgogICAgXQogIH0sCiAgInByb3RlY3RlZF9maWxlcyI6IDI3MSwKICAibmF0aXZlX2V4ZWN1dGVkIjogZmFsc2UsCiAgImdlb21ldHJ5X2NoYW5nZWQiOiBmYWxzZSwKICAibmV3X3JjX3F1YWxpZmllZCI6IGZhbHNlCn0K
+2026-10-25T13:18:31.9435776Z CDR_V59_RECOVERY_CONTROLS_ORIGINAL_END
+2026-10-25T13:18:31.9436692Z CDR_V59_RECOVERY_CONTROLS_RELEASE_BEGIN {"bytes": 665, "sha256": "b0d5bc89c4f5560335e60f640f8feb9e1ac879030a785d8881b1fb6f71083b00", "chunks": 1}
+2026-10-25T13:18:31.9449305Z CDR_V59_RECOVERY_CONTROLS_RELEASE_CHUNK 0 ewogICJzdGF0dXMiOiAiUEFTU19FWEFDVF9URVNURURfU09VUkNFX1JFTEVBU0VfQU5EMTdfQ09OVFJPTFMiLAogICJyZWplY3RlZCI6IFsKICAgICJsb2NhbC1jb250ZXh0IiwKICAgICJvdGhlci1yZXBvIiwKICAgICJtaXNzaW5nLXNvdXJjZSIsCiAgICAibXV0YWJsZS1zb3VyY2UiLAogICAgImludmFsaWQtcnVuIiwKICAgICJpbnZhbGlkLWF0dGVtcHQiLAogICAgImludmFsaWQtZ3JvdXAiLAogICAgImRpZmZlcmVudC1yZWxlYXNlLXRhcmdldCIsCiAgICAiZGlmZmVyZW50LXRhZy1vYmplY3QiLAogICAgImFubm90YXRlZC10YWciLAogICAgImRpZmZlcmVudC10YWctbmFtZSIsCiAgICAiZHJhZnQtcmVsZWFzZSIsCiAgICAicHJvZHVjdGlvbi1yZWxlYXNlIiwKICAgICJkdXBsaWNhdGUtYXNzZXQtbmFtZSIsCiAgICAiYXNzZXQtZGlnZXN0LW1pc3NpbmciLAogICAgInByZWV4aXN0aW5nLXdyb25nLXRhZyIsCiAgICAicmVhZC1kZW5pZWQtbmV2ZXItY3JlYXRlcyIKICBdLAogICJleGlzdGluZ19wYXJ0aWFsX2Fzc2V0c19wcmVzZXJ2ZWQiOiB0cnVlLAogICJleGlzdGluZ19yZWxlYXNlX25vdF9yZWNyZWF0ZWQiOiB0cnVlLAogICJuZXdfcmVsZWFzZV91c2VzX3Rlc3RlZF9zaGEiOiB0cnVlLAogICJub19wZXJtaXNzaW9uc19leHBhbmRlZCI6IHRydWUKfQo=
+2026-10-25T13:18:31.9461819Z CDR_V59_RECOVERY_CONTROLS_RELEASE_END
+2026-10-25T13:18:31.9462446Z CDR_V59_RECOVERY_CONTROLS_RECOVERY_BEGIN {"bytes": 2658, "sha256": "00f46cc6c5b0f7d156df38faf60d31faa58480f9423a3d671533a31187975088", "chunks": 1}
+2026-10-25T13:18:31.9581917Z CDR_V59_RECOVERY_CONTROLS_RECOVERY_CHUNK 0 ewogICJzdGF0dXMiOiAiUEFTU19WNTlfQVJUSUZBQ1RfUFVCTElDQVRJT05fUkVDT1ZFUllfNDVfQ09OVFJPTFMiLAogICJyZWplY3RlZCI6IFsKICAgICJydW5faWQiLAogICAgInJ1bl9ydW5fYXR0ZW1wdCIsCiAgICAicnVuX2hlYWRfc2hhIiwKICAgICJydW5fcGF0aCIsCiAgICAicnVuX2V2ZW50IiwKICAgICJydW5fc3RhdHVzIiwKICAgICJydW5fY29uY2x1c2lvbiIsCiAgICAiam9iX2lkIiwKICAgICJqb2JfcnVuX2lkIiwKICAgICJqb2JfaGVhZF9zaGEiLAogICAgImpvYl9zdGF0dXMiLAogICAgImpvYl9jb25jbHVzaW9uIiwKICAgICJhcnRpZmFjdF9pZCIsCiAgICAiYXJ0aWZhY3RfbmFtZSIsCiAgICAiYXJ0aWZhY3Rfc2l6ZV9pbl9ieXRlcyIsCiAgICAiYXJ0aWZhY3RfZGlnZXN0IiwKICAgICJhcnRpZmFjdF9leHBpcmVkIiwKICAgICJhcnRpZmFjdF9zb3VyY2UiLAogICAgInN1bW1hcnlfdHJ1bmNhdGVkIiwKICAgICJzdW1tYXJ5X2NoYW5nZWQiLAogICAgImxvZ190cnVuY2F0ZWQiLAogICAgImxvZ19jaGFuZ2VkIiwKICAgICJyYXdfdHJhbnNwb3J0X3N0cmlwc19lc2NhcGVzIiwKICAgICJyYXdfdHJhbnNwb3J0X3dyb25nX2VuZHBvaW50IiwKICAgICJ6aXBfc2l6ZV9taXNtYXRjaCIsCiAgICAiemlwX2RpZ2VzdF9taXNtYXRjaCIsCiAgICAiemlwX21lbWJlcl9jb3VudCIsCiAgICAiemlwX3RyYXZlcnNhbCIsCiAgICAiemlwX2Fic29sdXRlIiwKICAgICJ6aXBfYmFja3NsYXNoIiwKICAgICJ6aXBfYWxpYXMiLAogICAgInppcF9kb3QiLAogICAgInppcF9kdXBsaWNhdGUiLAogICAgInppcF9zeW1saW5rIiwKICAgICJ6aXBfZGlyZWN0b3J5IiwKICAgICJ6aXBfdHJhaWxpbmciLAogICAgInppcF9jcmMiLAogICAgInRhcl9taXNzaW5nIiwKICAgICJ0YXJfZXh0cmEiLAogICAgInRhcl9kdXBsaWNhdGUiLAogICAgInRhcl9jaGFuZ2VkIiwKICAgICJ0YXJfc3ltbGluayIsCiAgICAidGFyX2hhcmRsaW5rIiwKICAgICJ0YXJfdHJhdmVyc2FsIiwKICAgICJ0YXJfd3Jvbmdfcm9vdCIKICBdLAogICJtZXRhZGF0YV9hbmRfbG9nX2NvbnRyb2xzIjogMjQsCiAgInppcF9jb250cm9scyI6IDEzLAogICJjb21wbGV0ZV90YXJfY29udHJvbHMiOiA4LAogICJwdWJsaWNhdGlvbiI6IHsKICAgICJzdGF0dXMiOiAiUEFTU19SRUFEX09OTFlfUkVMRUFTRV9MT09LVVBfQU5EX1NUUkVBTV9DT1BZXzhfRkFVTFRTIiwKICAgICJyZWplY3RlZCI6IFsKICAgICAgImRpZmZlcmVudF9yZXF1ZXN0ZWRfdGFnIiwKICAgICAgImFic2VudF9uZXZlcl9jcmVhdGUiLAogICAgICAid3JvbmdfdGFyZ2V0X2NvbW1pdGlzaCIsCiAgICAgICJ3cm9uZ19wcmVyZWxlYXNlIiwKICAgICAgIndyb25nX2RyYWZ0IiwKICAgICAgIndyb25nX3RhZ19zb3VyY2UiLAogICAgICAiY29weV9kZXN0aW5hdGlvbl9leGlzdHMiLAogICAgICAiY29weV9zeW1saW5rIgogICAgXSwKICAgICJleGlzdGluZ19yZWxlYXNlX3Bvc2l0aXZlIjogdHJ1ZSwKICAgICJzdHJlYW1fY29weV9wb3NpdGl2ZSI6IHRydWUsCiAgICAiZW1wdHlfZmlsZV9wcmVzZXJ2ZWQiOiB0cnVlLAogICAgInJlbGVhc2VfY3JlYXRpb25fcG9zc2libGUiOiBmYWxzZSwKICAgICJjaHVua19jb250cm9scyI6IHsKICAgICAgInBvc2l0aXZlX3JvdW5kdHJpcCI6IHRydWUsCiAgICAgICJuZWdhdGl2ZV9jb250cm9scyI6IDYsCiAgICAgICJhbGxfbmF0aXZlX3BheWxvYWRfYnl0ZXNfcHJlc2VydmVkIjogdHJ1ZQogICAgfSwKICAgICJmaWxlX2xpc3RfY29udHJvbHMiOiB7CiAgICAgICJzdGF0dXMiOiAiUEFTU19BQ1RVQUxfUFVCTElDQVRJT05fRklMRV9MSVNUXzE0X0ZBVUxUUyIsCiAgICAgICJyZWplY3RlZCI6IFsKICAgICAgICAiemVyb19wYXJ0cyIsCiAgICAgICAgInVuZXhwZWN0ZWRfcGFydCIsCiAgICAgICAgIm9yaWdpbmFsX3BhdGhfc3Vic2NyaXB0X3JlZ3Jlc3Npb24iLAogICAgICAgICJtaXNzaW5nX3BhcnQiLAogICAgICAgICJjaGFuZ2VkX3BhcnQiLAogICAgICAgICJlbXB0eV9wYXJ0IiwKICAgICAgICAic3ltbGlua19wYXJ0IiwKICAgICAgICAiZHVwbGljYXRlX3BhcnQiLAogICAgICAgICJ0cmF2ZXJzYWxfcGFydCIsCiAgICAgICAgImFic29sdXRlX3BhcnQiLAogICAgICAgICJiYWNrc2xhc2hfcGFydCIsCiAgICAgICAgImVtcHR5X3N1bW1hcnkiLAogICAgICAgICJtYW5pZmVzdF9kaXNhZ3JlZXNfd2l0aF9tZW1vcnkiLAogICAgICAgICJzdW1tYXJ5X291dHNpZGVfdHJhbnNwb3J0IgogICAgICBdLAogICAgICAiYWN0dWFsX3NoYXJlZF9mdW5jdGlvbl9leGVjdXRlZCI6IHRydWUsCiAgICAgICJhY3R1YWxfcGFja2VkX2ZpbGVzIjogdHJ1ZSwKICAgICAgIm9yaWdpbmFsX2J1Z19yZXByb2R1Y2VkIjogdHJ1ZQogICAgfQogIH0sCiAgImFjdHVhbF9jb21taXR0ZWRfZnVsbF9zdW1tYXJpZXNfYW5kX2xvZ3NfdmVyaWZpZWQiOiB0cnVlLAogICJhY3R1YWxfYXJjaGl2ZV9kb3dubG9hZGVkIjogZmFsc2UsCiAgImZpeHR1cmVfYXJjaGl2ZV9yb3VuZHRyaXAiOiB0cnVlLAogICJwcm90ZWN0ZWRfZmlsZXMiOiAyOTQsCiAgIm5hdGl2ZV9leGVjdXRlZCI6IGZhbHNlLAogICJvcmlnaW5hbF9uYXRpdmVfc3RhZ2VzX3JlcnVuIjogZmFsc2UsCiAgInJlY292ZXJ5X2F1dGhvcml6ZWQiOiB0cnVlCn0K
+2026-10-25T13:18:31.9700292Z CDR_V59_RECOVERY_CONTROLS_RECOVERY_END
+2026-10-25T13:18:31.9792619Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-25T13:18:31.9793038Z with:
+2026-10-25T13:18:31.9793313Z   name: cdr-v59-publication-recovery-controls-40196976458-1
+2026-10-25T13:18:31.9793725Z   path: hw/soc/out/cdr-v59-publication-recovery-controls/
+2026-10-25T13:18:31.9794061Z   retention-days: 90
+2026-10-25T13:18:31.9794290Z   if-no-files-found: warn
+2026-10-25T13:18:31.9794525Z   compression-level: 6
+2026-10-25T13:18:31.9794737Z   overwrite: false
+2026-10-25T13:18:31.9794950Z   include-hidden-files: false
+2026-10-25T13:18:31.9795182Z env:
+2026-10-25T13:18:31.9795379Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-25T13:18:31.9795951Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:18:31.9796373Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-25T13:18:31.9796792Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:18:31.9797205Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:18:31.9797584Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-25T13:18:31.9797965Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-25T13:18:31.9798280Z ##[endgroup]
+2026-10-25T13:18:32.1418893Z (node:2406) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T13:18:32.1420087Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T13:18:32.1477938Z With the provided path, there will be 3 files uploaded
+2026-10-25T13:18:32.1484687Z Artifact name is valid!
+2026-10-25T13:18:32.1485193Z Root directory input is valid!
+2026-10-25T13:18:32.5080835Z Beginning upload of artifact content to blob storage
+2026-10-25T13:18:32.5311290Z (node:2406) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-25T13:18:32.7887716Z Uploaded bytes 5141
+2026-10-25T13:18:32.8611469Z Finished uploading artifact content to blob storage!
+2026-10-25T13:18:32.8612829Z SHA256 digest of uploaded artifact zip is 8fd3ea43fd1243841d370783a90c3ccfe5b4c154e2dbbfaf5129e01f94a40ec0
+2026-10-25T13:18:32.8614502Z Finalizing artifact upload
+2026-10-25T13:18:33.3422310Z Artifact cdr-v59-publication-recovery-controls-40196976458-1.zip successfully finalized. Artifact ID 12600217749
+2026-10-25T13:18:33.3424277Z Artifact cdr-v59-publication-recovery-controls-40196976458-1 has been successfully uploaded! Final size is 5141 bytes. Artifact ID is 12600217749
+2026-10-25T13:18:33.3429687Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/40196976458/artifacts/12600217749
+2026-10-25T13:18:33.3626469Z Post job cleanup.
+2026-10-25T13:18:33.4789694Z (node:2418) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-25T13:18:33.4791526Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-25T13:18:33.4970334Z Post job cleanup.
+2026-10-25T13:18:33.6016914Z [command]/usr/bin/git version
+2026-10-25T13:18:33.6046229Z git version 2.55.0
+2026-10-25T13:18:33.6096965Z Temporarily overriding HOME='/home/runner/work/_temp/3255ec1a-1a0c-421c-8760-0e9a03633f11' before making global git config changes
+2026-10-25T13:18:33.6106573Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-25T13:18:33.6133710Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-25T13:18:33.6167166Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-25T13:18:33.6173032Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-25T13:18:33.6516801Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-25T13:18:33.6526234Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-25T13:18:33.6836703Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-25T13:18:33.6874140Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-25T13:18:33.7370290Z Cleaning up orphan processes
+2026-10-25T13:18:33.7818539Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

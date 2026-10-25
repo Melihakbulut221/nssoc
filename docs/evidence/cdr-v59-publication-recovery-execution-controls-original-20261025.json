@@ -1,0 +1,345 @@
+{
+  "status": "PASS_V59_COMPOSED_ADMISSION_DERIVATION_AND_FILESYSTEM_SOURCE_CONTROLS",
+  "inherited": {
+    "status": "PASS_INHERITED81_PLUS16_FONT_PLUS18_ACTUAL_DIAGNOSTIC_CONTROLS",
+    "inherited": {
+      "status": "PASS52_INHERITED_PLUS9_SOURCE_PLUS20_FAILED_SIDECAR_CONTROLS",
+      "inherited": {
+        "status": "PASS32_ORIGINAL_AND20_STATIC_SOURCE_PREREQUISITE_CONTROLS",
+        "original_capsule_controls": {
+          "status": "PASS_32_EXACT_REJECTED_CAPSULE_CONTROLS_NO_NATIVE_EXECUTION",
+          "rejected": [
+            "source_run_id",
+            "source_run_run_attempt",
+            "source_run_head_sha",
+            "source_run_path",
+            "source_run_event",
+            "source_run_status",
+            "source_run_conclusion",
+            "source_job_id",
+            "source_job_run_id",
+            "source_job_head_sha",
+            "source_job_status",
+            "source_job_conclusion",
+            "changed_status",
+            "claimed_acceptance",
+            "wrong_arm",
+            "invented_historical_sources_check",
+            "invented_wire_pass",
+            "different_failure",
+            "missing_original_failure_command",
+            "changed_original_error_log",
+            "changed_candidate_GDS",
+            "waived_DRC",
+            "missing_old_length_fault",
+            "changed_deep_LVS",
+            "changed_planes",
+            "manifest_bytes",
+            "manifest_sha256",
+            "manifest_source_directory",
+            "manifest_order",
+            "asset_id",
+            "asset_size",
+            "asset_digest"
+          ],
+          "protected_files": 160,
+          "original_report_sha256": "c07cfcd6f1172d54dd1fdda3cf5d8c69e0522121fcc245a0b85d58ac5fa9258f",
+          "native_executed": false,
+          "geometry_changed": false,
+          "qualification": false
+        },
+        "rejected": [
+          "status",
+          "source_head",
+          "run_id",
+          "preserved_candidate_gds_sha256",
+          "preserved_candidate_reference_sha256",
+          "restored_capsule_files_unchanged",
+          "annotation_binding_accepted",
+          "census_bytes",
+          "census_cell_count",
+          "census_cells",
+          "census_top_cells",
+          "census_dbu_um",
+          "census_exact_file_hex",
+          "wrong_failure_line",
+          "wrong_failure_key",
+          "missing_census_fault",
+          "census_runtime_source",
+          "census_runtime_attempt",
+          "census_runtime_not_terminal",
+          "census_runtime_wrong_job"
+        ],
+        "protected_files": 174,
+        "native_executed": false,
+        "geometry_changed": false
+      },
+      "source_controls": {
+        "status": "PASS9_DERIVATION_AND_LOSSLESS_DIFFERENCE_CONTROLS",
+        "rejected": [
+          "changed_frozen_source",
+          "omitted_native_record",
+          "changed_raw_record",
+          "hidden_duplicate_multiplicity",
+          "invented_text_equality",
+          "invented_pin_equality",
+          "invented_material_equality",
+          "invented_annotation_acceptance",
+          "duplicate_layer_report"
+        ],
+        "derivation": {
+          "original_sha256": "fb51f63f3e934747ba1fbc6af8a06a176b7d6e47e52794abaaa5108d2989d217",
+          "generated_sha256": "a48374ae4cac836a818c6797341589be31baabedfcd2688be7545656f376ad64",
+          "reversible_edits": [
+            {
+              "before": "for n in('capsule','pdk','out'):",
+              "after": "for n in('capsule','pdk','out','saved-sidecar'):",
+              "count": 1
+            },
+            {
+              "before": "S.write(str(sidecar))",
+              "after": "assert a.saved_sidecar.resolve()!=sidecar and a.saved_sidecar.stat().st_size==2910\n        assert sha(a.saved_sidecar)=='3a9b62c8597335b253671bb135dfcacf2778a71e5a1d62eb59c0ab72345c354f'\n        sidecar.write_bytes(a.saved_sidecar.read_bytes());assert sha(sidecar)=='3a9b62c8597335b253671bb135dfcacf2778a71e5a1d62eb59c0ab72345c354f'",
+              "count": 1
+            },
+            {
+              "before": "        serialized=[dict(cell=name,**exact_static(pya,N,native,R,cells[name]))\n          for name,native in zip(NAMES,(O,F))]",
+              "after": "        from cdr_v59_serialized_shape_diagnostic import capture\n        capture(pya,N,O,F,R,cells,out/'serialized-comparison.json')\n        try:\n            serialized=[dict(cell=name,**exact_static(pya,N,native,R,cells[name]))\n              for name,native in zip(NAMES,(O,F))]\n        except AssertionError as error:\n            tb=error.__traceback__\n            while tb.tb_next is not None:tb=tb.tb_next\n            assert error.args==('Changed complete raw native shapes',)\n            assert tb.tb_frame.f_code is exact_static.__code__ and tb.tb_lineno==40\n            f=tb.tb_frame.f_locals\n            assert f['native_layout']is N and f['native']is O\n            assert f['static_layout']is R and f['static']is cells[NAMES[0]]\n            result['raw_failure_identity']=dict(function='exact_static',line=40,\n              executing_helper_sha256=sha(Path(__file__)),native_cell=O.name,serialized_cell=NAMES[0],\n              first_native_and_saved_cell_objects_bound=True)\n            save()\n            raise",
+              "count": 1
+            },
+            {
+              "before": "        assert sidecar.stat().st_size>66",
+              "after": "        raise AssertionError('Expected saved raw-shape rejection did not recur; no binding permitted')\n        assert sidecar.stat().st_size>66",
+              "count": 1
+            }
+          ],
+          "unchanged_functions": [
+            "sha",
+            "labels",
+            "raw_shapes",
+            "all_regions",
+            "exact_static",
+            "exact_cell_inventory",
+            "native_controls"
+          ],
+          "original_raw_assertion_line": 40,
+          "binding_blocked_after_original_serialized_checks": true,
+          "original_layout_write_removed": true
+        },
+        "native_executed": false
+      },
+      "rejected": [
+        "status",
+        "source_head",
+        "run_id",
+        "accepted",
+        "geometry_regenerated",
+        "all339_original_files_unchanged",
+        "runtime_files_unchanged",
+        "error",
+        "changed_actual_sidecar",
+        "changed_original_gds",
+        "changed_original_report",
+        "missing_original_member",
+        "runtime_run_attempt",
+        "runtime_head_sha",
+        "runtime_conclusion",
+        "runtime_status",
+        "archive_sha256",
+        "archive_bytes",
+        "asset_wrong_id",
+        "asset_wrong_digest"
+      ],
+      "protected_files": 192,
+      "native_executed": false
+    },
+    "font": {
+      "status": "PASS16_EXACT_FONT_CONTRACT_AND_DERIVATION_SOURCE_CONTROLS",
+      "rejected": [
+        "native_font",
+        "saved_DefaultFont0",
+        "saved_font1",
+        "saved_font2",
+        "changed_string",
+        "changed_transform",
+        "changed_x",
+        "changed_y",
+        "changed_size",
+        "changed_halign",
+        "changed_valign",
+        "changed_layer",
+        "changed_property",
+        "missing_label",
+        "extra_label",
+        "changed_frozen_source"
+      ],
+      "derivation": {
+        "original_sha256": "fb51f63f3e934747ba1fbc6af8a06a176b7d6e47e52794abaaa5108d2989d217",
+        "generated_sha256": "6c445c96df3ad83c47b25c977a9fad4b06daad38187cbeb594b6e75c56d7fc24",
+        "reversible_edits": [
+          {
+            "before": "for n in('capsule','pdk','out'):",
+            "after": "for n in('capsule','pdk','out','saved-sidecar'):",
+            "count": 1
+          },
+          {
+            "before": "S.write(str(sidecar))",
+            "after": "assert a.saved_sidecar.resolve()!=sidecar and a.saved_sidecar.stat().st_size==2910\n        assert sha(a.saved_sidecar)=='3a9b62c8597335b253671bb135dfcacf2778a71e5a1d62eb59c0ab72345c354f'\n        sidecar.write_bytes(a.saved_sidecar.read_bytes());assert sha(sidecar)=='3a9b62c8597335b253671bb135dfcacf2778a71e5a1d62eb59c0ab72345c354f'",
+            "count": 1
+          },
+          {
+            "before": "        serialized=[dict(cell=name,**exact_static(pya,N,native,R,cells[name]))\n          for name,native in zip(NAMES,(O,F))]",
+            "after": "        from cdr_v59_font_roundtrip_contract import admit_all\n        serialized=admit_all(pya,N,O,F,R,cells,exact_static,out/'font-roundtrip.json')",
+            "count": 1
+          }
+        ],
+        "unchanged_functions": [
+          "sha",
+          "labels",
+          "raw_shapes",
+          "all_regions",
+          "exact_static",
+          "exact_cell_inventory",
+          "native_controls"
+        ],
+        "preserialization_native_to_static_exact_unchanged": true,
+        "original_raw_failure_required_before_narrow_admission": true,
+        "original_recovery_and10_native_controls_unchanged": true
+      },
+      "actual_numeric_accessors_executed": false,
+      "native_shapes_executed": false,
+      "positive_scope": "Explicit numeric field fixtures only; actual saved raw comparison authenticated, native accessors remain unexecuted."
+    },
+    "rejected": [
+      "status",
+      "source_head",
+      "run_id",
+      "accepted",
+      "annotation_binding_accepted",
+      "strict_wires_executed",
+      "all345_restored_files_unchanged",
+      "runtime_unchanged",
+      "all339_analysis_originals_unchanged",
+      "sidecar_bytes",
+      "run_run_attempt",
+      "run_head_sha",
+      "run_conclusion",
+      "run_status",
+      "asset_id",
+      "asset_size",
+      "asset_digest",
+      "asset_name"
+    ],
+    "protected_files": 215,
+    "native_executed": false
+  },
+  "rejected": [
+    "summary_status",
+    "summary_source_head",
+    "summary_run_id",
+    "summary_accepted",
+    "summary_geometry_regenerated",
+    "summary_wire_rc_extracted",
+    "summary_original_physical_and_planes_rerun",
+    "summary_annotation_binding_accepted",
+    "summary_strict_wires_executed",
+    "summary_original_font_rejection_preserved",
+    "summary_all339_analysis_originals_unchanged",
+    "summary_all345_restored_files_unchanged",
+    "summary_runtime_unchanged",
+    "wrong_graph",
+    "body_anchor",
+    "missing_output",
+    "candidate_gds",
+    "missing_font_mutation",
+    "missing_positive_font",
+    "wrong_font",
+    "original_recover_changed",
+    "missing_materialization_fault",
+    "missing_wire_command",
+    "run_id",
+    "run_head_sha",
+    "run_run_attempt",
+    "run_conclusion",
+    "run_event",
+    "job_id",
+    "job_run_id",
+    "job_head_sha",
+    "job_conclusion",
+    "asset_id",
+    "asset_size",
+    "asset_digest",
+    "asset_name",
+    "manifest_bytes",
+    "manifest_sha256",
+    "manifest_source_directory",
+    "old_length_184",
+    "old_length_185",
+    "old_length_222",
+    "old_length_223",
+    "target_width",
+    "target_id"
+  ],
+  "derivation": {
+    "proof": [
+      {
+        "stage": "binding",
+        "edits": 8,
+        "unchanged_functions": [
+          "build",
+          "controls",
+          "geometry_readback_controls",
+          "geometry_readback_matches",
+          "native_contact_oracle",
+          "native_export",
+          "verify"
+        ],
+        "original_sha256": "e989a9795312e6da4955e226f80b8c7ca6c2dde6a27717fa989aeea91bc7ae3e",
+        "generated_sha256": "30664f1cc9ecd48d33f705b0ba2b0a26d9cc353fff4ab587cd269e340067c06e",
+        "reverse_exact": true
+      },
+      {
+        "stage": "rc",
+        "edits": 10,
+        "unchanged_functions": [],
+        "original_sha256": "d9e82c2b9eaa57cf4e6ebe2bb7e5ac2d1e61ce58bb2789b122309642529a10e6",
+        "generated_sha256": "5979afeaebd00812c9ae9c73427ca051b616342e99f5beebd543a9f2fbd64f68",
+        "reverse_exact": true
+      }
+    ],
+    "rejected": [
+      "binding_source",
+      "binding_edits",
+      "rc_source",
+      "rc_edits"
+    ]
+  },
+  "filesystem": {
+    "actual_tiny_archive_roundtrip": true,
+    "zero_byte_log_retained": true,
+    "copy_roundtrip": true,
+    "source_result_not_overwritten": true,
+    "rejected": [
+      "part_order",
+      "whole_digest",
+      "extent",
+      "member_hash",
+      "missing",
+      "occupied",
+      "extra",
+      "traversal",
+      "alias",
+      "backslash",
+      "symlink",
+      "hardlink",
+      "duplicate",
+      "copy_occupied",
+      "copy_missing",
+      "copy_changed",
+      "preserved_result_changed"
+    ]
+  },
+  "protected_files": 271,
+  "native_executed": false,
+  "geometry_changed": false,
+  "new_rc_qualified": false
+}
