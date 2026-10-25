@@ -1,0 +1,136 @@
+{
+  "schema": 1,
+  "status": "SOURCE_ONLY_EXACT_FROZEN_RPPD_CONTACT_AND_GEOMETRY_MODEL_AUDIT",
+  "observed_utc": "2026-10-25T07:33:00.223380+00:00",
+  "PDK_commit": "c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c",
+  "sources": [
+    {
+      "path": "ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib",
+      "git_blob": "9a29c7a26c05e81b521184f3d52a404456dc26de",
+      "sha256": "98fa5436f6df86dc1dd35e9f16383c4eba4c36d478d7eec203a0295dc1259e51",
+      "bytes": 4936,
+      "runtime_manifest_member": "models/resistors_mod.lib",
+      "byte_identity_to_native_manifest": true,
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/blob/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/resistors_mod.lib"
+    },
+    {
+      "path": "ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib",
+      "git_blob": "3d7a56c443b58ec1dc720ca7942f1736c11e5960",
+      "sha256": "2c18502104146804444a567abfe7d00520752bf75426809f9d79f40198fe9c1e",
+      "bytes": 2330,
+      "runtime_manifest_member": "models/cornerRES.lib",
+      "byte_identity_to_native_manifest": true,
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/blob/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/ngspice/models/cornerRES.lib"
+    },
+    {
+      "path": "ihp-sg13g2/libs.tech/verilog-a/r3_cmc/r3_cmc.va",
+      "git_blob": "60c8acb3b0041963fba6d452e85e3410a8a11184",
+      "sha256": "398746f45048a9e075913e85a982258b929c9042257339bf1fc47d7e25303551",
+      "bytes": 37892,
+      "runtime_manifest_member": "r3-source/r3_cmc.va",
+      "byte_identity_to_native_manifest": true,
+      "url": "https://github.com/IHP-GmbH/IHP-Open-PDK/blob/c4b8b4e5e7a05f375cca3815d51b3a37721fbf5c/ihp-sg13g2/libs.tech/verilog-a/r3_cmc/r3_cmc.va"
+    }
+  ],
+  "native_runtime_evidence": {
+    "run": 40097348918,
+    "summary_asset": 672315252,
+    "summary_bytes": 136137,
+    "summary_sha256": "d9e470d8c156904c5fbf0f80e9bbb0421a62cfa5c2dfa4986f47af9ef1540a55",
+    "model_archive_sha256": "276fbd8b9128750b2f524ec7b0f9e43a45652af62e477a6d618a74ab804a91bf",
+    "r3_osdi_sha256": "9b41facf3c49d2266e542406547ed00677304f09c1dd281f3bf90414ee053828",
+    "scope": "Exact resistor source bytes match this qualified shared runtime manifest; no archive or native model executed in this audit."
+  },
+  "assumptions": {
+    "b": 0,
+    "m": 1,
+    "postsim": 0,
+    "nominal_temperature_C": 27,
+    "width_length_units": "micrometres in formulas below",
+    "geometry_rows_are_requested_candidate_roles_not_new_native_measurements": true
+  },
+  "source_formulas": {
+    "wrapper": "W_passed=W_drawn+0.006um; L_passed=(b+1)L+(2/kappa*W_passed+ps)b; rz=35e-6/W_m-(postsim>0)*4.5e-6/W_m; c1=c2=1; rc=rz",
+    "nominal_contact_sum": "rc1_tnom+rc2_tnom=2*rz=70/W_um ohm for postsim0 and m1; independent of L",
+    "typical_sheet": "cornerRES res_typ sets rsh_rppd=260 ohm/square",
+    "intrinsic_geometry": "r3 lines355-378 convert passed W/L, then add model xw=+0.006um; lines407-410 with explicit sw_mman=1 and nsmm_rsh/nsmm_w/nsmm_l=1 add geometry/mismatch factors. Do not equate effective R with260*drawnL/drawnW.",
+    "body": "r3 line484: r0=rsh*delr_rsh*(leff_um/weff_um)*(1-df*sqrt(dp_i))",
+    "contacts": "r3 lines488-495: rc1_tnom=(rc+rcw/w_um)/c1; rc2_tnom=(rc+rcw/w_um)/c2",
+    "temperature": "body tc1=170e-6/K,tc2=0.4e-6/K^2; contact tc1rc=-950e-6/K. r3 lines534-542 apply distinct body/contact factors.",
+    "bias": "r3 line822 reports r_dc=1/geff+tcrc*(rc1_tnom+rc2_tnom), including bias dependence; loadStatic749-760 places contacts at both actual ends."
+  },
+  "line_references": {
+    "r3_cmc.va": [
+      [
+        355,
+        378
+      ],
+      [
+        400,
+        410
+      ],
+      [
+        451,
+        484
+      ],
+      [
+        488,
+        496
+      ],
+      [
+        534,
+        542
+      ],
+      [
+        749,
+        760
+      ],
+      [
+        820,
+        823
+      ]
+    ],
+    "resistors_mod.lib": "Exact .subckt rppd block through .ends rppd",
+    "cornerRES.lib": "Exact .LIB res_typ block"
+  },
+  "approximate_examples": [
+    {
+      "role": "gain-pullup",
+      "drawn_W_um": 8.0,
+      "drawn_L_um": 1.8,
+      "two_end_contact_nominal_ohm_at_postsim0_m1": 8.75,
+      "drawn_sheet_only_approximation_ohm": 58.5,
+      "drawn_sheet_plus_contact_approximation_ohm": 67.25,
+      "contact_fraction_of_approximation": 0.13011152416356878,
+      "half_length_total_approximation_ratio": 0.5650557620817844
+    },
+    {
+      "role": "gain-shunt",
+      "drawn_W_um": 4.0,
+      "drawn_L_um": 7.4,
+      "two_end_contact_nominal_ohm_at_postsim0_m1": 17.5,
+      "drawn_sheet_only_approximation_ohm": 481.0,
+      "drawn_sheet_plus_contact_approximation_ohm": 498.5,
+      "contact_fraction_of_approximation": 0.03510531594784353,
+      "half_length_total_approximation_ratio": 0.5175526579739218
+    },
+    {
+      "role": "AB-slave-load",
+      "drawn_W_um": 32.0,
+      "drawn_L_um": 2.6,
+      "two_end_contact_nominal_ohm_at_postsim0_m1": 2.1875,
+      "drawn_sheet_only_approximation_ohm": 21.125,
+      "drawn_sheet_plus_contact_approximation_ohm": 23.3125,
+      "contact_fraction_of_approximation": 0.0938337801608579,
+      "half_length_total_approximation_ratio": 0.546916890080429
+    }
+  ],
+  "scope_flags": {
+    "native_simulation_executed": false,
+    "native_resistance_measured": false,
+    "native_current_inferred": false,
+    "operating_point_current_or_headroom_accepted": false,
+    "CDR_candidate_accepted": false
+  },
+  "meaning": "Length changes retain a real contact floor. The numeric examples are explicitly drawn-sheet-plus-contact sensitivity approximations, not compact-model effective resistance, transient current, KCL or candidate acceptance. Keep all native model corrections and original electrical gates."
+}
