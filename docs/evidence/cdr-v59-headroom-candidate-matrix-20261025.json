@@ -1,0 +1,2498 @@
+{
+  "schema": "nssoc.cdr-v59-headroom-hypothesis-matrix.v1",
+  "status": "SOURCE_ONLY_UNEXECUTED_PHYSICAL_RESISTOR_HYPOTHESES",
+  "baseline_source": "d965f27c264ed43fe22b0c3e749f6d33147357af",
+  "scope": "Conditional circuit sizing from authenticated same-row observations; no new native model, layout, RC, OP or transient has run.",
+  "evidence": {
+    "ledger_run": 40171679250,
+    "ledger_source": "07dfd6553a9a204a6f89904e4c58128ee7c21509",
+    "original_electrical_run": 40108285374,
+    "original_electrical_source": "d92a3367a1013d1071125b753ec4f65ae4ec813b",
+    "findings": {
+      "path": "docs/evidence/cdr-v58-current-ledger-bounded-findings-20261025.json",
+      "sha256": "2e42c259e1ef9c6e229edc4c9ac3bdffda4b8d80d325488e2887c786fae5b424"
+    },
+    "source_contract": {
+      "path": "docs/evidence/cdr-v58-current-ledger-contract-20261025.json",
+      "sha256": "250c318c3e7726c1e2fbf27fff2e2dae9bff93612f0b1f2dc07c3f196f3301bc"
+    },
+    "original_model": {
+      "run": 40098426328,
+      "summary_asset": 672354252,
+      "summary_sha256": "224a21ec8b8e5821d762050a4f99031399973c5b76d77142398cc66fd3fe85d8",
+      "member": "composition/pd500-mim-wire.spice",
+      "sha256": "daa20afc0260f312691de3fb92f1aa758a1a1ad379357f2d22846a8140241f7c",
+      "native_devices": 500,
+      "wire_R": 24574,
+      "wire_C": 15694
+    },
+    "source_indices": {
+      "nominal_early__ledger-index.json": {
+        "asset": {
+          "id": 674361439,
+          "name": "nominal_early__ledger-index.json",
+          "size": 709354,
+          "digest": "sha256:717ef98678f1c6e55b03ea831bf65efeb749682b6ebdfba8833b4391cd5ff26c"
+        },
+        "git_blob_sha": "87f115dd56ce955336a6fd72786170ecab1dd6d3",
+        "path": "docs/evidence/cdr-v58-current-ledger-nominal-early-index-20261025.json"
+      },
+      "nominal_late__ledger-index.json": {
+        "asset": {
+          "id": 674362346,
+          "name": "nominal_late__ledger-index.json",
+          "size": 709346,
+          "digest": "sha256:342a3a60794663cff85b2a473edcb8f9196caf9ce382a255b67b9189e2187fd9"
+        },
+        "git_blob_sha": "f61cfa48323f5fcbd17e17a4eea878aa10383c7a",
+        "path": "docs/evidence/cdr-v58-current-ledger-nominal-late-index-20261025.json"
+      },
+      "hot_early__ledger-index.json": {
+        "asset": {
+          "id": 674360090,
+          "name": "hot_early__ledger-index.json",
+          "size": 708931,
+          "digest": "sha256:9ba49c2b4053215df1d435cf74b9ae5cd9ade96fe5f0fb6bb73d2bd36f308f92"
+        },
+        "git_blob_sha": "52b1d7b94d72fd81dfb0837361ae3eccbfd3d48a",
+        "path": "docs/evidence/cdr-v58-current-ledger-hot-early-index-20261025.json"
+      }
+    },
+    "rppd_audit": {
+      "source": "d91c724837aed6e43a6fa507f19b43ac174131b2",
+      "path": "docs/evidence/cdr-rppd-frozen-source-scaling-audit-20261025.json",
+      "sha256": "8ac0e466918cf31377100660fed65c1fed8f76c67b2759835f075757002f0245"
+    },
+    "prior_failures": [
+      {
+        "path": "docs/pcie-cdr-load-resistor-screen-20261018.md",
+        "sha256": "12ac21b8ca44d786780d7ee299f1839ce24ab35df22d747c0fe71915d30e7186",
+        "run": 39149512255,
+        "recovery": 39150862130,
+        "scope": "All sixteen older sampler loads2.12→1.2/1.6 failed; different484-device/3250R/3841C baseline. Do not transfer that result or claim isolated4-load correction is proved."
+      },
+      {
+        "path": "docs/cdr-v29-gain-headroom-candidate-20261021.md",
+        "sha256": "3b96681e18e30b6e575be388d062a4bd86c72d90639e76a599d3e9a41f2cccbc",
+        "scope": "Earlier increase2.12→2.6 and input-bias change targeted selector headroom; preserve this competing tradeoff."
+      }
+    ],
+    "corner_source": {
+      "path": "scripts/cloud_pll_pump_current.py",
+      "sha256": "0ec3faf3820264560f195cab1e7371b16a066eac2ffa59682145b4a089c9688f",
+      "nominal": {
+        "temperature_c": 27,
+        "supply_v": 2.5,
+        "res": "res_typ",
+        "sheet_ohm": 260
+      },
+      "hot_early": {
+        "temperature_c": 125,
+        "supply_v": 2.375,
+        "res": "res_wcs",
+        "sheet_ohm": 286
+      }
+    }
+  },
+  "topology": {
+    "gain_paths": [
+      {
+        "sampler": "D",
+        "polarity": "p",
+        "follower": 69,
+        "gain": 59,
+        "input_load": 187,
+        "pullup": 183,
+        "shunt": 185,
+        "tail_mos": [
+          1,
+          2
+        ],
+        "input_cluster": 13,
+        "collector_cluster": 21
+      },
+      {
+        "sampler": "D",
+        "polarity": "n",
+        "follower": 70,
+        "gain": 60,
+        "input_load": 188,
+        "pullup": 182,
+        "shunt": 184,
+        "tail_mos": [
+          1,
+          2
+        ],
+        "input_cluster": 15,
+        "collector_cluster": 22
+      },
+      {
+        "sampler": "C",
+        "polarity": "p",
+        "follower": 121,
+        "gain": 111,
+        "input_load": 225,
+        "pullup": 221,
+        "shunt": 223,
+        "tail_mos": [
+          30,
+          31
+        ],
+        "input_cluster": 114,
+        "collector_cluster": 121
+      },
+      {
+        "sampler": "C",
+        "polarity": "n",
+        "follower": 124,
+        "gain": 112,
+        "input_load": 226,
+        "pullup": 220,
+        "shunt": 222,
+        "tail_mos": [
+          30,
+          31
+        ],
+        "input_cluster": 116,
+        "collector_cluster": 122
+      }
+    ],
+    "hold_paths": [
+      {
+        "sampler": "B",
+        "holds": [
+          71,
+          72
+        ],
+        "bleed": 198,
+        "loads": [
+          194,
+          191
+        ],
+        "emitter_cluster": 71
+      },
+      {
+        "sampler": "A",
+        "holds": [
+          87,
+          88
+        ],
+        "bleed": 210,
+        "loads": [
+          205,
+          202
+        ],
+        "emitter_cluster": 100
+      }
+    ],
+    "declared_resistor_records": [
+      {
+        "native_id": 182,
+        "instance": "XD0182",
+        "model": "rppd",
+        "parameters": {
+          "w": "8u",
+          "l": "1.8u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T182_rppd_1",
+            "anchor": "T182_rppd_1",
+            "native_cluster": 16,
+            "native_net": "avdd"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T182_rppd_2",
+            "anchor": "T182_rppd_2",
+            "native_cluster": 22,
+            "native_net": "$99"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 183,
+        "instance": "XD0183",
+        "model": "rppd",
+        "parameters": {
+          "w": "8u",
+          "l": "1.8u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T183_rppd_1",
+            "anchor": "T183_rppd_1",
+            "native_cluster": 16,
+            "native_net": "avdd"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T183_rppd_2",
+            "anchor": "T183_rppd_2",
+            "native_cluster": 21,
+            "native_net": "$98"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 184,
+        "instance": "XD0184",
+        "model": "rppd",
+        "parameters": {
+          "w": "4u",
+          "l": "7.4u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T184_rppd_1",
+            "anchor": "T184_rppd_1",
+            "native_cluster": 22,
+            "native_net": "$99"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T184_rppd_2",
+            "anchor": "T184_rppd_2",
+            "native_cluster": 23,
+            "native_net": "avss"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 185,
+        "instance": "XD0185",
+        "model": "rppd",
+        "parameters": {
+          "w": "4u",
+          "l": "7.4u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T185_rppd_1",
+            "anchor": "T185_rppd_1",
+            "native_cluster": 21,
+            "native_net": "$98"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T185_rppd_2",
+            "anchor": "T185_rppd_2",
+            "native_cluster": 23,
+            "native_net": "avss"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 191,
+        "instance": "XD0191",
+        "model": "rppd",
+        "parameters": {
+          "w": "32u",
+          "l": "2.6u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T191_rppd_1",
+            "anchor": "T191_rppd_1",
+            "native_cluster": 16,
+            "native_net": "avdd"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T191_rppd_2",
+            "anchor": "T191_rppd_2",
+            "native_cluster": 58,
+            "native_net": "$285"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 194,
+        "instance": "XD0194",
+        "model": "rppd",
+        "parameters": {
+          "w": "32u",
+          "l": "2.6u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T194_rppd_1",
+            "anchor": "T194_rppd_1",
+            "native_cluster": 16,
+            "native_net": "avdd"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T194_rppd_2",
+            "anchor": "T194_rppd_2",
+            "native_cluster": 59,
+            "native_net": "$286"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 202,
+        "instance": "XD0202",
+        "model": "rppd",
+        "parameters": {
+          "w": "32u",
+          "l": "2.6u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T202_rppd_1",
+            "anchor": "T202_rppd_1",
+            "native_cluster": 16,
+            "native_net": "avdd"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T202_rppd_2",
+            "anchor": "T202_rppd_2",
+            "native_cluster": 87,
+            "native_net": "$449"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 205,
+        "instance": "XD0205",
+        "model": "rppd",
+        "parameters": {
+          "w": "32u",
+          "l": "2.6u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T205_rppd_1",
+            "anchor": "T205_rppd_1",
+            "native_cluster": 16,
+            "native_net": "avdd"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T205_rppd_2",
+            "anchor": "T205_rppd_2",
+            "native_cluster": 88,
+            "native_net": "$450"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 220,
+        "instance": "XD0220",
+        "model": "rppd",
+        "parameters": {
+          "w": "8u",
+          "l": "1.8u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T220_rppd_1",
+            "anchor": "T220_rppd_1",
+            "native_cluster": 16,
+            "native_net": "avdd"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T220_rppd_2",
+            "anchor": "T220_rppd_2",
+            "native_cluster": 122,
+            "native_net": "$652"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 221,
+        "instance": "XD0221",
+        "model": "rppd",
+        "parameters": {
+          "w": "8u",
+          "l": "1.8u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T221_rppd_1",
+            "anchor": "T221_rppd_1",
+            "native_cluster": 16,
+            "native_net": "avdd"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T221_rppd_2",
+            "anchor": "T221_rppd_2",
+            "native_cluster": 121,
+            "native_net": "$651"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 222,
+        "instance": "XD0222",
+        "model": "rppd",
+        "parameters": {
+          "w": "4u",
+          "l": "7.4u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T222_rppd_1",
+            "anchor": "T222_rppd_1",
+            "native_cluster": 122,
+            "native_net": "$652"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T222_rppd_2",
+            "anchor": "T222_rppd_2",
+            "native_cluster": 23,
+            "native_net": "avss"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      },
+      {
+        "native_id": 223,
+        "instance": "XD0223",
+        "model": "rppd",
+        "parameters": {
+          "w": "4u",
+          "l": "7.4u",
+          "ps": "0u",
+          "b": "0",
+          "m": "1",
+          "sw_et": "1"
+        },
+        "terminals": [
+          {
+            "terminal": "rppd_1",
+            "node": "w_T223_rppd_1",
+            "anchor": "T223_rppd_1",
+            "native_cluster": 121,
+            "native_net": "$651"
+          },
+          {
+            "terminal": "rppd_2",
+            "node": "w_T223_rppd_2",
+            "anchor": "T223_rppd_2",
+            "native_cluster": 23,
+            "native_net": "avss"
+          },
+          {
+            "terminal": "rppd_sub",
+            "node": "body_1",
+            "anchor": null,
+            "native_cluster": 1,
+            "native_net": "$1"
+          }
+        ]
+      }
+    ]
+  },
+  "measured_observations": [
+    {
+      "case": "nominal_early",
+      "native_id": 59,
+      "role": "D gain positive input",
+      "kind": "maximum_VCE",
+      "row": 14399,
+      "time_s": 4.4142187500000415e-9,
+      "measured_VCE_v": 1.672399553198051,
+      "required_C_minus_E_reduction_v": 0.0723995531980508,
+      "C_v": 2.038571390377174,
+      "B_v": 1.1757448080177095,
+      "E_v": 0.36617183717912294,
+      "Ic_a": 0.0006907037684702958
+    },
+    {
+      "case": "nominal_early",
+      "native_id": 60,
+      "role": "D gain negative input",
+      "kind": "maximum_VCE",
+      "row": 12736,
+      "time_s": 3.911406250000039e-9,
+      "measured_VCE_v": 1.6812547372242865,
+      "required_C_minus_E_reduction_v": 0.08125473722428644,
+      "C_v": 2.041475111592342,
+      "B_v": 1.1705803567498245,
+      "E_v": 0.36022037436805576,
+      "Ic_a": 0.0007434262047258419
+    },
+    {
+      "case": "nominal_early",
+      "native_id": 111,
+      "role": "C gain positive input",
+      "kind": "maximum_VCE",
+      "row": 12132,
+      "time_s": 3.730156249999999e-9,
+      "measured_VCE_v": 1.670835043742259,
+      "required_C_minus_E_reduction_v": 0.07083504374225891,
+      "C_v": 2.019169082556839,
+      "B_v": 1.149878065122234,
+      "E_v": 0.34833403881457997,
+      "Ic_a": 0.0005538865627163491
+    },
+    {
+      "case": "nominal_early",
+      "native_id": 112,
+      "role": "C gain negative input",
+      "kind": "maximum_VCE",
+      "row": 12946,
+      "time_s": 3.97515625000004e-9,
+      "measured_VCE_v": 1.677306021034764,
+      "required_C_minus_E_reduction_v": 0.0773060210347638,
+      "C_v": 2.022180356694608,
+      "B_v": 1.1441276098263824,
+      "E_v": 0.3448743356598442,
+      "Ic_a": 0.0005486982252495568
+    },
+    {
+      "case": "nominal_late",
+      "native_id": 59,
+      "role": "D gain positive input",
+      "kind": "maximum_VCE",
+      "row": 12317,
+      "time_s": 3.786093750000039e-9,
+      "measured_VCE_v": 1.671598728461951,
+      "required_C_minus_E_reduction_v": 0.07159872846195081,
+      "C_v": 2.0398350778467993,
+      "B_v": 1.1730253763664102,
+      "E_v": 0.3682363493848484,
+      "Ic_a": 0.0005969373844254082
+    },
+    {
+      "case": "nominal_late",
+      "native_id": 60,
+      "role": "D gain negative input",
+      "kind": "maximum_VCE",
+      "row": 13136,
+      "time_s": 4.032656250000034e-9,
+      "measured_VCE_v": 1.6801539667840935,
+      "required_C_minus_E_reduction_v": 0.08015396678409337,
+      "C_v": 2.0405201953406813,
+      "B_v": 1.1632409003964814,
+      "E_v": 0.3603662285565879,
+      "Ic_a": 0.0006056652164800688
+    },
+    {
+      "case": "nominal_late",
+      "native_id": 111,
+      "role": "C gain positive input",
+      "kind": "maximum_VCE",
+      "row": 12134,
+      "time_s": 3.730781249999999e-9,
+      "measured_VCE_v": 1.671363467894625,
+      "required_C_minus_E_reduction_v": 0.07136346789462489,
+      "C_v": 2.019441555595629,
+      "B_v": 1.1498022799853689,
+      "E_v": 0.34807808770100407,
+      "Ic_a": 0.0005569153497061136
+    },
+    {
+      "case": "nominal_late",
+      "native_id": 112,
+      "role": "C gain negative input",
+      "kind": "maximum_VCE",
+      "row": 12948,
+      "time_s": 3.975781250000041e-9,
+      "measured_VCE_v": 1.677662708134136,
+      "required_C_minus_E_reduction_v": 0.0776627081341359,
+      "C_v": 2.022850255572693,
+      "B_v": 1.1444939324184042,
+      "E_v": 0.3451875474385568,
+      "Ic_a": 0.000548628901747014
+    },
+    {
+      "case": "hot_early",
+      "native_id": 71,
+      "role": "B regenerative hold pair leg1",
+      "kind": "minimum_active_window_VCE",
+      "row": 68864,
+      "time_s": 2.0815781249999993e-8,
+      "measured_VCE_v": 0.3585379308935608,
+      "required_C_minus_E_increase_v": 0.04146206910643924,
+      "C_v": 1.833286032070081,
+      "B_v": 2.2005924336463374,
+      "E_v": 1.4747481011765202,
+      "base_above_collector_v": 0.3673064015762564,
+      "Ic_a": 0.0010167440948866523
+    },
+    {
+      "case": "hot_early",
+      "native_id": 72,
+      "role": "B regenerative hold pair leg2",
+      "kind": "minimum_active_window_VCE",
+      "row": 105819,
+      "time_s": 3.194234375000002e-8,
+      "measured_VCE_v": 0.3773437882596835,
+      "required_C_minus_E_increase_v": 0.022656211740316512,
+      "C_v": 1.8422471442199735,
+      "B_v": 2.1916646515677147,
+      "E_v": 1.46490335596029,
+      "base_above_collector_v": 0.34941750734774124,
+      "Ic_a": 0.0010237549578759257
+    },
+    {
+      "case": "hot_early",
+      "native_id": 87,
+      "role": "A regenerative hold pair leg1",
+      "kind": "minimum_active_window_VCE",
+      "row": 64510,
+      "time_s": 1.9503906249999998e-8,
+      "measured_VCE_v": 0.3688193066548493,
+      "required_C_minus_E_increase_v": 0.031180693345150723,
+      "C_v": 1.8228298546771775,
+      "B_v": 2.1809792543915583,
+      "E_v": 1.4540105480223282,
+      "base_above_collector_v": 0.35814939971438076,
+      "Ic_a": 0.001040360727452804
+    },
+    {
+      "case": "hot_early",
+      "native_id": 88,
+      "role": "A regenerative hold pair leg2",
+      "kind": "minimum_active_window_VCE",
+      "row": 111841,
+      "time_s": 3.375484375000002e-8,
+      "measured_VCE_v": 0.3876582205683845,
+      "required_C_minus_E_increase_v": 0.012341779431615518,
+      "C_v": 1.8319999303679597,
+      "B_v": 2.1699524112570705,
+      "E_v": 1.4443417097995752,
+      "base_above_collector_v": 0.3379524808891108,
+      "Ic_a": 0.0010158037490236049
+    }
+  ],
+  "arithmetic": {
+    "meaning": "Conditional frozen-load, collapsed-connection sensitivity only; not a bound on nonlinear circuit response or measured native resistance/current.",
+    "reference_resistance": "Rhat(W,L,T,Rs)=(Rs*L/W)*(1+170e-6*dT+0.4e-6*dT^2)+(70/W)*(1-950e-6*dT); dT=T-27, W/L inum.",
+    "exclusions": [
+      "actual wrapper width and local mismatch geometry corrections",
+      "bias-dependent geff and substrate/common-mode effects",
+      "self-heating and dynamic charge",
+      "distributed route impedance and local rail voltage differences",
+      "changes of aggregate branch currents and VBE/E with candidate"
+    ],
+    "gain": {
+      "exact_native_targets": [
+        59,
+        60,
+        111,
+        112
+      ],
+      "equation": "beta=Ru/Rd; a=Ru/Ru_new; b=Rd/Rd_new; C_new-C=((a-1)*(S-C)+(b-1)*beta*(G-C)-Ru*delta_I)/(a+b*beta); VCE_new=VCE+(C_new-C)-delta_E.",
+      "reference_assumptions": "Use original prescribed source S (2.5 nominal,2.375 hot) and G=0 as collapsed rail placeholders, delta_I=delta_E=0, current originalC/E from exactly the same row. Actual resistor terminal rail/path samples are in cloud full ledger and have not been substituted by aliases.",
+      "missing_current": "delta_I is the change in aggregate current leaving the collapsed collector node, not saved HBT Ic alone; no KCL closure or resistor-current inference.",
+      "source_rail_error": "d(C_new-C)/dS=(a-1)/(a+b*beta); d(C_new-C)/dG=(b-1)*beta/(a+b*beta). Unknown emitter shift subtracts one-for-one.",
+      "projections": [
+        {
+          "case": "nominal_early",
+          "variant": "gain_pullup_2p2",
+          "temperature_c": 27,
+          "source_supply_v": 2.5,
+          "approx_pullup_r_ohm": 80.25,
+          "approx_shunt_r_ohm": 498.5,
+          "a": 0.838006230529595,
+          "b": 1,
+          "beta": 0.13490471414242727,
+          "extra_load_current_coefficient_ohm": -69.12246220302376,
+          "upper_rail_error_coefficient": -0.1665042112616121,
+          "lower_rail_error_coefficient": 0,
+          "rows": [
+            {
+              "native_id": 59,
+              "kind": "max_abs_vce",
+              "row": 14399,
+              "time_s": 4.4142187500000415e-9,
+              "original_C_v": 2.038571390377174,
+              "original_E_v": 0.36617183717912294,
+              "original_VCE_v": 1.672399553198051,
+              "conditional_C_shift_v": -0.07682980669879098,
+              "conditional_VCE_v": 1.59556974649926
+            },
+            {
+              "native_id": 59,
+              "kind": "min_active_vce",
+              "row": 111926,
+              "time_s": 3.378140625000019e-8,
+              "original_C_v": 1.5586805496293894,
+              "original_E_v": 0.42877715581147374,
+              "original_VCE_v": 1.1299033938179157,
+              "conditional_C_shift_v": -0.15673365262917272,
+              "conditional_VCE_v": 0.973169741188743
+            },
+            {
+              "native_id": 60,
+              "kind": "max_abs_vce",
+              "row": 12736,
+              "time_s": 3.911406250000039e-9,
+              "original_C_v": 2.041475111592342,
+              "original_E_v": 0.36022037436805576,
+              "original_VCE_v": 1.6812547372242865,
+              "conditional_C_shift_v": -0.07634632488813577,
+              "conditional_VCE_v": 1.6049084123361508
+            },
+            {
+              "native_id": 60,
+              "kind": "min_active_vce",
+              "row": 69161,
+              "time_s": 2.090671874999988e-8,
+              "original_C_v": 1.5450529763137026,
+              "original_E_v": 0.43751028364104466,
+              "original_VCE_v": 1.107542692672658,
+              "conditional_C_shift_v": -0.15900270097551095,
+              "conditional_VCE_v": 0.948539991697147
+            },
+            {
+              "native_id": 111,
+              "kind": "max_abs_vce",
+              "row": 12132,
+              "time_s": 3.730156249999999e-9,
+              "original_C_v": 2.019169082556839,
+              "original_E_v": 0.34833403881457997,
+              "original_VCE_v": 1.670835043742259,
+              "conditional_C_shift_v": -0.08006037265907086,
+              "conditional_VCE_v": 1.590774671083188
+            },
+            {
+              "native_id": 111,
+              "kind": "min_active_vce",
+              "row": 112144,
+              "time_s": 3.384765625000021e-8,
+              "original_C_v": 1.575356122667918,
+              "original_E_v": 0.4111751946871891,
+              "original_VCE_v": 1.164180927980729,
+              "conditional_C_shift_v": -0.15395709949305714,
+              "conditional_VCE_v": 1.0102238284876717
+            },
+            {
+              "native_id": 112,
+              "kind": "max_abs_vce",
+              "row": 12946,
+              "time_s": 3.97515625000004e-9,
+              "original_C_v": 2.022180356694608,
+              "original_E_v": 0.3448743356598442,
+              "original_VCE_v": 1.677306021034764,
+              "conditional_C_shift_v": -0.0795589828338691,
+              "conditional_VCE_v": 1.5977470382008947
+            },
+            {
+              "native_id": 112,
+              "kind": "min_active_vce",
+              "row": 64398,
+              "time_s": 1.9472656249999863e-8,
+              "original_C_v": 1.5643398222793983,
+              "original_E_v": 0.41806685522887543,
+              "original_VCE_v": 1.146272967050523,
+              "conditional_C_shift_v": -0.1557913599002686,
+              "conditional_VCE_v": 0.9904816071502544
+            }
+          ]
+        },
+        {
+          "case": "nominal_early",
+          "variant": "gain_pullup_2p4",
+          "temperature_c": 27,
+          "source_supply_v": 2.5,
+          "approx_pullup_r_ohm": 86.75,
+          "approx_shunt_r_ohm": 498.5,
+          "a": 0.7752161383285303,
+          "b": 1,
+          "beta": 0.13490471414242727,
+          "extra_load_current_coefficient_ohm": -73.89128577530968,
+          "upper_rail_error_coefficient": -0.24698243212556503,
+          "lower_rail_error_coefficient": 0,
+          "rows": [
+            {
+              "native_id": 59,
+              "kind": "max_abs_vce",
+              "row": 14399,
+              "time_s": 4.4142187500000415e-9,
+              "original_C_v": 2.038571390377174,
+              "original_E_v": 0.36617183717912294,
+              "original_VCE_v": 1.672399553198051,
+              "conditional_C_shift_v": -0.1139647602569635,
+              "conditional_VCE_v": 1.5584347929410873
+            },
+            {
+              "native_id": 59,
+              "kind": "min_active_vce",
+              "row": 111926,
+              "time_s": 3.378140625000019e-8,
+              "original_C_v": 1.5586805496293894,
+              "original_E_v": 0.42877715581147374,
+              "original_VCE_v": 1.1299033938179157,
+              "conditional_C_shift_v": -0.2324893672596335,
+              "conditional_VCE_v": 0.8974140265582822
+            },
+            {
+              "native_id": 60,
+              "kind": "max_abs_vce",
+              "row": 12736,
+              "time_s": 3.911406250000039e-9,
+              "original_C_v": 2.041475111592342,
+              "original_E_v": 0.36022037436805576,
+              "original_VCE_v": 1.6812547372242865,
+              "conditional_C_shift_v": -0.11324759212902663,
+              "conditional_VCE_v": 1.56800714509526
+            },
+            {
+              "native_id": 60,
+              "kind": "min_active_vce",
+              "row": 69161,
+              "time_s": 2.090671874999988e-8,
+              "original_C_v": 1.5450529763137026,
+              "original_E_v": 0.43751028364104466,
+              "original_VCE_v": 1.107542692672658,
+              "conditional_C_shift_v": -0.23585513846111128,
+              "conditional_VCE_v": 0.8716875542115466
+            },
+            {
+              "native_id": 111,
+              "kind": "max_abs_vce",
+              "row": 12132,
+              "time_s": 3.730156249999999e-9,
+              "original_C_v": 2.019169082556839,
+              "original_E_v": 0.34833403881457997,
+              "original_VCE_v": 1.670835043742259,
+              "conditional_C_shift_v": -0.1187567894312787,
+              "conditional_VCE_v": 1.5520782543109803
+            },
+            {
+              "native_id": 111,
+              "kind": "min_active_vce",
+              "row": 112144,
+              "time_s": 3.384765625000021e-8,
+              "original_C_v": 1.575356122667918,
+              "original_E_v": 0.4111751946871891,
+              "original_VCE_v": 1.164180927980729,
+              "conditional_C_shift_v": -0.22837079367349022,
+              "conditional_VCE_v": 0.9358101343072387
+            },
+            {
+              "native_id": 112,
+              "kind": "max_abs_vce",
+              "row": 12946,
+              "time_s": 3.97515625000004e-9,
+              "original_C_v": 2.022180356694608,
+              "original_E_v": 0.3448743356598442,
+              "original_VCE_v": 1.677306021034764,
+              "conditional_C_shift_v": -0.11801305762093564,
+              "conditional_VCE_v": 1.5592929634138282
+            },
+            {
+              "native_id": 112,
+              "kind": "min_active_vce",
+              "row": 64398,
+              "time_s": 1.9472656249999863e-8,
+              "original_C_v": 1.5643398222793983,
+              "original_E_v": 0.41806685522887543,
+              "original_VCE_v": 1.146272967050523,
+              "conditional_C_shift_v": -0.23109162633647262,
+              "conditional_VCE_v": 0.9151813407140503
+            }
+          ]
+        },
+        {
+          "case": "nominal_early",
+          "variant": "gain_shunt_5p0",
+          "temperature_c": 27,
+          "source_supply_v": 2.5,
+          "approx_pullup_r_ohm": 67.25,
+          "approx_shunt_r_ohm": 342.5,
+          "a": 1,
+          "b": 1.4554744525547445,
+          "beta": 0.13490471414242727,
+          "extra_load_current_coefficient_ohm": -56.212629652226966,
+          "upper_rail_error_coefficient": 0,
+          "lower_rail_error_coefficient": 0.05136091618357207,
+          "rows": [
+            {
+              "native_id": 59,
+              "kind": "max_abs_vce",
+              "row": 14399,
+              "time_s": 4.4142187500000415e-9,
+              "original_C_v": 2.038571390377174,
+              "original_E_v": 0.36617183717912294,
+              "original_VCE_v": 1.672399553198051,
+              "conditional_C_shift_v": -0.10470289431539,
+              "conditional_VCE_v": 1.5676966588826609
+            },
+            {
+              "native_id": 59,
+              "kind": "min_active_vce",
+              "row": 111926,
+              "time_s": 3.378140625000019e-8,
+              "original_C_v": 1.5586805496293894,
+              "original_E_v": 0.42877715581147374,
+              "original_VCE_v": 1.1299033938179157,
+              "conditional_C_shift_v": -0.08005526106647912,
+              "conditional_VCE_v": 1.0498481327514366
+            },
+            {
+              "native_id": 60,
+              "kind": "max_abs_vce",
+              "row": 12736,
+              "time_s": 3.911406250000039e-9,
+              "original_C_v": 2.041475111592342,
+              "original_E_v": 0.36022037436805576,
+              "original_VCE_v": 1.6812547372242865,
+              "conditional_C_shift_v": -0.10485203209734272,
+              "conditional_VCE_v": 1.5764027051269438
+            },
+            {
+              "native_id": 60,
+              "kind": "min_active_vce",
+              "row": 69161,
+              "time_s": 2.090671874999988e-8,
+              "original_C_v": 1.5450529763137026,
+              "original_E_v": 0.43751028364104466,
+              "original_VCE_v": 1.107542692672658,
+              "conditional_C_shift_v": -0.07935533641562664,
+              "conditional_VCE_v": 1.0281873562570314
+            },
+            {
+              "native_id": 111,
+              "kind": "max_abs_vce",
+              "row": 12132,
+              "time_s": 3.730156249999999e-9,
+              "original_C_v": 2.019169082556839,
+              "original_E_v": 0.34833403881457997,
+              "original_VCE_v": 1.670835043742259,
+              "conditional_C_shift_v": -0.1037063740096619,
+              "conditional_VCE_v": 1.567128669732597
+            },
+            {
+              "native_id": 111,
+              "kind": "min_active_vce",
+              "row": 112144,
+              "time_s": 3.384765625000021e-8,
+              "original_C_v": 1.575356122667918,
+              "original_E_v": 0.4111751946871891,
+              "original_VCE_v": 1.164180927980729,
+              "conditional_C_shift_v": -0.08091173377562402,
+              "conditional_VCE_v": 1.083269194205105
+            },
+            {
+              "native_id": 112,
+              "kind": "max_abs_vce",
+              "row": 12946,
+              "time_s": 3.97515625000004e-9,
+              "original_C_v": 2.022180356694608,
+              "original_E_v": 0.3448743356598442,
+              "original_VCE_v": 1.677306021034764,
+              "conditional_C_shift_v": -0.10386103580825763,
+              "conditional_VCE_v": 1.5734449852265062
+            },
+            {
+              "native_id": 112,
+              "kind": "min_active_vce",
+              "row": 64398,
+              "time_s": 1.9472656249999863e-8,
+              "original_C_v": 1.5643398222793983,
+              "original_E_v": 0.41806685522887543,
+              "original_VCE_v": 1.146272967050523,
+              "conditional_C_shift_v": -0.0803459264947162,
+              "conditional_VCE_v": 1.0659270405558068
+            }
+          ]
+        },
+        {
+          "case": "nominal_late",
+          "variant": "gain_pullup_2p2",
+          "temperature_c": 27,
+          "source_supply_v": 2.5,
+          "approx_pullup_r_ohm": 80.25,
+          "approx_shunt_r_ohm": 498.5,
+          "a": 0.838006230529595,
+          "b": 1,
+          "beta": 0.13490471414242727,
+          "extra_load_current_coefficient_ohm": -69.12246220302376,
+          "upper_rail_error_coefficient": -0.1665042112616121,
+          "lower_rail_error_coefficient": 0,
+          "rows": [
+            {
+              "native_id": 59,
+              "kind": "max_abs_vce",
+              "row": 12317,
+              "time_s": 3.786093750000039e-9,
+              "original_C_v": 2.0398350778467993,
+              "original_E_v": 0.3682363493848484,
+              "original_VCE_v": 1.671598728461951,
+              "conditional_C_shift_v": -0.07661939741337981,
+              "conditional_VCE_v": 1.5949793310485711
+            },
+            {
+              "native_id": 59,
+              "kind": "min_active_vce",
+              "row": 112347,
+              "time_s": 3.390734375000004e-8,
+              "original_C_v": 1.558260958127339,
+              "original_E_v": 0.42925859275792627,
+              "original_VCE_v": 1.1290023653694128,
+              "conditional_C_shift_v": -0.1568035163812737,
+              "conditional_VCE_v": 0.972198848988139
+            },
+            {
+              "native_id": 60,
+              "kind": "max_abs_vce",
+              "row": 13136,
+              "time_s": 4.032656250000034e-9,
+              "original_C_v": 2.0405201953406813,
+              "original_E_v": 0.3603662285565879,
+              "original_VCE_v": 1.6801539667840935,
+              "conditional_C_shift_v": -0.07650532246543947,
+              "conditional_VCE_v": 1.603648644318654
+            },
+            {
+              "native_id": 60,
+              "kind": "min_active_vce",
+              "row": 69579,
+              "time_s": 2.1031718749999972e-8,
+              "original_C_v": 1.5451287509879386,
+              "original_E_v": 0.4374351874725079,
+              "original_VCE_v": 1.1076935635154306,
+              "conditional_C_shift_v": -0.15899008417314367,
+              "conditional_VCE_v": 0.9487034793422869
+            },
+            {
+              "native_id": 111,
+              "kind": "max_abs_vce",
+              "row": 12134,
+              "time_s": 3.730781249999999e-9,
+              "original_C_v": 2.019441555595629,
+              "original_E_v": 0.34807808770100407,
+              "original_VCE_v": 1.671363467894625,
+              "conditional_C_shift_v": -0.08001500475065704,
+              "conditional_VCE_v": 1.591348463143968
+            },
+            {
+              "native_id": 111,
+              "kind": "min_active_vce",
+              "row": 112144,
+              "time_s": 3.384765625000021e-8,
+              "original_C_v": 1.5753140235104843,
+              "original_E_v": 0.4112085594719336,
+              "original_VCE_v": 1.1641054640385509,
+              "conditional_C_shift_v": -0.1539641091800604,
+              "conditional_VCE_v": 1.0101413548584905
+            },
+            {
+              "native_id": 112,
+              "kind": "max_abs_vce",
+              "row": 12948,
+              "time_s": 3.975781250000041e-9,
+              "original_C_v": 2.022850255572693,
+              "original_E_v": 0.3451875474385568,
+              "original_VCE_v": 1.677662708134136,
+              "conditional_C_shift_v": -0.07944744184954858,
+              "conditional_VCE_v": 1.5982152662845874
+            },
+            {
+              "native_id": 112,
+              "kind": "min_active_vce",
+              "row": 64398,
+              "time_s": 1.9472656249999863e-8,
+              "original_C_v": 1.5643223276812526,
+              "original_E_v": 0.41807607182604906,
+              "original_VCE_v": 1.1462462558552036,
+              "conditional_C_shift_v": -0.15579427282453417,
+              "conditional_VCE_v": 0.9904519830306694
+            }
+          ]
+        },
+        {
+          "case": "nominal_late",
+          "variant": "gain_pullup_2p4",
+          "temperature_c": 27,
+          "source_supply_v": 2.5,
+          "approx_pullup_r_ohm": 86.75,
+          "approx_shunt_r_ohm": 498.5,
+          "a": 0.7752161383285303,
+          "b": 1,
+          "beta": 0.13490471414242727,
+          "extra_load_current_coefficient_ohm": -73.89128577530968,
+          "upper_rail_error_coefficient": -0.24698243212556503,
+          "lower_rail_error_coefficient": 0,
+          "rows": [
+            {
+              "native_id": 59,
+              "kind": "max_abs_vce",
+              "row": 12317,
+              "time_s": 3.786093750000039e-9,
+              "original_C_v": 2.0398350778467993,
+              "original_E_v": 0.3682363493848484,
+              "original_VCE_v": 1.671598728461951,
+              "conditional_C_shift_v": -0.11365265165226882,
+              "conditional_VCE_v": 1.557946076809682
+            },
+            {
+              "native_id": 59,
+              "kind": "min_active_vce",
+              "row": 112347,
+              "time_s": 3.390734375000004e-8,
+              "original_C_v": 1.558260958127339,
+              "original_E_v": 0.42925859275792627,
+              "original_VCE_v": 1.1290023653694128,
+              "conditional_C_shift_v": -0.23259299898930916,
+              "conditional_VCE_v": 0.8964093663801036
+            },
+            {
+              "native_id": 60,
+              "kind": "max_abs_vce",
+              "row": 13136,
+              "time_s": 4.032656250000034e-9,
+              "original_C_v": 2.0405201953406813,
+              "original_E_v": 0.3603662285565879,
+              "original_VCE_v": 1.6801539667840935,
+              "conditional_C_shift_v": -0.11348343966733807,
+              "conditional_VCE_v": 1.5666705271167554
+            },
+            {
+              "native_id": 60,
+              "kind": "min_active_vce",
+              "row": 69579,
+              "time_s": 2.1031718749999972e-8,
+              "original_C_v": 1.5451287509879386,
+              "original_E_v": 0.4374351874725079,
+              "original_VCE_v": 1.1076935635154306,
+              "conditional_C_shift_v": -0.23583642344777497,
+              "conditional_VCE_v": 0.8718571400676556
+            },
+            {
+              "native_id": 111,
+              "kind": "max_abs_vce",
+              "row": 12134,
+              "time_s": 3.730781249999999e-9,
+              "original_C_v": 2.019441555595629,
+              "original_E_v": 0.34807808770100407,
+              "original_VCE_v": 1.671363467894625,
+              "conditional_C_shift_v": -0.11868949337746966,
+              "conditional_VCE_v": 1.5526739745171554
+            },
+            {
+              "native_id": 111,
+              "kind": "min_active_vce",
+              "row": 112144,
+              "time_s": 3.384765625000021e-8,
+              "original_C_v": 1.5753140235104843,
+              "original_E_v": 0.4112085594719336,
+              "original_VCE_v": 1.1641054640385509,
+              "conditional_C_shift_v": -0.22838119142578361,
+              "conditional_VCE_v": 0.9357242726127672
+            },
+            {
+              "native_id": 112,
+              "kind": "max_abs_vce",
+              "row": 12948,
+              "time_s": 3.975781250000041e-9,
+              "original_C_v": 2.022850255572693,
+              "original_E_v": 0.3451875474385568,
+              "original_VCE_v": 1.677662708134136,
+              "conditional_C_shift_v": -0.1178476043667481,
+              "conditional_VCE_v": 1.559815103767388
+            },
+            {
+              "native_id": 112,
+              "kind": "min_active_vce",
+              "row": 64398,
+              "time_s": 1.9472656249999863e-8,
+              "original_C_v": 1.5643223276812526,
+              "original_E_v": 0.41807607182604906,
+              "original_VCE_v": 1.1462462558552036,
+              "conditional_C_shift_v": -0.23109594719487173,
+              "conditional_VCE_v": 0.9151503086603319
+            }
+          ]
+        },
+        {
+          "case": "nominal_late",
+          "variant": "gain_shunt_5p0",
+          "temperature_c": 27,
+          "source_supply_v": 2.5,
+          "approx_pullup_r_ohm": 67.25,
+          "approx_shunt_r_ohm": 342.5,
+          "a": 1,
+          "b": 1.4554744525547445,
+          "beta": 0.13490471414242727,
+          "extra_load_current_coefficient_ohm": -56.212629652226966,
+          "upper_rail_error_coefficient": 0,
+          "lower_rail_error_coefficient": 0.05136091618357207,
+          "rows": [
+            {
+              "native_id": 59,
+              "kind": "max_abs_vce",
+              "row": 12317,
+              "time_s": 3.786093750000039e-9,
+              "original_C_v": 2.0398350778467993,
+              "original_E_v": 0.3682363493848484,
+              "original_VCE_v": 1.671598728461951,
+              "conditional_C_shift_v": -0.10476779846159966,
+              "conditional_VCE_v": 1.5668309300003513
+            },
+            {
+              "native_id": 59,
+              "kind": "min_active_vce",
+              "row": 112347,
+              "time_s": 3.390734375000004e-8,
+              "original_C_v": 1.558260958127339,
+              "original_E_v": 0.42925859275792627,
+              "original_VCE_v": 1.1290023653694128,
+              "conditional_C_shift_v": -0.08003371046251097,
+              "conditional_VCE_v": 1.0489686549069017
+            },
+            {
+              "native_id": 60,
+              "kind": "max_abs_vce",
+              "row": 13136,
+              "time_s": 4.032656250000034e-9,
+              "original_C_v": 2.0405201953406813,
+              "original_E_v": 0.3603662285565879,
+              "original_VCE_v": 1.6801539667840935,
+              "conditional_C_shift_v": -0.10480298672377883,
+              "conditional_VCE_v": 1.5753509800603147
+            },
+            {
+              "native_id": 60,
+              "kind": "min_active_vce",
+              "row": 69579,
+              "time_s": 2.1031718749999972e-8,
+              "original_C_v": 1.5451287509879386,
+              "original_E_v": 0.4374351874725079,
+              "original_VCE_v": 1.1076935635154306,
+              "conditional_C_shift_v": -0.07935922827231891,
+              "conditional_VCE_v": 1.0283343352431116
+            },
+            {
+              "native_id": 111,
+              "kind": "max_abs_vce",
+              "row": 12134,
+              "time_s": 3.730781249999999e-9,
+              "original_C_v": 2.019441555595629,
+              "original_E_v": 0.34807808770100407,
+              "original_VCE_v": 1.671363467894625,
+              "conditional_C_shift_v": -0.1037203684745695,
+              "conditional_VCE_v": 1.5676430994200554
+            },
+            {
+              "native_id": 111,
+              "kind": "min_active_vce",
+              "row": 112144,
+              "time_s": 3.384765625000021e-8,
+              "original_C_v": 1.5753140235104843,
+              "original_E_v": 0.4112085594719336,
+              "original_VCE_v": 1.1641054640385509,
+              "conditional_C_shift_v": -0.08090957152432766,
+              "conditional_VCE_v": 1.083195892514223
+            },
+            {
+              "native_id": 112,
+              "kind": "max_abs_vce",
+              "row": 12948,
+              "time_s": 3.975781250000041e-9,
+              "original_C_v": 2.022850255572693,
+              "original_E_v": 0.3451875474385568,
+              "original_VCE_v": 1.677662708134136,
+              "conditional_C_shift_v": -0.10389544242838641,
+              "conditional_VCE_v": 1.5737672657057495
+            },
+            {
+              "native_id": 112,
+              "kind": "min_active_vce",
+              "row": 64398,
+              "time_s": 1.9472656249999863e-8,
+              "original_C_v": 1.5643223276812526,
+              "original_E_v": 0.41807607182604906,
+              "original_VCE_v": 1.1462462558552036,
+              "conditional_C_shift_v": -0.08034502795612718,
+              "conditional_VCE_v": 1.0659012278990765
+            }
+          ]
+        },
+        {
+          "case": "hot_early",
+          "variant": "gain_pullup_2p2",
+          "temperature_c": 125,
+          "source_supply_v": 2.375,
+          "approx_pullup_r_ohm": 88.19782583999998,
+          "approx_shunt_r_ohm": 555.81814656,
+          "a": 0.8345404465357964,
+          "b": 1,
+          "beta": 0.13242578245338818,
+          "extra_load_current_coefficient_ohm": -76.1191557195771,
+          "upper_rail_error_coefficient": -0.1711120290490044,
+          "lower_rail_error_coefficient": 0,
+          "rows": [
+            {
+              "native_id": 59,
+              "kind": "max_abs_vce",
+              "row": 16904,
+              "time_s": 5.167031250000045e-9,
+              "original_C_v": 1.9357688733615261,
+              "original_E_v": 0.4221284382815397,
+              "original_VCE_v": 1.5136404350799864,
+              "conditional_C_shift_v": -0.07515772930058948,
+              "conditional_VCE_v": 1.438482705779397
+            },
+            {
+              "native_id": 59,
+              "kind": "min_active_vce",
+              "row": 111923,
+              "time_s": 3.378046875000019e-8,
+              "original_C_v": 1.4354206170650206,
+              "original_E_v": 0.47738893255620074,
+              "original_VCE_v": 0.9580316845088198,
+              "conditional_C_shift_v": -0.16077333466661584,
+              "conditional_VCE_v": 0.797258349842204
+            },
+            {
+              "native_id": 60,
+              "kind": "max_abs_vce",
+              "row": 18546,
+              "time_s": 5.663281250000042e-9,
+              "original_C_v": 1.9356208839100035,
+              "original_E_v": 0.4155797005081653,
+              "original_VCE_v": 1.5200411834018381,
+              "conditional_C_shift_v": -0.07518305207591736,
+              "conditional_VCE_v": 1.4448581313259208
+            },
+            {
+              "native_id": 60,
+              "kind": "min_active_vce",
+              "row": 69160,
+              "time_s": 2.090640624999988e-8,
+              "original_C_v": 1.4241089457342082,
+              "original_E_v": 0.4859157266330953,
+              "original_VCE_v": 0.9381932191011129,
+              "conditional_C_shift_v": -0.16270889769996658,
+              "conditional_VCE_v": 0.7754843214011463
+            },
+            {
+              "native_id": 111,
+              "kind": "max_abs_vce",
+              "row": 14616,
+              "time_s": 4.480156250000045e-9,
+              "original_C_v": 1.9177271364071038,
+              "original_E_v": 0.40652000241083536,
+              "original_VCE_v": 1.5112071339962685,
+              "conditional_C_shift_v": -0.07824488751842908,
+              "conditional_VCE_v": 1.4329622464778393
+            },
+            {
+              "native_id": 111,
+              "kind": "min_active_vce",
+              "row": 112135,
+              "time_s": 3.384484375000019e-8,
+              "original_C_v": 1.4441382161897747,
+              "original_E_v": 0.46043696346930585,
+              "original_VCE_v": 0.9837012527204688,
+              "conditional_C_shift_v": -0.15928164859194333,
+              "conditional_VCE_v": 0.8244196041285254
+            },
+            {
+              "native_id": 112,
+              "kind": "max_abs_vce",
+              "row": 18747,
+              "time_s": 5.72421875000004e-9,
+              "original_C_v": 1.9177378433953458,
+              "original_E_v": 0.4023143440619537,
+              "original_VCE_v": 1.5154234993333922,
+              "conditional_C_shift_v": -0.07824305542394598,
+              "conditional_VCE_v": 1.4371804439094462
+            },
+            {
+              "native_id": 112,
+              "kind": "min_active_vce",
+              "row": 64392,
+              "time_s": 1.947078124999987e-8,
+              "original_C_v": 1.4354906651764148,
+              "original_E_v": 0.4673173325288596,
+              "original_VCE_v": 0.9681733326475552,
+              "conditional_C_shift_v": -0.1607613485921441,
+              "conditional_VCE_v": 0.8074119840554111
+            }
+          ]
+        },
+        {
+          "case": "hot_early",
+          "variant": "gain_pullup_2p4",
+          "temperature_c": 125,
+          "source_supply_v": 2.375,
+          "approx_pullup_r_ohm": 95.49441227999998,
+          "approx_shunt_r_ohm": 555.81814656,
+          "a": 0.770774448500538,
+          "b": 1,
+          "beta": 0.13242578245338818,
+          "extra_load_current_coefficient_ohm": -81.4931733158012,
+          "upper_rail_error_coefficient": -0.2537926183404123,
+          "lower_rail_error_coefficient": 0,
+          "rows": [
+            {
+              "native_id": 59,
+              "kind": "max_abs_vce",
+              "row": 16904,
+              "time_s": 5.167031250000045e-9,
+              "original_C_v": 1.9357688733615261,
+              "original_E_v": 0.4221284382815397,
+              "original_VCE_v": 1.5136404350799864,
+              "conditional_C_shift_v": -0.11147361768618748,
+              "conditional_VCE_v": 1.402166817393799
+            },
+            {
+              "native_id": 59,
+              "kind": "min_active_vce",
+              "row": 111923,
+              "time_s": 3.378046875000019e-8,
+              "original_C_v": 1.4354206170650206,
+              "original_E_v": 0.47738893255620074,
+              "original_VCE_v": 0.9580316845088198,
+              "conditional_C_shift_v": -0.2384583117337373,
+              "conditional_VCE_v": 0.7195733727750825
+            },
+            {
+              "native_id": 60,
+              "kind": "max_abs_vce",
+              "row": 18546,
+              "time_s": 5.663281250000042e-9,
+              "original_C_v": 1.9356208839100035,
+              "original_E_v": 0.4155797005081653,
+              "original_VCE_v": 1.5200411834018381,
+              "conditional_C_shift_v": -0.11151117631657616,
+              "conditional_VCE_v": 1.408530007085262
+            },
+            {
+              "native_id": 60,
+              "kind": "min_active_vce",
+              "row": 69160,
+              "time_s": 2.090640624999988e-8,
+              "original_C_v": 1.4241089457342082,
+              "original_E_v": 0.4859157266330953,
+              "original_VCE_v": 0.9381932191011129,
+              "conditional_C_shift_v": -0.24132913041859036,
+              "conditional_VCE_v": 0.6968640886825225
+            },
+            {
+              "native_id": 111,
+              "kind": "max_abs_vce",
+              "row": 14616,
+              "time_s": 4.480156250000045e-9,
+              "original_C_v": 1.9177271364071038,
+              "original_E_v": 0.40652000241083536,
+              "original_VCE_v": 1.5112071339962685,
+              "conditional_C_shift_v": -0.1160524773472593,
+              "conditional_VCE_v": 1.3951546566490092
+            },
+            {
+              "native_id": 111,
+              "kind": "min_active_vce",
+              "row": 112135,
+              "time_s": 3.384484375000019e-8,
+              "original_C_v": 1.4441382161897747,
+              "original_E_v": 0.46043696346930585,
+              "original_VCE_v": 0.9837012527204688,
+              "conditional_C_shift_v": -0.23624584942622387,
+              "conditional_VCE_v": 0.747455403294245
+            },
+            {
+              "native_id": 112,
+              "kind": "max_abs_vce",
+              "row": 18747,
+              "time_s": 5.72421875000004e-9,
+              "original_C_v": 1.9177378433953458,
+              "original_E_v": 0.4023143440619537,
+              "original_VCE_v": 1.5154234993333922,
+              "conditional_C_shift_v": -0.11604975999267882,
+              "conditional_VCE_v": 1.3993737393407133
+            },
+            {
+              "native_id": 112,
+              "kind": "min_active_vce",
+              "row": 64392,
+              "time_s": 1.947078124999987e-8,
+              "original_C_v": 1.4354906651764148,
+              "original_E_v": 0.4673173325288596,
+              "original_VCE_v": 0.9681733326475552,
+              "conditional_C_shift_v": -0.23844053404013674,
+              "conditional_VCE_v": 0.7297327986074185
+            }
+          ]
+        },
+        {
+          "case": "hot_early",
+          "variant": "gain_shunt_5p0",
+          "temperature_c": 125,
+          "source_supply_v": 2.375,
+          "approx_pullup_r_ohm": 73.60465295999998,
+          "approx_shunt_r_ohm": 380.7000719999999,
+          "a": 1,
+          "b": 1.4599896018932197,
+          "beta": 0.13242578245338818,
+          "extra_load_current_coefficient_ohm": -61.67951848591095,
+          "upper_rail_error_coefficient": 0,
+          "lower_rail_error_coefficient": 0.05104535958189869,
+          "rows": [
+            {
+              "native_id": 59,
+              "kind": "max_abs_vce",
+              "row": 16904,
+              "time_s": 5.167031250000045e-9,
+              "original_C_v": 1.9357688733615261,
+              "original_E_v": 0.4221284382815397,
+              "original_VCE_v": 1.5136404350799864,
+              "conditional_C_shift_v": -0.098812018208186,
+              "conditional_VCE_v": 1.4148284168718004
+            },
+            {
+              "native_id": 59,
+              "kind": "min_active_vce",
+              "row": 111923,
+              "time_s": 3.378046875000019e-8,
+              "original_C_v": 1.4354206170650206,
+              "original_E_v": 0.47738893255620074,
+              "original_VCE_v": 0.9580316845088198,
+              "conditional_C_shift_v": -0.07327156154935487,
+              "conditional_VCE_v": 0.8847601229594649
+            },
+            {
+              "native_id": 60,
+              "kind": "max_abs_vce",
+              "row": 18546,
+              "time_s": 5.663281250000042e-9,
+              "original_C_v": 1.9356208839100035,
+              "original_E_v": 0.4155797005081653,
+              "original_VCE_v": 1.5200411834018381,
+              "conditional_C_shift_v": -0.09880446403341869,
+              "conditional_VCE_v": 1.4212367193684194
+            },
+            {
+              "native_id": 60,
+              "kind": "min_active_vce",
+              "row": 69160,
+              "time_s": 2.090640624999988e-8,
+              "original_C_v": 1.4241089457342082,
+              "original_E_v": 0.4859157266330953,
+              "original_VCE_v": 0.9381932191011129,
+              "conditional_C_shift_v": -0.07269415321880131,
+              "conditional_VCE_v": 0.8654990658823115
+            },
+            {
+              "native_id": 111,
+              "kind": "max_abs_vce",
+              "row": 14616,
+              "time_s": 4.480156250000045e-9,
+              "original_C_v": 1.9177271364071038,
+              "original_E_v": 0.40652000241083536,
+              "original_VCE_v": 1.5112071339962685,
+              "conditional_C_shift_v": -0.09789107125786548,
+              "conditional_VCE_v": 1.413316062738403
+            },
+            {
+              "native_id": 111,
+              "kind": "min_active_vce",
+              "row": 112135,
+              "time_s": 3.384484375000019e-8,
+              "original_C_v": 1.4441382161897747,
+              "original_E_v": 0.46043696346930585,
+              "original_VCE_v": 0.9837012527204688,
+              "conditional_C_shift_v": -0.07371655453136879,
+              "conditional_VCE_v": 0.9099846981891
+            },
+            {
+              "native_id": 112,
+              "kind": "max_abs_vce",
+              "row": 18747,
+              "time_s": 5.72421875000004e-9,
+              "original_C_v": 1.9177378433953458,
+              "original_E_v": 0.4023143440619537,
+              "original_VCE_v": 1.5154234993333922,
+              "conditional_C_shift_v": -0.09789161779993034,
+              "conditional_VCE_v": 1.4175318815334619
+            },
+            {
+              "native_id": 112,
+              "kind": "min_active_vce",
+              "row": 64392,
+              "time_s": 1.947078124999987e-8,
+              "original_C_v": 1.4354906651764148,
+              "original_E_v": 0.4673173325288596,
+              "original_VCE_v": 0.9681733326475552,
+              "conditional_C_shift_v": -0.07327513718038901,
+              "conditional_VCE_v": 0.8948981954671662
+            }
+          ]
+        }
+      ]
+    },
+    "hold": {
+      "exact_identity": "At each actual device row D=B-C, VCE=VBE-D.",
+      "conditional_equation": "If VBE and branch-current difference are fixed and both slave loads scale equally, VCE_new=VBE-r_eff*D.",
+      "effective_resistance": "For intrinsic approximate scale r and unchanged series contribution, r_eff=1-f*(1-r), where f=changed intrinsic fraction of effective differential resistance. This is a sensitivity parameter, not a measured fraction.",
+      "required_fraction": "f_min=max(0,(0.4-VCE)/(D*(1-r))); r_eff must be <=(VBE-0.4)/D.",
+      "coupled_base_caution": "Both load resistors move both C and the opposite collector driving B/E. Holding E fixed would overstate headroom gain. Nonlinear regeneration, unequal loads, distributed B/C drops and VBE changes can invalidate the frozen-current projection.",
+      "projections": [
+        {
+          "case": "nominal_early",
+          "length_um": 2.2,
+          "temperature_c": 27,
+          "approx_ratio": 0.8605898123324397,
+          "old_approx_r_ohm": 23.3125,
+          "new_approx_r_ohm": 20.0625,
+          "rows": [
+            {
+              "native_id": 71,
+              "row": 89189,
+              "time_s": 2.6939531249999982e-8,
+              "original_C_v": 1.9393024527976679,
+              "original_B_v": 2.3170099414836702,
+              "original_E_v": 1.501413287636854,
+              "original_VCE_v": 0.4378891651608139,
+              "original_VBE_v": 0.8155966538468162,
+              "base_minus_collector_v": 0.37770748868600235,
+              "conditional_VCE_v": 0.4905454370419724,
+              "needed_effective_r_ratio": 1.1003135132232236,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 72,
+              "row": 105817,
+              "time_s": 3.1941718750000014e-8,
+              "original_C_v": 1.948001814929739,
+              "original_B_v": 2.307249554875117,
+              "original_E_v": 1.4916310875843828,
+              "original_VCE_v": 0.4563707273453561,
+              "original_VBE_v": 0.8156184672907343,
+              "base_minus_collector_v": 0.3592477399453782,
+              "conditional_VCE_v": 0.5064535221902882,
+              "needed_effective_r_ratio": 1.1569132414136467,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 87,
+              "row": 64507,
+              "time_s": 1.9502968750000002e-8,
+              "original_C_v": 1.926839183414423,
+              "original_B_v": 2.294791409107196,
+              "original_E_v": 1.4784748988291048,
+              "original_VCE_v": 0.4483642845853182,
+              "original_VBE_v": 0.8163165102780914,
+              "base_minus_collector_v": 0.3679522256927732,
+              "conditional_VCE_v": 0.4996605734218442,
+              "needed_effective_r_ratio": 1.1314417503366336,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 88,
+              "row": 112255,
+              "time_s": 3.387859375000001e-8,
+              "original_C_v": 1.9372282447516025,
+              "original_B_v": 2.284509719952793,
+              "original_E_v": 1.4693551270406677,
+              "original_VCE_v": 0.46787311771093476,
+              "original_VBE_v": 0.8151545929121251,
+              "base_minus_collector_v": 0.34728147520119035,
+              "conditional_VCE_v": 0.5162876933421998,
+              "needed_effective_r_ratio": 1.195441227239702,
+              "minimum_changed_intrinsic_r_fraction": 0
+            }
+          ]
+        },
+        {
+          "case": "nominal_early",
+          "length_um": 2,
+          "temperature_c": 27,
+          "approx_ratio": 0.7908847184986595,
+          "old_approx_r_ohm": 23.3125,
+          "new_approx_r_ohm": 18.4375,
+          "rows": [
+            {
+              "native_id": 71,
+              "row": 89189,
+              "time_s": 2.6939531249999982e-8,
+              "original_C_v": 1.9393024527976679,
+              "original_B_v": 2.3170099414836702,
+              "original_E_v": 1.501413287636854,
+              "original_VCE_v": 0.4378891651608139,
+              "original_VBE_v": 0.8155966538468162,
+              "base_minus_collector_v": 0.37770748868600235,
+              "conditional_VCE_v": 0.5168735729825517,
+              "needed_effective_r_ratio": 1.1003135132232236,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 72,
+              "row": 105817,
+              "time_s": 3.1941718750000014e-8,
+              "original_C_v": 1.948001814929739,
+              "original_B_v": 2.307249554875117,
+              "original_E_v": 1.4916310875843828,
+              "original_VCE_v": 0.4563707273453561,
+              "original_VBE_v": 0.8156184672907343,
+              "base_minus_collector_v": 0.3592477399453782,
+              "conditional_VCE_v": 0.5314949196127543,
+              "needed_effective_r_ratio": 1.1569132414136467,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 87,
+              "row": 64507,
+              "time_s": 1.9502968750000002e-8,
+              "original_C_v": 1.926839183414423,
+              "original_B_v": 2.294791409107196,
+              "original_E_v": 1.4784748988291048,
+              "original_VCE_v": 0.4483642845853182,
+              "original_VBE_v": 0.8163165102780914,
+              "base_minus_collector_v": 0.3679522256927732,
+              "conditional_VCE_v": 0.5253087178401072,
+              "needed_effective_r_ratio": 1.1314417503366336,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 88,
+              "row": 112255,
+              "time_s": 3.387859375000001e-8,
+              "original_C_v": 1.9372282447516025,
+              "original_B_v": 2.284509719952793,
+              "original_E_v": 1.4693551270406677,
+              "original_VCE_v": 0.46787311771093476,
+              "original_VBE_v": 0.8151545929121251,
+              "base_minus_collector_v": 0.34728147520119035,
+              "conditional_VCE_v": 0.5404949811578326,
+              "needed_effective_r_ratio": 1.195441227239702,
+              "minimum_changed_intrinsic_r_fraction": 0
+            }
+          ]
+        },
+        {
+          "case": "nominal_late",
+          "length_um": 2.2,
+          "temperature_c": 27,
+          "approx_ratio": 0.8605898123324397,
+          "old_approx_r_ohm": 23.3125,
+          "new_approx_r_ohm": 20.0625,
+          "rows": [
+            {
+              "native_id": 71,
+              "row": 69269,
+              "time_s": 2.093953124999998e-8,
+              "original_C_v": 1.9393324744833635,
+              "original_B_v": 2.3167741085435827,
+              "original_E_v": 1.5012014369175088,
+              "original_VCE_v": 0.4381310375658547,
+              "original_VBE_v": 0.8155726716260738,
+              "base_minus_collector_v": 0.37744163406021913,
+              "conditional_VCE_v": 0.49075024660374045,
+              "needed_effective_r_ratio": 1.1010249906870926,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 72,
+              "row": 104157,
+              "time_s": 3.1441718750000003e-8,
+              "original_C_v": 1.9478524551519905,
+              "original_B_v": 2.3068744292096888,
+              "original_E_v": 1.491311904273557,
+              "original_VCE_v": 0.4565405508784335,
+              "original_VBE_v": 0.8155625249361318,
+              "base_minus_collector_v": 0.3590219740576983,
+              "conditional_VCE_v": 0.5065918716585951,
+              "needed_effective_r_ratio": 1.1574849311851503,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 87,
+              "row": 64503,
+              "time_s": 1.950359375e-8,
+              "original_C_v": 1.927145100379623,
+              "original_B_v": 2.294269232558677,
+              "original_E_v": 1.4784683020793865,
+              "original_VCE_v": 0.44867679830023643,
+              "original_VBE_v": 0.8158009304792906,
+              "base_minus_collector_v": 0.36712413217905415,
+              "conditional_VCE_v": 0.49985764246460856,
+              "needed_effective_r_ratio": 1.1325894814141384,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 88,
+              "row": 112250,
+              "time_s": 3.387890625000001e-8,
+              "original_C_v": 1.93671526688857,
+              "original_B_v": 2.2833482834120113,
+              "original_E_v": 1.4687091846277232,
+              "original_VCE_v": 0.46800608226084695,
+              "original_VBE_v": 0.8146390987842882,
+              "base_minus_collector_v": 0.34663301652344125,
+              "conditional_VCE_v": 0.5163302561461525,
+              "needed_effective_r_ratio": 1.1961904348954249,
+              "minimum_changed_intrinsic_r_fraction": 0
+            }
+          ]
+        },
+        {
+          "case": "nominal_late",
+          "length_um": 2,
+          "temperature_c": 27,
+          "approx_ratio": 0.7908847184986595,
+          "old_approx_r_ohm": 23.3125,
+          "new_approx_r_ohm": 18.4375,
+          "rows": [
+            {
+              "native_id": 71,
+              "row": 69269,
+              "time_s": 2.093953124999998e-8,
+              "original_C_v": 1.9393324744833635,
+              "original_B_v": 2.3167741085435827,
+              "original_E_v": 1.5012014369175088,
+              "original_VCE_v": 0.4381310375658547,
+              "original_VBE_v": 0.8155726716260738,
+              "base_minus_collector_v": 0.37744163406021913,
+              "conditional_VCE_v": 0.5170598511226834,
+              "needed_effective_r_ratio": 1.1010249906870926,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 72,
+              "row": 104157,
+              "time_s": 3.1441718750000003e-8,
+              "original_C_v": 1.9478524551519905,
+              "original_B_v": 2.3068744292096888,
+              "original_E_v": 1.491311904273557,
+              "original_VCE_v": 0.4565405508784335,
+              "original_VBE_v": 0.8155625249361318,
+              "base_minus_collector_v": 0.3590219740576983,
+              "conditional_VCE_v": 0.531617532048676,
+              "needed_effective_r_ratio": 1.1574849311851503,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 87,
+              "row": 64503,
+              "time_s": 1.950359375e-8,
+              "original_C_v": 1.927145100379623,
+              "original_B_v": 2.294269232558677,
+              "original_E_v": 1.4784683020793865,
+              "original_VCE_v": 0.44867679830023643,
+              "original_VBE_v": 0.8158009304792906,
+              "base_minus_collector_v": 0.36712413217905415,
+              "conditional_VCE_v": 0.5254480645467947,
+              "needed_effective_r_ratio": 1.1325894814141384,
+              "minimum_changed_intrinsic_r_fraction": 0
+            },
+            {
+              "native_id": 88,
+              "row": 112250,
+              "time_s": 3.387890625000001e-8,
+              "original_C_v": 1.93671526688857,
+              "original_B_v": 2.2833482834120113,
+              "original_E_v": 1.4687091846277232,
+              "original_VCE_v": 0.46800608226084695,
+              "original_VBE_v": 0.8146390987842882,
+              "base_minus_collector_v": 0.34663301652344125,
+              "conditional_VCE_v": 0.5404923430888051,
+              "needed_effective_r_ratio": 1.1961904348954249,
+              "minimum_changed_intrinsic_r_fraction": 0
+            }
+          ]
+        },
+        {
+          "case": "hot_early",
+          "length_um": 2.2,
+          "temperature_c": 125,
+          "approx_ratio": 0.8580306343773211,
+          "old_approx_r_ohm": 25.697749679999994,
+          "new_approx_r_ohm": 22.049456459999995,
+          "rows": [
+            {
+              "native_id": 71,
+              "row": 68864,
+              "time_s": 2.0815781249999993e-8,
+              "original_C_v": 1.833286032070081,
+              "original_B_v": 2.2005924336463374,
+              "original_E_v": 1.4747481011765202,
+              "original_VCE_v": 0.3585379308935608,
+              "original_VBE_v": 0.7258443324698172,
+              "base_minus_collector_v": 0.3673064015762564,
+              "conditional_VCE_v": 0.41068418771449083,
+              "needed_effective_r_ratio": 0.88711857749141,
+              "minimum_changed_intrinsic_r_fraction": 0.7951111284712099
+            },
+            {
+              "native_id": 72,
+              "row": 105819,
+              "time_s": 3.194234375000002e-8,
+              "original_C_v": 1.8422471442199735,
+              "original_B_v": 2.1916646515677147,
+              "original_E_v": 1.46490335596029,
+              "original_VCE_v": 0.3773437882596835,
+              "original_VBE_v": 0.7267612956074248,
+              "base_minus_collector_v": 0.34941750734774124,
+              "conditional_VCE_v": 0.42695037011530007,
+              "needed_effective_r_ratio": 0.9351600556243194,
+              "minimum_changed_intrinsic_r_fraction": 0.45671785663964914
+            },
+            {
+              "native_id": 87,
+              "row": 64510,
+              "time_s": 1.9503906249999998e-8,
+              "original_C_v": 1.8228298546771775,
+              "original_B_v": 2.1809792543915583,
+              "original_E_v": 1.4540105480223282,
+              "original_VCE_v": 0.3688193066548493,
+              "original_VBE_v": 0.72696870636923,
+              "base_minus_collector_v": 0.35814939971438076,
+              "conditional_VCE_v": 0.4196655497304432,
+              "needed_effective_r_ratio": 0.9129394231289599,
+              "minimum_changed_intrinsic_r_fraction": 0.6132349502950277
+            },
+            {
+              "native_id": 88,
+              "row": 111841,
+              "time_s": 3.375484375000002e-8,
+              "original_C_v": 1.8319999303679597,
+              "original_B_v": 2.1699524112570705,
+              "original_E_v": 1.4443417097995752,
+              "original_VCE_v": 0.3876582205683845,
+              "original_VBE_v": 0.7256107014574953,
+              "base_minus_collector_v": 0.3379524808891108,
+              "conditional_VCE_v": 0.4356371198908221,
+              "needed_effective_r_ratio": 0.9634807254583667,
+              "minimum_changed_intrinsic_r_fraction": 0.25723348400874674
+            }
+          ]
+        },
+        {
+          "case": "hot_early",
+          "length_um": 2,
+          "temperature_c": 125,
+          "approx_ratio": 0.7870459515659817,
+          "old_approx_r_ohm": 25.697749679999994,
+          "new_approx_r_ohm": 20.225309849999995,
+          "rows": [
+            {
+              "native_id": 71,
+              "row": 68864,
+              "time_s": 2.0815781249999993e-8,
+              "original_C_v": 1.833286032070081,
+              "original_B_v": 2.2005924336463374,
+              "original_E_v": 1.4747481011765202,
+              "original_VCE_v": 0.3585379308935608,
+              "original_VBE_v": 0.7258443324698172,
+              "base_minus_collector_v": 0.3673064015762564,
+              "conditional_VCE_v": 0.4367573161249559,
+              "needed_effective_r_ratio": 0.88711857749141,
+              "minimum_changed_intrinsic_r_fraction": 0.5300740856474734
+            },
+            {
+              "native_id": 72,
+              "row": 105819,
+              "time_s": 3.194234375000002e-8,
+              "original_C_v": 1.8422471442199735,
+              "original_B_v": 2.1916646515677147,
+              "original_E_v": 1.46490335596029,
+              "original_VCE_v": 0.3773437882596835,
+              "original_VBE_v": 0.7267612956074248,
+              "base_minus_collector_v": 0.34941750734774124,
+              "conditional_VCE_v": 0.4517536610431084,
+              "needed_effective_r_ratio": 0.9351600556243194,
+              "minimum_changed_intrinsic_r_fraction": 0.3044785710930995
+            },
+            {
+              "native_id": 87,
+              "row": 64510,
+              "time_s": 1.9503906249999998e-8,
+              "original_C_v": 1.8228298546771775,
+              "original_B_v": 2.1809792543915583,
+              "original_E_v": 1.4540105480223282,
+              "original_VCE_v": 0.3688193066548493,
+              "original_VBE_v": 0.72696870636923,
+              "base_minus_collector_v": 0.35814939971438076,
+              "conditional_VCE_v": 0.44508867126824014,
+              "needed_effective_r_ratio": 0.9129394231289599,
+              "minimum_changed_intrinsic_r_fraction": 0.4088233001966853
+            },
+            {
+              "native_id": 88,
+              "row": 111841,
+              "time_s": 3.375484375000002e-8,
+              "original_C_v": 1.8319999303679597,
+              "original_B_v": 2.1699524112570705,
+              "original_E_v": 1.4443417097995752,
+              "original_VCE_v": 0.3876582205683845,
+              "original_VBE_v": 0.7256107014574953,
+              "base_minus_collector_v": 0.3379524808891108,
+              "conditional_VCE_v": 0.45962656955204084,
+              "needed_effective_r_ratio": 0.9634807254583667,
+              "minimum_changed_intrinsic_r_fraction": 0.17148898933916457
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "candidates": [
+    {
+      "id": "baseline_v58",
+      "description": "Previously rejected unmodified native model; identity anchor, not a new qualification.",
+      "priority": 0,
+      "changes": [],
+      "status": "UNEXECUTED_HYPOTHESIS",
+      "physical_layout_matches": false,
+      "electrical_accepted": false
+    },
+    {
+      "id": "gain_shunt_5p0",
+      "description": "Lower C/D gain collector bias by shortening only four ground shunts.",
+      "priority": 1,
+      "changes": [
+        {
+          "native_id": 184,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "7.4u",
+          "after": "5u"
+        },
+        {
+          "native_id": 185,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "7.4u",
+          "after": "5u"
+        },
+        {
+          "native_id": 222,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "7.4u",
+          "after": "5u"
+        },
+        {
+          "native_id": 223,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "7.4u",
+          "after": "5u"
+        }
+      ],
+      "status": "UNEXECUTED_HYPOTHESIS",
+      "physical_layout_matches": false,
+      "electrical_accepted": false
+    },
+    {
+      "id": "hold_load_2p0",
+      "description": "Reduce only the A/B slave collector loads and regenerative differential swing.",
+      "priority": 1,
+      "changes": [
+        {
+          "native_id": 191,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        },
+        {
+          "native_id": 194,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        },
+        {
+          "native_id": 202,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        },
+        {
+          "native_id": 205,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        }
+      ],
+      "status": "UNEXECUTED_HYPOTHESIS",
+      "physical_layout_matches": false,
+      "electrical_accepted": false
+    },
+    {
+      "id": "gain_shunt_5p0_hold_load_2p0",
+      "description": "Combine the two independently targeted resistor sets.",
+      "priority": 2,
+      "changes": [
+        {
+          "native_id": 184,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "7.4u",
+          "after": "5u"
+        },
+        {
+          "native_id": 185,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "7.4u",
+          "after": "5u"
+        },
+        {
+          "native_id": 222,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "7.4u",
+          "after": "5u"
+        },
+        {
+          "native_id": 223,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "7.4u",
+          "after": "5u"
+        },
+        {
+          "native_id": 191,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        },
+        {
+          "native_id": 194,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        },
+        {
+          "native_id": 202,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        },
+        {
+          "native_id": 205,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        }
+      ],
+      "status": "UNEXECUTED_HYPOTHESIS",
+      "physical_layout_matches": false,
+      "electrical_accepted": false
+    },
+    {
+      "id": "gain_pullup_2p4",
+      "description": "Lower C/D gain collector bias through longer four supply pullups; larger incremental load resistance tradeoff.",
+      "priority": 3,
+      "changes": [
+        {
+          "native_id": 182,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "1.8u",
+          "after": "2.4u"
+        },
+        {
+          "native_id": 183,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "1.8u",
+          "after": "2.4u"
+        },
+        {
+          "native_id": 220,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "1.8u",
+          "after": "2.4u"
+        },
+        {
+          "native_id": 221,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "1.8u",
+          "after": "2.4u"
+        }
+      ],
+      "status": "UNEXECUTED_HYPOTHESIS",
+      "physical_layout_matches": false,
+      "electrical_accepted": false
+    },
+    {
+      "id": "gain_pullup_2p4_hold_load_2p0",
+      "description": "Alternative combined gain bias/hold-load experiment.",
+      "priority": 3,
+      "changes": [
+        {
+          "native_id": 182,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "1.8u",
+          "after": "2.4u"
+        },
+        {
+          "native_id": 183,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "1.8u",
+          "after": "2.4u"
+        },
+        {
+          "native_id": 220,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "1.8u",
+          "after": "2.4u"
+        },
+        {
+          "native_id": 221,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "1.8u",
+          "after": "2.4u"
+        },
+        {
+          "native_id": 191,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        },
+        {
+          "native_id": 194,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        },
+        {
+          "native_id": 202,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        },
+        {
+          "native_id": 205,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2u"
+        }
+      ],
+      "status": "UNEXECUTED_HYPOTHESIS",
+      "physical_layout_matches": false,
+      "electrical_accepted": false
+    },
+    {
+      "id": "hold_load_2p2",
+      "description": "Smaller hold-load perturbation; weak projected margin and high intrinsic-resistance-fraction requirement.",
+      "priority": 4,
+      "changes": [
+        {
+          "native_id": 191,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2.2u"
+        },
+        {
+          "native_id": 194,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2.2u"
+        },
+        {
+          "native_id": 202,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2.2u"
+        },
+        {
+          "native_id": 205,
+          "model": "rppd",
+          "parameter": "l",
+          "before": "2.6u",
+          "after": "2.2u"
+        }
+      ],
+      "status": "UNEXECUTED_HYPOTHESIS",
+      "physical_layout_matches": false,
+      "electrical_accepted": false
+    }
+  ],
+  "sequence": {
+    "first_physical_arms": [
+      "gain_shunt_5p0",
+      "hold_load_2p0"
+    ],
+    "combined_only_after_isolated_evidence": "gain_shunt_5p0_hold_load_2p0",
+    "deferred_alternatives": [
+      "gain_pullup_2p4",
+      "gain_pullup_2p4_hold_load_2p0",
+      "hold_load_2p2"
+    ],
+    "baseline": "Reuse immutable observed rejection for diagnosis; any baseline execution must be explicitly tied to a verification need, no duplicate simulation.",
+    "required_stages": [
+      "Source review of exact four-device length-only delta and native identity/ownership controls per isolated arm",
+      "Fresh generated native geometry, unchanged560DRC categories and full500 deep/flat transistor LVS/25 public ports; no terminal-free-metal waiver",
+      "Fresh strict planes/wires/anchors, intrinsic7MIM/native500 binding and two-order RC with all original13+9 controls and composition controls",
+      "Clean native zero-source OP and every actual124HBT OFF flag readback; no UIC or fitted initial state",
+      "Original ten-case34.25ns/.3125ps/256bit loaded waveforms, original150fF collector/50fF port loading, original .3/.6/.9UI and100mV/37.5ps gates; all transistor, VI, phase and fault controls unchanged"
+    ],
+    "electrical_scope": "Any nominal/hot diagnostic substage remains screening only. All original ten cases plus geometry/RC proof are required for candidate acceptance.",
+    "current_native_dispatch_authorized": false
+  },
+  "exact_invariants": {
+    "unchanged_hbt": 124,
+    "unchanged_mos": 50,
+    "unchanged_native_r_count": 98,
+    "unchanged_mim": 7,
+    "unchanged_finite_taps": 221,
+    "unchanged_external_sources_and_clock": true,
+    "unchanged_bias_current_sources": true,
+    "unchanged_ref_mos_and_tail_ratios": true,
+    "no_ideal_bypass": true,
+    "no_clock_polarity_rewire": true,
+    "no_gate_waiver": true,
+    "new_geometry_requires_new_rc": true,
+    "old_rc_not_candidate_physical_evidence": true,
+    "candidate_native_current_inferred": false,
+    "cdr_accepted": false,
+    "full_PHY_accepted": false
+  }
+}
