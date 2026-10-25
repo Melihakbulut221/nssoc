@@ -1,0 +1,18 @@
+name: mainchip-clock-marker-classification-cloud
+on:
+  push:
+    branches:
+      - codex/register-mainchip-clock-marker-classification
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 1
+    steps:
+      - run: printf 'Manual workflow registration only; no checkout, archive, CAD, or native execution.\n'
