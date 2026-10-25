@@ -408,7 +408,7 @@ def main():
         result['prepared_source_identity']=restore_parts(m['prepared_source'],pp,work/'prep-parts');save()
         chosen={n:prep['outputs'][n]for n in ('whole8088/source/composed/output8088-wire.spice','whole8088/source/composed/composition.json','whole8088/source/interfaces.json')}
         assert chosen['whole8088/source/interfaces.json']==m['interfaces_sha256']=='13bfff54e68a5355547fc64e4ebdd64e347c5b54a43b8c924b9ece724b009aaf'
-        assert prior['restore']['selected_files']['whole8088/source/interfaces.json']['sha256']==m['interfaces_sha256'] if 'whole8088/source/interfaces.json' in prior['restore']['selected_files'] else prep['output_parent_binding']['source']['restore']['selected_files']['interfaces.json']['sha256']==m['interfaces_sha256']
+        assert prep['output_parent_binding']['source']['restore']['selected_files']['interfaces.json']['sha256']==m['interfaces_sha256']
         result['prepared_model_restore']=extract_verified(pp,work/'prep-parts',work/'model',chosen);save()
         model=(work/'model/whole8088/source/composed/output8088-wire.spice').read_text()
         case=work/'native/work';contract=json.loads((case/'contract.json').read_bytes());bench=(case/'bench.cir').read_text()
@@ -416,7 +416,7 @@ def main():
         interfaces=json.loads((work/'model/whole8088/source/interfaces.json').read_bytes())
         result['actual_input_controls']=actual_controls(contract,bench,model,qualified,interfaces);save()
         write(OUT/'consumed-input-binding.json',dict(contract_sha256=sha(case/'contract.json'),
-            bench_sha256=sha(case/'bench.cir'),model_sha256=hashlib.sha256(model.encode()).hexdigest(),
+            bench_sha256=sha(case/'bench.cir'),model_sha256=sha(work/'model/whole8088/source/composed/output8088-wire.spice'),
             composition_sha256=chosen['whole8088/source/composed/composition.json'],interfaces_sha256=m['interfaces_sha256'],
             source_run=40168554741,source_head=m['native_source']['source'],prepared_source=m['prepared_source'],
             actual_input_controls=result['actual_input_controls'],unavailable_diagnostics=observer.probe_inventory(contract)['unavailable_diagnostics'],
