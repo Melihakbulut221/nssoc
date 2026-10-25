@@ -68,6 +68,19 @@ async def partial_raw_batch_and_complete_record_epoch_reset(d):
             link.ready=True;before=link.reads
             await link.feed(stream_words(0,1-polarity,count=4),gap=1);await link.drain()
             assert link.reads-before==4
+    # Same-polarity reset cannot be rescued by the collector's polarity flush.
+    # Different count/offset changes the deterministic payload and bit position.
+    for polarity in (0,1):
+        for domain in ('wr','rr'):
+            for cut in range(1,16):
+                await link.reset('rr',polarity=polarity)
+                link.ready=False
+                await link.feed(stream_words(5,polarity,count=4)[:cut],gap=1)
+                await Timer(60000,unit='ps')
+                await link.reset(domain,polarity=polarity)
+                link.ready=True;before=link.reads
+                await link.feed(stream_words(17,polarity,count=5),gap=1);await link.drain()
+                assert link.reads-before==5
     link.close()
 
 @cocotb.test()

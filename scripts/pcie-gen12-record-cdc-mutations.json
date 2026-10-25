@@ -84,8 +84,8 @@
       "name": "unmask_stale_fields",
       "path": "hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v",
       "before": "rd_valid_o ? container_out[191:0] : 192'b0",
-      "after": "container_out[191:0]",
-      "test": "resets_held_prefetch_and_startup_stopped_clock"
+      "after": "(rd_valid_o || rd_fault_o) ? container_out[191:0] : 192'b0",
+      "test": "exact_capacity_overflow_sticky_epoch"
     },
     {
       "name": "hide_polarity_loss",
