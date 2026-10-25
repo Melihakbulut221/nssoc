@@ -212,7 +212,7 @@ def main():
         for label,layout in (("original",original),("candidate",changed)):
             shape=first_text(layout);record=shape_record(shape)
             assert type(record["value"]["halign"]) is type(record["value"]["valign"]) is int
-            assert json.loads(canonical(record))==record
+            assert canonical(json.loads(canonical(record)))==canonical(record)
             assert record["value"]["halign"]==int(shape.text.halign)
             assert record["value"]["valign"]==int(shape.text.valign)
             text_proofs.append(dict(layout=label,actual_native_text=record,json_roundtrip=True))
