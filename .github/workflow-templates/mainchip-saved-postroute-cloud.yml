@@ -1,0 +1,103 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-saved-postroute-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      execute:
+        type: boolean
+        default: false
+        required: true
+        description: Run original postroute gates on the exact completed route
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-saved-postroute-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact new admission and all original timing and physical decision controls
+        run: |
+          python3 scripts/check_mainchip_route12_postroute_sources.py
+          python3 scripts/check_mainchip_postroute_inputs_sources.py
+          python3 scripts/cloud_mainchip_saved_postroute.py --controls
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import json,mainchip_saved_postroute_publisher_base as p
+          print(json.dumps(p.controls(),indent=2))
+          PYCODE
+      - name: Actual unchanged native flow step contract
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          app="$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage"
+          "$app" python scripts/check_onehot_routed_extraction_native.py
+          PYTHONPATH=hw/soc/pnr "$app" python - <<'PYCODE'
+          from mainchip_completed_postroute_flow import MainchipCompletedPostroute
+          from librelane.steps import OpenROAD,Odb
+          from librelane.state import DesignFormat
+          from replay_onehot_routed_extraction_flow import AuditedRCX,AuditedRoutedSTA
+          assert MainchipCompletedPostroute.Steps==[OpenROAD.CheckAntennas,Odb.ReportDisconnectedPins,AuditedRCX,AuditedRoutedSTA]
+          assert AuditedRCX.inputs==[DesignFormat.DEF]
+          print('PASS_ACTUAL_NATIVE_POSTROUTE_STEP_CONTRACT_NO_ROUTE_EXECUTED')
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: saved-postroute-controls-${{ github.run_id }}
+          path: cloud-mainchip-saved-postroute-controls/
+          retention-days: 30
+  native:
+    if: inputs.execute
+    needs: controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 350
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Reserve exact tested-source evidence release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/ensure_cloud_tested_source_release.py --group mainchip-route12-saved-postroute
+      - name: Restore exact original native CAD runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+          python3 scripts/bootstrap_flow.py
+          echo "CLOUD_APPIMAGE=$GITHUB_WORKSPACE/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage" >> "$GITHUB_ENV"
+      - name: Exact completed route topology antenna fresh RC and original three-corner STA
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NSSOC_COMPLETED_DRT: '{"run":40199977397,"attempt":1,"group":"mainchip-route12-saved7200-next","source_head":"e291495bea09cfeb38df625c21f6697f90625749","controller_sha256":"b59e08eece9cf3ac35d13319959e7a2f7fde50d7a873d7aabb8b5a327905170c","summary_sha256":"0f5123d3ea073c93b4e4733e778605e2108719053714b3cbe2f0062b65580c76","parts_sha256":"7b01425b64943a52fa98bf069d9ead9bf6b0e0d0d1ddaf34db10664de7a36f72"}'
+          NSSOC_INPUT_PACKAGE: '{"run":39635867954,"group":"mainchip-postroute-inputs","source_head":"d37ef5a4358933a7b9b106ef7f9c6724a4e71f3b","controller_sha256":"b4ea0290387bd9891559c146b88aab274da60f180cad4b356bd53b986398382a","summary_sha256":"069978a77028b77bc5a59534a241bb97b4d5ef3a13c3b72621133a64eb0cfd73","parts_sha256":"256db094424d4c4f35afac9592a0339a241a615c9de6c4a636650e2ba215c716","attempt":1}'
+        run: python3 scripts/cloud_mainchip_saved_postroute.py
+      - name: Preserve complete output or failure
+        if: always()
+        id: publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/publish_mainchip_saved_postroute.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome == 'failure'
+        with:
+          name: saved-postroute-native-${{ github.run_id }}
+          path: |
+            cloud-mainchip-route12-postroute/
+            cloud-mainchip-saved-postroute-program/
+          retention-days: 30
