@@ -8407,3 +8407,10 @@ Next bounded correction is an additional static annotated O/F source beside the 
 Mainchip40179732322 and first p-high40178775666 remain the sole two current native processes; their exact state is refreshed in machine checkpoint.
 
 Local project/tmp/native processes verified absent. Inventory118 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-25T10:13:31.409406+00:00 — cloud-only checkpoint v38
+
+Imported83 exact-source mainchip diagnostic replay entries and six compact final proof files (root4740daa1). Run40179732322 collected20 bound native stacks and saved23 images;19 samples show route search,9 heap work. This is diagnosis only: original no-log gate rejected and routing/final timing remain false. CDR controls40182500368 passed; actual40182758502 rejected at serialized raw-shape equality before strict wires, with all339 original files unchanged. Phase334 actual40178775666 completed full34ns/114525row capture but failed original electrical gates (17 low-VCE HBTs, parent120 wrong-sign samples per output,142.556/147.483ps release vs62.5ps limit). It is not resumable. Failure evidence and next bounded cloud-only actions are preserved; no acceptance criterion relaxed.
+
+Local project/tmp/native processes verified absent. Inventory120 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
