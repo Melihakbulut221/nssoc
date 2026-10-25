@@ -50,7 +50,8 @@ def summary(spec):
     return raw,d
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ.get('RUNNER_ENVIRONMENT')=='github-hosted'
-    source_pins();OUT.mkdir(exist_ok=False);reports.OUT=OUT
+    method=source_pins();assert method['manual_binding_authorized']is True
+    OUT.mkdir(exist_ok=False);reports.OUT=OUT
     result=dict(status='RUNNING_SOURCE_NATIVE334_BINDING',source_head=os.environ['GITHUB_SHA'],
       run_id=int(os.environ['GITHUB_RUN_ID']),validation_errors=[],variants={},simulator_invoked=False,
       new_extraction_performed=False,**binding.FLAGS)
