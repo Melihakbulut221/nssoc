@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "status": "PUBLISHED_PACKAGE_SOURCE_PROVENANCE_NOT_REBUILT_ELF_ATTESTATION",
+  "native_evidence_run": 40169634355,
+  "package": "LibreLane3.0.5 AppImage",
+  "appimage_sha256": "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466",
+  "package_tag": "3.0.5",
+  "tag_resolved_to": "bf87321d2f6099414424a641b10af308ecb01df5",
+  "published_openroad_revision": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "published_date": "2026-02-17",
+  "actual_elf_sha256": "25a5e9ba1cbb76b820af97cfc8d87b7a2d1bc1203091d83ee4eee859c2e9a04b",
+  "actual_saved_symbol": "drt::FlexGridGraph::getRouteShapeCostAdj(int, int, int, drt::frDirEnum, bool) const",
+  "actual_elf_saved_offset": 25397912,
+  "primary_sources": [
+    {
+      "repository": "librelane/librelane",
+      "path": "nix/openroad.nix",
+      "ref": "bf87321d2f6099414424a641b10af308ecb01df5",
+      "git_blob_sha": "cb110ae48bc76f770e8bcabb2901de2b437af171",
+      "bytes": 4603,
+      "sha256": "3b6358ff4f9dce083beaca1a107f66278bac6da4749b41004baee14907d5daf0",
+      "url": "https://github.com/librelane/librelane/blob/bf87321d2f6099414424a641b10af308ecb01df5/nix/openroad.nix"
+    },
+    {
+      "repository": "librelane/librelane",
+      "path": "flake.nix",
+      "ref": "bf87321d2f6099414424a641b10af308ecb01df5",
+      "git_blob_sha": "c5bc1ae35fcb47b30c0cb16935f08a576e623d04",
+      "bytes": 6384,
+      "sha256": "227d9f033ef976422a9e46eb3aeba058ba9ce6b7c50305901ff61b1aed49f712",
+      "url": "https://github.com/librelane/librelane/blob/bf87321d2f6099414424a641b10af308ecb01df5/flake.nix"
+    },
+    {
+      "repository": "librelane/librelane",
+      "path": "nix/patches/openroad/grt_pin_layers.patch",
+      "ref": "bf87321d2f6099414424a641b10af308ecb01df5",
+      "git_blob_sha": "81a4cc46967202054bfa4c2b792992d25d7b1901",
+      "bytes": 1610,
+      "sha256": "10d06e53eae15fa2d316b84d8c27e7fd0a3784f517ff9680b609507af1f08187",
+      "url": "https://github.com/librelane/librelane/blob/bf87321d2f6099414424a641b10af308ecb01df5/nix/patches/openroad/grt_pin_layers.patch"
+    },
+    {
+      "repository": "The-OpenROAD-Project/OpenROAD",
+      "path": "src/drt/src/dr/FlexGridGraph.h",
+      "ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+      "git_blob_sha": "bc53c0d3523c828b0067665c9cc321cfcd64261b",
+      "bytes": 39199,
+      "sha256": "4e388c0bfa994ef09de72ce044a751908598bc55b858ff7dfe5080a44a388cd9",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexGridGraph.h"
+    }
+  ],
+  "published_recipe_only_override": "llvmPackages18",
+  "sole_published_patch_touches": [
+    "src/grt/src/GlobalRouter.cpp"
+  ],
+  "function_lines": [
+    313,
+    340
+  ],
+  "source_observation": "The published function body selects and reads adjacent route-shape costs with coordinate helpers; no loop appears in that body. A sample in this helper does not identify its caller or show an infinite loop.",
+  "limitations": [
+    "Published source recipe association is an inference from the hash-pinned AppImage release and matching package date; no reproducible rebuild or ELF-to-source attestation was executed.",
+    "The exact ELF saved instruction was already byte-verified independently.",
+    "One saved instruction cannot prove root cause, route progress or deadlock.",
+    "A future bounded same-process stack sampler must retain original failure and record its stop/resume perturbation."
+  ],
+  "native_execution_performed": false,
+  "route_progress_proven": false,
+  "routing_complete": false,
+  "final_timing_complete": false
+}
