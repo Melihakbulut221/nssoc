@@ -1,0 +1,12 @@
+name: tx-phase-reset334-return-ledger-cloud
+on:
+  push:
+    branches: [codex/register-phase318-return-ledger-20261025]
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - run: echo 'Workflow registration only; no checkout, project files, archive, engine or readback.'
