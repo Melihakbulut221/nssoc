@@ -15,3 +15,11 @@ The ledger uses 42 fixed native rows, whose exact times are bound to the prior s
 The complete graph and row ledger are separate assets. The compact index ranks only the largest absolute drops among these 42 rows; it does not claim full-wave extrema. Any geometry proposal still requires actual material association for the implicated edges.
 
 The manual-only workflow remains unregistered, readback=false, native simulation=false and extraction=false. Source-only controls retain the previous 20 math,23 metadata,11 archive and 9 original-result faults, plus 12 ledger math,15 RC metadata,4 fixed-row and 2 derivation faults and the original release/parts/refusal suites. No authored control or native operation was executed while preparing this candidate.
+
+## Reserved publication correction
+
+The first wrapper template called the legacy publisher CLI directly. Its release lookup could create a release after a failed lookup, so an earlier preflight alone did not make publication read-only. That source finding is retained; no readback was executed.
+
+The corrected template copies the reviewed CDC readonly_release function exactly from 96ee918510bc3a3c1e24acfd9404459f8d8b75f0. It binds migration.release in the actual imported publisher function globals and asserts that binding before use. Every asset lookup/upload cycle validates the exact reserved tag and tested source through read-only APIs. The original uploader's retry, no-overwrite and hosted size/digest verification stay unchanged. A missing or mismatched release fails without a creation call.
+
+The release waiter runs before dependency pip installation. Hosted source controls extract the entire actual template publication program, including file-list assembly, and exercise it with real temporary files and two archive parts. The original publisher upload/digest function runs against mocked remote transport. Two positives cover fresh publication and identical existing assets; 13 refusals cover the legacy seam, wrong source/tag, missing reservation, Path-versus-manifest indexing, digest mismatch, unknown path shape, duplicate asset names and symlinks. No remote upload, source test or native operation was executed while authoring this correction.
