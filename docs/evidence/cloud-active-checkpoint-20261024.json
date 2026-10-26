@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-26T14:16:16.017395+00:00",
+  "updated_at": "2026-10-26T14:35:04.875258+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "ac1915afc141cc3b50ade7050842398e67b735cf",
+  "root_source_before_receipt": "2e16b3e9d3cce8d895b0f6150b6f568087e6e79e",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 60,
+    "inventory_version": 61,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40322641142,
@@ -14,7 +14,16 @@
     "automatic_native_dispatch": false,
     "last_verified_run_status": "ATTENTION_REQUIRED: all51 source controls passed; complete observation and snapshot succeeded; open engineering failures retained; no MONITOR_ERROR"
   },
-  "active_runs": {},
+  "active_runs": {
+    "mainchip-fixed-clock-signal-repair-via-json-controls": {
+      "run": 40340536377,
+      "head_sha": "9a877b109e794a7804498a6c51e4ab0d2d5419bd",
+      "status": "queued",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": []
+    }
+  },
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -1171,6 +1180,33 @@
       "release": 424317632,
       "archive_stays_cloud_only": true,
       "cause": "Guide-audit snapshot equality refused before routing; frozen via geometry tuples cross JSON as lists. Narrow schema-validated projection correction and complete controls required, preserving fresh native guide proof and all geometry checks. No native retry authorized."
+    },
+    "mainchip_via_JSON_correction": {
+      "candidate": "d248a56ffd0044423fb1f5cf20b55b10371624e6",
+      "controls_source": "9a877b109e794a7804498a6c51e4ab0d2d5419bd",
+      "controls_run": 40340536377,
+      "controls_method_sha256": "180e4581d2f0fe2ad7ea65231084ae507b8379a7428f4e95f342a08276964caf",
+      "protected": 275,
+      "reviews": "Root complete native diff/new3-24 fixture and PLL bounded peer CLEAR;275 pins based on256 unchanged inherited pins plus18 verified modified/new pins and root review. Original14/50 preserved. Controls now hosted, no native flags enabled.",
+      "native_execution_authorized": false,
+      "original_DRT_violations": 762
+    },
+    "pll_same_row_saved_capture_source_candidate": {
+      "source": "8ae330883227a995e38fe01ebc21c8e329d798c9",
+      "peer_receipt_source": "9c087fc56ce1ad777a0a4a51ffe03248f8e3f457",
+      "protected": 377,
+      "all_authorization_false": true,
+      "workflow_registered": false,
+      "validation_complete": false,
+      "status": "Complete source/controller/checkers/direct_JSON_publication/manual_template durable. Bounded core/checker peer CLEAR. Full restoration/publication/template source review and actual cloud controls still pending. No new engine or archive read locally."
+    },
+    "cdr_tail_access_wire_native_source_WIP": {
+      "source": "2d178ecccc702a524220fe7e51fcc1ebc366d599",
+      "generator_sha256": "565e70da",
+      "authored_controls": "19 metadata +1missing-import and11 serializedgeometryfaults, unexecuted",
+      "validation_complete": false,
+      "execution_authorized": false,
+      "current_source_blocker": "TX peer found verify_snapshot called with6arguments but defined5 at serialized reread; delta owns narrow source correction. Controller/workflow/restoration incomplete. Full clearances/DRC/LVS/freshRC and all10 original electricalcases still required."
     }
   },
   "next_actions": [
@@ -1380,31 +1416,16 @@
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40335275167,
-      "head_sha": "6f50c4b0226cdad11cd80ab6519d6a7141175978",
-      "status": "completed",
-      "conclusion": "failure",
+      "run": 40340536377,
+      "head_sha": "9a877b109e794a7804498a6c51e4ab0d2d5419bd",
+      "status": "queued",
+      "conclusion": null,
       "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121615064104,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121615440133,
-          "name": "native",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        }
-      ]
+      "jobs": []
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-26T14:16:16.017395+00:00",
+    "observed_at": "2026-10-26T14:35:04.875258+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -1526,7 +1547,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-26T14:16:16.017395+00:00",
+  "local_workspace_verified_empty_at": "2026-10-26T14:35:04.875258+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -9075,6 +9096,112 @@
       "git_blob": "a3fce50c7b0925f49f960ea43710da8a73ec4b00",
       "bytes": 38982,
       "sha256": "0ccef7871ff04cf180cbeda86d3444c23ed1c6fa49b037f788b5f9aef064acbb",
+      "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v61": [
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-saved-diagnosis-source-contract-20261026.json",
+      "source": "8ae330883227a995e38fe01ebc21c8e329d798c9",
+      "git_blob": "69a247f99bbe2f6fbcc6b202472437063c37de6f",
+      "bytes": 75445,
+      "sha256": "4deb05ea171de81726de1c37773e2be88b1a9e89b9fa6356395dc8ecbd5a1558",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-via-json-independent-review-20261026.json",
+      "source": "9c087fc56ce1ad777a0a4a51ffe03248f8e3f457",
+      "git_blob": "2aa7002773dd82dfbf61479d3c8f2bf52f788e50",
+      "bytes": 4012,
+      "sha256": "c6d20019aed2e68aa15ac655243a633ac9623e120e37c91fc95acee28151441d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-saved-diagnosis-peer-review-20261026.json",
+      "source": "9c087fc56ce1ad777a0a4a51ffe03248f8e3f457",
+      "git_blob": "0f05db34cb20057301f492960ff3d527422d9f85",
+      "bytes": 2203,
+      "sha256": "d6286395fd8a31e215c5445c9d35d7c3900a82b56aa844343186aa78af1a9258",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-native-generator-source-checkpoint-20261026.json",
+      "source": "2d178ecccc702a524220fe7e51fcc1ebc366d599",
+      "git_blob": "93c64ed31a38c30271fa725b961f79c541bd339b",
+      "bytes": 2486,
+      "sha256": "fdce09375ef08b9e6b6c2831ce1321826111021e81f183610c6d75b1553b369c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-json-correction-20261026.json",
+      "source": "d248a56ffd0044423fb1f5cf20b55b10371624e6",
+      "git_blob": "9fdcf6b0f54a333bd5b58bd4ee96d28aecbe10ff",
+      "bytes": 9358,
+      "sha256": "690e4df3035c614a6873149c3d370ac7675ceb0331b70fc2c3353f0f3ae756b7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src__grt__src__GlobalRouter.cpp",
+      "source": "d248a56ffd0044423fb1f5cf20b55b10371624e6",
+      "git_blob": "b57d47085e2bb7ee382520357bfb5e74e2799700",
+      "bytes": 193007,
+      "sha256": "71befc6541b5d2b0d22ec021e8c7f2d3edcd2c0dcf4575b0fb28ad21f5e5af83",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src__grt__src__GlobalRouter.i",
+      "source": "d248a56ffd0044423fb1f5cf20b55b10371624e6",
+      "git_blob": "f4ada4f1b60096614d77a839a2c058194efad20e",
+      "bytes": 6844,
+      "sha256": "dcb136715e9e15a8f2c577e2dc621cf0a25a0640d210b059669e7ccc975681d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src__grt__src__GlobalRouter.tcl",
+      "source": "d248a56ffd0044423fb1f5cf20b55b10371624e6",
+      "git_blob": "8c92dbfe08833cc338ee3ceb1d1305817a83d0c0",
+      "bytes": 20565,
+      "sha256": "8d300dc261692737a948471d8a1f3664e122faa1266db1a60632ffda052ad28d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src__odb__src__db__dbBlock.cpp",
+      "source": "d248a56ffd0044423fb1f5cf20b55b10371624e6",
+      "git_blob": "8268386efcc2b40b2a4562d3f5b1a474b53b2e2d",
+      "bytes": 111323,
+      "sha256": "e296d6540cb3e82991c133ac3c2244c4e4cad9cb783630d4e7643c17a82fc296",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src__odb__src__db__dbGuide.cpp",
+      "source": "d248a56ffd0044423fb1f5cf20b55b10371624e6",
+      "git_blob": "7816665d6578fcd7848cc3f268f60d4e5442a719",
+      "bytes": 6966,
+      "sha256": "74068d8340c777d5a733b6cf488641d0d85e7d33182a267335e29c171f6f3ff3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/mainchip-fixed-clock-signal-repair-via-json-correction-20261026.md",
+      "source": "d248a56ffd0044423fb1f5cf20b55b10371624e6",
+      "git_blob": "4c96d0d5bd6d52346633fbdc812d2177f196d9f1",
+      "bytes": 2960,
+      "sha256": "786ae368eed099ec16f6a77152d2f549bb3fbe1dff19810eda6da5d7402631b7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-json-root-peer-review-20261026.json",
+      "source": "9a877b109e794a7804498a6c51e4ab0d2d5419bd",
+      "git_blob": "a3b59ce0b8daebeddf488b705598808a4dce5a7a",
+      "bytes": 5844,
+      "sha256": "1ea41dba7e379b1fda5c3b0be6d22a8486f0da88733c6a851dac927da3ae7a5c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-json-controls-dispatch-20261026.json",
+      "source": "3ecffbb4c53f66c2e9b15d17f2f71a77019be199",
+      "git_blob": "e2bd567fe8c5069585da05f2ec37b837647c268f",
+      "bytes": 502,
+      "sha256": "8c6a077f2a1b353d6d4deda3d831371532c72900199abbad2f452d09b7542942",
       "existing_identical": false
     }
   ]
