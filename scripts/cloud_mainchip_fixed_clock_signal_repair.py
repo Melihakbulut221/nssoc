@@ -15,6 +15,25 @@ APP_SHA=base.APP_SHA
 
 def save(path,value):base.save(path,value)
 
+SHORT_PHASES=frozenset(('bootstrap-exact-runtime','restore-complete-saved-inputs','actual-runtime-version',
+    'prepare','load-exact-saved-guides','guide-audit','route-audit','paired-original-class-return',
+    'unfix-audit','full-original-class-read-only-DRT','drc-audit'))
+
+def command_seconds(label):
+    assert type(label)is str,'Command label must be an exact string'
+    if label=='one-signal-routing-attempt':return 14400
+    assert label in SHORT_PHASES,('Unknown command label',label)
+    return 1200
+
+def execute_command(sup,argv,label):
+    seconds=command_seconds(label) # Reject unknown labels before any process launch.
+    sup.supervised(argv,label,seconds=seconds,cwd=ROOT)
+    record=json.loads(c.regular(sup.TRACE/(label+'.command.json')).read_bytes())
+    base.terminal_stream(record,sup.TRACE,label)
+    record['requested_timeout_seconds']=seconds
+    return record
+
+
 def space(stage):
     needed=24*1024**3 if stage=='initial'else 4*1024**3
     if stage=='publish'and OUT.exists():
@@ -112,9 +131,7 @@ def run():
     beat=threading.Thread(target=sup.heartbeat,daemon=True);beat.start()
     def command(argv,label):
         result['storage'].append(space('phase'));save(OUT/'result.json',result)
-        sup.supervised(argv,label,seconds=1200,cwd=ROOT)
-        record=json.loads(c.regular(sup.TRACE/(label+'.command.json')).read_bytes())
-        base.terminal_stream(record,sup.TRACE,label)
+        record=execute_command(sup,argv,label)
         result['phase_results'].append(record);save(OUT/'result.json',result)
         return record
     def phase(name):

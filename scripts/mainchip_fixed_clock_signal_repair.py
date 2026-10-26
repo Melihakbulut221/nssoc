@@ -58,7 +58,7 @@ def methods():
     for path,h in m['protected'].items():assert c.file_sha(ROOT/path)==h,('source',path)
     for key in ('rc_sta_execution_authorized','simulation_authorized','timing_accepted','full_phy_accepted'):
         assert m[key]is False
-    assert m['limits']==dict(phase_seconds=1200,threads=2,max_group_rss_kib=10485760,min_available_kib=2097152)
+    assert m['limits']==dict(phase_seconds=1200,routing_seconds=14400,threads=2,max_group_rss_kib=10485760,min_available_kib=2097152)
     return m
 
 def skeleton(parsed):

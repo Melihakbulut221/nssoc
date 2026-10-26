@@ -1,0 +1,207 @@
+{
+  "binding_findings": [
+    "common/odb.i includes Python dbtypes and the complete odb/db.h declarations.",
+    "common/containers.i line17 explicitly expands WRAP_DB_CONTAINER(odb::dbGuide).",
+    "python/dbtypes.i lines42-52 turns dbSet<dbGuide> into a Python list with every wrapped pointer.",
+    "Pinned db.h declares dbGuide getBox/getNet/getLayer/isCongested; no method-specific SWIG rename/ignore was found in the complete Python/common inputs.",
+    "Controls imports are definition-only; explicit odb stub scope is isolated to the source checker. Native main independently requires native execution and routing authorization."
+  ],
+  "budget_decision": {
+    "other_known_phase_seconds": 1200,
+    "prediction": false,
+    "reason": "The final recorded segment alone exceeds1200s and distinct known segments exceed10400s; neither1200 nor7200 has completion evidence.",
+    "root_requested_routing_seconds": 14400,
+    "scope": "A bounded new signal-repair attempt. Segment sum is not total CPU time or full history. No completion guarantee.",
+    "workflow_minutes": 360
+  },
+  "known_reported_segment_sum_s": 10422.393594415,
+  "native_binding_scope": "Published exact package-source association; actual dbGuide calls remain required in native guide-audit before routing. Synthetic controls do not attest the binary.",
+  "observed_segments": [
+    {
+      "json_pointer": "/native_inner_report",
+      "route_complete": true,
+      "run_id": 40199977397,
+      "segment_elapsed_s": 2011.9713942879998,
+      "source_head": "e291495bea09cfeb38df625c21f6697f90625749",
+      "status": "COMPLETE_NATIVE_DRT_REQUIRES_ALL_POSTROUTE_PHYSICAL_RC_STA_GATES"
+    },
+    {
+      "json_pointer": "/admitted_prior_evidence/inner_report",
+      "route_complete": false,
+      "run_id": 40185550438,
+      "segment_elapsed_s": 7207.447604058,
+      "source_head": "85f1aeee0e92eb4ad8c4f16fa98814ea30c3f60c",
+      "status": "SAVED_CROSS_RUNNER_ACTIVE_DRT_PROGRESS_REQUIRES_FURTHER_CONTINUATION_AND_SIGNOFF"
+    },
+    {
+      "json_pointer": "/admitted_prior_evidence/inner_report/initial_source/exact_diagnostic_file_admission/inner_report",
+      "route_complete": false,
+      "run_id": 40179732322,
+      "segment_elapsed_s": 602.388747146,
+      "source_head": "e4d3ab6d8bc51b8a8c8f5c15e02897da018d44d3",
+      "status": "FAIL_OR_ERROR"
+    },
+    {
+      "json_pointer": "/admitted_prior_evidence/inner_report/initial_source/exact_diagnostic_file_admission/inner_report/initial_source/latest_file_admission/inner_report",
+      "route_complete": false,
+      "run_id": 40120760532,
+      "segment_elapsed_s": 600.585848923,
+      "source_head": "84b513cb437b68af0f4cb22bc4707db1a35958cf",
+      "status": "FAIL_OR_ERROR"
+    }
+  ],
+  "prior_completed_final_violation_count": 0,
+  "prior_max_iterations": 64,
+  "prior_observed_optimization_iterations": [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
+    "11",
+    "12",
+    "13",
+    "14",
+    "15",
+    "16",
+    "17",
+    "18",
+    "19",
+    "20",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
+    "27",
+    "33",
+    "34",
+    "35",
+    "41",
+    "42",
+    "43"
+  ],
+  "prior_summary": {
+    "asset": 675284368,
+    "authenticated_complete_JSON_in_RAM": true,
+    "bytes": 49860330,
+    "sha256": "0f5123d3ea073c93b4e4733e778605e2108719053714b3cbe2f0062b65580c76"
+  },
+  "python_binding_sources": [
+    {
+      "bytes": 55840,
+      "matches": [],
+      "sha256": "73164e2e8bf85405f66a8bf25f9d4cc07d55854c301be058e24c0c245b31b83a",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/dbenums.i",
+      "source_path": "src/odb/src/swig/python/dbenums.i",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 628,
+      "matches": [],
+      "sha256": "c3dedd1f93bfe6f02b7776f2e1304250ea9ff1def01ee1acf3d03cbd653301db",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/dboperators.i",
+      "source_path": "src/odb/src/swig/python/dboperators.i",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 10337,
+      "matches": [
+        {
+          "line": 314,
+          "text": "%include containers.i"
+        }
+      ],
+      "sha256": "5ce9798bad0c1bce78b13d4dd0c934b90b02e41162f1641e78ccd3b08e9886db",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/dbtypes.i",
+      "source_path": "src/odb/src/swig/python/dbtypes.i",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 786,
+      "matches": [],
+      "sha256": "fa75b1e3efd14b7bb3f3caac79c037db253d7c5d1be311829ecaf034ef3733b8",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/main.cpp",
+      "source_path": "src/odb/src/swig/python/main.cpp",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 2180,
+      "matches": [],
+      "sha256": "4b213a966e4f1c9b9604c0cd315bc754744756a2b8e579944801ea60f2fac501",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/parserenums.i",
+      "source_path": "src/odb/src/swig/python/parserenums.i",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 3225,
+      "matches": [
+        {
+          "line": 17,
+          "text": "WRAP_DB_CONTAINER(odb::dbGuide)"
+        }
+      ],
+      "sha256": "91fb4249ac32658a8765ed0a2e2ad0b58ddc213cb1fce4829175785ee3ebb1fa",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/containers.i",
+      "source_path": "src/odb/src/swig/common/containers.i",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 1097,
+      "matches": [],
+      "sha256": "e0bd223d0bed22c646986ee10d2d9fcfb6f51c799f9dcf723bb9ff7036d4c192",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/dbhelpers.i",
+      "source_path": "src/odb/src/swig/common/dbhelpers.i",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 746,
+      "matches": [],
+      "sha256": "294a71cf3ac647c76aca42b956bf60bc9325f0805246aa52c7df57f6bae970fb",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/dbtypes_common.i",
+      "source_path": "src/odb/src/swig/common/dbtypes_common.i",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 2787,
+      "matches": [
+        {
+          "line": 65,
+          "text": "%include \"dbtypes.i\""
+        },
+        {
+          "line": 71,
+          "text": "%include \"odb/db.h\""
+        }
+      ],
+      "sha256": "3083e86b4dec8286c00a6e0720755b115612ea626d2a1b62582f9fa23c5fcb34",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/odb.i",
+      "source_path": "src/odb/src/swig/common/odb.i",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 1642,
+      "matches": [],
+      "sha256": "08c86986e55d8503168668bf77684d3fdf82efa021e676a342a3e1d4efe13007",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/polygon.i",
+      "source_path": "src/odb/src/swig/common/polygon.i",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    },
+    {
+      "bytes": 7980,
+      "matches": [],
+      "sha256": "32dc5bbb099bca7f126202ac87c57beb204b808dc545b32cc632756dcbe82918",
+      "snapshot_path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/swig_common.cpp",
+      "source_path": "src/odb/src/swig/common/swig_common.cpp",
+      "source_ref": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+    }
+  ],
+  "schema": "mainchip-signal-repair-budget-and-SWIG-source-v1"
+}

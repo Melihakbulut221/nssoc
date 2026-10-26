@@ -152,6 +152,58 @@ def controls():
                        ('skip_route_audit',"phase('route-audit')","phase('prepare')"),
                        ('skip_final_DRC',"'full-original-class-read-only-DRT'","'wrong-check'")]:
         bad=source.replace(a,b,1);assert bad!=source;reject(label,lambda bad=bad:sequence(bad))
+    # Exercise the actual supervised-call helper, not only a duplicated budget map.
+    expected_budgets={name:1200 for name in (
+        'bootstrap-exact-runtime','restore-complete-saved-inputs','actual-runtime-version',
+        'prepare','load-exact-saved-guides','guide-audit','route-audit',
+        'paired-original-class-return','unfix-audit','full-original-class-read-only-DRT','drc-audit')}
+    expected_budgets['one-signal-routing-attempt']=14400
+    bad_labels=[None,True,'unknown','one-signal-routing-attempt ','prepare/extra']
+    calls=[]
+    with tempfile.TemporaryDirectory()as tmp:
+        trace=Path(tmp)
+        def fake_supervised(argv,label,*,seconds,cwd):
+            calls.append((argv,label,seconds,cwd))
+            for suffix in ('stdout','stderr'):(trace/(label+'.'+suffix)).write_bytes(b'')
+            record=dict(label=label,returncode=0,supervision_failure=None,
+                process_group_cleanup=dict(remaining_live=[]),
+                stdout_bytes=0,stderr_bytes=0,stdout_sha256=c.digest(b''),stderr_sha256=c.digest(b''))
+            (trace/(label+'.command.json')).write_text(json.dumps(record))
+        supervisor=types.SimpleNamespace(TRACE=trace,supervised=fake_supervised)
+        for label,budget in expected_budgets.items():
+            result=driver.execute_command(supervisor,['fixture-no-process'],label)
+            assert result['requested_timeout_seconds']==budget
+            assert calls[-1]==(['fixture-no-process'],label,budget,driver.ROOT)
+        assert len(calls)==12
+        for i,label in enumerate(bad_labels):
+            reject('unknown_budget_label_'+str(i),lambda label=label:driver.execute_command(supervisor,['must-not-launch'],label))
+            assert len(calls)==12
+        positives.append('actual_supervised_call_all12_exact_budgets')
+        error=RuntimeError('injected supervisor refusal')
+        with patch.object(supervisor,'supervised',side_effect=error):
+            try:driver.execute_command(supervisor,['fixture-no-process'],'one-signal-routing-attempt')
+            except RuntimeError as got:assert got is error
+            else:raise AssertionError('Supervisor refusal hidden')
+        positives.append('actual_supervisor_refusal_preserved')
+    def verify_budgets(fn):
+        assert {label:fn(label)for label in expected_budgets}==expected_budgets
+        for label in bad_labels:
+            try:fn(label)
+            except AssertionError:pass
+            else:raise AssertionError('Unqualified label accepted')
+    tree=ast.parse(source)
+    budget_node=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='command_seconds')
+    budget_source=ast.get_source_segment(source,budget_node)
+    verify_budgets(driver.command_seconds)
+    for label,old,new in [
+        ('route_budget_reverted','return 14400','return 1200'),
+        ('all_phases_long','return 1200','return 14400'),
+        ('prefix_label_bypass',"label=='one-signal-routing-attempt'","label.startswith('one-signal-routing-attempt')")]:
+        assert budget_source.count(old)==1
+        mutant=budget_source.replace(old,new,1);assert mutant!=budget_source
+        namespace={'SHORT_PHASES':driver.SHORT_PHASES}
+        exec(compile(mutant,'actual-command-seconds-'+label,'exec'),namespace)
+        reject(label,lambda fn=namespace['command_seconds']:verify_budgets(fn))
     # Real restoration entry must always restore the shared extraction projection after failure.
     original_selected=driver.capture.SELECTED;injected=ValueError('injected capture transport failure');observed=[]
     def fail_capture(path):
@@ -179,7 +231,7 @@ def controls():
     inherited_result=inherited.controls()
     import check_mainchip_original_clock_restoration_driver as oldcheck
     markers=oldcheck.marker_controls()
-    assert len(positives)==12 and len(refusals)==42,(len(positives),len(refusals))
+    assert len(positives)==14 and len(refusals)==50,(len(positives),len(refusals))
     return dict(status='PASS_SIGNAL_REPAIR_SOURCE_CONTROLS_NOT_NATIVE',positives=positives,refusals=refusals,
         inherited_classification_archive_publication_wait=inherited_result,marker_API=markers,
         phase_sequence=order,synthetic_native_DB_API_fixture=True,synthetic_Tcl_hash_override_fixture=True,
