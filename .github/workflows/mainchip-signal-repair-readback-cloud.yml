@@ -1,0 +1,14 @@
+name: mainchip-signal-repair-readback-cloud
+on:
+  push:
+    branches:
+      - codex/register-signal-repair-readback-20261026
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Register manual saved signal repair diagnostic readback workflow
+        run: printf '%s\n' 'Manual workflow registry only; no checkout, tests, archives or CAD.'
