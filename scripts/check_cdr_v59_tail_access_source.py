@@ -70,6 +70,155 @@ def actual_output_metadata(text):
                          "actual_assignment_line":assignment.lineno,"actual_probe_guard_passed":True})
     return rows
 
+
+def actual_input_relocation_controls(text):
+    """Actual metadata assignment and frozen checker loops; files here are synthetic."""
+    original=json.loads((ROOT/"docs/evidence/cdr-v59-cd-shunt-first-physical-result-20261025.json").read_text())["layout"]
+    serialized=(json.dumps(original,indent=2)+"\n").encode()
+    summary=json.loads(native.SUMMARY.read_text())
+    expected_actual={k[len("analysis-capsule/"):]:v for k,v in summary["outputs"].items() if k.startswith("analysis-capsule/")}
+    assert hashlib.sha256(serialized).hexdigest()==expected_actual["parent/layout/result.json"]=="4b36c9731972d2bb1f1035ae780fdb2c5692bb32a767dc8369dc1f1fa84cde5b"
+    runtime_actual=json.loads(native.RUNTIME.read_text())["relative_runtime_sha256"]
+    canonical=Path("/home/runner/work/nssoc/nssoc")
+    historical=canonical/"hw/soc/out/cloud-cdr500-resistor-v59-cd_shunt"
+    lib_actual=canonical/"pdk/libs.tech/klayout/python"
+    classifications=[]
+    for name,h in original["inputs"].items():
+        path=Path(name)
+        if path.is_relative_to(historical):
+            assert expected_actual[str(path.relative_to(historical))]==h
+            classifications.append("historical")
+        elif path.is_relative_to(lib_actual):
+            assert runtime_actual[str(path.relative_to(lib_actual))]==h
+            classifications.append("runtime")
+        else:
+            assert path==canonical/"scripts/generate_cdr500_resistor_v59.py"
+            assert digest(ROOT/path.relative_to(canonical))==h
+            classifications.append("generator")
+    assert len(classifications)==243
+    assert {n:classifications.count(n) for n in set(classifications)}=={"historical":154,"runtime":88,"generator":1}
+    function=next(n for n in ast.parse(text).body if isinstance(n,ast.FunctionDef) and n.name=="generate_admitted")
+    assignment=[n for n in function.body if isinstance(n,ast.Assign) and isinstance(n.value,ast.Call)
+                and isinstance(n.value.func,ast.Name) and n.value.func.id=="relocate_physical_inputs"]
+    assert len(assignment)==1
+    assert ast.unparse(assignment[0].targets[0])=="(meta['inputs'], meta['tail_access_input_relocation'])"
+    checker=ROOT/"hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py"
+    checker_text=checker.read_text()
+    assert hashlib.sha256(checker_text.encode()).hexdigest()=="46c2673bd3262998639ac47c465f14c24c90a1b494e7fd6dfe852e1af670886b"
+    run=next(n for n in ast.parse(checker_text).body if isinstance(n,ast.FunctionDef) and n.name=="run")
+    pins=[n for n in run.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=="pins" for t in n.targets)]
+    update=[n for n in run.body if isinstance(n,ast.Expr) and "pins.update" in ast.unparse(n) and 'generated["outputs"]' in ast.get_source_segment(checker_text,n)]
+    pre=[n for n in run.body if isinstance(n,ast.If) and "Layout source changed" in ast.unparse(n)]
+    terminal=[n for n in ast.walk(run) if isinstance(n,ast.If) and "Inputs changed during verification" in ast.unparse(n)]
+    assert len(pins)==len(update)==len(pre)==len(terminal)==1
+    def compiled(nodes):return compile(ast.Module(body=nodes,type_ignores=[]),str(checker),"exec")
+    preflight=compiled(pins+update+pre);final=compiled(terminal)
+    positives=[{"case":"actual_complete243_input_manifest_join","historical":154,"runtime":88,"generator":1,
+                "original_parent_bytes":len(serialized),"original_parent_sha256":hashlib.sha256(serialized).hexdigest(),
+                "archive_read":False}]
+    failures=[]
+    with tempfile.TemporaryDirectory(prefix="cdr-tail-all-inputs-") as temp:
+        base=Path(temp)
+        def fixture(label):
+            root=base/label;root.mkdir()
+            source=root/"hw/soc/out/cloud-cdr-v59-font-recovery/analysis-capsule"
+            source.mkdir(parents=True)
+            lib=root/"pdk/libs.tech/klayout/python"
+            metadata=copy.deepcopy(original);metadata["inputs"]={}
+            expected=dict(expected_actual);runtime=dict(runtime_actual)
+            for name,h in original["inputs"].items():
+                old=Path(name);local=root/old.relative_to(canonical)
+                if old.is_relative_to(historical):
+                    relative=old.relative_to(historical);target=source/relative
+                    body=("explicit synthetic restored bytes:"+str(relative)).encode()
+                    h=hashlib.sha256(body).hexdigest();expected[str(relative)]=h
+                elif old.is_relative_to(lib_actual):
+                    relative=old.relative_to(lib_actual);target=lib/relative
+                    body=("explicit synthetic runtime bytes:"+str(relative)).encode()
+                    h=hashlib.sha256(body).hexdigest();runtime[str(relative)]=h
+                else:
+                    target=local;body=(ROOT/old.relative_to(canonical)).read_bytes()
+                    assert hashlib.sha256(body).hexdigest()==h
+                target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(body)
+                metadata["inputs"][str(local)]=h
+            (source/"parent/layout").mkdir(parents=True,exist_ok=True)
+            (source/"parent/layout/result.json").write_bytes(serialized)
+            layout=root/"candidate/parent/layout";layout.mkdir(parents=True)
+            (layout/"fixture.gds").write_bytes(b"explicit synthetic current GDS output; no CAD")
+            metadata["outputs"]={"fixture.gds":digest(layout/"fixture.gds")}
+            return dict(root=root,source=source,lib=lib,meta=metadata,expected=expected,runtime=runtime,
+                        layout=layout,proof={},relocate_physical_inputs=native.relocate_physical_inputs)
+        def bind(f):
+            from unittest import mock
+            with mock.patch.object(native,"ROOT",f["root"]),mock.patch.object(native,"CANONICAL",f["source"]):
+                exec(compile(ast.Module(body=assignment,type_ignores=[]),native.__file__,"exec"),f)
+            f["generated"]=f["meta"];f["Path"]=Path;f["digest"]=native.sha
+            return f["meta"]["tail_access_input_relocation"]
+        def check(f):exec(preflight,f)
+        f=fixture("positive")
+        old=copy.deepcopy(f["meta"]["inputs"]);proof=bind(f);check(f);exec(final,f)
+        assert proof["original_inputs"]==old and len(f["pins"])==244
+        assert (f["source"]/"parent/layout/result.json").read_bytes()==serialized
+        positives.append({"case":"actual_assignment_to_frozen_initial_and_terminal_digest_loops",
+          "input_pins":243,"current_output_pins":1,"old_metadata_unchanged":True,
+          "all_file_bytes_explicitly_synthetic_except_original_source_and_metadata":True})
+        def refuse(label,mutate,stage,kind,reason):
+            f=fixture(label)
+            if stage in ("checker","terminal"):bind(f)
+            if stage=="terminal":check(f)
+            mutate(f)
+            try:
+                if stage=="bind":bind(f)
+                elif stage=="original":f.update(generated=f["meta"],Path=Path,digest=native.sha);check(f)
+                elif stage=="checker":check(f)
+                else:exec(final,f)
+            except Exception as error:
+                assert type(error) is kind,(label,type(error),repr(error))
+                if kind is FileNotFoundError:
+                    assert error.filename==str(f["root"]/"hw/soc/out/cloud-cdr500-resistor-v59-cd_shunt/source/result.json")
+                else:
+                    actual=error.args[0][0] if isinstance(error.args[0],tuple) else error.args[0]
+                    assert actual==reason,(label,repr(error))
+                failures.append({"case":label,"error":repr(error),"actual_phase":stage})
+            else:raise AssertionError("Accepted input relocation fault "+label)
+        first=lambda f:str(f["root"]/"hw/soc/out/cloud-cdr500-resistor-v59-cd_shunt/source/result.json")
+        runtime_key=lambda f:next(k for k in f["meta"]["inputs"] if Path(k).is_relative_to(f["lib"]))
+        source_file=lambda f:f["source"]/"source/result.json"
+        def rename(f,name):
+            h=f["meta"]["inputs"].pop(first(f));f["meta"]["inputs"][name(f)]=h
+        refuse("original_missing_historical_path",lambda f:None,"original",FileNotFoundError,None)
+        refuse("omitted_inherited_input",lambda f:f["meta"]["inputs"].pop(first(f)),"bind",AssertionError,"Changed complete inherited input census")
+        refuse("changed_historical_digest",lambda f:f["meta"]["inputs"].__setitem__(first(f),"0"*64),"bind",AssertionError,"Historical input not bound by restored capsule")
+        refuse("changed_runtime_digest",lambda f:f["meta"]["inputs"].__setitem__(runtime_key(f),"0"*64),"bind",AssertionError,"Changed frozen runtime input")
+        refuse("changed_generator_digest",lambda f:f["meta"]["inputs"].__setitem__(str(f["root"]/"scripts/generate_cdr500_resistor_v59.py"),"0"*64),"bind",AssertionError,"Changed original generator input")
+        refuse("undeclared_repository_input",lambda f:rename(f,lambda z:str(z["root"]/"scripts/unprotected.py")),"bind",AssertionError,"Unexpected inherited repository input")
+        refuse("escaping_historical_path",lambda f:rename(f,lambda z:first(z).replace("/source/result.json","/source/../result.json")),"bind",AssertionError,"Noncanonical inherited input path")
+        refuse("noncanonical_historical_path",lambda f:rename(f,lambda z:first(z).replace("/source/result.json","/source/./result.json")),"bind",AssertionError,"Noncanonical inherited input path")
+        refuse("missing_capsule_member",lambda f:f["expected"].pop("source/result.json"),"bind",AssertionError,"Historical input not bound by restored capsule")
+        refuse("changed_capsule_member_hash",lambda f:f["expected"].__setitem__("source/result.json","0"*64),"bind",AssertionError,"Historical input not bound by restored capsule")
+        refuse("missing_restored_file",lambda f:source_file(f).unlink(),"bind",AssertionError,"Missing or changed physical input")
+        refuse("tampered_restored_file",lambda f:source_file(f).write_bytes(b"changed"),"bind",AssertionError,"Missing or changed physical input")
+        def link_file(f):
+            p=source_file(f);target=p.with_name("original-bytes.json");p.rename(target);p.symlink_to(target)
+        refuse("symlink_restored_file",link_file,"bind",AssertionError,"Symlink in physical input")
+        def link_parent(f):
+            p=f["source"]/"source";target=p.with_name("source-real");p.rename(target);p.symlink_to(target,target_is_directory=True)
+        refuse("symlink_restored_ancestor",link_parent,"bind",AssertionError,"Symlink in physical input")
+        def directory(f):
+            p=source_file(f);p.unlink();p.mkdir()
+        refuse("directory_instead_of_restored_file",directory,"bind",AssertionError,"Missing or changed physical input")
+        refuse("tampered_metadata_after_binding",lambda f:f["meta"]["inputs"].__setitem__(str(source_file(f)),"0"*64),"checker",ValueError,"Layout source changed")
+        refuse("tampered_current_output",lambda f:(f["layout"]/"fixture.gds").write_bytes(b"changed"),"checker",ValueError,"Layout source changed")
+        refuse("restored_input_changed_after_preflight",lambda f:source_file(f).write_bytes(b"changed"),"terminal",ValueError,"Inputs changed during verification")
+        refuse("missing_frozen_runtime",lambda f:Path(runtime_key(f)).unlink(),"bind",AssertionError,"Missing or changed physical input")
+    assert len(positives)==2 and len(failures)==19
+    return {"status":"PASS_ACTUAL_ALL_INPUT_RELOCATION_AND_FROZEN_DIGEST_LOOPS",
+      "positives":positives,"refusals":failures,"positive_count":2,"refusal_count":19,
+      "actual_parent_metadata_census":243,"historical_relocated":154,"runtime_unchanged":88,"generator_unchanged":1,
+      "checker_source_sha256":"46c2673bd3262998639ac47c465f14c24c90a1b494e7fd6dfe852e1af670886b",
+      "all_actual_archive_file_hashes_joined_without_archive_access":True,
+      "filesystem_fixtures_synthetic":True,"CAD_executed":False}
+
 def controls():
     assert os.environ.get("GITHUB_ACTIONS")=="true"
     method=json.loads(METHOD.read_text())
@@ -124,6 +273,7 @@ def controls():
           "actual_current_function_signature":str(inspect.signature(native.verify_snapshot)),"error":repr(e)}
     else:raise AssertionError("Accepted first-draft extra serialized-reread argument")
     current=(ROOT/"scripts/generate_cdr_v59_tail_access_wire.py").read_text()
+    input_relocation=actual_input_relocation_controls(current)
     output_rows=actual_output_metadata(current)
     assert len(output_rows)==2 and all(r["field"]=="outputs" for r in output_rows)
     output_refusals=[]
@@ -167,6 +317,7 @@ def controls():
       "metadata_faults_rejected":19,"actual_import_positive":1,"actual_snapshot_call_signatures_positive":1,
       "actual_snapshot_call_lines":call_lines,"actual_first_draft_signature_refusal":signature_failure,"actual_missing_dependency_rejected":1,
       "actual_output_assignment_probe_positives":output_rows,"output_metadata_faults":output_refusals,
+      "input_relocation_controls":input_relocation,
       "protected_files_verified":len(method["protected_sha256"]),"cases":cases,
       "native_geometry_controls_executed":False,"physical_accepted":False,"electrical_accepted":False}
 

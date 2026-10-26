@@ -38,6 +38,8 @@ jobs:
           assert x['metadata_faults_rejected']==19 and x['actual_import_positive']==1
           assert x['actual_snapshot_call_signatures_positive']==1 and x['actual_missing_dependency_rejected']==1
           assert len(x['actual_output_assignment_probe_positives'])==2 and len(x['output_metadata_faults'])==3
+          assert x['input_relocation_controls']['status']=='PASS_ACTUAL_ALL_INPUT_RELOCATION_AND_FROZEN_DIGEST_LOOPS'
+          assert (x['input_relocation_controls']['positive_count'],x['input_relocation_controls']['refusal_count'])==(2,19)
           PY
       - name: All-device and terminal-partition source controls
         run: |

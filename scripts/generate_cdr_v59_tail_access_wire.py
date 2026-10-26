@@ -64,6 +64,44 @@ def source_gate(source,pdk):
     proposal=plan.candidate_plan(handoff)
     return expected,runtime,lib,handoff,proposal
 
+
+def relocate_physical_inputs(meta,source,expected,runtime,lib):
+    """Bind all inherited pins to exact restored bytes; retain their original paths."""
+    assert source==CANONICAL and lib==ROOT/"pdk/libs.tech/klayout/python"
+    historical=ROOT/"hw/soc/out/cloud-cdr500-resistor-v59-cd_shunt"
+    old=meta["inputs"]
+    assert isinstance(old,dict) and len(old)==243,"Changed complete inherited input census"
+    mapped={};relocations=[];unchanged_runtime=0;unchanged_generator=0
+    for name,digest in old.items():
+        p=Path(name)
+        assert p.is_absolute() and str(p)==name and ".." not in p.parts,"Noncanonical inherited input path"
+        assert isinstance(digest,str) and len(digest)==64 and set(digest)<=set("0123456789abcdef"),"Malformed inherited digest"
+        if p.is_relative_to(historical):
+            relative=p.relative_to(historical)
+            assert relative.parts[0]=="source" and expected.get(str(relative))==digest,"Historical input not bound by restored capsule"
+            target=source/relative
+            relocations.append({"original_path":name,"restored_path":str(target),
+                                "capsule_member":str(relative),"sha256":digest})
+        elif p.is_relative_to(lib):
+            relative=p.relative_to(lib)
+            assert runtime.get(str(relative))==digest,"Changed frozen runtime input"
+            target=p;unchanged_runtime+=1
+        else:
+            assert p==ROOT/"scripts/generate_cdr500_resistor_v59.py","Unexpected inherited repository input"
+            assert digest=="73d2eb18f3ceb4425668584f86b5e64a4c262af25c638114a4f18fcac36fb81d","Changed original generator input"
+            target=p;unchanged_generator+=1
+        assert target.is_relative_to(ROOT),"Input escapes qualified project root"
+        assert all(not a.is_symlink() for a in (target,*target.parents) if a.is_relative_to(ROOT)),"Symlink in physical input"
+        assert target.is_file() and sha(target)==digest,("Missing or changed physical input",str(target))
+        assert str(target) not in mapped,"Duplicate relocated physical input"
+        mapped[str(target)]=digest
+    assert len(mapped)==243 and len(relocations)==154 and unchanged_runtime==88 and unchanged_generator==1,"Changed input classes"
+    return mapped,{"status":"BOUND_ALL243_ORIGINAL_PINS_TO_IDENTICAL_CURRENT_BYTES",
+      "original_inputs":dict(old),"relocations":relocations,"relocated":154,
+      "unchanged_runtime":88,"unchanged_generator":1,"all243_hashes_verified":True,
+      "original_parent_metadata_sha256":expected["parent/layout/result.json"],
+      "original_parent_metadata_preserved":True,"DRC_or_LVS_executed":False}
+
 def material(pya,layout,cell,recursive=False):
     out={}
     for li in layout.layer_indexes():
@@ -371,6 +409,8 @@ def generate_admitted(source,out,pdk,admission):
     child_meta["outputs"]={p.name:sha(p) for p in directory.iterdir() if p.is_file() and p.name!="result.json"}
     assert child_meta["routes"]==old_routes
     (directory/"result.json").write_text(json.dumps(child_meta,indent=2)+"\n")
+    meta["inputs"],meta["tail_access_input_relocation"]=relocate_physical_inputs(meta,source,expected,runtime,lib)
+    proof["physical_input_relocation"]=meta["tail_access_input_relocation"]
     meta["status"]=proof["status"];meta["tail_access_wire"]=proof
     meta["outputs"]={p.name:sha(p) for p in dest.iterdir() if p.is_file()}
     (dest/"result.json").write_text(json.dumps(meta,indent=2)+"\n")
