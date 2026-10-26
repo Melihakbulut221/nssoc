@@ -1,0 +1,170 @@
+{
+  "schema": "cdr-saved-identity-missing-pin-root-review-v1",
+  "status": "CLEAR_CORRECTED_SOURCE_CONTROLS_ONLY",
+  "reviewed_source": "45e0b01b787a478d5c3f62661f231a5e963e0de4",
+  "failed_run": 40381110487,
+  "tested_source": "ca3095bcab2cd32b7a29c1ba228090d12a551e4f",
+  "tested_method_sha256": "f8fc5f513b055a21e5974d31c83ed1ce7efd945595a4f62530261bb85d3bfd9b",
+  "corrected_method_sha256": "9138241a53b566cc85d14e6872759253b28e068612e481e4672c39c4fde7dfb8",
+  "all436priorpins_unchanged": true,
+  "exact17pin_removal_reproduces_tested_method": true,
+  "qualified_waiter_existing_bytes_unchanged": true,
+  "complete14_initialization_modules_remotely_rehashed": {
+    "scripts/cdr_v59_tail_access_runtime.py": {
+      "bytes": 3862,
+      "sha256": "946c08060f099e99f49ac35e559324b1e445d4c3865cfa7be954fa6e75db6176"
+    },
+    "scripts/cdr_v59_tail_access_topology.py": {
+      "bytes": 9714,
+      "sha256": "df8b0e712cd224c6af66d88e91242d4e5b5d8b75a96ebf81179cb740c06c3a37"
+    },
+    "scripts/cdr_v59_tail_saved_identity.py": {
+      "bytes": 9449,
+      "sha256": "5b4cd8d7bf4a6c73df3b509f1d09cdf2029854c67431c4d70c5e0457c15f8568"
+    },
+    "scripts/cdr_v59_tail_saved_identity_native.py": {
+      "bytes": 17749,
+      "sha256": "4236d056174ad2f1520e762c00e630cb033279761a6cb15924e4cad680e9f85a"
+    },
+    "scripts/check_cdr_v59_tail_saved_identity.py": {
+      "bytes": 12074,
+      "sha256": "560c5dea05f43416abb160da59be9f37315327fca65318029f96437a6ebc2650"
+    },
+    "scripts/check_cdr_v59_tail_saved_identity_runtime.py": {
+      "bytes": 1540,
+      "sha256": "58ecea6b42a2455179864b3e274170d623e11df4937aa4288e8f580260709727"
+    },
+    "scripts/check_cdr_v59_tail_saved_identity_transport.py": {
+      "bytes": 23976,
+      "sha256": "00db49dbd97043ce104bab1308c5c91c2708ac3de6b500daab3bf6f8f65cc2f5"
+    },
+    "scripts/cloud_cdr_v59_tail_saved_identity.py": {
+      "bytes": 12485,
+      "sha256": "372fdd3c121e0901a5b3a3306d84fd54f9e6a39e16d7a6eac894c7e4e29d15cf"
+    },
+    "scripts/cloud_chunked_results.py": {
+      "bytes": 4885,
+      "sha256": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816"
+    },
+    "scripts/cloud_verified_parts.py": {
+      "bytes": 5017,
+      "sha256": "64b6655bfd6f8c348af62e9179268eafb84c9150cbba895989bcdfb2c6b5b795"
+    },
+    "scripts/ensure_cloud_tested_source_release.py": {
+      "bytes": 6349,
+      "sha256": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e"
+    },
+    "scripts/migrate_outputs_to_cloud.py": {
+      "bytes": 12452,
+      "sha256": "52fa3ef7adc92b6e6071b304ccb1b07908f31ccde7dacf39a7258e07356fa512"
+    },
+    "scripts/run_cloud_tx_layout_repair.py": {
+      "bytes": 75555,
+      "sha256": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f"
+    },
+    "scripts/wait_cloud_tested_source_release.py": {
+      "bytes": 3571,
+      "sha256": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73"
+    }
+  },
+  "independent_AST_initialization_edges": [
+    [
+      "check_cdr_v59_tail_saved_identity_runtime",
+      "cdr_v59_tail_saved_identity"
+    ],
+    [
+      "check_cdr_v59_tail_saved_identity_runtime",
+      "cdr_v59_tail_access_runtime"
+    ],
+    [
+      "cdr_v59_tail_saved_identity",
+      "ensure_cloud_tested_source_release"
+    ],
+    [
+      "cdr_v59_tail_saved_identity",
+      "cloud_chunked_results"
+    ],
+    [
+      "cdr_v59_tail_saved_identity",
+      "cloud_verified_parts"
+    ],
+    [
+      "cdr_v59_tail_saved_identity",
+      "run_cloud_tx_layout_repair"
+    ],
+    [
+      "cloud_verified_parts",
+      "cloud_chunked_results"
+    ],
+    [
+      "check_cdr_v59_tail_saved_identity_transport",
+      "cdr_v59_tail_saved_identity"
+    ],
+    [
+      "check_cdr_v59_tail_saved_identity_transport",
+      "cloud_cdr_v59_tail_saved_identity"
+    ],
+    [
+      "check_cdr_v59_tail_saved_identity_transport",
+      "cloud_chunked_results"
+    ],
+    [
+      "cloud_cdr_v59_tail_saved_identity",
+      "cdr_v59_tail_saved_identity"
+    ],
+    [
+      "cloud_cdr_v59_tail_saved_identity",
+      "cdr_v59_tail_access_runtime"
+    ],
+    [
+      "cloud_cdr_v59_tail_saved_identity",
+      "migrate_outputs_to_cloud"
+    ],
+    [
+      "cloud_cdr_v59_tail_saved_identity",
+      "ensure_cloud_tested_source_release"
+    ],
+    [
+      "cloud_cdr_v59_tail_saved_identity",
+      "cloud_chunked_results"
+    ],
+    [
+      "cloud_cdr_v59_tail_saved_identity",
+      "wait_cloud_tested_source_release"
+    ],
+    [
+      "wait_cloud_tested_source_release",
+      "ensure_cloud_tested_source_release"
+    ],
+    [
+      "check_cdr_v59_tail_saved_identity",
+      "cdr_v59_tail_saved_identity"
+    ],
+    [
+      "check_cdr_v59_tail_saved_identity",
+      "cdr_v59_tail_saved_identity_native"
+    ],
+    [
+      "check_cdr_v59_tail_saved_identity",
+      "cdr_v59_tail_access_topology"
+    ],
+    [
+      "check_cdr_v59_tail_saved_identity",
+      "cloud_cdr_v59_tail_saved_identity"
+    ],
+    [
+      "cdr_v59_tail_saved_identity_native",
+      "cdr_v59_tail_saved_identity"
+    ],
+    [
+      "cdr_v59_tail_saved_identity_native",
+      "cdr_v59_tail_access_topology"
+    ]
+  ],
+  "complete_failure_and_repair_proof_pins_rehashed": 16,
+  "executable_edits": false,
+  "missingfile_negative_controls_remain": true,
+  "all_readback_native_geometry_RC_electrical_authorizations_remain_false": true,
+  "local_imports_tests_archives": false,
+  "reviewed_at": "2026-10-26T19:01:28.964071+00:00"
+}

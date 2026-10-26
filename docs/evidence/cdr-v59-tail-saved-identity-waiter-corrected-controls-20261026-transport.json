@@ -1,0 +1,123 @@
+{
+  "status": "PASS_TRANSPORT_CONTROLS",
+  "archive": {
+    "status": "PASS_ARCHIVE_ADMISSION_FILE_CONTROLS",
+    "positives": [
+      "actual_multipart_full_hidden_empty_extract"
+    ],
+    "refusals": [
+      "missing_member",
+      "unexpected_unselected_member",
+      "changed_unselected_member",
+      "changed_transport",
+      "post_restore_extra",
+      "post_restore_symlink"
+    ]
+  },
+  "publication": {
+    "status": "PASS_ACTUAL_RESERVED_PUBLICATION_WRAPPER_CONTROLS",
+    "positives": [
+      "failed",
+      "interrupted",
+      "oversized",
+      "malformed_failed"
+    ],
+    "refusals": [
+      "root_link",
+      "report_link",
+      "descendant_link",
+      "attempt",
+      "exact_transport_error_preserved",
+      "source",
+      "run",
+      "result_attempt",
+      "original_failure",
+      "acceptance",
+      "engine",
+      "status",
+      "outputs",
+      "malformed_success"
+    ],
+    "real_pack_and_complete_extract": true,
+    "qualified_publisher_used": true,
+    "remote_transport_only_mocked": true
+  },
+  "lifecycle": {
+    "status": "PASS_ACTUAL_OUTER_MAIN_LIFECYCLE_CONTROLS",
+    "positive_count": 1,
+    "refusal_count": 4,
+    "cases": [
+      {
+        "case": "complete",
+        "actual_main_status": "PASS_SAVED_IDENTITY_READBACK_ORIGINAL_PHYSICAL_FAILURE_RETAINED",
+        "source_inventory_files": 6,
+        "complete_terminal_inventory_files": 21,
+        "complete_published_roundtrip": true,
+        "assets": 14,
+        "all_partial_direct_bytes_exact": true,
+        "owned_cleanup_attempted": true,
+        "heartbeat_stopped": true,
+        "signal_handlers_restored": true,
+        "runtime_transport_explicitly_mocked": true,
+        "actual_main_run_execute_finally_and_publisher": true
+      },
+      {
+        "case": "native_failure",
+        "actual_main_status": "FAIL_SAVED_IDENTITY_READBACK",
+        "source_inventory_files": 6,
+        "complete_terminal_inventory_files": 16,
+        "complete_published_roundtrip": true,
+        "assets": 9,
+        "all_partial_direct_bytes_exact": true,
+        "owned_cleanup_attempted": true,
+        "heartbeat_stopped": true,
+        "signal_handlers_restored": true,
+        "runtime_transport_explicitly_mocked": true,
+        "actual_main_run_execute_finally_and_publisher": true
+      },
+      {
+        "case": "partial_json",
+        "actual_main_status": "FAIL_SAVED_IDENTITY_READBACK",
+        "source_inventory_files": 6,
+        "complete_terminal_inventory_files": 21,
+        "complete_published_roundtrip": true,
+        "assets": 14,
+        "all_partial_direct_bytes_exact": true,
+        "owned_cleanup_attempted": true,
+        "heartbeat_stopped": true,
+        "signal_handlers_restored": true,
+        "runtime_transport_explicitly_mocked": true,
+        "actual_main_run_execute_finally_and_publisher": true
+      },
+      {
+        "case": "integrity_failure",
+        "actual_main_status": "FAIL_SAVED_INPUT_INTEGRITY",
+        "source_inventory_files": 6,
+        "complete_terminal_inventory_files": 21,
+        "complete_published_roundtrip": true,
+        "assets": 14,
+        "all_partial_direct_bytes_exact": true,
+        "owned_cleanup_attempted": true,
+        "heartbeat_stopped": true,
+        "signal_handlers_restored": true,
+        "runtime_transport_explicitly_mocked": true,
+        "actual_main_run_execute_finally_and_publisher": true
+      },
+      {
+        "case": "cleanup_failure",
+        "actual_main_status": "FAIL_TERMINAL_CLEANUP",
+        "source_inventory_files": 6,
+        "complete_terminal_inventory_files": 21,
+        "complete_published_roundtrip": true,
+        "assets": 14,
+        "all_partial_direct_bytes_exact": true,
+        "owned_cleanup_attempted": true,
+        "heartbeat_stopped": true,
+        "signal_handlers_restored": true,
+        "runtime_transport_explicitly_mocked": true,
+        "actual_main_run_execute_finally_and_publisher": true
+      }
+    ],
+    "native_or_CAD_executed": false
+  }
+}
