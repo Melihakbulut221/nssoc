@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Fail-closed saved-diagnosis resource admission; never omit selected observations."""
-import hashlib,json,os
+import hashlib,json,os,traceback
 from pathlib import Path
 import numpy as np
 import tx_phase_reset334_saved_diagnosis as old
@@ -40,9 +40,9 @@ def write(path,value):
     path=Path(path);assert path.parent.is_dir()and not path.is_symlink()
     tmp=path.with_name(path.name+'.writing');partial=path.with_name(path.name+'.incomplete')
     assert not tmp.exists()and not partial.exists()
-    existing=sum(n for p,n in output_files(path.parent).items()if p!=path.name)
+    existing=sum(output_files(path.parent).values())
     result=path.name=='result.json';limit=MAX_RESULT_BYTES if result else MAX_JSON_BYTES
-    aggregate=MAX_OUTPUT_BYTES if result else MAX_OUTPUT_BYTES-FAILURE_RESERVE_BYTES
+    aggregate=MAX_OUTPUT_BYTES-FAILURE_RESERVE_BYTES
     size=0;digest=hashlib.sha256()
     try:
         with tmp.open('xb')as stream:
@@ -59,6 +59,54 @@ def write(path,value):
         if tmp.exists():tmp.replace(partial)
         raise
     return dict(bytes=size,sha256=digest.hexdigest(),streamed_complete_JSON=True)
+
+def file_evidence(root):
+    records={}
+    for name,size in sorted(output_files(root).items()):
+        p=root/name;h=hashlib.sha256()
+        with p.open('rb')as stream:
+            for block in iter(lambda:stream.read(1024**2),b''):h.update(block)
+        records[name]=dict(bytes=size,sha256=h.hexdigest())
+    return records
+
+
+def final_result(path,result):
+    """Persist a complete terminal failure envelope if normal result encoding/admission fails."""
+    path=Path(path);assert path.name=='result.json'
+    try:
+        proof=write(path,result)
+        return dict(proof,terminal_failure_envelope=False)
+    except BaseException as error:
+        failure=dict(type=type(error).__name__,error=repr(error),traceback=traceback.format_exc())
+    # Normal writes reserve space even for result.json and count old/new coexistence.
+    # Keep both the last complete result and every incomplete fragment byte-exact.
+    previous=path.with_name('result.previous.json')
+    assert not previous.exists()
+    if path.exists():path.replace(previous)
+    files=file_evidence(path.parent)
+    original={k:result.get(k)for k in ('error','traceback')}
+    assert all(v is None or type(v)is str for v in original.values())
+    envelope=dict(status='FAIL_INCOMPLETE_CURRENT_AVSS18_SAVED_CAPTURE_DIAGNOSIS',
+      run_id=result['run_id'],source_head=result['source_head'],accepted=False,
+      complete_diagnosis=False,partial_result_accepted=False,new_simulation=False,
+      native_process_resumed=False,full_PHY_accepted=False,
+      original_electrical_rejection_preserved=True,original_status=result.get('status'),
+      original_failure=original,result_write_failure=failure,
+      outputs={name:row['sha256']for name,row in files.items()},preserved_evidence=files,
+      previous_complete_and_partial_bytes_preserved=True,observations_not_truncated_for_acceptance=True)
+    assert type(envelope['run_id'])is int and type(envelope['source_head'])is str
+    data=(json.dumps(envelope,indent=2,allow_nan=False)+'\n').encode()
+    # A bounded emergency record uses only the pre-reserved space. Authored limit/
+    # encoder failures are small; filesystem I/O failures are never reported as success.
+    bound('terminal_failure_envelope_bytes',len(data),1024**2)
+    bound('terminal_total_bytes',sum(row['bytes']for row in files.values())+len(data),MAX_OUTPUT_BYTES)
+    tmp=path.with_name('result.failure-writing')
+    assert not tmp.exists()and not path.exists()
+    with tmp.open('xb')as stream:stream.write(data)
+    tmp.replace(path)
+    return dict(bytes=len(data),sha256=hashlib.sha256(data).hexdigest(),
+      streamed_complete_JSON=False,terminal_failure_envelope=True)
+
 
 def plan(t,values,c,replay,prior_names,targets,interval_fn):
     """Enumerate exactly the unchanged frame selectors before allocating full state frames."""

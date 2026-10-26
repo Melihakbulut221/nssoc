@@ -142,6 +142,66 @@ def main_entry_fixture():
         assert result['outputs']=={}and result['new_simulation']is False and result['original_electrical_rejection_preserved']
         return dict(actual_main_entry=True,actual_finally_failure_preserved=True,archive_or_native_executed=False)
 
+def main_result_failure_fixtures():
+    """Exercise the actual controller save/except/finally path, never restoration or analysis."""
+    class StopBeforeRestore(Exception):pass
+    positives=[]
+    for mode in ('body_result_limit','body_aggregate_limit','body_encoder_error','finally_result_limit'):
+        with tempfile.TemporaryDirectory()as td:
+            root=Path(td);out=root/'result';temp=root/'temp';temp.mkdir()
+            original_stop='explicit restore stop '+('z'*2048 if mode=='finally_result_limit'else '')
+            def precreated(*args):
+                if mode=='body_result_limit':return dict(fixture='x'*2048)
+                if mode=='body_encoder_error':return dict(fixture=object())
+                if mode=='body_aggregate_limit':
+                    remain=4*1024**2-1024**2-sum(c.resources.output_files(out).values())-128
+                    assert remain>0
+                    (out/'preserved-fixture.json').write_bytes(b'"'+b'e'*(remain-2)+b'"')
+                return dict(fixture=True)
+            def stop(*args):raise StopBeforeRestore(original_stop)
+            with (
+                mock.patch.object(c,'methods',return_value=dict(readback_authorized=True)),
+                mock.patch.object(c,'completed_controls',return_value=dict(fixture=True)),
+                mock.patch.object(c,'OUT',out),mock.patch.object(c.transport,'precreated',side_effect=precreated),
+                mock.patch.object(c.shutil,'disk_usage',return_value=types.SimpleNamespace(free=32*1024**3)),
+                mock.patch.object(c,'snapshot',return_value=(b'',{},{})),mock.patch.object(c,'restore_capture',side_effect=stop),
+                mock.patch.object(c.resources,'MAX_RESULT_BYTES',1024),
+                mock.patch.object(c.resources,'MAX_OUTPUT_BYTES',4*1024**2),
+                mock.patch.object(c.resources,'FAILURE_RESERVE_BYTES',1024**2),
+                mock.patch.dict(os.environ,dict(RUNNER_TEMP=str(temp),GITHUB_RUN_ID='1',GITHUB_SHA='a'*40)),
+                mock.patch('sys.argv',['controller','--readback']),
+            ):
+                try:
+                    with contextlib.redirect_stdout(io.StringIO()):c.main()
+                except RuntimeError as error:
+                    assert str(error)=='Complete terminal failure envelope preserved; diagnosis incomplete'
+                else:raise AssertionError('Actual controller accepted failed result publication')
+                assert sum(c.resources.output_files(out).values())<=c.resources.MAX_OUTPUT_BYTES
+            raw=(out/'result.json').read_bytes();result=json.loads(raw)
+            assert result['status']=='FAIL_INCOMPLETE_CURRENT_AVSS18_SAVED_CAPTURE_DIAGNOSIS'
+            assert not result['complete_diagnosis']and not result['accepted']and not result['partial_result_accepted']
+            assert result['original_electrical_rejection_preserved']and not result['new_simulation']
+            assert result['previous_complete_and_partial_bytes_preserved']
+            files=result['preserved_evidence']
+            assert set(files)==set(result['outputs'])=={p.name for p in out.iterdir()if p.name!='result.json'}
+            assert 'result.previous.json'in files and 'result.json.incomplete'in files
+            assert json.loads((out/'result.previous.json').read_bytes())['status']=='RUNNING'
+            for name,proof in files.items():
+                assert (out/name).stat().st_size==proof['bytes']and c.sha(out/name)==proof['sha256']==result['outputs'][name]
+            error=result['original_failure']['error']
+            if mode=='body_encoder_error':assert 'TypeError'in error and 'JSON serializable'in error
+            elif mode=='finally_result_limit':
+                assert original_stop in error and 'StopBeforeRestore'in error
+                assert result['result_write_failure']['type']=='ResourceLimit'
+            else:assert 'ResourceLimit'in error
+            assert result['original_failure']['traceback']and result['result_write_failure']['traceback']
+            positives.append(dict(case=mode,actual_main_and_finally=True,complete_terminal_failure=True,
+              evidence_files=len(files),envelope_bytes=len(raw),archive_or_native_executed=False))
+    assert len(positives)==4
+    return dict(positives=positives,normal_outputs_or_observations_not_truncated=True,
+      previous_and_incomplete_evidence_hashes_verified=True)
+
+
 def archive_fixtures():
     rejected=[]
     with tempfile.TemporaryDirectory()as td:
@@ -257,12 +317,12 @@ def controls():
     from check_tx_phase_reset334_avss18_saved_resources import controls as resource_controls
     resource_result=resource_controls()
     reconstruction=reconstruct_fixture()
-    entry=main_entry_fixture()
+    entry=main_entry_fixture();failure_entries=main_result_failure_fixtures()
     return dict(status='PASS_CURRENT_AVSS18_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY',import_closure=closure,permission_controls=permissions,
       original_current_result_faults=badresult,metadata_faults=badmeta,observer_derivation=derivation,
       topology_fixture=dict(topology,real_restored_input_scope=False,synthetic_fixture_only=True),
       hand_numbered_headroom=h,interval_boundary_fixtures=intervals,actual_code_mutations=mutations,
-      inherited_original_math=inherited,resource_controls=resource_result,reconstruction_completion=reconstruction,actual_main_entry=entry,
+      inherited_original_math=inherited,resource_controls=resource_result,reconstruction_completion=reconstruction,actual_main_entry=entry,actual_main_result_failures=failure_entries,
       archive_controls=archive_fixtures(),current_OP_admission=dict(run=op['run_id'],summary_sha256=c.current.admission.SOURCE['summary']),
       required_actual_restored_controls=dict(source=18,path=32,contract=24,topology=14),
       waveform_or_archive_input_read=False,native_simulator_invoked=False,new_geometry=False,

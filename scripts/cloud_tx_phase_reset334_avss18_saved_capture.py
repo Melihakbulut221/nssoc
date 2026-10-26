@@ -162,8 +162,9 @@ def main():
       original_electrical_rejection_preserved=True,accepted=False,new_simulation=False,native_process_resumed=False,
       full_PHY_accepted=False,completed_source_controls=control_proof)
     def save():write(OUT/'result.json',result)
-    save();work=Path(os.environ['RUNNER_TEMP'])/'tx-current-avss18-saved-capture'
+    work=Path(os.environ['RUNNER_TEMP'])/'tx-current-avss18-saved-capture'
     try:
+        save()
         result['publication_preflight']=transport.precreated(GROUP);save()
         assert shutil.disk_usage(work.parent).free>=16*1024**3
         work.mkdir(exist_ok=False)
@@ -202,8 +203,9 @@ def main():
         raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p.name!='result.json'}
-        save();raw=(OUT/'result.json').read_bytes()
+        final=resources.final_result(OUT/'result.json',result);raw=(OUT/'result.json').read_bytes()
         print('RESULT_SHA256',digest(raw));print('RESULT_BYTES',len(raw))
         if len(raw)<=8*1024**2:print(raw.decode())
         else:print('FULL_RESULT_PRESERVED_FOR_DIRECT_PUBLICATION')
+        if final['terminal_failure_envelope']:raise RuntimeError('Complete terminal failure envelope preserved; diagnosis incomplete')
 if __name__=='__main__':main()

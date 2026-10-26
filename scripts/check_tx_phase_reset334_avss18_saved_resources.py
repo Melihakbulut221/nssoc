@@ -81,7 +81,30 @@ def controls():
         r.write(root/'result.json',failure)
         assert json.loads((root/'result.json').read_bytes())==failure and target.read_bytes()==before
         positives.append('complete_failure_record_after_limits_without_truncating_prior_evidence')
-    assert len(positives)==7 and len(refused)==16,(len(positives),len(refused))
+
+    with tempfile.TemporaryDirectory()as td:
+        root=Path(td);target=root/'witness.json'
+        prior=(json.dumps(dict(stable='p'*256))+'\n').encode();target.write_bytes(prior)
+        with patch.object(r,'MAX_OUTPUT_BYTES',512),patch.object(r,'FAILURE_RESERVE_BYTES',128):
+            reject('prior_destination_and_partial_coexist_at_aggregate_limit',
+              lambda:r.write(target,dict(replacement='x'*256)))
+            partial=root/'witness.json.incomplete'
+            assert target.read_bytes()==prior and partial.is_file()and partial.stat().st_size>0
+            assert sum(r.output_files(root).values())<=384
+            positives.append('near_limit_old_destination_counted_until_replace_and_partial_retained')
+
+    with tempfile.TemporaryDirectory()as td:
+        root=Path(td);result=dict(status='PASS_DIAGNOSIS',run_id=1,source_head='a'*40,invalid=object())
+        proof=r.final_result(root/'result.json',result)
+        saved=json.loads((root/'result.json').read_bytes())
+        assert proof['terminal_failure_envelope']and saved['original_status']=='PASS_DIAGNOSIS'
+        assert saved['status']=='FAIL_INCOMPLETE_CURRENT_AVSS18_SAVED_CAPTURE_DIAGNOSIS'
+        assert not saved['accepted']and not saved['complete_diagnosis']
+        assert saved['result_write_failure']['type']=='TypeError'
+        assert set(saved['preserved_evidence'])=={'result.json.incomplete'}
+        assert saved['outputs']['result.json.incomplete']==hashlib.sha256((root/'result.json.incomplete').read_bytes()).hexdigest()
+        positives.append('failed_final_result_encoder_cannot_publish_nominal_PASS_status')
+    assert len(positives)==9 and len(refused)==17,(len(positives),len(refused))
     return dict(status='PASS_SAVED_DIAGNOSIS_RESOURCE_FIXTURES_ONLY',positives=positives,refused=refused,
       synthetic_arrays_only=True,native_waveform_read=False,no_observations_dropped_to_obtain_acceptance=True,
       full_JSON_streamed=True,complete_failure_record_required=True)

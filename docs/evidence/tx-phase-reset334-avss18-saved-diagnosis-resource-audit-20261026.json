@@ -60,7 +60,14 @@
     "original_review_preserved_before_resource_admission": true,
     "no_subsampling_or_truncation": true,
     "complete_JSON_direct_assets": true,
-    "no_duplicate_full_index_inside_result": true
+    "no_duplicate_full_index_inside_result": true,
+    "old_destination_counted_until_atomic_replace": true,
+    "normal_result_also_reserves_failure_bytes": true,
+    "terminal_failure_envelope_max_bytes": 1048576,
+    "terminal_failure_envelope": "Explicit FAIL/INCOMPLETE; original and writer errors plus full previous/partial size and SHA inventory",
+    "prior_complete_result_preserved_as": "result.previous.json",
+    "failed_fragments_preserved": true,
+    "successful_observations_unchanged": true
   },
   "memory": {
     "admission": "/proc/meminfo MemAvailable after exact original replay",
@@ -83,8 +90,9 @@
     "active_workflow_must_be_added_byte_exact_and_pinned_before_any_controls_activation": true
   },
   "resource_fixtures": {
-    "positive": 7,
-    "refusals": 16,
+    "positive": 9,
+    "refusals": 17,
+    "actual_controller_finally_cases": 4,
     "executed": false
   },
   "original_analysis_program_unchanged": true,
@@ -93,5 +101,12 @@
   "all_authorization_flags_false": true,
   "code_or_tests_executed": false,
   "local_files_created": false,
-  "archive_access": false
+  "archive_access": false,
+  "followup_source_findings": {
+    "source": "b7748fb18924bd18db3322983ee3ccfba0e245d3",
+    "writer_old_destination_omission_corrected": true,
+    "initial_result_save_now_inside_try_finally": true,
+    "finally_writer_limit_or_encoder_failure_cannot_leave_RUNNING_summary": true,
+    "counts_selectors_original_numerical_functions_unchanged": true
+  }
 }
