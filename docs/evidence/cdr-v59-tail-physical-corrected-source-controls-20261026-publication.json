@@ -1,0 +1,159 @@
+{
+  "status": "PASS_ACTUAL_TAIL_PUBLISHER_AND_PACK_CONTROLS",
+  "positives": [
+    {
+      "status": "FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL",
+      "complete_original_files": 10,
+      "parts": 1,
+      "assets": 10,
+      "complete_tar_roundtrip": true,
+      "existing_identical_asset_reused": true,
+      "original_result_sha256": "3092e01b4a7140258e7ac4454bf8556e5d1d6351c48b04e1d4d42c8231001e0e"
+    },
+    {
+      "status": "RUNNING_ADDITIVE_TAIL_WIRE_PHYSICAL",
+      "complete_original_files": 10,
+      "parts": 1,
+      "assets": 10,
+      "complete_tar_roundtrip": true,
+      "existing_identical_asset_reused": true,
+      "original_result_sha256": "c660493cbe4355f5600fae5b606646e0ce43d0ff376b32eb0a114160416864ba"
+    },
+    {
+      "status": "OVERSIZED_SYNTHETIC",
+      "complete_original_files": 10,
+      "parts": 1,
+      "assets": 10,
+      "complete_tar_roundtrip": true,
+      "existing_identical_asset_reused": true,
+      "original_result_sha256": "8b0325e5c82777525459891f0726ff14accf70050c256382e17ae041ae9427f8"
+    }
+  ],
+  "refusals": [
+    {
+      "case": "draft",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "prerelease",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "target",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "tag",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "annotated_tag",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "ref",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "absent",
+      "rejected": true,
+      "error": "AssertionError('Exact-source prerelease absent; never create')"
+    },
+    {
+      "case": "uploaded_size",
+      "rejected": true,
+      "error": "RuntimeError('Existing asset differs; never overwrite: cdr-v59-tail-access-physical-123456-1.summary.json')"
+    },
+    {
+      "case": "uploaded_digest",
+      "rejected": true,
+      "error": "RuntimeError('Existing asset differs; never overwrite: cdr-v59-tail-access-physical-123456-1.summary.json')"
+    },
+    {
+      "case": "exception",
+      "rejected": true,
+      "error": "ValueError('EXACT_INJECTED_PUBLISHER_TRANSPORT_FAILURE')"
+    },
+    {
+      "case": "root_link",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "root_file",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "result_link",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "descendant_link",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "missing_result",
+      "rejected": true,
+      "error": "FileNotFoundError(2, 'No such file or directory')"
+    }
+  ],
+  "positive_count": 3,
+  "refusal_count": 15,
+  "real_qualified_publisher": true,
+  "remote_transport_explicitly_mocked": true,
+  "network_accessed": false,
+  "native_executed": false,
+  "inherited_publication_controls": {
+    "status": "PASS_READ_ONLY_RELEASE_LOOKUP_AND_STREAM_COPY_8_FAULTS",
+    "rejected": [
+      "different_requested_tag",
+      "absent_never_create",
+      "wrong_target_commitish",
+      "wrong_prerelease",
+      "wrong_draft",
+      "wrong_tag_source",
+      "copy_destination_exists",
+      "copy_symlink"
+    ],
+    "existing_release_positive": true,
+    "stream_copy_positive": true,
+    "empty_file_preserved": true,
+    "release_creation_possible": false,
+    "chunk_controls": {
+      "positive_roundtrip": true,
+      "negative_controls": 6,
+      "all_native_payload_bytes_preserved": true
+    },
+    "file_list_controls": {
+      "status": "PASS_ACTUAL_PUBLICATION_FILE_LIST_14_FAULTS",
+      "rejected": [
+        "zero_parts",
+        "unexpected_part",
+        "original_path_subscript_regression",
+        "missing_part",
+        "changed_part",
+        "empty_part",
+        "symlink_part",
+        "duplicate_part",
+        "traversal_part",
+        "absolute_part",
+        "backslash_part",
+        "empty_summary",
+        "manifest_disagrees_with_memory",
+        "summary_outside_transport"
+      ],
+      "actual_shared_function_executed": true,
+      "actual_packed_files": true,
+      "original_bug_reproduced": true
+    }
+  }
+}
