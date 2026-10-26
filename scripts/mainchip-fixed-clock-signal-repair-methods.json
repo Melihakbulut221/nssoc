@@ -1,6 +1,11 @@
 {
   "budget_and_binding_evidence": "docs/evidence/mainchip-fixed-clock-signal-repair-budget-and-bindings-20261026.json",
   "cloud_restore_authorized": false,
+  "failed_source_controls": {
+    "complete_proof": "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.json",
+    "run": 40332121729,
+    "source": "20c98c4a11e3d5001ff301978dbbc47798f823e7"
+  },
   "full_phy_accepted": false,
   "limits": {
     "max_group_rss_kib": 10485760,
@@ -93,7 +98,12 @@
     "docs/evidence/mainchip-clock-marker-classification-source-peer-review-20261025.json": "c1e1fdd0a9bf4f2c541dda792d96a08facae1ca2be02897e342853c7f871c5e2",
     "docs/evidence/mainchip-clock-marker-classification-source-root-review-20261025.json": "d42b901680bf3b84c228838147069c340978b5ec062db71bb5880de00b7b6c5b",
     "docs/evidence/mainchip-fixed-clock-signal-repair-budget-and-bindings-20261026.json": "c679d5ab0b0acdbb34c75831775037340ada5aede8e4413c1137bc55d02e519f",
+    "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.job.log": "a2a5a7811eb7050e898a6f3e10c211a04afb5a46067fac4ea824a7f730d6a1a9",
+    "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.json": "bccc93aa9a1b7ba0821b259fb5dbfc4493859c4496681b5511dad9d7eac2066f",
+    "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.result.json": "8e0dab1f741ed4a0ec4a10655da3cf2454faa07de48f78a84f8ee7681723ecf5",
+    "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.tested-methods.json": "676355eef71a00d8fa4bfd9144c38c9b8e67c87990e55c15c53a835b71b499f5",
     "docs/evidence/mainchip-fixed-clock-signal-repair-independent-review-20261026.json": "797c9e404ba7f032d0e986a4468f50cdd3a8dd467d36e1617bd107f45f635ee1",
+    "docs/evidence/mainchip-fixed-clock-signal-repair-phase-fixture-correction-20261026.json": "5deba16f111d2037eb08ecbb145a85175f2412bde5dd4b60f1acd1f07e2a894e",
     "docs/evidence/mainchip-fixed-clock-signal-repair-primary-source-20261026.json": "d1c024b1edb27076d4e92ada1d62eded4e5f3c6934b8c84239d39b39ed3709fe",
     "docs/evidence/mainchip-fixed-clock-signal-repair-root-source-review-20261026.json": "4567cb873135705e18b1b13dec61057f83eba541a4f554786b04e10865665594",
     "docs/evidence/mainchip-fixed-clock-signal-repair-route-provenance-20261026.json": "ae98123002493940cb7b171479524448adf3771d4754ed0339e0c25e54dd4f1b",
@@ -200,7 +210,7 @@
     "scripts/candidate_hold_conflicts.py": "1ab6d7159278e68370f20a2bd6c6943e4df4efbe315a8764871559f63cedf3f5",
     "scripts/check_final_native_antenna_counts.py": "70abda1232ec88f48b8e8687d48b2f4e83239d73456f2c98714b123b0f1fce13",
     "scripts/check_mainchip_clock_marker_classification.py": "14539f8845746f99bb6cc79db61560c935b00fa3afe82daf8b75a11745889b8f",
-    "scripts/check_mainchip_fixed_clock_signal_repair.py": "7c3ec0e2a9bb0d9fba548fa923ecfbb211bab4ed51159c9f046eba2535e1363b",
+    "scripts/check_mainchip_fixed_clock_signal_repair.py": "add28401cd0652f0d37d1dc64179f46db2c595bb807d6e7a9468f296d1e4bc6d",
     "scripts/check_mainchip_original_clock_restoration.py": "15a2f88f3ca920eea78665d2f3a2e7fd90ae94bd347a452485b22540db5a29e4",
     "scripts/check_mainchip_original_clock_restoration_driver.py": "ef455966e3c0922c468d730da9dcad874a96bea3fd24a6d7eb2aeef1d84e7e3b",
     "scripts/check_mainchip_postroute_config.py": "6e120dfe941173796056318397eecdfadf5b0658963012ec5a987ef53329afcb",
@@ -313,10 +323,11 @@
     "new_refusals": 50,
     "scope": "Authored only; synthetic DB/Tcl fixtures, real wrapper/file/publication fixture functions. No CAD or native archive."
   },
-  "source_controls_authorized": true,
-  "status": "SOURCE_REVIEWED_HOSTED_CONTROLS_AUTHORIZED_NATIVE_DISABLED",
+  "source_controls_authorized": false,
+  "status": "SOURCE_FIXTURE_CORRECTION_PENDING_REVIEW_AND_HOSTED_CONTROLS",
   "timing_accepted": false,
   "unfinished": [
+    "Independent review of exact phase fixture correction",
     "One hosted source-controls proof",
     "Exact metadata native activation review",
     "Native API/guide/routing/roundtrip compatibility and resource proof",

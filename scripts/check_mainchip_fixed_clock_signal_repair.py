@@ -39,6 +39,36 @@ def sequence(text):
     assert rows==expected
     return rows
 
+def mutate_phase_call(text,function,index,old,new):
+    assert (function,index)in (('phase',0),('command',1))
+    tree=ast.parse(text)
+    run=next(n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='run')
+    matches=[n for n in ast.walk(run)if isinstance(n,ast.Call)and
+        isinstance(n.func,ast.Name)and n.func.id==function and len(n.args)>index and
+        isinstance(n.args[index],ast.Constant)and n.args[index].value==old]
+    assert len(matches)==1,('Actual run call must be unique',function,old)
+    call=matches[0];target=call.args[index];assert type(target.value)is str and old!=new
+    whitelist=next(n for n in tree.body if isinstance(n,ast.Assign)and
+        any(isinstance(t,ast.Name)and t.id=='SHORT_PHASES'for t in n.targets))
+    original_whitelist=ast.get_source_segment(text,whitelist)
+    lines=text.encode().splitlines(keepends=True)
+    start=sum(map(len,lines[:target.lineno-1]))+target.col_offset
+    end=sum(map(len,lines[:target.end_lineno-1]))+target.end_col_offset
+    raw=text.encode();bad=(raw[:start]+repr(new).encode()+raw[end:]).decode()
+    assert bad!=text
+    # Exact expected AST: mutate this one call argument, then compare the entire module.
+    target.value=new
+    after=ast.parse(bad)
+    assert ast.dump(after,include_attributes=False)==ast.dump(tree,include_attributes=False)
+    after_run=next(n for n in after.body if isinstance(n,ast.FunctionDef)and n.name=='run')
+    changed=[n for n in ast.walk(after_run)if isinstance(n,ast.Call)and
+        (n.lineno,n.col_offset)==(call.lineno,call.col_offset)]
+    assert len(changed)==1 and changed[0].func.id==function and changed[0].args[index].value==new
+    after_whitelist=next(n for n in after.body if isinstance(n,ast.Assign)and
+        any(isinstance(t,ast.Name)and t.id=='SHORT_PHASES'for t in n.targets))
+    assert ast.get_source_segment(bad,after_whitelist)==original_whitelist
+    return bad
+
 def guide_fixture(empty=False,congested=False,valid=True):
     class Layer:
         def __init__(self,name,level):self.name,self.level=name,level
@@ -148,10 +178,12 @@ def controls():
         bad=copy.deepcopy(result);mutate(bad);reject(label,lambda bad=bad:s.continuation_gate(bad))
     source=c.regular(ROOT/'scripts/cloud_mainchip_fixed_clock_signal_repair.py').read_text()
     order=sequence(source);positives.append('actual_cloud_phase_order')
-    for label,a,b in [('skip_guide_audit',"phase('guide-audit')","phase('prepare')"),
-                       ('skip_route_audit',"phase('route-audit')","phase('prepare')"),
-                       ('skip_final_DRC',"'full-original-class-read-only-DRT'","'wrong-check'")]:
-        bad=source.replace(a,b,1);assert bad!=source;reject(label,lambda bad=bad:sequence(bad))
+    for label,function,index,old,new in [
+        ('skip_guide_audit','phase',0,'guide-audit','prepare'),
+        ('skip_route_audit','phase',0,'route-audit','prepare'),
+        ('skip_final_DRC','command',1,'full-original-class-read-only-DRT','wrong-check')]:
+        bad=mutate_phase_call(source,function,index,old,new)
+        reject(label,lambda bad=bad:sequence(bad))
     # Exercise the actual supervised-call helper, not only a duplicated budget map.
     expected_budgets={name:1200 for name in (
         'bootstrap-exact-runtime','restore-complete-saved-inputs','actual-runtime-version',

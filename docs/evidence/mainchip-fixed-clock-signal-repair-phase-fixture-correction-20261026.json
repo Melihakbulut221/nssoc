@@ -1,0 +1,96 @@
+{
+  "actual_target_sites": [
+    {
+      "actual_source": "phase('guide-audit')",
+      "function": "phase",
+      "index": 0,
+      "line": 152,
+      "new": "prepare",
+      "old": "guide-audit",
+      "scope": "run"
+    },
+    {
+      "actual_source": "phase('route-audit')",
+      "function": "phase",
+      "index": 0,
+      "line": 156,
+      "new": "prepare",
+      "old": "route-audit",
+      "scope": "run"
+    },
+    {
+      "actual_source": "command([str(app),'openroad','-exit',str(OUT/'work/final-drc.tcl')],'full-original-class-read-only-DRT')",
+      "function": "command",
+      "index": 1,
+      "line": 159,
+      "new": "wrong-check",
+      "old": "full-original-class-read-only-DRT",
+      "scope": "run"
+    }
+  ],
+  "added_checker_function": "mutate_phase_call",
+  "authorization": {
+    "cloud_restore": false,
+    "native": false,
+    "routing": false,
+    "source_controls": false
+  },
+  "budget_selector_fixtures_unchanged": true,
+  "cause": "Budget whitelist added an earlier duplicate label; textual first-match mutation edited SHORT_PHASES instead of the actual DRC command.",
+  "changed_source": {
+    "bytes": 19644,
+    "new_sha256": "add28401cd0652f0d37d1dc64179f46db2c595bb807d6e7a9468f296d1e4bc6d",
+    "old_sha256": "7c3ec0e2a9bb0d9fba548fa923ecfbb211bab4ed51159c9f046eba2535e1363b",
+    "path": "scripts/check_mainchip_fixed_clock_signal_repair.py"
+  },
+  "correction": "All three phase mutations now address one unique call argument in the actual run() AST. Full module AST must differ only at that intended Constant; actual call location/value and exact unchanged SHORT_PHASES source are explicitly asserted.",
+  "failed_run": 40332121729,
+  "limits_unchanged": {
+    "max_group_rss_kib": 10485760,
+    "min_available_kib": 2097152,
+    "phase_seconds": 1200,
+    "routing_seconds": 14400,
+    "threads": 2
+  },
+  "no_local_tests_imports_or_native": true,
+  "original_failure_preserved": {
+    "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.job.log": {
+      "bytes": 25159,
+      "sha256": "a2a5a7811eb7050e898a6f3e10c211a04afb5a46067fac4ea824a7f730d6a1a9"
+    },
+    "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.json": {
+      "bytes": 23468,
+      "sha256": "bccc93aa9a1b7ba0821b259fb5dbfc4493859c4496681b5511dad9d7eac2066f"
+    },
+    "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.result.json": {
+      "bytes": 951,
+      "sha256": "8e0dab1f741ed4a0ec4a10655da3cf2454faa07de48f78a84f8ee7681723ecf5"
+    },
+    "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.tested-methods.json": {
+      "bytes": 36741,
+      "sha256": "676355eef71a00d8fa4bfd9144c38c9b8e67c87990e55c15c53a835b71b499f5"
+    }
+  },
+  "parent": "90c717e78e34b36471a3efc5e2fe6b81004de538",
+  "schema": "mainchip-fixed-clock-signal-repair-phase-fixture-correction-v1",
+  "source_controls": {
+    "positives": 14,
+    "refusals": 50,
+    "unexecuted": true
+  },
+  "status": "SOURCE_ONLY_NOT_EXECUTED",
+  "tested_source": "20c98c4a11e3d5001ff301978dbbc47798f823e7",
+  "unchanged_checker_functions": [
+    "fixture",
+    "sequence",
+    "guide_fixture",
+    "main"
+  ],
+  "unchanged_production": {
+    ".github/workflow-templates/mainchip-fixed-clock-signal-repair-cloud.yml": "19d4684f0ceeb5384665f1dd32e51130c840822cd8bb77669cb8004c307839fc",
+    ".github/workflows/mainchip-fixed-clock-signal-repair-cloud.yml": "19d4684f0ceeb5384665f1dd32e51130c840822cd8bb77669cb8004c307839fc",
+    "scripts/cloud_mainchip_fixed_clock_signal_repair.py": "85e6f7799965f3f702ef1c37b4296ebd63bf910ea70c19ea4f4162fa9e35df98",
+    "scripts/mainchip_fixed_clock_signal_repair.py": "fefe067abf459cd9827dcd89113eec3a63b948bf7a46146fdfe1f902e69f7c2d",
+    "scripts/mainchip_fixed_clock_signal_repair_native.py": "c917d797d1ed3bbaabb7adacf2ab59eebdf91cbdc244ba4ca721e3445ed7622b"
+  }
+}
