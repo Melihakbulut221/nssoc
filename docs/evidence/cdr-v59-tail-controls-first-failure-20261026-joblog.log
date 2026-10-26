@@ -1,0 +1,346 @@
+﻿2026-10-26T15:58:44.0086458Z Current runner version: '2.338.0'
+2026-10-26T15:58:44.0109835Z ##[group]Runner Image Provisioner
+2026-10-26T15:58:44.0110618Z Hosted Compute Agent
+2026-10-26T15:58:44.0111228Z Version: 20261021.618
+2026-10-26T15:58:44.0111795Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-26T15:58:44.0112435Z Build Date: 2026-10-21T00:45:21Z
+2026-10-26T15:58:44.0113093Z Worker ID: {eb487b95-8039-423c-8847-7f7a32337b1b}
+2026-10-26T15:58:44.0113760Z Region: centralus
+2026-10-26T15:58:44.0114293Z Cloud: Azure
+2026-10-26T15:58:44.0114780Z ##[endgroup]
+2026-10-26T15:58:44.0116136Z ##[group]Operating System
+2026-10-26T15:58:44.0116788Z Ubuntu
+2026-10-26T15:58:44.0117505Z 22.04.5
+2026-10-26T15:58:44.0118028Z LTS
+2026-10-26T15:58:44.0118518Z ##[endgroup]
+2026-10-26T15:58:44.0119058Z ##[group]Runner Image
+2026-10-26T15:58:44.0119628Z Image: ubuntu-22.04
+2026-10-26T15:58:44.0120200Z Version: 20261012.322.1
+2026-10-26T15:58:44.0121360Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261012.322/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-26T15:58:44.0122743Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261012.322
+2026-10-26T15:58:44.0124404Z ##[endgroup]
+2026-10-26T15:58:44.0126162Z ##[group]GITHUB_TOKEN Permissions
+2026-10-26T15:58:44.0129958Z Actions: read
+2026-10-26T15:58:44.0130852Z Contents: read
+2026-10-26T15:58:44.0131714Z Metadata: read
+2026-10-26T15:58:44.0132565Z ##[endgroup]
+2026-10-26T15:58:44.0135060Z Secret source: Actions
+2026-10-26T15:58:44.0136620Z Cache mode: write
+2026-10-26T15:58:44.0138242Z Prepare workflow directory
+2026-10-26T15:58:44.0591358Z Prepare all required actions
+2026-10-26T15:58:44.0641033Z Getting action download info
+2026-10-26T15:58:44.4227580Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-26T15:58:44.5244290Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-26T15:58:44.6251196Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-26T15:58:44.8004819Z Complete job name: source-controls
+2026-10-26T15:58:44.8908076Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-26T15:58:44.8909004Z with:
+2026-10-26T15:58:44.8909400Z   persist-credentials: false
+2026-10-26T15:58:44.8909859Z   repository: Melihakbulut221/nssoc
+2026-10-26T15:58:44.8913522Z   token: ***
+2026-10-26T15:58:44.8913906Z   ssh-strict: true
+2026-10-26T15:58:44.8914286Z   ssh-user: git
+2026-10-26T15:58:44.8914658Z   clean: true
+2026-10-26T15:58:44.8915047Z   sparse-checkout-cone-mode: true
+2026-10-26T15:58:44.8915512Z   fetch-depth: 1
+2026-10-26T15:58:44.8915901Z   fetch-tags: false
+2026-10-26T15:58:44.8916294Z   show-progress: true
+2026-10-26T15:58:44.8916692Z   lfs: false
+2026-10-26T15:58:44.8917043Z   submodules: false
+2026-10-26T15:58:44.8917578Z   set-safe-directory: true
+2026-10-26T15:58:44.8918059Z   allow-unsafe-pr-checkout: false
+2026-10-26T15:58:44.8918730Z env:
+2026-10-26T15:58:44.8919099Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-26T15:58:44.8919523Z ##[endgroup]
+2026-10-26T15:58:44.9933104Z Syncing repository: Melihakbulut221/nssoc
+2026-10-26T15:58:44.9935069Z ##[group]Getting Git version info
+2026-10-26T15:58:44.9935830Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-26T15:58:44.9936966Z [command]/usr/bin/git version
+2026-10-26T15:58:45.0014148Z git version 2.55.0
+2026-10-26T15:58:45.0033225Z ##[endgroup]
+2026-10-26T15:58:45.0046714Z Temporarily overriding HOME='/home/runner/work/_temp/043e31cf-9d3d-4c3f-b313-366f28ef1192' before making global git config changes
+2026-10-26T15:58:45.0049350Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T15:58:45.0051312Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-26T15:58:45.0088802Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-26T15:58:45.0121228Z ##[group]Initializing the repository
+2026-10-26T15:58:45.0125218Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-26T15:58:45.0198508Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-26T15:58:45.0199576Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-26T15:58:45.0200802Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-26T15:58:45.0201604Z hint: call:
+2026-10-26T15:58:45.0202076Z hint:
+2026-10-26T15:58:45.0202631Z hint: 	git config --global init.defaultBranch <name>
+2026-10-26T15:58:45.0203264Z hint:
+2026-10-26T15:58:45.0203878Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-26T15:58:45.0204813Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-26T15:58:45.0205556Z hint:
+2026-10-26T15:58:45.0206028Z hint: 	git branch -m <name>
+2026-10-26T15:58:45.0206548Z hint:
+2026-10-26T15:58:45.0207510Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-26T15:58:45.0208691Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-26T15:58:45.0211881Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-26T15:58:45.0277796Z ##[endgroup]
+2026-10-26T15:58:45.0278490Z ##[group]Disabling automatic garbage collection
+2026-10-26T15:58:45.0288539Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-26T15:58:45.0312306Z ##[endgroup]
+2026-10-26T15:58:45.0313499Z ##[group]Setting up auth
+2026-10-26T15:58:45.0320305Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T15:58:45.0349423Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T15:58:45.0726921Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T15:58:45.0783147Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T15:58:45.1023875Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T15:58:45.1062733Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T15:58:45.1240020Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-26T15:58:45.1272597Z ##[endgroup]
+2026-10-26T15:58:45.1273337Z ##[group]Fetching the repository
+2026-10-26T15:58:45.1281796Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +1825c237caedae514a0a1e90f9b31c4be5d768cb:refs/remotes/origin/codex/cdr-v59-tail-access-wire-proposal
+2026-10-26T15:58:57.4969881Z From https://github.com/Melihakbulut221/nssoc
+2026-10-26T15:58:57.4970674Z  * [new ref]           1825c237caedae514a0a1e90f9b31c4be5d768cb -> origin/codex/cdr-v59-tail-access-wire-proposal
+2026-10-26T15:58:57.4980114Z ##[endgroup]
+2026-10-26T15:58:57.4980664Z ##[group]Determining the checkout info
+2026-10-26T15:58:57.4984169Z ##[endgroup]
+2026-10-26T15:58:57.4989759Z [command]/usr/bin/git sparse-checkout disable
+2026-10-26T15:58:57.5035243Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-26T15:58:57.5060427Z ##[group]Checking out the ref
+2026-10-26T15:58:57.5064851Z [command]/usr/bin/git checkout --progress --force -B codex/cdr-v59-tail-access-wire-proposal refs/remotes/origin/codex/cdr-v59-tail-access-wire-proposal
+2026-10-26T15:58:58.5770185Z Updating files:  11% (3322/29830)
+2026-10-26T15:58:58.6674966Z Updating files:  12% (3580/29830)
+2026-10-26T15:58:58.7943553Z Updating files:  13% (3878/29830)
+2026-10-26T15:58:58.8439523Z Updating files:  14% (4177/29830)
+2026-10-26T15:58:58.9747353Z Updating files:  15% (4475/29830)
+2026-10-26T15:58:59.4680073Z Updating files:  16% (4773/29830)
+2026-10-26T15:58:59.5335383Z Updating files:  17% (5072/29830)
+2026-10-26T15:58:59.6348614Z Updating files:  17% (5175/29830)
+2026-10-26T15:58:59.6828942Z Updating files:  18% (5370/29830)
+2026-10-26T15:58:59.6989353Z Updating files:  19% (5668/29830)
+2026-10-26T15:58:59.7143236Z Updating files:  20% (5966/29830)
+2026-10-26T15:58:59.8160487Z Updating files:  21% (6265/29830)
+2026-10-26T15:58:59.8643053Z Updating files:  22% (6563/29830)
+2026-10-26T15:58:59.8830879Z Updating files:  23% (6861/29830)
+2026-10-26T15:58:59.9060445Z Updating files:  24% (7160/29830)
+2026-10-26T15:58:59.9193440Z Updating files:  25% (7458/29830)
+2026-10-26T15:58:59.9289394Z Updating files:  26% (7756/29830)
+2026-10-26T15:58:59.9386253Z Updating files:  27% (8055/29830)
+2026-10-26T15:58:59.9502608Z Updating files:  28% (8353/29830)
+2026-10-26T15:58:59.9638200Z Updating files:  29% (8651/29830)
+2026-10-26T15:58:59.9714244Z Updating files:  30% (8949/29830)
+2026-10-26T15:58:59.9832273Z Updating files:  31% (9248/29830)
+2026-10-26T15:58:59.9927789Z Updating files:  32% (9546/29830)
+2026-10-26T15:59:00.0057013Z Updating files:  33% (9844/29830)
+2026-10-26T15:59:00.0169995Z Updating files:  34% (10143/29830)
+2026-10-26T15:59:00.0511377Z Updating files:  35% (10441/29830)
+2026-10-26T15:59:00.0716884Z Updating files:  36% (10739/29830)
+2026-10-26T15:59:00.1005641Z Updating files:  37% (11038/29830)
+2026-10-26T15:59:00.1127743Z Updating files:  38% (11336/29830)
+2026-10-26T15:59:00.1305545Z Updating files:  39% (11634/29830)
+2026-10-26T15:59:00.1435303Z Updating files:  40% (11932/29830)
+2026-10-26T15:59:00.1504068Z Updating files:  41% (12231/29830)
+2026-10-26T15:59:00.1612463Z Updating files:  42% (12529/29830)
+2026-10-26T15:59:00.1706226Z Updating files:  43% (12827/29830)
+2026-10-26T15:59:00.1802477Z Updating files:  44% (13126/29830)
+2026-10-26T15:59:00.1911917Z Updating files:  45% (13424/29830)
+2026-10-26T15:59:00.2031385Z Updating files:  46% (13722/29830)
+2026-10-26T15:59:00.2188664Z Updating files:  47% (14021/29830)
+2026-10-26T15:59:00.2297481Z Updating files:  48% (14319/29830)
+2026-10-26T15:59:00.2385883Z Updating files:  49% (14617/29830)
+2026-10-26T15:59:00.2477374Z Updating files:  50% (14915/29830)
+2026-10-26T15:59:00.2587555Z Updating files:  51% (15214/29830)
+2026-10-26T15:59:00.2704102Z Updating files:  52% (15512/29830)
+2026-10-26T15:59:00.2798926Z Updating files:  53% (15810/29830)
+2026-10-26T15:59:00.3027437Z Updating files:  54% (16109/29830)
+2026-10-26T15:59:00.3111070Z Updating files:  55% (16407/29830)
+2026-10-26T15:59:00.3212674Z Updating files:  56% (16705/29830)
+2026-10-26T15:59:00.3291082Z Updating files:  57% (17004/29830)
+2026-10-26T15:59:00.3395040Z Updating files:  58% (17302/29830)
+2026-10-26T15:59:00.3490263Z Updating files:  59% (17600/29830)
+2026-10-26T15:59:00.3632145Z Updating files:  60% (17898/29830)
+2026-10-26T15:59:00.3697439Z Updating files:  61% (18197/29830)
+2026-10-26T15:59:00.3759333Z Updating files:  62% (18495/29830)
+2026-10-26T15:59:00.3825172Z Updating files:  63% (18793/29830)
+2026-10-26T15:59:00.3914308Z Updating files:  64% (19092/29830)
+2026-10-26T15:59:00.4159065Z Updating files:  65% (19390/29830)
+2026-10-26T15:59:00.4270644Z Updating files:  66% (19688/29830)
+2026-10-26T15:59:00.4506054Z Updating files:  67% (19987/29830)
+2026-10-26T15:59:00.4636928Z Updating files:  68% (20285/29830)
+2026-10-26T15:59:00.4726182Z Updating files:  69% (20583/29830)
+2026-10-26T15:59:00.4816769Z Updating files:  70% (20881/29830)
+2026-10-26T15:59:00.4907883Z Updating files:  71% (21180/29830)
+2026-10-26T15:59:00.4987778Z Updating files:  72% (21478/29830)
+2026-10-26T15:59:00.5072730Z Updating files:  73% (21776/29830)
+2026-10-26T15:59:00.5149268Z Updating files:  74% (22075/29830)
+2026-10-26T15:59:00.5278135Z Updating files:  75% (22373/29830)
+2026-10-26T15:59:00.5321830Z Updating files:  76% (22671/29830)
+2026-10-26T15:59:00.5817878Z Updating files:  76% (22784/29830)
+2026-10-26T15:59:00.5904346Z Updating files:  77% (22970/29830)
+2026-10-26T15:59:00.6467862Z Updating files:  78% (23268/29830)
+2026-10-26T15:59:00.6648327Z Updating files:  79% (23566/29830)
+2026-10-26T15:59:00.6882781Z Updating files:  80% (23864/29830)
+2026-10-26T15:59:00.7015354Z Updating files:  81% (24163/29830)
+2026-10-26T15:59:00.7132325Z Updating files:  82% (24461/29830)
+2026-10-26T15:59:00.7312492Z Updating files:  83% (24759/29830)
+2026-10-26T15:59:00.7450563Z Updating files:  84% (25058/29830)
+2026-10-26T15:59:00.7691836Z Updating files:  85% (25356/29830)
+2026-10-26T15:59:00.7824822Z Updating files:  86% (25654/29830)
+2026-10-26T15:59:00.7961606Z Updating files:  87% (25953/29830)
+2026-10-26T15:59:00.8035452Z Updating files:  88% (26251/29830)
+2026-10-26T15:59:00.8138962Z Updating files:  89% (26549/29830)
+2026-10-26T15:59:00.8252570Z Updating files:  90% (26847/29830)
+2026-10-26T15:59:00.8332479Z Updating files:  91% (27146/29830)
+2026-10-26T15:59:00.8450110Z Updating files:  92% (27444/29830)
+2026-10-26T15:59:00.8603476Z Updating files:  93% (27742/29830)
+2026-10-26T15:59:00.8732330Z Updating files:  94% (28041/29830)
+2026-10-26T15:59:00.8891848Z Updating files:  95% (28339/29830)
+2026-10-26T15:59:00.9061098Z Updating files:  96% (28637/29830)
+2026-10-26T15:59:00.9181726Z Updating files:  97% (28936/29830)
+2026-10-26T15:59:00.9306678Z Updating files:  98% (29234/29830)
+2026-10-26T15:59:00.9567557Z Updating files:  99% (29532/29830)
+2026-10-26T15:59:00.9568445Z Updating files: 100% (29830/29830)
+2026-10-26T15:59:00.9569006Z Updating files: 100% (29830/29830), done.
+2026-10-26T15:59:00.9935947Z Switched to a new branch 'codex/cdr-v59-tail-access-wire-proposal'
+2026-10-26T15:59:00.9938019Z branch 'codex/cdr-v59-tail-access-wire-proposal' set up to track 'origin/codex/cdr-v59-tail-access-wire-proposal'.
+2026-10-26T15:59:01.0083465Z ##[endgroup]
+2026-10-26T15:59:01.0130434Z [command]/usr/bin/git log -1 --format=%H
+2026-10-26T15:59:01.0153716Z 1825c237caedae514a0a1e90f9b31c4be5d768cb
+2026-10-26T15:59:01.0162091Z ##[group]Removing auth
+2026-10-26T15:59:01.0165589Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T15:59:01.0194186Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T15:59:01.0416989Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T15:59:01.0437070Z http.https://github.com/.extraheader
+2026-10-26T15:59:01.0443766Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-26T15:59:01.0472165Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T15:59:01.0695655Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T15:59:01.0726184Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T15:59:01.0944756Z ##[endgroup]
+2026-10-26T15:59:01.1165285Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-26T15:59:01.1165693Z with:
+2026-10-26T15:59:01.1165926Z   python-version: 3.12
+2026-10-26T15:59:01.1166180Z   check-latest: false
+2026-10-26T15:59:01.1168831Z   token: ***
+2026-10-26T15:59:01.1169058Z   update-environment: true
+2026-10-26T15:59:01.1169306Z   allow-prereleases: false
+2026-10-26T15:59:01.1169544Z   freethreaded: false
+2026-10-26T15:59:01.1169747Z env:
+2026-10-26T15:59:01.1169947Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-26T15:59:01.1170177Z ##[endgroup]
+2026-10-26T15:59:01.2471716Z ##[group]Installed versions
+2026-10-26T15:59:01.2556180Z (node:2097) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-26T15:59:01.2557544Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-26T15:59:01.2558015Z Successfully set up CPython (3.12.15)
+2026-10-26T15:59:01.2558578Z ##[endgroup]
+2026-10-26T15:59:01.2709921Z ##[group]Run python scripts/check_cdr_v59_tail_access_imports.py --output hw/soc/out/cdr-tail-controls/imports.json
+2026-10-26T15:59:01.2711459Z [36;1mpython scripts/check_cdr_v59_tail_access_imports.py --output hw/soc/out/cdr-tail-controls/imports.json[0m
+2026-10-26T15:59:01.3319447Z shell: /usr/bin/bash -e {0}
+2026-10-26T15:59:01.3319747Z env:
+2026-10-26T15:59:01.3319987Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-26T15:59:01.3320316Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.3320748Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T15:59:01.3321165Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.3321532Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.3321949Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.3322322Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T15:59:01.3322681Z ##[endgroup]
+2026-10-26T15:59:01.8113259Z Traceback (most recent call last):
+2026-10-26T15:59:01.8118789Z   File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_access_imports.py", line 130, in <module>
+2026-10-26T15:59:01.8119352Z     if __name__=="__main__":main()
+2026-10-26T15:59:01.8128005Z                             ^^^^^^
+2026-10-26T15:59:01.8128731Z   File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_access_imports.py", line 124, in main
+2026-10-26T15:59:01.8129305Z     try:result=controls()
+2026-10-26T15:59:01.8129568Z                ^^^^^^^^^^
+2026-10-26T15:59:01.8130105Z   File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_access_imports.py", line 94, in controls
+2026-10-26T15:59:01.8130826Z     positives.append({"case":"actual_full_driver_import","proof":isolated(root)})
+2026-10-26T15:59:01.8131368Z                                                                  ^^^^^^^^^^^^^^
+2026-10-26T15:59:01.8131988Z   File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_access_imports.py", line 67, in isolated
+2026-10-26T15:59:01.8132662Z     assert proc.returncode==0 and proc.stdout=="TAIL_DRIVER_IMPORT_ONLY\n" and proc.stderr=="",vars(proc)
+2026-10-26T15:59:01.8133166Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-26T15:59:01.8140656Z AssertionError: {'args': ['/opt/hostedtoolcache/Python/3.12.15/x64/bin/python', '-I', '-B', '-c', "import sys;sys.path.insert(0,sys.argv[1]);import cloud_cdr_v59_tail_access_physical;print('TAIL_DRIVER_IMPORT_ONLY')", '/tmp/cdr-tail-import-x_9p0tm1/scripts'], 'returncode': 1, 'stdout': '', 'stderr': 'Traceback (most recent call last):\n  File "<string>", line 1, in <module>\n  File "/tmp/cdr-tail-import-x_9p0tm1/scripts/cloud_cdr_v59_tail_access_physical.py", line 17, in <module>\n    import cdr_v59_binding_rc_source as source\n  File "/tmp/cdr-tail-import-x_9p0tm1/scripts/cdr_v59_binding_rc_source.py", line 8, in <module>\n    import cloud_cdr_v59_font_recovery as font\n  File "/tmp/cdr-tail-import-x_9p0tm1/scripts/cloud_cdr_v59_font_recovery.py", line 6, in <module>\n    import cloud_cdr_v59_serialized_shape_diagnostic as diagnostic\n  File "/tmp/cdr-tail-import-x_9p0tm1/scripts/cloud_cdr_v59_serialized_shape_diagnostic.py", line 6, in <module>\n    import cloud_cdr_v59_static_source_recovery as previous\n  File "/tmp/cdr-tail-import-x_9p0tm1/scripts/cloud_cdr_v59_static_source_recovery.py", line 6, in <module>\n    import cloud_cdr_v59_annotation_diagnostic as saved\n  File "/tmp/cdr-tail-import-x_9p0tm1/scripts/cloud_cdr_v59_annotation_diagnostic.py", line 6, in <module>\n    import compare_cloud_routed_endpoints as reports\n  File "/tmp/cdr-tail-import-x_9p0tm1/scripts/compare_cloud_routed_endpoints.py", line 7, in <module>\n    from refined_hold_targets import validate_child as validate_refined_hold,CHILD_FILES as REFINED_HOLD_FILES,TARGETS as REFINED_HOLD_TARGETS\n  File "/tmp/cdr-tail-import-x_9p0tm1/scripts/refined_hold_targets.py", line 31, in <module>\n    raw=(ROOT/\'docs/evidence/cloud-refined-load-hold-targets-20261016.json\').read_bytes()\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1019, in read_bytes\n    with self.open(mode=\'rb\') as f:\n         ^^^^^^^^^^^^^^^^^^^^\n  File "/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/pathlib.py", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: \'/tmp/cdr-tail-import-x_9p0tm1/docs/evidence/cloud-refined-load-hold-targets-20261016.json\'\n'}
+2026-10-26T15:59:01.8207612Z ##[error]Process completed with exit code 1.
+2026-10-26T15:59:01.8280111Z ##[group]Run python - <<'PY'
+2026-10-26T15:59:01.8280444Z [36;1mpython - <<'PY'[0m
+2026-10-26T15:59:01.8280702Z [36;1mimport ast,base64,hashlib,json[0m
+2026-10-26T15:59:01.8280981Z [36;1mfrom pathlib import Path[0m
+2026-10-26T15:59:01.8281296Z [36;1msource=Path('scripts/cloud_cdr_v59_binding_rc.py')[0m
+2026-10-26T15:59:01.8281683Z [36;1massert source.is_file() and not source.is_symlink()[0m
+2026-10-26T15:59:01.8282015Z [36;1mraw=source.read_bytes()[0m
+2026-10-26T15:59:01.8282517Z [36;1massert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'[0m
+2026-10-26T15:59:01.8283200Z [36;1mnodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit'][0m
+2026-10-26T15:59:01.8283715Z [36;1massert len(nodes)==1[0m
+2026-10-26T15:59:01.8284017Z [36;1mscope=dict(base64=base64,hashlib=hashlib,json=json)[0m
+2026-10-26T15:59:01.8284527Z [36;1mexec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)[0m
+2026-10-26T15:59:01.8284980Z [36;1mfolder=Path('hw/soc/out/cdr-tail-controls')[0m
+2026-10-26T15:59:01.8285291Z [36;1massert not folder.is_symlink()[0m
+2026-10-26T15:59:01.8285594Z [36;1massert not folder.exists() or folder.is_dir()[0m
+2026-10-26T15:59:01.8286006Z [36;1mnames=('imports','source','topology','physical','runtime','publication')[0m
+2026-10-26T15:59:01.8286405Z [36;1massert len(names)==len(set(names))==6[0m
+2026-10-26T15:59:01.8286834Z [36;1massert {p.name for p in folder.glob('*.json')} <= {name+'.json' for name in names}[0m
+2026-10-26T15:59:01.8287485Z [36;1memitted=[];missing=[][0m
+2026-10-26T15:59:01.8287733Z [36;1mfor name in names:[0m
+2026-10-26T15:59:01.8287986Z [36;1m    path=folder/(name+'.json')[0m
+2026-10-26T15:59:01.8288292Z [36;1m    assert not path.is_symlink(),str(path)[0m
+2026-10-26T15:59:01.8288590Z [36;1m    if not path.exists():[0m
+2026-10-26T15:59:01.8288869Z [36;1m        missing.append(path.name)[0m
+2026-10-26T15:59:01.8289142Z [36;1m        continue[0m
+2026-10-26T15:59:01.8289402Z [36;1m    assert path.is_file(),str(path)[0m
+2026-10-26T15:59:01.8289761Z [36;1m    scope['emit'](path,'CDR_TAIL_CONTROL_'+name.upper())[0m
+2026-10-26T15:59:01.8290372Z [36;1m    emitted.append(dict(name=path.name,bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest()))[0m
+2026-10-26T15:59:01.8291214Z [36;1mprint('CDR_TAIL_CONTROL_FILE_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,missing_files_created=False),sort_keys=True),flush=True)[0m
+2026-10-26T15:59:01.8291797Z [36;1mPY[0m
+2026-10-26T15:59:01.8331740Z shell: /usr/bin/bash -e {0}
+2026-10-26T15:59:01.8332012Z env:
+2026-10-26T15:59:01.8332232Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-26T15:59:01.8332547Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.8332989Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T15:59:01.8333400Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.8333784Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.8334273Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.8334649Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T15:59:01.8334963Z ##[endgroup]
+2026-10-26T15:59:01.8721130Z CDR_TAIL_CONTROL_IMPORTS_BEGIN {"bytes": 2575, "sha256": "320a17250aa593ad01c260b46cbfecb721a70cdbbe262286fd1786a78376023f", "chunks": 1}
+2026-10-26T15:59:01.8852515Z CDR_TAIL_CONTROL_IMPORTS_CHUNK 0 ewogICJzdGF0dXMiOiAiRkFJTF9JTVBPUlRfQ09OVFJPTFMiLAogICJuYXRpdmVfZXhlY3V0ZWQiOiBmYWxzZSwKICAiZXJyb3IiOiAiQXNzZXJ0aW9uRXJyb3IoeydhcmdzJzogWycvb3B0L2hvc3RlZHRvb2xjYWNoZS9QeXRob24vMy4xMi4xNS94NjQvYmluL3B5dGhvbicsICctSScsICctQicsICctYycsIFwiaW1wb3J0IHN5cztzeXMucGF0aC5pbnNlcnQoMCxzeXMuYXJndlsxXSk7aW1wb3J0IGNsb3VkX2Nkcl92NTlfdGFpbF9hY2Nlc3NfcGh5c2ljYWw7cHJpbnQoJ1RBSUxfRFJJVkVSX0lNUE9SVF9PTkxZJylcIiwgJy90bXAvY2RyLXRhaWwtaW1wb3J0LXhfOXAwdG0xL3NjcmlwdHMnXSwgJ3JldHVybmNvZGUnOiAxLCAnc3Rkb3V0JzogJycsICdzdGRlcnInOiAnVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOlxcbiAgRmlsZSBcIjxzdHJpbmc+XCIsIGxpbmUgMSwgaW4gPG1vZHVsZT5cXG4gIEZpbGUgXCIvdG1wL2Nkci10YWlsLWltcG9ydC14XzlwMHRtMS9zY3JpcHRzL2Nsb3VkX2Nkcl92NTlfdGFpbF9hY2Nlc3NfcGh5c2ljYWwucHlcIiwgbGluZSAxNywgaW4gPG1vZHVsZT5cXG4gICAgaW1wb3J0IGNkcl92NTlfYmluZGluZ19yY19zb3VyY2UgYXMgc291cmNlXFxuICBGaWxlIFwiL3RtcC9jZHItdGFpbC1pbXBvcnQteF85cDB0bTEvc2NyaXB0cy9jZHJfdjU5X2JpbmRpbmdfcmNfc291cmNlLnB5XCIsIGxpbmUgOCwgaW4gPG1vZHVsZT5cXG4gICAgaW1wb3J0IGNsb3VkX2Nkcl92NTlfZm9udF9yZWNvdmVyeSBhcyBmb250XFxuICBGaWxlIFwiL3RtcC9jZHItdGFpbC1pbXBvcnQteF85cDB0bTEvc2NyaXB0cy9jbG91ZF9jZHJfdjU5X2ZvbnRfcmVjb3ZlcnkucHlcIiwgbGluZSA2LCBpbiA8bW9kdWxlPlxcbiAgICBpbXBvcnQgY2xvdWRfY2RyX3Y1OV9zZXJpYWxpemVkX3NoYXBlX2RpYWdub3N0aWMgYXMgZGlhZ25vc3RpY1xcbiAgRmlsZSBcIi90bXAvY2RyLXRhaWwtaW1wb3J0LXhfOXAwdG0xL3NjcmlwdHMvY2xvdWRfY2RyX3Y1OV9zZXJpYWxpemVkX3NoYXBlX2RpYWdub3N0aWMucHlcIiwgbGluZSA2LCBpbiA8bW9kdWxlPlxcbiAgICBpbXBvcnQgY2xvdWRfY2RyX3Y1OV9zdGF0aWNfc291cmNlX3JlY292ZXJ5IGFzIHByZXZpb3VzXFxuICBGaWxlIFwiL3RtcC9jZHItdGFpbC1pbXBvcnQteF85cDB0bTEvc2NyaXB0cy9jbG91ZF9jZHJfdjU5X3N0YXRpY19zb3VyY2VfcmVjb3ZlcnkucHlcIiwgbGluZSA2LCBpbiA8bW9kdWxlPlxcbiAgICBpbXBvcnQgY2xvdWRfY2RyX3Y1OV9hbm5vdGF0aW9uX2RpYWdub3N0aWMgYXMgc2F2ZWRcXG4gIEZpbGUgXCIvdG1wL2Nkci10YWlsLWltcG9ydC14XzlwMHRtMS9zY3JpcHRzL2Nsb3VkX2Nkcl92NTlfYW5ub3RhdGlvbl9kaWFnbm9zdGljLnB5XCIsIGxpbmUgNiwgaW4gPG1vZHVsZT5cXG4gICAgaW1wb3J0IGNvbXBhcmVfY2xvdWRfcm91dGVkX2VuZHBvaW50cyBhcyByZXBvcnRzXFxuICBGaWxlIFwiL3RtcC9jZHItdGFpbC1pbXBvcnQteF85cDB0bTEvc2NyaXB0cy9jb21wYXJlX2Nsb3VkX3JvdXRlZF9lbmRwb2ludHMucHlcIiwgbGluZSA3LCBpbiA8bW9kdWxlPlxcbiAgICBmcm9tIHJlZmluZWRfaG9sZF90YXJnZXRzIGltcG9ydCB2YWxpZGF0ZV9jaGlsZCBhcyB2YWxpZGF0ZV9yZWZpbmVkX2hvbGQsQ0hJTERfRklMRVMgYXMgUkVGSU5FRF9IT0xEX0ZJTEVTLFRBUkdFVFMgYXMgUkVGSU5FRF9IT0xEX1RBUkdFVFNcXG4gIEZpbGUgXCIvdG1wL2Nkci10YWlsLWltcG9ydC14XzlwMHRtMS9zY3JpcHRzL3JlZmluZWRfaG9sZF90YXJnZXRzLnB5XCIsIGxpbmUgMzEsIGluIDxtb2R1bGU+XFxuICAgIHJhdz0oUk9PVC9cXCdkb2NzL2V2aWRlbmNlL2Nsb3VkLXJlZmluZWQtbG9hZC1ob2xkLXRhcmdldHMtMjAyNjEwMTYuanNvblxcJykucmVhZF9ieXRlcygpXFxuICAgICAgICBeXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5cXG4gIEZpbGUgXCIvb3B0L2hvc3RlZHRvb2xjYWNoZS9QeXRob24vMy4xMi4xNS94NjQvbGliL3B5dGhvbjMuMTIvcGF0aGxpYi5weVwiLCBsaW5lIDEwMTksIGluIHJlYWRfYnl0ZXNcXG4gICAgd2l0aCBzZWxmLm9wZW4obW9kZT1cXCdyYlxcJykgYXMgZjpcXG4gICAgICAgICBeXl5eXl5eXl5eXl5eXl5eXl5eXlxcbiAgRmlsZSBcIi9vcHQvaG9zdGVkdG9vbGNhY2hlL1B5dGhvbi8zLjEyLjE1L3g2NC9saWIvcHl0aG9uMy4xMi9wYXRobGliLnB5XCIsIGxpbmUgMTAxMywgaW4gb3BlblxcbiAgICByZXR1cm4gaW8ub3BlbihzZWxmLCBtb2RlLCBidWZmZXJpbmcsIGVuY29kaW5nLCBlcnJvcnMsIG5ld2xpbmUpXFxuICAgICAgICAgICBeXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5cXG5GaWxlTm90Rm91bmRFcnJvcjogW0Vycm5vIDJdIE5vIHN1Y2ggZmlsZSBvciBkaXJlY3Rvcnk6IFxcJy90bXAvY2RyLXRhaWwtaW1wb3J0LXhfOXAwdG0xL2RvY3MvZXZpZGVuY2UvY2xvdWQtcmVmaW5lZC1sb2FkLWhvbGQtdGFyZ2V0cy0yMDI2MTAxNi5qc29uXFwnXFxuJ30pIgp9Cg==
+2026-10-26T15:59:01.8971370Z CDR_TAIL_CONTROL_IMPORTS_END
+2026-10-26T15:59:01.8972649Z CDR_TAIL_CONTROL_FILE_CENSUS {"emitted": [{"bytes": 2575, "name": "imports.json", "sha256": "320a17250aa593ad01c260b46cbfecb721a70cdbbe262286fd1786a78376023f"}], "missing": ["source.json", "topology.json", "physical.json", "runtime.json", "publication.json"], "missing_files_created": false}
+2026-10-26T15:59:01.9051959Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-26T15:59:01.9052366Z with:
+2026-10-26T15:59:01.9052613Z   name: cdr-tail-source-controls-40354596668-1
+2026-10-26T15:59:01.9052936Z   include-hidden-files: true
+2026-10-26T15:59:01.9053200Z   if-no-files-found: error
+2026-10-26T15:59:01.9053439Z   retention-days: 90
+2026-10-26T15:59:01.9053667Z   path: hw/soc/out/cdr-tail-controls
+2026-10-26T15:59:01.9053927Z   compression-level: 6
+2026-10-26T15:59:01.9054137Z   overwrite: false
+2026-10-26T15:59:01.9054330Z env:
+2026-10-26T15:59:01.9054526Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-26T15:59:01.9054832Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.9055243Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-26T15:59:01.9055674Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.9056046Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.9056448Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-26T15:59:01.9056815Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-26T15:59:01.9057121Z ##[endgroup]
+2026-10-26T15:59:02.0698202Z (node:2110) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-26T15:59:02.0699364Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-26T15:59:02.0754509Z With the provided path, there will be 1 file uploaded
+2026-10-26T15:59:02.0761452Z Artifact name is valid!
+2026-10-26T15:59:02.0761951Z Root directory input is valid!
+2026-10-26T15:59:02.3660705Z Beginning upload of artifact content to blob storage
+2026-10-26T15:59:02.3830642Z (node:2110) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-26T15:59:02.5474050Z Uploaded bytes 969
+2026-10-26T15:59:02.5968015Z Finished uploading artifact content to blob storage!
+2026-10-26T15:59:02.5969594Z SHA256 digest of uploaded artifact zip is 9013ed23aa3c78d9f9674936886cbe4a054a8c45f55c3caeb3e46fdfe855c291
+2026-10-26T15:59:02.5970770Z Finalizing artifact upload
+2026-10-26T15:59:03.0792422Z Artifact cdr-tail-source-controls-40354596668-1.zip successfully finalized. Artifact ID 12664438039
+2026-10-26T15:59:03.0793614Z Artifact cdr-tail-source-controls-40354596668-1 has been successfully uploaded! Final size is 969 bytes. Artifact ID is 12664438039
+2026-10-26T15:59:03.0798611Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/40354596668/artifacts/12664438039
+2026-10-26T15:59:03.1066069Z Post job cleanup.
+2026-10-26T15:59:03.1896960Z [command]/usr/bin/git version
+2026-10-26T15:59:03.1935567Z git version 2.55.0
+2026-10-26T15:59:03.2006665Z Temporarily overriding HOME='/home/runner/work/_temp/418240b2-19af-4309-bfa0-c8409e044e65' before making global git config changes
+2026-10-26T15:59:03.2008465Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-26T15:59:03.2013169Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-26T15:59:03.2050266Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-26T15:59:03.2087611Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-26T15:59:03.2352672Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-26T15:59:03.2387817Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-26T15:59:03.2661373Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-26T15:59:03.2695447Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-26T15:59:03.3164104Z Cleaning up orphan processes
+2026-10-26T15:59:03.3483547Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
