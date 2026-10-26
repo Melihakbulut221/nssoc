@@ -1,0 +1,266 @@
+{
+  "status": "PASS_TAIL_PHYSICAL_DRIVER_SOURCE_CONTROLS_ONLY",
+  "positives": [
+    {
+      "case": "actual_original_full_physical_report",
+      "historical_outer_status": "FAIL_CDR_V59_NATIVE_PHYSICAL_OR_STRICT_WIRES",
+      "historical_failure_not_overwritten": true
+    },
+    {
+      "case": "actual_four_method_derivations_reverse_exact",
+      "methods": {
+        "check_physical.py": {
+          "original": "hw/soc/flow/check_pcie_cdr_sampler_active_input_v57_parent.py",
+          "original_sha256": "46c2673bd3262998639ac47c465f14c24c90a1b494e7fd6dfe852e1af670886b",
+          "generated_sha256": "3ef6c47117a5467acc37ee4ea87af979a75e9be671cbf0a5153307974d082d66",
+          "exact_qualified_reversible_changes": [
+            {
+              "before": "nssoc_cdr_pd500_active_input_v57",
+              "after": "nssoc_cdr_pd500_resistor_v59",
+              "count": 1
+            },
+            {
+              "before": "def reference_fault(text, name):",
+              "after": "def reference_fault(text, name):\n    if name=='v59_old_length':\n        lines=text.splitlines(keepends=True);hits=[]\n        for i,line in enumerate(lines):\n            fields=line.split()\n            if fields and fields[0] in ['Rsc_DN', 'Rsc_DP', 'Rsd_DN', 'Rsd_DP']:\n                assert line.count(' l=5u ')==1\n                lines[i]=line.replace(' l=5u ',' l=7.4u ');hits.append(fields[0])\n        assert sorted(hits)==['Rsc_DN', 'Rsc_DP', 'Rsd_DN', 'Rsd_DP']\n        return ''.join(lines)\n",
+              "count": 1
+            },
+            {
+              "before": "            \"lvs_flat\",\n",
+              "after": "            \"lvs_flat\",\n            \"v59_old_length\",\n",
+              "count": 1
+            },
+            {
+              "before": "if name in (\"gain_gate_disconnected\",",
+              "after": "if name in (\"v59_old_length\", \"gain_gate_disconnected\",",
+              "count": 1
+            }
+          ]
+        },
+        "cdr_tail_geometry.py": {
+          "original": "scripts/check_cdr_sampler_active_input_v57_parent_geometry.py",
+          "original_sha256": "84b9bbf507fa1d6dfc2e85576197cbfca1ece05ec530c3e177090b88fb259542",
+          "generated_sha256": "82fbf5eb57610edcf1126e9e1d82c14be7cf59291d710a20dcb4445efd54b92e",
+          "exact_qualified_reversible_changes": [
+            {
+              "before": "nssoc_cdr_pd500_active_input_v57",
+              "after": "nssoc_cdr_pd500_resistor_v59",
+              "count": 2
+            }
+          ]
+        },
+        "cdr_tail_planes.py": {
+          "original": "scripts/cloud_cdr_sampler_active_input_v57_planes.py",
+          "original_sha256": "815cb16b22c48003ebb6f062dcd3a85dcaf5a2e22e249641991a1fba620d8c62",
+          "generated_sha256": "43220291eedb81182688915971b2bde1d74af15eea96de6bb41e899726011429",
+          "exact_qualified_reversible_changes": [
+            {
+              "before": "nssoc_cdr_pd500_active_input_v57",
+              "after": "nssoc_cdr_pd500_resistor_v59",
+              "count": 2
+            },
+            {
+              "before": "from check_cdr_sampler_active_input_v57_parent_geometry import check",
+              "after": "from cdr_tail_geometry import check",
+              "count": 1
+            }
+          ]
+        },
+        "cdr_tail_recover.py": {
+          "original": "scripts/cloud_cdr_sampler_active_input_v57_wire_inputs.py",
+          "original_sha256": "228a1be91648d5e3a7a5d8937b14738377403aefbf617280af7fa6b494d3d30f",
+          "generated_sha256": "29b92f3ae273b3f5bf6f0f9ae4b144c3257b73bf38307500c27f8853d00d90ea",
+          "exact_qualified_reversible_changes": [
+            {
+              "before": "nssoc_cdr_pd500_active_input_v57",
+              "after": "nssoc_cdr_pd500_resistor_v59",
+              "count": 1
+            }
+          ]
+        }
+      }
+    },
+    {
+      "case": "actual_graph.json_input_path_binding",
+      "paths": 3,
+      "synthetic_file_bytes": true
+    },
+    {
+      "case": "actual_locations.json_input_path_binding",
+      "paths": 4,
+      "synthetic_file_bytes": true
+    },
+    {
+      "case": "actual_anchors.json_input_path_binding",
+      "paths": 9,
+      "synthetic_file_bytes": true
+    },
+    {
+      "case": "actual_execute_restore-complete-original-capsule",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_execute_restore-frozen-pdk-runtime",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_execute_native-additive-generation",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_execute_full-physical-and13-faults",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_execute_fresh-native-planes",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_execute_source-annotation-recovery",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_execute_probe01.py",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_execute_locate01.py",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_execute_anchors01.py",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_execute_dedup01.py",
+      "fake_supervisor_only": true
+    },
+    {
+      "case": "actual_main_preserves_partial_after_qualification_failure",
+      "status": "FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL",
+      "qualification_stubbed": true,
+      "capsule_copy_real": true
+    },
+    {
+      "case": "actual_main_preserves_partial_after_integrity_failure",
+      "status": "FAIL_ORIGINAL_CAPSULE_INTEGRITY",
+      "qualification_stubbed": true,
+      "capsule_copy_real": true
+    }
+  ],
+  "refusals": [
+    {
+      "case": "status",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "missing_DRC_category",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "nonzero_DRC_marker",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "DRC_status",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "missing_v59_length_fault",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "accepted_v59_length_fault",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "deep_device_census",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "flat_device_census",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "extraction_diagnostic",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "comparison_status",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "unexpected_step",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "wire_wrong_digest",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "wire_wrong_bytes",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "wire_old_capsule_path",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "wire_missing_input",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "wire_symlink_input",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "unknown_command_before_launch",
+      "rejected": true,
+      "error": "AssertionError('Unknown physical command label')"
+    },
+    {
+      "case": "nonzero_return",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "supervision_failure",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "live_descendant",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "wrong_stdout_bytes",
+      "rejected": true,
+      "error": "AssertionError()"
+    },
+    {
+      "case": "wrong_stderr_digest",
+      "rejected": true,
+      "error": "AssertionError()"
+    }
+  ],
+  "positive_count": 17,
+  "refusal_count": 22,
+  "native_executed": false,
+  "physical_accepted": false
+}

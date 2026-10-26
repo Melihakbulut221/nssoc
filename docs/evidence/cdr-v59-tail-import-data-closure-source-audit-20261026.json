@@ -1,0 +1,986 @@
+{
+  "actual_failure": {
+    "active_method_unchanged": true,
+    "all_pins_verified": 319,
+    "branch": "codex/cdr-v59-tail-access-wire-proposal",
+    "commit": "5e31f46c6fac3e28cc22f8f2239cb9fa3642f081",
+    "evidence": {
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-artifacts.json": {
+        "bytes": 772,
+        "sha256": "34619d19a8d3f42adc6c7396663959c24e2d1d40955ba7f28b095ceed45e2c90"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-complete-pin-audit.json": {
+        "bytes": 60367,
+        "sha256": "1984b2225b7017be6bed8c1bd6eeed82cc8c4f02ea70ec5202938f9f9a9bb66d"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-control-file-census.json": {
+        "bytes": 327,
+        "sha256": "50dfae685936be4ff2795a590a526a1bb9e0deb00e6df4a60cf15d6a26841b61"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-imports.json": {
+        "bytes": 2575,
+        "sha256": "320a17250aa593ad01c260b46cbfecb721a70cdbbe262286fd1786a78376023f"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-joblog.log": {
+        "bytes": 33731,
+        "sha256": "3b56fbd9b2176f75dd7a410f2db14064715bd1c1a3925eb5747ae44256b0762a"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-jobs.json": {
+        "bytes": 4735,
+        "sha256": "5bb1c054acb8e495879bcd11b77ce8fce3580e3a7e6d117d44a1814f541053f9"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-receipt.json": {
+        "bytes": 4058,
+        "sha256": "5b306ce46a2a7aaabb9daf0d144d2a8bcf366b3f78dc2e802a7b8b1d3e0d05be"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-run.json": {
+        "bytes": 13069,
+        "sha256": "6d6e8cec4f1a60c839b65dbc7078776612fae915c7c4facf6711dc7cf721e4ff"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-tested-active-workflow.yml": {
+        "bytes": 9385,
+        "sha256": "4837874cd603b2d2ad803356e0a8d3e8af97b3c4e465c2838d0adae1853b03ee"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-tested-methods.json": {
+        "bytes": 43582,
+        "sha256": "775ab083a9704013a20279327c45a60ebd3828f84d18172ae220a1dcf4fa49cd"
+      },
+      "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-tested-template.yml": {
+        "bytes": 9385,
+        "sha256": "4837874cd603b2d2ad803356e0a8d3e8af97b3c4e465c2838d0adae1853b03ee"
+      }
+    },
+    "job_id": 121683553313,
+    "protected_bytes": 22599398,
+    "run_id": 40354596668
+  },
+  "audit_scope": {
+    "archive_downloaded": false,
+    "authored_imports_or_tests_executed": false,
+    "deferred_examples": [
+      "expanded_load_targets.base_targets/recipe",
+      "refined_load_targets.recipe",
+      "native/runtime/archive helpers"
+    ],
+    "deferred_function_and_main_guard_reads_excluded": true,
+    "definition_defaults_decorators_and_class_body_reviewed": true,
+    "every_module_initial_statement_reviewed": true,
+    "native_executed": false,
+    "only_other_initial_calls": "standard-library Path/environment operations, literal JSON decoding and builtins; no other initial repository data reads",
+    "source_inspection_only": true,
+    "three_local_select_functions_reviewed_as_pure_JSON_selection": true
+  },
+  "changed_file_hashes": {
+    ".github/workflow-templates/cdr-v59-tail-access-physical-cloud.yml": {
+      "bytes": 9432,
+      "new": "31438c5cbd1670df9b874fe83bb9607bb9e61d5562faf898d3bb456ee3bebca6",
+      "old": "4837874cd603b2d2ad803356e0a8d3e8af97b3c4e465c2838d0adae1853b03ee"
+    },
+    ".github/workflows/cdr-v59-tail-access-physical-cloud.yml": {
+      "bytes": 9432,
+      "new": "31438c5cbd1670df9b874fe83bb9607bb9e61d5562faf898d3bb456ee3bebca6",
+      "old": "4837874cd603b2d2ad803356e0a8d3e8af97b3c4e465c2838d0adae1853b03ee"
+    },
+    "scripts/check_cdr_v59_tail_access_imports.py": {
+      "bytes": 19026,
+      "new": "3e43cc66ca9f2f03a624824cc9a5175ed5a0d745383105f0fa94bc1f049fe02e",
+      "old": "a86d35952891f9dad32d80d3f52703ffce6232d67c572702f9d426879af6aa10"
+    }
+  },
+  "checker_unified_diff": "--- scripts/check_cdr_v59_tail_access_imports.py@1825c237\n+++ scripts/check_cdr_v59_tail_access_imports.py@data-closure-correction\n@@ -6,7 +6,8 @@\n import hashlib\n import json\n import os\n-from pathlib import Path\n+import re\n+from pathlib import Path, PurePosixPath\n import shutil\n import subprocess\n import sys\n@@ -17,12 +18,83 @@\n ENTRY=\"scripts/cloud_cdr_v59_tail_access_physical.py\"\n INITIAL=[\"scripts/audit_cloud_route_annotation.py\",\"scripts/audit_cloud_routed_endpoints.py\",\"scripts/audit_cloud_routed_hold_conflicts.py\",\"scripts/branch_hold_targets.py\",\"scripts/candidate_hold_conflicts.py\",\"scripts/cdr_v59_binding_rc_source.py\",\"scripts/cdr_v59_font_roundtrip_contract.py\",\"scripts/cdr_v59_serialized_shape_diagnostic.py\",\"scripts/cdr_v59_tail_access_plan.py\",\"scripts/cdr_v59_tail_access_runtime.py\",\"scripts/cdr_v59_tail_access_topology.py\",\"scripts/cloud_cdr500_input_access_v58_physical.py\",\"scripts/cloud_cdr500_resistor_v59_physical.py\",\"scripts/cloud_cdr_v59_annotation_diagnostic.py\",\"scripts/cloud_cdr_v59_binding_rc.py\",\"scripts/cloud_cdr_v59_font_recovery.py\",\"scripts/cloud_cdr_v59_serialized_shape_diagnostic.py\",\"scripts/cloud_cdr_v59_static_source_recovery.py\",\"scripts/cloud_cdr_v59_tail_access_physical.py\",\"scripts/cloud_chunked_results.py\",\"scripts/cloud_contact_release.py\",\"scripts/cloud_verified_parts.py\",\"scripts/compare_cloud_routed_endpoints.py\",\"scripts/diagnose_cdr_v59_annotation_native.py\",\"scripts/ensure_cloud_tested_source_release.py\",\"scripts/expanded_load_targets.py\",\"scripts/generate_cdr500_resistor_v59.py\",\"scripts/materialize_cdr_v59_static_annotations.py\",\"scripts/measured_hold_targets.py\",\"scripts/migrate_outputs_to_cloud.py\",\"scripts/read_opensta_phase_slacks.py\",\"scripts/refined_hold_targets.py\",\"scripts/refined_load_targets.py\",\"scripts/route_cloud_newer_postcts.py\",\"scripts/run_cloud_tx_layout_repair.py\"]\n \n+# Exactly the three repository data reads evaluated while importing INITIAL.\n+# Other recipe/native/archive reads are deferred and are not copied here.\n+INITIAL_DATA={\n+    \"docs/evidence/cloud-refined-load-hold-targets-20261016.json\": {\n+        \"module\": \"scripts/refined_hold_targets.py\",\n+        \"read_line\": 31,\n+        \"hash_line\": 32,\n+        \"bytes\": 53179,\n+        \"sha256\": \"8eabcf9f3e0ace7ec6240474f1a5a0758c31f0350d559c5ef70a64b43572342b\"\n+    },\n+    \"docs/evidence/route146-all-reachable-branch-recipe-20261016.json\": {\n+        \"module\": \"scripts/branch_hold_targets.py\",\n+        \"read_line\": 32,\n+        \"hash_line\": 32,\n+        \"bytes\": 110689,\n+        \"sha256\": \"12795513c5d9694eaae9daed4ca6b2c6209a42040c1ff8bdba9a23f249e8b31a\"\n+    },\n+    \"docs/evidence/cloud-measured-load-hold-conflicts-20261016.json\": {\n+        \"module\": \"scripts/measured_hold_targets.py\",\n+        \"read_line\": 30,\n+        \"hash_line\": 31,\n+        \"bytes\": 382341,\n+        \"sha256\": \"55046b17b57dc82eeecbd26783ac62241bde725fce3eab21f9f271dd9a76565b\"\n+    }\n+}\n+\n def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()\n \n def initial_nodes(tree):\n     yield tree\n     if isinstance(tree,(ast.FunctionDef,ast.AsyncFunctionDef,ast.Lambda)):return\n     for child in ast.iter_child_nodes(tree):yield from initial_nodes(child)\n+\n+def data_path(root,path):\n+    assert isinstance(path,str) and \"\\\\\" not in path,(\"Noncanonical initial data path\",path)\n+    relative=PurePosixPath(path)\n+    assert not relative.is_absolute() and \"..\" not in relative.parts,(\"Escaping initial data path\",path)\n+    assert relative.as_posix()==path and path.startswith(\"docs/evidence/\") and path.endswith(\".json\"),(\"Noncanonical initial data path\",path)\n+    assert root.is_dir() and not root.is_symlink(),(\"Nonregular isolated root\",str(root))\n+    parent=root\n+    for part in relative.parts[:-1]:\n+        parent=parent/part\n+        assert parent.is_dir() and not parent.is_symlink(),(\"Missing/nonregular initial data parent\",path)\n+    file=root/path\n+    assert file.is_file() and not file.is_symlink(),(\"Missing/nonregular initial data\",path)\n+    assert file.resolve().is_relative_to(root.resolve()),(\"Escaping initial data target\",path)\n+    return file\n+\n+def data_closure(root,pins,inventory=None):\n+    inventory=INITIAL_DATA if inventory is None else inventory\n+    # Check spelling before the exact allowlist so path-escape fixtures test that guard.\n+    for path in inventory:\n+        assert isinstance(path,str) and \"\\\\\" not in path,(\"Noncanonical initial data path\",path)\n+        relative=PurePosixPath(path)\n+        assert not relative.is_absolute() and \"..\" not in relative.parts,(\"Escaping initial data path\",path)\n+        assert relative.as_posix()==path and path.startswith(\"docs/evidence/\") and path.endswith(\".json\"),(\"Noncanonical initial data path\",path)\n+    assert set(inventory)==set(INITIAL_DATA),(\"Initial data inventory changed\",sorted(inventory))\n+    result={}\n+    for path,record in inventory.items():\n+        assert record==INITIAL_DATA[path],(\"Initial data metadata changed\",path)\n+        assert pins.get(path)==record[\"sha256\"],(\"Unprotected/changed initial data pin\",path)\n+        module=root/record[\"module\"]\n+        assert module.is_file() and not module.is_symlink() and sha(module)==pins[record[\"module\"]],(\"Changed initial data reader\",record[\"module\"])\n+        tree=ast.parse(module.read_text())\n+        def same(node,source):\n+            return ast.dump(node,include_attributes=False)==ast.dump(ast.parse(source).body[0],include_attributes=False)\n+        reads=[n for n in tree.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id==\"raw\" for t in n.targets)]\n+        assert len(reads)==1 and reads[0].lineno==record[\"read_line\"] and same(reads[0],\"raw=(ROOT/\"+repr(path)+\").read_bytes()\"),(\"Initial data read binding changed\",path)\n+        hashes=[n for n in tree.body if isinstance(n,ast.Assert) and n.lineno==record[\"hash_line\"]]\n+        assert len(hashes)==1 and same(hashes[0],\"assert hashlib.sha256(raw).hexdigest()==RECIPE_SHA\"),(\"Initial data hash guard changed\",path)\n+        recipes=[n for n in tree.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id==\"RECIPE_SHA\" for t in n.targets)]\n+        assert len(recipes)==1 and ast.literal_eval(recipes[0].value)==record[\"sha256\"],(\"Initial data reader digest changed\",path)\n+        file=data_path(root,path)\n+        assert file.stat().st_size==record[\"bytes\"],(\"Changed initial data size\",path)\n+        assert sha(file)==record[\"sha256\"],(\"Changed initial data bytes\",path)\n+        result[path]=dict(record)\n+    return result\n \n def closure(root,pins):\n     scripts=root/\"scripts\"\n@@ -57,13 +129,25 @@\n                 else:\n                     assert first in sys.stdlib_module_names,(\"Unknown non-stdlib dependency\",path,name)\n     assert set(seen)==expected,(\"Initial dependency inventory changed\",sorted(expected-set(seen)))\n-    return {\"modules\":seen,\"edges\":edges,\"initial_only\":True,\"deferred_CAD_and_function_imports_excluded\":True}\n-\n-def isolated(root,missing=None):\n+    return {\"modules\":seen,\"edges\":edges,\"data\":data_closure(root,pins),\"initial_only\":True,\"deferred_CAD_and_function_imports_excluded\":True}\n+\n+def isolated(root,missing=None,data_error=None):\n     code=\"import sys;sys.path.insert(0,sys.argv[1]);import cloud_cdr_v59_tail_access_physical;print('TAIL_DRIVER_IMPORT_ONLY')\"\n     proc=subprocess.run([sys.executable,\"-I\",\"-B\",\"-c\",code,str(root/\"scripts\")],\n         cwd=root,capture_output=True,text=True,timeout=60)\n-    if missing is None:\n+    assert missing is None or data_error is None\n+    if data_error is not None:\n+        path,kind=data_error;record=INITIAL_DATA[path]\n+        assert proc.returncode==1 and proc.stdout==\"\" and proc.stderr.startswith(\"Traceback (most recent call last):\\n\"),vars(proc)\n+        frames=re.findall(r'^  File \"([^\"]+)\", line ([0-9]+), in ([^\\n]+)$',proc.stderr,re.MULTILINE)\n+        expected=(str(root/record[\"module\"]),str(record[\"read_line\"] if kind==\"missing\" else record[\"hash_line\"]),\"<module>\")\n+        if kind==\"missing\":\n+            assert expected in frames,vars(proc)\n+            assert proc.stderr.splitlines()[-1]==\"FileNotFoundError: [Errno 2] No such file or directory: \"+repr(str(root/path)),vars(proc)\n+        else:\n+            assert kind==\"tampered\" and frames[-1]==expected,vars(proc)\n+            assert proc.stderr.splitlines()[-1]==\"AssertionError\" and \"asserthashlib.sha256(raw).hexdigest()==RECIPE_SHA\" in proc.stderr.replace(\" \", \"\"),vars(proc)\n+    elif missing is None:\n         assert proc.returncode==0 and proc.stdout==\"TAIL_DRIVER_IMPORT_ONLY\\n\" and proc.stderr==\"\",vars(proc)\n     else:\n         assert proc.returncode==1 and proc.stdout==\"\"\n@@ -76,11 +160,15 @@\n     pins=methods[\"protected_sha256\"]\n     for p,h in pins.items():assert (ROOT/p).is_file() and not (ROOT/p).is_symlink() and sha(ROOT/p)==h,p\n     audit=closure(ROOT,pins)\n-    positives=[{\"case\":\"actual_repository_initial_closure\",\"modules\":len(audit[\"modules\"])}];refusals=[]\n+    positives=[{\"case\":\"actual_repository_initial_closure\",\"modules\":len(audit[\"modules\"])},\n+      {\"case\":\"exact_repository_initial_data_reads\",\"data\":audit[\"data\"]}];refusals=[]\n     def copy(root):\n         (root/\"scripts\").mkdir()\n-        for p in INITIAL:\n-            target=root/p;target.write_bytes((ROOT/p).read_bytes());assert sha(target)==pins[p]\n+        for p in [*INITIAL,*INITIAL_DATA]:\n+            original=ROOT/p;body=original.read_bytes();assert hashlib.sha256(body).hexdigest()==pins[p]\n+            target=root/p;target.parent.mkdir(parents=True,exist_ok=True);target.write_bytes(body)\n+            assert sha(target)==pins[p] and sha(original)==pins[p]\n+        assert {p.relative_to(root).as_posix() for p in root.rglob(\"*\") if p.is_file()}==set(INITIAL)|set(INITIAL_DATA)\n     def reject(name,change):\n         with tempfile.TemporaryDirectory(prefix=\"cdr-tail-import-fault-\") as folder:\n             root=Path(folder);copy(root);local=dict(pins);change(root,local)\n@@ -89,9 +177,19 @@\n             else:raise AssertionError(\"Accepted import fault \"+name)\n     with tempfile.TemporaryDirectory(prefix=\"cdr-tail-import-\") as folder:\n         root=Path(folder);copy(root)\n-        assert closure(root,pins)[\"modules\"]==audit[\"modules\"]\n+        assert closure(root,pins)==audit\n         positives.append({\"case\":\"exact_isolated_copy_closure\",\"modules\":len(INITIAL)})\n         positives.append({\"case\":\"actual_full_driver_import\",\"proof\":isolated(root)})\n+        positives.append({\"case\":\"only35_modules_and3_data_files_copied\",\"files\":sorted(p.relative_to(root).as_posix() for p in root.rglob(\"*\") if p.is_file())})\n+        assert len(positives[-1][\"files\"])==38\n+        for path in INITIAL_DATA:\n+            p=root/path;body=p.read_bytes()\n+            for kind in (\"missing\",\"tampered\"):\n+                if kind==\"missing\":p.unlink()\n+                else:p.write_bytes(body+b\" \")\n+                try:proof=isolated(root,data_error=(path,kind))\n+                finally:p.write_bytes(body)\n+                refusals.append({\"case\":\"actual_\"+kind+\"_data_\"+Path(path).name,\"proof\":proof,\"rejected\":True})\n         for missing in (\"cdr_v59_tail_access_runtime\",\"refined_hold_targets\"):\n             p=root/\"scripts\"/(missing+\".py\");body=p.read_bytes();p.unlink()\n             proof=isolated(root,missing);p.write_bytes(body)\n@@ -111,8 +209,54 @@\n         entry=root/ENTRY;entry.write_text(entry.read_text()+\"\\nimport explicit_extra_module\\n\")\n         pins[ENTRY]=sha(entry);pins[\"scripts/explicit_extra_module.py\"]=sha(p)\n     reject(\"undeclared_repository_module\",undeclared)\n-    assert len(positives)==3 and len(refusals)==9\n-    return {\"status\":\"PASS_ACTUAL_TAIL_DRIVER_INITIAL_IMPORT_CONTROLS\",\"positive_count\":3,\"refusal_count\":9,\n+\n+    def reject_data(name,change,reason):\n+        with tempfile.TemporaryDirectory(prefix=\"cdr-tail-data-fault-\") as folder:\n+            root=Path(folder);copy(root);local=dict(pins);inventory={p:dict(v) for p,v in INITIAL_DATA.items()}\n+            change(root,local,inventory)\n+            try:data_closure(root,local,inventory)\n+            except AssertionError as error:\n+                assert error.args and isinstance(error.args[0],tuple) and error.args[0][0]==reason,(name,repr(error))\n+                refusals.append({\"case\":name,\"error\":repr(error),\"rejected\":True})\n+            else:raise AssertionError(\"Accepted initial data fault \"+name)\n+    path=next(iter(INITIAL_DATA))\n+    reject_data(\"missing_initial_data\",lambda root,pins,inv:(root/path).unlink(),\"Missing/nonregular initial data\")\n+    reject_data(\"unprotected_initial_data\",lambda root,pins,inv:pins.pop(path),\"Unprotected/changed initial data pin\")\n+    reject_data(\"changed_initial_data_pin\",lambda root,pins,inv:pins.__setitem__(path,\"0\"*64),\"Unprotected/changed initial data pin\")\n+    reject_data(\"changed_initial_data_size\",lambda root,pins,inv:(root/path).write_bytes((root/path).read_bytes()+b\" \"),\"Changed initial data size\")\n+    reject_data(\"changed_initial_data_bytes\",lambda root,pins,inv:(root/path).write_bytes(b\"X\"+(root/path).read_bytes()[1:]),\"Changed initial data bytes\")\n+    def link_file(root,pins,inv):\n+        file=root/path;outside=root/\"outside.json\";file.rename(outside);file.symlink_to(outside)\n+    reject_data(\"symlink_initial_data\",link_file,\"Missing/nonregular initial data\")\n+    def link_parent(root,pins,inv):\n+        parent=(root/path).parent;outside=root/\"outside\";parent.rename(outside);parent.symlink_to(outside,target_is_directory=True)\n+    reject_data(\"symlink_initial_data_parent\",link_parent,\"Missing/nonregular initial data parent\")\n+    def directory(root,pins,inv):\n+        file=root/path;file.unlink();file.mkdir()\n+    reject_data(\"directory_initial_data\",directory,\"Missing/nonregular initial data\")\n+    def replace_path(inv,bad):\n+        value=inv.pop(path);inv[bad]=value\n+    for name,bad,reason in (\n+      (\"absolute_data_path\",\"/tmp/escape.json\",\"Escaping initial data path\"),\n+      (\"traversal_data_path\",\"docs/evidence/../../escape.json\",\"Escaping initial data path\"),\n+      (\"backslash_data_path\",\"docs\\\\evidence\\\\escape.json\",\"Noncanonical initial data path\"),\n+      (\"noncanonical_data_path\",\"docs//evidence/escape.json\",\"Noncanonical initial data path\")):\n+        reject_data(name,lambda root,pins,inv,bad=bad:replace_path(inv,bad),reason)\n+    reject_data(\"undeclared_initial_data\",lambda root,pins,inv:inv.__setitem__(\"docs/evidence/extra.json\",dict(inv[path])),\"Initial data inventory changed\")\n+    reject_data(\"omitted_initial_data\",lambda root,pins,inv:inv.pop(path),\"Initial data inventory changed\")\n+    reject_data(\"changed_initial_data_metadata\",lambda root,pins,inv:inv[path].__setitem__(\"bytes\",1),\"Initial data metadata changed\")\n+    def reader_path(root,pins,inv):\n+        module=root/INITIAL_DATA[path][\"module\"];body=module.read_text()\n+        assert body.count(path)==1\n+        module.write_text(body.replace(path,\"docs/evidence/unreviewed.json\"));pins[INITIAL_DATA[path][\"module\"]]=sha(module)\n+    reject_data(\"changed_initial_reader_path\",reader_path,\"Initial data read binding changed\")\n+    def reader_digest(root,pins,inv):\n+        module=root/INITIAL_DATA[path][\"module\"];body=module.read_text();digest=INITIAL_DATA[path][\"sha256\"]\n+        assert body.count(digest)==1\n+        module.write_text(body.replace(digest,\"0\"*64));pins[INITIAL_DATA[path][\"module\"]]=sha(module)\n+    reject_data(\"changed_initial_reader_digest\",reader_digest,\"Initial data reader digest changed\")\n+    assert len(positives)==5 and len(refusals)==32\n+    return {\"status\":\"PASS_ACTUAL_TAIL_DRIVER_INITIAL_IMPORT_CONTROLS\",\"positive_count\":5,\"refusal_count\":32,\n       \"positives\":positives,\"refusals\":refusals,\"closure\":audit,\n       \"installed_external_allowlist\":[],\"native_executed\":False,\"deferred_native_imports_validated\":False}\n \n",
+  "correction": {
+    "added_checker_functions": [
+      "data_path",
+      "data_closure"
+    ],
+    "added_positive_groups": [
+      "exact_repository_initial_data_reads",
+      "only35_modules_and3_data_files_copied"
+    ],
+    "added_refusals": {
+      "actual_hash_assertion_imports": 3,
+      "actual_missing_data_imports": 3,
+      "data_path_pin_reader_and_byte_fixtures": 17
+    },
+    "changed_original_checker_functions_AST": [
+      "closure",
+      "controls",
+      "isolated"
+    ],
+    "copied_JSON_data": 3,
+    "copied_files_only": 38,
+    "copied_modules": 35,
+    "data_admission": "Exact data inventory, original module read/hash-guard AST and original RECIPE_SHA; protected hash and exact byte size; canonical relative docs/evidence JSON path; root/parent/file non-symlink and contained regular files.",
+    "expected_total": {
+      "positives": 5,
+      "refusals": 32
+    },
+    "failure_qualification": "Actual missing-file imports bind the original module/read line and exact FileNotFoundError filename. Tampered-file imports require the final original hash-assertion frame and AssertionError. Validator mutations require the exact expected guard reason.",
+    "installed_external_allowlist": [],
+    "isolated_command_flags_preserved": [
+      "-I",
+      "-B"
+    ],
+    "no_dispatch_or_retry_authorized_by_this_commit": true,
+    "original_module_controls_retained": {
+      "positives": 3,
+      "refusals": 9
+    },
+    "physical_native_generator_topology_runtime_publisher_other_checkers_unchanged": true,
+    "unchanged_original_checker_functions_AST": [
+      "initial_nodes",
+      "main",
+      "sha"
+    ],
+    "workflow_change_only": "Both existing workflow copies change only the import-control count admission 3/9 to 5/32 and require exactly three data files."
+  },
+  "data_inventory": {
+    "docs/evidence/cloud-measured-load-hold-conflicts-20261016.json": {
+      "bytes": 382341,
+      "hash_line": 31,
+      "module": "scripts/measured_hold_targets.py",
+      "read_line": 30,
+      "sha256": "55046b17b57dc82eeecbd26783ac62241bde725fce3eab21f9f271dd9a76565b"
+    },
+    "docs/evidence/cloud-refined-load-hold-targets-20261016.json": {
+      "bytes": 53179,
+      "hash_line": 32,
+      "module": "scripts/refined_hold_targets.py",
+      "read_line": 31,
+      "sha256": "8eabcf9f3e0ace7ec6240474f1a5a0758c31f0350d559c5ef70a64b43572342b"
+    },
+    "docs/evidence/route146-all-reachable-branch-recipe-20261016.json": {
+      "bytes": 110689,
+      "hash_line": 32,
+      "module": "scripts/branch_hold_targets.py",
+      "read_line": 32,
+      "sha256": "12795513c5d9694eaae9daed4ca6b2c6209a42040c1ff8bdba9a23f249e8b31a"
+    }
+  },
+  "failed_source": "1825c237caedae514a0a1e90f9b31c4be5d768cb",
+  "finding": "The isolated root contained 35 Python modules but omitted three repository JSON files read unconditionally during import. The first actual import failed in refined_hold_targets.py line 31 before native work.",
+  "initial_data_bytes": 546209,
+  "module_audit": {
+    "scripts/audit_cloud_route_annotation.py": {
+      "bytes": 9326,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 7
+        },
+        {
+          "callee": "Path",
+          "line": 7
+        },
+        {
+          "callee": "Path",
+          "line": 7
+        },
+        {
+          "callee": "os.environ.get",
+          "line": 7
+        },
+        {
+          "callee": "str",
+          "line": 7
+        },
+        {
+          "callee": "frozenset",
+          "line": 43
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        124
+      ],
+      "sha256": "88e5c8ae53fdfe03fae68b35983ebf63784c325cdf143a4f04c6d8096a3be64b"
+    },
+    "scripts/audit_cloud_routed_endpoints.py": {
+      "bytes": 10224,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 13
+        },
+        {
+          "callee": "Path",
+          "line": 13
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        133
+      ],
+      "sha256": "7ac4b12b49e25b276e57cdbe98cf401b19868713cdbfa1f40217d8116bb0c076"
+    },
+    "scripts/audit_cloud_routed_hold_conflicts.py": {
+      "bytes": 6850,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 10
+        },
+        {
+          "callee": "Path",
+          "line": 10
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        87
+      ],
+      "sha256": "5aab0a1aa2e12515a6ffe5c94d0920672b50aafd7bcdee4e8c853f26d90818ee"
+    },
+    "scripts/branch_hold_targets.py": {
+      "bytes": 5633,
+      "called_local_functions": {
+        "select": {
+          "calls": [
+            {
+              "callee": "len",
+              "line": 18
+            },
+            {
+              "callee": "all",
+              "line": 23
+            },
+            {
+              "callee": "x['branch_pin'].rsplit",
+              "line": 26
+            },
+            {
+              "callee": "chosen.append",
+              "line": 28
+            },
+            {
+              "callee": "sum",
+              "line": 30
+            },
+            {
+              "callee": "len",
+              "line": 17
+            },
+            {
+              "callee": "x['sink_master'].startswith",
+              "line": 27
+            },
+            {
+              "callee": "dict",
+              "line": 28
+            },
+            {
+              "callee": "len",
+              "line": 29
+            },
+            {
+              "callee": "x['branch_pin'].rsplit",
+              "line": 21
+            },
+            {
+              "callee": "x['all_reachable_setup_ns'].values",
+              "line": 23
+            },
+            {
+              "callee": "x['next_pin'].rsplit",
+              "line": 27
+            },
+            {
+              "callee": "dict",
+              "line": 28
+            },
+            {
+              "callee": "min",
+              "line": 28
+            },
+            {
+              "callee": "x['all_reachable_setup_ns'].values",
+              "line": 28
+            }
+          ],
+          "first_line": 15,
+          "last_line": 31,
+          "source_sha256": "edd1f9a4406f98a4d7e8b6a2d9eb9c9ace60886a9549233c58c085dc875ed8cb"
+        }
+      },
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 6
+        },
+        {
+          "callee": "Path",
+          "line": 6
+        },
+        {
+          "callee": "(ROOT / 'docs/evidence/route146-all-reachable-branch-recipe-20261016.json').read_bytes",
+          "line": 32
+        },
+        {
+          "callee": "hashlib.sha256(raw).hexdigest",
+          "line": 32
+        },
+        {
+          "callee": "hashlib.sha256",
+          "line": 32
+        },
+        {
+          "callee": "json.loads",
+          "line": 33
+        },
+        {
+          "callee": "select",
+          "line": 33
+        },
+        {
+          "callee": "dict",
+          "line": 34
+        }
+      ],
+      "initial_repository_reads": [
+        {
+          "expression": "(ROOT / 'docs/evidence/route146-all-reachable-branch-recipe-20261016.json').read_bytes()",
+          "line": 32
+        }
+      ],
+      "main_guard_lines": [
+        67
+      ],
+      "sha256": "4a6fc92fd4ec974cfa3ec36ae5ad6e01f7c6ad3b2419e1651a0bc48b87568cbc"
+    },
+    "scripts/candidate_hold_conflicts.py": {
+      "bytes": 5623,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [],
+      "sha256": "1ab6d7159278e68370f20a2bd6c6943e4df4efbe315a8764871559f63cedf3f5"
+    },
+    "scripts/cdr_v59_binding_rc_source.py": {
+      "bytes": 20136,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 14
+        },
+        {
+          "callee": "Path",
+          "line": 14
+        },
+        {
+          "callee": "Path",
+          "line": 26
+        },
+        {
+          "callee": "dict",
+          "line": 28
+        },
+        {
+          "callee": "json.loads",
+          "line": 29
+        },
+        {
+          "callee": "json.loads",
+          "line": 30
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [],
+      "sha256": "bec7865bded1e56fc373dc57cd52758efa70702ffc98b30e67274c720cdd728f"
+    },
+    "scripts/cdr_v59_font_roundtrip_contract.py": {
+      "bytes": 13654,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 8
+        },
+        {
+          "callee": "Path",
+          "line": 8
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [],
+      "sha256": "efa50460da1756dc4b1711083967a657e72079cb7e500d899f05a9d807169b10"
+    },
+    "scripts/cdr_v59_serialized_shape_diagnostic.py": {
+      "bytes": 10893,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 7
+        },
+        {
+          "callee": "Path",
+          "line": 7
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [],
+      "sha256": "1c63677847ff2d91ad940f82919775a6a0a48e7122be69be9482b7d0834e668f"
+    },
+    "scripts/cdr_v59_tail_access_plan.py": {
+      "bytes": 6995,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "dict",
+          "line": 21
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [],
+      "sha256": "9a6a9c6fbad2f410cf1f8882da5090ebca6b56bf9d531f1838bb59235afa9256"
+    },
+    "scripts/cdr_v59_tail_access_runtime.py": {
+      "bytes": 3862,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [],
+      "sha256": "946c08060f099e99f49ac35e559324b1e445d4c3865cfa7be954fa6e75db6176"
+    },
+    "scripts/cdr_v59_tail_access_topology.py": {
+      "bytes": 9714,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [],
+      "sha256": "df8b0e712cd224c6af66d88e91242d4e5b5d8b75a96ebf81179cb740c06c3a37"
+    },
+    "scripts/cloud_cdr500_input_access_v58_physical.py": {
+      "bytes": 14338,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 8
+        },
+        {
+          "callee": "Path",
+          "line": 8
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        176
+      ],
+      "sha256": "559d340a818d5ecfd8bc9965c25e0942fe98cb956087b419c4463e296e794898"
+    },
+    "scripts/cloud_cdr500_resistor_v59_physical.py": {
+      "bytes": 12688,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 11
+        },
+        {
+          "callee": "Path",
+          "line": 11
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        173
+      ],
+      "sha256": "c17f43e8896e62e4f7e088821e87143e51cd9e5771184f85ce72802bbc99e315"
+    },
+    "scripts/cloud_cdr_v59_annotation_diagnostic.py": {
+      "bytes": 14312,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 10
+        },
+        {
+          "callee": "Path",
+          "line": 10
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        196
+      ],
+      "sha256": "ade3551da4e78eaf02920e688e7886fa55b1f2ee9c4c798854f181402ef0f825"
+    },
+    "scripts/cloud_cdr_v59_binding_rc.py": {
+      "bytes": 15761,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        227
+      ],
+      "sha256": "647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709"
+    },
+    "scripts/cloud_cdr_v59_font_recovery.py": {
+      "bytes": 18284,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 10
+        },
+        {
+          "callee": "Path",
+          "line": 10
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        230
+      ],
+      "sha256": "968ed10148f855d1fa1f9a9533d923ea3c0010889387d87e16e58ac87793758e"
+    },
+    "scripts/cloud_cdr_v59_serialized_shape_diagnostic.py": {
+      "bytes": 15771,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 10
+        },
+        {
+          "callee": "Path",
+          "line": 10
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        215
+      ],
+      "sha256": "7bcfc52160657696e5aeca72fbf68b2c21bc4ad284fc598e3d63d049ec6e52c4"
+    },
+    "scripts/cloud_cdr_v59_static_source_recovery.py": {
+      "bytes": 14205,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 9
+        },
+        {
+          "callee": "Path",
+          "line": 9
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        203
+      ],
+      "sha256": "e1b99a76b9c20d760528f3bc35c2ab39d52786c7f0192aaba75888b7d683eaac"
+    },
+    "scripts/cloud_cdr_v59_tail_access_physical.py": {
+      "bytes": 18491,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        325
+      ],
+      "sha256": "2ccef3a38d29f4ec4cbe55aa151a7935b48a9fc3ae48db21ac4154be13896cbf"
+    },
+    "scripts/cloud_chunked_results.py": {
+      "bytes": 4885,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        68
+      ],
+      "sha256": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816"
+    },
+    "scripts/cloud_contact_release.py": {
+      "bytes": 3043,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        48
+      ],
+      "sha256": "6a1e50e9cb4e1fb18bc4ef19a821096952fc50b382c25b0d655e537e55e35f11"
+    },
+    "scripts/cloud_verified_parts.py": {
+      "bytes": 5017,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        78
+      ],
+      "sha256": "64b6655bfd6f8c348af62e9179268eafb84c9150cbba895989bcdfb2c6b5b795"
+    },
+    "scripts/compare_cloud_routed_endpoints.py": {
+      "bytes": 24976,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 19
+        },
+        {
+          "callee": "Path",
+          "line": 19
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        282
+      ],
+      "sha256": "15ead8483a372a713a4d68aa36e00a7ee05b5c9528c6ece4f5b4bd2d5c20ad42"
+    },
+    "scripts/diagnose_cdr_v59_annotation_native.py": {
+      "bytes": 19164,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        292
+      ],
+      "sha256": "156fea2f555922d1b5f80637404d635118f2b008571226825ca79f5a42432c15"
+    },
+    "scripts/ensure_cloud_tested_source_release.py": {
+      "bytes": 6349,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        105
+      ],
+      "sha256": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e"
+    },
+    "scripts/expanded_load_targets.py": {
+      "bytes": 7696,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 7
+        },
+        {
+          "callee": "Path",
+          "line": 7
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        112
+      ],
+      "sha256": "1ef4d51a8be52f5621ed594a6fb4e0c5a24c078e54759dae227226dbe0cc6fd8"
+    },
+    "scripts/generate_cdr500_resistor_v59.py": {
+      "bytes": 18410,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "dict",
+          "line": 18
+        },
+        {
+          "callee": "dict",
+          "line": 20
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        312
+      ],
+      "sha256": "73d2eb18f3ceb4425668584f86b5e64a4c262af25c638114a4f18fcac36fb81d"
+    },
+    "scripts/materialize_cdr_v59_static_annotations.py": {
+      "bytes": 12986,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 8
+        },
+        {
+          "callee": "Path",
+          "line": 8
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        201
+      ],
+      "sha256": "fb51f63f3e934747ba1fbc6af8a06a176b7d6e47e52794abaaa5108d2989d217"
+    },
+    "scripts/measured_hold_targets.py": {
+      "bytes": 5108,
+      "called_local_functions": {
+        "select": {
+          "calls": [
+            {
+              "callee": "len",
+              "line": 24
+            },
+            {
+              "callee": "len",
+              "line": 20
+            },
+            {
+              "callee": "all",
+              "line": 22
+            },
+            {
+              "callee": "len",
+              "line": 23
+            },
+            {
+              "callee": "all",
+              "line": 28
+            },
+            {
+              "callee": "row['setup_seconds'].values",
+              "line": 22
+            },
+            {
+              "callee": "r['hold_seconds'].items",
+              "line": 28
+            }
+          ],
+          "first_line": 16,
+          "last_line": 29,
+          "source_sha256": "d00d39915869aa8cd4cf5bfbf518229904e26f3fd9df91f65dd9afcc882a440a"
+        }
+      },
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 6
+        },
+        {
+          "callee": "Path",
+          "line": 6
+        },
+        {
+          "callee": "(ROOT / 'docs/evidence/cloud-measured-load-hold-conflicts-20261016.json').read_bytes",
+          "line": 30
+        },
+        {
+          "callee": "hashlib.sha256(raw).hexdigest",
+          "line": 31
+        },
+        {
+          "callee": "hashlib.sha256",
+          "line": 31
+        },
+        {
+          "callee": "json.loads",
+          "line": 32
+        },
+        {
+          "callee": "select",
+          "line": 32
+        },
+        {
+          "callee": "dict",
+          "line": 33
+        }
+      ],
+      "initial_repository_reads": [
+        {
+          "expression": "(ROOT / 'docs/evidence/cloud-measured-load-hold-conflicts-20261016.json').read_bytes()",
+          "line": 30
+        }
+      ],
+      "main_guard_lines": [
+        69
+      ],
+      "sha256": "91138b2c0f590b151ed93f12aeabb17fa5406e1286754498ad14b694e423efdf"
+    },
+    "scripts/migrate_outputs_to_cloud.py": {
+      "bytes": 12452,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 20
+        },
+        {
+          "callee": "Path",
+          "line": 20
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        270
+      ],
+      "sha256": "52fa3ef7adc92b6e6071b304ccb1b07908f31ccde7dacf39a7258e07356fa512"
+    },
+    "scripts/read_opensta_phase_slacks.py": {
+      "bytes": 3670,
+      "called_local_functions": {},
+      "initial_calls": [],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        77
+      ],
+      "sha256": "dfade1f0ac09bcbaa9a0c5f63869e0d2a545324003538a5dcb847d1dbc950273"
+    },
+    "scripts/refined_hold_targets.py": {
+      "bytes": 6219,
+      "called_local_functions": {
+        "select": {
+          "calls": [
+            {
+              "callee": "len",
+              "line": 24
+            },
+            {
+              "callee": "dict",
+              "line": 30
+            },
+            {
+              "callee": "len",
+              "line": 20
+            },
+            {
+              "callee": "all",
+              "line": 22
+            },
+            {
+              "callee": "len",
+              "line": 23
+            },
+            {
+              "callee": "all",
+              "line": 28
+            },
+            {
+              "callee": "zip",
+              "line": 30
+            },
+            {
+              "callee": "row['setup_seconds'].values",
+              "line": 22
+            },
+            {
+              "callee": "r['hold_seconds'].items",
+              "line": 28
+            }
+          ],
+          "first_line": 16,
+          "last_line": 30,
+          "source_sha256": "29ebb05bea1e79ec31b4aa10a0c767fa4f994d0490a71bb0a0e01058041d6a55"
+        }
+      },
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 6
+        },
+        {
+          "callee": "Path",
+          "line": 6
+        },
+        {
+          "callee": "(ROOT / 'docs/evidence/cloud-refined-load-hold-targets-20261016.json').read_bytes",
+          "line": 31
+        },
+        {
+          "callee": "hashlib.sha256(raw).hexdigest",
+          "line": 32
+        },
+        {
+          "callee": "hashlib.sha256",
+          "line": 32
+        },
+        {
+          "callee": "json.loads",
+          "line": 33
+        },
+        {
+          "callee": "select",
+          "line": 33
+        },
+        {
+          "callee": "dict",
+          "line": 34
+        }
+      ],
+      "initial_repository_reads": [
+        {
+          "expression": "(ROOT / 'docs/evidence/cloud-refined-load-hold-targets-20261016.json').read_bytes()",
+          "line": 31
+        }
+      ],
+      "main_guard_lines": [
+        80
+      ],
+      "sha256": "d3d985cc4b16add202815a745aebcd952723c296ce7e2d7a2b9eabc0eb72592a"
+    },
+    "scripts/refined_load_targets.py": {
+      "bytes": 6693,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 8
+        },
+        {
+          "callee": "Path",
+          "line": 8
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        82
+      ],
+      "sha256": "d942cecb77d1b3394c53d5bc7f3e0d9e117843882d37c59fbb42909f24da5cb9"
+    },
+    "scripts/route_cloud_newer_postcts.py": {
+      "bytes": 49174,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 17
+        },
+        {
+          "callee": "Path",
+          "line": 17
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        677
+      ],
+      "sha256": "29997f34ca6e764c40a40b5203388993b890f6d838cbe2651d5ce5c018042b40"
+    },
+    "scripts/run_cloud_tx_layout_repair.py": {
+      "bytes": 75555,
+      "called_local_functions": {},
+      "initial_calls": [
+        {
+          "callee": "Path(__file__).resolve",
+          "line": 14
+        },
+        {
+          "callee": "Path",
+          "line": 14
+        }
+      ],
+      "initial_repository_reads": [],
+      "main_guard_lines": [
+        757
+      ],
+      "sha256": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f"
+    }
+  },
+  "reviewed_initial_module_bytes": 488157,
+  "reviewed_initial_module_count": 35,
+  "schema": "cdr-v59-tail-import-data-closure-source-audit-v1",
+  "source_parent": "5e31f46c6fac3e28cc22f8f2239cb9fa3642f081",
+  "status": "AUTHORED_SOURCE_ONLY_REQUIRES_INDEPENDENT_REVIEW_AND_HOSTED_CONTROLS",
+  "workflow_unified_diff": "--- .github/workflow-templates/cdr-v59-tail-access-physical-cloud.yml@1825c237\n+++ .github/workflow-templates/cdr-v59-tail-access-physical-cloud.yml@data-closure-correction\n@@ -62,7 +62,8 @@\n           b=Path('hw/soc/out/cdr-tail-controls')\n           x=json.loads((b/'imports.json').read_text())\n           assert x['status']=='PASS_ACTUAL_TAIL_DRIVER_INITIAL_IMPORT_CONTROLS'\n-          assert (x['positive_count'],x['refusal_count'])==(3,9) and len(x['closure']['modules'])==35\n+          assert (x['positive_count'],x['refusal_count'])==(5,32) and len(x['closure']['modules'])==35\n+          assert len(x['closure']['data'])==3\n           x=json.loads((b/'physical.json').read_text())\n           assert x['status']=='PASS_TAIL_PHYSICAL_DRIVER_SOURCE_CONTROLS_ONLY'\n           assert (x['positive_count'],x['refusal_count'])==(17,22)\n"
+}
