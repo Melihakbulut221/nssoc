@@ -36,6 +36,8 @@ def methods():
     for p,h in m['protected'].items():assert sha(ROOT/p)==h,p
     for key in ('native_transient_authorized','extraction_authorized','geometry_generation_authorized','continuation_authorized'):
         assert m[key]is False,key
+    for key in ('native_zero_op_authorized','simulation_authorized','native_execution_authorized','prepared_path_controls_authorized'):
+        assert type(m[key])is bool,key
     assert m['native_zero_op_authorized']is m['simulation_authorized']is m['native_execution_authorized']
     assert m['prepared_path_controls_authorized']is m['native_zero_op_authorized']
     assert m['owned_process']==dict(seconds=18000,minimum_available_kib=2097152,maximum_group_rss_kib=10485760,output_limit_per_stream_bytes=16777216)
@@ -180,6 +182,7 @@ def run_owned_child():
 
 
 def validate_native(native):
+    assert native['source_head']==os.environ['GITHUB_SHA']and native['run_id']==int(os.environ['GITHUB_RUN_ID'])
     assert native['status']==PASS and native['all_four_expanded_zero_OPs_passed']is True
     assert native['sources_unchanged']and native['native_simulator_invoked']and native['runtime_installed']
     assert native['current_RC_model_hashes']==admission.MODELS
@@ -191,6 +194,10 @@ def validate_native(native):
     proof=native['current_TAIL_M4_preparation']
     assert proof['current_models']==admission.MODELS and proof['current_RC']['all3181_files_authenticated']is True
     assert proof['current_RC']['native_view_files']==3165 and proof['current_RC']['consumed_native_view']=='native'
+    assert proof['current_RC']['outer_summary_sha256']==admission.SOURCE['summary']
+    assert proof['current_RC']['native_summary_sha256']==admission.ASSETS['native']['sha256']
+    assert proof['current_RC']['complete_files']==3181 and proof['current_RC']['full_current_physical_files']==631
+    assert proof['physical_source']==admission.physical.SOURCE
     assert proof['binding_faults_per_polarity']==20 and proof['preparation_faults']==8 and proof['path_faults']==32
     assert proof['unchanged_original_function_code_objects']is True
     assert set(native['cases'])==set(adapter.LABELS)
