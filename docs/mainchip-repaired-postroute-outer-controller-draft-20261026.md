@@ -1,0 +1,15 @@
+# Disabled repaired-route postroute controller draft
+
+This draft adds a hosted outer process owner and failure-preserving evidence collector around the reviewed two-edit geometry acquisition bridge. The original numerical postroute program remains byte-exact at c6335c535959286b7f77c3aaf6a5ab631640557c8453079a80dd97c97f58701f. Original clocks remain 20/4/8/8 ns with 5% derating. No routing, simulation, RC-model requalification, SRAM substitution, timing acceptance or PHY acceptance is authorized.
+
+All execution flags remain false and the bridge's actual repair terminal binding remains null. The only prospective route input is run 40344497930 at source 2a81095f744193451800ef178c9a7ae7314dd2dc. Native admission requires complete authenticated terminal success, final original-class zero DRT, both original 1691-clock gates, exact candidate hash and complete archive inventory. The full original 5030-file package and exact resized netlist remain mandatory.
+
+The supervisor loader, original process supervisor and bounded fresh memory sampler are copied byte-exact from the qualified CDR controller. The proposal bounds bootstrap and runtime version at 1200 seconds each, and the complete unchanged postroute worker, including inherited downloads/extraction and native descendants, at 14400 seconds. The existing 10 GiB group RSS, 2 GiB minimum available memory, stream bounds and owned process-group cleanup remain. The longer worker budget is a source proposal, not a measured completion claim.
+
+The worker writes two derived program files without changing protected originals, injects the derived geometry module into the original numerical module's real import, restores that module binding and argv, and preserves the original result byte-exact. The outer collector attempts both native-result and program collection even after one collection failure. Publication calls the existing exact-source reserved-only publisher under a temporary group binding; fallback artifacts remain a template prerequisite.
+
+This is an intermediate durable source checkpoint. Meaningful hosted boundary/module-loading/failure/publication controls, a whole import-time code/data closure, the manual workflow template and independent full outer review are still unfinished. No authored functions, imports, tests or native commands have been executed locally or in the cloud.
+
+Root's bounded prior bridge review covers admission b3ae2998 (16884 bytes), adapter 3e117048 (5341 bytes) and checker d52049ff (15612 bytes), including the two reversible acquisition substitutions and authored 5/56 controls. It does not qualify this new outer controller.
+
+Actual prospective input run 40344497930 subsequently terminated with FAIL_OR_INTERRUPTED_SIGNAL_REPAIR. The final drc-audit was refused by the memory supervisor after three unavailable live VmRSS reads; saved physical reports have not been read back. Complete terminal evidence is preserved at 16a4c31dd631510d6543b4b5a0f0dfa1716cadd8. This failed run does not satisfy the existing success-bound bridge admission. No failure-to-success normalization or resource waiver is proposed.
