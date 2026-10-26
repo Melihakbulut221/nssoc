@@ -24,7 +24,7 @@ TRANSPORT=ROOT/"hw/soc/out/cloud-cdr-v59-tail-saved-identity-publication"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 SECONDS={"restore-complete-saved931-capsule":1200,"read-only-saved-native-identities":1200}
 DIRECT=("archive-verification.json","original-identity.json","current-identity.json",
- "raw-hierarchy-proof.json","original-comparator-rejection.json","identity-comparison.json")
+ "raw-hierarchy-proof.json","original-comparator-rejection.json","identity-comparison.json","acquired-witness-controls.json")
 EXPORTS={side+"-"+name+".json":path for side,files in source.SIDES.items()
  for name,path in files.items() if name in ("inventory","pins")}
 PASS="PASS_SAVED_IDENTITY_READBACK_ORIGINAL_PHYSICAL_FAILURE_RETAINED"
@@ -86,12 +86,29 @@ def collect_direct():
             source.read_json(p);files.append((name,p))
     return files
 
+def validate_publication(result):
+    assert result["source_head"]==os.environ["GITHUB_SHA"],"Publication source changed"
+    assert type(result["run_id"]) is int and result["run_id"]==int(os.environ["GITHUB_RUN_ID"]),"Publication run changed"
+    assert result["run_attempt"]==1,"Publication attempt changed"
+    assert result["original_run"]==source.RUN and result["original_status"]=="FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL"
+    assert result["original_failure_preserved"] is True,"Original failure lost"
+    for name in ("automatic_retry","geometry_generated","extraction_executed","simulation_executed",
+      "physical_accepted","electrical_accepted","qualified_pex","full_phy_accepted"):
+        assert result[name] is False,"Publication scope changed"
+    if result["status"]==PASS:assert result["read_only_identity_verified"] is True
+    else:
+        assert result["status"].startswith(("FAIL_","RUNNING_")) and result["read_only_identity_verified"] is False
+    actual={p.relative_to(OUT).as_posix():source.sha(p) for p in OUT.rglob("*")
+      if p.is_file() and p!=OUT/"result.json"}
+    assert result["outputs"]==actual,"Publication complete output map changed"
+
 def publish(result):
     assert os.environ.get("GITHUB_RUN_ATTEMPT")=="1"
     assert OUT.is_dir() and not OUT.is_symlink() and not TRANSPORT.exists()
     storage("publication")
     report=OUT/"result.json";assert report.is_file() and not report.is_symlink()
     assert source.read_json(report)==result
+    validate_publication(result)
     direct=collect_direct()
     TRANSPORT.mkdir()
     stem=source.GROUP+"-"+os.environ["GITHUB_RUN_ID"]+"-1"
@@ -137,6 +154,10 @@ def run(result,supervisor,m):
     assert witness["status"]=="PASS_READ_ONLY_SAVED_NATIVE_IDENTITIES_NO_TOPOLOGY_GATE_CHANGE"
     assert witness["physical_accepted"] is witness["electrical_accepted"] is witness["qualified_pex"] is False
     assert witness["topology_comparator_modified"] is False
+    controls=source.read_json(OUT/"acquired-witness-controls.json")
+    assert controls["status"]=="PASS_COMPLETE_ACQUIRED_WITNESS_MUTATION_CONTROLS"
+    assert controls["positive_copies"]==len(controls["refusals"])==12
+    assert controls["saved_native_inputs_mutated"] is False
     source.verify_inputs(OUT/"restored",source.expected_files());source.methods()
     result.update(status=PASS,read_only_identity_verified=True,identity_comparison_sha256=source.sha(OUT/"identity-comparison.json"))
 

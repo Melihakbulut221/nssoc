@@ -27,6 +27,11 @@ def parse_path(value):
         result.append(tuple(map(int,match.groups())))
     return result
 
+def properties(inst):
+    rows=[{"key_type":type(k).__name__,"key":k,"value_type":type(v).__name__,"value":v}
+      for k,v in inst.properties().items()]
+    return sorted(rows,key=lambda r:json.dumps(r,sort_keys=True,separators=(",",":"),allow_nan=False))
+
 def stable_path(pya,layout,row):
     path=parse_path(row["pcell"]["path"])
     cell=layout.cell(TOP);require(cell is not None,"Missing top cell")
@@ -36,13 +41,15 @@ def stable_path(pya,layout,row):
         require(ordinal<len(instances),"Instance ordinal is absent")
         inst=instances[ordinal]
         require(not inst.is_regular_array(),"Regular array is outside exact original producer scope")
+        require(inst.size()==1,"Iterated or multiple instance elements are outside exact original producer scope")
         require(inst.cell_index==child_index,"Recorded child cell index does not resolve")
         child=layout.cell(child_index);require(child is not None,"Missing child cell")
         levels.append({"parent_cell":cell.name,"child_cell":child.name,
           "instance_ordinal":ordinal,"cplx_trans_dbu":str(inst.cplx_trans),
           "dcplx_trans_um":str(inst.dcplx_trans),"na":inst.na,"nb":inst.nb,
           "array_vector_a_dbu":str(inst.a),"array_vector_b_dbu":str(inst.b),
-          "is_regular_array":False,"array_element":None})
+          "is_regular_array":False,"single_instance_count":inst.size(),"array_element":0,
+          "instance_properties":properties(inst)})
         transform=transform*inst.dcplx_trans
         cell=child
     require(not list(cell.each_inst()),"Recorded primitive is not a leaf")
@@ -89,16 +96,24 @@ def read_side(pya,root,files,producer):
         require(by_path.get(row["pcell"]["path"])==row["pcell"],"Location does not bind exact full inventory row")
         require(row["pcell"]["path"] not in used,"Primitive reused")
         used.add(row["pcell"]["path"])
-        native_terminals=[]
+        native_terminals=[];box=pya.Box()
+        body={("npn13G2","S"),("sg13_lv_nmos","B"),("sg13_hv_nmos","B"),("sg13_hv_pmos","B"),
+          ("rppd","rppd_sub"),("ptap1","WELL"),("ntap1","WELL")}
         for td in cls.terminal_definitions():
             net=device.net_for_terminal(td.id())
             native_partitions[net.cluster_id].append((ident,cls.name,td.name))
             shapes=lvs.shapes_of_terminal(device.terminal_ref(td.id()))
             require(bool(shapes),"Missing native terminal geometry")
+            terminal_box=pya.Box()
+            for region in shapes.values():terminal_box+=region.bbox()
+            if (cls.name,td.name) not in body:box+=terminal_box
             native_terminals.append({"name":td.name,"net":net.name,"native_cluster":net.cluster_id,
               "native_layers":[{"layer":i,"bbox_dbu":str(r.bbox()),"area_dbu2":r.area(),"polygons":r.count()}
                 for i,r in shapes.items()]})
         require(native_terminals==row["terminals"],"Native terminal shape/name binding changed")
+        candidates=[r for r in physical if MODELS[r["cell"].split("$")[0]]==cls.name and
+          (pya.DBox.from_s(r["bbox"]).to_itype(layout.dbu)&box)==box]
+        require(len(candidates)==1 and candidates[0]==row["pcell"],"Native primitive enclosure is not the exact unique saved leaf")
         witnesses.append({"native_device":ident,"model":row["model"],
           "raw_path":row["pcell"]["path"],"stable_path":stable_path(pya,layout,row)})
     require(len(used)==500,"Incomplete physical identity coverage")
@@ -159,6 +174,34 @@ def compare_witnesses(old,new):
       "original_native_failure_preserved":True,"physical_accepted":False,"electrical_accepted":False,
       "qualified_pex":False,"topology_comparator_modified":False}
 
+def witness_controls(old,new):
+    """Mutate copies of the complete acquired witness; never touch saved native inputs."""
+    cases=[
+      ("primitive_model",lambda b:b["paths"][0].update(model="wrong"),"Device identity changed"),
+      ("hierarchy_child_name",lambda b:b["paths"][0]["stable_path"]["levels"][0].update(child_cell="wrong"),"Stable instance path changed"),
+      ("hierarchy_parent_name",lambda b:b["paths"][0]["stable_path"]["levels"][0].update(parent_cell="wrong"),"Stable instance path changed"),
+      ("instance_ordinal",lambda b:b["paths"][0]["stable_path"]["levels"][0].update(instance_ordinal=-1),"Stable instance path changed"),
+      ("instance_transform",lambda b:b["paths"][0]["stable_path"]["levels"][0].update(cplx_trans_dbu="wrong"),"Stable instance path changed"),
+      ("instance_properties",lambda b:b["paths"][0]["stable_path"]["levels"][0].update(instance_properties=[{"unexpected":True}]),"Stable instance path changed"),
+      ("array_element",lambda b:b["paths"][0]["stable_path"]["levels"][0].update(array_element=1),"Stable instance path changed"),
+      ("path_depth",lambda b:b["paths"][0]["stable_path"]["levels"].pop(),"Stable instance path changed"),
+      ("public_partition",lambda b:b["native_pins"][0]["full_partition"]["terminals"].pop(),"Public name/terminal partition changed"),
+      ("public_anchor",lambda b:b["native_pins"][0]["full_anchor"].update(point_dbu=[-1,-1]),"Public name/anchor binding changed"),
+      ("device_parameter",lambda b:b["locations"]["devices"][0]["parameters"].update(W=-1),"Full semantic device/parameter/location data changed"),
+      ("terminal_anchor",lambda b:b["anchors"]["anchors"][0].update(point_dbu=[-1,-1]),"Complete original 978 anchors changed")]
+    records=[]
+    for name,change,message in cases:
+        require(compare_witnesses(old,new)["devices"]==500,"Baseline identity failed before witness mutation")
+        bad=copy.deepcopy(new);change(bad)
+        try:compare_witnesses(old,bad)
+        except AssertionError as error:
+            require(str(error)==message,"Unqualified witness mutation rejection")
+            records.append({"case":name,"complete_positive_before_fault":True,"error":str(error)})
+        else:raise AssertionError("Accepted witness mutation "+name)
+    require(len(records)==12,"Incomplete acquired-witness controls")
+    return {"status":"PASS_COMPLETE_ACQUIRED_WITNESS_MUTATION_CONTROLS","positive_copies":12,
+      "refusals":records,"saved_native_inputs_mutated":False}
+
 def raw_hierarchy_proof(old_layout,new_layout,generation,generator):
     scope={"json":json}
     source.load_definitions(generator,["raw_records","hierarchy"],scope)
@@ -173,11 +216,15 @@ def raw_hierarchy_proof(old_layout,new_layout,generation,generator):
         a=scope["raw_records"](old_layout,old);b=scope["raw_records"](new_layout,new)
         ha=scope["hierarchy"](old);hb=scope["hierarchy"](new)
         require(ha==hb,"Original named hierarchy changed")
+        old_props=[{"child":i.cell.name,"ordinal":j,"properties":properties(i)} for j,i in enumerate(old.each_inst())]
+        new_props=[{"child":i.cell.name,"ordinal":j,"properties":properties(i)} for j,i in enumerate(new.each_inst())]
+        require(old_props==new_props,"Complete instance property/order binding changed")
         require(collections.Counter(b)==collections.Counter(a)+(added if name==CHILD else collections.Counter()),
           "Original shape/text/properties or exact added records changed")
         proof.append({"cell":name,"original_raw_records":len(a),"current_raw_records":len(b),
           "original_raw_sha256":source.value_hash(a),"current_raw_sha256":source.value_hash(b),
           "exact_named_hierarchy":ha,"hierarchy_sha256":source.value_hash(ha),
+          "exact_instance_property_and_order":old_props,
           "original_raw_preserved":True,"exact_added_records_only":name==CHILD})
     return {"all_original_cell_names_preserved":True,"full_raw_shape_text_properties_preserved":True,
       "exact_original_named_hierarchy_preserved":True,"cells":proof,"added_raw_records":generation["added_raw_records"]}
@@ -209,6 +256,8 @@ def run(root,out):
     source.write(out/"original-comparator-rejection.json",rejection)
     comparison=compare_witnesses(old,new)
     source.write(out/"identity-comparison.json",comparison)
+    controls=witness_controls(old,new)
+    source.write(out/"acquired-witness-controls.json",controls)
     source.verify_inputs(root,manifest)
     return comparison
 

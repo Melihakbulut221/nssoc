@@ -38,7 +38,7 @@ SIDES={name:{k:prefix+"/"+v for k,v in {
  "locations":"wire/device-locations01.json","graph":"wire/native05/result.json",
  "anchors":"wire/anchors08.json"}.items()}
  for name,prefix in (("old","source-capsule/analysis-capsule"),("new","candidate"))}
-FALSE_FLAGS=("geometry_generation_authorized","physical_qualification_authorized","extraction_authorized",
+FALSE_FLAGS=("native_execution_authorized","geometry_generation_authorized","physical_qualification_authorized","extraction_authorized",
  "simulation_authorized","accepted","qualified_pex","full_phy_accepted")
 COMMANDS=("restore-complete-original-capsule","restore-frozen-pdk-runtime","native-additive-generation",
  "full-physical-and13-faults","fresh-native-planes","source-annotation-recovery",
@@ -153,7 +153,13 @@ def validate_parts(manifest):
     return manifest
 
 def verify_inputs(root,expected):
-    return extraction_helpers().verify_files(root,expected)
+    proof=extraction_helpers().verify_files(root,expected)
+    actual=set()
+    for p in root.rglob("*"):
+        assert not p.is_symlink() and (p.is_dir() or p.is_file()),"Nonregular restored member"
+        if p.is_file():actual.add(p.relative_to(root).as_posix())
+    assert actual==set(expected),"Changed complete restored member inventory"
+    return proof
 
 def restore(out):
     authorize()
