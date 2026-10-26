@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-26T17:25:52.093551+00:00",
+  "updated_at": "2026-10-26T17:34:10.985341+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "4bd9f7a997c76ed9310b659b695cd3f595a58e08",
+  "root_source_before_receipt": "b7a14db8b6263fe7b158f98e77e584209224713b",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 65,
+    "inventory_version": 66,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40322641142,
@@ -15,6 +15,31 @@
     "last_verified_run_status": "ATTENTION_REQUIRED: all51 source controls passed; complete observation and snapshot succeeded; open engineering failures retained; no MONITOR_ERROR"
   },
   "active_runs": {
+    "cdr_tail_complete_input_relocation_native": {
+      "run": 40369539200,
+      "head_sha": "504c4b94ab19532e0831daf496df4a9448678290",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121736255584,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121736653973,
+          "name": "physical",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Complete additive physical qualification and evidence publication"
+          ]
+        }
+      ]
+    },
     "mainchip-fixed-clock-signal-repair-via-corrected-native": {
       "run": 40344497930,
       "head_sha": "2a81095f744193451800ef178c9a7ae7314dd2dc",
@@ -35,7 +60,7 @@
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "One bounded fixed-clock signal repair and complete original-class DRC"
+            "Permanent complete summary and authenticated archive publication"
           ]
         }
       ]
@@ -1408,7 +1433,12 @@
       "tested_source": "0c78e5e9082b305739753e70ff7ed9fbe0a706aa",
       "method_sha256": "12b3c7c55fe480ad90bdccd05b5ac18ab24ce64dd16678526b7add0b951a7cc7",
       "protected": 388,
-      "result_unreviewed": true,
+      "result_unreviewed": false,
+      "status": "PASS_ALL_SIX_ACTUAL_RECORDS_PHYSICAL_SKIPPED",
+      "complete_proof_source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "full_joblog_bytes": 471739,
+      "full_joblog_sha256": "6195ba2389b048a413f228ff7b9ae4d238528dfdda7b468eaec62e9a0ba040ff",
+      "root_independent_reconstruction_all_six_records": true,
       "all243_original_hashes_retained": true,
       "relocated_to_existing_exact_capsule_members": 154,
       "runtime_unchanged": 88,
@@ -1416,11 +1446,11 @@
       "original_metadata_preserved": true,
       "only_generator_metadata_changed": true,
       "original_checker_and_geometry_functions_unchanged": true,
-      "authored_real_assignment_and_original_digest_controls": [
+      "actual_real_assignment_and_original_digest_controls": [
         2,
         19
       ],
-      "all3physical_flags_false": true,
+      "physical_job_skipped": 121731615835,
       "DRC_LVS_accepted": false
     },
     "pll_tail_M4_disabled_candidate": {
@@ -1441,15 +1471,33 @@
       "fresh_RC_electrical_still_required": true,
       "original4HBT_and62_5ps_failures_open": true,
       "PHY_accepted": false
+    },
+    "cdr_tail_relocated_native_physical": {
+      "run": 40369539200,
+      "source": "504c4b94ab19532e0831daf496df4a9448678290",
+      "method_sha256": "bcc78448e02dc21e23e4c16d7725d155c84c6091b4e4b3d1cce71e61d65071c3",
+      "protected": 404,
+      "all388_tested_pins_preserved": true,
+      "complete16proofpins_root_reverified": true,
+      "proof_bytes": 845846,
+      "proposal_exact_normalization_bytes": 60806,
+      "release": 424559937,
+      "dispatch_receipt": "abb2027783476f7fc22f0fa5e381062f04b89f58",
+      "native_result_unreviewed": true,
+      "source_controls_rerun_required": true,
+      "RC_and_electrical_not_authorized": true,
+      "all_ten_original_electrical_cases_still_required": true,
+      "automatic_retry": false,
+      "full_PHY_accepted": false
     }
   },
   "next_actions": [
     "Consume sole mainchip40344497930 terminal with complete original-class DRT/native1691/unfix/metadata proof; preserve every failure and no automatic retry. Only actual zero markers permit separately reviewed fresh RC/STA.",
-    "Consume actual corrected CDR243-input controls40368080369 at0c78e5e9: complete six JSON records and native-skipped gate. If all pass, review exact normalization and metadata-only physical activation before one next native dispatch plus immediate exact-source prerelease reservation. First native40361500020 geometry11/11 passed but DRC/LVS never executed; inherited154 stale paths fixed without missing source or changed geometry.",
-    "Continue disabled PLL12-M4-branch current334AVSS18 source with complete407-file restoration, qualified owned-process supervision, failure-preserving publication and genuine isolated imports including3JSON files. Review full wrapper then actual source controls before native; never infer headroom improvement from wire-width guess.",
-    "Continue disabled original-class mainchip postroute outer supervisor/publication around reviewed01417/314825 bridge while native runs. Terminal binding remains null until complete eligible native evidence. Retain original20/4/8/8ns+5percent and explicit SRAM fastm55/modelRC qualification limits.",
+    "Consume sole corrected CDR243-input native40369539200 at504c4b94 with reserved release424559937: complete rerun6source records and actual native geometry/completeDRC/deep-flat500deviceLVS/topology/sourcepreservation. Sourcecontrols40368080369 already fullypassed; first native40361500020 generation11/11passed but DRC/LVSnotexecuted. No duplicate or automaticretry. Actualphysicalpass then separatelyreview freshbinding/RC/MIM and all10original electricalcases.",
+    "Continue disabled PLL12-M4-branch current334AVSS18 source with complete407-file restoration, qualified owned-process supervision, failure-preserving publication and genuine isolated imports including3JSONfiles. Review full wrapper then actual source controls before native; never infer headroom improvement from wire-width guess.",
+    "Continue disabled original-class mainchip postroute outer supervisor/publication around reviewed01417/314825 bridge while native runs. Terminal binding remains null until complete eligible native evidence. Retain original20/4/8/8ns+5percent and explicit SRAMfastm55/modelRC qualification limits.",
     "Full serial training/descrambler shared-state and coherent epoch/rate/polarity/reset/clockloss integration remain open. Authorized PCIeBase3.0 specification oracle question pending; continue independent physical work without inventing TS/scrambler semantics.",
-    "Keep all source/results/resume receipts in GitHub; local project/tmp/native processes empty, no local CAD/tests/archive/GDS/waveform. Keep8h read-only monitor and exact run handles, no monitor CAD dispatch."
+    "Keep all source/results/resume receipts in GitHub; local project/tmp/native processes empty, no local CAD/tests/archive/GDS/waveform. Keep8h read-only monitor and exactrunhandles; no monitor CADdispatch."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -1660,29 +1708,6 @@
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40361500020,
-      "head_sha": "fed0e5b16fe0add36660403a1897c4843f3ea890",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121707893681,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121708282571,
-          "name": "physical",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40368080369,
       "head_sha": "0c78e5e9082b305739753e70ff7ed9fbe0a706aa",
       "status": "completed",
@@ -1706,6 +1731,31 @@
       ]
     },
     {
+      "run": 40369539200,
+      "head_sha": "504c4b94ab19532e0831daf496df4a9448678290",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121736255584,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121736653973,
+          "name": "physical",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Complete additive physical qualification and evidence publication"
+          ]
+        }
+      ]
+    },
+    {
       "run": 40344497930,
       "head_sha": "2a81095f744193451800ef178c9a7ae7314dd2dc",
       "status": "in_progress",
@@ -1725,14 +1775,14 @@
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "One bounded fixed-clock signal repair and complete original-class DRC"
+            "Permanent complete summary and authenticated archive publication"
           ]
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-26T17:25:52.093551+00:00",
+    "observed_at": "2026-10-26T17:34:10.985341+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -1854,7 +1904,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-26T17:25:52.093551+00:00",
+  "local_workspace_verified_empty_at": "2026-10-26T17:34:10.985341+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -10726,6 +10776,179 @@
       "bytes": 4010,
       "sha256": "5a236ac956a00fc8bdef33afc5f3e15854c429cb325e955126b03580fd6c2f23",
       "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v66": [
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-artifacts.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "22369da19dcfe83c56ead8f7a1faf489598db5a0",
+      "bytes": 774,
+      "sha256": "4986fd12eed2ee7bc651e079485e027ffc9ca01b857e46d90f8b271dfa1a4f47",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-complete-pin-audit.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "cd6d72adffa5c883d1c2c63f5d94cc933d8683d6",
+      "bytes": 128045,
+      "sha256": "c632b40c438bc1c713dd2df489d63793b319da8f9591c5a5784de545684bff90",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-control-file-census.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "2128bc7b44dcdd393bce53cb1e99d8a2c52bda75",
+      "bytes": 962,
+      "sha256": "60625c9f612128818a693499dda694e88f10706fe90d5fc5c3230701318f911d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-imports.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "77e62dd4f266fe17949833551c250bb43022039a",
+      "bytes": 39634,
+      "sha256": "34edcc336309df63ae2fa853628f13e26776a72643ec3db99fe1cc1fe53b2f98",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-joblog.log",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "5a2a898a1e62f4c20640425c2a495585229ddba0",
+      "bytes": 471739,
+      "sha256": "6195ba2389b048a413f228ff7b9ae4d238528dfdda7b468eaec62e9a0ba040ff",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-jobs.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "e6fbaf7f4e7a2b718b8202dbb39258fe2c03cc80",
+      "bytes": 4735,
+      "sha256": "9a6e8a51ea583facb92a84665e5bcf420ff92dd8570ca037932da61d33a96913",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-physical.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "149fb4a2ffbb185daa871823d1bfb0ba6fe7c794",
+      "bytes": 8157,
+      "sha256": "235f8c73f866721a144495cbe4691e7b5aaf87f5f8fa92d66dc34cca643d88f1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-publication.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "057bfcb365004d8d70483a1cffccb298c20d44d2",
+      "bytes": 4321,
+      "sha256": "cea06c253a74f91122644610e28d5202137af124d4f7149f15b4211a4154f9a5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-receipt.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "dd3bb24cd22e00e1dd2cf4f5513528979307423f",
+      "bytes": 14165,
+      "sha256": "015553db8b7da2eabdb2b3743adbb757da1146ff747e606f2cbc3cc194eb2d3b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-run.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "e2be106cf432a85788f61c56371af07f66b26a5e",
+      "bytes": 13084,
+      "sha256": "8c896ae4bc59029ca63be5749f60e460f4e4d8ce00b41a1bd96cc8f6285bdae6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-runtime.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "d73a88a0015525c69447169caf449b1c9e1062d9",
+      "bytes": 69649,
+      "sha256": "d6ad2d613b4dce7cbb37ef1c6e88a590c52a92a2377f3ebc92bebff8c6c17161",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-source.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "5f682a380430843250296442d5d7413bf02c03a2",
+      "bytes": 6716,
+      "sha256": "b0f8c458fd95351474819344d0e8094d345cc321997bc98bc21cdaf7b254df80",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-tested-active-workflow.yml",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "c70f630167dfb1ebcd4d0d020ca4c45870781098",
+      "bytes": 9674,
+      "sha256": "6797fb01f512ae069fef5daf41b1f5a1d135376117827be81b26aaa6095c190f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-tested-methods.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "d6b25f3c0722cb88f76aa40ab4186a64bc9591dd",
+      "bytes": 60806,
+      "sha256": "12b3c7c55fe480ad90bdccd05b5ac18ab24ce64dd16678526b7add0b951a7cc7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-tested-template.yml",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "c70f630167dfb1ebcd4d0d020ca4c45870781098",
+      "bytes": 9674,
+      "sha256": "6797fb01f512ae069fef5daf41b1f5a1d135376117827be81b26aaa6095c190f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-controls-pass-20261026-topology.json",
+      "source": "fa07434c27430fe6d17b133b579af583bc6fe2fc",
+      "git_blob": "b68749d5982ab8829f787bb097f75b9abc146c81",
+      "bytes": 3711,
+      "sha256": "3650cecfd6957c0433b9facfe8146e209b3b25b829b5f5ccc0b00bf81786065a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-physical-activation-proposal-20261026.json",
+      "source": "ed5a79229fcef9650759777937e2e4efb4c691a6",
+      "git_blob": "d0115ace43b233499183d6396eae7fd494973532",
+      "bytes": 9942,
+      "sha256": "90f8781ae92529a50428e66bcd67cf2e1857432c04e08fdcb31e6474b3a208fa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-physical-activation-proposed-methods-20261026.json",
+      "source": "ed5a79229fcef9650759777937e2e4efb4c691a6",
+      "git_blob": "a85d13ea804e694a33ede1e03f42c68537a95297",
+      "bytes": 64059,
+      "sha256": "b86cefa07f64b25bd989df21ad541d5cba90fce5bae68faf4eb8d854ff33741c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-physical-root-activation-20261026.json",
+      "source": "504c4b94ab19532e0831daf496df4a9448678290",
+      "git_blob": "0413c06a8a0348fe9987f232daa32b732c7c50e3",
+      "bytes": 2223,
+      "sha256": "e6fb3b79a1d0b2c6db55ca9746e887e6fb345a3cdac0d9de85cf5c72c7790f4e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-input-relocation-physical-native-dispatch-20261026.json",
+      "source": "abb2027783476f7fc22f0fa5e381062f04b89f58",
+      "git_blob": "3a0954cc2e16aa7c4e19155358b66f3e135bb6b9",
+      "bytes": 18187,
+      "sha256": "d2ba8bd8daa02a4b7f3369851327cefcd1f49d8eec45e90619e6e240d874c76a",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v66": [
+    {
+      "run": 40369539200,
+      "source": "504c4b94ab19532e0831daf496df4a9448678290",
+      "release": 424559937,
+      "tag": "cloud-results-40369539200-1-cdr-v59-tail-access-physical",
+      "draft": false,
+      "prerelease": true,
+      "make_latest": false
     }
   ]
 }
