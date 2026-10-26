@@ -1,0 +1,14 @@
+name: tx-phase-reset334-tail-m4-rc-cloud
+on:
+  push:
+    branches:
+      - codex/register-pll-tail-m4-rc-20261026
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Register manual fresh PLL tail M4 RC workflow
+        run: printf '%s\n' 'Manual workflow registry only; no checkout, tests, archives or CAD.'
