@@ -1,0 +1,197 @@
+name: CDR v59 saved native identity readback
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        description: Read the separately authorized immutable saved GDS and LVS identities
+        type: boolean
+        required: true
+        default: false
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-v59-tail-saved-identity-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact initialization closure and real isolated imports
+        run: python scripts/check_cdr_v59_tail_saved_identity_imports.py
+      - name: Original full-data rejection and semantic identity controls
+        run: python scripts/check_cdr_v59_tail_saved_identity.py
+      - name: Real full-member archive and reserved publication fixtures
+        run: python scripts/check_cdr_v59_tail_saved_identity_transport.py
+      - name: Frozen ownership and launcher persistence controls
+        run: python scripts/check_cdr_v59_tail_saved_identity_runtime.py
+      - name: Exact source reservation and read-only waiter controls
+        run: |
+          python - <<'PY'
+          import sys
+          sys.path.insert(0,'scripts')
+          import cdr_v59_tail_saved_identity as s
+          import ensure_cloud_tested_source_release as release
+          import wait_cloud_tested_source_release as waiter
+          assert s.methods()['source_controls_authorized'] is True
+          out=s.ROOT/'hw/soc/out/cdr-v59-tail-saved-identity-release-controls'
+          out.mkdir(parents=True,exist_ok=False)
+          result={'status':'RUNNING_RELEASE_CONTROLS'}
+          s.write(out/'result.json',result)
+          try:
+              result['reservation']=release.controls()
+              result['waiter']=waiter.controls()
+              result['status']='PASS_SOURCE_RESERVATION_AND_WAITER_CONTROLS'
+          except BaseException as error:
+              result.update(status='FAIL_RELEASE_CONTROLS',error=repr(error))
+              raise
+          finally:s.write(out/'result.json',result)
+          PY
+      - name: Admit all five complete records and exact counts
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          def read(name):
+              p=Path('hw/soc/out/cdr-v59-tail-saved-identity-'+name+'-controls/result.json')
+              assert p.is_file() and not p.is_symlink()
+              return json.loads(p.read_text())
+          x=read('source')
+          assert x['status']=='PASS_SOURCE_AND_ADMISSION'
+          assert (x['source']['positive_count'],x['source']['refusal_count'])==(4,32)
+          assert x['source']['synthetic_native_identity_only'] is True
+          assert x['raw_diagnostic']['status']=='PASS_COMPLETE_RAW_DIAGNOSTIC_BEFORE_UNCHANGED_GUARD'
+          assert (x['raw_diagnostic']['positive_count'],x['raw_diagnostic']['refusal_count'])==(2,15)
+          assert x['raw_diagnostic']['actual_frozen_raw_record_and_hierarchy_functions_used'] is True
+          assert x['raw_diagnostic']['real_JSON_persistence_before_actual_guard'] is True
+          assert x['admission']['positives']==2 and len(x['admission']['refusals'])==12
+          x=read('transport')
+          assert x['status']=='PASS_TRANSPORT_CONTROLS'
+          assert len(x['archive']['positives'])==1 and len(x['archive']['refusals'])==6
+          assert len(x['publication']['positives'])==4 and len(x['publication']['refusals'])==14
+          assert x['lifecycle']['status']=='PASS_ACTUAL_OUTER_MAIN_LIFECYCLE_CONTROLS'
+          assert (x['lifecycle']['positive_count'],x['lifecycle']['refusal_count'])==(1,4)
+          assert len(x['lifecycle']['cases'])==5
+          x=read('import')
+          assert x['status']=='PASS_SAVED_IDENTITY_INITIAL_IMPORT_CONTROLS'
+          assert (x['positive_count'],x['refusal_count'])==(2,9)
+          assert len(x['closure']['modules'])==14 and x['closure']['initialization_data_reads']==[]
+          x=read('runtime')
+          assert x['status']=='PASS_QUALIFIED_RUNTIME_AND_WRITER_DEPENDENCY_CONTROLS'
+          assert len(x['supervisor']['controls'])==13
+          assert len(x['launcher']['positive'])==2 and len(x['launcher']['rejected'])==9
+          assert len(x['all11_launcher_results_saved'])==11
+          assert x['original_missing_writer_reproduced']['result_missing'] is True
+          assert x['corrected_exit127_saved']['returncode']==127
+          x=read('release')
+          assert x['status']=='PASS_SOURCE_RESERVATION_AND_WAITER_CONTROLS'
+          assert len(x['reservation']['rejected'])==17
+          assert len(x['waiter']['positive_cases'])==3 and len(x['waiter']['rejected'])==4
+          PY
+      - name: Emit exact complete or partial control bytes
+        if: always()
+        run: |
+          python - <<'PY'
+          import ast,base64,hashlib,json
+          from pathlib import Path
+          source=Path('scripts/cloud_cdr_v59_binding_rc.py')
+          assert source.is_file() and not source.is_symlink()
+          raw=source.read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'
+          nodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit']
+          assert len(nodes)==1
+          scope=dict(base64=base64,hashlib=hashlib,json=json)
+          exec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)
+          names=('source','transport','import','runtime','release')
+          assert len(set(names))==len(names)==5
+          emitted=[];missing=[]
+          for name in names:
+              folder=Path('hw/soc/out/cdr-v59-tail-saved-identity-'+name+'-controls')
+              assert not folder.is_symlink() and (not folder.exists() or folder.is_dir())
+              path=folder/'result.json'
+              assert not path.is_symlink()
+              if not path.exists():
+                  missing.append(name)
+                  continue
+              assert path.is_file()
+              scope['emit'](path,'CDR_SAVED_IDENTITY_CONTROL_'+name.upper())
+              emitted.append(dict(name=name,bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+          print('CDR_SAVED_IDENTITY_CONTROL_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,missing_files_created=False),sort_keys=True),flush=True)
+          PY
+      - name: Full control evidence fallback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-saved-identity-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: hw/soc/out/cdr-v59-tail-saved-identity-*-controls
+  readback:
+    if: ${{ inputs.readback }}
+    needs: source-controls
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-22.04
+    timeout-minutes: 100
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Read-only exact-source reservation before dependency setup
+        run: python scripts/cloud_cdr_v59_tail_saved_identity.py --preflight
+      - name: Qualified pinned AppImage for read-only KLayout APIs
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2 tcl8.6
+          curl --fail --location --retry 4 https://github.com/librelane/librelane/releases/download/3.0.5/librelane-devshell-x86_64.AppImage -o "$RUNNER_TEMP/librelane.AppImage"
+          echo "d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466  $RUNNER_TEMP/librelane.AppImage" | sha256sum --check
+          chmod +x "$RUNNER_TEMP/librelane.AppImage"
+          echo "CLOUD_APPIMAGE=$RUNNER_TEMP/librelane.AppImage" >> "$GITHUB_ENV"
+      - name: Complete saved native identity acquisition and evidence publication
+        run: python scripts/cloud_cdr_v59_tail_saved_identity.py
+      - name: Preserve pre-driver failure truthfully
+        if: always()
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          out=Path('hw/soc/out/cloud-cdr-v59-tail-saved-identity')
+          assert not out.is_symlink()
+          out.mkdir(parents=True,exist_ok=True)
+          p=out/'result.json'
+          assert not p.is_symlink()
+          if not p.exists():
+              p.write_text(json.dumps(dict(status='FAIL_BEFORE_SAVED_IDENTITY_DRIVER_RESULT',
+                source_head=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),
+                run_attempt=int(os.environ['GITHUB_RUN_ATTEMPT']),original_failure_preserved=True,
+                read_only_identity_verified=False,geometry_generated=False,extraction_executed=False,
+                simulation_executed=False,physical_accepted=False,electrical_accepted=False,
+                qualified_pex=False,full_phy_accepted=False,automatic_retry=False),indent=2)+'\n')
+          PY
+      - name: Complete or partial saved identity evidence fallback
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-saved-identity-full-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            hw/soc/out/cloud-cdr-v59-tail-saved-identity
+            hw/soc/out/cloud-cdr-v59-tail-saved-identity-publication

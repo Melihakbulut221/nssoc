@@ -1,0 +1,154 @@
+{
+  "schema": "bounded-independent-source-review-v1",
+  "reviewer": "pll_handoff",
+  "reviewed_source": "8bf6c78115bd38ff4f1b5a83fa3a15770dcfb9c7",
+  "initial_reviewed_source": "300a37f703291de1a37feb387f23ff29840c2b23",
+  "verdict": "CLEAR_BOUNDED_CORRECTED_SOURCE_ONLY",
+  "statement": "Bounded corrected ownership and raw-wire API source review CLEAR at 8bf6c78115bd38ff4f1b5a83fa3a15770dcfb9c7. Both identified census blockers are closed: all-block ITerm/BTerm maps reconcile connected IDs and owners exactly, disconnected terminals retain owner=None and original geometry ordinals, and block metal fills are projected as immutable unowned material using the exact native getRect()/layer/ID/mask/OPC APIs. The actual collect() fixture uses the complete explicitly synthetic 143820-net/153130-instance census: one pristine eligible baseline, separate overlapping unowned ITerm/BTerm/fill refusals and missing-connected census refusal. Independently authenticated all eleven pinned primary snapshots, 413994 bytes, against exact OpenROAD dcf36133a369abc8f3c5e5738cd4d82e4903c0e0. Raw opcode/operand projection matches dbWireShapeItr, getPrevPoint and dbShape::setSegment, including sticky RULE width, wrong-way transverse width versus default endpoint extension, initial coordinates, explicit extension, colinear cancellation, junction layer walk and via component multiplicity. Native getCoord validates coordinates only. Exact SWIG mappings support two-item Point returns, vector<pair<layer*,Rect>>, Point& transforms and Rect& fill outputs. project_wire, previous_point, segment and all five original native helper functions remain AST-identical after correction. Child blocks now refuse explicitly. No additional concrete blocker in this bounded scope; authored controls and native applicability have not been executed by this review.",
+  "reviewed_candidate_files": {
+    "scripts/mainchip_two_signal_geometry.py": {
+      "bytes": 13738,
+      "sha256": "209bc0a6eb847a628cc5fca5d0b2778e2138016cfbc189b226c2aebeb2da8d00",
+      "scope": "complete source"
+    },
+    "scripts/mainchip_two_signal_ownership_native.py": {
+      "bytes": 14135,
+      "sha256": "e786920dd82626e9799bae94b89619d8bd61a1bd88608caa1d7fd31f42a17436",
+      "scope": "complete source"
+    },
+    "scripts/check_mainchip_two_signal_repair.py": {
+      "bytes": 29720,
+      "sha256": "431b6622c213dfb53f9d6adab8bfaab5a7c0e8403ba8ee9c8fc3bbcd90b7a33b",
+      "scope": "disconnected_pin_controls only"
+    }
+  },
+  "exact_primary_revision": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "primary_snapshots_byte_equal_to_upstream": {
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/include/odb/db.h": {
+      "bytes": 272666,
+      "sha256": "142810acc2b0495b10c988b59e4d450e54dc27b2569687391588bfe1fad78bda"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/include/odb/dbShape.h": {
+      "bytes": 15686,
+      "sha256": "6d5deff3d0969e27c74010e1ce90c5c0371d087d9a482e1cfb42b5d5eb2118a1"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/db/dbITerm.cpp": {
+      "bytes": 23081,
+      "sha256": "4fcf1642a4b50648e392232bd93ee1be8f550837f2e8d14b9c64c4cdd1c16e6c"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/db/dbTransform.cpp": {
+      "bytes": 8461,
+      "sha256": "02c4fb424e9ba0b9db47e5e7ed0cfb4968f0db0b12105848e200332c2b92643f"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/db/dbWire.cpp": {
+      "bytes": 28655,
+      "sha256": "d69448584d7fd0f251ce58bdbe1a08f611465b70682cffc7725c7d122ee8f229"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/db/dbWireCodec.cpp": {
+      "bytes": 35756,
+      "sha256": "d748d0398c2b5062b528300fccf1810bb6d88ab0c3b227b370ed0db127629bdf"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/db/dbWireOpcode.h": {
+      "bytes": 5569,
+      "sha256": "10d67bbc05ea58be52df54603d9e6fb7b859fa799ab9c5ffbc31e2cd54f5743a"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/db/dbWireShapeItr.cpp": {
+      "bytes": 7771,
+      "sha256": "4338ae24b1fd6f4decc84b9e704b3a8faaa39af7a3978ec7576c91a6c175464f"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/swig/common/containers.i": {
+      "bytes": 3225,
+      "sha256": "91fb4249ac32658a8765ed0a2e2ad0b58ddc213cb1fce4829175785ee3ebb1fa"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/swig/common/odb.i": {
+      "bytes": 2787,
+      "sha256": "3083e86b4dec8286c00a6e0720755b115612ea626d2a1b62582f9fa23c5fcb34"
+    },
+    "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/swig/python/dbtypes.i": {
+      "bytes": 10337,
+      "sha256": "5ce9798bad0c1bce78b13d4dd0c934b90b02e41162f1641e78ccd3b08e9886db"
+    }
+  },
+  "additional_primary_source_reads": {
+    "src/odb/src/swig/common/dbtypes_common.i": {
+      "bytes": 746,
+      "sha256": "294a71cf3ac647c76aca42b956bf60bc9325f0805246aa52c7df57f6bae970fb"
+    },
+    "src/odb/src/swig/python/dbenums.i": {
+      "bytes": 55840,
+      "sha256": "73164e2e8bf85405f66a8bf25f9d4cc07d55854c301be058e24c0c245b31b83a"
+    },
+    "src/odb/include/odb/dbWireCodec.h": {
+      "bytes": 19058,
+      "sha256": "15a507c9f1381b21c4d4d595df6ad2807e7f29284a57ecbd0094c0e125bba474"
+    },
+    "src/odb/src/db/dbTechLayerRule.cpp": {
+      "bytes": 6783,
+      "sha256": "867b81846118431a16a831bbc6116a3aca33a28819bb3195abaed04b9124e620"
+    },
+    "src/odb/include/odb/geom.h": {
+      "bytes": 33288,
+      "sha256": "839f053193fbca30e7f97a2f9887eba64937e4036b104abc1306f3a7740b08b5"
+    },
+    "src/odb/src/db/dbMaster.cpp": {
+      "bytes": 19971,
+      "sha256": "35c0bd32522b2a7f43fd4c470b5c1f3290588ff3360e0c4f53ca257e34bc5970"
+    },
+    "src/odb/include/odb/dbTransform.h": {
+      "bytes": 3325,
+      "sha256": "bdefe7f6fd3270728c8f68986b06197e0da500bc23c73e00fa14b6f10cc9ea4a"
+    },
+    "src/odb/src/db/dbBlock.cpp": {
+      "bytes": 111323,
+      "sha256": "e296d6540cb3e82991c133ac3c2244c4e4cad9cb783630d4e7643c17a82fc296"
+    },
+    "src/odb/src/db/dbDatabase.cpp": {
+      "bytes": 26206,
+      "sha256": "1a297b936a3c1e5b1d63d22e1d15b7233283359399437a75155daf3f06457b80"
+    },
+    "src/odb/src/db/dbMPin.cpp": {
+      "bytes": 4263,
+      "sha256": "fadc5668d56d1617c8ae5fc10de3d6bc6e3610ff121c77b452117c2e3b6c1917"
+    },
+    "src/odb/src/db/dbBPin.cpp": {
+      "bytes": 7277,
+      "sha256": "6e01f2bed04912f518189bc221e7d6ba417bc4d25aaff69e8fe15eb82627a0a9"
+    },
+    "src/odb/src/db/dbFill.cpp": {
+      "bytes": 3365,
+      "sha256": "8ee67bb5af70413617d0f3046825e76ef68e60079bda2ee90fec06eb6c68611c"
+    }
+  },
+  "findings": [
+    {
+      "id": "disconnected_native_terminals_omitted",
+      "initial_source": "300a37f703291de1a37feb387f23ff29840c2b23",
+      "severity": "source correctness blocker",
+      "evidence": "collect traversed only per-net ITerm/BTerm sets; exact dbITerm::getNet returns nullptr for disconnected terminals. Block collections expose all terminals.",
+      "resolution_source": "8bf6c78115bd38ff4f1b5a83fa3a15770dcfb9c7",
+      "resolution": "Connected maps reconcile against both block terminal sets; disconnected geometry retains owner=None and original ordinal. Actual collect fixture covers ITerm, BTerm and missing connected census."
+    },
+    {
+      "id": "native_metal_fill_omitted",
+      "initial_source": "300a37f703291de1a37feb387f23ff29840c2b23",
+      "severity": "source correctness blocker",
+      "evidence": "dbBlock::getFills/dbFill is a separate metal-shape collection, not any net/obstruction collection. Prior collect neither enumerated it nor proved zero.",
+      "resolution_source": "8bf6c78115bd38ff4f1b5a83fa3a15770dcfb9c7",
+      "resolution": "Exact fill rectangle/layer/native ID/mask/OPC retained as metal-fill with owner=None, including immutable digest and actual collect overlapping-fill fixture."
+    }
+  ],
+  "authored_collector_control_counts": {
+    "positive": 1,
+    "refusal": 4
+  },
+  "review_limits": [
+    "No authored functions/imports/tests executed",
+    "No native OpenROAD, database, archive, waveform, GDS or local project files read or written",
+    "No actual native geometry/pin/fill census acquired",
+    "No assumption current database contains disconnected pins or fills",
+    "No routing planner/native repair/controller/publication review",
+    "No full 375-pin closure repetition",
+    "No native routing guide or ownership fact inferred from equal ODB bytes",
+    "No dispatch, activation, routing eligibility or physical/electrical acceptance granted"
+  ]
+}

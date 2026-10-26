@@ -1,0 +1,153 @@
+{
+  "status": "AUTHORED_SOURCE_ONLY_NOT_EXECUTED",
+  "base_source": "fa4b1b5ebc9222fb401b9cbf4e955fd2e21098c2",
+  "admission": {
+    "original_path": "scripts/tx_phase_reset334_avss18_loaded_admission.py",
+    "original_sha256": "4e50336031994b06f92e2e6601bf6eb6273c4ab893fa1dda235d9ace4f53b0b2",
+    "generated_sha256": "8c5fbd6acdc52a26e89f7871bf5dbe565dd2ada95467c81a3edf40a44c1fc643",
+    "edits": [
+      {
+        "before": "Authenticate the complete current AVSS18 RC capsule; no CAD or simulation.",
+        "after": "Authenticate all3181 current M4 RC files and the exact native3165 view; no CAD or simulation.",
+        "count": 1
+      },
+      {
+        "before": "import tx_phase_reset334_avss18_rc_admission as physical",
+        "after": "import tx_phase_reset334_tail_m4_rc_admission as physical",
+        "count": 1
+      },
+      {
+        "before": "SOURCE={'run': 40217002155, 'job': 121240388714, 'head': '881493acb2670dae88b821c45a697f3215df5aeb', 'release': 423554242, 'group': 'tx-phase-reset334-avss18-rc', 'summary': '00ec7ddda92e1545bf6495a6e75287e85ba956a25fd0ced4f9754bbc4c79e067'}",
+        "after": "SOURCE={'run': 40389279496, 'job': 121806403483, 'head': '7cce8a3f959fe2c71452c757296d3951f857bedf', 'release': 424685864, 'group': 'tx-phase-reset334-tail-m4-rc', 'summary': '06db4d7a1bd50396e449c11e5c08660c619db7c5655003f731e23e6e610310cb'}",
+        "count": 1
+      },
+      {
+        "before": "ASSETS={'summary': {'id': 675684027, 'name': 'tx-phase-reset334-avss18-rc-40217002155-1.summary.json', 'size': 2408543, 'sha256': '00ec7ddda92e1545bf6495a6e75287e85ba956a25fd0ced4f9754bbc4c79e067'}, 'parts': {'id': 675684139, 'name': 'tx-phase-reset334-avss18-rc-40217002155-1.parts.json', 'size': 868, 'sha256': '3c5e1d2587387c2ffd134f7f6e0edad7ba3e4db65e8cc1b11ade0f60d3ed4a2c'}, 'archive': {'id': 675684628, 'name': 'tx-phase-reset334-avss18-rc-40217002155-1.tar.gz.part0000', 'size': 70182061, 'sha256': 'cef352f2e67fb8bd01413fc91c31b66895961ccc4101311a9e2fd94adff3b7ed'}}",
+        "after": "ASSETS={'summary': {'id': 679269684, 'name': 'tx-phase-reset334-tail-m4-rc-40389279496-1.summary.json', 'size': 3091157, 'sha256': '06db4d7a1bd50396e449c11e5c08660c619db7c5655003f731e23e6e610310cb'}, 'native': {'id': 679270543, 'name': 'native-RC-result.json', 'size': 2485576, 'sha256': '0da5676f4b4b9cabaf4119a8cb94492e5f0d8d6f5686ae0633d51a51562ff240'}, 'parts': {'id': 679269844, 'name': 'tx-phase-reset334-tail-m4-rc-40389279496-1.parts.json', 'size': 874, 'sha256': 'a8aa64ca1aa1e4af91e1a1082439bb3a5ac80454f985bffc81564fa2e1d70bad'}, 'archive': {'id': 679270999, 'name': 'tx-phase-reset334-tail-m4-rc-40389279496-1.tar.gz.part0000', 'size': 125252895, 'sha256': '1973a6c4f6e5707d035d88e5dc5c48ddf7ec3b988b3f787df0f49a384e8dd8d0'}}",
+        "count": 1
+      },
+      {
+        "before": "MODELS={'p': 'bfe98e32e29aacd8defbb46eed28a62286bcc1513db0af1b6f8e1d514e1c8aa4', 'n': '1e5a2f72577c1923d06afa4e74f879ca2f8bd086581c1400188ff5ac7d95c975'}",
+        "after": "MODELS={'p': '474987ee48116c9ca825f526fa6eb36c66244307994c414c3dac7854afb63306', 'n': '75f73b6868707cdcc4386e7a41d2ee877344af7702cf412aa5e5d04edb5dda09'}",
+        "count": 1
+      },
+      {
+        "before": "SUMMARY='docs/evidence/tx-phase-reset334-avss18-rc-native-full-result-20261025.json'",
+        "after": "SUMMARY='docs/evidence/tx-phase-reset334-tail-M4-RC-native-pass-20261026-summary.json'\nNATIVE='docs/evidence/tx-phase-reset334-tail-M4-RC-native-pass-20261026-native-result.json'",
+        "count": 1
+      },
+      {
+        "before": "ROOT_NAME='cloud-tx-phase-reset334-avss18-rc'",
+        "after": "ROOT_NAME='cloud-tx-phase-reset334-tail-m4-rc'",
+        "count": 1
+      },
+      {
+        "before": "def snapshot():\n    raw=(ROOT/SUMMARY).read_bytes()\n    assert len(raw)==ASSETS['summary']['size']and digest(raw)==SOURCE['summary']\n    r=json.loads(raw);validate(r);return raw,r",
+        "after": "def native_snapshot():\n    raw=(ROOT/NATIVE).read_bytes()\n    assert len(raw)==ASSETS['native']['size']and digest(raw)==ASSETS['native']['sha256']\n    r=json.loads(raw);validate(r);return raw,r\n\ndef snapshot():\n    raw=(ROOT/SUMMARY).read_bytes()\n    assert len(raw)==ASSETS['summary']['size']and digest(raw)==SOURCE['summary']\n    r=json.loads(raw);_,native=native_snapshot();validate_outer(r,native);return raw,r\n\ndef validate_outer(r,native):\n    validate(native)\n    assert (r['source_head'],r['run_id'],r['run_attempt'])==(SOURCE['head'],SOURCE['run'],1)\n    assert r['status']==native['status'] and r['native_result']==native\n    assert r['native_result_present']is True and r['native_result_raw_path']=='native-RC-result.json'\n    assert r['native_result_sha256']==ASSETS['native']['sha256']and r['native_result_bytes']==ASSETS['native']['size']\n    for key in ('native_extraction_completed','both_orders_qualified','fresh_current_four_OP_and_original_loaded_waveforms_required','protected_sources_unchanged','original_electrical_rejection_preserved'):assert r[key]is True,key\n    for key in ('electrical_accepted','full_phy_accepted','simulation_executed','geometry_generation_executed','continuation_executed','zero_op_executed','old_R_rescaled'):assert r[key]is False,key\n    s=r['supervisor']\n    assert s['returncode']==0 and s['supervision_failure']is None and s['memory_read_error']is None\n    assert s['process_group_cleanup']['remaining_live']==[]\n    assert s['minimum_available_kib']==2097152 and s['maximum_group_rss_kib']==10485760\n    assert len(r['outputs'])==3180 and 'result.json'not in r['outputs']\n    native_view={p[len('native/'):]:h for p,h in r['outputs'].items()if p.startswith('native/')}\n    expected=dict(native['outputs']);expected['result.json']=ASSETS['native']['sha256']\n    assert len(expected)==3165 and native_view==expected\n    assert r['outputs']['native-RC-result.json']==ASSETS['native']['sha256']\n    for name,stage in (('fresh-intrinsic-result.json','intrinsic'),('fresh-two-order-result.json','precision')):\n        assert r['outputs'][name]==native['outputs'][name]==native['stages'][stage]['source_sha256']\n    physical_raw,physical_outer=physical.physical();native_raw,physical_native=physical.native_physical()\n    assert native['original_physical_source']==physical.SOURCE\n    full_physical=physical.expected_files(physical_outer)\n    assert len(full_physical)==631\n    assert all(r['outputs']['native/intrinsic/physical/'+p]==h for p,h in full_physical.items())\n    assert r['outputs']['native/intrinsic/physical/native/result.json']==digest(native_raw)\n    assert r['outputs']['native/intrinsic/physical/result.json']==digest(physical_raw)\n    return True",
+        "count": 1
+      },
+      {
+        "before": "'PASS_FRESH_AVSS18_334_EIGHT_MIM_BOTH_NATIVE_RC_ORDERS_REQUIRES_LOADED'",
+        "after": "'PASS_FRESH_TAIL_M4_334_EIGHT_MIM_BOTH_NATIVE_RC_ORDERS_REQUIRES_LOADED'",
+        "count": 1
+      },
+      {
+        "before": "len(r['outputs'])==2716",
+        "after": "len(r['outputs'])==3164",
+        "count": 1
+      },
+      {
+        "before": "'.github/workflows/tx-phase-reset334-avss18-rc-cloud.yml'",
+        "after": "'.github/workflows/tx-phase-reset334-tail-m4-rc-cloud.yml'",
+        "count": 1
+      },
+      {
+        "before": "def expected_files(r):\n    validate(r);expected=dict(r['outputs']);assert 'result.json'not in expected\n    expected['result.json']=SOURCE['summary'];assert len(expected)==2717\n    return expected",
+        "after": "def expected_files(r):\n    _,native=native_snapshot();validate_outer(r,native)\n    expected=dict(r['outputs']);assert 'result.json'not in expected\n    expected['result.json']=SOURCE['summary'];assert len(expected)==3181\n    return expected",
+        "count": 1
+      },
+      {
+        "before": "    p_raw,p=physical.physical()\n    assert(destination/'intrinsic/physical/result.json').read_bytes()==p_raw\n    for pol in ('p','n'):\n        base=destination/'precision'/pol\n        assert json.loads((base/'composition/composition.json').read_bytes())==r['polarities'][pol]['composition']\n        assert sha(base/'composition/reset334-wire.spice')==MODELS[pol]\n        assert json.loads((destination/'intrinsic/physical'/pol/'layout/result.json').read_bytes())==p['variants'][pol]['generation']\n    return r,p,dict(metadata=metadata,transport=parts,inventory=inventory,all2717_files_authenticated=True,original_electrical_rejection_preserved=True)",
+        "after": "    native_raw,native=native_snapshot();native_root=destination/'native'\n    assert(native_root/'result.json').read_bytes()==native_raw\n    assert(destination/'native-RC-result.json').read_bytes()==native_raw\n    p_raw,p_outer=physical.physical();p_native_raw,p_native=physical.native_physical()\n    assert(native_root/'intrinsic/physical/result.json').read_bytes()==p_raw\n    assert(native_root/'intrinsic/physical/native/result.json').read_bytes()==p_native_raw\n    for pol in ('p','n'):\n        base=native_root/'precision'/pol\n        assert json.loads((base/'composition/composition.json').read_bytes())==native['polarities'][pol]['composition']\n        assert sha(base/'composition/reset334-wire.spice')==MODELS[pol]\n        assert json.loads((native_root/'intrinsic/physical/native'/pol/'layout/result.json').read_bytes())==p_native['variants'][pol]['generation']\n    return native,p_native,dict(metadata=metadata,transport=parts,inventory=inventory,\n      outer_summary_sha256=SOURCE['summary'],native_summary_sha256=digest(native_raw),\n      complete_files=3181,native_view_files=3165,all3181_files_authenticated=True,\n      consumed_native_view='native',full_current_physical_files=631,\n      original_electrical_rejection_preserved=True)",
+        "count": 1
+      }
+    ],
+    "reversed_byte_exact": true
+  },
+  "adapter": {
+    "original_path": "scripts/tx_phase_reset334_avss18_loaded_adapter.py",
+    "original_sha256": "9494df4bbc881d36f3b991a82f57e6e03d6bdacb4d37580ebfcb2821a7419e1a",
+    "generated_sha256": "d8297aec6af353e0c15d233bb184197ee1ca96cfbb4ce73ef9874c447a6e3dcb",
+    "edits": [
+      {
+        "before": "import tx_phase_reset334_avss18_loaded_admission as admission",
+        "after": "import tx_phase_reset334_tail_m4_loaded_admission as admission",
+        "count": 1
+      },
+      {
+        "before": "base=destination/'authenticated-RC';binding=binding_context()",
+        "after": "base=destination/'authenticated-RC/native';binding=binding_context()",
+        "count": 1
+      },
+      {
+        "before": "def isolated(module,overrides):\n    \"\"\"New globals only: original code objects, defaults and modules remain untouched.\"\"\"\n    assert module.__name__ in ALLOWED and set(overrides)==ALLOWED[module.__name__]\n    ns=dict(vars(module));ns.update(overrides)\n    result=types.ModuleType(module.__name__+'_current_AVSS18')\n    result.__dict__.update(ns);ns=result.__dict__\n    ns['__name__']=module.__name__+'_current_AVSS18'\n    for name,fn in vars(module).items():\n        if isinstance(fn,types.FunctionType)and fn.__module__==module.__name__:\n            assert fn.__closure__ is None and name not in overrides\n            new=types.FunctionType(fn.__code__,ns,fn.__name__,fn.__defaults__)\n            new.__kwdefaults__=fn.__kwdefaults__;new.__annotations__=fn.__annotations__.copy()\n            ns[name]=new;assert new.__code__ is fn.__code__ and new.__globals__ is ns\n    assert all(vars(module)[k]is not overrides[k]for k in overrides if isinstance(overrides[k],types.ModuleType))\n    return result",
+        "after": "def isolated(module,overrides):\n    \"\"\"New globals only: original code objects, defaults and modules remain untouched.\"\"\"\n    assert module.__name__ in ALLOWED and set(overrides)==ALLOWED[module.__name__]\n    ns=dict(vars(module));ns.update(overrides)\n    result=types.ModuleType(module.__name__+'_current_TAIL_M4')\n    result.__dict__.update(ns);ns=result.__dict__\n    ns['__name__']=module.__name__+'_current_TAIL_M4'\n    for name,fn in vars(module).items():\n        if isinstance(fn,types.FunctionType)and fn.__module__==module.__name__:\n            assert fn.__closure__ is None and name not in overrides\n            new=types.FunctionType(fn.__code__,ns,fn.__name__,fn.__defaults__)\n            new.__kwdefaults__=fn.__kwdefaults__;new.__annotations__=fn.__annotations__.copy()\n            ns[name]=new;assert new.__code__ is fn.__code__ and new.__globals__ is ns\n    assert all(vars(module)[k]is not overrides[k]for k in overrides if isinstance(overrides[k],types.ModuleType))\n    return result",
+        "count": 1
+      },
+      {
+        "before": "def binding_context():return isolated(old_binding,dict(MODELS=dict(admission.MODELS)))",
+        "after": "def prior_four_tail_rejection():\n    path=ROOT/'docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.result.json'\n    raw=path.read_bytes()\n    assert len(raw)==1581863 and digest(raw)=='6138eeb8fcae24f1961324be4add303ba24cd0bd9a7fdf231bed59cbefae8293'\n    r=json.loads(raw)\n    assert r['run_id']==40323469809 and r['source_head']=='5a712e76807579a7736c24f602a204c481c001b7'\n    assert r['case']=='p-initial-high' and r['stage']=='initial'\n    assert r['status']=='REJECTED_PHYSICAL334_THREE_MODEL_ORIGINAL_LOADED_GATES'\n    assert r['full_capture']is True and r['native_process_saved']is False and r['native_exit_code']==0\n    assert r['electrical_screen_passed']is False and r['review']['passed']is False\n    h=r['review']['measurement']['hbt_safety'];failed={k:v for k,v in h.items()if not v['passed']}\n    assert len(h)==318 and set(failed)=={'xdut.xd75','xdut.xd83','xdut.xd98','xdut.xd105'}\n    assert r['review']['capture']['complete_unmodified_rows']is True\n    assert r['review']['capture']['end_s']==34e-9\n    assert r['review']['gate']['original_first_fall_limit_s']==62.5e-12\n    return dict(path=str(path.relative_to(ROOT)),sha256=digest(raw),run=r['run_id'],source=r['source_head'],\n      status=r['status'],all_four_failed_HBT_records=failed,original_complete_review=r['review'],\n      complete_capture_preserved=True,original_electrical_rejection_unchanged=True,\n      no_previous_capture_used_as_new_model_result=True)\n\ndef binding_context():return isolated(old_binding,dict(MODELS=dict(admission.MODELS)))",
+        "count": 1
+      },
+      {
+        "before": "original,parent=original_rejections();write(destination/'original-loaded-rejection.json',original)",
+        "after": "original,parent=original_rejections();write(destination/'original-loaded-rejection.json',original)\n    four=prior_four_tail_rejection();write(destination/'prior-four-tail-rejection.json',four)",
+        "count": 1
+      },
+      {
+        "before": "original17_HBT_rejection=original,simulator_invoked=False,new_extraction=False)",
+        "after": "original17_HBT_rejection=original,prior_four_tail_rejection=four,simulator_invoked=False,new_extraction=False)",
+        "count": 1
+      },
+      {
+        "before": "proof=dict(status='PASS_CURRENT_AVSS18_BINDING_PREPARATION_AND_RUNTIME_PATHS_NOT_ELECTRICAL',current_RC=transport,",
+        "after": "proof=dict(status='PASS_CURRENT_TAIL_M4_BINDING_PREPARATION_AND_RUNTIME_PATHS_NOT_ELECTRICAL',current_RC=transport,",
+        "count": 1
+      },
+      {
+        "before": "path_controls=path_proof,original17_HBT_rejection=original,original_parent_TX_rejection=parent,all_prepared_files=manifest,",
+        "after": "path_controls=path_proof,original17_HBT_rejection=original,prior_four_tail_rejection=four,original_parent_TX_rejection=parent,all_prepared_files=manifest,",
+        "count": 1
+      }
+    ],
+    "reversed_byte_exact": true
+  },
+  "controller": {
+    "original_path": "scripts/cloud_tx_phase_reset334_zero_op.py",
+    "original_sha256": "096f78daa2eca069eda8fb96624dac2cb7abf16f554dfa7459c680b2d6bb757e",
+    "context_path": "scripts/cloud_tx_phase_reset334_avss18_loaded.py",
+    "context_sha256": "a910d4a068e6a936034ec62b2ddec84d1c78ca7a686503c31592efa91368f62b",
+    "generated_full_program_sha256": "804b944769b6ff44c2913a311e9de6f8dfe5dd4a633ea2d2eed9189784f6071b",
+    "one_original_preparation_replacement": {
+      "OLD": "        prior_raw,prior=prerequisite(m['qualified_adapter'])\n        (OUT/'qualified-adapter.summary.json').write_bytes(prior_raw)\n        spec=initialization.PREPARATION\n        old=preparation.api('actions/runs/'+str(spec['run']))\n        assert old['head_sha']==spec['head']and old['run_attempt']==1 and old['status']=='completed'and old['conclusion']=='success'\n        summary_raw=preparation.asset(spec['summary_asset'],spec['summary_sha256'])\n        summary=json.loads(summary_raw);(OUT/'preparation.summary.json').write_bytes(summary_raw)\n        labels=[s+'-initial-'+h for s in ('p','n')for h in ('high','low')]\n        selected=['cases/'+label+'/'+name for label in labels for name in ('bench.cir','contract.json')]\n        selected+=['qualified-binding/qualified-rc/'+s+'/composition/reset334-wire.spice'for s in ('p','n')]\n        restored,restore_proof=reports.restore_report('tx-phase-reset334-loaded-preparation',spec['run'],\n          spec['summary_sha256'],spec['parts_sha256'],OUT/'prepared',selected)\n        assert restored==summary;r['prepared_archive']=restore_proof\n        cases={label:((OUT/'prepared/cases'/label/'bench.cir').read_text(),\n          json.loads((OUT/'prepared/cases'/label/'contract.json').read_bytes()))for label in labels}\n        model_paths={s:OUT/'prepared/qualified-binding/qualified-rc'/s/'composition/reset334-wire.spice'for s in ('p','n')}\n        models={s:p.read_text()for s,p in model_paths.items()}\n        r['path_controls']=checker.positive_paths(cases,summary_raw,models)\n        assert len(r['path_controls']['negative_controls'])==32\n        a=initialization.adapters()\n        for label,(deck,contract)in cases.items():\n            assert prior['cases'][label]['actual_HBT_names']==a.targets(contract)\n            assert prior['cases'][label]['base_deck_sha256']==initialization.digest(deck)\n            assert prior['cases'][label]['initialized_deck_sha256']==initialization.digest(a.initialized_deck(deck,contract))\n        r['original_parent_TX_rejection']=summary['original_parent_TX_rejection']\n        assert not r['original_parent_TX_rejection']['electrical_screen_passed']\n",
+      "NEW": "        cases,summary_raw,models,model_paths,current_proof=_current_inputs(OUT,r)\n        summary=json.loads(summary_raw)\n        r['path_controls']=current_proof['path_controls']\n        assert len(r['path_controls']['negative_controls'])==32\n        a=initialization.adapters()\n        r['original_parent_TX_rejection']=summary['original_parent_TX_rejection']\n        assert not r['original_parent_TX_rejection']['electrical_screen_passed']\n"
+    },
+    "all_other_functions_AST_identical": [
+      "sha",
+      "write",
+      "methods",
+      "source_controls",
+      "validate_prerequisite",
+      "prerequisite",
+      "prerequisite_controls"
+    ],
+    "reversed_byte_exact": true
+  },
+  "source_hashes": {
+    "scripts/tx_phase_reset334_tail_m4_loaded_admission.py": "8c5fbd6acdc52a26e89f7871bf5dbe565dd2ada95467c81a3edf40a44c1fc643",
+    "scripts/tx_phase_reset334_tail_m4_loaded_adapter.py": "d8297aec6af353e0c15d233bb184197ee1ca96cfbb4ce73ef9874c447a6e3dcb",
+    "scripts/cloud_tx_phase_reset334_tail_m4_loaded.py": "0c0d151f840f677fe5d08f50e123f48907dbd03e361dddc9cb2bd4f754acafa4"
+  },
+  "no_authored_imports_or_tests": true,
+  "no_archive_or_native_execution": true
+}

@@ -1,0 +1,204 @@
+{
+  "API_notes": [
+    "Shape.polygon is a read-only property converting boxes to typed polygons; explicit is_box/is_polygon excludes paths.",
+    "Polygon(Box) uses integer coordinates; holes(), num_points_hull(), is_box() and typed equality bind the exact rectangle, not area.",
+    "Raw syntax requires the precise four ordered rectangle corners before native conversion; self-intersections/extra vertices are rejected."
+  ],
+  "actual_diagnostic_failure_preserved": true,
+  "actual_diagnostic_run": 40392469979,
+  "authorization": false,
+  "changed_old_paths": {
+    ".github/workflow-templates/cdr-v59-tail-saved-identity-cloud.yml": {
+      "after": "7a98e197ab3cdbb19b9b65eab26c6c61033a28bf60a8fc124033581c405f84cd",
+      "before": "53294a6fe573718df975a4f3f1ec8e0e1db85b4bd0b032811ba8a08254886051",
+      "diff": "--- .github/workflow-templates/cdr-v59-tail-saved-identity-cloud.yml@parent\n+++ .github/workflow-templates/cdr-v59-tail-saved-identity-cloud.yml@candidate\n@@ -71,6 +71,12 @@\n           assert x['source']['synthetic_native_identity_only'] is True\n           assert x['raw_diagnostic']['status']=='PASS_COMPLETE_RAW_DIAGNOSTIC_BEFORE_UNCHANGED_GUARD'\n           assert (x['raw_diagnostic']['positive_count'],x['raw_diagnostic']['refusal_count'])==(2,15)\n+          assert x['serialization']['status']=='PASS_SOURCE_BOUND17_SERIALIZATION_GUARD_CONTROLS'\n+          assert (x['serialization']['positive_count'],x['serialization']['refusal_count'])==(4,39)\n+          assert x['serialization']['actual_140_cell_raw_counter_JSON_used'] is True\n+          assert x['serialization']['actual_original_guard_invoked'] is True\n+          assert x['serialization']['native_geometry_API_explicitly_synthetic'] is True\n+          assert x['serialization']['actual_native_typed_geometry_validation_completed'] is False\n           assert x['raw_diagnostic']['actual_frozen_raw_record_and_hierarchy_functions_used'] is True\n           assert x['raw_diagnostic']['real_JSON_persistence_before_actual_guard'] is True\n           assert x['admission']['positives']==2 and len(x['admission']['refusals'])==12\n@@ -84,7 +90,7 @@\n           x=read('import')\n           assert x['status']=='PASS_SAVED_IDENTITY_INITIAL_IMPORT_CONTROLS'\n           assert (x['positive_count'],x['refusal_count'])==(2,9)\n-          assert len(x['closure']['modules'])==14 and x['closure']['initialization_data_reads']==[]\n+          assert len(x['closure']['modules'])==16 and x['closure']['initialization_data_reads']==[]\n           x=read('runtime')\n           assert x['status']=='PASS_QUALIFIED_RUNTIME_AND_WRITER_DEPENDENCY_CONTROLS'\n           assert len(x['supervisor']['controls'])==13\n"
+    },
+    ".github/workflows/cdr-v59-tail-saved-identity-cloud.yml": {
+      "after": "7a98e197ab3cdbb19b9b65eab26c6c61033a28bf60a8fc124033581c405f84cd",
+      "before": "53294a6fe573718df975a4f3f1ec8e0e1db85b4bd0b032811ba8a08254886051",
+      "diff": "--- .github/workflows/cdr-v59-tail-saved-identity-cloud.yml@parent\n+++ .github/workflows/cdr-v59-tail-saved-identity-cloud.yml@candidate\n@@ -71,6 +71,12 @@\n           assert x['source']['synthetic_native_identity_only'] is True\n           assert x['raw_diagnostic']['status']=='PASS_COMPLETE_RAW_DIAGNOSTIC_BEFORE_UNCHANGED_GUARD'\n           assert (x['raw_diagnostic']['positive_count'],x['raw_diagnostic']['refusal_count'])==(2,15)\n+          assert x['serialization']['status']=='PASS_SOURCE_BOUND17_SERIALIZATION_GUARD_CONTROLS'\n+          assert (x['serialization']['positive_count'],x['serialization']['refusal_count'])==(4,39)\n+          assert x['serialization']['actual_140_cell_raw_counter_JSON_used'] is True\n+          assert x['serialization']['actual_original_guard_invoked'] is True\n+          assert x['serialization']['native_geometry_API_explicitly_synthetic'] is True\n+          assert x['serialization']['actual_native_typed_geometry_validation_completed'] is False\n           assert x['raw_diagnostic']['actual_frozen_raw_record_and_hierarchy_functions_used'] is True\n           assert x['raw_diagnostic']['real_JSON_persistence_before_actual_guard'] is True\n           assert x['admission']['positives']==2 and len(x['admission']['refusals'])==12\n@@ -84,7 +90,7 @@\n           x=read('import')\n           assert x['status']=='PASS_SAVED_IDENTITY_INITIAL_IMPORT_CONTROLS'\n           assert (x['positive_count'],x['refusal_count'])==(2,9)\n-          assert len(x['closure']['modules'])==14 and x['closure']['initialization_data_reads']==[]\n+          assert len(x['closure']['modules'])==16 and x['closure']['initialization_data_reads']==[]\n           x=read('runtime')\n           assert x['status']=='PASS_QUALIFIED_RUNTIME_AND_WRITER_DEPENDENCY_CONTROLS'\n           assert len(x['supervisor']['controls'])==13\n"
+    },
+    "scripts/cdr_v59_tail_saved_identity_native.py": {
+      "after": "4eab1f31c2414b6061c72096405f9688d8c1f03c6f31cb0fd505c17bd0523510",
+      "before": "c28ccd4184134fa276937d799f26facf3d48377b478e9cb56b0ab826977a05c3",
+      "diff": "--- scripts/cdr_v59_tail_saved_identity_native.py@parent\n+++ scripts/cdr_v59_tail_saved_identity_native.py@candidate\n@@ -321,7 +321,10 @@\n       \"methods_sha256\":source.sha(source.METHOD)}\n     emit_raw_hierarchy_diagnostic(old_layout,new_layout,generation,source.ROOT/source.GENERATOR,\n       out/\"raw-hierarchy-diagnostic.json\",context)\n-    rawproof=raw_hierarchy_proof(old_layout,new_layout,generation,source.ROOT/source.GENERATOR)\n+    from cdr_v59_tail_serialized_additions import reproduce_original_failure,verify\n+    raw_rejection=reproduce_original_failure(raw_hierarchy_proof,old_layout,new_layout,generation,source.ROOT/source.GENERATOR)\n+    source.write(out/\"original-raw-guard-rejection.json\",raw_rejection)\n+    rawproof=verify(pya,properties,old_layout,new_layout,generation,source.ROOT/source.GENERATOR)\n     source.write(out/\"raw-hierarchy-proof.json\",rawproof)\n     # Reproduce the actual unmodified first failure at its exact original source assertion.\n     try:topology.compare([old[k] for k in (\"graph\",\"locations\",\"anchors\")],\n"
+    },
+    "scripts/check_cdr_v59_tail_saved_identity.py": {
+      "after": "e2b8947ccba486fd9c34707259622631efeeb7fc12b6db788b0d77313d208990",
+      "before": "7091c9172d22b5c2767083cd64101af5c46ad0ebe8a9c360ef17be78079437c3",
+      "diff": "--- scripts/check_cdr_v59_tail_saved_identity.py@parent\n+++ scripts/check_cdr_v59_tail_saved_identity.py@candidate\n@@ -321,6 +321,9 @@\n     try:\n         result[\"source\"]=controls();s.write(out/\"result.json\",result)\n         result[\"raw_diagnostic\"]=raw_diagnostic_controls();s.write(out/\"result.json\",result)\n+        import sys\n+        from check_cdr_v59_tail_serialized_additions import controls as serialization_controls\n+        result[\"serialization\"]=serialization_controls(sys.modules[__name__]);s.write(out/\"result.json\",result)\n         result[\"admission\"]=admission_controls();result[\"status\"]=\"PASS_SOURCE_AND_ADMISSION\"\n     except BaseException as error:\n         result.update(status=\"FAIL_SOURCE_AND_ADMISSION\",error=repr(error));raise\n"
+    },
+    "scripts/check_cdr_v59_tail_saved_identity_imports.py": {
+      "after": "76972d8f120cb468c1b70edb504cd682eb88479bc4e1f52fa4f405f12b85a409",
+      "before": "59a6237f73bde8f9ec3a56fa290dde05f12fd810b5a7f2c9aa0ef9bc33085dc6",
+      "diff": "--- scripts/check_cdr_v59_tail_saved_identity_imports.py@parent\n+++ scripts/check_cdr_v59_tail_saved_identity_imports.py@candidate\n@@ -14,8 +14,8 @@\n \n ENTRIES=(\"cloud_cdr_v59_tail_saved_identity\",\"cdr_v59_tail_saved_identity_native\",\n  \"check_cdr_v59_tail_saved_identity\",\"check_cdr_v59_tail_saved_identity_transport\",\n- \"check_cdr_v59_tail_saved_identity_runtime\")\n-DECLARED=[\"cdr_v59_tail_access_runtime\",\"cdr_v59_tail_access_topology\",\"cdr_v59_tail_saved_identity\",\"cdr_v59_tail_saved_identity_native\",\"check_cdr_v59_tail_saved_identity\",\"check_cdr_v59_tail_saved_identity_runtime\",\"check_cdr_v59_tail_saved_identity_transport\",\"cloud_cdr_v59_tail_saved_identity\",\"cloud_chunked_results\",\"cloud_verified_parts\",\"ensure_cloud_tested_source_release\",\"migrate_outputs_to_cloud\",\"run_cloud_tx_layout_repair\",\"wait_cloud_tested_source_release\"]\n+ \"check_cdr_v59_tail_saved_identity_runtime\",\"check_cdr_v59_tail_serialized_additions\",\"cdr_v59_tail_serialized_additions\")\n+DECLARED=[\"cdr_v59_tail_serialized_additions\",\"check_cdr_v59_tail_serialized_additions\",\"cdr_v59_tail_access_runtime\",\"cdr_v59_tail_access_topology\",\"cdr_v59_tail_saved_identity\",\"cdr_v59_tail_saved_identity_native\",\"check_cdr_v59_tail_saved_identity\",\"check_cdr_v59_tail_saved_identity_runtime\",\"check_cdr_v59_tail_saved_identity_transport\",\"cloud_cdr_v59_tail_saved_identity\",\"cloud_chunked_results\",\"cloud_verified_parts\",\"ensure_cloud_tested_source_release\",\"migrate_outputs_to_cloud\",\"run_cloud_tx_layout_repair\",\"wait_cloud_tested_source_release\"]\n \n def require(value,message):\n     if not value:raise AssertionError(message)\n"
+    },
+    "scripts/check_cdr_v59_tail_saved_identity_transport.py": {
+      "after": "e6996fa48fb16de0200a213d39939e0cfe161d17d0e33cfbd535d0d2f1de51dc",
+      "before": "bd5e0d35a526b760747d0ee75564cc47eebca9e696685bddb12709f6f13469ba",
+      "diff": "--- scripts/check_cdr_v59_tail_saved_identity_transport.py@parent\n+++ scripts/check_cdr_v59_tail_saved_identity_transport.py@candidate\n@@ -201,6 +201,8 @@\n                             s.write(out/\"original-identity.json\",{\"synthetic_partial\":True})\n                             s.write(out/\"raw-hierarchy-diagnostic.json\",{\"synthetic_runtime_transport\":True,\n                               \"qualified\":False,\"status\":\"DIAGNOSTIC_ONLY_BEFORE_UNCHANGED_RAW_HIERARCHY_ASSERTIONS\"})\n+                            s.write(out/\"original-raw-guard-rejection.json\",{\"synthetic_runtime_transport\":True,\n+                              \"original_guard_passed\":False,\"original_failure_preserved\":True})\n                             code=2\n                         else:\n                             for name in d.DIRECT:\n@@ -292,7 +294,7 @@\n                     assert binding[\"qualified_as_success\"] is (mode==\"complete\")\n                 if mode==\"complete\":\n                     assert result[\"status\"]==d.PASS and result[\"read_only_identity_verified\"] is True\n-                    assert len(publication[\"direct_asset_bindings\"])==len(d.DIRECT)+len(d.EXPORTS)==12\n+                    assert len(publication[\"direct_asset_bindings\"])==len(d.DIRECT)+len(d.EXPORTS)==13\n                 else:\n                     assert result[\"status\"]==expected_status and result[\"read_only_identity_verified\"] is False\n                     assert publication[\"failed_direct_outputs_preserved_as_raw_bytes\"] is True\n@@ -302,6 +304,9 @@\n                     diagnostic_binding=next(v for v in publication[\"direct_asset_bindings\"]\n                       if v[\"asset_suffix\"]==\"raw-hierarchy-diagnostic.json\")\n                     assert diagnostic_binding[\"qualified_as_success\"] is False\n+                    assert uploaded[stem+\".original-raw-guard-rejection.json\"]==(out/\"original-raw-guard-rejection.json\").read_bytes()\n+                    raw_binding=next(v for v in publication[\"direct_asset_bindings\"] if v[\"asset_suffix\"]==\"original-raw-guard-rejection.json\")\n+                    assert raw_binding[\"qualified_as_success\"] is False\n                     assert \"execute\" in result[\"traceback\"] and \"cloud_cdr_v59_tail_saved_identity.py\" in result[\"traceback\"]\n                 if mode==\"partial_json\":\n                     assert result[\"error\"].startswith(\"JSONDecodeError(\")\n"
+    },
+    "scripts/cloud_cdr_v59_tail_saved_identity.py": {
+      "after": "12efbc07d78be237b0ea00d6c8630d7f3e3abb3c5fb4c54905190d26a1042566",
+      "before": "f47617049e47971e26f0d6fda88bda409b6cc877dff5ba8049a6b875c98c58ff",
+      "diff": "--- scripts/cloud_cdr_v59_tail_saved_identity.py@parent\n+++ scripts/cloud_cdr_v59_tail_saved_identity.py@candidate\n@@ -24,7 +24,7 @@\n APP_SHA=\"d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466\"\n SECONDS={\"restore-complete-saved931-capsule\":1200,\"read-only-saved-native-identities\":1200}\n DIRECT=(\"archive-verification.json\",\"original-identity.json\",\"current-identity.json\",\n- \"raw-hierarchy-diagnostic.json\",\"raw-hierarchy-proof.json\",\"original-comparator-rejection.json\",\"identity-comparison.json\",\"acquired-witness-controls.json\")\n+ \"raw-hierarchy-diagnostic.json\",\"original-raw-guard-rejection.json\",\"raw-hierarchy-proof.json\",\"original-comparator-rejection.json\",\"identity-comparison.json\",\"acquired-witness-controls.json\")\n EXPORTS={side+\"-\"+name+\".json\":path for side,files in source.SIDES.items()\n  for name,path in files.items() if name in (\"inventory\",\"pins\")}\n PASS=\"PASS_SAVED_IDENTITY_READBACK_ORIGINAL_PHYSICAL_FAILURE_RETAINED\"\n"
+    }
+  },
+  "contract_path": "docs/evidence/cdr-v59-tail-serialized-additions-contract-20261026.json",
+  "contract_sha256": "d6b2d367bff2036d97e62b28d2bf37d8be1a878770b594ab8e0286a92c88205e",
+  "exact_original_raw_guard_preserved": true,
+  "fixture_scope": "Complete authenticated140-cell raw Counters and exact generation metadata; original frozen raw guard and production supplemental gate execute in hosted fixtures with explicitly synthetic typed-native API/hierarchy. Real native typed equality remains unexecuted.",
+  "full_proof_bytes": 22383249,
+  "full_proof_files": 37,
+  "full_terminal_receipt_path": "docs/evidence/cdr-v59-tail-saved-identity-raw-diagnostic-native-terminal-20261026-receipt.json",
+  "full_terminal_receipt_sha256": "cc3cd85ff804335aa4e5c4f1b6b287c8bd0f5cf0cd003129d496f152c2bbbe9d",
+  "native_derivation": {
+    "new": "    from cdr_v59_tail_serialized_additions import reproduce_original_failure,verify\n    raw_rejection=reproduce_original_failure(raw_hierarchy_proof,old_layout,new_layout,generation,source.ROOT/source.GENERATOR)\n    source.write(out/\"original-raw-guard-rejection.json\",raw_rejection)\n    rawproof=verify(pya,properties,old_layout,new_layout,generation,source.ROOT/source.GENERATOR)",
+    "old": "    rawproof=raw_hierarchy_proof(old_layout,new_layout,generation,source.ROOT/source.GENERATOR)",
+    "old_sha256": "c28ccd4184134fa276937d799f26facf3d48377b478e9cb56b0ab826977a05c3"
+  },
+  "new_paths": {
+    "docs/evidence/cdr-v59-tail-saved-identity-pre-serialization-native-20261026.py": {
+      "bytes": 23244,
+      "sha256": "c28ccd4184134fa276937d799f26facf3d48377b478e9cb56b0ab826977a05c3"
+    },
+    "docs/evidence/cdr-v59-tail-serialization-primary-klayout-v0.30.7/gsiDeclDbBox.cc": {
+      "bytes": 26488,
+      "sha256": "80e087dfcc401e2067c82a6d0ef46162785dd1022746a0da6ea1a68d656baffe"
+    },
+    "docs/evidence/cdr-v59-tail-serialization-primary-klayout-v0.30.7/gsiDeclDbPolygon.cc": {
+      "bytes": 102057,
+      "sha256": "272715c02b62919509812f3b49558ac8a8d93fd71fb7fbbe9d5ee4dfe51e1246"
+    },
+    "docs/evidence/cdr-v59-tail-serialization-primary-klayout-v0.30.7/gsiDeclDbShape.cc": {
+      "bytes": 79750,
+      "sha256": "d1dfd12e5aecfd7ef03550b0c49e2398f69b86410c7df51c31e736c720e6411d"
+    },
+    "docs/evidence/cdr-v59-tail-serialized-additions-contract-20261026.json": {
+      "bytes": 13141,
+      "sha256": "d6b2d367bff2036d97e62b28d2bf37d8be1a878770b594ab8e0286a92c88205e"
+    },
+    "scripts/cdr_v59_tail_serialized_additions.py": {
+      "bytes": 8672,
+      "sha256": "b772536a6922148dea0ecf4298dce1a2a5199c468c68f80db0cdd17b394e2a98"
+    },
+    "scripts/check_cdr_v59_tail_serialized_additions.py": {
+      "bytes": 13140,
+      "sha256": "13bde7eec28dfa5524aba70c21703afe392210455a7b735652b6541455c50071"
+    }
+  },
+  "no_generator_geometry_RC_or_numerical_change": true,
+  "not_performed": [
+    "authored imports/tests",
+    "native",
+    "CAD",
+    "archive download",
+    "registration",
+    "dispatch",
+    "activation",
+    "representation normalization of original records"
+  ],
+  "original_comparator_unchanged": "df8b0e712cd224c6af66d88e91242d4e5b5d8b75a96ebf81179cb740c06c3a37",
+  "original_native_snapshot": "docs/evidence/cdr-v59-tail-saved-identity-pre-serialization-native-20261026.py",
+  "original_raw_guard_text_sha256": "97e1d6942d904f8bf6cf7bda5e05d97dc27a49c3306a6ae4beb962a447dfb0f6",
+  "parent": "13acbcea56e37f11fda3a4b28e898b6bd5c17e98",
+  "schema": "cdr-v59-exact17-serialization-source-audit-v1",
+  "source_admission_unchanged": "5b4cd8d7bf4a6c73df3b509f1d09cdf2029854c67431c4d70c5e0457c15f8568",
+  "source_controls": {
+    "admission": [
+      2,
+      12
+    ],
+    "executed": false,
+    "initial_data_reads": 0,
+    "initial_modules": 16,
+    "new_serialization": [
+      4,
+      39
+    ],
+    "original_source": [
+      4,
+      32
+    ],
+    "outer_lifecycle": [
+      1,
+      4
+    ],
+    "publication": [
+      4,
+      14
+    ],
+    "raw_diagnostic": [
+      2,
+      15
+    ],
+    "source_control_records": 5
+  },
+  "status": "DISABLED_SOURCE_ONLY_UNEXECUTED",
+  "typed_API_primary_sources": [
+    {
+      "bytes": 79750,
+      "path": "docs/evidence/cdr-v59-tail-serialization-primary-klayout-v0.30.7/gsiDeclDbShape.cc",
+      "sha256": "d1dfd12e5aecfd7ef03550b0c49e2398f69b86410c7df51c31e736c720e6411d",
+      "url": "https://raw.githubusercontent.com/KLayout/klayout/v0.30.7/src/db/db/gsiDeclDbShape.cc"
+    },
+    {
+      "bytes": 102057,
+      "path": "docs/evidence/cdr-v59-tail-serialization-primary-klayout-v0.30.7/gsiDeclDbPolygon.cc",
+      "sha256": "272715c02b62919509812f3b49558ac8a8d93fd71fb7fbbe9d5ee4dfe51e1246",
+      "url": "https://raw.githubusercontent.com/KLayout/klayout/v0.30.7/src/db/db/gsiDeclDbPolygon.cc"
+    },
+    {
+      "bytes": 26488,
+      "path": "docs/evidence/cdr-v59-tail-serialization-primary-klayout-v0.30.7/gsiDeclDbBox.cc",
+      "sha256": "80e087dfcc401e2067c82a6d0ef46162785dd1022746a0da6ea1a68d656baffe",
+      "url": "https://raw.githubusercontent.com/KLayout/klayout/v0.30.7/src/db/db/gsiDeclDbBox.cc"
+    }
+  ],
+  "unchanged_original_functions": {
+    "scripts/cdr_v59_tail_saved_identity_native.py": [
+      "compare_witnesses",
+      "emit_raw_hierarchy_diagnostic",
+      "inventory",
+      "parse_path",
+      "properties",
+      "raw_hierarchy_proof",
+      "read_side",
+      "require",
+      "stable_path",
+      "witness_controls"
+    ],
+    "scripts/check_cdr_v59_tail_saved_identity.py": [
+      "admission_controls",
+      "api_fixture",
+      "controls",
+      "full_structural_pair",
+      "raw_diagnostic_controls",
+      "raw_diagnostic_fixture",
+      "raw_fixture_layout"
+    ],
+    "scripts/check_cdr_v59_tail_saved_identity_imports.py": [
+      "closure",
+      "controls",
+      "copy_modules",
+      "isolated",
+      "main",
+      "require"
+    ],
+    "scripts/check_cdr_v59_tail_saved_identity_transport.py": [
+      "archive_controls",
+      "main",
+      "publication_controls"
+    ],
+    "scripts/cloud_cdr_v59_tail_saved_identity.py": [
+      "collect_direct",
+      "execute",
+      "main",
+      "publish",
+      "run",
+      "storage",
+      "tokenless",
+      "validate_publication"
+    ]
+  }
+}

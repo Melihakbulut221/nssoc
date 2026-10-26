@@ -1,0 +1,99 @@
+{
+  "all_authorizations_false": true,
+  "current_native": {
+    "calls": [
+      {
+        "end_line": 141,
+        "expected_argument": "fixed",
+        "line": 141,
+        "source": "metadata_base(source,out/'fixed-base.odb',target,fixed,baseline,out,'fixed-metadata',remove_category=True)"
+      },
+      {
+        "end_line": 185,
+        "expected_argument": "raw",
+        "line": 185,
+        "source": "metadata_base(routed,out/'unfix-base.odb',target,raw,got,out,'unfixed-metadata')"
+      }
+    ],
+    "path": "scripts/mainchip_two_signal_repair_native.py",
+    "prepare": "Metadata FIXED changes export to the exact fixed overlay while encoded paths remain unchanged; separate paired import then establishes encoded FIXED.",
+    "sha256": "adfa942462d3447054081b7486813b7207a7fb76b3624fdd58fd03d63cee37fa",
+    "unfix": "Metadata returns to its baseline while encoded protected paths remain FIXED, so the intermediate expected DEF remains raw routed-fixed bytes. Separate paired original-class import restores original encoded classes, then exact original-class DEF and all invariants are checked."
+  },
+  "existing_qualified_source_controls": {
+    "path": "scripts/check_mainchip_original_clock_restoration.py",
+    "relevant_lines": [
+      59,
+      80,
+      120,
+      128,
+      153,
+      164
+    ],
+    "scope": "Existing checker separates metadata/encoded states, rejects fixed-looking DEF with ROUTED decoder paths, and mutates both actual prior metadata_base expectation arguments. No authored code or tests were executed for this source review.",
+    "seam": {
+      "first_line": 28,
+      "last_line": 35,
+      "source": "def metadata_def_seam(native):\n    calls={n.args[-1].value:n for n in ast.walk(native)\n        if isinstance(n,ast.Call)and isinstance(n.func,ast.Name)and n.func.id=='metadata_base'\n        and isinstance(n.args[-1],ast.Constant)}\n    assert set(calls)=={'fixed-metadata-only','unfixed-metadata-only'}\n    for label,call in calls.items():\n        assert isinstance(call.args[3],ast.Name)and call.args[3].id=='fixed',label\n    return calls"
+    },
+    "sha256": "15a2f88f3ca920eea78665d2f3a2e7fd90ae94bd347a452485b22540db5a29e4"
+  },
+  "native_or_writer_executed": false,
+  "original_1691_gate_and_resource_guards_unchanged": true,
+  "primary": {
+    "bytes": 53139,
+    "excerpt": "        dbWireType wire_type = decode.getWireType();\n        if (wire->getNet()->getWireType() == dbWireType::FIXED) {\n          wire_type = dbWireType::FIXED;\n        }\n\n        if ((path_cnt == 0) || (wire_type != prev_wire_type)) {\n          *_out << \"\\n      + \" << wire_type.getString() << \" \" << lname;\n        } else {\n          *_out << \"\\n      NEW \" << lname;\n        }",
+    "first_line": 1475,
+    "last_line": 1484,
+    "path": "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/odb/src/defout/defout_impl.cpp",
+    "sha256": "a81f028054a03466ff67755b8bc203adb0ea97b89136efebb92f690ace7eae7d",
+    "url": "https://raw.githubusercontent.com/The-OpenROAD-Project/OpenROAD/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/defout/defout_impl.cpp"
+  },
+  "production_changes": null,
+  "qualified_prior": {
+    "calls": [
+      {
+        "end_line": 237,
+        "expected_argument": "fixed",
+        "line": 237,
+        "source": "metadata_base(restored,out/'fixed-import-base.odb',target,fixed,r,out,'fixed-metadata-only')"
+      },
+      {
+        "end_line": 253,
+        "expected_argument": "fixed",
+        "line": 253,
+        "source": "metadata_base(out/'fixed.odb',out/'unfixed-import-base.odb',target,fixed,f,out,'unfixed-metadata-only')"
+      }
+    ],
+    "metadata_base": {
+      "first_line": 149,
+      "last_line": 162,
+      "source": "def metadata_base(source,destination,target,expected,baseline,out,label):\n    # Qualified onehot method: change the independent dbNet flag on a separate DB.\n    db,b=load(source)\n    try:\n        assert set(target)==set(baseline['names'])\n        for name,kind in target.items():\n            net=b.findNet(name);assert net\n            if str(net.getWireType())!=kind:net.setWireType(kind)\n            assert str(net.getWireType())==kind\n        odb.write_db(db,str(destination))\n    finally:odb.dbDatabase.destroy(db)\n    got=audit_view(destination,expected,baseline,out,label)\n    c.validate_metadata_transition(got['encoded'],baseline['encoded'],target)\n    return got"
+    },
+    "path": "scripts/mainchip_original_clock_restoration_native.py",
+    "sha256": "e48e0071f26309cfebadd051286408c3a229b1a6c54884ec516292d3017bee4c"
+  },
+  "reviewed_commit": "b93378641061d397c92be54e119a893f653182c1",
+  "reviewer": "tx_diagnosis",
+  "root_concern_resolved_by_primary_and_qualified_prior": true,
+  "source_inspection_only": true,
+  "status": "CLEAR_BOUNDED_METADATA_VERSUS_ENCODED_DEF_SOURCE_REVIEW",
+  "truth_table": [
+    {
+      "encoded": "ROUTED",
+      "export": "FIXED",
+      "metadata": "FIXED"
+    },
+    {
+      "encoded": "FIXED",
+      "export": "FIXED",
+      "metadata": "ROUTED"
+    },
+    {
+      "encoded": "ROUTED",
+      "export": "ROUTED",
+      "metadata": "ROUTED"
+    }
+  ],
+  "writer_rule": "Each path begins with decode.getWireType(); only independent dbNet metadata FIXED overrides it to FIXED. Metadata ROUTED does not override encoded FIXED."
+}
