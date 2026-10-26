@@ -62,7 +62,8 @@ jobs:
           b=Path('hw/soc/out/cdr-tail-controls')
           x=json.loads((b/'imports.json').read_text())
           assert x['status']=='PASS_ACTUAL_TAIL_DRIVER_INITIAL_IMPORT_CONTROLS'
-          assert (x['positive_count'],x['refusal_count'])==(3,9) and len(x['closure']['modules'])==35
+          assert (x['positive_count'],x['refusal_count'])==(5,32) and len(x['closure']['modules'])==35
+          assert len(x['closure']['data'])==3
           x=json.loads((b/'physical.json').read_text())
           assert x['status']=='PASS_TAIL_PHYSICAL_DRIVER_SOURCE_CONTROLS_ONLY'
           assert (x['positive_count'],x['refusal_count'])==(17,22)
