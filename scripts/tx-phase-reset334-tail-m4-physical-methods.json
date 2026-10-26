@@ -127,10 +127,10 @@
     "scripts/tx-phase-reset334-tail-m4-source-methods.json": "9145cffb217df12b488bec0d90482ffed60f8c1613823ef2b7b0cfa3f99ee4c8",
     "scripts/generate_tx_phase_reset334_tail_m4_native.py": "9861cd4f2ccde9f8c9b5fc1d1d4ece95dff7834a8c3646ac1c87b24f810a788c",
     "scripts/check_tx_phase_reset334_tail_m4_publication.py": "43042ad9ee6dc88d3bbbfb3152ccf4f63bc7814c8ad2e862f9e70186ed42991d",
-    "scripts/cloud_tx_phase_reset334_tail_m4_physical.py": "772cd3494991ba341a6b530817606ef308709383d8e3d078455a2aa30ac265f1",
+    "scripts/cloud_tx_phase_reset334_tail_m4_physical.py": "a16f7bb5c0469edd7a280153eac2a3301618a90dcc011b7da02677cd357439a4",
     "scripts/cdr_v59_tail_access_runtime.py": "946c08060f099e99f49ac35e559324b1e445d4c3865cfa7be954fa6e75db6176",
     "scripts/tx_phase_reset334_avss18_rc_admission.py": "03c5c360a021392974bbafaba64668cf0f6287f38d2159117f6208cf080c57ea",
-    "scripts/check_tx_phase_reset334_tail_m4_physical.py": "74a6d70e49023ea728d19233c9e8fc28f37802c450cacff3293bec081af6c841",
+    "scripts/check_tx_phase_reset334_tail_m4_physical.py": "ba6ee9c2364b2bac38714d69d13837aa46418571d3b084c1cb460e44aa23e75b",
     "docs/evidence/cloud-refined-load-hold-targets-20261016.json": "8eabcf9f3e0ace7ec6240474f1a5a0758c31f0350d559c5ef70a64b43572342b",
     "docs/evidence/route146-all-reachable-branch-recipe-20261016.json": "12795513c5d9694eaae9daed4ca6b2c6209a42040c1ff8bdba9a23f249e8b31a",
     "docs/evidence/cloud-measured-load-hold-conflicts-20261016.json": "55046b17b57dc82eeecbd26783ac62241bde725fce3eab21f9f271dd9a76565b",
@@ -140,11 +140,13 @@
     "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-runtime.json": "13b05592e46759d27a2b4670be08d57cc863e8284c4d3d7cf8865cb1f45e611c",
     "scripts/cdr_v59_mim_admission.py": "a985d8bf1c94c6a3ba3d4f19c24193f35598a883eab56a52ed6de86ff98c14e5",
     "scripts/check_tx_phase_reset334_tail_m4_imports.py": "11694ca13ffc38e630ebbba04dc290a753224a7e65428f0a138e966c986d5271",
-    ".github/workflow-templates/tx-phase-reset334-tail-m4-physical-cloud.yml": "6c48eb6aea0c581e370f4e42221d625d8cd44ebfa235679df6cfb1b9e16535c9",
+    ".github/workflow-templates/tx-phase-reset334-tail-m4-physical-cloud.yml": "0d5f2421a560fd3d14d294d6fc2013d5f924c554753fd706a77ed313917b057f",
     "docs/evidence/tx-phase-reset334-tail-M4-root-source-review-20261026.json": "ffb8272e58dbb18716d20123c51a58d3097f355cd984fd03dec0b96b48224c2a",
     "docs/evidence/tx-phase-reset334-tail-M4-independent-source-review-20261026.json": "157f2f5a77f12f2d7cfd13cbde60a68a770fd6222b2b6796364de00803ad579e",
-    "docs/tx-phase-reset334-tail-M4-physical-cloud-source-20261026.md": "6e083d4d361e711423f2d852c2f956426b4f3d06dce099e7666a56268814ffc6",
-    "docs/evidence/tx-phase-reset334-tail-M4-import-data-source-audit-20261026.json": "1f28f773e2a2198f202ffd65313c26012387da57a1bd8998d294f268cb69cd72"
+    "docs/tx-phase-reset334-tail-M4-physical-cloud-source-20261026.md": "99b29ba4ec728b3cfacd4d565de361f71531f26c5eedc1a463c56711e9a49f07",
+    "docs/evidence/tx-phase-reset334-tail-M4-import-data-source-audit-20261026.json": "1f28f773e2a2198f202ffd65313c26012387da57a1bd8998d294f268cb69cd72",
+    "scripts/cloud_cdr_v59_binding_rc.py": "647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709",
+    "docs/evidence/tx-phase-reset334-tail-M4-physical-durability-source-fix-20261026.json": "dbafe6dbb8fdbf8b1f2a386f4e9812c3f6aeb18c935283aeecd45c61d5eba2b9"
   },
   "source_derivation": {
     "current_AVSS18_main_sha256": "83d9a9c358d8f8c49b5e33530a327df987fd6c43e85eab115fc8d5b64084a5dd",
@@ -364,7 +366,7 @@
     "parts_refusals": 6,
     "derived_full_main": 2,
     "omitted_main_seams": 7,
-    "outer_main_finally": 4,
+    "outer_main_finally": 6,
     "baseline_immutability_refusals": 3,
     "permission_refusals": 4,
     "authorization_refusals": 8,
@@ -377,6 +379,16 @@
     "publication_refusals": 13,
     "wait_positive": 3,
     "wait_refusals": 4,
-    "native_material_refusals_each": 40
+    "native_material_refusals_each": 40,
+    "actual_control_emitter_positive": 2,
+    "actual_control_emitter_refusals": 2
+  },
+  "control_evidence_emitter": {
+    "path": "scripts/cloud_cdr_v59_binding_rc.py",
+    "sha256": "647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709",
+    "maximum_bytes_per_record": 4194304,
+    "record_count": 5,
+    "always_preserve_existing": true,
+    "missing_records_created": false
   }
 }

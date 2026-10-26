@@ -159,10 +159,20 @@ def preflight():
 
 def finalize(report):
     native=STAGE/'result.json'
+    report['native_result_present']=native.is_file()
     if native.is_file():
-        raw=native.read_bytes();(OUT/'native-physical-result.json').write_bytes(raw)
+        raw=native.read_bytes();copied=OUT/'native-physical-result.json';copied.write_bytes(raw)
         report['native_result_sha256']=hashlib.sha256(raw).hexdigest()
-        report['native_result']=json.loads(raw)
+        report['native_result_bytes']=len(raw)
+        report['native_result_raw_path']=str(copied.relative_to(OUT))
+        assert sha(copied)==report['native_result_sha256']
+        try:
+            parsed=json.loads(raw)
+            assert isinstance(parsed,dict),'Native result must be an object'
+        except Exception as e:
+            report.update(status='FAIL_OR_ERROR',native_result_parse_error=repr(e),
+                          native_result_parse_traceback=traceback.format_exc())
+        else:report['native_result']=parsed
     if 'baseline_restoration'in report.get('native_result',{}):
         finalize_baseline(report['native_result'])
         if not report['native_result']['original_baseline_byte_unchanged']:report['status']='FAIL_OR_ERROR'
@@ -170,7 +180,9 @@ def finalize(report):
         p=STAGE/('physical-'+pol+'-native-material.json')
         if p.is_file():(OUT/p.name).write_bytes(p.read_bytes())
     try:methods();report['protected_sources_unchanged']=True
-    except BaseException as e:report.update(status='FAIL_OR_ERROR',protected_sources_unchanged=False,source_error=repr(e))
+    except BaseException as e:
+        report.update(status='FAIL_OR_ERROR',protected_sources_unchanged=False,
+                      source_error=repr(e),source_traceback=traceback.format_exc())
     report['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}
     write(OUT/'result.json',report)
     return report

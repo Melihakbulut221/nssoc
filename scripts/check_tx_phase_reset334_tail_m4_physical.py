@@ -75,6 +75,74 @@ def permissions(text):
     assert 'if: always()'in native and 'inputs.native'in native
     return True
 
+def control_emit_program(text):
+    header="      - name: Emit exact complete or partial control bytes\n        if: always()\n        run: |\n          python3 - <<'PYCONTROL'\n"
+    assert text.count(header)==1
+    body=text.split(header,1)[1].split('          PYCONTROL\n',1)[0]
+    assert all(line.startswith('          ')for line in body.splitlines())
+    code='\n'.join(line[10:]for line in body.splitlines())+'\n'
+    tree=ast.parse(code)
+    assignments={n.targets[0].id:n.value for n in tree.body if isinstance(n,ast.Assign)and len(n.targets)==1 and isinstance(n.targets[0],ast.Name)}
+    assert ast.literal_eval(assignments['names'])==('wrapper-controls','import-controls','publication-controls','wait-controls','source-controls')
+    assert "647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709"in code
+    assert "scope['emit']"in code and "missing_files_created=False"in code
+    imports=[n for n in tree.body if isinstance(n,(ast.Import,ast.ImportFrom))]
+    assert len(imports)==2 and isinstance(imports[0],ast.Import)
+    assert [x.name for x in imports[0].names]==['ast','base64','hashlib','json']
+    assert isinstance(imports[1],ast.ImportFrom)and imports[1].module=='pathlib'
+    return code
+
+def control_emit_fixtures(text):
+    import base64,hashlib
+    code=control_emit_program(text);positive=[];refused=[]
+    names=('wrapper-controls','import-controls','publication-controls','wait-controls','source-controls')
+    source_path=Path('scripts/cloud_cdr_v59_binding_rc.py')
+    raw=(c.ROOT/source_path).read_bytes()
+    assert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'
+    with tempfile.TemporaryDirectory()as folder:
+        root=Path(folder);(root/'scripts').mkdir();(root/source_path).write_bytes(raw)
+        payload={name:(b'{"fixture":"' + name.encode()+b'"}\n')for name in names}
+        payload['wrapper-controls']=b'x'*7000
+        payload['publication-controls']=bytes([255,0])
+        payload['import-controls']=b''
+        for name,b in payload.items():(root/(name+'.json')).write_bytes(b)
+        def exercise():
+            previous=Path.cwd()
+            try:
+                os.chdir(root)
+                with contextlib.redirect_stdout(io.StringIO())as output:exec(compile(code,'actual-control-emission-template','exec'),{})
+                lines=output.getvalue().splitlines();census=json.loads(lines[-1].split(' ',1)[1])
+                assert census['missing_files_created']is False and not census['failures']
+                for row in census['emitted']:
+                    name=row['name'][:-5];marker='TAIL_M4_CONTROL_'+name.upper().replace('-','_')
+                    begin=[x for x in lines if x.startswith(marker+'_BEGIN ')];assert len(begin)==1
+                    header=json.loads(begin[0].split(' ',1)[1])
+                    pieces=[x.split(' ',2)for x in lines if x.startswith(marker+'_CHUNK ')]
+                    assert [int(x[1])for x in pieces]==list(range(header['chunks']))
+                    assert lines.count(marker+'_END')==1
+                    got=base64.b64decode(''.join(x[2]for x in pieces))
+                    assert got==payload[name]==(root/row['name']).read_bytes()
+                    assert header['bytes']==row['bytes']==len(got)
+                    assert header['sha256']==row['sha256']==hashlib.sha256(got).hexdigest()
+                return census
+            finally:os.chdir(previous)
+        full=exercise();assert len(full['emitted'])==5 and full['missing']==[]
+        positive.append(dict(name='five_actual_files_complete_indexed_bytes',proof=full))
+        for name in ('wrapper-controls','source-controls'):(root/(name+'.json')).unlink()
+        partial=exercise();assert len(partial['emitted'])==3
+        assert partial['missing']==['wrapper-controls.json','source-controls.json']
+        assert not(root/'wrapper-controls.json').exists()and not(root/'source-controls.json').exists()
+        positive.append(dict(name='earlier_failure_missing_records_never_created',proof=partial))
+        (root/source_path).write_bytes(raw+b' ')
+        reject(refused,'mutated_frozen_emitter_source',exercise)
+        (root/source_path).write_bytes(raw)
+    reject(refused,'absent_always_scope',lambda:control_emit_program(text.replace(
+        '      - name: Emit exact complete or partial control bytes\n        if: always()',
+        '      - name: Emit exact complete or partial control bytes\n        if: success()')))
+    assert len(positive)==2 and len(refused)==2
+    return dict(positive=positive,refused=refused,actual_template_program_executed=True,
+                original_records_modified=False,missing_records_created=False)
+
 def workflow_controls():
     m=c.methods();template=c.ROOT/m['template']
     text=template.read_text();assert permissions(text)
@@ -87,7 +155,8 @@ def workflow_controls():
         ('global-write',text.replace('permissions:\n  contents: read','permissions:\n  contents: write')),
         ('controls-write',text.replace('  source-controls:\n','  source-controls:\n    permissions:\n      contents: write\n'))):
         reject(rejected,name,lambda bad=bad:permissions(bad))
-    return dict(actual_template_path=m['template'],active_byte_equal_if_registered=True,rejected=rejected)
+    return dict(actual_template_path=m['template'],active_byte_equal_if_registered=True,rejected=rejected,
+                control_evidence=control_emit_fixtures(text))
 
 def derived_main_fixtures():
     body,proof=c.derive();results=[];faults=[]
@@ -128,7 +197,7 @@ def derived_main_fixtures():
 
 def finalization_fixtures():
     rows=[];mutations=[]
-    for mode in ('preflight-refusal','supervisor-refusal','native-rejection','complete-physical'):
+    for mode in ('preflight-refusal','supervisor-refusal','native-rejection','complete-physical','truncated-native-result','source-integrity-failure'):
         with tempfile.TemporaryDirectory()as td:
             out=Path(td)/'out';stage=out/'native'
             def flight():
@@ -136,14 +205,15 @@ def finalization_fixtures():
                 return {'fixture':True}
             def run():
                 stage.mkdir()
-                native=dict(status=c.PASS if mode=='complete-physical'else'FAIL_OR_ERROR',
+                native=dict(status=c.PASS if mode in ('complete-physical','source-integrity-failure')else'FAIL_OR_ERROR',
                             original_baseline_byte_unchanged=True,sources_unchanged=True,validation_errors=[])
                 c.write(stage/'result.json',native);(stage/'partial.bin').write_bytes(b'complete saved partial evidence')
+                if mode=='truncated-native-result':(stage/'result.json').write_bytes(b'{"status":"RUNNING","variants":')
                 if mode=='supervisor-refusal':raise RuntimeError('EXACT_SUPERVISOR_REFUSAL')
-                return dict(returncode=0 if mode=='complete-physical'else 7)
-            with mock.patch.object(c,'OUT',out),mock.patch.object(c,'STAGE',stage),                 mock.patch.object(c,'preflight',flight),mock.patch.object(c,'run_owned_child',run),                 mock.patch.object(c,'methods',return_value={}),mock.patch.object(c,'derive',return_value=('',{'fixture':True})):
+                return dict(returncode=0 if mode in ('complete-physical','source-integrity-failure','truncated-native-result')else 7)
+            with mock.patch.object(c,'OUT',out),mock.patch.object(c,'STAGE',stage),                 mock.patch.object(c,'preflight',flight),mock.patch.object(c,'run_owned_child',run),                 mock.patch.object(c,'methods',side_effect=AssertionError('EXACT_SOURCE_INTEGRITY_FAILURE')if mode=='source-integrity-failure'else None,return_value={}),mock.patch.object(c,'derive',return_value=('',{'fixture':True})):
                 try:c.main()
-                except (RuntimeError,AssertionError):assert mode!='complete-physical'
+                except (RuntimeError,AssertionError,json.JSONDecodeError):assert mode!='complete-physical'
                 else:assert mode=='complete-physical'
                 r=json.loads((out/'result.json').read_bytes())
                 assert (r['status']==c.PASS)==(mode=='complete-physical')
@@ -151,6 +221,16 @@ def finalization_fixtures():
                 if mode!='preflight-refusal':
                     assert (out/'native-physical-result.json').read_bytes()==(stage/'result.json').read_bytes()
                     assert r['outputs']['native/partial.bin']==c.sha(stage/'partial.bin')
+                if mode=='truncated-native-result':
+                    assert 'native_result'not in r and r['native_result_present']is True
+                    assert r['native_result_parse_error']and r['native_result_parse_traceback']
+                    assert 'JSONDecodeError'in r['error']and 'JSONDecodeError'in r['native_result_parse_error']
+                    assert r['native_result_bytes']==len((stage/'result.json').read_bytes())
+                    assert r['native_result_sha256']==c.sha(stage/'result.json')
+                if mode=='source-integrity-failure':
+                    assert r['protected_sources_unchanged']is False
+                    assert 'EXACT_SOURCE_INTEGRITY_FAILURE'in r['source_error']and r['source_traceback']
+                    assert r['native_result']['status']==c.PASS and r['status']=='FAIL_OR_ERROR'
                 rows.append(dict(mode=mode,result=r,synthetic_supervisor_only=True))
     with tempfile.TemporaryDirectory()as td:
         root=Path(td);p=root/'original';p.write_bytes(b'original')
