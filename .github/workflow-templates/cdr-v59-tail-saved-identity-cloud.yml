@@ -69,6 +69,10 @@ jobs:
           assert x['status']=='PASS_SOURCE_AND_ADMISSION'
           assert (x['source']['positive_count'],x['source']['refusal_count'])==(4,32)
           assert x['source']['synthetic_native_identity_only'] is True
+          assert x['raw_diagnostic']['status']=='PASS_COMPLETE_RAW_DIAGNOSTIC_BEFORE_UNCHANGED_GUARD'
+          assert (x['raw_diagnostic']['positive_count'],x['raw_diagnostic']['refusal_count'])==(2,15)
+          assert x['raw_diagnostic']['actual_frozen_raw_record_and_hierarchy_functions_used'] is True
+          assert x['raw_diagnostic']['real_JSON_persistence_before_actual_guard'] is True
           assert x['admission']['positives']==2 and len(x['admission']['refusals'])==12
           x=read('transport')
           assert x['status']=='PASS_TRANSPORT_CONTROLS'

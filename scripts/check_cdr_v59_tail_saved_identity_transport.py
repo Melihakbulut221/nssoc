@@ -198,7 +198,10 @@ def lifecycle_controls():
                         assert list(argv)==[app,"python",base/"scripts/cdr_v59_tail_saved_identity_native.py",
                           "--root",out/"restored","--out",out]
                         if mode=="native_failure":
-                            s.write(out/"original-identity.json",{"synthetic_partial":True});code=2
+                            s.write(out/"original-identity.json",{"synthetic_partial":True})
+                            s.write(out/"raw-hierarchy-diagnostic.json",{"synthetic_runtime_transport":True,
+                              "qualified":False,"status":"DIAGNOSTIC_ONLY_BEFORE_UNCHANGED_RAW_HIERARCHY_ASSERTIONS"})
+                            code=2
                         else:
                             for name in d.DIRECT:
                                 if name!="archive-verification.json":s.write(out/name,{"synthetic_native_transport":True})
@@ -289,12 +292,16 @@ def lifecycle_controls():
                     assert binding["qualified_as_success"] is (mode=="complete")
                 if mode=="complete":
                     assert result["status"]==d.PASS and result["read_only_identity_verified"] is True
-                    assert len(publication["direct_asset_bindings"])==len(d.DIRECT)+len(d.EXPORTS)==11
+                    assert len(publication["direct_asset_bindings"])==len(d.DIRECT)+len(d.EXPORTS)==12
                 else:
                     assert result["status"]==expected_status and result["read_only_identity_verified"] is False
                     assert publication["failed_direct_outputs_preserved_as_raw_bytes"] is True
                 if mode=="native_failure":
                     assert result["error"]=="AssertionError()" and result["commands"][1]["returncode"]==2
+                    assert uploaded[stem+".raw-hierarchy-diagnostic.json"]==(out/"raw-hierarchy-diagnostic.json").read_bytes()
+                    diagnostic_binding=next(v for v in publication["direct_asset_bindings"]
+                      if v["asset_suffix"]=="raw-hierarchy-diagnostic.json")
+                    assert diagnostic_binding["qualified_as_success"] is False
                     assert "execute" in result["traceback"] and "cloud_cdr_v59_tail_saved_identity.py" in result["traceback"]
                 if mode=="partial_json":
                     assert result["error"].startswith("JSONDecodeError(")

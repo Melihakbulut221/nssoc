@@ -175,6 +175,144 @@ def admission_controls():
     assert len(bad)==12
     return {"status":"PASS_SAVED_IDENTITY_ADMISSION_CONTROLS","positives":positive,"refusals":bad}
 
+FROZEN_NATIVE="docs/evidence/cdr-v59-tail-saved-identity-pre-diagnostic-native-20261026.py"
+
+def raw_diagnostic_fixture():
+    # API-shaped objects only: these strings are never parsed as CAD geometry.
+    base=(126,0,"polygon (0,0;20,0;20,20;0,20)","{}",False)
+    added=(134,0,"polygon (100,100;120,100;120,120;100,120)","{}",False)
+    original={n.TOP:[],n.CHILD:[base,base],
+      "other":[(8,0,"box (1,2;3,4)",'{"1":"original"}',False),
+               (8,1,"text ('kept',r0 1,2)","{}",True)]}
+    current=copy.deepcopy(original);current[n.CHILD].append(added)
+    generation={"added_raw_records":[list(added)],"added_local_material":{
+      "134":{"polygons":["synthetic-only-polygon"],"area_dbu2":400}},
+      "proposal":{"allowed_added_layers":[[126,0],[133,0],[134,0]]},
+      "synthetic_fixture_not_actual_GDS":True}
+    return original,current,generation
+
+def raw_fixture_layout(records,*,hierarchy_changed=False,property_changed=False,bbox="(0,0;200,200)"):
+    keys=sorted({(r[0],r[1]) for rows in records.values() for r in rows})
+    layers={i:types.SimpleNamespace(layer=v[0],datatype=v[1]) for i,v in enumerate(keys)}
+    cells={}
+    for index,(name,rows) in enumerate(records.items()):
+        cell=types.SimpleNamespace(name=name,cell_index=lambda index=index:index,
+          bbox=lambda bbox=bbox:bbox)
+        def shapes(layer,rows=rows):
+            info=layers[layer];selected=[]
+            for r in rows:
+                if r[:2]!=(info.layer,info.datatype):continue
+                selected.append(types.SimpleNamespace(to_s=lambda r=r:r[2],
+                  properties=lambda r=r:json.loads(r[3]),is_text=lambda r=r:r[4]))
+            return types.SimpleNamespace(each=lambda:iter(selected))
+        cell.shapes=shapes;cell.each_inst=lambda:iter([])
+        cells[name]=cell
+    if n.TOP in cells and n.CHILD in cells:
+        inst=types.SimpleNamespace(cell=cells[n.CHILD],
+          cplx_trans="changed" if hierarchy_changed else "r0 *1 0,0",
+          na=0,nb=0,a="0,0",b="0,0",
+          properties=lambda:{1:"changed"} if property_changed else {})
+        cells[n.TOP].each_inst=lambda:iter([inst])
+    return types.SimpleNamespace(dbu=0.001,each_cell=lambda:iter(cells.values()),
+      cell=lambda name:cells.get(name),layer_indexes=lambda:list(layers),get_info=lambda i:layers[i])
+
+def raw_diagnostic_controls():
+    # The prior failing function is byte-identical; only an earlier diagnostic call is new.
+    import ast
+    def function_text(text,name):
+        node=next(x for x in ast.parse(text).body if isinstance(x,ast.FunctionDef) and x.name==name)
+        return ast.get_source_segment(text,node)
+    frozen=s.ROOT/FROZEN_NATIVE
+    pins=s.methods()["protected_sha256"]
+    assert s.sha(frozen)==pins[FROZEN_NATIVE]
+    assert function_text(frozen.read_text(),"raw_hierarchy_proof")==function_text(
+      Path(n.__file__).read_text(),"raw_hierarchy_proof")
+    positives=["unchanged_complete_raw_hierarchy_function_byte_exact"]
+    refusals=[]
+    def acquire(label,change=None,expected_error=None,layout_options=None,inspect=None):
+        original,current,generation=raw_diagnostic_fixture()
+        if change:change(original,current,generation)
+        old=raw_fixture_layout(original);new=raw_fixture_layout(current,**(layout_options or {}))
+        with tempfile.TemporaryDirectory(prefix="cdr-raw-diagnostic-") as td:
+            path=Path(td)/"raw-hierarchy-diagnostic.json"
+            context={"synthetic_API_only":True,"case":label}
+            proof=n.emit_raw_hierarchy_diagnostic(old,new,generation,s.ROOT/s.GENERATOR,path,context)
+            saved=s.read_json(path)
+            assert saved==json.loads(json.dumps(proof))
+            assert saved["source_identity"]==context and saved["qualified"] is False
+            assert saved["counter_records_are_complete"] is True
+            assert saved["representation_normalization_applied"] is False
+            assert saved["original_generation_report"]==generation
+            assert saved["generator_sha256"]==pins[s.GENERATOR]
+            assert saved["original_cell_names"]==sorted(original)
+            assert saved["current_cell_names"]==sorted(current)
+            byname={r["cell"]:r for r in saved["cells"]}
+            assert set(byname)==set(original)|set(current)
+            for name,row in byname.items():
+                # Re-expand every multiplicity to the exact synthetic source rows.
+                expand=lambda rows:sorted(tuple(x["record"]) for x in rows for _ in range(x["multiplicity"]))
+                assert expand(row["original_raw_counter"])==sorted(original.get(name,[]))
+                assert expand(row["current_raw_counter"])==sorted(current.get(name,[]))
+                expected=list(original.get(name,[]))
+                if name==n.CHILD:expected+=list(map(tuple,generation["added_raw_records"]))
+                assert expand(row["expected_raw_counter"])==sorted(expected)
+            if inspect:inspect(saved,byname)
+            before=path.read_bytes()
+            try:n.raw_hierarchy_proof(old,new,generation,s.ROOT/s.GENERATOR)
+            except AssertionError as error:
+                assert expected_error is not None and str(error)==expected_error,(label,str(error))
+                assert path.read_bytes()==before,"Original refusal changed the prior complete diagnostic"
+                refusals.append({"case":label,"exact_original_error":str(error),
+                  "diagnostic_saved_before_refusal":True,"diagnostic_sha256":s.sha(path),
+                  "complete_cells":len(saved["cells"])})
+            else:
+                assert expected_error is None,label
+                assert saved["raw_counter_mismatch_cells"]==[]
+                assert byname[n.CHILD]["original_raw_counter"][0]["multiplicity"]==2
+                positives.append("complete_exact_addition_and_duplicate_original_multiplicity")
+    acquire("exact")
+    raw_error="Original shape/text/properties or exact added records changed"
+    def replace_added(index,value):
+        def change(a,b,g):
+            r=list(b[n.CHILD][-1]);r[index]=value;b[n.CHILD][-1]=tuple(r)
+        return change
+    def mismatch(saved,rows):
+        row=rows[n.CHILD]
+        assert row["expected_record_deficits"] and row["unexpected_record_counter"]
+        assert row["original_record_deficits"]==[]
+        assert sum(x["multiplicity"] for x in row["expected_record_deficits"])==1
+        assert sum(x["multiplicity"] for x in row["unexpected_record_counter"])==1
+    acquire("same_count_changed_added_representation",
+      replace_added(2,"box (100,100;120,120)"),raw_error,inspect=mismatch)
+    acquire("target_original_record_deficit",lambda a,b,g:b[n.CHILD].pop(0),raw_error)
+    def non_target(saved,rows):
+        assert saved["non_target_original_deficit_cells"]==["other"]
+        assert rows["other"]["original_record_deficits"]
+        assert rows[n.CHILD]["raw_counter_equal_expected"] is True
+    acquire("non_target_original_deficit",lambda a,b,g:b["other"].pop(0),raw_error,inspect=non_target)
+    acquire("non_target_addition",lambda a,b,g:b["other"].append(b["other"][0]),raw_error)
+    acquire("added_property",replace_added(3,'{"1":"new-property"}'),raw_error,inspect=mismatch)
+    acquire("added_text_state",replace_added(4,True),raw_error,inspect=mismatch)
+    acquire("added_layer",replace_added(0,135),raw_error,inspect=mismatch)
+    acquire("added_datatype",replace_added(1,1),raw_error,inspect=mismatch)
+    acquire("duplicate_addition",lambda a,b,g:b[n.CHILD].append(b[n.CHILD][-1]),raw_error)
+    acquire("missing_addition",lambda a,b,g:b[n.CHILD].pop(),raw_error)
+    acquire("named_hierarchy",expected_error="Original named hierarchy changed",
+      layout_options={"hierarchy_changed":True})
+    acquire("instance_property",expected_error="Complete instance property/order binding changed",
+      layout_options={"property_changed":True})
+    acquire("top_bbox",expected_error="Top bbox changed",layout_options={"bbox":"(0,0;201,200)"})
+    acquire("cell_inventory",lambda a,b,g:b.update(renamed=b.pop("other")),
+      "Cell-name inventory changed")
+    acquire("missing_expected_addition",lambda a,b,g:g.update(added_raw_records=[]),
+      "Missing original generation additive records")
+    assert len(positives)==2 and len(refusals)==15
+    return {"status":"PASS_COMPLETE_RAW_DIAGNOSTIC_BEFORE_UNCHANGED_GUARD",
+      "positive_count":2,"refusal_count":15,"positives":positives,"refusals":refusals,
+      "actual_frozen_raw_record_and_hierarchy_functions_used":True,
+      "real_JSON_persistence_before_actual_guard":True,"native_GDS_or_CAD_executed":False,
+      "actual_native_serialization_mismatch_explanation_proven":False}
+
 def main():
     assert s.methods()["source_controls_authorized"] is True
     out=s.ROOT/"hw/soc/out/cdr-v59-tail-saved-identity-source-controls";out.mkdir(parents=True,exist_ok=False)
@@ -182,6 +320,7 @@ def main():
     s.write(out/"result.json",result)
     try:
         result["source"]=controls();s.write(out/"result.json",result)
+        result["raw_diagnostic"]=raw_diagnostic_controls();s.write(out/"result.json",result)
         result["admission"]=admission_controls();result["status"]="PASS_SOURCE_AND_ADMISSION"
     except BaseException as error:
         result.update(status="FAIL_SOURCE_AND_ADMISSION",error=repr(error));raise

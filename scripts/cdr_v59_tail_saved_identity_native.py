@@ -202,6 +202,74 @@ def witness_controls(old,new):
     return {"status":"PASS_COMPLETE_ACQUIRED_WITNESS_MUTATION_CONTROLS","positive_copies":12,
       "refusals":records,"saved_native_inputs_mutated":False}
 
+def emit_raw_hierarchy_diagnostic(old_layout,new_layout,generation,generator,path,context):
+    """Preserve complete raw representations before the unchanged admission guard."""
+    scope={"json":json}
+    source.load_definitions(generator,["raw_records","hierarchy"],scope)
+    def rows(counter):
+        return [{"record":list(record),"multiplicity":count}
+          for record,count in sorted(counter.items())]
+    def layers(layout):
+        return [{"native_layer_index":i,"gds_layer":layout.get_info(i).layer,
+          "gds_datatype":layout.get_info(i).datatype} for i in layout.layer_indexes()]
+    old_names={c.name for c in old_layout.each_cell()}
+    new_names={c.name for c in new_layout.each_cell()}
+    added=collections.Counter(tuple(v) for v in generation["added_raw_records"])
+    cells=[]
+    for name in sorted(old_names|new_names):
+        old=old_layout.cell(name);new=new_layout.cell(name)
+        a=[] if old is None else scope["raw_records"](old_layout,old)
+        b=[] if new is None else scope["raw_records"](new_layout,new)
+        ca=collections.Counter(a);cb=collections.Counter(b)
+        allowed=added if name==CHILD else collections.Counter()
+        expected=ca+allowed
+        ha=None if old is None else scope["hierarchy"](old)
+        hb=None if new is None else scope["hierarchy"](new)
+        def instances(cell):
+            if cell is None:return None
+            return [{"child":i.cell.name,"ordinal":j,"properties":properties(i)}
+              for j,i in enumerate(cell.each_inst())]
+        pa=instances(old);pb=instances(new)
+        cells.append({"cell":name,"is_target_child":name==CHILD,
+          "original_present":old is not None,"current_present":new is not None,
+          "original_cell_index":None if old is None else old.cell_index(),
+          "current_cell_index":None if new is None else new.cell_index(),
+          "original_raw_counter":rows(ca),"current_raw_counter":rows(cb),
+          "expected_raw_counter":rows(expected),"allowed_added_counter":rows(allowed),
+          "original_record_deficits":rows(ca-cb),"actual_added_counter":rows(cb-ca),
+          "expected_record_deficits":rows(expected-cb),"unexpected_record_counter":rows(cb-expected),
+          "signed_current_minus_original":[{"record":list(r),"delta":cb[r]-ca[r]}
+            for r in sorted(set(ca)|set(cb)) if cb[r]!=ca[r]],
+          "original_raw_record_count":len(a),"current_raw_record_count":len(b),
+          "original_raw_ordered_sha256":source.value_hash(a),
+          "current_raw_ordered_sha256":source.value_hash(b),
+          "original_named_hierarchy":ha,"current_named_hierarchy":hb,
+          "original_instance_properties_and_order":pa,"current_instance_properties_and_order":pb,
+          "raw_counter_equal_expected":cb==expected,
+          "named_hierarchy_equal":ha==hb,"instance_properties_and_order_equal":pa==pb})
+    diagnostic={"schema":"cdr-saved-raw-hierarchy-complete-diagnostic-v1",
+      "status":"DIAGNOSTIC_ONLY_BEFORE_UNCHANGED_RAW_HIERARCHY_ASSERTIONS",
+      "qualified":False,"physical_accepted":False,"original_failure_preserved":True,
+      "counter_records_are_complete":True,"counter_multiplicity_retained":True,
+      "representation_normalization_applied":False,"material_equivalence_inferred":False,
+      "raw_record_schema":["gds_layer_integer","gds_datatype_integer","exact_shape_to_s",
+        "exact_properties_json_string","is_text_boolean"],
+      "source_identity":context,"generator_path":str(generator),"generator_sha256":source.sha(generator),
+      "original_dbu_um":old_layout.dbu,"current_dbu_um":new_layout.dbu,
+      "original_top_bbox_dbu":str(old_layout.cell(TOP).bbox()),
+      "current_top_bbox_dbu":str(new_layout.cell(TOP).bbox()),
+      "original_layer_inventory":layers(old_layout),"current_layer_inventory":layers(new_layout),
+      "original_cell_names":sorted(old_names),"current_cell_names":sorted(new_names),
+      "original_generation_report":generation,"prewrite_added_raw_counter":rows(added),"cells":cells,
+      "raw_counter_mismatch_cells":[r["cell"] for r in cells if not r["raw_counter_equal_expected"]],
+      "non_target_original_deficit_cells":[r["cell"] for r in cells
+        if not r["is_target_child"] and r["original_record_deficits"]],
+      "hierarchy_mismatch_cells":[r["cell"] for r in cells if not r["named_hierarchy_equal"]],
+      "instance_property_mismatch_cells":[r["cell"] for r in cells
+        if not r["instance_properties_and_order_equal"]]}
+    source.write(path,diagnostic)
+    return diagnostic
+
 def raw_hierarchy_proof(old_layout,new_layout,generation,generator):
     scope={"json":json}
     source.load_definitions(generator,["raw_records","hierarchy"],scope)
@@ -239,6 +307,20 @@ def run(root,out):
     new_layout,new=read_side(pya,root,source.SIDES["new"],producer)
     source.write(out/"current-identity.json",new)
     generation=source.read_json(root/source.GENERATION)
+    # Diagnostic data is durable before any original raw/hierarchy assertion.
+    # A diagnostic never changes the original guard or qualifies failed geometry.
+    context={"saved_capsule_run":source.RUN,"saved_capsule_source":source.HEAD,
+      "saved_manifest_sha256":source.value_hash(manifest),
+      "generation_member":source.GENERATION,
+      "saved_files":{member:{"expected_sha256":manifest[member],
+        "actual_sha256":source.sha(root/member)}
+        for member in [source.GENERATION]+[v for side in source.SIDES.values() for v in side.values()]},
+      "programs":{p:source.sha(source.ROOT/p) for p in
+        (source.GENERATOR,source.LOCATE,"scripts/cdr_v59_tail_saved_identity_native.py",
+         "scripts/cdr_v59_tail_access_topology.py")},
+      "methods_sha256":source.sha(source.METHOD)}
+    emit_raw_hierarchy_diagnostic(old_layout,new_layout,generation,source.ROOT/source.GENERATOR,
+      out/"raw-hierarchy-diagnostic.json",context)
     rawproof=raw_hierarchy_proof(old_layout,new_layout,generation,source.ROOT/source.GENERATOR)
     source.write(out/"raw-hierarchy-proof.json",rawproof)
     # Reproduce the actual unmodified first failure at its exact original source assertion.
