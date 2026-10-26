@@ -1,0 +1,14 @@
+name: mainchip-two-signal-repair-cloud
+on:
+  push:
+    branches:
+      - codex/register-mainchip-two-signal-20261026
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Register manual ownership-first two-signal workflow
+        run: printf '%s\n' 'Manual workflow registry only; no checkout, tests, archives or CAD.'
