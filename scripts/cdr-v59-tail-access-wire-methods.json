@@ -1,21 +1,37 @@
 {
   "accepted": false,
   "controller_readiness": {
+    "authored_tests_executed": false,
     "controller_authored": true,
-    "controller_controls_authored": false,
+    "controller_controls_authored": true,
     "executed": false,
-    "full_import_closure_audited": false,
-    "publication_fixtures_authored": false,
-    "workflow_authored": false
+    "full_import_closure_audited": true,
+    "independent_controller_review_complete": false,
+    "initial_import_modules": 35,
+    "publication_fixtures_authored": true,
+    "workflow_authored": true
   },
   "extraction_authorized": false,
   "full_phy_accepted": false,
   "geometry_generation_authorized": false,
+  "initial_import_controls": {
+    "deferred_CAD_imports_in_scope": false,
+    "executed": false,
+    "installed_external_allowlist": [],
+    "modules": 35,
+    "positives": 3,
+    "refusals": 9
+  },
   "native_execution_authorized": false,
   "native_geometry_controls": {
     "executed": false,
     "positives": 11,
     "refusals": 11
+  },
+  "physical_driver_controls": {
+    "executed": false,
+    "positives": 17,
+    "refusals": 22
   },
   "physical_qualification_authorized": false,
   "protected_sha256": {
@@ -24,6 +40,7 @@
     ".github/workflow-templates/cdr-v59-font-recovery-cloud.yml": "22e89eea8075aae92e05c1e2717d08eae1c03b9a70a93ef27351e40205ba2aa0",
     ".github/workflow-templates/cdr-v59-serialized-shape-diagnostic-cloud.yml": "083d02ecd727f794c6b1d9216ffec2a5f2be9079006b885d6ebec9f703b8a2df",
     ".github/workflow-templates/cdr-v59-static-source-recovery-cloud.yml": "e40df37501e2f95642edbb2ea44ed410ba285d293112cbf9a53f807ce5a73b73",
+    ".github/workflow-templates/cdr-v59-tail-access-physical-cloud.yml": "5cece8b88a6a9980c02ea10843034dc6674659f98678fd4ff12c376b33bd4ddb",
     ".github/workflow-templates/cdr500-resistor-v59-physical-cloud.yml": "16bd06b919a37a768f6c5b2c223320892ed622c04e3a76eb603e5f1f09b13c28",
     ".github/workflows/cdr-v59-annotation-diagnostic-cloud.yml": "50e6433d7936751d44f597a80b4834140558a87f78a72f79a3c493c2298ba376",
     ".github/workflows/cdr-v59-binding-rc-cloud.yml": "83f24de2d65d5f51a840da21149a85e388148721f54c3bffa5c7732c52b325fd",
@@ -128,6 +145,7 @@
     "docs/evidence/cdr-v59-tail-exact-wire-methods-20261026/dedup01.py": "58ec392e70a89e2b4b6175fbef01413e3417b1d5fb1389aabd6fa7b95b743544",
     "docs/evidence/cdr-v59-tail-exact-wire-methods-20261026/locate01.py": "8b4e377afe7edd1ef3a1d1c59eaa43a79f6ef9af7d7a87f5b99ff51ee727614c",
     "docs/evidence/cdr-v59-tail-exact-wire-methods-20261026/probe01.py": "ba22f02f0f7d7ee123f2c79cfc601bf246f59db2338ae68874601187b734555b",
+    "docs/evidence/cdr-v59-tail-launcher-write-source-correction-20261026.json": "0672859ddc3788bc9dda61cdfa0c4d62b0941b11cd7608f716a2a760e2ddcf82",
     "docs/evidence/cdr-v59-tail-native-generator-first-draft-20261026.py": "565e70daad68d58e974c203b2e4957cb98a826e4534b718522aed20a9d25cf15",
     "docs/evidence/cdr-v59-tail-native-generator-source-checkpoint-20261026.json": "fdce09375ef08b9e6b6c2831ce1321826111021e81f183610c6d75b1553b369c",
     "docs/evidence/cdr-v59-tail-native-independent-source-review-20261026.json": "eaa9e123515ad673ceb5d2ca277850a59837707a2feb7fb835772e3c68c65df0",
@@ -143,7 +161,10 @@
     "docs/evidence/cdr-v59-tail-output-map-independent-review-20261026.json": "73e2a146c21e7cd9bebdf5e4297a85490d6fff4fb8a4b456a138990610d2defd",
     "docs/evidence/cdr-v59-tail-output-metadata-source-correction-20261026.json": "bf1beb731cf816e6ebe1330d8ef3715d7bad0c7d5107649f3b0c3987d351ba64",
     "docs/evidence/cdr-v59-tail-physical-controller-source-draft-20261026.json": "0b2659df6eb21514aff785078c0a35478297c77cebd8d12342e084ddcb34dbec",
+    "docs/evidence/cdr-v59-tail-physical-source-package-20261026.json": "68f534c553720d8f5e130e1fb99bcae313f048bc817fd7ca84aa45d3831ee8ca",
     "docs/evidence/cdr-v59-tail-qualified-memory-sampler-20261026.py": "55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07",
+    "docs/evidence/cdr-v59-tail-runtime-first-draft-20261026.py": "ec835b68116b1c2b597c9dcdf79c475910be7e2aad03d476929fc371b9a318ff",
+    "docs/evidence/cdr-v59-tail-topology-root-source-review-20261026.json": "a592dd5ca01b0ca5cf9d03a4cc90eb05e343b798ca53c43b2a633965b4baeee4",
     "docs/evidence/cdr-v59-tail-wire-topology-source-checkpoint-20261026.json": "6a4411705f83ef30cd10652f19b982280afaf95566921cee09562abaeead2ca0",
     "docs/evidence/cdr500-floating-wire-cleanup-pass-20261024.json": "8bed60f381ea6ade3f2f81793c10a22a953fa73cd6b57b9254cf184e1f370364",
     "docs/evidence/cdr500-input-access-v58-2700nm-tm1-source-review-20261024.json": "cc7d21c88e1ca6d12cfdcc29a7a525245129008e75f315d93571220e3fd9b60f",
@@ -224,9 +245,10 @@
     "scripts/cdr_retimed_via_rich_v7_parent_plan.py": "f5d6814cc680dddcad875be5ae404d03f2ee6a65144741e80def3f42d37c6d4f",
     "scripts/cdr_v59_binding_rc_source.py": "bec7865bded1e56fc373dc57cd52758efa70702ffc98b30e67274c720cdd728f",
     "scripts/cdr_v59_font_roundtrip_contract.py": "efa50460da1756dc4b1711083967a657e72079cb7e500d899f05a9d807169b10",
+    "scripts/cdr_v59_mim_admission.py": "a985d8bf1c94c6a3ba3d4f19c24193f35598a883eab56a52ed6de86ff98c14e5",
     "scripts/cdr_v59_serialized_shape_diagnostic.py": "1c63677847ff2d91ad940f82919775a6a0a48e7122be69be9482b7d0834e668f",
     "scripts/cdr_v59_tail_access_plan.py": "9a6a9c6fbad2f410cf1f8882da5090ebca6b56bf9d531f1838bb59235afa9256",
-    "scripts/cdr_v59_tail_access_runtime.py": "ec835b68116b1c2b597c9dcdf79c475910be7e2aad03d476929fc371b9a318ff",
+    "scripts/cdr_v59_tail_access_runtime.py": "946c08060f099e99f49ac35e559324b1e445d4c3865cfa7be954fa6e75db6176",
     "scripts/cdr_v59_tail_access_topology.py": "df8b0e712cd224c6af66d88e91242d4e5b5d8b75a96ebf81179cb740c06c3a37",
     "scripts/check_cdr500_resistor_v59_source.py": "1d458093d210b20c0dda7f17a65c9e600cabc9eb8444511af2a0c7aae71245ce",
     "scripts/check_cdr_collector_v8_parent_sources.py": "dd63c29417d4eb3e92862167366cc391ad7034350a9d4ff78c29416bdad96c74",
@@ -261,6 +283,8 @@
     "scripts/check_cdr_strapped_v6_parent_sources.py": "3b516ad37746de8f71a0aa62c7dff9e56dd72c4d2f6b20de2096739800b37301",
     "scripts/check_cdr_v59_binding_rc_source.py": "79453d2a5c7b41317c6aa0e2270f13ee674268686063d1c1e74d1bdc870263c8",
     "scripts/check_cdr_v59_mim_runtime.py": "501d4846603abd42b9efeaf515a5ad45f136d58997e37b16329003623b9f33ac",
+    "scripts/check_cdr_v59_tail_access_imports.py": "a86d35952891f9dad32d80d3f52703ffce6232d67c572702f9d426879af6aa10",
+    "scripts/check_cdr_v59_tail_access_physical.py": "9ee55a369a74489559e3f6e1336874e5a99515ac330fc3174bcba3c49e55573e",
     "scripts/check_cdr_v59_tail_access_source.py": "7e80c24d6a41d2991fa9a0a08b1add3fe359a63376f6313a3d70b56f58a36a64",
     "scripts/check_cdr_v59_tail_access_topology.py": "e7d43e2c8c92bcb7e25fe297418718ac32bbf33ba5f93c59cc87217dfff26477",
     "scripts/check_cdr_via_rich_v7_parent_sources.py": "a01e3cda48f0d36c7a8baa9d6cb1c8d738b2a06f050356a1cc63285e022ba1bc",
@@ -326,7 +350,23 @@
     "scripts/run_cloud_tx_mux4.py": "bb7f5c5ef736dd54c5ed560424d97d248894f4aa6fa6119f1e95c5f5c3df4b52",
     "scripts/run_cloud_tx_operating_point.py": "e8c4f4b9c723217bdbb0be17f6c77cfd2e459928e07a7b6ff2c17dfcf1759a1e"
   },
+  "publication_controls": {
+    "executed": false,
+    "positives": 3,
+    "refusals": 15,
+    "shared_chunk_and_file_list_controls_retained": true,
+    "shared_release_copy_faults": 8
+  },
   "qualified_pex": false,
+  "runtime_controls": {
+    "actual_result_persistence": 11,
+    "corrected_exit127_persistence": 1,
+    "executed": false,
+    "launcher_positives": 2,
+    "launcher_refusals": 9,
+    "original_missing_write_reproduction": 1,
+    "qualified_supervisor_cases": 13
+  },
   "schema": "cdr-v59-tail-access-wire-methods-v1",
   "simulation_authorized": false,
   "source_controls": {
@@ -341,7 +381,7 @@
     "missing_dependency_refusal": 1
   },
   "source_controls_authorized": false,
-  "status": "SOURCE_PHYSICAL_CONTROLLER_DRAFT_PENDING_IMPORT_AND_PUBLICATION_CONTROLS_AND_REVIEW",
+  "status": "SOURCE_PHYSICAL_PACKAGE_AUTHORED_PENDING_INDEPENDENT_REVIEW_AND_HOSTED_CONTROLS",
   "topology_source_controls": {
     "executed": false,
     "positives": 2,

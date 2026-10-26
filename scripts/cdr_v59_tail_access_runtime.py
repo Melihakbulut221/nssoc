@@ -4,6 +4,7 @@
 import ast
 import hashlib
 import importlib.util
+import json
 import sys
 import types
 from pathlib import Path
@@ -13,6 +14,8 @@ SUPERVISOR_SHA="e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b
 SAMPLER="docs/evidence/cdr-v59-tail-qualified-memory-sampler-20261026.py"
 SAMPLER_SHA="55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07"
 PROBE="scripts/check_cdr_v59_mim_runtime.py"
+WRITER="scripts/cdr_v59_mim_admission.py"
+WRITER_SHA="a985d8bf1c94c6a3ba3d4f19c24193f35598a883eab56a52ed6de86ff98c14e5"
 
 def raw(root,path,expected):
     file=root/path
@@ -56,7 +59,12 @@ def launcher(root,gate,expected_probe):
     file,text,tree=raw(root,PROBE,expected_probe)
     module=types.ModuleType("cdr_tail_qualified_launcher")
     module.__file__=str(file)
-    module.admission=types.SimpleNamespace(ROOT=root,methods=gate)
+    writer_file,_,writer_tree=raw(root,WRITER,WRITER_SHA)
+    writer_nodes=[n for n in writer_tree.body if isinstance(n,ast.FunctionDef) and n.name=="write"]
+    assert len(writer_nodes)==1
+    writer_scope={"json":json}
+    exec(compile(ast.Module(body=writer_nodes,type_ignores=[]),str(writer_file),"exec"),writer_scope)
+    module.admission=types.SimpleNamespace(ROOT=root,methods=gate,write=writer_scope["write"])
     selected=[]
     for node in tree.body:
         if isinstance(node,(ast.Import,ast.ImportFrom)):
