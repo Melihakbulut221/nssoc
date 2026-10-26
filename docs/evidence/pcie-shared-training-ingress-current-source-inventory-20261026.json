@@ -1,0 +1,332 @@
+{
+  "current_CDC_proof": {
+    "bytes": 71328,
+    "counts": {
+      "RTL_named": 66,
+      "mapped_named": 33,
+      "qualified_mutants": 18,
+      "synthesis_checks": 6
+    },
+    "limitations": "Existing complete functional proof read from authenticated repository evidence; no new tests, synthesis, mutation or physical CDC qualification.",
+    "path": "docs/evidence/pcie-gen12-record-cdc-full-after-targeted-native-pass-20261025.json",
+    "run": 40212194745,
+    "sha256": "59c9f59c81c9cdf15b24b724f713f4dc77de997758775b346c3e2e0278126ee4",
+    "source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a",
+    "source_ref": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5",
+    "status": "PASS_COMPLETE_FUNCTIONAL_CDC_NOT_PROTOCOL_OR_PHYSICAL_PHY"
+  },
+  "date": "2026-10-26",
+  "full_phy_accepted": false,
+  "implemented_wiring": [
+    {
+      "finding": "Four aligner/FIFO outputs carry complete194-bit record,3-bit length,SKP/EIEOS/realign per lane privately into the normal-operation descrambler; no shared training consumer port exists.",
+      "lines": [
+        36,
+        89
+      ],
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v"
+    },
+    {
+      "finding": "Qualified single physical-lane raw32 collector and opaque192-bit complete-record CDC preserve data/K/code/disparity/comma. Their fixed194-bit container code is transport only, not Gen3 evidence.",
+      "lines": [
+        10,
+        67
+      ],
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v"
+    },
+    {
+      "finding": "Either clean reset asserts asynchronously in both domains; each release traverses three reset stages, four boot stages and synchronized peer-up. This startup barrier does not detect a mid-epoch stopped clock. Fault may arrive after an already accepted prefix.",
+      "lines": [
+        37,
+        68
+      ],
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v"
+    },
+    {
+      "finding": "Normal-only block has private state_q/seeded_q, static LANE_ID and no state transfer ports. DATA is XORed; TS field descrambling/DC balance is explicitly excluded. Existing implementation advances non-SKP OS and resets on its EIEOS branch; this observation is not a newly qualified training oracle.",
+      "lines": [
+        4,
+        12,
+        54,
+        117,
+        123
+      ],
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_record_descrambler_v1.v"
+    },
+    {
+      "finding": "Packet boundary still receives external pcie_link_up_i,pcie_training_i,pcie_retrain_done_i; current routing is not an integrated serial PCS/LTSSM proof.",
+      "lines": [
+        257,
+        271,
+        968,
+        990
+      ],
+      "path": "hw/soc/rtl/soc_top.v"
+    }
+  ],
+  "integrated_root_inventory": {
+    "complete_tree_not_truncated": true,
+    "exact_paths_absent": [
+      "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_front_x4_v1.v",
+      "hw/soc/rtl/pcie/soc_pcie_training_ingress_x4_v1.v",
+      "hw/soc/rtl/pcie/soc_pcie_training_epoch_control_v1.v",
+      "hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v",
+      "hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v"
+    ],
+    "meaning": "The root imports qualified proof but does not yet instantiate the Gen12 CDC wrappers or the three proposed shared-unit files at their active RTL paths."
+  },
+  "ltssm_accepted": false,
+  "no_authored_code_or_tests_executed": true,
+  "no_local_files": true,
+  "no_native_archive_access": true,
+  "no_new_RTL": true,
+  "no_new_run": true,
+  "pma_accepted": false,
+  "precise_next_unit": {
+    "command_interface": "Held coherent request/ack mailbox per recovered domain; epoch, externally selected rate/encoding, per-lane polarity/reset/alignment action. No per-bit bus synchronizer or asynchronous status AND.",
+    "external_contract": "PMA readiness must match the requested epoch/rate; detected discontinuity uses an explicit external loss input. No clock mux, analog lock or automatic stopped-clock detector is invented.",
+    "proposed_paths": [
+      "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_front_x4_v1.v",
+      "hw/soc/rtl/pcie/soc_pcie_training_ingress_x4_v1.v",
+      "hw/soc/rtl/pcie/soc_pcie_training_epoch_control_v1.v"
+    ],
+    "proposed_proof": "Independent complete-field record queue oracle with async clocks, both initial polarities, same-polarity resets, held/partial records, delayed/wrong-epoch acknowledgments, overflow and explicit clock loss; existing normal-end drain/abort tests retained. No new test authored or executed.",
+    "record_interfaces": {
+      "common": "independent valid/ready per physical lane; explicit loss/fault and accepted epoch",
+      "gen12": "128 data+16K+16code-error+16disparity-error+16comma",
+      "gen3": "194 block+3length+SKP/EIEOS/realign"
+    },
+    "reset_contract": "Stop admission and explicitly drain or abort the old owner epoch; coordinated reset must invalidate queued old records before an acknowledged new epoch can release data. Wrong/stale PMA or lane acknowledgments cannot relabel queued records.",
+    "scope": "Expose actual Gen3 FIFO records before normal descrambling and join distinct typed Gen12/Gen3 physical-lane streams to a common-clock owner through one explicit epoch-control boundary.",
+    "unresolved_before_RTL": [
+      "Epoch width,wrap refusal and retained-history bound",
+      "Exact mailbox request/ack/reset protocol and stopped-clock behavior",
+      "State-correct training-to-normal scrambler continuity and logical-lane assignment contract"
+    ]
+  },
+  "primary_source_refresh": {
+    "FAQ": {
+      "observed_partial_requirements": [
+        "State-specific128b/130b TS consecutiveness compares symbols6-9; Recovery.Equalization does not additionally require link/lane equality.",
+        "Repeated phase0 uses the preset received during the latest transition to8GT/s.",
+        "The described intermediate-L0 autonomous-equalization sequence must continue inhibiting DLLPs until equalization completes."
+      ],
+      "sufficient_complete_oracle": false,
+      "url": "https://pcisig.com/faq?field_category_value%5B%5D=pci_express_3.0&keys=equalization"
+    },
+    "base3_catalog": {
+      "catalog_read": true,
+      "observed_version": "3.0",
+      "publication_date": "2010-11-10",
+      "url": "https://pcisig.com/PCIExpress/Specs/Base/_3.0"
+    },
+    "intel_pathfinding": {
+      "meaning": "Official2009 presentation explicitly identifies pathfinding/work-in-progress; partial TS scrambling rationale is not promoted to final target normative field rules.",
+      "observed_pages": [
+        2,
+        13
+      ],
+      "url": "https://www.intel.com/content/dam/doc/guide/pci-express3-phy-implementation-considerations-idf2009-presentation.pdf"
+    },
+    "target_document": {
+      "authentication_or_access_bypass_attempted": false,
+      "full_content_read": false,
+      "public_tool_access": "Unavailable",
+      "url": "https://members.pcisig.com/wg/PCI-SIG/document/8265"
+    }
+  },
+  "prior_boundary": {
+    "path": "docs/evidence/pcie-shared-training-owner-connection-boundary-20261025.json",
+    "sha256": "d16e3eb92bb94860f9bca3e0098d3502706366c61b1a945fe340a3c2f812b288"
+  },
+  "qualified_CDC_source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a",
+  "root_source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5",
+  "schema": "pcie-shared-training-ingress-source-inventory-refresh-v1",
+  "source_inspection_scope": "19 focused paths:14 root-side and5 qualified CDC wrapper/harness/test paths. No full repository or physical integration proof.",
+  "sources": [
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 6031,
+      "git_blob_sha": "349bb9e7b9ba894bf7d352c9eea4b830f6d8ec3e",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v",
+      "prior_sha256": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d",
+      "sha256": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 7562,
+      "git_blob_sha": "dec0e45e42f974f15fbe0a174c0bfeb3f2640353",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_lane_align_v3.v",
+      "prior_sha256": "7d8df97bc16c4c1e8dc10de8539dff0de50fefd88d6fe8ec02c20fcf25258cdb",
+      "sha256": "7d8df97bc16c4c1e8dc10de8539dff0de50fefd88d6fe8ec02c20fcf25258cdb",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 5777,
+      "git_blob_sha": "0b10fbc275584bd9475eea0ae1f79b6343416337",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v",
+      "prior_sha256": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735",
+      "sha256": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 6105,
+      "git_blob_sha": "efb66c308096e48cd93067307174431392e62afc",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_record_descrambler_v1.v",
+      "prior_sha256": "514dc351e8f140635c16cf9bfe4c0ce4066bc9566493a55b55d46820fac7b007",
+      "sha256": "514dc351e8f140635c16cf9bfe4c0ce4066bc9566493a55b55d46820fac7b007",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 8293,
+      "git_blob_sha": "204473133929c059e4f15798e57cccd6a6545d18",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_sds_deskew_v2.v",
+      "prior_sha256": "bc3120f3f03af9e267449a72ebb77241a90b5fb008e74edfd14e154451a25ac7",
+      "sha256": "bc3120f3f03af9e267449a72ebb77241a90b5fb008e74edfd14e154451a25ac7",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 4910,
+      "git_blob_sha": "ac58de0999680f7e738725f0e0be0f079dadbc61",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_owned_rx_v1.v",
+      "prior_sha256": "0ca444320dd44eb4f90cf59df4841109dc29879a5d81c772bebf3dbe410fe022",
+      "sha256": "0ca444320dd44eb4f90cf59df4841109dc29879a5d81c772bebf3dbe410fe022",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 6729,
+      "git_blob_sha": "4db32018006164b25682fd91dd1b26187583f2c5",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_events_v2.v",
+      "prior_sha256": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50",
+      "sha256": "ee78b371252c9573ec27e21d443f330becbbcfdfff560872f0180024867cbd50",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 7024,
+      "git_blob_sha": "abf86a9bfd9043cff849a7138ab4e6ca1273a5d8",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen3_tx_path_v4.v",
+      "prior_sha256": "36691c0f57934c708367a30d6a5f4ce940ecfaa18c83c63e8e3636a5081fbd67",
+      "sha256": "36691c0f57934c708367a30d6a5f4ce940ecfaa18c83c63e8e3636a5081fbd67",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 67444,
+      "git_blob_sha": "09994c146f2a4022151a09ef567119c1889e8fda",
+      "path": "hw/soc/rtl/soc_top.v",
+      "prior_sha256": "b782a7fbe7b9ad5abb0db67bd132907d71e1ef43c9451b9befa2f356b77d4847",
+      "sha256": "b782a7fbe7b9ad5abb0db67bd132907d71e1ef43c9451b9befa2f356b77d4847",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 5595,
+      "git_blob_sha": "efeeffe7edfb2fcc53b2b43914037d9f0f1587e9",
+      "path": "scripts/prepare_pcie_mainchip_pnr.py",
+      "prior_sha256": "ef911ba667a5b5be8522fc2ea9e48e6de65da3ad0ac7b37fa384127647b287af",
+      "sha256": "ef911ba667a5b5be8522fc2ea9e48e6de65da3ad0ac7b37fa384127647b287af",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 13675,
+      "git_blob_sha": "bccfb14279e5a726b0936e54716b96de17e81860",
+      "path": "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_events_v2.py",
+      "prior_sha256": "7bf2b4f3b44cfb1ce4053d721e5a32970f37156dc7437e7058d59a8436fe2b96",
+      "sha256": "7bf2b4f3b44cfb1ce4053d721e5a32970f37156dc7437e7058d59a8436fe2b96",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 16549,
+      "git_blob_sha": "74652a7d7939d58922ec1cf2cfaa7b3ab3721a4d",
+      "path": "hw/soc/tb/cocotb/test_soc_pcie_gen3_recovered_x4_v3.py",
+      "prior_sha256": "58280100a30f37b0d99f6a3fad929b01b23a0171c505616014a4aab613eae54d",
+      "sha256": "58280100a30f37b0d99f6a3fad929b01b23a0171c505616014a4aab613eae54d",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 10172,
+      "git_blob_sha": "ed73367ee02a57a3c51d4635fe5477fa55b79978",
+      "path": "scripts/check_pcie_gen3_recovered_events_v2.py",
+      "prior_sha256": "ab52a968e134860dc93c2d83e91e52f71b05efe8f1ff5ff07defc6d42422c4b8",
+      "sha256": "ab52a968e134860dc93c2d83e91e52f71b05efe8f1ff5ff07defc6d42422c4b8",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 3614,
+      "git_blob_sha": "5552361b95eea1187e1637fa4de1765b17bd25df",
+      "path": "docs/evidence/pcie-gen3-primary-source-boundary-20261025.json",
+      "prior_sha256": "5459ffb63fe492e49219e99df044b795920499c172085ef89523607af2f128be",
+      "sha256": "5459ffb63fe492e49219e99df044b795920499c172085ef89523607af2f128be",
+      "source": "3b337bbb63ff55d38a73f60eafe5fca0f6550fd5"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 1880,
+      "git_blob_sha": "78ed183b74b405243e545b7715e529aeb4fb73f1",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v",
+      "prior_sha256": "b83c9e0d15e055020e8d44c0dc948eaff88d118cede1feaf33b8d38ddd24bc78",
+      "sha256": "b83c9e0d15e055020e8d44c0dc948eaff88d118cede1feaf33b8d38ddd24bc78",
+      "source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 4076,
+      "git_blob_sha": "137dde81679888b960c4e9ef7dd0a3daed1d4e8a",
+      "path": "hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v",
+      "prior_sha256": "3c60eead90fe053c2615b76d44e1d5c74add6b3351a3cd85f76572ac3faabf20",
+      "sha256": "3c60eead90fe053c2615b76d44e1d5c74add6b3351a3cd85f76572ac3faabf20",
+      "source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 11859,
+      "git_blob_sha": "e4164227239f6f9e90e27fd8928b543896a7cc9f",
+      "path": "hw/soc/tb/cocotb/pcie_gen12_record_cdc_harness.py",
+      "prior_sha256": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979",
+      "sha256": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979",
+      "source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a"
+    },
+    {
+      "byte_identical_to_prior_boundary": true,
+      "bytes": 3846,
+      "git_blob_sha": "95223a3ba205c0535e5e5b6fd29da21e7ba5b3c3",
+      "path": "hw/soc/tb/cocotb/test_soc_pcie_gen12_record_cdc_v1.py",
+      "prior_sha256": "5d1d386c3fe5a7dfedc9279066f9bd8f8cf3d75e42ef1d463d49868e9580ce32",
+      "sha256": "5d1d386c3fe5a7dfedc9279066f9bd8f8cf3d75e42ef1d463d49868e9580ce32",
+      "source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a"
+    },
+    {
+      "byte_identical_to_prior_boundary": false,
+      "bytes": 8374,
+      "git_blob_sha": "876d596cd6bb4637e7ea825238ae24202b43d8cc",
+      "path": "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py",
+      "prior_sha256": "c6e71e6c8fa440f20d0d9619fac0ea9015eef662dfe6c89497edcb39a16fa102",
+      "sha256": "843962b620d10f143287797b3cc4da80d98b9cdffc429252f5cdd8330e783fb5",
+      "source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a"
+    }
+  ],
+  "status": "SOURCE_ONLY_IMPLEMENTATION_BOUNDARY_TARGET_PROTOCOL_ORACLE_UNRESOLVED",
+  "training_owner_accepted": false,
+  "unchanged_current_native": {
+    "no_job_change": true,
+    "run": 40344497930,
+    "source": "2a81095f744193451800ef178c9a7ae7314dd2dc"
+  },
+  "unresolved_original_spec_oracle": [
+    "Exact targetBase3.0 and applicable errata TS1/TS2 fields,DC-balance and scrambling/bypass rules",
+    "State-specific comparison,count,timer and equalization transitions",
+    "Original-spec seed/reset/retention and logical-lane mapping rules",
+    "Independently reviewed TS-to-normal LFSR continuity oracle and packet/DLLP release conditions"
+  ]
+}
