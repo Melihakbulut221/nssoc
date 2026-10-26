@@ -91,12 +91,25 @@ def run():
         finally:
             sup.STOP.set();beat.join(timeout=2)
             for signum,handler in previous.items():signal.signal(signum,handler)
-            command=sup.TRACE/(LABEL+'.command.json')
-            if command.is_file():
-                result['terminal_command_record']=capture.value(c.regular(command).read_bytes())
-            result['outputs']={p:x['sha256']for p,x in inventory(OUT).items()if p!='result.json'}
-            save(OUT/'result.json',result)
-        methods()
+            finalize(result,sup.TRACE)
+    assert result['status']=='COMPLETE_SAVED_SIGNAL_REPAIR_REPORTS_ORIGINAL_FAILURE_RETAINED'
+    return result
+def finalize(result,trace):
+    command=trace/(LABEL+'.command.json')
+    if command.is_file():
+        raw=c.regular(command).read_bytes()
+        result['terminal_command_raw']=dict(bytes=len(raw),sha256=c.digest(raw))
+        try:result['terminal_command_record']=capture.value(raw)
+        except Exception as error:
+            result.update(status='FAIL_OR_INTERRUPTED_SIGNAL_REPAIR_READBACK',
+                terminal_command_parse_error=repr(error),terminal_command_parse_traceback=traceback.format_exc())
+    try:methods()
+    except BaseException as error:
+        result.update(status='FAIL_OR_INTERRUPTED_SIGNAL_REPAIR_READBACK',
+            source_integrity_error=repr(error),source_integrity_traceback=traceback.format_exc())
+    result['outputs']={p:x['sha256']for p,x in inventory(OUT).items()if p!='result.json'}
+    save(OUT/'result.json',result)
+    return result
 def direct_files(output,summary,stem):
     result=[]
     for name in DIRECT:
