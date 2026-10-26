@@ -242,7 +242,11 @@ def native_controls(pya,candidate,before,expected_child,old_bbox,additions):
     def changed_property(l,c):
         shapes=[q for li in l.layer_indexes() for q in c.shapes(li).each()]
         assert shapes
-        shapes[0].set_property("tail-wire-control","changed")
+        shape=shapes[0];properties=shape.properties()
+        key=next(iter(properties)) if properties else 1
+        value="tail-wire-control-changed"
+        if properties.get(key)==value:value+="2"
+        shape.set_property(key,value)
     def changed_label(l,c):
         labels=[q for cell in l.each_cell() for li in l.layer_indexes() for q in cell.shapes(li).each() if q.is_text()]
         assert labels
