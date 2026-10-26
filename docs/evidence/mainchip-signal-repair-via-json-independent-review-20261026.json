@@ -1,0 +1,95 @@
+{
+  "schema": "bounded-independent-via-json-source-review-v1",
+  "reviewer": "/root/pll_handoff",
+  "reviewed_source": "d248a56ffd0044423fb1f5cf20b55b10371624e6",
+  "failed_source": "6f50c4b0226cdad11cd80ab6519d6a7141175978",
+  "status": "CLEAR_SOURCE_ONLY_UNEXECUTED",
+  "focused_hashes": {
+    "scripts/mainchip_fixed_clock_signal_repair_native.py": {
+      "bytes": 15020,
+      "sha256": "a33fc4659e0da96325ebc8a5cc33dbc7afe5e350be0f9bd643848c0ab56ff386"
+    },
+    "scripts/check_mainchip_fixed_clock_signal_repair.py": {
+      "bytes": 19809,
+      "sha256": "276645fc1d637417e517d1399df751bc71ba89bab9ccbf7ce454d194466fb129"
+    },
+    "scripts/check_mainchip_signal_repair_via_projection.py": {
+      "bytes": 10234,
+      "sha256": "4f5b2fc115f89b51b80a6301213fb9a97d7eb706b16b2d7bff4e6a1f1383e60c"
+    },
+    "scripts/mainchip-fixed-clock-signal-repair-methods.json": {
+      "bytes": 42114,
+      "sha256": "ffd98754efddf29d85198392c3565d215f441905ae0f7d33e34ddb23b72a1a9e"
+    },
+    ".github/workflow-templates/mainchip-fixed-clock-signal-repair-cloud.yml": {
+      "bytes": 3856,
+      "sha256": "19d4684f0ceeb5384665f1dd32e51130c840822cd8bb77669cb8004c307839fc"
+    },
+    ".github/workflows/mainchip-fixed-clock-signal-repair-cloud.yml": {
+      "bytes": 3856,
+      "sha256": "19d4684f0ceeb5384665f1dd32e51130c840822cd8bb77669cb8004c307839fc"
+    },
+    "scripts/mainchip_original_clock_restoration_native.py": {
+      "bytes": 15209,
+      "sha256": "e48e0071f26309cfebadd051286408c3a229b1a6c54884ec516292d3017bee4c"
+    },
+    "scripts/mainchip_fixed_clock_signal_repair.py": {
+      "bytes": 10464,
+      "sha256": "fefe067abf459cd9827dcd89113eec3a63b948bf7a46146fdfe1f902e69f7c2d"
+    },
+    "docs/evidence/mainchip-fixed-clock-signal-repair-via-json-correction-20261026.json": {
+      "bytes": 9358,
+      "sha256": "690e4df3035c614a6873149c3d370ac7675ceb0331b70fc2c3353f0f3ae756b7"
+    },
+    "docs/evidence/mainchip-fixed-clock-signal-repair-first-native-failure-20261026.json": {
+      "bytes": 41865,
+      "sha256": "e577c2eaa44ffda226d0bdfa1a1f5c72da07f7e00f5e68ba48e19d33614a8fd3"
+    }
+  },
+  "AST_comparison": {
+    "scripts/mainchip_fixed_clock_signal_repair_native.py": {
+      "added": [
+        "via_projection"
+      ],
+      "changed": [
+        "compare_vias",
+        "snapshot"
+      ],
+      "unchanged": [
+        "guide_proof",
+        "main",
+        "save",
+        "source_paths",
+        "validate_guide_proof"
+      ]
+    },
+    "scripts/check_mainchip_fixed_clock_signal_repair.py": {
+      "added": [],
+      "changed": [
+        "controls"
+      ],
+      "unchanged": [
+        "fixture",
+        "guide_fixture",
+        "main",
+        "mutate_phase_call",
+        "sequence"
+      ]
+    }
+  },
+  "findings": [
+    "Only via_projection plus snapshot/compare_vias boundaries change. All other native functions and original14/50 control bodies remain.",
+    "Strict block/tech key, nonempty string layer, five fields, exact four integer coordinates; no bool/float/string coercion; order and duplicate multiplicity retained.",
+    "Snapshot returns JSON lists. Common used definitions compare before union. Only validated union boxes become tuples for the frozen native lookup; both databases must contain exact definitions, and projected output equality is checked again.",
+    "Actual qualified boxes/vias and full snapshot143820-net synthetic API fixtures have3 positives/24 exact refusals, including old snapshot tuple boundary and no-tuple actual compare mutation.",
+    "Fresh native guide_proof remains unchanged and required. Equal ODB/DEF bytes neither prove guide absence nor qualify guide availability.",
+    "Both workflow copies remain byte-identical to failed-source template19d4684f. All current authorization flags remain false."
+  ],
+  "limitations": [
+    "No full274-pin repeat",
+    "No authored imports or test execution",
+    "No native archive or CAD",
+    "No routing/native/guide outcome inferred",
+    "No activation or dispatch"
+  ]
+}
