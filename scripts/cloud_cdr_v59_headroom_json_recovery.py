@@ -157,8 +157,11 @@ def publication_files(m):
     assert r['original_run']==ORIGINAL and r['original_source']==HEAD and all(r[k]is False for k in FALSE)
     assert r['status']in ('RUNNING','FAIL_EXACT_JSON_RECOVERY',PASS)
     if r['status']!=PASS:return [result]
-    summary,_,_=reference(m);expected=expected_exports(m,summary)
+    summary,manifest,_=reference(m);expected=expected_exports(m,summary)
     assert r['member_proof']['all_member_hashes_verified']==15 and set(r['member_proof']['selected'])==set(SELECT)|{'result.json'}
+    assert r['member_proof']['archive']==manifest['verification']
+    for name,record in r['member_proof']['selected'].items():
+        assert record['sha256']==expected[output_name(name)] and type(record['bytes'])is int and record['bytes']>0
     path=OUT/'json';assert path.is_dir()and not path.is_symlink()
     found={}
     for p in path.iterdir():

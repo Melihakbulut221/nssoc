@@ -8,7 +8,7 @@ The new release would be `cdr-v59-headroom-json-recovery`, reserved externally a
 
 Files:
 - `scripts/cloud_cdr_v59_headroom_json_recovery.py`: admission, original full-member extraction, export and publication.
-- `scripts/check_cdr_v59_headroom_json_recovery.py`: six authored positive groups and 32 refusals, including actual synthetic multipart extraction, unselected-file corruption, linked members, exact published-file validation and the real qualified publisher with a fake remote.
+- `scripts/check_cdr_v59_headroom_json_recovery.py`: six authored positive groups and 35 refusals, including actual synthetic multipart extraction, unselected-file corruption, linked members, exact archive/selected proof and published-file validation and the real qualified publisher with a fake remote.
 - `scripts/cdr-v59-headroom-json-recovery-methods.json`: original proof, complete inherited protected map and new source pins.
 - `.github/workflow-templates/cdr-v59-headroom-json-recovery-cloud.yml`: unregistered manual controls/recovery template, source and recovery flags false.
 

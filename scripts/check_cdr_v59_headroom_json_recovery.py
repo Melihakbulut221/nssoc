@@ -118,13 +118,16 @@ def controls():
             info['assets'].append(dict(id=len(info['assets'])+1,name=p.name,size=p.stat().st_size,digest='sha256:'+c.sha(p),browser_download_url='fixture/'+p.name))
             uploads.append(p.name)
             return type('Result',(),{'returncode':0})()
-        with patch.object(c,'OUT',out),patch.dict(os.environ,env),patch.object(c,'expected_exports',return_value=expected),patch.object(c.waiter,'wait',return_value={}),patch.object(c.release,'api',side_effect=read),patch.object(c.publisher.subprocess,'run',side_effect=upload):
+        with patch.object(c,'OUT',out),patch.dict(os.environ,env),patch.object(c,'expected_exports',return_value=expected),patch.object(c,'reference',return_value=(summary,packed,receipt)),patch.object(c.waiter,'wait',return_value={}),patch.object(c.release,'api',side_effect=read),patch.object(c.publisher.subprocess,'run',side_effect=upload):
             result_pub=c.publish(fixture_m);assert len(result_pub['assets'])==12 and len(uploads)==12
             again=c.publish(fixture_m);assert len(again['assets'])==12 and len(uploads)==12
             positive.append('actual_complete_file_list_publisher_fake_remote_no_clobber')
             for label,change in [('wrong_output_hash',lambda r:r['outputs'].__setitem__(next(iter(expected)),'0'*64)),
                 ('acceptance_claim',lambda r:r.__setitem__('accepted',True)),('missing_member_proof',lambda r:r['member_proof'].__setitem__('all_member_hashes_verified',14)),
-                ('wrong_recovery_source',lambda r:r.__setitem__('source_head','b'*40))]:
+                ('wrong_recovery_source',lambda r:r.__setitem__('source_head','b'*40)),
+                ('changed_archive_proof',lambda r:r['member_proof']['archive'].__setitem__('sha256','0'*64)),
+                ('changed_selected_proof',lambda r:r['member_proof']['selected'][c.SELECT[0]].__setitem__('sha256','0'*64)),
+                ('invalid_selected_size',lambda r:r['member_proof']['selected'][c.SELECT[0]].__setitem__('bytes',False))]:
                 r=copy.deepcopy(result);change(r);c.write(out/'result.json',r);reject(label,lambda:c.publication_files(fixture_m))
             c.write(out/'result.json',result)
             victim=out/'json'/next(iter(expected));old= victim.read_bytes();victim.unlink();victim.symlink_to(out/'result.json')
@@ -138,7 +141,7 @@ def controls():
         reject('local_recovery_guard',lambda:c.guard(fixture_m,'recovery',dict(env,GITHUB_ACTIONS='false')))
         reject('attempt2_guard',lambda:c.guard(fixture_m,'recovery',dict(env,GITHUB_RUN_ATTEMPT='2')))
         reject('unauthorized_recovery',lambda:c.guard(dict(fixture_m,recovery_authorized=False),'recovery',env))
-    assert len(positive)==6 and len(bad)==32,(positive,bad)
+    assert len(positive)==6 and len(bad)==35,(positive,bad)
     return dict(status='PASS_SYNTHETIC_EXISTING_JSON_RECOVERY_CONTROLS',positive=positive,rejected=bad,
         frozen_functions=same,import_closure=closure,original_archive_downloaded=False,new_analysis=False,simulation=False,native=False)
 if __name__=='__main__':
