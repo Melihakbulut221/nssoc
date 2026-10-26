@@ -1,0 +1,14 @@
+{
+  "status": "SOURCE_REVIEW_FINDING_CORRECTED_NOT_EXECUTED",
+  "reviewed_head": "6ad40b41d229a89d0d6d938be9ba51474542c427",
+  "reviewer": "/root/tx_diagnosis",
+  "finding": "The inherited exact main has two (_,x,start) loops: the M4 rect/via/xs branch and the later power_via actual_branch loop. The initial fixture asserted one solely by tuple target.",
+  "correction": "Retain exact two tuple-target census, then require exactly one actual body with rect/via/xs.append and no power_via. Add a real program fault replacing the rect call with power_via; the unmodified later power loop remains and must not be selected as a fallback.",
+  "generator_unchanged_sha256": "4c9892f91324d203a918aa9b4a894a10f42c81b3f4a34f45387e2b1fbb71d887",
+  "native_comparator_unchanged_sha256": "2469c0144a51e9a3b26e762656b1f6e62436381040b30e6feaea91907e803e29",
+  "source_faults_authored": 25,
+  "source_positives_authored": 6,
+  "controls_executed": false,
+  "native_executed": false,
+  "all_method_authorizations_false": true
+}

@@ -42,8 +42,19 @@ def route_plan(main_text,report):
     tree=ast.parse(main_text)
     loops=[n for n in ast.walk(tree)if isinstance(n,ast.For)and isinstance(n.target,ast.Tuple)
         and [x.id for x in n.target.elts if isinstance(x,ast.Name)]==["_","x","start"]]
-    assert len(loops)==1
-    program=ast.fix_missing_locations(ast.Module(body=[copy.deepcopy(loops[0])],type_ignores=[]))
+    # The frozen main also has a later (_,x,start) power-via loop.
+    # Bind the actual branch body, not merely its tuple target spelling.
+    assert len(loops)==2
+    def branch_body(node):
+        calls=[n for n in ast.walk(node)if isinstance(n,ast.Call)]
+        names={n.func.id for n in calls if isinstance(n.func,ast.Name)}
+        appends=[n for n in calls if isinstance(n.func,ast.Attribute)
+            and isinstance(n.func.value,ast.Name)and n.func.value.id=="xs"and n.func.attr=="append"]
+        return "rect"in names and "via"in names and "power_via"not in names and len(appends)==1
+    selected=[node for node in loops if branch_body(node)]
+    assert len(selected)==1,"Expected the unique actual M4 rect/via/xs branch loop"
+    loop=selected[0]
+    program=ast.fix_missing_locations(ast.Module(body=[copy.deepcopy(loop)],type_ignores=[]))
     terminal_map=terminals(report);rects=[];vias=[]
     for bus in report["local_buses"]:
         net=bus["net"];rid=bus["row"];xs=[]
@@ -59,7 +70,7 @@ def route_plan(main_text,report):
                 row_starts={int(k):v for k,v in report["row_starts_um"].items()},xs=xs)
         exec(compile(program,"<actual-frozen-M4-loop-fixture>","exec"),ns)
         assert len(xs)==sum(t[0]==rid for t in terminal_map[net])
-    return dict(rects=rects,vias=vias,actual_loop_ast=ast.dump(loops[0],include_attributes=False))
+    return dict(rects=rects,vias=vias,actual_loop_ast=ast.dump(loop,include_attributes=False))
 
 def assert_plan(old,new,report):
     assert len(old["rects"])==len(new["rects"])==684
@@ -151,6 +162,7 @@ def main():
         # violate complete branch/via deltas, not a mirrored expected helper.
         mutants={
             "legacy_1p2":current,
+            "branch_loop_missing_power_loop_remains":changed.replace("rect(4, x - tail_half_width","power_via(4, x - tail_half_width"),
             "all_nets_widened":changed.replace("tail_half_width = 1.2 if net in "+repr(g.TAIL_NETS)+" else 0.6","tail_half_width = 1.2"),
             "only_first_net":changed.replace(repr(g.TAIL_NETS),repr(g.TAIL_NETS[:1])),
             "wrong_width":changed.replace("tail_half_width = 1.2 if","tail_half_width = 1.1 if"),
@@ -177,7 +189,7 @@ def main():
             r=copy.deepcopy(report);mutate(r);bad(name,lambda r=r:g.target_plan(r))
         for label,raises in (("full_main_return",False),("full_main_finally_stop",True)):
             result["positives"].append(dict(name=label,proof=main_entry(full,proof,raises)))
-        assert len(result["positives"])==6 and len(result["faults"])==24
+        assert len(result["positives"])==6 and len(result["faults"])==25
         result.update(status="PASS_AUTHORED_SOURCE_PLAN_CONTROLS_NOT_NATIVE",source_geometry_material_proved=False,
             source_generation_executed=False,original_electrical_rejection_preserved=True,
             native_material_faults_authored_but_not_executed=40)
