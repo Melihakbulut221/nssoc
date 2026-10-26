@@ -1,0 +1,17 @@
+# Current CDR headroom JSON recovery source proposal
+
+The completed readback [40322375915](https://github.com/Melihakbulut221/nssoc/actions/runs/40322375915) authenticated both original nominal captures, replayed the original measurement block and saved the same-row diagnostics. Its result is a successful diagnostic, while both electrical cases remain rejected. The release exposes the 18,563-byte result and 873-byte parts manifest, but the detailed diagnosis and replay reports are inside one 452,517,405-byte archive.
+
+This candidate only makes those existing JSON bytes individually accessible. It does not rerun the same-row analysis, load waveform arrays, invoke a simulator, perform CAD extraction, change geometry or change any electrical threshold. It verifies the exact completed run, both named jobs, source, lightweight tag, prerelease and all three existing assets. The full ordered archive hash is checked before the original complete-member reader hashes all 15 regular files. The existing reader's `relative` and `extract` functions remain AST-identical, with only the global selection changed to ten JSON members plus the original result. The selected bytes are syntax-checked and copied unchanged; binary caches and critical-frame JSONL are hashed but not parsed or republished.
+
+The new release would be `cdr-v59-headroom-json-recovery`, reserved externally against the exact future tested source. The original release stays unchanged. The existing qualified publisher retains digest verification and no-clobber behavior; its release lookup is replaced by the exact qualified `only_reserved` function. A failure or interruption publishes only the recovery receipt. A successful recovery publishes that receipt plus eleven exact original JSON files. Full selected JSONs remain in the fallback artifact even if publication fails.
+
+Files:
+- `scripts/cloud_cdr_v59_headroom_json_recovery.py`: admission, original full-member extraction, export and publication.
+- `scripts/check_cdr_v59_headroom_json_recovery.py`: six authored positive groups and 35 refusals, including actual synthetic multipart extraction, unselected-file corruption, linked members, exact archive/selected proof and published-file validation and the real qualified publisher with a fake remote.
+- `scripts/cdr-v59-headroom-json-recovery-methods.json`: original proof, complete inherited protected map and new source pins.
+- `.github/workflow-templates/cdr-v59-headroom-json-recovery-cloud.yml`: unregistered manual controls/recovery template, source and recovery flags false.
+
+The checker also verifies the three frozen function ASTs, resolves the entire initialization import closure against protected repository files or the Python standard library, and calls no original archive endpoint. Source controls additionally retain the qualified 17 release and 3-positive/4-refusal read-only waiter controls. The exact source-controls run and any recovery execution need separate review and authorization. No authored controls, imports, archive reads or recovery were executed while preparing this source proposal.
+
+Known limits: terminal proof establishes the diagnostic ran, but component/bias causality is not inferred from the compact minima. The forthcoming recovered diagnosis JSONs are needed to examine the existing same-time voltage/current budgets. Original electrical rejection, external-clock scope, tolerances, PEX limitations and all acceptance flags remain unchanged.

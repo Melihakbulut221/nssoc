@@ -1,0 +1,46 @@
+{
+  "schema": "mainchip-fixed-clock-signal-repair-route-source-v1",
+  "source_ref": "2ef9cc3d6b7f97ca6419060bdddae1aaff47b327",
+  "completed_route_run": 40199977397,
+  "full_source_summary": {
+    "asset": 675284368,
+    "bytes": 49860330,
+    "sha256": "0f5123d3ea073c93b4e4733e778605e2108719053714b3cbe2f0062b65580c76",
+    "authenticated_complete_JSON_in_RAM": true,
+    "not_an_archive": true
+  },
+  "projection": {
+    "route_script": {
+      "sha256": "11457b60c2c81c6c64ab44272a14394190255548fe31394497990ffa4e8d0085",
+      "original_sha256": "dcfb68741ea369b67c9dcd551c8d7b4aca4e7387ec999568cefa3a68c13f684e",
+      "exact_native_drt_setup": "set_thread_count $::env(DRT_THREADS)\n\nset drc_report_iter_step_arg \"\"\nif { $::env(DRT_SAVE_SNAPSHOTS) } {\n    set_debug_level DRT snapshot 1\n    set drc_report_iter_step_arg \"-drc_report_iter_step 1\"\n    detailed_route_debug -snapshot_dir \"$::env(STEP_DIR)\"\n}\nif { [info exists ::env(DRT_SAVE_DRC_REPORT_ITERS)] } {\n    set drc_report_iter_step_arg \"-drc_report_iter_step $::env(DRT_SAVE_DRC_REPORT_ITERS)\"\n}\n\n",
+      "exact_native_drt_arguments": "set drt_args [list]\nlappend drt_args -droute_end_iter $::env(DRT_OPT_ITERS)\nlappend drt_args -or_seed 42\nlappend drt_args -verbose 1\nlappend drt_args {*}$drc_report_iter_step_arg\n",
+      "layers": "set_routing_layers -signal Metal2-TopMetal2 -clock Metal4-TopMetal2",
+      "already_executed_global_route_replaced_by_hash_pinned_saved_global": true,
+      "sta_before_global_route_provenance_only_no_new_timing_acceptance": true
+    },
+    "original_native_settings": {
+      "DESIGN_NAME": "soc_top",
+      "DRT_THREADS": "2",
+      "DRT_OPT_ITERS": "64",
+      "DRT_SAVE_SNAPSHOTS": "0",
+      "DRT_SAVE_DRC_REPORT_ITERS": "5",
+      "DRT_ANTENNA_REPAIR_ITERS": "1",
+      "DIODE_CELL": "sg13g2_antennanp/A"
+    },
+    "retained_timing_contract": {
+      "clock_periods_ns": [
+        20,
+        4,
+        8,
+        8
+      ],
+      "derating_percent": 5,
+      "new_native_sta_run_required": true,
+      "step_configuration_sha256": "c6dfea371e243881a4ae20499da8726980c83224ea31e1b4e5fe7bb44cbccaaa",
+      "full_flow_configuration_sha256": "b86cade4259c9e0a650c0950882b6a9e08d15e3ebade31d31a001b507279832f"
+    },
+    "global_guides_sha256": "54ae78b49f70b05e007edc151c67c64a7eed4fd9a9ce0aed6d7898bb3286dcde"
+  },
+  "scope": "Exact observed settings and literal generated setup/argument projection. Original global Tcl/environment/guide/config hashes remain required at actual cloud restore; no native execution or feasibility claim."
+}

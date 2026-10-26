@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-26T12:56:42.096323+00:00",
+  "updated_at": "2026-10-26T14:01:59.822552+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "ad06827149c839a999183ad85dcd0cc2ab8abfa9",
+  "root_source_before_receipt": "5c2a063105c1da8ca0ab229eea2270cf8b6b88d0",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 57,
+    "inventory_version": 58,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40322641142,
@@ -15,27 +15,27 @@
     "last_verified_run_status": "ATTENTION_REQUIRED: all51 source controls passed; complete observation and snapshot succeeded; open engineering failures retained; no MONITOR_ERROR"
   },
   "active_runs": {
-    "pll-current-avss18-initial-p-high-transient": {
-      "run": 40323469809,
-      "head_sha": "5a712e76807579a7736c24f602a204c481c001b7",
+    "mainchip-fixed-clock-signal-repair-native": {
+      "run": 40335275167,
+      "head_sha": "6f50c4b0226cdad11cd80ab6519d6a7141175978",
       "status": "in_progress",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121574053171,
-          "name": "source-controls",
+          "id": 121615064104,
+          "name": "controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121574354567,
-          "name": "exact318-p-high-native",
+          "id": 121615440133,
+          "name": "native",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Run sole p-high process or continue its exact saved process"
+            "One bounded fixed-clock signal repair and complete original-class DRC"
           ]
         }
       ]
@@ -1085,13 +1085,72 @@
     "cdr_current500_loaded": "All10 original cases40219397958 completed: eight normal/constant cases electrically rejected; clock_stopped andvi_bias_off passed intentional-fault detection only. Complete proofs retained. Same-row readback40322375915/source6b43c7f3 succeeded after hosted16/48rows4/25publication4/9imports and complete6JSONproof2ce519c7. Both original nominal rejections replayed before analysis, all113475native rows retained; full terminal455235e7. Detailed two diagnosis JSON files currently archived remotely; source-only scoped JSON recovery being prepared on codex/cdr-headroom-result-recovery before design changes. No renewed simulation or threshold waiver.",
     "pll_avss18_loaded": "Four current zeroOPs still qualified;17oldHBT failures remain. Corrected portable source0274dbdb includes exact original8lifecycle/2support edits, complete prepare-return fixture and early actual resource receipt with unchanged72/20GiB and13200s guards. Hosted sourcecontrols40322037751/source52a2c682 PASS; root reconstructed all4fullJSON and264384Blog3de7b3bb, proofad4c5993. Minimal exact338\u2192345pin metadata activation5a712e76, sole original34ns p-high native40323469809 active with prerelease424228367 beforepreflight. No othercase/cross/retry/geometry/extraction authorized.",
     "execution_policy_latest_user": "Cloud-only remains authoritative, overriding stale local-work goal text. Local checkout/project/temp/native processes remain absent. All native archives/waves stay GitHub; only API/source/text/JSON/log bytes are handled in local RAM.",
-    "cloud_monitor": "Fixed real40271666966 MONITOR_ERROR caused by over8MiB descriptor. Candidate40322641142 passed51controls and completed actual observation/snapshot with129existing engineering attention records; no MONITOR_ERROR. Sourcefd2d6c24 now deployedmain554fdf1f; readlimit/8hourcron/read-only preserved. Oversized/ambiguous descriptors remain unverified and require detailed review without stopping other observations."
+    "cloud_monitor": "Fixed real40271666966 MONITOR_ERROR caused by over8MiB descriptor. Candidate40322641142 passed51controls and completed actual observation/snapshot with129existing engineering attention records; no MONITOR_ERROR. Sourcefd2d6c24 now deployedmain554fdf1f; readlimit/8hourcron/read-only preserved. Oversized/ambiguous descriptors remain unverified and require detailed review without stopping other observations.",
+    "cdr_full_saved_json_recovery": {
+      "run": 40328664042,
+      "source": "695b24cea60aeffa8330623a0da6ff6923c95eb2",
+      "proof": "234f309e8fbfda9f244018faa35d65fd0051541a",
+      "result_sha256": "d398a1e737eb40d7ceb36e03f870287da058ae825f3e21475115a4b45339ba7c",
+      "original_members_verified": 15,
+      "original_JSONs_recovered": 11,
+      "new_analysis": false,
+      "simulation": false,
+      "accepted": false,
+      "next": "Source-only tail-access metal hypothesis from simultaneous original nominal frames; all ten original case gates remain required."
+    },
+    "pll_current_avss18_p_high_complete_rejection": {
+      "run": 40323469809,
+      "source": "5a712e76807579a7736c24f602a204c481c001b7",
+      "proof": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "full_summary_sha256": "6138eeb8fcae24f1961324be4add303ba24cd0bd9a7fdf231bed59cbefae8293",
+      "full_capture_s": 3.4e-08,
+      "rows": 114525,
+      "columns": 4727,
+      "native_exit": 0,
+      "diagnostics": [],
+      "sources_unchanged": true,
+      "previous_failed_HBTs": 17,
+      "current_failed_HBTs": 4,
+      "electrical_accepted": false,
+      "native_process_saved": false,
+      "next": "Source-bound same-row interpretation of four parent selector-tail HBT minima and original fixed phase/release failures; no retry/other case authorized."
+    },
+    "signal_repair_source_and_sole_native": {
+      "reviewed_source": "a75ea9181fea9005486e79933bd69629f5717d7a",
+      "fixture_corrected_source": "e9e53525eda8e9cb053502af8bfeda2cb04c3c92",
+      "failed_controls_run_preserved": 40332121729,
+      "passing_controls_run": 40333880492,
+      "new_controls": [
+        14,
+        50
+      ],
+      "inherited_classification_controls": [
+        7,
+        50
+      ],
+      "marker_controls": [
+        6,
+        32
+      ],
+      "native_run": 40335275167,
+      "native_source": "6f50c4b0226cdad11cd80ab6519d6a7141175978",
+      "dispatch_receipt": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "routing_seconds": 14400,
+      "other_phase_seconds": 1200,
+      "workflow_minutes": 360,
+      "selected_clocks_required": 1691,
+      "original_DRT_markers": 762,
+      "RC_STA_execution": false,
+      "timing_accepted": false,
+      "full_PHY_accepted": false
+    }
   },
   "next_actions": [
-    "Consume sole currentAVSS18 initialp-high40323469809 complete actual resource/preparation/runtime/native gate and allsaved outputs; no automatic rerun, continuation or othercase. Preserve partial/failure if any.",
-    "Complete source-only signal repair candidate from saved originalclock restoration/FIXED input and all762clock-signal classification. Exact original1691clock gate, connection/placement/non-signal invariants and20/4/8/8ns+5% remain. Verify original guide/setup and supported DRT APIs; no invented incremental option. Review/sourcecontrols before native routing.",
-    "Use bounded cloud-only JSON recovery to expose exact two current CDR diagnosis/replay records from40322375915 immutable archive; do not rerun simulation/analysis or fetchnativearchiveslocally. Review same-row voltage/current budgets before component/layout edits.",
-    "Existing monitor main554fdf1f remains8h/read-only; its engineering ATTENTION_REQUIRED is separate from monitor operation. Keep current rootinventory/source checkpoints and allactualfailures preserved. Latestcloud-only instruction overrides oldgoal localwording."
+    "Consume sole signal repair40335275167 exact source6f50c4b0 and release424317632 completely. No duplicate native dispatch or automatic retry. Require all1691 original clock records, signal-only routing/complete non-NETS and native geometry invariants, paired original classes and complete original-class native/JSON/TR DRC before proposing RC/STA.",
+    "CDR recovery40328664042 is complete, original release unchanged and all eleven saved JSON bytes retained. Continue current500 source-only tail-access physical candidate from exact same-row frames and16 terminal mappings. Preserve all ten original-case failures and thresholds; fresh DRC/LVS/RC before separately reviewed electrical runs.",
+    "PLL40323469809 completed original34ns with zero native diagnostics but original gates rejected. Four xdut HBTs remain below0.4V and phase/preset/release failed. Source-only fresh-capture same-row observer next; no additional simulation/cross/othercase/retry authorized.",
+    "Keep all execution and artifacts on GitHub. Local project checkout/tmp/native remain absent. Monitor on main554fdf1f every8h remains read-only; preserve actual failures and no signoff claims.",
+    "Full serial Gen3 x4 PHY, shared digital PCS/LTSSM/PMA mainchip integration and original20/4/8/8ns+5% final setup/hold remain unaccepted."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -1280,42 +1339,26 @@
     "observed_40322375915": 40322375915,
     "observed_40227590415": 40227590415,
     "observed_40322037751": 40322037751,
-    "observed_40322641142": 40322641142
+    "observed_40322641142": 40322641142,
+    "observed_40326905130": 40326905130,
+    "observed_40327085769": 40327085769,
+    "observed_40328664042": 40328664042,
+    "observed_40332010239": 40332010239,
+    "observed_40332121729": 40332121729,
+    "observed_40333880492": 40333880492,
+    "observed_40323469809": 40323469809
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40223193329,
-      "head_sha": "7ad3ba10842df1fcf3646e7196812f4f58d149dd",
+      "run": 40326905130,
+      "head_sha": "342a1d1948f080da88697a9d7ec6a7e9cc4b72fd",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121259008912,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121259115060,
-          "name": "native",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40226099351,
-      "head_sha": "08c777ac74afa57c399ddfe4c7528a0ffc63aa03",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121267678156,
+          "id": 121585846274,
           "name": "register",
           "status": "completed",
           "conclusion": "success",
@@ -1324,22 +1367,22 @@
       ]
     },
     {
-      "run": 40226253001,
-      "head_sha": "354247a6636397bf5020a65ce0e61ef43356e05e",
+      "run": 40327085769,
+      "head_sha": "9c63664f0c170f5a498bc6f25559d89e59ebf406",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121268157737,
+          "id": 121586533242,
           "name": "controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121268257508,
-          "name": "readback",
+          "id": 121586716574,
+          "name": "recover",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
@@ -1347,22 +1390,22 @@
       ]
     },
     {
-      "run": 40227070148,
-      "head_sha": "e42177896ed7c5ca706c48c2b0bf3a19f2a51308",
+      "run": 40328664042,
+      "head_sha": "695b24cea60aeffa8330623a0da6ff6923c95eb2",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121270595402,
+          "id": 121591959268,
           "name": "controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121270714245,
-          "name": "readback",
+          "id": 121592213747,
+          "name": "recover",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
@@ -1370,131 +1413,38 @@
       ]
     },
     {
-      "run": 40219397958,
-      "head_sha": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+      "run": 40332010239,
+      "head_sha": "84b174a68a7c05536f6b44a4251fb1fcc300eced",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121603564901,
+          "name": "register",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40332121729,
+      "head_sha": "20c98c4a11e3d5001ff301978dbbc47798f823e7",
       "status": "completed",
       "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121247472789,
+          "id": 121603976327,
           "name": "controls",
           "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121247587307,
-          "name": "prepare",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121248489080,
-          "name": "loaded (hot_early)",
-          "status": "completed",
           "conclusion": "failure",
           "active_steps": []
         },
         {
-          "id": 121248489109,
-          "name": "loaded (cold_early)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 121248489123,
-          "name": "loaded (constant_one)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 121248489133,
-          "name": "loaded (cold_late)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 121248489136,
-          "name": "loaded (constant_zero)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 121248489159,
-          "name": "loaded (hot_late)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 121248489166,
-          "name": "loaded (nominal_late)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 121248489193,
-          "name": "loaded (vi_bias_off)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121248489203,
-          "name": "loaded (nominal_early)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 121248489276,
-          "name": "loaded (clock_stopped)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40227349839,
-      "head_sha": "2f0e634bafdfbd1b2dc99bee7681c80d9f8c2f5e",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121271434895,
-          "name": "registration",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40227579824,
-      "head_sha": "8edeead0bf55ec0aae41dd78bb2612bf3163026a",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121272137095,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121272282810,
-          "name": "readback",
+          "id": 121604373966,
+          "name": "native",
           "status": "completed",
           "conclusion": "skipped",
           "active_steps": []
@@ -1502,72 +1452,58 @@
       ]
     },
     {
-      "run": 40322375915,
-      "head_sha": "6b43c7f32997a3dec1a37b0221cbdaf5f68933ec",
+      "run": 40333880492,
+      "head_sha": "000b7f6ee493b4af32c8c143ccff490ceeb3af65",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121570295285,
+          "id": 121610142389,
           "name": "controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121570507854,
-          "name": "readback",
+          "id": 121610368811,
+          "name": "native",
           "status": "completed",
-          "conclusion": "success",
+          "conclusion": "skipped",
           "active_steps": []
         }
       ]
     },
     {
-      "run": 40227590415,
-      "head_sha": "caeee1660a61b6880341a6bfcad34856ba6c5824",
-      "status": "completed",
-      "conclusion": "success",
+      "run": 40335275167,
+      "head_sha": "6f50c4b0226cdad11cd80ab6519d6a7141175978",
+      "status": "in_progress",
+      "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 121272163497,
-          "name": "register-only",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40322037751,
-      "head_sha": "52a2c682ff4d46184b7a268743068d77605dc284",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121569136774,
-          "name": "source-controls",
+          "id": 121615064104,
+          "name": "controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 121569442709,
-          "name": "exact318-p-high-native",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
+          "id": 121615440133,
+          "name": "native",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "One bounded fixed-clock signal repair and complete original-class DRC"
+          ]
         }
       ]
     },
     {
       "run": 40323469809,
       "head_sha": "5a712e76807579a7736c24f602a204c481c001b7",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
@@ -1580,31 +1516,6 @@
         {
           "id": 121574354567,
           "name": "exact318-p-high-native",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Run sole p-high process or continue its exact saved process"
-          ]
-        }
-      ]
-    },
-    {
-      "run": 40322641142,
-      "head_sha": "fc86756f1a7e9aaf272205a38a25932ff061cfbc",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121571199297,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121571252664,
-          "name": "observe",
           "status": "completed",
           "conclusion": "failure",
           "active_steps": []
@@ -1613,7 +1524,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-26T12:56:42.096323+00:00",
+    "observed_at": "2026-10-26T14:01:59.822552+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -1735,7 +1646,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-26T12:56:42.096323+00:00",
+  "local_workspace_verified_empty_at": "2026-10-26T14:01:59.822552+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -8335,6 +8246,832 @@
       "release": 424228367,
       "tag": "cloud-results-40323469809-1-tx-phase-reset334-avss18-transient-native-initial-p-initial-high",
       "source": "5a712e76807579a7736c24f602a204c481c001b7"
+    }
+  ],
+  "imported_checkpoint_receipts_v58": [
+    {
+      "path": "docs/cdr-v59-headroom-json-recovery-source-proposal-20261026.md",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "43f21f313efe52d89eda6077c518520ac1ec446a",
+      "bytes": 3466,
+      "sha256": "ffa7076ae39495bc55f1e4b217bc4ec4938ccc7454d00bbf30498b9114ae3c95",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-activation-proposal-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "b49f608a4e62db614f906699f165300b3b80d48c",
+      "bytes": 3505,
+      "sha256": "ad8fb772a79c139d896d1a2e5753ee6bfaed9b92735aa12ca08d632bcf7e2dd0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-controls-dispatch-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "e7b04b721261252bbbd163e5d9145fc2f997bb79",
+      "bytes": 20942,
+      "sha256": "d70e6de30a69394448d746e9bad0fc2f6c61aae5a47ae7dc52972d9bac820259",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-controls-terminal-20261026.job.log",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "e1d96120f7822f7649e2d8a8099b31cceb02655a",
+      "bytes": 40886,
+      "sha256": "6c5bc64b1729523ec24b4de55c014949a4cce9b10a45eca13371d7967e714ac7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-controls-terminal-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "069d3844c2f59946c5f22009765f3ccc140a4426",
+      "bytes": 24595,
+      "sha256": "8f52fdf56262a91be011bbf8f8200da02cac0c11d97d7b68caeb4d3b4c8f92f4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-controls-terminal-20261026.recovery.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "7678c5a6d2f2be1ad284c2ebb649d322c67a1bc0",
+      "bytes": 2320,
+      "sha256": "3655443cfa7eb66eef995e80f1c0b6873b3a114ff9ad7c5772436ac6db136067",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-controls-terminal-20261026.release.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "059ea13e7ccf270ee0188532d6f82b6272b3afc5",
+      "bytes": 665,
+      "sha256": "b0d5bc89c4f5560335e60f640f8feb9e1ac879030a785d8881b1fb6f71083b00",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-controls-terminal-20261026.tested-methods.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "7e718bbfd17ee40abaa2254c99c2beca6faa058a",
+      "bytes": 75973,
+      "sha256": "3cf5f19e06d559221e531a0227d84b25e1d9385a79f33e60e0df721eef01bfb6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-controls-terminal-20261026.wait.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-dispatch-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "5977a70184448e843dc8674b099f0647fb93282c",
+      "bytes": 17693,
+      "sha256": "d921b6a1a5794184d526cf89ab03d1844a63c712faae61b712186f0b12b11f14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-independent-source-review-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "82b0cbef9cf21e27735b0a55912065fe7a82441a",
+      "bytes": 1506,
+      "sha256": "3deb159bf66d7bb1f00a687ff0381ce3118f72362bf55d6b2f780926b40e8b24",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_early--cache.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "d7cd8b83d3a869ae86f8cefcd8f34f72db98bab6",
+      "bytes": 5952,
+      "sha256": "c20f3f2ec78d2efd6a5c949bbe9cd0d0862cce41faed11dcb97b172191e2c251",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_early--diagnosis.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "0e8f61f7e2e45a55335c3f3e8a12bc3931b9db66",
+      "bytes": 3299804,
+      "sha256": "c41e0ced62d5622e7d56cabfec630ee3bac9ca7dc199d974556e91ec91a653ea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_early--frames.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "181ea676b0b647adb2f3e1c3dbeea5ad74b2fa3e",
+      "bytes": 192,
+      "sha256": "478729c369369ba5674e33d31470d7dab539a6c1b5cdf33e65be8efd76b99e9b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_early--original-measurements-reproduced.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "e9237e3a37f86b22539b7ea648a7559287ad2522",
+      "bytes": 146107,
+      "sha256": "2c7fa940044846e6896697f1bd412f6390677072e00756ba0b66b19ba9556c96",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_early--restore-proof.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "381835590eee8077168ae9f5be20848318df43c4",
+      "bytes": 1784,
+      "sha256": "73845c7780aa4b2ffacab2ad4460a9fb479202e81849720ffc0e2fa02fac5d34",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_late--cache.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "6e27f079d27e131d5aa599c47fdfd84a3eb91d06",
+      "bytes": 5952,
+      "sha256": "21f6b292ab9f7ca5fbb50efa7b52474f63cb0d600ffdda2babf8d32cf271be35",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_late--diagnosis.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "3a1c5233b22562172cf166c857a388d3a52387a0",
+      "bytes": 3302486,
+      "sha256": "6620d59f4686dde7e0bbac90013bccc5cd6c1ee43a319b3f128789d3dfb8efbf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_late--frames.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "f28219eefc1bd65f5441fdd2cf1b210abb8b4b05",
+      "bytes": 192,
+      "sha256": "3230055684a026432c91d0dd6eb4d41c325e76e0c7af0de7b6120380c058f924",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_late--original-measurements-reproduced.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "2a9916dcf08173d2f4cd5a5e5a6f43c02799610e",
+      "bytes": 146262,
+      "sha256": "2fc100fb58e002fd1e2053f8bc00ce61704424f13990e141333446417fa5be35",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-nominal_late--restore-proof.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "b559696df96f9d875841ce04f93a24259f517bf4",
+      "bytes": 1784,
+      "sha256": "c84851eca39e4053d9be8a12dc2f3e119c233e7b187d886edf2ac8b564120e4b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/headroom-original-result.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "0173aecdb4f15e01ac64cbaf8e634d83c9152504",
+      "bytes": 18563,
+      "sha256": "09dfde461cfc3bcfa727fe0a65e167971cf47869829ac57a3c4f3d9d938498db",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026-assets/result.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "d85ebf41f545a6cf8073ff4ab9414e75fba59da1",
+      "bytes": 3936,
+      "sha256": "d398a1e737eb40d7ceb36e03f870287da058ae825f3e21475115a4b45339ba7c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026.controls-recovery.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "7678c5a6d2f2be1ad284c2ebb649d322c67a1bc0",
+      "bytes": 2320,
+      "sha256": "3655443cfa7eb66eef995e80f1c0b6873b3a114ff9ad7c5772436ac6db136067",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026.controls-release.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "059ea13e7ccf270ee0188532d6f82b6272b3afc5",
+      "bytes": 665,
+      "sha256": "b0d5bc89c4f5560335e60f640f8feb9e1ac879030a785d8881b1fb6f71083b00",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026.controls-wait.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026.controls.job.log",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "d401a45afb2711602f9363f42a67cfa7827f0798",
+      "bytes": 40897,
+      "sha256": "a9c71773a651afe4b42128cde2e9c0abd08f84febd66445ee09771991d7354b9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "bf20b82f6c4d13a6ef23fe787893a1c4e0ca1b14",
+      "bytes": 38074,
+      "sha256": "1b571341866bd14378e66c57ce94a57a85e5ba93019b4af3493412b5a282cd94",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026.publication.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "18716a6d26d11673166d7df36274b630b041b7c0",
+      "bytes": 4701,
+      "sha256": "e2c9ebb8eec47ddbc53360001361adaea2e1982935d783f2927bc41e9002ea07",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026.recover.job.log",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "99d6d53f33e6bb8452e408a9b0807c537c1fd632",
+      "bytes": 40881,
+      "sha256": "176d5de627f159eff9802ff531e467b13fd692e6769a717afd87620693983ac6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026.release-manifest.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "9664e4931c489d8dd448c7375f21e7924c7be14d",
+      "bytes": 37789,
+      "sha256": "e6c53f44e56213ddef3dd9181c0e72c2d94a746c745156fdde8ebba5bd87c6a6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-native-pass-20261026.tested-methods.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "ebaa3ac7a41d59675e388e5e3004ed004fd773fe",
+      "bytes": 78895,
+      "sha256": "756574d4407780628b366f25c46d887881f3263f3484df878607504702ea56d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-proposed-methods-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "ebaa3ac7a41d59675e388e5e3004ed004fd773fe",
+      "bytes": 78895,
+      "sha256": "756574d4407780628b366f25c46d887881f3263f3484df878607504702ea56d1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-registration-20261026.job.log",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "62be9f9d0a8a5a2356c20831ee675bd8805bcc5a",
+      "bytes": 2256,
+      "sha256": "81d9dac86956da56a70e5a15575e07ade59930647cf8668507e25e3a8ecc0953",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-registration-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "73de30833e45c8034262d4a6cb70e864f4f9ce6a",
+      "bytes": 18948,
+      "sha256": "2c23d8c5c29c797d01ce005290863b846b7178c8ff972783f600671bfad563f2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-root-activation-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "36fdba1c0cfbb59a2e57336d6e7b5ad6414ecccb",
+      "bytes": 1171,
+      "sha256": "30a0f3d52d58b16f3d37dc6963a7e743a11d57e5a809f6e28083c7034d860673",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-root-source-review-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "b50a462a646a15d803d6cab14820adb7523ef53e",
+      "bytes": 1184,
+      "sha256": "4d1908a5af2e21b116821eac30bb485aa747bf098e7f342db321b48743fe5c0c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-headroom-json-recovery-static-source-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "ea536b85ef5ae3135bfc4a7dcd1fa5cc1e1a1bd3",
+      "bytes": 13027,
+      "sha256": "ca328eb7f2d46d659c31a3c9386624e53f9721727d351341209e52f786c40e40",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-independent-review-20261026.json",
+      "source": "efe6e529961b33bb960fde761203d4d11283d4c3",
+      "git_blob": "e2f3a93ef91a4ec168a2ebeb5a3a6a589c443739",
+      "bytes": 28847,
+      "sha256": "797c9e404ba7f032d0e986a4468f50cdd3a8dd467d36e1617bd107f45f635ee1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-budget-and-bindings-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "85336dbe422631ab095445c529654adb17383d8d",
+      "bytes": 8019,
+      "sha256": "c679d5ab0b0acdbb34c75831775037340ada5aede8e4413c1137bc55d02e519f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-controls-pass-20261026.job.log",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "45ce294168de34bdf5c466d9fd4f029052535427",
+      "bytes": 33015,
+      "sha256": "26daf66a75fe22cb6657bcdec2729fd2d02c7d7eb0707d2cf01c142aa9eb3ade",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-controls-pass-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "aab4aa1274e8082ff0f93e454abcaec8c8143680",
+      "bytes": 22766,
+      "sha256": "5cdba6e087baf32abb434b827fb88e3f4bb0e4351354741a892adc24f4b053ca",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-controls-pass-20261026.result.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "b32ba3b278b838a32728027c71518607d7f74a90",
+      "bytes": 7415,
+      "sha256": "0df59439210c0dd858b44e465bf203e291d9b7fd0f593e6073a43e3407a76893",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-controls-pass-20261026.tested-methods.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "72e093bfa5b390fd2c6763fb4dd2340390ed0721",
+      "bytes": 38190,
+      "sha256": "5021c39ecde22052375c8b8c5ed44c8f111d665af08ab31361ec25d2b7b9e9ef",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-controls-retry-dispatch-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "baa34df81cf1bff9f2a1c7949650af6b32f7774b",
+      "bytes": 20377,
+      "sha256": "3061695527c64b333da83c887b2f68bde9aa196657878e4656d35483143a56eb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.job.log",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "662b7bf3220b4b47d3a51e1eb0c9ff0e81b8563f",
+      "bytes": 25159,
+      "sha256": "a2a5a7811eb7050e898a6f3e10c211a04afb5a46067fac4ea824a7f730d6a1a9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "8123f441d9d4ad40ab45e2b96d7b2e9a84a3ff30",
+      "bytes": 23468,
+      "sha256": "bccc93aa9a1b7ba0821b259fb5dbfc4493859c4496681b5511dad9d7eac2066f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.result.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "8ebe4c63ca8ec448dfe72833eb8e54e20215d256",
+      "bytes": 951,
+      "sha256": "8e0dab1f741ed4a0ec4a10655da3cf2454faa07de48f78a84f8ee7681723ecf5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-first-controls-failure-20261026.tested-methods.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "b7b81df54f6848a75de01a1f056c5ee91d344fff",
+      "bytes": 36741,
+      "sha256": "676355eef71a00d8fa4bfd9144c38c9b8e67c87990e55c15c53a835b71b499f5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-native-activation-proposal-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "613df95b5bbf429695a206d6813f49fcc15c0576",
+      "bytes": 6850,
+      "sha256": "bfc3d3fcc1f2afeb56e14eed6b2a1981ea2a6030a4f2cf98f239c773db4be9b7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-native-dispatch-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "df65cb9de5cf5bfae8bb490ed1e2941d2424aecb",
+      "bytes": 17963,
+      "sha256": "75bc8e839675f58e6be18addadb9886cd01305f46c47023e79e09f26b96db6aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-phase-fixture-correction-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "00d87fbe8c1e6a3483b58d7d0501c7057f3075e7",
+      "bytes": 3910,
+      "sha256": "5deba16f111d2037eb08ecbb145a85175f2412bde5dd4b60f1acd1f07e2a894e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-phase-fixture-peer-review-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "3ec13bace44fd1a0d816cd61ae61311f42138ab1",
+      "bytes": 3118,
+      "sha256": "4994f683e17d34915859e55bcff2fda19f6fe9628eb791cc18b96a34c3a61a3e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-phase-fixture-root-review-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "74a6b296dcf8cca293d05824cd10ef40cd65f3d2",
+      "bytes": 2937,
+      "sha256": "bbfbdde6c920179675bda716edc8d7f055eac49db6899991dfd71d4ae4dfec56",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-primary-source-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "dfcc2ebea72dc4cc3ada6009b9a504909dc2830d",
+      "bytes": 4464,
+      "sha256": "d1c024b1edb27076d4e92ada1d62eded4e5f3c6934b8c84239d39b39ed3709fe",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-root-native-activation-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "ba1255456e137967be6334e38642712a4c671f8a",
+      "bytes": 1999,
+      "sha256": "69cb765e5d4b861fea974337a71c7a9c38c3ed4eda6e2cabb126bec17789f1ac",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-root-source-review-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "817ad51f61d72aa9d350d0a323481b0906478af9",
+      "bytes": 3857,
+      "sha256": "4567cb873135705e18b1b13dec61057f83eba541a4f554786b04e10865665594",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-route-provenance-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "694a3a51e13aac73a41f724df8d42838013c1a32",
+      "bytes": 2572,
+      "sha256": "ae98123002493940cb7b171479524448adf3771d4754ed0339e0c25e54dd4f1b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-source-controls-dispatch-20261026.json",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "ba63cff9d4cdecaa0ba61afbdd261f1fa21e1f17",
+      "bytes": 39078,
+      "sha256": "8f3a004fc32aa70c9d7fd82aecc552c07baa90deb9ebb2bdb0484cd6af0b1de5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-source-controls-dispatch-20261026.registration-job.log",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "e1488d6f8a96d958e8288bdc7ed6407a3931d354",
+      "bytes": 2250,
+      "sha256": "17d6159fb99448cb17b84cb242607e0c0ea584a6fa7a26ebce20514a336a3166",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/drt/src/TritonRoute.cpp",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "252d7146a7e4bde9d740b7b003bdf60c410cdc3d",
+      "bytes": 46888,
+      "sha256": "fa5c6c23a992648c5282ed99ecb03a92bee9187dd55b9630809a5da41f18a3f5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/drt/src/TritonRoute.tcl",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "b518bbd95a85e69f7d32f1569a9794ee30de4597",
+      "bytes": 15390,
+      "sha256": "6cc777bde429f6ab1dfdda3e70ae6c22e2e8e6a2d93b9a723d6a2f992291f265",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/drt/src/io/GuideProcessor.cpp",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "21d9ea0c92ae3a72c8c0e1fd6da58d8dd71a0019",
+      "bytes": 73641,
+      "sha256": "669c2a484f4285407235edb2792029fb2e44d93d0165a50469a0c5bd0021e7d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/drt/src/io/io.cpp",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "e93a4e89b5a748ceed2f4c956f940e8e1c7b77ca",
+      "bytes": 149437,
+      "sha256": "5981b0cf31cae90fdfa2628ffb33c437cf15f33d866310176fd5f53024321c7e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/include/odb/db.h",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "2720d091a5a164752020685aab9c1f885f51d223",
+      "bytes": 272666,
+      "sha256": "142810acc2b0495b10c988b59e4d450e54dc27b2569687391588bfe1fad78bda",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/containers.i",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "55b33dae85f4c4a1522271dd283d13daa1b928b6",
+      "bytes": 3225,
+      "sha256": "91fb4249ac32658a8765ed0a2e2ad0b58ddc213cb1fce4829175785ee3ebb1fa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/dbhelpers.i",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "6e7e7a4dfdecdb0430226543d3260abfaf3089f0",
+      "bytes": 1097,
+      "sha256": "e0bd223d0bed22c646986ee10d2d9fcfb6f51c799f9dcf723bb9ff7036d4c192",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/dbtypes_common.i",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "7f1e7550b1e92b2651fe0274425fb38f60bb4deb",
+      "bytes": 746,
+      "sha256": "294a71cf3ac647c76aca42b956bf60bc9325f0805246aa52c7df57f6bae970fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/odb.i",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "76158886c9b71c6392463cbb052f8b0e5e9beb99",
+      "bytes": 2787,
+      "sha256": "3083e86b4dec8286c00a6e0720755b115612ea626d2a1b62582f9fa23c5fcb34",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/polygon.i",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "4f8c2cb43573a98d8e8b2572c3d460b79d40876b",
+      "bytes": 1642,
+      "sha256": "08c86986e55d8503168668bf77684d3fdf82efa021e676a342a3e1d4efe13007",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/common/swig_common.cpp",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "8eac9d366ff1ab0bc990f8a3fac2889844cf1802",
+      "bytes": 7980,
+      "sha256": "32dc5bbb099bca7f126202ac87c57beb204b808dc545b32cc632756dcbe82918",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/dbenums.i",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "db516f1da064425c5eac131f3c651c68c9402159",
+      "bytes": 55840,
+      "sha256": "73164e2e8bf85405f66a8bf25f9d4cc07d55854c301be058e24c0c245b31b83a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/dboperators.i",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "ce023b1e3b1571ad9316addfa799a8995efdf620",
+      "bytes": 628,
+      "sha256": "c3dedd1f93bfe6f02b7776f2e1304250ea9ff1def01ee1acf3d03cbd653301db",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/dbtypes.i",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "57f89a8dd6e7291720b652e1f0513e10b77f95e7",
+      "bytes": 10337,
+      "sha256": "5ce9798bad0c1bce78b13d4dd0c934b90b02e41162f1641e78ccd3b08e9886db",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/main.cpp",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "ab457f6fe78a438b6d56333e430b8aca111e9ca9",
+      "bytes": 786,
+      "sha256": "fa75b1e3efd14b7bb3f3caac79c037db253d7c5d1be311829ecaf034ef3733b8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-signal-repair-primary-dcf36133/src/odb/src/swig/python/parserenums.i",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "1e693c489139fc7f41b76f9e148c0d82c8851120",
+      "bytes": 2180,
+      "sha256": "4b213a966e4f1c9b9604c0cd315bc754744756a2b8e579944801ea60f2fac501",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/mainchip-fixed-clock-signal-repair-20261026.md",
+      "source": "e65c3ac125f24fbf015eeb505496e6a4ff83014d",
+      "git_blob": "1b3aaebf32df51a30918d54a736d3f7dad08e79a",
+      "bytes": 7595,
+      "sha256": "de1b2fb43c4001d7a2d46075b816d14362c5c42e1baf194810559ca17f8d017a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-transient-resource-independent-review-20261026.json",
+      "source": "dc45ec0b45f6760e8800d375f90a73510b929df8",
+      "git_blob": "95b9ab6e430699d7054b1d608bc190e06b4c595b",
+      "bytes": 1700,
+      "sha256": "f85d115b22fb66c513f4716800086dbd1192bc9ff33b32f8384fc5083a4748ad",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/cdr-v59-ten-case-native-evidence-summary-20261026.md",
+      "source": "75f86aff723ae08ef0ec0b2924245b24f6e3412b",
+      "git_blob": "d639f143861ba6f2f559235f9bd2a9722474301e",
+      "bytes": 4867,
+      "sha256": "acb3adaca2f6cd78764eeaabeed5ed88d051081975ceba7f4a923621b316a305",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-ten-case-native-json-comparison-20261026.json",
+      "source": "75f86aff723ae08ef0ec0b2924245b24f6e3412b",
+      "git_blob": "963f960b2efe35cd339f335ef7442faf476cec15",
+      "bytes": 82643,
+      "sha256": "ff38ff69562bfeaf3e15a78a1ad67e1f1bb38d212f3a193be342b8e7eede9ffe",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.comparison.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "ceceb8b243c190e30c7208bb8591122cc5da6c57",
+      "bytes": 316576,
+      "sha256": "0b44f865accb0f83327307ae111e363cac255d49f63060f331116e8986c4ece6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.jobs.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "0c3bb32088e875a0b8e075db56040219bc6e9b62",
+      "bytes": 8553,
+      "sha256": "7af608e8b7e5c65a60c9917ab78bf98a43c35f0c787a0c5c7db5e5bff613c181",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "37d77c749ea7e8debe3061dce838bf0dd936bcd8",
+      "bytes": 21183,
+      "sha256": "c63c9950971d7d205e2c71efdfbfa83213ac3f4a250f6a45c7cd65379085b67d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.native.job.log",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "ca468088d68bc2456f6f61b32919e93ae9eccf25",
+      "bytes": 2268120,
+      "sha256": "e5bd22678de1f2a48c3dc641116990ab2ed7090ad32d03670166864074e0d819",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.parts.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "dae51f3a5682ed4e4b5c8a9a33a13f240649d53b",
+      "bytes": 1743,
+      "sha256": "25317f13a2fc917107234ce4448a9119ff439f56a2430df9efacbc465db122c5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.preparation.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "1365ac4be6f3b20b002d0262447dd8f3f96fdd84",
+      "bytes": 268560,
+      "sha256": "b9dfd2e1edcda8c30f6e4e81c622249fc4ed21e1818cad254a2002e49a8ad4b0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.release.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "5c2b24c2a7a5cc033fb3ef27db583a62ab275771",
+      "bytes": 26218,
+      "sha256": "d5b2f0b573858abca6f92d593a8138250cb7b8f011b125c4c07e5d00938a1784",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.resources.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "d009d26b8bdaf71d87a48e9859a044e2a4978075",
+      "bytes": 1128,
+      "sha256": "bd9149c9eb32018369a341354697d2a522df3318f448299686589e5309aaedb1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.restoration.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "ef462bb9276abb112fd2ea888ffd9e185d311810",
+      "bytes": 682750,
+      "sha256": "694eed8b0d0aa1c98b6365eee38994d9090be50b285b0b9193550830427a5731",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.restored-input-controls.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "83883ba26d622eb2c3e4968e562cb38da5b57707",
+      "bytes": 11780,
+      "sha256": "e5eebe55b2754d5a03e5d6a15a95f36c9dafc95b62917abc8bb5ebf6837c7374",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.result.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "291e1c4fdb0dbb0ee53eb0f5b935e2e100df3b7c",
+      "bytes": 1581863,
+      "sha256": "6138eeb8fcae24f1961324be4add303ba24cd0bd9a7fdf231bed59cbefae8293",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.run.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "6a405066bf03ab3426fbf8015b93b97e6214a656",
+      "bytes": 14427,
+      "sha256": "78bebff8cd9bc291e39b28e859359a6fbbde1a9ee776d57cbc012120b6aabbdb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.source-controls-1.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "51a7ea0d9f83e5ea100c9f6d82effb76da684232",
+      "bytes": 126895,
+      "sha256": "3001c36fbd5331bd2f5628aec809b1f50e9216fbe7f182cd2497a1ee29d8708e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.source-controls-2.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "24e9db0ec2e2f6c40d27d583abb1e8fe42ad07c4",
+      "bytes": 618,
+      "sha256": "c920d5845be48121f5e22ad04eece3e1cdcf2cb145ff2b3a613c52b6e060ca8b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.source-controls-3.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "e1e2e9020029261550eed5195517c7c7af173aec",
+      "bytes": 883,
+      "sha256": "8283d5a0176526bd560bd7e364a1234cc678fb3e768523a3e2b962e7e1e63a80",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.source-controls-4.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.source-controls.job.log",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "bece5df277359354e5cdafe3fd3b264e70423f24",
+      "bytes": 264382,
+      "sha256": "5c04faeb5c28557e9d6e7f9dbc4d8b1226c6f86f9bbcacd37d6169c390cdaf67",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.tag.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "4bb7a0f114f0202d5aacd38f6b768d48c723efec",
+      "bytes": 672,
+      "sha256": "866488672c913fabdd64015e754e7d12ecb8946fef9be36d9f3c517dbfe42d18",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-avss18-p-high-native-rejection-20261026.zero-OP.json",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "a78b11a28d46c9945fbf06783a63fa09242cddde",
+      "bytes": 2216507,
+      "sha256": "af1babab272ca21fc332b79b3a8f3288f8c5e055cacfc0479d9d03686b575002",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/tx-phase-reset334-avss18-p-high-native-rejection-20261026.md",
+      "source": "cf621e4cc1773b4ba1242ae62fa31df58e21ec9a",
+      "git_blob": "f6ced79db6c576ea87f56b63199a4170d22a4cb1",
+      "bytes": 1641,
+      "sha256": "47e3ef107f4d2fbef3ad098f9a2e35dbff130d767c3f1fbefb35dd678e1985d5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-master-tail-source-routing-handoff-20261026.json",
+      "source": "58bb0f13ca5525df2068dac31e463e6ea3a9a510",
+      "git_blob": "458542457936b3dc5d292155a8dc91234feb00cb",
+      "bytes": 13535,
+      "sha256": "ebafae702e1ea9526127702fb99b167755be8d71bcc28baa46ff30f11dcf4843",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v58": [
+    {
+      "run": 40328664042,
+      "release": 424268610,
+      "tag": "cloud-results-40328664042-1-cdr-v59-headroom-json-recovery",
+      "source": "695b24cea60aeffa8330623a0da6ff6923c95eb2",
+      "complete": true
+    },
+    {
+      "run": 40335275167,
+      "release": 424317632,
+      "tag": "cloud-results-40335275167-1-mainchip-fixed-clock-signal-repair",
+      "source": "6f50c4b0226cdad11cd80ab6519d6a7141175978",
+      "result_not_yet_accepted": true
     }
   ]
 }
