@@ -24,6 +24,184 @@ PARAMETERS = dict(b_layer="TopMetal1",t_layer="TopMetal2",
 PLACEMENTS = {"sd":(993600,272000,28,17), "sc":(993600,1461520,124,61)}
 ALLOWED_LAYERS = ((126,0),(133,0),(134,0))
 CLEARANCE_DBU = {126:1640,133:1060,134:2000}
+EXPECTED_ANCHORS = {
+  "T003_D": [
+    3,
+    "sg13_lv_nmos",
+    "D",
+    28,
+    "$131",
+    8,
+    1885245,
+    406030,
+    17
+  ],
+  "T004_D": [
+    4,
+    "sg13_lv_nmos",
+    "D",
+    28,
+    "$131",
+    8,
+    1931750,
+    406030,
+    17
+  ],
+  "T005_D": [
+    5,
+    "sg13_lv_nmos",
+    "D",
+    28,
+    "$131",
+    8,
+    1997305,
+    406030,
+    17
+  ],
+  "T006_D": [
+    6,
+    "sg13_lv_nmos",
+    "D",
+    28,
+    "$131",
+    8,
+    2046955,
+    406030,
+    17
+  ],
+  "T032_D": [
+    32,
+    "sg13_lv_nmos",
+    "D",
+    124,
+    "$680",
+    8,
+    1885245,
+    1595550,
+    61
+  ],
+  "T033_D": [
+    33,
+    "sg13_lv_nmos",
+    "D",
+    124,
+    "$680",
+    8,
+    1931750,
+    1595550,
+    61
+  ],
+  "T034_D": [
+    34,
+    "sg13_lv_nmos",
+    "D",
+    124,
+    "$680",
+    8,
+    1997305,
+    1595550,
+    61
+  ],
+  "T035_D": [
+    35,
+    "sg13_lv_nmos",
+    "D",
+    124,
+    "$680",
+    8,
+    2046955,
+    1595550,
+    61
+  ],
+  "T061_E": [
+    61,
+    "npn13G2",
+    "E",
+    28,
+    "$131",
+    10,
+    1371525,
+    388022,
+    17
+  ],
+  "T062_E": [
+    62,
+    "npn13G2",
+    "E",
+    28,
+    "$131",
+    10,
+    1440330,
+    388022,
+    17
+  ],
+  "T064_E": [
+    64,
+    "npn13G2",
+    "E",
+    28,
+    "$131",
+    10,
+    1637080,
+    388022,
+    17
+  ],
+  "T065_E": [
+    65,
+    "npn13G2",
+    "E",
+    28,
+    "$131",
+    10,
+    1686730,
+    388022,
+    17
+  ],
+  "T115_E": [
+    115,
+    "npn13G2",
+    "E",
+    124,
+    "$680",
+    10,
+    1371525,
+    1577542,
+    61
+  ],
+  "T116_E": [
+    116,
+    "npn13G2",
+    "E",
+    124,
+    "$680",
+    10,
+    1440330,
+    1577542,
+    61
+  ],
+  "T118_E": [
+    118,
+    "npn13G2",
+    "E",
+    124,
+    "$680",
+    10,
+    1637080,
+    1577542,
+    61
+  ],
+  "T119_E": [
+    119,
+    "npn13G2",
+    "E",
+    124,
+    "$680",
+    10,
+    1686730,
+    1577542,
+    61
+  ]
+}
 
 def dbu(value):
     # Historical JSON contains harmless binary float spellings, but no rounding
@@ -47,6 +225,13 @@ def validate_mapping(handoff):
         assert r["pin_via_columns"]==(4 if i<4 else 1) and r["lane_via_columns"]==8
     anchors=handoff["native_terminal_rows"]
     assert len(anchors)==16 and len({r["wire_anchor"] for r in anchors})==16
+    assert {r["wire_anchor"]:[r["device"],r["model"],r["terminal"],r["native_cluster"],r["native_net"],r["metal"],*r["point_dbu"],r["wire_component"]] for r in anchors}==EXPECTED_ANCHORS
+    for label,tag in (("D","sd"),("C","sc")):
+        rec=handoff["target_native_nodes"][label]
+        dx,dy,cluster,component=PLACEMENTS[tag]
+        assert rec["parent"]==tag and rec["source_net"]=="M_TE"
+        assert [dbu(x) for x in rec["parent_translation_um"]]==[dx,dy]
+        assert rec["native_cluster"]==cluster and rec["wire_component"]==component
     expected={
       28:({"T061_E","T062_E","T064_E","T065_E"},{"T003_D","T004_D","T005_D","T006_D"},17),
       124:({"T115_E","T116_E","T118_E","T119_E"},{"T032_D","T033_D","T034_D","T035_D"},61)}
