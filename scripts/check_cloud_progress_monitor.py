@@ -312,8 +312,51 @@ class Controls(unittest.TestCase):
 
     def test_oversize_summary_never_downloaded(self):
         api = Mock(run("completed", "success")); api.assets[0]["size"] = m.LIMIT + 1
-        with self.assertRaises(AssertionError): m.collect(api, config(), NOW)
-        self.assertFalse(any(kind == "raw" for kind, _ in api.calls))
+        result = m.collect(api, config(), NOW)
+        row = result["runs"][0]; report = row["reports"][0]
+        self.assertEqual(row["classification"], "UNVERIFIED_TERMINAL_METADATA")
+        self.assertFalse(row["publication_verified"])
+        self.assertEqual(result["problem_runs"], [123])
+        self.assertEqual(report["metadata_skipped"][".summary.json"]["reason"], "OVERSIZED_DESCRIPTOR")
+        self.assertNotIn(("raw", "releases/assets/100"), api.calls)
+        self.assertIn(("raw", "releases/assets/101"), api.calls)
+        self.assertNotIn("native_status", report)
+
+    def test_oversize_parts_preserves_native_failure(self):
+        api = Mock(run("completed", "success"), summary=dict(status="FAIL_REAL_GATE", source_head=HEAD))
+        api.assets[1]["size"] = m.LIMIT + 1
+        result = m.collect(api, config(), NOW)
+        self.assertEqual(result["runs"][0]["classification"], "FAILED_NATIVE_REPORT")
+        self.assertNotIn(("raw", "releases/assets/101"), api.calls)
+        self.assertFalse(result["runs"][0]["publication_verified"])
+
+    def test_exact_own_summary_ignores_prerequisite_descriptor(self):
+        api = Mock(run("completed", "success"))
+        api.assets[0]["name"] = "native-123-1.summary.json"
+        api.assets.append(dict(id=999, name="qualified-zero-OP.summary.json", size=999999999))
+        result = m.collect(api, config(), NOW)
+        self.assertTrue(result["runs"][0]["publication_verified"])
+        self.assertNotIn(("raw", "releases/assets/999"), api.calls)
+
+    def test_ambiguous_summary_is_unverified_without_fetch(self):
+        api = Mock(run("completed", "success"))
+        api.assets.append(dict(id=999, name="other.summary.json", size=123))
+        result = m.collect(api, config(), NOW)
+        row = result["runs"][0]
+        self.assertEqual(row["classification"], "UNVERIFIED_TERMINAL_METADATA")
+        self.assertEqual(row["reports"][0]["metadata_skipped"][".summary.json"]["reason"], "AMBIGUOUS_DESCRIPTOR")
+        self.assertNotIn(("raw", "releases/assets/100"), api.calls)
+        self.assertNotIn(("raw", "releases/assets/999"), api.calls)
+
+    def test_changed_skipped_metadata_is_progress_without_download(self):
+        before = Mock(run("completed", "success")); before.assets[0]["size"] = m.LIMIT + 1
+        old = m.collect(before, config(), NOW)
+        same = Mock(run("completed", "success")); same.assets[0]["size"] = m.LIMIT + 1
+        self.assertTrue(m.collect(same, config(), NOW, old)["routine_unchanged"])
+        same.assets[0]["size"] += 1
+        result = m.collect(same, config(), NOW, old)
+        self.assertTrue(result["runs"][0]["changed_since_previous"])
+        self.assertNotIn(("raw", "releases/assets/100"), same.calls)
 
     def test_wrong_summary_source_rejected(self):
         api = Mock(run("completed", "success"), summary=dict(status="PASS", source_head="f" * 40))

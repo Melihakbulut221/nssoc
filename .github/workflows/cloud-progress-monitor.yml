@@ -49,6 +49,7 @@ jobs:
           python3 - <<'PYCODE'
           import json
           r=json.load(open('cloud-progress-monitor/result.json'))
+          if r['status']=='MONITOR_ERROR': raise RuntimeError(r['error'])
           p=r['configuration_source']
           assert p['bootstrap'] is False and p['branch']=='codex/complete-open-work'
           assert p['head_sha']==r['target_head']
