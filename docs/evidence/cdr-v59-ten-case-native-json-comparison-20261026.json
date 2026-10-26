@@ -1,0 +1,2354 @@
+{
+  "schema": "cdr-v59-ten-case-authenticated-native-json-comparison-v1",
+  "status": "EIGHT_NORMAL_CASES_REJECTED_TWO_INTENTIONAL_FAULTS_DETECTED_NO_CDR_ACCEPTANCE",
+  "source_run": 40219397958,
+  "source_head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+  "workflow_conclusion": "failure",
+  "full_native_JSON_assets": 10,
+  "authenticated_native_JSON_bytes": 26758739,
+  "frozen_measurement_source": {
+    "path": "scripts/cloud_cdr500_v58_loaded.py",
+    "source": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+    "sha256": "12fffebb23c7478d0994c00bc0e6fc53e4842b09bfca496db59316c923e86ab2",
+    "measurement_lines": [
+      275,
+      335
+    ],
+    "device_predicate_line": 299
+  },
+  "gates": {
+    "HBT": {
+      "minimum_active_VCE_v": 0.4,
+      "maximum_alltime_abs_VCE_v": 1.6,
+      "maximum_alltime_abs_VBE_v": 1,
+      "maximum_alltime_abs_Ic_per_emitter_a_exclusive": 0.003,
+      "active_from_s": 2e-09
+    },
+    "MOS": {
+      "maximum_terminal_abs_v": 1.32,
+      "minimum_active_VDS_v": 0,
+      "minimum_individual_tail_current_a": 0,
+      "minimum_summed_stage_tail_current_a": 0.0005
+    },
+    "native_capacitor_abs_limit_v": 1.6,
+    "HBT_tail_minimum_current_a": 0.0005,
+    "data": {
+      "UI_s": 1.25e-10,
+      "minimum_signed_margin_v": 0.1,
+      "sampler_sample_phases_UI": [
+        0.3,
+        0.6,
+        0.9
+      ],
+      "sampler_clock_to_valid_limit_s": 3.75e-11,
+      "comparator_sample_phases_UI": [
+        0.6,
+        0.75,
+        0.9
+      ],
+      "comparator_clock_to_valid_limit_s": 7.5e-11
+    },
+    "phase": {
+      "nonconstant_direction_adjusted_minimum_v": 0.03,
+      "constant_maximum_absolute_v": 0.01,
+      "window_s": [
+        3e-09,
+        3.3875e-08
+      ]
+    },
+    "VI": {
+      "nonconstant_direction_adjusted_current_minimum_a": 5e-05,
+      "nonconstant_direction_adjusted_voltage_minimum_v": 0.005,
+      "constant_maximum_absolute_current_a": 5e-06,
+      "constant_maximum_absolute_voltage_v": 0.002,
+      "minimum_active_tail_current_a": 0.0001
+    },
+    "intentional_fault_acceptance": "actual_fault_detected = fault and not (data_ok and vi_ok); only this predicate controls the two intentional fault case statuses, independently of device safety"
+  },
+  "common_runtime": {
+    "engine_sha256": "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509",
+    "reported_full_capture_end_s": 3.425e-08,
+    "maximum_step_requested_s": 3.125e-13,
+    "full_capture_columns": 1152,
+    "native_OFF_flags": 124,
+    "zero_source_OP_maximum": 0.0,
+    "sampler_test_load_f": 1.5e-13,
+    "comparator_test_load_f": 5e-14,
+    "base_external_clock_Hz": 8000000000.0,
+    "intentional_fault_exceptions": [
+      "clock_stopped deliberately changes the clock stimulus",
+      "vi_bias_off deliberately disables the VI bias"
+    ]
+  },
+  "current_composition": {
+    "run": 40206349975,
+    "source_head": "6ba254971226133de9a3977d70831ad332a1f3fe",
+    "summary_sha256": "ecf619ad48f888e37c7a6805b3a0986337fceb006a97fb7408726838227ef2c8",
+    "stage_sha256": "c65d1af69428a4a71b1a08e6404e389d921c885667ec1e6cfa7def7d9ef84ce4",
+    "geometry_regenerated": false,
+    "simulation_preaccepted": false
+  },
+  "interpretation": [
+    "The six varying-data normal cases share active VCE failures at XD61/62/115/116; hot cases additionally fail XD71/72/87/88 active VCE.",
+    "Cold cases also exceed 1.6 V in the all-time VCE maxima of XD59/60/111/112; those maxima alone do not locate the violation after startup.",
+    "All six varying-data normal cases miss the 30 mV phase gate. Only cold_late passes its VI phase/current gate.",
+    "Both constant cases pass device safety and the constant phase gate; constant_one passes the data screen but both constants fail the 2 mV VI output-voltage neutrality gate.",
+    "constant_zero also fails comparator x/y margin and clock-to-valid gates; this is a separate failure from VI neutrality.",
+    "Intentional clock_stopped and vi_bias_off PASS means failure detection only; all CDR/full-PHY/closed-loop acceptance flags remain false."
+  ],
+  "limitations": [
+    "Published JSON extrema are not simultaneous-row causal evidence.",
+    "No archive or raw waveform was downloaded or read, no analysis/simulation was rerun, no thresholds changed.",
+    "Native simulator elapsed time is absent from the native JSON; recorded job times include setup/publication and are not engine duration.",
+    "The summarized data excludes per-bit delay arrays but retains their native full assets and original aggregate verdicts."
+  ],
+  "cases": [
+    {
+      "case": "nominal_early",
+      "classification": "NORMAL_LOADED_CASE_REJECTED",
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "job": {
+        "id": 121248489203,
+        "conclusion": "failure",
+        "started_at": "2026-10-25T18:07:28Z",
+        "completed_at": "2026-10-25T18:24:25Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569625,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-nominal_early",
+        "asset_id": 675777539,
+        "asset_name": "cdr-v59-loaded-nominal_early-40219397958-1.native-result.json",
+        "bytes": 2680207,
+        "sha256": "caaf18f812d63c812b789ffc25d13f498e4a2c70fb3d1a2b0c619fe8526e8a6f",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-nominal_early/cdr-v59-loaded-nominal_early-40219397958-1.native-result.json"
+      },
+      "corner": "nominal",
+      "data_offset_s": -1.875e-11,
+      "original_verdicts": {
+        "devices_passed": false,
+        "data_passed": false,
+        "phase_passed": false,
+        "actual_fault_detected": false,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 4,
+        "failed": [
+          {
+            "instance": "xpd.xd0061",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.34464772900275364,
+            "maximum_alltime_abs_vce_v": 0.701447642576845,
+            "maximum_alltime_abs_vbe_v": 0.9121859084468548,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014865440871945292
+          },
+          {
+            "instance": "xpd.xd0062",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.34592191779326864,
+            "maximum_alltime_abs_vce_v": 0.701679166719649,
+            "maximum_alltime_abs_vbe_v": 0.9127909324621432,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014983512061279224
+          },
+          {
+            "instance": "xpd.xd0115",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.37874666132652646,
+            "maximum_alltime_abs_vce_v": 0.6756589069190018,
+            "maximum_alltime_abs_vbe_v": 0.9108077335169192,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014672165686610472
+          },
+          {
+            "instance": "xpd.xd0116",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.38016973786396824,
+            "maximum_alltime_abs_vce_v": 0.6758812319801791,
+            "maximum_alltime_abs_vbe_v": 0.9114050667566933,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.001478880370339018
+          }
+        ],
+        "worst_minimum_active": "xpd.xd0061"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.0024424899068130473,
+        "minimum_individual_MOS_tail_current_a": 0.0008022313242732633,
+        "minimum_summed_stage_tail_current_a": 0.0014683516001407482
+      },
+      "phase": {
+        "observed_average_v": -0.011009984778995511,
+        "direction": -1,
+        "direction_adjusted_v": 0.011009984778995511,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": false
+      },
+      "vi": {
+        "mean_signed_current_a": -3.409350563147196e-05,
+        "mean_output_difference_v": -0.011457410137085905,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025158803632804015,
+          "xty": 0.0002512639304585286
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.9411075144832717,
+          1.9495928476005038
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.02222218369510068,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.546875000000157e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.03186434478614444,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.265624999999218e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.01285755176454634,
+          "wrong_sign_samples": 33,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 1.189062500000592e-10,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.029952308644670397,
+          "wrong_sign_samples": 66,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 1.0234374999999369e-10,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.009172244388545824,
+          "wrong_sign_samples": 48,
+          "below_100mv_samples": 676,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12378067945051789,
+          "wrong_sign_samples": 382,
+          "below_100mv_samples": 724,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "e8d96d9cb9c116e0df63f614ee48beb3a28cdeed08d92afb85e45ba1231a003e",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    },
+    {
+      "case": "nominal_late",
+      "classification": "NORMAL_LOADED_CASE_REJECTED",
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "job": {
+        "id": 121248489166,
+        "conclusion": "failure",
+        "started_at": "2026-10-25T18:07:28Z",
+        "completed_at": "2026-10-25T18:27:08Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569650,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-nominal_late",
+        "asset_id": 675782841,
+        "asset_name": "cdr-v59-loaded-nominal_late-40219397958-1.native-result.json",
+        "bytes": 2680319,
+        "sha256": "e42b9911a37d7ea2294236214c07c1caa30d05add9736a0e6e8493b3d3a18040",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-nominal_late/cdr-v59-loaded-nominal_late-40219397958-1.native-result.json"
+      },
+      "corner": "nominal",
+      "data_offset_s": 1.875e-11,
+      "original_verdicts": {
+        "devices_passed": false,
+        "data_passed": false,
+        "phase_passed": false,
+        "actual_fault_detected": false,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 4,
+        "failed": [
+          {
+            "instance": "xpd.xd0061",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.34054993914507325,
+            "maximum_alltime_abs_vce_v": 0.701188504387835,
+            "maximum_alltime_abs_vbe_v": 0.9120797975880509,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014826645912730336
+          },
+          {
+            "instance": "xpd.xd0062",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3418403860325231,
+            "maximum_alltime_abs_vce_v": 0.7014204282313999,
+            "maximum_alltime_abs_vbe_v": 0.9126831517841771,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014944203195321572
+          },
+          {
+            "instance": "xpd.xd0115",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.38001810333749675,
+            "maximum_alltime_abs_vce_v": 0.6754572702954358,
+            "maximum_alltime_abs_vbe_v": 0.9103487870846081,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014591466226805212
+          },
+          {
+            "instance": "xpd.xd0116",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3812999490084107,
+            "maximum_alltime_abs_vce_v": 0.6756799880378805,
+            "maximum_alltime_abs_vbe_v": 0.910942859652088,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014707315161544532
+          }
+        ],
+        "worst_minimum_active": "xpd.xd0061"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.0024428800968079394,
+        "minimum_individual_MOS_tail_current_a": 0.0008022313242732633,
+        "minimum_summed_stage_tail_current_a": 0.0015012531310757548
+      },
+      "phase": {
+        "observed_average_v": 0.014071645016858859,
+        "direction": 1,
+        "direction_adjusted_v": 0.014071645016858859,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": false
+      },
+      "vi": {
+        "mean_signed_current_a": 4.28775570936529e-05,
+        "mean_output_difference_v": 0.012137488901540948,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025199320278707516,
+          "xty": 0.0002484606304279907
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.9408668482986933,
+          1.9487486163175622
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.018185068031914248,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.6093749999991113e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.0491737170232729,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 4.171875000011064e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.0114170016981903,
+          "wrong_sign_samples": 33,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 1.189062500000592e-10,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.02637011445053684,
+          "wrong_sign_samples": 63,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 5.765624999999016e-11,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12299248857650825,
+          "wrong_sign_samples": 385,
+          "below_100mv_samples": 737,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.00607126335642918,
+          "wrong_sign_samples": 44,
+          "below_100mv_samples": 675,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "9b1ca2fbc1998f69d6c39bcdc315a1e29dee6fa5a631eee929ee4041e26448e1",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    },
+    {
+      "case": "hot_early",
+      "classification": "NORMAL_LOADED_CASE_REJECTED",
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "job": {
+        "id": 121248489080,
+        "conclusion": "failure",
+        "started_at": "2026-10-25T18:24:28Z",
+        "completed_at": "2026-10-25T18:43:59Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569678,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-hot_early",
+        "asset_id": 675819545,
+        "asset_name": "cdr-v59-loaded-hot_early-40219397958-1.native-result.json",
+        "bytes": 2680378,
+        "sha256": "dff11290d24a806cee9adf413b8325d744cbe26fec7b85220e64ae856981f4c8",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-hot_early/cdr-v59-loaded-hot_early-40219397958-1.native-result.json"
+      },
+      "corner": "hot_low",
+      "data_offset_s": -1.875e-11,
+      "original_verdicts": {
+        "devices_passed": false,
+        "data_passed": false,
+        "phase_passed": false,
+        "actual_fault_detected": false,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 8,
+        "failed": [
+          {
+            "instance": "xpd.xd0061",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3331757472709035,
+            "maximum_alltime_abs_vce_v": 0.6778437156079735,
+            "maximum_alltime_abs_vbe_v": 0.8317961258305954,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.001408963540424094
+          },
+          {
+            "instance": "xpd.xd0062",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.33437665777809145,
+            "maximum_alltime_abs_vce_v": 0.6780916196543156,
+            "maximum_alltime_abs_vbe_v": 0.8323833356781932,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014190771249677828
+          },
+          {
+            "instance": "xpd.xd0071",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.35898697718297146,
+            "maximum_alltime_abs_vce_v": 0.930541080264319,
+            "maximum_alltime_abs_vbe_v": 0.8631442899285791,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.001994377596007434
+          },
+          {
+            "instance": "xpd.xd0072",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.37776855545712795,
+            "maximum_alltime_abs_vce_v": 0.9305278963548285,
+            "maximum_alltime_abs_vbe_v": 0.862077191406343,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0019728435544605185
+          },
+          {
+            "instance": "xpd.xd0087",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3691883530115905,
+            "maximum_alltime_abs_vce_v": 0.9271611162935587,
+            "maximum_alltime_abs_vbe_v": 0.8604931212278459,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0019487423763958958
+          },
+          {
+            "instance": "xpd.xd0088",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.38800841984814727,
+            "maximum_alltime_abs_vce_v": 0.9257142097886992,
+            "maximum_alltime_abs_vbe_v": 0.8598989277901412,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.00193593299011854
+          },
+          {
+            "instance": "xpd.xd0115",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3320125247714293,
+            "maximum_alltime_abs_vce_v": 0.6542390699498888,
+            "maximum_alltime_abs_vbe_v": 0.831174161171474,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0013964360489652022
+          },
+          {
+            "instance": "xpd.xd0116",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.33340785270548245,
+            "maximum_alltime_abs_vce_v": 0.6544818219877594,
+            "maximum_alltime_abs_vbe_v": 0.831757100656078,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.001406446251575601
+          }
+        ],
+        "worst_minimum_active": "xpd.xd0115"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.0025774209866007876,
+        "minimum_individual_MOS_tail_current_a": 0.0007767544786316118,
+        "minimum_summed_stage_tail_current_a": 0.0015504722768778768
+      },
+      "phase": {
+        "observed_average_v": -0.008294017355603403,
+        "direction": -1,
+        "direction_adjusted_v": 0.008294017355603403,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": false
+      },
+      "vi": {
+        "mean_signed_current_a": -2.165264445783118e-05,
+        "mean_output_difference_v": -0.00780662600965389,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025264863299507884,
+          "xty": 0.00025223691101353233
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.8448132496716934,
+          1.8529581008479985
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.01960770285823104,
+          "wrong_sign_samples": 33,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 5.140624999999962e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.03838113268354935,
+          "wrong_sign_samples": 129,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.9218749999990935e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.030938368925147935,
+          "wrong_sign_samples": 64,
+          "below_100mv_samples": 158,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.09990986978122496,
+          "wrong_sign_samples": 113,
+          "below_100mv_samples": 133,
+          "maximum_clock_to_valid_s": 1.1890624999999054e-10,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.005610525657169059,
+          "wrong_sign_samples": 70,
+          "below_100mv_samples": 707,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.1239303021687343,
+          "wrong_sign_samples": 379,
+          "below_100mv_samples": 744,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "bd72db2111d7daf19cf2138d10c380236978bf5df282066b565413517ce3d28e",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "0cbae1fa0af7dd3e76da29aa0e7854b1ef02871b0abe8ca68d4cd76eb6cae7aa"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    },
+    {
+      "case": "hot_late",
+      "classification": "NORMAL_LOADED_CASE_REJECTED",
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "job": {
+        "id": 121248489159,
+        "conclusion": "failure",
+        "started_at": "2026-10-25T18:27:11Z",
+        "completed_at": "2026-10-25T18:49:41Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569697,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-hot_late",
+        "asset_id": 675831652,
+        "asset_name": "cdr-v59-loaded-hot_late-40219397958-1.native-result.json",
+        "bytes": 2680499,
+        "sha256": "d69389d75b76555d6016cf180d3e915143d4ea573ab3cbd2fb7b19f0295ba17c",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-hot_late/cdr-v59-loaded-hot_late-40219397958-1.native-result.json"
+      },
+      "corner": "hot_low",
+      "data_offset_s": 1.875e-11,
+      "original_verdicts": {
+        "devices_passed": false,
+        "data_passed": false,
+        "phase_passed": false,
+        "actual_fault_detected": false,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 8,
+        "failed": [
+          {
+            "instance": "xpd.xd0061",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.31740379764883386,
+            "maximum_alltime_abs_vce_v": 0.6775915486253193,
+            "maximum_alltime_abs_vbe_v": 0.8319137564268778,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014026574688755563
+          },
+          {
+            "instance": "xpd.xd0062",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3186450812246776,
+            "maximum_alltime_abs_vce_v": 0.6778347241822602,
+            "maximum_alltime_abs_vbe_v": 0.8325013709742727,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014126490251843572
+          },
+          {
+            "instance": "xpd.xd0071",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.35920356832998945,
+            "maximum_alltime_abs_vce_v": 0.9291167911220009,
+            "maximum_alltime_abs_vbe_v": 0.8627208085467335,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0019860192445843145
+          },
+          {
+            "instance": "xpd.xd0072",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.37775405540956974,
+            "maximum_alltime_abs_vce_v": 0.9300240230216588,
+            "maximum_alltime_abs_vbe_v": 0.8612721333894287,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0019547739228043936
+          },
+          {
+            "instance": "xpd.xd0087",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.36875823320809054,
+            "maximum_alltime_abs_vce_v": 0.927260740609972,
+            "maximum_alltime_abs_vbe_v": 0.8605929257194702,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0019503024542463767
+          },
+          {
+            "instance": "xpd.xd0088",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.38773931822742536,
+            "maximum_alltime_abs_vce_v": 0.9257437179583765,
+            "maximum_alltime_abs_vbe_v": 0.8599664569278895,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0019371258357052362
+          },
+          {
+            "instance": "xpd.xd0115",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3365050223927174,
+            "maximum_alltime_abs_vce_v": 0.6539919916708136,
+            "maximum_alltime_abs_vbe_v": 0.8305221457292659,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0013907378044954548
+          },
+          {
+            "instance": "xpd.xd0116",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3378923970742371,
+            "maximum_alltime_abs_vce_v": 0.6542349889081441,
+            "maximum_alltime_abs_vbe_v": 0.8311035428165092,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014006842867444885
+          }
+        ],
+        "worst_minimum_active": "xpd.xd0061"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.0025779743780138054,
+        "minimum_individual_MOS_tail_current_a": 0.0007767544786316118,
+        "minimum_summed_stage_tail_current_a": 0.0015739315322522622
+      },
+      "phase": {
+        "observed_average_v": 0.009242502012439738,
+        "direction": 1,
+        "direction_adjusted_v": 0.009242502012439738,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": false
+      },
+      "vi": {
+        "mean_signed_current_a": 2.4040806174653198e-05,
+        "mean_output_difference_v": 0.007275681599052573,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025301611007177283,
+          "xty": 0.0002504628847086623
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.8447728591001638,
+          1.8529285779453408
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.027473929542788465,
+          "wrong_sign_samples": 64,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 5.234374999998993e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.0009511820730141655,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 4.8593749999994775e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.02948434426162335,
+          "wrong_sign_samples": 64,
+          "below_100mv_samples": 152,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.08874919361263801,
+          "wrong_sign_samples": 102,
+          "below_100mv_samples": 131,
+          "maximum_clock_to_valid_s": 1.1890624999999013e-10,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12100531294188875,
+          "wrong_sign_samples": 387,
+          "below_100mv_samples": 750,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.005441348248929962,
+          "wrong_sign_samples": 68,
+          "below_100mv_samples": 709,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "2b1c2959765595c139a0daed118bef71356d230f00ddd858c0fa4290fc2ea682",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "0cbae1fa0af7dd3e76da29aa0e7854b1ef02871b0abe8ca68d4cd76eb6cae7aa"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    },
+    {
+      "case": "cold_early",
+      "classification": "NORMAL_LOADED_CASE_REJECTED",
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "job": {
+        "id": 121248489109,
+        "conclusion": "failure",
+        "started_at": "2026-10-25T18:44:02Z",
+        "completed_at": "2026-10-25T19:01:59Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569724,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-cold_early",
+        "asset_id": 675856761,
+        "asset_name": "cdr-v59-loaded-cold_early-40219397958-1.native-result.json",
+        "bytes": 2679902,
+        "sha256": "936bcab73f50f7d3bf3c374ddd771ae741ce5cdf9139d6e740aa857b264bd1c2",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-cold_early/cdr-v59-loaded-cold_early-40219397958-1.native-result.json"
+      },
+      "corner": "cold_high",
+      "data_offset_s": -1.875e-11,
+      "original_verdicts": {
+        "devices_passed": false,
+        "data_passed": false,
+        "phase_passed": false,
+        "actual_fault_detected": false,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 8,
+        "failed": [
+          {
+            "instance": "xpd.xd0059",
+            "failed_metrics": [
+              "maximum_alltime_abs_vce_v"
+            ],
+            "minimum_active_vce_v": 1.1667606266231165,
+            "maximum_alltime_abs_vce_v": 1.665263941721945,
+            "maximum_alltime_abs_vbe_v": 0.9728147981380431,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0018491436319598275
+          },
+          {
+            "instance": "xpd.xd0060",
+            "failed_metrics": [
+              "maximum_alltime_abs_vce_v"
+            ],
+            "minimum_active_vce_v": 1.142346214429459,
+            "maximum_alltime_abs_vce_v": 1.675585554066425,
+            "maximum_alltime_abs_vbe_v": 0.9749179106894158,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0019342072413970487
+          },
+          {
+            "instance": "xpd.xd0061",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3561464976715185,
+            "maximum_alltime_abs_vce_v": 0.7197704498926063,
+            "maximum_alltime_abs_vbe_v": 0.9650467050688871,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015755772017882197
+          },
+          {
+            "instance": "xpd.xd0062",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.35747878795822097,
+            "maximum_alltime_abs_vce_v": 0.7199964319037699,
+            "maximum_alltime_abs_vbe_v": 0.9656784690201297,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015887876701543922
+          },
+          {
+            "instance": "xpd.xd0111",
+            "failed_metrics": [
+              "maximum_alltime_abs_vce_v"
+            ],
+            "minimum_active_vce_v": 1.20639741621681,
+            "maximum_alltime_abs_vce_v": 1.663763335576725,
+            "maximum_alltime_abs_vbe_v": 0.9634905456812928,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0016596047799543596
+          },
+          {
+            "instance": "xpd.xd0112",
+            "failed_metrics": [
+              "maximum_alltime_abs_vce_v"
+            ],
+            "minimum_active_vce_v": 1.1863064671863115,
+            "maximum_alltime_abs_vce_v": 1.6710279624862028,
+            "maximum_alltime_abs_vbe_v": 0.9659588249058642,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0017375785472415197
+          },
+          {
+            "instance": "xpd.xd0115",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.39767878899425346,
+            "maximum_alltime_abs_vce_v": 0.6918974608464254,
+            "maximum_alltime_abs_vbe_v": 0.9634196081447175,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015495603515684828
+          },
+          {
+            "instance": "xpd.xd0116",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.39899689574940733,
+            "maximum_alltime_abs_vce_v": 0.6921130626005985,
+            "maximum_alltime_abs_vbe_v": 0.9640406571579029,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015625824013117526
+          }
+        ],
+        "worst_minimum_active": "xpd.xd0061"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.0023500839150596906,
+        "minimum_individual_MOS_tail_current_a": 0.0008360731000202295,
+        "minimum_summed_stage_tail_current_a": 0.0014573795123254865
+      },
+      "phase": {
+        "observed_average_v": -0.013251884075308945,
+        "direction": -1,
+        "direction_adjusted_v": 0.013251884075308945,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": false
+      },
+      "vi": {
+        "mean_signed_current_a": -4.58355788288716e-05,
+        "mean_output_difference_v": -0.014320516391043887,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025182409334590007,
+          "xty": 0.0002491743997942914
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          2.03421817093927,
+          2.0428170995830346
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.05420441404847679,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 106,
+          "maximum_clock_to_valid_s": 4.2031249999991884e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.08261237209208669,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 64,
+          "maximum_clock_to_valid_s": 3.8906250000224914e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.007629023366396883,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 5.015625000000027e-11,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.003301945852600249,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 5.20312499999995e-11,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.016166095575137738,
+          "wrong_sign_samples": 28,
+          "below_100mv_samples": 627,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12155690095741711,
+          "wrong_sign_samples": 395,
+          "below_100mv_samples": 711,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "ff7fa9bd67003b8ace1ce9865aff667d040e6703ba42b3265b84074202790aa0",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "98a4f7868f19152a2040b3aedbfe530dcc5720389350fb50ce4b7dbace1a813a"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    },
+    {
+      "case": "cold_late",
+      "classification": "NORMAL_LOADED_CASE_REJECTED",
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "job": {
+        "id": 121248489133,
+        "conclusion": "failure",
+        "started_at": "2026-10-25T18:49:44Z",
+        "completed_at": "2026-10-25T19:10:41Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569744,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-cold_late",
+        "asset_id": 675874624,
+        "asset_name": "cdr-v59-loaded-cold_late-40219397958-1.native-result.json",
+        "bytes": 2680139,
+        "sha256": "d5d1332ad9760eef2fd0d5c09bb440fc5a595e19a6134cf23b95d7e8460b8799",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-cold_late/cdr-v59-loaded-cold_late-40219397958-1.native-result.json"
+      },
+      "corner": "cold_high",
+      "data_offset_s": 1.875e-11,
+      "original_verdicts": {
+        "devices_passed": false,
+        "data_passed": false,
+        "phase_passed": false,
+        "actual_fault_detected": false,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 8,
+        "failed": [
+          {
+            "instance": "xpd.xd0059",
+            "failed_metrics": [
+              "maximum_alltime_abs_vce_v"
+            ],
+            "minimum_active_vce_v": 1.1656891618115257,
+            "maximum_alltime_abs_vce_v": 1.665026977522598,
+            "maximum_alltime_abs_vbe_v": 0.972718968446293,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0018475741800734076
+          },
+          {
+            "instance": "xpd.xd0060",
+            "failed_metrics": [
+              "maximum_alltime_abs_vce_v"
+            ],
+            "minimum_active_vce_v": 1.142463930106495,
+            "maximum_alltime_abs_vce_v": 1.6752831106179764,
+            "maximum_alltime_abs_vbe_v": 0.9748673063379226,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0019334760358595193
+          },
+          {
+            "instance": "xpd.xd0061",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.35545277108739604,
+            "maximum_alltime_abs_vce_v": 0.7197489866441165,
+            "maximum_alltime_abs_vbe_v": 0.9649157077627334,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015721968885383053
+          },
+          {
+            "instance": "xpd.xd0062",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.35679334888441283,
+            "maximum_alltime_abs_vce_v": 0.7199692352917961,
+            "maximum_alltime_abs_vbe_v": 0.9655463213838871,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015853306637120242
+          },
+          {
+            "instance": "xpd.xd0111",
+            "failed_metrics": [
+              "maximum_alltime_abs_vce_v"
+            ],
+            "minimum_active_vce_v": 1.2062977790295444,
+            "maximum_alltime_abs_vce_v": 1.6641672251595225,
+            "maximum_alltime_abs_vbe_v": 0.9635261744292736,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0016599704547002475
+          },
+          {
+            "instance": "xpd.xd0112",
+            "failed_metrics": [
+              "maximum_alltime_abs_vce_v"
+            ],
+            "minimum_active_vce_v": 1.1862268025009328,
+            "maximum_alltime_abs_vce_v": 1.671170512869284,
+            "maximum_alltime_abs_vbe_v": 0.9659684617914854,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0017379290037438935
+          },
+          {
+            "instance": "xpd.xd0115",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3967593581079958,
+            "maximum_alltime_abs_vce_v": 0.6917382223943211,
+            "maximum_alltime_abs_vbe_v": 0.9630350382294842,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015415249542805299
+          },
+          {
+            "instance": "xpd.xd0116",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3980777807917284,
+            "maximum_alltime_abs_vce_v": 0.6919540771128381,
+            "maximum_alltime_abs_vbe_v": 0.963652341376687,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015543658346395275
+          }
+        ],
+        "worst_minimum_active": "xpd.xd0061"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.0023503637346081827,
+        "minimum_individual_MOS_tail_current_a": 0.0008360731000202295,
+        "minimum_summed_stage_tail_current_a": 0.0014971377748911232
+      },
+      "phase": {
+        "observed_average_v": 0.018759182407912148,
+        "direction": 1,
+        "direction_adjusted_v": 0.018759182407912148,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": false
+      },
+      "vi": {
+        "mean_signed_current_a": 6.337541196421018e-05,
+        "mean_output_difference_v": 0.016768788730671943,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.0002515169522748446,
+          "xty": 0.0002466437041650116
+        },
+        "phase_passed": true,
+        "bias_passed": true,
+        "passed": true,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          2.033727976694523,
+          2.041607522865691
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.0513245219124981,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 118,
+          "maximum_clock_to_valid_s": 4.2343749999991824e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.089143238971922,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 64,
+          "maximum_clock_to_valid_s": 3.828125000008855e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.009071149111304511,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 4.984375000005368e-11,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.004692773316888203,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 5.171874999999129e-11,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12185340197819934,
+          "wrong_sign_samples": 385,
+          "below_100mv_samples": 723,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.006636399019952781,
+          "wrong_sign_samples": 32,
+          "below_100mv_samples": 631,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "1bd5ffacd5ce510c8410e40e1f9e36f44d2c5d82baf0055b8e40ae3a7337b7b4",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "98a4f7868f19152a2040b3aedbfe530dcc5720389350fb50ce4b7dbace1a813a"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    },
+    {
+      "case": "constant_zero",
+      "classification": "NORMAL_LOADED_CASE_REJECTED",
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "job": {
+        "id": 121248489136,
+        "conclusion": "failure",
+        "started_at": "2026-10-25T19:02:02Z",
+        "completed_at": "2026-10-25T19:13:52Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569768,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-constant_zero",
+        "asset_id": 675882424,
+        "asset_name": "cdr-v59-loaded-constant_zero-40219397958-1.native-result.json",
+        "bytes": 2662111,
+        "sha256": "23dda9be3a781d93dabc3609a0edc5d347455e2a0c716563a484f193eea4ff81",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-constant_zero/cdr-v59-loaded-constant_zero-40219397958-1.native-result.json"
+      },
+      "corner": "nominal",
+      "data_offset_s": 1.875e-11,
+      "original_verdicts": {
+        "devices_passed": true,
+        "data_passed": false,
+        "phase_passed": true,
+        "actual_fault_detected": false,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 0,
+        "failed": [],
+        "worst_minimum_active": "xpd.xd0115"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.002499463262813032,
+        "minimum_individual_MOS_tail_current_a": 0.00080248722022435,
+        "minimum_summed_stage_tail_current_a": 0.0015344681237291677
+      },
+      "phase": {
+        "observed_average_v": -0.0007445421291431387,
+        "direction": null,
+        "direction_adjusted_v": null,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": true
+      },
+      "vi": {
+        "mean_signed_current_a": -1.0412616350239746e-06,
+        "mean_output_difference_v": -0.0033611809248284964,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.0002547396529166215,
+          "xty": 0.0002539868103153567
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.9431591380467477,
+          1.947094605025009
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.30143827280898816,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.29641174215457783,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.19321167204607873,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.19735023190019657,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.09524421782215456,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 6,
+          "maximum_clock_to_valid_s": 1.1890624999999054e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.09491628021176494,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 6,
+          "maximum_clock_to_valid_s": 1.1890624999999054e-10,
+          "passed": false
+        }
+      },
+      "capture": {
+        "header_rows": 112701,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1038690115,
+        "raw_sha256": "7ab4294952846d7f0278fef4ae15fafb15c239bf7be3eeb02016e735d47416e1",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    },
+    {
+      "case": "constant_one",
+      "classification": "NORMAL_LOADED_CASE_REJECTED",
+      "status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "job": {
+        "id": 121248489123,
+        "conclusion": "failure",
+        "started_at": "2026-10-25T19:10:43Z",
+        "completed_at": "2026-10-25T19:27:47Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569799,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-constant_one",
+        "asset_id": 675911143,
+        "asset_name": "cdr-v59-loaded-constant_one-40219397958-1.native-result.json",
+        "bytes": 2661855,
+        "sha256": "af22bef048bed91af931be91c8836f864ad8dc7f549d4d3ade57a45434a447a3",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-constant_one/cdr-v59-loaded-constant_one-40219397958-1.native-result.json"
+      },
+      "corner": "nominal",
+      "data_offset_s": 1.875e-11,
+      "original_verdicts": {
+        "devices_passed": true,
+        "data_passed": true,
+        "phase_passed": true,
+        "actual_fault_detected": false,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 0,
+        "failed": [],
+        "worst_minimum_active": "xpd.xd0115"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.0025004102638193637,
+        "minimum_individual_MOS_tail_current_a": 0.0008022313242732633,
+        "minimum_summed_stage_tail_current_a": 0.0016639077898370166
+      },
+      "phase": {
+        "observed_average_v": -0.0008234725125950089,
+        "direction": null,
+        "direction_adjusted_v": null,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": true
+      },
+      "vi": {
+        "mean_signed_current_a": -9.9624827096089e-07,
+        "mean_output_difference_v": -0.003823023841652685,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025479475420766434,
+          "xty": 0.0002540428798331094
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.9426985420960472,
+          1.947177625682129
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.29316623100860806,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.28906261388199167,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.1934231712781498,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.19838085381047402,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.11346554570591817,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.11271816823863536,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        }
+      },
+      "capture": {
+        "header_rows": 112701,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1038690115,
+        "raw_sha256": "102280616c13a4a42255bac6e37f952e85879b353702d80d5d3d5c212de77e20",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    },
+    {
+      "case": "clock_stopped",
+      "classification": "INTENTIONAL_FAULT_DETECTION_ONLY",
+      "status": "PASS_WHOLE_MIM_PD500_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF",
+      "job": {
+        "id": 121248489276,
+        "conclusion": "success",
+        "started_at": "2026-10-25T19:13:55Z",
+        "completed_at": "2026-10-25T19:37:56Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569822,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-clock_stopped",
+        "asset_id": 675934020,
+        "asset_name": "cdr-v59-loaded-clock_stopped-40219397958-1.native-result.json",
+        "bytes": 2673502,
+        "sha256": "8685b79e6064c8b49a07b8a3c21b666540d44162dc334ca6d711440a35ab2c8f",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-clock_stopped/cdr-v59-loaded-clock_stopped-40219397958-1.native-result.json"
+      },
+      "corner": "nominal",
+      "data_offset_s": 1.875e-11,
+      "original_verdicts": {
+        "devices_passed": true,
+        "data_passed": false,
+        "phase_passed": false,
+        "actual_fault_detected": true,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 0,
+        "failed": [],
+        "worst_minimum_active": "xpd.xd0115"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.002514839603255945,
+        "minimum_individual_MOS_tail_current_a": 0.000880431345797184,
+        "minimum_summed_stage_tail_current_a": 0.0016639077898370166
+      },
+      "phase": {
+        "observed_average_v": -0.0008271542674702688,
+        "direction": 1,
+        "direction_adjusted_v": -0.0008271542674702688,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": false
+      },
+      "vi": {
+        "mean_signed_current_a": -9.822289349891772e-07,
+        "mean_output_difference_v": -0.0038288219409145924,
+        "minimum_active_tail_current_a": {
+          "xtx": 0.00025737610691377403,
+          "xty": 0.00025657586206639975
+        },
+        "phase_passed": false,
+        "bias_passed": true,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          1.941591972198383,
+          1.947177625682129
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.30890514112808337,
+          "wrong_sign_samples": 381,
+          "below_100mv_samples": 381,
+          "maximum_clock_to_valid_s": 1.1890625000101707e-10,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.417541242011072,
+          "wrong_sign_samples": 378,
+          "below_100mv_samples": 378,
+          "maximum_clock_to_valid_s": 1.1890625000142073e-10,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.26728405922992204,
+          "wrong_sign_samples": 378,
+          "below_100mv_samples": 378,
+          "maximum_clock_to_valid_s": 1.1890625000101707e-10,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.26901889924185024,
+          "wrong_sign_samples": 378,
+          "below_100mv_samples": 378,
+          "maximum_clock_to_valid_s": 1.1890625000101707e-10,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.13101606281062878,
+          "wrong_sign_samples": 387,
+          "below_100mv_samples": 387,
+          "maximum_clock_to_valid_s": 1.1890625000101707e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.11480865443295223,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 0,
+          "maximum_clock_to_valid_s": 0.0,
+          "passed": true
+        }
+      },
+      "capture": {
+        "header_rows": 110385,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1017345859,
+        "raw_sha256": "ba28fa48a219b786e9c74cdde56f956e6aa4377bdec6e898d2416afbdbb80db6",
+        "start_s": 0.0,
+        "end_s": 3.425e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    },
+    {
+      "case": "vi_bias_off",
+      "classification": "INTENTIONAL_FAULT_DETECTION_ONLY",
+      "status": "PASS_WHOLE_MIM_PD500_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF",
+      "job": {
+        "id": 121248489193,
+        "conclusion": "success",
+        "started_at": "2026-10-25T19:27:50Z",
+        "completed_at": "2026-10-25T19:39:11Z"
+      },
+      "source": {
+        "run": 40219397958,
+        "head": "92a8253dd3410dd33bf34c1f7225991cf588d85d",
+        "release_id": 423569846,
+        "tag": "cloud-results-40219397958-1-cdr-v59-loaded-vi_bias_off",
+        "asset_id": 675938431,
+        "asset_name": "cdr-v59-loaded-vi_bias_off-40219397958-1.native-result.json",
+        "bytes": 2679827,
+        "sha256": "6db9ba2ff642d45f2ca313543f404880a888e4c28120b3e43a5b4eaf0895da95",
+        "url": "https://github.com/Melihakbulut221/nssoc/releases/download/cloud-results-40219397958-1-cdr-v59-loaded-vi_bias_off/cdr-v59-loaded-vi_bias_off-40219397958-1.native-result.json"
+      },
+      "corner": "nominal",
+      "data_offset_s": 1.875e-11,
+      "original_verdicts": {
+        "devices_passed": false,
+        "data_passed": false,
+        "phase_passed": false,
+        "actual_fault_detected": true,
+        "accepted": false,
+        "cdr_accepted": false,
+        "full_phy_accepted": false,
+        "closed_loop": false,
+        "qualified_pex": false
+      },
+      "HBT_screen": {
+        "checked": 124,
+        "failed_count": 5,
+        "failed": [
+          {
+            "instance": "xpd.xd0061",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3404328670899457,
+            "maximum_alltime_abs_vce_v": 0.7012273146175194,
+            "maximum_alltime_abs_vbe_v": 0.9121032249423712,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014831058200234324
+          },
+          {
+            "instance": "xpd.xd0062",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3417231227628623,
+            "maximum_alltime_abs_vce_v": 0.7014593959168178,
+            "maximum_alltime_abs_vbe_v": 0.9127067440124838,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014948661268898997
+          },
+          {
+            "instance": "xpd.xd0115",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.3800518837411154,
+            "maximum_alltime_abs_vce_v": 0.6755874614298016,
+            "maximum_alltime_abs_vbe_v": 0.910380194732071,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014597559027831873
+          },
+          {
+            "instance": "xpd.xd0116",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.38133421264087286,
+            "maximum_alltime_abs_vce_v": 0.6758103908862821,
+            "maximum_alltime_abs_vbe_v": 0.9109744984264264,
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0014713472208834494
+          },
+          {
+            "instance": "xpd.xd0170",
+            "failed_metrics": [
+              "minimum_active_vce_v"
+            ],
+            "minimum_active_vce_v": 0.29068660139910796,
+            "maximum_alltime_abs_vce_v": 0.3064076306892918,
+            "maximum_alltime_abs_vbe_v": 0.306407959615954,
+            "maximum_alltime_abs_ic_per_emitter_a": 2.3641108998611e-08
+          }
+        ],
+        "worst_minimum_active": "xpd.xd0170"
+      },
+      "other_device_screen": {
+        "MOS_failures": {},
+        "capacitor_failures": {},
+        "minimum_HBT_tail_current_a": 0.0024428784831550007,
+        "minimum_individual_MOS_tail_current_a": 0.0008026890912124542,
+        "minimum_summed_stage_tail_current_a": 0.0015029814020195626
+      },
+      "phase": {
+        "observed_average_v": 0.01409700129742681,
+        "direction": 1,
+        "direction_adjusted_v": 0.01409700129742681,
+        "gate": {
+          "minimum_signed_v": 0.03,
+          "constant_maximum_abs_v": 0.01,
+          "window_s": [
+            3.0000000000000004e-09,
+            3.3875e-08
+          ]
+        },
+        "passed": false
+      },
+      "vi": {
+        "mean_signed_current_a": 1.3664384877164272e-07,
+        "mean_output_difference_v": -5.77000119027963e-05,
+        "minimum_active_tail_current_a": {
+          "xtx": -1.687387618971065e-08,
+          "xty": 1.0499438956305479e-07
+        },
+        "phase_passed": false,
+        "bias_passed": false,
+        "passed": false,
+        "phase_limits": {
+          "minimum_signed_current_a": 5e-05,
+          "minimum_signed_voltage_v": 0.005,
+          "constant_maximum_abs_current_a": 5e-06,
+          "constant_maximum_abs_voltage_v": 0.002
+        },
+        "output_commonmode_v": [
+          2.0247086803903036,
+          2.028714908480026
+        ],
+        "native_mim_geometry_um": [
+          40,
+          40
+        ],
+        "real_input_loading": true,
+        "actual_filter_connection": true,
+        "closed_loop": false
+      },
+      "sampler_checks": {
+        "a": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.018209109676258717,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 4.6093749999991113e-11,
+          "passed": false
+        },
+        "b": {
+          "samples": 765,
+          "minimum_signed_margin_v": 0.04921132080360014,
+          "wrong_sign_samples": 0,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 4.171875000011064e-11,
+          "passed": false
+        },
+        "c": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.01139658549277535,
+          "wrong_sign_samples": 33,
+          "below_100mv_samples": 129,
+          "maximum_clock_to_valid_s": 1.189062500000592e-10,
+          "passed": false
+        },
+        "d": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.026333418529338674,
+          "wrong_sign_samples": 63,
+          "below_100mv_samples": 128,
+          "maximum_clock_to_valid_s": 5.765624999999016e-11,
+          "passed": false
+        }
+      },
+      "comparisons": {
+        "x": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.12315520051572115,
+          "wrong_sign_samples": 385,
+          "below_100mv_samples": 737,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        },
+        "y": {
+          "samples": 765,
+          "minimum_signed_margin_v": -0.006072040859984505,
+          "wrong_sign_samples": 44,
+          "below_100mv_samples": 675,
+          "maximum_clock_to_valid_s": 1.189062500003487e-10,
+          "passed": false
+        }
+      },
+      "capture": {
+        "header_rows": 113475,
+        "columns": 1152,
+        "header_bytes": 37699,
+        "raw_bytes": 1045823299,
+        "raw_sha256": "b5c2e936972cc0308bd06b0c76bfb8c865e40ec2b22bd542ef6fe23c5993acfc",
+        "start_s": 0.0,
+        "end_s": 3.424999999999999e-08,
+        "max_step_s": 3.125000000020087e-13,
+        "complete_unmodified_rows": true,
+        "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation",
+        "logical_vector_order_count": 1152
+      },
+      "runtime": {
+        "returncode": 0,
+        "diagnostics": [],
+        "native_options": {
+          "backend": "klu",
+          "numeric": {
+            "reltol": 0.0001,
+            "abstol": 1e-12,
+            "vntol": 1e-06,
+            "trtol": 7.0,
+            "maxord": 2.0,
+            "itl4": 10.0
+          },
+          "method": "TRAPEZOIDAL",
+          "native_readback_sha256": "caf1115b38773e4f087efeeb2f7a675ed618a41494b26cdcd33fa6b0093d603d"
+        },
+        "native_flags_verified": 124,
+        "zero_source_op_maximum": 0.0,
+        "current_saved_input_integrity": {
+          "files": 5549,
+          "all_hashes_unchanged": true
+        }
+      },
+      "native_byte_integrity_preserved": true
+    }
+  ]
+}
