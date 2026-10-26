@@ -158,6 +158,7 @@ def finalize(report):
     try:methods();report['protected_sources_unchanged']=True
     except BaseException as error:
         report.update(status='FAIL_OR_ERROR',protected_sources_unchanged=False,source_error=repr(error),source_traceback=traceback.format_exc())
+    if report['status']!=PASS:report['zero_op_qualification_complete']=False
     report['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}
     write(OUT/'result.json',report);return report
 
@@ -166,19 +167,48 @@ def run_owned_child():
     import signal,threading
     m=methods();trace=OUT/'supervision';trace.mkdir(exist_ok=False)
     owned=runtime.supervisor(ROOT,OUT,trace,methods,m['protected'][runtime.SAMPLER])
-    old_signals={s:signal.signal(s,owned.interrupted)for s in (signal.SIGTERM,signal.SIGINT)}
-    worker=threading.Thread(target=owned.heartbeat,daemon=True);worker.start()
+    old_signals={};worker=None;record=None;primary=None;primary_traceback=None;terminal=[]
     try:
+        for sig in (signal.SIGTERM,signal.SIGINT):old_signals[sig]=signal.signal(sig,owned.interrupted)
+        worker=threading.Thread(target=owned.heartbeat,daemon=True);worker.start()
         result=owned.supervised([sys.executable,'-B',ROOT/'scripts/cloud_tx_phase_reset334_tail_m4_loaded.py','--child'],
           'fresh-current-four-original-zero-OPs',False,seconds=m['owned_process']['seconds'],cwd=OUT)
         record=json.loads((trace/'fresh-current-four-original-zero-OPs.command.json').read_text())
         assert record['returncode']==result.returncode and not record['supervision_failure']
         assert not record['process_group_cleanup']['remaining_live']
-        return record
+    except BaseException as error:
+        primary=error;primary_traceback=error.__traceback__
     finally:
-        owned.stop_process(owned.ACTIVE);owned.STOP.set();worker.join(timeout=2)
-        for sig,handler in old_signals.items():signal.signal(sig,handler)
-        owned.sample('final_resource_sample')
+        def attempt(name,operation):
+            try:
+                value=operation();row=dict(action=name,completed=True)
+                if name=='stop_owned_process':row['process_cleanup']=value
+                terminal.append(row)
+            except BaseException as error:
+                terminal.append(dict(action=name,completed=False,error=repr(error),traceback=traceback.format_exc()))
+        def join_heartbeat():
+            if worker is not None:
+                worker.join(timeout=2)
+                assert not worker.is_alive(),'Owned heartbeat remains active after bounded join'
+        attempt('stop_owned_process',lambda:owned.stop_process(owned.ACTIVE))
+        attempt('set_stop_event',owned.STOP.set)
+        attempt('join_heartbeat',join_heartbeat)
+        for sig,handler in old_signals.items():
+            attempt('restore_signal_'+signal.Signals(sig).name,lambda sig=sig,handler=handler:signal.signal(sig,handler))
+        attempt('final_resource_sample',lambda:owned.sample('final_resource_sample'))
+        failed=[row for row in terminal if not row['completed']]
+        evidence=dict(status='FAIL_PRIMARY_BODY'if primary is not None else('FAIL_TERMINAL_CLEANUP'if failed else'PASS_OWNED_TERMINAL_CLEANUP'),
+          primary_error=None if primary is None else repr(primary),
+          primary_traceback=None if primary is None else''.join(traceback.format_exception(type(primary),primary,primary_traceback)),
+          terminal_actions=terminal,all_terminal_actions_attempted=True,child_result_available=record is not None)
+        try:write(OUT/'supervision-finalization.json',evidence)
+        except BaseException as error:
+            failed.append(dict(action='persist_terminal_receipt',completed=False,error=repr(error),traceback=traceback.format_exc()))
+        if primary is not None:
+            if failed:primary.add_note('Owned terminal cleanup failures: '+json.dumps(failed,sort_keys=True))
+            raise primary.with_traceback(primary_traceback)
+        if failed:raise RuntimeError('Owned terminal cleanup failed: '+json.dumps(failed,sort_keys=True))
+    return record
 
 
 def validate_native(native):

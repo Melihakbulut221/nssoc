@@ -70,6 +70,7 @@ jobs:
           assert len(r['authorization']['positive'])==2 and len(r['authorization']['rejected'])==7
           assert len(r['child_preflight']['positive'])==1 and len(r['child_preflight']['refused'])==6
           assert len(r['finalization']['actual_controller_main_finally'])==6
+          assert len(r['owned_child_terminal']['cases'])==6 and r['owned_child_terminal']['all_terminal_actions_attempted_after_earlier_failure']
           assert len(r['workflow']['rejected'])==4
           assert len(r['workflow']['control_evidence']['positive'])==2 and len(r['workflow']['control_evidence']['refused'])==2
           assert len(r['runtime']['supervisor']['controls'])==13

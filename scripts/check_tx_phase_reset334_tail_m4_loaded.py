@@ -280,6 +280,7 @@ def finalization_fixtures():
                 else:assert mode=='complete-four-OP'
                 raw=(out/'result.json').read_bytes();r=json.loads(raw)
                 assert(r['status']==controller.PASS)==(mode=='complete-four-OP')
+                assert r['zero_op_qualification_complete']is(mode=='complete-four-OP')
                 for key in ('electrical_accepted','transient_executed','geometry_generation_executed','extraction_executed'):assert r[key]is False
                 if mode!='preflight-refusal':
                     assert(out/'native-four-OP-result.json').read_bytes()==(stage/'result.json').read_bytes()
@@ -525,12 +526,88 @@ def authorization_controls():
     return dict(positive=positive,rejected=rejected)
 
 
+
+def owned_child_terminal_fixtures():
+    import signal,threading
+    results=[]
+    for mode in ('success','body-only','body-and-stop-failure','cleanup-only-stop-failure','body-and-all-cleanup-failures','cleanup-only-final-sample-failure'):
+        with tempfile.TemporaryDirectory()as folder:
+            out=Path(folder)/'out';out.mkdir();calls=[]
+            primary=RuntimeError('EXACT_PRIMARY_BODY_'+mode)
+            body_failure=mode.startswith('body-')
+            all_failures=mode=='body-and-all-cleanup-failures'
+            class StopEvent:
+                def set(self):
+                    calls.append('set-stop')
+                    if all_failures:raise RuntimeError('EXACT_STOP_EVENT_FAILURE')
+            class Worker:
+                def __init__(self,*,target,daemon):assert target is owned.heartbeat and daemon is True
+                def start(self):calls.append('start-heartbeat')
+                def join(self,timeout):
+                    assert timeout==2;calls.append('join-heartbeat')
+                    if all_failures:raise RuntimeError('EXACT_JOIN_FAILURE')
+                def is_alive(self):calls.append('heartbeat-is-alive');return False
+            handlers={signal.SIGTERM:'original-TERM',signal.SIGINT:'original-INT'}
+            def signal_call(sig,handler):
+                label=signal.Signals(sig).name
+                if handler is owned.interrupted:
+                    calls.append('install-'+label);return handlers[sig]
+                assert handler==handlers[sig];calls.append('restore-'+label)
+                if all_failures and sig==signal.SIGTERM:raise RuntimeError('EXACT_SIGNAL_RESTORE_FAILURE')
+                return owned.interrupted
+            def stop(active):
+                assert active is owned.ACTIVE;calls.append('stop-process')
+                if mode in ('body-and-stop-failure','cleanup-only-stop-failure')or all_failures:
+                    raise RuntimeError('EXACT_STOP_PROCESS_FAILURE')
+                return dict(signals=[],remaining_live=[],remaining_nonrunning=[])
+            def sample(kind):
+                assert kind=='final_resource_sample';calls.append('final-sample')
+                if mode=='cleanup-only-final-sample-failure'or all_failures:raise RuntimeError('EXACT_FINAL_SAMPLE_FAILURE')
+            def supervised(argv,label,native,*,seconds,cwd):
+                assert argv==[sys.executable,'-B',controller.ROOT/'scripts/cloud_tx_phase_reset334_tail_m4_loaded.py','--child']
+                assert label=='fresh-current-four-original-zero-OPs'and native is False and seconds==18000 and cwd==out
+                calls.append('supervised-body')
+                if body_failure:raise primary
+                record=dict(returncode=0,supervision_failure=None,process_group_cleanup={'remaining_live':[]})
+                controller.write(out/'supervision'/('fresh-current-four-original-zero-OPs.command.json'),record)
+                return types.SimpleNamespace(returncode=0)
+            owned=types.SimpleNamespace(ACTIVE=object(),STOP=StopEvent(),heartbeat=lambda:None,interrupted=lambda *_:None,
+              stop_process=stop,sample=sample,supervised=supervised)
+            m=dict(protected={controller.runtime.SAMPLER:'fixture-sampler'},owned_process={'seconds':18000})
+            caught=None
+            with mock.patch.object(controller,'OUT',out),mock.patch.object(controller,'methods',return_value=m),\
+                 mock.patch.object(controller.runtime,'supervisor',return_value=owned),\
+                 mock.patch.object(signal,'signal',side_effect=signal_call),mock.patch.object(threading,'Thread',Worker):
+                try:record=controller.run_owned_child()
+                except BaseException as error:caught=error
+            if mode=='success':assert caught is None and record['returncode']==0
+            elif body_failure:assert caught is primary,'Original exception object replaced by cleanup error'
+            else:assert isinstance(caught,RuntimeError)and'Owned terminal cleanup failed'in str(caught)
+            expected=['install-SIGTERM','install-SIGINT','start-heartbeat','supervised-body','stop-process','set-stop','join-heartbeat']
+            if not all_failures:expected.append('heartbeat-is-alive')
+            expected+=['restore-SIGTERM','restore-SIGINT','final-sample'];assert calls==expected
+            path=out/'supervision-finalization.json';raw=path.read_bytes();evidence=json.loads(raw)
+            assert evidence['all_terminal_actions_attempted']is True and len(evidence['terminal_actions'])==6
+            assert [r['action']for r in evidence['terminal_actions']]==['stop_owned_process','set_stop_event','join_heartbeat','restore_signal_SIGTERM','restore_signal_SIGINT','final_resource_sample']
+            if body_failure:
+                assert evidence['status']=='FAIL_PRIMARY_BODY'and evidence['primary_error']==repr(primary)
+                assert evidence['primary_traceback']and'EXACT_PRIMARY_BODY_'in evidence['primary_traceback']
+            elif mode=='success':assert evidence['status']=='PASS_OWNED_TERMINAL_CLEANUP'
+            else:assert evidence['status']=='FAIL_TERMINAL_CLEANUP'and evidence['primary_error']is None
+            errors=[r for r in evidence['terminal_actions']if not r['completed']]
+            assert len(errors)==(5 if all_failures else(0 if mode in ('success','body-only')else 1))
+            if body_failure and errors:assert any('Owned terminal cleanup failures:'in note for note in primary.__notes__)
+            results.append(dict(mode=mode,actual_run_owned_child=True,primary_exception_identity_preserved=body_failure,
+              terminal_receipt_sha256=d.digest(raw),evidence=evidence,calls=calls,
+              synthetic_process_and_signal_API_only=True,engine_or_archive_executed=False))
+    return dict(cases=results,all_terminal_actions_attempted_after_earlier_failure=True)
+
 def controls():
     base=inherited_controls()
     base.update(outer_native_view=outer_view_controls(),
       actual_prepare_completion=[prepare_completion_fixture(False),prepare_completion_fixture(True)],
       actual_post_preparation_main=[derived_preparation_boundary(x)for x in (True,False)],
-      native_result_controls=native_result_controls(),finalization=finalization_fixtures(),runtime=runtime_controls(),
+      native_result_controls=native_result_controls(),finalization=finalization_fixtures(),owned_child_terminal=owned_child_terminal_fixtures(),runtime=runtime_controls(),
       authorization=authorization_controls(),child_preflight=child_preflight_controls(),workflow=workflow_controls(),
       prior_four_failed_HBT_count=len(d.prior_four_tail_rejection()['all_four_failed_HBT_records']),
       native_executed=False,actual_fresh_model_binding_executed=False)
