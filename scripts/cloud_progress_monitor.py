@@ -179,9 +179,26 @@ def terminal_reports(api, run):
             matches = [a for a in release["assets"] if a["name"].endswith(suffix)]
             if not matches:
                 continue
-            assert len(matches) == 1, "Ambiguous terminal descriptor"
+            # Some publishers retain prerequisite summaries alongside their own result.
+            exact_name = tag.removeprefix(prefix) + "-" + str(run["id"]) + "-" + str(run["run_attempt"]) + suffix
+            exact = [a for a in matches if a["name"] == exact_name]
+            if len(exact) == 1:
+                matches = exact
+            if len(matches) != 1:
+                record.setdefault("metadata_skipped", {})[suffix] = {
+                    "reason": "AMBIGUOUS_DESCRIPTOR", "downloaded": False,
+                    "candidates": [{k: a.get(k) for k in ("id", "name", "size", "digest")} for a in matches],
+                }
+                continue
             asset = matches[0]
-            assert 0 < asset["size"] <= LIMIT, "Oversized metadata; no bulk download"
+            assert type(asset["size"]) is int and asset["size"] > 0, "Invalid metadata size"
+            if asset["size"] > LIMIT:
+                record.setdefault("metadata_skipped", {})[suffix] = {
+                    "reason": "OVERSIZED_DESCRIPTOR", "downloaded": False,
+                    "asset": asset["id"], "name": asset["name"], "advertised_bytes": asset["size"],
+                    "advertised_digest": asset.get("digest"), "limit_bytes": LIMIT,
+                }
+                continue
             raw = api.raw("releases/assets/" + str(asset["id"]), binary=True)
             digest = hashlib.sha256(raw).hexdigest()
             assert len(raw) == asset["size"]
@@ -198,7 +215,9 @@ def terminal_reports(api, run):
                 record["part_count"] = len(data.get("parts", []))
             record["metadata"][suffix] = {"asset": asset["id"], "bytes": len(raw), "sha256": digest}
         record["complete_descriptor"] = len(record["metadata"]) == 2
-        if not record["complete_descriptor"]:
+        if record.get("metadata_skipped"):
+            record["note"] = "Descriptor content remains unverified; bounded observation skipped it without downloading"
+        elif not record["complete_descriptor"]:
             record["note"] = "Publication is incomplete; partial assets are not completion evidence"
         reports.append(record)
     return reports
@@ -268,7 +287,8 @@ def progress_signature(item):
     return (
         item["status"], item.get("conclusion"), item["classification"],
         tuple((j["id"], j["status"], j["conclusion"], tuple((s["number"], s["status"], s["conclusion"]) for s in j["steps"])) for j in item["jobs"]),
-        tuple((r["tag"], r.get("native_status"), tuple(sorted((k, v["sha256"]) for k, v in r["metadata"].items()))) for r in item["reports"]),
+        tuple((r["tag"], r.get("native_status"), tuple(sorted((k, v["sha256"]) for k, v in r["metadata"].items())),
+               json.dumps(r.get("metadata_skipped", {}), sort_keys=True)) for r in item["reports"]),
     )
 
 def collect(api, config, now, previous=None, configuration_source=None):
@@ -312,12 +332,15 @@ def collect(api, config, now, previous=None, configuration_source=None):
             "reason": reason, "jobs": [job_record(j) for j in jobs], "reports": reports,
             "publication_verified": bool(reports) and all(r["complete_descriptor"] for r in reports),
         }
-        if category == "COMPLETED_ACTIONS" and not record["publication_verified"]:
+        if category == "COMPLETED_ACTIONS" and any(r.get("metadata_skipped") for r in reports):
+            record["classification"] = "UNVERIFIED_TERMINAL_METADATA"
+            record["reason"] = "Terminal descriptor exceeds the bounded reader or is ambiguous; detailed review required"
+        elif category == "COMPLETED_ACTIONS" and not record["publication_verified"]:
             record["classification"] = "INCOMPLETE_PUBLICATION"
             record["reason"] = "Actions succeeded without every expected terminal summary/parts pair"
         record["changed_since_previous"] = run["id"] not in old or progress_signature(record) != progress_signature(old[run["id"]])
         result["runs"].append(record)
-    problems = [r["id"] for r in result["runs"] if r["classification"].startswith(("FAILED", "STALLED", "INCOMPLETE"))]
+    problems = [r["id"] for r in result["runs"] if r["classification"].startswith(("FAILED", "STALLED", "INCOMPLETE", "UNVERIFIED"))]
     absent_required = [m["workflow"] for m in missing if not m["optional"]]
     result["problem_runs"] = problems
     result["missing_required_workflows"] = absent_required
@@ -338,7 +361,7 @@ def markdown(result):
     for row in result["runs"]:
         lines.append("| " + row["label"].replace("|", "/") + " | [" + str(row["id"]) + "](" + row["html_url"] + ") | " + row["classification"] + " / " + str(row["conclusion"]) + " | " + ("changed" if row["changed_since_previous"] else "unchanged") + " |")
         for report in row["reports"]:
-            lines.append("| terminal metadata | [" + report["tag"] + "](" + report["url"] + ") | " + str(report.get("native_status", "missing summary")).replace("|", "/") + " | " + ("summary+parts present" if report["complete_descriptor"] else "incomplete publication") + " |")
+            lines.append("| terminal metadata | [" + report["tag"] + "](" + report["url"] + ") | " + str(report.get("native_status", "missing summary")).replace("|", "/") + " | " + ("summary+parts present" if report["complete_descriptor"] else "unverified descriptor" if report.get("metadata_skipped") else "incomplete publication") + " |")
     lines.extend(["", "Full serial PHY, main-chip integration and final timing are **not accepted by this monitor**.",
                   "This job observes progress. It cannot perform arbitrary engineering repairs and never dispatches, cancels or restarts native jobs."])
     if result["missing_selectors"]:
@@ -356,13 +379,15 @@ def main():
     check_config(config)
     api = API(os.environ["GH_TOKEN"])
     args.out.mkdir(parents=True, exist_ok=True)
+    configuration_source = None
     try:
         config, configuration_source = load_config(api, config)
         previous = previous_snapshot(api, int(os.environ["GITHUB_RUN_ID"]))
         result = collect(api, config, utc_now(), previous, configuration_source)
     except Exception as exc:
         result = {"schema": 1, "repository": REPO, "target_branch": config["target_branch"],
-                  "target_head": None, "runs": [], "observed_at": utc_now().isoformat(),
+                  "target_head": (configuration_source or {}).get("head_sha"), "configuration_source": configuration_source,
+                  "runs": [], "observed_at": utc_now().isoformat(),
                   "status": "MONITOR_ERROR", "error": str(exc), "automatic_native_dispatch": False,
                   "full_phy_accepted": False, "problem_runs": []}
         (args.out / "result.json").write_text(json.dumps(result, indent=2) + "\n")
