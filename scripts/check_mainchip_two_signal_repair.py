@@ -489,5 +489,5 @@ def main():
     try:r.update(controls())
     except BaseException as exc:r.update(status='FAIL_SOURCE_CONTROLS',error=repr(exc));raise
     finally:
-        path=OUT/'boundary-controls.json';driver.save(path,r);emit(path)
+        path=OUT/'boundary-controls.json';driver.save(path,r)
 if __name__=='__main__':main()

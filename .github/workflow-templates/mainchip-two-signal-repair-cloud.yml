@@ -37,7 +37,9 @@ jobs:
           from check_mainchip_original_clock_restoration_driver import emit
           for name in ('boundary-controls.json','import-controls.json'):
               path=Path('cloud-mainchip-two-signal-controls')/name
-              if path.is_file(): emit(path.resolve())
+              if path.is_file():
+                  print('TWO_SIGNAL_CONTROL_FILE '+name,flush=True)
+                  emit(path.resolve())
           PYCODE
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
