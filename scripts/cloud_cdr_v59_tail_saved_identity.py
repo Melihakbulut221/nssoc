@@ -24,7 +24,7 @@ TRANSPORT=ROOT/"hw/soc/out/cloud-cdr-v59-tail-saved-identity-publication"
 APP_SHA="d6a349ec65be11456e96c4981d35f63ca34d3c85daf79a51e1ccb907bb5d7466"
 SECONDS={"restore-complete-saved931-capsule":1200,"read-only-saved-native-identities":1200}
 DIRECT=("archive-verification.json","original-identity.json","current-identity.json",
- "raw-hierarchy-diagnostic.json","raw-hierarchy-proof.json","original-comparator-rejection.json","identity-comparison.json","acquired-witness-controls.json")
+ "raw-hierarchy-diagnostic.json","original-raw-guard-rejection.json","raw-hierarchy-proof.json","original-comparator-rejection.json","identity-comparison.json","acquired-witness-controls.json")
 EXPORTS={side+"-"+name+".json":path for side,files in source.SIDES.items()
  for name,path in files.items() if name in ("inventory","pins")}
 PASS="PASS_SAVED_IDENTITY_READBACK_ORIGINAL_PHYSICAL_FAILURE_RETAINED"

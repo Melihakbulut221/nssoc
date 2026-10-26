@@ -321,6 +321,9 @@ def main():
     try:
         result["source"]=controls();s.write(out/"result.json",result)
         result["raw_diagnostic"]=raw_diagnostic_controls();s.write(out/"result.json",result)
+        import sys
+        from check_cdr_v59_tail_serialized_additions import controls as serialization_controls
+        result["serialization"]=serialization_controls(sys.modules[__name__]);s.write(out/"result.json",result)
         result["admission"]=admission_controls();result["status"]="PASS_SOURCE_AND_ADMISSION"
     except BaseException as error:
         result.update(status="FAIL_SOURCE_AND_ADMISSION",error=repr(error));raise

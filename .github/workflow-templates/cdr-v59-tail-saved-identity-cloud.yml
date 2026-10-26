@@ -71,6 +71,12 @@ jobs:
           assert x['source']['synthetic_native_identity_only'] is True
           assert x['raw_diagnostic']['status']=='PASS_COMPLETE_RAW_DIAGNOSTIC_BEFORE_UNCHANGED_GUARD'
           assert (x['raw_diagnostic']['positive_count'],x['raw_diagnostic']['refusal_count'])==(2,15)
+          assert x['serialization']['status']=='PASS_SOURCE_BOUND17_SERIALIZATION_GUARD_CONTROLS'
+          assert (x['serialization']['positive_count'],x['serialization']['refusal_count'])==(4,39)
+          assert x['serialization']['actual_140_cell_raw_counter_JSON_used'] is True
+          assert x['serialization']['actual_original_guard_invoked'] is True
+          assert x['serialization']['native_geometry_API_explicitly_synthetic'] is True
+          assert x['serialization']['actual_native_typed_geometry_validation_completed'] is False
           assert x['raw_diagnostic']['actual_frozen_raw_record_and_hierarchy_functions_used'] is True
           assert x['raw_diagnostic']['real_JSON_persistence_before_actual_guard'] is True
           assert x['admission']['positives']==2 and len(x['admission']['refusals'])==12
@@ -84,7 +90,7 @@ jobs:
           x=read('import')
           assert x['status']=='PASS_SAVED_IDENTITY_INITIAL_IMPORT_CONTROLS'
           assert (x['positive_count'],x['refusal_count'])==(2,9)
-          assert len(x['closure']['modules'])==14 and x['closure']['initialization_data_reads']==[]
+          assert len(x['closure']['modules'])==16 and x['closure']['initialization_data_reads']==[]
           x=read('runtime')
           assert x['status']=='PASS_QUALIFIED_RUNTIME_AND_WRITER_DEPENDENCY_CONTROLS'
           assert len(x['supervisor']['controls'])==13

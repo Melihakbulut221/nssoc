@@ -14,8 +14,8 @@ import cdr_v59_tail_saved_identity as s
 
 ENTRIES=("cloud_cdr_v59_tail_saved_identity","cdr_v59_tail_saved_identity_native",
  "check_cdr_v59_tail_saved_identity","check_cdr_v59_tail_saved_identity_transport",
- "check_cdr_v59_tail_saved_identity_runtime")
-DECLARED=["cdr_v59_tail_access_runtime","cdr_v59_tail_access_topology","cdr_v59_tail_saved_identity","cdr_v59_tail_saved_identity_native","check_cdr_v59_tail_saved_identity","check_cdr_v59_tail_saved_identity_runtime","check_cdr_v59_tail_saved_identity_transport","cloud_cdr_v59_tail_saved_identity","cloud_chunked_results","cloud_verified_parts","ensure_cloud_tested_source_release","migrate_outputs_to_cloud","run_cloud_tx_layout_repair","wait_cloud_tested_source_release"]
+ "check_cdr_v59_tail_saved_identity_runtime","check_cdr_v59_tail_serialized_additions","cdr_v59_tail_serialized_additions")
+DECLARED=["cdr_v59_tail_serialized_additions","check_cdr_v59_tail_serialized_additions","cdr_v59_tail_access_runtime","cdr_v59_tail_access_topology","cdr_v59_tail_saved_identity","cdr_v59_tail_saved_identity_native","check_cdr_v59_tail_saved_identity","check_cdr_v59_tail_saved_identity_runtime","check_cdr_v59_tail_saved_identity_transport","cloud_cdr_v59_tail_saved_identity","cloud_chunked_results","cloud_verified_parts","ensure_cloud_tested_source_release","migrate_outputs_to_cloud","run_cloud_tx_layout_repair","wait_cloud_tested_source_release"]
 
 def require(value,message):
     if not value:raise AssertionError(message)

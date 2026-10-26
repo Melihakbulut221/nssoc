@@ -321,7 +321,10 @@ def run(root,out):
       "methods_sha256":source.sha(source.METHOD)}
     emit_raw_hierarchy_diagnostic(old_layout,new_layout,generation,source.ROOT/source.GENERATOR,
       out/"raw-hierarchy-diagnostic.json",context)
-    rawproof=raw_hierarchy_proof(old_layout,new_layout,generation,source.ROOT/source.GENERATOR)
+    from cdr_v59_tail_serialized_additions import reproduce_original_failure,verify
+    raw_rejection=reproduce_original_failure(raw_hierarchy_proof,old_layout,new_layout,generation,source.ROOT/source.GENERATOR)
+    source.write(out/"original-raw-guard-rejection.json",raw_rejection)
+    rawproof=verify(pya,properties,old_layout,new_layout,generation,source.ROOT/source.GENERATOR)
     source.write(out/"raw-hierarchy-proof.json",rawproof)
     # Reproduce the actual unmodified first failure at its exact original source assertion.
     try:topology.compare([old[k] for k in ("graph","locations","anchors")],
