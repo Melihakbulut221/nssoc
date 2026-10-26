@@ -52,6 +52,7 @@ def placed_box(transform,value):
     return g.rect([min(x),min(y),max(x),max(y)])
 
 def collect(db,block):
+    assert not list(block.getChildren()),'Child blocks require separate ownership qualification'
     markers=g.marker_boxes(block.getDbUnitsPerMicron())
     assert db.getTech().getDbUnitsPerMicron()==block.getDbUnitsPerMicron()
     layers={x.getId():layer_record(x)for x in db.getTech().getLayers()}
@@ -60,6 +61,7 @@ def collect(db,block):
     nets=list(block.getNets());assert len(nets)==143820
     assert source_names<={n.getName()for n in nets}
     rows=[];full_sources={};counts={};stream=hashlib.sha256()
+    connected_iterms={};connected_bterms={}
     def feed(row):
         kind=row['kind'];counts[kind]=counts.get(kind,0)+1
         raw=g.canonical(row);stream.update(len(raw).to_bytes(8,'big'));stream.update(raw)
@@ -92,6 +94,9 @@ def collect(db,block):
                     owner=name,route_class=route_class))
         else:assert name not in source_names,'Source net is unwired'
         for iterm in net.getITerms():
+            assert iterm.getId()not in connected_iterms,'Duplicate connected ITerm'
+            assert iterm.getNet()is not None and iterm.getNet().getName()==name
+            connected_iterms[iterm.getId()]=name
             geometries=iterm.getGeometries()
             if name in source_names:
                 full_sources[name]['pins'].append(dict(kind='iterm',id=iterm.getId(),
@@ -103,6 +108,9 @@ def collect(db,block):
                     layer=layer.getName(),box=box(r),instance=iterm.getInst().getName(),
                     master=iterm.getInst().getMaster().getName(),terminal=iterm.getMTerm().getName()))
         for bterm in net.getBTerms():
+            assert bterm.getId()not in connected_bterms,'Duplicate connected BTerm'
+            assert bterm.getNet()is not None and bterm.getNet().getName()==name
+            connected_bterms[bterm.getId()]=name
             for pin in bterm.getBPins():
                 for ordinal,b in enumerate(pin.getBoxes()):
                     assert not b.isVia(),'Unprojected BPin via'
@@ -126,6 +134,32 @@ def collect(db,block):
                 else:
                     feed(dict(record_id=identity,owner=name,kind='special-wire',
                         layer=b.getTechLayer().getName(),box=box(b),native_box_id=b.getId()))
+    for fill in block.getFills():
+        feed(dict(record_id=['fill',fill.getId()],owner=None,kind='metal-fill',
+            layer=fill.getTechLayer().getName(),box=box(fill.getRect()),
+            mask=fill.maskNumber(),needs_OPC=fill.needsOPC()))
+    all_iterms=list(block.getITerms());all_bterms=list(block.getBTerms())
+    assert len({t.getId()for t in all_iterms})==len(all_iterms)
+    assert len({t.getId()for t in all_bterms})==len(all_bterms)
+    assert {t.getId():t.getNet().getName()for t in all_iterms if t.getNet()is not None}==connected_iterms
+    assert {t.getId():t.getNet().getName()for t in all_bterms if t.getNet()is not None}==connected_bterms
+    for iterm in all_iterms:
+        if iterm.getNet()is not None:continue
+        for ordinal,(layer,r)in enumerate(iterm.getGeometries()):
+            feed(dict(record_id=['iterm',iterm.getId(),ordinal],owner=None,kind='iterm-pin',
+                layer=layer.getName(),box=box(r),instance=iterm.getInst().getName(),
+                master=iterm.getInst().getMaster().getName(),terminal=iterm.getMTerm().getName()))
+    for bterm in all_bterms:
+        if bterm.getNet()is not None:continue
+        for pin in bterm.getBPins():
+            for ordinal,b in enumerate(pin.getBoxes()):
+                assert not b.isVia(),'Unprojected disconnected BPin via'
+                feed(dict(record_id=['bterm',bterm.getId(),'bpin',pin.getId(),ordinal],
+                    owner=None,kind='bterm-pin',layer=b.getTechLayer().getName(),box=box(b),
+                    terminal=bterm.getName(),native_box_id=b.getId()))
+    counts['all-block-iterm']=len(all_iterms);counts['all-block-bterm']=len(all_bterms)
+    counts['disconnected-iterm']=len(all_iterms)-len(connected_iterms)
+    counts['disconnected-bterm']=len(all_bterms)-len(connected_bterms)
     for ob in block.getObstructions():
         b=ob.getBBox();assert not b.isVia(),'Unprojected block obstruction via'
         feed(dict(record_id=['block-obstruction',ob.getId()],owner=None,kind='block-obstruction',
@@ -153,3 +187,35 @@ def collect(db,block):
         read_only=True,scope='All ordinary wire opcode-derived boxes, every via component, native placed ITerm/BTerm pins, special-wire boxes/vias, block and transformed decomposed master obstruction boxes. Polygon segmentation identity is not claimed.')
     assert set(full_sources)==source_names
     return decision
+
+
+def immutable_material(db,block):
+    """Additional obstacle/special material omitted from the legacy wire-aware digest."""
+    assert not list(block.getChildren()),'Child blocks require separate material qualification'
+    stream=hashlib.sha256();counts={}
+    def feed(kind,row):
+        encoded=g.canonical([kind,row]);stream.update(len(encoded).to_bytes(8,'big'));stream.update(encoded)
+        counts[kind]=counts.get(kind,0)+1
+    for fill in block.getFills():
+        feed('metal-fill',[fill.getId(),fill.getTechLayer().getName(),box(fill.getRect()),fill.maskNumber(),fill.needsOPC()])
+    for layer in sorted(db.getTech().getLayers(),key=lambda x:x.getId()):
+        feed('technology-layer',[layer.getId(),layer_record(layer)])
+    masters={(i.getMaster().getLib().getName(),i.getMaster().getName()):i.getMaster()for i in block.getInsts()}
+    for key,master in sorted(masters.items()):
+        for ordinal,b in enumerate(master.getObstructions(True)):
+            assert not b.isVia()
+            feed('master-obstruction',[list(key),ordinal,b.getId(),b.getTechLayer().getName(),box(b)])
+    for ob in block.getObstructions():
+        b=ob.getBBox();assert not b.isVia()
+        feed('block-obstruction',[ob.getId(),b.getId(),b.getTechLayer().getName(),box(b)])
+    for net in sorted(block.getNets(),key=lambda x:x.getName()):
+        for swire in net.getSWires():
+            for ordinal,b in enumerate(swire.getWires()):
+                if b.isVia():
+                    tech=b.getTechVia();v=tech if tech is not None else b.getBlockVia()
+                    material=dict(kind='via',namespace='tech'if tech is not None else'block',
+                        via=via_record(v),origin=list(b.getViaXY()),bbox=box(b))
+                else:material=dict(kind='box',layer=b.getTechLayer().getName(),box=box(b))
+                feed('special-wire',[net.getName(),swire.getId(),ordinal,b.getId(),material])
+    return dict(counts=counts,sha256=stream.hexdigest(),
+        scope='Exact layer width/direction, decomposed master and block obstruction boxes with native IDs/order, and every special-wire/via component; instance transforms are independently protected by the qualified placement digest.')

@@ -218,22 +218,28 @@ def ownership_decision(markers,records):
     """Conservative sufficient condition; absence/ambiguity never grants repair."""
     assert len(markers)==3 and [x['ordinal']for x in markers]==[0,1,2]
     assert [x['target']for x in markers]==['net36993','net36993','net459']
+    for marker in markers:
+        expected=[CLOCK,marker['target']]if marker['ordinal']<2 else[marker['target'],CLOCK]
+        assert marker['source_names']==expected,'Original ordered typed source names differ'
     ids=[row['record_id']for row in records]
+    assert all(type(value)is str and value for value in ids),'Native record IDs must be nonempty strings'
     assert len(ids)==len(set(ids)),'Duplicate native ownership record'
     allowed={'wire','wire-rect','via','iterm-pin','bterm-pin','master-obstruction',
-             'block-obstruction','special-wire','special-via'}
+             'block-obstruction','special-wire','special-via','metal-fill'}
     for row in records:
         assert row['kind']in allowed,'Unclassified native material'
         assert type(row['layer'])is str and row['layer']
         rect(row['box'])
         assert type(row['source_indices'])is list,'Original source indices required'
+        assert row['source_indices']==[[m['ordinal'],i]for m in markers
+            for i,name in enumerate(m['source_names'])if name==row['owner']],'Original source index mapping differs'
         assert row['owner']is None or type(row['owner'])is str
     witnesses=[];blockers=[]
     for marker in markers:
         local=[r for r in records if r['layer']==marker['layer']and overlap(r['box'],marker['box'])]
         target=marker['target'];pair={target,CLOCK}
         unknown=[r['record_id']for r in local if r['owner']not in pair or
-                 r['kind']in ('master-obstruction','block-obstruction','special-wire','special-via')]
+                 r['kind']in ('master-obstruction','block-obstruction','special-wire','special-via','metal-fill')]
         if unknown:blockers.append(dict(marker=marker['ordinal'],reason='Foreign, obstruction or special material',records=unknown))
         a=[r for r in local if r['owner']==target];b=[r for r in local if r['owner']==CLOCK]
         actual=[]

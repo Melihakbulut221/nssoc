@@ -1,0 +1,108 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-two-signal-repair-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      execute:
+        type: boolean
+        required: true
+        default: false
+        description: Ownership-first, at most one two-signal attempt; every other routed net encoded FIXED
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-two-signal-repair-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Ownership, typed raw geometry, disconnected pins, exact two-net barriers and qualified transport controls
+        run: python3 scripts/check_mainchip_two_signal_repair.py
+      - name: Actual isolated full import and three original JSON readers
+        run: python3 scripts/check_mainchip_two_signal_imports.py > cloud-mainchip-two-signal-controls/import-controls.json
+      - name: Complete source-control records
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          from pathlib import Path
+          from check_mainchip_original_clock_restoration_driver import emit
+          for name in ('boundary-controls.json','import-controls.json'):
+              path=Path('cloud-mainchip-two-signal-controls')/name
+              if path.is_file(): emit(path.resolve())
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: two-signal-repair-controls-${{ github.run_id }}
+          path: cloud-mainchip-two-signal-controls/
+          retention-days: 90
+  native:
+    if: inputs.execute
+    needs: controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact source and separate restoration execution routing authorization
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import mainchip_two_signal_repair as s
+          m=s.methods()
+          for key in ('cloud_restore_authorized','native_execution_authorized','native_routing_authorized'):
+              assert m[key] is True
+          PYCODE
+      - name: Read-only exact-source reserved prerelease wait
+        timeout-minutes: 6
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/wait_cloud_tested_source_release.py --group mainchip-two-signal-repair
+      - name: Qualified Ubuntu22.04 FUSE dependency
+        timeout-minutes: 10
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends libfuse2
+      - name: Read-only ownership then conditional two-net repair and complete original-class DRC
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CLOUD_APPIMAGE: ${{ github.workspace }}/hw/soc/tools/physical/librelane-3.0.5-x86_64.AppImage
+        run: python3 scripts/cloud_mainchip_two_signal_repair.py
+      - name: Full bounded result log reconstruction
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          from pathlib import Path
+          from check_mainchip_original_clock_restoration_driver import emit
+          p=Path('cloud-mainchip-two-signal-repair/result.json').resolve()
+          if p.is_file(): emit(p)
+          else: print('TWO_SIGNAL_RESULT_MISSING_NO_ACCEPTANCE',flush=True)
+          PYCODE
+      - name: Permanent complete summary and authenticated archive publication
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_two_signal_repair.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: two-signal-repair-native-${{ github.run_id }}
+          path: |
+            cloud-mainchip-two-signal-repair/
+            publication-mainchip-two-signal-repair/
+          retention-days: 90
