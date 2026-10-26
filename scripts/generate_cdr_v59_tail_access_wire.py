@@ -327,7 +327,7 @@ def generate_admitted(source,out,pdk,admission):
     layout.write(str(dest/(plan.TOP+".gds")))
     reread=pya.Layout();reread.read(str(dest/(plan.TOP+".gds")))
     assert reread.dbu==.001
-    verify_snapshot(pya,reread,before,expected_child,expected_raw,old_bbox)
+    verify_snapshot(pya,reread,before,expected_child,old_bbox)
     controls=native_controls(pya,dest/(plan.TOP+".gds"),before,expected_child,old_bbox,additions)
     (out/"native-geometry-controls.json").write_text(json.dumps(controls,indent=2)+"\n")
     manifest=json.loads((parent/"children.json").read_text())

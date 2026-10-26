@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted source controls only. Native geometry faults execute separately."""
+import ast
 import copy
+import inspect
 import hashlib
 import json
 import os
@@ -10,12 +12,27 @@ import subprocess
 import sys
 import tempfile
 import cdr_v59_tail_access_plan as plan
+import generate_cdr_v59_tail_access_wire as native
 
 ROOT=Path(__file__).resolve().parents[1]
 METHOD=ROOT/"scripts/cdr-v59-tail-access-wire-methods.json"
 
 def digest(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def actual_snapshot_call_signatures(text):
+    tree=ast.parse(text)
+    signature=inspect.signature(native.verify_snapshot)
+    rows=[]
+    for node in ast.walk(tree):
+        if not isinstance(node,ast.Call) or not isinstance(node.func,ast.Name) or node.func.id!="verify_snapshot":
+            continue
+        assert not any(isinstance(a,ast.Starred) for a in node.args)
+        assert all(k.arg is not None for k in node.keywords)
+        signature.bind(*[object() for _ in node.args],**{k.arg:object() for k in node.keywords})
+        rows.append(node.lineno)
+    assert len(rows)==4,rows
+    return sorted(rows)
 
 def controls():
     assert os.environ.get("GITHUB_ACTIONS")=="true"
@@ -61,6 +78,15 @@ def controls():
     reject("wrong_parent_translation",lambda x:x["target_native_nodes"]["D"].update(parent_translation_um=[993.605,272]))
     reject("wrong_parent_tag",lambda x:x["target_native_nodes"]["D"].update(parent="sc"))
     assert len(cases)==19
+    call_lines=actual_snapshot_call_signatures((ROOT/"scripts/generate_cdr_v59_tail_access_wire.py").read_text())
+    old=(ROOT/"docs/evidence/cdr-v59-tail-native-generator-first-draft-20261026.py").read_text()
+    assert hashlib.sha256(old.encode()).hexdigest()=="565e70daad68d58e974c203b2e4957cb98a826e4534b718522aed20a9d25cf15"
+    try:actual_snapshot_call_signatures(old)
+    except TypeError as e:
+        assert str(e)=="too many positional arguments"
+        signature_failure={"actual_first_draft_source":"565e70daad68d58e974c203b2e4957cb98a826e4534b718522aed20a9d25cf15",
+          "actual_current_function_signature":str(inspect.signature(native.verify_snapshot)),"error":repr(e)}
+    else:raise AssertionError("Accepted first-draft extra serialized-reread argument")
     runtime=json.loads((ROOT/"docs/evidence/cdr-v59-tail-native-runtime-source-20261026.json").read_text())
     assert len(runtime["relative_runtime_sha256"])==88
     assert runtime["relative_runtime_sha256"]["sg13g2_pycell_lib/ihp/via_stack_code.py"]=="185f6d3bea6ef9a4960817d189e099057242e1cca73f6ab31c08298c2d64cc61"
@@ -85,7 +111,8 @@ def controls():
         assert bad.returncode==1 and bad.stdout==""
         assert bad.stderr.splitlines()[-1]=="ModuleNotFoundError: No module named 'cdr_v59_tail_access_plan'"
     return {"status":"PASS_TAIL_ACCESS_SOURCE_CONTROLS_ONLY","metadata_positive":1,
-      "metadata_faults_rejected":19,"actual_import_positive":1,"actual_missing_dependency_rejected":1,
+      "metadata_faults_rejected":19,"actual_import_positive":1,"actual_snapshot_call_signatures_positive":1,
+      "actual_snapshot_call_lines":call_lines,"actual_first_draft_signature_refusal":signature_failure,"actual_missing_dependency_rejected":1,
       "protected_files_verified":len(method["protected_sha256"]),"cases":cases,
       "native_geometry_controls_executed":False,"physical_accepted":False,"electrical_accepted":False}
 
