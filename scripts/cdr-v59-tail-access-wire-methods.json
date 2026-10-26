@@ -16,7 +16,7 @@
   },
   "extraction_authorized": false,
   "full_phy_accepted": false,
-  "geometry_generation_authorized": false,
+  "geometry_generation_authorized": true,
   "initial_import_controls": {
     "actual_first_failure_receipt": "docs/evidence/cdr-v59-tail-controls-first-failure-20261026-receipt.json",
     "data_bytes": 546209,
@@ -29,7 +29,7 @@
     "positives": 5,
     "refusals": 32
   },
-  "native_execution_authorized": false,
+  "native_execution_authorized": true,
   "native_geometry_controls": {
     "executed": false,
     "positives": 11,
@@ -40,7 +40,7 @@
     "positives": 17,
     "refusals": 22
   },
-  "physical_qualification_authorized": false,
+  "physical_qualification_authorized": true,
   "protected_sha256": {
     ".github/workflow-templates/cdr-v59-annotation-diagnostic-cloud.yml": "50e6433d7936751d44f597a80b4834140558a87f78a72f79a3c493c2298ba376",
     ".github/workflow-templates/cdr-v59-binding-rc-cloud.yml": "83f24de2d65d5f51a840da21149a85e388148721f54c3bffa5c7732c52b325fd",
@@ -377,7 +377,23 @@
     "scripts/run_cloud_tx_mux4.py": "bb7f5c5ef736dd54c5ed560424d97d248894f4aa6fa6119f1e95c5f5c3df4b52",
     "scripts/run_cloud_tx_operating_point.py": "e8c4f4b9c723217bdbb0be17f6c77cfd2e459928e07a7b6ff2c17dfcf1759a1e",
     "docs/evidence/cdr-v59-tail-import-data-closure-independent-review-20261026.json": "5d2f7c6b2681fb3b72cd688c98e2c9ad18664779c4edcf635b363bca9ed8363b",
-    "docs/evidence/cdr-v59-tail-import-data-root-controls-review-20261026.json": "af2e0184d61d3b8e33fada2cf64d1fcebc04a6a4e2bd378c5a1bb43c7afbd71c"
+    "docs/evidence/cdr-v59-tail-import-data-root-controls-review-20261026.json": "af2e0184d61d3b8e33fada2cf64d1fcebc04a6a4e2bd378c5a1bb43c7afbd71c",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-imports.json": "9c34cab10f91984001ac4f7dbdb795afa853cef4c8e5824e90d649bacfaeeda3",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-source.json": "24026654629ed129cd170e9e834c73994b1caf43c0b4853faf4b4673dd2b8658",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-topology.json": "3650cecfd6957c0433b9facfe8146e209b3b25b829b5f5ccc0b00bf81786065a",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-physical.json": "235f8c73f866721a144495cbe4691e7b5aaf87f5f8fa92d66dc34cca643d88f1",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-runtime.json": "13b05592e46759d27a2b4670be08d57cc863e8284c4d3d7cf8865cb1f45e611c",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-publication.json": "cea06c253a74f91122644610e28d5202137af124d4f7149f15b4211a4154f9a5",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-run.json": "0a520fddc4eea4dbc30e0d29594a084f5944d924b376d08e3a3a96a76b140a2c",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-jobs.json": "260e7c7c773d7cc61f418fa9163e813957c0dba9209daa38ad93d39cf9e1b316",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-artifacts.json": "43229e08ad8b71d2ea0ce872dedc17df722b035649b38595f2de03b1f6d9fa2b",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-joblog.log": "fb137f482619f8a4e86ed1d228c85ffa0f4f0876176c4dd23c784b2a89b231d9",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-tested-methods.json": "3e01021d5f1ef3cb9a467d65415295eaa4ab0188ba3502299b21979d75a8a2b8",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-tested-template.yml": "31438c5cbd1670df9b874fe83bb9607bb9e61d5562faf898d3bb456ee3bebca6",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-tested-active-workflow.yml": "31438c5cbd1670df9b874fe83bb9607bb9e61d5562faf898d3bb456ee3bebca6",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-control-file-census.json": "1b6589f59f04a525749415755f10551c620846f2b44031e75cc646596d556869",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-complete-pin-audit.json": "3ad27eba5e69145d4d76cb8e7392259e3cab708d87d91b0555f7ec32277ba0c4",
+    "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-receipt.json": "ffcb4f28d427948713487909abb89dd5ff16ebd5b198df19387cef7478aa594e"
   },
   "publication_controls": {
     "executed": false,
@@ -410,10 +426,125 @@
     "missing_dependency_refusal": 1
   },
   "source_controls_authorized": true,
-  "status": "SOURCE_IMPORT_DATA_CLOSURE_CORRECTED_PENDING_REVIEW_AND_HOSTED_CONTROLS",
+  "status": "AUTHORIZED_SINGLE_ADDITIVE_TAIL_WIRE_PHYSICAL_AFTER_FULL_SOURCE_CONTROLS",
   "topology_source_controls": {
     "executed": false,
     "positives": 2,
     "refusals": 16
+  },
+  "completed_source_controls": {
+    "status": "PASS_ACTUAL_SIX_SOURCE_CONTROL_RECORDS_PHYSICAL_SKIPPED",
+    "run_id": 40359138577,
+    "source": "887fd2f5117474cd1380ce5f9518a35cbe2a8e89",
+    "run_attempt": 1,
+    "controls_job_id": 121699545074,
+    "physical_job_id": 121700013843,
+    "controls_conclusion": "success",
+    "physical_conclusion": "skipped",
+    "tested_methods_sha256": "3e01021d5f1ef3cb9a467d65415295eaa4ab0188ba3502299b21979d75a8a2b8",
+    "tested_protected_files": 336,
+    "receipt": "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-receipt.json",
+    "receipt_sha256": "ffcb4f28d427948713487909abb89dd5ff16ebd5b198df19387cef7478aa594e",
+    "full_joblog": "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-joblog.log",
+    "full_joblog_sha256": "fb137f482619f8a4e86ed1d228c85ffa0f4f0876176c4dd23c784b2a89b231d9",
+    "six_exact_records": {
+      "imports": {
+        "path": "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-imports.json",
+        "bytes": 39634,
+        "sha256": "9c34cab10f91984001ac4f7dbdb795afa853cef4c8e5824e90d649bacfaeeda3"
+      },
+      "source": {
+        "path": "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-source.json",
+        "bytes": 2737,
+        "sha256": "24026654629ed129cd170e9e834c73994b1caf43c0b4853faf4b4673dd2b8658"
+      },
+      "topology": {
+        "path": "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-topology.json",
+        "bytes": 3711,
+        "sha256": "3650cecfd6957c0433b9facfe8146e209b3b25b829b5f5ccc0b00bf81786065a"
+      },
+      "physical": {
+        "path": "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-physical.json",
+        "bytes": 8157,
+        "sha256": "235f8c73f866721a144495cbe4691e7b5aaf87f5f8fa92d66dc34cca643d88f1"
+      },
+      "runtime": {
+        "path": "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-runtime.json",
+        "bytes": 54570,
+        "sha256": "13b05592e46759d27a2b4670be08d57cc863e8284c4d3d7cf8865cb1f45e611c"
+      },
+      "publication": {
+        "path": "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-publication.json",
+        "bytes": 4321,
+        "sha256": "cea06c253a74f91122644610e28d5202137af124d4f7149f15b4211a4154f9a5"
+      }
+    },
+    "proof_files": {
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-imports.json": {
+        "bytes": 39634,
+        "sha256": "9c34cab10f91984001ac4f7dbdb795afa853cef4c8e5824e90d649bacfaeeda3"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-source.json": {
+        "bytes": 2737,
+        "sha256": "24026654629ed129cd170e9e834c73994b1caf43c0b4853faf4b4673dd2b8658"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-topology.json": {
+        "bytes": 3711,
+        "sha256": "3650cecfd6957c0433b9facfe8146e209b3b25b829b5f5ccc0b00bf81786065a"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-physical.json": {
+        "bytes": 8157,
+        "sha256": "235f8c73f866721a144495cbe4691e7b5aaf87f5f8fa92d66dc34cca643d88f1"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-runtime.json": {
+        "bytes": 54570,
+        "sha256": "13b05592e46759d27a2b4670be08d57cc863e8284c4d3d7cf8865cb1f45e611c"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-publication.json": {
+        "bytes": 4321,
+        "sha256": "cea06c253a74f91122644610e28d5202137af124d4f7149f15b4211a4154f9a5"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-run.json": {
+        "bytes": 13085,
+        "sha256": "0a520fddc4eea4dbc30e0d29594a084f5944d924b376d08e3a3a96a76b140a2c"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-jobs.json": {
+        "bytes": 4735,
+        "sha256": "260e7c7c773d7cc61f418fa9163e813957c0dba9209daa38ad93d39cf9e1b316"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-artifacts.json": {
+        "bytes": 774,
+        "sha256": "43229e08ad8b71d2ea0ce872dedc17df722b035649b38595f2de03b1f6d9fa2b"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-joblog.log": {
+        "bytes": 408075,
+        "sha256": "fb137f482619f8a4e86ed1d228c85ffa0f4f0876176c4dd23c784b2a89b231d9"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-tested-methods.json": {
+        "bytes": 46463,
+        "sha256": "3e01021d5f1ef3cb9a467d65415295eaa4ab0188ba3502299b21979d75a8a2b8"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-tested-template.yml": {
+        "bytes": 9432,
+        "sha256": "31438c5cbd1670df9b874fe83bb9607bb9e61d5562faf898d3bb456ee3bebca6"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-tested-active-workflow.yml": {
+        "bytes": 9432,
+        "sha256": "31438c5cbd1670df9b874fe83bb9607bb9e61d5562faf898d3bb456ee3bebca6"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-control-file-census.json": {
+        "bytes": 962,
+        "sha256": "1b6589f59f04a525749415755f10551c620846f2b44031e75cc646596d556869"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-complete-pin-audit.json": {
+        "bytes": 110382,
+        "sha256": "3ad27eba5e69145d4d76cb8e7392259e3cab708d87d91b0555f7ec32277ba0c4"
+      },
+      "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-receipt.json": {
+        "bytes": 8298,
+        "sha256": "ffcb4f28d427948713487909abb89dd5ff16ebd5b198df19387cef7478aa594e"
+      }
+    },
+    "native_or_physical_result_claimed": false
   }
 }
