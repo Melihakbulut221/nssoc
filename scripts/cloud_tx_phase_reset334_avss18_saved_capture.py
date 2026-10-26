@@ -8,6 +8,7 @@ import tx_phase_reset334_avss18_transient_adapter as current
 import cloud_tx_phase_reset334_saved_capture as prior
 import cloud_tx_normal_saved_capture as transport
 import ensure_cloud_tested_source_release as release
+import tx_phase_reset334_avss18_saved_resources as resources
 ROOT=Path(__file__).resolve().parents[1]
 METHOD=ROOT/'scripts/tx-phase-reset334-avss18-saved-capture-methods.json'
 GROUP='tx-phase-reset334-avss18-saved-capture'
@@ -22,7 +23,7 @@ SUMMARY_SHA='6138eeb8fcae24f1961324be4add303ba24cd0bd9a7fdf231bed59cbefae8293'
 PARTS_SHA='25317f13a2fc917107234ce4448a9119ff439f56a2430df9efacbc465db122c5'
 RAW_SHA='cf96ddb12bab9f75cb13a7b09e6f2dd2207073c6e7241c97c65b19424a0ee08f'
 CONTROLLER_SHA='e54194102ab784cd3198c278ba29c9c527c6f367607a3e25cf29e501099562fb'
-write=transport.write
+write=resources.write
 sha=transport.sha
 encode=current.encode
 digest=current.digest
@@ -170,6 +171,9 @@ def main():
         case,proof=restore_capture(work,original,manifest);result['native_archive']=proof;save()
         opraw,op,opproof=current.admission.restore(work/'qualified-current-OP')
         write(OUT/'current-OP-restoration.json',opproof)
+        input_resources=resources.input_budget({name:(case/name).stat().st_size for name in ('wave.raw','contract.json','bench.cir','native.log','op.raw')},
+          sum(row['bytes']for row in opproof['inventory']['files'].values()),opproof['transport']['bytes'])
+        write(OUT/'restored-input-resource-bounds.json',input_resources);result['input_resource_bounds']=input_resources;save()
         expected,deck,screen,bindings,controls=reconstruct(work/'qualified-current-OP',op,original)
         actual=json.loads((case/'contract.json').read_bytes());actual_deck=(case/'bench.cir').read_text()
         controls['native_match']=prior.validate_actual(actual,actual_deck,expected,deck)
@@ -189,11 +193,13 @@ def main():
           first_fall_windows=diagnosis['first_fall_windows'],source_bound_tail_topology=diagnosis['source_bound_tail_topology'],
           full_observations_published_as_direct_JSON_asset=True,full_original_review_replays=1,
           original_rejection_reproduced=True,causal_conclusion=False,circuit_edit_justified=False)
-        write(OUT/'diagnostic-index.json',compact)
+        index_asset=write(OUT/'diagnostic-index.json',compact)
         result.update(status='PASS_CURRENT_AVSS18_SAVED_DIAGNOSIS_ORIGINAL_ELECTRICAL_REJECTION_REMAINS',
-          diagnostic_index=compact,full_original_review_replays=1,source_capture_sha256=RAW_SHA)
+          diagnostic_index_asset=index_asset,full_original_review_replays=1,source_capture_sha256=RAW_SHA)
     except BaseException as error:
-        result.update(status='FAIL_CURRENT_AVSS18_SAVED_CAPTURE_DIAGNOSIS',error=repr(error),traceback=traceback.format_exc());raise
+        result.update(status='FAIL_CURRENT_AVSS18_SAVED_CAPTURE_DIAGNOSIS',error=repr(error),traceback=traceback.format_exc())
+        if isinstance(error,resources.ResourceLimit):result['resource_refusal']=error.record
+        raise
     finally:
         result['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p.name!='result.json'}
         save();raw=(OUT/'result.json').read_bytes()

@@ -40,12 +40,15 @@ jobs:
           import json
           r=json.load(open('source-controls.json'))
           assert r['status']=='PASS_CURRENT_AVSS18_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY'
+          assert r['permission_controls']['actual_active_and_template_checked']and len(r['permission_controls']['refused'])==8
           assert len(r['original_current_result_faults'])==16 and len(r['metadata_faults'])==21
           assert len(r['observer_derivation']['edits'])==2 and r['observer_derivation']['reversed_byte_exact']
           assert len(r['topology_fixture']['rejected'])==14
           assert r['topology_fixture']['target_groups']==12 and r['topology_fixture']['passive_accesses']==168
           assert r['topology_fixture']['synthetic_fixture_only']and not r['topology_fixture']['real_restored_input_scope']
           assert len(r['actual_code_mutations'])==3 and len(r['inherited_original_math']['rejected'])==20
+          assert len(r['resource_controls']['positives'])==7 and len(r['resource_controls']['refused'])==16
+          assert r['resource_controls']['full_JSON_streamed']and r['resource_controls']['complete_failure_record_required']
           assert r['reconstruction_completion']['actual_reconstruct_return_reached']
           assert r['actual_main_entry']['actual_main_entry']and r['actual_main_entry']['actual_finally_failure_preserved']
           assert len(r['archive_controls']['rejected'])==11
@@ -80,6 +83,9 @@ jobs:
           if-no-files-found: error
           retention-days: 90
   saved-capture-readback:
+    permissions:
+      contents: write
+      actions: read
     if: inputs.readback
     needs: source-controls
     runs-on: ubuntu-24.04

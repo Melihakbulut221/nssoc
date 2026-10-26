@@ -5,6 +5,7 @@ import ast,copy,json,types
 import numpy as np
 import tx_phase_reset334_saved_diagnosis as old
 import tx_phase_reset334_avss18_transient_adapter as current
+import tx_phase_reset334_avss18_saved_resources as resources
 from cloud_tx_stream import read_streamed_wave
 ROOT=old.ROOT
 ORIGINAL='scripts/tx_phase_reset334_saved_diagnosis.py'
@@ -157,9 +158,15 @@ def observe(case,result,screen,bindings,emit):
       original_acceptance=False,new_simulation=False,original_first_fall_limit_s=old.UI/2))
     t,values,proof=read_streamed_wave(case/'wave.raw',c['vectors'],old.STOP,old.STEP)
     assert proof==replay['capture']and proof['raw_sha256']==result['outputs']['work/wave.raw']
-    analyze,derivation=analysis_program();d=analyze(t,values,c,replay)
     prior=result['original17_HBT_rejection']['all17_original_failed_HBT_records']
     assert len(prior)==17 and set(TARGETS)<=set(prior)
+    try:
+        resource_plan=resources.plan(t,values,c,replay,list(prior),TARGETS,intervals)
+        resource_plan['memory_admission']=resources.admit_memory(resource_plan,resources.mem_available())
+    except resources.ResourceLimit as error:
+        emit('diagnostic-resource-refusal.json',error.record);raise
+    emit('diagnostic-resource-plan.json',resource_plan)
+    analyze,derivation=analysis_program();d=analyze(t,values,c,replay)
     frames=d['frames'];active=np.flatnonzero(t>=old.START);previous={}
     def ensure(row):
         key=str(int(row))
@@ -179,6 +186,7 @@ def observe(case,result,screen,bindings,emit):
                 for label in ('first','last','before','after'):
                     if r[label]is not None:r[label]['frame']=ensure(r[label]['row'])
             violations[name]=v
+    resources.validate_frames(resource_plan,frames,t)
     for key,frame in frames.items():
         row=frame['row'];assert frame['time_s']==float(t[row])
         ground={n:old.voltage(values,g['public_AVSS_node'],row)for n,g in topo['target_groups'].items()}
@@ -188,7 +196,7 @@ def observe(case,result,screen,bindings,emit):
     d.update(status='DIAGNOSIS_ONLY_CURRENT_AVSS18_REJECTION_REMAINS',source_bound_tail_topology=topo,
       current_capture_source=result['source_head'],current_capture_run=result['run_id'],
       current_capture_sha256=proof['raw_sha256'],current_model_hashes=result['current_RC_model_hashes'],
-      original17_current_minimum_frames=previous,four_tail_violation_intervals=violations,observer_derivation=derivation,
+      original17_current_minimum_frames=previous,four_tail_violation_intervals=violations,observer_derivation=derivation,resource_plan=resource_plan,
       original17_rejection_preserved=True,full_original_review_replays=1,engineering_change_authorized=False)
     return d
 

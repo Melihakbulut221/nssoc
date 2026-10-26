@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted real-code fixtures; synthetic inputs never qualify a native capture."""
-import ast,contextlib,copy,io,json,os,tempfile,types
+import ast,contextlib,copy,io,json,os,re,tempfile,types
 from pathlib import Path
 from unittest import mock
 import numpy as np
@@ -163,8 +163,48 @@ def archive_fixtures():
     return dict(actual_complete_archive_positive=True,rejected=rejected,parts=c.transport.parts_controls(),
       selected_archive=c.transport.selected_archive_controls())
 
+def permission_contract(template,active):
+    """Exact reviewed workflow permission scope, independently checked on actual files."""
+    assert type(template)is str and type(active)is str and active==template,'Active/template workflow differs'
+    top='permissions:\n  contents: read\n  actions: read\n'
+    scoped='    permissions:\n      contents: write\n      actions: read\n'
+    assert template.count(top)==1,'Top-level permissions must remain read-only'
+    assert template.count('jobs:\n')==1
+    names=re.findall(r'^  ([a-z][a-z0-9-]*):\n',template.split('jobs:\n',1)[1],re.M)
+    assert names==['source-controls','saved-capture-readback'],'Unexpected or duplicate job scope'
+    controls=template.split('  source-controls:\n',1)[1].split('  saved-capture-readback:\n',1)[0]
+    readback=template.split('  saved-capture-readback:\n',1)[1]
+    assert not re.search(r'^\s+permissions:',controls,re.M),'Source controls must inherit read-only permissions'
+    assert readback.count(scoped)==1,'Readback job requires exact contents-write/actions-read scope'
+    assert re.findall(r'^[ \t]*permissions:.*$',template,re.M)==['permissions:','    permissions:'],'Unexpected permission block'
+    return dict(source_controls=dict(contents='read',actions='read'),
+      saved_capture_readback=dict(contents='write',actions='read'),active_template_byte_equal=True)
+
+def permission_controls(m):
+    template='.github/workflow-templates/tx-phase-reset334-avss18-saved-capture-cloud.yml'
+    active='.github/workflows/tx-phase-reset334-avss18-saved-capture-cloud.yml'
+    assert template in m['protected']and active in m['protected'],'Actual active/template files must both be protected'
+    before=(c.ROOT/template).read_text();live=(c.ROOT/active).read_text()
+    assert c.sha(c.ROOT/template)==m['protected'][template]and c.sha(c.ROOT/active)==m['protected'][active]
+    proof=permission_contract(before,live)
+    scoped='    permissions:\n      contents: write\n      actions: read\n'
+    trials=[
+      ('missing_readback_override',before.replace(scoped,'')),
+      ('readback_contents_read',before.replace(scoped,scoped.replace('contents: write','contents: read'))),
+      ('readback_actions_write',before.replace(scoped,scoped.replace('actions: read','actions: write'))),
+      ('top_contents_write',before.replace('permissions:\n  contents: read','permissions:\n  contents: write',1)),
+      ('source_controls_write',before.replace('  source-controls:\n','  source-controls:\n'+scoped,1)),
+      ('wrong_job_scope',before.replace(scoped,scoped.replace('    permissions:','  permissions:',1))),
+      ('duplicate_readback_permissions',before.replace(scoped,scoped+scoped))]
+    refused=[]
+    for name,bad in trials:
+        assert bad!=before;refused.append(reject(name,lambda bad=bad:permission_contract(bad,bad)))
+    refused.append(reject('active_template_mismatch',lambda:permission_contract(before,live+'\n')))
+    assert len(refused)==8
+    return dict(actual_file_positive=proof,refused=refused,actual_active_and_template_checked=True)
+
 def controls():
-    m=c.methods();closure=imports.import_closure(c.ROOT,m['protected'],m['import_roots'])
+    m=c.methods();permissions=permission_controls(m);closure=imports.import_closure(c.ROOT,m['protected'],m['import_roots'])
     raw,original,manifest=c.snapshot()
     op,opmetadata=c.current.admission.prerequisite()
     recorded=dict(run=json.loads((c.ROOT/(c.PREFIX+'.run.json')).read_bytes()),
@@ -214,13 +254,15 @@ def controls():
       reject('missing_right_censor',lambda:interval_fixture(mutated_function('intervals',
         "right_censored=bool(b==len(t)-1)","right_censored=False")))]
     inherited=inherited_math.controls();assert len(inherited['rejected'])==20
+    from check_tx_phase_reset334_avss18_saved_resources import controls as resource_controls
+    resource_result=resource_controls()
     reconstruction=reconstruct_fixture()
     entry=main_entry_fixture()
-    return dict(status='PASS_CURRENT_AVSS18_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY',import_closure=closure,
+    return dict(status='PASS_CURRENT_AVSS18_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY',import_closure=closure,permission_controls=permissions,
       original_current_result_faults=badresult,metadata_faults=badmeta,observer_derivation=derivation,
       topology_fixture=dict(topology,real_restored_input_scope=False,synthetic_fixture_only=True),
       hand_numbered_headroom=h,interval_boundary_fixtures=intervals,actual_code_mutations=mutations,
-      inherited_original_math=inherited,reconstruction_completion=reconstruction,actual_main_entry=entry,
+      inherited_original_math=inherited,resource_controls=resource_result,reconstruction_completion=reconstruction,actual_main_entry=entry,
       archive_controls=archive_fixtures(),current_OP_admission=dict(run=op['run_id'],summary_sha256=c.current.admission.SOURCE['summary']),
       required_actual_restored_controls=dict(source=18,path=32,contract=24,topology=14),
       waveform_or_archive_input_read=False,native_simulator_invoked=False,new_geometry=False,
