@@ -132,6 +132,7 @@ def run():
         finally:
             if old is None:os.environ.pop('NSSOC_TWO_SIGNAL_PHASE',None)
             else:os.environ['NSSOC_TWO_SIGNAL_PHASE']=old
+    failure=None
     try:
         command([sys.executable,str(ROOT/'scripts/bootstrap_flow.py')],'bootstrap-exact-runtime')
         app=c.regular(Path(os.environ['CLOUD_APPIMAGE']).resolve());assert c.file_sha(app)==APP_SHA
@@ -161,16 +162,35 @@ def run():
             original_inputs_unchanged=True,runtime_appimage_sha256=APP_SHA,
             published_package_source_is_not_rebuilt_ELF_attestation=True)
     except BaseException as exc:
-        result.update(status='FAIL_OR_BLOCKED_TWO_SIGNAL_ATTEMPT',error=repr(exc),traceback=traceback.format_exc());raise
+        failure=exc
+        result.update(status='FAIL_OR_BLOCKED_TWO_SIGNAL_ATTEMPT',error=repr(exc),traceback=traceback.format_exc())
     finally:
-        try:sup.stop_process(sup.ACTIVE)
-        finally:
+        # Terminal guards cannot leave a saved COMPLETE verdict after their failure.
+        # Preserve an earlier phase exception while independently recording cleanup/source failures.
+        terminal_errors=[]
+        result['terminal_checks']=[]
+        def terminal_check(label,fn):
+            try:fn()
+            except BaseException as exc:
+                trace=traceback.format_exc();terminal_errors.append((exc,trace))
+                result['terminal_checks'].append(dict(label=label,status='FAIL',error=repr(exc),traceback=trace))
+            else:result['terminal_checks'].append(dict(label=label,status='PASS'))
+        terminal_check('owned-process-cleanup',lambda:sup.stop_process(sup.ACTIVE))
+        def stop_heartbeat():
             sup.STOP.set();beat.join(timeout=2)
-            for sig,handler in previous.items():signal.signal(sig,handler)
-            sup.OUT,sup.TRACE=oldout,oldtrace
-            result['outputs']={str(p.relative_to(OUT)):c.file_sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}
-            save(OUT/'result.json',result)
-        s.methods()
+        terminal_check('heartbeat-stop',stop_heartbeat)
+        for sig,handler in previous.items():
+            terminal_check('restore-signal-'+str(sig),lambda sig=sig,handler=handler:signal.signal(sig,handler))
+        sup.OUT,sup.TRACE=oldout,oldtrace
+        terminal_check('final-source-integrity',s.methods)
+        if terminal_errors:
+            result['status']='FAIL_OR_BLOCKED_TWO_SIGNAL_ATTEMPT'
+            if failure is None:
+                failure,trace=terminal_errors[0]
+                result.update(error=repr(failure),traceback=trace)
+        result['outputs']={str(p.relative_to(OUT)):c.file_sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'}
+        save(OUT/'result.json',result)
+    if failure is not None:raise failure
 
 def publish():
     s.methods()

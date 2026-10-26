@@ -254,7 +254,9 @@ def outer_controls():
     import threading
     import ensure_cloud_tested_source_release as guard
     positive=[];failures=[]
-    for scenario in ('ownership-block','prepare-failure','route-failure','final-source-failure'):
+    scenarios=('success','ownership-block','prepare-failure','route-failure','final-source-failure',
+               'cleanup-failure','terminal-source-failure','body-and-cleanup-failure')
+    for scenario in scenarios:
         with tempfile.TemporaryDirectory(prefix='two-signal-main-')as temp:
             root=Path(temp);out=root/'out';transport=root/'transport';app=root/'explicit-stub.AppImage'
             app.write_bytes(b'explicit nonexecutable source fixture')
@@ -265,18 +267,25 @@ def outer_controls():
                 own['records'][0]['kind']='iterm-pin'
                 own.update(g.ownership_decision(own['markers'],own['records']))
             calls=[];stopped=[];gate_calls=0
-            sup=types.SimpleNamespace(OUT=None,TRACE=None,ACTIVE=None,STOP=threading.Event(),
-                heartbeat=lambda:None,interrupted=lambda *a:None,stop_process=lambda p:stopped.append(p))
+            injected=RuntimeError('exact '+scenario)
+            cleanup_error=ValueError('exact secondary cleanup fixture')
+            def cleanup(process):
+                stopped.append(process)
+                if scenario=='cleanup-failure':raise injected
+                if scenario=='body-and-cleanup-failure':raise cleanup_error
+            oldout,oldtrace=object(),object()
+            sup=types.SimpleNamespace(OUT=oldout,TRACE=oldtrace,ACTIVE=None,STOP=threading.Event(),
+                heartbeat=lambda:None,interrupted=lambda *a:None,stop_process=cleanup)
             def method():
                 nonlocal gate_calls
                 gate_calls+=1
-                if scenario=='final-source-failure'and gate_calls==2:raise AssertionError('exact final source fixture')
+                if (scenario=='final-source-failure'and gate_calls==2)or(
+                    scenario=='terminal-source-failure'and gate_calls==3):raise injected
                 return dict(cloud_restore_authorized=True,native_execution_authorized=True,native_routing_authorized=True)
-            injected=RuntimeError('exact '+scenario)
             def execute(sup,argv,label):
                 calls.append(label)
-                if (scenario=='prepare-failure'and label=='prepare-fixed')or(scenario=='route-failure'and label=='one-two-signal-routing-attempt'):
-                    raise injected
+                if (scenario in ('prepare-failure','body-and-cleanup-failure')and label=='prepare-fixed')or(
+                    scenario=='route-failure'and label=='one-two-signal-routing-attempt'):raise injected
                 if label=='ownership':driver.save(out/'work/ownership.json',own)
                 if label=='one-two-signal-routing-attempt':
                     (out/'supervision'/('one-two-signal-routing-attempt.stdout')).write_bytes(b'explicit stub')
@@ -295,21 +304,40 @@ def outer_controls():
                 stack.enter_context(patch.dict(os.environ,{'CLOUD_APPIMAGE':str(app)}))
                 try:driver.run()
                 except BaseException as exc:
-                    if scenario in ('prepare-failure','route-failure'):assert exc is injected
-                    elif scenario=='ownership-block':assert isinstance(exc,AssertionError)and 'forbids routing'in str(exc)
-                    else:assert isinstance(exc,AssertionError)and str(exc)=='exact final source fixture'
-                else:raise AssertionError('Real outer failure fixture returned success')
+                    assert scenario!='success'
+                    if scenario=='ownership-block':assert isinstance(exc,AssertionError)and 'forbids routing'in str(exc)
+                    else:assert exc is injected,(scenario,exc)
+                else:assert scenario=='success','Real outer failure fixture returned success'
             result=json.loads((out/'result.json').read_bytes())
-            assert result['status']=='FAIL_OR_BLOCKED_TWO_SIGNAL_ATTEMPT'
             assert result['original_guard_failure_preserved']and not result['accepted']
             assert len(stopped)==1 and sup.STOP.is_set()
-            if scenario in ('ownership-block','prepare-failure'):
+            assert sup.OUT is oldout and sup.TRACE is oldtrace
+            checks=result['terminal_checks']
+            assert [x['label']for x in checks]==['owned-process-cleanup','heartbeat-stop',
+                'restore-signal-2','restore-signal-15','final-source-integrity']
+            failed=[x for x in checks if x['status']=='FAIL']
+            if scenario in ('ownership-block','prepare-failure','body-and-cleanup-failure'):
                 assert 'one-two-signal-routing-attempt'not in calls and not result['native_routing_started']
             else:assert calls.count('one-two-signal-routing-attempt')==1
             assert 'work/ownership.json'in result['outputs']
+            if scenario=='success':
+                assert result['status']=='COMPLETE_CONDITIONAL_TWO_SIGNAL_ATTEMPT_NOT_RC_STA_OR_PHY_ACCEPTANCE'
+                assert not failed and gate_calls==3 and len(calls)==13
+                positive.append('actual_successful_outer_run_terminal_guards')
+                continue
+            assert result['status']=='FAIL_OR_BLOCKED_TWO_SIGNAL_ATTEMPT'
+            if scenario in ('cleanup-failure','body-and-cleanup-failure'):
+                assert len(failed)==1 and failed[0]['label']=='owned-process-cleanup'
+                expected=cleanup_error if scenario=='body-and-cleanup-failure'else injected
+                assert failed[0]['error']==repr(expected)and result['error']==repr(injected)
+                assert gate_calls==(2 if scenario=='body-and-cleanup-failure'else 3)
+            elif scenario=='terminal-source-failure':
+                assert gate_calls==3 and len(failed)==1 and failed[0]['label']=='final-source-integrity'
+                assert failed[0]['error']==repr(injected)and result['error']==repr(injected)
+            else:assert not failed
             failures.append(dict(name=scenario,actual_calls=calls,result=result))
     positive.append('actual_outer_run_finally_and_exact_failure_records')
-    assert len(failures)==4
+    assert len(positive)==2 and len(failures)==7
     return dict(positive=positive,rejected=failures,all_CAD_and_remote_IO_explicit_stubs=True)
 
 def disconnected_pin_controls():
