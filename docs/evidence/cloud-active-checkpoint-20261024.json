@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-26T14:01:59.822552+00:00",
+  "updated_at": "2026-10-26T14:07:26.974112+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "5c2a063105c1da8ca0ab229eea2270cf8b6b88d0",
+  "root_source_before_receipt": "00400223587f5523bb114b71c1c854ef4fc9aa41",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 58,
+    "inventory_version": 59,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40322641142,
@@ -14,33 +14,7 @@
     "automatic_native_dispatch": false,
     "last_verified_run_status": "ATTENTION_REQUIRED: all51 source controls passed; complete observation and snapshot succeeded; open engineering failures retained; no MONITOR_ERROR"
   },
-  "active_runs": {
-    "mainchip-fixed-clock-signal-repair-native": {
-      "run": 40335275167,
-      "head_sha": "6f50c4b0226cdad11cd80ab6519d6a7141175978",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121615064104,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121615440133,
-          "name": "native",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "One bounded fixed-clock signal repair and complete original-class DRC"
-          ]
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -1143,6 +1117,48 @@
       "RC_STA_execution": false,
       "timing_accepted": false,
       "full_PHY_accepted": false
+    },
+    "cdr_tail_access_wire_source_WIP": {
+      "source": "4864ea8a56ef86e5361b97f98ea516e4db405f9b",
+      "branch": "codex/cdr-v59-tail-access-wire-proposal",
+      "files": [
+        {
+          "source": "4864ea8a56ef86e5361b97f98ea516e4db405f9b",
+          "path": "scripts/cdr_v59_tail_access_plan.py",
+          "bytes": 4600,
+          "sha256": "a7d42135af4221f725541168500723dc9462136b28b6501da1afa06b605021b6"
+        },
+        {
+          "source": "4864ea8a56ef86e5361b97f98ea516e4db405f9b",
+          "path": "scripts/cdr-v59-tail-access-wire-contract.json",
+          "bytes": 4759,
+          "sha256": "35af59e1fde42eb410422883c6f18447608e7cbc4df06a56e92d41b7e2dbf74f"
+        }
+      ],
+      "physical_execution_authorized": false,
+      "validation_complete": false,
+      "proposal": "Same-net additive y180um TopMetal2 bus and eight native TM1-to-TM2 taps in shared sampler_cd child, exact sc/sd placements; oldy240 bus retained. Requires complete generator/controller/controls and native clearance/fullDRC/LVS/freshRC before separately reviewed electrical simulation. All ten original cases remain required."
+    },
+    "pll_same_row_saved_capture_source_WIP": {
+      "source": "d78e92735e091b401e3334bd17dcd6b99b7d4f12",
+      "branch": "codex/phase318-saved-capture-diagnosis",
+      "files": [
+        {
+          "source": "d78e92735e091b401e3334bd17dcd6b99b7d4f12",
+          "path": "scripts/tx_phase_reset334_avss18_saved_diagnosis.py",
+          "bytes": 14938,
+          "sha256": "540a1b9226c8b027e0d3ff5b82ca41b8552d8e86a6f028d523df4d7400964382"
+        },
+        {
+          "source": "d78e92735e091b401e3334bd17dcd6b99b7d4f12",
+          "path": "scripts/cloud_tx_phase_reset334_avss18_saved_capture.py",
+          "bytes": 14605,
+          "sha256": "c92fff5707e30b1d2e02c0d6f7ab1cb00b63123e1a98577e12525009d7547d63"
+        }
+      ],
+      "execution_authorized": false,
+      "controls_complete": false,
+      "proposal": "Same-row observer on complete saved current34ns capture: four current selector-tail minima, original17 minimum rows, prescribed/actual first-fall crossings, all12 tail groups, passive terminal voltage differences. Exact four-device set plus preserved original numerical analysis; no simulation, rescaled R, inferred KCL or acceptance. Author controls/publication workflow next; publish needed diagnostic JSON directly."
     }
   },
   "next_actions": [
@@ -1346,139 +1362,16 @@
     "observed_40332010239": 40332010239,
     "observed_40332121729": 40332121729,
     "observed_40333880492": 40333880492,
-    "observed_40323469809": 40323469809
+    "observed_40323469809": 40323469809,
+    "observed_40335275167": 40335275167
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40326905130,
-      "head_sha": "342a1d1948f080da88697a9d7ec6a7e9cc4b72fd",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121585846274,
-          "name": "register",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40327085769,
-      "head_sha": "9c63664f0c170f5a498bc6f25559d89e59ebf406",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121586533242,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121586716574,
-          "name": "recover",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40328664042,
-      "head_sha": "695b24cea60aeffa8330623a0da6ff6923c95eb2",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121591959268,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121592213747,
-          "name": "recover",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40332010239,
-      "head_sha": "84b174a68a7c05536f6b44a4251fb1fcc300eced",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121603564901,
-          "name": "register",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40332121729,
-      "head_sha": "20c98c4a11e3d5001ff301978dbbc47798f823e7",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121603976327,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 121604373966,
-          "name": "native",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40333880492,
-      "head_sha": "000b7f6ee493b4af32c8c143ccff490ceeb3af65",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121610142389,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121610368811,
-          "name": "native",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40335275167,
       "head_sha": "6f50c4b0226cdad11cd80ab6519d6a7141175978",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
@@ -1491,31 +1384,6 @@
         {
           "id": 121615440133,
           "name": "native",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "One bounded fixed-clock signal repair and complete original-class DRC"
-          ]
-        }
-      ]
-    },
-    {
-      "run": 40323469809,
-      "head_sha": "5a712e76807579a7736c24f602a204c481c001b7",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121574053171,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121574354567,
-          "name": "exact318-p-high-native",
           "status": "completed",
           "conclusion": "failure",
           "active_steps": []
@@ -1524,7 +1392,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-26T14:01:59.822552+00:00",
+    "observed_at": "2026-10-26T14:07:26.974112+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -1646,7 +1514,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-26T14:01:59.822552+00:00",
+  "local_workspace_verified_empty_at": "2026-10-26T14:07:26.974112+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -9072,6 +8940,64 @@
       "tag": "cloud-results-40335275167-1-mainchip-fixed-clock-signal-repair",
       "source": "6f50c4b0226cdad11cd80ab6519d6a7141175978",
       "result_not_yet_accepted": true
+    }
+  ],
+  "imported_checkpoint_receipts_v59": [
+    {
+      "path": "docs/evidence/cdr-v59-master-tail-source-routing-handoff-20261026.json",
+      "source": "4864ea8a56ef86e5361b97f98ea516e4db405f9b",
+      "git_blob": "458542457936b3dc5d292155a8dc91234feb00cb",
+      "bytes": 13535,
+      "sha256": "ebafae702e1ea9526127702fb99b167755be8d71bcc28baa46ff30f11dcf4843",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-current-font-physical-summary-20261026.json",
+      "source": "4864ea8a56ef86e5361b97f98ea516e4db405f9b",
+      "git_blob": "bc5afae9ea5ce2560529fc919d9162109a650357",
+      "bytes": 362103,
+      "sha256": "da0ea575f0950c765714f831786ca325cab597dad2df1ed6d65785b1688595f0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-native-pdk-564881f6/sg13g2_tech.json",
+      "source": "4864ea8a56ef86e5361b97f98ea516e4db405f9b",
+      "git_blob": "6d1e7d15b0d6d5940bb90bebe002821672672d52",
+      "bytes": 26363,
+      "sha256": "dce023dcf8dca1a7d875b6f71b5ce651b42f2dc3e9a21abb6de3997262273142",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-native-pdk-564881f6/via_stack_code.py",
+      "source": "4864ea8a56ef86e5361b97f98ea516e4db405f9b",
+      "git_blob": "9f5d6b98b5408bd9e1f71a84f0ea8e03dbcc71a4",
+      "bytes": 7492,
+      "sha256": "185f6d3bea6ef9a4960817d189e099057242e1cca73f6ab31c08298c2d64cc61",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-native-runtime-source-20261026.json",
+      "source": "4864ea8a56ef86e5361b97f98ea516e4db405f9b",
+      "git_blob": "a735d757f90b3e751a5c2283aad6df564ae70517",
+      "bytes": 10418,
+      "sha256": "be8556edd721f3a6e07cbe5c57930a138582d9f8eee18bebc38c9520aa7e8245",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-original-leaf-layout-20261026.json",
+      "source": "4864ea8a56ef86e5361b97f98ea516e4db405f9b",
+      "git_blob": "8c94c6e429501b09db6193e06a9a829a1a3bfff3",
+      "bytes": 247445,
+      "sha256": "5519863b12a9e0c86514daa78fb958199929e5b07fe0be95e07da8b882c2aa90",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/tx-phase-reset334-avss18-saved-diagnosis-source-20261026.md",
+      "source": "d78e92735e091b401e3334bd17dcd6b99b7d4f12",
+      "git_blob": "d1fe122ddc68149613ffad7c3b1155782f372dd4",
+      "bytes": 405,
+      "sha256": "a24c5a93847ef1c73b3bbbf2b85a9128f365c1e113b50e7b825a952a39b19aae",
+      "existing_identical": false
     }
   ]
 }
