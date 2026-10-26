@@ -13,6 +13,26 @@ def save(path,value):
     from cloud_mainchip_original_clock_restoration import save as atomic
     atomic(path,value)
 
+def via_projection(value):
+    """JSON-stable via boxes only; preserve exact names, layers, integers, order and multiplicity."""
+    assert type(value)is dict,'Via projection must be a dictionary'
+    result={}
+    for key,boxes in value.items():
+        assert type(key)is str and ':'in key,'Via key must be a typed name'
+        kind,name=key.split(':',1)
+        assert kind in ('block','tech')and name,'Unknown or empty via name'
+        assert type(boxes)is list,'Via boxes must be a list'
+        rows=[]
+        for box in boxes:
+            assert type(box)in (tuple,list)and len(box)==5,'Via box must have five fields'
+            layer,*coordinates=box
+            assert type(layer)is str and layer,'Via layer must be a nonempty string'
+            assert all(type(v)is int for v in coordinates),'Via coordinates must be exact integers'
+            rows.append([layer,*coordinates])
+        assert rows==sorted(rows),'Via box order must match the qualified sorted projection'
+        result[key]=rows
+    return result
+
 def snapshot(path,out,label):
     db,b=n.load(path)
     try:
@@ -31,16 +51,21 @@ def snapshot(path,out,label):
             vias=lambda db,block,names:{})
         geometry=d.geometry_projection(db,b,proxy)
         geometry['scope']='All net identity and metadata/special status, all instance placement and master-pin boxes; encoded wires and union of used-via definitions audited separately.'
-        return dict(identity=identity,encoded=encoded,geometry=geometry,via=n.vias(db,b,names),
+        return dict(identity=identity,encoded=encoded,geometry=geometry,via=via_projection(n.vias(db,b,names)),
                     raw_def_sha256=c.file_sha(out/(label+'.def')))
     finally:odb.dbDatabase.destroy(db)
 
 def compare_vias(before,after,before_path,after_path):
-    union=dict(before['via']);union.update(after['via'])
-    for key in before['via'].keys()&after['via'].keys():assert before['via'][key]==after['via'][key]
+    left=via_projection(before['via']);right=via_projection(after['via'])
+    union=dict(left);union.update(right)
+    for key in left.keys()&right.keys():assert left[key]==right[key],'Common used via definition changed'
+    # The frozen helper compares native tuple boxes, so reconstruct only this validated schema.
+    required={key:[tuple(box)for box in boxes]for key,boxes in union.items()}
     for path in (before_path,after_path):
         db,b=n.load(path)
-        try:n.vias(db,b,[],union)
+        try:
+            got=n.vias(db,b,[],required)
+            assert via_projection(got)==union,'Required via definition projection changed'
         finally:odb.dbDatabase.destroy(db)
     return dict(union_count=len(union),definitions_present_and_identical_in_both_databases=True,
                 newly_generated_via_definitions_not_admitted=True)

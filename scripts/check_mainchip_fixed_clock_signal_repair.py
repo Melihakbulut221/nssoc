@@ -259,6 +259,8 @@ def controls():
         except ValueError as e:assert e is error;p.assert_called_once()
         else:raise AssertionError('Publisher error hidden')
     assert pub.GROUP==old;positives.append('actual_publisher_failure_preserved')
+    from check_mainchip_signal_repair_via_projection import controls as via_controls
+    via_result=via_controls(native)
     import check_mainchip_clock_marker_classification as inherited
     inherited_result=inherited.controls()
     import check_mainchip_original_clock_restoration_driver as oldcheck
@@ -266,6 +268,7 @@ def controls():
     assert len(positives)==14 and len(refusals)==50,(len(positives),len(refusals))
     return dict(status='PASS_SIGNAL_REPAIR_SOURCE_CONTROLS_NOT_NATIVE',positives=positives,refusals=refusals,
         inherited_classification_archive_publication_wait=inherited_result,marker_API=markers,
+        via_projection_controls=via_result,
         phase_sequence=order,synthetic_native_DB_API_fixture=True,synthetic_Tcl_hash_override_fixture=True,
         actual_native_archive_accessed=False,native_execution=False,accepted=False)
 
