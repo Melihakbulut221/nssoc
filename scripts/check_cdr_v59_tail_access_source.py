@@ -134,7 +134,10 @@ def controls():
     ]:
         assert bad!=current
         try:actual_output_metadata(bad)
-        except AssertionError as error:output_refusals.append({"case":label,"error":repr(error)})
+        except (AssertionError,KeyError) as error:
+            if label=="wrong_actual_filename":assert type(error) is KeyError and error.args==("fixture.gds",)
+            else:assert type(error) is AssertionError
+            output_refusals.append({"case":label,"error":repr(error)})
         else:raise AssertionError("Accepted output metadata fault "+label)
     assert len(output_refusals)==3
     runtime=json.loads((ROOT/"docs/evidence/cdr-v59-tail-native-runtime-source-20261026.json").read_text())
