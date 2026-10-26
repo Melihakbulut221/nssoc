@@ -1,0 +1,107 @@
+{
+  "authored_counts": {
+    "boundary_positives": 4,
+    "boundary_refusals": 32,
+    "direct_publication": 2,
+    "isolated_imports": [
+      2,
+      7
+    ],
+    "outer_finally": 4,
+    "qualified_publication": [
+      3,
+      13
+    ],
+    "wait": [
+      3,
+      4
+    ]
+  },
+  "changed_functions": [
+    "fixture",
+    "controls"
+  ],
+  "checker_after": {
+    "bytes": 19668,
+    "sha256": "df3086dadbe8d27c7be6f3d33f57da860f8e89b28b5d291104f247879ad11dd4"
+  },
+  "checker_before": {
+    "bytes": 17804,
+    "sha256": "740e96d68d725ff075ffb54825330c072b4aeec8a666508cb88a7a03c97233c9"
+  },
+  "correction": "Rename only type=net sources, retain the original instance source ck0 in both serialized witnesses; preserve the 11 records and duplicate multiplicity.",
+  "diagnosis": {
+    "old_TR_operation": "Renamed only net:ck0/net:ck1.",
+    "old_json_operation": "Renamed every JSON string ck0/ck1, including the non-net instance source.",
+    "production_oracle_changed": false,
+    "scope": "Synthetic fixture only. Original classifier correctly rejected inconsistent JSON/TR typed source names.",
+    "specific_mismatched_record": {
+      "TR_name": "ck0",
+      "bad_JSON_name": "ck0000",
+      "ordinal": 7,
+      "original_name": "ck0",
+      "type": "inst"
+    }
+  },
+  "exact_checker_diff": "--- tested/checker\n+++ corrected/checker\n@@ -23,8 +23,17 @@\n     files['work/expected-original-class.def']=raw\n     files['work/ownership.json']=encoded(dict(selected=names,net_count=143820))\n     tree,tr,measurement,_,_=marker_fixture.fixture()\n-    text=json.dumps(tree).replace('\"ck0\"','\"ck0000\"').replace('\"ck1\"','\"ck0001\"')\n-    marker=encoded(json.loads(text));tr=tr.replace(b'net:ck0',b'net:ck0000').replace(b'net:ck1',b'net:ck0001')\n+    rows=tree[a.drc.CATEGORY]['category']['Short']['violations']\n+    sources=[source for row in rows if isinstance(row['sources'],list)for source in row['sources']]\n+    non_net=copy.deepcopy([source for source in sources if source['type']!='net'])\n+    assert non_net==[dict(type='inst',name='ck0')]\n+    assert tr.count(b' net:ck0')==6 and tr.count(b' net:ck1')==2\n+    for source in sources:\n+        if source['type']=='net'and source['name']in('ck0','ck1'):\n+            source['name']={'ck0':'ck0000','ck1':'ck0001'}[source['name']]\n+    assert [source for source in sources if source['type']!='net']==non_net\n+    marker=encoded(tree);tr=tr.replace(b'net:ck0',b'net:ck0000').replace(b'net:ck1',b'net:ck0001')\n+    assert b'\\tsrcs: inst:ck0\\n'in tr and b'inst:ck0000'not in tr\n     measurement.update(all_categories_below_native_cap=True,zero_reported_DRT_markers=False,\n         report_bytes=len(tr),report_sha256=a.c.digest(tr))\n     measurement['serialized_markers']=a.drc.bind_serialized_markers(measurement,marker)\n@@ -169,11 +178,31 @@\n         assert observed['classification']['exact_complete_JSON_TR_reconstruction']is True\n         assert observed['saved_native_reported_next_stage']['eligible_for_separately_reviewed_RC_STA']is False\n         positives.append('actual_full_saved_boundary_complete_143820_net_DEF_and_failed_guard')\n-    def body_case(name,fn):\n+    def body_case(name,fn,rebind_marker=False):\n         local=copy.deepcopy(files);changed(local,name,fn)\n+        if rebind_marker:\n+            assert name=='work/initial-drc-markers.json'\n+            final=json.loads(local['work/drc-audit-result.json'])\n+            final['final_DRT']['serialized_markers']=a.drc.bind_serialized_markers(final['final_DRT'],local[name])\n+            local['work/drc-audit-result.json']=encoded(final)\n         rr=copy.deepcopy(r);rr['outputs']={n:a.c.digest(b)for n,b in local.items()}\n         with tempfile.TemporaryDirectory()as tmp,patch.object(a.repair,'SELECTED_SHA',selector):\n             root=Path(tmp);write(root,local);a.inspect_saved(root,rr)\n+    def old_global_JSON_rename(x):\n+        rows=x[a.drc.CATEGORY]['category']['Short']['violations']\n+        assert rows[7]['sources']==[dict(type='inst',name='ck0')]\n+        expected=copy.deepcopy(x)\n+        expected[a.drc.CATEGORY]['category']['Short']['violations'][7]['sources'][0]['name']='ck0000'\n+        # Exact failed fixture expression, applied after the corrected net-only rename.\n+        text=json.dumps(x).replace('\"ck0\"','\"ck0000\"').replace('\"ck1\"','\"ck0001\"')\n+        got=json.loads(text)\n+        assert got==expected and got!=x\n+        x.clear();x.update(got)\n+    try:body_case('work/initial-drc-markers.json',old_global_JSON_rename,rebind_marker=True)\n+    except AssertionError as error:\n+        assert str(error)=='Complete JSON/TR category/source/shape/comment sequence differs'\n+    else:raise AssertionError('Accepted exact old global JSON non-net rename')\n+    refusals.append('exact_old_global_JSON_non_net_rename')\n     for label,name,fn in [\n       ('native_final_status','work/drc-audit-result.json',lambda x:x.update(status='RUNNING')),\n       ('final_clock_gate','work/drc-audit-result.json',lambda x:x.update(original1691_clock_gate_passed=False)),\n@@ -224,7 +253,7 @@\n     wait=waiter.controls()\n     assert len(publication['positives'])==3 and len(publication['rejected'])==13\n     assert len(wait['positive_cases'])==3 and len(wait['rejected'])==4\n-    assert len(positives)==4 and len(refusals)==31 and len(set(refusals))==31\n+    assert len(positives)==4 and len(refusals)==32 and len(set(refusals))==32\n     return dict(status='PASS_FAILED_SIGNAL_REPAIR_READBACK_SOURCE_CONTROLS',positives=positives,refusals=refusals,\n         publication=publication,wait=wait,lifecycle=lifecycle_controls(),direct_publication=publication_controls(),fixture_ODB_not_used=True,synthetic_saved_reports=True,\n         native_or_prior_archive_accessed=False,original_failed_run_not_accepted=True)\n",
+  "failed_run": 40376447654,
+  "failure_proofs": {
+    "docs/evidence/mainchip-signal-repair-readback-first-source-controls-failure-20261026.full-result.json": {
+      "bytes": 79205,
+      "sha256": "72eef1d25edb127d2c8fb7d3a0f8c5cf36c60026c1fb93cf11088f5b97f8c354"
+    },
+    "docs/evidence/mainchip-signal-repair-readback-first-source-controls-failure-20261026.job.log": {
+      "bytes": 136432,
+      "sha256": "005bdf7106dd0304517687642cf7e4346616d0a3e05f0217e44ca5277f5ce514"
+    },
+    "docs/evidence/mainchip-signal-repair-readback-first-source-controls-failure-20261026.json": {
+      "bytes": 23458,
+      "sha256": "e73c3fdf0090d04fcc9b42d4de8c849c7c68e73cb4fe78f0c8ba42ba05860db2"
+    },
+    "docs/evidence/mainchip-signal-repair-readback-first-source-controls-failure-20261026.tested-methods.json": {
+      "bytes": 48695,
+      "sha256": "cdc9933e07ea687430bcf0042daa310b038004a6b61618880a087e0716cf099d"
+    }
+  },
+  "limits": {
+    "authored_tests_or_imports_executed": false,
+    "native_archive_downloaded": false,
+    "production_parser_classifier_controller_changed": false,
+    "readback_authorized": false,
+    "readback_executed": false,
+    "source_controls_authorized": false
+  },
+  "literal_edits": [
+    {
+      "new": "    rows=tree[a.drc.CATEGORY]['category']['Short']['violations']\n    sources=[source for row in rows if isinstance(row['sources'],list)for source in row['sources']]\n    non_net=copy.deepcopy([source for source in sources if source['type']!='net'])\n    assert non_net==[dict(type='inst',name='ck0')]\n    assert tr.count(b' net:ck0')==6 and tr.count(b' net:ck1')==2\n    for source in sources:\n        if source['type']=='net'and source['name']in('ck0','ck1'):\n            source['name']={'ck0':'ck0000','ck1':'ck0001'}[source['name']]\n    assert [source for source in sources if source['type']!='net']==non_net\n    marker=encoded(tree);tr=tr.replace(b'net:ck0',b'net:ck0000').replace(b'net:ck1',b'net:ck0001')\n    assert b'\\tsrcs: inst:ck0\\n'in tr and b'inst:ck0000'not in tr\n",
+      "old": "    text=json.dumps(tree).replace('\"ck0\"','\"ck0000\"').replace('\"ck1\"','\"ck0001\"')\n    marker=encoded(json.loads(text));tr=tr.replace(b'net:ck0',b'net:ck0000').replace(b'net:ck1',b'net:ck0001')\n"
+    },
+    {
+      "new": "            root=Path(tmp);write(root,local);a.inspect_saved(root,rr)\n    def old_global_JSON_rename(x):\n        rows=x[a.drc.CATEGORY]['category']['Short']['violations']\n        assert rows[7]['sources']==[dict(type='inst',name='ck0')]\n        expected=copy.deepcopy(x)\n        expected[a.drc.CATEGORY]['category']['Short']['violations'][7]['sources'][0]['name']='ck0000'\n        # Exact failed fixture expression, applied after the corrected net-only rename.\n        text=json.dumps(x).replace('\"ck0\"','\"ck0000\"').replace('\"ck1\"','\"ck0001\"')\n        got=json.loads(text)\n        assert got==expected and got!=x\n        x.clear();x.update(got)\n    try:body_case('work/initial-drc-markers.json',old_global_JSON_rename,rebind_marker=True)\n    except AssertionError as error:\n        assert str(error)=='Complete JSON/TR category/source/shape/comment sequence differs'\n    else:raise AssertionError('Accepted exact old global JSON non-net rename')\n    refusals.append('exact_old_global_JSON_non_net_rename')\n    for label,name,fn in [\n",
+      "old": "            root=Path(tmp);write(root,local);a.inspect_saved(root,rr)\n    for label,name,fn in [\n"
+    },
+    {
+      "new": "len(refusals)==32 and len(set(refusals))==32",
+      "old": "len(refusals)==31 and len(set(refusals))==31"
+    },
+    {
+      "new": "    def body_case(name,fn,rebind_marker=False):\n        local=copy.deepcopy(files);changed(local,name,fn)\n        if rebind_marker:\n            assert name=='work/initial-drc-markers.json'\n            final=json.loads(local['work/drc-audit-result.json'])\n            final['final_DRT']['serialized_markers']=a.drc.bind_serialized_markers(final['final_DRT'],local[name])\n            local['work/drc-audit-result.json']=encoded(final)\n",
+      "old": "    def body_case(name,fn):\n        local=copy.deepcopy(files);changed(local,name,fn)\n"
+    }
+  ],
+  "preserved_failure_commit": "9a919bfc176732e2bfe347cb8a5805dfac664d9c",
+  "prior_source": "536263a3e09d72dd78731c34fe67b463152c130a",
+  "regression": "Apply the exact old global JSON replacement to the corrected witness; prove only ordinal7 instance name changed; refresh full member hashes and serialized marker byte/hash binding; require the actual inspect_saved call to reject with the exact unchanged classifier JSON/TR message.",
+  "review": "Pending bounded root and peer review; no retry authorization inferred.",
+  "schema": "mainchip-signal-readback-fixture-correction-v1",
+  "template_delta": "Only boundary refusal count31 to32 in both identical copies. readback default remains false.",
+  "unchanged_checker_functions_AST": [
+    "encoded",
+    "changed",
+    "write",
+    "reject",
+    "lifecycle_controls",
+    "publication_controls",
+    "main"
+  ]
+}

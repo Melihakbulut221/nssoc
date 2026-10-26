@@ -23,8 +23,17 @@ def fixture():
     files['work/expected-original-class.def']=raw
     files['work/ownership.json']=encoded(dict(selected=names,net_count=143820))
     tree,tr,measurement,_,_=marker_fixture.fixture()
-    text=json.dumps(tree).replace('"ck0"','"ck0000"').replace('"ck1"','"ck0001"')
-    marker=encoded(json.loads(text));tr=tr.replace(b'net:ck0',b'net:ck0000').replace(b'net:ck1',b'net:ck0001')
+    rows=tree[a.drc.CATEGORY]['category']['Short']['violations']
+    sources=[source for row in rows if isinstance(row['sources'],list)for source in row['sources']]
+    non_net=copy.deepcopy([source for source in sources if source['type']!='net'])
+    assert non_net==[dict(type='inst',name='ck0')]
+    assert tr.count(b' net:ck0')==6 and tr.count(b' net:ck1')==2
+    for source in sources:
+        if source['type']=='net'and source['name']in('ck0','ck1'):
+            source['name']={'ck0':'ck0000','ck1':'ck0001'}[source['name']]
+    assert [source for source in sources if source['type']!='net']==non_net
+    marker=encoded(tree);tr=tr.replace(b'net:ck0',b'net:ck0000').replace(b'net:ck1',b'net:ck0001')
+    assert b'\tsrcs: inst:ck0\n'in tr and b'inst:ck0000'not in tr
     measurement.update(all_categories_below_native_cap=True,zero_reported_DRT_markers=False,
         report_bytes=len(tr),report_sha256=a.c.digest(tr))
     measurement['serialized_markers']=a.drc.bind_serialized_markers(measurement,marker)
@@ -169,11 +178,31 @@ def controls():
         assert observed['classification']['exact_complete_JSON_TR_reconstruction']is True
         assert observed['saved_native_reported_next_stage']['eligible_for_separately_reviewed_RC_STA']is False
         positives.append('actual_full_saved_boundary_complete_143820_net_DEF_and_failed_guard')
-    def body_case(name,fn):
+    def body_case(name,fn,rebind_marker=False):
         local=copy.deepcopy(files);changed(local,name,fn)
+        if rebind_marker:
+            assert name=='work/initial-drc-markers.json'
+            final=json.loads(local['work/drc-audit-result.json'])
+            final['final_DRT']['serialized_markers']=a.drc.bind_serialized_markers(final['final_DRT'],local[name])
+            local['work/drc-audit-result.json']=encoded(final)
         rr=copy.deepcopy(r);rr['outputs']={n:a.c.digest(b)for n,b in local.items()}
         with tempfile.TemporaryDirectory()as tmp,patch.object(a.repair,'SELECTED_SHA',selector):
             root=Path(tmp);write(root,local);a.inspect_saved(root,rr)
+    def old_global_JSON_rename(x):
+        rows=x[a.drc.CATEGORY]['category']['Short']['violations']
+        assert rows[7]['sources']==[dict(type='inst',name='ck0')]
+        expected=copy.deepcopy(x)
+        expected[a.drc.CATEGORY]['category']['Short']['violations'][7]['sources'][0]['name']='ck0000'
+        # Exact failed fixture expression, applied after the corrected net-only rename.
+        text=json.dumps(x).replace('"ck0"','"ck0000"').replace('"ck1"','"ck0001"')
+        got=json.loads(text)
+        assert got==expected and got!=x
+        x.clear();x.update(got)
+    try:body_case('work/initial-drc-markers.json',old_global_JSON_rename,rebind_marker=True)
+    except AssertionError as error:
+        assert str(error)=='Complete JSON/TR category/source/shape/comment sequence differs'
+    else:raise AssertionError('Accepted exact old global JSON non-net rename')
+    refusals.append('exact_old_global_JSON_non_net_rename')
     for label,name,fn in [
       ('native_final_status','work/drc-audit-result.json',lambda x:x.update(status='RUNNING')),
       ('final_clock_gate','work/drc-audit-result.json',lambda x:x.update(original1691_clock_gate_passed=False)),
@@ -224,7 +253,7 @@ def controls():
     wait=waiter.controls()
     assert len(publication['positives'])==3 and len(publication['rejected'])==13
     assert len(wait['positive_cases'])==3 and len(wait['rejected'])==4
-    assert len(positives)==4 and len(refusals)==31 and len(set(refusals))==31
+    assert len(positives)==4 and len(refusals)==32 and len(set(refusals))==32
     return dict(status='PASS_FAILED_SIGNAL_REPAIR_READBACK_SOURCE_CONTROLS',positives=positives,refusals=refusals,
         publication=publication,wait=wait,lifecycle=lifecycle_controls(),direct_publication=publication_controls(),fixture_ODB_not_used=True,synthetic_saved_reports=True,
         native_or_prior_archive_accessed=False,original_failed_run_not_accepted=True)
