@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-26T17:34:10.985341+00:00",
+  "updated_at": "2026-10-26T17:58:43.138140+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "b7a14db8b6263fe7b158f98e77e584209224713b",
+  "root_source_before_receipt": "3aadf5e9714c0cdb2f9b504d34f1914d1a66cded",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 66,
+    "inventory_version": 67,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40322641142,
@@ -14,58 +14,7 @@
     "automatic_native_dispatch": false,
     "last_verified_run_status": "ATTENTION_REQUIRED: all51 source controls passed; complete observation and snapshot succeeded; open engineering failures retained; no MONITOR_ERROR"
   },
-  "active_runs": {
-    "cdr_tail_complete_input_relocation_native": {
-      "run": 40369539200,
-      "head_sha": "504c4b94ab19532e0831daf496df4a9448678290",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121736255584,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121736653973,
-          "name": "physical",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Complete additive physical qualification and evidence publication"
-          ]
-        }
-      ]
-    },
-    "mainchip-fixed-clock-signal-repair-via-corrected-native": {
-      "run": 40344497930,
-      "head_sha": "2a81095f744193451800ef178c9a7ae7314dd2dc",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121647707160,
-          "name": "controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121648067587,
-          "name": "native",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Permanent complete summary and authenticated archive publication"
-          ]
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -1477,27 +1426,92 @@
       "source": "504c4b94ab19532e0831daf496df4a9448678290",
       "method_sha256": "bcc78448e02dc21e23e4c16d7725d155c84c6091b4e4b3d1cce71e61d65071c3",
       "protected": 404,
-      "all388_tested_pins_preserved": true,
-      "complete16proofpins_root_reverified": true,
-      "proof_bytes": 845846,
-      "proposal_exact_normalization_bytes": 60806,
       "release": 424559937,
-      "dispatch_receipt": "abb2027783476f7fc22f0fa5e381062f04b89f58",
-      "native_result_unreviewed": true,
-      "source_controls_rerun_required": true,
+      "status": "FAIL_TOPOLOGY_RAW_NATIVE_PORT_LIST_COMPARISON",
+      "native_result_unreviewed": false,
+      "complete_failure_source": "a3f13235277fc6f694816503869de892136c95dc",
+      "rerun_actual_source_controls_proof": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "actual_native_commands_returned_zero": 10,
+      "DRC_categories": 560,
+      "DRC_markers": 0,
+      "deep_and_flat_LVS_devices": 500,
+      "physical_fault_controls": 13,
+      "native_geometry_positive_faults": [
+        11,
+        11
+      ],
+      "all_four_strict_wire_commands_returned_zero": true,
+      "all_later_comparator_checks_not_executed": true,
+      "summary_asset": 678939830,
+      "summary_sha256": "27a186a20213a7485d7f59747372e513a279d878dceb2ed1553cea36b13b5286",
+      "physical_asset": 678940628,
+      "physical_sha256": "4462c427ddbb82352d9e3b08c365606dc8848dd0df4032eed19f7111ea42f9f2",
+      "diagnostic_source": "6f920abd126522a8bcaf81b93a28c64b256a4fa6",
+      "independent_JSON_238_partitions_1446_terminal_bindings_978_anchors_equal": true,
+      "native_port_order_yp_yn_swapped": true,
+      "all500_location_differences_are_pcell_path": true,
+      "native_cell_identity_readback_still_required": true,
+      "physical_qualification_accepted": false,
       "RC_and_electrical_not_authorized": true,
       "all_ten_original_electrical_cases_still_required": true,
       "automatic_retry": false,
       "full_PHY_accepted": false
+    },
+    "mainchip_signal_repair_terminal": {
+      "run": 40344497930,
+      "source": "2a81095f744193451800ef178c9a7ae7314dd2dc",
+      "status": "FAIL_FINAL_AUDIT_MEMORY_COUNTER_UNAVAILABLE",
+      "complete_proof_source": "16a4c31dd631510d6543b4b5a0f0dfa1716cadd8",
+      "actual_single_route_seconds": 8168.528965095,
+      "route_returncode": 0,
+      "route_audit_unfix_and_full_readonly_DRT_returned_zero": true,
+      "final_audit_returncode": 0,
+      "final_audit_supervision_failure": "memory_sample_unavailable",
+      "missing_counter_live_identity_not_waived": true,
+      "summary_asset": 678934198,
+      "summary_bytes": 61963,
+      "summary_sha256": "74c86b9b1526342aff7da67d1e009ad6050f66e64f6459d355d5f522fa437f09",
+      "native_archive_bytes": 670979402,
+      "native_archive_cloud_only": true,
+      "saved_repaired_ODB_sha256": "23e36c1410aaca0ddd6a502feda7da4e2aee521ea09d8b37a18d2329facfc61d",
+      "saved_final_audit_sha256": "a9395e70cb673d79238bd079589aa76e27b86da331742092a7a90e27b7b45357",
+      "saved_DRT_report_sha256": "47391c36cc33bc08cdf11552d52da427de1e1c287ca99527aa7074d5d68a3d26",
+      "saved_DRT_report_not_empty": true,
+      "final_marker_census_not_consumed": true,
+      "disabled_diagnostic_readback_source": "cb3bee96287cbaf954b779bcef9ddb654d83c56b",
+      "postroute_bridge_disabled": true,
+      "fresh_RC_STA_eligible": false,
+      "automatic_retry": false,
+      "reroute_not_dispatched": true,
+      "timing_accepted": false
+    },
+    "pll_tail_M4_cloud_source_controls": {
+      "reviewed_source": "e21b3a7c8144cfd7a9b305962a75928a8f91b8fd",
+      "root_and_peer_receipts_source": "ea0a1cf89ecc1b88e35ab8c70ead15a47bbb5f0e",
+      "run": 40373227229,
+      "source": "7343294af597a90d723d4455626bdd49759102ec",
+      "method_sha256": "16bc328e02838fb7398514ee956e311d7a41ed7421e88d936a141faf4892ee19",
+      "protected": 142,
+      "workflow": 397375774,
+      "source_controls_only": true,
+      "native_generation_authorized": false,
+      "native_material_authorized": false,
+      "result_unreviewed": true,
+      "wrapper_scope": "Current407 baseline restore, exact12 M4 growth per polarity, original334device/1010terminal/560DRC/deepflat gates and40nativefaults; qualified supervised child; reserved-source publication; fullimport-time3JSON closure.",
+      "always_complete5control_records": true,
+      "actual_main_finally_truncated_JSON_and_source_failure_fixtures_authored": true,
+      "controls_not_yet_qualified": true,
+      "original4HBT_and62_5ps_failures_open": true,
+      "full_PHY_accepted": false
     }
   },
   "next_actions": [
-    "Consume sole mainchip40344497930 terminal with complete original-class DRT/native1691/unfix/metadata proof; preserve every failure and no automatic retry. Only actual zero markers permit separately reviewed fresh RC/STA.",
-    "Consume sole corrected CDR243-input native40369539200 at504c4b94 with reserved release424559937: complete rerun6source records and actual native geometry/completeDRC/deep-flat500deviceLVS/topology/sourcepreservation. Sourcecontrols40368080369 already fullypassed; first native40361500020 generation11/11passed but DRC/LVSnotexecuted. No duplicate or automaticretry. Actualphysicalpass then separatelyreview freshbinding/RC/MIM and all10original electricalcases.",
-    "Continue disabled PLL12-M4-branch current334AVSS18 source with complete407-file restoration, qualified owned-process supervision, failure-preserving publication and genuine isolated imports including3JSONfiles. Review full wrapper then actual source controls before native; never infer headroom improvement from wire-width guess.",
-    "Continue disabled original-class mainchip postroute outer supervisor/publication around reviewed01417/314825 bridge while native runs. Terminal binding remains null until complete eligible native evidence. Retain original20/4/8/8ns+5percent and explicit SRAMfastm55/modelRC qualification limits.",
-    "Full serial training/descrambler shared-state and coherent epoch/rate/polarity/reset/clockloss integration remain open. Authorized PCIeBase3.0 specification oracle question pending; continue independent physical work without inventing TS/scrambler semantics.",
-    "Keep all source/results/resume receipts in GitHub; local project/tmp/native processes empty, no local CAD/tests/archive/GDS/waveform. Keep8h read-only monitor and exactrunhandles; no monitor CADdispatch."
+    "Consume exact failed mainchip403444 archive in separatelyreviewed cloud-only saved-report readback, all94members/hash/12commandstreams/both1691gates/nativeTRmarker census. No rerouting or memorycounterwaiver. Nonempty finalDRCreport means do not assumezero. Finish readbackcontrols/importclosure/template fromdisabledcb3; actualsourcecontrols first.",
+    "CDR403695 native fullDRC560zero/deepflat500LVS+faults passed but comparator failed native_ports order and later latent pcell.path index spelling. Verify all500 native cellpaths against exactsaved original/candidateGDS using readonlyKLayout; retain25name-partitionbindings,238partitions,1446terminals,978anchors and rawshape/hierarchy preservation. No blanket pathremoval, no geometryregeneration or earlierfailure rewriting. Savedidentityreadback source/controls reviewed before execution.",
+    "Consume sole PLLtailM4 sourcecontrols40373227229 exact7343294a, complete5indexedrecords/fullstdout/livejobproof. No physicaldispatch before actualpass and metadata-only normalization review. Original4HBT and62.5ps electrical rejections remain.",
+    "Disabled mainchip postroute bridge/outerdraft60eb cannot consume failed403444 as success. Exact terminaladmission remainsnull; allRCSTAflagsfalse until nativephysicaleligibility. Preserve original20/4/8/8ns+5percent, SRAMfastm55 and RCqualification limits.",
+    "Fullserial sharedtraining/descrambler state and coherentepoch/rate/polarity/reset/clockloss integration remain open. AuthorizedPCIeBase3.0 oracle pending; continue independentphysical work.",
+    "Everything stays GitHub-only; localproject/tmp/nativeprocesses absent, no localCAD/tests/archive/GDS/waveform. Existing8hreadonlymonitor retains exactrunhandles and neverdispatchesCAD."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -1703,63 +1717,19 @@
     "observed_40359138577": 40359138577,
     "observed_40361500020": 40361500020,
     "observed_40354254916": 40354254916,
-    "observed_40368080369": 40368080369
+    "observed_40368080369": 40368080369,
+    "observed_40344497930": 40344497930,
+    "observed_40369539200": 40369539200,
+    "observed_40373010004": 40373010004,
+    "observed_40373227229": 40373227229
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40368080369,
-      "head_sha": "0c78e5e9082b305739753e70ff7ed9fbe0a706aa",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121731118498,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121731615835,
-          "name": "physical",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40369539200,
-      "head_sha": "504c4b94ab19532e0831daf496df4a9448678290",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 121736255584,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 121736653973,
-          "name": "physical",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Complete additive physical qualification and evidence publication"
-          ]
-        }
-      ]
-    },
-    {
       "run": 40344497930,
       "head_sha": "2a81095f744193451800ef178c9a7ae7314dd2dc",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
@@ -1772,17 +1742,77 @@
         {
           "id": 121648067587,
           "name": "native",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Permanent complete summary and authenticated archive publication"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40369539200,
+      "head_sha": "504c4b94ab19532e0831daf496df4a9448678290",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121736255584,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121736653973,
+          "name": "physical",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40373010004,
+      "head_sha": "7167348268f8bd0059100f24ede49c96ba8b869b",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121748460348,
+          "name": "register",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40373227229,
+      "head_sha": "7343294af597a90d723d4455626bdd49759102ec",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 121749245291,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 121749771675,
+          "name": "fresh-two-polarity334-physical",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-26T17:34:10.985341+00:00",
+    "observed_at": "2026-10-26T17:58:43.138140+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -1904,7 +1934,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-26T17:34:10.985341+00:00",
+  "local_workspace_verified_empty_at": "2026-10-26T17:58:43.138140+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -10949,6 +10979,440 @@
       "draft": false,
       "prerelease": true,
       "make_latest": false
+    }
+  ],
+  "imported_checkpoint_receipts_v67": [
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-corrected-native-terminal-20261026.controls-job.log",
+      "source": "16a4c31dd631510d6543b4b5a0f0dfa1716cadd8",
+      "git_blob": "05ad3b5001272bdfb8f04ca2e5add400ae300f0a",
+      "bytes": 34807,
+      "sha256": "e02e53b58cb015c7b57aa0b74710a030553fc194ff339df0c74246a260e573d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-corrected-native-terminal-20261026.controls-result.json",
+      "source": "16a4c31dd631510d6543b4b5a0f0dfa1716cadd8",
+      "git_blob": "fadd571d52f52fe0bd423b49196ff3547a6ccc0a",
+      "bytes": 8760,
+      "sha256": "9c0bc27c595d80f8b933ec088ffd59d8976e9c4e66e879e089c735abdbdfc8a5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-corrected-native-terminal-20261026.json",
+      "source": "16a4c31dd631510d6543b4b5a0f0dfa1716cadd8",
+      "git_blob": "27951b83e77ce06092c5aab94ca9b9ca3d1b6675",
+      "bytes": 63922,
+      "sha256": "07e4cf4f724aea12a6687725cd6522efe5d69cb53704d8a847bbddb8c54783e2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-corrected-native-terminal-20261026.native-job.log",
+      "source": "16a4c31dd631510d6543b4b5a0f0dfa1716cadd8",
+      "git_blob": "620b68dc939b53efc2664d247b180c0ca9c044d6",
+      "bytes": 953513,
+      "sha256": "dc55f7e87aeca25cc3fb985b50d54eff221fb1354e49cf3d68e1cbb482982790",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-corrected-native-terminal-20261026.parts.json",
+      "source": "16a4c31dd631510d6543b4b5a0f0dfa1716cadd8",
+      "git_blob": "bca0a8189f6f6b1f45a95fc426e832a9f3241edd",
+      "bytes": 892,
+      "sha256": "00f403be73b0624fb99d13ae4d278c4734fbb55533a068d07ca9655d05c1b186",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-corrected-native-terminal-20261026.result.json",
+      "source": "16a4c31dd631510d6543b4b5a0f0dfa1716cadd8",
+      "git_blob": "990f4732e696e22a9948427d13b2c2b1ea698804",
+      "bytes": 61918,
+      "sha256": "ba7da0eded7866f6340b01cd78c6ec6883ae13527d49290a74755a48d587c475",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-corrected-native-terminal-20261026.summary.json",
+      "source": "16a4c31dd631510d6543b4b5a0f0dfa1716cadd8",
+      "git_blob": "3be07ccc510f8393e17a74fef4650bc8e041296a",
+      "bytes": 61963,
+      "sha256": "74c86b9b1526342aff7da67d1e009ad6050f66e64f6459d355d5f522fa437f09",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-fixed-clock-signal-repair-via-corrected-native-terminal-20261026.tested-methods.json",
+      "source": "16a4c31dd631510d6543b4b5a0f0dfa1716cadd8",
+      "git_blob": "9651ac769a2ab4239bda4708733585b7845764d8",
+      "bytes": 42923,
+      "sha256": "af0289bf24c032d14230c2203f2fef354fdb27ff99ad86a6b4f2af7269ea98cf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py",
+      "source": "60eb8fe66bf9b75e66cb95cc5520190d411b2c1f",
+      "git_blob": "cff6c01f5e2397283e30dfa227bff13cbbc0659e",
+      "bytes": 22471,
+      "sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-qualified-memory-sampler-20261026.py",
+      "source": "60eb8fe66bf9b75e66cb95cc5520190d411b2c1f",
+      "git_blob": "4ace1c5d0acff0e23389f9356b0365558eb9758b",
+      "bytes": 10879,
+      "sha256": "55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/mainchip-repaired-postroute-outer-controller-draft-20261026.md",
+      "source": "60eb8fe66bf9b75e66cb95cc5520190d411b2c1f",
+      "git_blob": "284c609823a8c4869277470fb6564f570e274e41",
+      "bytes": 3121,
+      "sha256": "05447d09e6d53d6bca3cde7740ae315964815fec6c3dbe68cef55108e4ec65a1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/mainchip-signal-repair-terminal-readback-draft-20261026.md",
+      "source": "cb3bee96287cbaf954b779bcef9ddb654d83c56b",
+      "git_blob": "2e1960f56e44f1ddf2247956c804094b8fb95c4c",
+      "bytes": 1090,
+      "sha256": "2151c319eb7b71d3f838c57539cbca0ab8bf4a13db90799a8b3226c8a35c7311",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-artifacts.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "aee117c60030a63e2357ed2aa7d7b8ea21ab9ad4",
+      "bytes": 774,
+      "sha256": "7aae1e4594c57efbe991b8fb8ddb72aa9b2ce6baa1bf4e358bf38d0995962a12",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-complete-pin-audit.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "ef2d20a9dbba1481047a1adf8a2f7f69467c337a",
+      "bytes": 133289,
+      "sha256": "8ab3647ae857bd1ac68163c650bfb8bbd5244fc014ea537cf5f3cce79727db58",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-control-file-census.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "e5dd330d82b95a13b07288aaf64f7bb6da3234ef",
+      "bytes": 962,
+      "sha256": "0e8eeca4f05619f3b864768f838ca33303d15cf1b20b449be056ca8889cca531",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-imports.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "08701cbe8b8beadc650749c3cbd066473d0a21cf",
+      "bytes": 39634,
+      "sha256": "2f165fa45820d2de18072340f592beab81107983e424f1a229d53f791c602c23",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-joblog.log",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "de2a9c3d3a40c66eebe32d01e72cd92306084dd7",
+      "bytes": 483554,
+      "sha256": "c57ec2fc63d2d2f0f23345644a05aedfec521f5088baf3d35a117872cc94f4d4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-jobs.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "11c5bfd45226592d3a96c4b1b1ad3e9968505409",
+      "bytes": 6442,
+      "sha256": "1dfd5b10871ed76d932b4090661c3307e3dae7cb905903ff190475e091185a92",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-physical.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "149fb4a2ffbb185daa871823d1bfb0ba6fe7c794",
+      "bytes": 8157,
+      "sha256": "235f8c73f866721a144495cbe4691e7b5aaf87f5f8fa92d66dc34cca643d88f1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-publication.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "057bfcb365004d8d70483a1cffccb298c20d44d2",
+      "bytes": 4321,
+      "sha256": "cea06c253a74f91122644610e28d5202137af124d4f7149f15b4211a4154f9a5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-receipt.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "6516450c4b60c7d37caf8da626e8506775feac67",
+      "bytes": 12575,
+      "sha256": "fa3f0ca3b45fabfd4d9f846557b8121223f2ea387afc00ad17d8657a34f91ee7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-run.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "7c4aabf0c4b90706a687512f3ac4c78030271cb7",
+      "bytes": 13082,
+      "sha256": "d9a4be6ff48da2a5d6273daa91e176814dafcf67b9d3a5e5b6270f8d4e233220",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-runtime.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "ef4625fa2e3a498f49621ffd7abd4bfce0ccbf1b",
+      "bytes": 72994,
+      "sha256": "19b5d0e38cf202f61663076e2f8be242d10b863686603209f2bedcba3a0c6b0c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-source.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "409c8322df93561f75983f705531295c4c335d49",
+      "bytes": 6716,
+      "sha256": "648676d92ce0132008ada2006e665fd1d5d35c990b6f24363bc1933b61bd9fb4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-tested-active-workflow.yml",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "c70f630167dfb1ebcd4d0d020ca4c45870781098",
+      "bytes": 9674,
+      "sha256": "6797fb01f512ae069fef5daf41b1f5a1d135376117827be81b26aaa6095c190f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-tested-methods.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "82e15b7bfe748779ca6a07d6cfb61713ad1f6858",
+      "bytes": 64035,
+      "sha256": "bcc78448e02dc21e23e4c16d7725d155c84c6091b4e4b3d1cce71e61d65071c3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-tested-template.yml",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "c70f630167dfb1ebcd4d0d020ca4c45870781098",
+      "bytes": 9674,
+      "sha256": "6797fb01f512ae069fef5daf41b1f5a1d135376117827be81b26aaa6095c190f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-source-controls-20261026-topology.json",
+      "source": "ff550fc9b75a41d604c79686401c1c250710b120",
+      "git_blob": "b68749d5982ab8829f787bb097f75b9abc146c81",
+      "bytes": 3711,
+      "sha256": "3650cecfd6957c0433b9facfe8146e209b3b25b829b5f5ccc0b00bf81786065a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-anchors.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "8670dceaf5a269e6d1a08568a961165392f9f907",
+      "bytes": 1650472,
+      "sha256": "8d67e55c697a519a30bb82cbabb49ebbb554f3755517d8dfe80d152f3c103e66",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-artifacts.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "42a8f87263ba33b14f605b882cbc2395ad52fb77",
+      "bytes": 1857,
+      "sha256": "ff9978e4ea0dac92626e6f4759c90c2910b8236f96687acc0d2ccb326c57ac9d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-generation.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "93d622511f8567c16143aa97237aaa94f47287c5",
+      "bytes": 147807,
+      "sha256": "1c614b4863940a1b161640caecb1577ff0c399cbbb083866ccc1523fbd370514",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-joblog.log",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "112d10ec78c8458228c09d24dc9969432f27e2fd",
+      "bytes": 674687,
+      "sha256": "83be616afcab78f6eb5d25e4e0a8815be9e72aeb1a54ac6ba3070f14d90a30bf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-jobs.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "6747e08180313c9af3579e7930be1ed72fc0431c",
+      "bytes": 9640,
+      "sha256": "e1a80004127f06b31e0414a40e05a802a597dd6ead36fced9aa71f6b178544e8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-locations.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "12357e7d1298f98bd7fafc74163b8d512f56526a",
+      "bytes": 686519,
+      "sha256": "05e5ddc2be68c6018c1d724ef44a3aa619f69945678194244e53f18888ecf82b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-parts.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "04760b4cc6e26c4af6190d84f53479bd33892973",
+      "bytes": 870,
+      "sha256": "7c1b16f511ceea2c87f48872e7b954863ad83ab186839545bdf4483712c53e27",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-physical.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "717bd87c339b73d77bb1d60796b2849774459649",
+      "bytes": 131689,
+      "sha256": "4462c427ddbb82352d9e3b08c365606dc8848dd0df4032eed19f7111ea42f9f2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-planes.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "d88a8235efd1a92021e2994d900f3ac6d921cda0",
+      "bytes": 244662,
+      "sha256": "79224d9db3059e5a4d4d78ffa3f99dfb82dfb45505ea7b57674de486c52c36b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-receipt.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "3f03b57f98867f229b43f332765eecb4d45f383a",
+      "bytes": 157573,
+      "sha256": "c8773cbf1723d6ad954bf4139cc54e50c734541085cde7d4d21ae468fede17e7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-release.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "cfe9ea146e6df03fc61626763d9c698f22c2ea95",
+      "bytes": 21373,
+      "sha256": "47e30cbf9177589d143d1c4ccb793c9415657a08107023358059d513d058ed9f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-run.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "5ded21a8ede39be3319bea79df2f40dca4839981",
+      "bytes": 14414,
+      "sha256": "ac90e54aee9b1daa177cfc02a1776ae44671db787cdf04d31f2a1d50f0ab22ad",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-strict-wires.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "20f01cf134ae07cde4a7b7fedc48e7d58600f64a",
+      "bytes": 290686,
+      "sha256": "51707329570aa501d3d0b8c017e34878b1b9c908479ec6fd49b036e9e97075e4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-summary.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "15e7f4a242bac5d2d4c408e9d2bc5fb22a7d0cec",
+      "bytes": 431132,
+      "sha256": "27a186a20213a7485d7f59747372e513a279d878dceb2ed1553cea36b13b5286",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-physical-corrected-result-20261026-tag.json",
+      "source": "a3f13235277fc6f694816503869de892136c95dc",
+      "git_blob": "7abe4e65dfa7892f1411db3b24939056e51516a5",
+      "bytes": 552,
+      "sha256": "fb44a7b136feee054597d1ee61825d0972f8dd740273d51c33f0bee18479101d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-native-port-and-path-diagnostic-20261026-new-public-ports.json",
+      "source": "6f920abd126522a8bcaf81b93a28c64b256a4fa6",
+      "git_blob": "e25438dd736d7ac9f4c9d7afc09283299fb04342",
+      "bytes": 127994,
+      "sha256": "bcb9fa69991902510c55296ecb1ae9edc9aacabb389fd9831df25aeb8d92c378",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-native-port-and-path-diagnostic-20261026-old-public-ports.json",
+      "source": "6f920abd126522a8bcaf81b93a28c64b256a4fa6",
+      "git_blob": "04c7c7f30a3cf54c432d3d4c4acc39409b094ba7",
+      "bytes": 127994,
+      "sha256": "8a6b9a1f34d83a68777699d63c15449638cdd28d15ffea0a7274f049403f8969",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-native-port-and-path-diagnostic-20261026.json",
+      "source": "6f920abd126522a8bcaf81b93a28c64b256a4fa6",
+      "git_blob": "8298da9cd194de5403c39677af8f648d0d30b2d0",
+      "bytes": 407440,
+      "sha256": "1256d227fc73418b0603a7ac03646e498f4de9f98a8ec7d0071c7aacdda6bc2a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-physical-source-inventory-20261026.json",
+      "source": "747a52050a6ae898643629840f00b22b4fe9b8a6",
+      "git_blob": "0bf0501311dbf8b1cada9920dd1441d4dd46a28d",
+      "bytes": 37697,
+      "sha256": "2bf3e9671d67a1f27193495a0858099b2641bec5b945f065f3e3c1b19318ca4f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-physical-durability-source-fix-20261026.json",
+      "source": "e21b3a7c8144cfd7a9b305962a75928a8f91b8fd",
+      "git_blob": "39d3d45c09f9b33ca286027a1eb612935a49e4d8",
+      "bytes": 2715,
+      "sha256": "dbafe6dbb8fdbf8b1f2a386f4e9812c3f6aeb18c935283aeecd45c61d5eba2b9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-physical-independent-source-review-20261026.json",
+      "source": "ea0a1cf89ecc1b88e35ab8c70ead15a47bbb5f0e",
+      "git_blob": "549a3f506a53d6a2123eccca731693d4c201fbcb",
+      "bytes": 2869,
+      "sha256": "4beb4edd5a9f73d344cc702a8b50003bfbf436d89dcbababccef778a80a183e4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-source-controls-activation-20261026.json",
+      "source": "82688c3d0428f747b0f71dc7d2134c9344fb94aa",
+      "git_blob": "4a389e8c6995b693285f06a9e48e89b294088b16",
+      "bytes": 1476,
+      "sha256": "b883451e173d91738614352d57fd39c69fb60647dce18fd9aebb7affecc6e529",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-physical-workflow-registration-20261026.json",
+      "source": "7343294af597a90d723d4455626bdd49759102ec",
+      "git_blob": "e871189a7f8761cce4fde07e5a90ae58e50ee56d",
+      "bytes": 764,
+      "sha256": "58e657a1ef29a5f5033557d40a0e0d6f61f8540650ebca1d10037c44bf5cf12c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-physical-source-controls-dispatch-20261026.json",
+      "source": "c5fc93dea83f99cd21f26aad69780fe69d370782",
+      "git_blob": "9e153f2669f3b3ef1ee471c07ef462b72aa48497",
+      "bytes": 588,
+      "sha256": "a48e530ae79801b0b886dce05b23e662d81b4d73f9d42fe990b13208f89546f7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/tx-phase-reset334-tail-M4-physical-cloud-source-20261026.md",
+      "source": "e21b3a7c8144cfd7a9b305962a75928a8f91b8fd",
+      "git_blob": "76a0d57ec11cd7d51c6d396c8eb2fa15ee3af4f9",
+      "bytes": 8096,
+      "sha256": "99b29ba4ec728b3cfacd4d565de361f71531f26c5eedc1a463c56711e9a49f07",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-import-data-source-audit-20261026.json",
+      "source": "e21b3a7c8144cfd7a9b305962a75928a8f91b8fd",
+      "git_blob": "09e078e48cd5ababef1c4e9ba331041e6f141860",
+      "bytes": 26523,
+      "sha256": "1f28f773e2a2198f202ffd65313c26012387da57a1bd8998d294f268cb69cd72",
+      "existing_identical": false
     }
   ]
 }

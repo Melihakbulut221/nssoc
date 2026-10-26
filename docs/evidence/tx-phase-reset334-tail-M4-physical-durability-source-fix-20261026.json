@@ -1,0 +1,43 @@
+{
+  "schema": "tail-M4-physical-durability-source-fix-v1",
+  "supersedes_source": "554ccabd8754b1ee5bac7fcdf93351e4ed4aca07",
+  "findings": [
+    {
+      "owner": "root",
+      "finding": "Control JSONs other than final combined success were not always emitted as exact indexed bytes.",
+      "correction": "Always execute hash-checked frozen stdlib emit for all five existing records, with explicit missing census; never create missing control records. Continue recording other existing files if one cannot be emitted, then fail.",
+      "frozen_source": {
+        "path": "scripts/cloud_cdr_v59_binding_rc.py",
+        "commit": "36535dc8d4a02cb1d3a2508ee73ac54cd6727858",
+        "bytes": 15761,
+        "sha256": "647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709"
+      },
+      "authored_fixtures": "Actual template program reconstructs all five indexed records, including empty/binary/7000-byte inputs; earlier failure has three retained files and two absent files; mutated frozen source and missing always scope refuse."
+    },
+    {
+      "owner": "root",
+      "finding": "finalize parsed native JSON outside error handling; a killed child could leave a truncated file and prevent terminal root failure persistence.",
+      "correction": "Copy and hash complete raw native bytes first, catch parse/shape error into FAIL and explicit traceback without inventing parsed native data, then persist full existing-file inventory and source-integrity verdict.",
+      "authored_fixtures": "Existing four full-main/finally scenarios retained; actual main/finally truncated native JSON and source-integrity failure scenarios added."
+    }
+  ],
+  "unchanged": {
+    "builder": "4c9892f91324d203a918aa9b4a894a10f42c81b3f4a34f45387e2b1fbb71d887",
+    "material": "2469c0144a51e9a3b26e762656b1f6e62436381040b30e6feaea91907e803e29",
+    "source_checker": "92ef94e4b81c632d6d8356151459da02353b6c010b68559b7de933886907659a",
+    "controller_main_sha256": "9c4978dccf0338804d76eb1c1288df256a4ed191154ef53e597431d2a8b17dc0",
+    "derived_native_main": {
+      "original_main_sha256": "1f58b5cf0b8ba8db914e66a57905751640357654ea23ecddeac5a6c4b5746f74",
+      "generated_main_sha256": "6fca5e96d9af27803dd69859c3f6c4b25c18cbee775b4a24de95debb53e2c096",
+      "edit_count": 7
+    },
+    "import_checker": "11694ca13ffc38e630ebbba04dc290a753224a7e65428f0a138e966c986d5271",
+    "publication_checker": "43042ad9ee6dc88d3bbbfb3152ccf4f63bc7814c8ad2e862f9e70186ed42991d",
+    "all_original_geometry_and_electrical_gates": true
+  },
+  "source_only": true,
+  "all_authorization_flags_false": true,
+  "tests_or_imports_executed": false,
+  "hosted_controls_or_native_dispatched": false,
+  "archive_downloaded": false
+}
