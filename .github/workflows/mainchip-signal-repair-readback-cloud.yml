@@ -1,0 +1,122 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-signal-repair-readback-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        required: true
+        default: false
+        description: Read exact saved reports from failed repair; no CAD, routing or waiver
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-signal-repair-readback-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Actual copied-root isolated code and data initialization
+        run: |
+          mkdir cloud-mainchip-signal-repair-readback-import-controls
+          python3 scripts/check_mainchip_signal_repair_readback_imports.py > cloud-mainchip-signal-repair-readback-import-controls/imports.json
+      - name: Actual saved-report archive lifecycle and publication controls
+        run: python3 scripts/check_mainchip_signal_repair_readback.py
+      - name: Complete control result preservation and bounded log reconstruction
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import json,os,traceback
+          from pathlib import Path
+          import cloud_mainchip_signal_repair_readback as d
+          from check_mainchip_original_clock_restoration_driver import emit
+          out=Path('cloud-mainchip-signal-repair-readback-controls')
+          out.mkdir(exist_ok=True)
+          r=dict(status='FAIL_SOURCE_CONTROLS',source_head=os.environ['GITHUB_SHA'],native_executed=False)
+          try:
+              r['imports']=json.loads(Path('cloud-mainchip-signal-repair-readback-import-controls/imports.json').read_bytes())
+              r['boundary']=json.loads((out/'boundary-controls.json').read_bytes())
+              assert r['imports']['status']=='PASS_ACTUAL_SIGNAL_READBACK_IMPORT_DATA_CLOSURE'
+              assert len(r['imports']['positive'])==2 and len(r['imports']['rejected'])==7
+              assert r['boundary']['status']=='PASS_FAILED_SIGNAL_REPAIR_READBACK_SOURCE_CONTROLS'
+              assert len(r['boundary']['positives'])==4 and len(r['boundary']['refusals'])==31
+              assert len(r['boundary']['lifecycle']['actual_outer_run_finally'])==4
+              assert len(r['boundary']['direct_publication']['actual_publisher_binding_and_direct_file_program'])==2
+              r['status']='PASS_COMPLETE_SAVED_SIGNAL_REPAIR_READBACK_SOURCE_CONTROLS'
+          except BaseException as error:
+              r.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              d.save(out/'result.json',r)
+              emit((out/'result.json').resolve())
+          assert r['status']=='PASS_COMPLETE_SAVED_SIGNAL_REPAIR_READBACK_SOURCE_CONTROLS'
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: signal-repair-readback-controls-${{ github.run_id }}
+          path: |
+            cloud-mainchip-signal-repair-readback-controls/
+            cloud-mainchip-signal-repair-readback-import-controls/
+          retention-days: 90
+  readback:
+    if: inputs.readback
+    needs: controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact readback authorization before archive access
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import cloud_mainchip_signal_repair_readback as d
+          assert d.methods()['cloud_readback_authorized'] is True
+          PYCODE
+      - name: Read-only exact-source prerelease wait
+        timeout-minutes: 6
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/wait_cloud_tested_source_release.py --group mainchip-signal-repair-readback
+      - name: Authenticate all saved members and expose full reports
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_signal_repair_readback.py
+      - name: Full bounded readback result log reconstruction
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          from pathlib import Path
+          from check_mainchip_original_clock_restoration_driver import emit
+          p=Path('cloud-mainchip-signal-repair-readback/result.json').resolve()
+          if p.is_file(): emit(p)
+          else: print('SIGNAL_REPAIR_READBACK_RESULT_MISSING_NO_ACCEPTANCE',flush=True)
+          PYCODE
+      - name: Permanent complete evidence and direct diagnostic files
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_signal_repair_readback.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: signal-repair-readback-${{ github.run_id }}
+          path: |
+            cloud-mainchip-signal-repair-readback/
+            publication-mainchip-signal-repair-readback/
+          retention-days: 90
