@@ -8575,3 +8575,10 @@ Local project/tmp/native processes verified absent. Inventory216 exact cloud han
 All source work remains on GitHub. Via JSON correctiond248a56f preserves exact geometric definitions and original gates; root and independent peer reviewed it, then sole hosted source-controls40340536377 was dispatched at9a877b10 with execute=false. No native rerun authorized. Complete PLLsame-row source8ae33088 has bounded core/checker peer review but no actual controls or workflow registration. CDRnative generator2d178e is unexecuted WIP with an identified5/6-argument source defect being corrected; source/controller readiness remains false. Native archives/waveforms/layouts remain cloud-only.
 
 Local project/tmp/native processes verified absent. Inventory217 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-26T15:05:40.339972+00:00 — cloud-only checkpoint v62
+
+Previous turn was concrete progress: via JSON boundary source correction passed all original14/50 plus new3/24 hosted controls. Root verified actual livejobs/full34810B log/all3 resultchunks and exact275→279 pin normalization, then dispatched sole corrected native40344497930 at2a81095f with exact-source release424387428 reserved. It must still prove real guide census, routing/1691 clocks/original-class DRC; no RC/STA/PHY acceptance. CDRsource signature/property/output-map corrections are durable57525552 and pending controller/actualcontrols. Root found PLLpublication permission and diagnostic-resource gaps before activation; source-only corrections underway. Fullserialtraining ownership and authoritative Gen3 TS/scrambler handoff semantics remain open; official Base3.0 download requires member login and user was asked for authorized access while independent cloud work continues.
+
+Local project/tmp/native processes verified absent. Inventory218 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
