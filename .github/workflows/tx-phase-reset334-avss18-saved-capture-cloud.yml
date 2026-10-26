@@ -1,0 +1,14 @@
+name: tx-phase-reset334-avss18-saved-capture-cloud
+on:
+  push:
+    branches:
+      - codex/register-avss18-saved-capture-20261026
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Register manual saved capture workflow
+        run: printf '%s\n' 'Manual workflow registry only; no checkout, tests, archives or CAD.'
