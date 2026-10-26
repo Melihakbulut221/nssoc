@@ -1,0 +1,28 @@
+{
+  "schema": "bounded-independent-source-review-v1",
+  "status": "CLEAR_SOURCE_ONLY",
+  "reviewer": "tx_diagnosis",
+  "reviewed_source": "1435bafb934edee97944f880714b490995fe244c",
+  "reviewed_branch": "codex/phase318-saved-capture-diagnosis",
+  "exact_verdict_verbatim": "Bounded resource correction review CLEAR at 1435bafb934edee97944f880714b490995fe244c. Re-fetched helper 11309 B/b557f43e95052278d086d930368221bd1765d3d7d65cb889377ba1ab21e692a1 and checker 7829 B/b0b3954f73c50c9ea308e6a9662ba9187dacccb40cc409cdb66dbdc3458c168a. Against b7748, plan/admit_memory/validate_frames/input_budget and four other definitions are AST-identical; only write changes, file_evidence/final_result are added. Core866a4a4c is byte-identical. Existing destination now remains counted through .writing/.incomplete coexistence; every normal write reserves16MiB. Fallback renames the prior complete result, hashes all retained files/partials, writes a bounded <=1MiB FAIL/INCOMPLETE envelope within total2GiB, preserves original/write errors and cannot retain nominal PASS on encoding failure. The near-limit fixture requires a nonempty fragment and total<=384B, so it exercises coexistence; nominal-PASS/TypeError fixture checks failure status and exact fragment hash. 9 positives/17 refusals are concrete authored fixtures, not executed. No new selector/math/truncation issue found. Controller-main/finally four-case integration remains root's scope; no full-manifest or native qualification inferred.",
+  "focused_files": {
+    "scripts/tx_phase_reset334_avss18_saved_resources.py": {
+      "bytes": 11309,
+      "sha256": "b557f43e95052278d086d930368221bd1765d3d7d65cb889377ba1ab21e692a1"
+    },
+    "scripts/check_tx_phase_reset334_avss18_saved_resources.py": {
+      "bytes": 7829,
+      "sha256": "b0b3954f73c50c9ea308e6a9662ba9187dacccb40cc409cdb66dbdc3458c168a"
+    },
+    "scripts/tx_phase_reset334_avss18_saved_diagnosis.py": {
+      "bytes": 15451,
+      "sha256": "866a4a4c49330e0a1125225b9848c61e9695f8dc8133f3f03fbb7acf13dff375"
+    }
+  },
+  "controller_main_integration_review_included": false,
+  "full_manifest_repeated": false,
+  "source_or_tests_executed": false,
+  "native_execution": false,
+  "archive_read": false,
+  "local_project_files_created": false
+}
