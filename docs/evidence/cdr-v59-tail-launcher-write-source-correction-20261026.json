@@ -1,0 +1,13 @@
+{
+  "schema": "cdr-v59-tail-launcher-write-dependency-source-correction-v1",
+  "original_source": "8d7cc2c818b0a5ff42f8b9bb1fafee6bed93940b",
+  "finding": "Frozen probe finally invokes admission.write, but the original injected SimpleNamespace supplied ROOT and methods only; every probe outcome would raise AttributeError and omit result.json.",
+  "finding_by": "/root/tx_diagnosis",
+  "original_runtime_sha256": "ec835b68116b1c2b597c9dcdf79c475910be7e2aad03d476929fc371b9a318ff",
+  "correction": "Load and compile only exact write() AST from full source-hash-pinned cdr_v59_mim_admission.py; supply json dependency and inject write into the namespace. Frozen probe body and its process-group cleanup remain unchanged.",
+  "writer_source_sha256": "a985d8bf1c94c6a3ba3d4f19c24193f35598a883eab56a52ed6de86ff98c14e5",
+  "runtime_sha256": "946c08060f099e99f49ac35e559324b1e445d4c3865cfa7be954fa6e75db6176",
+  "controls": "Invoke the exact frozen probe controls, wrap its actual atomic writer solely to assert each of 11 saved results matches its returned object, reproduce the original missing-write AttributeError by removing only this dependency, then require the corrected actual exit127 result to be durably preserved. Qualified 13 supervised subprocess fixtures also run in the hosted checker.",
+  "controls_executed": false,
+  "native_executed": false
+}
