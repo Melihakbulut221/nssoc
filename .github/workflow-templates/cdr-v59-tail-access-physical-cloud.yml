@@ -8,7 +8,7 @@ on:
         default: false
         required: true
 permissions:
-  contents: write
+  contents: read
   actions: read
 concurrency:
   group: cdr-v59-tail-access-physical-${{ github.ref }}
@@ -21,6 +21,8 @@ jobs:
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'
@@ -78,6 +80,38 @@ jobs:
           assert len(x['inherited_publication_controls']['rejected'])==8
           assert {p.name for p in b.glob('*.json')}=={'imports.json','source.json','topology.json','physical.json','runtime.json','publication.json'}
           PY
+      - name: Emit exact complete or partial control bytes
+        if: always()
+        run: |
+          python - <<'PY'
+          import ast,base64,hashlib,json
+          from pathlib import Path
+          source=Path('scripts/cloud_cdr_v59_binding_rc.py')
+          assert source.is_file() and not source.is_symlink()
+          raw=source.read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'
+          nodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit']
+          assert len(nodes)==1
+          scope=dict(base64=base64,hashlib=hashlib,json=json)
+          exec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)
+          folder=Path('hw/soc/out/cdr-tail-controls')
+          assert not folder.is_symlink()
+          assert not folder.exists() or folder.is_dir()
+          names=('imports','source','topology','physical','runtime','publication')
+          assert len(names)==len(set(names))==6
+          assert {p.name for p in folder.glob('*.json')} <= {name+'.json' for name in names}
+          emitted=[];missing=[]
+          for name in names:
+              path=folder/(name+'.json')
+              assert not path.is_symlink(),str(path)
+              if not path.exists():
+                  missing.append(path.name)
+                  continue
+              assert path.is_file(),str(path)
+              scope['emit'](path,'CDR_TAIL_CONTROL_'+name.upper())
+              emitted.append(dict(name=path.name,bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+          print('CDR_TAIL_CONTROL_FILE_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,missing_files_created=False),sort_keys=True),flush=True)
+          PY
       - name: Preserve every complete control result
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -90,12 +124,17 @@ jobs:
   physical:
     if: ${{ inputs.execute }}
     needs: source-controls
+    permissions:
+      contents: write
+      actions: read
     runs-on: ubuntu-22.04
     timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
           python-version: '3.12'

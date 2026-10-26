@@ -1,0 +1,55 @@
+{
+  "schema": "cdr-v59-tail-control-byte-emission-and-scoped-permissions-audit-v1",
+  "parent_source": "fe0bda059b14bbc19fdd82e214df82587ef223c3",
+  "status": "SOURCE_ONLY_WORKFLOW_CORRECTION_PENDING_ROOT_REVIEW",
+  "cause": "imports.json preserves indented insertion-order bytes but its prior console line was compact and sorted; failed physical/runtime/publication sections saved JSON then raised before their success-only emit. Existing artifacts preserve these files, but exact console reconstruction needed an always step.",
+  "authorized_scope": "Only the unregistered workflow template, its method pin and this audit receipt. All Python/controller/checker/native source bytes and authorization flags remain unchanged.",
+  "workflow_path": ".github/workflow-templates/cdr-v59-tail-access-physical-cloud.yml",
+  "old_bytes": 7416,
+  "old_sha256": "5cece8b88a6a9980c02ea10843034dc6674659f98678fd4ff12c376b33bd4ddb",
+  "new_bytes": 9385,
+  "new_sha256": "4837874cd603b2d2ad803356e0a8d3e8af97b3c4e465c2838d0adae1853b03ee",
+  "exact_unified_diff": "--- old-template\n+++ new-template\n@@ -8,7 +8,7 @@\n         default: false\n         required: true\n permissions:\n-  contents: write\n+  contents: read\n   actions: read\n concurrency:\n   group: cdr-v59-tail-access-physical-${{ github.ref }}\n@@ -21,6 +21,8 @@\n     timeout-minutes: 45\n     steps:\n       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262\n+        with:\n+          persist-credentials: false\n       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065\n         with:\n           python-version: '3.12'\n@@ -78,6 +80,38 @@\n           assert len(x['inherited_publication_controls']['rejected'])==8\n           assert {p.name for p in b.glob('*.json')}=={'imports.json','source.json','topology.json','physical.json','runtime.json','publication.json'}\n           PY\n+      - name: Emit exact complete or partial control bytes\n+        if: always()\n+        run: |\n+          python - <<'PY'\n+          import ast,base64,hashlib,json\n+          from pathlib import Path\n+          source=Path('scripts/cloud_cdr_v59_binding_rc.py')\n+          assert source.is_file() and not source.is_symlink()\n+          raw=source.read_bytes()\n+          assert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'\n+          nodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit']\n+          assert len(nodes)==1\n+          scope=dict(base64=base64,hashlib=hashlib,json=json)\n+          exec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)\n+          folder=Path('hw/soc/out/cdr-tail-controls')\n+          assert not folder.is_symlink()\n+          assert not folder.exists() or folder.is_dir()\n+          names=('imports','source','topology','physical','runtime','publication')\n+          assert len(names)==len(set(names))==6\n+          assert {p.name for p in folder.glob('*.json')} <= {name+'.json' for name in names}\n+          emitted=[];missing=[]\n+          for name in names:\n+              path=folder/(name+'.json')\n+              assert not path.is_symlink(),str(path)\n+              if not path.exists():\n+                  missing.append(path.name)\n+                  continue\n+              assert path.is_file(),str(path)\n+              scope['emit'](path,'CDR_TAIL_CONTROL_'+name.upper())\n+              emitted.append(dict(name=path.name,bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest()))\n+          print('CDR_TAIL_CONTROL_FILE_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,missing_files_created=False),sort_keys=True),flush=True)\n+          PY\n       - name: Preserve every complete control result\n         if: always()\n         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02\n@@ -90,12 +124,17 @@\n   physical:\n     if: ${{ inputs.execute }}\n     needs: source-controls\n+    permissions:\n+      contents: write\n+      actions: read\n     runs-on: ubuntu-22.04\n     timeout-minutes: 360\n     env:\n       GH_TOKEN: ${{ github.token }}\n     steps:\n       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262\n+        with:\n+          persist-credentials: false\n       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065\n         with:\n           python-version: '3.12'\n",
+  "exact_emitter_program": "import ast,base64,hashlib,json\nfrom pathlib import Path\nsource=Path('scripts/cloud_cdr_v59_binding_rc.py')\nassert source.is_file() and not source.is_symlink()\nraw=source.read_bytes()\nassert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'\nnodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit']\nassert len(nodes)==1\nscope=dict(base64=base64,hashlib=hashlib,json=json)\nexec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)\nfolder=Path('hw/soc/out/cdr-tail-controls')\nassert not folder.is_symlink()\nassert not folder.exists() or folder.is_dir()\nnames=('imports','source','topology','physical','runtime','publication')\nassert len(names)==len(set(names))==6\nassert {p.name for p in folder.glob('*.json')} <= {name+'.json' for name in names}\nemitted=[];missing=[]\nfor name in names:\n    path=folder/(name+'.json')\n    assert not path.is_symlink(),str(path)\n    if not path.exists():\n        missing.append(path.name)\n        continue\n    assert path.is_file(),str(path)\n    scope['emit'](path,'CDR_TAIL_CONTROL_'+name.upper())\n    emitted.append(dict(name=path.name,bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest()))\nprint('CDR_TAIL_CONTROL_FILE_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,missing_files_created=False),sort_keys=True),flush=True)\n",
+  "emitter_source": "scripts/cloud_cdr_v59_binding_rc.py",
+  "emitter_source_sha256": "647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709",
+  "emitter_policy": "Only the exact source-hash-bound emit function AST is loaded with its three stdlib dependencies. No repository module imports are needed, including after an initial-import fixture failure.",
+  "file_names": [
+    "imports.json",
+    "source.json",
+    "topology.json",
+    "physical.json",
+    "runtime.json",
+    "publication.json"
+  ],
+  "path_checks": [
+    "six unique declared basenames",
+    "no unexpected .json outputs",
+    "folder is not symlink and is absent or directory",
+    "each existing declared path must be a regular nonsymlink file",
+    "broken symlinks reject before missing-file handling",
+    "missing outputs remain absent and are listed in the census"
+  ],
+  "log_format": "CDR_TAIL_CONTROL_<UPPER_NAME>_BEGIN declares exact bytes/SHA256/chunk count; numbered base64 CHUNK lines retain every byte; END terminates the record. Full census repeats observed file bytes and hashes. Original failures are not caught, replaced, or converted to pass.",
+  "permissions": {
+    "top": {
+      "contents": "read",
+      "actions": "read"
+    },
+    "physical": {
+      "contents": "write",
+      "actions": "read"
+    },
+    "checkout_persist_credentials": false
+  },
+  "unchanged_six_success_record_admission": true,
+  "unchanged_always_full_artifact": true,
+  "static_verification": {
+    "template_python_blocks_parsed": 5,
+    "actual_imports_executed": false,
+    "authored_tests_executed": false,
+    "workflow_registered": false,
+    "workflow_dispatched": false,
+    "native_executed": false
+  }
+}
