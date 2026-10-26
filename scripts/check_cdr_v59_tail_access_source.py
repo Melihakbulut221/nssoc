@@ -34,6 +34,42 @@ def actual_snapshot_call_signatures(text):
     assert len(rows)==4,rows
     return sorted(rows)
 
+
+def actual_output_metadata(text):
+    """Execute the real two metadata assignments and the unchanged probe guard."""
+    function=next(n for n in ast.parse(text).body if isinstance(n,ast.FunctionDef) and n.name=="generate_admitted")
+    assignments=[]
+    for n in ast.walk(function):
+        if not isinstance(n,ast.Assign) or len(n.targets)!=1:continue
+        target=n.targets[0]
+        if isinstance(target,ast.Subscript) and isinstance(target.value,ast.Name) and target.value.id in ("meta","child_meta") and isinstance(target.slice,ast.Constant) and target.slice.value in ("outputs","output_sha256"):
+            assignments.append(n)
+    assert len(assignments)==2
+    original=json.loads((ROOT/"docs/evidence/cdr-v4-rc-inputs-20261017.json").read_text())["report"]["original_extraction_methods"]["probe01.py"]
+    assert hashlib.sha256(original["text"].encode()).hexdigest()==original["sha256"]
+    guard=[n for n in ast.parse(original["text"]).body if isinstance(n,ast.Assert) and "pin(GDS)" in ast.unparse(n) and "['outputs']" in ast.unparse(n)]
+    assert len(guard)==1
+    rows=[]
+    with tempfile.TemporaryDirectory(prefix="cdr-tail-output-fields-") as tmp:
+        root=Path(tmp)
+        for assignment in assignments:
+            name=assignment.targets[0].value.id
+            parent=root/name;directory=parent/"layout91";directory.mkdir(parents=True)
+            gds=directory/"fixture.gds";gds.write_bytes(b"explicit synthetic geometry bytes, no CAD")
+            metadata={"outputs":{"fixture.gds":"0"*64}}
+            # The child source result already exists; the new parent destination does not.
+            if name=="child_meta":(directory/"result.json").write_text("{}\n")
+            scope={"sha":native.sha,name:metadata,"directory":directory,"dest":directory}
+            exec(compile(ast.Module(body=[assignment],type_ignores=[]),native.__file__,"exec"),scope)
+            (directory/"result.json").write_text(json.dumps(metadata)+"\n")
+            probe={"pin":lambda p:{"sha256":native.sha(p)},"GDS":gds,"P":parent,"json":json}
+            exec(compile(ast.Module(body=guard,type_ignores=[]),"unchanged-original-probe-guard","exec"),probe)
+            assert metadata["outputs"]["fixture.gds"]==native.sha(gds)
+            assert "result.json" not in metadata["outputs"]
+            rows.append({"metadata_variable":name,"field":assignment.targets[0].slice.value,
+                         "actual_assignment_line":assignment.lineno,"actual_probe_guard_passed":True})
+    return rows
+
 def controls():
     assert os.environ.get("GITHUB_ACTIONS")=="true"
     method=json.loads(METHOD.read_text())
@@ -87,6 +123,20 @@ def controls():
         signature_failure={"actual_first_draft_source":"565e70daad68d58e974c203b2e4957cb98a826e4534b718522aed20a9d25cf15",
           "actual_current_function_signature":str(inspect.signature(native.verify_snapshot)),"error":repr(e)}
     else:raise AssertionError("Accepted first-draft extra serialized-reread argument")
+    current=(ROOT/"scripts/generate_cdr_v59_tail_access_wire.py").read_text()
+    output_rows=actual_output_metadata(current)
+    assert len(output_rows)==2 and all(r["field"]=="outputs" for r in output_rows)
+    output_refusals=[]
+    for label,bad in [
+        ("previous_wrong_field",current.replace('["outputs"]={p.name:sha(p)', '["output_sha256"]={p.name:sha(p)')),
+        ("wrong_actual_digest",current.replace('["outputs"]={p.name:sha(p)', '["outputs"]={p.name:"0"*64')),
+        ("wrong_actual_filename",current.replace('["outputs"]={p.name:sha(p)', '["outputs"]={p.name+"_wrong":sha(p)')),
+    ]:
+        assert bad!=current
+        try:actual_output_metadata(bad)
+        except AssertionError as error:output_refusals.append({"case":label,"error":repr(error)})
+        else:raise AssertionError("Accepted output metadata fault "+label)
+    assert len(output_refusals)==3
     runtime=json.loads((ROOT/"docs/evidence/cdr-v59-tail-native-runtime-source-20261026.json").read_text())
     assert len(runtime["relative_runtime_sha256"])==88
     assert runtime["relative_runtime_sha256"]["sg13g2_pycell_lib/ihp/via_stack_code.py"]=="185f6d3bea6ef9a4960817d189e099057242e1cca73f6ab31c08298c2d64cc61"
@@ -113,6 +163,7 @@ def controls():
     return {"status":"PASS_TAIL_ACCESS_SOURCE_CONTROLS_ONLY","metadata_positive":1,
       "metadata_faults_rejected":19,"actual_import_positive":1,"actual_snapshot_call_signatures_positive":1,
       "actual_snapshot_call_lines":call_lines,"actual_first_draft_signature_refusal":signature_failure,"actual_missing_dependency_rejected":1,
+      "actual_output_assignment_probe_positives":output_rows,"output_metadata_faults":output_refusals,
       "protected_files_verified":len(method["protected_sha256"]),"cases":cases,
       "native_geometry_controls_executed":False,"physical_accepted":False,"electrical_accepted":False}
 

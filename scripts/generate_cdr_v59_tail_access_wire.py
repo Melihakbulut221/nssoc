@@ -368,11 +368,11 @@ def generate_admitted(source,out,pdk,admission):
       "simulation_executed":False,"physical_accepted":False,"electrical_accepted":False}
     child_meta["status"]=proof["status"]
     child_meta["tail_access_wire"]=proof
-    child_meta["output_sha256"]={p.name:sha(p) for p in directory.iterdir() if p.is_file() and p.name!="result.json"}
+    child_meta["outputs"]={p.name:sha(p) for p in directory.iterdir() if p.is_file() and p.name!="result.json"}
     assert child_meta["routes"]==old_routes
     (directory/"result.json").write_text(json.dumps(child_meta,indent=2)+"\n")
     meta["status"]=proof["status"];meta["tail_access_wire"]=proof
-    meta["output_sha256"]={p.name:sha(p) for p in dest.iterdir() if p.is_file()}
+    meta["outputs"]={p.name:sha(p) for p in dest.iterdir() if p.is_file()}
     (dest/"result.json").write_text(json.dumps(meta,indent=2)+"\n")
     assert sha(dest/"schematic.cir")==expected["parent/layout/schematic.cir"]
     assert sha(dest/(plan.TOP+".lef"))==expected["parent/layout/"+plan.TOP+".lef"]
