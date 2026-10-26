@@ -71,20 +71,36 @@ def execute(supervisor,result,argv,label,without_tokens=False):
     assert not record["process_group_cleanup"]["remaining_live"]
     return record
 
-def collect_direct():
-    files=[]
+def collect_direct(result):
+    # Failed/interrupted evidence is raw data, including truncated JSON writes.
+    # Only a claimed successful acquisition must provide every parseable report.
+    success=result["status"]==PASS
+    files=[];bindings=[]
+    def add(name,path,kind,expected=None):
+        assert path.is_file() and not path.is_symlink()
+        relative=path.relative_to(OUT).as_posix();digest=source.sha(path)
+        assert result["outputs"].get(relative)==digest,"Direct evidence differs from terminal inventory"
+        if success:
+            try:source.read_json(path)
+            except (ValueError,UnicodeError) as error:
+                raise AssertionError("Malformed direct JSON cannot qualify successful readback: "+name) from error
+            if expected is not None:assert digest==expected,"Successful saved-input export changed"
+        files.append((name,path))
+        bindings.append({"asset_suffix":name,"output_member":relative,"bytes":path.stat().st_size,
+          "sha256":digest,"kind":kind,"json_syntax_checked_for_success":success,
+          "qualified_as_success":success,"expected_saved_input_sha256":expected,
+          "matches_original_saved_input":None if expected is None else digest==expected})
     for name in DIRECT:
-        p=OUT/name
-        if p.exists():
-            assert p.is_file() and not p.is_symlink()
-            source.read_json(p);files.append((name,p))
+        path=OUT/name
+        assert not path.is_symlink()
+        if success:assert path.exists(),"Missing successful direct report: "+name
+        if path.exists():add(name,path,"acquisition_output")
     for name,member in EXPORTS.items():
-        p=OUT/"restored"/member
-        if p.exists():
-            assert p.is_file() and not p.is_symlink()
-            assert source.sha(p)==source.expected_files()[member]
-            source.read_json(p);files.append((name,p))
-    return files
+        path=OUT/"restored"/member
+        assert not path.is_symlink()
+        if success:assert path.exists(),"Missing successful saved-input export: "+name
+        if path.exists():add(name,path,"saved_input_export",source.expected_files()[member])
+    return files,bindings
 
 def validate_publication(result):
     assert result["source_head"]==os.environ["GITHUB_SHA"],"Publication source changed"
@@ -109,7 +125,7 @@ def publish(result):
     report=OUT/"result.json";assert report.is_file() and not report.is_symlink()
     assert source.read_json(report)==result
     validate_publication(result)
-    direct=collect_direct()
+    direct,direct_bindings=collect_direct(result)
     TRANSPORT.mkdir()
     stem=source.GROUP+"-"+os.environ["GITHUB_RUN_ID"]+"-1"
     summary=TRANSPORT/(stem+".summary.json")
@@ -122,7 +138,8 @@ def publish(result):
         shutil.copyfile(path,dest);assert source.sha(dest)==source.sha(path)
         files.append(dest)
     assert len({p.name for p in files})==len(files)
-    proof={"status":"RUNNING_PUBLICATION","original_run_failure_preserved":True,"assets":[]}
+    proof={"status":"RUNNING_PUBLICATION","original_run_failure_preserved":True,"assets":[],
+      "direct_asset_bindings":direct_bindings,"failed_direct_outputs_preserved_as_raw_bytes":result["status"]!=PASS}
     source.write(TRANSPORT/"publication.json",proof)
     tag,_=release.context(source.GROUP,os.environ)
     previous=publisher.release;publisher.release=helper.only_reserved(source.GROUP,os.environ,release.api)

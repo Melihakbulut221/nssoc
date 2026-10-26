@@ -73,7 +73,10 @@ jobs:
           x=read('transport')
           assert x['status']=='PASS_TRANSPORT_CONTROLS'
           assert len(x['archive']['positives'])==1 and len(x['archive']['refusals'])==6
-          assert len(x['publication']['positives'])==3 and len(x['publication']['refusals'])==13
+          assert len(x['publication']['positives'])==4 and len(x['publication']['refusals'])==14
+          assert x['lifecycle']['status']=='PASS_ACTUAL_OUTER_MAIN_LIFECYCLE_CONTROLS'
+          assert (x['lifecycle']['positive_count'],x['lifecycle']['refusal_count'])==(1,4)
+          assert len(x['lifecycle']['cases'])==5
           x=read('import')
           assert x['status']=='PASS_SAVED_IDENTITY_INITIAL_IMPORT_CONTROLS'
           assert (x['positive_count'],x['refusal_count'])==(2,9)
