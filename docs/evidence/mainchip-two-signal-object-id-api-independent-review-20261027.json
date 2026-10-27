@@ -1,0 +1,380 @@
+{
+  "schema": "bounded-primary-source-api-review-v1",
+  "reviewer": "/root/pll_handoff",
+  "repository": "The-OpenROAD-Project/OpenROAD",
+  "pinned_source": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "consumer": {
+    "repo": "Melihakbulut221/nssoc",
+    "source": "432ee929d03154a47fc59ee154404ad85578d78e",
+    "path": "scripts/mainchip_two_signal_ownership_native.py",
+    "bytes": 14135,
+    "sha256": "e786920dd82626e9799bae94b89619d8bd61a1bd88608caa1d7fd31f42a17436",
+    "run": 40394973509,
+    "actual_failure_reported_by": "/root/tx_diagnosis",
+    "reported_failure": "immutable_material line201: dbTechLayer object has no getId"
+  },
+  "verdict": "CONCRETE_API_EXPOSURE_BLOCKER; NO_GETOID_REPLACEMENT_ESTABLISHED",
+  "source_evidence": [
+    {
+      "path": "src/odb/include/odb/dbObject.h",
+      "bytes": 4092,
+      "sha256": "09f1eabbf37505f18c0bd574c3dac5851219efb663e6b998accc27e57d798747",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/include/odb/dbObject.h"
+    },
+    {
+      "path": "src/odb/include/odb/db.h",
+      "bytes": 272666,
+      "sha256": "142810acc2b0495b10c988b59e4d450e54dc27b2569687391588bfe1fad78bda",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/include/odb/db.h"
+    },
+    {
+      "path": "src/odb/src/db/dbObject.cpp",
+      "bytes": 18114,
+      "sha256": "0a0e5a06f922935186398eca4409af6d5e9871b40fd2cb3636db32f1c8a2ca7c",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbObject.cpp"
+    },
+    {
+      "path": "src/odb/src/db/dbTechLayer.cpp",
+      "bytes": 61165,
+      "sha256": "0269de473356678bae52afa3d2986d1e798eb4a4ea574fc956bf0912b2e018d0",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbTechLayer.cpp"
+    },
+    {
+      "path": "src/odb/src/db/dbWireCodec.cpp",
+      "bytes": 35756,
+      "sha256": "d748d0398c2b5062b528300fccf1810bb6d88ab0c3b227b370ed0db127629bdf",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/db/dbWireCodec.cpp"
+    },
+    {
+      "path": "src/odb/src/swig/common/odb.i",
+      "bytes": 2787,
+      "sha256": "3083e86b4dec8286c00a6e0720755b115612ea626d2a1b62582f9fa23c5fcb34",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/common/odb.i"
+    },
+    {
+      "path": "src/odb/src/swig/common/containers.i",
+      "bytes": 3225,
+      "sha256": "91fb4249ac32658a8765ed0a2e2ad0b58ddc213cb1fce4829175785ee3ebb1fa",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/common/containers.i"
+    },
+    {
+      "path": "src/odb/src/swig/common/dbhelpers.i",
+      "bytes": 1097,
+      "sha256": "e0bd223d0bed22c646986ee10d2d9fcfb6f51c799f9dcf723bb9ff7036d4c192",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/common/dbhelpers.i"
+    },
+    {
+      "path": "src/odb/src/swig/common/dbtypes_common.i",
+      "bytes": 746,
+      "sha256": "294a71cf3ac647c76aca42b956bf60bc9325f0805246aa52c7df57f6bae970fb",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/common/dbtypes_common.i"
+    },
+    {
+      "path": "src/odb/src/swig/common/polygon.i",
+      "bytes": 1642,
+      "sha256": "08c86986e55d8503168668bf77684d3fdf82efa021e676a342a3e1d4efe13007",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/common/polygon.i"
+    },
+    {
+      "path": "src/odb/src/swig/python/dbtypes.i",
+      "bytes": 10337,
+      "sha256": "5ce9798bad0c1bce78b13d4dd0c934b90b02e41162f1641e78ccd3b08e9886db",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/python/dbtypes.i"
+    },
+    {
+      "path": "src/odb/src/swig/python/dbenums.i",
+      "bytes": 55840,
+      "sha256": "73164e2e8bf85405f66a8bf25f9d4cc07d55854c301be058e24c0c245b31b83a",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/python/dbenums.i"
+    },
+    {
+      "path": "src/odb/src/swig/python/parserenums.i",
+      "bytes": 2180,
+      "sha256": "4b213a966e4f1c9b9604c0cd315bc754744756a2b8e579944801ea60f2fac501",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/python/parserenums.i"
+    },
+    {
+      "path": "src/odb/src/swig/python/dboperators.i",
+      "bytes": 628,
+      "sha256": "c3dedd1f93bfe6f02b7776f2e1304250ea9ff1def01ee1acf3d03cbd653301db",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/python/dboperators.i"
+    },
+    {
+      "path": "src/odb/src/swig/python/CMakeLists.txt",
+      "bytes": 946,
+      "sha256": "a72a25e665716f45f494419f3f8b54d23a995da82981bafed11b02bc87fd759a",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/odb/src/swig/python/CMakeLists.txt"
+    },
+    {
+      "path": "src/cmake/openroad.cmake",
+      "bytes": 148,
+      "sha256": "e1975f30dbf8e024b2756bd05c440cd815c2313cb97a9799a597f269be1e9612",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/cmake/openroad.cmake"
+    },
+    {
+      "path": "src/cmake/swig_lib.cmake",
+      "bytes": 4501,
+      "sha256": "bcfe8617e99aa66cffb48160f7f55d9c6b5f02abd2e7c62e153539eafa3e70e5",
+      "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/cmake/swig_lib.cmake"
+    }
+  ],
+  "findings": [
+    {
+      "finding": "C++ public API is not the Python wrapper API",
+      "evidence": "dbObject.h line165 declares uint32_t getId() const. dbObject.cpp lines21-23 implements it via internal getImpl()->getOID(). Neither declaration establishes a Python getOID method."
+    },
+    {
+      "finding": "Pinned Python interface does not parse the base declaration",
+      "evidence": "src/odb/src/swig/python/CMakeLists.txt selects ../common/odb.i. Its %include list parses db.h but not dbObject.h; the C++ #include is compilation-only. All common/python .i sources inspected have no getId/getOID declaration or rename/extension. swig_lib.cmake uses this interface, with no includeall or base-class injection in its options."
+    },
+    {
+      "finding": "Failure risk covers every newly used inherited getId call",
+      "evidence": "Current ownership uses getId on technology layers, nets, wires, ITerms, BTerms, BPins, SWires, SBoxes, fills, obstructions, instances and boxes. Only dbTechLayer failure is reported actual; other types remain a source-derived exposure risk. Pure raw projection source has no getId. No rule.getId currently exists."
+    },
+    {
+      "finding": "Layer number and routing level are not raw OIDs",
+      "evidence": "db.h9408 documents getNumber as mask-order;9420 routing level. dbTechLayer.cpp2213 returns number_,2219 returns rlevel_, whereas2302 getTechLayer(tech,dbid) uses layer_tbl_->getPtr(dbid). Do not substitute either ordinal for a raw wire layer operand."
+    },
+    {
+      "finding": "Static typed lookup can preserve known raw operands without inventing a public base accessor",
+      "evidence": "db.h explicitly declares getTechLayer(tech,oid), getTechLayerRule(tech/block,oid), getVia(block,oid), getTechVia(tech,oid), and typed object lookups. dbWireCodec.cpp stores the native internal OID for PATH/SHORT/VWIRE, VIA/TECHVIA and ITerm/BTerm operands. Any replacement must retain raw operand bytes/indices and validate the actual object returned; source inspection does not qualify a replacement implementation or runtime API."
+    }
+  ],
+  "getId_call_count": 44,
+  "getId_call_sites": [
+    {
+      "function": "via_record",
+      "line": 17,
+      "expression": "via.getBottomLayer().getId()"
+    },
+    {
+      "function": "via_record",
+      "line": 17,
+      "expression": "via.getTopLayer().getId()"
+    },
+    {
+      "function": "via_record",
+      "line": 19,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "via_record",
+      "line": 19,
+      "expression": "b.getTechLayer().getId()"
+    },
+    {
+      "function": "collect",
+      "line": 58,
+      "expression": "x.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 86,
+      "expression": "net.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 87,
+      "expression": "wire.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 89,
+      "expression": "wire.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 93,
+      "expression": "net.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 93,
+      "expression": "wire.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 97,
+      "expression": "iterm.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 99,
+      "expression": "iterm.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 102,
+      "expression": "iterm.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 107,
+      "expression": "iterm.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 111,
+      "expression": "bterm.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 113,
+      "expression": "bterm.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 117,
+      "expression": "bterm.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 117,
+      "expression": "pin.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 119,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 124,
+      "expression": "net.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 124,
+      "expression": "swire.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 133,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 136,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 138,
+      "expression": "fill.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 142,
+      "expression": "t.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 143,
+      "expression": "t.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 144,
+      "expression": "t.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 145,
+      "expression": "t.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 149,
+      "expression": "iterm.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 157,
+      "expression": "bterm.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 157,
+      "expression": "pin.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 159,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 165,
+      "expression": "ob.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 166,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 177,
+      "expression": "instance.getId()"
+    },
+    {
+      "function": "collect",
+      "line": 179,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "immutable_material",
+      "line": 200,
+      "expression": "fill.getId()"
+    },
+    {
+      "function": "immutable_material",
+      "line": 201,
+      "expression": "x.getId()"
+    },
+    {
+      "function": "immutable_material",
+      "line": 202,
+      "expression": "layer.getId()"
+    },
+    {
+      "function": "immutable_material",
+      "line": 207,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "immutable_material",
+      "line": 210,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "immutable_material",
+      "line": 210,
+      "expression": "ob.getId()"
+    },
+    {
+      "function": "immutable_material",
+      "line": 219,
+      "expression": "b.getId()"
+    },
+    {
+      "function": "immutable_material",
+      "line": 219,
+      "expression": "swire.getId()"
+    }
+  ],
+  "bounded_repair_constraints": [
+    "Do not globally replace getId with unproven getOID.",
+    "Keep encoded raw OIDs separate from human-readable or local census identities; no getNumber/routing-level/iteration-index substitution for native operands.",
+    "Preserve disconnected terminal and fill completeness, every shape ordinal/multiplicity, immutable source material and raw wire opcode/data equality.",
+    "Probe the exact hosted pinned Python binding and actual minimum collector surface before a new route attempt; synthetic fixtures must not invent unavailable getId APIs.",
+    "No acceptance or native guide/routing equivalence follows from this audit."
+  ],
+  "scope_exclusions": [
+    "No authored functions, imports or tests executed.",
+    "No native ODB/archive/GDS downloads or extraction.",
+    "No mutation of TX implementation or dispatch.",
+    "No full ownership correctness re-review; this is only the identifier API exposure and call-site inventory."
+  ],
+  "date_context": "2026-10-27"
+}
