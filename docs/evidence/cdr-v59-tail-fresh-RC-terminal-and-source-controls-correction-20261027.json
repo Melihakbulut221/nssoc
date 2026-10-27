@@ -1,0 +1,91 @@
+{
+  "all_original_numerical_bodies_and_thresholds_unchanged": true,
+  "authored_controls": {
+    "actual_binding_and_precision_main_entries": 2,
+    "actual_complete_stage_handoff": {
+      "refusals": 11,
+      "synthetic_order_projections": 2
+    },
+    "actual_full_RC_main": {
+      "current_failures": 3,
+      "old_stale_RUNNNING_result_reproduced": true,
+      "positive": 1,
+      "protected_source_failure": "Actual source.methods on altered protected temporary bytes; original body error and later integrity error retained; current-inventory error separately saved.",
+      "transport": "Real synthetic tar bytes and exact original extraction-method text; network/native subprocess calls explicitly replaced, no CAD."
+    },
+    "actual_stage_validator": {
+      "refusals": 15,
+      "synthetic_positive_reports": 2
+    },
+    "admission_positives": 7,
+    "admission_refusals": 29,
+    "aggregate_positive_groups": 8,
+    "aggregate_refusals": 34,
+    "checker": "scripts/check_cdr_v59_tail_fresh_rc_workers.py",
+    "derivation": {
+      "positive_worker_derivations": 5,
+      "refusals": 5
+    },
+    "executed": false
+  },
+  "changes": {
+    "scripts/cdr_v59_tail_fresh_rc_admission.py": {
+      "added_functions": [],
+      "changed_original_functions": [
+        "validate_authorizations"
+      ],
+      "unified_diff": "--- scripts/cdr_v59_tail_fresh_rc_admission.py@0675\n+++ scripts/cdr_v59_tail_fresh_rc_admission.py\n@@ -56,6 +56,8 @@\n         require(type(m[key]) is bool,\"Non-boolean authorization\")\n     require(len({m[k] for k in NATIVE_FLAGS})==1,\"Split fresh RC authorization\")\n     require(all(m[k] is False for k in ALWAYS_FALSE),\"Unsupported engineering authorization\")\n+    require(not m[NATIVE_FLAGS[0]] or m[\"source_controls_authorized\"] is True,\n+      \"Native fresh RC requires source-controls authorization\")\n     return m\n \n def methods():\n"
+    },
+    "scripts/cdr_v59_tail_fresh_rc_legacy.py": {
+      "added_functions": [
+        "finalize_rc_outputs"
+      ],
+      "changed_original_functions": [
+        "stage_report"
+      ],
+      "unified_diff": "--- scripts/cdr_v59_tail_fresh_rc_legacy.py@0675\n+++ scripts/cdr_v59_tail_fresh_rc_legacy.py\n@@ -5,6 +5,7 @@\n import os\n from pathlib import Path\n import shutil\n+import traceback\n import cdr_v59_tail_fresh_rc_admission as source\n import cdr_v59_binding_rc_source as numerical\n from run_cloud_tx_layout_repair import sha\n@@ -121,9 +122,31 @@\n       \"original_anchor_absolute_paths_preserved\":True,\"historical_RC_reused\":False}\n \n def new_current_outputs(pin):\n-    # Terminal inventory is descriptive; integrity failures are retained by the unchanged worker finally.\n+    # This source-bound inventory may fail; finalize_rc_outputs preserves that failure before saving.\n     original=source.contract()[\"canonical_candidate\"][\"expected_sha256\"]\n     return {name:digest for name,digest in inventory(ANALYSIS).items() if name not in original}\n+\n+def finalize_rc_outputs(report,stage,pin,save,primary_error):\n+    failures=[]\n+    for field,action in (\n+      (\"outputs\",lambda:{name:digest for name,digest in inventory(stage).items() if name!=\"result.json\"}),\n+      (\"new_current_view_outputs\",lambda:new_current_outputs(pin))):\n+        try:report[field]=action()\n+        except BaseException as error:\n+            failures.append((field,error,traceback.format_exc()))\n+    report[\"terminal_output_inventory_complete\"]=not failures\n+    report[\"terminal_output_errors\"]=[{\"field\":field,\"error\":repr(error),\"traceback\":trace}\n+      for field,error,trace in failures]\n+    report[\"active_primary_exception_before_inventory\"]=repr(primary_error) if primary_error is not None else None\n+    if failures and (report[\"status\"]==\"RUNNING\" or report[\"status\"].startswith(\"PASS\")):\n+        report[\"status\"]=\"FAIL_V59_TERMINAL_OUTPUT_INVENTORY\"\n+    try:save()\n+    except BaseException as error:\n+        report[\"terminal_save_error\"]={\"error\":repr(error),\"traceback\":traceback.format_exc()}\n+        # If storage itself fails, retain the complete unsaved report in the supervised stream.\n+        print(json.dumps({\"unsaved_terminal_RC_result\":report},sort_keys=True,default=repr),flush=True)\n+        if primary_error is None:raise\n+    if failures and primary_error is None:raise failures[0][1]\n \n def stage_report(stage):\n     require(stage in PASS,\"Unknown numerical stage report\")\n@@ -150,6 +173,8 @@\n           len(report[\"contact_model_controls\"][\"rejected_compact_models\"])==3,\"Fresh contact oracle/faults changed\")\n         require(report[\"native_simulation_passed\"] is report[\"wire_rc_included\"] is False,\"Binding scope changed\")\n     else:\n+        require(report[\"terminal_output_inventory_complete\"] is True and not report[\"terminal_output_errors\"],\n+          \"Fresh RC terminal inventory incomplete\")\n         require(report[\"geometry\"]==source.read_json(ANALYSIS/\"wire/native05/result.json\") and\n           report[\"anchors\"]==source.read_json(ANALYSIS/\"wire/anchors08.json\"),\"Fresh RC geometry/anchor source mismatch\")\n         require(report[\"capture\"][\"returncode\"]==0 and\n"
+    },
+    "scripts/check_cdr_v59_tail_fresh_rc_admission.py": {
+      "added_functions": [],
+      "changed_original_functions": [
+        "controls"
+      ],
+      "unified_diff": "--- scripts/check_cdr_v59_tail_fresh_rc_admission.py@0675\n+++ scripts/check_cdr_v59_tail_fresh_rc_admission.py\n@@ -40,8 +40,12 @@\n         base=copy.deepcopy(m)\n         for key in gate.NATIVE_FLAGS:base[key]=enabled\n         base[\"controller_readiness\"]=enabled\n+        base[\"source_controls_authorized\"]=enabled\n         gate.validate_authorizations(base)\n         positives.append(\"actual_authorization_mode_\"+str(enabled))\n+        if enabled:\n+            mutated(\"native_without_source_controls\",base,lambda x:x.__setitem__(\"source_controls_authorized\",False),\n+              gate.validate_authorizations,\"Native fresh RC requires source-controls authorization\")\n         mutated(\"split_authorization_\"+str(enabled),base,lambda x:x.__setitem__(gate.NATIVE_FLAGS[0],not enabled),\n           gate.validate_authorizations,\"Split fresh RC authorization\")\n         mutated(\"integer_authorization_\"+str(enabled),base,lambda x:x.__setitem__(gate.NATIVE_FLAGS[0],int(enabled)),\n@@ -118,7 +122,7 @@\n         (root/\"parent-link\").symlink_to(root,target_is_directory=True)\n         reject(\"candidate_destination_symlink\",lambda:gate.materialize_candidate(saved,spec,root/\"parent-link/new-view\"),\n           \"Symlink in candidate destination ancestry\")\n-    assert len(positives)==7 and len(refused)==28,(len(positives),len(refused))\n+    assert len(positives)==7 and len(refused)==29,(len(positives),len(refused))\n     return {\"status\":\"PASS_JOINT_SAVED_RC_ADMISSION_SOURCE_CONTROLS\",\"positives\":positives,\n       \"refusals\":refused,\"native_archives_or_CAD_accessed\":False,\"electrical_accepted\":False,\n       \"physical_accepted\":False,\"qualified_pex\":False}\n"
+    },
+    "scripts/cloud_cdr_v59_tail_fresh_wire_rc.py": {
+      "added_functions": [],
+      "changed_original_functions": [
+        "main"
+      ],
+      "unified_diff": "--- scripts/cloud_cdr_v59_tail_fresh_wire_rc.py@0675\n+++ scripts/cloud_cdr_v59_tail_fresh_wire_rc.py\n@@ -94,7 +94,5 @@\n         except BaseException as error:\n             r.update(status='FAIL_V59_SAVED_INPUT_INTEGRITY',integrity_error=repr(error));raise\n         finally:\n-            r['outputs']={str(p.relative_to(STAGE)):sha(p)for p in STAGE.rglob('*')if p.is_file()and p!=STAGE/'result.json'}\n-            r['new_current_view_outputs']=admission.new_current_outputs(pin)\n-            save()\n+            admission.finalize_rc_outputs(r,STAGE,pin,save,sys.exc_info()[1])\n if __name__=='__main__':main()\n"
+    }
+  },
+  "controller_readiness": false,
+  "exact_RC_original_reversal": true,
+  "findings": [
+    {
+      "correction": "Independent stage/current inventories with exact error/trace; unconditional save attempt; current inventory failure cannot preserve PASS; original active exception remains primary. Storage-save failure emits complete unsaved report to supervised stdout.",
+      "finding": "new_current_outputs calls source.contract/methods before finally save, so source corruption can prevent durable failure and mask the active integrity exception.",
+      "reviewer": "/root"
+    },
+    {
+      "correction": "All native modes require source_controls_authorized; all-false mode unchanged; corrected real positive and exact source-controls-false refusal.",
+      "finding": "Native enabled/controller ready/source-controls false was accepted; original enabled fixture left source controls false.",
+      "reviewer": "/root/tx_diagnosis"
+    }
+  ],
+  "geometry_generation_authorized": false,
+  "native_execution_authorized": false,
+  "old_finalization_snapshot": {
+    "bytes": 7796,
+    "path": "docs/evidence/cdr-v59-tail-fresh-wire-RC-pre-finalization-20261027.py",
+    "sha256": "0456b951b669dbe49395635b93bb74defb2d8aefda8fb77f7a813db025cfb8a9"
+  },
+  "physical_accepted": false,
+  "qualified_pex": false,
+  "schema": "cdr-tail-fresh-RC-terminal-source-control-correction-v1",
+  "scope": "Disabled source-only correction and authored hosted controls; no authored source executed locally.",
+  "simulation_authorized": false,
+  "source_controls_authorized": false,
+  "source_parent": "0675c7048428a0ac04ef1ac3b76bb6c9e7a1549d"
+}

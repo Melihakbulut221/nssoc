@@ -1,8 +1,8 @@
 {
   "adapter": {
-    "bytes": 12900,
+    "bytes": 14406,
     "path": "scripts/cdr_v59_tail_fresh_rc_legacy.py",
-    "sha256": "a54774e85d0e0c1fffde3f05e7e0e7e59ad405ff94616d9564743c3724c4143b"
+    "sha256": "54555c686fed74ce2cbf330556bac1bf94de519b4994431513aa29e9c7c7f589"
   },
   "controller_readiness": false,
   "derivations": [
@@ -46,9 +46,9 @@
       "changed_function_ASTs": [
         "main"
       ],
-      "derived_bytes": 7796,
+      "derived_bytes": 7653,
       "derived_path": "scripts/cloud_cdr_v59_tail_fresh_wire_rc.py",
-      "derived_sha256": "0456b951b669dbe49395635b93bb74defb2d8aefda8fb77f7a813db025cfb8a9",
+      "derived_sha256": "16a485eee67c45feffb2c75100fd7b45269014c870bb3bc1c36e36394604b3eb",
       "edits": [
         {
           "after": "import cdr_v59_tail_fresh_rc_legacy as admission",
@@ -67,15 +67,15 @@
           "before": "    assert not admission.CAPSULE.exists()"
         },
         {
-          "after": "            r['new_current_view_outputs']=admission.new_current_outputs(pin)",
-          "before": "            names=set(pin['outputs'])|{'result.json'}if pin is not None else set()\n            r['new_capsule_outputs']={str(p.relative_to(admission.CAPSULE)):sha(p)for p in admission.CAPSULE.rglob('*')if p.is_file()and str(p.relative_to(admission.CAPSULE))not in names}"
+          "after": "            admission.finalize_rc_outputs(r,STAGE,pin,save,sys.exc_info()[1])",
+          "before": "            r['outputs']={str(p.relative_to(STAGE)):sha(p)for p in STAGE.rglob('*')if p.is_file()and p!=STAGE/'result.json'}\n            names=set(pin['outputs'])|{'result.json'}if pin is not None else set()\n            r['new_capsule_outputs']={str(p.relative_to(admission.CAPSULE)):sha(p)for p in admission.CAPSULE.rglob('*')if p.is_file()and str(p.relative_to(admission.CAPSULE))not in names}\n            save()"
         }
       ],
       "original_path": "scripts/cloud_cdr_v59_rc.py",
       "original_sha256": "5979afeaebd00812c9ae9c73427ca051b616342e99f5beebd543a9f2fbd64f68",
       "reversed_byte_exact": true,
       "stage": "rc",
-      "unified_diff": "--- scripts/cloud_cdr_v59_rc.py\n+++ scripts/cloud_cdr_v59_tail_fresh_wire_rc.py\n@@ -8,16 +8,16 @@\n import compare_cloud_routed_endpoints as reports\n from run_cloud_tx_layout_repair import fetch,sha\n from cloud_cdr_v4_rc import NONBRIDGE_SELECTOR\n-import cdr_v59_binding_rc_source as admission\n-from cdr_v59_binding_rc_source import PIN,validate_summary as validate_source,methods as validate_methods\n+import cdr_v59_tail_fresh_rc_legacy as admission\n+from cdr_v59_tail_fresh_rc_legacy import PIN,validate_summary as validate_source,methods as validate_methods\n ROOT=Path(__file__).resolve().parents[1]\n # Restore the original cloud path so every native anchor input hash can be checked\n # without rewriting any of the source graph, device or terminal reports.\n OUT=admission.ANALYSIS\n-STAGE=ROOT/'hw/soc/out/cloud-cdr-v59-rc'\n+STAGE=admission.RC_STAGE\n def main():\n     admission.authorize('rc')\n-    assert not admission.CAPSULE.exists()\n+    admission.assert_current_candidate_ready()\n     STAGE.mkdir(parents=True,exist_ok=False);reports.OUT=STAGE\n     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],qualified_pex=False,full_phy_accepted=False,closed_loop=False,\n         scope='Whole actual PD500 metal/via RC. Native500device/1446terminal binding,113 independent wire components,978 actual points; strict raw R/C value/point/topology checks and13corruptions. Intrinsic MIM retained separately; wire-only geometry has no intrinsic device extraction. Substrate spreading/RF qualification, loaded electrical behavior and closed-loop acceptance remain separate.')\n@@ -95,7 +95,6 @@\n             r.update(status='FAIL_V59_SAVED_INPUT_INTEGRITY',integrity_error=repr(error));raise\n         finally:\n             r['outputs']={str(p.relative_to(STAGE)):sha(p)for p in STAGE.rglob('*')if p.is_file()and p!=STAGE/'result.json'}\n-            names=set(pin['outputs'])|{'result.json'}if pin is not None else set()\n-            r['new_capsule_outputs']={str(p.relative_to(admission.CAPSULE)):sha(p)for p in admission.CAPSULE.rglob('*')if p.is_file()and str(p.relative_to(admission.CAPSULE))not in names}\n+            r['new_current_view_outputs']=admission.new_current_outputs(pin)\n             save()\n if __name__=='__main__':main()\n"
+      "unified_diff": "--- scripts/cloud_cdr_v59_rc.py\n+++ scripts/cloud_cdr_v59_tail_fresh_wire_rc.py\n@@ -8,16 +8,16 @@\n import compare_cloud_routed_endpoints as reports\n from run_cloud_tx_layout_repair import fetch,sha\n from cloud_cdr_v4_rc import NONBRIDGE_SELECTOR\n-import cdr_v59_binding_rc_source as admission\n-from cdr_v59_binding_rc_source import PIN,validate_summary as validate_source,methods as validate_methods\n+import cdr_v59_tail_fresh_rc_legacy as admission\n+from cdr_v59_tail_fresh_rc_legacy import PIN,validate_summary as validate_source,methods as validate_methods\n ROOT=Path(__file__).resolve().parents[1]\n # Restore the original cloud path so every native anchor input hash can be checked\n # without rewriting any of the source graph, device or terminal reports.\n OUT=admission.ANALYSIS\n-STAGE=ROOT/'hw/soc/out/cloud-cdr-v59-rc'\n+STAGE=admission.RC_STAGE\n def main():\n     admission.authorize('rc')\n-    assert not admission.CAPSULE.exists()\n+    admission.assert_current_candidate_ready()\n     STAGE.mkdir(parents=True,exist_ok=False);reports.OUT=STAGE\n     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],qualified_pex=False,full_phy_accepted=False,closed_loop=False,\n         scope='Whole actual PD500 metal/via RC. Native500device/1446terminal binding,113 independent wire components,978 actual points; strict raw R/C value/point/topology checks and13corruptions. Intrinsic MIM retained separately; wire-only geometry has no intrinsic device extraction. Substrate spreading/RF qualification, loaded electrical behavior and closed-loop acceptance remain separate.')\n@@ -94,8 +94,5 @@\n         except BaseException as error:\n             r.update(status='FAIL_V59_SAVED_INPUT_INTEGRITY',integrity_error=repr(error));raise\n         finally:\n-            r['outputs']={str(p.relative_to(STAGE)):sha(p)for p in STAGE.rglob('*')if p.is_file()and p!=STAGE/'result.json'}\n-            names=set(pin['outputs'])|{'result.json'}if pin is not None else set()\n-            r['new_capsule_outputs']={str(p.relative_to(admission.CAPSULE)):sha(p)for p in admission.CAPSULE.rglob('*')if p.is_file()and str(p.relative_to(admission.CAPSULE))not in names}\n-            save()\n+            admission.finalize_rc_outputs(r,STAGE,pin,save,sys.exc_info()[1])\n if __name__=='__main__':main()\n"
     },
     {
       "byte_exact_functions": [
@@ -207,11 +207,12 @@
   },
   "source_controls_authorized": false,
   "source_parent": "2dbdca3ca0f27bf0542217726dc94bbbb981ea9c",
+  "terminal_inventory_policy": "Both inventories attempted independently; updated failure always saved; active original integrity/body exception remains primary; inventory-only failure rejects.",
   "unfinished": [
-    "Actual adapter/main/handoff fixtures",
+    "Remaining MIM capture/audit entry fixtures",
     "Complete qualified outer runtime/finally/publication",
     "Isolated full import/data closure",
     "Disabled manual workflow template",
-    "Independent worker review and actual hosted source controls"
+    "Independent final-worker review and actual hosted source controls"
   ]
 }

@@ -94,7 +94,5 @@ def main():
         except BaseException as error:
             r.update(status='FAIL_V59_SAVED_INPUT_INTEGRITY',integrity_error=repr(error));raise
         finally:
-            r['outputs']={str(p.relative_to(STAGE)):sha(p)for p in STAGE.rglob('*')if p.is_file()and p!=STAGE/'result.json'}
-            r['new_current_view_outputs']=admission.new_current_outputs(pin)
-            save()
+            admission.finalize_rc_outputs(r,STAGE,pin,save,sys.exc_info()[1])
 if __name__=='__main__':main()

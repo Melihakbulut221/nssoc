@@ -40,8 +40,12 @@ def controls():
         base=copy.deepcopy(m)
         for key in gate.NATIVE_FLAGS:base[key]=enabled
         base["controller_readiness"]=enabled
+        base["source_controls_authorized"]=enabled
         gate.validate_authorizations(base)
         positives.append("actual_authorization_mode_"+str(enabled))
+        if enabled:
+            mutated("native_without_source_controls",base,lambda x:x.__setitem__("source_controls_authorized",False),
+              gate.validate_authorizations,"Native fresh RC requires source-controls authorization")
         mutated("split_authorization_"+str(enabled),base,lambda x:x.__setitem__(gate.NATIVE_FLAGS[0],not enabled),
           gate.validate_authorizations,"Split fresh RC authorization")
         mutated("integer_authorization_"+str(enabled),base,lambda x:x.__setitem__(gate.NATIVE_FLAGS[0],int(enabled)),
@@ -118,7 +122,7 @@ def controls():
         (root/"parent-link").symlink_to(root,target_is_directory=True)
         reject("candidate_destination_symlink",lambda:gate.materialize_candidate(saved,spec,root/"parent-link/new-view"),
           "Symlink in candidate destination ancestry")
-    assert len(positives)==7 and len(refused)==28,(len(positives),len(refused))
+    assert len(positives)==7 and len(refused)==29,(len(positives),len(refused))
     return {"status":"PASS_JOINT_SAVED_RC_ADMISSION_SOURCE_CONTROLS","positives":positives,
       "refusals":refused,"native_archives_or_CAD_accessed":False,"electrical_accepted":False,
       "physical_accepted":False,"qualified_pex":False}

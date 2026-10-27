@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import traceback
 import cdr_v59_tail_fresh_rc_admission as source
 import cdr_v59_binding_rc_source as numerical
 from run_cloud_tx_layout_repair import sha
@@ -121,9 +122,31 @@ def restore_for_rc(pin,stage):
       "original_anchor_absolute_paths_preserved":True,"historical_RC_reused":False}
 
 def new_current_outputs(pin):
-    # Terminal inventory is descriptive; integrity failures are retained by the unchanged worker finally.
+    # This source-bound inventory may fail; finalize_rc_outputs preserves that failure before saving.
     original=source.contract()["canonical_candidate"]["expected_sha256"]
     return {name:digest for name,digest in inventory(ANALYSIS).items() if name not in original}
+
+def finalize_rc_outputs(report,stage,pin,save,primary_error):
+    failures=[]
+    for field,action in (
+      ("outputs",lambda:{name:digest for name,digest in inventory(stage).items() if name!="result.json"}),
+      ("new_current_view_outputs",lambda:new_current_outputs(pin))):
+        try:report[field]=action()
+        except BaseException as error:
+            failures.append((field,error,traceback.format_exc()))
+    report["terminal_output_inventory_complete"]=not failures
+    report["terminal_output_errors"]=[{"field":field,"error":repr(error),"traceback":trace}
+      for field,error,trace in failures]
+    report["active_primary_exception_before_inventory"]=repr(primary_error) if primary_error is not None else None
+    if failures and (report["status"]=="RUNNING" or report["status"].startswith("PASS")):
+        report["status"]="FAIL_V59_TERMINAL_OUTPUT_INVENTORY"
+    try:save()
+    except BaseException as error:
+        report["terminal_save_error"]={"error":repr(error),"traceback":traceback.format_exc()}
+        # If storage itself fails, retain the complete unsaved report in the supervised stream.
+        print(json.dumps({"unsaved_terminal_RC_result":report},sort_keys=True,default=repr),flush=True)
+        if primary_error is None:raise
+    if failures and primary_error is None:raise failures[0][1]
 
 def stage_report(stage):
     require(stage in PASS,"Unknown numerical stage report")
@@ -150,6 +173,8 @@ def stage_report(stage):
           len(report["contact_model_controls"]["rejected_compact_models"])==3,"Fresh contact oracle/faults changed")
         require(report["native_simulation_passed"] is report["wire_rc_included"] is False,"Binding scope changed")
     else:
+        require(report["terminal_output_inventory_complete"] is True and not report["terminal_output_errors"],
+          "Fresh RC terminal inventory incomplete")
         require(report["geometry"]==source.read_json(ANALYSIS/"wire/native05/result.json") and
           report["anchors"]==source.read_json(ANALYSIS/"wire/anchors08.json"),"Fresh RC geometry/anchor source mismatch")
         require(report["capture"]["returncode"]==0 and

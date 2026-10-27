@@ -56,6 +56,8 @@ def validate_authorizations(m):
         require(type(m[key]) is bool,"Non-boolean authorization")
     require(len({m[k] for k in NATIVE_FLAGS})==1,"Split fresh RC authorization")
     require(all(m[k] is False for k in ALWAYS_FALSE),"Unsupported engineering authorization")
+    require(not m[NATIVE_FLAGS[0]] or m["source_controls_authorized"] is True,
+      "Native fresh RC requires source-controls authorization")
     return m
 
 def methods():
