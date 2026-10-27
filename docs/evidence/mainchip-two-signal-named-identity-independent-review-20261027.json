@@ -1,0 +1,76 @@
+{
+  "schema": "mainchip-two-signal-named-identity-independent-review-v1",
+  "reviewed_source": "0c44aafb55575303c2de72802cd2ac6005e94ba0",
+  "reviewer": "pll_handoff",
+  "verdict": "CLEAR_BOUNDED_NATIVE_IDENTITY_AND_GEOMETRY_SCHEMA_SOURCE_ONLY",
+  "files": [
+    {
+      "path": "scripts/mainchip_two_signal_ownership_native.py",
+      "bytes": 18713,
+      "sha256": "b5ac981c99dad7031553330c1cfbcfdfd5523728bf3071b6fdae382123f0d34d"
+    },
+    {
+      "path": "scripts/mainchip_two_signal_geometry.py",
+      "bytes": 14214,
+      "sha256": "5f044322e06af04ebb9590e7011dc8ed7e31969e226153ba6e829c1d69940072"
+    }
+  ],
+  "supporting_files": [
+    {
+      "path": "scripts/mainchip_original_clock_restoration.py",
+      "bytes": 11609,
+      "sha256": "fd69f21bae8beed99f1886accec86a9b35bfa7db5437cdb792813a76e60f9194"
+    },
+    {
+      "path": "scripts/mainchip_two_signal_repair_native.py",
+      "bytes": 15421,
+      "sha256": "adfa942462d3447054081b7486813b7207a7fb76b3624fdd58fd03d63cee37fa"
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-api-probe-native-pass-20261027.api-census.json",
+      "bytes": 72093,
+      "sha256": "6fd2b5881c98fb1c57a7ba774a03862d5c7ce561da8a9e8592afbce0c732aea8"
+    }
+  ],
+  "derivation": {
+    "original_geometry_sha256": "209bc0a6eb847a628cc5fca5d0b2778e2138016cfbc189b226c2aebeb2da8d00",
+    "literal_edits": 9,
+    "additional_docstring_edit": true,
+    "forward_and_reverse_byte_exact": true,
+    "unchanged_functions": [
+      "segment",
+      "ownership_decision",
+      "marker_boxes",
+      "overlap",
+      "intersection",
+      "rect",
+      "integer",
+      "canonical",
+      "digest"
+    ]
+  },
+  "findings": [
+    "Raw path operands remain database OIDs and resolve through actual static getters into a separately enumerated named layer catalogue. Layer number and routing level are only observed comparison fields, never substituted as OIDs.",
+    "Rule keys retain block/tech namespace plus raw OID; vias retain native namespace/OID, exact acquired named top/bottom/component rectangles and ordinal multiplicity. All unobserved raw terminal, layer, rule or via scopes/IDs fail closed.",
+    "The actual collector regenerates the complete sorted length-prefixed raw-wire SHA using byte-identical canonical JSON to the acquired API census, and compares the full 13,905,578-pair stream digest 256fdf3008a093c2256b05330266f2722c33e2de179df5768dfe74b810adfa9a, not merely counts.",
+    "Every named connected ITerm/BTerm map is reconciled against independent block enumeration. The 1,000 disconnected ITerms remain owner=None and retain every geometry ordinal. Nonempty fill and block-obstruction censuses refuse because their instance APIs were not exercised.",
+    "Named parent identities and anonymous container/shape/component ordinals preserve multiplicity without claiming database OIDs or cross-serialization order stability. Immutable special material and master obstructions remain independently hashed.",
+    "No getId/getOID attribute call remains in the two focused modules. Exact nine geometry substitutions and the sole additional docstring change reverse to the original 209bc0a6 source; segment and ownership decisions are byte-exact.",
+    "The native pipeline invokes complete collect only at the original ownership stage; immutable material snapshots remain separate."
+  ],
+  "acquired_api": {
+    "path": "docs/evidence/mainchip-two-signal-api-probe-native-pass-20261027.api-census.json",
+    "bytes": 72093,
+    "sha256": "6fd2b5881c98fb1c57a7ba774a03862d5c7ce561da8a9e8592afbce0c732aea8",
+    "raw_layers": 7,
+    "block_rules": 54,
+    "tech_vias": 7
+  },
+  "scope_limits": [
+    "Source/AST/hash and acquired derived-JSON inspection only; no authored imports/tests/functions executed.",
+    "No ODB/native/archive download or routing. No full419-pin repeat.",
+    "Delta owns actual fixture review; outer publication/runtime and native execution are outside this bounded verdict.",
+    "No current geometry ownership, routing feasibility, timing or PHY acceptance follows from this source review."
+  ],
+  "authorization_changed": false
+}
