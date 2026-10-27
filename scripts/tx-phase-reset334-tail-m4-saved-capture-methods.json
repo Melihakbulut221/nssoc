@@ -46,7 +46,9 @@
     "resource_positives": 10,
     "resource_faults": 18,
     "authorization_positives": 2,
-    "authorization_refusals": 28
+    "authorization_refusals": 28,
+    "complete_acquired_view_positive": 1,
+    "exact_wrong_outer_view_regression": 1
   },
   "initial_repository_modules": [
     "scripts/audit_cloud_route_annotation.py",
@@ -121,6 +123,7 @@
     "docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py",
     "docs/evidence/cdr-v59-tail-qualified-memory-sampler-20261026.py",
     "docs/evidence/tx-phase-reset334-tail-M4-loaded-activated-controls-failed-checker-20261027.py",
+    "docs/evidence/tx-phase-reset334-tail-M4-saved-readback-b291-outer-view-controller-20261027.py",
     "hw/soc/flow/audit_klayout_lvs.py",
     "hw/soc/flow/check_ihp_drc.py",
     "hw/soc/flow/check_pcie_rx_cell.py",
@@ -330,7 +333,7 @@
     ".github/workflow-templates/tx-phase-reset334-tail-m4-loaded-cloud.yml": "0300ab1ff79f8934d61a7deeb3628b395ca14faae1f1fc3250c8733555069f66",
     ".github/workflow-templates/tx-phase-reset334-tail-m4-physical-cloud.yml": "0d5f2421a560fd3d14d294d6fc2013d5f924c554753fd706a77ed313917b057f",
     ".github/workflow-templates/tx-phase-reset334-tail-m4-rc-cloud.yml": "bae4cb9045d719d6a456956374b10c5265356728cbb387d91d07efc74ab4bc2e",
-    ".github/workflow-templates/tx-phase-reset334-tail-m4-saved-capture-cloud.yml": "c55eca57ad397edac7ebbfddc1ac784df21b1629252f8569533b27868c937f2f",
+    ".github/workflow-templates/tx-phase-reset334-tail-m4-saved-capture-cloud.yml": "c1afd0d1abf7ebbcc0a1164648850e2219b7b5cdc9a572a44742f48095d25a0f",
     ".github/workflow-templates/tx-phase-reset334-tail-m4-transient-cloud.yml": "f47d4df0c819d8478e7d853bd8997d6f7eefb8a40e17a8b0c4b37e218d4daf30",
     ".github/workflow-templates/tx-phase-reset334-transient-cloud.yml": "c262077fc66fcf743825489ad832a4900ebbf0cce1d15054c46bcfbe2e2768a9",
     ".github/workflow-templates/tx-phase-reset334-zero-op-cloud.yml": "90a4b5e0ba515b70204a4489eaf53d7669bc77baf7566bf522b8a137ee1f49fa",
@@ -845,7 +848,7 @@
     "scripts/check_tx_phase_reset334_tail_m4_rc.py": "918cab7af3c845968e8faaaab5f889fbc55c6abe57bab06cbddd5ba91eaf1cf5",
     "scripts/check_tx_phase_reset334_tail_m4_rc_imports.py": "c8f51af318d397e1a554a596f7fedb9d9f42515a53d2e19e4592084e6b7a5e9a",
     "scripts/check_tx_phase_reset334_tail_m4_rc_publication.py": "75103ef679d3f8b6c597e5eb67da44fb770b06fcecab95e988eb3004b4d58bcc",
-    "scripts/check_tx_phase_reset334_tail_m4_saved_capture.py": "8c584f7cdba1e2afbfc13887d2b7d907f2ef0f4c3a0578211a6e3bce2bd10731",
+    "scripts/check_tx_phase_reset334_tail_m4_saved_capture.py": "c61f49a3e7c9161333ea787da3439b8886f0e0875f1b865fd464b52d4adca9a3",
     "scripts/check_tx_phase_reset334_tail_m4_saved_imports.py": "263169c19584ce65e225ac25dbeafb36491991e60711f7e3741d9269e1464099",
     "scripts/check_tx_phase_reset334_tail_m4_saved_publication.py": "1854829a7b933ef78b43447bbe900e9ad1819b9ac6bded5aba1380414a7e6ef1",
     "scripts/check_tx_phase_reset334_tail_m4_saved_resources.py": "355ecc68858abb779b7c140e3c229670f0d32416121e6b7d9e181a47349febaf",
@@ -892,7 +895,7 @@
     "scripts/cloud_tx_phase_reset334_tail_m4_loaded.py": "914baac8484ece23bc2d3085e7371dff2b751a27a5e787152db153b55a7b4f73",
     "scripts/cloud_tx_phase_reset334_tail_m4_physical.py": "a16f7bb5c0469edd7a280153eac2a3301618a90dcc011b7da02677cd357439a4",
     "scripts/cloud_tx_phase_reset334_tail_m4_rc.py": "1ba462150e46d28b011c0a3dafce918f7950158791fba938c44807b7e5ce71e9",
-    "scripts/cloud_tx_phase_reset334_tail_m4_saved_capture.py": "e9ef797650b6aca3b60e61cab2fe350b61e741a6fbf4ccd8f955ebb2dbd3db95",
+    "scripts/cloud_tx_phase_reset334_tail_m4_saved_capture.py": "bddfc4b0a0d11a00fed8b51d7a785d06f5b143210af8ef4867d52f8da241d0e6",
     "scripts/cloud_tx_phase_reset334_tail_m4_transient.py": "bdcb6cf1269683926c85fbf90a23cee27beb10355e54ab69dd50281322ef4224",
     "scripts/cloud_tx_phase_reset334_transient.py": "db0108b0b553d24d1ce8d4813806f41821bbf607053538a2ebe59127629eb0f0",
     "scripts/cloud_tx_phase_reset334_zero_op.py": "096f78daa2eca069eda8fb96624dac2cb7abf16f554dfa7459c680b2d6bb757e",
@@ -998,7 +1001,10 @@
     "scripts/tx_phase_reset334_transient_support.py": "6e13a8fb79af6cffb3f65c0085ba15ca5e2d565508f7154ffc94c2469383a7df",
     "scripts/tx_phase_reset334_zero_op_runtime.py": "dd3745fc3207e43f44b8a59c6107280ff46c510d58b4d23d109197e85a98384c",
     "scripts/tx_reverse_native_cap_order.py": "4d46575a4c7c50d8ad5d1c4f73239454ac26345ae5b9984f0282b0c7f55980c4",
-    "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73"
+    "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73",
+    "docs/evidence/tx-phase-reset334-tail-M4-saved-readback-b291-outer-view-controller-20261027.py": "e9ef797650b6aca3b60e61cab2fe350b61e741a6fbf4ccd8f955ebb2dbd3db95",
+    "docs/evidence/tx-phase-reset334-tail-M4-saved-readback-native-history-view-correction-20261027.json": "4dedee7e76966fb3de4b80479adf601d86cdb02580775747ef11491c2f94acc4",
+    "docs/evidence/tx-phase-reset334-tail-M4-saved-readback-import-publication-independent-review-20261027.json": "09988ba745b02bfb3a01bcdea3da30bb440a221ba4c9b1f2561543eca2f0c2e8"
   },
   "scope": {
     "original_rejection_preserved": true,
@@ -1028,5 +1034,6 @@
     "failure_envelope_bytes": 1048576
   },
   "source_audit": "docs/evidence/tx-phase-reset334-tail-M4-saved-readback-source-derivation-20261027.json",
-  "resource_audit": "docs/evidence/tx-phase-reset334-tail-M4-saved-readback-source-derivation-20261027.json"
+  "resource_audit": "docs/evidence/tx-phase-reset334-tail-M4-saved-readback-source-derivation-20261027.json",
+  "source_correction": "docs/evidence/tx-phase-reset334-tail-M4-saved-readback-native-history-view-correction-20261027.json"
 }

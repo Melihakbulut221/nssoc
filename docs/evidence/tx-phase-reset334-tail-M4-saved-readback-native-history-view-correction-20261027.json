@@ -1,0 +1,83 @@
+{
+  "schema": "narrow-source-correction-v1",
+  "status": "AUTHORED_UNEXECUTED_DISABLED",
+  "prior_candidate": "b291561516c347225bd5e72604f825ea127bd5a0",
+  "finding": {
+    "reviewer": "tx_diagnosis",
+    "error": "KeyError(original17_HBT_rejection)",
+    "cause": "The exact complete four-OP outer publication stores histories under native_result; snapshot returns outer while native_snapshot returns separately authenticated native JSON.",
+    "actual_outer": {
+      "bytes": 3832886,
+      "sha256": "2cafe4a2c38555ec96beb3d29e87ddf8cf8011a9f0a84c6bf7172ac220d30261"
+    },
+    "actual_native": {
+      "bytes": 3114446,
+      "sha256": "f1e921615c66430a0b28bfc5f5d3434872c78c83a4a4ed2495789e8348bcd280"
+    },
+    "fields": [
+      "original17_HBT_rejection",
+      "prior_four_tail_rejection",
+      "original_parent_TX_rejection"
+    ]
+  },
+  "correction": {
+    "source_function": "validate_result",
+    "outer_snapshot_retained": true,
+    "native_snapshot_explicit": true,
+    "complete_embedded_native_equality_checked": true,
+    "source_changes": [
+      {
+        "before": "    assert r['original17_HBT_rejection']==current.admission.snapshot()[1]['original17_HBT_rejection']",
+        "after": "    outer_OP=current.admission.snapshot()[1]\n    original_OP=current.admission.native_snapshot()[1]\n    assert outer_OP['native_result']==original_OP\n    assert r['original17_HBT_rejection']==original_OP['original17_HBT_rejection']",
+        "count": 1
+      },
+      {
+        "before": "    original_OP=current.admission.snapshot()[1]\n    assert r['prior_four_tail_rejection']",
+        "after": "    assert r['prior_four_tail_rejection']",
+        "count": 1
+      }
+    ]
+  },
+  "controls": {
+    "actual_complete_JSON_snapshot_positive": 1,
+    "exact_original_wrong_view_regression": 1,
+    "original_exception_args": [
+      "original17_HBT_rejection"
+    ],
+    "actual_snapshot_and_frozen_validate_frames_required": true,
+    "archive_waveform_or_native_execution": false
+  },
+  "unchanged_source_functions": [
+    "methods",
+    "authorization",
+    "completed_controls",
+    "snapshot",
+    "metadata",
+    "restore_capture",
+    "reconstruct",
+    "main"
+  ],
+  "unchanged_observer_sha256": "66852848374dd0963d53344a043b08a63e9f522c5a070f04506dacb169ae6bfb",
+  "unchanged_resource_sha256": "25714d9988c2f3d78046cdefd7fdb0e20ca917b2c80f4b72a6e52eb7a78dd85d",
+  "unchanged_reconstruction_and_native_consumption": true,
+  "self_audit": {
+    "main_restores_full_outer3286_then_consumes_native3271": true,
+    "read_inputs_and_actual_input_controls_receive_native": true,
+    "historical_models_use_tail_M4_loaded_native_fresh_preparation": true,
+    "original_full34ns_decks_not_OP_decks": true,
+    "original17_prior4_and_parent_histories_from_native": true
+  },
+  "prior_audits_proofs_not_overwritten": true,
+  "prior_peer_import": {
+    "path": "docs/evidence/tx-phase-reset334-tail-M4-saved-readback-import-publication-independent-review-20261027.json",
+    "sha256": "09988ba745b02bfb3a01bcdea3da30bb440a221ba4c9b1f2561543eca2f0c2e8",
+    "scope": "b291 imports/publication/template; not this new history view fix"
+  },
+  "no_local_authored_execution": true,
+  "no_dispatch": true,
+  "source_diffs": {
+    "scripts/cloud_tx_phase_reset334_tail_m4_saved_capture.py": "--- b291/scripts/cloud_tx_phase_reset334_tail_m4_saved_capture.py\n+++ corrected/scripts/cloud_tx_phase_reset334_tail_m4_saved_capture.py\n@@ -86,7 +86,10 @@\n     assert cap['header_rows']==114525 and cap['columns']==4727 and cap['start_s']==0 and cap['end_s']==34e-9\n     assert len(r['outputs'])==30\n     assert r['current_RC_model_hashes']==current.admission.MODELS\n-    assert r['original17_HBT_rejection']==current.admission.snapshot()[1]['original17_HBT_rejection']\n+    outer_OP=current.admission.snapshot()[1]\n+    original_OP=current.admission.native_snapshot()[1]\n+    assert outer_OP['native_result']==original_OP\n+    assert r['original17_HBT_rejection']==original_OP['original17_HBT_rejection']\n     assert r['preparation_source']['outer_zero_OP_summary_sha256']==current.admission.SOURCE['summary']\n     assert r['preparation_source']['summary_sha256']==current.admission.PREPARATION_SHA\n     for k in ('old_R_rescaled','geometry_generation_executed','new_extraction_performed'):assert r[k]is False\n@@ -103,7 +106,6 @@\n         assert row['passed']is True\n         assert row['min_post_vce_v']>=.4 and row['max_whole_abs_vce_v']<=1.6\n         assert row['max_whole_abs_vbe_v']<=1. and row['max_whole_abs_ic_per_emitter_a']<=.003\n-    original_OP=current.admission.snapshot()[1]\n     assert r['prior_four_tail_rejection']==original_OP['prior_four_tail_rejection']\n     assert r['original_parent_TX_rejection']==original_OP['original_parent_TX_rejection']\n     assert r['preparation_source']['native_zero_OP_summary_sha256']==current.admission.ASSETS['native']['sha256']\n",
+    "scripts/check_tx_phase_reset334_tail_m4_saved_capture.py": "--- b291/scripts/check_tx_phase_reset334_tail_m4_saved_capture.py\n+++ corrected/scripts/check_tx_phase_reset334_tail_m4_saved_capture.py\n@@ -394,8 +394,49 @@\n               complete_terminal_failure=True,terminal_errors=saved['terminal_errors']))\n     return dict(positive=positives,source_or_inventory_error_never_keeps_diagnostic_PASS=True)\n \n+\n+def complete_snapshot_view_controls():\n+    \"\"\"Actual complete acquired JSONs through real snapshot/validators; no archive or native code.\"\"\"\n+    native_raw,native=c.current.admission.native_snapshot()\n+    outer_raw,outer=c.current.admission.snapshot()\n+    assert outer['native_result']==native\n+    keys=('original17_HBT_rejection','prior_four_tail_rejection','original_parent_TX_rejection')\n+    assert all(k not in outer and k in native for k in keys)\n+    assert c.digest(outer_raw)==c.current.admission.SOURCE['summary']\n+    assert c.digest(native_raw)==c.current.admission.ASSETS['native']['sha256']\n+    raw,result,manifest=c.snapshot()\n+    assert c.digest(raw)==c.SUMMARY_SHA and c.validate_result(result)\n+    assert all(result[k]==native[k]for k in keys)\n+    path=c.ROOT/'docs/evidence/tx-phase-reset334-tail-M4-saved-readback-b291-outer-view-controller-20261027.py'\n+    frozen=path.read_bytes()\n+    assert c.digest(frozen)=='e9ef797650b6aca3b60e61cab2fe350b61e741a6fbf4ccd8f955ebb2dbd3db95'\n+    tree=ast.parse(frozen)\n+    nodes=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='validate_result']\n+    assert len(nodes)==1\n+    ns=dict(vars(c));exec(compile(ast.Module(body=nodes,type_ignores=[]),str(path),'exec'),ns)\n+    old=ns['validate_result'];assert old is not c.validate_result\n+    with mock.patch.object(c,'validate_result',old):\n+        try:c.snapshot()\n+        except KeyError as error:\n+            assert error.args==('original17_HBT_rejection',)\n+            frames=[];trace=error.__traceback__\n+            while trace is not None:\n+                frames.append(trace.tb_frame.f_code);trace=trace.tb_next\n+            assert c.snapshot.__code__ in frames and old.__code__ in frames\n+            regression=dict(error=repr(error),exact_frozen_function=True,\n+              actual_snapshot_frame=True,actual_frozen_validation_frame=True)\n+        else:raise AssertionError('Old outer history view no longer reproduces original KeyError')\n+    assert c.validate_result(result)and c.snapshot()[0]==raw\n+    return dict(positive=dict(actual_complete_JSON_snapshot_and_validation=True,\n+      outer_OP_bytes=len(outer_raw),outer_OP_sha256=c.digest(outer_raw),\n+      native_OP_bytes=len(native_raw),native_OP_sha256=c.digest(native_raw),\n+      current_transient_bytes=len(raw),current_transient_sha256=c.digest(raw),\n+      historical_fields=list(keys),outer_native_roles_distinct=True),\n+      regression=regression,archive_or_waveform_read=False,native_simulator_invoked=False)\n+\n def controls():\n     m=c.methods();permissions=permission_controls(m);closure=imports.closure(c.ROOT,m['protected'])\n+    complete_views=complete_snapshot_view_controls()\n     raw,original,manifest=c.snapshot()\n     op,opmetadata=c.current.admission.prerequisite()\n     recorded=dict(run=json.loads((c.ROOT/(c.PREFIX+'.run.json')).read_bytes()),\n@@ -450,6 +491,7 @@\n     reconstruction=reconstruct_fixture()\n     entry=main_entry_fixture();failure_entries=main_result_failure_fixtures()\n     return dict(status='PASS_CURRENT_TAIL_M4_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY',import_closure=closure,permission_controls=permissions,\n+      complete_acquired_view_controls=complete_views,\n       original_current_result_faults=badresult,metadata_faults=badmeta,observer_derivation=derivation,\n       topology_fixture=dict(topology,real_restored_input_scope=False,synthetic_fixture_only=True),\n       hand_numbered_headroom=h,interval_boundary_fixtures=intervals,actual_code_mutations=mutations,\n",
+    ".github/workflow-templates/tx-phase-reset334-tail-m4-saved-capture-cloud.yml": "--- b291/.github/workflow-templates/tx-phase-reset334-tail-m4-saved-capture-cloud.yml\n+++ corrected/.github/workflow-templates/tx-phase-reset334-tail-m4-saved-capture-cloud.yml\n@@ -43,6 +43,8 @@\n           assert r['permission_controls']['actual_active_and_template_checked']and len(r['permission_controls']['refused'])==8\n           assert len(r['original_current_result_faults'])==16 and len(r['metadata_faults'])==21\n           assert len(r['observer_derivation']['edits'])==2 and r['observer_derivation']['reversed_byte_exact']\n+          assert r['complete_acquired_view_controls']['positive']['actual_complete_JSON_snapshot_and_validation']\n+          assert r['complete_acquired_view_controls']['regression']['error']==\"KeyError('original17_HBT_rejection')\"\n           assert len(r['topology_fixture']['rejected'])==14\n           assert r['topology_fixture']['target_groups']==12 and r['topology_fixture']['passive_accesses']==168\n           assert r['topology_fixture']['synthetic_fixture_only']and not r['topology_fixture']['real_restored_input_scope']\n"
+  }
+}

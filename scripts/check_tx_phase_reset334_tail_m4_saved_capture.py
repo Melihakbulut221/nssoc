@@ -394,8 +394,49 @@ def terminal_integrity_fixtures():
               complete_terminal_failure=True,terminal_errors=saved['terminal_errors']))
     return dict(positive=positives,source_or_inventory_error_never_keeps_diagnostic_PASS=True)
 
+
+def complete_snapshot_view_controls():
+    """Actual complete acquired JSONs through real snapshot/validators; no archive or native code."""
+    native_raw,native=c.current.admission.native_snapshot()
+    outer_raw,outer=c.current.admission.snapshot()
+    assert outer['native_result']==native
+    keys=('original17_HBT_rejection','prior_four_tail_rejection','original_parent_TX_rejection')
+    assert all(k not in outer and k in native for k in keys)
+    assert c.digest(outer_raw)==c.current.admission.SOURCE['summary']
+    assert c.digest(native_raw)==c.current.admission.ASSETS['native']['sha256']
+    raw,result,manifest=c.snapshot()
+    assert c.digest(raw)==c.SUMMARY_SHA and c.validate_result(result)
+    assert all(result[k]==native[k]for k in keys)
+    path=c.ROOT/'docs/evidence/tx-phase-reset334-tail-M4-saved-readback-b291-outer-view-controller-20261027.py'
+    frozen=path.read_bytes()
+    assert c.digest(frozen)=='e9ef797650b6aca3b60e61cab2fe350b61e741a6fbf4ccd8f955ebb2dbd3db95'
+    tree=ast.parse(frozen)
+    nodes=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='validate_result']
+    assert len(nodes)==1
+    ns=dict(vars(c));exec(compile(ast.Module(body=nodes,type_ignores=[]),str(path),'exec'),ns)
+    old=ns['validate_result'];assert old is not c.validate_result
+    with mock.patch.object(c,'validate_result',old):
+        try:c.snapshot()
+        except KeyError as error:
+            assert error.args==('original17_HBT_rejection',)
+            frames=[];trace=error.__traceback__
+            while trace is not None:
+                frames.append(trace.tb_frame.f_code);trace=trace.tb_next
+            assert c.snapshot.__code__ in frames and old.__code__ in frames
+            regression=dict(error=repr(error),exact_frozen_function=True,
+              actual_snapshot_frame=True,actual_frozen_validation_frame=True)
+        else:raise AssertionError('Old outer history view no longer reproduces original KeyError')
+    assert c.validate_result(result)and c.snapshot()[0]==raw
+    return dict(positive=dict(actual_complete_JSON_snapshot_and_validation=True,
+      outer_OP_bytes=len(outer_raw),outer_OP_sha256=c.digest(outer_raw),
+      native_OP_bytes=len(native_raw),native_OP_sha256=c.digest(native_raw),
+      current_transient_bytes=len(raw),current_transient_sha256=c.digest(raw),
+      historical_fields=list(keys),outer_native_roles_distinct=True),
+      regression=regression,archive_or_waveform_read=False,native_simulator_invoked=False)
+
 def controls():
     m=c.methods();permissions=permission_controls(m);closure=imports.closure(c.ROOT,m['protected'])
+    complete_views=complete_snapshot_view_controls()
     raw,original,manifest=c.snapshot()
     op,opmetadata=c.current.admission.prerequisite()
     recorded=dict(run=json.loads((c.ROOT/(c.PREFIX+'.run.json')).read_bytes()),
@@ -450,6 +491,7 @@ def controls():
     reconstruction=reconstruct_fixture()
     entry=main_entry_fixture();failure_entries=main_result_failure_fixtures()
     return dict(status='PASS_CURRENT_TAIL_M4_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY',import_closure=closure,permission_controls=permissions,
+      complete_acquired_view_controls=complete_views,
       original_current_result_faults=badresult,metadata_faults=badmeta,observer_derivation=derivation,
       topology_fixture=dict(topology,real_restored_input_scope=False,synthetic_fixture_only=True),
       hand_numbered_headroom=h,interval_boundary_fixtures=intervals,actual_code_mutations=mutations,

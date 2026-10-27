@@ -86,7 +86,10 @@ def validate_result(r):
     assert cap['header_rows']==114525 and cap['columns']==4727 and cap['start_s']==0 and cap['end_s']==34e-9
     assert len(r['outputs'])==30
     assert r['current_RC_model_hashes']==current.admission.MODELS
-    assert r['original17_HBT_rejection']==current.admission.snapshot()[1]['original17_HBT_rejection']
+    outer_OP=current.admission.snapshot()[1]
+    original_OP=current.admission.native_snapshot()[1]
+    assert outer_OP['native_result']==original_OP
+    assert r['original17_HBT_rejection']==original_OP['original17_HBT_rejection']
     assert r['preparation_source']['outer_zero_OP_summary_sha256']==current.admission.SOURCE['summary']
     assert r['preparation_source']['summary_sha256']==current.admission.PREPARATION_SHA
     for k in ('old_R_rescaled','geometry_generation_executed','new_extraction_performed'):assert r[k]is False
@@ -103,7 +106,6 @@ def validate_result(r):
         assert row['passed']is True
         assert row['min_post_vce_v']>=.4 and row['max_whole_abs_vce_v']<=1.6
         assert row['max_whole_abs_vbe_v']<=1. and row['max_whole_abs_ic_per_emitter_a']<=.003
-    original_OP=current.admission.snapshot()[1]
     assert r['prior_four_tail_rejection']==original_OP['prior_four_tail_rejection']
     assert r['original_parent_TX_rejection']==original_OP['original_parent_TX_rejection']
     assert r['preparation_source']['native_zero_OP_summary_sha256']==current.admission.ASSETS['native']['sha256']

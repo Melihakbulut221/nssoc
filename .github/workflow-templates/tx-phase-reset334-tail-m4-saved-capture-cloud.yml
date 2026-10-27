@@ -43,6 +43,8 @@ jobs:
           assert r['permission_controls']['actual_active_and_template_checked']and len(r['permission_controls']['refused'])==8
           assert len(r['original_current_result_faults'])==16 and len(r['metadata_faults'])==21
           assert len(r['observer_derivation']['edits'])==2 and r['observer_derivation']['reversed_byte_exact']
+          assert r['complete_acquired_view_controls']['positive']['actual_complete_JSON_snapshot_and_validation']
+          assert r['complete_acquired_view_controls']['regression']['error']=="KeyError('original17_HBT_rejection')"
           assert len(r['topology_fixture']['rejected'])==14
           assert r['topology_fixture']['target_groups']==12 and r['topology_fixture']['passive_accesses']==168
           assert r['topology_fixture']['synthetic_fixture_only']and not r['topology_fixture']['real_restored_input_scope']
