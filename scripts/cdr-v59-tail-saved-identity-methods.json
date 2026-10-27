@@ -507,6 +507,8 @@
     "docs/evidence/cdr-v59-tail-serialization-primary-klayout-v0.30.7/gsiDeclDbPolygon.cc": "272715c02b62919509812f3b49558ac8a8d93fd71fb7fbbe9d5ee4dfe51e1246",
     "docs/evidence/cdr-v59-tail-serialization-primary-klayout-v0.30.7/gsiDeclDbShape.cc": "d1dfd12e5aecfd7ef03550b0c49e2398f69b86410c7df51c31e736c720e6411d",
     "docs/evidence/cdr-v59-tail-serialized-additions-contract-20261026.json": "d6b2d367bff2036d97e62b28d2bf37d8be1a878770b594ab8e0286a92c88205e",
+    "docs/evidence/cdr-v59-tail-serialized-additions-independent-review-20261026.json": "0cc2a068e3dc0f67b3d5dc90e518f5906b7947905791a24e893cecdd47769994",
+    "docs/evidence/cdr-v59-tail-serialized-additions-pinned-api-independent-review-20261026.json": "778c0bccd989799f99116d6f23594b936ade92de2ea8dd82c55369d8d420bad4",
     "docs/evidence/cdr-v59-tail-serialized-additions-source-audit-20261026.json": "5ccb590833d44c9ccded0ad7c43d1d272fad41b4e3919cd5fd45140064a51a49",
     "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-artifacts.json": "43229e08ad8b71d2ea0ce872dedc17df722b035649b38595f2de03b1f6d9fa2b",
     "docs/evidence/cdr-v59-tail-source-controls-pass-20261026-complete-pin-audit.json": "3ad27eba5e69145d4d76cb8e7392259e3cab708d87d91b0555f7ec32277ba0c4",
@@ -747,7 +749,25 @@
     "actual_diagnostic_run": 40392469979,
     "contract_path": "docs/evidence/cdr-v59-tail-serialized-additions-contract-20261026.json",
     "contract_sha256": "d6b2d367bff2036d97e62b28d2bf37d8be1a878770b594ab8e0286a92c88205e",
-    "independent_source_review_complete": false,
+    "independent_source_review_complete": true,
+    "independent_source_reviews": [
+      {
+        "bytes": 2050,
+        "path": "docs/evidence/cdr-v59-tail-serialized-additions-independent-review-20261026.json",
+        "reviewer": "/root/tx_diagnosis",
+        "scope": "Full acquired Counter/contract join, helper/native-run delta and genuine source fixtures; explicitly no actual typed-native qualification.",
+        "sha256": "0cc2a068e3dc0f67b3d5dc90e518f5906b7947905791a24e893cecdd47769994",
+        "source": "b4892a8ddbfcbb4cc1a2b843a1652aedcc6ac33d"
+      },
+      {
+        "bytes": 2050,
+        "path": "docs/evidence/cdr-v59-tail-serialized-additions-pinned-api-independent-review-20261026.json",
+        "reviewer": "/root/pll_handoff",
+        "scope": "Independent exact upstream v0.30.7 Box/Polygon/Shape source declarations and helper API use; no runtime or full contract re-audit.",
+        "sha256": "778c0bccd989799f99116d6f23594b936ade92de2ea8dd82c55369d8d420bad4",
+        "source": "b4892a8ddbfcbb4cc1a2b843a1652aedcc6ac33d"
+      }
+    ],
     "native_typed_gate_executed": false,
     "new_source_controls_executed": false,
     "previous_complete_source_controls": {
@@ -931,8 +951,8 @@
     },
     "executed": false
   },
-  "source_controls_authorized": false,
-  "status": "DISABLED_SOURCE_ONLY_EXACT17_SERIALIZATION_AWARE_SUPPLEMENTAL_GUARD",
+  "source_controls_authorized": true,
+  "status": "PROPOSED_SOURCE_CONTROLS_ONLY_EXACT17_SERIALIZATION_SUPPLEMENT",
   "unregistered_template": {
     "path": ".github/workflow-templates/cdr-v59-tail-saved-identity-cloud.yml",
     "sha256": "7a98e197ab3cdbb19b9b65eab26c6c61033a28bf60a8fc124033581c405f84cd"
