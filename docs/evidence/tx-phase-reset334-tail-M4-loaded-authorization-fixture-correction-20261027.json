@@ -1,0 +1,130 @@
+{
+  "schema": "tail-m4-authorization-fixture-state-correction-v1",
+  "status": "SOURCE_ONLY_UNEXECUTED_ALL_AUTHORIZATIONS_FALSE",
+  "actual_failed_run": 40543321528,
+  "full_failure_proof_commit": "558b5f961de5ae9abcd36af20a3889c1fe6e9d2a",
+  "actual_error": "AssertionError: Accepted split-authorization",
+  "failed_source": "0ff76ddde744540f0b5ec26dbbbaebd40901ef16",
+  "failed_checker_snapshot": {
+    "path": "docs/evidence/tx-phase-reset334-tail-M4-loaded-activated-controls-failed-checker-20261027.py",
+    "bytes": 49343,
+    "sha256": "f949044f3c80e62478c010ff0b4077af001fa6a148196857e63712fa03ec07e7"
+  },
+  "root_cause": "Setting native_zero_op_authorized=True splits a disabled four-flag base but is a no-op on the enabled four-flag base. Production methods correctly accepts internally consistent activated flags.",
+  "correction": "Every one of seven negative method mutations now runs from each of the two legitimate all-false/all-true bases. The split mutation flips only native_zero_op_authorized. Each mutation must change canonical method-value serialization; integer1 remains distinguishable from booleantrue.",
+  "new_actual_methods_cases": {
+    "valid_modes": 2,
+    "negative_modes": 14,
+    "negative_per_mode": 7,
+    "old_activated_noop_regression": 1
+  },
+  "exact_old_regression": "The authenticated failed checker AST supplies the exact old split tuple/lambda. On an enabled base it must preserve serialized method bytes; actual unchanged production methods must accept it and actual unchanged reject must raise exactly Accepted split-authorization in its own code frame. No simulator or native work is entered.",
+  "authorization_mutation_audit": [
+    {
+      "case": "transient",
+      "both_mode_reason": "Forbidden false field set true in both modes; production methods requires false."
+    },
+    {
+      "case": "geometry",
+      "both_mode_reason": "Forbidden false field set true in both modes; production methods requires false."
+    },
+    {
+      "case": "continuation",
+      "both_mode_reason": "Forbidden false field set true in both modes; production methods requires false."
+    },
+    {
+      "case": "extraction",
+      "both_mode_reason": "Forbidden false field set true in both modes; production methods requires false."
+    },
+    {
+      "case": "split-authorization",
+      "both_mode_reason": "Exactly native_zero_op_authorized flips away from the three unchanged booleans."
+    },
+    {
+      "case": "nonboolean-native",
+      "both_mode_reason": "All four boolean flags become integer1; JSON serialization and exact type checks distinguish true from1."
+    },
+    {
+      "case": "resource-limit",
+      "both_mode_reason": "Original18000seconds becomes1 in both modes; resource equality is independent of authorization state."
+    }
+  ],
+  "preflight_mutation_audit": [
+    {
+      "case": "source",
+      "both_mode_reason": "Exact GITHUB_SHA becomes40zeros; new serialized-proof inequality assertion precedes rejection."
+    },
+    {
+      "case": "run",
+      "both_mode_reason": "Exact positive GITHUB_RUN_ID becomes-1; new serialized-proof inequality assertion precedes rejection."
+    },
+    {
+      "case": "attempt",
+      "both_mode_reason": "Exact attempt1 becomes2; new serialized-proof inequality assertion precedes rejection."
+    },
+    {
+      "case": "control-proof",
+      "both_mode_reason": "Nonempty fixture evidence becomesempty; new serialized-proof inequality assertion precedes rejection."
+    },
+    {
+      "case": "reservation",
+      "both_mode_reason": "Nonempty exact reservation becomesempty; new serialized-proof inequality assertion precedes rejection."
+    },
+    {
+      "case": "nonempty-release",
+      "both_mode_reason": "Read-only reservation existing_assets changes from[] to[already-published]. Auth collaborator is explicitly isolated and these metadata predicates do not depend on either legitimate four-flag mode."
+    }
+  ],
+  "changed_checker_functions": [
+    "child_preflight_controls",
+    "authorization_controls"
+  ],
+  "all_other_checker_functions_AST_identical": [
+    "control_emit_fixtures",
+    "control_emit_program",
+    "controls",
+    "derived_preparation_boundary",
+    "entry_fixture",
+    "finalization_fixtures",
+    "inherited_controls",
+    "mutated_derivation",
+    "native_fixture",
+    "native_result_controls",
+    "outer_view_controls",
+    "owned_child_terminal_fixtures",
+    "permissions",
+    "prepare_completion_fixture",
+    "refusal",
+    "reject",
+    "runtime_controls",
+    "workflow_controls"
+  ],
+  "unchanged_reject_function_exact": true,
+  "production_controller_admission_adapter_original_numerics_unchanged": true,
+  "literal_checker_edits": [
+    {
+      "before": "def authorization_controls():\n    m=controller.methods();positive=[];rejected=[]\n    keys=('native_execution_authorized','native_zero_op_authorized','simulation_authorized','prepared_path_controls_authorized')\n    with tempfile.TemporaryDirectory()as folder:\n        path=Path(folder)/'method.json'\n        for mode in (False,True):\n            candidate=copy.deepcopy(m);candidate.update({k:mode for k in keys});path.write_text(json.dumps(candidate))\n            with mock.patch.object(controller,'METHOD',path):\n                assert controller.methods()==candidate\n                if mode:controller.authorize(candidate)\n            positive.append(dict(four_OP_authorizations=mode))\n        mutations=[('transient',lambda x:x.update(native_transient_authorized=True)),\n          ('geometry',lambda x:x.update(geometry_generation_authorized=True)),\n          ('continuation',lambda x:x.update(continuation_authorized=True)),\n          ('extraction',lambda x:x.update(extraction_authorized=True)),\n          ('split-authorization',lambda x:x.update(native_zero_op_authorized=True)),\n          ('nonboolean-native',lambda x:x.update({k:1 for k in keys})),\n          ('resource-limit',lambda x:x['owned_process'].update(seconds=1))]\n        for name,mutate in mutations:\n            candidate=copy.deepcopy(m);mutate(candidate);path.write_text(json.dumps(candidate))\n            with mock.patch.object(controller,'METHOD',path):reject(rejected,name,controller.methods)\n    return dict(positive=positive,rejected=rejected)",
+      "after": "def authorization_controls():\n    m=controller.methods();positive=[];rejected=[];matrix=[];legitimate={}\n    keys=('native_execution_authorized','native_zero_op_authorized','simulation_authorized','prepared_path_controls_authorized')\n    with tempfile.TemporaryDirectory()as folder:\n        path=Path(folder)/'method.json'\n        for mode in (False,True):\n            candidate=copy.deepcopy(m);candidate.update({k:mode for k in keys});path.write_text(json.dumps(candidate))\n            with mock.patch.object(controller,'METHOD',path):\n                assert controller.methods()==candidate\n                if mode:controller.authorize(candidate)\n            legitimate[mode]=copy.deepcopy(candidate)\n            positive.append(dict(four_OP_authorizations=mode))\n        mutations=[('transient',lambda x:x.update(native_transient_authorized=True)),\n          ('geometry',lambda x:x.update(geometry_generation_authorized=True)),\n          ('continuation',lambda x:x.update(continuation_authorized=True)),\n          ('extraction',lambda x:x.update(extraction_authorized=True)),\n          ('split-authorization',lambda x:x.update(native_zero_op_authorized=not x['native_zero_op_authorized'])),\n          ('nonboolean-native',lambda x:x.update({k:1 for k in keys})),\n          ('resource-limit',lambda x:x['owned_process'].update(seconds=1))]\n        for mode in (False,True):\n            for name,mutate in mutations:\n                baseline=legitimate[mode];candidate=copy.deepcopy(baseline)\n                mutate(candidate)\n                changed=[k for k in baseline if json.dumps(candidate[k],sort_keys=True)!=json.dumps(baseline[k],sort_keys=True)]\n                assert changed,'Authorization refusal must actually change the method'\n                if name=='split-authorization':\n                    assert changed==['native_zero_op_authorized']\n                    assert candidate['native_zero_op_authorized']is not mode\n                    assert all(candidate[k]is mode for k in keys if k!='native_zero_op_authorized')\n                if name=='nonboolean-native':assert set(changed)==set(keys) and all(type(candidate[k])is int for k in keys)\n                path.write_text(json.dumps(candidate));label=('enabled:'if mode else'disabled:')+name\n                with mock.patch.object(controller,'METHOD',path):reject(rejected,label,controller.methods)\n                matrix.append(dict(base_four_OP_authorizations=mode,case=name,changed_fields=changed,\n                    actual_method_rejected=True,method_serialization_changed=True))\n        # Replay the exact failed mutation through the unchanged real reject/methods seam.\n        frozen=controller.ROOT/FAILED_AUTHORIZATION_CHECKER;raw=frozen.read_bytes()\n        assert controller.sha(frozen)==m['protected'][FAILED_AUTHORIZATION_CHECKER]\n        expected=ast.parse(\"('split-authorization',lambda x:x.update(native_zero_op_authorized=True))\",mode='eval').body\n        matches=[n for n in ast.walk(ast.parse(raw.decode()))if isinstance(n,ast.Tuple)\n          and ast.dump(n,include_attributes=False)==ast.dump(expected,include_attributes=False)]\n        assert len(matches)==1\n        legacy=eval(compile(ast.Expression(body=copy.deepcopy(matches[0])),str(frozen),'eval'),{})\n        candidate=copy.deepcopy(legitimate[True]);before=json.dumps(candidate,sort_keys=True)\n        legacy[1](candidate)\n        assert json.dumps(candidate,sort_keys=True)==before\n        path.write_text(json.dumps(candidate));legacy_rejections=[]\n        with mock.patch.object(controller,'METHOD',path):\n            assert controller.methods()==candidate\n            try:reject(legacy_rejections,legacy[0],controller.methods)\n            except AssertionError as error:\n                assert error.args==('Accepted split-authorization',)\n                tb=error.__traceback__\n                while tb.tb_next:tb=tb.tb_next\n                assert tb.tb_frame.f_code is reject.__code__\n            else:raise AssertionError('Original activated no-op fixture failure was not reproduced')\n        assert not legacy_rejections\n        regression=dict(exact_original_failure_reproduced=True,error='AssertionError: Accepted split-authorization',\n          exact_failed_checker_sha256=m['protected'][FAILED_AUTHORIZATION_CHECKER],source_line=matches[0].lineno,\n          activated_method_serialization_unchanged=True,production_methods_correctly_accepts_consistent_flags=True,\n          actual_unchanged_reject_function=True,native_or_archive_executed=False)\n    assert len(positive)==2 and len(rejected)==len(matrix)==14\n    assert {mode:sum(x['base_four_OP_authorizations']is mode for x in matrix)for mode in (False,True)}=={False:7,True:7}\n    return dict(positive=positive,rejected=rejected,both_legitimate_modes=matrix,\n      old_activated_noop_regression=regression)"
+    },
+    {
+      "before": "def child_preflight_controls():\n    positive=[];refused=[]\n    identity=dict(source_head=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),run_attempt=1)\n    controls=dict(fixture='exact passed controls')\n    reservation=dict(existing_assets=[],tag='fixture',source='fixture')\n    proof=dict(**identity,completed_controls=controls,reservation=reservation)\n    with tempfile.TemporaryDirectory()as folder:\n        root=Path(folder);path=root/'authorized-preflight.json'\n        path.write_text(json.dumps(proof))\n        with mock.patch.object(controller,'OUT',root),mock.patch.object(controller,'methods',return_value={}),mock.patch.object(controller,'authorize'),\\\n             mock.patch.object(controller,'completed_controls',return_value=controls),mock.patch.object(controller.guard,'context',return_value=('tag','head')),\\\n             mock.patch.object(controller.guard,'api',return_value={}),mock.patch.object(controller.guard,'validate_release',return_value=reservation):\n            result=controller.child_preflight()\n            assert result==dict(reservation,completed_source_controls=controls);positive.append('exact_parent_preflight')\n            for name,key,value in [('source','source_head','0'*40),('run','run_id',-1),('attempt','run_attempt',2),\n                                   ('control-proof','completed_controls',{}),('reservation','reservation',{})]:\n                changed=copy.deepcopy(proof);changed[key]=value;path.write_text(json.dumps(changed))\n                reject(refused,name,controller.child_preflight)\n            path.write_text(json.dumps(proof))\n            with mock.patch.object(controller.guard,'validate_release',return_value=dict(reservation,existing_assets=['already-published'])):\n                reject(refused,'nonempty-release',controller.child_preflight)\n    return dict(positive=positive,refused=refused,actual_child_preflight=True,no_remote_call=True)",
+      "after": "def child_preflight_controls():\n    positive=[];refused=[]\n    identity=dict(source_head=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),run_attempt=1)\n    controls=dict(fixture='exact passed controls')\n    reservation=dict(existing_assets=[],tag='fixture',source='fixture')\n    proof=dict(**identity,completed_controls=controls,reservation=reservation)\n    with tempfile.TemporaryDirectory()as folder:\n        root=Path(folder);path=root/'authorized-preflight.json'\n        path.write_text(json.dumps(proof))\n        with mock.patch.object(controller,'OUT',root),mock.patch.object(controller,'methods',return_value={}),mock.patch.object(controller,'authorize'),\\\n             mock.patch.object(controller,'completed_controls',return_value=controls),mock.patch.object(controller.guard,'context',return_value=('tag','head')),\\\n             mock.patch.object(controller.guard,'api',return_value={}),mock.patch.object(controller.guard,'validate_release',return_value=reservation):\n            result=controller.child_preflight()\n            assert result==dict(reservation,completed_source_controls=controls);positive.append('exact_parent_preflight')\n            for name,key,value in [('source','source_head','0'*40),('run','run_id',-1),('attempt','run_attempt',2),\n                                   ('control-proof','completed_controls',{}),('reservation','reservation',{})]:\n                changed=copy.deepcopy(proof);changed[key]=value\n                assert json.dumps(changed,sort_keys=True)!=json.dumps(proof,sort_keys=True),'Preflight refusal must actually change the proof'\n                path.write_text(json.dumps(changed))\n                reject(refused,name,controller.child_preflight)\n            path.write_text(json.dumps(proof))\n            with mock.patch.object(controller.guard,'validate_release',return_value=dict(reservation,existing_assets=['already-published'])):\n                reject(refused,'nonempty-release',controller.child_preflight)\n    return dict(positive=positive,refused=refused,actual_child_preflight=True,no_remote_call=True)"
+    },
+    {
+      "before": "import check_tx_phase_reset334_loaded_native_adapter as old_init_check\n",
+      "after": "import check_tx_phase_reset334_loaded_native_adapter as old_init_check\n\nFAILED_AUTHORIZATION_CHECKER='docs/evidence/tx-phase-reset334-tail-M4-loaded-activated-controls-failed-checker-20261027.py'\n"
+    }
+  ],
+  "exact_reversal_recovers_failed_checker": true,
+  "full_diffs": {
+    "scripts/check_tx_phase_reset334_tail_m4_loaded.py": "--- scripts/check_tx_phase_reset334_tail_m4_loaded.py@failed\n+++ scripts/check_tx_phase_reset334_tail_m4_loaded.py@corrected\n@@ -8,6 +8,8 @@\n import tx_phase_reset334_tail_m4_loaded_adapter as d\n import cloud_tx_phase_reset334_tail_m4_loaded as controller\n import check_tx_phase_reset334_loaded_native_adapter as old_init_check\n+\n+FAILED_AUTHORIZATION_CHECKER='docs/evidence/tx-phase-reset334-tail-M4-loaded-activated-controls-failed-checker-20261027.py'\n \n def refusal(name,fn):\n     try:fn()\n@@ -518,7 +520,9 @@\n             assert result==dict(reservation,completed_source_controls=controls);positive.append('exact_parent_preflight')\n             for name,key,value in [('source','source_head','0'*40),('run','run_id',-1),('attempt','run_attempt',2),\n                                    ('control-proof','completed_controls',{}),('reservation','reservation',{})]:\n-                changed=copy.deepcopy(proof);changed[key]=value;path.write_text(json.dumps(changed))\n+                changed=copy.deepcopy(proof);changed[key]=value\n+                assert json.dumps(changed,sort_keys=True)!=json.dumps(proof,sort_keys=True),'Preflight refusal must actually change the proof'\n+                path.write_text(json.dumps(changed))\n                 reject(refused,name,controller.child_preflight)\n             path.write_text(json.dumps(proof))\n             with mock.patch.object(controller.guard,'validate_release',return_value=dict(reservation,existing_assets=['already-published'])):\n@@ -526,7 +530,7 @@\n     return dict(positive=positive,refused=refused,actual_child_preflight=True,no_remote_call=True)\n \n def authorization_controls():\n-    m=controller.methods();positive=[];rejected=[]\n+    m=controller.methods();positive=[];rejected=[];matrix=[];legitimate={}\n     keys=('native_execution_authorized','native_zero_op_authorized','simulation_authorized','prepared_path_controls_authorized')\n     with tempfile.TemporaryDirectory()as folder:\n         path=Path(folder)/'method.json'\n@@ -535,18 +539,60 @@\n             with mock.patch.object(controller,'METHOD',path):\n                 assert controller.methods()==candidate\n                 if mode:controller.authorize(candidate)\n+            legitimate[mode]=copy.deepcopy(candidate)\n             positive.append(dict(four_OP_authorizations=mode))\n         mutations=[('transient',lambda x:x.update(native_transient_authorized=True)),\n           ('geometry',lambda x:x.update(geometry_generation_authorized=True)),\n           ('continuation',lambda x:x.update(continuation_authorized=True)),\n           ('extraction',lambda x:x.update(extraction_authorized=True)),\n-          ('split-authorization',lambda x:x.update(native_zero_op_authorized=True)),\n+          ('split-authorization',lambda x:x.update(native_zero_op_authorized=not x['native_zero_op_authorized'])),\n           ('nonboolean-native',lambda x:x.update({k:1 for k in keys})),\n           ('resource-limit',lambda x:x['owned_process'].update(seconds=1))]\n-        for name,mutate in mutations:\n-            candidate=copy.deepcopy(m);mutate(candidate);path.write_text(json.dumps(candidate))\n-            with mock.patch.object(controller,'METHOD',path):reject(rejected,name,controller.methods)\n-    return dict(positive=positive,rejected=rejected)\n+        for mode in (False,True):\n+            for name,mutate in mutations:\n+                baseline=legitimate[mode];candidate=copy.deepcopy(baseline)\n+                mutate(candidate)\n+                changed=[k for k in baseline if json.dumps(candidate[k],sort_keys=True)!=json.dumps(baseline[k],sort_keys=True)]\n+                assert changed,'Authorization refusal must actually change the method'\n+                if name=='split-authorization':\n+                    assert changed==['native_zero_op_authorized']\n+                    assert candidate['native_zero_op_authorized']is not mode\n+                    assert all(candidate[k]is mode for k in keys if k!='native_zero_op_authorized')\n+                if name=='nonboolean-native':assert set(changed)==set(keys) and all(type(candidate[k])is int for k in keys)\n+                path.write_text(json.dumps(candidate));label=('enabled:'if mode else'disabled:')+name\n+                with mock.patch.object(controller,'METHOD',path):reject(rejected,label,controller.methods)\n+                matrix.append(dict(base_four_OP_authorizations=mode,case=name,changed_fields=changed,\n+                    actual_method_rejected=True,method_serialization_changed=True))\n+        # Replay the exact failed mutation through the unchanged real reject/methods seam.\n+        frozen=controller.ROOT/FAILED_AUTHORIZATION_CHECKER;raw=frozen.read_bytes()\n+        assert controller.sha(frozen)==m['protected'][FAILED_AUTHORIZATION_CHECKER]\n+        expected=ast.parse(\"('split-authorization',lambda x:x.update(native_zero_op_authorized=True))\",mode='eval').body\n+        matches=[n for n in ast.walk(ast.parse(raw.decode()))if isinstance(n,ast.Tuple)\n+          and ast.dump(n,include_attributes=False)==ast.dump(expected,include_attributes=False)]\n+        assert len(matches)==1\n+        legacy=eval(compile(ast.Expression(body=copy.deepcopy(matches[0])),str(frozen),'eval'),{})\n+        candidate=copy.deepcopy(legitimate[True]);before=json.dumps(candidate,sort_keys=True)\n+        legacy[1](candidate)\n+        assert json.dumps(candidate,sort_keys=True)==before\n+        path.write_text(json.dumps(candidate));legacy_rejections=[]\n+        with mock.patch.object(controller,'METHOD',path):\n+            assert controller.methods()==candidate\n+            try:reject(legacy_rejections,legacy[0],controller.methods)\n+            except AssertionError as error:\n+                assert error.args==('Accepted split-authorization',)\n+                tb=error.__traceback__\n+                while tb.tb_next:tb=tb.tb_next\n+                assert tb.tb_frame.f_code is reject.__code__\n+            else:raise AssertionError('Original activated no-op fixture failure was not reproduced')\n+        assert not legacy_rejections\n+        regression=dict(exact_original_failure_reproduced=True,error='AssertionError: Accepted split-authorization',\n+          exact_failed_checker_sha256=m['protected'][FAILED_AUTHORIZATION_CHECKER],source_line=matches[0].lineno,\n+          activated_method_serialization_unchanged=True,production_methods_correctly_accepts_consistent_flags=True,\n+          actual_unchanged_reject_function=True,native_or_archive_executed=False)\n+    assert len(positive)==2 and len(rejected)==len(matrix)==14\n+    assert {mode:sum(x['base_four_OP_authorizations']is mode for x in matrix)for mode in (False,True)}=={False:7,True:7}\n+    return dict(positive=positive,rejected=rejected,both_legitimate_modes=matrix,\n+      old_activated_noop_regression=regression)\n \n \n \n",
+    ".github/workflow-templates/tx-phase-reset334-tail-m4-loaded-cloud.yml": "--- .github/workflow-templates/tx-phase-reset334-tail-m4-loaded-cloud.yml@failed\n+++ .github/workflow-templates/tx-phase-reset334-tail-m4-loaded-cloud.yml@corrected\n@@ -69,7 +69,10 @@\n           assert r['outer_native_view']['complete_outer_members']==3181 and r['outer_native_view']['complete_consumed_native_members']==3165\n           assert r['outer_native_view']['exact_full_set_equality']and len(r['outer_native_view']['rejected'])==24\n           assert len(r['native_result_controls']['rejected'])==24\n-          assert len(r['authorization']['positive'])==2 and len(r['authorization']['rejected'])==7\n+          assert len(r['authorization']['positive'])==2 and len(r['authorization']['rejected'])==14\n+          assert len(r['authorization']['both_legitimate_modes'])==14\n+          assert r['authorization']['old_activated_noop_regression']['exact_original_failure_reproduced']\n+          assert all(x['method_serialization_changed']and x['actual_method_rejected']for x in r['authorization']['both_legitimate_modes'])\n           assert len(r['child_preflight']['positive'])==1 and len(r['child_preflight']['refused'])==6\n           assert len(r['finalization']['actual_controller_main_finally'])==6\n           assert len(r['owned_child_terminal']['cases'])==6 and r['owned_child_terminal']['all_terminal_actions_attempted_after_earlier_failure']\n"
+  },
+  "source_hashes": {
+    "scripts/check_tx_phase_reset334_tail_m4_loaded.py": "f3de5e4a69e578d9db533d725f6899b4958153093ebc724a120aed6d1f813620",
+    ".github/workflow-templates/tx-phase-reset334-tail-m4-loaded-cloud.yml": "0300ab1ff79f8934d61a7deeb3628b395ca14faae1f1fc3250c8733555069f66",
+    ".github/workflows/tx-phase-reset334-tail-m4-loaded-cloud.yml": "0300ab1ff79f8934d61a7deeb3628b395ca14faae1f1fc3250c8733555069f66"
+  },
+  "no_authored_imports_tests_native_archive_or_local_files": true,
+  "dispatch_performed": false
+}
