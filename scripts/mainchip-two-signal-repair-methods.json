@@ -13,7 +13,7 @@
     8,
     8
   ],
-  "cloud_restore_authorized": true,
+  "cloud_restore_authorized": false,
   "current_marker_count": 3,
   "derating_percent": 5,
   "full_phy_accepted": false,
@@ -82,8 +82,8 @@
     "routing_seconds": 14400,
     "threads": 2
   },
-  "native_execution_authorized": true,
-  "native_routing_authorized": true,
+  "native_execution_authorized": false,
+  "native_routing_authorized": false,
   "original_clock_count": 1691,
   "protected": {
     ".github/workflow-templates/mainchip-clock-diagnostic-cloud.yml": "ff78fe6369c94df2209ae7cfd53c8f53054453ec0e34bf7c7c2c967f2f2248a0",
@@ -329,6 +329,21 @@
     "docs/evidence/mainchip-two-signal-named-identity-controls-pass-20261027.workflow.yml": "8878e03e4169d1165547f7b53a9b35c9ae5372c55ba3e2d3501aae75a5be06ad",
     "docs/evidence/mainchip-two-signal-named-identity-fixture-independent-review-20261027.json": "bd03bc17760fa07b9b34aefc8fb50006e8579143f98eb9e287cd2a3f18d188be",
     "docs/evidence/mainchip-two-signal-named-identity-independent-review-20261027.json": "74c0b0bac86c73d0e09526dc764832fa78c35096669ac36de02b9b0ae1e9c6c8",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.boundary.json": "d5cb2dd333d26bf83f0a3670742ee12a5ad37c46ad79ce7d3a64323a57797ee6",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.controls.log": "8abbad6748f2d68f25c25fdcd77cb4637c3478b2d193389d909fd8edc9aa6a63",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.imports.json": "166a466ec2a5d725865ee1bbd730bd992397903246555df6ca516b6af3fb3174",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.indexed-records.json": "ef1c02a4392eaa1846844abcf7d43afad6cdaad8811ff139f53a81635b01e0e0",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.jobs.json": "4dcabf9c0997f8e37c1a266b9bb8fd5ad2b61618a81c74b1442912275574d4f7",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.json": "3d03404829f2db8dfe0122b151bf0b0cc6bbaf751c1f25c02dbd9484df711b4b",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.native-result.json": "af799b7b6dbc50f79050de76e4b121d2dc2dd26e49e58c604eb8870c2d563511",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.native.log": "419d0ba1b9fb2fb8641c5794674459e6ac80de3de73e561885064e3296219a90",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.parts.json": "654e75a5c0f9e494d6898ba76ac7adf8562f8a20876b44d0eb8196f35a743b04",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.release.json": "f5422983342e205e5c1536bcada86ef8de20c8dc455b2133536436a3f0cb806a",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.run.json": "69c6ac8ae4e68a2e17ac8c010f1ab4d8ba4f30649347c8b1cdea1c90adbafc93",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.summary.json": "97c4d84bfed69dad9c58f37eb37166ac028b625a21fd68982dab6b4e07beac0b",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.tag.json": "7a7aa894b6748a9eacee12dc17adc647e1f9b1e4d8210869fd43af8483fd14c0",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.tested-methods.json": "69520e00d17c70032f74388700f885195bab80b98a6c6eecc5890757712a63a7",
+    "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.workflow.yml": "8878e03e4169d1165547f7b53a9b35c9ae5372c55ba3e2d3501aae75a5be06ad",
     "docs/evidence/mainchip-two-signal-named-identity-source-candidate-20261027.json": "09838221c85a042dd6dc43ead0e4202a2d93c59fa030944f9d9978922d87a356",
     "docs/evidence/mainchip-two-signal-ownership-independent-source-review-20261026.json": "a1b6a5b6fafaf794cc946e74727f5108d6e468a19de7d645acf9cc69b8d9e504",
     "docs/evidence/mainchip-two-signal-ownership-primary-20261026/src/drt/src/dr/FlexDR_init.cpp": "cf48ce2c745723c9c73a3431938f26eb9b87ee4c663a0ad8b7d6e185eb511723",
@@ -352,6 +367,13 @@
     "docs/evidence/mainchip-two-signal-residual-repair-proposal-20261026.primary/TritonRoute.tcl": "6cc777bde429f6ab1dfdda3e70ae6c22e2e8e6a2d93b9a723d6a2f992291f265",
     "docs/evidence/mainchip-two-signal-residual-repair-proposal-20261026.primary/io.cpp": "5981b0cf31cae90fdfa2628ffb33c437cf15f33d866310176fd5f53024321c7e",
     "docs/evidence/mainchip-two-signal-root-source-contract-review-20261026.json": "f30180039543f4b9506cb3f3ad49c0b52a34778e13ceec441198d0406015c8e3",
+    "docs/evidence/mainchip-two-signal-router-census-failed-planner-20261027.py": "7bcc472de2db9715065863c2a44b27abe1a05c4581c5ff04a9aa6879145dcf6f",
+    "docs/evidence/mainchip-two-signal-router-census-failure-source-diagnosis-20261027.json": "fffb61adc70a0dc7c94461071072108b9089e9bf5ab126d3deed707676355383",
+    "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/FlexDR.cpp": "122e84ca0906d7e53d4e5f4c7216a72e55f085f1a62b0848df06fc9eafd2e3af",
+    "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/FlexDR_init.cpp": "cf48ce2c745723c9c73a3431938f26eb9b87ee4c663a0ad8b7d6e185eb511723",
+    "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/GuideProcessor.cpp": "669c2a484f4285407235edb2792029fb2e44d93d0165a50469a0c5bd0021e7d4",
+    "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/frBlock.h": "40c985e9e39c5dbcc1fa5b59c9752dce3e4ee81b2f393f61543532cfc7f28439",
+    "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/io.cpp": "5981b0cf31cae90fdfa2628ffb33c437cf15f33d866310176fd5f53024321c7e",
     "docs/evidence/mainchip-two-signal-source-controls-pass-20261026.boundary.json": "8c6cc99237011cda6545b460165e7171e66cbd945a5992281bb37f3917eaa162",
     "docs/evidence/mainchip-two-signal-source-controls-pass-20261026.imports.json": "f86da6be97eb8c87b4cbe20fc9cbbbf91eb99a4debd5e9cce9444e791fa35563",
     "docs/evidence/mainchip-two-signal-source-controls-pass-20261026.job.log": "222c5e5800a072d3e594122370dc30342a9601240d2c98e59170af4857337548",
@@ -359,6 +381,7 @@
     "docs/evidence/mainchip-two-signal-source-controls-pass-20261026.tested-methods.json": "f071439b3ae48c122583f885a4325548bce65ffcd2c870dec9ce7448ff9c58c1",
     "docs/evidence/mainchip-two-signal-source-emission-correction-20261026.json": "67a9c5772b35a136cb3eddcfd14a60371ed140093f54276d4ec84d2aecfd222d",
     "docs/evidence/mainchip-two-signal-terminal-failure-source-correction-20261026.json": "974e13c2c3ee5dcf5943227438f850b8d8efce23babdd47172ebec6d858157a6",
+    "docs/evidence/mainchip-two-signal-typed-special-census-source-proposal-20261027.json": "f44b872f1e4cb5e5c4fd95a74ec21e5efa4220a0ee43c11697193e2403d7a8fb",
     "docs/evidence/mainchip-two-signal-wrapper-import-publication-independent-review-20261026.json": "79f959745d0468fc74dbb6a703a5f6118c3f5c3d2852f11795e8949a03cb0fec",
     "docs/evidence/onehot-clock-restore-pass-20261020.json": "169fd80a0fadf36eba427fbe05f3e30d9c7c6dc2189e2b35f1b5e71f8ab20d3a",
     "docs/evidence/onehot-routed-extraction-preflight-20261018.json": "a2aef5d32449f74d7145bddb56a7cb67d74abae759642c87b61f61db18003679",
@@ -416,7 +439,7 @@
     "scripts/check_mainchip_signal_repair_readback_imports.py": "5d73d01238ebda98230d4323d9d75fc1c52247d41946d07eb112619998838434",
     "scripts/check_mainchip_signal_repair_via_projection.py": "4f5b2fc115f89b51b80a6301213fb9a97d7eb706b16b2d7bff4e6a1f1383e60c",
     "scripts/check_mainchip_two_signal_imports.py": "a54656d1d3645a5886198866439cebda65088a5422e546f33588bae3ca80c4ab",
-    "scripts/check_mainchip_two_signal_repair.py": "c9e2f5367eb476997c9da36555d5a0aa0aa9ab5cfc5b3ddefce1d970916980a5",
+    "scripts/check_mainchip_two_signal_repair.py": "da6730b06e67d8cb8e515977a5dd9e38f945649c98aadd6a2ed38f7f0a929fcd",
     "scripts/check_onehot_fixed_clock_route.py": "9d7515d21cc75fdf8f4824560495272629e60ae864953094587106fc69e3b078",
     "scripts/check_onehot_native_fanout_routed_topology.py": "df81932b78735c0a695bbeaa4989932e57f4d134a862cdd2bed2ddf8b7c66efc",
     "scripts/check_onehot_round4_saved_topology.py": "a2e275f59e00fc2eb4952ac03aff386c7cb26b012477d7624c1d609ec5b46d5d",
@@ -494,8 +517,8 @@
     "scripts/mainchip_two_signal_api_probe_fixture.py": "4fd751114d1b3f766cd0b5ad79de4919c559ebea2aede9d002ae0df9fc3f91a1",
     "scripts/mainchip_two_signal_geometry.py": "5f044322e06af04ebb9590e7011dc8ed7e31969e226153ba6e829c1d69940072",
     "scripts/mainchip_two_signal_ownership_native.py": "b5ac981c99dad7031553330c1cfbcfdfd5523728bf3071b6fdae382123f0d34d",
-    "scripts/mainchip_two_signal_repair.py": "7bcc472de2db9715065863c2a44b27abe1a05c4581c5ff04a9aa6879145dcf6f",
-    "scripts/mainchip_two_signal_repair_native.py": "adfa942462d3447054081b7486813b7207a7fb76b3624fdd58fd03d63cee37fa",
+    "scripts/mainchip_two_signal_repair.py": "22a3c95f09218dce2661af42a770b5dcb234ef0188ba381aedee96a82eeebcd8",
+    "scripts/mainchip_two_signal_repair_native.py": "d94e03651bacfb86243174bd6e15522e5829ce2bc8a856c7c555713458cef049",
     "scripts/measured_hold_targets.py": "91138b2c0f590b151ed93f12aeabb17fa5406e1286754498ad14b694e423efdf",
     "scripts/migrate_outputs_to_cloud.py": "52fa3ef7adc92b6e6071b304ccb1b07908f31ccde7dacf39a7258e07356fa512",
     "scripts/native_graph_path_coverage.py": "6cedd37c0e7f58235f1bf711c50b77fccd6ab521428c3510d266028d0b4675a5",
@@ -518,6 +541,17 @@
     "scripts/wait_cloud_tested_source_release.py": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73"
   },
   "rc_sta_execution_authorized": false,
+  "router_census_evidence": {
+    "actual_failing_row_unknown": true,
+    "diagnosis": "docs/evidence/mainchip-two-signal-router-census-failure-source-diagnosis-20261027.json",
+    "failed_run": 40558510934,
+    "failed_source": "f65fa3dce502336b312c00960f29cf612dcd3559",
+    "failure_proof": "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.json",
+    "full_prevalidation_observations_required": true,
+    "native_retry_authorized": false,
+    "primary_revision": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "typed_special_source_only": true
+  },
   "schema": 1,
   "simulation_authorized": false,
   "source_controls": {
@@ -567,14 +601,18 @@
       9,
       20
     ],
+    "router_census": [
+      3,
+      16
+    ],
     "transport": [
       1,
       3
     ]
   },
-  "source_controls_authorized": true,
+  "source_controls_authorized": false,
   "source_unit_complete": true,
-  "status": "AUTHORIZED_ONE_OWNERSHIP_FIRST_TWO_SIGNAL_ATTEMPT_AFTER_COMPLETE_NAMED_IDENTITY_CONTROLS",
+  "status": "DISABLED_TYPED_SPECIAL_ROUTER_CENSUS_SOURCE_PROPOSAL_AFTER_PRESERVED_PRE_ROUTE_FAILURE",
   "targets": [
     "net36993",
     "net459"

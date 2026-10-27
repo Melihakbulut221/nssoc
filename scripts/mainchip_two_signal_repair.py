@@ -93,25 +93,74 @@ def require_actionable(result):
     assert all(w['target_movable']and not w['clock_movement_permitted']for w in result['witnesses'])
     return True
 
-def router_census(rows,owners):
-    """No unwired non-target is admitted as a routing participant."""
-    assert len(rows)==143820 and set(rows)==set(owners['frozen'])|set(TARGETS)
-    candidates=[];unwired=[]
+def router_census_observation(rows,owners):
+    """Classify every observed row without accepting it or discarding refusals."""
+    classes={key:[]for key in ('target','ordinary_fixed','ordinary_unwired','special')}
+    refusals=[]
+    def refuse(name,reason):refusals.append(dict(name=name,reason=reason))
+    expected=set(owners['frozen'])|set(TARGETS)
+    if len(rows)!=143820 or set(rows)!=expected:
+        refuse(None,'complete_net_membership')
     for name,row in rows.items():
-        assert set(row)=={'wire_present','metadata','paths','guides','terminals','special'}
-        assert type(row['guides'])is int and row['guides']>=0
-        assert type(row['terminals'])is int and row['terminals']>=0
+        if set(row)!={'wire_present','metadata','paths','guides','terminals','special','sigtype'}:
+            refuse(name,'row_schema');continue
+        if (type(row['wire_present'])is not bool or type(row['special'])is not bool
+            or type(row['guides'])is not int or row['guides']<0
+            or type(row['terminals'])is not int or row['terminals']<0
+            or type(row['metadata'])is not str or not row['metadata']
+            or type(row['sigtype'])is not str or not row['sigtype']
+            or type(row['paths'])is not list or any(type(p)is not str for p in row['paths'])):
+            refuse(name,'row_types');continue
         if name in TARGETS:
-            assert row['wire_present']and row['metadata']=='ROUTED'
-            assert row['paths']and set(row['paths'])=={'ROUTED'}and row['guides']>0
-            assert not row['special'];candidates.append(name)
-        elif row['wire_present']:
-            assert row['metadata']=='FIXED'and row['paths']and set(row['paths'])=={'FIXED'}
+            classes['target'].append(name)
+            if not (row['wire_present']and row['metadata']=='ROUTED'and row['paths']
+                and set(row['paths'])=={'ROUTED'}and row['guides']>0
+                and not row['special']and row['sigtype']=='SIGNAL'):
+                refuse(name,'target_must_be_ordinary_routed_guided_signal')
+            continue
+        # Actual dbNet.isSpecial alone selects the pinned DRT addSNet population.
+        # It does not imply empty stored guides or absent special-wire geometry.
+        if row['special']:
+            classes['special'].append(name)
+            if row['wire_present']:
+                if not (row['metadata']=='FIXED'and row['paths']and set(row['paths'])=={'FIXED'}):
+                    refuse(name,'special_ordinary_wire_must_remain_FIXED')
+            elif row['paths']!=[]:
+                refuse(name,'special_absent_wire_has_paths')
+            continue
+        if row['sigtype']in ('POWER','GROUND'):
+            refuse(name,'ordinary_supply_is_DRT_305_not_a_skip')
+        if row['wire_present']:
+            classes['ordinary_fixed'].append(name)
+            if not (row['metadata']=='FIXED'and row['paths']and set(row['paths'])=={'FIXED'}):
+                refuse(name,'ordinary_nontarget_wire_must_be_FIXED')
         else:
-            assert row['paths']==[]and row['guides']==0 and row['terminals']<=1
-            unwired.append(name)
-    assert sorted(candidates)==sorted(TARGETS)
-    return dict(two_routed_nonfixed_guided_names=sorted(candidates),unwired_nonparticipants=sorted(unwired),
+            classes['ordinary_unwired'].append(name)
+            # This conservative original ordinary-net refusal is unchanged.
+            if not (row['paths']==[]and row['guides']==0 and row['terminals']<=1):
+                refuse(name,'ordinary_unwired_must_be_unguided_singleton')
+    if sorted(classes['target'])!=sorted(TARGETS):
+        refuse(None,'exact_two_targets_required')
+    return dict(status='OBSERVED_ROUTER_CENSUS_NOT_ACCEPTANCE',accepted=False,
+        net_count=len(rows),expected_net_count=143820,
+        missing_names=sorted(expected-set(rows)),extra_names=sorted(set(rows)-expected),
+        class_counts={k:len(v)for k,v in classes.items()},
+        special_names=sorted(classes['special']),ordinary_unwired_names=sorted(classes['ordinary_unwired']),
+        target_names=sorted(classes['target']),refusals=refusals,
+        refusal_count=len(refusals),rows_sha256=c.digest(c.canonical(rows)),
+        refusals_sha256=c.digest(c.canonical(refusals)),
+        ordinary_unwired_rule='paths=[] and guides=0 and terminals<=1',
+        special_basis='Actual dbNet.isSpecial; pinned dcf36133 Parser.addNet addSNet versus addNet')
+
+def router_census(rows,owners):
+    """Only the two targets may route; typed special material remains protected."""
+    report=router_census_observation(rows,owners)
+    assert not report['refusals'],('Router census refused',report['refusals'][0],
+        report['refusal_count'],report['refusals_sha256'])
+    return dict(two_routed_nonfixed_guided_names=report['target_names'],
+        unwired_nonparticipants=report['ordinary_unwired_names'],
+        actual_special_nonparticipants=report['special_names'],
+        class_counts=report['class_counts'],observed_rows_sha256=report['rows_sha256'],
         all_other_wired_paths_encoded_FIXED=True,no_unguided_fallback_admitted=True)
 
 def restore_expectation(raw,classes):

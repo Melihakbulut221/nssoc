@@ -73,15 +73,76 @@ def input_paths():
     assert c.file_sha(failed/'work/initial-drc.rpt')==s.TR_SHA
     return clock,global_root,failed,source
 
-def guide_census(path,owners):
-    db,b=n.load(path)
+def guide_census(path,owners,out,immutable_material):
+    """Save every observed router row before any routing-admission assertion."""
+    observed=dict(status='INCOMPLETE_ROUTER_API_OBSERVATION',accepted=False,
+        source_odb_sha256=c.file_sha(path),rows={},special_observations={},
+        duplicate_names=[],current_net=None,enumerated_count=0,enumeration_complete=False,
+        immutable_special_material=immutable_material,
+        material_protection='Already compared by structural_equal before this call; unchanged postroute invariants remain mandatory.')
+    report=None;failure=None;answer=None;db=None
     try:
-        rows={}
+        db,b=n.load(path)
         for net in b.getNets():
-            rows[net.getName()]=dict(n.encoded(net),guides=len(list(net.getGuides())),
-                terminals=len(list(net.getITerms()))+len(list(net.getBTerms())),special=net.isSpecial())
-        return s.router_census(rows,owners)
-    finally:odb.dbDatabase.destroy(db)
+            name=net.getName();observed['current_net']=name;observed['enumerated_count']+=1
+            guides=list(net.getGuides());iterms=list(net.getITerms());bterms=list(net.getBTerms())
+            row=dict(n.encoded(net),guides=len(guides),terminals=len(iterms)+len(bterms),
+                special=net.isSpecial(),sigtype=str(net.getSigType()))
+            if name in observed['rows']:
+                observed['duplicate_names'].append(dict(name=name,row=row))
+            else:observed['rows'][name]=row
+            if row['special']is True:
+                details=[]
+                for ordinal,guide in enumerate(guides):
+                    owner=guide.getNet();layer=guide.getLayer();box=guide.getBox()
+                    details.append(dict(ordinal=ordinal,owner=None if owner is None else owner.getName(),
+                        layer=None if layer is None else layer.getName(),
+                        box=[box.xMin(),box.yMin(),box.xMax(),box.yMax()],congested=guide.isCongested()))
+                observed['special_observations'][name]=dict(identity=n.identity(db,net),guides=details)
+        observed.update(current_net=None,enumeration_complete=True)
+        report=s.router_census_observation(observed['rows'],owners)
+        native_refusals=[]
+        if observed['duplicate_names']:native_refusals.append(dict(name=None,reason='duplicate_native_net_name'))
+        for name,details in observed['special_observations'].items():
+            row=observed['rows'][name];identity=details['identity']
+            if not (identity['name']==name and identity['sigtype']==row['sigtype']
+                and len(identity['terminals'])+len(identity['bterms'])==row['terminals']):
+                native_refusals.append(dict(name=name,reason='special_terminal_identity_join'))
+            if len(details['guides'])!=row['guides']or any(
+                guide['owner']!=name or guide['layer']is None or guide['congested']
+                or not (guide['box'][0]<guide['box'][2]and guide['box'][1]<guide['box'][3])
+                for guide in details['guides']):
+                native_refusals.append(dict(name=name,reason='special_guide_identity_or_geometry'))
+        report['native_observation_refusals']=native_refusals
+        # Both complete raw observations and all compact refusal classes survive rejection.
+        save(out/'router-census-observed.json',observed)
+        save(out/'router-census-report.json',report)
+        assert not native_refusals,('Native router census observation refused',native_refusals)
+        answer=s.router_census(observed['rows'],owners)
+        observed['status']='COMPLETE_ROUTER_CENSUS_GATE_NOT_ROUTING_ACCEPTANCE'
+    except BaseException as exc:
+        failure=exc
+        observed.update(status='FAIL_ROUTER_CENSUS_NO_ROUTING',error=repr(exc))
+    finally:
+        try:
+            if db is not None:odb.dbDatabase.destroy(db)
+        except BaseException as exc:
+            observed['database_cleanup_error']=repr(exc)
+            observed['status']='FAIL_ROUTER_CENSUS_NO_ROUTING'
+            if failure is None:failure=exc
+        if report is None:
+            report=s.router_census_observation(observed['rows'],owners)
+            report['native_observation_refusals']=[]
+        report.update(observation_status=observed['status'],
+            enumeration_complete=observed['enumeration_complete'],
+            current_net=observed['current_net'],enumerated_count=observed['enumerated_count'],accepted=False)
+        if failure is not None:report['error']=repr(failure)
+        save(out/'router-census-observed.json',observed)
+        save(out/'router-census-report.json',report)
+    if failure is not None:raise failure
+    answer['saved_census']={p:c.file_sha(out/p)for p in (
+        'router-census-observed.json','router-census-report.json')}
+    return answer
 
 def main():
     assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ.get('GITHUB_RUN_ATTEMPT')=='1'
@@ -151,7 +212,8 @@ def main():
                     {k:'FIXED'if v is not None else None for k,v in classes.items()})
                 assert all(got['encoded'][k]==baseline['encoded'][k]for k in s.TARGETS)
                 assert c.restore_classes(fixed,classes)==original
-                result['router_census']=guide_census(out/'fixed.odb',owners)
+                result['router_census']=guide_census(out/'fixed.odb',owners,out,
+                    got['geometry']['immutable_obstacles_and_special_material'])
                 result['guide_proof']=prior.validate_guide_proof(prior.guide_proof(out/'fixed.odb'))
                 save(out/'fixed-native.json',got)
                 settings=old.timing_contract(json.loads(c.regular(global_root/(old.GLOBAL_PREFIX+'config.json')).read_bytes()),

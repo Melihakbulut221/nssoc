@@ -297,6 +297,158 @@ def sequence_controls():
         rejected.append(old)
     return dict(actual_sequence=positive,actual_call_mutations_refused=rejected)
 
+def router_census_controls():
+    """Actual collector/save/validator with explicit synthetic native collaborators."""
+    with patch.dict(sys.modules,{'odb':types.ModuleType('odb')}):
+        import mainchip_two_signal_repair_native as native
+    class Net:
+        def __init__(self,name,**changes):
+            self.name=name
+            self.row=dict(wire_present=False,metadata='ROUTED',paths=[],
+                guides=0,terminals=1,special=False,sigtype='SIGNAL')
+            self.row.update(changes);self.identity_delta=0;self.guide_owner=None;self.api_error=None
+        def getName(self):return self.name
+        def getSigType(self):return self.row['sigtype']
+        def isSpecial(self):return self.row['special']
+        def getITerms(self):return list(range(self.row['terminals']))
+        def getBTerms(self):return []
+        def getGuides(self):
+            if self.api_error is not None:raise self.api_error
+            return [Guide(self,i)for i in range(self.row['guides'])]
+    class Guide:
+        def __init__(self,net,ordinal):self.net=net;self.ordinal=ordinal
+        def getNet(self):
+            return self.net if self.net.guide_owner is None else types.SimpleNamespace(getName=lambda:self.net.guide_owner)
+        def getLayer(self):return types.SimpleNamespace(getName=lambda:'Metal5')
+        def getBox(self):return types.SimpleNamespace(xMin=lambda:10+self.ordinal,yMin=lambda:20,
+            xMax=lambda:30+self.ordinal,yMax=lambda:40)
+        def isCongested(self):return False
+    targets=[Net(name,wire_present=True,metadata='ROUTED',paths=['ROUTED'],guides=1,terminals=2)for name in s.TARGETS]
+    fixed=Net('fixed-wire',wire_present=True,metadata='FIXED',paths=['FIXED'],terminals=2)
+    special=Net('VDD',special=True,terminals=4,guides=2) # SIGNAL intentionally: actual flag, not name/supply.
+    nets=targets+[fixed,special]+[Net('u'+str(i).zfill(6))for i in range(143820-4)]
+    owners=dict(frozen=sorted(x.name for x in nets if x.name not in s.TARGETS))
+    material=dict(counts={'special-wire':3,'master-obstruction':2},sha256='a'*64,
+        scope='Explicit synthetic immutable-material fixture; no native geometry claim')
+    positive=[];rejected=[]
+    baseline_rows=None
+    def changed(index,**values):
+        result=list(nets);obj=copy.copy(nets[index]);obj.row=dict(obj.row,**values);result[index]=obj;return result,obj
+    def invoke(label,current,reason=None,error=None,cleanup_error=None):
+        db=object();destroyed=[];entry_checks=[]
+        block=types.SimpleNamespace(getNets=lambda:current)
+        def destroy(value):
+            assert value is db;destroyed.append(True)
+            if cleanup_error is not None:raise cleanup_error
+        def identity(db_value,net):
+            assert db_value is db
+            return dict(name=net.name,sigtype=net.row['sigtype'],
+                terminals=[['fixture-instance-'+str(i),'P']for i in range(net.row['terminals']+net.identity_delta)],
+                bterms=[],rule=None)
+        def encoded(net):return {k:copy.deepcopy(net.row[k])for k in ('wire_present','metadata','paths')}
+        actual=s.router_census
+        with tempfile.TemporaryDirectory(prefix='two-signal-router-census-')as folder:
+            out=Path(folder);path=out/'synthetic-fixed.odb';path.write_bytes(b'EXPLICIT_SYNTHETIC_NOT_ODB')
+            def admission(rows,owner_map):
+                saved=json.loads((out/'router-census-observed.json').read_text())
+                report=json.loads((out/'router-census-report.json').read_text())
+                assert saved['rows']==rows and saved['enumeration_complete']is True
+                assert report['rows_sha256']==s.c.digest(s.c.canonical(rows))
+                entry_checks.append(True)
+                return actual(rows,owner_map)
+            with patch.object(native,'odb',types.SimpleNamespace(dbDatabase=types.SimpleNamespace(destroy=destroy))),\
+                patch.object(native.n,'load',lambda p:(db,block)),patch.object(native.n,'encoded',encoded),\
+                patch.object(native.n,'identity',identity),patch.object(s,'router_census',admission):
+                try:answer=native.guide_census(path,owners,out,material)
+                except BaseException as exc:
+                    assert reason is not None or error is not None or cleanup_error is not None,(label,repr(exc))
+                    if error is not None:assert exc is error,(label,repr(exc))
+                    elif cleanup_error is not None:assert exc is cleanup_error,(label,repr(exc))
+                    else:assert type(exc)is AssertionError,(label,repr(exc))
+                else:
+                    assert reason is error is cleanup_error is None,('Unexpected collector acceptance',label)
+                    assert answer['two_routed_nonfixed_guided_names']==sorted(s.TARGETS)
+                    assert answer['actual_special_nonparticipants']==['VDD']
+                    assert answer['saved_census']=={p:s.c.file_sha(out/p)for p in (
+                        'router-census-observed.json','router-census-report.json')}
+            saved=json.loads((out/'router-census-observed.json').read_text())
+            report=json.loads((out/'router-census-report.json').read_text())
+            assert destroyed==[True]and saved['accepted']is report['accepted']is False
+            assert saved['source_odb_sha256']==s.c.file_sha(path)
+            assert saved['immutable_special_material']==material
+            assert report['rows_sha256']==s.c.digest(s.c.canonical(saved['rows']))
+            if reason is None and error is None and cleanup_error is None:
+                assert saved['status']=='COMPLETE_ROUTER_CENSUS_GATE_NOT_ROUTING_ACCEPTANCE'
+                assert report['enumeration_complete']is True and len(saved['rows'])==143820 and entry_checks==[True]
+                details=saved['special_observations']['VDD']
+                assert details['identity']['terminals']==[['fixture-instance-'+str(i),'P']for i in range(4)]
+                assert details['guides']==[dict(ordinal=i,owner='VDD',layer='Metal5',box=[10+i,20,30+i,40],congested=False)for i in range(2)]
+                positive.append(label)
+            else:
+                assert saved['status']==report['observation_status']=='FAIL_ROUTER_CENSUS_NO_ROUTING'
+                if reason is not None:
+                    reasons=[x['reason']for x in report['refusals']+report['native_observation_refusals']]
+                    assert reasons==[reason],(label,reasons)
+                if error is not None:
+                    assert saved['enumeration_complete']is False and saved['current_net']==current[-1].name
+                    assert saved['enumerated_count']==143820 and len(saved['rows'])==143819
+                    assert saved['error']==repr(error)
+                if cleanup_error is not None:
+                    assert saved['database_cleanup_error']==repr(cleanup_error)
+                rejected.append(label)
+            return saved,report
+    saved,_=invoke('actual_special_SIGNAL_multiterminal_nonzero_guides_saved_before_gate',nets)
+    baseline_rows=saved['rows']
+    current,_=changed(3,sigtype='POWER')
+    invoke('actual_special_POWER_not_supply_only_inference',current)
+    current,_=changed(3,wire_present=True,metadata='FIXED',paths=['FIXED'])
+    invoke('special_ordinary_wire_still_encoded_FIXED',current)
+    # Preserve the exact failed planner, not a hand-written approximation.
+    frozen=s.ROOT/'docs/evidence/mainchip-two-signal-router-census-failed-planner-20261027.py'
+    raw=frozen.read_bytes()
+    assert s.c.digest(raw)=='7bcc472de2db9715065863c2a44b27abe1a05c4581c5ff04a9aa6879145dcf6f'
+    node=[x for x in ast.parse(raw).body if isinstance(x,ast.FunctionDef)and x.name=='router_census']
+    assert len(node)==1
+    scope={'TARGETS':s.TARGETS}
+    exec(compile(ast.Module(body=node,type_ignores=[]),str(frozen),'exec'),scope)
+    old_rows={name:{k:v for k,v in row.items()if k!='sigtype'}for name,row in baseline_rows.items()}
+    try:scope['router_census'](old_rows,owners)
+    except AssertionError as exc:
+        assert exc.args==()
+        tb=exc.__traceback__;hit=[]
+        while tb is not None:
+            if tb.tb_frame.f_code is scope['router_census'].__code__:hit.append(tb.tb_lineno)
+            tb=tb.tb_next
+        assert hit==[111]
+        rejected.append('exact_old_untyped_special_refusal_reproduced_not_actual_offender_claim')
+    else:raise AssertionError('Original untyped special-net failure not reproduced')
+    for label,index,values,reason in [
+        ('same_native_row_ordinary',3,{'special':False},'ordinary_unwired_must_be_unguided_singleton'),
+        ('ordinary_guide_bearing_unwired',4,{'guides':1},'ordinary_unwired_must_be_unguided_singleton'),
+        ('ordinary_multiterminal_unwired',4,{'terminals':2},'ordinary_unwired_must_be_unguided_singleton'),
+        ('truthy_special_not_boolean',3,{'special':1},'row_types'),
+        ('ordinary_supply_is_not_special',2,{'sigtype':'POWER'},'ordinary_supply_is_DRT_305_not_a_skip'),
+        ('target_special_refused',0,{'special':True},'target_must_be_ordinary_routed_guided_signal'),
+        ('target_without_guides',0,{'guides':0},'target_must_be_ordinary_routed_guided_signal'),
+        ('ordinary_fixed_wire_changed',2,{'paths':['ROUTED']},'ordinary_nontarget_wire_must_be_FIXED'),
+        ('special_ordinary_wire_changed',3,{'wire_present':True,'paths':['ROUTED']},'special_ordinary_wire_must_remain_FIXED')]:
+        current,_=changed(index,**values);invoke(label,current,reason)
+    current,obj=changed(3);obj.identity_delta=1
+    invoke('special_pin_identity_join_refused_after_saved_observation',current,'special_terminal_identity_join')
+    current,obj=changed(3);obj.guide_owner='different-native-net'
+    invoke('special_guide_owner_join_refused_after_saved_observation',current,'special_guide_identity_or_geometry')
+    invoke('duplicate_native_name_saved_and_refused',nets+[nets[-1]],'duplicate_native_net_name')
+    invoke('missing_native_name_saved_and_refused',nets[:-1],'complete_net_membership')
+    current,obj=changed(len(nets)-1);late=RuntimeError('EXACT_LATE_ROUTER_GUIDE_API_FAILURE');obj.api_error=late
+    invoke('late_actual_getter_preserves_complete_prefix_and_exception',current,error=late)
+    cleanup=RuntimeError('EXACT_ROUTER_CENSUS_DATABASE_CLEANUP_FAILURE')
+    invoke('cleanup_failure_cannot_publish_success',nets,cleanup_error=cleanup)
+    assert len(positive)==3 and len(rejected)==16
+    return dict(positive=positive,rejected=rejected,actual_guide_census_and_router_functions=True,
+        actual_JSON_persistence=True,full_synthetic_143820_net_census=True,
+        native_API_collaborators='Explicit synthetic Net/Guide, load/encoded/identity/destroy; no native ODB execution',
+        original_failed_row_unknown=True)
+
 def boundary_controls():
     names=[f'clock{i:04}'for i in range(1691)]
     names=sorted(names)
@@ -334,7 +486,7 @@ def boundary_controls():
         target=name in s.TARGETS;wired=encoded[name]['wire_present']
         rows[name]=dict(wire_present=wired,metadata='ROUTED'if target or not wired else'FIXED',
             paths=(['ROUTED']if target else['FIXED'])if wired else[],guides=1 if target else 0,
-            terminals=2 if wired else 1,special=False)
+            terminals=2 if wired else 1,special=False,sigtype='CLOCK'if name in names else'SIGNAL')
     census=s.router_census(rows,owners);assert census['two_routed_nonfixed_guided_names']==sorted(s.TARGETS)
     positive.append('exact_two_router_candidates_with_unwired_nonguided_singletons')
     for name,key,value in [(names[0],'metadata','ROUTED'),(names[0],'paths',['ROUTED']),
@@ -724,6 +876,7 @@ def controls():
         projection=projection_controls(),decision=decision_controls(),native_API=native_api_controls(),
         identity_contract=identity_contract_controls(),
         budgets=budget_controls(),sequence=sequence_controls(),boundary=boundary_controls(),outer=outer_controls(),
+        router_census=router_census_controls(),
         disconnected_pins=disconnected_pin_controls(),transport=transport_controls(),
         inherited=inherited_controls(),actual_runtime_executed=False,
         archive_accessed=False,synthetic_geometry_only=True)
