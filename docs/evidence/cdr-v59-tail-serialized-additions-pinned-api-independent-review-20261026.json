@@ -1,0 +1,15 @@
+{
+  "actual_runtime_serialization_qualified": false,
+  "electrical_accepted": false,
+  "full_contract_fixture_counter_audit_repeated": false,
+  "no_authored_imports_pya_tests_archives_or_native": true,
+  "physical_accepted": false,
+  "reviewer": "/root/pll_handoff",
+  "schema": "bounded-independent-source-review-v1",
+  "scope": [
+    "Pinned KLayout v0.30.7 Shape.polygon conversion and Polygon/Box declaration semantics used by the exact17 helper"
+  ],
+  "source": "b4892a8ddbfcbb4cc1a2b843a1652aedcc6ac33d",
+  "verbatim_payload": "Bounded KLayout API source review CLEAR at b4892a8ddbfcbb4cc1a2b843a1652aedcc6ac33d, helper8672B/b772536a6922148dea0ecf4298dce1a2a5199c468c68f80db0cdd17b394e2a98. Independently re-fetched all3 snapshots from upstream KLayout/klayout v0.30.7 and proved byte-equal: Box26488B/80e087dfcc401e2067c82a6d0ef46162785dd1022746a0da6ea1a68d656baffe; Polygon102057B/272715c02b62919509812f3b49558ac8a8d93fd71fb7fbbe9d5ee4dfe51e1246; Shape79750B/d1dfd12e5aecfd7ef03550b0c49e2398f69b86410c7df51c31e736c720e6411d. Shape get_polygon612\u2013620 returns copied polygon variant on successful conversion, nil otherwise; declaration1612 explicitly supports boxes/simple polygons. Polygon constructor1499/new_b1317 creates C(box); hull count1602/implementation1258 returns actual hull size; holes1717 counts holes; is_box1752 means identical to bounding box; equality1517 invokes Polygon C::equal, not Shape pointer equality. Helper gates native box/polygon kind before conversion and then requires no holes,4hullpoints,is_box and integer Polygon(Box) equality; property/raw Counter protection stays outside that conversion. No concrete API blocker in this narrow seam. No authored imports/Pya/tests/archive/native; no full contract/fixture/Counter re-audit or runtime serialization qualification. Root now holds my branch for source-controls activation, so please preserve this exact structured verdict docs-only on your branch if needed; I cannot append until root releases it.",
+  "verdict": "CLEAR_BOUNDED_PINNED_API_SOURCE_ONLY"
+}

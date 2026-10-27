@@ -1,0 +1,887 @@
+﻿2026-10-27T16:02:48.7704543Z Current runner version: '2.338.0'
+2026-10-27T16:02:48.7728725Z ##[group]Runner Image Provisioner
+2026-10-27T16:02:48.7729598Z Hosted Compute Agent
+2026-10-27T16:02:48.7730162Z Version: 20261021.618
+2026-10-27T16:02:48.7730873Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T16:02:48.7731721Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T16:02:48.7732360Z Worker ID: {9bd4737e-9192-407a-beef-706f92bf2fc6}
+2026-10-27T16:02:48.7733082Z Region: southcentralus
+2026-10-27T16:02:48.7733960Z Cloud: Azure
+2026-10-27T16:02:48.7734475Z ##[endgroup]
+2026-10-27T16:02:48.7735875Z ##[group]Operating System
+2026-10-27T16:02:48.7736436Z Ubuntu
+2026-10-27T16:02:48.7736964Z 22.04.5
+2026-10-27T16:02:48.7737469Z LTS
+2026-10-27T16:02:48.7737965Z ##[endgroup]
+2026-10-27T16:02:48.7738510Z ##[group]Runner Image
+2026-10-27T16:02:48.7739071Z Image: ubuntu-22.04
+2026-10-27T16:02:48.7739630Z Version: 20261012.322.1
+2026-10-27T16:02:48.7740818Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20261012.322/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-27T16:02:48.7742269Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20261012.322
+2026-10-27T16:02:48.7743158Z ##[endgroup]
+2026-10-27T16:02:48.7744895Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T16:02:48.7747145Z Actions: read
+2026-10-27T16:02:48.7747725Z Contents: read
+2026-10-27T16:02:48.7748290Z Metadata: read
+2026-10-27T16:02:48.7748808Z ##[endgroup]
+2026-10-27T16:02:48.7750803Z Secret source: Actions
+2026-10-27T16:02:48.7751645Z Cache mode: write
+2026-10-27T16:02:48.7752366Z Prepare workflow directory
+2026-10-27T16:02:48.8139365Z Prepare all required actions
+2026-10-27T16:02:48.8187718Z Getting action download info
+2026-10-27T16:02:49.1552276Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-27T16:02:49.2679822Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-27T16:02:49.3796515Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-27T16:02:49.6418315Z Complete job name: source-controls
+2026-10-27T16:02:49.7205063Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-27T16:02:49.7206142Z with:
+2026-10-27T16:02:49.7206652Z   persist-credentials: false
+2026-10-27T16:02:49.7207323Z   repository: Melihakbulut221/nssoc
+2026-10-27T16:02:49.7211390Z   token: ***
+2026-10-27T16:02:49.7211856Z   ssh-strict: true
+2026-10-27T16:02:49.7212425Z   ssh-user: git
+2026-10-27T16:02:49.7212888Z   clean: true
+2026-10-27T16:02:49.7213607Z   sparse-checkout-cone-mode: true
+2026-10-27T16:02:49.7214242Z   fetch-depth: 1
+2026-10-27T16:02:49.7214725Z   fetch-tags: false
+2026-10-27T16:02:49.7215245Z   show-progress: true
+2026-10-27T16:02:49.7215743Z   lfs: false
+2026-10-27T16:02:49.7216179Z   submodules: false
+2026-10-27T16:02:49.7216707Z   set-safe-directory: true
+2026-10-27T16:02:49.7217268Z   allow-unsafe-pr-checkout: false
+2026-10-27T16:02:49.7218078Z env:
+2026-10-27T16:02:49.7218544Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-27T16:02:49.7219062Z ##[endgroup]
+2026-10-27T16:02:49.8222434Z Syncing repository: Melihakbulut221/nssoc
+2026-10-27T16:02:49.8225455Z ##[group]Getting Git version info
+2026-10-27T16:02:49.8226759Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-27T16:02:49.8228322Z [command]/usr/bin/git version
+2026-10-27T16:02:49.8331552Z git version 2.55.0
+2026-10-27T16:02:49.8368187Z ##[endgroup]
+2026-10-27T16:02:49.8405596Z Temporarily overriding HOME='/home/runner/work/_temp/f60421fc-e648-4a96-b794-e67e0a15efec' before making global git config changes
+2026-10-27T16:02:49.8407444Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T16:02:49.8408776Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-27T16:02:49.8443151Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-27T16:02:49.8446168Z ##[group]Initializing the repository
+2026-10-27T16:02:49.8450412Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-27T16:02:49.8570244Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T16:02:49.8572409Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T16:02:49.8589197Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T16:02:49.8590749Z hint: call:
+2026-10-27T16:02:49.8591512Z hint:
+2026-10-27T16:02:49.8592386Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T16:02:49.8594408Z hint:
+2026-10-27T16:02:49.8595569Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T16:02:49.8597387Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T16:02:49.8598709Z hint:
+2026-10-27T16:02:49.8599498Z hint: 	git branch -m <name>
+2026-10-27T16:02:49.8600427Z hint:
+2026-10-27T16:02:49.8601427Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T16:02:49.8602689Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-27T16:02:49.8605650Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-27T16:02:49.8618285Z ##[endgroup]
+2026-10-27T16:02:49.8619639Z ##[group]Disabling automatic garbage collection
+2026-10-27T16:02:49.8622105Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T16:02:49.8653135Z ##[endgroup]
+2026-10-27T16:02:49.8654666Z ##[group]Setting up auth
+2026-10-27T16:02:49.8661513Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T16:02:49.8701219Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T16:02:49.9076913Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T16:02:49.9107483Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T16:02:49.9328075Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T16:02:49.9359226Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T16:02:49.9552877Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T16:02:49.9660121Z ##[endgroup]
+2026-10-27T16:02:49.9662155Z ##[group]Fetching the repository
+2026-10-27T16:02:49.9669724Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +4bd48807b28b2b7a0ddf9b8a01dd926c2689dcd8:refs/remotes/origin/codex/cdr-v59-tail-saved-identity
+2026-10-27T16:03:11.9126892Z From https://github.com/Melihakbulut221/nssoc
+2026-10-27T16:03:11.9128414Z  * [new ref]           4bd48807b28b2b7a0ddf9b8a01dd926c2689dcd8 -> origin/codex/cdr-v59-tail-saved-identity
+2026-10-27T16:03:11.9135421Z ##[endgroup]
+2026-10-27T16:03:11.9136573Z ##[group]Determining the checkout info
+2026-10-27T16:03:11.9137583Z ##[endgroup]
+2026-10-27T16:03:11.9139936Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T16:03:11.9316946Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T16:03:11.9404309Z ##[group]Checking out the ref
+2026-10-27T16:03:11.9409124Z [command]/usr/bin/git checkout --progress --force -B codex/cdr-v59-tail-saved-identity refs/remotes/origin/codex/cdr-v59-tail-saved-identity
+2026-10-27T16:03:13.0434728Z Updating files:  10% (3139/30136)
+2026-10-27T16:03:13.2015294Z Updating files:  11% (3315/30136)
+2026-10-27T16:03:13.2569544Z Updating files:  12% (3617/30136)
+2026-10-27T16:03:13.3630956Z Updating files:  13% (3918/30136)
+2026-10-27T16:03:13.5153611Z Updating files:  14% (4220/30136)
+2026-10-27T16:03:13.6036890Z Updating files:  15% (4521/30136)
+2026-10-27T16:03:13.7177907Z Updating files:  16% (4822/30136)
+2026-10-27T16:03:14.0429290Z Updating files:  17% (5124/30136)
+2026-10-27T16:03:14.2759100Z Updating files:  17% (5176/30136)
+2026-10-27T16:03:14.4602213Z Updating files:  18% (5425/30136)
+2026-10-27T16:03:14.4832109Z Updating files:  19% (5726/30136)
+2026-10-27T16:03:14.5026034Z Updating files:  20% (6028/30136)
+2026-10-27T16:03:14.5192926Z Updating files:  21% (6329/30136)
+2026-10-27T16:03:14.6471210Z Updating files:  22% (6630/30136)
+2026-10-27T16:03:14.7038200Z Updating files:  23% (6932/30136)
+2026-10-27T16:03:14.7167737Z Updating files:  24% (7233/30136)
+2026-10-27T16:03:14.7446292Z Updating files:  25% (7534/30136)
+2026-10-27T16:03:14.7591155Z Updating files:  26% (7836/30136)
+2026-10-27T16:03:14.7746431Z Updating files:  27% (8137/30136)
+2026-10-27T16:03:14.7849580Z Updating files:  28% (8439/30136)
+2026-10-27T16:03:14.7990123Z Updating files:  29% (8740/30136)
+2026-10-27T16:03:14.8146164Z Updating files:  30% (9041/30136)
+2026-10-27T16:03:14.8227919Z Updating files:  31% (9343/30136)
+2026-10-27T16:03:14.8382725Z Updating files:  32% (9644/30136)
+2026-10-27T16:03:14.8477606Z Updating files:  33% (9945/30136)
+2026-10-27T16:03:14.8647489Z Updating files:  34% (10247/30136)
+2026-10-27T16:03:14.8806415Z Updating files:  35% (10548/30136)
+2026-10-27T16:03:14.9124998Z Updating files:  36% (10849/30136)
+2026-10-27T16:03:15.0426263Z Updating files:  37% (11151/30136)
+2026-10-27T16:03:15.0658821Z Updating files:  37% (11257/30136)
+2026-10-27T16:03:15.0857928Z Updating files:  38% (11452/30136)
+2026-10-27T16:03:15.1023266Z Updating files:  39% (11754/30136)
+2026-10-27T16:03:15.1172316Z Updating files:  40% (12055/30136)
+2026-10-27T16:03:15.1297282Z Updating files:  41% (12356/30136)
+2026-10-27T16:03:15.1402044Z Updating files:  42% (12658/30136)
+2026-10-27T16:03:15.1469189Z Updating files:  43% (12959/30136)
+2026-10-27T16:03:15.1571903Z Updating files:  44% (13260/30136)
+2026-10-27T16:03:15.1707426Z Updating files:  45% (13562/30136)
+2026-10-27T16:03:15.1834993Z Updating files:  46% (13863/30136)
+2026-10-27T16:03:15.1949811Z Updating files:  47% (14164/30136)
+2026-10-27T16:03:15.2105402Z Updating files:  48% (14466/30136)
+2026-10-27T16:03:15.2223192Z Updating files:  49% (14767/30136)
+2026-10-27T16:03:15.2306332Z Updating files:  50% (15068/30136)
+2026-10-27T16:03:15.2400571Z Updating files:  51% (15370/30136)
+2026-10-27T16:03:15.2525930Z Updating files:  52% (15671/30136)
+2026-10-27T16:03:15.2630183Z Updating files:  53% (15973/30136)
+2026-10-27T16:03:15.2896933Z Updating files:  54% (16274/30136)
+2026-10-27T16:03:15.2992002Z Updating files:  55% (16575/30136)
+2026-10-27T16:03:15.3091062Z Updating files:  56% (16877/30136)
+2026-10-27T16:03:15.3174713Z Updating files:  57% (17178/30136)
+2026-10-27T16:03:15.3276023Z Updating files:  58% (17479/30136)
+2026-10-27T16:03:15.3370688Z Updating files:  59% (17781/30136)
+2026-10-27T16:03:15.3524518Z Updating files:  60% (18082/30136)
+2026-10-27T16:03:15.3609410Z Updating files:  61% (18383/30136)
+2026-10-27T16:03:15.3671574Z Updating files:  62% (18685/30136)
+2026-10-27T16:03:15.3736206Z Updating files:  63% (18986/30136)
+2026-10-27T16:03:15.3818167Z Updating files:  64% (19288/30136)
+2026-10-27T16:03:15.3974647Z Updating files:  65% (19589/30136)
+2026-10-27T16:03:15.4229919Z Updating files:  66% (19890/30136)
+2026-10-27T16:03:15.4496027Z Updating files:  67% (20192/30136)
+2026-10-27T16:03:15.4593327Z Updating files:  68% (20493/30136)
+2026-10-27T16:03:15.4720972Z Updating files:  69% (20794/30136)
+2026-10-27T16:03:15.4814023Z Updating files:  70% (21096/30136)
+2026-10-27T16:03:15.6216013Z Updating files:  71% (21397/30136)
+2026-10-27T16:03:15.6303597Z Updating files:  72% (21698/30136)
+2026-10-27T16:03:15.6399945Z Updating files:  73% (22000/30136)
+2026-10-27T16:03:15.6476795Z Updating files:  74% (22301/30136)
+2026-10-27T16:03:15.6558606Z Updating files:  75% (22602/30136)
+2026-10-27T16:03:15.7110878Z Updating files:  76% (22904/30136)
+2026-10-27T16:03:15.7214238Z Updating files:  77% (23205/30136)
+2026-10-27T16:03:15.7829586Z Updating files:  78% (23507/30136)
+2026-10-27T16:03:15.8042161Z Updating files:  79% (23808/30136)
+2026-10-27T16:03:15.8319320Z Updating files:  80% (24109/30136)
+2026-10-27T16:03:15.8457343Z Updating files:  81% (24411/30136)
+2026-10-27T16:03:15.8602512Z Updating files:  82% (24712/30136)
+2026-10-27T16:03:15.8791816Z Updating files:  83% (25013/30136)
+2026-10-27T16:03:15.8952194Z Updating files:  84% (25315/30136)
+2026-10-27T16:03:15.9182900Z Updating files:  85% (25616/30136)
+2026-10-27T16:03:15.9306443Z Updating files:  86% (25917/30136)
+2026-10-27T16:03:15.9450276Z Updating files:  87% (26219/30136)
+2026-10-27T16:03:15.9547686Z Updating files:  88% (26520/30136)
+2026-10-27T16:03:15.9664438Z Updating files:  89% (26822/30136)
+2026-10-27T16:03:15.9685353Z Updating files:  90% (27123/30136)
+2026-10-27T16:03:15.9770529Z Updating files:  90% (27215/30136)
+2026-10-27T16:03:15.9854253Z Updating files:  91% (27424/30136)
+2026-10-27T16:03:15.9975471Z Updating files:  92% (27726/30136)
+2026-10-27T16:03:16.0153226Z Updating files:  93% (28027/30136)
+2026-10-27T16:03:16.0289752Z Updating files:  94% (28328/30136)
+2026-10-27T16:03:16.0468162Z Updating files:  95% (28630/30136)
+2026-10-27T16:03:16.0660843Z Updating files:  96% (28931/30136)
+2026-10-27T16:03:16.0791204Z Updating files:  97% (29232/30136)
+2026-10-27T16:03:16.0936323Z Updating files:  98% (29534/30136)
+2026-10-27T16:03:16.1243734Z Updating files:  99% (29835/30136)
+2026-10-27T16:03:16.1244465Z Updating files: 100% (30136/30136)
+2026-10-27T16:03:16.1244822Z Updating files: 100% (30136/30136), done.
+2026-10-27T16:03:16.3715146Z Switched to a new branch 'codex/cdr-v59-tail-saved-identity'
+2026-10-27T16:03:16.3717276Z branch 'codex/cdr-v59-tail-saved-identity' set up to track 'origin/codex/cdr-v59-tail-saved-identity'.
+2026-10-27T16:03:16.3864676Z ##[endgroup]
+2026-10-27T16:03:16.3907313Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T16:03:16.3941919Z 4bd48807b28b2b7a0ddf9b8a01dd926c2689dcd8
+2026-10-27T16:03:16.3955585Z ##[group]Removing auth
+2026-10-27T16:03:16.3956269Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T16:03:16.3992725Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T16:03:16.4255018Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T16:03:16.4286664Z http.https://github.com/.extraheader
+2026-10-27T16:03:16.4292476Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T16:03:16.4918803Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T16:03:16.5175882Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T16:03:16.5204923Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T16:03:16.5452604Z ##[endgroup]
+2026-10-27T16:03:16.5851736Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-27T16:03:16.5852252Z with:
+2026-10-27T16:03:16.5852569Z   python-version: 3.12
+2026-10-27T16:03:16.5852885Z   check-latest: false
+2026-10-27T16:03:16.5855613Z   token: ***
+2026-10-27T16:03:16.5855929Z   update-environment: true
+2026-10-27T16:03:16.5856313Z   allow-prereleases: false
+2026-10-27T16:03:16.5856652Z   freethreaded: false
+2026-10-27T16:03:16.5856955Z env:
+2026-10-27T16:03:16.5857283Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-27T16:03:16.5857625Z ##[endgroup]
+2026-10-27T16:03:16.7216342Z ##[group]Installed versions
+2026-10-27T16:03:16.7315304Z (node:2093) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T16:03:16.7316749Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T16:03:16.7317588Z Successfully set up CPython (3.12.15)
+2026-10-27T16:03:16.7318546Z ##[endgroup]
+2026-10-27T16:03:16.7822816Z ##[group]Run python scripts/check_cdr_v59_tail_saved_identity_imports.py
+2026-10-27T16:03:16.7823859Z [36;1mpython scripts/check_cdr_v59_tail_saved_identity_imports.py[0m
+2026-10-27T16:03:17.0099929Z shell: /usr/bin/bash -e {0}
+2026-10-27T16:03:17.0100634Z env:
+2026-10-27T16:03:17.0100964Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-27T16:03:17.0101383Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:17.0101935Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T16:03:17.0102422Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:17.0102891Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:17.0103731Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:17.0104219Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T16:03:17.0104673Z ##[endgroup]
+2026-10-27T16:03:18.8251895Z {
+2026-10-27T16:03:18.8252907Z   "status": "PASS_SAVED_IDENTITY_INITIAL_IMPORT_CONTROLS",
+2026-10-27T16:03:18.8253691Z   "positives": [
+2026-10-27T16:03:18.8254064Z     "exact_source_initialization_closure",
+2026-10-27T16:03:18.8254583Z     "actual_fresh_isolated_full_imports"
+2026-10-27T16:03:18.8254985Z   ],
+2026-10-27T16:03:18.8255344Z   "refusals": [
+2026-10-27T16:03:18.8255712Z     {
+2026-10-27T16:03:18.8256113Z       "case": "actual_absent_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8256608Z       "returncode": 1,
+2026-10-27T16:03:18.8256954Z       "stdout": "",
+2026-10-27T16:03:18.8261075Z       "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/importlib/__init__.py\", line 90, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen importlib._bootstrap>\", line 1387, in _gcd_import\n  File \"<frozen importlib._bootstrap>\", line 1360, in _find_and_load\n  File \"<frozen importlib._bootstrap>\", line 1331, in _find_and_load_unlocked\n  File \"<frozen importlib._bootstrap>\", line 935, in _load_unlocked\n  File \"<frozen importlib._bootstrap_external>\", line 999, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 488, in _call_with_frames_removed\n  File \"/tmp/cdr-identity-imports-2sdd7sx3/missing-cdr_v59_tail_saved_identity/scripts/cloud_cdr_v59_tail_saved_identity.py\", line 14, in <module>\n    import cdr_v59_tail_saved_identity as source\nModuleNotFoundError: No module named 'cdr_v59_tail_saved_identity'\n"
+2026-10-27T16:03:18.8264477Z     },
+2026-10-27T16:03:18.8264765Z     {
+2026-10-27T16:03:18.8265099Z       "case": "actual_absent_wait_cloud_tested_source_release",
+2026-10-27T16:03:18.8265503Z       "returncode": 1,
+2026-10-27T16:03:18.8265870Z       "stdout": "",
+2026-10-27T16:03:18.8269041Z       "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/importlib/__init__.py\", line 90, in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<frozen importlib._bootstrap>\", line 1387, in _gcd_import\n  File \"<frozen importlib._bootstrap>\", line 1360, in _find_and_load\n  File \"<frozen importlib._bootstrap>\", line 1331, in _find_and_load_unlocked\n  File \"<frozen importlib._bootstrap>\", line 935, in _load_unlocked\n  File \"<frozen importlib._bootstrap_external>\", line 999, in exec_module\n  File \"<frozen importlib._bootstrap>\", line 488, in _call_with_frames_removed\n  File \"/tmp/cdr-identity-imports-2sdd7sx3/missing-wait_cloud_tested_source_release/scripts/cloud_cdr_v59_tail_saved_identity.py\", line 19, in <module>\n    from wait_cloud_tested_source_release import wait\nModuleNotFoundError: No module named 'wait_cloud_tested_source_release'\n"
+2026-10-27T16:03:18.8272746Z     },
+2026-10-27T16:03:18.8273017Z     {
+2026-10-27T16:03:18.8274397Z       "case": "missing_source",
+2026-10-27T16:03:18.8274804Z       "error": "Missing or nonregular repository module"
+2026-10-27T16:03:18.8275199Z     },
+2026-10-27T16:03:18.8275490Z     {
+2026-10-27T16:03:18.8275780Z       "case": "changed_source",
+2026-10-27T16:03:18.8276162Z       "error": "Changed repository module"
+2026-10-27T16:03:18.8276499Z     },
+2026-10-27T16:03:18.8276744Z     {
+2026-10-27T16:03:18.8277083Z       "case": "source_symlink",
+2026-10-27T16:03:18.8277451Z       "error": "Missing or nonregular repository module"
+2026-10-27T16:03:18.8277886Z     },
+2026-10-27T16:03:18.8278142Z     {
+2026-10-27T16:03:18.8278419Z       "case": "unprotected_source",
+2026-10-27T16:03:18.8278832Z       "error": "Unprotected repository module"
+2026-10-27T16:03:18.8279185Z     },
+2026-10-27T16:03:18.8279514Z     {
+2026-10-27T16:03:18.8279811Z       "case": "undeclared_local",
+2026-10-27T16:03:18.8280182Z       "error": "Undeclared repository module"
+2026-10-27T16:03:18.8281044Z     },
+2026-10-27T16:03:18.8281321Z     {
+2026-10-27T16:03:18.8281673Z       "case": "unknown_external",
+2026-10-27T16:03:18.8282049Z       "error": "Undeclared external dependency"
+2026-10-27T16:03:18.8282424Z     },
+2026-10-27T16:03:18.8282713Z     {
+2026-10-27T16:03:18.8283003Z       "case": "stdlib_shadow",
+2026-10-27T16:03:18.8283453Z       "error": "Standard-library shadow"
+2026-10-27T16:03:18.8283861Z     }
+2026-10-27T16:03:18.8284137Z   ],
+2026-10-27T16:03:18.8284428Z   "positive_count": 2,
+2026-10-27T16:03:18.8284768Z   "refusal_count": 9,
+2026-10-27T16:03:18.8285090Z   "closure": {
+2026-10-27T16:03:18.8285422Z     "modules": {
+2026-10-27T16:03:18.8285952Z       "cdr_v59_tail_serialized_additions": "b772536a6922148dea0ecf4298dce1a2a5199c468c68f80db0cdd17b394e2a98",
+2026-10-27T16:03:18.8286688Z       "cdr_v59_tail_saved_identity": "5b4cd8d7bf4a6c73df3b509f1d09cdf2029854c67431c4d70c5e0457c15f8568",
+2026-10-27T16:03:18.8287403Z       "run_cloud_tx_layout_repair": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+2026-10-27T16:03:18.8288079Z       "cloud_verified_parts": "64b6655bfd6f8c348af62e9179268eafb84c9150cbba895989bcdfb2c6b5b795",
+2026-10-27T16:03:18.8288758Z       "cloud_chunked_results": "fe414dcd92c233554a82a2151232bab8803e6ec7863df3872fbde009d3905816",
+2026-10-27T16:03:18.8289517Z       "ensure_cloud_tested_source_release": "ff213cb47a28b65207ef280be8ab4a0059622a3daa6a1e2c81f781c81ff2876e",
+2026-10-27T16:03:18.8290282Z       "check_cdr_v59_tail_serialized_additions": "13bde7eec28dfa5524aba70c21703afe392210455a7b735652b6541455c50071",
+2026-10-27T16:03:18.8291064Z       "cdr_v59_tail_saved_identity_native": "4eab1f31c2414b6061c72096405f9688d8c1f03c6f31cb0fd505c17bd0523510",
+2026-10-27T16:03:18.8291798Z       "cdr_v59_tail_access_topology": "df8b0e712cd224c6af66d88e91242d4e5b5d8b75a96ebf81179cb740c06c3a37",
+2026-10-27T16:03:18.8292571Z       "check_cdr_v59_tail_saved_identity_runtime": "58ecea6b42a2455179864b3e274170d623e11df4937aa4288e8f580260709727",
+2026-10-27T16:03:18.8293287Z       "cdr_v59_tail_access_runtime": "946c08060f099e99f49ac35e559324b1e445d4c3865cfa7be954fa6e75db6176",
+2026-10-27T16:03:18.8294453Z       "check_cdr_v59_tail_saved_identity_transport": "e6996fa48fb16de0200a213d39939e0cfe161d17d0e33cfbd535d0d2f1de51dc",
+2026-10-27T16:03:18.8295241Z       "cloud_cdr_v59_tail_saved_identity": "12efbc07d78be237b0ea00d6c8630d7f3e3abb3c5fb4c54905190d26a1042566",
+2026-10-27T16:03:18.8295999Z       "wait_cloud_tested_source_release": "4c749e3f6f072c053f2dd5d45e9ad4f8cb2eca1e7c7b1cf480177f637fb04b73",
+2026-10-27T16:03:18.8296841Z       "migrate_outputs_to_cloud": "52fa3ef7adc92b6e6071b304ccb1b07908f31ccde7dacf39a7258e07356fa512",
+2026-10-27T16:03:18.8297574Z       "check_cdr_v59_tail_saved_identity": "e2b8947ccba486fd9c34707259622631efeeb7fc12b6db788b0d77313d208990"
+2026-10-27T16:03:18.8298239Z     },
+2026-10-27T16:03:18.8298535Z     "repository_edges": [
+2026-10-27T16:03:18.8298853Z       {
+2026-10-27T16:03:18.8299185Z         "from": "cdr_v59_tail_serialized_additions",
+2026-10-27T16:03:18.8299662Z         "line": 7,
+2026-10-27T16:03:18.8299955Z         "to": "cdr_v59_tail_saved_identity"
+2026-10-27T16:03:18.8300404Z       },
+2026-10-27T16:03:18.8300676Z       {
+2026-10-27T16:03:18.8300976Z         "from": "cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8301386Z         "line": 12,
+2026-10-27T16:03:18.8301691Z         "to": "ensure_cloud_tested_source_release"
+2026-10-27T16:03:18.8302073Z       },
+2026-10-27T16:03:18.8302560Z       {
+2026-10-27T16:03:18.8302931Z         "from": "cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8303493Z         "line": 13,
+2026-10-27T16:03:18.8303891Z         "to": "cloud_chunked_results"
+2026-10-27T16:03:18.8304337Z       },
+2026-10-27T16:03:18.8304682Z       {
+2026-10-27T16:03:18.8305125Z         "from": "cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8305588Z         "line": 14,
+2026-10-27T16:03:18.8306076Z         "to": "cloud_verified_parts"
+2026-10-27T16:03:18.8306441Z       },
+2026-10-27T16:03:18.8306699Z       {
+2026-10-27T16:03:18.8306979Z         "from": "cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8307351Z         "line": 15,
+2026-10-27T16:03:18.8307652Z         "to": "run_cloud_tx_layout_repair"
+2026-10-27T16:03:18.8307986Z       },
+2026-10-27T16:03:18.8308255Z       {
+2026-10-27T16:03:18.8308548Z         "from": "cloud_verified_parts",
+2026-10-27T16:03:18.8308920Z         "line": 7,
+2026-10-27T16:03:18.8309212Z         "to": "cloud_chunked_results"
+2026-10-27T16:03:18.8309544Z       },
+2026-10-27T16:03:18.8309815Z       {
+2026-10-27T16:03:18.8310140Z         "from": "check_cdr_v59_tail_serialized_additions",
+2026-10-27T16:03:18.8310534Z         "line": 12,
+2026-10-27T16:03:18.8310829Z         "to": "cdr_v59_tail_saved_identity"
+2026-10-27T16:03:18.8311154Z       },
+2026-10-27T16:03:18.8311449Z       {
+2026-10-27T16:03:18.8311802Z         "from": "check_cdr_v59_tail_serialized_additions",
+2026-10-27T16:03:18.8312178Z         "line": 13,
+2026-10-27T16:03:18.8312489Z         "to": "cdr_v59_tail_saved_identity_native"
+2026-10-27T16:03:18.8312837Z       },
+2026-10-27T16:03:18.8313119Z       {
+2026-10-27T16:03:18.8313599Z         "from": "check_cdr_v59_tail_serialized_additions",
+2026-10-27T16:03:18.8313985Z         "line": 14,
+2026-10-27T16:03:18.8314315Z         "to": "cdr_v59_tail_serialized_additions"
+2026-10-27T16:03:18.8314668Z       },
+2026-10-27T16:03:18.8314978Z       {
+2026-10-27T16:03:18.8315291Z         "from": "cdr_v59_tail_saved_identity_native",
+2026-10-27T16:03:18.8315650Z         "line": 9,
+2026-10-27T16:03:18.8315970Z         "to": "cdr_v59_tail_saved_identity"
+2026-10-27T16:03:18.8316302Z       },
+2026-10-27T16:03:18.8316603Z       {
+2026-10-27T16:03:18.8316910Z         "from": "cdr_v59_tail_saved_identity_native",
+2026-10-27T16:03:18.8317245Z         "line": 10,
+2026-10-27T16:03:18.8317598Z         "to": "cdr_v59_tail_access_topology"
+2026-10-27T16:03:18.8317934Z       },
+2026-10-27T16:03:18.8318261Z       {
+2026-10-27T16:03:18.8318574Z         "from": "check_cdr_v59_tail_saved_identity_runtime",
+2026-10-27T16:03:18.8318929Z         "line": 8,
+2026-10-27T16:03:18.8319276Z         "to": "cdr_v59_tail_saved_identity"
+2026-10-27T16:03:18.8319604Z       },
+2026-10-27T16:03:18.8319876Z       {
+2026-10-27T16:03:18.8320216Z         "from": "check_cdr_v59_tail_saved_identity_runtime",
+2026-10-27T16:03:18.8320582Z         "line": 9,
+2026-10-27T16:03:18.8320908Z         "to": "cdr_v59_tail_access_runtime"
+2026-10-27T16:03:18.8321268Z       },
+2026-10-27T16:03:18.8321548Z       {
+2026-10-27T16:03:18.8321883Z         "from": "check_cdr_v59_tail_saved_identity_transport",
+2026-10-27T16:03:18.8322251Z         "line": 16,
+2026-10-27T16:03:18.8322576Z         "to": "cdr_v59_tail_saved_identity"
+2026-10-27T16:03:18.8322898Z       },
+2026-10-27T16:03:18.8323153Z       {
+2026-10-27T16:03:18.8324037Z         "from": "check_cdr_v59_tail_saved_identity_transport",
+2026-10-27T16:03:18.8324424Z         "line": 17,
+2026-10-27T16:03:18.8324738Z         "to": "cloud_cdr_v59_tail_saved_identity"
+2026-10-27T16:03:18.8325136Z       },
+2026-10-27T16:03:18.8325462Z       {
+2026-10-27T16:03:18.8325816Z         "from": "check_cdr_v59_tail_saved_identity_transport",
+2026-10-27T16:03:18.8326208Z         "line": 18,
+2026-10-27T16:03:18.8326508Z         "to": "cloud_chunked_results"
+2026-10-27T16:03:18.8326856Z       },
+2026-10-27T16:03:18.8327113Z       {
+2026-10-27T16:03:18.8327431Z         "from": "cloud_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8327801Z         "line": 14,
+2026-10-27T16:03:18.8328139Z         "to": "cdr_v59_tail_saved_identity"
+2026-10-27T16:03:18.8328486Z       },
+2026-10-27T16:03:18.8328887Z       {
+2026-10-27T16:03:18.8329221Z         "from": "cloud_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8329567Z         "line": 15,
+2026-10-27T16:03:18.8329848Z         "to": "cdr_v59_tail_access_runtime"
+2026-10-27T16:03:18.8330216Z       },
+2026-10-27T16:03:18.8330469Z       {
+2026-10-27T16:03:18.8330775Z         "from": "cloud_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8331134Z         "line": 16,
+2026-10-27T16:03:18.8331449Z         "to": "migrate_outputs_to_cloud"
+2026-10-27T16:03:18.8331814Z       },
+2026-10-27T16:03:18.8332068Z       {
+2026-10-27T16:03:18.8332380Z         "from": "cloud_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8332734Z         "line": 17,
+2026-10-27T16:03:18.8333053Z         "to": "ensure_cloud_tested_source_release"
+2026-10-27T16:03:18.8333664Z       },
+2026-10-27T16:03:18.8333942Z       {
+2026-10-27T16:03:18.8334238Z         "from": "cloud_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8334627Z         "line": 18,
+2026-10-27T16:03:18.8334991Z         "to": "cloud_chunked_results"
+2026-10-27T16:03:18.8335341Z       },
+2026-10-27T16:03:18.8335598Z       {
+2026-10-27T16:03:18.8335898Z         "from": "cloud_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8336311Z         "line": 19,
+2026-10-27T16:03:18.8336654Z         "to": "wait_cloud_tested_source_release"
+2026-10-27T16:03:18.8337000Z       },
+2026-10-27T16:03:18.8337271Z       {
+2026-10-27T16:03:18.8337578Z         "from": "wait_cloud_tested_source_release",
+2026-10-27T16:03:18.8337985Z         "line": 5,
+2026-10-27T16:03:18.8338312Z         "to": "ensure_cloud_tested_source_release"
+2026-10-27T16:03:18.8338660Z       },
+2026-10-27T16:03:18.8338938Z       {
+2026-10-27T16:03:18.8339236Z         "from": "check_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8339588Z         "line": 11,
+2026-10-27T16:03:18.8339903Z         "to": "cdr_v59_tail_saved_identity"
+2026-10-27T16:03:18.8340218Z       },
+2026-10-27T16:03:18.8340617Z       {
+2026-10-27T16:03:18.8341404Z         "from": "check_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8341856Z         "line": 12,
+2026-10-27T16:03:18.8342283Z         "to": "cdr_v59_tail_saved_identity_native"
+2026-10-27T16:03:18.8342755Z       },
+2026-10-27T16:03:18.8343097Z       {
+2026-10-27T16:03:18.8343559Z         "from": "check_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8343950Z         "line": 13,
+2026-10-27T16:03:18.8344256Z         "to": "cdr_v59_tail_access_topology"
+2026-10-27T16:03:18.8344667Z       },
+2026-10-27T16:03:18.8344948Z       {
+2026-10-27T16:03:18.8345362Z         "from": "check_cdr_v59_tail_saved_identity",
+2026-10-27T16:03:18.8345755Z         "line": 14,
+2026-10-27T16:03:18.8346083Z         "to": "cloud_cdr_v59_tail_saved_identity"
+2026-10-27T16:03:18.8346514Z       }
+2026-10-27T16:03:18.8346786Z     ],
+2026-10-27T16:03:18.8347086Z     "stdlib_externals": [
+2026-10-27T16:03:18.8347439Z       "argparse",
+2026-10-27T16:03:18.8347737Z       "ast",
+2026-10-27T16:03:18.8348062Z       "collections",
+2026-10-27T16:03:18.8348368Z       "contextlib",
+2026-10-27T16:03:18.8348644Z       "copy",
+2026-10-27T16:03:18.8348975Z       "gzip",
+2026-10-27T16:03:18.8349265Z       "hashlib",
+2026-10-27T16:03:18.8349583Z       "importlib",
+2026-10-27T16:03:18.8350068Z       "io",
+2026-10-27T16:03:18.8350349Z       "json",
+2026-10-27T16:03:18.8350683Z       "os",
+2026-10-27T16:03:18.8350983Z       "pathlib",
+2026-10-27T16:03:18.8351283Z       "re",
+2026-10-27T16:03:18.8351575Z       "shutil",
+2026-10-27T16:03:18.8352054Z       "signal",
+2026-10-27T16:03:18.8352456Z       "subprocess",
+2026-10-27T16:03:18.8352833Z       "sys",
+2026-10-27T16:03:18.8353201Z       "tarfile",
+2026-10-27T16:03:18.8353856Z       "tempfile",
+2026-10-27T16:03:18.8354286Z       "threading",
+2026-10-27T16:03:18.8354767Z       "time",
+2026-10-27T16:03:18.8355085Z       "traceback",
+2026-10-27T16:03:18.8355365Z       "types",
+2026-10-27T16:03:18.8355742Z       "unittest"
+2026-10-27T16:03:18.8356125Z     ],
+2026-10-27T16:03:18.8356503Z     "deferred_function_and_CAD_imports_outside_scope": true,
+2026-10-27T16:03:18.8356981Z     "initialization_data_reads": []
+2026-10-27T16:03:18.8357334Z   },
+2026-10-27T16:03:18.8357844Z   "native_or_CAD_imported": false
+2026-10-27T16:03:18.8358303Z }
+2026-10-27T16:03:18.9056743Z ##[group]Run python scripts/check_cdr_v59_tail_saved_identity.py
+2026-10-27T16:03:18.9057292Z [36;1mpython scripts/check_cdr_v59_tail_saved_identity.py[0m
+2026-10-27T16:03:18.9102969Z shell: /usr/bin/bash -e {0}
+2026-10-27T16:03:18.9103581Z env:
+2026-10-27T16:03:18.9103944Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-27T16:03:18.9104386Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:18.9104957Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T16:03:18.9105464Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:18.9105918Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:18.9106459Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:18.9106932Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T16:03:18.9107360Z ##[endgroup]
+2026-10-27T16:03:26.0201335Z Traceback (most recent call last):
+2026-10-27T16:03:26.0202004Z {
+2026-10-27T16:03:26.0212739Z   File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_serialized_additions.py", line 99, in run
+2026-10-27T16:03:26.0214840Z     try:proof=gate.verify(pya,n.properties,left,right,generation,s.ROOT/s.GENERATOR)
+2026-10-27T16:03:26.0215966Z               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-27T16:03:26.0217309Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_serialized_additions.py", line 111, in verify
+2026-10-27T16:03:26.0218607Z     key,kind=rectangle(record);acquired[key]+=count
+2026-10-27T16:03:26.0219351Z              ^^^^^^^^^^^^^^^^^
+2026-10-27T16:03:26.0220573Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_serialized_additions.py", line 23, in rectangle
+2026-10-27T16:03:26.0222089Z     require((layer,datatype) in ((126,0),(133,0),(134,0)),"Unapproved addition layer/datatype")
+2026-10-27T16:03:26.0223815Z   File "/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_serialized_additions.py", line 16, in require
+2026-10-27T16:03:26.0225183Z     if not value:raise AssertionError(message)
+2026-10-27T16:03:26.0225928Z                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-27T16:03:26.0226748Z AssertionError: Unapproved addition layer/datatype
+2026-10-27T16:03:26.0227332Z 
+2026-10-27T16:03:26.0227829Z During handling of the above exception, another exception occurred:
+2026-10-27T16:03:26.0228461Z 
+2026-10-27T16:03:26.0228734Z Traceback (most recent call last):
+2026-10-27T16:03:26.0230061Z   File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_saved_identity.py", line 332, in <module>
+2026-10-27T16:03:26.0231293Z     if __name__=="__main__":main()
+2026-10-27T16:03:26.0231946Z                             ^^^^^^
+2026-10-27T16:03:26.0232631Z   "status": "FAIL_SOURCE_AND_ADMISSION",
+2026-10-27T16:03:26.0233290Z   "source": {
+2026-10-27T16:03:26.0234258Z     "status": "PASS_SAVED_IDENTITY_SOURCE_CONTROLS",
+2026-10-27T16:03:26.0235007Z     "positives": [
+2026-10-27T16:03:26.0235788Z       "complete_actual_JSON_with_explicit_synthetic_stable_identity",
+2026-10-27T16:03:26.0237257Z       "exact_actual_original_native_ports_failure_line107",
+2026-10-27T16:03:26.0238110Z       "actual_path_walker_API_shaped_fixture",
+2026-10-27T16:03:26.0239017Z       "port_enumeration_order_only_with_full_binding_retained"
+2026-10-27T16:03:26.0239807Z     ],
+2026-10-27T16:03:26.0240276Z     "refusals": [
+2026-10-27T16:03:26.0240876Z       {
+2026-10-27T16:03:26.0241489Z         "case": "latent_all500_raw_path_rejection",
+2026-10-27T16:03:26.0243577Z         "actual_exception": "Original device geometry, parameters, identity or terminals changed"
+2026-10-27T16:03:26.0244691Z       },
+2026-10-27T16:03:26.0245186Z       {
+2026-10-27T16:03:26.0245789Z         "case": "wrong_root",
+2026-10-27T16:03:26.0246567Z         "actual_exception": "Wrong root or empty instance path"
+2026-10-27T16:03:26.0247402Z       },
+2026-10-27T16:03:26.0247910Z       {
+2026-10-27T16:03:26.0248451Z         "case": "empty_path",
+2026-10-27T16:03:26.0249626Z         "actual_exception": "Wrong root or empty instance path"
+2026-10-27T16:03:26.0250469Z       },
+2026-10-27T16:03:26.0250974Z       {
+2026-10-27T16:03:26.0251512Z         "case": "malformed_index",
+2026-10-27T16:03:26.0252363Z         "actual_exception": "Malformed cell-index/instance-ordinal token"
+2026-10-27T16:03:26.0253308Z       },
+2026-10-27T16:03:26.0253857Z       {
+2026-10-27T16:03:26.0254296Z         "case": "negative_index",
+2026-10-27T16:03:26.0254953Z         "actual_exception": "Malformed cell-index/instance-ordinal token"
+2026-10-27T16:03:26.0255571Z       },
+2026-10-27T16:03:26.0255958Z       {
+2026-10-27T16:03:26.0256321Z         "case": "missing_ordinal",
+2026-10-27T16:03:26.0256799Z         "actual_exception": "Instance ordinal is absent"
+2026-10-27T16:03:26.0257365Z       },
+2026-10-27T16:03:26.0257702Z       {
+2026-10-27T16:03:26.0258094Z         "case": "wrong_cell_index",
+2026-10-27T16:03:26.0258675Z         "actual_exception": "Recorded child cell index does not resolve"
+2026-10-27T16:03:26.0259255Z       },
+2026-10-27T16:03:26.0259710Z       {
+2026-10-27T16:03:26.0260070Z         "case": "leaf_name",
+2026-10-27T16:03:26.0260603Z         "actual_exception": "Resolved primitive cell name changed"
+2026-10-27T16:03:26.0261141Z       },
+2026-10-27T16:03:26.0261512Z       {
+2026-10-27T16:03:26.0261902Z         "case": "leaf_transform",
+2026-10-27T16:03:26.0262411Z         "actual_exception": "Resolved full transform changed"
+2026-10-27T16:03:26.0262902Z       },
+2026-10-27T16:03:26.0263283Z       {
+2026-10-27T16:03:26.0263822Z         "case": "leaf_bbox",
+2026-10-27T16:03:26.0264379Z         "actual_exception": "Resolved primitive bbox changed"
+2026-10-27T16:03:26.0264879Z       },
+2026-10-27T16:03:26.0265206Z       {
+2026-10-27T16:03:26.0265614Z         "case": "regular_array",
+2026-10-27T16:03:26.0266222Z         "actual_exception": "Regular array is outside exact original producer scope"
+2026-10-27T16:03:26.0266837Z       },
+2026-10-27T16:03:26.0267182Z       {
+2026-10-27T16:03:26.0267587Z         "case": "nonregular_iterated_array",
+2026-10-27T16:03:26.0268734Z         "actual_exception": "Iterated or multiple instance elements are outside exact original producer scope"
+2026-10-27T16:03:26.0269526Z       },
+2026-10-27T16:03:26.0269876Z       {
+2026-10-27T16:03:26.0270268Z         "case": "nonleaf",
+2026-10-27T16:03:26.0270778Z         "actual_exception": "Recorded primitive is not a leaf"
+2026-10-27T16:03:26.0271326Z       },
+2026-10-27T16:03:26.0271677Z       {
+2026-10-27T16:03:26.0272013Z         "case": "missing_device_count",
+2026-10-27T16:03:26.0272579Z         "actual_exception": "Wrong witness device census"
+2026-10-27T16:03:26.0273050Z       },
+2026-10-27T16:03:26.0273676Z       {
+2026-10-27T16:03:26.0274138Z         "case": "missing_terminal_count",
+2026-10-27T16:03:26.0274619Z         "actual_exception": "Wrong witness terminal census"
+2026-10-27T16:03:26.0275201Z       },
+2026-10-27T16:03:26.0275531Z       {
+2026-10-27T16:03:26.0275946Z         "case": "missing_path",
+2026-10-27T16:03:26.0276811Z         "actual_exception": "Missing stable identity"
+2026-10-27T16:03:26.0277301Z       },
+2026-10-27T16:03:26.0277741Z       {
+2026-10-27T16:03:26.0278118Z         "case": "device_id",
+2026-10-27T16:03:26.0278670Z         "actual_exception": "Device identity changed"
+2026-10-27T16:03:26.0279155Z       },
+2026-10-27T16:03:26.0279504Z       {
+2026-10-27T16:03:26.0279909Z         "case": "device_model",
+2026-10-27T16:03:26.0280394Z         "actual_exception": "Device identity changed"
+2026-10-27T16:03:26.0280870Z       },
+2026-10-27T16:03:26.0281287Z       {
+2026-10-27T16:03:26.0281662Z         "case": "level_cell",
+2026-10-27T16:03:26.0282189Z         "actual_exception": "Stable instance path changed"
+2026-10-27T16:03:26.0282712Z       },
+2026-10-27T16:03:26.0283093Z       {
+2026-10-27T16:03:26.0283698Z         "case": "level_parent",
+2026-10-27T16:03:26.0284205Z         "actual_exception": "Stable instance path changed"
+2026-10-27T16:03:26.0284731Z       },
+2026-10-27T16:03:26.0285094Z       {
+2026-10-27T16:03:26.0285667Z         "case": "level_ordinal",
+2026-10-27T16:03:26.0286191Z         "actual_exception": "Stable instance path changed"
+2026-10-27T16:03:26.0286692Z       },
+2026-10-27T16:03:26.0287027Z       {
+2026-10-27T16:03:26.0287464Z         "case": "level_transform",
+2026-10-27T16:03:26.0288006Z         "actual_exception": "Stable instance path changed"
+2026-10-27T16:03:26.0288572Z       },
+2026-10-27T16:03:26.0288910Z       {
+2026-10-27T16:03:26.0289260Z         "case": "level_array",
+2026-10-27T16:03:26.0289850Z         "actual_exception": "Stable instance path changed"
+2026-10-27T16:03:26.0290374Z       },
+2026-10-27T16:03:26.0290757Z       {
+2026-10-27T16:03:26.0291143Z         "case": "level_depth",
+2026-10-27T16:03:26.0291658Z         "actual_exception": "Stable instance path changed"
+2026-10-27T16:03:26.0292273Z       },
+2026-10-27T16:03:26.0292605Z       {
+2026-10-27T16:03:26.0293044Z         "case": "duplicate_port",
+2026-10-27T16:03:26.0293766Z         "actual_exception": "Duplicate/missing public identity"
+2026-10-27T16:03:26.0294366Z       },
+2026-10-27T16:03:26.0294764Z       {
+2026-10-27T16:03:26.0295132Z         "case": "missing_port",
+2026-10-27T16:03:26.0295659Z         "actual_exception": "Duplicate/missing public identity"
+2026-10-27T16:03:26.0296255Z       },
+2026-10-27T16:03:26.0296612Z       {
+2026-10-27T16:03:26.0297046Z         "case": "port_rename",
+2026-10-27T16:03:26.0297499Z         "actual_exception": "Public port names changed"
+2026-10-27T16:03:26.0297968Z       },
+2026-10-27T16:03:26.0298339Z       {
+2026-10-27T16:03:26.0298713Z         "case": "port_partition",
+2026-10-27T16:03:26.0299278Z         "actual_exception": "Public name/terminal partition changed"
+2026-10-27T16:03:26.0299829Z       },
+2026-10-27T16:03:26.0300189Z       {
+2026-10-27T16:03:26.0300594Z         "case": "port_anchor",
+2026-10-27T16:03:26.0301193Z         "actual_exception": "Public name/anchor binding changed"
+2026-10-27T16:03:26.0301723Z       },
+2026-10-27T16:03:26.0302103Z       {
+2026-10-27T16:03:26.0302502Z         "case": "unbound_raw_path",
+2026-10-27T16:03:26.0303118Z         "actual_exception": "Stable witness not bound to exact raw location"
+2026-10-27T16:03:26.0303907Z       },
+2026-10-27T16:03:26.0304237Z       {
+2026-10-27T16:03:26.0304675Z         "case": "device_parameter",
+2026-10-27T16:03:26.0305292Z         "actual_exception": "Full semantic device/parameter/location data changed"
+2026-10-27T16:03:26.0306015Z       },
+2026-10-27T16:03:26.0306350Z       {
+2026-10-27T16:03:26.0306691Z         "case": "anchor_coordinate",
+2026-10-27T16:03:26.0307292Z         "actual_exception": "Complete original 978 anchors changed"
+2026-10-27T16:03:26.0307810Z       }
+2026-10-27T16:03:26.0308165Z     ],
+2026-10-27T16:03:26.0308560Z     "positive_count": 4,
+2026-10-27T16:03:26.0308976Z     "refusal_count": 32,
+2026-10-27T16:03:26.0309438Z     "synthetic_native_identity_only": true,
+2026-10-27T16:03:26.0309951Z     "actual_original_and_current_JSON_used": true,
+2026-10-27T16:03:26.0310563Z     "native_or_CAD_executed": false
+2026-10-27T16:03:26.0311206Z   },
+2026-10-27T16:03:26.0311594Z   "raw_diagnostic": {
+2026-10-27T16:03:26.0312126Z     "status": "PASS_COMPLETE_RAW_DIAGNOSTIC_BEFORE_UNCHANGED_GUARD",
+2026-10-27T16:03:26.0312701Z     "positive_count": 2,
+2026-10-27T16:03:26.0313107Z     "refusal_count": 15,
+2026-10-27T16:03:26.0313718Z     "positives": [
+2026-10-27T16:03:26.0314207Z       "unchanged_complete_raw_hierarchy_function_byte_exact",
+2026-10-27T16:03:26.0314880Z       "complete_exact_addition_and_duplicate_original_multiplicity"
+2026-10-27T16:03:26.0315548Z     ],
+2026-10-27T16:03:26.0315877Z     "refusals": [
+2026-10-27T16:03:26.0316289Z       {
+2026-10-27T16:03:26.0316723Z         "case": "same_count_changed_added_representation",
+2026-10-27T16:03:26.0317456Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0318231Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0319183Z         "diagnostic_sha256": "9992f1a6d45e23dcf188ca336f4117c31ffaacc24dcfb0d2d885b37a883c1bbe",
+2026-10-27T16:03:26.0319956Z         "complete_cells": 3
+2026-10-27T16:03:26.0320400Z       },
+2026-10-27T16:03:26.0320738Z       {
+2026-10-27T16:03:26.0321147Z         "case": "target_original_record_deficit",
+2026-10-27T16:03:26.0321829Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0322586Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0323282Z         "diagnostic_sha256": "40993adba305f85cc242401b07ea3b802bf7dbcb52f94e2bc2401af4946c6024",
+2026-10-27T16:03:26.0324246Z         "complete_cells": 3
+2026-10-27T16:03:26.0324699Z       },
+2026-10-27T16:03:26.0325035Z       {
+2026-10-27T16:03:26.0325505Z         "case": "non_target_original_deficit",
+2026-10-27T16:03:26.0326172Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0326832Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0327569Z         "diagnostic_sha256": "885951f7f0683bc8977518435abc9f301da48f1076049bae03c11f9ceca7cfb1",
+2026-10-27T16:03:26.0328224Z         "complete_cells": 3
+2026-10-27T16:03:26.0328633Z       },
+2026-10-27T16:03:26.0328976Z       {
+2026-10-27T16:03:26.0329351Z         "case": "non_target_addition",
+2026-10-27T16:03:26.0330171Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0330846Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0331554Z         "diagnostic_sha256": "687e74fe53cc8b5aeb4390af6d7b0ed58d98a2b37f68770dfb28a6787c6994f6",
+2026-10-27T16:03:26.0332242Z         "complete_cells": 3
+2026-10-27T16:03:26.0332637Z       },
+2026-10-27T16:03:26.0332992Z       {
+2026-10-27T16:03:26.0333496Z         "case": "added_property",
+2026-10-27T16:03:26.0334120Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0334856Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0335614Z         "diagnostic_sha256": "b13ce36cc2e98f1859ae47fe8eb87b53e292691576ead301b44995c3291cd99e",
+2026-10-27T16:03:26.0336323Z         "complete_cells": 3
+2026-10-27T16:03:26.0336762Z       },
+2026-10-27T16:03:26.0337098Z       {
+2026-10-27T16:03:26.0337518Z         "case": "added_text_state",
+2026-10-27T16:03:26.0338251Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0339084Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0339903Z         "diagnostic_sha256": "d6e698f428b0b29130984c9a3a01d0f9cdad291554e44558813adcbd5d6cdc21",
+2026-10-27T16:03:26.0340695Z         "complete_cells": 3
+2026-10-27T16:03:26.0341190Z       },
+2026-10-27T16:03:26.0341536Z       {
+2026-10-27T16:03:26.0341919Z         "case": "added_layer",
+2026-10-27T16:03:26.0342654Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0343822Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0344478Z         "diagnostic_sha256": "088adeec8acba289702dffaa66e1b1ff5b0a74db1da4b466451845de21387633",
+2026-10-27T16:03:26.0344974Z         "complete_cells": 3
+2026-10-27T16:03:26.0345329Z       },
+2026-10-27T16:03:26.0345604Z       {
+2026-10-27T16:03:26.0345892Z         "case": "added_datatype",
+2026-10-27T16:03:26.0346388Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0346873Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0347367Z         "diagnostic_sha256": "1f8650c8a7b0363cd36910aa0c3149bbdb4aa31b133b572e794bb8a1d16eb460",
+2026-10-27T16:03:26.0347880Z         "complete_cells": 3
+2026-10-27T16:03:26.0348176Z       },
+2026-10-27T16:03:26.0348449Z       {
+2026-10-27T16:03:26.0348782Z         "case": "duplicate_addition",
+2026-10-27T16:03:26.0349322Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0349843Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0350345Z         "diagnostic_sha256": "715792cbf99c0bd658a72c07521b1d342fbbfe08297f62ef21594878d82b68c3",
+2026-10-27T16:03:26.0350832Z         "complete_cells": 3
+2026-10-27T16:03:26.0351143Z       },
+2026-10-27T16:03:26.0351416Z       {
+2026-10-27T16:03:26.0351709Z         "case": "missing_addition",
+2026-10-27T16:03:26.0352182Z         "exact_original_error": "Original shape/text/properties or exact added records changed",
+2026-10-27T16:03:26.0352717Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0353239Z         "diagnostic_sha256": "90104d2fa36eb3333fba936bf43d80b2e58f006317cc96cff6110f6f48708b8d",
+2026-10-27T16:03:26.0354073Z         "complete_cells": 3
+2026-10-27T16:03:26.0354437Z       },
+2026-10-27T16:03:26.0354711Z       {
+2026-10-27T16:03:26.0354980Z         "case": "named_hierarchy",
+2026-10-27T16:03:26.0355419Z         "exact_original_error": "Original named hierarchy changed",
+2026-10-27T16:03:26.0355842Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0356405Z         "diagnostic_sha256": "1b8f022e99e8e7afb8b884ea539f479fadf9a820406ecd01812f1a8cb4c32540",
+2026-10-27T16:03:26.0356893Z         "complete_cells": 3
+2026-10-27T16:03:26.0357171Z       },
+2026-10-27T16:03:26.0357480Z       {
+2026-10-27T16:03:26.0357757Z         "case": "instance_property",
+2026-10-27T16:03:26.0358227Z         "exact_original_error": "Complete instance property/order binding changed",
+2026-10-27T16:03:26.0358711Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0359207Z         "diagnostic_sha256": "119c5c1bf4c1057d81b1a0d16358dc34b2df985a674a958599d02032caa71923",
+2026-10-27T16:03:26.0359728Z         "complete_cells": 3
+2026-10-27T16:03:26.0360055Z       },
+2026-10-27T16:03:26.0360430Z       {
+2026-10-27T16:03:26.0360707Z         "case": "top_bbox",
+2026-10-27T16:03:26.0361046Z         "exact_original_error": "Top bbox changed",
+2026-10-27T16:03:26.0361468Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0361965Z         "diagnostic_sha256": "a51fb39a24521d75dfbe4c9f4f70489f6ab2cbc33f509831c011e967cd1ceeee",
+2026-10-27T16:03:26.0362472Z         "complete_cells": 3
+2026-10-27T16:03:26.0362778Z       },
+2026-10-27T16:03:26.0363053Z       {
+2026-10-27T16:03:26.0363505Z         "case": "cell_inventory",
+2026-10-27T16:03:26.0363965Z         "exact_original_error": "Cell-name inventory changed",
+2026-10-27T16:03:26.0364371Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0364898Z         "diagnostic_sha256": "5efc03ccd2cb3bfaa4ca805bc1533e31d9a02465c6f91f8defa3df78c6ccb352",
+2026-10-27T16:03:26.0365413Z         "complete_cells": 4
+2026-10-27T16:03:26.0365724Z       },
+2026-10-27T16:03:26.0365992Z       {
+2026-10-27T16:03:26.0366266Z         "case": "missing_expected_addition",
+2026-10-27T16:03:26.0366775Z         "exact_original_error": "Missing original generation additive records",
+2026-10-27T16:03:26.0367247Z         "diagnostic_saved_before_refusal": true,
+2026-10-27T16:03:26.0367885Z         "diagnostic_sha256": "c2ebc0ea432e1e224db845d3734b27d99dcf9fd0e88efe44ef4828d30cf4d578",
+2026-10-27T16:03:26.0368692Z         "complete_cells": 3
+2026-10-27T16:03:26.0368994Z       }
+2026-10-27T16:03:26.0369301Z     ],
+2026-10-27T16:03:26.0369650Z     "actual_frozen_raw_record_and_hierarchy_functions_used": true,
+2026-10-27T16:03:26.0370097Z     "real_JSON_persistence_before_actual_guard": true,
+2026-10-27T16:03:26.0370514Z     "native_GDS_or_CAD_executed": false,
+2026-10-27T16:03:26.0370954Z     "actual_native_serialization_mismatch_explanation_proven": false
+2026-10-27T16:03:26.0371403Z   },
+2026-10-27T16:03:26.0371873Z   "error": "AssertionError(('boolean_layer', 'Unapproved addition layer/datatype', 'Invalid raw record types'))"
+2026-10-27T16:03:26.0372402Z }
+2026-10-27T16:03:26.0373223Z   File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_saved_identity.py", line 326, in main
+2026-10-27T16:03:26.0374459Z     result["serialization"]=serialization_controls(sys.modules[__name__]);s.write(out/"result.json",result)
+2026-10-27T16:03:26.0375110Z                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-27T16:03:26.0375753Z   File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_serialized_additions.py", line 128, in controls
+2026-10-27T16:03:26.0376426Z     run("boolean_layer",replace_first(0,True),"Invalid raw record types")
+2026-10-27T16:03:26.0377082Z   File "/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_serialized_additions.py", line 101, in run
+2026-10-27T16:03:26.0377749Z     assert message is not None and str(error)==message,(label,str(error),message)
+2026-10-27T16:03:26.0378275Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2026-10-27T16:03:26.0378823Z AssertionError: ('boolean_layer', 'Unapproved addition layer/datatype', 'Invalid raw record types')
+2026-10-27T16:03:26.0691204Z ##[error]Process completed with exit code 1.
+2026-10-27T16:03:26.0808473Z ##[group]Run python - <<'PY'
+2026-10-27T16:03:26.0808976Z [36;1mpython - <<'PY'[0m
+2026-10-27T16:03:26.0809319Z [36;1mimport ast,base64,hashlib,json[0m
+2026-10-27T16:03:26.0809709Z [36;1mfrom pathlib import Path[0m
+2026-10-27T16:03:26.0810118Z [36;1msource=Path('scripts/cloud_cdr_v59_binding_rc.py')[0m
+2026-10-27T16:03:26.0810557Z [36;1massert source.is_file() and not source.is_symlink()[0m
+2026-10-27T16:03:26.0811001Z [36;1mraw=source.read_bytes()[0m
+2026-10-27T16:03:26.0811599Z [36;1massert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'[0m
+2026-10-27T16:03:26.0812378Z [36;1mnodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit'][0m
+2026-10-27T16:03:26.0812898Z [36;1massert len(nodes)==1[0m
+2026-10-27T16:03:26.0813264Z [36;1mscope=dict(base64=base64,hashlib=hashlib,json=json)[0m
+2026-10-27T16:03:26.0814233Z [36;1mexec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)[0m
+2026-10-27T16:03:26.0814759Z [36;1mnames=('source','transport','import','runtime','release')[0m
+2026-10-27T16:03:26.0815241Z [36;1massert len(set(names))==len(names)==5[0m
+2026-10-27T16:03:26.0815604Z [36;1memitted=[];missing=[][0m
+2026-10-27T16:03:26.0815939Z [36;1mfor name in names:[0m
+2026-10-27T16:03:26.0816428Z [36;1m    folder=Path('hw/soc/out/cdr-v59-tail-saved-identity-'+name+'-controls')[0m
+2026-10-27T16:03:26.0816980Z [36;1m    assert not folder.is_symlink() and (not folder.exists() or folder.is_dir())[0m
+2026-10-27T16:03:26.0817497Z [36;1m    path=folder/'result.json'[0m
+2026-10-27T16:03:26.0817850Z [36;1m    assert not path.is_symlink()[0m
+2026-10-27T16:03:26.0818212Z [36;1m    if not path.exists():[0m
+2026-10-27T16:03:26.0818556Z [36;1m        missing.append(name)[0m
+2026-10-27T16:03:26.0818896Z [36;1m        continue[0m
+2026-10-27T16:03:26.0819224Z [36;1m    assert path.is_file()[0m
+2026-10-27T16:03:26.0819674Z [36;1m    scope['emit'](path,'CDR_SAVED_IDENTITY_CONTROL_'+name.upper())[0m
+2026-10-27T16:03:26.0820439Z [36;1m    emitted.append(dict(name=name,bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest()))[0m
+2026-10-27T16:03:26.0821319Z [36;1mprint('CDR_SAVED_IDENTITY_CONTROL_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,missing_files_created=False),sort_keys=True),flush=True)[0m
+2026-10-27T16:03:26.0821970Z [36;1mPY[0m
+2026-10-27T16:03:26.0863893Z shell: /usr/bin/bash -e {0}
+2026-10-27T16:03:26.0864314Z env:
+2026-10-27T16:03:26.0864691Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-27T16:03:26.0865083Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:26.0865633Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T16:03:26.0866142Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:26.0866607Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:26.0867101Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:26.0867549Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T16:03:26.0868377Z ##[endgroup]
+2026-10-27T16:03:26.1647811Z CDR_SAVED_IDENTITY_CONTROL_SOURCE_BEGIN {"bytes": 9789, "sha256": "8fb0068e68cdddf46704cb9ae74d6ec8bb771b30f54e460bc00ecabf0e098f35", "chunks": 4}
+2026-10-27T16:03:26.1795622Z CDR_SAVED_IDENTITY_CONTROL_SOURCE_CHUNK 0 ewogICJzdGF0dXMiOiAiRkFJTF9TT1VSQ0VfQU5EX0FETUlTU0lPTiIsCiAgInNvdXJjZSI6IHsKICAgICJzdGF0dXMiOiAiUEFTU19TQVZFRF9JREVOVElUWV9TT1VSQ0VfQ09OVFJPTFMiLAogICAgInBvc2l0aXZlcyI6IFsKICAgICAgImNvbXBsZXRlX2FjdHVhbF9KU09OX3dpdGhfZXhwbGljaXRfc3ludGhldGljX3N0YWJsZV9pZGVudGl0eSIsCiAgICAgICJleGFjdF9hY3R1YWxfb3JpZ2luYWxfbmF0aXZlX3BvcnRzX2ZhaWx1cmVfbGluZTEwNyIsCiAgICAgICJhY3R1YWxfcGF0aF93YWxrZXJfQVBJX3NoYXBlZF9maXh0dXJlIiwKICAgICAgInBvcnRfZW51bWVyYXRpb25fb3JkZXJfb25seV93aXRoX2Z1bGxfYmluZGluZ19yZXRhaW5lZCIKICAgIF0sCiAgICAicmVmdXNhbHMiOiBbCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJsYXRlbnRfYWxsNTAwX3Jhd19wYXRoX3JlamVjdGlvbiIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiT3JpZ2luYWwgZGV2aWNlIGdlb21ldHJ5LCBwYXJhbWV0ZXJzLCBpZGVudGl0eSBvciB0ZXJtaW5hbHMgY2hhbmdlZCIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogIndyb25nX3Jvb3QiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIldyb25nIHJvb3Qgb3IgZW1wdHkgaW5zdGFuY2UgcGF0aCIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogImVtcHR5X3BhdGgiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIldyb25nIHJvb3Qgb3IgZW1wdHkgaW5zdGFuY2UgcGF0aCIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogIm1hbGZvcm1lZF9pbmRleCIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiTWFsZm9ybWVkIGNlbGwtaW5kZXgvaW5zdGFuY2Utb3JkaW5hbCB0b2tlbiIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogIm5lZ2F0aXZlX2luZGV4IiwKICAgICAgICAiYWN0dWFsX2V4Y2VwdGlvbiI6ICJNYWxmb3JtZWQgY2VsbC1pbmRleC9pbnN0YW5jZS1vcmRpbmFsIHRva2VuIgogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAibWlzc2luZ19vcmRpbmFsIiwKICAgICAgICAiYWN0dWFsX2V4Y2VwdGlvbiI6ICJJbnN0YW5jZSBvcmRpbmFsIGlzIGFic2VudCIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogIndyb25nX2NlbGxfaW5kZXgiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIlJlY29yZGVkIGNoaWxkIGNlbGwgaW5kZXggZG9lcyBub3QgcmVzb2x2ZSIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogImxlYWZfbmFtZSIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiUmVzb2x2ZWQgcHJpbWl0aXZlIGNlbGwgbmFtZSBjaGFuZ2VkIgogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAibGVhZl90cmFuc2Zvcm0iLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIlJlc29sdmVkIGZ1bGwgdHJhbnNmb3JtIGNoYW5nZWQiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJsZWFmX2Jib3giLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIlJlc29sdmVkIHByaW1pdGl2ZSBiYm94IGNoYW5nZWQiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJyZWd1bGFyX2FycmF5IiwKICAgICAgICAiYWN0dWFsX2V4Y2VwdGlvbiI6ICJSZWd1bGFyIGFycmF5IGlzIG91dHNpZGUgZXhhY3Qgb3JpZ2luYWwgcHJvZHVjZXIgc2NvcGUiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJub25yZWd1bGFyX2l0ZXJhdGVkX2FycmF5IiwKICAgICAgICAiYWN0dWFsX2V4Y2VwdGlvbiI6ICJJdGVyYXRlZCBvciBtdWx0aXBsZSBpbnN0YW5jZSBlbGVtZW50cyBhcmUgb3V0c2lkZSBleGFjdCBvcmlnaW5hbCBwcm9kdWNlciBzY29wZSIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogIm5vbmxlYWYiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIlJlY29yZGVkIHByaW1pdGl2ZSBpcyBub3QgYSBsZWFmIgogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAibWlzc2luZ19kZXZpY2VfY291bnQiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIldyb25nIHdpdG5lc3MgZGV2aWNlIGNlbnN1cyIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogIm1pc3NpbmdfdGVybWluYWxfY291bnQiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIldyb25nIHdpdG5lc3MgdGVybWluYWwgY2Vuc3VzIgogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAibWlzc2luZ19wYXRoIiwKICAgICAgICAiYWN0dWFsX2V4Y2VwdGlvbiI6ICJNaXNzaW5nIHN0YWJsZSBpZGVudGl0eSIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogImRldmljZV9pZCIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiRGV2aWNlIGlkZW50aXR5IGNoYW5nZWQiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJkZXZpY2VfbW9kZWwiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIkRldmljZSBpZGVudGl0eSBjaGFuZ2VkIgogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAibGV2ZWxfY2VsbCIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiU3RhYmxlIGluc3RhbmNlIHBhdGggY2hhbmdlZCIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogImxldmVsX3BhcmVudCIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiU3RhYmxlIGluc3RhbmNlIHBhdGggY2hhbmdlZCIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogImxldmVsX29yZGluYWwiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIlN0YWJsZSBpbnN0YW5jZSBwYXRoIGNoYW5nZWQiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJsZXZlbF90cmFuc2Zvcm0iLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIlN0YWJsZSBpbnN0YW5jZSBwYXRoIGNoYW5nZWQiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJsZXZlbF9hcnJheSIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiU3RhYmxlIGluc3Rh
+2026-10-27T16:03:26.2121947Z CDR_SAVED_IDENTITY_CONTROL_SOURCE_CHUNK 1 bmNlIHBhdGggY2hhbmdlZCIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogImxldmVsX2RlcHRoIiwKICAgICAgICAiYWN0dWFsX2V4Y2VwdGlvbiI6ICJTdGFibGUgaW5zdGFuY2UgcGF0aCBjaGFuZ2VkIgogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAiZHVwbGljYXRlX3BvcnQiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIkR1cGxpY2F0ZS9taXNzaW5nIHB1YmxpYyBpZGVudGl0eSIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogIm1pc3NpbmdfcG9ydCIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiRHVwbGljYXRlL21pc3NpbmcgcHVibGljIGlkZW50aXR5IgogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAicG9ydF9yZW5hbWUiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIlB1YmxpYyBwb3J0IG5hbWVzIGNoYW5nZWQiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJwb3J0X3BhcnRpdGlvbiIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiUHVibGljIG5hbWUvdGVybWluYWwgcGFydGl0aW9uIGNoYW5nZWQiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJwb3J0X2FuY2hvciIsCiAgICAgICAgImFjdHVhbF9leGNlcHRpb24iOiAiUHVibGljIG5hbWUvYW5jaG9yIGJpbmRpbmcgY2hhbmdlZCIKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogInVuYm91bmRfcmF3X3BhdGgiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIlN0YWJsZSB3aXRuZXNzIG5vdCBib3VuZCB0byBleGFjdCByYXcgbG9jYXRpb24iCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJkZXZpY2VfcGFyYW1ldGVyIiwKICAgICAgICAiYWN0dWFsX2V4Y2VwdGlvbiI6ICJGdWxsIHNlbWFudGljIGRldmljZS9wYXJhbWV0ZXIvbG9jYXRpb24gZGF0YSBjaGFuZ2VkIgogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAiYW5jaG9yX2Nvb3JkaW5hdGUiLAogICAgICAgICJhY3R1YWxfZXhjZXB0aW9uIjogIkNvbXBsZXRlIG9yaWdpbmFsIDk3OCBhbmNob3JzIGNoYW5nZWQiCiAgICAgIH0KICAgIF0sCiAgICAicG9zaXRpdmVfY291bnQiOiA0LAogICAgInJlZnVzYWxfY291bnQiOiAzMiwKICAgICJzeW50aGV0aWNfbmF0aXZlX2lkZW50aXR5X29ubHkiOiB0cnVlLAogICAgImFjdHVhbF9vcmlnaW5hbF9hbmRfY3VycmVudF9KU09OX3VzZWQiOiB0cnVlLAogICAgIm5hdGl2ZV9vcl9DQURfZXhlY3V0ZWQiOiBmYWxzZQogIH0sCiAgInJhd19kaWFnbm9zdGljIjogewogICAgInN0YXR1cyI6ICJQQVNTX0NPTVBMRVRFX1JBV19ESUFHTk9TVElDX0JFRk9SRV9VTkNIQU5HRURfR1VBUkQiLAogICAgInBvc2l0aXZlX2NvdW50IjogMiwKICAgICJyZWZ1c2FsX2NvdW50IjogMTUsCiAgICAicG9zaXRpdmVzIjogWwogICAgICAidW5jaGFuZ2VkX2NvbXBsZXRlX3Jhd19oaWVyYXJjaHlfZnVuY3Rpb25fYnl0ZV9leGFjdCIsCiAgICAgICJjb21wbGV0ZV9leGFjdF9hZGRpdGlvbl9hbmRfZHVwbGljYXRlX29yaWdpbmFsX211bHRpcGxpY2l0eSIKICAgIF0sCiAgICAicmVmdXNhbHMiOiBbCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJzYW1lX2NvdW50X2NoYW5nZWRfYWRkZWRfcmVwcmVzZW50YXRpb24iLAogICAgICAgICJleGFjdF9vcmlnaW5hbF9lcnJvciI6ICJPcmlnaW5hbCBzaGFwZS90ZXh0L3Byb3BlcnRpZXMgb3IgZXhhY3QgYWRkZWQgcmVjb3JkcyBjaGFuZ2VkIiwKICAgICAgICAiZGlhZ25vc3RpY19zYXZlZF9iZWZvcmVfcmVmdXNhbCI6IHRydWUsCiAgICAgICAgImRpYWdub3N0aWNfc2hhMjU2IjogIjk5OTJmMWE2ZDQ1ZTIzZGNmMTg4Y2EzMzZmNDExN2MzMWZmYWFjYzI0ZGNmYjBkMmQ4ODViMzdhODgzYzFiYmUiLAogICAgICAgICJjb21wbGV0ZV9jZWxscyI6IDMKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogInRhcmdldF9vcmlnaW5hbF9yZWNvcmRfZGVmaWNpdCIsCiAgICAgICAgImV4YWN0X29yaWdpbmFsX2Vycm9yIjogIk9yaWdpbmFsIHNoYXBlL3RleHQvcHJvcGVydGllcyBvciBleGFjdCBhZGRlZCByZWNvcmRzIGNoYW5nZWQiLAogICAgICAgICJkaWFnbm9zdGljX3NhdmVkX2JlZm9yZV9yZWZ1c2FsIjogdHJ1ZSwKICAgICAgICAiZGlhZ25vc3RpY19zaGEyNTYiOiAiNDA5OTNhZGJhMzA1Zjg1Y2MyNDI0MDFiMDdlYTNiODAyYmY3ZGJjYjUyZjk0ZTJiYzI0MDFhZjQ5NDZjNjAyNCIsCiAgICAgICAgImNvbXBsZXRlX2NlbGxzIjogMwogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAibm9uX3RhcmdldF9vcmlnaW5hbF9kZWZpY2l0IiwKICAgICAgICAiZXhhY3Rfb3JpZ2luYWxfZXJyb3IiOiAiT3JpZ2luYWwgc2hhcGUvdGV4dC9wcm9wZXJ0aWVzIG9yIGV4YWN0IGFkZGVkIHJlY29yZHMgY2hhbmdlZCIsCiAgICAgICAgImRpYWdub3N0aWNfc2F2ZWRfYmVmb3JlX3JlZnVzYWwiOiB0cnVlLAogICAgICAgICJkaWFnbm9zdGljX3NoYTI1NiI6ICI4ODU5NTFmN2YwNjgzYmM4OTc3NTE4NDM1YWJjOWYzMDFkYTQ4ZjEwNzYwNDliYWUwM2MxMWY5Y2VjYTdjZmIxIiwKICAgICAgICAiY29tcGxldGVfY2VsbHMiOiAzCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJub25fdGFyZ2V0X2FkZGl0aW9uIiwKICAgICAgICAiZXhhY3Rfb3JpZ2luYWxfZXJyb3IiOiAiT3JpZ2luYWwgc2hhcGUvdGV4dC9wcm9wZXJ0aWVzIG9yIGV4YWN0IGFkZGVkIHJlY29yZHMgY2hhbmdlZCIsCiAgICAgICAgImRpYWdub3N0aWNfc2F2ZWRfYmVmb3JlX3JlZnVzYWwiOiB0cnVlLAogICAgICAgICJkaWFnbm9zdGljX3NoYTI1NiI6ICI2ODdlNzRmZTUzY2M4YjVhZWI0MzkwYWY2ZDdiMGVkNThkOThhMmIzN2Y2ODc3MGRmYjI4YTY3ODdjNjk5NGY2IiwKICAgICAgICAiY29tcGxldGVfY2VsbHMiOiAzCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJhZGRlZF9wcm9wZXJ0eSIsCiAgICAgICAgImV4YWN0X29yaWdpbmFsX2Vycm9yIjogIk9yaWdpbmFsIHNoYXBlL3RleHQvcHJvcGVydGllcyBvciBleGFjdCBhZGRlZCByZWNvcmRzIGNo
+2026-10-27T16:03:26.2404450Z CDR_SAVED_IDENTITY_CONTROL_SOURCE_CHUNK 2 YW5nZWQiLAogICAgICAgICJkaWFnbm9zdGljX3NhdmVkX2JlZm9yZV9yZWZ1c2FsIjogdHJ1ZSwKICAgICAgICAiZGlhZ25vc3RpY19zaGEyNTYiOiAiYjEzY2UzNmNjMmU5OGYxODU5YWU0N2ZlOGViODdiNTNlMjkyNjkxNTc2ZWFkMzAxYjQ0OTk1YzMyOTFjZDk5ZSIsCiAgICAgICAgImNvbXBsZXRlX2NlbGxzIjogMwogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAiYWRkZWRfdGV4dF9zdGF0ZSIsCiAgICAgICAgImV4YWN0X29yaWdpbmFsX2Vycm9yIjogIk9yaWdpbmFsIHNoYXBlL3RleHQvcHJvcGVydGllcyBvciBleGFjdCBhZGRlZCByZWNvcmRzIGNoYW5nZWQiLAogICAgICAgICJkaWFnbm9zdGljX3NhdmVkX2JlZm9yZV9yZWZ1c2FsIjogdHJ1ZSwKICAgICAgICAiZGlhZ25vc3RpY19zaGEyNTYiOiAiZDZlNjk4ZjQyOGIwYjI5MTMwOTg0YzlhM2EwMWQwZjljZGFkMjkxNTU0ZTQ0NTU4ODEzYWRjYmQ1ZDZjZGMyMSIsCiAgICAgICAgImNvbXBsZXRlX2NlbGxzIjogMwogICAgICB9LAogICAgICB7CiAgICAgICAgImNhc2UiOiAiYWRkZWRfbGF5ZXIiLAogICAgICAgICJleGFjdF9vcmlnaW5hbF9lcnJvciI6ICJPcmlnaW5hbCBzaGFwZS90ZXh0L3Byb3BlcnRpZXMgb3IgZXhhY3QgYWRkZWQgcmVjb3JkcyBjaGFuZ2VkIiwKICAgICAgICAiZGlhZ25vc3RpY19zYXZlZF9iZWZvcmVfcmVmdXNhbCI6IHRydWUsCiAgICAgICAgImRpYWdub3N0aWNfc2hhMjU2IjogIjA4OGFkZWVjOGFjYmEyODk3MDJkZmZhYTY2ZTFiMWZmNWIwYTc0ZGIxZGE0YjQ2NjQ1MTg0NWRlMjEzODc2MzMiLAogICAgICAgICJjb21wbGV0ZV9jZWxscyI6IDMKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogImFkZGVkX2RhdGF0eXBlIiwKICAgICAgICAiZXhhY3Rfb3JpZ2luYWxfZXJyb3IiOiAiT3JpZ2luYWwgc2hhcGUvdGV4dC9wcm9wZXJ0aWVzIG9yIGV4YWN0IGFkZGVkIHJlY29yZHMgY2hhbmdlZCIsCiAgICAgICAgImRpYWdub3N0aWNfc2F2ZWRfYmVmb3JlX3JlZnVzYWwiOiB0cnVlLAogICAgICAgICJkaWFnbm9zdGljX3NoYTI1NiI6ICIxZjg2NTBjOGE3YjAzNjNjZDM2OTEwYWEwYzMxNDliYmRiNGFhMzFiMTMzYjU3MmU3OTRiYjhhMWQxNmViNDYwIiwKICAgICAgICAiY29tcGxldGVfY2VsbHMiOiAzCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJkdXBsaWNhdGVfYWRkaXRpb24iLAogICAgICAgICJleGFjdF9vcmlnaW5hbF9lcnJvciI6ICJPcmlnaW5hbCBzaGFwZS90ZXh0L3Byb3BlcnRpZXMgb3IgZXhhY3QgYWRkZWQgcmVjb3JkcyBjaGFuZ2VkIiwKICAgICAgICAiZGlhZ25vc3RpY19zYXZlZF9iZWZvcmVfcmVmdXNhbCI6IHRydWUsCiAgICAgICAgImRpYWdub3N0aWNfc2hhMjU2IjogIjcxNTc5MmNiZjk5YzBiZDY1OGE3MmMwNzUyMWIxZDM0MmZiYmZlMDgyOTdmNjJlZjIxNTk0ODc4ZDgyYjY4YzMiLAogICAgICAgICJjb21wbGV0ZV9jZWxscyI6IDMKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogIm1pc3NpbmdfYWRkaXRpb24iLAogICAgICAgICJleGFjdF9vcmlnaW5hbF9lcnJvciI6ICJPcmlnaW5hbCBzaGFwZS90ZXh0L3Byb3BlcnRpZXMgb3IgZXhhY3QgYWRkZWQgcmVjb3JkcyBjaGFuZ2VkIiwKICAgICAgICAiZGlhZ25vc3RpY19zYXZlZF9iZWZvcmVfcmVmdXNhbCI6IHRydWUsCiAgICAgICAgImRpYWdub3N0aWNfc2hhMjU2IjogIjkwMTA0ZDJmYTM2ZWIzMzMzZmJhOTM2YmY0M2Q4MGIyZTU4ZjAwNjMxN2NjOTZjZmY2MTEwZjZmNDg3MDhiOGQiLAogICAgICAgICJjb21wbGV0ZV9jZWxscyI6IDMKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogIm5hbWVkX2hpZXJhcmNoeSIsCiAgICAgICAgImV4YWN0X29yaWdpbmFsX2Vycm9yIjogIk9yaWdpbmFsIG5hbWVkIGhpZXJhcmNoeSBjaGFuZ2VkIiwKICAgICAgICAiZGlhZ25vc3RpY19zYXZlZF9iZWZvcmVfcmVmdXNhbCI6IHRydWUsCiAgICAgICAgImRpYWdub3N0aWNfc2hhMjU2IjogIjFiOGYwMjJlOTllOGU3YWZiOGI4ODRlYTUzOWY0NzlmYWRmOWE4MjA0MDZlY2QwMTgxMmYxYThjYjRjMzI1NDAiLAogICAgICAgICJjb21wbGV0ZV9jZWxscyI6IDMKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogImluc3RhbmNlX3Byb3BlcnR5IiwKICAgICAgICAiZXhhY3Rfb3JpZ2luYWxfZXJyb3IiOiAiQ29tcGxldGUgaW5zdGFuY2UgcHJvcGVydHkvb3JkZXIgYmluZGluZyBjaGFuZ2VkIiwKICAgICAgICAiZGlhZ25vc3RpY19zYXZlZF9iZWZvcmVfcmVmdXNhbCI6IHRydWUsCiAgICAgICAgImRpYWdub3N0aWNfc2hhMjU2IjogIjExOWM1YzFiZjRjMTA1N2Q4MWIxYTBkMTYzNThkYzM0YjJkZjk4NWE2NzRhOTU4NTk5ZDAyMDMyY2FhNzE5MjMiLAogICAgICAgICJjb21wbGV0ZV9jZWxscyI6IDMKICAgICAgfSwKICAgICAgewogICAgICAgICJjYXNlIjogInRvcF9iYm94IiwKICAgICAgICAiZXhhY3Rfb3JpZ2luYWxfZXJyb3IiOiAiVG9wIGJib3ggY2hhbmdlZCIsCiAgICAgICAgImRpYWdub3N0aWNfc2F2ZWRfYmVmb3JlX3JlZnVzYWwiOiB0cnVlLAogICAgICAgICJkaWFnbm9zdGljX3NoYTI1NiI6ICJhNTFmYjM5YTI0NTIxZDc1ZGZiZTRjOWY0ZjcwNDg5ZjZhYjJjYmMzM2Y1MDk4MzFjMDExZTk2N2NkMWNlZWVlIiwKICAgICAgICAiY29tcGxldGVfY2VsbHMiOiAzCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJjZWxsX2ludmVudG9yeSIsCiAgICAgICAgImV4YWN0X29yaWdpbmFsX2Vycm9yIjogIkNlbGwtbmFtZSBpbnZlbnRvcnkgY2hhbmdlZCIsCiAgICAgICAgImRpYWdub3N0aWNfc2F2ZWRfYmVmb3JlX3JlZnVzYWwiOiB0cnVlLAogICAgICAgICJkaWFnbm9zdGljX3NoYTI1NiI6ICI1ZWZjMDNjY2QyY2IzYmZhYTRjYTgwNWJjMTUzM2UzMWQ5YTAyNDY1YzZmOTFmOGRlZmEzZGY3OGM2Y2NiMzUyIiwKICAgICAgICAiY29tcGxldGVfY2VsbHMiOiA0CiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiY2FzZSI6ICJtaXNzaW5nX2V4cGVjdGVkX2FkZGl0aW9uIiwKICAgICAgICAiZXhhY3Rfb3JpZ2luYWxfZXJyb3IiOiAiTWlzc2luZyBvcmlnaW5h
+2026-10-27T16:03:26.2563643Z CDR_SAVED_IDENTITY_CONTROL_SOURCE_CHUNK 3 bCBnZW5lcmF0aW9uIGFkZGl0aXZlIHJlY29yZHMiLAogICAgICAgICJkaWFnbm9zdGljX3NhdmVkX2JlZm9yZV9yZWZ1c2FsIjogdHJ1ZSwKICAgICAgICAiZGlhZ25vc3RpY19zaGEyNTYiOiAiYzJlYmMwZWE0MzJlMWUyMjRkYjg0NWQzNzM0YjI3ZDk5ZGNmOWZkMGU4OGVmZTQ0ZWY0ODI4ZDMwY2Y0ZDU3OCIsCiAgICAgICAgImNvbXBsZXRlX2NlbGxzIjogMwogICAgICB9CiAgICBdLAogICAgImFjdHVhbF9mcm96ZW5fcmF3X3JlY29yZF9hbmRfaGllcmFyY2h5X2Z1bmN0aW9uc191c2VkIjogdHJ1ZSwKICAgICJyZWFsX0pTT05fcGVyc2lzdGVuY2VfYmVmb3JlX2FjdHVhbF9ndWFyZCI6IHRydWUsCiAgICAibmF0aXZlX0dEU19vcl9DQURfZXhlY3V0ZWQiOiBmYWxzZSwKICAgICJhY3R1YWxfbmF0aXZlX3NlcmlhbGl6YXRpb25fbWlzbWF0Y2hfZXhwbGFuYXRpb25fcHJvdmVuIjogZmFsc2UKICB9LAogICJlcnJvciI6ICJBc3NlcnRpb25FcnJvcigoJ2Jvb2xlYW5fbGF5ZXInLCAnVW5hcHByb3ZlZCBhZGRpdGlvbiBsYXllci9kYXRhdHlwZScsICdJbnZhbGlkIHJhdyByZWNvcmQgdHlwZXMnKSkiCn0K
+2026-10-27T16:03:26.2571125Z CDR_SAVED_IDENTITY_CONTROL_SOURCE_END
+2026-10-27T16:03:26.2571866Z CDR_SAVED_IDENTITY_CONTROL_IMPORT_BEGIN {"bytes": 9305, "sha256": "b5a2ceca57fa86ed5104caf1cb42b0e6de9fbd2a5bea33717a5341c7adefa310", "chunks": 4}
+2026-10-27T16:03:26.2711130Z CDR_SAVED_IDENTITY_CONTROL_IMPORT_CHUNK 0 ewogICJzdGF0dXMiOiAiUEFTU19TQVZFRF9JREVOVElUWV9JTklUSUFMX0lNUE9SVF9DT05UUk9MUyIsCiAgInBvc2l0aXZlcyI6IFsKICAgICJleGFjdF9zb3VyY2VfaW5pdGlhbGl6YXRpb25fY2xvc3VyZSIsCiAgICAiYWN0dWFsX2ZyZXNoX2lzb2xhdGVkX2Z1bGxfaW1wb3J0cyIKICBdLAogICJyZWZ1c2FscyI6IFsKICAgIHsKICAgICAgImNhc2UiOiAiYWN0dWFsX2Fic2VudF9jZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiLAogICAgICAicmV0dXJuY29kZSI6IDEsCiAgICAgICJzdGRvdXQiOiAiIiwKICAgICAgInN0ZGVyciI6ICJUcmFjZWJhY2sgKG1vc3QgcmVjZW50IGNhbGwgbGFzdCk6XG4gIEZpbGUgXCI8c3RyaW5nPlwiLCBsaW5lIDEsIGluIDxtb2R1bGU+XG4gIEZpbGUgXCIvb3B0L2hvc3RlZHRvb2xjYWNoZS9QeXRob24vMy4xMi4xNS94NjQvbGliL3B5dGhvbjMuMTIvaW1wb3J0bGliL19faW5pdF9fLnB5XCIsIGxpbmUgOTAsIGluIGltcG9ydF9tb2R1bGVcbiAgICByZXR1cm4gX2Jvb3RzdHJhcC5fZ2NkX2ltcG9ydChuYW1lW2xldmVsOl0sIHBhY2thZ2UsIGxldmVsKVxuICAgICAgICAgICBeXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXG4gIEZpbGUgXCI8ZnJvemVuIGltcG9ydGxpYi5fYm9vdHN0cmFwPlwiLCBsaW5lIDEzODcsIGluIF9nY2RfaW1wb3J0XG4gIEZpbGUgXCI8ZnJvemVuIGltcG9ydGxpYi5fYm9vdHN0cmFwPlwiLCBsaW5lIDEzNjAsIGluIF9maW5kX2FuZF9sb2FkXG4gIEZpbGUgXCI8ZnJvemVuIGltcG9ydGxpYi5fYm9vdHN0cmFwPlwiLCBsaW5lIDEzMzEsIGluIF9maW5kX2FuZF9sb2FkX3VubG9ja2VkXG4gIEZpbGUgXCI8ZnJvemVuIGltcG9ydGxpYi5fYm9vdHN0cmFwPlwiLCBsaW5lIDkzNSwgaW4gX2xvYWRfdW5sb2NrZWRcbiAgRmlsZSBcIjxmcm96ZW4gaW1wb3J0bGliLl9ib290c3RyYXBfZXh0ZXJuYWw+XCIsIGxpbmUgOTk5LCBpbiBleGVjX21vZHVsZVxuICBGaWxlIFwiPGZyb3plbiBpbXBvcnRsaWIuX2Jvb3RzdHJhcD5cIiwgbGluZSA0ODgsIGluIF9jYWxsX3dpdGhfZnJhbWVzX3JlbW92ZWRcbiAgRmlsZSBcIi90bXAvY2RyLWlkZW50aXR5LWltcG9ydHMtMnNkZDdzeDMvbWlzc2luZy1jZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkvc2NyaXB0cy9jbG91ZF9jZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkucHlcIiwgbGluZSAxNCwgaW4gPG1vZHVsZT5cbiAgICBpbXBvcnQgY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5IGFzIHNvdXJjZVxuTW9kdWxlTm90Rm91bmRFcnJvcjogTm8gbW9kdWxlIG5hbWVkICdjZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHknXG4iCiAgICB9LAogICAgewogICAgICAiY2FzZSI6ICJhY3R1YWxfYWJzZW50X3dhaXRfY2xvdWRfdGVzdGVkX3NvdXJjZV9yZWxlYXNlIiwKICAgICAgInJldHVybmNvZGUiOiAxLAogICAgICAic3Rkb3V0IjogIiIsCiAgICAgICJzdGRlcnIiOiAiVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOlxuICBGaWxlIFwiPHN0cmluZz5cIiwgbGluZSAxLCBpbiA8bW9kdWxlPlxuICBGaWxlIFwiL29wdC9ob3N0ZWR0b29sY2FjaGUvUHl0aG9uLzMuMTIuMTUveDY0L2xpYi9weXRob24zLjEyL2ltcG9ydGxpYi9fX2luaXRfXy5weVwiLCBsaW5lIDkwLCBpbiBpbXBvcnRfbW9kdWxlXG4gICAgcmV0dXJuIF9ib290c3RyYXAuX2djZF9pbXBvcnQobmFtZVtsZXZlbDpdLCBwYWNrYWdlLCBsZXZlbClcbiAgICAgICAgICAgXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXl5eXlxuICBGaWxlIFwiPGZyb3plbiBpbXBvcnRsaWIuX2Jvb3RzdHJhcD5cIiwgbGluZSAxMzg3LCBpbiBfZ2NkX2ltcG9ydFxuICBGaWxlIFwiPGZyb3plbiBpbXBvcnRsaWIuX2Jvb3RzdHJhcD5cIiwgbGluZSAxMzYwLCBpbiBfZmluZF9hbmRfbG9hZFxuICBGaWxlIFwiPGZyb3plbiBpbXBvcnRsaWIuX2Jvb3RzdHJhcD5cIiwgbGluZSAxMzMxLCBpbiBfZmluZF9hbmRfbG9hZF91bmxvY2tlZFxuICBGaWxlIFwiPGZyb3plbiBpbXBvcnRsaWIuX2Jvb3RzdHJhcD5cIiwgbGluZSA5MzUsIGluIF9sb2FkX3VubG9ja2VkXG4gIEZpbGUgXCI8ZnJvemVuIGltcG9ydGxpYi5fYm9vdHN0cmFwX2V4dGVybmFsPlwiLCBsaW5lIDk5OSwgaW4gZXhlY19tb2R1bGVcbiAgRmlsZSBcIjxmcm96ZW4gaW1wb3J0bGliLl9ib290c3RyYXA+XCIsIGxpbmUgNDg4LCBpbiBfY2FsbF93aXRoX2ZyYW1lc19yZW1vdmVkXG4gIEZpbGUgXCIvdG1wL2Nkci1pZGVudGl0eS1pbXBvcnRzLTJzZGQ3c3gzL21pc3Npbmctd2FpdF9jbG91ZF90ZXN0ZWRfc291cmNlX3JlbGVhc2Uvc2NyaXB0cy9jbG91ZF9jZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkucHlcIiwgbGluZSAxOSwgaW4gPG1vZHVsZT5cbiAgICBmcm9tIHdhaXRfY2xvdWRfdGVzdGVkX3NvdXJjZV9yZWxlYXNlIGltcG9ydCB3YWl0XG5Nb2R1bGVOb3RGb3VuZEVycm9yOiBObyBtb2R1bGUgbmFtZWQgJ3dhaXRfY2xvdWRfdGVzdGVkX3NvdXJjZV9yZWxlYXNlJ1xuIgogICAgfSwKICAgIHsKICAgICAgImNhc2UiOiAibWlzc2luZ19zb3VyY2UiLAogICAgICAiZXJyb3IiOiAiTWlzc2luZyBvciBub25yZWd1bGFyIHJlcG9zaXRvcnkgbW9kdWxlIgogICAgfSwKICAgIHsKICAgICAgImNhc2UiOiAiY2hhbmdlZF9zb3VyY2UiLAogICAgICAiZXJyb3IiOiAiQ2hhbmdlZCByZXBvc2l0b3J5IG1vZHVsZSIKICAgIH0sCiAgICB7CiAgICAgICJjYXNlIjogInNvdXJjZV9zeW1saW5rIiwKICAgICAgImVycm9yIjogIk1pc3Npbmcgb3Igbm9ucmVndWxhciByZXBvc2l0b3J5IG1vZHVsZSIKICAgIH0sCiAgICB7CiAgICAgICJjYXNlIjogInVucHJvdGVjdGVkX3NvdXJjZSIsCiAgICAgICJlcnJvciI6ICJVbnByb3RlY3RlZCByZXBvc2l0b3J5IG1vZHVsZSIKICAgIH0sCiAgICB7CiAgICAgICJjYXNlIjogInVuZGVjbGFyZWRfbG9jYWwiLAogICAgICAiZXJyb3IiOiAiVW5kZWNsYXJlZCByZXBvc2l0b3J5IG1vZHVsZSIKICAgIH0sCiAgICB7CiAgICAgICJjYXNlIjogInVua25vd25fZXh0
+2026-10-27T16:03:26.2989527Z CDR_SAVED_IDENTITY_CONTROL_IMPORT_CHUNK 1 ZXJuYWwiLAogICAgICAiZXJyb3IiOiAiVW5kZWNsYXJlZCBleHRlcm5hbCBkZXBlbmRlbmN5IgogICAgfSwKICAgIHsKICAgICAgImNhc2UiOiAic3RkbGliX3NoYWRvdyIsCiAgICAgICJlcnJvciI6ICJTdGFuZGFyZC1saWJyYXJ5IHNoYWRvdyIKICAgIH0KICBdLAogICJwb3NpdGl2ZV9jb3VudCI6IDIsCiAgInJlZnVzYWxfY291bnQiOiA5LAogICJjbG9zdXJlIjogewogICAgIm1vZHVsZXMiOiB7CiAgICAgICJjZHJfdjU5X3RhaWxfc2VyaWFsaXplZF9hZGRpdGlvbnMiOiAiYjc3MjUzNmE2OTIyMTQ4ZGVhMGVjZjQyOThkY2UxYTJhNTE5OWM0NjhjNjhmODBkYjBjZGQxN2IzOTRlMmE5OCIsCiAgICAgICJjZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiOiAiNWI0Y2Q4ZDdiZjRhNmM3M2RmM2I1MDlmMWQwOWNkZjIwMjk4NTRjNjc0MzFjNGQ3MGM1ZTA0NTdjMTVmODU2OCIsCiAgICAgICJydW5fY2xvdWRfdHhfbGF5b3V0X3JlcGFpciI6ICIzMTIzOTE0MjZiZDg1MDViNmQ2ZDMyZmRjNWZmZWM3YTc2ZGRmYzgzYjJmNGQ3MjU0M2E0MGQ2MzMyZTI4YTNmIiwKICAgICAgImNsb3VkX3ZlcmlmaWVkX3BhcnRzIjogIjY0YjY2NTViZmQ2ZjhjMzQ4YWY2MmU5MTc5MjY4ZWFmYjg0YzkxNTBjYmJhODk1OTg5YmNkZmIyYzZiNWI3OTUiLAogICAgICAiY2xvdWRfY2h1bmtlZF9yZXN1bHRzIjogImZlNDE0ZGNkOTJjMjMzNTU0YTgyYTIxNTEyMzJiYWI4ODAzZTZlYzc4NjNkZjM4NzJmYmRlMDA5ZDM5MDU4MTYiLAogICAgICAiZW5zdXJlX2Nsb3VkX3Rlc3RlZF9zb3VyY2VfcmVsZWFzZSI6ICJmZjIxM2NiNDdhMjhiNjUyMDdlZjI4MGJlOGFiNGEwMDU5NjIyYTNkYWE2YTFlMmM4MWY3ODFjODFmZjI4NzZlIiwKICAgICAgImNoZWNrX2Nkcl92NTlfdGFpbF9zZXJpYWxpemVkX2FkZGl0aW9ucyI6ICIxM2JkZTdlZWMyOGRmYTU1MjRhYmE3MGMyMTcwM2FmZTM5MjIxMDQ1NWE3YjczNTY1MmI2NTQxNDU1YzUwMDcxIiwKICAgICAgImNkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eV9uYXRpdmUiOiAiNGVhYjFmMzFjMjQxNGI2MDYxYzcyMDk2NDA1Zjk2ODhkOGMxZjAzYzZmMzFjYjBmZDUwNWMxN2JkMDUyMzUxMCIsCiAgICAgICJjZHJfdjU5X3RhaWxfYWNjZXNzX3RvcG9sb2d5IjogImRmOGIwZTcxMmNkMjI0YzZhZjY2ZDg4ZTkxMjQyZDRlNWI1ZDhiNzVhOTZlYmY4MTE3OWNiNzQwYzA2YzNhMzciLAogICAgICAiY2hlY2tfY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5X3J1bnRpbWUiOiAiNThlY2VhNmI0MmEyNDU1MTc5ODY0YjNlMjc0MTcwZDYyM2UxMWRmNDkzN2FhNDI4OGU4ZjU4MDI2MDcwOTcyNyIsCiAgICAgICJjZHJfdjU5X3RhaWxfYWNjZXNzX3J1bnRpbWUiOiAiOTQ2YzA4MDYwZjA5OWU5OWY0OWFjMzVlNTU5MzI0YjFlNDQ1ZDRjMzg2NWNmYTdiZTk1NGZhNmU3NWRiNjE3NiIsCiAgICAgICJjaGVja19jZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHlfdHJhbnNwb3J0IjogImU2OTk2ZmE0OGZiMTZkZTAyMDBhMjEzZDM5OTM5ZTBjZmUxNjFkMTdkMGUzM2NmYmQ1MzVkMGQyZjFkZTUxZGMiLAogICAgICAiY2xvdWRfY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5IjogIjEyZWZiYzA3ZDc4YmUyMzdiMGVhMDBkNmM4NjMwZDdmM2UzYWJiM2M1ZmI0YzU0OTA1MTkwZDI2YTEwNDI1NjYiLAogICAgICAid2FpdF9jbG91ZF90ZXN0ZWRfc291cmNlX3JlbGVhc2UiOiAiNGM3NDllM2Y2ZjA3MmMwNTNmMmRkNWQ0NWU5YWQ0ZjhjYjJlY2ExZTdjN2IxY2Y0ODAxNzdmNjM3ZmIwNGI3MyIsCiAgICAgICJtaWdyYXRlX291dHB1dHNfdG9fY2xvdWQiOiAiNTJmYTNlZjdhZGM5MmI2ZTYwNzFiMzA0Y2NiMWIwNzkwOGYzMWNjZGU3ZGFjZjM5YTcyNThlMDczNTZmYTUxMiIsCiAgICAgICJjaGVja19jZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiOiAiZTJiODk0N2NjYmE0ODZmZDljMzQ3MDcyNTk2MjI2MzFlZmVlYjdmYzEyYjZkYjc4OGIwZDc3MzEzZDIwODk5MCIKICAgIH0sCiAgICAicmVwb3NpdG9yeV9lZGdlcyI6IFsKICAgICAgewogICAgICAgICJmcm9tIjogImNkcl92NTlfdGFpbF9zZXJpYWxpemVkX2FkZGl0aW9ucyIsCiAgICAgICAgImxpbmUiOiA3LAogICAgICAgICJ0byI6ICJjZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJjZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiLAogICAgICAgICJsaW5lIjogMTIsCiAgICAgICAgInRvIjogImVuc3VyZV9jbG91ZF90ZXN0ZWRfc291cmNlX3JlbGVhc2UiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJjZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiLAogICAgICAgICJsaW5lIjogMTMsCiAgICAgICAgInRvIjogImNsb3VkX2NodW5rZWRfcmVzdWx0cyIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIsCiAgICAgICAgImxpbmUiOiAxNCwKICAgICAgICAidG8iOiAiY2xvdWRfdmVyaWZpZWRfcGFydHMiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJjZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiLAogICAgICAgICJsaW5lIjogMTUsCiAgICAgICAgInRvIjogInJ1bl9jbG91ZF90eF9sYXlvdXRfcmVwYWlyIgogICAgICB9LAogICAgICB7CiAgICAgICAgImZyb20iOiAiY2xvdWRfdmVyaWZpZWRfcGFydHMiLAogICAgICAgICJsaW5lIjogNywKICAgICAgICAidG8iOiAiY2xvdWRfY2h1bmtlZF9yZXN1bHRzIgogICAgICB9LAogICAgICB7CiAgICAgICAgImZyb20iOiAiY2hlY2tfY2RyX3Y1OV90YWlsX3NlcmlhbGl6ZWRfYWRkaXRpb25zIiwKICAgICAgICAibGluZSI6IDEyLAogICAgICAgICJ0byI6ICJjZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJjaGVja19jZHJfdjU5X3RhaWxfc2VyaWFsaXplZF9hZGRpdGlvbnMiLAogICAgICAgICJsaW5lIjogMTMsCiAgICAgICAgInRvIjogImNkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eV9uYXRpdmUiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJjaGVj
+2026-10-27T16:03:26.3320802Z CDR_SAVED_IDENTITY_CONTROL_IMPORT_CHUNK 2 a19jZHJfdjU5X3RhaWxfc2VyaWFsaXplZF9hZGRpdGlvbnMiLAogICAgICAgICJsaW5lIjogMTQsCiAgICAgICAgInRvIjogImNkcl92NTlfdGFpbF9zZXJpYWxpemVkX2FkZGl0aW9ucyIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eV9uYXRpdmUiLAogICAgICAgICJsaW5lIjogOSwKICAgICAgICAidG8iOiAiY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5IgogICAgICB9LAogICAgICB7CiAgICAgICAgImZyb20iOiAiY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5X25hdGl2ZSIsCiAgICAgICAgImxpbmUiOiAxMCwKICAgICAgICAidG8iOiAiY2RyX3Y1OV90YWlsX2FjY2Vzc190b3BvbG9neSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNoZWNrX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eV9ydW50aW1lIiwKICAgICAgICAibGluZSI6IDgsCiAgICAgICAgInRvIjogImNkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNoZWNrX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eV9ydW50aW1lIiwKICAgICAgICAibGluZSI6IDksCiAgICAgICAgInRvIjogImNkcl92NTlfdGFpbF9hY2Nlc3NfcnVudGltZSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNoZWNrX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eV90cmFuc3BvcnQiLAogICAgICAgICJsaW5lIjogMTYsCiAgICAgICAgInRvIjogImNkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNoZWNrX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eV90cmFuc3BvcnQiLAogICAgICAgICJsaW5lIjogMTcsCiAgICAgICAgInRvIjogImNsb3VkX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNoZWNrX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eV90cmFuc3BvcnQiLAogICAgICAgICJsaW5lIjogMTgsCiAgICAgICAgInRvIjogImNsb3VkX2NodW5rZWRfcmVzdWx0cyIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNsb3VkX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIsCiAgICAgICAgImxpbmUiOiAxNCwKICAgICAgICAidG8iOiAiY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5IgogICAgICB9LAogICAgICB7CiAgICAgICAgImZyb20iOiAiY2xvdWRfY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5IiwKICAgICAgICAibGluZSI6IDE1LAogICAgICAgICJ0byI6ICJjZHJfdjU5X3RhaWxfYWNjZXNzX3J1bnRpbWUiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJjbG91ZF9jZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiLAogICAgICAgICJsaW5lIjogMTYsCiAgICAgICAgInRvIjogIm1pZ3JhdGVfb3V0cHV0c190b19jbG91ZCIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNsb3VkX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIsCiAgICAgICAgImxpbmUiOiAxNywKICAgICAgICAidG8iOiAiZW5zdXJlX2Nsb3VkX3Rlc3RlZF9zb3VyY2VfcmVsZWFzZSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNsb3VkX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIsCiAgICAgICAgImxpbmUiOiAxOCwKICAgICAgICAidG8iOiAiY2xvdWRfY2h1bmtlZF9yZXN1bHRzIgogICAgICB9LAogICAgICB7CiAgICAgICAgImZyb20iOiAiY2xvdWRfY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5IiwKICAgICAgICAibGluZSI6IDE5LAogICAgICAgICJ0byI6ICJ3YWl0X2Nsb3VkX3Rlc3RlZF9zb3VyY2VfcmVsZWFzZSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogIndhaXRfY2xvdWRfdGVzdGVkX3NvdXJjZV9yZWxlYXNlIiwKICAgICAgICAibGluZSI6IDUsCiAgICAgICAgInRvIjogImVuc3VyZV9jbG91ZF90ZXN0ZWRfc291cmNlX3JlbGVhc2UiCiAgICAgIH0sCiAgICAgIHsKICAgICAgICAiZnJvbSI6ICJjaGVja19jZHJfdjU5X3RhaWxfc2F2ZWRfaWRlbnRpdHkiLAogICAgICAgICJsaW5lIjogMTEsCiAgICAgICAgInRvIjogImNkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNoZWNrX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIsCiAgICAgICAgImxpbmUiOiAxMiwKICAgICAgICAidG8iOiAiY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5X25hdGl2ZSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNoZWNrX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIsCiAgICAgICAgImxpbmUiOiAxMywKICAgICAgICAidG8iOiAiY2RyX3Y1OV90YWlsX2FjY2Vzc190b3BvbG9neSIKICAgICAgfSwKICAgICAgewogICAgICAgICJmcm9tIjogImNoZWNrX2Nkcl92NTlfdGFpbF9zYXZlZF9pZGVudGl0eSIsCiAgICAgICAgImxpbmUiOiAxNCwKICAgICAgICAidG8iOiAiY2xvdWRfY2RyX3Y1OV90YWlsX3NhdmVkX2lkZW50aXR5IgogICAgICB9CiAgICBdLAogICAgInN0ZGxpYl9leHRlcm5hbHMiOiBbCiAgICAgICJhcmdwYXJzZSIsCiAgICAgICJhc3QiLAogICAgICAiY29sbGVjdGlvbnMiLAogICAgICAiY29udGV4dGxpYiIsCiAgICAgICJjb3B5IiwKICAgICAgImd6aXAiLAogICAgICAiaGFzaGxpYiIsCiAgICAgICJpbXBvcnRsaWIiLAogICAgICAiaW8iLAogICAgICAianNvbiIsCiAgICAgICJvcyIsCiAgICAgICJwYXRobGliIiwKICAgICAgInJlIiwKICAgICAgInNodXRpbCIsCiAgICAgICJzaWduYWwiLAogICAgICAic3VicHJvY2VzcyIsCiAgICAgICJzeXMiLAogICAgICAidGFyZmlsZSIsCiAgICAgICJ0ZW1wZmlsZSIsCiAgICAgICJ0aHJlYWRpbmciLAogICAgICAidGltZSIsCiAgICAgICJ0cmFjZWJhY2siLAogICAgICAidHlwZXMiLAogICAgICAidW5pdHRlc3QiCiAgICBdLAogICAgImRlZmVycmVkX2Z1bmN0aW9uX2FuZF9DQURfaW1wb3J0c19vdXRzaWRlX3Nj
+2026-10-27T16:03:26.3481512Z CDR_SAVED_IDENTITY_CONTROL_IMPORT_CHUNK 3 b3BlIjogdHJ1ZSwKICAgICJpbml0aWFsaXphdGlvbl9kYXRhX3JlYWRzIjogW10KICB9LAogICJuYXRpdmVfb3JfQ0FEX2ltcG9ydGVkIjogZmFsc2UKfQo=
+2026-10-27T16:03:26.3482744Z CDR_SAVED_IDENTITY_CONTROL_IMPORT_END
+2026-10-27T16:03:26.3484380Z CDR_SAVED_IDENTITY_CONTROL_CENSUS {"emitted": [{"bytes": 9789, "name": "source", "sha256": "8fb0068e68cdddf46704cb9ae74d6ec8bb771b30f54e460bc00ecabf0e098f35"}, {"bytes": 9305, "name": "import", "sha256": "b5a2ceca57fa86ed5104caf1cb42b0e6de9fbd2a5bea33717a5341c7adefa310"}], "missing": ["transport", "runtime", "release"], "missing_files_created": false}
+2026-10-27T16:03:26.4218257Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-27T16:03:26.4218759Z with:
+2026-10-27T16:03:26.4219098Z   name: cdr-saved-identity-controls-40537004738-1
+2026-10-27T16:03:26.4219491Z   include-hidden-files: true
+2026-10-27T16:03:26.4219847Z   if-no-files-found: error
+2026-10-27T16:03:26.4220159Z   retention-days: 90
+2026-10-27T16:03:26.4220536Z   path: hw/soc/out/cdr-v59-tail-saved-identity-*-controls
+2026-10-27T16:03:26.4220947Z   compression-level: 6
+2026-10-27T16:03:26.4221232Z   overwrite: false
+2026-10-27T16:03:26.4221604Z env:
+2026-10-27T16:03:26.4221899Z   PYTHONDONTWRITEBYTECODE: 1
+2026-10-27T16:03:26.4222464Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:26.4222934Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T16:03:26.4223509Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:26.4224121Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:26.4224542Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T16:03:26.4225036Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T16:03:26.4225424Z ##[endgroup]
+2026-10-27T16:03:26.6067721Z (node:2116) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T16:03:26.6068942Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T16:03:26.6187186Z With the provided path, there will be 2 files uploaded
+2026-10-27T16:03:26.6189886Z Artifact name is valid!
+2026-10-27T16:03:26.6190598Z Root directory input is valid!
+2026-10-27T16:03:26.9237559Z Beginning upload of artifact content to blob storage
+2026-10-27T16:03:26.9444080Z (node:2116) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T16:03:27.1125526Z Uploaded bytes 4806
+2026-10-27T16:03:27.1592704Z Finished uploading artifact content to blob storage!
+2026-10-27T16:03:27.1594001Z SHA256 digest of uploaded artifact zip is 38f5aea868247fb08a3be732ee455d73681ba46ff8078759bc261e0d8edc0787
+2026-10-27T16:03:27.1595362Z Finalizing artifact upload
+2026-10-27T16:03:27.6439327Z Artifact cdr-saved-identity-controls-40537004738-1.zip successfully finalized. Artifact ID 12747679198
+2026-10-27T16:03:27.6440788Z Artifact cdr-saved-identity-controls-40537004738-1 has been successfully uploaded! Final size is 4806 bytes. Artifact ID is 12747679198
+2026-10-27T16:03:27.6446746Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/40537004738/artifacts/12747679198
+2026-10-27T16:03:27.7128676Z Post job cleanup.
+2026-10-27T16:03:27.7982708Z [command]/usr/bin/git version
+2026-10-27T16:03:27.8019449Z git version 2.55.0
+2026-10-27T16:03:27.8051562Z Temporarily overriding HOME='/home/runner/work/_temp/6b0d29c4-797c-422e-9a51-085f896ea82a' before making global git config changes
+2026-10-27T16:03:27.8052944Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T16:03:27.8058163Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-27T16:03:27.8401683Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T16:03:27.8446120Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T16:03:27.8803307Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T16:03:27.8859317Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T16:03:27.9161194Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T16:03:27.9194600Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T16:03:27.9896417Z Cleaning up orphan processes
+2026-10-27T16:03:28.0232311Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

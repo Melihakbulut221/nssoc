@@ -1,0 +1,28 @@
+{
+  "actual_error": "AssertionError(('boolean_layer', 'Unapproved addition layer/datatype', 'Invalid raw record types'))",
+  "actual_producer": {
+    "line": 194,
+    "path": "scripts/check_cdr_v59_tail_saved_identity.py",
+    "sha256": "e2b8947ccba486fd9c34707259622631efeeb7fc12b6db788b0d77313d208990",
+    "text": "def raw_fixture_layout(records,*,hierarchy_changed=False,property_changed=False,bbox=\"(0,0;200,200)\"):\n    keys=sorted({(r[0],r[1]) for rows in records.values() for r in rows})\n    layers={i:types.SimpleNamespace(layer=v[0],datatype=v[1]) for i,v in enumerate(keys)}\n    cells={}\n    for index,(name,rows) in enumerate(records.items()):\n        cell=types.SimpleNamespace(name=name,cell_index=lambda index=index:index,\n          bbox=lambda bbox=bbox:bbox)\n        def shapes(layer,rows=rows):\n            info=layers[layer];selected=[]\n            for r in rows:\n                if r[:2]!=(info.layer,info.datatype):continue\n                selected.append(types.SimpleNamespace(to_s=lambda r=r:r[2],\n                  properties=lambda r=r:json.loads(r[3]),is_text=lambda r=r:r[4]))\n            return types.SimpleNamespace(each=lambda:iter(selected))\n        cell.shapes=shapes;cell.each_inst=lambda:iter([])\n        cells[name]=cell\n    if n.TOP in cells and n.CHILD in cells:\n        inst=types.SimpleNamespace(cell=cells[n.CHILD],\n          cplx_trans=\"changed\" if hierarchy_changed else \"r0 *1 0,0\",\n          na=0,nb=0,a=\"0,0\",b=\"0,0\",\n          properties=lambda:{1:\"changed\"} if property_changed else {})\n        cells[n.TOP].each_inst=lambda:iter([inst])\n    return types.SimpleNamespace(dbu=0.001,each_cell=lambda:iter(cells.values()),\n      cell=lambda name:cells.get(name),layer_indexes=lambda:list(layers),get_info=lambda i:layers[i])"
+  },
+  "complete_serialization_counts_not_claimed": true,
+  "failed_checker": {
+    "line": 128,
+    "path": "scripts/check_cdr_v59_tail_serialized_additions.py",
+    "sha256": "13bde7eec28dfa5524aba70c21703afe392210455a7b735652b6541455c50071",
+    "text": "    run(\"boolean_layer\",replace_first(0,True),\"Invalid raw record types\")"
+  },
+  "no_authored_code_import_or_execution_for_diagnosis": true,
+  "no_native_or_archive_access": true,
+  "proposed_narrow_repair": "Keep the real guard and native reader unchanged. Reproduce the original whole-fixture expectation mismatch, separately require full-fixture integer layer1 rejection, and invoke actual rectangle with an unconverted boolean raw record to exercise the exact type boundary.",
+  "source_diagnosis": "raw_fixture_layout constructs a set of (layer,datatype) keys. Python True and integer 1 are equal and hash identically; the boolean mutation is merged with the existing integer layer before get_info and raw_records. The observed actual guard rejection is therefore unapproved integer layer, not a boolean type rejection.",
+  "status": "ACTUAL_HOSTED_FIXTURE_EXPECTATION_FAILURE_NOT_NATIVE_GEOMETRY",
+  "transport_runtime_release_not_executed": true,
+  "unchanged_guard": {
+    "line": 18,
+    "path": "scripts/cdr_v59_tail_serialized_additions.py",
+    "sha256": "b772536a6922148dea0ecf4298dce1a2a5199c468c68f80db0cdd17b394e2a98",
+    "text": "def rectangle(record):\n    require(isinstance(record,(list,tuple)) and len(record)==5,\"Invalid complete raw record\")\n    layer,datatype,text,properties,is_text=record\n    require(type(layer) is int and type(datatype) is int and isinstance(text,str)\n      and isinstance(properties,str) and type(is_text) is bool,\"Invalid raw record types\")\n    require((layer,datatype) in ((126,0),(133,0),(134,0)),\"Unapproved addition layer/datatype\")\n    require(properties==\"{}\" and is_text is False,\"Addition properties or text changed\")\n    box=re.fullmatch(r\"box \\((-?\\d+),(-?\\d+);(-?\\d+),(-?\\d+)\\)\",text)\n    polygon=re.fullmatch(r\"polygon \\((-?\\d+),(-?\\d+);(-?\\d+),(-?\\d+);(-?\\d+),(-?\\d+);(-?\\d+),(-?\\d+)\\)\",text)\n    require(box is not None or polygon is not None,\"Addition is not an exact box or four-corner polygon\")\n    if box:\n        x0,y0,x1,y1=map(int,box.groups())\n        require(x0<x1 and y0<y1,\"Degenerate or reversed rectangle\")\n        kind=\"box\"\n    else:\n        x0,y0,xa,ya,x1,y1,xb,yb=map(int,polygon.groups())\n        require(x0==xa<x1==xb and y0==yb<ya==y1,\"Nonrectangular or self-intersecting polygon\")\n        kind=\"polygon\"\n    return (layer,datatype,x0,y0,x1,y1,properties,is_text),kind"
+  }
+}

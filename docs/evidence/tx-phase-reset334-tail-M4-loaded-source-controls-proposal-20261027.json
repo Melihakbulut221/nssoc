@@ -1,0 +1,133 @@
+{
+  "schema": "source-controls-only-metadata-proposal-v1",
+  "status": "PROPOSED_ONLY_NOT_APPLIED",
+  "reviewed_executable_source": "1b78a0da90d9944dcac17eee69e11e832f2e7a7a",
+  "review_receipts_source": "ccce6bd453b2dee865cffc3d97872d5543a341ed",
+  "target_method_path": "scripts/tx-phase-reset334-tail-m4-loaded-methods.json",
+  "current_method": {
+    "bytes": 74838,
+    "sha256": "67f2d7bc9337d67f212f052e91828939fb7886bdbd6a7d1c9d0e171472624c3d",
+    "protected_count": 474,
+    "all_authorizations_false": true
+  },
+  "proposed_method": {
+    "path": "docs/evidence/tx-phase-reset334-tail-M4-loaded-proposed-source-controls-method-20261027.json",
+    "bytes": 75306,
+    "sha256": "24b6f3ca155474affb7d2b1bd16fd58ab9fea8574a141c1c2089a3503afcdeab",
+    "protected_count": 477,
+    "only_authorization_true": "source_controls_authorized",
+    "completed_source_controls": null
+  },
+  "exact_existing_pins_preserved": true,
+  "new_protected_entries": {
+    "docs/evidence/tx-phase-reset334-tail-M4-loaded-current-inputs-independent-review-20261026.json": "390ad2de863465941f09664f7b26e5eb56e1cdaadce321425b933376443b035a",
+    "docs/evidence/tx-phase-reset334-tail-M4-loaded-wrapper-independent-review-20261026.json": "6d9787fb729d1e357cb5a77bc5b5cfe35668197dddd16a8a81f846696ef60039",
+    ".github/workflows/tx-phase-reset334-tail-m4-loaded-cloud.yml": "35ec1fa9a3013349444a44dd044827ca3e49d23c3d00fff181cde460729dbf0f"
+  },
+  "normalization_to_reviewed_disabled_method": {
+    "operations": [
+      "set source_controls_authorized=False",
+      "replace protected with exact original474-entry map"
+    ],
+    "serialized_bytes_equal": true,
+    "sha256": "67f2d7bc9337d67f212f052e91828939fb7886bdbd6a7d1c9d0e171472624c3d"
+  },
+  "future_native_normalization_contract": {
+    "function": "cloud_tx_phase_reset334_tail_m4_loaded.completed_controls",
+    "allowed_normalized_fields": [
+      "prepared_path_controls_authorized",
+      "native_zero_op_authorized",
+      "native_execution_authorized",
+      "simulation_authorized",
+      "completed_source_controls"
+    ],
+    "proof_pins_only_added": true,
+    "all_tested_pins_and_all_other_metadata_must_remain_exact": true,
+    "source_controls_authorized_is_not_normalized_and_remains_true_after_hosted_pass": true,
+    "no_completed_proof_is_claimed_now": true
+  },
+  "activation_not_performed": {
+    "method_unchanged": true,
+    "active_workflow_not_written": true,
+    "workflow_not_registered": true,
+    "no_dispatch": true
+  },
+  "review_surface": {
+    "admission": "scripts/tx_phase_reset334_tail_m4_loaded_admission.py",
+    "adapter": "scripts/tx_phase_reset334_tail_m4_loaded_adapter.py",
+    "controller": "scripts/cloud_tx_phase_reset334_tail_m4_loaded.py",
+    "source_checker": "scripts/check_tx_phase_reset334_tail_m4_loaded.py",
+    "imports": "scripts/check_tx_phase_reset334_tail_m4_loaded_imports.py",
+    "publication": "scripts/check_tx_phase_reset334_tail_m4_loaded_publication.py",
+    "template": ".github/workflow-templates/tx-phase-reset334-tail-m4-loaded-cloud.yml",
+    "key_controller_functions": [
+      "derive",
+      "program_namespace",
+      "child_preflight",
+      "validate_native",
+      "run_owned_child",
+      "finalize",
+      "main",
+      "completed_controls"
+    ],
+    "scope": "Fresh four-OP source unit, hosted controls only; synthetic collaborators explicitly separated from actual future model binding and native OP."
+  },
+  "closure": {
+    "required_repository_modules": 101,
+    "initial_repository_modules": 58,
+    "initial_repository_edges": 123,
+    "original_import_time_JSONs": 3
+  },
+  "required_workflow_assertions": [
+    "assert r[\"status\"]==\"PASS_TAIL_M4_FRESH_FOUR_OP_SOURCE_CONTROLS_NO_NATIVE\"",
+    "assert r['actual_controller_imported']and r['all_original_function_code_objects_identical']and r['original_module_globals_unchanged']",
+    "assert len(r['RC_faults'])==24 and len(r['metadata_faults'])==20 and len(r['context_faults'])==13",
+    "assert len(r['actual_main_entry_positives'])==2 and len(r['actual_post_preparation_main'])==2",
+    "assert all(x['actual_finally_result_written']for x in r['actual_main_entry_positives'])",
+    "assert len(r['actual_prepare_completion'])==2 and r['actual_prepare_completion'][1]['rejected']",
+    "assert len(r['inherited_preparation']['rejected'])==15",
+    "assert len(r['inherited_initialization']['negative_controls'])==30",
+    "assert len(r['inherited_zero_OP']['negative_controls'])==12",
+    "assert len(r['archive_controls']['rejected'])==13 and r['archive_controls']['inherited_parts_controls']['negative_controls']==6",
+    "assert r['original_failed_HBT_count']==17 and r['prior_four_failed_HBT_count']==4",
+    "assert r['outer_native_view']['complete_outer_members']==3181 and r['outer_native_view']['complete_consumed_native_members']==3165",
+    "assert r['outer_native_view']['exact_full_set_equality']and len(r['outer_native_view']['rejected'])==24",
+    "assert len(r['native_result_controls']['rejected'])==24",
+    "assert len(r['authorization']['positive'])==2 and len(r['authorization']['rejected'])==7",
+    "assert len(r['child_preflight']['positive'])==1 and len(r['child_preflight']['refused'])==6",
+    "assert len(r['finalization']['actual_controller_main_finally'])==6",
+    "assert len(r['owned_child_terminal']['cases'])==6 and r['owned_child_terminal']['all_terminal_actions_attempted_after_earlier_failure']",
+    "assert len(r['workflow']['rejected'])==4",
+    "assert len(r['workflow']['control_evidence']['positive'])==2 and len(r['workflow']['control_evidence']['refused'])==2",
+    "assert len(r['runtime']['supervisor']['controls'])==13",
+    "assert r['native_executed']is r['simulation_executed']is r['extraction_executed']is r['actual_fresh_model_binding_executed']is False",
+    "assert len(aux['publication']['positive_cases'])==2 and len(aux['publication']['rejected'])==13",
+    "assert len(aux['imports']['positive'])==2 and len(aux['imports']['rejected'])==7",
+    "assert len(aux['imports']['closure']['import_time_data'])==3",
+    "assert len(aux['wait']['positive_cases'])==3 and len(aux['wait']['rejected'])==4",
+    "assert source.is_file() and not source.is_symlink()",
+    "assert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'",
+    "assert len(nodes)==1",
+    "assert len(names)==len(set(names))==5",
+    "assert path.is_file() and not path.is_symlink(),str(path)",
+    "assert path.read_bytes()==before,'Control record changed during emission'",
+    "assert not failures,failures"
+  ],
+  "proposed_invocation_after_separate_root_activation": {
+    "workflow": ".github/workflows/tx-phase-reset334-tail-m4-loaded-cloud.yml",
+    "inputs": {
+      "native": false
+    },
+    "source": "resulting immutable activation source, never moving default branch",
+    "native_job_must_be_skipped": true,
+    "reservation": "No native output release is needed for controls-only. Future native mode requires separate passed-controls review and exact-source reserved lightweight-tag prerelease before dependency installation.",
+    "registration_if_absent": "Separate sole-file orphan printf-only manual workflow registration; no inherited CI/native job."
+  },
+  "preservation_requirements": [
+    "full terminal run/jobs metadata",
+    "full raw source job log",
+    "five exact indexed wrapper/import/publication/wait/combined JSON records, including all existing partial records on failure",
+    "no retry or native authorization inferred from source-control success"
+  ],
+  "no_authored_imports_tests_archive_native_or_workflows_executed": true
+}

@@ -8652,3 +8652,10 @@ Local project/tmp/native processes verified absent. Inventory241 exact cloud han
 PLL native403892passed freshbothpolarity/bothorderRC; full22file15.745MBproof fa4b preserved and root verified all4nativeorder gates,1347R/2545C each,13+9 faults/order and19compositionfaults/polarity with fullnestedmaps. FullPEX/electrical remainfalse; nextfourOP954sourceonlyunit underterminal-cleanup correction/review. CDR diagnostic403924 remainsFAIL at originalrawguard; full37file22.38MBproof13ac includes9.496MBcomplete Counters. Root independently recomputed all140cells/12887originalrecords and exact17polygon-to-box integerrectanglepairs; no priorgeometryloss or hierarchy/propertychange. Disabledstrictsupplementalgateb489awaitsreviews/actualcontrols. Mainchip two-signal controls403933PASS, root reconstructed65chunks/full286814Blog. Sole ownership-firstnative403949source432ee929 hasreserved424727408; all1691originalclock/fulloriginalclassDRC gatesretained. Localworkspace empty.
 
 Local project/tmp/native processes verified absent. Inventory246 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-27T16:13:30.916471+00:00 — cloud-only checkpoint v73
+
+Cloud-only operation and local cleanup reverified. Mainchip403949 failed before routing because pinned OpenROAD Python binding lacks inherited getId; full16-file failure proof49a4185b is retained and a separate disabled API census5f536496 is being completed, not a blind accessor replacement. PLL405368 and CDR405370 actual source-controls each failed in a synthetic fixture before native work; both skipped native jobs and complete failure evidence are preserved. Exact original digest collaborator and boolean-layer producer fixture corrections are under review with production numerical/geometry gates unchanged. Fresh PLL RC403892 remains PASS; no electrical/fullPHY/routing/finaltiming acceptance is added.
+
+Local project/tmp/native processes verified absent. Inventory249 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
