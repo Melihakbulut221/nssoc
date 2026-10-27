@@ -11,12 +11,12 @@ from check_mainchip_original_clock_restoration_driver import emit
 OUT=s.ROOT/'cloud-mainchip-two-signal-controls'
 
 def catalog():
-    return dict(layers={1:dict(name='Metal5',width=10,wrong_way_width=14,direction='HORIZONTAL'),
-        2:dict(name='Metal6',width=12,wrong_way_width=18,direction='VERTICAL')},
-        rules={'tech:1':18,'block:1':22},
-        vias={'tech:1':dict(name='V56',top=2,bottom=1,box=[-2,-2,2,2],components=[
-            dict(layer=1,box=[-2,-2,2,2],box_id=7),
-            dict(layer=2,box=[-1,-1,1,1],box_id=8)])})
+    return dict(layers={'Metal5':dict(name='Metal5',width=10,wrong_way_width=14,direction='HORIZONTAL'),
+        'Metal6':dict(name='Metal6',width=12,wrong_way_width=18,direction='VERTICAL')},
+        path_layers={1:'Metal5',2:'Metal6'},rules={'tech:1':18,'block:1':22},
+        vias={'tech:1':dict(name='V56',top='Metal6',bottom='Metal5',box=[-2,-2,2,2],components=[
+            dict(layer='Metal5',box=[-2,-2,2,2],component_ordinal=0),
+            dict(layer='Metal6',box=[-1,-1,1,1],component_ordinal=1)])})
 
 def projection_controls():
     positive=[];rejected=[]
@@ -35,7 +35,7 @@ def projection_controls():
           [[-5,-5,25,5],[13,-5,27,25]])
     via=check('every_via_component_and_next_layer',[[96,1],[4,0],[5,0],[136,1],[5,20]],
           [[-2,-2,2,2],[-1,-1,1,1],[-6,-6,6,26]])
-    assert [x['native_box_id']for x in via['shapes'][:2]]==[7,8]
+    assert [x['component_identity']for x in via['shapes'][:2]]==[['tech:1',0],['tech:1',1]]
     check('rect_operands_preserved',[[96,1],[4,10],[5,20],[14,-2],[11,-3],[11,4],[11,5]],
           [[8,17,14,25]])
     check('block_rule_width',[[96,1],[131,1],[4,0],[5,0],[4,20]],[[-11,-11,31,11]])
@@ -64,9 +64,15 @@ def projection_controls():
     reject('off_grid_marker',lambda:g.marker_boxes(1),'grid')
     bad=catalog();bad['vias']['tech:1']['components']=[]
     reject('empty_via_material',lambda:g.project_wire(raw,bad),'')
-    bad=catalog();bad['layers'][1]['width']=0
+    bad=catalog();bad['layers']['Metal5']['width']=0
     reject('zero_wire_width',lambda:g.project_wire(raw,bad),'routing width')
-    assert len(positive)==9 and len(rejected)==17
+    bad=catalog();bad['layers'][1]=bad['layers'].pop('Metal5')
+    reject('raw_ID_used_as_named_layer_key',lambda:g.project_wire(raw,bad),'Named native layer catalogue key differs')
+    bad=catalog();bad['path_layers']={True:'Metal5',2:'Metal6'}
+    reject('bool_raw_path_layer_key',lambda:g.project_wire(raw,bad),'Invalid raw path layer join')
+    bad=catalog();bad['vias']['tech:1']['components'][1]['component_ordinal']=0
+    reject('duplicate_scoped_component_ordinal',lambda:g.project_wire(raw,bad),'Scoped via component ordinal differs')
+    assert len(positive)==9 and len(rejected)==20
     return dict(positive=positive,rejected=rejected,synthetic_explicit_DBU_oracles=True)
 
 def decision_fixture():
@@ -120,26 +126,118 @@ def decision_controls():
     return dict(positive=positives,rejected=rejected)
 
 def native_api_controls():
-    # Import the real native adapter with an explicit empty odb stand-in only in controls.
-    stub=types.ModuleType('odb')
-    with patch.dict(sys.modules,{'odb':stub}):
+    """Actual native adapter with raw OIDs distinct from every named/numbered identity."""
+    with patch.dict(sys.modules,{'odb':types.ModuleType('odb')}):
         import mainchip_two_signal_ownership_native as native
-        class Wire:
-            def __init__(self):self.raw=[[96,1],[4,0],[5,0],[4,20]]
-            def length(self):return len(self.raw)
-            def getOpcode(self,i):return self.raw[i][0]
-            def getData(self,i):return self.raw[i][1]
-            def getCoord(self,i):return {2:[0,0],3:[20,0]}[i]
-        wire=Wire();layers=catalog()['layers']
-        got=native.native_wire(None,None,wire,layers)
-        assert got['native_coordinate_checks_passed']
-        assert got['shapes'][0]['box']==[-5,-5,25,5]
-        with patch.object(Wire,'getCoord',lambda self,i:[1,1]):
-            try:native.native_wire(None,None,wire,layers)
-            except AssertionError as exc:assert 'Native coordinate mismatch'in str(exc)
-            else:raise AssertionError('Native coordinate mismatch accepted')
-        return dict(positive=['actual_native_wire_with_documented_raw_API_shape'],
-            rejected=['actual_native_getCoord_disagreement'],native_odb_executed=False)
+    class Layer:
+        def __init__(self,name,width,number,level,direction):
+            self.name=name;self.width=width;self.number=number;self.level=level;self.direction=direction
+        def getName(self):return self.name
+        def getWidth(self):return self.width
+        def getWrongWayWidth(self):return self.width+4 if self.width else 0
+        def getNumber(self):return self.number
+        def getRoutingLevel(self):return self.level
+        def getDirection(self):return self.direction
+    lower=Layer('Metal5',10,7,5,'HORIZONTAL');upper=Layer('Metal6',12,9,6,'VERTICAL')
+    cut=Layer('Via5',0,8,0,'NONE')
+    class Box:
+        def __init__(self,layer,coords=(-2,-2,2,2)):self.layer=layer;self.coords=coords
+        def getTechLayer(self):return self.layer
+        def xMin(self):return self.coords[0]
+        def yMin(self):return self.coords[1]
+        def xMax(self):return self.coords[2]
+        def yMax(self):return self.coords[3]
+        def isVia(self):return False
+    class Via:
+        def __init__(self):self.components=[Box(lower),Box(cut),Box(upper),Box(upper)]
+        def getName(self):return 'V56'
+        def getTopLayer(self):return upper
+        def getBottomLayer(self):return lower
+        def getBBox(self):return Box(lower)
+        def getBoxes(self):return self.components
+    via=Via()
+    tech=types.SimpleNamespace(getLayers=lambda:[lower,upper,cut])
+    db=types.SimpleNamespace(getTech=lambda:tech);block=object()
+    proof=dict(complete_census_counts={'technology-layer':3},raw_operand_native_lookups=dict(
+        layers={'73':dict(name='Metal5',width=10,wrong_way_width=14,direction='HORIZONTAL',
+            layer_number_observed_not_used_as_OID=7,routing_level_observed_not_used_as_OID=5),
+            '82':dict(name='Metal6',width=12,wrong_way_width=16,direction='VERTICAL',
+            layer_number_observed_not_used_as_OID=9,routing_level_observed_not_used_as_OID=6)},
+        rules={'block:52':dict(width=18)},vias={'tech:44':dict(name='V56',top='Metal6',bottom='Metal5',
+            bbox=[-2,-2,2,2],components=[dict(layer=name,rect=[-2,-2,2,2],component_ordinal=i)
+                for i,name in enumerate(['Metal5','Via5','Metal6','Metal6'])])}))
+    calls=[]
+    def lookup_layer(scope,oid):
+        assert scope is tech;calls.append(('layer',oid))
+        value={73:lower,82:upper}[oid]
+        # A fresh wrapper-shaped object must join by validated record, never Python identity.
+        return Layer(value.name,value.width,value.number,value.level,value.direction)
+    def lookup_rule(scope,oid):
+        assert scope is block and oid==52;calls.append(('rule',oid))
+        return types.SimpleNamespace(getWidth=lambda:18)
+    def lookup_via(scope,oid):
+        assert scope is tech and oid==44;calls.append(('via',oid));return via
+    odb=types.SimpleNamespace(dbTechLayer=types.SimpleNamespace(getTechLayer=lookup_layer),
+        dbTechLayerRule=types.SimpleNamespace(getTechLayerRule=lookup_rule),
+        dbTechVia=types.SimpleNamespace(getTechVia=lookup_via))
+    class Wire:
+        def __init__(self,raw,coordinates):self.raw=raw;self.coordinates=coordinates
+        def length(self):return len(self.raw)
+        def getOpcode(self,i):return self.raw[i][0]
+        def getData(self,i):return self.raw[i][1]
+        def getCoord(self,i):return self.coordinates[i]
+    plain=Wire([[96,73],[4,0],[5,0],[4,20]],{2:[0,0],3:[20,0]})
+    vwire=Wire([[96,73],[131,52],[4,0],[5,0],[136,44],[5,20]],{3:[0,0],5:[0,20]})
+    positive=[];rejected=[]
+    def reject(name,fn,message):
+        try:fn()
+        except AssertionError as exc:assert message in str(exc),(name,repr(exc))
+        else:raise AssertionError('Actual native identity mutation admitted: '+name)
+        rejected.append(name)
+    with patch.object(native,'odb',odb):
+        layers=native.named_layers(tech,proof)
+        got=native.native_wire(db,block,plain,layers,proof)
+        assert got['shapes'][0]['box']==[-5,-5,25,5]and got['raw']==plain.raw
+        assert got['catalog']['path_layers']=={73:'Metal5'}and set(got['catalog']['layers'])=={'Metal5','Metal6','Via5'}
+        assert calls==[('layer',73)]and not hasattr(lower,'getId')and not hasattr(lower,'getOID')
+        positive.append('actual_raw_OID_73_distinct_from_number7_level5_and_fresh_wrapper')
+        got=native.native_wire(db,block,vwire,layers,proof)
+        assert [x['box']for x in got['shapes']]==[[-2,-2,2,2]]*4+[[-9,-9,9,29]]
+        assert [x['component_identity']for x in got['shapes'][:4]]==[['tech:44',i]for i in range(4)]
+        assert got['shapes'][2]['box']==got['shapes'][3]['box']and got['shapes'][2]['component_identity']!=got['shapes'][3]['component_identity']
+        positive.append('actual_block_rule_tech_via_named_cut_layer_duplicate_multiplicity')
+        with patch.object(plain,'getCoord',lambda i:[1,1]):
+            reject('native_coordinate_disagreement',lambda:native.native_wire(db,block,plain,layers,proof),'Native coordinate mismatch')
+        for value in (7,5,74):
+            bad=copy.deepcopy(plain);bad.raw[0][1]=value
+            reject('unobserved_layer_'+str(value),lambda bad=bad:native.native_wire(db,block,bad,layers,proof),'Unobserved raw layer OID')
+        for kind in (9,10):
+            bad=copy.deepcopy(plain);bad.raw.append([kind,11])
+            reject('unobserved_raw_terminal_'+str(kind),lambda bad=bad:native.native_wire(db,block,bad,layers,proof),'Raw terminal static getter was not exercised')
+        bad=copy.deepcopy(vwire);bad.raw[1][0]=3
+        reject('unobserved_tech_rule_scope',lambda:native.native_wire(db,block,bad,layers,proof),'Unobserved raw layer-rule scope/OID')
+        with patch.object(odb.dbTechLayerRule,'getTechLayerRule',lambda scope,oid:types.SimpleNamespace(getWidth=lambda:20)):
+            reject('raw_rule_width_changed',lambda:native.native_wire(db,block,vwire,layers,proof),'Raw layer-rule width differs')
+        for op,oid in ((135,44),(136,45)):
+            bad=copy.deepcopy(vwire);bad.raw[4]=[op,oid]
+            reject('unobserved_via_'+str(op)+'_'+str(oid),lambda bad=bad:native.native_wire(db,block,bad,layers,proof),'Unobserved raw via static getter scope/OID')
+        with patch.object(odb.dbTechLayer,'getTechLayer',lambda scope,oid:upper):
+            reject('static_layer_wrong_name',lambda:native.native_wire(db,block,plain,layers,proof),'Raw layer OID/name/geometry join differs')
+        bad_layers=copy.deepcopy(layers);bad_layers['Metal5']['width']=22
+        reject('independent_named_layer_differs',lambda:native.native_wire(db,block,plain,bad_layers,proof),'Raw layer differs from independent named census')
+        with patch.object(via,'components',via.components[:-1]):
+            reject('duplicate_via_component_dropped',lambda:native.native_wire(db,block,vwire,layers,proof),'Raw via OID/name/component join differs')
+        with patch.object(via,'components',[Box(lower,(-3,-2,2,2)),*via.components[1:]]):
+            reject('via_geometry_changed',lambda:native.native_wire(db,block,vwire,layers,proof),'Raw via OID/name/component join differs')
+        with patch.object(odb.dbTechVia,'getTechVia',lambda scope,oid:None):
+            reject('missing_actual_via',lambda:native.native_wire(db,block,vwire,layers,proof),'Missing native via geometry')
+        bad=copy.deepcopy(plain);bad.raw.append([31,0])
+        reject('unsupported_opcode',lambda:native.native_wire(db,block,bad,layers,proof),'Unknown wire opcode')
+        bad=copy.deepcopy(plain);bad.raw[1][1]=True
+        reject('bool_raw_coordinate',lambda:native.native_wire(db,block,bad,layers,proof),'Invalid native raw operand')
+    assert len(positive)==2 and len(rejected)==17
+    return dict(positive=positive,rejected=rejected,actual_native_adapter_functions=True,native_odb_executed=False,
+        synthetic_API_objects_without_getId_or_getOID=True)
 
 def budget_controls():
     positive=[];rejected=[]
@@ -345,8 +443,9 @@ def disconnected_pin_controls():
     with patch.dict(sys.modules,{'odb':types.ModuleType('odb')}):
         import mainchip_two_signal_ownership_native as native
     class Layer:
-        def getId(self):return 1
         def getName(self):return 'Metal5'
+        def getNumber(self):return 14
+        def getRoutingLevel(self):return 5
         def getWidth(self):return 400
         def getWrongWayWidth(self):return 400
         def getDirection(self):return 'HORIZONTAL'
@@ -358,7 +457,6 @@ def disconnected_pin_controls():
         def xMax(self):return self.values[2]
         def yMax(self):return self.values[3]
         def getTechLayer(self):return layer
-        def getId(self):return 99
         def isVia(self):return False
     class Master:
         def getName(self):return 'explicit_master'
@@ -373,8 +471,7 @@ def disconnected_pin_controls():
     instances=[Instance(i)for i in range(153130)]
     class Wire:
         def __init__(self,index,start,end):
-            self.index=index;self.raw=[[96,1],[4,start],[5,3580080],[4,end]]
-        def getId(self):return self.index
+            self.index=index;self.raw=[[96,73],[4,start],[5,3580080],[4,end]]
         def length(self):return len(self.raw)
         def getOpcode(self,i):return self.raw[i][0]
         def getData(self,i):return self.raw[i][1]
@@ -384,7 +481,6 @@ def disconnected_pin_controls():
     class Net:
         def __init__(self,index,name):self.index=index;self.name=name
         def getName(self):return self.name
-        def getId(self):return self.index
         def getWire(self):return wires.get(self.name)
         def getWireType(self):return 'ROUTED'
         def getSigType(self):return 'CLOCK'if self.name==g.CLOCK else'SIGNAL'
@@ -395,18 +491,16 @@ def disconnected_pin_controls():
     nets=[Net(i+1,name)for i,name in enumerate([g.CLOCK,*g.TARGETS,*[f'n{i:06}'for i in range(143817)]])]
     marker_box=g.marker_boxes(2000)[0]['box']
     class ITerm:
-        def getId(self):return 501
         def getNet(self):return None
         def getGeometries(self):return [(layer,Box(marker_box))]
         def getInst(self):return instances[0]
         def getMTerm(self):return types.SimpleNamespace(getName=lambda:'A')
     class BTerm:
-        def getId(self):return 601
         def getName(self):return 'unowned_port'
         def getNet(self):return None
-        def getBPins(self):return [types.SimpleNamespace(getId=lambda:701,getBoxes=lambda:[Box(marker_box)])]
+        def getBPins(self):return [types.SimpleNamespace(getBoxes=lambda:[Box(marker_box)])]
     class Block:
-        iterms=[];bterms=[];fills=[]
+        iterms=[];bterms=[];fills=[];obstructions=[]
         def getChildren(self):return []
         def getFills(self):return self.fills
         def getDbUnitsPerMicron(self):return 2000
@@ -414,39 +508,161 @@ def disconnected_pin_controls():
         def getITerms(self):return self.iterms
         def getBTerms(self):return self.bterms
         def getInsts(self):return instances
-        def getObstructions(self):return []
+        def getObstructions(self):return self.obstructions
     block=Block();tech=types.SimpleNamespace(getDbUnitsPerMicron=lambda:2000,getLayers=lambda:[layer])
     db=types.SimpleNamespace(getTech=lambda:tech)
-    pristine=native.collect(db,block)
+    def evidence():
+        import hashlib
+        stream=hashlib.sha256()
+        for name,wire in sorted(wires.items()):
+            raw=g.canonical([['net',name,'wire'],wire.raw]);stream.update(len(raw).to_bytes(8,'big'));stream.update(raw)
+        return dict(complete_census_sha256={'ordinary-wire':stream.hexdigest()},complete_census_counts={'technology-layer':1,'ordinary-wire':3,
+            'instance-terminal':len(block.iterms),'block-terminal':len(block.bterms)},
+            complete_raw_opcode_data_pairs=12,
+            disconnected_iterms=sum(t.getNet()is None for t in block.iterms),
+            disconnected_bterms=sum(t.getNet()is None for t in block.bterms),
+            raw_operand_native_lookups=dict(layers={'73':dict(name='Metal5',width=400,wrong_way_width=400,
+                direction='HORIZONTAL',layer_number_observed_not_used_as_OID=14,
+                routing_level_observed_not_used_as_OID=5)},rules={},vias={}))
+    def lookup(scope,oid):
+        assert scope is tech and oid==73
+        return Layer()
+    odb=types.SimpleNamespace(dbTechLayer=types.SimpleNamespace(getTechLayer=lookup))
+    def collect(proof_override=None):
+        source=evidence if proof_override is None else lambda:proof_override
+        with patch.object(native,'api_evidence',source),patch.object(native,'odb',odb):
+            return native.collect(db,block)
+    pristine=collect()
     assert pristine['eligible_for_one_two_net_attempt']and pristine['native_geometry_census']['all-block-iterm']==0
     rejected=[]
+    for name,key,value,message in [
+        ('pair_count','complete_raw_opcode_data_pairs',11,'Raw opcode/data pair census changed'),
+        ('full_raw_digest','complete_census_sha256',{'ordinary-wire':'0'*64},'Full raw wire stream differs')]:
+        bad=evidence();bad[key]=value
+        try:collect(bad)
+        except AssertionError as exc:assert message in str(exc)
+        else:raise AssertionError('Incomplete acquired raw stream admitted')
+        rejected.append('actual_collect_'+name+'_refused')
     for kind,pins in [('iterm',[ITerm()]),('bterm',[BTerm()])]:
         block.iterms=pins if kind=='iterm'else[]
         block.bterms=pins if kind=='bterm'else[]
-        result=native.collect(db,block)
+        result=collect()
         assert not result['eligible_for_one_two_net_attempt']
         found=[r for r in result['records']if r['owner']is None and r['kind']==kind+'-pin']
         assert len(found)==1 and found[0]['source_indices']==[]
         assert result['native_geometry_census']['disconnected-'+kind]==1
         rejected.append('actual_collect_unowned_overlapping_'+kind)
     block.iterms=[];block.bterms=[]
-    block.fills=[types.SimpleNamespace(getId=lambda:801,getTechLayer=lambda:layer,
-        getRect=lambda:Box(marker_box),maskNumber=lambda:0,needsOPC=lambda:False)]
-    result=native.collect(db,block)
-    assert not result['eligible_for_one_two_net_attempt']
-    fills=[r for r in result['records']if r['kind']=='metal-fill']
-    assert len(fills)==1 and fills[0]['owner']is None and fills[0]['source_indices']==[]
-    rejected.append('actual_collect_unowned_overlapping_metal_fill');block.fills=[]
+    block.fills=[object()]
+    try:collect()
+    except AssertionError as exc:assert 'Nonempty fill census'in str(exc)
+    else:raise AssertionError('Unqualified native fill instance accepted')
+    rejected.append('actual_collect_unobserved_fill_refused_before_getters');block.fills=[]
+    block.obstructions=[object()]
+    try:collect()
+    except AssertionError as exc:assert 'Nonempty block-obstruction census'in str(exc)
+    else:raise AssertionError('Unqualified native block-obstruction accepted')
+    rejected.append('actual_collect_unobserved_block_obstruction_refused_before_getters');block.obstructions=[]
+    for kind,pins,message in [('iterm',[ITerm(),ITerm()],'Duplicate block ITerm identity'),
+                              ('bterm',[BTerm(),BTerm()],'Duplicate block BTerm identity')]:
+        block.iterms=pins if kind=='iterm'else[];block.bterms=pins if kind=='bterm'else[]
+        try:collect()
+        except AssertionError as exc:assert message in str(exc)
+        else:raise AssertionError('Duplicate named terminal admitted')
+        rejected.append('actual_collect_duplicate_'+kind+'_identity_refused')
+    block.iterms=[];block.bterms=[]
     # Connected block terminals omitted by a net enumeration cannot silently disappear.
     class MissingConnected(ITerm):
         def getNet(self):return nets[0]
     block.iterms=[MissingConnected()];block.bterms=[]
-    try:native.collect(db,block)
-    except AssertionError:pass
+    try:collect()
+    except AssertionError as exc:assert 'Connected ITerm census mismatch'in str(exc)
     else:raise AssertionError('Unreconciled native terminal accepted')
     rejected.append('actual_collect_connected_terminal_census_mismatch')
+    assert len(rejected)==9
     return dict(positive=['actual_full_synthetic_collector_pristine'],rejected=rejected,
         native_execution=False,all_143820_nets_and_153130_instances_explicitly_synthetic=True)
+
+def identity_contract_controls():
+    """Actual acquired evidence, exact former failure and actual immutable-material gate."""
+    import traceback
+    with patch.dict(sys.modules,{'odb':types.ModuleType('odb')}):
+        import mainchip_two_signal_ownership_native as native
+    from mainchip_two_signal_api_probe_fixture import fixture
+    positive=[];rejected=[]
+    report=native.api_evidence()
+    assert report['complete_raw_opcode_data_pairs']==13905578 and report['disconnected_iterms']==1000
+    assert report['raw_operand_native_lookups']['layers']['15']['name']=='Metal5'
+    assert report['raw_terminal_named_joins']==[]
+    positive.append('actual_saved_native_census_exact_hash_and_observed_scope')
+    original_path='docs/evidence/mainchip-two-signal-before-named-identity-20261027.py'
+    raw=s.c.regular(s.ROOT/original_path).read_bytes()
+    assert s.c.digest(raw)==s.methods()['protected'][original_path]
+    old_tree=ast.parse(raw);assert sum(isinstance(n,ast.Call)and isinstance(n.func,ast.Attribute)and n.func.attr=='getId'for n in ast.walk(old_tree))==44
+    f=fixture()
+    with patch.object(f.block,'getFills',lambda:[]),patch.object(f.block,'getObstructions',lambda:[]):
+        namespace={'__name__':'frozen_actual_getId_failure','__file__':str(s.ROOT/original_path)}
+        with patch.dict(sys.modules,{'odb':f.odb}):
+            exec(compile(raw,str(s.ROOT/original_path),'exec'),namespace)
+        try:namespace['immutable_material'](f.db,f.block)
+        except AttributeError as exc:
+            assert exc.name=='getId'and exc.obj is f.lower
+            frames=traceback.extract_tb(exc.__traceback__)
+            assert any(x.name=='<lambda>'and x.filename==str(s.ROOT/original_path)for x in frames)
+        else:raise AssertionError('Exact historical getId failure did not reproduce')
+        rejected.append('exact_original_44_call_source_layer_getId_AttributeError')
+        # The exact production structural gate, extracted without importing/running a CAD entry point.
+        path=s.ROOT/'scripts/mainchip_two_signal_repair_native.py'
+        text=s.c.regular(path).read_text();tree=ast.parse(text)
+        nodes=[n for n in tree.body if isinstance(n,ast.FunctionDef)and n.name=='structural_equal']
+        assert len(nodes)==1;ns={}
+        exec(compile(ast.Module(body=nodes,type_ignores=[]),str(path),'exec'),ns)
+        equal=ns['structural_equal']
+        with patch.object(native,'odb',f.odb),patch.object(native,'api_evidence',lambda:dict(complete_census_counts={'technology-layer':3})):
+            baseline=native.immutable_material(f.db,f.block)
+            assert baseline['counts']=={'required-empty-native-material':1,'technology-layer':3,
+                'master-obstruction':1,'special-wire':2}
+            wrapped=lambda material:dict(identity={},geometry=material,via={})
+            equal(wrapped(baseline),wrapped(native.immutable_material(f.db,f.block)))
+            positive.append('actual_immutable_material_same_named_scope_and_order')
+            via=f.odb.dbTechVia.getTechVia(f.tech,44)
+            components=list(via.getBoxes())
+            projected=native.via_record(via,native.named_layers(f.tech,dict(complete_census_counts={'technology-layer':3})))
+            assert len(projected['components'])==4
+            assert projected['components'][2]['box']==projected['components'][3]['box']
+            assert [x['component_ordinal']for x in projected['components']]==[0,1,2,3]
+            positive.append('actual_duplicate_via_material_retained_with_parent_scoped_ordinals')
+            def reject_material(name):
+                changed=native.immutable_material(f.db,f.block)
+                try:equal(wrapped(baseline),wrapped(changed))
+                except AssertionError as exc:assert str(exc)=='Native placement/pin/NDR/special geometry changed'
+                else:raise AssertionError('Changed immutable material accepted: '+name)
+                rejected.append(name)
+            with patch.object(f.lower,'getWidth',lambda:402):reject_material('actual_layer_width_change_rejected')
+            with patch.object(f.master,'getObstructions',lambda include:[]):reject_material('actual_master_obstruction_removed_rejected')
+            with patch.object(via,'getBoxes',lambda:components[:-1]):reject_material('actual_duplicate_via_component_drop_rejected')
+            sbox=f.nets[0].getSWires()[0].getWires()[1]
+            with patch.object(type(sbox),'getViaXY',lambda self:[21,30]):reject_material('actual_special_via_origin_change_rejected')
+            for method,message in (('getFills','Nonempty fill census'),('getObstructions','Nonempty block-obstruction census')):
+                with patch.object(f.block,method,lambda:[object()]):
+                    try:native.immutable_material(f.db,f.block)
+                    except AssertionError as exc:assert message in str(exc)
+                    else:raise AssertionError('Unqualified immutable material accepted')
+                rejected.append('actual_immutable_'+method+'_unobserved_instance_refused')
+    original=s.c.regular(s.ROOT/native.API_PATH).read_bytes()
+    with tempfile.TemporaryDirectory(prefix='named-API-proof-')as temp:
+        path=Path(temp)/'proof.json'
+        for name,raw in [('truncated',original[:-1]),('different_layer_number',original.replace(b'"layer_number_observed_not_used_as_OID": 14',b'"layer_number_observed_not_used_as_OID": 15',1)),
+                         ('extra_byte',original+b' ')]:
+            assert raw!=original;path.write_bytes(raw)
+            with patch.object(native.c,'regular',lambda unused:path):
+                try:native.api_evidence()
+                except AssertionError as exc:assert str(exc)=='Exact acquired API census differs'
+                else:raise AssertionError('Changed API proof accepted')
+            rejected.append('actual_api_file_'+name+'_rejected')
+    assert len(positive)==3 and len(rejected)==10
+    return dict(positive=positive,rejected=rejected,actual_original_failure_and_structural_gate=True,
+        actual_CAD_executed=False,synthetic_material_collaborators=True)
 
 def transport_controls():
     import publish_mainchip_saved_postroute as publisher
@@ -506,6 +722,7 @@ def controls():
     method=s.methods();assert method['source_controls_authorized']is True
     result=dict(status='PASS_TWO_SIGNAL_OWNERSHIP_AND_DRIVER_SOURCE_CONTROLS',
         projection=projection_controls(),decision=decision_controls(),native_API=native_api_controls(),
+        identity_contract=identity_contract_controls(),
         budgets=budget_controls(),sequence=sequence_controls(),boundary=boundary_controls(),outer=outer_controls(),
         disconnected_pins=disconnected_pin_controls(),transport=transport_controls(),
         inherited=inherited_controls(),actual_runtime_executed=False,

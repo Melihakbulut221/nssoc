@@ -70,13 +70,15 @@ def segment(previous,current,previous_extension,current_extension,half_width,def
     return rect(box)
 
 def validate_catalog(catalog):
-    assert set(catalog)=={'layers','rules','vias'}
+    assert set(catalog)=={'layers','path_layers','rules','vias'}
     for key,row in catalog['layers'].items():
-        assert type(key)is int and key>0
+        assert type(key)is str and key and key==row['name'],'Named native layer catalogue key differs'
         assert set(row)=={'name','width','wrong_way_width','direction'}
         assert type(row['name'])is str and row['name']
         assert row['direction']in ('HORIZONTAL','VERTICAL','NONE')
         assert integer(row['width'])>=0 and integer(row['wrong_way_width'])>=0
+    for oid,name in catalog['path_layers'].items():
+        assert type(oid)is int and oid>0 and name in catalog['layers'],'Invalid raw path layer join'
     for key,width in catalog['rules'].items():
         kind,oid=key.split(':')
         assert kind in ('block','tech')and str(int(oid))==oid and int(oid)>0
@@ -88,10 +90,11 @@ def validate_catalog(catalog):
         assert type(v['name'])is str and v['name']
         assert v['top']in catalog['layers']and v['bottom']in catalog['layers']
         rect(v['box']);assert type(v['components'])is list and v['components']
-        for component in v['components']:
-            assert set(component)=={'layer','box','box_id'}
+        for ordinal,component in enumerate(v['components']):
+            assert set(component)=={'layer','box','component_ordinal'}
             assert component['layer']in catalog['layers']
-            integer(component['box_id']);rect(component['box'])
+            assert type(component['component_ordinal'])is int and component['component_ordinal']==ordinal,'Scoped via component ordinal differs'
+            rect(component['box'])
     return catalog
 
 def previous_point(raw,index,catalog):
@@ -105,8 +108,8 @@ def previous_point(raw,index,catalog):
         op,data=raw[index];kind=op&MASK
         if kind in (0,1):
             if need_layer:
-                assert data in catalog['layers'],'Unknown path layer'
-                layer=data;need_layer=False
+                assert data in catalog['path_layers'],'Unknown path layer'
+                layer=catalog['path_layers'][data];need_layer=False
         elif kind==2:
             index=data
             continue
@@ -119,7 +122,7 @@ def previous_point(raw,index,catalog):
         index-=1
 
 def project_wire(raw,catalog):
-    """Full ordered wire shapes, preserving opcode IDs and every via component."""
+    """Full ordered wire shapes: raw OIDs join named layers; component ordinals are not native IDs."""
     assert type(raw)is list and raw,'Nonempty raw wire required'
     for row in raw:
         assert type(row)is list and len(row)==2,'Raw opcode/data pair required'
@@ -136,13 +139,13 @@ def project_wire(raw,catalog):
         return value
     def output(index,kind,box,layer_id,**extra):
         assert layer_id in catalog['layers'],'No current native layer'
-        shapes.append(dict(opcode_index=index,kind=kind,layer_id=layer_id,
+        shapes.append(dict(opcode_index=index,kind=kind,layer_key=layer_id,
             layer=catalog['layers'][layer_id]['name'],box=rect(box),**extra))
     while i<len(raw):
         index=i;op,data=take();kind=op&MASK
         if kind in (0,1,13):
-            assert data in catalog['layers'],'Unknown path layer'
-            layer=data;count=0;dw=catalog['layers'][layer]['width']>>1
+            assert data in catalog['path_layers'],'Unknown path layer'
+            layer=catalog['path_layers'][data];count=0;dw=catalog['layers'][layer]['width']>>1
             # Match C++: has_width is not reset here.
         elif kind==2:
             previous,layer=previous_point(raw,data,catalog)
@@ -198,7 +201,7 @@ def project_wire(raw,catalog):
                 box=component['box'];px,py=previous
                 output(index,'via',[box[0]+px,box[1]+py,box[2]+px,box[3]+py],
                     component['layer'],via_key=key,via_name=v['name'],component_ordinal=ordinal,
-                    native_box_id=component['box_id'],origin_xy=list(previous),definition_box=list(box),
+                    component_identity=[key,component['component_ordinal']],origin_xy=list(previous),definition_box=list(box),
                     definition_bbox=list(v['box']))
         elif kind==14:
             deltas=[data]
