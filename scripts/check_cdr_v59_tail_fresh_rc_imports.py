@@ -15,6 +15,9 @@ import tempfile
 
 ROOT=Path(__file__).resolve().parents[1]
 METHOD=ROOT/"scripts/cdr-v59-tail-fresh-rc-methods.json"
+FAILED_CHECKER='docs/evidence/cdr-v59-tail-fresh-RC-failed-import-checker-20261027.py'
+FAILED_CHECKER_SHA='dc90b86b7b65b3c8904be5784e059ef28a7cf3e69254edd4d90e49d708f8cf10'
+FAILED_RESULT='docs/evidence/cdr-v59-tail-fresh-RC-source-controls-terminal-20261027-control-imports.json'
 ENTRIES=["scripts/cloud_cdr_v59_tail_fresh_rc.py","scripts/cloud_cdr_v59_tail_fresh_binding.py","scripts/cloud_cdr_v59_tail_fresh_wire_rc.py","scripts/cloud_cdr_v59_tail_fresh_mim_capture.py","scripts/cloud_cdr_v59_tail_fresh_mim_audit.py","scripts/cloud_cdr_v59_tail_fresh_mim_precision.py","scripts/check_cdr_v59_tail_fresh_rc_semantic.py","scripts/check_cdr_v59_tail_fresh_rc_admission.py","scripts/check_cdr_v59_tail_fresh_rc_workers.py","scripts/check_cdr_v59_tail_fresh_rc_outer.py","scripts/check_cdr_v59_tail_fresh_rc_runtime.py","scripts/cloud_cdr_retimed_composition.py","scripts/check_magic_hbt_multiplicity_v3.py","scripts/patch_magic_hbt_multiplicity_v3.py","scripts/check_magic_coupled_cap_v2.py","scripts/check_magic_intrinsic_cap_retirement.py"]
 ENTRY=ENTRIES[0]
 INITIAL=["scripts/audit_cdr_v59_mim_intrinsic.py","scripts/audit_cloud_route_annotation.py","scripts/audit_cloud_routed_endpoints.py","scripts/audit_cloud_routed_hold_conflicts.py","scripts/branch_hold_targets.py","scripts/build_cdr500_cleaned_native_models.py","scripts/build_pcie_local_vco_hybrid_v6.py","scripts/candidate_hold_conflicts.py","scripts/cdr_v59_binding_rc_source.py","scripts/cdr_v59_font_roundtrip_contract.py","scripts/cdr_v59_mim_admission.py","scripts/cdr_v59_mim_composition_derivation.py","scripts/cdr_v59_serialized_shape_diagnostic.py","scripts/cdr_v59_tail_access_runtime.py","scripts/cdr_v59_tail_access_topology.py","scripts/cdr_v59_tail_fresh_rc_admission.py","scripts/cdr_v59_tail_fresh_rc_legacy.py","scripts/cdr_v59_tail_fresh_rc_semantic.py","scripts/cdr_v59_tail_saved_identity.py","scripts/cdr_v59_tail_saved_identity_native.py","scripts/check_cdr_v59_tail_fresh_rc_admission.py","scripts/check_cdr_v59_tail_fresh_rc_outer.py","scripts/check_cdr_v59_tail_fresh_rc_runtime.py","scripts/check_cdr_v59_tail_fresh_rc_semantic.py","scripts/check_cdr_v59_tail_fresh_rc_workers.py","scripts/check_magic_coupled_cap_v2.py","scripts/check_magic_hbt_multiplicity_v3.py","scripts/check_magic_intrinsic_cap_retirement.py","scripts/cloud_cdr500_input_access_v58_physical.py","scripts/cloud_cdr500_resistor_v59_physical.py","scripts/cloud_cdr_retimed_composition.py","scripts/cloud_cdr_v4_rc.py","scripts/cloud_cdr_v59_annotation_diagnostic.py","scripts/cloud_cdr_v59_binding_rc.py","scripts/cloud_cdr_v59_font_recovery.py","scripts/cloud_cdr_v59_publication_recovery.py","scripts/cloud_cdr_v59_serialized_shape_diagnostic.py","scripts/cloud_cdr_v59_static_source_recovery.py","scripts/cloud_cdr_v59_tail_fresh_binding.py","scripts/cloud_cdr_v59_tail_fresh_mim_audit.py","scripts/cloud_cdr_v59_tail_fresh_mim_capture.py","scripts/cloud_cdr_v59_tail_fresh_mim_precision.py","scripts/cloud_cdr_v59_tail_fresh_rc.py","scripts/cloud_cdr_v59_tail_fresh_wire_rc.py","scripts/cloud_chunked_results.py","scripts/cloud_contact_release.py","scripts/cloud_verified_parts.py","scripts/compare_cloud_routed_endpoints.py","scripts/diagnose_cdr_v59_annotation_native.py","scripts/ensure_cloud_tested_source_release.py","scripts/expanded_load_targets.py","scripts/generate_cdr500_resistor_v59.py","scripts/materialize_cdr_v59_static_annotations.py","scripts/measured_hold_targets.py","scripts/migrate_outputs_to_cloud.py","scripts/patch_magic_hbt_multiplicity_v3.py","scripts/read_opensta_phase_slacks.py","scripts/refined_hold_targets.py","scripts/refined_load_targets.py","scripts/route_cloud_newer_postcts.py","scripts/run_cloud_tx_layout_repair.py","scripts/tx_native_cap_order.py","scripts/wait_cloud_tested_source_release.py"]
@@ -252,8 +255,33 @@ def controls():
             p=root/"scripts"/(missing+".py");body=p.read_bytes();p.unlink()
             proof=isolated(root,missing);p.write_bytes(body)
             refusals.append({"case":"actual_missing_"+missing,"proof":proof,"rejected":True})
+    # Execute the exact frozen failed AST call through the unchanged real reject/closure helpers.
+    frozen=ROOT/FAILED_CHECKER
+    assert pins[FAILED_CHECKER]==FAILED_CHECKER_SHA and sha(frozen)==FAILED_CHECKER_SHA
+    old_calls=[n for n in ast.walk(ast.parse(frozen.read_text()))if isinstance(n,ast.Call)
+      and isinstance(n.func,ast.Name)and n.func.id=="reject"and n.args
+      and isinstance(n.args[0],ast.Constant)and n.args[0].value=="unprotected_initial_dependency"]
+    assert len(old_calls)==1
+    try:
+        exec(compile(ast.fix_missing_locations(ast.Module(body=[ast.Expr(value=old_calls[0])],type_ignores=[])),
+          str(frozen),"exec"),{"reject":reject})
+    except AssertionError as error:
+        expected=("Undeclared repository import","scripts/check_cdr_v59_tail_fresh_rc_runtime.py","cdr_v59_tail_access_runtime")
+        cause=error.__context__
+        assert isinstance(cause,AssertionError)and cause.args==(expected,),repr(error)
+        assert error.args==(("unprotected_initial_dependency",repr(cause)),),repr(error)
+        frames=[];tb=cause.__traceback__
+        while tb is not None:frames.append(tb.tb_frame.f_code);tb=tb.tb_next
+        assert closure.__code__ in frames
+        saved=json.loads((ROOT/FAILED_RESULT).read_bytes())
+        assert saved["status"]=="FAIL_IMPORT_CONTROLS"and saved["error"]==repr(error)
+        positives.append({"case":"original_edge_reason_fixture_failure_reproduced",
+          "exact_error":repr(error),"actual_closure_cause":repr(cause),"saved_failed_record":FAILED_RESULT,
+          "failed_checker_sha256":FAILED_CHECKER_SHA})
+    else:raise AssertionError("Frozen wrong-reason fixture unexpectedly passed")
     reject("missing_initial_dependency",lambda root,pins:(root/"scripts/cdr_v59_tail_access_runtime.py").unlink(),"Missing/nonregular repository import")
-    reject("unprotected_initial_dependency",lambda root,pins:pins.pop("scripts/cdr_v59_tail_access_runtime.py"),"Unprotected repository import")
+    reject("unprotected_initial_dependency",lambda root,pins:pins.pop("scripts/cdr_v59_tail_access_runtime.py"),"Undeclared repository import")
+    reject("unprotected_explicit_entry",lambda root,pins:pins.pop(ENTRIES[-1]),"Unprotected repository import")
     reject("changed_initial_dependency",lambda root,pins:(root/ENTRY).write_text((root/ENTRY).read_text()+"\n# changed\n"),"Changed repository import")
     reject("standard_library_shadow",lambda root,pins:(root/"scripts/json.py").write_text("raise RuntimeError('shadow')\n"),"Standard-library shadow")
     def symlink(root,pins):
@@ -313,11 +341,11 @@ def controls():
         assert body.count(digest)==1
         module.write_text(body.replace(digest,"0"*64));pins[INITIAL_DATA[path]["module"]]=sha(module)
     reject_data("changed_initial_reader_digest",reader_digest,"Initial data reader digest changed")
-    assert len(positives)==5 and len(refusals)==32
+    assert len(positives)==6 and len(refusals)==33
     deferred=deferred_import_controls(copy,pins)
     positives.extend(deferred["positive"]);refusals.extend(deferred["refusals"])
-    assert len(positives)==6 and len(refusals)==37
-    return {"status":"PASS_ACTUAL_FRESH_TAIL_INITIAL_AND_DECLARED_RAW_IMPORT_CONTROLS","positive_count":6,"refusal_count":37,
+    assert len(positives)==7 and len(refusals)==38
+    return {"status":"PASS_ACTUAL_FRESH_TAIL_INITIAL_AND_DECLARED_RAW_IMPORT_CONTROLS","positive_count":7,"refusal_count":38,
       "positives":positives,"refusals":refusals,"closure":audit,
       "installed_external_allowlist":{"networkx":"3.4.2"},"native_executed":False,"deferred_raw_imports":deferred,
       "all_deferred_CAD_runtime_validated":False}

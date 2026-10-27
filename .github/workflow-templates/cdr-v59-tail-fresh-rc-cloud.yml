@@ -89,7 +89,8 @@ jobs:
               return json.loads(p.read_bytes())
           x=read('imports')
           assert x['status']=='PASS_ACTUAL_FRESH_TAIL_INITIAL_AND_DECLARED_RAW_IMPORT_CONTROLS'
-          assert (x['positive_count'],x['refusal_count'])==(6,37)
+          assert (x['positive_count'],x['refusal_count'])==(7,38)
+          assert sum(p['case']=='original_edge_reason_fixture_failure_reproduced'for p in x['positives'])==1
           assert len(x['closure']['modules'])==63 and len(x['closure']['data'])==3
           assert x['installed_external_allowlist']=={'networkx':'3.4.2'}
           assert len(x['deferred_raw_imports']['positive'])==1 and len(x['deferred_raw_imports']['refusals'])==5
