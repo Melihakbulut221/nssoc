@@ -178,7 +178,9 @@ def finalization(result,supervisor,heartbeat,previous):
             require(not heartbeat.is_alive(),"Heartbeat did not stop")
         attempt("join_heartbeat",join)
     for sig,handler in previous.items():
-        attempt("restore_signal_"+str(int(sig)),lambda sig=sig,handler=handler:signal.signal(sig,handler))
+        def restore_signal(sig=sig,handler=handler):
+            signal.signal(sig,handler)
+        attempt("restore_signal_"+str(int(sig)),restore_signal)
     if supervisor is not None:attempt("terminal_resource_sample",lambda:supervisor.sample("fresh_RC_terminal"))
     def source_integrity():
         method=source.methods()

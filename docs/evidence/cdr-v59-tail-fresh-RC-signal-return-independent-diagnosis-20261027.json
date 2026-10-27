@@ -1,0 +1,11 @@
+{
+  "no_authored_execution": true,
+  "no_native_execution": true,
+  "observed_failure": "KeyError('outputs') at checker lifecycle_controls line254",
+  "reviewer": "/root/pll_handoff",
+  "run": 40569566031,
+  "schema": "cdr-tail-fresh-RC-signal-return-independent-diagnosis-v1",
+  "source": "6300d0c3f8b9410f8aaf7aa43d51bee5aa3d3695",
+  "underlying_cause_status": "Source-derived; original saved per-case terminal result and TypeError were not emitted",
+  "verbatim": "Exact bounded diagnosis payload: actual run40569566031/source6300d0c3f8b9410f8aaf7aa43d51bee5aa3d3695/source job122419865260 failed; native122420909708 skipped. Independently fetched full1,764,095B job log SHAde2165da88d8cf854bbfbb46346efdbdb2a02a9baf6a5177627a5f98abb9f0d8. Rehashed checker26135B/aaa054cc134b374b77322eec6ec775dd38be7ebcf6afb01d5cc58319cad3a6e3, controller19528B/67d05780f362fa146c7a47bf120eb2b75a308efd2c2d87c9c8f77d047b8541b6, workflow13308B/299647d9619d516d2ea343a2a19a301e82b2ee5606d360e1944989253df93389. Actual traceback is checker lifecycle_controls254 KeyError('outputs'); earlier saved terminal contents were not emitted, so the concrete underlying diagnosis is source-derived, not an observed TypeError log. Controller323 installs supervisor.interrupted;181 restoration lambda returns signal.signal's prior-handler callable;169 attempt stores that in terminal_evidence;204 calls save_result. Admission write34 evaluates json.dumps before writing/replacing, so callable encoding leaves previous result. Controller80's fallback encodes the same result and can fail again; original in-memory output map may exist despite prior saved JSON lacking outputs. Python3.12 primary API explicitly says signal.signal returns prior handler (https://docs.python.org/3.12/library/signal.html#signal.signal). No production imports/tests/signals/archive/native executed. Minimal boundary: preserve actual signal restoration and independent terminal actions, discard non-evidence callable return or record explicit primitives; reproduce exact frozen-old actual-main stale-result/masking path and assert corrected durable full result. No outputs default/rename or acceptance waiver."
+}

@@ -112,8 +112,9 @@ jobs:
           assert x['authored_native_execution'] is False and x['unfinished_entry_scopes']==[]
           x=read('outer')
           assert x['status']=='PASS_ACTUAL_FRESH_RC_OUTER_PIPELINE_LIFECYCLE_CONTROLS'
-          assert (x['positive_groups'],x['refusals'])==(6,41)
-          assert len(x['lifecycle']['cases'])==10 and x['lifecycle']['refusals']==9
+          assert (x['positive_groups'],x['refusals'])==(6,42)
+          assert len(x['lifecycle']['cases'])==11 and x['lifecycle']['refusals']==10
+          assert x['lifecycle']['frozen_signal_return_failure_reproduced'] is True
           assert len(x['pipeline']['positive'])==1 and len(x['pipeline']['refusals'])==13
           assert len(x['publication']['positive'])==4 and len(x['publication']['refusals'])==19
           assert x['native_executed'] is False

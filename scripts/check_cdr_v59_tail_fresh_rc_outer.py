@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 """Hosted controls enter the actual outer driver; numerical/remote transports are synthetic."""
 import argparse
+import ast
 import copy
 from contextlib import contextmanager,ExitStack
 import json
@@ -20,6 +21,11 @@ s=d.source
 a=d.stages
 ENV={**workers.ENV,"GITHUB_REPOSITORY":"Melihakbulut221/nssoc"}
 class FixtureFailure(RuntimeError):pass
+FAILED_DRIVER='docs/evidence/cdr-v59-tail-fresh-RC-signal-return-failed-controller-20261027.py'
+FAILED_DRIVER_SHA='67d05780f362fa146c7a47bf120eb2b75a308efd2c2d87c9c8f77d047b8541b6'
+FAILED_CHECKER='docs/evidence/cdr-v59-tail-fresh-RC-signal-return-failed-checker-20261027.py'
+FAILED_CHECKER_SHA='aaa054cc134b374b77322eec6ec775dd38be7ebcf6afb01d5cc58319cad3a6e3'
+FAILED_OUTER_RESULT='docs/evidence/cdr-v59-tail-fresh-RC-corrected-source-controls-terminal-20261027-control-outer.json'
 
 @contextmanager
 def remote():
@@ -148,7 +154,7 @@ def pipeline_controls():
 
 def lifecycle_controls():
     cases=[];method=s.methods()
-    modes=("complete","native_failure","partial_JSON","source_corruption","saved_integrity",
+    modes=("old_signal_return","complete","native_failure","partial_JSON","source_corruption","saved_integrity",
       "cleanup_failure","body_and_cleanup","copy_failure","final_sample","publication_failure")
     for mode in modes:
         with workers.fixture()as f,ExitStack()as stack:
@@ -240,6 +246,18 @@ def lifecycle_controls():
             stack.enter_context(patch.dict(os.environ,{**ENV,"CLOUD_APPIMAGE":str(app)}))
             stack.enter_context(patch.object(sys,"argv",["fresh-tail-RC"]))
             signals={sig:d.signal.getsignal(sig)for sig in (d.signal.SIGINT,d.signal.SIGTERM)}
+            if mode=="old_signal_return":
+                frozen_driver=workers.ROOT/FAILED_DRIVER
+                assert method["protected_sha256"][FAILED_DRIVER]==FAILED_DRIVER_SHA and s.sha(frozen_driver)==FAILED_DRIVER_SHA
+                old_nodes=[n for n in ast.parse(frozen_driver.read_text()).body if isinstance(n,ast.FunctionDef)and n.name=="finalization"]
+                assert len(old_nodes)==1
+                scope=dict(d.__dict__)
+                exec(compile(ast.Module(body=old_nodes,type_ignores=[]),str(frozen_driver),"exec"),scope)
+                old_finalization=scope["finalization"]
+                def historical_finalization(result,*args):
+                    try:return old_finalization(result,*args)
+                    finally:state["old_in_memory_result"]=result
+                stack.enter_context(patch.object(d,"finalization",side_effect=historical_finalization))
             with remote()as transport_fixture:
                 publication_mock=None
                 if mode=="publication_failure":publication_mock=stack.enter_context(patch.object(d.publisher,"publish",side_effect=publication_error))
@@ -251,7 +269,46 @@ def lifecycle_controls():
                 assert state["events"]==list(d.SECONDS) and state["cleanup"]==state["sample"]==1
                 assert owned.STOP.is_set() and d.publisher.release is original_release
                 assert {sig:d.signal.getsignal(sig)for sig in signals}==signals
+                signal_keys=["restore_signal_"+str(int(sig))for sig in signals]
+                if mode=="old_signal_return":
+                    assert type(caught)is TypeError and str(caught)=="Object of type method is not JSON serializable",repr(caught)
+                    assert type(caught.__context__)is TypeError and str(caught.__context__)==str(caught)
+                    memory=state["old_in_memory_result"]
+                    for key in signal_keys:
+                        handler=memory["terminal_evidence"][key]
+                        assert handler.__self__ is owned and handler.__func__ is Owned.interrupted
+                    assert memory["outputs"]=={n:h for n,h in a.inventory(out).items()if n!="result.json"}
+                    assert memory["status"]=="FAIL_TERMINAL_SAVE"and memory["fresh_RC_pipeline_complete"]is False
+                    assert result["status"]=="RUNNING_FRESH_TAIL_RC"and "outputs"not in result
+                    assert not transport.exists()and not transport_fixture["assets"]
+                    frozen_checker=workers.ROOT/FAILED_CHECKER
+                    assert method["protected_sha256"][FAILED_CHECKER]==FAILED_CHECKER_SHA and s.sha(frozen_checker)==FAILED_CHECKER_SHA
+                    assertions=[n for n in ast.walk(ast.parse(frozen_checker.read_text()))if isinstance(n,ast.Assert)and n.lineno==254]
+                    assert len(assertions)==1
+                    try:
+                        exec(compile(ast.Module(body=assertions,type_ignores=[]),str(frozen_checker),"exec"),
+                          {"result":result,"a":a,"out":out})
+                    except KeyError as masked:
+                        saved=s.read_json(workers.ROOT/FAILED_OUTER_RESULT)
+                        assert masked.args==("outputs",)and saved["error"]==repr(masked)
+                        tb=masked.__traceback__
+                        while tb.tb_next:tb=tb.tb_next
+                        assert tb.tb_frame.f_code.co_filename==str(frozen_checker)and tb.tb_lineno==254
+                        masked_error=repr(masked)
+                    else:raise AssertionError("Frozen stale-result assertion unexpectedly passed")
+                    cases.append({"case":mode,"status":"PASS_FROZEN_SIGNAL_RETURN_FAILURE_REPRODUCED",
+                      "actual_main_called":True,"type_error":repr(caught),"write_error":repr(caught.__context__),
+                      "signal_callable_keys":signal_keys,"actual_handlers_restored":True,
+                      "memory_outputs_complete":True,"stale_saved_result":result,
+                      "stale_saved_sha256":s.sha(out/"result.json"),"exact_original_masked_error":masked_error,
+                      "failed_controller_sha256":FAILED_DRIVER_SHA,"failed_checker_sha256":FAILED_CHECKER_SHA,
+                      "publication_refused":True,"synthetic_numerical_and_remote_transport":True})
+                    continue
+                assert "outputs"in result,{"case":mode,"caught":repr(caught),"saved_result":result}
                 assert result["outputs"]=={n:h for n,h in a.inventory(out).items()if n!="result.json"}
+                assert json.loads(json.dumps(result,allow_nan=False))==result
+                assert all(key not in result.get("terminal_evidence",{})for key in signal_keys)
+                assert all(any(x["action"]==key and x["completed"]is True for x in result["terminal_actions"])for key in signal_keys)
                 if mode=="complete":
                     assert caught is None and result["status"]==d.PASS and result["fresh_RC_pipeline_complete"]is True
                 elif mode in ("native_failure","partial_JSON","body_and_cleanup"):
@@ -289,8 +346,8 @@ def lifecycle_controls():
                   ("native_failure","partial_JSON","body_and_cleanup","saved_integrity","publication_failure"),
                   "actual_main_run_execute_finalization_publication":True,"synthetic_numerical_and_remote_transport":True,
                   "complete_output_files":len(result["outputs"]),"evidence":roundtrip})
-    assert len(cases)==10
-    return {"positive":1,"refusals":9,"cases":cases}
+    assert len(cases)==11
+    return {"positive":1,"refusals":10,"cases":cases,"frozen_signal_return_failure_reproduced":True}
 
 def publication_controls():
     positives=[];refusals=[]
@@ -370,8 +427,8 @@ def controls():
     result["lifecycle"]=lifecycle_controls()
     result["publication"]=publication_controls()
     result["status"]="PASS_ACTUAL_FRESH_RC_OUTER_PIPELINE_LIFECYCLE_CONTROLS"
-    result["positive_groups"]=6;result["refusals"]=41
-    assert len(result["pipeline"]["refusals"])+result["lifecycle"]["refusals"]+len(result["publication"]["refusals"])==41
+    result["positive_groups"]=6;result["refusals"]=42
+    assert len(result["pipeline"]["refusals"])+result["lifecycle"]["refusals"]+len(result["publication"]["refusals"])==42
     result["native_executed"]=False;s.methods()
     return result
 
