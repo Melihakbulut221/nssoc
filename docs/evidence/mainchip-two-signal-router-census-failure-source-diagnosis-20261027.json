@@ -1,0 +1,211 @@
+{
+  "actual_evidence": {
+    "fixed_audit": {
+      "both_streams_fully_reconstructed_from_exact_zero_offset_progress_chunks": true,
+      "elapsed_seconds": 110.87570284499998,
+      "memory_read_error": null,
+      "remaining_live": [],
+      "returncode": 1,
+      "stderr": {
+        "bytes": 899,
+        "sha256": "3a0772ed21b1559227269f4820bea75498396d199e1f38df064115d473ed7407"
+      },
+      "stdout": {
+        "bytes": 335,
+        "sha256": "becee14f45f68993b9d9cf8989ddab1b9bda3cce213765fb0694a340f672fa5c"
+      },
+      "supervision_failure": null
+    },
+    "native_log": {
+      "bytes": 1044453,
+      "sha256": "419d0ba1b9fb2fb8641c5794674459e6ac80de3de73e561885064e3296219a90"
+    },
+    "outer_terminal_checks_passed": 5,
+    "ownership": {
+      "ITerms": 766734,
+      "accepted": false,
+      "blockers": [],
+      "disconnected_ITerms": 1000,
+      "eligible_for_one_two_net_attempt": true,
+      "feasibility_proven": false,
+      "instances": 153130,
+      "marker_count": 3,
+      "nets": 143820,
+      "ordinary_dbWires": 143706,
+      "witnesses": 6
+    },
+    "successful_prior_commands": [
+      "bootstrap-exact-runtime",
+      "restore-complete-saved-inputs",
+      "actual-runtime-version",
+      "ownership",
+      "prepare-fixed",
+      "paired-all-nontarget-fixed-import"
+    ],
+    "summary": {
+      "bytes": 637472,
+      "path": "docs/evidence/mainchip-two-signal-named-identity-native-terminal-20261027.summary.json",
+      "sha256": "97c4d84bfed69dad9c58f37eb37166ac028b625a21fd68982dab6b4e07beac0b"
+    }
+  },
+  "native_routing_started": false,
+  "native_status": "FAIL_OR_BLOCKED_TWO_SIGNAL_ATTEMPT",
+  "observed_failure": {
+    "actual_cause_not_established": true,
+    "actual_failing_net_unknown": true,
+    "actual_failing_row_persisted": false,
+    "assertion": "row['paths']==[] and row['guides']==0 and row['terminals']<=1",
+    "file": "scripts/mainchip_two_signal_repair.py",
+    "function": "router_census",
+    "line": 111,
+    "native_caller": {
+      "file": "scripts/mainchip_two_signal_repair_native.py",
+      "function": "guide_census",
+      "line": 83,
+      "sha256": "adfa942462d3447054081b7486813b7207a7fb76b3624fdd58fd03d63cee37fa"
+    },
+    "sha256": "7bcc472de2db9715065863c2a44b27abe1a05c4581c5ff04a9aa6879145dcf6f"
+  },
+  "primary_source": {
+    "facts": [
+      {
+        "fact": "Every dbNet is enumerated. Actual dbNet.isSpecial() selects frBlock.addSNet versus addNet. Non-special supply errors with DRT-305; supply/name is not an exception.",
+        "lines": [
+          982,
+          1026
+        ],
+        "path": "src/drt/src/io/io.cpp"
+      },
+      {
+        "fact": "Ordinary nets_ and snets_ are separate; findNet can resolve either.",
+        "lines": [
+          123,
+          134,
+          382,
+          392
+        ],
+        "path": "src/drt/src/db/obj/frBlock.h"
+      },
+      {
+        "fact": "Ordinary FIXED state is derived from decoded dbWire path type; special-wire geometry and via components are still imported.",
+        "lines": [
+          701,
+          712,
+          919,
+          979
+        ],
+        "path": "src/drt/src/io/io.cpp"
+      },
+      {
+        "fact": "Detailed-router traversal here uses ordinary getNets().",
+        "lines": [
+          332,
+          365,
+          1966
+        ],
+        "path": "src/drt/src/dr/FlexDR.cpp"
+      },
+      {
+        "fact": "canRipup requires not fixed and has guides. The <=1-pin condition concerns worker-local drNet pins; it does not establish interchangeability with raw ITerm+BTerm count.",
+        "lines": [
+          2307,
+          2310,
+          2625,
+          2631
+        ],
+        "path": "src/drt/src/dr/FlexDR_init.cpp"
+      },
+      {
+        "fact": "Stored guides are read for all dbNets; actual special status does not imply zero stored guides.",
+        "lines": [
+          716,
+          735
+        ],
+        "path": "src/drt/src/io/GuideProcessor.cpp"
+      }
+    ],
+    "files": [
+      {
+        "bytes": 149437,
+        "sha256": "5981b0cf31cae90fdfa2628ffb33c437cf15f33d866310176fd5f53024321c7e",
+        "snapshot": "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/io.cpp",
+        "upstream_path": "src/drt/src/io/io.cpp",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/io/io.cpp"
+      },
+      {
+        "bytes": 14013,
+        "sha256": "40c985e9e39c5dbcc1fa5b59c9752dce3e4ee81b2f393f61543532cfc7f28439",
+        "snapshot": "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/frBlock.h",
+        "upstream_path": "src/drt/src/db/obj/frBlock.h",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/db/obj/frBlock.h"
+      },
+      {
+        "bytes": 77688,
+        "sha256": "122e84ca0906d7e53d4e5f4c7216a72e55f085f1a62b0848df06fc9eafd2e3af",
+        "snapshot": "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/FlexDR.cpp",
+        "upstream_path": "src/drt/src/dr/FlexDR.cpp",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR.cpp"
+      },
+      {
+        "bytes": 112064,
+        "sha256": "cf48ce2c745723c9c73a3431938f26eb9b87ee4c663a0ad8b7d6e185eb511723",
+        "snapshot": "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/FlexDR_init.cpp",
+        "upstream_path": "src/drt/src/dr/FlexDR_init.cpp",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/dr/FlexDR_init.cpp"
+      },
+      {
+        "bytes": 73641,
+        "sha256": "669c2a484f4285407235edb2792029fb2e44d93d0165a50469a0c5bd0021e7d4",
+        "snapshot": "docs/evidence/mainchip-two-signal-router-census-primary-dcf36133/GuideProcessor.cpp",
+        "upstream_path": "src/drt/src/io/GuideProcessor.cpp",
+        "url": "https://github.com/The-OpenROAD-Project/OpenROAD/blob/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0/src/drt/src/io/GuideProcessor.cpp"
+      }
+    ],
+    "revision": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0"
+  },
+  "proof_commit": "723973112c7fa2d27a67c3309f4bc558537b8c0e",
+  "proposed_next_boundary": {
+    "active_flags_changed": false,
+    "dispatch_authorized": false,
+    "implementation_authored": false,
+    "meaningful_control_targets": [
+      "actual guide_census fixture with special multi-terminal net",
+      "same row converted to ordinary must fail",
+      "ordinary unwired guided net must fail",
+      "full observed census saved even on late refusal"
+    ],
+    "partition_by_actual_isSpecial": true,
+    "persist_exact_refused_row_and_reason": true,
+    "persist_full_observed_rows_before_validation": true,
+    "preserve_complete_special_material_guide_pin_evidence": true,
+    "prohibited": [
+      "name-based special inference",
+      "supply-only exception",
+      "ordinary multi-terminal waiver",
+      "zero-guide inference from special status",
+      "reroute or acceptance claim"
+    ],
+    "retain_all_wired_nontarget_FIXED": true,
+    "retain_conservative_ordinary_unwired_refusal": true,
+    "source_only": true
+  },
+  "run": 40558510934,
+  "schema": "mainchip-two-signal-router-census-failure-source-diagnosis-v1",
+  "scope": {
+    "all_1691_clock_gates_unchanged": true,
+    "archive_downloaded": false,
+    "derating_percent": 5,
+    "local_authored_execution": false,
+    "native_rerun": false,
+    "original_clocks_ns": [
+      20,
+      4,
+      8,
+      8
+    ],
+    "original_memory_guard_failure_retained": true,
+    "source_and_published_text_only": true
+  },
+  "source": "f65fa3dce502336b312c00960f29cf612dcd3559",
+  "source_issue": "The current no-ordinary-dbWire branch applies the same terminal/guides restriction to actual special nets and ordinary nets, although their router populations differ. This source issue is established; it is not proof of the actual failing row."
+}
