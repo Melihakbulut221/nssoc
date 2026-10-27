@@ -8,6 +8,7 @@ import cdr_v59_tail_loaded_admission as a
 import cdr_v59_tail_loaded_terminal as terminal
 AUDIT="docs/evidence/cdr-v59-tail-loaded-worker-derivation-20261028.json"
 WORKER="scripts/cloud_cdr_v59_tail_loaded.py"
+FROZEN_TERMINAL="docs/evidence/cdr-v59-tail-loaded-terminal-before-atomic-fragment-fix-20261028.py"
 
 def derivation():
     audit=json.loads(a.regular(a.ROOT,AUDIT).read_bytes())
@@ -95,7 +96,7 @@ def main_entry_controls():
                 assert captured is primary and saved["status"]=="FAIL_TAIL_LOADED_TERMINAL_INTEGRITY"
                 assert calls==["restore_boundary","source_guard","saved_input_guard"]
                 assert saved["status_before_terminal"]=="FAIL_OR_ERROR"
-                assert [x["action"]for x in saved["terminal_actions"]]==["protected_sources","complete_saved_inputs","complete_output_inventory"]
+                assert [x["action"]for x in saved["terminal_actions"]]==["protected_sources","complete_saved_inputs","preserve_preexisting_atomic_fragment","complete_output_inventory"]
                 assert saved["terminal_errors"][0]["error"]==repr(secondary)
                 assert saved["active_primary_exception_before_terminal"]["error"]==repr(primary)
             results.append({"mode":label,"saved_status":saved["status"],"raised_exact_object":"secondary"if captured is secondary else"primary",
@@ -136,14 +137,14 @@ def terminal_controls():
                         finally:terminal.finalize(out,result,save,admission)
                     else:terminal.finalize(out,result,save,admission)
                 except BaseException as error:caught=error
-            assert calls==["sources","inputs","inventory","save"],(mode,calls)
+            assert calls==(["sources","inputs","inventory","save","inventory"]if mode in ("save_failure","body_and_save_failure")else["sources","inputs","inventory","save"]),(mode,calls)
             assert caught is (primary if mode.startswith("body_and")else None if mode=="complete"else failure)
             assert (out/".partial").read_bytes()==b"raw\x00evidence"
             if mode in ("save_failure","body_and_save_failure"):
                 emitted=json.loads(output.getvalue())["unsaved_terminal_loaded_result"]
                 assert emitted==result and emitted["status"]=="FAIL_TAIL_LOADED_TERMINAL_SAVE"
                 assert emitted["outputs"][".partial"]==a.sha(out/".partial")
-                assert len(emitted["terminal_actions"])==3 and emitted["terminal_errors"][-1]["error"]==repr(failure)
+                assert len(emitted["terminal_actions"])==6 and emitted["terminal_errors"][-1]["error"]==repr(failure)
                 assert json.loads((out/"result.json").read_bytes())=={"status":"RUNNING_SYNTHETIC"}
             else:
                 saved=json.loads((out/"result.json").read_bytes());assert saved==result
@@ -154,10 +155,127 @@ def terminal_controls():
               "complete_unsaved_JSON_preserved":mode in ("save_failure","body_and_save_failure")})
     return {"cases":cases,"positive":1,"failure_paths":6,"actual_finalizer_called":True}
 
+def atomic_fragment_controls():
+    """Exercise the actual fixed-name writer and real terminal inventories."""
+    frozen=a.regular(a.ROOT,FROZEN_TERMINAL).read_bytes()
+    assert a.sha(a.ROOT/FROZEN_TERMINAL)==a.methods()["protected_sha256"][FROZEN_TERMINAL]
+    definitions=[n for n in ast.parse(frozen).body if isinstance(n,ast.FunctionDef)]
+    scope={"json":json,"sys":sys,"traceback":traceback}
+    exec(compile(ast.Module(body=definitions,type_ignores=[]),"frozen-pre-fragment-terminal","exec"),scope)
+    cases=[]
+    for mode in ("frozen_preexisting","frozen_replace_failure","preserved_preexisting","replace_failure","body_and_replace_failure",
+                 "replace_and_retention_failure","replace_and_inventory_failure","preexisting_retention_failure"):
+        with tempfile.TemporaryDirectory()as td:
+            out=Path(td);(out/"available.raw").write_bytes(b"original-evidence")
+            a.write(out/"result.json",{"status":"RUNNING_SYNTHETIC"})
+            original=b'{"partial_original":\x00'
+            if mode in ("frozen_preexisting","preserved_preexisting","preexisting_retention_failure"):
+                (out/"result.json.tmp").write_bytes(original)
+            if mode=="preserved_preexisting":
+                folder=out/"terminal-save-fragments";folder.mkdir()
+                (folder/"result.json.tmp.000000").write_bytes(b"prior-unique-fragment")
+            result={"status":"PASS_SYNTHETIC_NUMERICAL_BODY","accepted":False}
+            primary=RuntimeError("EXACT_ATOMIC_BODY_FAILURE")
+            save_error=OSError("EXACT_ATOMIC_REPLACE_FAILURE")
+            retention_error=OSError("EXACT_ATOMIC_LINK_FAILURE")
+            inventory_error=OSError("EXACT_ATOMIC_REFRESH_FAILURE")
+            calls=[];write_payload=[];replace_calls=[];inventory_calls=[];output=io.StringIO()
+            admission=types.SimpleNamespace(methods=lambda:None,verify_restored=lambda path:{},
+              require=a.require,sha=a.sha)
+            real_replace=Path.replace;real_link=os.link;real_inventory=terminal.inventory
+            def replace(path,target):
+                assert path==out/"result.json.tmp"and Path(target)==out/"result.json"
+                replace_calls.append(str(path))
+                if mode in ("frozen_replace_failure","replace_failure","body_and_replace_failure","replace_and_retention_failure","replace_and_inventory_failure"):
+                    raise save_error
+                return real_replace(path,target)
+            def link(source,target,**kwargs):
+                if mode in ("replace_and_retention_failure","preexisting_retention_failure"):raise retention_error
+                return real_link(source,target,**kwargs)
+            def inventory(path,source):
+                inventory_calls.append(str(path))
+                if mode=="replace_and_inventory_failure"and len(inventory_calls)==2:raise inventory_error
+                return real_inventory(path,source)
+            def save():
+                calls.append("save")
+                write_payload.append((json.dumps(result,indent=2,sort_keys=True,allow_nan=False)+"\n").encode())
+                a.write(out/"result.json",result)
+            selected=scope["finalize"]if mode.startswith("frozen_")else terminal.finalize
+            caught=None
+            with mock.patch.object(Path,"replace",replace),mock.patch.object(terminal.os,"link",side_effect=link),\
+                 mock.patch.object(terminal,"inventory",side_effect=inventory),contextlib.redirect_stdout(output):
+                try:
+                    if mode=="body_and_replace_failure":
+                        try:raise primary
+                        finally:selected(out,result,save,admission)
+                    else:selected(out,result,save,admission)
+                except BaseException as error:caught=error
+            actual=real_inventory(out,admission)
+            if mode=="frozen_preexisting":
+                assert caught is None and calls==["save"]and not(out/"result.json.tmp").exists()
+                saved=json.loads((out/"result.json").read_bytes())
+                import hashlib
+                assert saved["outputs"]["result.json.tmp"]==hashlib.sha256(original).hexdigest()
+                assert saved["outputs"]!=actual and all(p.read_bytes()!=original for p in out.rglob("*")if p.is_file())
+                cases.append({"mode":mode,"exact_old_fragment_loss_and_stale_inventory_reproduced":True})
+                continue
+            if mode=="frozen_replace_failure":
+                assert caught is save_error and calls==["save"]and len(replace_calls)==1
+                emitted=json.loads(output.getvalue())["unsaved_terminal_loaded_result"]
+                assert emitted["outputs"]!=actual and "result.json.tmp"not in emitted["outputs"]
+                assert (out/"result.json.tmp").read_bytes()==write_payload[0]
+                assert json.loads((out/"result.json").read_bytes())=={"status":"RUNNING_SYNTHETIC"}
+                cases.append({"mode":mode,"exact_old_failed_save_missing_fragment_inventory_reproduced":True})
+                continue
+            if mode=="preserved_preexisting":
+                assert caught is None and calls==["save"]
+                saved=json.loads((out/"result.json").read_bytes())
+                row=saved["retained_atomic_fragments"][0]
+                assert row["stage"]=="before_final_save"and row["source_name_removed"]is True
+                assert row["retained"]=="terminal-save-fragments/result.json.tmp.000001"
+                assert (out/row["retained"]).read_bytes()==original
+                assert (out/"terminal-save-fragments/result.json.tmp.000000").read_bytes()==b"prior-unique-fragment"
+                assert saved["outputs"]==actual and saved["terminal_inventory_complete"]is True
+            else:
+                emitted=json.loads(output.getvalue())["unsaved_terminal_loaded_result"];assert emitted==result
+                assert emitted["status"]=="FAIL_TAIL_LOADED_TERMINAL_SAVE"
+                assert json.loads((out/"result.json").read_bytes())=={"status":"RUNNING_SYNTHETIC"}
+                expected=primary if mode=="body_and_replace_failure"else retention_error if mode=="preexisting_retention_failure"else save_error
+                assert caught is expected,(mode,caught)
+                if mode=="preexisting_retention_failure":
+                    assert calls==[]and replace_calls==[]and emitted["terminal_save_attempted"]is False
+                    assert (out/"result.json.tmp").read_bytes()==original
+                    assert [x["action"]for x in emitted["terminal_errors"]]==[
+                      "preserve_preexisting_atomic_fragment","save_result","preserve_failed_save_fragment"]
+                    assert emitted["terminal_errors"][0]["error"]==repr(retention_error)
+                else:
+                    assert calls==["save"]and len(replace_calls)==1 and emitted["terminal_save_attempted"]is True
+                    assert emitted["terminal_errors"][0]["error"]==repr(save_error)
+                    if mode=="replace_and_retention_failure":
+                        assert (out/"result.json.tmp").read_bytes()==write_payload[0]
+                        assert emitted["terminal_errors"][1]["error"]==repr(retention_error)
+                    else:
+                        row=emitted["retained_atomic_fragments"][0]
+                        assert row["stage"]=="after_failed_save"and row["source_name_removed"]is True
+                        assert (out/row["retained"]).read_bytes()==write_payload[0]
+                        assert a.sha(out/row["retained"])==row["sha256"]and len(write_payload[0])==row["bytes"]
+                        assert not(out/"result.json.tmp").exists()
+                if mode=="replace_and_inventory_failure":
+                    assert emitted["terminal_inventory_complete"]is False
+                    assert emitted["terminal_errors"][-1]["error"]==repr(inventory_error)
+                else:assert emitted["outputs"]==actual and emitted["terminal_inventory_complete"]is True
+                assert [x["action"]for x in emitted["terminal_actions"]][-2:]==[
+                  "preserve_failed_save_fragment","refresh_failed_save_inventory"]
+            cases.append({"mode":mode,"actual_atomic_writer_used":bool(calls),
+              "complete_available_inventory_checked":mode!="replace_and_inventory_failure",
+              "original_exception_identity_preserved":True,"fragment_bytes_retained":True})
+    return {"cases":cases,"old_regressions":2,"corrected_cases":6,"actual_atomic_writer_replace_boundary":True}
+
 def controls():
     assert a.methods()["source_controls_authorized"]is True
     return {"status":"PASS_EXACT_NUMERICAL_WORKER_DERIVATION_AND_TERMINAL_SOURCE_CONTROLS",
       "derivation":derivation(),"actual_main":main_entry_controls(),"terminal":terminal_controls(),
+      "atomic_fragments":atomic_fragment_controls(),
       "original_numerical_functions_executed":False,"archive_accessed":False,"simulator_executed":False,
       "full_outer_and_import_readiness":False}
 
