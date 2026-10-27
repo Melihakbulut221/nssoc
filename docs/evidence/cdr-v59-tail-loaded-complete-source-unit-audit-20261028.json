@@ -1,0 +1,173 @@
+{
+  "active_workflow": {
+    "HTTP_status": 404,
+    "path": ".github/workflows/cdr-v59-tail-loaded-cloud.yml",
+    "registered": false
+  },
+  "all_authorizations_false": true,
+  "controls": {
+    "admission_positive": 4,
+    "admission_refusals": 45,
+    "all8complete_required": true,
+    "always_emit_complete_or_partial_bytes_without_JSON_parsing": true,
+    "current_result_positive": 2,
+    "current_result_refusals": 24,
+    "exact_frozen_emitter": true,
+    "execution_policy_modes": 11,
+    "execution_policy_refusals": 19,
+    "file_list_refusals": 14,
+    "frozen_loader_positive": 1,
+    "frozen_loader_refusals": 6,
+    "import_data": 3,
+    "import_modules": 55,
+    "import_positive": 5,
+    "import_refusals": 34,
+    "missing_records_not_fabricated": true,
+    "named_records": [
+      "imports",
+      "admission",
+      "restore",
+      "worker",
+      "result",
+      "outer",
+      "runtime",
+      "release"
+    ],
+    "old_electrical_rejections": 8,
+    "old_intentional_fault_passes": 2,
+    "original_old_case_verdicts": 10,
+    "outer_lifecycle_cases": 16,
+    "outer_lifecycle_positive": 2,
+    "outer_lifecycle_refusals": 14,
+    "preparation_positive": 1,
+    "preparation_refusals": 8,
+    "publication_positive": 4,
+    "publication_refusals": 21,
+    "real_short_budget_commands": 2,
+    "release_positive": 3,
+    "release_refusals": 13,
+    "restore_positive": 2,
+    "restore_refusals": 9,
+    "shared_publication_refusals": 8,
+    "supervisor_inherited": 13,
+    "wait_positive": 3,
+    "wait_refusals": 4,
+    "worker_atomic_cases": 8,
+    "worker_edits": 6,
+    "worker_main_cases": 2,
+    "worker_numerical_blocks": 6,
+    "worker_terminal_cases": 7
+  },
+  "embedded_Python_programs": [
+    {
+      "bytes": 296,
+      "end_line": 41,
+      "sha256": "61c010020e665f3d5b4049410503b7c44bbfd158985370fb46b2c112a29f2022",
+      "source": "import sys\nfrom pathlib import Path\nsys.path.insert(0,'scripts')\nimport cdr_v59_tail_loaded_admission as a\nm=a.methods()\nassert m['source_controls_authorized'] is True and m['workflow_dispatch_authorized'] is True\nPath('hw/soc/out/cdr-v59-tail-loaded-controls').mkdir(parents=True,exist_ok=False)",
+      "start_line": 35
+    },
+    {
+      "bytes": 806,
+      "end_line": 81,
+      "sha256": "098c05ca4022b0f654dee77f2cb070f6eefb6a45c69ac840c2bfb86317c81d97",
+      "source": "import sys\nfrom pathlib import Path\nsys.path.insert(0,'scripts')\nimport cdr_v59_tail_loaded_admission as a\nimport ensure_cloud_tested_source_release as release\nimport wait_cloud_tested_source_release as waiter\nimport cloud_cdr_v59_binding_rc as shared\nassert a.methods()['source_controls_authorized'] is True\nout=Path('hw/soc/out/cdr-v59-tail-loaded-controls/release.json')\nresult={'status':'RUNNING_RELEASE_CONTROLS'}\na.write(out,result)\ntry:\n    result['reservation']=release.controls()\n    result['waiter']=waiter.controls()\n    result['publication']=shared.publication_controls()\n    result['status']='PASS_SOURCE_RESERVATION_WAITER_AND_SHARED_PUBLICATION_CONTROLS'\nexcept BaseException as error:\n    result.update(status='FAIL_RELEASE_CONTROLS',error=repr(error))\n    raise\nfinally:a.write(out,result)",
+      "start_line": 62
+    },
+    {
+      "bytes": 5295,
+      "end_line": 155,
+      "sha256": "449e61bab2a0406076570ab35bd0e39c11c6ea5f80d25ec75f86b1c92bcc0b79",
+      "source": "import json\nfrom pathlib import Path\nroot=Path('hw/soc/out/cdr-v59-tail-loaded-controls')\nassert root.is_dir() and not root.is_symlink()\ndef read(name):\n    path=root/(name+'.json')\n    assert path.is_file() and not path.is_symlink()\n    return json.loads(path.read_bytes())\nx=read('imports')\nassert x['status']=='PASS_EXACT_LOADED_INITIAL_IMPORTS_AND_THREE_DATA_READS'\nassert (x['positive_count'],x['refusal_count'])==(5,34)\nassert len(x['closure']['modules'])==55 and len(x['closure']['edges'])==123 and len(x['closure']['data'])==3\nassert x['installed_external_allowlist']=={'numpy':'2.3.3'}\nassert x['isolated_numpy_version_required']=='2.3.3'\nassert len(x['every_entry_imported'])==12 and x['actual_waiter_imported'] is True\nassert x['native_executed'] is False and x['numerical_functions_executed'] is False\nx=read('admission')\nassert x['status']=='PASS_ACTUAL_TAIL_LOADED_METADATA_AND_REGULAR_INVENTORY_CONTROLS'\nassert len(x['positive_groups'])==4 and len(x['rejected'])==45\nassert x['complete_actual_JSON_used'] and x['frozen_pipeline_validator_executed_on_saved_report']\nassert x['archive_downloaded'] is False and x['simulator_executed'] is False\nx=read('restore')\nassert x['status']=='PASS_ACTUAL_LOADED_RESTORE_RETURN_AND_FULL_MEMBER_BOUNDARIES'\nassert len(x['positive'])==2 and len(x['rejected'])==9\nassert x['actual_restore_exact_extract_pack_and_authorize_called'] is True\nassert x['real_current_reports_validated_before_synthetic_archive_cases'] is True\nassert x['producer_archive_downloaded'] is False and x['loaded_numerical_functions_executed'] is False\nx=read('worker')\nassert x['status']=='PASS_EXACT_NUMERICAL_WORKER_DERIVATION_AND_TERMINAL_SOURCE_CONTROLS'\nassert x['derivation']['edits']==x['derivation']['numerical_blocks']==6\nassert x['derivation']['exact_reverse'] and x['derivation']['non_main_functions_identical']\nassert len(x['actual_main']['cases'])==2 and x['actual_main']['old_primary_masking_reproduced']\nassert x['actual_main']['corrected_primary_identity_preserved'] and x['actual_main']['restoration_and_native_never_reached']\nassert len(x['terminal']['cases'])==7 and x['terminal']['positive']==1 and x['terminal']['failure_paths']==6\nassert len(x['atomic_fragments']['cases'])==8 and x['atomic_fragments']['old_regressions']==2 and x['atomic_fragments']['corrected_cases']==6\nassert x['atomic_fragments']['actual_atomic_writer_replace_boundary'] is True\nassert x['original_numerical_functions_executed'] is False and x['simulator_executed'] is False\nx=read('result')\nassert x['status']=='PASS_ORIGINAL_LOADED_RESULT_PREDICATES_AND_CURRENT_BINDINGS'\nassert len(x['historical']['cases'])==10 and x['historical']['eight_rejections_and_two_fault_detections_retained']\nassert sum(row['original_passed']for row in x['historical']['cases'])==2\nassert all(row['all_measured_values_unchanged']for row in x['historical']['cases'])\nassert len(x['current']['positive_modes'])==2 and len(x['current']['rejected'])==24\nassert x['current']['actual_current_simulation_claimed'] is False\nassert x['all_original_numerical_thresholds_unchanged'] and x['numerical_worker_executed'] is False\nx=read('outer')\nassert x['status']=='PASS_LOADED_OUTER_SOURCE_CONTROLS'\nassert len(x['lifecycle']['cases'])==16 and (x['lifecycle']['positive'],x['lifecycle']['refusals'])==(2,14)\nassert all(row['real_signals_restored'] and row['full_existing_output_map'] and row['all_eight_outer_actions']for row in x['lifecycle']['cases'])\nassert len(x['execution_policy']['positive_modes'])==11 and len(x['execution_policy']['refused'])==19\nassert x['execution_policy']['all_eleven_reserved_preparation_last'] is True\nassert (x['preparation']['positive'],x['preparation']['refusals'])==(1,8) and len(x['preparation']['cases'])==9\nassert len(x['publication']['positive'])==4 and len(x['publication']['refused'])==21\nassert x['publication']['actual_pack_extract_reserved_publisher'] is True\nassert x['historical_eight_rejections_two_faults_preserved'] and x['fixture_runtime_engine_identity_explicitly_synthetic']\nassert x['original_numerical_worker_executed'] is False and x['actual_current_native_archive_accessed'] is False\nx=read('runtime')\nassert x['status']=='PASS_LOADED_QUALIFIED_SUPERVISOR_AND_EXACT_BUDGET_CONTROLS'\nassert len(x['inherited']['controls'])==13 and all(x['inherited']['controls'].values())\nassert len(x['loaded_budgets'])==2 and [row['seconds']for row in x['loaded_budgets']]==[1200,7200]\nassert len(x['frozen_loaders']['positive'])==1 and len(x['frozen_loaders']['refused'])==6\nassert x['actual_short_python_children_only'] and x['numerical_worker_executed'] is False and x['simulator_executed'] is False\nassert x['memory_limits_or_sampling_relaxed'] is False\nx=read('release')\nassert x['status']=='PASS_SOURCE_RESERVATION_WAITER_AND_SHARED_PUBLICATION_CONTROLS'\nassert x['reservation']['status'].startswith('PASS')\nassert len(x['reservation']['positive_cases'])==3 and len(x['reservation']['rejected'])==13\nassert len(x['waiter']['positive_cases'])==3 and len(x['waiter']['rejected'])==4 and not x['waiter']['creation_attempted']\nassert len(x['publication']['rejected'])==8 and len(x['publication']['file_list_controls']['rejected'])==14\nassert x['publication']['file_list_controls']['actual_shared_function_executed'] and not x['publication']['release_creation_possible']",
+      "start_line": 86
+    },
+    {
+      "bytes": 1313,
+      "end_line": 185,
+      "sha256": "d35e5cda26895983be759758dabc8338e01b4b1cb526b3b62149e67b3eb2896c",
+      "source": "import ast,base64,hashlib,json\nfrom pathlib import Path\nsource=Path('scripts/cloud_cdr_v59_binding_rc.py')\nassert source.is_file() and not source.is_symlink()\nraw=source.read_bytes()\nassert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'\nnodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit']\nassert len(nodes)==1\nscope=dict(base64=base64,hashlib=hashlib,json=json)\nexec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)\nroot=Path('hw/soc/out/cdr-v59-tail-loaded-controls')\nassert not root.is_symlink() and (not root.exists() or root.is_dir())\nnames=('imports','admission','restore','worker','result','outer','runtime','release')\nassert len(names)==len(set(names))==8\nemitted=[];missing=[]\nfor name in names:\n    path=root/(name+'.json')\n    assert not path.is_symlink()\n    if not path.exists():\n        missing.append(name)\n        continue\n    assert path.is_file()\n    scope['emit'](path,'CDR_TAIL_LOADED_CONTROL_'+name.upper())\n    emitted.append(dict(name=name,bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest()))\nprint('CDR_TAIL_LOADED_CONTROL_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,missing_files_created=False),sort_keys=True),flush=True)",
+      "start_line": 161
+    },
+    {
+      "bytes": 1796,
+      "end_line": 260,
+      "sha256": "df049dd1d2542ceb4f105324fffd341a04283810b4869e7f3bd7174a3579deb4",
+      "source": "import hashlib,json,os\nfrom pathlib import Path\ncase=os.environ['LOADED_CASE'];prepare=os.environ['PREPARE_ONLY']=='true'\ncases=('nominal_early','nominal_late','hot_early','hot_late','cold_early','cold_late','constant_zero','constant_one','clock_stopped','vi_bias_off')\nassert case in cases and (not prepare or case=='nominal_early')\nsuffix='preparation'if prepare else case\nout=Path('cloud-cdr-v59-tail-loaded-evidence-'+suffix)\nassert not out.is_symlink()\nout.mkdir(parents=True,exist_ok=True)\npath=out/'result.json'\nassert not path.is_symlink()\nif not path.exists():\n    outputs={}\n    for member in out.rglob('*'):\n        assert not member.is_symlink()\n        if member.is_dir():continue\n        assert member.is_file()\n        with member.open('rb')as stream:\n            outputs[str(member.relative_to(out))]=hashlib.file_digest(stream,'sha256').hexdigest()\n    value=dict(status='FAIL_BEFORE_LOADED_DRIVER_RESULT',source_head=os.environ['GITHUB_SHA'],\n      run_id=int(os.environ['GITHUB_RUN_ID']),run_attempt=int(os.environ['GITHUB_RUN_ATTEMPT']),\n      case=case,preparation_only=prepare,group='cdr-v59-tail-loaded-'+suffix,\n      fresh_RC_run=40576801174,original_physical_run=40369539200,\n      original_physical_status='FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL',\n      original_eight_electrical_rejections_and_two_fault_detections_preserved=True,\n      native_case_passed=False,accepted=False,qualified_pex=False,full_phy_accepted=False,\n      cdr_accepted=False,physical_accepted=False,geometry_regenerated=False,\n      native_extraction_executed=False,automatic_retry=False,\n      terminal_finalization_complete=False,outer_terminal_finalization_complete=False,\n      outputs=outputs,pre_driver_failure_marker_only=True)\n    path.write_text(json.dumps(value,sort_keys=True,indent=2)+'\\n')",
+      "start_line": 230
+    },
+    {
+      "bytes": 1796,
+      "end_line": 343,
+      "sha256": "df049dd1d2542ceb4f105324fffd341a04283810b4869e7f3bd7174a3579deb4",
+      "source": "import hashlib,json,os\nfrom pathlib import Path\ncase=os.environ['LOADED_CASE'];prepare=os.environ['PREPARE_ONLY']=='true'\ncases=('nominal_early','nominal_late','hot_early','hot_late','cold_early','cold_late','constant_zero','constant_one','clock_stopped','vi_bias_off')\nassert case in cases and (not prepare or case=='nominal_early')\nsuffix='preparation'if prepare else case\nout=Path('cloud-cdr-v59-tail-loaded-evidence-'+suffix)\nassert not out.is_symlink()\nout.mkdir(parents=True,exist_ok=True)\npath=out/'result.json'\nassert not path.is_symlink()\nif not path.exists():\n    outputs={}\n    for member in out.rglob('*'):\n        assert not member.is_symlink()\n        if member.is_dir():continue\n        assert member.is_file()\n        with member.open('rb')as stream:\n            outputs[str(member.relative_to(out))]=hashlib.file_digest(stream,'sha256').hexdigest()\n    value=dict(status='FAIL_BEFORE_LOADED_DRIVER_RESULT',source_head=os.environ['GITHUB_SHA'],\n      run_id=int(os.environ['GITHUB_RUN_ID']),run_attempt=int(os.environ['GITHUB_RUN_ATTEMPT']),\n      case=case,preparation_only=prepare,group='cdr-v59-tail-loaded-'+suffix,\n      fresh_RC_run=40576801174,original_physical_run=40369539200,\n      original_physical_status='FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL',\n      original_eight_electrical_rejections_and_two_fault_detections_preserved=True,\n      native_case_passed=False,accepted=False,qualified_pex=False,full_phy_accepted=False,\n      cdr_accepted=False,physical_accepted=False,geometry_regenerated=False,\n      native_extraction_executed=False,automatic_retry=False,\n      terminal_finalization_complete=False,outer_terminal_finalization_complete=False,\n      outputs=outputs,pre_driver_failure_marker_only=True)\n    path.write_text(json.dumps(value,sort_keys=True,indent=2)+'\\n')",
+      "start_line": 313
+    }
+  ],
+  "execution": {
+    "all11readonlyreservations_before_native_dependencies": true,
+    "automatic_retry": false,
+    "checkout_credentials_never_persisted": true,
+    "controls_permissions": [
+      "contents:read",
+      "actions:read"
+    ],
+    "each_case_process_seconds": 7200,
+    "fail_fast": false,
+    "loaded_job_timeout_minutes": 180,
+    "max_parallel": 2,
+    "only_two_native_jobs_contents_write": true,
+    "original10cases": [
+      "nominal_early",
+      "nominal_late",
+      "hot_early",
+      "hot_late",
+      "cold_early",
+      "cold_late",
+      "constant_zero",
+      "constant_one",
+      "clock_stopped",
+      "vi_bias_off"
+    ],
+    "original_all_available_worker_output_transport_artifacts": true,
+    "preparation_before_all_cases": true,
+    "preparation_job_timeout_minutes": 90,
+    "preparation_process_seconds": 1200,
+    "preparation_reserved_last": true,
+    "source_control_job_timeout_minutes": 90
+  },
+  "no_current_electrical_result_claimed": true,
+  "no_local_authored_imports_tests_native_archive": true,
+  "original_physical_failure_preserved": true,
+  "original_runtime": {
+    "numpy": "2.3.3",
+    "original_engine_child_removes_GH_TOKEN_GITHUB_TOKEN": true,
+    "original_engine_sha256": "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509",
+    "python": "3.12",
+    "sha256": "ca3d6d291cb6062a9e6ecb8aac001f33c1f82966960b08dc327bddd080217e05",
+    "template": ".github/workflow-templates/cdr-v59-loaded-cloud.yml",
+    "ubuntu": "24.04",
+    "unchanged_native_packages": [
+      "tcl8.6",
+      "libsndfile1",
+      "libsamplerate0",
+      "libreadline8t64",
+      "libxaw7",
+      "libxt6",
+      "libxft2",
+      "libfontconfig1"
+    ]
+  },
+  "pending": [
+    "Final bounded outer/checker and isolated import/template reviews",
+    "Actual hosted source controls",
+    "Separate reviewed source-control activation and explicit dispatch",
+    "Complete actual proof and exact metadata normalization before any preparation/simulation activation",
+    "One separately authorized original matrix; all original thresholds and historical failures retained"
+  ],
+  "schema": "cdr-v59-tail-loaded-complete-source-unit-audit-v1",
+  "status": "SOURCE_COMPLETE_UNEXECUTED_AND_DISABLED",
+  "template": {
+    "bytes": 20768,
+    "path": ".github/workflow-templates/cdr-v59-tail-loaded-cloud.yml",
+    "sha256": "f0589ef60523d4f241ee0658d2334fd6e2b98fbe97cfeaa97cfeb3d81e020953"
+  }
+}
