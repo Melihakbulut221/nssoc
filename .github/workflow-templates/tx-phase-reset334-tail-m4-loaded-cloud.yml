@@ -57,6 +57,8 @@ jobs:
           assert r['actual_controller_imported']and r['all_original_function_code_objects_identical']and r['original_module_globals_unchanged']
           assert len(r['RC_faults'])==24 and len(r['metadata_faults'])==20 and len(r['context_faults'])==13
           assert len(r['actual_main_entry_positives'])==2 and len(r['actual_post_preparation_main'])==2
+          assert all(x['exact_original_digest_callable']for x in r['actual_post_preparation_main'])
+          assert r['actual_old_missing_digest_regression']['rejected']and r['actual_old_missing_digest_regression']['exact_old_missing_digest_reproduced']
           assert all(x['actual_finally_result_written']for x in r['actual_main_entry_positives'])
           assert len(r['actual_prepare_completion'])==2 and r['actual_prepare_completion'][1]['rejected']
           assert len(r['inherited_preparation']['rejected'])==15

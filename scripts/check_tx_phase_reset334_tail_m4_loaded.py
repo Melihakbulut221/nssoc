@@ -308,10 +308,15 @@ def runtime_controls():
     return dict(supervisor=result,actual_generic_process_controls=True,ngspice_or_CAD_executed=False)
 
 
-def derived_preparation_boundary(prepare_only):
+def derived_preparation_boundary(prepare_only,omit_digest=False):
     ns,proof=controller.program_namespace();seen=[]
     original,parent=d.original_rejections();four=d.prior_four_tail_rejection()
-    init=types.SimpleNamespace(adapters=lambda:types.SimpleNamespace())
+    original_digest=ns['initialization'].digest
+    init=types.SimpleNamespace(adapters=lambda:types.SimpleNamespace(),digest=original_digest)
+    assert init.digest is original_digest
+    if omit_digest:
+        assert prepare_only is True
+        del init.digest
     path_binding=types.SimpleNamespace(bench=types.SimpleNamespace(binding=types.SimpleNamespace(MODELS=dict(a.MODELS))))
     class StopBeforeEngine(RuntimeError):pass
     def prepare(destination):
@@ -330,11 +335,28 @@ def derived_preparation_boundary(prepare_only):
         ns['publication']=types.SimpleNamespace(context=lambda *args:('fixture-tag','a'*40),api=lambda p:{'fixture':p},validate_release=lambda *args:{'fixture':True})
         ns['native']=types.SimpleNamespace(restore=stop)
         try:ns['main'](prepare_only=prepare_only)
-        except StopBeforeEngine:assert not prepare_only
-        else:assert prepare_only
+        except AttributeError as error:
+            assert omit_digest and prepare_only and error.name=='digest'and error.obj is init
+            frames=[];tb=error.__traceback__
+            while tb:
+                frames.append(tb);tb=tb.tb_next
+            assert frames[-1].tb_frame.f_code is ns['sha'].__code__
+            assert frames[-2].tb_frame.f_code is ns['main'].__code__
+            assert seen==['fresh-prepare-complete']
+            assert(ns['OUT']/'fresh-preparation/preparation.summary.json').is_file()
+            prior=json.loads((ns['OUT']/'result.json').read_bytes())
+            assert prior['status']=='PASS_FOUR_EXACT_RUNTIME_PATH_BINDINGS_NO_NATIVE_ZERO_OP'
+            assert prior['native_simulator_invoked']is prior['runtime_installed']is False
+            return dict(prepare_only=True,rejected=True,exact_old_missing_digest_reproduced=True,
+              error=repr(error),unchanged_original_main_finally_and_sha=True,
+              preparation_file_written_before_finally=True,earlier_result_is_not_a_completed_fixture=True,
+              native_or_archive_executed=False)
+        except StopBeforeEngine:assert not prepare_only and not omit_digest
+        else:assert prepare_only and not omit_digest
         result=json.loads((ns['OUT']/'result.json').read_bytes())
         assert result['current_RC_model_hashes']==a.MODELS and result['original17_HBT_rejection']==original and result['prior_four_tail_rejection']==four
         assert ns['initialization']is init and ns['path_binding']is path_binding
+        assert init.digest is original_digest
         if prepare_only:
             assert seen==['fresh-prepare-complete']and result['status']=='PASS_FOUR_EXACT_RUNTIME_PATH_BINDINGS_NO_NATIVE_ZERO_OP'
             assert result['zero_source_OP_executed']is False
@@ -344,7 +366,8 @@ def derived_preparation_boundary(prepare_only):
         assert result['native_simulator_invoked']is False and result['runtime_installed']is False
         assert result['outputs']['fresh-preparation/preparation.summary.json']==controller.sha(ns['OUT']/'fresh-preparation/preparation.summary.json')
     return dict(prepare_only=prepare_only,actual_full_main_and_current_inputs=True,correct_isolated_context_installed=True,
-      explicit_original_runtime_boundary=True,synthetic_preparation_only=True,native_or_archive_executed=False)
+      explicit_original_runtime_boundary=True,synthetic_preparation_only=True,
+      exact_original_digest_callable=True,native_or_archive_executed=False)
 
 
 def native_result_controls():
@@ -607,6 +630,7 @@ def controls():
     base.update(outer_native_view=outer_view_controls(),
       actual_prepare_completion=[prepare_completion_fixture(False),prepare_completion_fixture(True)],
       actual_post_preparation_main=[derived_preparation_boundary(x)for x in (True,False)],
+      actual_old_missing_digest_regression=derived_preparation_boundary(True,omit_digest=True),
       native_result_controls=native_result_controls(),finalization=finalization_fixtures(),owned_child_terminal=owned_child_terminal_fixtures(),runtime=runtime_controls(),
       authorization=authorization_controls(),child_preflight=child_preflight_controls(),workflow=workflow_controls(),
       prior_four_failed_HBT_count=len(d.prior_four_tail_rejection()['all_four_failed_HBT_records']),
