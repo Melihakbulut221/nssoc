@@ -1,0 +1,318 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-tail-m4-transient-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source controls or separately authorized first current TAIL_M4 p-high process
+        type: choice
+        default: source-controls
+        required: true
+        options: [source-controls, native]
+      stage:
+        description: Fresh initial process or separately authorized exact saved-process continuation
+        type: choice
+        default: initial
+        required: true
+        options: [initial, cross]
+      source_descriptor:
+        description: Exact successful saved-process descriptor for cross only
+        type: string
+        default: '{}'
+        required: true
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-tail-m4-transient-p-initial-high
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Current OP admission, exact numerical functions and actual preparation/main-entry controls
+        run: |
+          set -euo pipefail
+          if bash -o pipefail -c '(exit 7) | tee /dev/null'; then exit 1; fi
+          python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+          python3 scripts/check_tx_phase_reset334_tail_m4_transient_imports.py | tee import-controls.json
+          python3 - <<'IMPORT'
+          import json
+          i=json.load(open('import-controls.json'))
+          assert i['status']=='PASS_TAIL_M4_TRANSIENT_ACTUAL_IMPORT_AND3_DATA_CLOSURE'
+          assert len(i['positive'])==2 and len(i['rejected'])==7
+          assert len(i['workflow_controls']['rejected'])==4
+          e=i['workflow_controls']['control_evidence']
+          assert len(e['positive'])==2 and len(e['refused'])==2 and e['actual_template_program_executed']
+          IMPORT
+          python3 scripts/cloud_tx_phase_reset334_tail_m4_transient.py --controls | tee source-controls.json
+          python3 - <<'PY'
+          import json
+          x=json.load(open('source-controls.json'))
+          assert x['status']=='PASS_CURRENT_TAIL_M4_PORTABLE_SOURCE_CONTROLS_ONLY'
+          assert len(x['OP_faults'])==24 and len(x['metadata_faults'])==20 and len(x['context_controls']['rejected'])==14
+          assert len(x['lifecycle_derivation']['literal_edits'])==10 and len(x['support_derivation']['literal_edits'])==2
+          assert len(x['derivation_faults'])==4
+          assert x['continuation_asset_controls']['two_summary_orderings_preserve_exact_source_asset']and len(x['continuation_asset_controls']['rejected'])==2
+          assert x['numerical_functions_use_exact_original_code_objects']and x['original_module_globals_unchanged']
+          assert len(x['actual_main_entry_positives'])==2 and all(r['actual_finally_failure_preserved']for r in x['actual_main_entry_positives'])
+          assert x['actual_preparation_entry']['current_capsule_boundary_reached']and x['legacy_preparation_refusal']['original_legacy_prepare_rejected_before_restore']
+          assert len(x['inherited_original_numerical_controls']['negative_controls'])==52 and x['current_portable_controls']['count']==22
+          assert len(x['archive_controls']['rejected'])==13 and x['archive_controls']['inherited_parts_controls']['negative_controls']==6
+          assert x['actual_prepare_completion']['actual_derived_prepare_return_reached']and x['missing_summary_refusal']['actual_missing_summary_fault_rejected']
+          assert len(x['outer_admission']['rejected'])==20 and x['outer_admission']['complete_outer_files']==3286
+          assert x['outer_admission']['complete_native_files']==3271 and x['outer_admission']['all_prepared_files']==3201
+          a=x['authorization_controls'];p=x['preflight_controls']
+          assert len(a['positive'])==2 and len(a['rejected'])==42 and a['both_actual_methods_modes_exercised']
+          assert a['every_mutation_type_sensitive_and_applicable']and a['activated_no_op_regression_reproduced']
+          assert len(p['positive'])==2 and len(p['rejected'])==7 and p['actual_preflight_and_methods']
+          o=x['actual_outer_terminal_controls'];n=x['actual_inner_terminal_controls']
+          assert len(o['cases'])==12 and o['positive']==2 and o['refusal']==10
+          assert len(n['actual_derived_main_cases'])==12 and n['positive']==1 and n['expected_failures']==11
+          assert len(n['exact_previous_cleanup_regressions'])==2 and n['streaming_hash_actual_file_positive']
+          assert n['no_Docker_CRIU_simulator_network_or_archive_executed']
+          assert x['actual_restored18_source_plus32_path_controls_required_before_engine']
+          assert x['actual_restore_executed']is x['native_simulator_invoked']is x['transient_executed']is False
+          PY
+      - name: Actual resource observation and failure-preservation program fixtures
+        run: |
+          set -euo pipefail
+          python3 scripts/check_tx_phase_reset334_tail_m4_transient_resources.py | tee resource-controls.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('resource-controls.json'))
+          assert r['status']=='PASS_ACTUAL_RESOURCE_PROGRAM_FIXTURES_ONLY'
+          assert len(r['positive_cases'])==4 and len(r['rejected'])==5
+          assert r['actual_template_programs_executed']and r['measured_resource_inputs_are_synthetic']
+          assert not r['native_executed']and not r['provisioning_performed']
+          PY
+      - name: Actual reserved-only publication and read-only release waiter controls
+        run: |
+          set -euo pipefail
+          python3 scripts/check_tx_phase_reset334_tail_m4_transient_publication.py | tee publication-controls.json
+          python3 scripts/wait_cloud_tested_source_release.py --controls | tee wait-controls.json
+          python3 - <<'PY'
+          import json
+          p=json.load(open('publication-controls.json'));w=json.load(open('wait-controls.json'))
+          assert len(p['positive_cases'])==2 and len(p['rejected'])==13 and p['actual_template_program_executed']and p['real_file_list_assembly']
+          assert len(w['positive_cases'])==3 and len(w['rejected'])==4
+          PY
+      - name: Emit exact complete or partial control bytes
+        if: always()
+        run: |
+          python3 - <<'PYCONTROL'
+          import ast,base64,hashlib,json
+          from pathlib import Path
+          source=Path('scripts/cloud_cdr_v59_binding_rc.py')
+          assert source.is_file() and not source.is_symlink()
+          raw=source.read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'
+          nodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit']
+          assert len(nodes)==1
+          scope=dict(base64=base64,hashlib=hashlib,json=json)
+          exec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)
+          names=('source-controls','import-controls','resource-controls','publication-controls','wait-controls')
+          assert len(names)==len(set(names))==5
+          emitted=[];missing=[];failures=[]
+          for name in names:
+              path=Path(name+'.json')
+              if not path.exists() and not path.is_symlink():
+                  missing.append(path.name)
+                  continue
+              try:
+                  assert path.is_file() and not path.is_symlink(),str(path)
+                  before=path.read_bytes()
+                  scope['emit'](path,'TAIL_M4_TRANSIENT_CONTROL_'+name.upper().replace('-','_'))
+                  assert path.read_bytes()==before,'Control record changed during emission'
+                  emitted.append(dict(name=path.name,bytes=len(before),sha256=hashlib.sha256(before).hexdigest()))
+              except Exception as error:failures.append(dict(name=path.name,error=repr(error)))
+          print('TAIL_M4_TRANSIENT_CONTROL_FILE_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,failures=failures,missing_files_created=False),sort_keys=True),flush=True)
+          assert not failures,failures
+          PYCONTROL
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: tail-m4-portable-source-controls
+          path: |
+            source-controls.json
+            import-controls.json
+            publication-controls.json
+            wait-controls.json
+            resource-controls.json
+          if-no-files-found: error
+          retention-days: 90
+          include-hidden-files: true
+  exact318-p-high-native:
+    needs: source-controls
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'native'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+      PROOF_STAGE: ${{ inputs.stage }}
+      NSSOC_TX_SOURCE: ${{ inputs.source_descriptor }}
+      NSSOC_TX_SECONDS: '13200'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Passed source controls and read-only exact reserved release before dependencies
+        run: |
+          if [ "$PROOF_STAGE" = initial ]; then test "$NSSOC_TX_SOURCE" = '{}'; fi
+          python3 scripts/cloud_tx_phase_reset334_tail_m4_transient.py --preflight --stage "$PROOF_STAGE" --case p-initial-high
+      - name: Record native runner resources before dependency installation
+        run: |
+          python3 - <<'RESOURCE'
+          import datetime,json,os,shutil
+          from pathlib import Path
+          assert os.environ['PROOF_STAGE']in ('initial','cross')and os.environ['GITHUB_RUN_ATTEMPT']=='1'
+          root=Path.cwd().resolve();disk=shutil.disk_usage(root);fields={}
+          for line in Path('/proc/meminfo').read_text().splitlines():
+              key,_,value=line.partition(':')
+              if key in ('MemTotal','MemAvailable','MemFree'):
+                  count,unit=value.split();assert unit=='kB';fields[key]=int(count)*1024
+          assert set(fields)=={'MemTotal','MemAvailable','MemFree'}and all(v>=0 for v in fields.values())
+          affinity=sorted(os.sched_getaffinity(0));assert affinity and os.cpu_count()>0
+          receipt=dict(schema='native-resource-observation-v1',status='OBSERVATION_ONLY_NOT_RESOURCE_OR_ELECTRICAL_ACCEPTANCE',
+              source_head=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),run_attempt=1,stage=os.environ['PROOF_STAGE'],
+              observed_at_utc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              disk=dict(path=str(root),device=os.stat(root).st_dev,total_bytes=disk.total,used_bytes=disk.used,free_bytes=disk.free),
+              ram_bytes=fields,cpu=dict(logical_count=os.cpu_count(),available_affinity=affinity),
+              runner={k:os.environ.get(k)for k in ('ImageOS','ImageVersion','ImageRelease','RUNNER_OS','RUNNER_ARCH','RUNNER_NAME')},
+              original_guards_unchanged=dict(prelaunch_free_bytes=72*1024**3,checkpoint_reserve_bytes=20*1024**3),
+              provisioning_performed=False,cleanup_performed=False,resource_guarantee=False)
+          path=Path(os.environ['RUNNER_TEMP'])/'native-resource-before-dependencies.json'
+          with path.open('xb')as f:f.write((json.dumps(receipt,indent=2,allow_nan=False)+'\n').encode())
+          print(json.dumps(receipt,sort_keys=True),flush=True)
+          RESOURCE
+      - name: Install original pinned portable runtime dependencies and CRIU
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends build-essential pkg-config libprotobuf-dev libprotobuf-c-dev protobuf-c-compiler protobuf-compiler python3-protobuf uuid-dev libbsd-dev libcap-dev libnet1-dev libnl-3-dev tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+          git init "$RUNNER_TEMP/criu-src"
+          git -C "$RUNNER_TEMP/criu-src" remote add origin https://github.com/checkpoint-restore/criu.git
+          git -C "$RUNNER_TEMP/criu-src" fetch --depth 1 origin 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          git -C "$RUNNER_TEMP/criu-src" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/criu-src" rev-parse HEAD)" = 9539417f3e3cfa4eb84c319cd71f4d52f1f08645
+          make -C "$RUNNER_TEMP/criu-src" -j2 criu PYTHON=/usr/bin/python3 2>&1 | tee "$RUNNER_TEMP/criu-build.log"
+          sudo install -m 755 "$RUNNER_TEMP/criu-src/criu/criu" /usr/sbin/criu
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          p=pathlib.Path('/usr/sbin/criu')
+          d=dict(source_commit='9539417f3e3cfa4eb84c319cd71f4d52f1f08645',
+            binary_sha256=hashlib.sha256(p.read_bytes()).hexdigest(),
+            version=subprocess.check_output([str(p),'--version'],text=True),
+            libraries=subprocess.check_output(['ldd',str(p)],text=True))
+          (pathlib.Path(os.environ['RUNNER_TEMP'])/'criu-build.json').write_text(json.dumps(d,indent=2)+'\n')
+          PY
+      - name: Run sole p-high process or continue its exact saved process
+        run: python3 scripts/cloud_tx_phase_reset334_tail_m4_transient.py --stage "$PROOF_STAGE" --case p-initial-high
+      - name: Preserve complete result including rejected capture or partial process
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json,os
+          from pathlib import Path
+          root=Path('cloud-tx-phase-reset334-tail-m4-transient-native-'+os.environ['PROOF_STAGE']+'-p-initial-high')
+          root.mkdir(exist_ok=True);p=root/'result.json'
+          if not p.exists():p.write_text(json.dumps(dict(status='FAIL_MISSING_NATIVE_RESULT',source_head=os.environ['GITHUB_SHA'],
+            full_capture=False,electrical_screen_passed=False,full_PHY_accepted=False))+'\n')
+          resource=Path(os.environ['RUNNER_TEMP'])/'native-resource-before-dependencies.json'
+          result=json.loads(p.read_bytes())
+          if resource.exists()or resource.is_symlink():
+              assert resource.is_file()and not resource.is_symlink()
+              value=json.loads(resource.read_bytes())
+              assert value['source_head']==os.environ['GITHUB_SHA']and value['run_id']==int(os.environ['GITHUB_RUN_ID'])and value['run_attempt']==1
+              assert value['stage']==os.environ['PROOF_STAGE']and value['schema']=='native-resource-observation-v1'
+              assert value['original_guards_unchanged']==dict(prelaunch_free_bytes=72*1024**3,checkpoint_reserve_bytes=20*1024**3)
+              target=root/resource.name;assert not target.exists()and not target.is_symlink()
+              target.write_bytes(resource.read_bytes());digest=hashlib.sha256(target.read_bytes()).hexdigest()
+              assert target.read_bytes()==resource.read_bytes()
+              result.setdefault('outputs',{})[target.name]=digest
+              result['early_resources']=dict(status='OBSERVED_BEFORE_DEPENDENCIES',path=target.name,sha256=digest)
+          else:result['early_resources']=dict(status='NOT_RECORDED',reason='Native preflight/resource step did not complete')
+          p.write_text(json.dumps(result,indent=2,allow_nan=False)+'\n')
+          raw=p.read_bytes()
+          print('RESULT_SHA256',hashlib.sha256(raw).hexdigest());print('RESULT_BYTES',len(raw))
+          if len(raw)<=16_000_000:
+              data=base64.b64encode(raw).decode();chunks=[data[i:i+4096]for i in range(0,len(data),4096)]
+              for i,c in enumerate(chunks):print(f'RESULT_BASE64 {i}/{len(chunks)} {c}')
+          else:print('COMPLETE_RESULT_RETAINED_IN_PUBLICATION_AND_FALLBACK',p)
+          PY
+      - name: Publish every native byte and complete failure using reserved-only source binding
+        id: publish
+        if: always()
+        run: |
+          set -euo pipefail
+          group="tx-phase-reset334-tail-m4-transient-native-$PROOF_STAGE-p-initial-high"
+          root="cloud-$group"
+          stem="$group-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          python3 scripts/wait_cloud_tested_source_release.py --group "$group"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" "$group" "$root" <<'PYCODE'
+          import json,pathlib,sys,os
+          sys.path.insert(0,'scripts')
+          import ensure_cloud_tested_source_release as guard
+          import migrate_outputs_to_cloud as migration
+          import publish_cloud_results as publisher
+          stem,group,root_arg=sys.argv[1:]
+          assert os.environ['PROOF_STAGE'] in ('initial','cross')
+          assert group=='tx-phase-reset334-tail-m4-transient-native-'+os.environ['PROOF_STAGE']+'-p-initial-high'
+          expected,source=guard.context(group,os.environ)
+          assert stem==group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+          root=pathlib.Path(root_arg)
+          part_file=pathlib.Path(stem+'.parts.json')
+          manifest=json.loads(part_file.read_text())
+          part_names=[p['name'] for p in manifest['parts']]
+          assert part_names and len(part_names)==len(set(part_names))
+          assert all(pathlib.Path(n).name==n and '\\' not in n and n not in ('.','..') for n in part_names)
+          separate=sorted(str(p) for p in root.glob('*.json') if p.name!='result.json')
+          paths=[stem+'.summary.json',str(part_file),*separate,*part_names]
+          assert len(paths)==len(set(paths))
+          assert len({pathlib.Path(p).name for p in paths})==len(paths)
+          assert all(pathlib.Path(p).is_file() and not pathlib.Path(p).is_symlink() for p in paths)
+          def readonly_release(tag):
+              assert tag==expected
+              info=guard.api('releases/tags/'+tag)
+              guard.validate_release(info,guard.api('git/ref/tags/'+tag),tag,source)
+              return info
+          migration.release=readonly_release
+          assert publisher.publish is migration.publish
+          assert publisher.publish.__globals__['release'] is readonly_release
+          readonly_release(expected)
+          result=publisher.publish_results(group,paths)
+          assert result['tag']==expected and len(result['assets'])==len(paths)
+          assert [x['name'] for x in result['assets']]==[pathlib.Path(p).name for p in paths]
+          readonly_release(expected)
+          print(json.dumps(result,sort_keys=True),flush=True)
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome != 'success'
+        with:
+          name: tail-m4-p-high-complete-evidence-${{ inputs.stage }}
+          path: cloud-tx-phase-reset334-tail-m4-transient-native-${{ inputs.stage }}-p-initial-high/
+          if-no-files-found: error
+          retention-days: 90
+          include-hidden-files: true
