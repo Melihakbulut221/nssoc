@@ -1,0 +1,356 @@
+# Inactive source template. Registration and dispatch require separately reviewed metadata.
+name: CDR v59 current tail original ten-case loaded matrix
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Source controls, preparation only, or all original ten electrical cases
+        type: choice
+        required: true
+        default: controls
+        options: [controls, preparation, loaded]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: cdr-v59-tail-loaded-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Require reviewed exact source-control activation
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_v59_tail_loaded_admission as a
+          m=a.methods()
+          assert m['source_controls_authorized'] is True and m['workflow_dispatch_authorized'] is True
+          Path('hw/soc/out/cdr-v59-tail-loaded-controls').mkdir(parents=True,exist_ok=False)
+          PY
+      - name: Install original exact numerical initialization dependency
+        run: python3 -m pip install numpy==2.3.3
+      - name: Exact 55-module three-data isolated imports
+        run: python scripts/check_cdr_v59_tail_loaded_imports.py --output hw/soc/out/cdr-v59-tail-loaded-controls/imports.json
+      - name: Current reports and unchanged saved-pipeline admission
+        run: python scripts/check_cdr_v59_tail_loaded_admission.py > hw/soc/out/cdr-v59-tail-loaded-controls/admission.json
+      - name: Full-member restore and six-value returns
+        run: python scripts/check_cdr_v59_tail_loaded_restore.py > hw/soc/out/cdr-v59-tail-loaded-controls/restore.json
+      - name: Six numerical blocks and atomic terminal preservation
+        run: python scripts/check_cdr_v59_tail_loaded_worker.py > hw/soc/out/cdr-v59-tail-loaded-controls/worker.json
+      - name: Original ten verdicts and same-run result binding
+        run: python scripts/check_cdr_v59_tail_loaded_result.py > hw/soc/out/cdr-v59-tail-loaded-controls/result.json
+      - name: Actual outer lifecycle publication and every case budget
+        run: python scripts/check_cdr_v59_tail_loaded_stage.py > hw/soc/out/cdr-v59-tail-loaded-controls/outer.json
+      - name: Qualified ownership and exact original loaded budgets
+        run: python scripts/check_cdr_v59_tail_loaded_runtime.py --out hw/soc/out/cdr-v59-tail-loaded-controls/runtime.json
+      - name: Source reservation readonly waiter and shared publication controls
+        run: |
+          python - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0,'scripts')
+          import cdr_v59_tail_loaded_admission as a
+          import ensure_cloud_tested_source_release as release
+          import wait_cloud_tested_source_release as waiter
+          import cloud_cdr_v59_binding_rc as shared
+          assert a.methods()['source_controls_authorized'] is True
+          out=Path('hw/soc/out/cdr-v59-tail-loaded-controls/release.json')
+          result={'status':'RUNNING_RELEASE_CONTROLS'}
+          a.write(out,result)
+          try:
+              result['reservation']=release.controls()
+              result['waiter']=waiter.controls()
+              result['publication']=shared.publication_controls()
+              result['status']='PASS_SOURCE_RESERVATION_WAITER_AND_SHARED_PUBLICATION_CONTROLS'
+          except BaseException as error:
+              result.update(status='FAIL_RELEASE_CONTROLS',error=repr(error))
+              raise
+          finally:a.write(out,result)
+          PY
+      - name: Admit all eight complete source-control records
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('hw/soc/out/cdr-v59-tail-loaded-controls')
+          assert root.is_dir() and not root.is_symlink()
+          def read(name):
+              path=root/(name+'.json')
+              assert path.is_file() and not path.is_symlink()
+              return json.loads(path.read_bytes())
+          x=read('imports')
+          assert x['status']=='PASS_EXACT_LOADED_INITIAL_IMPORTS_AND_THREE_DATA_READS'
+          assert (x['positive_count'],x['refusal_count'])==(5,34)
+          assert len(x['closure']['modules'])==55 and len(x['closure']['edges'])==123 and len(x['closure']['data'])==3
+          assert x['installed_external_allowlist']=={'numpy':'2.3.3'}
+          assert x['isolated_numpy_version_required']=='2.3.3'
+          assert len(x['every_entry_imported'])==12 and x['actual_waiter_imported'] is True
+          assert x['native_executed'] is False and x['numerical_functions_executed'] is False
+          x=read('admission')
+          assert x['status']=='PASS_ACTUAL_TAIL_LOADED_METADATA_AND_REGULAR_INVENTORY_CONTROLS'
+          assert len(x['positive_groups'])==4 and len(x['rejected'])==45
+          assert x['complete_actual_JSON_used'] and x['frozen_pipeline_validator_executed_on_saved_report']
+          assert x['archive_downloaded'] is False and x['simulator_executed'] is False
+          x=read('restore')
+          assert x['status']=='PASS_ACTUAL_LOADED_RESTORE_RETURN_AND_FULL_MEMBER_BOUNDARIES'
+          assert len(x['positive'])==2 and len(x['rejected'])==9
+          assert x['actual_restore_exact_extract_pack_and_authorize_called'] is True
+          assert x['real_current_reports_validated_before_synthetic_archive_cases'] is True
+          assert x['producer_archive_downloaded'] is False and x['loaded_numerical_functions_executed'] is False
+          x=read('worker')
+          assert x['status']=='PASS_EXACT_NUMERICAL_WORKER_DERIVATION_AND_TERMINAL_SOURCE_CONTROLS'
+          assert x['derivation']['edits']==x['derivation']['numerical_blocks']==6
+          assert x['derivation']['exact_reverse'] and x['derivation']['non_main_functions_identical']
+          assert len(x['actual_main']['cases'])==2 and x['actual_main']['old_primary_masking_reproduced']
+          assert x['actual_main']['corrected_primary_identity_preserved'] and x['actual_main']['restoration_and_native_never_reached']
+          assert len(x['terminal']['cases'])==7 and x['terminal']['positive']==1 and x['terminal']['failure_paths']==6
+          assert len(x['atomic_fragments']['cases'])==8 and x['atomic_fragments']['old_regressions']==2 and x['atomic_fragments']['corrected_cases']==6
+          assert x['atomic_fragments']['actual_atomic_writer_replace_boundary'] is True
+          assert x['original_numerical_functions_executed'] is False and x['simulator_executed'] is False
+          x=read('result')
+          assert x['status']=='PASS_ORIGINAL_LOADED_RESULT_PREDICATES_AND_CURRENT_BINDINGS'
+          assert len(x['historical']['cases'])==10 and x['historical']['eight_rejections_and_two_fault_detections_retained']
+          assert sum(row['original_passed']for row in x['historical']['cases'])==2
+          assert all(row['all_measured_values_unchanged']for row in x['historical']['cases'])
+          assert len(x['current']['positive_modes'])==2 and len(x['current']['rejected'])==24
+          assert x['current']['actual_current_simulation_claimed'] is False
+          assert x['all_original_numerical_thresholds_unchanged'] and x['numerical_worker_executed'] is False
+          x=read('outer')
+          assert x['status']=='PASS_LOADED_OUTER_SOURCE_CONTROLS'
+          assert len(x['lifecycle']['cases'])==16 and (x['lifecycle']['positive'],x['lifecycle']['refusals'])==(2,14)
+          assert all(row['real_signals_restored'] and row['full_existing_output_map'] and row['all_eight_outer_actions']for row in x['lifecycle']['cases'])
+          assert len(x['execution_policy']['positive_modes'])==11 and len(x['execution_policy']['refused'])==19
+          assert x['execution_policy']['all_eleven_reserved_preparation_last'] is True
+          assert (x['preparation']['positive'],x['preparation']['refusals'])==(1,8) and len(x['preparation']['cases'])==9
+          assert len(x['publication']['positive'])==4 and len(x['publication']['refused'])==21
+          assert x['publication']['actual_pack_extract_reserved_publisher'] is True
+          assert x['historical_eight_rejections_two_faults_preserved'] and x['fixture_runtime_engine_identity_explicitly_synthetic']
+          assert x['original_numerical_worker_executed'] is False and x['actual_current_native_archive_accessed'] is False
+          x=read('runtime')
+          assert x['status']=='PASS_LOADED_QUALIFIED_SUPERVISOR_AND_EXACT_BUDGET_CONTROLS'
+          assert len(x['inherited']['controls'])==13 and all(x['inherited']['controls'].values())
+          assert len(x['loaded_budgets'])==2 and [row['seconds']for row in x['loaded_budgets']]==[1200,7200]
+          assert len(x['frozen_loaders']['positive'])==1 and len(x['frozen_loaders']['refused'])==6
+          assert x['actual_short_python_children_only'] and x['numerical_worker_executed'] is False and x['simulator_executed'] is False
+          assert x['memory_limits_or_sampling_relaxed'] is False
+          x=read('release')
+          assert x['status']=='PASS_SOURCE_RESERVATION_WAITER_AND_SHARED_PUBLICATION_CONTROLS'
+          assert x['reservation']['status'].startswith('PASS')
+          assert len(x['reservation']['positive_cases'])==3 and len(x['reservation']['rejected'])==13
+          assert len(x['waiter']['positive_cases'])==3 and len(x['waiter']['rejected'])==4 and not x['waiter']['creation_attempted']
+          assert len(x['publication']['rejected'])==8 and len(x['publication']['file_list_controls']['rejected'])==14
+          assert x['publication']['file_list_controls']['actual_shared_function_executed'] and not x['publication']['release_creation_possible']
+          PY
+      - name: Always emit exact complete or partial control bytes
+        if: always()
+        run: |
+          python - <<'PY'
+          import ast,base64,hashlib,json
+          from pathlib import Path
+          source=Path('scripts/cloud_cdr_v59_binding_rc.py')
+          assert source.is_file() and not source.is_symlink()
+          raw=source.read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'
+          nodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit']
+          assert len(nodes)==1
+          scope=dict(base64=base64,hashlib=hashlib,json=json)
+          exec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)
+          root=Path('hw/soc/out/cdr-v59-tail-loaded-controls')
+          assert not root.is_symlink() and (not root.exists() or root.is_dir())
+          names=('imports','admission','restore','worker','result','outer','runtime','release')
+          assert len(names)==len(set(names))==8
+          emitted=[];missing=[]
+          for name in names:
+              path=root/(name+'.json')
+              assert not path.is_symlink()
+              if not path.exists():
+                  missing.append(name)
+                  continue
+              assert path.is_file()
+              scope['emit'](path,'CDR_TAIL_LOADED_CONTROL_'+name.upper())
+              emitted.append(dict(name=name,bytes=path.stat().st_size,sha256=hashlib.sha256(path.read_bytes()).hexdigest()))
+          print('CDR_TAIL_LOADED_CONTROL_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,missing_files_created=False),sort_keys=True),flush=True)
+          PY
+      - name: Preserve every original source-control record
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-tail-loaded-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: hw/soc/out/cdr-v59-tail-loaded-controls
+  prepare:
+    needs: source-controls
+    if: ${{ inputs.mode != 'controls' }}
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      GH_TOKEN: ${{ github.token }}
+      LOADED_CASE: nominal_early
+      PREPARE_ONLY: 'true'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Readonly all-eleven exact-source reservations before numerical dependencies
+        run: python scripts/cloud_cdr_v59_tail_loaded_stage.py --case "$LOADED_CASE" --prepare-only --preflight
+      - name: Original qualified loaded simulator dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+      - name: Original complete binding and deck without transient
+        run: python scripts/cloud_cdr_v59_tail_loaded_stage.py --case "$LOADED_CASE" --prepare-only
+      - name: Retain a pre-driver failure without overwriting any original result
+        if: always()
+        run: |
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          case=os.environ['LOADED_CASE'];prepare=os.environ['PREPARE_ONLY']=='true'
+          cases=('nominal_early','nominal_late','hot_early','hot_late','cold_early','cold_late','constant_zero','constant_one','clock_stopped','vi_bias_off')
+          assert case in cases and (not prepare or case=='nominal_early')
+          suffix='preparation'if prepare else case
+          out=Path('cloud-cdr-v59-tail-loaded-evidence-'+suffix)
+          assert not out.is_symlink()
+          out.mkdir(parents=True,exist_ok=True)
+          path=out/'result.json'
+          assert not path.is_symlink()
+          if not path.exists():
+              outputs={}
+              for member in out.rglob('*'):
+                  assert not member.is_symlink()
+                  if member.is_dir():continue
+                  assert member.is_file()
+                  with member.open('rb')as stream:
+                      outputs[str(member.relative_to(out))]=hashlib.file_digest(stream,'sha256').hexdigest()
+              value=dict(status='FAIL_BEFORE_LOADED_DRIVER_RESULT',source_head=os.environ['GITHUB_SHA'],
+                run_id=int(os.environ['GITHUB_RUN_ID']),run_attempt=int(os.environ['GITHUB_RUN_ATTEMPT']),
+                case=case,preparation_only=prepare,group='cdr-v59-tail-loaded-'+suffix,
+                fresh_RC_run=40576801174,original_physical_run=40369539200,
+                original_physical_status='FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL',
+                original_eight_electrical_rejections_and_two_fault_detections_preserved=True,
+                native_case_passed=False,accepted=False,qualified_pex=False,full_phy_accepted=False,
+                cdr_accepted=False,physical_accepted=False,geometry_regenerated=False,
+                native_extraction_executed=False,automatic_retry=False,
+                terminal_finalization_complete=False,outer_terminal_finalization_complete=False,
+                outputs=outputs,pre_driver_failure_marker_only=True)
+              path.write_text(json.dumps(value,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Preserve all original worker and complete or partial published evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-tail-loaded-preparation-full-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            cloud-cdr-v59-tail-loaded-evidence-preparation
+            cloud-cdr-v59-tail-loaded-nominal_early
+            hw/soc/out/cloud-cdr-v59-tail-loaded-preparation-publication
+  loaded:
+    needs: [source-controls, prepare]
+    if: ${{ inputs.mode == 'loaded' }}
+    permissions:
+      contents: write
+      actions: read
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        case: [nominal_early, nominal_late, hot_early, hot_late, cold_early, cold_late, constant_zero, constant_one, clock_stopped, vi_bias_off]
+    env:
+      GH_TOKEN: ${{ github.token }}
+      LOADED_CASE: ${{ matrix.case }}
+      PREPARE_ONLY: 'false'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Readonly all-eleven exact-source reservations before numerical dependencies
+        run: python scripts/cloud_cdr_v59_tail_loaded_stage.py --case "$LOADED_CASE" --preflight
+      - name: Original qualified loaded simulator dependencies
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends tcl8.6 libsndfile1 libsamplerate0 libreadline8t64 libxaw7 libxt6 libxft2 libfontconfig1
+          python3 -m pip install numpy==2.3.3
+      - name: Original full OFF OP and transient with unchanged numerical gates
+        run: python scripts/cloud_cdr_v59_tail_loaded_stage.py --case "$LOADED_CASE"
+      - name: Retain a pre-driver failure without overwriting any original result
+        if: always()
+        run: |
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          case=os.environ['LOADED_CASE'];prepare=os.environ['PREPARE_ONLY']=='true'
+          cases=('nominal_early','nominal_late','hot_early','hot_late','cold_early','cold_late','constant_zero','constant_one','clock_stopped','vi_bias_off')
+          assert case in cases and (not prepare or case=='nominal_early')
+          suffix='preparation'if prepare else case
+          out=Path('cloud-cdr-v59-tail-loaded-evidence-'+suffix)
+          assert not out.is_symlink()
+          out.mkdir(parents=True,exist_ok=True)
+          path=out/'result.json'
+          assert not path.is_symlink()
+          if not path.exists():
+              outputs={}
+              for member in out.rglob('*'):
+                  assert not member.is_symlink()
+                  if member.is_dir():continue
+                  assert member.is_file()
+                  with member.open('rb')as stream:
+                      outputs[str(member.relative_to(out))]=hashlib.file_digest(stream,'sha256').hexdigest()
+              value=dict(status='FAIL_BEFORE_LOADED_DRIVER_RESULT',source_head=os.environ['GITHUB_SHA'],
+                run_id=int(os.environ['GITHUB_RUN_ID']),run_attempt=int(os.environ['GITHUB_RUN_ATTEMPT']),
+                case=case,preparation_only=prepare,group='cdr-v59-tail-loaded-'+suffix,
+                fresh_RC_run=40576801174,original_physical_run=40369539200,
+                original_physical_status='FAIL_ADDITIVE_TAIL_WIRE_PHYSICAL',
+                original_eight_electrical_rejections_and_two_fault_detections_preserved=True,
+                native_case_passed=False,accepted=False,qualified_pex=False,full_phy_accepted=False,
+                cdr_accepted=False,physical_accepted=False,geometry_regenerated=False,
+                native_extraction_executed=False,automatic_retry=False,
+                terminal_finalization_complete=False,outer_terminal_finalization_complete=False,
+                outputs=outputs,pre_driver_failure_marker_only=True)
+              path.write_text(json.dumps(value,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Preserve all original worker and complete or partial published evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-tail-loaded-${{ matrix.case }}-full-${{ github.run_id }}-${{ github.run_attempt }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            cloud-cdr-v59-tail-loaded-evidence-${{ matrix.case }}
+            cloud-cdr-v59-tail-loaded-${{ matrix.case }}
+            hw/soc/out/cloud-cdr-v59-tail-loaded-${{ matrix.case }}-publication
