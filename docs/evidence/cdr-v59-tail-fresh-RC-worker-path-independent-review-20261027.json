@@ -1,0 +1,130 @@
+{
+  "schema": "cdr-tail-fresh-RC-worker-path-independent-review-v1",
+  "reviewed_source": "0675c7048428a0ac04ef1ac3b76bb6c9e7a1549d",
+  "reviewer": "pll_handoff",
+  "verdict": "CLEAR_BOUNDED_PATH_SCHEMA_AND_NUMERICAL_DERIVATION_ONLY",
+  "files": [
+    {
+      "path": "scripts/cdr_v59_tail_fresh_rc_legacy.py",
+      "bytes": 12900,
+      "sha256": "a54774e85d0e0c1fffde3f05e7e0e7e59ad405ff94616d9564743c3724c4143b"
+    },
+    {
+      "path": "scripts/cloud_cdr_v59_tail_fresh_binding.py",
+      "bytes": 19359,
+      "sha256": "8e87263dedb3b0876065d394846e36101a8fdd05421b62c1dcb29a18a2712b06"
+    },
+    {
+      "path": "scripts/cloud_cdr_v59_tail_fresh_wire_rc.py",
+      "bytes": 7796,
+      "sha256": "0456b951b669dbe49395635b93bb74defb2d8aefda8fb77f7a813db025cfb8a9"
+    },
+    {
+      "path": "scripts/cloud_cdr_v59_tail_fresh_mim_capture.py",
+      "bytes": 15820,
+      "sha256": "70fa8db889c7730bb9e8ac71259f56ae4f0d2360c8ba8aa0284bf9cfe3f33e70"
+    },
+    {
+      "path": "scripts/cloud_cdr_v59_tail_fresh_mim_audit.py",
+      "bytes": 8332,
+      "sha256": "6b3bb17be41f539367a6434a130e2be44cfa587b66388b9abd0543f5d3920472"
+    },
+    {
+      "path": "scripts/cloud_cdr_v59_tail_fresh_mim_precision.py",
+      "bytes": 9703,
+      "sha256": "c4001dff0eadd4152fd0d543d2dfa31e31eced741b9ecd6c1fe0f54a35bf2e62"
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-rc-numerical-worker-derivation-20261027.json",
+      "bytes": 16219,
+      "sha256": "9dd81269e0168e3db6ef1aae119c25c30910e5d909ab18683f7ed7caeae32679"
+    }
+  ],
+  "original_files": [
+    {
+      "path": "scripts/cloud_cdr_v59_binding.py",
+      "bytes": 19375,
+      "sha256": "30664f1cc9ecd48d33f705b0ba2b0a26d9cc353fff4ab587cd269e340067c06e"
+    },
+    {
+      "path": "scripts/cloud_cdr_v59_rc.py",
+      "bytes": 7995,
+      "sha256": "5979afeaebd00812c9ae9c73427ca051b616342e99f5beebd543a9f2fbd64f68"
+    },
+    {
+      "path": "scripts/cloud_cdr_v59_mim_capture.py",
+      "bytes": 15844,
+      "sha256": "540b7b41493b4661b6131852c0d81d89edbfc9f9f67f733b7176cb23e45e1115"
+    },
+    {
+      "path": "scripts/cloud_cdr_v59_mim_audit.py",
+      "bytes": 8356,
+      "sha256": "0fe300a11f9d9765dc0e21b4c59ddc79e15fd3d3d71a28fc478a06ffb117c233"
+    },
+    {
+      "path": "scripts/cloud_cdr_v59_mim_precision.py",
+      "bytes": 9904,
+      "sha256": "1339eec60c6d3efa0e382c11312fd6ff6c54e7e6e2be864b777e78798d5e782b"
+    }
+  ],
+  "derivations": [
+    {
+      "stage": "binding",
+      "edits": 3,
+      "changed": [],
+      "old_sha": "30664f1cc9ecd48d33f705b0ba2b0a26d9cc353fff4ab587cd269e340067c06e",
+      "new_sha": "8e87263dedb3b0876065d394846e36101a8fdd05421b62c1dcb29a18a2712b06"
+    },
+    {
+      "stage": "rc",
+      "edits": 5,
+      "changed": [
+        "main"
+      ],
+      "old_sha": "5979afeaebd00812c9ae9c73427ca051b616342e99f5beebd543a9f2fbd64f68",
+      "new_sha": "0456b951b669dbe49395635b93bb74defb2d8aefda8fb77f7a813db025cfb8a9"
+    },
+    {
+      "stage": "capture",
+      "edits": 2,
+      "changed": [],
+      "old_sha": "540b7b41493b4661b6131852c0d81d89edbfc9f9f67f733b7176cb23e45e1115",
+      "new_sha": "70fa8db889c7730bb9e8ac71259f56ae4f0d2360c8ba8aa0284bf9cfe3f33e70"
+    },
+    {
+      "stage": "audit",
+      "edits": 2,
+      "changed": [],
+      "old_sha": "0fe300a11f9d9765dc0e21b4c59ddc79e15fd3d3d71a28fc478a06ffb117c233",
+      "new_sha": "6b3bb17be41f539367a6434a130e2be44cfa587b66388b9abd0543f5d3920472"
+    },
+    {
+      "stage": "precision",
+      "edits": 5,
+      "changed": [
+        "check",
+        "main"
+      ],
+      "old_sha": "1339eec60c6d3efa0e382c11312fd6ff6c54e7e6e2be864b777e78798d5e782b",
+      "new_sha": "c4001dff0eadd4152fd0d543d2dfa31e31eced741b9ecd6c1fe0f54a35bf2e62"
+    }
+  ],
+  "findings": [
+    "Independently reconstructed and reversed all 3+5+2+2+5 literal substitutions against the exact original sources. Binding, capture and audit function bodies remain byte-exact; precision records and compose remain byte-exact.",
+    "The actual restore_for_binding selection/output-map interface, restore_for_rc strict graph/anchors interface, and five-value project_for_capture return match all unchanged worker consumers.",
+    "The original full 955 saved capsule and canonical 184 current input files remain authenticated separately from fresh wire/runtime additions. No old RC output counts or numerical values are relabelled.",
+    "Complete fresh binding, RC-stage and current-view maps are fixed in a same-run/source handoff, verified before and after copy. Each precise/precise_reversed source and binding projection is an independent complete copy.",
+    "Current exact absolute native anchor inputs retain their paths and hashes. Fresh generated MIM anchors use their actual new GDS/LVS/graph/locations/copy paths.",
+    "Original binding target-length/native-contact gates, wire 13 controls, MIM 13+9 controls, two-order records and unchanged 21-control composition remain in the source."
+  ],
+  "known_unresolved": [
+    "Root identified RC finally inventory recomputing source.contract/methods before save, which can prevent durable terminal failure when protected source changes. Delta is authoring independent inventory error capture and unconditional save plus actual full-main fixtures; this review does not clear that finalization seam.",
+    "Wrapper/supervision/publication/import closure and meaningful new adapter/main fixtures remain separate unreviewed work."
+  ],
+  "scope_limits": [
+    "Source/AST/hash/byte comparisons only; no authored imports, tests or functions executed.",
+    "No native archive, GDS, waveform or CAD access. No full 686-pin closure repeated.",
+    "No native, physical, PEX, electrical or source-controls acceptance."
+  ],
+  "authorizations_changed": false
+}
