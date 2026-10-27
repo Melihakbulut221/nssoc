@@ -88,13 +88,28 @@ def controls():
             bad=copy.deepcopy(record);change(bad);c.save(path,bad)
             refuse(name,lambda:c.counts(path))
         shell=shell_controls(work/'shell')
-    assert len(positive)==9 and len(rejected)==29 and len(shell)==7
+    assert len(positive)==9 and len(rejected)==29 and len(shell)==11
     return dict(status='PASS_ROOT_GEN12_SOURCE_AND_HANDOFF_CONTROLS_NO_RTL',original=original,
       positive=positive,rejected=rejected,shell=shell,simulations_executed=False,
       synthesis_executed=False,compiled_fault_campaign_executed=False,terminal_pins=c.pins()[0]['protected'])
 
 def shell_controls(work):
     work.mkdir();original=(c.ROOT/'scripts/run_cocotb.sh').read_text()
+    extras=(
+      ('hw/soc/tb/cocotb','Makefile.soc_npu','test_soc_npu_defects','sim_build_npu_defects','results_soc_npu_defects.xml'),
+      ('hw/soc/tb/cocotb','Makefile.soc_wdog','test_soc_wdog_strap','sim_build_soc_wdog_strap','results_soc_wdog_strap.xml'),
+      ('hw/soc/tb/cocotb','Makefile.soc_uart','test_soc_uart_defects','sim_build_uart_defects','results_soc_uart_defects.xml'))
+    anchor='EXTRA_MODULES="\\\n'
+    assert original.count(anchor)==1
+    table=original.split(anchor,1)[1].split('"',1)[0]
+    assert tuple(tuple(row.split('|'))for row in table.splitlines())==extras
+    frozen=(c.ROOT/'docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-checker.py').read_bytes()
+    assert c.sha(frozen)=='afaa0638201367c95bade6ed950258e38a1fa224529fb33f8b59e8fcd83e09f0'
+    oldfn=[n for n in ast.parse(frozen).body if isinstance(n,ast.FunctionDef)and n.name=='shell_controls']
+    assert len(oldfn)==1
+    oldassign=[n for n in ast.walk(oldfn[0])if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=='maker'for t in n.targets)]
+    assert len(oldassign)==1
+    old_maker=ast.literal_eval(oldassign[0].value)
     helpers=r'''import json,sys
 from pathlib import Path
 root=Path(__file__).resolve().parents[1]
@@ -111,15 +126,21 @@ out=Path(sys.argv[sys.argv.index('--out')+1]);out.mkdir(parents=True)
 sys.exit(7 if mode=='driver-failure'else 0)
 '''
     maker=r'''#!/usr/bin/env python3
-import sys
+import json,sys,xml.etree.ElementTree as E
 from pathlib import Path
-p=Path.cwd()
+p=Path.cwd();root=p.parents[3];mode=(root/'mode').read_text()
+with(root/'make-calls.jsonl').open('a')as f:f.write(json.dumps(sys.argv[1:])+'\n')
 if 'clean'in sys.argv:sys.exit(0)
 mk=sys.argv[sys.argv.index('-f')+1]
 if mk=='Makefile.gen12_record_cdc':sys.exit(17)
-(p/'results_other.xml').write_text('<testsuite><testcase name="other" classname="test_other"/></testsuite>')
-root=p.parents[3]
-sys.exit(9 if (root/'mode').read_text()=='other-failure'else 0)
+args=dict(a.split('=',1)for a in sys.argv[1:]if '='in a)
+module=args.get('MODULE','test_other')
+name=args.get('COCOTB_RESULTS_FILE','results_other.xml')
+assert Path(name).name==name
+if mode!='missing-explicit-xml-'+module:
+ tree=E.Element('testsuite');E.SubElement(tree,'testcase',name='synthetic_'+module,classname=module)
+ (p/name).write_bytes(E.tostring(tree))
+sys.exit(9 if mode=='other-failure'else 0)
 '''
     branch='''    if [ "$name" = "gen12_record_cdc" ]; then
         run_gen12_record_cdc || suite_fail=$((suite_fail + 1))
@@ -128,7 +149,9 @@ sys.exit(9 if (root/'mode').read_text()=='other-failure'else 0)
 '''
     assert original.count(branch)==1
     outcomes={}
-    for index,mode in enumerate(('success','driver-failure','wrong-count','counts-refusal','binding-refusal','other-failure','dispatch-removed')):
+    modes=('success','driver-failure','wrong-count','counts-refusal','binding-refusal','other-failure',
+      'dispatch-removed','old-maker-explicit-xml-omission',*('missing-explicit-xml-'+x[2]for x in extras))
+    for index,mode in enumerate(modes):
         root=work/str(index);scripts=root/'scripts';bench=root/'hw/soc/tb/cocotb'
         scripts.mkdir(parents=True);bench.mkdir(parents=True)
         text=original.replace(branch,'',1)if mode=='dispatch-removed'else original
@@ -140,7 +163,10 @@ sys.exit(9 if (root/'mode').read_text()=='other-failure'else 0)
         for top in c.TESTS:(bench/('test_'+top+'.py')).write_text('# Explicit synthetic shell reachability fixture\n')
         (bench/'Makefile.other').write_text('COCOTB_TEST_MODULES := test_other\n')
         (bench/'test_other.py').write_text('# Explicit synthetic existing-suite fixture\n')
-        bins=root/'bin';bins.mkdir();(bins/'make').write_text(maker);(bins/'make').chmod(0o755)
+        for x in extras:(bench/(x[2]+'.py')).write_text('# Explicit synthetic EXTRA_MODULES reachability fixture\n')
+        bins=root/'bin';bins.mkdir()
+        (bins/'make').write_text(old_maker if mode=='old-maker-explicit-xml-omission'else maker)
+        (bins/'make').chmod(0o755)
         env=dict(os.environ,PY=sys.executable,PATH=str(bins)+':'+os.environ['PATH'])
         p=subprocess.run(['bash',str(scripts/'run_cocotb.sh')],cwd=root,env=env,capture_output=True,text=True,timeout=30)
         calls=[json.loads(s)for s in(root/'calls.jsonl').read_text().splitlines()]
@@ -148,16 +174,39 @@ sys.exit(9 if (root/'mode').read_text()=='other-failure'else 0)
         assert bound=={'test_'+top for top in c.TESTS},(mode,bound,p.stdout,p.stderr)
         invoked=[a for a in calls if '--out'in a]
         assert len(invoked)==(0 if mode=='dispatch-removed'else 1),(mode,calls)
-        if invoked:
-            assert invoked[0][-6:]==['--simulators','icarus','--depths','4','8','32'],invoked
+        if invoked:assert invoked[0][-6:]==['--simulators','icarus','--depths','4','8','32'],invoked
+        make_calls=[]
+        if mode!='old-maker-explicit-xml-omission':
+            make_calls=[json.loads(s)for s in(root/'make-calls.jsonl').read_text().splitlines()]
+            actual=[a for a in make_calls if 'clean'not in a and any(v.startswith('MODULE=')for v in a)]
+            assert len(actual)==len(extras)
+            for row,x in zip(actual,extras):
+                assert row[row.index('-f')+1]==x[1]
+                assert [v for v in row if v.startswith(('MODULE=','SIM_BUILD=','COCOTB_RESULTS_FILE='))]==[
+                  'MODULE='+x[2],'SIM_BUILD='+x[3],'COCOTB_RESULTS_FILE='+x[4]]
         if mode=='success':
-            assert p.returncode==0 and 'cocotb: 34 passed, 0 failed, 0 suite(s) not clean, 0 skipped'in p.stdout,(p.stdout,p.stderr)
+            assert p.returncode==0 and 'cocotb: 37 passed, 0 failed, 0 suite(s) not clean, 0 skipped'in p.stdout,(p.stdout,p.stderr)
         else:
             assert p.returncode!=0,(mode,p.stdout,p.stderr)
             if mode=='binding-refusal':assert 'UNREACHED cocotb test modules'in p.stdout
             if mode=='other-failure':assert 'NOT CLEAN (make rc=9)'in p.stdout
+            if mode=='old-maker-explicit-xml-omission':
+                assert p.returncode==1 and 'cocotb: 34 passed, 0 failed, 3 suite(s) not clean, 0 skipped'in p.stdout
+                assert p.stdout.count('INVALID/MISSING XML (make rc=0;')==3
+                for x in extras:
+                    lines=[line for line in p.stdout.splitlines()if line.lstrip().startswith(x[2]+' ')]
+                    assert len(lines)==1 and 'INVALID/MISSING XML (make rc=0;'in lines[0]
+                assert 'UNREACHED'not in p.stdout and 'NOT CLEAN'not in p.stdout
+            if mode.startswith('missing-explicit-xml-'):
+                assert p.returncode==1 and 'cocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped'in p.stdout
+                assert p.stdout.count('INVALID/MISSING XML (make rc=0;')==1
+                module=mode.removeprefix('missing-explicit-xml-')
+                lines=[line for line in p.stdout.splitlines()if line.lstrip().startswith(module+' ')]
+                assert len(lines)==1 and 'INVALID/MISSING XML (make rc=0;'in lines[0]
         outcomes[mode]=dict(returncode=p.returncode,stdout=p.stdout,stderr=p.stderr,actual_calls=calls,
-          synthetic_helper_and_make=True,actual_generic_runner=True)
+          actual_make_calls=make_calls,synthetic_helper_and_make=True,actual_generic_runner=True,
+          frozen_failed_maker_used=mode=='old-maker-explicit-xml-omission')
+    assert len(outcomes)==11
     return outcomes
 
 if __name__=='__main__':
