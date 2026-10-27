@@ -8666,3 +8666,10 @@ Local project/tmp/native processes verified absent. Inventory249 exact cloud han
 Verified and activated only the two narrow source-fixture corrections after independent reviews: CDR exact failedBoolean-call reproduction plus real directbool guard and integer-layer whole-run refusal(5/40), PLL exact original digest callable plus originalfull-main omission regression. Production native/numerical/geometry guards are unchanged. Sole corrected source-controls40540717792/40540798717 were dispatched with readback/nativefalse; terminal states are live in this checkpoint, no acceptance inferred. Mainchip readonly APIprobe5ee9 has a clear scopednativepeer and explicit rawterminaljoins/partialfailure evidence, remains disabled at3a9598b9 pending outerreview. Local workspace/tmp/nativeprocesses absent; every edit/evidence/resume iscloud-only.
 
 Local project/tmp/native processes verified absent. Inventory251 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-27T16:43:35.719380+00:00 — cloud-only checkpoint v75
+
+Both corrected hosted source-controls passed with complete evidence. Root independently reconstructed all five records in each fulljoblog, rehashed CDR19proof893162B and PLL14proof2342897B, verified original controls/regressions and byte-exact method normalizations. Sole saved CDR native typed readback40542841034 and sole fresh PLL four-original-OP40543321528 were dispatched on immutable sources; exactsource lightweight-tag prereleases425724474/425727592 were reserved immediately before hostedwaiters. No originalrawguard/geometry/numerical acceptance waiver and no transient. Mainchip disabledAPIprobe has clear native+outerpeers; rootfinalcorrected-native review/actualcontrols stillrequired. Everything remainscloud-only and localworkspace/tmp/nativeprocesses areempty.
+
+Local project/tmp/native processes verified absent. Inventory253 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
