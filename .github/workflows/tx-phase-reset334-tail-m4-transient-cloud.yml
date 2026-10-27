@@ -1,0 +1,13 @@
+name: tx-phase-reset334-tail-m4-transient-cloud
+on:
+  push:
+    branches: ['codex/register-tail-m4-transient-20261027']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Registration only without checkout or engineering execution
+        run: printf '%s\n' 'Workflow registration only; no checkout, authored tests, archives, CAD or simulation.'
