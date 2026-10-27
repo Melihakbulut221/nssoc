@@ -1,0 +1,133 @@
+# SPDX-License-Identifier: Apache-2.0
+name: mainchip-two-signal-current-readback-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        type: boolean
+        required: true
+        default: false
+        description: Authenticate selected text from completed unsuccessful repair; no CAD or reroute
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mainchip-two-signal-current-readback-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  controls:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Actual copied-root isolated source and original data initialization
+        run: |
+          mkdir cloud-mainchip-two-signal-current-readback-import-controls
+          python3 scripts/check_mainchip_two_signal_current_readback_imports.py > cloud-mainchip-two-signal-current-readback-import-controls/imports.json
+      - name: Actual current saved-text, archive, lifecycle, authorization and publication controls
+        run: python3 scripts/check_mainchip_two_signal_current_readback.py
+      - name: Always preserve complete individual source-control records
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import json,os,traceback
+          from pathlib import Path
+          from check_mainchip_original_clock_restoration_driver import emit
+          import cloud_mainchip_two_signal_current_readback as d
+          out=Path('cloud-mainchip-two-signal-current-readback-controls')
+          out.mkdir(exist_ok=True)
+          r=dict(status='FAIL_SOURCE_CONTROLS',source_head=os.environ['GITHUB_SHA'],native_executed=False)
+          paths={'imports':Path('cloud-mainchip-two-signal-current-readback-import-controls/imports.json'),
+                 'boundary':out/'boundary-controls.json'}
+          try:
+              r.update({k:json.loads(p.read_bytes())for k,p in paths.items()})
+              i,b=r['imports'],r['boundary']
+              assert i['status']=='PASS_ACTUAL_CURRENT_TWO_SIGNAL_READBACK_IMPORT_DATA_CLOSURE'
+              assert len(i['positive'])==2 and len(i['rejected'])==7
+              assert b['status']=='PASS_CURRENT_TWO_SIGNAL_TEXT_READBACK_SOURCE_CONTROLS'
+              assert len(b['boundary']['positive'])==3 and len(b['boundary']['rejected'])==29
+              assert len(b['authorization']['positive'])==3 and len(b['authorization']['rejected'])==12
+              assert len(b['lifecycle']['actual_run_finally_cases'])==12
+              assert len(b['publication']['actual_publisher_binding_and_direct_file_program'])==2
+              assert len(b['inherited_transport']['positives'])==3 and len(b['inherited_transport']['rejected'])==13
+              assert len(b['inherited_reservation']['positive_cases'])==3 and len(b['inherited_reservation']['rejected'])==4
+              r['status']='PASS_COMPLETE_CURRENT_TWO_SIGNAL_READBACK_SOURCE_CONTROLS'
+          except BaseException as error:
+              r.update(error=repr(error),traceback=traceback.format_exc())
+          finally:
+              d.save(out/'result.json',r)
+              for name,p in {**paths,'aggregate':out/'result.json'}.items():
+                  if p.is_file() and p.stat().st_size:
+                      print('CURRENT_TWO_SIGNAL_CONTROL_FILE '+name,flush=True)
+                      try:emit(p.resolve())
+                      except BaseException as error:
+                          print(json.dumps(dict(control_file=name,emission_error=repr(error),bytes=p.stat().st_size,
+                            sha256=d.c.file_sha(p))),flush=True)
+          assert r['status']=='PASS_COMPLETE_CURRENT_TWO_SIGNAL_READBACK_SOURCE_CONTROLS'
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: current-two-signal-readback-controls-${{ github.run_id }}
+          path: |
+            cloud-mainchip-two-signal-current-readback-controls/
+            cloud-mainchip-two-signal-current-readback-import-controls/
+          retention-days: 90
+  readback:
+    if: inputs.readback
+    needs: controls
+    runs-on: ubuntu-22.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exact completed-controls authorization before archive access
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          import cloud_mainchip_two_signal_current_readback as d
+          assert d.methods()['cloud_readback_authorized'] is True
+          PYCODE
+      - name: Read-only exact-source reserved prerelease wait
+        timeout-minutes: 6
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/wait_cloud_tested_source_release.py --group mainchip-two-signal-current-readback
+      - name: Supervised complete-member authentication and selected-text diagnosis
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_two_signal_current_readback.py
+      - name: Always preserve bounded complete readback result log
+        if: always()
+        run: |
+          PYTHONPATH=scripts python3 - <<'PYCODE'
+          from pathlib import Path
+          from check_mainchip_original_clock_restoration_driver import emit
+          p=Path('cloud-mainchip-two-signal-current-readback/result.json').resolve()
+          if p.is_file():emit(p)
+          else:print('CURRENT_TWO_SIGNAL_READBACK_RESULT_MISSING_NO_ACCEPTANCE',flush=True)
+          PYCODE
+      - name: Permanent complete failure-preserving evidence and direct saved text
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/cloud_mainchip_two_signal_current_readback.py --publish
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: current-two-signal-readback-${{ github.run_id }}
+          path: |
+            cloud-mainchip-two-signal-current-readback/
+            publication-mainchip-two-signal-current-readback/
+          retention-days: 90
