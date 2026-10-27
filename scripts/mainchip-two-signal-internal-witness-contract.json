@@ -1,0 +1,104 @@
+{
+  "schema": "mainchip-two-signal-internal-witness-contract-v1",
+  "status": "DISABLED_OBSERVER_SOURCE_FOUNDATION_UNQUALIFIED_ENGINE",
+  "base_source": "d758c03a2fc4a5d890606a0b005a3d36136d0611",
+  "openroad_source": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "prior_repair": {
+    "run_id": 40572767703,
+    "source": "3ee00226fe604d6c019c383e773dc23b5892afc9",
+    "changed_signals": 0,
+    "original_class_shorts": 3,
+    "accepted": false
+  },
+  "acquired_readback": {
+    "run_id": 40592580993,
+    "source": "4b4c5d11c978f883c7d43b49fd3f719ac3614025",
+    "release_id": 426038847,
+    "authoritative_full_census_asset": 683033496,
+    "census_bytes": 214498564,
+    "census_sha256": "d62edab967a4c17cbdca2dc4f37b6a8730c5abb18bf73cb2b1c4caf62dad4c72"
+  },
+  "prior_original_class_odb_sha256": "13eda10135ad036c7e2e6b9ba0559210c8bee8008ad42e9da81c53301837342a",
+  "acquisition_input_binding": null,
+  "selected_nets": [
+    "net36993",
+    "net459",
+    "clknet_5_29__leaf_u_ibex.clk"
+  ],
+  "stages": [
+    {
+      "name": "imported",
+      "hook": "Immediately after existing initDesign(), before pin-access/guide/preparation/TA."
+    },
+    {
+      "name": "before_dr",
+      "hook": "Immediately before existing dr(), after unchanged preparation/TA."
+    },
+    {
+      "name": "after_dr",
+      "hook": "Immediately after existing dr(), before existing endFR()."
+    },
+    {
+      "name": "after_writer",
+      "hook": "Immediately after existing endFR(), before Tcl writes routed-fixed.odb/.def."
+    }
+  ],
+  "observer": {
+    "enable_environment": "NNSOC_DRT_INTERNAL_WITNESS_DIR",
+    "disabled_behavior": "An absent environment variable returns before inspecting or changing any engine object.",
+    "enabled_behavior": "Read-only native C++ getters; exact named ordinary-net/fixed-state/census checks. No setters, routing options, net-class changes, worker scheduling or algorithm decisions are patched.",
+    "output": "Four exclusive, no-follow stage files in a pre-existing absolute directory. Every complete line is written immediately; bounded incomplete prefix remains on a later failure. A complete marker alone does not prove successful fsync/close or job completion.",
+    "caps": {
+      "stage_bytes": 67108864,
+      "stage_rows": 200000,
+      "material_rows_per_net": 10000,
+      "total_stage_bytes": 268435456
+    },
+    "preserved_evidence": [
+      "segment endpoints/width/extension styles and bounding boxes",
+      "patch origin/local and absolute boxes",
+      "every lower/cut/upper via component with source ordinal and multiplicity",
+      "internal layer index separately from native OID/name",
+      "native raw opcode/data pairs and actual native shape iterator components",
+      "internal fixed state, native net OID/class and terminal counts"
+    ],
+    "scope_exclusion": "Three selected nets only. Existing full-chip native guards must establish all non-target and all 1691 original clock conservation; this witness does not claim complete internal conservation of every other fixed net."
+  },
+  "comparison": {
+    "material": "Exact integer rectangle unions by actual native layer name; separately retained raw rows and multisets identify segmentation and duplicate-component differences.",
+    "diagnostic_fact": "A fixed selected net changing internal material during DR while emitted material stays unchanged is reported as an observed internal/output difference, only after authentic complete stages and external input/output joins.",
+    "forbidden_inference": "Synthetic controls, internal zero-marker count, or a complete parser result do not establish an accepted physical repair or the historical run's cause."
+  },
+  "required_unchanged_gates": [
+    "all 1691 original clock records/shapes",
+    "all other ordinary net native geometry, route encoding and DEF records",
+    "identity/source/network input joins",
+    "complete original-class JSON/TR DRC, not fixed-overlay-only DRC",
+    "20/4/8/8 ns and 5 percent original timing constraints",
+    "original ownership/process/memory/disk/runtime guards",
+    "all output command/stream/inventory identities"
+  ],
+  "build_and_execution_boundary": {
+    "qualified_engine": null,
+    "build_authorized": false,
+    "native_authorized": false,
+    "source_unit_complete": false,
+    "pending": [
+      "Exact source-only observer/primary API and fixture peer review.",
+      "Hosted source controls, without compiling or executing an engine.",
+      "Separately reviewed reproducible baseline and instrumented engine build recipes, compiler/dependency/submodule identity and complete build evidence.",
+      "Actual native C++ ABI compilation and synthetic native fixtures covering path segments, patch wires, via components/multiplicity, fixed flags, incomplete writes and observer-off/on output equivalence.",
+      "Source, engine binary, input ODB/LEF, routing options and resource admission for any future diagnostic; no authorization is inferred from this contract.",
+      "Failure-preserving owned-process wrapper, reserved publication, full available stage files and raw streams; no native artifact needs local download.",
+      "Actual after-writer raw/material join to the separately reimported router-emitted ODB/DEF plus every unchanged full-chip guard."
+    ]
+  },
+  "authorization": {
+    "source_controls": false,
+    "engine_build": false,
+    "native_execution": false,
+    "native_routing": false,
+    "rc_sta": false,
+    "physical_acceptance": false
+  }
+}

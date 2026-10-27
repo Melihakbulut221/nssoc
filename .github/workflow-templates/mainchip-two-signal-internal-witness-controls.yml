@@ -1,0 +1,57 @@
+name: Mainchip internal DRT witness source controls (inactive template)
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: read
+concurrency:
+  group: mainchip-internal-witness-source-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Admit source-controls-only authorization
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path("scripts/mainchip-two-signal-internal-witness-methods.json").read_bytes())
+          assert m["source_controls_authorized"] is True
+          assert m["source_unit_complete"] is False and m["qualified_engine"] is None
+          for k in ("engine_build_authorized","native_execution_authorized","native_routing_authorized","physical_acceptance","rc_sta_execution_authorized"):
+              assert m[k] is False
+          PY
+      - name: Full source and explicit synthetic witness controls
+        run: |
+          python -B scripts/check_mainchip_two_signal_internal_witness.py > internal-witness-controls.json
+          cat internal-witness-controls.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path("internal-witness-controls.json").read_bytes())
+          assert r["status"]=="PASS"
+          assert r["positive_count"]==4 and r["refusal_count"]==28
+          assert r["engine_compiled"] is False and r["native_executed"] is False
+          assert r["physical_acceptance"] is False
+          PY
+      - name: Preserve complete available source-control record
+        if: always()
+        run: |
+          python - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          p=Path("internal-witness-controls.json")
+          b=p.read_bytes() if p.is_file() else b""
+          pieces=[b[i:i+6000] for i in range(0,len(b),6000)]
+          print("INTERNAL_WITNESS_RECORD_INDEX "+json.dumps({"path":str(p),"present":p.is_file(),"bytes":len(b),"sha256":hashlib.sha256(b).hexdigest(),"chunks":len(pieces)},sort_keys=True))
+          for i,v in enumerate(pieces):
+              print("INTERNAL_WITNESS_RECORD_CHUNK "+json.dumps({"index":i,"base64":base64.b64encode(v).decode()},sort_keys=True))
+          PY
