@@ -104,6 +104,13 @@ def finalize(result,trace):
         result.update(status='FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK',
           terminal_save_error=repr(exc),terminal_save_traceback=traceback.format_exc(),
           terminal_result_persisted=False)
+        # A failed atomic replace can retain a new result.json.tmp after the prior inventory.
+        try:
+            result['outputs']={p:x['sha256']for p,x in inventory(OUT).items()if p!='result.json'}
+            result['terminal_save_inventory_refreshed']=True
+        except BaseException as refresh:
+            result.update(terminal_save_inventory_refreshed=False,
+              terminal_save_inventory_error=repr(refresh),terminal_save_inventory_traceback=traceback.format_exc())
         # The captured raw job stream retains the full result if atomic persistence fails.
         try:print('CURRENT_TWO_SIGNAL_READBACK_UNSAVED_RESULT '+json.dumps(result,sort_keys=True),file=sys.stderr,flush=True)
         except BaseException as fallback:

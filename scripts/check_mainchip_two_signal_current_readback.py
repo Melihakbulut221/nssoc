@@ -167,7 +167,7 @@ def lifecycle_controls():
     cases=[]
     modes=('complete','body_failure','malformed_command','cleanup_failure','source_failure',
       'body_and_cleanup','inventory_failure','command_read_failure','heartbeat_stop_failure',
-      'terminal_save_failure','body_and_terminal_save')
+      'terminal_save_failure','body_and_terminal_save','terminal_save_inventory_failure')
     for mode in modes:
         with tempfile.TemporaryDirectory()as folder:
             root=Path(folder);out=root/'out';transport=root/'transport';after=[False]
@@ -176,9 +176,10 @@ def lifecycle_controls():
             command_read=OSError('EXACT_READBACK_TERMINAL_COMMAND_READ_FAILURE')
             heartbeat_stop=RuntimeError('EXACT_READBACK_HEARTBEAT_STOP_FAILURE')
             terminal_save=OSError('EXACT_READBACK_TERMINAL_SAVE_FAILURE')
-            calls=dict(method=0,command_read=0,result_save=0,thread_start=0,thread_join=0)
+            calls=dict(method=0,command_read=0,result_save=0,thread_start=0,thread_join=0,inventory=0)
             captured=io.StringIO();event=threading.Event()
             original_regular=d.c.regular;original_save=d.save;original_inventory=d.inventory
+            original_replace=d.base.os.replace
             def method():
                 calls['method']+=1
                 if mode=='source_failure'and after[0]:raise source
@@ -209,7 +210,8 @@ def lifecycle_controls():
             sup=types.SimpleNamespace(ACTIVE=None,STOP=types.SimpleNamespace(set=event_stop),TRACE=out/'supervision',
               interrupted=lambda *x:None,heartbeat=lambda:None,stop_process=stop,supervised=supervised)
             def inventory(path):
-                if mode=='inventory_failure':raise inv
+                calls['inventory']+=1
+                if mode=='inventory_failure'or(mode=='terminal_save_inventory_failure'and calls['inventory']==2):raise inv
                 return original_inventory(path)
             def regular(path):
                 if path==out/'supervision'/(d.LABEL+'.command.json'):
@@ -217,13 +219,17 @@ def lifecycle_controls():
                     if mode=='command_read_failure'and calls['command_read']==2:raise command_read
                 return original_regular(path)
             def save(path,value):
-                if path==out/'result.json':
-                    calls['result_save']+=1
-                    if mode in ('terminal_save_failure','body_and_terminal_save')and calls['result_save']==2:raise terminal_save
+                if path==out/'result.json':calls['result_save']+=1
                 return original_save(path,value)
+            def replace(source,target):
+                if target==out/'result.json'and mode in ('terminal_save_failure','body_and_terminal_save','terminal_save_inventory_failure')and calls['result_save']==2:
+                    assert source==out/'result.json.tmp'and source.is_file()
+                    raise terminal_save
+                return original_replace(source,target)
             with patch.object(d,'OUT',out),patch.object(d,'TRANSPORT',transport),patch.object(d,'methods',method),\
               patch.object(d.runtime,'supervisor',return_value=sup),patch.object(d,'inventory',side_effect=inventory),\
               patch.object(d.c,'regular',side_effect=regular),patch.object(d,'save',side_effect=save),\
+              patch.object(d.base.os,'replace',side_effect=replace),\
               patch.object(d.threading,'Thread',return_value=thread),patch.object(d.sys,'stderr',captured),\
               patch.object(d.shutil,'disk_usage',return_value=types.SimpleNamespace(free=32*1024**3)),\
               patch.object(guard,'context',return_value=('tag','a'*40)),patch.object(guard,'api',return_value={}),\
@@ -231,18 +237,29 @@ def lifecycle_controls():
                 expected={'body_failure':primary,'malformed_command':primary,'cleanup_failure':cleanup,
                   'source_failure':source,'body_and_cleanup':primary,'inventory_failure':inv,
                   'command_read_failure':command_read,'heartbeat_stop_failure':heartbeat_stop,
-                  'terminal_save_failure':terminal_save,'body_and_terminal_save':primary}.get(mode)
+                  'terminal_save_failure':terminal_save,'body_and_terminal_save':primary,
+                  'terminal_save_inventory_failure':terminal_save}.get(mode)
                 try:d.run()
                 except BaseException as got:assert got is expected,(mode,got,expected)
                 else:assert expected is None
             disk=json.loads((out/'result.json').read_bytes());fallback=captured.getvalue()
-            if mode in ('terminal_save_failure','body_and_terminal_save'):
+            if mode in ('terminal_save_failure','body_and_terminal_save','terminal_save_inventory_failure'):
                 prefix='CURRENT_TWO_SIGNAL_READBACK_UNSAVED_RESULT '
                 assert fallback.startswith(prefix)and len(fallback.splitlines())==1
                 saved=json.loads(fallback[len(prefix):])
                 assert saved['terminal_save_error']==repr(terminal_save)and saved['terminal_result_persisted']is False
                 assert disk['status']=='RUNNING_CURRENT_TWO_SIGNAL_TEXT_READBACK'
-                assert calls['result_save']==2
+                assert calls['result_save']==calls['inventory']==2
+                temporary=out/'result.json.tmp';assert temporary.is_file()
+                assert 'cloud_mainchip_original_clock_restoration.py'in saved['terminal_save_traceback']
+                assert 'os.replace(temporary,path)'in saved['terminal_save_traceback']
+                assert json.loads(temporary.read_bytes())['status']==('FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK'if mode=='body_and_terminal_save'else'COMPLETE_CURRENT_TWO_SIGNAL_TEXT_READBACK_UNSUCCESSFUL_REPAIR_RETAINED')
+                if mode=='terminal_save_inventory_failure':
+                    assert saved['terminal_save_inventory_refreshed']is False and saved['terminal_save_inventory_error']==repr(inv)
+                    assert 'result.json.tmp'not in saved['outputs']
+                else:
+                    assert saved['terminal_save_inventory_refreshed']is True
+                    assert saved['outputs']['result.json.tmp']==a.c.file_sha(temporary)
             else:
                 assert fallback=='';saved=disk
             assert saved['repair_succeeded']is saved['postroute_bridge_eligible']is False
@@ -253,7 +270,7 @@ def lifecycle_controls():
             assert event.is_set()is(mode!='heartbeat_stop_failure')
             assert (out/'saved/retained.json').read_bytes()==b'{"retained":true}'
             assert saved['status']==('COMPLETE_CURRENT_TWO_SIGNAL_TEXT_READBACK_UNSUCCESSFUL_REPAIR_RETAINED'if mode=='complete'else'FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK')
-            if mode!='inventory_failure':
+            if mode not in ('inventory_failure','terminal_save_inventory_failure'):
                 assert saved['outputs']=={p:x['sha256']for p,x in original_inventory(out).items()if p!='result.json'}
             if mode=='malformed_command':assert saved['terminal_command_parse_error']and 'terminal_command_record'not in saved
             if mode=='command_read_failure':
@@ -267,9 +284,10 @@ def lifecycle_controls():
                 assert saved['error']==repr(primary)and saved['terminal_checks'][0]['error']==repr(cleanup)
             if mode=='body_and_terminal_save':assert saved['error']==repr(primary)
             cases.append(mode)
-    assert len(cases)==11
+    assert len(cases)==12
     return dict(actual_run_finally_cases=cases,real_error_identity_preserved=True,
       complete_unsaved_terminal_result_fallback=True,independent_heartbeat_stop_and_join=True,
+      actual_atomic_writer_replace_failure_retained=True,secondary_inventory_failure_cannot_replace_save_error=True,
       synthetic_worker_supervisor_and_thread_collaborators=True)
 
 def authorization_controls():
