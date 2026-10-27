@@ -1,0 +1,115 @@
+{
+  "schema": "disabled-source-correction-v1",
+  "status": "AUTHORED_UNEXECUTED_AWAITING_BOUNDED_PEER_REVIEW",
+  "parent_source": "a8fdb3efe8addcec49ee2a0e804b7d047dab5b75",
+  "reason": "Inherited Docker finally called removal and permission repair sequentially; an exception could replace an active body error and skip work copy/inventory/save. Body exception-report save/log operations could also mask that original body error.",
+  "source_files": {
+    "scripts/cloud_tx_phase_reset334_tail_m4_transient.py": {
+      "bytes": 20602,
+      "sha256": "bdcb6cf1269683926c85fbf90a23cee27beb10355e54ab69dd50281322ef4224"
+    },
+    "scripts/check_tx_phase_reset334_tail_m4_transient.py": {
+      "bytes": 52469,
+      "sha256": "7920f825633bda99f755ce18fc9b6170e586ca37d979662a70cbff8fa03ab1db"
+    }
+  },
+  "exact_derivation": {
+    "frozen_original": "scripts/cloud_tx_phase_reset334_transient.py",
+    "frozen_sha256": "db0108b0b553d24d1ce8d4813806f41821bbf607053538a2ebe59127629eb0f0",
+    "prior_eight_edit_generated_sha256": "9a07c33d6039cbae47e3bddcb9a084e94f650cc520509cd4b1cb0d6e99a2c144",
+    "current_ten_edit_generated_sha256": "93386ba2903a89751a0e0d875790306d06bdbd1ee77ad773680c5cac3008b3b5",
+    "added_reversible_edits": [
+      {
+        "before": "    except BaseException as e:\n        if not r['status'].startswith('REJECTED_'):r['status']='FAIL_OR_ERROR'\n        r.update(error=repr(e),traceback=traceback.format_exc());save()\n        if(case/'native.log').exists():print((case/'native.log').read_text(errors='replace')[-16000:],flush=True)\n        raise\n",
+        "after": "    except BaseException as e:\n        if not r['status'].startswith('REJECTED_'):r['status']='FAIL_OR_ERROR'\n        r.update(error=repr(e),traceback=traceback.format_exc())\n        try:save()\n        except BaseException as reporting_error:\n            r['body_failure_save_error']=dict(error=repr(reporting_error),traceback=traceback.format_exc())\n        try:\n            if(case/'native.log').exists():print((case/'native.log').read_text(errors='replace')[-16000:],flush=True)\n        except BaseException as reporting_error:\n            r['body_failure_log_error']=dict(error=repr(reporting_error),traceback=traceback.format_exc())\n        raise\n",
+        "count": 1
+      },
+      {
+        "before": "    finally:\n        if owned:\n            try:\n                if state()['Running'] and not r['native_process_saved']:dump('emergency-checkpoint-native')\n            except BaseException as e:r['emergency_checkpoint_error']=repr(e)\n            run('remove-owned-container',['docker','rm','-f',name],False)\n        if case.exists()and not(out/'work').exists():\n            run('readable-native-work',['sudo','chown','-R',str(os.getuid())+':'+str(os.getgid()),str(case)])\n            shutil.copytree(case,out/'work',copy_function=os.link)\n        r['outputs']={str(p.relative_to(out)):sha(p)for p in out.rglob('*')if p.is_file()and p!=out/'result.json'};save()",
+        "after": "    finally:\n        _current_finalize_native_lifecycle(r,out,case,owned,name,state,dump,run,save)",
+        "count": 1
+      }
+    ],
+    "all_ten_reverse_byte_exact": true,
+    "prior_derived_main_success_body_AST_identical": true,
+    "all_prior_derived_non_main_functions_AST_identical": true
+  },
+  "new_helper": "finalize_native_lifecycle",
+  "terminal_actions": [
+    "emergency checkpoint if still running and not already saved",
+    "remove only owned container, require zero return",
+    "permission repair",
+    "copy actual native work even if permission repair failed",
+    "complete available output inventory",
+    "terminal result save"
+  ],
+  "guarantees": [
+    "Active primary exception is preserved through cleanup, inventory and save failures.",
+    "Body-error save/log failures are recorded without replacing the original body exception.",
+    "Cleanup-only failure rejects nominal completion, retains original failure details and attempts all remaining actions.",
+    "Full available copied files and copy fragments are hash-indexed; missing/unreadable evidence is a failure, never acceptance.",
+    "An inner result-save failure emits the complete unsaved failure report if encodable; otherwise a small explicitly incomplete diagnostic is attempted. Outer raw-result/partial preservation is unchanged."
+  ],
+  "streaming_hash": {
+    "source": "scripts/run_cloud_tx_layout_repair.py",
+    "function": "sha",
+    "function_source": "def sha(path):\n    with path.open('rb') as stream:\n        return hashlib.file_digest(stream, 'sha256').hexdigest()",
+    "source_sha256": "312391426bd8505b6d6d32fdc5ffec7a76ddfc83b2f4d72543a40d6332e28a3f",
+    "copied_function_byte_exact": true,
+    "reason": "Use original hashlib.file_digest streaming instead of buffering a full waveform in Path.read_bytes."
+  },
+  "authored_fixtures": {
+    "actual_complete_derived_main_and_outer_main_current_cases": 12,
+    "current_positive": 1,
+    "current_expected_failures": 11,
+    "exact_old_cleanup_masking_regressions": 2,
+    "streaming_hash_real_file_positive": 1,
+    "current_modes": [
+      "complete",
+      "body-remove",
+      "body-chown",
+      "remove",
+      "chown",
+      "copy",
+      "inventory",
+      "save",
+      "body-save",
+      "emergency",
+      "body-error-save",
+      "body-diagnostic-read"
+    ],
+    "actual_paths": "Each current case invokes controller.main and the entire actual derived native main; external Docker/CRIU/runtime/preparation/numerical-review collaborators are synthetic and never native. The two regressions reverse both new terminal edits and require exact previous generated source hash.",
+    "previous_checker_functions_unchanged_except_controls": true,
+    "previously_reviewed_authorization": "2 actual modes / 42 genuine typed mutations",
+    "previously_reviewed_outer_terminal": "12 actual outer-main cases remain unchanged"
+  },
+  "unchanged_contract": {
+    "segment_seconds": 13200,
+    "initial_disk_free_bytes": 77309411328,
+    "checkpoint_reserve_bytes": 21474836480,
+    "original_stop_s": 3.4e-08,
+    "original_step_s": 3.125e-13,
+    "min_VCE_v": 0.4,
+    "min_signed_margin_v": 0.1,
+    "first_fall_limit_s": 6.25e-11,
+    "original_UI_samples": [
+      0.3,
+      0.5,
+      0.7
+    ],
+    "original17_prior4_and_parent_rejection_preserved": true
+  },
+  "limitations": {
+    "authored_tests_or_imports_executed": false,
+    "native_or_archive_access": false,
+    "workflow_registered": false,
+    "complete_source_unit": false,
+    "remaining": [
+      "isolated import/data closure and real missing/tampered data fixtures",
+      "direct reserved-source publication controls",
+      "resource-observation/preservation controls",
+      "manual workflow template, five exact always-emitted records and count/permission contract",
+      "complete protected source audit and independent review"
+    ]
+  }
+}

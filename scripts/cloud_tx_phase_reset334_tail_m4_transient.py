@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Fresh current-model portable34ns source wrapper; no transient until exact reviewed activation."""
-import argparse,copy,hashlib,json,os,subprocess,sys,traceback
+import argparse,copy,hashlib,json,os,shutil,subprocess,sys,traceback
 from pathlib import Path
 import ensure_cloud_tested_source_release as release
 import wait_cloud_tested_source_release as waiter
@@ -10,9 +10,11 @@ METHOD=ROOT/'scripts/tx-phase-reset334-tail-m4-transient-methods.json'
 ORIGINAL='scripts/cloud_tx_phase_reset334_transient.py'
 ORIGINAL_SHA='db0108b0b553d24d1ce8d4813806f41821bbf607053538a2ebe59127629eb0f0'
 WORKFLOW='.github/workflows/tx-phase-reset334-tail-m4-transient-cloud.yml'
-EDITS=[{'before': 'import tx_phase_reset334_transient_support as review', 'after': 'from tx_phase_reset334_tail_m4_transient_adapter import session\nreview=session()', 'count': 1}, {'before': 'tx-phase-reset334-transient-native-', 'after': 'tx-phase-reset334-tail-m4-transient-native-', 'count': 4}, {'before': 'codex/tx-clock-phase-parent', 'after': 'codex/phase318-saved-capture-diagnosis', 'count': 2}, {'before': 'tx-phase-reset334-transient-cloud.yml', 'after': 'tx-phase-reset334-tail-m4-transient-cloud.yml', 'count': 2}, {'before': '.reset334-portable-stage-', 'after': '.reset334-tail-m4-portable-stage-', 'count': 1}, {'before': 'cloud-tx-phase-reset334-prepared-', 'after': 'cloud-tx-phase-reset334-tail-m4-prepared-', 'count': 1}, {'before': "        r['original_parent_TX_rejection']=proof['original_parent_TX_rejection']", 'after': "        r['original_parent_TX_rejection']=proof['original_parent_TX_rejection']\n        r.update(original17_HBT_rejection=proof['original17_HBT_rejection'],prior_four_tail_rejection=proof['prior_four_tail_rejection'],current_RC_model_hashes=proof['current_models'],old_R_rescaled=False,geometry_generation_executed=False,new_extraction_performed=False)", 'count': 1}, {'before': "                a=next(a for a in rel['assets']if a['name'].endswith(suffix))", 'after': "                expected=spec['group']+'-'+str(spec['run'])+'-1'+suffix\n                matches=[a for a in rel['assets']if a['name']==expected];assert len(matches)==1\n                a=matches[0]", 'count': 1}]
+EDITS=[{'before': 'import tx_phase_reset334_transient_support as review', 'after': 'from tx_phase_reset334_tail_m4_transient_adapter import session\nreview=session()', 'count': 1}, {'before': 'tx-phase-reset334-transient-native-', 'after': 'tx-phase-reset334-tail-m4-transient-native-', 'count': 4}, {'before': 'codex/tx-clock-phase-parent', 'after': 'codex/phase318-saved-capture-diagnosis', 'count': 2}, {'before': 'tx-phase-reset334-transient-cloud.yml', 'after': 'tx-phase-reset334-tail-m4-transient-cloud.yml', 'count': 2}, {'before': '.reset334-portable-stage-', 'after': '.reset334-tail-m4-portable-stage-', 'count': 1}, {'before': 'cloud-tx-phase-reset334-prepared-', 'after': 'cloud-tx-phase-reset334-tail-m4-prepared-', 'count': 1}, {'before': "        r['original_parent_TX_rejection']=proof['original_parent_TX_rejection']", 'after': "        r['original_parent_TX_rejection']=proof['original_parent_TX_rejection']\n        r.update(original17_HBT_rejection=proof['original17_HBT_rejection'],prior_four_tail_rejection=proof['prior_four_tail_rejection'],current_RC_model_hashes=proof['current_models'],old_R_rescaled=False,geometry_generation_executed=False,new_extraction_performed=False)", 'count': 1}, {'before': "                a=next(a for a in rel['assets']if a['name'].endswith(suffix))", 'after': "                expected=spec['group']+'-'+str(spec['run'])+'-1'+suffix\n                matches=[a for a in rel['assets']if a['name']==expected];assert len(matches)==1\n                a=matches[0]", 'count': 1}, {'before': "    except BaseException as e:\n        if not r['status'].startswith('REJECTED_'):r['status']='FAIL_OR_ERROR'\n        r.update(error=repr(e),traceback=traceback.format_exc());save()\n        if(case/'native.log').exists():print((case/'native.log').read_text(errors='replace')[-16000:],flush=True)\n        raise\n", 'after': "    except BaseException as e:\n        if not r['status'].startswith('REJECTED_'):r['status']='FAIL_OR_ERROR'\n        r.update(error=repr(e),traceback=traceback.format_exc())\n        try:save()\n        except BaseException as reporting_error:\n            r['body_failure_save_error']=dict(error=repr(reporting_error),traceback=traceback.format_exc())\n        try:\n            if(case/'native.log').exists():print((case/'native.log').read_text(errors='replace')[-16000:],flush=True)\n        except BaseException as reporting_error:\n            r['body_failure_log_error']=dict(error=repr(reporting_error),traceback=traceback.format_exc())\n        raise\n", 'count': 1}, {'before': "    finally:\n        if owned:\n            try:\n                if state()['Running'] and not r['native_process_saved']:dump('emergency-checkpoint-native')\n            except BaseException as e:r['emergency_checkpoint_error']=repr(e)\n            run('remove-owned-container',['docker','rm','-f',name],False)\n        if case.exists()and not(out/'work').exists():\n            run('readable-native-work',['sudo','chown','-R',str(os.getuid())+':'+str(os.getgid()),str(case)])\n            shutil.copytree(case,out/'work',copy_function=os.link)\n        r['outputs']={str(p.relative_to(out)):sha(p)for p in out.rglob('*')if p.is_file()and p!=out/'result.json'};save()", 'after': '    finally:\n        _current_finalize_native_lifecycle(r,out,case,owned,name,state,dump,run,save)', 'count': 1}]
 
-def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
+def sha(path):
+    with path.open('rb') as stream:
+        return hashlib.file_digest(stream, 'sha256').hexdigest()
 
 def group(stage,case):
     assert stage in ('initial','cross')and case=='p-initial-high'
@@ -74,11 +76,67 @@ def derived_program(text=None):
         assert reversed_text.count(e['after'])==e['count'];reversed_text=reversed_text.replace(e['after'],e['before'])
     assert reversed_text==text
     return changed,dict(original_sha256=ORIGINAL_SHA,generated_sha256=hashlib.sha256(changed.encode()).hexdigest(),
-      literal_edits=EDITS,reversed_byte_exact=True,original_Docker_CRIU_13200s_lifecycle_preserved=True)
+      literal_edits=EDITS,reversed_byte_exact=True,original_Docker_CRIU_13200s_runtime_and_numerical_body_preserved=True,
+      inner_terminal_actions_independently_attempted=True)
+
+def finalize_native_lifecycle(report,out,case,owned,name,state,dump,run,save):
+    """Attempt every owned terminal action; preserve an already active body exception."""
+    primary_error=sys.exc_info()[1]
+    actions=[];failures=[]
+    def attempt(label,action):
+        row=dict(phase=label,status='ATTEMPTED');actions.append(row)
+        try:
+            value=action();row['status']='COMPLETE';return value
+        except BaseException as error:
+            row.update(status='FAILED',error=repr(error),traceback=traceback.format_exc())
+            failures.append(error)
+    def emergency():
+        if state()['Running']and not report['native_process_saved']:
+            dump('emergency-checkpoint-native')
+    def remove():
+        result=run('remove-owned-container',['docker','rm','-f',name],False)
+        assert result.returncode==0,'Owned container removal failed'
+    if owned:
+        attempt('emergency-checkpoint-if-running',emergency)
+        attempt('remove-owned-container',remove)
+    if case.exists()and not(out/'work').exists():
+        attempt('readable-native-work',lambda:run('readable-native-work',
+            ['sudo','chown','-R',str(os.getuid())+':'+str(os.getgid()),str(case)]))
+        # Permission repair failure must not prevent trying an already-readable partial tree.
+        attempt('preserve-native-work',lambda:shutil.copytree(case,out/'work',copy_function=os.link))
+    def inventory():
+        files,errors=output_inventory(out);report['outputs']=files
+        report['inner_terminal_inventory_errors']=errors
+        assert not errors,'Native terminal inventory is incomplete'
+    attempt('native-output-inventory',inventory)
+    report.update(inner_terminal_actions=actions,inner_terminal_actions_complete=not failures,
+        inner_active_primary_error=None if primary_error is None else repr(primary_error))
+    if failures:
+        if not str(report.get('status','')).startswith('REJECTED_'):report['status']='FAIL_OR_ERROR'
+        report['electrical_screen_passed']=False
+    try:save()
+    except BaseException as error:
+        failures.append(error)
+        report['inner_terminal_actions_complete']=False
+        report['inner_terminal_save_error']=dict(error=repr(error),traceback=traceback.format_exc())
+        if not str(report.get('status','')).startswith('REJECTED_'):report['status']='FAIL_OR_ERROR'
+        report['electrical_screen_passed']=False
+        # The outer finalizer still preserves the last exact result and all available work.
+        # Retain a complete unsaved report in the job stream when it can be encoded.
+        try:print(json.dumps(dict(unsaved_inner_terminal_result=report),allow_nan=False,default=repr),flush=True)
+        except BaseException as stream_error:
+            report['inner_terminal_stream_error']=repr(stream_error)
+            try:print(json.dumps(dict(status='FAIL_OR_ERROR',inner_terminal_evidence_incomplete=True,
+                primary_error=None if primary_error is None else repr(primary_error),
+                save_error=repr(error),stream_error=repr(stream_error),output_directory=str(out),
+                native_work_directory=str(case)),allow_nan=False),flush=True)
+            except BaseException:pass
+    if failures and primary_error is None:raise failures[0]
 
 def program_namespace():
     text,proof=derived_program()
-    ns=dict(__name__='current_TAIL_M4_portable_lifecycle',__file__=str(Path(__file__)))
+    ns=dict(__name__='current_TAIL_M4_portable_lifecycle',__file__=str(Path(__file__)),
+        _current_finalize_native_lifecycle=finalize_native_lifecycle)
     exec(compile(text,'<current-TAIL-M4-portable-lifecycle>','exec'),ns)
     return ns,proof
 

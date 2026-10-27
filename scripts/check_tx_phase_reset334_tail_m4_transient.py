@@ -395,6 +395,218 @@ def terminal_controls():
     assert len(cases)==12
     return dict(cases=cases,positive=2,refusal=10,synthetic_native_body_only=True)
 
+def inner_terminal_case(mode,old_finally=False):
+    """Actual complete derived main plus outer wrapper, with synthetic external/runtime calls only."""
+    modes=('complete','body-remove','body-chown','remove','chown','copy','inventory','save','body-save','emergency','body-error-save','body-diagnostic-read')
+    assert mode in modes
+    assert not old_finally or mode in ('body-remove','body-chown')
+    ns,proof=controller.program_namespace()
+    if old_finally:
+        text,_=controller.derived_program();previous=text
+        assert len(controller.EDITS)==10
+        for edit in reversed(controller.EDITS[8:]):
+            assert previous.count(edit['after'])==1
+            previous=previous.replace(edit['after'],edit['before'])
+        assert controller.hashlib.sha256(previous.encode()).hexdigest()=='9a07c33d6039cbae47e3bddcb9a084e94f650cc520509cd4b1cb0d6e99a2c144'
+        previous_ns=dict(__name__='exact_previous_inner_finally_fixture',__file__=str(Path(controller.__file__)))
+        exec(compile(previous,'<exact-previous-inner-finally>','exec'),previous_ns)
+        ns=previous_ns
+    calls=[];stream=io.StringIO()
+    primary=RuntimeError('SYNTHETIC_NATIVE_BODY_FAILURE')
+    remove_error=controller.subprocess.TimeoutExpired(['docker','rm','-f','owned-fixture'],900)
+    chown_error=controller.subprocess.TimeoutExpired(['sudo','chown','owned-fixture'],900)
+    copy_error=OSError('SYNTHETIC_NATIVE_COPY_FAILURE')
+    hash_error=OSError('SYNTHETIC_NATIVE_HASH_FAILURE')
+    save_error=OSError('SYNTHETIC_INNER_SAVE_FAILURE')
+    emergency_error=OSError('SYNTHETIC_OWNED_STATE_FAILURE')
+    log_error=OSError('SYNTHETIC_BODY_LOG_READ_FAILURE')
+    body_fails=mode.startswith('body-')or mode=='emergency'
+    with tempfile.TemporaryDirectory()as directory:
+        root=Path(directory);label='p-initial-high';stage='initial'
+        out=root/('cloud-'+controller.group(stage,label))
+        prepared_root=root/('cloud-tx-phase-reset334-tail-m4-prepared-'+label)
+        case=prepared_root/'native'
+        runner=root/'runner';runner.mkdir()
+        runtime=root/'runtime';runtime.mkdir()
+        engine=runtime/'ngspice';engine.write_bytes(b'explicit synthetic engine never executed')
+        dash=runtime/'dash';dash.write_bytes(b'explicit synthetic shell never executed')
+        criu=runtime/'criu';criu.write_bytes(b'explicit synthetic CRIU never executed')
+        real_sha=ns['sha'];controller_sha=controller.sha
+        engine_hash=real_sha(engine)
+        (runner/'criu-build.json').write_text(json.dumps(dict(source_commit=ns['CRIU'],binary_sha256=real_sha(criu))))
+        class RootProxy:
+            def __str__(self):return '/home/runner/work/nssoc/nssoc'
+            def __truediv__(self,name):return root/name
+        def native_sha(path):
+            mapped={'/bin/dash':dash,'/usr/sbin/criu':criu}.get(str(path),Path(path))
+            return real_sha(mapped)
+        def prepare(actual_label,actual_prepared,actual_out,group):
+            assert(actual_label,actual_prepared,actual_out,group)==(label,prepared_root,out,controller.group(stage,label))
+            case.mkdir(parents=True)
+            for name,data in {'bench.cir':b'* synthetic full prepared deck\n','contract.json':b'{}\n','spinit':b'* synthetic\n'}.items():
+                (case/name).write_bytes(data)
+            prepared=dict(outputs={'native/'+name:real_sha(case/name)for name in ('contract.json','spinit')})
+            source_proof=dict(original_parent_TX_rejection=dict(electrical_screen_passed=False),
+                original17_HBT_rejection=dict(explicitly_synthetic=True),prior_four_tail_rejection=dict(explicitly_synthetic=True),
+                current_models=dict(explicitly_synthetic=True))
+            return prepared,source_proof,dict(explicitly_synthetic=True),engine,dict(summary_sha256='1'*64)
+        def result(stdout='',returncode=0):return types.SimpleNamespace(stdout=stdout,stderr='',returncode=returncode)
+        def run(command,**kwargs):
+            command=list(map(str,command));calls.append(command)
+            assert kwargs==dict(capture_output=True,text=True,timeout=900)
+            if command[:3]==['docker','ps','-aq']:return result()
+            if command[:2]in (['sudo','criu'],['uname','-a'],['lscpu','--json'],['sudo','python3'],['sudo','systemctl']):return result()
+            if command[0]=='ldd':return result()
+            if command[:2]==['docker','build']:return result()
+            if command[:3]==['docker','image','inspect']:return result(json.dumps([dict(Id='synthetic-image')]))
+            if command[:2]==['docker','save']:
+                Path(command[3]).write_bytes(b'synthetic image bytes, not an archive');return result()
+            if command[:2]==['docker','create']:
+                assert '--memory'in command and command[command.index('--memory')+1]=='12g'
+                assert '--network'in command and command[command.index('--network')+1]=='host'
+                return result('a'*64+'\n')
+            if command[:2]==['docker','start']:
+                (case/'native.log').write_bytes(b'explicit synthetic native transcript\n')
+                (case/'wave.raw').write_bytes(b'explicit synthetic partial waveform bytes, never parsed')
+                (case/'boots.log').write_bytes(b'native-entrypoint\n')
+                if body_fails:raise primary
+                return result()
+            if command[:3]==['docker','rm','-f']:
+                if mode in ('body-remove','remove'):raise remove_error
+                return result()
+            if command[:2]==['sudo','chown']:
+                if mode in ('body-chown','chown'):raise chown_error
+                return result()
+            raise AssertionError('Unexpected external command '+repr(command))
+        def check_output(command):
+            assert command==['docker','inspect','nssoc-reset334-portable-initial-p-initial-high']
+            calls.append(list(command))
+            if mode=='emergency':raise emergency_error
+            return json.dumps([dict(State=dict(Running=False,ExitCode=0))]).encode()
+        real_copy2=controller.shutil.copy2;real_copytree=controller.shutil.copytree
+        def copy2(source,destination,*args,**kwargs):
+            return real_copy2(dash if str(source)=='/bin/dash'else source,destination,*args,**kwargs)
+        def copytree(source,destination,**kwargs):
+            assert Path(source)==case and Path(destination)==out/'work'and kwargs==dict(copy_function=os.link)
+            if mode=='copy':
+                Path(destination).mkdir()
+                (Path(destination)/'retained-prefix.bin').write_bytes(b'copy failed after this exact partial')
+                raise copy_error
+            return real_copytree(source,destination,**kwargs)
+        native_shutil=types.SimpleNamespace(disk_usage=lambda _:types.SimpleNamespace(free=80*1024**3),
+            copy2=copy2,copytree=copytree,rmtree=controller.shutil.rmtree)
+        original_review=ns['review']
+        ns.update(ROOT=RootProxy(),reports=types.SimpleNamespace(OUT=None),ENGINE_SHA=engine_hash,sha=native_sha,
+            shutil=native_shutil,subprocess=types.SimpleNamespace(run=run,check_output=check_output),
+            runtime_files=lambda *_:({},[]),raw_state=lambda *_:dict(explicitly_synthetic=True,complete_rows=1))
+        ns['review']=types.SimpleNamespace(methods=lambda:dict(protected={},native_transient_authorized=True,segment_seconds=13200),
+            prepare=prepare,FLAGS=original_review.FLAGS,runtime_identity=lambda _:dict(explicitly_synthetic=True),
+            review_capture=lambda *_:dict(passed=True,explicitly_synthetic=True))
+        real_write_text=Path.write_text;real_read_text=Path.read_text
+        def write_text(path,text,*args,**kwargs):
+            if path==out/'result.json':
+                value=json.loads(text)
+                if mode in ('save','body-save')and 'inner_terminal_actions'in value:raise save_error
+                if mode=='body-error-save'and value.get('error')==repr(primary)and 'inner_terminal_actions'not in value:raise save_error
+            return real_write_text(path,text,*args,**kwargs)
+        def read_text(path,*args,**kwargs):
+            if mode=='body-diagnostic-read'and path==case/'native.log':raise log_error
+            return real_read_text(path,*args,**kwargs)
+        def outer_sha(path):
+            if mode=='inventory'and Path(path)==out/'work/wave.raw':raise hash_error
+            return controller_sha(path)
+        caught=None;old_argv=sys.argv
+        with mock.patch.dict(os.environ,dict(RUNNER_TEMP=str(runner))),mock.patch.object(sys,'stdout',stream),\
+             mock.patch.object(controller,'ROOT',root),mock.patch.object(controller,'methods',return_value={}),\
+             mock.patch.object(controller,'preflight',return_value=dict(explicitly_synthetic=True)),\
+             mock.patch.object(controller,'program_namespace',return_value=(ns,proof)),\
+             mock.patch.object(controller.shutil,'copytree',side_effect=copytree),\
+             mock.patch.object(controller,'sha',side_effect=outer_sha),mock.patch.object(Path,'write_text',write_text),\
+             mock.patch.object(Path,'read_text',read_text):
+            try:
+                if old_finally:
+                    with mock.patch.object(sys,'argv',['fixture','--stage',stage,'--case',label]):ns['main']()
+                else:controller.main(stage,label)
+            except BaseException as error:caught=error
+        assert sys.argv is old_argv
+        report=json.loads((out/'result.json').read_bytes())
+        if old_finally:
+            expected=remove_error if mode=='body-remove'else chown_error
+            assert caught is expected and caught is not primary
+            assert report['error']==repr(primary)and 'outputs'not in report and not(out/'work').exists()
+            assert any(command[:2]==['docker','create']for command in calls)
+            return dict(mode=mode,exact_previous_inner_finally=True,original_primary_masked=True,
+                work_copy_and_inventory_skipped=True,caught=repr(caught),saved_error=report['error'])
+        native_raw=(out/'native-lifecycle-result.json').read_bytes();native=json.loads(native_raw)
+        assert report['native_lifecycle_result_sha256']==controller.hashlib.sha256(native_raw).hexdigest()
+        assert report['outputs']['native-lifecycle-result.json']==controller.hashlib.sha256(native_raw).hexdigest()
+        assert any(command[:3]==['docker','rm','-f']for command in calls)
+        assert any(command[:2]==['sudo','chown']for command in calls)
+        if mode=='copy':
+            expected=b'copy failed after this exact partial'
+            assert(out/'work/retained-prefix.bin').read_bytes()==expected
+            assert report['outputs']['work/retained-prefix.bin']==controller.hashlib.sha256(expected).hexdigest()
+        else:
+            expected=b'explicit synthetic partial waveform bytes, never parsed'
+            assert(out/'work/wave.raw').read_bytes()==expected
+            if mode!='inventory':assert report['outputs']['work/wave.raw']==controller.hashlib.sha256(expected).hexdigest()
+        if mode=='complete':
+            assert caught is None and report['status']=='COMPLETE_PHYSICAL334_THREE_MODEL_FULL_NATIVE_CAPTURE_REQUIRES_REVIEW_AND_FULL_PHY'
+            assert native['inner_terminal_actions_complete']is True
+        else:
+            assert report['status']=='FAIL_OR_ERROR'and report['electrical_screen_passed']is False
+            if body_fails:assert caught is primary
+            elif mode=='remove':assert caught is remove_error
+            elif mode=='chown':assert caught is chown_error
+            elif mode=='copy':assert caught is copy_error
+            elif mode=='save':assert caught is save_error
+            else:assert type(caught)is AssertionError and caught.args==('Native terminal inventory is incomplete',)
+        if mode in ('save','body-save'):
+            rows=[json.loads(line)for line in stream.getvalue().splitlines()if line.startswith('{"unsaved_inner_terminal_result":')]
+            assert len(rows)==1
+            terminal=rows[0]['unsaved_inner_terminal_result']
+            assert terminal['status']=='FAIL_OR_ERROR'and not terminal['electrical_screen_passed']
+            assert terminal['inner_terminal_save_error']['error']==repr(save_error)
+            assert terminal['inner_active_primary_error']==(repr(primary)if body_fails else None)
+            assert terminal['outputs']['work/wave.raw']==controller.hashlib.sha256(expected).hexdigest()
+        else:
+            terminal=native
+            assert terminal['inner_active_primary_error']==(repr(primary)if body_fails else None)
+        if mode=='body-error-save':assert terminal['body_failure_save_error']['error']==repr(save_error)
+        if mode=='body-diagnostic-read':assert terminal['body_failure_log_error']['error']==repr(log_error)
+        phases=[entry['phase']for entry in terminal['inner_terminal_actions']]
+        assert phases==['emergency-checkpoint-if-running','remove-owned-container','readable-native-work',
+            'preserve-native-work','native-output-inventory']
+        assert all(entry['status']in ('COMPLETE','FAILED')for entry in terminal['inner_terminal_actions'])
+        return dict(mode=mode,actual_derived_main_and_outer_main=True,owned_container_created=True,
+            terminal_actions=terminal['inner_terminal_actions'],active_primary_preserved=body_fails,
+            saved_status=report['status'],caught=None if caught is None else repr(caught),
+            complete_available_outputs=report['outputs'],full_native_result_sha256=controller.hashlib.sha256(native_raw).hexdigest(),
+            all_external_runtime_and_numerical_review_collaborators_explicitly_synthetic=True)
+
+def inner_terminal_controls():
+    old=[inner_terminal_case(mode,True)for mode in ('body-remove','body-chown')]
+    cases=[inner_terminal_case(mode)for mode in
+        ('complete','body-remove','body-chown','remove','chown','copy','inventory','save','body-save','emergency','body-error-save','body-diagnostic-read')]
+    assert len(old)==2 and len(cases)==12
+    # The outer controller hashes large native files with the exact qualified streaming helper.
+    expected=(controller.ROOT/'scripts/run_cloud_tx_layout_repair.py').read_text()
+    node=next(n for n in ast.parse(expected).body if isinstance(n,ast.FunctionDef)and n.name=='sha')
+    actual=Path(controller.__file__).read_text()
+    current=next(n for n in ast.parse(actual).body if isinstance(n,ast.FunctionDef)and n.name=='sha')
+    assert ast.get_source_segment(expected,node)==ast.get_source_segment(actual,current)
+    with tempfile.TemporaryDirectory()as directory:
+        path=Path(directory)/'synthetic-wave.raw';data=b'bounded streaming hash fixture\n'*32768;path.write_bytes(data)
+        original_read=Path.read_bytes
+        def forbidden_read(item):
+            assert item!=path,'Whole native file read_bytes is forbidden for this hash fixture'
+            return original_read(item)
+        with mock.patch.object(Path,'read_bytes',forbidden_read):
+            assert controller.sha(path)==controller.hashlib.sha256(data).hexdigest()
+    return dict(actual_derived_main_cases=cases,positive=1,expected_failures=11,
+        exact_previous_cleanup_regressions=old,streaming_hash_actual_file_positive=True,
+        no_Docker_CRIU_simulator_network_or_archive_executed=True)
+
 def controls():
     m=controller.methods();assert m['source_controls_authorized']is True
     imports=inherited_imports.import_closure(controller.ROOT,m['protected'],m['import_roots'])
@@ -473,11 +685,11 @@ def controls():
     outer_controls=outer_admission_controls(outer,op)
     authorization=authorization_controls(m)
     preflight=preflight_controls(m)
-    terminal=terminal_controls()
+    terminal=terminal_controls();inner_terminal=inner_terminal_controls()
     controller.methods()
     return dict(status='PASS_CURRENT_TAIL_M4_PORTABLE_SOURCE_CONTROLS_ONLY',import_closure=imports,
       prerequisite=metadata,OP_faults=op_faults,outer_admission=outer_controls,metadata_faults=meta,context_controls=contexts,
-      authorization_controls=authorization,preflight_controls=preflight,actual_outer_terminal_controls=terminal,
+      authorization_controls=authorization,preflight_controls=preflight,actual_outer_terminal_controls=terminal,actual_inner_terminal_controls=inner_terminal,
       lifecycle_derivation=derivation,support_derivation=source_proof,derivation_faults=derivation_faults,
       numerical_functions_use_exact_original_code_objects=True,original_module_globals_unchanged=True,
       actual_main_entry_positives=entries,actual_preparation_entry=prepare_entry,legacy_preparation_refusal=old_entry,
