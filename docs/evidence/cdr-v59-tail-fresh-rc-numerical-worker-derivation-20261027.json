@@ -1,0 +1,217 @@
+{
+  "adapter": {
+    "bytes": 12900,
+    "path": "scripts/cdr_v59_tail_fresh_rc_legacy.py",
+    "sha256": "a54774e85d0e0c1fffde3f05e7e0e7e59ad405ff94616d9564743c3724c4143b"
+  },
+  "controller_readiness": false,
+  "derivations": [
+    {
+      "byte_exact_functions": [
+        "native_contact_oracle",
+        "native_export",
+        "geometry_readback_matches",
+        "geometry_readback_controls",
+        "build",
+        "verify",
+        "controls",
+        "main"
+      ],
+      "changed_function_ASTs": [],
+      "derived_bytes": 19359,
+      "derived_path": "scripts/cloud_cdr_v59_tail_fresh_binding.py",
+      "derived_sha256": "8e87263dedb3b0876065d394846e36101a8fdd05421b62c1dcb29a18a2712b06",
+      "edits": [
+        {
+          "after": "import cdr_v59_tail_fresh_rc_legacy as admission",
+          "before": "import cdr_v59_binding_rc_source as admission"
+        },
+        {
+          "after": "from cdr_v59_tail_fresh_rc_legacy import PIN,validate_summary as validate_source,methods as validate_methods",
+          "before": "from cdr_v59_binding_rc_source import PIN,validate_summary as validate_source,methods as validate_methods"
+        },
+        {
+          "after": "OUT=admission.BINDING",
+          "before": "OUT=ROOT/'hw/soc/out/cloud-cdr-v59-binding'"
+        }
+      ],
+      "original_path": "scripts/cloud_cdr_v59_binding.py",
+      "original_sha256": "30664f1cc9ecd48d33f705b0ba2b0a26d9cc353fff4ab587cd269e340067c06e",
+      "reversed_byte_exact": true,
+      "stage": "binding",
+      "unified_diff": "--- scripts/cloud_cdr_v59_binding.py\n+++ scripts/cloud_cdr_v59_tail_fresh_binding.py\n@@ -8,10 +8,10 @@\n from pathlib import Path\n import compare_cloud_routed_endpoints as reports\n import build_cdr500_cleaned_native_models as models\n-import cdr_v59_binding_rc_source as admission\n-from cdr_v59_binding_rc_source import PIN,validate_summary as validate_source,methods as validate_methods\n+import cdr_v59_tail_fresh_rc_legacy as admission\n+from cdr_v59_tail_fresh_rc_legacy import PIN,validate_summary as validate_source,methods as validate_methods\n from run_cloud_tx_layout_repair import fetch,sha\n-ROOT=Path(__file__).resolve().parents[1];OUT=ROOT/'hw/soc/out/cloud-cdr-v59-binding'\n+ROOT=Path(__file__).resolve().parents[1];OUT=admission.BINDING\n TOP='nssoc_cdr_pd500_resistor_v59';MODEL='nssoc_cdr_pd500_resistor_v59_compact'\n CENSUS=dict(npn13G2=124,sg13_lv_nmos=50,rppd=98,cap_cmim=7,ptap1=221)\n \n"
+    },
+    {
+      "byte_exact_functions": [],
+      "changed_function_ASTs": [
+        "main"
+      ],
+      "derived_bytes": 7796,
+      "derived_path": "scripts/cloud_cdr_v59_tail_fresh_wire_rc.py",
+      "derived_sha256": "0456b951b669dbe49395635b93bb74defb2d8aefda8fb77f7a813db025cfb8a9",
+      "edits": [
+        {
+          "after": "import cdr_v59_tail_fresh_rc_legacy as admission",
+          "before": "import cdr_v59_binding_rc_source as admission"
+        },
+        {
+          "after": "from cdr_v59_tail_fresh_rc_legacy import PIN,validate_summary as validate_source,methods as validate_methods",
+          "before": "from cdr_v59_binding_rc_source import PIN,validate_summary as validate_source,methods as validate_methods"
+        },
+        {
+          "after": "STAGE=admission.RC_STAGE",
+          "before": "STAGE=ROOT/'hw/soc/out/cloud-cdr-v59-rc'"
+        },
+        {
+          "after": "    admission.assert_current_candidate_ready()",
+          "before": "    assert not admission.CAPSULE.exists()"
+        },
+        {
+          "after": "            r['new_current_view_outputs']=admission.new_current_outputs(pin)",
+          "before": "            names=set(pin['outputs'])|{'result.json'}if pin is not None else set()\n            r['new_capsule_outputs']={str(p.relative_to(admission.CAPSULE)):sha(p)for p in admission.CAPSULE.rglob('*')if p.is_file()and str(p.relative_to(admission.CAPSULE))not in names}"
+        }
+      ],
+      "original_path": "scripts/cloud_cdr_v59_rc.py",
+      "original_sha256": "5979afeaebd00812c9ae9c73427ca051b616342e99f5beebd543a9f2fbd64f68",
+      "reversed_byte_exact": true,
+      "stage": "rc",
+      "unified_diff": "--- scripts/cloud_cdr_v59_rc.py\n+++ scripts/cloud_cdr_v59_tail_fresh_wire_rc.py\n@@ -8,16 +8,16 @@\n import compare_cloud_routed_endpoints as reports\n from run_cloud_tx_layout_repair import fetch,sha\n from cloud_cdr_v4_rc import NONBRIDGE_SELECTOR\n-import cdr_v59_binding_rc_source as admission\n-from cdr_v59_binding_rc_source import PIN,validate_summary as validate_source,methods as validate_methods\n+import cdr_v59_tail_fresh_rc_legacy as admission\n+from cdr_v59_tail_fresh_rc_legacy import PIN,validate_summary as validate_source,methods as validate_methods\n ROOT=Path(__file__).resolve().parents[1]\n # Restore the original cloud path so every native anchor input hash can be checked\n # without rewriting any of the source graph, device or terminal reports.\n OUT=admission.ANALYSIS\n-STAGE=ROOT/'hw/soc/out/cloud-cdr-v59-rc'\n+STAGE=admission.RC_STAGE\n def main():\n     admission.authorize('rc')\n-    assert not admission.CAPSULE.exists()\n+    admission.assert_current_candidate_ready()\n     STAGE.mkdir(parents=True,exist_ok=False);reports.OUT=STAGE\n     r=dict(status='RUNNING',source_head=os.environ['GITHUB_SHA'],qualified_pex=False,full_phy_accepted=False,closed_loop=False,\n         scope='Whole actual PD500 metal/via RC. Native500device/1446terminal binding,113 independent wire components,978 actual points; strict raw R/C value/point/topology checks and13corruptions. Intrinsic MIM retained separately; wire-only geometry has no intrinsic device extraction. Substrate spreading/RF qualification, loaded electrical behavior and closed-loop acceptance remain separate.')\n@@ -95,7 +95,6 @@\n             r.update(status='FAIL_V59_SAVED_INPUT_INTEGRITY',integrity_error=repr(error));raise\n         finally:\n             r['outputs']={str(p.relative_to(STAGE)):sha(p)for p in STAGE.rglob('*')if p.is_file()and p!=STAGE/'result.json'}\n-            names=set(pin['outputs'])|{'result.json'}if pin is not None else set()\n-            r['new_capsule_outputs']={str(p.relative_to(admission.CAPSULE)):sha(p)for p in admission.CAPSULE.rglob('*')if p.is_file()and str(p.relative_to(admission.CAPSULE))not in names}\n+            r['new_current_view_outputs']=admission.new_current_outputs(pin)\n             save()\n if __name__=='__main__':main()\n"
+    },
+    {
+      "byte_exact_functions": [
+        "generate",
+        "check_capture",
+        "main"
+      ],
+      "changed_function_ASTs": [],
+      "derived_bytes": 15820,
+      "derived_path": "scripts/cloud_cdr_v59_tail_fresh_mim_capture.py",
+      "derived_sha256": "70fa8db889c7730bb9e8ac71259f56ae4f0d2360c8ba8aa0284bf9cfe3f33e70",
+      "edits": [
+        {
+          "after": "import cdr_v59_tail_fresh_rc_legacy as admission",
+          "before": "import cdr_v59_mim_admission as admission"
+        },
+        {
+          "after": "OUT=admission.MIM_OUT/VARIANT",
+          "before": "OUT=ROOT/('hw/soc/out/cloud-cdr-v59-mim-precision/'+VARIANT)"
+        }
+      ],
+      "original_path": "scripts/cloud_cdr_v59_mim_capture.py",
+      "original_sha256": "540b7b41493b4661b6131852c0d81d89edbfc9f9f67f733b7176cb23e45e1115",
+      "reversed_byte_exact": true,
+      "stage": "capture",
+      "unified_diff": "--- scripts/cloud_cdr_v59_mim_capture.py\n+++ scripts/cloud_cdr_v59_tail_fresh_mim_capture.py\n@@ -12,11 +12,11 @@\n from decimal import Decimal\n from pathlib import Path\n import compare_cloud_routed_endpoints as reports\n-import cdr_v59_mim_admission as admission\n+import cdr_v59_tail_fresh_rc_legacy as admission\n import build_pcie_local_vco_hybrid_v6 as parser\n from run_cloud_tx_layout_repair import sha\n ROOT=Path(__file__).resolve().parents[1];VARIANT=os.environ.get('CDR500_CAPTURE_VARIANT','precise');assert VARIANT in ('precise','precise_reversed')\n-OUT=ROOT/('hw/soc/out/cloud-cdr-v59-mim-precision/'+VARIANT)\n+OUT=admission.MIM_OUT/VARIANT\n TOP='nssoc_cdr_pd500_resistor_v59'\n \n def generate():\n"
+    },
+    {
+      "byte_exact_functions": [
+        "main"
+      ],
+      "changed_function_ASTs": [],
+      "derived_bytes": 8332,
+      "derived_path": "scripts/cloud_cdr_v59_tail_fresh_mim_audit.py",
+      "derived_sha256": "6b3bb17be41f539367a6434a130e2be44cfa587b66388b9abd0543f5d3920472",
+      "edits": [
+        {
+          "after": "import cdr_v59_tail_fresh_rc_legacy as admission",
+          "before": "import cdr_v59_mim_admission as admission"
+        },
+        {
+          "after": "CAP=admission.MIM_OUT/VARIANT",
+          "before": "CAP=ROOT/('hw/soc/out/cloud-cdr-v59-mim-precision/'+VARIANT)"
+        }
+      ],
+      "original_path": "scripts/cloud_cdr_v59_mim_audit.py",
+      "original_sha256": "0fe300a11f9d9765dc0e21b4c59ddc79e15fd3d3d71a28fc478a06ffb117c233",
+      "reversed_byte_exact": true,
+      "stage": "audit",
+      "unified_diff": "--- scripts/cloud_cdr_v59_mim_audit.py\n+++ scripts/cloud_cdr_v59_tail_fresh_mim_audit.py\n@@ -6,11 +6,11 @@\n from pathlib import Path\n from unittest.mock import patch\n import compare_cloud_routed_endpoints as reports\n-import cdr_v59_mim_admission as admission\n+import cdr_v59_tail_fresh_rc_legacy as admission\n import audit_cdr_v59_mim_intrinsic\n from run_cloud_tx_layout_repair import fetch,sha\n ROOT=Path(__file__).resolve().parents[1];VARIANT=os.environ.get('CDR500_CAPTURE_VARIANT','precise');assert VARIANT in ('precise','precise_reversed')\n-CAP=ROOT/('hw/soc/out/cloud-cdr-v59-mim-precision/'+VARIANT)\n+CAP=admission.MIM_OUT/VARIANT\n OUT=CAP/'audit-stage'\n def main():\n     assert os.environ.get('GITHUB_ACTIONS')=='true';admission.authorize();OUT.mkdir(parents=True,exist_ok=False);reports.OUT=OUT\n"
+    },
+    {
+      "byte_exact_functions": [
+        "records",
+        "compose"
+      ],
+      "changed_function_ASTs": [
+        "check",
+        "main"
+      ],
+      "derived_bytes": 9703,
+      "derived_path": "scripts/cloud_cdr_v59_tail_fresh_mim_precision.py",
+      "derived_sha256": "c4001dff0eadd4152fd0d543d2dfa31e31eced741b9ecd6c1fe0f54a35bf2e62",
+      "edits": [
+        {
+          "after": "import cdr_v59_tail_fresh_rc_legacy as admission",
+          "before": "import cdr_v59_mim_admission as admission"
+        },
+        {
+          "after": "OUT=admission.MIM_OUT",
+          "before": "OUT=ROOT/'hw/soc/out/cloud-cdr-v59-mim-precision'"
+        },
+        {
+          "after": "    return admission.methods()",
+          "before": "    record=json.loads((ROOT/'scripts/cdr-v59-mim-methods.json').read_text())\n    for path,digest in record['protected'].items():assert sha(ROOT/path)==digest,path\n    return record"
+        },
+        {
+          "after": "admission.derived('capture')",
+          "before": "ROOT/'scripts/cloud_cdr_v59_mim_capture.py'"
+        },
+        {
+          "after": "admission.derived('audit')",
+          "before": "ROOT/'scripts/cloud_cdr_v59_mim_audit.py'"
+        }
+      ],
+      "original_path": "scripts/cloud_cdr_v59_mim_precision.py",
+      "original_sha256": "1339eec60c6d3efa0e382c11312fd6ff6c54e7e6e2be864b777e78798d5e782b",
+      "reversed_byte_exact": true,
+      "stage": "precision",
+      "unified_diff": "--- scripts/cloud_cdr_v59_mim_precision.py\n+++ scripts/cloud_cdr_v59_tail_fresh_mim_precision.py\n@@ -7,16 +7,14 @@\n from pathlib import Path\n import build_pcie_local_vco_hybrid_v6 as parser\n import tx_native_cap_order as cap_order\n-import cdr_v59_mim_admission as admission\n+import cdr_v59_tail_fresh_rc_legacy as admission\n from cdr_v59_mim_composition_derivation import derive as derive_composition,controls as count_controls\n from run_cloud_tx_layout_repair import sha\n ROOT=Path(__file__).resolve().parents[1]\n-OUT=ROOT/'hw/soc/out/cloud-cdr-v59-mim-precision'\n+OUT=admission.MIM_OUT\n MODEL='nssoc_cdr_pd500_resistor_mim_wire_v59'\n def check():\n-    record=json.loads((ROOT/'scripts/cdr-v59-mim-methods.json').read_text())\n-    for path,digest in record['protected'].items():assert sha(ROOT/path)==digest,path\n-    return record\n+    return admission.methods()\n \n def records(path):\n     result=Counter()\n@@ -93,9 +91,9 @@\n         result['order_controls']=cap_order.controls();run([sys.executable,ROOT/'scripts/tx_reverse_native_cap_order.py','--controls'],'reverse-order-controls')\n         for variant in ('precise','precise_reversed'):\n             env=dict(os.environ,CDR500_CAPTURE_VARIANT=variant)\n-            run([sys.executable,ROOT/'scripts/cloud_cdr_v59_mim_capture.py'],variant+'-capture',env)\n+            run([sys.executable,admission.derived('capture')],variant+'-capture',env)\n             cap_path=OUT/variant/'result.json';cap=json.loads(cap_path.read_text());cap_sha=sha(cap_path)\n-            run([sys.executable,ROOT/'scripts/cloud_cdr_v59_mim_audit.py'],variant+'-audit',env)\n+            run([sys.executable,admission.derived('audit')],variant+'-audit',env)\n             audit=json.loads((OUT/variant/'audit-stage/result.json').read_text())\n             assert sha(cap_path)==cap_sha and cap['sources_unchanged']and audit['sources_unchanged']\n             assert len(audit['wire_controls']['cases'])==13 and len(audit['intrinsic_controls'])==9 and all(c['rejected']for c in audit['intrinsic_controls'])\n"
+    }
+  ],
+  "electrical_accepted": false,
+  "native_execution_authorized": false,
+  "numeric_policies": {
+    "RC_method_adaptation_and_extraction_audit_fault_body_unchanged": true,
+    "R_C_rescaling": false,
+    "binding_all_functions_byte_exact": true,
+    "capture_and_audit_all_functions_byte_exact": true,
+    "new_geometry": false,
+    "old_resistors_reused": false,
+    "precision_records_and_compose_byte_exact": true,
+    "simulation": false,
+    "tolerances_relaxed": false
+  },
+  "physical_accepted": false,
+  "qualified_pex": false,
+  "required_fresh_sequence": [
+    "complete955 and original931 read-only restore",
+    "typed17 plus semantic500/25 supplemental admission with original failures retained",
+    "exact canonical184 current-input view",
+    "fresh500 model binding",
+    "fresh whole-wire RC and13 faults",
+    "fresh precise and precise_reversed MIM captures/audits",
+    "unchanged two-order comparison and21-fault composition"
+  ],
+  "root_bounded_admission_source_review": {
+    "source": "1e418705168feb178872a31a2e930c04d860a3b4",
+    "verbatim_payload": "Root read complete admission18,114B/0b2dac0b +checker9,333B/1b6c2ca2 at1e418705. No blocker found in exact955\u2192931\u2192184maps, canonical nineanchorpaths, retained560DRC/500deepflat/13faults/11geometry/160planes19faults, actual184-filecopy/symlink refusal and 2modeauthorization controls. This is bounded source review only; live release/restore/qualify_saved/outer-finalization behavior stillneeds actual source controls/nativeexecution. Preserve original outputs/admission provenance explicitly inderived worker."
+  },
+  "schema": "cdr-tail-fresh-RC-numerical-worker-derivation-v1",
+  "scope": "Disabled source-only adapters to exact inherited numerical workers; no source controls or native execution performed.",
+  "source_and_output_identity": {
+    "MIM": "Complete fresh binding stage and complete fresh current view copied into each native order; explicit same-run stage manifest replaces historical763/1136/1127 identity.",
+    "binding": "Full current-stage outputs plus separate original184 input map and original failed physical/typed readback provenance",
+    "current_input_view": "hw/soc/out/cloud-cdr-v59-tail-access-physical/candidate full184 plus freshly generated wire/runtime files",
+    "immutable_saved": "restore/saved full955; original failed physical remains nested931",
+    "original_metadata": "Every original candidate byte remains hashed; original parent inputs/outputs and nine absolute anchor paths are never rewritten."
+  },
+  "source_controls_authorized": false,
+  "source_parent": "2dbdca3ca0f27bf0542217726dc94bbbb981ea9c",
+  "unfinished": [
+    "Actual adapter/main/handoff fixtures",
+    "Complete qualified outer runtime/finally/publication",
+    "Isolated full import/data closure",
+    "Disabled manual workflow template",
+    "Independent worker review and actual hosted source controls"
+  ]
+}
