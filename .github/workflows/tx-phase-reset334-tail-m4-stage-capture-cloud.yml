@@ -1,0 +1,13 @@
+name: tx-phase-reset334-tail-m4-stage-capture-cloud
+on:
+  push:
+    branches: ['codex/register-tail-m4-stage-readback-20261028']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Registration only without checkout or engineering execution
+        run: printf '%s\n' 'Workflow registration only; no checkout, tests, archives, CAD or simulation.'
