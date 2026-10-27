@@ -1,0 +1,1121 @@
+{
+  "status": "PASS_ROOT_GEN12_SOURCE_AND_HANDOFF_CONTROLS_NO_RTL",
+  "original": {
+    "status": "PASS_SOURCE_IDENTITIES_AND_DECLARED_TEST_STRUCTURE_ONLY",
+    "protected_count": 27,
+    "tests": {
+      "soc_pcie_gen12_record_cdc_v1": [
+        "all192_bits_async_wraps",
+        "held_all_fields_and_error_flags_are_payload",
+        "exact_capacity_overflow_sticky_epoch",
+        "resets_held_prefetch_and_startup_stopped_clock",
+        "loss_without_valid_and_buffered_prefix",
+        "mid_epoch_clock_pause_is_not_loss_detection"
+      ],
+      "soc_pcie_gen12_recovered_records_v1": [
+        "both_polarities_all_offsets_and_errors",
+        "first_public_word_and_startup_reset",
+        "partial_raw_batch_and_complete_record_epoch_reset",
+        "polarity_change_and_known_loss_stop_epoch",
+        "composed_capacity_and_common_pause"
+      ]
+    },
+    "mutation_definitions": 18,
+    "mutations_compiled": false,
+    "simulations_executed": false,
+    "synthesis_executed": false,
+    "automatic_clock_loss_detection": false,
+    "TS_accepted": false,
+    "full_PHY_accepted": false
+  },
+  "positive": {
+    "xml-soc_pcie_gen12_record_cdc_v1": true,
+    "xml-soc_pcie_gen12_recovered_records_v1": true,
+    "vendor-admission-synthetic": true,
+    "matrix-1": true,
+    "matrix-2": true,
+    "compile-admission": true,
+    "actual-command-streams-and-returncode": true,
+    "counts-1": true,
+    "counts-2": true
+  },
+  "rejected": {
+    "xml-missing-test": {
+      "type": "AssertionError",
+      "error": "incomplete or extra named tests"
+    },
+    "xml-extra-test": {
+      "type": "AssertionError",
+      "error": "incomplete or extra named tests"
+    },
+    "xml-duplicate-test": {
+      "type": "AssertionError",
+      "error": "wrong/duplicate test names"
+    },
+    "xml-wrong-module": {
+      "type": "AssertionError",
+      "error": "wrong module"
+    },
+    "xml-wrong-file": {
+      "type": "AssertionError",
+      "error": "wrong test source"
+    },
+    "xml-zero-simulation": {
+      "type": "AssertionError",
+      "error": "no actual simulation"
+    },
+    "xml-nonfinite-time": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "xml-skipped": {
+      "type": "AssertionError",
+      "error": "required test skipped"
+    },
+    "xml-failure": {
+      "type": "AssertionError",
+      "error": "positive test failed"
+    },
+    "xml-error": {
+      "type": "AssertionError",
+      "error": "XML test error is not behavioral detection"
+    },
+    "xml-nonzero-exit": {
+      "type": "AssertionError",
+      "error": "positive test failed"
+    },
+    "xml-doctype": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "vendor-byte": {
+      "type": "AssertionError",
+      "error": "vendor bytes"
+    },
+    "vendor-digest": {
+      "type": "AssertionError",
+      "error": "vendor bytes"
+    },
+    "vendor-git-blob": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "vendor-duplicate-module": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "missing-depth": {
+      "type": "AssertionError",
+      "error": "All three qualified depths are required"
+    },
+    "unreviewed-simulator": {
+      "type": "AssertionError",
+      "error": "Unreviewed simulators"
+    },
+    "duplicate-simulator": {
+      "type": "AssertionError",
+      "error": "Unreviewed simulators"
+    },
+    "compile-exit": {
+      "type": "AssertionError",
+      "error": "compile/setup failure is not behavioral detection"
+    },
+    "compile-missing": {
+      "type": "AssertionError",
+      "error": "missing compiled image"
+    },
+    "compile-empty": {
+      "type": "AssertionError",
+      "error": "missing compiled image"
+    },
+    "result-driver-failed": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "result-compile-failed": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "result-skipped": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "result-source-changed": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "result-duplicate-label": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "result-missing-test": {
+      "type": "AssertionError",
+      "error": ""
+    },
+    "result-wrong-matrix": {
+      "type": "AssertionError",
+      "error": "Result matrix changed"
+    }
+  },
+  "shell": {
+    "success": {
+      "returncode": 0,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 37 passed, 0 failed, 0 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/0/hw/soc/out/cocotb/gen12-record-cdc.cnZXCF/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/0/hw/soc/out/cocotb/gen12-record-cdc.cnZXCF/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    },
+    "driver-failure": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 failed, 0 skipped; NOT CLEAN (driver rc=7)\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 37 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/1/hw/soc/out/cocotb/gen12-record-cdc.jiLa7o/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/1/hw/soc/out/cocotb/gen12-record-cdc.jiLa7o/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    },
+    "wrong-count": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             32 passed, 0 failed, 0 skipped; NOT CLEAN (driver rc=0)\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/2/hw/soc/out/cocotb/gen12-record-cdc.3I67ZN/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/2/hw/soc/out/cocotb/gen12-record-cdc.3I67ZN/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    },
+    "counts-refusal": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             INVALID/MISSING CDC RESULT (driver rc=0; /tmp/gen12-root-controls-61pdwmdd/shell/3/hw/soc/out/cocotb/gen12_record_cdc.log)\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 4 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/3/hw/soc/out/cocotb/gen12-record-cdc.xlXuoO/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/3/hw/soc/out/cocotb/gen12-record-cdc.xlXuoO/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    },
+    "binding-refusal": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\nUNREACHED cocotb test modules -- no Makefile defaults to them and\nEXTRA_MODULES does not name them:\n    hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1\n\nA suite nothing runs is not evidence. Give it a Makefile, add it to\nEXTRA_MODULES with its parent makefile and its own SIM_BUILD and\nresults file, or put it in SKIP_MODULES with the reason.\n\ncocotb: 37 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/4/hw/soc/out/cocotb/gen12-record-cdc.NTmEgQ/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/4/hw/soc/out/cocotb/gen12-record-cdc.NTmEgQ/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    },
+    "other-failure": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 failed, 0 skipped; NOT CLEAN (make rc=9)\n      log: /tmp/gen12-root-controls-61pdwmdd/shell/5/hw/soc/out/cocotb/other.log\n  test_soc_npu_defects         1 passed, 0 failed, 0 skipped; NOT CLEAN (make rc=9)\n      log: /tmp/gen12-root-controls-61pdwmdd/shell/5/hw/soc/out/cocotb/test_soc_npu_defects.log\n  test_soc_wdog_strap          1 passed, 0 failed, 0 skipped; NOT CLEAN (make rc=9)\n      log: /tmp/gen12-root-controls-61pdwmdd/shell/5/hw/soc/out/cocotb/test_soc_wdog_strap.log\n  test_soc_uart_defects        1 passed, 0 failed, 0 skipped; NOT CLEAN (make rc=9)\n      log: /tmp/gen12-root-controls-61pdwmdd/shell/5/hw/soc/out/cocotb/test_soc_uart_defects.log\n\ncocotb: 37 passed, 0 failed, 4 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/5/hw/soc/out/cocotb/gen12-record-cdc.tdrwyc/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/5/hw/soc/out/cocotb/gen12-record-cdc.tdrwyc/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    },
+    "dispatch-removed": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             INVALID/MISSING XML (make rc=17; /tmp/gen12-root-controls-61pdwmdd/shell/6/hw/soc/out/cocotb/gen12_record_cdc.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 4 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.gen12_record_cdc",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.gen12_record_cdc"
+        ],
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    },
+    "old-maker-explicit-xml-omission": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-61pdwmdd/shell/7/hw/soc/out/cocotb/test_soc_npu_defects.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  test_soc_wdog_strap          INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-61pdwmdd/shell/7/hw/soc/out/cocotb/test_soc_wdog_strap.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  test_soc_uart_defects        INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-61pdwmdd/shell/7/hw/soc/out/cocotb/test_soc_uart_defects.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n\ncocotb: 34 passed, 0 failed, 3 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/7/hw/soc/out/cocotb/gen12-record-cdc.SpnkpD/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/7/hw/soc/out/cocotb/gen12-record-cdc.SpnkpD/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": true
+    },
+    "missing-explicit-xml-test_soc_npu_defects": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-61pdwmdd/shell/8/hw/soc/out/cocotb/test_soc_npu_defects.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/8/hw/soc/out/cocotb/gen12-record-cdc.eMjxn7/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/8/hw/soc/out/cocotb/gen12-record-cdc.eMjxn7/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    },
+    "missing-explicit-xml-test_soc_wdog_strap": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-61pdwmdd/shell/9/hw/soc/out/cocotb/test_soc_wdog_strap.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/9/hw/soc/out/cocotb/gen12-record-cdc.hCewOC/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/9/hw/soc/out/cocotb/gen12-record-cdc.hCewOC/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    },
+    "missing-explicit-xml-test_soc_uart_defects": {
+      "returncode": 1,
+      "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-61pdwmdd/shell/10/hw/soc/out/cocotb/test_soc_uart_defects.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n\ncocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+      "stderr": "",
+      "actual_calls": [
+        [
+          "--out",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/10/hw/soc/out/cocotb/gen12-record-cdc.6lHKYQ/capture",
+          "--simulators",
+          "icarus",
+          "--depths",
+          "4",
+          "8",
+          "32"
+        ],
+        [
+          "--counts",
+          "/tmp/gen12-root-controls-61pdwmdd/shell/10/hw/soc/out/cocotb/gen12-record-cdc.6lHKYQ/capture/result.json"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_record_cdc_v1"
+        ],
+        [
+          "--bind-module",
+          "test_soc_pcie_gen12_recovered_records_v1"
+        ]
+      ],
+      "actual_make_calls": [
+        [
+          "-f",
+          "Makefile.other",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.other"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_npu",
+          "MODULE=test_soc_npu_defects",
+          "SIM_BUILD=sim_build_npu_defects",
+          "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_wdog",
+          "MODULE=test_soc_wdog_strap",
+          "SIM_BUILD=sim_build_soc_wdog_strap",
+          "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+          "clean"
+        ],
+        [
+          "-f",
+          "Makefile.soc_uart",
+          "MODULE=test_soc_uart_defects",
+          "SIM_BUILD=sim_build_uart_defects",
+          "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+        ]
+      ],
+      "synthetic_helper_and_make": true,
+      "actual_generic_runner": true,
+      "frozen_failed_maker_used": false
+    }
+  },
+  "simulations_executed": false,
+  "synthesis_executed": false,
+  "compiled_fault_campaign_executed": false,
+  "terminal_pins": {
+    ".github/workflow-templates/pcie-gen12-record-cdc-root-controls-cloud.yml": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.jobs.json": "33dbc20923d638f5802c968ed5376cad79372c22215a920238ce2a9532550c0a",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.json": "7e95b1b3186ad800f7aeccdb78a852e5eeb7f990a7afeb52b69223da4b8525fa",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.log": "b579cb01e46092b4246c3bd2482f542f6c4e18ad7894f57dc500d394175f079c",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.original-source.json": "a9d88a8109af6926dc1624f4a6927096baae88447acd034a7b95a0ac97974151",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.run.json": "72bbea969b7790e9b5c90d1465f5774832d503eecc3425daa0d723f6bbfdef3d",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-checker.py": "afaa0638201367c95bade6ed950258e38a1fa224529fb33f8b59e8fcd83e09f0",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-helper.py": "126370784ac360bc2aada28ac41c688003792869774881ea084efa5c9cb851ae",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-method.json": "633d605222b4308b79fb0ad2a5a457b86eb4a68393be0c8d8f8619d60aac9069",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-runner.sh": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-workflow.yml": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc",
+    "docs/evidence/pcie-gen12-root-explicit-module-fixture-correction-20261028.json": "f1fc39bdcebee7fc0d3aded6c9a8f1ee85fa56d18bae02e6160d1c78693af781",
+    "docs/evidence/pcie-gen12-root-explicit-module-fixture-independent-review-20261028.json": "dd091d929bf7fef6f0ca5697e63841422c5c42ef099c21cb2983aafda723f929",
+    "docs/evidence/pcie-gen12-training-record-noshare-native-pass-20261025.json": "23f194ff593e30c340f7562ab92c1a66f7107b5f35ff3abda7f0d293a50bd10f",
+    "docs/pcie-gen12-record-cdc-implementation-20261025.md": "32b0160e2d959c15dd60e081f4be10aad3dd005321237f54ef219ad1bff5b52c",
+    "docs/pcie-gen12-record-cdc-proof-refinements-20261025.md": "618af28582d274bafe2bd4ca38efd7b93304f4acc93bad38c81d899505e40dc5",
+    "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-source-freeze.json": "80e7abc3badad6ea90426c029068eac697f1a881f251aac9c73f63a84613a874",
+    "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-validation.json": "36f55a9a5a5e4d1a11034747df79b67e196fd8852b33ffa407c0ecae160f98fc",
+    "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-rtl-contract.json": "a51a3b5e9b550a7f5ea6e29044c1637ba355e2b085a966663136cf60c154e3fb",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v": "009d4885c5492dbc291b7eea3987304847d9a187013439459ada829a18ed54af",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v": "5a0661a0681bbe351714305859a111bb8c53544e80e680e1056c057ffcc4de66",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v": "d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v": "96c6dea3aecca038dc8d5322d2c4a85d7847dbe24bc45a1b4a22d27301980566",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v": "b83c9e0d15e055020e8d44c0dc948eaff88d118cede1feaf33b8d38ddd24bc78",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v": "3c60eead90fe053c2615b76d44e1d5c74add6b3351a3cd85f76572ac3faabf20",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v": "01a3c63b3f3e561e25adb955526a2e0f5241986181dec9ada78cc5f84e7e5533",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v": "483685e8574baecc8e754678ca7cd90aae93be2a0313d8669935546758ebc31d",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d",
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v": "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f",
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v": "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e",
+    "hw/soc/tb/cocotb/Makefile.gen12_record_cdc": "bdb28508b8599cb6a7c5dc8f0bf29e9343190e797d4b617e8ccd8e2619652817",
+    "hw/soc/tb/cocotb/pcie_gen12_record_cdc_harness.py": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen12_record_cdc_v1.py": "5d1d386c3fe5a7dfedc9279066f9bd8f8cf3d75e42ef1d463d49868e9580ce32",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py": "843962b620d10f143287797b3cc4da80d98b9cdffc429252f5cdd8330e783fb5",
+    "scripts/check_pcie_gen12_raw32_rx.py": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da",
+    "scripts/check_pcie_gen12_record_cdc_root.py": "126370784ac360bc2aada28ac41c688003792869774881ea084efa5c9cb851ae",
+    "scripts/check_pcie_gen12_record_cdc_root_controls.py": "5b08f9d762caa44bf51f4b1ab5c76a8d683d5f59a1f624909b5cc2cb4ec07519",
+    "scripts/check_pcie_gen12_record_cdc_source.py": "91c601c3cbc4fb8a23dda5d602acbc392f8b53dbdbcc15a3ced9cb8c3a081d67",
+    "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2",
+    "scripts/pcie-gen12-record-cdc-methods.json": "a34ed5f841566c227a572fca1abd4c90376200162522ed3208403ba2ca3d4751",
+    "scripts/pcie-gen12-record-cdc-mutations.json": "5d7f7457ee47d257d62424610363836132eff63acf8a0aff46fd566fb3d6aeab",
+    "scripts/pcie-gen12-record-cdc-proposal.json": "bf7b09fb1127d62e4be85c39f65eb09a58467a20c4f811cddde39eab1a9feacf",
+    "scripts/pcie-gen12-record-cdc-requirements.txt": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070",
+    "scripts/run_cocotb.sh": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc",
+    "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
+  }
+}
