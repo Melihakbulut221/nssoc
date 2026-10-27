@@ -1,0 +1,80 @@
+{
+  "schema": "tail-M4-portable-source-controls-increment-v1",
+  "base": "a3e481a4ed6685536f3ffbd0e453fa6851f8ef66",
+  "source_unit_complete": false,
+  "all_authorizations_false": true,
+  "execution": false,
+  "controller": {
+    "path": "scripts/cloud_tx_phase_reset334_tail_m4_transient.py",
+    "sha256": "60f83cc829a3efa00d4fb636ce12a46ec267aaab2ed65bfe2478960145fa07fe",
+    "bytes": 15295,
+    "changed_existing_functions": [
+      "finalize",
+      "main"
+    ],
+    "new_functions": [
+      "preserve_partial",
+      "write_terminal",
+      "output_inventory"
+    ],
+    "derived_original_lifecycle_function_unchanged": true,
+    "original_Docker_CRIU_13200s_72GiB_initial_20GiB_reserve_unchanged": true,
+    "scope": "Terminal wrapper only; exact original native lifecycle and numerical gates unchanged.",
+    "diff": "--- foundation/controller\n+++ checkpoint/controller\n@@ -82,19 +82,71 @@\n     exec(compile(text,'<current-TAIL-M4-portable-lifecycle>','exec'),ns)\n     return ns,proof\n \n+\n+def preserve_partial(path):\n+    \"\"\"Keep a preexisting or failed atomic fragment under a unique evidence name.\"\"\"\n+    assert path.is_file()and not path.is_symlink(),'Terminal fragment is not a regular file'\n+    number=0\n+    while True:\n+        destination=path.with_name(path.name+'.preserved-'+str(number))\n+        if not destination.exists()and not destination.is_symlink():break\n+        number+=1\n+    path.replace(destination)\n+    return destination.name\n+\n+def write_terminal(out,result):\n+    temporary=out/'result.json.writing'\n+    assert not temporary.exists()and not temporary.is_symlink(),'Terminal fragment must be preserved before another write'\n+    with temporary.open('x')as stream:\n+        json.dump(result,stream,indent=2,allow_nan=False);stream.write('\\n')\n+    temporary.replace(out/'result.json')\n+\n+def output_inventory(out):\n+    files={};errors=[]\n+    for path in sorted(out.rglob('*')):\n+        if path==out/'result.json':continue\n+        try:\n+            assert not path.is_symlink(),'Symlink in native output'\n+            assert path.is_file()or path.is_dir(),'Nonregular native output'\n+            if path.is_file():files[str(path.relative_to(out))]=sha(path)\n+        except BaseException as error:\n+            errors.append(dict(phase='terminal-output-inventory',path=str(path.relative_to(out)),error=repr(error)))\n+    return files,errors\n+\n+\n def finalize(out,preflight,derivation,primary_error=None,primary_traceback=None):\n-    \"\"\"Preserve the exact native result before adding outer terminal observations.\"\"\"\n+    \"\"\"Keep full original result/partials, then save terminal failure even if encoding fails.\"\"\"\n     out.mkdir(parents=True,exist_ok=True)\n     path=out/'result.json';raw=None;parsed=None;errors=[]\n     if path.exists():\n         try:\n             assert path.is_file()and not path.is_symlink(),'Native result is not a regular file'\n-            raw=path.read_bytes();(out/'native-lifecycle-result.json').write_bytes(raw)\n+            candidate=path.read_bytes()\n+            saved=out/'native-lifecycle-result.json'\n+            if saved.exists()or saved.is_symlink():\n+                previous=preserve_partial(saved)\n+                errors.append(dict(phase='previous-native-result-copy',preserved_path=previous,\n+                    error='A preexisting native result copy was preserved'))\n+            saved.write_bytes(candidate);raw=candidate\n             parsed=json.loads(raw);assert isinstance(parsed,dict),'Native result is not an object'\n         except BaseException as error:\n             errors.append(dict(phase='native-result-read-or-parse',error=repr(error),traceback=traceback.format_exc()))\n     else:errors.append(dict(phase='native-result',error='Native lifecycle result was not produced'))\n+    temporary=out/'result.json.writing'\n+    if temporary.exists()or temporary.is_symlink():\n+        try:\n+            preserved=preserve_partial(temporary)\n+            errors.append(dict(phase='previous-terminal-fragment',preserved_path=preserved,\n+                error='A preexisting terminal write fragment was preserved'))\n+        except BaseException as error:\n+            errors.append(dict(phase='previous-terminal-fragment',error=repr(error)))\n     result=dict(parsed)if isinstance(parsed,dict)else{}\n+    if primary_error is None and result.get('status')not in (\n+        'SAVED_PHYSICAL334_THREE_MODEL_NATIVE_PROCESS_REQUIRES_CONTINUATION_AND_FULL_REVIEW',\n+        'COMPLETE_PHYSICAL334_THREE_MODEL_FULL_NATIVE_CAPTURE_REQUIRES_REVIEW_AND_FULL_PHY',\n+        'REJECTED_PHYSICAL334_THREE_MODEL_ORIGINAL_LOADED_GATES'):\n+        errors.append(dict(phase='native-terminal-state',error='Native lifecycle did not produce a terminal state',\n+            observed_status=result.get('status')))\n     result.update(source_head=os.environ.get('GITHUB_SHA'),run_id=int(os.environ.get('GITHUB_RUN_ID','0')),\n       run_attempt=int(os.environ.get('GITHUB_RUN_ATTEMPT','0')),\n       current_source_release_prerequisite=preflight,current_lifecycle_derivation=derivation,\n@@ -106,26 +158,42 @@\n       wrapper_primary_traceback=primary_traceback,\n       scope='Only three current tail-M4 RC macros under the exact original external fixture; original17 and prior4 HBT failures retained; no all31/PLL/fullPHY acceptance.')\n     try:methods()\n-    except BaseException as error:errors.append(dict(phase='terminal-protected-source-integrity',error=repr(error),traceback=traceback.format_exc()))\n-    files={}\n-    for p in sorted(out.rglob('*')):\n-        if p==path:continue\n-        try:\n-            assert not p.is_symlink(),'Symlink in native output'\n-            if p.is_file():files[str(p.relative_to(out))]=sha(p)\n-        except BaseException as error:errors.append(dict(phase='terminal-output-inventory',path=str(p.relative_to(out)),error=repr(error)))\n+    except BaseException as error:\n+        errors.append(dict(phase='terminal-protected-source-integrity',error=repr(error),traceback=traceback.format_exc()))\n+    files,inventory_errors=output_inventory(out);errors.extend(inventory_errors)\n     result['outputs']=files;result['wrapper_finalization_errors']=errors\n     if primary_error is not None or errors:\n         if not str(result.get('status','')).startswith('REJECTED_'):result['status']='FAIL_OR_ERROR'\n         result['electrical_screen_passed']=False\n     result['wrapper_terminal_complete']=not errors\n-    temporary=out/'result.json.writing'\n-    temporary.write_text(json.dumps(result,indent=2,allow_nan=False)+'\\n');temporary.replace(path)\n+    try:\n+        write_terminal(out,result)\n+    except BaseException as error:\n+        errors.append(dict(phase='terminal-result-write',error=repr(error),traceback=traceback.format_exc()))\n+        if temporary.exists()or temporary.is_symlink():\n+            try:preserve_partial(temporary)\n+            except BaseException as partial_error:\n+                errors.append(dict(phase='terminal-fragment-preservation',error=repr(partial_error)))\n+        files,inventory_errors=output_inventory(out);errors.extend(inventory_errors)\n+        # Full native observations remain byte-exact in native-lifecycle-result.json.\n+        # This small envelope never converts an incomplete encoding into a pass.\n+        result=dict(status='FAIL_OR_ERROR',electrical_screen_passed=False,wrapper_terminal_complete=False,\n+          source_head=os.environ.get('GITHUB_SHA'),run_id=os.environ.get('GITHUB_RUN_ID'),\n+          wrapper_primary_error=None if primary_error is None else repr(primary_error),\n+          wrapper_primary_traceback=primary_traceback,wrapper_finalization_errors=errors,\n+          native_lifecycle_result_present=raw is not None,\n+          native_lifecycle_result_raw_path=None if raw is None else 'native-lifecycle-result.json',\n+          native_lifecycle_result_sha256=None if raw is None else hashlib.sha256(raw).hexdigest(),\n+          native_lifecycle_result_bytes=None if raw is None else len(raw),outputs=files,\n+          full_native_observations_preserved_by_raw_result=raw is not None,\n+          scope='Terminal failure envelope only; full original result and all available write fragments retained.')\n+        write_terminal(out,result)\n     return result\n \n+\n def main(stage,case):\n-    pre=None;derivation=None;primary=None;trace=None;tb=None;old=sys.argv\n-    out=ROOT/('cloud-'+group(stage,case))\n+    pre=None;derivation=None;primary=None;trace=None;tb=None;old=sys.argv;terminal=None\n+    out=ROOT/('cloud-'+group(stage,case));result=None\n     try:\n         pre=preflight(stage,case);ns,derivation=program_namespace()\n         sys.argv=[str(Path(__file__)),'--stage',stage,'--case',case]\n@@ -134,9 +202,16 @@\n         primary=error;tb=error.__traceback__;trace=traceback.format_exc()\n     finally:\n         sys.argv=old\n-        result=finalize(out,pre,derivation,primary,trace)\n+        try:result=finalize(out,pre,derivation,primary,trace)\n+        except BaseException as error:\n+            terminal=error\n+            print(json.dumps(dict(status='FAIL_OR_ERROR',terminal_result_write_failed=True,\n+                primary_error=None if primary is None else repr(primary),terminal_error=repr(error)),\n+                allow_nan=False),file=sys.stderr,flush=True)\n     if primary is not None:raise primary.with_traceback(tb)\n-    if result['wrapper_finalization_errors']:raise RuntimeError('Portable native terminal finalization failed; complete available evidence preserved')\n+    if terminal is not None:raise terminal\n+    if result['wrapper_finalization_errors']:\n+        raise RuntimeError('Portable native terminal finalization failed; complete available evidence preserved')\n \n if __name__=='__main__':\n     p=argparse.ArgumentParser();p.add_argument('--controls',action='store_true');p.add_argument('--preflight',action='store_true')\n"
+  },
+  "checker": {
+    "path": "scripts/check_tx_phase_reset334_tail_m4_transient.py",
+    "bytes": 37008,
+    "sha256": "5e5e89947595ed34563c70c4a61bfcd4905e6791b0fcb1f41e0286526dee3203",
+    "basis": {
+      "path": "scripts/check_tx_phase_reset334_avss18_transient.py",
+      "sha256": "bb02542b81a6089bf5d3f82515451460ef8d2d2ec584dcf5391f71beb9545c4e"
+    },
+    "new_cases": {
+      "actual_outer_terminal": 12,
+      "terminal_positive": 2,
+      "terminal_failure": 10,
+      "actual_methods_modes": 2,
+      "actual_methods_refusals": 42,
+      "preflight_positive": 2,
+      "preflight_refusals": 7,
+      "current_native_OP_refusals": 24,
+      "current_outer_OP_refusals": 20
+    },
+    "inherited_cases": {
+      "metadata": 20,
+      "context": 14,
+      "original_numerical": 52,
+      "portable": 22,
+      "archive": 13,
+      "parts": 6,
+      "actual_main_entry": 2,
+      "prepare_entry": 2,
+      "prepare_completion": 2,
+      "continuation_asset": 2
+    },
+    "all_fixture_execution_pending": true,
+    "actual_program_paths_with_synthetic_collaborators": [
+      "outer main/finalize/write and real temporary files",
+      "methods using actual temporary method and pinned source file",
+      "preflight using actual methods and synthetic release/controls transport",
+      "derived full initial/cross main stops before current restore",
+      "derived prepare reaches full final return with synthetic runtime/path collaborators; old missing-summary mutant retained"
+    ],
+    "current_native_and_outer_faults_use_full_authenticated_JSONs": true
+  },
+  "preservation": [
+    "Original native result and any previous copy remain byte-exact before final summary replacement.",
+    "Previous and failed result-writing fragments retain unique names and full digest-indexed content.",
+    "JSON encoding failure produces a terminal FAIL envelope referencing full native bytes and fragments, never a nominal PASS.",
+    "Primary body exception is rethrown by identity even if terminal writes also fail; stderr records the secondary terminal error.",
+    "Original 17 HBT, prior four-tail and original parent rejection remain in current admission/context."
+  ],
+  "remaining": [
+    "Full current source/import-time-data closure and isolated missing/tampered dependency fixtures",
+    "Exact reserved-only direct publication assembly and actual publication controls",
+    "Native-only resource observation and unchanged original disk guards",
+    "Disabled manual template and always-emitted complete control records",
+    "Independent new wrapper/fixture review and hosted controls only after root authorization"
+  ]
+}

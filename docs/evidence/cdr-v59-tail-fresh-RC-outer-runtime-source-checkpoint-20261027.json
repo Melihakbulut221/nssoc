@@ -1,0 +1,29 @@
+{
+  "authorizations": "All false; controller readiness remains false; no workflow or source controls execution.",
+  "controller": {
+    "bytes": 19528,
+    "path": "scripts/cloud_cdr_v59_tail_fresh_rc.py",
+    "sha256": "67d05780f362fa146c7a47bf120eb2b75a308efd2c2d87c9c8f77d047b8541b6"
+  },
+  "failure_preservation": "Full outer main captures primary exception; independent cleanup, heartbeat stop/join, both signal restoration, final resource sample, protected/saved integrity, actual current-view byte copy, complete inventory and final save. Original body exception remains primary after publication.",
+  "original_pipeline_validator": {
+    "exact_function_text": "def validate_pipeline(r,code):\n    assert code==0 and r['status']==PASS and r['source_head']==os.environ['GITHUB_SHA']\n    assert r['sources_unchanged']is True and r['both_native_orders_verified']is True\n    assert r['native_rc_and_device_records_equal_in_both_orders']is True\n    for k in ('qualified_pex','full_phy_accepted','closed_loop','loaded_simulation_passed'):assert r[k]is False\n    assert set(r['variants'])=={'precise','precise_reversed'}\n    for name,pair in r['variants'].items():\n        c=pair['capture'];audit=pair['audit']\n        assert c['native_order_variant']==name and c['sources_unchanged']and audit['sources_unchanged']\n        assert c['capture']['status']=='NATIVE_COMPLETE_AWAITING_RC_AUDIT'and c['capture']['returncode']==0\n        assert c['native_binding']['actual_mim_devices']==7 and c['native_binding']['actual_mim_masks_exact']\n        assert c['native_binding']['original_metal_and_vias_unchanged']\n        assert c['native_binding']['all978points_match_original_native_clusters_and_physical_components']\n        assert len(c['native_binding']['point_changes'])==7 and len(c['controls'])==5 and all(v['rejected']for v in c['controls'])\n        assert c['intrinsic_capture_binding']['physical_components']==113 and c['intrinsic_capture_binding']['physical_points']==978\n        assert len(c['intrinsic_capture_binding']['native_mim_devices'])==7\n        assert audit['audit']['status']=='PASS_WIRE_GRAPH_AND_COLLAPSED_C_ONLY'\n        assert len(audit['wire_controls']['cases'])==13 and len(audit['intrinsic_controls'])==9\n        assert all(v['rejected']for v in audit['intrinsic_controls'])\n    comp=r['composition'];assert len(comp['controls'])==21 and all(v['rejected']for v in comp['controls'])\n    assert comp['contract']['counts']['devices']==500 and comp['contract']['intrinsic_mim_models_in_final_netlist']==7\n    assert comp['contract']['all_raw_wire_tokens_preserved']is True\n    assert comp['non_cascading_count_derivation']['reverse_reconstruction_exact']is True\n    assert len(r['count_derivation_controls']['positive_collision_cases'])==len(r['count_derivation_controls']['rejected'])==4\n    return True",
+    "execution_scope_globals": [
+      "os",
+      "PASS"
+    ],
+    "path": "scripts/cloud_cdr_v59_mim_stage.py",
+    "sha256": "15c6d6f6399f28a211ad0ea86a385d4400ab43aab6b0109214240b6eca935372",
+    "unchanged_body": true
+  },
+  "parent": "a27e28c3a65f46bf170b10b88c9126e2d2210ae0",
+  "phase_contract": "Exact full955 restore and current184 copy, qualified AppImage smoke, current500 binding, fresh wire RC, both complete fresh MIM orders and unchanged composition. No layout regeneration or simulator.",
+  "publication": "Exact result/full map plus complete pack and real shared file-list verifier; actual publisher defining-module release replaced by strict reserved-only lookup and restored in finally. Existing malformed direct JSON retained as raw failed bytes; successful direct JSON must parse.",
+  "schema": "cdr-tail-fresh-RC-disabled-outer-source-checkpoint-v1",
+  "unfinished": [
+    "Actual outer-main/finalization/command/pipeline/publication fixtures",
+    "Full isolated module/data import closure",
+    "Manual inactive workflow template",
+    "Independent bounded outer review and complete hosted controls"
+  ]
+}
