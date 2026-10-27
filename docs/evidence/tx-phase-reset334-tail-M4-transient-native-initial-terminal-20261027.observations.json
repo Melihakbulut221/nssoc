@@ -1,0 +1,522 @@
+{
+  "schema": "current-tail-M4-complete-transient-observation-v1",
+  "status": "REJECTED_PHYSICAL334_THREE_MODEL_ORIGINAL_LOADED_GATES",
+  "source": "2071d818cce135a16f378ba22af0186df8ce80a7",
+  "run": 40567765771,
+  "summary_asset": 682721590,
+  "summary_sha256": "d0ebfc842547a9439f6f1c5125bb34436613d2aed384abe5fe0c23ff4fe2cc0c",
+  "full_capture": {
+    "header_rows": 114525,
+    "columns": 4727,
+    "header_bytes": 147584,
+    "raw_bytes": 4331024984,
+    "raw_sha256": "c96c2f3255ebf01f8faa387c339edcce4769f2bb170886ea06320bf3986d52bc",
+    "start_s": 0.0,
+    "end_s": 3.4e-08,
+    "max_step_s": 3.125000000020087e-13,
+    "complete_unmodified_rows": true,
+    "method": "Memory-mapped full binary raw; every original vector retained; no interpolation/decimation"
+  },
+  "native_exit_code": 0,
+  "native_errors": [],
+  "native_diagnostics": [],
+  "solver": {
+    "status": "PASS_NATIVE_SOLVER_OPTION_READBACK",
+    "profile": "breakpoint_tight_trap",
+    "numeric_options": {
+      "maxord": 2,
+      "reltol": 1e-06,
+      "abstol": 1e-13,
+      "vntol": 1e-08,
+      "trtol": 1,
+      "itl4": 100
+    },
+    "method": "TRAPEZOIDAL",
+    "native_text": "******************************\n* Current simulation options *\n******************************\n\nTemperatures:\ntemp = 300.150000\ntnom = 300.150000\n\nIntegration method summary:\nIntegration Method = TRAPEZOIDAL\nMaxOrder = 2\nxmu = 0.5\nindverbosity = 2\nepsmin = 1e-28\n\nMatrix solver:\nSparse 1.3\n\nTolerances (absolute):\nabstol      (current) = 1e-13\nchgtol      (charge)  = 1e-14\nvntol       (voltage) = 1e-08\npivtol      (pivot)   = 1e-13\n\nTolerances (relative):\nreltol      (current) = 1e-06\npivrel      (pivot)   = 0.001\n\nIteration limits:\nitl1 (DC iterations) = 100\nitl2 (DC transfer curve iterations) = 50\nitl4 (transient iterations) = 100\ngminsteps = 1\nsrcsteps = 1\n\nTruncation error correction, charge based, is selected:\ntrtol = 1.000000\n\nConductances:\ngmin     (devices)  = 1e-12\ndiaggmin (stepping) = 0\ngshunt = 0\ncshunt = -1\ndelmin = 3.125e-24\n\nDefault parameters for MOS devices\nDefault M: 1.000000\nDefault L: 0.000100\nDefault W: 0.000100\nDefault AD: 0.000000\nDefault AS: 0.000000\nNSSOC_NATIVE_MINBREAK 1E-18\n",
+    "native_minbreak_variable_s": 1e-18,
+    "minbreak_readback_scope": "Native circuit option variable; CKT breakpoint effect separately tested with exact-PWL linear controls."
+  },
+  "original_HBT_thresholds": {
+    "min_post_VCE_v": 0.4,
+    "max_whole_abs_VCE_v": 1.6,
+    "max_whole_abs_VBE_v": 1.0,
+    "max_whole_abs_Ic_per_emitter_a": 0.003
+  },
+  "all318_numeric_safety_passed": true,
+  "failed_HBT_count": 0,
+  "four_parent_tail_minima": {
+    "xdut.xd75": {
+      "min_post_vce_v": 0.40532353082748435,
+      "max_whole_abs_vce_v": 0.5739440178184783,
+      "max_whole_abs_vbe_v": 0.8312237113030363,
+      "max_whole_abs_ic_per_emitter_a": 0.00032955008686651535,
+      "passed": true
+    },
+    "xdut.xd83": {
+      "min_post_vce_v": 0.4035061101697761,
+      "max_whole_abs_vce_v": 0.572300821194841,
+      "max_whole_abs_vbe_v": 0.830977592550074,
+      "max_whole_abs_ic_per_emitter_a": 0.0003274556017499894,
+      "passed": true
+    },
+    "xdut.xd98": {
+      "min_post_vce_v": 0.40124170560429456,
+      "max_whole_abs_vce_v": 0.5701834757051707,
+      "max_whole_abs_vbe_v": 0.8306714168862748,
+      "max_whole_abs_ic_per_emitter_a": 0.0003248809095068287,
+      "passed": true
+    },
+    "xdut.xd105": {
+      "min_post_vce_v": 0.4007933716630845,
+      "max_whole_abs_vce_v": 0.5697017267657373,
+      "max_whole_abs_vbe_v": 0.8306139216537352,
+      "max_whole_abs_ic_per_emitter_a": 0.0003243917002146378,
+      "passed": true
+    }
+  },
+  "worst_numeric_safety_margin_v": 0.0007933716630844634,
+  "original_first_fall_limit_s": 6.25e-11,
+  "original_signed_margin_v": 0.1,
+  "all_three_model_screens": {
+    "xdut": {
+      "physical_role": "phase_l1_k0",
+      "signals": {
+        "fixed_phase_samples": {
+          "MP": {
+            "fixed_original_UI_centers": 256,
+            "minimum_signed_margin_v": -0.17474769730596146,
+            "wrong_sign_samples": 123,
+            "margin_violations": 236,
+            "rising_s": [
+              7.250221749047232e-10,
+              3.1586941472457107e-09,
+              1.2146902222007289e-08,
+              1.5170787323820552e-08
+            ],
+            "falling_s": [
+              0.0,
+              3.0610470645850994e-09,
+              3.282841369221142e-09,
+              1.5052165899231615e-08,
+              1.5272877787364692e-08
+            ]
+          },
+          "QP": {
+            "fixed_original_UI_centers": 256,
+            "minimum_signed_margin_v": -0.16136904587875486,
+            "wrong_sign_samples": 120,
+            "margin_violations": 220,
+            "rising_s": [
+              6.625082994398257e-10
+            ],
+            "falling_s": [
+              0.0
+            ]
+          },
+          "release": {
+            "fixed_original_UI_centers": 256,
+            "minimum_signed_margin_v": -0.14346362522049752,
+            "wrong_sign_samples": 3,
+            "margin_violations": 6,
+            "rising_s": [
+              2.2759306710801286e-09,
+              1.4288312170601722e-08
+            ],
+            "falling_s": [
+              0.0,
+              1.2176169462328678e-08
+            ]
+          }
+        },
+        "asynchronous_preset_during_running": {
+          "MP": {
+            "minimum_signed_margin_v": 0.01452051329150894,
+            "wrong_sign_samples": 0
+          },
+          "QP": {
+            "minimum_signed_margin_v": 0.11204570426941807,
+            "wrong_sign_samples": 0
+          },
+          "release": {
+            "minimum_signed_margin_v": -0.06751783923358268,
+            "wrong_sign_samples": 64
+          }
+        },
+        "first_fall_releases": [
+          {
+            "arm_s": 1.75e-09,
+            "fall_s": 2.125e-09,
+            "observed_release_edges_s": [
+              2.2759306710801286e-09
+            ],
+            "exactly_one": true,
+            "before_first_fall": false,
+            "signed_delay_s": 1.5093067108012862e-10,
+            "within_original_UI_center": false
+          },
+          {
+            "arm_s": 1.403125e-08,
+            "fall_s": 1.4125e-08,
+            "observed_release_edges_s": [
+              1.4288312170601722e-08
+            ],
+            "exactly_one": true,
+            "before_first_fall": false,
+            "signed_delay_s": 1.6331217060172124e-10,
+            "within_original_UI_center": false
+          }
+        ],
+        "fixed_phase_and_margin_passed": false,
+        "preset_passed": false,
+        "first_fall_passed": false,
+        "diagnostic_signal_screen_passed": false,
+        "observed_phase_fitted": false,
+        "production_startup_or_recovery_removal_qualified": false
+      },
+      "pair_ranges": {
+        "fixture_input": {
+          "minimum_v": -0.17063108996201892,
+          "maximum_v": 0.17063108996201892,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.2605958859271778
+        },
+        "master": {
+          "minimum_v": -0.0520459623403271,
+          "maximum_v": 0.20401886369551692,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.140090568373502
+        },
+        "slave": {
+          "minimum_v": -0.0047353291763898575,
+          "maximum_v": 0.20164643551141825,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.1243039445703262
+        },
+        "release": {
+          "minimum_v": -0.2194853432376549,
+          "maximum_v": 0.1539086121187201,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.2328364519930615
+        },
+        "native_clock": {
+          "minimum_v": -0.08814327474017336,
+          "maximum_v": 0.2148768553822391,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 1.580287371099733
+        },
+        "arm_conditioned": {
+          "minimum_v": -0.19421566571620041,
+          "maximum_v": 0.19030688509744031,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 1.60204155162991
+        },
+        "run": {
+          "minimum_v": -0.18310156193828475,
+          "maximum_v": 0.04831506463805635,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 1.52936508527937
+        }
+      }
+    },
+    "xloadm": {
+      "physical_role": "phase_l2_k0",
+      "signals": {
+        "fixed_phase_samples": {
+          "MP": {
+            "fixed_original_UI_centers": 256,
+            "minimum_signed_margin_v": -0.17723043886391493,
+            "wrong_sign_samples": 118,
+            "margin_violations": 118,
+            "rising_s": [],
+            "falling_s": [
+              0.0
+            ]
+          },
+          "QP": {
+            "fixed_original_UI_centers": 256,
+            "minimum_signed_margin_v": -0.15631883620584208,
+            "wrong_sign_samples": 120,
+            "margin_violations": 227,
+            "rising_s": [
+              6.243836451012143e-10
+            ],
+            "falling_s": [
+              0.0
+            ]
+          },
+          "release": {
+            "fixed_original_UI_centers": 256,
+            "minimum_signed_margin_v": -0.14605837839799798,
+            "wrong_sign_samples": 20,
+            "margin_violations": 22,
+            "rising_s": [
+              3.314569840598381e-09,
+              1.5200787593111227e-08
+            ],
+            "falling_s": [
+              0.0,
+              1.2177149609006965e-08
+            ]
+          }
+        },
+        "asynchronous_preset_during_running": {
+          "MP": {
+            "minimum_signed_margin_v": 0.1752826712065234,
+            "wrong_sign_samples": 0
+          },
+          "QP": {
+            "minimum_signed_margin_v": 0.11603355401542048,
+            "wrong_sign_samples": 0
+          },
+          "release": {
+            "minimum_signed_margin_v": -0.07888953699836687,
+            "wrong_sign_samples": 67
+          }
+        },
+        "first_fall_releases": [
+          {
+            "arm_s": 1.75e-09,
+            "fall_s": 2.125e-09,
+            "observed_release_edges_s": [
+              3.314569840598381e-09
+            ],
+            "exactly_one": true,
+            "before_first_fall": false,
+            "signed_delay_s": 1.189569840598381e-09,
+            "within_original_UI_center": false
+          },
+          {
+            "arm_s": 1.403125e-08,
+            "fall_s": 1.4125e-08,
+            "observed_release_edges_s": [
+              1.5200787593111227e-08
+            ],
+            "exactly_one": true,
+            "before_first_fall": false,
+            "signed_delay_s": 1.075787593111226e-09,
+            "within_original_UI_center": false
+          }
+        ],
+        "fixed_phase_and_margin_passed": false,
+        "preset_passed": false,
+        "first_fall_passed": false,
+        "diagnostic_signal_screen_passed": false,
+        "observed_phase_fitted": false,
+        "production_startup_or_recovery_removal_qualified": false
+      },
+      "pair_ranges": {
+        "fixture_input": {
+          "minimum_v": -0.0520459623403271,
+          "maximum_v": 0.20401886369551692,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.140090568373502
+        },
+        "master": {
+          "minimum_v": -0.23737609877690047,
+          "maximum_v": 0.0,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.2147832445984097
+        },
+        "slave": {
+          "minimum_v": -0.00325194987169157,
+          "maximum_v": 0.20708855306914575,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.2000307863219506
+        },
+        "release": {
+          "minimum_v": -0.22377566393486026,
+          "maximum_v": 0.1505012732483504,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.2387389107697837
+        },
+        "native_clock": {
+          "minimum_v": -0.06946139554713149,
+          "maximum_v": 0.21700527055451135,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 1.5803140549272279
+        },
+        "arm_conditioned": {
+          "minimum_v": -0.19446851809247612,
+          "maximum_v": 0.19049448686238035,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 1.603847035920585
+        },
+        "run": {
+          "minimum_v": -0.18390554065809028,
+          "maximum_v": 0.04746111876009862,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 1.5356624541003543
+        }
+      }
+    },
+    "xloadq": {
+      "physical_role": "phase_l2_k1",
+      "signals": {
+        "fixed_phase_samples": {
+          "MP": {
+            "fixed_original_UI_centers": 256,
+            "minimum_signed_margin_v": -0.1820629548744552,
+            "wrong_sign_samples": 120,
+            "margin_violations": 120,
+            "rising_s": [
+              7.045508821825156e-10
+            ],
+            "falling_s": [
+              0.0
+            ]
+          },
+          "QP": {
+            "fixed_original_UI_centers": 256,
+            "minimum_signed_margin_v": -0.16772725526086502,
+            "wrong_sign_samples": 120,
+            "margin_violations": 120,
+            "rising_s": [
+              6.212260324660026e-10
+            ],
+            "falling_s": [
+              0.0
+            ]
+          },
+          "release": {
+            "fixed_original_UI_centers": 256,
+            "minimum_signed_margin_v": -0.1042491724859562,
+            "wrong_sign_samples": 236,
+            "margin_violations": 237,
+            "rising_s": [],
+            "falling_s": [
+              0.0
+            ]
+          }
+        },
+        "asynchronous_preset_during_running": {
+          "MP": {
+            "minimum_signed_margin_v": 0.1792242584256627,
+            "wrong_sign_samples": 0
+          },
+          "QP": {
+            "minimum_signed_margin_v": 0.16466421001400633,
+            "wrong_sign_samples": 0
+          },
+          "release": {
+            "minimum_signed_margin_v": 0.1252063122836815,
+            "wrong_sign_samples": 0
+          }
+        },
+        "first_fall_releases": [
+          {
+            "arm_s": 1.75e-09,
+            "fall_s": 2.2500000000000003e-09,
+            "observed_release_edges_s": [],
+            "exactly_one": false,
+            "before_first_fall": false,
+            "signed_delay_s": null,
+            "within_original_UI_center": false
+          },
+          {
+            "arm_s": 1.403125e-08,
+            "fall_s": 1.425e-08,
+            "observed_release_edges_s": [],
+            "exactly_one": false,
+            "before_first_fall": false,
+            "signed_delay_s": null,
+            "within_original_UI_center": false
+          }
+        ],
+        "fixed_phase_and_margin_passed": false,
+        "preset_passed": true,
+        "first_fall_passed": false,
+        "diagnostic_signal_screen_passed": false,
+        "observed_phase_fitted": false,
+        "production_startup_or_recovery_removal_qualified": false
+      },
+      "pair_ranges": {
+        "fixture_input": {
+          "minimum_v": -0.0047353291763898575,
+          "maximum_v": 0.20164643551141825,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.1243039445703262
+        },
+        "master": {
+          "minimum_v": -0.011832390781522761,
+          "maximum_v": 0.22949027583779724,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.212895286329482
+        },
+        "slave": {
+          "minimum_v": -0.0032528815741447795,
+          "maximum_v": 0.2284631941308426,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.198676855780394
+        },
+        "release": {
+          "minimum_v": -0.22343041389422735,
+          "maximum_v": 0.0,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 2.238668220236184
+        },
+        "native_clock": {
+          "minimum_v": -7.501386816835461e-08,
+          "maximum_v": 0.2162683051915304,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 1.580481389694283
+        },
+        "arm_conditioned": {
+          "minimum_v": -0.19447089003792595,
+          "maximum_v": 0.19040244324806643,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 1.6038666424317976
+        },
+        "run": {
+          "minimum_v": -0.18499262761225754,
+          "maximum_v": 0.03969568608357321,
+          "minimum_common_mode_v": 0.0,
+          "maximum_common_mode_v": 1.5350808163709757
+        }
+      }
+    }
+  },
+  "complete_original_gate": {
+    "checks": {
+      "native_returncode_zero": true,
+      "no_native_diagnostics": true,
+      "solver_readback": true,
+      "all318_flags": true,
+      "full_zero_OP": true,
+      "complete_original_capture": true,
+      "original_phase_and_safety": false,
+      "no_validation_errors": true,
+      "native_columns": true,
+      "all_three_model_safety": true,
+      "all_three_fixed_phase": false,
+      "exact_HBT_measurement_count": true,
+      "exact_three_model_screens": true,
+      "exact318_native_identity": true,
+      "exact_three_physical_roles": true,
+      "no_claimed_full_PHY": true,
+      "all318_numeric_safety": true,
+      "all_three_fixed_event_metrics": false,
+      "one_zero_OP": true,
+      "exact_native_vector_identity": true,
+      "original34ns": true,
+      "unchanged_native_maxstep": true
+    },
+    "passed": false,
+    "all31_clock_tree_accepted": false,
+    "actual_PLL_waveform_replayed": false,
+    "PLL_connected": false,
+    "full_PHY_accepted": false,
+    "mainchip_integrated": false,
+    "routed_parent_accepted": false,
+    "physical_reset_distribution_accepted": false,
+    "scope": "Three actual distributed-RC macros driven by the documented scalar external fixture; not routed31-tree, actual PLL waveform or PHY qualification.",
+    "original_first_fall_limit_s": 6.25e-11,
+    "separate_31_25ps_requirement_proven": false
+  },
+  "interpretation": "The complete current-model result passes all318 exported numeric HBT safety checks but rejects all three fixed-phase screens. All nine fixed-output channels have margin violations; this cannot be summarized as only an offset or delay. Parent/master-child first-fall delay exceeds the unchanged limit; Q-child has no qualifying release edge. These derived summaries do not establish a transistor-level or wire-level causal mechanism.",
+  "criu_check_command_returncode": 1,
+  "criu_scope": "The informational CRIU check returned1; this run completed normally without a saved process. No checkpoint/resume capability is newly qualified.",
+  "native_process_saved": false,
+  "electrical_screen_passed": false,
+  "full_PHY_accepted": false,
+  "follow_up_scope": "Review original source timing/clock/release/selector path using authenticated existing derived evidence. No retry, rescaling, ideal-clock substitution, changed thresholds or geometry edit."
+}
