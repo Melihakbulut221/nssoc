@@ -4,7 +4,6 @@
 import hashlib,json,os,traceback
 from pathlib import Path
 import mainchip_original_clock_restoration as c
-import mainchip_original_clock_restoration_native as qualified
 import mainchip_two_signal_repair as source
 import mainchip_two_signal_geometry as geometry
 from cloud_mainchip_original_clock_restoration import save
@@ -43,22 +42,33 @@ def surface(value):
             except Exception as exc:result[key]=dict(error_type=type(exc).__name__,error=str(exc))
     return result
 
-def census(odb,db,block):
+def census(odb,db,block,partial=None):
+    if partial is None:partial={}
+    partial.update(status='INCOMPLETE_API_CENSUS_PREFIX_ONLY',complete=False,class_api_surfaces={},
+        representative_api_surfaces={},observed_counts={},streamed_prefix_sha256={})
+    class_surfaces=partial['class_api_surfaces']
+    class_surfaces.update({name:dict(present=hasattr(odb,name),
+        public_attributes=sorted(x for x in dir(getattr(odb,name))if not x.startswith('_'))if hasattr(odb,name)else[])
+        for name in CLASS_NAMES})
     assert not list(block.getChildren()),'Unqualified child block'
     assert block.getDbUnitsPerMicron()==db.getTech().getDbUnitsPerMicron()
-    tech=db.getTech();layers=list(tech.getLayers());layer_rows=[layer(x)for x in layers]
-    by_name={x['name']:x for x in layer_rows};assert len(by_name)==len(layer_rows)
+    tech=db.getTech();layers=list(tech.getLayers());by_name={}
     counts={};streams={};representatives={};raw_ids=dict(layers={},rules={},vias={})
-    class_surfaces={name:dict(present=hasattr(odb,name),
-        public_attributes=sorted(x for x in dir(getattr(odb,name))if not x.startswith('_'))if hasattr(odb,name)else[])
-        for name in CLASS_NAMES}
+    raw_terminal_joins={};raw_terminal_rows=[]
+    partial['observed_raw_operand_lookups']=raw_ids
+    partial['observed_raw_terminal_lookups']=raw_terminal_rows
+    partial['observed_counts']=counts;partial['representative_api_surfaces']=representatives
     def record(kind,key,value,obj):
         counts[kind]=counts.get(kind,0)+1
         raw=c.canonical([key,value]);streams.setdefault(kind,hashlib.sha256())
         streams[kind].update(len(raw).to_bytes(8,'big'));streams[kind].update(raw)
+        partial['streamed_prefix_sha256'][kind]=streams[kind].hexdigest()
         if kind not in representatives:
             representatives[kind]=dict(scoped_identity=key,api=surface(obj))
-    for row,obj in zip(layer_rows,layers):record('technology-layer',['technology-layer',row['name']],row,obj)
+    for obj in layers:
+        row=layer(obj);assert type(row['name'])is str and row['name']and row['name']not in by_name
+        by_name[row['name']]=row
+        record('technology-layer',['technology-layer',row['name']],row,obj)
     def via_row(via,scope,oid=None):
         assert via is not None
         boxes=[]
@@ -118,6 +128,11 @@ def census(odb,db,block):
                         obj=odb.dbBTerm.getBTerm(block,data);assert obj is not None
                         identity=[obj.getName()];kind_name='bterm'
                     assert obj.getNet()is not None and obj.getNet().getName()==name
+                    join=(kind_name,data);value=(tuple(identity),name)
+                    if join in raw_terminal_joins:assert raw_terminal_joins[join]==value,'Raw terminal lookup changed'
+                    else:
+                        raw_terminal_joins[join]=value
+                        raw_terminal_rows.append(dict(kind=kind_name,raw_OID=data,named_identity=identity,owner=name))
                     record('raw-'+kind_name+'-lookup',['net',name,'opcode',index,'raw-OID',data],
                         dict(named_identity=identity,owner=name),obj)
         for it in net.getITerms():
@@ -155,6 +170,12 @@ def census(odb,db,block):
                 assert not b.isVia(),'Unqualified BPin via'
                 record('block-pin-box',['bterm',key,'bpin',pi,'box',bi],dict(layer=b.getTechLayer().getName(),rect=rect(b)),b)
     assert {k:v for k,v in seen_bterms.items()if v is not None}==net_bterms
+    for (kind,oid),(identity,owner)in raw_terminal_joins.items():
+        if kind=='iterm':
+            assert seen_iterms.get(identity)==net_iterms.get(identity)==owner,'Raw ITerm named identity is absent from both terminal censuses'
+        else:
+            assert len(identity)==1
+            assert seen_bterms.get(identity[0])==net_bterms.get(identity[0])==owner,'Raw BTerm named identity is absent from both terminal censuses'
     for index,fill in enumerate(block.getFills()):
         record('metal-fill',['fill',index],dict(layer=fill.getTechLayer().getName(),
             rect=rect(fill.getRect()),mask=fill.maskNumber(),needs_OPC=fill.needsOPC()),fill)
@@ -184,6 +205,8 @@ def census(odb,db,block):
         layer_numbers_or_routing_levels_used_as_OIDs=False,table_OIDs_invented=False,
         scoped_identity_contract='Names are unique within their named native parent; anonymous entries retain exact native-container ordinal and geometry multiplicity. These keys are not database OIDs and are not yet a repair qualification.',
         every_block_terminal_reconciled_with_connected_net_census=True,
+        every_raw_terminal_lookup_reconciled_with_both_censuses=True,
+        unique_raw_terminal_OID_joins=len(raw_terminal_joins),raw_terminal_named_joins=raw_terminal_rows,
         disconnected_iterms=sum(v is None for v in seen_iterms.values()),
         disconnected_bterms=sum(v is None for v in seen_bterms.values()),
         source_geometry_mutated=False,native_routing_started=False,ownership_eligible=False,
@@ -192,6 +215,7 @@ def census(odb,db,block):
 def main():
     from mainchip_two_signal_api_probe import methods
     import odb
+    import mainchip_original_clock_restoration_native as qualified
     m=methods()
     assert m['native_api_probe_authorized']is True and m['cloud_restore_authorized']is True
     assert os.environ.get('GITHUB_ACTIONS')=='true'and os.environ.get('GITHUB_RUN_ATTEMPT')=='1'
@@ -200,14 +224,15 @@ def main():
     out=Path(os.environ['NSSOC_TWO_SIGNAL_OUT']);assert out.is_dir()and out.is_absolute()
     for p in [out,*out.parents]:assert not p.is_symlink()
     result=dict(status='RUNNING_READ_ONLY_API_CENSUS',accepted=False,native_routing_started=False)
-    database=None;failure=None
+    database=None;failure=None;partial={}
     try:
         database,block=qualified.load(path)
-        result=census(odb,database,block)
+        result=census(odb,database,block,partial)
         result['input']=dict(member=source.INPUT,sha256=source.INPUT_SHA,bytes=source.INPUT_BYTES)
     except BaseException as exc:
         failure=exc
-        result.update(status='FAIL_READ_ONLY_API_CENSUS',error=repr(exc),traceback=traceback.format_exc())
+        result.update(status='FAIL_READ_ONLY_API_CENSUS',error=repr(exc),traceback=traceback.format_exc(),
+            partial_census=partial,complete_census=False)
     finally:
         result['terminal_checks']=[]
         for label,fn in [('destroy-read-only-database',lambda:odb.dbDatabase.destroy(database)if database is not None else None),

@@ -17,6 +17,8 @@ def methods():
     for key in ('source_controls_authorized','cloud_restore_authorized','native_execution_authorized','native_api_probe_authorized'):
         assert type(m[key])is bool
     assert m['cloud_restore_authorized']==m['native_execution_authorized']==m['native_api_probe_authorized']
+    if m['native_api_probe_authorized']:
+        assert m['source_controls_authorized']is True and m['source_unit_complete']is True
     for key in ('native_routing_authorized','geometry_mutation_authorized','simulation_authorized',
                 'rc_sta_execution_authorized','timing_accepted','full_phy_accepted'):
         assert m[key]is False
@@ -35,6 +37,11 @@ def validate_report(report):
     assert report['complete_raw_opcode_data_pairs']>0 and report['raw_operand_native_lookups']['layers']
     assert set(report['raw_operand_native_lookups'])=={'layers','rules','vias'}
     assert report['every_block_terminal_reconciled_with_connected_net_census']is True
+    assert report['every_raw_terminal_lookup_reconciled_with_both_censuses']is True
+    assert type(report['raw_terminal_named_joins'])is list
+    assert len(report['raw_terminal_named_joins'])==report['unique_raw_terminal_OID_joins']
+    assert all(type(r['raw_OID'])is int and r['raw_OID']>0 and r['kind']in ('iterm','bterm')
+        and type(r['owner'])is str and r['owner'] for r in report['raw_terminal_named_joins'])
     assert report['input']==dict(member=original.INPUT,sha256=original.INPUT_SHA,bytes=original.INPUT_BYTES)
     assert report['terminal_checks']==[dict(label=label,status='PASS')for label in
         ('destroy-read-only-database','unchanged-source-file')]

@@ -1,7 +1,73 @@
 {
   "cloud_restore_authorized": false,
+  "driver_derivation": {
+    "derived_sha256": "195794d5d6b4cd7c0c388fc0867a0edf900695d24dd5c3a69efd834e69b08e4d",
+    "frozen_path": "scripts/cloud_mainchip_two_signal_repair.py",
+    "frozen_sha256": "e5b2d952dd859e5fc297a4240565488dc748b29b7ccbf1d62adc587ffac1a45e",
+    "literal_edits": 9
+  },
   "full_phy_accepted": false,
   "geometry_mutation_authorized": false,
+  "import_time_modules": [
+    "scripts/audit_cloud_route_annotation.py",
+    "scripts/audit_cloud_routed_endpoints.py",
+    "scripts/audit_cloud_routed_hold_conflicts.py",
+    "scripts/branch_hold_targets.py",
+    "scripts/candidate_hold_conflicts.py",
+    "scripts/check_final_native_antenna_counts.py",
+    "scripts/check_mainchip_original_clock_restoration_driver.py",
+    "scripts/check_mainchip_route12_completed_source.py",
+    "scripts/check_mainchip_two_signal_api_probe.py",
+    "scripts/check_mainchip_two_signal_api_probe_imports.py",
+    "scripts/check_mainchip_two_signal_repair.py",
+    "scripts/cloud_chunked_results.py",
+    "scripts/cloud_contact_release.py",
+    "scripts/cloud_mainchip_fixed_clock_signal_repair.py",
+    "scripts/cloud_mainchip_original_clock_restoration.py",
+    "scripts/cloud_mainchip_postroute_geometry.py",
+    "scripts/cloud_mainchip_postroute_review.py",
+    "scripts/cloud_mainchip_two_signal_api_probe.py",
+    "scripts/cloud_mainchip_two_signal_repair.py",
+    "scripts/cloud_verified_parts.py",
+    "scripts/compare_cloud_routed_endpoints.py",
+    "scripts/ensure_cloud_tested_source_release.py",
+    "scripts/expanded_load_targets.py",
+    "scripts/mainchip_clock_marker_capture.py",
+    "scripts/mainchip_clock_marker_classification.py",
+    "scripts/mainchip_fixed_clock_signal_repair.py",
+    "scripts/mainchip_original_clock_drc.py",
+    "scripts/mainchip_original_clock_restoration.py",
+    "scripts/mainchip_saved_postroute_admission.py",
+    "scripts/mainchip_saved_postroute_publisher_base.py",
+    "scripts/mainchip_signal_repair_readback.py",
+    "scripts/mainchip_two_signal_api_probe.py",
+    "scripts/mainchip_two_signal_api_probe_fixture.py",
+    "scripts/mainchip_two_signal_api_probe_native.py",
+    "scripts/mainchip_two_signal_geometry.py",
+    "scripts/mainchip_two_signal_repair.py",
+    "scripts/measured_hold_targets.py",
+    "scripts/migrate_outputs_to_cloud.py",
+    "scripts/publish_cloud_results.py",
+    "scripts/publish_mainchip_saved_postroute.py",
+    "scripts/read_opensta_phase_slacks.py",
+    "scripts/refined_hold_targets.py",
+    "scripts/refined_load_targets.py",
+    "scripts/route_cloud_newer_postcts.py",
+    "scripts/run_cloud_tx_layout_repair.py",
+    "scripts/wait_cloud_tested_source_release.py"
+  ],
+  "import_time_roots": [
+    "scripts/mainchip_two_signal_api_probe.py",
+    "scripts/mainchip_two_signal_api_probe_native.py",
+    "scripts/cloud_mainchip_two_signal_api_probe.py",
+    "scripts/mainchip_two_signal_api_probe_fixture.py",
+    "scripts/check_mainchip_two_signal_api_probe.py",
+    "scripts/check_mainchip_two_signal_api_probe_imports.py",
+    "scripts/cloud_mainchip_two_signal_repair.py",
+    "scripts/check_mainchip_two_signal_repair.py",
+    "scripts/wait_cloud_tested_source_release.py",
+    "scripts/publish_mainchip_saved_postroute.py"
+  ],
   "input": {
     "bytes": 213740873,
     "member": "work/drc-observed.odb",
@@ -15,7 +81,9 @@
     "output_limit_per_stream_bytes": 16777216,
     "phase_seconds": 1200
   },
+  "native_JSON_read_bound_bytes": 268435456,
   "native_api_probe_authorized": false,
+  "native_compatibility_proven": false,
   "native_execution_authorized": false,
   "native_routing_authorized": false,
   "protected": {
@@ -25,6 +93,7 @@
     ".github/workflow-templates/mainchip-original-clock-restoration-cloud.yml": "158af04bf103e2b19c925767555fd3dea6e3607efa96af4d62e766dbd5646479",
     ".github/workflow-templates/mainchip-saved-postroute-cloud.yml": "7bb486d1a7450c63d2d72d5e0e5afd6d558fb238f4ccecdfd715319612c1399b",
     ".github/workflow-templates/mainchip-signal-repair-readback-cloud.yml": "4644c6bae0001b687e5ae7226c84f281f63e2714140b82eb327572ee6e96a920",
+    ".github/workflow-templates/mainchip-two-signal-api-probe-cloud.yml": "f072ebb3e666caa8dfba21db81e171c5456afa474abfbacb731385a2beca28cf",
     ".github/workflow-templates/mainchip-two-signal-repair-cloud.yml": "8878e03e4169d1165547f7b53a9b35c9ae5372c55ba3e2d3501aae75a5be06ad",
     ".github/workflows/mainchip-clock-diagnostic-cloud.yml": "ff78fe6369c94df2209ae7cfd53c8f53054453ec0e34bf7c7c2c967f2f2248a0",
     ".github/workflows/mainchip-clock-marker-classification-cloud.yml": "1493d72361158f62cab715e96515ebb84e84c627939e448c871fc27df2d32e3c",
@@ -238,6 +307,7 @@
     "docs/evidence/mainchip-two-signal-api-primary-20261027/src/odb/src/swig/python/dboperators.i": "c3dedd1f93bfe6f02b7776f2e1304250ea9ff1def01ee1acf3d03cbd653301db",
     "docs/evidence/mainchip-two-signal-api-primary-20261027/src/odb/src/swig/python/dbtypes.i": "5ce9798bad0c1bce78b13d4dd0c934b90b02e41162f1641e78ccd3b08e9886db",
     "docs/evidence/mainchip-two-signal-api-primary-20261027/src/odb/src/swig/python/parserenums.i": "4b213a966e4f1c9b9604c0cd315bc754744756a2b8e579944801ea60f2fac501",
+    "docs/evidence/mainchip-two-signal-api-probe-complete-source-audit-20261027.json": "8456690131633cec7cb2964f68841933e23e7c26fb35920a6977c6557ec176aa",
     "docs/evidence/mainchip-two-signal-first-native-api-failure-20261026.boundary.json": "5b833b88cdbf5fc894feae5fabbe4d3789822f2f327393c11741867ee565b62d",
     "docs/evidence/mainchip-two-signal-first-native-api-failure-20261026.command-events.json": "e0e11fccc7ef893ed1be3b5a322e5f402fb3dfefccece1e270b74e1a353c1460",
     "docs/evidence/mainchip-two-signal-first-native-api-failure-20261026.controls-job.log": "5dd72ae70b4d19e37ef29ae80f4595da53c998604764cfaa74a2d658887afaee",
@@ -342,6 +412,8 @@
     "scripts/check_mainchip_signal_repair_readback.py": "df3086dadbe8d27c7be6f3d33f57da860f8e89b28b5d291104f247879ad11dd4",
     "scripts/check_mainchip_signal_repair_readback_imports.py": "5d73d01238ebda98230d4323d9d75fc1c52247d41946d07eb112619998838434",
     "scripts/check_mainchip_signal_repair_via_projection.py": "4f5b2fc115f89b51b80a6301213fb9a97d7eb706b16b2d7bff4e6a1f1383e60c",
+    "scripts/check_mainchip_two_signal_api_probe.py": "2f3bc15c5824c787f761ae3381d31a28112222ca2b9e6f6dddfab357f884cb16",
+    "scripts/check_mainchip_two_signal_api_probe_imports.py": "1c7e612e745d5b528d42d10bd0b7d598c7fe67c38d168d009d29663eeed33170",
     "scripts/check_mainchip_two_signal_imports.py": "a54656d1d3645a5886198866439cebda65088a5422e546f33588bae3ca80c4ab",
     "scripts/check_mainchip_two_signal_repair.py": "12ab8b71dc43dd5bbf34ce55575e4d5cbcfd6675ea9686287a190a011cbec2a8",
     "scripts/check_onehot_fixed_clock_route.py": "9d7515d21cc75fdf8f4824560495272629e60ae864953094587106fc69e3b078",
@@ -373,6 +445,7 @@
     "scripts/cloud_mainchip_route12_postroute_geometry.py": "52de46aacf9b97ab17ac56560efef838d149a746a2dd09a6f1af87ed41be0c97",
     "scripts/cloud_mainchip_saved_postroute.py": "8a1a5ed19bb3fdb6d4bbf482718dcf29d7d15fdada23a90e678edef6981f5716",
     "scripts/cloud_mainchip_signal_repair_readback.py": "3c7cddd389b4d6fc8b3a3f3b6c4640b1bd786a6ece79986669ef1f3a6dc7d800",
+    "scripts/cloud_mainchip_two_signal_api_probe.py": "025f7d833b9318d2e6c2e064ffeea1f9eb881efc25cf9b15e0c020cddac982f9",
     "scripts/cloud_mainchip_two_signal_repair.py": "e5b2d952dd859e5fc297a4240565488dc748b29b7ccbf1d62adc587ffac1a45e",
     "scripts/cloud_replay_onehot_handoff.py": "f0e76748f4467590509b94398d85cd16a76315b8eea5563a6c119c99a40544b0",
     "scripts/cloud_replay_onehot_logic.py": "357278b73a34d5a04ed64ea07e022322196fa8330c3d0abfddf3a3884978feeb",
@@ -419,8 +492,9 @@
     "scripts/mainchip_saved_postroute_admission.py": "02228698d77216f28f2ce3ff2542aedc3615bd34d60d6f8aa138a24ea1702977",
     "scripts/mainchip_saved_postroute_publisher_base.py": "63b577fbac2b72037653c2a39486723cfd496edb34e1282850eaeed31a72a553",
     "scripts/mainchip_signal_repair_readback.py": "a43c538ab60cd64fe7cdcdc2f04704cc940d90f962ccf51802f90ee9eee2c4ae",
-    "scripts/mainchip_two_signal_api_probe.py": "6f4b474de85105c5c6b4909e7fd307759bed5ee344f1da9ca848942a488e08d4",
-    "scripts/mainchip_two_signal_api_probe_native.py": "1b75d964f0909479abe3e0ff11f41933d980e5a5b506b9edaa9e357ace64e68a",
+    "scripts/mainchip_two_signal_api_probe.py": "76ba97d646912164b378f4a1cad644c5e4ef7f5179f5764174a9312e062382ed",
+    "scripts/mainchip_two_signal_api_probe_fixture.py": "4fd751114d1b3f766cd0b5ad79de4919c559ebea2aede9d002ae0df9fc3f91a1",
+    "scripts/mainchip_two_signal_api_probe_native.py": "e96d47de458076582f364e1bd9130ebb13d24955257a2ec79665a19b2d03fdfd",
     "scripts/mainchip_two_signal_geometry.py": "209bc0a6eb847a628cc5fca5d0b2778e2138016cfbc189b226c2aebeb2da8d00",
     "scripts/mainchip_two_signal_ownership_native.py": "e786920dd82626e9799bae94b89619d8bd61a1bd88608caa1d7fd31f42a17436",
     "scripts/mainchip_two_signal_repair.py": "7bcc472de2db9715065863c2a44b27abe1a05c4581c5ff04a9aa6879145dcf6f",
@@ -449,9 +523,44 @@
   "purpose": "READ_ONLY_API_AND_IDENTITY_DIAGNOSTIC_NOT_REPAIR",
   "rc_sta_execution_authorized": false,
   "simulation_authorized": false,
-  "source_controls": null,
+  "source_controls": {
+    "authorization": [
+      1,
+      11
+    ],
+    "census": [
+      3,
+      10
+    ],
+    "driver": [
+      4,
+      6
+    ],
+    "isolated_imports": [
+      2,
+      7
+    ],
+    "native_main": [
+      1,
+      4
+    ],
+    "outer": [
+      1,
+      5
+    ],
+    "report": [
+      1,
+      13
+    ],
+    "transport": [
+      1,
+      3
+    ]
+  },
   "source_controls_authorized": false,
-  "source_unit_complete": false,
+  "source_unit_complete": true,
+  "status": "DISABLED_COMPLETE_SOURCE_PENDING_REVIEW_AND_HOSTED_CONTROLS",
   "timing_accepted": false,
+  "workflow_registered": false,
   "wrapper_workflow_readiness": false
 }
