@@ -69,7 +69,10 @@ jobs:
           assert r['outer_native_view']['complete_outer_members']==3181 and r['outer_native_view']['complete_consumed_native_members']==3165
           assert r['outer_native_view']['exact_full_set_equality']and len(r['outer_native_view']['rejected'])==24
           assert len(r['native_result_controls']['rejected'])==24
-          assert len(r['authorization']['positive'])==2 and len(r['authorization']['rejected'])==7
+          assert len(r['authorization']['positive'])==2 and len(r['authorization']['rejected'])==14
+          assert len(r['authorization']['both_legitimate_modes'])==14
+          assert r['authorization']['old_activated_noop_regression']['exact_original_failure_reproduced']
+          assert all(x['method_serialization_changed']and x['actual_method_rejected']for x in r['authorization']['both_legitimate_modes'])
           assert len(r['child_preflight']['positive'])==1 and len(r['child_preflight']['refused'])==6
           assert len(r['finalization']['actual_controller_main_finally'])==6
           assert len(r['owned_child_terminal']['cases'])==6 and r['owned_child_terminal']['all_terminal_actions_attempted_after_earlier_failure']

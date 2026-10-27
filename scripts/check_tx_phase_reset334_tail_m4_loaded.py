@@ -9,6 +9,8 @@ import tx_phase_reset334_tail_m4_loaded_adapter as d
 import cloud_tx_phase_reset334_tail_m4_loaded as controller
 import check_tx_phase_reset334_loaded_native_adapter as old_init_check
 
+FAILED_AUTHORIZATION_CHECKER='docs/evidence/tx-phase-reset334-tail-M4-loaded-activated-controls-failed-checker-20261027.py'
+
 def refusal(name,fn):
     try:fn()
     except(AssertionError,KeyError,ValueError,TypeError,FileNotFoundError):return name
@@ -518,7 +520,9 @@ def child_preflight_controls():
             assert result==dict(reservation,completed_source_controls=controls);positive.append('exact_parent_preflight')
             for name,key,value in [('source','source_head','0'*40),('run','run_id',-1),('attempt','run_attempt',2),
                                    ('control-proof','completed_controls',{}),('reservation','reservation',{})]:
-                changed=copy.deepcopy(proof);changed[key]=value;path.write_text(json.dumps(changed))
+                changed=copy.deepcopy(proof);changed[key]=value
+                assert json.dumps(changed,sort_keys=True)!=json.dumps(proof,sort_keys=True),'Preflight refusal must actually change the proof'
+                path.write_text(json.dumps(changed))
                 reject(refused,name,controller.child_preflight)
             path.write_text(json.dumps(proof))
             with mock.patch.object(controller.guard,'validate_release',return_value=dict(reservation,existing_assets=['already-published'])):
@@ -526,7 +530,7 @@ def child_preflight_controls():
     return dict(positive=positive,refused=refused,actual_child_preflight=True,no_remote_call=True)
 
 def authorization_controls():
-    m=controller.methods();positive=[];rejected=[]
+    m=controller.methods();positive=[];rejected=[];matrix=[];legitimate={}
     keys=('native_execution_authorized','native_zero_op_authorized','simulation_authorized','prepared_path_controls_authorized')
     with tempfile.TemporaryDirectory()as folder:
         path=Path(folder)/'method.json'
@@ -535,18 +539,60 @@ def authorization_controls():
             with mock.patch.object(controller,'METHOD',path):
                 assert controller.methods()==candidate
                 if mode:controller.authorize(candidate)
+            legitimate[mode]=copy.deepcopy(candidate)
             positive.append(dict(four_OP_authorizations=mode))
         mutations=[('transient',lambda x:x.update(native_transient_authorized=True)),
           ('geometry',lambda x:x.update(geometry_generation_authorized=True)),
           ('continuation',lambda x:x.update(continuation_authorized=True)),
           ('extraction',lambda x:x.update(extraction_authorized=True)),
-          ('split-authorization',lambda x:x.update(native_zero_op_authorized=True)),
+          ('split-authorization',lambda x:x.update(native_zero_op_authorized=not x['native_zero_op_authorized'])),
           ('nonboolean-native',lambda x:x.update({k:1 for k in keys})),
           ('resource-limit',lambda x:x['owned_process'].update(seconds=1))]
-        for name,mutate in mutations:
-            candidate=copy.deepcopy(m);mutate(candidate);path.write_text(json.dumps(candidate))
-            with mock.patch.object(controller,'METHOD',path):reject(rejected,name,controller.methods)
-    return dict(positive=positive,rejected=rejected)
+        for mode in (False,True):
+            for name,mutate in mutations:
+                baseline=legitimate[mode];candidate=copy.deepcopy(baseline)
+                mutate(candidate)
+                changed=[k for k in baseline if json.dumps(candidate[k],sort_keys=True)!=json.dumps(baseline[k],sort_keys=True)]
+                assert changed,'Authorization refusal must actually change the method'
+                if name=='split-authorization':
+                    assert changed==['native_zero_op_authorized']
+                    assert candidate['native_zero_op_authorized']is not mode
+                    assert all(candidate[k]is mode for k in keys if k!='native_zero_op_authorized')
+                if name=='nonboolean-native':assert set(changed)==set(keys) and all(type(candidate[k])is int for k in keys)
+                path.write_text(json.dumps(candidate));label=('enabled:'if mode else'disabled:')+name
+                with mock.patch.object(controller,'METHOD',path):reject(rejected,label,controller.methods)
+                matrix.append(dict(base_four_OP_authorizations=mode,case=name,changed_fields=changed,
+                    actual_method_rejected=True,method_serialization_changed=True))
+        # Replay the exact failed mutation through the unchanged real reject/methods seam.
+        frozen=controller.ROOT/FAILED_AUTHORIZATION_CHECKER;raw=frozen.read_bytes()
+        assert controller.sha(frozen)==m['protected'][FAILED_AUTHORIZATION_CHECKER]
+        expected=ast.parse("('split-authorization',lambda x:x.update(native_zero_op_authorized=True))",mode='eval').body
+        matches=[n for n in ast.walk(ast.parse(raw.decode()))if isinstance(n,ast.Tuple)
+          and ast.dump(n,include_attributes=False)==ast.dump(expected,include_attributes=False)]
+        assert len(matches)==1
+        legacy=eval(compile(ast.Expression(body=copy.deepcopy(matches[0])),str(frozen),'eval'),{})
+        candidate=copy.deepcopy(legitimate[True]);before=json.dumps(candidate,sort_keys=True)
+        legacy[1](candidate)
+        assert json.dumps(candidate,sort_keys=True)==before
+        path.write_text(json.dumps(candidate));legacy_rejections=[]
+        with mock.patch.object(controller,'METHOD',path):
+            assert controller.methods()==candidate
+            try:reject(legacy_rejections,legacy[0],controller.methods)
+            except AssertionError as error:
+                assert error.args==('Accepted split-authorization',)
+                tb=error.__traceback__
+                while tb.tb_next:tb=tb.tb_next
+                assert tb.tb_frame.f_code is reject.__code__
+            else:raise AssertionError('Original activated no-op fixture failure was not reproduced')
+        assert not legacy_rejections
+        regression=dict(exact_original_failure_reproduced=True,error='AssertionError: Accepted split-authorization',
+          exact_failed_checker_sha256=m['protected'][FAILED_AUTHORIZATION_CHECKER],source_line=matches[0].lineno,
+          activated_method_serialization_unchanged=True,production_methods_correctly_accepts_consistent_flags=True,
+          actual_unchanged_reject_function=True,native_or_archive_executed=False)
+    assert len(positive)==2 and len(rejected)==len(matrix)==14
+    assert {mode:sum(x['base_four_OP_authorizations']is mode for x in matrix)for mode in (False,True)}=={False:7,True:7}
+    return dict(positive=positive,rejected=rejected,both_legitimate_modes=matrix,
+      old_activated_noop_regression=regression)
 
 
 

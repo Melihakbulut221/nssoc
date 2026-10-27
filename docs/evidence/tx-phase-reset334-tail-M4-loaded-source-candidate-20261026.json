@@ -1,12 +1,12 @@
 {
-  "status": "DISABLED_FOUR_OP_FIXTURE_SOURCE_REVIEWED_PENDING_HOSTED_CONTROLS",
-  "parent_source": "6f869966940512fc84e5a1844731a32fcab498f8",
+  "status": "DISABLED_FOUR_OP_AUTHORIZATION_FIXTURE_CORRECTION_PENDING_PEER_AND_HOSTED_CONTROLS",
+  "parent_source": "558b5f961de5ae9abcd36af20a3889c1fe6e9d2a",
   "qualified_RC_proof": "fa4b1b5ebc9222fb401b9cbf4e955fd2e21098c2",
   "method": {
     "path": "scripts/tx-phase-reset334-tail-m4-loaded-methods.json",
-    "bytes": 77500,
-    "sha256": "bb90a4e68c495e0141a1443371e754b94bb9fefd32cf0a014249563a4b06d6f8",
-    "protected_files": 490
+    "bytes": 82559,
+    "sha256": "00fc04ce329efc996e64868413dea99a6c43f86967588065a23a0987effc9f92",
+    "protected_files": 520
   },
   "files": {
     "scripts/tx_phase_reset334_tail_m4_loaded_admission.py": {
@@ -22,8 +22,8 @@
       "sha256": "914baac8484ece23bc2d3085e7371dff2b751a27a5e787152db153b55a7b4f73"
     },
     "scripts/check_tx_phase_reset334_tail_m4_loaded.py": {
-      "bytes": 49343,
-      "sha256": "f949044f3c80e62478c010ff0b4077af001fa6a148196857e63712fa03ec07e7"
+      "bytes": 52925,
+      "sha256": "f3de5e4a69e578d9db533d725f6899b4958153093ebc724a120aed6d1f813620"
     },
     "scripts/check_tx_phase_reset334_tail_m4_loaded_imports.py": {
       "bytes": 6801,
@@ -34,8 +34,8 @@
       "sha256": "f89c8a9ab91cafa7061de8597655fbaa9b4724e6343b94f065af03376880062d"
     },
     ".github/workflow-templates/tx-phase-reset334-tail-m4-loaded-cloud.yml": {
-      "bytes": 13486,
-      "sha256": "fd83338a04daf9be53392f1c3abe98b4eefc27c4e79ff6915af0622b0ec40900"
+      "bytes": 13802,
+      "sha256": "0300ab1ff79f8934d61a7deeb3628b395ca14faae1f1fc3250c8733555069f66"
     }
   },
   "exact_native_program": {
@@ -62,11 +62,11 @@
   },
   "source_closure": {
     "proof": "docs/evidence/tx-phase-reset334-tail-M4-loaded-source-closure-20261026.json",
-    "protected_bytes": 86802981,
     "repository_source_files": 101,
     "initialization_modules": 58,
     "actual_import_time_data_files": 3,
-    "unresolved_initial_imports": []
+    "unresolved_initial_imports": [],
+    "protected_byte_total_scope": "Prior total is superseded by the new method map; this narrow update rehashes changed/new files and retains all other source pins without a repeated full byte-total claim."
   },
   "template_python_blocks": [
     {
@@ -110,7 +110,7 @@
     "outer_finalization_cases": 6,
     "supervisor_cases": 13,
     "authorization_positives": 2,
-    "authorization_refusals": 7,
+    "authorization_refusals": 14,
     "child_preflight_positive": 1,
     "child_preflight_refusals": 6,
     "permission_refusals": 4,
@@ -122,14 +122,16 @@
     "wait_refusals": 4,
     "owned_child_terminal_cases": 6,
     "original_digest_omission_regression": 1,
-    "exact_original_digest_positive_cases": 2
+    "exact_original_digest_positive_cases": 2,
+    "exact_activated_authorization_noop_regression": 1
   },
   "independent_review": {
     "admission_adapter": "docs/evidence/tx-phase-reset334-tail-M4-loaded-admission-independent-review-20261026.json",
     "current_inputs_four_OP": "docs/evidence/tx-phase-reset334-tail-M4-loaded-current-inputs-independent-review-20261026.json",
     "outer_lifecycle_import_publication": "docs/evidence/tx-phase-reset334-tail-M4-loaded-wrapper-independent-review-20261026.json",
     "digest_fixture": "docs/evidence/tx-phase-reset334-tail-M4-loaded-digest-fixture-independent-review-20261027.json",
-    "scope": "Bounded source reviews complete; actual first source-controls failure preserved. Corrected fixture is unexecuted and all authorizations remain false."
+    "scope": "Bounded source reviews complete; actual first source-controls failure preserved. Corrected fixture is unexecuted and all authorizations remain false.",
+    "authorization_fixture": "Pending independent source review; previous scoped reviews remain bound to their original source."
   },
   "authorization": {
     "source_controls_authorized": false,
@@ -148,12 +150,18 @@
   "original_numerical_gates_unchanged": true,
   "transient_scope": "No native transient in this unit. Only full original34ns/.3125ps prepared decks retained. After actual four-OP evidence, a separate current-OP admission/portable transient unit must be reviewed before any34ns run.",
   "audit_scope": "Only source/AST/JSON/hash operations in RAM and GitHub API writes; no authored imports, tests, engine, raw/native archive, local files or native downloads.",
-  "next_step": "Root may authorize exactly one hosted source-controls run. No activation, dispatch, native work or retry was performed by this receipt import.",
+  "next_step": "Narrow independent source review, then separately authorized hosted controls only; no native retry authorized.",
   "terminal_lifecycle_correction": "docs/evidence/tx-phase-reset334-tail-M4-loaded-terminal-source-correction-20261026.json",
   "digest_fixture_correction": {
     "path": "docs/evidence/tx-phase-reset334-tail-M4-loaded-digest-fixture-correction-20261027.json",
     "sha256": "5f25f35f57d6e21c6d27d06314d7cb45b473271ecedc70bd749a8eef7cae2de6",
     "failed_run": 40536882089,
+    "all_authorizations_false": true
+  },
+  "authorization_fixture_correction": {
+    "path": "docs/evidence/tx-phase-reset334-tail-M4-loaded-authorization-fixture-correction-20261027.json",
+    "sha256": "e2ce5e87a1886c74fd37362f66e7dd04666a72987b365201a251ef496c27092c",
+    "failed_run": 40543321528,
     "all_authorizations_false": true
   }
 }
