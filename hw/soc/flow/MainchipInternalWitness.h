@@ -152,13 +152,19 @@ inline void observe(frDesign* design, odb::dbDatabase* db,
     require(native && !native->isSpecial() && native->getWire(), "selected native ordinary wire");
     const bool expected_fixed = name == NAMES[2];
     require(net->isFixed() == expected_fixed, "selected fixed state changed");
-    require(native->getSigType() == odb::dbSigType::SIGNAL, "selected net not SIGNAL");
+    const auto expected_signal = expected_fixed ? odb::dbSigType::CLOCK : odb::dbSigType::SIGNAL;
+    require(native->getSigType() == expected_signal && net->getType() == expected_signal,
+            "selected SIGNAL/SIGNAL/CLOCK type");
+    const std::size_t expected_terms = name == NAMES[0] ? 9 : (name == NAMES[1] ? 5 : 8);
+    require(native->getITerms().size() + native->getBTerms().size() == expected_terms,
+            "selected acquired terminal count");
     require(native->getWireType() == (expected_fixed ? odb::dbWireType::FIXED : odb::dbWireType::ROUTED),
             "selected native wire class");
     require(net->getInstTerms().size() + net->getBTerms().size()
             == native->getITerms().size() + native->getBTerms().size(), "terminal census mismatch");
     out.row("{\"kind\":\"net\",\"name\":" + quote(name)
         + ",\"fixed\":" + (net->isFixed() ? "true" : "false")
+        + ",\"sigtype\":" + quote(expected_fixed ? "CLOCK" : "SIGNAL")
         + ",\"native_oid\":" + std::to_string(native->getId())
         + ",\"native_class\":" + quote(expected_fixed ? "FIXED" : "ROUTED")
         + ",\"terminal_count\":" + std::to_string(native->getITerms().size() + native->getBTerms().size()) + "}");

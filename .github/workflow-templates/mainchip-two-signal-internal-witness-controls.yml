@@ -38,7 +38,7 @@ jobs:
           from pathlib import Path
           r=json.loads(Path("internal-witness-controls.json").read_bytes())
           assert r["status"]=="PASS"
-          assert r["positive_count"]==4 and r["refusal_count"]==28
+          assert r["positive_count"]==4 and r["refusal_count"]==29
           assert r["engine_compiled"] is False and r["native_executed"] is False
           assert r["physical_acceptance"] is False
           PY

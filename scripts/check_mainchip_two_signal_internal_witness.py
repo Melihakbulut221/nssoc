@@ -15,9 +15,9 @@ def fixture():
                  "ordinary_nets": 143818, "special_nets": 2, "native_nets": 143820}]
         for i, name in enumerate(c.NAMES):
             fixed = i == 2
-            rows.append({"kind": "net", "name": name, "fixed": fixed, "native_oid": 100+i,
+            rows.append({"kind": "net", "name": name, "fixed": fixed, "sigtype": "CLOCK" if fixed else "SIGNAL", "native_oid": 100+i,
                          "native_class": "FIXED" if fixed else "ROUTED",
-                         "terminal_count": [9, 5, 2][i]})
+                         "terminal_count": [9, 5, 8][i]})
             origin = 100*i
             material = [
                 {"kind": "internal", "net": name, "container": "shape", "ordinal": 0, "component": 0,
@@ -137,6 +137,8 @@ def controls(root=c.ROOT):
     change("unknown_field", iskind("net"), lambda r: r.update(accepted=True), "Unexpected witness row fields")
     change("name", iskind("net"), lambda r: r.update(name="net999"), "Witness net order/identity mismatch")
     change("fixed", iskind("net"), lambda r: r.update(fixed=True), "Witness fixed state mismatch")
+    change("clock_is_not_SIGNAL", lambda r: r.get("kind") == "net" and r.get("name") == c.NAMES[2],
+           lambda r: r.update(sigtype="SIGNAL"), "Witness signal type mismatch")
     change("boolean_oid", iskind("net"), lambda r: r.update(native_oid=True), "Invalid native net OID")
     change("net_oid_change", iskind("net"), lambda r: r.update(native_oid=900), "Cross-stage net identity mismatch")
     change("terminal", iskind("net"), lambda r: r.update(terminal_count=8), "Target terminal count mismatch")

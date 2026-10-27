@@ -102,15 +102,15 @@ def parse_stage(data, stage):
     nets = {}
     for name in NAMES:
         row = rows[position]; position += 1
-        keys(row, "kind name fixed native_oid native_class terminal_count")
+        keys(row, "kind name fixed sigtype native_oid native_class terminal_count")
         require(row["kind"] == "net" and row["name"] == name, "Witness net order/identity mismatch")
         fixed = name == NAMES[2]
         require(type(row["fixed"]) is bool and row["fixed"] == fixed
                 and row["native_class"] == ("FIXED" if fixed else "ROUTED"), "Witness fixed state mismatch")
+        require(row["sigtype"] == ("CLOCK" if fixed else "SIGNAL"), "Witness signal type mismatch")
         integer(row["native_oid"], "Invalid native net OID", 1)
         integer(row["terminal_count"], "Invalid terminal count", 1)
-        if name != NAMES[2]:
-            require(row["terminal_count"] == (9 if name == NAMES[0] else 5), "Target terminal count mismatch")
+        require(row["terminal_count"] == {NAMES[0]: 9, NAMES[1]: 5, NAMES[2]: 8}[name], "Target terminal count mismatch")
         groups = {"internal": [], "native": [], "raw": []}
         rank = -1
         while position < len(rows) - 1 and rows[position].get("kind") != "end_net":
