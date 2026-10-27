@@ -1,0 +1,103 @@
+{
+  "actual_error": "AssertionError(('boolean_layer', 'Unapproved addition layer/datatype', 'Invalid raw record types'))",
+  "actual_failed_receipt": {
+    "path": "docs/evidence/cdr-v59-tail-serialization-first-controls-failure-20261027-receipt.json",
+    "sha256": "9ebb7797e3c8f1ef4f9c8a68ad7ad2db0d93176ef86f6d8116218698da123628"
+  },
+  "actual_failed_run": 40537004738,
+  "actual_frozen_call_regression": {
+    "execution": "Actual unchanged local run and replace_first closures call the unchanged production verify/rectangle using the full acquired Counter fixture.",
+    "required_exception_args": [
+      [
+        "boolean_layer",
+        "Unapproved addition layer/datatype",
+        "Invalid raw record types"
+      ]
+    ],
+    "selection": "Exact AST match of original run(boolean_layer, replace_first(0,True), Invalid raw record types) expression",
+    "source": "docs/evidence/cdr-v59-tail-serialization-first-controls-failed-checker-20261027.py"
+  },
+  "all_other_checker_functions_and_classes_AST_identical": [
+    "TypedBox",
+    "TypedPolygon",
+    "typed_shape"
+  ],
+  "complete_failed_proof_commit": "e691e1cad4e8def7b682deb0c6a6457c5a83ec97",
+  "direct_actual_guard_refusal": {
+    "called_function": "gate.rectangle",
+    "case": "boolean_layer_direct",
+    "expected": "Invalid raw record types",
+    "mutated_type": "bool"
+  },
+  "exact_reversal_recovers_failed_checker": true,
+  "failed_checker_snapshot": {
+    "bytes": 13140,
+    "path": "docs/evidence/cdr-v59-tail-serialization-first-controls-failed-checker-20261027.py",
+    "sha256": "13bde7eec28dfa5524aba70c21703afe392210455a7b735652b6541455c50071"
+  },
+  "full_diffs": {
+    ".github/workflow-templates/cdr-v59-tail-saved-identity-cloud.yml": "--- .github/workflow-templates/cdr-v59-tail-saved-identity-cloud.yml@failed\n+++ .github/workflow-templates/cdr-v59-tail-saved-identity-cloud.yml@corrected\n@@ -72,7 +72,7 @@\n           assert x['raw_diagnostic']['status']=='PASS_COMPLETE_RAW_DIAGNOSTIC_BEFORE_UNCHANGED_GUARD'\n           assert (x['raw_diagnostic']['positive_count'],x['raw_diagnostic']['refusal_count'])==(2,15)\n           assert x['serialization']['status']=='PASS_SOURCE_BOUND17_SERIALIZATION_GUARD_CONTROLS'\n-          assert (x['serialization']['positive_count'],x['serialization']['refusal_count'])==(4,39)\n+          assert (x['serialization']['positive_count'],x['serialization']['refusal_count'])==(5,40)\n           assert x['serialization']['actual_140_cell_raw_counter_JSON_used'] is True\n           assert x['serialization']['actual_original_guard_invoked'] is True\n           assert x['serialization']['native_geometry_API_explicitly_synthetic'] is True\n",
+    ".github/workflows/cdr-v59-tail-saved-identity-cloud.yml": "--- .github/workflows/cdr-v59-tail-saved-identity-cloud.yml@failed\n+++ .github/workflows/cdr-v59-tail-saved-identity-cloud.yml@corrected\n@@ -72,7 +72,7 @@\n           assert x['raw_diagnostic']['status']=='PASS_COMPLETE_RAW_DIAGNOSTIC_BEFORE_UNCHANGED_GUARD'\n           assert (x['raw_diagnostic']['positive_count'],x['raw_diagnostic']['refusal_count'])==(2,15)\n           assert x['serialization']['status']=='PASS_SOURCE_BOUND17_SERIALIZATION_GUARD_CONTROLS'\n-          assert (x['serialization']['positive_count'],x['serialization']['refusal_count'])==(4,39)\n+          assert (x['serialization']['positive_count'],x['serialization']['refusal_count'])==(5,40)\n           assert x['serialization']['actual_140_cell_raw_counter_JSON_used'] is True\n           assert x['serialization']['actual_original_guard_invoked'] is True\n           assert x['serialization']['native_geometry_API_explicitly_synthetic'] is True\n",
+    "scripts/check_cdr_v59_tail_serialized_additions.py": "--- scripts/check_cdr_v59_tail_serialized_additions.py@failed\n+++ scripts/check_cdr_v59_tail_serialized_additions.py@corrected\n@@ -15,6 +15,7 @@\n \n PREFIX=\"docs/evidence/cdr-v59-tail-saved-identity-raw-diagnostic-native-terminal-20261026\"\n FROZEN=\"docs/evidence/cdr-v59-tail-saved-identity-pre-serialization-native-20261026.py\"\n+FAILED_CHECKER=\"docs/evidence/cdr-v59-tail-serialization-first-controls-failed-checker-20261027.py\"\n \n class TypedBox:\n     def __init__(self,*bounds):self.bounds=tuple(bounds)\n@@ -125,7 +126,23 @@\n     run(\"non_target_added_record\",lambda a,b:b[original_non_target].append(b[original_non_target][0]),\"Addition outside authorized target child\")\n     run(\"duplicate_authorized_addition\",lambda a,b:b[n.CHILD].append(first),\"Exact authorized addition coordinates or multiplicities changed\")\n     run(\"missing_authorized_addition\",lambda a,b:b[n.CHILD].remove(first),\"Exact authorized addition coordinates or multiplicities changed\")\n-    run(\"boolean_layer\",replace_first(0,True),\"Invalid raw record types\")\n+    failed_path=s.ROOT/FAILED_CHECKER\n+    failed_raw=failed_path.read_bytes()\n+    assert s.sha(failed_path)==pins[FAILED_CHECKER]\n+    expected_call=ast.parse('run(\"boolean_layer\",replace_first(0,True),\"Invalid raw record types\")').body[0]\n+    failed_calls=[node for node in ast.walk(ast.parse(failed_raw.decode())) if isinstance(node,ast.Expr)\n+      and ast.dump(node,include_attributes=False)==ast.dump(expected_call,include_attributes=False)]\n+    assert len(failed_calls)==1\n+    try:\n+        exec(compile(ast.Module(body=[copy.deepcopy(failed_calls[0])],type_ignores=[]),\n+          str(failed_path),\"exec\"),{\"run\":run,\"replace_first\":replace_first})\n+    except AssertionError as error:\n+        assert error.args==((\"boolean_layer\",\"Unapproved addition layer/datatype\",\"Invalid raw record types\"),)\n+        positives.append({\"case\":\"exact_failed_boolean_fixture_call_reproduced\",\n+          \"failed_checker_sha256\":pins[FAILED_CHECKER],\"source_line\":failed_calls[0].lineno,\n+          \"actual_error\":repr(error),\"boolean_integer_layer_equality_collision_preserved\":True})\n+    else:raise AssertionError(\"Original boolean fixture mismatch was not reproduced\")\n+    run(\"integer_layer_one\",replace_first(0,1),\"Unapproved addition layer/datatype\")\n     run(\"added_layer\",replace_first(0,135),\"Unapproved addition layer/datatype\")\n     run(\"added_datatype\",replace_first(1,1),\"Unapproved addition layer/datatype\")\n     run(\"added_property\",replace_first(3,'{\"1\":\"changed\"}'),\"Addition properties or text changed\")\n@@ -154,6 +171,9 @@\n             assert str(error)==message,(label,str(error),message)\n             refusals.append({\"case\":label,\"reason\":str(error)})\n         else:raise AssertionError(\"Accepted \"+label)\n+    boolean_record=list(first);boolean_record[0]=True\n+    assert type(boolean_record[0]) is bool\n+    reject(\"boolean_layer_direct\",lambda:gate.rectangle(boolean_record),\"Invalid raw record types\")\n     left,right=layouts(old,current);right.dbu=.002\n     reject(\"dbu\",lambda:gate.verify(pya,n.properties,left,right,generation,s.ROOT/s.GENERATOR),\"Original DBU changed\")\n     left,right=layouts(old,current);right.cell(n.TOP).bbox=lambda:\"changed\"\n@@ -181,9 +201,9 @@\n     left,right=layouts(old,current);right.cell(n.TOP).bbox=lambda:\"wrong\"\n     reject(\"unrelated_original_guard_failure\",lambda:gate.reproduce_original_failure(\n       n.raw_hierarchy_proof,left,right,generation,s.ROOT/s.GENERATOR),\"Original exact raw rejection was not reproduced\")\n-    assert len(positives)==4 and len(refusals)==39,(len(positives),len(refusals))\n+    assert len(positives)==5 and len(refusals)==40,(len(positives),len(refusals))\n     return {\"status\":\"PASS_SOURCE_BOUND17_SERIALIZATION_GUARD_CONTROLS\",\n-      \"positive_count\":4,\"refusal_count\":39,\"positives\":positives,\"refusals\":refusals,\n+      \"positive_count\":5,\"refusal_count\":40,\"positives\":positives,\"refusals\":refusals,\n       \"actual_140_cell_raw_counter_JSON_used\":True,\"actual_original_guard_invoked\":True,\n       \"original_generation_and17_additions_bound\":True,\n       \"native_geometry_API_explicitly_synthetic\":True,\"authored_native_or_CAD_executed\":False,\n"
+  },
+  "literal_checker_edits": [
+    {
+      "after": "FROZEN=\"docs/evidence/cdr-v59-tail-saved-identity-pre-serialization-native-20261026.py\"\nFAILED_CHECKER=\"docs/evidence/cdr-v59-tail-serialization-first-controls-failed-checker-20261027.py\"\n",
+      "before": "FROZEN=\"docs/evidence/cdr-v59-tail-saved-identity-pre-serialization-native-20261026.py\"\n"
+    },
+    {
+      "after": "    failed_path=s.ROOT/FAILED_CHECKER\n    failed_raw=failed_path.read_bytes()\n    assert s.sha(failed_path)==pins[FAILED_CHECKER]\n    expected_call=ast.parse('run(\"boolean_layer\",replace_first(0,True),\"Invalid raw record types\")').body[0]\n    failed_calls=[node for node in ast.walk(ast.parse(failed_raw.decode())) if isinstance(node,ast.Expr)\n      and ast.dump(node,include_attributes=False)==ast.dump(expected_call,include_attributes=False)]\n    assert len(failed_calls)==1\n    try:\n        exec(compile(ast.Module(body=[copy.deepcopy(failed_calls[0])],type_ignores=[]),\n          str(failed_path),\"exec\"),{\"run\":run,\"replace_first\":replace_first})\n    except AssertionError as error:\n        assert error.args==((\"boolean_layer\",\"Unapproved addition layer/datatype\",\"Invalid raw record types\"),)\n        positives.append({\"case\":\"exact_failed_boolean_fixture_call_reproduced\",\n          \"failed_checker_sha256\":pins[FAILED_CHECKER],\"source_line\":failed_calls[0].lineno,\n          \"actual_error\":repr(error),\"boolean_integer_layer_equality_collision_preserved\":True})\n    else:raise AssertionError(\"Original boolean fixture mismatch was not reproduced\")\n    run(\"integer_layer_one\",replace_first(0,1),\"Unapproved addition layer/datatype\")\n",
+      "before": "    run(\"boolean_layer\",replace_first(0,True),\"Invalid raw record types\")\n"
+    },
+    {
+      "after": "    boolean_record=list(first);boolean_record[0]=True\n    assert type(boolean_record[0]) is bool\n    reject(\"boolean_layer_direct\",lambda:gate.rectangle(boolean_record),\"Invalid raw record types\")\n    left,right=layouts(old,current);right.dbu=.002\n",
+      "before": "    left,right=layouts(old,current);right.dbu=.002\n"
+    },
+    {
+      "after": "assert len(positives)==5 and len(refusals)==40,(len(positives),len(refusals))",
+      "before": "assert len(positives)==4 and len(refusals)==39,(len(positives),len(refusals))"
+    },
+    {
+      "after": "\"positive_count\":5,\"refusal_count\":40",
+      "before": "\"positive_count\":4,\"refusal_count\":39"
+    }
+  ],
+  "local_imports_tests_or_archives": false,
+  "native_execution": false,
+  "native_reader_controller_comparator_unchanged": true,
+  "new_authored_fixture_tests_executed": false,
+  "new_counts": {
+    "positive": 5,
+    "refusal": 40
+  },
+  "old_and_new_hashes": {
+    ".github/workflow-templates/cdr-v59-tail-saved-identity-cloud.yml": {
+      "new": "ed3a09dd26438e9185bc1ae719bc0d5e055a858957e8a28cd21cf83b7ca9162d",
+      "old": "7a98e197ab3cdbb19b9b65eab26c6c61033a28bf60a8fc124033581c405f84cd"
+    },
+    ".github/workflows/cdr-v59-tail-saved-identity-cloud.yml": {
+      "new": "ed3a09dd26438e9185bc1ae719bc0d5e055a858957e8a28cd21cf83b7ca9162d",
+      "old": "7a98e197ab3cdbb19b9b65eab26c6c61033a28bf60a8fc124033581c405f84cd"
+    },
+    "scripts/check_cdr_v59_tail_serialized_additions.py": {
+      "new": "1579456d1e3e9f300f10325424f1b64aeb1afff905d71b2b3813436fc99801c8",
+      "old": "13bde7eec28dfa5524aba70c21703afe392210455a7b735652b6541455c50071"
+    }
+  },
+  "old_counts": {
+    "positive": 4,
+    "refusal": 39
+  },
+  "only_changed_checker_function": "controls",
+  "precise_source_cause": "Inherited raw_fixture_layout builds a set of layer/datatype pairs; True compares and hashes equal to existing integer1, so the whole-fixture mutation does not preserve the invalid boolean type.",
+  "production_validator_unchanged": true,
+  "schema": "cdr-v59-serialization-boolean-fixture-source-correction-v1",
+  "source_before": "4bd48807b28b2b7a0ddf9b8a01dd926c2689dcd8",
+  "status": "SOURCE_ONLY_CHECKER_CORRECTION_UNEXECUTED",
+  "whole_fixture_refusal": {
+    "case": "integer_layer_one",
+    "expected": "Unapproved addition layer/datatype",
+    "mutated_value": 1
+  },
+  "workflow_change": "Only serialization count assertion 4/39 to 5/40 in identical active/template copies."
+}

@@ -15,6 +15,7 @@ import cdr_v59_tail_serialized_additions as gate
 
 PREFIX="docs/evidence/cdr-v59-tail-saved-identity-raw-diagnostic-native-terminal-20261026"
 FROZEN="docs/evidence/cdr-v59-tail-saved-identity-pre-serialization-native-20261026.py"
+FAILED_CHECKER="docs/evidence/cdr-v59-tail-serialization-first-controls-failed-checker-20261027.py"
 
 class TypedBox:
     def __init__(self,*bounds):self.bounds=tuple(bounds)
@@ -125,7 +126,23 @@ def controls(base):
     run("non_target_added_record",lambda a,b:b[original_non_target].append(b[original_non_target][0]),"Addition outside authorized target child")
     run("duplicate_authorized_addition",lambda a,b:b[n.CHILD].append(first),"Exact authorized addition coordinates or multiplicities changed")
     run("missing_authorized_addition",lambda a,b:b[n.CHILD].remove(first),"Exact authorized addition coordinates or multiplicities changed")
-    run("boolean_layer",replace_first(0,True),"Invalid raw record types")
+    failed_path=s.ROOT/FAILED_CHECKER
+    failed_raw=failed_path.read_bytes()
+    assert s.sha(failed_path)==pins[FAILED_CHECKER]
+    expected_call=ast.parse('run("boolean_layer",replace_first(0,True),"Invalid raw record types")').body[0]
+    failed_calls=[node for node in ast.walk(ast.parse(failed_raw.decode())) if isinstance(node,ast.Expr)
+      and ast.dump(node,include_attributes=False)==ast.dump(expected_call,include_attributes=False)]
+    assert len(failed_calls)==1
+    try:
+        exec(compile(ast.Module(body=[copy.deepcopy(failed_calls[0])],type_ignores=[]),
+          str(failed_path),"exec"),{"run":run,"replace_first":replace_first})
+    except AssertionError as error:
+        assert error.args==(("boolean_layer","Unapproved addition layer/datatype","Invalid raw record types"),)
+        positives.append({"case":"exact_failed_boolean_fixture_call_reproduced",
+          "failed_checker_sha256":pins[FAILED_CHECKER],"source_line":failed_calls[0].lineno,
+          "actual_error":repr(error),"boolean_integer_layer_equality_collision_preserved":True})
+    else:raise AssertionError("Original boolean fixture mismatch was not reproduced")
+    run("integer_layer_one",replace_first(0,1),"Unapproved addition layer/datatype")
     run("added_layer",replace_first(0,135),"Unapproved addition layer/datatype")
     run("added_datatype",replace_first(1,1),"Unapproved addition layer/datatype")
     run("added_property",replace_first(3,'{"1":"changed"}'),"Addition properties or text changed")
@@ -154,6 +171,9 @@ def controls(base):
             assert str(error)==message,(label,str(error),message)
             refusals.append({"case":label,"reason":str(error)})
         else:raise AssertionError("Accepted "+label)
+    boolean_record=list(first);boolean_record[0]=True
+    assert type(boolean_record[0]) is bool
+    reject("boolean_layer_direct",lambda:gate.rectangle(boolean_record),"Invalid raw record types")
     left,right=layouts(old,current);right.dbu=.002
     reject("dbu",lambda:gate.verify(pya,n.properties,left,right,generation,s.ROOT/s.GENERATOR),"Original DBU changed")
     left,right=layouts(old,current);right.cell(n.TOP).bbox=lambda:"changed"
@@ -181,9 +201,9 @@ def controls(base):
     left,right=layouts(old,current);right.cell(n.TOP).bbox=lambda:"wrong"
     reject("unrelated_original_guard_failure",lambda:gate.reproduce_original_failure(
       n.raw_hierarchy_proof,left,right,generation,s.ROOT/s.GENERATOR),"Original exact raw rejection was not reproduced")
-    assert len(positives)==4 and len(refusals)==39,(len(positives),len(refusals))
+    assert len(positives)==5 and len(refusals)==40,(len(positives),len(refusals))
     return {"status":"PASS_SOURCE_BOUND17_SERIALIZATION_GUARD_CONTROLS",
-      "positive_count":4,"refusal_count":39,"positives":positives,"refusals":refusals,
+      "positive_count":5,"refusal_count":40,"positives":positives,"refusals":refusals,
       "actual_140_cell_raw_counter_JSON_used":True,"actual_original_guard_invoked":True,
       "original_generation_and17_additions_bound":True,
       "native_geometry_API_explicitly_synthetic":True,"authored_native_or_CAD_executed":False,
