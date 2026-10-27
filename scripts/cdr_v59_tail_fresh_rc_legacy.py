@@ -143,6 +143,8 @@ def finalize_rc_outputs(report,stage,pin,save,primary_error):
     try:save()
     except BaseException as error:
         report["terminal_save_error"]={"error":repr(error),"traceback":traceback.format_exc()}
+        if report["status"]=="RUNNING" or report["status"].startswith("PASS"):
+            report["status"]="FAIL_V59_TERMINAL_SAVE"
         # If storage itself fails, retain the complete unsaved report in the supervised stream.
         print(json.dumps({"unsaved_terminal_RC_result":report},sort_keys=True,default=repr),flush=True)
         if primary_error is None:raise

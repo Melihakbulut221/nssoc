@@ -4,13 +4,14 @@
 import argparse
 import ast
 import copy
-from contextlib import ExitStack,contextmanager
+from contextlib import ExitStack,contextmanager,redirect_stdout
 import importlib.util
 import hashlib
 import io
 import tarfile
 import json
 import os
+import sys
 from pathlib import Path
 import tempfile
 from unittest.mock import patch
@@ -19,7 +20,7 @@ from run_cloud_tx_layout_repair import sha
 
 ROOT=Path(__file__).resolve().parents[1]
 AUDIT="docs/evidence/cdr-v59-tail-fresh-rc-numerical-worker-derivation-20261027.json"
-ENV={"GITHUB_SHA":"1"*40,"GITHUB_RUN_ID":"101","GITHUB_RUN_ATTEMPT":"1","GITHUB_ACTIONS":"true","PYTHONDONTWRITEBYTECODE":"1"}
+ENV={"GITHUB_SHA":"1"*40,"GITHUB_RUN_ID":"101","GITHUB_RUN_ATTEMPT":"1","GITHUB_ACTIONS":"true","PYTHONDONTWRITEBYTECODE":"1","CDR500_CAPTURE_VARIANT":"precise"}
 SAVED={"synthetic_saved_integrity_boundary":True}
 class BoundaryStop(RuntimeError):pass
 
@@ -373,15 +374,125 @@ def rc_terminal_controls():
     return {"cases":cases,"exact_previous_stale_failure":reproduced,"positive":1,
       "expected_current_failures":3,"original_failure_reproduced":True}
 
+
+def terminal_helper_controls():
+    cases=[]
+    # The actual finalizer must attempt the second inventory after the first failed.
+    report={"status":a.PASS["rc"]};events=[];error=OSError("STAGE_INVENTORY_FAILURE")
+    def first(_):events.append("stage");raise error
+    def second(_):events.append("current");return {"fresh": "1"*64}
+    saved=[]
+    def save():events.append("save");saved.append(copy.deepcopy(report))
+    with patch.object(a,"inventory",side_effect=first),patch.object(a,"new_current_outputs",side_effect=second):
+        try:a.finalize_rc_outputs(report,Path("synthetic-stage"),{},save,None)
+        except OSError as caught:assert caught is error
+        else:raise AssertionError("Stage inventory failure admitted")
+    assert events==["stage","current","save"] and saved==[report]
+    assert report["new_current_view_outputs"]=={"fresh":"1"*64}
+    assert report["status"]=="FAIL_V59_TERMINAL_OUTPUT_INVENTORY"
+    cases.append({"case":"stage_inventory_fails_current_still_attempted","events":events,"same_exception":True})
+    for active in (False,True):
+        primary=RuntimeError("ACTIVE_PRIMARY") if active else None
+        save_error=OSError("TERMINAL_SAVE_FAILURE")
+        report={"status":"FAIL_OR_ERROR" if active else a.PASS["rc"]}
+        if active:report["error"]=repr(primary)
+        events=[];stream=io.StringIO()
+        def save_failure():events.append("save");raise save_error
+        with patch.object(a,"inventory",return_value={"result.json":"0"*64,"file":"1"*64}),patch.object(a,"new_current_outputs",return_value={"fresh":"2"*64}),redirect_stdout(stream):
+            if active:
+                try:
+                    try:raise primary
+                    finally:a.finalize_rc_outputs(report,Path("synthetic-stage"),{},save_failure,sys.exc_info()[1])
+                except RuntimeError as caught:assert caught is primary
+                else:raise AssertionError("Active primary exception suppressed by terminal save failure")
+            else:
+                try:a.finalize_rc_outputs(report,Path("synthetic-stage"),{},save_failure,None)
+                except OSError as caught:assert caught is save_error
+                else:raise AssertionError("Terminal save failure admitted")
+        emitted=json.loads(stream.getvalue())
+        assert events==["save"] and emitted=={"unsaved_terminal_RC_result":report}
+        assert report["terminal_save_error"]["error"]==repr(save_error)
+        assert report["active_primary_exception_before_inventory"]==(repr(primary)if active else None)
+        assert report["status"]==("FAIL_OR_ERROR"if active else"FAIL_V59_TERMINAL_SAVE")
+        assert report["terminal_output_inventory_complete"] is True
+        cases.append({"case":"save_failure_with_"+("active_primary"if active else"no_primary"),
+          "same_exception":True,"complete_unsaved_result_emitted":True,"emitted":emitted})
+    assert len(cases)==3
+    return cases
+
+
+def mim_entry_controls():
+    positive=[];negative=[]
+    with fixture() as f:
+        f["mim"].mkdir();a.restore_inputs();capture=load_worker("capture")
+        out=f["mim"]/"precise";stop=BoundaryStop("STOP_BEFORE_PRECISION_PRODUCER_ARCHIVE")
+        with patch.object(capture,"OUT",out),patch.object(capture,"VARIANT","precise"),patch.object(a,"authorize",return_value=None),patch.object(capture.sys,"argv",[str(capture.__file__)]),patch.object(capture.reports,"OUT",out),patch.object(capture.reports,"restore_report",side_effect=stop) as producer:
+            try:capture.main()
+            except BoundaryStop as error:assert error is stop
+            else:raise AssertionError("Capture did not stop before producer archive")
+            producer.assert_called_once()
+        report=json.loads((out/"result.json").read_text())
+        assert report["status"]=="FAIL_OR_ERROR" and report["error"]==repr(stop)
+        assert report["model_binding_source"]["summary_sha256"]==a.binding_pin()["summary_sha256"]
+        a.verify_projection(out)
+        assert report["outputs"]=={n:h for n,h in a.inventory(out).items()if n!="result.json"}
+        positive.append({"stage":"capture","actual_main":True,"actual_complete_projection":True,"producer_archive_not_accessed":True})
+    for mode in ("boundary","binding_run","binding_summary","capture_file_digest","native_order"):
+        with fixture() as f:
+            f["mim"].mkdir();a.restore_inputs();out=f["mim"]/"precise";out.mkdir()
+            _,_,_,bproof,_=a.project_for_capture(out)
+            prior={"status":"PASS_PD500_MIM_AWARE_NATIVE_CAPTURE_AND_INTRINSIC_BINDING_REQUIRES_RAW_RC_AUDIT",
+              "source_head":ENV["GITHUB_SHA"],"sources_unchanged":True,"native_order_variant":"precise",
+              "outputs":a.inventory(out),"intrinsic_capture_binding":{"explicitly_synthetic":True},
+              "model_binding_source":bproof}
+            pristine=copy.deepcopy(prior)
+            if mode=="binding_run":prior["model_binding_source"]["run"]=102
+            elif mode=="binding_summary":prior["model_binding_source"]["summary_sha256"]="0"*64
+            elif mode=="capture_file_digest":prior["outputs"]["source/.hidden"]="0"*64
+            elif mode=="native_order":prior["native_order_variant"]="precise_reversed"
+            if mode!="boundary":assert json.dumps(prior,sort_keys=True)!=json.dumps(pristine,sort_keys=True)
+            put(out/"result.json",prior)
+            audit=load_worker("audit");target=out/"source/wire/audit-rc48.py"
+            stop=BoundaryStop("STOP_BEFORE_MIM_NUMERICAL_ADAPTATION")
+            original_read=Path.read_text;boundary=[]
+            def read(path,*args,**kwargs):
+                if path==target:boundary.append(path);raise stop
+                return original_read(path,*args,**kwargs)
+            caught=None
+            with patch.object(audit,"CAP",out),patch.object(audit,"OUT",out/"audit-stage"),patch.object(audit,"VARIANT","precise"),patch.object(a,"authorize",return_value=None),patch.object(audit.reports,"OUT",out/"audit-stage"),patch.object(Path,"read_text",read):
+                try:audit.main()
+                except BaseException as error:caught=error
+            report=json.loads((out/"audit-stage/result.json").read_text())
+            assert report["status"]=="FAIL_OR_ERROR" and report["error"]==repr(caught)
+            if mode=="boundary":
+                assert caught is stop and boundary==[target]
+                assert report["intrinsic_binding_source"]=={"run":101,"summary_sha256":bproof["summary_sha256"]}
+                positive.append({"stage":"audit","actual_main":True,"actual_binding_pin_consumed":True,"numerical_helper_not_read_or_executed":True})
+            else:
+                assert type(caught)is AssertionError and caught.args==() and boundary==[]
+                tb=caught.__traceback__
+                while tb.tb_next:tb=tb.tb_next
+                assert tb.tb_frame.f_code.co_name=="main" and Path(tb.tb_frame.f_code.co_filename)==Path(audit.__file__)
+                node=next(n for n in ast.walk(ast.parse(Path(audit.__file__).read_text()))if isinstance(n,ast.Assert)and n.lineno==tb.tb_lineno)
+                observed=ast.unparse(node.test)
+                expected={"binding_run":"prior['model_binding_source']['run'] == binding_pin['run']",
+                  "binding_summary":"prior['model_binding_source']['summary_sha256'] == binding_pin['summary_sha256']",
+                  "capture_file_digest":"all((sha(CAP / n) == digest for n, digest in prior['outputs'].items()))",
+                  "native_order":"prior['native_order_variant'] == VARIANT"}[mode]
+                assert observed==expected,(mode,observed,expected)
+                negative.append({"case":mode,"actual_assertion":observed,"line":tb.tb_lineno,"rejected":True})
+    assert len(positive)==2 and len(negative)==4
+    return {"positive":positive,"negative":negative,"synthetic_reports_not_native_qualification":True}
+
 def controls():
     a.methods()
-    d=derivation_controls();r=report_controls();h=handoff_controls();entries=main_entry_controls();terminal=rc_terminal_controls()
+    d=derivation_controls();r=report_controls();h=handoff_controls();entries=main_entry_controls();terminal=rc_terminal_controls();terminal_helpers=terminal_helper_controls();mim=mim_entry_controls()
     result={"status":"PASS_DISABLED_FRESH_NUMERICAL_DERIVATION_AND_SYNTHETIC_HANDOFF_CONTROLS",
-      "derivation":d,"report_schema":r,"handoff":h,"actual_main_entries":entries,"RC_terminal":terminal,
-      "positive_groups":8,"refusals":34,"authored_native_execution":False,
+      "derivation":d,"report_schema":r,"handoff":h,"actual_main_entries":entries,"RC_terminal":terminal,"direct_finalizer":terminal_helpers,"MIM_entries":mim,
+      "positive_groups":10,"refusals":41,"authored_native_execution":False,
       "synthetic_stages_are_not_actual_native_qualification":True,
-      "unfinished_entry_scopes":["MIM capture main after full projection","MIM audit main after source/hash guards"]}
-    assert len(d["negative"])+len(r["negative"])+len(h["negative"])+terminal["expected_current_failures"]==34
+      "unfinished_entry_scopes":[]}
+    assert len(d["negative"])+len(r["negative"])+len(h["negative"])+terminal["expected_current_failures"]+len(terminal_helpers)+len(mim["negative"])==41
     a.methods();return result
 
 def main():
