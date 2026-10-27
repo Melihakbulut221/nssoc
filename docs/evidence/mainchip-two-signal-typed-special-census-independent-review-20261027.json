@@ -1,0 +1,104 @@
+{
+  "schema": "mainchip-two-signal-typed-special-census-independent-source-review-v1",
+  "reviewed_source": "19d646305529ee35f246996a5aa43b79de9da2fe",
+  "reviewed_branch": "codex/mainchip-fixed-clock-signal-repair",
+  "reviewer": "pll_handoff",
+  "verdict": "CLEAR_BOUNDED_SOURCE_ONLY",
+  "verbatim_verdict": "Bounded source review CLEAR at 19d646305529ee35f246996a5aa43b79de9da2fe; no concrete blocker found. Independently rehashed the planner, native collector, checker, full source audit, exact frozen failed planner and 453-pin method. All three unified source diffs were independently applied and reversed byte-exact. Actual dbNet.isSpecial selects the pinned DRT addSNet population; names and POWER/GROUND do not infer special status. Non-special supply refuses. The original ordinary unwired paths=[]/guides=0/terminals<=1 rule remains unchanged and is not represented as equivalence to worker-local drNet pin counts. Every nontarget ordinary dbWire, including one attached to an actual special net, remains encoded FIXED. Existing structural equality, immutable special material and postroute geometry/identity/wire invariants remain required. Full observed rows, special terminal identities and guides, and compact refusal reports are saved before native/router admission assertions. The actual collector/save fixtures cover three positive and sixteen refusal scenarios, including the exact frozen line111 failure on an explicitly synthetic special row, the complete 143820-net census, late getter failure with a 143819-row prefix, and cleanup failure. External native APIs are synthetic in these authored fixtures. The actual original failed row remains unknown. This is bounded source/AST/hash inspection only, with no authored imports/tests, archive/native work, or full 453-pin closure audit. It is not execution, routing, physical acceptance, or proof that the actual prior failure was caused by a special net.",
+  "focused_files": {
+    "scripts/mainchip_two_signal_repair.py": {
+      "bytes": 10320,
+      "sha256": "22a3c95f09218dce2661af42a770b5dcb234ef0188ba381aedee96a82eeebcd8"
+    },
+    "scripts/mainchip_two_signal_repair_native.py": {
+      "bytes": 19641,
+      "sha256": "d94e03651bacfb86243174bd6e15522e5829ce2bc8a856c7c555713458cef049"
+    },
+    "scripts/check_mainchip_two_signal_repair.py": {
+      "bytes": 58567,
+      "sha256": "da6730b06e67d8cb8e515977a5dd9e38f945649c98aadd6a2ed38f7f0a929fcd"
+    },
+    "docs/evidence/mainchip-two-signal-typed-special-census-source-proposal-20261027.json": {
+      "bytes": 34855,
+      "sha256": "f44b872f1e4cb5e5c4fd95a74ec21e5efa4220a0ee43c11697193e2403d7a8fb"
+    },
+    "docs/evidence/mainchip-two-signal-router-census-failed-planner-20261027.py": {
+      "bytes": 7233,
+      "sha256": "7bcc472de2db9715065863c2a44b27abe1a05c4581c5ff04a9aa6879145dcf6f"
+    },
+    "scripts/mainchip-two-signal-repair-methods.json": {
+      "bytes": 72054,
+      "sha256": "a3326a0db64e79e7eca55b75450753c57a4f26416288cd867455d8bd214187d9"
+    }
+  },
+  "independent_diff_reversal": [
+    {
+      "path": "scripts/mainchip_two_signal_repair.py",
+      "old_sha256": "7bcc472de2db9715065863c2a44b27abe1a05c4581c5ff04a9aa6879145dcf6f",
+      "new_sha256": "22a3c95f09218dce2661af42a770b5dcb234ef0188ba381aedee96a82eeebcd8",
+      "forward_and_reverse_byte_exact": true
+    },
+    {
+      "path": "scripts/mainchip_two_signal_repair_native.py",
+      "old_sha256": "adfa942462d3447054081b7486813b7207a7fb76b3624fdd58fd03d63cee37fa",
+      "new_sha256": "d94e03651bacfb86243174bd6e15522e5829ce2bc8a856c7c555713458cef049",
+      "forward_and_reverse_byte_exact": true
+    },
+    {
+      "path": "scripts/check_mainchip_two_signal_repair.py",
+      "old_sha256": "c9e2f5367eb476997c9da36555d5a0aa0aa9ab5cfc5b3ddefce1d970916980a5",
+      "new_sha256": "da6730b06e67d8cb8e515977a5dd9e38f945649c98aadd6a2ed38f7f0a929fcd",
+      "forward_and_reverse_byte_exact": true
+    }
+  ],
+  "source_scope": {
+    "planner_changed": [
+      "router_census"
+    ],
+    "planner_added": [
+      "router_census_observation"
+    ],
+    "native_changed": [
+      "guide_census",
+      "main"
+    ],
+    "native_main_change": "Only the fixed-audit call receives out and already-compared immutable material.",
+    "checker_changed": [
+      "boundary_controls",
+      "controls"
+    ],
+    "checker_added": [
+      "router_census_controls"
+    ],
+    "all_other_top_level_functions_ast_identical": true
+  },
+  "primary_runtime": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "primary_evidence": {
+    "commit": "30172c4b0f4a7d4f56daab16adeaf3ea1c36c233",
+    "path": "docs/evidence/mainchip-two-signal-router-census-failure-source-diagnosis-20261027.json",
+    "sha256": "fffb61adc70a0dc7c94461071072108b9089e9bf5ab126d3deed707676355383"
+  },
+  "observed_method_authorizations": {
+    "cloud_restore_authorized": false,
+    "native_execution_authorized": false,
+    "native_routing_authorized": false,
+    "rc_sta_execution_authorized": false,
+    "simulation_authorized": false,
+    "source_controls_authorized": false
+  },
+  "authored_fixture_counts": {
+    "positive": 3,
+    "refusal": 16
+  },
+  "limitations": [
+    "No actual source controls or native execution by this reviewer.",
+    "No full 453-pin closure repeat.",
+    "No claim that raw terminal count equals worker-local drNet pin count.",
+    "No actual prior offending net was saved, so its cause is unproved.",
+    "Getter and database-cleanup preservation was inspected; this review does not claim general storage-failure durability for every save operation."
+  ],
+  "local_authored_execution": false,
+  "archive_downloaded": false,
+  "native_execution": false,
+  "dispatch": false
+}
