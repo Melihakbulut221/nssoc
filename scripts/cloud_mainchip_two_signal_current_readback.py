@@ -79,12 +79,16 @@ def worker():
 def finalize(result,trace):
     error=None
     command=trace/(LABEL+'.command.json')
-    if command.is_file():
-        raw=c.regular(command).read_bytes()
-        result['terminal_command_raw']=dict(bytes=len(raw),sha256=c.digest(raw))
-        try:result['terminal_command_record']=capture.value(raw)
-        except BaseException as exc:
-            error=exc;result.update(terminal_command_parse_error=repr(exc),terminal_command_parse_traceback=traceback.format_exc())
+    try:
+        if command.exists()or command.is_symlink():
+            raw=c.regular(command).read_bytes()
+            result['terminal_command_raw']=dict(bytes=len(raw),sha256=c.digest(raw))
+            try:result['terminal_command_record']=capture.value(raw)
+            except BaseException as exc:
+                error=exc;result.update(terminal_command_parse_error=repr(exc),terminal_command_parse_traceback=traceback.format_exc())
+    except BaseException as exc:
+        error=exc
+        result.update(terminal_command_acquisition_error=repr(exc),terminal_command_acquisition_traceback=traceback.format_exc())
     try:methods()
     except BaseException as exc:
         if error is None:error=exc
@@ -94,7 +98,16 @@ def finalize(result,trace):
         if error is None:error=exc
         result.update(inventory_error=repr(exc),inventory_traceback=traceback.format_exc())
     if error is not None:result['status']='FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK'
-    save(OUT/'result.json',result)
+    try:save(OUT/'result.json',result)
+    except BaseException as exc:
+        if error is None:error=exc
+        result.update(status='FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK',
+          terminal_save_error=repr(exc),terminal_save_traceback=traceback.format_exc(),
+          terminal_result_persisted=False)
+        # The captured raw job stream retains the full result if atomic persistence fails.
+        try:print('CURRENT_TWO_SIGNAL_READBACK_UNSAVED_RESULT '+json.dumps(result,sort_keys=True),file=sys.stderr,flush=True)
+        except BaseException as fallback:
+            result.update(terminal_fallback_error=repr(fallback),terminal_fallback_traceback=traceback.format_exc())
     return error
 def run():
     m=methods();assert m['cloud_readback_authorized']is True
@@ -135,7 +148,8 @@ def run():
                 result['status']='FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK'
                 if primary is None:primary=exc
         result['owned_cleanup']=attempt('owned-process-cleanup',lambda:sup.stop_process(sup.ACTIVE))
-        attempt('heartbeat-stop',lambda:(sup.STOP.set(),beat.join(timeout=2)))
+        attempt('heartbeat-stop',lambda:sup.STOP.set())
+        attempt('heartbeat-join',lambda:beat.join(timeout=2))
         for signum,handler in previous.items():attempt('restore-signal-'+str(signum),lambda s=signum,h=handler:signal.signal(s,h))
         try:
             terminal_error=finalize(result,sup.TRACE)

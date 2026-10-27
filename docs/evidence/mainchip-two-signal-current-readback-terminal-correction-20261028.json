@@ -1,0 +1,94 @@
+{
+  "all_authorizations_false": true,
+  "archive_accessed": false,
+  "authored_imports_or_tests_executed": false,
+  "changed_old_pins": [
+    ".github/workflow-templates/mainchip-two-signal-current-readback-cloud.yml",
+    "scripts/check_mainchip_two_signal_current_readback.py",
+    "scripts/cloud_mainchip_two_signal_current_readback.py"
+  ],
+  "changes": {
+    ".github/workflow-templates/mainchip-two-signal-current-readback-cloud.yml": {
+      "bytes": 6528,
+      "changed_functions": [],
+      "diff": "--- .github/workflow-templates/mainchip-two-signal-current-readback-cloud.yml\n+++ .github/workflow-templates/mainchip-two-signal-current-readback-cloud.yml\n@@ -52,7 +52,7 @@\n               assert b['status']=='PASS_CURRENT_TWO_SIGNAL_TEXT_READBACK_SOURCE_CONTROLS'\n               assert len(b['boundary']['positive'])==3 and len(b['boundary']['rejected'])==29\n               assert len(b['authorization']['positive'])==3 and len(b['authorization']['rejected'])==12\n-              assert len(b['lifecycle']['actual_run_finally_cases'])==7\n+              assert len(b['lifecycle']['actual_run_finally_cases'])==11\n               assert len(b['publication']['actual_publisher_binding_and_direct_file_program'])==2\n               assert len(b['inherited_transport']['positives'])==3 and len(b['inherited_transport']['rejected'])==13\n               assert len(b['inherited_reservation']['positive_cases'])==3 and len(b['inherited_reservation']['rejected'])==4\n",
+      "previous_bytes": 6527,
+      "previous_sha256": "fd62274311c6fc971fcd73314b3c8157b52f490a47ed5e2c20fc9ab3481f9383",
+      "sha256": "28d374ef0b199d24e7969edc4268f2970df89915f6779d97f81588d4d83dff01"
+    },
+    "scripts/check_mainchip_two_signal_current_readback.py": {
+      "bytes": 25539,
+      "changed_functions": [
+        "lifecycle_controls"
+      ],
+      "diff": "--- scripts/check_mainchip_two_signal_current_readback.py\n+++ scripts/check_mainchip_two_signal_current_readback.py\n@@ -162,14 +162,25 @@\n     return dict(positive=positive,rejected=refused,full_native_input_or_archive_accessed=False,\n       synthetic_ODB_bytes_only=True,actual_three_marker_bodies=True)\n def lifecycle_controls():\n+    import io\n     import ensure_cloud_tested_source_release as guard\n     cases=[]\n-    for mode in ('complete','body_failure','malformed_command','cleanup_failure','source_failure','body_and_cleanup','inventory_failure'):\n+    modes=('complete','body_failure','malformed_command','cleanup_failure','source_failure',\n+      'body_and_cleanup','inventory_failure','command_read_failure','heartbeat_stop_failure',\n+      'terminal_save_failure','body_and_terminal_save')\n+    for mode in modes:\n         with tempfile.TemporaryDirectory()as folder:\n             root=Path(folder);out=root/'out';transport=root/'transport';after=[False]\n             primary=RuntimeError('EXACT_READBACK_BODY_FAILURE');cleanup=RuntimeError('EXACT_READBACK_CLEANUP_FAILURE')\n             source=AssertionError('EXACT_READBACK_FINAL_SOURCE_FAILURE');inv=ValueError('EXACT_READBACK_INVENTORY_FAILURE')\n+            command_read=OSError('EXACT_READBACK_TERMINAL_COMMAND_READ_FAILURE')\n+            heartbeat_stop=RuntimeError('EXACT_READBACK_HEARTBEAT_STOP_FAILURE')\n+            terminal_save=OSError('EXACT_READBACK_TERMINAL_SAVE_FAILURE')\n+            calls=dict(method=0,command_read=0,result_save=0,thread_start=0,thread_join=0)\n+            captured=io.StringIO();event=threading.Event()\n+            original_regular=d.c.regular;original_save=d.save;original_inventory=d.inventory\n             def method():\n+                calls['method']+=1\n                 if mode=='source_failure'and after[0]:raise source\n                 return dict(cloud_readback_authorized=True,protected={d.runtime.SAMPLER:'f'*64})\n             def supervised(argv,label,**kw):\n@@ -184,37 +195,82 @@\n                 d.save(out/'source-admission.json',dict(synthetic=True))\n                 if mode=='malformed_command':(trace/(label+'.command.json')).write_bytes(b'{\"label\":')\n                 after[0]=True\n-                if mode in ('body_failure','body_and_cleanup','malformed_command'):raise primary\n+                if mode in ('body_failure','body_and_cleanup','malformed_command','body_and_terminal_save'):raise primary\n             def stop(p):\n                 if mode in ('cleanup_failure','body_and_cleanup'):raise cleanup\n                 return dict(remaining_live=[])\n-            sup=types.SimpleNamespace(ACTIVE=None,STOP=threading.Event(),TRACE=out/'supervision',\n+            def event_stop():\n+                if mode=='heartbeat_stop_failure':raise heartbeat_stop\n+                event.set()\n+            def thread_start():calls['thread_start']+=1\n+            def thread_join(timeout):\n+                assert timeout==2;calls['thread_join']+=1\n+            thread=types.SimpleNamespace(start=thread_start,join=thread_join)\n+            sup=types.SimpleNamespace(ACTIVE=None,STOP=types.SimpleNamespace(set=event_stop),TRACE=out/'supervision',\n               interrupted=lambda *x:None,heartbeat=lambda:None,stop_process=stop,supervised=supervised)\n-            original_inventory=d.inventory\n             def inventory(path):\n                 if mode=='inventory_failure':raise inv\n                 return original_inventory(path)\n+            def regular(path):\n+                if path==out/'supervision'/(d.LABEL+'.command.json'):\n+                    calls['command_read']+=1\n+                    if mode=='command_read_failure'and calls['command_read']==2:raise command_read\n+                return original_regular(path)\n+            def save(path,value):\n+                if path==out/'result.json':\n+                    calls['result_save']+=1\n+                    if mode in ('terminal_save_failure','body_and_terminal_save')and calls['result_save']==2:raise terminal_save\n+                return original_save(path,value)\n             with patch.object(d,'OUT',out),patch.object(d,'TRANSPORT',transport),patch.object(d,'methods',method),\\\n               patch.object(d.runtime,'supervisor',return_value=sup),patch.object(d,'inventory',side_effect=inventory),\\\n+              patch.object(d.c,'regular',side_effect=regular),patch.object(d,'save',side_effect=save),\\\n+              patch.object(d.threading,'Thread',return_value=thread),patch.object(d.sys,'stderr',captured),\\\n               patch.object(d.shutil,'disk_usage',return_value=types.SimpleNamespace(free=32*1024**3)),\\\n               patch.object(guard,'context',return_value=('tag','a'*40)),patch.object(guard,'api',return_value={}),\\\n               patch.object(guard,'validate_release',return_value={}):\n                 expected={'body_failure':primary,'malformed_command':primary,'cleanup_failure':cleanup,\n-                  'source_failure':source,'body_and_cleanup':primary,'inventory_failure':inv}.get(mode)\n+                  'source_failure':source,'body_and_cleanup':primary,'inventory_failure':inv,\n+                  'command_read_failure':command_read,'heartbeat_stop_failure':heartbeat_stop,\n+                  'terminal_save_failure':terminal_save,'body_and_terminal_save':primary}.get(mode)\n                 try:d.run()\n                 except BaseException as got:assert got is expected,(mode,got,expected)\n                 else:assert expected is None\n-            saved=json.loads((out/'result.json').read_bytes())\n+            disk=json.loads((out/'result.json').read_bytes());fallback=captured.getvalue()\n+            if mode in ('terminal_save_failure','body_and_terminal_save'):\n+                prefix='CURRENT_TWO_SIGNAL_READBACK_UNSAVED_RESULT '\n+                assert fallback.startswith(prefix)and len(fallback.splitlines())==1\n+                saved=json.loads(fallback[len(prefix):])\n+                assert saved['terminal_save_error']==repr(terminal_save)and saved['terminal_result_persisted']is False\n+                assert disk['status']=='RUNNING_CURRENT_TWO_SIGNAL_TEXT_READBACK'\n+                assert calls['result_save']==2\n+            else:\n+                assert fallback=='';saved=disk\n             assert saved['repair_succeeded']is saved['postroute_bridge_eligible']is False\n-            assert len(saved['terminal_checks'])==4 and sup.STOP.is_set()\n+            assert [x['label']for x in saved['terminal_checks']]==[\n+              'owned-process-cleanup','heartbeat-stop','heartbeat-join',\n+              'restore-signal-'+str(d.signal.SIGINT),'restore-signal-'+str(d.signal.SIGTERM)]\n+            assert calls['thread_start']==calls['thread_join']==1 and calls['method']==2\n+            assert event.is_set()is(mode!='heartbeat_stop_failure')\n             assert (out/'saved/retained.json').read_bytes()==b'{\"retained\":true}'\n             assert saved['status']==('COMPLETE_CURRENT_TWO_SIGNAL_TEXT_READBACK_UNSUCCESSFUL_REPAIR_RETAINED'if mode=='complete'else'FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK')\n-            if mode!='inventory_failure':assert saved['outputs']['saved/retained.json']==a.c.file_sha(out/'saved/retained.json')\n+            if mode!='inventory_failure':\n+                assert saved['outputs']=={p:x['sha256']for p,x in original_inventory(out).items()if p!='result.json'}\n             if mode=='malformed_command':assert saved['terminal_command_parse_error']and 'terminal_command_record'not in saved\n+            if mode=='command_read_failure':\n+                assert saved['terminal_command_acquisition_error']==repr(command_read)\n+                assert 'terminal_command_raw'not in saved and 'terminal_command_record'not in saved\n+                assert calls['command_read']>=2\n+            if mode=='heartbeat_stop_failure':\n+                assert saved['terminal_checks'][1]['error']==repr(heartbeat_stop)\n+                assert saved['terminal_checks'][2]['status']=='PASS'\n             if mode=='body_and_cleanup':\n                 assert saved['error']==repr(primary)and saved['terminal_checks'][0]['error']==repr(cleanup)\n+            if mode=='body_and_terminal_save':assert saved['error']==repr(primary)\n             cases.append(mode)\n-    return dict(actual_run_finally_cases=cases,real_error_identity_preserved=True)\n+    assert len(cases)==11\n+    return dict(actual_run_finally_cases=cases,real_error_identity_preserved=True,\n+      complete_unsaved_terminal_result_fallback=True,independent_heartbeat_stop_and_join=True,\n+      synthetic_worker_supervisor_and_thread_collaborators=True)\n \n def authorization_controls():\n     positive=[];negative=[]\n",
+      "previous_bytes": 21812,
+      "previous_sha256": "d1d6e4fdaaadff694d77794c9a460d073f2e93e96092ee81e1af3b0fd607390f",
+      "sha256": "36bf5be171ed4ac69cd743a3f299d8371abd8602727b0d1ea508046f31aebf3b"
+    },
+    "scripts/cloud_mainchip_two_signal_current_readback.py": {
+      "bytes": 12053,
+      "changed_functions": [
+        "finalize",
+        "run"
+      ],
+      "diff": "--- scripts/cloud_mainchip_two_signal_current_readback.py\n+++ scripts/cloud_mainchip_two_signal_current_readback.py\n@@ -79,12 +79,16 @@\n def finalize(result,trace):\n     error=None\n     command=trace/(LABEL+'.command.json')\n-    if command.is_file():\n-        raw=c.regular(command).read_bytes()\n-        result['terminal_command_raw']=dict(bytes=len(raw),sha256=c.digest(raw))\n-        try:result['terminal_command_record']=capture.value(raw)\n-        except BaseException as exc:\n-            error=exc;result.update(terminal_command_parse_error=repr(exc),terminal_command_parse_traceback=traceback.format_exc())\n+    try:\n+        if command.exists()or command.is_symlink():\n+            raw=c.regular(command).read_bytes()\n+            result['terminal_command_raw']=dict(bytes=len(raw),sha256=c.digest(raw))\n+            try:result['terminal_command_record']=capture.value(raw)\n+            except BaseException as exc:\n+                error=exc;result.update(terminal_command_parse_error=repr(exc),terminal_command_parse_traceback=traceback.format_exc())\n+    except BaseException as exc:\n+        error=exc\n+        result.update(terminal_command_acquisition_error=repr(exc),terminal_command_acquisition_traceback=traceback.format_exc())\n     try:methods()\n     except BaseException as exc:\n         if error is None:error=exc\n@@ -94,7 +98,16 @@\n         if error is None:error=exc\n         result.update(inventory_error=repr(exc),inventory_traceback=traceback.format_exc())\n     if error is not None:result['status']='FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK'\n-    save(OUT/'result.json',result)\n+    try:save(OUT/'result.json',result)\n+    except BaseException as exc:\n+        if error is None:error=exc\n+        result.update(status='FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK',\n+          terminal_save_error=repr(exc),terminal_save_traceback=traceback.format_exc(),\n+          terminal_result_persisted=False)\n+        # The captured raw job stream retains the full result if atomic persistence fails.\n+        try:print('CURRENT_TWO_SIGNAL_READBACK_UNSAVED_RESULT '+json.dumps(result,sort_keys=True),file=sys.stderr,flush=True)\n+        except BaseException as fallback:\n+            result.update(terminal_fallback_error=repr(fallback),terminal_fallback_traceback=traceback.format_exc())\n     return error\n def run():\n     m=methods();assert m['cloud_readback_authorized']is True\n@@ -135,7 +148,8 @@\n                 result['status']='FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK'\n                 if primary is None:primary=exc\n         result['owned_cleanup']=attempt('owned-process-cleanup',lambda:sup.stop_process(sup.ACTIVE))\n-        attempt('heartbeat-stop',lambda:(sup.STOP.set(),beat.join(timeout=2)))\n+        attempt('heartbeat-stop',lambda:sup.STOP.set())\n+        attempt('heartbeat-join',lambda:beat.join(timeout=2))\n         for signum,handler in previous.items():attempt('restore-signal-'+str(signum),lambda s=signum,h=handler:signal.signal(s,h))\n         try:\n             terminal_error=finalize(result,sup.TRACE)\n",
+      "previous_bytes": 11119,
+      "previous_sha256": "1e3c8e0cc2ec799483318f2c3fb0adf6e3f4f3fc7e03efa9b67e3013bb4f0fbc",
+      "sha256": "e5c41ebb7feebfe5f05f3d2f1b5b59f65f173b0b636fca580046f349bdb6656b"
+    }
+  },
+  "dispatch": false,
+  "findings": [
+    "Command regular-file validation and raw acquisition were outside the recorded terminal guard.",
+    "A heartbeat event-stop exception could skip the join attempt.",
+    "A final atomic save failure could leave RUNNING on disk without a full terminal JSON fallback."
+  ],
+  "findings_reviewer": "/root/delta_review",
+  "fixture_cases": [
+    "complete",
+    "body_failure",
+    "malformed_command",
+    "cleanup_failure",
+    "source_failure",
+    "body_and_cleanup",
+    "inventory_failure",
+    "command_read_failure",
+    "heartbeat_stop_failure",
+    "terminal_save_failure",
+    "body_and_terminal_save"
+  ],
+  "fixture_scope": {
+    "actual_production_run_and_finally": true,
+    "command_acquisition_failure_on_second_actual_call": true,
+    "complete_unsaved_result_stream_parsed": true,
+    "exact_exception_identity_checked": true,
+    "full_available_inventory_equal": true,
+    "independent_five_terminal_actions": true,
+    "original_body_exception_preserved_when_final_save_fails": true,
+    "source_check_attempted_after_command_failure": true,
+    "synthetic_worker_supervisor_thread": true
+  },
+  "initialization_closure_unchanged": true,
+  "limitations": [
+    "These controls are authored and have not been executed.",
+    "If atomic result persistence fails, the on-disk result may remain RUNNING; the captured raw job log contains the complete FAIL terminal JSON.",
+    "A failure of both persistence and the fallback output stream cannot create durable bytes; the original primary exception is still preserved.",
+    "Core admission, archive reader, marker interpretation and root-cause limits are unchanged."
+  ],
+  "new_imports": [
+    {
+      "module": "io",
+      "scope": "deferred fixture only",
+      "stdlib": true
+    }
+  ],
+  "old_pins": 487,
+  "original_repair_succeeded": false,
+  "root_cause_established": false,
+  "source_parent": "f5897f2f083bcee58e26c93c69025cdff698b893",
+  "status": "DISABLED_TERMINAL_PERSISTENCE_CORRECTION_AUTHORED_UNEXECUTED",
+  "unchanged_core_sha256": "1ffd32908afc8807a60e1b929b6b2772a404246f1183a586dcb032c1ec37a0ae",
+  "unchanged_import_checker_sha256": "f2ebb1241ba7f213673a70caa5eab3d01ffe42a4113e56b83917b717f52a0f07",
+  "workflow_activated": false
+}

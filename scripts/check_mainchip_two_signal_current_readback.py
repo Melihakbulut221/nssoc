@@ -162,14 +162,25 @@ def boundary_controls():
     return dict(positive=positive,rejected=refused,full_native_input_or_archive_accessed=False,
       synthetic_ODB_bytes_only=True,actual_three_marker_bodies=True)
 def lifecycle_controls():
+    import io
     import ensure_cloud_tested_source_release as guard
     cases=[]
-    for mode in ('complete','body_failure','malformed_command','cleanup_failure','source_failure','body_and_cleanup','inventory_failure'):
+    modes=('complete','body_failure','malformed_command','cleanup_failure','source_failure',
+      'body_and_cleanup','inventory_failure','command_read_failure','heartbeat_stop_failure',
+      'terminal_save_failure','body_and_terminal_save')
+    for mode in modes:
         with tempfile.TemporaryDirectory()as folder:
             root=Path(folder);out=root/'out';transport=root/'transport';after=[False]
             primary=RuntimeError('EXACT_READBACK_BODY_FAILURE');cleanup=RuntimeError('EXACT_READBACK_CLEANUP_FAILURE')
             source=AssertionError('EXACT_READBACK_FINAL_SOURCE_FAILURE');inv=ValueError('EXACT_READBACK_INVENTORY_FAILURE')
+            command_read=OSError('EXACT_READBACK_TERMINAL_COMMAND_READ_FAILURE')
+            heartbeat_stop=RuntimeError('EXACT_READBACK_HEARTBEAT_STOP_FAILURE')
+            terminal_save=OSError('EXACT_READBACK_TERMINAL_SAVE_FAILURE')
+            calls=dict(method=0,command_read=0,result_save=0,thread_start=0,thread_join=0)
+            captured=io.StringIO();event=threading.Event()
+            original_regular=d.c.regular;original_save=d.save;original_inventory=d.inventory
             def method():
+                calls['method']+=1
                 if mode=='source_failure'and after[0]:raise source
                 return dict(cloud_readback_authorized=True,protected={d.runtime.SAMPLER:'f'*64})
             def supervised(argv,label,**kw):
@@ -184,37 +195,82 @@ def lifecycle_controls():
                 d.save(out/'source-admission.json',dict(synthetic=True))
                 if mode=='malformed_command':(trace/(label+'.command.json')).write_bytes(b'{"label":')
                 after[0]=True
-                if mode in ('body_failure','body_and_cleanup','malformed_command'):raise primary
+                if mode in ('body_failure','body_and_cleanup','malformed_command','body_and_terminal_save'):raise primary
             def stop(p):
                 if mode in ('cleanup_failure','body_and_cleanup'):raise cleanup
                 return dict(remaining_live=[])
-            sup=types.SimpleNamespace(ACTIVE=None,STOP=threading.Event(),TRACE=out/'supervision',
+            def event_stop():
+                if mode=='heartbeat_stop_failure':raise heartbeat_stop
+                event.set()
+            def thread_start():calls['thread_start']+=1
+            def thread_join(timeout):
+                assert timeout==2;calls['thread_join']+=1
+            thread=types.SimpleNamespace(start=thread_start,join=thread_join)
+            sup=types.SimpleNamespace(ACTIVE=None,STOP=types.SimpleNamespace(set=event_stop),TRACE=out/'supervision',
               interrupted=lambda *x:None,heartbeat=lambda:None,stop_process=stop,supervised=supervised)
-            original_inventory=d.inventory
             def inventory(path):
                 if mode=='inventory_failure':raise inv
                 return original_inventory(path)
+            def regular(path):
+                if path==out/'supervision'/(d.LABEL+'.command.json'):
+                    calls['command_read']+=1
+                    if mode=='command_read_failure'and calls['command_read']==2:raise command_read
+                return original_regular(path)
+            def save(path,value):
+                if path==out/'result.json':
+                    calls['result_save']+=1
+                    if mode in ('terminal_save_failure','body_and_terminal_save')and calls['result_save']==2:raise terminal_save
+                return original_save(path,value)
             with patch.object(d,'OUT',out),patch.object(d,'TRANSPORT',transport),patch.object(d,'methods',method),\
               patch.object(d.runtime,'supervisor',return_value=sup),patch.object(d,'inventory',side_effect=inventory),\
+              patch.object(d.c,'regular',side_effect=regular),patch.object(d,'save',side_effect=save),\
+              patch.object(d.threading,'Thread',return_value=thread),patch.object(d.sys,'stderr',captured),\
               patch.object(d.shutil,'disk_usage',return_value=types.SimpleNamespace(free=32*1024**3)),\
               patch.object(guard,'context',return_value=('tag','a'*40)),patch.object(guard,'api',return_value={}),\
               patch.object(guard,'validate_release',return_value={}):
                 expected={'body_failure':primary,'malformed_command':primary,'cleanup_failure':cleanup,
-                  'source_failure':source,'body_and_cleanup':primary,'inventory_failure':inv}.get(mode)
+                  'source_failure':source,'body_and_cleanup':primary,'inventory_failure':inv,
+                  'command_read_failure':command_read,'heartbeat_stop_failure':heartbeat_stop,
+                  'terminal_save_failure':terminal_save,'body_and_terminal_save':primary}.get(mode)
                 try:d.run()
                 except BaseException as got:assert got is expected,(mode,got,expected)
                 else:assert expected is None
-            saved=json.loads((out/'result.json').read_bytes())
+            disk=json.loads((out/'result.json').read_bytes());fallback=captured.getvalue()
+            if mode in ('terminal_save_failure','body_and_terminal_save'):
+                prefix='CURRENT_TWO_SIGNAL_READBACK_UNSAVED_RESULT '
+                assert fallback.startswith(prefix)and len(fallback.splitlines())==1
+                saved=json.loads(fallback[len(prefix):])
+                assert saved['terminal_save_error']==repr(terminal_save)and saved['terminal_result_persisted']is False
+                assert disk['status']=='RUNNING_CURRENT_TWO_SIGNAL_TEXT_READBACK'
+                assert calls['result_save']==2
+            else:
+                assert fallback=='';saved=disk
             assert saved['repair_succeeded']is saved['postroute_bridge_eligible']is False
-            assert len(saved['terminal_checks'])==4 and sup.STOP.is_set()
+            assert [x['label']for x in saved['terminal_checks']]==[
+              'owned-process-cleanup','heartbeat-stop','heartbeat-join',
+              'restore-signal-'+str(d.signal.SIGINT),'restore-signal-'+str(d.signal.SIGTERM)]
+            assert calls['thread_start']==calls['thread_join']==1 and calls['method']==2
+            assert event.is_set()is(mode!='heartbeat_stop_failure')
             assert (out/'saved/retained.json').read_bytes()==b'{"retained":true}'
             assert saved['status']==('COMPLETE_CURRENT_TWO_SIGNAL_TEXT_READBACK_UNSUCCESSFUL_REPAIR_RETAINED'if mode=='complete'else'FAIL_OR_INTERRUPTED_CURRENT_TWO_SIGNAL_READBACK')
-            if mode!='inventory_failure':assert saved['outputs']['saved/retained.json']==a.c.file_sha(out/'saved/retained.json')
+            if mode!='inventory_failure':
+                assert saved['outputs']=={p:x['sha256']for p,x in original_inventory(out).items()if p!='result.json'}
             if mode=='malformed_command':assert saved['terminal_command_parse_error']and 'terminal_command_record'not in saved
+            if mode=='command_read_failure':
+                assert saved['terminal_command_acquisition_error']==repr(command_read)
+                assert 'terminal_command_raw'not in saved and 'terminal_command_record'not in saved
+                assert calls['command_read']>=2
+            if mode=='heartbeat_stop_failure':
+                assert saved['terminal_checks'][1]['error']==repr(heartbeat_stop)
+                assert saved['terminal_checks'][2]['status']=='PASS'
             if mode=='body_and_cleanup':
                 assert saved['error']==repr(primary)and saved['terminal_checks'][0]['error']==repr(cleanup)
+            if mode=='body_and_terminal_save':assert saved['error']==repr(primary)
             cases.append(mode)
-    return dict(actual_run_finally_cases=cases,real_error_identity_preserved=True)
+    assert len(cases)==11
+    return dict(actual_run_finally_cases=cases,real_error_identity_preserved=True,
+      complete_unsaved_terminal_result_fallback=True,independent_heartbeat_stop_and_join=True,
+      synthetic_worker_supervisor_and_thread_collaborators=True)
 
 def authorization_controls():
     positive=[];negative=[]
