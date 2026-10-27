@@ -1,0 +1,97 @@
+{
+  "actual_failure_files": {
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.jobs.json": {
+      "bytes": 3427,
+      "sha256": "33dbc20923d638f5802c968ed5376cad79372c22215a920238ce2a9532550c0a"
+    },
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.json": {
+      "bytes": 3387,
+      "sha256": "7e95b1b3186ad800f7aeccdb78a852e5eeb7f990a7afeb52b69223da4b8525fa"
+    },
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.log": {
+      "bytes": 26386,
+      "sha256": "b579cb01e46092b4246c3bd2482f542f6c4e18ad7894f57dc500d394175f079c"
+    },
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.original-source.json": {
+      "bytes": 969,
+      "sha256": "a9d88a8109af6926dc1624f4a6927096baae88447acd034a7b95a0ac97974151"
+    },
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.run.json": {
+      "bytes": 13074,
+      "sha256": "72bbea969b7790e9b5c90d1465f5774832d503eecc3425daa0d723f6bbfdef3d"
+    },
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-checker.py": {
+      "bytes": 10216,
+      "sha256": "afaa0638201367c95bade6ed950258e38a1fa224529fb33f8b59e8fcd83e09f0"
+    },
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-helper.py": {
+      "bytes": 14707,
+      "sha256": "126370784ac360bc2aada28ac41c688003792869774881ea084efa5c9cb851ae"
+    },
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-method.json": {
+      "bytes": 6152,
+      "sha256": "633d605222b4308b79fb0ad2a5a457b86eb4a68393be0c8d8f8619d60aac9069"
+    },
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-runner.sh": {
+      "bytes": 24605,
+      "sha256": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc"
+    },
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-workflow.yml": {
+      "bytes": 4151,
+      "sha256": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc"
+    }
+  },
+  "all_RTL_and_test_harness_and_production_helper_unchanged": true,
+  "authored_execution": false,
+  "cause": "Synthetic make ignored the three existing explicit MODULE and COCOTB_RESULTS_FILE invocations. Production runner correctly refused missing XML.",
+  "changes": [
+    "Exact existing three-row EXTRA_MODULES table bound before constructing fixture.",
+    "Synthetic make honors actual MODULE/SIM_BUILD/COCOTB_RESULTS_FILE arguments and records all invocations.",
+    "Positive synthetic shell case counts 33 synthetic Gen12 plus one generic suite and three explicit modules: 37, not an RTL qualification.",
+    "Frozen exact failed maker is AST-extracted from preserved failed source and must reproduce all three specific missing-XML refusals and 34/3 summary.",
+    "Each explicit XML omission independently requires its own missing-XML refusal and 36/1 summary."
+  ],
+  "corrected_checker": {
+    "bytes": 13822,
+    "sha256": "5b08f9d762caa44bf51f4b1ab5c76a8d683d5f59a1f624909b5cc2cb4ec07519"
+  },
+  "dispatch": false,
+  "failed_job": 122476559839,
+  "failed_run": 40585747340,
+  "full_phy_accepted": false,
+  "original_27_source_pins_unchanged": true,
+  "prior_failed_checker_sha256": "afaa0638201367c95bade6ed950258e38a1fa224529fb33f8b59e8fcd83e09f0",
+  "shell_positive": 1,
+  "shell_refusals": 10,
+  "shell_scenarios": 11,
+  "simulations_executed": false,
+  "source_parent": "617ea54c4204737a5e070921907e5d5045f1e5ca",
+  "status": "DISABLED_CHECKER_ONLY_FIXTURE_CORRECTION_PENDING_REVIEW_AND_HOSTED_CONTROLS",
+  "unchanged_other_source_controls": [
+    9,
+    29
+  ],
+  "unchanged_sources": {
+    ".github/workflow-templates/pcie-gen12-record-cdc-root-controls-cloud.yml": {
+      "git_blob_sha": "863443db4f973e8683343546c7dc4f0e999e1659",
+      "sha256": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc"
+    },
+    ".github/workflows/pcie-gen12-record-cdc-root-controls-cloud.yml": {
+      "git_blob_sha": "863443db4f973e8683343546c7dc4f0e999e1659",
+      "sha256": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc"
+    },
+    "scripts/check_pcie_gen12_record_cdc_root.py": {
+      "git_blob_sha": "1d1a453f753ab67d4c19ca4e41f508bc1548b55e",
+      "sha256": "126370784ac360bc2aada28ac41c688003792869774881ea084efa5c9cb851ae"
+    },
+    "scripts/pcie-gen12-record-cdc-methods.json": {
+      "git_blob_sha": "fd3b0fe29c699043d742431d55d08bf3ef42ebf2",
+      "sha256": "a34ed5f841566c227a572fca1abd4c90376200162522ed3208403ba2ca3d4751"
+    },
+    "scripts/run_cocotb.sh": {
+      "git_blob_sha": "6b3efdd44db8ac99b398f986ab3fce7fac9a1184",
+      "sha256": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc"
+    }
+  },
+  "whole_checker_diff": "--- scripts/check_pcie_gen12_record_cdc_root_controls.py\n+++ scripts/check_pcie_gen12_record_cdc_root_controls.py\n@@ -88,13 +88,28 @@\n             bad=copy.deepcopy(record);change(bad);c.save(path,bad)\n             refuse(name,lambda:c.counts(path))\n         shell=shell_controls(work/'shell')\n-    assert len(positive)==9 and len(rejected)==29 and len(shell)==7\n+    assert len(positive)==9 and len(rejected)==29 and len(shell)==11\n     return dict(status='PASS_ROOT_GEN12_SOURCE_AND_HANDOFF_CONTROLS_NO_RTL',original=original,\n       positive=positive,rejected=rejected,shell=shell,simulations_executed=False,\n       synthesis_executed=False,compiled_fault_campaign_executed=False,terminal_pins=c.pins()[0]['protected'])\n \n def shell_controls(work):\n     work.mkdir();original=(c.ROOT/'scripts/run_cocotb.sh').read_text()\n+    extras=(\n+      ('hw/soc/tb/cocotb','Makefile.soc_npu','test_soc_npu_defects','sim_build_npu_defects','results_soc_npu_defects.xml'),\n+      ('hw/soc/tb/cocotb','Makefile.soc_wdog','test_soc_wdog_strap','sim_build_soc_wdog_strap','results_soc_wdog_strap.xml'),\n+      ('hw/soc/tb/cocotb','Makefile.soc_uart','test_soc_uart_defects','sim_build_uart_defects','results_soc_uart_defects.xml'))\n+    anchor='EXTRA_MODULES=\"\\\\\\n'\n+    assert original.count(anchor)==1\n+    table=original.split(anchor,1)[1].split('\"',1)[0]\n+    assert tuple(tuple(row.split('|'))for row in table.splitlines())==extras\n+    frozen=(c.ROOT/'docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-checker.py').read_bytes()\n+    assert c.sha(frozen)=='afaa0638201367c95bade6ed950258e38a1fa224529fb33f8b59e8fcd83e09f0'\n+    oldfn=[n for n in ast.parse(frozen).body if isinstance(n,ast.FunctionDef)and n.name=='shell_controls']\n+    assert len(oldfn)==1\n+    oldassign=[n for n in ast.walk(oldfn[0])if isinstance(n,ast.Assign)and any(isinstance(t,ast.Name)and t.id=='maker'for t in n.targets)]\n+    assert len(oldassign)==1\n+    old_maker=ast.literal_eval(oldassign[0].value)\n     helpers=r'''import json,sys\n from pathlib import Path\n root=Path(__file__).resolve().parents[1]\n@@ -111,15 +126,21 @@\n sys.exit(7 if mode=='driver-failure'else 0)\n '''\n     maker=r'''#!/usr/bin/env python3\n-import sys\n+import json,sys,xml.etree.ElementTree as E\n from pathlib import Path\n-p=Path.cwd()\n+p=Path.cwd();root=p.parents[3];mode=(root/'mode').read_text()\n+with(root/'make-calls.jsonl').open('a')as f:f.write(json.dumps(sys.argv[1:])+'\\n')\n if 'clean'in sys.argv:sys.exit(0)\n mk=sys.argv[sys.argv.index('-f')+1]\n if mk=='Makefile.gen12_record_cdc':sys.exit(17)\n-(p/'results_other.xml').write_text('<testsuite><testcase name=\"other\" classname=\"test_other\"/></testsuite>')\n-root=p.parents[3]\n-sys.exit(9 if (root/'mode').read_text()=='other-failure'else 0)\n+args=dict(a.split('=',1)for a in sys.argv[1:]if '='in a)\n+module=args.get('MODULE','test_other')\n+name=args.get('COCOTB_RESULTS_FILE','results_other.xml')\n+assert Path(name).name==name\n+if mode!='missing-explicit-xml-'+module:\n+ tree=E.Element('testsuite');E.SubElement(tree,'testcase',name='synthetic_'+module,classname=module)\n+ (p/name).write_bytes(E.tostring(tree))\n+sys.exit(9 if mode=='other-failure'else 0)\n '''\n     branch='''    if [ \"$name\" = \"gen12_record_cdc\" ]; then\n         run_gen12_record_cdc || suite_fail=$((suite_fail + 1))\n@@ -128,7 +149,9 @@\n '''\n     assert original.count(branch)==1\n     outcomes={}\n-    for index,mode in enumerate(('success','driver-failure','wrong-count','counts-refusal','binding-refusal','other-failure','dispatch-removed')):\n+    modes=('success','driver-failure','wrong-count','counts-refusal','binding-refusal','other-failure',\n+      'dispatch-removed','old-maker-explicit-xml-omission',*('missing-explicit-xml-'+x[2]for x in extras))\n+    for index,mode in enumerate(modes):\n         root=work/str(index);scripts=root/'scripts';bench=root/'hw/soc/tb/cocotb'\n         scripts.mkdir(parents=True);bench.mkdir(parents=True)\n         text=original.replace(branch,'',1)if mode=='dispatch-removed'else original\n@@ -140,7 +163,10 @@\n         for top in c.TESTS:(bench/('test_'+top+'.py')).write_text('# Explicit synthetic shell reachability fixture\\n')\n         (bench/'Makefile.other').write_text('COCOTB_TEST_MODULES := test_other\\n')\n         (bench/'test_other.py').write_text('# Explicit synthetic existing-suite fixture\\n')\n-        bins=root/'bin';bins.mkdir();(bins/'make').write_text(maker);(bins/'make').chmod(0o755)\n+        for x in extras:(bench/(x[2]+'.py')).write_text('# Explicit synthetic EXTRA_MODULES reachability fixture\\n')\n+        bins=root/'bin';bins.mkdir()\n+        (bins/'make').write_text(old_maker if mode=='old-maker-explicit-xml-omission'else maker)\n+        (bins/'make').chmod(0o755)\n         env=dict(os.environ,PY=sys.executable,PATH=str(bins)+':'+os.environ['PATH'])\n         p=subprocess.run(['bash',str(scripts/'run_cocotb.sh')],cwd=root,env=env,capture_output=True,text=True,timeout=30)\n         calls=[json.loads(s)for s in(root/'calls.jsonl').read_text().splitlines()]\n@@ -148,16 +174,39 @@\n         assert bound=={'test_'+top for top in c.TESTS},(mode,bound,p.stdout,p.stderr)\n         invoked=[a for a in calls if '--out'in a]\n         assert len(invoked)==(0 if mode=='dispatch-removed'else 1),(mode,calls)\n-        if invoked:\n-            assert invoked[0][-6:]==['--simulators','icarus','--depths','4','8','32'],invoked\n+        if invoked:assert invoked[0][-6:]==['--simulators','icarus','--depths','4','8','32'],invoked\n+        make_calls=[]\n+        if mode!='old-maker-explicit-xml-omission':\n+            make_calls=[json.loads(s)for s in(root/'make-calls.jsonl').read_text().splitlines()]\n+            actual=[a for a in make_calls if 'clean'not in a and any(v.startswith('MODULE=')for v in a)]\n+            assert len(actual)==len(extras)\n+            for row,x in zip(actual,extras):\n+                assert row[row.index('-f')+1]==x[1]\n+                assert [v for v in row if v.startswith(('MODULE=','SIM_BUILD=','COCOTB_RESULTS_FILE='))]==[\n+                  'MODULE='+x[2],'SIM_BUILD='+x[3],'COCOTB_RESULTS_FILE='+x[4]]\n         if mode=='success':\n-            assert p.returncode==0 and 'cocotb: 34 passed, 0 failed, 0 suite(s) not clean, 0 skipped'in p.stdout,(p.stdout,p.stderr)\n+            assert p.returncode==0 and 'cocotb: 37 passed, 0 failed, 0 suite(s) not clean, 0 skipped'in p.stdout,(p.stdout,p.stderr)\n         else:\n             assert p.returncode!=0,(mode,p.stdout,p.stderr)\n             if mode=='binding-refusal':assert 'UNREACHED cocotb test modules'in p.stdout\n             if mode=='other-failure':assert 'NOT CLEAN (make rc=9)'in p.stdout\n+            if mode=='old-maker-explicit-xml-omission':\n+                assert p.returncode==1 and 'cocotb: 34 passed, 0 failed, 3 suite(s) not clean, 0 skipped'in p.stdout\n+                assert p.stdout.count('INVALID/MISSING XML (make rc=0;')==3\n+                for x in extras:\n+                    lines=[line for line in p.stdout.splitlines()if line.lstrip().startswith(x[2]+' ')]\n+                    assert len(lines)==1 and 'INVALID/MISSING XML (make rc=0;'in lines[0]\n+                assert 'UNREACHED'not in p.stdout and 'NOT CLEAN'not in p.stdout\n+            if mode.startswith('missing-explicit-xml-'):\n+                assert p.returncode==1 and 'cocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped'in p.stdout\n+                assert p.stdout.count('INVALID/MISSING XML (make rc=0;')==1\n+                module=mode.removeprefix('missing-explicit-xml-')\n+                lines=[line for line in p.stdout.splitlines()if line.lstrip().startswith(module+' ')]\n+                assert len(lines)==1 and 'INVALID/MISSING XML (make rc=0;'in lines[0]\n         outcomes[mode]=dict(returncode=p.returncode,stdout=p.stdout,stderr=p.stderr,actual_calls=calls,\n-          synthetic_helper_and_make=True,actual_generic_runner=True)\n+          actual_make_calls=make_calls,synthetic_helper_and_make=True,actual_generic_runner=True,\n+          frozen_failed_maker_used=mode=='old-maker-explicit-xml-omission')\n+    assert len(outcomes)==11\n     return outcomes\n \n if __name__=='__main__':\n"
+}

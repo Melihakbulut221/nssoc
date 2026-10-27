@@ -1,0 +1,100 @@
+# SPDX-License-Identifier: Apache-2.0
+# Inactive candidate: root source review and explicit registration are required.
+name: Gen12 root CDC focused functional controls
+on:
+  workflow_dispatch:
+    inputs:
+      execute_rtl:
+        type: boolean
+        default: false
+        description: Run the original focused dual-simulator RTL matrix after controls
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: gen12-root-record-cdc-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Original source pins and actual generic-runner handoff controls
+        run: |
+          set -euo pipefail
+          python3 scripts/check_pcie_gen12_record_cdc_source.py | tee gen12-root-source.log
+          python3 -u scripts/check_pcie_gen12_record_cdc_root_controls.py | tee gen12-root-controls.log
+      - name: Preserve source control output including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen12-root-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            gen12-root-source.log
+            gen12-root-controls.log
+          if-no-files-found: warn
+          retention-days: 90
+  focused-rtl:
+    needs: source-controls
+    if: inputs.execute_rtl
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Recheck current source before provisioning tools
+        run: python3 -u scripts/check_pcie_gen12_record_cdc_root_controls.py
+      - name: Provision Icarus and the qualified Verilator source revision
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends iverilog build-essential autoconf flex bison libfl-dev zlib1g-dev help2man python3-venv
+          build="$RUNNER_TEMP/gen12-root-verilator"
+          prefix="$RUNNER_TEMP/gen12-root-tools"
+          mkdir "$build"
+          git -C "$build" init
+          git -C "$build" fetch --depth=1 https://github.com/verilator/verilator.git 51cdf52d0f3a3e59b51fd87762646a851e9f4aff
+          git -C "$build" checkout --detach FETCH_HEAD
+          test "$(git -C "$build" rev-parse HEAD)" = 51cdf52d0f3a3e59b51fd87762646a851e9f4aff
+          test -z "$(git -C "$build" status --porcelain)"
+          cd "$build"
+          autoconf
+          ./configure --prefix="$prefix"
+          make -j2
+          make install
+          echo "$prefix/bin" >> "$GITHUB_PATH"
+      - name: Original two-top three-depth dual-simulator RTL tests
+        run: |
+          set -euo pipefail
+          python3 -u scripts/check_pcie_gen12_record_cdc_root.py \
+            --out hw/soc/out/gen12-root-focused --simulators icarus verilator --depths 4 8 32 \
+            | tee gen12-root-focused.log
+          test "$(python3 scripts/check_pcie_gen12_record_cdc_root.py --counts hw/soc/out/gen12-root-focused/result.json)" = '66 0 0'
+      - name: Print complete terminal result if present
+        if: always()
+        run: |
+          if test -f hw/soc/out/gen12-root-focused/result.json; then
+            cat hw/soc/out/gen12-root-focused/result.json
+          fi
+      - name: Preserve every actual compile log, XML and terminal result
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen12-root-focused-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            gen12-root-focused.log
+            hw/soc/out/gen12-root-focused/
+          if-no-files-found: warn
+          retention-days: 90

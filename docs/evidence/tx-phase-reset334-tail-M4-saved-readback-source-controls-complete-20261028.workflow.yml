@@ -1,0 +1,232 @@
+# SPDX-License-Identifier: Apache-2.0
+name: tx-phase-reset334-tail-m4-saved-capture-cloud
+on:
+  workflow_dispatch:
+    inputs:
+      readback:
+        description: Separately authorized read of the completed current capture; never a simulator
+        type: boolean
+        default: false
+        required: true
+permissions:
+  contents: read
+  actions: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: tx-phase-reset334-tail-m4-saved-capture
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Source imports, exact current rejection, real restoration glue and native-row arithmetic fixtures
+        run: |
+          set -euo pipefail
+          python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+          python3 scripts/cloud_tx_phase_reset334_tail_m4_saved_capture.py --controls | tee source-controls.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('source-controls.json'))
+          assert r['status']=='PASS_CURRENT_TAIL_M4_SAVED_CAPTURE_SOURCE_CONTROLS_ONLY'
+          assert r['permission_controls']['actual_active_and_template_checked']and len(r['permission_controls']['refused'])==8
+          assert len(r['original_current_result_faults'])==16 and len(r['metadata_faults'])==21
+          assert len(r['observer_derivation']['edits'])==2 and r['observer_derivation']['reversed_byte_exact']
+          assert r['complete_acquired_view_controls']['positive']['actual_complete_JSON_snapshot_and_validation']
+          assert r['complete_acquired_view_controls']['regression']['error']=="KeyError('original17_HBT_rejection')"
+          assert len(r['topology_fixture']['rejected'])==14
+          assert r['topology_fixture']['target_groups']==12 and r['topology_fixture']['passive_accesses']==168
+          assert r['topology_fixture']['synthetic_fixture_only']and not r['topology_fixture']['real_restored_input_scope']
+          assert len(r['actual_code_mutations'])==3 and len(r['inherited_original_math']['rejected'])==20
+          assert len(r['resource_controls']['positives'])==10 and len(r['resource_controls']['refused'])==18
+          assert len(r['actual_main_result_failures']['positives'])==4 and r['actual_main_result_failures']['previous_and_incomplete_evidence_hashes_verified']
+          assert r['resource_controls']['full_JSON_streamed']and r['resource_controls']['complete_failure_record_required']
+          assert r['reconstruction_completion']['actual_reconstruct_return_reached']
+          assert r['actual_consumed_native_root']['actual_full_main']and r['actual_consumed_native_root']['native_consumption_subdirectory_asserted']
+          assert len(r['authorization_controls']['positive'])==2 and len(r['authorization_controls']['refused'])==28
+          assert len(r['terminal_integrity']['positive'])==2
+          assert r['actual_main_entry']['actual_main_entry']and r['actual_main_entry']['actual_finally_failure_preserved']
+          assert len(r['archive_controls']['rejected'])==11
+          assert r['required_actual_restored_controls']==dict(source=18,path=32,contract=24,topology=14)
+          assert r['waveform_or_archive_input_read']is r['native_simulator_invoked']is r['new_geometry']is False
+          assert r['direct_complete_diagnostic_JSON_publication_required']
+          PY
+      - name: Isolated current import closure and exact resource admission fixtures
+        run: |
+          set -euo pipefail
+          python3 scripts/check_tx_phase_reset334_tail_m4_saved_imports.py | tee import-controls.json
+          python3 scripts/check_tx_phase_reset334_tail_m4_saved_resources.py | tee resource-controls.json
+          python3 - <<'PY'
+          import json
+          i=json.load(open('import-controls.json'))
+          assert i['status']=='PASS_TAIL_M4_SAVED_CAPTURE_ACTUAL_IMPORT_AND3_DATA_CLOSURE'
+          assert len(i['positive'])==2 and len(i['rejected'])==7
+          assert len(i['workflow_controls']['control_evidence']['positive'])==2
+          assert len(i['workflow_controls']['control_evidence']['refused'])==2
+          r=json.load(open('resource-controls.json'))
+          assert len(r['positives'])==10 and len(r['refused'])==18
+          PY
+      - name: Actual direct-JSON publication program and reserved-release waiter fixtures
+        run: |
+          set -euo pipefail
+          python3 scripts/check_tx_phase_reset334_tail_m4_saved_publication.py | tee publication-controls.json
+          python3 scripts/wait_cloud_tested_source_release.py --controls | tee wait-controls.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open('publication-controls.json'))
+          assert r['status']=='PASS_CURRENT_TAIL_M4_SAVED_CAPTURE_ACTUAL_PUBLICATION_PROGRAM_CONTROLS_ONLY'
+          assert len(r['positive_cases'])==2 and len(r['rejected'])==13
+          assert r['actual_template_program_executed']and r['real_file_list_assembly']
+          assert not r['remote_network_or_upload_executed']and not r['release_creation_executed']
+          w=json.load(open('wait-controls.json'))
+          assert w['status']=='PASS_READ_ONLY_RELEASE_WAIT_CONTROLS'
+          assert len(w['positive_cases'])==3 and len(w['rejected'])==4
+          PY
+      - name: Emit exact complete or partial control bytes
+        if: always()
+        run: |
+          python3 - <<'PYCONTROL'
+          import ast,base64,hashlib,json
+          from pathlib import Path
+          source=Path('scripts/cloud_cdr_v59_binding_rc.py')
+          assert source.is_file() and not source.is_symlink()
+          raw=source.read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='647af19c78158045739b2589d61a2962bbff69e230b593ccb33019550edbd709'
+          nodes=[n for n in ast.parse(raw.decode()).body if isinstance(n,ast.FunctionDef) and n.name=='emit']
+          assert len(nodes)==1
+          scope=dict(base64=base64,hashlib=hashlib,json=json)
+          exec(compile(ast.Module(body=nodes,type_ignores=[]),str(source),'exec'),scope)
+          names=('source-controls','import-controls','resource-controls','publication-controls','wait-controls')
+          assert len(names)==len(set(names))==5
+          emitted=[];missing=[];failures=[]
+          for name in names:
+              path=Path(name+'.json')
+              if not path.exists() and not path.is_symlink():
+                  missing.append(path.name)
+                  continue
+              try:
+                  assert path.is_file() and not path.is_symlink(),str(path)
+                  before=path.read_bytes()
+                  scope['emit'](path,'TAIL_M4_SAVED_CONTROL_'+name.upper().replace('-','_'))
+                  assert path.read_bytes()==before,'Control record changed during emission'
+                  emitted.append(dict(name=path.name,bytes=len(before),sha256=hashlib.sha256(before).hexdigest()))
+              except Exception as error:failures.append(dict(name=path.name,error=repr(error)))
+          print('TAIL_M4_SAVED_CONTROL_FILE_CENSUS '+json.dumps(dict(emitted=emitted,missing=missing,failures=failures,missing_files_created=False),sort_keys=True),flush=True)
+          assert not failures,failures
+          PYCONTROL
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: current-tail-m4-saved-source-controls
+          path: |
+            source-controls.json
+            import-controls.json
+            resource-controls.json
+            publication-controls.json
+            wait-controls.json
+          if-no-files-found: error
+          retention-days: 90
+  saved-capture-readback:
+    permissions:
+      contents: write
+      actions: read
+    if: inputs.readback
+    needs: source-controls
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      GH_TOKEN: ${{ github.token }}
+      PYTHONDONTWRITEBYTECODE: "1"
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Wait for exact precreated source release before dependencies
+        run: python3 scripts/wait_cloud_tested_source_release.py --group tx-phase-reset334-tail-m4-saved-capture
+      - name: Install only readback Python dependencies
+        run: python3 -m pip install numpy==2.3.3 scipy==1.16.2 networkx==3.4.2
+      - name: Authenticate complete current archives, reconstruct native contract and replay original rejection once
+        run: python3 scripts/cloud_tx_phase_reset334_tail_m4_saved_capture.py --readback
+      - name: Preserve complete failed or successful diagnosis
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          root=Path('cloud-tx-phase-reset334-tail-m4-saved-capture')
+          root.mkdir(exist_ok=True);p=root/'result.json'
+          if not p.exists():
+              p.write_text(json.dumps(dict(status='FAIL_MISSING_READBACK_RESULT',source_head=os.environ['GITHUB_SHA'],
+                run_id=int(os.environ['GITHUB_RUN_ID']),accepted=False,new_simulation=False,full_PHY_accepted=False))+'\n')
+          raw=p.read_bytes()
+          print('RESULT_SHA256',hashlib.sha256(raw).hexdigest());print('RESULT_BYTES',len(raw))
+          PY
+      - name: Publish every complete diagnostic JSON directly and retain full evidence archive
+        id: publish
+        if: always()
+        run: |
+          set -euo pipefail
+          group="tx-phase-reset334-tail-m4-saved-capture"
+          root="cloud-$group"
+          stem="$group-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          python3 scripts/wait_cloud_tested_source_release.py --group "$group"
+          cp "$root/result.json" "$stem.summary.json"
+          python3 scripts/cloud_chunked_results.py --directory "$root" --stem "$stem"
+          python3 - "$stem" "$group" "$root" <<'PYCODE'
+          import json,pathlib,sys,os
+          sys.path.insert(0,'scripts')
+          import ensure_cloud_tested_source_release as guard
+          import migrate_outputs_to_cloud as migration
+          import publish_cloud_results as publisher
+          stem,group,root_arg=sys.argv[1:]
+          assert group=='tx-phase-reset334-tail-m4-saved-capture'
+          expected,source=guard.context(group,os.environ)
+          assert stem==group+'-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']
+          root=pathlib.Path(root_arg)
+          part_file=pathlib.Path(stem+'.parts.json')
+          manifest=json.loads(part_file.read_text())
+          part_names=[p['name'] for p in manifest['parts']]
+          assert part_names and len(part_names)==len(set(part_names))
+          assert all(pathlib.Path(n).name==n and '\\' not in n and n not in ('.','..') for n in part_names)
+          separate=sorted(str(p) for p in root.glob('*.json') if p.name!='result.json')
+          paths=[stem+'.summary.json',str(part_file),*separate,*part_names]
+          assert len(paths)==len(set(paths))
+          assert len({pathlib.Path(p).name for p in paths})==len(paths)
+          assert all(pathlib.Path(p).is_file() and not pathlib.Path(p).is_symlink() for p in paths)
+          def readonly_release(tag):
+              assert tag==expected
+              info=guard.api('releases/tags/'+tag)
+              guard.validate_release(info,guard.api('git/ref/tags/'+tag),tag,source)
+              return info
+          migration.release=readonly_release
+          assert publisher.publish is migration.publish
+          assert publisher.publish.__globals__['release'] is readonly_release
+          readonly_release(expected)
+          result=publisher.publish_results(group,paths)
+          assert result['tag']==expected and len(result['assets'])==len(paths)
+          assert [x['name'] for x in result['assets']]==[pathlib.Path(p).name for p in paths]
+          readonly_release(expected)
+          print(json.dumps(result,sort_keys=True),flush=True)
+          PYCODE
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.publish.outcome != 'success'
+        with:
+          name: current-tail-m4-complete-diagnostic-evidence
+          path: cloud-tx-phase-reset334-tail-m4-saved-capture/
+          if-no-files-found: error
+          retention-days: 90
+          include-hidden-files: true
