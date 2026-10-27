@@ -1,0 +1,530 @@
+{
+  "MIM_entries": {
+    "negative": [
+      {
+        "actual_assertion": "prior['model_binding_source']['run'] == binding_pin['run']",
+        "case": "binding_run",
+        "line": 36,
+        "rejected": true
+      },
+      {
+        "actual_assertion": "prior['model_binding_source']['summary_sha256'] == binding_pin['summary_sha256']",
+        "case": "binding_summary",
+        "line": 35,
+        "rejected": true
+      },
+      {
+        "actual_assertion": "all((sha(CAP / n) == digest for n, digest in prior['outputs'].items()))",
+        "case": "capture_file_digest",
+        "line": 31,
+        "rejected": true
+      },
+      {
+        "actual_assertion": "prior['native_order_variant'] == VARIANT",
+        "case": "native_order",
+        "line": 30,
+        "rejected": true
+      }
+    ],
+    "positive": [
+      {
+        "actual_complete_projection": true,
+        "actual_main": true,
+        "producer_archive_not_accessed": true,
+        "stage": "capture"
+      },
+      {
+        "actual_binding_pin_consumed": true,
+        "actual_main": true,
+        "numerical_helper_not_read_or_executed": true,
+        "stage": "audit"
+      }
+    ],
+    "synthetic_reports_not_native_qualification": true
+  },
+  "RC_terminal": {
+    "cases": [
+      {
+        "actual_main": true,
+        "complete_stage_files": {
+          "compile-native-methods.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-audit.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-extraction.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-fault-controls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "result.json": "402274348da030e836f19bc5d1ca040ae1766c6a87e4faa0d5f1bd4dd3608be4"
+        },
+        "error": null,
+        "fixture_transport_and_native_subprocesses_are_synthetic": true,
+        "mode": "success",
+        "old_worker": false,
+        "saved_status": "PASS_PD500_FRESH_NATIVE_WIRE_RC_AND13_CONTROLS_REQUIRES_LOADED_CLOSED_LOOP",
+        "terminal_output_errors": []
+      },
+      {
+        "actual_main": true,
+        "complete_stage_files": {
+          "compile-native-methods.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-audit.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-extraction.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-fault-controls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "result.json": "9d30addd5d0db58f0de386d0651e503fabcaf536f3800dc54361f3d3258cf0d7"
+        },
+        "error": "RuntimeError('INJECTED_CURRENT_OUTPUT_INVENTORY_FAILURE')",
+        "fixture_transport_and_native_subprocesses_are_synthetic": true,
+        "mode": "inventory",
+        "old_worker": false,
+        "saved_status": "FAIL_V59_TERMINAL_OUTPUT_INVENTORY",
+        "terminal_output_errors": [
+          {
+            "error": "RuntimeError('INJECTED_CURRENT_OUTPUT_INVENTORY_FAILURE')",
+            "field": "new_current_view_outputs",
+            "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_legacy.py\", line 134, in finalize_rc_outputs\n    try:report[field]=action()\n                      ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_legacy.py\", line 133, in <lambda>\n    (\"new_current_view_outputs\",lambda:new_current_outputs(pin))):\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1139, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1143, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1198, in _execute_mock_call\n    raise effect\nRuntimeError: INJECTED_CURRENT_OUTPUT_INVENTORY_FAILURE\n"
+          }
+        ]
+      },
+      {
+        "actual_main": true,
+        "complete_stage_files": {
+          "compile-native-methods.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-audit.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-extraction.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-fault-controls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "result.json": "92858f9ab7f9eb2ba80011a6c86a0582c496db612dc51313bdce2cac7780dadf"
+        },
+        "error": "AssertionError('Protected source or evidence changed: protected-source.py')",
+        "fixture_transport_and_native_subprocesses_are_synthetic": true,
+        "mode": "source_corruption",
+        "old_worker": false,
+        "saved_status": "FAIL_V59_SAVED_INPUT_INTEGRITY",
+        "terminal_output_errors": [
+          {
+            "error": "AssertionError('Protected source or evidence changed: protected-source.py')",
+            "field": "new_current_view_outputs",
+            "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_v59_tail_fresh_wire_rc.py\", line 87, in main\n    r['saved_capsule_integrity']=admission.verify_saved_inputs(pin)\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1139, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1143, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1204, in _execute_mock_call\n    result = effect(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_fresh_rc_workers.py\", line 288, in checked_saved\n    try:a.source.methods()\n        ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_admission.py\", line 67, in methods\n    require(sha(regular(ROOT,name))==digest,\"Protected source or evidence changed: \"+name)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_admission.py\", line 26, in require\n    if not value:raise AssertionError(message)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Protected source or evidence changed: protected-source.py\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_v59_tail_fresh_wire_rc.py\", line 93, in main\n    r['saved_capsule_integrity']=admission.verify_saved_inputs(pin)\n                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1139, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1143, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1204, in _execute_mock_call\n    result = effect(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_fresh_rc_workers.py\", line 288, in checked_saved\n    try:a.source.methods()\n        ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_admission.py\", line 67, in methods\n    require(sha(regular(ROOT,name))==digest,\"Protected source or evidence changed: \"+name)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_admission.py\", line 26, in require\n    if not value:raise AssertionError(message)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Protected source or evidence changed: protected-source.py\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_legacy.py\", line 134, in finalize_rc_outputs\n    try:report[field]=action()\n                      ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_legacy.py\", line 133, in <lambda>\n    (\"new_current_view_outputs\",lambda:new_current_outputs(pin))):\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_legacy.py\", line 126, in new_current_outputs\n    original=source.contract()[\"canonical_candidate\"][\"expected_sha256\"]\n             ^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1139, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1143, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1204, in _execute_mock_call\n    result = effect(*args, **kwargs)\n             ^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_fresh_rc_workers.py\", line 293, in checked_contract\n    try:a.source.methods()\n        ^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_admission.py\", line 67, in methods\n    require(sha(regular(ROOT,name))==digest,\"Protected source or evidence changed: \"+name)\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_admission.py\", line 26, in require\n    if not value:raise AssertionError(message)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: Protected source or evidence changed: protected-source.py\n"
+          }
+        ]
+      },
+      {
+        "actual_main": true,
+        "complete_stage_files": {
+          "compile-native-methods.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "native-extraction.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "result.json": "13aab50e3d8d83ece326513cf1e0422a69c6ca595405b2a8428b4308b2608087"
+        },
+        "error": "AssertionError(('native-extraction', 1))",
+        "fixture_transport_and_native_subprocesses_are_synthetic": true,
+        "mode": "body_inventory",
+        "old_worker": false,
+        "saved_status": "FAIL_OR_ERROR",
+        "terminal_output_errors": [
+          {
+            "error": "RuntimeError('INJECTED_CURRENT_OUTPUT_INVENTORY_FAILURE')",
+            "field": "new_current_view_outputs",
+            "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_v59_tail_fresh_wire_rc.py\", line 76, in main\n    run([sys.executable,wire/'run-rc01.py'],'native-extraction')\n  File \"/home/runner/work/nssoc/nssoc/scripts/cloud_cdr_v59_tail_fresh_wire_rc.py\", line 30, in run\n    assert rc==0,(label,rc)\n           ^^^^^\nAssertionError: ('native-extraction', 1)\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_legacy.py\", line 134, in finalize_rc_outputs\n    try:report[field]=action()\n                      ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_legacy.py\", line 133, in <lambda>\n    (\"new_current_view_outputs\",lambda:new_current_outputs(pin))):\n                                       ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1139, in __call__\n    return self._mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1143, in _mock_call\n    return self._execute_mock_call(*args, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.15/x64/lib/python3.12/unittest/mock.py\", line 1198, in _execute_mock_call\n    raise effect\nRuntimeError: INJECTED_CURRENT_OUTPUT_INVENTORY_FAILURE\n"
+          }
+        ]
+      }
+    ],
+    "exact_previous_stale_failure": {
+      "actual_main": true,
+      "complete_stage_files": {
+        "compile-native-methods.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-audit.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-extraction.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "native-fault-controls.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "result.json": "e873fc3535cc23eeadadccf7385d670de508fb6c880473d9c8632e5d449e748b"
+      },
+      "error": "RuntimeError('INJECTED_CURRENT_OUTPUT_INVENTORY_FAILURE')",
+      "fixture_transport_and_native_subprocesses_are_synthetic": true,
+      "mode": "inventory",
+      "old_worker": true,
+      "saved_status": "RUNNING",
+      "terminal_output_errors": null
+    },
+    "expected_current_failures": 3,
+    "original_failure_reproduced": true,
+    "positive": 1
+  },
+  "actual_main_entries": [
+    {
+      "actual_main": true,
+      "actual_selected_copy": true,
+      "full_failure_saved": true,
+      "network_calls": 1,
+      "stage": "binding"
+    },
+    {
+      "actual_handoff": true,
+      "actual_main": true,
+      "full_failure_saved": true,
+      "native_calls": 0,
+      "stage": "precision"
+    }
+  ],
+  "authored_native_execution": false,
+  "derivation": {
+    "negative": [
+      {
+        "case": "binding_numeric_or_order_change",
+        "reason": "Exact numerical derivation changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "rc_numeric_or_order_change",
+        "reason": "Exact numerical derivation changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "capture_numeric_or_order_change",
+        "reason": "Exact numerical derivation changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "audit_numeric_or_order_change",
+        "reason": "Exact numerical derivation changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "precision_numeric_or_order_change",
+        "reason": "Exact numerical derivation changed",
+        "rejected": true,
+        "type": "AssertionError"
+      }
+    ],
+    "positive": [
+      {
+        "changed_ASTs": [],
+        "exact_numerical_functions": [
+          "native_contact_oracle",
+          "native_export",
+          "geometry_readback_matches",
+          "geometry_readback_controls",
+          "build",
+          "verify",
+          "controls",
+          "main"
+        ],
+        "reversed_byte_exact": true,
+        "stage": "binding"
+      },
+      {
+        "changed_ASTs": [
+          "main"
+        ],
+        "exact_numerical_functions": [],
+        "reversed_byte_exact": true,
+        "stage": "rc"
+      },
+      {
+        "changed_ASTs": [],
+        "exact_numerical_functions": [
+          "generate",
+          "check_capture",
+          "main"
+        ],
+        "reversed_byte_exact": true,
+        "stage": "capture"
+      },
+      {
+        "changed_ASTs": [],
+        "exact_numerical_functions": [
+          "main"
+        ],
+        "reversed_byte_exact": true,
+        "stage": "audit"
+      },
+      {
+        "changed_ASTs": [
+          "check",
+          "main"
+        ],
+        "exact_numerical_functions": [
+          "records",
+          "compose"
+        ],
+        "reversed_byte_exact": true,
+        "stage": "precision"
+      }
+    ]
+  },
+  "direct_finalizer": [
+    {
+      "case": "stage_inventory_fails_current_still_attempted",
+      "events": [
+        "stage",
+        "current",
+        "save"
+      ],
+      "same_exception": true
+    },
+    {
+      "case": "save_failure_with_no_primary",
+      "complete_unsaved_result_emitted": true,
+      "emitted": {
+        "unsaved_terminal_RC_result": {
+          "active_primary_exception_before_inventory": null,
+          "new_current_view_outputs": {
+            "fresh": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "outputs": {
+            "file": "1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          "status": "FAIL_V59_TERMINAL_SAVE",
+          "terminal_output_errors": [],
+          "terminal_output_inventory_complete": true,
+          "terminal_save_error": {
+            "error": "OSError('TERMINAL_SAVE_FAILURE')",
+            "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_legacy.py\", line 143, in finalize_rc_outputs\n    try:save()\n        ^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_fresh_rc_workers.py\", line 400, in save_failure\n    def save_failure():events.append(\"save\");raise save_error\n                                             ^^^^^^^^^^^^^^^^\nOSError: TERMINAL_SAVE_FAILURE\n"
+          }
+        }
+      },
+      "same_exception": true
+    },
+    {
+      "case": "save_failure_with_active_primary",
+      "complete_unsaved_result_emitted": true,
+      "emitted": {
+        "unsaved_terminal_RC_result": {
+          "active_primary_exception_before_inventory": "RuntimeError('ACTIVE_PRIMARY')",
+          "error": "RuntimeError('ACTIVE_PRIMARY')",
+          "new_current_view_outputs": {
+            "fresh": "2222222222222222222222222222222222222222222222222222222222222222"
+          },
+          "outputs": {
+            "file": "1111111111111111111111111111111111111111111111111111111111111111"
+          },
+          "status": "FAIL_OR_ERROR",
+          "terminal_output_errors": [],
+          "terminal_output_inventory_complete": true,
+          "terminal_save_error": {
+            "error": "OSError('TERMINAL_SAVE_FAILURE')",
+            "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_fresh_rc_workers.py\", line 404, in terminal_helper_controls\n    try:raise primary\n        ^^^^^^^^^^^^^\nRuntimeError: ACTIVE_PRIMARY\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/cdr_v59_tail_fresh_rc_legacy.py\", line 143, in finalize_rc_outputs\n    try:save()\n        ^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_cdr_v59_tail_fresh_rc_workers.py\", line 400, in save_failure\n    def save_failure():events.append(\"save\");raise save_error\n                                             ^^^^^^^^^^^^^^^^\nOSError: TERMINAL_SAVE_FAILURE\n"
+          }
+        }
+      },
+      "same_exception": true
+    }
+  ],
+  "handoff": {
+    "negative": [
+      {
+        "case": "wrong_run",
+        "reason": "Fresh handoff source/run mismatch",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "wrong_source",
+        "reason": "Fresh handoff source/run mismatch",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "historical_identity",
+        "reason": "Historical bundle relabelled",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "repeat_handoff",
+        "reason": "Fresh MIM handoff already exists or root missing",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "wrong_order",
+        "reason": "Wrong fresh native order",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "wrong_order_parent",
+        "reason": "Wrong fresh native order",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "repeat_projection",
+        "reason": "Numerical projection destination exists",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "projected_current_corrupt",
+        "reason": "Numerical input digest changed: wire/fresh-rc.spice",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "projected_unselected_binding_corrupt",
+        "reason": "Numerical input digest changed: .hidden",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "projected_extra",
+        "reason": "Complete numerical inventory changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "projected_symlink",
+        "reason": "Symlink in protected path",
+        "rejected": true,
+        "type": "AssertionError"
+      }
+    ],
+    "positive": [
+      {
+        "actual_copy_and_verification": true,
+        "complete_binding": {
+          ".hidden": "6b428ace0262db5de1acac5d5e225a117674ede63c6631800103512289d791e6",
+          "binding.json": "64e4ffea69c71e5c3cf2f56f42f97ef84106f70965034e3ddd5af3207c7d0f1d",
+          "empty": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "result.json": "a8b45984e71ad413d8b42554517f168cc43f8f82f85495c4c7da5d92bd744f4a"
+        },
+        "complete_source": {
+          ".hidden": "eab800d33e9a11a4d6948af0bf728cdd6796d4678336e0ad010cf0ff662f33ba",
+          "empty": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "wire/anchors08.json": "b9142bd5b90a6fba57ac30bb5b6773d225538fa3e06a87c17c219c57a9259e36",
+          "wire/fresh-rc.spice": "fe7868e16b8e258739e6ee78a10bb200b88e2e1f6487fff0e39981b7c52f9653",
+          "wire/native05/result.json": "0ab6b5b6962b6e19be3e1130d551e05089a26c7d29618a1f9a9c44671f4e52d3"
+        },
+        "order": "precise"
+      },
+      {
+        "actual_copy_and_verification": true,
+        "complete_binding": {
+          ".hidden": "6b428ace0262db5de1acac5d5e225a117674ede63c6631800103512289d791e6",
+          "binding.json": "64e4ffea69c71e5c3cf2f56f42f97ef84106f70965034e3ddd5af3207c7d0f1d",
+          "empty": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "result.json": "a8b45984e71ad413d8b42554517f168cc43f8f82f85495c4c7da5d92bd744f4a"
+        },
+        "complete_source": {
+          ".hidden": "eab800d33e9a11a4d6948af0bf728cdd6796d4678336e0ad010cf0ff662f33ba",
+          "empty": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "wire/anchors08.json": "b9142bd5b90a6fba57ac30bb5b6773d225538fa3e06a87c17c219c57a9259e36",
+          "wire/fresh-rc.spice": "fe7868e16b8e258739e6ee78a10bb200b88e2e1f6487fff0e39981b7c52f9653",
+          "wire/native05/result.json": "0ab6b5b6962b6e19be3e1130d551e05089a26c7d29618a1f9a9c44671f4e52d3"
+        },
+        "order": "precise_reversed"
+      }
+    ],
+    "scope": "Actual complete inventory and both-order copy APIs with explicit synthetic stages; not extracted native RC."
+  },
+  "positive_groups": 10,
+  "refusals": 41,
+  "report_schema": {
+    "negative": [
+      {
+        "case": "source",
+        "reason": "Fresh numerical stage failed or wrong source",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "status",
+        "reason": "Fresh numerical stage failed or wrong source",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "scope",
+        "reason": "Numerical stage acceptance changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "fault",
+        "reason": "Fresh14 binding faults changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "target_fault",
+        "reason": "Fresh target-length faults changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "contact",
+        "reason": "Fresh contact oracle/faults changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "simulation",
+        "reason": "Binding scope changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "geometry",
+        "reason": "Fresh RC geometry/anchor source mismatch",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "capture",
+        "reason": "Fresh RC capture incomplete",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "audit",
+        "reason": "Fresh strict RC audit changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "boolean_R_count",
+        "reason": "Fresh actual R/C counts invalid",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "zero_C_count",
+        "reason": "Fresh actual R/C counts invalid",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "fault_count",
+        "reason": "Fresh13 raw RC faults changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "fresh_output",
+        "reason": "Fresh complete current output-map changed",
+        "rejected": true,
+        "type": "AssertionError"
+      },
+      {
+        "case": "unlisted_complete_stage_file",
+        "reason": "Fresh complete stage output inventory changed",
+        "rejected": true,
+        "type": "AssertionError"
+      }
+    ],
+    "positive": [
+      {
+        "actual_validator": true,
+        "stage": "binding",
+        "synthetic_report_not_native_qualification": true
+      },
+      {
+        "actual_validator": true,
+        "stage": "rc",
+        "synthetic_report_not_native_qualification": true
+      }
+    ]
+  },
+  "status": "PASS_DISABLED_FRESH_NUMERICAL_DERIVATION_AND_SYNTHETIC_HANDOFF_CONTROLS",
+  "synthetic_stages_are_not_actual_native_qualification": true,
+  "unfinished_entry_scopes": []
+}

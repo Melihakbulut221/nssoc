@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-27T19:40:58.395724+00:00",
+  "updated_at": "2026-10-27T20:23:02.627694+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "591db8cedd54de382d9fc0a23f2ab14dd0323fce",
+  "root_source_before_receipt": "65e515813a08a6f857a98685d3f7045adbd6c87f",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 79,
+    "inventory_version": 80,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40322641142,
@@ -15,27 +15,52 @@
     "last_verified_run_status": "ATTENTION_REQUIRED: all51 source controls passed; complete observation and snapshot succeeded; open engineering failures retained; no MONITOR_ERROR"
   },
   "active_runs": {
-    "PLL first current-tail full transient process": {
-      "run": 40567765771,
-      "head_sha": "2071d818cce135a16f378ba22af0186df8ce80a7",
+    "Mainchip typed-special two-signal repair": {
+      "run": 40572767703,
+      "head_sha": "3ee00226fe604d6c019c383e773dc23b5892afc9",
       "status": "in_progress",
       "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 122413517331,
+          "id": 122431088644,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 122432552864,
+          "name": "native",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Read-only ownership then conditional two-net repair and complete original-class DRC"
+          ]
+        }
+      ]
+    },
+    "CDR current-tail fresh binding wireRC MIM": {
+      "run": 40576801174,
+      "head_sha": "9dde4d54f07e52baf004cfd99fabaf71032b3ed3",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 122445301811,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 122414584974,
-          "name": "exact318-p-high-native",
+          "id": 122446295351,
+          "name": "fresh-RC",
           "status": "in_progress",
           "conclusion": null,
           "active_steps": [
-            "Run sole p-high process or continue its exact saved process"
+            "Original pinned native runtime and extraction dependencies"
           ]
         }
       ]
@@ -2132,14 +2157,96 @@
       "eight_hour_cloud_monitor_retained": true,
       "unintended_pending_generic_run40559604904_cancelled_before_jobs": true,
       "all_ordinary_commits_skip_ci": true
+    },
+    "v80_CDR_full_controls_and_native_dispatch": {
+      "controls_run": 40573703714,
+      "controls_source": "4108ff388145d5286c6121ef25f8fe5004d857de",
+      "complete_proof": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "root_full19files_3840525bytes_7records_479chunks_verified": true,
+      "live_raw_source_log_equal": true,
+      "old_callable_signal_failure_actually_reproduced": true,
+      "all_ten_corrected_cases_fullsaved_json_and_signal_restoration_passed": true,
+      "all764oldGitobjects_unchanged": true,
+      "source_neutral_exact_normalization_verified": true,
+      "native_source": "9dde4d54f07e52baf004cfd99fabaf71032b3ed3",
+      "native_run": 40576801174,
+      "method_sha256": "71a38d7f40424d8ea3f6d4f593dd1b9e2d50a6025da41348820aa737a6a1911e",
+      "protected": 783,
+      "release": 425941182,
+      "phase_seconds": 1200,
+      "phases": 4,
+      "geometry_or_simulation_or_acceptance": false
+    },
+    "v80_mainchip_actual_controls_and_repair": {
+      "controls_run": 40570652971,
+      "fullproof": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "root_full9files_586688bytes_66chunks_verified": true,
+      "new_typed_special_3positive_16refusals_passed": true,
+      "all455tested_gitobjects_unchanged": true,
+      "protected": 464,
+      "native_run": 40572767703,
+      "native_source": "3ee00226fe604d6c019c383e773dc23b5892afc9",
+      "release": 425914881,
+      "ownership_first": true,
+      "only_two_target_nets_mutable": true,
+      "all1691_original_clock_gates_retained": true,
+      "full_original_class_DRC_required": true,
+      "original_setup_hold_constraints_unchanged": true,
+      "no_native_result_at_source_review": true
+    },
+    "v80_PLL_actual_full_capture_phase_rejection": {
+      "run": 40567765771,
+      "source": "2071d818cce135a16f378ba22af0186df8ce80a7",
+      "complete_proof": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "proof_scope": "Agent-authenticated18completefiles12539730B,8full directJSON,756chunks/full3267254B joblog; root imports byte-bound proof without relabeling failed electrical outcome",
+      "native_return": 0,
+      "full34ns_capture": true,
+      "rows": 114525,
+      "columns": 4727,
+      "all318HBT_safety_passed": true,
+      "original_fixed_phase_failed": true,
+      "all9fixed_outputs_have_violations": true,
+      "parent_firstfall_ps": [
+        150.930671,
+        163.312171
+      ],
+      "masterchild_firstfall_ps": [
+        1189.569841,
+        1075.787593
+      ],
+      "Qchild_qualifying_release_edges_missing": true,
+      "original_limit_ps": 62.5,
+      "native_saved_process": false,
+      "retry": false,
+      "selected_cloud_readback_candidate_in_preparation": true,
+      "full_phy_accepted": false
+    },
+    "v80_CDC_qualified_package_gap": {
+      "inventory": "85951d00cf7802169a616b492330e809c26697fb",
+      "actual_qualified_run": 40212194745,
+      "qualified_source": "d246ded34ec4ee70b35d07ffeeb85a0ef6e7958a",
+      "missing_root_RTL": [
+        "hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v",
+        "hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v"
+      ],
+      "safe_import_review_in_progress": true,
+      "training_owner_absent": true,
+      "fullPHY_or_physicalCDC_accepted": false
+    },
+    "v80_cloud_only": {
+      "local_workspace_empty": true,
+      "project_tmp_and_native_processes_absent": true,
+      "all_CAD_tests_and_archives_cloud_only": true,
+      "eight_hour_monitor_retained": true
     }
   },
   "next_actions": [
-    "Monitor sole PLL40567765771 exact2071d818 initial p-initial-high original full34ns process, reservedrelease425882934. Preserve complete native raw streams/checkpoint orwaveform+allJSONs cloud-only. No crosscontinuation/retry/othercase until actualterminal proof and independent exactsource review.",
-    "Consume mainchip40570652971 complete source controls proof. If all new3/16 and prior groups pass, review metadata-only native activation against all455testedpins and fullproofs before a sole conditional ownership-first repair. Original all1691fixedclocks, immutable special material, ordinary unwired refusals, full original-class DRC/resource gates remain.",
-    "Correct CDR actual finalization callable return serialization error with no-return signal restoration; add exact frozen failed actual-main regression and corrected full-JSON/output proof. Preserve both actual failed runs/proofs. Review source delta before new source-controls; runtime/release and native freshRC remain unqualified.",
-    "No local project files, authored imports/tests, CAD, native archives or raw waveforms. All edits/tests/artifacts cloud-only, no automatic retries, existing8h read-only monitor retained.",
-    "FullserialGen3x4 PHY, routed serial PCIe/Ethernet chip and original setup/hold remain unaccepted until complete actual evidence."
+    "Consume CDR40576801174 complete repeated source-control/native proof with exact reservedrelease425941182. Verify actual binding500, freshwireRC, allsevenMIMbothorders and full955/current184 provenance; no geometry regeneration, oldRCreuse, simulation or acceptance assumed. If pipeline passes, prepare original ten-case electrical matrix against actual newRC, source review before dispatch.",
+    "Consume mainchip40572767703 complete actual native proof at3ee00226, exactrelease425914881. Preserve ownership and full actual typedcensus/rawrows; if only capsule contains detailed census, use reviewed cloud-only selectedtext readback. Only net36993/net459 mutable, all1691clock/material/class/DRC gates unchanged. No RC/STA bridge until actual output qualifies.",
+    "PLL40567765771 completed original34ns fullcapture with all318numeric safety passed but originalphase/preset/event gates rejected. Prepare cloud-only selected current-capture same-row clock/release/run/selector frames and crossing brackets; no new simulation or geometry, originalfailure/prescribed masks remain. Independent completeproof review before diagnostic native dispatch; no retries.",
+    "Review exact qualifiedGen12 recordCDC package missing from root and selectively integrate unchanged source/test/harness with authentic historicalproof, excluding old nativeauthorization and conflictingdocs. Full trainingowner/TS/LTSSM remains unimplemented; do not invent PCIe-spec encoding or claim fullPHY.",
+    "No local projectfiles, authored imports/tests, CAD, nativearchives or rawwaveforms. All edits/results cloud-only, ordinary commits skipCI, no automatic retries, existing8h read-only monitor retained.",
+    "Full serialGen3x4 PHY, routed PCIe/Ethernet mainchip and original setup/hold remain unaccepted until actual complete evidence."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -2387,144 +2494,12 @@
     "observed_40566366012": 40566366012,
     "observed_40569566031": 40569566031,
     "observed_40570652971": 40570652971,
-    "observed_40558510934": 40558510934
+    "observed_40558510934": 40558510934,
+    "observed_40573703714": 40573703714,
+    "observed_40567765771": 40567765771
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
-    {
-      "run": 40563361826,
-      "head_sha": "1ba251d61d491d61a3a4a34b60649e5b51e723b4",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122397999387,
-          "name": "register",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40559604904,
-      "head_sha": "94b48b07d413b2625d0b944c1fc110c8464af340",
-      "status": "completed",
-      "conclusion": "cancelled",
-      "run_attempt": 1,
-      "jobs": []
-    },
-    {
-      "run": 40565959717,
-      "head_sha": "a7045484029e2c33232cd79b70011467330d711b",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122407146190,
-          "name": "register",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40565864976,
-      "head_sha": "a93e8db672027f1436e46ac4ddc59b63b6f274d7",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122406837374,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 122407384713,
-          "name": "exact318-p-high-native",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40567765771,
-      "head_sha": "2071d818cce135a16f378ba22af0186df8ce80a7",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122413517331,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 122414584974,
-          "name": "exact318-p-high-native",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Run sole p-high process or continue its exact saved process"
-          ]
-        }
-      ]
-    },
-    {
-      "run": 40566366012,
-      "head_sha": "ced72e6d15b9622c83bdffb9743a0e69b9f06ef6",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122408598319,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 122409328118,
-          "name": "fresh-RC",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40569566031,
-      "head_sha": "6300d0c3f8b9410f8aaf7aa43d51bee5aa3d3695",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122419865260,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 122420909708,
-          "name": "fresh-RC",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
     {
       "run": 40570652971,
       "head_sha": "7ec6a0bd7483f8f9227d717ffd295e92b5d96490",
@@ -2549,22 +2524,95 @@
       ]
     },
     {
-      "run": 40558510934,
-      "head_sha": "f65fa3dce502336b312c00960f29cf612dcd3559",
-      "status": "completed",
-      "conclusion": "failure",
+      "run": 40572767703,
+      "head_sha": "3ee00226fe604d6c019c383e773dc23b5892afc9",
+      "status": "in_progress",
+      "conclusion": null,
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 122380922323,
+          "id": 122431088644,
           "name": "controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 122382997809,
+          "id": 122432552864,
           "name": "native",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Read-only ownership then conditional two-net repair and complete original-class DRC"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 40573703714,
+      "head_sha": "4108ff388145d5286c6121ef25f8fe5004d857de",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 122434392844,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 122434884410,
+          "name": "fresh-RC",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40576801174,
+      "head_sha": "9dde4d54f07e52baf004cfd99fabaf71032b3ed3",
+      "status": "in_progress",
+      "conclusion": null,
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 122445301811,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 122446295351,
+          "name": "fresh-RC",
+          "status": "in_progress",
+          "conclusion": null,
+          "active_steps": [
+            "Original pinned native runtime and extraction dependencies"
+          ]
+        }
+      ]
+    },
+    {
+      "run": 40567765771,
+      "head_sha": "2071d818cce135a16f378ba22af0186df8ce80a7",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 122413517331,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 122414584974,
+          "name": "exact318-p-high-native",
           "status": "completed",
           "conclusion": "failure",
           "active_steps": []
@@ -2573,7 +2621,7 @@
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-27T19:40:58.395724+00:00",
+    "observed_at": "2026-10-27T20:23:02.627694+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -2695,7 +2743,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-27T19:40:58.395724+00:00",
+  "local_workspace_verified_empty_at": "2026-10-27T20:23:02.627694+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -18450,6 +18498,542 @@
       "source": "2071d818cce135a16f378ba22af0186df8ce80a7",
       "release": 425882934,
       "tag": "cloud-results-40567765771-1-tx-phase-reset334-tail-m4-transient-native-initial-p-initial-high"
+    }
+  ],
+  "imported_checkpoint_receipts_v80": [
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-controls-pass-20261027.boundary.json",
+      "source": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "git_blob": "dbb20cf8eaf6a1c1e82098da0e55d12420ebd310",
+      "bytes": 127398,
+      "sha256": "8800a7ce831932830633f2f138bb0a9004819997993f0af6f8c13f26e3472485",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-controls-pass-20261027.imports.json",
+      "source": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "git_blob": "257b1e5155adc6e2fc36bc8bafa060249a306c55",
+      "bytes": 67713,
+      "sha256": "46fd3a96caf19eddb6f404f3fbe5c63ea19dc145896a404711d174acf293347e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-controls-pass-20261027.indexed-records.json",
+      "source": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "git_blob": "6db6028b68aca567b9e46d19fc6a70346986987b",
+      "bytes": 310,
+      "sha256": "017aad642297df2e883349a6469f4b9216a44a62f5a3a8bd51678b3bb7d2896f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-controls-pass-20261027.job.log",
+      "source": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "git_blob": "2b21c5f1aec1009d0cfc7b92eb5fdb18750f0ab8",
+      "bytes": 291410,
+      "sha256": "86eda5fe3be34936bb1a520f6b05afff0aff906b8e4134955dadcb854f811554",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-controls-pass-20261027.jobs.json",
+      "source": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "git_blob": "b1c70b8ffd5eb425418d4ca7fd15bcbc24f0319b",
+      "bytes": 3845,
+      "sha256": "17657486ab72af7a9292bd1daf9812a6142026e2f14a19772f6fbf2df34138cf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-controls-pass-20261027.json",
+      "source": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "git_blob": "77c060d92213409055d4da8c08a13e2b6b22764f",
+      "bytes": 6058,
+      "sha256": "e2627aea8ed2f2b973627a0a0c6a2c982743488dd569c7c0a8a186b8edae16bb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-controls-pass-20261027.run.json",
+      "source": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "git_blob": "1ea81baf97cb15ddec03a0c0502e54a39f707ef7",
+      "bytes": 13060,
+      "sha256": "4071eddfc9e57df4718be7cc7ada6147cdc8a96f56cc0e3fed33f66374d83bac",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-controls-pass-20261027.tested-methods.json",
+      "source": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "git_blob": "74d198559a5776619177c38d8a96d63fc17a1d4d",
+      "bytes": 72379,
+      "sha256": "36b14234a531654b2a21eb58f134d35d253fa1e808eb0d028e65795ad7754a2c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-controls-pass-20261027.workflow.yml",
+      "source": "d8e3137b8e9b2cd13d31e906ad83d0f7ce658724",
+      "git_blob": "65f0f21a4a55b59e1d5ae9b6c113b5205142cacd",
+      "bytes": 4515,
+      "sha256": "8878e03e4169d1165547f7b53a9b35c9ae5372c55ba3e2d3501aae75a5be06ad",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-native-proposal-20261027.json",
+      "source": "704079d1",
+      "git_blob": "b6d31f48f0cad677d1c93f333cf4dda2ffecb008",
+      "bytes": 6624,
+      "sha256": "57855e0bc1fefa10f825e95c2f545b679a5897fcd73ccb6883f2122a74a55c8d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-native-proposed-methods-20261027.json",
+      "source": "704079d1",
+      "git_blob": "9eaa6ab53b53997d8aa0a8870e0ea79b87840075",
+      "bytes": 73804,
+      "sha256": "114a00260f909e3ffb7dda708d2c7dc43c838dd39779868a6af735c94cccf7a8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-native-root-activation-20261027.json",
+      "source": "3ee00226fe604d6c019c383e773dc23b5892afc9",
+      "git_blob": "557a8cc140be14f094e17f39ade3c4f40a24ef01",
+      "bytes": 1921,
+      "sha256": "2a2ed6b0dc58b8df70a0bc6da82455a2a0cb0e96f58f5b4f0bbee602c7c2e9c3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-two-signal-typed-special-native-dispatch-20261027.json",
+      "source": "245a9a0b308948b404cefb431f25544b6877b692",
+      "git_blob": "9b195bd890fdb8f313d1dbf1d9aacff942e5b9f2",
+      "bytes": 18692,
+      "sha256": "744ceef8e3e51440a80e9f2b6cd153abb744cb0b1e162f54f69037c735ea38d0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-return-failed-checker-20261027.py",
+      "source": "a88e985f73ae9180f624142ec69f431df07e0d31",
+      "git_blob": "ccbd0aad8184d1eb9f5b36222621824030b7f09b",
+      "bytes": 26135,
+      "sha256": "aaa054cc134b374b77322eec6ec775dd38be7ebcf6afb01d5cc58319cad3a6e3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-return-failed-controller-20261027.py",
+      "source": "a88e985f73ae9180f624142ec69f431df07e0d31",
+      "git_blob": "3e074f3d05385f985403ac5001675d5a9792f72a",
+      "bytes": 19528,
+      "sha256": "67d05780f362fa146c7a47bf120eb2b75a308efd2c2d87c9c8f77d047b8541b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-return-independent-diagnosis-20261027.json",
+      "source": "a88e985f73ae9180f624142ec69f431df07e0d31",
+      "git_blob": "98c4304011eec1cea77e8fb8946181c116de457e",
+      "bytes": 2163,
+      "sha256": "3ac2ce2716055065614c6d41f02cc15d4691d5d5a444166279e5e844590342fb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-return-source-correction-20261027.json",
+      "source": "a88e985f73ae9180f624142ec69f431df07e0d31",
+      "git_blob": "6708277576a7882be6895a3ae31ab35694811e69",
+      "bytes": 25331,
+      "sha256": "db7dd3ae9f528162509442df166d7f2e67c239791f92f52e4533f2bf2b45630d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-controls-activation-proposal-20261027.json",
+      "source": "eeeeaac4baff36e43eeaac8b8f9e0e0c4d637bf2",
+      "git_blob": "afaf650e4a11ab58f2619785e84a76c14af7105c",
+      "bytes": 4605,
+      "sha256": "3fc35f1bb310ac7610bae996bded2985f8ee2350e8558f2183a1e2130f881916",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-controls-proposed-method-20261027.json",
+      "source": "eeeeaac4baff36e43eeaac8b8f9e0e0c4d637bf2",
+      "git_blob": "d2a9407c2cfd8523e099677d3a41ca80e943fc0a",
+      "bytes": 121458,
+      "sha256": "2eb6b53a2a4a2772b37c5e9abb98cd68a4491672aa8a0b6998b0221a15daacdf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-return-independent-review-20261027.json",
+      "source": "eeeeaac4baff36e43eeaac8b8f9e0e0c4d637bf2",
+      "git_blob": "392016936dfb2865026a244a49ac259ef1efe43b",
+      "bytes": 1556,
+      "sha256": "91a2adf51831c24d628ee2d040343475520936dcdbab1c4a5e4017efc61e8294",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-return-root-review-20261027.json",
+      "source": "eeeeaac4baff36e43eeaac8b8f9e0e0c4d637bf2",
+      "git_blob": "2d07d445394a0fed5d30fa24ea3cb8c811938460",
+      "bytes": 1122,
+      "sha256": "89da626bc6fe7f2a43fef02ee697010dd8d8f04a24acd3f7916ef3abb1fae9d7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-root-activation-20261027.json",
+      "source": "4108ff388145d5286c6121ef25f8fe5004d857de",
+      "git_blob": "35e13cdbdd96fe49e12eaabdb0a9f2a9f96fdaa5",
+      "bytes": 786,
+      "sha256": "df707ae1ccbce87aa9b87feea16308fbb993e366243316fb70f445d6f9ed920d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-dispatch-20261027.json",
+      "source": "73a79f3fb536695c02fde14350d3f2387a8e295a",
+      "git_blob": "c9442adebd4f9cbaaf60125a20be0cfded8d208d",
+      "bytes": 596,
+      "sha256": "797b6f09bfa6e47bb29879ae493530949d3f71b7521fc0373f664a74a9a3339e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-active-workflow.yml",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "34d87f3c30107b10833a34ae48a473e5d2db3729",
+      "bytes": 13392,
+      "sha256": "0602c09562d4521b34f3113d8e8b6f2451b58c3d645f9061c015b0e3889a89c6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-artifacts.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "0a85a7e81331deda95e4b7fa147b69fa98da657e",
+      "bytes": 765,
+      "sha256": "8fc40206fd8f328918116d7438f34bcea8575f6f8bbad59a17340e4a3bf947c8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-control-admission.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "6f33fbee719975b6abb254188ede6b939ddb9982",
+      "bytes": 4721,
+      "sha256": "7d444038d7e1d17352a349e4be1a01f66604b02ad7050146baeeeb1a2e15e6f4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-control-imports.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "fab3975f917b77db595556f7a2f36c4ca293279a",
+      "bytes": 67786,
+      "sha256": "3f27ecd2c09a95cf4543eb7b949fbfccc86c4222496e3123fc5e83e10c1ca967",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-control-outer.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "9ff1eb8f4c863e01d1f37769c3bf011fed37de8d",
+      "bytes": 55132,
+      "sha256": "87dcc125be7d919b79cfeb03afd9b71c096522f49e34f7410451eff54f1f2b8f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-control-release.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "c44fd371e88038715cd5068eb734729e9a83bef1",
+      "bytes": 2730,
+      "sha256": "cfc026546322b92c3d2c61a62d3d080356cc5312d0754f717d5cdaf423422695",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-control-runtime.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "b0d0e3273c8e9f47b97d4d61c4b4c3edab49c375",
+      "bytes": 134779,
+      "sha256": "35c0949b03ad3b6e5b967c4469e8b64e87ea727386d590a8074ba07f43504238",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-control-semantic.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "25e07ab18276517f714785837869cbb39888de86",
+      "bytes": 1172218,
+      "sha256": "9caafd81194d46442b54a2094e53cc1bb3481f079276e016af93dc8ad1ae00aa",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-control-workers.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "2aef0ab04d33433464719a2422ae30c38d20c25b",
+      "bytes": 26804,
+      "sha256": "f7273447a211e5ddcca6fe646bac8b9b1f66eef76a3a2aad9322125844a1b29d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-dispatch.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "c9442adebd4f9cbaaf60125a20be0cfded8d208d",
+      "bytes": 596,
+      "sha256": "797b6f09bfa6e47bb29879ae493530949d3f71b7521fc0373f664a74a9a3339e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-emission-census.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "a1460c3ee7e733c8935908b1c1309c1075ebb231",
+      "bytes": 1076,
+      "sha256": "90de86bc0e3599981e435f91991d32d6ac05bcfa6a978757dcb19d0455d6077d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-jobs.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "e9ca75f0869a6dfabcebe88113b85aa793bf6aef",
+      "bytes": 5423,
+      "sha256": "577bad44468cc9af832313deccf3d9ef1fbcb84bfe48e5a2cd466f664a7e96df",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-native-skipped-job.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "6a538a4832cc59edf8c057ee23806bc4f398fe66",
+      "bytes": 903,
+      "sha256": "f15a6c9126f9ea3afdaa16f65edc05bc509995b4b3508b13a9fe0f5730fa8b14",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-run.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "2ba1420a217a5442b73c6ee5e60e1ec5ce52eb85",
+      "bytes": 13040,
+      "sha256": "56021a805e038ae65431f56d5b7be808b54d98ac108dbe4f7ec251f32d13550d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-source-job.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "837dba16f90347fae013ee844f5ceee85f3750c6",
+      "bytes": 4492,
+      "sha256": "4725d16372fffdafca80696f9659e1efade546e6d42de748e722ff75cc3c344a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-source-job.log",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "5208544be76867794dccb77775e5a1cb269bff48",
+      "bytes": 2191277,
+      "sha256": "4b7be3e8f56389a51c0a1d1918a761c2ec3b7e81117c892c143d016765220342",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-template.yml",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "34d87f3c30107b10833a34ae48a473e5d2db3729",
+      "bytes": 13392,
+      "sha256": "0602c09562d4521b34f3113d8e8b6f2451b58c3d645f9061c015b0e3889a89c6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027-tested-method.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "d2a9407c2cfd8523e099677d3a41ca80e943fc0a",
+      "bytes": 121458,
+      "sha256": "2eb6b53a2a4a2772b37c5e9abb98cd68a4491672aa8a0b6998b0221a15daacdf",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-source-controls-terminal-20261027.json",
+      "source": "c1aaee0a7692d702fa28602053953eafd4e913b0",
+      "git_blob": "a80f75ebf72cfe46272ae11d610428b5b6387d61",
+      "bytes": 10541,
+      "sha256": "2cc9ef88027e33d2b1b8527ad593b48a4a2f1ae4bf913f5e90727d5d76cb33cd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-native-activation-proposal-20261027.json",
+      "source": "662be61a3a0cc5f1393bff735efd8d9dd79f68b9",
+      "git_blob": "3ebca97aeecf79d99531ec33c577c746cf830b29",
+      "bytes": 29658,
+      "sha256": "ae069c88ed4f46c6647d755810ad0e434e18535cd9b9d62c1bc93659a5be7069",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-native-proposed-method-20261027.json",
+      "source": "662be61a3a0cc5f1393bff735efd8d9dd79f68b9",
+      "git_blob": "30f2a33f0eaa67fd9b9ec2b79332483cc5ebf18d",
+      "bytes": 133126,
+      "sha256": "71a38d7f40424d8ea3f6d4f593dd1b9e2d50a6025da41348820aa737a6a1911e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-native-root-activation-20261027.json",
+      "source": "9dde4d54f07e52baf004cfd99fabaf71032b3ed3",
+      "git_blob": "507a61f4bd18659b307c5bea63c61bc1051da217",
+      "bytes": 1048,
+      "sha256": "266096184539a102761712f81f16b8ccf589a7bc548b5c250e653da4cddf72af",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-fresh-RC-signal-corrected-native-dispatch-20261027.json",
+      "source": "b49ff6749683a9815d6212d86ce69955ef302da0",
+      "git_blob": "f552286e22dbfa85637f02b52f3119932f176a89",
+      "bytes": 18393,
+      "sha256": "01200ac5698cfaa9bf4a7ff22fcbd9fba171b4fbd900b06ea75367232329dfe2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.authentication.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "65221b2d74dca907fd19f2b1f0eb5d484c00a0a9",
+      "bytes": 1420,
+      "sha256": "2b751619211504b71a444379fdfb0bbdd863119db4541865096856c63a5bf3e6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.current-OP-restoration.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "b2e6b04f85d68feefb69704e68040300bba81866",
+      "bytes": 882490,
+      "sha256": "0f1bb84e2f2b5ddfee1f873334d9308164e26ea7c826f41f841e13329750ddc1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.current-restored-input-controls.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "07995cc1ddcece43dac92a7d1c739bdb7f5ec035",
+      "bytes": 11844,
+      "sha256": "9f0a39693a336bdb94adbdc92296ad6c01163da438cd23ffbeba008ecbace6b6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.independent-timing-review.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "8ae2f81808fd4618f8942909066d65160e59d99e",
+      "bytes": 1867,
+      "sha256": "35d5abb714c03c4c5a6104c365a8e10ad423648b198d0a708822f7184a22055c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.jobs.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "faa291afaefc4a9b9ff2708482756b3169612ff6",
+      "bytes": 9346,
+      "sha256": "9a2eb496f77cdfc79399f295043b024e3ed3274af860ba0c3188c9be6a7e3679",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "303701d564bb241588ab3cf0732fecef1cdc5db1",
+      "bytes": 14629,
+      "sha256": "e4be55d9e3d57e60878fc3dfd3d194510849c5d94997b8d13861c3214910f82c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.native-job.log",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "be3e9d613ef21f36b68905ef713b8eb0a6b7951d",
+      "bytes": 3267254,
+      "sha256": "eb4134a29a13f35ea67ccb27d1d19a1a906aca2e48efb280bbc6c1ad58b005ae",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.native-lifecycle-result.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "d895dcc024d60eb10b90fd28d7b8999cac4bc16b",
+      "bytes": 2315269,
+      "sha256": "7fa2fc332ab24b990d013f27d34f28cf04e0390e45a2c14bf41448a718426b96",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.native-resource-before-dependencies.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "60eda9da2dd986c159c2cff4541a2663c56d1f3c",
+      "bytes": 1128,
+      "sha256": "96640979e40f825654dd1116955eb162b3033928aad343b67beae152164878d6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.observations.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "502431b8477d583db98ed85143a9407339c82b62",
+      "bytes": 19034,
+      "sha256": "c72f6b769ebab16b76712bc11a5a2c25eb934054340fb221f3741591523a592d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.parts.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "eb584b3ae1b9dec3b573b6c0908741ac432bb2ab",
+      "bytes": 1749,
+      "sha256": "7ac3fd71ebb91e21a1b08d39b874ec5c6e72052d353f376f37e23bf0e7196f3e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.qualified-preparation.summary.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "9365366af5df327aa45871998d26583423b7586e",
+      "bytes": 526928,
+      "sha256": "a09ef332cf35bafd71d4b94b94e715c85dee2f40593e4bec6749a9af0db07b5e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.qualified-zero-OP.summary.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "0f2fa9f42fccfa90475ff363e1d0616b897460eb",
+      "bytes": 3114446,
+      "sha256": "f1e921615c66430a0b28bfc5f5d3434872c78c83a4a4ed2495789e8348bcd280",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.release.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "a587d5263c1793f244d34f1be78238b6c3326514",
+      "bytes": 28783,
+      "sha256": "c952b453dba92a191db63b24d946e92bc3a953a8f6f7f1db31ec9171b21c6a49",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.result-emission.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "2ea0cd7cb482f092acd79872ddc5ff5bd433511e",
+      "bytes": 7009,
+      "sha256": "bb0e99a458e5a1e596d8f614346df18494ee94bb1312e432ce741c6892d99b66",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.run.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "f213b9493c25057cd18a6ed64460d415cfa6570c",
+      "bytes": 14413,
+      "sha256": "66143e2cb1709cde9fd2f3d0512c50dd6597302d6db1a5b88973e35176152821",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.summary.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "e954e7f9ac133aeda5f02c49b007add773e0ad4a",
+      "bytes": 2321446,
+      "sha256": "d0ebfc842547a9439f6f1c5125bb34436613d2aed384abe5fe0c23ff4fe2cc0c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-transient-native-initial-terminal-20261027.tag.json",
+      "source": "fe1ba7ccb14a5f8d0a78f570324db7873e4c3fbc",
+      "git_blob": "b0af118f925cb07994911090a7e4f9e109cb2897",
+      "bytes": 675,
+      "sha256": "b6662f9c495eea2157b19c15c636eb4cc401b9c5f4cbe2d9eef790cd7368570a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/pcie-gen12-qualified-package-current-root-inventory-20261027.json",
+      "source": "85951d00cf7802169a616b492330e809c26697fb",
+      "git_blob": "e2dd639c19871282a0145c4f578521797e603909",
+      "bytes": 67067,
+      "sha256": "77a123679d54083948bdace7e6726a732064bb1abd7918f7a5235d9e086c30ec",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v80": [
+    {
+      "run": 40572767703,
+      "source": "3ee00226fe604d6c019c383e773dc23b5892afc9",
+      "release": 425914881,
+      "tag": "cloud-results-40572767703-1-mainchip-two-signal-repair"
+    },
+    {
+      "run": 40576801174,
+      "source": "9dde4d54f07e52baf004cfd99fabaf71032b3ed3",
+      "release": 425941182,
+      "tag": "cloud-results-40576801174-1-cdr-v59-tail-fresh-rc"
     }
   ]
 }
