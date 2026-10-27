@@ -80,6 +80,69 @@ jobs:
               raise
           finally:a.write(out,result)
           PY
+      - name: Reproduce actual first aggregate failure and corrected reservation schema
+        run: |
+          python - <<'PY'
+          import copy,hashlib,json,os,tempfile,traceback
+          from pathlib import Path
+          root=Path.cwd()
+          prefix=root/'docs/evidence/cdr-v59-tail-loaded-first-source-controls-terminal-20261028'
+          names=('imports','admission','restore','worker','result','outer','runtime','release')
+          saved={name:Path(str(prefix)+'.'+name+'.json').read_bytes()for name in names}
+          old_raw=Path(str(prefix)+'.workflow.yml').read_bytes()
+          assert hashlib.sha256(old_raw).hexdigest()=='f0589ef60523d4f241ee0658d2334fd6e2b98fbe97cfeaa97cfeb3d81e020953'
+          new_raw=(root/'.github/workflow-templates/cdr-v59-tail-loaded-cloud.yml').read_bytes()
+          assert (root/'.github/workflows/cdr-v59-tail-loaded-cloud.yml').read_bytes()==new_raw
+          def extract(raw):
+              lines=raw.decode().splitlines()
+              i=lines.index('      - name: Admit all eight complete source-control records')
+              assert lines[i+1:i+3]==['        run: |',"          python - <<'PY'"]
+              stop=lines.index('          PY',i+3)
+              assert all(line.startswith('          ')for line in lines[i+3:stop])
+              return '\n'.join(line[10:]for line in lines[i+3:stop])
+          old=extract(old_raw);current=extract(new_raw)
+          report={'status':'RUNNING_AGGREGATE_SCHEMA_REGRESSION','positive':[],'refused':[]}
+          def execute(program,label,replace=None):
+              with tempfile.TemporaryDirectory(prefix='cdr-aggregate-schema-')as tmp:
+                  target=Path(tmp)/'hw/soc/out/cdr-v59-tail-loaded-controls'
+                  target.mkdir(parents=True)
+                  for name,raw in saved.items():(target/(name+'.json')).write_bytes(raw)
+                  if replace is not None:(target/'release.json').write_text(json.dumps(replace))
+                  try:
+                      os.chdir(tmp)
+                      exec(compile(program,label,'exec'),{})
+                  finally:os.chdir(root)
+          try:
+              execute(old,'frozen-failed-aggregate')
+          except KeyError as error:
+              assert error.args==('positive_cases',)
+              frames=traceback.extract_tb(error.__traceback__)
+              assert frames[-1].filename=='frozen-failed-aggregate'
+              report['original_failure']={'error':repr(error),'frame':frames[-1].filename,'line':frames[-1].lineno}
+          else:raise AssertionError('Original aggregate failure did not recur')
+          execute(current,'corrected-aggregate')
+          report['positive'].append('All eight complete first hosted records accepted without rewriting any measured value')
+          release=json.loads(saved['release'])
+          mutations=[]
+          for key in ('existing_partial_assets_preserved','existing_release_not_recreated','new_release_uses_tested_sha','no_permissions_expanded'):
+              value=copy.deepcopy(release);value['reservation'][key]=False;mutations.append((key,value))
+          value=copy.deepcopy(release);value['reservation']['rejected'].pop();mutations.append(('missing_seventeenth_refusal',value))
+          value=copy.deepcopy(release);value['reservation']['status']='PASS_INCOMPLETE';mutations.append(('wrong_reservation_status',value))
+          for label,value in mutations:
+              try:execute(current,'corrected-aggregate',value)
+              except AssertionError as error:
+                  frames=traceback.extract_tb(error.__traceback__)
+                  assert frames[-1].filename=='corrected-aggregate'
+                  report['refused'].append({'case':label,'frame':frames[-1].filename,'line':frames[-1].lineno})
+              else:raise AssertionError('Bad reservation evidence accepted: '+label)
+          assert len(report['positive'])==1 and len(report['refused'])==6
+          report.update(status='PASS_ACTUAL_EIGHT_RECORD_AGGREGATE_SCHEMA_REGRESSION',
+              old_program_sha256=hashlib.sha256(old.encode()).hexdigest(),
+              corrected_program_sha256=hashlib.sha256(current.encode()).hexdigest(),
+              exact_old_control_bytes={name:hashlib.sha256(raw).hexdigest()for name,raw in saved.items()},
+              simulator_or_archive_accessed=False,numerical_or_case_gates_changed=False)
+          print('CDR_TAIL_LOADED_AGGREGATE_SCHEMA_REGRESSION '+json.dumps(report,sort_keys=True),flush=True)
+          PY
       - name: Admit all eight complete source-control records
         run: |
           python - <<'PY'
@@ -148,8 +211,9 @@ jobs:
           assert x['memory_limits_or_sampling_relaxed'] is False
           x=read('release')
           assert x['status']=='PASS_SOURCE_RESERVATION_WAITER_AND_SHARED_PUBLICATION_CONTROLS'
-          assert x['reservation']['status'].startswith('PASS')
-          assert len(x['reservation']['positive_cases'])==3 and len(x['reservation']['rejected'])==13
+          assert x['reservation']['status']=='PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS'
+          assert all(x['reservation'][k] is True for k in ('existing_partial_assets_preserved','existing_release_not_recreated','new_release_uses_tested_sha','no_permissions_expanded'))
+          assert len(x['reservation']['rejected'])==17
           assert len(x['waiter']['positive_cases'])==3 and len(x['waiter']['rejected'])==4 and not x['waiter']['creation_attempted']
           assert len(x['publication']['rejected'])==8 and len(x['publication']['file_list_controls']['rejected'])==14
           assert x['publication']['file_list_controls']['actual_shared_function_executed'] and not x['publication']['release_creation_possible']
