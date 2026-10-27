@@ -1,0 +1,1440 @@
+﻿2026-10-27T21:47:43.5797775Z Current runner version: '2.338.0'
+2026-10-27T21:47:43.5821542Z ##[group]Runner Image Provisioner
+2026-10-27T21:47:43.5822368Z Hosted Compute Agent
+2026-10-27T21:47:43.5822972Z Version: 20261021.618
+2026-10-27T21:47:43.5823616Z Commit: 21505ad2541d5be6135ed84fc33697146cf75b8e
+2026-10-27T21:47:43.5824282Z Build Date: 2026-10-21T00:45:21Z
+2026-10-27T21:47:43.5824979Z Worker ID: {b329734e-248c-414c-8d07-7486bb0b2a3f}
+2026-10-27T21:47:43.5825641Z Region: centralus
+2026-10-27T21:47:43.5826154Z Cloud: Azure
+2026-10-27T21:47:43.5826664Z ##[endgroup]
+2026-10-27T21:47:43.5827881Z ##[group]Operating System
+2026-10-27T21:47:43.5828537Z Ubuntu
+2026-10-27T21:47:43.5829018Z 24.04.5
+2026-10-27T21:47:43.5829488Z LTS
+2026-10-27T21:47:43.5829997Z ##[endgroup]
+2026-10-27T21:47:43.5830684Z ##[group]Runner Image
+2026-10-27T21:47:43.5831313Z Image: ubuntu-24.04
+2026-10-27T21:47:43.5831846Z Version: 20261012.334.1
+2026-10-27T21:47:43.5833029Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261012.334/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-27T21:47:43.5834426Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261012.334
+2026-10-27T21:47:43.5835899Z ##[endgroup]
+2026-10-27T21:47:43.5837167Z ##[group]GITHUB_TOKEN Permissions
+2026-10-27T21:47:43.5840282Z Contents: read
+2026-10-27T21:47:43.5841362Z Metadata: read
+2026-10-27T21:47:43.5842083Z ##[endgroup]
+2026-10-27T21:47:43.5844669Z Secret source: Actions
+2026-10-27T21:47:43.5845783Z Cache mode: write
+2026-10-27T21:47:43.5847417Z Prepare workflow directory
+2026-10-27T21:47:43.6225799Z Prepare all required actions
+2026-10-27T21:47:43.6296195Z Getting action download info
+2026-10-27T21:47:43.9152214Z Download action repository 'actions/checkout@11d5960a326750d5838078e36cf38b85af677262' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-27T21:47:44.1113774Z Download action repository 'actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-27T21:47:44.2931083Z Download action repository 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-27T21:47:44.6505301Z Complete job name: source-controls
+2026-10-27T21:47:44.7437782Z ##[group]Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+2026-10-27T21:47:44.7439588Z with:
+2026-10-27T21:47:44.7440765Z   persist-credentials: false
+2026-10-27T21:47:44.7441909Z   repository: Melihakbulut221/nssoc
+2026-10-27T21:47:44.7451064Z   token: ***
+2026-10-27T21:47:44.7451972Z   ssh-strict: true
+2026-10-27T21:47:44.7452909Z   ssh-user: git
+2026-10-27T21:47:44.7453813Z   clean: true
+2026-10-27T21:47:44.7454755Z   sparse-checkout-cone-mode: true
+2026-10-27T21:47:44.7455861Z   fetch-depth: 1
+2026-10-27T21:47:44.7456760Z   fetch-tags: false
+2026-10-27T21:47:44.7457699Z   show-progress: true
+2026-10-27T21:47:44.7458618Z   lfs: false
+2026-10-27T21:47:44.7459488Z   submodules: false
+2026-10-27T21:47:44.7460586Z   set-safe-directory: true
+2026-10-27T21:47:44.7461697Z   allow-unsafe-pr-checkout: false
+2026-10-27T21:47:44.7463099Z ##[endgroup]
+2026-10-27T21:47:47.1955943Z Syncing repository: Melihakbulut221/nssoc
+2026-10-27T21:47:47.1958883Z ##[group]Getting Git version info
+2026-10-27T21:47:47.1959670Z Working directory is '/home/runner/work/nssoc/nssoc'
+2026-10-27T21:47:47.1963629Z [command]/usr/bin/git version
+2026-10-27T21:47:47.3397154Z git version 2.55.0
+2026-10-27T21:47:47.3413775Z ##[endgroup]
+2026-10-27T21:47:47.3429550Z Temporarily overriding HOME='/home/runner/work/_temp/f5e478bb-26f6-4621-8e1c-d9770afe3430' before making global git config changes
+2026-10-27T21:47:47.3431267Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T21:47:47.3435773Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-27T21:47:47.3750136Z Deleting the contents of '/home/runner/work/nssoc/nssoc'
+2026-10-27T21:47:47.3755015Z ##[group]Initializing the repository
+2026-10-27T21:47:47.3759201Z [command]/usr/bin/git init /home/runner/work/nssoc/nssoc
+2026-10-27T21:47:47.4307227Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-27T21:47:47.4308897Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-27T21:47:47.4310096Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-27T21:47:47.4311226Z hint: call:
+2026-10-27T21:47:47.4311693Z hint:
+2026-10-27T21:47:47.4312186Z hint: 	git config --global init.defaultBranch <name>
+2026-10-27T21:47:47.4312673Z hint:
+2026-10-27T21:47:47.4313112Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-27T21:47:47.4313751Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-27T21:47:47.4314281Z hint:
+2026-10-27T21:47:47.4314623Z hint: 	git branch -m <name>
+2026-10-27T21:47:47.4314993Z hint:
+2026-10-27T21:47:47.4315452Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-27T21:47:47.4316170Z Initialized empty Git repository in /home/runner/work/nssoc/nssoc/.git/
+2026-10-27T21:47:47.4321784Z [command]/usr/bin/git remote add origin https://github.com/Melihakbulut221/nssoc
+2026-10-27T21:47:47.4582164Z ##[endgroup]
+2026-10-27T21:47:47.4582952Z ##[group]Disabling automatic garbage collection
+2026-10-27T21:47:47.4585598Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-27T21:47:47.4619373Z ##[endgroup]
+2026-10-27T21:47:47.4620042Z ##[group]Setting up auth
+2026-10-27T21:47:47.4626384Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T21:47:47.4655211Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T21:47:47.6911415Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T21:47:47.6944963Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T21:47:47.7184170Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T21:47:47.7218450Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T21:47:47.7407103Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-27T21:47:47.7447182Z ##[endgroup]
+2026-10-27T21:47:47.7447827Z ##[group]Fetching the repository
+2026-10-27T21:47:47.7460183Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +19b3a8f11922d7760a58d76fef0eeff0a0ec8e5a:refs/remotes/origin/codex/gen12-cdc-root-integration
+2026-10-27T21:48:05.5416809Z From https://github.com/Melihakbulut221/nssoc
+2026-10-27T21:48:05.5418078Z  * [new ref]           19b3a8f11922d7760a58d76fef0eeff0a0ec8e5a -> origin/codex/gen12-cdc-root-integration
+2026-10-27T21:48:05.5425625Z ##[endgroup]
+2026-10-27T21:48:05.5426217Z ##[group]Determining the checkout info
+2026-10-27T21:48:05.5426948Z ##[endgroup]
+2026-10-27T21:48:05.5429893Z [command]/usr/bin/git sparse-checkout disable
+2026-10-27T21:48:05.5651313Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-27T21:48:05.5685209Z ##[group]Checking out the ref
+2026-10-27T21:48:05.5691819Z [command]/usr/bin/git checkout --progress --force -B codex/gen12-cdc-root-integration refs/remotes/origin/codex/gen12-cdc-root-integration
+2026-10-27T21:48:06.6161563Z Updating files:  10% (3356/31658)
+2026-10-27T21:48:06.8347105Z Updating files:  11% (3483/31658)
+2026-10-27T21:48:06.9100122Z Updating files:  12% (3799/31658)
+2026-10-27T21:48:06.9911344Z Updating files:  13% (4116/31658)
+2026-10-27T21:48:07.0735425Z Updating files:  14% (4433/31658)
+2026-10-27T21:48:07.1866963Z Updating files:  15% (4749/31658)
+2026-10-27T21:48:07.2343345Z Updating files:  16% (5066/31658)
+2026-10-27T21:48:07.3540239Z Updating files:  17% (5382/31658)
+2026-10-27T21:48:07.6417570Z Updating files:  18% (5699/31658)
+2026-10-27T21:48:07.7725387Z Updating files:  18% (5899/31658)
+2026-10-27T21:48:08.0009624Z Updating files:  19% (6016/31658)
+2026-10-27T21:48:08.1917741Z Updating files:  20% (6332/31658)
+2026-10-27T21:48:08.3508784Z Updating files:  21% (6649/31658)
+2026-10-27T21:48:08.4367900Z Updating files:  22% (6965/31658)
+2026-10-27T21:48:08.4543826Z Updating files:  23% (7282/31658)
+2026-10-27T21:48:08.4693844Z Updating files:  24% (7598/31658)
+2026-10-27T21:48:08.5640001Z Updating files:  25% (7915/31658)
+2026-10-27T21:48:08.5993465Z Updating files:  26% (8232/31658)
+2026-10-27T21:48:08.6312111Z Updating files:  26% (8380/31658)
+2026-10-27T21:48:08.6539979Z Updating files:  27% (8548/31658)
+2026-10-27T21:48:08.6816490Z Updating files:  28% (8865/31658)
+2026-10-27T21:48:08.6967346Z Updating files:  29% (9181/31658)
+2026-10-27T21:48:08.7126712Z Updating files:  30% (9498/31658)
+2026-10-27T21:48:08.7224488Z Updating files:  31% (9814/31658)
+2026-10-27T21:48:08.7363229Z Updating files:  32% (10131/31658)
+2026-10-27T21:48:08.7498906Z Updating files:  33% (10448/31658)
+2026-10-27T21:48:08.7586832Z Updating files:  34% (10764/31658)
+2026-10-27T21:48:08.7731567Z Updating files:  35% (11081/31658)
+2026-10-27T21:48:08.7826084Z Updating files:  36% (11397/31658)
+2026-10-27T21:48:08.7971888Z Updating files:  37% (11714/31658)
+2026-10-27T21:48:08.8233160Z Updating files:  38% (12031/31658)
+2026-10-27T21:48:08.8512339Z Updating files:  39% (12347/31658)
+2026-10-27T21:48:08.8887837Z Updating files:  40% (12664/31658)
+2026-10-27T21:48:08.8977689Z Updating files:  41% (12980/31658)
+2026-10-27T21:48:08.9122096Z Updating files:  42% (13297/31658)
+2026-10-27T21:48:08.9265004Z Updating files:  43% (13613/31658)
+2026-10-27T21:48:08.9334904Z Updating files:  44% (13930/31658)
+2026-10-27T21:48:08.9445346Z Updating files:  45% (14247/31658)
+2026-10-27T21:48:08.9558749Z Updating files:  46% (14563/31658)
+2026-10-27T21:48:08.9703639Z Updating files:  47% (14880/31658)
+2026-10-27T21:48:08.9809469Z Updating files:  48% (15196/31658)
+2026-10-27T21:48:08.9957836Z Updating files:  49% (15513/31658)
+2026-10-27T21:48:09.0115455Z Updating files:  50% (15829/31658)
+2026-10-27T21:48:09.0227742Z Updating files:  51% (16146/31658)
+2026-10-27T21:48:09.0318010Z Updating files:  52% (16463/31658)
+2026-10-27T21:48:09.0420493Z Updating files:  53% (16779/31658)
+2026-10-27T21:48:09.0543882Z Updating files:  54% (17096/31658)
+2026-10-27T21:48:09.0652369Z Updating files:  55% (17412/31658)
+2026-10-27T21:48:09.0909009Z Updating files:  56% (17729/31658)
+2026-10-27T21:48:09.0999958Z Updating files:  57% (18046/31658)
+2026-10-27T21:48:09.1101899Z Updating files:  58% (18362/31658)
+2026-10-27T21:48:09.1184959Z Updating files:  59% (18679/31658)
+2026-10-27T21:48:09.1300906Z Updating files:  60% (18995/31658)
+2026-10-27T21:48:09.1406806Z Updating files:  61% (19312/31658)
+2026-10-27T21:48:09.1551545Z Updating files:  62% (19628/31658)
+2026-10-27T21:48:09.1613017Z Updating files:  63% (19945/31658)
+2026-10-27T21:48:09.1676707Z Updating files:  64% (20262/31658)
+2026-10-27T21:48:09.1749658Z Updating files:  65% (20578/31658)
+2026-10-27T21:48:09.1850866Z Updating files:  66% (20895/31658)
+2026-10-27T21:48:09.2113190Z Updating files:  67% (21211/31658)
+2026-10-27T21:48:09.2300583Z Updating files:  68% (21528/31658)
+2026-10-27T21:48:09.2447327Z Updating files:  69% (21845/31658)
+2026-10-27T21:48:09.2565397Z Updating files:  70% (22161/31658)
+2026-10-27T21:48:09.2661227Z Updating files:  71% (22478/31658)
+2026-10-27T21:48:09.2756758Z Updating files:  72% (22794/31658)
+2026-10-27T21:48:09.2838194Z Updating files:  73% (23111/31658)
+2026-10-27T21:48:09.2933899Z Updating files:  74% (23427/31658)
+2026-10-27T21:48:09.3014218Z Updating files:  75% (23744/31658)
+2026-10-27T21:48:09.3106010Z Updating files:  76% (24061/31658)
+2026-10-27T21:48:09.3577740Z Updating files:  77% (24377/31658)
+2026-10-27T21:48:09.3681343Z Updating files:  78% (24694/31658)
+2026-10-27T21:48:09.4186007Z Updating files:  79% (25010/31658)
+2026-10-27T21:48:09.6651798Z Updating files:  80% (25327/31658)
+2026-10-27T21:48:09.6652548Z Updating files:  80% (25631/31658)
+2026-10-27T21:48:09.6880767Z Updating files:  81% (25643/31658)
+2026-10-27T21:48:09.7005877Z Updating files:  82% (25960/31658)
+2026-10-27T21:48:09.7146283Z Updating files:  83% (26277/31658)
+2026-10-27T21:48:09.7373807Z Updating files:  84% (26593/31658)
+2026-10-27T21:48:09.7548863Z Updating files:  85% (26910/31658)
+2026-10-27T21:48:09.7770181Z Updating files:  86% (27226/31658)
+2026-10-27T21:48:09.7895698Z Updating files:  87% (27543/31658)
+2026-10-27T21:48:09.8025136Z Updating files:  88% (27860/31658)
+2026-10-27T21:48:09.8127665Z Updating files:  89% (28176/31658)
+2026-10-27T21:48:09.8244835Z Updating files:  90% (28493/31658)
+2026-10-27T21:48:09.8337100Z Updating files:  91% (28809/31658)
+2026-10-27T21:48:09.8440731Z Updating files:  92% (29126/31658)
+2026-10-27T21:48:09.8631676Z Updating files:  93% (29442/31658)
+2026-10-27T21:48:09.8773913Z Updating files:  94% (29759/31658)
+2026-10-27T21:48:09.8957887Z Updating files:  95% (30076/31658)
+2026-10-27T21:48:09.9159319Z Updating files:  96% (30392/31658)
+2026-10-27T21:48:09.9291271Z Updating files:  97% (30709/31658)
+2026-10-27T21:48:09.9445465Z Updating files:  98% (31025/31658)
+2026-10-27T21:48:09.9754378Z Updating files:  99% (31342/31658)
+2026-10-27T21:48:09.9754922Z Updating files: 100% (31658/31658)
+2026-10-27T21:48:09.9755520Z Updating files: 100% (31658/31658), done.
+2026-10-27T21:48:10.1232908Z Switched to a new branch 'codex/gen12-cdc-root-integration'
+2026-10-27T21:48:10.1234569Z branch 'codex/gen12-cdc-root-integration' set up to track 'origin/codex/gen12-cdc-root-integration'.
+2026-10-27T21:48:10.1334538Z ##[endgroup]
+2026-10-27T21:48:10.1374455Z [command]/usr/bin/git log -1 --format=%H
+2026-10-27T21:48:10.1400100Z 19b3a8f11922d7760a58d76fef0eeff0a0ec8e5a
+2026-10-27T21:48:10.1417067Z ##[group]Removing auth
+2026-10-27T21:48:10.1417874Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T21:48:10.1447647Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T21:48:10.1668502Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T21:48:10.1689980Z http.https://github.com/.extraheader
+2026-10-27T21:48:10.1695351Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-27T21:48:10.2205846Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T21:48:10.2439154Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T21:48:10.2468728Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T21:48:10.2692976Z ##[endgroup]
+2026-10-27T21:48:10.3543891Z ##[group]Run actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+2026-10-27T21:48:10.3544381Z with:
+2026-10-27T21:48:10.3544723Z   python-version: 3.12
+2026-10-27T21:48:10.3545037Z   check-latest: false
+2026-10-27T21:48:10.3547716Z   token: ***
+2026-10-27T21:48:10.3548026Z   update-environment: true
+2026-10-27T21:48:10.3548385Z   allow-prereleases: false
+2026-10-27T21:48:10.3548727Z   freethreaded: false
+2026-10-27T21:48:10.3549044Z ##[endgroup]
+2026-10-27T21:48:10.5188155Z ##[group]Installed versions
+2026-10-27T21:48:10.6139649Z (node:2374) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T21:48:10.6140686Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T21:48:10.6141422Z Successfully set up CPython (3.12.15)
+2026-10-27T21:48:10.6142563Z ##[endgroup]
+2026-10-27T21:48:10.6513340Z ##[group]Run set -euo pipefail
+2026-10-27T21:48:10.6513851Z [36;1mset -euo pipefail[0m
+2026-10-27T21:48:10.6514405Z [36;1mpython3 scripts/check_pcie_gen12_record_cdc_source.py | tee gen12-root-source.log[0m
+2026-10-27T21:48:10.6515128Z [36;1mpython3 -u scripts/check_pcie_gen12_record_cdc_root_controls.py | tee gen12-root-controls.log[0m
+2026-10-27T21:48:10.7144541Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-27T21:48:10.7145064Z env:
+2026-10-27T21:48:10.7145450Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T21:48:10.7145992Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T21:48:10.7146500Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T21:48:10.7146958Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T21:48:10.7147455Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T21:48:10.7148058Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T21:48:10.7148491Z ##[endgroup]
+2026-10-27T21:48:11.6233954Z {
+2026-10-27T21:48:11.6235033Z   "status": "PASS_SOURCE_IDENTITIES_AND_DECLARED_TEST_STRUCTURE_ONLY",
+2026-10-27T21:48:11.6235690Z   "protected_count": 27,
+2026-10-27T21:48:11.6236106Z   "tests": {
+2026-10-27T21:48:11.6236576Z     "soc_pcie_gen12_record_cdc_v1": [
+2026-10-27T21:48:11.6237102Z       "all192_bits_async_wraps",
+2026-10-27T21:48:11.6237623Z       "held_all_fields_and_error_flags_are_payload",
+2026-10-27T21:48:11.6238188Z       "exact_capacity_overflow_sticky_epoch",
+2026-10-27T21:48:11.6238792Z       "resets_held_prefetch_and_startup_stopped_clock",
+2026-10-27T21:48:11.6239401Z       "loss_without_valid_and_buffered_prefix",
+2026-10-27T21:48:11.6239963Z       "mid_epoch_clock_pause_is_not_loss_detection"
+2026-10-27T21:48:11.6240820Z     ],
+2026-10-27T21:48:11.6241267Z     "soc_pcie_gen12_recovered_records_v1": [
+2026-10-27T21:48:11.6241787Z       "both_polarities_all_offsets_and_errors",
+2026-10-27T21:48:11.6242406Z       "first_public_word_and_startup_reset",
+2026-10-27T21:48:11.6243026Z       "partial_raw_batch_and_complete_record_epoch_reset",
+2026-10-27T21:48:11.6243702Z       "polarity_change_and_known_loss_stop_epoch",
+2026-10-27T21:48:11.6244282Z       "composed_capacity_and_common_pause"
+2026-10-27T21:48:11.6244774Z     ]
+2026-10-27T21:48:11.6245172Z   },
+2026-10-27T21:48:11.6245610Z   "mutation_definitions": 18,
+2026-10-27T21:48:11.6246079Z   "mutations_compiled": false,
+2026-10-27T21:48:11.6246614Z   "simulations_executed": false,
+2026-10-27T21:48:11.6247112Z   "synthesis_executed": false,
+2026-10-27T21:48:11.6247640Z   "automatic_clock_loss_detection": false,
+2026-10-27T21:48:11.6248319Z   "TS_accepted": false,
+2026-10-27T21:48:11.6248888Z   "full_PHY_accepted": false
+2026-10-27T21:48:11.6249472Z }
+2026-10-27T21:49:03.6776216Z {
+2026-10-27T21:49:03.6777663Z   "status": "PASS_ROOT_GEN12_SOURCE_AND_HANDOFF_CONTROLS_NO_RTL",
+2026-10-27T21:49:03.6778716Z   "original": {
+2026-10-27T21:49:03.6779627Z     "status": "PASS_SOURCE_IDENTITIES_AND_DECLARED_TEST_STRUCTURE_ONLY",
+2026-10-27T21:49:03.6780767Z     "protected_count": 27,
+2026-10-27T21:49:03.6781409Z     "tests": {
+2026-10-27T21:49:03.6782219Z       "soc_pcie_gen12_record_cdc_v1": [
+2026-10-27T21:49:03.6782969Z         "all192_bits_async_wraps",
+2026-10-27T21:49:03.6783707Z         "held_all_fields_and_error_flags_are_payload",
+2026-10-27T21:49:03.6784454Z         "exact_capacity_overflow_sticky_epoch",
+2026-10-27T21:49:03.6784988Z         "resets_held_prefetch_and_startup_stopped_clock",
+2026-10-27T21:49:03.6785582Z         "loss_without_valid_and_buffered_prefix",
+2026-10-27T21:49:03.6786093Z         "mid_epoch_clock_pause_is_not_loss_detection"
+2026-10-27T21:49:03.6786520Z       ],
+2026-10-27T21:49:03.6786938Z       "soc_pcie_gen12_recovered_records_v1": [
+2026-10-27T21:49:03.6787425Z         "both_polarities_all_offsets_and_errors",
+2026-10-27T21:49:03.6787939Z         "first_public_word_and_startup_reset",
+2026-10-27T21:49:03.6789001Z         "partial_raw_batch_and_complete_record_epoch_reset",
+2026-10-27T21:49:03.6789538Z         "polarity_change_and_known_loss_stop_epoch",
+2026-10-27T21:49:03.6790091Z         "composed_capacity_and_common_pause"
+2026-10-27T21:49:03.6790728Z       ]
+2026-10-27T21:49:03.6791058Z     },
+2026-10-27T21:49:03.6791442Z     "mutation_definitions": 18,
+2026-10-27T21:49:03.6791896Z     "mutations_compiled": false,
+2026-10-27T21:49:03.6792364Z     "simulations_executed": false,
+2026-10-27T21:49:03.6792812Z     "synthesis_executed": false,
+2026-10-27T21:49:03.6793286Z     "automatic_clock_loss_detection": false,
+2026-10-27T21:49:03.6793842Z     "TS_accepted": false,
+2026-10-27T21:49:03.6794266Z     "full_PHY_accepted": false
+2026-10-27T21:49:03.6794702Z   },
+2026-10-27T21:49:03.6795075Z   "positive": {
+2026-10-27T21:49:03.6795486Z     "xml-soc_pcie_gen12_record_cdc_v1": true,
+2026-10-27T21:49:03.6796066Z     "xml-soc_pcie_gen12_recovered_records_v1": true,
+2026-10-27T21:49:03.6796680Z     "vendor-admission-synthetic": true,
+2026-10-27T21:49:03.6797388Z     "matrix-1": true,
+2026-10-27T21:49:03.6797815Z     "matrix-2": true,
+2026-10-27T21:49:03.6798198Z     "compile-admission": true,
+2026-10-27T21:49:03.6799473Z     "actual-command-streams-and-returncode": true,
+2026-10-27T21:49:03.6800003Z     "counts-1": true,
+2026-10-27T21:49:03.6800559Z     "counts-2": true
+2026-10-27T21:49:03.6800982Z   },
+2026-10-27T21:49:03.6801312Z   "rejected": {
+2026-10-27T21:49:03.6801702Z     "xml-missing-test": {
+2026-10-27T21:49:03.6802119Z       "type": "AssertionError",
+2026-10-27T21:49:03.6802637Z       "error": "incomplete or extra named tests"
+2026-10-27T21:49:03.6803147Z     },
+2026-10-27T21:49:03.6803506Z     "xml-extra-test": {
+2026-10-27T21:49:03.6803954Z       "type": "AssertionError",
+2026-10-27T21:49:03.6804504Z       "error": "incomplete or extra named tests"
+2026-10-27T21:49:03.6804988Z     },
+2026-10-27T21:49:03.6805436Z     "xml-duplicate-test": {
+2026-10-27T21:49:03.6805880Z       "type": "AssertionError",
+2026-10-27T21:49:03.6806385Z       "error": "wrong/duplicate test names"
+2026-10-27T21:49:03.6806863Z     },
+2026-10-27T21:49:03.6807251Z     "xml-wrong-module": {
+2026-10-27T21:49:03.6807746Z       "type": "AssertionError",
+2026-10-27T21:49:03.6808186Z       "error": "wrong module"
+2026-10-27T21:49:03.6808602Z     },
+2026-10-27T21:49:03.6808970Z     "xml-wrong-file": {
+2026-10-27T21:49:03.6809382Z       "type": "AssertionError",
+2026-10-27T21:49:03.6809869Z       "error": "wrong test source"
+2026-10-27T21:49:03.6810289Z     },
+2026-10-27T21:49:03.6810814Z     "xml-zero-simulation": {
+2026-10-27T21:49:03.6811342Z       "type": "AssertionError",
+2026-10-27T21:49:03.6811785Z       "error": "no actual simulation"
+2026-10-27T21:49:03.6812276Z     },
+2026-10-27T21:49:03.6812648Z     "xml-nonfinite-time": {
+2026-10-27T21:49:03.6813045Z       "type": "AssertionError",
+2026-10-27T21:49:03.6813501Z       "error": ""
+2026-10-27T21:49:03.6813862Z     },
+2026-10-27T21:49:03.6814253Z     "xml-skipped": {
+2026-10-27T21:49:03.6814695Z       "type": "AssertionError",
+2026-10-27T21:49:03.6815131Z       "error": "required test skipped"
+2026-10-27T21:49:03.6815647Z     },
+2026-10-27T21:49:03.6816006Z     "xml-failure": {
+2026-10-27T21:49:03.6816451Z       "type": "AssertionError",
+2026-10-27T21:49:03.6816912Z       "error": "positive test failed"
+2026-10-27T21:49:03.6817355Z     },
+2026-10-27T21:49:03.6817745Z     "xml-error": {
+2026-10-27T21:49:03.6818141Z       "type": "AssertionError",
+2026-10-27T21:49:03.6818770Z       "error": "XML test error is not behavioral detection"
+2026-10-27T21:49:03.6819540Z     },
+2026-10-27T21:49:03.6820038Z     "xml-nonzero-exit": {
+2026-10-27T21:49:03.6820956Z       "type": "AssertionError",
+2026-10-27T21:49:03.6821545Z       "error": "positive test failed"
+2026-10-27T21:49:03.6822138Z     },
+2026-10-27T21:49:03.6822633Z     "xml-doctype": {
+2026-10-27T21:49:03.6823136Z       "type": "AssertionError",
+2026-10-27T21:49:03.6823700Z       "error": ""
+2026-10-27T21:49:03.6824152Z     },
+2026-10-27T21:49:03.6825027Z     "vendor-byte": {
+2026-10-27T21:49:03.6825548Z       "type": "AssertionError",
+2026-10-27T21:49:03.6826134Z       "error": "vendor bytes"
+2026-10-27T21:49:03.6826740Z     },
+2026-10-27T21:49:03.6827268Z     "vendor-digest": {
+2026-10-27T21:49:03.6827810Z       "type": "AssertionError",
+2026-10-27T21:49:03.6828412Z       "error": "vendor bytes"
+2026-10-27T21:49:03.6828910Z     },
+2026-10-27T21:49:03.6829252Z     "vendor-git-blob": {
+2026-10-27T21:49:03.6829720Z       "type": "AssertionError",
+2026-10-27T21:49:03.6830210Z       "error": ""
+2026-10-27T21:49:03.6830755Z     },
+2026-10-27T21:49:03.6831118Z     "vendor-duplicate-module": {
+2026-10-27T21:49:03.6831555Z       "type": "AssertionError",
+2026-10-27T21:49:03.6832061Z       "error": ""
+2026-10-27T21:49:03.6832425Z     },
+2026-10-27T21:49:03.6832808Z     "missing-depth": {
+2026-10-27T21:49:03.6833389Z       "type": "AssertionError",
+2026-10-27T21:49:03.6834086Z       "error": "All three qualified depths are required"
+2026-10-27T21:49:03.6835000Z     },
+2026-10-27T21:49:03.6835524Z     "unreviewed-simulator": {
+2026-10-27T21:49:03.6836018Z       "type": "AssertionError",
+2026-10-27T21:49:03.6836505Z       "error": "Unreviewed simulators"
+2026-10-27T21:49:03.6836976Z     },
+2026-10-27T21:49:03.6837426Z     "duplicate-simulator": {
+2026-10-27T21:49:03.6837879Z       "type": "AssertionError",
+2026-10-27T21:49:03.6838325Z       "error": "Unreviewed simulators"
+2026-10-27T21:49:03.6838838Z     },
+2026-10-27T21:49:03.6839211Z     "compile-exit": {
+2026-10-27T21:49:03.6839778Z       "type": "AssertionError",
+2026-10-27T21:49:03.6840340Z       "error": "compile/setup failure is not behavioral detection"
+2026-10-27T21:49:03.6841061Z     },
+2026-10-27T21:49:03.6841489Z     "compile-missing": {
+2026-10-27T21:49:03.6841920Z       "type": "AssertionError",
+2026-10-27T21:49:03.6842407Z       "error": "missing compiled image"
+2026-10-27T21:49:03.6842926Z     },
+2026-10-27T21:49:03.6843291Z     "compile-empty": {
+2026-10-27T21:49:03.6843769Z       "type": "AssertionError",
+2026-10-27T21:49:03.6844244Z       "error": "missing compiled image"
+2026-10-27T21:49:03.6844806Z     },
+2026-10-27T21:49:03.6845215Z     "result-driver-failed": {
+2026-10-27T21:49:03.6845703Z       "type": "AssertionError",
+2026-10-27T21:49:03.6846244Z       "error": ""
+2026-10-27T21:49:03.6846650Z     },
+2026-10-27T21:49:03.6847050Z     "result-compile-failed": {
+2026-10-27T21:49:03.6847641Z       "type": "AssertionError",
+2026-10-27T21:49:03.6848116Z       "error": ""
+2026-10-27T21:49:03.6848521Z     },
+2026-10-27T21:49:03.6848921Z     "result-skipped": {
+2026-10-27T21:49:03.6849436Z       "type": "AssertionError",
+2026-10-27T21:49:03.6849936Z       "error": ""
+2026-10-27T21:49:03.6850320Z     },
+2026-10-27T21:49:03.6850959Z     "result-source-changed": {
+2026-10-27T21:49:03.6851454Z       "type": "AssertionError",
+2026-10-27T21:49:03.6851943Z       "error": ""
+2026-10-27T21:49:03.6852390Z     },
+2026-10-27T21:49:03.6852880Z     "result-duplicate-label": {
+2026-10-27T21:49:03.6853497Z       "type": "AssertionError",
+2026-10-27T21:49:03.6854112Z       "error": ""
+2026-10-27T21:49:03.6854588Z     },
+2026-10-27T21:49:03.6855072Z     "result-missing-test": {
+2026-10-27T21:49:03.6855655Z       "type": "AssertionError",
+2026-10-27T21:49:03.6856171Z       "error": ""
+2026-10-27T21:49:03.6856679Z     },
+2026-10-27T21:49:03.6857143Z     "result-wrong-matrix": {
+2026-10-27T21:49:03.6857625Z       "type": "AssertionError",
+2026-10-27T21:49:03.6858116Z       "error": "Result matrix changed"
+2026-10-27T21:49:03.6858639Z     }
+2026-10-27T21:49:03.6859226Z   },
+2026-10-27T21:49:03.6859676Z   "shell": {
+2026-10-27T21:49:03.6860061Z     "success": {
+2026-10-27T21:49:03.6860772Z       "returncode": 0,
+2026-10-27T21:49:03.6862656Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 37 passed, 0 failed, 0 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.6864827Z       "stderr": "",
+2026-10-27T21:49:03.6865330Z       "actual_calls": [
+2026-10-27T21:49:03.6865705Z         [
+2026-10-27T21:49:03.6866195Z           "--out",
+2026-10-27T21:49:03.6866876Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/0/hw/soc/out/cocotb/gen12-record-cdc.MDZYSQ/capture",
+2026-10-27T21:49:03.6867643Z           "--simulators",
+2026-10-27T21:49:03.6868092Z           "icarus",
+2026-10-27T21:49:03.6868455Z           "--depths",
+2026-10-27T21:49:03.6868867Z           "4",
+2026-10-27T21:49:03.6869213Z           "8",
+2026-10-27T21:49:03.6869564Z           "32"
+2026-10-27T21:49:03.6869952Z         ],
+2026-10-27T21:49:03.6870311Z         [
+2026-10-27T21:49:03.6870875Z           "--counts",
+2026-10-27T21:49:03.6871576Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/0/hw/soc/out/cocotb/gen12-record-cdc.MDZYSQ/capture/result.json"
+2026-10-27T21:49:03.6872344Z         ],
+2026-10-27T21:49:03.6872752Z         [
+2026-10-27T21:49:03.6873125Z           "--bind-module",
+2026-10-27T21:49:03.6873594Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.6874047Z         ],
+2026-10-27T21:49:03.6874372Z         [
+2026-10-27T21:49:03.6874815Z           "--bind-module",
+2026-10-27T21:49:03.6875311Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.6875802Z         ]
+2026-10-27T21:49:03.6876157Z       ],
+2026-10-27T21:49:03.6876506Z       "actual_make_calls": [
+2026-10-27T21:49:03.6876998Z         [
+2026-10-27T21:49:03.6877342Z           "-f",
+2026-10-27T21:49:03.6877725Z           "Makefile.other",
+2026-10-27T21:49:03.6878152Z           "clean"
+2026-10-27T21:49:03.6878509Z         ],
+2026-10-27T21:49:03.6878917Z         [
+2026-10-27T21:49:03.6879307Z           "-f",
+2026-10-27T21:49:03.6879704Z           "Makefile.other"
+2026-10-27T21:49:03.6880114Z         ],
+2026-10-27T21:49:03.6880590Z         [
+2026-10-27T21:49:03.6881004Z           "-f",
+2026-10-27T21:49:03.6881416Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.6882001Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.6882535Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.6883093Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.6883710Z           "clean"
+2026-10-27T21:49:03.6884071Z         ],
+2026-10-27T21:49:03.6884384Z         [
+2026-10-27T21:49:03.6884753Z           "-f",
+2026-10-27T21:49:03.6885152Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.6885647Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.6886176Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.6886717Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.6887250Z         ],
+2026-10-27T21:49:03.6887584Z         [
+2026-10-27T21:49:03.6888028Z           "-f",
+2026-10-27T21:49:03.6888432Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.6888890Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.6889436Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.6890038Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.6890772Z           "clean"
+2026-10-27T21:49:03.6891216Z         ],
+2026-10-27T21:49:03.6891576Z         [
+2026-10-27T21:49:03.6891942Z           "-f",
+2026-10-27T21:49:03.6892364Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.6892900Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.6893495Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.6894059Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.6894560Z         ],
+2026-10-27T21:49:03.6894993Z         [
+2026-10-27T21:49:03.6895320Z           "-f",
+2026-10-27T21:49:03.6895740Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.6896193Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.6896716Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.6897333Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.6898054Z           "clean"
+2026-10-27T21:49:03.6898699Z         ],
+2026-10-27T21:49:03.6899166Z         [
+2026-10-27T21:49:03.6899608Z           "-f",
+2026-10-27T21:49:03.6900057Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.6900661Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.6901203Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.6901772Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.6902268Z         ]
+2026-10-27T21:49:03.6902706Z       ],
+2026-10-27T21:49:03.6903094Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.6903613Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.6904134Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.6904615Z     },
+2026-10-27T21:49:03.6905083Z     "driver-failure": {
+2026-10-27T21:49:03.6905521Z       "returncode": 1,
+2026-10-27T21:49:03.6907752Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 failed, 0 skipped; NOT CLEAN (driver rc=7)\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 37 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.6909752Z       "stderr": "",
+2026-10-27T21:49:03.6910171Z       "actual_calls": [
+2026-10-27T21:49:03.6911413Z         [
+2026-10-27T21:49:03.6911860Z           "--out",
+2026-10-27T21:49:03.6912535Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/1/hw/soc/out/cocotb/gen12-record-cdc.8UYxo1/capture",
+2026-10-27T21:49:03.6913176Z           "--simulators",
+2026-10-27T21:49:03.6913532Z           "icarus",
+2026-10-27T21:49:03.6913890Z           "--depths",
+2026-10-27T21:49:03.6914264Z           "4",
+2026-10-27T21:49:03.6914577Z           "8",
+2026-10-27T21:49:03.6914907Z           "32"
+2026-10-27T21:49:03.6915232Z         ],
+2026-10-27T21:49:03.6915600Z         [
+2026-10-27T21:49:03.6915904Z           "--counts",
+2026-10-27T21:49:03.6916508Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/1/hw/soc/out/cocotb/gen12-record-cdc.8UYxo1/capture/result.json"
+2026-10-27T21:49:03.6917081Z         ],
+2026-10-27T21:49:03.6917347Z         [
+2026-10-27T21:49:03.6917622Z           "--bind-module",
+2026-10-27T21:49:03.6917987Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.6918321Z         ],
+2026-10-27T21:49:03.6918591Z         [
+2026-10-27T21:49:03.6918859Z           "--bind-module",
+2026-10-27T21:49:03.6919224Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.6919605Z         ]
+2026-10-27T21:49:03.6919860Z       ],
+2026-10-27T21:49:03.6920159Z       "actual_make_calls": [
+2026-10-27T21:49:03.6920551Z         [
+2026-10-27T21:49:03.6920804Z           "-f",
+2026-10-27T21:49:03.6921139Z           "Makefile.other",
+2026-10-27T21:49:03.6921447Z           "clean"
+2026-10-27T21:49:03.6921731Z         ],
+2026-10-27T21:49:03.6922001Z         [
+2026-10-27T21:49:03.6922293Z           "-f",
+2026-10-27T21:49:03.6922639Z           "Makefile.other"
+2026-10-27T21:49:03.6922927Z         ],
+2026-10-27T21:49:03.6923182Z         [
+2026-10-27T21:49:03.6923445Z           "-f",
+2026-10-27T21:49:03.6923730Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.6924092Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.6924444Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.6924818Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.6925208Z           "clean"
+2026-10-27T21:49:03.6925534Z         ],
+2026-10-27T21:49:03.6925803Z         [
+2026-10-27T21:49:03.6926055Z           "-f",
+2026-10-27T21:49:03.6926320Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.6926680Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.6927030Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.6927438Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.6927802Z         ],
+2026-10-27T21:49:03.6928059Z         [
+2026-10-27T21:49:03.6928579Z           "-f",
+2026-10-27T21:49:03.6928982Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.6929313Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.6929682Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.6930067Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.6930510Z           "clean"
+2026-10-27T21:49:03.6930934Z         ],
+2026-10-27T21:49:03.6931181Z         [
+2026-10-27T21:49:03.6931467Z           "-f",
+2026-10-27T21:49:03.6931750Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.6932132Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.6932501Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.6932865Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.6933247Z         ],
+2026-10-27T21:49:03.6933501Z         [
+2026-10-27T21:49:03.6933815Z           "-f",
+2026-10-27T21:49:03.6934170Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.6934492Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.6934870Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.6935284Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.6935721Z           "clean"
+2026-10-27T21:49:03.6936037Z         ],
+2026-10-27T21:49:03.6936295Z         [
+2026-10-27T21:49:03.6936564Z           "-f",
+2026-10-27T21:49:03.6936847Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.6937147Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.6937550Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.6937933Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.6938332Z         ]
+2026-10-27T21:49:03.6938592Z       ],
+2026-10-27T21:49:03.6938863Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.6939258Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.6939597Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.6939907Z     },
+2026-10-27T21:49:03.6940188Z     "wrong-count": {
+2026-10-27T21:49:03.6940637Z       "returncode": 1,
+2026-10-27T21:49:03.6941945Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             32 passed, 0 failed, 0 skipped; NOT CLEAN (driver rc=0)\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.6943166Z       "stderr": "",
+2026-10-27T21:49:03.6943473Z       "actual_calls": [
+2026-10-27T21:49:03.6943770Z         [
+2026-10-27T21:49:03.6944039Z           "--out",
+2026-10-27T21:49:03.6944562Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/2/hw/soc/out/cocotb/gen12-record-cdc.QmZJmd/capture",
+2026-10-27T21:49:03.6945070Z           "--simulators",
+2026-10-27T21:49:03.6945346Z           "icarus",
+2026-10-27T21:49:03.6945676Z           "--depths",
+2026-10-27T21:49:03.6945999Z           "4",
+2026-10-27T21:49:03.6946321Z           "8",
+2026-10-27T21:49:03.6946587Z           "32"
+2026-10-27T21:49:03.6946833Z         ],
+2026-10-27T21:49:03.6947126Z         [
+2026-10-27T21:49:03.6947385Z           "--counts",
+2026-10-27T21:49:03.6947971Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/2/hw/soc/out/cocotb/gen12-record-cdc.QmZJmd/capture/result.json"
+2026-10-27T21:49:03.6948484Z         ],
+2026-10-27T21:49:03.6948736Z         [
+2026-10-27T21:49:03.6949047Z           "--bind-module",
+2026-10-27T21:49:03.6949404Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.6949863Z         ],
+2026-10-27T21:49:03.6950202Z         [
+2026-10-27T21:49:03.6950654Z           "--bind-module",
+2026-10-27T21:49:03.6951120Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.6951554Z         ]
+2026-10-27T21:49:03.6951907Z       ],
+2026-10-27T21:49:03.6952204Z       "actual_make_calls": [
+2026-10-27T21:49:03.6952482Z         [
+2026-10-27T21:49:03.6952909Z           "-f",
+2026-10-27T21:49:03.6953495Z           "Makefile.other",
+2026-10-27T21:49:03.6954038Z           "clean"
+2026-10-27T21:49:03.6954385Z         ],
+2026-10-27T21:49:03.6954718Z         [
+2026-10-27T21:49:03.6955503Z           "-f",
+2026-10-27T21:49:03.6955792Z           "Makefile.other"
+2026-10-27T21:49:03.6956084Z         ],
+2026-10-27T21:49:03.6956328Z         [
+2026-10-27T21:49:03.6956583Z           "-f",
+2026-10-27T21:49:03.6956913Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.6957243Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.6957592Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.6957962Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.6958323Z           "clean"
+2026-10-27T21:49:03.6958799Z         ],
+2026-10-27T21:49:03.6959034Z         [
+2026-10-27T21:49:03.6959310Z           "-f",
+2026-10-27T21:49:03.6959584Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.6959961Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.6960313Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.6960968Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.6961338Z         ],
+2026-10-27T21:49:03.6961584Z         [
+2026-10-27T21:49:03.6961835Z           "-f",
+2026-10-27T21:49:03.6962135Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.6962451Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.6962800Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.6963177Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.6963554Z           "clean"
+2026-10-27T21:49:03.6963836Z         ],
+2026-10-27T21:49:03.6964083Z         [
+2026-10-27T21:49:03.6964344Z           "-f",
+2026-10-27T21:49:03.6964614Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.6964902Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.6965281Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.6965659Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.6966009Z         ],
+2026-10-27T21:49:03.6966297Z         [
+2026-10-27T21:49:03.6966528Z           "-f",
+2026-10-27T21:49:03.6966851Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.6967157Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.6967506Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.6967880Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.6968226Z           "clean"
+2026-10-27T21:49:03.6968522Z         ],
+2026-10-27T21:49:03.6968767Z         [
+2026-10-27T21:49:03.6969040Z           "-f",
+2026-10-27T21:49:03.6969309Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.6969607Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.6969976Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.6970448Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.6970908Z         ]
+2026-10-27T21:49:03.6971175Z       ],
+2026-10-27T21:49:03.6971449Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.6971827Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.6972584Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.6972918Z     },
+2026-10-27T21:49:03.6973210Z     "counts-refusal": {
+2026-10-27T21:49:03.6973504Z       "returncode": 1,
+2026-10-27T21:49:03.6974832Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             INVALID/MISSING CDC RESULT (driver rc=0; /tmp/gen12-root-controls-n7n_pf9q/shell/3/hw/soc/out/cocotb/gen12_record_cdc.log)\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 4 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.6976161Z       "stderr": "",
+2026-10-27T21:49:03.6976439Z       "actual_calls": [
+2026-10-27T21:49:03.6976754Z         [
+2026-10-27T21:49:03.6977023Z           "--out",
+2026-10-27T21:49:03.6977575Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/3/hw/soc/out/cocotb/gen12-record-cdc.LcMgjj/capture",
+2026-10-27T21:49:03.6978166Z           "--simulators",
+2026-10-27T21:49:03.6978469Z           "icarus",
+2026-10-27T21:49:03.6978755Z           "--depths",
+2026-10-27T21:49:03.6979057Z           "4",
+2026-10-27T21:49:03.6979300Z           "8",
+2026-10-27T21:49:03.6979588Z           "32"
+2026-10-27T21:49:03.6979847Z         ],
+2026-10-27T21:49:03.6980146Z         [
+2026-10-27T21:49:03.6980820Z           "--counts",
+2026-10-27T21:49:03.6981305Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/3/hw/soc/out/cocotb/gen12-record-cdc.LcMgjj/capture/result.json"
+2026-10-27T21:49:03.6981863Z         ],
+2026-10-27T21:49:03.6982116Z         [
+2026-10-27T21:49:03.6982388Z           "--bind-module",
+2026-10-27T21:49:03.6982745Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.6983075Z         ],
+2026-10-27T21:49:03.6983356Z         [
+2026-10-27T21:49:03.6983627Z           "--bind-module",
+2026-10-27T21:49:03.6984007Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.6984402Z         ]
+2026-10-27T21:49:03.6984691Z       ],
+2026-10-27T21:49:03.6985015Z       "actual_make_calls": [
+2026-10-27T21:49:03.6985345Z         [
+2026-10-27T21:49:03.6985621Z           "-f",
+2026-10-27T21:49:03.6985997Z           "Makefile.other",
+2026-10-27T21:49:03.6986321Z           "clean"
+2026-10-27T21:49:03.6986627Z         ],
+2026-10-27T21:49:03.6986914Z         [
+2026-10-27T21:49:03.6987223Z           "-f",
+2026-10-27T21:49:03.6987738Z           "Makefile.other"
+2026-10-27T21:49:03.6988226Z         ],
+2026-10-27T21:49:03.6988588Z         [
+2026-10-27T21:49:03.6988945Z           "-f",
+2026-10-27T21:49:03.6989359Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.6989845Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.6990573Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.6991152Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.6991697Z           "clean"
+2026-10-27T21:49:03.6992070Z         ],
+2026-10-27T21:49:03.6992469Z         [
+2026-10-27T21:49:03.6992819Z           "-f",
+2026-10-27T21:49:03.6993285Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.6993925Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.6994458Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.6995228Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.6995817Z         ],
+2026-10-27T21:49:03.6996306Z         [
+2026-10-27T21:49:03.6996738Z           "-f",
+2026-10-27T21:49:03.6997152Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.6997629Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.6998268Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.6998895Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.6999393Z           "clean"
+2026-10-27T21:49:03.6999766Z         ],
+2026-10-27T21:49:03.7000067Z         [
+2026-10-27T21:49:03.7000816Z           "-f",
+2026-10-27T21:49:03.7001171Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7001528Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7001923Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7002357Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.7002723Z         ],
+2026-10-27T21:49:03.7003002Z         [
+2026-10-27T21:49:03.7003265Z           "-f",
+2026-10-27T21:49:03.7003546Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7003904Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7004285Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7004680Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.7005097Z           "clean"
+2026-10-27T21:49:03.7005354Z         ],
+2026-10-27T21:49:03.7005670Z         [
+2026-10-27T21:49:03.7005931Z           "-f",
+2026-10-27T21:49:03.7006220Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7006677Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7007037Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7007684Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.7008052Z         ]
+2026-10-27T21:49:03.7008353Z       ],
+2026-10-27T21:49:03.7008656Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.7009016Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.7009401Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.7009741Z     },
+2026-10-27T21:49:03.7010000Z     "binding-refusal": {
+2026-10-27T21:49:03.7010330Z       "returncode": 1,
+2026-10-27T21:49:03.7012599Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\nUNREACHED cocotb test modules -- no Makefile defaults to them and\nEXTRA_MODULES does not name them:\n    hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1\n\nA suite nothing runs is not evidence. Give it a Makefile, add it to\nEXTRA_MODULES with its parent makefile and its own SIM_BUILD and\nresults file, or put it in SKIP_MODULES with the reason.\n\ncocotb: 37 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.7014773Z       "stderr": "",
+2026-10-27T21:49:03.7015076Z       "actual_calls": [
+2026-10-27T21:49:03.7015362Z         [
+2026-10-27T21:49:03.7015677Z           "--out",
+2026-10-27T21:49:03.7016177Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/4/hw/soc/out/cocotb/gen12-record-cdc.q9vK6h/capture",
+2026-10-27T21:49:03.7016879Z           "--simulators",
+2026-10-27T21:49:03.7017190Z           "icarus",
+2026-10-27T21:49:03.7017685Z           "--depths",
+2026-10-27T21:49:03.7018014Z           "4",
+2026-10-27T21:49:03.7018291Z           "8",
+2026-10-27T21:49:03.7018603Z           "32"
+2026-10-27T21:49:03.7018893Z         ],
+2026-10-27T21:49:03.7019164Z         [
+2026-10-27T21:49:03.7019454Z           "--counts",
+2026-10-27T21:49:03.7020051Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/4/hw/soc/out/cocotb/gen12-record-cdc.q9vK6h/capture/result.json"
+2026-10-27T21:49:03.7020767Z         ],
+2026-10-27T21:49:03.7021053Z         [
+2026-10-27T21:49:03.7021339Z           "--bind-module",
+2026-10-27T21:49:03.7021710Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.7022059Z         ],
+2026-10-27T21:49:03.7022338Z         [
+2026-10-27T21:49:03.7022655Z           "--bind-module",
+2026-10-27T21:49:03.7023007Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.7023413Z         ]
+2026-10-27T21:49:03.7023706Z       ],
+2026-10-27T21:49:03.7023978Z       "actual_make_calls": [
+2026-10-27T21:49:03.7024321Z         [
+2026-10-27T21:49:03.7024591Z           "-f",
+2026-10-27T21:49:03.7024893Z           "Makefile.other",
+2026-10-27T21:49:03.7025221Z           "clean"
+2026-10-27T21:49:03.7025530Z         ],
+2026-10-27T21:49:03.7025811Z         [
+2026-10-27T21:49:03.7026080Z           "-f",
+2026-10-27T21:49:03.7026417Z           "Makefile.other"
+2026-10-27T21:49:03.7026764Z         ],
+2026-10-27T21:49:03.7027033Z         [
+2026-10-27T21:49:03.7027315Z           "-f",
+2026-10-27T21:49:03.7027616Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7027943Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7028341Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7028767Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.7029146Z           "clean"
+2026-10-27T21:49:03.7029443Z         ],
+2026-10-27T21:49:03.7029737Z         [
+2026-10-27T21:49:03.7030068Z           "-f",
+2026-10-27T21:49:03.7030555Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7030914Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7031292Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7032168Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.7032558Z         ],
+2026-10-27T21:49:03.7032851Z         [
+2026-10-27T21:49:03.7033106Z           "-f",
+2026-10-27T21:49:03.7033615Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7033998Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7034402Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7034809Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.7035173Z           "clean"
+2026-10-27T21:49:03.7035486Z         ],
+2026-10-27T21:49:03.7035756Z         [
+2026-10-27T21:49:03.7036051Z           "-f",
+2026-10-27T21:49:03.7036359Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7036700Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7037116Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7037519Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.7037918Z         ],
+2026-10-27T21:49:03.7038195Z         [
+2026-10-27T21:49:03.7038463Z           "-f",
+2026-10-27T21:49:03.7038773Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7039102Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7039489Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7039930Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.7040485Z           "clean"
+2026-10-27T21:49:03.7040873Z         ],
+2026-10-27T21:49:03.7041138Z         [
+2026-10-27T21:49:03.7041416Z           "-f",
+2026-10-27T21:49:03.7041746Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7042084Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7042453Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7042863Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.7043255Z         ]
+2026-10-27T21:49:03.7043535Z       ],
+2026-10-27T21:49:03.7043867Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.7044226Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.7044593Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.7044954Z     },
+2026-10-27T21:49:03.7045253Z     "other-failure": {
+2026-10-27T21:49:03.7045570Z       "returncode": 1,
+2026-10-27T21:49:03.7048060Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 failed, 0 skipped; NOT CLEAN (make rc=9)\n      log: /tmp/gen12-root-controls-n7n_pf9q/shell/5/hw/soc/out/cocotb/other.log\n  test_soc_npu_defects         1 passed, 0 failed, 0 skipped; NOT CLEAN (make rc=9)\n      log: /tmp/gen12-root-controls-n7n_pf9q/shell/5/hw/soc/out/cocotb/test_soc_npu_defects.log\n  test_soc_wdog_strap          1 passed, 0 failed, 0 skipped; NOT CLEAN (make rc=9)\n      log: /tmp/gen12-root-controls-n7n_pf9q/shell/5/hw/soc/out/cocotb/test_soc_wdog_strap.log\n  test_soc_uart_defects        1 passed, 0 failed, 0 skipped; NOT CLEAN (make rc=9)\n      log: /tmp/gen12-root-controls-n7n_pf9q/shell/5/hw/soc/out/cocotb/test_soc_uart_defects.log\n\ncocotb: 37 passed, 0 failed, 4 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.7050682Z       "stderr": "",
+2026-10-27T21:49:03.7051019Z       "actual_calls": [
+2026-10-27T21:49:03.7051359Z         [
+2026-10-27T21:49:03.7051638Z           "--out",
+2026-10-27T21:49:03.7052103Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/5/hw/soc/out/cocotb/gen12-record-cdc.9bCTWJ/capture",
+2026-10-27T21:49:03.7052649Z           "--simulators",
+2026-10-27T21:49:03.7053014Z           "icarus",
+2026-10-27T21:49:03.7053316Z           "--depths",
+2026-10-27T21:49:03.7053600Z           "4",
+2026-10-27T21:49:03.7053859Z           "8",
+2026-10-27T21:49:03.7054160Z           "32"
+2026-10-27T21:49:03.7054452Z         ],
+2026-10-27T21:49:03.7054717Z         [
+2026-10-27T21:49:03.7054991Z           "--counts",
+2026-10-27T21:49:03.7055491Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/5/hw/soc/out/cocotb/gen12-record-cdc.9bCTWJ/capture/result.json"
+2026-10-27T21:49:03.7056095Z         ],
+2026-10-27T21:49:03.7056356Z         [
+2026-10-27T21:49:03.7056634Z           "--bind-module",
+2026-10-27T21:49:03.7056974Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.7057408Z         ],
+2026-10-27T21:49:03.7057776Z         [
+2026-10-27T21:49:03.7058051Z           "--bind-module",
+2026-10-27T21:49:03.7058375Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.7058754Z         ]
+2026-10-27T21:49:03.7059020Z       ],
+2026-10-27T21:49:03.7059373Z       "actual_make_calls": [
+2026-10-27T21:49:03.7059673Z         [
+2026-10-27T21:49:03.7059920Z           "-f",
+2026-10-27T21:49:03.7060243Z           "Makefile.other",
+2026-10-27T21:49:03.7060693Z           "clean"
+2026-10-27T21:49:03.7061004Z         ],
+2026-10-27T21:49:03.7061279Z         [
+2026-10-27T21:49:03.7061540Z           "-f",
+2026-10-27T21:49:03.7061844Z           "Makefile.other"
+2026-10-27T21:49:03.7062134Z         ],
+2026-10-27T21:49:03.7062451Z         [
+2026-10-27T21:49:03.7062723Z           "-f",
+2026-10-27T21:49:03.7063014Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7063362Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7063720Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7064948Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.7065352Z           "clean"
+2026-10-27T21:49:03.7065632Z         ],
+2026-10-27T21:49:03.7065909Z         [
+2026-10-27T21:49:03.7066177Z           "-f",
+2026-10-27T21:49:03.7066511Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7066865Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7067217Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7067605Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.7067978Z         ],
+2026-10-27T21:49:03.7068264Z         [
+2026-10-27T21:49:03.7068536Z           "-f",
+2026-10-27T21:49:03.7068825Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7069135Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7069556Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7069969Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.7070456Z           "clean"
+2026-10-27T21:49:03.7070767Z         ],
+2026-10-27T21:49:03.7071021Z         [
+2026-10-27T21:49:03.7071315Z           "-f",
+2026-10-27T21:49:03.7071629Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7071961Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7072324Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7072712Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.7073129Z         ],
+2026-10-27T21:49:03.7073414Z         [
+2026-10-27T21:49:03.7073672Z           "-f",
+2026-10-27T21:49:03.7073972Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7074297Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7074672Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7075088Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.7075442Z           "clean"
+2026-10-27T21:49:03.7075746Z         ],
+2026-10-27T21:49:03.7076042Z         [
+2026-10-27T21:49:03.7076329Z           "-f",
+2026-10-27T21:49:03.7076645Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7076956Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7077337Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7077723Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.7078090Z         ]
+2026-10-27T21:49:03.7078385Z       ],
+2026-10-27T21:49:03.7078674Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.7079157Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.7079501Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.7079828Z     },
+2026-10-27T21:49:03.7080146Z     "dispatch-removed": {
+2026-10-27T21:49:03.7080785Z       "returncode": 1,
+2026-10-27T21:49:03.7082655Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             INVALID/MISSING XML (make rc=17; /tmp/gen12-root-controls-n7n_pf9q/shell/6/hw/soc/out/cocotb/gen12_record_cdc.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 4 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.7084430Z       "stderr": "",
+2026-10-27T21:49:03.7084758Z       "actual_calls": [
+2026-10-27T21:49:03.7085069Z         [
+2026-10-27T21:49:03.7085355Z           "--bind-module",
+2026-10-27T21:49:03.7085700Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.7086033Z         ],
+2026-10-27T21:49:03.7086307Z         [
+2026-10-27T21:49:03.7086608Z           "--bind-module",
+2026-10-27T21:49:03.7086942Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.7087291Z         ]
+2026-10-27T21:49:03.7087598Z       ],
+2026-10-27T21:49:03.7087916Z       "actual_make_calls": [
+2026-10-27T21:49:03.7088260Z         [
+2026-10-27T21:49:03.7088524Z           "-f",
+2026-10-27T21:49:03.7088831Z           "Makefile.gen12_record_cdc",
+2026-10-27T21:49:03.7089171Z           "clean"
+2026-10-27T21:49:03.7089474Z         ],
+2026-10-27T21:49:03.7089744Z         [
+2026-10-27T21:49:03.7090003Z           "-f",
+2026-10-27T21:49:03.7090285Z           "Makefile.gen12_record_cdc"
+2026-10-27T21:49:03.7090859Z         ],
+2026-10-27T21:49:03.7091148Z         [
+2026-10-27T21:49:03.7091423Z           "-f",
+2026-10-27T21:49:03.7091715Z           "Makefile.other",
+2026-10-27T21:49:03.7092003Z           "clean"
+2026-10-27T21:49:03.7092299Z         ],
+2026-10-27T21:49:03.7092581Z         [
+2026-10-27T21:49:03.7092840Z           "-f",
+2026-10-27T21:49:03.7093133Z           "Makefile.other"
+2026-10-27T21:49:03.7093429Z         ],
+2026-10-27T21:49:03.7093836Z         [
+2026-10-27T21:49:03.7094104Z           "-f",
+2026-10-27T21:49:03.7094401Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7094725Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7095066Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7095488Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.7095876Z           "clean"
+2026-10-27T21:49:03.7096152Z         ],
+2026-10-27T21:49:03.7096423Z         [
+2026-10-27T21:49:03.7096678Z           "-f",
+2026-10-27T21:49:03.7097028Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7097350Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7097706Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7098098Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.7098460Z         ],
+2026-10-27T21:49:03.7098729Z         [
+2026-10-27T21:49:03.7099004Z           "-f",
+2026-10-27T21:49:03.7099268Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7099621Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7099997Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7100554Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.7100938Z           "clean"
+2026-10-27T21:49:03.7101203Z         ],
+2026-10-27T21:49:03.7101501Z         [
+2026-10-27T21:49:03.7101754Z           "-f",
+2026-10-27T21:49:03.7102055Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7102412Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7102761Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7103197Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.7103555Z         ],
+2026-10-27T21:49:03.7103820Z         [
+2026-10-27T21:49:03.7104111Z           "-f",
+2026-10-27T21:49:03.7104393Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7104725Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7105079Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7105446Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.7105862Z           "clean"
+2026-10-27T21:49:03.7106135Z         ],
+2026-10-27T21:49:03.7106450Z         [
+2026-10-27T21:49:03.7106706Z           "-f",
+2026-10-27T21:49:03.7107103Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7107530Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7107894Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7108285Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.7108668Z         ]
+2026-10-27T21:49:03.7108946Z       ],
+2026-10-27T21:49:03.7109255Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.7109641Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.7109988Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.7110318Z     },
+2026-10-27T21:49:03.7110875Z     "old-maker-explicit-xml-omission": {
+2026-10-27T21:49:03.7111252Z       "returncode": 1,
+2026-10-27T21:49:03.7114202Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-n7n_pf9q/shell/7/hw/soc/out/cocotb/test_soc_npu_defects.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  test_soc_wdog_strap          INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-n7n_pf9q/shell/7/hw/soc/out/cocotb/test_soc_wdog_strap.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  test_soc_uart_defects        INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-n7n_pf9q/shell/7/hw/soc/out/cocotb/test_soc_uart_defects.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n\ncocotb: 34 passed, 0 failed, 3 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.7117392Z       "stderr": "",
+2026-10-27T21:49:03.7117771Z       "actual_calls": [
+2026-10-27T21:49:03.7118111Z         [
+2026-10-27T21:49:03.7118380Z           "--out",
+2026-10-27T21:49:03.7118841Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/7/hw/soc/out/cocotb/gen12-record-cdc.lLtZRK/capture",
+2026-10-27T21:49:03.7119389Z           "--simulators",
+2026-10-27T21:49:03.7119720Z           "icarus",
+2026-10-27T21:49:03.7120021Z           "--depths",
+2026-10-27T21:49:03.7120313Z           "4",
+2026-10-27T21:49:03.7120781Z           "8",
+2026-10-27T21:49:03.7121104Z           "32"
+2026-10-27T21:49:03.7121397Z         ],
+2026-10-27T21:49:03.7121667Z         [
+2026-10-27T21:49:03.7121945Z           "--counts",
+2026-10-27T21:49:03.7122457Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/7/hw/soc/out/cocotb/gen12-record-cdc.lLtZRK/capture/result.json"
+2026-10-27T21:49:03.7123005Z         ],
+2026-10-27T21:49:03.7123289Z         [
+2026-10-27T21:49:03.7123548Z           "--bind-module",
+2026-10-27T21:49:03.7123914Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.7124250Z         ],
+2026-10-27T21:49:03.7124556Z         [
+2026-10-27T21:49:03.7124850Z           "--bind-module",
+2026-10-27T21:49:03.7125170Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.7125558Z         ]
+2026-10-27T21:49:03.7125828Z       ],
+2026-10-27T21:49:03.7126110Z       "actual_make_calls": [],
+2026-10-27T21:49:03.7126479Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.7126825Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.7128160Z       "frozen_failed_maker_used": true
+2026-10-27T21:49:03.7128520Z     },
+2026-10-27T21:49:03.7128839Z     "missing-explicit-xml-test_soc_npu_defects": {
+2026-10-27T21:49:03.7129252Z       "returncode": 1,
+2026-10-27T21:49:03.7131148Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-n7n_pf9q/shell/8/hw/soc/out/cocotb/test_soc_npu_defects.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.7132920Z       "stderr": "",
+2026-10-27T21:49:03.7133201Z       "actual_calls": [
+2026-10-27T21:49:03.7133548Z         [
+2026-10-27T21:49:03.7133817Z           "--out",
+2026-10-27T21:49:03.7134272Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/8/hw/soc/out/cocotb/gen12-record-cdc.nzzwNK/capture",
+2026-10-27T21:49:03.7134797Z           "--simulators",
+2026-10-27T21:49:03.7135090Z           "icarus",
+2026-10-27T21:49:03.7135379Z           "--depths",
+2026-10-27T21:49:03.7135683Z           "4",
+2026-10-27T21:49:03.7135947Z           "8",
+2026-10-27T21:49:03.7136216Z           "32"
+2026-10-27T21:49:03.7136484Z         ],
+2026-10-27T21:49:03.7136783Z         [
+2026-10-27T21:49:03.7137078Z           "--counts",
+2026-10-27T21:49:03.7137567Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/8/hw/soc/out/cocotb/gen12-record-cdc.nzzwNK/capture/result.json"
+2026-10-27T21:49:03.7138089Z         ],
+2026-10-27T21:49:03.7138350Z         [
+2026-10-27T21:49:03.7138639Z           "--bind-module",
+2026-10-27T21:49:03.7138970Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.7139292Z         ],
+2026-10-27T21:49:03.7139529Z         [
+2026-10-27T21:49:03.7139848Z           "--bind-module",
+2026-10-27T21:49:03.7140202Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.7140710Z         ]
+2026-10-27T21:49:03.7140967Z       ],
+2026-10-27T21:49:03.7141222Z       "actual_make_calls": [
+2026-10-27T21:49:03.7141553Z         [
+2026-10-27T21:49:03.7141833Z           "-f",
+2026-10-27T21:49:03.7142115Z           "Makefile.other",
+2026-10-27T21:49:03.7142422Z           "clean"
+2026-10-27T21:49:03.7142690Z         ],
+2026-10-27T21:49:03.7142992Z         [
+2026-10-27T21:49:03.7143271Z           "-f",
+2026-10-27T21:49:03.7143545Z           "Makefile.other"
+2026-10-27T21:49:03.7143846Z         ],
+2026-10-27T21:49:03.7144103Z         [
+2026-10-27T21:49:03.7144403Z           "-f",
+2026-10-27T21:49:03.7144712Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7145019Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7145388Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7145767Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.7146230Z           "clean"
+2026-10-27T21:49:03.7146518Z         ],
+2026-10-27T21:49:03.7146760Z         [
+2026-10-27T21:49:03.7147043Z           "-f",
+2026-10-27T21:49:03.7147324Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7147641Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7148025Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7148399Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.7148771Z         ],
+2026-10-27T21:49:03.7149060Z         [
+2026-10-27T21:49:03.7149314Z           "-f",
+2026-10-27T21:49:03.7149634Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7149955Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7150321Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7150919Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.7151331Z           "clean"
+2026-10-27T21:49:03.7151659Z         ],
+2026-10-27T21:49:03.7151919Z         [
+2026-10-27T21:49:03.7152173Z           "-f",
+2026-10-27T21:49:03.7152504Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7152816Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7153220Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7153602Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.7153962Z         ],
+2026-10-27T21:49:03.7154224Z         [
+2026-10-27T21:49:03.7154478Z           "-f",
+2026-10-27T21:49:03.7154808Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7155121Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7155511Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7156006Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.7156466Z           "clean"
+2026-10-27T21:49:03.7156751Z         ],
+2026-10-27T21:49:03.7157008Z         [
+2026-10-27T21:49:03.7157242Z           "-f",
+2026-10-27T21:49:03.7157546Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7157884Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7158241Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7158680Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.7159019Z         ]
+2026-10-27T21:49:03.7159311Z       ],
+2026-10-27T21:49:03.7159618Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.7159970Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.7160321Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.7160927Z     },
+2026-10-27T21:49:03.7161255Z     "missing-explicit-xml-test_soc_wdog_strap": {
+2026-10-27T21:49:03.7161644Z       "returncode": 1,
+2026-10-27T21:49:03.7163334Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-n7n_pf9q/shell/9/hw/soc/out/cocotb/test_soc_wdog_strap.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n  test_soc_uart_defects        1 passed, 0 skipped\n\ncocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.7164973Z       "stderr": "",
+2026-10-27T21:49:03.7165258Z       "actual_calls": [
+2026-10-27T21:49:03.7165561Z         [
+2026-10-27T21:49:03.7165843Z           "--out",
+2026-10-27T21:49:03.7166291Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/9/hw/soc/out/cocotb/gen12-record-cdc.NT3im7/capture",
+2026-10-27T21:49:03.7166847Z           "--simulators",
+2026-10-27T21:49:03.7167140Z           "icarus",
+2026-10-27T21:49:03.7167458Z           "--depths",
+2026-10-27T21:49:03.7167776Z           "4",
+2026-10-27T21:49:03.7168038Z           "8",
+2026-10-27T21:49:03.7168331Z           "32"
+2026-10-27T21:49:03.7168587Z         ],
+2026-10-27T21:49:03.7168845Z         [
+2026-10-27T21:49:03.7169143Z           "--counts",
+2026-10-27T21:49:03.7169652Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/9/hw/soc/out/cocotb/gen12-record-cdc.NT3im7/capture/result.json"
+2026-10-27T21:49:03.7170234Z         ],
+2026-10-27T21:49:03.7170617Z         [
+2026-10-27T21:49:03.7170901Z           "--bind-module",
+2026-10-27T21:49:03.7171266Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.7171602Z         ],
+2026-10-27T21:49:03.7171890Z         [
+2026-10-27T21:49:03.7172164Z           "--bind-module",
+2026-10-27T21:49:03.7172485Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.7172887Z         ]
+2026-10-27T21:49:03.7173146Z       ],
+2026-10-27T21:49:03.7173477Z       "actual_make_calls": [
+2026-10-27T21:49:03.7173785Z         [
+2026-10-27T21:49:03.7174036Z           "-f",
+2026-10-27T21:49:03.7174383Z           "Makefile.other",
+2026-10-27T21:49:03.7174696Z           "clean"
+2026-10-27T21:49:03.7174970Z         ],
+2026-10-27T21:49:03.7175239Z         [
+2026-10-27T21:49:03.7175500Z           "-f",
+2026-10-27T21:49:03.7175826Z           "Makefile.other"
+2026-10-27T21:49:03.7176124Z         ],
+2026-10-27T21:49:03.7176432Z         [
+2026-10-27T21:49:03.7176707Z           "-f",
+2026-10-27T21:49:03.7176997Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7177371Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7177733Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7178111Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.7178508Z           "clean"
+2026-10-27T21:49:03.7178801Z         ],
+2026-10-27T21:49:03.7179085Z         [
+2026-10-27T21:49:03.7179356Z           "-f",
+2026-10-27T21:49:03.7179661Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7180021Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7180688Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7181092Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.7181476Z         ],
+2026-10-27T21:49:03.7181740Z         [
+2026-10-27T21:49:03.7182018Z           "-f",
+2026-10-27T21:49:03.7182329Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7182647Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7183061Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7183459Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.7183839Z           "clean"
+2026-10-27T21:49:03.7184140Z         ],
+2026-10-27T21:49:03.7184395Z         [
+2026-10-27T21:49:03.7184679Z           "-f",
+2026-10-27T21:49:03.7184970Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7185306Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7185694Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7186104Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.7186499Z         ],
+2026-10-27T21:49:03.7186767Z         [
+2026-10-27T21:49:03.7187035Z           "-f",
+2026-10-27T21:49:03.7187356Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7187682Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7188102Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7188495Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.7188844Z           "clean"
+2026-10-27T21:49:03.7189208Z         ],
+2026-10-27T21:49:03.7189474Z         [
+2026-10-27T21:49:03.7189751Z           "-f",
+2026-10-27T21:49:03.7190043Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7190448Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7190883Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7191289Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.7191657Z         ]
+2026-10-27T21:49:03.7191938Z       ],
+2026-10-27T21:49:03.7192248Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.7192691Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.7193051Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.7193387Z     },
+2026-10-27T21:49:03.7193726Z     "missing-explicit-xml-test_soc_uart_defects": {
+2026-10-27T21:49:03.7194117Z       "returncode": 1,
+2026-10-27T21:49:03.7195923Z       "stdout": "== hw/soc/tb/cocotb\n  gen12_record_cdc             33 passed, 0 skipped\n  other                        1 passed, 0 skipped\n  test_soc_npu_defects         1 passed, 0 skipped\n  test_soc_wdog_strap          1 passed, 0 skipped\n  test_soc_uart_defects        INVALID/MISSING XML (make rc=0; /tmp/gen12-root-controls-n7n_pf9q/shell/10/hw/soc/out/cocotb/test_soc_uart_defects.log)\n      usage: cocotb_results.py [-h] paths [paths ...]\n      cocotb_results.py: error: the following arguments are required: paths\n\ncocotb: 36 passed, 0 failed, 1 suite(s) not clean, 0 skipped\n",
+2026-10-27T21:49:03.7197744Z       "stderr": "",
+2026-10-27T21:49:03.7198063Z       "actual_calls": [
+2026-10-27T21:49:03.7198394Z         [
+2026-10-27T21:49:03.7198688Z           "--out",
+2026-10-27T21:49:03.7199242Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/10/hw/soc/out/cocotb/gen12-record-cdc.K5KRrY/capture",
+2026-10-27T21:49:03.7199770Z           "--simulators",
+2026-10-27T21:49:03.7200060Z           "icarus",
+2026-10-27T21:49:03.7200958Z           "--depths",
+2026-10-27T21:49:03.7201274Z           "4",
+2026-10-27T21:49:03.7201635Z           "8",
+2026-10-27T21:49:03.7201904Z           "32"
+2026-10-27T21:49:03.7202171Z         ],
+2026-10-27T21:49:03.7202476Z         [
+2026-10-27T21:49:03.7202745Z           "--counts",
+2026-10-27T21:49:03.7203297Z           "/tmp/gen12-root-controls-n7n_pf9q/shell/10/hw/soc/out/cocotb/gen12-record-cdc.K5KRrY/capture/result.json"
+2026-10-27T21:49:03.7203840Z         ],
+2026-10-27T21:49:03.7204103Z         [
+2026-10-27T21:49:03.7204398Z           "--bind-module",
+2026-10-27T21:49:03.7204849Z           "test_soc_pcie_gen12_record_cdc_v1"
+2026-10-27T21:49:03.7205277Z         ],
+2026-10-27T21:49:03.7205552Z         [
+2026-10-27T21:49:03.7205831Z           "--bind-module",
+2026-10-27T21:49:03.7206183Z           "test_soc_pcie_gen12_recovered_records_v1"
+2026-10-27T21:49:03.7206551Z         ]
+2026-10-27T21:49:03.7206796Z       ],
+2026-10-27T21:49:03.7207103Z       "actual_make_calls": [
+2026-10-27T21:49:03.7207400Z         [
+2026-10-27T21:49:03.7207667Z           "-f",
+2026-10-27T21:49:03.7208033Z           "Makefile.other",
+2026-10-27T21:49:03.7208306Z           "clean"
+2026-10-27T21:49:03.7208711Z         ],
+2026-10-27T21:49:03.7208975Z         [
+2026-10-27T21:49:03.7209241Z           "-f",
+2026-10-27T21:49:03.7209564Z           "Makefile.other"
+2026-10-27T21:49:03.7209866Z         ],
+2026-10-27T21:49:03.7210146Z         [
+2026-10-27T21:49:03.7210487Z           "-f",
+2026-10-27T21:49:03.7210774Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7211200Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7211570Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7211980Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml",
+2026-10-27T21:49:03.7212348Z           "clean"
+2026-10-27T21:49:03.7212607Z         ],
+2026-10-27T21:49:03.7212923Z         [
+2026-10-27T21:49:03.7213186Z           "-f",
+2026-10-27T21:49:03.7213479Z           "Makefile.soc_npu",
+2026-10-27T21:49:03.7213813Z           "MODULE=test_soc_npu_defects",
+2026-10-27T21:49:03.7214169Z           "SIM_BUILD=sim_build_npu_defects",
+2026-10-27T21:49:03.7214624Z           "COCOTB_RESULTS_FILE=results_soc_npu_defects.xml"
+2026-10-27T21:49:03.7214986Z         ],
+2026-10-27T21:49:03.7215249Z         [
+2026-10-27T21:49:03.7215518Z           "-f",
+2026-10-27T21:49:03.7215809Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7216178Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7216527Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7216895Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml",
+2026-10-27T21:49:03.7217296Z           "clean"
+2026-10-27T21:49:03.7217604Z         ],
+2026-10-27T21:49:03.7217908Z         [
+2026-10-27T21:49:03.7218166Z           "-f",
+2026-10-27T21:49:03.7218435Z           "Makefile.soc_wdog",
+2026-10-27T21:49:03.7218791Z           "MODULE=test_soc_wdog_strap",
+2026-10-27T21:49:03.7219143Z           "SIM_BUILD=sim_build_soc_wdog_strap",
+2026-10-27T21:49:03.7219555Z           "COCOTB_RESULTS_FILE=results_soc_wdog_strap.xml"
+2026-10-27T21:49:03.7219926Z         ],
+2026-10-27T21:49:03.7220190Z         [
+2026-10-27T21:49:03.7220624Z           "-f",
+2026-10-27T21:49:03.7220920Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7221272Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7221648Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7222048Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml",
+2026-10-27T21:49:03.7222436Z           "clean"
+2026-10-27T21:49:03.7222721Z         ],
+2026-10-27T21:49:03.7222991Z         [
+2026-10-27T21:49:03.7223291Z           "-f",
+2026-10-27T21:49:03.7223584Z           "Makefile.soc_uart",
+2026-10-27T21:49:03.7223966Z           "MODULE=test_soc_uart_defects",
+2026-10-27T21:49:03.7224318Z           "SIM_BUILD=sim_build_uart_defects",
+2026-10-27T21:49:03.7224712Z           "COCOTB_RESULTS_FILE=results_soc_uart_defects.xml"
+2026-10-27T21:49:03.7225102Z         ]
+2026-10-27T21:49:03.7225365Z       ],
+2026-10-27T21:49:03.7225653Z       "synthetic_helper_and_make": true,
+2026-10-27T21:49:03.7226018Z       "actual_generic_runner": true,
+2026-10-27T21:49:03.7226384Z       "frozen_failed_maker_used": false
+2026-10-27T21:49:03.7226729Z     }
+2026-10-27T21:49:03.7227027Z   },
+2026-10-27T21:49:03.7227307Z   "simulations_executed": false,
+2026-10-27T21:49:03.7227660Z   "synthesis_executed": false,
+2026-10-27T21:49:03.7228023Z   "compiled_fault_campaign_executed": false,
+2026-10-27T21:49:03.7228390Z   "terminal_pins": {
+2026-10-27T21:49:03.7229142Z     ".github/workflow-templates/pcie-gen12-record-cdc-root-controls-cloud.yml": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc",
+2026-10-27T21:49:03.7230210Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.jobs.json": "33dbc20923d638f5802c968ed5376cad79372c22215a920238ce2a9532550c0a",
+2026-10-27T21:49:03.7231281Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.json": "7e95b1b3186ad800f7aeccdb78a852e5eeb7f990a7afeb52b69223da4b8525fa",
+2026-10-27T21:49:03.7232278Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.log": "b579cb01e46092b4246c3bd2482f542f6c4e18ad7894f57dc500d394175f079c",
+2026-10-27T21:49:03.7233277Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.original-source.json": "a9d88a8109af6926dc1624f4a6927096baae88447acd034a7b95a0ac97974151",
+2026-10-27T21:49:03.7234276Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.run.json": "72bbea969b7790e9b5c90d1465f5774832d503eecc3425daa0d723f6bbfdef3d",
+2026-10-27T21:49:03.7235256Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-checker.py": "afaa0638201367c95bade6ed950258e38a1fa224529fb33f8b59e8fcd83e09f0",
+2026-10-27T21:49:03.7236319Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-helper.py": "126370784ac360bc2aada28ac41c688003792869774881ea084efa5c9cb851ae",
+2026-10-27T21:49:03.7237349Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-method.json": "633d605222b4308b79fb0ad2a5a457b86eb4a68393be0c8d8f8619d60aac9069",
+2026-10-27T21:49:03.7238372Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-runner.sh": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc",
+2026-10-27T21:49:03.7239370Z     "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-workflow.yml": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc",
+2026-10-27T21:49:03.7240949Z     "docs/evidence/pcie-gen12-root-explicit-module-fixture-correction-20261028.json": "f1fc39bdcebee7fc0d3aded6c9a8f1ee85fa56d18bae02e6160d1c78693af781",
+2026-10-27T21:49:03.7242175Z     "docs/evidence/pcie-gen12-root-explicit-module-fixture-independent-review-20261028.json": "dd091d929bf7fef6f0ca5697e63841422c5c42ef099c21cb2983aafda723f929",
+2026-10-27T21:49:03.7243325Z     "docs/evidence/pcie-gen12-training-record-noshare-native-pass-20261025.json": "23f194ff593e30c340f7562ab92c1a66f7107b5f35ff3abda7f0d293a50bd10f",
+2026-10-27T21:49:03.7244327Z     "docs/pcie-gen12-record-cdc-implementation-20261025.md": "32b0160e2d959c15dd60e081f4be10aad3dd005321237f54ef219ad1bff5b52c",
+2026-10-27T21:49:03.7245243Z     "docs/pcie-gen12-record-cdc-proof-refinements-20261025.md": "618af28582d274bafe2bd4ca38efd7b93304f4acc93bad38c81d899505e40dc5",
+2026-10-27T21:49:03.7246277Z     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-source-freeze.json": "80e7abc3badad6ea90426c029068eac697f1a881f251aac9c73f63a84613a874",
+2026-10-27T21:49:03.7247530Z     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-validation.json": "36f55a9a5a5e4d1a11034747df79b67e196fd8852b33ffa407c0ecae160f98fc",
+2026-10-27T21:49:03.7248675Z     "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-rtl-contract.json": "a51a3b5e9b550a7f5ea6e29044c1637ba355e2b085a966663136cf60c154e3fb",
+2026-10-27T21:49:03.7249630Z     "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v": "009d4885c5492dbc291b7eea3987304847d9a187013439459ada829a18ed54af",
+2026-10-27T21:49:03.7250478Z     "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v": "5a0661a0681bbe351714305859a111bb8c53544e80e680e1056c057ffcc4de66",
+2026-10-27T21:49:03.7251253Z     "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v": "d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9",
+2026-10-27T21:49:03.7252077Z     "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v": "96c6dea3aecca038dc8d5322d2c4a85d7847dbe24bc45a1b4a22d27301980566",
+2026-10-27T21:49:03.7252839Z     "hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v": "b83c9e0d15e055020e8d44c0dc948eaff88d118cede1feaf33b8d38ddd24bc78",
+2026-10-27T21:49:03.7253772Z     "hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v": "3c60eead90fe053c2615b76d44e1d5c74add6b3351a3cd85f76572ac3faabf20",
+2026-10-27T21:49:03.7254605Z     "hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v": "01a3c63b3f3e561e25adb955526a2e0f5241986181dec9ada78cc5f84e7e5533",
+2026-10-27T21:49:03.7255359Z     "hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v": "483685e8574baecc8e754678ca7cd90aae93be2a0313d8669935546758ebc31d",
+2026-10-27T21:49:03.7256109Z     "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735",
+2026-10-27T21:49:03.7256843Z     "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d",
+2026-10-27T21:49:03.7257591Z     "hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v": "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f",
+2026-10-27T21:49:03.7258373Z     "hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v": "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e",
+2026-10-27T21:49:03.7259121Z     "hw/soc/tb/cocotb/Makefile.gen12_record_cdc": "bdb28508b8599cb6a7c5dc8f0bf29e9343190e797d4b617e8ccd8e2619652817",
+2026-10-27T21:49:03.7259920Z     "hw/soc/tb/cocotb/pcie_gen12_record_cdc_harness.py": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979",
+2026-10-27T21:49:03.7260820Z     "hw/soc/tb/cocotb/test_soc_pcie_gen12_record_cdc_v1.py": "5d1d386c3fe5a7dfedc9279066f9bd8f8cf3d75e42ef1d463d49868e9580ce32",
+2026-10-27T21:49:03.7261625Z     "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py": "843962b620d10f143287797b3cc4da80d98b9cdffc429252f5cdd8330e783fb5",
+2026-10-27T21:49:03.7262424Z     "scripts/check_pcie_gen12_raw32_rx.py": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da",
+2026-10-27T21:49:03.7263150Z     "scripts/check_pcie_gen12_record_cdc_root.py": "126370784ac360bc2aada28ac41c688003792869774881ea084efa5c9cb851ae",
+2026-10-27T21:49:03.7263934Z     "scripts/check_pcie_gen12_record_cdc_root_controls.py": "5b08f9d762caa44bf51f4b1ab5c76a8d683d5f59a1f624909b5cc2cb4ec07519",
+2026-10-27T21:49:03.7264735Z     "scripts/check_pcie_gen12_record_cdc_source.py": "91c601c3cbc4fb8a23dda5d602acbc392f8b53dbdbcc15a3ced9cb8c3a081d67",
+2026-10-27T21:49:03.7265458Z     "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2",
+2026-10-27T21:49:03.7266189Z     "scripts/pcie-gen12-record-cdc-methods.json": "a34ed5f841566c227a572fca1abd4c90376200162522ed3208403ba2ca3d4751",
+2026-10-27T21:49:03.7267012Z     "scripts/pcie-gen12-record-cdc-mutations.json": "5d7f7457ee47d257d62424610363836132eff63acf8a0aff46fd566fb3d6aeab",
+2026-10-27T21:49:03.7267835Z     "scripts/pcie-gen12-record-cdc-proposal.json": "bf7b09fb1127d62e4be85c39f65eb09a58467a20c4f811cddde39eab1a9feacf",
+2026-10-27T21:49:03.7268635Z     "scripts/pcie-gen12-record-cdc-requirements.txt": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070",
+2026-10-27T21:49:03.7269340Z     "scripts/run_cocotb.sh": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc",
+2026-10-27T21:49:03.7270037Z     "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
+2026-10-27T21:49:03.7270677Z   }
+2026-10-27T21:49:03.7270968Z }
+2026-10-27T21:49:03.7366337Z ##[group]Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+2026-10-27T21:49:03.7366825Z with:
+2026-10-27T21:49:03.7367135Z   name: gen12-root-controls-40589708391-1
+2026-10-27T21:49:03.7367598Z   path: gen12-root-source.log
+gen12-root-controls.log
+
+2026-10-27T21:49:03.7368003Z   if-no-files-found: warn
+2026-10-27T21:49:03.7368360Z   retention-days: 90
+2026-10-27T21:49:03.7368688Z   compression-level: 6
+2026-10-27T21:49:03.7369004Z   overwrite: false
+2026-10-27T21:49:03.7369368Z   include-hidden-files: false
+2026-10-27T21:49:03.7369716Z env:
+2026-10-27T21:49:03.7370065Z   pythonLocation: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T21:49:03.7370697Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib/pkgconfig
+2026-10-27T21:49:03.7371206Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T21:49:03.7371793Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T21:49:03.7372375Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.12.15/x64
+2026-10-27T21:49:03.7372848Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.12.15/x64/lib
+2026-10-27T21:49:03.7373247Z ##[endgroup]
+2026-10-27T21:49:03.9143581Z (node:3248) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T21:49:03.9144804Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T21:49:03.9194181Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-27T21:49:03.9196319Z The least common ancestor is /home/runner/work/nssoc/nssoc. This will be the root directory of the artifact
+2026-10-27T21:49:03.9197086Z With the provided path, there will be 2 files uploaded
+2026-10-27T21:49:03.9211368Z Artifact name is valid!
+2026-10-27T21:49:03.9212141Z Root directory input is valid!
+2026-10-27T21:49:04.3671914Z Beginning upload of artifact content to blob storage
+2026-10-27T21:49:04.4532246Z (node:3248) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-27T21:49:04.6058077Z Uploaded bytes 5848
+2026-10-27T21:49:04.6494630Z Finished uploading artifact content to blob storage!
+2026-10-27T21:49:04.6495869Z SHA256 digest of uploaded artifact zip is 8823a246732146aeec09259fc725aed9137c7640efdc8c74fdeeeab0b501f4a2
+2026-10-27T21:49:04.6497059Z Finalizing artifact upload
+2026-10-27T21:49:05.0842041Z Artifact gen12-root-controls-40589708391-1.zip successfully finalized. Artifact ID 12774385205
+2026-10-27T21:49:05.0843305Z Artifact gen12-root-controls-40589708391-1 has been successfully uploaded! Final size is 5848 bytes. Artifact ID is 12774385205
+2026-10-27T21:49:05.0847776Z Artifact download URL: https://github.com/Melihakbulut221/nssoc/actions/runs/40589708391/artifacts/12774385205
+2026-10-27T21:49:05.1059967Z Post job cleanup.
+2026-10-27T21:49:05.2263451Z (node:3260) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-27T21:49:05.2264646Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-27T21:49:05.2389180Z Post job cleanup.
+2026-10-27T21:49:05.3288281Z [command]/usr/bin/git version
+2026-10-27T21:49:05.3337315Z git version 2.55.0
+2026-10-27T21:49:05.3380104Z Temporarily overriding HOME='/home/runner/work/_temp/cf11cfca-9dc6-4edd-8e27-3a5a69561f20' before making global git config changes
+2026-10-27T21:49:05.3382258Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-27T21:49:05.3385832Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/nssoc/nssoc
+2026-10-27T21:49:05.3434648Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-27T21:49:05.3486499Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-27T21:49:05.3843539Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-27T21:49:05.3878098Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-27T21:49:05.4148657Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-27T21:49:05.4182097Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-27T21:49:05.4559854Z Cleaning up orphan processes
+2026-10-27T21:49:05.4984812Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@11d5960a326750d5838078e36cf38b85af677262, actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065, actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
