@@ -8659,3 +8659,10 @@ Local project/tmp/native processes verified absent. Inventory246 exact cloud han
 Cloud-only operation and local cleanup reverified. Mainchip403949 failed before routing because pinned OpenROAD Python binding lacks inherited getId; full16-file failure proof49a4185b is retained and a separate disabled API census5f536496 is being completed, not a blind accessor replacement. PLL405368 and CDR405370 actual source-controls each failed in a synthetic fixture before native work; both skipped native jobs and complete failure evidence are preserved. Exact original digest collaborator and boolean-layer producer fixture corrections are under review with production numerical/geometry gates unchanged. Fresh PLL RC403892 remains PASS; no electrical/fullPHY/routing/finaltiming acceptance is added.
 
 Local project/tmp/native processes verified absent. Inventory249 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-27T16:29:16.534836+00:00 — cloud-only checkpoint v74
+
+Verified and activated only the two narrow source-fixture corrections after independent reviews: CDR exact failedBoolean-call reproduction plus real directbool guard and integer-layer whole-run refusal(5/40), PLL exact original digest callable plus originalfull-main omission regression. Production native/numerical/geometry guards are unchanged. Sole corrected source-controls40540717792/40540798717 were dispatched with readback/nativefalse; terminal states are live in this checkpoint, no acceptance inferred. Mainchip readonly APIprobe5ee9 has a clear scopednativepeer and explicit rawterminaljoins/partialfailure evidence, remains disabled at3a9598b9 pending outerreview. Local workspace/tmp/nativeprocesses absent; every edit/evidence/resume iscloud-only.
+
+Local project/tmp/native processes verified absent. Inventory251 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

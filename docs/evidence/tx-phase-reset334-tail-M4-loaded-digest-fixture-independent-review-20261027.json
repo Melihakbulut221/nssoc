@@ -1,0 +1,60 @@
+{
+  "all_authorizations_false": true,
+  "authored_imports_tests_native_or_archives_executed": false,
+  "checker_sha256": "f949044f3c80e62478c010ff0b4077af001fa6a148196857e63712fa03ec07e7",
+  "concrete_blockers_in_scope": [],
+  "correction_audit": {
+    "bytes": 8727,
+    "path": "docs/evidence/tx-phase-reset334-tail-M4-loaded-digest-fixture-correction-20261027.json",
+    "sha256": "5f25f35f57d6e21c6d27d06314d7cb45b473271ecedc70bd749a8eef7cae2de6"
+  },
+  "declared_protected_pins": 489,
+  "focused_bytes": 145402,
+  "focused_files_hashed": 9,
+  "full_protected_map_repeat": false,
+  "method_path": "scripts/tx-phase-reset334-tail-m4-loaded-methods.json",
+  "method_sha256": "a13e9c0e5364fd01e63afd42471806b5130cafc26b1f18904154b7b43c2a2101",
+  "reviewer": "/root/delta_review",
+  "schema": "bounded-independent-source-review-v1",
+  "source": "6f869966940512fc84e5a1844731a32fcab498f8",
+  "source_before": "1b78a0da90d9944dcac17eee69e11e832f2e7a7a",
+  "source_review_limit": "Actual authored fixtures are unexecuted by this reviewer; no original electrical or native acceptance follows.",
+  "unchanged_production": {
+    "scripts/cloud_tx_phase_reset334_tail_m4_loaded.py": "914baac8484ece23bc2d3085e7371dff2b751a27a5e787152db153b55a7b4f73",
+    "scripts/cloud_tx_phase_reset334_zero_op.py": "096f78daa2eca069eda8fb96624dac2cb7abf16f554dfa7459c680b2d6bb757e",
+    "scripts/tx_phase_reset334_loaded_native_adapter.py": "a42b8481207112deaa8a6bef1cc18cbe7508b4cbdc7ed901db738327fb944828",
+    "scripts/tx_phase_reset334_tail_m4_loaded_adapter.py": "d8297aec6af353e0c15d233bb184197ee1ca96cfbb4ce73ef9874c447a6e3dcb",
+    "scripts/tx_phase_reset334_tail_m4_loaded_admission.py": "8c5fbd6acdc52a26e89f7871bf5dbe565dd2ada95467c81a3edf40a44c1fc643"
+  },
+  "verdict": "CLEAR_BOUNDED_FIXTURE_ONLY_SOURCE_REVIEW",
+  "verified_source_delta": {
+    "new_omission_regression": {
+      "engine_or_archive_executed": false,
+      "intermediate_pass_not_treated_as_completed_fixture": true,
+      "removed_only": "digest attribute from synthetic initialization",
+      "required_exception": "AttributeError",
+      "required_name": "digest",
+      "required_object": "same synthetic initialization object",
+      "required_prepare_trace": [
+        "fresh-prepare-complete"
+      ],
+      "required_terminal_frames": [
+        "actual original main code object",
+        "actual original sha code object"
+      ]
+    },
+    "no_alternate_hash_implementation": true,
+    "only_checker_functions_changed": [
+      "derived_preparation_boundary",
+      "controls"
+    ],
+    "original_digest_callable_identity_asserted_before_and_after_full_main": true,
+    "original_digest_definition": "def digest(b):return hashlib.sha256(b.encode()if isinstance(b,str)else b).hexdigest()",
+    "original_finally_dependency": "def sha(p):return initialization.digest(Path(p).read_bytes())",
+    "other_checker_functions_ast_identical": 18,
+    "production_numerical_supervisor_import_publication_unchanged": true,
+    "template_change": "Only assert exact original digest callable in both full-main positives and exact old missing-digest refusal.",
+    "two_existing_boundary_positive_fixtures_retained": true
+  },
+  "workflow_and_template_sha256": "fd83338a04daf9be53392f1c3abe98b4eefc27c4e79ff6915af0622b0ec40900"
+}

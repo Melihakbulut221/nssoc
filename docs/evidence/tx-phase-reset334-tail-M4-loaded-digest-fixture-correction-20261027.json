@@ -1,0 +1,50 @@
+{
+  "schema": "minimal-source-fixture-correction-v1",
+  "status": "AUTHORED_NOT_EXECUTED_ALL_AUTHORIZATIONS_FALSE",
+  "parent": "e76d8e4c2de78bc6b6b77a0a3791d76bc6a03d3a",
+  "failed_run": 40536882089,
+  "failed_source": "a5ece7ac54c6186a8d01f07f9fa7e150263c387d",
+  "full_failure_receipt": {
+    "path": "docs/evidence/tx-phase-reset334-tail-M4-loaded-source-controls-failure-20261027.json",
+    "sha256": "4557761ec0f76b6d7ef9b1a72af41f02be290ff4cb639457a6e45aca0ed4b7f9"
+  },
+  "failure": "derived_preparation_boundary replaced initialization with synthetic adapters-only object; unchanged original finally sha requires initialization.digest.",
+  "fix": "Bind the actual original ns[initialization].digest callable into the synthetic object and assert identity before/after the real full-main call; no alternate hash implementation.",
+  "regression": "Omit only that exact digest attribute for prepare_only=True. Require actual AttributeError name=digest,obj=the synthetic initialization; final traceback frames must be original sha and full main. Require preparation file and pre-final result to exist, record that earlier PASS is not a completed fixture.",
+  "finally_dependency_audit": {
+    "unchanged_original_sha": "def sha(p):return initialization.digest(Path(p).read_bytes())",
+    "original_digest_source": "scripts/tx_phase_reset334_loaded_native_adapter.py",
+    "original_digest_definition": "def digest(b):return hashlib.sha256(b.encode()if isinstance(b,str)else b).hexdigest()",
+    "original_digest_definition_sha256": "7ae98a5bbe9e88f906a92932be6800f9419d1bc0fa7ad7dbd69f677178480ed8",
+    "finalization_other_consumed_globals": [
+      "OUT real temporary Path",
+      "Path original class",
+      "write original function",
+      "json original module",
+      "r original main-local result"
+    ],
+    "nested_save_original_unchanged": true,
+    "no_engine_call_in_positive_or_omission_cases": true
+  },
+  "changed_checker_functions": [
+    "derived_preparation_boundary",
+    "controls"
+  ],
+  "other_existing_checker_functions_AST_identical": 18,
+  "production_controller_admission_adapter_numerical_runtime_files_unchanged": true,
+  "derived_original_program_sha256": "804b944769b6ff44c2913a311e9de6f8dfe5dd4a633ea2d2eed9189784f6071b",
+  "new_checker": {
+    "bytes": 49343,
+    "sha256": "f949044f3c80e62478c010ff0b4077af001fa6a148196857e63712fa03ec07e7"
+  },
+  "template_and_active_identical": {
+    "bytes": 13486,
+    "sha256": "fd83338a04daf9be53392f1c3abe98b4eefc27c4e79ff6915af0622b0ec40900"
+  },
+  "workflow_delta": "Only require exact original digest collaborator in two positive full-main boundary fixtures and one exact old omission rejection.",
+  "exact_diff": "--- before/scripts/check_tx_phase_reset334_tail_m4_loaded.py\n+++ after/scripts/check_tx_phase_reset334_tail_m4_loaded.py\n@@ -308,10 +308,15 @@\n     return dict(supervisor=result,actual_generic_process_controls=True,ngspice_or_CAD_executed=False)\n \n \n-def derived_preparation_boundary(prepare_only):\n+def derived_preparation_boundary(prepare_only,omit_digest=False):\n     ns,proof=controller.program_namespace();seen=[]\n     original,parent=d.original_rejections();four=d.prior_four_tail_rejection()\n-    init=types.SimpleNamespace(adapters=lambda:types.SimpleNamespace())\n+    original_digest=ns['initialization'].digest\n+    init=types.SimpleNamespace(adapters=lambda:types.SimpleNamespace(),digest=original_digest)\n+    assert init.digest is original_digest\n+    if omit_digest:\n+        assert prepare_only is True\n+        del init.digest\n     path_binding=types.SimpleNamespace(bench=types.SimpleNamespace(binding=types.SimpleNamespace(MODELS=dict(a.MODELS))))\n     class StopBeforeEngine(RuntimeError):pass\n     def prepare(destination):\n@@ -330,11 +335,28 @@\n         ns['publication']=types.SimpleNamespace(context=lambda *args:('fixture-tag','a'*40),api=lambda p:{'fixture':p},validate_release=lambda *args:{'fixture':True})\n         ns['native']=types.SimpleNamespace(restore=stop)\n         try:ns['main'](prepare_only=prepare_only)\n-        except StopBeforeEngine:assert not prepare_only\n-        else:assert prepare_only\n+        except AttributeError as error:\n+            assert omit_digest and prepare_only and error.name=='digest'and error.obj is init\n+            frames=[];tb=error.__traceback__\n+            while tb:\n+                frames.append(tb);tb=tb.tb_next\n+            assert frames[-1].tb_frame.f_code is ns['sha'].__code__\n+            assert frames[-2].tb_frame.f_code is ns['main'].__code__\n+            assert seen==['fresh-prepare-complete']\n+            assert(ns['OUT']/'fresh-preparation/preparation.summary.json').is_file()\n+            prior=json.loads((ns['OUT']/'result.json').read_bytes())\n+            assert prior['status']=='PASS_FOUR_EXACT_RUNTIME_PATH_BINDINGS_NO_NATIVE_ZERO_OP'\n+            assert prior['native_simulator_invoked']is prior['runtime_installed']is False\n+            return dict(prepare_only=True,rejected=True,exact_old_missing_digest_reproduced=True,\n+              error=repr(error),unchanged_original_main_finally_and_sha=True,\n+              preparation_file_written_before_finally=True,earlier_result_is_not_a_completed_fixture=True,\n+              native_or_archive_executed=False)\n+        except StopBeforeEngine:assert not prepare_only and not omit_digest\n+        else:assert prepare_only and not omit_digest\n         result=json.loads((ns['OUT']/'result.json').read_bytes())\n         assert result['current_RC_model_hashes']==a.MODELS and result['original17_HBT_rejection']==original and result['prior_four_tail_rejection']==four\n         assert ns['initialization']is init and ns['path_binding']is path_binding\n+        assert init.digest is original_digest\n         if prepare_only:\n             assert seen==['fresh-prepare-complete']and result['status']=='PASS_FOUR_EXACT_RUNTIME_PATH_BINDINGS_NO_NATIVE_ZERO_OP'\n             assert result['zero_source_OP_executed']is False\n@@ -344,7 +366,8 @@\n         assert result['native_simulator_invoked']is False and result['runtime_installed']is False\n         assert result['outputs']['fresh-preparation/preparation.summary.json']==controller.sha(ns['OUT']/'fresh-preparation/preparation.summary.json')\n     return dict(prepare_only=prepare_only,actual_full_main_and_current_inputs=True,correct_isolated_context_installed=True,\n-      explicit_original_runtime_boundary=True,synthetic_preparation_only=True,native_or_archive_executed=False)\n+      explicit_original_runtime_boundary=True,synthetic_preparation_only=True,\n+      exact_original_digest_callable=True,native_or_archive_executed=False)\n \n \n def native_result_controls():\n@@ -607,6 +630,7 @@\n     base.update(outer_native_view=outer_view_controls(),\n       actual_prepare_completion=[prepare_completion_fixture(False),prepare_completion_fixture(True)],\n       actual_post_preparation_main=[derived_preparation_boundary(x)for x in (True,False)],\n+      actual_old_missing_digest_regression=derived_preparation_boundary(True,omit_digest=True),\n       native_result_controls=native_result_controls(),finalization=finalization_fixtures(),owned_child_terminal=owned_child_terminal_fixtures(),runtime=runtime_controls(),\n       authorization=authorization_controls(),child_preflight=child_preflight_controls(),workflow=workflow_controls(),\n       prior_four_failed_HBT_count=len(d.prior_four_tail_rejection()['all_four_failed_HBT_records']),\n--- before/.github/workflow-templates/tx-phase-reset334-tail-m4-loaded-cloud.yml\n+++ after/.github/workflow-templates/tx-phase-reset334-tail-m4-loaded-cloud.yml\n@@ -57,6 +57,8 @@\n           assert r['actual_controller_imported']and r['all_original_function_code_objects_identical']and r['original_module_globals_unchanged']\n           assert len(r['RC_faults'])==24 and len(r['metadata_faults'])==20 and len(r['context_faults'])==13\n           assert len(r['actual_main_entry_positives'])==2 and len(r['actual_post_preparation_main'])==2\n+          assert all(x['exact_original_digest_callable']for x in r['actual_post_preparation_main'])\n+          assert r['actual_old_missing_digest_regression']['rejected']and r['actual_old_missing_digest_regression']['exact_old_missing_digest_reproduced']\n           assert all(x['actual_finally_result_written']for x in r['actual_main_entry_positives'])\n           assert len(r['actual_prepare_completion'])==2 and r['actual_prepare_completion'][1]['rejected']\n           assert len(r['inherited_preparation']['rejected'])==15\n",
+  "new_controls_executed": false,
+  "local_authored_imports_or_tests_executed": false,
+  "archive_or_native_executed": false,
+  "retry_dispatched": false
+}
