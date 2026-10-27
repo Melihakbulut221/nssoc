@@ -15,6 +15,7 @@ from cloud_chunked_results import pack
 
 ROOT=a.ROOT
 WORKER="scripts/cloud_cdr_v59_tail_loaded.py"
+ENGINE_SHA="103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509"
 PREP_PASS="PASS_CURRENT_TAIL_LOADED_PREPARATION_ORIGINAL_BINDING_GATES"
 CASE_PASS="PASS_CURRENT_TAIL_ORIGINAL_LOADED_CASE_NOT_PHY_ACCEPTANCE"
 
@@ -163,7 +164,7 @@ def qualify_native(ctx,result,prepared):
       "Complete native worker output map changed")
     a.verify_exact_files(root/"current-mim-bundle",a.expected_files())
     a.require(a.sha(a.regular(root,"source/source/runtime/patched-ngspice"))==
-      "103134f6e3bf71771a7f9c94cc43fd5ea2f9d51490116718814aa344e9c51509","Original loaded engine changed")
+      ENGINE_SHA,"Original loaded engine changed")
     result["native_validation"]=result_gate.validate(native,ctx["case"],ctx["prepare"],result["command"]["returncode"],prepared)
     result["native_case_passed"]=True
     return native
