@@ -1,0 +1,69 @@
+{
+  "schema": "cdr-fresh-RC-signal-return-independent-source-diagnosis-v1",
+  "reviewer": "pll_handoff",
+  "source": "6300d0c3f8b9410f8aaf7aa43d51bee5aa3d3695",
+  "run": 40569566031,
+  "source_job": 122419865260,
+  "native_job": 122420909708,
+  "actual_source_job_conclusion": "failure",
+  "actual_native_job_conclusion": "skipped",
+  "full_actual_log": {
+    "bytes": 1764095,
+    "sha256": "de2165da88d8cf854bbfbb46346efdbdb2a02a9baf6a5177627a5f98abb9f0d8"
+  },
+  "owner_full_proof": {
+    "commit": "b861a6ba387eb5ca09cac73ab03e673afe12d1e2",
+    "prefix": "docs/evidence/cdr-v59-tail-fresh-RC-corrected-source-controls-terminal-20261027"
+  },
+  "focused_files": {
+    "scripts/check_cdr_v59_tail_fresh_rc_outer.py": {
+      "bytes": 26135,
+      "sha256": "aaa054cc134b374b77322eec6ec775dd38be7ebcf6afb01d5cc58319cad3a6e3"
+    },
+    "scripts/cloud_cdr_v59_tail_fresh_rc.py": {
+      "bytes": 19528,
+      "sha256": "67d05780f362fa146c7a47bf120eb2b75a308efd2c2d87c9c8f77d047b8541b6"
+    },
+    ".github/workflows/cdr-v59-tail-fresh-rc-cloud.yml": {
+      "bytes": 13308,
+      "sha256": "299647d9619d516d2ea343a2a19a301e82b2ee5606d360e1944989253df93389"
+    }
+  },
+  "observed_failure": {
+    "function": "lifecycle_controls",
+    "checker_line": 254,
+    "error": "KeyError: 'outputs'",
+    "actual_underlying_TypeError_printed": false,
+    "actual_per_case_result_preserved_by_old_fixture": false
+  },
+  "source_derived_cause": {
+    "handler_installation": "Controller main line323 installs supervisor.interrupted for SIGINT and SIGTERM.",
+    "restoration_return": "Controller finalization line181 returns signal.signal(sig, handler) from its lambda.",
+    "return_capture": "attempt line169 records every non-None callback return in terminal_evidence.",
+    "type": "The previously installed handler returned by signal.signal is the supervisor.interrupted bound method.",
+    "first_save": "Admission write line34 evaluates JSON encoding before writing/replacing; a bound method is not JSON-serializable.",
+    "secondary_mask": "Controller save_result line80 JSON-encodes the same result in its fallback, which also contains that callable.",
+    "stale_file": "The last previously saved RUNNING result can remain on disk without the output map assigned later in memory.",
+    "fixture_mask": "The checker reads the stale JSON and indexes outputs before inspecting the caught terminal error.",
+    "inventory_failure_not_required": true,
+    "scope": "Applies to the first complete synthetic case and production orchestration; not merely a checker output-key mismatch. This is source-derived until hosted regression executes."
+  },
+  "primary_api": {
+    "url": "https://docs.python.org/3.12/library/signal.html#signal.signal",
+    "claim": "signal.signal returns the previous handler; handlers may be callable Python objects.",
+    "docs_observed_version": "3.12.16",
+    "hosted_python_version": "3.12.15",
+    "no_claim_of_new_runtime_execution": true
+  },
+  "correction_boundary": [
+    "Keep actual signal restoration and every independent terminal action.",
+    "Do not record the non-evidence callable return; use a no-return wrapper or explicit primitive metadata.",
+    "Do not default, rename, or waive the required complete output inventory.",
+    "Reproduce the exact frozen-old actual-main stale-report and callable-encoding failure, and require corrected durable JSON through actual main.",
+    "Preserve original body error identity and complete available failure evidence."
+  ],
+  "authored_repository_imports_or_tests": false,
+  "native_archive_or_CAD": false,
+  "dispatch": false,
+  "physics_or_electrical_acceptance": false
+}
