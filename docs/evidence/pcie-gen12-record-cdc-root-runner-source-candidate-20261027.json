@@ -1,0 +1,109 @@
+{
+  "active_workflow_added": false,
+  "cloud_dispatch": false,
+  "controls": {
+    "actual_generic_shell_scenarios": 7,
+    "actual_shell_positive": 1,
+    "actual_shell_refusals": 6,
+    "no_RTL_executed_by_controls": true,
+    "positive": 9,
+    "rejected": 29,
+    "synthetic_helper_and_make_collaborators": true
+  },
+  "files": {
+    ".github/workflow-templates/pcie-gen12-record-cdc-root-controls-cloud.yml": {
+      "bytes": 4151,
+      "sha256": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc"
+    },
+    "scripts/check_pcie_gen12_record_cdc_root.py": {
+      "bytes": 14707,
+      "sha256": "126370784ac360bc2aada28ac41c688003792869774881ea084efa5c9cb851ae"
+    },
+    "scripts/check_pcie_gen12_record_cdc_root_controls.py": {
+      "bytes": 10216,
+      "sha256": "afaa0638201367c95bade6ed950258e38a1fa224529fb33f8b59e8fcd83e09f0"
+    },
+    "scripts/pcie-gen12-record-cdc-root-integration-methods.json": {
+      "bytes": 6152,
+      "sha256": "633d605222b4308b79fb0ad2a5a457b86eb4a68393be0c8d8f8619d60aac9069"
+    },
+    "scripts/run_cocotb.sh": {
+      "bytes": 24605,
+      "sha256": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc"
+    }
+  },
+  "generic_patch": {
+    "candidate_bytes": 24605,
+    "candidate_sha256": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc",
+    "edits": [
+      {
+        "after": "run_gen12_record_cdc() {\n    # The frozen package requires an explicit vendor/source list and two tops.\n    # The normal Icarus job runs all eleven tests at all three qualified depths.\n    local name=gen12_record_cdc work python rc counts p f s\n    work=$(mktemp -d \"$LOG_DIR/gen12-record-cdc.XXXXXX\") || return 1\n    python=\"$PY\"\n    [ ! -x \"$ROOT/hw/.venv/bin/python\" ] || python=\"$ROOT/hw/.venv/bin/python\"\n    timeout --signal=TERM --kill-after=10s 3600 \\\n        \"$python\" \"$ROOT/scripts/check_pcie_gen12_record_cdc_root.py\" \\\n        --out \"$work/capture\" --simulators icarus --depths 4 8 32 \\\n        > \"$LOG_DIR/$name.log\" 2>&1\n    rc=$?\n    if ! counts=$(\"$python\" \"$ROOT/scripts/check_pcie_gen12_record_cdc_root.py\" \\\n        --counts \"$work/capture/result.json\" 2>>\"$LOG_DIR/$name.log\"); then\n        printf '  %-28s INVALID/MISSING CDC RESULT (driver rc=%s; %s)\\n' \"$name\" \"$rc\" \"$LOG_DIR/$name.log\"\n        suite_fail=$((suite_fail + 1))\n        return\n    fi\n    read -r p f s <<< \"$counts\"\n    pass_total=$((pass_total + p))\n    fail_total=$((fail_total + f))\n    skip_total=$((skip_total + s))\n    if [ \"$rc\" != \"0\" ] || [ \"$p\" != \"33\" ] || [ \"$f\" != \"0\" ] || [ \"$s\" != \"0\" ]; then\n        printf '  %-28s %s passed, %s failed, %s skipped; NOT CLEAN (driver rc=%s)\\n' \"$name\" \"$p\" \"$f\" \"$s\" \"$rc\"\n        suite_fail=$((suite_fail + 1))\n    else\n        printf '  %-28s %s passed, %s skipped\\n' \"$name\" \"$p\" \"$s\"\n    fi\n}\n\nrun_one() {",
+        "before": "run_one() {",
+        "count": 1
+      },
+      {
+        "after": "    suite_total=$((suite_total + 1))\n    if [ \"$name\" = \"gen12_record_cdc\" ]; then\n        run_gen12_record_cdc || suite_fail=$((suite_fail + 1))\n        return\n    fi\n",
+        "before": "    suite_total=$((suite_total + 1))\n",
+        "count": 1
+      },
+      {
+        "after": "        # This dynamic test_$(TOPLEVEL) Makefile is reached by the explicit\n        # two-top handoff above. Its checker pins that actual dispatch and both tests.\n        if [ \"$dir\" = \"hw/soc/tb/cocotb\" ] &&\n           { [ \"$mod\" = \"test_soc_pcie_gen12_record_cdc_v1\" ] ||\n             [ \"$mod\" = \"test_soc_pcie_gen12_recovered_records_v1\" ]; } &&\n           \"$PY\" \"$ROOT/scripts/check_pcie_gen12_record_cdc_root.py\" --bind-module \"$mod\"; then\n            continue\n        fi\n        case \" $SKIP_MODULES \" in *\" $mod \"*) continue ;; esac\n",
+        "before": "        case \" $SKIP_MODULES \" in *\" $mod \"*) continue ;; esac\n",
+        "count": 1
+      }
+    ],
+    "original_bytes": 22559,
+    "original_sha256": "87564e079e290f8db711180a7f1e2c26541fe11dfc45e6e4e072c372364b6610",
+    "reverse_byte_exact": true,
+    "unified_diff": "--- original/scripts/run_cocotb.sh\n+++ candidate/scripts/run_cocotb.sh\n@@ -106,9 +106,43 @@\n     fi\n }\n \n+run_gen12_record_cdc() {\n+    # The frozen package requires an explicit vendor/source list and two tops.\n+    # The normal Icarus job runs all eleven tests at all three qualified depths.\n+    local name=gen12_record_cdc work python rc counts p f s\n+    work=$(mktemp -d \"$LOG_DIR/gen12-record-cdc.XXXXXX\") || return 1\n+    python=\"$PY\"\n+    [ ! -x \"$ROOT/hw/.venv/bin/python\" ] || python=\"$ROOT/hw/.venv/bin/python\"\n+    timeout --signal=TERM --kill-after=10s 3600 \\\n+        \"$python\" \"$ROOT/scripts/check_pcie_gen12_record_cdc_root.py\" \\\n+        --out \"$work/capture\" --simulators icarus --depths 4 8 32 \\\n+        > \"$LOG_DIR/$name.log\" 2>&1\n+    rc=$?\n+    if ! counts=$(\"$python\" \"$ROOT/scripts/check_pcie_gen12_record_cdc_root.py\" \\\n+        --counts \"$work/capture/result.json\" 2>>\"$LOG_DIR/$name.log\"); then\n+        printf '  %-28s INVALID/MISSING CDC RESULT (driver rc=%s; %s)\\n' \"$name\" \"$rc\" \"$LOG_DIR/$name.log\"\n+        suite_fail=$((suite_fail + 1))\n+        return\n+    fi\n+    read -r p f s <<< \"$counts\"\n+    pass_total=$((pass_total + p))\n+    fail_total=$((fail_total + f))\n+    skip_total=$((skip_total + s))\n+    if [ \"$rc\" != \"0\" ] || [ \"$p\" != \"33\" ] || [ \"$f\" != \"0\" ] || [ \"$s\" != \"0\" ]; then\n+        printf '  %-28s %s passed, %s failed, %s skipped; NOT CLEAN (driver rc=%s)\\n' \"$name\" \"$p\" \"$f\" \"$s\" \"$rc\"\n+        suite_fail=$((suite_fail + 1))\n+    else\n+        printf '  %-28s %s passed, %s skipped\\n' \"$name\" \"$p\" \"$s\"\n+    fi\n+}\n+\n run_one() {\n     local dir=$1 mk=$2 name=$3\n     suite_total=$((suite_total + 1))\n+    if [ \"$name\" = \"gen12_record_cdc\" ]; then\n+        run_gen12_record_cdc || suite_fail=$((suite_fail + 1))\n+        return\n+    fi\n     if [ \"$name\" = \"soc_pcie_ethernet\" ]; then\n         run_pcie_ethernet || suite_fail=$((suite_fail + 1))\n         return\n@@ -303,6 +337,14 @@\n             skip_total=$((skip_total + 1))\n             continue\n         fi\n+        # This dynamic test_$(TOPLEVEL) Makefile is reached by the explicit\n+        # two-top handoff above. Its checker pins that actual dispatch and both tests.\n+        if [ \"$dir\" = \"hw/soc/tb/cocotb\" ] &&\n+           { [ \"$mod\" = \"test_soc_pcie_gen12_record_cdc_v1\" ] ||\n+             [ \"$mod\" = \"test_soc_pcie_gen12_recovered_records_v1\" ]; } &&\n+           \"$PY\" \"$ROOT/scripts/check_pcie_gen12_record_cdc_root.py\" --bind-module \"$mod\"; then\n+            continue\n+        fi\n         case \" $SKIP_MODULES \" in *\" $mod \"*) continue ;; esac\n         # Reached if some Makefile in this directory names it as MODULE or\n         # COCOTB_TEST_MODULES, or the table above lists it.\n"
+  },
+  "imported_13_file_manifest_path": "docs/evidence/pcie-gen12-record-cdc-root-exact-import-proposal-20261027.json",
+  "imported_13_files_unchanged": true,
+  "limitations": [
+    "Authored source and fixtures have not been executed locally or hosted.",
+    "Source readiness is pending independent review and genuine cloud controls.",
+    "The imported wrappers are not instantiated in soc_top; no training/epoch/LTSSM/protocol behavior is added.",
+    "No active workflow, old native authorization, synthesis/physical adapters or native dispatch is imported."
+  ],
+  "local_authored_execution": false,
+  "native_archives_accessed": false,
+  "original_27_pins_unchanged": true,
+  "pipeline": {
+    "completeness": "Only the two exact names bind through the pinned helper and actual dispatch. No SKIP_MODULES broadening or change to other existing suite logic.",
+    "evidence": "Distinct compile/run streams, binary hashes, exact original named XML validation, complete per-case result and final source recheck; raw outputs retained on failure.",
+    "focused": "Inactive workflow defaults to source controls only; explicit later execute_rtl runs both simulators and exact66 cases. It does not rerun mapped/synthesis/compiled-fault qualification.",
+    "generic": "Both tops, Icarus, depths4/8/32; exact33 cases. A named handoff reports any driver/count/completeness failure through existing generic counters.",
+    "runtime": "Cloud-only Python3.12, fresh hash-locked cocotb2.0.1/find_libpython0.4.0 environment; exactly one immutable vendor copy. Verilator source51cdf52d0f3a3e59b51fd87762646a851e9f4aff /5.040; actual Icarus version retained."
+  },
+  "prior_import": "7a796a21c745673806ab19f610fda390f0a467ee",
+  "qualified_functions": {
+    "all_four_source_segments_byte_exact": true,
+    "full_historical_controller_not_imported_or_executed": true,
+    "functions": {
+      "compile_admission": {
+        "end": 230,
+        "sha256": "680725f8c23c5f594748c429082d2df8a10f3a6ec2c09c8bd2a612197684bd2c",
+        "start": 228
+      },
+      "make_args": {
+        "end": 310,
+        "sha256": "f8524981aacbc7b64c2a4ea494054de4a616a8ace4564687a55c143c8d1c81e4",
+        "start": 300
+      },
+      "vendor_admission": {
+        "end": 235,
+        "sha256": "f9decb39a6d066168f799e0f3f6551ec57702440a2dd427b3b27be1dade531d2",
+        "start": 232
+      },
+      "xml_review": {
+        "end": 226,
+        "sha256": "c464054eaccd9717b93acac6bff5d43d25ded1b0d45a96a2194e3a1609467343",
+        "start": 185
+      }
+    },
+    "source": "scripts/cloud_pcie_gen12_record_cdc.py",
+    "source_sha256": "d8232a832be1ade7174caa89a207fca5f05e1a2883c8224fb727618500d3d18a"
+  },
+  "root_base": "f3c55df0b9be77bc5a35e29c4dbb35e29e11b2a4",
+  "status": "SOURCE_ONLY_INTEGRATED_ROOT_CANDIDATE_NOT_EXECUTED"
+}

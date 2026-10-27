@@ -106,9 +106,43 @@ run_pcie_ethernet() {
     fi
 }
 
+run_gen12_record_cdc() {
+    # The frozen package requires an explicit vendor/source list and two tops.
+    # The normal Icarus job runs all eleven tests at all three qualified depths.
+    local name=gen12_record_cdc work python rc counts p f s
+    work=$(mktemp -d "$LOG_DIR/gen12-record-cdc.XXXXXX") || return 1
+    python="$PY"
+    [ ! -x "$ROOT/hw/.venv/bin/python" ] || python="$ROOT/hw/.venv/bin/python"
+    timeout --signal=TERM --kill-after=10s 3600 \
+        "$python" "$ROOT/scripts/check_pcie_gen12_record_cdc_root.py" \
+        --out "$work/capture" --simulators icarus --depths 4 8 32 \
+        > "$LOG_DIR/$name.log" 2>&1
+    rc=$?
+    if ! counts=$("$python" "$ROOT/scripts/check_pcie_gen12_record_cdc_root.py" \
+        --counts "$work/capture/result.json" 2>>"$LOG_DIR/$name.log"); then
+        printf '  %-28s INVALID/MISSING CDC RESULT (driver rc=%s; %s)\n' "$name" "$rc" "$LOG_DIR/$name.log"
+        suite_fail=$((suite_fail + 1))
+        return
+    fi
+    read -r p f s <<< "$counts"
+    pass_total=$((pass_total + p))
+    fail_total=$((fail_total + f))
+    skip_total=$((skip_total + s))
+    if [ "$rc" != "0" ] || [ "$p" != "33" ] || [ "$f" != "0" ] || [ "$s" != "0" ]; then
+        printf '  %-28s %s passed, %s failed, %s skipped; NOT CLEAN (driver rc=%s)\n' "$name" "$p" "$f" "$s" "$rc"
+        suite_fail=$((suite_fail + 1))
+    else
+        printf '  %-28s %s passed, %s skipped\n' "$name" "$p" "$s"
+    fi
+}
+
 run_one() {
     local dir=$1 mk=$2 name=$3
     suite_total=$((suite_total + 1))
+    if [ "$name" = "gen12_record_cdc" ]; then
+        run_gen12_record_cdc || suite_fail=$((suite_fail + 1))
+        return
+    fi
     if [ "$name" = "soc_pcie_ethernet" ]; then
         run_pcie_ethernet || suite_fail=$((suite_fail + 1))
         return
@@ -301,6 +335,14 @@ for dir in hw/tb hw/soc/tb/cocotb; do
                "$ROOT/.github/workflows/checks.yml" 2>/dev/null; then
             echo "SKIP $dir/$mod: separately run by check_soc_memory_parity.sh (native PDK, Icarus >=13); results belong to the memory-parity job"
             skip_total=$((skip_total + 1))
+            continue
+        fi
+        # This dynamic test_$(TOPLEVEL) Makefile is reached by the explicit
+        # two-top handoff above. Its checker pins that actual dispatch and both tests.
+        if [ "$dir" = "hw/soc/tb/cocotb" ] &&
+           { [ "$mod" = "test_soc_pcie_gen12_record_cdc_v1" ] ||
+             [ "$mod" = "test_soc_pcie_gen12_recovered_records_v1" ]; } &&
+           "$PY" "$ROOT/scripts/check_pcie_gen12_record_cdc_root.py" --bind-module "$mod"; then
             continue
         fi
         case " $SKIP_MODULES " in *" $mod "*) continue ;; esac
