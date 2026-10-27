@@ -1,11 +1,22 @@
-# Fresh tail-M4 transient foundation — disabled, incomplete
+# Disabled current tail-M4 transient source checkpoint
 
-The actual four-OP proof is complete at62da550a366fbd3d96dff0c88a7512ba72f238c8. All four current P/N cases passed the original OFF/zero-source OP checks; this is not transient or electrical acceptance.
+The qualified four-OP proof remains exact at 62da550a366fbd3d96dff0c88a7512ba72f238c8.
+The complete 3286-member outer capsule, separate 3271-member native view, 3201 prepared files,
+native summary and nested preparation digest remain distinct. TX independently reviewed the
+admission/adapter and complete acquired JSON joins; see the context review receipt.
 
-Three concrete Python source files are authored and parsed as source only. Admission retains all3286 outer capsule members and separately binds the3271 native view; the adapter consumes native/fresh-preparation full34ns decks and separate nested preparation hash. Native/<case>/bench.cir remains the rejected OP-only transient input. Original17 and prior4 HBT failures and original TX rejection remain.
+The source increment adds authored controls for the real outer main/finalization, methods in
+both legitimate authorization modes, preflight, full derived main entry and prepare completion.
+All are unexecuted. Terminal handling preserves original raw result bytes, preexisting and failed
+write fragments, complete available file hashes, and the original primary exception.
+JSON encoding failures cannot leave a nominal PASS summary.
 
-The original13200-second Docker/CRIU owner lifecycle,12GiB container cap,72GiB initial disk and20GiB checkpoint reserve are retained. The four-OP POSIX sampler is not claimed to supervise Docker daemon children. No numerical, clock, VCE, margin, phase or sample threshold was changed.
+The original Docker/CRIU 13200-second lifecycle, 72 GiB initial disk/20 GiB reserve, full original
+34 ns/.3125 ps decks, 0.4 V VCE, 100 mV and 62.5 ps gates remain unchanged.
+All authorization flags are false and source_unit_complete is false. No active workflow
+or registration was created.
 
-The source audit contains every reversible edit. The new method explicitly has source_unit_complete=false and all authorization flags false. No active workflow or template was added. No source was imported/executed, no tests/CAD/SPICE ran, and no archive was downloaded locally.
-
-Remaining: complete production-path/finalization/both-mode authorization fixtures, actual isolated source+three-data import closure, reserved-source publication and always-emitted full controls, full disabled template/protected closure, then independent source review. The finalizer is newly authored and unreviewed; it must be exercised through actual controller fixtures before any activation. Fresh transient starting case is p-initial-high only; no continuation or other-case authorization.
+Next: finish the full isolated import/data closure, qualified exact-source reserved-only direct
+publication and its real file-list fixtures, native resource observation, disabled template,
+always-emitted controls, complete source pin audit and independent wrapper review.
+No transient or hosted controls dispatch is authorized.
