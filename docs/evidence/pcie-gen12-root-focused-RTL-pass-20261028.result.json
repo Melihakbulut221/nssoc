@@ -1,0 +1,2937 @@
+{
+  "status": "PASS_ROOT_GEN12_RECORD_CDC_FOCUSED_RTL",
+  "run": "40589708391",
+  "source": "19b3a8f11922d7760a58d76fef0eeff0a0ec8e5a",
+  "original_source_controls": {
+    "status": "PASS_SOURCE_IDENTITIES_AND_DECLARED_TEST_STRUCTURE_ONLY",
+    "protected_count": 27,
+    "tests": {
+      "soc_pcie_gen12_record_cdc_v1": [
+        "all192_bits_async_wraps",
+        "held_all_fields_and_error_flags_are_payload",
+        "exact_capacity_overflow_sticky_epoch",
+        "resets_held_prefetch_and_startup_stopped_clock",
+        "loss_without_valid_and_buffered_prefix",
+        "mid_epoch_clock_pause_is_not_loss_detection"
+      ],
+      "soc_pcie_gen12_recovered_records_v1": [
+        "both_polarities_all_offsets_and_errors",
+        "first_public_word_and_startup_reset",
+        "partial_raw_batch_and_complete_record_epoch_reset",
+        "polarity_change_and_known_loss_stop_epoch",
+        "composed_capacity_and_common_pause"
+      ]
+    },
+    "mutation_definitions": 18,
+    "mutations_compiled": false,
+    "simulations_executed": false,
+    "synthesis_executed": false,
+    "automatic_clock_loss_detection": false,
+    "TS_accepted": false,
+    "full_PHY_accepted": false
+  },
+  "method_sha256": "c45be6d7bb8a635e1c8aa2d2b579fdec4e47de942d11982a6fdbf5e17d43b817",
+  "scope": {
+    "LTSSM": false,
+    "TS_accepted": false,
+    "automatic_clock_loss_detection": false,
+    "compiled_fault_campaign_rerun": false,
+    "full_PHY_accepted": false,
+    "mapped_or_synthesis_rerun": false,
+    "physical_CDC_qualification": false,
+    "root_serial_consumer_integration": false
+  },
+  "simulations": [
+    {
+      "label": "icarus-soc_pcie_gen12_record_cdc_v1-d4",
+      "simulator": "icarus",
+      "depth": 4,
+      "top": "soc_pcie_gen12_record_cdc_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=4",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/build/sim.vvp"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/compile.stdout",
+          "bytes": 1396,
+          "sha256": "df3b0c18d88315eb46fde63d747771a62722661091bd9c9a88fc5f2a46aca938"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/compile.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "compiled_image": {
+        "bytes": 64125,
+        "sha256": "2291321e82afd00ed16b676738924baa8b53081eeed7aed441f917d76cc4f68b"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=4",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/simulation.stdout",
+          "bytes": 5531,
+          "sha256": "7d61fa9a28bee2a329b4ef10b6ecba0f3b6c094cca6d8f7045e34503625932e5"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "all192_bits_async_wraps",
+          "disposition": "PASS"
+        },
+        {
+          "test": "held_all_fields_and_error_flags_are_payload",
+          "disposition": "PASS"
+        },
+        {
+          "test": "exact_capacity_overflow_sticky_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "resets_held_prefetch_and_startup_stopped_clock",
+          "disposition": "PASS"
+        },
+        {
+          "test": "loss_without_valid_and_buffered_prefix",
+          "disposition": "PASS"
+        },
+        {
+          "test": "mid_epoch_clock_pause_is_not_loss_detection",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1961,
+        "sha256": "5371b26c4ec602065234eaec95a7aa9e5bf5536958222bff0f65fab8ed214919",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/results.xml"
+      }
+    },
+    {
+      "label": "icarus-soc_pcie_gen12_recovered_records_v1-d4",
+      "simulator": "icarus",
+      "depth": 4,
+      "top": "soc_pcie_gen12_recovered_records_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=4",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/build/sim.vvp"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/compile.stdout",
+          "bytes": 1436,
+          "sha256": "a9e6400a507522016eb0a01a0365b30075a7ab8f9feab156b36094fc9b9a8f8b"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/compile.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "compiled_image": {
+        "bytes": 687102,
+        "sha256": "70ff67e1a3e62db55c0f7426a0ade10c294f1dd5583cb01e7cbc72fc766a6547"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=4",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/simulation.stdout",
+          "bytes": 6839,
+          "sha256": "2732df4e1887c1cd49b8ecdce5ada0bd8491b59e211af7b20a3d9cfe60e89a45"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "both_polarities_all_offsets_and_errors",
+          "disposition": "PASS"
+        },
+        {
+          "test": "first_public_word_and_startup_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "partial_raw_batch_and_complete_record_epoch_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "polarity_change_and_known_loss_stop_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "composed_capacity_and_common_pause",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1721,
+        "sha256": "30839542f89bb3231a665ca66bd60c75fb1885e3b980391d528ff45a97e86fa4",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/results.xml"
+      }
+    },
+    {
+      "label": "icarus-soc_pcie_gen12_record_cdc_v1-d8",
+      "simulator": "icarus",
+      "depth": 8,
+      "top": "soc_pcie_gen12_record_cdc_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=8",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/build/sim.vvp"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/compile.stdout",
+          "bytes": 1396,
+          "sha256": "32d160e35bf84f46c449abc473f9b4656f0dc319381f41c2cbb51d3a24a3ba82"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/compile.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "compiled_image": {
+        "bytes": 64143,
+        "sha256": "79ac07c2978fdba66dfbe2efd247d9de97a4a4b49d0dc151a76d30ac71edc720"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=8",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/simulation.stdout",
+          "bytes": 5531,
+          "sha256": "658a723d01224d0b31566708f73bd351fabca50ea31084bd9a5b41375d0e6586"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "all192_bits_async_wraps",
+          "disposition": "PASS"
+        },
+        {
+          "test": "held_all_fields_and_error_flags_are_payload",
+          "disposition": "PASS"
+        },
+        {
+          "test": "exact_capacity_overflow_sticky_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "resets_held_prefetch_and_startup_stopped_clock",
+          "disposition": "PASS"
+        },
+        {
+          "test": "loss_without_valid_and_buffered_prefix",
+          "disposition": "PASS"
+        },
+        {
+          "test": "mid_epoch_clock_pause_is_not_loss_detection",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1954,
+        "sha256": "f0b7141990c3a9b1dc3cf4ad95070a47ff809c722b9a8f4117f64033f106d1a9",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/results.xml"
+      }
+    },
+    {
+      "label": "icarus-soc_pcie_gen12_recovered_records_v1-d8",
+      "simulator": "icarus",
+      "depth": 8,
+      "top": "soc_pcie_gen12_recovered_records_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=8",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/build/sim.vvp"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/compile.stdout",
+          "bytes": 1436,
+          "sha256": "3b91ba17f683d6fe47bd123c713f20282472685b28a7f89c790523f5e279a2f1"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/compile.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "compiled_image": {
+        "bytes": 687120,
+        "sha256": "85725a46783eb5d7847c4fee30d5367b13dd90cf7cda68f1955dddebbc212883"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=8",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/simulation.stdout",
+          "bytes": 6839,
+          "sha256": "4e3a5c5eb512cf8c6df5ea73cc91f8e2148d52a93b9769f0963cbf3ec6b9b422"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "both_polarities_all_offsets_and_errors",
+          "disposition": "PASS"
+        },
+        {
+          "test": "first_public_word_and_startup_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "partial_raw_batch_and_complete_record_epoch_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "polarity_change_and_known_loss_stop_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "composed_capacity_and_common_pause",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1718,
+        "sha256": "7b9679afabe8c572ecd5ae86fe453dc8a6c4a5804f4ac29e6f2e83f677f8228c",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/results.xml"
+      }
+    },
+    {
+      "label": "icarus-soc_pcie_gen12_record_cdc_v1-d32",
+      "simulator": "icarus",
+      "depth": 32,
+      "top": "soc_pcie_gen12_record_cdc_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=32",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/build/sim.vvp"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/compile.stdout",
+          "bytes": 1400,
+          "sha256": "ea5cc03e149b4087f70aeb63b8ba79d3c46970865b9f14f172bfa67350f93db9"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/compile.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "compiled_image": {
+        "bytes": 64180,
+        "sha256": "57fa8f28099fa24a3cd29f42cbdc45301eaceded7265dbe6ef1cf72bf3b10ad6"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=32",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/simulation.stdout",
+          "bytes": 5533,
+          "sha256": "abae8f3af0ce55aea0cfb317885abf87b2da9f9f9298e122fba798382b7a066e"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "all192_bits_async_wraps",
+          "disposition": "PASS"
+        },
+        {
+          "test": "held_all_fields_and_error_flags_are_payload",
+          "disposition": "PASS"
+        },
+        {
+          "test": "exact_capacity_overflow_sticky_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "resets_held_prefetch_and_startup_stopped_clock",
+          "disposition": "PASS"
+        },
+        {
+          "test": "loss_without_valid_and_buffered_prefix",
+          "disposition": "PASS"
+        },
+        {
+          "test": "mid_epoch_clock_pause_is_not_loss_detection",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1954,
+        "sha256": "4be3beee9526f3e8ddd5ee0e9b3c5d6dfafa78b4995037719d8f66a77695ebd6",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/results.xml"
+      }
+    },
+    {
+      "label": "icarus-soc_pcie_gen12_recovered_records_v1-d32",
+      "simulator": "icarus",
+      "depth": 32,
+      "top": "soc_pcie_gen12_recovered_records_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=32",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/build/sim.vvp"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/compile.stdout",
+          "bytes": 1440,
+          "sha256": "9134cfc1cd5f29fb6bbe482d4fcf2996861a6881ad91b08d2f616ad24365af37"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/compile.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "compiled_image": {
+        "bytes": 687157,
+        "sha256": "7a5bcb0921a52753e22cc1f9912cd76c40d4a496cdeeef22de41f4a7c6c4e438"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=icarus",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=32",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/simulation.stdout",
+          "bytes": 6841,
+          "sha256": "901aec14767d02b8c241cc25aa2dcce5849d48405e6d1013a6a4d4a4a7c4bb3a"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "both_polarities_all_offsets_and_errors",
+          "disposition": "PASS"
+        },
+        {
+          "test": "first_public_word_and_startup_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "partial_raw_batch_and_complete_record_epoch_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "polarity_change_and_known_loss_stop_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "composed_capacity_and_common_pause",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1721,
+        "sha256": "b75c2aa7b0bd5f79c88981be021683f2aa707c2e3f2d98750a5341de563fff32",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/results.xml"
+      }
+    },
+    {
+      "label": "verilator-soc_pcie_gen12_record_cdc_v1-d4",
+      "simulator": "verilator",
+      "depth": 4,
+      "top": "soc_pcie_gen12_record_cdc_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=4",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/compile.stdout",
+          "bytes": 7282,
+          "sha256": "70cb506cc89e5ffc43571629c67167e43829ec972b2a77a78a6bf0ccfb04fcde"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/compile.stderr",
+          "bytes": 3691,
+          "sha256": "f94a57d3d66ac3308a41f7ddcb58d9210dc5e44e5fd3b2a4a1b14578d3b52870"
+        }
+      },
+      "compiled_image": {
+        "bytes": 360032,
+        "sha256": "c550806612222a37dc7ff2af2f1190beb5fa91aa039c8e00ae5b020a5a7e62f9"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=4",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/simulation.stdout",
+          "bytes": 5412,
+          "sha256": "5d91c2c32b1d10d2d65bba8efdadde7fad5a72910492ad4ee84a9fe8d35c6e3f"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "all192_bits_async_wraps",
+          "disposition": "PASS"
+        },
+        {
+          "test": "held_all_fields_and_error_flags_are_payload",
+          "disposition": "PASS"
+        },
+        {
+          "test": "exact_capacity_overflow_sticky_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "resets_held_prefetch_and_startup_stopped_clock",
+          "disposition": "PASS"
+        },
+        {
+          "test": "loss_without_valid_and_buffered_prefix",
+          "disposition": "PASS"
+        },
+        {
+          "test": "mid_epoch_clock_pause_is_not_loss_detection",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1955,
+        "sha256": "2cd79caf6d4402766e4f1e881fefce7b1ab1a5b6751de892282710fb1daa2355",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/results.xml"
+      }
+    },
+    {
+      "label": "verilator-soc_pcie_gen12_recovered_records_v1-d4",
+      "simulator": "verilator",
+      "depth": 4,
+      "top": "soc_pcie_gen12_recovered_records_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=4",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/compile.stdout",
+          "bytes": 15449,
+          "sha256": "11753c6c58d724351d8f854873ecc883effedd1118aec3b91bb4d4a08850ef0e"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/compile.stderr",
+          "bytes": 6882,
+          "sha256": "734c32a036270db3a13973e56f2e49e7b6887638c72628f1aa7d3efadeb7e5b7"
+        }
+      },
+      "compiled_image": {
+        "bytes": 723056,
+        "sha256": "379c4d68e8abd51d4f4978679a05a936ceaebd0155fe5bb4201500a1fb2eb0fb"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=4",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/simulation.stdout",
+          "bytes": 6720,
+          "sha256": "410d598f55b8ad3581754bdd9d5276a406e2dfe85b5652db5c1ca8049d5e4922"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "both_polarities_all_offsets_and_errors",
+          "disposition": "PASS"
+        },
+        {
+          "test": "first_public_word_and_startup_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "partial_raw_batch_and_complete_record_epoch_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "polarity_change_and_known_loss_stop_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "composed_capacity_and_common_pause",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1717,
+        "sha256": "64da015abd757f14530ce562df446d536e0a618d11199b6ea3b0d1697b97aa13",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/results.xml"
+      }
+    },
+    {
+      "label": "verilator-soc_pcie_gen12_record_cdc_v1-d8",
+      "simulator": "verilator",
+      "depth": 8,
+      "top": "soc_pcie_gen12_record_cdc_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=8",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/compile.stdout",
+          "bytes": 7282,
+          "sha256": "be016873af5f34adf5377dae4a780c86cd3dbb059229985898acff5c2c97a1c6"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/compile.stderr",
+          "bytes": 3691,
+          "sha256": "f94a57d3d66ac3308a41f7ddcb58d9210dc5e44e5fd3b2a4a1b14578d3b52870"
+        }
+      },
+      "compiled_image": {
+        "bytes": 360032,
+        "sha256": "b7c1e02c1291ddbb7f765c8602300d90413a85b8dd1f3ccdf1fef8deecf7959c"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=8",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/simulation.stdout",
+          "bytes": 5412,
+          "sha256": "59858c953123de17cd87813322002ab90afd197e3b45b82df3120cea01a3eb06"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "all192_bits_async_wraps",
+          "disposition": "PASS"
+        },
+        {
+          "test": "held_all_fields_and_error_flags_are_payload",
+          "disposition": "PASS"
+        },
+        {
+          "test": "exact_capacity_overflow_sticky_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "resets_held_prefetch_and_startup_stopped_clock",
+          "disposition": "PASS"
+        },
+        {
+          "test": "loss_without_valid_and_buffered_prefix",
+          "disposition": "PASS"
+        },
+        {
+          "test": "mid_epoch_clock_pause_is_not_loss_detection",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1958,
+        "sha256": "8543737d0bcc1cec41aad63b0380aab0623979c83b8cd54a441086c06fbe2df4",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/results.xml"
+      }
+    },
+    {
+      "label": "verilator-soc_pcie_gen12_recovered_records_v1-d8",
+      "simulator": "verilator",
+      "depth": 8,
+      "top": "soc_pcie_gen12_recovered_records_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=8",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/compile.stdout",
+          "bytes": 15449,
+          "sha256": "89579b0d36896a4feedb7ae78386512570d3d40fa516a3a99c808a4efe03ded8"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/compile.stderr",
+          "bytes": 6882,
+          "sha256": "734c32a036270db3a13973e56f2e49e7b6887638c72628f1aa7d3efadeb7e5b7"
+        }
+      },
+      "compiled_image": {
+        "bytes": 723056,
+        "sha256": "88cce46edcba9de20a5cca780178a2f3f6c616a9c37fcdc5db9a64deefe9a8fc"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=8",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/simulation.stdout",
+          "bytes": 6720,
+          "sha256": "d3b68e1ff7e262b939ce731f3166e6ca9ec4c33b5f7c90ca55ba0925d81c7f21"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "both_polarities_all_offsets_and_errors",
+          "disposition": "PASS"
+        },
+        {
+          "test": "first_public_word_and_startup_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "partial_raw_batch_and_complete_record_epoch_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "polarity_change_and_known_loss_stop_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "composed_capacity_and_common_pause",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1718,
+        "sha256": "084465b23fccbb8f6ed5b92c1bb9b0f7bb9cd4295bf50b38cd0c49934c3a466f",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/results.xml"
+      }
+    },
+    {
+      "label": "verilator-soc_pcie_gen12_record_cdc_v1-d32",
+      "simulator": "verilator",
+      "depth": 32,
+      "top": "soc_pcie_gen12_record_cdc_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=32",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/compile.stdout",
+          "bytes": 7288,
+          "sha256": "57b66f984d7d6ddf26390520a3bd83213d4a91aaa27120bcbeecd1ba135e3b2f"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/compile.stderr",
+          "bytes": 3691,
+          "sha256": "f94a57d3d66ac3308a41f7ddcb58d9210dc5e44e5fd3b2a4a1b14578d3b52870"
+        }
+      },
+      "compiled_image": {
+        "bytes": 360032,
+        "sha256": "d9b59390ff8a85001b6f2ad25b5b6e3348f257c0c8fc1f882b29896f3e471837"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_record_cdc_v1",
+          "DEPTH=32",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/simulation.stdout",
+          "bytes": 5414,
+          "sha256": "45002ab700e3a42650c40e5741832526c3b4644b8a6789269d828ba65148905f"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "all192_bits_async_wraps",
+          "disposition": "PASS"
+        },
+        {
+          "test": "held_all_fields_and_error_flags_are_payload",
+          "disposition": "PASS"
+        },
+        {
+          "test": "exact_capacity_overflow_sticky_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "resets_held_prefetch_and_startup_stopped_clock",
+          "disposition": "PASS"
+        },
+        {
+          "test": "loss_without_valid_and_buffered_prefix",
+          "disposition": "PASS"
+        },
+        {
+          "test": "mid_epoch_clock_pause_is_not_loss_detection",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1959,
+        "sha256": "2debe3dccbf3f081c34de4dd25ce6b0ae8d56b74ab9c03267478d24408c67184",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/results.xml"
+      }
+    },
+    {
+      "label": "verilator-soc_pcie_gen12_recovered_records_v1-d32",
+      "simulator": "verilator",
+      "depth": 32,
+      "top": "soc_pcie_gen12_recovered_records_v1",
+      "status": "PASS",
+      "compile": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=32",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/compile.stdout",
+          "bytes": 15455,
+          "sha256": "91b2add9998fb1e15065c2ca394dc2656a80d04e220bc2e1c11c9d1abd490403"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/compile.stderr",
+          "bytes": 6882,
+          "sha256": "734c32a036270db3a13973e56f2e49e7b6887638c72628f1aa7d3efadeb7e5b7"
+        }
+      },
+      "compiled_image": {
+        "bytes": 723056,
+        "sha256": "be436634178cd129723737bc927f7225bc83e48505fc4f0c4623d1cf93286b29"
+      },
+      "simulation": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "900s",
+          "make",
+          "-f",
+          "/home/runner/work/nssoc/nssoc/hw/soc/tb/cocotb/Makefile.gen12_record_cdc",
+          "SIM=verilator",
+          "TOPLEVEL=soc_pcie_gen12_recovered_records_v1",
+          "DEPTH=32",
+          "SIM_BUILD=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build",
+          "COCOTB_RESULTS_FILE=/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/results.xml",
+          "WAVES=0",
+          "VERILOG_SOURCES=/home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v /home/runner/work/nssoc/nssoc/hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v /home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+          "BUILD_ARGS=-j2",
+          "COCOTB_TEST_FILTER=",
+          "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/results.xml"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/simulation.stdout",
+          "bytes": 6722,
+          "sha256": "c3c64e75db95575460af221cf28a09bd31ebd22d9c18db7394adf3d855c73e59"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/simulation.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "tests": [
+        {
+          "test": "both_polarities_all_offsets_and_errors",
+          "disposition": "PASS"
+        },
+        {
+          "test": "first_public_word_and_startup_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "partial_raw_batch_and_complete_record_epoch_reset",
+          "disposition": "PASS"
+        },
+        {
+          "test": "polarity_change_and_known_loss_stop_epoch",
+          "disposition": "PASS"
+        },
+        {
+          "test": "composed_capacity_and_common_pause",
+          "disposition": "PASS"
+        }
+      ],
+      "xml": {
+        "bytes": 1719,
+        "sha256": "aa0afc7e64b23476807d3043058b7b459f189134d599c1e99aeae05fe4644e42",
+        "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/results.xml"
+      }
+    }
+  ],
+  "expected_invocations": 12,
+  "expected_tests": 66,
+  "source_pins": {
+    ".github/workflow-templates/pcie-gen12-record-cdc-root-controls-cloud.yml": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.jobs.json": "33dbc20923d638f5802c968ed5376cad79372c22215a920238ce2a9532550c0a",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.json": "7e95b1b3186ad800f7aeccdb78a852e5eeb7f990a7afeb52b69223da4b8525fa",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.log": "b579cb01e46092b4246c3bd2482f542f6c4e18ad7894f57dc500d394175f079c",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.original-source.json": "a9d88a8109af6926dc1624f4a6927096baae88447acd034a7b95a0ac97974151",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.run.json": "72bbea969b7790e9b5c90d1465f5774832d503eecc3425daa0d723f6bbfdef3d",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-checker.py": "afaa0638201367c95bade6ed950258e38a1fa224529fb33f8b59e8fcd83e09f0",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-helper.py": "126370784ac360bc2aada28ac41c688003792869774881ea084efa5c9cb851ae",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-method.json": "633d605222b4308b79fb0ad2a5a457b86eb4a68393be0c8d8f8619d60aac9069",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-runner.sh": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc",
+    "docs/evidence/pcie-gen12-root-controls-failed-20261028.tested-workflow.yml": "3e1a0e580a02c245365c95970489ee418974ec2564d8e5c44af00ad56ae525bc",
+    "docs/evidence/pcie-gen12-root-explicit-module-fixture-correction-20261028.json": "f1fc39bdcebee7fc0d3aded6c9a8f1ee85fa56d18bae02e6160d1c78693af781",
+    "docs/evidence/pcie-gen12-root-explicit-module-fixture-independent-review-20261028.json": "dd091d929bf7fef6f0ca5697e63841422c5c42ef099c21cb2983aafda723f929",
+    "docs/evidence/pcie-gen12-training-record-noshare-native-pass-20261025.json": "23f194ff593e30c340f7562ab92c1a66f7107b5f35ff3abda7f0d293a50bd10f",
+    "docs/pcie-gen12-record-cdc-implementation-20261025.md": "32b0160e2d959c15dd60e081f4be10aad3dd005321237f54ef219ad1bff5b52c",
+    "docs/pcie-gen12-record-cdc-proof-refinements-20261025.md": "618af28582d274bafe2bd4ca38efd7b93304f4acc93bad38c81d899505e40dc5",
+    "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-source-freeze.json": "80e7abc3badad6ea90426c029068eac697f1a881f251aac9c73f63a84613a874",
+    "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-native-validation.json": "36f55a9a5a5e4d1a11034747df79b67e196fd8852b33ffa407c0ecae160f98fc",
+    "hw/soc/pcie-evidence/20261005-pll-acquisition-and-recovered-lanes/cdc-rtl-contract.json": "a51a3b5e9b550a7f5ea6e29044c1637ba355e2b085a966663136cf60c154e3fb",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_decode.v": "009d4885c5492dbc291b7eea3987304847d9a187013439459ada829a18ed54af",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_8b10b_encode.v": "5a0661a0681bbe351714305859a111bb8c53544e80e680e1056c057ffcc4de66",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_align.v": "d9fb7d39ec8916e33efebdcd7fe62fd6e32f437cab3e8436436bd9e09eb2b8b9",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_raw32_rx.v": "96c6dea3aecca038dc8d5322d2c4a85d7847dbe24bc45a1b4a22d27301980566",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_record_cdc_v1.v": "b83c9e0d15e055020e8d44c0dc948eaff88d118cede1feaf33b8d38ddd24bc78",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_recovered_records_v1.v": "3c60eead90fe053c2615b76d44e1d5c74add6b3351a3cd85f76572ac3faabf20",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_training_records.v": "01a3c63b3f3e561e25adb955526a2e0f5241986181dec9ada78cc5f84e7e5533",
+    "hw/soc/rtl/pcie/soc_pcie_gen12_tx_raw32.v": "483685e8574baecc8e754678ca7cd90aae93be2a0313d8669935546758ebc31d",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_block_cdc_v1.v": "9022c0f0479a52fdd928dcad574c11b0b4405412ca9f8f93f015793e7930d735",
+    "hw/soc/rtl/pcie/soc_pcie_gen3_recovered_x4_v4.v": "588f2f94e0eab7b7751d21cbe433670c44774a10da15815b983eed3e710be91d",
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_decode.v": "365cb1b03c3fd89aae055210beae154d6aa4abcbbf7c01d79c14d692ffd87a4f",
+    "hw/soc/rtl/pcie/vendor/benz_8b10b_encode.v": "ac5eb688080565efe3e2a1c8120e7a672401583f2ba39e19f233f699b499867e",
+    "hw/soc/tb/cocotb/Makefile.gen12_record_cdc": "bdb28508b8599cb6a7c5dc8f0bf29e9343190e797d4b617e8ccd8e2619652817",
+    "hw/soc/tb/cocotb/pcie_gen12_record_cdc_harness.py": "c928cf3c61a2a9cb26d3203b99ddeef98661d5eebb48b74e8f2af295a6a62979",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen12_record_cdc_v1.py": "5d1d386c3fe5a7dfedc9279066f9bd8f8cf3d75e42ef1d463d49868e9580ce32",
+    "hw/soc/tb/cocotb/test_soc_pcie_gen12_recovered_records_v1.py": "843962b620d10f143287797b3cc4da80d98b9cdffc429252f5cdd8330e783fb5",
+    "scripts/check_pcie_gen12_raw32_rx.py": "451667d66bb77df193e56ed60cc82f91738d676316e4b6016f3bc9d119d7c7da",
+    "scripts/check_pcie_gen12_record_cdc_root.py": "126370784ac360bc2aada28ac41c688003792869774881ea084efa5c9cb851ae",
+    "scripts/check_pcie_gen12_record_cdc_root_controls.py": "5b08f9d762caa44bf51f4b1ab5c76a8d683d5f59a1f624909b5cc2cb4ec07519",
+    "scripts/check_pcie_gen12_record_cdc_source.py": "91c601c3cbc4fb8a23dda5d602acbc392f8b53dbdbcc15a3ced9cb8c3a081d67",
+    "scripts/cocotb_results.py": "f67fa5d00f0752557bfe9b30e998c64fe054746d948fd32f53365ba5e13012f2",
+    "scripts/pcie-gen12-record-cdc-methods.json": "a34ed5f841566c227a572fca1abd4c90376200162522ed3208403ba2ca3d4751",
+    "scripts/pcie-gen12-record-cdc-mutations.json": "5d7f7457ee47d257d62424610363836132eff63acf8a0aff46fd566fb3d6aeab",
+    "scripts/pcie-gen12-record-cdc-proposal.json": "bf7b09fb1127d62e4be85c39f65eb09a58467a20c4f811cddde39eab1a9feacf",
+    "scripts/pcie-gen12-record-cdc-requirements.txt": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070",
+    "scripts/run_cocotb.sh": "7c4b25472500c8406810c21c318b57d7241fedfe5f438055f9f49367e0385ffc",
+    "sw/tests/data/pcie_gen12_ieee8023z_codes.json": "e7c1ced79890c6cbef114045370bb110a00a21e863b4f802680ea12adc0ab438"
+  },
+  "errors": [],
+  "toolchain": {
+    "python": "3.12.15 (main, Oct  1 2026, 02:35:59) [GCC 13.3.0]",
+    "cocotb": "2.0.1",
+    "find_libpython": "0.4.0",
+    "versions": {
+      "icarus": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "60s",
+          "iverilog",
+          "-V"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/version-icarus.stdout",
+          "bytes": 3294,
+          "sha256": "f9199cc8658f4afcec3edeb93f29f23bb2aebf66d3eeb217cdc728aaa692f946"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/version-icarus.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "verilator": {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "60s",
+          "verilator",
+          "--version"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/version-verilator.stdout",
+          "bytes": 43,
+          "sha256": "8dfb6ae7dceb54dc2936a78ea7d24751ed8eb8cf128293174e0fb916b79c5636"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/version-verilator.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    },
+    "setup": [
+      {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "120s",
+          "/opt/hostedtoolcache/Python/3.12.15/x64/bin/python3",
+          "-m",
+          "venv",
+          "/home/runner/work/_temp/gen12-root-runtime-z6_wpa8h/venv"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/venv.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/venv.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "300s",
+          "/home/runner/work/_temp/gen12-root-runtime-z6_wpa8h/venv/bin/python",
+          "-m",
+          "pip",
+          "install",
+          "--require-hashes",
+          "--only-binary=:all:",
+          "-r",
+          "/home/runner/work/nssoc/nssoc/scripts/pcie-gen12-record-cdc-requirements.txt"
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/packages.stdout",
+          "bytes": 676,
+          "sha256": "ea54339c282010c0571409ca81fc3d079574a4ca720eb1d178c3099136072cbf"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/packages.stderr",
+          "bytes": 123,
+          "sha256": "49ef78140217de8c48d38d4670505cda32ebfe99396bdf215825b7c6490c33cb"
+        }
+      },
+      {
+        "command": [
+          "timeout",
+          "--signal=TERM",
+          "--kill-after=10s",
+          "60s",
+          "/home/runner/work/_temp/gen12-root-runtime-z6_wpa8h/venv/bin/python",
+          "-c",
+          "import sys,importlib.metadata;assert sys.version_info[:2]==(3,12);assert importlib.metadata.version(\"cocotb\")==\"2.0.1\";assert importlib.metadata.version(\"find_libpython\")==\"0.4.0\""
+        ],
+        "returncode": 0,
+        "stdout": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/package-identities.stdout",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/toolchain/package-identities.stderr",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "requirements_sha256": "71f8607c76595a1254177a372191a5ed5e17a50367c4248e461ee02cb8f4d070"
+  },
+  "vendor": {
+    "path": "/home/runner/work/nssoc/nssoc/hw/soc/out/gen12-root-focused/vendor/axis_async_fifo.v",
+    "bytes": 34468,
+    "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250"
+  },
+  "terminal_source_pins_unchanged": true,
+  "outputs": {
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/build/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/build/sim.vvp": {
+      "bytes": 64180,
+      "sha256": "57fa8f28099fa24a3cd29f42cbdc45301eaceded7265dbe6ef1cf72bf3b10ad6"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/compile.stdout": {
+      "bytes": 1400,
+      "sha256": "ea5cc03e149b4087f70aeb63b8ba79d3c46970865b9f14f172bfa67350f93db9"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/results.xml": {
+      "bytes": 1954,
+      "sha256": "4be3beee9526f3e8ddd5ee0e9b3c5d6dfafa78b4995037719d8f66a77695ebd6"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d32/simulation.stdout": {
+      "bytes": 5533,
+      "sha256": "abae8f3af0ce55aea0cfb317885abf87b2da9f9f9298e122fba798382b7a066e"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/build/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/build/sim.vvp": {
+      "bytes": 64125,
+      "sha256": "2291321e82afd00ed16b676738924baa8b53081eeed7aed441f917d76cc4f68b"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/compile.stdout": {
+      "bytes": 1396,
+      "sha256": "df3b0c18d88315eb46fde63d747771a62722661091bd9c9a88fc5f2a46aca938"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/results.xml": {
+      "bytes": 1961,
+      "sha256": "5371b26c4ec602065234eaec95a7aa9e5bf5536958222bff0f65fab8ed214919"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d4/simulation.stdout": {
+      "bytes": 5531,
+      "sha256": "7d61fa9a28bee2a329b4ef10b6ecba0f3b6c094cca6d8f7045e34503625932e5"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/build/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/build/sim.vvp": {
+      "bytes": 64143,
+      "sha256": "79ac07c2978fdba66dfbe2efd247d9de97a4a4b49d0dc151a76d30ac71edc720"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/compile.stdout": {
+      "bytes": 1396,
+      "sha256": "32d160e35bf84f46c449abc473f9b4656f0dc319381f41c2cbb51d3a24a3ba82"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/results.xml": {
+      "bytes": 1954,
+      "sha256": "f0b7141990c3a9b1dc3cf4ad95070a47ff809c722b9a8f4117f64033f106d1a9"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_record_cdc_v1-d8/simulation.stdout": {
+      "bytes": 5531,
+      "sha256": "658a723d01224d0b31566708f73bd351fabca50ea31084bd9a5b41375d0e6586"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/build/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/build/sim.vvp": {
+      "bytes": 687157,
+      "sha256": "7a5bcb0921a52753e22cc1f9912cd76c40d4a496cdeeef22de41f4a7c6c4e438"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/compile.stdout": {
+      "bytes": 1440,
+      "sha256": "9134cfc1cd5f29fb6bbe482d4fcf2996861a6881ad91b08d2f616ad24365af37"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/results.xml": {
+      "bytes": 1721,
+      "sha256": "b75c2aa7b0bd5f79c88981be021683f2aa707c2e3f2d98750a5341de563fff32"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d32/simulation.stdout": {
+      "bytes": 6841,
+      "sha256": "901aec14767d02b8c241cc25aa2dcce5849d48405e6d1013a6a4d4a4a7c4bb3a"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/build/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/build/sim.vvp": {
+      "bytes": 687102,
+      "sha256": "70ff67e1a3e62db55c0f7426a0ade10c294f1dd5583cb01e7cbc72fc766a6547"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/compile.stdout": {
+      "bytes": 1436,
+      "sha256": "a9e6400a507522016eb0a01a0365b30075a7ab8f9feab156b36094fc9b9a8f8b"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/results.xml": {
+      "bytes": 1721,
+      "sha256": "30839542f89bb3231a665ca66bd60c75fb1885e3b980391d528ff45a97e86fa4"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d4/simulation.stdout": {
+      "bytes": 6839,
+      "sha256": "2732df4e1887c1cd49b8ecdce5ada0bd8491b59e211af7b20a3d9cfe60e89a45"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/build/cmds.f": {
+      "bytes": 19,
+      "sha256": "46969f38f339d3fde8758e37f30c904f5d53cd1861f1136925c1fb53e8763e94"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/build/sim.vvp": {
+      "bytes": 687120,
+      "sha256": "85725a46783eb5d7847c4fee30d5367b13dd90cf7cda68f1955dddebbc212883"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/compile.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/compile.stdout": {
+      "bytes": 1436,
+      "sha256": "3b91ba17f683d6fe47bd123c713f20282472685b28a7f89c790523f5e279a2f1"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/results.xml": {
+      "bytes": 1718,
+      "sha256": "7b9679afabe8c572ecd5ae86fe453dc8a6c4a5804f4ac29e6f2e83f677f8228c"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/icarus-soc_pcie_gen12_recovered_records_v1-d8/simulation.stdout": {
+      "bytes": 6839,
+      "sha256": "4e3a5c5eb512cf8c6df5ea73cc91f8e2148d52a93b9769f0963cbf3ec6b9b422"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop": {
+      "bytes": 360032,
+      "sha256": "d9b59390ff8a85001b6f2ad25b5b6e3348f257c0c8fc1f882b29896f3e471837"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop.cpp": {
+      "bytes": 3964,
+      "sha256": "b00d1e73a23b25472fc221ef31882919b89fb0c9a2fd4c835b9935f48c35c9aa"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop.h": {
+      "bytes": 4197,
+      "sha256": "06a6950d3d070885c74a7578ebf4773fefad6544f676318bd593ad034d8b1c67"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop.mk": {
+      "bytes": 2473,
+      "sha256": "084710f355e03e04daa3a42494ff623f8a2dade404785dec4ac26e55d963e653"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__ALL.a": {
+      "bytes": 95002,
+      "sha256": "0b5b7a05f82cc67f663266bb50441a3488ed5625ee03db0a9ae2585727c007c8"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__ALL.cpp": {
+      "bytes": 448,
+      "sha256": "cc3caad9bef485ff06a2251ca7d468e2c2da882915e35d09b9da4f786a32e3ae"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__ALL.d": {
+      "bytes": 1121,
+      "sha256": "a896398a9b45ab58b18974a941334655dbc053e97436d7e6eec2a8202cd51aca"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__ALL.o": {
+      "bytes": 88280,
+      "sha256": "4eb12d3e22b780d3c80fbe230781a95e3a7ca8401399192279f69603dcfc23e7"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__ConstPool_0.cpp": {
+      "bytes": 1798,
+      "sha256": "c09dbf24fabb0fa9fce8e49a9f1778423bef4bc1409194fb6b3885c4a3582d91"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__Dpi.cpp": {
+      "bytes": 669,
+      "sha256": "8773ff8dca9c9cd2b6bd44866425460a86a2fac90c380d17bdb32b9cc7a54934"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__Dpi.h": {
+      "bytes": 520,
+      "sha256": "0aaefcf270d5abc8942c8cadecb540524c4db550fddfc9a42688c7cd99619f4d"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__Syms.cpp": {
+      "bytes": 57207,
+      "sha256": "f674c641708fbb86e9fbd49fa36f21bd8b1d717aeea74dcdb7431c717db692dc"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__Syms.h": {
+      "bytes": 1283,
+      "sha256": "15843739319ddeb5a74a1eadda912199f8d401c4fa2927772f091ee76df77749"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop___024root.h": {
+      "bytes": 25122,
+      "sha256": "53d994f4afaa0dd30e2866da4dfc729a83f253f0b9396a69663d2f190febd828"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop___024root__DepSet_h84412442__0.cpp": {
+      "bytes": 4825,
+      "sha256": "fbac2142b17cedc7e5fbc93c9d3d260d0a45bca4f655d1c00937293dd32a3719"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop___024root__DepSet_h84412442__0__Slow.cpp": {
+      "bytes": 845,
+      "sha256": "05b2b32ca221967ee8bcae3765b60d245fb3a9eba7a203d70b810d11708fa278"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop___024root__DepSet_heccd7ead__0.cpp": {
+      "bytes": 125666,
+      "sha256": "a213b529d0c4c2472129c02aaaa5779345e1e5fc5e3f4f95c45f57db335f3514"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop___024root__DepSet_heccd7ead__0__Slow.cpp": {
+      "bytes": 87877,
+      "sha256": "227f99c9ce5583df72649bf1b29193ca11f32f32f13622be65a4b718aaceff7b"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop___024root__Slow.cpp": {
+      "bytes": 4445,
+      "sha256": "7eb073b6c3c302bc23c7de3d6cda98e5743cb1a4fc26643fbe022e9f89ce2b91"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__pch.h": {
+      "bytes": 773,
+      "sha256": "ea2059defd46499b420d27ff869add76b41b9ec6be4dd8e59185a2278506cbfa"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__ver.d": {
+      "bytes": 3623,
+      "sha256": "7609a40ec9679d5ee12bba35300a75e652a7459314c563a799463efe32bb47b9"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop__verFiles.dat": {
+      "bytes": 8496,
+      "sha256": "99648093c423a5bc585a2317aed970a9320f96779ea4a3877b20a28d78b0eb66"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/Vtop_classes.mk": {
+      "bytes": 1803,
+      "sha256": "5488efc0c70241632a43b1abc3ae5157164f72bee151751374cfa9dd9b5a97e6"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilated.d": {
+      "bytes": 1033,
+      "sha256": "1c27355dbd1ccde230bdff16f67569e74ac36f2b9cfdc0597edda67e71287f44"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilated.o": {
+      "bytes": 237680,
+      "sha256": "025aae5d6c7f7dfa88121638f38a3848760aa9d649819b3bc4d84b5a6dd4481f"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilated_dpi.d": {
+      "bytes": 1033,
+      "sha256": "57f1aecb62e18b5e560803a2bf1841db82464e235c6233fa849141d8161136eb"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilated_dpi.o": {
+      "bytes": 30896,
+      "sha256": "36ca4aaa489ec5741eefe949e5f5b0da2d1f123097506ac9bcf54006682f2934"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilated_threads.d": {
+      "bytes": 620,
+      "sha256": "7c93e1d8048cb4d990bbbadc9c9adce022a6b06004c26d878a64be42ca059b5c"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilated_threads.o": {
+      "bytes": 60840,
+      "sha256": "95b766ac572c0231a468a775b518b6fb5b09f9dcbccac6ffc26ac40f2ee92429"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilated_vpi.d": {
+      "bytes": 1128,
+      "sha256": "8b168e2beb6de3468101d2430db8819afd1e2d85118a411fae70f98c4c87e3dd"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilated_vpi.o": {
+      "bytes": 217784,
+      "sha256": "9f9b5de513701efed0656ec30a7e0161fce5ffa6f42594f11cfa16923365efca"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilator.d": {
+      "bytes": 1171,
+      "sha256": "2cd38a54180b61c594700a56aad02028c360a0564ce1e5aee72f2a857784ed05"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/build/verilator.o": {
+      "bytes": 10680,
+      "sha256": "c1fe9e909362cc1884d723c2531f4aa2bf0d63b38e2531d187da961f07c8c6fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/compile.stderr": {
+      "bytes": 3691,
+      "sha256": "f94a57d3d66ac3308a41f7ddcb58d9210dc5e44e5fd3b2a4a1b14578d3b52870"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/compile.stdout": {
+      "bytes": 7288,
+      "sha256": "57b66f984d7d6ddf26390520a3bd83213d4a91aaa27120bcbeecd1ba135e3b2f"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/results.xml": {
+      "bytes": 1959,
+      "sha256": "2debe3dccbf3f081c34de4dd25ce6b0ae8d56b74ab9c03267478d24408c67184"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d32/simulation.stdout": {
+      "bytes": 5414,
+      "sha256": "45002ab700e3a42650c40e5741832526c3b4644b8a6789269d828ba65148905f"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop": {
+      "bytes": 360032,
+      "sha256": "c550806612222a37dc7ff2af2f1190beb5fa91aa039c8e00ae5b020a5a7e62f9"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop.cpp": {
+      "bytes": 3964,
+      "sha256": "b00d1e73a23b25472fc221ef31882919b89fb0c9a2fd4c835b9935f48c35c9aa"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop.h": {
+      "bytes": 4197,
+      "sha256": "06a6950d3d070885c74a7578ebf4773fefad6544f676318bd593ad034d8b1c67"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop.mk": {
+      "bytes": 2473,
+      "sha256": "084710f355e03e04daa3a42494ff623f8a2dade404785dec4ac26e55d963e653"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__ALL.a": {
+      "bytes": 94930,
+      "sha256": "0af3408ca2e87e06317e6b1832d2acd12bb1a3add12a9239d6cb67cbb08112c9"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__ALL.cpp": {
+      "bytes": 448,
+      "sha256": "cc3caad9bef485ff06a2251ca7d468e2c2da882915e35d09b9da4f786a32e3ae"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__ALL.d": {
+      "bytes": 1121,
+      "sha256": "a896398a9b45ab58b18974a941334655dbc053e97436d7e6eec2a8202cd51aca"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__ALL.o": {
+      "bytes": 88208,
+      "sha256": "3bb7aaa62ad1ef61b001862b37554e94e5e79a0517dcc2c1ee094bd435ce8f55"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__ConstPool_0.cpp": {
+      "bytes": 1798,
+      "sha256": "c09dbf24fabb0fa9fce8e49a9f1778423bef4bc1409194fb6b3885c4a3582d91"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__Dpi.cpp": {
+      "bytes": 669,
+      "sha256": "8773ff8dca9c9cd2b6bd44866425460a86a2fac90c380d17bdb32b9cc7a54934"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__Dpi.h": {
+      "bytes": 520,
+      "sha256": "0aaefcf270d5abc8942c8cadecb540524c4db550fddfc9a42688c7cd99619f4d"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__Syms.cpp": {
+      "bytes": 57206,
+      "sha256": "cae62822446eafe67359d834079bfcd1b9f2b5c1fc24f16a762c6dc4ba9753d2"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__Syms.h": {
+      "bytes": 1283,
+      "sha256": "15843739319ddeb5a74a1eadda912199f8d401c4fa2927772f091ee76df77749"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop___024root.h": {
+      "bytes": 25094,
+      "sha256": "f1a0b210c4c79053892fbacbc9d5809475e09ee5d4c454d10863a8cacc873d0f"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop___024root__DepSet_h84412442__0.cpp": {
+      "bytes": 4825,
+      "sha256": "fbac2142b17cedc7e5fbc93c9d3d260d0a45bca4f655d1c00937293dd32a3719"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop___024root__DepSet_h84412442__0__Slow.cpp": {
+      "bytes": 845,
+      "sha256": "05b2b32ca221967ee8bcae3765b60d245fb3a9eba7a203d70b810d11708fa278"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop___024root__DepSet_heccd7ead__0.cpp": {
+      "bytes": 121154,
+      "sha256": "86da626ba14393c0a1db03c3cb88d4a354a33316ac07fec7bd0800e6eeaef467"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop___024root__DepSet_heccd7ead__0__Slow.cpp": {
+      "bytes": 87870,
+      "sha256": "47bb51527b047dead197e055ad29a0d87b8ac1284b4251195763885ba5e50ef2"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop___024root__Slow.cpp": {
+      "bytes": 4445,
+      "sha256": "7eb073b6c3c302bc23c7de3d6cda98e5743cb1a4fc26643fbe022e9f89ce2b91"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__pch.h": {
+      "bytes": 773,
+      "sha256": "ea2059defd46499b420d27ff869add76b41b9ec6be4dd8e59185a2278506cbfa"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__ver.d": {
+      "bytes": 3606,
+      "sha256": "5477612158d5093388bd52e2dfc1ecc6d51d371c6fda43649a9458aa65ad1019"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop__verFiles.dat": {
+      "bytes": 8476,
+      "sha256": "d5dee4dc1df7757aac99c7dd7044b2e4986cb76eec8d75475e8c9cc54cc57203"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/Vtop_classes.mk": {
+      "bytes": 1803,
+      "sha256": "5488efc0c70241632a43b1abc3ae5157164f72bee151751374cfa9dd9b5a97e6"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilated.d": {
+      "bytes": 1033,
+      "sha256": "1c27355dbd1ccde230bdff16f67569e74ac36f2b9cfdc0597edda67e71287f44"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilated.o": {
+      "bytes": 237680,
+      "sha256": "025aae5d6c7f7dfa88121638f38a3848760aa9d649819b3bc4d84b5a6dd4481f"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilated_dpi.d": {
+      "bytes": 1033,
+      "sha256": "57f1aecb62e18b5e560803a2bf1841db82464e235c6233fa849141d8161136eb"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilated_dpi.o": {
+      "bytes": 30896,
+      "sha256": "36ca4aaa489ec5741eefe949e5f5b0da2d1f123097506ac9bcf54006682f2934"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilated_threads.d": {
+      "bytes": 620,
+      "sha256": "7c93e1d8048cb4d990bbbadc9c9adce022a6b06004c26d878a64be42ca059b5c"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilated_threads.o": {
+      "bytes": 60840,
+      "sha256": "95b766ac572c0231a468a775b518b6fb5b09f9dcbccac6ffc26ac40f2ee92429"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilated_vpi.d": {
+      "bytes": 1128,
+      "sha256": "8b168e2beb6de3468101d2430db8819afd1e2d85118a411fae70f98c4c87e3dd"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilated_vpi.o": {
+      "bytes": 217784,
+      "sha256": "9f9b5de513701efed0656ec30a7e0161fce5ffa6f42594f11cfa16923365efca"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilator.d": {
+      "bytes": 1171,
+      "sha256": "2cd38a54180b61c594700a56aad02028c360a0564ce1e5aee72f2a857784ed05"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/build/verilator.o": {
+      "bytes": 10680,
+      "sha256": "c1fe9e909362cc1884d723c2531f4aa2bf0d63b38e2531d187da961f07c8c6fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/compile.stderr": {
+      "bytes": 3691,
+      "sha256": "f94a57d3d66ac3308a41f7ddcb58d9210dc5e44e5fd3b2a4a1b14578d3b52870"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/compile.stdout": {
+      "bytes": 7282,
+      "sha256": "70cb506cc89e5ffc43571629c67167e43829ec972b2a77a78a6bf0ccfb04fcde"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/results.xml": {
+      "bytes": 1955,
+      "sha256": "2cd79caf6d4402766e4f1e881fefce7b1ab1a5b6751de892282710fb1daa2355"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d4/simulation.stdout": {
+      "bytes": 5412,
+      "sha256": "5d91c2c32b1d10d2d65bba8efdadde7fad5a72910492ad4ee84a9fe8d35c6e3f"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop": {
+      "bytes": 360032,
+      "sha256": "b7c1e02c1291ddbb7f765c8602300d90413a85b8dd1f3ccdf1fef8deecf7959c"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop.cpp": {
+      "bytes": 3964,
+      "sha256": "b00d1e73a23b25472fc221ef31882919b89fb0c9a2fd4c835b9935f48c35c9aa"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop.h": {
+      "bytes": 4197,
+      "sha256": "06a6950d3d070885c74a7578ebf4773fefad6544f676318bd593ad034d8b1c67"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop.mk": {
+      "bytes": 2473,
+      "sha256": "084710f355e03e04daa3a42494ff623f8a2dade404785dec4ac26e55d963e653"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__ALL.a": {
+      "bytes": 94970,
+      "sha256": "f879e791d22e661d5558f0b5809ac4efc6205196c2a54325bd231709b7e60830"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__ALL.cpp": {
+      "bytes": 448,
+      "sha256": "cc3caad9bef485ff06a2251ca7d468e2c2da882915e35d09b9da4f786a32e3ae"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__ALL.d": {
+      "bytes": 1121,
+      "sha256": "a896398a9b45ab58b18974a941334655dbc053e97436d7e6eec2a8202cd51aca"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__ALL.o": {
+      "bytes": 88248,
+      "sha256": "9735369c1525c41c4175b1de37dbbdb16cab52c4d40487d459d8c00dfe936d7f"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__ConstPool_0.cpp": {
+      "bytes": 1798,
+      "sha256": "c09dbf24fabb0fa9fce8e49a9f1778423bef4bc1409194fb6b3885c4a3582d91"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__Dpi.cpp": {
+      "bytes": 669,
+      "sha256": "8773ff8dca9c9cd2b6bd44866425460a86a2fac90c380d17bdb32b9cc7a54934"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__Dpi.h": {
+      "bytes": 520,
+      "sha256": "0aaefcf270d5abc8942c8cadecb540524c4db550fddfc9a42688c7cd99619f4d"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__Syms.cpp": {
+      "bytes": 57206,
+      "sha256": "5463c285c6fd3d93252ad0cb8af30bac72cf886ed82bd3e2f0106095b51663ce"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__Syms.h": {
+      "bytes": 1283,
+      "sha256": "15843739319ddeb5a74a1eadda912199f8d401c4fa2927772f091ee76df77749"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop___024root.h": {
+      "bytes": 25094,
+      "sha256": "1454bffbcac2fac2376978da932789266f1548d842e98b478a26ec6eb92040f4"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop___024root__DepSet_h84412442__0.cpp": {
+      "bytes": 4825,
+      "sha256": "fbac2142b17cedc7e5fbc93c9d3d260d0a45bca4f655d1c00937293dd32a3719"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop___024root__DepSet_h84412442__0__Slow.cpp": {
+      "bytes": 845,
+      "sha256": "05b2b32ca221967ee8bcae3765b60d245fb3a9eba7a203d70b810d11708fa278"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop___024root__DepSet_heccd7ead__0.cpp": {
+      "bytes": 119946,
+      "sha256": "69d49f94a29bf1ef826563e43f001e389be1e3cd5c6e40f9bd60157419ac68c3"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop___024root__DepSet_heccd7ead__0__Slow.cpp": {
+      "bytes": 87872,
+      "sha256": "445daed981923355e487eeeff3f614d90772766d328f32fa42e72426871631a6"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop___024root__Slow.cpp": {
+      "bytes": 4445,
+      "sha256": "7eb073b6c3c302bc23c7de3d6cda98e5743cb1a4fc26643fbe022e9f89ce2b91"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__pch.h": {
+      "bytes": 773,
+      "sha256": "ea2059defd46499b420d27ff869add76b41b9ec6be4dd8e59185a2278506cbfa"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__ver.d": {
+      "bytes": 3606,
+      "sha256": "fedafcf0f21937fdb399b57446d6c9b867bb4752b5ef8e007d6264c1c37029a8"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop__verFiles.dat": {
+      "bytes": 8476,
+      "sha256": "620f22fe166585802fc7423f342cd197eb4efb77acf1af4bbc76997381cf2c88"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/Vtop_classes.mk": {
+      "bytes": 1803,
+      "sha256": "5488efc0c70241632a43b1abc3ae5157164f72bee151751374cfa9dd9b5a97e6"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilated.d": {
+      "bytes": 1033,
+      "sha256": "1c27355dbd1ccde230bdff16f67569e74ac36f2b9cfdc0597edda67e71287f44"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilated.o": {
+      "bytes": 237680,
+      "sha256": "025aae5d6c7f7dfa88121638f38a3848760aa9d649819b3bc4d84b5a6dd4481f"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilated_dpi.d": {
+      "bytes": 1033,
+      "sha256": "57f1aecb62e18b5e560803a2bf1841db82464e235c6233fa849141d8161136eb"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilated_dpi.o": {
+      "bytes": 30896,
+      "sha256": "36ca4aaa489ec5741eefe949e5f5b0da2d1f123097506ac9bcf54006682f2934"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilated_threads.d": {
+      "bytes": 620,
+      "sha256": "7c93e1d8048cb4d990bbbadc9c9adce022a6b06004c26d878a64be42ca059b5c"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilated_threads.o": {
+      "bytes": 60840,
+      "sha256": "95b766ac572c0231a468a775b518b6fb5b09f9dcbccac6ffc26ac40f2ee92429"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilated_vpi.d": {
+      "bytes": 1128,
+      "sha256": "8b168e2beb6de3468101d2430db8819afd1e2d85118a411fae70f98c4c87e3dd"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilated_vpi.o": {
+      "bytes": 217784,
+      "sha256": "9f9b5de513701efed0656ec30a7e0161fce5ffa6f42594f11cfa16923365efca"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilator.d": {
+      "bytes": 1171,
+      "sha256": "2cd38a54180b61c594700a56aad02028c360a0564ce1e5aee72f2a857784ed05"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/build/verilator.o": {
+      "bytes": 10680,
+      "sha256": "c1fe9e909362cc1884d723c2531f4aa2bf0d63b38e2531d187da961f07c8c6fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/compile.stderr": {
+      "bytes": 3691,
+      "sha256": "f94a57d3d66ac3308a41f7ddcb58d9210dc5e44e5fd3b2a4a1b14578d3b52870"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/compile.stdout": {
+      "bytes": 7282,
+      "sha256": "be016873af5f34adf5377dae4a780c86cd3dbb059229985898acff5c2c97a1c6"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/results.xml": {
+      "bytes": 1958,
+      "sha256": "8543737d0bcc1cec41aad63b0380aab0623979c83b8cd54a441086c06fbe2df4"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/verilator-soc_pcie_gen12_record_cdc_v1-d8/simulation.stdout": {
+      "bytes": 5412,
+      "sha256": "59858c953123de17cd87813322002ab90afd197e3b45b82df3120cea01a3eb06"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop": {
+      "bytes": 723056,
+      "sha256": "be436634178cd129723737bc927f7225bc83e48505fc4f0c4623d1cf93286b29"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop.cpp": {
+      "bytes": 4060,
+      "sha256": "ca3c9087eba92ff9a57de412b002b981c73a358aa42f205c4a23e71d797bed14"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop.d": {
+      "bytes": 29,
+      "sha256": "6b3e5093848d0a3ba69b0d5fd5ca2d8556079e14ffcfee622bca020dd8b5a04e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop.h": {
+      "bytes": 4227,
+      "sha256": "09da3b472a89398df26ab67a30131a80a6f7198d4a59ec69d08982370eceafbb"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop.mk": {
+      "bytes": 2473,
+      "sha256": "084710f355e03e04daa3a42494ff623f8a2dade404785dec4ac26e55d963e653"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop.o": {
+      "bytes": 8896,
+      "sha256": "0f6c9506fd2327d7ef7537f734aa6745795115ce83bf2f3547b72dc950b16bcb"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__ALL.a": {
+      "bytes": 623912,
+      "sha256": "2feca1ba8e751c94267589b6b9bb0ecb239316166109fec017d2d159387fd40b"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__ConstPool_0.cpp": {
+      "bytes": 1798,
+      "sha256": "c09dbf24fabb0fa9fce8e49a9f1778423bef4bc1409194fb6b3885c4a3582d91"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__ConstPool_0.d": {
+      "bytes": 123,
+      "sha256": "f59c66fa09abb1c65537f750ce3b9ccc8b770e7a0e4dd940b8e4e3533ffa5b70"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__ConstPool_0.o": {
+      "bytes": 1712,
+      "sha256": "caeb9a1d7fdfddf7d105f9d914e6b478cc26e4a6ec4ddf45dd86329698c7bd9a"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__Dpi.cpp": {
+      "bytes": 669,
+      "sha256": "8773ff8dca9c9cd2b6bd44866425460a86a2fac90c380d17bdb32b9cc7a54934"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__Dpi.d": {
+      "bytes": 132,
+      "sha256": "a23b8e10b021ce8f2802fd153f54d39a81d6b7177eca9b975ffca09b2d04e6e2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__Dpi.h": {
+      "bytes": 520,
+      "sha256": "0aaefcf270d5abc8942c8cadecb540524c4db550fddfc9a42688c7cd99619f4d"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__Dpi.o": {
+      "bytes": 824,
+      "sha256": "008970b3d933ee4579b6ac44bdd2d66509711deea3eceb5c4e2d18b863fbb6fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__Syms.cpp": {
+      "bytes": 328618,
+      "sha256": "e37b434364a290ca08db32c573e08d320ebeb7a333fe5dc90f0995fa6c3a5473"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__Syms.d": {
+      "bytes": 65,
+      "sha256": "e45649a28eadd09ae871b919c8f1de9cc66bcabb8e5be1592229287f367938a3"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__Syms.h": {
+      "bytes": 4797,
+      "sha256": "5b57a942e0a5bc06395b058daca9eb5f51a2d638d9db13a1c13939e6426fab37"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__Syms.o": {
+      "bytes": 185944,
+      "sha256": "90ffe37e4eaaef69937e3d95576da2d4a7087bfb114906387b6610c76d488b8b"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root.h": {
+      "bytes": 154030,
+      "sha256": "92a4740eeca3c5b367e29e59384487cc169677642bbeac7b580d45e5e1760a34"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_h84412442__0.cpp": {
+      "bytes": 12397,
+      "sha256": "33183dd42f5c5524821219e1b2a74e71caadadb8f4363f3e5d3bb5e2d62bab0f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_h84412442__0.d": {
+      "bytes": 127,
+      "sha256": "a63a01c9d47617ea88390340475152b996204574f6b4aa32c5889e34dca49eb2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_h84412442__0.o": {
+      "bytes": 2216,
+      "sha256": "67ef01262c742c13243752131ea7e63ba55561cc744532465d0f13ede05c84bf"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_h84412442__0__Slow.cpp": {
+      "bytes": 845,
+      "sha256": "05b2b32ca221967ee8bcae3765b60d245fb3a9eba7a203d70b810d11708fa278"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_h84412442__0__Slow.d": {
+      "bytes": 139,
+      "sha256": "87fc8edeb35185489fb7a07ff416f977ab50a86cd79452cd2a26add874656581"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_h84412442__0__Slow.o": {
+      "bytes": 5760,
+      "sha256": "f999810f78e9e27de2e9b6d866166fc6f5465b580358d5a42e997375d5634458"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__0.cpp": {
+      "bytes": 1279885,
+      "sha256": "39a137030d75724ab2715e4113f258a522ac10393e3aeab24add8b05c0bddce1"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__0.d": {
+      "bytes": 111,
+      "sha256": "f82b3b11218264e4aab0b5ce7064656d9bcfc211d00f7cee28fde65461b5d71e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__0.o": {
+      "bytes": 56992,
+      "sha256": "c107d1e04a35a7750a808131be5c3ec0b5bc7334d6a94c0acaf89ee2cdd749dc"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__0__Slow.cpp": {
+      "bytes": 1298490,
+      "sha256": "f15f5e7a1104dab90e0b4c1cdba4d6cceeab33b2740d480a3931e8385f09203a"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__0__Slow.d": {
+      "bytes": 126,
+      "sha256": "4b32c3578330a74ec63567dc8f40f3e1eb28ec63a17d3422d1fb13a407d46e0e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__0__Slow.o": {
+      "bytes": 181256,
+      "sha256": "a8bca79c2a1e1874bf520edc084225f56a0a0712c12ca0fb48a9867273c8cd9c"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__1.cpp": {
+      "bytes": 1341795,
+      "sha256": "6aaff8e43bd4d4dcb41b794555f3b6866282167853608dfc6d1beda2bf610188"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__1.d": {
+      "bytes": 111,
+      "sha256": "0cb8f08dbfe2c1a1a81e428e620a0fc03c6d17b2920c47810de4bd9576d03d5a"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__1.o": {
+      "bytes": 59192,
+      "sha256": "39973a88b243c5d4a1089fe9cdc3fc6bc7eb40bfabb3560a635dc85703fe77eb"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__1__Slow.cpp": {
+      "bytes": 219205,
+      "sha256": "2c6e18a9c6b78fdf6de249288437d61cd2c7a414573074dcb508ecb7676fe6e4"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__1__Slow.d": {
+      "bytes": 126,
+      "sha256": "e4b9163a10aabb3d3878e6d962582e8ac08e0bc34f2e7570b7099373f6ffd26f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__1__Slow.o": {
+      "bytes": 75952,
+      "sha256": "ab01b727fffa7794c27d1991a8333a0befd2549e1e9a8f11fdc82cec7b4529d0"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__2.cpp": {
+      "bytes": 10788,
+      "sha256": "d5b693fd924881773571e253815740ea083ea6fecbf16632ddcc0254aaaa4d5d"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__2.d": {
+      "bytes": 111,
+      "sha256": "0798607e3f8bdeaa525723b494f0f2852e3371dd6293df48092d1b650276d4df"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__DepSet_heccd7ead__2.o": {
+      "bytes": 3664,
+      "sha256": "38b92d1ffe0f95aa4bf968749f376465fd4eca44a30f67df874f27316ec08172"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__Slow.cpp": {
+      "bytes": 5557,
+      "sha256": "e28154f22f15eca07340b45de68cdcffb6389738bf86efa5b40ee9f78c9daade"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__Slow.d": {
+      "bytes": 94,
+      "sha256": "b1f605ae02c9adfdaf5187cd1a271765fec8bbf739c844c027cb84a097673da2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop___024root__Slow.o": {
+      "bytes": 23056,
+      "sha256": "a6e23fce82835d9706de6e75714a8f91c7e9d4eb6b81de3dd4fa62b71cd3093d"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__pch.h": {
+      "bytes": 773,
+      "sha256": "ea2059defd46499b420d27ff869add76b41b9ec6be4dd8e59185a2278506cbfa"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__pch.h.fast.d": {
+      "bytes": 832,
+      "sha256": "e8bb9c79de59353caf6391cc21b755d5e52cbdfd341008415efbe2327bbb4268"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__pch.h.fast.gch": {
+      "bytes": 71681839,
+      "sha256": "7c4edcddc2ca7f005eef3bed4f232ff1ad979f0d03f5dce49ef4d1ad3178ea47"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__pch.h.slow.d": {
+      "bytes": 832,
+      "sha256": "31d9f22317b9bc4ff96be669e2636cbb7f71057c33699d733b2c22151fa00450"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__pch.h.slow.gch": {
+      "bytes": 70703340,
+      "sha256": "e53d92ecdee52c8833a3b48c93b600b82c13ae140c070f5e1aca3e94b8424047"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__ver.d": {
+      "bytes": 4252,
+      "sha256": "1c8cbbe0ebe35ed315040794b03f246da95a935fc98f12efbdfa640adced3380"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop__verFiles.dat": {
+      "bytes": 9397,
+      "sha256": "c72445cab66e2240ece81c9fcc76152b4e15a07f0c41f37fc49d4d574226d3a2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/Vtop_classes.mk": {
+      "bytes": 1929,
+      "sha256": "a65f4542c249df792f1349da07f8c5c0a28e3fb51fada8faca7613842433aadd"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilated.d": {
+      "bytes": 1033,
+      "sha256": "1c27355dbd1ccde230bdff16f67569e74ac36f2b9cfdc0597edda67e71287f44"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilated.o": {
+      "bytes": 237680,
+      "sha256": "025aae5d6c7f7dfa88121638f38a3848760aa9d649819b3bc4d84b5a6dd4481f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilated_dpi.d": {
+      "bytes": 1033,
+      "sha256": "57f1aecb62e18b5e560803a2bf1841db82464e235c6233fa849141d8161136eb"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilated_dpi.o": {
+      "bytes": 30896,
+      "sha256": "36ca4aaa489ec5741eefe949e5f5b0da2d1f123097506ac9bcf54006682f2934"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilated_threads.d": {
+      "bytes": 620,
+      "sha256": "7c93e1d8048cb4d990bbbadc9c9adce022a6b06004c26d878a64be42ca059b5c"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilated_threads.o": {
+      "bytes": 60840,
+      "sha256": "95b766ac572c0231a468a775b518b6fb5b09f9dcbccac6ffc26ac40f2ee92429"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilated_vpi.d": {
+      "bytes": 1128,
+      "sha256": "8b168e2beb6de3468101d2430db8819afd1e2d85118a411fae70f98c4c87e3dd"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilated_vpi.o": {
+      "bytes": 217784,
+      "sha256": "9f9b5de513701efed0656ec30a7e0161fce5ffa6f42594f11cfa16923365efca"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilator.d": {
+      "bytes": 1171,
+      "sha256": "2cd38a54180b61c594700a56aad02028c360a0564ce1e5aee72f2a857784ed05"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/build/verilator.o": {
+      "bytes": 10680,
+      "sha256": "c1fe9e909362cc1884d723c2531f4aa2bf0d63b38e2531d187da961f07c8c6fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/compile.stderr": {
+      "bytes": 6882,
+      "sha256": "734c32a036270db3a13973e56f2e49e7b6887638c72628f1aa7d3efadeb7e5b7"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/compile.stdout": {
+      "bytes": 15455,
+      "sha256": "91b2add9998fb1e15065c2ca394dc2656a80d04e220bc2e1c11c9d1abd490403"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/results.xml": {
+      "bytes": 1719,
+      "sha256": "aa0afc7e64b23476807d3043058b7b459f189134d599c1e99aeae05fe4644e42"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d32/simulation.stdout": {
+      "bytes": 6722,
+      "sha256": "c3c64e75db95575460af221cf28a09bd31ebd22d9c18db7394adf3d855c73e59"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop": {
+      "bytes": 723056,
+      "sha256": "379c4d68e8abd51d4f4978679a05a936ceaebd0155fe5bb4201500a1fb2eb0fb"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop.cpp": {
+      "bytes": 4060,
+      "sha256": "ca3c9087eba92ff9a57de412b002b981c73a358aa42f205c4a23e71d797bed14"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop.d": {
+      "bytes": 29,
+      "sha256": "6b3e5093848d0a3ba69b0d5fd5ca2d8556079e14ffcfee622bca020dd8b5a04e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop.h": {
+      "bytes": 4227,
+      "sha256": "09da3b472a89398df26ab67a30131a80a6f7198d4a59ec69d08982370eceafbb"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop.mk": {
+      "bytes": 2473,
+      "sha256": "084710f355e03e04daa3a42494ff623f8a2dade404785dec4ac26e55d963e653"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop.o": {
+      "bytes": 8896,
+      "sha256": "fa7c9c6937374f5324d0cb46875004c40d684ea0b635f4a13617ae7dd959b775"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__ALL.a": {
+      "bytes": 623822,
+      "sha256": "63ff84e66cc5d29f7b8423151c8f741cecd7cd4d641e5212b7731d6ec33965a3"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__ConstPool_0.cpp": {
+      "bytes": 1798,
+      "sha256": "c09dbf24fabb0fa9fce8e49a9f1778423bef4bc1409194fb6b3885c4a3582d91"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__ConstPool_0.d": {
+      "bytes": 123,
+      "sha256": "f59c66fa09abb1c65537f750ce3b9ccc8b770e7a0e4dd940b8e4e3533ffa5b70"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__ConstPool_0.o": {
+      "bytes": 1712,
+      "sha256": "caeb9a1d7fdfddf7d105f9d914e6b478cc26e4a6ec4ddf45dd86329698c7bd9a"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__Dpi.cpp": {
+      "bytes": 669,
+      "sha256": "8773ff8dca9c9cd2b6bd44866425460a86a2fac90c380d17bdb32b9cc7a54934"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__Dpi.d": {
+      "bytes": 132,
+      "sha256": "a23b8e10b021ce8f2802fd153f54d39a81d6b7177eca9b975ffca09b2d04e6e2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__Dpi.h": {
+      "bytes": 520,
+      "sha256": "0aaefcf270d5abc8942c8cadecb540524c4db550fddfc9a42688c7cd99619f4d"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__Dpi.o": {
+      "bytes": 824,
+      "sha256": "008970b3d933ee4579b6ac44bdd2d66509711deea3eceb5c4e2d18b863fbb6fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__Syms.cpp": {
+      "bytes": 328617,
+      "sha256": "b0d9b8faf30360c930a94fc18364ebac9d28cba363fad7343b28e7a498089a5b"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__Syms.d": {
+      "bytes": 65,
+      "sha256": "e45649a28eadd09ae871b919c8f1de9cc66bcabb8e5be1592229287f367938a3"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__Syms.h": {
+      "bytes": 4797,
+      "sha256": "5b57a942e0a5bc06395b058daca9eb5f51a2d638d9db13a1c13939e6426fab37"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__Syms.o": {
+      "bytes": 185944,
+      "sha256": "99af864e4c4c39dae2508fdc4d14871dbf1d297d91220a6ba40aa27101c14411"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root.h": {
+      "bytes": 153993,
+      "sha256": "be481b14168bf2d15ade620583c664f1c4d21a8e8104932872822cd0d0b98423"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_h84412442__0.cpp": {
+      "bytes": 12397,
+      "sha256": "33183dd42f5c5524821219e1b2a74e71caadadb8f4363f3e5d3bb5e2d62bab0f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_h84412442__0.d": {
+      "bytes": 127,
+      "sha256": "a63a01c9d47617ea88390340475152b996204574f6b4aa32c5889e34dca49eb2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_h84412442__0.o": {
+      "bytes": 2216,
+      "sha256": "94771a0560a5848a24398df7d4268dbc63f53f0e4d6037c560f14b9ed028d6ea"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_h84412442__0__Slow.cpp": {
+      "bytes": 845,
+      "sha256": "05b2b32ca221967ee8bcae3765b60d245fb3a9eba7a203d70b810d11708fa278"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_h84412442__0__Slow.d": {
+      "bytes": 139,
+      "sha256": "87fc8edeb35185489fb7a07ff416f977ab50a86cd79452cd2a26add874656581"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_h84412442__0__Slow.o": {
+      "bytes": 5760,
+      "sha256": "5309f81a723624768e32eba1d3e121cbe7f793a04a78b154f57c859821d9012e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__0.cpp": {
+      "bytes": 1279879,
+      "sha256": "312c37f7ff06f262d2ebc3ce692ff794469a1f0aa81956389a56f6be54deb58e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__0.d": {
+      "bytes": 111,
+      "sha256": "f82b3b11218264e4aab0b5ce7064656d9bcfc211d00f7cee28fde65461b5d71e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__0.o": {
+      "bytes": 56992,
+      "sha256": "5b576a6ce46093c9e41d8a4ada6f3ec78075bf5cca7739c11e1d4f4ea97fec40"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__0__Slow.cpp": {
+      "bytes": 1298484,
+      "sha256": "d1f32bfac9c88af662b794a76a65b95d67bb62b6dfdcbd5632361f5eb16804e3"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__0__Slow.d": {
+      "bytes": 126,
+      "sha256": "4b32c3578330a74ec63567dc8f40f3e1eb28ec63a17d3422d1fb13a407d46e0e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__0__Slow.o": {
+      "bytes": 181256,
+      "sha256": "4d83ed1eb1b5bc145cd20d46c626d9002950ffb07d22bdea8367d1681e5abe59"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__1.cpp": {
+      "bytes": 1336461,
+      "sha256": "326f83e20b2dd052d63c3beff89d669159cc3c9993206e513b35234fb95eb5b1"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__1.d": {
+      "bytes": 111,
+      "sha256": "0cb8f08dbfe2c1a1a81e428e620a0fc03c6d17b2920c47810de4bd9576d03d5a"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__1.o": {
+      "bytes": 59112,
+      "sha256": "ead8b9544ecdb9dfa6c2c253be764df53f78b65b5ddb6a14e9b4a15514617723"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__1__Slow.cpp": {
+      "bytes": 219204,
+      "sha256": "f79f92c6724a8f8a38a9075309df28a6efe3f8d3a13e2439cc3670413062a8a1"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__1__Slow.d": {
+      "bytes": 126,
+      "sha256": "e4b9163a10aabb3d3878e6d962582e8ac08e0bc34f2e7570b7099373f6ffd26f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__1__Slow.o": {
+      "bytes": 75944,
+      "sha256": "474dd3b174d648741c97163ec4b4827fdae6bc2a10ffc1404b8fe1270733ea85"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__2.cpp": {
+      "bytes": 10788,
+      "sha256": "d5b693fd924881773571e253815740ea083ea6fecbf16632ddcc0254aaaa4d5d"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__2.d": {
+      "bytes": 111,
+      "sha256": "0798607e3f8bdeaa525723b494f0f2852e3371dd6293df48092d1b650276d4df"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__DepSet_heccd7ead__2.o": {
+      "bytes": 3664,
+      "sha256": "7c7dd148b3992fa8714f9b5a070c16b9cdb3fe71385e2b2d414f5fd332802651"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__Slow.cpp": {
+      "bytes": 5557,
+      "sha256": "e28154f22f15eca07340b45de68cdcffb6389738bf86efa5b40ee9f78c9daade"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__Slow.d": {
+      "bytes": 94,
+      "sha256": "b1f605ae02c9adfdaf5187cd1a271765fec8bbf739c844c027cb84a097673da2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop___024root__Slow.o": {
+      "bytes": 23056,
+      "sha256": "550d4b4c237a8a6861d22724db2ce40b9fdf2ee8c4f51db660ede44d97c5c2fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__pch.h": {
+      "bytes": 773,
+      "sha256": "ea2059defd46499b420d27ff869add76b41b9ec6be4dd8e59185a2278506cbfa"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__pch.h.fast.d": {
+      "bytes": 832,
+      "sha256": "e8bb9c79de59353caf6391cc21b755d5e52cbdfd341008415efbe2327bbb4268"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__pch.h.fast.gch": {
+      "bytes": 71682066,
+      "sha256": "73d043bf525e40606e651eb327b8a431afc688bdd142985a85fba1e34c9513a1"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__pch.h.slow.d": {
+      "bytes": 832,
+      "sha256": "31d9f22317b9bc4ff96be669e2636cbb7f71057c33699d733b2c22151fa00450"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__pch.h.slow.gch": {
+      "bytes": 70703742,
+      "sha256": "196ebdf28d0a8cbc146ffffd4a419e93c2a670abaf362f61ca30d98dc20486fa"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__ver.d": {
+      "bytes": 4232,
+      "sha256": "1a46a82fb12f7ffd8b6b29fcf713fae1ad3b64f0b9f57a97078d11fdd1e5beac"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop__verFiles.dat": {
+      "bytes": 9374,
+      "sha256": "18872792ba74a680ceb0e17a252cce09bb49985469ed3c274ae5b935583a75e8"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/Vtop_classes.mk": {
+      "bytes": 1929,
+      "sha256": "a65f4542c249df792f1349da07f8c5c0a28e3fb51fada8faca7613842433aadd"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilated.d": {
+      "bytes": 1033,
+      "sha256": "1c27355dbd1ccde230bdff16f67569e74ac36f2b9cfdc0597edda67e71287f44"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilated.o": {
+      "bytes": 237680,
+      "sha256": "025aae5d6c7f7dfa88121638f38a3848760aa9d649819b3bc4d84b5a6dd4481f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilated_dpi.d": {
+      "bytes": 1033,
+      "sha256": "57f1aecb62e18b5e560803a2bf1841db82464e235c6233fa849141d8161136eb"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilated_dpi.o": {
+      "bytes": 30896,
+      "sha256": "36ca4aaa489ec5741eefe949e5f5b0da2d1f123097506ac9bcf54006682f2934"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilated_threads.d": {
+      "bytes": 620,
+      "sha256": "7c93e1d8048cb4d990bbbadc9c9adce022a6b06004c26d878a64be42ca059b5c"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilated_threads.o": {
+      "bytes": 60840,
+      "sha256": "95b766ac572c0231a468a775b518b6fb5b09f9dcbccac6ffc26ac40f2ee92429"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilated_vpi.d": {
+      "bytes": 1128,
+      "sha256": "8b168e2beb6de3468101d2430db8819afd1e2d85118a411fae70f98c4c87e3dd"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilated_vpi.o": {
+      "bytes": 217784,
+      "sha256": "9f9b5de513701efed0656ec30a7e0161fce5ffa6f42594f11cfa16923365efca"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilator.d": {
+      "bytes": 1171,
+      "sha256": "2cd38a54180b61c594700a56aad02028c360a0564ce1e5aee72f2a857784ed05"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/build/verilator.o": {
+      "bytes": 10680,
+      "sha256": "c1fe9e909362cc1884d723c2531f4aa2bf0d63b38e2531d187da961f07c8c6fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/compile.stderr": {
+      "bytes": 6882,
+      "sha256": "734c32a036270db3a13973e56f2e49e7b6887638c72628f1aa7d3efadeb7e5b7"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/compile.stdout": {
+      "bytes": 15449,
+      "sha256": "11753c6c58d724351d8f854873ecc883effedd1118aec3b91bb4d4a08850ef0e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/results.xml": {
+      "bytes": 1717,
+      "sha256": "64da015abd757f14530ce562df446d536e0a618d11199b6ea3b0d1697b97aa13"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d4/simulation.stdout": {
+      "bytes": 6720,
+      "sha256": "410d598f55b8ad3581754bdd9d5276a406e2dfe85b5652db5c1ca8049d5e4922"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop": {
+      "bytes": 723056,
+      "sha256": "88cce46edcba9de20a5cca780178a2f3f6c616a9c37fcdc5db9a64deefe9a8fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop.cpp": {
+      "bytes": 4060,
+      "sha256": "ca3c9087eba92ff9a57de412b002b981c73a358aa42f205c4a23e71d797bed14"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop.d": {
+      "bytes": 29,
+      "sha256": "6b3e5093848d0a3ba69b0d5fd5ca2d8556079e14ffcfee622bca020dd8b5a04e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop.h": {
+      "bytes": 4227,
+      "sha256": "09da3b472a89398df26ab67a30131a80a6f7198d4a59ec69d08982370eceafbb"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop.mk": {
+      "bytes": 2473,
+      "sha256": "084710f355e03e04daa3a42494ff623f8a2dade404785dec4ac26e55d963e653"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop.o": {
+      "bytes": 8896,
+      "sha256": "37e144d4d820f3f4067eb3840dd684f336c0b7b235dd6baae901ecb9fc15a657"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__ALL.a": {
+      "bytes": 623870,
+      "sha256": "7988767b8800db37f20742b18a216bb720a59adbf2197de8a6281795961cc546"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__ConstPool_0.cpp": {
+      "bytes": 1798,
+      "sha256": "c09dbf24fabb0fa9fce8e49a9f1778423bef4bc1409194fb6b3885c4a3582d91"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__ConstPool_0.d": {
+      "bytes": 123,
+      "sha256": "f59c66fa09abb1c65537f750ce3b9ccc8b770e7a0e4dd940b8e4e3533ffa5b70"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__ConstPool_0.o": {
+      "bytes": 1712,
+      "sha256": "caeb9a1d7fdfddf7d105f9d914e6b478cc26e4a6ec4ddf45dd86329698c7bd9a"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__Dpi.cpp": {
+      "bytes": 669,
+      "sha256": "8773ff8dca9c9cd2b6bd44866425460a86a2fac90c380d17bdb32b9cc7a54934"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__Dpi.d": {
+      "bytes": 132,
+      "sha256": "a23b8e10b021ce8f2802fd153f54d39a81d6b7177eca9b975ffca09b2d04e6e2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__Dpi.h": {
+      "bytes": 520,
+      "sha256": "0aaefcf270d5abc8942c8cadecb540524c4db550fddfc9a42688c7cd99619f4d"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__Dpi.o": {
+      "bytes": 824,
+      "sha256": "008970b3d933ee4579b6ac44bdd2d66509711deea3eceb5c4e2d18b863fbb6fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__Syms.cpp": {
+      "bytes": 328617,
+      "sha256": "d5e168039262221ade1c651f1dd2968b069f492fea85039729ed8ef30055a689"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__Syms.d": {
+      "bytes": 65,
+      "sha256": "e45649a28eadd09ae871b919c8f1de9cc66bcabb8e5be1592229287f367938a3"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__Syms.h": {
+      "bytes": 4797,
+      "sha256": "5b57a942e0a5bc06395b058daca9eb5f51a2d638d9db13a1c13939e6426fab37"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__Syms.o": {
+      "bytes": 185944,
+      "sha256": "b400fe1df5becb7a52fd88b3f814b5b67c18afabdaf4b7d8a5ba88a6c04a62b8"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root.h": {
+      "bytes": 153993,
+      "sha256": "d2b5bc18cca6b0c68eec8881d82967899bab38b7e7d75bef4a86d46ce6f2e5ca"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_h84412442__0.cpp": {
+      "bytes": 12397,
+      "sha256": "33183dd42f5c5524821219e1b2a74e71caadadb8f4363f3e5d3bb5e2d62bab0f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_h84412442__0.d": {
+      "bytes": 127,
+      "sha256": "a63a01c9d47617ea88390340475152b996204574f6b4aa32c5889e34dca49eb2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_h84412442__0.o": {
+      "bytes": 2216,
+      "sha256": "09289fc7245daade30394356852d9262717626f856ad8e7f76161eee72d570c6"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_h84412442__0__Slow.cpp": {
+      "bytes": 845,
+      "sha256": "05b2b32ca221967ee8bcae3765b60d245fb3a9eba7a203d70b810d11708fa278"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_h84412442__0__Slow.d": {
+      "bytes": 139,
+      "sha256": "87fc8edeb35185489fb7a07ff416f977ab50a86cd79452cd2a26add874656581"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_h84412442__0__Slow.o": {
+      "bytes": 5760,
+      "sha256": "0b22bb065958c736937efae4cb2b3b00283910ea25d49f9be3a8def43adbbac9"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__0.cpp": {
+      "bytes": 1279881,
+      "sha256": "4dbd8268ae48a4b910a747f568ca620001aa02124865a730d537546234a6c4b4"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__0.d": {
+      "bytes": 111,
+      "sha256": "f82b3b11218264e4aab0b5ce7064656d9bcfc211d00f7cee28fde65461b5d71e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__0.o": {
+      "bytes": 56992,
+      "sha256": "9085eefb6c409027f3fc6e412e0bb1edb219219ee36731c28114874777a2cac4"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__0__Slow.cpp": {
+      "bytes": 1298486,
+      "sha256": "6d6086cf7b1679cca65acf3b6f54676090b798d015f52224ab832baab3af4ea3"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__0__Slow.d": {
+      "bytes": 126,
+      "sha256": "4b32c3578330a74ec63567dc8f40f3e1eb28ec63a17d3422d1fb13a407d46e0e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__0__Slow.o": {
+      "bytes": 181256,
+      "sha256": "013a4d194deaa0b4179ea233df0bcaeba56afeb91a326afb6e99245df0a01d92"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__1.cpp": {
+      "bytes": 1334883,
+      "sha256": "679211f9c5d2318522df14e8f52fade93f96262828a1734eb8a80b5796d8cf92"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__1.d": {
+      "bytes": 111,
+      "sha256": "0cb8f08dbfe2c1a1a81e428e620a0fc03c6d17b2920c47810de4bd9576d03d5a"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__1.o": {
+      "bytes": 59160,
+      "sha256": "457399f50f2d2bdede6fb69fbed651012d17effc05a765d6c1c1fab982392456"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__1__Slow.cpp": {
+      "bytes": 219204,
+      "sha256": "6cf7fd3699360ab6ca419072d77fffcc1d6585ac0e20a52c81e0a5c07c11452a"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__1__Slow.d": {
+      "bytes": 126,
+      "sha256": "e4b9163a10aabb3d3878e6d962582e8ac08e0bc34f2e7570b7099373f6ffd26f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__1__Slow.o": {
+      "bytes": 75944,
+      "sha256": "64dc285b9bafde38127382c8f756cb6db1396b14df4de7d15eab98174b097645"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__2.cpp": {
+      "bytes": 10788,
+      "sha256": "d5b693fd924881773571e253815740ea083ea6fecbf16632ddcc0254aaaa4d5d"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__2.d": {
+      "bytes": 111,
+      "sha256": "0798607e3f8bdeaa525723b494f0f2852e3371dd6293df48092d1b650276d4df"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__DepSet_heccd7ead__2.o": {
+      "bytes": 3664,
+      "sha256": "0521899b9655c989fdba52e053cb22d9a36bf34fba64912e4c8d6366eecc29f5"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__Slow.cpp": {
+      "bytes": 5557,
+      "sha256": "e28154f22f15eca07340b45de68cdcffb6389738bf86efa5b40ee9f78c9daade"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__Slow.d": {
+      "bytes": 94,
+      "sha256": "b1f605ae02c9adfdaf5187cd1a271765fec8bbf739c844c027cb84a097673da2"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop___024root__Slow.o": {
+      "bytes": 23056,
+      "sha256": "769843769cf8c4e829affa22f21d07e24f7d98255aff03d15be1c825c9a2205c"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__pch.h": {
+      "bytes": 773,
+      "sha256": "ea2059defd46499b420d27ff869add76b41b9ec6be4dd8e59185a2278506cbfa"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__pch.h.fast.d": {
+      "bytes": 832,
+      "sha256": "e8bb9c79de59353caf6391cc21b755d5e52cbdfd341008415efbe2327bbb4268"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__pch.h.fast.gch": {
+      "bytes": 71681837,
+      "sha256": "418626c92a27b9b3e3cede86f4d26be8db3d062a9d76dd430a71c524bcf9b7ac"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__pch.h.slow.d": {
+      "bytes": 832,
+      "sha256": "31d9f22317b9bc4ff96be669e2636cbb7f71057c33699d733b2c22151fa00450"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__pch.h.slow.gch": {
+      "bytes": 70703558,
+      "sha256": "58529ca294b86319b26bc51c747fb91a1fcc1f9fc7b68eb4e1981832a49ae375"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__ver.d": {
+      "bytes": 4232,
+      "sha256": "86f311ad65846b7a04fdc235dc3daad442059792de139275ec0bc967e8bb9d6e"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop__verFiles.dat": {
+      "bytes": 9374,
+      "sha256": "880f3e71b0bd9215c09f42ec1cff06dcce44fa176a912d58cc4964d9c23c8e47"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/Vtop_classes.mk": {
+      "bytes": 1929,
+      "sha256": "a65f4542c249df792f1349da07f8c5c0a28e3fb51fada8faca7613842433aadd"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilated.d": {
+      "bytes": 1033,
+      "sha256": "1c27355dbd1ccde230bdff16f67569e74ac36f2b9cfdc0597edda67e71287f44"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilated.o": {
+      "bytes": 237680,
+      "sha256": "025aae5d6c7f7dfa88121638f38a3848760aa9d649819b3bc4d84b5a6dd4481f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilated_dpi.d": {
+      "bytes": 1033,
+      "sha256": "57f1aecb62e18b5e560803a2bf1841db82464e235c6233fa849141d8161136eb"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilated_dpi.o": {
+      "bytes": 30896,
+      "sha256": "36ca4aaa489ec5741eefe949e5f5b0da2d1f123097506ac9bcf54006682f2934"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilated_threads.d": {
+      "bytes": 620,
+      "sha256": "7c93e1d8048cb4d990bbbadc9c9adce022a6b06004c26d878a64be42ca059b5c"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilated_threads.o": {
+      "bytes": 60840,
+      "sha256": "95b766ac572c0231a468a775b518b6fb5b09f9dcbccac6ffc26ac40f2ee92429"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilated_vpi.d": {
+      "bytes": 1128,
+      "sha256": "8b168e2beb6de3468101d2430db8819afd1e2d85118a411fae70f98c4c87e3dd"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilated_vpi.o": {
+      "bytes": 217784,
+      "sha256": "9f9b5de513701efed0656ec30a7e0161fce5ffa6f42594f11cfa16923365efca"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilator.d": {
+      "bytes": 1171,
+      "sha256": "2cd38a54180b61c594700a56aad02028c360a0564ce1e5aee72f2a857784ed05"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/build/verilator.o": {
+      "bytes": 10680,
+      "sha256": "c1fe9e909362cc1884d723c2531f4aa2bf0d63b38e2531d187da961f07c8c6fc"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/compile.stderr": {
+      "bytes": 6882,
+      "sha256": "734c32a036270db3a13973e56f2e49e7b6887638c72628f1aa7d3efadeb7e5b7"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/compile.stdout": {
+      "bytes": 15449,
+      "sha256": "89579b0d36896a4feedb7ae78386512570d3d40fa516a3a99c808a4efe03ded8"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/results.xml": {
+      "bytes": 1718,
+      "sha256": "084465b23fccbb8f6ed5b92c1bb9b0f7bb9cd4295bf50b38cd0c49934c3a466f"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/simulation.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "simulations/verilator-soc_pcie_gen12_recovered_records_v1-d8/simulation.stdout": {
+      "bytes": 6720,
+      "sha256": "d3b68e1ff7e262b939ce731f3166e6ca9ec4c33b5f7c90ca55ba0925d81c7f21"
+    },
+    "toolchain/package-identities.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/package-identities.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/packages.stderr": {
+      "bytes": 123,
+      "sha256": "49ef78140217de8c48d38d4670505cda32ebfe99396bdf215825b7c6490c33cb"
+    },
+    "toolchain/packages.stdout": {
+      "bytes": 676,
+      "sha256": "ea54339c282010c0571409ca81fc3d079574a4ca720eb1d178c3099136072cbf"
+    },
+    "toolchain/venv.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/venv.stdout": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/version-icarus.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/version-icarus.stdout": {
+      "bytes": 3294,
+      "sha256": "f9199cc8658f4afcec3edeb93f29f23bb2aebf66d3eeb217cdc728aaa692f946"
+    },
+    "toolchain/version-verilator.stderr": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "toolchain/version-verilator.stdout": {
+      "bytes": 43,
+      "sha256": "8dfb6ae7dceb54dc2936a78ea7d24751ed8eb8cf128293174e0fb916b79c5636"
+    },
+    "vendor/axis_async_fifo.v": {
+      "bytes": 34468,
+      "sha256": "339734a7984d7d540451c92f0831495837c451d170ba60dfbd59f851b28f4250"
+    }
+  }
+}
