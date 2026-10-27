@@ -1,0 +1,13 @@
+name: cdr-v59-tail-loaded-cloud
+on:
+  push:
+    branches: ['codex/register-cdr-v59-tail-loaded-20261028']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  register:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Registration only without checkout or engineering execution
+        run: printf '%s\n' 'Workflow registration only; no checkout, tests, archives, CAD or simulation.'
