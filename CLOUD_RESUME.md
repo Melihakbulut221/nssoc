@@ -8804,3 +8804,10 @@ Local project/tmp/native processes verified absent. Inventory300 exact cloud han
 Actual shared-prefix source22f61f65 passed4 positive+23 refusal+6 sequencing+8 actual-driver lifecycle fixture cases (619pins). Native run40786115875 now owns permanent exact-source release427295332; it is pending and must be continued without restart. CDR width source7ae20c38 passed7 positive+28 refusal+4 lifecycle cases and disabled-native refusal in40787010885. Its priorHTTP422 cause was invalid unquoted YAML pip --only-binary=:all: scalar (line39:97), corrected to a block scalar with identical command; no workflow-count limit was demonstrated and nothing was pruned. Main harmless diagnostic40786525718 passed. Real CDR GDS/LVS/PEX/electrical qualification remains pending. All proof/code stays on GitHub; local workspace remains empty.
 
 Local project/tmp/native processes verified absent. Inventory303 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-28T23:46:47.297415+00:00 — cloud-only checkpoint v95
+
+Native40786115875 completedFAIL and its full evidence was permanently preserved. Actual ownership passed in523.58s; original DEF exact50637ee8 and fixed metadata DEF exact71e7923d were preserved,104 runtime libraries matched, peak4,142,813,184B and0OOM. prepare-fixed failed because unchanged legacy Tcl renderer disallowed /work. New sourcee16c7f46 adds an explicit bounded canonical-path adapter without changing the original native bodies or586 inherited pins. Its hosted controls passed including3 valid/13 rejected paths, exact original paired Tcl import, and restoration after success/failure. Changed-source native40789053922 is pending under permanent source-bound release427309454; old failedrun was not rerun. Native CDR geometry wrapper is under source-only construction, still unqualified. Local execution/artifacts remain absent.
+
+Local project/tmp/native processes verified absent. Inventory304 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
