@@ -23,6 +23,7 @@ jobs:
           python3 -B scripts/check_mainchip_two_signal_internal_witness.py > internal-witness-controls.json
           cat engine-build-controls.json
           cat internal-witness-controls.json
+          python3 -c 'import json; r=json.load(open("engine-build-controls.json")); assert r["status"]=="PASS_ENGINE_BUILD_SOURCE_CONTROLS"; assert (r["positive_count"],r["refusal_count"],r["lifecycle"]["count"])==(7,45,25)'
       - name: Preserve available control records in full job log
         if: always()
         run: |
@@ -55,6 +56,20 @@ jobs:
           python3 -B scripts/check_mainchip_two_signal_internal_witness.py > internal-witness-controls.json
           cat engine-build-controls.json
           cat internal-witness-controls.json
+          python3 -c 'import json; r=json.load(open("engine-build-controls.json")); assert r["status"]=="PASS_ENGINE_BUILD_SOURCE_CONTROLS"; assert (r["positive_count"],r["refusal_count"],r["lifecycle"]["count"])==(7,45,25)'
+      - name: Preserve available control records in full job log
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,json
+          from pathlib import Path
+          for name in ("engine-build-controls.json","internal-witness-controls.json"):
+              p=Path(name);b=p.read_bytes() if p.is_file() else b""
+              pieces=[b[i:i+6000] for i in range(0,len(b),6000)]
+              print("ENGINE_BUILD_RECORD_INDEX "+json.dumps(dict(path=name,present=p.is_file(),bytes=len(b),sha256=hashlib.sha256(b).hexdigest(),chunks=len(pieces))))
+              for i,v in enumerate(pieces):
+                  print("ENGINE_BUILD_RECORD_CHUNK "+json.dumps(dict(path=name,index=i,base64=base64.b64encode(v).decode())))
+          PY
       - name: Build complete pinned engine under owned cgroup
         run: python3 -B scripts/mainchip_witness_engine_build.py build
       - name: Permanently preserve available success or failure evidence

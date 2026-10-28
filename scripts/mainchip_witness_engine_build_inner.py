@@ -11,7 +11,8 @@ import subprocess
 import sys
 import time
 import traceback
-from build_contract import MEMORY, PIDS, require
+import mainchip_witness_engine_build_contract as c
+from mainchip_witness_engine_build_contract import MEMORY, PIDS, require
 
 WORK = Path("/work")
 OUT = WORK / "out"
@@ -22,7 +23,7 @@ report = dict(schema="mainchip-witness-engine-inner-v1", status="IN_PROGRESS",
               observer_equivalence_qualified=False, terminal_errors=[], commands=[])
 
 def write(name, value):
-    (OUT / name).write_text(json.dumps(value, sort_keys=True, indent=2) + "\n")
+    c.atomic_record(OUT / name, value)
 
 def hash_file(p):
     h = hashlib.sha256()
@@ -43,48 +44,56 @@ def cgroup():
     r["elapsed_seconds"] = time.monotonic() - START
     return r
 
-def run(label, argv, timeout=None):
+
+def stop_child(proc, report, killpg=os.killpg):
+    def terminate():
+        if proc.poll() is None: killpg(proc.pid, signal.SIGTERM)
+    def wait():
+        proc.wait(timeout=10)
+    def kill():
+        if proc.poll() is None: killpg(proc.pid, signal.SIGKILL)
+    c.attempt(report, "child-terminate", terminate)
+    c.attempt(report, "child-wait-after-terminate", wait)
+    c.attempt(report, "child-kill-if-live", kill)
+    c.attempt(report, "child-final-wait", wait)
+
+def run(label, argv, timeout=None, popen=subprocess.Popen, killpg=os.killpg):
     require(time.monotonic() < DEADLINE, "build deadline exhausted")
-    before = time.monotonic()
-    entry = dict(label=label, argv=argv, returncode=None, timed_out=False)
-    report["commands"].append(entry)
-    proc = None
+    before=time.monotonic(); primary=None; progress_error=None
+    entry=dict(label=label,argv=argv,returncode=None,timed_out=False)
+    report["commands"].append(entry); proc=None
     try:
-        with (OUT / (label+".stdout")).open("wb") as stdout, (OUT / (label+".stderr")).open("wb") as stderr:
-            proc = subprocess.Popen(argv, stdout=stdout, stderr=stderr, start_new_session=True,
-                                    env={**os.environ, "LC_ALL":"C.UTF-8", "PYTHONDONTWRITEBYTECODE":"1"})
-            limit = min(DEADLINE, before + timeout) if timeout else DEADLINE
-            with (OUT / "cgroup-samples.jsonl").open("a") as samples:
+        with (OUT/(label+".stdout")).open("wb") as stdout, (OUT/(label+".stderr")).open("wb") as stderr:
+            proc=popen(argv,stdout=stdout,stderr=stderr,start_new_session=True,
+                env={**os.environ,"LC_ALL":"C.UTF-8","PYTHONDONTWRITEBYTECODE":"1"})
+            limit=min(DEADLINE,before+timeout) if timeout else DEADLINE
+            with (OUT/"cgroup-samples.jsonl").open("a") as samples:
                 while proc.poll() is None:
-                    samples.write(json.dumps(cgroup(), sort_keys=True)+"\n"); samples.flush()
-                    left = limit - time.monotonic()
-                    if left <= 0:
-                        entry["timed_out"] = True
+                    samples.write(json.dumps(cgroup(),sort_keys=True)+"\n");samples.flush()
+                    left=limit-time.monotonic()
+                    if left<=0:
+                        entry["timed_out"]=True
                         raise TimeoutError(label)
-                    try:
-                        proc.wait(timeout=min(10, left))
-                    except subprocess.TimeoutExpired:
-                        pass
-            entry["returncode"] = proc.returncode
-            require(proc.returncode == 0, label+" failed")
+                    try: proc.wait(timeout=min(10,left))
+                    except subprocess.TimeoutExpired: pass
+            entry["returncode"]=proc.returncode
+            require(proc.returncode==0,label+" failed")
+    except BaseException as exc:
+        primary=exc;entry["error"]=c.error_record(label,exc)
     finally:
-        if proc is not None and proc.poll() is None:
-            os.killpg(proc.pid, signal.SIGTERM)
-            try:
-                proc.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                os.killpg(proc.pid, signal.SIGKILL)
-                proc.wait(timeout=10)
         if proc is not None:
-            entry["returncode"] = proc.returncode
-        entry["elapsed_seconds"] = time.monotonic() - before
-        write("inner-progress.json", report)
+            stop_child(proc,report,killpg)
+            entry["returncode"]=proc.returncode
+        entry["elapsed_seconds"]=time.monotonic()-before
+        try: write("inner-progress.json",report)
+        except BaseException as exc:
+            progress_error=exc
+            report["terminal_errors"].append(c.error_record("inner-progress",exc))
+    if primary is not None: raise primary
+    if progress_error is not None: raise progress_error
 
 def terminal(name, action):
-    try:
-        action()
-    except Exception as exc:
-        report["terminal_errors"].append(dict(action=name, error=repr(exc), traceback=traceback.format_exc()))
+    return c.attempt(report, name, action)
 
 def finish_cgroup():
     report["cgroup_terminal"] = cgroup()
@@ -109,6 +118,7 @@ def preserve_build_records():
 
 def main():
     OUT.mkdir(exist_ok=True)
+    primary=None
     try:
         report["cgroup_initial"] = cgroup()
         first = report["cgroup_initial"]
@@ -123,7 +133,12 @@ def main():
         require(prefix.is_file(), "pinned dependency prefixes missing")
         shutil.copyfile(prefix, OUT / "openroad_deps_prefixes.txt")
         run("complete-build", ["bash", "etc/Build.sh", "-no-gui", "-no-tests", "-threads=2",
-            "-dir=/work/build", "-cmake=-DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=OFF -DBUILD_PYTHON=ON -DGPU=OFF"])
+            "-dir=/work/build", "-cmake=-DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLINK_TIME_OPTIMIZATION:BOOL=OFF -DCMAKE_INTERPROCEDURAL_OPTIMIZATION:BOOL=OFF -DBUILD_PYTHON:BOOL=ON -DGPU=OFF"])
+        configuration=c.validate_build_configuration(
+            (WORK/"build/CMakeCache.txt").read_text(),
+            c.decode((WORK/"build/compile_commands.json").read_bytes()))
+        write("build-configuration.json",configuration)
+        report["actual_build_configuration"]=configuration
         executable = str(WORK / "build/bin/openroad")
         require(Path(executable).is_file(), "complete executable missing")
         run("version", [executable, "-version"], 30)
@@ -150,8 +165,9 @@ def main():
         require(bool(dependencies), "missing runtime linkage record")
         write("runtime-dependencies.json", dependencies)
         report["compiled_complete_project"] = True
-    except Exception as exc:
-        report["failure"] = dict(error=repr(exc), traceback=traceback.format_exc())
+    except BaseException as exc:
+        primary=exc
+        report["failure"] = c.error_record("inner-build",exc)
     finally:
         terminal("preserve-build-records", preserve_build_records)
         terminal("terminal-cgroup", finish_cgroup)
@@ -159,7 +175,7 @@ def main():
         report["status"] = ("PASS_COMPLETE_OPENROAD_BUILD_AND_INTERFACE_SMOKE_ONLY"
                             if report["compiled_complete_project"] and not report["terminal_errors"]
                             and "failure" not in report else "FAIL_ENGINE_BUILD_OR_INTERFACE_SMOKE")
-        write("inner-result.json", report)
+        c.finish_record(OUT/"inner-result.json", report, "FAIL_ENGINE_BUILD_OR_INTERFACE_SMOKE", primary)
     return 0 if report["status"].startswith("PASS_") else 1
 
 if __name__ == "__main__":

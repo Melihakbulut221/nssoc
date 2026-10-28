@@ -135,3 +135,95 @@ def validate_terminal(info, inner):
         require({"oom", "oom_kill"} <= set(sample["memory.events"]), "missing memory events")
     require(int(last["memory.peak"]) <= MEMORY, "native memory peak")
     return True
+
+def error_record(action, exc):
+    import traceback
+    return dict(action=action, type=type(exc).__name__, error=repr(exc),
+                traceback="".join(traceback.format_exception(type(exc), exc, exc.__traceback__)))
+
+def atomic_record(path, value):
+    import tempfile
+    path = Path(path)
+    require(not path.is_symlink() and not path.parent.is_symlink(), "record path symlink")
+    raw = (json.dumps(value, sort_keys=True, indent=2, allow_nan=False)+"\n").encode()
+    # Exclusive unique names preserve an older fragment and any interrupted new write.
+    fd, temporary = tempfile.mkstemp(prefix=path.name+".", suffix=".tmp", dir=path.parent)
+    with os.fdopen(fd, "wb") as stream:
+        stream.write(raw); stream.flush(); os.fsync(stream.fileno())
+    os.replace(temporary, path)
+
+def inventory(root, exclude=()):
+    root = Path(root); rows = {}
+    for path in sorted(root.rglob("*")):
+        require(not path.is_symlink(), "output symlink")
+        if path.is_file() and path.relative_to(root).as_posix() not in exclude:
+            h = hashlib.sha256()
+            with path.open("rb") as stream:
+                for raw in iter(lambda: stream.read(1024*1024), b""):
+                    h.update(raw)
+            rows[path.relative_to(root).as_posix()] = dict(bytes=path.stat().st_size, sha256=h.hexdigest())
+    return rows
+
+def attempt(report, label, action):
+    try:
+        value = action()
+        report.setdefault("terminal_actions", []).append(dict(action=label, completed=True))
+        return value
+    except BaseException as exc:
+        report.setdefault("terminal_errors", []).append(error_record(label, exc))
+        report.setdefault("terminal_actions", []).append(dict(action=label, completed=False))
+        return None
+
+def finish_record(path, report, failure_status, primary=None):
+    path = Path(path); save_error = None
+    try:
+        report["available_outputs"] = inventory(path.parent, (path.name,))
+    except BaseException as exc:
+        report["terminal_errors"].append(error_record("terminal-inventory", exc))
+    if primary is not None:
+        report["primary_exception"] = error_record("primary", primary)
+    if primary is not None or report["terminal_errors"]:
+        report["status"] = failure_status
+    try:
+        atomic_record(path, report)
+    except BaseException as exc:
+        save_error = exc
+        report["status"] = failure_status
+        report["terminal_errors"].append(error_record("terminal-save", exc))
+        # Include the real new .tmp and any prior final record without replacing either.
+        try:
+            report["available_outputs_after_save_failure"] = inventory(path.parent)
+        except BaseException as refresh:
+            report["terminal_errors"].append(error_record("post-save-inventory", refresh))
+        try:
+            print("ENGINE_BUILD_TERMINAL_FALLBACK "+json.dumps(
+                dict(path=str(path), complete_unsaved_record=report, acceptance=False),
+                sort_keys=True, allow_nan=False), flush=True)
+        except BaseException as fallback:
+            report["terminal_errors"].append(error_record("terminal-fallback-output",fallback))
+    if primary is not None:
+        raise primary
+    if save_error is not None:
+        raise save_error
+
+def validate_build_configuration(cache_text, compile_commands):
+    import shlex
+    entries = {}
+    for line in cache_text.splitlines():
+        if not line or line.startswith(("#", "//")) or "=" not in line or ":" not in line.split("=",1)[0]:
+            continue
+        key_type, value = line.split("=",1); key, kind = key_type.split(":",1)
+        require(key not in entries, "duplicate CMake cache key")
+        entries[key] = (kind,value)
+    expected = {"LINK_TIME_OPTIMIZATION":("BOOL","OFF"),
+                "CMAKE_INTERPROCEDURAL_OPTIMIZATION":("BOOL","OFF"),
+                "BUILD_PYTHON":("BOOL","ON"),"BUILD_GUI":("BOOL","OFF"),
+                "ENABLE_TESTS":("BOOL","OFF")}
+    for key,value in expected.items():
+        require(entries.get(key) == value, "actual build flag: "+key)
+    require(isinstance(compile_commands,list) and bool(compile_commands), "complete compile commands missing")
+    for entry in compile_commands:
+        words = entry.get("arguments") or shlex.split(entry["command"])
+        require(not any(x.startswith("-flto") for x in words), "actual compile LTO flag")
+    return dict(cache_flags={k:list(entries[k]) for k in expected},
+                compile_command_count=len(compile_commands),compile_commands_no_flto=True)
