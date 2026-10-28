@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-28T18:05:52.728072+00:00",
+  "updated_at": "2026-10-28T18:22:11.225564+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "85a5e3ef401eac42caceb749de47a650bf9e23f7",
+  "root_source_before_receipt": "34e4f138c9bff6b37c5b5b543772ccd80ffd9297",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 86,
+    "inventory_version": 87,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40322641142,
@@ -67,16 +67,20 @@
         {
           "id": 122994880883,
           "name": "loaded (hot_late)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Original full OFF OP and transient with unchanged numerical gates"
+          ]
         },
         {
           "id": 122994880968,
           "name": "loaded (hot_early)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Preserve all original worker and complete or partial published evidence"
+          ]
         },
         {
           "id": 122994881002,
@@ -88,11 +92,9 @@
         {
           "id": 122994881012,
           "name": "loaded (nominal_early)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Original full OFF OP and transient with unchanged numerical gates"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
         },
         {
           "id": 122994881117,
@@ -2448,32 +2450,59 @@
       "source": "5e373a9378b4a3c0fad51687a604a14668dba3ce",
       "method_sha256": "b5fca4c67c0fd99111ecef652e52ee7b5755e7035fa5398f9cd154168bf5da18",
       "protected_pins": 946,
-      "preparation_passed": true,
-      "nominal_early_and_late_started": true,
-      "other_cases": 8,
-      "max_parallel": 2,
-      "dispatch_attempt": 1,
-      "electrical_acceptance": false,
-      "full_PHY": false,
-      "original10_cases_and_all_gates_unchanged": true,
-      "permanent_exact_source_releases": 11,
-      "aggregate_schema_first_failure_retained": 40598054387,
-      "corrected_source_controls_pass": 40600731947
+      "preparation_and_repeated_source_controls_passed": true,
+      "full_preparation_and_nominal_late_proof": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "complete_proof_files": 32,
+      "nominal_late_failure_job": 122994881117,
+      "nominal_late_native_result_asset": 685872971,
+      "nominal_late_native_result_sha256": "aa012dd6a72c384584928aa2a5feca043d93df60d5082cc308a5352fbdecf2a6",
+      "nominal_late_original_electrical_rejected": true,
+      "simulator_returncode": 0,
+      "complete_wave_rows": 113475,
+      "complete_wave_columns": 1152,
+      "complete_raw_wave_sha256": "b77ce447d78d1d4bdf73807d5733af6982968a0cb58a0743026ad2985807a93b",
+      "no_timeout_or_memory_supervision_failure": true,
+      "nominal_late_breakdown": "8fb6345ae6540642edd6e46ebf7e2a01b8579f51",
+      "HBT_safety_failures": 4,
+      "HBT_safety_passes": 120,
+      "MOS_safety_passes": 50,
+      "MIM_voltage_passes": 7,
+      "stage_tail_current_gates_passed": true,
+      "data_phase_and_device_gates_failed": true,
+      "phase_mean_v": 0.014054411381940113,
+      "original_minimum_signed_phase_v": 0.03,
+      "remaining_matrix_continues": true,
+      "automatic_retry": false,
+      "original_numerical_gates_unchanged": true,
+      "full_PHY_accepted": false
     },
     "pll36_actual_stage_readback": {
       "run": 40739668266,
       "source": "19656104578e68487a2909a4acbffedd59a50625",
       "method_sha256": "19440e3bd2b942d2608f00ba8e1fc94cf374955ddf9d625819cdfa046e0a5593",
       "protected_pins": 758,
-      "source_controls_pass": 40737602821,
       "release": 427001871,
-      "readback_conclusion": "success",
-      "new_simulation": false,
-      "original318_HBT_safety_and_three_phase_failures_retained": true,
+      "source_controls_job": 122997543952,
+      "readback_job": 122998457121,
+      "conclusion": "success",
+      "full_proof_commit": "343bc88882e9919de953e098286de98564ae067e",
+      "full_proof_files": 25,
+      "frames": 927,
+      "diagnostic_pairs": 36,
+      "original_pairs_preserved": 24,
+      "added_diagnostic_pairs": 12,
+      "full_original_review_replays": 1,
+      "original318_HBT_safety_passed": true,
+      "original_three_phase_failures_retained": true,
       "complete_derived_witness_asset": 685854297,
       "complete_derived_witness_bytes": 178862150,
       "complete_derived_witness_sha256": "715de8205b582ac599c3c2e4d34f7a5515061425afd50951635ac0ea88425ea8",
-      "full_proof_preservation_and_interpretation_pending": true
+      "complete_derived_witness_preserved_on_permanent_release": true,
+      "large_witness_payload_not_locally_acquired": true,
+      "new_simulation": false,
+      "physical_cause_established": false,
+      "circuit_edit_validated": false,
+      "full_PHY_accepted": false
     },
     "mainchip_passive_internal_witness": {
       "source": "fc75ba27a0721b8443c5f1842dea27426af3c7dd",
@@ -2508,14 +2537,24 @@
       "tx_diagnosis": "usage_limit_stopped_after_preserved_foundation",
       "pll_handoff": "completed_readonly_review",
       "root_continues_cloud_orchestration": true
+    },
+    "cloud_only_current_boundary": {
+      "local_project_files": 0,
+      "project_named_temp_files": 0,
+      "native_processes": 0,
+      "no_local_native_archives_GDS_ODB_or_raw_waves": true,
+      "no_local_authored_tests_or_simulations": true,
+      "source_and_all_results_preserved_on_GitHub": true,
+      "original8h_GitHub_monitor_retained": true
     }
   },
   "next_actions": [
-    "Preserve complete current CDR preparation JSONs, controls and actual logs, then inspect all ten current loaded case results without automatic retries or numerical gate changes.",
-    "Preserve and interpret complete PLL36 saved-capture readback records and original failure replay; keep the full 178862150-byte derived witness as the permanent release asset.",
-    "Complete real instrumented OpenROAD build and ownership/OOM/resource qualification before any internal route diagnostic dispatch; preserve all protected clock geometry and original DRC classes.",
-    "Finish disabled current postroute outer fixtures/import/runtime/template qualification; do not bind or dispatch until an authentic current route terminal satisfies all original gates.",
-    "Keep source/results exclusively on GitHub and local project/native/temp artifacts absent. Maintain original clocks 20/4/8/8ns +5%, 0.4V/100mV/62.5ps gates. Do not mark full serial PHY, current route or final setup/hold accepted."
+    "Inspect remaining original CDR matrix40737889314 cases, preserve full terminal JSONs/logs/releases and classify genuine electrical failures. Do not retry current cases or change numerical gates.",
+    "Use preserved nominal-late breakdown to map xpd.xd0061/62/115/116 actual terminal roles; require same-row native evidence before choosing circuit changes. Preserve sampler c/d sign and clock-to-valid failures, XOR errors and VI current/phase failures.",
+    "Use actual PLL36 first-fall path observations to inspect XCLK driver/distribution RC and release-to-XRUN loading; preserve original24 pairs, all318 safety gates and three phase failures.",
+    "Complete genuine instrumented OpenROAD engine build qualification before any internal DRT witness routing. Current native layout still has3 original-class Shorts and zero changed targets.",
+    "Finish disabled postroute outer controls and only bind authentic current successful route output; historical setup/hold results do not qualify current layout.",
+    "Keep all source/tests/CAD/native outputs on GitHub. Keep local workspace/temp/native artifacts absent; do not assert serial PHY, route or final timing closure."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -2788,75 +2827,6 @@
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40600731947,
-      "head_sha": "411981a837d47d82436fd7cc076368db5ddadb0c",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122527908819,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 122529482559,
-          "name": "prepare",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 122529483742,
-          "name": "loaded",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40601173989,
-      "head_sha": "8aaaeac747e0de9a50077d19c82f4bfc19678963",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122529384619,
-          "name": "register",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40737602821,
-      "head_sha": "2c52eb7d81d3b07612f92f2ae55e3f7965e9e128",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122990284278,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 122991564618,
-          "name": "saved-capture-readback",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
-    },
-    {
       "run": 40737889314,
       "head_sha": "5e373a9378b4a3c0fad51687a604a14668dba3ce",
       "status": "queued",
@@ -2908,16 +2878,20 @@
         {
           "id": 122994880883,
           "name": "loaded (hot_late)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Original full OFF OP and transient with unchanged numerical gates"
+          ]
         },
         {
           "id": 122994880968,
           "name": "loaded (hot_early)",
-          "status": "queued",
+          "status": "in_progress",
           "conclusion": null,
-          "active_steps": []
+          "active_steps": [
+            "Preserve all original worker and complete or partial published evidence"
+          ]
         },
         {
           "id": 122994881002,
@@ -2929,11 +2903,9 @@
         {
           "id": 122994881012,
           "name": "loaded (nominal_early)",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Original full OFF OP and transient with unchanged numerical gates"
-          ]
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
         },
         {
           "id": 122994881117,
@@ -2973,40 +2945,10 @@
           "active_steps": []
         }
       ]
-    },
-    {
-      "run": 40598054387,
-      "head_sha": "acb6881b8c7a92f2687c0fc254daa246cffa1d6d",
-      "status": "completed",
-      "conclusion": "failure",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 122518906126,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 122520567191,
-          "name": "prepare",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        },
-        {
-          "id": 122520567763,
-          "name": "loaded",
-          "status": "completed",
-          "conclusion": "skipped",
-          "active_steps": []
-        }
-      ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-28T18:05:52.728072+00:00",
+    "observed_at": "2026-10-28T18:22:11.225564+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3128,7 +3070,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-28T18:05:52.728072+00:00",
+  "local_workspace_verified_empty_at": "2026-10-28T18:22:11.225564+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -22316,6 +22258,472 @@
       "git_blob": "c982dd16464b935968c409a957059fafaad37f35",
       "bytes": 8754,
       "sha256": "c100813873f266a0c518424163ec41ed616cdaaa43c118eadbbef0f0a8042a8f",
+      "existing_identical": false
+    }
+  ],
+  "imported_checkpoint_receipts_v87": [
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.aggregate-schema-regression.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "39f3661eb75507b735f9b83d1865f53bf7696e50",
+      "bytes": 1983,
+      "sha256": "f186026680fc62e84c492703a86be354962f62674188c15ce44006d871d24cfd",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.asset-authentication.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "8eba1874d5b1cdcaeabb44384fa5ca23d2abe080",
+      "bytes": 3574,
+      "sha256": "3ec8b8f47cb4d1a47dac39e007fa16989937b22525f68ea22cf02bf9be232811",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.jobs.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "ac67e86300ab00333851cc89f3454bff37f03790",
+      "bytes": 31151,
+      "sha256": "a8b81e2bcedc57d0e11cf51047c6b66f001cde824a9f2b0dd033f8799d678456",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.job.log",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "f6c4244fb68933083101db15245120a8f706509e",
+      "bytes": 139665,
+      "sha256": "dd9d9988ce972df3cb6300de512d04e1724bc432902be05fe96f616d464c7069",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.native-result.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "3bf3dd520b241fba643c47f19cc24aef8da36afc",
+      "bytes": 1911518,
+      "sha256": "aa012dd6a72c384584928aa2a5feca043d93df60d5082cc308a5352fbdecf2a6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.parts.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "9805ac178f3277579bae9d76db9d5dedfeed5c85",
+      "bytes": 1336,
+      "sha256": "f43c0671f140cfad3ee4504b86e8bddd43243640f180035a567cd3f417c13040",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.preparation-native-result.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "22b150910a45bae068404a4c796e41b25bd17b71",
+      "bytes": 1763681,
+      "sha256": "feda357b449bd6398bc585d1a582bf67b50370020f064d7e61296987073db497",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.preparation-summary.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "39f3742ead53ddaa7c0e994f14e18d2dfa544dff",
+      "bytes": 1352072,
+      "sha256": "9a8b70b63b792927ed2b08f094aa7f06853ced00a05bab5d87e68750ea2e03ea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.release.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "20f743a0dd97b97b57dfecf67b6c6b61917c9d70",
+      "bytes": 19815,
+      "sha256": "fa98c6652ba2dc1aed71fe1f6f44c4013dfcd752a2b5b03fa597c76aec1b457f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.summary.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "b2db6d72b7c23764563104d1dcfc1668ecde3488",
+      "bytes": 1363004,
+      "sha256": "0f5058543190c3a49ea7f80edfc19b53f899925c886968ff067e86ab2ec5645e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.tag.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "edf20d3b0aedded7e6662f3fabc3940280f91985",
+      "bytes": 565,
+      "sha256": "97cbb3dd1510db64a7267e8e276abcf3bb6f3f34959e82d0b210d0d1b1f689d6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.validation.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "1931567c23280946c3eb944f35719e424284750a",
+      "bytes": 364,
+      "sha256": "24a5f88fb993a7e0ec1d3b93b9118f3356858e54d15052cba568e5767bd64ce5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.preparation.job.log",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "b880f1b8481a066f28d1de15440ab1302216c96c",
+      "bytes": 57998,
+      "sha256": "577bd2d47f14e48ce066223a219e680d7f4ab08b98172d4a7d1e2d4df5639d3c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.preparation.native-result.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "22b150910a45bae068404a4c796e41b25bd17b71",
+      "bytes": 1763681,
+      "sha256": "feda357b449bd6398bc585d1a582bf67b50370020f064d7e61296987073db497",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.preparation.parts.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "af2652ef82558b444459a46194fb1a8b311faecf",
+      "bytes": 891,
+      "sha256": "1ea2155f5f294b13933f0607de09799434d46f676386daf9e1617940c682edee",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.preparation.release.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "e051fa347b131401d47ecb89942a2340c56c5a50",
+      "bytes": 11329,
+      "sha256": "b3c370cee25dfeea3be9aa9ef24e55b21588dfcff17b44311551cf70f5ac77f9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.preparation.summary.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "39f3742ead53ddaa7c0e994f14e18d2dfa544dff",
+      "bytes": 1352072,
+      "sha256": "9a8b70b63b792927ed2b08f094aa7f06853ced00a05bab5d87e68750ea2e03ea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.preparation.tag.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "b00e566d5c57ea2ec3a0f4901d89f7e563590b87",
+      "bytes": 562,
+      "sha256": "dc5214315825f7c5017306795f4f717350b0c4c784abfd74d6ef07f449ff67f2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.preparation.validation.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "117dc85372477e041b087000d1b16967a6880e34",
+      "bytes": 420,
+      "sha256": "43e15a5a8b4b9a892e9a95d63c9e560d00f997baf073269f5d9991adf1547a12",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.receipt.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "ed136be0dc458d848f52273c8c2c47263d0b44d5",
+      "bytes": 9125,
+      "sha256": "d4210f68b0ad07f35d9747f802d98b5126cb8f455e13121a3df0ff71123fc458",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.run.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "1f888cf1dc6be5119fbb3369fc64b4733868c3c8",
+      "bytes": 14391,
+      "sha256": "8e38e35525d9609782e69ae71645f4e12e8dd1545fca01bd5b4f99057e0bc24b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.source-controls.admission.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "f375eb172015209e870e6a39629416951c7f9e6d",
+      "bytes": 5925,
+      "sha256": "36838f1e49f8deb7d579399ab41f1995d326c6cb78ddeef8bb4796d79436249b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.source-controls.imports.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "a4faeeb85f0fff0730566f0ebf7231767ec7c0ba",
+      "bytes": 58398,
+      "sha256": "ad96628fb3e1ec16c887e0679b8619347daa02be3de56e43ed4672462036b5a7",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.source-controls.job.log",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "d02579d457851e24e88a22e6c095020ebe92536b",
+      "bytes": 641448,
+      "sha256": "a96b8907cb6ef3119b3759c2ee0bf6b3196dbb239e26d84b4ff9558a2573214a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.source-controls.outer.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "d260f5b2f108752147de8c6d8c8cc212d9b7d09e",
+      "bytes": 32597,
+      "sha256": "f09254841290fdc9ce1dcfc4a761dfdcb9f4e8471afd94b58021fa2f20823022",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.source-controls.release.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "c44fd371e88038715cd5068eb734729e9a83bef1",
+      "bytes": 2730,
+      "sha256": "cfc026546322b92c3d2c61a62d3d080356cc5312d0754f717d5cdaf423422695",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.source-controls.restore.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "633533c394bb3172d5867625e931ce01e8472b0b",
+      "bytes": 7574,
+      "sha256": "11d262dcca5a79062d98c8c81b8f13cd3d73c46ca4f45709fb8ebb2527dbc487",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.source-controls.result.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "3896a0570fca7c3fa2ec105b21ffea36ba174491",
+      "bytes": 10081,
+      "sha256": "83e4a5c1ead4a1890ab86870d0a0cb39cb219b10fc91c6d522759fedcf895034",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.source-controls.runtime.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "1bedd95864c11146e88b455803e2814b21817d37",
+      "bytes": 163837,
+      "sha256": "51e06a91d4e2b47e5dd0c61e9779ece95b491acae0e8e4876fa6440550b04551",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.source-controls.worker.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "0fcc971b10300fd6b0fe06ec8df150c045e3eae6",
+      "bytes": 4680,
+      "sha256": "82c57dd1ae82b3f92c5291e50da6a6c3c8f1c38582d362e85d1a588d72fd23d5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.tested-method.json",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "dc1af84e6ea8b37582af2d1c2b8733a569d10e01",
+      "bytes": 151674,
+      "sha256": "b5fca4c67c0fd99111ecef652e52ee7b5755e7035fa5398f9cd154168bf5da18",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.workflow.yml",
+      "source": "a9b797d2ef9c0613216ae1d3936b1bc6aad765f1",
+      "git_blob": "10247fd82bcdb370cf954fae2b41c5c764c823c7",
+      "bytes": 25433,
+      "sha256": "710f4b02feb2c513c8703bb23e304db727745da1faaf3f79c9486d6e868955ea",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-nominal-late-electrical-breakdown-20261028.json",
+      "source": "8fb6345ae6540642edd6e46ebf7e2a01b8579f51",
+      "git_blob": "c92e2edb51795ff87e902085194abb3ed3ac7c39",
+      "bytes": 9704,
+      "sha256": "306da8d5aecad43ac90dd4cb3fcad27092a4ebd3d744afc59f948bc75381c093",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-consumed-input-binding.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "f30257c549d11ab011fe253adf975209b5801673",
+      "bytes": 778,
+      "sha256": "ce12fb9063604b60db0e3eeef888ebfd45b771ac1909a0318f4fc47891f616c8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-current-OP-restoration.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "1819b8b496106bf26705f10b05368f212faaa28e",
+      "bytes": 882491,
+      "sha256": "d50f395e2a94bba621e9309308217e740794897b64b87018f263553d8a76b933",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-current-restored-input-controls.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "a795b34a13332101b53b0559c3d696245fc11445",
+      "bytes": 14741,
+      "sha256": "87d1805fcb969986c4ddafeda076a7219b3052ccc7d8d2aa1db069c660c0c5f9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-diagnostic-index.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "4c96372054c49a59c6a819997b5112ef128a1b57",
+      "bytes": 2450526,
+      "sha256": "703e659145f94213502d1375fe789c03ab2f14420638fdd682942c5f9cde8f2a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-diagnostic-probe-inventory.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "d341dcec32cb3230da6ae74218012cb0c04a6981",
+      "bytes": 453654,
+      "sha256": "dbb69664d2b1f6cf32bdb7d6b6570f8a4ffeec884a868996039462b8dcaf5568",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-diagnostic-resource-plan.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "aab9dc0ca1df3aa74c0aa81b48788aeaa0627d29",
+      "bytes": 10890,
+      "sha256": "a125e389a6a4d4091e0e9e6fcc842729d44dd46e755486f14488b1e49d007e90",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-original-review-replay.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "16579a15e7876e5faf0abae3657686f1864fecc1",
+      "bytes": 242057,
+      "sha256": "b98bf5e38f7f7250f2b98680563a8eb098e2cd7fb99585b092fec52a7bb2fd0c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-restored-input-resource-bounds.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "02cfe345351b2073ace1cc928d091a64cf69cfef",
+      "bytes": 790,
+      "sha256": "b94c13a7e92805de11ffbd777d888207466c5c31f7bc2cac0cf3267966d3b1e1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-tx-phase-reset334-tail-m4-stage-capture-40739668266-1.parts.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "dfd018baa504e3455903c794ef80d80c0cbf2c39",
+      "bytes": 904,
+      "sha256": "d9fc2d3b9827071871e8bd83b324f90a5ff468e679289acd55e7818c7e7fe2c5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.asset-tx-phase-reset334-tail-m4-stage-capture-40739668266-1.summary.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "60caf2a62f7dda29dbe51b0954d43e23b52f2cfc",
+      "bytes": 51130,
+      "sha256": "5cbaaf7f6c0aacb3cc28cf7bf169d91e2cc5d78bfd2fce10f1e49e320c680514",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.controls-import_controls.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "c2f494f0060bea3eb7b27cfd229377c3ebc37f29",
+      "bytes": 125964,
+      "sha256": "ffe71ade7b1a47861a375270d19f656f568bf60e38cb17a405ea86d85f5d8c85",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.controls-publication_controls.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "baf8e5375471136614955ba2d72f8c8f28ac19b8",
+      "bytes": 897,
+      "sha256": "55ac21bc2111a96341baa091f1686b3bb550428e8ece8ef2261bd8ab964f04c1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.controls-resource_controls.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "e5b77783c4384e6108197a521386479dc3abe98f",
+      "bytes": 1502,
+      "sha256": "b07d50b457ebbfa6b47393e69db8b6548a4415bceb6af4b9c121a4971c0fe9e1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.controls-source_controls.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "b94594a0ae15c1e7bac356c18bbc1eaab4c85526",
+      "bytes": 135718,
+      "sha256": "4b15228b7958fca6327938fc159a9e3f207ff9c00391fc92d8be58c85be4e7c8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.controls-wait_controls.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "8d8eb2be31c95d5782b53cfd5422a239ff47d694",
+      "bytes": 577,
+      "sha256": "7a9dba3c81344591bfa207623bb43d1f1201b939f4be1eb43963035d23eaa26e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.jobs.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "a776b150786c620be4e4486411c53dc8a5b7e385",
+      "bytes": 9053,
+      "sha256": "5f03b1516839ea4c2a299c148e6178ec53098131d3a537eb13ea81b6270f24e3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.observations.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "4c87e1f8e605eace1727d974fe4e1a9392151443",
+      "bytes": 95128,
+      "sha256": "f33a529f17b6bf567a441b0e7d31aa496ba64519927a88547e9ce15eb0fd3363",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.receipt.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "0b8a11dc073908d766c0d87e508833b470313cca",
+      "bytes": 9115,
+      "sha256": "913cec7c197688ecc888ee5cf6d6dd4e4962644cc3aeca73e4c6be229f1f1397",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.release.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "300d1d1c72b341e8cc0bc896230f6ee77e371818",
+      "bytes": 27558,
+      "sha256": "d2efa1f03a562b696f4f292eb1d27c26d17ba85a9de5d79a27fae1d95d24f691",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.run.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "b581e3a2623c1c1bc24562a3cfe538f142e3d538",
+      "bytes": 14434,
+      "sha256": "206f069e8380afd88e97e83e4df7f40dbc7b434b64de3c369a06213e0b3550a2",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.saved-capture-readback.job.log",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "2f2d4f209040884cd7f54cabf30d045c3ef42bfc",
+      "bytes": 119484,
+      "sha256": "e9a2888534629c8ab1006e0ac3b02954df063a66e6a19878de7fce4da9aa2b8e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.source-controls.job.log",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "1ee832c22952019bc5443661c374b006e96310a2",
+      "bytes": 893012,
+      "sha256": "a80b1f2d472c657bcf21ff5d0f983dc3d7c6e849ecb5a0c492a5548d5b188dd8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.tag.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "b0e22901db9b6686090942bf2aada0668eaa58ac",
+      "bytes": 588,
+      "sha256": "38ee20dc5d655575eb640d94ad93271a323f516d5f6078d09ec37fcebe31215c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.tested-method.json",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "7ec25a651b23502efaace1b65cda49b2180abb3b",
+      "bytes": 131236,
+      "sha256": "19440e3bd2b942d2608f00ba8e1fc94cf374955ddf9d625819cdfa046e0a5593",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/tx-phase-reset334-tail-M4-stage-readback-complete-20261028.workflow.yml",
+      "source": "343bc88882e9919de953e098286de98564ae067e",
+      "git_blob": "8527a4df03589b556384e88f33fac69aba06e6a5",
+      "bytes": 13644,
+      "sha256": "4708ad524f138a6efad1fda62c3cb2875a051c1533f0f372fef28e49aef22ec6",
       "existing_identical": false
     }
   ]
