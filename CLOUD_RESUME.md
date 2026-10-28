@@ -8790,3 +8790,10 @@ Local project/tmp/native processes verified absent. Inventory296 exact cloud han
 ### 2026-10-28T22:52:30.408983+00:00 — cloud-only checkpoint v92
 
 Dual-schema monitor source 46447f9d9b44d23e9847adc06f4d3fc1d13daf33 passed63 hosted controls. Run40781615079 retained ATTENTION_REQUIRED for historical failures; no MONITOR_ERROR or automatic native dispatch. Reader deployed before atomic manifest/two-shard migration; no old-reader runs remained. All296 historical rows and policy/selectors preserved exactly in order; new monitor handle297 added. Each document remains <=65536 bytes. Main bootstrap remains schema1. Physical/RTL/native evidence remains in GitHub only; local workspace/tmp native scope reverified empty. Selector-width source-controls candidate011d62ac is prepared but untested. Actual built-engine runtime40776999659 passed; routing-prefix successor remains in preparation. Full serial PHY, routed serial main chip and final setup/hold are not accepted.
+
+
+### 2026-10-28T23:16:07.020274+00:00 — cloud-only checkpoint v93
+
+Cloud monitor migration verified by actual hosted run40783413345:63 controls passed,297 explicit rows+2 latest selectors at one root HEAD, all three document hashes verified. ATTENTION_REQUIRED preserves historical failures. Full2,037,989B JSON snapshot retained permanently in Git. CDR width source controls remain unexecuted: GitHub returned definite HTTP422 before any run; harmless registry/default stubs and explicit event mapping have not resolved it. Shared routing prefix source22f61f65 preserves original586 pins,619 total, and independent cleanup correction with eight actual-driver lifecycle fixture cases; hosted controls/native still unaccepted. No native archive or local CAD/test execution occurred.
+
+Local project/tmp/native processes verified absent. Inventory300 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.

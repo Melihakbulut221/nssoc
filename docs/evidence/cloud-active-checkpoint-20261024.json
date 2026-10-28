@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-28T22:52:30.408983+00:00",
+  "updated_at": "2026-10-28T23:16:07.020274+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "9f641953a87f783e64155fce00891fe475c1b374",
+  "root_source_before_receipt": "f17258408fcfae400fd2af03278c0731fb3f1513",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 92,
+    "inventory_version": 93,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -2715,6 +2715,34 @@
       "source": "011d62ac0801cf99ea1e7c204f55254bfc485c38",
       "controls_executed": false,
       "native_executed": false
+    },
+    "monitor_live_sharded_readback": {
+      "run": 40783413345,
+      "source": "5259d3decb710c850a7695940fdc4a7eba9f5154",
+      "root_read": "f17258408fcfae400fd2af03278c0731fb3f1513",
+      "explicit297": true,
+      "observed299": true,
+      "controls63": true,
+      "status": "ATTENTION_REQUIRED",
+      "all_historical_failures_retained": true,
+      "native_dispatch": false,
+      "receipt_source": "cf257e6c5132c121b095667f8df4c52bcb4e1ac0"
+    },
+    "cdr_width_controls_dispatch_problem": {
+      "source": "b89d7fbf0c38d81ecb2e0ed87f0dbb7b6f33671e",
+      "http422": true,
+      "actual_controls_runs": 0,
+      "controls_unexecuted": true,
+      "native": false,
+      "diagnosis_in_progress": true
+    },
+    "built_engine_shared_prefix_source": {
+      "source": "22f61f652d12337bd17a5db6f2d766578f425b49",
+      "protected619": true,
+      "original586_unchanged": true,
+      "reviewed_independent_cleanup_fix": true,
+      "controls_unexecuted": true,
+      "native_unaccepted": true
     }
   },
   "next_actions": [
@@ -3002,19 +3030,71 @@
     "observed_40770955148": 40770955148,
     "observed_40776736400": 40776736400,
     "observed_40776999659": 40776999659,
-    "observed_40781615079": 40781615079
+    "observed_40781615079": 40781615079,
+    "observed_40783413345": 40783413345,
+    "observed_40783594576": 40783594576,
+    "observed_40784411137": 40784411137
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40781615079,
-      "head_sha": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
+      "run": 40783413345,
+      "head_sha": "5259d3decb710c850a7695940fdc4a7eba9f5154",
       "status": "completed",
-      "conclusion": "failure"
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123150507461,
+          "name": "controls",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        },
+        {
+          "id": 123150570369,
+          "name": "observe",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40783594576,
+      "head_sha": "36b2152170c923e96432fadf7ef9ea2a3de96204",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123151113607,
+          "name": "register-only",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40784411137,
+      "head_sha": "93784533ae8d78120a4cedc9c9a5bd2055253a98",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123153893026,
+          "name": "register-only",
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
+        }
+      ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-28T22:52:30.408983+00:00",
+    "observed_at": "2026-10-28T23:16:07.020274+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3143,7 +3223,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-28T22:52:30.408983+00:00",
+  "local_workspace_verified_empty_at": "2026-10-28T23:16:07.020274+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -25326,6 +25406,112 @@
       "source": "65dc9b8eb1d1c6b1b0535adcfd51cdda372acbae",
       "draft": false,
       "prerelease": true
+    }
+  ],
+  "imported_checkpoint_receipts_v93": [
+    {
+      "path": "docs/evidence/cloud-monitor-sharded-live-terminal-20261029.artifact.json",
+      "source": "cf257e6c5132c121b095667f8df4c52bcb4e1ac0",
+      "git_blob": "fbf715278eedc194597d85b34326a3737a9a1a82",
+      "bytes": 776,
+      "sha256": "692b2c9ae1633079039b8d5f9ee7e4d1ff34d21bf1f9dcd899a7f59a733fc3ca",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-sharded-live-terminal-20261029.controls.log",
+      "source": "cf257e6c5132c121b095667f8df4c52bcb4e1ac0",
+      "git_blob": "0ab8022a5f4a99363b79828ad5e3ce054521aaea",
+      "bytes": 20552,
+      "sha256": "9e08d882b8c918eea93699a20ae2e291b1eac04340a0db4fb0aa802b053cfc4d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-sharded-live-terminal-20261029.jobs.json",
+      "source": "cf257e6c5132c121b095667f8df4c52bcb4e1ac0",
+      "git_blob": "2aa31e4e1139890a31d9f225ffe9adf84e5a3a23",
+      "bytes": 5572,
+      "sha256": "5900fcc78885565b7ae3ce41059619ae31421e1510422d0d0335760b96d358e3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-sharded-live-terminal-20261029.observe.log",
+      "source": "cf257e6c5132c121b095667f8df4c52bcb4e1ac0",
+      "git_blob": "ba76a76df28ac6a4e06fa9860c0d2287577ac279",
+      "bytes": 21443,
+      "sha256": "91ee28093142cda2a484e4c054c4f3228fa70b7108304ebe8f7d9dfced993466",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-sharded-live-terminal-20261029.receipt.json",
+      "source": "cf257e6c5132c121b095667f8df4c52bcb4e1ac0",
+      "git_blob": "70381508c0909ad74977138f55c4913cc28da982",
+      "bytes": 1857,
+      "sha256": "dddcaeade6bf16321ca055220cbf2d23d53fd013760a8c5d91274e8df923e3a8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-sharded-live-terminal-20261029.run.json",
+      "source": "cf257e6c5132c121b095667f8df4c52bcb4e1ac0",
+      "git_blob": "e9662126e3defe8a72c3022e652dfbd73ec11f0d",
+      "bytes": 14335,
+      "sha256": "4d94e893250865b45e79df7ca52fab4a5d2deea9ba56dda51eb9514f92b69b7e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cloud-monitor-sharded-live-terminal-20261029.snapshot.json",
+      "source": "cf257e6c5132c121b095667f8df4c52bcb4e1ac0",
+      "git_blob": "e2378301cd9e55b0c60e8736919b1b8b1817fa07",
+      "bytes": 2037989,
+      "sha256": "cbe9a014f4d53d0a13b76015a9c204f4ce48107f274e345972b06af5e572903b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-selector-column-width-controls-admission-20261029.json",
+      "source": "011d62ac0801cf99ea1e7c204f55254bfc485c38",
+      "git_blob": "6f5de6351aab9677366025e6a086f7a0d94e5892",
+      "bytes": 8823,
+      "sha256": "7b9afa94b58e4f71c1bea01119a1f5aba2778fd6d604d58e42da1013dce06307",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-selector-column-width-controls-dependencies-20261029.json",
+      "source": "011d62ac0801cf99ea1e7c204f55254bfc485c38",
+      "git_blob": "bbe8f1af48be6ee6654a41170f7e39cb4ca98c39",
+      "bytes": 17283,
+      "sha256": "fc1da12c02277b67e96129328c78bf28c0832d5f5a223588253ad53d5f718894",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-selector-column-width-klayout-pypi-20261029.json",
+      "source": "011d62ac0801cf99ea1e7c204f55254bfc485c38",
+      "git_blob": "d322cfc3ac9fdfff105b6181c9483bbd2196e59b",
+      "bytes": 51979,
+      "sha256": "69931da7a0ce1790d7392e2664e90514aab032ccdfad30616b9e7733efde302f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-selector-width-dispatch-admission-20261029.json",
+      "source": "b89d7fbf0c38d81ecb2e0ed87f0dbb7b6f33671e",
+      "git_blob": "de295305a6c8180f5792081a6eab723f2d1d9a55",
+      "bytes": 777,
+      "sha256": "2c4f602b159e6d13c4aa34ec0d476c088b1c1151c4169ce0316dfdf3681b1746",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-built-engine-route-prefix-source-admission-20261029.json",
+      "source": "31dd6f0dfa143fd233c73cc4e988329b2429b8da",
+      "git_blob": "6e3232ccd8fcbb8dc24ef76c9eda558bf67cbb30",
+      "bytes": 3832,
+      "sha256": "b622ba9ffe1c06592ab6b4ad219653630e9abba5f7dd5cd9376345261100f3dc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-built-engine-route-prefix-independent-review-20261029.json",
+      "source": "22f61f652d12337bd17a5db6f2d766578f425b49",
+      "git_blob": "55778f4359bf65c9e281dad3376b480cadacf8c5",
+      "bytes": 5373,
+      "sha256": "804d7e99be6e10b0e4750b4a8b84d69ef0817a568c77055b83af8b38f538c6ec",
+      "existing_identical": false
     }
   ]
 }
