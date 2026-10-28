@@ -1,0 +1,190 @@
+{
+  "lifecycle": [
+    {
+      "case": "complete",
+      "cleanup_errors": [],
+      "complete_census": true,
+      "events": [
+        "create",
+        "read",
+        "chip",
+        "census",
+        "destroy"
+      ],
+      "primary": null
+    },
+    {
+      "case": "create",
+      "cleanup_errors": [],
+      "complete_census": false,
+      "events": [
+        "create"
+      ],
+      "primary": "create sentinel"
+    },
+    {
+      "case": "read",
+      "cleanup_errors": [],
+      "complete_census": false,
+      "events": [
+        "create",
+        "read",
+        "destroy"
+      ],
+      "primary": "read sentinel"
+    },
+    {
+      "case": "chip",
+      "cleanup_errors": [],
+      "complete_census": false,
+      "events": [
+        "create",
+        "read",
+        "chip",
+        "destroy"
+      ],
+      "primary": "chip sentinel"
+    },
+    {
+      "case": "census",
+      "cleanup_errors": [],
+      "complete_census": false,
+      "events": [
+        "create",
+        "read",
+        "chip",
+        "census",
+        "destroy"
+      ],
+      "primary": "census sentinel"
+    },
+    {
+      "case": "destroy",
+      "cleanup_errors": [
+        {
+          "action": "destroy-read-only-database",
+          "error": "RuntimeError('destroy sentinel')",
+          "traceback": "Traceback (most recent call last):\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_witness_engine_build_contract.py\", line 169, in attempt\n    value = action()\n            ^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/mainchip_built_engine_runtime_native.py\", line 29, in destroy\n    odb.dbDatabase.destroy(database);report[\"database_destroyed\"]=True\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/nssoc/nssoc/scripts/check_mainchip_built_engine_runtime.py\", line 97, in destroy\n    if failure==\"destroy\":raise RuntimeError(\"destroy sentinel\")\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nRuntimeError: destroy sentinel\n",
+          "type": "RuntimeError"
+        }
+      ],
+      "complete_census": true,
+      "events": [
+        "create",
+        "read",
+        "chip",
+        "census",
+        "destroy"
+      ],
+      "primary": null
+    }
+  ],
+  "lifecycle_count": 6,
+  "native_objects_executed": false,
+  "observer_equivalence_qualified": false,
+  "physical_acceptance": false,
+  "positive": [
+    "hosted exact source context",
+    "actual prior build envelope",
+    "complete inventory selected extraction",
+    "exact 104 runtime records"
+  ],
+  "positive_count": 4,
+  "protected_count": 586,
+  "refusal_count": 23,
+  "refusals": [
+    {
+      "label": "context GITHUB_ACTIONS",
+      "reason": "hosted Linux only"
+    },
+    {
+      "label": "context RUNNER_OS",
+      "reason": "hosted Linux only"
+    },
+    {
+      "label": "context GITHUB_REPOSITORY",
+      "reason": "repository identity"
+    },
+    {
+      "label": "context GITHUB_RUN_ID",
+      "reason": "run identity"
+    },
+    {
+      "label": "context GITHUB_RUN_ATTEMPT",
+      "reason": "no retry"
+    },
+    {
+      "label": "context GITHUB_SHA",
+      "reason": "source identity"
+    },
+    {
+      "label": "context GITHUB_REF",
+      "reason": "runtime probe branch"
+    },
+    {
+      "label": "wrong engine source",
+      "reason": "original build run"
+    },
+    {
+      "label": "failed engine build",
+      "reason": "original build jobs"
+    },
+    {
+      "label": "changed engine asset",
+      "reason": "engine release asset census"
+    },
+    {
+      "label": "traversal",
+      "reason": "archive path"
+    },
+    {
+      "label": "absolute",
+      "reason": "archive path"
+    },
+    {
+      "label": "symlink",
+      "reason": "nonregular archive member"
+    },
+    {
+      "label": "duplicate",
+      "reason": "duplicate archive member"
+    },
+    {
+      "label": "unknown",
+      "reason": "archive member identity/size"
+    },
+    {
+      "label": "missing",
+      "reason": "missing archive member"
+    },
+    {
+      "label": "changed bytes",
+      "reason": "changed archive member"
+    },
+    {
+      "label": "wrong size",
+      "reason": "archive member identity/size"
+    },
+    {
+      "label": "unrecorded directory",
+      "reason": "unrecorded archive directory"
+    },
+    {
+      "label": "expanded bound",
+      "reason": "archive expanded size"
+    },
+    {
+      "label": "runtime missing",
+      "reason": "runtime dependency identities"
+    },
+    {
+      "label": "runtime extra",
+      "reason": "runtime dependency identities"
+    },
+    {
+      "label": "runtime changed",
+      "reason": "runtime dependency identities"
+    }
+  ],
+  "status": "PASS_BUILT_ENGINE_RUNTIME_SOURCE_CONTROLS"
+}
