@@ -1,0 +1,16 @@
+name: CDR selector width geometry generation only
+on:
+  workflow_dispatch:
+    inputs:
+      generate:
+        description: Explicit geometry request on separately reviewed source branch
+        type: boolean
+        default: false
+        required: true
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: printf '%s\n' 'Workflow registry only; no checkout, dependencies, tests or native execution.'
