@@ -1,19 +1,25 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-28T22:18:36.043547+00:00",
+  "updated_at": "2026-10-28T22:52:30.408983+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "aa5ac74a8b451928a6aac6b37539f5aabe77412e",
+  "root_source_before_receipt": "9f641953a87f783e64155fce00891fe475c1b374",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 91,
+    "inventory_version": 92,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
     "schedule_verified_at": "2026-10-28T19:30:09.304878+00:00",
     "automatic_native_dispatch": false,
     "last_verified_run_status": "ATTENTION_REQUIRED: actual source controls and live inventory/snapshot passed; unresolved engineering failures retained; complete logs preserved; no MONITOR_ERROR",
-    "proof_commit": "4117a800cbd9fcfb11f94b8531b3bc1e2e8d24fa"
+    "proof_commit": "4117a800cbd9fcfb11f94b8531b3bc1e2e8d24fa",
+    "inventory_schema": 2,
+    "run_files": [
+      ".github/cloud-progress-monitor-runs-000.json",
+      ".github/cloud-progress-monitor-runs-001.json"
+    ],
+    "deployed_source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33"
   },
   "active_runs": {},
   "isolated_durable_sources": {
@@ -2630,6 +2636,85 @@
       "limit": 65536,
       "handles": 296,
       "next_step": "Before another new handle, implement reviewed inventory partitioning preserving all handles and existing per-document bounds; no dropping evidence or relaxing bound."
+    },
+    "cloud_monitor_sharded_inventory_v92": {
+      "schema": "cloud-monitor-sharded-deployment-v1",
+      "source": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
+      "run": 40781615079,
+      "controls_tests": 63,
+      "actual_live_status": "ATTENTION_REQUIRED",
+      "original_failed_runs_preserved": true,
+      "native_dispatch": false,
+      "prior_root": "9f641953a87f783e64155fce00891fe475c1b374",
+      "prior_inventory_sha256": "ce008b7e97abf71705706c0c9bed0d20eb6d6cbec813bf3dcb74e834b712dd37",
+      "prior_count": 296,
+      "new_count": 297,
+      "all_original_rows_exact_and_ordered": true,
+      "selectors_policy_unchanged": true,
+      "every_document_limit_bytes": 65536,
+      "manifest": {
+        "repository": "Melihakbulut221/nssoc",
+        "target_branch": "codex/complete-open-work",
+        "stall_seconds": 21600,
+        "automatic_native_dispatch": false,
+        "latest_workflows": [
+          {
+            "label": "CDR newest actual-parent physical pipeline",
+            "workflow": "cdr-sampler-active-input-v57-parent-cloud.yml",
+            "branch": "codex/complete-open-work",
+            "optional": false,
+            "production_jobs": [
+              "native-physical"
+            ]
+          },
+          {
+            "label": "PLL latest complete-capture reader",
+            "workflow": "pll-rhi120-c8-delta-reader-cloud.yml",
+            "branch": "codex/complete-open-work",
+            "event": "workflow_dispatch",
+            "production_jobs": [
+              "completed-reader"
+            ],
+            "optional": true
+          }
+        ],
+        "inventory_version": 92,
+        "inventory_updated_at": "2026-10-28T22:52:30.408983+00:00",
+        "schema": 2,
+        "run_files": [
+          {
+            "path": ".github/cloud-progress-monitor-runs-000.json",
+            "blob_sha": "fe633c866dedd8526aadefa2821164b190994f0f",
+            "sha256": "921acce01fb4b8d3daeca838107cfc84d30ffd344783aa0beb9a3443257f3c89",
+            "bytes": 32294,
+            "run_count": 148
+          },
+          {
+            "path": ".github/cloud-progress-monitor-runs-001.json",
+            "blob_sha": "3e2979e43fbde7bae8ac15cf4bf128266e921a6c",
+            "sha256": "95d036192557172d68cb1e4e298256474e3bff9f4ad18b801105edc5ebd5f49e",
+            "bytes": 32893,
+            "run_count": 149
+          }
+        ],
+        "run_count": 297,
+        "runs_sha256": "921832d21d10670dfb009a96343f7cad88441ec14b93039a7ad1bdb2552c3bcb"
+      },
+      "main_bootstrap_schema": 1,
+      "old_reader_active_runs": [],
+      "local_workspace_entries": 0,
+      "project_named_tmp": {
+        "/tmp": [],
+        "/var/tmp": []
+      },
+      "native_processes": 0,
+      "scope": "Cloud orchestration qualification only; no PHY/routing/timing acceptance."
+    },
+    "cdr_v59_selector_width_controls_source": {
+      "branch": "codex/cdr-v59-selector-column-width-controls",
+      "source": "011d62ac0801cf99ea1e7c204f55254bfc485c38",
+      "controls_executed": false,
+      "native_executed": false
     }
   },
   "next_actions": [
@@ -2916,110 +3001,20 @@
     "observed_40769846963": 40769846963,
     "observed_40770955148": 40770955148,
     "observed_40776736400": 40776736400,
-    "observed_40776999659": 40776999659
+    "observed_40776999659": 40776999659,
+    "observed_40781615079": 40781615079
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
-      "run": 40776736400,
-      "head_sha": "33bb39d61d023344d3b19b34608703fbb7d2ae7d",
+      "run": 40781615079,
+      "head_sha": "46447f9d9b44d23e9847adc06f4d3fc1d13daf33",
       "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123127873385,
-          "name": "register-only",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40776999659,
-      "head_sha": "65dc9b8eb1d1c6b1b0535adcfd51cdda372acbae",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123128784455,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123129173992,
-          "name": "native-probe",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
-    },
-    {
-      "run": 40770955148,
-      "head_sha": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
-      "status": "completed",
-      "conclusion": "success",
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123107705594,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123108245647,
-          "name": "readback (hot_early)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123108245666,
-          "name": "readback (cold_late)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123108245698,
-          "name": "readback (hot_late)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123108245705,
-          "name": "readback (nominal_late)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123108245741,
-          "name": "readback (nominal_early)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123108245843,
-          "name": "readback (cold_early)",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        }
-      ]
+      "conclusion": "failure"
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-28T22:18:36.043547+00:00",
+    "observed_at": "2026-10-28T22:52:30.408983+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3148,7 +3143,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-28T22:18:36.043547+00:00",
+  "local_workspace_verified_empty_at": "2026-10-28T22:52:30.408983+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
