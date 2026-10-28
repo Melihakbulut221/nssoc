@@ -1,0 +1,12 @@
+name: Built engine shared routing prefix
+on:
+  push:
+    branches: [codex/register-mainchip-built-engine-route-prefix]
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-24.04
+    steps:
+      - run: printf '%s\n' 'Workflow registration only; no checkout, tests, archive retrieval or native execution.'
