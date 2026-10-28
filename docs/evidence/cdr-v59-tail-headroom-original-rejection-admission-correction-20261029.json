@@ -1,0 +1,107 @@
+{
+  "status": "CORRECTED_EXACT_ORIGINAL_ELECTRICAL_REFUSAL_ADMISSION_SOURCE_CONTROLS_ONLY",
+  "failed_source": "a0d3c77cb3f9203ab0714ae33954b6019d29a99a",
+  "failed_run": 40768371741,
+  "complete_failure_proof_commit": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+  "failed_job": 123098584805,
+  "raw_log": {
+    "bytes": 31115,
+    "sha256": "c813040eda08ab183a44208a8b2944488697d88e0ec8f22cd30f94c41309ef96"
+  },
+  "failure": "AssertionError('incomplete original outer terminal')",
+  "diagnosis": "The six authenticated rejected cases have complete native/preservation terminal records and seven successful outer cleanup/preservation actions. Their separate original_native_case_qualification action fails because the original worker rejects electrically and returns 1; requiring outer finalization success contradicted these preserved reports.",
+  "correction": "Admit only the exact six authenticated rejection chains, including full error/traceback hashes; require original body/evidence/qualification reasons, all seven cleanup/preservation successes, no supervision or memory-read error, original resource limits, empty owned process cleanup, exact stdout/stderr output hashes and native_case_passed false. Electrical and native predicates are unchanged.",
+  "original_rejection_chain_fields": [
+    "body_error",
+    "command_evidence_error",
+    "outer_terminal_actions",
+    "outer_terminal_errors",
+    "outer_terminal_finalization_complete"
+  ],
+  "original_rejection_chain_sha256": {
+    "nominal_early": "44ccd866d74289ff63312691d15ab50b18f8447740b77ac0544e6544b2c9e34a",
+    "nominal_late": "5ff8e50d1c4f87cea13908670401f94045c0c9cff9693331f9ca4b8c6f2bff9c",
+    "hot_early": "be8002323ab4784e04826fa354c4c916183c575b411edc0d2bc2055ad0afdcd3",
+    "hot_late": "9de38b4c4756fff5c4da35c541cf98a71d8ec3e907341e2b335f15640e108d5e",
+    "cold_early": "0df9c4797813da656bffd5a19a68434e669b14c784d5af5d0f07b65c29c36372",
+    "cold_late": "0d39249854e3ef2f569aa1793821d6d2884d15b304e918c661fa106bb5233800"
+  },
+  "unchanged_original_pins": 946,
+  "original_report_bytes_unchanged": true,
+  "original_sampling_comparator_gates_ps": [
+    37.5,
+    75
+  ],
+  "old_predicate": "    need(o[\"outer_terminal_finalization_complete\"] is True and o[\"outer_terminal_errors\"]==[],\n        \"incomplete original outer terminal\")\n",
+  "new_predicate": "    validate_original_rejection_terminal(o,case)\n",
+  "added_helper": "# Exact authenticated original electrical-refusal chains, including preserved tracebacks.\nORIGINAL_REJECTION_TERMINAL_SHA256 = {'nominal_early': '44ccd866d74289ff63312691d15ab50b18f8447740b77ac0544e6544b2c9e34a', 'nominal_late': '5ff8e50d1c4f87cea13908670401f94045c0c9cff9693331f9ca4b8c6f2bff9c', 'hot_early': 'be8002323ab4784e04826fa354c4c916183c575b411edc0d2bc2055ad0afdcd3', 'hot_late': '9de38b4c4756fff5c4da35c541cf98a71d8ec3e907341e2b335f15640e108d5e', 'cold_early': '0df9c4797813da656bffd5a19a68434e669b14c784d5af5d0f07b65c29c36372', 'cold_late': '0d39249854e3ef2f569aa1793821d6d2884d15b304e918c661fa106bb5233800'}\n\ndef validate_original_rejection_terminal(o,case):\n    need(o[\"outer_terminal_finalization_complete\"] is False,\"original qualification failure flag changed\")\n    actions=[dict(action=name,completed=True)for name in\n        (\"owned_process_cleanup\",\"stop_heartbeat\",\"join_heartbeat\",\"restore_signal_2\",\"restore_signal_15\",\n         \"terminal_resource_sample\",\"preserve_complete_native_evidence\")]\n    actions.append(dict(action=\"original_native_case_qualification\",completed=False))\n    need(o[\"outer_terminal_actions\"]==actions,\"original cleanup/preservation action chain changed\")\n    errors=o[\"outer_terminal_errors\"]\n    need(type(errors)is list and len(errors)==1 and type(errors[0])is dict,\"different outer terminal error census\")\n    need(errors[0][\"action\"]==\"original_native_case_qualification\"\n        and errors[0][\"type\"]==\"AssertionError\"\n        and errors[0][\"error\"]==\"AssertionError('Loaded owned command did not complete cleanly')\",\n        \"different outer qualification error\")\n    body=o[\"body_error\"];evidence=o[\"command_evidence_error\"]\n    need(body[\"action\"]==\"loaded_worker\" and body[\"type\"]==\"AssertionError\",\"different original body failure\")\n    need(evidence[\"action\"]==\"command_evidence\" and evidence[\"type\"]==\"AssertionError\"\n        and evidence[\"error\"]==\"AssertionError('Original loaded worker failed')\",\"different command evidence failure\")\n    q=o[\"command\"];label=\"original-loaded-\"+case\n    need(q[\"label\"]==label and type(q[\"returncode\"])is int and q[\"returncode\"]==1,\n        \"different original worker return\")\n    need(q[\"supervision_failure\"]is None and q[\"memory_read_error\"]is None,\n        \"original supervision failure cannot be admitted\")\n    need(q[\"minimum_available_kib\"]==2097152 and q[\"maximum_group_rss_kib\"]==10485760,\n        \"original supervision limits changed\")\n    need(q[\"process_group_cleanup\"]==dict(remaining_live=[],remaining_nonrunning=[],signals=[]),\n        \"original process cleanup changed\")\n    need(q[\"stdout_sha256\"]==o[\"outputs\"][\"supervision/\"+label+\".stdout\"]\n        and q[\"stderr_sha256\"]==o[\"outputs\"][\"supervision/\"+label+\".stderr\"],\"original command stream join changed\")\n    need(o[\"native_case_passed\"]is False,\"original native case qualification invented\")\n    keys=(\"body_error\",\"command_evidence_error\",\"outer_terminal_actions\",\"outer_terminal_errors\",\n          \"outer_terminal_finalization_complete\")\n    raw=json.dumps({k:o[k]for k in keys},sort_keys=True,separators=(\",\",\":\"),allow_nan=False).encode()\n    need(hashlib.sha256(raw).hexdigest()==ORIGINAL_REJECTION_TERMINAL_SHA256[case],\n        \"exact authenticated original rejection chain changed\")\n\n",
+  "old_production_source": {
+    "path": "docs/evidence/cdr-v59-tail-headroom-first-failed-admission-20261029.py",
+    "bytes": 14677,
+    "sha256": "34199476cc513877a65863595f2fa17ee0cbd42fb0ee597b9de8f4d03a4d2bd8"
+  },
+  "source_delta": {
+    "changed_existing_functions": [
+      "validate_reports"
+    ],
+    "added_function": "validate_original_rejection_terminal",
+    "unchanged_existing_functions": [
+      "adapted_function",
+      "api",
+      "cloud_guard",
+      "download",
+      "identity",
+      "methods",
+      "need",
+      "read_json",
+      "reference",
+      "regular",
+      "replay_all",
+      "restore",
+      "sha",
+      "validate_method",
+      "validate_native"
+    ],
+    "driver_and_rows_unchanged": true,
+    "publication_controls_unchanged": true
+  },
+  "actual_control_design": {
+    "positive_count": 7,
+    "refusal_count": 72,
+    "new_reason_bound_terminal_refusals": 16,
+    "exact_original_failure_via_actual_reference_and_original_AST": true,
+    "all_six_authentic_full_reports": true,
+    "complete_failure_preserved": true,
+    "synthetic_measurements_and_transport_explicit": true,
+    "authored_not_executed": true
+  },
+  "files": {
+    "scripts/cdr_v59_tail_headroom_admission.py": {
+      "bytes": 17847,
+      "sha256": "dc1a39a03843b87bd90974a200f6526a79ab77a1e18f12e304ddc711f3a086bb"
+    },
+    "scripts/check_cdr_v59_tail_headroom_admission.py": {
+      "bytes": 19087,
+      "sha256": "c835a7cdc2aa2af1cefbc0498f3e66f7732eae008902bf6de45978005f8ff936"
+    },
+    ".github/workflows/cdr-v59-tail-headroom-cloud.yml": {
+      "bytes": 8754,
+      "sha256": "e392694a6471cedd49682906face63283c69550de3b3cc01f7b5a731a848edde"
+    },
+    ".github/workflow-templates/cdr-v59-tail-headroom-cloud.yml": {
+      "bytes": 8754,
+      "sha256": "e392694a6471cedd49682906face63283c69550de3b3cc01f7b5a731a848edde"
+    },
+    "docs/evidence/cdr-v59-tail-headroom-first-failed-admission-20261029.py": {
+      "bytes": 14677,
+      "sha256": "34199476cc513877a65863595f2fa17ee0cbd42fb0ee597b9de8f4d03a4d2bd8"
+    }
+  },
+  "readback_authorized": false,
+  "new_simulation": false,
+  "native_executed": false,
+  "local_authored_tests_executed": false,
+  "accepted": false,
+  "cdr_accepted": false,
+  "full_phy_accepted": false
+}

@@ -62,7 +62,10 @@ jobs:
           root=Path('hw/soc/out/cdr-tail-headroom-controls')
           a=json.loads((root/'admission.json').read_bytes())
           assert a['status']=='PASS_CURRENT_TAIL_HEADROOM_SOURCE_CONTROLS_NOT_CAPTURE_ANALYSIS'
-          assert a['positive_count']==6 and a['refusal_count']>=40
+          assert (a['positive_count'],a['refusal_count'])==(7,72)
+          assert a['exact_original_terminal_refusal_count']==16
+          assert a['historical_rejection_schema_regression']['actual_original_validate_frame'] is True
+          assert a['historical_rejection_schema_regression']['actual_reference_frame'] is True
           assert a['actual_six_original_reports_authenticated'] is True
           assert a['actual_capture_read'] is False and a['simulator_executed'] is False
           r=json.loads((root/'rows.json').read_bytes())

@@ -117,6 +117,44 @@ def reference(case,m,root=ROOT):
     validate_reports(case,pin,docs)
     return pin,docs
 
+# Exact authenticated original electrical-refusal chains, including preserved tracebacks.
+ORIGINAL_REJECTION_TERMINAL_SHA256 = {'nominal_early': '44ccd866d74289ff63312691d15ab50b18f8447740b77ac0544e6544b2c9e34a', 'nominal_late': '5ff8e50d1c4f87cea13908670401f94045c0c9cff9693331f9ca4b8c6f2bff9c', 'hot_early': 'be8002323ab4784e04826fa354c4c916183c575b411edc0d2bc2055ad0afdcd3', 'hot_late': '9de38b4c4756fff5c4da35c541cf98a71d8ec3e907341e2b335f15640e108d5e', 'cold_early': '0df9c4797813da656bffd5a19a68434e669b14c784d5af5d0f07b65c29c36372', 'cold_late': '0d39249854e3ef2f569aa1793821d6d2884d15b304e918c661fa106bb5233800'}
+
+def validate_original_rejection_terminal(o,case):
+    need(o["outer_terminal_finalization_complete"] is False,"original qualification failure flag changed")
+    actions=[dict(action=name,completed=True)for name in
+        ("owned_process_cleanup","stop_heartbeat","join_heartbeat","restore_signal_2","restore_signal_15",
+         "terminal_resource_sample","preserve_complete_native_evidence")]
+    actions.append(dict(action="original_native_case_qualification",completed=False))
+    need(o["outer_terminal_actions"]==actions,"original cleanup/preservation action chain changed")
+    errors=o["outer_terminal_errors"]
+    need(type(errors)is list and len(errors)==1 and type(errors[0])is dict,"different outer terminal error census")
+    need(errors[0]["action"]=="original_native_case_qualification"
+        and errors[0]["type"]=="AssertionError"
+        and errors[0]["error"]=="AssertionError('Loaded owned command did not complete cleanly')",
+        "different outer qualification error")
+    body=o["body_error"];evidence=o["command_evidence_error"]
+    need(body["action"]=="loaded_worker" and body["type"]=="AssertionError","different original body failure")
+    need(evidence["action"]=="command_evidence" and evidence["type"]=="AssertionError"
+        and evidence["error"]=="AssertionError('Original loaded worker failed')","different command evidence failure")
+    q=o["command"];label="original-loaded-"+case
+    need(q["label"]==label and type(q["returncode"])is int and q["returncode"]==1,
+        "different original worker return")
+    need(q["supervision_failure"]is None and q["memory_read_error"]is None,
+        "original supervision failure cannot be admitted")
+    need(q["minimum_available_kib"]==2097152 and q["maximum_group_rss_kib"]==10485760,
+        "original supervision limits changed")
+    need(q["process_group_cleanup"]==dict(remaining_live=[],remaining_nonrunning=[],signals=[]),
+        "original process cleanup changed")
+    need(q["stdout_sha256"]==o["outputs"]["supervision/"+label+".stdout"]
+        and q["stderr_sha256"]==o["outputs"]["supervision/"+label+".stderr"],"original command stream join changed")
+    need(o["native_case_passed"]is False,"original native case qualification invented")
+    keys=("body_error","command_evidence_error","outer_terminal_actions","outer_terminal_errors",
+          "outer_terminal_finalization_complete")
+    raw=json.dumps({k:o[k]for k in keys},sort_keys=True,separators=(",",":"),allow_nan=False).encode()
+    need(hashlib.sha256(raw).hexdigest()==ORIGINAL_REJECTION_TERMINAL_SHA256[case],
+        "exact authenticated original rejection chain changed")
+
 def validate_reports(case,pin,d):
     n,o,p,prepared=d["native"],d["summary"],d["manifest"],d["preparation_native"]
     need(pin["case"]==n["case"]==o["case"]==case,"case identity")
@@ -141,8 +179,7 @@ def validate_reports(case,pin,d):
         need(record["terminal_finalization_complete"] is True
             and record["terminal_inventory_complete"] is True and record["terminal_errors"]==[],
             "incomplete original terminal")
-    need(o["outer_terminal_finalization_complete"] is True and o["outer_terminal_errors"]==[],
-        "incomplete original outer terminal")
+    validate_original_rejection_terminal(o,case)
     native_sha=pin["documents"]["native"]["sha256"]
     need(o["native_controller_result_sha256"]==o["outputs"]["native/result.json"]==native_sha,
         "native summary join")

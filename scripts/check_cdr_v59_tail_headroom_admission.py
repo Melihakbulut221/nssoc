@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # SPDX-License-Identifier: Apache-2.0
 """Hosted actual admission/transport/lifecycle controls, with synthetic collaborators."""
-import base64, copy, hashlib, io, json, os, tarfile, tempfile
+import ast, base64, copy, hashlib, io, json, os, tarfile, tempfile
 from contextlib import redirect_stdout
 from pathlib import Path
 from unittest.mock import patch
@@ -9,6 +9,9 @@ import numpy as np
 import cdr_v59_tail_headroom_admission as a
 import cloud_cdr_v59_tail_headroom_readback as worker
 from cloud_chunked_results import pack
+
+FROZEN_FAILED_ADMISSION = 'docs/evidence/cdr-v59-tail-headroom-first-failed-admission-20261029.py'
+FROZEN_FAILED_ADMISSION_SHA256 = '34199476cc513877a65863595f2fa17ee0cbd42fb0ee597b9de8f4d03a4d2bd8'
 
 def controls():
     m=a.methods()
@@ -28,6 +31,30 @@ def controls():
         pin,docs=a.reference(case,m)
         assert a.validate_reports(case,pin,docs)["VI_only_passed"]is(case=="cold_late")
     positive.append("all_six_actual_complete_saved_reports_and_cold_late_VI_pass")
+    # Exact failed production predicate through the actual reference/validation path.
+    frozen_path=a.regular(a.ROOT,FROZEN_FAILED_ADMISSION)
+    assert a.sha(frozen_path)==FROZEN_FAILED_ADMISSION_SHA256
+    frozen=frozen_path.read_text()
+    old_nodes=[n for n in ast.parse(frozen).body if isinstance(n,ast.FunctionDef)and n.name=="validate_reports"]
+    assert len(old_nodes)==1
+    scope=dict(vars(a))
+    exec(compile(ast.Module(body=old_nodes,type_ignores=[]),str(frozen_path),"exec"),scope)
+    original_validate=scope["validate_reports"]
+    with patch.object(a,"validate_reports",original_validate):
+        try:a.reference("nominal_early",m)
+        except AssertionError as error:
+            assert error.args==("incomplete original outer terminal",)
+            frames=[];trace=error.__traceback__
+            while trace is not None:
+                frames.append(trace.tb_frame.f_code);trace=trace.tb_next
+            assert original_validate.__code__ in frames and a.reference.__code__ in frames
+            historical=dict(expected_error=repr(error),frozen_source_sha256=FROZEN_FAILED_ADMISSION_SHA256,
+                actual_original_validate_frame=True,actual_reference_frame=True,
+                current_full_report_bytes=True,original_electrical_failure_not_waived=True)
+        else:raise AssertionError("Exact original wrong-success admission did not reject")
+    a.reference("nominal_early",m)
+    positive.append("exact_original_outer_success_predicate_failure_and_corrected_reference")
+
     base_docs=a.reference("cold_late",m)[1]
     pin=m["cases"]["cold_late"]
     for path,value in [
@@ -46,6 +73,34 @@ def controls():
     ]:
         bad=mutate(base_docs,path,value)
         refuses("report:"+"/".join(path),lambda bad=bad:a.validate_reports("cold_late",pin,bad))
+    # These counterfactuals must fail at the specific real original-terminal guard.
+    terminal_faults=[
+        (("summary","outer_terminal_finalization_complete"),True,"original qualification failure flag changed"),
+        (("summary","outer_terminal_actions",0,"completed"),False,"original cleanup/preservation action chain changed"),
+        (("summary","outer_terminal_actions",6,"completed"),False,"original cleanup/preservation action chain changed"),
+        (("summary","outer_terminal_actions",7,"completed"),True,"original cleanup/preservation action chain changed"),
+        (("summary","outer_terminal_errors"),[],"different outer terminal error census"),
+        (("summary","outer_terminal_errors",0,"action"),"owned_process_cleanup","different outer qualification error"),
+        (("summary","outer_terminal_errors",0,"error"),"other","different outer qualification error"),
+        (("summary","body_error","action"),"other","different original body failure"),
+        (("summary","command_evidence_error","error"),"other","different command evidence failure"),
+        (("summary","command","label"),"other","different original worker return"),
+        (("summary","command","supervision_failure"),"memory_limit","original supervision failure cannot be admitted"),
+        (("summary","command","memory_read_error"),"fault","original supervision failure cannot be admitted"),
+        (("summary","command","minimum_available_kib"),1,"original supervision limits changed"),
+        (("summary","command","process_group_cleanup","remaining_live"),[123],"original process cleanup changed"),
+        (("summary","command","stderr_sha256"),"0"*64,"original command stream join changed"),
+        (("summary","outer_terminal_errors",0,"traceback"),"modified","exact authenticated original rejection chain changed"),
+    ]
+    for path,value,reason in terminal_faults:
+        bad=mutate(base_docs,path,value)
+        assert json.dumps(bad,sort_keys=True)!=json.dumps(base_docs,sort_keys=True),"no-op terminal fault"
+        try:a.validate_reports("cold_late",pin,bad)
+        except AssertionError as error:
+            assert error.args==(reason,),(path,error.args,reason)
+            rejected.append("original_terminal:"+"/".join(map(str,path)))
+        else:raise AssertionError("Changed original terminal admitted: "+repr(path))
+
     for key in a.ALWAYS_FALSE:
         refuses("scope:"+key,lambda key=key:a.validate_method(mutate(m,(key,),True)))
     refuses("reordered_cases",lambda:a.validate_method(mutate(m,("case_order",),list(reversed(a.CASES)))))
@@ -207,7 +262,8 @@ def controls():
 
     return dict(status="PASS_CURRENT_TAIL_HEADROOM_SOURCE_CONTROLS_NOT_CAPTURE_ANALYSIS",
         positive=positive,refused=rejected,positive_count=len(positive),refusal_count=len(rejected),
-        actual_six_original_reports_authenticated=True,
+        actual_six_original_reports_authenticated=True,historical_rejection_schema_regression=historical,
+        exact_original_terminal_refusal_count=len(terminal_faults),
         synthetic_transport_and_measurements_explicit=True,local_execution=False,
         actual_capture_read=False,simulator_executed=False,accepted=False)
 if __name__=="__main__":
