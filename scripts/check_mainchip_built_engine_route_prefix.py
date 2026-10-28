@@ -153,6 +153,60 @@ def lifecycle_controls(records):
     assert len(results)==8
     return results
 
+def path_controls():
+    """Actual pinned pure Tcl functions; no OpenROAD import or native execution."""
+    import mainchip_built_engine_route_prefix_native as adapter
+    raw=(ROOT/"scripts/mainchip_original_clock_restoration_native.py").read_text()
+    nodes=[n for n in ast.parse(raw).body if isinstance(n,ast.FunctionDef)and n.name in ("tcl_path","import_tcl")]
+    assert len(nodes)==2
+    namespace={"Path":Path}
+    exec(compile(ast.Module(body=nodes,type_ignores=[]),"<pinned-original-tcl-functions>","exec"),namespace)
+    original=namespace["tcl_path"];out=Path("/work/out/work")
+    source=out/"fixed-base.odb";patchdef=out/"fixed-patch.def"
+    try:namespace["import_tcl"](source,patchdef,out,"fixed")
+    except AssertionError:pass
+    else:raise AssertionError("legacy path regression not reproduced")
+    module=SimpleNamespace(tcl_path=original)
+    def imported():
+        namespace["tcl_path"]=module.tcl_path
+        try:return namespace["import_tcl"](source,patchdef,out,"fixed")
+        finally:namespace["tcl_path"]=original
+    native=SimpleNamespace(n=module,main=imported)
+    generated=adapter.execute_native(native)
+    assert generated==(
+        "read_db {/work/out/work/fixed-base.odb}\n"
+        "read_def -floorplan_initialize {/work/out/work/fixed-patch.def}\n"
+        "write_def {/work/out/work/fixed-single.def}\n"
+        "read_def -floorplan_initialize {/work/out/work/fixed-patch.def}\n"
+        "write_def {/work/out/work/fixed.def}\n"
+        "write_db {/work/out/work/fixed.odb}\n")
+    assert module.tcl_path is original
+    sentinel=RuntimeError("native body sentinel")
+    def fail():raise sentinel
+    native.main=fail
+    try:adapter.execute_native(native)
+    except RuntimeError as exc:assert exc is sentinel
+    else:raise AssertionError("body failure lost")
+    assert module.tcl_path is original
+    accepted=("/work/out/work","/work/out/work/a b.def","/work/routing-inputs/global/config/_env.tcl")
+    for value in accepted:assert adapter.canonical_tcl_path(value)=="{"+value+"}"
+    rejected=("/work/out/workx/file","/work/source/file","/work/input.odb","/tmp/file",
+        "/home/runner/work/nssoc/nssoc/file","relative","/work/out/work/../escape",
+        "/work/out/work/bad{","/work/out/work/bad}","/work/out/work/bad\n",
+        "/work/out/work/bad\r","/work/out/work/bad\\")
+    for value in rejected:
+        try:adapter.canonical_tcl_path(value)
+        except ValueError:pass
+        else:raise AssertionError("unsafe path accepted: "+repr(value))
+    with patch.object(adapter.Path,"resolve",return_value=Path("/tmp/aliased")):
+        try:adapter.canonical_tcl_path("/work/out/work/link")
+        except ValueError as exc:assert "alias"in str(exc)
+        else:raise AssertionError("path alias accepted")
+    return dict(legacy_rejection_reproduced=True,original_import_tcl_executed=True,
+        exact_paired_import_preserved=True,renderer_restored_after_success_and_failure=True,
+        positive_paths=len(accepted),refused_paths=len(rejected)+1,
+        original_native_module_body_unchanged=True,actual_native_executed=False)
+
 def main():
     method=c.method(ROOT);positive=[];refusals=[];sequences=[]
     def refuse(name,fn,reason):
@@ -171,10 +225,10 @@ def main():
         ("GITHUB_REF","refs/heads/"+c.previous.BRANCH,"route prefix branch")]:
         refuse(key,lambda key=key,value=value:c.context({**env,key:value}),reason)
     expected={
-        "ownership":["/work/engine/openroad","-no_init","-exit","-python","/work/source/scripts/mainchip_two_signal_repair_native.py"],
-        "prepare-fixed":["/work/engine/openroad","-no_init","-exit","-python","/work/source/scripts/mainchip_two_signal_repair_native.py"],
+        "ownership":["/work/engine/openroad","-no_init","-exit","-python","/work/source/scripts/mainchip_built_engine_route_prefix_native.py"],
+        "prepare-fixed":["/work/engine/openroad","-no_init","-exit","-python","/work/source/scripts/mainchip_built_engine_route_prefix_native.py"],
         "paired-all-nontarget-fixed-import":["/work/engine/openroad","-no_init","-exit","/work/out/work/fixed.tcl"],
-        "fixed-audit":["/work/engine/openroad","-no_init","-exit","-python","/work/source/scripts/mainchip_two_signal_repair_native.py"]}
+        "fixed-audit":["/work/engine/openroad","-no_init","-exit","-python","/work/source/scripts/mainchip_built_engine_route_prefix_native.py"]}
     assert {p:c.command(p,"/work/engine/openroad")for p in c.PHASES}==expected
     positive.append("exact four commands and canonical paths")
     for phase in ("one-two-signal-routing-attempt","route-audit","unfix-audit","drc-audit","../ownership",None):
@@ -230,10 +284,11 @@ def main():
             ("extra mutable net",lambda r:r["fixed-audit"]["router_census"].update(two_routed_nonfixed_guided_names=[*repair.TARGETS,"clock"]),"two-target routing boundary")]:
             changed=copy.deepcopy(records);mutate(changed)
             refuse(name,lambda changed=changed:c.prefix_complete(changed,{}),reason)
+    paths=path_controls()
     lifecycle=lifecycle_controls(records)
     assert (len(positive),len(refusals),len(sequences),len(lifecycle))==(4,23,6,8)
     print(json.dumps(dict(status="PASS_SHARED_PREFIX_SOURCE_CONTROLS",positive_count=4,refusal_count=23,
-        sequencing_cases=sequences,lifecycle_cases=lifecycle,lifecycle_count=8,
+        sequencing_cases=sequences,lifecycle_cases=lifecycle,lifecycle_count=8,path_controls=paths,
         positive=positive,refusals=refusals,protected_count=len(method["protected"]),
         mocked_native_boundary=True,real_ownership_solver_requalified_by_fixtures=False,
         native_prefix_executed=False,native_routing_executed=False,physical_acceptance=False),sort_keys=True,indent=2))

@@ -51,7 +51,7 @@ def command(phase,executable,out=CANONICAL_OUT):
     require(executable=="/work/engine/openroad" and out==CANONICAL_OUT,"canonical native paths")
     if phase=="paired-all-nontarget-fixed-import":
         return [executable,"-no_init","-exit",out+"/fixed.tcl"]
-    return [executable,"-no_init","-exit","-python","/work/source/scripts/mainchip_two_signal_repair_native.py"]
+    return [executable,"-no_init","-exit","-python","/work/source/scripts/mainchip_built_engine_route_prefix_native.py"]
 def prefix_complete(records,ownership):
     import mainchip_two_signal_repair as repair
     require(set(records)==set(PASS_STATUSES),"prefix result census")
