@@ -1,0 +1,34 @@
+{
+  "schema": "cdr-tail-loaded-aggregate-schema-correction-v1",
+  "source_before": "1d47e5e8f5705af5b462b99b4ca8b19ef3bc2307",
+  "failed_run": 40598054387,
+  "failed_source": "acb6881b8c7a92f2687c0fc254daa246cffa1d6d",
+  "all_eight_records_passed": true,
+  "full94chunks_preserved": true,
+  "actual_failure": "KeyError('positive_cases')",
+  "actual_reserved_release_schema": {
+    "required_true_booleans": [
+      "existing_partial_assets_preserved",
+      "existing_release_not_recreated",
+      "new_release_uses_tested_sha",
+      "no_permissions_expanded"
+    ],
+    "refusals": 17,
+    "status": "PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS"
+  },
+  "original_wrong_assumptions": {
+    "positive_cases": 3,
+    "refusals": 13
+  },
+  "gate_before": "          assert x['reservation']['status'].startswith('PASS')\n          assert len(x['reservation']['positive_cases'])==3 and len(x['reservation']['rejected'])==13\n",
+  "gate_after": "          assert x['reservation']['status']=='PASS_EXACT_TESTED_SOURCE_RELEASE_AND17_CONTROLS'\n          assert all(x['reservation'][k] is True for k in ('existing_partial_assets_preserved','existing_release_not_recreated','new_release_uses_tested_sha','no_permissions_expanded'))\n          assert len(x['reservation']['rejected'])==17\n",
+  "fixture_source": "import copy,hashlib,json,os,tempfile,traceback\nfrom pathlib import Path\nroot=Path.cwd()\nprefix=root/'docs/evidence/cdr-v59-tail-loaded-first-source-controls-terminal-20261028'\nnames=('imports','admission','restore','worker','result','outer','runtime','release')\nsaved={name:Path(str(prefix)+'.'+name+'.json').read_bytes()for name in names}\nold_raw=Path(str(prefix)+'.workflow.yml').read_bytes()\nassert hashlib.sha256(old_raw).hexdigest()=='f0589ef60523d4f241ee0658d2334fd6e2b98fbe97cfeaa97cfeb3d81e020953'\nnew_raw=(root/'.github/workflow-templates/cdr-v59-tail-loaded-cloud.yml').read_bytes()\nassert (root/'.github/workflows/cdr-v59-tail-loaded-cloud.yml').read_bytes()==new_raw\ndef extract(raw):\n    lines=raw.decode().splitlines()\n    i=lines.index('      - name: Admit all eight complete source-control records')\n    assert lines[i+1:i+3]==['        run: |',\"          python - <<'PY'\"]\n    stop=lines.index('          PY',i+3)\n    assert all(line.startswith('          ')for line in lines[i+3:stop])\n    return '\\n'.join(line[10:]for line in lines[i+3:stop])\nold=extract(old_raw);current=extract(new_raw)\nreport={'status':'RUNNING_AGGREGATE_SCHEMA_REGRESSION','positive':[],'refused':[]}\ndef execute(program,label,replace=None):\n    with tempfile.TemporaryDirectory(prefix='cdr-aggregate-schema-')as tmp:\n        target=Path(tmp)/'hw/soc/out/cdr-v59-tail-loaded-controls'\n        target.mkdir(parents=True)\n        for name,raw in saved.items():(target/(name+'.json')).write_bytes(raw)\n        if replace is not None:(target/'release.json').write_text(json.dumps(replace))\n        try:\n            os.chdir(tmp)\n            exec(compile(program,label,'exec'),{})\n        finally:os.chdir(root)\ntry:\n    execute(old,'frozen-failed-aggregate')\nexcept KeyError as error:\n    assert error.args==('positive_cases',)\n    frames=traceback.extract_tb(error.__traceback__)\n    assert frames[-1].filename=='frozen-failed-aggregate'\n    report['original_failure']={'error':repr(error),'frame':frames[-1].filename,'line':frames[-1].lineno}\nelse:raise AssertionError('Original aggregate failure did not recur')\nexecute(current,'corrected-aggregate')\nreport['positive'].append('All eight complete first hosted records accepted without rewriting any measured value')\nrelease=json.loads(saved['release'])\nmutations=[]\nfor key in ('existing_partial_assets_preserved','existing_release_not_recreated','new_release_uses_tested_sha','no_permissions_expanded'):\n    value=copy.deepcopy(release);value['reservation'][key]=False;mutations.append((key,value))\nvalue=copy.deepcopy(release);value['reservation']['rejected'].pop();mutations.append(('missing_seventeenth_refusal',value))\nvalue=copy.deepcopy(release);value['reservation']['status']='PASS_INCOMPLETE';mutations.append(('wrong_reservation_status',value))\nfor label,value in mutations:\n    try:execute(current,'corrected-aggregate',value)\n    except AssertionError as error:\n        frames=traceback.extract_tb(error.__traceback__)\n        assert frames[-1].filename=='corrected-aggregate'\n        report['refused'].append({'case':label,'frame':frames[-1].filename,'line':frames[-1].lineno})\n    else:raise AssertionError('Bad reservation evidence accepted: '+label)\nassert len(report['positive'])==1 and len(report['refused'])==6\nreport.update(status='PASS_ACTUAL_EIGHT_RECORD_AGGREGATE_SCHEMA_REGRESSION',\n    old_program_sha256=hashlib.sha256(old.encode()).hexdigest(),\n    corrected_program_sha256=hashlib.sha256(current.encode()).hexdigest(),\n    exact_old_control_bytes={name:hashlib.sha256(raw).hexdigest()for name,raw in saved.items()},\n    simulator_or_archive_accessed=False,numerical_or_case_gates_changed=False)\nprint('CDR_TAIL_LOADED_AGGREGATE_SCHEMA_REGRESSION '+json.dumps(report,sort_keys=True),flush=True)\n",
+  "fixture_sha256": "a7bad13cde8297c2a85e3b9bacdfa6cb805a1d451ef1b2132d3f8d08622b32df",
+  "only_workflow_aggregate_schema_and_hosted_regression_changed": true,
+  "all_worker_controller_numerical_and_case_gates_unchanged": true,
+  "no_native_execution_or_local_files": true,
+  "new_controls_not_yet_executed": true,
+  "template_old_sha256": "f0589ef60523d4f241ee0658d2334fd6e2b98fbe97cfeaa97cfeb3d81e020953",
+  "template_new_sha256": "710f4b02feb2c513c8703bb23e304db727745da1faaf3f79c9486d6e868955ea",
+  "time": "2026-10-27T23:06:43.161010+00:00"
+}

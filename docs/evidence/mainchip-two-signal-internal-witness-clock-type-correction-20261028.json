@@ -1,0 +1,47 @@
+{
+  "changed_files": {
+    ".github/workflow-templates/mainchip-two-signal-internal-witness-controls.yml": {
+      "bytes": 2577,
+      "sha256": "be0c1759884e5cd42535db5fba0d52578ae5375fe820061a501431a621c0912a"
+    },
+    "docs/evidence/mainchip-two-signal-internal-witness-acquired-identities-20261028.json": {
+      "bytes": 5401,
+      "sha256": "c574668d98a199c2eaa7931db63d7d5d65ea4d16d69a84abd98b0458daa3c128"
+    },
+    "hw/soc/flow/MainchipInternalWitness.h": {
+      "bytes": 11602,
+      "sha256": "8107a009d7db32e56a355b3c40c9f3e94dc2cd40df2afc575a8e7c652e63ff62"
+    },
+    "scripts/check_mainchip_two_signal_internal_witness.py": {
+      "bytes": 11450,
+      "sha256": "b61b37d80b916da6623cecc99120c28a2f90304d83a914152c9e8b0961b25ade"
+    },
+    "scripts/mainchip-two-signal-internal-witness-contract.json": {
+      "bytes": 6084,
+      "sha256": "d445b30ffd6ba9a87dd3c5c10794f1ffb444d843ed97ca89f29ea0637c5c1149"
+    },
+    "scripts/mainchip_two_signal_internal_witness.py": {
+      "bytes": 18383,
+      "sha256": "52b8b7e3a0c763c4a219f93d80f3568348eddc1b69ac3cbbd27411c05abc95a3"
+    }
+  },
+  "controls": {
+    "executed": false,
+    "positive_count": 4,
+    "refusal_count": 29
+  },
+  "correction": "Native and internal sigtypes must be SIGNAL/SIGNAL/CLOCK, and actual terminal counts9/5/8. The schema preserves signal type explicitly; the real strict parser fixture refuses the former SIGNAL clock representation.",
+  "derived_router_sha256": "385e2d9f681c0039c8caa7c49a4b8bf72570c97d6be808533475486f102be7fd",
+  "engine_compiled": false,
+  "evidence": "docs/evidence/mainchip-two-signal-internal-witness-acquired-identities-20261028.json",
+  "evidence_sha256": "c574668d98a199c2eaa7931db63d7d5d65ea4d16d69a84abd98b0458daa3c128",
+  "existing_production_sources_changed": false,
+  "finding": "The disabled C++ draft required SIGNAL on the selected clock, but complete acquired census declares CLOCK.",
+  "finding_source": "PLL independent C++ source peer requested the actual selected clock type.",
+  "native_executed": false,
+  "native_policy_and_hooks_unchanged": true,
+  "new_getter_primary": "frNet::getType() is public and const at pinned frNet.h line192; C++ source use only, no SWIG claim.",
+  "parent_source": "b6f42a44d1bc5bc845f5626f8f25bd32884fa232",
+  "schema": "mainchip-internal-witness-clock-type-source-correction-v1",
+  "unchanged_normal_Tcl_debug_precondition": "The native-before-writer equality remains; a future wrapper must bind normal settings rather than waive any debug-path native writes."
+}

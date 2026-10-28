@@ -1,0 +1,33 @@
+{
+  "additional_header_destination": "src/drt/src/MainchipInternalWitness.h",
+  "additional_header_source": "hw/soc/flow/MainchipInternalWitness.h",
+  "all_other_original_bytes_unchanged": true,
+  "authored_functions_executed": false,
+  "base": "d758c03a2fc4a5d890606a0b005a3d36136d0611",
+  "derived_bytes": 47356,
+  "derived_sha256": "385e2d9f681c0039c8caa7c49a4b8bf72570c97d6be808533475486f102be7fd",
+  "derived_snapshot": "docs/evidence/mainchip-two-signal-internal-witness-derived-TritonRoute-20261028.cpp",
+  "engine_compiled": false,
+  "insertions": [
+    {
+      "new": "#include \"drt/TritonRoute.h\"\n#include \"MainchipInternalWitness.h\"\n",
+      "old": "#include \"drt/TritonRoute.h\"\n"
+    },
+    {
+      "new": "  initDesign();\n  mainchip_witness::observe(getDesign(), db_, \"imported\", !distributed_ && !router_cfg_->SINGLE_STEP_DR);\n  bool has_routable_nets = false;\n",
+      "old": "  initDesign();\n  bool has_routable_nets = false;\n"
+    },
+    {
+      "new": "  mainchip_witness::observe(getDesign(), db_, \"before_dr\", !distributed_ && !router_cfg_->SINGLE_STEP_DR);\n  dr();\n  mainchip_witness::observe(getDesign(), db_, \"after_dr\", !distributed_ && !router_cfg_->SINGLE_STEP_DR);\n  if (!router_cfg_->SINGLE_STEP_DR) {\n    endFR();\n    mainchip_witness::observe(getDesign(), db_, \"after_writer\", !distributed_ && !router_cfg_->SINGLE_STEP_DR);\n  }\n",
+      "old": "  dr();\n  if (!router_cfg_->SINGLE_STEP_DR) {\n    endFR();\n  }\n"
+    }
+  ],
+  "native_executed": false,
+  "openroad_revision": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "original_bytes": 46888,
+  "original_path": "src/drt/src/TritonRoute.cpp",
+  "original_sha256": "fa5c6c23a992648c5282ed99ecb03a92bee9187dd55b9630809a5da41f18a3f5",
+  "original_snapshot": "docs/evidence/mainchip-two-signal-current-readback-bounded-diagnosis-20261028-primary/TritonRoute.cpp",
+  "schema": "mainchip-two-signal-observer-reversible-derivation-v1",
+  "unified_diff": "--- a/src/drt/src/TritonRoute.cpp\n+++ b/src/drt/src/TritonRoute.cpp\n@@ -2,6 +2,7 @@\n // Copyright (c) 2019-2025, The OpenROAD Authors\n \n #include \"drt/TritonRoute.h\"\n+#include \"MainchipInternalWitness.h\"\n \n #include <algorithm>\n #include <fstream>\n@@ -1013,6 +1014,7 @@\n     }\n   }\n   initDesign();\n+  mainchip_witness::observe(getDesign(), db_, \"imported\", !distributed_ && !router_cfg_->SINGLE_STEP_DR);\n   bool has_routable_nets = false;\n   for (auto net : db_->getChip()->getBlock()->getNets()) {\n     if (net->getITerms().size() + net->getBTerms().size() > 1) {\n@@ -1071,9 +1073,12 @@\n     asio::post(*dist_pool_,\n                [this] { sendDesignUpdates(\"\", router_cfg_->MAX_THREADS); });\n   }\n+  mainchip_witness::observe(getDesign(), db_, \"before_dr\", !distributed_ && !router_cfg_->SINGLE_STEP_DR);\n   dr();\n+  mainchip_witness::observe(getDesign(), db_, \"after_dr\", !distributed_ && !router_cfg_->SINGLE_STEP_DR);\n   if (!router_cfg_->SINGLE_STEP_DR) {\n     endFR();\n+    mainchip_witness::observe(getDesign(), db_, \"after_writer\", !distributed_ && !router_cfg_->SINGLE_STEP_DR);\n   }\n   return 0;\n }\n"
+}

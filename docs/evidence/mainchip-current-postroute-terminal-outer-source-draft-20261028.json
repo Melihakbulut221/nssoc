@@ -1,0 +1,117 @@
+{
+  "base": "4429ab8f4671cc50daf147f98ff2a21553a2cdf6",
+  "changes": [
+    "Outer setup and all independent terminal actions are protected; command-record acquisition/save do not replace primary exceptions.",
+    "Atomic fragments are retained by exclusive hard link before result writes and after failed final writes; complete unsaved terminal JSON is emitted if save fails.",
+    "Original numerical and geometry body/gates are unchanged outside the two reviewed source acquisition edits; save/finally orchestration is explicitly derived, not claimed byte-identical.",
+    "No return value from signal restoration or arbitrary cleanup collaborators is inserted into JSON.",
+    "Tokenless OpenROAD version child; unchanged original numerical code strips tokens from all CAD children.",
+    "Complete failed direct JSON bytes, including empty/truncated files, may be published as failure evidence. A complete-success status requires all four parsed direct reports.",
+    "Publication after a recorded analysis-source failure checks immutable startup method hash and separately protected publication dependencies; never qualifies acceptance."
+  ],
+  "identified_original_gaps": [
+    "Command-record acquisition/save in finally can mask the original supervised exception.",
+    "Signal/thread setup precedes protected try; stop and join are coupled; signal restoration/final source/inventory/save may abort later terminal actions.",
+    "Fixed atomic result fragments can be overwritten or omitted from a stale final inventory.",
+    "Old original numerical and geometry finally output hashing/write can mask primary failure.",
+    "Legacy publish_evidence rewrites the original result nonatomically; new publisher preserves exact report bytes and calls only the qualified reserved-only publish_files seam."
+  ],
+  "original_geometry": {
+    "derived_sha256": "7ea811258114dbf4dcccfd4a9d339cdf097f4f280ff8676b2a5c13b930e839df",
+    "edits": [
+      [
+        "from cloud_mainchip_route12_drt_continuation import log_proof\n",
+        "from cloud_mainchip_route12_drt_continuation import log_proof\nfrom mainchip_current_postroute_admission import consume\n"
+      ],
+      [
+        "        selected=json.loads(os.environ['NSSOC_COMPLETED_DRT'])\n        live=api('actions/runs/'+str(selected['run']))\n        assert live['status']=='completed'and live['conclusion']=='success','Never consume unfinished route'\n        names=['work/detailed-route.odb','work/detailed-route.drc','work/native.log','work/boots.log','work/before-guide-read.odb','work/drt-done']\n        actual,aproof=reports.restore_report(selected['group'],selected['run'],selected['summary_sha256'],selected['parts_sha256'],OUT/'routed',names)\n        portable=json.loads((ROOT/'docs/evidence/mainchip-portable-runtime-pass-20261020.json').read_text())\n        validate(selected,live,actual,portable['report']['image_id'])\n        controller='scripts/cloud_mainchip_route12_drt'+('_continuation'if 'continuation' in live['path']else'')+'.py'\n        assert source_hash(controller,selected['source_head'])==selected['controller_sha256']==sha(ROOT/controller)\n        native=log_proof((OUT/'routed/work/native.log').read_bytes(),(OUT/'routed/work/boots.log').read_bytes())\n        assert native==actual['native_log']\n        drc=OUT/'routed/work/detailed-route.drc'\n        if native['completed_violation_counts'][-1]==0:\n            assert not drc.read_text().strip(),'Zero native count but nonempty final DRC report'\n        else:\n            assert drc.read_text().strip(),'Nonzero native count but empty final DRC report'\n        r['native_drc_report']=dict(sha256=sha(drc),bytes=drc.stat().st_size,\n            final_native_count=native['completed_violation_counts'][-1],zero_count_and_empty_report_consistent=True)\n        assert(OUT/'routed/work/drt-done').read_text().strip()\n        assert sha(OUT/'routed/work/before-guide-read.odb')==sha(a)\n        b=OUT/'routed/work/detailed-route.odb';assert sha(b)==actual['routed_odb_sha256']\n        r.update(route_complete=True,completed_route_source=aproof,completed_route_descriptor=selected,\n            global_source=bproof,handoff_source=hproof,candidate_netlist_path=str(nl),\n            candidate_netlist_sha256=sha(nl),reported_native_drt_violation_counts=native['completed_violation_counts'])\n",
+        "        b,aproof=consume(ROOT,OUT)\n        r['native_drc_report']=aproof['final_DRT']\n        r.update(route_complete=True,completed_route_source=aproof,\n            completed_route_descriptor=aproof['envelope'],global_source=bproof,handoff_source=hproof,\n            candidate_netlist_path=str(nl),candidate_netlist_sha256=sha(nl),\n            reported_native_drt_violation_counts=[aproof['final_original_class_DRT_markers']],\n            repaired_original_class_admission=aproof)\n"
+      ],
+      [
+        "from pathlib import Path\n",
+        "from pathlib import Path\nimport mainchip_current_postroute_terminal as terminal\n"
+      ],
+      [
+        "    def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\\n')\n",
+        "    def save():terminal.write(OUT/'result.json',r)\n"
+      ],
+      [
+        "        r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()\n",
+        "        terminal.finalize_worker(OUT,r,save)\n"
+      ]
+    ],
+    "file_unchanged": true,
+    "path": "scripts/cloud_mainchip_route12_postroute_geometry.py",
+    "sha256": "52de46aacf9b97ab17ac56560efef838d149a746a2dd09a6f1af87ed41be0c97"
+  },
+  "original_numerical": {
+    "complete_successful_main_try_body_handlers_and_orelse_AST_exact": true,
+    "derived_sha256": "6d6705a360ef13fe095dde90f565eeadab493a104ab687cee150de7a5ac4802b",
+    "edits": [
+      [
+        "from pathlib import Path\n",
+        "from pathlib import Path\nimport mainchip_current_postroute_terminal as terminal\n"
+      ],
+      [
+        "    def save():(OUT/'result.json').write_text(json.dumps(r,indent=2)+'\\n')\n",
+        "    def save():terminal.write(OUT/'result.json',r)\n"
+      ],
+      [
+        "        r['outputs']={str(p.relative_to(OUT)):sha(p)for p in OUT.rglob('*')if p.is_file()and p!=OUT/'result.json'};save()\n",
+        "        terminal.finalize_worker(OUT,r,save)\n"
+      ]
+    ],
+    "file_unchanged": true,
+    "non_main_functions_AST_exact": [
+      "sha",
+      "timing_gate",
+      "controls",
+      "api",
+      "source_hash"
+    ],
+    "path": "scripts/cloud_mainchip_route12_postroute.py",
+    "sha256": "c6335c535959286b7f77c3aaf6a5ab631640557c8453079a80dd97c97f58701f"
+  },
+  "original_outer": {
+    "path": "docs/evidence/mainchip-current-postroute-original-outer-draft-20261028.py",
+    "sha256": "c31da35e355f368bffc965043c7336735d51c30fe10e6518d1ca41d557c107c9"
+  },
+  "schema": "disabled-current-postroute-terminal-outer-source-draft-v1",
+  "source_files": {
+    "docs/evidence/cdr-v59-mim-qualified-process-supervisor-20261025.py": {
+      "bytes": 22471,
+      "sha256": "e326e548ebe11550d18a049d639bdf063f03602d4ba08299b00a5747d3281c0b"
+    },
+    "docs/evidence/cdr-v59-tail-qualified-memory-sampler-20261026.py": {
+      "bytes": 10879,
+      "sha256": "55fb9a3ba9a049c509b629e8638a688b5f827316485f9fd89cd5a8888804df07"
+    },
+    "docs/evidence/mainchip-current-postroute-original-outer-draft-20261028.py": {
+      "bytes": 12346,
+      "sha256": "c31da35e355f368bffc965043c7336735d51c30fe10e6518d1ca41d557c107c9"
+    },
+    "scripts/bootstrap_flow.py": {
+      "bytes": 4431,
+      "sha256": "b5fe7b7657d4f7333358d9c40a1747e9ec4d62fe4e356cfdc44d8aa0b40cb9c2"
+    },
+    "scripts/cloud_mainchip_current_postroute.py": {
+      "bytes": 17139,
+      "sha256": "5d6a39b95655a9fd3f1b0ea5fa54f076fac794642d8d1d849c8c54cfb81475d2"
+    },
+    "scripts/mainchip_current_postroute_bridge.py": {
+      "bytes": 7154,
+      "sha256": "1891de8b25c3352d6464630c9b577c77db2ca8f959c2a849e64497b99c2e04bb"
+    },
+    "scripts/mainchip_current_postroute_terminal.py": {
+      "bytes": 5639,
+      "sha256": "657bd137ad80396fefa03110e1e9fce5d7b59d6256f9634bc0e710432e670a8e"
+    }
+  },
+  "status": "SOURCE_DRAFT_REQUIRES_MEANINGFUL_HOSTED_FIXTURES_AND_INDEPENDENT_REVIEW",
+  "unfinished": [
+    "Admission and full restored/return-path controls still to author; actual current failure fixture remains required.",
+    "Direct real-writer and full-main lifecycle regressions, publication/transport fixtures, runtime/import/deferred closure and inactive template are not yet complete.",
+    "No successful repaired source exists; terminal_binding and approved_producer remain null; all flags and readiness remain false.",
+    "No authored import/test, local file, archive, native execution or workflow dispatch occurred."
+  ]
+}
