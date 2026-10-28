@@ -1,0 +1,80 @@
+name: CDR selector column width source controls
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: cdr-selector-width-source-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Exact source-only authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          assert os.environ["GITHUB_ACTIONS"]=="true"
+          m=json.loads(pathlib.Path("scripts/cdr-v59-selector-column-width-methods.json").read_text())
+          assert m["source_controls_authorized"] is True
+          for k in ("native_execution_authorized","geometry_generation_authorized","simulation_authorized","physical_accepted","electrical_accepted","full_phy_accepted"):
+              assert m[k] is False,k
+          for name,h in m["protected_sha256"].items():
+              p=pathlib.Path(name)
+              assert p.is_file() and not p.is_symlink() and hashlib.sha256(p.read_bytes()).hexdigest()==h,name
+          PY
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Install explicit synthetic geometry dependency
+        run: python -m pip install --disable-pip-version-check --no-cache-dir --only-binary=:all: --no-deps --require-hashes -r scripts/cdr-v59-selector-column-width-controls-requirements.txt
+      - name: Actual source and synthetic geometry controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B scripts/check_cdr_v59_selector_column_width.py --output width-controls.json
+          python - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path("width-controls.json").read_text())
+          assert r["status"]=="PASS_SOURCE_CONTROLS_ONLY"
+          assert (r["source"]["positive"],r["source"]["refusals"])==(3,15)
+          assert (r["component"]["positive"],r["component"]["refusals"])==(1,6)
+          assert (r["geometry"]["positive"],r["geometry"]["refusals"])==(3,7)
+          assert r["lifecycle"]["count"]==4 and r["disabled_native"]["rejected"] is True
+          assert r["native_input_qualified"] is r["physical_accepted"] is r["electrical_accepted"] is False
+          PY
+      - name: Preserve exact existing control bytes
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import base64,hashlib,pathlib
+          p=pathlib.Path("width-controls.json")
+          if p.exists():
+              assert p.is_file() and not p.is_symlink()
+              b=p.read_bytes();chunks=[b[i:i+2250] for i in range(0,len(b),2250)] or [b""]
+              print("WIDTH_RECORD_BEGIN",len(b),hashlib.sha256(b).hexdigest(),len(chunks),flush=True)
+              for i,c in enumerate(chunks):
+                  print("WIDTH_RECORD_CHUNK",i,base64.b64encode(c).decode(),flush=True)
+              print("WIDTH_RECORD_END",flush=True)
+          else:
+              print("WIDTH_RECORD_ABSENT; no result fabricated",flush=True)
+          PY
+      - name: Preserve available source-control outputs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cdr-selector-width-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            width-controls.json
+            width-controls.json.*.incomplete
+          if-no-files-found: warn
