@@ -71,7 +71,11 @@ jobs:
           assert r['original_waveform_acquired'] is False and r['native_executed'] is False
           p=json.loads((root/'publication.json').read_bytes())
           assert p['status']=='PASS_ACTUAL_TAIL_HEADROOM_PUBLICATION_SOURCE_CONTROLS'
-          assert (p['positive_count'],p['refusal_count'])==(3,5) and len(p['cases'])==8
+          assert (p['positive_count'],p['refusal_count'])==(3,11) and len(p['cases'])==14
+          assert p['terminal_cases']==6
+          terminal=[x for x in p['cases'] if x['terminal_evidence'] is not None]
+          assert len(terminal)==6
+          assert all(x['terminal_evidence']['original_exception_identity_preserved'] and x['terminal_evidence']['publisher_hook_identity_restored'] for x in terminal)
           assert all(x['partial_evidence_retained'] for x in p['cases'])
           assert p['actual_capture_read'] is False and p['simulator_executed'] is False
           PY

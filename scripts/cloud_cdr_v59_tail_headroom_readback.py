@@ -225,8 +225,15 @@ def publish(root,case,m):
         try:
             write(transport/"publication.json",proof)
         except BaseException as error:
-            print("CDR_TAIL_HEADROOM_PUBLICATION_FALLBACK "+json.dumps(dict(
-                primary_error=repr(primary)if primary else None,save_error=repr(error),proof=proof)),flush=True)
+            proof["status_before_terminal"]=proof["status"]
+            proof["status"]="FAIL_READBACK_PUBLICATION_TERMINAL_SAVE"
+            proof["terminal_errors"]=[dict(action="atomic_publication_save",error=repr(error))]
+            try:
+                print("CDR_TAIL_HEADROOM_PUBLICATION_FALLBACK "+json.dumps(dict(
+                    primary_error=repr(primary)if primary else None,save_error=repr(error),proof=proof)),flush=True)
+            except BaseException as fallback_error:
+                proof["terminal_errors"].append(dict(action="fallback_encode_or_emit",error=repr(fallback_error)))
+                # The active upload exception wins; otherwise the atomic save error wins.
             if primary is None:raise
     return proof
 
