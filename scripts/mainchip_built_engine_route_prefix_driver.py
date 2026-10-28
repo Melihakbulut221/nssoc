@@ -63,12 +63,12 @@ def main():
     finally:
         if sup is not None:
             c.attempt(report,"owned-native-process-cleanup",lambda:sup.stop_process(sup.ACTIVE))
-            def heartbeat_stop():
-                sup.STOP.set()
+            c.attempt(report,"heartbeat-stop",lambda:sup.STOP.set())
+            def heartbeat_join():
                 if beat is not None:
                     beat.join(timeout=5)
                     c.require(not beat.is_alive(),"heartbeat remained live")
-            c.attempt(report,"heartbeat-stop",heartbeat_stop)
+            c.attempt(report,"heartbeat-join",heartbeat_join)
         for sig,previous in handlers.items():c.attempt(report,"restore-signal-"+str(sig),lambda sig=sig,previous=previous:signal.signal(sig,previous))
         c.attempt(report,"protected-source-terminal",lambda:c.method(Path("/work/source")))
         report["status"]=("PASS_ACTUAL_BUILT_ENGINE_SHARED_PREFIX"

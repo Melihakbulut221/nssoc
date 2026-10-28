@@ -20,7 +20,7 @@
     "production_modules": 67,
     "source_only_no_imports_or_tests": true
   },
-  "controls": "Four positive, 23 refusal, six pure sequencing cases; ownership solver explicitly mocked only in boundary fixtures. These do not requalify actual native geometry or full native driver lifecycle.",
+  "controls": "Four positive, 23 refusal, six pure sequencing cases plus eight actual driver.main/finally lifecycle cases. The original joined-cleanup body is reconstructed byte-exact and reproduces skipped join; current cases independently attempt stop/join, preserve original body exception identity, restore signals, recheck source and use the real qualified atomic final writer/inventory. Native commands, source admission, supervisor, thread and signal collaborators are explicitly synthetic; this is not native geometry/process/runtime qualification.",
   "engine": {
     "bytes": 108939848,
     "sha256": "1e79e2f0e77eb1a9153ec2c4040a0420e66d77777843a211da2cfd9b59b0238a"
@@ -97,5 +97,13 @@
   },
   "schema": "built-engine-route-prefix-source-admission-v1",
   "scope": "Actual built ELF; reuse four unchanged original routing-prefix phases only. No router is launched.",
-  "setup_hold_closure": false
+  "setup_hold_closure": false,
+  "lifecycle_correction": {
+    "reviewed_source": "31dd6f0dfa143fd233c73cc4e988329b2429b8da",
+    "finding": "A failing heartbeat STOP.set prevented the prior single cleanup callback from attempting join.",
+    "correction": "Independently capture heartbeat-stop and heartbeat-join outcomes without modifying the qualified supervisor, container helpers or native phases.",
+    "actual_main_cases": 8,
+    "authored_controls_executed": false,
+    "original_main_sha256": "316293dbf737eefd8fbf6b90385537e0d32732961b1d87513ffb5a29587dbb5d"
+  }
 }

@@ -1,0 +1,96 @@
+{
+  "schema": "built-engine-route-prefix-bounded-source-review-v1",
+  "reviewed_source": "31dd6f0dfa143fd233c73cc4e988329b2429b8da",
+  "base": "571437a0420b11bdb8709c74e8aad11c2aa666a9",
+  "scope": "Source/AST/hash inspection and narrow cleanup correction; no imports, authored tests, native/CAD/archives, workflow dispatch or runtime acceptance.",
+  "findings": [
+    {
+      "status": "source_corrected_hosted_controls_pending",
+      "path": "scripts/mainchip_built_engine_route_prefix_driver.py",
+      "original_lines": [
+        66,
+        71
+      ],
+      "finding": "The combined heartbeat-stop callback skipped join if STOP.set raised.",
+      "change": "Separate independently attempted stop and join; preserve source checks, handler restoration, atomic final evidence and original primary exception.",
+      "original_main_sha256": "316293dbf737eefd8fbf6b90385537e0d32732961b1d87513ffb5a29587dbb5d",
+      "original_driver_sha256": "f2c8b7b9db802b59481958fcadffe0343884b8fcfeed3dacfb2a71d9fe90027f",
+      "corrected_driver_sha256": "1b2e824309c19bc547edfff6152885bc38b4ab40982000f349d3fdc34dbfe488",
+      "exact_literal_old": "            def heartbeat_stop():\n                sup.STOP.set()\n                if beat is not None:\n                    beat.join(timeout=5)\n                    c.require(not beat.is_alive(),\"heartbeat remained live\")\n            c.attempt(report,\"heartbeat-stop\",heartbeat_stop)\n",
+      "exact_literal_new": "            c.attempt(report,\"heartbeat-stop\",lambda:sup.STOP.set())\n            def heartbeat_join():\n                if beat is not None:\n                    beat.join(timeout=5)\n                    c.require(not beat.is_alive(),\"heartbeat remained live\")\n            c.attempt(report,\"heartbeat-join\",heartbeat_join)\n"
+    }
+  ],
+  "reviewed_bindings": {
+    "original_input_sha256": "444f75328e4065ae1fd1fdf1b872980931fcbae8ec8a62182a833e48230bf9b1",
+    "engine_sha256": "1e79e2f0e77eb1a9153ec2c4040a0420e66d77777843a211da2cfd9b59b0238a",
+    "engine_attestation": "Distinct full built ELF, immutable image and exact104 runtime-library identities; no old AppImage identity is asserted for this ELF.",
+    "original_archives": {
+      "failed_input_complete_members": 94,
+      "clock_complete_members": 107,
+      "built_engine_complete_members": 95
+    },
+    "legacy_global_tag": "Explicit separately authenticated original global run/report versus historical tag; no retarget.",
+    "original_gate": "phase_results.ownership.original_gate.result:1691 and all_source_clock_and_fixed_records_preserved",
+    "fixed_gate": "phase_results.fixed-audit.router_census.two_routed_nonfixed_guided_names",
+    "frozen_native_roots": [
+      "source",
+      "routing-inputs/clock/selected",
+      "routing-inputs/global",
+      "input-transport/selected",
+      "engine/openroad",
+      "input.odb",
+      "runtime-dependencies.json",
+      "out/work"
+    ],
+    "continuation": "Every regular member of these eight roots has exact size/hash, symlinks/special entries refuse, and all files are rehashed after cloud packing. Frozen projection alone is not terminal host acceptance; later admission must join the full container/inner/native/host proof.",
+    "scope_flags": {
+      "native_routing_executed": false,
+      "physical_acceptance": false,
+      "observer_equivalence_qualified": false
+    }
+  },
+  "independent_pin_check": {
+    "existing_protected": 618,
+    "inherited_runtime_protected": 586,
+    "all586_hash_values_and_git_blob_mode_identities_equal": true,
+    "all32_added_pins_rehashed": true,
+    "added_pin_bytes": 590229,
+    "final_protected": 619,
+    "changed_existing_pins": [
+      "scripts/mainchip_built_engine_route_prefix_driver.py",
+      "scripts/check_mainchip_built_engine_route_prefix.py",
+      "docs/evidence/mainchip-built-engine-route-prefix-source-admission-20261029.json"
+    ],
+    "only_added_pin": "docs/evidence/mainchip-built-engine-route-prefix-independent-review-20261029.json"
+  },
+  "authored_control_cases": [
+    "exact-original-stop-failure-skips-join",
+    "complete",
+    "body-only",
+    "process-stop-failure",
+    "heartbeat-stop-failure",
+    "heartbeat-join-failure",
+    "heartbeat-still-live",
+    "body-and-independent-cleanup-failures"
+  ],
+  "control_semantics": {
+    "actual_driver_main_and_execute_prefix": true,
+    "actual_qualified_attempt_finish_record_atomic_writer_inventory": true,
+    "mocked_native_commands_source_admission_supervisor_thread_signals": true,
+    "original_primary_exception_identity": true,
+    "independent_join_after_stop_failure": true,
+    "full_available_output_map_and_partial_byte_digest": true,
+    "handler_restoration_and_second_source_check": true,
+    "controls_executed": false
+  },
+  "preservation": {
+    "execute_prefix_AST_unchanged": true,
+    "driver_only_literal_cleanup_replacement": true,
+    "all_other_eight_original_unit_files_except_checker_method_admission_unchanged": true,
+    "qualified_supervisor_and_original_native_code_unchanged": true,
+    "all586_inherited_pins_unchanged": true,
+    "workflow_template_and_active_bytes_unchanged": true,
+    "source_only_no_physical_or_electrical_acceptance": true
+  },
+  "remaining": "Actual hosted source controls and native prefix qualification remain pending. This review does not qualify future observer-off/on routing tails."
+}
