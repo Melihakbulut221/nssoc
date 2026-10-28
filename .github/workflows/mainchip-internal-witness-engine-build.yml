@@ -1,0 +1,13 @@
+name: Mainchip pinned observer engine build
+on:
+  push: {}
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  register-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Registry only; no checkout, test, or native execution
+        run: printf '%s\n' 'Workflow registration only. Native work requires explicit tested branch dispatch.'
