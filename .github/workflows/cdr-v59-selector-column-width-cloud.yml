@@ -36,7 +36,8 @@ jobs:
         with:
           python-version: '3.12'
       - name: Install explicit synthetic geometry dependency
-        run: python -m pip install --disable-pip-version-check --no-cache-dir --only-binary=:all: --no-deps --require-hashes -r scripts/cdr-v59-selector-column-width-controls-requirements.txt
+        run: |
+          python -m pip install --disable-pip-version-check --no-cache-dir --only-binary=:all: --no-deps --require-hashes -r scripts/cdr-v59-selector-column-width-controls-requirements.txt
       - name: Actual source and synthetic geometry controls
         shell: bash
         run: |

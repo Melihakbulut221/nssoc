@@ -1,0 +1,278 @@
+{
+  "schema": "cdr-selector-width-yaml-scalar-correction-v1",
+  "parent": "b89d7fbf0c38d81ecb2e0ed87f0dbb7b6f33671e",
+  "original_source": "011d62ac0801cf99ea1e7c204f55254bfc485c38",
+  "finding": {
+    "path": ".github/workflows/cdr-v59-selector-column-width-cloud.yml",
+    "line": 39,
+    "column": 97,
+    "parser": "Installed Ruby/Psych YAML.safe_load from RAM/stdin; no repository code executed and no files written.",
+    "message": "mapping values are not allowed in this context",
+    "cause": "The unquoted run scalar contains --only-binary=:all: followed by a space. YAML treats that terminal colon-space as a mapping delimiter.",
+    "registration_was_valid": true,
+    "registration_run": 40783594576,
+    "registration_source": "36b2152170c923e96432fadf7ef9ea2a3de96204",
+    "default_main": "e4b8d914659934617e93c7a99121d4d65d7f3401",
+    "workflow_id": 399990996,
+    "source_runs_before_correction": 0,
+    "actual_dispatch_success_after_correction_not_yet_claimed": true
+  },
+  "exact_correction": {
+    "before": "        run: python -m pip install --disable-pip-version-check --no-cache-dir --only-binary=:all: --no-deps --require-hashes -r scripts/cdr-v59-selector-column-width-controls-requirements.txt",
+    "after": "        run: |\n          python -m pip install --disable-pip-version-check --no-cache-dir --only-binary=:all: --no-deps --require-hashes -r scripts/cdr-v59-selector-column-width-controls-requirements.txt",
+    "shell_command_unchanged": "python -m pip install --disable-pip-version-check --no-cache-dir --only-binary=:all: --no-deps --require-hashes -r scripts/cdr-v59-selector-column-width-controls-requirements.txt",
+    "decoded_block_scalar": "python -m pip install --disable-pip-version-check --no-cache-dir --only-binary=:all: --no-deps --require-hashes -r scripts/cdr-v59-selector-column-width-controls-requirements.txt\n",
+    "only_added_command_character_is_yaml_block_terminal_newline": true,
+    "all_dependency_flags_and_hash_pinned_wheel_unchanged": true,
+    "source_and_geometry_controls_unchanged": true,
+    "all_job_names_actions_permissions_and_events_unchanged": true
+  },
+  "parser_evidence": {
+    "original_011d62ac": {
+      "bytes": 3702,
+      "sha256": "13712d5e3f3ce5689758389a4f7830e173b81056d491e5efc35d441edb5a46e9",
+      "returncode": 1,
+      "stderr": "/usr/lib/ruby/3.2.0/psych/parser.rb:62:in `_native_parse': (<unknown>): mapping values are not allowed in this context at line 39 column 97 (Psych::SyntaxError)\n\tfrom /usr/lib/ruby/3.2.0/psych/parser.rb:62:in `parse'\n\tfrom /usr/lib/ruby/3.2.0/psych.rb:455:in `parse_stream'\n\tfrom /usr/lib/ruby/3.2.0/psych.rb:399:in `parse'\n\tfrom /usr/lib/ruby/3.2.0/psych.rb:323:in `safe_load'\n\tfrom -e:5:in `<main>'\n",
+      "parsed": null
+    },
+    "normalized_b89d7fbf": {
+      "bytes": 3705,
+      "sha256": "eb3de732a33ac2eb2961f02bec5c34e1c21976f35d44f828e41e10aa333241ba",
+      "returncode": 1,
+      "stderr": "/usr/lib/ruby/3.2.0/psych/parser.rb:62:in `_native_parse': (<unknown>): mapping values are not allowed in this context at line 39 column 97 (Psych::SyntaxError)\n\tfrom /usr/lib/ruby/3.2.0/psych/parser.rb:62:in `parse'\n\tfrom /usr/lib/ruby/3.2.0/psych.rb:455:in `parse_stream'\n\tfrom /usr/lib/ruby/3.2.0/psych.rb:399:in `parse'\n\tfrom /usr/lib/ruby/3.2.0/psych.rb:323:in `safe_load'\n\tfrom -e:5:in `<main>'\n",
+      "parsed": null
+    },
+    "corrected_source": {
+      "bytes": 3717,
+      "sha256": "f06e43d54ba4b50b7c67e6815ae6f4657d933535c58342f8e2dddb2791c0058e",
+      "returncode": 0,
+      "stderr": "",
+      "parsed": {
+        "root_class": "Hash",
+        "root_keys": [
+          [
+            "String",
+            "name"
+          ],
+          [
+            "TrueClass",
+            "true"
+          ],
+          [
+            "String",
+            "permissions"
+          ],
+          [
+            "String",
+            "concurrency"
+          ],
+          [
+            "String",
+            "jobs"
+          ]
+        ],
+        "events": {
+          "workflow_dispatch": {}
+        },
+        "jobs": {
+          "source-controls": {
+            "type": "Hash",
+            "steps": [
+              {
+                "index": 0,
+                "type": "Hash",
+                "keys": [
+                  "uses",
+                  "with"
+                ],
+                "name_type": null,
+                "run_type": null,
+                "uses_type": "String"
+              },
+              {
+                "index": 1,
+                "type": "Hash",
+                "keys": [
+                  "name",
+                  "shell",
+                  "run"
+                ],
+                "name_type": "String",
+                "run_type": "String",
+                "uses_type": null
+              },
+              {
+                "index": 2,
+                "type": "Hash",
+                "keys": [
+                  "uses",
+                  "with"
+                ],
+                "name_type": null,
+                "run_type": null,
+                "uses_type": "String"
+              },
+              {
+                "index": 3,
+                "type": "Hash",
+                "keys": [
+                  "name",
+                  "run"
+                ],
+                "name_type": "String",
+                "run_type": "String",
+                "uses_type": null
+              },
+              {
+                "index": 4,
+                "type": "Hash",
+                "keys": [
+                  "name",
+                  "shell",
+                  "run"
+                ],
+                "name_type": "String",
+                "run_type": "String",
+                "uses_type": null
+              },
+              {
+                "index": 5,
+                "type": "Hash",
+                "keys": [
+                  "name",
+                  "if",
+                  "shell",
+                  "run"
+                ],
+                "name_type": "String",
+                "run_type": "String",
+                "uses_type": null
+              },
+              {
+                "index": 6,
+                "type": "Hash",
+                "keys": [
+                  "name",
+                  "if",
+                  "uses",
+                  "with"
+                ],
+                "name_type": "String",
+                "run_type": null,
+                "uses_type": "String"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "main_printf_stub": {
+      "bytes": 360,
+      "sha256": "3437374d407c6af86703fe8b28327d2722310a1f174a36a9081c1db8bfdbb08b",
+      "returncode": 0,
+      "stderr": "",
+      "parsed": {
+        "root_class": "Hash",
+        "root_keys": [
+          [
+            "String",
+            "name"
+          ],
+          [
+            "TrueClass",
+            "true"
+          ],
+          [
+            "String",
+            "permissions"
+          ],
+          [
+            "String",
+            "jobs"
+          ]
+        ],
+        "events": {
+          "push": {
+            "branches": [
+              "codex/register-cdr-v59-selector-column-width-controls"
+            ]
+          },
+          "workflow_dispatch": {}
+        },
+        "jobs": {
+          "register-only": {
+            "type": "Hash",
+            "steps": [
+              {
+                "index": 0,
+                "type": "Hash",
+                "keys": [
+                  "run"
+                ],
+                "name_type": null,
+                "run_type": "String",
+                "uses_type": null
+              }
+            ]
+          }
+        }
+      }
+    }
+  },
+  "discovery_alternative": {
+    "CDR_workflow_files": 1337,
+    "CDR_protected_workflow_files": 14,
+    "CDR_pin_count_before": 959,
+    "CDR_protected_workflow_paths": [
+      ".github/workflows/cdr-v59-annotation-diagnostic-cloud.yml",
+      ".github/workflows/cdr-v59-binding-rc-cloud.yml",
+      ".github/workflows/cdr-v59-font-recovery-cloud.yml",
+      ".github/workflows/cdr-v59-selector-column-width-cloud.yml",
+      ".github/workflows/cdr-v59-serialized-shape-diagnostic-cloud.yml",
+      ".github/workflows/cdr-v59-static-source-recovery-cloud.yml",
+      ".github/workflows/cdr-v59-tail-access-physical-cloud.yml",
+      ".github/workflows/cdr-v59-tail-fresh-rc-cloud.yml",
+      ".github/workflows/cdr-v59-tail-loaded-cloud.yml",
+      ".github/workflows/cdr-v59-tail-saved-identity-cloud.yml",
+      ".github/workflows/cdr500-cleaned-binding-rc-cloud.yml",
+      ".github/workflows/cdr500-input-access-v58-physical-cloud.yml",
+      ".github/workflows/cdr500-resistor-v59-physical-cloud.yml",
+      ".github/workflows/cdr500-v58-binding-rc-cloud.yml"
+    ],
+    "all14_declare_workflow_dispatch": true,
+    "additional_push_workflows": [
+      ".github/workflows/cdr500-cleaned-binding-rc-cloud.yml",
+      ".github/workflows/cdr500-input-access-v58-physical-cloud.yml",
+      ".github/workflows/cdr500-v58-binding-rc-cloud.yml"
+    ],
+    "additional_push_branch": "codex/cdr500-floating-wire-diagnosis",
+    "prefix_source": "22f61f652d12337bd17a5db6f2d766578f425b49",
+    "prefix_workflow_files": 1353,
+    "prefix_protected_workflow_files": 11,
+    "prefix_real_dispatch_run": 40786115875,
+    "prefix_source_controls_job": 123159616137,
+    "prefix_source_controls_status": "success",
+    "prefix_native_status_at_read": "in_progress",
+    "no_workflow_count_limit_inferred": true,
+    "no_workflow_pruning_performed_or_required_by_this_fix": true,
+    "official_limits": "https://docs.github.com/en/actions/reference/limits",
+    "contents_api_note": "The documented 1,000-file directory-listing cap is not an Actions dispatch/discovery contract; the truncated CDR directory listing included this target.",
+    "contents_api_documentation": "https://docs.github.com/en/rest/repos/contents?apiVersion=2022-11-28"
+  },
+  "preservation": {
+    "prior_protected_entries": 959,
+    "new_protected_entries": 960,
+    "only_prior_pin_changed": ".github/workflows/cdr-v59-selector-column-width-cloud.yml",
+    "all_other958_prior_pin_values_and_git_objects_preserved": true,
+    "all946_inherited_original_pins_preserved": true,
+    "inactive_template_unchanged": true,
+    "source_controls_authorized": true,
+    "native_execution_authorized": false,
+    "geometry_generation_authorized": false,
+    "simulation_authorized": false,
+    "physical_accepted": false,
+    "electrical_accepted": false,
+    "full_phy_accepted": false
+  },
+  "execution_scope": "Only YAML/source parsing and immutable Git/JSON reads. No authored source controls, imports, tests, KLayout/CAD/native/archive/wheel acquisition, workflow dispatch, main/root/other-branch mutation."
+}
