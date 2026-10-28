@@ -1,12 +1,12 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-10-28T20:02:44.887540+00:00",
+  "updated_at": "2026-10-28T21:34:16.393529+00:00",
   "execution_policy": "GitHub-hosted Actions/Releases only. Latest user request overrides old goal local-work wording. No local checkout, CAD, simulation or native artifact; RAM-only gh metadata/source orchestration.",
-  "root_source_before_receipt": "6534c1391a01da7c3030268d1b6a18fd399a2a46",
+  "root_source_before_receipt": "68710351e7adb46e022cabbb0726323abb9dc8bf",
   "monitor": {
     "branch": "main",
     "source": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
-    "inventory_version": 89,
+    "inventory_version": 90,
     "every_hours": 8,
     "read_only": true,
     "last_verified_run": 40713357703,
@@ -15,33 +15,7 @@
     "last_verified_run_status": "ATTENTION_REQUIRED: actual source controls and live inventory/snapshot passed; unresolved engineering failures retained; complete logs preserved; no MONITOR_ERROR",
     "proof_commit": "4117a800cbd9fcfb11f94b8531b3bc1e2e8d24fa"
   },
-  "active_runs": {
-    "mainchip-internal-engine-build": {
-      "run": 40756287268,
-      "head_sha": "3f389a05b6d2630eb6f0db80df2c191be8fd9e91",
-      "status": "in_progress",
-      "conclusion": null,
-      "run_attempt": 1,
-      "jobs": [
-        {
-          "id": 123055977574,
-          "name": "source-controls",
-          "status": "completed",
-          "conclusion": "success",
-          "active_steps": []
-        },
-        {
-          "id": 123057210407,
-          "name": "engine-build",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Build complete pinned engine under owned cgroup"
-          ]
-        }
-      ]
-    }
-  },
+  "active_runs": {},
   "isolated_durable_sources": {
     "pll_observer": "f520b2511b9dd00c98c1bff5491e87d232f11d21",
     "cdr_native_collision_receipt": "dca2bcd76d278ffcfef7a8be37f6f795304128f5",
@@ -2513,16 +2487,95 @@
       "all_native_execution": "GitHub Actions only",
       "local_user_settings_untouched": true,
       "full_PHY_routing_and_final_timing_closed": false
+    },
+    "mainchip_full_hosted_engine_build_20261029": {
+      "run": 40756287268,
+      "source": "3f389a05b6d2630eb6f0db80df2c191be8fd9e91",
+      "conclusion": "success",
+      "proof_commit": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "release": 427111201,
+      "build_seconds": 2989.665119994,
+      "peak_memory_bytes": 3718201344,
+      "memory_limit_bytes": 12884901888,
+      "oom_events": 0,
+      "binary_sha256": "1e79e2f0e77eb1a9153ec2c4040a0420e66d77777843a211da2cfd9b59b0238a",
+      "observer_equivalence_qualified": false,
+      "physical_accepted": false,
+      "next_native_source_review": {
+        "commit": "26e2f28b735238bd69140dca9a0fc6d2bf29f197",
+        "path": "docs/evidence/mainchip-built-engine-next-native-qualification-20261029.json",
+        "sha256": "2729aca991679497480a6a1cde84e49c4c4c723c4d4da756364ae4031ea92d91",
+        "expected_archive_members": 95,
+        "actual_runtime_library_records": 104,
+        "archive_census_not_yet_read_locally_or_by_successor": true
+      }
+    },
+    "cdr_tail_six_PVT_readback_20261029": {
+      "run": 40770955148,
+      "source": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
+      "method_sha256": "751ec078b73a48a39f6bc8a0e65ff367db29ba6e2c395ce79933596d3a60e684",
+      "source_branch": "codex/cdr-v59-tail-headroom-readback",
+      "latest_proof_commit": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "pins": 1005,
+      "original946_unchanged": true,
+      "first_actual_controls_failure": {
+        "run": 40768371741,
+        "source": "a0d3c77cb3f9203ab0714ae33954b6019d29a99a",
+        "proof": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+        "reason": "Authenticated original electrical qualification rejection was initially confused with incomplete preservation; original failure retained."
+      },
+      "corrected_actual_controls": {
+        "run": 40769846963,
+        "source": "9be22b89f1a263f72bdf43eb2f69cd2665cde8f3",
+        "proof": "87808471517018cac226ea890c3af06b854f746f",
+        "admission": [
+          7,
+          72
+        ],
+        "rows": [
+          4,
+          38
+        ],
+        "publication": [
+          3,
+          11
+        ],
+        "terminal_publication_cases": 6
+      },
+      "exact_readback_source_controls_passed": true,
+      "new_simulation": false,
+      "new_extraction": false,
+      "geometry_changed": false,
+      "electrical_accepted": false,
+      "observed_completed_cases_before_checkpoint": [
+        "nominal_early",
+        "nominal_late",
+        "hot_late",
+        "cold_early",
+        "cold_late"
+      ],
+      "readback_not_phy_acceptance": true,
+      "native_archives_and_frames_stay_in_cloud": true
+    },
+    "latest_cloud_only_user_instruction_20261029": {
+      "local_checkout": false,
+      "local_authored_tests": false,
+      "local_CAD_or_simulation": false,
+      "local_native_archives": false,
+      "all_source_and_evidence_remote": true,
+      "local_scope": "Empty project workspace; bounded Documents/Downloads/cache project-name scan found only empty workspace; known retired paths/services remain absent from preceding verified evidence.",
+      "allowed_local_operation": "RAM-only GitHub API/source/derived JSON/log orchestration",
+      "eight_hour_cloud_monitor_retained": true
     }
   },
   "next_actions": [
-    "Observe the existing exact-source engine build40756287268 once it changes. Preserve full native terminal records, binary/archive hashes, CMake/compile/runtime/cgroup proof in reserved permanent release427111201. Never repeat the same native source on observation timeout.",
-    "If full pinned build and actual interface probes pass, qualify observer off/on emitted-output equivalence before observing the three original Shorts on current13eda101 routed input. Current unchanged layout and original clock constraints remain unaccepted.",
-    "CDR40737889314 is fully terminal:8 actual functional rejections and2 expected fault detections. Use cloud-only readback of already-saved native waveforms to obtain exact simultaneous HBT min-active/max-alltime VCE terminals, signed currents, LP/LN, upper sampler, tail MOS and clock/data windows before a physical modification. Do not download native waveforms locally.",
-    "Preserve original CDR sampler37.5ps and comparison75ps; separate PLL first-fall62.5ps. Gain common-mode versus cold maxVCE tradeoff and hot feedback failures must be resolved without numeric relaxation.",
-    "Use actual PLL36 first-fall observations to inspect XCLK distribution and XRUN loading, preserving all original phase/safety gates.",
-    "Bind current routing and qualified min/max RC to postroute STA. Historical negative setup/hold numbers refer to another ODB and do not qualify current layout.",
-    "Keep all project source, tests, native tools, archives and captures in GitHub; no local checkout/simulation. Existing8h read-only monitor remains. Full serial PHY, routed serial mainchip, final setup/hold and production acceptance stay open."
+    "Reconcile saved-capture readback40770955148 from exacta551de0; source controls passed on this exact final source. Five case jobs already succeeded before this checkpoint, hot_early remained in progress. Preserve each complete summary/parts/diagnosis metadata/full job log from its reserved permanent release; do not fetch archives/native frames/waveforms locally. Never restart unchanged source on a wait timeout.",
+    "Use the authentic same-row current CDR diagnosis to choose a physical change that addresses selector minVCE without worsening cold gain maxVCE; preserve original37.5ps/75ps sampling/comparator and.4/1.6V device gates. The six old electrical failures and cold_late VI-only pass remain unchanged.",
+    "Implement the source-reviewed native engine successor at26e2f28. Restore engine release427111201 in exact image468fcd7; verify95 expected archive members and104 runtime libraries cloud-side, then exercise real DB lifecycle/ownership/API on original444f input. Later13eda is comparison output, not interchangeable input.",
+    "Qualify same-ELF observer-off/on via one authenticated prepared prefix and two fresh routing tails at identical paths, explicitly documenting the shared prefix. Preserve all1691 clocks, all non-target records/material, original guides/layers/seed42/2threads/64iterations and original20/4/8/8ns+5percent timing. Join after_writer native witnesses to actual emittedODB/DEF; do not relabel old AppImage provenance.",
+    "Preserve historical global-route tag/report mismatch explicitly: use existing exact summary/parts/member/run bindings for release421512828; never retarget or assert modern tag equality for that legacy dependency.",
+    "Use existing PLL36 first-fall evidence to address XCLK/XRUN loading under original62.5ps PLL gate; CDR gates remain separate. Bind qualified min/maxRC and current routed layout before finalSTA; prior negative slack belongs to anotherODB.",
+    "All source edits, tests, native CAD/simulation, archives and captures remain in GitHub. Local project must stay empty. Keep existing8h read-only cloud monitor. Full serial PHY, mainchip routed serial integration, final setup/hold and production acceptance remain open."
   ],
   "full_serial_phy_accepted": false,
   "final_timing_complete": false,
@@ -2792,15 +2845,20 @@
     "observed_40739668266": 40739668266,
     "observed_40598054387": 40598054387,
     "observed_40751042524": 40751042524,
-    "observed_40737889314": 40737889314
+    "observed_40737889314": 40737889314,
+    "observed_40756287268": 40756287268,
+    "observed_40768186383": 40768186383,
+    "observed_40768371741": 40768371741,
+    "observed_40769846963": 40769846963,
+    "observed_40770955148": 40770955148
   },
   "queue_cleanup_receipt": "docs/evidence/cloud-unintended-tag-runs-cleanup-20261024.json",
   "current_run_snapshot": [
     {
       "run": 40756287268,
       "head_sha": "3f389a05b6d2630eb6f0db80df2c191be8fd9e91",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
@@ -2813,23 +2871,21 @@
         {
           "id": 123057210407,
           "name": "engine-build",
-          "status": "in_progress",
-          "conclusion": null,
-          "active_steps": [
-            "Build complete pinned engine under owned cgroup"
-          ]
+          "status": "completed",
+          "conclusion": "success",
+          "active_steps": []
         }
       ]
     },
     {
-      "run": 40751042524,
-      "head_sha": "8fda83c4b5acd55af773ea94abbc13e32c694137",
+      "run": 40768186383,
+      "head_sha": "d653389338ba74cec218df01fef0e4aa57b2b68d",
       "status": "completed",
       "conclusion": "success",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 123037472027,
+          "id": 123097942678,
           "name": "register-only",
           "status": "completed",
           "conclusion": "success",
@@ -2838,101 +2894,112 @@
       ]
     },
     {
-      "run": 40737889314,
-      "head_sha": "5e373a9378b4a3c0fad51687a604a14668dba3ce",
+      "run": 40768371741,
+      "head_sha": "a0d3c77cb3f9203ab0714ae33954b6019d29a99a",
       "status": "completed",
       "conclusion": "failure",
       "run_attempt": 1,
       "jobs": [
         {
-          "id": 122991282837,
+          "id": 123098584805,
+          "name": "source-controls",
+          "status": "completed",
+          "conclusion": "failure",
+          "active_steps": []
+        },
+        {
+          "id": 123099028357,
+          "name": "readback",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40769846963,
+      "head_sha": "9be22b89f1a263f72bdf43eb2f69cd2665cde8f3",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123103793795,
           "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 122993284667,
-          "name": "prepare",
+          "id": 123104275804,
+          "name": "readback",
+          "status": "completed",
+          "conclusion": "skipped",
+          "active_steps": []
+        }
+      ]
+    },
+    {
+      "run": 40770955148,
+      "head_sha": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "jobs": [
+        {
+          "id": 123107705594,
+          "name": "source-controls",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 122994880806,
-          "name": "loaded (vi_bias_off)",
+          "id": 123108245647,
+          "name": "readback (hot_early)",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 122994880821,
-          "name": "loaded (cold_early)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 122994880830,
-          "name": "loaded (constant_zero)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 122994880879,
-          "name": "loaded (clock_stopped)",
+          "id": 123108245666,
+          "name": "readback (cold_late)",
           "status": "completed",
           "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 122994880883,
-          "name": "loaded (hot_late)",
+          "id": 123108245698,
+          "name": "readback (hot_late)",
           "status": "completed",
-          "conclusion": "failure",
+          "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 122994880968,
-          "name": "loaded (hot_early)",
+          "id": 123108245705,
+          "name": "readback (nominal_late)",
           "status": "completed",
-          "conclusion": "failure",
+          "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 122994881002,
-          "name": "loaded (constant_one)",
+          "id": 123108245741,
+          "name": "readback (nominal_early)",
           "status": "completed",
-          "conclusion": "failure",
+          "conclusion": "success",
           "active_steps": []
         },
         {
-          "id": 122994881012,
-          "name": "loaded (nominal_early)",
+          "id": 123108245843,
+          "name": "readback (cold_early)",
           "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 122994881117,
-          "name": "loaded (nominal_late)",
-          "status": "completed",
-          "conclusion": "failure",
-          "active_steps": []
-        },
-        {
-          "id": 122994881158,
-          "name": "loaded (cold_late)",
-          "status": "completed",
-          "conclusion": "failure",
+          "conclusion": "success",
           "active_steps": []
         }
       ]
     }
   ],
   "local_cleanup_verification": {
-    "observed_at": "2026-10-28T20:02:44.887540+00:00",
+    "observed_at": "2026-10-28T21:34:16.393529+00:00",
     "workspace": "/home/hasanmelih/Documents/ChatGPT/nnsoc",
     "workspace_entries": 0,
     "project_named_tmp_entries": 0,
@@ -3061,7 +3128,7 @@
     "path": "docs/evidence/pcie-gen12-training-record-cloud-start-20261024.json",
     "sha256": "8f89f71429985d03c1131b733e68557496f6e61e3a4c0d771221b98bbbbc8167"
   },
-  "local_workspace_verified_empty_at": "2026-10-28T20:02:44.887540+00:00",
+  "local_workspace_verified_empty_at": "2026-10-28T21:34:16.393529+00:00",
   "imported_checkpoint_receipts_v30": [
     {
       "path": "docs/evidence/cdr-v58-saved-capture-joblog-20261024.txt",
@@ -23868,6 +23935,826 @@
       "reserved_before_native": true,
       "draft": false,
       "prerelease": true
+    }
+  ],
+  "imported_checkpoint_receipts_v90": [
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.build-configuration.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "cf6b4ccc82c599543e99faa523012dcd6b456929",
+      "bytes": 398,
+      "sha256": "db70175fafb919c0f9794bc56415051c0dc671380aeb71f3c4ec5cecfcab8479",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.container-initial.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "b1a1bfb9be633ad55163b4ac68f3d893ea708ab4",
+      "bytes": 6308,
+      "sha256": "622ca7340f5367e04411e75a5f3bce68a5711472c4d770c66bb7d844c1d52797",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.container-terminal.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "33e2d46fc8641ffb3f7a1aadb8c29016e4c62c3c",
+      "bytes": 6869,
+      "sha256": "5d875e4c4682235bf3d9051d72df603f053a7935841bcb7aac72b917a6f6eaf8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.engine-build-controls.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "ee03d3d2c2c6edeff6be5309ef8da7c7300223fa",
+      "bytes": 3045,
+      "sha256": "40d871dacd6103f0da1407d2a6e8ce9ee2c97a390a23519d19a758f8d6a66319",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.host-result.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "b7dd93fef777e7b309d61f237dd80ad4d4c20849",
+      "bytes": 31328,
+      "sha256": "c268f23d2f9d7e9b3dc17966da74829445aca1390a17888a291a0f4f330e3f01",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.inner-result.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "f8af90aa0ced4cc9b5a609d5ba947fffc00744aa",
+      "bytes": 19296,
+      "sha256": "b64e680d6a2b2aab202d581d6b5ab458b2811793e994c16ccc2736c5e58a2c35",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.internal-witness-controls.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "7558fbe248f3278f1f78b9ef29c218c6a3602403",
+      "bytes": 1133,
+      "sha256": "a5685ad91793240a318f79785f64df6c7979c062430bd63cf9aaae0bb362bc3b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.job.log",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "31e836cf4ef4874d53aab64019676290043d4416",
+      "bytes": 62896,
+      "sha256": "36521a18c3b0120f521b06ad304a0fa1db0f0eff352fc29da9b04fa4c79da412",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.jobs.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "93abd720ac7559ce23946cacf0f6ce0f5d8978a1",
+      "bytes": 6512,
+      "sha256": "cf89bae33b80715269216525a1ca6dda31e92a3cddc4b0a933d6b2ba8bf62dd6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.method.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "7291265f07ddd1eacf08c4cf12129d552ee077f1",
+      "bytes": 85283,
+      "sha256": "d4e9b849aaa9559784972a3d6f401ff7f4f9b4165bcb91480559df92cd270303",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.outputs.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "acfd71ac2d14f8d700d9e17f66bc86feb8690adb",
+      "bytes": 13467,
+      "sha256": "2e065e7e0bad2d6a164d542d403e83387e8b1431d622e28e811d81a2308e5748",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.parts.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "2e1b75ab6d225b15ad016cf9be55277f4ed9b354",
+      "bytes": 313,
+      "sha256": "c9827ad25a1d735a4c782a41f74d2ad79a4180a4cd98aaca3f3757e97c3314cb",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.publication-availability.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "85d1b76aec139b994d47f85bb47d289912807282",
+      "bytes": 679,
+      "sha256": "a9c9ef906438fccd93af7eb02a18f8b7f1c887c5ed75855a440635b53ba048f8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.receipt.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "8a08fa54fecbdcbcf7b5fbe8b61798e5eb22f0f1",
+      "bytes": 5369,
+      "sha256": "0b9b32fe4ac465859a86f7062c46867cf95b035a26e2796b0bf93fa0de33d5c5",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.release-reservation.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "0598a20106cbdfd4a4a274febee770c449d8eca7",
+      "bytes": 339,
+      "sha256": "acb0f4e49856ee163aa6aeb08782bcec2e271ab594820a43437e482a2ce2fa5d",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.release.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "cad7ad5fba9d3af66f3da3bd9c3946a79ffa928e",
+      "bytes": 30841,
+      "sha256": "6a6548cb957b093aaf55831a16d4cc7fa397b4526548e4e42f0abb877a2e571e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.run.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "04f88fe0aaa3843f7c042b09a5ae948b9097b3ca",
+      "bytes": 14401,
+      "sha256": "a54a71a7c192c386d367e5d3c9d223dd59356180ee160779cdfc440933367a45",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.runtime-dependencies.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "534b24cdcf542b98ad1ae9c29197ed1e2ad5ccd8",
+      "bytes": 16940,
+      "sha256": "6651a9b0b0059ed4b6ebfa5cb016a2ce08c146196d357fa1283ebf57eb6619a0",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-internal-witness-engine-native-build-terminal-20261028.tag.json",
+      "source": "462ab164e82e755f90a77aa98211b18dbb62db98",
+      "git_blob": "23a48446fe36bc9eb925b10793a45e10ee7f249d",
+      "bytes": 585,
+      "sha256": "e3a8b4183a32b1196f13519e943fbc3c39d2d9b4261d56c32c5f98c5be84bab3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/mainchip-built-engine-next-native-qualification-20261029.json",
+      "source": "26e2f28b735238bd69140dca9a0fc6d2bf29f197",
+      "git_blob": "61d5212537c6cd7e1c48acf3728ead7955d07814",
+      "bytes": 6033,
+      "sha256": "2729aca991679497480a6a1cde84e49c4c4c723c4d4da756364ae4031ea92d91",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-source-foundation-20261028.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "da34196ffea90b52831ec9f5d9ba70b26a7804a2",
+      "bytes": 7094,
+      "sha256": "47d9293b934a59ab0218360a5a840395a244c5e53bb855b472b892f5f6e3594c",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.cold_early.native-result.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "017f2069c1c530e4ce512471fe72e1bd01958261",
+      "bytes": 1911109,
+      "sha256": "0241ab3fb4a50cafd4369c5d09fe4043e5d5d3ab696a01ca444bc66b60c5ebac",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.cold_early.parts.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "3f260f3b090d391886ce58794cf7a46005390b23",
+      "bytes": 1326,
+      "sha256": "aefbcdfc0fe266b85960655f8539a128a4b3775eb160429a059a8e61f999432a",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.cold_early.summary.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "bb1612399b487742f79acfb4c4ffe3cb446e5028",
+      "bytes": 1369441,
+      "sha256": "9bca37e9adcc154188c5b490936e98e38e249c2b309ac187cdc0bbb0e03b7d6d",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.cold_late.native-result.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "2ae56699b34bd2b156184748461016feaabcf52e",
+      "bytes": 1911351,
+      "sha256": "5bf7da024ba3e67e494595df9f4996f7744a4d94e60ec8b3b71d2dd39a95b09c",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.cold_late.parts.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "740af6dc805e2fed901dcbfffbccf0ca2022cab7",
+      "bytes": 1321,
+      "sha256": "22d713c2f75609822c2ac5f3a265e9683293d853dec6d881fb0d7ee8495d0524",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.cold_late.summary.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "d43392fce5761327bf65244c3d8d1053c48505aa",
+      "bytes": 1371234,
+      "sha256": "b6593885f7d3cf204486b6159ba74b956850ae5931f664ce7db092954bb9764a",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.hot_early.native-result.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "13fefec00fc1c0b8828543afa6abef0f60500a6c",
+      "bytes": 1911602,
+      "sha256": "f853cc27010c031eb7ae7dae8804d6c2a2d9725def56e166870de59086733646",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.hot_early.parts.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "b0942ae49c88e3eef49569d2050d4b482d3658f9",
+      "bytes": 1321,
+      "sha256": "76788f4162f27c5447922a6e2f2a20e8f2228aaa433be001cc0a0ee4f83ba38c",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.hot_early.summary.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "566ad6860c4545c7fdacf920364124762e4bbc60",
+      "bytes": 1364971,
+      "sha256": "368db1d9d6a91e3274195c62c363a9528aeafef4b8829c7e31a53d555f160ca9",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.hot_late.native-result.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "b632275beda22768303ed4b5e6b3a6e02fef183d",
+      "bytes": 1911698,
+      "sha256": "7a90e0a2370e51a96e3a08d8fe837a6c13c571e98c6ac0ace89360dc3089cedb",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.hot_late.parts.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "5560bbdd4173e6c9e3db05066020eaeee2c825eb",
+      "bytes": 1316,
+      "sha256": "009bf1a6f1208d4dc01e816d824872ed35ddd9a0acf25d93b289b65ebe393769",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.hot_late.summary.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "ef34f8c391c86e107b419a537c1724f7fe2f6e2e",
+      "bytes": 1369261,
+      "sha256": "cfbd6703d3fe5d1f3d6544f0decc43faf0465c6d184f628e69a6851ffd830bc3",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.nominal_early.native-result.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "754373b8f7f55025b61912b75379c6e907ba3e7c",
+      "bytes": 1911425,
+      "sha256": "6dce7c5c75d41d53c403076464f23fc1079221f998593bcae5673e38974aeb25",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.nominal_early.parts.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "5d8b9ee9553d3517d4596eb138a8f50919142c9a",
+      "bytes": 1341,
+      "sha256": "e021b417c3540eaec809199d21d3fc0254fa42ae165611365d451bfad7df2611",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.nominal_early.summary.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "44a553958173043ef41218eda247467426f4568d",
+      "bytes": 1362858,
+      "sha256": "bba5739a4ef5f457dbbb823d7261c4d36abc72b8d7e0ecc595995c65c2d20360",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-more-terminal-20261028.shared.preparation-native-result.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "22b150910a45bae068404a4c796e41b25bd17b71",
+      "bytes": 1763681,
+      "sha256": "feda357b449bd6398bc585d1a582bf67b50370020f064d7e61296987073db497",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.native-result.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "3bf3dd520b241fba643c47f19cc24aef8da36afc",
+      "bytes": 1911518,
+      "sha256": "aa012dd6a72c384584928aa2a5feca043d93df60d5082cc308a5352fbdecf2a6",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.parts.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "9805ac178f3277579bae9d76db9d5dedfeed5c85",
+      "bytes": 1336,
+      "sha256": "f43c0671f140cfad3ee4504b86e8bddd43243640f180035a567cd3f417c13040",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-loaded-preparation-and-first-electrical-rejection-20261028.nominal_late.summary.json",
+      "source": "cc80520486bda17f888f76eff2d51a1eba8a018f",
+      "git_blob": "b2db6d72b7c23764563104d1dcfc1668ecde3488",
+      "bytes": 1363004,
+      "sha256": "0f5058543190c3a49ea7f80edfc19b53f899925c886968ff067e86ab2ec5645e",
+      "existing_identical": true
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-rows-source-review-20261028.json",
+      "source": "33cba220e48d42a083fbf17f7130356d480a443b",
+      "git_blob": "5d1954a4928b61b935424c26a7671c180ac4f73c",
+      "bytes": 17593,
+      "sha256": "0b9b785ba547981ede6bd457900415b52a61352d16da0f14734f821f1a38f621",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-complete-source-controls-review-20261028.json",
+      "source": "69952fa80ae34ee9a602faaef0eef45aef74cef1",
+      "git_blob": "82d6a2f64b3fedaf0a10ee0523e827e5379dfc19",
+      "bytes": 3595,
+      "sha256": "ac976d7ef238647a52050aec7c380ed51717c54d610cd6e0bcf2a39452d89404",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-publication-primary-correction-20261028.json",
+      "source": "a0d3c77cb3f9203ab0714ae33954b6019d29a99a",
+      "git_blob": "b376e4292970838d451fe9f088a73f001223c9cb",
+      "bytes": 5514,
+      "sha256": "eba45405a9deea9d5a9ce6758b344bc3380e9913baf8ede3790c09cead49c5d3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-admission.json",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-jobs.json",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "58d53a4529d75536ca1834c638ddb8134c303aec",
+      "bytes": 6348,
+      "sha256": "ba29337ff805b11f94a9c818769f0ff1513f249328e40d8ebc1b023f3f678ab4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-receipt.json",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "33a4f3a1085593388a605c534f95ef256a2db0a0",
+      "bytes": 4274,
+      "sha256": "48419917e824b7003430e3885dd9ffa2eb2a07841a50d57f7ab2c42404927f96",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-record-index.json",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "1bbb9e66064c2733f01c25e5e50b4c4110c2477d",
+      "bytes": 345,
+      "sha256": "b9b4a8ffaab094d7ddb4666ed61acb8332b75a13443e4dba52788c7b5263bd32",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-registration-job.log",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "7f63e9e78fbdb37b7858102d4e83ad036267bbfd",
+      "bytes": 2251,
+      "sha256": "df6e39648231dcca93cb26346d41ad8efcc5a01aef564cc306d492f9dcf029e9",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-registration-jobs.json",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "b614bb2efb50f05b88230ef5e74859504311b439",
+      "bytes": 1974,
+      "sha256": "ecf9f4823b109d4783d5174a58466a4afb95c40c50256b2746ab1301a6acd00e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-registration-run.json",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "4d827af3f7aaf13d0c30378648dd5f8e11e7d310",
+      "bytes": 14394,
+      "sha256": "546a5d07d3d1ddffd75b91a217684a6ca790a0eccb71403fa2211f681b9ca4c4",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-registration-workflow.yml",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "4ecff4cde03d82126746a23c66395dfce20a5b5c",
+      "bytes": 486,
+      "sha256": "a75280700e2e80b1c2226d4f428368b6132ffec363dba040f84b8c9721e2f307",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-registry.json",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "726e2eb186546990c9ea262cb0fe2caa0fea7667",
+      "bytes": 652,
+      "sha256": "befece0f33af1b0bdc1f0dc1fb7871594104895f08d1cb0b1008c511dc492c7f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-run.json",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "e9acf3cd2885093af0e5d824af2dfb600a08eda8",
+      "bytes": 14427,
+      "sha256": "d77700c2149e581b71a930fa4b0423f278b4d9923383f37cb0b435cb351efd67",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-source-job.log",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "41a7c95972a45e148c80500d0c94cbb4348f4cc5",
+      "bytes": 31115,
+      "sha256": "c813040eda08ab183a44208a8b2944488697d88e0ec8f22cd30f94c41309ef96",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-tested-method.json",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "e992b813353cff230ba1d5cbcaeddd9693ed7697",
+      "bytes": 184969,
+      "sha256": "919610a4e9aa7c000b5d5420431c19be171afde5fd24a2654b79b68296cbab79",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-source-controls-terminal-20261029-tested-workflow.yml",
+      "source": "f1ba23d50b82034ab86a5eb89f073af14e1ce802",
+      "git_blob": "89a1f56d552808685c8c425580018af5822e08cf",
+      "bytes": 8493,
+      "sha256": "f5939b6b9e75d7c32773ff402ecdd62d984e4356c9cc7a9c6ca427279ee73a06",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-failed-admission-20261029.py",
+      "source": "9be22b89f1a263f72bdf43eb2f69cd2665cde8f3",
+      "git_blob": "f5668c385c463e898a18d7350f381d3065eabffd",
+      "bytes": 14677,
+      "sha256": "34199476cc513877a65863595f2fa17ee0cbd42fb0ee597b9de8f4d03a4d2bd8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-original-rejection-admission-correction-20261029.json",
+      "source": "9be22b89f1a263f72bdf43eb2f69cd2665cde8f3",
+      "git_blob": "c1d6ca0eac5dd6204cac31f03ba4f3a5322f32ce",
+      "bytes": 8127,
+      "sha256": "1820c8b9ae242b92e4e9d4d8349623ab93b978175be1dea3da2175bf7e9c356f",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-admission.json",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "4bc8746417e1d2fd9e2ed8ae3f57cd001b8d3270",
+      "bytes": 4367,
+      "sha256": "3c179202b0ec5e2cbc23a16022174cb68f61ba42c6f0383b0d66af88c732ad9e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-jobs.json",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "4aa9ba439f6218daa16526b2712810fbb0fe2ef8",
+      "bytes": 6348,
+      "sha256": "9a4fa11f383ec61446f11f1d0ad76d700d0274379ff67b83e49750a9ce7d0ec6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-publication.json",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "bdb900e135f7f82d395aaad965adf3a364cb9bda",
+      "bytes": 14509,
+      "sha256": "e36f85a2c2f7bc990095af69a685e157805e783970e15e653b76c4d44b72617e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-receipt.json",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "bfa91b9124313d0e7e0b249dece47097bb208d5e",
+      "bytes": 5393,
+      "sha256": "223551f3320a3c2e0d159a7f86367e248c7eae37ac4a318d575d81d7fb5f7218",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-record-index.json",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "a883d72f8eaef3724e591675475a3ac17bedc0f2",
+      "bytes": 583,
+      "sha256": "5f373b0f48e1f455ae6e7e1c36e97c73be5c7ae2638b90a20cfcdb986e708d09",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-root-review.json",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "94fe1646dc24014a824855cc24ee206da6f18dd4",
+      "bytes": 940,
+      "sha256": "502eec74a06bf3b89162b9ac79de39eb8fabd1f2bb5ef9fe81a7ac5e774e65a1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-rows.json",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "e179461d73700deaa48ea00209921a7a339ec809",
+      "bytes": 7491,
+      "sha256": "4085c623cc4c1f814dec2abf7cb378bcafe2b245dbdebc2567c77e4cef98ef71",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-run.json",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "5ebff0b7596f2a777c18cbfc6b84ebbc2dd7db58",
+      "bytes": 14429,
+      "sha256": "ec47dd4832e662d6c96a5b95c832d8c23b51fb4017779386c3c27cb4d1860262",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-source-job.log",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "50051c6727fbc229dc71b90a4c64d68b2d931ce2",
+      "bytes": 86222,
+      "sha256": "c412be7d84fbed8b7698587c9913faeb2464ce9749e519976c762953c718fac1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-tested-method.json",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "eab4469e850fd90caae8397e4b6e3b64c693a2b6",
+      "bytes": 187468,
+      "sha256": "c50636cd54cbc5fadeeafce88d807981b303192a0764a15bfaee726530f3406b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-corrected-source-controls-terminal-20261029-tested-workflow.yml",
+      "source": "87808471517018cac226ea890c3af06b854f746f",
+      "git_blob": "04405a8bd022192fee661b56b278ae5f30b5609a",
+      "bytes": 8754,
+      "sha256": "e392694a6471cedd49682906face63283c69550de3b3cc01f7b5a731a848edde",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-readback-admission-20261029.json",
+      "source": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
+      "git_blob": "9cdcdc0461dd77bc5d558b7b151e837c15b36fe9",
+      "bytes": 13863,
+      "sha256": "2e2fedd47483626f3a03c09e57fcf9db1194c2e4c860a82327ad016dbd99065b",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.admission.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "4bc8746417e1d2fd9e2ed8ae3f57cd001b8d3270",
+      "bytes": 4367,
+      "sha256": "3c179202b0ec5e2cbc23a16022174cb68f61ba42c6f0383b0d66af88c732ad9e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.cold_early.release.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "1ecb6f1ab50ca502657d0b61aee4390e2ecbfc5c",
+      "bytes": 2515,
+      "sha256": "9e67bb95dc2aebb47f30114a0dccff5b46f08840a638c3d9f3661c234c5d4898",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.cold_early.tag.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "841f35ebfdceff52a42cba878424c3d5c42c461f",
+      "bytes": 565,
+      "sha256": "0d6d0338eceecfa734c72ee1d64d1841b7384947335160e7e33eb661756a673e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.cold_late.release.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "d379b7d67710e07f0fe8c56fc0d940e5d1f5028d",
+      "bytes": 2510,
+      "sha256": "4a30b60ab4b7e576a71c353f74ee4821ba5372d30c2ab3854a039a002dee2f03",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.cold_late.tag.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "3ecd4b5e6d8e018fe7d55984c792f8e502d2d011",
+      "bytes": 562,
+      "sha256": "8e922f789f581147dc8e4d8f261ee7c954ae946885b7a1f3b169b91b2f6096a6",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.hot_early.release.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "d67041a3ba9007a4cd7688c16b4601c41887809e",
+      "bytes": 2510,
+      "sha256": "257d62b19febcbf8fca8f235a173b04f699e6d63a566bf1c1e36532c5af0a181",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.hot_early.tag.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "3dd0527eb6aed062f0d6967f70e99a1c24f4074e",
+      "bytes": 562,
+      "sha256": "becfca24d767b719d164dfb84d087a59f88d8d71240b29dc87287ee1a884d170",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.hot_late.release.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "b504aa23b16d1c2086ff2bdb5c660317e69a477f",
+      "bytes": 2505,
+      "sha256": "d5558d0042edb9fb93fb6d49a39304ae47472beba828dd7cfb689d2105f18702",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.hot_late.tag.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "2da5e5b10babdb21af9de6b1b659f3330ad2a16a",
+      "bytes": 558,
+      "sha256": "29d22e69f78548192b2aefaf0bb74455d167062cbb291f0ae8e888a2b2c8c982",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.jobs.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "79004d0ad54affe8ba6fb222823c42e7bd5f4bcc",
+      "bytes": 23925,
+      "sha256": "f22e42188b8d4cb6436369842bd0b08c4b2ccc275a390a3273224749a9219e69",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.nominal_early.release.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "998e19c5fa4632519114b5b04a7b4bc6b883ad82",
+      "bytes": 10954,
+      "sha256": "052b3b787de84ac6b409c639ba6d27037de2cf8da013150d2187614171819e5a",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.nominal_early.tag.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "88cfa6a0f17473ad9f0bae6924ba0395a01c7478",
+      "bytes": 575,
+      "sha256": "4d2893eb166f4c63eb2bab81d066cfde3f679fdb48e745e95c0d77f4922623bc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.nominal_late.release.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "9cf2ea2971bcde88f954fc09c6dee3952584d0f5",
+      "bytes": 10937,
+      "sha256": "0b8ba8a2646430dedb3b5f3f381bbbeae7fb4a11bd2a3f7cae8c148ce323465e",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.nominal_late.tag.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "f589542349a92a04a1ee8310e4bb944c1ab86086",
+      "bytes": 572,
+      "sha256": "57ac9773b16eda26f1cc260702e138b4b616e082e71297f6c939e5aa49e88619",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.publication.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "0b94251db45f395f9c280ccbb5fc91473a180b5c",
+      "bytes": 14509,
+      "sha256": "899ad077f57f80dc19bf774b5f55f6c9cc91f0af6cf5b82a80d245ed0d977aa8",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.receipt.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "5ae05c50bdff92960f76b55cedead97bdd39e7e7",
+      "bytes": 9002,
+      "sha256": "7f534307d242f8747df5b34f95ca7127f9f2d2005849b9b81fd01fe08f4645a1",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.record-indices.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "36ba73e7cb689791c6930c17dde25484c9b3fa70",
+      "bytes": 583,
+      "sha256": "d61fc009ce9c31c03ffb8511fdf112aba0b0c583de84668a467710245d49edbc",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.reservations.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "bffd6aee4f581f71feca17e887af952358d449dd",
+      "bytes": 2514,
+      "sha256": "8c1adba53bb0028ea1c2d0f6ea72d00e131368bb7ab1b29b959224d2c2f725ed",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.rows.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "e179461d73700deaa48ea00209921a7a339ec809",
+      "bytes": 7491,
+      "sha256": "4085c623cc4c1f814dec2abf7cb378bcafe2b245dbdebc2567c77e4cef98ef71",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.run.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "24940b7e45c41d07d4c8d5da814df28f3bb923ac",
+      "bytes": 14414,
+      "sha256": "7cfc3334eb0cc3bbd6046f6e7c28764264a61e2344da46f6d91b7e146fdd61b3",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.source-controls.log",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "1d44c6edd813370ffcc2fde8a81c767a7020f21b",
+      "bytes": 86142,
+      "sha256": "03403f439080101d4a59eca9aa7e72cf22e22860055dc47010dd21b23cb6ec32",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.tested-method.json",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "e087223c50ec50b64aca7d5c0659beed70a8089d",
+      "bytes": 191243,
+      "sha256": "751ec078b73a48a39f6bc8a0e65ff367db29ba6e2c395ce79933596d3a60e684",
+      "existing_identical": false
+    },
+    {
+      "path": "docs/evidence/cdr-v59-tail-headroom-first-readback-20261029.tested-workflow.yml",
+      "source": "a9276dfb5ef335ba24ce841442ca98483c6d7106",
+      "git_blob": "04405a8bd022192fee661b56b278ae5f30b5609a",
+      "bytes": 8754,
+      "sha256": "e392694a6471cedd49682906face63283c69550de3b3cc01f7b5a731a848edde",
+      "existing_identical": false
+    }
+  ],
+  "cloud_results_release_reservations_v90": [
+    {
+      "case": "nominal_early",
+      "group": "cdr-v59-tail-headroom-nominal_early",
+      "tag": "cloud-results-40770955148-1-cdr-v59-tail-headroom-nominal_early",
+      "release_id": 427203944,
+      "source": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
+      "run": 40770955148,
+      "run_attempt": 1,
+      "created_at": "2026-10-28T21:18:23Z",
+      "prerelease": true,
+      "draft": false
+    },
+    {
+      "case": "nominal_late",
+      "group": "cdr-v59-tail-headroom-nominal_late",
+      "tag": "cloud-results-40770955148-1-cdr-v59-tail-headroom-nominal_late",
+      "release_id": 427203986,
+      "source": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
+      "run": 40770955148,
+      "run_attempt": 1,
+      "created_at": "2026-10-28T21:18:23Z",
+      "prerelease": true,
+      "draft": false
+    },
+    {
+      "case": "hot_early",
+      "group": "cdr-v59-tail-headroom-hot_early",
+      "tag": "cloud-results-40770955148-1-cdr-v59-tail-headroom-hot_early",
+      "release_id": 427204028,
+      "source": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
+      "run": 40770955148,
+      "run_attempt": 1,
+      "created_at": "2026-10-28T21:18:23Z",
+      "prerelease": true,
+      "draft": false
+    },
+    {
+      "case": "hot_late",
+      "group": "cdr-v59-tail-headroom-hot_late",
+      "tag": "cloud-results-40770955148-1-cdr-v59-tail-headroom-hot_late",
+      "release_id": 427204080,
+      "source": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
+      "run": 40770955148,
+      "run_attempt": 1,
+      "created_at": "2026-10-28T21:18:23Z",
+      "prerelease": true,
+      "draft": false
+    },
+    {
+      "case": "cold_early",
+      "group": "cdr-v59-tail-headroom-cold_early",
+      "tag": "cloud-results-40770955148-1-cdr-v59-tail-headroom-cold_early",
+      "release_id": 427204142,
+      "source": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
+      "run": 40770955148,
+      "run_attempt": 1,
+      "created_at": "2026-10-28T21:18:23Z",
+      "prerelease": true,
+      "draft": false
+    },
+    {
+      "case": "cold_late",
+      "group": "cdr-v59-tail-headroom-cold_late",
+      "tag": "cloud-results-40770955148-1-cdr-v59-tail-headroom-cold_late",
+      "release_id": 427204209,
+      "source": "a551de0a2fcb5a0485fdcbf9f41f939a8cb62fe1",
+      "run": 40770955148,
+      "run_attempt": 1,
+      "created_at": "2026-10-28T21:18:23Z",
+      "prerelease": true,
+      "draft": false
     }
   ]
 }

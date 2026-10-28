@@ -1,0 +1,123 @@
+{
+  "schema": "cdr-tail-headroom-bounded-source-review-v1",
+  "status": "SOURCE_CORRECTION_READY_FOR_HOSTED_SOURCE_CONTROLS_READBACK_DISABLED",
+  "reviewed_parent": "69952fa80ae34ee9a602faaef0eef45aef74cef1",
+  "original_source": "5e373a9378b4a3c0fad51687a604a14668dba3ce",
+  "original_protected_pins": 946,
+  "original_protected_values_and_git_objects_unchanged": true,
+  "parent_added_pins_rehashed": 31,
+  "parent_added_bytes_rehashed": 21967073,
+  "actual_reports": {
+    "count": 19,
+    "bytes": 21441114,
+    "all_hashes_match": true,
+    "six_case_complete_native_output_maps": 3925,
+    "outer_outputs": 3933,
+    "archive_members": 3934,
+    "cold_late_VI_pass_retained": true
+  },
+  "corrected_parent_review": {
+    "outer_native_paths_and_report_joins": "CLEAR",
+    "original_6722_byte_measurement_block_sha256": "7a9787a019bf460d31d40e23f94e76f51c9540cb0aafef465a1b82e8767ace64",
+    "original_extract_and_validate_native_function_AST_unchanged": true,
+    "original_bind_native_and_binding_controls_AST_unchanged": true,
+    "post_save_failure_inventory_and_finish_primary_preservation": "SOURCE_REVIEW_CLEAR",
+    "success_publication_requires_six_outputs_full_frame_binary_canonical_diagnosis_replay_capture_inventory_joins": true
+  },
+  "finding": "An error encoding or emitting publication fallback could mask the original upload exception or atomic save exception.",
+  "fix": "Independently catch fallback failures, record them in the in-memory terminal proof, restore the original publisher hook, retain the upload exception by identity or the atomic save exception when no earlier primary exists. Mark failed terminal save explicitly without discarding prior publication outcome.",
+  "changed_driver_functions": [
+    "publish"
+  ],
+  "unchanged_driver_functions": [
+    "encode",
+    "finish",
+    "group",
+    "initial",
+    "inventory",
+    "main",
+    "publication_result",
+    "run",
+    "write"
+  ],
+  "reversible_replacement": {
+    "old": "        except BaseException as error:\n            print(\"CDR_TAIL_HEADROOM_PUBLICATION_FALLBACK \"+json.dumps(dict(\n                primary_error=repr(primary)if primary else None,save_error=repr(error),proof=proof)),flush=True)\n            if primary is None:raise\n",
+    "new": "        except BaseException as error:\n            proof[\"status_before_terminal\"]=proof[\"status\"]\n            proof[\"status\"]=\"FAIL_READBACK_PUBLICATION_TERMINAL_SAVE\"\n            proof[\"terminal_errors\"]=[dict(action=\"atomic_publication_save\",error=repr(error))]\n            try:\n                print(\"CDR_TAIL_HEADROOM_PUBLICATION_FALLBACK \"+json.dumps(dict(\n                    primary_error=repr(primary)if primary else None,save_error=repr(error),proof=proof)),flush=True)\n            except BaseException as fallback_error:\n                proof[\"terminal_errors\"].append(dict(action=\"fallback_encode_or_emit\",error=repr(fallback_error)))\n                # The active upload exception wins; otherwise the atomic save error wins.\n            if primary is None:raise\n",
+    "occurrences": 1
+  },
+  "actual_controls": {
+    "original_publication_cases": 8,
+    "new_terminal_cases": 6,
+    "positive_count": 3,
+    "refusal_count": 11,
+    "terminal_modes": [
+      "upload_primary_save",
+      "upload_primary_save_encode",
+      "upload_primary_save_emit",
+      "save_only",
+      "save_only_encode",
+      "save_only_emit"
+    ],
+    "actual_paths": [
+      "worker.publish",
+      "publisher.publish",
+      "worker.write",
+      "os.replace",
+      "fallback JSON encoding",
+      "fallback printing"
+    ],
+    "explicit_synthetic_collaborators": [
+      "remote GitHub transport",
+      "waiter",
+      "injected upload exception",
+      "atomic replace exception",
+      "fallback encode exception",
+      "fallback emit exception"
+    ],
+    "checks": [
+      "exact original exception object",
+      "actual worker publish/write traceback frames",
+      "original publisher.release callable identity",
+      "real atomic fragment bytes/hash retained",
+      "original result and partial output byte equality",
+      "complete successful fallback payload",
+      "no retry sleep"
+    ],
+    "local_execution": false,
+    "hosted_execution": false,
+    "original_capture_acquired": false
+  },
+  "gates": {
+    "sampler_ps": 37.5,
+    "comparator_ps": 75,
+    "minimum_active_vce_v": 0.4,
+    "maximum_alltime_abs_vce_v": 1.6
+  },
+  "new_files": {
+    "scripts/cloud_cdr_v59_tail_headroom_readback.py": {
+      "bytes": 13769,
+      "sha256": "a32b10c012466138894d784683f08ce61a286eec78390045119b7fa60d4803d2"
+    },
+    "scripts/check_cdr_v59_tail_headroom_publication.py": {
+      "bytes": 10492,
+      "sha256": "876be66a443bb27edc990133b464efae79366acc41ea4865ab0c57e44a2f596e"
+    },
+    ".github/workflows/cdr-v59-tail-headroom-cloud.yml": {
+      "bytes": 8493,
+      "sha256": "f5939b6b9e75d7c32773ff402ecdd62d984e4356c9cc7a9c6ca427279ee73a06"
+    },
+    ".github/workflow-templates/cdr-v59-tail-headroom-cloud.yml": {
+      "bytes": 8493,
+      "sha256": "f5939b6b9e75d7c32773ff402ecdd62d984e4356c9cc7a9c6ca427279ee73a06"
+    }
+  },
+  "limitations": [
+    "Source/AST/hash review only. Hosted controls are not yet executed. No current capture or native archive acquired.",
+    "This is diagnostics and failure preservation, not electrical or physical acceptance."
+  ],
+  "readback_authorized": false,
+  "new_simulation": false,
+  "accepted": false,
+  "cdr_accepted": false,
+  "full_phy_accepted": false
+}
