@@ -1,0 +1,82 @@
+{
+  "schema": "mainchip-engine-build-source-and-immutable-image-v1",
+  "observed_at": "2026-10-28T18:59:58.808146+00:00",
+  "upstream": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+  "source_derived_docker_tag": "6f6e09",
+  "index_sha256": "e5394355bdaa3c33be748ca550c8c49fe760e8ab55faef7a3bb983bbae870873",
+  "amd64_manifest_sha256": "468fcd7f156dd350a648b0a3038ea16a5a25fde2e1b527f03d052108fea5ff3a",
+  "config_sha256": "a958d3bee9c5261b26e221e1c1461c92f830f14293bc5050848653bd7ec8d185",
+  "primary": {
+    "Dockerfile": "a851fba153086cb2580b344514cb3468b451eb24df4556795faef28c88879dae",
+    "etc/Build.sh": "5d0d0e6d15662214a87b7c088dd5f13d57f6e99071cc96743a3406fa330829d7",
+    "etc/DependencyInstaller.sh": "13ca3359af432f29eea8c374a53105c3b66f1673583261ce264d0e770626588b",
+    "etc/DockerTag.sh": "27c21ce7014664550b1f4f81ff36b31939ca04fdfef8e8f1216ad02551b994e0",
+    ".gitmodules": "74a3514ca22f31020545e668f4d6d07c49861f8383cd24a659b53d8c9dd6f69f",
+    "docs/user/Build.md": "0676df8c002d8b1c55f2f76ad0f3d109bf2403d06564bfec504b1330a9b96ad9",
+    "CMakeLists.txt": "eeb7d49e24e355c6bbdc9a3006bcc5d8b94ca17b21d55c11f0e9f873156abd1c"
+  },
+  "gitlinks": [
+    {
+      "path": "src/sta",
+      "mode": "160000",
+      "type": "commit",
+      "sha": "857316ff001b2a8dbbdc5996944d08a6d38c87ab"
+    },
+    {
+      "path": "third-party/abc",
+      "mode": "160000",
+      "type": "commit",
+      "sha": "4c756ffb8dff7c583e80c7970d117abd3dfddb5c"
+    }
+  ],
+  "nested_gitlinks_absent": null,
+  "actions": [
+    {
+      "repository": "actions/checkout",
+      "sha": "11bd71901bbe5b1630ceea73d27597364c9af683",
+      "url": "https://github.com/actions/checkout/commit/11bd71901bbe5b1630ceea73d27597364c9af683",
+      "message": "Prepare 4.2.2 Release (#1953)\n\n* Prepare 4.2.2 Release\n\n---------\n\nCo-authored-by: Josh Gross <joshmgross@github.com>"
+    },
+    {
+      "repository": "actions/upload-artifact",
+      "sha": "ea165f8d65b6e75b540449e92b4886f43607fa02",
+      "url": "https://github.com/actions/upload-artifact/commit/ea165f8d65b6e75b540449e92b4886f43607fa02",
+      "message": "Merge pull request #685 from salmanmkc/salmanmkc/3-new-upload-artifacts-release\n\nUpdate to use artifact 2.3.2 package & prepare for new upload-artifact release"
+    }
+  ],
+  "image_layers_acquired_locally": false,
+  "native_compilation_executed": false,
+  "local_tests_executed": false,
+  "physical_acceptance": false,
+  "observer_equivalence_qualified": false,
+  "scope": "Complete pinned OpenROAD source build plus Tcl command-presence and Python symbol-callability smoke only. No object create/destroy, full-chip observer equivalence, chip routing, RC extraction or STA is qualified. Compilation and authored source controls remain pending GitHub execution.",
+  "cdr_description_correction": {
+    "sampler_limit_ps": 37.5,
+    "comparator_limit_ps": 75,
+    "distinct_pll_first_fall_limit_ps": 62.5,
+    "previous_description_error": "8fb6345a breakdown and root checkpoint87 incorrectly described the CDR sampler limit as62.5ps. Original source predicates were never changed."
+  },
+  "gitlink_source": {
+    "repository": "The-OpenROAD-Project/OpenROAD",
+    "commit": "dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "tree_api_url": "https://api.github.com/repos/The-OpenROAD-Project/OpenROAD/git/trees/dcf36133a369abc8f3c5e5738cd4d82e4903c0e0",
+    "recursive_tree_truncated": false,
+    "exact_mode": "160000",
+    "root_gitlink_count": 2
+  },
+  "nested_gitlinks_admission": "Each fetched pinned submodule is required by the actual host build to have no nested mode-160000 entries. This correction does not claim a new compiled/runtime result.",
+  "correction_parent": "bf58180fc99325353e4d8c3866d5970847a322dc",
+  "lto_contract": {
+    "option": "LINK_TIME_OPTIMIZATION",
+    "requested": "OFF",
+    "actual_cache_required": [
+      "LINK_TIME_OPTIMIZATION:BOOL=OFF",
+      "CMAKE_INTERPROCEDURAL_OPTIMIZATION:BOOL=OFF"
+    ],
+    "actual_compile_commands_must_not_contain_flto": true,
+    "source": "CMakeLists.txt",
+    "source_sha256": "eeb7d49e24e355c6bbdc9a3006bcc5d8b94ca17b21d55c11f0e9f873156abd1c",
+    "option_line": 132,
+    "release_ipo_assignment_line": 139
+  }
+}

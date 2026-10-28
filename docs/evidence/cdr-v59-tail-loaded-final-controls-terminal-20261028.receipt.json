@@ -1,0 +1,483 @@
+{
+  "schema": "cdr-v59-complete-final-control-terminal-evidence-v1",
+  "observed_at": "2026-10-28T19:47:55.479121+00:00",
+  "branch": "codex/cdr-v59-final-control-evidence",
+  "base_commit": "6534c1391a01da7c3030268d1b6a18fd399a2a46",
+  "run_id": 40737889314,
+  "run_attempt": 1,
+  "tested_source": "5e373a9378b4a3c0fad51687a604a14668dba3ce",
+  "run_status": "completed",
+  "run_conclusion": "failure",
+  "terminal_cases_preserved": [
+    "constant_zero",
+    "constant_one",
+    "clock_stopped",
+    "vi_bias_off"
+  ],
+  "remaining_live_cases": [],
+  "complete_matrix_job_counts": {
+    "loaded_cases": 10,
+    "success": 2,
+    "failure": 8
+  },
+  "interpretation": "The two successful jobs are deliberate-fault detections only. The eight normal loaded cases remain electrically rejected. No CDR or full-PHY acceptance is claimed.",
+  "electrical_classification": {
+    "constant_zero": {
+      "job_id": 122994880830,
+      "job_conclusion": "failure",
+      "classification": "ELECTRICAL_REJECTION",
+      "native_status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "HBT_passed": 124,
+      "HBT_failed": {},
+      "MOS_passed": 50,
+      "MIM_passed": 7,
+      "devices_passed": true,
+      "data_passed": false,
+      "sampler_passed": {
+        "a": true,
+        "b": true,
+        "c": true,
+        "d": true
+      },
+      "comparator_passed": {
+        "x": false,
+        "y": false
+      },
+      "phase_average_v": -0.0007443274015404632,
+      "phase_passed": true,
+      "vi_mean_current_a": -1.0413909343319696e-06,
+      "vi_mean_output_v": -0.00336061684597419,
+      "vi_phase_passed": false,
+      "vi_bias_passed": true,
+      "actual_fault_detected": false,
+      "original_case_predicate_passed": false,
+      "accepted": false,
+      "cdr_accepted": false,
+      "full_phy_accepted": false
+    },
+    "constant_one": {
+      "job_id": 122994881002,
+      "job_conclusion": "failure",
+      "classification": "ELECTRICAL_REJECTION",
+      "native_status": "REJECTED_WHOLE_MIM_PD500_LOADED",
+      "HBT_passed": 124,
+      "HBT_failed": {},
+      "MOS_passed": 50,
+      "MIM_passed": 7,
+      "devices_passed": true,
+      "data_passed": true,
+      "sampler_passed": {
+        "a": true,
+        "b": true,
+        "c": true,
+        "d": true
+      },
+      "comparator_passed": {
+        "x": true,
+        "y": true
+      },
+      "phase_average_v": -0.0008233892228616982,
+      "phase_passed": true,
+      "vi_mean_current_a": -9.963542439909231e-07,
+      "vi_mean_output_v": -0.0038226160147020486,
+      "vi_phase_passed": false,
+      "vi_bias_passed": true,
+      "actual_fault_detected": false,
+      "original_case_predicate_passed": false,
+      "accepted": false,
+      "cdr_accepted": false,
+      "full_phy_accepted": false
+    },
+    "clock_stopped": {
+      "job_id": 122994880879,
+      "job_conclusion": "success",
+      "classification": "EXPECTED_FAULT_DETECTED",
+      "native_status": "PASS_WHOLE_MIM_PD500_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF",
+      "HBT_passed": 124,
+      "HBT_failed": {},
+      "MOS_passed": 50,
+      "MIM_passed": 7,
+      "devices_passed": true,
+      "data_passed": false,
+      "sampler_passed": {
+        "a": false,
+        "b": false,
+        "c": false,
+        "d": false
+      },
+      "comparator_passed": {
+        "x": false,
+        "y": true
+      },
+      "phase_average_v": -0.0008270114794214429,
+      "phase_passed": false,
+      "vi_mean_current_a": -9.822963764843486e-07,
+      "vi_mean_output_v": -0.003828428346017837,
+      "vi_phase_passed": false,
+      "vi_bias_passed": true,
+      "actual_fault_detected": true,
+      "original_case_predicate_passed": true,
+      "accepted": false,
+      "cdr_accepted": false,
+      "full_phy_accepted": false
+    },
+    "vi_bias_off": {
+      "job_id": 122994880806,
+      "job_conclusion": "success",
+      "classification": "EXPECTED_FAULT_DETECTED",
+      "native_status": "PASS_WHOLE_MIM_PD500_LOADED_SCREEN_NOT_CLOSED_LOOP_OR_PHY_SIGNOFF",
+      "HBT_passed": 119,
+      "HBT_failed": {
+        "xpd.xd0061": {
+          "numeric": {
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015310379566174327,
+            "maximum_alltime_abs_vbe_v": 0.9146141352204131,
+            "maximum_alltime_abs_vce_v": 0.699661240700532,
+            "minimum_active_vce_v": 0.33912622516598045
+          },
+          "gates": {
+            "minimum_active_vce_ge_0_4": false,
+            "maximum_abs_vce_le_1_6": true,
+            "maximum_abs_vbe_le_1": true,
+            "maximum_abs_ic_per_emitter_lt_0_003": true
+          },
+          "passed": false
+        },
+        "xpd.xd0062": {
+          "numeric": {
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015368908320694645,
+            "maximum_alltime_abs_vbe_v": 0.9149089482565316,
+            "maximum_alltime_abs_vce_v": 0.6998591559345237,
+            "minimum_active_vce_v": 0.3402025243692016
+          },
+          "gates": {
+            "minimum_active_vce_ge_0_4": false,
+            "maximum_abs_vce_le_1_6": true,
+            "maximum_abs_vbe_le_1": true,
+            "maximum_abs_ic_per_emitter_lt_0_003": true
+          },
+          "passed": false
+        },
+        "xpd.xd0115": {
+          "numeric": {
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015083750477824468,
+            "maximum_alltime_abs_vbe_v": 0.9129888000829083,
+            "maximum_alltime_abs_vce_v": 0.673851053038073,
+            "minimum_active_vce_v": 0.3774295984503063
+          },
+          "gates": {
+            "minimum_active_vce_ge_0_4": false,
+            "maximum_abs_vce_le_1_6": true,
+            "maximum_abs_vbe_le_1": true,
+            "maximum_abs_ic_per_emitter_lt_0_003": true
+          },
+          "passed": false
+        },
+        "xpd.xd0116": {
+          "numeric": {
+            "maximum_alltime_abs_ic_per_emitter_a": 0.0015141822065001882,
+            "maximum_alltime_abs_vbe_v": 0.9132800789594062,
+            "maximum_alltime_abs_vce_v": 0.6740401455170194,
+            "minimum_active_vce_v": 0.3785015723443146
+          },
+          "gates": {
+            "minimum_active_vce_ge_0_4": false,
+            "maximum_abs_vce_le_1_6": true,
+            "maximum_abs_vbe_le_1": true,
+            "maximum_abs_ic_per_emitter_lt_0_003": true
+          },
+          "passed": false
+        },
+        "xpd.xd0170": {
+          "numeric": {
+            "maximum_alltime_abs_ic_per_emitter_a": 2.360392958999059e-08,
+            "maximum_alltime_abs_vbe_v": 0.30640354160221284,
+            "maximum_alltime_abs_vce_v": 0.30640321209129473,
+            "minimum_active_vce_v": 0.2906743326185952
+          },
+          "gates": {
+            "minimum_active_vce_ge_0_4": false,
+            "maximum_abs_vce_le_1_6": true,
+            "maximum_abs_vbe_le_1": true,
+            "maximum_abs_ic_per_emitter_lt_0_003": true
+          },
+          "passed": false
+        }
+      },
+      "MOS_passed": 50,
+      "MIM_passed": 7,
+      "devices_passed": false,
+      "data_passed": false,
+      "sampler_passed": {
+        "a": false,
+        "b": false,
+        "c": false,
+        "d": false
+      },
+      "comparator_passed": {
+        "x": false,
+        "y": false
+      },
+      "phase_average_v": 0.014079731674364633,
+      "phase_passed": false,
+      "vi_mean_current_a": 1.3645687729024578e-07,
+      "vi_mean_output_v": -5.775236521457934e-05,
+      "vi_phase_passed": false,
+      "vi_bias_passed": false,
+      "actual_fault_detected": true,
+      "original_case_predicate_passed": true,
+      "accepted": false,
+      "cdr_accepted": false,
+      "full_phy_accepted": false
+    }
+  },
+  "original_fault_logic": "actual_fault_detected = fault and not (data_ok and vi_ok); passed = actual_fault_detected if fault else safe and data_ok and vi_ok",
+  "fault_detection_safety_scope": "The original deliberate-fault predicate does not require safe=True. vi_bias_off therefore retains five explicit HBT minimum-VCE failures while its expected-fault predicate passes; no safety or electrical acceptance follows.",
+  "timing_limits": {
+    "sampler_ps": 37.5,
+    "comparator_ps": 75,
+    "distinct_PLL_62_5ps_gate_not_applied": true
+  },
+  "complete_direct_assets": {
+    "count": 20,
+    "unique_preserved_payloads": 14,
+    "acquired_bytes": 25564178,
+    "all_bytes_sizes_and_GitHub_digests_verified": true,
+    "shared_preparation_preserved_once_without_truncation": true
+  },
+  "complete_job_logs": {
+    "count": 4,
+    "bytes": 624906,
+    "raw_bytes_preserved": true
+  },
+  "current_complete_maps": {
+    "native_outputs": 3925,
+    "complete_native_members": 3926,
+    "outer_outputs": 3933,
+    "complete_outer_members": 3934,
+    "all_native_hashes_join_outer_and_preservation_map": true,
+    "same_run_preparation_native_outputs": 3922,
+    "same_run_preparation_outer_outputs": 3928,
+    "fresh_RC_input_files": 3823,
+    "all_current_model_binding_and_input_hash_joins_verified": true
+  },
+  "archive_scope": "Only complete direct JSON, text logs and Git/API metadata were acquired. Archive part sizes/digests and producer verification reports are preserved and joined; no archive/raw-wave bytes were acquired or independently replayed.",
+  "tested_source_files": {
+    "scripts/cloud_cdr_v59_tail_loaded.py": {
+      "bytes": 29911,
+      "sha256": "05961e992b1e1c2e0a41062e2fab234b1c11f8044bdb4e50da66308c5c02f96a"
+    },
+    "scripts/cdr-v59-tail-loaded-methods.json": {
+      "bytes": 151674,
+      "sha256": "b5fca4c67c0fd99111ecef652e52ee7b5755e7035fa5398f9cd154168bf5da18"
+    },
+    ".github/workflows/cdr-v59-tail-loaded-cloud.yml": {
+      "bytes": 25433,
+      "sha256": "710f4b02feb2c513c8703bb23e304db727745da1faaf3f79c9486d6e868955ea"
+    }
+  },
+  "source_gate_reference": "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.source-gates.json",
+  "inherited_complete_proof": "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.inherited-complete-proof.json",
+  "proof_files": {
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_zero.native-result.json": {
+      "bytes": 1893331,
+      "sha256": "ba72ec79b2c30a98391a1b8083c2d43713409077636c1f683eec3d2d30885451"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_zero.parts.json": {
+      "bytes": 1341,
+      "sha256": "437ac5ea69b1a66935a76ba72e8a1f4143c9201e327d887092cc52ac6468a734"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.shared.preparation-native-result.json": {
+      "bytes": 1763681,
+      "sha256": "feda357b449bd6398bc585d1a582bf67b50370020f064d7e61296987073db497"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.shared.preparation-summary.json": {
+      "bytes": 1352072,
+      "sha256": "9a8b70b63b792927ed2b08f094aa7f06853ced00a05bab5d87e68750ea2e03ea"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_zero.summary.json": {
+      "bytes": 1373745,
+      "sha256": "c3fa296ff9e3a5dc4a07b4a826e204cd7fc0880be5b4fb332f0b92231b7e10f6"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_one.native-result.json": {
+      "bytes": 1893089,
+      "sha256": "3c5588b973353bc4c2c6d80acdf8a4dc275a36bd501363bc86e0189a3bccb04d"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_one.parts.json": {
+      "bytes": 1336,
+      "sha256": "9e5a53627ab508af805348ebd2b1e0c2dbe2b8b97c22ba15d3cc17a0e4b5aba5"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_one.summary.json": {
+      "bytes": 1375703,
+      "sha256": "6da3e23916366440a3ebe94b0a78dd99ad6950524a2a05888a8fe6fcd96c118b"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.clock_stopped.native-result.json": {
+      "bytes": 1904275,
+      "sha256": "d0891b3d29b96af25023352812308fa36218de2966c756a66da69a7161e87477"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.clock_stopped.parts.json": {
+      "bytes": 1341,
+      "sha256": "3a69a73b56e80b036447baf6e52abf6bb226e1cc4b585f3269cf92073298495f"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.clock_stopped.summary.json": {
+      "bytes": 1371491,
+      "sha256": "6599552554d54b886c0551c1b6c4e0c9ad84e0705bc908a3cc8cfa1e9b561cde"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.vi_bias_off.native-result.json": {
+      "bytes": 1910556,
+      "sha256": "bfeb89bd4b9db1fcea9c2e942d6cce6812ba28dab1359939b5c7fbc7a0d8fd29"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.vi_bias_off.parts.json": {
+      "bytes": 1331,
+      "sha256": "308e94a2c8bb9bbb5b8756f62d94711bc9196d27b148e9cb15835bf363b14a1d"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.vi_bias_off.summary.json": {
+      "bytes": 1373627,
+      "sha256": "47fa6a937d42dd5b1eb997748f601c31d3f2a0b90f975339b362d664625d5b52"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_zero.job.log": {
+      "bytes": 161605,
+      "sha256": "fff304f22989703d3c85a62ab3b0f5779781ceb332a1474a2a8829e58e455d79"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_zero.job.json": {
+      "bytes": 3881,
+      "sha256": "b15a85be3c1ef7e5e7cd954b5a76e8f7084b4623c2c06d76f1fe1830efd52018"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_zero.release.json": {
+      "bytes": 19844,
+      "sha256": "c63e693631a41643ce7e0e14c5c99a226ee80c3ebd09c2beef4a0caa98edcaa5"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_zero.tag.json": {
+      "bytes": 568,
+      "sha256": "6ccb74289d1daa6ffa6ec29fbd5b050a70dc2ae47614d94d58a067e97e37f040"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_zero.provenance-joins.json": {
+      "bytes": 11798,
+      "sha256": "5864152f62776e33319a58765f9c83064b0f0d4088adbd4f05092312a8624c47"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_zero.electrical-classification.json": {
+      "bytes": 7843,
+      "sha256": "1b7ee9deaf53a3b894775abab2f7b3ddcde337a17b7d744db25ff81144ecbbfc"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_one.job.log": {
+      "bytes": 151112,
+      "sha256": "6188a695ae41ce2ce0aa88f4344e4af4b26ef25e6661ac7fbaebf621b4b94494"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_one.job.json": {
+      "bytes": 3880,
+      "sha256": "be8ff733b92bb7cb682d4d18c35a68f81bba64fcf8b94dea514e7093d42e4454"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_one.release.json": {
+      "bytes": 19815,
+      "sha256": "e3f0be1816b605ebc8509455917d50efc5b29382a3fbf9b7a573787792fce32d"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_one.tag.json": {
+      "bytes": 565,
+      "sha256": "741a12d290fc0605f19fb8288d19ac3f0ce70b38577006e5b8688819afb45b10"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_one.provenance-joins.json": {
+      "bytes": 11795,
+      "sha256": "022da587912cb1a5fea91281a251e168bf42c0f4ec671633a10b39719e3eefd4"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.constant_one.electrical-classification.json": {
+      "bytes": 7793,
+      "sha256": "d255e15163f14d0d90daaeb6608f297cf3b6872adf871b439ee2427703a2fdef"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.clock_stopped.job.log": {
+      "bytes": 162674,
+      "sha256": "ee3de5138f7816d75ec49183c6faf2b52f384bce911edc228b1ebbe7cb45a4bb"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.clock_stopped.job.json": {
+      "bytes": 3881,
+      "sha256": "8e67449df7cee53a29692e30b7f8eb540db843cdbbcb9152af03d10c0c3c1a35"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.clock_stopped.release.json": {
+      "bytes": 19844,
+      "sha256": "dfd6a8872581f1391a4416b789daa5623f8bdee07e0bd8f1c51f318a6630a2ef"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.clock_stopped.tag.json": {
+      "bytes": 568,
+      "sha256": "dd46149419642177e42c2c27356fb4e90b62031aca98d3f20ce66f882996a47f"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.clock_stopped.provenance-joins.json": {
+      "bytes": 10520,
+      "sha256": "82a7fdce5d3c93a86f55fa512413b3253fc98eb50e4c4baa01875f368020b457"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.clock_stopped.electrical-classification.json": {
+      "bytes": 7959,
+      "sha256": "b3a0b8330d6999b5c244f2cf316bdf97fa4fe7c49b2dc54e3d48b87ab5eb4f95"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.vi_bias_off.job.log": {
+      "bytes": 149515,
+      "sha256": "51c6c1797e8906ec200d659953accd7d484ee472545f907e7288a0711b88e946"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.vi_bias_off.job.json": {
+      "bytes": 3879,
+      "sha256": "bbb0339aace1c5e5b820d5708c3992383c1118dd3f497c1ce914bf8ee0627d08"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.vi_bias_off.release.json": {
+      "bytes": 19786,
+      "sha256": "73c697a1a26e25737ef40457a385ccf8d62c6300cfaee0a97fd595b5b1a505df"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.vi_bias_off.tag.json": {
+      "bytes": 562,
+      "sha256": "ecbdeb01dbd681a04d0acfbdee3a94f45101adba5ab90052f96c0585ef4616e8"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.vi_bias_off.provenance-joins.json": {
+      "bytes": 10516,
+      "sha256": "bdfac5650d15dfac3d96dc13755017a93080f68b3bb36fb0b3e9addd89324cd1"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.vi_bias_off.electrical-classification.json": {
+      "bytes": 10714,
+      "sha256": "94540288c9f0c4184c48d7021fec5bebd18c70f4d2634d284a697cb53a0472df"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.tested-worker.py": {
+      "bytes": 29911,
+      "sha256": "05961e992b1e1c2e0a41062e2fab234b1c11f8044bdb4e50da66308c5c02f96a"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.tested-method.json": {
+      "bytes": 151674,
+      "sha256": "b5fca4c67c0fd99111ecef652e52ee7b5755e7035fa5398f9cd154168bf5da18"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.tested-workflow.yml": {
+      "bytes": 25433,
+      "sha256": "710f4b02feb2c513c8703bb23e304db727745da1faaf3f79c9486d6e868955ea"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.asset-authentication.json": {
+      "bytes": 10548,
+      "sha256": "8fdd56ee3648d4c458164f50656ffc6e900a5945e20fcd531e43bde26a71ec3b"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.run.json": {
+      "bytes": 14399,
+      "sha256": "025ff41c2a126876c602ac9b09cde84e545ac9dd45135cd005d430e562bc4c33"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.jobs.json": {
+      "bytes": 54635,
+      "sha256": "d66b2907ee088d8f520e0905a21f7490d4eb9a2f23fb77e8a79f42a127f17ebc"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.initial-jobs-snapshot.json": {
+      "bytes": 54263,
+      "sha256": "4dedf4fff8a3a661f7020dc391367904bb3f85ee6a00a3eba34414de93ae3a64"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.inherited-complete-proof.json": {
+      "bytes": 889,
+      "sha256": "aa249816684d4199fa24d93ebe5a7c073f36086260da2565ffe59d8c97d40522"
+    },
+    "docs/evidence/cdr-v59-tail-loaded-final-controls-terminal-20261028.source-gates.json": {
+      "bytes": 9121,
+      "sha256": "2150b26e53cb50a6cbac31eaeb53aabfb7787a152eab673a5bb1c07cc0491311"
+    }
+  },
+  "no_local_files": true,
+  "no_repository_source_execution": true,
+  "no_tests_or_simulation": true,
+  "no_dispatch_or_retry": true,
+  "only_docs_added": true,
+  "operational_branches_unchanged": true,
+  "all_original_numerical_gates_unchanged": true,
+  "causality_established": false,
+  "repair_approval": false,
+  "accepted": false,
+  "cdr_accepted": false,
+  "full_phy_accepted": false
+}
