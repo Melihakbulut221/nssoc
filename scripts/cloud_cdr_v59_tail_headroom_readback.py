@@ -68,9 +68,17 @@ def finish(root,result,primary):
         result["terminal_errors"]=errors
         result["terminal_complete"]=False
         result["status"]="FAIL_READBACK_TERMINAL_SAVE"
-        raw=encode(result)
-        print("CDR_TAIL_HEADROOM_TERMINAL_FALLBACK "+json.dumps(dict(bytes=len(raw),
-            sha256=hashlib.sha256(raw).hexdigest(),base64=base64.b64encode(raw).decode())),flush=True)
+        try:
+            result["outputs"]=inventory(root)
+        except BaseException as refresh_error:
+            errors.append(dict(action="post_save_failure_inventory",error=repr(refresh_error)))
+        try:
+            raw=encode(result)
+            print("CDR_TAIL_HEADROOM_TERMINAL_FALLBACK "+json.dumps(dict(bytes=len(raw),
+                sha256=hashlib.sha256(raw).hexdigest(),base64=base64.b64encode(raw).decode())),flush=True)
+        except BaseException as fallback_error:
+            errors.append(dict(action="fallback_encode_or_emit",error=repr(fallback_error)))
+            # Existing body exception wins even if both preservation channels fail.
     if errors and primary is None:
         raise RuntimeError("Readback terminal preservation failed: "+repr(errors))
 
@@ -132,7 +140,33 @@ def publication_result(root,case):
             and r["all_original_measurements_reproduced"]is True,"incomplete success")
         a.need(r["original_data_passed"]is False and r["original_devices_passed"]is False
             and r["original_VI_only_passed"]is(case=="cold_late"),"original verdict changed")
+        required={"initial.json","restore-proof.json","original-measurements-replayed.json",
+                  "diagnosis.json","native-frames.bin","frames.json"}
+        a.need(required<=set(r["outputs"]),"complete success outputs missing")
         a.need(r["diagnosis_sha256"]==r["outputs"]["diagnosis.json"]["sha256"],"diagnosis join")
+        diagnosis=a.read_json(a.regular(root,"diagnosis.json"))
+        frames=a.read_json(a.regular(root,"frames.json"))
+        replay=a.read_json(a.regular(root,"original-measurements-replayed.json"))
+        restore=a.read_json(a.regular(root,"restore-proof.json"))
+        a.need(frames==r["frames"] and frames["complete"] is True,"frame proof join")
+        a.need(frames["sha256"]==r["outputs"]["native-frames.bin"]["sha256"]
+            and frames["bytes"]==r["outputs"]["native-frames.bin"]["bytes"],"frame bytes join")
+        a.need(frames["columns"]==["native_row","time",*diagnosis["selected_vectors"]]
+            and frames["frame_rows"]==diagnosis["frame_rows"]
+            and type(frames["rows"]) is int and frames["rows"]==len(frames["frame_rows"])>0
+            and frames["dtype"]=="<f8"
+            and frames["bytes"]==frames["rows"]*len(frames["columns"])*8,"frame schema join")
+        a.need(frames["diagnosis_sha256"]==core.digest(core.canonical(diagnosis)),
+            "canonical diagnosis join")
+        a.need(diagnosis["original_capture"]["raw_sha256"]==r["original_wave_sha256"]
+            and restore["selected"]["native/native/wave.raw"]["sha256"]==r["original_wave_sha256"],
+            "original capture join")
+        a.need(restore["all_original_outputs_verified"] is True
+            and restore["all_member_hashes_verified"]==3934,"complete original inventory join")
+        a.need(replay["readback_only"] is True and replay["all_numerical_gates_unchanged"] is True
+            and replay["original_status"]==r["original_status"],"original measurement replay join")
+        a.need(all(frames[k] is False and diagnosis[k] is False for k in
+            ("electrical_accepted","cdr_accepted","full_phy_accepted")),"diagnostic acceptance widened")
     return r
 
 def publish(root,case,m):

@@ -15,9 +15,10 @@ CASES = ("nominal_early","nominal_late","hot_early","hot_late","cold_early","col
 MODEL = "current-mim-bundle/mim/composition/pd500-mim-wire.spice"
 CONTRACT = "current-mim-bundle/mim/composition/composition.json"
 PLANES = "current-mim-bundle/mim/precise/source/native-planes.json"
-SELECT = ("native/wave.raw","native/native.log","native/bench.cir",
+SELECT = tuple("native/"+path for path in (
+          "native/wave.raw","native/native.log","native/bench.cir",
           "native/original-bench.cir","native/op.dat",MODEL,CONTRACT,PLANES,
-          "native-controller-result.json")
+          "result.json"))
 ALWAYS_FALSE = ("simulation_authorized","native_execution_authorized","extraction_authorized",
                 "geometry_authorized","accepted","cdr_accepted","qualified_pex","full_phy_accepted",
                 "electrical_acceptance","automatic_native_retry")
@@ -143,9 +144,9 @@ def validate_reports(case,pin,d):
     need(o["outer_terminal_finalization_complete"] is True and o["outer_terminal_errors"]==[],
         "incomplete original outer terminal")
     native_sha=pin["documents"]["native"]["sha256"]
-    need(o["native_controller_result_sha256"]==o["outputs"]["native-controller-result.json"]==native_sha,
+    need(o["native_controller_result_sha256"]==o["outputs"]["native/result.json"]==native_sha,
         "native summary join")
-    need({k:o["outputs"][k]for k in n["outputs"]}==n["outputs"],"native output map differs")
+    need({k:o["outputs"]["native/"+k]for k in n["outputs"]}==n["outputs"],"native output map differs")
     need(len(n["outputs"])==pin["native_outputs"] and len(o["outputs"])==pin["outer_outputs"],
         "original output census")
     need(len(n["vectors"])==len(set(n["vectors"]))==1151 and n["raw_capture"]["columns"]==1152,
@@ -162,7 +163,7 @@ def validate_reports(case,pin,d):
         "preparation model join")
     need(prepared["status"]=="PASS_PD500_LOADED_PREPARATION_AND13_BINDING_CONTROLS_NO_TRANSIENT"
         and prepared["transient_executed"] is False,"preparation status")
-    need(p==pin["parts"] and p["source_directory"]=="cloud-cdr-v59-tail-loaded-"+case
+    need(p==pin["parts"] and p["source_directory"]=="cloud-cdr-v59-tail-loaded-evidence-"+case
         and p["stem"]=="cdr-v59-tail-loaded-"+case+"-"+str(RUN)+"-1","parts identity")
     need(p["verification"]["all_parts_and_combined_bytes_verified"] is True,"unverified parts")
     need([x["index"]for x in p["parts"]]==list(range(len(p["parts"])))
@@ -215,7 +216,7 @@ def restore(case,work,m):
     extract,adaptation=adapted_function("extract",{"SELECT":SELECT})
     saved=work/"saved"
     proof=extract(docs["manifest"],transport,saved,docs["summary"],pin["documents"]["summary"]["sha256"])
-    need((saved/"native-controller-result.json").read_bytes()==
+    need((saved/"native/result.json").read_bytes()==
         regular(ROOT,pin["documents"]["native"]["path"]).read_bytes(),"archived native record differs")
     need((saved/"result.json").read_bytes()==regular(ROOT,pin["documents"]["summary"]["path"]).read_bytes(),
         "archived outer record differs")
@@ -242,8 +243,8 @@ def validate_native(saved,report):
     proxy=types.SimpleNamespace(STOP=rows.STOP,STEP=rows.STEP,replay=replay_all)
     reader,adaptation=adapted_function("validate_native",{
         "MODEL":MODEL,"CONTRACT":CONTRACT,"PLANES":PLANES,"rows":proxy})
-    t,d,contract,replayed=reader(saved,report)
-    need(sha(saved/PLANES)==report["native_plane_source"]["native_planes_sha256"],"native plane hash")
+    t,d,contract,replayed=reader(saved/"native",report)
+    need(sha(saved/"native"/PLANES)==report["native_plane_source"]["native_planes_sha256"],"native plane hash")
     return t,d,contract,dict(adapter=adaptation,complete_original_measurements=replayed,
         original_status=report["status"],readback_only=True,all_numerical_gates_unchanged=True,
         accepted=False,cdr_accepted=False,qualified_pex=False,full_phy_accepted=False)
