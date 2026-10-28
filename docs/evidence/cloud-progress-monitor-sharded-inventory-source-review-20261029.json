@@ -1,0 +1,240 @@
+{
+  "schema": "cloud-progress-monitor-sharded-inventory-source-review-v1",
+  "repository": "Melihakbulut221/nssoc",
+  "base_commit": "554fdf1f53a3b4906a09cd62e11f66fa5f53bd66",
+  "candidate_branch": "codex/cloud-monitor-sharded-inventory",
+  "scope": "Source-only compatible bounded inventory partition; no monitor deployment or root inventory migration.",
+  "execution": {
+    "authored_tests_run": false,
+    "authored_modules_imported": false,
+    "native_work_run": false,
+    "workflow_dispatched": false,
+    "local_files_created": false,
+    "source_validation": [
+      "Python AST parse only",
+      "Original function/class AST identity",
+      "Complete raw fixture byte/hash identity",
+      "Exact workflow literal delta"
+    ]
+  },
+  "source_files": {
+    "scripts/fixtures/cloud-progress-monitor-296-v91.json": {
+      "bytes": 65365,
+      "sha256": "ce008b7e97abf71705706c0c9bed0d20eb6d6cbec813bf3dcb74e834b712dd37",
+      "base_sha256": null
+    },
+    "scripts/cloud_progress_monitor.py": {
+      "bytes": 26785,
+      "sha256": "c1c182a88212c54c745450316fe501a295c73115f1aa4f8ba377117499018607",
+      "base_sha256": "fd2d6c246d1550729f3824592e47c00531809046f430ca61cb6dafb586da8d25"
+    },
+    "scripts/check_cloud_progress_monitor.py": {
+      "bytes": 37122,
+      "sha256": "1565cb3d7913f0625500b7a207c2d8300d965add9af16e3b1a79654373681f63",
+      "base_sha256": "afb66b76985d58c78b63cab4c3da8ea023f61254950a52500afd49d568f29567"
+    },
+    ".github/workflows/cloud-progress-monitor.yml": {
+      "bytes": 2720,
+      "sha256": "b2dc03dc440b462fe493b76bc08e4e217dc28aa4566a6e0e3f81569312870d71",
+      "base_sha256": "c46b8b375f40c2c4b1a35abe500adf525635819354ee68eb5bf422e0e4e1bd76"
+    }
+  },
+  "unchanged_production_definitions": [
+    "time_value",
+    "utc_now",
+    "SafeRedirect",
+    "API",
+    "check_config",
+    "classify",
+    "job_record",
+    "terminal_reports",
+    "select_runs",
+    "previous_snapshot",
+    "progress_signature",
+    "collect",
+    "markdown",
+    "main"
+  ],
+  "changed_production_definition": "load_config",
+  "new_production_definitions": [
+    "inventory_document",
+    "assembled_inventory"
+  ],
+  "all_original_checker_definitions_AST_identical": [
+    "CaptureOpener",
+    "Controls",
+    "Mock",
+    "SmallResponse",
+    "SnapshotAPI",
+    "config",
+    "job",
+    "run"
+  ],
+  "existing_hosted_controls": {
+    "count": 51,
+    "names": [
+      "test_previous_snapshot_roundtrip_and_digest",
+      "test_previous_snapshot_corrupt_digest_rejected",
+      "test_previous_snapshot_unexpected_archive_member_rejected",
+      "test_previous_monitor_error_not_used_as_progress_baseline",
+      "test_current_snapshot_never_reused",
+      "test_real_api_request_is_repository_scoped_get",
+      "test_path_escape_rejected_before_request",
+      "test_http_body_limit_even_without_content_length",
+      "test_redirect_removes_authorization",
+      "test_redirect_rejects_external_or_unencrypted_host",
+      "test_real_config",
+      "test_remote_config_is_commit_and_blob_bound",
+      "test_remote_config_corrupt_blob_rejected",
+      "test_absent_remote_config_explicit_bootstrap",
+      "test_inventory_version_required",
+      "test_push_controls_not_manual_reader",
+      "test_skipped_production_is_not_native_completion",
+      "test_failed_missing_or_skipped_production_stays_failed",
+      "test_duplicate_pinned_run_rejected",
+      "test_wrong_repository_rejected",
+      "test_native_dispatch_rejected",
+      "test_short_stall_threshold_rejected",
+      "test_live_does_not_read_releases",
+      "test_pending_not_failed",
+      "test_active_six_hour_boundary_not_stalled",
+      "test_active_beyond_six_hours_stalled",
+      "test_old_workflow_new_running_job_not_stalled",
+      "test_completed_failed_job_in_live_workflow",
+      "test_failure_conclusions",
+      "test_overall_success_does_not_hide_failed_job",
+      "test_terminal_native_failure",
+      "test_terminal_success_is_not_phy_acceptance",
+      "test_terminal_partial_publication_not_complete",
+      "test_terminal_no_publication_not_complete",
+      "test_summary_hash_corruption_rejected",
+      "test_summary_size_corruption_rejected",
+      "test_oversize_summary_never_downloaded",
+      "test_oversize_parts_preserves_native_failure",
+      "test_exact_own_summary_ignores_prerequisite_descriptor",
+      "test_ambiguous_summary_is_unverified_without_fetch",
+      "test_changed_skipped_metadata_is_progress_without_download",
+      "test_wrong_summary_source_rejected",
+      "test_wrong_run_source_rejected",
+      "test_wrong_run_branch_rejected",
+      "test_selector_deduplicates_live_pinned_run",
+      "test_missing_optional_pipeline_not_failure",
+      "test_missing_required_pipeline_is_attention",
+      "test_unchanged_observation_quiet",
+      "test_completed_step_is_progress",
+      "test_changed_terminal_metadata_is_progress",
+      "test_summary_has_explicit_scope"
+    ],
+    "status": "Unchanged; not executed in this task"
+  },
+  "new_hosted_controls": {
+    "count": 12,
+    "names": [
+      "test_full_296_fixture_and_complete_collection_equivalence",
+      "test_one_captured_head_and_document_proofs",
+      "test_new_manifest_is_not_legacy_configuration",
+      "test_same64KiB_limit_for_manifest_and_both_children",
+      "test_oversized_child_response_even_with_acceptable_descriptor",
+      "test_missing_children_never_use_bootstrap",
+      "test_corrupt_child_git_blob_size_and_digest",
+      "test_manifest_count_digest_descriptor_and_path_guards",
+      "test_child_scope_schema_and_no_recursive_fields",
+      "test_global_duplicate_id_refused_even_identical_or_conflicting",
+      "test_global_bad_run_source_refused_after_reassembly",
+      "test_missing_child_actual_main_preserves_monitor_error_before_collection"
+    ],
+    "status": "Authored; execution pending root review"
+  },
+  "complete_immutable_fixture": {
+    "source_commit": "9f641953a87f783e64155fce00891fe475c1b374",
+    "source_path": ".github/cloud-progress-monitor.json",
+    "source_git_blob": "8b729e463548ae1b1bdb0669e0bf49ee12dee84c",
+    "fixture_path": "scripts/fixtures/cloud-progress-monitor-296-v91.json",
+    "bytes": 65365,
+    "sha256": "ce008b7e97abf71705706c0c9bed0d20eb6d6cbec813bf3dcb74e834b712dd37",
+    "inventory_version": 91,
+    "pinned_runs": 296,
+    "latest_workflow_selectors": 2,
+    "ordered_runs_canonical_sha256": "e2a69764c478f6d3e71e1f23a287840121849aa7b784d97ada223820315ffcd1",
+    "preservation": "Exact full original bytes. Every label, run ID, head SHA, branch, production-job array and selector retained.",
+    "actual_fixture_paths": "load_config requires full dictionary equality; actual collect compares all 296 rows, statuses, problems, selectors and metadata call sequence against the original configuration."
+  },
+  "dual_schema_contract": {
+    "schema1": "Unchanged check_config and absent-root explicit bootstrap. Deployed main bootstrap remains byte-exact.",
+    "schema2_manifest_keys": [
+      "schema",
+      "repository",
+      "target_branch",
+      "stall_seconds",
+      "automatic_native_dispatch",
+      "latest_workflows",
+      "inventory_version",
+      "inventory_updated_at",
+      "run_files",
+      "run_count",
+      "runs_sha256"
+    ],
+    "manifest_path": ".github/cloud-progress-monitor.json",
+    "shard_paths": [
+      ".github/cloud-progress-monitor-runs-000.json",
+      ".github/cloud-progress-monitor-runs-001.json"
+    ],
+    "descriptor_keys": [
+      "path",
+      "blob_sha",
+      "sha256",
+      "bytes",
+      "run_count"
+    ],
+    "shard_schema": "cloud-progress-monitor-runs-v1",
+    "shard_keys": [
+      "schema",
+      "repository",
+      "target_branch",
+      "runs"
+    ],
+    "read_contract": "Capture target head once. Fetch all three documents at that immutable SHA. Check all fixed ordered descriptors before child reads, then per-document Git blob/SHA256/bytes/scope/count, complete ordered run digest and original global check_config.",
+    "invalid_child": "Fail closed, no partial collection or bootstrap fallback. Actual main fixture checks MONITOR_ERROR and no prior-snapshot or collect call.",
+    "canonical_runs_encoding": "UTF-8 json.dumps(runs, sort_keys=True, separators=(comma,colon), allow_nan=False), no final newline.",
+    "runtime_config_schema": 1,
+    "output_snapshot_schema": 1,
+    "source_proof": "Existing branch/head_sha/blob_sha/sha256/bytes/bootstrap retained; schema2 adds inventory_schema, three document identities, resolved_run_count and runs_sha256."
+  },
+  "unchanged_limits_and_behavior": {
+    "individual_inventory_document_bytes": 65536,
+    "metadata_and_snapshot_bytes": 8388608,
+    "schedule": "17 */8 * * *",
+    "stall_seconds": 21600,
+    "permissions": {
+      "contents": "read",
+      "actions": "read"
+    },
+    "automatic_native_dispatch": false,
+    "acceptance_inferred": false,
+    "push_branch_filter": [
+      "codex/cloud-progress-monitor"
+    ],
+    "new_branch_push_will_not_run_workflow": true,
+    "workflow_change": "Only three path-filter entries: both explicit shard paths and complete regression fixture. Schedule, permissions, conditions, concurrency, checkout, timeouts, commands and artifact policy remain byte-exact.",
+    "bootstrap_sha256": "4d254b5ffa8542d34f3b363b8138aab33c4f96c21cdd2db3bf1ac9d778e6335b"
+  },
+  "migration_after_separate_review_and_hosted_controls": [
+    "Deploy compatible reader/checker/fixture/path filters on main while root inventory remains schema1.",
+    "Let any monitor running old code finish before root migration. Schema2 intentionally fails the old validator rather than silently hiding handles.",
+    "In one separately authorized root commit, publish manifest plus both fixed shards, preserve all rows/selectors, recompute blob/SHA256/byte counts/ordered combined digest and update inventory version/timestamp.",
+    "Authored 296-run regression splits 148+148 into 32294 and 32656 byte shard documents. No root manifest or shard data is changed by this candidate.",
+    "Keep checked-out main bootstrap schema1: main validates it before remote loading. Checking out a root schema2 inventory as the local bootstrap is unsupported.",
+    "Inspect first actual cloud snapshot for complete handles and three document proofs. No runtime qualification is asserted here."
+  ],
+  "remaining_risks": [
+    "Hosted controls are authored but unexecuted; source/AST review is not execution proof.",
+    "Exactly two fixed shard paths are supported; expansion requires another explicit review, not recursion or increased limits.",
+    "Partitioning does not reduce per-run API requests or snapshot size; existing 8MiB and job-time limits remain.",
+    "Rollback to old reader requires restoring valid schema1 root first."
+  ],
+  "full_changed_file_diffs": {
+    "scripts/cloud_progress_monitor.py": "--- base/scripts/cloud_progress_monitor.py\n+++ candidate/scripts/cloud_progress_monitor.py\n@@ -111,24 +111,93 @@\n         assert isinstance(item.get(\"production_jobs\", []), list)\n     assert config[\"automatic_native_dispatch\"] is False\n \n+INVENTORY_LIMIT = 65536\n+INVENTORY_PATH = \".github/cloud-progress-monitor.json\"\n+RUN_FILE_PATHS = (\n+    \".github/cloud-progress-monitor-runs-000.json\",\n+    \".github/cloud-progress-monitor-runs-001.json\",\n+)\n+\n+\n+def inventory_document(api, head, path, optional=False):\n+    \"\"\"Read one bounded document at the already captured commit, never a child ref.\"\"\"\n+    assert re.fullmatch(r\"[0-9a-f]{40}\", head)\n+    assert path in (INVENTORY_PATH, *RUN_FILE_PATHS), \"Unapproved inventory path\"\n+    data = api.maybe(\"contents/\" + path + \"?ref=\" + head)\n+    if data is None:\n+        assert optional and path == INVENTORY_PATH, (\"Missing inventory shard\", path)\n+        return None\n+    assert data[\"encoding\"] == \"base64\" and data[\"size\"] <= INVENTORY_LIMIT\n+    raw = base64.b64decode(data[\"content\"], validate=False)\n+    assert len(raw) == data[\"size\"] <= INVENTORY_LIMIT\n+    assert hashlib.sha1(b\"blob \" + str(len(raw)).encode() + bytes([0]) + raw).hexdigest() == data[\"sha\"]\n+    return json.loads(raw), dict(path=path, blob_sha=data[\"sha\"],\n+        sha256=hashlib.sha256(raw).hexdigest(), bytes=len(raw))\n+\n+\n+def assembled_inventory(api, head, manifest):\n+    \"\"\"Explicit two-file format; preserve ordered rows and validate globally.\"\"\"\n+    assert set(manifest) == {\n+        \"schema\", \"repository\", \"target_branch\", \"stall_seconds\", \"automatic_native_dispatch\",\n+        \"latest_workflows\", \"inventory_version\", \"inventory_updated_at\",\n+        \"run_files\", \"run_count\", \"runs_sha256\",\n+    }, \"Inventory manifest fields\"\n+    assert type(manifest[\"schema\"]) is int and manifest[\"schema\"] == 2\n+    assert type(manifest[\"run_files\"]) is list and len(manifest[\"run_files\"]) == 2, \"Inventory shard count\"\n+    assert type(manifest[\"run_count\"]) is int and manifest[\"run_count\"] > 0, \"Inventory run count\"\n+    assert isinstance(manifest[\"runs_sha256\"], str) and re.fullmatch(r\"[0-9a-f]{64}\", manifest[\"runs_sha256\"])\n+    config = {k:manifest[k] for k in (\n+        \"repository\", \"target_branch\", \"stall_seconds\", \"automatic_native_dispatch\",\n+        \"latest_workflows\", \"inventory_version\", \"inventory_updated_at\",\n+    )}\n+    config.update(schema=1, runs=[])\n+    check_config(config)\n+    # Validate all descriptors before the first child read.\n+    for path, item in zip(RUN_FILE_PATHS, manifest[\"run_files\"], strict=True):\n+        assert type(item) is dict and set(item) == {\"path\",\"blob_sha\",\"sha256\",\"bytes\",\"run_count\"}, \"Inventory descriptor fields\"\n+        assert item[\"path\"] == path, \"Inventory shard order/path\"\n+        assert type(item[\"bytes\"]) is int and 0 < item[\"bytes\"] <= INVENTORY_LIMIT, \"Inventory descriptor size\"\n+        assert type(item[\"run_count\"]) is int and item[\"run_count\"] > 0, \"Inventory descriptor count\"\n+        assert isinstance(item[\"blob_sha\"], str) and re.fullmatch(r\"[0-9a-f]{40}\", item[\"blob_sha\"])\n+        assert isinstance(item[\"sha256\"], str) and re.fullmatch(r\"[0-9a-f]{64}\", item[\"sha256\"])\n+    documents = []\n+    for item in manifest[\"run_files\"]:\n+        shard, proof = inventory_document(api, head, item[\"path\"])\n+        assert all(proof[k] == item[k] for k in (\"path\",\"blob_sha\",\"sha256\",\"bytes\")), (\"Inventory shard identity\", item[\"path\"])\n+        assert type(shard) is dict and set(shard) == {\"schema\",\"repository\",\"target_branch\",\"runs\"}, \"Inventory shard fields\"\n+        assert shard[\"schema\"] == \"cloud-progress-monitor-runs-v1\", \"Inventory shard schema\"\n+        assert shard[\"repository\"] == config[\"repository\"] and shard[\"target_branch\"] == config[\"target_branch\"], \"Inventory shard scope\"\n+        assert type(shard[\"runs\"]) is list and len(shard[\"runs\"]) == item[\"run_count\"], \"Inventory shard run count\"\n+        config[\"runs\"].extend(shard[\"runs\"])\n+        documents.append(dict(proof, run_count=len(shard[\"runs\"])))\n+    assert len(config[\"runs\"]) == manifest[\"run_count\"], \"Inventory combined run count\"\n+    raw = json.dumps(config[\"runs\"], sort_keys=True, separators=(\",\",\":\"), allow_nan=False).encode()\n+    assert hashlib.sha256(raw).hexdigest() == manifest[\"runs_sha256\"], \"Inventory combined run digest\"\n+    # This rejects duplicate IDs across files as well as the original invalid source/policy cases.\n+    check_config(config)\n+    return config, documents\n+\n+\n def load_config(api, bootstrap):\n-    \"\"\"Pin the small working-branch inventory to one exact Git commit/blob.\"\"\"\n+    \"\"\"Pin schema-1 or explicit sharded inventory to one exact Git commit.\"\"\"\n     branch = \"codex/complete-open-work\"\n     head = api.get(\"git/ref/heads/\" + branch)[\"object\"][\"sha\"]\n-    path = \".github/cloud-progress-monitor.json\"\n-    data = api.maybe(\"contents/\" + path + \"?ref=\" + head)\n-    if data is None:\n+    document = inventory_document(api, head, INVENTORY_PATH, optional=True)\n+    if document is None:\n         check_config(bootstrap)\n         return bootstrap, dict(branch=branch, head_sha=head, bootstrap=True,\n             note=\"Working-branch inventory absent; using explicit reviewed bootstrap inventory\")\n-    assert data[\"encoding\"] == \"base64\" and data[\"size\"] <= 65536\n-    raw = base64.b64decode(data[\"content\"], validate=False)\n-    assert len(raw) == data[\"size\"] <= 65536\n-    assert hashlib.sha1(b\"blob \" + str(len(raw)).encode() + bytes([0]) + raw).hexdigest() == data[\"sha\"]\n-    config = json.loads(raw)\n-    check_config(config)\n-    return config, dict(branch=branch, head_sha=head, blob_sha=data[\"sha\"],\n-        sha256=hashlib.sha256(raw).hexdigest(), bytes=len(raw), bootstrap=False)\n+    manifest, first = document\n+    proof = dict(branch=branch, head_sha=head, blob_sha=first[\"blob_sha\"],\n+        sha256=first[\"sha256\"], bytes=first[\"bytes\"], bootstrap=False)\n+    if manifest[\"schema\"] == 1:\n+        check_config(manifest)\n+        return manifest, proof\n+    assert manifest[\"schema\"] == 2, \"Unknown inventory schema\"\n+    config, documents = assembled_inventory(api, head, manifest)\n+    proof.update(inventory_schema=2, documents=[first,*documents],\n+        resolved_run_count=len(config[\"runs\"]), runs_sha256=manifest[\"runs_sha256\"])\n+    return config, proof\n \n def classify(run, jobs, now, stall_seconds):\n     status = run[\"status\"]\n",
+    "scripts/check_cloud_progress_monitor.py": "--- base/scripts/check_cloud_progress_monitor.py\n+++ candidate/scripts/check_cloud_progress_monitor.py\n@@ -412,5 +412,259 @@\n         self.assertIn(\"not accepted by this monitor\", text)\n         self.assertIn(\"never dispatches\", text)\n \n+\n+# This is the complete original root inventory, not a reduced demonstration fixture.\n+FROZEN_INVENTORY = Path(__file__).resolve().parent / \"fixtures/cloud-progress-monitor-296-v91.json\"\n+FROZEN_ROOT = \"9f641953a87f783e64155fce00891fe475c1b374\"\n+FROZEN_SHA256 = \"ce008b7e97abf71705706c0c9bed0d20eb6d6cbec813bf3dcb74e834b712dd37\"\n+FROZEN_RUNS_SHA256 = \"e2a69764c478f6d3e71e1f23a287840121849aa7b784d97ada223820315ffcd1\"\n+\n+\n+def content_record(raw):\n+    return dict(encoding=\"base64\", size=len(raw), content=base64.b64encode(raw).decode(),\n+        sha=hashlib.sha1(b\"blob \"+str(len(raw)).encode()+bytes([0])+raw).hexdigest())\n+\n+\n+def inventory_json(value):\n+    return (json.dumps(value,separators=(\",\",\":\"),allow_nan=False)+\"\\n\").encode()\n+\n+\n+def small_inventory():\n+    value=config()\n+    value[\"runs\"].append(dict(value[\"runs\"][0],run=124,label=\"second\"))\n+    return value\n+\n+\n+def shard_bundle(value):\n+    \"\"\"Construct explicit synthetic transport around the complete unchanged rows.\"\"\"\n+    count=len(value[\"runs\"]); assert count>=2\n+    bodies={}\n+    manifest={k:copy.deepcopy(v) for k,v in value.items() if k not in (\"schema\",\"runs\")}\n+    manifest.update(schema=2,run_files=[],run_count=count,\n+        runs_sha256=hashlib.sha256(json.dumps(value[\"runs\"],sort_keys=True,separators=(\",\",\":\"),allow_nan=False).encode()).hexdigest())\n+    for path,rows in zip(m.RUN_FILE_PATHS,(value[\"runs\"][:count//2],value[\"runs\"][count//2:]),strict=True):\n+        raw=inventory_json(dict(schema=\"cloud-progress-monitor-runs-v1\",repository=m.REPO,\n+            target_branch=value[\"target_branch\"],runs=rows))\n+        bodies[path]=raw\n+        manifest[\"run_files\"].append(dict(path=path,bytes=len(raw),blob_sha=content_record(raw)[\"sha\"],\n+            sha256=hashlib.sha256(raw).hexdigest(),run_count=len(rows)))\n+    bodies[m.INVENTORY_PATH]=inventory_json(manifest)\n+    return manifest,bodies\n+\n+\n+class InventoryAPI:\n+    \"\"\"Every request has to retain the first captured commit.\"\"\"\n+    def __init__(self,bodies):\n+        self.bodies=copy.deepcopy(bodies);self.calls=[];self.head_reads=0;self.responses={}\n+    def get(self,path):\n+        self.calls.append((\"get\",path))\n+        assert path==\"git/ref/heads/codex/complete-open-work\"\n+        self.head_reads+=1\n+        return dict(object=dict(sha=HEAD if self.head_reads==1 else \"b\"*40))\n+    def maybe(self,path):\n+        self.calls.append((\"maybe\",path))\n+        prefix,suffix=\"contents/\",\"?ref=\"+HEAD\n+        assert path.startswith(prefix) and path.endswith(suffix),\"Mutable or foreign inventory read\"\n+        name=path[len(prefix):-len(suffix)]\n+        if name in self.responses:return copy.deepcopy(self.responses[name])\n+        if name not in self.bodies:return None\n+        return content_record(self.bodies[name])\n+\n+\n+class FullRunAPI:\n+    \"\"\"Actual collect(), all296 handles, explicit non-native metadata transport.\"\"\"\n+    def __init__(self,value):\n+        self.items={r[\"run\"]:r for r in value[\"runs\"]};self.calls=[]\n+    def get(self,path):\n+        self.calls.append((\"get\",path))\n+        if path==\"git/ref/heads/codex/complete-open-work\":return dict(object=dict(sha=HEAD))\n+        assert path.startswith(\"actions/runs/\") and path.count(\"/\")==2\n+        item=self.items[int(path.rsplit(\"/\",1)[1])]\n+        state=run()\n+        state.update(id=item[\"run\"],head_sha=item[\"head_sha\"],head_branch=item[\"branch\"],\n+            html_url=\"https://github.com/\"+m.REPO+\"/actions/runs/\"+str(item[\"run\"]))\n+        return state\n+    def maybe(self,path):\n+        self.calls.append((\"maybe\",path))\n+        assert path.startswith(\"actions/workflows/\"),\"No terminal/native asset reads in active fixture\"\n+        return None\n+    def pages(self,path,key,maximum=1000):\n+        self.calls.append((\"pages\",path))\n+        assert path.startswith(\"actions/runs/\") and path.endswith(\"/attempts/1/jobs\") and key==\"jobs\"\n+        assert int(path.split(\"/\")[2]) in self.items\n+        return [job()]\n+\n+\n+class ShardedInventoryControls(unittest.TestCase):\n+    def test_full_296_fixture_and_complete_collection_equivalence(self):\n+        raw=FROZEN_INVENTORY.read_bytes()\n+        self.assertEqual(len(raw),65365)\n+        self.assertEqual(hashlib.sha256(raw).hexdigest(),FROZEN_SHA256)\n+        original=json.loads(raw)\n+        self.assertEqual(len(original[\"runs\"]),296)\n+        self.assertEqual(len({r[\"run\"] for r in original[\"runs\"]}),296)\n+        self.assertEqual(len(original[\"latest_workflows\"]),2)\n+        manifest,bodies=shard_bundle(original)\n+        self.assertEqual(manifest[\"runs_sha256\"],FROZEN_RUNS_SHA256)\n+        self.assertEqual([len(bodies[p]) for p in m.RUN_FILE_PATHS],[32294,32656])\n+        actual,proof=m.load_config(InventoryAPI(bodies),config())\n+        self.assertEqual(actual,original)\n+        self.assertEqual(proof[\"resolved_run_count\"],296)\n+        self.assertEqual(proof[\"runs_sha256\"],FROZEN_RUNS_SHA256)\n+        self.assertEqual([d[\"path\"] for d in proof[\"documents\"]],[m.INVENTORY_PATH,*m.RUN_FILE_PATHS])\n+        self.assertEqual([d[\"run_count\"] for d in proof[\"documents\"][1:]],[148,148])\n+        # Every original label/head/branch/production job and selector reaches actual collect().\n+        a=FullRunAPI(original);b=FullRunAPI(actual)\n+        legacy=m.collect(a,original,NOW,configuration_source=dict(head_sha=HEAD))\n+        current=m.collect(b,actual,NOW,configuration_source=proof)\n+        self.assertEqual(legacy[\"runs\"],current[\"runs\"])\n+        self.assertEqual(len(current[\"runs\"]),296)\n+        self.assertEqual(legacy[\"missing_selectors\"],current[\"missing_selectors\"])\n+        self.assertEqual(legacy[\"problem_runs\"],current[\"problem_runs\"])\n+        self.assertEqual(legacy[\"status\"],current[\"status\"])\n+        self.assertEqual(a.calls,b.calls)\n+        self.assertFalse(current[\"automatic_native_dispatch\"])\n+        self.assertFalse(current[\"full_phy_accepted\"])\n+        self.assertFalse(current[\"final_timing_accepted\"])\n+        self.assertEqual(current[\"schema\"],1)\n+\n+    def test_one_captured_head_and_document_proofs(self):\n+        manifest,bodies=shard_bundle(small_inventory())\n+        api=InventoryAPI(bodies);actual,proof=m.load_config(api,config())\n+        self.assertEqual(api.head_reads,1)\n+        self.assertTrue(all(path.endswith(\"?ref=\"+HEAD) for kind,path in api.calls if kind==\"maybe\"))\n+        self.assertEqual(proof[\"head_sha\"],HEAD)\n+        for document in proof[\"documents\"]:\n+            raw=bodies[document[\"path\"]]\n+            self.assertEqual(document[\"bytes\"],len(raw))\n+            self.assertEqual(document[\"blob_sha\"],content_record(raw)[\"sha\"])\n+            self.assertEqual(document[\"sha256\"],hashlib.sha256(raw).hexdigest())\n+        for key in (\"branch\",\"head_sha\",\"blob_sha\",\"sha256\",\"bytes\",\"bootstrap\"):\n+            self.assertIn(key,proof)\n+        self.assertFalse(proof[\"bootstrap\"])\n+\n+    def test_new_manifest_is_not_legacy_configuration(self):\n+        manifest,_=shard_bundle(small_inventory())\n+        with self.assertRaises(AssertionError):m.check_config(manifest)\n+\n+    def test_same64KiB_limit_for_manifest_and_both_children(self):\n+        self.assertEqual(m.INVENTORY_LIMIT,65536);self.assertEqual(m.LIMIT,8*1024*1024)\n+        for path in (m.INVENTORY_PATH,*m.RUN_FILE_PATHS):\n+            for size in (65536,65537):\n+                with self.subTest(path=path,size=size):\n+                    manifest,bodies=shard_bundle(small_inventory())\n+                    bodies[path]+=b\" \"*(size-len(bodies[path]))\n+                    if path!=m.INVENTORY_PATH:\n+                        row=next(x for x in manifest[\"run_files\"] if x[\"path\"]==path)\n+                        row.update(bytes=len(bodies[path]),blob_sha=content_record(bodies[path])[\"sha\"],\n+                            sha256=hashlib.sha256(bodies[path]).hexdigest())\n+                        bodies[m.INVENTORY_PATH]=inventory_json(manifest)\n+                    if size==65536:\n+                        got,_=m.load_config(InventoryAPI(bodies),config())\n+                        self.assertEqual(got,small_inventory())\n+                    else:\n+                        with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())\n+\n+    def test_oversized_child_response_even_with_acceptable_descriptor(self):\n+        manifest,bodies=shard_bundle(small_inventory())\n+        path=m.RUN_FILE_PATHS[0]; bodies[path]+=b\" \"*(65537-len(bodies[path]))\n+        with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())\n+\n+    def test_missing_children_never_use_bootstrap(self):\n+        for path in m.RUN_FILE_PATHS:\n+            manifest,bodies=shard_bundle(small_inventory());del bodies[path]\n+            with self.assertRaisesRegex(AssertionError,\"Missing inventory shard\"):\n+                m.load_config(InventoryAPI(bodies),config())\n+\n+    def test_corrupt_child_git_blob_size_and_digest(self):\n+        for field in (\"blob\",\"size\",\"content\",\"declared_sha256\",\"declared_bytes\",\"declared_blob\"):\n+            with self.subTest(field=field):\n+                manifest,bodies=shard_bundle(small_inventory());path=m.RUN_FILE_PATHS[0]\n+                api=InventoryAPI(bodies);response=content_record(bodies[path])\n+                if field==\"blob\":response[\"sha\"]=\"f\"*40;api.responses[path]=response\n+                elif field==\"size\":response[\"size\"]+=1;api.responses[path]=response\n+                elif field==\"content\":response[\"content\"]=base64.b64encode(b\"changed\").decode();api.responses[path]=response\n+                else:\n+                    key={\"declared_sha256\":\"sha256\",\"declared_bytes\":\"bytes\",\"declared_blob\":\"blob_sha\"}[field]\n+                    manifest[\"run_files\"][0][key]=manifest[\"run_files\"][0][key]+1 if key==\"bytes\" else \"f\"*(64 if key==\"sha256\" else 40)\n+                    api.bodies[m.INVENTORY_PATH]=inventory_json(manifest)\n+                with self.assertRaises(AssertionError):m.load_config(api,config())\n+\n+    def test_manifest_count_digest_descriptor_and_path_guards(self):\n+        mutations=(\n+            (\"no_shards\",lambda x:x.update(run_files=[])),\n+            (\"extra_shard\",lambda x:x[\"run_files\"].append(copy.deepcopy(x[\"run_files\"][0]))),\n+            (\"duplicate_path\",lambda x:x[\"run_files\"][1].update(path=m.RUN_FILE_PATHS[0])),\n+            (\"reorder\",lambda x:x[\"run_files\"].reverse()),\n+            (\"traversal\",lambda x:x[\"run_files\"][0].update(path=\"../inventory.json\")),\n+            (\"absolute\",lambda x:x[\"run_files\"][0].update(path=\"/inventory.json\")),\n+            (\"URL\",lambda x:x[\"run_files\"][0].update(path=\"https://example.invalid/data\")),\n+            (\"recursive_manifest\",lambda x:x[\"run_files\"][0].update(path=m.INVENTORY_PATH)),\n+            (\"child_ref\",lambda x:x[\"run_files\"][0].update(ref=\"main\")),\n+            (\"boolean_bytes\",lambda x:x[\"run_files\"][0].update(bytes=True)),\n+            (\"boolean_count\",lambda x:x[\"run_files\"][0].update(run_count=True)),\n+            (\"wrong_child_count\",lambda x:x[\"run_files\"][0].update(run_count=2)),\n+            (\"wrong_total\",lambda x:x.update(run_count=3)),\n+            (\"wrong_digest\",lambda x:x.update(runs_sha256=\"0\"*64)),\n+            (\"unknown_schema\",lambda x:x.update(schema=3)),\n+            (\"wrong_repository\",lambda x:x.update(repository=\"other/project\")),\n+            (\"wrong_branch\",lambda x:x.update(target_branch=\"main\")),\n+            (\"dispatch\",lambda x:x.update(automatic_native_dispatch=True)),\n+            (\"short_stall\",lambda x:x.update(stall_seconds=1)),\n+        )\n+        for label,mutate in mutations:\n+            with self.subTest(label=label):\n+                manifest,bodies=shard_bundle(small_inventory());mutate(manifest)\n+                bodies[m.INVENTORY_PATH]=inventory_json(manifest)\n+                with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())\n+\n+    def test_child_scope_schema_and_no_recursive_fields(self):\n+        for key,value in ((\"schema\",\"other\"),(\"repository\",\"other/project\"),(\"target_branch\",\"main\"),\n+                          (\"runs\",{}),(\"run_files\",[])):\n+            with self.subTest(key=key):\n+                manifest,bodies=shard_bundle(small_inventory());path=m.RUN_FILE_PATHS[0]\n+                shard=json.loads(bodies[path]);shard[key]=value;bodies[path]=inventory_json(shard)\n+                descriptor=manifest[\"run_files\"][0]\n+                descriptor.update(bytes=len(bodies[path]),blob_sha=content_record(bodies[path])[\"sha\"],\n+                    sha256=hashlib.sha256(bodies[path]).hexdigest())\n+                bodies[m.INVENTORY_PATH]=inventory_json(manifest)\n+                with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())\n+\n+    def test_global_duplicate_id_refused_even_identical_or_conflicting(self):\n+        for conflict in (False,True):\n+            value=small_inventory();value[\"runs\"][1]=copy.deepcopy(value[\"runs\"][0])\n+            if conflict:value[\"runs\"][1][\"head_sha\"]=\"b\"*40\n+            _,bodies=shard_bundle(value)\n+            with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())\n+\n+    def test_global_bad_run_source_refused_after_reassembly(self):\n+        value=small_inventory();value[\"runs\"][1][\"head_sha\"]=\"mutable-main\"\n+        _,bodies=shard_bundle(value)\n+        with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())\n+\n+    def test_missing_child_actual_main_preserves_monitor_error_before_collection(self):\n+        import os\n+        import tempfile\n+        from unittest.mock import patch\n+        _,bodies=shard_bundle(small_inventory());del bodies[m.RUN_FILE_PATHS[1]]\n+        api=InventoryAPI(bodies)\n+        with tempfile.TemporaryDirectory() as temp:\n+            base=Path(temp);bootstrap=base/\"bootstrap.json\";bootstrap.write_bytes(inventory_json(config()))\n+            output=base/\"result\";summary=base/\"summary.md\"\n+            with patch.object(m,\"API\",return_value=api), patch.object(m,\"previous_snapshot\",side_effect=AssertionError(\"Unexpected prior read\")) as prior, patch.object(m,\"collect\",side_effect=AssertionError(\"Unexpected collection\")) as collect:\n+                with patch.dict(os.environ,dict(GITHUB_ACTIONS=\"true\",RUNNER_ENVIRONMENT=\"github-hosted\",\n+                    GITHUB_REPOSITORY=m.REPO,GH_TOKEN=\"fixture\",GITHUB_RUN_ID=\"999\",GITHUB_STEP_SUMMARY=str(summary))):\n+                    with patch.object(sys,\"argv\",[\"monitor\",\"--config\",str(bootstrap),\"--out\",str(output)]):\n+                        with self.assertRaisesRegex(AssertionError,\"Missing inventory shard\"):m.main()\n+                prior.assert_not_called();collect.assert_not_called()\n+            saved=json.loads((output/\"result.json\").read_text())\n+            self.assertEqual(saved[\"status\"],\"MONITOR_ERROR\")\n+            self.assertEqual(saved[\"runs\"],[])\n+            self.assertFalse(saved[\"automatic_native_dispatch\"])\n+            self.assertFalse(saved[\"full_phy_accepted\"])\n+            self.assertIn(\"No native work was changed\",summary.read_text())\n+            self.assertTrue(all(path.startswith((\"contents/\",\"git/ref/heads/\")) for _,path in api.calls))\n+\n+\n if __name__ == \"__main__\":\n     unittest.main(verbosity=2)\n",
+    ".github/workflows/cloud-progress-monitor.yml": "--- base/.github/workflows/cloud-progress-monitor.yml\n+++ candidate/.github/workflows/cloud-progress-monitor.yml\n@@ -12,8 +12,11 @@\n     paths:\n       - .github/workflows/cloud-progress-monitor.yml\n       - .github/cloud-progress-monitor.json\n+      - .github/cloud-progress-monitor-runs-000.json\n+      - .github/cloud-progress-monitor-runs-001.json\n       - scripts/cloud_progress_monitor.py\n       - scripts/check_cloud_progress_monitor.py\n+      - scripts/fixtures/cloud-progress-monitor-296-v91.json\n permissions:\n   contents: read\n   actions: read\n"
+  }
+}

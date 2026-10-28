@@ -111,24 +111,93 @@ def check_config(config):
         assert isinstance(item.get("production_jobs", []), list)
     assert config["automatic_native_dispatch"] is False
 
-def load_config(api, bootstrap):
-    """Pin the small working-branch inventory to one exact Git commit/blob."""
-    branch = "codex/complete-open-work"
-    head = api.get("git/ref/heads/" + branch)["object"]["sha"]
-    path = ".github/cloud-progress-monitor.json"
+INVENTORY_LIMIT = 65536
+INVENTORY_PATH = ".github/cloud-progress-monitor.json"
+RUN_FILE_PATHS = (
+    ".github/cloud-progress-monitor-runs-000.json",
+    ".github/cloud-progress-monitor-runs-001.json",
+)
+
+
+def inventory_document(api, head, path, optional=False):
+    """Read one bounded document at the already captured commit, never a child ref."""
+    assert re.fullmatch(r"[0-9a-f]{40}", head)
+    assert path in (INVENTORY_PATH, *RUN_FILE_PATHS), "Unapproved inventory path"
     data = api.maybe("contents/" + path + "?ref=" + head)
     if data is None:
+        assert optional and path == INVENTORY_PATH, ("Missing inventory shard", path)
+        return None
+    assert data["encoding"] == "base64" and data["size"] <= INVENTORY_LIMIT
+    raw = base64.b64decode(data["content"], validate=False)
+    assert len(raw) == data["size"] <= INVENTORY_LIMIT
+    assert hashlib.sha1(b"blob " + str(len(raw)).encode() + bytes([0]) + raw).hexdigest() == data["sha"]
+    return json.loads(raw), dict(path=path, blob_sha=data["sha"],
+        sha256=hashlib.sha256(raw).hexdigest(), bytes=len(raw))
+
+
+def assembled_inventory(api, head, manifest):
+    """Explicit two-file format; preserve ordered rows and validate globally."""
+    assert set(manifest) == {
+        "schema", "repository", "target_branch", "stall_seconds", "automatic_native_dispatch",
+        "latest_workflows", "inventory_version", "inventory_updated_at",
+        "run_files", "run_count", "runs_sha256",
+    }, "Inventory manifest fields"
+    assert type(manifest["schema"]) is int and manifest["schema"] == 2
+    assert type(manifest["run_files"]) is list and len(manifest["run_files"]) == 2, "Inventory shard count"
+    assert type(manifest["run_count"]) is int and manifest["run_count"] > 0, "Inventory run count"
+    assert isinstance(manifest["runs_sha256"], str) and re.fullmatch(r"[0-9a-f]{64}", manifest["runs_sha256"])
+    config = {k:manifest[k] for k in (
+        "repository", "target_branch", "stall_seconds", "automatic_native_dispatch",
+        "latest_workflows", "inventory_version", "inventory_updated_at",
+    )}
+    config.update(schema=1, runs=[])
+    check_config(config)
+    # Validate all descriptors before the first child read.
+    for path, item in zip(RUN_FILE_PATHS, manifest["run_files"], strict=True):
+        assert type(item) is dict and set(item) == {"path","blob_sha","sha256","bytes","run_count"}, "Inventory descriptor fields"
+        assert item["path"] == path, "Inventory shard order/path"
+        assert type(item["bytes"]) is int and 0 < item["bytes"] <= INVENTORY_LIMIT, "Inventory descriptor size"
+        assert type(item["run_count"]) is int and item["run_count"] > 0, "Inventory descriptor count"
+        assert isinstance(item["blob_sha"], str) and re.fullmatch(r"[0-9a-f]{40}", item["blob_sha"])
+        assert isinstance(item["sha256"], str) and re.fullmatch(r"[0-9a-f]{64}", item["sha256"])
+    documents = []
+    for item in manifest["run_files"]:
+        shard, proof = inventory_document(api, head, item["path"])
+        assert all(proof[k] == item[k] for k in ("path","blob_sha","sha256","bytes")), ("Inventory shard identity", item["path"])
+        assert type(shard) is dict and set(shard) == {"schema","repository","target_branch","runs"}, "Inventory shard fields"
+        assert shard["schema"] == "cloud-progress-monitor-runs-v1", "Inventory shard schema"
+        assert shard["repository"] == config["repository"] and shard["target_branch"] == config["target_branch"], "Inventory shard scope"
+        assert type(shard["runs"]) is list and len(shard["runs"]) == item["run_count"], "Inventory shard run count"
+        config["runs"].extend(shard["runs"])
+        documents.append(dict(proof, run_count=len(shard["runs"])))
+    assert len(config["runs"]) == manifest["run_count"], "Inventory combined run count"
+    raw = json.dumps(config["runs"], sort_keys=True, separators=(",",":"), allow_nan=False).encode()
+    assert hashlib.sha256(raw).hexdigest() == manifest["runs_sha256"], "Inventory combined run digest"
+    # This rejects duplicate IDs across files as well as the original invalid source/policy cases.
+    check_config(config)
+    return config, documents
+
+
+def load_config(api, bootstrap):
+    """Pin schema-1 or explicit sharded inventory to one exact Git commit."""
+    branch = "codex/complete-open-work"
+    head = api.get("git/ref/heads/" + branch)["object"]["sha"]
+    document = inventory_document(api, head, INVENTORY_PATH, optional=True)
+    if document is None:
         check_config(bootstrap)
         return bootstrap, dict(branch=branch, head_sha=head, bootstrap=True,
             note="Working-branch inventory absent; using explicit reviewed bootstrap inventory")
-    assert data["encoding"] == "base64" and data["size"] <= 65536
-    raw = base64.b64decode(data["content"], validate=False)
-    assert len(raw) == data["size"] <= 65536
-    assert hashlib.sha1(b"blob " + str(len(raw)).encode() + bytes([0]) + raw).hexdigest() == data["sha"]
-    config = json.loads(raw)
-    check_config(config)
-    return config, dict(branch=branch, head_sha=head, blob_sha=data["sha"],
-        sha256=hashlib.sha256(raw).hexdigest(), bytes=len(raw), bootstrap=False)
+    manifest, first = document
+    proof = dict(branch=branch, head_sha=head, blob_sha=first["blob_sha"],
+        sha256=first["sha256"], bytes=first["bytes"], bootstrap=False)
+    if manifest["schema"] == 1:
+        check_config(manifest)
+        return manifest, proof
+    assert manifest["schema"] == 2, "Unknown inventory schema"
+    config, documents = assembled_inventory(api, head, manifest)
+    proof.update(inventory_schema=2, documents=[first,*documents],
+        resolved_run_count=len(config["runs"]), runs_sha256=manifest["runs_sha256"])
+    return config, proof
 
 def classify(run, jobs, now, stall_seconds):
     status = run["status"]

@@ -412,5 +412,259 @@ class Controls(unittest.TestCase):
         self.assertIn("not accepted by this monitor", text)
         self.assertIn("never dispatches", text)
 
+
+# This is the complete original root inventory, not a reduced demonstration fixture.
+FROZEN_INVENTORY = Path(__file__).resolve().parent / "fixtures/cloud-progress-monitor-296-v91.json"
+FROZEN_ROOT = "9f641953a87f783e64155fce00891fe475c1b374"
+FROZEN_SHA256 = "ce008b7e97abf71705706c0c9bed0d20eb6d6cbec813bf3dcb74e834b712dd37"
+FROZEN_RUNS_SHA256 = "e2a69764c478f6d3e71e1f23a287840121849aa7b784d97ada223820315ffcd1"
+
+
+def content_record(raw):
+    return dict(encoding="base64", size=len(raw), content=base64.b64encode(raw).decode(),
+        sha=hashlib.sha1(b"blob "+str(len(raw)).encode()+bytes([0])+raw).hexdigest())
+
+
+def inventory_json(value):
+    return (json.dumps(value,separators=(",",":"),allow_nan=False)+"\n").encode()
+
+
+def small_inventory():
+    value=config()
+    value["runs"].append(dict(value["runs"][0],run=124,label="second"))
+    return value
+
+
+def shard_bundle(value):
+    """Construct explicit synthetic transport around the complete unchanged rows."""
+    count=len(value["runs"]); assert count>=2
+    bodies={}
+    manifest={k:copy.deepcopy(v) for k,v in value.items() if k not in ("schema","runs")}
+    manifest.update(schema=2,run_files=[],run_count=count,
+        runs_sha256=hashlib.sha256(json.dumps(value["runs"],sort_keys=True,separators=(",",":"),allow_nan=False).encode()).hexdigest())
+    for path,rows in zip(m.RUN_FILE_PATHS,(value["runs"][:count//2],value["runs"][count//2:]),strict=True):
+        raw=inventory_json(dict(schema="cloud-progress-monitor-runs-v1",repository=m.REPO,
+            target_branch=value["target_branch"],runs=rows))
+        bodies[path]=raw
+        manifest["run_files"].append(dict(path=path,bytes=len(raw),blob_sha=content_record(raw)["sha"],
+            sha256=hashlib.sha256(raw).hexdigest(),run_count=len(rows)))
+    bodies[m.INVENTORY_PATH]=inventory_json(manifest)
+    return manifest,bodies
+
+
+class InventoryAPI:
+    """Every request has to retain the first captured commit."""
+    def __init__(self,bodies):
+        self.bodies=copy.deepcopy(bodies);self.calls=[];self.head_reads=0;self.responses={}
+    def get(self,path):
+        self.calls.append(("get",path))
+        assert path=="git/ref/heads/codex/complete-open-work"
+        self.head_reads+=1
+        return dict(object=dict(sha=HEAD if self.head_reads==1 else "b"*40))
+    def maybe(self,path):
+        self.calls.append(("maybe",path))
+        prefix,suffix="contents/","?ref="+HEAD
+        assert path.startswith(prefix) and path.endswith(suffix),"Mutable or foreign inventory read"
+        name=path[len(prefix):-len(suffix)]
+        if name in self.responses:return copy.deepcopy(self.responses[name])
+        if name not in self.bodies:return None
+        return content_record(self.bodies[name])
+
+
+class FullRunAPI:
+    """Actual collect(), all296 handles, explicit non-native metadata transport."""
+    def __init__(self,value):
+        self.items={r["run"]:r for r in value["runs"]};self.calls=[]
+    def get(self,path):
+        self.calls.append(("get",path))
+        if path=="git/ref/heads/codex/complete-open-work":return dict(object=dict(sha=HEAD))
+        assert path.startswith("actions/runs/") and path.count("/")==2
+        item=self.items[int(path.rsplit("/",1)[1])]
+        state=run()
+        state.update(id=item["run"],head_sha=item["head_sha"],head_branch=item["branch"],
+            html_url="https://github.com/"+m.REPO+"/actions/runs/"+str(item["run"]))
+        return state
+    def maybe(self,path):
+        self.calls.append(("maybe",path))
+        assert path.startswith("actions/workflows/"),"No terminal/native asset reads in active fixture"
+        return None
+    def pages(self,path,key,maximum=1000):
+        self.calls.append(("pages",path))
+        assert path.startswith("actions/runs/") and path.endswith("/attempts/1/jobs") and key=="jobs"
+        assert int(path.split("/")[2]) in self.items
+        return [job()]
+
+
+class ShardedInventoryControls(unittest.TestCase):
+    def test_full_296_fixture_and_complete_collection_equivalence(self):
+        raw=FROZEN_INVENTORY.read_bytes()
+        self.assertEqual(len(raw),65365)
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),FROZEN_SHA256)
+        original=json.loads(raw)
+        self.assertEqual(len(original["runs"]),296)
+        self.assertEqual(len({r["run"] for r in original["runs"]}),296)
+        self.assertEqual(len(original["latest_workflows"]),2)
+        manifest,bodies=shard_bundle(original)
+        self.assertEqual(manifest["runs_sha256"],FROZEN_RUNS_SHA256)
+        self.assertEqual([len(bodies[p]) for p in m.RUN_FILE_PATHS],[32294,32656])
+        actual,proof=m.load_config(InventoryAPI(bodies),config())
+        self.assertEqual(actual,original)
+        self.assertEqual(proof["resolved_run_count"],296)
+        self.assertEqual(proof["runs_sha256"],FROZEN_RUNS_SHA256)
+        self.assertEqual([d["path"] for d in proof["documents"]],[m.INVENTORY_PATH,*m.RUN_FILE_PATHS])
+        self.assertEqual([d["run_count"] for d in proof["documents"][1:]],[148,148])
+        # Every original label/head/branch/production job and selector reaches actual collect().
+        a=FullRunAPI(original);b=FullRunAPI(actual)
+        legacy=m.collect(a,original,NOW,configuration_source=dict(head_sha=HEAD))
+        current=m.collect(b,actual,NOW,configuration_source=proof)
+        self.assertEqual(legacy["runs"],current["runs"])
+        self.assertEqual(len(current["runs"]),296)
+        self.assertEqual(legacy["missing_selectors"],current["missing_selectors"])
+        self.assertEqual(legacy["problem_runs"],current["problem_runs"])
+        self.assertEqual(legacy["status"],current["status"])
+        self.assertEqual(a.calls,b.calls)
+        self.assertFalse(current["automatic_native_dispatch"])
+        self.assertFalse(current["full_phy_accepted"])
+        self.assertFalse(current["final_timing_accepted"])
+        self.assertEqual(current["schema"],1)
+
+    def test_one_captured_head_and_document_proofs(self):
+        manifest,bodies=shard_bundle(small_inventory())
+        api=InventoryAPI(bodies);actual,proof=m.load_config(api,config())
+        self.assertEqual(api.head_reads,1)
+        self.assertTrue(all(path.endswith("?ref="+HEAD) for kind,path in api.calls if kind=="maybe"))
+        self.assertEqual(proof["head_sha"],HEAD)
+        for document in proof["documents"]:
+            raw=bodies[document["path"]]
+            self.assertEqual(document["bytes"],len(raw))
+            self.assertEqual(document["blob_sha"],content_record(raw)["sha"])
+            self.assertEqual(document["sha256"],hashlib.sha256(raw).hexdigest())
+        for key in ("branch","head_sha","blob_sha","sha256","bytes","bootstrap"):
+            self.assertIn(key,proof)
+        self.assertFalse(proof["bootstrap"])
+
+    def test_new_manifest_is_not_legacy_configuration(self):
+        manifest,_=shard_bundle(small_inventory())
+        with self.assertRaises(AssertionError):m.check_config(manifest)
+
+    def test_same64KiB_limit_for_manifest_and_both_children(self):
+        self.assertEqual(m.INVENTORY_LIMIT,65536);self.assertEqual(m.LIMIT,8*1024*1024)
+        for path in (m.INVENTORY_PATH,*m.RUN_FILE_PATHS):
+            for size in (65536,65537):
+                with self.subTest(path=path,size=size):
+                    manifest,bodies=shard_bundle(small_inventory())
+                    bodies[path]+=b" "*(size-len(bodies[path]))
+                    if path!=m.INVENTORY_PATH:
+                        row=next(x for x in manifest["run_files"] if x["path"]==path)
+                        row.update(bytes=len(bodies[path]),blob_sha=content_record(bodies[path])["sha"],
+                            sha256=hashlib.sha256(bodies[path]).hexdigest())
+                        bodies[m.INVENTORY_PATH]=inventory_json(manifest)
+                    if size==65536:
+                        got,_=m.load_config(InventoryAPI(bodies),config())
+                        self.assertEqual(got,small_inventory())
+                    else:
+                        with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())
+
+    def test_oversized_child_response_even_with_acceptable_descriptor(self):
+        manifest,bodies=shard_bundle(small_inventory())
+        path=m.RUN_FILE_PATHS[0]; bodies[path]+=b" "*(65537-len(bodies[path]))
+        with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())
+
+    def test_missing_children_never_use_bootstrap(self):
+        for path in m.RUN_FILE_PATHS:
+            manifest,bodies=shard_bundle(small_inventory());del bodies[path]
+            with self.assertRaisesRegex(AssertionError,"Missing inventory shard"):
+                m.load_config(InventoryAPI(bodies),config())
+
+    def test_corrupt_child_git_blob_size_and_digest(self):
+        for field in ("blob","size","content","declared_sha256","declared_bytes","declared_blob"):
+            with self.subTest(field=field):
+                manifest,bodies=shard_bundle(small_inventory());path=m.RUN_FILE_PATHS[0]
+                api=InventoryAPI(bodies);response=content_record(bodies[path])
+                if field=="blob":response["sha"]="f"*40;api.responses[path]=response
+                elif field=="size":response["size"]+=1;api.responses[path]=response
+                elif field=="content":response["content"]=base64.b64encode(b"changed").decode();api.responses[path]=response
+                else:
+                    key={"declared_sha256":"sha256","declared_bytes":"bytes","declared_blob":"blob_sha"}[field]
+                    manifest["run_files"][0][key]=manifest["run_files"][0][key]+1 if key=="bytes" else "f"*(64 if key=="sha256" else 40)
+                    api.bodies[m.INVENTORY_PATH]=inventory_json(manifest)
+                with self.assertRaises(AssertionError):m.load_config(api,config())
+
+    def test_manifest_count_digest_descriptor_and_path_guards(self):
+        mutations=(
+            ("no_shards",lambda x:x.update(run_files=[])),
+            ("extra_shard",lambda x:x["run_files"].append(copy.deepcopy(x["run_files"][0]))),
+            ("duplicate_path",lambda x:x["run_files"][1].update(path=m.RUN_FILE_PATHS[0])),
+            ("reorder",lambda x:x["run_files"].reverse()),
+            ("traversal",lambda x:x["run_files"][0].update(path="../inventory.json")),
+            ("absolute",lambda x:x["run_files"][0].update(path="/inventory.json")),
+            ("URL",lambda x:x["run_files"][0].update(path="https://example.invalid/data")),
+            ("recursive_manifest",lambda x:x["run_files"][0].update(path=m.INVENTORY_PATH)),
+            ("child_ref",lambda x:x["run_files"][0].update(ref="main")),
+            ("boolean_bytes",lambda x:x["run_files"][0].update(bytes=True)),
+            ("boolean_count",lambda x:x["run_files"][0].update(run_count=True)),
+            ("wrong_child_count",lambda x:x["run_files"][0].update(run_count=2)),
+            ("wrong_total",lambda x:x.update(run_count=3)),
+            ("wrong_digest",lambda x:x.update(runs_sha256="0"*64)),
+            ("unknown_schema",lambda x:x.update(schema=3)),
+            ("wrong_repository",lambda x:x.update(repository="other/project")),
+            ("wrong_branch",lambda x:x.update(target_branch="main")),
+            ("dispatch",lambda x:x.update(automatic_native_dispatch=True)),
+            ("short_stall",lambda x:x.update(stall_seconds=1)),
+        )
+        for label,mutate in mutations:
+            with self.subTest(label=label):
+                manifest,bodies=shard_bundle(small_inventory());mutate(manifest)
+                bodies[m.INVENTORY_PATH]=inventory_json(manifest)
+                with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())
+
+    def test_child_scope_schema_and_no_recursive_fields(self):
+        for key,value in (("schema","other"),("repository","other/project"),("target_branch","main"),
+                          ("runs",{}),("run_files",[])):
+            with self.subTest(key=key):
+                manifest,bodies=shard_bundle(small_inventory());path=m.RUN_FILE_PATHS[0]
+                shard=json.loads(bodies[path]);shard[key]=value;bodies[path]=inventory_json(shard)
+                descriptor=manifest["run_files"][0]
+                descriptor.update(bytes=len(bodies[path]),blob_sha=content_record(bodies[path])["sha"],
+                    sha256=hashlib.sha256(bodies[path]).hexdigest())
+                bodies[m.INVENTORY_PATH]=inventory_json(manifest)
+                with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())
+
+    def test_global_duplicate_id_refused_even_identical_or_conflicting(self):
+        for conflict in (False,True):
+            value=small_inventory();value["runs"][1]=copy.deepcopy(value["runs"][0])
+            if conflict:value["runs"][1]["head_sha"]="b"*40
+            _,bodies=shard_bundle(value)
+            with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())
+
+    def test_global_bad_run_source_refused_after_reassembly(self):
+        value=small_inventory();value["runs"][1]["head_sha"]="mutable-main"
+        _,bodies=shard_bundle(value)
+        with self.assertRaises(AssertionError):m.load_config(InventoryAPI(bodies),config())
+
+    def test_missing_child_actual_main_preserves_monitor_error_before_collection(self):
+        import os
+        import tempfile
+        from unittest.mock import patch
+        _,bodies=shard_bundle(small_inventory());del bodies[m.RUN_FILE_PATHS[1]]
+        api=InventoryAPI(bodies)
+        with tempfile.TemporaryDirectory() as temp:
+            base=Path(temp);bootstrap=base/"bootstrap.json";bootstrap.write_bytes(inventory_json(config()))
+            output=base/"result";summary=base/"summary.md"
+            with patch.object(m,"API",return_value=api), patch.object(m,"previous_snapshot",side_effect=AssertionError("Unexpected prior read")) as prior, patch.object(m,"collect",side_effect=AssertionError("Unexpected collection")) as collect:
+                with patch.dict(os.environ,dict(GITHUB_ACTIONS="true",RUNNER_ENVIRONMENT="github-hosted",
+                    GITHUB_REPOSITORY=m.REPO,GH_TOKEN="fixture",GITHUB_RUN_ID="999",GITHUB_STEP_SUMMARY=str(summary))):
+                    with patch.object(sys,"argv",["monitor","--config",str(bootstrap),"--out",str(output)]):
+                        with self.assertRaisesRegex(AssertionError,"Missing inventory shard"):m.main()
+                prior.assert_not_called();collect.assert_not_called()
+            saved=json.loads((output/"result.json").read_text())
+            self.assertEqual(saved["status"],"MONITOR_ERROR")
+            self.assertEqual(saved["runs"],[])
+            self.assertFalse(saved["automatic_native_dispatch"])
+            self.assertFalse(saved["full_phy_accepted"])
+            self.assertIn("No native work was changed",summary.read_text())
+            self.assertTrue(all(path.startswith(("contents/","git/ref/heads/")) for _,path in api.calls))
+
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)
