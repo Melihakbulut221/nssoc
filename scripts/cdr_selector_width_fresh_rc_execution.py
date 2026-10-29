@@ -8,6 +8,7 @@ import os
 from pathlib import Path
 import re
 import secrets
+import sys
 import types
 import cdr_selector_width_fresh_rc_admission as original
 import cdr_selector_width_fresh_rc_legacy as stages
@@ -117,7 +118,7 @@ def preflight():
     method=context(methods())
     require(not RESERVATION.exists()and not RESERVATION.is_symlink(),
       "Preflight receipt already exists")
-    wait(GROUP,os.environ)
+    wait(GROUP,os.environ,emit=lambda *a,**k:print(*a,file=sys.stderr,**k))
     tag,head=release.context(GROUP,os.environ)
     value=dict(schema="width-fresh-rc-reservation-v1",source_head=head,
       run_id=int(os.environ["GITHUB_RUN_ID"]),run_attempt=1,
