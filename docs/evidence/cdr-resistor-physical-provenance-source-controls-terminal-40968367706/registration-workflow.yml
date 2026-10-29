@@ -1,0 +1,17 @@
+name: Magic resistor physical provenance source controls
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Exact candidate source commit
+        type: string
+        required: true
+permissions:
+  contents: read
+jobs:
+  registration-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: Harmless workflow registration only
+        run: printf '%s\n' 'Registration only. No checkout, dependencies, tests, compiler, extraction, or native execution.'

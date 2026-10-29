@@ -1,0 +1,137 @@
+name: Magic resistor physical provenance source controls
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Exact source commit to qualify without native execution
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: magic-resistor-source-controls-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  PYTHONDONTWRITEBYTECODE: '1'
+jobs:
+  source-controls:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate exact source and immutable source manifest
+        id: bind
+        env:
+          REQUESTED_SOURCE: ${{ inputs.source }}
+        run: |
+          python3 -B - <<'PY'
+          import hashlib,json,os,subprocess,sys
+          from pathlib import Path
+          e=os.environ
+          assert e['GITHUB_ACTIONS']=='true'
+          assert e['GITHUB_REPOSITORY']=='Melihakbulut221/nssoc'
+          assert e['GITHUB_EVENT_NAME']=='workflow_dispatch'
+          assert e['GITHUB_RUN_ATTEMPT']=='1'
+          assert e['GITHUB_REF']=='refs/heads/codex/cdr-resistor-physical-provenance'
+          assert e['REQUESTED_SOURCE']==e['GITHUB_SHA']
+          assert subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()==e['GITHUB_SHA']
+          out=Path('magic-resistor-source-controls');out.mkdir()
+          path=Path('scripts/cdr-resistor-physical-provenance-pins.json')
+          assert path.is_file() and not path.is_symlink()
+          raw=path.read_bytes()
+          assert hashlib.sha256(raw).hexdigest()=='18c5bdcc4ad50a144fbe387f0abf1ff2791c23259cefcd4f037d64501c8593d4'
+          sys.path.insert(0,str(Path('scripts').resolve()))
+          import patch_magic_resistor_provenance as p
+          pins,spec=p.source_guard()
+          assert len(pins['files'])==54 and len(spec['rules'])==11
+          assert pins['inherited_manifest']['entries']==43
+          (out/'source-manifest.json').write_bytes(raw)
+          context=dict(source=e['GITHUB_SHA'],run_id=int(e['GITHUB_RUN_ID']),attempt=1,
+            branch=e['GITHUB_REF'],event=e['GITHUB_EVENT_NAME'],
+            manifest=dict(path=str(path),bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest()),
+            protected_files=pins['files'],source_controls_only=True,native_executed=False,
+            native_acquisition=False,native_build_executed=False,
+            native_output_equivalence_qualified=False,physical_ownership_proved=False,
+            physical_acceptance=False,electrical_acceptance=False,full_phy_accepted=False)
+          (out/'context.json').write_text(json.dumps(context,sort_keys=True,indent=2)+'\n')
+          PY
+      - name: Exercise actual source derivation and refusal functions
+        run: python3 -B scripts/check_magic_resistor_provenance.py --output magic-resistor-source-controls/controls.json > magic-resistor-source-controls/controls.stdout 2> magic-resistor-source-controls/controls.stderr
+      - name: Repeat inherited source-only geometry and preservation controls
+        if: always() && steps.bind.outcome == 'success'
+        run: |
+          python3 -B - <<'PY' > magic-resistor-source-controls/inherited.json.stdout 2> magic-resistor-source-controls/inherited.json.stderr
+          import json,os,sys,traceback
+          from pathlib import Path
+          sys.path.insert(0,str(Path('scripts').resolve()))
+          import check_cdr_current_access_overlay as old
+          error=None
+          try:
+              report=old.controls('eceffabefffa8aab22b9ba5b5a7de13bc5a83fff42a79387fbd766ed6820f141')
+          except BaseException as exc:
+              error=exc
+              report=dict(status='FAIL_INHERITED_SOURCE_CONTROLS',error=repr(exc),
+                traceback=traceback.format_exc(),native_executed=False,physical_acceptance=False)
+          report['invocation']=dict(function='unchanged check_cdr_current_access_overlay.controls',
+            original_cli_not_invoked=True,reason='Original CLI authorizes another branch; current workflow authenticates this source-only execution.',
+            source=os.environ['GITHUB_SHA'],run_id=int(os.environ['GITHUB_RUN_ID']),attempt=1,
+            source_controls_only=True,native_executed=False)
+          old.finish_report(Path('magic-resistor-source-controls/inherited.json'),report,error)
+          PY
+      - name: Require actual source-only results and unchanged scope
+        run: |
+          python3 -B - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('magic-resistor-source-controls')
+          result=json.loads((root/'controls.json').read_bytes())
+          assert result['status']=='PASS_RESISTOR_PROVENANCE_SOURCE_CONTROLS'
+          assert result['positive_count']==4 and len(result['positive'])==4
+          assert result['refusal_count']==19 and len(result['refusals'])==19
+          for k in ('native_executed','c_compilation_executed','native_output_equivalence_qualified','physical_ownership_proved','physical_acceptance','electrical_acceptance','full_phy_accepted'):
+              assert result[k] is False,k
+          old=json.loads((root/'inherited.json').read_bytes())
+          assert old['status']=='PASS_CURRENT_ACCESS_OVERLAY_SOURCE_CONTROLS' and old['passed'] is True
+          assert old['counts']==dict(positive=11,refusal=33,lifecycle=11)
+          assert old['checker_finalization_count']==5 and len(old['checker_finalization_cases'])==5
+          assert old['original_archive_controls']['counts']==dict(positive=14,refusal=80,lifecycle=5)
+          assert old['original_archive_controls']['passed'] is True
+          assert old['native_executed'] is False and old['physical_acceptance'] is False
+          print('PASS_SOURCE_ONLY_QUALIFICATION; no C compilation, Magic extraction, native-output equivalence, or physical acceptance')
+          PY
+      - name: Always emit every complete report and stream
+        if: always()
+        run: |
+          python3 -B - <<'PY'
+          import base64,hashlib,json,zlib
+          from pathlib import Path
+          names=('context.json','source-manifest.json','controls.json','controls.stdout','controls.stderr',
+            'inherited.json','inherited.json.stdout','inherited.json.stderr')
+          for name in names:
+              p=Path('magic-resistor-source-controls')/name
+              assert not p.is_symlink()
+              present=p.is_file();raw=p.read_bytes() if present else b''
+              packed=zlib.compress(raw,9)
+              chunks=[packed[i:i+6000] for i in range(0,len(packed),6000)]
+              print('MAGIC_RESISTOR_CONTROL_INDEX '+json.dumps(dict(path=name,present=present,
+                bytes=len(raw),sha256=hashlib.sha256(raw).hexdigest(),encoding='zlib+base64',
+                compressed_bytes=len(packed),chunks=len(chunks)),sort_keys=True))
+              for i,b in enumerate(chunks):
+                  print('MAGIC_RESISTOR_CONTROL_CHUNK '+json.dumps(dict(path=name,index=i,
+                    base64=base64.b64encode(b).decode()),sort_keys=True))
+          PY
+      - name: Preserve every complete source control record
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: magic-resistor-source-controls-${{ github.run_id }}-${{ github.run_attempt }}
+          path: magic-resistor-source-controls
+          if-no-files-found: error
+          retention-days: 90
