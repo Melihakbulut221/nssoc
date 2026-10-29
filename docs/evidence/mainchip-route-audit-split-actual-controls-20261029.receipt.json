@@ -1,0 +1,545 @@
+{
+  "run": 40807637800,
+  "job": 123230284833,
+  "source_head": "3a0b148ecf43c17c3d00cda4cfeb324594c885dc",
+  "draft_source": "58cb0176b62f357c30040ad586b20c0a3faf749e",
+  "status": "PASS_HOSTED_COMPLETE_ROUTE_AUDIT_SPLIT_SOURCE_CONTROLS_ONLY",
+  "protected_count": 687,
+  "full_control_records_sha256": {
+    "route-prefix-controls.json": "ddb4ab0620973c109ea450f031fc773621de3c67d9599aa6af6dde062e755633",
+    "route-tail-controls.json": "a4b0a883759f37e90fefc3d98f4d9e9abf512ea87d5a21cddb6bb7da45bd7878"
+  },
+  "original_prefix": {
+    "positive_count": 4,
+    "refusal_count": 23,
+    "sequencing": 6,
+    "lifecycle": 8
+  },
+  "tail": {
+    "envelope_refusals": 10,
+    "restore_cases": 4,
+    "lifecycle_cases": 14,
+    "geometry_mismatch_refusals": 10,
+    "observer": {
+      "positive": 3,
+      "refusals": [
+        {
+          "error": "off case wrote witness",
+          "type": "ValueError"
+        },
+        {
+          "error": "after-writer raw opcodes differ from serialized ODB",
+          "type": "ValueError"
+        },
+        {
+          "error": "exact four witness files",
+          "type": "ValueError"
+        }
+      ],
+      "synthetic_only": true
+    },
+    "sequence": {
+      "gate_refusals": 4,
+      "independent_audit_seconds": [
+        1200,
+        1200,
+        1200,
+        1200,
+        1200
+      ],
+      "independent_route_seconds": 14400,
+      "original_three_shorts_retained": true,
+      "sequence": [
+        [
+          "one-two-signal-routing-attempt",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "/work/out/work/repair.tcl"
+          ]
+        ],
+        [
+          "route-audit",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "-python",
+            "/work/tail-source/scripts/mainchip_built_engine_route_tail_native.py"
+          ]
+        ],
+        [
+          "paired-original-class-return",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "/work/out/work/unfix.tcl"
+          ]
+        ],
+        [
+          "unfix-audit",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "-python",
+            "/work/tail-source/scripts/mainchip_built_engine_route_tail_native.py"
+          ]
+        ],
+        [
+          "full-original-class-read-only-DRT",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "/work/out/work/final-drc.tcl"
+          ]
+        ],
+        [
+          "drc-audit",
+          [
+            "/work/engine/openroad",
+            "-no_init",
+            "-exit",
+            "-python",
+            "/work/tail-source/scripts/mainchip_built_engine_route_tail_native.py"
+          ]
+        ]
+      ],
+      "stops": [
+        "one-two-signal-routing-attempt",
+        "route-audit",
+        "paired-original-class-return",
+        "unfix-audit",
+        "full-original-class-read-only-DRT",
+        "drc-audit"
+      ]
+    },
+    "publication": {
+      "positive": 2,
+      "refusals": 1
+    },
+    "isolated_imports": {
+      "actual_authorization_modes": 3,
+      "actual_isolated_imports": [
+        "mainchip_built_engine_route_tail_contract",
+        "mainchip_built_engine_route_tail_driver",
+        "mainchip_built_engine_route_tail_inner",
+        "mainchip_built_engine_route_tail_handoff",
+        "cloud_mainchip_built_engine_route_tail",
+        "check_mainchip_built_engine_route_tail_handoff",
+        "check_mainchip_built_engine_route_tail"
+      ],
+      "authorization_refusals": [
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "native type",
+          "mode": "disabled"
+        },
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "control type",
+          "mode": "disabled"
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "physical claim",
+          "mode": "disabled"
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "retry",
+          "mode": "disabled"
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "false equivalence",
+          "mode": "disabled"
+        },
+        {
+          "error": {
+            "error": "inconsistent stage authorizations",
+            "type": "ValueError"
+          },
+          "label": "split route",
+          "mode": "disabled"
+        },
+        {
+          "error": {
+            "error": "inconsistent stage authorizations",
+            "type": "ValueError"
+          },
+          "label": "split audit",
+          "mode": "disabled"
+        },
+        {
+          "error": {
+            "error": "incomplete split source unit",
+            "type": "ValueError"
+          },
+          "label": "incomplete source",
+          "mode": "disabled"
+        },
+        {
+          "error": {
+            "error": "route/audit handoff split required",
+            "type": "ValueError"
+          },
+          "label": "unsplit",
+          "mode": "disabled"
+        },
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "native type",
+          "mode": "controls"
+        },
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "control type",
+          "mode": "controls"
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "physical claim",
+          "mode": "controls"
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "retry",
+          "mode": "controls"
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "false equivalence",
+          "mode": "controls"
+        },
+        {
+          "error": {
+            "error": "inconsistent stage authorizations",
+            "type": "ValueError"
+          },
+          "label": "split route",
+          "mode": "controls"
+        },
+        {
+          "error": {
+            "error": "inconsistent stage authorizations",
+            "type": "ValueError"
+          },
+          "label": "split audit",
+          "mode": "controls"
+        },
+        {
+          "error": {
+            "error": "incomplete split source unit",
+            "type": "ValueError"
+          },
+          "label": "incomplete source",
+          "mode": "controls"
+        },
+        {
+          "error": {
+            "error": "route/audit handoff split required",
+            "type": "ValueError"
+          },
+          "label": "unsplit",
+          "mode": "controls"
+        },
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "native type",
+          "mode": "native"
+        },
+        {
+          "error": {
+            "error": "authorization type",
+            "type": "ValueError"
+          },
+          "label": "control type",
+          "mode": "native"
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "physical claim",
+          "mode": "native"
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "retry",
+          "mode": "native"
+        },
+        {
+          "error": {
+            "error": "no acceptance or continuation",
+            "type": "ValueError"
+          },
+          "label": "false equivalence",
+          "mode": "native"
+        },
+        {
+          "error": {
+            "error": "inconsistent stage authorizations",
+            "type": "ValueError"
+          },
+          "label": "split route",
+          "mode": "native"
+        },
+        {
+          "error": {
+            "error": "inconsistent stage authorizations",
+            "type": "ValueError"
+          },
+          "label": "split audit",
+          "mode": "native"
+        },
+        {
+          "error": {
+            "error": "incomplete split source unit",
+            "type": "ValueError"
+          },
+          "label": "incomplete source",
+          "mode": "native"
+        },
+        {
+          "error": {
+            "error": "route/audit handoff split required",
+            "type": "ValueError"
+          },
+          "label": "unsplit",
+          "mode": "native"
+        }
+      ],
+      "native_odb_module_imported": false
+    },
+    "handoff": {
+      "actual_freeze_restore_executed": true,
+      "native_engine_executed": false,
+      "positive": [
+        {
+          "canonical_files": 751,
+          "complete_evidence_retained": true,
+          "frozen_files": 746,
+          "handoff_files": 758,
+          "mode": "off"
+        },
+        {
+          "canonical_files": 755,
+          "complete_evidence_retained": true,
+          "frozen_files": 746,
+          "handoff_files": 762,
+          "mode": "on"
+        }
+      ],
+      "refusals": [
+        {
+          "case": "failed_job",
+          "result": {
+            "error": "complete route job required",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "wrong_source",
+          "result": {
+            "error": "same workflow route run",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "annotated_tag",
+          "result": {
+            "error": "",
+            "type": "AssertionError"
+          }
+        },
+        {
+          "case": "wrong_method",
+          "result": {
+            "error": "route/audit exact method",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "case_incomplete",
+          "result": {
+            "error": "route body completion",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "original_map",
+          "result": {
+            "error": "route changed original frozen input: input.odb",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "part_hash",
+          "result": {
+            "error": "route part asset join",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "missing_outer_member",
+          "result": {
+            "error": "missing archive member",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "changed_nested_member",
+          "result": {
+            "error": "archive member identity/size",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "missing_nested_member",
+          "result": {
+            "error": "missing archive member",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "destination_collision",
+          "result": {
+            "error": "audit projection collision",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "witness_join",
+          "result": {
+            "error": "route witness census",
+            "type": "ValueError"
+          }
+        }
+      ],
+      "synthetic_payloads_only": true,
+      "terminal": [
+        {
+          "case": "frozen_input",
+          "partial_evidence_preserved": true,
+          "result": {
+            "error": "frozen input changed: input.odb",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "route_failed",
+          "partial_evidence_preserved": true,
+          "result": {
+            "error": "route host completion",
+            "type": "ValueError"
+          }
+        },
+        {
+          "case": "proof_replace",
+          "partial_evidence_preserved": true,
+          "result": {
+            "same_exception": true
+          }
+        },
+        {
+          "case": "tar_add",
+          "partial_evidence_preserved": true,
+          "result": {
+            "same_exception": true
+          }
+        }
+      ]
+    },
+    "split_publication": [
+      {
+        "case": "missing_terminal",
+        "full_partial_output_archive": true,
+        "missing_terminal_not_accepted": true,
+        "same_upload_exception": false
+      },
+      {
+        "case": "malformed_terminal",
+        "full_partial_output_archive": true,
+        "missing_terminal_not_accepted": true,
+        "same_upload_exception": false
+      },
+      {
+        "case": "upload_failure",
+        "full_partial_output_archive": true,
+        "missing_terminal_not_accepted": true,
+        "same_upload_exception": true
+      }
+    ]
+  },
+  "native_routing_executed": false,
+  "native_qualification": false,
+  "physical_acceptance": false,
+  "full_phy_accepted": false,
+  "files": {
+    "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.joblog.log": {
+      "bytes": 84387,
+      "sha256": "95b833a103cd94ab57274ae4cc1808f7cf657718bf69c5126fa6859198ea9631"
+    },
+    "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.route-prefix-controls.json": {
+      "bytes": 27540,
+      "sha256": "ddb4ab0620973c109ea450f031fc773621de3c67d9599aa6af6dde062e755633"
+    },
+    "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.route-tail-controls.json": {
+      "bytes": 18126,
+      "sha256": "a4b0a883759f37e90fefc3d98f4d9e9abf512ea87d5a21cddb6bb7da45bd7878"
+    },
+    "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.run.json": {
+      "bytes": 14394,
+      "sha256": "5ca7789eec4dbd1604213da5cbc8b28e9d2f50d2d9a4391026f70cf1d69ed8b6"
+    },
+    "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.jobs.json": {
+      "bytes": 3379,
+      "sha256": "23aee45ce74eb61ca1145bc79e41b284dd89be2bd8aa4d67b7f247c3ad0f0f43"
+    },
+    "docs/evidence/mainchip-route-audit-split-actual-controls-20261029.record-indexes.json": {
+      "bytes": 439,
+      "sha256": "089a6de58f1ecea82940a44503cfa64e0344ae4d1506cf22aca32a1dbb3b5a9e"
+    }
+  }
+}
