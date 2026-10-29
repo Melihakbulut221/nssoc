@@ -1,0 +1,16 @@
+name: Fixed engine actual chip runtime probe
+on:
+  workflow_dispatch:
+    inputs:
+      probe:
+        description: Reserved read-only native probe on reviewed topic source only
+        required: true
+        type: boolean
+        default: false
+permissions: {}
+jobs:
+  registered-only:
+    if: ${{ false }}
+    runs-on: ubuntu-24.04
+    steps:
+      - run: exit 1
