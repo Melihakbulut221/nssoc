@@ -1,16 +1,17 @@
-# Cloud continuation — checkpoint v109
+# Cloud continuation — checkpoint v110
 
-Updated: 2026-10-29T07:52:51.545846+00:00
+Updated: 2026-10-29T08:44:05.298871+00:00
 
 Latest user instruction overrides older local goal wording: all computation, code and evidence stay in GitHub; local workspace is empty. No local checkout, authored tests, CAD, native archives or waveforms. Original user review documents remain preserved.
 
-Current-width fresh RC40830441311 completed successfully in GitHub: four original phases,500 devices/R24356/C15566, complete6647 native archive members and54 full proof files146866421B preserved at b43991. Raw result9d128f and independent direct summaryc569 remain distinct; no electrical/fullPHY acceptance. Corrected repaired-engine source controls40835411152 passed; first fixture failure40834365048 retained. Separate native engine build40837855489 sourcebfb75d24515a566262bfb8b2e8b681dd2774cec6 now runs in GitHub with920 pins and empty exact-source release427584078 reserved before acquisition. New ELF runtime qualification and actual repaired routing still required; original3 shorts remain historical. New disabled current-width loaded-input admission is being authored on codex/cdr-width-loaded-admission. Local workspace0files, former project paths absent, named temporary files0, native processes0 verified.
+Cloud-only computation finished two more real stages: repaired FIXED-guard OpenROAD build40837855489 passed, newELF2a343c/108939848B,100-member native archive,104 library hashes,3.71GB peak and zeroOOM;39 full proof files preserved at1c26b1. This is full build/interface smoke only: new actual ODB runtime and repaired routing are still required. Current-width loaded-input source controls40841477699 passed5positive45refusal5syntheticrestore,13fullproofs ataaa00af; native restore and numerical worker/controller integration remain disabled. Latest scheduled monitor40826302954 failed because old config rejects retained main rows; complete failure is preserved and minimal read-only fix is being authored on codex/cloud-monitor-main-observation. The8h schedule remains enabled; do not mistake its triggered runs for working observation until the repair passes. No active native job remains in this snapshot; local workspace/tmp/native processes verified empty.
 
-Active handles at this snapshot: 40837855489 in_progress
+Active handles at this snapshot: No native run remains active in this snapshot.
 
 Authoritative structured continuation: docs/evidence/cloud-active-checkpoint-20261024.json. Existing eight-hour GitHub monitor remains read-only; it cannot dispatch native work. All original physical/electrical/clock gates remain unchanged; full serial PHY, routed main chip and final setup/hold remain unaccepted.
 
 ## Historical notes below — not current running-job status
+
 
 
 
@@ -8934,3 +8935,10 @@ Local project/tmp/native processes verified absent. Inventory326 exact cloud han
 Current-width fresh RC40830441311 completed successfully in GitHub: four original phases,500 devices/R24356/C15566, complete6647 native archive members and54 full proof files146866421B preserved at b43991. Raw result9d128f and independent direct summaryc569 remain distinct; no electrical/fullPHY acceptance. Corrected repaired-engine source controls40835411152 passed; first fixture failure40834365048 retained. Separate native engine build40837855489 sourcebfb75d24515a566262bfb8b2e8b681dd2774cec6 now runs in GitHub with920 pins and empty exact-source release427584078 reserved before acquisition. New ELF runtime qualification and actual repaired routing still required; original3 shorts remain historical. New disabled current-width loaded-input admission is being authored on codex/cdr-width-loaded-admission. Local workspace0files, former project paths absent, named temporary files0, native processes0 verified.
 
 Local project/tmp/native processes verified absent. Inventory329 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
+
+
+### 2026-10-29T08:44:05.298871+00:00 — cloud-only checkpoint v110
+
+Cloud-only computation finished two more real stages: repaired FIXED-guard OpenROAD build40837855489 passed, newELF2a343c/108939848B,100-member native archive,104 library hashes,3.71GB peak and zeroOOM;39 full proof files preserved at1c26b1. This is full build/interface smoke only: new actual ODB runtime and repaired routing are still required. Current-width loaded-input source controls40841477699 passed5positive45refusal5syntheticrestore,13fullproofs ataaa00af; native restore and numerical worker/controller integration remain disabled. Latest scheduled monitor40826302954 failed because old config rejects retained main rows; complete failure is preserved and minimal read-only fix is being authored on codex/cloud-monitor-main-observation. The8h schedule remains enabled; do not mistake its triggered runs for working observation until the repair passes. No active native job remains in this snapshot; local workspace/tmp/native processes verified empty.
+
+Local project/tmp/native processes verified absent. Inventory331 exact cloud handles; existing8h read-only monitor retained. Full serial PHY, routed serial chip and final setup/hold remain unaccepted.
